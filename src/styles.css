@@ -1,1 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
+.nav-item {
+	font-size: 11px !important;
+	padding: 0 !important;
+	font-weight: bold;
+}
+
+.nav-link {
+	padding: 5px 10px !important;
+}
+
+mwlResizable {
+  box-sizing: border-box;
+}

@@ -1,0 +1,122 @@
+
+fieldset.scheduler-border {
+    border: 1px solid #B0B0B0 !important;
+    padding: 0 1em 0 1em !important;
+    margin: -5px 0 0 0 !important;
+    -webkit-box-shadow:  0px 0px 0px 0px #e0e0e0;
+            box-shadow:  0px 0px 0px 0px #e0e0e0;
+    border-radius: 3px 3px 3px 3px;
+}
+
+legend.scheduler-border {
+    font-size: 10.5px !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    width:auto;
+    padding:10px 10px;
+    margin-bottom: -14px;
+    color: #2d5986;
+}
+
+label.top-label {
+	padding-left: 0;
+	padding-bottom: 0;
+	margin-bottom: -1em !important;
+}
+
+label{
+	font-weight: bold !important;
+	font-size: 10px;
+}
+
+textarea {
+	height: 68%;
+}
+
+.custom-row-inline-inset {
+	margin-top: 8px;
+	margin-bottom: 8px;
+}
+
+.cust-btn-bg {
+	margin-top: 4px;
+	margin-left: 5px;
+	color: white;
+	font-size: 12px;
+	background-color: #4080bf !important; /*014ca0*/
+}
+
+.cust-btn-bg:hover {
+	background-color: #2d5986 !important; /*013cd6*/
+}
+
+.nav-pills li {
+	margin-right: 8px;
+}
+
+input.cust-sm {
+	height: calc(1.6rem + 1px);
+	padding: 0.1rem 0.25rem;
+	font-size: 0.8rem;
+	line-height: .9;
+	border-radius: 0.2rem;
+}
+
+input.form-control-sm {
+	height: calc(1.6rem + 1px);
+	padding: 0.1rem 0.25rem;
+	font-size: 0.8rem;
+	line-height: .9;
+	border-radius: 0.2rem !important;
+	margin-bottom: -5px;
+}
+
+.cust-tabs-container h4 {
+	font-size: 15px;
+	margin-bottom: 2px;
+	margin-top: -5px;
+}
+
+.cust-tabs-container ul li a {
+	font-size: 12px;
+}
+
+.input-group {
+	margin-bottom: -6px;
+}
+
+.input-group label {
+	right: 0 !important;
+	text-align: right;
+}
+
+.cust-col-right-offset {
+	padding-right: 0px;
+}
+
+
+/*height: calc(1.8125rem + 2px);
+padding: 0.25rem 0.5rem;
+font-size: 0.875rem;
+line-height: 1.5;
+border-radius: 0.2rem;*/
+
+
+/*fieldset.scheduler-border {
+    border: 1px solid #B0B0B0 !important;
+    padding: 0 1.4em 1.4em 1.4em !important;
+    margin: 0 0 0 0 !important;
+    -webkit-box-shadow:  0px 0px 0px 0px #e0e0e0;
+            box-shadow:  0px 0px 0px 0px #e0e0e0;
+    border-radius: 3px 3px 3px 3px;
+}
+
+legend.scheduler-border {
+    font-size: .85em !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    width:auto;
+    padding:10px 10px;
+    border-bottom:none;
+}
+*/
