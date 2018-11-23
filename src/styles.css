@@ -1,14 +1,189 @@
 /* You can add global styles to this file, and also import other style files */
-.nav-item {
-	font-size: 11px !important;
-	padding: 0 !important;
-	font-weight: bold;
-}
-
-.nav-link {
-	padding: 5px 10px !important;
-}
 
 mwlResizable {
   box-sizing: border-box;
 }
+
+
+
+fieldset.scheduler-border {
+    border: 1px solid #B0B0B0 !important;
+    padding: 0 1em 0 1em !important;
+    margin: -5px 0 0 0 !important;
+    -webkit-box-shadow:  0px 0px 0px 0px #e0e0e0;
+            box-shadow:  0px 0px 0px 0px #e0e0e0;
+    border-radius: 3px 3px 3px 3px;
+}
+
+legend.scheduler-border {
+    font-size: 10.5px !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    width:auto;
+    padding:10px 10px;
+    margin-bottom: -14px;
+    color: #2d5986;
+}
+
+label.top-label {
+  padding-left: 0 !important;
+  padding-bottom: 0 !important;
+  margin-bottom: -1em !important;
+}
+
+label{
+  font-weight: bold !important;
+  font-size: 10px !important;
+}
+
+textarea {
+  height: 68% !important;
+}
+
+.custom-row-inline-inset {
+  margin-top: 8px !important;
+  margin-bottom: 8px !important;
+}
+
+.cust-btn-bg {
+  margin-top: 4px !important;
+  margin-left: 5px !important;
+  color: white !important;
+  font-size: 12px !important;
+  background-color: #4080bf !important; /*014ca0*/
+}
+
+.cust-btn-bg:hover {
+  background-color: #2d5986 !important; /*013cd6*/
+}
+
+.nav-pills li {
+  margin-right: 8px !important;
+}
+
+input.cust-sm {
+  height: calc(1.6rem + 1px) !important;
+  padding: 0.1rem 0.25rem !important;
+  font-size: 0.8rem !important;
+  line-height: .9 !important;
+  border-radius: 0.2rem !important;
+}
+
+input.form-control-sm {
+  height: calc(1.6rem + 1px) !important;
+  padding: 0.1rem 0.25rem !important;
+  font-size: 0.8rem !important;
+  line-height: .9 !important;
+  border-radius: 0.2rem !important;
+  margin-bottom: -5px !important;
+}
+
+.cust-tabs-container h4 {
+  font-size: 15px !important;
+  margin-bottom: 2px !important;
+  margin-top: -5px !important;
+}
+
+.cust-tabs-container ul li a {
+  font-size: 12px !important;
+}
+
+.input-group {
+  margin-bottom: -6px !important;
+}
+
+.input-group label {
+  right: 0 !important;
+  text-align: right !important;
+}
+
+.cust-col-right-offset {
+  padding-right: 0px !important;
+}
+
+.nopadding {
+       padding: 0 !important;
+       margin: 0 !important;
+}
+
+.mainContentPad {
+    padding: .5em 1em .5em 1em;
+}
+
+.bord {
+    border: 1px solid gray;
+}
+
+.cust-side-nav-bg {
+    background-color: #557a95;
+    color: white;
+    height: 100%;
+    position: static;
+    flex-grow: 100;
+    min-height: 650px;
+}
+.cust-padding {
+    padding: .7em;
+}
+
+.side-nav-header p {
+    padding: 0 !important;
+    margin: 0 !important;
+    font-size: 13px;
+}
+
+.cust-side-nav-bg a {
+padding: 6px 8px 6px 16px;
+text-decoration: none;
+font-size: 15px;
+color: #ccccc6;
+display: block;
+}
+
+.cust-side-nav-bg a:hover {
+    color: #f1f1f1;
+    background-color: #ccccc6;
+}
+
+.cust-nav-bar-bg {
+    background-color: #f3f3f3;
+    border-bottom: 1px solid #cccccc;
+    height: 2.2em;
+}
+
+.nav-item {
+  font-size: 11px !important;
+  padding: 0 !important;
+  font-weight: bold;
+}
+
+.nav-link {
+  padding: 5px 10px !important;
+}
+
+
+/*height: calc(1.8125rem + 2px);
+padding: 0.25rem 0.5rem;
+font-size: 0.875rem;
+line-height: 1.5;
+border-radius: 0.2rem;*/
+
+
+/*fieldset.scheduler-border {
+    border: 1px solid #B0B0B0 !important;
+    padding: 0 1.4em 1.4em 1.4em !important;
+    margin: 0 0 0 0 !important;
+    -webkit-box-shadow:  0px 0px 0px 0px #e0e0e0;
+            box-shadow:  0px 0px 0px 0px #e0e0e0;
+    border-radius: 3px 3px 3px 3px;
+}
+
+legend.scheduler-border {
+    font-size: .85em !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    width:auto;
+    padding:10px 10px;
+    border-bottom:none;
+}
+*/

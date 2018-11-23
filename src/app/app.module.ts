@@ -1,6 +1,6 @@
 ﻿import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { ReactiveFormsModule }    from '@angular/forms';
+import { ReactiveFormsModule, FormsModule }    from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ResizableModule } from 'angular-resizable-element';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
@@ -18,8 +18,12 @@ import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 import { HomeComponent } from './home';
 import { LoginComponent } from './login';
 import { RegisterComponent } from './register';
-import { QuotationComponent } from './quotation/quotation.component';
-
+import { QuotationComponent } from './quotation/quotation.component';;
+import { GeneralInfoComponent } from './quotation/general-info/general-info.component'
+;
+import { CoverageComponent } from './quotation/coverage/coverage.component'
+;
+import { QuoteOptionComponent } from './quotation/quote-option/quote-option.component'
 @NgModule({
     imports: [
         BrowserModule,
@@ -30,6 +34,7 @@ import { QuotationComponent } from './quotation/quotation.component';
         AngularFontAwesomeModule,
         NgbModule,
         SidebarModule.forRoot(),
+        FormsModule,
     ],
     declarations: [
         AppComponent,
@@ -38,7 +43,11 @@ import { QuotationComponent } from './quotation/quotation.component';
         LoginComponent,
         RegisterComponent,
         QuotationComponent
-    ],
+,
+        GeneralInfoComponent
+,
+        CoverageComponent ,
+        QuoteOptionComponent   ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
