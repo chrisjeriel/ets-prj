@@ -1,5 +1,3 @@
-# angular-7-registration-login-example
+# PMMSC - Engineering Treaty System
 
-Angular 7 User Registration and Login Example with Angular CLI
-
-Full tutorial with example available at http://jasonwatmore.com/post/2018/10/29/angular-7-user-registration-and-login-example-tutorial
+Developed by : Computer Professionals Inc.
