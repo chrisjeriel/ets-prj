@@ -3,8 +3,9 @@ A project by : Computer Professionals Inc.
 
 
 Note: 
-	- Make sure 'npm' NodeJs is installed, please refer to this site:  https://nodejs.org/en/
 	
+	- Make sure 'npm' NodeJs is installed, please refer to this site:  https://nodejs.org/en/
+
 	- Install Angular command line interface: https://cli.angular.io/
 
 
