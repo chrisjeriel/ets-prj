@@ -20,3 +20,49 @@
 .cust-filter:hover {
   	background: linear-gradient(to bottom, #4080df 0%, #2d5986 100%);
 }
+
+.dropdown-menu {
+	padding: 0px !important;
+	padding-bottom: 10px !important;
+}
+
+.dropdown-item{
+	width: 300px;
+	height: 200px;
+	overflow: auto;
+}
+
+div.input-group-text {
+	font-size: 9px;
+	font-weight: bold;
+	width: 100px;
+}
+
+input.form-control {
+	font-size: 11px !important;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+	background-color: white !important;
+	color: gray !important;
+}
+
+
+.dropdown-item.active, .dropdown-item:hover {
+	background-color: white !important;
+	color: gray !important;
+}
+
+div.input-group {
+	margin-bottom: 2px !important;
+}
+
+.cust-tbl-submit {
+	border-radius: 2px !important;
+	font-size: 12px !important;
+}
+
+.cust-tbl-label {
+	font-size: 11px;
+	font-weight: bold;
+}

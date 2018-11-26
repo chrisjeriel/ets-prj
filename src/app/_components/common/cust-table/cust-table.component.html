@@ -1,192 +1,82 @@
-<div class="btn-group" dropdown>
-  <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
-    Button dropdown <span class="caret"></span>
-  </button>
-  <ul *dropdownMenu class="dropdown-menu" role="menu">
-    <li role="menuitem"><button class="dropdown-item" href="#">Action</button></li>
-    <li role="menuitem"><button class="dropdown-item" href="#">Another action</button></li>
-    <li role="menuitem"><button class="dropdown-item" href="#">Something else here</button></li>
-    <li class="divider dropdown-divider"></li>
-    <li role="menuitem"><button class="dropdown-item" href="#">Separated link</button>
-    </li>
-  </ul>
-</div>
-
 <div id="cust-table-container">
-	<button class="cust-filter"><a><fa name="filter"></fa></a></button>
-	<table datatable class="row-border hover">
-	  <thead>
-	    <tr>
-	      	<th>Quotation No</th>
-			<th>Branch</th>
-			<th>Line Class</th>
-			<th>Ceding Company</th>
-			<th>Principal</th>
-			<th>Contractor</th>
-			<th>Insured</th>
-			<th>Quote Date</th>
-			<th>Validity Date</th>
-			<th>Requested By</th>
-			<th>Created By</th>
-	    </tr>
-	  </thead>
-	  <tbody>
-	    <tr>
-	      <td>1</td>
-	      <td>Foo</td>
-	      <td><input type="text" value="Bar"/></td>
-	      <td>Bar</td>
-	      <td>Bar</td>
-	      <td>Bar</td>
-	      <td>Bar</td>
-	      <td>Bar</td>
-	      <td>Bar</td>
-	      <td>Bar</td>
-	      <td>Bar</td>
-	    </tr>
-	     <tr>
-	      <td>2</td>
-	      <td>Someone</td>
-	      <td>Youknow</td>
-	      <td>Youknow</td>
-	      <td>Youknow</td>
-	      <td>Youknow</td>
-	      <td>Youknow</td>
-	      <td>Youknow</td>
-	      <td>Youknow</td>
-	      <td>Youknow</td>
-	      <td>Youknow</td>
-	    </tr>
-	    <tr>
-	      <td>3</td>
-	      <td>Iamout</td>
-	      <td>Ofinspiration</td>
-	      <td>Ofinspiration</td>
-	      <td>Ofinspiration</td>
-	      <td>Ofinspiration</td>
-	      <td>Ofinspiration</td>
-	      <td>Ofinspiration</td>
-	      <td>Ofinspiration</td>
-	      <td>Ofinspiration</td>
-	      <td>Ofinspiration</td>
-	    </tr>
-	    <tr>
-	      <td>4</td>
-	      <td>Yoda</td>
-	      <td>Skywalker</td>
-	      <td>Skywalker</td>
-	      <td>Skywalker</td>
-	      <td>Skywalker</td>
-	      <td>Skywalker</td>
-	      <td>Skywalker</td>
-	      <td>Skywalker</td>
-	      <td>Skywalker</td>
-	      <td>Skywalker</td>
-	    </tr>
-	    <tr>
-	      <td>5</td>
-	      <td>Patrick</td>
-	      <td>Dupont</td>
-	      <td>Dupont</td>
-	      <td>Dupont</td>
-	      <td>Dupont</td>
-	      <td>Dupont</td>
-	      <td>Dupont</td>
-	      <td>Dupont</td>
-	      <td>Dupont</td>
-	      <td>Dupont</td>
-	    </tr>
-	    <tr>
-	      <td>6</td>
-	      <td>Barack</td>
-	      <td>Obama</td>
-	      <td>Obama</td>
-	      <td>Obama</td>
-	      <td>Obama</td>
-	      <td>Obama</td>
-	      <td>Obama</td>
-	      <td>Obama</td>
-	      <td>Obama</td>
-	      <td>Obama</td>
-	    </tr>
-	    <tr>
-	      <td>7</td>
-	      <td>François</td>
-	      <td>Holland</td>
-	      <td>Holland</td>
-	      <td>Holland</td>
-	      <td>Holland</td>
-	      <td>Holland</td>
-	      <td>Holland</td>
-	      <td>Holland</td>
-	      <td>Holland</td>
-	      <td>Holland</td>
-	    </tr>
-	    <tr>
-	      <td>8</td>
-	      <td>Michel</td>
-	      <td>Popo</td>
-	      <td>Popo</td>
-	      <td>Popo</td>
-	      <td>Popo</td>
-	      <td>Popo</td>
-	      <td>Popo</td>
-	      <td>Popo</td>
-	      <td>Popo</td>
-	      <td>Popo</td>
-	    </tr>
-	    <tr>
-	      <td>9</td>
-	      <td>Chuck</td>
-	      <td>Norris</td>
-	      <td>Norris</td>
-	      <td>Norris</td>
-	      <td>Norris</td>
-	      <td>Norris</td>
-	      <td>Norris</td>
-	      <td>Norris</td>
-	      <td>Norris</td>
-	      <td>Norris</td>
-	    </tr>
-	    <tr>
-	      <td>10</td>
-	      <td>Simon</td>
-	      <td>Robin</td>
-	      <td>Robin</td>
-	      <td>Robin</td>
-	      <td>Robin</td>
-	      <td>Robin</td>
-	      <td>Robin</td>
-	      <td>Robin</td>
-	      <td>Robin</td>
-	      <td>Robin</td>
-	    </tr>
-	    <tr>
-	      <td>11</td>
-	      <td>Louis</td>
-	      <td>Lin</td>
-	      <td>Lin</td>
-	      <td>Lin</td>
-	      <td>Lin</td>
-	      <td>Lin</td>
-	      <td>Lin</td>
-	      <td>Lin</td>
-	      <td>Lin</td>
-	      <td>Lin</td>
-	    </tr>
-	    <tr>
-	      <td>12</td>
-	      <td>Zelda</td>
-	      <td>Link</td>
-	      <td>Link</td>
-	      <td>Link</td>
-	      <td>Link</td>
-	      <td>Link</td>
-	      <td>Link</td>
-	      <td>Link</td>
-	      <td>Link</td>
-	      <td>Link</td>
-	    </tr>
-	  </tbody>
+	<br/>
+	<div ngbDropdown>
+	  <button class="cust-filter" ngbDropdownToggle><a><fa name="filter"></fa></a></button>
+	  <div ngbDropdownMenu aria-labelledby="dropdownConfig">
+	  	<div class="dropdown-item">
+	  		<span class="cust-tbl-label">Filter by:</span>
+  			<div class="input-group">
+			  <div class="input-group-prepend">
+			    <div class="input-group-text">
+			      <input type="checkbox"><span>&nbsp;Quote No</span>
+			    </div>
+			  </div>
+			  <input type="text" class="form-control cust-sm">
+			</div>
+			<div class="input-group">
+			  <div class="input-group-prepend">
+			    <div class="input-group-text">
+			      <input type="checkbox"><span>&nbsp;Branch</span>
+			    </div>
+			  </div>
+			  <input type="text" class="form-control cust-sm">
+			</div>
+			<div class="input-group">
+			  <div class="input-group-prepend">
+			    <div class="input-group-text">
+			      <input type="checkbox"><span>&nbsp;Line Class</span>
+			    </div>
+			  </div>
+			  <input type="text" class="form-control cust-sm">
+			</div>
+			<div class="input-group">
+			  <div class="input-group-prepend">
+			    <div class="input-group-text">
+			      <input type="checkbox"><span>&nbsp;Insured</span>
+			    </div>
+			  </div>
+			  <input type="text" class="form-control cust-sm">
+			</div>
+			<div class="input-group">
+			  <div class="input-group-prepend">
+			    <div class="input-group-text">
+			      <input type="checkbox"><span>&nbsp;Quote Date</span>
+			    </div>
+			  </div>
+			  <input type="date" class="form-control cust-sm">
+			</div>
+			<div class="input-group">
+			  <div class="input-group-prepend">
+			    <div class="input-group-text">
+			      <input type="checkbox"><span>&nbsp;Validity Date</span>
+			    </div>
+			  </div>
+			  <input type="date" class="form-control cust-sm">
+			</div>
+			<div class="input-group">
+			  <button class="cust-filter cust-tbl-submit"><a>Ok</a></button>
+			</div>
+		</div>
+	  </div>
+	</div>
+	<table datatable [dtOptions]="dtOptions" class="row-border hover">
+	<thead>
+		<tr>
+			<th *ngFor="let tHeader of tHeader">{{tHeader}}</th>
+		</tr>
+	</thead>
+	<tbody>
+	  <tr *ngFor="let data of tableData">
+	    <td>{{ data.id }}</td>
+		<td>{{ data.firstName }}</td>
+		<td>{{ data.lastName }}</td>
+		<td>{{ data.middleName }}</td>
+		<td>{{ data.gender }}</td>
+		<td>{{ data.age }}</td>
+		<td>{{ data.birthDate }}</td>
+	  </tr>
+	</tbody>
 	</table>
 </div>
+
+<hr/>
