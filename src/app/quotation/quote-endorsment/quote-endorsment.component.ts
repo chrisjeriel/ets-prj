@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { QuotationInfo } from '../../_models/QuoteOption'
 import { QuoteEndorsment } from '../../_models/QuoteEndorsment'
+import { QuotationService } from '../../_services';
 
 @Component({
   selector: 'app-quote-endorsment',
@@ -10,11 +11,16 @@ import { QuoteEndorsment } from '../../_models/QuoteEndorsment'
 export class QuoteEndorsmentComponent implements OnInit {
   private quotationInfo: QuotationInfo;
   private quoteEndorsment: QuoteEndorsment;
-  constructor() { }
+  tableData: any[] = [];
+  tHeader: any[] = ['Endt Title', 'Endt Description', 'Wording' ];
+  constructor(private quotationService: QuotationService) { }
 
   ngOnInit() {
   	this.quotationInfo = new QuotationInfo();
   	this.quotationInfo.quotationNo = "Quotation No";
   	this.quotationInfo.quotationName ="Quotation Name";
+
+    this.tableData = this.quotationService.getEndorsments();
+
   }
 }
