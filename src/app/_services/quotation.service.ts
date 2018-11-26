@@ -3,11 +3,13 @@ import { HttpClient } from '@angular/common/http';
 
 import { environment } from '@environments/environment';
 import { DummyInfo } from '@app/_models';
+import { QuotationProcessing } from '@app/_models';
 
 @Injectable({ providedIn: 'root' })
 export class QuotationService {
 
     dummyInfoData : DummyInfo[] = [];
+    quoProcessingData : QuotationProcessing[] = [];
 
     constructor(private http: HttpClient) {
 
@@ -34,4 +36,19 @@ export class QuotationService {
         return this.dummyInfoData;
     }
 
+    getQuoProcessingData() {
+        this.quoProcessingData = [
+            new QuotationProcessing('CAR-2015-0289-01', 'Direct', 'CAR Wet Risks', 'In Progress', 'Malayan',
+                '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', '02-09-2015',
+                '03-09-2015', 'Inigo Flores', 'cuaresma'),
+            new QuotationProcessing('CAR-2015-0289-02', 'Direct', 'CAR Wet Risks', 'In Progress', 'Malayan',
+                '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', '02-09-2015',
+                '03-09-2015', 'Inigo Flores', 'cuaresma'),
+            new QuotationProcessing('CAR-2015-0289-03', 'Direct', 'CAR Wet Risks', 'In Progress', 'Malayan',
+                '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', '02-09-2015',
+                '03-09-2015', 'Inigo Flores', 'cuaresma'),
+        ];
+
+        return this.quoProcessingData;
+    }
 }
