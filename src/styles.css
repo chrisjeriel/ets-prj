@@ -187,3 +187,95 @@ legend.scheduler-border {
     border-bottom:none;
 }
 */
+
+#cust-table-container {
+  
+}
+
+#cust-table-container table {
+  border: 1px solid #767676;
+  border-radius: 3px;
+}
+
+#cust-table-container th {
+  border-right: 1px solid gray;
+  border-bottom: 1px solid gray;
+  line-height: 12px;
+  font-size: 10.4px !important;
+}
+
+#cust-table-container th:last-of-type {
+  border-right: none;
+}
+
+#cust-table-container tr {
+  font-size: 12px !important;
+  padding: 0 !important;
+  line-height: 12px;
+}
+
+#cust-table-container tr.odd {
+  background-color: #f3f3f3;
+}
+
+#cust-table-container div.dataTables_info {
+  padding-top: 2px !important;
+  font-size: 12px !important;
+}
+
+#cust-table-container div.dataTables_paginate {
+  font-size: 12px !important;
+}
+
+
+#cust-table-container div.dataTables_paginate a {
+  color: white; 
+  background-color: #f0f0f0; 
+  border-color: gray; 
+  margin-left: 0px !important;
+  border-radius: 0;
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+}
+
+
+#cust-table-container div.dataTables_paginate > a:first-child {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+#cust-table-container div.dataTables_paginate > a:last-child {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+  color: white !important;
+  background: linear-gradient(to bottom, #4080bf 0%, #2d5986 100%);
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  background: linear-gradient(to bottom, #4080bf 0%, #2d5986 100%);
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  background: linear-gradient(to bottom, #4080bf 0%, #2d5986 100%);
+}
+
+.dataTables_wrapper .dataTables_filter input {
+  height: calc(1.5rem + 1px) !important;
+  padding: 0.1rem 0.25rem !important;
+  font-size: 12px !important;
+  line-height: .7 !important;
+  border-radius: 0.2rem !important;
+  margin-bottom: -5px !important;
+  overflow: visible;
+  outline: none;
+  border-style: none;
+  border: 1px solid gray;
+  margin-right: 30px;
+}
+
+#cust-table-container tbody tr:hover {
+  background-color: #FFFF99;
+}
