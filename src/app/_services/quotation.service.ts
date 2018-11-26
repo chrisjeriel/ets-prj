@@ -3,11 +3,13 @@ import { HttpClient } from '@angular/common/http';
 
 import { environment } from '@environments/environment';
 import { DummyInfo } from '@app/_models';
+import { IntCompAdvInfo } from '@app/_models';
 
 @Injectable({ providedIn: 'root' })
 export class QuotationService {
 
     dummyInfoData : DummyInfo[] = [];
+    intCompAdvInfo : IntCompAdvInfo[] = [];
 
     constructor(private http: HttpClient) {
 
@@ -32,6 +34,18 @@ export class QuotationService {
 
         /*return this.http.get<User[]>(`${environment.apiUrl}/quotation`);*/
         return this.dummyInfoData;
+    }
+
+    getIntCompAdvInfo() {
+        /*Dummy Data Array*/
+        this.intCompAdvInfo = [ 
+            new IntCompAdvInfo(1,'CPI','Carino Engelbert','IT', '', 'none', 'etcarino', "November 26, 2018", 'etcarino', "November 26, 2018"), 
+            new IntCompAdvInfo(2,'CPI','Qwerty 123','IT', '', 'none', 'etcarino', "November 26, 2018", 'etcarino', "November 26, 2018"), 
+
+        ];
+
+        /*return this.http.get<User[]>(`${environment.apiUrl}/quotation`);*/
+        return this.intCompAdvInfo;
     }
 
 }
