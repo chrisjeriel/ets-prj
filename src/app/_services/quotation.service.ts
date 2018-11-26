@@ -39,9 +39,9 @@ export class QuotationService {
     
     getQuotationListInfo(){
         this.quotationListData = [
-            new QuotationList("CAR-2015-2832-01", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", Date.toString(), Date.toString(), "Inigo Flores", "Cuaresma"),
-            new QuotationList("CAR-2015-2832-02", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", Date.toString(), Date.toString(), "Inigo Flores", "Cuaresma"),
-            new QuotationList("CAR-2015-2832-03", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", Date.toString(), Date.toString(), "Inigo Flores", "Cuaresma"),
+            new QuotationList("CAR-2015-2832-01", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", "07-28-2018", "08-28-2018", "Inigo Flores", "Cuaresma"),
+            new QuotationList("CAR-2015-2832-02", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", "07-28-2018", "08-28-2018", "Inigo Flores", "Cuaresma"),
+            new QuotationList("CAR-2015-2832-03", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", "07-28-2018", "08-28-2018", "Inigo Flores", "Cuaresma"),
         ];
         return this.quotationListData;
     }

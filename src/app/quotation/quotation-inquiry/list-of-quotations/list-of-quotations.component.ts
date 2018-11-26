@@ -1,27 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { QuotationService } from '../../../_services';
-import { QuotationList, HoldCoverMonitoringList } from '../../../_models';
 
 @Component({
     selector: 'app-list-of-quotations',
     templateUrl: './list-of-quotations.component.html',
-    styleUrls: ['./list-of-quotations.component.css'],
-    providers: [NgbDropdownConfig]
+    styleUrls: ['./list-of-quotations.component.css']
 })
 export class ListOfQuotationsComponent implements OnInit {
-    dtOptions: DataTables.Settings = {};
     tableData: any[] = [];
     tHeader: any[] = [];
 
-    constructor(config: NgbDropdownConfig,
-                 private quotationService: QuotationService) { 
-        config.placement = 'bottom-right';
-        config.autoClose = false;
+    constructor(private quotationService: QuotationService) { 
     }
 
-    ngOnInit() : void {
-
+    ngOnInit() {
         this.tHeader.push("Quotation No.");
         this.tHeader.push("Branch");
         this.tHeader.push("Line Class");
@@ -34,13 +26,7 @@ export class ListOfQuotationsComponent implements OnInit {
         this.tHeader.push("Validity Date");
         this.tHeader.push("Requested By");
         this.tHeader.push("Created By");
-        
-        console.log(this.tHeader);
 
-        this.dtOptions = {
-        pagingType: 'full_numbers'
-    };
-
-    this.tableData = this.quotationService.getQuotationListInfo();
-}
+        this.tableData = this.quotationService.getQuotationListInfo();
+    }
 }
