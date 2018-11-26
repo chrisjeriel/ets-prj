@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { QuotationGenInfo } from '../../_models/quotationGenInfo';
+import { QuotationGenInfo } from '../../_models/QuotationGenInfo';
 
 @Component({
   selector: 'app-general-info',
