@@ -4,9 +4,9 @@
 		 	<div class="form-row custom-row-inline-inset">
 				<div class="input-group">
 					<label class="form-control-sm col-sm-2" for="xx">Quotation No</label>
-				    <input type="text" [(ngModel)]="this.holdCoverInfo.quotationNo" id="inputQuotation" class="form-control form-control-sm cust-sm">
+				    <input type="text" [(ngModel)]="this.holdCover.quotationNo" id="inputQuotation" class="form-control form-control-sm cust-sm">
 				     <label class="form-control-sm col-sm-2" for="xx">Insured</label>
-				    <input type="text" id="inputQuotation" class="form-control form-control-sm">
+				    <input type="text" id="inputQuotation" [(ngModel)]="this.holdCover.insured" class="form-control form-control-sm">
 				</div>
 			</div>
 	</fieldset>
@@ -17,15 +17,15 @@
 		 	<div class="form-row">
 			 	<div class="form-group col-sm-4">
 			      <label for="inputEmail4" class="form-control-sm top-label">Risk</label>
-			      <input type="text" class="form-control form-control-sm cust-sm" id="inputQuotation">
+			      <input type="text" class="form-control form-control-sm cust-sm" id="inputQuotation" [(ngModel)]="this.holdCover.risk">
 			    </div>
 			    <div class="form-group col-sm-3">
 			      <label for="inputEmail4" class="form-control-sm top-label">Hold Cover No.</label>
-			      <input type="text" class="form-control form-control-sm cust-sm" id="inputQuotation">
+			      <input type="text" class="form-control form-control-sm cust-sm" id="inputQuotation" [(ngModel)]="this.holdCover.holdCoverNo">
 			    </div>
 			    <div class="form-group col-sm-3">
 			      <label for="inputEmail4" class="form-control-sm top-label">Comp. Ref. Hold Cover No.</label>
-			      <input type="text" class="form-control form-control-sm cust-sm" id="inputQuotation">
+			      <input type="text" class="form-control form-control-sm cust-sm" id="inputQuotation" [(ngModel)]="this.holdCover.compRefHoldCoverNo">
 			    </div>
 			    <div class="form-group col-sm-2">
 			      <label for="inputEmail4" class="form-control-sm top-label">Status</label>
@@ -48,7 +48,7 @@
 			    </div>
 			    <div class="form-group col-sm-3">
 			      <label for="inputEmail4" class="form-control-sm top-label">Requested By</label>
-			      <input type="text" class="form-control form-control-sm cust-sm" id="inputQuotation">
+			      <input type="text" class="form-control form-control-sm cust-sm" id="inputQuotation" [(ngModel)]="this.holdCover.requestedBy">
 			    </div>
 			    <div class="form-group col-sm-3">
 			      <label for="inputEmail4" class="form-control-sm top-label">Request Date</label>

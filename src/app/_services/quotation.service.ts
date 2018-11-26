@@ -37,7 +37,10 @@ export class QuotationService {
 
     getAttachment(){
         this.attachmentInfoData = [
-            new AttachmentInfo("C:desktop/proj-ets","Project","Project","")
+            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj","Project","Project",""),
+            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj","Project","Project",""),
+            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj","Project","Project",""),
+            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj","Project","Project","")
         ];
 
         return this.attachmentInfoData;

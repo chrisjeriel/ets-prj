@@ -11,7 +11,7 @@ import { AttachmentInfo } from '../../_models';
   providers: [NgbDropdownConfig]
 })
 export class AttachmentComponent implements OnInit {
-
+ 
   dtOptions: DataTables.Settings = {};
   tableData: any[] = [];
   tHeader: any[] = [];

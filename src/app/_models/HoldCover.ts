@@ -5,10 +5,10 @@ export class HoldCoverInfo {
 	holdCoverNo: number;
 	compRefHoldCoverNo: number;
 	status: string;
-	periodFrom: Date = new Date();
-	periodTo: Date = new Date();
+	periodFrom: string;
+	periodTo: string;
 	requestedBy: string;
-	requestDate: Date = new Date(); 
+	requestDate: string; 
 
 	/*constructor(quotationNo: number,insured: string,risk: string, holdCoverNo: number,compRefHoldCoverNo: number,
 				status: string,periodFrom: Date,periodTo: Date, requestedBy: string, requestDate: Date){

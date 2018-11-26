@@ -15,15 +15,15 @@ private holdCover: HoldCoverInfo;
   ngOnInit() {
   	this.holdCover = new HoldCoverInfo();
   	this.holdCover.quotationNo = 1;
-  	this.holdCover.insured ="Earl";
-  	this.holdCover.risk = "";
+  	this.holdCover.insured ="MOCK TEST";
+  	this.holdCover.risk = "MOCK TEST";
   	this.holdCover.holdCoverNo = 1;
   	this.holdCover.compRefHoldCoverNo = 1;
-  	this.holdCover.status = "";
-  	this.holdCover.periodFrom = "";
-  	this.holdCover.periodTo = "";
-  	this.holdCover.requestedBy = "";
-  	this.holdCover.requestDate = "";
+  	this.holdCover.status = "MOCK TEST";
+  	this.holdCover.periodFrom = "MOCK TEST";
+  	this.holdCover.periodTo = "MOCK TEST";
+  	this.holdCover.requestedBy = "MOCK TEST";
+  	this.holdCover.requestDate = "MOCK TEST";
 
   }
 
