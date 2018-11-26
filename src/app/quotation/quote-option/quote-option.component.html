@@ -13,12 +13,12 @@
 
 	<fieldset class="scheduler-border">
 		<legend class="scheduler-border">Quotation Option</legend>
-		<h1>Table</h1>
+		<app-cust-table [tableData]="quoteOptionTableData" [tHeader]="quoteOptionTHeader"></app-cust-table>
 	</fieldset>
 
 	<fieldset class="scheduler-border">
 		<legend class="scheduler-border">Quotation Other Rates</legend>
-		<h1>Table</h1>
+		<app-cust-table [tableData]="otherRatesTableData" [tHeader]="otherRatesTHeader"></app-cust-table>
 	</fieldset>
 
 	<div class="form-row">

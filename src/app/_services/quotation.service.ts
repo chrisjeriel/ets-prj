@@ -2,12 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { environment } from '@environments/environment';
-import { DummyInfo } from '@app/_models';
+import { DummyInfo, QuotationOption, QuotationOtherRates } from '@app/_models';
 
 @Injectable({ providedIn: 'root' })
 export class QuotationService {
 
     dummyInfoData : DummyInfo[] = [];
+
+    quotataionOption: QuotationOption[]=[];
+    quotataionOtherRates: QuotationOtherRates[]=[];
 
     constructor(private http: HttpClient) {
 
@@ -32,6 +35,23 @@ export class QuotationService {
 
         /*return this.http.get<User[]>(`${environment.apiUrl}/quotation`);*/
         return this.dummyInfoData;
+    }
+
+    getQuoteOptions(){
+        this.quotataionOption = [
+            new QuotationOption(1,5,"Condition",6,8,5),
+            new QuotationOption(2,8,"Stable",7,4,3),
+            new QuotationOption(3,9,"Good",6,43,2)
+        ];
+        return this.quotataionOption;
+    }
+
+    getQuotataionOtherRates(){
+        this.quotataionOtherRates = [
+            new QuotationOtherRates('Others1',50,'sample remark'),
+            new QuotationOtherRates('Others1',60,'sample description')
+        ]
+        return this.quotataionOtherRates;
     }
 
 }
