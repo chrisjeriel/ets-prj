@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { environment } from '@environments/environment';
-import { DummyInfo } from '@app/_models';
+import { DummyInfo,QuoteEndorsment } from '@app/_models';
 
 @Injectable({ providedIn: 'root' })
 export class QuotationService {
 
     dummyInfoData : DummyInfo[] = [];
-
+    endorsmentData: QuoteEndorsment[] = [];
     constructor(private http: HttpClient) {
 
     }
@@ -32,6 +32,15 @@ export class QuotationService {
 
         /*return this.http.get<User[]>(`${environment.apiUrl}/quotation`);*/
         return this.dummyInfoData;
+    }
+
+    getEndorsments(){
+        
+        this.endorsmentData = [
+            new QuoteEndorsment('Endt Title','Endt Description', 'Wording'),
+            new QuoteEndorsment('This is the title', 'sample Description', 'Sample Wording')
+        ];
+        return this.endorsmentData;
     }
 
 }
