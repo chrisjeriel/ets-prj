@@ -13,7 +13,7 @@ import { DummyInfo } from '../../../_models';
 export class CustTableComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   tableData: any[] = [];
-  tHeader: [] = [];
+  tHeader: any[] = [];
 
   constructor(config: NgbDropdownConfig,
   			  private quotationService: QuotationService) { 
