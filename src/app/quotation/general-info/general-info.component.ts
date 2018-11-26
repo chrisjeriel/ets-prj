@@ -36,6 +36,7 @@ export class GeneralInfoComponent implements OnInit {
 	}
 
 	reqMode: SelectRequestMode[] = [
+		{ name: '', value: '' },
 		{ name: 'Web Portal', value: 'Web Portal' },
 		{ name: 'Fax', value: 'Fax' },
 		{ name: 'Email', value: 'Email' },
