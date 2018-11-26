@@ -67,13 +67,9 @@
 	</thead>
 	<tbody>
 	  <tr *ngFor="let data of tableData">
-	    <td>{{ data.id }}</td>
-		<td>{{ data.firstName }}</td>
-		<td>{{ data.lastName }}</td>
-		<td>{{ data.middleName }}</td>
-		<td>{{ data.gender }}</td>
-		<td>{{ data.age }}</td>
-		<td>{{ data.birthDate }}</td>
+	  	<td *ngFor="let key of dataKeys">
+	  		{{ processData(key, data) }}
+	  	</td>
 	  </tr>
 	</tbody>
 	</table>
