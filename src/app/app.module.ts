@@ -23,7 +23,8 @@ import { GeneralInfoComponent } from './quotation/general-info/general-info.comp
 ;
 import { CoverageComponent } from './quotation/coverage/coverage.component'
 ;
-import { QuoteOptionComponent } from './quotation/quote-option/quote-option.component'
+import { QuoteOptionComponent } from './quotation/quote-option/quote-option.component';
+import { QuotationInquiryComponent } from './quotation/quotation-inquiry/quotation-inquiry.component'
 @NgModule({
     imports: [
         BrowserModule,
@@ -47,7 +48,8 @@ import { QuoteOptionComponent } from './quotation/quote-option/quote-option.comp
         GeneralInfoComponent
 ,
         CoverageComponent ,
-        QuoteOptionComponent   ],
+        QuoteOptionComponent ,
+        QuotationInquiryComponent  ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
