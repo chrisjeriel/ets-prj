@@ -18,12 +18,16 @@ import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 import { HomeComponent } from './home';
 import { LoginComponent } from './login';
 import { RegisterComponent } from './register';
-import { QuotationComponent } from './quotation/quotation.component';;
+import { QuotationComponent } from './quotation/quotation.component';
 import { GeneralInfoComponent } from './quotation/general-info/general-info.component'
 ;
 import { CoverageComponent } from './quotation/coverage/coverage.component'
 ;
 import { QuoteOptionComponent } from './quotation/quote-option/quote-option.component'
+;
+import { HoldCoverComponent } from './quotation/hold-cover/hold-cover.component';;
+import { AttachmentComponent } from './quotation/attachment/attachment.component'
+
 @NgModule({
     imports: [
         BrowserModule,
@@ -47,7 +51,9 @@ import { QuoteOptionComponent } from './quotation/quote-option/quote-option.comp
         GeneralInfoComponent
 ,
         CoverageComponent ,
-        QuoteOptionComponent   ],
+        QuoteOptionComponent ,
+        HoldCoverComponent ,
+        AttachmentComponent ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
