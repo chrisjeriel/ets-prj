@@ -6,6 +6,7 @@ import { ResizableModule } from 'angular-resizable-element';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SidebarModule } from 'ng-sidebar';
+import { DataTablesModule } from 'angular-datatables';
 
 // used to create fake backend
 import { fakeBackendProvider } from './_helpers';
@@ -13,11 +14,12 @@ import { fakeBackendProvider } from './_helpers';
 import { AppComponent }  from './app.component';
 import { routing }        from './app.routing';
 
-import { AlertComponent } from './_components';
+import { AlertComponent } from './_components/common/alert';
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 import { HomeComponent } from './home';
 import { LoginComponent } from './login';
 import { RegisterComponent } from './register';
+
 import { QuotationComponent } from './quotation/quotation.component';
 import { GeneralInfoComponent } from './quotation/general-info/general-info.component'
 ;
@@ -27,6 +29,9 @@ import { QuoteOptionComponent } from './quotation/quote-option/quote-option.comp
 ;
 import { HoldCoverComponent } from './quotation/hold-cover/hold-cover.component';;
 import { AttachmentComponent } from './quotation/attachment/attachment.component'
+import { DummyComponent } from './_components/common/dummy/dummy.component';
+import { CustTableComponent } from './_components/common/cust-table/cust-table.component';
+
 
 @NgModule({
     imports: [
@@ -39,6 +44,7 @@ import { AttachmentComponent } from './quotation/attachment/attachment.component
         NgbModule,
         SidebarModule.forRoot(),
         FormsModule,
+        DataTablesModule,
     ],
     declarations: [
         AppComponent,
@@ -46,14 +52,17 @@ import { AttachmentComponent } from './quotation/attachment/attachment.component
         HomeComponent,
         LoginComponent,
         RegisterComponent,
-        QuotationComponent
-,
-        GeneralInfoComponent
-,
+        QuotationComponent,
+        GeneralInfoComponent,
         CoverageComponent ,
         QuoteOptionComponent ,
+        DummyComponent ,
+        CustTableComponent,
         HoldCoverComponent ,
-        AttachmentComponent ],
+        AttachmentComponent,
+        ],
+
+
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
@@ -65,3 +74,6 @@ import { AttachmentComponent } from './quotation/attachment/attachment.component
 })
 
 export class AppModule { }
+
+
+/*angular-registration-login-example*/
