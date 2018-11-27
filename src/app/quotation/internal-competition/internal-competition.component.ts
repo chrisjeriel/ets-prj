@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { QuotationService } from '../../_services';
+import { IntCompAdvInfo } from '@app/_models';
 
 @Component({
   selector: 'app-internal-competition',
@@ -9,6 +10,8 @@ import { QuotationService } from '../../_services';
 export class InternalCompetitionComponent implements OnInit {
   tableData: any[] = [];
   tHeader: any[] = [];
+  nData: IntCompAdvInfo = new IntCompAdvInfo(null, null, null, null, null, null, null, null, null, null);
+
 
   constructor(private quotationService: QuotationService) { }
 
