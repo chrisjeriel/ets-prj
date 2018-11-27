@@ -30,7 +30,8 @@ import { QuoteOptionComponent } from './quotation/quote-option/quote-option.comp
 import { HoldCoverComponent } from './quotation/hold-cover/hold-cover.component';;
 import { AttachmentComponent } from './quotation/attachment/attachment.component'
 import { DummyComponent } from './_components/common/dummy/dummy.component';
-import { CustTableComponent } from './_components/common/cust-table/cust-table.component';
+import { CustTableComponent } from './_components/common/cust-table/cust-table.component';;
+import { CustEditableTableComponent } from './_components/common/cust-editable-table/cust-editable-table.component'
 
 
 @NgModule({
@@ -60,6 +61,7 @@ import { CustTableComponent } from './_components/common/cust-table/cust-table.c
         CustTableComponent,
         HoldCoverComponent ,
         AttachmentComponent,
+        CustEditableTableComponent
         ],
 
 
