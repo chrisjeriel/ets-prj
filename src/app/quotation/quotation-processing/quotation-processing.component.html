@@ -3,7 +3,9 @@
 	<ngb-tabset>
 	  <ngb-tab class="ngb-tab" title="List of Quotations">
 	    <ng-template ngbTabContent>
-	    	<app-cust-table [tableData]="tableData" [tHeader]="tHeader"></app-cust-table>
+
+	    	<app-cust-editable-table [addFlag]="true" [editFlag]="true" [deleteFlag]="false" [nData]="nData" [tableData]="tableData" [tHeader]="tHeader"></app-cust-editable-table>
+	    
 	    </ng-template>
 	  </ngb-tab>
 	</ngb-tabset>

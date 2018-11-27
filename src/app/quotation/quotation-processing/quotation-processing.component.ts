@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { QuotationService } from '../../_services';
+import { QuotationProcessing } from '../../_models';
+
 
 @Component({
   selector: 'app-quotation-processing',
@@ -9,6 +11,7 @@ import { QuotationService } from '../../_services';
 export class QuotationProcessingComponent implements OnInit {
   tableData: any[] = [];
   tHeader: any[] = [];
+  nData: QuotationProcessing = new QuotationProcessing(null, null, null, null, null, null, null, null, null, null, null, null);
 
   constructor(private quotationService: QuotationService) { }
 

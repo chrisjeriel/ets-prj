@@ -16,8 +16,8 @@ export class NotesService {
 
   getNotesReminders() {
   	this.notesRemindersData = [
-  		new NotesReminders('Reminder', 'Call Mr. Bean later', 'cuaresma', new Date('02-28-2015'), '4:00 PM', 'Pending',
-  			'cuaresma', new Date('02-28-2015'))
+  		new NotesReminders('Reminder', 'Call Mr. Bean later', 'cuaresma', new Date('2015-02-28'), '4:00 PM', 'Pending',
+  			'cuaresma', new Date('2015-02-28'))
   	]
 
   	return this.notesRemindersData;

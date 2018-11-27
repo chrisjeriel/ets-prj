@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NotesService } from '../_services';
+import { NotesReminders } from '../_models';
 
 @Component({
   selector: 'app-notes',
@@ -9,6 +10,7 @@ import { NotesService } from '../_services';
 export class NotesComponent implements OnInit {
   tableData: any[] = [];
   tHeader: any[] = [];
+  nData: NotesReminders = new NotesReminders(null, null, null, null, null, null, 'user', new Date());
 
   constructor(private notesService: NotesService) { }
 
