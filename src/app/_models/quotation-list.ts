@@ -42,39 +42,39 @@ export class QuotationList{
 }
 
 export class HoldCoverMonitoringList{
-    company: string;
-    quoteNo: string;
+    cedingCompany: string;
+    quotationNo: string;
     holdCoverNo: string;
     risk: string;
     insured: string;
     periodFrom: string;
     periodTo: string;
-    referenceHoldCover: string;
+    compRefHoldCoverNo: string;
     requestedBy: string;
     requestDate: string;
     status: string;
     
-    constructor(company: string,
-                quoteNo: string,
+    constructor(cedingCompany: string,
+                quotationNo: string,
                 holdCoverNo: string,
                 risk: string,
                 insured: string,
                 periodFrom: string,
                 periodTo: string,
-                referenceHoldCover: string,
+                compRefHoldCoverNo: string,
                 requestedBy: string,
                 requestDate: string,
                 status: string
                 )
     {
-        this.company = company;
-        this.quoteNo = quoteNo;
+        this.cedingCompany = cedingCompany;
+        this.quotationNo = quotationNo;
         this.holdCoverNo = holdCoverNo;
         this.risk = risk;
         this.insured = insured;
         this.periodFrom = periodFrom;
         this.periodTo = periodTo;
-        this.referenceHoldCover = referenceHoldCover;
+        this.compRefHoldCoverNo = compRefHoldCoverNo;
         this.requestedBy = requestedBy;
         this.requestDate = requestDate;
         this.status = status;

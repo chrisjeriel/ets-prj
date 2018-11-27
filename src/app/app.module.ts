@@ -28,7 +28,8 @@ import { DummyComponent } from './_components/common/dummy/dummy.component';
 import { CustTableComponent } from './_components/common/cust-table/cust-table.component';;
 import { CustEditableTableComponent } from './_components/common/cust-editable-table/cust-editable-table.component'
 import { QuotationInquiryComponent } from './quotation/quotation-inquiry/quotation-inquiry.component';
-import { ListOfQuotationsComponent } from './quotation/quotation-inquiry/list-of-quotations/list-of-quotations.component'
+import { ListOfQuotationsComponent } from './quotation/quotation-inquiry/list-of-quotations/list-of-quotations.component';
+import { HoldCoverMonitoringListComponent } from './quotation/quotation-inquiry/hold-cover-monitoring-list/hold-cover-monitoring-list.component'
 
 @NgModule({
     imports: [
@@ -57,7 +58,9 @@ import { ListOfQuotationsComponent } from './quotation/quotation-inquiry/list-of
         CustTableComponent,
         CustEditableTableComponent,
         QuotationInquiryComponent,
-        ListOfQuotationsComponent],
+        ListOfQuotationsComponent,
+        HoldCoverMonitoringListComponent],
+    
     providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
           { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
