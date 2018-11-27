@@ -13,6 +13,7 @@ export class QuoteEndorsmentComponent implements OnInit {
   private quoteEndorsment: QuoteEndorsment;
   tableData: any[] = [];
   tHeader: any[] = ['Endt Title', 'Endt Description', 'Wording' ];
+  nData: QuoteEndorsment = new QuoteEndorsment(null, null, null);
   constructor(private quotationService: QuotationService) { }
 
   ngOnInit() {

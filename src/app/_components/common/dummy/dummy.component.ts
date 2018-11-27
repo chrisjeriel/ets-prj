@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { QuotationService } from '../../../_services';
+import { DummyInfo } from '../../../_models';
 
 @Component({
   selector: 'app-dummy',
@@ -8,7 +9,9 @@ import { QuotationService } from '../../../_services';
 })
 export class DummyComponent implements OnInit {
   tableData: any[] = [];
+  tableData2: any[] = [];
   tHeader: any[] = [];
+  nData: DummyInfo = new DummyInfo(null, null, null, null, null, null, null);
 
   constructor(private quotationService: QuotationService) { }
 
@@ -23,6 +26,7 @@ export class DummyComponent implements OnInit {
 
 
   	this.tableData = this.quotationService.getDummyInfo();
+  	this.tableData2 = this.quotationService.getDummyEditableInfo();
   }
 
 }

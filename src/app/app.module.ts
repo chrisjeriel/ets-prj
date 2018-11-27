@@ -24,8 +24,9 @@ import { GeneralInfoComponent } from './quotation/general-info/general-info.comp
 import { CoverageComponent } from './quotation/coverage/coverage.component';
 import { QuoteOptionComponent } from './quotation/quote-option/quote-option.component';
 import { DummyComponent } from './_components/common/dummy/dummy.component';
+import { QuoteEndorsmentComponent } from './quotation/quote-endorsment/quote-endorsment.component';
 import { CustTableComponent } from './_components/common/cust-table/cust-table.component';
-import { QuoteEndorsmentComponent } from './quotation/quote-endorsment/quote-endorsment.component'
+import { CustEditableTableComponent } from './_components/common/cust-editable-table/cust-editable-table.component';
 
 @NgModule({
     imports: [
@@ -50,9 +51,11 @@ import { QuoteEndorsmentComponent } from './quotation/quote-endorsment/quote-end
         GeneralInfoComponent,
         CoverageComponent ,
         QuoteOptionComponent ,
-        DummyComponent ,
+        QuoteEndorsmentComponent,
+        DummyComponent,
         CustTableComponent,
-        QuoteEndorsmentComponent],
+        CustEditableTableComponent
+        ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
