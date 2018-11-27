@@ -7,14 +7,14 @@ export class QuotationProcessing {
 	principal: string;
 	contractor: string;
 	insured: string;
-	quoteDate: string;
-	validityDate: string;
+	quoteDate: Date;
+	validityDate: Date;
 	requestedBy: string;
 	createdBy: string;
 
 	constructor(quotationNo: string,branch: string,lineClass: string,quoteStatus: string,
-			cedingCompany: string,principal: string,contractor: string,insured: string,quoteDate: string,
-			validityDate: string, requestedBy: string, createdBy: string) {
+			cedingCompany: string,principal: string,contractor: string,insured: string,quoteDate: Date,
+			validityDate: Date, requestedBy: string, createdBy: string) {
 		this.quotationNo = quotationNo;
 		this.branch = branch;
 		this.lineClass = lineClass;

@@ -2,13 +2,13 @@ export class NotesReminders {
 	type: string;
     details: string;
 	alarmUser: string;
-	alarmDate: string;
+	alarmDate: Date;
 	alarmTime: string;
 	status: string;
 	createdBy: string;
-	dateCreated: string;
+	dateCreated: Date;
 
-	constructor(type: string,details: string,alarmUser: string,alarmDate: string,alarmTime: string,status: string,createdBy: string,dateCreated: string) {
+	constructor(type: string,details: string,alarmUser: string,alarmDate: Date,alarmTime: string,status: string,createdBy: string,dateCreated: Date) {
 		this.type = type;
 		this.details = details;
 		this.alarmUser = alarmUser;

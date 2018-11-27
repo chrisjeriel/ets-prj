@@ -39,14 +39,14 @@ export class QuotationService {
     getQuoProcessingData() {
         this.quoProcessingData = [
             new QuotationProcessing('CAR-2015-0289-01', 'Direct', 'CAR Wet Risks', 'In Progress', 'Malayan',
-                '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', '02-09-2015',
-                '03-09-2015', 'Inigo Flores', 'cuaresma'),
+                '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', new Date('2015-02-09'),
+                new Date('2015-03-09'), 'Inigo Flores', 'cuaresma'),
             new QuotationProcessing('CAR-2015-0289-02', 'Direct', 'CAR Wet Risks', 'In Progress', 'Malayan',
-                '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', '02-09-2015',
-                '03-09-2015', 'Inigo Flores', 'cuaresma'),
+                '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', new Date('2015-02-09'),
+                new Date('2015-03-09'), 'Inigo Flores', 'cuaresma'),
             new QuotationProcessing('CAR-2015-0289-03', 'Direct', 'CAR Wet Risks', 'In Progress', 'Malayan',
-                '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', '02-09-2015',
-                '03-09-2015', 'Inigo Flores', 'cuaresma'),
+                '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', new Date('2015-02-09'),
+                new Date('2015-03-09'), 'Inigo Flores', 'cuaresma'),
         ];
 
         return this.quoProcessingData;
