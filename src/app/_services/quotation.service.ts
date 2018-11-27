@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
 import { environment } from '@environments/environment';
 import { DummyInfo } from '@app/_models';
 import { IntCompAdvInfo } from '@app/_models';
@@ -14,6 +13,7 @@ export class QuotationService {
     constructor(private http: HttpClient) {
 
     }
+
 
     getDummyInfo() {
         /*Dummy Data Array*/
@@ -49,4 +49,16 @@ export class QuotationService {
         return this.intCompAdvInfo;
     }
 
-} 
+    getDummyEditableInfo() {
+        /*Dummy Data Array*/
+        this.dummyInfoData = [ 
+            new DummyInfo(1,'Christopher Jeriel','Sarsonas','Alcala', 'Male', 25, "January 21, 2018"), 
+            new DummyInfo(2,'Veronica','Raymundo','C', 'Female', 25, "January 21, 2018"), 
+            new DummyInfo(3,'Elmon','Hagacer','H', 'Male', 25, "January 21, 2018"), 
+        ];
+
+        /*return this.http.get<User[]>(`${environment.apiUrl}/quotation`);*/
+        return this.dummyInfoData;
+    }
+
+}

@@ -25,7 +25,8 @@ import { CoverageComponent } from './quotation/coverage/coverage.component';
 import { QuoteOptionComponent } from './quotation/quote-option/quote-option.component';
 import { InternalCompetitionComponent } from './quotation/internal-competition/internal-competition.component';
 import { DummyComponent } from './_components/common/dummy/dummy.component';
-import { CustTableComponent } from './_components/common/cust-table/cust-table.component';
+import { CustTableComponent } from './_components/common/cust-table/cust-table.component';;
+import { CustEditableTableComponent } from './_components/common/cust-editable-table/cust-editable-table.component'
 
 @NgModule({
     imports: [
@@ -50,9 +51,11 @@ import { CustTableComponent } from './_components/common/cust-table/cust-table.c
         GeneralInfoComponent,
         CoverageComponent ,
         QuoteOptionComponent ,
-        DummyComponent ,
+        InternalCompetitionComponent,
+        DummyComponent,
         CustTableComponent,
-        InternalCompetitionComponent],
+        CustEditableTableComponent
+        ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
