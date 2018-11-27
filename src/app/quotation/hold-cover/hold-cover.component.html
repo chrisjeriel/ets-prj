@@ -4,9 +4,9 @@
 		 	<div class="form-row custom-row-inline-inset">
 				<div class="input-group">
 					<label class="form-control-sm col-sm-2" for="xx">Quotation No</label>
-				    <input type="text" [(ngModel)]="this.holdCover.quotationNo" id="inputQuotation" class="form-control form-control-sm cust-sm">
+				    <input type="text" [(ngModel)]="this.holdCover.quotationNo" id="inputQuotation" class="form-control form-control-sm cust-sm" disabled="disabled">
 				     <label class="form-control-sm col-sm-2" for="xx">Insured</label>
-				    <input type="text" id="inputQuotation" [(ngModel)]="this.holdCover.insured" class="form-control form-control-sm">
+				    <input type="text" id="inputQuotation" [(ngModel)]="this.holdCover.insured" class="form-control form-control-sm" disabled="disabled">
 				</div>
 			</div>
 	</fieldset>
@@ -15,7 +15,7 @@
 	<fieldset class="scheduler-border">
 		 <legend class="scheduler-border">Hold Cover Details</legend>
 		 	<div class="form-row">
-			 	<div class="form-group col-sm-4">
+			 	<div class="form-group col-sm-3">
 			      <label for="inputEmail4" class="form-control-sm top-label">Risk</label>
 			      <input type="text" class="form-control form-control-sm cust-sm" id="inputQuotation" [(ngModel)]="this.holdCover.risk">
 			    </div>
@@ -27,9 +27,14 @@
 			      <label for="inputEmail4" class="form-control-sm top-label">Comp. Ref. Hold Cover No.</label>
 			      <input type="text" class="form-control form-control-sm cust-sm" id="inputQuotation" [(ngModel)]="this.holdCover.compRefHoldCoverNo">
 			    </div>
-			    <div class="form-group col-sm-2">
+			    <div class="form-group col-sm-3">
 			      <label for="inputEmail4" class="form-control-sm top-label">Status</label>
-			      <select class="form-control form-control-sm cust-sm" id="inputQuotation"></select>
+			      <select class="form-control form-control-sm cust-sm" id="inputQuotation">
+			      <option></option>
+			      <option><b>I -</b> In-force</option>
+			      <option><b>C -</b> Converted</option>
+			      <option><b>E -</b> Expired</option>
+			      </select>
 			    </div>
 			</div>
 	</fieldset>
@@ -52,7 +57,7 @@
 			    </div>
 			    <div class="form-group col-sm-3">
 			      <label for="inputEmail4" class="form-control-sm top-label">Request Date</label>
-			      <input type="date" class="form-control form-control-sm cust-sm" id="inputQuotation">
+			      <input type="date" class="form-control form-control-sm cust-sm" id="inputQuotation"  value="2018-01-01">
 			    </div>
 		 	</div>
 	</fieldset>
