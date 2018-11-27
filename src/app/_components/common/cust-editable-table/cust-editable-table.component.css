@@ -2,11 +2,16 @@
     position: relative !important;
 }
 
-.cust-filter {
+.cust-btn-container {
 	position: absolute !important;
-	right: 1px;
+	left: 1px;
 	top: 1px;
-	font-size: 14px;
+	z-index: 9999 !important;
+}
+
+.cust-btn {
+	font-size: 11px;
+	font-weight: bold;
 	color: white !important;
 	text-align: center;
     text-decoration: none !important;
@@ -14,10 +19,18 @@
     border-style: none;
     border: 1px solid gray;
     z-index: 9999 !important;
+    border-radius: 2px;
     background: linear-gradient(to bottom, #4080bf 0%, #2d5986 100%);
+    width: 60px;
+    padding-top: 5px;
+    padding-bottom: 2px;
 }
 
-.cust-filter:hover {
+.cust-btn:first-of-type {
+	margin-right: 3px;
+}
+
+.cust-btn:hover {
   	background: linear-gradient(to bottom, #4080df 0%, #2d5986 100%);
 }
 
@@ -67,3 +80,21 @@ div.input-group {
 	font-weight: bold;
 }
 
+.dataTables_wrapper .dataTables_filter input {
+  margin-right: 0px;
+}
+
+.editable-text {
+	width: 90%;
+	padding: 0px;
+	border: none;
+	background-color: inherit;
+}
+
+.editable-text:focus {
+	padding: 5px;
+}
+
+.editable-checkbox {
+	padding: 1em !important;
+}
