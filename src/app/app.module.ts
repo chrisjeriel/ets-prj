@@ -52,10 +52,7 @@ import { CustEditableTableComponent } from './_components/common/cust-editable-t
         CoverageComponent,
         QuoteOptionComponent,
         DummyComponent,
-        CustTableComponent,
-        CustEditableTableComponent
-    ],
-
+        CustTableComponent],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
