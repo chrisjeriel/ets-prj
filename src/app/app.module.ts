@@ -1,5 +1,5 @@
 
-﻿import { NgModule }      from '@angular/core';
+import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule, FormsModule }    from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -25,7 +25,8 @@ import { GeneralInfoComponent } from './quotation/general-info/general-info.comp
 import { CoverageComponent } from './quotation/coverage/coverage.component';
 import { QuoteOptionComponent } from './quotation/quote-option/quote-option.component';
 import { DummyComponent } from './_components/common/dummy/dummy.component';
-import { CustTableComponent } from './_components/common/cust-table/cust-table.component';
+import { CustTableComponent } from './_components/common/cust-table/cust-table.component';;
+import { CustEditableTableComponent } from './_components/common/cust-editable-table/cust-editable-table.component'
 import { QuotationInquiryComponent } from './quotation/quotation-inquiry/quotation-inquiry.component';
 import { ListOfQuotationsComponent } from './quotation/quotation-inquiry/list-of-quotations/list-of-quotations.component'
 
@@ -54,16 +55,17 @@ import { ListOfQuotationsComponent } from './quotation/quotation-inquiry/list-of
         QuoteOptionComponent ,
         DummyComponent ,
         CustTableComponent,
+        CustEditableTableComponent,
         QuotationInquiryComponent,
         ListOfQuotationsComponent],
     providers: [
-        { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+          { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
 
-        // provider used to create fake backend
-        fakeBackendProvider
-    ],
-    bootstrap: [AppComponent]
-})
+          // provider used to create fake backend
+          fakeBackendProvider
+          ],
+          bootstrap: [AppComponent]
+          })
 
 export class AppModule { }

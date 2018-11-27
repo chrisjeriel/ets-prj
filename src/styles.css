@@ -273,7 +273,8 @@ legend.scheduler-border {
   outline: none;
   border-style: none;
   border: 1px solid gray;
-  margin-right: 30px;
+  width: 190px;
+  /*margin-right: 30px;*/
 }
 
 #cust-table-container tbody tr:hover {
