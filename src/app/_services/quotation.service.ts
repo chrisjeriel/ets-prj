@@ -37,15 +37,16 @@ export class QuotationService {
     }
 
     getIntCompAdvInfo() {
-        /*Dummy Data Array*/
+       
+        /*intCompAdvInfo Data Array*/
         this.intCompAdvInfo = [ 
-            new IntCompAdvInfo(1,'CPI','Carino Engelbert','IT', '', 'none', 'etcarino', "November 26, 2018", 'etcarino', "November 26, 2018"), 
-            new IntCompAdvInfo(2,'CPI','Qwerty 123','IT', '', 'none', 'etcarino', "November 26, 2018", 'etcarino', "November 26, 2018"), 
-
+            new IntCompAdvInfo(1,'CPI','Carino Engelbert','IT','-', 'excellent', 'etcarino', '11/27/2018', 'etcarino',  '11/27/2018'), 
+            new IntCompAdvInfo(2,'CPI','Qwerty 123','IT', '-', 'nice', 'etcarino',  '11/27/2018', 'etcarino',  '11/27/2018'), 
+            new IntCompAdvInfo(3,'CPI','ABCDE 246','President', '-', 'good', 'etcarino',  '11/27/2018', 'etcarino',  '11/27/2018'), 
         ];
 
         /*return this.http.get<User[]>(`${environment.apiUrl}/quotation`);*/
         return this.intCompAdvInfo;
     }
 
-}
+} 

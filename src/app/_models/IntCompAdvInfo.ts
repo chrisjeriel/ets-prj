@@ -6,12 +6,12 @@ export class IntCompAdvInfo {
 	advOpt: string;
 	advWord: string;
 	createdBy: string;
-	dateCreated: string;
+	dateCreated: Date;
 	lastUpdateBy: string;
-	lastUpdate: string;
+	lastUpdate: Date;
 
 
-	constructor(advNo: number,company: string,attention: string,position: string, advOpt: string,advWord: string,createdBy: string, dateCreated: string, lastUpdateBy: string, lastUpdate: string) {
+	constructor(advNo: number,company: string,attention: string,position: string, advOpt: string,advWord: string,createdBy: string, dateCreated: Date, lastUpdateBy: string, lastUpdate: Date) {
 		
 		this.advNo = advNo;
 		this.company = company;
