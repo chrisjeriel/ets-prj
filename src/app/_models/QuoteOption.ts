@@ -1,6 +1,6 @@
 export class QuotationInfo {
     quotationNo: string;
-    quotationName: string;
+    insuredName: string;
 }
 
 export class QuotationOption{

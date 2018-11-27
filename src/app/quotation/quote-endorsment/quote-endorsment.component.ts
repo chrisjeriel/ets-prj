@@ -17,8 +17,8 @@ export class QuoteEndorsmentComponent implements OnInit {
 
   ngOnInit() {
   	this.quotationInfo = new QuotationInfo();
-  	this.quotationInfo.quotationNo = "Quotation No";
-  	this.quotationInfo.quotationName ="Quotation Name";
+  	this.quotationInfo.quotationNo = "SMP-0000-0000-00";
+  	this.quotationInfo.insuredName ="Insured Name";
 
     this.tableData = this.quotationService.getEndorsments();
 

@@ -4,9 +4,9 @@
 		<div class="form-row">
 			<div class="input-group">
 					<label class="form-control-sm col-sm-1" for="quotationNo">Quotation No</label>
-				    <input type="text" id="quotationNo" class="form-control form-control-sm col-sm-2" placeholder="CAR-2015-0289-04" [(ngModel)]="this.quotationInfo.quotationNo">
+				    <input type="text" id="quotationNo" class="form-control form-control-sm col-sm-2" placeholder="CAR-2015-0289-04" [(ngModel)]="this.quotationInfo.quotationNo" readonly="readonly">
 				    <label class="form-control-sm col-sm-1" for="insuredName">Insured</label>
-				    <input type="text" id="insuredName" class="form-control form-control-sm col-sm-7" placeholder="Insured name" [(ngModel)]="this.quotationInfo.quotationName">
+				    <input type="text" id="insuredName" class="form-control form-control-sm col-sm-7" placeholder="Insured name" [(ngModel)]="this.quotationInfo.insuredName" readonly="readonly">
 				</div>
 		</div>
 	</fieldset>
