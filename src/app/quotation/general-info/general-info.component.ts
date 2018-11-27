@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { QuotationGenInfo } from '../../_models';
+import { callLifecycleHooksChildrenFirst } from '@angular/core/src/view/provider';
 
 
 @Component({
@@ -8,7 +9,7 @@ import { QuotationGenInfo } from '../../_models';
 	styleUrls: ['./general-info.component.css']
 })
 export class GeneralInfoComponent implements OnInit {
-
+	sampDAte: string;
 	private quotationGenInfo: QuotationGenInfo;
 
 	constructor() { }
@@ -22,7 +23,7 @@ export class GeneralInfoComponent implements OnInit {
 		this.quotationGenInfo.histNo = "MOCK DATA";
 		this.quotationGenInfo.branch = "MOCK DATA";
 		this.quotationGenInfo.lineClass = "MOCK DATA";
-		this.quotationGenInfo.policyNumber = "MOCK DATA";
+		this.quotationGenInfo.policyNumber = 0;
 		this.quotationGenInfo.printedBy = "MOCK DATA";
 		this.quotationGenInfo.printDate;
 		this.quotationGenInfo.cedingCompany = "MOCK DATA";
@@ -65,6 +66,14 @@ export class GeneralInfoComponent implements OnInit {
 		{ name: 'Phone', value: 'Phone' },
 		{ name: 'etc', value: 'etc' },
 	];
+
+	//getting value
+	func(a: string, b: Date) {
+		this.quotationGenInfo.createdBy = a;
+		this.quotationGenInfo.lastUpdate = b;
+		console.log(this.quotationGenInfo.createdBy);
+		console.log(this.quotationGenInfo.lastUpdate);
+	}
 
 }
 export interface SelectRequestMode {

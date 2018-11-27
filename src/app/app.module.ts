@@ -1,6 +1,6 @@
-﻿import { NgModule }      from '@angular/core';
+﻿import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { ReactiveFormsModule, FormsModule }    from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ResizableModule } from 'angular-resizable-element';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
@@ -11,8 +11,8 @@ import { DataTablesModule } from 'angular-datatables';
 // used to create fake backend
 import { fakeBackendProvider } from './_helpers';
 
-import { AppComponent }  from './app.component';
-import { routing }        from './app.routing';
+import { AppComponent } from './app.component';
+import { routing } from './app.routing';
 
 import { AlertComponent } from './_components/common/alert';
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
@@ -39,6 +39,7 @@ import { CustEditableTableComponent } from './_components/common/cust-editable-t
         SidebarModule.forRoot(),
         FormsModule,
         DataTablesModule,
+
     ],
     declarations: [
         AppComponent,
@@ -48,12 +49,13 @@ import { CustEditableTableComponent } from './_components/common/cust-editable-t
         RegisterComponent,
         QuotationComponent,
         GeneralInfoComponent,
-        CoverageComponent ,
-        QuoteOptionComponent ,
+        CoverageComponent,
+        QuoteOptionComponent,
         DummyComponent,
         CustTableComponent,
         CustEditableTableComponent
-        ],
+    ],
+
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
@@ -61,7 +63,7 @@ import { CustEditableTableComponent } from './_components/common/cust-editable-t
         // provider used to create fake backend
         fakeBackendProvider
     ],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
 })
 
 export class AppModule { }

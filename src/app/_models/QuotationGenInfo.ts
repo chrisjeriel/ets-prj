@@ -6,7 +6,7 @@ export class QuotationGenInfo {
 	histNo: string;
 	branch: string;
 	lineClass: string;
-	policyNumber: string;
+	policyNumber: number;
 	printedBy: string;
 	printDate: Date;
 
