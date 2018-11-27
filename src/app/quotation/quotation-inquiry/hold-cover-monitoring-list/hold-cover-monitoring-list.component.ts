@@ -15,19 +15,18 @@ export class HoldCoverMonitoringListComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.tHeader.push("Quotation No.");
-        this.tHeader.push("Branch");
-        this.tHeader.push("Line Class");
-        this.tHeader.push("Quote Status");
         this.tHeader.push("Ceding Company");
-        this.tHeader.push("Principal");
-        this.tHeader.push("Contractor");
+        this.tHeader.push("Quotation No.");
+        this.tHeader.push("Hold Cover No.");
+        this.tHeader.push("Risk");
         this.tHeader.push("Insured");
-        this.tHeader.push("Quote Date");
-        this.tHeader.push("Validity Date");
+        this.tHeader.push("Period From");
+        this.tHeader.push("Period To");
+        this.tHeader.push("Comp. Ref. Hold Cover No.");
         this.tHeader.push("Requested By");
-        this.tHeader.push("Created By");
+        this.tHeader.push("Request Date");
+        this.tHeader.push("Status");
 
-        this.tableData = this.quotationService.getQuotationListInfo();
+        this.tableData = this.quotationService.getQuotationHoldCoverInfo();
     }
 }
