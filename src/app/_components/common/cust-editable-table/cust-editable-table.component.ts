@@ -15,6 +15,9 @@ export class CustEditableTableComponent implements OnInit {
   @Input() tableData: any[] = [];
   @Input() tHeader: any[] = [];
   @Input() nData;
+  @Input() addFlag;
+  @Input() editFlag;
+  @Input() deleteFlag;
   dataKeys: any[] = [];
   
   tableLoad: boolean = true;
@@ -46,9 +49,11 @@ export class CustEditableTableComponent implements OnInit {
   }
 
   onClickAdd() {
-
-
   	this.tableData.push(this.nData);
+  }
+
+  onClickDelete() {
+  	this.tableData.pop();
   }
 
 }
