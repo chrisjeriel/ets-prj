@@ -4,9 +4,9 @@
 		 	<div class="form-row custom-row-inline-inset">
 				<div class="input-group">
 					<label class="form-control-sm col-sm-2" for="xx">Quotation No</label>
-				    <input type="text" id="xx" class="form-control form-control-sm cust-sm">
+				    <input type="text" id="xx" class="form-control form-control-sm cust-sm" disabled="disabled">
 				     <label class="form-control-sm col-sm-2" for="xx">Insured</label>
-				    <input type="text" class="form-control form-control-sm">
+				    <input type="text" class="form-control form-control-sm" disabled="disabled">
 				</div>
 			</div>
 	</fieldset>
@@ -14,7 +14,7 @@
 <div>
 	<fieldset class="scheduler-border">
 		 <legend class="scheduler-border">Attached Files</legend>
-		 	<p>Works!</p>
+		 	<app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData" [tHeader]="tHeader"></app-cust-editable-table>
 	</fieldset>
 </div>
 <div class="form-row">

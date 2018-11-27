@@ -75,12 +75,11 @@
 	  	<td *ngFor="let key of dataKeys">
 	  		<div>
 		  		<!-- <input class="editable-checkbox" type="checkbox" *ngIf="key == 'id'"> -->
-		  		<input class="editable-text" type="text" [value]="processData(key, data)">
+		  		<input class="editable-text" type="text"  [value]="processData(key, data)">
 	  		</div>
 	  	</td>
 	  </tr>
 	</tbody>
 	</table>
 </div>
-
 <hr/>

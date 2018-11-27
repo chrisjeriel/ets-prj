@@ -15,6 +15,7 @@ export class AttachmentComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   tableData: any[] = [];
   tHeader: any[] = [];
+  nData: AttachmentInfo = new AttachmentInfo(null, null, null,null);
 
 
   constructor(config: NgbDropdownConfig,
@@ -24,14 +25,11 @@ export class AttachmentComponent implements OnInit {
   }
 
   ngOnInit() : void {
+
   	this.tHeader.push("File Path");
   	this.tHeader.push("Description");
   	this.tHeader.push("Table Code");
   	this.tHeader.push("Actions");
-
-  	this.dtOptions = {
-  	  pagingType: 'full_numbers'
-    };
 
     this.tableData = this.quotationService.getAttachment();
   }

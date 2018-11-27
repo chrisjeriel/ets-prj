@@ -12,6 +12,4 @@ export class QuoteOptionComponent implements OnInit {
   ngOnInit() {
   }
 
-  private 
-
 }
