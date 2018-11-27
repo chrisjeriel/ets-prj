@@ -6,8 +6,8 @@
 					<div class="input-group" >
 						<label class="form-control-sm col-sm-2" for="inputQuonum">Quotation No </label>
 				    	<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-2" placeholder="CAR-2015-0289-04">
-				    	<label class="form-control-sm col-sm-1" for="inputInname" >Insured</label>
-				    	<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" placeholder="Insured Name">
+				    	<label class="form-control-sm col-sm-2" for="inputInname" >Insured</label>
+				    	<input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-5" placeholder="Insured Name">
 					</div>
 				</div>
 		</fieldset>
@@ -21,9 +21,9 @@
     <div class="row">
        <div class="form-group col-sm">
        		<div class="text-center">
-				<button class="btn btn-sm cust-btn-bg" type="button">Print</button>
-            	<button class="btn btn-sm cust-btn-bg" type="button">Cancel</button>
-            	<button class="btn btn-sm cust-btn-bg" type="button">Save</button>
+				<button class="btn btn-sm cust-btn-bg" type="button" (click)="onClickPrint()">Print</button>
+            	<button class="btn btn-sm cust-btn-bg" type="button" (click)="onClickCancel()">Cancel</button>
+            	<button class="btn btn-sm cust-btn-bg" type="button" (click)="onClickSave()">Save</button>
        		</div>
   		</div>
     </div>
