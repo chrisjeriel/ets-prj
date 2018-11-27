@@ -37,6 +37,7 @@ export class QuotationService {
         return this.dummyInfoData;
     }
 
+
     getQuoteOptions(){
         this.quotataionOption = [
             new QuotationOption(1,5,"Condition",6,8,5),
@@ -52,6 +53,19 @@ export class QuotationService {
             new QuotationOtherRates('Others1',60,'sample description')
         ]
         return this.quotataionOtherRates;
+    }
+
+    getDummyEditableInfo() {
+        /*Dummy Data Array*/
+        this.dummyInfoData = [ 
+            new DummyInfo(1,'Christopher Jeriel','Sarsonas','Alcala', 'Male', 25, "January 21, 2018"), 
+            new DummyInfo(2,'Veronica','Raymundo','C', 'Female', 25, "January 21, 2018"), 
+            new DummyInfo(3,'Elmon','Hagacer','H', 'Male', 25, "January 21, 2018"), 
+        ];
+
+        /*return this.http.get<User[]>(`${environment.apiUrl}/quotation`);*/
+        return this.dummyInfoData;
+
     }
 
 }
