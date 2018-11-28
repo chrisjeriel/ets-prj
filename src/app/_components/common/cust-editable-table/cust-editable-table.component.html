@@ -77,9 +77,10 @@
 	  <tr *ngFor="let data of tableData">
 	  	<td *ngIf="checkFlag">&nbsp;&nbsp;&nbsp;<input type="checkbox" name="checkbox"></td>
 	  	<td *ngFor="let key of dataKeys">
-	  		<div>
+	  	
+	  	 <div>
 		  		<input class="editable-text" type="text" [value]="processData(key, data)">
-	  		</div>	
+	  		</div> 
 	  	</td>
 	  		<td *ngIf="selectFlag">
 	  			<select class="form-control form-control-sm cust-sm" >

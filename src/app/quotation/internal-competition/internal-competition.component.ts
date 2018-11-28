@@ -33,15 +33,15 @@ export class InternalCompetitionComponent implements OnInit {
   }
 
   onClickPrint() {
-    alert("Printing Advice On Internal Competition Letter");
+   
   }
 
   onClickCancel() {
-    alert("Cancel");
+    
   }
 
   onClickSave() {
-    alert("Saving Successful");
+   
   }
 
 
