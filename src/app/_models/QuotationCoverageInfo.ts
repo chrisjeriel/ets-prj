@@ -1,12 +1,21 @@
 export class QuotationCoverageInfo {
-    coverCode: number;
-    section: string;
-    bulletNo: number;
-    sumInsured: number;
-    sortSe: string;
-    addSl: number;
+    coverCode: any;
+    section: any;
+    bulletNo: any;
+    sumInsured: any;
+    sortSe: any;
+    addSl: any;
 
-    constructor(coverCode: number, section: string, bulletNo: number, sumInsured: number, sortSe: string, addSl: number) {
+    quotationNo: string;
+    insured: string;
+    currency: string;
+    sectionOne: string;
+    sectionTwo: string;
+    sectionThree: string;
+    deductibles: string;
+    remarks: string;
+
+    constructor(coverCode: any, section: any, bulletNo: any, sumInsured: any, sortSe: any, addSl: any) {
         this.coverCode = coverCode;
         this.section = section;
         this.bulletNo = bulletNo;
@@ -14,4 +23,5 @@ export class QuotationCoverageInfo {
         this.sortSe = sortSe;
         this.addSl = addSl;
     }
+
 }

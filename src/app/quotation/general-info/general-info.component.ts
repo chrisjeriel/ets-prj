@@ -9,16 +9,15 @@ import { callLifecycleHooksChildrenFirst } from '@angular/core/src/view/provider
 	styleUrls: ['./general-info.component.css']
 })
 export class GeneralInfoComponent implements OnInit {
-	sampDAte: string;
 	private quotationGenInfo: QuotationGenInfo;
 
 	constructor() { }
 
 	ngOnInit() {
 		this.quotationGenInfo = new QuotationGenInfo();
-		this.quotationGenInfo.line = "MCS";
-		this.quotationGenInfo.year = 2222;
-		this.quotationGenInfo.seqNo = 10230;
+		this.quotationGenInfo.line;
+		this.quotationGenInfo.year;
+		this.quotationGenInfo.seqNo;
 		this.quotationGenInfo.reqSeq = "MOCK DATA";
 		this.quotationGenInfo.histNo = "MOCK DATA";
 		this.quotationGenInfo.branch = "MOCK DATA";

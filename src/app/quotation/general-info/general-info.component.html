@@ -5,8 +5,7 @@
 		<div class="form-row">
 			<div class="form-group col-sm-1">
 				<label for="inputEmail4" class="form-control-sm top-label">Line</label>
-				<input type="text" [(ngModel)]="this.quotationGenInfo.line" class="form-control form-control-sm cust-sm" id="inputEmail4"
-				 placeholder="MC">
+				<input type="text" [(ngModel)]="this.quotationGenInfo.line" class="form-control form-control-sm cust-sm" id="inputEmail4">
 			</div>
 			<div class="form-group col-sm-1">
 				<label for="inputEmail4" class="form-control-sm top-label">Year</label>
@@ -15,11 +14,11 @@
 			</div>
 			<div class="form-group col-sm-1">
 				<label for="inputEmail4" class="form-control-sm top-label">Seq No</label>
-				<input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4" placeholder="00001">
+				<input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4" placeholder="0001">
 			</div>
 			<div class="form-group col-sm-1">
 				<label for="inputEmail4" class="form-control-sm top-label">Req Seq</label>
-				<input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4" placeholder="01">
+				<input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4" placeholder="0001">
 			</div>
 			<div class="form-group col-sm-1">
 				<label for="inputEmail4" class="form-control-sm top-label">Hist No</label>
@@ -214,11 +213,11 @@
 		<div class="form-row">
 			<div class="col-sm">
 				<label for="inputEmail4" class="form-control-sm top-label">Opening Paragraph</label>
-				<textarea class="form-control form-control-sm" placeholder="This is the opening remarks."></textarea>
+				<textarea class="form-control form-control-sm" placeholder="Further to our Quotation No.."></textarea>
 			</div>
 			<div class="col-sm">
 				<label for="inputEmail4" class="form-control-sm top-label">Closing Paragraph</label>
-				<textarea class="form-control form-control-sm" placeholder="This is the closing remarks."></textarea>
+				<textarea class="form-control form-control-sm" placeholder="This quotation is subject.."></textarea>
 			</div>
 			<div class="col-sm">
 				<div class="form-row">
@@ -238,12 +237,13 @@
 			</div>
 		</div>
 	</fieldset>
-</div>
-<div class="form-row">
-	<div class="form-group col-sm">
-		<div class="float-sm-right">
-			<button type="button" (click)="func(crBy.value,lastDa.value)" class="btn btn-sm cust-btn-bg">Save</button>
-			<button type="button" class="btn btn-sm cust-btn-bg">Cancel</button>
+
+	<div class="form-row">
+		<div class="form-group col-sm">
+			<div class="float-sm-center">
+				<button type="button" (click)="func(crBy.value,lastDa.value)" class="btn btn-sm cust-btn-bg">Save</button>
+				<button type="button" class="btn btn-sm cust-btn-bg">Cancel</button>
+			</div>
 		</div>
 	</div>
 </div>
