@@ -8,16 +8,20 @@ import { User } from './_models';
 @Component({ 
     selector: 'app',
     templateUrl: 'app.component.html',
-
 })
 export class AppComponent {
     currentUser: User;
     public style: object = {};
 
-    private _opened: boolean = true;
- 
-    private _toggleSidebar() {
-        this._opened = !this._opened;
+    private _opened: boolean = true; /*must be added*/
+    private _closeOnClickOutside: boolean = true; /*must be added*/
+
+    private _toggleOpened(): void {
+      this._opened = !this._opened;
+    }
+
+    private _toggleCloseOnClickOutside(): void {
+      this._closeOnClickOutside = !this._closeOnClickOutside;
     }
 
     validate(event: ResizeEvent): boolean {
