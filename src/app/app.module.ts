@@ -34,6 +34,8 @@ import { QuotationInquiryComponent } from './quotation/quotation-inquiry/quotati
 import { ListOfQuotationsComponent } from './quotation/quotation-inquiry/list-of-quotations/list-of-quotations.component';
 import { HoldCoverMonitoringListComponent } from './quotation/quotation-inquiry/hold-cover-monitoring-list/hold-cover-monitoring-list.component';
 
+import { NotesComponent } from './notes/notes.component';;
+import { QuotationProcessingComponent } from './quotation/quotation-processing/quotation-processing.component'
 @NgModule({
     imports: [
         BrowserModule,
@@ -61,13 +63,17 @@ import { HoldCoverMonitoringListComponent } from './quotation/quotation-inquiry/
         QuoteEndorsementComponent,
         DummyComponent,
         CustTableComponent,
+        NotesComponent ,
+        QuotationProcessingComponent,
         HoldCoverComponent ,
         AttachmentComponent,
         CustEditableTableComponent,
         QuotationInquiryComponent,
         ListOfQuotationsComponent,
-        HoldCoverMonitoringListComponent],
-
+        HoldCoverMonitoringListComponent,
+        DummyComponent ,
+        CustTableComponent,
+        CustEditableTableComponent ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

@@ -15,7 +15,8 @@ export class CustEditableTableComponent implements OnInit {
   @Input() tableData: any[] = [];
   @Input() tHeader: any[] = [];
   @Input() magnifyingGlass: any[] = [];
-  @Input() options: any[] = [];  
+  @Input() options: any[] = [];
+  @Input() dataTypes: any[] = [];
   @Input() nData;
   @Input() checkFlag;
   @Input() selectFlag;

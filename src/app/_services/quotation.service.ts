@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { QuotationList, HoldCoverMonitoringList, DummyInfo, QuoteEndorsement, QuotationOption, QuotationOtherRates, IntCompAdvInfo, AttachmentInfo } from '@app/_models';
-
+import { QuotationList, HoldCoverMonitoringList, DummyInfo, QuoteEndorsement, QuotationOption, QuotationOtherRates, IntCompAdvInfo, AttachmentInfo, QuotationProcessing } from '@app/_models';
 
 @Injectable({ providedIn: 'root' })
 export class QuotationService {
@@ -14,6 +13,7 @@ export class QuotationService {
     holdCoverMonitoringListData : HoldCoverMonitoringList[] = [];
     intCompAdvInfo : IntCompAdvInfo[] = [];
     attachmentInfoData: AttachmentInfo[] = [];
+    quoProcessingData : QuotationProcessing[] = [];
 
     constructor(private http: HttpClient) {
 
@@ -113,6 +113,19 @@ export class QuotationService {
 
     }
 
+    getQuoProcessingData() {
+        this.quoProcessingData = [
+            new QuotationProcessing('CAR-2015-0289-01', 'Direct', 'CAR Wet Risks', 'In Progress', 'Malayan','5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', new Date('2015-02-09'),
+            new Date('2015-03-09'), 'Inigo Flores', 'cuaresma'),
+            new QuotationProcessing('CAR-2015-0289-02', 'Direct', 'CAR Wet Risks', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', new Date('2015-02-09'),
+            new Date('2015-03-09'), 'Inigo Flores', 'cuaresma'),
+            new QuotationProcessing('CAR-2015-0289-03', 'Direct', 'CAR Wet Risks', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', new Date('2015-02-09'),
+            new Date('2015-03-09'), 'Inigo Flores', 'cuaresma'),
+        ];
+
+        return this.quoProcessingData;
+    }
+
 
     getQuoteOptions(){
         this.quotataionOption = [
@@ -127,7 +140,7 @@ export class QuotationService {
         this.quotataionOtherRates = [
             new QuotationOtherRates('Others1',50,'sample remark'),
             new QuotationOtherRates('Others1',60,'sample description')
-        ]
+        ];
         return this.quotataionOtherRates;
     }
 

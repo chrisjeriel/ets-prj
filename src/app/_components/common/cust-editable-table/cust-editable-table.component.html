@@ -75,12 +75,18 @@
 	<tbody>
 	  <tr *ngFor="let data of tableData">
 	  	<td *ngIf="checkFlag">&nbsp;&nbsp;&nbsp;<input type="checkbox" name="checkbox"></td>
-	  	<td *ngFor="let key of dataKeys">
+	  	<td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]">
 	  		<div>
-		  		<!-- <input class="editable-checkbox" type="checkbox" *ngIf="key == 'id'"> -->
+		  		<input *ngSwitchCase="'checkbox'" type="checkbox">
+		  		<select *ngSwitchCase="'select'" class="editable-text" [value]="processData(key, data)">
+		  			<option>Option A</option>
+		  			<option>Option B</option>
+		  			<option>Option C</option>
+		  		</select>
+		  		<input *ngSwitchCase="'date'" class="editable-text" type="text" [value]="processData(key, data) | date:'MM-dd-yyyy'">
 		  		<i *ngIf="magnifyingGlass.indexOf(key)!=-1" class="fa fa-search"></i> &nbsp;
-		  		<input class="editable-text" type="text" [value]="processData(key, data)">
-	  		</div> 
+		  		<input *ngSwitchDefault class="editable-text" type="text" [value]="processData(key, data)">
+		  	</div>
 	  	</td>
 	  	<td *ngIf="tHeader.indexOf('Edit Flag')!= -1">
 	  		<div align="center">
@@ -92,7 +98,7 @@
 	  			<option *ngFor = "let options of options">{{options}}</option>
   			</select>
   		</td>
-		  	<td *ngIf="tHeader.indexOf('Actions')!=-1" class="icon"><button class="fa fa-edit fa-lg" title="Edit"></button> &nbsp;<button class="fa fa-trash fa-lg" title="Delete"></button></td>
+		<td *ngIf="tHeader.indexOf('Actions')!=-1" class="icon"><button class="fa fa-edit fa-lg" title="Edit"></button> &nbsp;<button class="fa fa-trash fa-lg" title="Delete"></button></td>
 	  </tr>
 	</tbody>
 	</table>

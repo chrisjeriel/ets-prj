@@ -29,7 +29,7 @@
             <nav class="navbar navbar-expand-lg navbar-light cust-nav-bar-bg justify-content-end" *ngIf="currentUser">
                 <div class="navbar-nav">
                     <a class="nav-item nav-link" routerLink="/"><fa name="home"></fa></a>
-                    <a class="nav-item nav-link" routerLink="/quotation"><fa name="bell"></fa></a>
+                    <a class="nav-item nav-link" routerLink="/notes"><fa name="bell"></fa></a>
                     <a class="nav-item nav-link" (click)="logout()"><fa name="sign-out"></fa></a>
                 </div>
             </nav>
@@ -70,7 +70,9 @@
             <ngb-accordion #acc="ngbAccordion">
                 <ngb-panel title="Quotation">
                     <ng-template ngbPanelContent>
-                        <button [routerLink]="['/quotation']" class="button btn btn-link">Quotation Processing</button>
+                        <button [routerLink]="['/quotation-processing']" class="button btn btn-link">Quotation Processing</button>
+                        <br/>
+                        <button [routerLink]="['/quotation']" class="button btn btn-link">Quotation</button>
                         <br/>
                         <button [routerLink]="['/quotation-inquiry']" class="button btn btn-link">Quotation Inquiry</button>
                     </ng-template>
@@ -125,7 +127,7 @@
                 <a class="nav-item nav-link" style="position: absolute; left: 0px;" (click)="_toggleOpened()"><fa name="bars"></fa></a>
                 <div class="navbar-nav">
                     <a class="nav-item nav-link" routerLink="/"><fa name="home" placement="bottom" ngbTooltip="Home"></fa></a>
-                    <a class="nav-item nav-link" routerLink="/quotation"><fa name="bell" placement="bottom" ngbTooltip="Notes & Reminders"></fa></a>
+                    <a class="nav-item nav-link" routerLink="/notes"><fa name="bell" placement="bottom" ngbTooltip="Notes & Reminders"></fa></a>
                     <a class="nav-item nav-link" (click)="logout()"><fa name="sign-out" placement="bottom" ngbTooltip="Logout"></fa></a>
                 </div>
             </nav>
