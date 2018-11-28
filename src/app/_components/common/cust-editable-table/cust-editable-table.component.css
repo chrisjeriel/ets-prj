@@ -8,6 +8,10 @@
 	top: 1px;
 	z-index: 9999 !important;
 }
+.icon {
+	text-align: center;
+
+}
 
 .cust-btn {
 	font-size: 11px;

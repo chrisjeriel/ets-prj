@@ -67,7 +67,7 @@
 	<table datatable [dtOptions]="dtOptions" class="row-border hover">
 	<thead>
 		<tr>
-			<th *ngIf="checkFlag"><input type="checkbox"  name="checkbox"></th>
+			<th *ngIf="checkFlag"></th>
 			<th *ngFor="let tHeader of tHeader">{{tHeader}}</th>
 		</tr>
 	</thead>
@@ -77,7 +77,7 @@
 	  	<td *ngFor="let key of dataKeys">
 	  		<div>
 		  		<!-- <input class="editable-checkbox" type="checkbox" *ngIf="key == 'id'"> -->
-		  		<input class="editable-text" type="text"  [value]="processData(key, data)">
+		  		<input class="editable-text" type="text" [value]="processData(key, data)">
 	  		</div>	
 	  	</td>
 	  		<td *ngIf="checkFlag">
@@ -85,7 +85,7 @@
 		  			<option *ngFor = "let options of options">{{options}}</option>
 	  			</select>
 	  		</td>
-		  	<td *ngIf="checkFlag"><button class="fa fa-edit" title="Edit"></button> &nbsp;<button class="fa fa-trash" title="Delete"></button></td>
+		  	<td *ngIf="tHeader.indexOf('Actions')!=-1" class="icon"><button class="fa fa-edit fa-lg" title="Edit"></button> &nbsp;<button class="fa fa-trash fa-lg" title="Delete"></button></td>
 	  </tr>
 	</tbody>
 	</table>
