@@ -6,7 +6,6 @@
 	  	<button *ngIf="editFlag" class="cust-btn" (click)="onClickEdit()"><a class="paginate_button previous">Edit</a></button>
 	  	<button *ngIf="deleteFlag" class="cust-btn" (click)="onClickDelete()"><a class="paginate_button previous">Delete</a></button>
 	  </div>
-	  
 	  <div ngbDropdownMenu aria-labelledby="dropdownConfig">
 	  	<div class="dropdown-item">
 	  		<span class="cust-tbl-label">Filter by:</span>
@@ -64,17 +63,23 @@
 		</div>
 	  </div>
 	</div>
+
 	<table datatable [dtOptions]="dtOptions" class="row-border hover">
+
 	<thead>
 		<tr>
+			<th *ngIf="checkboxFlag" ></th>
 			<th *ngFor="let tHeader of tHeader">{{tHeader}}</th>
 		</tr>
 	</thead>
+
 	<tbody>
 	  <tr *ngFor="let data of tableData">
+	  	<td *ngIf="checkboxFlag" >
+	  		<input  class="editable-checkbox" type="checkbox">
+	  	</td>
 	  	<td *ngFor="let key of dataKeys">
 	  		<div>
-		  		<!-- <input class="editable-checkbox" type="checkbox" *ngIf="key == 'id'"> -->
 		  		<input class="editable-text" type="text" [value]="processData(key, data)">
 	  		</div>
 	  	</td>

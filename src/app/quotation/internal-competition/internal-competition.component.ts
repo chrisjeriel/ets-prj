@@ -11,6 +11,7 @@ export class InternalCompetitionComponent implements OnInit {
   tableData: any[] = [];
   tHeader: any[] = [];
   nData: IntCompAdvInfo = new IntCompAdvInfo(null, null, null, null, null, null, null, null, null, null);
+  
 
 
   constructor(private quotationService: QuotationService) { }
