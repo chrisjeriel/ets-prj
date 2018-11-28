@@ -1,4 +1,4 @@
-export class QuoteEndorsment{
+export class QuoteEndorsement{
 	endtTitle: string;
 	endtDescription: string;
 	endtWording: string;

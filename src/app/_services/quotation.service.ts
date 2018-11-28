@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { environment } from '@environments/environment';
-import { DummyInfo,QuoteEndorsment,QuotationOption, QuotationOtherRates } from '@app/_models';
+import { DummyInfo,QuoteEndorsement,QuotationOption, QuotationOtherRates } from '@app/_models';
 import { AttachmentInfo } from '@app/_models';
 
 @Injectable({ providedIn: 'root' })
@@ -10,7 +10,7 @@ export class QuotationService {
     quotataionOption: QuotationOption[]=[];
     quotataionOtherRates: QuotationOtherRates[]=[];
     dummyInfoData : DummyInfo[] = [];
-    endorsmentData: QuoteEndorsment[] = [];
+    endorsementData: QuoteEndorsement[] = [];
     attachmentInfoData: AttachmentInfo[] = [];
     constructor(private http: HttpClient) {
 
@@ -38,13 +38,13 @@ export class QuotationService {
     }
 
 
-    getEndorsments(){
+    getEndorsements(){
         
-        this.endorsmentData = [
-            new QuoteEndorsment('Endt Title','Endt Description', 'Wording'),
-            new QuoteEndorsment('This is the title', 'sample Description', 'Sample Wording')
+        this.endorsementData = [
+            new QuoteEndorsement('Endt Title','Endt Description', 'Wording'),
+            new QuoteEndorsement('This is the title', 'sample Description', 'Sample Wording')
         ];
-        return this.endorsmentData;
+        return this.endorsementData;
     }
 
     getAttachment(){
