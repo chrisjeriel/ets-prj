@@ -1,86 +1,105 @@
 <div id="cust-table-container">
-	<br/>
+	<br />
 	<div ngbDropdown>
-	  <div class="cust-btn-container">
-	  	<button *ngIf="addFlag" class="cust-btn" (click)="onClickAdd()"><a>Add</a></button>
-	  	<button *ngIf="editFlag" class="cust-btn" (click)="onClickEdit()"><a class="paginate_button previous">Edit</a></button>
-	  	<button *ngIf="deleteFlag" class="cust-btn" (click)="onClickDelete()"><a class="paginate_button previous">Delete</a></button>
-	  </div>
-	  
-	  <div ngbDropdownMenu aria-labelledby="dropdownConfig">
-	  	<div class="dropdown-item">
-	  		<span class="cust-tbl-label">Filter by:</span>
-  			<div class="input-group">
-			  <div class="input-group-prepend">
-			    <div class="input-group-text">
-			      <input type="checkbox"><span>&nbsp;Quote No</span>
-			    </div>
-			  </div>
-			  <input type="text" class="form-control cust-sm">
-			</div>
-			<div class="input-group">
-			  <div class="input-group-prepend">
-			    <div class="input-group-text">
-			      <input type="checkbox"><span>&nbsp;Branch</span>
-			    </div>
-			  </div>
-			  <input type="text" class="form-control cust-sm">
-			</div>
-			<div class="input-group">
-			  <div class="input-group-prepend">
-			    <div class="input-group-text">
-			      <input type="checkbox"><span>&nbsp;Line Class</span>
-			    </div>
-			  </div>
-			  <input type="text" class="form-control cust-sm">
-			</div>
-			<div class="input-group">
-			  <div class="input-group-prepend">
-			    <div class="input-group-text">
-			      <input type="checkbox"><span>&nbsp;Insured</span>
-			    </div>
-			  </div>
-			  <input type="text" class="form-control cust-sm">
-			</div>
-			<div class="input-group">
-			  <div class="input-group-prepend">
-			    <div class="input-group-text">
-			      <input type="checkbox"><span>&nbsp;Quote Date</span>
-			    </div>
-			  </div>
-			  <input type="date" class="form-control cust-sm">
-			</div>
-			<div class="input-group">
-			  <div class="input-group-prepend">
-			    <div class="input-group-text">
-			      <input type="checkbox"><span>&nbsp;Validity Date</span>
-			    </div>
-			  </div>
-			  <input type="date" class="form-control cust-sm">
-			</div>
-			<div class="input-group">
-			  <button class="cust-filter cust-tbl-submit"><a>Ok</a></button>
+		<div class="cust-btn-container">
+			<button *ngIf="addFlag" class="cust-btn" (click)="onClickAdd()"><a>Add</a></button>
+			<button *ngIf="editFlag" class="cust-btn" (click)="onClickEdit()"><a class="paginate_button previous">Edit</a></button>
+			<button *ngIf="deleteFlag" class="cust-btn" (click)="onClickDelete()"><a class="paginate_button previous">Delete</a></button>
+		</div>
+
+		<div ngbDropdownMenu aria-labelledby="dropdownConfig">
+			<div class="dropdown-item">
+				<span class="cust-tbl-label">Filter by:</span>
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<div class="input-group-text">
+							<input type="checkbox"><span>&nbsp;Quote No</span>
+						</div>
+					</div>
+					<input type="text" class="form-control cust-sm">
+				</div>
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<div class="input-group-text">
+							<input type="checkbox"><span>&nbsp;Branch</span>
+						</div>
+					</div>
+					<input type="text" class="form-control cust-sm">
+				</div>
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<div class="input-group-text">
+							<input type="checkbox"><span>&nbsp;Line Class</span>
+						</div>
+					</div>
+					<input type="text" class="form-control cust-sm">
+				</div>
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<div class="input-group-text">
+							<input type="checkbox"><span>&nbsp;Insured</span>
+						</div>
+					</div>
+					<input type="text" class="form-control cust-sm">
+				</div>
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<div class="input-group-text">
+							<input type="checkbox"><span>&nbsp;Quote Date</span>
+						</div>
+					</div>
+					<input type="date" class="form-control cust-sm">
+				</div>
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<div class="input-group-text">
+							<input type="checkbox"><span>&nbsp;Validity Date</span>
+						</div>
+					</div>
+					<input type="date" class="form-control cust-sm">
+				</div>
+				<div class="input-group">
+					<button class="cust-filter cust-tbl-submit"><a>Ok</a></button>
+				</div>
 			</div>
 		</div>
-	  </div>
 	</div>
 	<table datatable [dtOptions]="dtOptions" class="row-border hover">
-	<thead>
-		<tr>
-			<th *ngFor="let tHeader of tHeader">{{tHeader}}</th>
-		</tr>
-	</thead>
-	<tbody>
-	  <tr *ngFor="let data of tableData">
-	  	<td *ngFor="let key of dataKeys">
-	  		<div>
-		  		<!-- <input class="editable-checkbox" type="checkbox" *ngIf="key == 'id'"> -->
-		  		<input class="editable-text" type="text" [value]="processData(key, data)">
-	  		</div>
-	  	</td>
-	  </tr>
-	</tbody>
+		<thead class="text-center">
+			<tr>
+				<!-- <th *ngFor="let tHeader of tHeader">{{tHeader}}</th> -->
+				<th *ngFor="let tHeader of tHeader" [ngSwitch]="tHeader">
+					<input class="editable-checkbox" type="checkbox" *ngSwitchCase="'select'">
+					<div *ngSwitchDefault>{{tHeader}}</div>
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let data of tableData">
+				<td *ngFor="let key of dataKeys" [ngSwitch]="key">
+					<div class="text-center">
+						<input class="editable-checkbox" type="checkbox" *ngSwitchCase="'selectAll'">
+						<input class="editable-checkbox" type="checkbox" *ngSwitchCase="'addSl'">
+						<select class="editable-text" *ngSwitchCase="'section'">
+							<option></option>
+							<option>Sample Data</option>
+						</select>
+						<select class="editable-text" *ngSwitchCase="'bulletNo'">
+							<option></option>
+							<option>Sample Data</option>
+						</select>
+						<select class="editable-text" *ngSwitchCase="'sortSe'">
+							<option></option>
+							<option>Sample Data</option>
+						</select>
+						<input class="" type="button" *ngSwitchCase="'actions'" value="edit">
+						<input class="" type="button" *ngSwitchCase="'actions'" value="delete">
+						<input *ngSwitchDefault class="editable-text" type="text" [value]="processData(key, data)">
+					</div>
+				</td>
+			</tr>
+		</tbody>
 	</table>
 </div>
 
-<hr/>
+<hr />
