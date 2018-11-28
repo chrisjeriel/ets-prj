@@ -1,48 +1,49 @@
 <!-- ITEM 1 HERE -->
 <div>
 	<fieldset class="scheduler-border">
-	    <legend class="scheduler-border">Quotation Number</legend>
-	    <div class="form-row">
-		    <div class="form-group col-sm-1">
-		      <label for="inputEmail4" class="form-control-sm top-label">Line</label>
-		      <input type="text" [(ngModel)]="this.quotationGenInfo.line" class="form-control form-control-sm cust-sm" id="inputEmail4" placeholder="MC">
-		    </div>
-		    <div class="form-group col-sm-1">
-		      <label for="inputEmail4" class="form-control-sm top-label">Year</label>
-		      <input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4" placeholder="2018">
-		    </div>
-		    <div class="form-group col-sm-1">
-		      <label for="inputEmail4" class="form-control-sm top-label">Seq No</label>
-		      <input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4" placeholder="00001">
-		    </div>
-		    <div class="form-group col-sm-1">
-		      <label for="inputEmail4" class="form-control-sm top-label">Req Seq</label>
-		      <input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4" placeholder="MPC">
-		    </div>
-		    <div class="form-group col-sm-1">
-		      <label for="inputEmail4" class="form-control-sm top-label">Hist No</label>
-		      <input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4" placeholder="00001">
-		    </div>
-		    <div class="form-group col-sm">
-		      <label for="inputEmail4" class="form-control-sm top-label">Branch</label>
-		      <input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4" placeholder="MKT">
-		    </div>
-		    <div class="form-group col-sm">
-		      <label for="inputEmail4" class="form-control-sm top-label">Line Class</label>
-		      <input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4" placeholder="Engineering">
-		    </div>
-		    <div class="form-group col-sm">
-		      <label for="inputEmail4" class="form-control-sm top-label">Policy Number</label>
-		      <input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4" placeholder="000001">
-		    </div>
-		    <div class="form-group col-sm">
-		      <label for="inputEmail4" class="form-control-sm top-label">Printed By</label>
-		      <input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4" placeholder="James Reid">
-		    </div>
-		    <div class="form-group col-sm">
-		      <label for="inputEmail4" class="form-control-sm top-label">Print Date</label>
-		      <input type="date" class="form-control form-control-sm cust-sm" id="inputEmail4" value="2018-01-01">
-		    </div>
+		<legend class="scheduler-border">Quotation Number</legend>
+		<div class="form-row">
+			<div class="form-group col-sm-1">
+				<label for="inputEmail4" class="form-control-sm top-label">Line</label>
+				<input type="text" [(ngModel)]="this.quotationGenInfo.line" class="form-control form-control-sm cust-sm" id="inputEmail4">
+			</div>
+			<div class="form-group col-sm-1">
+				<label for="inputEmail4" class="form-control-sm top-label">Year</label>
+				<input type="text" [(ngModel)]="this.quotationGenInfo.year" class="form-control form-control-sm cust-sm" id="inputEmail4"
+				 placeholder="2018">
+			</div>
+			<div class="form-group col-sm-1">
+				<label for="inputEmail4" class="form-control-sm top-label">Seq No</label>
+				<input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4" placeholder="0001">
+			</div>
+			<div class="form-group col-sm-1">
+				<label for="inputEmail4" class="form-control-sm top-label">Req Seq</label>
+				<input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4" placeholder="0001">
+			</div>
+			<div class="form-group col-sm-1">
+				<label for="inputEmail4" class="form-control-sm top-label">Hist No</label>
+				<input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4" placeholder="00001">
+			</div>
+			<div class="form-group col-sm">
+				<label for="inputEmail4" class="form-control-sm top-label">Branch</label>
+				<input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4" placeholder="MKT">
+			</div>
+			<div class="form-group col-sm">
+				<label for="inputEmail4" class="form-control-sm top-label">Line Class</label>
+				<input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4" placeholder="Engineering">
+			</div>
+			<div class="form-group col-sm">
+				<label for="inputEmail4" class="form-control-sm top-label">Policy Number</label>
+				<input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4" placeholder="000001">
+			</div>
+			<div class="form-group col-sm">
+				<label for="inputEmail4" class="form-control-sm top-label">Printed By</label>
+				<input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4" placeholder="James Reid">
+			</div>
+			<div class="form-group col-sm">
+				<label for="inputEmail4" class="form-control-sm top-label">Print Date</label>
+				<input type="date" class="form-control form-control-sm cust-sm" id="inputEmail4" value="2018-01-01">
+			</div>
 		</div>
 	</fieldset>
 </div>
@@ -50,36 +51,38 @@
 
 <div>
 	<fieldset class="scheduler-border">
-	    <legend class="scheduler-border">Quotation Details</legend>
-	    <div class="form-row">
-		    <div class="form-group col-sm">
-		      <label for="inputEmail4" class="form-control-sm top-label">Ceding Company</label>
-		      <input type="email" class="form-control form-control-sm" id="inputEmail4" placeholder="Banco De Oro">
-		    </div>
-		    <div class="form-group col-sm">
-		      <label for="inputEmail4" class="form-control-sm top-label">Quote Status</label>
-		      <input type="email" class="form-control form-control-sm" id="inputEmail4" placeholder="On Going">
-		    </div>
-		    <div class="form-group col-sm">
-		      <label for="inputEmail4" class="form-control-sm top-label">Quote Date</label>
-		      <input type="date" class="form-control form-control-sm" id="inputEmail4" value="2018-01-01">
-		    </div>
-		    <div class="form-group col-sm">
-		      <label for="inputEmail4" class="form-control-sm top-label">Valid Until</label>
-		      <input type="date" class="form-control form-control-sm" id="inputEmail4" value="2018-01-01">
-		    </div>
-		    <div class="form-group col-sm">
-		      <label for="inputEmail4" class="form-control-sm top-label">Requested By</label>
-		      <input type="text" class="form-control form-control-sm" id="inputEmail4" placeholder="Jobert Austria">
-		    </div>
-		    <div class="form-group col-sm">
-		      <label for="inputEmail4" class="form-control-sm top-label">Request Date</label>
-		      <input type="date" class="form-control form-control-sm" id="inputEmail4" value="2018-01-01">
-		    </div>
-		    <div class="form-group col-sm">
-		      <label for="inputEmail4" class="form-control-sm top-label">Request Mode</label>
-		      <input type="text" class="form-control form-control-sm" id="inputEmail4" placeholder="Intermediate">
-		    </div>
+		<legend class="scheduler-border">Quotation Details</legend>
+		<div class="form-row">
+			<div class="form-group col-sm">
+				<label for="inputEmail4" class="form-control-sm top-label">Ceding Company</label>
+				<input type="email" class="form-control form-control-sm" id="inputEmail4" placeholder="Banco De Oro">
+			</div>
+			<div class="form-group col-sm">
+				<label for="inputEmail4" class="form-control-sm top-label">Quote Status</label>
+				<input type="email" class="form-control form-control-sm" id="inputEmail4" placeholder="On Going">
+			</div>
+			<div class="form-group col-sm">
+				<label for="inputEmail4" class="form-control-sm top-label">Quote Date</label>
+				<input type="date" class="form-control form-control-sm" id="inputEmail4">
+			</div>
+			<div class="form-group col-sm">
+				<label for="inputEmail4" class="form-control-sm top-label">Valid Until</label>
+				<input type="date" class="form-control form-control-sm" id="inputEmail4" value="2018-01-01">
+			</div>
+			<div class="form-group col-sm">
+				<label for="inputEmail4" class="form-control-sm top-label">Requested By</label>
+				<input type="text" class="form-control form-control-sm" id="inputEmail4" placeholder="Jobert Austria">
+			</div>
+			<div class="form-group col-sm">
+				<label for="inputEmail4" class="form-control-sm top-label">Request Date</label>
+				<input type="date" class="form-control form-control-sm" id="inputEmail4" value="2018-01-01">
+			</div>
+			<div class="form-group col-sm">
+				<label for="inputEmail4" class="form-control-sm top-label">Request Mode</label>
+				<select class="form-control form-control-sm drp-dwn-cstmz" id="inputEmail4">
+					<option *ngFor="let req of reqMode" value="{{req.value}}"> {{req.name}}</option>
+				</select>
+			</div>
 		</div>
 	</fieldset>
 </div>
@@ -91,33 +94,33 @@
 			<div class="form-row custom-row-inline-inset">
 				<div class="input-group">
 					<label class="form-control-sm col-sm-2" for="xx">Principal</label>
-				    <input type="text" id="xx" class="form-control form-control-sm cust-sm">
-				    <label class="form-control-sm col-sm-2" for="xx">Contractor</label>
-				    <input type="text" class="form-control form-control-sm">
+					<input type="text" id="xx" class="form-control form-control-sm cust-sm">
+					<label class="form-control-sm col-sm-2" for="xx">Contractor</label>
+					<input type="text" class="form-control form-control-sm">
 				</div>
 				<div class="input-group">
 					<label class="form-control-sm col-sm-2" for="xx">Insured</label>
-				    <input type="text" id="xx" class="form-control form-control-sm">
+					<input type="text" id="xx" class="form-control form-control-sm">
 				</div>
 				<div class="input-group">
 					<label class="form-control-sm col-sm-2" for="xx">Property/Project</label>
-				    <input type="text" id="xx" class="form-control form-control-sm">
+					<input type="text" id="xx" class="form-control form-control-sm">
 				</div>
 				<div class="input-group">
 					<label class="form-control-sm col-sm-2" for="xx">Site</label>
-				    <input type="text" id="xx" class="form-control form-control-sm">
-				    <label class="form-control-sm col-sm-2" for="xx">Duration/Testing</label>
-				    <input type="text" class="form-control form-control-sm">
+					<input type="text" id="xx" class="form-control form-control-sm">
+					<label class="form-control-sm col-sm-2" for="xx">Duration/Testing</label>
+					<input type="text" class="form-control form-control-sm">
 				</div>
 				<div class="input-group">
 					<label class="form-control-sm col-sm-2" for="xx">Risk</label>
-				    <input type="text" id="xx" class="form-control form-control-sm">
-				    <label class="form-control-sm col-sm-2" for="xx">Object</label>
-				    <input type="text" class="form-control form-control-sm">
+					<input type="text" id="xx" class="form-control form-control-sm">
+					<label class="form-control-sm col-sm-2" for="xx">Object</label>
+					<input type="text" class="form-control form-control-sm">
 				</div>
 				<div class="input-group">
 					<label class="form-control-sm col-sm-2" for="xx">Location</label>
-				    <input type="text" id="xx" class="form-control form-control-sm">
+					<input type="text" id="xx" class="form-control form-control-sm">
 				</div>
 			</div>
 		</fieldset>
@@ -126,8 +129,8 @@
 		<fieldset class="scheduler-border">
 			<legend class="scheduler-border">Share Details</legend>
 			<div class="custom-row-inline-inset">
-			  <!-- <div class="form-row"> -->
-			    <!-- <div class="form-group col-sm-6">
+				<!-- <div class="form-row"> -->
+				<!-- <div class="form-group col-sm-6">
 			      <label for="inputEmail4" class="form-control-sm top-label">% Share</label>
 			      <input type="email" class="form-control form-control-sm" id="inputEmail4" placeholder="Email">
 			    </div>
@@ -135,70 +138,70 @@
 			      <label for="inputPassword4" class="form-control-sm top-label">Part of (100%)</label>
 			      <input type="password" class="form-control form-control-sm" id="inputPassword4" placeholder="Password">
 			    </div> -->
-			    <div class="input-group">
+				<div class="input-group">
 					<label class="form-control-sm col-sm-3" for="xx">% Share</label>
-				    <input type="text" id="xx" class="form-control form-control-sm">
-				    <label class="form-control-sm col-sm-3" for="xx">Part of (100%)</label>
-				    <input type="text" id="xx" class="form-control form-control-sm">
+					<input type="text" id="xx" class="form-control form-control-sm">
+					<label class="form-control-sm col-sm-3" for="xx">Part of (100%)</label>
+					<input type="text" id="xx" class="form-control form-control-sm">
 				</div>
-			  <!-- </div> -->
-			  <!-- <div class="form-group">
+				<!-- </div> -->
+				<!-- <div class="form-group">
 			    <label for="inputAddress" class="form-control-sm top-label">Intermediary</label>
 			    <input type="text" class="form-control form-control-sm" id="inputAddress" placeholder="1234 Main St">
 			  </div> -->
-			  	<div class="input-group">
+				<div class="input-group">
 					<label class="form-control-sm col-sm-3" for="xx">Intermediary</label>
-				    <input type="text" id="xx" class="form-control form-control-sm">
+					<input type="text" id="xx" class="form-control form-control-sm">
 				</div>
 			</div>
 		</fieldset>
 		<fieldset class="scheduler-border">
 			<legend class="scheduler-border">Tags</legend>
 			<div class="custom-row-inline-inset">
-			  <div class="form-row">
-			    <div class="form-group col-sm-6">
-			      	<div class="input-group">
-					  <div class="input-group-prepend">
-					    <div class="input-group-text">
-					    <input type="checkbox">
-					    </div>
-					  </div>
-					  <input type="text" value="Government Flag" disabled class="form-control form-control-sm">
-				    </div>
-			    </div>
-			    <div class="col-sm-6">
-			        <div class="input-group">
-					  <div class="input-group-prepend">
-					    <div class="input-group-text">
-					    <input type="checkbox">
-					    </div>
-					  </div>
-					  <input type="text" value="Indicative" disabled class="form-control form-control-sm">
-				    </div>
-			    </div>
-			  </div>
-			  <div class="form-row">
-			    <div class="form-group col-sm-6">
-			      	<div class="input-group">
-					  <div class="input-group-prepend">
-					    <div class="input-group-text">
-					    <input type="checkbox">
-					    </div>
-					  </div>
-					  <input type="text" value="Open Cover" disabled class="form-control form-control-sm">
-				    </div>
-			    </div>
-			    <div class="col-sm-6">
-			        <div class="input-group">
-					  <div class="input-group-prepend">
-					    <div class="input-group-text">
-					    <input type="checkbox">
-					    </div>
-					  </div>
-					  <input type="text" value="Declaration" disabled class="form-control form-control-sm">
-				    </div>
-			    </div>
-			  </div>
+				<div class="form-row">
+					<div class="form-group col-sm-6">
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<div class="input-group-text">
+									<input type="checkbox">
+								</div>
+							</div>
+							<input type="text" value="Government Flag" disabled class="form-control form-control-sm">
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<div class="input-group-text">
+									<input type="checkbox">
+								</div>
+							</div>
+							<input type="text" value="Indicative" disabled class="form-control form-control-sm">
+						</div>
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col-sm-6">
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<div class="input-group-text">
+									<input type="checkbox">
+								</div>
+							</div>
+							<input type="text" value="Open Cover" disabled class="form-control form-control-sm">
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<div class="input-group-text">
+									<input type="checkbox">
+								</div>
+							</div>
+							<input type="text" value="Declaration" disabled class="form-control form-control-sm">
+						</div>
+					</div>
+				</div>
 			</div>
 		</fieldset>
 	</div>
@@ -206,40 +209,41 @@
 
 <div>
 	<fieldset class="scheduler-border">
-	    <legend class="scheduler-border">Quotation Wordings</legend>
-	    <div class="form-row">
-		    <div class="col-sm">
-		      <label for="inputEmail4" class="form-control-sm top-label">Opening Paragraph</label>
-		      <textarea class="form-control form-control-sm" placeholder="This is the opening remarks."></textarea>
-		    </div>
-		    <div class="col-sm">
-		      <label for="inputEmail4" class="form-control-sm top-label">Closing Paragraph</label>
-		      <textarea class="form-control form-control-sm" placeholder="This is the closing remarks."></textarea>
-		    </div>
-		    <div class="col-sm">
-		    	 <div class="form-row">
-		    	 	<div class="form-group col-sm-6">
-		    	 		<label for="inputEmail4" class="form-control-sm top-label">Created By</label>
-					    <input type="text" class="form-control form-control-sm" id="inputEmail4" placeholder="xpact123">
-					    <label for="inputEmail4" class="form-control-sm top-label">Date Created</label>
-					    <input type="date" class="form-control form-control-sm" id="inputEmail4" value="2018-01-01">
-		    	 	</div>
-		    	 	<div class="form-group col-sm-6">
-		    	 		<label for="inputEmail4" class="form-control-sm top-label">Last Update By</label>
-					    <input type="text" class="form-control form-control-sm" id="inputEmail4" placeholder="chrisjeriel">
-					    <label for="inputEmail4" class="form-control-sm top-label">Last Update</label>
-					    <input type="date" class="form-control form-control-sm" id="inputEmail4" value="2018-01-01">
-		    	 	</div>
-		    	 </div>
-		    </div>
+		<legend class="scheduler-border">Quotation Wordings</legend>
+		<div class="form-row">
+			<div class="col-sm">
+				<label for="inputEmail4" class="form-control-sm top-label">Opening Paragraph</label>
+				<textarea class="form-control form-control-sm" placeholder="Further to our Quotation No.."></textarea>
+			</div>
+			<div class="col-sm">
+				<label for="inputEmail4" class="form-control-sm top-label">Closing Paragraph</label>
+				<textarea class="form-control form-control-sm" placeholder="This quotation is subject.."></textarea>
+			</div>
+			<div class="col-sm">
+				<div class="form-row">
+					<div class="form-group col-sm-6">
+						<label for="inputEmail4" class="form-control-sm top-label">Created By</label>
+						<input type="text" #crBy class="form-control form-control-sm" id="inputEmail4" placeholder="xpact123">
+						<label for="inputEmail4" class="form-control-sm top-label">Date Created</label>
+						<input type="date" class="form-control form-control-sm" id="inputEmail4" value="2018-01-01">
+					</div>
+					<div class="form-group col-sm-6">
+						<label for="inputEmail4" class="form-control-sm top-label">Last Update By</label>
+						<input type="text" class="form-control form-control-sm" id="inputEmail4" placeholder="chrisjeriel">
+						<label for="inputEmail4" class="form-control-sm top-label">Last Update</label>
+						<input type="date" #lastDa class="form-control form-control-sm" id="inputEmail4">
+					</div>
+				</div>
+			</div>
 		</div>
 	</fieldset>
-</div>
-<div class="form-row">
-	<div class="form-group col-sm">
-		<div class="float-sm-right">
-			<button type="button" class="btn btn-sm cust-btn-bg">Save</button>
-			<button type="button" class="btn btn-sm cust-btn-bg">Cancel</button>
+
+	<div class="form-row">
+		<div class="form-group col-sm">
+			<div class="float-sm-center">
+				<button type="button" (click)="func(crBy.value,lastDa.value)" class="btn btn-sm cust-btn-bg">Save</button>
+				<button type="button" class="btn btn-sm cust-btn-bg">Cancel</button>
+			</div>
 		</div>
 	</div>
 </div>

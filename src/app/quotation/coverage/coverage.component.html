@@ -1,10 +1,64 @@
 <div>
-	<fieldset class="scheduler-border">
-	    <legend class="scheduler-border">Quotation Number</legend>
-	    <br/>
-	    <div>
-	    	<app-cust-table></app-cust-table>
-	    </div>
-	    <br/>
-	</fieldset>
+  <fieldset class="scheduler-border">
+    <legend class="scheduler-border">Quotation Info</legend>
+    <div class="form-row custom-row-inline-inset">
+      <div class="input-group">
+        <label class="form-control-sm col-sm-1" for="xx">Quotation No</label>
+        <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-2" placeholder="CAR-2015-0289-04"
+          readonly>
+        <label class="form-control-sm col-sm-1" for="xx">Insured</label>
+        <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-10" placeholder="Insured Name"
+          readonly>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset class="scheduler-border">
+    <legend class="scheduler-border">Section Covers</legend>
+    <app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData"
+      [tHeader]="tHeader"></app-cust-editable-table>
+  </fieldset>
+  <fieldset class="scheduler-border">
+    <legend class="scheduler-border">Total Sum Insured</legend>
+    <div class="form-row custom-row-inline-inset">
+      <div class="input-group">
+        <label class="form-control-sm col-sm-1" for="xx">Currency</label>
+        <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm" required>
+        <label class="form-control-sm col-sm-1" for="xx">Section I</label>
+        <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm txt-content-rght" required
+          placeholder="0.00">
+        <label class="form-control-sm col-sm-1" for="xx">Section II</label>
+        <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm txt-content-rght" required
+          placeholder="0.00">
+        <label class="form-control-sm col-sm-1" for="xx">Section III</label>
+        <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm txt-content-rght" required
+          placeholder="0.00">
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset class="scheduler-border">
+    <legend class="scheduler-border">Quote Deductibles</legend>
+    <div class="form-row custom-row-inline-inset">
+      <div class="col-sm-2"></div>
+      <div class="col-sm-4">
+        <label for="inputEmail4" class="form-control-sm top-label">Deductibles</label>
+        <textarea class="form-control form-control-sm"></textarea>
+      </div>
+      <div class="col-sm-4">
+        <label for="inputEmail4" class="form-control-sm top-label">Remarks</label>
+        <textarea class="form-control form-control-sm"></textarea>
+      </div>
+      <div class="col-sm-2"></div>
+    </div>
+  </fieldset>
+
+  <div class="form-row">
+    <div class="form-group col-sm">
+      <div class="float-sm-center">
+        <button type="button" class="btn btn-sm cust-btn-bg">Cancel</button>
+        <button type="button" class="btn btn-sm cust-btn-bg">Save</button>
+      </div>
+    </div>
+  </div>
 </div>
