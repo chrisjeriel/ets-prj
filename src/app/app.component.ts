@@ -24,19 +24,6 @@ export class AppComponent {
       this._closeOnClickOutside = !this._closeOnClickOutside;
     }
 
-    validate(event: ResizeEvent): boolean {
-    const MIN_DIMENSIONS_PX: number = 50;
-        if (
-          event.rectangle.width &&
-          event.rectangle.height &&
-          (event.rectangle.width < MIN_DIMENSIONS_PX ||
-            event.rectangle.height < MIN_DIMENSIONS_PX)
-        ) {
-          return false;
-        }
-        return true;
-    }
-
     constructor(
         private router: Router,
         private authenticationService: AuthenticationService
@@ -49,14 +36,4 @@ export class AppComponent {
         this.router.navigate(['/login']);
     }
 
-    onResizeEnd(event: ResizeEvent): void {
-        console.log(this);
-        this.style = {
-          position: 'relative',
-          left: `${event.rectangle.left}px`,
-          top: `${event.rectangle.top}px`,
-          width: `${event.rectangle.width}px`,
-          height: `${event.rectangle.height}px`
-        };
-      }
 }
