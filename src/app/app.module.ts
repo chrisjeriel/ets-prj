@@ -19,13 +19,13 @@ import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 import { HomeComponent } from './home';
 import { LoginComponent } from './login';
 import { RegisterComponent } from './register';
-
 import { QuotationComponent } from './quotation/quotation.component';
 import { GeneralInfoComponent } from './quotation/general-info/general-info.component';
 import { CoverageComponent } from './quotation/coverage/coverage.component';
 import { QuoteOptionComponent } from './quotation/quote-option/quote-option.component';
-import { HoldCoverComponent } from './quotation/hold-cover/hold-cover.component';
-import { AttachmentComponent } from './quotation/attachment/attachment.component';
+import { InternalCompetitionComponent } from './quotation/internal-competition/internal-competition.component';
+import { HoldCoverComponent } from './quotation/hold-cover/hold-cover.component';;
+import { AttachmentComponent } from './quotation/attachment/attachment.component'
 import { DummyComponent } from './_components/common/dummy/dummy.component';
 import { CustTableComponent } from './_components/common/cust-table/cust-table.component';
 import { QuoteEndorsmentComponent } from './quotation/quote-endorsment/quote-endorsment.component';
@@ -58,6 +58,7 @@ import { HoldCoverMonitoringListComponent } from './quotation/quotation-inquiry/
         CoverageComponent ,
         QuoteOptionComponent ,
         QuoteEndorsmentComponent,
+        InternalCompetitionComponent,
         DummyComponent,
         CustTableComponent,
         HoldCoverComponent ,

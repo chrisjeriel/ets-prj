@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
 import { environment } from '@environments/environment';
-import { QuotationList, HoldCoverMonitoringList, DummyInfo, QuoteEndorsment, QuotationOption, QuotationOtherRates } from '@app/_models';
+import { QuotationList, HoldCoverMonitoringList, DummyInfo, QuoteEndorsment, QuotationOption, QuotationOtherRates, IntCompAdvInfo } from '@app/_models';
 import { AttachmentInfo } from '@app/_models';
+
 
 @Injectable({ providedIn: 'root' })
 export class QuotationService {
@@ -13,11 +13,13 @@ export class QuotationService {
     quotationListData : QuotationList[] = [];
     holdCoverMonitoringListData : HoldCoverMonitoringList[] = [];
     endorsmentData: QuoteEndorsment[] = [];
+    intCompAdvInfo : IntCompAdvInfo[] = [];
     attachmentInfoData: AttachmentInfo[] = [];
 
     constructor(private http: HttpClient) {
 
     }
+
 
     getDummyInfo() {
         /*Dummy Data Array*/
@@ -112,6 +114,7 @@ export class QuotationService {
 
     }
 
+
     getQuoteOptions(){
         this.quotataionOption = [
             new QuotationOption(1,5,"Condition",6,8,5),
@@ -127,6 +130,21 @@ export class QuotationService {
             new QuotationOtherRates('Others1',60,'sample description')
         ]
         return this.quotataionOtherRates;
+    }
+
+
+
+    getIntCompAdvInfo() {
+       
+        /*intCompAdvInfo Data Array*/
+        this.intCompAdvInfo = [ 
+            new IntCompAdvInfo(1,'CPI','Carino Engelbert','IT','Y', 'excellent','etcarino',new Date(),'etcarino', new Date()), 
+            new IntCompAdvInfo(2,'CPI','Qwerty 123','Developer','N', 'good','etcarino',new Date(),'etcarino', new Date()), 
+            new IntCompAdvInfo(3,'CPI','ABCDE 246','SA','Y', 'very good','etcarino',new Date(),'etcarino', new Date()), 
+        ];
+
+        /*return this.http.get<User[]>(`${environment.apiUrl}/quotation`);*/
+        return this.intCompAdvInfo;
     }
 
 }

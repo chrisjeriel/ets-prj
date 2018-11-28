@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import {NgbDropdownConfig} from '@ng-bootstrap/ng-bootstrap';
 import { QuotationService } from '../../../_services';
 import { DummyInfo } from '../../../_models';
+import { IntCompAdvInfo } from '../../../_models';
 
 
 

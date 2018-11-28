@@ -6,3 +6,4 @@ export * from './HoldCover';
 export * from './Attachment';
 export * from './QuoteEndorsment';
 export * from './QuoteOption';
+export * from './IntCompAdvInfo';

@@ -6,7 +6,6 @@
 	  	<button *ngIf="editFlag" class="cust-btn" (click)="onClickEdit()"><a class="paginate_button previous">Edit</a></button>
 	  	<button *ngIf="deleteFlag" class="cust-btn" (click)="onClickDelete()"><a class="paginate_button previous">Delete</a></button>
 	  </div>
-	  
 	  <div ngbDropdownMenu aria-labelledby="dropdownConfig">
 	  	<div class="dropdown-item">
 	  		<span class="cust-tbl-label">Filter by:</span>
@@ -64,6 +63,7 @@
 		</div>
 	  </div>
 	</div>
+
 	<table datatable [dtOptions]="dtOptions" class="row-border hover">
 	<thead>	
 		<tr>
@@ -71,6 +71,7 @@
 			<th *ngFor="let tHeader of tHeader">{{tHeader}}</th>
 		</tr>
 	</thead>
+
 	<tbody>
 	  <tr *ngFor="let data of tableData">
 	  	<td *ngIf="checkFlag">&nbsp;&nbsp;&nbsp;<input type="checkbox" name="checkbox"></td>
@@ -79,7 +80,7 @@
 		  		<!-- <input class="editable-checkbox" type="checkbox" *ngIf="key == 'id'"> -->
 		  		<i *ngIf="magnifyingGlass.indexOf(key)!=-1" class="fa fa-search"></i> &nbsp;
 		  		<input class="editable-text" type="text" [value]="processData(key, data)">
-	  		</div>	
+	  		</div> 
 	  	</td>
 	  	<td *ngIf="tHeader.indexOf('Edit Flag')!= -1">
 	  		<div align="center">
