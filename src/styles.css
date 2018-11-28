@@ -152,7 +152,7 @@ display: block;
 }
 
 .nav-item {
-  font-size: 11px !important;
+  font-size: 14px !important;
   padding: 0 !important;
   font-weight: bold;
 }
@@ -280,3 +280,59 @@ legend.scheduler-border {
 #cust-table-container tbody tr:hover {
   background-color: #FFFF99;
 }
+
+
+
+/*ng-sidebar component custom css START*/
+.cust-ng-sidebar {
+  padding: 5px;
+}
+
+.cust-ng-sidebar {
+  border: 1px solid gray !important;
+  color: white;
+  background-color: #557a95;
+  height: 100%;
+}
+
+.cust-ng-sidebar p{
+  font-size: 12px;
+}
+
+.demo-sidebar .ng-sidebar--animate .ng-sidebar .ng-sidebar--opened .ng-sidebar--left .ng-sidebar--push {
+  border: 1px solid gray !important;
+  color: blue;
+  padding: 
+}
+/*ng-sidebar component custom css END*/
+
+
+/*ng-accordion component custom css START*/
+.card-header {
+  padding: 0px;
+}
+
+button.btn.btn-link{
+  font-size: 12px;
+  font-weight: bold;
+  text-decoration: none;
+  padding: 0px 6px 2px 6px;
+}
+
+div.card-body {
+  padding: 0px 0px 0px 12px;
+}
+
+
+/*ng-accordion component custom css END*/
+
+
+/*
+Policy Issuance
+  - Create Policy Record
+  - Policy Record Listing
+  - Create Alteration
+  - Alteration Listing
+
+Distribution
+Renewal Processing*/

@@ -13,8 +13,8 @@ export class GeneralInfoComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-  	this.quotationGenInfo = new QuotationGenInfo();
-  	this.quotationGenInfo.line = "MCS";
+  this.quotationGenInfo = new QuotationGenInfo();
+  this.quotationGenInfo.line = "MCS";
 	this.quotationGenInfo.year = 2018;
 	this.quotationGenInfo.seqNo = 10230;
 	this.quotationGenInfo.reqSeq = "MOCK DATA";
