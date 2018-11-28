@@ -39,7 +39,7 @@ export class CustEditableTableComponent implements OnInit {
   	  pagingType: 'full_numbers',
   	  lengthChange: false,
   	  info: false,
-  	  ordering: false,
+  	  ordering: true,
     };
 
     if (this.tableData.length > 0) {
