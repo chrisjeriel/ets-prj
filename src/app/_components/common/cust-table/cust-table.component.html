@@ -1,5 +1,11 @@
 <div id="cust-table-container">
-	<br/>
+    <br/>
+    <div class="expire" *ngIf="expireFilter" align="right">
+        <!-- remove -->
+            <label>Expires in (Days): &nbsp; </label>
+            <input type="search" class="expireIn" placeholder="">
+        <!-- end remove -->
+    </div>
 	<div ngbDropdown>
 	  <button class="cust-filter" ngbDropdownToggle><a><fa name="filter"></fa></a></button>
 	  <div ngbDropdownMenu aria-labelledby="dropdownConfig">
@@ -60,3 +66,4 @@
 </div>
 
 <hr/>
+
