@@ -65,8 +65,7 @@
 	</div>
 
 	<table datatable [dtOptions]="dtOptions" class="row-border hover">
-
-	<thead>
+	<thead>	
 		<tr>
 			<th *ngIf="checkFlag"></th>
 			<th *ngFor="let tHeader of tHeader">{{tHeader}}</th>
@@ -76,22 +75,33 @@
 	<tbody>
 	  <tr *ngFor="let data of tableData">
 	  	<td *ngIf="checkFlag">&nbsp;&nbsp;&nbsp;<input type="checkbox" name="checkbox"></td>
-	  	<td *ngFor="let key of dataKeys">
-	  	 	<div>
-		  		<input class="editable-text" type="text" [value]="processData(key, data)">
-	  		</div> 
+	  	<td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]">
+	  		<div>
+		  		<input *ngSwitchCase="'checkbox'" type="checkbox">
+		  		<select *ngSwitchCase="'select'" class="editable-text" [value]="processData(key, data)">
+		  			<option>Option A</option>
+		  			<option>Option B</option>
+		  			<option>Option C</option>
+		  		</select>
+		  		<input *ngSwitchCase="'date'" class="editable-text" type="text" [value]="processData(key, data) | date:'MM-dd-yyyy'">
+		  		<i *ngIf="magnifyingGlass.indexOf(key)!=-1" class="fa fa-search"></i> &nbsp;
+		  		<input *ngSwitchDefault class="editable-text" type="text" [value]="processData(key, data)">
+		  	</div>
 	  	</td>
-	  	<td *ngIf="selectFlag">
-	  			<select class="form-control form-control-sm cust-sm" >
-		  			<option *ngFor = "let options of options">{{options}}</option>
-	  			</select>
+	  	<td *ngIf="tHeader.indexOf('Edit Flag')!= -1">
+	  		<div align="center">
+	  			<input type="checkbox" name="">
+	  		</div>
 	  	</td>
-		 <td *ngIf="tHeader.indexOf('Actions')!=-1" class="icon">
-		 	<button class="fa fa-edit fa-lg" title="Edit"></button> &nbsp;
-		 	<button class="fa fa-trash fa-lg" title="Delete"></button>
-		 </td>
+  		<td *ngIf="selectFlag">
+  			<select class="form-control form-control-sm cust-sm" >
+	  			<option *ngFor = "let options of options">{{options}}</option>
+  			</select>
+  		</td>
+		<td *ngIf="tHeader.indexOf('Actions')!=-1" class="icon"><button class="fa fa-edit fa-lg" title="Edit"></button> &nbsp;<button class="fa fa-trash fa-lg" title="Delete"></button></td>
 	  </tr>
 	</tbody>
 	</table>
 </div>
+
 <hr/>
