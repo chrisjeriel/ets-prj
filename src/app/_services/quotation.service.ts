@@ -2,22 +2,17 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
 import { DummyInfo } from '@app/_models';
-<<<<<<< HEAD
 import { IntCompAdvInfo } from '@app/_models';
-=======
 import { AttachmentInfo } from '@app/_models';
->>>>>>> e1de7d065b74065f46c97ed2ea010731e9910c33
+
 
 @Injectable({ providedIn: 'root' })
 export class QuotationService {
 
     dummyInfoData : DummyInfo[] = [];
-<<<<<<< HEAD
     intCompAdvInfo : IntCompAdvInfo[] = [];
-  
-=======
     attachmentInfoData: AttachmentInfo[] = [];
->>>>>>> e1de7d065b74065f46c97ed2ea010731e9910c33
+
     constructor(private http: HttpClient) {
 
     }
