@@ -14,7 +14,9 @@ export class CustEditableTableComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   @Input() tableData: any[] = [];
   @Input() tHeader: any[] = [];
+  @Input() options: any[] = [];  
   @Input() nData;
+  @Input() checkFlag;
   @Input() addFlag;
   @Input() editFlag;
   @Input() deleteFlag;

@@ -38,10 +38,10 @@ export class QuotationService {
 
     getAttachment(){
         this.attachmentInfoData = [
-            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj","Project","Project",""),
-            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj","Project","Project",""),
-            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj","Project","Project",""),
-            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj","Project","Project","")
+            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj","Project"),
+            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj","Project"),
+            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj","Project"),
+            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj","Project")
         ];
 
         return this.attachmentInfoData;
