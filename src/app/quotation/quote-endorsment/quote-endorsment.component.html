@@ -13,14 +13,12 @@
 
 	<fieldset class="scheduler-border">
 		<legend class="scheduler-border">Endorsments</legend>
-		<app-cust-editable-table [addFlag]="true" [editFlag]="true" [deleteFlag]="true" [nData]="nData" [tableData]="tableData" [tHeader]="tHeader"></app-cust-editable-table>
+		<app-cust-editable-table [checkboxFlag]="true" [addFlag]="true" [editFlag]="true" [deleteFlag]="true" [nData]="nData" [tableData]="tableData" [tHeader]="tHeader" [magnifyingGlass]="magnifyingGlass"></app-cust-editable-table>
 	</fieldset>
 
-	<div class="form-group col-sm">
-		<div class="float-sm-right">
+	<div class="form-group col-sm" align="center">
 			<button type="button" class="btn btn-sm cust-btn-bg" (click)="save()">Save</button>
 			<button type="button" class="btn btn-sm cust-btn-bg">Cancel</button>
-		</div>
 	</div>
 
 </div>
