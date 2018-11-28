@@ -15,10 +15,12 @@ export class CustEditableTableComponent implements OnInit {
   @Input() tableData: any[] = [];
   @Input() tHeader: any[] = [];
   @Input() nData;
+  @Input() dataTypes: any[] = [];
   @Input() addFlag;
   @Input() editFlag;
   @Input() deleteFlag;
   dataKeys: any[] = [];
+  dataKeyTypes: any[] = [];
   
   tableLoad: boolean = true;
   nextId: number = 0;
