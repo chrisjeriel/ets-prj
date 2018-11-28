@@ -4,3 +4,5 @@ export * from './DummyInfo';
 export * from './quotation-list';
 export * from './HoldCover';
 export * from './Attachment';
+export * from './QuoteEndorsment';
+export * from './QuoteOption';

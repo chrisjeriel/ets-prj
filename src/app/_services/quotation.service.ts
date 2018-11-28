@@ -2,18 +2,19 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { environment } from '@environments/environment';
-import { DummyInfo } from '@app/_models';
-import { QuotationList, HoldCoverMonitoringList } from '@app/_models';
+import { QuotationList, HoldCoverMonitoringList, DummyInfo, QuoteEndorsment, QuotationOption, QuotationOtherRates } from '@app/_models';
 import { AttachmentInfo } from '@app/_models';
 
 @Injectable({ providedIn: 'root' })
 export class QuotationService {
-
+    quotataionOption: QuotationOption[]=[];
+    quotataionOtherRates: QuotationOtherRates[]=[];
     dummyInfoData : DummyInfo[] = [];
-
     quotationListData : QuotationList[] = [];
     holdCoverMonitoringListData : HoldCoverMonitoringList[] = [];
+    endorsmentData: QuoteEndorsment[] = [];
     attachmentInfoData: AttachmentInfo[] = [];
+
     constructor(private http: HttpClient) {
 
     }
@@ -78,6 +79,15 @@ export class QuotationService {
     }
     
 
+    getEndorsments(){
+        
+        this.endorsmentData = [
+            new QuoteEndorsment('Endt Title','Endt Description', 'Wording'),
+            new QuoteEndorsment('This is the title', 'sample Description', 'Sample Wording')
+        ];
+        return this.endorsmentData;
+    }
+
     getAttachment(){
         this.attachmentInfoData = [
             new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj","Project"),
@@ -87,7 +97,7 @@ export class QuotationService {
         ];
 
         return this.attachmentInfoData;
-}
+    }
 
     getDummyEditableInfo() {
         /*Dummy Data Array*/
@@ -100,6 +110,23 @@ export class QuotationService {
         /*return this.http.get<User[]>(`${environment.apiUrl}/quotation`);*/
         return this.dummyInfoData;
 
+    }
+
+    getQuoteOptions(){
+        this.quotataionOption = [
+            new QuotationOption(1,5,"Condition",6,8,5),
+            new QuotationOption(2,8,"Stable",7,4,3),
+            new QuotationOption(3,9,"Good",6,43,2)
+        ];
+        return this.quotataionOption;
+    }
+
+    getQuotataionOtherRates(){
+        this.quotataionOtherRates = [
+            new QuotationOtherRates('Others1',50,'sample remark'),
+            new QuotationOtherRates('Others1',60,'sample description')
+        ]
+        return this.quotataionOtherRates;
     }
 
 }

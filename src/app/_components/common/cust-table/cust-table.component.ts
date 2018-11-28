@@ -12,7 +12,6 @@ import { DummyInfo } from '../../../_models';
     providers: [NgbDropdownConfig]
 })
 export class CustTableComponent implements OnInit {
-    
     dtOptions: DataTables.Settings = {};
     @Input() tableData: any[] = [];
     @Input() tHeader: any[] = [];

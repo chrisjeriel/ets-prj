@@ -14,6 +14,7 @@ export class CustEditableTableComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   @Input() tableData: any[] = [];
   @Input() tHeader: any[] = [];
+  @Input() magnifyingGlass: any[] = [];
   @Input() options: any[] = [];  
   @Input() nData;
   @Input() checkFlag;
@@ -21,6 +22,7 @@ export class CustEditableTableComponent implements OnInit {
   @Input() addFlag;
   @Input() editFlag;
   @Input() deleteFlag;
+  @Input() checkboxFlag;
   dataKeys: any[] = [];
   
   tableLoad: boolean = true;
@@ -37,7 +39,7 @@ export class CustEditableTableComponent implements OnInit {
   	  pagingType: 'full_numbers',
   	  lengthChange: false,
   	  info: false,
-  	  ordering: false,
+  	  ordering: true,
     };
 
     if (this.tableData.length > 0) {
