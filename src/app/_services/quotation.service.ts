@@ -3,23 +3,17 @@ import { HttpClient } from '@angular/common/http';
 
 import { environment } from '@environments/environment';
 import { DummyInfo } from '@app/_models';
-<<<<<<< HEAD
 import { QuotationList, HoldCoverMonitoringList } from '@app/_models';
-=======
 import { AttachmentInfo } from '@app/_models';
->>>>>>> 539f17ea25ac8f4d8fca0fdd6d673290f5e2a605
 
 @Injectable({ providedIn: 'root' })
 export class QuotationService {
 
     dummyInfoData : DummyInfo[] = [];
-<<<<<<< HEAD
+
     quotationListData : QuotationList[] = [];
     holdCoverMonitoringListData : HoldCoverMonitoringList[] = [];
-
-=======
     attachmentInfoData: AttachmentInfo[] = [];
->>>>>>> 539f17ea25ac8f4d8fca0fdd6d673290f5e2a605
     constructor(private http: HttpClient) {
 
     }
@@ -45,7 +39,6 @@ export class QuotationService {
         return this.dummyInfoData;
     }
 
-<<<<<<< HEAD
     getQuotationListInfo(){
         this.quotationListData = [
             new QuotationList("CAR-2015-2832-01", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", "07-28-2018", "08-28-2018", "Inigo Flores", "Cuaresma"),
@@ -84,7 +77,6 @@ export class QuotationService {
         return this.holdCoverMonitoringListData;
     }
     
-=======
 
     getAttachment(){
         this.attachmentInfoData = [
@@ -96,7 +88,7 @@ export class QuotationService {
 
         return this.attachmentInfoData;
 }
->>>>>>> 539f17ea25ac8f4d8fca0fdd6d673290f5e2a605
+
     getDummyEditableInfo() {
         /*Dummy Data Array*/
         this.dummyInfoData = [ 

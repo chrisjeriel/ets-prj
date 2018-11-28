@@ -15,10 +15,7 @@ const appRoutes: Routes = [
     { path: 'dummy', component: DummyComponent, canActivate: [AuthGuard] },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
-<<<<<<< HEAD
     { path: 'quotation-inquiry', component: QuotationInquiryComponent },
-=======
->>>>>>> 539f17ea25ac8f4d8fca0fdd6d673290f5e2a605
     
     // otherwise redirect to home
     { path: '**', redirectTo: '' }

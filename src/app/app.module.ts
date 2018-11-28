@@ -38,6 +38,7 @@ import { ListOfQuotationsComponent } from './quotation/quotation-inquiry/list-of
 import { HoldCoverMonitoringListComponent } from './quotation/quotation-inquiry/hold-cover-monitoring-list/hold-cover-monitoring-list.component'
 
 
+
 @NgModule({
     imports: [
         BrowserModule,
@@ -63,28 +64,21 @@ import { HoldCoverMonitoringListComponent } from './quotation/quotation-inquiry/
         QuoteOptionComponent ,
         DummyComponent ,
         CustTableComponent,
-<<<<<<< HEAD
+        HoldCoverComponent ,
+        AttachmentComponent,
         CustEditableTableComponent,
         QuotationInquiryComponent,
         ListOfQuotationsComponent,
         HoldCoverMonitoringListComponent],
-    
-=======
-        HoldCoverComponent ,
-        AttachmentComponent,
-        CustEditableTableComponent
-        ],
 
-
->>>>>>> 539f17ea25ac8f4d8fca0fdd6d673290f5e2a605
     providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-          { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+        { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
 
-          // provider used to create fake backend
-          fakeBackendProvider
-          ],
-          bootstrap: [AppComponent]
-          })
+        // provider used to create fake backend
+        fakeBackendProvider
+    ],
+    bootstrap: [AppComponent]
+})
 
 export class AppModule { }
