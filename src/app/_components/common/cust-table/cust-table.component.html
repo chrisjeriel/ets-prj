@@ -1,78 +1,84 @@
 <div id="cust-table-container">
-	<br/>
-	<div ngbDropdown>
-	  <button class="cust-filter" ngbDropdownToggle><a><fa name="filter"></fa></a></button>
-	  <div ngbDropdownMenu aria-labelledby="dropdownConfig">
-	  	<div class="dropdown-item">
-	  		<span class="cust-tbl-label">Filter by:</span>
-  			<div class="input-group">
-			  <div class="input-group-prepend">
-			    <div class="input-group-text">
-			      <input type="checkbox"><span>&nbsp;Quote No</span>
-			    </div>
-			  </div>
-			  <input type="text" class="form-control cust-sm">
-			</div>
-			<div class="input-group">
-			  <div class="input-group-prepend">
-			    <div class="input-group-text">
-			      <input type="checkbox"><span>&nbsp;Branch</span>
-			    </div>
-			  </div>
-			  <input type="text" class="form-control cust-sm">
-			</div>
-			<div class="input-group">
-			  <div class="input-group-prepend">
-			    <div class="input-group-text">
-			      <input type="checkbox"><span>&nbsp;Line Class</span>
-			    </div>
-			  </div>
-			  <input type="text" class="form-control cust-sm">
-			</div>
-			<div class="input-group">
-			  <div class="input-group-prepend">
-			    <div class="input-group-text">
-			      <input type="checkbox"><span>&nbsp;Insured</span>
-			    </div>
-			  </div>
-			  <input type="text" class="form-control cust-sm">
-			</div>
-			<div class="input-group">
-			  <div class="input-group-prepend">
-			    <div class="input-group-text">
-			      <input type="checkbox"><span>&nbsp;Quote Date</span>
-			    </div>
-			  </div>
-			  <input type="date" class="form-control cust-sm">
-			</div>
-			<div class="input-group">
-			  <div class="input-group-prepend">
-			    <div class="input-group-text">
-			      <input type="checkbox"><span>&nbsp;Validity Date</span>
-			    </div>
-			  </div>
-			  <input type="date" class="form-control cust-sm">
-			</div>
-			<div class="input-group">
-			  <button class="cust-filter cust-tbl-submit"><a>Ok</a></button>
-			</div>
-		</div>
-	  </div>
-	</div>
-	<table datatable [dtOptions]="dtOptions" class="row-border hover">
-	<thead>
-		<tr>
-			<th *ngFor="let tHeader of tHeader">{{tHeader}}</th>
-		</tr>
-	</thead>
-	<tbody>
-	  <tr *ngFor="let data of tableData">
-	  	<td *ngFor="let key of dataKeys">
-	  		{{ processData(key, data) }}
-	  	</td>
-	  </tr>
-	</tbody>
-	</table>
+    <br/>
+    <div class="expire" *ngIf="expireFilter" align="right">
+        <!-- remove -->
+            <label>Expires in (Days): &nbsp; </label>
+            <input type="search" class="expireIn" placeholder="">
+        <!-- end remove -->
+    </div>
+    <div ngbDropdown>
+        <button class="cust-filter" ngbDropdownToggle><a><fa name="filter"></fa></a></button>
+        <div ngbDropdownMenu aria-labelledby="dropdownConfig">
+            <div class="dropdown-item">
+                <span class="cust-tbl-label">Filter by:</span>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <input type="checkbox"><span>&nbsp;Quote No</span>
+                        </div>
+                    </div>
+                    <input type="text" class="form-control cust-sm">
+                </div>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <input type="checkbox"><span>&nbsp;Branch</span>
+                        </div>
+                    </div>
+                    <input type="text" class="form-control cust-sm">
+                </div>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <input type="checkbox"><span>&nbsp;Line Class</span>
+                        </div>
+                    </div>
+                    <input type="text" class="form-control cust-sm">
+                </div>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <input type="checkbox"><span>&nbsp;Insured</span>
+                        </div>
+                    </div>
+                    <input type="text" class="form-control cust-sm">
+                </div>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <input type="checkbox"><span>&nbsp;Quote Date</span>
+                        </div>
+                    </div>
+                    <input type="date" class="form-control cust-sm">
+                </div>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <input type="checkbox"><span>&nbsp;Validity Date</span>
+                        </div>
+                    </div>
+                    <input type="date" class="form-control cust-sm">
+                </div>
+                <div class="input-group">
+                    <button class="cust-filter cust-tbl-submit"><a>Ok</a></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <table datatable [dtOptions]="dtOptions" class="row-border hover">
+        <thead>
+            <tr>
+                <th *ngFor="let tHeader of tHeader">{{tHeader}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of tableData">
+                <td *ngFor="let key of dataKeys">
+                    {{ processData(key, data) }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 
 <hr/>
