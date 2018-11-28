@@ -80,7 +80,7 @@
 		  		<input class="editable-text" type="text" [value]="processData(key, data)">
 	  		</div>	
 	  	</td>
-	  		<td *ngIf="checkFlag">
+	  		<td *ngIf="selectFlag">
 	  			<select class="form-control form-control-sm cust-sm" >
 		  			<option *ngFor = "let options of options">{{options}}</option>
 	  			</select>
