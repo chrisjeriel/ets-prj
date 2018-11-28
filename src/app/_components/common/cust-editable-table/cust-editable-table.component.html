@@ -77,17 +77,19 @@
 	  <tr *ngFor="let data of tableData">
 	  	<td *ngIf="checkFlag">&nbsp;&nbsp;&nbsp;<input type="checkbox" name="checkbox"></td>
 	  	<td *ngFor="let key of dataKeys">
-	  	
-	  	 <div>
+	  	 	<div>
 		  		<input class="editable-text" type="text" [value]="processData(key, data)">
 	  		</div> 
 	  	</td>
-	  		<td *ngIf="selectFlag">
+	  	<td *ngIf="selectFlag">
 	  			<select class="form-control form-control-sm cust-sm" >
 		  			<option *ngFor = "let options of options">{{options}}</option>
 	  			</select>
-	  		</td>
-		  	<td *ngIf="tHeader.indexOf('Actions')!=-1" class="icon"><button class="fa fa-edit fa-lg" title="Edit"></button> &nbsp;<button class="fa fa-trash fa-lg" title="Delete"></button></td>
+	  	</td>
+		 <td *ngIf="tHeader.indexOf('Actions')!=-1" class="icon">
+		 	<button class="fa fa-edit fa-lg" title="Edit"></button> &nbsp;
+		 	<button class="fa fa-trash fa-lg" title="Delete"></button>
+		 </td>
 	  </tr>
 	</tbody>
 	</table>

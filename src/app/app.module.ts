@@ -54,12 +54,8 @@ import { CustEditableTableComponent } from './_components/common/cust-editable-t
         GeneralInfoComponent,
         CoverageComponent ,
         QuoteOptionComponent ,
-<<<<<<< HEAD
         InternalCompetitionComponent,
         DummyComponent,
-=======
-        DummyComponent ,
->>>>>>> e1de7d065b74065f46c97ed2ea010731e9910c33
         CustTableComponent,
         HoldCoverComponent ,
         AttachmentComponent,
