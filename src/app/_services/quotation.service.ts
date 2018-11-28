@@ -3,12 +3,13 @@ import { HttpClient } from '@angular/common/http';
 
 import { environment } from '@environments/environment';
 import { DummyInfo } from '@app/_models';
+import { AttachmentInfo } from '@app/_models';
 
 @Injectable({ providedIn: 'root' })
 export class QuotationService {
 
     dummyInfoData : DummyInfo[] = [];
-
+    attachmentInfoData: AttachmentInfo[] = [];
     constructor(private http: HttpClient) {
 
     }
@@ -34,6 +35,17 @@ export class QuotationService {
         return this.dummyInfoData;
     }
 
+
+    getAttachment(){
+        this.attachmentInfoData = [
+            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj","Project","Project",""),
+            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj","Project","Project",""),
+            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj","Project","Project",""),
+            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj","Project","Project","")
+        ];
+
+        return this.attachmentInfoData;
+}
     getDummyEditableInfo() {
         /*Dummy Data Array*/
         this.dummyInfoData = [ 
@@ -44,6 +56,7 @@ export class QuotationService {
 
         /*return this.http.get<User[]>(`${environment.apiUrl}/quotation`);*/
         return this.dummyInfoData;
+
     }
 
 }
