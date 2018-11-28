@@ -18,6 +18,7 @@ export class CustEditableTableComponent implements OnInit {
   @Input() options: any[] = [];  
   @Input() nData;
   @Input() checkFlag;
+  @Input() selectFlag;
   @Input() addFlag;
   @Input() editFlag;
   @Input() deleteFlag;
