@@ -4,6 +4,7 @@ import { QuotationService } from '../../../_services';
 import { DummyInfo } from '../../../_models';
 
 
+
 @Component({
   selector: 'app-cust-table',
   templateUrl: './cust-table.component.html',
@@ -12,10 +13,11 @@ import { DummyInfo } from '../../../_models';
 })
 export class CustTableComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
+
   @Input() tableData: any[] = [];
   @Input() tHeader: any[] = [];
   dataKeys: any[] = [];
-  
+
   constructor(config: NgbDropdownConfig) { 
   	config.placement = 'bottom-right';
     config.autoClose = false;

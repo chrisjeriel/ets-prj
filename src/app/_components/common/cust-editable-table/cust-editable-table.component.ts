@@ -15,7 +15,9 @@ export class CustEditableTableComponent implements OnInit {
   @Input() tableData: any[] = [];
   @Input() tHeader: any[] = [];
   @Input() magnifyingGlass: any[] = [];
+  @Input() options: any[] = [];  
   @Input() nData;
+  @Input() checkFlag;
   @Input() addFlag;
   @Input() editFlag;
   @Input() deleteFlag;
@@ -36,6 +38,7 @@ export class CustEditableTableComponent implements OnInit {
   	  pagingType: 'full_numbers',
   	  lengthChange: false,
   	  info: false,
+  	  ordering: false,
     };
 
     if (this.tableData.length > 0) {
