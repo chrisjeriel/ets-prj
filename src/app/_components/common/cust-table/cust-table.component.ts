@@ -12,7 +12,7 @@ import { DummyInfo } from '../../../_models';
     providers: [NgbDropdownConfig]
 })
 export class CustTableComponent implements OnInit {
-<<<<<<< HEAD
+    
     dtOptions: DataTables.Settings = {};
     @Input() tableData: any[] = [];
     @Input() tHeader: any[] = [];
@@ -23,19 +23,6 @@ export class CustTableComponent implements OnInit {
         config.placement = 'bottom-right';
         config.autoClose = false;
     }
-=======
-  dtOptions: DataTables.Settings = {};
-
-  @Input() tableData: any[] = [];
-  @Input() tHeader: any[] = [];
-  dataKeys: any[] = [];
-
-
-  constructor(config: NgbDropdownConfig) { 
-  	config.placement = 'bottom-right';
-    config.autoClose = false;
-  }
->>>>>>> 539f17ea25ac8f4d8fca0fdd6d673290f5e2a605
 
     ngOnInit() : void {
 
