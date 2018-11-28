@@ -1,4 +1,4 @@
-﻿<div class="container-fluid">
+﻿<!-- <div class="container-fluid">
   <div class="row">
     <div mwlResizable
       [enableGhostResize]="true"
@@ -40,4 +40,100 @@
         </div>
     </div>
   </div>
-</div>
+</div> -->
+
+
+<ng-sidebar-container style="position: static;" (onBackdropClicked)="_onBackdropClicked()">
+  <ng-sidebar
+    [(opened)]="_opened"
+    [mode]="'push'" 
+    [keyClose]="_keyClose"
+    [position]="'left'"
+    [dock]="'true'"
+    [dockedSize]="'50px'"
+    [sidebarClass]="'demo-sidebar'"
+    [closeOnClickOutside]="_closeOnClickOutside" *ngIf="currentUser">
+    
+    <div class="cust-ng-sidebar">
+      <!-- <button hidden class="demo-control" style="float: right;" (click)="_toggleOpened()"> >> </button>
+      <button hidden class="demo-control" style="float: right;" (click)="_toggleCloseOnClickOutside()">Auto = {{_closeOnClickOutside}}</button> -->
+      <div class="cust-side-nav-bg">
+          <div class="side-nav-header">
+                <h3 class="text-center">PMMSC</h3>
+                <p>Module Id: QLR101</p>
+                <p>Database: PCIC</p>
+                <p>Server Time: Nov 21, 2018 10:32:10 AM</p>
+                <p>User Id: {{ currentUser.username }}</p>
+          </div>
+          <hr>
+          <div class="side-nav-body">
+            <ngb-accordion #acc="ngbAccordion">
+                <ngb-panel title="Quotation">
+                    <ng-template ngbPanelContent>
+                        <button [routerLink]="['/quotation']" class="button btn btn-link">Quotation Processing</button>
+                        <br/>
+                        <button [routerLink]="['/dummy']" class="button btn btn-link">Quotation Inquiry</button>
+                    </ng-template>
+                </ngb-panel>
+                <ngb-panel title="Underwriting">
+                    <ng-template ngbPanelContent>
+                        <ngb-accordion #acc="ngbAccordion">
+                            <ngb-panel title="Policy Issuance">
+                                <ng-template ngbPanelContent>
+                                    <button [routerLink]="['/quotation']" class="button btn btn-link">Create Policy Record</button>
+                                    <br/>
+                                    <button [routerLink]="['/dummy']" class="button btn btn-link">Policy Record Listing</button>
+                                    <br/>
+                                    <button [routerLink]="['/dummy']" class="button btn btn-link">Create Alteration</button>
+                                    <br/>
+                                    <button [routerLink]="['/dummy']" class="button btn btn-link">Alteration Listing</button>
+                                </ng-template>
+                            </ngb-panel>
+                            <ngb-panel title="Distribution">
+                            </ngb-panel>
+                            <ngb-panel title="Renewal Processing">
+                            </ngb-panel>
+                        </ngb-accordion>
+                    </ng-template>
+                </ngb-panel>
+                <ngb-panel title="Accounting">
+                </ngb-panel>
+                <ngb-panel title="Claims">
+                </ngb-panel>
+                <ngb-panel title="Security">
+                </ngb-panel>
+            </ngb-accordion>
+                <!-- <a href="/">Home</a>
+                <a href="/quotation">Quotation</a>
+                <a href="/quotation">Underwriting</a>
+                <a href="/quotation">Accounting</a>
+                <a href="/quotation">Claims</a>
+                <a href="/quotation">Security</a>
+                <a href="/quotation">Security</a>
+                <a href="/dummy">Available Components</a> -->
+           </div>
+        </div>
+    </div>
+    
+
+  </ng-sidebar>
+
+  <div ng-sidebar-content>
+    <section class="demo-contents">
+        <div class="">
+            <nav class="navbar navbar-expand-lg navbar-light cust-nav-bar-bg justify-content-end" *ngIf="currentUser">
+                <a class="nav-item nav-link" style="position: absolute; left: 0px;" (click)="_toggleOpened()"><fa name="bars"></fa></a>
+                <div class="navbar-nav">
+                    <a class="nav-item nav-link" routerLink="/"><fa name="home" placement="bottom" ngbTooltip="Home"></fa></a>
+                    <a class="nav-item nav-link" routerLink="/quotation"><fa name="bell" placement="bottom" ngbTooltip="Notes & Reminders"></fa></a>
+                    <a class="nav-item nav-link" (click)="logout()"><fa name="sign-out" placement="bottom" ngbTooltip="Logout"></fa></a>
+                </div>
+            </nav>
+            <div class="mainContentPad">
+                <alert></alert>
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </section>
+  </div>
+</ng-sidebar-container>
