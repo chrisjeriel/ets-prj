@@ -21,19 +21,18 @@ import { LoginComponent } from './login';
 import { RegisterComponent } from './register';
 
 import { QuotationComponent } from './quotation/quotation.component';
-import { GeneralInfoComponent } from './quotation/general-info/general-info.component'
-;
-import { CoverageComponent } from './quotation/coverage/coverage.component'
-;
-import { QuoteOptionComponent } from './quotation/quote-option/quote-option.component'
-;
-import { HoldCoverComponent } from './quotation/hold-cover/hold-cover.component';;
-import { AttachmentComponent } from './quotation/attachment/attachment.component'
+import { GeneralInfoComponent } from './quotation/general-info/general-info.component';
+import { CoverageComponent } from './quotation/coverage/coverage.component';
+import { QuoteOptionComponent } from './quotation/quote-option/quote-option.component';
+import { HoldCoverComponent } from './quotation/hold-cover/hold-cover.component';
+import { AttachmentComponent } from './quotation/attachment/attachment.component';
 import { DummyComponent } from './_components/common/dummy/dummy.component';
 import { QuoteEndorsementComponent } from './quotation/quote-endorsement/quote-endorsement.component';
 import { CustTableComponent } from './_components/common/cust-table/cust-table.component';
 import { CustEditableTableComponent } from './_components/common/cust-editable-table/cust-editable-table.component';
-
+import { QuotationInquiryComponent } from './quotation/quotation-inquiry/quotation-inquiry.component';
+import { ListOfQuotationsComponent } from './quotation/quotation-inquiry/list-of-quotations/list-of-quotations.component';
+import { HoldCoverMonitoringListComponent } from './quotation/quotation-inquiry/hold-cover-monitoring-list/hold-cover-monitoring-list.component';
 
 @NgModule({
     imports: [
@@ -63,9 +62,10 @@ import { CustEditableTableComponent } from './_components/common/cust-editable-t
         CustTableComponent,
         HoldCoverComponent ,
         AttachmentComponent,
-        CustEditableTableComponent
-        ],
-
+        CustEditableTableComponent,
+        QuotationInquiryComponent,
+        ListOfQuotationsComponent,
+        HoldCoverMonitoringListComponent],
 
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
