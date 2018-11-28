@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { QuotationList, HoldCoverMonitoringList, DummyInfo, QuoteEndorsment, QuotationOption, QuotationOtherRates, IntCompAdvInfo } from '@app/_models';
-import { AttachmentInfo } from '@app/_models';
+import { QuotationList, HoldCoverMonitoringList, DummyInfo, QuoteEndorsement, QuotationOption, QuotationOtherRates, IntCompAdvInfo, AttachmentInfo } from '@app/_models';
 
 
 @Injectable({ providedIn: 'root' })
@@ -10,9 +9,9 @@ export class QuotationService {
     quotataionOption: QuotationOption[]=[];
     quotataionOtherRates: QuotationOtherRates[]=[];
     dummyInfoData : DummyInfo[] = [];
+    endorsementData: QuoteEndorsement[] = [];
     quotationListData : QuotationList[] = [];
     holdCoverMonitoringListData : HoldCoverMonitoringList[] = [];
-    endorsmentData: QuoteEndorsment[] = [];
     intCompAdvInfo : IntCompAdvInfo[] = [];
     attachmentInfoData: AttachmentInfo[] = [];
 
@@ -81,13 +80,13 @@ export class QuotationService {
     }
     
 
-    getEndorsments(){
+    getEndorsements(){
         
-        this.endorsmentData = [
-            new QuoteEndorsment('Endt Title','Endt Description', 'Wording'),
-            new QuoteEndorsment('This is the title', 'sample Description', 'Sample Wording')
+        this.endorsementData = [
+            new QuoteEndorsement('Endt Title','Endt Description', 'Wording'),
+            new QuoteEndorsement('This is the title', 'sample Description', 'Sample Wording')
         ];
-        return this.endorsmentData;
+        return this.endorsementData;
     }
 
     getAttachment(){

@@ -1,20 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { QuotationInfo } from '../../_models/QuoteOption'
-import { QuoteEndorsment } from '../../_models/QuoteEndorsment'
+import { QuoteEndorsement } from '../../_models/QuoteEndorsement'
 import { QuotationService } from '../../_services';
 
 @Component({
-  selector: 'app-quote-endorsment',
-  templateUrl: './quote-endorsment.component.html',
-  styleUrls: ['./quote-endorsment.component.css']
+  selector: 'app-quote-endorsement',
+  templateUrl: './quote-endorsement.component.html',
+  styleUrls: ['./quote-endorsement.component.css']
 })
-export class QuoteEndorsmentComponent implements OnInit {
+export class QuoteEndorsementComponent implements OnInit {
   private quotationInfo: QuotationInfo;
-  private quoteEndorsment: QuoteEndorsment;
+  private quoteEndorsement: QuoteEndorsement;
   tableData: any[] = [];
   tHeader: any[] = ['Endt Title', 'Endt Description', 'Wording','Edit Flag', 'Actions' ];
   magnifyingGlass: any[]=["endtDescription"]
-  nData: QuoteEndorsment = new QuoteEndorsment(null, null, null);
+  nData: QuoteEndorsement = new QuoteEndorsement(null, null, null);
   constructor(private quotationService: QuotationService) { }
 
   ngOnInit() {
@@ -22,7 +22,7 @@ export class QuoteEndorsmentComponent implements OnInit {
   	this.quotationInfo.quotationNo = "SMP-0000-0000-00";
   	this.quotationInfo.insuredName ="Insured Name";
 
-    this.tableData = this.quotationService.getEndorsments();
+    this.tableData = this.quotationService.getEndorsements();
 
   }
 }

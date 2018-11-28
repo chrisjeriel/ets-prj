@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { QuoteEndorsmentComponent } from './quote-endorsment.component';
+import { QuoteEndorsementComponent } from './quote-endorsement.component';
 
 describe('QuoteEndorsmentComponent', () => {
-  let component: QuoteEndorsmentComponent;
-  let fixture: ComponentFixture<QuoteEndorsmentComponent>;
+  let component: QuoteEndorsementComponent;
+  let fixture: ComponentFixture<QuoteEndorsementComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ QuoteEndorsmentComponent ]
+      declarations: [ QuoteEndorsementComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(QuoteEndorsmentComponent);
+    fixture = TestBed.createComponent(QuoteEndorsementComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
