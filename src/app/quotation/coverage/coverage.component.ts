@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { QuotationService } from '../../_services';
 import { QuotationCoverageInfo } from '../../_models';
+import { QuotationService } from '@app/_services';
 
 @Component({
   selector: 'app-coverage',
@@ -8,15 +8,16 @@ import { QuotationCoverageInfo } from '../../_models';
   styleUrls: ['./coverage.component.css']
 })
 export class CoverageComponent implements OnInit {
+
   private quotationCoverageInfo: QuotationCoverageInfo;
   tableData: any[] = [];
   tHeader: any[] = [];
   nData: QuotationCoverageInfo = new QuotationCoverageInfo(null, null, null, null, null, null);
 
-
   constructor(private quotationService: QuotationService) { }
 
   ngOnInit() {
+
     this.tHeader.push("Cover Code");
     this.tHeader.push("Section");
     this.tHeader.push("Bullet No");
@@ -34,6 +35,6 @@ export class CoverageComponent implements OnInit {
     this.quotationCoverageInfo.sectionThree = "MOCK DATA";
     this.quotationCoverageInfo.deductibles = "MOCK DATA";
     this.quotationCoverageInfo.remarks = "MOCK DATA";
-
   }
+
 }
