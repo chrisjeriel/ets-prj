@@ -19,14 +19,28 @@ import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 import { HomeComponent } from './home';
 import { LoginComponent } from './login';
 import { RegisterComponent } from './register';
+<<<<<<< HEAD
 import { QuotationComponent } from './quotation/quotation.component';
 import { GeneralInfoComponent } from './quotation/general-info/general-info.component';
 import { CoverageComponent } from './quotation/coverage/coverage.component';
 import { QuoteOptionComponent } from './quotation/quote-option/quote-option.component';
 import { InternalCompetitionComponent } from './quotation/internal-competition/internal-competition.component';
+=======
+
+import { QuotationComponent } from './quotation/quotation.component';
+import { GeneralInfoComponent } from './quotation/general-info/general-info.component'
+;
+import { CoverageComponent } from './quotation/coverage/coverage.component'
+;
+import { QuoteOptionComponent } from './quotation/quote-option/quote-option.component'
+;
+import { HoldCoverComponent } from './quotation/hold-cover/hold-cover.component';;
+import { AttachmentComponent } from './quotation/attachment/attachment.component'
+>>>>>>> e1de7d065b74065f46c97ed2ea010731e9910c33
 import { DummyComponent } from './_components/common/dummy/dummy.component';
 import { CustTableComponent } from './_components/common/cust-table/cust-table.component';;
 import { CustEditableTableComponent } from './_components/common/cust-editable-table/cust-editable-table.component'
+
 
 @NgModule({
     imports: [
@@ -51,11 +65,19 @@ import { CustEditableTableComponent } from './_components/common/cust-editable-t
         GeneralInfoComponent,
         CoverageComponent ,
         QuoteOptionComponent ,
+<<<<<<< HEAD
         InternalCompetitionComponent,
         DummyComponent,
+=======
+        DummyComponent ,
+>>>>>>> e1de7d065b74065f46c97ed2ea010731e9910c33
         CustTableComponent,
+        HoldCoverComponent ,
+        AttachmentComponent,
         CustEditableTableComponent
         ],
+
+
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

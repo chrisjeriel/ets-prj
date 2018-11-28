@@ -2,14 +2,22 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
 import { DummyInfo } from '@app/_models';
+<<<<<<< HEAD
 import { IntCompAdvInfo } from '@app/_models';
+=======
+import { AttachmentInfo } from '@app/_models';
+>>>>>>> e1de7d065b74065f46c97ed2ea010731e9910c33
 
 @Injectable({ providedIn: 'root' })
 export class QuotationService {
 
     dummyInfoData : DummyInfo[] = [];
+<<<<<<< HEAD
     intCompAdvInfo : IntCompAdvInfo[] = [];
   
+=======
+    attachmentInfoData: AttachmentInfo[] = [];
+>>>>>>> e1de7d065b74065f46c97ed2ea010731e9910c33
     constructor(private http: HttpClient) {
 
     }
@@ -36,6 +44,17 @@ export class QuotationService {
         return this.dummyInfoData;
     }
 
+
+    getAttachment(){
+        this.attachmentInfoData = [
+            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj","Project"),
+            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj","Project"),
+            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj","Project"),
+            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj","Project")
+        ];
+
+        return this.attachmentInfoData;
+}
     getDummyEditableInfo() {
         /*Dummy Data Array*/
         this.dummyInfoData = [ 
@@ -46,6 +65,7 @@ export class QuotationService {
 
         /*return this.http.get<User[]>(`${environment.apiUrl}/quotation`);*/
         return this.dummyInfoData;
+
     }
 
     getIntCompAdvInfo() {

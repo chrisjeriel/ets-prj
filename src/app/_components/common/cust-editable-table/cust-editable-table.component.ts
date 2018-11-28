@@ -14,7 +14,10 @@ export class CustEditableTableComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   @Input() tableData: any[] = [];
   @Input() tHeader: any[] = [];
+  @Input() options: any[] = [];  
   @Input() nData;
+  @Input() checkFlag;
+  @Input() selectFlag;
   @Input() addFlag;
   @Input() editFlag;
   @Input() deleteFlag;
@@ -35,6 +38,7 @@ export class CustEditableTableComponent implements OnInit {
   	  pagingType: 'full_numbers',
   	  lengthChange: false,
   	  info: false,
+  	  ordering: false,
     };
 
     if (this.tableData.length > 0) {
