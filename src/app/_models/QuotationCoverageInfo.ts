@@ -1,23 +1,13 @@
 export class QuotationCoverageInfo {
-    selectAll: any;
-    coverCode: any;
-    section: any;
-    bulletNo: any;
-    sumInsured: any;
-    sortSe: any;
-    addSl: any;
-    actions: any;
+    selectAll: string;
+    coverCode: string;
+    section: string;
+    bulletNo: string;
+    sumInsured: string;
+    sortSe: string;
+    addSl: string;
 
-    quotationNo: string;
-    insured: string;
-    currency: string;
-    sectionOne: string;
-    sectionTwo: string;
-    sectionThree: string;
-    deductibles: string;
-    remarks: string;
-
-    constructor(selectAll: any, coverCode: any, section: any, bulletNo: any, sumInsured: any, sortSe: any, addSl: any, actions: any) {
+    constructor(selectAll: string, coverCode: string, section: string, bulletNo: string, sumInsured: string, sortSe: string, addSl: string) {
         this.selectAll = selectAll;
         this.coverCode = coverCode;
         this.section = section;
@@ -25,7 +15,6 @@ export class QuotationCoverageInfo {
         this.sumInsured = sumInsured;
         this.sortSe = sortSe;
         this.addSl = addSl;
-        this.actions = actions;
 
     }
 

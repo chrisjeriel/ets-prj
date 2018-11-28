@@ -1,5 +1,11 @@
 <div id="cust-table-container">
-	<br/>
+    <br/>
+    <div class="expire" *ngIf="expireFilter" align="right">
+        <!-- remove -->
+            <label>Expires in (Days): &nbsp; </label>
+            <input type="search" class="expireIn" placeholder="">
+        <!-- end remove -->
+    </div>
 	<div ngbDropdown>
 	  <button class="cust-filter" ngbDropdownToggle><a><fa name="filter"></fa></a></button>
 	  <div ngbDropdownMenu aria-labelledby="dropdownConfig">
@@ -8,7 +14,7 @@
   			<div class="input-group">
 			  <div class="input-group-prepend">
 			    <div class="input-group-text">
-			      <input type="checkbox"><span>&nbsp;Quote No</span>
+			      <input type="checkbox"><span>&nbsp;File Path</span>
 			    </div>
 			  </div>
 			  <input type="text" class="form-control cust-sm">
@@ -16,7 +22,7 @@
 			<div class="input-group">
 			  <div class="input-group-prepend">
 			    <div class="input-group-text">
-			      <input type="checkbox"><span>&nbsp;Branch</span>
+			      <input type="checkbox"><span>&nbsp;Description</span>
 			    </div>
 			  </div>
 			  <input type="text" class="form-control cust-sm">
@@ -24,7 +30,7 @@
 			<div class="input-group">
 			  <div class="input-group-prepend">
 			    <div class="input-group-text">
-			      <input type="checkbox"><span>&nbsp;Line Class</span>
+			      <input type="checkbox"><span>&nbsp;Table Code</span>
 			    </div>
 			  </div>
 			  <input type="text" class="form-control cust-sm">
@@ -36,22 +42,6 @@
 			    </div>
 			  </div>
 			  <input type="text" class="form-control cust-sm">
-			</div>
-			<div class="input-group">
-			  <div class="input-group-prepend">
-			    <div class="input-group-text">
-			      <input type="checkbox"><span>&nbsp;Quote Date</span>
-			    </div>
-			  </div>
-			  <input type="date" class="form-control cust-sm">
-			</div>
-			<div class="input-group">
-			  <div class="input-group-prepend">
-			    <div class="input-group-text">
-			      <input type="checkbox"><span>&nbsp;Validity Date</span>
-			    </div>
-			  </div>
-			  <input type="date" class="form-control cust-sm">
 			</div>
 			<div class="input-group">
 			  <button class="cust-filter cust-tbl-submit"><a>Ok</a></button>
@@ -76,3 +66,4 @@
 </div>
 
 <hr/>
+

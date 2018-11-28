@@ -2,6 +2,31 @@
     position: relative !important;
 }
 
+.expire{
+    position: absolute !important;
+	right: 250px;
+	top: 25px;
+	font-size: 11px;
+    text-decoration: none !important;
+    outline: none !important;
+    border-style: none;
+    z-index: 9999 !important;
+}
+
+.expireIn{
+    height: calc(1.5rem + 1px) !important;
+    padding: 0.1rem 0.25rem !important;
+    font-size: 12px !important;
+    line-height: .7 !important;
+    border-radius: 0.2rem !important;
+    margin-bottom: -5px !important;
+    overflow: visible;
+    outline: none;
+    border-style: none;
+    border: 1px solid gray;
+    width: 50px;
+}
+
 .cust-filter {
 	position: absolute !important;
 	right: 1px;
