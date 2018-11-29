@@ -95,6 +95,13 @@ div.input-group {
 	background-color: inherit;
 }
 
+.editable-select {
+	width: 90%;
+	padding: 0px;
+	border: none;
+	background-color: inherit;
+}
+
 .editable-text:focus {
 	padding: 5px;
 }
