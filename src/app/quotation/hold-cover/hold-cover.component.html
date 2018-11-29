@@ -1,65 +1,68 @@
 <div>
 	<fieldset class="scheduler-border">
-		 <legend class="scheduler-border">Quotation Info</legend>
-		 	<div class="form-row custom-row-inline-inset">
-				<div class="input-group">
-					<label class="form-control-sm col-sm-2" for="xx">Quotation No</label>
-				    <input type="text" [(ngModel)]="this.holdCover.quotationNo" id="inputQuotation" class="form-control form-control-sm cust-sm" disabled="disabled">
-				     <label class="form-control-sm col-sm-2" for="xx">Insured</label>
-				    <input type="text" id="inputQuotation" [(ngModel)]="this.holdCover.insured" class="form-control form-control-sm" disabled="disabled">
-				</div>
+		<legend class="scheduler-border">Quotation Info</legend>
+		<div class="form-row custom-row-inline-inset">
+			<div class="input-group">
+				<label class="form-control-sm col-sm-1" for="xx">Quotation No</label>
+				<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-2" placeholder="CAR-2015-0289-04"
+				 readonly>
+				<label class="form-control-sm col-sm-1" for="xx">Insured</label>
+				<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-7" placeholder="Insured Name"
+				 readonly>
 			</div>
+		</div>
 	</fieldset>
 </div>
 <div>
 	<fieldset class="scheduler-border">
-		 <legend class="scheduler-border">Hold Cover Details</legend>
-		 	<div class="form-row">
-			 	<div class="form-group col-sm-3">
-			      <label for="inputEmail4" class="form-control-sm top-label">Risk</label>
-			      <input type="text" class="form-control form-control-sm cust-sm" id="inputQuotation" [(ngModel)]="this.holdCover.risk">
-			    </div>
-			    <div class="form-group col-sm-3">
-			      <label for="inputEmail4" class="form-control-sm top-label">Hold Cover No.</label>
-			      <input type="text" class="form-control form-control-sm cust-sm" id="inputQuotation" [(ngModel)]="this.holdCover.holdCoverNo">
-			    </div>
-			    <div class="form-group col-sm-3">
-			      <label for="inputEmail4" class="form-control-sm top-label">Comp. Ref. Hold Cover No.</label>
-			      <input type="text" class="form-control form-control-sm cust-sm" id="inputQuotation" [(ngModel)]="this.holdCover.compRefHoldCoverNo">
-			    </div>
-			    <div class="form-group col-sm-3">
-			      <label for="inputEmail4" class="form-control-sm top-label">Status</label>
-			      <select class="form-control form-control-sm cust-sm" id="inputQuotation">
-			      <option></option>
-			      <option><b>I -</b> In-force</option>
-			      <option><b>C -</b> Converted</option>
-			      <option><b>E -</b> Expired</option>
-			      </select>
-			    </div>
+		<legend class="scheduler-border">Hold Cover Details</legend>
+		<div class="form-row">
+			<div class="form-group col-sm-3">
+				<label for="inputEmail4" class="form-control-sm top-label">Risk</label>
+				<input type="text" class="form-control form-control-sm cust-sm" id="inputQuotation" [(ngModel)]="this.holdCover.risk">
 			</div>
+			<div class="form-group col-sm-3">
+				<label for="inputEmail4" class="form-control-sm top-label">Hold Cover No.</label>
+				<input type="text" class="form-control form-control-sm cust-sm" id="inputQuotation" [(ngModel)]="this.holdCover.holdCoverNo">
+			</div>
+			<div class="form-group col-sm-3">
+				<label for="inputEmail4" class="form-control-sm top-label">Comp. Ref. Hold Cover No.</label>
+				<input type="text" class="form-control form-control-sm cust-sm" id="inputQuotation" [(ngModel)]="this.holdCover.compRefHoldCoverNo">
+			</div>
+			<div class="form-group col-sm-3">
+				<label for="inputEmail4" class="form-control-sm top-label">Status</label>
+				<select class="form-control form-control-sm cust-sm" id="inputQuotation">
+					<option></option>
+					<option><b>I -</b> In-force</option>
+					<option><b>C -</b> Converted</option>
+					<option><b>E -</b> Expired</option>
+				</select>
+			</div>
+		</div>
 	</fieldset>
 </div>
 <div>
 	<fieldset class="scheduler-border">
-		 <legend class="scheduler-border">Period of Issuance</legend>
-		 	<div class="form-row">
-		 		<div class="form-group col-sm-3">
-			      <label for="inputEmail4" class="form-control-sm top-label">Period From</label>
-			      <input type="date" class="form-control form-control-sm cust-sm" id="inputQuotation">
-			    </div>
-			    <div class="form-group col-sm-3">
-			      <label for="inputEmail4" class="form-control-sm top-label">Period To</label>
-			      <input type="date" class="form-control form-control-sm cust-sm" id="inputQuotation">
-			    </div>
-			    <div class="form-group col-sm-3">
-			      <label for="inputEmail4" class="form-control-sm top-label">Requested By</label>
-			      <input type="text" class="form-control form-control-sm cust-sm" id="inputQuotation" [(ngModel)]="this.holdCover.requestedBy">
-			    </div>
-			    <div class="form-group col-sm-3">
-			      <label for="inputEmail4" class="form-control-sm top-label">Request Date</label>
-			      <input type="date" class="form-control form-control-sm cust-sm" id="inputQuotation" [(ngModel)]="this.holdCover.requestDate">
-			    </div>
-		 	</div>
+		<legend class="scheduler-border">Period of Issuance</legend>
+		<div class="form-row">
+			<div class="form-group col-sm-3">
+				<label for="inputEmail4" class="form-control-sm top-label">Period From</label>
+				<input type="date" class="form-control form-control-sm cust-sm" id="inputQuotation">
+			</div>
+			<div class="form-group col-sm-3">
+				<label for="inputEmail4" class="form-control-sm top-label">Period To</label>
+				<input type="date" class="form-control form-control-sm cust-sm" id="inputQuotation">
+			</div>
+			<div class="form-group col-sm-3">
+				<label for="inputEmail4" class="form-control-sm top-label">Requested By</label>
+				<input type="text" class="form-control form-control-sm cust-sm" id="inputQuotation" [(ngModel)]="this.holdCover.requestedBy">
+			</div>
+			<div class="form-group col-sm-3">
+				<label for="inputEmail4" class="form-control-sm top-label">Request Date</label>
+				<input type="date" class="form-control form-control-sm cust-sm" id="inputQuotation" value="2018-01-01">
+			</div>
+		</div>
+
 	</fieldset>
 </div>
 <div class="form-row">
