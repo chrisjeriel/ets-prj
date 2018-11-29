@@ -10,7 +10,8 @@ export class HoldCoverMonitoringListComponent implements OnInit {
 
    tableData: any[] = [];
     tHeader: any[] = [];
-
+    dataTypes: any[] = [];
+    
     constructor(private quotationService: QuotationService) { 
     }
 
@@ -27,6 +28,18 @@ export class HoldCoverMonitoringListComponent implements OnInit {
         this.tHeader.push("Request Date");
         this.tHeader.push("Status");
 
+        this.dataTypes.push("text");
+        this.dataTypes.push("text");
+        this.dataTypes.push("text");
+        this.dataTypes.push("text");
+        this.dataTypes.push("text");
+        this.dataTypes.push("date");
+        this.dataTypes.push("date");
+        this.dataTypes.push("text");
+        this.dataTypes.push("text");
+        this.dataTypes.push("date");
+        this.dataTypes.push("text");
+        
         this.tableData = this.quotationService.getQuotationHoldCoverInfo();
     }
 }

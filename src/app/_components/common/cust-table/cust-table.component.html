@@ -57,8 +57,9 @@
 	</thead>
 	<tbody>
 	  <tr *ngFor="let data of tableData">
-	  	<td *ngFor="let key of dataKeys">
-	  		{{ processData(key, data) }}
+	  	<td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]">
+            <span *ngSwitchCase="'date'">{{ processData(key, data) | date: 'MM/dd/yyyy'}}</span>
+	  		<span *ngSwitchCase="'text'">{{ processData(key, data) }}</span>
 	  	</td>
 	  </tr>
 	</tbody>

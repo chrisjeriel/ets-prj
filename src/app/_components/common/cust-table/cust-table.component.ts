@@ -17,8 +17,9 @@ export class CustTableComponent implements OnInit {
     @Input() tableData: any[] = [];
     @Input() tHeader: any[] = [];
     @Input() expireFilter: boolean;
+    @Input() dataTypes: any[] = [];
     dataKeys: any[] = [];
-
+    
     constructor(config: NgbDropdownConfig) { 
         config.placement = 'bottom-right';
         config.autoClose = false;
