@@ -77,7 +77,7 @@
 					<td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]">
 						<div>
 							<input *ngSwitchCase="'checkbox'" type="checkbox">
-							<select *ngSwitchCase="'select'" class="editable-text" [value]="processData(key, data)">
+							<select *ngSwitchCase="'select'" class="editable-select" [value]="processData(key, data)">
 								<option>Option A</option>
 								<option>Option B</option>
 								<option>Option C</option>
