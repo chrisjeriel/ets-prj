@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import {NgbDropdownConfig} from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { QuotationService } from '../../../_services';
 import { DummyInfo } from '../../../_models';
 import { IntCompAdvInfo } from '../../../_models';
@@ -25,21 +25,21 @@ export class CustTableComponent implements OnInit {
         config.autoClose = false;
     }
 
-    ngOnInit() : void {
+    ngOnInit(): void {
 
         this.dtOptions = {
-        pagingType: 'full_numbers'
-    };
+            pagingType: 'full_numbers'
+        };
 
-    if (this.tableData.length > 0) {
-        this.dataKeys = Object.keys(this.tableData[0]);
-    } else {
-        this.tHeader.push("No Data");
+        if (this.tableData.length > 0) {
+            this.dataKeys = Object.keys(this.tableData[0]);
+        } else {
+            this.tHeader.push("No Data");
+        }
     }
-}
 
-processData(key: any, data: any) {
-    return data[key];
-}
+    processData(key: any, data: any) {
+        return data[key];
+    }
 
 }

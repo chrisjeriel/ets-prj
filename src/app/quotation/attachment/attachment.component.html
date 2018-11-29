@@ -1,20 +1,23 @@
 <div>
 	<fieldset class="scheduler-border">
-		 <legend class="scheduler-border">Quotation Info</legend>
-		 	<div class="form-row custom-row-inline-inset">
-				<div class="input-group">
-					<label class="form-control-sm col-sm-2" for="xx">Quotation No</label>
-				    <input type="text" id="xx" class="form-control form-control-sm cust-sm" disabled="disabled">
-				     <label class="form-control-sm col-sm-2" for="xx">Insured</label>
-				    <input type="text" class="form-control form-control-sm" disabled="disabled">
-				</div>
+		<legend class="scheduler-border">Quotation Info</legend>
+		<div class="form-row custom-row-inline-inset">
+			<div class="input-group">
+				<label class="form-control-sm col-sm-1" for="xx">Quotation No</label>
+				<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-2" placeholder="CAR-2015-0289-04"
+				 readonly>
+				<label class="form-control-sm col-sm-1" for="xx">Insured</label>
+				<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-7" placeholder="Insured Name"
+				 readonly>
 			</div>
+		</div>
 	</fieldset>
 </div>
 <div>
 	<fieldset class="scheduler-border">
-		 <legend class="scheduler-border">Attached Files</legend>
-		 	<app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData" [tHeader]="tHeader" [checkFlag]="true" [options] = "options" [selectFlag]="true"></app-cust-editable-table>
+		<legend class="scheduler-border">Attached Files</legend>
+		<app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData"
+		 [tHeader]="tHeader" [checkFlag]="true" [options]="options" [selectFlag]="true"></app-cust-editable-table>
 
 	</fieldset>
 </div>

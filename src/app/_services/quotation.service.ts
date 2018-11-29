@@ -1,19 +1,20 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { QuotationList, HoldCoverMonitoringList, DummyInfo, QuoteEndorsement, QuotationOption, QuotationOtherRates, IntCompAdvInfo, AttachmentInfo, QuotationProcessing } from '@app/_models';
+import { QuotationList, HoldCoverMonitoringList, DummyInfo, QuoteEndorsement, QuotationOption, QuotationOtherRates, IntCompAdvInfo, AttachmentInfo, QuotationProcessing, QuotationCoverageInfo } from '@app/_models';
 
 @Injectable({ providedIn: 'root' })
 export class QuotationService {
-    quotataionOption: QuotationOption[]=[];
-    quotataionOtherRates: QuotationOtherRates[]=[];
-    dummyInfoData : DummyInfo[] = [];
+    quotataionOption: QuotationOption[] = [];
+    quotataionOtherRates: QuotationOtherRates[] = [];
+    dummyInfoData: DummyInfo[] = [];
     endorsementData: QuoteEndorsement[] = [];
-    quotationListData : QuotationList[] = [];
-    holdCoverMonitoringListData : HoldCoverMonitoringList[] = [];
-    intCompAdvInfo : IntCompAdvInfo[] = [];
+    quotationListData: QuotationList[] = [];
+    holdCoverMonitoringListData: HoldCoverMonitoringList[] = [];
+    intCompAdvInfo: IntCompAdvInfo[] = [];
     attachmentInfoData: AttachmentInfo[] = [];
-    quoProcessingData : QuotationProcessing[] = [];
+    quoProcessingData: QuotationProcessing[] = [];
+    coverageInfoData: QuotationCoverageInfo[] = [];
 
     constructor(private http: HttpClient) {
 
@@ -22,26 +23,33 @@ export class QuotationService {
 
     getDummyInfo() {
         /*Dummy Data Array*/
-        this.dummyInfoData = [ 
-            new DummyInfo(1,'Christopher Jeriel','Sarsonas','Alcala', 'Male', 25, "January 21, 2018"), 
-            new DummyInfo(2,'Veronica','Raymundo','C', 'Female', 25, "January 21, 2018"), 
-            new DummyInfo(3,'Elmon','Hagacer','H', 'Male', 25, "January 21, 2018"), 
-            new DummyInfo(4,'Nadine','Lustre','R', 'Female', 25, "January 21, 2018"),
-            new DummyInfo(5,'Christopher Jeriel','Sarsonas','Alcala', 'Male', 25, "January 21, 2018"), 
-            new DummyInfo(6,'Veronica','Raymundo','C', 'Female', 25, "January 21, 2018"), 
-            new DummyInfo(7,'Elmon','Hagacer','H', 'Male', 25, "January 21, 2018"), 
-            new DummyInfo(8,'Nadine','Lustre','R', 'Female', 25, "January 21, 2018"),
-            new DummyInfo(9,'Christopher Jeriel','Sarsonas','Alcala', 'Male', 25, "January 21, 2018"), 
-            new DummyInfo(10,'Veronica','Raymundo','C', 'Female', 25, "January 21, 2018"), 
-            new DummyInfo(11,'Elmon','Hagacer','H', 'Male', 25, "January 21, 2018"), 
-            new DummyInfo(12,'Nadine','Lustre','R', 'Female', 25, "January 21, 2018"),
+        this.dummyInfoData = [
+            new DummyInfo(1, 'Christopher Jeriel', 'Sarsonas', 'Alcala', 'Male', 25, "January 21, 2018"),
+            new DummyInfo(2, 'Veronica', 'Raymundo', 'C', 'Female', 25, "January 21, 2018"),
+            new DummyInfo(3, 'Elmon', 'Hagacer', 'H', 'Male', 25, "January 21, 2018"),
+            new DummyInfo(4, 'Nadine', 'Lustre', 'R', 'Female', 25, "January 21, 2018"),
+            new DummyInfo(5, 'Christopher Jeriel', 'Sarsonas', 'Alcala', 'Male', 25, "January 21, 2018"),
+            new DummyInfo(6, 'Veronica', 'Raymundo', 'C', 'Female', 25, "January 21, 2018"),
+            new DummyInfo(7, 'Elmon', 'Hagacer', 'H', 'Male', 25, "January 21, 2018"),
+            new DummyInfo(8, 'Nadine', 'Lustre', 'R', 'Female', 25, "January 21, 2018"),
+            new DummyInfo(9, 'Christopher Jeriel', 'Sarsonas', 'Alcala', 'Male', 25, "January 21, 2018"),
+            new DummyInfo(10, 'Veronica', 'Raymundo', 'C', 'Female', 25, "January 21, 2018"),
+            new DummyInfo(11, 'Elmon', 'Hagacer', 'H', 'Male', 25, "January 21, 2018"),
+            new DummyInfo(12, 'Nadine', 'Lustre', 'R', 'Female', 25, "January 21, 2018"),
         ];
 
         /*return this.http.get<User[]>(`${environment.apiUrl}/quotation`);*/
         return this.dummyInfoData;
     }
 
-    getQuotationListInfo(){
+    getCoverageInfo() {
+        this.coverageInfoData = [
+            new QuotationCoverageInfo("data", "1", "Section I", "3", "69000", "Sort", "70000"),
+            new QuotationCoverageInfo(null, "2", 'Section II', "4", "123000", 'Sort', "456000")
+        ];
+        return this.coverageInfoData;
+    }
+    getQuotationListInfo() {
         this.quotationListData = [
             new QuotationList("CAR-2015-2832-01", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),
             new QuotationList("CAR-2015-2832-02", "Branch 2", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),
@@ -60,7 +68,7 @@ export class QuotationService {
         return this.quotationListData;
     }
 
-    getQuotationHoldCoverInfo(){
+    getQuotationHoldCoverInfo() {
         this.holdCoverMonitoringListData = [
             new HoldCoverMonitoringList("Malayan", "CAR-2015-2832-01", "CAR-2015-01", "Risk 1", "5K Builders & ABE International Corp", new Date(), new Date(), "CAR-2015-00", "Inigo Flores", new Date(), "I - In-force"),
             new HoldCoverMonitoringList("Malayan", "CAR-2015-2832-02", "CAR-2015-02", "Risk 2", "5K Builders & ABE International Corp", new Date(), new Date(),"CAR-2015-00", "Inigo Flores", new Date(), "I - In-force"),
@@ -78,23 +86,23 @@ export class QuotationService {
         ];
         return this.holdCoverMonitoringListData;
     }
-    
 
-    getEndorsements(){
-        
+
+    getEndorsements() {
+
         this.endorsementData = [
-            new QuoteEndorsement('Endt Title','Endt Description', 'Wording'),
+            new QuoteEndorsement('Endt Title', 'Endt Description', 'Wording'),
             new QuoteEndorsement('This is the title', 'sample Description', 'Sample Wording')
         ];
         return this.endorsementData;
     }
 
-    getAttachment(){
+    getAttachment() {
         this.attachmentInfoData = [
-            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj","Project"),
-            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj","Project"),
-            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj","Project"),
-            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj","Project")
+            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project"),
+            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project"),
+            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project"),
+            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project")
         ];
 
         return this.attachmentInfoData;
@@ -102,10 +110,10 @@ export class QuotationService {
 
     getDummyEditableInfo() {
         /*Dummy Data Array*/
-        this.dummyInfoData = [ 
-            new DummyInfo(1,'Christopher Jeriel','Sarsonas','Alcala', 'Male', 25, "January 21, 2018"), 
-            new DummyInfo(2,'Veronica','Raymundo','C', 'Female', 25, "January 21, 2018"), 
-            new DummyInfo(3,'Elmon','Hagacer','H', 'Male', 25, "January 21, 2018"), 
+        this.dummyInfoData = [
+            new DummyInfo(1, 'Christopher Jeriel', 'Sarsonas', 'Alcala', 'Male', 25, "January 21, 2018"),
+            new DummyInfo(2, 'Veronica', 'Raymundo', 'C', 'Female', 25, "January 21, 2018"),
+            new DummyInfo(3, 'Elmon', 'Hagacer', 'H', 'Male', 25, "January 21, 2018"),
         ];
 
         /*return this.http.get<User[]>(`${environment.apiUrl}/quotation`);*/
@@ -115,31 +123,31 @@ export class QuotationService {
 
     getQuoProcessingData() {
         this.quoProcessingData = [
-            new QuotationProcessing('CAR-2015-0289-01', 'Direct', 'CAR Wet Risks', 'In Progress', 'Malayan','5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', new Date('2015-02-09'),
-            new Date('2015-03-09'), 'Inigo Flores', 'cuaresma'),
+            new QuotationProcessing('CAR-2015-0289-01', 'Direct', 'CAR Wet Risks', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', new Date('2015-02-09'),
+                new Date('2015-03-09'), 'Inigo Flores', 'cuaresma'),
             new QuotationProcessing('CAR-2015-0289-02', 'Direct', 'CAR Wet Risks', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', new Date('2015-02-09'),
-            new Date('2015-03-09'), 'Inigo Flores', 'cuaresma'),
+                new Date('2015-03-09'), 'Inigo Flores', 'cuaresma'),
             new QuotationProcessing('CAR-2015-0289-03', 'Direct', 'CAR Wet Risks', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', new Date('2015-02-09'),
-            new Date('2015-03-09'), 'Inigo Flores', 'cuaresma'),
+                new Date('2015-03-09'), 'Inigo Flores', 'cuaresma'),
         ];
 
         return this.quoProcessingData;
     }
 
 
-    getQuoteOptions(){
+    getQuoteOptions() {
         this.quotataionOption = [
-            new QuotationOption(1,5,"Condition",6,8,5),
-            new QuotationOption(2,8,"Stable",7,4,3),
-            new QuotationOption(3,9,"Good",6,43,2)
+            new QuotationOption(1, 5, "Condition", 6, 8, 5),
+            new QuotationOption(2, 8, "Stable", 7, 4, 3),
+            new QuotationOption(3, 9, "Good", 6, 43, 2)
         ];
         return this.quotataionOption;
     }
 
-    getQuotataionOtherRates(){
+    getQuotataionOtherRates() {
         this.quotataionOtherRates = [
-            new QuotationOtherRates('Others1',50,'sample remark'),
-            new QuotationOtherRates('Others1',60,'sample description')
+            new QuotationOtherRates('Others1', 50, 'sample remark'),
+            new QuotationOtherRates('Others1', 60, 'sample description')
         ];
         return this.quotataionOtherRates;
     }
@@ -147,12 +155,12 @@ export class QuotationService {
 
 
     getIntCompAdvInfo() {
-       
+
         /*intCompAdvInfo Data Array*/
-        this.intCompAdvInfo = [ 
-            new IntCompAdvInfo(1,'CPI','Carino Engelbert','IT','Y', 'excellent','etcarino',new Date(),'etcarino', new Date()), 
-            new IntCompAdvInfo(2,'CPI','Qwerty 123','Developer','N', 'good','etcarino',new Date(),'etcarino', new Date()), 
-            new IntCompAdvInfo(3,'CPI','ABCDE 246','SA','Y', 'very good','etcarino',new Date(),'etcarino', new Date()), 
+        this.intCompAdvInfo = [
+            new IntCompAdvInfo(1, 'CPI', 'Carino Engelbert', 'IT', 'Y', 'excellent', 'etcarino', new Date(), 'etcarino', new Date()),
+            new IntCompAdvInfo(2, 'CPI', 'Qwerty 123', 'Developer', 'N', 'good', 'etcarino', new Date(), 'etcarino', new Date()),
+            new IntCompAdvInfo(3, 'CPI', 'ABCDE 246', 'SA', 'Y', 'very good', 'etcarino', new Date(), 'etcarino', new Date()),
         ];
 
         /*return this.http.get<User[]>(`${environment.apiUrl}/quotation`);*/
