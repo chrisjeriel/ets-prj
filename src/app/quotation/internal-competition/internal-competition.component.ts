@@ -10,7 +10,7 @@ import { IntCompAdvInfo } from '@app/_models';
 export class InternalCompetitionComponent implements OnInit {
   tableData: any[] = [];
   tHeader: any[] = ["Advice No.","Company","Attention","Position","Advice Option","Advice Wordings","Created By","Date Created","Last Updated By","Last Update"];
-  dataTypes: any[] = ["text","text","text","text","select","select","text","date_info","text","date_info"];
+  dataTypes: any[] = ["text","text","text","text","select","select","text","date","text","date"];
   magnifyingGlass: any[]=["attention","position","createdBy"];
   nData: IntCompAdvInfo = new IntCompAdvInfo(null, null, null, null, null, null, null, null, null, null);
   

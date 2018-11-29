@@ -83,7 +83,7 @@
 		  			<option>Option B</option>
 		  			<option>Option C</option>
 		  		</select>
-		  		<input *ngSwitchCase="'date'" class="editable-text" type="text" [value]="processData(key, data) | date:'MM-dd-yyyy'">
+		  		<input *ngSwitchCase="'date'" class="editable-text" type="text" [value]="processData(key, data) | date:'MM-dd-yyyy hh:mma'">
 		  		<i *ngIf="magnifyingGlass.indexOf(key)!=-1" class="fa fa-search"></i> &nbsp;
 		  		<input *ngSwitchDefault class="editable-text" type="text" [value]="processData(key, data)">
 		  	</div>
