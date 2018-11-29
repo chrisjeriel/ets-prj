@@ -35,7 +35,8 @@ import { ListOfQuotationsComponent } from './quotation/quotation-inquiry/list-of
 import { HoldCoverMonitoringListComponent } from './quotation/quotation-inquiry/hold-cover-monitoring-list/hold-cover-monitoring-list.component';
 
 import { NotesComponent } from './notes/notes.component';;
-import { QuotationProcessingComponent } from './quotation/quotation-processing/quotation-processing.component'
+import { QuotationProcessingComponent } from './quotation/quotation-processing/quotation-processing.component';
+import { CustEditableNonDatatableTableComponent } from './_components/common/cust-editable-non-datatable-table/cust-editable-non-datatable-table.component'
 @NgModule({
     imports: [
         BrowserModule,
@@ -73,7 +74,8 @@ import { QuotationProcessingComponent } from './quotation/quotation-processing/q
         HoldCoverMonitoringListComponent,
         DummyComponent ,
         CustTableComponent,
-        CustEditableTableComponent ],
+        CustEditableTableComponent,
+        CustEditableNonDatatableTableComponent ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

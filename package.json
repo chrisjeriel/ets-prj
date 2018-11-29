@@ -25,6 +25,7 @@
     "angular-font-awesome": "^3.1.2",
     "angular-resizable": "^1.2.0",
     "angular-resizable-element": "^3.2.2",
+    "colresizable": "^1.6.0",
     "core-js": "^2.5.4",
     "datatables.net": "^1.10.19",
     "datatables.net-dt": "^1.10.19",

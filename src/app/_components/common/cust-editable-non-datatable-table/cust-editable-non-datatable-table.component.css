@@ -1,0 +1,154 @@
+table{
+	border: 1px solid #767676;
+	border-radius: 3px;
+	width: 100%;
+	margin: 0 auto;
+	clear: both;
+	border-collapse: separate;
+	border-spacing: 0;
+	box-sizing: content-box;
+}
+
+thead{
+	border-collapse: separate;
+	border-spacing: 0;
+	box-sizing: border-box;
+}
+
+tr{
+	font-size: 12px !important;
+	padding: 0 !important;
+	line-height: 12px;
+}
+
+th{
+	border-right: 1px solid gray;
+	border-bottom: 1px solid gray;
+	line-height: 12px;
+	font-size: 10.4px !important;
+	text-align: inherit;
+	cursor: pointer;
+	padding: 10px 18px;
+	font-weight: bold;
+	box-sizing: content-box;
+}
+
+tbody{
+	box-sizing: border-box;
+}
+
+tbody tr{
+	font-size: 12px !important;
+	padding: 0 !important;
+	line-height: 12px;
+	box-sizing: border-box;
+}
+
+td{
+	padding: 8px 10px;
+}
+
+#cust-table-container {
+    position: relative !important;
+}
+
+.cust-btn-container {
+	left: 1px;
+	top: 1px;
+	z-index: 9999 !important;
+	margin-bottom: 12px;
+}
+.icon {
+	text-align: center;
+
+}
+
+.cust-btn {
+	font-size: 11px;
+	font-weight: bold;
+	color: white !important;
+	text-align: center;
+    text-decoration: none !important;
+    outline: none !important;
+    border-style: none;
+    border: 1px solid gray;
+    z-index: 9999 !important;
+    border-radius: 2px;
+    background: linear-gradient(to bottom, #4080bf 0%, #2d5986 100%);
+    width: 60px;
+    padding-top: 5px;
+    padding-bottom: 2px;
+}
+
+.cust-btn {
+	margin-right: 3px;
+}
+
+.cust-btn:hover {
+  	background: linear-gradient(to bottom, #4080df 0%, #2d5986 100%);
+}
+
+.dropdown-menu {
+	padding: 0px !important;
+	padding-bottom: 10px !important;
+}
+
+.dropdown-item{
+	width: 300px;
+	height: 200px;
+	overflow: auto;
+}
+
+div.input-group-text {
+	font-size: 9px;
+	font-weight: bold;
+	width: 100px;
+}
+
+input.form-control {
+	font-size: 11px !important;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+	background-color: white !important;
+	color: gray !important;
+}
+
+
+.dropdown-item.active, .dropdown-item:hover {
+	background-color: white !important;
+	color: gray !important;
+}
+
+div.input-group {
+	margin-bottom: 2px !important;
+}
+
+.cust-tbl-submit {
+	border-radius: 2px !important;
+	font-size: 12px !important;
+}
+
+.cust-tbl-label {
+	font-size: 11px;
+	font-weight: bold;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+  margin-right: 0px;
+}
+
+.editable-text {
+	width: 80%;
+	padding: 0px;
+	border: none;
+	background-color: inherit;
+}
+
+.editable-text:focus {
+	padding: 5px;
+}
+
+.editable-checkbox {
+	padding: 1em !important;
+}

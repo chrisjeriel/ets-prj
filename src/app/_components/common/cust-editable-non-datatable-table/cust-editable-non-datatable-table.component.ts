@@ -1,16 +1,14 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-cust-editable-table',
-  templateUrl: './cust-editable-table.component.html',
-  styleUrls: ['./cust-editable-table.component.css'],
-  providers: [NgbDropdownConfig]
+  selector: 'app-cust-editable-non-datatable-table',
+  templateUrl: './cust-editable-non-datatable-table.component.html',
+  styleUrls: ['./cust-editable-non-datatable-table.component.css']
 })
-export class CustEditableTableComponent implements OnInit {
-  dtOptions: DataTables.Settings = {};
+export class CustEditableNonDatatableTableComponent implements OnInit {
+
   @Input() tableData: any[] = [];
-  @Output() tableDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
   @Input() tHeader: any[] = [];
   @Input() magnifyingGlass: any[] = [];
   @Input() options: any[] = [];
@@ -22,6 +20,7 @@ export class CustEditableTableComponent implements OnInit {
   @Input() editFlag;
   @Input() deleteFlag;
   @Input() checkboxFlag;
+
   dataKeys: any[] = [];
   
   tableLoad: boolean = true;
@@ -32,29 +31,14 @@ export class CustEditableTableComponent implements OnInit {
     config.autoClose = false;
   }
 
-  ngOnInit() : void {
-    $(document).ready(function(){
-      $("#sample2").colResizable({
-        liveDrag:true,
-        fixed:false
-      });
-    }); 
-
-  	this.dtOptions = {
-  	  pagingType: 'full_numbers',
-  	  lengthChange: false,
-  	  info: false,
-  	  ordering: true,
-    };
-
-    if (this.tableData.length > 0) {
+  ngOnInit() {
+  	if (this.tableData.length > 0) {
     	this.dataKeys = Object.keys(this.nData);
     } else {
     	this.tHeader.push("No Data");
     }
-
   }
-
+  
   processData(key: any, data: any) {
   	return data[key];
   }
@@ -66,8 +50,8 @@ export class CustEditableTableComponent implements OnInit {
   onClickDelete() {
   	this.tableData.pop();
   }
-
-  /*onChange(){
-    this.tableDataChange.emit(this.tableData);
-  }*/
+  
+  sortColumn(key:any){
+    console.log(key);
+  }
 }
