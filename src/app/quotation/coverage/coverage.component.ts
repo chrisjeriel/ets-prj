@@ -22,7 +22,7 @@ export class CoverageComponent implements OnInit {
 
   ngOnInit() {
 
-    this.tHeader.push("cbHeader");
+    this.tHeader.push("");
     this.tHeader.push("Cover Code");
     this.tHeader.push("Section");
     this.tHeader.push("Bullet No");
@@ -34,9 +34,9 @@ export class CoverageComponent implements OnInit {
     this.dataTypes.push("text");
     this.dataTypes.push("select");
     this.dataTypes.push("select");
-    this.dataTypes.push("number");
+    this.dataTypes.push("currency");
     this.dataTypes.push("select");
-    this.dataTypes.push("number");
+    this.dataTypes.push("currency");
 
     this.selOptions.push({ selector: "section", vals: ["I", "II", "III"] });
     this.selOptions.push({ selector: "bulletNo", vals: ["1", "2", "3"] });

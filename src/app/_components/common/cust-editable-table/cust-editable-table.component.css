@@ -131,9 +131,6 @@ div.input-group {
 }
 
 .number{
-	/*position: absolute;
-	right: 0px;
-	top:0px;*/
+	width: 93%;	 
 	float: right;
-	width: 93%;
 }
