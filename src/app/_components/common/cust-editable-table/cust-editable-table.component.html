@@ -1,3 +1,20 @@
+<style>
+	thead tr th {
+	  position: relative;
+	}
+	span.ui-column-resizer {
+	  display: block;
+	  position: absolute;
+	  top: 0;
+	  right: 0;
+	  margin: 0;
+	  width: 8px;
+	  height: 100%;
+	  padding: 0;
+	  cursor: col-resize;
+	}
+</style>
+
 <div id="cust-table-container">
 	<br />
 	<div ngbDropdown>
@@ -68,7 +85,10 @@
 	<thead>	
 		<tr>
 			<th *ngIf="checkFlag"></th>
-			<th *ngFor="let tHeader of tHeader">{{tHeader}}</th>
+			<th *ngFor="let tHeader of tHeader">
+				<span class="ui-column-resizer" (mousedown) = "onMouseDown($event)"></span>
+				<span class="gridHeader">{{tHeader}}</span>
+			</th>
 		</tr>
 	</thead>
 

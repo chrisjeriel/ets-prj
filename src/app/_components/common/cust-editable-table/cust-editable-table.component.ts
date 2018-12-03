@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, Renderer } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -33,8 +33,13 @@ export class CustEditableTableComponent implements OnInit {
   tableLoad: boolean = true;
   nextId: number = 0;
   exists:Boolean = false;
+
+  start:    any;
+  pressed:  any;
+  startX:   any;
+  startWidth: any;
   
-  constructor(config: NgbDropdownConfig) { 
+  constructor(config: NgbDropdownConfig, public renderer: Renderer) { 
   	config.placement = 'bottom-right';
     config.autoClose = false;
   }
@@ -83,6 +88,31 @@ export class CustEditableTableComponent implements OnInit {
     if(!this.exists){
       this.editedData.push(row);
     }
+  }
+
+  private onMouseDown(event){
+      console.log(event);
+      this.start = event.target;
+      this.pressed = true;
+      this.startX = event.x;
+      this.startWidth = $(this.start).parent().width();
+      this.initResizableColumns();
+    }
+
+  private initResizableColumns() {
+       this.renderer.listenGlobal('body', 'mousemove', (event) => {
+          if(this.pressed) {
+             let width = this.startWidth + (event.x - this.startX);
+             $(this.start).parent().css({'min-width': width, 'max-   width': width});
+             let index = $(this.start).parent().index() + 1;
+             $('.glowTableBody tr td:nth-child(' + index + ')').css({'min-width': width, 'max-width': width});
+          }
+       });
+       this.renderer.listenGlobal('body', 'mouseup', (event) => {
+       if(this.pressed) {
+           this.pressed = false;
+       }
+     });
   }
 
 }
