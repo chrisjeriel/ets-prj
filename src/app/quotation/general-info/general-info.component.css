@@ -17,3 +17,7 @@
 .spec-ico {
 	margin-left: -50px;
 }
+
+.input-group label {
+	padding-left: 0px;
+}
