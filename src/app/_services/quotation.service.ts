@@ -44,8 +44,8 @@ export class QuotationService {
 
     getCoverageInfo() {
         this.coverageInfoData = [
-            new QuotationCoverageInfo("data", "1", "Section I", "3", "69000", "Sort", "70000"),
-            new QuotationCoverageInfo(null, "2", 'Section II', "4", "123000", 'Sort', "456000")
+            new QuotationCoverageInfo("data", "1", "I", "3", "69000", "Sort C", "70000"),
+            new QuotationCoverageInfo("data", "2", 'II', "2", "123000", 'Sort B', "456000")
         ];
         return this.coverageInfoData;
     }

@@ -12,13 +12,12 @@ export class GeneralInfoComponent implements OnInit {
 	private quotationGenInfo: QuotationGenInfo;
 
 	constructor() { }
-
 	ngOnInit() {
 		this.quotationGenInfo = new QuotationGenInfo();
 		this.quotationGenInfo.line;
-		this.quotationGenInfo.year;
+		this.quotationGenInfo.year = new Date().getFullYear();
 		this.quotationGenInfo.seqNo;
-		this.quotationGenInfo.reqSeq = "MOCK DATA";
+		this.quotationGenInfo.reqSeq;
 		this.quotationGenInfo.histNo = "MOCK DATA";
 		this.quotationGenInfo.branch = "MOCK DATA";
 		this.quotationGenInfo.lineClass = "MOCK DATA";
@@ -27,7 +26,7 @@ export class GeneralInfoComponent implements OnInit {
 		this.quotationGenInfo.printDate;
 		this.quotationGenInfo.cedingCompany = "MOCK DATA";
 		this.quotationGenInfo.quoteStatus = "MOCK DATA";
-		this.quotationGenInfo.quoteDate;
+		this.quotationGenInfo.quoteDate = new Date();
 		this.quotationGenInfo.validUntil;
 		this.quotationGenInfo.requestedBy = "MOCK DATA";
 		this.quotationGenInfo.requestedDate;
@@ -72,6 +71,11 @@ export class GeneralInfoComponent implements OnInit {
 		this.quotationGenInfo.lastUpdate = b;
 		console.log(this.quotationGenInfo.createdBy);
 		console.log(this.quotationGenInfo.lastUpdate);
+	}
+
+	defaultValues(year: Date) {
+		year = new Date();
+		year.getFullYear();
 	}
 
 }
