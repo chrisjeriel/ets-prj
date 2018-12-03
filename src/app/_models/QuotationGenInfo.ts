@@ -2,7 +2,7 @@ export class QuotationGenInfo {
 	line: string;
 	year: number;
 	seqNo: number;
-	reqSeq: string;
+	reqSeq: any;
 	histNo: string;
 	branch: string;
 	lineClass: string;

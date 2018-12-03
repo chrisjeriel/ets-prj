@@ -67,7 +67,11 @@
 			<thead>
 				<tr>
 					<th *ngIf="checkFlag"></th>
-					<th *ngFor="let tHeader of tHeader">{{tHeader}}</th>
+					<!-- <th *ngFor="let tHeader of tHeader">{{tHeader}}</th> -->
+					<th *ngFor="let tHeader of tHeader" [ngSwitch]="tHeader">
+						<input class="editable-checkbox" type="checkbox" *ngSwitchCase="'cbHeader'">
+						<div *ngSwitchDefault>{{tHeader}}</div>
+					</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -90,6 +94,7 @@
 
 							<input *ngSwitchCase="'number'" class="editable-number" type="text" [value]="processData(key, data) | number:'.2-6'">
 
+
 							<i *ngIf="magnifyingGlass.indexOf(key)!=-1" class="fa fa-search"></i> &nbsp;
 							<input *ngSwitchDefault class="editable-text" type="text" [value]="processData(key, data)">
 						</div>
@@ -100,11 +105,12 @@
 						</div>
 					</td>
 					<td *ngIf="selectFlag">
-						<select class="form-control form-control-sm cust-sm" >
-							<option *ngFor = "let options of options">{{options}}</option>
+						<select class="form-control form-control-sm cust-sm">
+							<option *ngFor="let options of options">{{options}}</option>
 						</select>
 					</td>
-					<td *ngIf="tHeader.indexOf('Actions')!=-1" class="icon"><button class="fa fa-edit fa-lg" title="Edit"></button> &nbsp;<button class="fa fa-trash fa-lg" title="Delete"></button>
+					<td *ngIf="tHeader.indexOf('Actions')!=-1" class="icon"><button class="fa fa-edit fa-lg" title="Edit"></button>
+						&nbsp;<button class="fa fa-trash fa-lg" title="Delete"></button>
 					</td>
 				</tr>
 			</tbody>

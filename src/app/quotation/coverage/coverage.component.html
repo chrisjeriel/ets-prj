@@ -19,7 +19,7 @@
       [tHeader]="tHeader"></app-cust-editable-table> -->
 
     <app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData"
-      [tHeader]="tHeader" [dataTypes]="dataTypes"></app-cust-editable-table>
+      [tHeader]="tHeader" [dataTypes]="dataTypes" [opts]="selOptions"></app-cust-editable-table>
 
   </fieldset>
   <fieldset class="scheduler-border">
@@ -30,7 +30,10 @@
         <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm" required>
         <label class="form-control-sm col-sm-1" for="xx">Section I</label>
         <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm txt-content-rght" required
-          placeholder="0.00" value="{{ sec.value | number: '.1-2' }}" #sec readonly>
+          placeholder="0.00" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
+          readonly>
+        <!-- placeholder="0.00" value="{{ sec.value | number: '.1-2' }}" #sec readonly> -->
+
         <label class="form-control-sm col-sm-1" for="xx">Section II</label>
         <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm txt-content-rght" required
           placeholder="0.00" readonly>
