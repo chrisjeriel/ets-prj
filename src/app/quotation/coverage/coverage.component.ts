@@ -40,7 +40,7 @@ export class CoverageComponent implements OnInit {
 
     this.selOptions.push({ selector: "section", vals: ["I", "II", "III"] });
     this.selOptions.push({ selector: "bulletNo", vals: ["1", "2", "3"] });
-    this.selOptions.push({ selector: "sortSe", vals: ["Sort A", "Sort B", "Sort C"] });
+    this.selOptions.push({ selector: "sortSe", vals: ["10", "20", "30"] });
 
 
 
