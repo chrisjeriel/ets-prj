@@ -18,6 +18,8 @@ export class QuoteOptionComponent implements OnInit {
   quoteOptionDataType: any[] = ['text','percent','text','percent','percent','percent'];
   quoteOptionNData: QuotationOption = new QuotationOption(null,null,null,null,null,null);
   magnifyingGlass:any[] = ['commRateFac'];
+  quoteOptionEdited:any[]=[];
+
 
   otherRatesTableData: any[] = [];
   otherRatesTHeader: any[] = ['Others', 'Amounts', 'Deductible/Remarks', 'Actions'];
@@ -36,7 +38,9 @@ export class QuoteOptionComponent implements OnInit {
   }
   
   save(){
-  	console.log(this.quoteOptionTableData);
+  	console.log(this.quoteOptionEdited);
   }
+
+
 
 }

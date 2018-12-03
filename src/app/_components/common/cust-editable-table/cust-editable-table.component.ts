@@ -26,19 +26,18 @@ export class CustEditableTableComponent implements OnInit {
   
   tableLoad: boolean = true;
   nextId: number = 0;
-
+  editedData:any[] = [];
+  @Output() editedDataChange:EventEmitter<any[]> = new EventEmitter<any[]>();
+  
   constructor(config: NgbDropdownConfig) { 
   	config.placement = 'bottom-right';
     config.autoClose = false;
   }
 
   ngOnInit() : void {
-    $(document).ready(function(){
-      $("#sample2").colResizable({
-        liveDrag:true,
-        fixed:false
-      });
-    }); 
+    /*$(document).ready(function(){
+      $("#sample2").colResizable({liveDrag:true});
+    }); */
 
   	this.dtOptions = {
   	  pagingType: 'full_numbers',
@@ -67,7 +66,11 @@ export class CustEditableTableComponent implements OnInit {
   	this.tableData.pop();
   }
 
-  /*onChange(){
-    this.tableDataChange.emit(this.tableData);
-  }*/
+  onChange(row:any){
+    for(var _i = 0; _i < this.editedData.length; _i++){
+      if(this.editedData[_i][0]==row[0])
+        this.editedData.splice(_i,1);
+    }
+    this.editedData.push(row);
+  }
 }
