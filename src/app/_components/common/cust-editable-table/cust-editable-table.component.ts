@@ -22,6 +22,7 @@ export class CustEditableTableComponent implements OnInit {
   @Input() addFlag;
   @Input() editFlag;
   @Input() deleteFlag;
+
   @Input() checkboxFlag;
   @Input() columnId;
 
