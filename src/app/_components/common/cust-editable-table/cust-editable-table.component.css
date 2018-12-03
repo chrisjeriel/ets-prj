@@ -89,7 +89,6 @@ div.input-group {
 }
 
 .editable-text {
-	width: 90%;
 	padding: 0px;
 	border: none;
 	background-color: inherit;
@@ -130,5 +129,8 @@ div.input-group {
 }
 
 .number{
-	float: right;
+	position: absolute;
+	right: 0px;
+	top:0px;
+	/*float: right;*/
 }
