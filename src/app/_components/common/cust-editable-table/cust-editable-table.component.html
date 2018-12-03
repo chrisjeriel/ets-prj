@@ -78,12 +78,20 @@
 	  	<td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]">
 	  		<div>
 		  		<input *ngSwitchCase="'checkbox'" type="checkbox">
-		  		<select *ngSwitchCase="'select'" class="editable-text" [value]="processData(key, data)">
-		  			<option>Option A</option>
-		  			<option>Option B</option>
-		  			<option>Option C</option>
+		  		<select *ngSwitchCase="'select'" class="editable-select" [value]="processData(key, data)">
+		  			<ng-container *ngFor="let data of opts">
+		  				<ng-container *ngIf="key == data.selector">
+		  					<option *ngFor="let val of data.vals">{{ val }}</option>
+		  				</ng-container>
+		  			</ng-container>
 		  		</select>
-		  		<input *ngSwitchCase="'date'" class="editable-text" type="text" [value]="processData(key, data) | date:'MM-dd-yyyy'">
+
+		  		<input *ngSwitchCase="'date'" class="editable-date" type="date" [ngModel]="processData(key, data) | date:'yyyy-MM-dd'">
+		  		<input *ngSwitchCase="'time'" class="editable-date" type="time" [ngModel]="processData(key, data) | date:'HH:mm'">
+		  		<input *ngSwitchCase="'datetime'" class="editable-date" type="datetime-local" [ngModel]="processData(key, data) | date:'yyyy-MM-ddTHH:mm'">
+
+		  		<input *ngSwitchCase="'number'" class="editable-number" type="text" [value]="processData(key, data) | number:'.2-6'">
+
 		  		<i *ngIf="magnifyingGlass.indexOf(key)!=-1" class="fa fa-search"></i> &nbsp;
 		  		<input *ngSwitchDefault class="editable-text" type="text" [value]="processData(key, data)">
 		  	</div>
