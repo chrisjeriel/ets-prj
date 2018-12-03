@@ -30,13 +30,13 @@
         <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm" required>
         <label class="form-control-sm col-sm-1" for="xx">Section I</label>
         <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm txt-content-rght" required
-          placeholder="0.00">
+          placeholder="0.00" value="{{ sec.value | number: '.1-2' }}" #sec readonly>
         <label class="form-control-sm col-sm-1" for="xx">Section II</label>
         <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm txt-content-rght" required
-          placeholder="0.00">
+          placeholder="0.00" readonly>
         <label class="form-control-sm col-sm-1" for="xx">Section III</label>
         <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm txt-content-rght" required
-          placeholder="0.00">
+          placeholder="0.00" readonly>
       </div>
     </div>
   </fieldset>
@@ -60,8 +60,10 @@
   <div class="form-row">
     <div class="form-group col-sm">
       <div class="float-sm-center">
-        <button type="button" class="btn btn-sm cust-btn-bg">Cancel</button>
-        <button type="button" class="btn btn-sm cust-btn-bg">Save</button>
+        <div class="cust-btn-container">
+          <button type="button" class="btn btn-sm cust-btn-bg cust-btn">Cancel</button>
+          <button type="button" class="btn btn-sm cust-btn-bg cust-btn">Save</button>
+        </div>
       </div>
     </div>
   </div>
