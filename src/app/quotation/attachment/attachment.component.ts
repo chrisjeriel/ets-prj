@@ -17,6 +17,7 @@ export class AttachmentComponent implements OnInit {
   tableData: any[] = [];
   tHeader: any[] = [];
   options: any[] = [];
+  dataTypes: any[] = [];
   nData: AttachmentInfo = new AttachmentInfo(null, null);
 
   private attachmentInfo : AttachmentInfo;
@@ -39,6 +40,11 @@ export class AttachmentComponent implements OnInit {
   	this.options.push("P - Policy");
   	this.options.push("C - Claim");
   	this.options.push("A - Accounting");
+
+  	// this.dataTypes.push("text");
+  	// this.dataTypes.push("text");
+  	// this.dataTypes.push("select1");
+  	// this.dataTypes.push("text");
 
     this.tableData = this.quotationService.getAttachment();
   }
