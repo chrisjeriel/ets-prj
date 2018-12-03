@@ -232,6 +232,14 @@ legend.scheduler-border {
    color: #2d5986;
 }
 
+#logo{
+    width: 100px;
+    height: 100px;
+    margin: 0;
+    padding: 0;
+    display: inline;
+}
+
 #cust-table-container {
   
 }
@@ -366,6 +374,7 @@ button.btn.btn-link{
 div.card-body {
   padding: 0px 0px 0px 12px;
 }
+
 
 
 /*ng-accordion component custom css END*/

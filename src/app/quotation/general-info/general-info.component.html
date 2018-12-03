@@ -18,7 +18,8 @@
 			</div>
 			<div class="form-group col-sm-1">
 				<label for="inputEmail4" class="form-control-sm top-label">Req Seq</label>
-				<input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4" placeholder="0001">
+				<input type="text" [(ngModel)]="this.quotationGenInfo.reqSeq" class="form-control form-control-sm cust-sm" id="inputEmail4"
+				 placeholder="0001">
 			</div>
 			<div class="form-group col-sm-1">
 				<label for="inputEmail4" class="form-control-sm top-label">Hist No</label>
@@ -63,7 +64,9 @@
 			</div>
 			<div class="form-group col-sm">
 				<label for="inputEmail4" class="form-control-sm top-label">Quote Date</label>
-				<input type="date" class="form-control form-control-sm" id="inputEmail4">
+				<input type="date" [ngModel]="this.quotationGenInfo.quoteDate | date:'yyyy-MM-dd'
+				" class="form-control form-control-sm"
+				 id="inputEmail4">
 			</div>
 			<div class="form-group col-sm">
 				<label for="inputEmail4" class="form-control-sm top-label">Valid Until</label>
@@ -240,9 +243,12 @@
 
 	<div class="form-row">
 		<div class="form-group col-sm">
-			<div class="float-sm-center">
-				<button type="button" (click)="func(crBy.value,lastDa.value)" class="cust-btn">Save</button>
-				<button type="button"class="cust-btn">Cancel</button>
+			<div class="col-md-13 text-center">
+				<br>
+				<div class="cust-btn-container">
+				<button type="button" class="cust-btn"><a>Cancel</a></button>
+				<button type="button" class="cust-btn"><a>Save</a></button>
+			</div>
 			</div>
 		</div>
 	</div>
