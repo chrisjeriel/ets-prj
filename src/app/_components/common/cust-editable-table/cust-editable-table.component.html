@@ -15,6 +15,7 @@
 	}
 </style>
 
+
 <div id="cust-table-container">
 	<br />
 	<div ngbDropdown>
@@ -96,20 +97,24 @@
 	  <tr *ngFor="let data of tableData;let ti = index">
 	  	<td *ngIf="checkFlag">&nbsp;&nbsp;&nbsp;<input type="checkbox" name="checkbox"></td>
 	  	<td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]">
-	  		<div style="position: relative">
+	  		<div>
 	  			<a><i *ngIf="magnifyingGlass.indexOf(key)!=-1" class="fa fa-search"></i></a> &nbsp;
 	  			<input *ngSwitchCase="'percent'" class="editable-text text-right number" type="text" [ngModel]="processData(key, data) | number:'1.7-7'" 
 	  			(ngModelChange)="onChange(tableData[ti],ti,key,$event)" >
 	  			<input *ngSwitchCase="'currency'" class="editable-text text-right number" type="text" [value]="processData(key, data) | number:'1.2-2'"
 	  			(ngModelChange)="onChange(tableData[ti],ti,key,$event)">
 		  		<input *ngSwitchCase="'checkbox'" type="checkbox">
-		  		<select *ngSwitchCase="'select'" class="editable-text" [value]="processData(key, data)" (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
-		  			<option>Option A</option>
-		  			<option>Option B</option>
-		  			<option>Option C</option>
-		  		</select>
-		  		<input *ngSwitchCase="'date'" class="editable-text" type="text" [value]="processData(key, data) | date:'MM-dd-yyyy'" 
-		  			(ngModelChange)="onChange(tableData[ti],ti,key,$event)">
+		  		<select *ngSwitchCase="'select'" class="editable-select" [value]="processData(key, data)">
+					<ng-container *ngFor="let data of opts">
+						<ng-container *ngIf="key == data.selector">
+							<option *ngFor="let val of data.vals">{{ val }}</option>
+						</ng-container>
+					</ng-container>
+				</select>
+
+				<input *ngSwitchCase="'date'" class="editable-date" type="date" [ngModel]="processData(key, data) | date:'yyyy-MM-dd'" (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
+				<input *ngSwitchCase="'time'" class="editable-date" type="time" [ngModel]="processData(key, data) | date:'HH:mm'">
+				<input *ngSwitchCase="'datetime'" class="editable-date" type="datetime-local" [ngModel]="processData(key, data) | date:'yyyy-MM-ddTHH:mm'">
 		  		<input *ngSwitchDefault class="editable-text " type="text" [ngModel]="processData(key, data)" (ngModelChange)="tableData[ti][key]=$event"
 		  			(ngModelChange)="onChange(tableData[ti],ti,key,$event)">
 		  	</div>
