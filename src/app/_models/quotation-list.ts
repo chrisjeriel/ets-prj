@@ -7,8 +7,8 @@ export class QuotationList{
     principal: string;
     contractor: string;
     insured: string;
-    quoteDate: string;
-    validityDate: string;
+    quoteDate: Date;
+    validityDate: Date;
     requestedBy: string;
     createdBy: string;
     
@@ -20,8 +20,8 @@ export class QuotationList{
                 principal: string,
                 contractor: string,
                 insured: string,
-                quoteDate: string,
-                validityDate: string,
+                quoteDate: Date,
+                validityDate: Date,
                 requestedBy: string,
                 createdBy: string
                 )
@@ -47,11 +47,11 @@ export class HoldCoverMonitoringList{
     holdCoverNo: string;
     risk: string;
     insured: string;
-    periodFrom: string;
-    periodTo: string;
+    periodFrom: Date;
+    periodTo: Date;
     compRefHoldCoverNo: string;
     requestedBy: string;
-    requestDate: string;
+    requestDate: Date;
     status: string;
     
     constructor(cedingCompany: string,
@@ -59,11 +59,11 @@ export class HoldCoverMonitoringList{
                 holdCoverNo: string,
                 risk: string,
                 insured: string,
-                periodFrom: string,
-                periodTo: string,
+                periodFrom: Date,
+                periodTo: Date,
                 compRefHoldCoverNo: string,
                 requestedBy: string,
-                requestDate: string,
+                requestDate: Date,
                 status: string
                 )
     {
