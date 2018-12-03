@@ -22,7 +22,7 @@ export class CoverageComponent implements OnInit {
 
   ngOnInit() {
 
-    this.tHeader.push("cbHeader");
+    this.tHeader.push("");
     this.tHeader.push("Cover Code");
     this.tHeader.push("Section");
     this.tHeader.push("Bullet No");

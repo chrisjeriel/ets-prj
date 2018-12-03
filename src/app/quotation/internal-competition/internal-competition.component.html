@@ -14,15 +14,18 @@
 <div>
 	<fieldset class="scheduler-border">
 		<legend class="scheduler-border">Advice Details	</legend>
-			<app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData" [tHeader]="tHeader"  [dataTypes]="dataTypes" [magnifyingGlass]="magnifyingGlass" [checkFlag]="true"  ></app-cust-editable-table>
+		<app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData" [tHeader]="tHeader"  [dataTypes]="dataTypes" [magnifyingGlass]="magnifyingGlass" [checkFlag]="true">
+		</app-cust-editable-table>
+
 	</fieldset>
 </div>
 <div class="row">
       <div class="form-group col-sm">
        	<div class="text-center">
-			<button class="btn btn-sm cust-btn-bg" type="button" (click)="onClickPrint()">Print</button>
-            <button class="btn btn-sm cust-btn-bg" type="button" (click)="onClickCancel()">Cancel</button>
-            <button class="btn btn-sm cust-btn-bg" type="button" (click)="onClickSave()">Save</button>
+       		<br>
+			<button class="cust-btn" type="button" (click)="onClickPrint()">Print</button>
+            <button class="cust-btn" type="button" (click)="onClickCancel()">Cancel</button>
+            <button class="cust-btn" type="button" (click)="onClickSave()">Save</button>
        	</div>
   	</div>
 </div>

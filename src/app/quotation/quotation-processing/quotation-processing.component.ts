@@ -11,7 +11,7 @@ import { QuotationProcessing } from '../../_models';
 export class QuotationProcessingComponent implements OnInit {
   tableData: any[] = [];
   tHeader: any[] = [];
-  nData: QuotationProcessing = new QuotationProcessing(null, null, null, null, null, null, null, null, null, null, null, null);
+  dataTypes: any[] = [];
 
   constructor(private quotationService: QuotationService) { }
 
@@ -28,6 +28,19 @@ export class QuotationProcessingComponent implements OnInit {
   	this.tHeader.push("Validity Date");
   	this.tHeader.push("Requested By");
   	this.tHeader.push("Created By");
+
+  	this.dataTypes.push("text");
+  	this.dataTypes.push("text");
+  	this.dataTypes.push("text");
+  	this.dataTypes.push("text");
+  	this.dataTypes.push("text");
+  	this.dataTypes.push("text");
+  	this.dataTypes.push("text");
+  	this.dataTypes.push("text");
+  	this.dataTypes.push("date");
+  	this.dataTypes.push("date");
+  	this.dataTypes.push("text");
+  	this.dataTypes.push("text");
 
   	this.tableData = this.quotationService.getQuoProcessingData();
   }
