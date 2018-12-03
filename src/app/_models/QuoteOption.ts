@@ -4,13 +4,13 @@ export class QuotationInfo {
 }
 
 export class QuotationOption{
-	optionNo: number;
+	optionNo: string;
 	rate: number;
 	conditions:string;
 	commRateFac:number;
 	commRateQuota:number;
 	commRateSurplus:number;
-	constructor(optionNo: number,rate: number,conditions:string,commRateFac:number,commRateQuota:number,commRateSurplus:number){
+	constructor(optionNo: string,rate: number,conditions:string,commRateFac:number,commRateQuota:number,commRateSurplus:number){
 		this.optionNo=optionNo;
 		this.rate=rate;
 		this.conditions=conditions;

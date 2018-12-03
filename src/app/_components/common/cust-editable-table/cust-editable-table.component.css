@@ -10,7 +10,7 @@
 }
 .icon {
 	text-align: center;
-
+	
 }
 
 .cust-btn {
@@ -89,7 +89,7 @@ div.input-group {
 }
 
 .editable-text {
-	width: 80%;
+	width: 90%;
 	padding: 0px;
 	border: none;
 	background-color: inherit;
@@ -108,4 +108,27 @@ div.input-group {
 
 .editable-checkbox {
 	padding: 1em !important;
+}
+
+.editable-number {
+	text-align: right;
+	width: 90%;
+	padding: 0px;
+	border: none;
+	background-color: inherit;
+}
+
+.editable-date {
+	width: 90%;
+	padding: 0px;
+	border: none;
+	background-color: inherit;
+}
+
+.fa-search {
+	float: left;
+}
+
+.number{
+	float: right;
 }

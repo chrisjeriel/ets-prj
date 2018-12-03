@@ -5,8 +5,8 @@ export class HoldCoverInfo {
 	holdCoverNo: number;
 	compRefHoldCoverNo: number;
 	status: string;
-	periodFrom: string;
-	periodTo: string;
+	periodFrom: Date;
+	periodTo: Date
 	requestedBy: string;
-	requestDate: string; 
+	requestDate: Date; 
 }

@@ -15,11 +15,15 @@ export class QuoteOptionComponent implements OnInit {
 
   quoteOptionTableData: any[] = [];
   quoteOptionTHeader : any[] = ['Option No','Rate(%)','Conditions','Comm Rate Fac(%)','Comm Rate Quota(%)', 'Comm Rate Surplus(%)', 'Actions'];
+  quoteOptionDataType: any[] = ['text','percent','text','percent','percent','percent'];
   quoteOptionNData: QuotationOption = new QuotationOption(null,null,null,null,null,null);
   magnifyingGlass:any[] = ['commRateFac'];
+  quoteOptionEdited:QuotationOption[]=[];
+
 
   otherRatesTableData: any[] = [];
   otherRatesTHeader: any[] = ['Others', 'Amounts', 'Deductible/Remarks', 'Actions'];
+  otherRatesDataType:any[] = ['text','percent','text'];
   otherRatesNData: QuotationOtherRates = new QuotationOtherRates(null,null,null);
 
   constructor(private quotationService: QuotationService) { }
@@ -34,7 +38,9 @@ export class QuoteOptionComponent implements OnInit {
   }
   
   save(){
-  	console.log(this.quotationInfo);
+  	console.log(this.quoteOptionEdited);
   }
+
+
 
 }

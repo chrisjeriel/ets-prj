@@ -20,10 +20,10 @@ private holdCover: HoldCoverInfo;
   	this.holdCover.holdCoverNo = 1;
   	this.holdCover.compRefHoldCoverNo = 1;
   	this.holdCover.status = "MOCK TEST";
-  	this.holdCover.periodFrom = "MOCK TEST";
-  	this.holdCover.periodTo = "MOCK TEST";
+  	this.holdCover.periodFrom = new Date();
+  	this.holdCover.periodTo = new Date();
   	this.holdCover.requestedBy = "MOCK TEST";
-  	this.holdCover.requestDate = "MOCK TEST";
+  	this.holdCover.requestDate = new Date();
 
   }
 
