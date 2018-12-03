@@ -69,7 +69,7 @@
 					<th *ngIf="checkFlag"></th>
 					<th *ngFor="let tHeader of tHeader">{{tHeader}}</th>
 				</tr>
-			</thead>
+			</thead>	
 			<tbody>
 				<tr *ngFor="let data of tableData">
 					<td *ngIf="checkFlag">&nbsp;&nbsp;&nbsp;<input type="checkbox" name="checkbox"></td>
@@ -96,6 +96,11 @@
 							<option *ngFor="let options of options">{{options}}</option>
 						</select>
 					</td>
+					<!-- <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]">
+						<select class="form-control form-control-sm cust-sm" *ngSwitchCase="'select1'"  [value]="processData(key, data)">
+							<option *ngFor="let options of options">{{options}}</option>
+						</select>
+					</td> -->
 					<td *ngIf="tHeader.indexOf('Actions')!=-1" class="icon"><button class="fa fa-edit fa-lg" title="Edit"></button>
 						&nbsp;<button class="fa fa-trash fa-lg" title="Delete"></button></td>
 				</tr>
