@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Renderer } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { QuotationService } from '../../../_services';
 import { DummyInfo } from '../../../_models';
@@ -19,8 +19,12 @@ export class CustTableComponent implements OnInit {
     @Input() expireFilter: boolean;
     @Input() dataTypes: any[] = [];
     dataKeys: any[] = [];
+    start:    any;
+    pressed:  any;
+    startX:   any;
+    startWidth: any;
 
-    constructor(config: NgbDropdownConfig) {
+    constructor(config: NgbDropdownConfig, public renderer: Renderer) {
         config.placement = 'bottom-right';
         config.autoClose = false;
     }
@@ -28,7 +32,7 @@ export class CustTableComponent implements OnInit {
     ngOnInit(): void {
 
         this.dtOptions = {
-            pagingType: 'full_numbers'
+            pagingType: 'full_numbers',
         };
 
         if (this.tableData.length > 0) {
@@ -40,6 +44,31 @@ export class CustTableComponent implements OnInit {
 
     processData(key: any, data: any) {
         return data[key];
+    }
+
+    private onMouseDown(event){
+      console.log(event);
+      this.start = event.target;
+      this.pressed = true;
+      this.startX = event.x;
+      this.startWidth = $(this.start).parent().width();
+      this.initResizableColumns();
+    }
+
+    private initResizableColumns() {
+         this.renderer.listenGlobal('body', 'mousemove', (event) => {
+            if(this.pressed) {
+               let width = this.startWidth + (event.x - this.startX);
+               $(this.start).parent().css({'min-width': width, 'max-   width': width});
+               let index = $(this.start).parent().index() + 1;
+               $('.glowTableBody tr td:nth-child(' + index + ')').css({'min-width': width, 'max-width': width});
+            }
+         });
+         this.renderer.listenGlobal('body', 'mouseup', (event) => {
+         if(this.pressed) {
+             this.pressed = false;
+         }
+       });
     }
 
 }
