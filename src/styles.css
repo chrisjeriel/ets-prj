@@ -57,7 +57,7 @@ textarea {
   z-index: 9999 !important;
 }
 
-.cust-btn, .btn {
+.cust-btn {
   font-size: 11px;
   font-weight: bold;
   color: white !important;
