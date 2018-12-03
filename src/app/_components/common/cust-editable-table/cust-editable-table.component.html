@@ -63,6 +63,55 @@
 			</div>
 		</div>
 
+
+	<table id="sample2" datatable [dtOptions]="dtOptions" class="row-border hover">
+	<thead>	
+		<tr>
+			<th *ngIf="checkFlag"></th>
+			<th *ngFor="let tHeader of tHeader">{{tHeader}}</th>
+		</tr>
+	</thead>
+
+	<tbody>
+	  <tr *ngFor="let data of tableData;let ti = index">
+	  	<td *ngIf="checkFlag">&nbsp;&nbsp;&nbsp;<input type="checkbox" name="checkbox"></td>
+	  	<td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]">
+	  		<div>
+	  			<a><i *ngIf="magnifyingGlass.indexOf(key)!=-1" class="fa fa-search"></i></a> &nbsp;
+	  			<input *ngSwitchCase="'percent'" class="editable-text text-right number" type="text" [ngModel]="processData(key, data) | number:'1.7-7'" 
+	  			(ngModelChange)="onChange(tableData[ti],ti,key,$event)" >
+	  			<input *ngSwitchCase="'currency'" class="editable-text text-right number" type="text" [value]="processData(key, data) | number:'1.2-2'"
+	  			(ngModelChange)="onChange(tableData[ti],ti,key,$event)">
+		  		<input *ngSwitchCase="'checkbox'" type="checkbox">
+		  		<select *ngSwitchCase="'select'" class="editable-text" [value]="processData(key, data)" (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
+		  			<option>Option A</option>
+		  			<option>Option B</option>
+		  			<option>Option C</option>
+		  		</select>
+		  		<input *ngSwitchCase="'date'" class="editable-text" type="text" [value]="processData(key, data) | date:'MM-dd-yyyy'" 
+		  			(ngModelChange)="onChange(tableData[ti],ti,key,$event)">
+		  		<input *ngSwitchDefault class="editable-text " type="text" [ngModel]="processData(key, data)" (ngModelChange)="tableData[ti][key]=$event"
+		  			(ngModelChange)="onChange(tableData[ti],ti,key,$event)">
+		  	</div>
+	  	</td>
+	  	<td *ngIf="tHeader.indexOf('Edit Flag')!= -1">
+	  		<div align="center">
+	  			<input type="checkbox" name="">
+	  		</div>
+	  	</td>
+  		<td *ngIf="selectFlag">
+  			<select class="form-control form-control-sm cust-sm" >
+	  			<option *ngFor = "let options of options">{{options}}</option>
+  			</select>
+  		</td>
+		<td *ngIf="tHeader.indexOf('Actions')!=-1" class="icon"><button class="fa fa-edit fa-lg" title="Edit"></button> &nbsp;<button class="fa fa-trash fa-lg" title="Delete"></button></td>
+	  </tr>
+	</tbody>
+	</table>
+</div>
+
+<hr/>
+<!-- =======
 		<table datatable [dtOptions]="dtOptions" class="row-border hover">
 			<thead>
 				<tr>
@@ -110,5 +159,11 @@
 			</tbody>
 		</table>
 	</div>
+<<<<<<< HEAD
 </div>
 <hr />
+=======
+
+	<hr />
+>>>>>>> 549b92f12997bcaacf1ad2eb026e266c7ccf926b -->
+>>>>>>> bca52e6667d749f1df6324dd4d9142f98bfb39ef

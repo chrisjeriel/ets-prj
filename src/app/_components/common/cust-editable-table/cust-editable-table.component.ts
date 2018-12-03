@@ -1,8 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
-import { QuotationService } from '../../../_services';
-import { DummyInfo } from '../../../_models';
-
 
 @Component({
   selector: 'app-cust-editable-table',
@@ -13,6 +10,7 @@ import { DummyInfo } from '../../../_models';
 export class CustEditableTableComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   @Input() tableData: any[] = [];
+  @Output() tableDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
   @Input() tHeader: any[] = [];
   @Input() magnifyingGlass: any[] = [];
   @Input() options: any[] = [];
@@ -25,17 +23,25 @@ export class CustEditableTableComponent implements OnInit {
   @Input() editFlag;
   @Input() deleteFlag;
   @Input() checkboxFlag;
+  @Input() columnId;
+
+  @Input() editedData: any[] = [];
+  @Output() editedDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
   dataKeys: any[] = [];
   
   tableLoad: boolean = true;
   nextId: number = 0;
-
+  exists:Boolean = false;
+  
   constructor(config: NgbDropdownConfig) { 
   	config.placement = 'bottom-right';
     config.autoClose = false;
   }
 
   ngOnInit() : void {
+    /*$(document).ready(function(){
+      $("#sample2").colResizable({liveDrag:true});
+    }); */
 
   	this.dtOptions = {
   	  pagingType: 'full_numbers',
@@ -62,6 +68,20 @@ export class CustEditableTableComponent implements OnInit {
 
   onClickDelete() {
   	this.tableData.pop();
+  }
+
+  onChange(row:any,index:number,key:any,data:any){
+    
+    for(var i= 0; i < this.editedData.length; i++){
+      if(this.editedData[i][this.columnId]==row[this.columnId]){
+        this.editedData[i][key]=data;
+        this.exists=true;
+      }
+    }
+    this.tableData[index][key]=data;
+    if(!this.exists){
+      this.editedData.push(row);
+    }
   }
 
 }
