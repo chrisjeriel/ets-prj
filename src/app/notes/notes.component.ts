@@ -11,6 +11,7 @@ export class NotesComponent implements OnInit {
   tableData: any[] = [];
   tHeader: any[] = [];
   dataTypes: any[] = [];
+  opts: any[] = [];
   nData: NotesReminders = new NotesReminders(null, null, null, null, null, null, 'user', new Date());
 
   constructor(private notesService: NotesService) { }
@@ -29,10 +30,13 @@ export class NotesComponent implements OnInit {
   	this.dataTypes.push("text");
   	this.dataTypes.push("text");
   	this.dataTypes.push("date");
+  	this.dataTypes.push("time");
+  	this.dataTypes.push("select");
   	this.dataTypes.push("text");
-  	this.dataTypes.push("text");
-  	this.dataTypes.push("text");
-  	this.dataTypes.push("date");
+  	this.dataTypes.push("datetime");
+
+  	this.opts.push({selector: "type", vals:["Reminder", "Note"]},
+                   {selector: "status", vals:["Pending", "On Going", "Done"]});
 
   	this.tableData = this.notesService.getNotesReminders();
   }
