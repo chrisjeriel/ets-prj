@@ -1,3 +1,20 @@
+<style>
+	thead tr th {
+	  position: relative;
+	}
+	span.ui-column-resizer {
+	  display: block;
+	  position: absolute;
+	  top: 0;
+	  right: 0;
+	  margin: 0;
+	  width: 8px;
+	  height: 100%;
+	  padding: 0;
+	  cursor: col-resize;
+	}
+</style>
+
 <div id="cust-table-container">
 	<br />
 	<div ngbDropdown>
@@ -68,7 +85,10 @@
 	<thead>	
 		<tr>
 			<th *ngIf="checkFlag"></th>
-			<th *ngFor="let tHeader of tHeader">{{tHeader}}</th>
+			<th *ngFor="let tHeader of tHeader">
+				<span class="ui-column-resizer" (mousedown) = "onMouseDown($event)"></span>
+				<span class="gridHeader">{{tHeader}}</span>
+			</th>
 		</tr>
 	</thead>
 
@@ -76,7 +96,7 @@
 	  <tr *ngFor="let data of tableData;let ti = index">
 	  	<td *ngIf="checkFlag">&nbsp;&nbsp;&nbsp;<input type="checkbox" name="checkbox"></td>
 	  	<td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]">
-	  		<div>
+	  		<div style="position: relative">
 	  			<a><i *ngIf="magnifyingGlass.indexOf(key)!=-1" class="fa fa-search"></i></a> &nbsp;
 	  			<input *ngSwitchCase="'percent'" class="editable-text text-right number" type="text" [ngModel]="processData(key, data) | number:'1.7-7'" 
 	  			(ngModelChange)="onChange(tableData[ti],ti,key,$event)" >
