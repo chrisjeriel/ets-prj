@@ -18,7 +18,7 @@ export class QuoteOptionComponent implements OnInit {
   quoteOptionDataType: any[] = ['text','percent','text','percent','percent','percent'];
   quoteOptionNData: QuotationOption = new QuotationOption(null,null,null,null,null,null);
   magnifyingGlass:any[] = ['commRateFac'];
-  quoteOptionEdited:any[]=[];
+  quoteOptionEdited:QuotationOption[]=[];
 
 
   otherRatesTableData: any[] = [];

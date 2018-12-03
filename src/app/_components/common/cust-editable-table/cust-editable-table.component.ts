@@ -22,6 +22,9 @@ export class CustEditableTableComponent implements OnInit {
   @Input() editFlag;
   @Input() deleteFlag;
   @Input() checkboxFlag;
+
+  @Input() editedData: any[] = [];
+  @Output() editedDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
   dataKeys: any[] = [];
   
   tableLoad: boolean = true;
