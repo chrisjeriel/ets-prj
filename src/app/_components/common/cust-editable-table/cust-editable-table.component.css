@@ -92,6 +92,7 @@ div.input-group {
 	padding: 0px;
 	border: none;
 	background-color: inherit;
+	width: 90%;
 }
 
 .editable-select {
@@ -126,11 +127,13 @@ div.input-group {
 
 .fa-search {
 	float: left;
+	width: 4%
 }
 
 .number{
-	position: absolute;
+	/*position: absolute;
 	right: 0px;
-	top:0px;
-	/*float: right;*/
+	top:0px;*/
+	float: right;
+	width: 93%;
 }
