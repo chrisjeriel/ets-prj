@@ -36,6 +36,7 @@ import { HoldCoverMonitoringListComponent } from './quotation/quotation-inquiry/
 
 import { NotesComponent } from './notes/notes.component';;
 import { QuotationProcessingComponent } from './quotation/quotation-processing/quotation-processing.component';
+import { CreatePARComponent } from './underwriting/create-par/create-par.component';
 
 @NgModule({
     imports: [
@@ -75,7 +76,8 @@ import { QuotationProcessingComponent } from './quotation/quotation-processing/q
         HoldCoverMonitoringListComponent,
         DummyComponent,
         CustTableComponent,
-        CustEditableTableComponent],
+        CustEditableTableComponent,
+        CreatePARComponent],
 
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
