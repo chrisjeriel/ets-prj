@@ -13,6 +13,8 @@ export class CoverageComponent implements OnInit {
   tableData: any[] = [];
   tHeader: any[] = [];
   dataTypes: any[] = [];
+  selOptions: any[] = [];
+
   nData: QuotationCoverageInfo = new QuotationCoverageInfo(null, null, null, null, null, null, null);
   //nData: NotesReminders = new NotesReminders(null, null, null, null, null, null, 'user', new Date());
 
@@ -20,7 +22,7 @@ export class CoverageComponent implements OnInit {
 
   ngOnInit() {
 
-    this.tHeader.push("");
+    this.tHeader.push("cbHeader");
     this.tHeader.push("Cover Code");
     this.tHeader.push("Section");
     this.tHeader.push("Bullet No");
@@ -30,20 +32,17 @@ export class CoverageComponent implements OnInit {
 
     this.dataTypes.push("checkbox");
     this.dataTypes.push("text");
-    this.dataTypes.push("text");
-    this.dataTypes.push("text");
-    this.dataTypes.push("text");
-    this.dataTypes.push("text");
-    this.dataTypes.push("text");
+    this.dataTypes.push("select");
+    this.dataTypes.push("select");
+    this.dataTypes.push("number");
+    this.dataTypes.push("select");
+    this.dataTypes.push("number");
 
-    // this.tHeader.push("Type");
-    // this.tHeader.push("Details");
-    // this.tHeader.push("Alarm User");
-    // this.tHeader.push("Alarm Date");
-    // this.tHeader.push("Alarm Time");
-    // this.tHeader.push("Status");
-    // this.tHeader.push("Created By");
-    // this.tHeader.push("Date Created");
+    this.selOptions.push({ selector: "section", vals: ["I", "II", "III"] });
+    this.selOptions.push({ selector: "bulletNo", vals: ["1", "2", "3"] });
+    this.selOptions.push({ selector: "sortSe", vals: ["Sort A", "Sort B", "Sort C"] });
+
+
 
     this.tableData = this.quotationService.getCoverageInfo();
 
