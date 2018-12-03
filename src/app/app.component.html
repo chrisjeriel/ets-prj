@@ -1,47 +1,14 @@
-﻿<!-- <div class="container-fluid">
-  <div class="row">
-    <div mwlResizable
-      [enableGhostResize]="true"
-      [resizeEdges]="{bottom: true, right: true, top: true, left: true}"
-      (resizeEnd)="onResizeEnd($event)" 
-      class="col-md-2 nopadding bord" *ngIf="currentUser">
-        <div class="cust-side-nav-bg">
-            <div class="side-nav-header cust-padding">
-                <h3 class="text-center">PMMSC</h3>
-                <p>Module Id: GICLS101</p>
-                <p>Database: PCIC</p>
-                <p>Server Time: 12:01 PM</p>
-                <p>User Id: chrisjeriel</p>
-            </div>
-            <div class="side-nav-body">
-                <a routerLink="/">Home</a>
-                <a routerLink="/quotation">Quotation</a>
-                <a routerLink="/quotation-inquiry">Underwriting</a>
-                <a routerLink="/quotation">Accounting</a>
-                <a routerLink="/quotation">Claims</a>
-                <a routerLink="/quotation">Security</a>
-                <a routerLink="/dummy">Available Components</a>
-            </div>
-        </div>
-    </div>
-    <div class="col-md nopadding">
-        <div class="">
-            <nav class="navbar navbar-expand-lg navbar-light cust-nav-bar-bg justify-content-end" *ngIf="currentUser">
-                <div class="navbar-nav">
-                    <a class="nav-item nav-link" routerLink="/"><fa name="home"></fa></a>
-                    <a class="nav-item nav-link" routerLink="/notes"><fa name="bell"></fa></a>
-                    <a class="nav-item nav-link" (click)="logout()"><fa name="sign-out"></fa></a>
-                </div>
-            </nav>
-            <div class="mainContentPad">
-                <alert></alert>
-                <router-outlet></router-outlet>
-            </div>
-        </div>
-    </div>
-  </div>
-</div> -->
-
+﻿<style>
+    .btn-link:hover {
+        color: #0056b3;
+        text-decoration: none;
+        background-color: transparent;
+        border-color: transparent;
+        background-color: #f1f1f1;
+        width: 95%;
+        text-align: left;
+    }
+</style>
 
 <ng-sidebar-container style="position: static;" (onBackdropClicked)="_onBackdropClicked()">
   <ng-sidebar
@@ -50,13 +17,11 @@
     [keyClose]="_keyClose"
     [position]="'left'"
     [dock]="'true'"
-    [dockedSize]="'50px'"
+    [dockedSize]="'0px'"
     [sidebarClass]="'demo-sidebar'"
     [closeOnClickOutside]="_closeOnClickOutside" *ngIf="currentUser">
     
     <div class="cust-ng-sidebar">
-      <!-- <button hidden class="demo-control" style="float: right;" (click)="_toggleOpened()"> >> </button>
-      <button hidden class="demo-control" style="float: right;" (click)="_toggleCloseOnClickOutside()">Auto = {{_closeOnClickOutside}}</button> -->
       <div class="cust-side-nav-bg">
           <div class="side-nav-header">
                 <h3 align="center">
