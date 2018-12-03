@@ -23,7 +23,7 @@ export class QuoteOptionComponent implements OnInit {
 
   otherRatesTableData: any[] = [];
   otherRatesTHeader: any[] = ['Others', 'Amounts', 'Deductible/Remarks', 'Actions'];
-  otherRatesDataType:any[] = ['text','currency','text'];
+  otherRatesDataType:any[] = ['text','percent','text'];
   otherRatesNData: QuotationOtherRates = new QuotationOtherRates(null,null,null);
 
   constructor(private quotationService: QuotationService) { }

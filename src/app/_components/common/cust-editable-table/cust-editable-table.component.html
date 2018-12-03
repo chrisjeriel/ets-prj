@@ -78,8 +78,8 @@
 	  	<td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]">
 	  		<div>
 	  			<i *ngIf="magnifyingGlass.indexOf(key)!=-1" class="fa fa-search"></i> &nbsp;
-	  			<input *ngSwitchCase="'percent'" class="editable-text text-right" type="text" [ngModel]="processData(key, data) | number:'1.7-7'" (ngModelChange)="onChange(tableData[ti])" >
-	  			<input *ngSwitchCase="'currency'" class="editable-text text-right" type="text" [value]="processData(key, data) | number:'1.2-2'">
+	  			<input *ngSwitchCase="'percent'" class="editable-text text-right number" type="text" [ngModel]="processData(key, data) | number:'1.7-7'" (ngModelChange)="onChange(tableData[ti])" >
+	  			<input *ngSwitchCase="'currency'" class="editable-text text-right number" type="text" [value]="processData(key, data) | number:'1.2-2'">
 		  		<input *ngSwitchCase="'checkbox'" type="checkbox">
 		  		<select *ngSwitchCase="'select'" class="editable-text" [value]="processData(key, data)">
 		  			<option>Option A</option>

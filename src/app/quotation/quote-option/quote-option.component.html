@@ -18,6 +18,11 @@
 		<app-cust-editable-table [checkFlag]="true" [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="quoteOptionNData" [tableData]="quoteOptionTableData" [tHeader]="quoteOptionTHeader" [dataTypes]="quoteOptionDataType" [magnifyingGlass]="magnifyingGlass" ></app-cust-editable-table>
 	</fieldset>
 
+	<!-- <fieldset class="scheduler-border">
+		<legend class="scheduler-border">Quotation Other Rates</legend>
+		<app-cust-editable-table [checkFlag]="true" [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="otherRatesNData" [tableData]="otherRatesTableData" [tHeader]="otherRatesTHeader" [dataTypes]="otherRatesDataType"></app-cust-editable-table>
+	</fieldset> -->
+
 	<fieldset class="scheduler-border">
 		<legend class="scheduler-border">Quotation Other Rates</legend>
 		<app-cust-editable-table [checkFlag]="true" [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="otherRatesNData" [tableData]="otherRatesTableData" [tHeader]="otherRatesTHeader" [dataTypes]="otherRatesDataType"></app-cust-editable-table>
@@ -26,8 +31,8 @@
 	<div class="form-row">
 		<div class="form-group col-sm-6">
 			<div class="float-sm-right">
+				<button type="button" class="btn btn-sm cust-btn-bg">Cancel</button>	
 				<button type="button" class="btn btn-sm cust-btn-bg" (click)="save()">Save</button>
-				<button type="button" class="btn btn-sm cust-btn-bg">Cancel</button>
 			</div>
 		</div>
 	</div>

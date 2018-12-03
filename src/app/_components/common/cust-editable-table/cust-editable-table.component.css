@@ -89,7 +89,6 @@ div.input-group {
 }
 
 .editable-text {
-	width: 80%;
 	padding: 0px;
 	border: none;
 	background-color: inherit;
@@ -108,4 +107,12 @@ div.input-group {
 
 .editable-checkbox {
 	padding: 1em !important;
+}
+
+.fa-search{
+	float: left;
+}
+
+.number{
+	float: right;
 }

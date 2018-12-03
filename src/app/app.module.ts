@@ -36,7 +36,7 @@ import { HoldCoverMonitoringListComponent } from './quotation/quotation-inquiry/
 
 import { NotesComponent } from './notes/notes.component';;
 import { QuotationProcessingComponent } from './quotation/quotation-processing/quotation-processing.component';
-import { CustEditableNonDatatableTableComponent } from './_components/common/cust-editable-non-datatable-table/cust-editable-non-datatable-table.component'
+
 @NgModule({
     imports: [
         BrowserModule,
