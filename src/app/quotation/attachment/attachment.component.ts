@@ -33,7 +33,6 @@ export class AttachmentComponent implements OnInit {
   	this.tHeader.push("File Path");
   	this.tHeader.push("Description");
   	this.tHeader.push("Table Code");
-  	this.tHeader.push("Actions");
 
   	this.options.push("");
   	this.options.push("Q - Quotation");
