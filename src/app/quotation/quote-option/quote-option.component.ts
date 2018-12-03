@@ -14,7 +14,7 @@ export class QuoteOptionComponent implements OnInit {
   private quotationOtherRates: QuotationOtherRates;
 
   quoteOptionTableData: any[] = [];
-  quoteOptionTHeader : any[] = ['Option No','Rate(%)','Conditions','Comm Rate Fac(%)','Comm Rate Quota(%)', 'Comm Rate Surplus(%)', 'Actions'];
+  quoteOptionTHeader : any[] = ['Option No','Rate(%)','Conditions','Comm Rate Fac(%)','Comm Rate Quota(%)', 'Comm Rate Surplus(%)'];
   quoteOptionDataType: any[] = ['text','percent','text','percent','percent','percent'];
   quoteOptionNData: QuotationOption = new QuotationOption(null,null,null,null,null,null);
   magnifyingGlass:any[] = ['commRateFac'];
