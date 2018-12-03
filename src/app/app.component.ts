@@ -10,7 +10,7 @@ import { User } from './_models';
     templateUrl: 'app.component.html',
 })
 export class AppComponent {
-    datetime: Date;
+    datetime: number;
     currentUser: User;
     public style: object = {};
 
