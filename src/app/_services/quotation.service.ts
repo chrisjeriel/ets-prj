@@ -158,9 +158,8 @@ export class QuotationService {
 
         /*intCompAdvInfo Data Array*/
         this.intCompAdvInfo = [
-            new IntCompAdvInfo(1, 'CPI', 'Carino Engelbert', 'IT', 'Y', 'excellent', 'etcarino', new Date(), 'etcarino', new Date()),
-            new IntCompAdvInfo(2, 'CPI', 'Qwerty 123', 'Developer', 'N', 'good', 'etcarino', new Date(), 'etcarino', new Date()),
-            new IntCompAdvInfo(3, 'CPI', 'ABCDE 246', 'SA', 'Y', 'very good', 'etcarino', new Date(), 'etcarino', new Date()),
+            new IntCompAdvInfo(1, 'CPI', 'Qwerty 123', 'Developer', 'N', 'good', 'etc', new Date(), 'etc', new Date()),
+            new IntCompAdvInfo(2, 'CPI', 'ABCDE 246', 'SA', 'Y', 'very good', 'etc', new Date(), 'etc', new Date())
         ];
 
         /*return this.http.get<User[]>(`${environment.apiUrl}/quotation`);*/

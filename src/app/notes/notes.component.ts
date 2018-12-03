@@ -36,7 +36,7 @@ export class NotesComponent implements OnInit {
   	this.dataTypes.push("datetime");
 
   	this.opts.push({selector: "type", vals:["Reminder", "Note"]},
-                   {selector: "status", vals:["Pending", "On Going", "Done"]});
+  				   {selector: "status", vals:["N/A", "Pending", "Done"]});
 
   	this.tableData = this.notesService.getNotesReminders();
   }
