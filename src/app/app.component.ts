@@ -10,6 +10,7 @@ import { User } from './_models';
     templateUrl: 'app.component.html',
 })
 export class AppComponent {
+    datetime: Date;
     currentUser: User;
     public style: object = {};
 
@@ -17,18 +18,21 @@ export class AppComponent {
     private _closeOnClickOutside: boolean = true; /*must be added*/
 
     private _toggleOpened(): void {
-      this._opened = !this._opened;
+        this._opened = !this._opened;
     }
 
     private _toggleCloseOnClickOutside(): void {
-      this._closeOnClickOutside = !this._closeOnClickOutside;
+        this._closeOnClickOutside = !this._closeOnClickOutside;
     }
 
     constructor(
-        private router: Router,
-        private authenticationService: AuthenticationService
+    private router: Router,
+     private authenticationService: AuthenticationService
     ) {
         this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+        setInterval(() => {
+            this.datetime = Date.now();
+        }, 1);
     }
 
     logout() {
