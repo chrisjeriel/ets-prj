@@ -78,16 +78,20 @@
 	  	<td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]">
 	  		<div>
 	  			<i *ngIf="magnifyingGlass.indexOf(key)!=-1" class="fa fa-search"></i> &nbsp;
-	  			<input *ngSwitchCase="'percent'" class="editable-text text-right number" type="text" [ngModel]="processData(key, data) | number:'1.7-7'" (ngModelChange)="onChange(tableData[ti])" >
-	  			<input *ngSwitchCase="'currency'" class="editable-text text-right number" type="text" [value]="processData(key, data) | number:'1.2-2'">
+	  			<input *ngSwitchCase="'percent'" class="editable-text text-right number" type="text" [ngModel]="processData(key, data) | number:'1.7-7'" 
+	  			(ngModelChange)="onChange(tableData[ti],ti,key,$event)" >
+	  			<input *ngSwitchCase="'currency'" class="editable-text text-right number" type="text" [value]="processData(key, data) | number:'1.2-2'"
+	  			(ngModelChange)="onChange(tableData[ti],ti,key,$event)">
 		  		<input *ngSwitchCase="'checkbox'" type="checkbox">
-		  		<select *ngSwitchCase="'select'" class="editable-text" [value]="processData(key, data)">
+		  		<select *ngSwitchCase="'select'" class="editable-text" [value]="processData(key, data)" (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
 		  			<option>Option A</option>
 		  			<option>Option B</option>
 		  			<option>Option C</option>
 		  		</select>
-		  		<input *ngSwitchCase="'date'" class="editable-text" type="text" [value]="processData(key, data) | date:'MM-dd-yyyy'">
-		  		<input *ngSwitchDefault class="editable-text " type="text" [ngModel]="processData(key, data)" (ngModelChange)="tableData[ti][key]=$event">
+		  		<input *ngSwitchCase="'date'" class="editable-text" type="text" [value]="processData(key, data) | date:'MM-dd-yyyy'" 
+		  			(ngModelChange)="onChange(tableData[ti],ti,key,$event)">
+		  		<input *ngSwitchDefault class="editable-text " type="text" [ngModel]="processData(key, data)" (ngModelChange)="tableData[ti][key]=$event"
+		  			(ngModelChange)="onChange(tableData[ti],ti,key,$event)">
 		  	</div>
 	  	</td>
 	  	<td *ngIf="tHeader.indexOf('Edit Flag')!= -1">

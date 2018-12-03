@@ -137,7 +137,7 @@ export class QuotationService {
 
     getQuoteOptions() {
         this.quotataionOption = [
-            new QuotationOption("OPT-001", 5, "Condition", 6, 8, 5),
+            new QuotationOption("OPT-001", 5.05, "Condition", 6, 8, 5),
             new QuotationOption("OPT-002", 8, "Stable", 7, 4, 3),
             new QuotationOption("OPT-003", 9, "Good", 6, 43, 2)
         ];

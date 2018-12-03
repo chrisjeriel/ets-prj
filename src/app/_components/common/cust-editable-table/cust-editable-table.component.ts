@@ -22,6 +22,7 @@ export class CustEditableTableComponent implements OnInit {
   @Input() editFlag;
   @Input() deleteFlag;
   @Input() checkboxFlag;
+  @Input() columnId;
 
   @Input() editedData: any[] = [];
   @Output() editedDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
@@ -69,11 +70,18 @@ export class CustEditableTableComponent implements OnInit {
   	this.tableData.pop();
   }
 
-  onChange(row:any){
-    for(var _i = 0; _i < this.editedData.length; _i++){
-      if(this.editedData[_i][0]==row[0])
-        this.editedData.splice(_i,1);
+  onChange(row:any,index:number,key:any,data:any){
+    exists:Boolean = false;
+    for(var i= 0; i < this.editedData.length; i++){
+      if(this.editedData[i][this.columnId]==row[this.columnId]){
+        this.editedData[i][key]=data;
+        this.exists=true;
+      }
     }
-    this.editedData.push(row);
+    this.tableData[index][key]=data;
+    if(!this.exists){
+      this.editedData.push(row);
+    }
   }
+
 }
