@@ -9,7 +9,8 @@ import { QuotationService } from '../../../_services';
 export class ListOfQuotationsComponent implements OnInit {
     tableData: any[] = [];
     tHeader: any[] = [];
-
+    dataTypes: any[] = [];
+    
     constructor(private quotationService: QuotationService) { 
     }
 
@@ -27,6 +28,19 @@ export class ListOfQuotationsComponent implements OnInit {
         this.tHeader.push("Requested By");
         this.tHeader.push("Created By");
 
+        this.dataTypes.push("text");
+        this.dataTypes.push("text");
+        this.dataTypes.push("text");
+        this.dataTypes.push("text");
+        this.dataTypes.push("text");
+        this.dataTypes.push("text");
+        this.dataTypes.push("text");
+        this.dataTypes.push("text");
+        this.dataTypes.push("date");
+        this.dataTypes.push("date");
+        this.dataTypes.push("text");
+        this.dataTypes.push("text");
+        
         this.tableData = this.quotationService.getQuotationListInfo();
     }
 }
