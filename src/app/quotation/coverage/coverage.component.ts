@@ -27,7 +27,7 @@ export class CoverageComponent implements OnInit {
     this.tHeader.push("Section");
     this.tHeader.push("Bullet No");
     this.tHeader.push("Sum Insured");
-    this.tHeader.push("Sort Se");
+    this.tHeader.push("Sort Sequence");
     this.tHeader.push("Add Sl");
 
     this.dataTypes.push("checkbox");

@@ -51,38 +51,38 @@ export class QuotationService {
     }
     getQuotationListInfo() {
         this.quotationListData = [
-            new QuotationList("CAR-2015-2832-01", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),
-            new QuotationList("CAR-2015-2832-02", "Branch 2", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),
-            new QuotationList("CAR-2015-2832-03", "Branch 5", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),
-            new QuotationList("CAR-2015-2832-04", "Branch 3", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),
-            new QuotationList("CAR-2015-2832-05", "Branch 4", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),
-            new QuotationList("CAR-2015-2832-06", "Branch 8", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),
-            new QuotationList("CAR-2015-2832-07", "Branch 6", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),
-            new QuotationList("CAR-2015-2832-08", "Branch 9", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(),"Inigo Flores", "Cuaresma"),
-            new QuotationList("CAR-2015-2832-09", "Branch 7", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),
-            new QuotationList("CAR-2015-2832-10", "Direct 1", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),
-            new QuotationList("CAR-2015-2832-11", "Direct 3", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),
-            new QuotationList("CAR-2015-2832-12", "Direct 5", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),
-            new QuotationList("CAR-2015-2832-13", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),
+            new QuotationList("CAR-2015-0002832-01", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),
+            new QuotationList("CAR-2015-0002832-02", "Branch 2", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),
+            new QuotationList("CAR-2015-0002832-03", "Branch 5", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),
+            new QuotationList("CAR-2015-0002832-04", "Branch 3", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),
+            new QuotationList("CAR-2015-0002832-05", "Branch 4", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),
+            new QuotationList("CAR-2015-0002832-06", "Branch 8", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),
+            new QuotationList("CAR-2015-0002832-07", "Branch 6", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),
+            new QuotationList("CAR-2015-0002832-08", "Branch 9", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(),"Inigo Flores", "Cuaresma"),
+            new QuotationList("CAR-2015-0002832-09", "Branch 7", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),
+            new QuotationList("CAR-2015-0002832-10", "Direct 1", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),
+            new QuotationList("CAR-2015-0002832-11", "Direct 3", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),
+            new QuotationList("CAR-2015-0002832-12", "Direct 5", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),
+            new QuotationList("CAR-2015-0002832-13", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),
         ];
         return this.quotationListData;
     }
 
     getQuotationHoldCoverInfo() {
         this.holdCoverMonitoringListData = [
-            new HoldCoverMonitoringList("Malayan", "CAR-2015-2832-01", "CAR-2015-01", "Risk 1", "5K Builders & ABE International Corp", new Date(), new Date(), "CAR-2015-00", "Inigo Flores", new Date(), "I - In-force"),
-            new HoldCoverMonitoringList("Malayan", "CAR-2015-2832-02", "CAR-2015-02", "Risk 2", "5K Builders & ABE International Corp", new Date(), new Date(),"CAR-2015-00", "Inigo Flores", new Date(), "I - In-force"),
-            new HoldCoverMonitoringList("Company 3", "CAR-2015-2832-03", "CAR-2015-03", "Risk 3", "5K Builders & ABE International Corp", new Date(), new Date(), "CAR-2015-00", "Inigo Flores", new Date(), "I - In-force"),
-            new HoldCoverMonitoringList("Company 4", "CAR-2015-2832-04", "CAR-2015-04", "Risk 4", "5K Builders & ABE International Corp", new Date(), new Date(),"CAR-2015-00", "Inigo Flores", new Date(), "I - In-force"),
-            new HoldCoverMonitoringList("Company 5", "CAR-2015-2832-05", "CAR-2015-05", "Risk 5", "5K Builders & ABE International Corp", new Date(), new Date(),"CAR-2015-00", "Inigo Flores", new Date(), "I - In-force"),
-            new HoldCoverMonitoringList("Company 6", "CAR-2015-2832-06", "CAR-2015-06", "Risk 6", "5K Builders & ABE International Corp", new Date(), new Date(),"CAR-2015-00", "Inigo Flores", new Date(), "I - In-force"),
-            new HoldCoverMonitoringList("Company 7", "CAR-2015-2832-07", "CAR-2015-07", "Risk 7", "5K Builders & ABE International Corp", new Date(), new Date(),"CAR-2015-00", "Inigo Flores", new Date(), "I - In-force"),
-            new HoldCoverMonitoringList("Company 8", "CAR-2015-2832-08", "CAR-2015-08", "Risk 8", "5K Builders & ABE International Corp", new Date(), new Date(),"CAR-2015-00", "Inigo Flores", new Date(), "I - In-force"),
-            new HoldCoverMonitoringList("Company 9", "CAR-2015-2832-09", "CAR-2015-09", "Risk 9", "5K Builders & ABE International Corp", new Date(), new Date(),"CAR-2015-00", "Inigo Flores", new Date(), "I - In-force"),
-            new HoldCoverMonitoringList("Company 10", "CAR-2015-2832-10", "CAR-2015-10", "Risk 10", "5K Builders & ABE International Corp", new Date(), new Date(), "CAR-2015-00", "Inigo Flores", new Date(), "I - In-force"),
-            new HoldCoverMonitoringList("Company 11", "CAR-2015-2832-11", "CAR-2015-11", "Risk 11", "5K Builders & ABE International Corp", new Date(), new Date(), "CAR-2015-00", "Inigo Flores", new Date(), "I - In-force"),
-            new HoldCoverMonitoringList("Company 12", "CAR-2015-2832-12", "CAR-2015-12", "Risk 12", "5K Builders & ABE International Corp", new Date(), new Date(), "CAR-2015-00", "Inigo Flores", new Date(), "I - In-force"),
-            new HoldCoverMonitoringList("Company 13", "CAR-2015-2832-13", "CAR-2015-13", "Risk 13", "5K Builders & ABE International Corp", new Date(), new Date(), "CAR-2015-00", "Inigo Flores", new Date(), "I - In-force"),
+            new HoldCoverMonitoringList("Malayan", "CAR-2015-0002832-01", "CAR-2015-01", "Risk 1", "5K Builders & ABE International Corp", new Date(), new Date(), "CAR-2015-00", "Inigo Flores", new Date(), "I - In-force"),
+            new HoldCoverMonitoringList("Malayan", "CAR-2015-0002832-02", "CAR-2015-02", "Risk 2", "5K Builders & ABE International Corp", new Date(), new Date(),"CAR-2015-00", "Inigo Flores", new Date(), "I - In-force"),
+            new HoldCoverMonitoringList("Company 3", "CAR-2015-0002832-03", "CAR-2015-03", "Risk 3", "5K Builders & ABE International Corp", new Date(), new Date(), "CAR-2015-00", "Inigo Flores", new Date(), "I - In-force"),
+            new HoldCoverMonitoringList("Company 4", "CAR-2015-0002832-04", "CAR-2015-04", "Risk 4", "5K Builders & ABE International Corp", new Date(), new Date(),"CAR-2015-00", "Inigo Flores", new Date(), "I - In-force"),
+            new HoldCoverMonitoringList("Company 5", "CAR-2015-0002832-05", "CAR-2015-05", "Risk 5", "5K Builders & ABE International Corp", new Date(), new Date(),"CAR-2015-00", "Inigo Flores", new Date(), "I - In-force"),
+            new HoldCoverMonitoringList("Company 6", "CAR-2015-0002832-06", "CAR-2015-06", "Risk 6", "5K Builders & ABE International Corp", new Date(), new Date(),"CAR-2015-00", "Inigo Flores", new Date(), "I - In-force"),
+            new HoldCoverMonitoringList("Company 7", "CAR-2015-0002832-07", "CAR-2015-07", "Risk 7", "5K Builders & ABE International Corp", new Date(), new Date(),"CAR-2015-00", "Inigo Flores", new Date(), "I - In-force"),
+            new HoldCoverMonitoringList("Company 8", "CAR-2015-0002832-08", "CAR-2015-08", "Risk 8", "5K Builders & ABE International Corp", new Date(), new Date(),"CAR-2015-00", "Inigo Flores", new Date(), "I - In-force"),
+            new HoldCoverMonitoringList("Company 9", "CAR-2015-0002832-09", "CAR-2015-09", "Risk 9", "5K Builders & ABE International Corp", new Date(), new Date(),"CAR-2015-00", "Inigo Flores", new Date(), "I - In-force"),
+            new HoldCoverMonitoringList("Company 10", "CAR-2015-0002832-10", "CAR-2015-10", "Risk 10", "5K Builders & ABE International Corp", new Date(), new Date(), "CAR-2015-00", "Inigo Flores", new Date(), "I - In-force"),
+            new HoldCoverMonitoringList("Company 11", "CAR-2015-0002832-11", "CAR-2015-11", "Risk 11", "5K Builders & ABE International Corp", new Date(), new Date(), "CAR-2015-00", "Inigo Flores", new Date(), "I - In-force"),
+            new HoldCoverMonitoringList("Company 12", "CAR-2015-0002832-12", "CAR-2015-12", "Risk 12", "5K Builders & ABE International Corp", new Date(), new Date(), "CAR-2015-00", "Inigo Flores", new Date(), "I - In-force"),
+            new HoldCoverMonitoringList("Company 13", "CAR-2015-0002832-13", "CAR-2015-13", "Risk 13", "5K Builders & ABE International Corp", new Date(), new Date(), "CAR-2015-00", "Inigo Flores", new Date(), "I - In-force"),
         ];
         return this.holdCoverMonitoringListData;
     }
@@ -123,11 +123,11 @@ export class QuotationService {
 
     getQuoProcessingData() {
         this.quoProcessingData = [
-            new QuotationProcessing('CAR-2015-0289-01', 'Direct', 'CAR Wet Risks', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', new Date('2015-02-09'),
+            new QuotationProcessing('CAR-2015-0000289-01', 'Direct', 'CAR Wet Risks', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', new Date('2015-02-09'),
                 new Date('2015-03-09'), 'Inigo Flores', 'cuaresma'),
-            new QuotationProcessing('CAR-2015-0289-02', 'Direct', 'CAR Wet Risks', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', new Date('2015-02-09'),
+            new QuotationProcessing('CAR-2015-0000289-02', 'Direct', 'CAR Wet Risks', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', new Date('2015-02-09'),
                 new Date('2015-03-09'), 'Inigo Flores', 'cuaresma'),
-            new QuotationProcessing('CAR-2015-0289-03', 'Direct', 'CAR Wet Risks', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', new Date('2015-02-09'),
+            new QuotationProcessing('CAR-2015-0000289-03', 'Direct', 'CAR Wet Risks', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', new Date('2015-02-09'),
                 new Date('2015-03-09'), 'Inigo Flores', 'cuaresma'),
         ];
 
