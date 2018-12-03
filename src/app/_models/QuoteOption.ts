@@ -4,7 +4,7 @@ export class QuotationInfo {
 }
 
 export class QuotationOption{
-	optionNo: number;
+	optionNo: string;
 	rate: number;
 	conditions:string;
 	commRateFac:number;
