@@ -5,7 +5,7 @@ import { IntCompAdvInfo } from '@app/_models';
 @Component({
   selector: 'app-internal-competition',
   templateUrl: './internal-competition.component.html',
-  styleUrls: ['./internal-competition.component.css']
+  styleUrls: ['./internal-competition.component.css' ]
 })
 export class InternalCompetitionComponent implements OnInit {
   tableData: any[] = [];

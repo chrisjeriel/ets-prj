@@ -1,32 +1,28 @@
-<div>	
-	<div>
-		<fieldset class="scheduler-border"> 
-			<legend class="scheduler-border">Quotation Info</legend>
-				<div class="form-row custom-row-inline-inset">
-					<div class="input-group" >
-						<label class="form-control-sm col-sm-2" for="inputQuonum">Quotation No </label>
-				    	<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm" placeholder="CAR-2015-0289-04" disabled="disabled">
-				    	<label class="form-control-sm col-sm-2" for="inputInname" >Insured</label>
-				    	<input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-5" placeholder="Insured Name" disabled="disabled">
-					</div>
+<div>
+	<fieldset class="scheduler-border"> 
+		<legend class="scheduler-border">Quotation Info</legend>
+			<div class="form-row custom-row-inline-inset">
+				<div class="input-group" >
+					<label class="form-control-sm col-sm-2" for="inputQuonum">Quotation No </label>
+				    <input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm" placeholder="CAR-2015-0289-04" disabled="disabled">
+				    <label class="form-control-sm col-sm-2" for="inputInname" >Insured</label>
+				    <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-5" placeholder="Insured Name" disabled="disabled">
 				</div>
-		</fieldset>
-	</div>
-	<div>
-		<fieldset class="scheduler-border">
-			<legend class="scheduler-border">Advice Details	</legend>
-
-				<app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData" [tHeader]="tHeader"  [dataTypes]="dataTypes" [magnifyingGlass]="magnifyingGlass" [checkFlag]="true"  ></app-cust-editable-table>
-		</fieldset>
-	</div>
-    <div class="row">
-       <div class="form-group col-sm">
-       		<div class="text-center">
-				<button class="btn btn-sm cust-btn-bg" (click)="onClickPrint()">Print</button>
-            	<button class="btn btn-sm cust-btn-bg" type="button" (click)="onClickCancel()">Cancel</button>
-            	<button class="btn btn-sm cust-btn-bg" type="button" (click)="onClickSave()">Save</button>
-       		</div>
-  		</div>
-    </div>
-
+			</div>
+	</fieldset>
+</div>
+<div>
+	<fieldset class="scheduler-border">
+		<legend class="scheduler-border">Advice Details	</legend>
+			<app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData" [tHeader]="tHeader"  [dataTypes]="dataTypes" [magnifyingGlass]="magnifyingGlass" [checkFlag]="true"  ></app-cust-editable-table>
+	</fieldset>
+</div>
+<div class="row">
+      <div class="form-group col-sm">
+       	<div class="text-center">
+			<button class="btn btn-sm cust-btn-bg" (click)="onClickPrint()">Print</button>
+            <button class="btn btn-sm cust-btn-bg" type="button" (click)="onClickCancel()">Cancel</button>
+            <button class="btn btn-sm cust-btn-bg" type="button" (click)="onClickSave()">Save</button>
+       	</div>
+  	</div>
 </div>
