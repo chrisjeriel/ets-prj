@@ -12,7 +12,7 @@ export class QuoteEndorsementComponent implements OnInit {
   private quotationInfo: QuotationInfo;
   private quoteEndorsement: QuoteEndorsement;
   tableData: any[] = [];
-  tHeader: any[] = ['Endt Title', 'Endt Description', 'Wording','Edit Flag'];
+  tHeader: any[] = ['Endt Title', 'Endt Description', 'Wording'];
   magnifyingGlass: any[]=["endtDescription"]
   nData: QuoteEndorsement = new QuoteEndorsement(null, null, null);
   constructor(private quotationService: QuotationService) { }
