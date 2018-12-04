@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CreatePARComponent } from './create-par.component';
+import { PolEndorsementComponent } from './pol-endorsement.component';
 
-describe('CreatePARComponent', () => {
-  let component: CreatePARComponent;
-  let fixture: ComponentFixture<CreatePARComponent>;
+describe('PolEndorsementComponent', () => {
+  let component: PolEndorsementComponent;
+  let fixture: ComponentFixture<PolEndorsementComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CreatePARComponent ]
+      declarations: [ PolEndorsementComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CreatePARComponent);
+    fixture = TestBed.createComponent(PolEndorsementComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
