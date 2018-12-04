@@ -36,7 +36,7 @@ import { HoldCoverMonitoringListComponent } from './quotation/quotation-inquiry/
 
 import { NotesComponent } from './notes/notes.component';;
 import { QuotationProcessingComponent } from './quotation/quotation-processing/quotation-processing.component';
-import { ParListingComponent } from './par-listing/par-listing.component';
+import { ParListingComponent } from './underwriting/policy-issuance/par-listing/par-listing.component';
 import { PolEndorsementComponent } from './underwriting/policy-issuance/pol-endorsement/pol-endorsement.component';
 import { PolCoInsuranceComponent } from './underwriting/policy-issuance/pol-co-insurance/pol-co-insurance.component';
 import { PolicyIssuanceComponent } from './underwriting/policy-issuance/policy-issuance.component';
