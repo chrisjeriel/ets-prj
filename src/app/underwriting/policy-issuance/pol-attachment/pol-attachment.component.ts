@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {NgbDropdownConfig} from '@ng-bootstrap/ng-bootstrap';
 import { PolAttachmentInfo } from '@app/_models';
-import { QuotationService } from '@app/_services';
+import { UnderwritingService } from '@app/_services';
 
 @Component({
   selector: 'app-pol-attachment',
@@ -16,14 +16,14 @@ export class PolAttachmentComponent implements OnInit {
    nData: PolAttachmentInfo = new PolAttachmentInfo(null, null);
    options: any[] = ["","Q - Quotation", "P - Policy", "C - Claim", "A - Accounting"];
 
-  constructor(config: NgbDropdownConfig,private quotationService: QuotationService) { 
+  constructor(config: NgbDropdownConfig,private underwritingService: UnderwritingService) { 
     config.placement = 'bottom-right';
     config.autoClose = false;
   }
 
   ngOnInit() {
 
-    this.tableData = this.quotationService.getAttachment();
+    this.tableData = this.underwritingService.getPolAttachment();
   }
 
 }

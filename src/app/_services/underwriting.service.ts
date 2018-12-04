@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { DummyInfo } from '@app/_models';
+import { DummyInfo , PolAttachmentInfo } from '@app/_models';
 
 @Injectable({ providedIn: 'root' })
 export class UnderwritingService {
 
     dummyInfoData: DummyInfo[] = [];
+    polAttachmentInfoData: PolAttachmentInfo[] = [];
+
 
     constructor(private http: HttpClient) {
 
@@ -32,4 +34,14 @@ export class UnderwritingService {
         /*return this.http.get<User[]>(`${environment.apiUrl}/quotation`);*/
         return this.dummyInfoData;
     }
+
+    getPolAttachment() {
+        this.polAttachmentInfoData = [
+            new PolAttachmentInfo("Libraries\Attachments", "NBI Form"),
+            new PolAttachmentInfo("Libraries\Attachments", "NSO Birth Certificate")
+        ];
+
+        return this.polAttachmentInfoData;
+    }
+
 }
