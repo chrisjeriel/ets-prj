@@ -16,7 +16,7 @@ export class PolEndorsementComponent implements OnInit {
     options: any[] = [];
     dataTypes: any[] = [];
     nData: QuoteEndorsement = new QuoteEndorsement(null, null, null);
-    alteration: boolean = true;
+    alteration: boolean = false;
 
    constructor(config: NgbDropdownConfig, private quotationService: QuotationService) { 
   	config.placement = 'bottom-right';
