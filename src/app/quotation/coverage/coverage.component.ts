@@ -20,6 +20,13 @@ export class CoverageComponent implements OnInit {
 
   constructor(private quotationService: QuotationService, private notesService: NotesService) { }
 
+  // temporary::: this should be deleted
+  policyNo: boolean = false;
+  pol(event) {
+    this.policyNo = true;
+  }
+  // temporary::: this should be deleted
+
   ngOnInit() {
 
     this.tHeader.push("");

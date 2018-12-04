@@ -9,7 +9,7 @@ import { QuotationInquiryComponent } from './quotation/quotation-inquiry/quotati
 import { NotesComponent } from './notes/notes.component';
 import { QuotationProcessingComponent } from './quotation/quotation-processing/quotation-processing.component';
 
-import { DummyComponent } from './_components/common/dummy/dummy.component'
+import { DummyComponent } from './_components/common/dummy/dummy.component';
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
