@@ -37,8 +37,8 @@ export class UnderwritingService {
 
     getPolAttachment() {
         this.polAttachmentInfoData = [
-            new PolAttachmentInfo("Libraries\Attachments", "NBI Form"),
-            new PolAttachmentInfo("Libraries\Attachments", "NSO Birth Certificate")
+            new PolAttachmentInfo("Libraries\\Attachments", "NBI Form"),
+            new PolAttachmentInfo("Libraries\\Attachments", "NSO Birth Certificate")
         ];
 
         return this.polAttachmentInfoData;
