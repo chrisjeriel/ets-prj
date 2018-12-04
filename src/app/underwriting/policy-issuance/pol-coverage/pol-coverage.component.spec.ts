@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CoverageComponent } from './coverage.component';
+import { PolCoverageComponent } from './pol-coverage.component';
 
-describe('CoverageComponent', () => {
-  let component: CoverageComponent;
-  let fixture: ComponentFixture<CoverageComponent>;
+describe('PolCoverageComponent', () => {
+  let component: PolCoverageComponent;
+  let fixture: ComponentFixture<PolCoverageComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CoverageComponent ]
+      declarations: [ PolCoverageComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CoverageComponent);
+    fixture = TestBed.createComponent(PolCoverageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

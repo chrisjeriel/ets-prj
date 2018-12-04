@@ -1,17 +1,20 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { DummyInfo } from '@app/_models';
+import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo } from '@app/_models';
 
 @Injectable({ providedIn: 'root' })
 export class UnderwritingService {
 
     dummyInfoData: DummyInfo[] = [];
+    uwcoverageInfoData: UnderwritingCoverageInfo[] = [];
+    uwotherRatesInfoData: UnderwritingOtherRatesInfo[] = [];
 
     constructor(private http: HttpClient) {
 
     }
-    
+
+
     getDummyInfo() {
         /*Dummy Data Array*/
         this.dummyInfoData = [
@@ -31,5 +34,20 @@ export class UnderwritingService {
 
         /*return this.http.get<User[]>(`${environment.apiUrl}/quotation`);*/
         return this.dummyInfoData;
+    }
+
+    getUWCoverageInfo() {
+        this.uwcoverageInfoData = [
+            new UnderwritingCoverageInfo("data", "1", "I", "3", "69000", "Sort C", "70000"),
+            new UnderwritingCoverageInfo("data", "2", 'II', "2", "123000", 'Sort B', "456000")
+        ];
+        return this.uwcoverageInfoData;
+    }
+    getUWOtherRatesInfo() {
+        this.uwotherRatesInfoData = [
+            new UnderwritingOtherRatesInfo("data", "Sample 1", 123000, "Remarks 1"),
+            new UnderwritingOtherRatesInfo("data", "Sample 2", 321000, "Remarks 2"),
+        ];
+        return this.uwotherRatesInfoData;
     }
 }

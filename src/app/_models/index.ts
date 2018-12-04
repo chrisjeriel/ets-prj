@@ -10,3 +10,5 @@ export * from './QuoteOption';
 export * from './IntCompAdvInfo';
 export * from './NotesReminders';
 export * from './QuotationProcessing';
+export * from './UnderwritingCoverageInfo';
+export * from './UnderwritingOtherRatesInfo';
