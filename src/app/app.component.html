@@ -52,13 +52,15 @@
                         <ngb-accordion #acc="ngbAccordion">
                             <ngb-panel title="Policy Issuance">
                                 <ng-template ngbPanelContent>
-                                    <button [routerLink]="['/quotation']" class="button btn btn-link">Create Policy Record</button>
+                                    <button [routerLink]="['/policy-issuance']" class="button btn btn-link">Create PAR</button>
                                     <br/>
-                                    <button [routerLink]="['/dummy']" class="button btn btn-link">Policy Record Listing</button>
+                                    <button [routerLink]="['/quotation']" class="button btn btn-link">Create PAR</button>
                                     <br/>
-                                    <button [routerLink]="['/dummy']" class="button btn btn-link">Create Alteration</button>
+                                    <button [routerLink]="['/dummy']" class="button btn btn-link">PAR Listing</button>
                                     <br/>
-                                    <button [routerLink]="['/dummy']" class="button btn btn-link">Alteration Listing</button>
+                                    <button [routerLink]="['/dummy']" class="button btn btn-link">Create Alteration PAR</button>
+                                    <br/>
+                                    <button [routerLink]="['/dummy']" class="button btn btn-link">Alteration PAR Listing</button>
                                 </ng-template>
                             </ngb-panel>
                             <ngb-panel title="Distribution">
