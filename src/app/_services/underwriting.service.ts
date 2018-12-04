@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { DummyInfo } from '@app/_models';
+import { DummyInfo, PolicyCoInsurance } from '@app/_models';
 
 @Injectable({ providedIn: 'root' })
 export class UnderwritingService {
 
     dummyInfoData: DummyInfo[] = [];
+    coInsuranceData: PolicyCoInsurance[] = [];
 
     constructor(private http: HttpClient) {
 
     }
-    
+
     getDummyInfo() {
         /*Dummy Data Array*/
         this.dummyInfoData = [
@@ -31,5 +32,14 @@ export class UnderwritingService {
 
         /*return this.http.get<User[]>(`${environment.apiUrl}/quotation`);*/
         return this.dummyInfoData;
+    }
+
+    getCoInsurance(){
+        this.coInsuranceData = [
+            new PolicyCoInsurance("Risk 1", "Malayan", 12.2, 10000, 500000),
+            new PolicyCoInsurance("Risk 2", "Company 1", 6.23, 20000, 600000),
+            new PolicyCoInsurance("Risk 3", "Company 2", 15.16, 30000, 700000),
+        ];
+        return this.coInsuranceData;
     }
 }

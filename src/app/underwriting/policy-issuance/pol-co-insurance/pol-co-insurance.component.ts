@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {NgbDropdownConfig} from '@ng-bootstrap/ng-bootstrap';
+import { UnderwritingService } from '../../_services';
+import { PolicyCoInsurance } from '@app/_models';
 
 @Component({
   selector: 'app-pol-co-insurance',
