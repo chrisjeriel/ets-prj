@@ -29,34 +29,10 @@
 	  <div ngbDropdownMenu aria-labelledby="dropdownConfig">
 	  	<div class="dropdown-item">
 	  		<span class="cust-tbl-label">Filter by:</span>
-  			<div class="input-group">
+  			<div class="input-group" *ngFor="let filt of filters">
 			  <div class="input-group-prepend">
 			    <div class="input-group-text">
-			      <input type="checkbox"><span>&nbsp;File Path</span>
-			    </div>
-			  </div>
-			  <input type="text" class="form-control cust-sm">
-			</div>
-			<div class="input-group">
-			  <div class="input-group-prepend">
-			    <div class="input-group-text">
-			      <input type="checkbox"><span>&nbsp;Description</span>
-			    </div>
-			  </div>
-			  <input type="text" class="form-control cust-sm">
-			</div>
-			<div class="input-group">
-			  <div class="input-group-prepend">
-			    <div class="input-group-text">
-			      <input type="checkbox"><span>&nbsp;Table Code</span>
-			    </div>
-			  </div>
-			  <input type="text" class="form-control cust-sm">
-			</div>
-			<div class="input-group">
-			  <div class="input-group-prepend">
-			    <div class="input-group-text">
-			      <input type="checkbox"><span>&nbsp;Insured</span>
+			      <input type="checkbox"><span>&nbsp;{{filt}}</span>
 			    </div>
 			  </div>
 			  <input type="text" class="form-control cust-sm">
@@ -73,6 +49,10 @@
 			<th *ngFor="let tHeader of tHeader">
 				<span class="ui-column-resizer" (mousedown) = "onMouseDown($event)"></span>
 				<span class="gridHeader">{{tHeader}}</span>
+			</th>
+			<th *ngFor="let tHeader of tHeader">
+				<span class="ui-column-resizer" (mousedown) = "onMouseDown($event)"></span>
+				<span class="gridHeader">{{tHeader1}}</span>
 			</th>
 		</tr>
 	</thead>

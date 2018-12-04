@@ -99,10 +99,10 @@
 	  	<td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]">
 	  		<div>
 	  			<a><i *ngIf="magnifyingGlass.indexOf(key)!=-1" class="fa fa-search"></i></a> &nbsp;
-	  			<input *ngSwitchCase="'percent'" class="editable-text text-right number" type="text" [ngModel]="processData(key, data) | number:'1.7-7'" 
+	  			<input *ngSwitchCase="'percent'" class="editable-text text-right number" type="text" [ngModel]="processData(key, data) | number:'1.7-7'" [ngModelOptions]="{updateOn:'blur'}"
 	  			(ngModelChange)="onChange(tableData[ti],ti,key,$event)" >
-	  			<input *ngSwitchCase="'currency'" class="editable-text text-right number" type="text" [value]="processData(key, data) | number:'1.2-2'"
-	  			(ngModelChange)="onChange(tableData[ti],ti,key,$event)">
+	  			<input *ngSwitchCase="'currency'" class="editable-text text-right number" type="text" [ngModel]="processData(key, data) | number:'1.2-2'" [ngModelOptions]="{updateOn:'blur'}"
+	  			(ngModelChange)="onChange(tableData[ti],ti,key,$event)" >
 		  		<input *ngSwitchCase="'checkbox'" type="checkbox">
 		  		<select *ngSwitchCase="'select'" class="editable-select" [value]="processData(key, data)">
 					<ng-container *ngFor="let data of opts">

@@ -32,7 +32,7 @@
                     PMMSC
               </h3>
                 <p>Module Id: QLR101</p>
-                <p>Database: PCIC</p>
+                <p>Database: PMMSC</p>
                 <!--<p>Server Time: Nov 21, 2018 10:32:10 AM</p>-->
                 <p>Server Time: {{datetime | date: 'medium'}}</p>
                 <p>User Id: {{ currentUser.username }}</p>
@@ -52,9 +52,9 @@
                         <ngb-accordion #acc="ngbAccordion">
                             <ngb-panel title="Policy Issuance">
                                 <ng-template ngbPanelContent>
-                                    <button [routerLink]="['/quotation']" class="button btn btn-link">Create Policy Record</button>
+                                    <button [routerLink]="['/policy']" class="button btn btn-link">Create Policy Record</button>
                                     <br/>
-                                    <button [routerLink]="['/dummy']" class="button btn btn-link">Policy Record Listing</button>
+                                    <button [routerLink]="['/quotation']" class="button btn btn-link">Policy Record Listing</button>
                                     <br/>
                                     <button [routerLink]="['/dummy']" class="button btn btn-link">Create Alteration</button>
                                     <br/>

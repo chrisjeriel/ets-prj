@@ -11,6 +11,7 @@ export class HoldCoverMonitoringListComponent implements OnInit {
    tableData: any[] = [];
     tHeader: any[] = [];
     dataTypes: any[] = [];
+    filters: any[] = [];
     
     constructor(private quotationService: QuotationService) { 
     }
@@ -27,6 +28,18 @@ export class HoldCoverMonitoringListComponent implements OnInit {
         this.tHeader.push("Requested By");
         this.tHeader.push("Request Date");
         this.tHeader.push("Status");
+
+        this.filters.push("Ced. Company");
+        this.filters.push("Quotation No.");
+        this.filters.push("Hold Cover No.");
+        this.filters.push("Risk");
+        this.filters.push("Insured");
+        this.filters.push("Period From");
+        this.filters.push("Period To");
+        this.filters.push("Comp. Ref. Hold Cover No.");
+        this.filters.push("Requested By");
+        this.filters.push("Request Date");
+        this.filters.push("Status");
 
         this.dataTypes.push("text");
         this.dataTypes.push("text");

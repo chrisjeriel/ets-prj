@@ -27,7 +27,7 @@ export class CoverageComponent implements OnInit {
     this.tHeader.push("Section");
     this.tHeader.push("Bullet No");
     this.tHeader.push("Sum Insured");
-    this.tHeader.push("Sort Se");
+    this.tHeader.push("Sort Sequence");
     this.tHeader.push("Add Sl");
 
     this.dataTypes.push("checkbox");
@@ -40,7 +40,7 @@ export class CoverageComponent implements OnInit {
 
     this.selOptions.push({ selector: "section", vals: ["I", "II", "III"] });
     this.selOptions.push({ selector: "bulletNo", vals: ["1", "2", "3"] });
-    this.selOptions.push({ selector: "sortSe", vals: ["Sort A", "Sort B", "Sort C"] });
+    this.selOptions.push({ selector: "sortSe", vals: ["10", "20", "30"] });
 
 
 

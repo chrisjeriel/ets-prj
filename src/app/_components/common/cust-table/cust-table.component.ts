@@ -18,6 +18,7 @@ export class CustTableComponent implements OnInit {
     @Input() tHeader: any[] = [];
     @Input() expireFilter: boolean;
     @Input() dataTypes: any[] = [];
+    @Input() filters: any[] = [];
     dataKeys: any[] = [];
     start:    any;
     pressed:  any;

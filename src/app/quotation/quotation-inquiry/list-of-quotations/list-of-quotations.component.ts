@@ -10,6 +10,7 @@ export class ListOfQuotationsComponent implements OnInit {
     tableData: any[] = [];
     tHeader: any[] = [];
     dataTypes: any[] = [];
+    filters: any[] = [];
     
     constructor(private quotationService: QuotationService) { 
     }
@@ -27,6 +28,19 @@ export class ListOfQuotationsComponent implements OnInit {
         this.tHeader.push("Validity Date");
         this.tHeader.push("Requested By");
         this.tHeader.push("Created By");
+
+        this.filters.push("Quotation No.");
+        this.filters.push("Branch");
+        this.filters.push("Line Class");
+        this.filters.push("Quote Status");
+        this.filters.push("Company");
+        this.filters.push("Principal");
+        this.filters.push("Contractor");
+        this.filters.push("Insured");
+        this.filters.push("Quote Date");
+        this.filters.push("Validity Date");
+        this.filters.push("Requested By");
+        this.filters.push("Created By");
 
         this.dataTypes.push("text");
         this.dataTypes.push("text");

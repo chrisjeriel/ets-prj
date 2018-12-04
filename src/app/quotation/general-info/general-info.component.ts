@@ -14,7 +14,7 @@ export class GeneralInfoComponent implements OnInit {
 	constructor() { }
 	ngOnInit() {
 		this.quotationGenInfo = new QuotationGenInfo();
-		this.quotationGenInfo.line;
+		this.quotationGenInfo.line = "EN";
 		this.quotationGenInfo.year = new Date().getFullYear();
 		this.quotationGenInfo.seqNo;
 		this.quotationGenInfo.reqSeq;
