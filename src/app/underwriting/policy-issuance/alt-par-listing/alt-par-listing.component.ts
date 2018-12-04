@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { UnderwritingService } from '../../../_services';
 
 @Component({
-  selector: 'app-par-listing',
-  templateUrl: './par-listing.component.html',
-  styleUrls: ['./par-listing.component.css']
+  selector: 'app-alt-par-listing',
+  templateUrl: './alt-par-listing.component.html',
+  styleUrls: ['./alt-par-listing.component.css']
 })
-export class ParListingComponent implements OnInit {
+export class AltParListingComponent implements OnInit {
   tableData: any[] = [];
   tHeader: any[] = [];
   dataTypes: any[] = [];
@@ -42,7 +42,7 @@ export class ParListingComponent implements OnInit {
     this.dataTypes.push("text");
     this.dataTypes.push("text");
 
-  	this.tableData = this.uwService.getParListing();
+  	this.tableData = this.uwService.getAltParListing();
   }
 
 }

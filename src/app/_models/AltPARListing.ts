@@ -1,4 +1,4 @@
-export class PARListing {
+export class AltPARListing {
 	parNo: string;
     status: string;
 	branch: string;
