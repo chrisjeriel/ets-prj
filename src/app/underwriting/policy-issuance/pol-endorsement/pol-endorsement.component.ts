@@ -29,7 +29,7 @@ export class PolEndorsementComponent implements OnInit {
         this.tHeader.push("Endt Description");
         this.tHeader.push("Wording");
         this.tHeader.push("Edit Flag");
-        this.tHeader.push("Actions");
+        //this.tHeader.push("Actions");
         
         this.tableData = this.quotationService.getEndorsements();
     }

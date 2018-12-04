@@ -31,7 +31,7 @@ export class PolCoInsuranceComponent implements OnInit {
         this.tHeader.push("Share Percentage");
         this.tHeader.push("Share Sum Insured");
         this.tHeader.push("Share Premium");
-        this.tHeader.push("Actions");
+        //this.tHeader.push("Actions");
         
         //this.dataTypes.push("checkbox");
         this.dataTypes.push("string");
