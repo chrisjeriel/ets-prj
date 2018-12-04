@@ -37,6 +37,7 @@ import { HoldCoverMonitoringListComponent } from './quotation/quotation-inquiry/
 import { NotesComponent } from './notes/notes.component';;
 import { QuotationProcessingComponent } from './quotation/quotation-processing/quotation-processing.component';
 import { PolAttachmentComponent } from './underwriting/policy/pol-attachment/pol-attachment.component';
+import { PolicyIssuanceComponent } from './underwriting/policy-issuance/policy-issuance.component';
 
 @NgModule({
     imports: [
@@ -77,7 +78,8 @@ import { PolAttachmentComponent } from './underwriting/policy/pol-attachment/pol
         DummyComponent,
         CustTableComponent,
         CustEditableTableComponent,
-        PolAttachmentComponent],
+        PolAttachmentComponent,
+        PolicyIssuanceComponent,],
 
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
