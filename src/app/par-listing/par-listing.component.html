@@ -1,14 +1,10 @@
 <div class="cust-tabs-container">
-	<h4>Quotation / Quotation Processing</h4>
+	<h4>Underwriting / Policy Issuance</h4>
 	<ngb-tabset>
-	  <ngb-tab class="ngb-tab" title="List of Quotations">
+	  <ngb-tab class="ngb-tab" title="PAR Listing">
 	    <ng-template ngbTabContent>
 
 	    	<!-- <app-cust-editable-table [addFlag]="true" [editFlag]="true" [deleteFlag]="false" [nData]="nData" [tableData]="tableData" [tHeader]="tHeader"></app-cust-editable-table> -->
-	    	
-	    	<br />
-	    	<button class="cust-btn" routerLink="/quotation"><a>Add</a></button>
-			<button class="cust-btn" routerLink="/quotation"><a>Edit</a></button>
 			
 	    	<app-cust-table [filters]="filters" [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes"></app-cust-table>
 
@@ -16,6 +12,3 @@
 	  </ngb-tab>
 	</ngb-tabset>
 </div>
-
-<hr />
-<app-par-listing></app-par-listing>
