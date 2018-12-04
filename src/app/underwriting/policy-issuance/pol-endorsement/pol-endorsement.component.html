@@ -1,0 +1,53 @@
+<div *ngIf="!alteration">
+	<fieldset class="scheduler-border">
+		<legend class="scheduler-border" >PAR Info</legend>
+		<div class="form-row custom-row-inline-inset">
+			<div class="input-group">
+				<label class="form-control-sm col-sm-1" for="xx">PAR No</label>
+				<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-2" placeholder="PAR-2015"
+				 readonly>
+				<label class="form-control-sm col-sm-1" for="xx">Insured</label>
+				<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-7" placeholder="Insured Name"
+				 readonly>
+			</div>
+		</div>
+	</fieldset>
+</div>
+<div *ngIf="alteration">
+	<fieldset class="scheduler-border">
+		<legend class="scheduler-border" >PAR Info</legend>
+		<div class="form-row custom-row-inline-inset">
+			<div class="input-group">
+				<label class="form-control-sm col-sm-1" for="xx">PAR No</label>
+				<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-2" placeholder="PAR-2015"
+				 readonly>
+				<label class="form-control-sm col-sm-1" for="xx">Insured</label>
+				<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-7" placeholder="Insured Name"
+				 readonly>
+			</div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-1" for="xx">Policy No</label>
+				<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-2" placeholder="POL-2015"
+				 readonly>
+            </div>
+		</div>
+	</fieldset>
+</div>
+<div>
+	<fieldset class="scheduler-border">
+		 <legend class="scheduler-border">Attached Files</legend>
+		 	<app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [tableData]="tableData" [tHeader]="tHeader" [checkFlag]="true" [nData]="nData"></app-cust-editable-table>
+
+	</fieldset>
+</div>
+<div class="form-row">
+	<div class="form-group col-sm">
+		<div class="col-md-13 text-center">
+			<div class="cust-btn-container">
+			<br>
+			<button type="button" class="cust-btn"><a>Cancel</a></button>
+			<button type="button" class="cust-btn"><a>Save</a></button>
+		</div>
+		</div>
+	</div>
+</div>
