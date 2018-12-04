@@ -1,3 +1,51 @@
-<p>
-  policy-issuance works!
-</p>
+<div class="cust-tabs-container">
+	<h4>Quotation / Quotation Processing</h4>
+	<ngb-tabset>
+
+		<ngb-tab class="ngb-tab" title="General Info">
+			<ng-template ngbTabContent>
+				<app-general-info></app-general-info>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab title="Coverage">
+			<ng-template ngbTabContent>
+				<app-coverage></app-coverage>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab title="Quote Option">
+			<ng-template ngbTabContent>
+				<app-quote-option></app-quote-option>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab title="Endorsement">
+			<ng-template ngbTabContent>
+				<app-quote-endorsement></app-quote-endorsement>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab title="Hold Cover">
+			<ng-template ngbTabContent>
+				<app-hold-cover></app-hold-cover>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab title="Internal Competition">
+			<ng-template ngbTabContent>
+				<app-internal-competition></app-internal-competition>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab title="Attachment">
+			<ng-template ngbTabContent>
+				<app-pol-attachment></app-pol-attachment>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab title="Print">
+			<ng-template ngbTabContent>
+                <app-pol-endorsement></app-pol-endorsement>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab title="Exit">
+			<ng-template ngbTabContent>
+                <app-pol-co-insurance></app-pol-co-insurance>
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>

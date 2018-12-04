@@ -33,11 +33,12 @@ import { CustEditableTableComponent } from './_components/common/cust-editable-t
 import { QuotationInquiryComponent } from './quotation/quotation-inquiry/quotation-inquiry.component';
 import { ListOfQuotationsComponent } from './quotation/quotation-inquiry/list-of-quotations/list-of-quotations.component';
 import { HoldCoverMonitoringListComponent } from './quotation/quotation-inquiry/hold-cover-monitoring-list/hold-cover-monitoring-list.component';
-
 import { NotesComponent } from './notes/notes.component';;
 import { QuotationProcessingComponent } from './quotation/quotation-processing/quotation-processing.component';
-import { PolAttachmentComponent } from './underwriting/policy/pol-attachment/pol-attachment.component';
+import { PolEndorsementComponent } from './underwriting/policy-issuance/pol-endorsement/pol-endorsement.component';
+import { PolCoInsuranceComponent } from './underwriting/policy-issuance/pol-co-insurance/pol-co-insurance.component';
 import { PolicyIssuanceComponent } from './underwriting/policy-issuance/policy-issuance.component';
+import { PolAttachmentComponent } from './underwriting/policy-issuance/pol-attachment/pol-attachment.component';
 
 @NgModule({
     imports: [
@@ -79,7 +80,10 @@ import { PolicyIssuanceComponent } from './underwriting/policy-issuance/policy-i
         CustTableComponent,
         CustEditableTableComponent,
         PolAttachmentComponent,
-        PolicyIssuanceComponent,],
+        PolCoInsuranceComponent,
+        PolEndorsementComponent,
+        PolicyIssuanceComponent,
+        PolAttachmentComponent,],
 
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
