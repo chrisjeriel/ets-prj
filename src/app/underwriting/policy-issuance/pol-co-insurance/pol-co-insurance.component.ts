@@ -17,6 +17,7 @@ export class PolCoInsuranceComponent implements OnInit {
     options: any[] = [];
     dataTypes: any[] = [];
     nData: PolicyCoInsurance = new PolicyCoInsurance(null, null, null, null, null);
+    magnifyingGlass: any[] = ["sharePercentage"];
     alteration: boolean = false;
 
    constructor(config: NgbDropdownConfig, private underwritingService: UnderwritingService) { 
@@ -41,7 +42,6 @@ export class PolCoInsuranceComponent implements OnInit {
         this.dataTypes.push("currency");
         
         this.tableData = this.underwritingService.getCoInsurance();
-        console.log(this.underwritingService.getCoInsurance());
     }
 
 }
