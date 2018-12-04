@@ -45,7 +45,6 @@ export class PolCreatePARComponent implements OnInit {
         
 
     this.tableData = this.underwritingService.getAlterationFromQuotation();
-    console.dir(this.tableData);
   }
 
 }
