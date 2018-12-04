@@ -1,0 +1,28 @@
+input[type=radio]{
+	vertical-align: top;
+}
+
+label{
+	margin:0px;
+	padding: 0px;
+	vertical-align: middle;
+}
+
+.row{
+	margin-bottom: 5px;
+}
+
+fieldset .row:first-of-type, .row:first-of-type{
+	margin-top: 10px;
+}
+
+.drp-dwn-cstmz {
+    height:26px; 
+    padding: 0px;
+}
+
+.text-search-ico {
+	margin-left: -18px;
+	z-index: 99999;
+	font-size: 14px;
+}

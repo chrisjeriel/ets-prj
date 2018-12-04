@@ -1,0 +1,105 @@
+<div class="cust-tabs-container">
+	<h4>Underwriting / Expiry & Renewal</h4>
+	<ngb-tabset>
+		<ngb-tab title="Extract Expiring Policies">
+			<ng-template ngbTabContent>
+				<div class="row">
+					<div class="col-sm-3"></div>
+					<div align="center" class="col-sm-5">
+						<fieldset class="scheduler-border">
+							<legend class="scheduler-border">Parameters</legend>
+							<div class="row">
+								<div class="col-sm-1"></div>
+								<div class="col-sm-5 text-left">
+									<input class="form-control-sm" type="radio" name="optradio" checked="checked">&nbsp;
+									<label class="form-control-sm top-label">By Date</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-1"></div>
+								<label class="form-control-sm col-sm-1 cust-sm">From</label>
+								<input type="date" class="form-control cust-sm col-sm-4" id="fromDate" value="2018-12-04">
+								<label class="form-control-sm col-sm-1 cust-sm">To</label>
+								<input type="date" class="form-control cust-sm col-sm-4" id="toDate" value="2018-12-04">
+							</div>
+							
+							<div class="row">
+								<div class="col-sm-1"></div>
+								<div class="col-sm-5 text-left">
+									<input class="form-control-sm" type="radio" name="optradio" checked="checked">&nbsp;
+									<label class="form-control-sm top-label">By Month/Year</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-1"></div>
+								<label class="form-control-sm col-sm-1 cust-sm">From</label>
+								<select class="form-control drp-dwn-cstmz col-sm-3" name="fromMonth">
+									<option>January</option>
+									<option>February</option>
+									<option>March</option>
+									<option>April</option>
+									<option>May</option>
+									<option>June</option>
+									<option>July</option>
+									<option>August</option>
+									<option>September</option>
+									<option>October</option>
+									<option>November</option>
+									<option>December</option>
+								</select>
+								<input class="form-control form-control-sm cust-sm col-sm-1" type="text" name="fromYear">
+								<label class="form-control-sm col-sm-1 cust-sm">To</label>
+								<select class="form-control drp-dwn-cstmz col-sm-3" name="toMonth">
+									<option>January</option>
+									<option>February</option>
+									<option>March</option>
+									<option>April</option>
+									<option>May</option>
+									<option>June</option>
+									<option>July</option>
+									<option>August</option>
+									<option>September</option>
+									<option>October</option>
+									<option>November</option>
+									<option>December</option>
+								</select>
+								<input class="form-control form-control-sm cust-sm col-sm-1" type="text" name="toYear">
+							</div>
+							<br>
+							<div class="row">
+								<label class="form-control-sm col-sm-3 text-right">Line</label>
+								<input type="text" class="form-control form-control-sm col-sm-2">
+								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<input type="text" name="" class="form-control form-control-sm col-sm-6"> 
+							</div>
+							<div class="row">
+								<label class="form-control-sm col-sm-3 text-right">Branch</label>
+								<input type="text" class="form-control form-control-sm col-sm-2">
+								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<input type="text" name="" class="form-control form-control-sm col-sm-6"> 
+							</div>
+							<div class="row">
+								<label class="form-control-sm col-sm-3 text-right">Ceding Company</label>
+								<input type="text" class="form-control form-control-sm col-sm-8">
+								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+							</div>
+						</fieldset>
+
+						<fieldset class="scheduler-border">
+							<legend class="scheduler-border">Last Extraction</legend>
+							<div class="row">
+								<div class="col-sm-1"></div>
+								<label class="form-control-sm top-label col-sm-1">User ID</label>
+								<input class="form-control-sm col-sm-4" type="text" name="optradio" checked="checked">
+								<label class="form-control-sm top-label col-sm-1">Extraction Date</label>
+								<input class="form-control-sm col-sm-4" type="text" name="optradio" checked="checked">
+							</div>
+						</fieldset>
+
+					</div>
+				</div>
+			</ng-template>
+
+		</ngb-tab>
+	</ngb-tabset>
+</div>

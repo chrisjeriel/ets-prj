@@ -9,6 +9,7 @@ import { QuotationInquiryComponent } from './quotation/quotation-inquiry/quotati
 import { NotesComponent } from './notes/notes.component';
 import { QuotationProcessingComponent } from './quotation/quotation-processing/quotation-processing.component';
 import { PolicyIssuanceComponent } from './underwriting/policy-issuance/policy-issuance.component';
+import { ExtractExpiringPoliciesComponent } from  './underwriting/expiry-and-renewal/extract-expiring-policies/extract-expiring-policies.component';
 
 import { DummyComponent } from './_components/common/dummy/dummy.component'
 
@@ -22,6 +23,7 @@ const appRoutes: Routes = [
     { path: 'quotation-inquiry', component: QuotationInquiryComponent },
     { path: 'notes', component: NotesComponent },
     { path: 'quotation-processing', component: QuotationProcessingComponent },
+    { path: 'extract-expiring-policies', component: ExtractExpiringPoliciesComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
