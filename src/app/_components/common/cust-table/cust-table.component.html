@@ -50,17 +50,13 @@
 				<span class="ui-column-resizer" (mousedown) = "onMouseDown($event)"></span>
 				<span class="gridHeader">{{tHeader}}</span>
 			</th>
-			<th *ngFor="let tHeader of tHeader">
-				<span class="ui-column-resizer" (mousedown) = "onMouseDown($event)"></span>
-				<span class="gridHeader">{{tHeader1}}</span>
-			</th>
 		</tr>
 	</thead>
 	<tbody>
 	  <tr *ngFor="let data of tableData">
 	  	<td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]">
             <span *ngSwitchCase="'date'">{{ processData(key, data) | date: 'MM/dd/yyyy'}}</span>
-	  		<span *ngSwitchCase="'text'">{{ processData(key, data) }}</span>
+	  		<span *ngSwitchDefault>{{ processData(key, data) }}</span>
 	  	</td>
 	  </tr>
 	</tbody>

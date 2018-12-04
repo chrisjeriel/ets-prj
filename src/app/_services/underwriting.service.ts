@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { DummyInfo } from '@app/_models';
+import { DummyInfo, CreateParInfo } from '@app/_models';
 
 @Injectable({ providedIn: 'root' })
 export class UnderwritingService {
 
     dummyInfoData: DummyInfo[] = [];
-
+    alterationFromQuotation: CreateParInfo[] = [];
+    
     constructor(private http: HttpClient) {
 
     }
@@ -31,5 +32,14 @@ export class UnderwritingService {
 
         /*return this.http.get<User[]>(`${environment.apiUrl}/quotation`);*/
         return this.dummyInfoData;
+    }
+
+
+    getAlterationFromQuotation(){
+        this.alterationFromQuotation = [
+            new CreateParInfo("test","test","test","test","test","test","test","test",new Date('2015-02-28'),new Date('2015-02-28'),"test","test"),
+        ];
+
+        return this.alterationFromQuotation;
     }
 }

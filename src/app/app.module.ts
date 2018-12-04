@@ -39,6 +39,8 @@ import { QuotationProcessingComponent } from './quotation/quotation-processing/q
 import { PolEndorsementComponent } from './underwriting/policy-issuance/pol-endorsement/pol-endorsement.component';
 import { PolCoInsuranceComponent } from './underwriting/policy-issuance/pol-co-insurance/pol-co-insurance.component';
 import { PolicyIssuanceComponent } from './underwriting/policy-issuance/policy-issuance.component';
+import { PolCreatePARComponent } from './underwriting/policy-issuance/pol-create-par/pol-create-par.component';
+import { PolCreateAlterationPARComponent } from './underwriting/policy-issuance/pol-create-alteration-par/pol-create-alteration-par.component';
 
 
 @NgModule({
@@ -82,7 +84,9 @@ import { PolicyIssuanceComponent } from './underwriting/policy-issuance/policy-i
         CustEditableTableComponent,
         PolEndorsementComponent,
         PolCoInsuranceComponent,
-        PolicyIssuanceComponent,],
+        PolicyIssuanceComponent,
+        PolCreatePARComponent,
+        PolCreateAlterationPARComponent,],
 
 
     providers: [
