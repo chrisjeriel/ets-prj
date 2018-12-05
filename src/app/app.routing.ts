@@ -14,6 +14,9 @@ import { ExtractExpiringPoliciesComponent } from  './underwriting/expiry-and-ren
 import { ParListingComponent } from './underwriting/policy-issuance/par-listing/par-listing.component';
 import { AltParListingComponent } from './underwriting/policy-issuance/alt-par-listing/alt-par-listing.component';
 
+import { ExpiryListingComponent } from './underwriting/expiry-and-renewal/expiry-listing/expiry-listing.component';
+
+
 import { DummyComponent } from './_components/common/dummy/dummy.component'
 
 const appRoutes: Routes = [
@@ -29,6 +32,7 @@ const appRoutes: Routes = [
     { path: 'extract-expiring-policies', component: ExtractExpiringPoliciesComponent },
     { path: 'par-listing', component: ParListingComponent },
     { path: 'alt-par-listing', component: AltParListingComponent },
+    { path: 'expiry-listing', component: ExpiryListingComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

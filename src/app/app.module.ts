@@ -44,6 +44,7 @@ import { ExpiryAndRenewalComponent } from './underwriting/expiry-and-renewal/exp
 import { ExtractExpiringPoliciesComponent } from './underwriting/expiry-and-renewal/extract-expiring-policies/extract-expiring-policies.component';
 import { PolGenInfoComponent } from './underwriting/policy-issuance/pol-gen-info/pol-gen-info.component'
 import { AltParListingComponent } from './underwriting/policy-issuance/alt-par-listing/alt-par-listing.component';
+import { ExpiryListingComponent } from './underwriting/expiry-and-renewal/expiry-listing/expiry-listing.component';
 
 @NgModule({
     imports: [
@@ -91,7 +92,8 @@ import { AltParListingComponent } from './underwriting/policy-issuance/alt-par-l
         ExpiryAndRenewalComponent,
         ExtractExpiringPoliciesComponent,
         PolGenInfoComponent,
-        AltParListingComponent
+        AltParListingComponent,
+        ExpiryListingComponent
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

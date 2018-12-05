@@ -78,16 +78,17 @@ export class CustEditableTableComponent implements OnInit {
 
   onChange(row:any,index:number,key:any,data:any){
     
-    for(var i= 0; i < this.editedData.length; i++){
-      if(this.editedData[i][this.columnId]==row[this.columnId]){
-        this.editedData[i][key]=data;
-        this.exists=true;
-      }
-    }
-    this.tableData[index][key]=data;
-    if(!this.exists){
-      this.editedData.push(row);
-    }
+    // for(var i= 0; i < this.editedData.length; i++){
+    //   if(this.editedData[i][this.columnId]==row[this.columnId]){
+    //     this.editedData[i][key]=data;
+    //     this.exists=true;
+    //   }
+    // }
+    // this.tableData[index][key]=data;
+    // if(!this.exists){
+    //   this.editedData.push(row);
+    // }
+    console.log("test");
   }
 
   private onMouseDown(event){

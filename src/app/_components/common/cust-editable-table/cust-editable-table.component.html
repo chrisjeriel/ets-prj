@@ -115,8 +115,8 @@
 				<input *ngSwitchCase="'date'" class="editable-date" type="date" [ngModel]="processData(key, data) | date:'yyyy-MM-dd'" (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
 				<input *ngSwitchCase="'time'" class="editable-date" type="time" [ngModel]="processData(key, data) | date:'HH:mm'">
 				<input *ngSwitchCase="'datetime'" class="editable-date" type="datetime-local" [ngModel]="processData(key, data) | date:'yyyy-MM-ddTHH:mm'">
-		  		<input *ngSwitchDefault class="editable-text " type="text" [ngModel]="processData(key, data)" (ngModelChange)="tableData[ti][key]=$event"
-		  			(ngModelChange)="onChange(tableData[ti],ti,key,$event)">
+		  		<input *ngSwitchDefault class="editable-text " type="text" [ngModel]="processData(key, data)"
+		  			(ngModelChange)="onChange(tableData[ti],ti,key,$event)" >
 		  	</div>
 	  	</td>
 	  	<td *ngIf="tHeader.indexOf('Edit Flag')!= -1">

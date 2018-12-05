@@ -1,0 +1,125 @@
+<div class="cust-tabs-container">
+	<h4>Underwriting / Expiry & Renewal</h4>
+	<ngb-tabset>
+		<ngb-tab title="Extract Expiring Policies">
+			<ng-template ngbTabContent>
+				<div class="row">
+					<div class="col-sm-5">
+						<fieldset class="scheduler-border">
+							<legend class="scheduler-border">Parameters</legend>
+							<div class="form-row custom-row-inline-inset">
+								<div class="input-group">
+									
+									<input class="form-control-sm " type="radio" name="optradio" id="byDate" [value]="true" [(ngModel)]="byDate" (click)="clearDates()">	
+									<label class="form-control-sm col-sm-3" for="byDate">&nbsp;By Date</label>
+								</div>
+							</div>
+
+							<div class="form-row custom-row-inline-inset">
+								<div class="input-group">
+									
+									<label class="form-control-sm col-sm-1 cust-sm" for="fromDate">From</label>
+									<input [(ngModel)]="expiryParameters.fromDate" type="date" class="form-control form-control-sm cust-sm col-sm-4" id="fromDate" value="2018-12-04" [disabled]="!byDate">
+									<label class="form-control-sm col-sm-1 cust-sm">To</label>
+									<input [(ngModel)]="expiryParameters.toDate" type="date" class="form-control cust-sm col-sm-4" id="toDate" value="2018-12-04" [disabled]="!byDate">
+								</div>
+							</div>
+
+
+							<div class="form-row custom-row-inline-inset">
+								<div class="input-group">
+									
+									<input class="form-control-sm " type="radio" name="optradio" id="byMonthYear" [value]="false" [(ngModel)]="byDate" (onChange)="clearDates()">
+									<label class="form-control-sm col-sm-4 text-left" for="byMonthYear">&nbsp;By Month/Year</label>
+								</div>
+							</div>
+
+							<div class="form-row custom-row-inline-inset">
+								<div class="input-group">
+									
+									<label class="form-control-sm col-sm-1 cust-sm">From</label>
+									<select [(ngModel)]="expiryParameters.fromMonth" class="form-control drp-dwn-cstmz col-sm-3" name="fromMonth" [disabled]="byDate">
+										<option value="1">January</option>
+										<option value="2">February</option>
+										<option value="3">March</option>
+										<option value="4">April</option>
+										<option value="5">May</option>
+										<option value="6">June</option>
+										<option value="7">July</option>
+										<option value="8">August</option>
+										<option value="9">September</option>
+										<option value="10">October</option>
+										<option value="11">November</option>
+										<option value="12">December</option>
+									</select>
+									<input [(ngModel)]="expiryParameters.fromYear" class="form-control form-control-sm cust-sm col-sm-1" type="text" name="fromYear" [disabled]="byDate">
+									<label class="form-control-sm col-sm-1 cust-sm">To</label>
+									<select [(ngModel)]="expiryParameters.toMonth" class="form-control drp-dwn-cstmz col-sm-3" name="toMonth" [disabled]="byDate">
+										<option value="1">January</option>
+										<option value="2">February</option>
+										<option value="3">March</option>
+										<option value="4">April</option>
+										<option value="5">May</option>
+										<option value="6">June</option>
+										<option value="7">July</option>
+										<option value="8">August</option>
+										<option value="9">September</option>
+										<option value="10">October</option>
+										<option value="11">November</option>
+										<option value="12">December</option>
+									</select>
+									<input [(ngModel)]="expiryParameters.toYear" class="form-control form-control-sm cust-sm col-sm-1" type="text" name="toYear" [disabled]="byDate">
+								</div>
+							</div>
+						</fieldset>
+					</div>
+
+					<div class="col-sm-5">
+						<fieldset class="scheduler-border middle">
+							<br>
+							<div class="form-row custom-row-inline-inset">
+								<div class="input-group">
+									<label class="form-control-sm col-sm-2 text-right">Line</label>
+									<input [(ngModel)]="expiryParameters.line1" type="text" class="form-control form-control-sm col-sm-2">
+									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+									<input [(ngModel)]="expiryParameters.line2" type="text" name="" class="form-control form-control-sm col-sm-6"> 
+								</div>
+							</div>
+							<div class="form-row custom-row-inline-inset">
+								<div class="input-group">
+									<label class="form-control-sm col-sm-2 text-right">Branch</label>
+									<input [(ngModel)]="expiryParameters.branch1" type="text" class="form-control form-control-sm col-sm-2">
+									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+									<input [(ngModel)]="expiryParameters.branch2" type="text" name="" class="form-control form-control-sm col-sm-6"> 
+								</div>
+							</div>
+							<div class="form-row custom-row-inline-inset">
+								<div class="input-group">
+									<label class="form-control-sm col-sm-2 text-right">Ceding Company</label>
+									<input [(ngModel)]="expiryParameters.cedingCompany" type="text" class="form-control form-control-sm col-sm-8">
+									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								</div>	
+							</div>
+							<br>
+						</fieldset>
+					</div>
+
+				</div>
+
+<!--  ------------------------------------------------------------------  -->
+				
+				<div class="form-row">
+					<div class="form-group col-sm">
+						<div class="col-md-13 text-center">
+							<br>
+							<div class="cust-btn-container">
+							<button type="button" class="cust-btn" (click)="save()"><a>Extract</a></button>
+							<button type="button" class="cust-btn"><a>Clear</a></button>
+						</div>
+						</div>
+					</div>
+				</div>
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>
