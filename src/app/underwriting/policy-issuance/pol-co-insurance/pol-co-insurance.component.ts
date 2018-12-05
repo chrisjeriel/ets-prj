@@ -43,5 +43,12 @@ export class PolCoInsuranceComponent implements OnInit {
         
         this.tableData = this.underwritingService.getCoInsurance();
     }
-
+    
+    onClickCancel(){
+        
+    }
+    
+    onClickSave(){
+        
+    }
 }

@@ -32,5 +32,12 @@ export class PolEndorsementComponent implements OnInit {
         
         this.tableData = this.quotationService.getEndorsements();
     }
-
+    
+    onClickCancel(){
+        
+    }
+    
+    onClickSave(){
+        
+    }
 }
