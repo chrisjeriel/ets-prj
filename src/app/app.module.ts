@@ -39,6 +39,7 @@ import { PolEndorsementComponent } from './underwriting/policy-issuance/pol-endo
 import { PolCoInsuranceComponent } from './underwriting/policy-issuance/pol-co-insurance/pol-co-insurance.component';
 import { PolicyIssuanceComponent } from './underwriting/policy-issuance/policy-issuance.component';
 import { PolAttachmentComponent } from './underwriting/policy-issuance/pol-attachment/pol-attachment.component';
+import { PolPostComponent } from './underwriting/policy-issuance/pol-post/pol-post.component';
 
 @NgModule({
     imports: [
@@ -83,7 +84,8 @@ import { PolAttachmentComponent } from './underwriting/policy-issuance/pol-attac
         PolCoInsuranceComponent,
         PolEndorsementComponent,
         PolicyIssuanceComponent,
-        PolAttachmentComponent,],
+        PolAttachmentComponent,
+        PolPostComponent,],
 
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
