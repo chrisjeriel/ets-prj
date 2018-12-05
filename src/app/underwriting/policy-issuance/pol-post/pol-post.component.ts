@@ -26,11 +26,7 @@ export class PolPostComponent implements OnInit {
   }
 
   
+  	
 
    
-
- 
-
-
-  
 }
