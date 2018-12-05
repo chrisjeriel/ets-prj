@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UnderwritingService } from '../../../_services';
+import { CreateParInfo } from '../../../_models/CreatePAR';
+
 
 @Component({
   selector: 'app-pol-create-par',
@@ -8,6 +10,7 @@ import { UnderwritingService } from '../../../_services';
 })
 export class PolCreatePARComponent implements OnInit {
   
+  private createParInfo : CreateParInfo
   tableData: any[] = [];
   tHeader: any[] = [];
   dataTypes: any[] = [];
@@ -16,7 +19,7 @@ export class PolCreatePARComponent implements OnInit {
 
    }
 
-  ngOnInit(): void {
+  ngOnInit() {
   	this.tHeader.push("Quotation No");
   	this.tHeader.push("Branch");
   	this.tHeader.push("Line Class");
@@ -43,8 +46,18 @@ export class PolCreatePARComponent implements OnInit {
     this.dataTypes.push("text");
     this.dataTypes.push("text");
         
-
+   // this.tableData = this.quotationService.getQuotationListInfo();
     this.tableData = this.underwritingService.getAlterationFromQuotation();
+
+    this.createParInfo = new CreateParInfo();
+    this.createParInfo.line = "test";
+    this.createParInfo.year = new Date(2018);
+    this.createParInfo.seqNo = 0;
+    this.createParInfo.altNo = 0;
+    this.createParInfo.branch = "test";
+    this.createParInfo.lineClass = "test";
+    this.createParInfo.cedingCompany = "test";
+
   }
 
 }

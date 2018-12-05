@@ -1,4 +1,17 @@
-export class CreateParInfo {
+export class CreateParInfo{
+	line: string
+	year: Date
+	
+}
+
+
+
+
+
+
+
+
+export class CreateParTable {
 	quotationNo: string
 	branch: string
 	lineClass: string

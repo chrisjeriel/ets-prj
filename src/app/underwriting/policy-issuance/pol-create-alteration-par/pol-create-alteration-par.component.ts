@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UnderwritingService } from '../../../_services';
+import { CreateAlterationParInfo } from '../../../_models/CreateAlterationPAR';
 
 @Component({
   selector: 'app-pol-create-alteration-par',
@@ -8,13 +9,13 @@ import { UnderwritingService } from '../../../_services';
 })
 export class PolCreateAlterationPARComponent implements OnInit {
   
-
+  private createAlterationPar : CreateAlterationParInfo;
   tableData: any[] = [];
   tHeader: any[] = [];
   dataTypes: any[]= [];
   constructor(private underwritingService : UnderwritingService) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
   	this.tHeader.push("Quotation No");
   	this.tHeader.push("Branch");
   	this.tHeader.push("Line Class");
@@ -42,6 +43,15 @@ export class PolCreateAlterationPARComponent implements OnInit {
     this.dataTypes.push("text");
 
   	this.tableData = this.underwritingService.getAlterationFromQuotation();
+  
+    this.createAlterationPar = new CreateAlterationParInfo();
+    this.createAlterationPar.line = "test";
+    this.createAlterationPar.year = new Date();
+    this.createAlterationPar.seqNo = 0;
+    this.createAlterationPar.altNo =0;
+    this.createAlterationPar.cedingCompany = "test";
+    this.createAlterationPar.principal = "test";
+    this.createAlterationPar.contractor = "test";
   }
 
 }
