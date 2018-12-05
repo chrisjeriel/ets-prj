@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing } from '@app/_models';
-
+import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing } from '@app/_models';
 
 @Injectable({ providedIn: 'root' })
 export class UnderwritingService {
@@ -13,6 +12,7 @@ export class UnderwritingService {
     coInsuranceData: PolicyCoInsurance[] = [];
     parListingData: PARListing[] = [];
     altParListingData: AltPARListing[] = [];
+    expiryListing: ExpiryListing[] = [];
 
     constructor(private http: HttpClient) {
 
@@ -52,7 +52,12 @@ export class UnderwritingService {
         ];
         return this.uwotherRatesInfoData;
     }
-    getCoInsurance() {
+
+    extractExpiringPolicies(){
+        return 100;
+    }
+    
+    getCoInsurance(){
         this.coInsuranceData = [
             new PolicyCoInsurance("Risk 1", "Malayan", 12.2, 10000, 500000),
             new PolicyCoInsurance("Risk 2", "Company 1", 6.23, 20000, 600000),
@@ -90,4 +95,12 @@ export class UnderwritingService {
 
         return this.altParListingData;
     }
-}
+
+    getExpiryListing(){
+        this.expiryListing = [
+            new ExpiryListing("POL-050","I","San Juan","CPI","insured","Sample Data","II", "Paul", "Peso", "IV", "si", "pre")
+        ];
+        return this.expiryListing;
+    }
+}            
+

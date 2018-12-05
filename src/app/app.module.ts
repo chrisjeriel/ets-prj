@@ -42,8 +42,11 @@ import { PolCoInsuranceComponent } from './underwriting/policy-issuance/pol-co-i
 import { PolicyIssuanceComponent } from './underwriting/policy-issuance/policy-issuance.component';
 import { PolCoverageComponent } from './underwriting/policy-issuance/pol-coverage/pol-coverage.component';
 import { PolOtherRatesComponent } from './underwriting/policy-issuance/pol-other-rates/pol-other-rates.component';
+import { ExpiryAndRenewalComponent } from './underwriting/expiry-and-renewal/expiry-and-renewal.component';
+import { ExtractExpiringPoliciesComponent } from './underwriting/expiry-and-renewal/extract-expiring-policies/extract-expiring-policies.component';
 import { PolGenInfoComponent } from './underwriting/policy-issuance/pol-gen-info/pol-gen-info.component'
 import { AltParListingComponent } from './underwriting/policy-issuance/alt-par-listing/alt-par-listing.component';
+import { ExpiryListingComponent } from './underwriting/expiry-and-renewal/expiry-listing/expiry-listing.component';
 
 @NgModule({
     imports: [
@@ -90,8 +93,11 @@ import { AltParListingComponent } from './underwriting/policy-issuance/alt-par-l
         PolicyIssuanceComponent,
         PolCoverageComponent,
         PolOtherRatesComponent,
+        ExpiryAndRenewalComponent,
+        ExtractExpiringPoliciesComponent,
         PolGenInfoComponent,
-        AltParListingComponent
+        AltParListingComponent,
+        ExpiryListingComponent
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
