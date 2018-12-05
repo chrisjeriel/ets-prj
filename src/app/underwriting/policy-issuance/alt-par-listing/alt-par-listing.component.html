@@ -1,0 +1,14 @@
+<div class="cust-tabs-container">
+	<h4>Underwriting / Policy Issuance</h4>
+	<ngb-tabset>
+	  <ngb-tab class="ngb-tab" title="Alteration PAR Listing">
+	    <ng-template ngbTabContent>
+
+	    	<!-- <app-cust-editable-table [addFlag]="true" [editFlag]="true" [deleteFlag]="false" [nData]="nData" [tableData]="tableData" [tHeader]="tHeader"></app-cust-editable-table> -->
+			
+	    	<app-cust-table [filters]="filters" [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes"></app-cust-table>
+
+	    </ng-template>
+	  </ngb-tab>
+	</ngb-tabset>
+</div>

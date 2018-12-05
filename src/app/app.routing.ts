@@ -10,7 +10,10 @@ import { NotesComponent } from './notes/notes.component';
 import { QuotationProcessingComponent } from './quotation/quotation-processing/quotation-processing.component';
 import { PolicyIssuanceComponent } from './underwriting/policy-issuance/policy-issuance.component';
 
-import { DummyComponent } from './_components/common/dummy/dummy.component';
+import { ParListingComponent } from './underwriting/policy-issuance/par-listing/par-listing.component';
+import { AltParListingComponent } from './underwriting/policy-issuance/alt-par-listing/alt-par-listing.component';
+
+import { DummyComponent } from './_components/common/dummy/dummy.component'
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -22,6 +25,8 @@ const appRoutes: Routes = [
     { path: 'quotation-inquiry', component: QuotationInquiryComponent },
     { path: 'notes', component: NotesComponent },
     { path: 'quotation-processing', component: QuotationProcessingComponent },
+    { path: 'par-listing', component: ParListingComponent },
+    { path: 'alt-par-listing', component: AltParListingComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
