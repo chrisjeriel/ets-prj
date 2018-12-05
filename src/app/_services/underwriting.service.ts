@@ -32,4 +32,8 @@ export class UnderwritingService {
         /*return this.http.get<User[]>(`${environment.apiUrl}/quotation`);*/
         return this.dummyInfoData;
     }
+
+    extractExpiringPolicies(){
+        return 100;
+    }
 }
