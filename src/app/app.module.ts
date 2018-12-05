@@ -36,10 +36,12 @@ import { HoldCoverMonitoringListComponent } from './quotation/quotation-inquiry/
 
 import { NotesComponent } from './notes/notes.component';;
 import { QuotationProcessingComponent } from './quotation/quotation-processing/quotation-processing.component';
+import { ParListingComponent } from './underwriting/policy-issuance/par-listing/par-listing.component';
 import { PolEndorsementComponent } from './underwriting/policy-issuance/pol-endorsement/pol-endorsement.component';
 import { PolCoInsuranceComponent } from './underwriting/policy-issuance/pol-co-insurance/pol-co-insurance.component';
 import { PolicyIssuanceComponent } from './underwriting/policy-issuance/policy-issuance.component';
-import { PolGenInfoComponent } from './underwriting/policy-issuance/pol-gen-info/pol-gen-info.component';
+import { PolGenInfoComponent } from './underwriting/policy-issuance/pol-gen-info/pol-gen-info.component'
+import { AltParListingComponent } from './underwriting/policy-issuance/alt-par-listing/alt-par-listing.component';
 
 @NgModule({
     imports: [
@@ -80,11 +82,13 @@ import { PolGenInfoComponent } from './underwriting/policy-issuance/pol-gen-info
         DummyComponent,
         CustTableComponent,
         CustEditableTableComponent,
+        ParListingComponent,
         PolEndorsementComponent,
         PolCoInsuranceComponent,
         PolicyIssuanceComponent,
-        PolGenInfoComponent,],
-
+        PolGenInfoComponent,
+        AltParListingComponent
+    ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
