@@ -68,7 +68,8 @@ textarea {
     z-index: 9999 !important;
     border-radius: 2px;
     background: linear-gradient(to bottom, #4080bf 0%, #2d5986 100%);
-    width: 60px;
+    min-width: 60px;
+    max-width: 120px;
     padding-top: 5px;
     padding-bottom: 2px;
     margin-right: 3px;
@@ -397,4 +398,14 @@ select.form-control.form-control-sm.cust-sm {
     font-size: 0.8rem !important;
     line-height: .6 !important;
     border-radius: 0.2rem !important;
+}
+
+.modal{
+    position: inherit;
+}
+.xl > .modal-dialog{
+    max-width: 1490px !important;
+    min-width: 971px !important;   
+    width: 95% !important;
+     z-index: 9999 !important;
 }
