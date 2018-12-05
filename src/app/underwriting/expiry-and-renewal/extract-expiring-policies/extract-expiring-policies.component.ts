@@ -19,18 +19,15 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
 
   save(){
   	alert("Extracted Policies: " + this.underWritingService.extractExpiringPolicies());
-  	console.log(this.byDate);
   }
 
   clearDates(){
-
-    this.expiryParameters.fromDate=null;
+    $('#fromDate').val("");
+    $('#toDate').val("");
     this.expiryParameters.fromMonth=null;
     this.expiryParameters.fromYear=null;
-    this.expiryParameters.toDate=null;
     this.expiryParameters.toMonth=null;
     this.expiryParameters.toYear=null;
-    console.log(this.expiryParameters.fromDate);
   }
 
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ExpiryParameters, LastExtraction } from '../../../_models';
+import { ExpiryParameters, ExpiryListing } from '../../../_models';
 import { UnderwritingService } from '../../../_services';
 
 @Component({
@@ -10,13 +10,12 @@ import { UnderwritingService } from '../../../_services';
 export class ExpiryListingComponent implements OnInit {
 
   expiryParameters: ExpiryParameters = new ExpiryParameters();
-  lastExtraction: LastExtraction = new LastExtraction();
-  constructor(private underWritingService: UnderwritingService) { }
+  tableData: ExpiryListing[] = [];
+  tHeader: any[] = ["Policy No","Line","Branch", "Ceding Company", "Insured", "Project Description", "Principal", "Contractor", "Currency", "Section I", "SI", "Premium"];
   byDate:boolean = true;
-
-  constructor() { }
-
+  constructor(private underWritingService: UnderwritingService) { }
   ngOnInit() {
+    this.tableData = this.underWritingService.getExpiryListing();
   }
 
 }

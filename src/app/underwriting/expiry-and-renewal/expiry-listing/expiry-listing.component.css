@@ -37,8 +37,16 @@ select + input, input + div + input{
 	margin-left: 6px !important;
 }
 
+.left{
+	min-height: 195px;
+}
 
 .middle{
 	margin-top: 5px !important;
-	min-height: 188px;
+	min-height: 186px;
 }
+
+.right{
+	margin-top: 5px !important;
+}
+

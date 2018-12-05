@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { DummyInfo, PolicyCoInsurance, PARListing, AltPARListing } from '@app/_models';
+import { DummyInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing } from '@app/_models';
 
 @Injectable({ providedIn: 'root' })
 export class UnderwritingService {
@@ -10,6 +10,7 @@ export class UnderwritingService {
     coInsuranceData: PolicyCoInsurance[] = [];
     parListingData: PARListing[] = [];
     altParListingData: AltPARListing[] = [];
+    expiryListing: ExpiryListing[] = [];
 
     constructor(private http: HttpClient) {
 
@@ -66,6 +67,13 @@ export class UnderwritingService {
         ];
 
         return this.altParListingData;
+    }
+
+    getExpiryListing(){
+        this.expiryListing = [
+            new ExpiryListing("POL-050","I","San Juan","CPI","insured","Sample Data","II", "Paul", "Peso", "IV", "si", "pre")
+        ];
+        return this.expiryListing;
     }
 }            
 

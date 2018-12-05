@@ -12,7 +12,7 @@
 								<div class="input-group">
 									<div class="col-sm-1"></div>
 									<input class="form-control-sm " type="radio" name="optradio" id="byDate" [value]="true" [(ngModel)]="byDate" (click)="clearDates()">	
-									<label class="form-control-sm col-sm-1" for="byDate">&nbsp;By Date</label>
+									<label class="form-control-sm col-sm-4" for="byDate">&nbsp;By Date</label>
 								</div>
 							</div>
 
@@ -30,7 +30,7 @@
 							<div class="form-row custom-row-inline-inset">
 								<div class="input-group">
 									<div class="col-sm-1"></div>
-									<input class="form-control-sm " type="radio" name="optradio" id="byMonthYear" [value]="false" [(ngModel)]="byDate" (onChange)="clearDates()">
+									<input class="form-control-sm " type="radio" name="optradio" id="byMonthYear" [value]="false" [(ngModel)]="byDate" (click)="clearDates()">
 									<label class="form-control-sm col-sm-2 text-left" for="byMonthYear">&nbsp;By Month/Year</label>
 								</div>
 							</div>
