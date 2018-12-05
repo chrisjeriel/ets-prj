@@ -10,6 +10,8 @@ export * from './QuoteOption';
 export * from './IntCompAdvInfo';
 export * from './NotesReminders';
 export * from './QuotationProcessing';
+export * from './UnderwritingCoverageInfo';
+export * from './UnderwritingOtherRatesInfo';
 export * from './PolicyCoInsurance';
 export * from './PARListing'
 export * from './AltPARListing';

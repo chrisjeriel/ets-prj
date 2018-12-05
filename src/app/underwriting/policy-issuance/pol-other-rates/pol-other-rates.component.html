@@ -1,0 +1,34 @@
+<fieldset class="scheduler-border">
+  <legend class="scheduler-border">PAR Info</legend>
+  <div class="form-row custom-row-inline-inset">
+    <div class="input-group">
+      <label class="form-control-sm col-sm-1" for="xx">PAR No</label>
+      <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-2" placeholder="" readonly>
+      <label class="form-control-sm col-sm-1" for="xx">Insured</label>
+      <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-7" placeholder="" readonly>
+    </div>
+    <div class="input-group" *ngIf="policyNo; else othercon">
+      <label class="form-control-sm col-sm-1" for="xx">Policy No</label>
+      <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-2" placeholder="" readonly>
+    </div>
+    <ng-template #othercon></ng-template>
+  </div>
+</fieldset>
+
+<fieldset class="scheduler-border">
+  <legend class="scheduler-border">Other Rates</legend>
+  <app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData"
+    [tHeader]="tHeader" [dataTypes]="dataTypes" [opts]="selOptions"></app-cust-editable-table>
+</fieldset>
+
+<div class="form-row">
+  <div class="form-group col-sm">
+    <div class="col-md-13 text-center">
+      <br>
+      <div class="cust-btn-container">
+        <button type="button" class="cust-btn" (click)="pol($event)"><a>Cancel</a></button>
+        <button type="button" class="cust-btn"><a>Save</a></button>
+      </div>
+    </div>
+  </div>
+</div>

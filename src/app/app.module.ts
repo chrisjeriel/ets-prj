@@ -40,6 +40,8 @@ import { ParListingComponent } from './underwriting/policy-issuance/par-listing/
 import { PolEndorsementComponent } from './underwriting/policy-issuance/pol-endorsement/pol-endorsement.component';
 import { PolCoInsuranceComponent } from './underwriting/policy-issuance/pol-co-insurance/pol-co-insurance.component';
 import { PolicyIssuanceComponent } from './underwriting/policy-issuance/policy-issuance.component';
+import { PolCoverageComponent } from './underwriting/policy-issuance/pol-coverage/pol-coverage.component';
+import { PolOtherRatesComponent } from './underwriting/policy-issuance/pol-other-rates/pol-other-rates.component';
 import { PolGenInfoComponent } from './underwriting/policy-issuance/pol-gen-info/pol-gen-info.component'
 import { AltParListingComponent } from './underwriting/policy-issuance/alt-par-listing/alt-par-listing.component';
 
@@ -86,6 +88,8 @@ import { AltParListingComponent } from './underwriting/policy-issuance/alt-par-l
         PolEndorsementComponent,
         PolCoInsuranceComponent,
         PolicyIssuanceComponent,
+        PolCoverageComponent,
+        PolOtherRatesComponent,
         PolGenInfoComponent,
         AltParListingComponent
     ],
