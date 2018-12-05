@@ -1,99 +1,140 @@
 <!-- ITEM 1 HERE -->
-<div>
-	<fieldset class="scheduler-border">
-		<legend class="scheduler-border">Quotation Number</legend>
-		<div class="form-row">
-			<div class="form-group col-sm-1">
-				<label for="inputEmail4" class="form-control-sm top-label">Line</label>
-				<input type="text" [(ngModel)]="this.quotationGenInfo.line" class="form-control form-control-sm cust-sm">
+<div class="row">
+	<div class="col-sm-8 cust-col-right-offset">
+		<fieldset class="scheduler-border">
+			<legend class="scheduler-border">Insured Details</legend>
+			<div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
+				<div class="input-group col-sm-8">
+					<div class="form-row"> 
+						<label class="form-control-sm col-sm-2"></label>
+						<div class="form-group col-sm"  style="margin-bottom: 12px;">
+							<label class="form-control-sm top-label">Line</label>
+							<input type="text" [(ngModel)]="this.quotationGenInfo.line" class="form-control form-control-sm cust-sm">
+						</div>
+						<div class="form-group col-sm"  style="margin-bottom: 12px;">
+							<label class="form-control-sm top-label">Year</label>
+							<input type="text" [(ngModel)]="this.quotationGenInfo.year" class="form-control form-control-sm cust-sm"
+							 placeholder="2018">
+						</div>
+						<div class="form-group col-sm"  style="margin-bottom: 12px;">
+							<label class="form-control-sm top-label">Seq No</label>
+							<input type="text" class="form-control form-control-sm cust-sm" placeholder="0001">
+						</div>
+						<div class="form-group col-sm"  style="margin-bottom: 12px;">
+							<label class="form-control-sm top-label">Req Seq</label>
+							<input type="text" [(ngModel)]="this.quotationGenInfo.reqSeq" class="form-control form-control-sm cust-sm"
+							 placeholder="0001">
+						</div>
+						<div class="form-group col-sm"  style="margin-bottom: 12px;">
+							<label class="form-control-sm top-label">Hist No</label>
+							<input type="text" class="form-control form-control-sm cust-sm" placeholder="00001">
+						</div>
+					</div>
+					<div class="form-row" style="width: 102%;">
+						<div class="input-group form-group" style="padding-right: 5px; padding-left: 5px;">
+							<label class="form-control-sm col-sm-2">Branch</label>
+							<input type="text" class="form-control form-control-sm">
+							<label class="form-control-sm col-sm-2">Line Class</label>
+							<input type="text" class="form-control form-control-sm">
+						</div>
+					</div>
+					<div class="form-row" style="width: 102%;">
+						<div class="input-group form-group" style="padding-right: 5px; padding-left: 5px;">
+							<label class="form-control-sm col-sm-2">Policy No.</label>
+							<input type="text" class="form-control form-control-sm">
+							<label class="form-control-sm col-sm-2">Status</label>
+							<input type="text" class="form-control form-control-sm">
+						</div>
+					</div>
+					<div class="form-row" style="width: 102%;">
+						<div class="input-group form-group" style="padding-right: 5px; padding-left: 5px;">
+							<label class="form-control-sm col-sm-2">Ceding Company</label>
+							<input type="text" class="form-control form-control-sm">
+						</div>
+					</div>
+				</div>
+				<div class="input-group col-sm-4" style="padding-top: 23px;">
+					<div class="input-group">
+						<label class="form-control-sm col-sm-3" for="xx">Quote Date</label>
+						<input type="date" class="form-control form-control-sm">
+					</div>
+					<div class="input-group">
+						<label class="form-control-sm col-sm-3" for="xx">Valid Until</label>
+						<input type="date" class="form-control form-control-sm">
+					</div>
+					<div class="input-group">
+						<label class="form-control-sm col-sm-3" for="xx">Print Date</label>
+						<input type="date" class="form-control form-control-sm">
+					</div>
+					<div class="input-group">
+						<label class="form-control-sm col-sm-3" for="xx">Print By</label>
+						<input type="text" class="form-control form-control-sm">
+					</div>
+				</div>
 			</div>
-			<div class="form-group col-sm-1">
-				<label for="inputEmail4" class="form-control-sm top-label">Year</label>
-				<input type="text" [(ngModel)]="this.quotationGenInfo.year" class="form-control form-control-sm cust-sm"
-				 placeholder="2018">
+		</fieldset>
+	</div>
+	<div class="col-sm-4">
+		<fieldset class="scheduler-border">
+			<legend class="scheduler-border">Share Details</legend>
+			<div class="form-row custom-row-inline-inset">
+				<div class="input-group">
+					<label class="form-control-sm col-sm-3" for="xx">Intermediary</label>
+					<input type="text" id="xx" class="form-control form-control-sm">
+				</div>
+				<div class="input-group">
+					<label class="form-control-sm col-sm-3" for="xx">Intermediary</label>
+					<input type="text" id="xx" class="form-control form-control-sm">
+				</div>
+				<div class="input-group">
+					<label class="form-control-sm col-sm-3" for="xx">Intermediary</label>
+					<input type="text" id="xx" class="form-control form-control-sm">
+				</div>
+				<div class="input-group">
+					<label class="form-control-sm col-sm-3" for="xx">Intermediary</label>
+					<input type="text" id="xx" class="form-control form-control-sm">
+				</div>
 			</div>
-			<div class="form-group col-sm-1">
-				<label for="inputEmail4" class="form-control-sm top-label">Seq No</label>
-				<input type="text" class="form-control form-control-sm cust-sm" placeholder="0001">
-			</div>
-			<div class="form-group col-sm-1">
-				<label for="inputEmail4" class="form-control-sm top-label">Req Seq</label>
-				<input type="text" [(ngModel)]="this.quotationGenInfo.reqSeq" class="form-control form-control-sm cust-sm"
-				 placeholder="0001">
-			</div>
-			<div class="form-group col-sm-1">
-				<label for="inputEmail4" class="form-control-sm top-label">Hist No</label>
-				<input type="text" class="form-control form-control-sm cust-sm" placeholder="00001">
-			</div>
-			<div class="form-group col-sm">
-				<label for="inputEmail4" class="form-control-sm top-label">Branch</label>
-				<input type="text" class="form-control form-control-sm cust-sm" placeholder="MKT">
-			</div>
-			<div class="form-group col-sm">
-				<label for="inputEmail4" class="form-control-sm top-label">Line Class</label>
-				<input type="text" class="form-control form-control-sm cust-sm" placeholder="Engineering">
-			</div>
-			<div class="form-group col-sm">
-				<label for="inputEmail4" class="form-control-sm top-label">Policy Number</label>
-				<input type="text" class="form-control form-control-sm cust-sm" placeholder="000001">
-			</div>
-			<div class="form-group col-sm">
-				<label for="inputEmail4" class="form-control-sm top-label">Printed By</label>
-				<input type="text" class="form-control form-control-sm cust-sm" placeholder="James Reid">
-			</div>
-			<div class="form-group col-sm">
-				<label for="inputEmail4" class="form-control-sm top-label">Print Date</label>
-				<input type="date" class="form-control form-control-sm cust-sm" value="2018-12-04">
-			</div>
-		</div>
-	</fieldset>
+		</fieldset>
+	</div>
 </div>
 
 
-<div>
-	<fieldset class="scheduler-border">
-		<legend class="scheduler-border">Quotation Details</legend>
-		<div class="form-row">
-			<div class="form-group col-sm">
-				<label for="inputEmail4" class="form-control-sm top-label">Ceding Company</label>
-				<input type="email" class="form-control form-control-sm" placeholder="Banco De Oro">
-			</div>
-			<div class="form-group col-sm">
-				<label for="inputEmail4" class="form-control-sm top-label">Quote Status</label>
-				<input type="email" class="form-control form-control-sm" placeholder="On Going">
-			</div>
-			<div class="form-group col-sm">
-				<label for="inputEmail4" class="form-control-sm top-label">Quote Date</label>
-				<input type="date" [ngModel]="this.quotationGenInfo.quoteDate | date:'yyyy-MM-dd'
-				" class="form-control form-control-sm"
-				>
-			</div>
-			<div class="form-group col-sm">
-				<label for="inputEmail4" class="form-control-sm top-label">Valid Until</label>
-				<input type="date" class="form-control form-control-sm" value="2018-01-01">
-			</div>
-			<div class="form-group col-sm">
-				<label for="inputEmail4" class="form-control-sm top-label">Requested By</label>
-				<input type="text" class="form-control form-control-sm" placeholder="Jobert Austria">
-			</div>
-			<div class="form-group col-sm">
-				<label for="inputEmail4" class="form-control-sm top-label">Request Date</label>
-				<input type="date" class="form-control form-control-sm" value="2018-01-01">
-			</div>
-			<div class="form-group col-sm">
-				<label for="inputEmail4" class="form-control-sm top-label">Request Mode</label>
-				<select class="form-control form-control-sm drp-dwn-cstmz">
-					<option *ngFor="let req of reqMode" value="{{req.value}}"> {{req.name}}</option>
-				</select>
-			</div>
-		</div>
-	</fieldset>
-</div>
 
 <div class="row">
 	<div class="col-sm-7 cust-col-left-offset">
 		<fieldset class="scheduler-border">
 			<legend class="scheduler-border">Insured Details</legend>
+			<div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
+				<div class="input-group col-sm-12">
+					<div class="form-row" style="width: 102%;">
+						<div class="input-group form-group" style="padding-right: 5px; padding-left: 5px;">
+							<label class="form-control-sm col-sm-1">Principal</label>
+							<input type="text" id="xx" class="form-control form-control-sm cust-sm">
+							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+							<label class="form-control-sm col-sm-2">Contractor</label>
+							<input type="text" class="form-control form-control-sm">
+							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+							<p>&nbsp;</p>
+						</div>
+					</div>
+					<div class="form-row" style="width: 102%;">
+						<div class="input-group form-group" style="padding-right: 5px; padding-left: 5px;">
+							<label class="form-control-sm col-sm-1" for="xx">Insured</label>
+							<input type="text" id="xx" class="form-control form-control-sm">
+						</div>
+					</div>
+					<div class="form-row" style="width: 102%;">
+						<div class="input-group form-group" style="padding-right: 5px; padding-left: 5px;">
+							<label class="form-control-sm col-sm-2">Ceding Company</label>
+							<input type="text" class="form-control form-control-sm">
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+
 			<div class="form-row custom-row-inline-inset">
 				<div class="input-group">
 					<label class="form-control-sm col-sm-2" for="xx">Principal</label>

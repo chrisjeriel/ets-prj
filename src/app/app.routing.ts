@@ -12,6 +12,9 @@ import { PolicyIssuanceComponent } from './underwriting/policy-issuance/policy-i
 import { DummyComponent } from './_components/common/dummy/dummy.component';
 import { PolCreatePARComponent } from './underwriting/policy-issuance/pol-create-par/pol-create-par.component';
 import { PolCreateAlterationPARComponent } from './underwriting/policy-issuance/pol-create-alteration-par/pol-create-alteration-par.component';
+import { ParListingComponent } from './underwriting/policy-issuance/par-listing/par-listing.component';
+import { AltParListingComponent } from './underwriting/policy-issuance/alt-par-listing/alt-par-listing.component';
+
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -26,6 +29,8 @@ const appRoutes: Routes = [
     { path: 'policy', component: PolicyIssuanceComponent },
     { path: 'createPAR', component: PolCreatePARComponent },
     { path: 'createAlterationPAR', component: PolCreateAlterationPARComponent },
+    { path: 'par-listing', component: ParListingComponent },
+    { path: 'alt-par-listing', component: AltParListingComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
