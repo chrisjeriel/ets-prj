@@ -1,19 +1,24 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { DummyInfo , PolAttachmentInfo } from '@app/_models';
+import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing,  PolAttachmentInfo} from '@app/_models';
+
 
 @Injectable({ providedIn: 'root' })
 export class UnderwritingService {
 
     dummyInfoData: DummyInfo[] = [];
+    uwcoverageInfoData: UnderwritingCoverageInfo[] = [];
+    uwotherRatesInfoData: UnderwritingOtherRatesInfo[] = [];
+    coInsuranceData: PolicyCoInsurance[] = [];
+    parListingData: PARListing[] = [];
+    altParListingData: AltPARListing[] = [];
     polAttachmentInfoData: PolAttachmentInfo[] = [];
 
 
     constructor(private http: HttpClient) {
 
     }
-    
     getDummyInfo() {
         /*Dummy Data Array*/
         this.dummyInfoData = [
@@ -33,6 +38,59 @@ export class UnderwritingService {
 
         /*return this.http.get<User[]>(`${environment.apiUrl}/quotation`);*/
         return this.dummyInfoData;
+    }
+
+    getUWCoverageInfo() {
+        this.uwcoverageInfoData = [
+            new UnderwritingCoverageInfo("data", "1", "I", "3", "69000", "Sort C", "70000"),
+            new UnderwritingCoverageInfo("data", "2", 'II', "2", "123000", 'Sort B', "456000")
+        ];
+        return this.uwcoverageInfoData;
+    }
+    getUWOtherRatesInfo() {
+        this.uwotherRatesInfoData = [
+            new UnderwritingOtherRatesInfo("data", "Sample 1", 123000, "Remarks 1"),
+            new UnderwritingOtherRatesInfo("data", "Sample 2", 321000, "Remarks 2"),
+        ];
+        return this.uwotherRatesInfoData;
+    }
+    getCoInsurance() {
+        this.coInsuranceData = [
+            new PolicyCoInsurance("Risk 1", "Malayan", 12.2, 10000, 500000),
+            new PolicyCoInsurance("Risk 2", "Company 1", 6.23, 20000, 600000),
+            new PolicyCoInsurance("Risk 3", "Company 2", 15.16, 30000, 700000),
+        ];
+        return this.coInsuranceData;
+    }
+
+    getParListing() {
+        this.parListingData = [
+            new PARListing("CAR-2018-0001", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "cuaresma"),
+            new PARListing("CAR-2018-0002", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "cuaresma"),
+            new PARListing("CAR-2018-0003", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "cuaresma"),
+            new PARListing("CAR-2018-0004", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "cuaresma"),
+            new PARListing("CAR-2018-0005", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "cuaresma"),
+            new PARListing("CAR-2018-0006", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "cuaresma"),
+            new PARListing("CAR-2018-0007", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "cuaresma"),
+            new PARListing("CAR-2018-0008", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "cuaresma")
+        ];
+
+        return this.parListingData;
+    }
+
+    getAltParListing() {
+        this.altParListingData = [
+            new PARListing("CAR-2018-0001", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "user"),
+            new PARListing("CAR-2018-0002", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "user"),
+            new PARListing("CAR-2018-0003", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "user"),
+            new PARListing("CAR-2018-0004", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "user"),
+            new PARListing("CAR-2018-0005", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "user"),
+            new PARListing("CAR-2018-0006", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "user"),
+            new PARListing("CAR-2018-0007", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "user"),
+            new PARListing("CAR-2018-0008", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "user")
+        ];
+
+        return this.altParListingData;
     }
 
     getPolAttachment() {

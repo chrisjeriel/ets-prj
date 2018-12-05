@@ -35,9 +35,14 @@ import { ListOfQuotationsComponent } from './quotation/quotation-inquiry/list-of
 import { HoldCoverMonitoringListComponent } from './quotation/quotation-inquiry/hold-cover-monitoring-list/hold-cover-monitoring-list.component';
 import { NotesComponent } from './notes/notes.component';;
 import { QuotationProcessingComponent } from './quotation/quotation-processing/quotation-processing.component';
+import { ParListingComponent } from './underwriting/policy-issuance/par-listing/par-listing.component';
 import { PolEndorsementComponent } from './underwriting/policy-issuance/pol-endorsement/pol-endorsement.component';
 import { PolCoInsuranceComponent } from './underwriting/policy-issuance/pol-co-insurance/pol-co-insurance.component';
 import { PolicyIssuanceComponent } from './underwriting/policy-issuance/policy-issuance.component';
+import { PolCoverageComponent } from './underwriting/policy-issuance/pol-coverage/pol-coverage.component';
+import { PolOtherRatesComponent } from './underwriting/policy-issuance/pol-other-rates/pol-other-rates.component';
+import { PolGenInfoComponent } from './underwriting/policy-issuance/pol-gen-info/pol-gen-info.component'
+import { AltParListingComponent } from './underwriting/policy-issuance/alt-par-listing/alt-par-listing.component';
 import { PolAttachmentComponent } from './underwriting/policy-issuance/pol-attachment/pol-attachment.component';
 import { PolPostComponent } from './underwriting/policy-issuance/pol-post/pol-post.component';
 
@@ -80,12 +85,17 @@ import { PolPostComponent } from './underwriting/policy-issuance/pol-post/pol-po
         DummyComponent,
         CustTableComponent,
         CustEditableTableComponent,
-        PolAttachmentComponent,
-        PolCoInsuranceComponent,
+        ParListingComponent,
         PolEndorsementComponent,
+        PolCoInsuranceComponent,
         PolicyIssuanceComponent,
+        PolCoverageComponent,
+        PolOtherRatesComponent,
+        PolGenInfoComponent,
+        AltParListingComponent,
         PolAttachmentComponent,
-        PolPostComponent,],
+        PolPostComponent,
+    ],
 
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
