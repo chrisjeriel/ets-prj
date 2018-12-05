@@ -10,9 +10,11 @@
 						</div>
 						<div class="col-sm">
 							<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
-								<div class="input-group" style="margin-top: 10px;">
-									<label class="form-control-sm col-sm-2">Policy No</label>
-									<input type="text" class="form-control form-control-sm">
+								<div *ngIf="mode" class="input-group" style="margin-top: 10px;">
+									<label  class="form-control-sm col-sm-2">Policy No</label>
+									<input  type="text" class="form-control form-control-sm">
+								</div>
+								<div *ngIf="mode != 'alteration'" class="input-group" style="margin-top: 15px;">
 								</div>
 								<div class="input-group">
 									<label class="form-control-sm col-sm-2">PAR No</label>
@@ -26,11 +28,16 @@
 									<input type="text" class="form-control form-control-sm">
 									<label class="form-control-sm col-sm-2">Line Class</label>
 									<input type="text" class="form-control form-control-sm">
+									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+									<span>&nbsp;</span>
 								</div>
 								<div class="input-group">
 									<label class="form-control-sm col-sm-2">Ceding Company</label>
 									<input type="text" class="form-control form-control-sm col-sm-3">
+									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+									<span>&nbsp;</span>
 									<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px;">
+
 								</div>
 								<div class="input-group">
 									<label class="form-control-sm col-sm-2">Co #</label>
@@ -48,7 +55,7 @@
 				</div>
 				<div class="col-sm-3" style="padding-left: 0px;">
 					<fieldset class="scheduler-border">
-						<legend class="scheduler-border">Par Info</legend>
+						<legend class="scheduler-border">Period of Issuance</legend>
 							<div class="custom-row-inline-inset">
 							<div class="form-row">
 								<div class="form-group col-sm" style="margin-bottom: 0px; margin-top: -9px;">
@@ -83,7 +90,7 @@
 			<fieldset class="scheduler-border">
 				<legend class="scheduler-border">-</legend>
 				<div class="custom-row-inline-inset">
-				<div class="form-row">
+				<div class="form-row" style="margin-top: 15px;">
 					<div class="form-group col-sm-6">
 						<div class="input-group">
 							<div class="input-group-prepend">
@@ -212,8 +219,12 @@
 						<div class="input-group" style="margin-top: 10px;">
 							<label class="form-control-sm col-sm-1">Principal</label>
 							<input type="text" class="form-control form-control-sm cust-sm">
+							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+									<span>&nbsp;</span>
 							<label class="form-control-sm col-sm-1">Contractor</label>
 							<input type="text" class="form-control form-control-sm">
+							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+									<span>&nbsp;</span>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Insured</label>
@@ -281,8 +292,10 @@
 				<legend class="scheduler-border">Share Details</legend>
 				<div class="custom-row-inline-inset">
 					<div class="input-group">
-						<label class="form-control-sm col-sm-4">Intermediary</label>
+						<label class="form-control-sm col-sm-3">Intermediary</label>
 						<input type="text" class="form-control form-control-sm">
+						<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+						<span>&nbsp;</span>
 					</div>
 				</div>
 			</fieldset>

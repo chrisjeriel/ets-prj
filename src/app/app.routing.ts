@@ -9,6 +9,7 @@ import { QuotationInquiryComponent } from './quotation/quotation-inquiry/quotati
 import { NotesComponent } from './notes/notes.component';
 import { QuotationProcessingComponent } from './quotation/quotation-processing/quotation-processing.component';
 import { PolicyIssuanceComponent } from './underwriting/policy-issuance/policy-issuance.component';
+import { PolicyIssuanceAltComponent } from './underwriting/policy-issuance/policy-issuance-alt.component';
 import { ExtractExpiringPoliciesComponent } from  './underwriting/expiry-and-renewal/extract-expiring-policies/extract-expiring-policies.component';
 import { ExpiryListingComponent } from './underwriting/expiry-and-renewal/expiry-listing/expiry-listing.component';
 
@@ -23,6 +24,7 @@ const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
     { path: 'quotation', component: QuotationComponent, canActivate: [AuthGuard] },
     { path: 'policy-issuance', component: PolicyIssuanceComponent, canActivate: [AuthGuard] },
+    { path: 'policy-issuance-alt', component: PolicyIssuanceAltComponent, canActivate: [AuthGuard] },
     { path: 'dummy', component: DummyComponent, canActivate: [AuthGuard] },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
