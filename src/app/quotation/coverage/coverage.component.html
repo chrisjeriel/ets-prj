@@ -27,7 +27,13 @@
     <div class="form-row custom-row-inline-inset">
       <div class="input-group">
         <label class="form-control-sm col-sm-1" for="xx">Currency</label>
-        <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm" required>
+        <!-- <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm" required> -->
+        <select class="form-control form-control-sm cust-sm">
+          <option value=""></option>
+          <option value="USD">USD</option>
+          <option value="PHP">PHP</option>
+          <option value="EUR">EUR</option>
+        </select>
         <label class="form-control-sm col-sm-1" for="xx">Section I</label>
         <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm txt-content-rght" required
           placeholder="0.00" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
@@ -65,9 +71,9 @@
       <div class="col-md-13 text-center">
         <br>
         <div class="cust-btn-container">
-        <button type="button" class="cust-btn"><a>Cancel</a></button>
-        <button type="button" class="cust-btn"><a>Save</a></button>
-      </div>
+          <button type="button" class="cust-btn"><a>Cancel</a></button>
+          <button type="button" class="cust-btn"><a>Save</a></button>
+        </div>
       </div>
     </div>
   </div>

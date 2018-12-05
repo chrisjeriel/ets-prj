@@ -36,7 +36,7 @@ export class CoverageComponent implements OnInit {
     this.dataTypes.push("select");
     this.dataTypes.push("currency");
     this.dataTypes.push("select");
-    this.dataTypes.push("currency");
+    this.dataTypes.push("checkbox");
 
     this.selOptions.push({ selector: "section", vals: ["I", "II", "III"] });
     this.selOptions.push({ selector: "bulletNo", vals: ["1", "2", "3"] });
