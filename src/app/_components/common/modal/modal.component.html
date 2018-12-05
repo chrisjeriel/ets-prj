@@ -1,9 +1,7 @@
 <ng-template #content let-modal>
     <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">{{modalTitle}}</h4>
-        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-            <span aria-hidden="true">&times;</span>
-        </button>
+        <h6 class="modal-title" id="modal-basic-title">{{modalTitle}}</h6>
+            <a class="btn-cust" aria-label="Close" (click)="modal.dismiss('Cross click')" aria-hidden="true" >&times;</a>
     </div>
     <div class="modal-body">
         <!-- Custom Table -->
@@ -15,15 +13,19 @@
             <app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [tableData]="tableData" [tHeader]="tHeader" [checkFlag]="true" [magnifyingGlass]="magnifyingGlass" [nData]="nData"></app-cust-editable-table>
         </div>
         <!-- Progress Bar -->
-        <div>
+        <div *ngIf="modalProgressBar">
+            <ngb-progressbar type="info" [value]="progress"></ngb-progressbar>
         </div>
         <!-- Text -->
+        <div *ngIf="textFlag">
+            {{modalText}}
+        </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="cust-btn" (click)="modal.close('Save click')"><a>Ok</a></button>
-        <button type="button" class="cust-btn" (click)="modal.close('Save click')"><a>Yes</a></button>
-        <button type="button" class="cust-btn" (click)="modal.close('Save click')"><a>No</a></button>
-        <button type="button" class="cust-btn" (click)="modal.close('Save click')"><a>Cancel</a></button>
+        <button *ngIf="btnModalOk" type="button" class="cust-btn" (click)="modal.close('Save click')"><a>Ok</a></button>
+        <button *ngIf="btnModalYes" type="button" class="cust-btn" (click)="modal.close('Save click');open(content);"><a>Yes</a></button>
+        <button *ngIf="btnModalNo" type="button" class="cust-btn" (click)="modal.close('Save click')"><a>No</a></button>
+        <button *ngIf="btnModalCancel" type="button" class="cust-btn" (click)="modal.close('Save click')"><a>Cancel</a></button>
     </div>
 </ng-template>
 

@@ -55,7 +55,7 @@ export class CustEditableTableComponent implements OnInit {
   	  lengthChange: false,
   	  info: false,
   	  ordering: true,
-      pageLength: this.pageLength;
+      pageLength: this.pageLength,
     };
 
     if (this.tableData.length > 0) {
