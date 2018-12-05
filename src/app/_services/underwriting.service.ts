@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing } from '@app/_models';
+import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable } from '@app/_models';
+
 
 @Injectable({ providedIn: 'root' })
 export class UnderwritingService {
 
     dummyInfoData: DummyInfo[] = [];
+    alterationFromQuotation: CreateParTable[] = [];
     uwcoverageInfoData: UnderwritingCoverageInfo[] = [];
     uwotherRatesInfoData: UnderwritingOtherRatesInfo[] = [];
     coInsuranceData: PolicyCoInsurance[] = [];
@@ -38,6 +40,25 @@ export class UnderwritingService {
         return this.dummyInfoData;
     }
 
+
+    getAlterationFromQuotation(){
+        this.alterationFromQuotation = [
+            new CreateParTable("CAR-2015-0002832-01", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),
+            new CreateParTable("CAR-2015-0002832-02", "Branch 2", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),
+            ];
+
+        return this.alterationFromQuotation;
+    }
+
+    getCoInsurance(){
+      this.coInsuranceData = [
+       new PolicyCoInsurance("Risk 1", "Malayan", 12.2, 10000, 500000),
+       new PolicyCoInsurance("Risk 2", "Company 1", 6.23, 20000, 600000),
+       new PolicyCoInsurance("Risk 3", "Company 2", 15.16, 30000, 700000),
+        ];
+        return this.coInsuranceData;
+    }
+
     getUWCoverageInfo() {
         this.uwcoverageInfoData = [
             new UnderwritingCoverageInfo("data", "1", "I", "3", "69000", "Sort C", "70000"),
@@ -56,15 +77,7 @@ export class UnderwritingService {
     extractExpiringPolicies(){
         return 100;
     }
-    
-    getCoInsurance(){
-        this.coInsuranceData = [
-            new PolicyCoInsurance("Risk 1", "Malayan", 12.2, 10000, 500000),
-            new PolicyCoInsurance("Risk 2", "Company 1", 6.23, 20000, 600000),
-            new PolicyCoInsurance("Risk 3", "Company 2", 15.16, 30000, 700000),
-        ];
-        return this.coInsuranceData;
-    }
+           
 
     getParListing() {
         this.parListingData = [
@@ -94,6 +107,7 @@ export class UnderwritingService {
         ];
 
         return this.altParListingData;
+
     }
 
     getExpiryListing(){

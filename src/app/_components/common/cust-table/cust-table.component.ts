@@ -19,6 +19,7 @@ export class CustTableComponent implements OnInit {
     @Input() expireFilter: boolean;
     @Input() dataTypes: any[] = [];
     @Input() filters: any[] = [];
+    @Input() pageLength: number = 3;
     dataKeys: any[] = [];
     start:    any;
     pressed:  any;
@@ -34,6 +35,7 @@ export class CustTableComponent implements OnInit {
 
         this.dtOptions = {
             pagingType: 'full_numbers',
+            pageLength: this.pageLength,
         };
 
         if (this.tableData.length > 0) {
