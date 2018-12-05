@@ -68,10 +68,12 @@ textarea {
   z-index: 9999 !important;
   border-radius: 2px;
   background: linear-gradient(to bottom, #4080bf 0%, #2d5986 100%);
-  width: 60px;
+  min-width: 60px;
+  max-width: 120px;
   padding-top: 5px;
   padding-bottom: 2px;
   margin-right: 3px;
+
 }
 
 .cust-btn:hover {

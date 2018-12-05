@@ -16,17 +16,20 @@
         </div>
         <!-- Progress Bar -->
         <div>
+
         </div>
         <!-- Text -->
+        <div>
+            <p>{{modalText}}</p>
+        </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="cust-btn" (click)="modal.close('Save click')"><a>Ok</a></button>
-        <button type="button" class="cust-btn" (click)="modal.close('Save click')"><a>Yes</a></button>
-        <button type="button" class="cust-btn" (click)="modal.close('Save click')"><a>No</a></button>
-        <button type="button" class="cust-btn" (click)="modal.close('Save click')"><a>Cancel</a></button>
+        <button *ngIf="btnModalOk" type="button" class="cust-btn" (click)="modal.close('Save click')"><a>Ok</a></button>
+        <button *ngIf="btnModalYes" type="button" class="cust-btn" (click)="modal.close('Save click')"><a>Yes</a></button>
+        <button *ngIf="btnModalNo" type="button" class="cust-btn" (click)="modal.close('Save click')"><a>No</a></button>
+        <button *ngIf="btnModalCancel" type="button" class="cust-btn" (click)="modal.close('Save click')"><a>Cancel</a></button>
     </div>
 </ng-template>
 
 <button class="cust-btn" (click)="open(content)"><a>{{btnTitle}}</a></button>
 
-<hr>

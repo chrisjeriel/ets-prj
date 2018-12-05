@@ -48,14 +48,19 @@ export class UnderwritingService {
 
         return this.alterationFromQuotation;
 
+
+    }
+
     getCoInsurance(){
-        this.coInsuranceData = [
+      this.coInsuranceData = [
             new PolicyCoInsurance("Risk 1", "Malayan", 12.2, 10000, 500000),
             new PolicyCoInsurance("Risk 2", "Company 1", 6.23, 20000, 600000),
             new PolicyCoInsurance("Risk 3", "Company 2", 15.16, 30000, 700000),
         ];
         return this.coInsuranceData;
     }
+
+    /**/
 
     getParListing() {
         this.parListingData = [

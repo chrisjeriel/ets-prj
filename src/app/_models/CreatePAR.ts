@@ -1,15 +1,12 @@
 export class CreateParInfo{
 	line: string
 	year: Date
-	
+	seqNo: number
+	altNo: number
+	branch: string
+	lineClass: string
+	cedingCompany: string
 }
-
-
-
-
-
-
-
 
 export class CreateParTable {
 	quotationNo: string

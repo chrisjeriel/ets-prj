@@ -27,7 +27,7 @@
 			</div>
 			<div class="form-group col-sm-3">
 				<label for="inputEmail4" class="form-control-sm top-label">Year</label>
-				<input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4">
+				<input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4" [(ngModel)]="this.createParInfo.year" >
 			</div>
 			<div class="form-group col-sm-3">
 				<label for="inputEmail4" class="form-control-sm top-label">Seq No</label>
@@ -56,34 +56,16 @@
 		<div class="col-md-13 text-center">
 			<br>
 			<div class="cust-btn-container">
-			<button type="button" id="cust-button" class="cust-btn"><a>Convert Quotation</a></button>
+			<!-- <button type="button" id="cust-button" class="cust-btn"><a>Convert Quotation</a></button> -->
+			<app-modal [tHeader]="tHeader" [tableData]="tableData" [dataTypes]="dataTypes" [btnTitle]="btnTitle" [modalCustTable]= "true" [btnModalOk]="true" [btnModalCancel]="true" [modalTitle]="modalTitle"></app-modal>
 			<button type="button" class="cust-btn"><a>Cancel</a></button>
-			<button type="button" class="cust-btn"><a>Save</a></button>
+			<!-- <button type="button" class="cust-btn"><a>Save</a></button> -->
+			<app-modal [btnTitle]="btnTitle2" [btnModalYes]="true" [btnModalNo]="true" [btnModalCancel]="true" [modalTitle]="modalTitle" [modalText]="modalText"></app-modal>
 		</div>
 		</div>
 	</div>
 </div>
-	<div>
-		<app-cust-table [tHeader]="tHeader" [tableData]="tableData" [dataTypes]="dataTypes"></app-cust-table>
-	</div>
-	<br>
-	<br>
-	<div>
-		<p>A policy record will be created with all the information entered in the quotation. Do you want to continue?</p>
-		<br>
-		<div class="form-row">
-			<div class="form-group col-sm">
-				<div class="col-md-13 text-center">
-					<br>
-					<div class="cust-btn-container">
-					<button type="button" class="cust-btn"><a>Yes</a></button>
-					<button type="button" class="cust-btn"><a>No</a></button>
-					<button type="button" class="cust-btn"><a>Cancel</a></button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+	
 	<br>
 	<br>
 	<div>
