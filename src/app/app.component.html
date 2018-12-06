@@ -52,18 +52,24 @@
                         <ngb-accordion #acc="ngbAccordion">
                             <ngb-panel title="Policy Issuance">
                                 <ng-template ngbPanelContent>
-                                    <button [routerLink]="['/policy-issuance']" class="button btn btn-link">Main Policy Issuance</button>
-                                    <br/>
-                                    <button [routerLink]="['/quotation']" class="button btn btn-link">Create PAR</button>
-                                    <br/>
+<!--                                     <button [routerLink]="['/createPAR']" class="button btn btn-link">Create PAR</button>
+                                    <br/> -->
                                     <button [routerLink]="['/par-listing']" class="button btn btn-link">PAR Listing</button>
                                     <br/>
-                                    <button [routerLink]="['/dummy']" class="button btn btn-link">Create Alteration PAR</button>
-                                    <br/>
+<!--                                     <button [routerLink]="['/createAlterationPAR']" class="button btn btn-link">Create Alteration PAR</button>
+                                    <br/> -->
                                     <button [routerLink]="['/alt-par-listing']" class="button btn btn-link">Alteration PAR Listing</button>
                                 </ng-template>
                             </ngb-panel>
                             <ngb-panel title="Distribution">
+                            </ngb-panel>
+                            <ngb-panel title="Expiry & Renewal">
+                                <ng-template ngbPanelContent>
+                                    <button [routerLink]="['/extract-expiring-policies']" class="button btn btn-link">Extract Expiring Policies</button>
+                                    <br/>
+                                    <button [routerLink]="['/expiry-listing']" class="button btn btn-link">Expiry Listing</button>
+                                    <br/>
+                                </ng-template>
                             </ngb-panel>
                             <ngb-panel title="Renewal Processing">
                             </ngb-panel>
@@ -77,14 +83,6 @@
                 <ngb-panel title="Security">
                 </ngb-panel>
             </ngb-accordion>
-                <!-- <a href="/">Home</a>
-                <a href="/quotation">Quotation</a>
-                <a href="/quotation">Underwriting</a>
-                <a href="/quotation">Accounting</a>
-                <a href="/quotation">Claims</a>
-                <a href="/quotation">Security</a>
-                <a href="/quotation">Security</a>
-                <a href="/dummy">Available Components</a> -->
            </div>
         </div>
     </div>

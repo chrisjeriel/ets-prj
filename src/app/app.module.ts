@@ -33,16 +33,23 @@ import { CustEditableTableComponent } from './_components/common/cust-editable-t
 import { QuotationInquiryComponent } from './quotation/quotation-inquiry/quotation-inquiry.component';
 import { ListOfQuotationsComponent } from './quotation/quotation-inquiry/list-of-quotations/list-of-quotations.component';
 import { HoldCoverMonitoringListComponent } from './quotation/quotation-inquiry/hold-cover-monitoring-list/hold-cover-monitoring-list.component';
-
 import { NotesComponent } from './notes/notes.component';;
 import { QuotationProcessingComponent } from './quotation/quotation-processing/quotation-processing.component';
 import { ParListingComponent } from './underwriting/policy-issuance/par-listing/par-listing.component';
 import { PolEndorsementComponent } from './underwriting/policy-issuance/pol-endorsement/pol-endorsement.component';
 import { PolCoInsuranceComponent } from './underwriting/policy-issuance/pol-co-insurance/pol-co-insurance.component';
 import { PolicyIssuanceComponent } from './underwriting/policy-issuance/policy-issuance.component';
+import { PolCreatePARComponent } from './underwriting/policy-issuance/pol-create-par/pol-create-par.component';
+import { PolCreateAlterationPARComponent } from './underwriting/policy-issuance/pol-create-alteration-par/pol-create-alteration-par.component';
 import { ModalComponent } from './_components/common/modal/modal.component';
+import { PolCoverageComponent } from './underwriting/policy-issuance/pol-coverage/pol-coverage.component';
+import { PolOtherRatesComponent } from './underwriting/policy-issuance/pol-other-rates/pol-other-rates.component';
+import { ExpiryAndRenewalComponent } from './underwriting/expiry-and-renewal/expiry-and-renewal.component';
+import { ExtractExpiringPoliciesComponent } from './underwriting/expiry-and-renewal/extract-expiring-policies/extract-expiring-policies.component';
 import { PolGenInfoComponent } from './underwriting/policy-issuance/pol-gen-info/pol-gen-info.component'
 import { AltParListingComponent } from './underwriting/policy-issuance/alt-par-listing/alt-par-listing.component';
+import { ExpiryListingComponent } from './underwriting/expiry-and-renewal/expiry-listing/expiry-listing.component';
+import { PolicyIssuanceAltComponent } from './underwriting/policy-issuance/policy-issuance-alt.component';
 
 @NgModule({
     imports: [
@@ -87,10 +94,19 @@ import { AltParListingComponent } from './underwriting/policy-issuance/alt-par-l
         PolEndorsementComponent,
         PolCoInsuranceComponent,
         PolicyIssuanceComponent,
+        PolCreatePARComponent,
+        PolCreateAlterationPARComponent,
         ModalComponent,
+        PolCoverageComponent,
+        PolOtherRatesComponent,
+        ExpiryAndRenewalComponent,
+        ExtractExpiringPoliciesComponent,
         PolGenInfoComponent,
-        AltParListingComponent
+        AltParListingComponent,
+        ExpiryListingComponent,
+        PolicyIssuanceAltComponent
     ],
+
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

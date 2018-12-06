@@ -1,0 +1,69 @@
+<div class="cust-tabs-container">
+	<h4>Underwriting / Policy Issuance / Create Policy Record</h4>
+	<ngb-tabset>
+
+		<ngb-tab class="ngb-tab" title="Create PAR">
+			<ng-template ngbTabContent>
+				
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab title="General Info" [routerLink]="['/alt-par-listing']">
+			<ng-template ngbTabContent>
+				
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>
+<br>
+<br>
+<div align="center" >
+	<fieldset class="scheduler-border col-sm-6 align-items-left">
+		
+		<legend class="scheduler-border">Basic Information</legend>
+		<div class="form-row">
+			<div class="form-group col-sm-3">
+				<label for="inputEmail4" class="form-control-sm top-label">Line</label>
+				<input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4" [(ngModel)]="this.createParInfo.line">
+			</div>
+			<div class="form-group col-sm-3">
+				<label for="inputEmail4" class="form-control-sm top-label">Year</label>
+				<input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4" >
+			</div>
+			<div class="form-group col-sm-3">
+				<label for="inputEmail4" class="form-control-sm top-label">Seq No</label>
+				<input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4"
+				[(ngModel)]="this.createParInfo.seqNo">
+			</div>
+			<div class="form-group col-sm-3">
+				<label for="inputEmail4" class="form-control-sm top-label">Alt No</label>
+				<input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4" [(ngModel)]="this.createParInfo.altNo">
+			</div>
+		
+	 		<div class="form-row">
+				<label class="form-control-sm" for="xx">Branch</label>
+				<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="this.createParInfo.branch">
+				<label class="form-control-sm" for="xx">Line Class</label>
+				<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="this.createParInfo.lineClass">
+			</div>
+			<div class="input-group	">
+				<label class="form-control-sm" for="xx">Ceding Company</label>
+				<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-9" [(ngModel)]="this.createParInfo.cedingCompany">
+			</div>
+		</div>
+	</fieldset>
+<div class="form-row">
+	<div class="form-group col-sm">
+		<div class="col-md-13 text-center">
+			<br>
+			<div class="cust-btn-container">
+			<!-- <button type="button" id="cust-button" class="cust-btn"><a>Convert Quotation</a></button> -->
+			<app-modal [tHeader]="tHeader" [tableData]="tableData" [dataTypes]="dataTypes" [btnTitle]="btnTitle" [modalCustTable]= "true" [btnModalOk]="true" [btnModalCancel]="true" [modalTitle]="modalTitle"></app-modal>
+			<button type="button" class="cust-btn"><a>Cancel</a></button>
+			<!-- <button type="button" class="cust-btn"><a>Save</a></button> -->
+			<app-modal [btnTitle]="btnTitle2" [btnModalYes]="true" [btnModalNo]="true" [btnModalCancel]="true" [modalTitle]="modalTitle" [modalText]="modalText"></app-modal>
+		</div>
+		</div>
+	</div>
+</div>
+	
+</div>

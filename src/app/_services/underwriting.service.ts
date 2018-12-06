@@ -1,20 +1,24 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { DummyInfo, PolicyCoInsurance, PARListing, AltPARListing } from '@app/_models';
+import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable } from '@app/_models';
+
 
 @Injectable({ providedIn: 'root' })
 export class UnderwritingService {
 
     dummyInfoData: DummyInfo[] = [];
+    alterationFromQuotation: CreateParTable[] = [];
+    uwcoverageInfoData: UnderwritingCoverageInfo[] = [];
+    uwotherRatesInfoData: UnderwritingOtherRatesInfo[] = [];
     coInsuranceData: PolicyCoInsurance[] = [];
     parListingData: PARListing[] = [];
     altParListingData: AltPARListing[] = [];
+    expiryListing: ExpiryListing[] = [];
 
     constructor(private http: HttpClient) {
 
     }
-
     getDummyInfo() {
         /*Dummy Data Array*/
         this.dummyInfoData = [
@@ -36,14 +40,44 @@ export class UnderwritingService {
         return this.dummyInfoData;
     }
 
+
+    getAlterationFromQuotation(){
+        this.alterationFromQuotation = [
+            new CreateParTable("CAR-2015-0002832-01", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),
+            new CreateParTable("CAR-2015-0002832-02", "Branch 2", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),
+            ];
+
+        return this.alterationFromQuotation;
+    }
+
     getCoInsurance(){
-        this.coInsuranceData = [
-            new PolicyCoInsurance("Risk 1", "Malayan", 12.2, 10000, 500000),
-            new PolicyCoInsurance("Risk 2", "Company 1", 6.23, 20000, 600000),
-            new PolicyCoInsurance("Risk 3", "Company 2", 15.16, 30000, 700000),
+      this.coInsuranceData = [
+       new PolicyCoInsurance("Risk 1", "Malayan", 12.2, 10000, 500000),
+       new PolicyCoInsurance("Risk 2", "Company 1", 6.23, 20000, 600000),
+       new PolicyCoInsurance("Risk 3", "Company 2", 15.16, 30000, 700000),
         ];
         return this.coInsuranceData;
     }
+
+    getUWCoverageInfo() {
+        this.uwcoverageInfoData = [
+            new UnderwritingCoverageInfo("data", "1", "I", "3", "69000", "Sort C", "70000"),
+            new UnderwritingCoverageInfo("data", "2", 'II', "2", "123000", 'Sort B', "456000")
+        ];
+        return this.uwcoverageInfoData;
+    }
+    getUWOtherRatesInfo() {
+        this.uwotherRatesInfoData = [
+            new UnderwritingOtherRatesInfo("data", "Sample 1", 123000, "Remarks 1"),
+            new UnderwritingOtherRatesInfo("data", "Sample 2", 321000, "Remarks 2"),
+        ];
+        return this.uwotherRatesInfoData;
+    }
+
+    extractExpiringPolicies(){
+        return 100;
+    }
+           
 
     getParListing() {
         this.parListingData = [
@@ -73,5 +107,14 @@ export class UnderwritingService {
         ];
 
         return this.altParListingData;
+
     }
-}
+
+    getExpiryListing(){
+        this.expiryListing = [
+            new ExpiryListing("POL-050","I","San Juan","CPI","insured","Sample Data","II", "Paul", "Peso", "IV", "si", "pre")
+        ];
+        return this.expiryListing;
+    }
+}            
+

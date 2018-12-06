@@ -57,22 +57,22 @@ textarea {
     z-index: 9999 !important;
 }
 .cust-btn {
-    font-size: 11px;
-    font-weight: bold;
-    color: white !important;
-    text-align: center;
-    text-decoration: none !important;
-    outline: none !important;
-    border-style: none;
-    border: 1px solid gray;
-    z-index: 9999 !important;
-    border-radius: 2px;
-    background: linear-gradient(to bottom, #4080bf 0%, #2d5986 100%);
-    min-width: 60px;
-    max-width: 120px;
-    padding-top: 5px;
-    padding-bottom: 2px;
-    margin-right: 3px;
+  font-size: 11px;
+  font-weight: bold;
+  color: white !important;
+  text-align: center;
+  text-decoration: none !important;
+  outline: none !important;
+  border-style: none;
+  border: 1px solid gray;
+  z-index: 9999 !important;
+  border-radius: 2px;
+  background: linear-gradient(to bottom, #4080bf 0%, #2d5986 100%);
+  min-width: 60px;
+  max-width: 120px;
+  padding-top: 5px;
+  padding-bottom: 2px;
+  margin-right: 3px;
 }
 
 .cust-btn:hover {
@@ -141,7 +141,7 @@ input.form-control-sm {
 }
 
 .cust-side-nav-bg {
-    background-color: #557a95;
+    background-color: #00194A;/*#557a95;*/
     color: white;
     height: 100%;
     position: static;
@@ -342,10 +342,10 @@ legend.scheduler-border {
 }
 
 .cust-ng-sidebar {
-    border: 1px solid gray !important;
-    color: white;
-    background-color: #557a95;
-    height: 100%;
+  border: 1px solid gray !important;
+  color: white;
+  background-color: #00194A; /*#557a95;*/
+  height: 100%;
 }
 
 .cust-ng-sidebar p{
@@ -366,10 +366,11 @@ legend.scheduler-border {
 }
 
 button.btn.btn-link{
-    font-size: 12px;
-    font-weight: bold;
-    text-decoration: none;
-    padding: 0px 6px 2px 6px;
+  font-size: 12px;
+  font-weight: bold;
+  text-decoration: none;
+  padding: 0px 6px 2px 6px;
+  color: #0003B4;
 }
 
 div.card-body {
