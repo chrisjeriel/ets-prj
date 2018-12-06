@@ -37,3 +37,8 @@ select + input, input + div + input{
 	margin-left: 6px !important;
 }
 
+.fa-check{
+	font-size: 60px;
+	color: #00194A;
+}
+

@@ -13,12 +13,13 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
   lastExtraction: LastExtraction = new LastExtraction();
   constructor(private underWritingService: UnderwritingService) { }
   byDate:boolean = true;
+  extractedPolicies: number = 0;
   ngOnInit() {
 
   }
 
   save(){
-  	alert("Extracted Policies: " + this.underWritingService.extractExpiringPolicies());
+  	this.extractedPolicies =  this.underWritingService.extractExpiringPolicies();
   }
 
   clearDates(){
