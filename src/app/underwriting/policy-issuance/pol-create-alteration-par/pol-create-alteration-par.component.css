@@ -7,3 +7,7 @@
 	z-index: 99999;
 	font-size: 14px;
 }
+
+.nav-a-hover:hover{
+	text-decoration: none;
+}
