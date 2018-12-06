@@ -26,8 +26,8 @@ export class PolPostComponent implements OnInit {
 
   ngOnInit() {	
     setTimeout(() => {
-      this.modalService.open(this.content,  { centered: true, windowClass : 'modal-size'});
-      this.fakeProgress(); 
+      this.modalService.open(this.successinfo,  { centered: true, windowClass : 'modal-size'});
+     /*this.fakeProgress(); */
     });
 
 
@@ -43,7 +43,7 @@ export class PolPostComponent implements OnInit {
              this.showTab = 0;
              this.progress = 0;
              this.modalService.dismissAll(true);
-                 this.modalService.open(this.successinfo,  { centered: true ,  backdrop: 'static', windowClass : 'modal-size'});
+                 this.modalService.open(this.successinfo,  { centered: true , windowClass : 'modal-size'});
            }
     },150);
 

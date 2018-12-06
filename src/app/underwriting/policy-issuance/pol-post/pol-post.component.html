@@ -1,6 +1,6 @@
 <ng-template #content let-c="close" let-d="dismiss">
     <div class="modal-header">
-      <h6 class="modal-title" id="modal-basic-title">Post</h6>
+      <p class="modal-title" id="modal-basic-title">Post</p>
     </div>
     <div class="modal-body">
     	<p class="text-center">Saving {{TabName[showTab]}} </p>
@@ -10,11 +10,40 @@
 
 <ng-template #successinfo let-modal>
     <div class="modal-header">
-      <h6 class="modal-title" id="modal-basic-title">Saving Successful</h6>
+		<!-- <i class="fa fa-check fa-2x" aria-hidden="true"></i> -->
+		<p class="modal-title" id="modal-basic-title">Saving Successful</p>
     </div>
+
+
     <div class="modal-body">
 
+    	<div class="form-row" style="width: 400px">
+    		<div class="input-group" >
+        		<label class="form-control-sm col-sm-3" style="text-align: right">Policy No.: </label>
+        		<label class="form-control-sm top-label">CAR-2015-0000289-04 </label>
+        	</div>
+        	<div class="input-group" >
+        		<label class="form-control-sm t col-sm-3">Alteration No.: 
+        		</label>
+        		<label class="form-control-sm top-label">00</label>
+        	</div>
+        	<div class="input-group" >
+        		<label class="form-control-sm  col-sm-3">Ced Company: 
+        		</label>
+        		<label class="form-control-sm top-label">FLT Prime </label>
+        	</div>
+        	<div class="input-group">
+        		<label class="form-control-sm  col-sm-3">Insured: 
+        		</label>
+        		<label class="form-control-sm top-label">2nd Inn, Inc. (Sogo Cubao 2) and/or A.G Sanches
+        		</label>
+        	</div>
+      	</div>
+
+
     </div>
+
+
     <div class="modal-footer">
       	<button type="button" class="cust-btn" (click)="modal.close('Close click')"><a>Print</a></button>
 		<button type="button" class="cust-btn" (click)="modal.close('Close click')" routerLink="''" ><a>Ok</a></button>
