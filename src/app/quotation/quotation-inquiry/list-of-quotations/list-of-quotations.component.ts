@@ -11,8 +11,10 @@ export class ListOfQuotationsComponent implements OnInit {
     tHeader: any[] = [];
     dataTypes: any[] = [];
     filters: any[] = [];
+    pageLength: number;
     
     constructor(private quotationService: QuotationService) { 
+        this.pageLength = 10;
     }
 
     ngOnInit() {

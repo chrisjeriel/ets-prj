@@ -38,7 +38,7 @@
     outline: none !important;
     border-style: none;
     border: 1px solid gray;
-    z-index: 9999 !important;
+    z-index: 200 !important;
     background: linear-gradient(to bottom, #4080bf 0%, #2d5986 100%);
 }
 
