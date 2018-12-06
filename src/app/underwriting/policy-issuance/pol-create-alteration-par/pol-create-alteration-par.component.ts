@@ -15,12 +15,6 @@ export class PolCreateAlterationPARComponent implements OnInit {
   tableData: any[] = [];
   tHeader: any[] = [];
   dataTypes: any[]= [];
-  btnTitle:string = "Convert Quotation";
-  modalTitle: string = "Convert Quotation";
-  
-  btnTitle2:string = "Save";
-  modalTitle2: string = "Convert Quotation to Alteration Record";
-  modalText: string = "A policy record will be created with all the information entered in the quotation. Do you want to continue?";
   
   constructor(private underwritingService : UnderwritingService, private router: Router, private modalService : NgbModal ) { }
 
