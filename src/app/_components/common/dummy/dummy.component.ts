@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { QuotationService } from '../../../_services';
 import { DummyInfo } from '../../../_models';
-
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 @Component({
     selector: 'app-dummy',
     templateUrl: './dummy.component.html',
@@ -14,7 +14,7 @@ export class DummyComponent implements OnInit {
     dataTypes: any[] = [];
     nData: DummyInfo = new DummyInfo(null, null, null, null, null, null, null);
 
-    constructor(private quotationService: QuotationService) { }
+    constructor(private quotationService: QuotationService, private modalService: NgbModal) { }
 
     ngOnInit() {
         this.tHeader.push("ID");
