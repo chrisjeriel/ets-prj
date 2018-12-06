@@ -15,69 +15,6 @@
 	</ngb-tabset>
 </div>
 <br>
-
-<!-- <br>
-<div align="center">
-	<div class="col-sm-8" align="left">
-					<fieldset class="scheduler-border">
-						<legend class="scheduler-border">Basic Information</legend>
-						<div class="col-sm-1">
-						</div>
-						<div class="col-sm">
-							<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
-								<div class="form-group col-sm-2">
-								</div>
-								<div class="form-group col-sm-3">
-									<label for="inputEmail4" class="form-control-sm top-label">Line</label>
-									<input type="text" class="form-control form-control-sm" ([ngModel])="this.createAlterationPar.line">
-								</div>
-								<div class="form-group col-sm-2">
-									<label for="inputEmail4" class="form-control-sm top-label">Year</label>
-									<input type="text" class="form-control form-control-sm">
-								</div>
-								<div class="form-group col-sm-3">
-									<label for="inputEmail4" class="form-control-sm top-label">Seq No</label>
-									<input type="text" class="form-control form-control-sm" ([ngModel])="this.createAlterationPar.seqNo">
-								</div>
-								<div class="form-group col-sm-2">
-									<label for="inputEmail4" class="form-control-sm top-label">Alt No</label>
-									<input type="text" class="form-control form-control-sm" ([ngModel])="this.createAlterationPar.altNo">
-								</div>
-								<div class="input-group">
-									<label class="form-control-sm col-sm-2">Ceding Company</label>
-									<input type="text" class="form-control form-control-sm" ([ngModel])="this.createAlterationPar.cedingCompany">
-								</div>
-								<div class="input-group">
-									<label class="form-control-sm col-sm-2">Principal</label>
-									<input type="text" class="form-control form-control-sm" ([ngModel])="this.createAlterationPar.principal" >
-									<label class="form-control-sm col-sm-2">Contractor</label>
-									<input type="text" class="form-control form-control-sm" ([ngModel])="this.createAlterationPar.contractor">
-								</div>
-							</div>
-						</div>
-					</fieldset>
-				</div>
-<!-- <div align="center">
-	<fieldset class="scheduler-border col-sm-7 align-items-center">
-		
-		<legend class="scheduler-border">Basic Information</legend>
-		<div class="form-row">
-			<div class="form-group col-sm-3">
-				<label for="inputEmail4" class="form-control-sm top-label">Line</label>
-				<input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4"  [(ngModel)]=" this.createAlterationPar.line">
-			</div>
-			<div class="form-group col-sm-3">
-				<label for="inputEmail4" class="form-control-sm top-label">Year</label>
-				<input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4">
-			</div>
-			<div class="form-group col-sm-3">
-				<label for="inputEmail4" class="form-control-sm top-label">Seq No</label>
-				<input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4" [(ngModel)]=" this.createAlterationPar.seqNo">
-			</div>
-			<div class="form-group col-sm-3">
-				<label for="inputEmail4" class="form-control-sm top-label">Alt No</label>
-				<input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4" [(ngModel)]=" this.createAlterationPar.altNo"> -->
-
 <div class="row">
 	<div class="col-sm-3"></div>
 	<div class="col-sm-6">
@@ -141,11 +78,29 @@
 		<div class="col-md-12 text-center">
 			<br>
 			<div class="cust-btn-container">
-			<!-- <button type="button" id="cust-button" class="cust-btn"><a>Convert Quotation</a></button> -->
-			<app-modal [tHeader]="tHeader" [tableData]="tableData" [dataTypes]="dataTypes" [btnTitle]="btnTitle" [modalCustTable]= "true" [btnModalOk]="true" [btnModalCancel]="true" [modalTitle]="modalTitle"></app-modal>
+			<app-modal  [btnTitle]="btnTitle" >
+        		<div header>Convert Quotation</div>
+        		<div body>
+           			<app-cust-table [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes"></app-cust-table>
+        		</div>
+        		<div footer>
+            		<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+            		<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+        		</div>
+  			</app-modal>
 			<button type="button" class="cust-btn"><a>Cancel</a></button>
-			<!-- <button type="button" class="cust-btn"><a>Save</a></button> -->
-			<app-modal [btnTitle]="btnTitle2" [btnModalYes]="true" [btnModalNo]="true" [btnModalCancel]="true" [modalTitle]="modalTitle" [modalText]="modalText"></app-modal>
+			<!-- <button type="button" class="cust-btn"><a>Cancel</a></button> -->
+			<app-modal [btnTitle]="btnTitle2">
+        		<div header>Convert Quotation to Policy Record</div>
+        		<div body>
+           			<p>"A policy record will be created with all the information entered in the quotation. Do you want to continue?"</p>
+        		</div>
+        		<div footer>
+            		<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Yes</a></button>
+            		<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>No</a></button>
+            		<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+        		</div>
+  			</app-modal>
 		</div>
 		</div>
 	</div>
