@@ -61,17 +61,18 @@ textarea {
   font-weight: bold;
   color: white !important;
   text-align: center;
-    text-decoration: none !important;
-    outline: none !important;
-    border-style: none;
-    border: 1px solid gray;
-    z-index: 9999 !important;
-    border-radius: 2px;
-    background: linear-gradient(to bottom, #4080bf 0%, #2d5986 100%);
-    width: 60px;
-    padding-top: 5px;
-    padding-bottom: 2px;
-    margin-right: 3px;
+  text-decoration: none !important;
+  outline: none !important;
+  border-style: none;
+  border: 1px solid gray;
+  z-index: 9999 !important;
+  border-radius: 2px;
+  background: linear-gradient(to bottom, #4080bf 0%, #2d5986 100%);
+  min-width: 60px;
+  max-width: 120px;
+  padding-top: 5px;
+  padding-bottom: 2px;
+  margin-right: 3px;
 }
 
 .cust-btn:hover {
@@ -140,7 +141,7 @@ input.form-control-sm {
 }
 
 .cust-side-nav-bg {
-    background-color: #557a95;
+    background-color: #00194A;/*#557a95;*/
     color: white;
     height: 100%;
     position: static;
@@ -343,7 +344,7 @@ legend.scheduler-border {
 .cust-ng-sidebar {
   border: 1px solid gray !important;
   color: white;
-  background-color: #557a95;
+  background-color: #00194A; /*#557a95;*/
   height: 100%;
 }
 
@@ -369,6 +370,7 @@ button.btn.btn-link{
   font-weight: bold;
   text-decoration: none;
   padding: 0px 6px 2px 6px;
+  color: #0003B4;
 }
 
 div.card-body {
@@ -397,4 +399,14 @@ select.form-control.form-control-sm.cust-sm {
     font-size: 0.8rem !important;
     line-height: .6 !important;
     border-radius: 0.2rem !important;
+}
+
+.modal{
+    position: inherit;
+}
+.xl > .modal-dialog{
+    max-width: 1490px !important;
+    min-width: 971px !important;   
+    width: 95% !important;
+     z-index: 9999 !important;
 }

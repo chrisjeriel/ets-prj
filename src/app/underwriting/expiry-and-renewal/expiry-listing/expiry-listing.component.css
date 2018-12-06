@@ -1,0 +1,52 @@
+/*input[type=radio]{
+	vertical-align: top;
+}*/
+
+
+.row{
+	margin-bottom: 5px;
+}
+
+.row:first-of-type{
+	margin-top: 10px;
+}
+
+.drp-dwn-cstmz {
+    height:26px; 
+    padding: 0px;
+}
+
+.text-search-ico {
+	margin-left: -18px;
+	z-index: 99999;
+	font-size: 14px;
+}
+
+.input-group label {
+	padding-left: 0px;
+}
+.input-group{
+	vertical-align: middle;
+}
+
+input[type=radio] + label {
+  text-align: left !important;
+}
+
+select + input, input + div + input{
+	margin-left: 6px !important;
+}
+
+.left{
+	min-height: 195px;
+}
+
+.middle{
+	margin-top: 5px !important;
+	min-height: 186px;
+}
+
+.right{
+	margin-top: 5px !important;
+}
+
