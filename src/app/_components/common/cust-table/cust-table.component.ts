@@ -19,7 +19,7 @@ export class CustTableComponent implements OnInit {
     @Input() expireFilter: boolean;
     @Input() dataTypes: any[] = [];
     @Input() filters: any[] = [];
-    @Input() pageLength: number = 3;
+    @Input() pageLength: number;
     dataKeys: any[] = [];
     start:    any;
     pressed:  any;
