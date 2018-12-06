@@ -1,9 +1,25 @@
 <div class="cust-tabs-container">
-	<h4>Available Components: </h4>
-	<fieldset class="scheduler-border">
-	    <legend class="scheduler-border">Table Sample</legend>
-	    <app-cust-table [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes"></app-cust-table>
-		<app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData2" [tHeader]="tHeader"></app-cust-editable-table>
-	</fieldset>
-    <app-modal></app-modal>
+    <h4>Available Components: </h4>
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">Table Sample</legend>
+        <app-cust-table [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes"></app-cust-table>
+        <app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData2" [tHeader]="tHeader"></app-cust-editable-table>
+    </fieldset>
+    <app-modal>
+        <div header>TESTING</div>
+        <div body>
+            <app-cust-table [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes"></app-cust-table>
+        </div>
+        <div footer>
+            <app-modal [btnTitle]="'Yes'">
+                <div header>Success</div>
+                <div body>
+                   Success
+                </div>
+                <div footer>
+                    <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Test</a></button>
+                </div>
+            </app-modal>
+        </div>
+    </app-modal>
 </div>
