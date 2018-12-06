@@ -2,18 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { QuotationService } from '../../../_services';
 
 @Component({
-  selector: 'app-hold-cover-monitoring-list',
-  templateUrl: './hold-cover-monitoring-list.component.html',
-  styleUrls: ['./hold-cover-monitoring-list.component.css']
+    selector: 'app-hold-cover-monitoring-list',
+    templateUrl: './hold-cover-monitoring-list.component.html',
+    styleUrls: ['./hold-cover-monitoring-list.component.css']
 })
 export class HoldCoverMonitoringListComponent implements OnInit {
 
-   tableData: any[] = [];
+    tableData: any[] = [];
     tHeader: any[] = [];
     dataTypes: any[] = [];
     filters: any[] = [];
-    
+    pageLength: number;
+
     constructor(private quotationService: QuotationService) { 
+        this.pageLength = 10;
     }
 
     ngOnInit() {
@@ -52,7 +54,7 @@ export class HoldCoverMonitoringListComponent implements OnInit {
         this.dataTypes.push("text");
         this.dataTypes.push("date");
         this.dataTypes.push("text");
-        
+
         this.tableData = this.quotationService.getQuotationHoldCoverInfo();
     }
 }

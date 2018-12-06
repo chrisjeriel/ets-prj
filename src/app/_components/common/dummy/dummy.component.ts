@@ -36,5 +36,7 @@ export class DummyComponent implements OnInit {
         this.tableData = this.quotationService.getDummyInfo();
         this.tableData2 = this.quotationService.getDummyEditableInfo();
     }
-
+    wow(){
+        alert("wow");
+    }
 }

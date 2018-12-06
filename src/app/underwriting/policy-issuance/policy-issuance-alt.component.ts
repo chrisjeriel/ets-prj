@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-policy-issuance-alt',
-  templateUrl: './policy-issuance-alt.component.html',
-  styleUrls: ['./policy-issuance-alt.component.css']
+    selector: 'app-policy-issuance-alt',
+    templateUrl: './policy-issuance-alt.component.html',
+    styleUrls: ['./policy-issuance-alt.component.css']
 })
 export class PolicyIssuanceAltComponent implements OnInit {
 
-  constructor() { }
+    alteration: boolean;
+    constructor() {
+        this.alteration = true;
+    }
 
-  ngOnInit() {
-  }
-
+    ngOnInit() {
+    }
 }
