@@ -1,0 +1,35 @@
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">{{modalTitle}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <!-- Custom Table -->
+        <div *ngIf="modalCustTable">
+            <app-cust-table [tableData]="tableData" [tHeader] = "tHeader" [dataTypes] = "dataTypes" [filters]="filters"></app-cust-table>
+        </div>
+        <!-- Custom Editable Table -->
+        <div *ngIf="modalCustEditableTable">
+            <app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [tableData]="tableData" [tHeader]="tHeader" [checkFlag]="true" [magnifyingGlass]="magnifyingGlass" [nData]="nData"></app-cust-editable-table>
+        </div>
+        <!-- Progress Bar -->
+        <div>
+
+        </div>
+        <!-- Text -->
+        <div>
+            <p>{{modalText}}</p>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button *ngIf="btnModalOk" type="button" class="cust-btn" (click)="modal.close('Save click')"><a>Ok</a></button>
+        <button *ngIf="btnModalYes" type="button" class="cust-btn" (click)="modal.close('Save click')"><a>Yes</a></button>
+        <button *ngIf="btnModalNo" type="button" class="cust-btn" (click)="modal.close('Save click')"><a>No</a></button>
+        <button *ngIf="btnModalCancel" type="button" class="cust-btn" (click)="modal.close('Save click')"><a>Cancel</a></button>
+    </div>
+</ng-template>
+
+<button class="cust-btn" (click)="open(content)"><a>{{btnTitle}}</a></button>
+

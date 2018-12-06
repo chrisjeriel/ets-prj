@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-pol-gen-info',
@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./pol-gen-info.component.css']
 })
 export class PolGenInfoComponent implements OnInit {
+
+  @Input() mode;
 
   constructor() { }
 

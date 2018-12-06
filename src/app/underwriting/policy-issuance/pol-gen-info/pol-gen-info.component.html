@@ -1,154 +1,280 @@
-<div>
-	<fieldset class="scheduler-border">
-		<legend class="scheduler-border">Policy Record</legend>
-		<div class="form-row">
-			<div class="form-group col-sm-1">
-				<label class="form-control-sm top-label">Line</label>
-				<input type="text" class="form-control form-control-sm cust-sm">
-			</div>
-			<div class="form-group col-sm-1">
-				<label class="form-control-sm top-label">Year</label>
-				<input type="text" class="form-control form-control-sm cust-sm">
-			</div>
-			<div class="form-group col-sm-1">
-				<label class="form-control-sm top-label">Seq No</label>
-				<input type="text" class="form-control form-control-sm cust-sm">
-			</div>
-			<div class="form-group col-sm-1">
-				<label class="form-control-sm top-label">Alt No</label>
-				<input type="text" class="form-control form-control-sm cust-sm">
-			</div>
-			<div class="form-group col-sm">
-				<label class="form-control-sm top-label">Branch</label>
-				<input type="text" class="form-control form-control-sm cust-sm">
-			</div>
-			<div class="form-group col-sm">
-				<label class="form-control-sm top-label">Line Class</label>
-				<input type="text" class="form-control form-control-sm cust-sm">
-			</div>
-			<div class="form-group col-sm">
-				<label class="form-control-sm top-label">Ceding Company</label>
-				<input type="text" class="form-control form-control-sm cust-sm">
-			</div>
-			<div class="form-group col-sm">
-				<label class="form-control-sm top-label">Co Pol No</label>
-				<input type="text" class="form-control form-control-sm cust-sm">
-			</div>
-			<div class="form-group col-sm">
-				<label class="form-control-sm top-label">Co Ref No</label>
-				<input type="text" class="form-control form-control-sm cust-sm">
-			</div>
-		</div>
-	</fieldset>
-</div>
-
-<div>
-	<fieldset class="scheduler-border">
-		<legend class="scheduler-border">Policy Record Status</legend>
-		<div class="form-row" style="margin-bottom: -5px;">
-			<div class="form-group col-sm-1">
-				<label class="form-control-sm top-label">Status</label>
-				<select class="form-control form-control-sm cust-sm" id="inputQuotation">
-					<option></option>
-					<option><b>I -</b> In-force</option>
-					<option><b>C -</b> Converted</option>
-					<option><b>E -</b> Expired</option>
-				</select>
-			</div>
-			<div class="form-group col-sm-2">
-				<label class="form-control-sm top-label">Printed By</label>
-				<input type="text" class="form-control form-control-sm cust-sm">
-			</div>
-			<div class="form-group col-sm-2">
-				<label class="form-control-sm top-label">Print Date</label>
-				<input type="date" class="form-control form-control-sm cust-sm">
-			</div>
-			<div class="form-group col-sm-2">
-				<label class="form-control-sm top-label">Quotation No</label>
-				<input type="text" class="form-control form-control-sm cust-sm">
-			</div>
-			<div class="form-group col-sm">
-				<label class="form-control-sm top-label">Requested By</label>
-				<input type="text" class="form-control form-control-sm cust-sm">
-			</div>
-			<div class="form-group col-sm">
-				<label class="form-control-sm top-label">Request Date</label>
-				<input type="text" class="form-control form-control-sm cust-sm">
-			</div>
-			<div class="form-group col-sm">
-				<label class="form-control-sm top-label">Request Mode</label>
-				<select class="form-control form-control-sm cust-sm" id="inputQuotation">
-					<option></option>
-					<option><b>F -</b> Full</option>
-					<option><b>P -</b> Partial</option>
-				</select>
-			</div>
-		</div>
-	</fieldset>
-</div>
 
 <div>
 	<div class="row">
-		<div class="col-sm-9">
-			<!-- <fieldset class="scheduler-border">
-				<legend class="scheduler-border">Period of Issuance</legend>
-				<div class="form-row">
-					<div class="form-group col-sm">
-						<label class="form-control-sm top-label">Issue Date</label>
-						<input type="date" class="form-control form-control-sm cust-sm">
+		<div class="col-sm-8">
+			<div class="row">
+				<div class="col-sm-9">
+					<fieldset class="scheduler-border">
+						<legend class="scheduler-border">Par Info</legend>
+						<div class="col-sm-1">
+						</div>
+						<div class="col-sm">
+							<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
+								<div *ngIf="mode" class="input-group" style="margin-top: 10px;">
+									<label  class="form-control-sm col-sm-2">Policy No</label>
+									<input  type="text" class="form-control form-control-sm">
+								</div>
+								<div *ngIf="mode != 'alteration'" class="input-group" style="margin-top: 15px;">
+								</div>
+								<div class="input-group">
+									<label class="form-control-sm col-sm-2">PAR No</label>
+									<input type="text" class="form-control form-control-sm">
+									<input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
+									<input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
+									<input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
+								</div>
+								<div class="input-group">
+									<label class="form-control-sm col-sm-2">Branch</label>
+									<input type="text" class="form-control form-control-sm">
+									<label class="form-control-sm col-sm-2">Line Class</label>
+									<input type="text" class="form-control form-control-sm">
+									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+									<span>&nbsp;</span>
+								</div>
+								<div class="input-group">
+									<label class="form-control-sm col-sm-2">Ceding Company</label>
+									<input type="text" class="form-control form-control-sm col-sm-3">
+									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+									<span>&nbsp;</span>
+									<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px;">
+
+								</div>
+								<div class="input-group">
+									<label class="form-control-sm col-sm-2">Co #</label>
+									<input type="text" class="form-control form-control-sm">
+									<label class="form-control-sm col-sm-2">Co Ref No</label>
+									<input type="text" class="form-control form-control-sm">
+								</div>
+								<div class="input-group">
+									<label class="form-control-sm col-sm-2">Quotation</label>
+									<input type="text" class="form-control form-control-sm">
+								</div>
+							</div>
+						</div>
+					</fieldset>
+				</div>
+				<div class="col-sm-3" style="padding-left: 0px;">
+					<fieldset class="scheduler-border">
+						<legend class="scheduler-border">Period of Issuance</legend>
+							<div class="custom-row-inline-inset">
+							<div class="form-row">
+								<div class="form-group col-sm" style="margin-bottom: 0px; margin-top: -9px;">
+									<label class="form-control-sm top-label">Issue Date</label>
+									<input type="date" class="form-control form-control-sm cust-sm">
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-sm" style="margin-bottom: 8px;">
+									<label class="form-control-sm top-label">Inception Date</label>
+									<input type="date" class="form-control form-control-sm cust-sm">
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-sm" style="margin-bottom: 8px;">
+									<label class="form-control-sm top-label">Expiry Date</label>
+									<input type="date" class="form-control form-control-sm cust-sm">
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-sm" style="margin-bottom: 8px;">
+									<label class="form-control-sm top-label">Effective Date</label>
+									<input type="date" class="form-control form-control-sm cust-sm">
+								</div>
+							</div>
+						</div>
+					</fieldset>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-4" style="padding-left: 0px;">
+			<fieldset class="scheduler-border">
+				<legend class="scheduler-border">-</legend>
+				<div class="custom-row-inline-inset">
+				<div class="form-row" style="margin-top: 15px;">
+					<div class="form-group col-sm-6">
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<div class="input-group-text">
+									<input type="checkbox">
+								</div>
+							</div>
+							<input type="text" style="font-size: 11px !important;" value="Booked" disabled class="form-control form-control-sm">
+						</div>
 					</div>
-					<div class="form-group col-sm">
-						<label class="form-control-sm top-label">Inception Date</label>
-						<input type="date" class="form-control form-control-sm cust-sm">
-					</div>
-					<div class="form-group col-sm">
-						<label class="form-control-sm top-label">Expiry Date</label>
-						<input type="date" class="form-control form-control-sm cust-sm">
-					</div>
-					<div class="form-group col-sm">
-						<label class="form-control-sm top-label">Effective Date</label>
-						<input type="date" class="form-control form-control-sm cust-sm">
+					<div class="col-sm-6">
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<div class="input-group-text">
+									<input type="checkbox">
+								</div>
+							</div>
+							<input type="text" style="font-size: 11px !important;" value="Alteration" disabled class="form-control form-control-sm">
+						</div>
 					</div>
 				</div>
-			</fieldset> -->
+				<div class="form-row">
+					<div class="form-group col-sm-6">
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<div class="input-group-text">
+									<input type="checkbox">
+								</div>
+							</div>
+							<input type="text" style="font-size: 11px !important;" value="Government" disabled class="form-control form-control-sm">
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<div class="input-group-text">
+									<input type="checkbox">
+								</div>
+							</div>
+							<input type="text" style="font-size: 11px !important;" value="Distribution" disabled class="form-control form-control-sm">
+						</div>
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col-sm-6">
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<div class="input-group-text">
+									<input type="checkbox">
+								</div>
+							</div>
+							<input type="text" style="font-size: 11px !important;" value="Open Cover" disabled class="form-control form-control-sm">
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<div class="input-group-text">
+									<input type="checkbox">
+								</div>
+							</div>
+							<input type="text" style="font-size: 11px !important;" value="Installment" disabled class="form-control form-control-sm">
+						</div>
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col-sm-6">
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<div class="input-group-text">
+									<input type="checkbox">
+								</div>
+							</div>
+							<input type="text" style="font-size: 11px !important;" value="Declaration Policy" disabled class="form-control form-control-sm">
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<div class="input-group-text">
+									<input type="checkbox">
+								</div>
+							</div>
+							<input type="text" style="font-size: 11px !important;" value="Extension" disabled class="form-control form-control-sm">
+						</div>
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col-sm-6">
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<div class="input-group-text">
+									<input type="checkbox">
+								</div>
+							</div>
+							<input type="text" style="font-size: 11px !important;" value="Hold Cover" disabled class="form-control form-control-sm">
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<div class="input-group-text">
+									<input type="checkbox">
+								</div>
+							</div>
+							<input type="text" style="font-size: 11px !important;" value="Min. Deposit" disabled class="form-control form-control-sm">
+						</div>
+					</div>
+				</div>
+			</div>
+			</fieldset>
+		</div>
+	</div>
+</div>
+
+
+<div>
+	<div class="row">
+		<div class="col-sm-8">
 			<fieldset class="scheduler-border">
 				<legend class="scheduler-border">Insured Details</legend>
-				<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
-					<div class="input-group" style="margin-top: 10px;">
-						<label class="form-control-sm col-sm-1">Principal</label>
-						<input type="text" class="form-control form-control-sm cust-sm">
-						<label class="form-control-sm col-sm-1">Contractor</label>
-						<input type="text" class="form-control form-control-sm">
+				<div class="col-sm-1">
+				</div>
+				<div class="col-sm">
+					<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
+						<div class="input-group" style="margin-top: 10px;">
+							<label class="form-control-sm col-sm-1">Principal</label>
+							<input type="text" class="form-control form-control-sm cust-sm">
+							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+									<span>&nbsp;</span>
+							<label class="form-control-sm col-sm-1">Contractor</label>
+							<input type="text" class="form-control form-control-sm">
+							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+									<span>&nbsp;</span>
+						</div>
+						<div class="input-group">
+							<label class="form-control-sm col-sm-1">Insured</label>
+							<!-- <input type="text" class="form-control form-control-sm"> -->
+							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 8px;"></textarea>
+						</div>
+						<div class="input-group">
+							<label class="form-control-sm col-sm-1">Risk</label>
+							<input type="text" class="form-control form-control-sm">
+						</div>
+						<div class="input-group">
+							<label class="form-control-sm col-sm-1">Object</label>
+							<input type="text" class="form-control form-control-sm">
+							<label class="form-control-sm col-sm-1">Duration</label>
+							<input type="text" class="form-control form-control-sm">
+						</div>
+						<div class="input-group">
+							<label class="form-control-sm col-sm-1">Nature of Work</label>
+							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;"></textarea>
+							<label class="form-control-sm col-sm-1">Site</label>
+							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;"></textarea>
+						</div>
+						<div class="input-group">
+							<label class="form-control-sm col-sm-1">Region</label>
+							<input type="text" class="form-control form-control-sm">
+							<label class="form-control-sm col-sm-1">Province</label>
+							<input type="text" class="form-control form-control-sm">
+						</div>
+						<div class="input-group">
+							<label class="form-control-sm col-sm-1">City/Town</label>
+							<input type="text" class="form-control form-control-sm col-sm-5">
+							<label class="form-control-sm col-sm-1">District</label>
+							<input type="text" class="form-control form-control-sm col-sm-2">
+							<label class="form-control-sm col-sm-1">Block</label>
+							<input type="text" class="form-control form-control-sm col-sm-2">
+						</div>
+						<div class="input-group">
+							<label class="form-control-sm col-sm-1">Lat</label>
+							<input type="text" class="form-control form-control-sm col-sm-2">
+							<label class="form-control-sm col-sm-1">Long</label>
+							<input type="text" class="form-control form-control-sm col-sm-2">
+							<div class="col-sm-6"></div>
+						</div>
 					</div>
-					<div class="input-group">
-						<label class="form-control-sm col-sm-1">Insured</label>
-						<!-- <input type="text" class="form-control form-control-sm"> -->
-						<textarea class="form-control form-control-sm" placeholder="Further to our Quotation No.."></textarea>
-					</div>
-					<div class="input-group">
-						<label class="form-control-sm col-sm-1">Property</label>
-						<input type="text" class="form-control form-control-sm">
-					</div>
-					<div class="input-group">
-						<label class="form-control-sm col-sm-1">Site</label>
-						<input type="text" class="form-control form-control-sm">
-						<label class="form-control-sm col-sm-1">Duration</label>
-						<input type="text" class="form-control form-control-sm">
-					</div>
-					<div class="input-group">
-						<label class="form-control-sm col-sm-1">Risk</label>
-						<input type="text" class="form-control form-control-sm">
-						<label class="form-control-sm col-sm-1">Object</label>
-						<input type="text" class="form-control form-control-sm">
-					</div>
-					<div class="input-group">
-						<label class="form-control-sm col-sm-1">Location</label>
-						<input type="text" class="form-control form-control-sm">
-					</div>
+				</div>
+				<div class="col-sm-1">
 				</div>
 			</fieldset>
 		</div>
-		<div class="col-sm-3">
+		<div class="col-sm-4" style="padding-left: 0px;">
 			<fieldset class="scheduler-border">
 				<legend class="scheduler-border">Production Booking</legend>
 				<div class="form-row">
@@ -166,8 +292,10 @@
 				<legend class="scheduler-border">Share Details</legend>
 				<div class="custom-row-inline-inset">
 					<div class="input-group">
-						<label class="form-control-sm col-sm-4">Intermediary</label>
+						<label class="form-control-sm col-sm-3">Intermediary</label>
 						<input type="text" class="form-control form-control-sm">
+						<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+						<span>&nbsp;</span>
 					</div>
 				</div>
 			</fieldset>
@@ -216,4 +344,16 @@
 			</div>
 		</div>
 	</fieldset>
+</div>
+
+<div class="form-row">
+	<div class="form-group col-sm">
+	  <div class="col-md-13 text-center">
+	    <br>
+	    <div class="cust-btn-container">
+	      <button type="button" class="cust-btn" (click)="pol($event)"><a>Cancel</a></button>
+	      <button type="button" class="cust-btn"><a>Save</a></button>
+	    </div>
+	  </div>
+	</div>
 </div>
