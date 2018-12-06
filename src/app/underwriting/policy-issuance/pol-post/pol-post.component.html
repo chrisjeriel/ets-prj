@@ -1,15 +1,16 @@
 <ng-template #content let-c="close" let-d="dismiss">
     <div class="modal-header">
-      <label class="modal-title" id="modal-basic-title">Post</label>
+      <h6 class="modal-title" id="modal-basic-title">Post</h6>
     </div>
     <div class="modal-body">
-      <p><ngb-progressbar [value]="progress" type="info" ></ngb-progressbar></p>
-    </div>
+    	<p class="text-center">Saving {{TabName[showTab]}} </p>
+    	<p style="width: 300px"><ngb-progressbar [value]="progress" type="info" ></ngb-progressbar></p>
+	</div>
 </ng-template>
 
 <ng-template #successinfo let-modal>
     <div class="modal-header">
-      <label class="modal-title" id="modal-basic-title">Saving Successful</label>
+      <h6 class="modal-title" id="modal-basic-title">Saving Successful</h6>
     </div>
     <div class="modal-body">
 

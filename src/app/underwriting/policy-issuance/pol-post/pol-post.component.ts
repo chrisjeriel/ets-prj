@@ -9,6 +9,8 @@ import { NgbModalConfig, NgbModal, NgbProgressbarConfig } from '@ng-bootstrap/ng
 })
 export class PolPostComponent implements OnInit {
 
+  TabName:  any[] = ["Gen Info","Coverage","OtherRates","Endorsement","CoInsurance","Distribution","Attachment"];
+  showTab: number = 0;
   progress: number = 0;	
   @ViewChild('content') content;
   @ViewChild('successinfo') successinfo;
@@ -24,8 +26,8 @@ export class PolPostComponent implements OnInit {
 
   ngOnInit() {	
     setTimeout(() => {
-      this.modalService.open(this.content,  { centered: true ,  backdrop: 'static', windowClass : "xl"});
-      this.fakeProgress();  
+      this.modalService.open(this.content,  { centered: true, windowClass : 'modal-size'});
+      this.fakeProgress(); 
     });
 
 
@@ -33,15 +35,17 @@ export class PolPostComponent implements OnInit {
 
    fakeProgress(){
       setTimeout(() => {
-           if(this.progress < 100){
-             this.progress +=30;
+           if(this.progress < 100 || this.showTab <= this.TabName.length ){
+             this.progress +=25;
+             this.showTab = ++this.showTab;
              this.fakeProgress();
            } else { 
+             this.showTab = 0;
              this.progress = 0;
              this.modalService.dismissAll(true);
-                 this.modalService.open(this.successinfo,  { centered: true ,  backdrop: 'static', windowClass : "xl"});
+                 this.modalService.open(this.successinfo,  { centered: true ,  backdrop: 'static', windowClass : 'modal-size'});
            }
-    },500);
+    },150);
 
     }
 
