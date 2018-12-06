@@ -70,6 +70,8 @@ export class ModalComponent implements OnInit {
 
     @Input() modalSize: string = "modal-size"
 
+    content: any;
+    
     constructor(private modalService: NgbModal) { }
 
     ngOnInit() {
@@ -77,7 +79,9 @@ export class ModalComponent implements OnInit {
     }
 
     open(content) {
-        this.modalService.open(content, { centered: true, backdrop: 'static', windowClass : this.modalSize });
+        this.content = content;
+        this.modalService.dismissAll();
+        this.modalService.open(this.content, { centered: true, backdrop: 'static', windowClass : this.modalSize });
     }
     
 

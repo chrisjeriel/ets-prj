@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { QuotationService } from '../../../_services';
 import { DummyInfo } from '../../../_models';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
@@ -8,13 +8,15 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
     styleUrls: ['./dummy.component.css']
 })
 export class DummyComponent implements OnInit {
+    @ViewChild('content') content; 
     tableData: any[] = [];
     tableData2: any[] = [];
     tHeader: any[] = [];
     dataTypes: any[] = [];
     nData: DummyInfo = new DummyInfo(null, null, null, null, null, null, null);
 
-    constructor(private quotationService: QuotationService, private modalService: NgbModal) { }
+    constructor(private quotationService: QuotationService, private modalService: NgbModal) { 
+    }
 
     ngOnInit() {
         this.tHeader.push("ID");
@@ -36,7 +38,7 @@ export class DummyComponent implements OnInit {
         this.tableData = this.quotationService.getDummyInfo();
         this.tableData2 = this.quotationService.getDummyEditableInfo();
     }
-    wow(){
-        alert("wow");
+    openAgain(){
+        this.modalService.dismissAll();
     }
 }
