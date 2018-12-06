@@ -26,8 +26,8 @@ export class PolPostComponent implements OnInit {
 
   ngOnInit() {	
     setTimeout(() => {
-      this.modalService.open(this.successinfo,  { centered: true, windowClass : 'modal-size'});
-     /*this.fakeProgress(); */
+      this.modalService.open(this.content,  { centered: true, windowClass : 'modal-size'});
+      this.fakeProgress(); 
     });
 
 
