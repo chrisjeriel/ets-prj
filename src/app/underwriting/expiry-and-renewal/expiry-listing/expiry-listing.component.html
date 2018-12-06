@@ -106,14 +106,14 @@
 						<fieldset class="scheduler-border right">
 							<div class="form-row custom-row-inline-inset">
 								<div class="input-group">
-									<input class="form-control-sm " type="radio" name="optradio" id="byDate" [value]="true" [(ngModel)]="byDate" (click)="clearDates()">	
-									<label class="form-control-sm col-sm-8" for="byDate">&nbsp;Expiry List</label>
+									<input class="form-control-sm " type="radio" name="byExpiryList" id="list" [value]="true"  checked="checked">	
+									<label class="form-control-sm col-sm-8" for="list">&nbsp;Expiry List</label>
 								</div>
 							</div>
 							<div class="form-row custom-row-inline-inset">
 								<div class="input-group">
-									<input class="form-control-sm " type="radio" name="optradio" id="byDate" [value]="true" [(ngModel)]="byDate" (click)="clearDates()">	
-									<label class="form-control-sm col-sm-8" for="byDate">&nbsp;Expiry/Renewwal Letters</label>
+									<input class="form-control-sm " type="radio" name="byExpiryList" id="letters" [value]="false" >	
+									<label class="form-control-sm col-sm-8" for="letters">&nbsp;Expiry/Renewwal Letters</label>
 								</div>
 							</div>
 						</fieldset>
@@ -123,8 +123,30 @@
 									<div class="col-md-13 text-center">
 										<br>
 										<div class="cust-btn-container">
-											<button type="button" class="cust-btn" (click)="save()"><a>Print</a></button>
-											<button type="button" class="cust-btn"><a>Process</a></button>
+											<button type="button" class="cust-btn"><a>Print</a></button>
+											<app-modal [btnTitle]="'Process'">
+												<div header>Process Expiring Policies</div>
+										        <div body>
+										        	<br>
+										           <i class="fa fa-question-circle"></i>&nbsp;<p>A policy record will be created for the selected expired policy. Do you want to continue?</p>
+										           <br>
+										           <br>
+										        </div>
+										        <div footer>
+									        		<!-- <button class="cust-btn" type="button" (click)="modalService.dismissAll();renewPolicies();"><a>Yes</a></button> -->
+							        				<app-modal [btnTitle]="'Yes'" (click)="renewPolicies()">
+														<div header>Process Expiring Policies</div>
+												        <div body>
+												        	<app-cust-table [tHeader]="renewedPolicyHeader" [tableData]="renewedPolicyList"></app-cust-table>
+												        </div>
+												        <div footer>
+												            <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+												        </div>
+													</app-modal>
+										        	<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>No</a></button>
+										            <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+										        </div>
+											</app-modal>
 										</div>
 									</div>
 							</div>
