@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import { NgbModalConfig, NgbModal, NgbProgressbarConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -10,7 +10,8 @@ import { NgbModalConfig, NgbModal, NgbProgressbarConfig } from '@ng-bootstrap/ng
 export class PolPostComponent implements OnInit {
 
   progress: number = 0;	
- 
+
+
   constructor(config: NgbModalConfig, configprogress: NgbProgressbarConfig, private modalService: NgbModal) {
   	config.backdrop = 'static';
     config.keyboard = false;
@@ -20,13 +21,10 @@ export class PolPostComponent implements OnInit {
     configprogress.height = '20px';
    }
 
-  ngOnInit() {		
-
-
+  ngOnInit() {	
+   
   }
 
   
-  	
-
    
 }
