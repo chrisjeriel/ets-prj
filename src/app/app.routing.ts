@@ -23,8 +23,8 @@ import { AltParListingComponent } from './underwriting/policy-issuance/alt-par-l
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
     { path: 'quotation', component: QuotationComponent, canActivate: [AuthGuard] },
-    { path: 'policy-issuance', component: PolicyIssuanceComponent, canActivate: [AuthGuard] },
-    { path: 'policy-issuance-alt', component: PolicyIssuanceAltComponent, canActivate: [AuthGuard] },
+    { path: 'policy-issuance', component: PolicyIssuanceComponent },
+    { path: 'policy-issuance-alt', component: PolicyIssuanceAltComponent},
     { path: 'dummy', component: DummyComponent, canActivate: [AuthGuard] },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },

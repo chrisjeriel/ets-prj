@@ -1,3 +1,13 @@
 #cust-button {
 	width: 120px;
 }
+
+.text-search-ico {
+	margin-left: -18px;
+	z-index: 200;
+	font-size: 14px;
+}
+
+.nav-a-hover:hover {
+	text-decoration: none;
+}
