@@ -1,5 +1,5 @@
 <div class="cust-tabs-container">
-	<h4>Underwriting / Policy Issuance / Create Policy Record</h4>
+	<h4>Underwriting / Policy Issuance</h4>
 	<ngb-tabset>
 
 		<ngb-tab class="ngb-tab" title="Create PAR">
@@ -16,44 +16,50 @@
 </div>
 <br>
 <br>
-<div align="center" >
-	<fieldset class="scheduler-border col-sm-6 align-items-left">
-		
-		<legend class="scheduler-border">Basic Information</legend>
-		<div class="form-row">
-			<div class="form-group col-sm-3">
-				<label for="inputEmail4" class="form-control-sm top-label">Line</label>
-				<input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4" [(ngModel)]="this.createParInfo.line">
-			</div>
-			<div class="form-group col-sm-3">
-				<label for="inputEmail4" class="form-control-sm top-label">Year</label>
-				<input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4" >
-			</div>
-			<div class="form-group col-sm-3">
-				<label for="inputEmail4" class="form-control-sm top-label">Seq No</label>
-				<input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4"
-				[(ngModel)]="this.createParInfo.seqNo">
-			</div>
-			<div class="form-group col-sm-3">
-				<label for="inputEmail4" class="form-control-sm top-label">Alt No</label>
-				<input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4" [(ngModel)]="this.createParInfo.altNo">
-			</div>
-		
-	 		<div class="form-row">
-				<label class="form-control-sm" for="xx">Branch</label>
-				<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="this.createParInfo.branch">
-				<label class="form-control-sm" for="xx">Line Class</label>
-				<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="this.createParInfo.lineClass">
-			</div>
-			<div class="input-group	">
-				<label class="form-control-sm" for="xx">Ceding Company</label>
-				<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-9" [(ngModel)]="this.createParInfo.cedingCompany">
-			</div>
-		</div>
-	</fieldset>
+	<div align="center">
+	<div class="col-sm-9" align="left">
+					<fieldset class="scheduler-border">
+						<legend class="scheduler-border">Basic Information</legend>
+						<div class="col-sm-1">
+						</div>
+						<div class="col-sm">
+							<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
+								<div class="form-group col-sm-2">
+								</div>
+								<div class="form-group col-sm-3">
+									<label for="inputEmail4" class="form-control-sm top-label">Line</label>
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="this.createParInfo.line">
+								</div>
+								<div class="form-group col-sm-2">
+									<label for="inputEmail4" class="form-control-sm top-label">Year</label>
+									<input type="text" class="form-control form-control-sm">
+								</div>
+								<div class="form-group col-sm-3">
+									<label for="inputEmail4" class="form-control-sm top-label">Seq No</label>
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="this.createParInfo.line">
+								</div>
+								<div class="form-group col-sm-2">
+									<label for="inputEmail4" class="form-control-sm top-label">Alt No</label>
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="this.createParInfo.line">
+								</div>
+								<div class="input-group">
+									<label class="form-control-sm col-sm-2">Branch</label>
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="this.createParInfo.line">
+									<label class="form-control-sm col-sm-2">Line Class</label>
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="this.createParInfo.line">
+								</div>
+								<div class="input-group">
+									<label class="form-control-sm col-sm-2">Ceding Company</label>
+									<input type="text" class="form-control form-control-sm ">
+								</div>
+							</div>
+						</div>
+					</fieldset>
+				</div>
+	
 <div class="form-row">
 	<div class="form-group col-sm">
-		<div class="col-md-13 text-center">
+		<div class="col-md-13">
 			<br>
 			<div class="cust-btn-container">
 			<!-- <button type="button" id="cust-button" class="cust-btn"><a>Convert Quotation</a></button> -->
@@ -64,6 +70,6 @@
 		</div>
 		</div>
 	</div>
-</div>
+	</div>
 	
 </div>
