@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UnderwritingService } from '../../../_services';
 import { CreateAlterationParInfo } from '../../../_models/CreateAlterationPAR';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pol-create-alteration-par',
@@ -20,7 +21,7 @@ export class PolCreateAlterationPARComponent implements OnInit {
   modalTitle2: string = "Convert Quotation to Alteration Record";
   modalText: string = "A policy record will be created with all the information entered in the quotation. Do you want to continue?";
   
-  constructor(private underwritingService : UnderwritingService) { }
+  constructor(private underwritingService : UnderwritingService, private router: Router) { }
 
   ngOnInit() {
   	this.tHeader.push("Quotation No");
