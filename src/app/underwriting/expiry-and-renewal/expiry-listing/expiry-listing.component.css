@@ -18,7 +18,7 @@
 
 .text-search-ico {
 	margin-left: -18px;
-	z-index: 99999;
+	z-index: 99;
 	font-size: 14px;
 }
 
@@ -50,3 +50,14 @@ select + input, input + div + input{
 	margin-top: 5px !important;
 }
 
+.fa-question-circle{
+	font-size: 60px;
+	color: #00194A;
+	margin-left: 15px;
+}
+
+p{
+	display: inline;
+	margin-right: 120px;
+	margin-bottom: 30px;
+}
