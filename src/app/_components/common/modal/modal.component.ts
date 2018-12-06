@@ -68,7 +68,7 @@ export class ModalComponent implements OnInit {
 
     @Input() progress: number = 90;
 
-    @Input() modalSize: string = "md"
+    @Input() modalSize: string = "modal-size"
 
     constructor(private modalService: NgbModal) { }
 
@@ -79,6 +79,7 @@ export class ModalComponent implements OnInit {
     open(content) {
         this.modalService.open(content, { centered: true, backdrop: 'static', windowClass : this.modalSize });
     }
+    
 
 
 }

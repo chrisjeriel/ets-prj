@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import {NgbDropdownConfig} from '@ng-bootstrap/ng-bootstrap';
 import { QuoteEndorsement } from '../../../_models/QuoteEndorsement'
 import { QuotationService } from '../../../_services';
@@ -17,7 +17,8 @@ export class PolEndorsementComponent implements OnInit {
     dataTypes: any[] = [];
     magnifyingGlass: any[]=["endtDescription"];
     nData: QuoteEndorsement = new QuoteEndorsement(null, null, null);
-    alteration: boolean = false;
+    
+    @Input() alteration: boolean;
 
    constructor(config: NgbDropdownConfig, private quotationService: QuotationService) { 
   	config.placement = 'bottom-right';
