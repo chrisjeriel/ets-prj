@@ -22,6 +22,8 @@ export class CustTableComponent implements OnInit {
     @Input() filters: any[] = [];
     @Input() pageLength: number;
     @Input() from: string = "";
+    @Input() checkFlag: boolean;
+
     dataKeys: any[] = [];
     start:    any;
     pressed:  any;
@@ -52,7 +54,6 @@ export class CustTableComponent implements OnInit {
     }
 
     private onMouseDown(event){
-      console.log(event);
       this.start = event.target;
       this.pressed = true;
       this.startX = event.x;

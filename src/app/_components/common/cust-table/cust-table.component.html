@@ -43,9 +43,12 @@ span.ui-column-resizer {
 			</div>
 		</div>
 	</div>
+<<<<<<< HEAD
+<div class="table-scroll">
 	<table datatable [dtOptions]="dtOptions" class="row-border hover">
 		<thead>
 			<tr>
+				<th *ngIf="checkFlag"></th>
 				<th *ngFor="let tHeader of tHeader">
 					<span class="ui-column-resizer" (mousedown) = "onMouseDown($event)"></span>
 					<span class="gridHeader">{{tHeader}}</span>
@@ -54,6 +57,7 @@ span.ui-column-resizer {
 		</thead>
 		<tbody>
 			<tr *ngFor="let data of tableData">
+				<td *ngIf="checkFlag"> <input type="checkbox" name=""></td>
 				<ng-container *ngIf="from === 'quotation-processing'">
 					<td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]" (click)="onRowClick($event)" (dblclick)="onRowDblClick($event)">
 						<span *ngSwitchCase="'date'" class="unclickable">{{ processData(key, data) | date: 'MM/dd/yyyy'}}</span>
@@ -69,6 +73,7 @@ span.ui-column-resizer {
 			</tr>
 		</tbody>
 	</table>
+    </div>
 </div>
 
 <hr/>
