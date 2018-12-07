@@ -144,3 +144,7 @@ div.input-group {
 	width: 93%;	 
 	float: right;
 }
+
+.icon .fa:not(:first-child) {
+	margin-left: 5px;
+}

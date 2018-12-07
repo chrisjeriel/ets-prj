@@ -129,8 +129,10 @@
                                 <option *ngFor="let options of options">{{options}}</option>
                             </select>
                         </td>
-                        <td *ngIf="tHeader.indexOf('Actions')!=-1" class="icon"><button class="fa fa-download" title="Download"></button>
-                            &nbsp;</td>
+                        <td *ngIf="tHeader.indexOf('Actions')!=-1" class="icon">
+                            <button class="fa fa-upload" title="Upload"></button>
+                            <button class="fa fa-download" title="Download"></button>
+                        </td>
                     </tr>
                 </tbody>
             </table>

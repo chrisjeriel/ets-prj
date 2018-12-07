@@ -12,8 +12,9 @@ fieldset .row:first-of-type, .row:first-of-type{
 }
 
 .drp-dwn-cstmz {
-    height:26px; 
+    height: calc(1.6rem + 1px);
     padding: 0px;
+    border-radius: 0.2rem !important;
 }
 
 .text-search-ico {
@@ -33,19 +34,49 @@ input[type=radio] + label {
   text-align: left !important;
 }
 
-select + input, input + div + input{
-	margin-left: 6px !important;
+select + input {
+	margin-left: 2px !important;
+}
+
+input + div + input{
+	margin-left: 6px;
 }
 
 .fa-check-circle{
 	font-size: 60px;
-	color: #00194A;
+	color: #557a95;
 	margin-left: 15px;
 }
 
-p{
-	display: inline;
-	margin-right: 120px;
-	margin-bottom: 30px;
+
+.my-modal-icon{
+	margin-left: 10px;
 }
 
+.my-modal-text{
+	padding-right: 0px;
+	margin:auto;
+	margin-right: 0px;
+	margin-left: 50px;
+}
+
+.my-modal-text span{
+	font-size: 12px;
+}
+
+div h4{
+	font-size: 15px;
+	margin: auto;
+}
+
+.my-modal-footer{
+	padding: 0px !important;
+}
+
+.input-group .from{
+	text-align: left !important;
+}
+
+.toMonth{
+	margin-left: -2px;
+}

@@ -1,7 +1,7 @@
 <div class="cust-tabs-container">
-	<h4>Expiry Listing</h4>
+	<h4>Underwriting / Expiry & Renewal</h4>
 	<ngb-tabset>
-		<ngb-tab title="Extract Expiring Policies">
+		<ngb-tab title="Expiry Listing">
 			<ng-template ngbTabContent>
 				<div class="row">
 					<div class="col-sm-4">
@@ -125,14 +125,16 @@
 										<div class="cust-btn-container">
 											<button type="button" class="cust-btn"><a>Print</a></button>
 											<app-modal [btnTitle]="'Process'">
-												<div header>Process Expiring Policies</div>
-										        <div body>
-										        	<br>
-										           <i class="fa fa-question-circle"></i>&nbsp;<p>A policy record will be created for the selected expired policy. Do you want to continue?</p>
-										           <br>
-										           <br>
+												<div header><h4>Process Expiring Policies</h4></div>
+										        <div body class="row">
+										           <div class="col-sm-1 text-right my-modal-icon">
+									           			<i class="fa fa-question-circle"></i>
+										           </div>
+										           <div class="col-sm-10 text-left my-modal-text">
+										           		<span class="align-middle">A policy record will be created for the selected expired policy. Do you want to continue?</span>
+										           </div>
 										        </div>
-										        <div footer>
+										        <div footer class="my-modal-footer">
 									        		<!-- <button class="cust-btn" type="button" (click)="modalService.dismissAll();renewPolicies();"><a>Yes</a></button> -->
 							        				<app-modal [btnTitle]="'Yes'" (click)="renewPolicies()">
 														<div header>Process Expiring Policies</div>
@@ -164,7 +166,7 @@
 						</div>
 					</div>
 				</div>
-				<app-cust-table [tHeader]="tHeader" [tableData]="tableData"></app-cust-table>
+				<app-cust-table [tHeader]="tHeader" [tableData]="tableData" [checkFlag]="'true'"></app-cust-table>
 			</ng-template>
 		</ngb-tab>
 	</ngb-tabset>
