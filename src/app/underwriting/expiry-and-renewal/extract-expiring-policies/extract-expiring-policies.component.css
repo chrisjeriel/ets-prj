@@ -60,3 +60,7 @@ input + div + input{
 .input-group .from{
 	text-align: left !important;
 }
+
+.toMonth{
+	margin-left: -2px;
+}

@@ -12,8 +12,9 @@
 }
 
 .drp-dwn-cstmz {
-    height:26px; 
+    height: calc(1.6rem + 1px);
     padding: 0px;
+    border-radius: 0.2rem !important;
 }
 
 .text-search-ico {
