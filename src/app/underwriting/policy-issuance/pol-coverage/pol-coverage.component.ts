@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { UnderwritingService } from '@app/_services/underwriting.service';
 import { UnderwritingCoverageInfo } from '@app/_models';
 
@@ -17,10 +17,8 @@ export class PolCoverageComponent implements OnInit {
 
   nData: UnderwritingCoverageInfo = new UnderwritingCoverageInfo(null, null, null, null, null, null, null);
   constructor(private underwritingservice: UnderwritingService) { }
-  policyNo: boolean = false;
-  pol(event) {
-    this.policyNo = true;
-  }
+
+  @Input() alteration: boolean;
   ngOnInit() {
     this.tHeader.push("");
     this.tHeader.push("Cover Code");

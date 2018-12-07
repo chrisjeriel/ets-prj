@@ -8,11 +8,12 @@
         <label class="form-control-sm col-sm-1" for="xx">Insured</label>
         <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-7" placeholder="" readonly>
       </div>
-      <div class="input-group" *ngIf="policyNo; else othercon">
+      <!-- <div class="input-group" *ngIf="alteration; else othercon"> -->
+      <div class="input-group" *ngIf="alteration">
         <label class="form-control-sm col-sm-1" for="xx">Policy No</label>
         <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-2" placeholder="" readonly>
       </div>
-      <ng-template #othercon></ng-template>
+
     </div>
   </fieldset>
 
