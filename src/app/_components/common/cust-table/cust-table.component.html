@@ -1,65 +1,73 @@
 <style>
-	thead tr th {
-	  position: relative;
-	}
-	span.ui-column-resizer {
-	  display: block;
-	  position: absolute;
-	  top: 0;
-	  right: 0;
-	  margin: 0;
-	  width: 8px;
-	  height: 100%;
-	  padding: 0;
-	  cursor: col-resize;
-	}
+thead tr th {
+	position: relative;
+}
+span.ui-column-resizer {
+	display: block;
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 0;
+	width: 8px;
+	height: 100%;
+	padding: 0;
+	cursor: col-resize;
+}
 </style>
 
 
 <div id="cust-table-container">
-    <br/>
-    <div class="expire" *ngIf="expireFilter" align="right">
-        <!-- remove -->
-            <label>Expires in (Days): &nbsp; </label>
-            <input type="search" class="expireIn" placeholder="">
-        <!-- end remove -->
-    </div>
+	<br/>
+	<div class="expire" *ngIf="expireFilter" align="right">
+		<!-- remove -->
+		<label>Expires in (Days): &nbsp; </label>
+		<input type="search" class="expireIn" placeholder="">
+		<!-- end remove -->
+	</div>
 	<div ngbDropdown>
-	  <button class="cust-filter" ngbDropdownToggle><a><fa name="filter"></fa></a></button>
-	  <div ngbDropdownMenu aria-labelledby="dropdownConfig">
-	  	<div class="dropdown-item">
-	  		<span class="cust-tbl-label">Filter by:</span>
-  			<div class="input-group" *ngFor="let filt of filters">
-			  <div class="input-group-prepend">
-			    <div class="input-group-text">
-			      <input type="checkbox"><span>&nbsp;{{filt}}</span>
-			    </div>
-			  </div>
-			  <input type="text" class="form-control cust-sm">
-			</div>
-			<div class="input-group">
-			  <button class="cust-filter cust-tbl-submit"><a>Ok</a></button>
+		<button class="cust-filter" ngbDropdownToggle><a><fa name="filter"></fa></a></button>
+		<div ngbDropdownMenu aria-labelledby="dropdownConfig">
+			<div class="dropdown-item">
+				<span class="cust-tbl-label">Filter by:</span>
+				<div class="input-group" *ngFor="let filt of filters">
+					<div class="input-group-prepend">
+						<div class="input-group-text">
+							<input type="checkbox"><span>&nbsp;{{filt}}</span>
+						</div>
+					</div>
+					<input type="text" class="form-control cust-sm">
+				</div>
+				<div class="input-group">
+					<button class="cust-filter cust-tbl-submit"><a>Ok</a></button>
+				</div>
 			</div>
 		</div>
-	  </div>
 	</div>
 	<table datatable [dtOptions]="dtOptions" class="row-border hover">
-	<thead>
-		<tr>
-			<th *ngFor="let tHeader of tHeader">
-				<span class="ui-column-resizer" (mousedown) = "onMouseDown($event)"></span>
-				<span class="gridHeader">{{tHeader}}</span>
-			</th>
-		</tr>
-	</thead>
-	<tbody>
-	  <tr *ngFor="let data of tableData">
-	  	<td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]">
-            <span *ngSwitchCase="'date'">{{ processData(key, data) | date: 'MM/dd/yyyy'}}</span>
-	  		<span *ngSwitchDefault>{{ processData(key, data) }}</span>
-	  	</td>
-	  </tr>
-	</tbody>
+		<thead>
+			<tr>
+				<th *ngFor="let tHeader of tHeader">
+					<span class="ui-column-resizer" (mousedown) = "onMouseDown($event)"></span>
+					<span class="gridHeader">{{tHeader}}</span>
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let data of tableData">
+				<ng-container *ngIf="from === 'quotation-processing'">
+					<td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]" (click)="onRowClick($event)" (dblclick)="onRowDblClick($event)">
+						<span *ngSwitchCase="'date'" class="unclickable">{{ processData(key, data) | date: 'MM/dd/yyyy'}}</span>
+						<span *ngSwitchDefault class="unclickable">{{ processData(key, data) }}</span>
+					</td>
+				</ng-container>
+				<ng-container *ngIf="from === ''">
+					<td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]" (click)="onRowClick($event)">
+						<span *ngSwitchCase="'date'" class="unclickable">{{ processData(key, data) | date: 'MM/dd/yyyy'}}</span>
+						<span *ngSwitchDefault class="unclickable">{{ processData(key, data) }}</span>
+					</td>
+				</ng-container>
+			</tr>
+		</tbody>
 	</table>
 </div>
 

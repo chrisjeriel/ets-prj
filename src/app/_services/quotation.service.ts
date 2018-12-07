@@ -16,6 +16,9 @@ export class QuotationService {
     quoProcessingData: QuotationProcessing[] = [];
     coverageInfoData: QuotationCoverageInfo[] = [];
 
+    rowData: any[] = [];
+    toGenInfo: string = "";
+
     constructor(private http: HttpClient) {
 
     }
@@ -166,4 +169,8 @@ export class QuotationService {
         return this.intCompAdvInfo;
     }
 
+
+    getRowData() {
+        return this.rowData;
+    }
 }

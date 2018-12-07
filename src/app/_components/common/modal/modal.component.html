@@ -2,7 +2,7 @@
     <div class="modal-header">
        <!-- <h6 class="modal-title" id="modal-basic-title">{{modalTitle}}</h6>--><h6 class="modal-title" id="modal-basic-title"><ng-content  select="[header]"></ng-content></h6>
         
-            <a class="btn-cust" aria-label="Close" (click)="modal.dismiss('Cross click')" aria-hidden="true" >&times;</a>
+            <a class="btn-cust" aria-label="Close" (click)="modal.dismiss('Cross click')" aria-hidden="true" >&times;&nbsp;&nbsp;</a>
     </div>
     <div class="modal-body">
         <ng-content select="[body]"></ng-content>
