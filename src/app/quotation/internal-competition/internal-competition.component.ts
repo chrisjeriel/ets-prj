@@ -6,7 +6,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-internal-competition',
   templateUrl: './internal-competition.component.html',
-  styles: ['./internal-competition.component.css' ]
+  styleUrls: ['./internal-competition.component.css']
 })
 export class InternalCompetitionComponent implements OnInit {
   tableData: any[] = [];

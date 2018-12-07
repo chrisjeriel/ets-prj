@@ -27,22 +27,31 @@
 			<button type="button" class="cust-btn"><a>Print</a></button>
 
 			<app-modal  [btnTitle]="'Cancel'" >
-				<div header>CONFIRMATION</div>
+				<div header><h4>CONFIRMATION</h4></div>
         		<div body>
-        			<div class="input-group">
-        				<i class="fa fa-question-circle fa-3x" aria-hidden="true"></i> 
-        				<p style="margin-left: 5px;margin-top: 10px;margin-bottom: 10px;">Do you want to save the changes you have made?</p>
+        			<div body class="row">
+        				<div class="col-sm-1 text-right my-modal-icon">
+							<i class="fa fa-question-circle"></i>
+						</div>
+
+						<div class="col-sm-10 text-left my-modal-text">
+							<span class="align-middle">Do you want to save the changes you have made?</span>
+						</div>
         			</div>
+        			
         		</div>
         		<div footer>
         			<app-modal [btnTitle]="'Yes'">
-            			<div header>SUCCESS MESSAGE</div>
-            			<div body>
-            				<div class="input-group">
-        						<i class="fa fa-check-circle fa-3x" aria-hidden="true"></i> 
-        						<p style="margin-left: 5px;margin-top: 10px;margin-bottom: 10px;">Saving Successfull</p>
-        					</div>
+            			<div header><h4>SUCCESS MESSAGE</h4></div>
+            			<div body class="row">
+        						<div class="col-sm-1 text-right my-modal-icon">
+									<i class="fa fa-check-circle"></i>
+								</div>
+								<div class="col-sm-9 text-left my-modal-text" style="margin-left: 30px;">
+									<span class="align-middle">Saving successful</span>
+								</div>
         				</div>
+        			
         				<div footer>
             				<button class="cust-btn" type="button" (click)="modalService.dismissAll();" routerLink="/quotation-processing"><a>Ok</a></button>
             			</div>
@@ -54,13 +63,15 @@
 			</app-modal>
 
 			<app-modal [btnTitle]="'Save'">
-            			<div header>SUCCESS MESSAGE</div>
+            			<div header><h4>SUCCESS MESSAGE</h4></div>
 
-            			<div body>
-            				<div class="input-group">
-        						<i class="fa fa-check-circle fa-3x" aria-hidden="true"></i> 
-        						<p style="margin-left: 5px;margin-top: 10px;margin-bottom: 10px;">Saving successfull.</p>
-        					</div>
+            			<div body class="row">
+        						<div class="col-sm-1 text-right my-modal-icon">
+									<i class="fa fa-check-circle"></i>
+								</div>
+								<div class="col-sm-9 text-left my-modal-text" style="margin-left: 30px;">
+									<span class="align-middle">Saving successful</span>
+								</div>
         				</div>
 
         				<div footer>
