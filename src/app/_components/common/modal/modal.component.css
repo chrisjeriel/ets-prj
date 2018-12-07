@@ -1,0 +1,14 @@
+#close{
+	font-size: 27px;
+}
+
+.close{
+	color: #fff;
+	float: right;
+	opacity: 1;
+}
+
+#closes:hover {
+	color: #fff;
+	opacity: 1;
+}
