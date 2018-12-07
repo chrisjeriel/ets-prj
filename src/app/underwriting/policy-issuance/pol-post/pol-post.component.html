@@ -1,6 +1,6 @@
 <ng-template #content let-c="close" let-d="dismiss">
     <div class="modal-header">
-      <p class="modal-title" id="modal-basic-title">Post</p>
+        <p class="modal-title" id="modal-basic-title">Post</p>
     </div>
     <div class="modal-body">
     	<p class="text-center">Saving {{TabName[showTab]}} </p>
@@ -19,7 +19,6 @@
             </div>
         </div>
     </div>
-
     <div class="modal-body">
     	<div class="form-row" style="width: 500px;">
     		<div class="input-group" >
@@ -34,7 +33,6 @@
                 </p>
                 <p *ngIf="!alterationFlag" class="form-control-sm col-sm-8" style="height: auto; margin-bottom: -6px ! important; overflow-wrap: break-word;">00
                 </p>
-
         	</div>
         	<div class="input-group" >
         		<b  class="form-control-sm col-sm-4" style="text-align: right; margin-bottom: -6px ! important;">Ced Company: 
@@ -49,12 +47,10 @@
         	</div>
       	</div>
     </div>
-
     <div class="modal-footer" style="justify-content: center;">
         <div class="row">
-                <button type="button" class="cust-btn" (click)="modal.close('Close click')"><a>Print</a></button>
-                <button type="button" class="cust-btn" (click)="modal.close('Close click')" routerLink=
-                "''" ><a>Ok</a></button>
+            <button type="button" class="cust-btn" (click)="modal.close('Close click')"><a>Print</a></button>
+            <button type="button" class="cust-btn" (click)="modal.close('Close click')" routerLink="''" ><a>Ok</a></button>
         </div>
     </div>
 </ng-template>
