@@ -106,7 +106,7 @@
 									<label class="form-control-sm col-sm-1">User ID</label>
 									<input [(ngModel)]="lastExtraction.userID" class="form-control form-control-sm col-sm-3" type="text" name="optradio" checked="checked">
 									<label class="form-control-sm col-sm-2">Extraction Date</label>
-									<input [(ngModel)]="lastExtraction.extractionDate" class="form-control form-control-sm col-sm-4" type="date" name="optradio" checked="checked">
+									<input [(ngModel)]="lastExtraction.extractionDate" class="form-control form-control-sm col-sm-4" type="date" name="optradio" checked="checked" id="extractionDate">
 								</div>
 							</div>
 						</fieldset>
@@ -119,8 +119,19 @@
 						<div class="col-md-13 text-center">
 							<br>
 							<div class="cust-btn-container">
-							<button type="button" class="cust-btn" (click)="save()"><a>Extract</a></button>
-							<button type="button" class="cust-btn"><a>Clear</a></button>
+							<app-modal [btnTitle]="'Extract'" (click)="save()">
+								<div header>Extract Expiring Policies</div>
+						        <div body>
+						        	<br>
+						           <i class="fa fa-check-circle"></i>&nbsp;<p>Extracted Policies: {{extractedPolicies}}</p>
+						           <br>
+						           <br>
+						        </div>
+						        <div footer>
+						            <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+						        </div>
+							</app-modal>
+							<button type="button" class="cust-btn" (click)="clearAll()"><a>Clear</a></button>
 						</div>
 						</div>
 					</div>

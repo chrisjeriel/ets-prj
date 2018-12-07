@@ -69,6 +69,7 @@ export class ModalComponent implements OnInit {
     @Input() progress: number = 90;
 
     @Input() modalSize: string = "modal-size"
+    content1: any = "";
 
     content: any;
     
