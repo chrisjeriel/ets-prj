@@ -6,6 +6,7 @@ import { RegisterComponent } from './register';
 import { AuthGuard } from './_guards';
 import { QuotationComponent } from './quotation/quotation.component'
 import { QuotationInquiryComponent } from './quotation/quotation-inquiry/quotation-inquiry.component';
+import { HoldCoverMonitoringListComponent } from './quotation/quotation-inquiry/hold-cover-monitoring-list/hold-cover-monitoring-list.component';
 import { NotesComponent } from './notes/notes.component';
 import { QuotationProcessingComponent } from './quotation/quotation-processing/quotation-processing.component';
 import { PolicyIssuanceComponent } from './underwriting/policy-issuance/policy-issuance.component';
@@ -29,6 +30,7 @@ const appRoutes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'quotation-inquiry', component: QuotationInquiryComponent },
+    { path: 'hold-cover-monitoring', component: HoldCoverMonitoringListComponent },
     { path: 'notes', component: NotesComponent },
     { path: 'quotation-processing', component: QuotationProcessingComponent },
     { path: 'extract-expiring-policies', component: ExtractExpiringPoliciesComponent },

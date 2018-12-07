@@ -1,3 +1,13 @@
+th, td{
+    white-space: nowrap;
+    min-width: 0px;
+    max-width: 1px;
+    overflow: hidden;
+}
+.table-scroll{
+    overflow: auto;
+    max-width: 100%
+}
 #cust-table-container {
     position: relative !important;
 }

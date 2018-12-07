@@ -43,7 +43,8 @@
 		</div>
 	  </div>
 	</div>
-	<table datatable [dtOptions]="dtOptions" class="row-border hover">
+    <div class="table-scroll">
+        <table datatable [dtOptions]="dtOptions" class="row-border hover">
 	<thead>
 		<tr>
 			<th *ngIf="checkFlag"></th>
@@ -63,6 +64,7 @@
 	  </tr>
 	</tbody>
 	</table>
+    </div>
 </div>
 
 <hr/>
