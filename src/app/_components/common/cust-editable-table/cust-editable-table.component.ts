@@ -94,7 +94,6 @@ export class CustEditableTableComponent implements OnInit {
   }
 
   private onMouseDown(event){
-      console.log(event);
       this.start = event.target;
       this.pressed = true;
       this.startX = event.x;
