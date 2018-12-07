@@ -125,16 +125,16 @@
 										<div class="cust-btn-container">
 											<button type="button" class="cust-btn"><a>Print</a></button>
 											<app-modal [btnTitle]="'Process'">
-												<div header>Process Expiring Policies</div>
+												<div header><h4>Process Expiring Policies</h4></div>
 										        <div body class="row">
-										           <div class="col-sm-1 text-right modal-icon">
-									           			<i class="fa fa-question-circle"></i>&nbsp;
+										           <div class="col-sm-1 text-right my-modal-icon">
+									           			<i class="fa fa-question-circle"></i>
 										           </div>
-										           <div class="col-sm-10 text-left modal-text">
-										           		<p>A policy record will be created for the selected expired policy. Do you want to continue?</p>
+										           <div class="col-sm-10 text-left my-modal-text">
+										           		<span class="align-middle">A policy record will be created for the selected expired policy. Do you want to continue?</span>
 										           </div>
 										        </div>
-										        <div footer>
+										        <div footer class="my-modal-footer">
 									        		<!-- <button class="cust-btn" type="button" (click)="modalService.dismissAll();renewPolicies();"><a>Yes</a></button> -->
 							        				<app-modal [btnTitle]="'Yes'" (click)="renewPolicies()">
 														<div header>Process Expiring Policies</div>
