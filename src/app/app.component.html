@@ -40,14 +40,20 @@
           <hr>
           <div class="side-nav-body">
             <ngb-accordion #acc="ngbAccordion">
-                <ngb-panel title="Quotation">
+                <ngb-panel>
+                    <ng-template ngbPanelTitle>
+                        <fa name="file"></fa>&nbsp;Quotation
+                    </ng-template>
                     <ng-template ngbPanelContent>
                         <button [routerLink]="['/quotation-processing']" class="button btn btn-link">Quotation Processing</button>
                         <br/>
                         <button [routerLink]="['/quotation-inquiry']" class="button btn btn-link">Quotation Inquiry</button>
                     </ng-template>
                 </ngb-panel>
-                <ngb-panel title="Underwriting">
+                <ngb-panel>
+                    <ng-template ngbPanelTitle>
+                        <fa name="list-ul"></fa>&nbsp;Underwriting
+                    </ng-template>
                     <ng-template ngbPanelContent>
                         <ngb-accordion #acc="ngbAccordion">
                             <ngb-panel title="Policy Issuance">
@@ -76,11 +82,20 @@
                         </ngb-accordion>
                     </ng-template>
                 </ngb-panel>
-                <ngb-panel title="Accounting">
+                <ngb-panel>
+                    <ng-template ngbPanelTitle>
+                        <fa name="calculator"></fa>&nbsp;Accounting
+                    </ng-template>
                 </ngb-panel>
-                <ngb-panel title="Claims">
+                <ngb-panel>
+                    <ng-template ngbPanelTitle>
+                        <fa name="vcard"></fa>&nbsp;Claims
+                    </ng-template>
                 </ngb-panel>
-                <ngb-panel title="Security">
+                <ngb-panel>
+                    <ng-template ngbPanelTitle>
+                        <fa name="user-secret"></fa>&nbsp;Security
+                    </ng-template>
                 </ngb-panel>
             </ngb-accordion>
            </div>
