@@ -1,7 +1,4 @@
 
-#cust-button {
-	width: 120px;
-}
 
 .text-search-ico {
 	margin-left: -18px;
@@ -12,3 +9,38 @@
 .nav-a-hover:hover {
 	text-decoration: none;
 }
+
+.right{
+	margin-top: 5px !important;
+}
+
+.fa-question-circle{
+	font-size: 60px;
+	color: #00194A;
+	/*margin-left: 15px;*/
+}
+
+.fa-check-circle{
+	font-size: 60px;
+	color: #00194A;
+	margin-left: 15px;
+}
+
+.modal-icon{
+	margin-left: 10px;
+}
+
+.modal-text{
+	padding-right: 0px;
+	margin-left: 15px;
+}
+
+#success {
+	margin-top: 16px;
+}
+
+
+
+
+
+
