@@ -4,7 +4,6 @@ import { environment } from '@environments/environment';
 import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo } from '@app/_models';
 
 
-
 @Injectable({ providedIn: 'root' })
 export class UnderwritingService {
 

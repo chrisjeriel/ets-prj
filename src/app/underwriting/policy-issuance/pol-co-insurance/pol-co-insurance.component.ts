@@ -17,7 +17,7 @@ export class PolCoInsuranceComponent implements OnInit {
     options: any[] = [];
     dataTypes: any[] = [];
     nData: PolicyCoInsurance = new PolicyCoInsurance(null, null, null, null, null);
-    magnifyingGlass: any[] = ["sharePercentage"];
+    magnifyingGlass: any[] = ["company"];
     
     @Input() alteration: boolean;
 

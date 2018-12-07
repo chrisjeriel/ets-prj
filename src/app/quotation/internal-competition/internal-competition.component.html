@@ -25,9 +25,48 @@
 			<br>
 			<div class="cust-btn-container">
 			<button type="button" class="cust-btn"><a>Print</a></button>
-			<button type="button" class="cust-btn"><a>Cancel</a></button>
-			<button type="button" class="cust-btn"><a>Save</a></button>
-		</div>
+
+			<app-modal  [btnTitle]="'Cancel'" >
+				<div header>CONFIRMATION</div>
+        		<div body>
+        			<div class="input-group">
+        				<i class="fa fa-question-circle fa-3x" aria-hidden="true"></i> 
+        				<p style="margin-left: 5px;margin-top: 10px;margin-bottom: 10px;">Do you want to save the changes you have made?</p>
+        			</div>
+        		</div>
+        		<div footer>
+        			<app-modal [btnTitle]="'Yes'">
+            			<div header>SUCCESS MESSAGE</div>
+            			<div body>
+            				<div class="input-group">
+        						<i class="fa fa-check-circle fa-3x" aria-hidden="true"></i> 
+        						<p style="margin-left: 5px;margin-top: 10px;margin-bottom: 10px;">Saving Successfull</p>
+        					</div>
+        				</div>
+        				<div footer>
+            				<button class="cust-btn" type="button" (click)="modalService.dismissAll();" routerLink="/quotation-processing"><a>Ok</a></button>
+            			</div>
+            		</app-modal>
+
+					<button class="cust-btn" type="button" (click)="modalService.dismissAll();" routerLink="/quotation-processing"><a>No</a></button>
+            		<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+        		</div>
+			</app-modal>
+
+			<app-modal [btnTitle]="'Save'">
+            			<div header>SUCCESS MESSAGE</div>
+
+            			<div body>
+            				<div class="input-group">
+        						<i class="fa fa-check-circle fa-3x" aria-hidden="true"></i> 
+        						<p style="margin-left: 5px;margin-top: 10px;margin-bottom: 10px;">Saving successfull.</p>
+        					</div>
+        				</div>
+
+        				<div footer>
+            				<button class="cust-btn" type="button" (click)="modalService.dismissAll();" routerLink="/quotation-processing"><a>Ok</a></button>
+            			</div>
+            </app-modal>
 		</div>
 	</div>
 </div>

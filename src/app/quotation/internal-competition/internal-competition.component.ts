@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { QuotationService } from '../../_services';
 import { IntCompAdvInfo } from '@app/_models';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-internal-competition',
@@ -15,7 +16,7 @@ export class InternalCompetitionComponent implements OnInit {
   nData: IntCompAdvInfo = new IntCompAdvInfo( null,null, null, null, null, null, null, new Date(), null, new Date());
   opts: any[] = [];
 
-  constructor(private quotationService: QuotationService) { }
+  constructor(private quotationService: QuotationService, private modalService: NgbModal) { }
 
   ngOnInit() {
 
