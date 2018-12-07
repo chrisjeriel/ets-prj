@@ -9,10 +9,10 @@ import { IntCompAdvInfo } from '@app/_models';
 })
 export class InternalCompetitionComponent implements OnInit {
   tableData: any[] = [];
-  tHeader: any[] = ["Advice No.","Company","Attention","Position","Advice Option","Advice Wordings","Updated By","Last Update"];
-  dataTypes: any[] = ["text","text","text","text","select","select","text","date"];
-  magnifyingGlass: any[]=["attention","position","createdBy"];
-  nData: IntCompAdvInfo = new IntCompAdvInfo( null,null, null, null, null, null, null, new Date());
+  tHeader: any[] = ["Advice No.","Company","Attention","Position","Advice Option","Advice Wordings","Created By","Date Created", "Last Update By", "Last Update"];
+  dataTypes: any[] = ["text","text","text","text","select","text","text","date", "text", "date"];
+  magnifyingGlass: any[]=["attention","advWord"];
+  nData: IntCompAdvInfo = new IntCompAdvInfo( null,null, null, null, null, null, null, new Date(), null, new Date());
   opts: any[] = [];
 
   constructor(private quotationService: QuotationService) { }
@@ -21,8 +21,7 @@ export class InternalCompetitionComponent implements OnInit {
 
   	this.tableData = this.quotationService.getIntCompAdvInfo();
 
-    this.opts.push({selector: "advOpt", vals:["Reminder", "Note"]},
-                   {selector: "advWord", vals:["Pending", "On Going", "Done"]});
+    this.opts.push({selector: "advOpt", vals:["Pending", "On Going", "Done"]});
 
   }
 

@@ -6,7 +6,9 @@
 					<label class="form-control-sm col-sm-1" for="inputQuonum">Quotation No </label>
 				    <input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-2" placeholder="CAR-2015-0000289-04" disabled="disabled">
 				    <label class="form-control-sm col-sm-1" for="inputInname" >Insured</label>
-				    <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-7" placeholder="Insured Name" disabled="disabled">
+				    <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-3" placeholder="Insured Name" disabled="disabled">
+				     <label class="form-control-sm col-sm-1" for="inputRisk" >Risk</label>
+				    <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-3" placeholder="Risk" disabled="disabled">
 				</div>
 			</div>
 	</fieldset>
@@ -14,11 +16,7 @@
 <div>
 	<fieldset class="scheduler-border">
 		<legend class="scheduler-border">Advice Details	</legend>
-		<!-- <app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData" [tHeader]="tHeader"  [dataTypes]="dataTypes" [magnifyingGlass]="magnifyingGlass" [checkFlag]="true" [opts]="opts">
-		</app-cust-editable-table> -->
-
 		<app-cust-editable-table [checkFlag]="true" [addFlag]="true" [deleteFlag]="true" [editFlag]="false" [nData]="nData" [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes" [opts]="opts" [magnifyingGlass]="magnifyingGlass"></app-cust-editable-table>
-
 	</fieldset>
 </div>
 <div class="form-row">
