@@ -44,17 +44,33 @@ input + div + input{
 
 .fa-check-circle{
 	font-size: 60px;
-	color: #00194A;
+	color: #557a95;
 	margin-left: 15px;
 }
 
-.modal-icon{
+
+.my-modal-icon{
 	margin-left: 10px;
 }
 
-.modal-text{
-	margin-top: 15px;
-	margin-left: 15px;
+.my-modal-text{
+	padding-right: 0px;
+	margin:auto;
+	margin-right: 0px;
+	margin-left: 50px;
+}
+
+.my-modal-text span{
+	font-size: 12px;
+}
+
+div h4{
+	font-size: 15px;
+	margin: auto;
+}
+
+.my-modal-footer{
+	padding: 0px !important;
 }
 
 .input-group .from{
