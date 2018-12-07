@@ -43,7 +43,8 @@
 		</div>
 	  </div>
 	</div>
-	<table datatable [dtOptions]="dtOptions" class="row-border hover">
+    <div class="table-scroll">
+        <table datatable [dtOptions]="dtOptions" class="row-border hover">
 	<thead>
 		<tr>
 			<th *ngFor="let tHeader of tHeader">
@@ -61,6 +62,7 @@
 	  </tr>
 	</tbody>
 	</table>
+    </div>
 </div>
 
 <hr/>

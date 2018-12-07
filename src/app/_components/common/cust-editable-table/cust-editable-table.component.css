@@ -4,6 +4,10 @@ th, td{
     max-width: 1px;
     overflow: hidden;
 }
+.table-scroll{
+    overflow: auto;
+    max-width: 100%
+}
 #cust-table-container {
     position: relative !important;
 }
@@ -132,7 +136,7 @@ div.input-group {
 }
 
 .fa-search {
-	float: left;
+	float: right;
 	width: 4%
 }
 
