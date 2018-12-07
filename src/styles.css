@@ -410,7 +410,8 @@ select.form-control.form-control-sm.cust-sm {
 .modal-content{
     width: auto;
     margin: auto;
-    min-width: 300px;
+    min-width: 30%;
+    max-height: 500px;
 }
 /*.sm > .modal-dialog{
 max-width: 300px !important;
@@ -428,8 +429,9 @@ width: 95% !important;
 z-index: 9999 !important;
 }*/ 
 .modal-size > .modal-dialog{
-    max-width: 1490px;
-    min-width: 300px;
+    /* max-height: 10%;*/
+    max-width: 80%;
+    min-width: 30%;
     /*width: 20% !important;*/
     z-index: 9999 !important;
 }
@@ -439,13 +441,15 @@ z-index: 9999 !important;
     color: white;
 }
 .modal-title {
-    margin-left: 5px;
-    margin-top: 5px;
-    margin-bottom: 5px;
+    margin-left: 1%;
+    margin-top: 0.5%;
+    margin-bottom: 1%;
 }
 
 .progress-bar{
+    background-color:#557a95 !important;  
+}
 
-background-color:#557a95 !important;  
-
+.modal-body{
+    overflow: auto;
 }

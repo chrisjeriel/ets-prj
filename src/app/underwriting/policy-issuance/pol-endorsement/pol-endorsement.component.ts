@@ -15,7 +15,7 @@ export class PolEndorsementComponent implements OnInit {
     tHeader: any[] = [];
     options: any[] = [];
     dataTypes: any[] = [];
-    magnifyingGlass: any[]=["endtDescription"];
+    magnifyingGlass: any[]=["endtTitle"];
     nData: QuoteEndorsement = new QuoteEndorsement(null, null, null);
     
     @Input() alteration: boolean;
