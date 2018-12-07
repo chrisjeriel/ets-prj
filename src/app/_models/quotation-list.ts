@@ -11,19 +11,19 @@ export class QuotationList{
     validityDate: Date;
     requestedBy: string;
     createdBy: string;
-    
+
     constructor(quotationNo: string,
-                branch: string,
-                lineClass: string,
-                quoteStatus: string,
-                cedingCompany: string,
-                principal: string,
-                contractor: string,
-                insured: string,
-                quoteDate: Date,
-                validityDate: Date,
-                requestedBy: string,
-                createdBy: string
+                 branch: string,
+                 lineClass: string,
+                 quoteStatus: string,
+                 cedingCompany: string,
+                 principal: string,
+                 contractor: string,
+                 insured: string,
+                 quoteDate: Date,
+                 validityDate: Date,
+                 requestedBy: string,
+                 createdBy: string
                 )
     {
         this.quotationNo = quotationNo;
@@ -42,9 +42,10 @@ export class QuotationList{
 }
 
 export class HoldCoverMonitoringList{
+    holdCoverNo: string;
+    status: string;
     cedingCompany: string;
     quotationNo: string;
-    holdCoverNo: string;
     risk: string;
     insured: string;
     periodFrom: Date;
@@ -52,24 +53,23 @@ export class HoldCoverMonitoringList{
     compRefHoldCoverNo: string;
     requestedBy: string;
     requestDate: Date;
-    status: string;
-    
-    constructor(cedingCompany: string,
-                quotationNo: string,
-                holdCoverNo: string,
-                risk: string,
-                insured: string,
-                periodFrom: Date,
-                periodTo: Date,
-                compRefHoldCoverNo: string,
-                requestedBy: string,
-                requestDate: Date,
-                status: string
-                )
+
+    constructor(holdCoverNo: string,
+                 status: string,
+                 cedingCompany: string,
+                 quotationNo: string,
+                 risk: string,
+                 insured: string,
+                 periodFrom: Date,
+                 periodTo: Date,
+                 compRefHoldCoverNo: string,
+                 requestedBy: string,
+                 requestDate: Date)
     {
+        this.holdCoverNo = holdCoverNo;
+        this.status = status;
         this.cedingCompany = cedingCompany;
         this.quotationNo = quotationNo;
-        this.holdCoverNo = holdCoverNo;
         this.risk = risk;
         this.insured = insured;
         this.periodFrom = periodFrom;
@@ -77,6 +77,6 @@ export class HoldCoverMonitoringList{
         this.compRefHoldCoverNo = compRefHoldCoverNo;
         this.requestedBy = requestedBy;
         this.requestDate = requestDate;
-        this.status = status;
+
     }
 }
