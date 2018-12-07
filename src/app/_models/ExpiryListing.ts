@@ -26,3 +26,13 @@ export class ExpiryListing{
 		this.premium=premium;
 	}
 }
+
+export class RenewedPolicy{
+	originalPolicyNumber:string;
+	policyRecordNo:string;
+
+	constructor(originalPolicyNumber:string,policyRecordNo:string){
+		this.originalPolicyNumber = originalPolicyNumber;
+		this.policyRecordNo = policyRecordNo;
+	}
+}

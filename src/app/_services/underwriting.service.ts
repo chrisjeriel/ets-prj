@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable ,  PolAttachmentInfo} from '@app/_models';
+import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo } from '@app/_models';
 
 
 
@@ -17,6 +17,7 @@ export class UnderwritingService {
     altParListingData: AltPARListing[] = [];
     polAttachmentInfoData: PolAttachmentInfo[] = [];
     expiryListing: ExpiryListing[] = [];
+    renewedPolicies: RenewedPolicy[]=[];
 
     constructor(private http: HttpClient) {
 
@@ -127,5 +128,13 @@ export class UnderwritingService {
             new ExpiryListing("POL-050","I","San Juan","CPI","insured","Sample Data","II", "Paul", "Peso", "IV", "si", "pre")
         ];
         return this.expiryListing;
+    }
+
+    renewExpiredPolicies(){
+        this.renewedPolicies = [
+            new RenewedPolicy("POL-8984","POL-2018"),
+            new RenewedPolicy("POL-3212","POL-2019")
+        ];
+        return this.renewedPolicies;
     }
 }            

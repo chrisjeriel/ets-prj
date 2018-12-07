@@ -64,7 +64,7 @@
 					<div class="input-group">
 						<label class="form-control-sm col-sm-2">Principal</label>
 						<input type="text" class="form-control form-control-sm">
-						<label class="form-control-sm col-sm-1">Contractor</label>
+						<label class="form-control-sm">Contractor</label>
 						<input type="text" class="form-control form-control-sm">
 					</div>
 				</div>
@@ -73,18 +73,41 @@
 	</div>
 	<div class="col-sm-3"></div>
 </div>
-
-
 <div>
 	<div class="form-group">
 		<div class="col-md-12 text-center">
 			<br>
 			<div class="cust-btn-container">
-			<!-- <button type="button" id="cust-button" class="cust-btn"><a>Convert Quotation</a></button> -->
-			<app-modal [tHeader]="tHeader" [tableData]="tableData" [dataTypes]="dataTypes" [btnTitle]="btnTitle" [modalCustTable]= "true" [btnModalOk]="true" [btnModalCancel]="true" [modalTitle]="modalTitle"></app-modal>
+			<app-modal  [btnTitle]="'Convert Quotation'" >
+        		<div header>Convert Quotation</div>
+        		<div body>
+           			<app-cust-table [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes"></app-cust-table>
+        		</div>
+        		<div footer>
+            		<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+            		<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+        		</div>
+  			</app-modal>
 			<button type="button" class="cust-btn"><a>Cancel</a></button>
-			<!-- <button type="button" class="cust-btn"><a>Save</a></button> -->
-			<app-modal [btnTitle]="btnTitle2" [btnModalYes]="true" [btnModalNo]="true" [btnModalCancel]="true" [modalTitle]="modalTitle" [modalText]="modalText"></app-modal>
+			<app-modal [btnTitle]="'Save'">
+        		<div header>Convert Quotation to Policy Record</div>
+        		<div body>
+           			<p>A policy record will be created with all the information<br> entered in the quotation. Do you want to continue?</p>
+        		</div>
+        		<div footer>
+            		<app-modal [btnTitle]="'Yes'">
+            			<div header>Success Message</div>
+        				<div body><p>Saving Sucessful</p>
+        				</div>
+        				<div footer>
+            				<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+            				
+        				</div>
+            		</app-modal>
+					<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>No</a></button>
+            		<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+        		</div>
+  			</app-modal>
 		</div>
 		</div>
 	</div>

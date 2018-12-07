@@ -10,37 +10,48 @@
 
 <ng-template #successinfo let-modal>
     <div class="modal-header">
-		<!-- <i class="fa fa-check fa-2x" aria-hidden="true"></i> -->
-		<p class="modal-title" id="modal-basic-title">Saving Successful</p>
+        <div class="input-group" >
+            <i class="fa fa-check fa-2x" aria-hidden="true" style="margin-left: 3px"></i> 
+            <p class="modal-title" id="modal-basic-title" style="margin-bottom: 10px">Saving Successful</p>
+        </div>
     </div>
 
     <div class="modal-body">
-    	<div class="form-row" style="width: 400px">
-    		<div class="input-group" >
-        		<label class="form-control-sm col-sm-3" style="text-align: right">Policy No.: </label>
-        		<label class="form-control-sm top-label">CAR-2015-0000289-04 </label>
+    	<div class="form-row" style="width: 450px;">
+    		<div class="input-group">
+        		<p class="form-control-sm col-sm-3" style="text-align: right; margin-bottom: -6px ! important;">Policy No.: </p>
+        		<p  class="form-control-sm" style="height: auto; margin-bottom: -6px ! important;">CAR-2015-0000289-04 
+                </p>
         	</div>
         	<div class="input-group" >
-        		<label class="form-control-sm t col-sm-3">Alteration No.: 
-        		</label>
-        		<label class="form-control-sm top-label">00</label>
+        		<p class="form-control-sm col-sm-3" style="text-align: right; margin-bottom: -6px ! important;">Alteration No.: 
+        		</p >
+        		<p *ngIf="alterationFlag" class="form-control-sm" style="height: auto; margin-bottom: -6px ! important;">{{alterNum}}
+                </p>
+                <p *ngIf="!alterationFlag" class="form-control-sm" style="height: auto; margin-bottom: -6px ! important;">00
+                </p>
+
         	</div>
         	<div class="input-group" >
-        		<label class="form-control-sm  col-sm-3">Ced Company: 
-        		</label>
-        		<label class="form-control-sm top-label">FLT Prime </label>
+        		<p  class="form-control-sm col-sm-3" style="text-align: right; margin-bottom: -6px ! important;">Ced Company: 
+        		</p >
+        		<p  class="form-control-sm" style="height: auto; margin-bottom: -6px ! important;">FLT Prime 
+                </p>
         	</div>
         	<div class="input-group">
-        		<label class="form-control-sm  col-sm-3">Insured: 
-        		</label>
-        		<label class="form-control-sm top-label">2nd Inn, Inc. (Sogo Cubao 2) and/or A.G Sanches
-        		</label>
+        		<p  class="form-control-sm col-sm-3" style="text-align: right; ">Insured: 
+        		</p>
+        		<p  class="form-control-sm" style="height: auto;">2nd Inn, Inc. (Sogo Cubao 2) and/or A.G Sanches
         	</div>
       	</div>
     </div>
 
-    <div class="modal-footer">
-      	<button type="button" class="cust-btn" (click)="modal.close('Close click')"><a>Print</a></button>
-		<button type="button" class="cust-btn" (click)="modal.close('Close click')" routerLink="''" ><a>Ok</a></button>
+    <div class="modal-footer" style="justify-content: center;">
+        <div class="row">
+                <button type="button" class="cust-btn" (click)="modal.close('Close click')"><a>Print</a></button>
+                <button type="button" class="cust-btn" (click)="modal.close('Close click')" routerLink=
+                "''" ><a>Ok</a></button>
+        </div>
     </div>
 </ng-template>
+

@@ -410,6 +410,7 @@ select.form-control.form-control-sm.cust-sm {
 .modal-content{
     width: auto;
     margin: auto;
+    min-width: 300px;
 }
 /*.sm > .modal-dialog{
 max-width: 300px !important;
