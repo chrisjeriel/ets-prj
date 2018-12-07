@@ -37,7 +37,7 @@ export class PolCoverageComponent implements OnInit {
     this.dataTypes.push("checkbox");
 
     this.selOptions.push({ selector: "section", vals: ["I", "II", "III"] });
-    this.selOptions.push({ selector: "bulletNo", vals: ["1", "2", "3"] });
+    this.selOptions.push({ selector: "bulletNo", vals: ["1", "1.2", "1.3"] });
     this.selOptions.push({ selector: "sortSe", vals: ["10", "20", "30"] });
 
     this.tableData = this.underwritingservice.getUWCoverageInfo();
