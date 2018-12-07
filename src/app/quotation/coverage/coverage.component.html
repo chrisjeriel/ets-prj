@@ -4,11 +4,11 @@
     <div class="form-row custom-row-inline-inset">
       <div class="input-group">
         <label class="form-control-sm col-sm-1" for="xx">Quotation No</label>
-        <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-2" placeholder="CAR-2015-0000289-04"
-          readonly>
+        <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-3" placeholder="" readonly>
         <label class="form-control-sm col-sm-1" for="xx">Insured</label>
-        <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-7" placeholder="Insured Name"
-          readonly>
+        <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-3" placeholder="" readonly>
+        <label class="form-control-sm col-sm-1" for="xx">Risk</label>
+        <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-3" placeholder="" readonly>
       </div>
     </div>
   </fieldset>
@@ -22,49 +22,69 @@
       [tHeader]="tHeader" [dataTypes]="dataTypes" [opts]="selOptions"></app-cust-editable-table>
 
   </fieldset>
-  <fieldset class="scheduler-border">
-    <legend class="scheduler-border">Total Sum Insured</legend>
-    <div class="form-row custom-row-inline-inset">
-      <div class="input-group">
-        <label class="form-control-sm col-sm-1" for="xx">Currency</label>
-        <!-- <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm" required> -->
-        <select class="form-control form-control-sm cust-sm">
-          <option value=""></option>
-          <option value="USD">USD</option>
-          <option value="PHP">PHP</option>
-          <option value="EUR">EUR</option>
-        </select>
-        <label class="form-control-sm col-sm-1" for="xx">Section I</label>
-        <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm txt-content-rght" required
-          placeholder="0.00" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
-          readonly>
-        <!-- placeholder="0.00" value="{{ sec.value | number: '.1-2' }}" #sec readonly> -->
-
-        <label class="form-control-sm col-sm-1" for="xx">Section II</label>
-        <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm txt-content-rght" required
-          placeholder="0.00" readonly>
-        <label class="form-control-sm col-sm-1" for="xx">Section III</label>
-        <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm txt-content-rght" required
-          placeholder="0.00" readonly>
-      </div>
+  <div class="row">
+    <div class="col-sm-4 mrgn-fieldset">
+      <fieldset class="scheduler-border fieldset-height">
+        <!-- <div class="h-33 d-inline-block"></div> -->
+        <div class="form-row custom-row-inline-inset">
+          <div class="col-sm-2"></div>
+          <div class="col-sm-4">
+            <label class="form-control-sm top-label" for="xx">Currency</label>
+            <select class="form-control form-control-sm cust-sm">
+              <option value=""></option>
+              <option value="USD">USD</option>
+              <option value="PHP">PHP</option>
+              <option value="EUR">EUR</option>
+            </select>
+          </div>
+          <div class="col-sm-4">
+            <label class="form-control-sm top-label" for="xx">Total Sum Insured</label>
+            <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm txt-content-rght" required
+              placeholder="0.00" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
+              readonly>
+          </div>
+          <div class="col-sm-2"></div>
+        </div>
+        <!-- <div class="h-33 d-inline-block"></div> -->
+      </fieldset>
     </div>
-  </fieldset>
-
-  <fieldset class="scheduler-border">
-    <legend class="scheduler-border">Quote Deductibles</legend>
-    <div class="form-row custom-row-inline-inset">
-      <div class="col-sm-2"></div>
-      <div class="col-sm-4">
-        <label for="inputEmail4" class="form-control-sm top-label">Deductibles</label>
-        <textarea class="form-control form-control-sm"></textarea>
-      </div>
-      <div class="col-sm-4">
-        <label for="inputEmail4" class="form-control-sm top-label">Remarks</label>
-        <textarea class="form-control form-control-sm"></textarea>
-      </div>
-      <div class="col-sm-2"></div>
+    <div class="col-sm-4">
+      <fieldset class="scheduler-border">
+        <legend class="scheduler-border">Sl per Section</legend>
+        <div class="custom-row-inline-inset">
+          <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-8">
+              <div class="input-group">
+                <label class="form-control-sm col-sm-4" for="xx">Section I</label>
+                <input type="text" id="xx" class="form-control form-control-sm txt-content-rght" readonly placeholder="0.00"
+                  onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
+              </div>
+              <div class="input-group">
+                <label class="form-control-sm col-sm-4" for="xx">Section II</label>
+                <input type="text" id="xx" class="form-control form-control-sm txt-content-rght" readonly placeholder="0.00"
+                  onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
+              </div>
+              <div class="input-group">
+                <label class="form-control-sm col-sm-4" for="xx">Section III</label>
+                <input type="text" id="xx" class="form-control form-control-sm txt-content-rght" readonly placeholder="0.00"
+                  onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
+              </div>
+            </div>
+            <div class="col-sm-2"></div>
+          </div>
+        </div>
+      </fieldset>
     </div>
-  </fieldset>
+    <div class="col-sm-4 mrgn-fieldset">
+      <fieldset class="scheduler-border fieldset-height">
+        <div class="form-row custom-row-inline-inset">
+          <label for="inputEmail4" class="form-control-sm top-label">Remarks</label>
+          <textarea class="form-control form-control-sm"></textarea>
+        </div>
+      </fieldset>
+    </div>
+  </div>
 
   <div class="form-row">
     <div class="form-group col-sm">

@@ -6,3 +6,9 @@
 .txt-content-rght{
     text-align: right
 }
+.mrgn-fieldset{
+    margin-top: 17px;
+}
+.fieldset-height{
+    height: 104%;
+}

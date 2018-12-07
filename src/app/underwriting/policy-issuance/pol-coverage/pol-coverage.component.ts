@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { UnderwritingService } from '@app/_services/underwriting.service';
 import { UnderwritingCoverageInfo } from '@app/_models';
 
@@ -17,10 +17,8 @@ export class PolCoverageComponent implements OnInit {
 
   nData: UnderwritingCoverageInfo = new UnderwritingCoverageInfo(null, null, null, null, null, null, null);
   constructor(private underwritingservice: UnderwritingService) { }
-  policyNo: boolean = false;
-  pol(event) {
-    this.policyNo = true;
-  }
+
+  @Input() alteration: boolean;
   ngOnInit() {
     this.tHeader.push("");
     this.tHeader.push("Cover Code");
@@ -39,7 +37,7 @@ export class PolCoverageComponent implements OnInit {
     this.dataTypes.push("checkbox");
 
     this.selOptions.push({ selector: "section", vals: ["I", "II", "III"] });
-    this.selOptions.push({ selector: "bulletNo", vals: ["1", "2", "3"] });
+    this.selOptions.push({ selector: "bulletNo", vals: ["1", "1.2", "1.3"] });
     this.selOptions.push({ selector: "sortSe", vals: ["10", "20", "30"] });
 
     this.tableData = this.underwritingservice.getUWCoverageInfo();
