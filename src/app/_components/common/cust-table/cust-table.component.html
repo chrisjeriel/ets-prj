@@ -46,6 +46,7 @@
 	<table datatable [dtOptions]="dtOptions" class="row-border hover">
 	<thead>
 		<tr>
+			<th *ngIf="checkFlag"></th>
 			<th *ngFor="let tHeader of tHeader">
 				<span class="ui-column-resizer" (mousedown) = "onMouseDown($event)"></span>
 				<span class="gridHeader">{{tHeader}}</span>
@@ -54,6 +55,7 @@
 	</thead>
 	<tbody>
 	  <tr *ngFor="let data of tableData">
+	  	<td *ngIf="checkFlag"> <input type="checkbox" name=""></td>
 	  	<td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]">
             <span *ngSwitchCase="'date'">{{ processData(key, data) | date: 'MM/dd/yyyy'}}</span>
 	  		<span *ngSwitchDefault>{{ processData(key, data) }}</span>

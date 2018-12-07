@@ -20,6 +20,7 @@ export class CustTableComponent implements OnInit {
     @Input() dataTypes: any[] = [];
     @Input() filters: any[] = [];
     @Input() pageLength: number;
+    @Input() checkFlag: boolean;
     dataKeys: any[] = [];
     start:    any;
     pressed:  any;

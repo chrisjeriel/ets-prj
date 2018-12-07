@@ -113,15 +113,16 @@ export class UnderwritingService {
 
     getExpiryListing(){
         this.expiryListing = [
-            new ExpiryListing("POL-050","I","San Juan","CPI","insured","Sample Data","II", "Paul", "Peso", "IV", "si", "pre")
+            new ExpiryListing("POL-0050","I","San Juan","CPI","insured","Sample Data","II", "Paul", "Peso", "IV", "si", "pre"),
+            new ExpiryListing("POL-0051","II","Muntinlupa","The Company","insured","Sample Data","II", "Christian", "Peso", "IV", "si", "pre")
         ];
         return this.expiryListing;
     }
 
     renewExpiredPolicies(){
         this.renewedPolicies = [
-            new RenewedPolicy("POL-8984","POL-2018"),
-            new RenewedPolicy("POL-3212","POL-2019")
+            new RenewedPolicy("POL-0050","POL-2018"),
+            new RenewedPolicy("POL-0051","POL-2019")
         ];
         return this.renewedPolicies;
     }

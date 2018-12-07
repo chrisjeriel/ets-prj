@@ -38,7 +38,8 @@ select + input, input + div + input{
 }
 
 .left{
-	min-height: 195px;
+	margin-top: -12px !important;
+	min-height: 203px;
 }
 
 .middle{
@@ -53,11 +54,15 @@ select + input, input + div + input{
 .fa-question-circle{
 	font-size: 60px;
 	color: #00194A;
-	margin-left: 15px;
+	/*margin-left: 15px;*/
 }
 
-p{
-	display: inline;
-	margin-right: 120px;
-	margin-bottom: 30px;
+
+.modal-icon{
+	margin-left: 10px;
+}
+
+.modal-text{
+	padding-right: 0px;
+	margin-left: 15px;
 }

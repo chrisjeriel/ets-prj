@@ -121,11 +121,21 @@
 							<div class="cust-btn-container">
 							<app-modal [btnTitle]="'Extract'" (click)="save()">
 								<div header>Extract Expiring Policies</div>
-						        <div body>
-						        	<br>
-						           <i class="fa fa-check-circle"></i>&nbsp;<p>Extracted Policies: {{extractedPolicies}}</p>
-						           <br>
-						           <br>
+						        <div body class="row">
+						           <!-- <div class="col-sm-1 text-right modal-icon">
+							            <i class="fa fa-check-circle"></i>
+							       </div>
+							       <div class="col-sm-9 text-left modal-text">
+						           		<p>Extracted Policies: {{extractedPolicies}}</p>
+						           </div> -->
+
+						            <div class="col-sm-1 text-right modal-icon">
+					           			<i class="fa fa-check-circle"></i>
+						           </div>
+						           <div class="col-sm-8 text-right modal-text">
+						           		<p>&nbsp;&nbsp;&nbsp;Extracted Policies: {{extractedPolicies}}</p>
+						           </div>
+
 						        </div>
 						        <div footer>
 						            <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
