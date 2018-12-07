@@ -39,6 +39,16 @@
 	margin-top: 16px;
 }
 
+.left{
+	margin-top: -12px !important;
+	min-height: 203px;
+}
+
+.middle{
+	margin-top: 5px !important;
+	min-height: 186px;
+}
+
 
 
 
