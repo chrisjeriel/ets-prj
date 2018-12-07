@@ -1,18 +1,18 @@
 <style>
 	thead tr th {
-	  position: relative;
-	}
-	span.ui-column-resizer {
-	  display: block;
-	  position: absolute;
-	  top: 0;
-	  right: 0;
-	  margin: 0;
-	  width: 8px;
-	  height: 100%;
-	  padding: 0;
-	  cursor: col-resize;
-	}
+        position: relative;
+    }
+    span.ui-column-resizer {
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 0;
+        width: 8px;
+        height: 100%;
+        padding: 0;
+        cursor: col-resize;
+    }
 </style>
 
 
@@ -81,60 +81,60 @@
 			</div>
 		</div>
 
+		<div class="table-scroll">
+			<table id="sample2" datatable [dtOptions]="dtOptions" class="row-border hover">
+				<thead>
+					<tr>
+						<th *ngIf="checkFlag"></th>
+						<th *ngFor="let tHeader of tHeader">
+							<span class="ui-column-resizer" (mousedown)="onMouseDown($event)"></span>
+							<span class="gridHeader">{{tHeader}}</span>
+						</th>
+					</tr>
+				</thead>
 
-		<table id="sample2" datatable [dtOptions]="dtOptions" class="row-border hover">
-			<thead>
-				<tr>
-					<th *ngIf="checkFlag"></th>
-					<th *ngFor="let tHeader of tHeader">
-						<span class="ui-column-resizer" (mousedown)="onMouseDown($event)"></span>
-						<span class="gridHeader">{{tHeader}}</span>
-					</th>
-				</tr>
-			</thead>
-
-			<tbody>
-				<tr *ngFor="let data of tableData;let ti = index">
-					<td *ngIf="checkFlag">&nbsp;&nbsp;&nbsp;<input type="checkbox" name="checkbox"></td>
-					<td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]">
-						<div>
-							<a><i *ngIf="magnifyingGlass.indexOf(key)!=-1" class="fa fa-search"></i></a> &nbsp;
-							<input *ngSwitchCase="'percent'" class="editable-text text-right number" type="text" [ngModel]="processData(key, data) | number:'1.7-7'"
-							 [ngModelOptions]="{updateOn:'blur'}" (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
-							<input *ngSwitchCase="'currency'" class="editable-text text-right number" type="text" [ngModel]="processData(key, data) | number:'1.2-2'"
-							 [ngModelOptions]="{updateOn:'blur'}" (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
-							<input *ngSwitchCase="'checkbox'" type="checkbox">
-							<select *ngSwitchCase="'select'" class="editable-select" [value]="processData(key, data)">
-								<ng-container *ngFor="let data of opts">
-									<ng-container *ngIf="key == data.selector">
-										<option *ngFor="let val of data.vals">{{ val }}</option>
+				<tbody>
+					<tr *ngFor="let data of tableData;let ti = index">
+						<td *ngIf="checkFlag">&nbsp;&nbsp;&nbsp;<input type="checkbox" name="checkbox"></td>
+						<td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]">
+							<div>
+								<a><i *ngIf="magnifyingGlass.indexOf(key)!=-1" class="fa fa-search"></i></a> &nbsp;
+								<input *ngSwitchCase="'percent'" class="editable-text text-right number" type="text" [ngModel]="processData(key, data) | number:'1.7-7'"
+								 [ngModelOptions]="{updateOn:'blur'}" (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
+								<input *ngSwitchCase="'currency'" class="editable-text text-right number" type="text" [ngModel]="processData(key, data) | number:'1.2-2'"
+								 [ngModelOptions]="{updateOn:'blur'}" (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
+								<input *ngSwitchCase="'checkbox'" type="checkbox">
+								<select *ngSwitchCase="'select'" class="editable-select" [value]="processData(key, data)">
+									<ng-container *ngFor="let data of opts">
+										<ng-container *ngIf="key == data.selector">
+											<option *ngFor="let val of data.vals">{{ val }}</option>
+										</ng-container>
 									</ng-container>
-								</ng-container>
+								</select>
+
+								<input *ngSwitchCase="'date'" class="editable-date" type="date" [ngModel]="processData(key, data) | date:'yyyy-MM-dd'"
+								 (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
+								<input *ngSwitchCase="'time'" class="editable-date" type="time" [ngModel]="processData(key, data) | date:'HH:mm'">
+								<input *ngSwitchCase="'datetime'" class="editable-date" type="datetime-local" [ngModel]="processData(key, data) | date:'yyyy-MM-ddTHH:mm'">
+								<input *ngSwitchDefault class="editable-text " type="text" [ngModel]="processData(key, data)" (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
+							</div>
+						</td>
+						<td *ngIf="tHeader.indexOf('Edit Flag')!= -1">
+							<div align="center">
+								<input type="checkbox" name="">
+							</div>
+						</td>
+						<td *ngIf="selectFlag">
+							<select class="editable-select">
+								<option *ngFor="let options of options">{{options}}</option>
 							</select>
-
-							<input *ngSwitchCase="'date'" class="editable-date" type="date" [ngModel]="processData(key, data) | date:'yyyy-MM-dd'"
-							 (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
-							<input *ngSwitchCase="'time'" class="editable-date" type="time" [ngModel]="processData(key, data) | date:'HH:mm'">
-							<input *ngSwitchCase="'datetime'" class="editable-date" type="datetime-local" [ngModel]="processData(key, data) | date:'yyyy-MM-ddTHH:mm'">
-							<input *ngSwitchDefault class="editable-text " type="text" [ngModel]="processData(key, data)" (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
-
-						</div>
-					</td>
-					<td *ngIf="tHeader.indexOf('Edit Flag')!= -1">
-						<div align="center">
-							<input type="checkbox" name="">
-						</div>
-					</td>
-					<td *ngIf="selectFlag">
-						<select class="editable-select">
-							<option *ngFor="let options of options">{{options}}</option>
-						</select>
-					</td>
-					<td *ngIf="tHeader.indexOf('Actions')!=-1" class="icon"><button class="fa fa-download" title="Download"></button>
-						&nbsp;</td>
-				</tr>
-			</tbody>
-		</table>
+						</td>
+						<td *ngIf="tHeader.indexOf('Actions')!=-1" class="icon"><button class="fa fa-download" title="Download"></button>
+							&nbsp;</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
 </div>
 <hr />

@@ -19,9 +19,10 @@ export class HoldCoverMonitoringListComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.tHeader.push("Hold Cover No.");
+        this.tHeader.push("Status");
         this.tHeader.push("Ceding Company");
         this.tHeader.push("Quotation No.");
-        this.tHeader.push("Hold Cover No.");
         this.tHeader.push("Risk");
         this.tHeader.push("Insured");
         this.tHeader.push("Period From");
@@ -29,7 +30,6 @@ export class HoldCoverMonitoringListComponent implements OnInit {
         this.tHeader.push("Comp. Ref. Hold Cover No.");
         this.tHeader.push("Requested By");
         this.tHeader.push("Request Date");
-        this.tHeader.push("Status");
 
         this.filters.push("Ced. Company");
         this.filters.push("Quotation No.");
@@ -48,13 +48,13 @@ export class HoldCoverMonitoringListComponent implements OnInit {
         this.dataTypes.push("text");
         this.dataTypes.push("text");
         this.dataTypes.push("text");
-        this.dataTypes.push("date");
-        this.dataTypes.push("date");
-        this.dataTypes.push("text");
         this.dataTypes.push("text");
         this.dataTypes.push("date");
+        this.dataTypes.push("date");
         this.dataTypes.push("text");
-
+        this.dataTypes.push("text");
+        this.dataTypes.push("date");
+        
         this.tableData = this.quotationService.getQuotationHoldCoverInfo();
     }
 }

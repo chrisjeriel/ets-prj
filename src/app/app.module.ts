@@ -48,8 +48,11 @@ import { ExpiryAndRenewalComponent } from './underwriting/expiry-and-renewal/exp
 import { ExtractExpiringPoliciesComponent } from './underwriting/expiry-and-renewal/extract-expiring-policies/extract-expiring-policies.component';
 import { PolGenInfoComponent } from './underwriting/policy-issuance/pol-gen-info/pol-gen-info.component'
 import { AltParListingComponent } from './underwriting/policy-issuance/alt-par-listing/alt-par-listing.component';
+import { PolAttachmentComponent } from './underwriting/policy-issuance/pol-attachment/pol-attachment.component';
+import { PolPostComponent } from './underwriting/policy-issuance/pol-post/pol-post.component';
 import { ExpiryListingComponent } from './underwriting/expiry-and-renewal/expiry-listing/expiry-listing.component';
 import { PolicyIssuanceAltComponent } from './underwriting/policy-issuance/policy-issuance-alt.component';
+
 
 @NgModule({
     imports: [
@@ -103,6 +106,8 @@ import { PolicyIssuanceAltComponent } from './underwriting/policy-issuance/polic
         ExtractExpiringPoliciesComponent,
         PolGenInfoComponent,
         AltParListingComponent,
+        PolAttachmentComponent,
+        PolPostComponent,
         ExpiryListingComponent,
         PolicyIssuanceAltComponent
     ],
