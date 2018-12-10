@@ -27,7 +27,7 @@ span.ui-column-resizer {
 		<input type="search" class="expireIn" placeholder="">
 		<!-- end remove -->
 	</div>
-	<div ngbDropdown>
+	<div ngbDropdown *ngIf="!tableOnly">
 		<button class="cust-filter" ngbDropdownToggle><a><fa name="filter"></fa></a></button>
 		<div ngbDropdownMenu aria-labelledby="dropdownConfig">
 			<div class="dropdown-item">

@@ -26,6 +26,7 @@ export class PolEndorsementComponent implements OnInit {
      }
 
     ngOnInit() : void{
+        this.tHeader.push("Endt Code");
         this.tHeader.push("Endt Title");
         this.tHeader.push("Endt Description");
         this.tHeader.push("Wording");
