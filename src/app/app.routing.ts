@@ -34,7 +34,7 @@ const appRoutes: Routes = [
     { path: 'quotation-processing', component: QuotationProcessingComponent },
     { path: 'extract-expiring-policies', component: ExtractExpiringPoliciesComponent },
     { path: 'policy', component: PolicyIssuanceComponent },
-    { path: 'createPAR', component: PolCreatePARComponent },
+    { path: 'create-policy', component: PolCreatePARComponent },
     { path: 'createAlterationPAR', component: PolCreateAlterationPARComponent },
     { path: 'par-listing', component: ParListingComponent },
     { path: 'alt-par-listing', component: AltParListingComponent },

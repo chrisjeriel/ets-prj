@@ -464,3 +464,7 @@ z-index: 9999 !important;
 #cust-table-container.paul-table .dataTables_paginate{
     float: left;
 }
+input[type=date] {
+    line-height: 1.1 !important;
+
+}
