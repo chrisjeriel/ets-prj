@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { QuotationService } from '../../_services';
 import { QuotationProcessing } from '../../_models';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -16,7 +17,7 @@ export class QuotationProcessingComponent implements OnInit {
   rowData: any[] = [];
   disabledEditBtn: boolean = true;
 
-  constructor(private quotationService: QuotationService, private modalService: NgbModal) { }
+  constructor(private quotationService: QuotationService, private modalService: NgbModal, private router: Router) { }
 
   ngOnInit() {
     this.rowData = this.quotationService.getRowData();
@@ -63,7 +64,25 @@ export class QuotationProcessingComponent implements OnInit {
   	this.tableData = this.quotationService.getQuoProcessingData();
   }
 
-  enableEditBtn() {
+  onRowClick(event) {
+    for(var i = 0; i < event.path[1].cells.length; i++) {
+        this.quotationService.rowData[i] = event.path[1].cells[i].innerText;
+      }
+
+    for(var i = 0; i < event.path[2].children.length; i++) {
+      event.path[2].children[i].style.backgroundColor = "";
+    }
+
+    event.path[1].style.backgroundColor = "#67b4fc";
     this.disabledEditBtn = false;
+  }
+
+  onRowDblClick(event) {
+    for(var i = 0; i < event.path[1].cells.length; i++) {
+        this.quotationService.rowData[i] = event.path[1].cells[i].innerText;
+      }
+
+      this.quotationService.toGenInfo = "edit";
+      this.router.navigate(['/quotation']);
   }
 }

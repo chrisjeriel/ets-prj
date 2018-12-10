@@ -21,9 +21,10 @@ export class CustTableComponent implements OnInit {
     @Input() dataTypes: any[] = [];
     @Input() filters: any[] = [];
     @Input() pageLength: number;
-    @Input() from: string = "";
     @Input() checkFlag: boolean;
-    @Output() enableEditBtn = new EventEmitter<string>();
+
+    @Output() rowClick: EventEmitter<any> = new EventEmitter();
+    @Output() rowDblClick: EventEmitter<any> = new EventEmitter();
 
     dataKeys: any[] = [];
     start:    any;
@@ -31,7 +32,7 @@ export class CustTableComponent implements OnInit {
     startX:   any;
     startWidth: any;
 
-    constructor(config: NgbDropdownConfig, public renderer: Renderer, private quotationService: QuotationService, private router: Router) {
+    constructor(config: NgbDropdownConfig, public renderer: Renderer, private quotationService: QuotationService) {
         config.placement = 'bottom-right';
         config.autoClose = false;
     }
@@ -79,26 +80,17 @@ export class CustTableComponent implements OnInit {
     }
 
     onRowClick(event) {
-      for(var i = 0; i < event.path[1].cells.length; i++) {
-        this.quotationService.rowData[i] = event.path[1].cells[i].innerText;
-      }
-
-      for(var i = 0; i < event.path[2].children.length; i++) {
-        event.path[2].children[i].style.backgroundColor = "";
-      }
-
-      event.path[1].style.backgroundColor = "#67b4fc";
-
-      this.quotationService.toGenInfo = "edit";
-      this.enableEditBtn.next();
+      this.rowClick.next(event);
     }
 
     onRowDblClick(event) {
-      for(var i = 0; i < event.path[1].cells.length; i++) {
+      /*for(var i = 0; i < event.path[1].cells.length; i++) {
         this.quotationService.rowData[i] = event.path[1].cells[i].innerText;
       }
 
       this.quotationService.toGenInfo = "edit";
-      this.router.navigate(['/quotation']);
+      this.router.navigate(['/quotation']);*/
+
+      this.rowDblClick.next(event);
     }
 }
