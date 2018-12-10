@@ -1,28 +1,35 @@
 export class QuotationProcessing {
 	quotationNo: string;
-    branch: string;
+    typeOfCession: string;
 	lineClass: string;
-	quoteStatus: string;
+	status: string;
 	cedingCompany: string;
 	principal: string;
 	contractor: string;
 	insured: string;
+	risk: string;
+	qObject: string;
+	location: string;
 	quoteDate: Date;
 	validityDate: Date;
 	requestedBy: string;
 	createdBy: string;
 
-	constructor(quotationNo: string,branch: string,lineClass: string,quoteStatus: string,
-			cedingCompany: string,principal: string,contractor: string,insured: string,quoteDate: Date,
+	constructor(quotationNo: string,typeOfCession: string,lineClass: string,status: string,
+			cedingCompany: string,principal: string,contractor: string,insured: string, risk: string, qObject: string, location: string,
+			quoteDate: Date,
 			validityDate: Date, requestedBy: string, createdBy: string) {
 		this.quotationNo = quotationNo;
-		this.branch = branch;
+		this.typeOfCession = typeOfCession;
 		this.lineClass = lineClass;
-		this.quoteStatus = quoteStatus;
+		this.status = status;
 		this.cedingCompany = cedingCompany;
 		this.principal = principal;
 		this.contractor = contractor;
 		this.insured = insured;
+		this.risk = risk;
+		this.qObject = qObject;
+		this.location = location;
 		this.quoteDate = quoteDate;
 		this.validityDate = validityDate;
 		this.requestedBy = requestedBy;
