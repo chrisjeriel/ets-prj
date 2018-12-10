@@ -61,7 +61,7 @@ export class CustEditableTableComponent implements OnInit {
     };
 
     if (this.tableData.length > 0) {
-    	this.dataKeys = Object.keys(this.nData);
+    	this.dataKeys = Object.keys(this.tableData[0]);
     } else {
     	this.tHeader.push("No Data");
     }

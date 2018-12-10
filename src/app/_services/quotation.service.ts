@@ -153,12 +153,11 @@ export class QuotationService {
             new QuotationOtherRates(2,'Others22', 50, 'sample deductible'),
             new QuotationOtherRates(3,'Others31', 60, 'deductible')
         ];
-        this.quotataionOtherRates = this.quotataionOtherRates.filter(function(itm){
+        var quotataionOtherRates =  this.quotataionOtherRates.filter(function(itm){
             return itm.optionNo == optionNo;
         });
-        this.quotataionOtherRates.forEach(function(itm){delete itm.optionNo;});
-        console.log(this.quotataionOtherRates);
-        return this.quotataionOtherRates;
+        quotataionOtherRates.forEach(function(itm){delete itm.optionNo;});
+        return quotataionOtherRates;
     }
 
 

@@ -35,7 +35,7 @@ export class QuoteOptionComponent implements OnInit {
   	this.quotationInfo.insuredName ="Insured Name";
 
     this.quoteOptionTableData = this.quotationService.getQuoteOptions();
-    this.otherRatesTableData = this.quotationService.getQuotataionOtherRates(2);
+    this.otherRatesTableData = this.quotationService.getQuotataionOtherRates(1);
   }
   
   save(){
@@ -43,7 +43,8 @@ export class QuoteOptionComponent implements OnInit {
   }
 
   clickRow(event){
-    console.log(event);
+    console.log(event.path[1].cells[1].childNodes[0].children[1].value);
+    this.otherRatesTableData = this.quotationService.getQuotataionOtherRates(event.path[1].cells[1].childNodes[0].children[1].value);
   }
 
 
