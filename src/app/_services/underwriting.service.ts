@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo } from '@app/_models';
+import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo, ALOPItemInformation } from '@app/_models';
 
 @Injectable({ providedIn: 'root' })
 export class UnderwritingService {
@@ -16,6 +16,7 @@ export class UnderwritingService {
     polAttachmentInfoData: PolAttachmentInfo[] = [];
     expiryListing: ExpiryListing[] = [];
     renewedPolicies: RenewedPolicy[]=[];
+    aLOPItemInfos: ALOPItemInformation[]=[];
 
     constructor(private http: HttpClient) {
 
@@ -135,5 +136,14 @@ export class UnderwritingService {
             new RenewedPolicy("POL-0051","POL-2019")
         ];
         return this.renewedPolicies;
+    }
+
+    getALOPItemInfos(){
+        this.aLOPItemInfos = [
+            new ALOPItemInformation(1,5,"desc","rel import","min loss"),
+            new ALOPItemInformation(2,7,"description","relative import","min loss")
+        ]
+        this.aLOPItemInfos.forEach(function(itm){delete itm.relativeImportance;});
+        return this.aLOPItemInfos;
     }
 }            

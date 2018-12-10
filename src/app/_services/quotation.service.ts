@@ -158,10 +158,18 @@ export class QuotationService {
 
     getQuotataionOtherRates(optionNo:number ) {
         this.quotataionOtherRates = [
-            new QuotationOtherRates(1,'Others1', 50, 'sample deductibles'),
+            new QuotationOtherRates(1,'Others11', 50, 'sample deductibles'),
+            new QuotationOtherRates(1,'Others12', 41, 'sample deductibles'),
+            new QuotationOtherRates(1,'Others13', 75, 'deductibles'),
             new QuotationOtherRates(2,'Others21', 60, 'deductibles'),
             new QuotationOtherRates(2,'Others22', 50, 'sample deductible'),
-            new QuotationOtherRates(3,'Others31', 60, 'deductible')
+            new QuotationOtherRates(2,'Others23', 65, 'demo'),
+            new QuotationOtherRates(2,'Others24', 41, 'sample ony'),
+            new QuotationOtherRates(3,'Others31', 4, 'for demo'),
+            new QuotationOtherRates(3,'Others32', 3, 'sample data'),
+            new QuotationOtherRates(3,'Others33', 5, 'sample'),
+            new QuotationOtherRates(3,'Others34', 6, 'deductibles'),
+
         ];
         var quotataionOtherRates =  this.quotataionOtherRates.filter(function(itm){
             return itm.optionNo == optionNo;

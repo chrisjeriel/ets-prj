@@ -1,0 +1,28 @@
+.text-search-ico {
+	margin-left: -18px;
+	z-index: 99999;
+	font-size: 14px;
+}
+
+.right,.left, .right fieldset,.insuredInt{
+	display: inline-block;
+}
+
+
+.right{
+	padding-right: 0px;
+	float: right;
+}
+
+.insuredInt{
+	padding-left: 0px;
+}
+
+.maxIndem{
+	margin-top: 5px !important;
+    padding-top: 10px !important;
+}
+
+.bottom-button-container{
+	display: block;
+}
