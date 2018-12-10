@@ -22,7 +22,7 @@ export class QuoteEndorsementComponent implements OnInit {
 
   tableData: any[] = [];
   tHeader: any[] = ['Endt Code','Endt Title', 'Endt Description', 'Wording'];
-  magnifyingGlass: any[]=["endtTitle"]
+  magnifyingGlass: any[]=["endtCode"]
   nData: QuoteEndorsement = new QuoteEndorsement(null,null, null, null, null);
 
   optionNos:number[] = [];
