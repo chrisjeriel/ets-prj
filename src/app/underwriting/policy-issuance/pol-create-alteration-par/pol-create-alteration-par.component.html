@@ -7,11 +7,6 @@
 
             </ng-template>
         </ngb-tab>
-        <ngb-tab>
-            <ng-template ngbTabTitle>
-                <a class="nav-a-hover" [routerLink]="['/policy-issuance-alt']">General Info</a>
-            </ng-template>
-        </ngb-tab>
     </ngb-tabset>
 </div>
 <br>
@@ -35,7 +30,7 @@
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-2">Quotation No</label>
-                            <input type="text" class="form-control form-control-sm" [disabled]="!fromQuotation">
+                            <input type="text" [(ngModel)]="quoteLine" class="form-control form-control-sm" [disabled]="!fromQuotation">
                             <input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [disabled]="!fromQuotation">
                             <input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [disabled]="!fromQuotation">
                             <input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [disabled]="!fromQuotation">
@@ -76,7 +71,7 @@
             <br>
             <div class="cust-btn-container">
                 <button type="button" class="cust-btn"><a>Cancel</a></button>
-                <button type="button" class="cust-btn"><a>Next</a></button>
+                <button type="button" (click)="navigateToGenInfo()" class="cust-btn"><a>Next</a></button>
             </div>
         </div>
     </div>

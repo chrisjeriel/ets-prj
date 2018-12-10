@@ -16,6 +16,7 @@ export class PolCreateAlterationPARComponent implements OnInit {
   tHeader: any[] = [];
   dataTypes: any[]= [];
   fromQuotation: boolean = true;
+  quoteLine: any;
   
   constructor(private underwritingService : UnderwritingService, private router: Router, private modalService : NgbModal ) { }
 
@@ -61,5 +62,10 @@ export class PolCreateAlterationPARComponent implements OnInit {
 
   fromHoldCover(){
     this.fromQuotation = !this.fromQuotation;
+  }
+
+  navigateToGenInfo() {
+    console.log(this.quoteLine);
+    this.router.navigate(['/policy-issuance', { line: this.quoteLine }], {skipLocationChange: true});
   }
 }
