@@ -35,10 +35,10 @@ export class ListOfQuotationsComponent implements OnInit {
         this.tHeader.push("Policy Number");
         this.tHeader.push("Currency");
         //remove this
-        this.tHeader.push("Quote Date");
+       /* this.tHeader.push("Quote Date");
         this.tHeader.push("Validity Date");
         this.tHeader.push("Requested By");
-        this.tHeader.push("Created By");
+        this.tHeader.push("Created By");*/
         
         this.filters.push("Quotation No.");
         this.filters.push("Type of Cession");
@@ -68,10 +68,10 @@ export class ListOfQuotationsComponent implements OnInit {
         this.dataTypes.push("text");
         this.dataTypes.push("text");
         //remove this
-        this.dataTypes.push("date");
+       /* this.dataTypes.push("date");
         this.dataTypes.push("date");
         this.dataTypes.push("text");
-        this.dataTypes.push("text");
+        this.dataTypes.push("text");*/
         
         this.tableData = this.quotationService.getQuotationListInfo();
     }
