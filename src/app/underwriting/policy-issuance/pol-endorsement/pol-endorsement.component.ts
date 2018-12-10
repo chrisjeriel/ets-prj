@@ -12,11 +12,12 @@ export class PolEndorsementComponent implements OnInit {
 
     dtOptions: DataTables.Settings = {};
     tableData: any[] = [];
-    tHeader: any[] = [];
     options: any[] = [];
     dataTypes: any[] = [];
-    magnifyingGlass: any[]=["endtTitle"];
+    magnifyingGlass: any[]=["endtCode"];
     nData: QuoteEndorsement = new QuoteEndorsement(null, null, null, null, null);
+
+    tHeader: any[] = ['Endt Code','Endt Title', 'Endt Description', 'Wording'];
     
     @Input() alteration: boolean;
 
