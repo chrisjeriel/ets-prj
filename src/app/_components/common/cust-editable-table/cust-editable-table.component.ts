@@ -29,8 +29,10 @@ export class CustEditableTableComponent implements OnInit {
 
   @Input() editedData: any[] = [];
   @Output() editedDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
-  dataKeys: any[] = [];
+  @Output() rowClick: EventEmitter<any> = new EventEmitter();
+  @Output() rowDblClick: EventEmitter<any> = new EventEmitter();
   
+  dataKeys: any[] = [];
   tableLoad: boolean = true;
   nextId: number = 0;
   exists:Boolean = false;
@@ -117,4 +119,11 @@ export class CustEditableTableComponent implements OnInit {
      });
   }
 
+  onRowClick(event) {
+    this.rowClick.next(event);
+  }
+
+  onRowDblClick(event) {
+    this.rowDblClick.next(event);
+  }
 }

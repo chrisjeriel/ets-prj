@@ -4,7 +4,6 @@
 		<ngb-tab class="ngb-tab" title="List of Quotations">
 			<ng-template ngbTabContent>
 				<br />
-				<!-- <button class="cust-btn" routerLink="/quotation"><a>Add</a></button> -->
 
 				<app-modal [btnTitle]="'Add'" >
 					<div header>Enter General Info</div>
@@ -13,7 +12,7 @@
 							<div class="custom-row-inline-inset">
 								<div class="input-group">
 									<label class="form-control-sm col-sm-3" for="xx">Line</label>
-									<input type="text" id="xx" class="form-control form-control-sm col-sm-2">
+									<input type="text" [(ngModel)]="line" class="form-control form-control-sm col-sm-2">
 									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 									&nbsp;&nbsp;
 									<input type="text" id="xx" class="form-control form-control-sm">
@@ -39,16 +38,15 @@
 						<div>
 							<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Maintain Risk</a></button>
 							<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-							<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Next</a></button>	
+							<button class="cust-btn" type="button" (click)="nextBtnEvent(line)"><a>Next</a></button>	
 						</div>
 					</div>
 				</app-modal>
 
-
 				<button *ngIf="disabledEditBtn" class="cust-btn-disabled">Edit</button>
-				<button *ngIf="!disabledEditBtn" class="cust-btn" routerLink="/quotation">Edit</button>
+				<button *ngIf="!disabledEditBtn" class="cust-btn" (click)="editBtnEvent()">Edit</button>
 
-				<app-cust-table [filters]="filters" [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes" [from]="'quotation-processing'"></app-cust-table>
+				<app-cust-table [filters]="filters" [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes" (rowClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)"></app-cust-table>
 
 			</ng-template>
 		</ngb-tab>
