@@ -74,11 +74,6 @@ export class QuotationProcessingComponent implements OnInit {
       this.quotationService.rowData[i] = event.target.parentElement.children[i].innerText;
     }
 
-    for(var i = 0; i < event.target.parentElement.parentElement.children.length; i++) {
-      event.target.parentElement.parentElement.children[i].style.backgroundColor = "";
-    }
-
-    event.target.parentElement.style.backgroundColor = "#67b4fc";
     this.disabledEditBtn = false;
   }
 

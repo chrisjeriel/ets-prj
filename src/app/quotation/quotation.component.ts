@@ -18,7 +18,7 @@ export class QuotationComponent implements OnInit {
 		}
 	}
 
-	test(content) {
+	showApprovalModal(content) {
     	this.modalService.open(content, { centered: true, backdrop: 'static', windowClass : "modal-size" });
 	}
 }
