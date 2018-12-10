@@ -4,7 +4,6 @@
 		<ngb-tab class="ngb-tab" title="List of Quotations">
 			<ng-template ngbTabContent>
 				<br />
-				<!-- <button class="cust-btn" routerLink="/quotation"><a>Add</a></button> -->
 
 				<app-modal [btnTitle]="'Add'" >
 					<div header>Enter General Info</div>
@@ -43,7 +42,6 @@
 						</div>
 					</div>
 				</app-modal>
-
 
 				<button *ngIf="disabledEditBtn" class="cust-btn-disabled">Edit</button>
 				<button *ngIf="!disabledEditBtn" class="cust-btn" (click)="editBtnEvent()">Edit</button>

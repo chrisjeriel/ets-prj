@@ -1,6 +1,6 @@
 <div class="cust-tabs-container">
 	<h4>Quotation / Quotation Processing</h4>
-	<ngb-tabset>
+	<ngb-tabset (tabChange)="beforeChange($event)">
 
 		<ngb-tab class="ngb-tab" title="General Info">
 			<ng-template ngbTabContent>
@@ -33,8 +33,78 @@
 				<app-pol-attachment></app-pol-attachment>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab title="Print">
+		<ngb-tab id="approval-tab">
+			<ng-template ngbTabTitle>
+				<div (click)="test()">Approval</div>
+			</ng-template>
+
 			<ng-template ngbTabContent>
+				
+				<app-modal [btnTitle]="'Add'" >
+					<div header>Approval</div>
+					<div body>
+						<div class="row">
+							<div class="col-sm-6">
+								<fieldset class="scheduler-border">
+									<div class="custom-row-inline-inset cust-div">
+										<div class="input-group">
+											<label class="form-control-sm col-sm-3" for="xx">Status</label>
+											<input type="text" id="xx" class="form-control form-control-sm col-sm-5">
+											&nbsp;
+										</div>
+										<div class="input-group">
+											<select class="form-control form-control-sm cust-sm col-sm-8">
+												<option>user1</option>
+												<option>user2</option>
+												<option>user3</option>
+											</select>
+											&nbsp;															
+											<button class="cust-btn">Approve</button>
+										</div>
+									</div>
+								</fieldset>
+							</div>
+							<div class="col-sm-6">
+								<fieldset class="scheduler-border">
+									<div class="custom-row-inline-inset cust-div">
+										<div class="input-group">
+											<label class="form-control-sm col-sm-5" for="xx">Report</label>
+											<input type="text" id="xx" class="form-control form-control-sm col-sm-7">
+										</div>
+										<div class="input-group">
+											<label class="form-control-sm col-sm-5" for="xx">No. of Copies</label>
+											<input type="text" id="xx" class="form-control form-control-sm col-sm-7">
+										</div>
+										<div class="input-group">
+											<label class="form-control-sm col-sm-5" for="xx">Destination</label>
+											<select class="form-control form-control-sm cust-sm col-sm-7">
+												<option>Screen</option>
+												<option>PDF</option>
+												<option>Printer</option>
+											</select>
+										</div>
+										<div class="input-group">
+											<label class="form-control-sm col-sm-5" for="xx">Printer Name</label>
+											<select class="form-control form-control-sm cust-sm col-sm-7">
+												<option>Printer A</option>
+												<option>Printer B</option>
+												<option>Printer C</option>
+											</select>
+										</div>
+									</div>
+								</fieldset>
+							</div>
+						</div>
+
+					</div>
+					<div footer>
+						<div>
+							<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+							<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Print</a></button>	
+						</div>
+					</div>
+				</app-modal>
+
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab title="Exit">

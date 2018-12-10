@@ -1,0 +1,10 @@
+.scheduler-border {
+	height: 100% !important;
+	margin: 0 !important;
+}
+
+.cust-div {
+	position: relative;
+	top: 50%;
+	transform: perspective(1px) translateY(-50%);
+}
