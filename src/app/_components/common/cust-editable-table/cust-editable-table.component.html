@@ -94,9 +94,9 @@
 				</thead>
 
 				<tbody>
-					<tr *ngFor="let data of tableData;let ti = index">
+					<tr *ngFor="let data of tableData;let ti = index" (click)="onRowClick($event)" (dblclick)="onRowDblClick($event)">
 						<td *ngIf="checkFlag">&nbsp;&nbsp;&nbsp;<input type="checkbox" name="checkbox"></td>
-						<td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]" (click)="onRowClick($event)" (dblclick)="onRowDblClick($event)">
+						<td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]">
 							<div>
 								<a><i *ngIf="magnifyingGlass.indexOf(key)!=-1" class="fa fa-search"></i></a> &nbsp;
 								<input *ngSwitchCase="'percent'" class="editable-text text-right number" type="text" [ngModel]="processData(key, data) | number:'1.7-7'"
