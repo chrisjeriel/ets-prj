@@ -11,11 +11,23 @@
 				 readonly>
 			</div>
 		</div>
+		<div class="form-row custom-row-inline-inset">
+			<div class="input-group">
+				<label class="form-control-sm col-sm-1" for="xx">Risk</label>
+				<input type="text" id="risk" class="form-control form-control-sm cust-sm col-sm-10" placeholder="risk"
+				 readonly>
+			</div>
+		</div>
+	</fieldset>
+
+	<fieldset class="scheduler-border">
+		<legend class="scheduler-border">Quotation Option</legend>
+		<app-cust-table [checkFlag]="true" [tableData]="quoteOptionTableData" [tHeader]="quoteOptionTHeader" [dataTypes]="quoteOptionDataType" (rowClick)="clickRow($event)"></app-cust-table>
 	</fieldset>
 
 	<fieldset class="scheduler-border">
 		<legend class="scheduler-border">Endorsements</legend>
-		<app-cust-editable-table [checkFlag]="true" [addFlag]="true" [deleteFlag]="true" [nData]="nData" [tableData]="tableData" [editFlag]="true" 
+		<app-cust-editable-table [checkFlag]="true" [addFlag]="true" [deleteFlag]="true" [nData]="nData" [tableData]="tableData" [editFlag]="false" 
 		 [tHeader]="tHeader" [magnifyingGlass]="magnifyingGlass"></app-cust-editable-table>
 	</fieldset>
 	<div class="form-row">
