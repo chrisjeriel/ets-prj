@@ -64,25 +64,30 @@ export class QuotationProcessingComponent implements OnInit {
   	this.tableData = this.quotationService.getQuoProcessingData();
   }
 
-  onRowClick(event) {
-    for(var i = 0; i < event.path[1].cells.length; i++) {
-        this.quotationService.rowData[i] = event.path[1].cells[i].innerText;
-      }
+  editBtnEvent() {
+    this.quotationService.toGenInfo = "edit";
+    this.router.navigate(['/quotation']);
+  }
 
-    for(var i = 0; i < event.path[2].children.length; i++) {
-      event.path[2].children[i].style.backgroundColor = "";
+  onRowClick(event) {
+    for(var i = 0; i < event.target.parentElement.children.length; i++) {
+      this.quotationService.rowData[i] = event.target.parentElement.children[i].innerText;
     }
 
-    event.path[1].style.backgroundColor = "#67b4fc";
+    for(var i = 0; i < event.target.parentElement.parentElement.children.length; i++) {
+      event.target.parentElement.parentElement.children[i].style.backgroundColor = "";
+    }
+
+    event.target.parentElement.style.backgroundColor = "#67b4fc";
     this.disabledEditBtn = false;
   }
 
   onRowDblClick(event) {
-    for(var i = 0; i < event.path[1].cells.length; i++) {
-        this.quotationService.rowData[i] = event.path[1].cells[i].innerText;
-      }
+    for(var i = 0; i < event.target.parentElement.children.length; i++) {
+      this.quotationService.rowData[i] = event.target.parentElement.children[i].innerText;
+    }
 
-      this.quotationService.toGenInfo = "edit";
-      this.router.navigate(['/quotation']);
+    this.quotationService.toGenInfo = "edit";
+    this.router.navigate(['/quotation']);
   }
 }

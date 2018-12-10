@@ -46,7 +46,7 @@
 
 
 				<button *ngIf="disabledEditBtn" class="cust-btn-disabled">Edit</button>
-				<button *ngIf="!disabledEditBtn" class="cust-btn" routerLink="/quotation">Edit</button>
+				<button *ngIf="!disabledEditBtn" class="cust-btn" (click)="editBtnEvent()">Edit</button>
 
 				<app-cust-table [filters]="filters" [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes" (rowClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)"></app-cust-table>
 

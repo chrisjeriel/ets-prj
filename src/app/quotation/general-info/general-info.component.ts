@@ -15,7 +15,7 @@ export class GeneralInfoComponent implements OnInit {
 
 	constructor(private quotationService: QuotationService) { }
 	ngOnInit() {
-		if(this.quotationService.toGenInfo == 'edit'){
+		if(this.quotationService.toGenInfo == "edit"){
 			this.quotationGenInfo = new QuotationGenInfo();
 			this.quotationGenInfo.line = this.rowData[0];
 			this.quotationGenInfo.year = new Date().getFullYear();
@@ -57,6 +57,7 @@ export class GeneralInfoComponent implements OnInit {
 			this.quotationGenInfo.lastUpdate;
 			this.quotationGenInfo.lastUpdateBy = "MOCK DATA";
 
+			this.quotationService.toGenInfo = "";
 		} else {
 			this.quotationGenInfo = new QuotationGenInfo();
 			this.quotationGenInfo.line = "EN";
