@@ -54,7 +54,7 @@ import { ExpiryListingComponent } from './underwriting/expiry-and-renewal/expiry
 import { PolicyIssuanceAltComponent } from './underwriting/policy-issuance/policy-issuance-alt.component';
 import { GenerateDocumentsComponent } from './underwriting/generate-documents/generate-documents.component';
 import { PolicyPrintingComponent } from './underwriting/generate-documents/policy-printing/policy-printing.component';
-
+import { PolicyToHoldCoverComponent } from './underwriting/expiry-and-renewal/policy-to-hold-cover/policy-to-hold-cover.component';
 @NgModule({
     imports: [
         BrowserModule,
@@ -112,7 +112,8 @@ import { PolicyPrintingComponent } from './underwriting/generate-documents/polic
         ExpiryListingComponent,
         PolicyIssuanceAltComponent,
         GenerateDocumentsComponent,
-        PolicyPrintingComponent
+        PolicyPrintingComponent,
+        PolicyToHoldCoverComponent
     ],
 
     providers: [

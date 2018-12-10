@@ -94,7 +94,7 @@
 				</thead>
 
 				<tbody>
-					<tr *ngFor="let data of tableData;let ti = index">
+					<tr *ngFor="let data of tableData;let ti = index" (click)="onRowClick($event)" (dblclick)="onRowDblClick($event)">
 						<td *ngIf="checkFlag">&nbsp;&nbsp;&nbsp;<input type="checkbox" name="checkbox"></td>
 						<td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]">
 							<div>

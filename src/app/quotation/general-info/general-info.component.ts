@@ -12,26 +12,32 @@ import { QuotationService } from '../../_services';
 export class GeneralInfoComponent implements OnInit {
 	private quotationGenInfo: QuotationGenInfo;
 	rowData: any[] = this.quotationService.rowData;
+	quotationNum: any[] = [];
+	
 
 	constructor(private quotationService: QuotationService) { }
 	ngOnInit() {
-		if(this.quotationService.toGenInfo == 'edit'){
+		if(this.quotationService.toGenInfo[0] == "edit"){
+			console.log(this.quotationService.rowData);
+
+			this.quotationNum = this.quotationService.rowData[0].split("-");
+
 			this.quotationGenInfo = new QuotationGenInfo();
-			this.quotationGenInfo.line = this.rowData[0];
-			this.quotationGenInfo.year = new Date().getFullYear();
+			this.quotationGenInfo.line = "";
+			this.quotationGenInfo.year = 0;
 			this.quotationGenInfo.seqNo;
 			this.quotationGenInfo.reqSeq;
 			this.quotationGenInfo.histNo = "MOCK DATA";
 			this.quotationGenInfo.branch = this.rowData[1];
-			this.quotationGenInfo.lineClass = "MOCK DATA";
+			this.quotationGenInfo.lineClass = this.quotationNum[0];
 			this.quotationGenInfo.policyNumber = 0;
 			this.quotationGenInfo.printedBy = "MOCK DATA";
 			this.quotationGenInfo.printDate;
 			this.quotationGenInfo.cedingCompany = this.rowData[4];
 			this.quotationGenInfo.quoteStatus = this.rowData[3];
-			this.quotationGenInfo.quoteDate = new Date(this.rowData[8]);
-			this.quotationGenInfo.validUntil = new Date(this.rowData[9]);
-			this.quotationGenInfo.requestedBy = this.rowData[10];
+			this.quotationGenInfo.quoteDate = new Date(this.rowData[11]);
+			this.quotationGenInfo.validUntil = new Date(this.rowData[12]);
+			this.quotationGenInfo.requestedBy = this.rowData[13];
 			this.quotationGenInfo.requestedDate;
 			this.quotationGenInfo.requestedMode = "MOCK DATA";
 			this.quotationGenInfo.principal = this.rowData[5];
@@ -40,9 +46,9 @@ export class GeneralInfoComponent implements OnInit {
 			this.quotationGenInfo.propertyProjectDescription = "MOCK DATA";
 			this.quotationGenInfo.site = "MOCK DATA";
 			this.quotationGenInfo.durationTesting = "MOCK DATA";
-			this.quotationGenInfo.risk = "MOCK DATA";
-			this.quotationGenInfo.object = "MOCK DATA";
-			this.quotationGenInfo.location = "MOCK DATA";
+			this.quotationGenInfo.risk = this.rowData[8];
+			this.quotationGenInfo.object = this.rowData[9];
+			this.quotationGenInfo.location = this.rowData[10];
 			this.quotationGenInfo.share = "MOCK DATA";
 			this.quotationGenInfo.partOf100 = "MOCK DATA";
 			this.quotationGenInfo.intermediary = "MOCK DATA";
@@ -59,48 +65,46 @@ export class GeneralInfoComponent implements OnInit {
 
 		} else {
 			this.quotationGenInfo = new QuotationGenInfo();
-			this.quotationGenInfo.line = "EN";
+			this.quotationGenInfo.line = "";
 			this.quotationGenInfo.year = new Date().getFullYear();
 			this.quotationGenInfo.seqNo;
 			this.quotationGenInfo.reqSeq;
-			this.quotationGenInfo.histNo = "MOCK DATA";
-			this.quotationGenInfo.branch = "MOCK DATA";
-			this.quotationGenInfo.lineClass = "MOCK DATA";
+			this.quotationGenInfo.histNo = "";
+			this.quotationGenInfo.branch = "";
+			this.quotationGenInfo.lineClass = "";
 			this.quotationGenInfo.policyNumber = 0;
-			this.quotationGenInfo.printedBy = "MOCK DATA";
+			this.quotationGenInfo.printedBy = "";
 			this.quotationGenInfo.printDate;
-			this.quotationGenInfo.cedingCompany = "MOCK DATA";
-			this.quotationGenInfo.quoteStatus = "MOCK DATA";
+			this.quotationGenInfo.cedingCompany = "";
+			this.quotationGenInfo.quoteStatus = "";
 			this.quotationGenInfo.quoteDate = new Date();
 			this.quotationGenInfo.validUntil;
-			this.quotationGenInfo.requestedBy = "MOCK DATA";
+			this.quotationGenInfo.requestedBy = "";
 			this.quotationGenInfo.requestedDate;
-			this.quotationGenInfo.requestedMode = "MOCK DATA";
-			this.quotationGenInfo.principal = "MOCK DATA";
-			this.quotationGenInfo.contractor = "MOCK DATA";
-			this.quotationGenInfo.insured = "MOCK DATA";
-			this.quotationGenInfo.propertyProjectDescription = "MOCK DATA";
-			this.quotationGenInfo.site = "MOCK DATA";
-			this.quotationGenInfo.durationTesting = "MOCK DATA";
-			this.quotationGenInfo.risk = "MOCK DATA";
-			this.quotationGenInfo.object = "MOCK DATA";
-			this.quotationGenInfo.location = "MOCK DATA";
-			this.quotationGenInfo.share = "MOCK DATA";
-			this.quotationGenInfo.partOf100 = "MOCK DATA";
-			this.quotationGenInfo.intermediary = "MOCK DATA";
-			this.quotationGenInfo.governmentFlag = "MOCK DATA";
-			this.quotationGenInfo.indicative = "MOCK DATA";
-			this.quotationGenInfo.openCover = "MOCK DATA";
-			this.quotationGenInfo.declaration = "MOCK DATA";
-			this.quotationGenInfo.openingParagraph = "MOCK DATA";
-			this.quotationGenInfo.closingParagraph = "MOCK DATA";
-			this.quotationGenInfo.createdBy = "MOCK DATA";
+			this.quotationGenInfo.requestedMode = "";
+			this.quotationGenInfo.principal = "";
+			this.quotationGenInfo.contractor = "";
+			this.quotationGenInfo.insured = "";
+			this.quotationGenInfo.propertyProjectDescription = "";
+			this.quotationGenInfo.site = "";
+			this.quotationGenInfo.durationTesting = "";
+			this.quotationGenInfo.risk = "";
+			this.quotationGenInfo.object = "";
+			this.quotationGenInfo.location = "";
+			this.quotationGenInfo.share = "";
+			this.quotationGenInfo.partOf100 = "";
+			this.quotationGenInfo.intermediary = "";
+			this.quotationGenInfo.governmentFlag = "";
+			this.quotationGenInfo.indicative = "";
+			this.quotationGenInfo.openCover = "";
+			this.quotationGenInfo.declaration = "";
+			this.quotationGenInfo.openingParagraph = "";
+			this.quotationGenInfo.closingParagraph = "";
+			this.quotationGenInfo.createdBy = "";
 			this.quotationGenInfo.dateCreated;
 			this.quotationGenInfo.lastUpdate;
-			this.quotationGenInfo.lastUpdateBy = "MOCK DATA";
+			this.quotationGenInfo.lastUpdateBy = "";
 		}
-
-		console.log(this.rowData);
 	}
 
 	reqMode: SelectRequestMode[] = [
