@@ -53,6 +53,7 @@ import { PolPostComponent } from './underwriting/policy-issuance/pol-post/pol-po
 import { ExpiryListingComponent } from './underwriting/expiry-and-renewal/expiry-listing/expiry-listing.component';
 import { PolicyIssuanceAltComponent } from './underwriting/policy-issuance/policy-issuance-alt.component';
 import { PolicyToHoldCoverComponent } from './underwriting/expiry-and-renewal/policy-to-hold-cover/policy-to-hold-cover.component';
+import { ChangeQuoteStatusComponent } from './quotation/change-quote-status/change-quote-status.component';
 
 
 @NgModule({
@@ -111,7 +112,8 @@ import { PolicyToHoldCoverComponent } from './underwriting/expiry-and-renewal/po
         PolPostComponent,
         ExpiryListingComponent,
         PolicyIssuanceAltComponent,
-        PolicyToHoldCoverComponent
+        PolicyToHoldCoverComponent,
+        ChangeQuoteStatusComponent,
     ],
 
     providers: [

@@ -1,3 +1,103 @@
 <div>
-    <app-cust-table [tableData]="tableData" [tHeader] = "tHeader" [dataTypes] = "dataTypes" [filters]="filters" [pageLength]="pageLength"></app-cust-table>
+    <app-cust-table [tableData]="tableData" [tHeader] = "tHeader" [dataTypes] = "dataTypes" [filters]="filters" [pageLength]="pageLength" [printBtn]="true"></app-cust-table>
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        <fieldset class="scheduler-border">
+            <br/>
+            <div class="form-row custom-row-inline-inset">
+                <div class="input-group alignment">
+                    <label class="form-control-sm col-sm-2 text-right">Quotation No</label>
+                    <input type="text" class="form-control form-control-sm col-sm-4">
+                    <label class="form-control-sm col-sm-2 text-right">Policy No</label>
+                    <input type="text" name="" class="form-control form-control-sm col-sm-4"> 
+                </div>
+            </div>
+            <div class="form-row custom-row-inline-inset">
+                <div class="input-group alignment">
+                    <label class="form-control-sm col-sm-2 text-right">Type of Cession</label>
+                    <input type="text" class="form-control form-control-sm col-sm-4">
+                    <label class="form-control-sm col-sm-2 text-right">Line Class</label>
+                    <input type="text" name="" class="form-control form-control-sm col-sm-4"> 
+                </div>
+            </div>
+            <div class="form-row custom-row-inline-inset">
+                <div class="input-group alignment">
+                    <label class="form-control-sm col-sm-2 text-right">Ceding Company</label>
+                    <input type="text" class="form-control form-control-sm col-sm-2">
+                    <input type="text" class="form-control form-control-sm col-sm-8">
+                </div>
+            </div>
+            <div class="form-row custom-row-inline-inset">
+                <div class="input-group alignment">
+                    <label class="form-control-sm col-sm-2 text-right">Quote Date</label>
+                    <input type="text" class="form-control form-control-sm col-sm-4">
+                    <label class="form-control-sm col-sm-2 text-right">Valid Until</label>
+                    <input type="text" name="" class="form-control form-control-sm col-sm-4"> 
+                </div>
+            </div>
+            <div class="form-row custom-row-inline-inset">
+                <div class="input-group alignment">
+                    <label class="form-control-sm col-sm-2 text-right">Requested By</label>
+                    <input type="text" class="form-control form-control-sm col-sm-4">
+                    <label class="form-control-sm col-sm-2 text-right">Status</label>
+                    <input type="text" name="" class="form-control form-control-sm col-sm-4"> 
+                </div>
+            </div>
+            <div class="form-row custom-row-inline-inset">
+                <div class="input-group alignment">
+                    <label class="form-control-sm col-sm-2 text-right">Created By</label>
+                    <input type="text" class="form-control form-control-sm col-sm-4">
+                    <div class="col-sm-6"></div>
+                </div>
+            </div>
+            <br>
+        </fieldset>
+    </div>
+    <div class="col-sm-6">
+        <fieldset class="scheduler-border">
+            <br>
+            <div class="form-row custom-row-inline-inset">
+                <div class="input-group alignment">
+                    <label class="form-control-sm col-sm-2 text-right">Principal</label>
+                    <input type="text" class="form-control form-control-sm col-sm-2">
+                    <input type="text" class="form-control form-control-sm col-sm-8">
+                </div>
+            </div>
+            <div class="form-row custom-row-inline-inset">
+                <div class="input-group alignment">
+                    <label class="form-control-sm col-sm-2 text-right">Contractor</label>
+                    <input type="text" class="form-control form-control-sm col-sm-2">
+                    <input type="text" class="form-control form-control-sm col-sm-8">
+                </div>
+            </div>
+            <div class="form-row custom-row-inline-inset">
+                <div class="input-group alignment">
+                    <label class="form-control-sm col-sm-2 text-right">Insured</label>
+                    <input type="text" class="form-control form-control-sm col-sm-10">
+                </div>
+            </div>
+            <div class="form-row custom-row-inline-inset">
+                 <div class="input-group alignment">
+                    <label class="form-control-sm col-sm-2 text-right">Risk</label>
+                    <input type="text" class="form-control form-control-sm col-sm-10">
+                </div>
+            </div>
+             <div class="form-row custom-row-inline-inset">
+                 <div class="input-group alignment">
+                    <label class="form-control-sm col-sm-2 text-right">Location</label>
+                    <input type="text" class="form-control form-control-sm col-sm-10">
+                </div>
+            </div>
+             <div class="form-row custom-row-inline-inset">
+                <div class="input-group alignment">
+                    <label class="form-control-sm col-sm-2 text-right">Object</label>
+                    <input type="text" class="form-control form-control-sm col-sm-4">
+                    <label class="form-control-sm col-sm-2 text-right">Currency</label>
+                    <input type="text" name="" class="form-control form-control-sm col-sm-4"> 
+                </div>
+            </div>
+            <br>
+        </fieldset>
+    </div>
 </div>

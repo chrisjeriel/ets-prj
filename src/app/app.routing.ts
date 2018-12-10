@@ -20,6 +20,7 @@ import { ParListingComponent } from './underwriting/policy-issuance/par-listing/
 import { AltParListingComponent } from './underwriting/policy-issuance/alt-par-listing/alt-par-listing.component';
 import { HoldCoverComponent } from './quotation/hold-cover/hold-cover.component';
 import { PolicyToHoldCoverComponent } from './underwriting/expiry-and-renewal/policy-to-hold-cover/policy-to-hold-cover.component';
+import { ChangeQuoteStatusComponent } from './quotation/change-quote-status/change-quote-status.component'
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -42,6 +43,7 @@ const appRoutes: Routes = [
     { path: 'expiry-listing', component: ExpiryListingComponent },
     { path: 'quotation-HoldCover', component: HoldCoverComponent },
     { path: 'policy-HoldCover', component: PolicyToHoldCoverComponent },
+    { path: 'change-quote-status', component: ChangeQuoteStatusComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
