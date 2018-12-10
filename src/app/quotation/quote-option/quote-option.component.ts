@@ -42,6 +42,9 @@ export class QuoteOptionComponent implements OnInit {
   	console.log(this.quoteOptionEdited);
   }
 
+  clickRow(event){
+    console.log(event);
+  }
 
 
 }

@@ -156,7 +156,8 @@ export class QuotationService {
         this.quotataionOtherRates = this.quotataionOtherRates.filter(function(itm){
             return itm.optionNo == optionNo;
         });
-
+        this.quotataionOtherRates.forEach(function(itm){delete itm.optionNo;});
+        console.log(this.quotataionOtherRates);
         return this.quotataionOtherRates;
     }
 
