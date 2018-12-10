@@ -99,6 +99,8 @@ export class GeneralInfoComponent implements OnInit {
 			this.quotationGenInfo.lastUpdate;
 			this.quotationGenInfo.lastUpdateBy = "MOCK DATA";
 		}
+
+		console.log(this.rowData);
 	}
 
 	reqMode: SelectRequestMode[] = [

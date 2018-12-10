@@ -48,9 +48,11 @@
 				<button *ngIf="disabledEditBtn" class="cust-btn-disabled">Edit</button>
 				<button *ngIf="!disabledEditBtn" class="cust-btn" routerLink="/quotation">Edit</button>
 
-				<app-cust-table [filters]="filters" [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes" [from]="'quotation-processing'"></app-cust-table>
+				<app-cust-table [filters]="filters" [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes" [from]="'quotation-processing'" (enableEditBtn)="enableEditBtn()"></app-cust-table>
 
 			</ng-template>
 		</ngb-tab>
 	</ngb-tabset>
 </div>
+
+<button (click)="test()">Test</button>

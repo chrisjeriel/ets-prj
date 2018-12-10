@@ -14,18 +14,12 @@ export class QuotationProcessingComponent implements OnInit {
   dataTypes: any[] = [];
   filters: any[] = [];
   rowData: any[] = [];
-  disabledEditBtn: boolean;
+  disabledEditBtn: boolean = true;
 
   constructor(private quotationService: QuotationService, private modalService: NgbModal) { }
 
   ngOnInit() {
     this.rowData = this.quotationService.getRowData();
-    
-    if(this.rowData.length != 0) {
-      this.disabledEditBtn = false;
-    } else {
-      this.disabledEditBtn = true;
-    }
 
   	this.tHeader.push("Quotation No");
   	this.tHeader.push("Branch");
@@ -67,5 +61,9 @@ export class QuotationProcessingComponent implements OnInit {
   	this.dataTypes.push("text");
 
   	this.tableData = this.quotationService.getQuoProcessingData();
+  }
+
+  enableEditBtn() {
+    this.disabledEditBtn = false;
   }
 }

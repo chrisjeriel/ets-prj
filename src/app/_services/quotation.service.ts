@@ -47,8 +47,8 @@ export class QuotationService {
 
     getCoverageInfo() {
         this.coverageInfoData = [
-            new QuotationCoverageInfo("data", "1", "I", "3", "69000", "Sort C", "70000"),
-            new QuotationCoverageInfo("data", "2", 'II', "2", "123000", 'Sort B', "456000")
+            new QuotationCoverageInfo("data", "1", "I", "3", "69000", "70000"),
+            new QuotationCoverageInfo("data", "2", 'II', "2", "123000", "456000")
         ];
         return this.coverageInfoData;
     }
@@ -61,7 +61,7 @@ export class QuotationService {
             new QuotationList("CAR-2015-0002832-05", "Branch 4", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),
             new QuotationList("CAR-2015-0002832-06", "Branch 8", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),
             new QuotationList("CAR-2015-0002832-07", "Branch 6", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),
-            new QuotationList("CAR-2015-0002832-08", "Branch 9", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(),"Inigo Flores", "Cuaresma"),
+            new QuotationList("CAR-2015-0002832-08", "Branch 9", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),
             new QuotationList("CAR-2015-0002832-09", "Branch 7", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),
             new QuotationList("CAR-2015-0002832-10", "Direct 1", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),
             new QuotationList("CAR-2015-0002832-11", "Direct 3", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),

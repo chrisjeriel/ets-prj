@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Renderer } from '@angular/core';
+import { Component, OnInit, Input, Renderer, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { QuotationService } from '../../../_services';
@@ -23,6 +23,7 @@ export class CustTableComponent implements OnInit {
     @Input() pageLength: number;
     @Input() from: string = "";
     @Input() checkFlag: boolean;
+    @Output() enableEditBtn = new EventEmitter<string>();
 
     dataKeys: any[] = [];
     start:    any;
@@ -87,6 +88,9 @@ export class CustTableComponent implements OnInit {
       }
 
       event.path[1].style.backgroundColor = "#67b4fc";
+
+      this.quotationService.toGenInfo = "edit";
+      this.enableEditBtn.next();
     }
 
     onRowDblClick(event) {
