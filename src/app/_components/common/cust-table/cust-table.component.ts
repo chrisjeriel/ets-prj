@@ -84,13 +84,6 @@ export class CustTableComponent implements OnInit {
     }
 
     onRowDblClick(event) {
-      /*for(var i = 0; i < event.path[1].cells.length; i++) {
-        this.quotationService.rowData[i] = event.path[1].cells[i].innerText;
-      }
-
-      this.quotationService.toGenInfo = "edit";
-      this.router.navigate(['/quotation']);*/
-
       this.rowDblClick.next(event);
     }
 }
