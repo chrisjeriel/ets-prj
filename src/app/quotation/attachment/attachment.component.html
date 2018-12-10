@@ -1,38 +1,38 @@
 <div>
-	<fieldset class="scheduler-border">
-		<legend class="scheduler-border">Quotation Info</legend>
-		<div class="form-row custom-row-inline-inset">
-			<div class="input-group">
-				<label class="form-control-sm col-sm-1" for="xx">Quotation No</label>
-				<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-2" placeholder="CAR-2015-0000289-04"
-				 readonly>
-				<label class="form-control-sm col-sm-1" for="xx">Insured</label>
-				<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-5" placeholder="Insured Name"
-				 readonly>
-				<label class="form-control-sm col-sm-1" for="xx">Risk</label>
-				<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-5" placeholder="Risk"
-				 readonly>
-			</div>
-		</div>
-	</fieldset>
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">Quotation Info</legend>
+        <div class="form-row custom-row-inline-inset">
+            <div class="input-group">
+                <label class="form-control-sm col-sm-1">Quotation No</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="CAR-2015-0000289-04"
+                       readonly>
+                <label class="form-control-sm col-sm-1">Insured</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-5" placeholder="Insured Name"
+                       readonly>
+                <label class="form-control-sm col-sm-1">Risk</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-5" placeholder="Risk"
+                       readonly>
+            </div>
+        </div>
+    </fieldset>
 </div>
 <div>
-	<fieldset class="scheduler-border">
-		 <legend class="scheduler-border">Attached Files</legend>
-		 	<app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData" [tHeader]="tHeader" [checkFlag]="true" [options] = "options" [selectFlag]="true"></app-cust-editable-table>
-		 	<!-- <app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData" [tHeader]="tHeader" [checkFlag]="true" [options] = "options" [selectFlag]="true" [dataTypes]="dataTypes"></app-cust-editable-table> -->
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">Attached Files</legend>
+        <app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData" [tHeader]="tHeader" [checkFlag]="true" [options] = "options" [selectFlag]="true"></app-cust-editable-table>
+        <!-- <app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData" [tHeader]="tHeader" [checkFlag]="true" [options] = "options" [selectFlag]="true" [dataTypes]="dataTypes"></app-cust-editable-table> -->
 
-	</fieldset>
+    </fieldset>
 </div>
 <div class="form-row">
-	<div class="form-group col-sm">
-		<div class="col-md-13 text-center">
-			<div class="cust-btn-container">
-			<br>
-			<button type="button" class="cust-btn"><a>Cancel</a></button>
-			<button type="button" class="cust-btn"><a>Save</a></button>
-		</div>
-		</div>
-	</div>
+    <div class="form-group col-sm">
+        <div class="col-md-13 text-center">
+            <div class="cust-btn-container">
+                <br>
+                <button type="button" class="cust-btn"><a>Cancel</a></button>
+                <button type="button" class="cust-btn"><a>Save</a></button>
+            </div>
+        </div>
+    </div>
 </div>
 

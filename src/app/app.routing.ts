@@ -19,6 +19,7 @@ import { PolCreateAlterationPARComponent } from './underwriting/policy-issuance/
 import { ParListingComponent } from './underwriting/policy-issuance/par-listing/par-listing.component';
 import { AltParListingComponent } from './underwriting/policy-issuance/alt-par-listing/alt-par-listing.component';
 import { HoldCoverComponent } from './quotation/hold-cover/hold-cover.component';
+import { PolicyToHoldCoverComponent } from './underwriting/expiry-and-renewal/policy-to-hold-cover/policy-to-hold-cover.component';
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -40,6 +41,7 @@ const appRoutes: Routes = [
     { path: 'alt-par-listing', component: AltParListingComponent },
     { path: 'expiry-listing', component: ExpiryListingComponent },
     { path: 'quotation-HoldCover', component: HoldCoverComponent },
+    { path: 'policy-HoldCover', component: PolicyToHoldCoverComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
