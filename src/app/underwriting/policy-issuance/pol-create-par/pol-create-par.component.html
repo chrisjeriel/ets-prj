@@ -1,90 +1,85 @@
 <div class="cust-tabs-container">
-	<h4>Underwriting / Policy Issuance / Create Policy</h4>
-	<ngb-tabset>
-		<ngb-tab class="ngb-tab" title="Enter Info">
-			<ng-template ngbTabContent>
-				
-			</ng-template>
-		</ngb-tab>
-		<ngb-tab class="ngb-tab">
-			<ng-template ngbTabTitle>
-				<a class="nav-a-hover" [routerLink]="['/policy-issuance', {line:'EAR'}]">General Info</a>
-			</ng-template>
-			<ng-template ngbTabContent>
-				
-			</ng-template>
-		</ngb-tab>
-	</ngb-tabset>
+    <h4>Underwriting / Policy Issuance / Create Policy </h4>
+    <ngb-tabset>
+        <ngb-tab class="ngb-tab" title="Enter Info">
+            <ng-template ngbTabContent>
+
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab class="ngb-tab">
+            <ng-template ngbTabTitle>
+                <a class="nav-a-hover" [routerLink]="['/policy-issuance']">General Info</a>
+            </ng-template>
+            <ng-template ngbTabContent>
+
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
 </div>
 <br>
 <div class="row">
-	<div class="col-sm-2"></div>
-	<div class="col-sm-8">
-		<fieldset class="scheduler-border">
-			<div class="col-sm-1"></div>
-			<div class="col-sm">
-				<div class="row" style="margin-right: 0px; margin-bottom: 11px;">
-					<div class="input-group" style="margin-top: -10px;">
-						 &nbsp;
-					</div>
-					<div class="input-group">
-						<div class="test input-group ">
-							<div class="col-sm-4"></div>
-							<div class="col-sm-8">
-								<div class="input-group">
-									<input class="form-control-sm " type="radio" name="optradio" [value]="true" (click)="fromHoldCover()" checked="checked">	
-									<label class="form-control-sm" for="list">&nbsp;From Quotation</label>
-									<input class="form-control-sm " type="radio" name="optradio" [value]="false" (click)="fromHoldCover()">
-									<label class="form-control-sm" for="list">&nbsp;From Hold Cover</label>
-								</div>
-							</div>
-							<div class="col-sm-4"></div>
-						</div>
-						<div class="input-group">
-									<label class="form-control-sm col-sm-2">Quotation No</label>
-									<input type="text" class="form-control form-control-sm" [disabled]="!fromQuotation" [(ngModel)]="quoteLine">
-									<input type="text" class="form-control form-control-sm" [disabled]="!fromQuotation" style="margin-left: 5px;">
-									<input type="text" class="form-control form-control-sm" [disabled]="!fromQuotation" style="margin-left: 5px;">
-									<input type="text" class="form-control form-control-sm" [disabled]="!fromQuotation" style="margin-left: 5px;">
-									<input type="text" class="form-control form-control-sm" [disabled]="!fromQuotation" style="margin-left: 5px;">
-									<span>&nbsp;</span>
-									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-						</div>
-						<div class="input-group">
-									<label class="form-control-sm col-sm-2">Hold Cover No</label>
-									<input type="text" class="form-control form-control-sm" [disabled]="fromQuotation">
-									<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [disabled]="fromQuotation">
-									<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [disabled]="fromQuotation">
-									<span>&nbsp;</span>
-									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-						</div>
-						<div class="input-group">
-									<label class="form-control-sm col-sm-2">Ceding Company</label>
-									<input type="text" class="form-control form-control-sm">
-						</div>
-						<div class="input-group">
-									<label class="form-control-sm col-sm-2">Insured</label>
-									<input type="text" class="form-control form-control-sm">
-						</div>
-						<div class="input-group">
-							<label class="form-control-sm col-sm-2">Risk</label>
-							<input type="text" class="form-control form-control-sm">
-						</div>
-					</div>
-				</div>
-			</div>
-		</fieldset>
-	</div>
-	<div class="col-sm-2"></div>
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8">
+        <fieldset class="scheduler-border">
+            <div class="col-sm-1"></div>
+            <div class="col-sm">
+                <div class="row" style="margin-right: 0px; margin-bottom: 11px;">
+                    <div class="input-group" style="margin-top: -10px;">
+                        &nbsp;
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group">
+                           			<div class="col-sm-2"></div>
+                                    <input class="form-control-sm " type="radio" name="optradio" [value]="true" (click)="fromHoldCover()" checked="checked">	
+                                    <label class="form-control-sm" for="list" >From Quotation</label>
+                                    <input class="form-control-sm " type="radio" name="optradio" [value]="false" (click)="fromHoldCover()" style="margin-left: 18px;">
+                                    <label class="form-control-sm" for="list">From Hold Cover</label>
+                        </div>
+                        <div class="input-group">
+                            <label class="form-control-sm col-sm-2">Quotation No</label>
+                            <input type="text" [(ngModel)]="quoteLine" class="form-control form-control-sm" [disabled]="!fromQuotation">
+                            <input type="text" class="form-control form-control-sm" [disabled]="!fromQuotation" style="margin-left: 5px;">
+                            <input type="text" class="form-control form-control-sm" [disabled]="!fromQuotation" style="margin-left: 5px;">
+                            <input type="text" class="form-control form-control-sm" [disabled]="!fromQuotation" style="margin-left: 5px;">
+                            <input type="text" class="form-control form-control-sm" [disabled]="!fromQuotation" style="margin-left: 5px;">
+                            <span>&nbsp;</span>
+                            <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+                        </div>
+                        <div class="input-group">
+                            <label class="form-control-sm col-sm-2">Hold Cover No</label>
+                            <input type="text" class="form-control form-control-sm" [disabled]="fromQuotation">
+                            <input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [disabled]="fromQuotation">
+                            <input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [disabled]="fromQuotation">
+                            <span>&nbsp;</span>
+                            <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+                        </div>
+                        <div class="input-group">
+                            <label class="form-control-sm col-sm-2">Ceding Company</label>
+                            <input type="text" class="form-control form-control-sm">
+                        </div>
+                        <div class="input-group">
+                            <label class="form-control-sm col-sm-2">Insured</label>
+                            <input type="text" class="form-control form-control-sm">
+                        </div>
+                        <div class="input-group">
+                            <label class="form-control-sm col-sm-2">Risk</label>
+                            <input type="text" class="form-control form-control-sm">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <div class="col-sm-2"></div>
 </div>
 <div class="form-row">
-	<div class="form-group col-sm">
-		<div class="col-md-13 text-center">
-			<br>
-			<div class="cust-btn-container">
-			<button type="button" class="cust-btn"><a>Cancel</a></button>
-			<button type="button" class="cust-btn" (click)="navigateToGenInfo()"><a>Ok</a></button>
-		</div>
-		</div>
-	</div>
+    <div class="form-group col-sm">
+        <div class="col-md-13 text-center">
+            <br>
+            <div class="cust-btn-container">
+                <button type="button" class="cust-btn"><a>Cancel</a></button>
+                <button type="button" (click)="navigateToGenInfo()"class="cust-btn"><a>Ok</a></button>
+            </div>
+        </div>
+    </div>
 </div>
