@@ -15,7 +15,7 @@ export class CoverageComponent implements OnInit {
   dataTypes: any[] = [];
   selOptions: any[] = [];
 
-  nData: QuotationCoverageInfo = new QuotationCoverageInfo(null, null, null, null, null, null, null);
+  nData: QuotationCoverageInfo = new QuotationCoverageInfo(null, null, null, null, null, null);
   //nData: NotesReminders = new NotesReminders(null, null, null, null, null, null, 'user', new Date());
 
   constructor(private quotationService: QuotationService, private notesService: NotesService) { }
@@ -27,7 +27,6 @@ export class CoverageComponent implements OnInit {
     this.tHeader.push("Section");
     this.tHeader.push("Bullet No");
     this.tHeader.push("Sum Insured");
-    this.tHeader.push("Sort Sequence");
     this.tHeader.push("Add Sl");
 
     this.dataTypes.push("checkbox");
@@ -35,11 +34,10 @@ export class CoverageComponent implements OnInit {
     this.dataTypes.push("select");
     this.dataTypes.push("select");
     this.dataTypes.push("currency");
-    this.dataTypes.push("select");
     this.dataTypes.push("checkbox");
 
     this.selOptions.push({ selector: "section", vals: ["I", "II", "III"] });
-    this.selOptions.push({ selector: "bulletNo", vals: ["1", "2", "3"] });
+    this.selOptions.push({ selector: "bulletNo", vals: ["1", "1.2", "1.3"] });
     this.selOptions.push({ selector: "sortSe", vals: ["10", "20", "30"] });
 
 

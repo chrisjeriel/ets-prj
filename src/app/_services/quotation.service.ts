@@ -16,6 +16,9 @@ export class QuotationService {
     quoProcessingData: QuotationProcessing[] = [];
     coverageInfoData: QuotationCoverageInfo[] = [];
 
+    rowData: any[] = [];
+    toGenInfo: any[] = [];
+
     constructor(private http: HttpClient) {
 
     }
@@ -44,8 +47,8 @@ export class QuotationService {
 
     getCoverageInfo() {
         this.coverageInfoData = [
-            new QuotationCoverageInfo("data", "1", "I", "3", "69000", "Sort C", "70000"),
-            new QuotationCoverageInfo("data", "2", 'II', "2", "123000", 'Sort B', "456000")
+            new QuotationCoverageInfo("data", "1", "I", "3", "69000", "70000"),
+            new QuotationCoverageInfo("data", "2", 'II', "2", "123000", "456000")
         ];
         return this.coverageInfoData;
     }
@@ -113,12 +116,20 @@ export class QuotationService {
 
     getQuoProcessingData() {
         this.quoProcessingData = [
-            new QuotationProcessing('CAR-2015-0000289-01', 'Direct', 'CAR Wet Risks', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', new Date('2015-02-09'),
-                                    new Date('2015-03-09'), 'Inigo Flores', 'cuaresma'),
-            new QuotationProcessing('CAR-2015-0000289-02', 'Direct', 'CAR Wet Risks', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', new Date('2015-02-09'),
-                                    new Date('2015-03-09'), 'Inigo Flores', 'cuaresma'),
-            new QuotationProcessing('CAR-2015-0000289-03', 'Direct', 'CAR Wet Risks', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', new Date('2015-02-09'),
-                                    new Date('2015-03-09'), 'Inigo Flores', 'cuaresma'),
+            new QuotationProcessing('CAR-2015-0000289-01', 'Direct', 'CAR Wet Risks', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers','Region IV, Laguna, Calamba, Pansol, Block 308', new Date('2015-02-09'),
+                new Date('2015-03-09'), 'Inigo Flores', 'cuaresma'),
+            new QuotationProcessing('CAR-2015-0000289-02', 'Retrocession', 'CAR Wet Risks', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'Fairmont Hotel', 'Cooling Towers','Region IV, Laguna, Calamba, Pansol, Block 308', new Date('2015-02-09'),
+                new Date('2015-03-09'), 'Inigo Flores', 'cuaresma'),
+            new QuotationProcessing('EAR-2016-0000289-03', 'Retrocession', 'EAR', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'Fairmont Hotel', 'Cooling Towers','Region IV, Laguna, Calamba, Pansol, Block 308', new Date('2015-02-09'),
+                new Date('2015-03-09'), 'Inigo Flores', 'cuaresma'),
+            new QuotationProcessing('EEI-2017-0000289-04', 'Retrocession', 'EEI', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'Fairmont Hotel', 'Cooling Towers','Region IV, Laguna, Calamba, Pansol, Block 308', new Date('2015-02-09'),
+                new Date('2015-03-09'), 'Inigo Flores', 'cuaresma'),
+            new QuotationProcessing('MBI-2018-0000289-05', 'Direct', 'MBI', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'Fairmont Hotel', 'Cooling Towers','Region IV, Laguna, Calamba, Pansol, Block 308', new Date('2015-02-09'),
+                new Date('2015-03-09'), 'Inigo Flores', 'cuaresma'),
+            new QuotationProcessing('MLP-2018-0000289-06', 'Direct', 'MLP', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'Fairmont Hotel', 'Cooling Towers','Region IV, Laguna, Calamba, Pansol, Block 308', new Date('2015-02-09'),
+                new Date('2015-03-09'), 'Inigo Flores', 'cuaresma'),
+            new QuotationProcessing('DOS-2018-0000289-07', 'Direct', 'DOS', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'Fairmont Hotel', 'Cooling Towers','Region IV, Laguna, Calamba, Pansol, Block 308', new Date('2015-02-09'),
+                new Date('2015-03-09'), 'Inigo Flores', 'cuaresma')
         ];
 
         return this.quoProcessingData;
@@ -156,4 +167,8 @@ export class QuotationService {
         return this.intCompAdvInfo;
     }
 
+
+    getRowData() {
+        return this.rowData;
+    }
 }

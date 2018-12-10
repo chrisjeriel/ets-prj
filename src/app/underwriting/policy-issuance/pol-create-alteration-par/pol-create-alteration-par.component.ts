@@ -15,6 +15,7 @@ export class PolCreateAlterationPARComponent implements OnInit {
   tableData: any[] = [];
   tHeader: any[] = [];
   dataTypes: any[]= [];
+  fromQuotation: boolean = true;
   
   constructor(private underwritingService : UnderwritingService, private router: Router, private modalService : NgbModal ) { }
 
@@ -57,4 +58,8 @@ export class PolCreateAlterationPARComponent implements OnInit {
     this.createAlterationPar.contractor = "test";
   }
 
+
+  fromHoldCover(){
+    this.fromQuotation = !this.fromQuotation;
+  }
 }

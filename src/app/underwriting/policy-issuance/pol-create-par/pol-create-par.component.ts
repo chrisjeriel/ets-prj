@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UnderwritingService } from '../../../_services';
 import { CreateParInfo } from '../../../_models/CreatePAR';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pol-create-par',
@@ -14,8 +15,10 @@ export class PolCreatePARComponent implements OnInit {
   tableData: any[] = [];
   tHeader: any[] = [];
   dataTypes: any[] = [];
-  
-  constructor(private underwritingService : UnderwritingService, private modalService : NgbModal ) {
+  fromQuotation: boolean = true;
+  quoteLine: any;
+
+  constructor(private underwritingService : UnderwritingService, private modalService : NgbModal, private router : Router ) {
 
    }
 
@@ -58,5 +61,14 @@ export class PolCreatePARComponent implements OnInit {
     this.createParInfo.lineClass = "test";
     this.createParInfo.cedingCompany = "test";
 
+  }
+  
+  fromHoldCover(){
+    this.fromQuotation = !this.fromQuotation;
+  }
+
+  navigateToGenInfo() {
+    console.log(this.quoteLine);
+    this.router.navigate(['/policy-issuance', { line: this.quoteLine }], {skipLocationChange: true});
   }
 }

@@ -52,6 +52,7 @@ import { PolAttachmentComponent } from './underwriting/policy-issuance/pol-attac
 import { PolPostComponent } from './underwriting/policy-issuance/pol-post/pol-post.component';
 import { ExpiryListingComponent } from './underwriting/expiry-and-renewal/expiry-listing/expiry-listing.component';
 import { PolicyIssuanceAltComponent } from './underwriting/policy-issuance/policy-issuance-alt.component';
+import { PolicyToHoldCoverComponent } from './underwriting/expiry-and-renewal/policy-to-hold-cover/policy-to-hold-cover.component';
 import { ChangeQuoteStatusComponent } from './quotation/change-quote-status/change-quote-status.component';
 
 
@@ -111,7 +112,8 @@ import { ChangeQuoteStatusComponent } from './quotation/change-quote-status/chan
         PolPostComponent,
         ExpiryListingComponent,
         PolicyIssuanceAltComponent,
-        ChangeQuoteStatusComponent
+        PolicyToHoldCoverComponent,
+        ChangeQuoteStatusComponent,
     ],
 
     providers: [

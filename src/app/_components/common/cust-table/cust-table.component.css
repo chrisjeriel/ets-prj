@@ -107,3 +107,7 @@ div.input-group {
 	font-weight: bold;
 }
 
+.unclickable {
+	pointer-events: none;
+}
+

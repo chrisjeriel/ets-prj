@@ -1,13 +1,14 @@
 <ng-template #content let-modal>
     <div class="modal-header">
-       <!-- <h6 class="modal-title" id="modal-basic-title">{{modalTitle}}</h6>-->
-       <span class="modal-title" id="modal-basic-title"><ng-content  select="[header]"></ng-content></span>
-        <div class="close" style="padding-bottom: 5px;">
-            <a class="btn-cust" aria-label="Close" (click)="modal.dismiss('Cross click')" aria-hidden="true" ><span style="padding-right: 3px;" id="closes">&times;</span></a>
-        </div>
+     <!-- <h6 class="modal-title" id="modal-basic-title">{{modalTitle}}</h6>-->
+     <span class="modal-title" id="modal-basic-title"><ng-content  select="[header]"></ng-content></span>
+     <div class="close" >
+        <a class="btn-cust" aria-label="Close" (click)="modal.dismiss('Cross click')" aria-hidden="true" ><span id="closes">&times;</span></a>
+
     </div>
-    <div class="modal-body">
-        <ng-content select="[body]"></ng-content>
+</div>
+<div class="modal-body">
+    <ng-content select="[body]"></ng-content>
         <!--<div *ngIf="modalCustTable">
             <app-cust-table [tableData]="tableData" [tHeader] = "tHeader" [dataTypes] = "dataTypes" [filters]="filters"></app-cust-table>
         </div>
