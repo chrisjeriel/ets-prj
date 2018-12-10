@@ -25,6 +25,7 @@ th, td{
 }
 .print{
     position: absolute;
+    top: 1px;
     z-index: 9999 !important;
 }
 .expireIn{

@@ -20,8 +20,9 @@ export class CustTableComponent implements OnInit {
     @Input() printBtn: boolean;
     @Input() dataTypes: any[] = [];
     @Input() filters: any[] = [];
-    @Input() pageLength: number;
+    @Input() pageLength: number = 10;
     @Input() checkFlag: boolean;
+    @Input() tableOnly: boolean = false;
     dataKeys: any[] = [];
     start:    any;
     pressed:  any;
@@ -34,16 +35,23 @@ export class CustTableComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        $('.dataTables_filter').addClass('right');
-        this.dtOptions = {
-            pagingType: 'full_numbers',
-            pageLength: this.pageLength,
-        };
-
+        if(this.tableOnly){
+             this.dtOptions = {
+                pagingType: 'full_numbers',
+                pageLength: this.pageLength,
+                dom: 'tp',
+            };
+        }else{
+            this.dtOptions = {
+                pagingType: 'full_numbers',
+                pageLength: this.pageLength,
+            };
+        }
         if (this.tableData.length > 0) {
             this.dataKeys = Object.keys(this.tableData[0]);
         } else {
-            this.tHeader.push("No Data");
+            if(this.tHeader.length <= 0)
+                this.tHeader.push("No Data");
         }
     }
 
