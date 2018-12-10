@@ -16,7 +16,7 @@ export class PolAlopComponent implements OnInit {
   constructor(private uwService: UnderwritingService) { }
 
   ngOnInit() {
-  	this.policyRecordInfo.policyNo = "CAR-2015-0000289-04";
+  	this.policyRecordInfo.policyNo = "CAR-2018-5081-077-0177";
   	//this.tHeader = ["Item No","Quantity","Description","Relative Importance","Possible Loss Min"];
   	this.tHeader = ["Item No","Quantity","Description","Possible Loss Min"];
   	this.dataTypes = ["number","number","text","text","text"];
