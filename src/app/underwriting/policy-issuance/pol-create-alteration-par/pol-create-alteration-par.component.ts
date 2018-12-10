@@ -65,7 +65,16 @@ export class PolCreateAlterationPARComponent implements OnInit {
   }
 
   navigateToGenInfo() {
-    console.log(this.quoteLine);
-    this.router.navigate(['/policy-issuance', { line: this.quoteLine }], {skipLocationChange: true});
+    if (this.quoteLine === 'CAR' || 
+        this.quoteLine === 'EAR' || 
+        this.quoteLine === 'EEI' || 
+        this.quoteLine === 'CEC' || 
+        this.quoteLine === 'MBI' || 
+        this.quoteLine === 'BPV' || 
+        this.quoteLine === 'MLP' || 
+        this.quoteLine === 'DOS') {
+      console.log(this.quoteLine);
+      this.router.navigate(['/policy-issuance-alt', { line: this.quoteLine }], {skipLocationChange: true});
+    }
   }
 }
