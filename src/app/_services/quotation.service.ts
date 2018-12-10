@@ -139,18 +139,24 @@ export class QuotationService {
 
     getQuoteOptions() {
         this.quotataionOption = [
-            new QuotationOption("OPT-001", 5.05, "Condition", 6, 8, 5),
-            new QuotationOption("OPT-002", 8, "Stable", 7, 4, 3),
-            new QuotationOption("OPT-003", 9, "Good", 6, 43, 2)
+            new QuotationOption(1, 5.05, "Condition", 6, 8, 5),
+            new QuotationOption(2, 8, "Stable", 7, 4, 3),
+            new QuotationOption(3, 9, "Good", 6, 43, 2)
         ];
         return this.quotataionOption;
     }
 
-    getQuotataionOtherRates() {
+    getQuotataionOtherRates(optionNo:number ) {
         this.quotataionOtherRates = [
-            new QuotationOtherRates('Others1', 50, 'sample remark'),
-            new QuotationOtherRates('Others1', 60, 'sample description')
+            new QuotationOtherRates(1,'Others1', 50, 'sample deductibles'),
+            new QuotationOtherRates(2,'Others21', 60, 'deductibles'),
+            new QuotationOtherRates(2,'Others22', 50, 'sample deductible'),
+            new QuotationOtherRates(3,'Others31', 60, 'deductible')
         ];
+        this.quotataionOtherRates = this.quotataionOtherRates.filter(function(itm){
+            return itm.optionNo == optionNo;
+        });
+
         return this.quotataionOtherRates;
     }
 
