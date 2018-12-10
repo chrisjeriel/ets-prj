@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild, Input} from '@angular/core';
 import { NgbModalConfig, NgbModal, NgbProgressbarConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -12,8 +12,11 @@ export class PolPostComponent implements OnInit {
   TabName:  any[] = ["Gen Info","Coverage","OtherRates","Endorsement","CoInsurance","Distribution","Attachment"];
   showTab: number = 0;
   progress: number = 0;	
+  alterNum: number = 0;
+  @ViewChild('alterationFlag') alteration;
   @ViewChild('content') content;
   @ViewChild('successinfo') successinfo;
+  @Input() alterationFlag ;
 
   constructor(config: NgbModalConfig, configprogress: NgbProgressbarConfig, private modalService: NgbModal) {
   	config.backdrop = 'static';
@@ -25,6 +28,9 @@ export class PolPostComponent implements OnInit {
    }
 
   ngOnInit() {	
+    if (this.alteration='true'){
+       this.getAlterNum();
+    }
     setTimeout(() => {
       this.modalService.open(this.content,  { centered: true, windowClass : 'modal-size'});
       this.fakeProgress(); 
@@ -45,9 +51,14 @@ export class PolPostComponent implements OnInit {
              this.modalService.dismissAll(true);
                  this.modalService.open(this.successinfo,  { centered: true , windowClass : 'modal-size'});
            }
-    },150);
+    },100);
 
     }
+
+    getAlterNum(){
+      this.alterNum = 1;
+    }
+    
 
   	
 

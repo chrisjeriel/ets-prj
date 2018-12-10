@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo } from '@app/_models';
+import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo, PolicyPrinting, PrinterList } from '@app/_models';
+
 
 @Injectable({ providedIn: 'root' })
 export class UnderwritingService {
@@ -16,6 +17,8 @@ export class UnderwritingService {
     polAttachmentInfoData: PolAttachmentInfo[] = [];
     expiryListing: ExpiryListing[] = [];
     renewedPolicies: RenewedPolicy[]=[];
+    policyPrinting: PolicyPrinting[]=[];
+    printerList: PrinterList[]=[];
 
     constructor(private http: HttpClient) {
 
@@ -135,5 +138,21 @@ export class UnderwritingService {
             new RenewedPolicy("POL-0051","POL-2019")
         ];
         return this.renewedPolicies;
+    }
+
+    printingPolicy(){
+        this.policyPrinting = [
+        new PolicyPrinting(null,null,null,null)
+        ];
+        return this.policyPrinting;
+    }
+
+    getPrinterName(){
+        this.printerList = [
+        new PrinterList("\\\\printer-server\\HP LaserJet MFP M129-M134 PCLms"),
+        new PrinterList("\\\\printer-server\\Canon Pixma MG4250"),
+        new PrinterList("\\\\printer-server\\Epson Ecotank ET-2600"),
+        ];
+        return this.printerList;
     }
 }            
