@@ -52,6 +52,8 @@
                         <button [routerLink]="['/quotation-HoldCover']" class="button btn btn-link">Quotation to Hold Cover</button>
                         <br/>
                         <button [routerLink]="['/hold-cover-monitoring']" class="button btn btn-link">Hold Cover Monitoring</button>
+                        <br/>
+                        <button [routerLink]="['/change-quote-status']" class="button btn btn-link">Change Quote Status</button>
                     </ng-template>
                 </ngb-panel>
                 <ngb-panel>
@@ -84,6 +86,11 @@
                                 </ng-template>
                             </ngb-panel>
                             <ngb-panel title="Renewal Processing">
+                            </ngb-panel>
+                            <ngb-panel title="Generate Documents">
+                                 <ng-template ngbPanelContent>
+                                    <button [routerLink]="['/policy-printing']" class="button btn btn-link">Policy Printing</button>  
+                                </ng-template>  
                             </ngb-panel>
                         </ngb-accordion>
                     </ng-template>

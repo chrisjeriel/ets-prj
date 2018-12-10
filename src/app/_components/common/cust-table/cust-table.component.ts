@@ -22,9 +22,12 @@ export class CustTableComponent implements OnInit {
   @Input() filters: any[] = [];
   @Input() pageLength: number;
   @Input() checkFlag: boolean;
+  @Input() tableOnly: boolean = false;
 
   @Output() rowClick: EventEmitter<any> = new EventEmitter();
   @Output() rowDblClick: EventEmitter<any> = new EventEmitter();
+    
+  @Input() printBtn: boolean = false;
 
   dataKeys: any[] = [];
   start:    any;
@@ -37,20 +40,26 @@ export class CustTableComponent implements OnInit {
     config.autoClose = false;
   }
 
-  ngOnInit(): void {
-
-    this.dtOptions = {
-      pagingType: 'full_numbers',
-      pageLength: this.pageLength,
-    };
-
-    if (this.tableData.length > 0) {
-      this.dataKeys = Object.keys(this.tableData[0]);
-    } else {
-      this.tHeader.push("No Data");
+ ngOnInit(): void {
+        if(this.tableOnly){
+             this.dtOptions = {
+                pagingType: 'full_numbers',
+                pageLength: this.pageLength,
+                dom: 'tp',
+            };
+        }else{
+            this.dtOptions = {
+                pagingType: 'full_numbers',
+                pageLength: this.pageLength,
+            };
+        }
+        if (this.tableData.length > 0) {
+            this.dataKeys = Object.keys(this.tableData[0]);
+        } else {
+            if(this.tHeader.length <= 0)
+                this.tHeader.push("No Data");
+        }
     }
-  }
-
   processData(key: any, data: any) {
     return data[key];
   }

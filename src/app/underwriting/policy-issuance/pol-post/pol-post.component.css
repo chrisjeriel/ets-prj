@@ -1,0 +1,17 @@
+div h4{
+	font-size: 15px;
+	margin: auto;
+}
+
+div b{
+	font-size: 12px;
+	text-align: right; 
+	margin-bottom: -6px ! important;
+}
+
+div p{
+	font-size: 12px;
+	height: auto;
+	margin-bottom: -6px ! important; 
+	overflow-wrap: break-word;
+}
