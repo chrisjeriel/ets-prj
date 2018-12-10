@@ -40,5 +40,4 @@ export class NotesComponent implements OnInit {
 
   	this.tableData = this.notesService.getNotesReminders();
   }
-
 }
