@@ -69,6 +69,6 @@ export class PolCreatePARComponent implements OnInit {
 
   navigateToGenInfo() {
     console.log(this.quoteLine);
-    this.router.navigate(['/policy-issuance', { line: this.quoteLine }], {skipLocationChange: true});
+    this.router.navigate(['/policy-issuance', { line: this.quoteLine }]); //, {skipLocationChange: true}
   }
 }
