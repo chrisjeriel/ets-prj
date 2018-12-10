@@ -14,8 +14,9 @@ export class PolCoverageComponent implements OnInit {
   tHeader: any[] = [];
   dataTypes: any[] = [];
   selOptions: any[] = [];
+  magnifyingGlass: any[] = ['coverCode'];
 
-  nData: UnderwritingCoverageInfo = new UnderwritingCoverageInfo(null, null, null, null, null, null, null);
+  nData: UnderwritingCoverageInfo = new UnderwritingCoverageInfo(null, null, null, null, null, null);
   constructor(private underwritingservice: UnderwritingService) { }
 
   @Input() alteration: boolean;
@@ -25,7 +26,6 @@ export class PolCoverageComponent implements OnInit {
     this.tHeader.push("Section");
     this.tHeader.push("Bullet No");
     this.tHeader.push("Sum Insured");
-    this.tHeader.push("Sort Sequence");
     this.tHeader.push("Add Sl");
 
     this.dataTypes.push("checkbox");
@@ -33,7 +33,6 @@ export class PolCoverageComponent implements OnInit {
     this.dataTypes.push("select");
     this.dataTypes.push("select");
     this.dataTypes.push("currency");
-    this.dataTypes.push("select");
     this.dataTypes.push("checkbox");
 
     this.selOptions.push({ selector: "section", vals: ["I", "II", "III"] });

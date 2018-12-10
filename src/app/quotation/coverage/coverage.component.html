@@ -6,9 +6,11 @@
         <label class="form-control-sm col-sm-1" for="xx">Quotation No</label>
         <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-3" placeholder="" readonly>
         <label class="form-control-sm col-sm-1" for="xx">Insured</label>
-        <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-3" placeholder="" readonly>
+        <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-6" placeholder="" readonly>
+      </div>
+      <div class="input-group">
         <label class="form-control-sm col-sm-1" for="xx">Risk</label>
-        <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-3" placeholder="" readonly>
+        <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-10" placeholder="" readonly>
       </div>
     </div>
   </fieldset>
@@ -19,33 +21,64 @@
       [tHeader]="tHeader"></app-cust-editable-table> -->
 
     <app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData"
-      [tHeader]="tHeader" [dataTypes]="dataTypes" [opts]="selOptions"></app-cust-editable-table>
+      [tHeader]="tHeader" [dataTypes]="dataTypes" [magnifyingGlass]="magnifyingGlass" [opts]="selOptions"></app-cust-editable-table>
 
   </fieldset>
   <div class="row">
     <div class="col-sm-4 mrgn-fieldset">
       <fieldset class="scheduler-border fieldset-height">
-        <!-- <div class="h-33 d-inline-block"></div> -->
-        <div class="form-row custom-row-inline-inset">
-          <div class="col-sm-2"></div>
-          <div class="col-sm-3">
-            <label class="form-control-sm top-label" for="xx">Currency</label>
-            <select class="form-control form-control-sm cust-sm">
-              <option value=""></option>
-              <option value="USD">USD</option>
-              <option value="PHP">PHP</option>
-              <option value="EUR">EUR</option>
-            </select>
+        <!-- <div class="form-row custom-row-inline-inset">
+          <div class="input-group">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-3">
+              <label class="form-control-sm" for="xx">Currency</label>
+              <select class="form-control form-control-sm cust-sm">
+                <option value=""></option>
+                <option value="USD">USD</option>
+                <option value="PHP">PHP</option>
+                <option value="EUR">EUR</option>
+              </select>
+            </div>
+            <div class="col-sm-5">
+              <label class="form-control-sm" for="xx">Exch. Rt.</label>
+              <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm txt-content-rght" required
+                placeholder="0.00" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
+                readonly>
+            </div>
+            <div class="col-sm-2"></div>
           </div>
-          <div class="col-sm-5">
-            <label class="form-control-sm top-label" for="xx">Total Sum Insured</label>
-            <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm txt-content-rght" required
-              placeholder="0.00" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
-              readonly>
+        </div> -->
+        <div class="custom-row-inline-inset">
+          <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-8">
+              <br>
+              <div class="input-group">
+                <label class="form-control-sm" for="xx">Currency</label>
+                <select class="form-control form-control-sm cust-sm">
+                  <option value=""></option>
+                  <option value="USD">USD</option>
+                  <option value="PHP">PHP</option>
+                  <option value="EUR">EUR</option>
+                </select>
+                <label class="form-control-sm" for="xx">Exch. Rt.</label>
+                <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm txt-content-rght"
+                  required placeholder="0.00" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
+                  readonly>
+              </div>
+
+              <div class="input-group">
+                <label class="form-control-sm" for="xx">Total SI</label>
+                <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm txt-content-rght"
+                  required placeholder="0.00" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
+                  readonly>
+              </div>
+            </div>
+            <div class="col-sm-2"></div>
           </div>
-          <div class="col-sm-2"></div>
         </div>
-        <!-- <div class="h-33 d-inline-block"></div> -->
+
+
       </fieldset>
     </div>
     <div class="col-sm-4">
@@ -53,7 +86,7 @@
         <legend class="scheduler-border">Sl per Section</legend>
         <div class="custom-row-inline-inset">
           <div class="row">
-            <div class="col-sm-2"></div>
+            <div class="col-sm-1"></div>
             <div class="col-sm-8">
               <div class="input-group">
                 <label class="form-control-sm col-sm-4" for="xx">Section I</label>
@@ -71,7 +104,7 @@
                   onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
               </div>
             </div>
-            <div class="col-sm-2"></div>
+            <div class="col-sm-3"></div>
           </div>
         </div>
       </fieldset>

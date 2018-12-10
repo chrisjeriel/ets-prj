@@ -15,7 +15,7 @@ export class UnderwritingService {
     altParListingData: AltPARListing[] = [];
     polAttachmentInfoData: PolAttachmentInfo[] = [];
     expiryListing: ExpiryListing[] = [];
-    renewedPolicies: RenewedPolicy[]=[];
+    renewedPolicies: RenewedPolicy[] = [];
 
     constructor(private http: HttpClient) {
 
@@ -42,28 +42,28 @@ export class UnderwritingService {
     }
 
 
-    getAlterationFromQuotation(){
+    getAlterationFromQuotation() {
         this.alterationFromQuotation = [
             new CreateParTable("CAR-2015-0002832-01", "Direct", "CAR Wet Risks", "Issued", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),
             new CreateParTable("CAR-2015-0002832-02", "Branch 2", "CAR Wet Risks", "Issued", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", new Date(), new Date(), "Inigo Flores", "Cuaresma"),
-            ];
+        ];
 
         return this.alterationFromQuotation;
     }
 
-    getCoInsurance(){
-      this.coInsuranceData = [
-       new PolicyCoInsurance("Risk 1", "Malayan", 12.2, 10000, 500000),
-       new PolicyCoInsurance("Risk 2", "Company 1", 6.23, 20000, 600000),
-       new PolicyCoInsurance("Risk 3", "Company 2", 15.16, 30000, 700000),
+    getCoInsurance() {
+        this.coInsuranceData = [
+            new PolicyCoInsurance("Risk 1", "Malayan", 12.2, 10000, 500000),
+            new PolicyCoInsurance("Risk 2", "Company 1", 6.23, 20000, 600000),
+            new PolicyCoInsurance("Risk 3", "Company 2", 15.16, 30000, 700000),
         ];
         return this.coInsuranceData;
     }
 
     getUWCoverageInfo() {
         this.uwcoverageInfoData = [
-            new UnderwritingCoverageInfo("data", "1", "I", "3", "69000", "Sort C", "70000"),
-            new UnderwritingCoverageInfo("data", "2", 'II', "2", "123000", 'Sort B', "456000")
+            new UnderwritingCoverageInfo("data", "1", "I", "3", "69000", "70000"),
+            new UnderwritingCoverageInfo("data", "2", 'II', "2", "123000", "456000")
         ];
         return this.uwcoverageInfoData;
     }
@@ -75,10 +75,10 @@ export class UnderwritingService {
         return this.uwotherRatesInfoData;
     }
 
-    extractExpiringPolicies(){
+    extractExpiringPolicies() {
         return 100;
     }
-           
+
 
     getParListing() {
         this.parListingData = [
@@ -121,18 +121,18 @@ export class UnderwritingService {
     }
 
 
-    getExpiryListing(){
+    getExpiryListing() {
         this.expiryListing = [
-            new ExpiryListing("POL-0050","I","San Juan","CPI","insured","Sample Data","II", "Paul", "Peso", "IV", "si", "pre"),
-            new ExpiryListing("POL-0051","II","Muntinlupa","The Company","insured","Sample Data","II", "Christian", "Peso", "IV", "si", "pre")
+            new ExpiryListing("POL-0050", "I", "San Juan", "CPI", "insured", "Sample Data", "II", "Paul", "Peso", "IV", "si", "pre"),
+            new ExpiryListing("POL-0051", "II", "Muntinlupa", "The Company", "insured", "Sample Data", "II", "Christian", "Peso", "IV", "si", "pre")
         ];
         return this.expiryListing;
     }
 
-    renewExpiredPolicies(){
+    renewExpiredPolicies() {
         this.renewedPolicies = [
-            new RenewedPolicy("POL-0050","POL-2018"),
-            new RenewedPolicy("POL-0051","POL-2019")
+            new RenewedPolicy("POL-0050", "POL-2018"),
+            new RenewedPolicy("POL-0051", "POL-2019")
         ];
         return this.renewedPolicies;
     }

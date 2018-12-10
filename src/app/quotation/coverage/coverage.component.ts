@@ -14,6 +14,7 @@ export class CoverageComponent implements OnInit {
   tHeader: any[] = [];
   dataTypes: any[] = [];
   selOptions: any[] = [];
+  magnifyingGlass: any[] = ['coverCode'];
 
   nData: QuotationCoverageInfo = new QuotationCoverageInfo(null, null, null, null, null, null);
   //nData: NotesReminders = new NotesReminders(null, null, null, null, null, null, 'user', new Date());
@@ -43,9 +44,6 @@ export class CoverageComponent implements OnInit {
     this.selOptions.push({ selector: "sortSe", vals: ["10", "20", "30"] });
 
     this.tableData = this.quotationService.getCoverageInfo();
-    this.temp = this.tableData[0].sumInsured;
-    console.log(this.temp);
-
 
     //this.tableData = this.notesService.getNotesReminders();
 

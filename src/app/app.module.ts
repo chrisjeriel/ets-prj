@@ -52,6 +52,8 @@ import { PolAttachmentComponent } from './underwriting/policy-issuance/pol-attac
 import { PolPostComponent } from './underwriting/policy-issuance/pol-post/pol-post.component';
 import { ExpiryListingComponent } from './underwriting/expiry-and-renewal/expiry-listing/expiry-listing.component';
 import { PolicyIssuanceAltComponent } from './underwriting/policy-issuance/policy-issuance-alt.component';
+import { InquiryComponent } from './underwriting/inquiry/inquiry.component';
+import { PolicyInquiryComponent } from './underwriting/inquiry/policy-inquiry/policy-inquiry.component';
 
 
 @NgModule({
@@ -109,7 +111,9 @@ import { PolicyIssuanceAltComponent } from './underwriting/policy-issuance/polic
         PolAttachmentComponent,
         PolPostComponent,
         ExpiryListingComponent,
-        PolicyIssuanceAltComponent
+        PolicyIssuanceAltComponent,
+        InquiryComponent,
+        PolicyInquiryComponent
     ],
 
     providers: [
