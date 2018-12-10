@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Renderer } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { QuotationService } from '../../../_services';
 import { DummyInfo } from '../../../_models';
@@ -20,14 +21,16 @@ export class CustTableComponent implements OnInit {
     @Input() dataTypes: any[] = [];
     @Input() filters: any[] = [];
     @Input() pageLength: number;
+    @Input() from: string = "";
     @Input() checkFlag: boolean;
+
     dataKeys: any[] = [];
     start:    any;
     pressed:  any;
     startX:   any;
     startWidth: any;
 
-    constructor(config: NgbDropdownConfig, public renderer: Renderer) {
+    constructor(config: NgbDropdownConfig, public renderer: Renderer, private quotationService: QuotationService, private router: Router) {
         config.placement = 'bottom-right';
         config.autoClose = false;
     }
@@ -74,4 +77,24 @@ export class CustTableComponent implements OnInit {
        });
     }
 
+    onRowClick(event) {
+      for(var i = 0; i < event.path[1].cells.length; i++) {
+        this.quotationService.rowData[i] = event.path[1].cells[i].innerText;
+      }
+
+      for(var i = 0; i < event.path[2].children.length; i++) {
+        event.path[2].children[i].style.backgroundColor = "";
+      }
+
+      event.path[1].style.backgroundColor = "#67b4fc";
+    }
+
+    onRowDblClick(event) {
+      for(var i = 0; i < event.path[1].cells.length; i++) {
+        this.quotationService.rowData[i] = event.path[1].cells[i].innerText;
+      }
+
+      this.quotationService.toGenInfo = "edit";
+      this.router.navigate(['/quotation']);
+    }
 }
