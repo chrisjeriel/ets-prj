@@ -18,7 +18,7 @@ export class QuotationComponent implements OnInit {
 		}
 	}
 
-	test() {
-    	console.log('working');
+	test(content) {
+    	this.modalService.open(content, { centered: true, backdrop: 'static', windowClass : "modal-size" });
 	}
 }
