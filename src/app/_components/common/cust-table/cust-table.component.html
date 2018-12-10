@@ -18,11 +18,12 @@
 
 <div id="cust-table-container">
     <br/>
+    <div class="print" *ngIf="printBtn" align="left">
+        <button class="cust-btn" type="button"><a>Print</a></button>
+    </div>
     <div class="expire" *ngIf="expireFilter" align="right">
-        <!-- remove -->
             <label>Expires in (Days): &nbsp; </label>
-            <input type="search" class="expireIn" placeholder="">
-        <!-- end remove -->
+            <input type="text" class="expireIn" placeholder="">
     </div>
 	<div ngbDropdown>
 	  <button class="cust-filter" ngbDropdownToggle><a><fa name="filter"></fa></a></button>

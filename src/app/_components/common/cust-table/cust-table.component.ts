@@ -17,6 +17,7 @@ export class CustTableComponent implements OnInit {
     @Input() tableData: any[] = [];
     @Input() tHeader: any[] = [];
     @Input() expireFilter: boolean;
+    @Input() printBtn: boolean;
     @Input() dataTypes: any[] = [];
     @Input() filters: any[] = [];
     @Input() pageLength: number;
@@ -33,7 +34,7 @@ export class CustTableComponent implements OnInit {
     }
 
     ngOnInit(): void {
-
+        $('.dataTables_filter').addClass('right');
         this.dtOptions = {
             pagingType: 'full_numbers',
             pageLength: this.pageLength,

@@ -456,3 +456,6 @@ z-index: 9999 !important;
 .modal-body{
     overflow: auto;
 }
+.dataTables_filter{
+    text-align: right !important;
+}

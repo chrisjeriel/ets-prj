@@ -12,6 +12,7 @@ th, td{
     position: relative !important;
 }
 
+
 .expire{
     position: absolute !important;
 	right: 250px;
@@ -22,7 +23,10 @@ th, td{
     border-style: none;
     z-index: 9999 !important;
 }
-
+.print{
+    position: absolute;
+    z-index: 9999 !important;
+}
 .expireIn{
     height: calc(1.5rem + 1px) !important;
     padding: 0.1rem 0.25rem !important;

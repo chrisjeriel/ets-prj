@@ -1,25 +1,35 @@
 export class QuotationList{
     quotationNo: string;
-    branch: string;
+    cessionType: string
     lineClass: string;
     quoteStatus: string;
     cedingCompany: string;
     principal: string;
     contractor: string;
     insured: string;
+    risk: string;
+    object: string;
+    location: string;
+    policyNo: string;
+    currency: string;
     quoteDate: Date;
     validityDate: Date;
     requestedBy: string;
     createdBy: string;
 
     constructor(quotationNo: string,
-                 branch: string,
+                 cessionType: string,
                  lineClass: string,
                  quoteStatus: string,
                  cedingCompany: string,
                  principal: string,
                  contractor: string,
                  insured: string,
+                 risk: string,
+                 object: string,
+                 location: string,
+                 policyNo: string,
+                 currency: string,
                  quoteDate: Date,
                  validityDate: Date,
                  requestedBy: string,
@@ -27,13 +37,18 @@ export class QuotationList{
                 )
     {
         this.quotationNo = quotationNo;
-        this.branch = branch;
+        this.cessionType = cessionType;
         this.lineClass = lineClass;
         this.quoteStatus = quoteStatus;
         this.cedingCompany = cedingCompany;
         this.principal = principal;
         this.contractor = contractor;
         this.insured = insured;
+        this.risk = risk;
+        this.object = object;
+        this.location = location;
+        this.policyNo = policyNo;
+        this.currency = currency;
         this.quoteDate = quoteDate;
         this.validityDate = validityDate;
         this.requestedBy = requestedBy;
