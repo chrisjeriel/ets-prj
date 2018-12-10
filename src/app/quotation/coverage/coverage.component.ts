@@ -20,6 +20,8 @@ export class CoverageComponent implements OnInit {
 
   constructor(private quotationService: QuotationService, private notesService: NotesService) { }
 
+  temp: number = 0;
+
   ngOnInit() {
 
     this.tHeader.push("");
@@ -40,9 +42,10 @@ export class CoverageComponent implements OnInit {
     this.selOptions.push({ selector: "bulletNo", vals: ["1", "1.2", "1.3"] });
     this.selOptions.push({ selector: "sortSe", vals: ["10", "20", "30"] });
 
-
-
     this.tableData = this.quotationService.getCoverageInfo();
+    this.temp = this.tableData[0].sumInsured;
+    console.log(this.temp);
+
 
     //this.tableData = this.notesService.getNotesReminders();
 
@@ -56,5 +59,7 @@ export class CoverageComponent implements OnInit {
     // this.quotationCoverageInfo.deductibles = "MOCK DATA";
     // this.quotationCoverageInfo.remarks = "MOCK DATA";
   }
+
+
 
 }
