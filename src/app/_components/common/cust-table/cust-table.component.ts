@@ -26,6 +26,8 @@ export class CustTableComponent implements OnInit {
 
   @Output() rowClick: EventEmitter<any> = new EventEmitter();
   @Output() rowDblClick: EventEmitter<any> = new EventEmitter();
+    
+  @Input() printBtn: boolean = false;
 
   dataKeys: any[] = [];
   start:    any;

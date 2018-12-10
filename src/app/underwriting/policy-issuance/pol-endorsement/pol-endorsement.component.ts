@@ -16,7 +16,7 @@ export class PolEndorsementComponent implements OnInit {
     options: any[] = [];
     dataTypes: any[] = [];
     magnifyingGlass: any[]=["endtTitle"];
-    //nData: QuoteEndorsement = new QuoteEndorsement(null, null, null);
+    nData: QuoteEndorsement = new QuoteEndorsement(null, null, null);
     
     @Input() alteration: boolean;
 
@@ -31,9 +31,7 @@ export class PolEndorsementComponent implements OnInit {
         this.tHeader.push("Wording");
         this.tHeader.push("Edit Flag");
         
-        //this.tableData = this.quotationService.getEndorsements();
-        this.tableData.push(["Endt Title", "Endt Description", "Wording"]); 
-        this.tableData.push(["Endt Title", "Endt Description", "Wording"]);
+        this.tableData = this.quotationService.getEndorsements();
     }
     
     onClickCancel(){
