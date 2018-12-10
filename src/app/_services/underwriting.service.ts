@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo } from '@app/_models';
+import { DummyInfo, UnderwritingCoverageInfo, UnderwritingPolicyInquiryInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo } from '@app/_models';
 
 @Injectable({ providedIn: 'root' })
 export class UnderwritingService {
@@ -16,6 +16,7 @@ export class UnderwritingService {
     polAttachmentInfoData: PolAttachmentInfo[] = [];
     expiryListing: ExpiryListing[] = [];
     renewedPolicies: RenewedPolicy[] = [];
+    policyInquiry: UnderwritingPolicyInquiryInfo[] = [];
 
     constructor(private http: HttpClient) {
 
@@ -135,5 +136,12 @@ export class UnderwritingService {
             new RenewedPolicy("POL-0051", "POL-2019")
         ];
         return this.renewedPolicies;
+    }
+    getPolicyInquiry() {
+        this.policyInquiry = [
+            new UnderwritingPolicyInquiryInfo("data", "data", "data", "data", "data", "data", "data", "data", "data", "data", "data", "data"),
+            new UnderwritingPolicyInquiryInfo("data2", "data2", "data2", "data2", "data2", "data2", "data2", "data2", "data2", "data2", "data2", "data2"),
+        ];
+        return this.policyInquiry;
     }
 }            
