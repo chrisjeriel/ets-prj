@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { QuotationService } from '../../_services';
 import { QuotationProcessing } from '../../_models';
-
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-quotation-processing',
@@ -13,10 +13,20 @@ export class QuotationProcessingComponent implements OnInit {
   tHeader: any[] = [];
   dataTypes: any[] = [];
   filters: any[] = [];
+  rowData: any[] = [];
+  disabledEditBtn: boolean;
 
-  constructor(private quotationService: QuotationService) { }
+  constructor(private quotationService: QuotationService, private modalService: NgbModal) { }
 
   ngOnInit() {
+    this.rowData = this.quotationService.getRowData();
+    
+    if(this.rowData.length != 0) {
+      this.disabledEditBtn = false;
+    } else {
+      this.disabledEditBtn = true;
+    }
+
   	this.tHeader.push("Quotation No");
   	this.tHeader.push("Branch");
   	this.tHeader.push("Line Class");
@@ -58,5 +68,4 @@ export class QuotationProcessingComponent implements OnInit {
 
   	this.tableData = this.quotationService.getQuoProcessingData();
   }
-
 }
