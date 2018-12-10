@@ -14,7 +14,7 @@ export class PolCreatePARComponent implements OnInit {
   tableData: any[] = [];
   tHeader: any[] = [];
   dataTypes: any[] = [];
-  
+  fromQuotation: boolean = true;
   constructor(private underwritingService : UnderwritingService, private modalService : NgbModal ) {
 
    }
@@ -58,5 +58,9 @@ export class PolCreatePARComponent implements OnInit {
     this.createParInfo.lineClass = "test";
     this.createParInfo.cedingCompany = "test";
 
+  }
+  
+  fromHoldCover(){
+    this.fromQuotation = !this.fromQuotation;
   }
 }
