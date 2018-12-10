@@ -25,3 +25,4 @@ export * from './PolAttachmentInfo';
 export * from './PolicyToHoldCover';
 export * from './PolicyPrinting';
 export * from './PrinterList';
+export * from './PolALOP';

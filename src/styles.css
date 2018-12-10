@@ -457,6 +457,14 @@ z-index: 9999 !important;
     overflow: auto;
 }
 
+#cust-table-container th.noborder{
+    border-right: none;
+}
+
+#cust-table-container.paul-table .dataTables_paginate{
+    float: left;
+}
 input[type=date] {
     line-height: 1.1 !important;
+
 }

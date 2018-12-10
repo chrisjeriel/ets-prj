@@ -16,14 +16,14 @@ export class PolEndorsementComponent implements OnInit {
     options: any[] = [];
     dataTypes: any[] = [];
     magnifyingGlass: any[]=["endtTitle"];
-    nData: QuoteEndorsement = new QuoteEndorsement(null, null, null);
+    nData: QuoteEndorsement = new QuoteEndorsement(null, null, null, null, null);
     
     @Input() alteration: boolean;
 
-   constructor(config: NgbDropdownConfig, private quotationService: QuotationService) { 
-  	config.placement = 'bottom-right';
-    config.autoClose = false;
-  }
+       constructor(config: NgbDropdownConfig, private quotationService: QuotationService) { 
+      	config.placement = 'bottom-right';
+        config.autoClose = false;
+     }
 
     ngOnInit() : void{
         this.tHeader.push("Endt Title");
@@ -31,7 +31,7 @@ export class PolEndorsementComponent implements OnInit {
         this.tHeader.push("Wording");
         this.tHeader.push("Edit Flag");
         
-        this.tableData = this.quotationService.getEndorsements();
+        this.tableData = this.quotationService.getEndorsements(1);
     }
     
     onClickCancel(){

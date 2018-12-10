@@ -15,6 +15,7 @@ export class QuotationService {
     attachmentInfoData: AttachmentInfo[] = [];
     quoProcessingData: QuotationProcessing[] = [];
     coverageInfoData: QuotationCoverageInfo[] = [];
+    quoteOptionNos: number[] = [];
 
     rowData: any[] = [];
     toGenInfo: any[] = [];
@@ -81,13 +82,22 @@ export class QuotationService {
     }
 
 
-    getEndorsements() {
+    getEndorsements(optionNo:number) {
 
         this.endorsementData = [
-            new QuoteEndorsement('Endt Title', 'Endt Description', 'Wording'),
-            new QuoteEndorsement('This is the title', 'sample Description', 'Sample Wording')
+            new QuoteEndorsement(1,"111",'Endt Title', 'Endt Description', 'Wording'),
+            new QuoteEndorsement(1,"112",'This is the title', 'sample Description', 'Sample Wording'),
+            new QuoteEndorsement(2,"221",'Endt Title', 'Endt Description', 'Wording'),
+            new QuoteEndorsement(2,"222",'This is the title', 'sample Description', 'Sample Wording'),
+            new QuoteEndorsement(3,"331",'Endt Title', 'Endt Description', 'Wording'),
+            new QuoteEndorsement(3,"332",'This is the title', 'sample Description', 'Sample Wording')
         ];
-        return this.endorsementData;
+
+        var endorsmentData = this.endorsementData.filter(function(itm){
+            return itm.optionNo == optionNo;
+        });
+        endorsmentData.forEach(function(itm){delete itm.optionNo;});
+        return endorsmentData;
     }
 
     getAttachment() {
@@ -138,19 +148,33 @@ export class QuotationService {
 
     getQuoteOptions() {
         this.quotataionOption = [
-            new QuotationOption("OPT-001", 5.05, "Condition", 6, 8, 5),
-            new QuotationOption("OPT-002", 8, "Stable", 7, 4, 3),
-            new QuotationOption("OPT-003", 9, "Good", 6, 43, 2)
+            new QuotationOption(1, 5.05, "Condition", 6, 8, 5),
+            new QuotationOption(2, 8, "Stable", 7, 4, 3),
+            new QuotationOption(3, 9, "Good", 6, 43, 2)
         ];
         return this.quotataionOption;
     }
 
-    getQuotataionOtherRates() {
+    getQuotataionOtherRates(optionNo:number ) {
         this.quotataionOtherRates = [
-            new QuotationOtherRates('Others1', 50, 'sample remark'),
-            new QuotationOtherRates('Others1', 60, 'sample description')
+            new QuotationOtherRates(1,'Others11', 50, 'sample deductibles'),
+            new QuotationOtherRates(1,'Others12', 41, 'sample deductibles'),
+            new QuotationOtherRates(1,'Others13', 75, 'deductibles'),
+            new QuotationOtherRates(2,'Others21', 60, 'deductibles'),
+            new QuotationOtherRates(2,'Others22', 50, 'sample deductible'),
+            new QuotationOtherRates(2,'Others23', 65, 'demo'),
+            new QuotationOtherRates(2,'Others24', 41, 'sample ony'),
+            new QuotationOtherRates(3,'Others31', 4, 'for demo'),
+            new QuotationOtherRates(3,'Others32', 3, 'sample data'),
+            new QuotationOtherRates(3,'Others33', 5, 'sample'),
+            new QuotationOtherRates(3,'Others34', 6, 'deductibles'),
+
         ];
-        return this.quotataionOtherRates;
+        var quotataionOtherRates =  this.quotataionOtherRates.filter(function(itm){
+            return itm.optionNo == optionNo;
+        });
+        quotataionOtherRates.forEach(function(itm){delete itm.optionNo;});
+        return quotataionOtherRates;
     }
 
 
@@ -170,5 +194,11 @@ export class QuotationService {
 
     getRowData() {
         return this.rowData;
+    }
+
+    getQuoteOptionNos(){
+        this.quoteOptionNos = [1,2,3];
+        //,4,5,6,7,8,1,4,5,7,8,9,2,3,4,5,6,7,2,3,4,5,6,1,8,9
+        return this.quoteOptionNos;
     }
 }

@@ -2,20 +2,55 @@
 	<fieldset class="scheduler-border">
 		<legend class="scheduler-border">Quotation Info</legend>
 		<div class="form-row custom-row-inline-inset">
-			<div class="input-group">
-				<label class="form-control-sm col-sm-1" for="xx">Quotation No</label>
-				<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-2" placeholder="CAR-2015-0000289-04"
-				 readonly>
-				<label class="form-control-sm col-sm-1" for="xx">Insured</label>
-				<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-7" placeholder="Insured Name"
-				 readonly>
-			</div>
-		</div>
+            <div class="input-group" >
+                <label class="form-control-sm col-sm-2" for="inputQuonum">Quotation No </label>
+                <input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-2" placeholder="CAR-2015-0000289-04" disabled="disabled">
+                <label class="form-control-sm col-sm-1" for="inputInname" >Insured</label>
+                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-6" placeholder="Insured Name" disabled="disabled">
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-2" for="inputRisk" >Risk</label>
+                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-9" placeholder="Risk" disabled="disabled">
+            </div>
+        </div>
 	</fieldset>
 
 	<fieldset class="scheduler-border">
+		<legend class="scheduler-border">Quotation Option</legend>
+		<app-cust-table [checkFlag]="true" [tableData]="quoteOptionTableData" [tHeader]="quoteOptionTHeader" [dataTypes]="quoteOptionDataType" (rowClick)="clickRow($event)"></app-cust-table>
+	</fieldset>
+	<fieldset class="scheduler-border" style="position: relative;">
 		<legend class="scheduler-border">Endorsements</legend>
-		<app-cust-editable-table [checkFlag]="true" [addFlag]="true" [deleteFlag]="true" [nData]="nData" [tableData]="tableData" [editFlag]="true" 
+		<!-- <button type="button" class="cust-btn copy-endt"><a>Copy Endt</a></button> -->
+		<app-modal [btnTitle]="'Copy Endt'" class="copy-endt">
+			<div header>Copy Endorsments</div>
+            <div body>
+            	<div id="cust-table-container" class="paul-table">
+					<table datatable [dtOptions]="dtOptions" class="row-border hover">
+						<thead>
+							<tr>
+								<th class="noborder"><span class="gridHeader">Copy From</span></th>
+								<th class="noborder"></th>
+								<th ><span class="gridHeader">Copy To</span></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let data of optionNos; let i = index">
+								<td *ngIf="i%10==0">Option 1</td>
+								<td *ngIf="i%10!=0"></td>
+								<td ><input type="checkbox" class="copyCheckBox" name=""></td>
+								<td>Option No {{data}} </td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+            </div>
+            <div footer style="margin: auto;">
+                <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+                <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+            </div>
+		</app-modal>
+		<app-cust-editable-table [checkFlag]="true" [addFlag]="true" [deleteFlag]="true" [nData]="nData" [tableData]="tableData" [editFlag]="false" 
 		 [tHeader]="tHeader" [magnifyingGlass]="magnifyingGlass"></app-cust-editable-table>
 	</fieldset>
 	<div class="form-row">
