@@ -12,6 +12,8 @@ export class PolOtherRatesComponent implements OnInit {
   tableData: any[] = [];
   tHeader: any[] = [];
   dataTypes: any[] = [];
+  magnifyingGlass: any[] = ['deductible', 'others'];
+
 
   nData: UnderwritingOtherRatesInfo = new UnderwritingOtherRatesInfo(null, null, null, null);
 
@@ -21,7 +23,7 @@ export class PolOtherRatesComponent implements OnInit {
     this.tHeader.push("");
     this.tHeader.push("Others");
     this.tHeader.push("Amounts");
-    this.tHeader.push("Deductible/Remarks");
+    this.tHeader.push("Deductible");
 
     this.dataTypes.push("checkbox");
     this.dataTypes.push("text");

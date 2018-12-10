@@ -57,6 +57,9 @@ import { PolicyPrintingComponent } from './underwriting/generate-documents/polic
 import { PolicyToHoldCoverComponent } from './underwriting/expiry-and-renewal/policy-to-hold-cover/policy-to-hold-cover.component';
 import { ChangeQuoteStatusComponent } from './quotation/change-quote-status/change-quote-status.component';
 import { PolAlopComponent } from './underwriting/policy-issuance/pol-alop/pol-alop.component';
+import { InquiryComponent } from './underwriting/inquiry/inquiry.component';
+import { PolicyInquiryComponent } from './underwriting/inquiry/policy-inquiry/policy-inquiry.component';
+
 
 @NgModule({
     imports: [
@@ -118,7 +121,9 @@ import { PolAlopComponent } from './underwriting/policy-issuance/pol-alop/pol-al
         ChangeQuoteStatusComponent,
         GenerateDocumentsComponent,
         PolicyPrintingComponent,
-        PolAlopComponent
+        PolAlopComponent,
+        InquiryComponent,
+        PolicyInquiryComponent,
     ],
 
     providers: [

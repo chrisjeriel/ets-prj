@@ -14,11 +14,14 @@ export class CoverageComponent implements OnInit {
   tHeader: any[] = [];
   dataTypes: any[] = [];
   selOptions: any[] = [];
+  magnifyingGlass: any[] = ['coverCode'];
 
   nData: QuotationCoverageInfo = new QuotationCoverageInfo(null, null, null, null, null, null);
   //nData: NotesReminders = new NotesReminders(null, null, null, null, null, null, 'user', new Date());
 
   constructor(private quotationService: QuotationService, private notesService: NotesService) { }
+
+  temp: number = 0;
 
   ngOnInit() {
 
@@ -40,8 +43,6 @@ export class CoverageComponent implements OnInit {
     this.selOptions.push({ selector: "bulletNo", vals: ["1", "1.2", "1.3"] });
     this.selOptions.push({ selector: "sortSe", vals: ["10", "20", "30"] });
 
-
-
     this.tableData = this.quotationService.getCoverageInfo();
 
     //this.tableData = this.notesService.getNotesReminders();
@@ -56,5 +57,7 @@ export class CoverageComponent implements OnInit {
     // this.quotationCoverageInfo.deductibles = "MOCK DATA";
     // this.quotationCoverageInfo.remarks = "MOCK DATA";
   }
+
+
 
 }
