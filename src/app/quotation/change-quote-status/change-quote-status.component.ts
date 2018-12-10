@@ -15,7 +15,7 @@ export class ChangeQuoteStatusComponent implements OnInit {
     }
 
     ngOnInit() {
-        $('#modalBtn').trigger('click');        //this line causes an error but somehow still works
+        //$('#modalBtn').trigger('click');        //this line causes an error but somehow still works
         this.tHeader.push("Quotation No.");
         this.tHeader.push("Type of Cession");
         this.tHeader.push("Ceding Company");
