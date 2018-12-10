@@ -1,0 +1,22 @@
+.copy-endt{
+	position: absolute;
+	top:45px;
+	left:144px;
+	z-index: 100;
+}	
+
+th, td{
+    white-space: nowrap;
+    min-width: 0px;
+    max-width: 1px;
+    overflow: hidden;
+}
+
+th{
+	line-height: 12px;
+	font-size: 10.4px !important;
+}
+
+.copyCheckBox{
+	float: right;
+}

@@ -15,6 +15,7 @@ export class QuotationService {
     attachmentInfoData: AttachmentInfo[] = [];
     quoProcessingData: QuotationProcessing[] = [];
     coverageInfoData: QuotationCoverageInfo[] = [];
+    quoteOptionNos: number[] = [];
 
     rowData: any[] = [];
     toGenInfo: string = "";
@@ -186,5 +187,11 @@ export class QuotationService {
 
     getRowData() {
         return this.rowData;
+    }
+
+    getQuoteOptionNos(){
+        this.quoteOptionNos = [1,2,3];
+        //,4,5,6,7,8,1,4,5,7,8,9,2,3,4,5,6,7,2,3,4,5,6,1,8,9
+        return this.quoteOptionNos;
     }
 }

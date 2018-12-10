@@ -26,3 +26,11 @@ h6#modal-basic-title.modal-title {
 h4 {
 	font-size: 14px !important;
 }
+
+.modal-backdrop{
+	position: fixed !important;
+	top: 0 !important;
+	right: 0 !important;
+	bottom: 0 !important;
+	left: 0 !important;
+}

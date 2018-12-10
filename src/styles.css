@@ -456,3 +456,11 @@ z-index: 9999 !important;
 .modal-body{
     overflow: auto;
 }
+
+#cust-table-container th.noborder{
+    border-right: none;
+}
+
+#cust-table-container.paul-table .dataTables_paginate{
+    float: left;
+}

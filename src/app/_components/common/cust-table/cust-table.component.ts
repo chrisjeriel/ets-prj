@@ -40,8 +40,7 @@ export class CustTableComponent implements OnInit {
     ngOnInit(): void {
 
         this.dtOptions = {
-            pagingType: 'full_numbers',
-            pageLength: this.pageLength,
+            pagingType: 'full_numbers'
         };
 
         if (this.tableData.length > 0) {
