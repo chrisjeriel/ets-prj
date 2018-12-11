@@ -11,6 +11,7 @@ export class ALOPItemInformation{
 		this.relativeImportance = relativeImportance;
 		this.possibleLossMin = possibleLossMin;
 	}
+
 }
 
 export class ALOPInfo{

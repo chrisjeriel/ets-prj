@@ -43,8 +43,12 @@ export class QuoteOptionComponent implements OnInit {
   }
 
   clickRow(event){
-    console.log(event.path[1].cells[1].childNodes[0].children[1].value);
-    this.otherRatesTableData = this.quotationService.getQuotataionOtherRates(event.path[1].cells[1].childNodes[0].children[1].value);
+    console.log(event);
+    try{
+      this.otherRatesTableData = this.quotationService.getQuotataionOtherRates(event.path[1].cells[1].childNodes[0].children[1].value);
+    }catch(e){
+      this.otherRatesTableData = this.quotationService.getQuotataionOtherRates(event.path[3].cells[1].childNodes[0].children[1].value);
+    }
   }
 
 
