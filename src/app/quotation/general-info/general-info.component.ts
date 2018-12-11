@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { QuotationGenInfo } from '../../_models';
 import { callLifecycleHooksChildrenFirst } from '@angular/core/src/view/provider';
 import { QuotationService } from '../../_services';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -13,10 +14,19 @@ export class GeneralInfoComponent implements OnInit {
 	private quotationGenInfo: QuotationGenInfo;
 	rowData: any[] = this.quotationService.rowData;
 	quotationNum: any[] = [];
+	tableData: any[] = [];
+	tHeader: any[] = [];
+	dataTypes: any[] = [];
+	filters: any[] = [];
 	
 
-	constructor(private quotationService: QuotationService) { }
+	constructor(private quotationService: QuotationService, private modalService: NgbModal) { }
 	ngOnInit() {
+		this.tHeader.push("Item No", "Description of Items");
+		this.dataTypes.push("text", "text");
+		this.filters.push("Item No", "Desc. of Items");
+		this.tableData = this.quotationService.getItemInfoData();
+
 		if(this.quotationService.toGenInfo[0] == "edit"){
 			console.log(this.quotationService.rowData);
 
@@ -127,6 +137,10 @@ export class GeneralInfoComponent implements OnInit {
 	defaultValues(year: Date) {
 		year = new Date();
 		year.getFullYear();
+	}
+
+	showItemInfoModal(content) {
+    	this.modalService.open(content, { centered: true, backdrop: 'static', windowClass : "modal-size" });
 	}
 
 }
