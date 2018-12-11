@@ -365,7 +365,7 @@
 									<div class="input-group">
 										<label class="form-control-sm col-sm-1">Items to be Insured</label>
 										<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;"></textarea>
-
+										<div class="text-search-ico" (click)="showItemInfoModal(content)"><a><i class="fa fa-plus-circle"></i></a></div>
 										<div class="col-sm">
 											<div class="row">
 												<div class="input-group">
@@ -445,7 +445,7 @@
 									<div class="input-group">
 										<label class="form-control-sm col-sm-1">Items to be Insured</label>
 										<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;"></textarea>
-
+										<div class="text-search-ico" (click)="showItemInfoModal(content)"><a><i class="fa fa-plus-circle"></i></a></div>
 										<div class="col-sm">
 											<div class="row">
 												<div class="input-group">
@@ -517,7 +517,7 @@
 									<div class="input-group">
 										<label class="form-control-sm col-sm-1">Items to be Insured</label>
 										<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;"></textarea>
-
+										<div class="text-search-ico" (click)="showItemInfoModal(content)"><a><i class="fa fa-plus-circle"></i></a></div>
 										<div class="col-sm">
 											<div class="row">
 												<div class="input-group">
@@ -598,7 +598,7 @@
 									<div class="input-group">
 										<label class="form-control-sm col-sm-1">Items to be Insured</label>
 										<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;"></textarea>
-
+										<div class="text-search-ico" (click)="showItemInfoModal(content)"><a><i class="fa fa-plus-circle"></i></a></div>
 										<div class="col-sm">
 											<div class="row">
 												<div class="input-group">
@@ -804,3 +804,32 @@
 			</div>
 		</div>
 	</div>
+
+	<ng-template #content>
+		<div class="modal-header">
+			<span class="modal-title" id="modal-basic-title">Item Information</span>
+			<div class="close" style="padding-bottom: 5px;">
+				<a class="btn-cust" aria-label="Close" (click)="modalService.dismissAll();" aria-hidden="true" ><span style="padding-right: 3px;" id="closes">&times;&nbsp;&nbsp;</span></a>
+			</div>
+		</div>
+		<div class="modal-body">
+			<div class="row">
+				<div class="col-sm">
+					<button class="cust-btn">Add</button>
+					<button class="cust-btn">Delete</button>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm">
+					<app-cust-table [filters]="filters" [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes"></app-cust-table>
+				</div>
+			</div>
+
+		</div>
+		<div class="modal-footer">
+			<div>
+				<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+				<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Save</a></button>	
+			</div>
+		</div>
+	</ng-template>
