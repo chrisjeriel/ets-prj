@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { QuotationList, HoldCoverMonitoringList, DummyInfo, QuoteEndorsement, QuotationOption, QuotationOtherRates, IntCompAdvInfo, AttachmentInfo, QuotationProcessing, QuotationCoverageInfo, QuotationHoldCover } from '@app/_models';
+import { QuotationList, HoldCoverMonitoringList, DummyInfo, QuoteEndorsement, QuotationOption, QuotationOtherRates, IntCompAdvInfo, AttachmentInfo, QuotationProcessing, QuotationCoverageInfo,QuotationHoldCover, ItemInformation } from '@app/_models';
+
 
 @Injectable({ providedIn: 'root' })
 export class QuotationService {
@@ -15,6 +16,7 @@ export class QuotationService {
     attachmentInfoData: AttachmentInfo[] = [];
     quoProcessingData: QuotationProcessing[] = [];
     coverageInfoData: QuotationCoverageInfo[] = [];
+    itemInfoData: ItemInformation[] = [];
     quoteOptionNos: number[] = [];
     quotationToHoldCover: QuotationHoldCover[] = [];
 
@@ -203,6 +205,7 @@ export class QuotationService {
         return this.quoteOptionNos;
     }
 
+
     getListOfValuesHoldCover() {
         this.quotationToHoldCover = [
             new QuotationHoldCover("EEI-2018-00088-00-67", "Phil. Guaranty", "A.B Industries. Inc", "BPI- EEI"),
@@ -213,5 +216,16 @@ export class QuotationService {
         ];
 
         return this.quotationToHoldCover;
+
+    
     }
-}
+    getItemInfoData() {
+        this.itemInfoData = [
+            new ItemInformation(1001, "Description for item number 1"),
+            new ItemInformation(1002, "Description for item number 2"),
+            new ItemInformation(1003, "Description for item number 3")
+        ];
+
+        return this.itemInfoData;
+
+    }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo, PolicyPrinting, PrinterList, ALOPItemInformation, UnderwritingPolicyInquiryInfo } from '@app/_models';
+import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo, PolicyPrinting, PrinterList, ALOPItemInformation, UnderwritingPolicyInquiryInfo, ItemInformation } from '@app/_models';
 
 @Injectable({ providedIn: 'root' })
 export class UnderwritingService {
@@ -20,6 +20,7 @@ export class UnderwritingService {
     printerList: PrinterList[]=[];
     aLOPItemInfos: ALOPItemInformation[]=[];
     policyInquiry: UnderwritingPolicyInquiryInfo[] = [];
+    itemInfoData: ItemInformation[] = [];
 
     constructor(private http: HttpClient) {
 
@@ -172,5 +173,15 @@ export class UnderwritingService {
             new UnderwritingPolicyInquiryInfo("data2", "data2", "data2", "data2", "data2", "data2", "data2", "data2", "data2", "data2", "data2", "data2"),
         ];
         return this.policyInquiry;
+    }
+
+    getItemInfoData() {
+        this.itemInfoData = [
+            new ItemInformation(1001, "Description for item number 1"),
+            new ItemInformation(1002, "Description for item number 2"),
+            new ItemInformation(1003, "Description for item number 3")
+        ];
+
+        return this.itemInfoData;
     }
 }            

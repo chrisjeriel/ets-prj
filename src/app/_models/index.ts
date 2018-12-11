@@ -27,3 +27,4 @@ export * from './PolicyPrinting';
 export * from './PrinterList';
 export * from './PolALOP';
 export * from './UnderwritingPolicyInquiryInfo';
+export * from './ItemInformation';
