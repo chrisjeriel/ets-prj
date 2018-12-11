@@ -8,46 +8,46 @@
             <div class="form-row custom-row-inline-inset">
                 <div class="input-group alignment">
                     <label class="form-control-sm col-sm-2 text-right">Quotation No</label>
-                    <input type="text" class="form-control form-control-sm col-sm-4" [value]="this.quotationService.rowData[0] == undefined ? '' : this.quotationService.rowData[0]" readonly>
+                    <input type="text" class="form-control form-control-sm col-sm-4" [value]="quoteList.quotationNo" readonly>
                     <label class="form-control-sm col-sm-2 text-right">Policy No</label>
-                    <input type="text" name="" class="form-control form-control-sm col-sm-4" [value]="this.quotationService.rowData[11] == undefined ? '' : this.quotationService.rowData[11]" readonly> 
+                    <input type="text" name="" class="form-control form-control-sm col-sm-4" [value]="quoteList.policyNo" readonly> 
                 </div>
             </div>
             <div class="form-row custom-row-inline-inset">
                 <div class="input-group alignment">
                     <label class="form-control-sm col-sm-2 text-right">Type of Cession</label>
-                    <input type="text" class="form-control form-control-sm col-sm-4" [value]="this.quotationService.rowData[1] == undefined ? '' : this.quotationService.rowData[1]" readonly>
+                    <input type="text" class="form-control form-control-sm col-sm-4" [value]="quoteList.cessionType" readonly>
                     <label class="form-control-sm col-sm-2 text-right">Line Class</label>
-                    <input type="text" name="" class="form-control form-control-sm col-sm-4" [value]="this.quotationService.rowData[2] == undefined ? '' : this.quotationService.rowData[2]" readonly> 
+                    <input type="text" name="" class="form-control form-control-sm col-sm-4" [value]="quoteList.lineClass" readonly> 
                 </div>
             </div>
             <div class="form-row custom-row-inline-inset">
                 <div class="input-group alignment">
                     <label class="form-control-sm col-sm-2 text-right">Ceding Company</label>
                     <input type="text" class="form-control form-control-sm col-sm-2">
-                    <input type="text" class="form-control form-control-sm col-sm-8" [value]="this.quotationService.rowData[4] == undefined ? '' : this.quotationService.rowData[4]" readonly>
+                    <input type="text" class="form-control form-control-sm col-sm-8" [value]="quoteList.cedingCompany" readonly>
                 </div>
             </div>
             <div class="form-row custom-row-inline-inset">
                 <div class="input-group alignment">
                     <label class="form-control-sm col-sm-2 text-right">Quote Date</label>
-                    <input type="text" class="form-control form-control-sm col-sm-4" [value]="quoteDate == undefined ? '' : quoteDate | date: 'MM/dd/yyyy'" readonly>
+                    <input type="text" class="form-control form-control-sm col-sm-4" [value]="quoteList.quoteDate | date: 'MM/dd/yyyy'" readonly>
                     <label class="form-control-sm col-sm-2 text-right">Valid Until</label>
-                    <input type="text" name="" class="form-control form-control-sm col-sm-4" [value]="validUntil == undefined ? '' : validUntil | date: 'MM/dd/yyyy'" readonly> 
+                    <input type="text" name="" class="form-control form-control-sm col-sm-4" [value]="quoteList.validityDate | date: 'MM/dd/yyyy'" readonly> 
                 </div>
             </div>
             <div class="form-row custom-row-inline-inset">
                 <div class="input-group alignment">
                     <label class="form-control-sm col-sm-2 text-right">Requested By</label>
-                    <input type="text" class="form-control form-control-sm col-sm-4" [value]="requestedBy == undefined ? '' : requestedBy" readonly>
+                    <input type="text" class="form-control form-control-sm col-sm-4" [value]="quoteList.requestedBy" readonly>
                     <label class="form-control-sm col-sm-2 text-right">Status</label>
-                    <input type="text" name="" class="form-control form-control-sm col-sm-4" [value]="this.quotationService.rowData[3] == undefined ? '' : this.quotationService.rowData[3]" readonly> 
+                    <input type="text" name="" class="form-control form-control-sm col-sm-4" [value]="quoteList.quoteStatus" readonly> 
                 </div>
             </div>
             <div class="form-row custom-row-inline-inset">
                 <div class="input-group alignment">
                     <label class="form-control-sm col-sm-2 text-right">Created By</label>
-                    <input type="text" class="form-control form-control-sm col-sm-4" [value]="createdBy == undefined ? '' : createdBy" readonly>
+                    <input type="text" class="form-control form-control-sm col-sm-4" [value]="quoteList.createdBy" readonly>
                     <div class="col-sm-6"></div>
                 </div>
             </div>
@@ -61,40 +61,40 @@
                 <div class="input-group alignment">
                     <label class="form-control-sm col-sm-2 text-right">Principal</label>
                     <input type="text" class="form-control form-control-sm col-sm-2">
-                    <input type="text" class="form-control form-control-sm col-sm-8" [value]="this.quotationService.rowData[5] == undefined ? '' : this.quotationService.rowData[5]" readonly>
+                    <input type="text" class="form-control form-control-sm col-sm-8" [value]="quoteList.principal" readonly>
                 </div>
             </div>
             <div class="form-row custom-row-inline-inset">
                 <div class="input-group alignment">
                     <label class="form-control-sm col-sm-2 text-right">Contractor</label>
                     <input type="text" class="form-control form-control-sm col-sm-2">
-                    <input type="text" class="form-control form-control-sm col-sm-8" [value]="this.quotationService.rowData[6] == undefined ? '' : this.quotationService.rowData[6]" readonly>
+                    <input type="text" class="form-control form-control-sm col-sm-8" [value]="quoteList.contractor" readonly>
                 </div>
             </div>
             <div class="form-row custom-row-inline-inset">
                 <div class="input-group alignment">
                     <label class="form-control-sm col-sm-2 text-right">Insured</label>
-                    <input type="text" class="form-control form-control-sm col-sm-10" [value]="this.quotationService.rowData[7] == undefined ? '' : this.quotationService.rowData[7]" readonly>
+                    <input type="text" class="form-control form-control-sm col-sm-10" [value]="quoteList.insured" readonly>
                 </div>
             </div>
             <div class="form-row custom-row-inline-inset">
                  <div class="input-group alignment">
                     <label class="form-control-sm col-sm-2 text-right">Risk</label>
-                    <input type="text" class="form-control form-control-sm col-sm-10" [value]="this.quotationService.rowData[8] == undefined ? '' : this.quotationService.rowData[8]" readonly>
+                    <input type="text" class="form-control form-control-sm col-sm-10" [value]="quoteList.risk" readonly>
                 </div>
             </div>
              <div class="form-row custom-row-inline-inset">
                  <div class="input-group alignment">
                     <label class="form-control-sm col-sm-2 text-right">Location</label>
-                    <input type="text" class="form-control form-control-sm col-sm-10" [value]="this.quotationService.rowData[10] == undefined ? '' : this.quotationService.rowData[10]" readonly>
+                    <input type="text" class="form-control form-control-sm col-sm-10" [value]="quoteList.location" readonly>
                 </div>
             </div>
              <div class="form-row custom-row-inline-inset">
                 <div class="input-group alignment">
                     <label class="form-control-sm col-sm-2 text-right">Object</label>
-                    <input type="text" class="form-control form-control-sm col-sm-4" [value]="this.quotationService.rowData[9] == undefined ? '' : this.quotationService.rowData[9]" readonly>
+                    <input type="text" class="form-control form-control-sm col-sm-4" [value]="quoteList.object" readonly>
                     <label class="form-control-sm col-sm-2 text-right">Currency</label>
-                    <input type="text" name="" class="form-control form-control-sm col-sm-4" [value]="this.quotationService.rowData[12] == undefined ? '' : this.quotationService.rowData[12]" readonly> 
+                    <input type="text" name="" class="form-control form-control-sm col-sm-4" [value]="quoteList.currency" readonly> 
                 </div>
             </div>
             <br>

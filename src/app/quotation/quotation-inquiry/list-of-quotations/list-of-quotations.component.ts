@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { QuotationList } from '@app/_models';
 import { QuotationService } from '../../../_services';
 
 @Component({
@@ -18,12 +19,7 @@ export class ListOfQuotationsComponent implements OnInit {
     i: number;
     a: any;
     line: string = "";
-    
-    //temporary values
-    quoteDate: Date;
-    validUntil: Date;
-    requestedBy: string;
-    createdBy: string;
+    quoteList: QuotationList = new QuotationList(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
     
     constructor(private quotationService: QuotationService, private router: Router) { 
         this.pageLength = 10;
@@ -43,11 +39,6 @@ export class ListOfQuotationsComponent implements OnInit {
         this.tHeader.push("Location");
         this.tHeader.push("Policy Number");
         this.tHeader.push("Currency");
-        //remove this
-        /* this.tHeader.push("Quote Date");
-        this.tHeader.push("Validity Date");
-        this.tHeader.push("Requested By");
-        this.tHeader.push("Created By");*/
 
         this.filters.push("Quotation No.");
         this.filters.push("Type of Cession");
@@ -76,22 +67,22 @@ export class ListOfQuotationsComponent implements OnInit {
         this.dataTypes.push("text");
         this.dataTypes.push("text");
         this.dataTypes.push("text");
-        //remove this
-        /* this.dataTypes.push("date");
-        this.dataTypes.push("date");
-        this.dataTypes.push("text");
-        this.dataTypes.push("text");*/
 
         this.tableData = this.quotationService.getQuotationListInfo();
+        this.tableData.forEach(function(e){
+            delete e.quoteDate;
+            delete e.validityDate;
+            delete e.createdBy;
+            delete e.requestedBy;
+        });
+        this.allData = this.quotationService.getQuotationListInfo();
     }
     onRowClick(event) {
         for(var i = 0; i < event.target.parentElement.children.length; i++) {
             this.quotationService.rowData[i] = event.target.parentElement.children[i].innerText;
         }
-        this.quoteDate = new Date();
-        this.validUntil = new Date();
-        this.requestedBy = "Inigo Flores";
-        this.createdBy = "cuaresma";
+        
+        this.quoteList = this.allData[event.path[1].rowIndex - 1];
     }
 
     onRowDblClick(event) {
