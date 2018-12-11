@@ -1,5 +1,5 @@
 <div class="cust-tabs-container">
-    <h4>Quotation / Quotation to hold Cover</h4>
+    <h4>Quotation / Quotation to Hold Cover</h4>
     <br>
     <div class="row">
         <div class="col-sm-2"></div>
@@ -14,14 +14,14 @@
                         </div>
                         <div class="input-group">
                             <div class="input-group">
-                                <label class="form-control-sm col-sm-2">PAR No</label>
-                                <input type="text" class="form-control form-control-sm">
+                                <label class="form-control-sm col-sm-2">Quotation No</label>
+                                <input type="text" class="form-control form-control-sm" [(ngModel)]="quoteLine">
                                 <input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
                                 <input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
                                 <input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
                                 <input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
                                 <span>&nbsp;</span>
-                                <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+                                <div class="text-search-ico"><a (click)="search()"><i class="fa fa-search"></i></a></div>
                             </div>
                             <div class="input-group">
                                 <label class="form-control-sm col-sm-2">Ceding Company</label>
@@ -99,4 +99,14 @@
         </div>
     </div>
 
+    <app-modal class="hidden" >
+    <div header>List of Values</div>
+    <div body>
+        <app-cust-table [tableData]="tableData" [tHeader]="tHeader"></app-cust-table>
+    </div>
+    <div footer>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+    </div>
+    </app-modal>
 

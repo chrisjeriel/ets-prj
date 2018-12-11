@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HoldCoverInfo } from '../../_models/HoldCover';
+import { QuotationService } from '../../_services';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+
 
 @Component({
   selector: 'app-hold-cover',
@@ -8,11 +11,24 @@ import { HoldCoverInfo } from '../../_models/HoldCover';
 })
 export class HoldCoverComponent implements OnInit {
 
+tableData: any[] = [];
+tHeader: any[] = [];
+quoteLine:any;
 private holdCover: HoldCoverInfo;
-	
-  constructor() { }
+
+  constructor( private quotationService: QuotationService,private modalService: NgbModal) { }
 
   ngOnInit() {
+
+    this.tHeader.push("Quotation No");
+    this.tHeader.push("Ceding Company");
+    this.tHeader.push("Insured");
+    this.tHeader.push("Risk");
+
+    this.tableData = this.quotationService.getListOfValuesHoldCover();
+  
+
+
   	this.holdCover = new HoldCoverInfo();
   	this.holdCover.quotationNo = 1;
   	this.holdCover.insured ="MOCK TEST";
@@ -25,6 +41,21 @@ private holdCover: HoldCoverInfo;
   	this.holdCover.requestedBy = "MOCK TEST";
   	this.holdCover.requestDate = new Date();
 
+  }
+
+  search(){
+    if (this.quoteLine === 'CAR' || 
+        this.quoteLine === 'EAR' || 
+        this.quoteLine === 'EEI' || 
+        this.quoteLine === 'CEC' || 
+        this.quoteLine === 'MBI' || 
+        this.quoteLine === 'BPV' || 
+        this.quoteLine === 'MLP' || 
+        this.quoteLine === 'DOS') {
+
+         $('#modalBtn').trigger('click'); 
+    }
+       
   }
 
 }
