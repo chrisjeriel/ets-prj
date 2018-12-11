@@ -157,12 +157,14 @@ export class UnderwritingService {
         return this.printerList;
     }
     
-    getALOPItemInfos(){
+    getALOPItemInfos(car:string){
         this.aLOPItemInfos = [
             new ALOPItemInformation(1,5,"desc","rel import","min loss"),
             new ALOPItemInformation(2,7,"description","relative import","min loss")
         ]
-        this.aLOPItemInfos.forEach(function(itm){delete itm.relativeImportance;});
+        if(car =="CAR"){
+            this.aLOPItemInfos.forEach(function(itm){delete itm.relativeImportance;});
+        }
         return this.aLOPItemInfos;
     }
 
