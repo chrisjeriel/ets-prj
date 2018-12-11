@@ -18,7 +18,13 @@ export class ListOfQuotationsComponent implements OnInit {
     i: number;
     a: any;
     line: string = "";
-
+    
+    //temporary values
+    quoteDate: Date;
+    validUntil: Date;
+    requestedBy: string;
+    createdBy: string;
+    
     constructor(private quotationService: QuotationService, private router: Router) { 
         this.pageLength = 10;
     }
@@ -81,8 +87,11 @@ export class ListOfQuotationsComponent implements OnInit {
     onRowClick(event) {
         for(var i = 0; i < event.target.parentElement.children.length; i++) {
             this.quotationService.rowData[i] = event.target.parentElement.children[i].innerText;
-            console.log(event.target.parentElement.children[i].innerText);
         }
+        this.quoteDate = new Date();
+        this.validUntil = new Date();
+        this.requestedBy = "Inigo Flores";
+        this.createdBy = "cuaresma";
     }
 
     onRowDblClick(event) {
