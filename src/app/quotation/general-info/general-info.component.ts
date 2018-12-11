@@ -66,18 +66,18 @@ export class GeneralInfoComponent implements OnInit {
 		} else {
 			this.quotationGenInfo = new QuotationGenInfo();
 			this.quotationGenInfo.line = "";
-			this.quotationGenInfo.year = new Date().getFullYear();
+			this.quotationGenInfo.year;
 			this.quotationGenInfo.seqNo;
 			this.quotationGenInfo.reqSeq;
 			this.quotationGenInfo.histNo = "";
 			this.quotationGenInfo.branch = "";
 			this.quotationGenInfo.lineClass = "";
-			this.quotationGenInfo.policyNumber = 0;
+			this.quotationGenInfo.policyNumber;
 			this.quotationGenInfo.printedBy = "";
 			this.quotationGenInfo.printDate;
 			this.quotationGenInfo.cedingCompany = "";
 			this.quotationGenInfo.quoteStatus = "";
-			this.quotationGenInfo.quoteDate = new Date();
+			this.quotationGenInfo.quoteDate;
 			this.quotationGenInfo.validUntil;
 			this.quotationGenInfo.requestedBy = "";
 			this.quotationGenInfo.requestedDate;
