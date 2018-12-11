@@ -1,14 +1,16 @@
 export class HoldCoverInfo {
-	quotationNo: number;
-	insured: string;
-	risk: string;
-	holdCoverNo: number;
-	compRefHoldCoverNo: number;
-	status: string;
-	periodFrom: Date;
-	periodTo: Date
+	quotationNo: String;
+	cedingCompany: string;
+	insured:string;
+	risk:string;
+	holdCoverNo:string;
+	periodFrom:Date;
+	coRefHoldCoverNo: string;
+	periodTo: Date;
 	requestedBy: string;
-	requestDate: Date; 
+	requestDate: Date;
+	status: string;
+
 }
 
 export class QuotationHoldCover {

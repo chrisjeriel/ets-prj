@@ -27,19 +27,18 @@ private holdCover: HoldCoverInfo;
 
     this.tableData = this.quotationService.getListOfValuesHoldCover();
   
-
-
   	this.holdCover = new HoldCoverInfo();
-  	this.holdCover.quotationNo = 1;
+  	this.holdCover.quotationNo = "MOCK TEST";
+    this.holdCover.cedingCompany = "MOCK TEST";
   	this.holdCover.insured ="MOCK TEST";
   	this.holdCover.risk = "MOCK TEST";
-  	this.holdCover.holdCoverNo = 1;
-  	this.holdCover.compRefHoldCoverNo = 1;
-  	this.holdCover.status = "MOCK TEST";
-  	this.holdCover.periodFrom = new Date();
+  	this.holdCover.holdCoverNo = "MOCK TEST";
+    this.holdCover.periodFrom = new Date();
+  	this.holdCover.coRefHoldCoverNo = "MOCK TEST";
   	this.holdCover.periodTo = new Date();
-  	this.holdCover.requestedBy = "MOCK TEST";
-  	this.holdCover.requestDate = new Date();
+    this.holdCover.requestedBy = "MOCK TEST";
+    this.holdCover.requestDate = new Date();
+    this.holdCover.status = "MOCK TEST";
 
   }
 
