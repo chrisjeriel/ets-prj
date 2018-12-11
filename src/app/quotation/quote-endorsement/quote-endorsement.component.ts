@@ -15,7 +15,7 @@ export class QuoteEndorsementComponent implements OnInit {
 
   quoteOptionTableData: any[] = [];
   quoteOptionTHeader : any[] = ['Option No','Rate(%)','Conditions','Comm Rate Quota(%)', 'Comm Rate Surplus(%)','Comm Rate Fac(%)'];
-  quoteOptionDataType: any[] = ['text','percent','text','percent','percent','percent'];
+  quoteOptionDataType: any[] = ['text','percent','text','percent','percent','percent','percent'];
   quoteOptionNData: QuotationOption = new QuotationOption(null,null,null,null,null,null);
   quoteOptionMagnifyingGlass:any[] = ['conditions'];
   quoteOptionEdited:QuotationOption[]=[];  

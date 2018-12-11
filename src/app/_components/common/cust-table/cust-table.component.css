@@ -111,3 +111,6 @@ div.input-group {
 	pointer-events: none;
 }
 
+.number{
+    float:right;
+}
