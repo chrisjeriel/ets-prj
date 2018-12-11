@@ -12,26 +12,23 @@ export class PolEndorsementComponent implements OnInit {
 
     dtOptions: DataTables.Settings = {};
     tableData: any[] = [];
-    tHeader: any[] = [];
     options: any[] = [];
     dataTypes: any[] = [];
-    magnifyingGlass: any[]=["endtTitle"];
-    nData: QuoteEndorsement = new QuoteEndorsement(null, null, null);
+    magnifyingGlass: any[]=["endtCode"];
+    nData: QuoteEndorsement = new QuoteEndorsement(null, null, null, null, null);
+
+    tHeader: any[] = ['Endt Code','Endt Title', 'Endt Description', 'Wording'];
     
     @Input() alteration: boolean;
 
-   constructor(config: NgbDropdownConfig, private quotationService: QuotationService) { 
-  	config.placement = 'bottom-right';
-    config.autoClose = false;
-  }
+       constructor(config: NgbDropdownConfig, private quotationService: QuotationService) { 
+      	config.placement = 'bottom-right';
+        config.autoClose = false;
+     }
 
     ngOnInit() : void{
-        this.tHeader.push("Endt Title");
-        this.tHeader.push("Endt Description");
-        this.tHeader.push("Wording");
-        this.tHeader.push("Edit Flag");
         
-        this.tableData = this.quotationService.getEndorsements();
+        this.tableData = this.quotationService.getEndorsements(1);
     }
     
     onClickCancel(){

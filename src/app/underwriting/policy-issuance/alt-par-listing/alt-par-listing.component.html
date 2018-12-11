@@ -1,13 +1,13 @@
 <div class="cust-tabs-container">
-	<h4>Underwriting / Policy Issuance</h4>
+	<h4>Policy / Policy Issuance</h4>
 	<ngb-tabset>
-	  <ngb-tab class="ngb-tab" title="Alteration PAR Listing">
+	  <ngb-tab class="ngb-tab" title="Alteration List">
 	    <ng-template ngbTabContent>
 
 	    	<!-- <app-cust-editable-table [addFlag]="true" [editFlag]="true" [deleteFlag]="false" [nData]="nData" [tableData]="tableData" [tHeader]="tHeader"></app-cust-editable-table> -->
 			<br />
-	    	<button class="cust-btn" routerLink="/policy-issuance-alt"><a>Add</a></button>
-			<button class="cust-btn" routerLink="/policy-issuance-alt"><a>Edit</a></button>
+			<button class="cust-btn" [routerLink]="['/create-alteration']"><a>Add</a></button>
+			<button class="cust-btn" [routerLink]="['/policy-issuance-alt', {line:'CAR'}]"><a>Edit</a></button>
 
 	    	<app-cust-table [filters]="filters" [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes"></app-cust-table>
 

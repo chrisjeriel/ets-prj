@@ -84,10 +84,20 @@ export class QuotationProcessingComponent implements OnInit {
   }
 
   nextBtnEvent() {
-    this.modalService.dismissAll();
-    this.quotationService.toGenInfo = [];
-    this.quotationService.toGenInfo.push("add", this.line);
-    this.router.navigate(['/quotation']);
+    if (this.line === 'CAR' || 
+        this.line === 'EAR' || 
+        this.line === 'EEI' || 
+        this.line === 'CEC' || 
+        this.line === 'MBI' || 
+        this.line === 'BPV' || 
+        this.line === 'MLP' || 
+        this.line === 'DOS') {
+      this.modalService.dismissAll();
+      this.quotationService.toGenInfo = [];
+      this.quotationService.toGenInfo.push("add", this.line);
+      this.router.navigate(['/quotation']);
+    }
+
   }
 
   onRowClick(event) {

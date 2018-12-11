@@ -58,19 +58,19 @@
                 </ngb-panel>
                 <ngb-panel>
                     <ng-template ngbPanelTitle>
-                        <fa name="list-ul"></fa>&nbsp;Underwriting
+                        <fa name="list-ul"></fa>&nbsp;Policy
                     </ng-template>
                     <ng-template ngbPanelContent>
                         <ngb-accordion #acc="ngbAccordion">
-                            <ngb-panel title="Policy Issuance">
+                            <ngb-panel title="Issuance">
                                 <ng-template ngbPanelContent>
                                     <button [routerLink]="['/create-policy']" class="button btn btn-link">Create Policy</button>
                                     <br/>
-                                    <button [routerLink]="['/par-listing']" class="button btn btn-link">Policy Listing</button>
+                                    <button [routerLink]="['/policy-listing']" class="button btn btn-link">Policy List</button>
                                     <br/>
-                                    <button [routerLink]="['/createAlterationPAR']" class="button btn btn-link">Create Alteration</button>
+                                    <button [routerLink]="['/create-alteration']" class="button btn btn-link">Create Alteration</button>
                                     <br/>
-                                    <button [routerLink]="['/alt-par-listing']" class="button btn btn-link">Alteration List</button>
+                                    <button [routerLink]="['/alt-policy-listing']" class="button btn btn-link">Alteration List</button>
                                 </ng-template>
                             </ngb-panel>
                             <ngb-panel title="Distribution">
@@ -85,12 +85,18 @@
                                     <br/>
                                 </ng-template>
                             </ngb-panel>
-                            <ngb-panel title="Renewal Processing">
+                            <ngb-panel title="Inquiry">
+                                <ng-template ngbPanelContent>
+                                    <button [routerLink]="['/policy-inquiry']" class="button btn btn-link">Policy Inquiry</button>
+                                    <br />
+                                </ng-template>
                             </ngb-panel>
                             <ngb-panel title="Generate Documents">
                                  <ng-template ngbPanelContent>
                                     <button [routerLink]="['/policy-printing']" class="button btn btn-link">Policy Printing</button>  
                                 </ng-template>  
+                            </ngb-panel>
+                            <ngb-panel title="Maintenance">
                             </ngb-panel>
                         </ngb-accordion>
                     </ng-template>
@@ -120,11 +126,19 @@
         <section class="demo-contents">
             <div class="">
                 <nav class="navbar navbar-expand-lg navbar-light cust-nav-bar-bg justify-content-end" *ngIf="currentUser">
-                    <a class="nav-item nav-link" style="position: absolute; left: 0px;" (click)="_toggleOpened()"><fa name="bars"></fa></a>
+                    <a class="nav-item nav-link" style="position: absolute; left: 0px;" (click)="_toggleOpened()">
+                        <fa name="bars"></fa>
+                    </a>
                     <div class="navbar-nav">
-                        <a class="nav-item nav-link" routerLink="/"><fa name="home" placement="bottom" ngbTooltip="Home"></fa></a>
-                        <a class="nav-item nav-link" routerLink="/notes"><fa name="bell" placement="bottom" ngbTooltip="Notes & Reminders"></fa></a>
-                        <a class="nav-item nav-link" (click)="logout()"><fa name="sign-out" placement="bottom" ngbTooltip="Logout"></fa></a>
+                        <a class="nav-item nav-link" routerLink="/">
+                            <fa name="home" placement="bottom" ngbTooltip="Home"></fa>
+                        </a>
+                        <a class="nav-item nav-link" routerLink="/notes">
+                            <fa name="bell" placement="bottom" ngbTooltip="Notes & Reminders"></fa>
+                        </a>
+                        <a class="nav-item nav-link" (click)="logout()">
+                            <fa name="sign-out" placement="bottom" ngbTooltip="Logout"></fa>
+                        </a>
                     </div>
                 </nav>
                 <div style="text-align: center">
@@ -133,8 +147,11 @@
                         <router-outlet></router-outlet>
                     </div>
                 </div>
-                
+
             </div>
         </section>
     </div>
 </ng-sidebar-container>
+
+
+

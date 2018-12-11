@@ -14,7 +14,7 @@ export class QuoteOptionComponent implements OnInit {
   private quotationOtherRates: QuotationOtherRates;
 
   quoteOptionTableData: any[] = [];
-  quoteOptionTHeader : any[] = ['Option No','Rate(%)','Conditions','Comm Rate Fac(%)','Comm Rate Quota(%)', 'Comm Rate Surplus(%)'];
+  quoteOptionTHeader : any[] = ['Option No','Rate(%)','Conditions','Comm Rate Quota(%)', 'Comm Rate Surplus(%)','Comm Rate Fac(%)'];
   quoteOptionDataType: any[] = ['text','percent','text','percent','percent','percent'];
   quoteOptionNData: QuotationOption = new QuotationOption(null,null,null,null,null,null);
   magnifyingGlass:any[] = ['conditions'];
@@ -22,9 +22,10 @@ export class QuoteOptionComponent implements OnInit {
 
 
   otherRatesTableData: any[] = [];
-  otherRatesTHeader: any[] = ['Others', 'Amounts', 'Deductible/Remarks'];
+  otherRatesTHeader: any[] = ['Others', 'Amounts', 'Deductible'];
   otherRatesDataType:any[] = ['text','currency','text'];
-  otherRatesNData: QuotationOtherRates = new QuotationOtherRates(null,null,null);
+  otherRatesMagnify: any[] = ['others','deductible'];
+  otherRatesNData: QuotationOtherRates = new QuotationOtherRates(null,null,null,null);
 
   constructor(private quotationService: QuotationService) { }
 
@@ -34,13 +35,17 @@ export class QuoteOptionComponent implements OnInit {
   	this.quotationInfo.insuredName ="Insured Name";
 
     this.quoteOptionTableData = this.quotationService.getQuoteOptions();
-    this.otherRatesTableData = this.quotationService.getQuotataionOtherRates();
+    this.otherRatesTableData = this.quotationService.getQuotataionOtherRates(1);
   }
   
   save(){
   	console.log(this.quoteOptionEdited);
   }
 
+  clickRow(event){
+    console.log(event.path[1].cells[1].childNodes[0].children[1].value);
+    this.otherRatesTableData = this.quotationService.getQuotataionOtherRates(event.path[1].cells[1].childNodes[0].children[1].value);
+  }
 
 
 }

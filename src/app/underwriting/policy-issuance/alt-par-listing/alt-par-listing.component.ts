@@ -17,7 +17,7 @@ export class AltParListingComponent implements OnInit {
   ngOnInit() {
   	this.tHeader.push("PAR No");
   	this.tHeader.push("Status");
-  	this.tHeader.push("Branch");
+  	this.tHeader.push("Type of Cession");
   	this.tHeader.push("Line Class");
   	this.tHeader.push("Ceding Company");
   	this.tHeader.push("Principal");
@@ -26,7 +26,7 @@ export class AltParListingComponent implements OnInit {
 
   	this.filters.push("PAR No");
   	this.filters.push("Status");
-  	this.filters.push("Branch");
+  	this.filters.push("Type of Cession");
   	this.filters.push("Line Class");
   	this.filters.push("Ceding Company");
   	this.filters.push("Principal");

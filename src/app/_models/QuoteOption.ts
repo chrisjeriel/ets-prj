@@ -4,29 +4,31 @@ export class QuotationInfo {
 }
 
 export class QuotationOption{
-	optionNo: string;
+	optionNo: number;
 	rate: number;
 	conditions:string;
-	commRateFac:number;
 	commRateQuota:number;
 	commRateSurplus:number;
-	constructor(optionNo: string,rate: number,conditions:string,commRateFac:number,commRateQuota:number,commRateSurplus:number){
+	commRateFac:number;
+	constructor(optionNo: number,rate: number,conditions:string,commRateQuota:number,commRateSurplus:number,commRateFac:number){
 		this.optionNo=optionNo;
 		this.rate=rate;
 		this.conditions=conditions;
-		this.commRateFac=commRateFac;
 		this.commRateQuota=commRateQuota;
 		this.commRateSurplus=commRateSurplus;
+		this.commRateFac=commRateFac;
 	}
 }
 
 export class QuotationOtherRates{
+	optionNo:number;
 	others:string;
 	amounts:number;
-	deductibleRemarks:string;
-	constructor(others:string,amounts:number,deductibleRemarks:string){
+	deductible:string;
+	constructor(optionNo:number,others:string,amounts:number,deductible:string){
+		this.optionNo = optionNo;
 		this.others=others;
 		this.amounts=amounts;
-		this.deductibleRemarks=deductibleRemarks;
+		this.deductible=deductible;
 	}
 }
