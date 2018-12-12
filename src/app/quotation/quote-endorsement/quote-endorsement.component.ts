@@ -49,6 +49,6 @@ export class QuoteEndorsementComponent implements OnInit {
 
   clickRow(event){
     console.log(event);
-    this.tableData = this.quotationService.getEndorsements(event.path[1].cells[1].innerText);
+    this.tableData = this.quotationService.getEndorsements(event.target.closest("tr").children[1].innerText);
   }
 }

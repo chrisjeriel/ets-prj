@@ -94,7 +94,7 @@ export class CustTableComponent implements OnInit {
       event.target.parentElement.parentElement.children[i].style.backgroundColor = "";
     }
 
-    event.target.parentElement.style.backgroundColor = "#67b4fc";
+    event.target.closest("tr").style.backgroundColor = "#67b4fc";
     this.rowClick.next(event);
   }
 
