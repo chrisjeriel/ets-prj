@@ -1,0 +1,120 @@
+<div>
+	<fieldset class="scheduler-border">
+		<legend class="scheduler-border">Quotation Info</legend>
+		<div class="form-row custom-row-inline-inset">
+            <div class="input-group" >
+                <label class="form-control-sm col-sm-2" for="inputQuonum">Quotation No </label>
+                <input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-2" placeholder="CAR-2018-5081-077-0177" disabled="disabled" [ngModel]="this.policyRecordInfo.policyNo">
+                <label class="form-control-sm col-sm-1" for="inputInname" >Insured</label>
+                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-6" placeholder="Insured Name" disabled="disabled">
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-2" for="inputRisk" >Risk</label>
+                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-9" placeholder="Risk" disabled="disabled">
+            </div>
+        </div>
+	</fieldset>
+
+	<fieldset class="scheduler-border col-sm-6 left">
+		<legend class="scheduler-border">Section III</legend>
+		<div class="form-row custom-row-inline-inset">
+			<div class="input-group">
+				<label class="form-control-sm col-sm-2 text-right" for="xx">Insured</label>
+				<input class="form-control form-control-sm  col-sm-2" type="text" name="" [(ngModel)]="aLOPInfo.insured1">
+				<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>&nbsp;
+				<input class="form-control form-control-sm  col-sm-7" type="text" name="" [(ngModel)]="aLOPInfo.insured2">
+			</div>
+			<div class="input-group">
+				<label class="form-control-sm col-sm-2 text-right" for="xx">Address</label>
+				<input class="form-control form-control-sm  col-sm-9" type="text" name="" [(ngModel)]="aLOPInfo.address1">
+			</div>
+			<div class="input-group">
+				<label class="form-control-sm col-sm-2 text-right" for="xx"></label>
+				<input class="form-control form-control-sm  col-sm-9" type="text" name="" [(ngModel)]="aLOPInfo.address2">
+			</div>
+			<div class="input-group">
+				<label class="form-control-sm col-sm-2 text-right" for="xx"></label>
+				<input class="form-control form-control-sm  col-sm-9" type="text" name="" [(ngModel)]="aLOPInfo.address3">
+			</div>
+			<div class="input-group">
+				<label class="form-control-sm col-sm-2 text-right" for="xx">Business</label>
+				<input class="form-control form-control-sm  col-sm-9" type="text" name="" [(ngModel)]="aLOPInfo.business">
+			</div>
+			<div class="input-group">
+				<div class="col-sm-2"></div>
+				<app-modal [btnTitle]="'Item Information'" style="margin-bottom: 2px;">
+					<div header>Item Information</div>	
+            		<div body>
+            			<app-cust-editable-table [addFlag]="true" [deleteFlag]="true" [nData]="nData" [tableData]="tableData" [editFlag]="false" [tHeader]="tHeader" [dataTypes]="dataTypes"></app-cust-editable-table>
+            		</div>
+            		<div footer class="text-center">
+							<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
+							<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Save</a></button>
+            		</div>
+				</app-modal>
+			</div>
+		</div>
+	</fieldset>
+
+	<div class="col-sm-6 right">
+		<div class="col-sm-6 insuredInt">
+			<fieldset class="scheduler-border col-sm-12 ">
+				<legend class="scheduler-border">Insured Interest</legend>
+				<div class="form-row custom-row-inline-inset">
+					<div class="input-group">
+						<label class="form-control-sm col-sm-3 text-right" for="xx">Annual SI</label>
+						<input class="form-control form-control-sm  col-sm-9" type="text" name="" [(ngModel)]="aLOPInfo.amountSI">
+					</div>
+					<div class="input-group">
+						<label class="form-control-sm col-sm-3 text-right" for="xx">Max SI</label>
+						<input class="form-control form-control-sm  col-sm-9" type="text" name="" [(ngModel)]="aLOPInfo.maxSI">
+					</div>
+				</div>
+			</fieldset>
+		</div>
+		<fieldset class="scheduler-border col-sm-6">
+			<legend class="scheduler-border">Period of Issuance</legend>
+			<div class="form-row custom-row-inline-inset">
+				<div class="input-group">
+					<label class="form-control-sm col-sm-3 text-right" for="xx">From Date</label>
+					<input class="form-control form-control-sm  col-sm-9" type="Date" name=""  [(ngModel)]="aLOPInfo.fromDate">
+				</div>
+				<div class="input-group">
+					<label class="form-control-sm col-sm-3 text-right" for="xx">To Date</label>
+					<input class="form-control form-control-sm  col-sm-9" type="Date" name="" [(ngModel)]="aLOPInfo.toDate">
+				</div>
+			</div>
+		</fieldset><br>
+
+		<fieldset class="scheduler-border col-sm-12 maxIndem">
+			<legend class="scheduler-border">Max. Indemnity Period</legend>
+			<div class="form-row custom-row-inline-inset">
+				<div class="input-group">
+					<label class="form-control-sm col-sm-2 text-right">Months</label>
+					<input type="text" name="" class="form-control form-control-sm col-sm-2" [(ngModel)]="aLOPInfo.months">
+					<label class="form-control-sm col-sm-2 text-right">Report Interval</label>
+					<input type="text" name="" class="form-control form-control-sm col-sm-2"  [(ngModel)]="aLOPInfo.reportInterval">
+					<label class="form-control-sm col-sm-1 text-right" style="padding-top: 0px">From Date</label>
+					<input type="date" name="" class="form-control form-control-sm col-sm-3" [(ngModel)]="aLOPInfo.fromDatePeriod">
+				</div>
+				<div class="input-group">
+					<label class="form-control-sm col-sm-2 text-right">Time Excess</label>
+					<input type="text" name="" class="form-control form-control-sm col-sm-10" [(ngModel)]="aLOPInfo.timeExcess">
+				</div>
+			</div>
+		</fieldset>
+	</div>
+
+	<div class="form-row bottom-button-container">
+		<div class="form-group col-sm">
+			<div class="col-md-13 text-center">
+				<br>
+				<div class="cust-btn-container">
+				<button type="button" class="cust-btn"><a>Cancel</a></button>
+				<button type="button" class="cust-btn" (click)="save()"><a>Save</a></button>
+			</div>
+			</div>
+		</div>
+	</div>
+
+</div>			
