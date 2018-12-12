@@ -85,7 +85,8 @@
 			<table id="sample2" datatable [dtOptions]="dtOptions" class="row-border hover">
 				<thead>
 					<tr>
-						<th *ngIf="checkFlag"></th>
+						<th *ngIf="checkFlag"><div class="check"><input type="checkbox" name="checkbox"></div></th>
+						
 						<th *ngFor="let tHeader of tHeader">
 							<span class="ui-column-resizer" (mousedown)="onMouseDown($event)"></span>
 							<span class="gridHeader">{{tHeader}}</span>
@@ -132,8 +133,8 @@
 							</select>
 						</td>
 						<td *ngIf="tHeader.indexOf('Actions')!=-1" class="icon">
-							<button class="fa fa-upload" title="Upload"></button>
-							<button class="fa fa-download" title="Download"></button>
+							<button class="fa fa-paperclip" title="Attach File"></button>
+							<button class="fa fa-folder-open" title="Open File"></button>
 						</td>
 					</tr>
 				</tbody>

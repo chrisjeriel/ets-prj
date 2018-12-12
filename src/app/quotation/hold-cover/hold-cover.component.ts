@@ -34,12 +34,13 @@ private holdCover: HoldCoverInfo;
   	this.holdCover.risk = "MOCK TEST";
   	this.holdCover.holdCoverNo = "MOCK TEST";
     this.holdCover.periodFrom = new Date();
-  	this.holdCover.coRefHoldCoverNo = "MOCK TEST";
-  	this.holdCover.periodTo = new Date();
     this.holdCover.requestedBy = "MOCK TEST";
+    this.holdCover.periodTo = new Date();
     this.holdCover.requestDate = new Date();
+  	this.holdCover.coRefHoldCoverNo = "MOCK TEST";
+  	this.holdCover.preparedBy="MOCK TEST"
     this.holdCover.status = "MOCK TEST";
-
+    this.holdCover.approvedBy= "MOCK TEST";
   }
 
   search(){

@@ -1,7 +1,7 @@
 th, td{
     white-space: nowrap;
-    min-width: 0px;
-    max-width: 1px;
+/*    min-width: 0px;
+    max-width: 1px;*/
     overflow: hidden;
 }
 .table-scroll{
@@ -147,4 +147,8 @@ div.input-group {
 
 .icon .fa:not(:first-child) {
 	margin-left: 5px;
+}
+
+.check {
+	width: 6px;
 }

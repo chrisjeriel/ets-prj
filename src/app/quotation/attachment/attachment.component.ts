@@ -19,7 +19,7 @@ export class AttachmentComponent implements OnInit {
   options: any[] = [];
   dataTypes: any[] = [];
   nData: AttachmentInfo = new AttachmentInfo(null, null);
-
+  test:boolean =true;
   private attachmentInfo : AttachmentInfo;
 
   constructor(config: NgbDropdownConfig,
@@ -30,16 +30,15 @@ export class AttachmentComponent implements OnInit {
 
   ngOnInit() : void {
 
-  	this.tHeader.push("File Path");
+  	this.tHeader.push("File Name");
   	this.tHeader.push("Description");
-  	this.tHeader.push("Table Code");
   	this.tHeader.push("Actions");
 
-  	this.options.push("");
-  	this.options.push("Q - Quotation");
-  	this.options.push("P - Policy");
-  	this.options.push("C - Claim");
-  	this.options.push("A - Accounting");
+  	// this.options.push("");
+  	// this.options.push("Q - Quotation");
+  	// this.options.push("P - Policy");
+  	// this.options.push("C - Claim");
+  	// this.options.push("A - Accounting");
 
   	// this.dataTypes.push("text");
   	// this.dataTypes.push("text");

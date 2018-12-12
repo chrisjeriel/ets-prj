@@ -5,11 +5,13 @@ export class HoldCoverInfo {
 	risk:string;
 	holdCoverNo:string;
 	periodFrom:Date;
-	coRefHoldCoverNo: string;
-	periodTo: Date;
 	requestedBy: string;
+	periodTo: Date;
 	requestDate: Date;
+	coRefHoldCoverNo: string;
+	preparedBy:string;
 	status: string;
+	approvedBy:string;
 
 }
 

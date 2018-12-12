@@ -108,7 +108,14 @@ export class QuotationService {
             new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project"),
             new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project"),
             new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project"),
-            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project")
+            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project"),
+            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project"),
+            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project"),
+            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project"),
+            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project"),
+            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project"),
+            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project"),
+            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project"),
         ];
 
         return this.attachmentInfoData;
@@ -212,6 +219,13 @@ export class QuotationService {
             new QuotationHoldCover("CAR-2018-00066-00-31", "PIONEER ASIA INSURANCE CORP", "ACK Construction, Inc.", "Equitable Tower"),
             new QuotationHoldCover("EAR-2018-02344-00-47", "Tan-Galute Adjustment Co., Inc", "A. C. Mojares Construction", "Metromart Cmplx"),
             new QuotationHoldCover("EAR-2018-00075-00-66", "Sentinel ", "ACM Builders", "Tariff Comm Bld"),
+            new QuotationHoldCover("CAR-2018-00090-00-69", "Trust Assurance ", "A. Consteel Construction", "JG Summit/Gourm"),
+            new QuotationHoldCover("CAR-2018-00090-00-69", "Trust Assurance ", "A. Consteel Construction", "JG Summit/Gourm"),
+            new QuotationHoldCover("CAR-2018-00090-00-69", "Trust Assurance ", "A. Consteel Construction", "JG Summit/Gourm"),
+            new QuotationHoldCover("CAR-2018-00090-00-69", "Trust Assurance ", "A. Consteel Construction", "JG Summit/Gourm"),
+            new QuotationHoldCover("CAR-2018-00090-00-69", "Trust Assurance ", "A. Consteel Construction", "JG Summit/Gourm"),
+            new QuotationHoldCover("CAR-2018-00090-00-69", "Trust Assurance ", "A. Consteel Construction", "JG Summit/Gourm"),
+            new QuotationHoldCover("CAR-2018-00090-00-69", "Trust Assurance ", "A. Consteel Construction", "JG Summit/Gourm"),
             new QuotationHoldCover("CAR-2018-00090-00-69", "Trust Assurance ", "A. Consteel Construction", "JG Summit/Gourm"),
         ];
 
