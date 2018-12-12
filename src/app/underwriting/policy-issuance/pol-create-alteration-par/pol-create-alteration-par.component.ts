@@ -61,7 +61,11 @@ export class PolCreateAlterationPARComponent implements OnInit {
 
 
   fromHoldCover(){
-    this.fromQuotation = !this.fromQuotation;
+    this.fromQuotation = false;
+  }
+
+  fromQuotationList(){
+    this.fromQuotation = true;
   }
 
   navigateToGenInfo() {
