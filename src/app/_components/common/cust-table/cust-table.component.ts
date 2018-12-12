@@ -122,6 +122,7 @@ export class CustTableComponent implements OnInit {
       }
     });
     this.renderer.listenGlobal('body', 'mouseup', (event) => {
+        $('#cust-datatable').DataTable().draw();
       if(this.pressed) {
         this.pressed = false;
       }
