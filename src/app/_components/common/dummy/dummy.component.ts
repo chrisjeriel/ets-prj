@@ -1,14 +1,18 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { QuotationService } from '../../../_services';
 import { DummyInfo } from '../../../_models';
+import { ModalComponent } from '../../../_components/common/modal/modal.component';
+
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 @Component({
     selector: 'app-dummy',
     templateUrl: './dummy.component.html',
     styleUrls: ['./dummy.component.css']
 })
-export class DummyComponent implements OnInit {
-    @ViewChild('content') content; 
+export class DummyComponent implements OnInit, AfterViewInit {
+    //@ViewChild('content') content;
+    @ViewChild(ModalComponent) modalComp: ModalComponent;
+    
     tableData: any[] = [];
     tableData2: any[] = [];
     tHeader: any[] = [];
@@ -37,6 +41,14 @@ export class DummyComponent implements OnInit {
         
         this.tableData = this.quotationService.getDummyInfo();
         this.tableData2 = this.quotationService.getDummyEditableInfo();
+    }
+    
+    ngAfterViewInit(){
+        console.log(this.modalComp.test);
+    }
+    open(){
+        this.modalService.dismissAll();
+        this.modalService.open(this.modalComp.test, { centered: true, backdrop: 'static', windowClass : "this.modalSize" });
     }
     openAgain(){
         this.modalService.dismissAll();

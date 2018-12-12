@@ -24,6 +24,7 @@ export class ChangeQuoteStatusComponent implements OnInit {
         
         //temporary
         this.tableData.push(["CAR-2015-0002832-01", "Retrocession", "Malayan", "5K Builders & ABE International Corp", "ABC Building"]);     
+        /*this.tableData.push([" ", " ", " ", " ", " "]);
         this.tableData.push([" ", " ", " ", " ", " "]);
         this.tableData.push([" ", " ", " ", " ", " "]);
         this.tableData.push([" ", " ", " ", " ", " "]);
@@ -31,8 +32,7 @@ export class ChangeQuoteStatusComponent implements OnInit {
         this.tableData.push([" ", " ", " ", " ", " "]);
         this.tableData.push([" ", " ", " ", " ", " "]);
         this.tableData.push([" ", " ", " ", " ", " "]);
-        this.tableData.push([" ", " ", " ", " ", " "]);
-        this.tableData.push([" ", " ", " ", " ", " "]);
+        this.tableData.push([" ", " ", " ", " ", " "]);*/
         //end temporary
     }
     

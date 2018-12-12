@@ -13,6 +13,7 @@ export class ListOfQuotationsComponent implements OnInit {
     tableData: any[] = [];
     allData: any[] = [];
     tHeader: any[] = [];
+    resizables: boolean[] = [];
     dataTypes: any[] = [];
     filters: any[] = [];
     pageLength: number;
@@ -36,8 +37,8 @@ export class ListOfQuotationsComponent implements OnInit {
         this.tHeader.push("Insured");
         this.tHeader.push("Risk");
         this.tHeader.push("Object");
-        this.tHeader.push("Location");
-        this.tHeader.push("Policy Number");
+        this.tHeader.push("Site");
+        this.tHeader.push("Policy No.");
         this.tHeader.push("Currency");
 
         this.filters.push("Quotation No.");
@@ -50,10 +51,24 @@ export class ListOfQuotationsComponent implements OnInit {
         this.filters.push("Insured");
         this.filters.push("Risk");
         this.filters.push("Object");
-        this.filters.push("Location");
-        this.filters.push("Policy Number");
+        this.filters.push("Site");
+        this.filters.push("Policy No.");
         this.filters.push("Currency");
 
+        this.resizables.push(false);
+        this.resizables.push(false);
+        this.resizables.push(true);
+        this.resizables.push(true);
+        this.resizables.push(true);
+        this.resizables.push(true);
+        this.resizables.push(true);
+        this.resizables.push(true);
+        this.resizables.push(true);
+        this.resizables.push(true);
+        this.resizables.push(true);
+        this.resizables.push(false);
+        this.resizables.push(false);
+        
         this.dataTypes.push("text");
         this.dataTypes.push("text");
         this.dataTypes.push("text");

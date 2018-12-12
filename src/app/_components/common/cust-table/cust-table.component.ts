@@ -16,11 +16,12 @@ import { IntCompAdvInfo } from '../../../_models';
 export class CustTableComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   @Input() tableData: any[] = [];
+  @Input() resizable: boolean[] = [];
   @Input() tHeader: any[] = [];
   @Input() expireFilter: boolean;
   @Input() dataTypes: any[] = [];
   @Input() filters: any[] = [];
-  @Input() pageLength: number;
+  @Input() pageLength: number = 10;
   @Input() checkFlag: boolean;
   @Input() tableOnly: boolean = false;
 
@@ -45,12 +46,51 @@ export class CustTableComponent implements OnInit {
              this.dtOptions = {
                 pagingType: 'full_numbers',
                 pageLength: this.pageLength,
+                lengthChange: false,
                 dom: 'tp',
+                drawCallback: function( settings ) {
+                        //for maintaining the same height every page, 
+                        //add empty row to table 
+                        var api = this.api();
+                        var currentPageDataSet = api.rows( {page:'current'} ).data() ;
+                        if(currentPageDataSet.length < settings.oInit.pageLength){     
+                            var $tbody = $('#cust-datatable tbody');
+                            for(var i = 0; i< settings.oInit.pageLength - currentPageDataSet.length; i++){
+                                var isEven = (currentPageDataSet.length+(i+1))%2 === 0;
+                                var $tr = (isEven)? $('<tr role="row" class="even"></tr>') : $('<tr role="row"  class="odd"></tr>');
+                                for(var j=0; j< currentPageDataSet[0].length; j++){
+                                    $tr.append('<td style="color:white;" >_</td>');
+                                }
+                                $tbody.append($tr);
+                            }
+                        }
+
+                    }
             };
         }else{
             this.dtOptions = {
                 pagingType: 'full_numbers',
                 pageLength: this.pageLength,
+                lengthChange: false,
+                scrollX: true,
+                drawCallback: function( settings ) {
+                        //for maintaining the same height every page, 
+                        //add empty row to table 
+                        var api = this.api();
+                        var currentPageDataSet = api.rows( {page:'current'} ).data() ;
+                        if(currentPageDataSet.length < settings.oInit.pageLength){     
+                            var $tbody = $('#cust-datatable tbody');
+                            for(var i = 0; i< settings.oInit.pageLength - currentPageDataSet.length; i++){
+                                var isEven = (currentPageDataSet.length+(i+1))%2 === 0;
+                                var $tr = (isEven)? $('<tr role="row" class="even"></tr>') : $('<tr role="row"  class="odd"></tr>');
+                                for(var j=0; j< currentPageDataSet[0].length; j++){
+                                    $tr.append('<td style="color:white;" >_</td>');
+                                }
+                                $tbody.append($tr);
+                            }
+                        }
+
+                    }
             };
         }
         if (this.tableData.length > 0) {
@@ -100,5 +140,14 @@ export class CustTableComponent implements OnInit {
 
   onRowDblClick(event) {
     this.rowDblClick.next(event);
+  }
+  
+  checkResizable(tHeader){
+      if(tHeader != 'Quotation No.' && tHeader != 'Policy No.' && tHeader != 'Currency' && tHeader != 'Type of Cession'){
+          return true;
+      }
+      else{
+          return false;
+      }
   }
 }

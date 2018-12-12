@@ -1,11 +1,13 @@
 th, td{
     white-space: nowrap;
-    min-width: 0px;
-    max-width: 1px;
+    /*min-width: 0px;
+    max-width: 1px;*/
+    min-width: 30px;
+    max-width: 150px;
     overflow: hidden;
 }
 .table-scroll{
-    overflow: auto;
+    /*overflow: auto;*/
     max-width: 100%
 }
 #cust-table-container {
@@ -25,7 +27,7 @@ th, td{
 }
 .print{
     position: absolute;
-    top: 1px;
+    top: 25px;
     z-index: 9999 !important;
 }
 .expireIn{
