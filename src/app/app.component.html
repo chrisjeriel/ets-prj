@@ -136,6 +136,10 @@
                         <a class="nav-item nav-link" routerLink="/notes">
                             <fa name="bell" placement="bottom" ngbTooltip="Notes & Reminders"></fa>
                         </a>
+                        <a class="nav-item nav-link" >
+                            <fa name="gear" placement="bottom" (click)="open(content)" ngbTooltip="Settings">
+                            </fa>
+                        </a>
                         <a class="nav-item nav-link" (click)="logout()">
                             <fa name="sign-out" placement="bottom" ngbTooltip="Logout"></fa>
                         </a>
@@ -152,6 +156,38 @@
         </section>
     </div>
 </ng-sidebar-container>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <div class="modal-title" id="modal-basic-title">
+             Color Theme
+        </div>
+    </div>
+    <div class="modal-body">
+        <div layout="row" layout-wrap layout-align="center center">
+            <p style="font-size: 12px; text-align: center; margin-bottom: 5px"> Select a color from the Theme Color Palettes below: </p>
+        </div> 
+        <div layout="row" layout-wrap layout-align="center center">
+            <div class="form-row" style="justify-content: center;">
+                <button class='btn col-sm-2'style="height : 40px; background: #536DFE">
+                </button>
+                <button class='btn col-sm-2'style="height : 40px; margin-left: 5px; background: #4CAF50">
+                </button>
+                <button class='btn col-sm-2'style="height : 40px; margin-left: 5px; background: #FF5252">
+                </button>
+                    <button class='btn col-sm-2'style="height : 40px; margin-left: 5px; background: #FFC107">
+                </button>
+            </div>
+          
+        </div>
+
+    </div>
+    <div class="modal-footer" style="justify-content: center; margin-top: -5px">
+         <div class="row" style="margin-top: -5px">
+            <button type="button" class="cust-btn" style="margin-bottom: -5px" (click)="modal.close('Close click')"><a>Close</a></button>
+        </div>
+    </div>
+</ng-template>
 
 
 

@@ -28,8 +28,4 @@ export class PolicyPrintingComponent implements OnInit {
   	 this.opts.push({selector: "noOfCopy", vals:["1", "2", "3","4","5"]});
   }
 
-  onRowDblClick($event){
-  	console.log(event.returnValue);
-  }
-
 } 
