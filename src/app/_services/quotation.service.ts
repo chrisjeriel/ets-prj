@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { QuotationList, HoldCoverMonitoringList, DummyInfo, QuoteEndorsement, QuotationOption, QuotationOtherRates, IntCompAdvInfo, AttachmentInfo, QuotationProcessing, QuotationCoverageInfo } from '@app/_models';
+import { QuotationList, HoldCoverMonitoringList, DummyInfo, QuoteEndorsement, QuotationOption, QuotationOtherRates, IntCompAdvInfo, AttachmentInfo, QuotationProcessing, QuotationCoverageInfo, ItemInformation } from '@app/_models';
 
 @Injectable({ providedIn: 'root' })
 export class QuotationService {
@@ -15,6 +15,7 @@ export class QuotationService {
     attachmentInfoData: AttachmentInfo[] = [];
     quoProcessingData: QuotationProcessing[] = [];
     coverageInfoData: QuotationCoverageInfo[] = [];
+    itemInfoData: ItemInformation[] = [];
     quoteOptionNos: number[] = [];
 
     rowData: any[] = [];
@@ -200,5 +201,15 @@ export class QuotationService {
         this.quoteOptionNos = [1,2,3];
         //,4,5,6,7,8,1,4,5,7,8,9,2,3,4,5,6,7,2,3,4,5,6,1,8,9
         return this.quoteOptionNos;
+    }
+
+    getItemInfoData() {
+        this.itemInfoData = [
+            new ItemInformation(1001, "Description for item number 1"),
+            new ItemInformation(1002, "Description for item number 2"),
+            new ItemInformation(1003, "Description for item number 3")
+        ];
+
+        return this.itemInfoData;
     }
 }
