@@ -21,3 +21,7 @@
     right: 0;
     padding-right:0; 
 }
+.fldst-height {
+    height: 200px;
+    padding-top: 15px !important; 
+}

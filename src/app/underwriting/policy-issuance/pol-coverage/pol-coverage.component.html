@@ -25,54 +25,55 @@
       [tHeader]="tHeader" [dataTypes]="dataTypes" [opts]="selOptions" [magnifyingGlass]="magnifyingGlass"></app-cust-editable-table>
   </fieldset>
 
-  <div class="prnt-dv">
+  <div>
     <div class="row">
       <div class="col-sm-5">
-        <div class="mrgn-fieldset">
-          <fieldset class="scheduler-border">
-            <div class="form-row custom-row-inline-inset">
-              <div class="input-group">
-                <label class="form-control-sm col-sm-2" for="xx">Section I</label>
-                <input type="text" id="xx" class="form-control form-control-sm cust-sm txt-content-rght col-sm-4"
-                  readonly placeholder="0.00">
-                <label class="form-control-sm col-sm-2" for="xx">Currency</label>
-                <select class="form-control form-control-sm cust-sm col-sm-4">
-                  <option value=""></option>
-                  <option value="USD">USD</option>
-                  <option value="PHP">PHP</option>
-                  <option value="EUR">EUR</option>
-                </select>
-              </div>
-              <div class="input-group">
-                <label class="form-control-sm col-sm-2" for="xx">Section II</label>
-                <input type="text" id="xx" class="form-control form-control-sm cust-sm txt-content-rght col-sm-4"
-                  readonly placeholder="0.00">
-                <label class="form-control-sm col-sm-2" for="xx">Exch. Rt.</label>
-                <select class="form-control form-control-sm cust-sm col-sm-4">
-                  <option value=""></option>
-                </select>
-              </div>
-              <div class="input-group">
-                <label class="form-control-sm col-sm-2" for="xx">Section III</label>
-                <input type="text" id="xx" class="form-control form-control-sm cust-sm txt-content-rght col-sm-4"
-                  readonly placeholder="0.00">
-                <label class="form-control-sm col-sm-2" for="xx">Premium</label>
-                <input type="text" id="xx" class="form-control form-control-sm cust-sm txt-content-rght col-sm-4">
-              </div>
-              <div class="input-group">
-                <label class="form-control-sm col-sm-2" for="xx">Total SI</label>
-                <input type="text" id="xx" class="form-control form-control-sm cust-sm txt-content-rght col-sm-4"
-                  readonly placeholder="0.00">
-                <label class="form-control-sm col-sm-2"></label>
-                <label class="form-control-sm col-sm-2"></label>
-                <label class="form-control-sm col-sm-2"></label>
-              </div>
+        <fieldset class="scheduler-border fldst-height" style="padding-top: 20px !important;">
+          <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+
+          <div class="form-row custom-row-inline-inset">
+            <div class="input-group">
+              <label class="form-control-sm text-right col-sm-2" for="xx">Section I</label>
+              <input type="text" id="xx" class="form-control form-control-sm cust-sm txt-content-rght col-sm-4"
+                readonly placeholder="0.00">
+              <label class="form-control-sm text-right col-sm-2" for="xx">Currency</label>
+              <select class="form-control form-control-sm cust-sm col-sm-4">
+                <option value=""></option>
+                <option value="USD">USD</option>
+                <option value="PHP">PHP</option>
+                <option value="EUR">EUR</option>
+              </select>
             </div>
-          </fieldset>
-        </div>
+
+            <div class="input-group">
+              <label class="form-control-sm col-sm-2" for="xx">Section II</label>
+              <input type="text" id="xx" class="form-control form-control-sm cust-sm txt-content-rght col-sm-4"
+                readonly placeholder="0.00">
+              <label class="form-control-sm col-sm-2" for="xx">Exch. Rt.</label>
+              <select class="form-control form-control-sm cust-sm col-sm-4">
+                <option value=""></option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label class="form-control-sm col-sm-2" for="xx">Section III</label>
+              <input type="text" id="xx" class="form-control form-control-sm cust-sm txt-content-rght col-sm-4"
+                readonly placeholder="0.00">
+              <label class="form-control-sm col-sm-2" for="xx">Premium</label>
+              <input type="text" id="xx" class="form-control form-control-sm cust-sm txt-content-rght col-sm-4">
+            </div>
+            <div class="input-group">
+              <label class="form-control-sm col-sm-2" for="xx">Total SI</label>
+              <input type="text" id="xx" class="form-control form-control-sm cust-sm txt-content-rght col-sm-4"
+                readonly placeholder="0.00">
+              <label class="form-control-sm col-sm-2"></label>
+              <label class="form-control-sm col-sm-2"></label>
+              <label class="form-control-sm col-sm-2"></label>
+            </div>
+          </div>
+        </fieldset>
       </div>
-      <div class="col-sm-3 chld-dv1">
-        <fieldset class="scheduler-border">
+      <div class="col-sm-3">
+        <fieldset class="scheduler-border fldst-height">
           <legend class="scheduler-border">Share Details</legend>
           <div class="custom-row-inline-inset">
             <div class="row">
@@ -97,10 +98,9 @@
           </div>
         </fieldset>
       </div>
-
-      <div class="col-sm-4 chld-dv2">
-        <!-- <div class="mrgn-fieldset"> -->
-        <fieldset class="scheduler-border">
+      <div class="col-sm-4">
+        <fieldset class="scheduler-border fldst-height">
+          <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
           <div class="custom-row-inline-inset">
             <div class="row">
               <div class="col-sm-1"></div>
@@ -118,7 +118,6 @@
             </div>
           </div>
         </fieldset>
-        <!-- </div> -->
       </div>
     </div>
   </div>
@@ -134,4 +133,3 @@
       </div>
     </div>
   </div>
-</div>
