@@ -50,11 +50,4 @@ export class AttachmentComponent implements OnInit {
     this.tableData = this.quotationService.getAttachment();
   }
 
-  clickk(){
-     $(document).ready(function(){
-        $(".checkk").click(function(){            
-            $('input[type="checkbox"]').attr("checked", "checked");
-        });
-    });
-  }
 }
