@@ -17,7 +17,7 @@ export class PolEndorsementComponent implements OnInit {
     magnifyingGlass: any[]=["endtCode"];
     nData: QuoteEndorsement = new QuoteEndorsement(null, null, null, null, null);
 
-    tHeader: any[] = ['Endt Code','Endt Title', 'Endt Description', 'Wording'];
+    tHeader: any[] = ['Endt Code','Endt Title', 'Endt Description', 'Wording', 'Edit Flag'];
     
     @Input() alteration: boolean;
 
@@ -27,7 +27,6 @@ export class PolEndorsementComponent implements OnInit {
      }
 
     ngOnInit() : void{
-        
         this.tableData = this.quotationService.getEndorsements(1);
     }
     

@@ -15,7 +15,7 @@ export class ChangeQuoteStatusComponent implements OnInit {
     }
 
     ngOnInit() {
-        //$('#modalBtn').trigger('click');        //this line causes an error but somehow still works
+        setTimeout(function(){$('#modalBtn').trigger('click');}, 100);
         this.tHeader.push("Quotation No.");
         this.tHeader.push("Type of Cession");
         this.tHeader.push("Ceding Company");
@@ -24,6 +24,7 @@ export class ChangeQuoteStatusComponent implements OnInit {
         
         //temporary
         this.tableData.push(["CAR-2015-0002832-01", "Retrocession", "Malayan", "5K Builders & ABE International Corp", "ABC Building"]);     
+        /*this.tableData.push([" ", " ", " ", " ", " "]);
         this.tableData.push([" ", " ", " ", " ", " "]);
         this.tableData.push([" ", " ", " ", " ", " "]);
         this.tableData.push([" ", " ", " ", " ", " "]);
@@ -31,8 +32,7 @@ export class ChangeQuoteStatusComponent implements OnInit {
         this.tableData.push([" ", " ", " ", " ", " "]);
         this.tableData.push([" ", " ", " ", " ", " "]);
         this.tableData.push([" ", " ", " ", " ", " "]);
-        this.tableData.push([" ", " ", " ", " ", " "]);
-        this.tableData.push([" ", " ", " ", " ", " "]);
+        this.tableData.push([" ", " ", " ", " ", " "]);*/
         //end temporary
     }
     
