@@ -18,6 +18,7 @@ export class AttachmentComponent implements OnInit {
   tHeader: any[] = [];
   options: any[] = [];
   dataTypes: any[] = [];
+  pageLength:number;
   nData: AttachmentInfo = new AttachmentInfo(null, null);
   test:boolean =true;
   private attachmentInfo : AttachmentInfo;
@@ -26,6 +27,7 @@ export class AttachmentComponent implements OnInit {
   			  private quotationService: QuotationService) { 
   	config.placement = 'bottom-right';
     config.autoClose = false;
+     this.pageLength = 10;
   }
 
   ngOnInit() : void {
@@ -48,4 +50,11 @@ export class AttachmentComponent implements OnInit {
     this.tableData = this.quotationService.getAttachment();
   }
 
+  clickk(){
+     $(document).ready(function(){
+        $(".checkk").click(function(){            
+            $('input[type="checkbox"]').attr("checked", "checked");
+        });
+    });
+  }
 }

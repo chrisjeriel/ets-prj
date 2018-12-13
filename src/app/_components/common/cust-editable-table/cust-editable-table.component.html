@@ -85,7 +85,7 @@
 			<table id="sample2" datatable [dtOptions]="dtOptions" class="row-border hover">
 				<thead>
 					<tr>
-						<th *ngIf="checkFlag"><div class="check"><input type="checkbox" name="checkbox"></div></th>
+						<th *ngIf="checkFlag"><div class="check"><input type="checkbox" [(ngModel)]="checked" class="checkk"></div></th>
 						
 						<th *ngFor="let tHeader of tHeader">
 							<span class="ui-column-resizer" (mousedown)="onMouseDown($event)"></span>
@@ -93,10 +93,9 @@
 						</th>
 					</tr>
 				</thead>
-
 				<tbody>
 					<tr *ngFor="let data of tableData;let ti = index" (click)="onRowClick($event)" (dblclick)="onRowDblClick($event)">
-						<td *ngIf="checkFlag">&nbsp;&nbsp;&nbsp;<input type="checkbox" name="checkbox"></td>
+						<td *ngIf="checkFlag">&nbsp;&nbsp;&nbsp;<input type="checkbox" name="checkbox" [checked]="checked" id="checkbox"></td>
 						<td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]">
 							<div>
 								<a><i *ngIf="magnifyingGlass.indexOf(key)!=-1" class="fa fa-search"></i></a> &nbsp;
@@ -106,7 +105,7 @@
 								 [ngModelOptions]="{updateOn:'blur'}" (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
 								<input *ngSwitchCase="'currency'" class="editable-text text-right number" type="text" [ngModel]="processData(key, data) | number:'1.2-2'"
 								 [ngModelOptions]="{updateOn:'blur'}" (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
-								<input *ngSwitchCase="'checkbox'" type="checkbox">
+								<input *ngSwitchCase="'checkbox'" type="checkbox" id="checkbox">
 								<select *ngSwitchCase="'select'" class="editable-select" [value]="processData(key, data)">
 									<ng-container *ngFor="let data of opts">
 										<ng-container *ngIf="key == data.selector">

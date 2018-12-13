@@ -2,7 +2,7 @@
     <h4>Available Components: </h4>
     <fieldset class="scheduler-border">
         <legend class="scheduler-border">Table Sample</legend>
-        <app-cust-table [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes"></app-cust-table>
+        <app-cust-table [filters]="filters" [tableData]="tableData" [tHeader] = "tHeader" [dataTypes] = "dataTypes" [filterDataTypes] = "filterDataTypes"></app-cust-table>
         <app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData2" [tHeader]="tHeader"></app-cust-editable-table>
     </fieldset>
     <app-modal>

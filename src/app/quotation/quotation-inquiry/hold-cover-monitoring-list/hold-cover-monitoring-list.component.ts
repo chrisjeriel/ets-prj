@@ -13,6 +13,7 @@ export class HoldCoverMonitoringListComponent implements OnInit {
     dataTypes: any[] = [];
     filters: any[] = [];
     pageLength: number;
+    filterDataTypes: any[] = [];
 
     constructor(private quotationService: QuotationService) { 
         this.pageLength = 10;
@@ -42,6 +43,18 @@ export class HoldCoverMonitoringListComponent implements OnInit {
         this.filters.push("Requested By");
         this.filters.push("Request Date");
         this.filters.push("Status");
+
+        this.filterDataTypes.push("text");
+        this.filterDataTypes.push("text");
+        this.filterDataTypes.push("text");
+        this.filterDataTypes.push("text");
+        this.filterDataTypes.push("text");
+        this.filterDataTypes.push("date");
+        this.filterDataTypes.push("date");
+        this.filterDataTypes.push("text");
+        this.filterDataTypes.push("text");
+        this.filterDataTypes.push("date");
+        this.filterDataTypes.push("text");
 
         this.dataTypes.push("text");
         this.dataTypes.push("text");

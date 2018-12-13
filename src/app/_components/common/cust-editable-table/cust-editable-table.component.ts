@@ -41,6 +41,7 @@ export class CustEditableTableComponent implements OnInit {
   pressed:  any;
   startX:   any;
   startWidth: any;
+  checked:boolean;
   
   constructor(config: NgbDropdownConfig, public renderer: Renderer) { 
   	config.placement = 'bottom-right';
@@ -126,4 +127,14 @@ export class CustEditableTableComponent implements OnInit {
   onRowDblClick(event) {
     this.rowDblClick.next(event);
   }
+
+  clickk(){        
+      if($('input[type="checkbox"]').prop("checked") ){
+             $('input[type="checkbox"]').removeAttr("checked");
+           }else{
+              $('input[type="checkbox"]').attr("checked", "checked");
+           }
+  }
+
+  
 }
