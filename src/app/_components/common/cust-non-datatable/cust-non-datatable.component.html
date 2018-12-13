@@ -1,92 +1,119 @@
 <style>
-thead tr th {
-	position: relative;
-}
-span.ui-column-resizer {
-	display: block;
-	position: absolute;
-	top: 0;
-	right: 0;
-	margin: 0;
-	width: 8px;
-	height: 100%;
-	padding: 0;
-	cursor: col-resize;
-}
+    thead tr th {
+        position: relative;
+    }
+    span.ui-column-resizer {
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 0;
+        width: 8px;
+        height: 100%;
+        padding: 0;
+        cursor: col-resize;
+    }
 </style>
 
 
 <div id="cust-table-container">
-	<br/>
-     <div class="print" *ngIf="printBtn" align="left">
+    <br/>
+    <div class="print" *ngIf="printBtn" align="left">
         <button class="cust-btn" type="button"><a>Print</a></button>
     </div>
-	<div class="expire" *ngIf="expireFilter" align="right">
-		<!-- remove -->
-		<label>Expires in (Days): &nbsp; </label>
-		<input type="search" class="expireIn" placeholder="">
-		<!-- end remove -->
-	</div>
+    <div class="expire" *ngIf="expireFilter" align="right">
+        <!-- remove -->
+        <label>Expires in (Days): &nbsp; </label>
+        <input type="search" class="expireIn" placeholder="">
+        <!-- end remove -->
+    </div>
     <div class="search-filter">
         <label>Search: &nbsp;
-            <input type="search" class="form-control-sm cust-search-form">
+            <input type="search" class="form-control-sm cust-search-form" [(ngModel)]="query">
         </label>
     </div>
-	<div ngbDropdown *ngIf="!tableOnly">
-		<button class="cust-filter" ngbDropdownToggle><a><fa name="filter"></fa></a></button>
-		<div ngbDropdownMenu aria-labelledby="dropdownConfig">
-			<div class="dropdown-item">
-				<span class="cust-tbl-label">Filter by:</span>
-				<div class="input-group" *ngFor="let filt of filters">
-					<div class="input-group-prepend">
-						<div class="input-group-text">
-							<input type="checkbox"><span>&nbsp;{{filt}}</span>
-						</div>
-					</div>
-					<input type="text" class="form-control cust-sm">
-				</div>
-				<div class="input-group">
-					<button class="cust-filter cust-tbl-submit"><a>Ok</a></button>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="table-scroll" id="cust-scroll">
-		<table class="row-border hover dataTable no-footer" id="cust-table" style="width: 100%">
-			<thead>
-				<tr style="min-width: 96px">
-					<th *ngIf="checkFlag"><input type="checkbox" name=""></th>
-					<th *ngFor="let tHeader of tHeader; let i = index">
-						<span *ngIf="resizable[i]" 
+    <div ngbDropdown *ngIf="!tableOnly">
+        <button class="cust-filter" ngbDropdownToggle><a><fa name="filter"></fa></a></button>
+        <div ngbDropdownMenu aria-labelledby="dropdownConfig">
+            <div class="dropdown-item">
+                <span class="cust-tbl-label">Filter by:</span>
+                <div class="input-group" *ngFor="let filt of filters">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <input type="checkbox"><span>&nbsp;{{filt}}</span>
+                        </div>
+                    </div>
+                    <input type="text" class="form-control cust-sm">
+                </div>
+                <div class="input-group">
+                    <button class="cust-filter cust-tbl-submit"><a>Ok</a></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="table-scroll" id="cust-scroll">
+        <table class="row-border hover dataTable no-footer" id="cust-table" style="width: 100%">
+            <thead>
+                <tr style="min-width: 96px">
+                    <th *ngIf="checkFlag"><input type="checkbox" name=""></th>
+                    <th *ngFor="let tHeader of tHeader; let i = index">
+                        <span *ngIf="resizable[i]" 
                               class="ui-column-resizer" (mousedown) = "onMouseDown($event)"></span>
-						<span class="gridHeader">{{tHeader}}</span>
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr *ngFor="let data of tableData | paginate: { itemsPerPage: pageLength, currentPage: p }" (click)="onRowClick($event)" (dblclick)="onRowDblClick($event)">
-					<td *ngIf="checkFlag"> <input type="checkbox" name=""></td>
-					<!-- <ng-container *ngIf="from === 'quotation-processing'"> -->
-						<td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]">
-							<span *ngSwitchCase="'date'" class="unclickable">{{ processData(key, data) | date: 'MM/dd/yyyy'}}</span>
-							<span *ngSwitchDefault class="unclickable">{{ processData(key, data) }}</span>
-						</td>
-					<!-- </ng-container> -->
-					<!-- <ng-container *ngIf="from === ''">
-						<td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]" (click)="onRowClick($event)">
-							<span *ngSwitchCase="'date'" class="unclickable">{{ processData(key, data) | date: 'MM/dd/yyyy'}}</span>
-							<span *ngSwitchDefault class="unclickable">{{ processData(key, data) }}</span>
-						</td>
-					</ng-container> -->
-				</tr>
-                <tr *ngFor="let auto of autoFill">
-                   <td *ngFor="let key of dataKeys" style="padding: 14px"></td>
+                        <span class="gridHeader">{{tHeader}}</span>
+                    </th>
                 </tr>
-			</tbody>
-		</table>
-	</div>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of tableData | paginate: { itemsPerPage: pageLength, currentPage: p } | search: searchQuery :query" (click)="onRowClick($event)" (dblclick)="onRowDblClick($event)">
+                    <td *ngIf="checkFlag"> <input type="checkbox" name=""></td>
+                    <!-- <ng-container *ngIf="from === 'quotation-processing'"> -->
+                    <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]">
+                        <span *ngSwitchCase="'date'" class="unclickable">{{ processData(key, data) | date: 'MM/dd/yyyy'}}</span>
+                        <span *ngSwitchDefault class="unclickable">{{ processData(key, data) }}</span>
+                    </td>
+                    <!-- </ng-container> -->
+                    <!-- <ng-container *ngIf="from === ''">
+<td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]" (click)="onRowClick($event)">
+<span *ngSwitchCase="'date'" class="unclickable">{{ processData(key, data) | date: 'MM/dd/yyyy'}}</span>
+<span *ngSwitchDefault class="unclickable">{{ processData(key, data) }}</span>
+</td>
+</ng-container> -->
+                </tr>
+                <tr *ngFor="let auto of autoFill">
+                    <td *ngFor="let key of dataKeys" style="padding: 14px"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="pagingStatus">
+        <label>Showing 1 to 2 of 2 entries</label>
+    </div>
     <div class="pagination">
-            <pagination-controls class="my-pagination" (pageChange)="p = $event"></pagination-controls>
+        <pagination-template class="" #paw="paginationApi" (pageChange)="p = $event"><a (click)="paw.setCurrent(1)">&laquo;</a></pagination-template>
+        <pagination-controls class="my-pagination" (pageChange)="p = $event" previousLabel="" nextLabel="">
+        </pagination-controls>
+         <pagination-template class="" #paw="paginationApi" (pageChange)="p = $event"> <a (click)="paw.setCurrent(paw.getLastPage())">&raquo;</a></pagination-template>
+        <!--<pagination-template class="" #paw="paginationApi" (pageChange)="p = $event">
+                 going to first page is easy, since it is always 1 
+                <a (click)="paw.setCurrent(1)">go to first page</a>
+                <div class="" [class.disabled]="paw.isFirstPage()">
+                    <a *ngIf="!paw.isFirstPage()" (click)="paw.previous()"> back </a>
+                </div>
+
+                <div *ngFor="let page of paw.pages" [class.current]="paw.getCurrent() === page.value">
+                    <a (click)="paw.setCurrent(page.value)" *ngIf="paw.getCurrent() !== page.value">
+                        <span>{{ page.label }}</span>
+                    </a>
+                    <a *ngIf="paw.getCurrent() === page.value">
+                        <span>{{ page.label }}</span>
+                    </a>
+                </div>
+
+                <div class="" [class.disabled]="paw.isLastPage()">
+                    <a *ngIf="!paw.isLastPage()" (click)="paw.next()"> next </a>
+                </div>
+                <a (click)="paw.setCurrent(paw.getLastPage())">go to last page</a>
+        </pagination-template>-->
     </div>
 </div>
 

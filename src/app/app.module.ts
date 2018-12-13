@@ -61,6 +61,7 @@ import { PolAlopComponent } from './underwriting/policy-issuance/pol-alop/pol-al
 import { InquiryComponent } from './underwriting/inquiry/inquiry.component';
 import { PolicyInquiryComponent } from './underwriting/inquiry/policy-inquiry/policy-inquiry.component';
 import { CustNonDatatableComponent } from './_components/common/cust-non-datatable/cust-non-datatable.component';
+import { SearchPipe } from './_pipes/search.pipe';
 
 
 @NgModule({
@@ -128,6 +129,7 @@ import { CustNonDatatableComponent } from './_components/common/cust-non-datatab
         InquiryComponent,
         PolicyInquiryComponent,
         CustNonDatatableComponent,
+        SearchPipe,
     ],
 
     providers: [
