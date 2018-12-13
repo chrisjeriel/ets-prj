@@ -19,9 +19,10 @@ export class DummyComponent implements OnInit, AfterViewInit {
     tHeader: any[] = [];
     tHeader2: any[] = [];
     filters: any[] = [];
+    filters2: any[] = [];
     dataTypes: any[] = [];
-    filters: any[] = [];
     filterDataTypes: any[] = [];
+    filterDataTypes2: any[] = [];
     dataTypes2: any[] = [];
     nData: DummyInfo = new DummyInfo(null, null, null, null, null, null, null);
     resizables: boolean[] = [];
@@ -76,19 +77,33 @@ export class DummyComponent implements OnInit, AfterViewInit {
         this.tHeader2.push("Policy No.");
         this.tHeader2.push("Currency");
 
-        this.filters.push("Quotation No.");
-        this.filters.push("Type of Cession");
-        this.filters.push("Line Class");
-        this.filters.push("Quote Status");
-        this.filters.push("Company");
-        this.filters.push("Principal");
-        this.filters.push("Contractor");
-        this.filters.push("Insured");
-        this.filters.push("Risk");
-        this.filters.push("Object");
-        this.filters.push("Site");
-        this.filters.push("Policy No.");
-        this.filters.push("Currency");
+        this.filters2.push("Quotation No.");
+        this.filters2.push("Type of Cession");
+        this.filters2.push("Line Class");
+        this.filters2.push("Quote Status");
+        this.filters2.push("Company");
+        this.filters2.push("Principal");
+        this.filters2.push("Contractor");
+        this.filters2.push("Insured");
+        this.filters2.push("Risk");
+        this.filters2.push("Object");
+        this.filters2.push("Site");
+        this.filters2.push("Policy No.");
+        this.filters2.push("Currency");
+
+        this.filterDataTypes2.push("text");
+        this.filterDataTypes2.push("text");
+        this.filterDataTypes2.push("text");
+        this.filterDataTypes2.push("text");
+        this.filterDataTypes2.push("text");
+        this.filterDataTypes2.push("text");
+        this.filterDataTypes2.push("text");
+        this.filterDataTypes2.push("text");
+        this.filterDataTypes2.push("text");
+        this.filterDataTypes2.push("text");
+        this.filterDataTypes2.push("text");
+        this.filterDataTypes2.push("text");
+        this.filterDataTypes2.push("date");
 
         this.resizables.push(false);
         this.resizables.push(false);
