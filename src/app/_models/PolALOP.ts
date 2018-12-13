@@ -11,11 +11,12 @@ export class ALOPItemInformation{
 		this.relativeImportance = relativeImportance;
 		this.possibleLossMin = possibleLossMin;
 	}
+
 }
 
 export class ALOPInfo{
-	policyNo1:string;
-	policyNo2:string;
+	insured1:string;
+	insured2:string;
 	address1:string;
 	address2:string;
 	address3:string;

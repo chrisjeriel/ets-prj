@@ -16,11 +16,12 @@ import { IntCompAdvInfo } from '../../../_models';
 export class CustTableComponent implements OnInit {
   dtOptions: DataTables.Settings = {};
   @Input() tableData: any[] = [];
+  @Input() resizable: boolean[] = [];
   @Input() tHeader: any[] = [];
   @Input() expireFilter: boolean;
   @Input() dataTypes: any[] = [];
   @Input() filters: any[] = [];
-  @Input() pageLength: number;
+  @Input() pageLength: number = 10;
   @Input() checkFlag: boolean;
   @Input() tableOnly: boolean = false;
   @Input() filterDataTypes: any[] = [];
@@ -47,12 +48,50 @@ export class CustTableComponent implements OnInit {
              this.dtOptions = {
                 pagingType: 'full_numbers',
                 pageLength: this.pageLength,
+                lengthChange: false,
                 dom: 'tp',
+                drawCallback: function( settings ) {
+                        //for maintaining the same height every page, 
+                        //add empty row to table 
+                        var api = this.api();
+                        var currentPageDataSet = api.rows( {page:'current'} ).data() ;
+                        if(currentPageDataSet.length < settings.oInit.pageLength){     
+                            var $tbody = $('#cust-datatable tbody');
+                            for(var i = 0; i< settings.oInit.pageLength - currentPageDataSet.length; i++){
+                                var isEven = (currentPageDataSet.length+(i+1))%2 === 0;
+                                var $tr = (isEven)? $('<tr role="row" class="even"></tr>') : $('<tr role="row"  class="odd"></tr>');
+                                for(var j=0; j< currentPageDataSet[0].length; j++){
+                                    $tr.append('<td style="padding:14px" ></td>');
+                                }
+                                $tbody.append($tr);
+                            }
+                        }
+
+                    }
             };
         }else{
             this.dtOptions = {
                 pagingType: 'full_numbers',
                 pageLength: this.pageLength,
+                lengthChange: false,
+                drawCallback: function( settings ) {
+                        //for maintaining the same height every page, 
+                        //add empty row to table 
+                        var api = this.api();
+                        var currentPageDataSet = api.rows( {page:'current'} ).data() ;
+                        if(currentPageDataSet.length < settings.oInit.pageLength){     
+                            var $tbody = $('#cust-datatable tbody');
+                            for(var i = 0; i< settings.oInit.pageLength - currentPageDataSet.length; i++){
+                                var isEven = (currentPageDataSet.length+(i+1))%2 === 0;
+                                var $tr = (isEven)? $('<tr role="row" class="even"></tr>') : $('<tr role="row"  class="odd"></tr>');
+                                for(var j=0; j< currentPageDataSet[0].length; j++){
+                                    $tr.append('<td style="padding:14px" ></td>');
+                                }
+                                $tbody.append($tr);
+                            }
+                        }
+
+                    }
             };
         }
         if (this.tableData.length > 0) {
@@ -84,6 +123,7 @@ export class CustTableComponent implements OnInit {
       }
     });
     this.renderer.listenGlobal('body', 'mouseup', (event) => {
+        //$('#cust-datatable').DataTable().draw();
       if(this.pressed) {
         this.pressed = false;
       }
@@ -96,11 +136,20 @@ export class CustTableComponent implements OnInit {
       event.target.parentElement.parentElement.children[i].style.backgroundColor = "";
     }
 
-    event.target.parentElement.style.backgroundColor = "#67b4fc";
+    event.target.closest("tr").style.backgroundColor = "#67b4fc";
     this.rowClick.next(event);
   }
 
   onRowDblClick(event) {
     this.rowDblClick.next(event);
+  }
+  
+  checkResizable(tHeader){
+      if(tHeader != 'Quotation No.' && tHeader != 'Policy No.' && tHeader != 'Currency' && tHeader != 'Type of Cession'){
+          return true;
+      }
+      else{
+          return false;
+      }
   }
 }

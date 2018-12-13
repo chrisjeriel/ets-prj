@@ -7,6 +7,7 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SidebarModule } from 'ng-sidebar';
 import { DataTablesModule } from 'angular-datatables';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 // used to create fake backend
 import { fakeBackendProvider } from './_helpers';
@@ -59,6 +60,9 @@ import { ChangeQuoteStatusComponent } from './quotation/change-quote-status/chan
 import { PolAlopComponent } from './underwriting/policy-issuance/pol-alop/pol-alop.component';
 import { InquiryComponent } from './underwriting/inquiry/inquiry.component';
 import { PolicyInquiryComponent } from './underwriting/inquiry/policy-inquiry/policy-inquiry.component';
+import { QuoAlopComponent } from './quotation/quo-alop/quo-alop.component';
+import { CustNonDatatableComponent } from './_components/common/cust-non-datatable/cust-non-datatable.component';
+import { SearchPipe } from './_pipes/search.pipe';
 
 
 @NgModule({
@@ -73,6 +77,7 @@ import { PolicyInquiryComponent } from './underwriting/inquiry/policy-inquiry/po
         SidebarModule.forRoot(),
         FormsModule,
         DataTablesModule,
+        NgxPaginationModule,
 
     ],
     declarations: [
@@ -124,6 +129,9 @@ import { PolicyInquiryComponent } from './underwriting/inquiry/policy-inquiry/po
         PolAlopComponent,
         InquiryComponent,
         PolicyInquiryComponent,
+        QuoAlopComponent,
+        CustNonDatatableComponent,
+        SearchPipe,
     ],
 
     providers: [

@@ -27,7 +27,7 @@ span.ui-column-resizer {
 		<input type="search" class="expireIn" placeholder="">
 		<!-- end remove -->
 	</div>
-	<div ngbDropdown>
+	<div ngbDropdown *ngIf="!tableOnly">
 		<button class="cust-filter" ngbDropdownToggle><a><fa name="filter"></fa></a></button>
 		<div ngbDropdownMenu aria-labelledby="dropdownConfig">
 			<div class="dropdown-item">
@@ -50,12 +50,13 @@ span.ui-column-resizer {
 		</div>
 	</div>
 	<div class="table-scroll">
-		<table datatable [dtOptions]="dtOptions" class="row-border hover">
+		<table datatable [dtOptions]="dtOptions" class="row-border hover" id="cust-datatable" style="width: 100%">
 			<thead>
-				<tr>
+				<tr style="min-width: 96px">
 					<th *ngIf="checkFlag"><input type="checkbox" [(ngModel)]="checked"></th>
-					<th *ngFor="let tHeader of tHeader">
-						<span class="ui-column-resizer" (mousedown) = "onMouseDown($event)"></span>
+					<th *ngFor="let tHeader of tHeader; let i = index">
+						<span *ngIf="resizable[i]" 
+                              class="ui-column-resizer" (mousedown) = "onMouseDown($event)"></span>
 						<span class="gridHeader">{{tHeader}}</span>
 					</th>
 				</tr>
@@ -66,6 +67,8 @@ span.ui-column-resizer {
 					<!-- <ng-container *ngIf="from === 'quotation-processing'"> -->
 						<td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]">
 							<span *ngSwitchCase="'date'" class="unclickable">{{ processData(key, data) | date: 'MM/dd/yyyy'}}</span>
+							<span *ngSwitchCase="'percent'" class="unclickable number">{{ processData(key, data) | number:'1.7-7'}}</span>
+							<span *ngSwitchCase="'currency'" class="unclickable number">{{ processData(key, data) | number:'1.2-2'}}</span>
 							<span *ngSwitchDefault class="unclickable">{{ processData(key, data) }}</span>
 						</td>
 					<!-- </ng-container> -->

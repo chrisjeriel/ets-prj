@@ -1,7 +1,9 @@
 th, td{
     white-space: nowrap;
-    min-width: 0px;
-    max-width: 1px;
+    /*min-width: 0px;
+    max-width: 1px;*/
+    min-width: 30px;
+    max-width: 150px;
     overflow: hidden;
 }
 .table-scroll{
@@ -25,7 +27,7 @@ th, td{
 }
 .print{
     position: absolute;
-    top: 1px;
+    top: 25px;
     z-index: 9999 !important;
 }
 .expireIn{
@@ -111,3 +113,6 @@ div.input-group {
 	pointer-events: none;
 }
 
+.number{
+    float:right;
+}

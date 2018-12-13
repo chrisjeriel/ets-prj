@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
 import { QuotationService } from '../../../_services';
 
 @Component({
@@ -13,9 +15,9 @@ export class HoldCoverMonitoringListComponent implements OnInit {
     dataTypes: any[] = [];
     filters: any[] = [];
     pageLength: number;
+    line: string = "";
     filterDataTypes: any[] = [];
-
-    constructor(private quotationService: QuotationService) { 
+    constructor(private quotationService: QuotationService, private router: Router) { 
         this.pageLength = 10;
     }
 
@@ -69,5 +71,22 @@ export class HoldCoverMonitoringListComponent implements OnInit {
         this.dataTypes.push("date");
         
         this.tableData = this.quotationService.getQuotationHoldCoverInfo();
+    }
+    onRowClick(event) {
+        for(var i = 0; i < event.target.parentElement.children.length; i++) {
+            this.quotationService.rowData[i] = event.target.parentElement.children[i].innerText;
+        }
+    }
+
+    onRowDblClick(event) {
+        for(var i = 0; i < event.target.parentElement.children.length; i++) {
+            this.quotationService.rowData[i] = event.target.parentElement.children[i].innerText;
+        }
+
+        this.line = this.quotationService.rowData[0].split("-")[0]; 
+
+        this.quotationService.toGenInfo = [];
+        this.quotationService.toGenInfo.push("edit", this.line);
+        this.router.navigate(['/quotation']);
     }
 }
