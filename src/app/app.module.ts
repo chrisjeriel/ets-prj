@@ -59,6 +59,7 @@ import { ChangeQuoteStatusComponent } from './quotation/change-quote-status/chan
 import { PolAlopComponent } from './underwriting/policy-issuance/pol-alop/pol-alop.component';
 import { InquiryComponent } from './underwriting/inquiry/inquiry.component';
 import { PolicyInquiryComponent } from './underwriting/inquiry/policy-inquiry/policy-inquiry.component';
+import { CustNonDatatableComponent } from './_components/common/cust-non-datatable/cust-non-datatable.component';
 
 
 @NgModule({
@@ -124,6 +125,7 @@ import { PolicyInquiryComponent } from './underwriting/inquiry/policy-inquiry/po
         PolAlopComponent,
         InquiryComponent,
         PolicyInquiryComponent,
+        CustNonDatatableComponent,
     ],
 
     providers: [

@@ -72,7 +72,6 @@ export class CustTableComponent implements OnInit {
                 pagingType: 'full_numbers',
                 pageLength: this.pageLength,
                 lengthChange: false,
-                scrollX: true,
                 drawCallback: function( settings ) {
                         //for maintaining the same height every page, 
                         //add empty row to table 
@@ -122,7 +121,7 @@ export class CustTableComponent implements OnInit {
       }
     });
     this.renderer.listenGlobal('body', 'mouseup', (event) => {
-        $('#cust-datatable').DataTable().draw();
+        //$('#cust-datatable').DataTable().draw();
       if(this.pressed) {
         this.pressed = false;
       }

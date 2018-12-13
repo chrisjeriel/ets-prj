@@ -12,12 +12,13 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 export class DummyComponent implements OnInit, AfterViewInit {
     //@ViewChild('content') content;
     @ViewChild(ModalComponent) modalComp: ModalComponent;
-    
+
     tableData: any[] = [];
     tableData2: any[] = [];
     tHeader: any[] = [];
     dataTypes: any[] = [];
     nData: DummyInfo = new DummyInfo(null, null, null, null, null, null, null);
+    resizable: boolean[] = [];
 
     constructor(private quotationService: QuotationService, private modalService: NgbModal) { 
     }
@@ -31,6 +32,14 @@ export class DummyComponent implements OnInit, AfterViewInit {
         this.tHeader.push("Age");
         this.tHeader.push("Birth Date");
 
+        this.resizable.push(false);
+        this.resizable.push(true);
+        this.resizable.push(true);
+        this.resizable.push(false);
+        this.resizable.push(false);
+        this.resizable.push(false);
+        this.resizable.push(false);
+
         this.dataTypes.push("text");
         this.dataTypes.push("text");
         this.dataTypes.push("text");
@@ -38,17 +47,17 @@ export class DummyComponent implements OnInit, AfterViewInit {
         this.dataTypes.push("text");
         this.dataTypes.push("text");
         this.dataTypes.push("text");
-        
+
         this.tableData = this.quotationService.getDummyInfo();
         this.tableData2 = this.quotationService.getDummyEditableInfo();
     }
-    
+
     ngAfterViewInit(){
         console.log(this.modalComp.test);
     }
     open(){
         this.modalService.dismissAll();
-        this.modalService.open(this.modalComp.test, { centered: true, backdrop: 'static', windowClass : "this.modalSize" });
+        this.modalService.open(this.modalComp.test, { centered: true, backdrop: 'static', windowClass : 'modal-size' });
     }
     openAgain(){
         this.modalService.dismissAll();
