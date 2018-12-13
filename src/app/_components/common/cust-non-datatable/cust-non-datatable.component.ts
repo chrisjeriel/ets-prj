@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { QuotationService } from '../../../_services';
 import { DummyInfo } from '../../../_models';
-import { IntCompAdvInfo } from '../../../_models';
+import { IntCompAdvInfo, QuotationList } from '../../../_models';
 
 @Component({
     selector: 'app-cust-non-datatable',
@@ -34,6 +34,12 @@ export class CustNonDatatableComponent implements OnInit {
     startWidth: any;
     autoFill: number[];
 
+    displayData:any[];
+    newData: any =new QuotationList("CAR-2015-00028-32-01", "Direct", "CAR Wet Risks", "Concluded", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna, Calamba", "CAR-2018-00001-023-0002-01", "PHP", new Date(), new Date(), "Inigo Flores", "Cuaresma");
+    sortBy:boolean = true;
+    sortIndex:number;
+    searchString: string;
+
     constructor(config: NgbDropdownConfig, public renderer: Renderer, private quotationService: QuotationService,) {
         config.placement = 'bottom-right';
         config.autoClose = false;
@@ -50,6 +56,7 @@ export class CustNonDatatableComponent implements OnInit {
         if(this.tableData.length < this.pageLength){
             this.autoFill = Array(this.pageLength - this.tableData.length).fill(1);
         }
+        this.displayData = JSON.parse(JSON.stringify( this.tableData));
     }
     processData(key: any, data: any) {
         return data[key];
@@ -92,6 +99,31 @@ export class CustNonDatatableComponent implements OnInit {
 
     onRowDblClick(event) {
         this.rowDblClick.next(event);
+    }
+
+    sort(str,sortBy){
+        this.displayData = this.displayData.sort(function(a, b) {
+            if(sortBy){
+                if(a[str] < b[str]) { return -1; }
+                if(a[str] > b[str]) { return 1; }
+            }else{
+                if(a[str] < b[str]) { return 1; }
+                if(a[str] > b[str]) { return -1; }
+            }
+        });
+        this.sortBy = !this.sortBy;
+   
+    }
+
+    showSort(sortBy,i){
+        return sortBy && i==this.sortIndex;
+    }
+
+    search(event){
+        this.displayData = this.tableData.filter((item) => this.dataKeys.some(key => item.hasOwnProperty(key) && new RegExp(event, 'gi').test(item[key])));
+        if(this.displayData.length < this.pageLength){
+            this.autoFill = Array(this.pageLength - this.tableData.length).fill(1);
+        }
     }
 
 }

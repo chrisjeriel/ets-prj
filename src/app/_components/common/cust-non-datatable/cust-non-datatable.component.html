@@ -28,8 +28,8 @@
         <!-- end remove -->
     </div>
     <div class="search-filter">
-        <label>Search: &nbsp;
-            <input type="search" class="form-control-sm cust-search-form" [(ngModel)]="query">
+        <<label>Search: &nbsp;
+            <input type="search" class="form-control-sm cust-search-form" [(ngModel)]="searchString" (ngModelChange)="search($event)">
         </label>
     </div>
     <div ngbDropdown *ngIf="!tableOnly">
@@ -56,15 +56,17 @@
             <thead>
                 <tr style="min-width: 96px">
                     <th *ngIf="checkFlag"><input type="checkbox" name=""></th>
-                    <th *ngFor="let tHeader of tHeader; let i = index">
+                    <th *ngFor="let tHeader of tHeader; let i = index" (click)="sort(dataKeys[i],sortBy);sortIndex=i;">
                         <span *ngIf="resizable[i]" 
                               class="ui-column-resizer" (mousedown) = "onMouseDown($event)"></span>
                         <span class="gridHeader">{{tHeader}}</span>
+                        <i *ngIf="showSort(sortBy,i)" class="fa fa-caret-down"></i>
+                        <i *ngIf="showSort(!sortBy,i)" class="fa fa-caret-up"></i>
                     </th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let data of tableData | paginate: { itemsPerPage: pageLength, currentPage: p } | search: searchQuery :query" (click)="onRowClick($event)" (dblclick)="onRowDblClick($event)">
+                <tr *ngFor="let data of displayData | paginate: { itemsPerPage: pageLength, currentPage: p } | search: searchQuery :query" (click)="onRowClick($event)" (dblclick)="onRowDblClick($event)">
                     <td *ngIf="checkFlag"> <input type="checkbox" name=""></td>
                     <!-- <ng-container *ngIf="from === 'quotation-processing'"> -->
                     <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]">
