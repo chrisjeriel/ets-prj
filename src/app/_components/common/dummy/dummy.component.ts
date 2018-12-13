@@ -15,10 +15,14 @@ export class DummyComponent implements OnInit, AfterViewInit {
 
     tableData: any[] = [];
     tableData2: any[] = [];
+    tableData3: any[] = [];
     tHeader: any[] = [];
+    tHeader2: any[] = [];
+    filters: any[] = [];
     dataTypes: any[] = [];
+    dataTypes2: any[] = [];
     nData: DummyInfo = new DummyInfo(null, null, null, null, null, null, null);
-    resizable: boolean[] = [];
+    resizables: boolean[] = [];
 
     constructor(private quotationService: QuotationService, private modalService: NgbModal) { 
     }
@@ -32,14 +36,6 @@ export class DummyComponent implements OnInit, AfterViewInit {
         this.tHeader.push("Age");
         this.tHeader.push("Birth Date");
 
-        this.resizable.push(false);
-        this.resizable.push(true);
-        this.resizable.push(true);
-        this.resizable.push(false);
-        this.resizable.push(false);
-        this.resizable.push(false);
-        this.resizable.push(false);
-
         this.dataTypes.push("text");
         this.dataTypes.push("text");
         this.dataTypes.push("text");
@@ -48,8 +44,71 @@ export class DummyComponent implements OnInit, AfterViewInit {
         this.dataTypes.push("text");
         this.dataTypes.push("text");
 
+        this.tHeader2.push("Quotation No.");
+        this.tHeader2.push("Type of Cession");
+        this.tHeader2.push("Line Class");
+        this.tHeader2.push("Status");
+        this.tHeader2.push("Ceding Company");
+        this.tHeader2.push("Principal");
+        this.tHeader2.push("Contractor");
+        this.tHeader2.push("Insured");
+        this.tHeader2.push("Risk");
+        this.tHeader2.push("Object");
+        this.tHeader2.push("Site");
+        this.tHeader2.push("Policy No.");
+        this.tHeader2.push("Currency");
+
+        this.filters.push("Quotation No.");
+        this.filters.push("Type of Cession");
+        this.filters.push("Line Class");
+        this.filters.push("Quote Status");
+        this.filters.push("Company");
+        this.filters.push("Principal");
+        this.filters.push("Contractor");
+        this.filters.push("Insured");
+        this.filters.push("Risk");
+        this.filters.push("Object");
+        this.filters.push("Site");
+        this.filters.push("Policy No.");
+        this.filters.push("Currency");
+
+        this.resizables.push(false);
+        this.resizables.push(false);
+        this.resizables.push(true);
+        this.resizables.push(true);
+        this.resizables.push(true);
+        this.resizables.push(true);
+        this.resizables.push(true);
+        this.resizables.push(true);
+        this.resizables.push(true);
+        this.resizables.push(true);
+        this.resizables.push(true);
+        this.resizables.push(false);
+        this.resizables.push(false);
+        
+        this.dataTypes2.push("text");
+        this.dataTypes2.push("text");
+        this.dataTypes2.push("text");
+        this.dataTypes2.push("text");
+        this.dataTypes2.push("text");
+        this.dataTypes2.push("text");
+        this.dataTypes2.push("text");
+        this.dataTypes2.push("text");
+        this.dataTypes2.push("text");
+        this.dataTypes2.push("text");
+        this.dataTypes2.push("text");
+        this.dataTypes2.push("text");
+        this.dataTypes2.push("text");
+        
         this.tableData = this.quotationService.getDummyInfo();
         this.tableData2 = this.quotationService.getDummyEditableInfo();
+        this.tableData3 = this.quotationService.getQuotationListInfo();
+        this.tableData3.forEach(function(e){
+            delete e.quoteDate;
+            delete e.validityDate;
+            delete e.createdBy;
+            delete e.requestedBy;
+        });
     }
 
     ngAfterViewInit(){

@@ -31,10 +31,12 @@ export class CustNonDatatableComponent implements OnInit {
     pressed:  any;
     startX:   any;
     startWidth: any;
+    autoFill: number[];
 
     constructor(config: NgbDropdownConfig, public renderer: Renderer, private quotationService: QuotationService,) {
         config.placement = 'bottom-right';
         config.autoClose = false;
+        
     }
 
     ngOnInit(): void {
@@ -43,6 +45,9 @@ export class CustNonDatatableComponent implements OnInit {
         } else {
             if(this.tHeader.length <= 0)
             this.tHeader.push("No Data");
+        }
+        if(this.tableData.length < this.pageLength){
+            this.autoFill = Array(this.pageLength - this.tableData.length).fill(1);
         }
     }
     processData(key: any, data: any) {
@@ -61,7 +66,7 @@ export class CustNonDatatableComponent implements OnInit {
         this.renderer.listenGlobal('body', 'mousemove', (event) => {
             if(this.pressed) {
                 let width = this.startWidth + (event.x - this.startX);
-                $(this.start).parent().css({'min-width': width, 'max-   width': width});
+                $(this.start).parent().css({'min-width': width, 'max-width': width});
                 let index = $(this.start).parent().index() + 1;
                 $('.glowTableBody tr td:nth-child(' + index + ')').css({'min-width': width, 'max-width': width});
             }

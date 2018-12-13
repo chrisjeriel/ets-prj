@@ -59,7 +59,7 @@ export class CustTableComponent implements OnInit {
                                 var isEven = (currentPageDataSet.length+(i+1))%2 === 0;
                                 var $tr = (isEven)? $('<tr role="row" class="even"></tr>') : $('<tr role="row"  class="odd"></tr>');
                                 for(var j=0; j< currentPageDataSet[0].length; j++){
-                                    $tr.append('<td style="color:white;" >_</td>');
+                                    $tr.append('<td style="padding:14px" ></td>');
                                 }
                                 $tbody.append($tr);
                             }
@@ -83,7 +83,7 @@ export class CustTableComponent implements OnInit {
                                 var isEven = (currentPageDataSet.length+(i+1))%2 === 0;
                                 var $tr = (isEven)? $('<tr role="row" class="even"></tr>') : $('<tr role="row"  class="odd"></tr>');
                                 for(var j=0; j< currentPageDataSet[0].length; j++){
-                                    $tr.append('<td style="color:white;" >_</td>');
+                                    $tr.append('<td style="padding:14px" ></td>');
                                 }
                                 $tbody.append($tr);
                             }

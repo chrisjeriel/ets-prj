@@ -7,6 +7,7 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SidebarModule } from 'ng-sidebar';
 import { DataTablesModule } from 'angular-datatables';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 // used to create fake backend
 import { fakeBackendProvider } from './_helpers';
@@ -74,6 +75,7 @@ import { CustNonDatatableComponent } from './_components/common/cust-non-datatab
         SidebarModule.forRoot(),
         FormsModule,
         DataTablesModule,
+        NgxPaginationModule,
 
     ],
     declarations: [

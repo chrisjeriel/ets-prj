@@ -51,7 +51,7 @@ span.ui-column-resizer {
 			</div>
 		</div>
 	</div>
-	<div class="table-scroll">
+	<div class="table-scroll" id="cust-scroll">
 		<table class="row-border hover dataTable no-footer" id="cust-table" style="width: 100%">
 			<thead>
 				<tr style="min-width: 96px">
@@ -64,7 +64,7 @@ span.ui-column-resizer {
 				</tr>
 			</thead>
 			<tbody>
-				<tr *ngFor="let data of tableData" (click)="onRowClick($event)" (dblclick)="onRowDblClick($event)">
+				<tr *ngFor="let data of tableData | paginate: { itemsPerPage: pageLength, currentPage: p }" (click)="onRowClick($event)" (dblclick)="onRowDblClick($event)">
 					<td *ngIf="checkFlag"> <input type="checkbox" name=""></td>
 					<!-- <ng-container *ngIf="from === 'quotation-processing'"> -->
 						<td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]">
@@ -79,9 +79,15 @@ span.ui-column-resizer {
 						</td>
 					</ng-container> -->
 				</tr>
+                <tr *ngFor="let auto of autoFill">
+                   <td *ngFor="let key of dataKeys" style="padding: 14px"></td>
+                </tr>
 			</tbody>
 		</table>
 	</div>
+    <div class="pagination">
+            <pagination-controls class="my-pagination" (pageChange)="p = $event"></pagination-controls>
+    </div>
 </div>
 
 <hr/>
