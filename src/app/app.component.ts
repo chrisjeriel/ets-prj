@@ -1,11 +1,11 @@
-﻿import { Component } from '@angular/core';
+﻿import { Component, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { ResizeEvent } from 'angular-resizable-element';
 
 import { AuthenticationService } from './_services';
 import { User } from './_models';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
+import { DOCUMENT } from '@angular/platform-browser';
 
 @Component({ 
     selector: 'app',
@@ -28,12 +28,14 @@ export class AppComponent {
     }
 
     content: any;
+    currentTheme: string;
     
     constructor(
     private router: Router,
      private authenticationService: AuthenticationService,
      config: NgbModalConfig,
-     private modalService: NgbModal
+     private modalService: NgbModal,
+     @Inject(DOCUMENT) private document
 
     ) {
         this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
@@ -43,7 +45,7 @@ export class AppComponent {
         config.backdrop = 'static';
         config.keyboard = false;
     }
-
+  
     logout() {
         this.authenticationService.logout();
         this.router.navigate(['/login']);
@@ -55,6 +57,9 @@ export class AppComponent {
         this.modalService.open(this.content, { centered: true , windowClass : 'modal-size'} );
     }
     
-
+    changeTheme(){
+        this.document.getElementById('theme').src = "../styles/indigo-styles.css";
+        console.log('indigo');
+    }
 
 }
