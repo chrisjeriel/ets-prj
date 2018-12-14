@@ -81,20 +81,20 @@
 </td>
 </ng-container> -->
                 </tr>
-                <tr *ngFor="let auto of autoFill">
+                <!-- <tr *ngFor="let auto of autoFill">
                     <td *ngFor="let key of dataKeys" style="padding: 14px"></td>
-                </tr>
+                </tr> -->
             </tbody>
         </table>
     </div>
     <div class="pagingStatus">
-        <label>Showing 1 to 2 of 2 entries</label>
+        <label>Showing {{1 + (p-1)*pageLength }} to {{p*pageLength<displayLength ?p*pageLength:displayLength}} of {{displayLength}} entries</label>
     </div>
     <div class="pagination">
-        <pagination-template class="" #paw="paginationApi" (pageChange)="p = $event"><a (click)="paw.setCurrent(1)">&laquo;</a></pagination-template>
+        <!-- <pagination-template class="" #paw="paginationApi" (pageChange)="p = $event"><a (click)="paw.setCurrent(1)">&laquo;</a></pagination-template> -->
         <pagination-controls class="my-pagination" (pageChange)="p = $event" previousLabel="" nextLabel="">
         </pagination-controls>
-         <pagination-template class="" #paw="paginationApi" (pageChange)="p = $event"> <a (click)="paw.setCurrent(paw.getLastPage())">&raquo;</a></pagination-template>
+         <!-- <pagination-template class="" #paw="paginationApi" (pageChange)="p = $event"> <a (click)="paw.setCurrent(paw.getLastPage())">&raquo;</a></pagination-template> -->
         <!--<pagination-template class="" #paw="paginationApi" (pageChange)="p = $event">
                  going to first page is easy, since it is always 1 
                 <a (click)="paw.setCurrent(1)">go to first page</a>

@@ -17,7 +17,7 @@ export class CustNonDatatableComponent implements OnInit {
     @Input() expireFilter: boolean;
     @Input() dataTypes: any[] = [];
     @Input() filters: any[] = [];
-    @Input() pageLength: number = 10;
+    @Input() pageLength: number = 2;
     @Input() checkFlag: boolean;
     @Input() tableOnly: boolean = false;
     @Input() searchQuery: any = "cessionType";
@@ -35,10 +35,12 @@ export class CustNonDatatableComponent implements OnInit {
     autoFill: number[];
 
     displayData:any[];
-    newData: any =new QuotationList("CAR-2015-00028-32-01", "Direct", "CAR Wet Risks", "Concluded", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna, Calamba", "CAR-2018-00001-023-0002-01", "PHP", new Date(), new Date(), "Inigo Flores", "Cuaresma");
+    newData: any =new QuotationList(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null);
     sortBy:boolean = true;
     sortIndex:number;
     searchString: string;
+    displayLength: number;
+    p:number = 1;
 
     constructor(config: NgbDropdownConfig, public renderer: Renderer, private quotationService: QuotationService,) {
         config.placement = 'bottom-right';
@@ -53,10 +55,14 @@ export class CustNonDatatableComponent implements OnInit {
             if(this.tHeader.length <= 0)
             this.tHeader.push("No Data");
         }
-        if(this.tableData.length < this.pageLength){
-            this.autoFill = Array(this.pageLength - this.tableData.length).fill(1);
-        }
         this.displayData = JSON.parse(JSON.stringify( this.tableData));
+        this.displayLength = this.displayData.length;
+        if(this.displayData.length%this.pageLength != 0){
+            this.autoFill = Array(this.pageLength - this.displayData.length%this.pageLength).fill(this.newData);
+        }
+        if(typeof this.autoFill != "undefined")
+            this.displayData = this.displayData.concat(this.autoFill);
+        
     }
     processData(key: any, data: any) {
         return data[key];
@@ -121,9 +127,12 @@ export class CustNonDatatableComponent implements OnInit {
 
     search(event){
         this.displayData = this.tableData.filter((item) => this.dataKeys.some(key => item.hasOwnProperty(key) && new RegExp(event, 'gi').test(item[key])));
-        if(this.displayData.length < this.pageLength){
-            this.autoFill = Array(this.pageLength - this.tableData.length).fill(1);
+        if(this.displayData.length%this.pageLength != 0){
+            this.autoFill = Array(this.displayData.length -  this.displayData.length%this.pageLength).fill(this.newData);
         }
+        this.displayLength = this.displayData.length;
+        if(typeof this.autoFill != "undefined")
+            this.displayData = this.displayData.concat(this.autoFill);
     }
 
 }

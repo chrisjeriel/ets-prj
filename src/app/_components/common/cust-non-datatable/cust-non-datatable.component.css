@@ -196,3 +196,7 @@ div.input-group {
     position: absolute;
     right: 5px;
 }
+
+tr{
+    height: 29px;
+}
