@@ -151,3 +151,56 @@ div.input-group {
 .icon .fa:not(:first-child) {
 	margin-left: 5px;
 }
+
+.my-pagination /deep/ .ngx-pagination .current {
+    background: linear-gradient(to bottom, #4080bf 0%, #2d5986 100%);
+    font-size: 11px;
+    font-weight: bold;
+    color: white !important;
+    text-align: center;
+    text-decoration: none !important;
+    outline: none !important;
+    border-style: none;
+    border: 1px solid gray;
+    border-radius: 2px;
+}
+
+.pagination{
+    margin-top: 1%;
+    float: right;
+}
+
+.pagingStatus{
+    float: left;
+}
+
+.cust-search-form{
+    height: 25px !important;
+    width: 189px !important;
+    font-size: 12px !important;
+}
+
+.search-filter{
+    position: absolute !important;
+    right: 0px;
+}
+
+#cust-scroll::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(45,89,134,0.3);
+	border-radius: 10px;
+	background-color: #F5F5F5;
+}
+
+#cust-scroll::-webkit-scrollbar
+{
+	width: 12px;
+	background-color: #F5F5F5;
+}
+
+#cust-scroll::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(45,89,134,.3);
+	background-color: #2d5986;
+}

@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter, Renderer } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 
+import { DummyInfo } from '../../../_models';
+
 @Component({
     selector: 'app-cust-editable-non-datatable',
     templateUrl: './cust-editable-non-datatable.component.html',
@@ -25,7 +27,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
 
     @Input() checkboxFlag;
     @Input() columnId;
-    @Input() pageLength;
+    @Input() pageLength = 10;
 
     @Input() editedData: any[] = [];
     @Output() editedDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
@@ -41,7 +43,15 @@ export class CustEditableNonDatatableComponent implements OnInit {
     pressed:  any;
     startX:   any;
     startWidth: any;
+    autoFill: number[];
 
+    displayData:any[];
+    newData: any = new DummyInfo(null,null,null,null,null,null,null);
+    sortBy:boolean = true;
+    sortIndex:number;
+    searchString: string;
+    displayLength: number;
+    p:number = 1;
 
     constructor(config: NgbDropdownConfig, public renderer: Renderer) { 
         config.placement = 'bottom-right';
@@ -54,6 +64,15 @@ export class CustEditableNonDatatableComponent implements OnInit {
         } else {
             this.tHeader.push("No Data");
         }
+        this.displayData = JSON.parse(JSON.stringify( this.tableData));
+        this.displayLength = this.displayData.length;
+        this.autoFill = Array(this.pageLength).fill(this.newData);
+        if(this.displayData.length%this.pageLength != 0){
+            this.autoFill = Array(this.pageLength - this.displayData.length%this.pageLength).fill(this.newData);
+        }
+        if(typeof this.autoFill != "undefined")
+            this.displayData = this.displayData.concat(this.autoFill);
+        
     }
 
     processData(key: any, data: any) {
@@ -97,5 +116,33 @@ export class CustEditableNonDatatableComponent implements OnInit {
 
     onRowDblClick(event) {
         this.rowDblClick.next(event);
+    }
+    sort(str,sortBy){
+        this.displayData = this.displayData.sort(function(a, b) {
+            if(sortBy){
+                if(a[str] < b[str]) { return -1; }
+                if(a[str] > b[str]) { return 1; }
+            }else{
+                if(a[str] < b[str]) { return 1; }
+                if(a[str] > b[str]) { return -1; }
+            }
+        });
+        this.sortBy = !this.sortBy;
+   
+    }
+
+    showSort(sortBy,i){
+        return sortBy && i==this.sortIndex;
+    }
+
+    search(event){
+        this.displayData = this.tableData.filter((item) => this.dataKeys.some(key => item.hasOwnProperty(key) && new RegExp(event, 'gi').test(item[key])));
+        this.autoFill = Array(this.pageLength).fill(this.newData);
+        if(this.displayData.length%this.pageLength != 0){
+            this.autoFill = Array(this.pageLength -  this.displayData.length%this.pageLength).fill(this.newData);
+        }
+        this.displayLength = this.displayData.length;
+        if(typeof this.autoFill != "undefined")
+            this.displayData = this.displayData.concat(this.autoFill);
     }
 }

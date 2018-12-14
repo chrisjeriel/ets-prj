@@ -147,9 +147,6 @@ div.input-group {
 .pagingStatus{
     float: left;
 }
-.pagination {
-  display: inline-block;
-}
 
 .pagination a {
   color: black;
