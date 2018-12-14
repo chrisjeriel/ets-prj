@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { QuotationService } from '../../../_services';
 import { DummyInfo } from '../../../_models';
 import { ModalComponent } from '../../../_components/common/modal/modal.component';
@@ -9,7 +9,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
     templateUrl: './dummy.component.html',
     styleUrls: ['./dummy.component.css']
 })
-export class DummyComponent implements OnInit, AfterViewInit {
+export class DummyComponent implements OnInit {
     //@ViewChild('content') content;
     @ViewChild(ModalComponent) modalComp: ModalComponent;
 
@@ -26,6 +26,30 @@ export class DummyComponent implements OnInit, AfterViewInit {
     dataTypes2: any[] = [];
     nData: DummyInfo = new DummyInfo(null, null, null, null, null, null, null);
     resizables: boolean[] = [];
+    //test
+    passData: any = {
+        tHeader: [
+            "Quotation No.", "Type of Cession", "Line Class", "Status",
+            "Ceding Company", "Principal", "Contractor", "Insured", "Risk",
+            "Object", "Site", "Policy No", "Currency",
+        ],
+        filters: [
+            "Quotation No.", "Type of Cession", "Line Class", "Status",
+            "Ceding Company", "Principal", "Contractor", "Insured", "Risk",
+            "Object", "Site", "Policy No", "Currency",
+        ],
+        resizable: [
+            false,false,true,true,true,true,true,true,true,true,true,false,
+            false,
+        ],
+        dataTypes: [
+            "text","text","text","text","text","text","text","text","text",
+            "text","text","text","text",
+        ],
+        tableData: this.quotationService.getQuotationListInfo(),
+        pageLength: 10,
+        
+    }
 
     constructor(private quotationService: QuotationService, private modalService: NgbModal) { 
     }
@@ -142,11 +166,14 @@ export class DummyComponent implements OnInit, AfterViewInit {
             delete e.createdBy;
             delete e.requestedBy;
         });
+         this.passData.tableData.forEach(function(e){
+            delete e.quoteDate;
+            delete e.validityDate;
+            delete e.createdBy;
+            delete e.requestedBy;
+        });
     }
 
-    ngAfterViewInit(){
-        console.log(this.modalComp.test);
-    }
     open(){
         this.modalService.dismissAll();
         this.modalService.open(this.modalComp.test, { centered: true, backdrop: 'static', windowClass : 'modal-size' });

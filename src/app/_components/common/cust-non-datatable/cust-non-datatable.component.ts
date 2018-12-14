@@ -27,6 +27,13 @@ export class CustNonDatatableComponent implements OnInit {
     @Output() rowDblClick: EventEmitter<any> = new EventEmitter();
 
     @Input() printBtn: boolean = false;
+    
+    //test
+    @Input() passData: any = {
+        tableData: [], tHeader: [], dataTypes: [], resizable: [],
+        expireFilter: false, filters: [], pageLength: 10, checkFlag: false,
+        tableOnly: false, 
+    }
 
     dataKeys: any[] = [];
     start:    any;
@@ -36,10 +43,12 @@ export class CustNonDatatableComponent implements OnInit {
     autoFill: number[];
 
     displayData:any[];
-    newData: any =new QuotationList("CAR-2015-00028-32-01", "Direct", "CAR Wet Risks", "Concluded", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna, Calamba", "CAR-2018-00001-023-0002-01", "PHP", new Date(), new Date(), "Inigo Flores", "Cuaresma");
+    newData: any =new QuotationList(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null);
     sortBy:boolean = true;
     sortIndex:number;
     searchString: string;
+    displayLength: number;
+    p:number = 1;
 
     constructor(config: NgbDropdownConfig, public renderer: Renderer, private quotationService: QuotationService,) {
         config.placement = 'bottom-right';
@@ -48,16 +57,21 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        if (this.tableData.length > 0) {
-            this.dataKeys = Object.keys(this.tableData[0]);
+        if (this.passData.tableData.length > 0) {
+            this.dataKeys = Object.keys(this.passData.tableData[0]);
         } else {
             if(this.tHeader.length <= 0)
             this.tHeader.push("No Data");
         }
-        if(this.tableData.length < this.pageLength){
-            this.autoFill = Array(this.pageLength - this.tableData.length).fill(1);
+        this.displayData = JSON.parse(JSON.stringify( this.passData.tableData));
+        this.displayLength = this.displayData.length;
+        this.autoFill = Array(this.passData.pageLength).fill(this.newData);
+        if(this.displayData.length%this.passData.pageLength != 0){
+            this.autoFill = Array(this.passData.pageLength - this.displayData.length%this.passData.pageLength).fill(this.newData);
         }
-        this.displayData = JSON.parse(JSON.stringify( this.tableData));
+        if(typeof this.autoFill != "undefined")
+            this.displayData = this.displayData.concat(this.autoFill);
+        
     }
     processData(key: any, data: any) {
         return data[key];
@@ -121,10 +135,14 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     search(event){
-        this.displayData = this.tableData.filter((item) => this.dataKeys.some(key => item.hasOwnProperty(key) && new RegExp(event, 'gi').test(item[key])));
-        if(this.displayData.length < this.pageLength){
-            this.autoFill = Array(this.pageLength - this.tableData.length).fill(1);
+        this.displayData = this.passData.tableData.filter((item) => this.dataKeys.some(key => item.hasOwnProperty(key) && new RegExp(event, 'gi').test(item[key])));
+        this.autoFill = Array(this.passData.pageLength).fill(this.newData);
+        if(this.displayData.length%this.passData.pageLength != 0){
+            this.autoFill = Array(this.passData.pageLength -  this.displayData.length%this.passData.pageLength).fill(this.newData);
         }
+        this.displayLength = this.displayData.length;
+        if(typeof this.autoFill != "undefined")
+            this.displayData = this.displayData.concat(this.autoFill);
     }
 
 }

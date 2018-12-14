@@ -116,3 +116,7 @@ div.input-group {
 .number{
     float:right;
 }
+
+.checkbox {
+    width: 6px;
+}
