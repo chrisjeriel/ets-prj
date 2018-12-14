@@ -26,6 +26,13 @@ export class CustNonDatatableComponent implements OnInit {
     @Output() rowDblClick: EventEmitter<any> = new EventEmitter();
 
     @Input() printBtn: boolean = false;
+    
+    //test
+    @Input() passData: any = {
+        tableData: [], tHeader: [], dataTypes: [], resizable: [],
+        expireFilter: false, filters: [], pageLength: 10, checkFlag: false,
+        tableOnly: false, 
+    }
 
     dataKeys: any[] = [];
     start:    any;
@@ -47,16 +54,16 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        if (this.tableData.length > 0) {
-            this.dataKeys = Object.keys(this.tableData[0]);
+        if (this.passData.tableData.length > 0) {
+            this.dataKeys = Object.keys(this.passData.tableData[0]);
         } else {
             if(this.tHeader.length <= 0)
             this.tHeader.push("No Data");
         }
-        if(this.tableData.length < this.pageLength){
-            this.autoFill = Array(this.pageLength - this.tableData.length).fill(1);
+        if(this.passData.tableData.length < this.pageLength){
+            this.autoFill = Array(this.passData.pageLength - this.passData.tableData.length).fill(1);
         }
-        this.displayData = JSON.parse(JSON.stringify( this.tableData));
+        this.displayData = JSON.parse(JSON.stringify( this.passData.tableData));
     }
     processData(key: any, data: any) {
         return data[key];
@@ -120,9 +127,9 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     search(event){
-        this.displayData = this.tableData.filter((item) => this.dataKeys.some(key => item.hasOwnProperty(key) && new RegExp(event, 'gi').test(item[key])));
+        this.displayData = this.passData.tableData.filter((item) => this.dataKeys.some(key => item.hasOwnProperty(key) && new RegExp(event, 'gi').test(item[key])));
         if(this.displayData.length < this.pageLength){
-            this.autoFill = Array(this.pageLength - this.tableData.length).fill(1);
+            this.autoFill = Array(this.pageLength - this.passData.tableData.length).fill(1);
         }
     }
 

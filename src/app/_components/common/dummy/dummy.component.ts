@@ -23,6 +23,30 @@ export class DummyComponent implements OnInit, AfterViewInit {
     dataTypes2: any[] = [];
     nData: DummyInfo = new DummyInfo(null, null, null, null, null, null, null);
     resizables: boolean[] = [];
+    //test
+    passData: any = {
+        tHeader: [
+            "Quotation No.", "Type of Cession", "Line Class", "Status",
+            "Ceding Company", "Principal", "Contractor", "Insured", "Risk",
+            "Object", "Site", "Policy No", "Currency",
+        ],
+        filters: [
+            "Quotation No.", "Type of Cession", "Line Class", "Status",
+            "Ceding Company", "Principal", "Contractor", "Insured", "Risk",
+            "Object", "Site", "Policy No", "Currency",
+        ],
+        resizable: [
+            false,false,true,true,true,true,true,true,true,true,true,false,
+            false,
+        ],
+        dataTypes: [
+            "text","text","text","text","text","text","text","text","text",
+            "text","text","text","text",
+        ],
+        tableData: this.quotationService.getQuotationListInfo(),
+        pageLength: 5,
+        
+    }
 
     constructor(private quotationService: QuotationService, private modalService: NgbModal) { 
     }
@@ -104,6 +128,12 @@ export class DummyComponent implements OnInit, AfterViewInit {
         this.tableData2 = this.quotationService.getDummyEditableInfo();
         this.tableData3 = this.quotationService.getQuotationListInfo();
         this.tableData3.forEach(function(e){
+            delete e.quoteDate;
+            delete e.validityDate;
+            delete e.createdBy;
+            delete e.requestedBy;
+        });
+         this.passData.tableData.forEach(function(e){
             delete e.quoteDate;
             delete e.validityDate;
             delete e.createdBy;

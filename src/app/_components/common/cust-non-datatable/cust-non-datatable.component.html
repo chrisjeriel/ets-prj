@@ -28,6 +28,7 @@
         <!-- end remove -->
     </div>
     <div class="search-filter">
+    <!--<div class="search-filter" *ngIf="passData.hasSearch">-->
         <label>Search: &nbsp;
             <input type="search" class="form-control-sm cust-search-form" [(ngModel)]="searchString" (ngModelChange)="search($event)">
         </label>
@@ -37,7 +38,7 @@
         <div ngbDropdownMenu aria-labelledby="dropdownConfig">
             <div class="dropdown-item">
                 <span class="cust-tbl-label">Filter by:</span>
-                <div class="input-group" *ngFor="let filt of filters">
+                <div class="input-group" *ngFor="let filt of passData.filters">
                     <div class="input-group-prepend">
                         <div class="input-group-text">
                             <input type="checkbox"><span>&nbsp;{{filt}}</span>
@@ -55,9 +56,9 @@
         <table class="row-border hover dataTable no-footer" id="cust-table" style="width: 100%">
             <thead>
                 <tr style="min-width: 96px">
-                    <th *ngIf="checkFlag"><input type="checkbox" name=""></th>
-                    <th *ngFor="let tHeader of tHeader; let i = index" (click)="sort(dataKeys[i],sortBy);sortIndex=i;">
-                        <span *ngIf="resizable[i]" 
+                    <th *ngIf="passData.checkFlag"><input type="checkbox" name=""></th>
+                    <th *ngFor="let tHeader of passData.tHeader; let i = index" (click)="sort(dataKeys[i],sortBy);sortIndex=i;">
+                        <span *ngIf="passData.resizable[i]" 
                               class="ui-column-resizer" (mousedown) = "onMouseDown($event)"></span>
                         <span class="gridHeader">{{tHeader}}</span>
                         <i *ngIf="showSort(sortBy,i)" class="fa fa-caret-down"></i>
@@ -66,8 +67,8 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let data of displayData | paginate: { itemsPerPage: pageLength, currentPage: p } | search: searchQuery :query" (click)="onRowClick($event)" (dblclick)="onRowDblClick($event)">
-                    <td *ngIf="checkFlag"> <input type="checkbox" name=""></td>
+                <tr *ngFor="let data of displayData | paginate: { itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event)" (dblclick)="onRowDblClick($event)">
+                    <td *ngIf="passData.checkFlag"> <input type="checkbox" name=""></td>
                     <!-- <ng-container *ngIf="from === 'quotation-processing'"> -->
                     <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]">
                         <span *ngSwitchCase="'date'" class="unclickable">{{ processData(key, data) | date: 'MM/dd/yyyy'}}</span>
@@ -88,13 +89,18 @@
         </table>
     </div>
     <div class="pagingStatus">
-        <label>Showing 1 to 2 of 2 entries</label>
+    <!--<div class="pagingStatus" *ngIf="passData.hasPageInfo">-->
+        <pagination-template #paw="paginationApi" (pageChange)="p = $event">
+            <label *ngIf="!paw.isLastPage()">Showing {{ (paw.getCurrent() - 1) * passData.pageLength + 1 }} - {{ paw.getCurrent() * passData.pageLength }} of {{displayData.length}} entries</label>
+            <label *ngIf="paw.isLastPage()">Showing {{ (paw.getCurrent() - 1) * passData.pageLength + 1 }} - {{displayData.length}} of {{displayData.length}} entries</label>
+        </pagination-template>
     </div>
     <div class="pagination">
-        <pagination-template class="" #paw="paginationApi" (pageChange)="p = $event"><a (click)="paw.setCurrent(1)">&laquo;</a></pagination-template>
+    <!--<div class="pagination" *ngIf="passData.hasPagination">-->
+       <!-- <pagination-template class="" #paw="paginationApi" (pageChange)="p = $event"><a (click)="paw.setCurrent(1)">&laquo;</a></pagination-template>-->
         <pagination-controls class="my-pagination" (pageChange)="p = $event" previousLabel="" nextLabel="">
         </pagination-controls>
-         <pagination-template class="" #paw="paginationApi" (pageChange)="p = $event"> <a (click)="paw.setCurrent(paw.getLastPage())">&raquo;</a></pagination-template>
+         <!--<pagination-template class="" #paw="paginationApi" (pageChange)="p = $event"> <a (click)="paw.setCurrent(paw.getLastPage())">&raquo;</a></pagination-template>-->
         <!--<pagination-template class="" #paw="paginationApi" (pageChange)="p = $event">
                  going to first page is easy, since it is always 1 
                 <a (click)="paw.setCurrent(1)">go to first page</a>

@@ -30,7 +30,10 @@
     <br/>
     <fieldset class="scheduler-border">
         <legend class="scheduler-border">Table Samples (Non DataTables)</legend>
-        <app-cust-non-datatable [tableData]="tableData3" [tHeader]="tHeader2" [dataTypes]="dataTypes2" [resizable]="resizables" [filters]="filters"></app-cust-non-datatable>
+       <!-- <app-cust-non-datatable [tableData]="tableData3" [tHeader]="tHeader2" [dataTypes]="dataTypes2" [resizable]="resizables" [filters]="filters"></app-cust-non-datatable>-->
     </fieldset>
-    
+    <br/>
+    <fieldset class="scheduler-border">
+        <app-cust-non-datatable [passData] = "passData"></app-cust-non-datatable>
+    </fieldset>
 </div>
