@@ -82,7 +82,7 @@
                 <tr *ngFor="let data of displayData | paginate: { itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event)" (dblclick)="onRowDblClick($event)">
                     <td *ngIf="passData.checkFlag"> <input type="checkbox" name=""></td>
                     <!-- <ng-container *ngIf="from === 'quotation-processing'"> -->
-                    <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]">
+                    <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]">
                         <span *ngSwitchCase="'date'" class="unclickable">{{ processData(key, data) | date: 'MM/dd/yyyy'}}</span>
                         <span *ngSwitchDefault class="unclickable">{{ processData(key, data) }}</span>
                     </td>
