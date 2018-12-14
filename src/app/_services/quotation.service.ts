@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { QuotationList, HoldCoverMonitoringList, DummyInfo, QuoteEndorsement, QuotationOption, QuotationOtherRates, IntCompAdvInfo, AttachmentInfo, QuotationProcessing, QuotationCoverageInfo, ItemInformation } from '@app/_models';
+import { QuotationList, HoldCoverMonitoringList, DummyInfo, QuoteEndorsement, QuotationOption, QuotationOtherRates, IntCompAdvInfo, AttachmentInfo, QuotationProcessing, QuotationCoverageInfo,QuotationHoldCover, ItemInformation } from '@app/_models';
+
 
 @Injectable({ providedIn: 'root' })
 export class QuotationService {
@@ -17,6 +18,7 @@ export class QuotationService {
     coverageInfoData: QuotationCoverageInfo[] = [];
     itemInfoData: ItemInformation[] = [];
     quoteOptionNos: number[] = [];
+    quotationToHoldCover: QuotationHoldCover[] = [];
 
     rowData: any[] = [];
     toGenInfo: any[] = [];
@@ -124,7 +126,14 @@ export class QuotationService {
             new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project"),
             new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project"),
             new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project"),
-            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project")
+            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project"),
+            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project"),
+            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project"),
+            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project"),
+            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project"),
+            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project"),
+            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project"),
+            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project"),
         ];
 
         return this.attachmentInfoData;
@@ -221,6 +230,27 @@ export class QuotationService {
         return this.quoteOptionNos;
     }
 
+
+    getListOfValuesHoldCover() {
+        this.quotationToHoldCover = [
+            new QuotationHoldCover("EEI-2018-00088-00-67", "Phil. Guaranty", "A.B Industries. Inc", "BPI- EEI"),
+            new QuotationHoldCover("CAR-2018-00066-00-31", "PIONEER ASIA INSURANCE CORP", "ACK Construction, Inc.", "Equitable Tower"),
+            new QuotationHoldCover("EAR-2018-02344-00-47", "Tan-Galute Adjustment Co., Inc", "A. C. Mojares Construction", "Metromart Cmplx"),
+            new QuotationHoldCover("EAR-2018-00075-00-66", "Sentinel ", "ACM Builders", "Tariff Comm Bld"),
+            new QuotationHoldCover("CAR-2018-00090-00-69", "Trust Assurance ", "A. Consteel Construction", "JG Summit/Gourm"),
+            new QuotationHoldCover("CAR-2018-00090-00-69", "Trust Assurance ", "A. Consteel Construction", "JG Summit/Gourm"),
+            new QuotationHoldCover("CAR-2018-00090-00-69", "Trust Assurance ", "A. Consteel Construction", "JG Summit/Gourm"),
+            new QuotationHoldCover("CAR-2018-00090-00-69", "Trust Assurance ", "A. Consteel Construction", "JG Summit/Gourm"),
+            new QuotationHoldCover("CAR-2018-00090-00-69", "Trust Assurance ", "A. Consteel Construction", "JG Summit/Gourm"),
+            new QuotationHoldCover("CAR-2018-00090-00-69", "Trust Assurance ", "A. Consteel Construction", "JG Summit/Gourm"),
+            new QuotationHoldCover("CAR-2018-00090-00-69", "Trust Assurance ", "A. Consteel Construction", "JG Summit/Gourm"),
+            new QuotationHoldCover("CAR-2018-00090-00-69", "Trust Assurance ", "A. Consteel Construction", "JG Summit/Gourm"),
+        ];
+
+        return this.quotationToHoldCover;
+
+    
+    }
     getItemInfoData() {
         this.itemInfoData = [
             new ItemInformation(1001, "Description for item number 1"),
@@ -229,5 +259,6 @@ export class QuotationService {
         ];
 
         return this.itemInfoData;
+
     }
 }

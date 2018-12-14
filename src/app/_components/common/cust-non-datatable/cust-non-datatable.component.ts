@@ -21,6 +21,7 @@ export class CustNonDatatableComponent implements OnInit {
     @Input() checkFlag: boolean;
     @Input() tableOnly: boolean = false;
     @Input() searchQuery: any = "cessionType";
+    @Input() filterDataTypes: any[] = [];
 
     @Output() rowClick: EventEmitter<any> = new EventEmitter();
     @Output() rowDblClick: EventEmitter<any> = new EventEmitter();

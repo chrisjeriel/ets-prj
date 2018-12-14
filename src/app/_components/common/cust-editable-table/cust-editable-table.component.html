@@ -85,7 +85,8 @@
 			<table id="sample2" datatable [dtOptions]="dtOptions" class="row-border hover">
 				<thead>
 					<tr>
-						<th *ngIf="checkFlag"></th>
+						<th *ngIf="checkFlag"><div class="checkbox"><input type="checkbox" id="check" [(ngModel)]="checked"></div></th>
+						
 						<th *ngFor="let tHeader of tHeader">
 							<span class="ui-column-resizer" (mousedown)="onMouseDown($event)"></span>
 							<span class="gridHeader">{{tHeader}}</span>
@@ -95,7 +96,7 @@
 
 				<tbody>
 					<tr *ngFor="let data of tableData;let ti = index" (click)="onRowClick($event)" (dblclick)="onRowDblClick($event)">
-						<td *ngIf="checkFlag">&nbsp;&nbsp;&nbsp;<input type="checkbox" name="checkbox"></td>
+						<td *ngIf="checkFlag" class="checkbox">&nbsp;&nbsp;&nbsp;<input type="checkbox" name="checkbox" [checked]="checked"></td>
 						<td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]">
 							<div>
 								<a><i *ngIf="magnifyingGlass.indexOf(key)!=-1" class="fa fa-search"></i></a> &nbsp;
@@ -132,8 +133,8 @@
 							</select>
 						</td>
 						<td *ngIf="tHeader.indexOf('Actions')!=-1" class="icon">
-							<button class="fa fa-upload" title="Upload"></button>
-							<button class="fa fa-download" title="Download"></button>
+							<button class="fa fa-paperclip" title="Attach File"></button>
+							<button class="fa fa-folder-open" title="Open File"></button>
 						</td>
 					</tr>
 				</tbody>

@@ -2,5 +2,6 @@
 	<h4>Quotation / Hold Cover Monitoring</h4>
 </div>
 <div>
-    <app-cust-table [filters]="filters" [expireFilter]="true" [tableData]="tableData" [tHeader] = "tHeader" [dataTypes] = "dataTypes" [pageLength]="pageLength" (rowClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)"></app-cust-table>
+    <app-cust-table [filters]="filters" [expireFilter]="true" [tableData]="tableData" [tHeader] = "tHeader" [dataTypes] = "dataTypes" [filterDataTypes] = "filterDataTypes" [pageLength]="pageLength"></app-cust-table>
+    <app-cust-table [filters]="filters" [expireFilter]="true" [tableData]="tableData" [tHeader] = "tHeader" [dataTypes] = "dataTypes" [pageLength]="pageLength" [filterDataTypes] = "filterDataTypes" (rowClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)"></app-cust-table>
 </div>

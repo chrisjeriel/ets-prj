@@ -24,6 +24,7 @@ export class CustTableComponent implements OnInit {
   @Input() pageLength: number = 10;
   @Input() checkFlag: boolean;
   @Input() tableOnly: boolean = false;
+  @Input() filterDataTypes: any[] = [];
 
   @Output() rowClick: EventEmitter<any> = new EventEmitter();
   @Output() rowDblClick: EventEmitter<any> = new EventEmitter();
@@ -35,7 +36,8 @@ export class CustTableComponent implements OnInit {
   pressed:  any;
   startX:   any;
   startWidth: any;
-
+  checked: boolean;
+  
   constructor(config: NgbDropdownConfig, public renderer: Renderer, private quotationService: QuotationService) {
     config.placement = 'bottom-right';
     config.autoClose = false;

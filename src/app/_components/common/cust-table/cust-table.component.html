@@ -32,13 +32,16 @@ span.ui-column-resizer {
 		<div ngbDropdownMenu aria-labelledby="dropdownConfig">
 			<div class="dropdown-item">
 				<span class="cust-tbl-label">Filter by:</span>
-				<div class="input-group" *ngFor="let filt of filters">
+				<div class="input-group" *ngFor="let filt of filters;let i= index" [ngSwitch]="filterDataTypes[i]">
 					<div class="input-group-prepend">
 						<div class="input-group-text">
 							<input type="checkbox"><span>&nbsp;{{filt}}</span>
 						</div>
 					</div>
-					<input type="text" class="form-control cust-sm">
+					<div >
+						<input *ngSwitchCase="'date'" type="date" class="form-control cust-sm">
+						<input *ngSwitchCase="'text'" type="text" class="form-control cust-sm">
+					</div>
 				</div>
 				<div class="input-group">
 					<button class="cust-filter cust-tbl-submit"><a>Ok</a></button>
@@ -50,7 +53,7 @@ span.ui-column-resizer {
 		<table datatable [dtOptions]="dtOptions" class="row-border hover" id="cust-datatable" style="width: 100%">
 			<thead>
 				<tr style="min-width: 96px">
-					<th *ngIf="checkFlag"><input type="checkbox" name=""></th>
+					<th *ngIf="checkFlag" class="checkbox"><input type="checkbox" [(ngModel)]="checked"></th>
 					<th *ngFor="let tHeader of tHeader; let i = index">
 						<span *ngIf="resizable[i]" 
                               class="ui-column-resizer" (mousedown) = "onMouseDown($event)"></span>
@@ -60,7 +63,7 @@ span.ui-column-resizer {
 			</thead>
 			<tbody>
 				<tr *ngFor="let data of tableData" (click)="onRowClick($event)" (dblclick)="onRowDblClick($event)">
-					<td *ngIf="checkFlag"> <input type="checkbox" name=""></td>
+					<td *ngIf="checkFlag" class="checkbox"><input type="checkbox" [checked]="checked"></td>
 					<!-- <ng-container *ngIf="from === 'quotation-processing'"> -->
 						<td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]">
 							<span *ngSwitchCase="'date'" class="unclickable">{{ processData(key, data) | date: 'MM/dd/yyyy'}}</span>

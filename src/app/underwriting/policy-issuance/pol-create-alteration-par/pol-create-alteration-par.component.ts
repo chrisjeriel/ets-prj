@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UnderwritingService } from '../../../_services';
-import { CreateAlterationParInfo } from '../../../_models/CreateAlterationPAR';
+import { CreateAlterationParInfo } from '../../../_models/CreateAlterationPolicy';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -61,7 +61,11 @@ export class PolCreateAlterationPARComponent implements OnInit {
 
 
   fromHoldCover(){
-    this.fromQuotation = !this.fromQuotation;
+    this.fromQuotation = false;
+  }
+
+  fromQuotationList(){
+    this.fromQuotation = true;
   }
 
   navigateToGenInfo() {
