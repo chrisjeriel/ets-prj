@@ -82,11 +82,13 @@ export class CustEditableNonDatatableComponent implements OnInit {
     onClickAdd() {
         this.displayData.push(this.nData);
         this.tableData.push(this.nData);
+        this.displayLength = this.displayData.length;
     }
 
     onClickDelete() {
         this.displayData.pop();
         this.tableData.pop();
+        this.displayLength = this.displayData.length;
     }
     private onMouseDown(event){
         this.start = event.target;
