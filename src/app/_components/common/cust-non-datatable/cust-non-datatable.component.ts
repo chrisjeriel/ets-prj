@@ -23,6 +23,60 @@ export class CustNonDatatableComponent implements OnInit {
     @Input() searchQuery: any = "cessionType";
     @Input() filterDataTypes: any[] = [];
 
+    @Input() filterObj:any[] = [
+        {
+            key: 'quotationNo',
+            title:'Quotation No.',
+            dataType: 'text'
+        },
+        {
+            key: 'cessionType',
+            title:'Type of Cession',
+            dataType: 'text'
+        },
+        {
+            key: 'lineClass',
+            title:'Line Class',
+            dataType: 'text'
+        },
+        {
+            key: 'quoteStatus',
+            title:'Quote Status',
+            dataType: 'text'
+        },
+        {
+            key: 'cedingCompany',
+            title:'Ceding Company',
+            dataType: 'text'
+        },
+        {
+            key: 'principal',
+            title:'Principal',
+            dataType: 'text'
+        },
+        {
+            key: 'insured',
+            title:'Insured',
+            dataType: 'text'
+        },
+        {
+            key: 'risk',
+            title:'Risk',
+            dataType: 'text'
+        },
+        {
+            key: 'object',
+            title:'Object',
+            dataType: 'text'
+        },
+        {
+            key: 'location',
+            title:'Insured',
+            dataType: 'date'
+        },
+
+    ];
+
     @Output() rowClick: EventEmitter<any> = new EventEmitter();
     @Output() rowDblClick: EventEmitter<any> = new EventEmitter();
 
@@ -65,14 +119,14 @@ export class CustNonDatatableComponent implements OnInit {
         }
         this.displayData = JSON.parse(JSON.stringify( this.passData.tableData));
         this.displayLength = this.displayData.length;
-        this.autoFill = Array(this.passData.pageLength).fill(this.newData);
-        if(this.displayData.length%this.passData.pageLength != 0){
-            this.autoFill = Array(this.passData.pageLength - this.displayData.length%this.passData.pageLength).fill(this.newData);
+        this.addFiller()
+
+        for(var filt in this.filterObj){
+            this.filterObj[filt].search='';
+            this.filterObj[filt].enabled=false;
         }
-        if(typeof this.autoFill != "undefined")
-            this.displayData = this.displayData.concat(this.autoFill);
-        
     }
+
     processData(key: any, data: any) {
         return data[key];
     }
@@ -134,8 +188,18 @@ export class CustNonDatatableComponent implements OnInit {
         return sortBy && i==this.sortIndex;
     }
 
-    search(event){
-        this.displayData = this.passData.tableData.filter((item) => this.dataKeys.some(key => item.hasOwnProperty(key) && new RegExp(event, 'gi').test(item[key])));
+    filterDisplay(filterObj,searchString){
+        this.displayData = this.passData.tableData.filter((item) => this.dataKeys.some(key => item.hasOwnProperty(key) && new RegExp(searchString, 'gi').test(item[key])));
+        for (var filt in filterObj) {    
+            if (!filterObj[filt]["enabled"]) {continue;}
+            this.displayData = this.displayData.filter(function(itm){
+                return itm[filterObj[filt].key].includes(filterObj[filt].search);
+            })
+        }
+        this.addFiller();
+    }
+
+    addFiller(){
         this.autoFill = Array(this.passData.pageLength).fill(this.newData);
         if(this.displayData.length%this.passData.pageLength != 0){
             this.autoFill = Array(this.passData.pageLength -  this.displayData.length%this.passData.pageLength).fill(this.newData);
@@ -144,5 +208,7 @@ export class CustNonDatatableComponent implements OnInit {
         if(typeof this.autoFill != "undefined")
             this.displayData = this.displayData.concat(this.autoFill);
     }
+
+
 
 }
