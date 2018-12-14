@@ -23,6 +23,27 @@ export class CustNonDatatableComponent implements OnInit {
     @Input() searchQuery: any = "cessionType";
     @Input() filterDataTypes: any[] = [];
 
+    @Input() filterObj = [
+        {
+            key: 'quotationNo',
+            title:'Quotation No.',
+            search:'',
+            enabled:false
+        },
+        {
+            key: 'cessionType',
+            title:'Type of Cession',
+            search:'',
+            enabled:false
+        },
+        {
+            key: 'lineClass',
+            title:'Line Class',
+            search:'',
+            enabled:false
+        }
+    ];
+
     @Output() rowClick: EventEmitter<any> = new EventEmitter();
     @Output() rowDblClick: EventEmitter<any> = new EventEmitter();
 
@@ -144,5 +165,17 @@ export class CustNonDatatableComponent implements OnInit {
         if(typeof this.autoFill != "undefined")
             this.displayData = this.displayData.concat(this.autoFill);
     }
+
+    filterDisplay(filterObj,searchString){
+        for (var filt in filterObj) {
+            if (!filterObj[filt]["enabled"]) {continue;}
+            this.displayData = this.displayData.filter(function(itm){
+            return itm[filterObj[filt].key].includes(filterObj[filt].search);
+        })
+        }
+        console.log(filterObj);
+    }
+
+
 
 }

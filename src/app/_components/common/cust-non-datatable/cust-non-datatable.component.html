@@ -38,7 +38,7 @@
         <div ngbDropdownMenu aria-labelledby="dropdownConfig">
             <div class="dropdown-item">
                 <span class="cust-tbl-label">Filter by:</span>
-                <div class="input-group" *ngFor="let filt of passData.filters;let i= index" [ngSwitch]="filterDataTypes[i]">
+                <!-- <div class="input-group" *ngFor="let filt of passData.filters;let i= index" [ngSwitch]="filterDataTypes[i]">
                     <div class="input-group-prepend">
                         <div class="input-group-text">
                             <input type="checkbox"><span>&nbsp;{{filt}}</span>
@@ -46,9 +46,19 @@
                     </div>
                     <input *ngSwitchCase="'date'" type="date" class="form-control cust-sm">
                     <input *ngSwitchCase="'text'" type="text" class="form-control cust-sm">
+                </div> -->
+                <div class="input-group" *ngFor="let filt of filterObj;let i= index" >
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <input type="checkbox" [(ngModel)]="filt.enabled"><span>&nbsp;{{filt.title}}</span>
+                        </div>
+                    </div>
+                    <input  type="text" class="form-control cust-sm" [(ngModel)]="filt.search">
                 </div>
+
+
                 <div class="input-group">
-                    <button class="cust-filter cust-tbl-submit"><a>Ok</a></button>
+                    <button class="cust-filter cust-tbl-submit" (click)="filterDisplay(filterObj,searchString)"><a>Ok</a></button>
                 </div>
             </div>
         </div>
