@@ -1,23 +1,36 @@
+table{
+    margin-top: 30px;
+}
+th, td{
+    white-space: nowrap;
+    min-width: 0px;
+    max-width: 1px;
+    overflow: hidden;
+}
+.table-scroll{
+    overflow: auto;
+    max-width: 100%
+}
 #cust-table-container {
     position: relative !important;
 }
 
 .cust-btn-container {
-    position: absolute !important;
-    left: 1px;
-    top: 1px;
-    z-index: 9999 !important;
+	position: absolute !important;
+	left: 1px;
+	top: 1px;
+	z-index: 99 !important;
 }
 .icon {
-    text-align: center;
-
+	text-align: center;
+	
 }
 
 .cust-btn {
-    font-size: 11px;
-    font-weight: bold;
-    color: white !important;
-    text-align: center;
+	font-size: 11px;
+	font-weight: bold;
+	color: white !important;
+	text-align: center;
     text-decoration: none !important;
     outline: none !important;
     border-style: none;
@@ -31,85 +44,110 @@
 }
 
 .cust-btn {
-    margin-right: 3px;
+	margin-right: 3px;
 }
 
 .cust-btn:hover {
-    background: linear-gradient(to bottom, #4080df 0%, #2d5986 100%);
+  	background: linear-gradient(to bottom, #4080df 0%, #2d5986 100%);
 }
 
 .dropdown-menu {
-    padding: 0px !important;
-    padding-bottom: 10px !important;
+	padding: 0px !important;
+	padding-bottom: 10px !important;
 }
 
 .dropdown-item{
-    width: 300px;
-    height: 200px;
-    overflow: auto;
+	width: 300px;
+	height: 200px;
+	overflow: auto;
 }
 
 div.input-group-text {
-    font-size: 9px;
-    font-weight: bold;
-    width: 100px;
+	font-size: 9px;
+	font-weight: bold;
+	width: 100px;
 }
 
 input.form-control {
-    font-size: 11px !important;
+	font-size: 11px !important;
 }
 
 .dropdown-item.active, .dropdown-item:active {
-    background-color: white !important;
-    color: gray !important;
+	background-color: white !important;
+	color: gray !important;
 }
 
 
 .dropdown-item.active, .dropdown-item:hover {
-    background-color: white !important;
-    color: gray !important;
+	background-color: white !important;
+	color: gray !important;
 }
 
 div.input-group {
-    margin-bottom: 2px !important;
+	margin-bottom: 2px !important;
 }
 
 .cust-tbl-submit {
-    border-radius: 2px !important;
-    font-size: 12px !important;
+	border-radius: 2px !important;
+	font-size: 12px !important;
 }
 
 .cust-tbl-label {
-    font-size: 11px;
-    font-weight: bold;
+	font-size: 11px;
+	font-weight: bold;
 }
 
 .dataTables_wrapper .dataTables_filter input {
-    margin-right: 0px;
-}
-
-.data{
-    width: 100%;
-    margin-top: 0.6%;
-    clear: both;
-    border-collapse: separate;
-    border-spacing: 0;
-    border: 1px solid #767676;
-    border-radius: 3px;
-    box-sizing: content-box;
+  margin-right: 0px;
 }
 
 .editable-text {
-    width: 80%;
-    padding: 0px;
-    border: none;
-    background-color: inherit;
+	padding: 0px;
+	border: none;
+	background-color: inherit;
+	width: 90%;
+}
+
+.editable-select {
+	width: 90%;
+	padding: 0px;
+	border: none;
+	background-color: inherit;
 }
 
 .editable-text:focus {
-    padding: 5px;
+	padding: 5px;
 }
 
 .editable-checkbox {
-    padding: 1em !important;
+	padding: 1em !important;
+}
+
+.editable-number {
+	text-align: right;
+	width: 90%;
+	padding: 0px;
+	border: none;
+	background-color: inherit;
+}
+
+.editable-date {
+	width: 90%;
+	padding: 0px;
+	border: none;
+	background-color: inherit;
+}
+
+.fa-search {
+	float: right;
+	width: 4%
+}
+
+.number{
+	width: 93%;	 
+	float: right;
+}
+
+.icon .fa:not(:first-child) {
+	margin-left: 5px;
 }
