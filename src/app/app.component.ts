@@ -168,7 +168,7 @@ export class AppComponent {
        this.theme = window.localStorage.getItem("selectedTheme");
            setTimeout(() => {    
              this.changeTheme(this.theme);
-           },1);
+           });
       }
 
 
