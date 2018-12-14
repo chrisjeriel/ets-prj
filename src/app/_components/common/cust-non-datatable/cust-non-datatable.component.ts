@@ -27,42 +27,52 @@ export class CustNonDatatableComponent implements OnInit {
         {
             key: 'quotationNo',
             title:'Quotation No.',
+            dataType: 'text'
         },
         {
             key: 'cessionType',
             title:'Type of Cession',
+            dataType: 'text'
         },
         {
             key: 'lineClass',
             title:'Line Class',
+            dataType: 'text'
         },
         {
             key: 'quoteStatus',
             title:'Quote Status',
+            dataType: 'text'
         },
         {
             key: 'cedingCompany',
             title:'Ceding Company',
+            dataType: 'text'
         },
         {
             key: 'principal',
             title:'Principal',
+            dataType: 'text'
         },
         {
             key: 'insured',
             title:'Insured',
+            dataType: 'text'
         },
         {
             key: 'risk',
             title:'Risk',
+            dataType: 'text'
         },
         {
             key: 'object',
             title:'Object',
+            dataType: 'text'
         },
         {
             key: 'location',
             title:'Insured',
+            dataType: 'date'
         },
 
     ];

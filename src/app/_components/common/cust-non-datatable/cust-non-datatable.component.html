@@ -47,13 +47,14 @@
                     <input *ngSwitchCase="'date'" type="date" class="form-control cust-sm">
                     <input *ngSwitchCase="'text'" type="text" class="form-control cust-sm">
                 </div> -->
-                <div class="input-group" *ngFor="let filt of filterObj;let i= index" >
+                <div class="input-group" *ngFor="let filt of filterObj;let i= index" [ngSwitch]="filterObj[i].dataType">
                     <div class="input-group-prepend">
                         <div class="input-group-text">
                             <input type="checkbox" [(ngModel)]="filt.enabled"><span>&nbsp;{{filt.title}}</span>
                         </div>
                     </div>
-                    <input  type="text" class="form-control cust-sm" [(ngModel)]="filt.search">
+                    <input *ngSwitchCase="'text'"  type="text" class="form-control cust-sm" [(ngModel)]="filt.search" (ngModelChange)="filterDisplay(filterObj,searchString)">
+                    <input *ngSwitchCase="'date'"  type="date" class="form-control cust-sm" [(ngModel)]="filt.search" (ngModelChange)="filterDisplay(filterObj,searchString)">
                 </div>
 
 
