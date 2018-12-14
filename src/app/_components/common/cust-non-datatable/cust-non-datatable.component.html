@@ -39,7 +39,6 @@
             <div class="dropdown-item">
                 <span class="cust-tbl-label">Filter by:</span>
                 <div class="input-group" *ngFor="let filt of passData.filters;let i= index" [ngSwitch]="filterDataTypes[i]">
-                <div class="input-group" *ngFor="let filt of passData.filters">
                     <div class="input-group-prepend">
                         <div class="input-group-text">
                             <input type="checkbox"><span>&nbsp;{{filt}}</span>
