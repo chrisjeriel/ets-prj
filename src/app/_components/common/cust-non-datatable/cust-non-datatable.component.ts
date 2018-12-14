@@ -17,7 +17,7 @@ export class CustNonDatatableComponent implements OnInit {
     @Input() expireFilter: boolean;
     @Input() dataTypes: any[] = [];
     @Input() filters: any[] = [];
-    @Input() pageLength: number = 2;
+    @Input() pageLength: number = 10;
     @Input() checkFlag: boolean;
     @Input() tableOnly: boolean = false;
     @Input() searchQuery: any = "cessionType";
@@ -62,13 +62,15 @@ export class CustNonDatatableComponent implements OnInit {
             if(this.tHeader.length <= 0)
             this.tHeader.push("No Data");
         }
-        this.displayData = JSON.parse(JSON.stringify( this.tableData));
+        this.displayData = JSON.parse(JSON.stringify( this.passData.tableData));
         this.displayLength = this.displayData.length;
-        if(this.displayData.length%this.pageLength != 0){
-            this.autoFill = Array(this.pageLength - this.displayData.length%this.pageLength).fill(this.newData);
+        this.autoFill = Array(this.passData.pageLength).fill(this.newData);
+        if(this.displayData.length%this.passData.pageLength != 0){
+            this.autoFill = Array(this.passData.pageLength - this.displayData.length%this.passData.pageLength).fill(this.newData);
         }
         if(typeof this.autoFill != "undefined")
             this.displayData = this.displayData.concat(this.autoFill);
+        
     }
     processData(key: any, data: any) {
         return data[key];
@@ -132,9 +134,10 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     search(event){
-        this.displayData = this.tableData.filter((item) => this.dataKeys.some(key => item.hasOwnProperty(key) && new RegExp(event, 'gi').test(item[key])));
-        if(this.displayData.length%this.pageLength != 0){
-            this.autoFill = Array(this.displayData.length -  this.displayData.length%this.pageLength).fill(this.newData);
+        this.displayData = this.passData.tableData.filter((item) => this.dataKeys.some(key => item.hasOwnProperty(key) && new RegExp(event, 'gi').test(item[key])));
+        this.autoFill = Array(this.passData.pageLength).fill(this.newData);
+        if(this.displayData.length%this.passData.pageLength != 0){
+            this.autoFill = Array(this.passData.pageLength -  this.displayData.length%this.passData.pageLength).fill(this.newData);
         }
         this.displayLength = this.displayData.length;
         if(typeof this.autoFill != "undefined")

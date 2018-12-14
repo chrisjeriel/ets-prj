@@ -95,7 +95,9 @@
             <label *ngIf="paw.isLastPage()">Showing {{ (paw.getCurrent() - 1) * passData.pageLength + 1 }} - {{displayData.length}} of {{displayData.length}} entries</label>
         </pagination-template>-->
         <pagination-template #paw="paginationApi" (pageChange)="p = $event">
-            <label>Showing {{1 + (p-1)*pageLength }} to {{!paw.isLastPage()?p*pageLength:displayLength}} of {{displayLength}} entries</label>
+            <label *ngIf="!paw.isLastPage() && displayLength > 0">Showing {{ (paw.getCurrent() - 1) * passData.pageLength + 1 }} - {{ paw.getCurrent() * passData.pageLength }} of {{displayLength}} entries</label>
+            <label *ngIf="paw.isLastPage() && displayLength > 0">Showing {{ (paw.getCurrent() - 1) * passData.pageLength + 1 }} - {{displayLength}} of {{displayLength}} entries</label>
+            <label *ngIf="displayLength < 1">Showing {{displayLength}} - {{displayLength}} of {{displayLength}} entries</label>
         </pagination-template>
     </div>
     <div class="pagination">
@@ -104,6 +106,27 @@
         <pagination-controls class="my-pagination" (pageChange)="p = $event" previousLabel="" nextLabel="">
         </pagination-controls>
          <!--<pagination-template class="" #paw="paginationApi" (pageChange)="p = $event"> <a (click)="paw.setCurrent(paw.getLastPage())">&raquo;</a></pagination-template>-->
+        <!--<pagination-template class="" #paw="paginationApi" (pageChange)="p = $event">
+                 going to first page is easy, since it is always 1 
+                <a (click)="paw.setCurrent(1)">go to first page</a>
+                <div class="" [class.disabled]="paw.isFirstPage()">
+                    <a *ngIf="!paw.isFirstPage()" (click)="paw.previous()"> back </a>
+                </div>
+
+                <div *ngFor="let page of paw.pages" [class.current]="paw.getCurrent() === page.value">
+                    <a (click)="paw.setCurrent(page.value)" *ngIf="paw.getCurrent() !== page.value">
+                        <span>{{ page.label }}</span>
+                    </a>
+                    <a *ngIf="paw.getCurrent() === page.value">
+                        <span>{{ page.label }}</span>
+                    </a>
+                </div>
+
+                <div class="" [class.disabled]="paw.isLastPage()">
+                    <a *ngIf="!paw.isLastPage()" (click)="paw.next()"> next </a>
+                </div>
+                <a (click)="paw.setCurrent(paw.getLastPage())">go to last page</a>
+        </pagination-template>-->
     </div>
 </div>
 
