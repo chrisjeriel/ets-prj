@@ -30,7 +30,7 @@
     <div class="search-filter">
     <!--<div class="search-filter" *ngIf="passData.hasSearch">-->
         <label>Search: &nbsp;
-            <input type="search" class="form-control-sm cust-search-form" [(ngModel)]="searchString" (ngModelChange)="search($event)">
+            <input type="search" class="form-control-sm cust-search-form" [(ngModel)]="searchString" (ngModelChange)="filterDisplay(filterObj,$event)">
         </label>
     </div>
     <div ngbDropdown *ngIf="!tableOnly">
