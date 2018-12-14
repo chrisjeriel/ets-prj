@@ -96,7 +96,7 @@
             <label *ngIf="paw.isLastPage()">Showing {{ (paw.getCurrent() - 1) * passData.pageLength + 1 }} - {{displayData.length}} of {{displayData.length}} entries</label>
         </pagination-template>-->
         <pagination-template #paw="paginationApi" id="non-editable" (pageChange)="p = $event">
-            <label *ngIf="!paw.isLastPage() && displayLength > 0">Showing {{ (paw.getCurrent() - 1) * passData.pageLength + 1 }} - {{ paw.getCurrent() * passData.pageLength }} of {{displayLength}} entries {{paw.getCurrent()}}</label>
+            <label *ngIf="!paw.isLastPage() && displayLength > 0">Showing {{ (paw.getCurrent() - 1) * passData.pageLength + 1 }} - {{ paw.getCurrent() * passData.pageLength }} of {{displayLength}} entries </label>
             <label *ngIf="paw.isLastPage() && displayLength > 0">Showing {{ (paw.getCurrent() - 1) * passData.pageLength + 1 }} - {{displayLength}} of {{displayLength}} entries</label>
             <label *ngIf="displayLength < 1">Showing 0 - 0 of 0 entries</label>
         </pagination-template>
