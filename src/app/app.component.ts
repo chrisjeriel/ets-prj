@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject,  ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ResizeEvent } from 'angular-resizable-element';
 import { HostListener, ElementRef } from '@angular/core';
@@ -29,7 +29,7 @@ export class AppComponent {
 
     content: any;
     theme : any;
-
+    
     constructor(
     private router: Router,
      private authenticationService: AuthenticationService,
@@ -154,17 +154,9 @@ export class AppComponent {
      @HostListener('document:click', ['$event'])
       clickout(event) {
         if(this.eRef.nativeElement.contains(event.target)) {
-                   if (this.theme == 'undefined'){
-                       this.setDefaultColorTheme();
-                   } else {
                       this.changeTheme(this.theme)
-                   }
         } else {
-                   if (this.theme == 'undefined'){
-                       this.setDefaultColorTheme();
-                   } else {
-                       this.changeTheme(this.theme);
-                   }
+                      this.changeTheme(this.theme);
         }
      }    
 
@@ -186,10 +178,5 @@ export class AppComponent {
              this.changeTheme(this.theme);
       });
   }
-
-
-
-
-
 
 }
