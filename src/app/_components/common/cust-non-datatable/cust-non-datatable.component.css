@@ -20,7 +20,7 @@ th, td{
 }
 .headcol {
     position: absolute;
-    left: 0;
+    left: inherit;
     min-width: 30px; 
     max-width: 150px;
 }

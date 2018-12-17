@@ -67,13 +67,11 @@
 
     <!-- Testing -->
     <div  *ngIf="passData.fixedCol" class="row">
-        <div>
-        </div>
-        <div class="col-sm-2">
-            <table class="row-border hover dataTable no-footer fixedTable">
+        <div class="col-sm-2" style="padding-right: 0px">
+            <table class="row-border hover dataTable no-footer" >
                 <thead>
-                    <tr style="min-width: 96px">
-                        <th class="headcol" (click)="sort(dataKeys[i],sortBy);sortIndex=i;">
+                    <tr>
+                        <th (click)="sort(dataKeys[i],sortBy);sortIndex=i;">
                             <span class="gridHeader">{{passData.tHeader[0]}}</span>
                             <i *ngIf="showSort(sortBy,i)" class="fa fa-caret-down"></i>
                             <i *ngIf="showSort(!sortBy,i)" class="fa fa-caret-up"></i>
@@ -82,7 +80,7 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let data of displayData | paginate: { id:'non-editable', itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event)" (dblclick)="onRowDblClick($event)">
-                        <td class="headcol" style="margin-top:1px">
+                        <td style="margin-top:1px">
                             <span class="unclickable">{{data[dataKeys[0]]}}</span>
                         </td>
                     </tr>
@@ -90,10 +88,10 @@
             </table>
         </div>
 
-        <div class="col-sm-10 table-scroll relative" id="cust-scroll">
-            <table class="row-border hover dataTable no-footer relative" id="cust-table" style="width: 100%">
+       <div class="col-sm-10 table-scroll" id="cust-scroll" style="padding-left: 0px">
+            <table class="row-border hover dataTable no-footer" id="cust-table" style="border-left: 0px;">
                 <thead>
-                    <tr style="min-width: 96px">
+                    <tr>
                         <th *ngIf="passData.checkFlag"><input type="checkbox" name=""></th>
                         <th *ngFor="let tHeader of passData.tHeader | slice: 1; let i = index" (click)="sort(dataKeys[i+1],sortBy);sortIndex=i;">
                             <span *ngIf="passData.resizable[i]" 
@@ -122,7 +120,7 @@
 
 
     <div class="table-scroll" id="cust-scroll" *ngIf="!passData.fixedCol">
-        <table class="row-border hover dataTable no-footer" id="cust-table" style="width: 100%">
+        <table class="row-border hover dataTable no-footer" id="cust-table">
             <thead>
                 <tr style="min-width: 96px">
                     <th *ngIf="passData.checkFlag"><input type="checkbox" name=""></th>
