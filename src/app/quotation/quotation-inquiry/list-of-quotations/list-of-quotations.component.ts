@@ -18,10 +18,19 @@ export class ListOfQuotationsComponent implements OnInit {
     filters: any[] = [];
     pageLength: number;
     i: number;
-    a: any;
     line: string = "";
     quoteList: QuotationList = new QuotationList(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
-    
+
+    passData: any = {
+        tableData: [], 
+        tHeader: ['Quotation No.','Type of Cession','Line Class','Status','Ceding Company','Principal','Contractor','Insured','Risk','Object','Site','Policy No','Currency'],
+        dataTypes: [],
+        resizable: [false, false, true, true, true, true, true, true, true, true, true, false, false],
+        filters: [],
+        pageLength: 10,
+        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: true, printBtn: true, 
+    }
+
     constructor(private quotationService: QuotationService, private router: Router) { 
         this.pageLength = 10;
     }
@@ -68,7 +77,7 @@ export class ListOfQuotationsComponent implements OnInit {
         this.resizables.push(true);
         this.resizables.push(false);
         this.resizables.push(false);
-        
+
         this.dataTypes.push("text");
         this.dataTypes.push("text");
         this.dataTypes.push("text");
@@ -83,8 +92,8 @@ export class ListOfQuotationsComponent implements OnInit {
         this.dataTypes.push("text");
         this.dataTypes.push("text");
 
-        this.tableData = this.quotationService.getQuotationListInfo();
-        this.tableData.forEach(function(e){
+        this.passData.tableData = this.quotationService.getQuotationListInfo();
+        this.passData.tableData.forEach(function(e){
             delete e.quoteDate;
             delete e.validityDate;
             delete e.createdBy;
@@ -96,7 +105,7 @@ export class ListOfQuotationsComponent implements OnInit {
         for(var i = 0; i < event.target.parentElement.children.length; i++) {
             this.quotationService.rowData[i] = event.target.parentElement.children[i].innerText;
         }
-        
+
         this.quoteList = this.allData[event.path[1].rowIndex - 1];
     }
 

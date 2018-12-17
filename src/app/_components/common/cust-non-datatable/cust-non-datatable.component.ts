@@ -20,9 +20,10 @@ export class CustNonDatatableComponent implements OnInit {
     @Input() pageLength: number = 10;
     @Input() checkFlag: boolean;
     @Input() tableOnly: boolean = false;
-    @Input() searchQuery: any = "cessionType";
     @Input() filterDataTypes: any[] = [];
-
+    
+    
+    
     @Input() filterObj:any[] = [
         {
             key: 'quotationNo',
@@ -81,12 +82,14 @@ export class CustNonDatatableComponent implements OnInit {
     @Output() rowDblClick: EventEmitter<any> = new EventEmitter();
 
     @Input() printBtn: boolean = false;
+    //@Input() fixedCol: boolean = false;
     
     //test
+    @Input() newData: any = new QuotationList(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null);
     @Input() passData: any = {
-        tableData: [], tHeader: [], dataTypes: [], resizable: [],
-        expireFilter: false, filters: [], pageLength: 10, checkFlag: false,
-        tableOnly: false, 
+        tableData: [], tHeader: [], dataTypes: [], resizable: [], filters: [],
+        pageLength: 10,
+        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false,
     }
 
     dataKeys: any[] = [];
@@ -97,7 +100,7 @@ export class CustNonDatatableComponent implements OnInit {
     autoFill: number[];
 
     displayData:any[];
-    newData: any =new QuotationList(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null);
+    
     sortBy:boolean = true;
     sortIndex:number;
     searchString: string;
@@ -111,6 +114,7 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        console.log(this.passData.conditions)
         if (this.passData.tableData.length > 0) {
             this.dataKeys = Object.keys(this.passData.tableData[0]);
         } else {
@@ -130,7 +134,9 @@ export class CustNonDatatableComponent implements OnInit {
     processData(key: any, data: any) {
         return data[key];
     }
-
+    consoled(){
+        console.log(this.displayData);
+    }
     private onMouseDown(event){
         this.start = event.target;
         this.pressed = true;

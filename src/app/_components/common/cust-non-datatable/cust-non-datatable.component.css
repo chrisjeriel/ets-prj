@@ -5,13 +5,33 @@ th, td{
     white-space: nowrap;
     /*min-width: 0px;
     max-width: 1px;*/
-    min-width: 30px;
-    max-width: 150px;
+
     overflow: hidden;
 }
 .table-scroll{
     overflow: auto;
     max-width: 100%;
+}
+.fixedTable{
+    position: absolute;
+    min-width: 30px;
+    max-width: 142px;
+}
+.headcol {
+    position: absolute;
+    left: 0;
+    min-width: 30px; 
+    max-width: 150px;
+}
+.no-padding{
+    padding: 0;
+}
+.no-border{
+    border-style: none;
+}
+.relative{
+    position: relative;
+    left: -5.8%;
 }
 #cust-table-container {
     position: relative !important;
@@ -149,44 +169,44 @@ div.input-group {
 }
 
 .pagination a {
-  color: black;
-  float: left;
-  padding: 8px 16px;
-  text-decoration: none;
-  transition: background-color .3s;
-  border: 1px solid #ddd;
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+    border: 1px solid #ddd;
 }
 
 .pagination a.active {
-  background-color: #4CAF50;
-  color: white;
-  border: 1px solid #4CAF50;
+    background-color: #4CAF50;
+    color: white;
+    border: 1px solid #4CAF50;
 }
 
 .pagination a:hover:not(.active) {background-color: #ddd;}
 /*/deep/ ul.ngx-pagination {
-    border: 1px solid gray;
-    border-radius: 2px;
-    padding: 0;
+border: 1px solid gray;
+border-radius: 2px;
+padding: 0;
 }*/
 #cust-scroll::-webkit-scrollbar-track
 {
-	-webkit-box-shadow: inset 0 0 6px rgba(45,89,134,0.3);
-	border-radius: 10px;
-	background-color: #F5F5F5;
+    -webkit-box-shadow: inset 0 0 6px rgba(45,89,134,0.3);
+    border-radius: 10px;
+    background-color: #F5F5F5;
 }
 
 #cust-scroll::-webkit-scrollbar
 {
-	width: 12px;
-	background-color: #F5F5F5;
+    width: 12px;
+    background-color: #F5F5F5;
 }
 
 #cust-scroll::-webkit-scrollbar-thumb
 {
-	border-radius: 10px;
-	-webkit-box-shadow: inset 0 0 6px rgba(45,89,134,.3);
-	background-color: #2d5986;
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(45,89,134,.3);
+    background-color: #2d5986;
 }
 
 .fa-caret-down, .fa-caret-up{

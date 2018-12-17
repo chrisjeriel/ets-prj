@@ -1,6 +1,10 @@
-<div>
-    <app-cust-table [tableData]="tableData" [tHeader] = "tHeader" [dataTypes] = "dataTypes" [filters]="filters" [pageLength]="pageLength" [printBtn]="true" (rowClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)" [resizable]="resizables"></app-cust-table>
+<div class="row">
+    <div class="col-sm-12">
+        <!--<app-cust-table [tableData]="tableData" [tHeader] = "tHeader" [dataTypes] = "dataTypes" [filters]="filters" [pageLength]="pageLength" [printBtn]="true" (rowClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)" [resizable]="resizables"></app-cust-table>-->
+        <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)"></app-cust-non-datatable>
+    </div>
 </div>
+<br/>
 <div class="row">
     <div class="col-sm-6">
         <fieldset class="scheduler-border">
@@ -78,18 +82,18 @@
                 </div>
             </div>
             <div class="form-row custom-row-inline-inset">
-                 <div class="input-group alignment">
+                <div class="input-group alignment">
                     <label class="form-control-sm col-sm-2 text-right">Risk</label>
                     <input type="text" class="form-control form-control-sm col-sm-10" [value]="quoteList.risk" readonly>
                 </div>
             </div>
-             <div class="form-row custom-row-inline-inset">
-                 <div class="input-group alignment">
+            <div class="form-row custom-row-inline-inset">
+                <div class="input-group alignment">
                     <label class="form-control-sm col-sm-2 text-right">Location</label>
                     <input type="text" class="form-control form-control-sm col-sm-10" [value]="quoteList.location" readonly>
                 </div>
             </div>
-             <div class="form-row custom-row-inline-inset">
+            <div class="form-row custom-row-inline-inset">
                 <div class="input-group alignment">
                     <label class="form-control-sm col-sm-2 text-right">Object</label>
                     <input type="text" class="form-control form-control-sm col-sm-4" [value]="quoteList.object" readonly>
@@ -101,3 +105,4 @@
         </fieldset>
     </div>
 </div>
+<br/>
