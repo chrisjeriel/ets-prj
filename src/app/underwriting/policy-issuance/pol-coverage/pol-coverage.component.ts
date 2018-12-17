@@ -22,7 +22,7 @@ export class PolCoverageComponent implements OnInit {
 
   @Input() alteration: boolean;
   ngOnInit() {
-    this.tHeader.push("");
+    
     this.tHeader.push("Cover Code");
     this.tHeader.push("Section");
     this.tHeader.push("Bullet No");
@@ -31,7 +31,7 @@ export class PolCoverageComponent implements OnInit {
     this.tHeader.push("Sum Insured");
     this.tHeader.push("Add Sl");
 
-    this.dataTypes.push("checkbox");
+    
     this.dataTypes.push("text");
     this.dataTypes.push("select");
     this.dataTypes.push("select");

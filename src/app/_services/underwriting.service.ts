@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo, PolicyPrinting, PrinterList, ALOPItemInformation, UnderwritingPolicyInquiryInfo, ItemInformation, UnderwritingPolicyDistList, DistributionByRiskInfo } from '@app/_models';
+import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo, PolicyPrinting, PrinterList, ALOPItemInformation, UnderwritingPolicyInquiryInfo, ItemInformation, UnderwritingPolicyDistList, DistributionByRiskInfo, PolicyEndorsement } from '@app/_models';
 
 @Injectable({ providedIn: 'root' })
 export class UnderwritingService {
@@ -21,8 +21,10 @@ export class UnderwritingService {
     aLOPItemInfos: ALOPItemInformation[] = [];
     policyInquiry: UnderwritingPolicyInquiryInfo[] = [];
     itemInfoData: ItemInformation[] = [];
+    policyEndorsement: PolicyEndorsement[] = [];
     policyDistListData: UnderwritingPolicyDistList[] = [];
     distributionByRiskData: DistributionByRiskInfo[] = [];
+
 
     constructor(private http: HttpClient) {
 
@@ -76,8 +78,8 @@ export class UnderwritingService {
     }
     getUWOtherRatesInfo() {
         this.uwotherRatesInfoData = [
-            new UnderwritingOtherRatesInfo("data", "Sample 1", 123000, "Remarks 1"),
-            new UnderwritingOtherRatesInfo("data", "Sample 2", 321000, "Remarks 2"),
+            new UnderwritingOtherRatesInfo("Sample 1", 123000, "Remarks 1"),
+            new UnderwritingOtherRatesInfo("Sample 2", 321000, "Remarks 2"),
         ];
         return this.uwotherRatesInfoData;
     }
@@ -189,6 +191,14 @@ export class UnderwritingService {
         return this.itemInfoData;
     }
 
+
+    getPolicyEndorsement(){
+        this.policyEndorsement = [
+            new PolicyEndorsement("TEST","TEST","TEST","TEST")
+        ]
+        return this.policyEndorsement;
+    }
+
     getPolicyDistListInfo(){
         this.policyDistListData = [
             new UnderwritingPolicyDistList(10001, 10001, 'Distributed but not posted', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT'),
@@ -205,6 +215,7 @@ export class UnderwritingService {
         ];
 
         return this.policyDistListData;
+
     }
 
     getDistByRiskData() {

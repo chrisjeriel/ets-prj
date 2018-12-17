@@ -85,7 +85,6 @@ import { PolDistComponent } from './underwriting/policy-distribution/pol-dist/po
         FormsModule,
         DataTablesModule,
         NgxPaginationModule,
-
     ],
     declarations: [
         AppComponent,

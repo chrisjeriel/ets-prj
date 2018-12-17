@@ -73,6 +73,11 @@ export class CustNonDatatableComponent implements OnInit {
         {
             key: 'location',
             title:'Insured',
+            dataType: 'text'
+        },
+        {
+            key: 'quoteDate',
+            title:'Period From',
             dataType: 'date'
         },
 
@@ -200,6 +205,11 @@ export class CustNonDatatableComponent implements OnInit {
             if (!filterObj[filt]["enabled"]) {continue;}
             this.displayData = this.displayData.filter(function(itm){
                 return itm[filterObj[filt].key].toLowerCase( ).includes(filterObj[filt].search.toLowerCase( ));
+/*=======
+                     if(filterObj[filt]["dataType"]=="date")
+                    return itm[filterObj[filt].key].toString().includes(new Date(filterObj[filt].search).toString());
+                return itm[filterObj[filt].key].includes(filterObj[filt].search);
+>>>>>>> b1c3410835a529fe6647f1324d64311af1ffe184*/
             })
         }
         this.addFiller();

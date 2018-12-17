@@ -17,13 +17,11 @@
       </div>
     </div>
   </fieldset>
-
   <fieldset class="scheduler-border">
     <legend class="scheduler-border">Section Covers</legend>
     <app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData"
-      [tHeader]="tHeader" [dataTypes]="dataTypes" [opts]="selOptions" [magnifyingGlass]="magnifyingGlass"></app-cust-editable-table>
+      [tHeader]="tHeader" [dataTypes]="dataTypes" [opts]="selOptions" [magnifyingGlass]="magnifyingGlass" [checkFlag]="true"></app-cust-editable-table>
   </fieldset>
-
   <div>
     <div class="row">
       <div class="col-sm-5">
@@ -98,6 +96,7 @@
               </div>
               <div class="col-sm-1"></div>
             </div>
+            <div class="cust-sm col-sm-1"></div>
           </div>
         </fieldset>
       </div>
@@ -123,9 +122,8 @@
         </fieldset>
       </div>
     </div>
-  </div>
-
-  <div class="form-row">
+</div>
+    <div class="form-row">
     <div class="form-group col-sm">
       <div class="col-md-13 text-center">
         <br>

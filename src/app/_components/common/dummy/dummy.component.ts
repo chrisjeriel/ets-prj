@@ -26,25 +26,26 @@ export class DummyComponent implements OnInit {
     dataTypes2: any[] = [];
     nData: DummyInfo = new DummyInfo(null, null, null, null, null, null, null);
     resizables: boolean[] = [];
+    require: any;
     //test
     passData: any = {
         tHeader: [
             "Quotation No.", "Type of Cession", "Line Class", "Status",
             "Ceding Company", "Principal", "Contractor", "Insured", "Risk",
-            "Object", "Site", "Policy No", "Currency",
+            "Object", "Site", "Policy No", "Currency","Period From"
         ],
         filters: [
             "Quotation No.", "Type of Cession", "Line Class", "Status",
             "Ceding Company", "Principal", "Contractor", "Insured", "Risk",
-            "Object", "Site", "Policy No", "Currency",
+            "Object", "Site", "Policy No", "Currency","Period From"
         ],
         resizable: [
             false,false,true,true,true,true,true,true,true,true,true,false,
-            false,
+            false,true
         ],
         dataTypes: [
             "text","text","text","text","text","text","text","text","text",
-            "text","text","text","text",
+            "text","text","text","text","date"
         ],
         tableData: this.quotationService.getQuotationListInfo(),
         pageLength: 10,
@@ -167,7 +168,7 @@ export class DummyComponent implements OnInit {
             delete e.requestedBy;
         });
          this.passData.tableData.forEach(function(e){
-            delete e.quoteDate;
+            
             delete e.validityDate;
             delete e.createdBy;
             delete e.requestedBy;
@@ -181,4 +182,9 @@ export class DummyComponent implements OnInit {
     openAgain(){
         this.modalService.dismissAll();
     }
+
+    // random(){
+    //     var randomWords = require('random-words');
+    //     console.log(randomWords());
+    // }
 }
