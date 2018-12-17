@@ -6,22 +6,27 @@
 
 .right,.left, .right fieldset,.insuredInt{
 	display: inline-block;
+    margin-top: 5px !important;
+
 }
 
+.left-div{
+	padding-left:0px;
+	padding-right: 5px;
+	/*float: left;*/
+}
+
+.right-div{
+	padding-right:0px;
+	padding-left: 5px;
+	/*float: right;*/
+}
 
 .right{
 	padding-right: 0px;
-	float: right;
+	/*float: right;*/
 }
 
-.insuredInt{
-	padding-left: 0px;
-}
-
-.maxIndem{
-	margin-top: 5px !important;
-    padding-top: 10px !important;
-}
 
 .bottom-button-container{
 	display: block;
@@ -29,4 +34,38 @@
 
 .text-center{
 	margin: auto;
+}
+
+label.text-left{
+	text-align: left !important;
+}
+
+.top{
+	margin-left: 0px;
+	margin-right: 0px;
+}
+
+.textarea{
+	height: 75px !important;
+}
+
+.textarea textarea{
+	height: 85% !important;
+	border-radius: 0.2rem !important;
+}
+
+.right .textarea{
+	height: 108px !important; 
+}
+
+.right .textarea textarea{
+	height: 89% !important;
+}
+
+.middle, .bottom{
+	margin-top: 5px !important;
+}
+
+.middle label.text-left{
+	padding-left:59px;
 }
