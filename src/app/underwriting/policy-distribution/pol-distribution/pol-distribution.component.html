@@ -1,0 +1,38 @@
+<br />
+<div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8">
+        <fieldset class="scheduler-border">
+            <div class="col-sm-1"></div>
+            <div class="col-sm">
+                <div class="row" style="padding: 1%; margin-right: 5%;">
+                    <div class="input-group">
+                        <div class="input-group">
+                            <label class="form-control-sm col-sm-2">Policy No</label>
+                            <input type="text" [(ngModel)]="quoteLine" class="form-control form-control-sm col-sm-1">
+                            <input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 5px;">
+                            <input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 5px;">
+                            <input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 5px;">
+                            <input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;">
+                            <input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 5px;">
+                            <span>&nbsp;</span>
+                            <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+                        </div>
+                    </div>
+            	</div>
+            </div>
+        </fieldset>
+    </div>
+    <div class="col-sm-2"></div>
+</div>
+<div class="form-row">
+    <div class="form-group col-sm">
+        <div class="col-md-12 text-center">
+            <br>
+            <div class="cust-btn-container">
+                <button type="button" class="cust-btn"><a>Cancel</a></button>
+                <button type="button" [routerLink]="['/policy-dist']" class="cust-btn"><a>Next</a></button>
+            </div>
+        </div>
+    </div>
+</div>
