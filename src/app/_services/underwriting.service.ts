@@ -71,8 +71,8 @@ export class UnderwritingService {
 
     getUWCoverageInfo() {
         this.uwcoverageInfoData = [
-            new UnderwritingCoverageInfo("data", "1", "I", "3", "1000000","12.2", "69000", "70000"),
-            new UnderwritingCoverageInfo("data", "2", 'II', "2","150000","15.16", "123000", "456000")
+            new UnderwritingCoverageInfo("1", "I", "3", "1000000","12.2", "69000", "70000"),
+            new UnderwritingCoverageInfo("2", 'II', "2","150000","15.16", "123000", "456000")
         ];
         return this.uwcoverageInfoData;
     }

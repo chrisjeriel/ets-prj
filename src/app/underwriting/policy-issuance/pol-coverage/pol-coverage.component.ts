@@ -17,13 +17,12 @@ export class PolCoverageComponent implements OnInit {
   magnifyingGlass: any[] = ['coverCode'];
   optionsData: any[] = [];
 
-  nData: UnderwritingCoverageInfo = new UnderwritingCoverageInfo(null, null, null, null, null, null, null, null);
+  nData: UnderwritingCoverageInfo = new UnderwritingCoverageInfo(null, null, null, null, null, null, null);
   constructor(private underwritingservice: UnderwritingService) { }
 
   @Input() alteration: boolean;
   ngOnInit() {
     
-    this.tHeader.push("_");
     this.tHeader.push("Cover Code");
     this.tHeader.push("Section");
     this.tHeader.push("Bullet No");
