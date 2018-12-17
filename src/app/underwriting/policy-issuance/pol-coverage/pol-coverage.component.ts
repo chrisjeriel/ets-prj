@@ -16,7 +16,7 @@ export class PolCoverageComponent implements OnInit {
   selOptions: any[] = [];
   magnifyingGlass: any[] = ['coverCode'];
 
-  nData: UnderwritingCoverageInfo = new UnderwritingCoverageInfo(null, null, null, null, null, null, null, null;
+  nData: UnderwritingCoverageInfo = new UnderwritingCoverageInfo(null, null, null, null, null, null, null, null);
   constructor(private underwritingservice: UnderwritingService) { }
 
   @Input() alteration: boolean;
