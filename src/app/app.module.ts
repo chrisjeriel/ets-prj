@@ -62,7 +62,9 @@ import { InquiryComponent } from './underwriting/inquiry/inquiry.component';
 import { PolicyInquiryComponent } from './underwriting/inquiry/policy-inquiry/policy-inquiry.component';
 import { QuoAlopComponent } from './quotation/quo-alop/quo-alop.component';
 import { CustNonDatatableComponent } from './_components/common/cust-non-datatable/cust-non-datatable.component';
+import { CustEditableNonDatatableComponent } from './_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { SearchPipe } from './_pipes/search.pipe';
+import { PolDistListComponent } from './underwriting/distribution/pol-dist-list/pol-dist-list.component';
 
 
 @NgModule({
@@ -130,7 +132,9 @@ import { SearchPipe } from './_pipes/search.pipe';
         PolicyInquiryComponent,
         QuoAlopComponent,
         CustNonDatatableComponent,
+        CustEditableNonDatatableComponent,
         SearchPipe,
+        PolDistListComponent,
     ],
 
     providers: [

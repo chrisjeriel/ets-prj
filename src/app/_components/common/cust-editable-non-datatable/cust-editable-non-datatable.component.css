@@ -1,3 +1,18 @@
+table{
+    margin-top: 30px;
+}
+th, td{
+    white-space: nowrap;
+    /*min-width: 0px;
+    max-width: 1px;*/
+    min-width: 30px;
+    max-width: 150px;
+    overflow: hidden;
+}
+.table-scroll{
+    overflow: auto;
+    max-width: 100%
+}
 #cust-table-container {
     position: relative !important;
 }
@@ -6,7 +21,7 @@
     position: absolute !important;
     left: 1px;
     top: 1px;
-    z-index: 9999 !important;
+    z-index: 99 !important;
 }
 .icon {
     text-align: center;
@@ -88,19 +103,15 @@ div.input-group {
     margin-right: 0px;
 }
 
-.data{
-    width: 100%;
-    margin-top: 0.6%;
-    clear: both;
-    border-collapse: separate;
-    border-spacing: 0;
-    border: 1px solid #767676;
-    border-radius: 3px;
-    box-sizing: content-box;
+.editable-text {
+    padding: 0px;
+    border: none;
+    background-color: inherit;
+    width: 90%;
 }
 
-.editable-text {
-    width: 80%;
+.editable-select {
+    width: 90%;
     padding: 0px;
     border: none;
     background-color: inherit;
@@ -112,4 +123,86 @@ div.input-group {
 
 .editable-checkbox {
     padding: 1em !important;
+}
+
+.editable-number {
+    text-align: right;
+    width: 90%;
+    padding: 0px;
+    border: none;
+    background-color: inherit;
+}
+
+.editable-date {
+    width: 90%;
+    padding: 0px;
+    border: none;
+    background-color: inherit;
+}
+
+.fa-search {
+    float: right;
+    width: 4%
+}
+
+.number{
+    width: 93%;	 
+    float: right;
+}
+
+.icon .fa:not(:first-child) {
+    margin-left: 5px;
+}
+
+.my-pagination /deep/ .ngx-pagination .current {
+    background: linear-gradient(to bottom, #4080bf 0%, #2d5986 100%);
+    font-size: 11px;
+    font-weight: bold;
+    color: white !important;
+    text-align: center;
+    text-decoration: none !important;
+    outline: none !important;
+    border-style: none;
+    border: 1px solid gray;
+    border-radius: 2px;
+}
+
+.pagination{
+    margin-top: 1%;
+    float: right;
+}
+
+.pagingStatus{
+    float: left;
+}
+
+.cust-search-form{
+    height: 25px !important;
+    width: 189px !important;
+    font-size: 12px !important;
+}
+
+.search-filter{
+    position: absolute !important;
+    right: 0px;
+}
+
+#cust-scroll::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(45,89,134,0.3);
+    border-radius: 10px;
+    background-color: #F5F5F5;
+}
+
+#cust-scroll::-webkit-scrollbar
+{
+    width: 12px;
+    background-color: #F5F5F5;
+}
+
+#cust-scroll::-webkit-scrollbar-thumb
+{
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(45,89,134,.3);
+    background-color: #2d5986;
 }

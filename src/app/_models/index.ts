@@ -29,3 +29,5 @@ export * from './PolALOP';
 export * from './UnderwritingPolicyInquiryInfo';
 export * from './ItemInformation';
 export * from './PolicyEndorsement';
+export * from './UnderwritingPolicyDistList';
+
