@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { index } from 'random-words';
 import { QuotationService } from '../../../_services';
 import { DummyInfo } from '../../../_models';
 import { ModalComponent } from '../../../_components/common/modal/modal.component';
@@ -26,6 +27,7 @@ export class DummyComponent implements OnInit {
     dataTypes2: any[] = [];
     nData: DummyInfo = new DummyInfo(null, null, null, null, null, null, null);
     resizables: boolean[] = [];
+    require: any;
     //test
     passData: any = {
         tHeader: [
@@ -181,4 +183,9 @@ export class DummyComponent implements OnInit {
     openAgain(){
         this.modalService.dismissAll();
     }
+
+    // random(){
+    //     var randomWords = require('random-words');
+    //     console.log(randomWords());
+    // }
 }
