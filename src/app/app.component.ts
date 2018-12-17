@@ -141,6 +141,7 @@ export class AppComponent {
                  this.style.setProperty('background', color1, 'important');
             });
             $('legend.scheduler-border').css({"color":color3});
+            $('.table tr.row_selected td').css({"background-color:":color3});
     }
 
     applyTheme(){
