@@ -115,6 +115,7 @@ export class AppComponent {
                  this.style.setProperty('background', '#557a95', 'important');
            });
           $('legend.scheduler-border').css({"color":"#2D5986"});
+           $('.nav-link').css({"color":""});
     }
 
     setColorTheme(color1 : string , color2 : string, color3 : string , color4 : string){
@@ -140,7 +141,10 @@ export class AppComponent {
             $(".progress-bar").each(function () {
                  this.style.setProperty('background', color1, 'important');
             });
-            $('legend.scheduler-border').css({"color":color3});
+            $('legend.scheduler-border').css({"color":color2});
+            $('.nav-link ').css({"color":color3});
+            $('.nav-link.active ').css({"color":"#495057"});
+
     }
 
     applyTheme(){
@@ -171,8 +175,6 @@ export class AppComponent {
            });
       }
 
-
-   
   @HostListener('window:unload', ['$event'])
   unloadHandler(event) {
       window.localStorage.setItem("selectedTheme", this.theme);
