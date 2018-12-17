@@ -16,23 +16,27 @@ export class PolCoverageComponent implements OnInit {
   selOptions: any[] = [];
   magnifyingGlass: any[] = ['coverCode'];
 
-  nData: UnderwritingCoverageInfo = new UnderwritingCoverageInfo(null, null, null, null, null, null);
+  nData: UnderwritingCoverageInfo = new UnderwritingCoverageInfo(null, null, null, null, null, null,null);
   constructor(private underwritingservice: UnderwritingService) { }
 
   @Input() alteration: boolean;
   ngOnInit() {
-    this.tHeader.push("");
+    
     this.tHeader.push("Cover Code");
     this.tHeader.push("Section");
     this.tHeader.push("Bullet No");
+    this.tHeader.push("Prenium");
+    this.tHeader.push("Rate");
     this.tHeader.push("Sum Insured");
     this.tHeader.push("Add Sl");
 
-    this.dataTypes.push("checkbox");
+    
     this.dataTypes.push("text");
     this.dataTypes.push("select");
     this.dataTypes.push("select");
     this.dataTypes.push("currency");
+    this.dataTypes.push("text")
+    this.dataTypes.push("text");
     this.dataTypes.push("checkbox");
 
     this.selOptions.push({ selector: "section", vals: ["I", "II", "III"] });

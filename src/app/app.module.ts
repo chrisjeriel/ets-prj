@@ -78,7 +78,6 @@ import { SearchPipe } from './_pipes/search.pipe';
         FormsModule,
         DataTablesModule,
         NgxPaginationModule,
-
     ],
     declarations: [
         AppComponent,

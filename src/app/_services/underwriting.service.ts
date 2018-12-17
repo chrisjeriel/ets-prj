@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo, PolicyPrinting, PrinterList, ALOPItemInformation, UnderwritingPolicyInquiryInfo, ItemInformation } from '@app/_models';
+import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo, PolicyPrinting, PrinterList, ALOPItemInformation, UnderwritingPolicyInquiryInfo, ItemInformation, PolicyEndorsement } from '@app/_models';
 
 @Injectable({ providedIn: 'root' })
 export class UnderwritingService {
@@ -21,6 +21,7 @@ export class UnderwritingService {
     aLOPItemInfos: ALOPItemInformation[]=[];
     policyInquiry: UnderwritingPolicyInquiryInfo[] = [];
     itemInfoData: ItemInformation[] = [];
+    policyEndorsement: PolicyEndorsement[] = [];
 
     constructor(private http: HttpClient) {
 
@@ -67,8 +68,8 @@ export class UnderwritingService {
 
     getUWCoverageInfo() {
         this.uwcoverageInfoData = [
-            new UnderwritingCoverageInfo("data", "1", "I", "3", "69000", "70000"),
-            new UnderwritingCoverageInfo("data", "2", 'II', "2", "123000", "456000")
+            new UnderwritingCoverageInfo("1", "I", "3","","", "69000",""),
+            new UnderwritingCoverageInfo("2", 'II', "2","","", "123000","")
         ];
         return this.uwcoverageInfoData;
     }
@@ -185,5 +186,12 @@ export class UnderwritingService {
         ];
 
         return this.itemInfoData;
+    }
+
+    getPolicyEndorsement(){
+        this.policyEndorsement = [
+            new PolicyEndorsement("","","","")
+        ]
+        return this.policyEndorsement;
     }
 }            

@@ -19,6 +19,7 @@ export class PolOtherRatesComponent implements OnInit {
 
   constructor(private underwritingservice: UnderwritingService) { }
   @Input() alteration: boolean;
+  
   ngOnInit() {
     this.tHeader.push("");
     this.tHeader.push("Others");

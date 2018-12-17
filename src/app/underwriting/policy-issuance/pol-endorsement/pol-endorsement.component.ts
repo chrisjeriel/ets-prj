@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import {NgbDropdownConfig} from '@ng-bootstrap/ng-bootstrap';
-import { QuoteEndorsement } from '../../../_models/QuoteEndorsement'
-import { QuotationService } from '../../../_services';
+import { PolicyEndorsement } from '../../../_models/PolicyEndorsement'
+import { UnderwritingService } from '../../../_services';
 
 @Component({
     selector: 'app-pol-endorsement',
@@ -15,19 +15,19 @@ export class PolEndorsementComponent implements OnInit {
     options: any[] = [];
     dataTypes: any[] = [];
     magnifyingGlass: any[]=["endtCode"];
-    nData: QuoteEndorsement = new QuoteEndorsement(null, null, null, null, null);
+    nData: PolicyEndorsement = new PolicyEndorsement(null, null, null, null);
 
-    tHeader: any[] = ['Endt Code','Endt Title', 'Endt Description', 'Wording', 'Edit Flag'];
+    tHeader: any[] = ['C','Endt Code','Endt Title', 'Remarks'];
     
     @Input() alteration: boolean;
 
-       constructor(config: NgbDropdownConfig, private quotationService: QuotationService) { 
+       constructor(config: NgbDropdownConfig, private underwritingService: UnderwritingService) { 
       	config.placement = 'bottom-right';
         config.autoClose = false;
      }
 
-    ngOnInit() : void{
-        this.tableData = this.quotationService.getEndorsements(1);
+    ngOnInit() {
+        this.tableData = this.underwritingService.getPolicyEndorsement();
     }
     
     onClickCancel(){
