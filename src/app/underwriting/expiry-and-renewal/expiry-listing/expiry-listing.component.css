@@ -40,12 +40,13 @@ select + input, input + div + input{
 
 .left{
 	margin-top: -12px !important;
-	min-height: 203px;
+	min-height: 133px;
 }
 
 .middle{
 	margin-top: 5px !important;
-	min-height: 186px;
+	/*min-height: 153px;*/
+	padding-top: 10px !important;
 }
 
 .right{
@@ -81,4 +82,35 @@ div h4{
 
 .my-modal-footer{
 	padding: 0px !important;
+}
+
+.left-input{
+	margin-right: 5px!important;
+}
+
+.right-input{
+	margin-left: 5px!important;
+}
+
+#byDate, #byMonthYear{
+	margin-bottom: 0px !important;
+} 
+
+.left .input-group, .right .input-group{
+    margin-bottom: -16px !important;
+}
+
+.left-div{
+    margin-top: 4px !important;
+    margin-bottom: 5px !important;
+}
+
+.middle-div{
+    margin-top: 0px !important;
+    margin-bottom: 5px !important;
+}
+
+.right-div{
+	margin-top: 4px !important;
+    margin-bottom: 5px !important;	
 }

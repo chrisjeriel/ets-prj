@@ -199,7 +199,7 @@ export class CustNonDatatableComponent implements OnInit {
         for (var filt in filterObj) {    
             if (!filterObj[filt]["enabled"]) {continue;}
             this.displayData = this.displayData.filter(function(itm){
-                return itm[filterObj[filt].key].includes(filterObj[filt].search);
+                return itm[filterObj[filt].key].toLowerCase( ).includes(filterObj[filt].search.toLowerCase( ));
             })
         }
         this.addFiller();
