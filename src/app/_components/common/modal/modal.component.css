@@ -34,3 +34,14 @@ h4 {
 	bottom: 0 !important;
 	left: 0 !important;
 }
+
+.mdl-icon {
+	color: #557a95;
+	margin: auto;
+	padding: auto;
+}
+
+.message {
+	vertical-align: middle;
+	font-size: 15px;
+}

@@ -23,6 +23,9 @@ import { PolicyPrintingComponent } from './underwriting/generate-documents/polic
 import { PolicyToHoldCoverComponent } from './underwriting/expiry-and-renewal/policy-to-hold-cover/policy-to-hold-cover.component';
 import { ChangeQuoteStatusComponent } from './quotation/change-quote-status/change-quote-status.component'
 import { PolicyInquiryComponent } from './underwriting/inquiry/policy-inquiry/policy-inquiry.component';
+import { PolDistComponent } from './underwriting/policy-distribution/pol-dist/pol-dist.component';
+import { PolicyDistributionComponent } from './underwriting/policy-distribution/policy-distribution.component';
+
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -48,6 +51,8 @@ const appRoutes: Routes = [
     { path: 'policy-HoldCover', component: PolicyToHoldCoverComponent },
     { path: 'change-quote-status', component: ChangeQuoteStatusComponent },
     { path: 'policy-inquiry', component: PolicyInquiryComponent },
+    { path: 'pol-dist', component: PolDistComponent },
+    { path: 'policy-dist', component: PolicyDistributionComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

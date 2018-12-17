@@ -93,6 +93,8 @@ export class QuotationProcessingComponent implements OnInit {
       this.line === 'MLP' || 
       this.line === 'DOS') {
       this.modalService.dismissAll();
+
+    this.quotationService.rowData = [];
     this.quotationService.toGenInfo = [];
     this.quotationService.toGenInfo.push("add", this.line);
     this.router.navigate(['/quotation']);

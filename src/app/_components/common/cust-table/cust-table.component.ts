@@ -95,10 +95,10 @@ export class CustTableComponent implements OnInit {
     }
 
     event.target.parentElement.style.backgroundColor = "#67b4fc";
-    this.rowClick.next(event);
+    this.rowClick.emit(event);
   }
 
   onRowDblClick(event) {
-    this.rowDblClick.next(event);
+    this.rowDblClick.emit(event);
   }
 }

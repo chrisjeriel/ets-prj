@@ -5,15 +5,27 @@
 	<app-cust-editable-table [addFlag]="true" [editFlag]="true" [deleteFlag]="false" [nData]="nData" [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes" [opts]="opts"></app-cust-editable-table>
 
 	<div class="form-row">
-	<div class="form-group col-sm">
-		<div class="col-md-13 text-center">
-			<br>
-			<div class="cust-btn-container">
-			<button type="button" class="cust-btn"><a>Cancel</a></button>
-			<button type="button" class="cust-btn"><a>Save</a></button>
-		</div>
+		<div class="form-group col-sm">
+			<div class="col-md-13 text-center">
+				<br>
+				<div class="cust-btn-container">
+					<button type="button" class="cust-btn"><a>Cancel</a></button>
+					<button type="button" class="cust-btn"><a>Save</a></button>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
-</div>
+
+<!-- <app-modal>
+	<div header>Custom</div>
+	<div body>
+		<button>PRESS ME</button>
+	</div>
+	<div footer>
+		<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Yes</a></button>
+		<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>No</a></button>
+		<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+	</div>
+</app-modal> -->
 

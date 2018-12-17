@@ -1,26 +1,42 @@
-<ng-template #content let-modal>
+<ng-template #content>
     <div class="modal-header">
-     <!-- <h6 class="modal-title" id="modal-basic-title">{{modalTitle}}</h6>-->
-     <span class="modal-title" id="modal-basic-title"><ng-content  select="[header]"></ng-content></span>
+        <ng-container [ngSwitch]="mdlConfig.mdlType">
+                <span *ngSwitchCase="'confirmation'" class="modal-title" id="modal-basic-title">Confirmation</span>   
+                <span *ngSwitchCase="'success'" class="modal-title" id="modal-basic-title">Success</span>         
+                <span *ngSwitchCase="'error'" class="modal-title" id="modal-basic-title">Error</span>         
+                <span *ngSwitchDefault class="modal-title" id="modal-basic-title"><ng-content select="[header]"></ng-content></span>
+        </ng-container>
+        <!-- <h6 class="modal-title" id="modal-basic-title">{{modalTitle}}</h6>-->
+
      <!-- <div class="close" >
         <a class="btn-cust" aria-label="Close" (click)="modal.dismiss('Cross click')" aria-hidden="true" ><span id="closes">&times;</span></a>
 
     </div> -->
-</div>
-<div class="modal-body">
-    <ng-content select="[body]"></ng-content>
-        <!--<div *ngIf="modalCustTable">
-            <app-cust-table [tableData]="tableData" [tHeader] = "tHeader" [dataTypes] = "dataTypes" [filters]="filters"></app-cust-table>
+    </div>
+    <div class="modal-body">
+            <div class="row" [ngSwitch]="mdlConfig.mdlType">
+               
+                <ng-container *ngSwitchCase="'confirmation'">
+                    <div  class="col-sm-2 align-items-center" style="border-style: solid;">
+                        <i class="fa fa-question-circle fa-4x mdl-icon" aria-hidden="true"></i>    
+                    </div>
+                    <div  class="col-sm-10 d-flex align-items-center" style="border-style: solid; min-width: 50%;">
+                        <span class="message">{{ confirmationMsg }}</span>
+                    </div>
+                </ng-container>    
+                <ng-container *ngSwitchCase="'success'">
+                    <div  class="col-sm-2 d-flex align-items-center">
+                        <i class="fa fa-check-circle fa-4x mdl-icon" aria-hidden="true"></i>
+                    </div>
+                    <div  class="col-sm-10 d-flex align-items-center">
+                        <span class="message">{{ successMsg }}</span>
+                    </div>
+                </ng-container>
+            <div *ngSwitchDefault class="col">
+                <ng-content select="[body]"></ng-content>
         </div>
-        <div *ngIf="modalCustEditableTable">
-            <app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [tableData]="tableData" [tHeader]="tHeader" [checkFlag]="true" [magnifyingGlass]="magnifyingGlass" [nData]="nData"></app-cust-editable-table>
-        </div>
-        <div *ngIf="modalProgressBar">
-            <ngb-progressbar type="info" [value]="progress"></ngb-progressbar>
-        </div>
-        <div *ngIf="textFlag">
-            {{modalText}}
-        </div>-->
+    </div>
+        
     </div>
     <div class="modal-footer">
         <ng-content select="[footer]"></ng-content>
@@ -31,5 +47,5 @@
     </div>
 </ng-template>
 
-<button id="modalBtn" class="cust-btn" (click)="open(content)"><a>{{btnTitle}}</a></button>
+<button id="modalBtn" class="cust-btn" (click)="open(content)"><a>{{ btnTitle }}</a></button>
 

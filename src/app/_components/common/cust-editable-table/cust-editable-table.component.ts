@@ -120,10 +120,10 @@ export class CustEditableTableComponent implements OnInit {
   }
 
   onRowClick(event) {
-    this.rowClick.next(event);
+    this.rowClick.emit(event);
   }
 
   onRowDblClick(event) {
-    this.rowDblClick.next(event);
+    this.rowDblClick.emit(event);
   }
 }

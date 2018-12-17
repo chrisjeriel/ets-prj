@@ -70,8 +70,22 @@ export class ModalComponent implements OnInit {
 
     @Input() modalSize: string = "modal-size"
     content1: any = "";
-
     content: any;
+
+    @Input() mdlConfig = {
+        mdlType: "",
+        mdlOpener: "",
+        mdlBtnAlign: "",
+        mdlSize: ""
+    };
+        /*
+            mdlType: confirmation, success, error, custom       DEFAULT: custom
+            mdlOpener: button, a, div, icon;                    DEFAULT: button
+            mdlBtnAlign: left, center, right;                   DEFAULT: right
+            mdlSize: sm, md, lg;                                DEFAULT: md
+            mdlTitle: ""                                        DEFAULT: null
+
+        */
     
     constructor(private modalService: NgbModal) { }
 
@@ -84,7 +98,6 @@ export class ModalComponent implements OnInit {
         this.modalService.dismissAll();
         this.modalService.open(this.content, { centered: true, backdrop: 'static', windowClass : this.modalSize });
     }
-    
 
 
 }
