@@ -23,6 +23,7 @@ export class PolCoverageComponent implements OnInit {
   @Input() alteration: boolean;
   ngOnInit() {
     
+    this.tHeader.push("_");
     this.tHeader.push("Cover Code");
     this.tHeader.push("Section");
     this.tHeader.push("Bullet No");
