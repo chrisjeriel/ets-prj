@@ -54,7 +54,7 @@
                         </div>
                     </div>
                     <input [disabled]="!filt.enabled" *ngSwitchCase="'text'"  type="text" class="form-control cust-sm" [(ngModel)]="filt.search" (ngModelChange)="filterDisplay(filterObj,searchString)">
-                    <input [disabled]="!filt.enabled" *ngSwitchCase="'date'"  type="date" class="form-control cust-sm" [(ngModel)]="filt.search | date: 'MM/dd/yyyy'" (ngModelChange)="filterDisplay(filterObj,searchString)">
+                    <input [disabled]="!filt.enabled" *ngSwitchCase="'date'"  type="date" class="form-control cust-sm" [(ngModel)]="filt.search" (ngModelChange)="filterDisplay(filterObj,searchString)">
                 </div>
 
 
