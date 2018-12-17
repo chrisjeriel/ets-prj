@@ -1,0 +1,226 @@
+table{
+    margin-top: 30px;
+}
+th, td{
+    white-space: nowrap;
+    /*min-width: 0px;
+    max-width: 1px;*/
+    min-width: 30px; 
+    max-width: 150px;
+    overflow: hidden;
+}
+.table-scroll{
+    overflow: auto;
+    max-width: 100%;
+}
+.fixedTable{
+    position: absolute;
+    min-width: 30px;
+    max-width: 142px;
+}
+.headcol {
+    position: absolute;
+    left: 0;
+    min-width: 30px; 
+    max-width: 150px;
+}
+.no-padding{
+    padding: 0;
+}
+.no-border{
+    border-style: none;
+}
+.relative{
+    position: relative;
+    left: -1.5%;
+}
+#cust-table-container {
+    position: relative !important;
+}
+
+
+.expire{
+    position: absolute !important;
+    right: 250px;
+    top: 25px;
+    font-size: 11px;
+    text-decoration: none !important;
+    outline: none !important;
+    border-style: none;
+    z-index: 9999 !important;
+}
+.print{
+    position: absolute;
+    top: 25px;
+    z-index: 9999 !important;
+}
+.expireIn{
+    height: calc(1.5rem + 1px) !important;
+    padding: 0.1rem 0.25rem !important;
+    font-size: 12px !important;
+    line-height: .7 !important;
+    border-radius: 0.2rem !important;
+    margin-bottom: -5px !important;
+    overflow: visible;
+    outline: none;
+    border-style: none;
+    border: 1px solid gray;
+    width: 50px;
+}
+
+.cust-filter {
+    position: absolute !important;
+    right: 1px;
+    top: 1px;
+    font-size: 14px;
+    color: white !important;
+    text-align: center;
+    text-decoration: none !important;
+    outline: none !important;
+    border-style: none;
+    border: 1px solid gray;
+    z-index: 200 !important;
+    background: linear-gradient(to bottom, #4080bf 0%, #2d5986 100%);
+}
+
+.cust-filter:hover {
+    background: linear-gradient(to bottom, #4080df 0%, #2d5986 100%);
+}
+
+.cust-search-form{
+    height: 25px !important;
+    width: 150px !important;
+    font-size: 12px !important;
+    border-radius: 0.2rem !important;
+    margin-bottom: -5px !important;
+    overflow: visible !important;
+    outline: none !important;
+    border-style: none !important;
+    border: 1px solid gray !important;
+}
+
+.search-filter{
+    position: absolute !important;
+    right: 39px;
+}
+
+.pagination{
+    margin-top: 1%;
+    float: right;
+}
+
+.dropdown-menu {
+    padding: 0px !important;
+    padding-bottom: 10px !important;
+}
+
+.dropdown-item{
+    width: 300px;
+    height: 200px;
+    overflow: auto;
+}
+
+div.input-group-text {
+    font-size: 9px;
+    font-weight: bold;
+    width: 100px;
+}
+
+input.form-control {
+    font-size: 11px !important;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+    background-color: white !important;
+    color: gray !important;
+}
+
+
+.dropdown-item.active, .dropdown-item:hover {
+    background-color: white !important;
+    color: gray !important;
+}
+
+div.input-group {
+    margin-bottom: 2px !important;
+}
+
+.cust-tbl-submit {
+    border-radius: 2px !important;
+    font-size: 12px !important;
+}
+
+.cust-tbl-label {
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.unclickable {
+    pointer-events: none;
+}
+
+.my-pagination /deep/ .ngx-pagination .current {
+    background: linear-gradient(to bottom, #4080bf 0%, #2d5986 100%);
+    font-size: 11px;
+    font-weight: bold;
+    color: white !important;
+    text-align: center;
+    text-decoration: none !important;
+    outline: none !important;
+    border-style: none;
+    border: 1px solid gray;
+    border-radius: 2px;
+}
+.pagingStatus{
+    float: left;
+}
+
+.pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+    border: 1px solid #ddd;
+}
+
+.pagination a.active {
+    background-color: #4CAF50;
+    color: white;
+    border: 1px solid #4CAF50;
+}
+
+.pagination a:hover:not(.active) {background-color: #ddd;}
+/*/deep/ ul.ngx-pagination {
+border: 1px solid gray;
+border-radius: 2px;
+padding: 0;
+}*/
+#cust-scroll::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(45,89,134,0.3);
+    border-radius: 10px;
+    background-color: #F5F5F5;
+}
+
+#cust-scroll::-webkit-scrollbar
+{
+    width: 12px;
+    background-color: #F5F5F5;
+}
+
+#cust-scroll::-webkit-scrollbar-thumb
+{
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(45,89,134,.3);
+    background-color: #2d5986;
+}
+
+.fa-caret-down, .fa-caret-up{
+    position: absolute;
+    right: 5px;
+}
+
+tr{
+    height: 29px;
+}

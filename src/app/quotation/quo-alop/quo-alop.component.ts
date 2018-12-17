@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { UnderwritingService } from '../../../_services';
-import { ALOPItemInformation, ALOPInfo } from '../../../_models';
+import { UnderwritingService } from '../../_services';
+import { ALOPItemInformation, ALOPInfo } from '../../_models';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-pol-alop',
-  templateUrl: './pol-alop.component.html',
-  styleUrls: ['./pol-alop.component.css']
+  selector: 'app-quo-alop',
+  templateUrl: './quo-alop.component.html',
+  styleUrls: ['./quo-alop.component.css']
 })
-export class PolAlopComponent implements OnInit {
+export class QuoAlopComponent implements OnInit {
   aLOPInfo:ALOPInfo = new ALOPInfo();
   tableData: any[] = [];
   tHeader:string[] = [];

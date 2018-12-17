@@ -41,7 +41,7 @@ export class CustEditableTableComponent implements OnInit {
   pressed:  any;
   startX:   any;
   startWidth: any;
-  
+  checked:boolean;
   constructor(config: NgbDropdownConfig, public renderer: Renderer) { 
   	config.placement = 'bottom-right';
     config.autoClose = false;
@@ -126,4 +126,5 @@ export class CustEditableTableComponent implements OnInit {
   onRowDblClick(event) {
     this.rowDblClick.next(event);
   }
+  
 }
