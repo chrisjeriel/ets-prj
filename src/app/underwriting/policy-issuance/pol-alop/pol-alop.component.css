@@ -69,3 +69,7 @@ label.text-left{
 .middle label.text-left{
 	padding-left:59px;
 }
+
+.left div{
+	padding-right: 10px !important;
+}
