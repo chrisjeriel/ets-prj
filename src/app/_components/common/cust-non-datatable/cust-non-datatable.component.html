@@ -66,8 +66,8 @@
     </div>
 
     <!-- Testing -->
-    <div  *ngIf="passData.fixedCol" class="row">
-        <div class="row table-scroll" id="cust-scroll">
+    <div  *ngIf="passData.fixedCol" class="row table-scroll" id="cust-scroll">
+        <div class="row">
             <div class="col-sm-2">
                 <table class="row-border hover dataTable no-footer fixedTable">
                     <thead>
@@ -90,7 +90,7 @@
             </div>
 
             <div class="col-sm-10 no-padding">
-                <table class="row-border hover dataTable no-footer" id="cust-table" style="width: 100%">
+                <table class="row-border hover dataTable no-footer relative" id="cust-table" style="width: 100%">
                     <thead>
                         <tr style="min-width: 96px">
                             <th *ngIf="passData.checkFlag"><input type="checkbox" name=""></th>

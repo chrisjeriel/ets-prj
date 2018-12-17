@@ -28,3 +28,4 @@ export * from './PrinterList';
 export * from './PolALOP';
 export * from './UnderwritingPolicyInquiryInfo';
 export * from './ItemInformation';
+export * from './UnderwritingPolicyDistList';

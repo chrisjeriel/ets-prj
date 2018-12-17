@@ -5,7 +5,8 @@ th, td{
     white-space: nowrap;
     /*min-width: 0px;
     max-width: 1px;*/
-
+    min-width: 30px; 
+    max-width: 150px;
     overflow: hidden;
 }
 .table-scroll{
@@ -31,7 +32,7 @@ th, td{
 }
 .relative{
     position: relative;
-    left: -5.8%;
+    left: -1.5%;
 }
 #cust-table-container {
     position: relative !important;

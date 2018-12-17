@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo, PolicyPrinting, PrinterList, ALOPItemInformation, UnderwritingPolicyInquiryInfo, ItemInformation } from '@app/_models';
+import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo, PolicyPrinting, PrinterList, ALOPItemInformation, UnderwritingPolicyInquiryInfo, ItemInformation, UnderwritingPolicyDistList } from '@app/_models';
 
 @Injectable({ providedIn: 'root' })
 export class UnderwritingService {
@@ -21,6 +21,7 @@ export class UnderwritingService {
     aLOPItemInfos: ALOPItemInformation[]=[];
     policyInquiry: UnderwritingPolicyInquiryInfo[] = [];
     itemInfoData: ItemInformation[] = [];
+    policyDistListData: UnderwritingPolicyDistList[] = [];
 
     constructor(private http: HttpClient) {
 
@@ -144,20 +145,20 @@ export class UnderwritingService {
 
     printingPolicy(){
         this.policyPrinting = [
-        new PolicyPrinting(null,null,null,null)
+            new PolicyPrinting(null,null,null,null)
         ];
         return this.policyPrinting;
     }
 
     getPrinterName(){
         this.printerList = [
-        new PrinterList("\\\\printer-server\\HP LaserJet MFP M129-M134 PCLms"),
-        new PrinterList("\\\\printer-server\\Canon Pixma MG4250"),
-        new PrinterList("\\\\printer-server\\Epson Ecotank ET-2600"),
+            new PrinterList("\\\\printer-server\\HP LaserJet MFP M129-M134 PCLms"),
+            new PrinterList("\\\\printer-server\\Canon Pixma MG4250"),
+            new PrinterList("\\\\printer-server\\Epson Ecotank ET-2600"),
         ];
         return this.printerList;
     }
-    
+
     getALOPItemInfos(car:string){
         this.aLOPItemInfos = [
             new ALOPItemInformation(1,5,"desc","rel import","min loss"),
@@ -185,5 +186,23 @@ export class UnderwritingService {
         ];
 
         return this.itemInfoData;
+    }
+
+    getPolicyDistListInfo(){
+        this.policyDistListData = [
+            new UnderwritingPolicyDistList(10001, 10001, 'Distributed but not posted', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT'),
+            new UnderwritingPolicyDistList(10002, 10002, 'Distributed but not posted', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT'),
+            new UnderwritingPolicyDistList(10003, 10003, 'Distributed but not posted', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT'),
+            new UnderwritingPolicyDistList(10004, 10004, 'Distributed but not posted', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT'),
+            new UnderwritingPolicyDistList(10005, 10005, 'Distributed but not posted', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT'),
+            new UnderwritingPolicyDistList(10006, 10006, 'Distributed but not posted', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT'),
+            new UnderwritingPolicyDistList(10007, 10007, 'Distributed but not posted', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT'),
+            new UnderwritingPolicyDistList(10008, 10008, 'Distributed but not posted', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT'),
+            new UnderwritingPolicyDistList(10009, 10009, 'Distributed but not posted', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT'),
+            new UnderwritingPolicyDistList(10010, 10010, 'Distributed but not posted', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT'),
+            new UnderwritingPolicyDistList(10011, 10011, 'Distributed but not posted', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT'),
+        ];
+
+        return this.policyDistListData;
     }
 }            
