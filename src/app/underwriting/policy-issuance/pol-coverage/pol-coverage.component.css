@@ -7,3 +7,13 @@
 .fieldset-height{
     height: 104%;
 }
+
+legend.scheduler-border {
+    font-size: 10.5px !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    width:auto;
+    padding:10px 10px;
+    margin-bottom: -11px;
+    color: #2d5986;
+}

@@ -75,8 +75,8 @@ export class UnderwritingService {
     }
     getUWOtherRatesInfo() {
         this.uwotherRatesInfoData = [
-            new UnderwritingOtherRatesInfo("data", "Sample 1", 123000, "Remarks 1"),
-            new UnderwritingOtherRatesInfo("data", "Sample 2", 321000, "Remarks 2"),
+            new UnderwritingOtherRatesInfo("Sample 1", 123000, "Remarks 1"),
+            new UnderwritingOtherRatesInfo("Sample 2", 321000, "Remarks 2"),
         ];
         return this.uwotherRatesInfoData;
     }
@@ -190,7 +190,7 @@ export class UnderwritingService {
 
     getPolicyEndorsement(){
         this.policyEndorsement = [
-            new PolicyEndorsement("","","","")
+            new PolicyEndorsement("TEST","TEST","TEST","TEST")
         ]
         return this.policyEndorsement;
     }
