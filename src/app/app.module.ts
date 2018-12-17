@@ -61,8 +61,7 @@ import { InquiryComponent } from './underwriting/inquiry/inquiry.component';
 import { PolicyInquiryComponent } from './underwriting/inquiry/policy-inquiry/policy-inquiry.component';
 import { SelectComponent } from './_components/common/select/select.component';
 import { MultipleSelectComponent } from './_components/common/multiple-select/multiple-select.component';
-import { DistributionByRiskComponent } from './underwriting/distribution/distribution-by-risk/distribution-by-risk.component';
-import { DistributionComponent } from './underwriting/distribution/distribution.component';
+import { DistributionByRiskComponent } from './underwriting/policy-distribution/pol-distribution/distribution-by-risk/distribution-by-risk.component';
 
 
 @NgModule({
@@ -131,7 +130,6 @@ import { DistributionComponent } from './underwriting/distribution/distribution.
         SelectComponent,
         MultipleSelectComponent,
         DistributionByRiskComponent,
-        DistributionComponent,
     ],
 
     providers: [
