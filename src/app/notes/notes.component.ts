@@ -14,6 +14,10 @@ export class NotesComponent implements OnInit {
   dataTypes: any[] = [];
   opts: any[] = [];
   nData: NotesReminders = new NotesReminders(null, null, null, null, null, null, 'user', new Date());
+  mdlConfig = {
+    mdlType: "confirmation",
+    confirmationMsg: "Do you want to save the changes you have made?"
+  };
 
   constructor(private notesService: NotesService, private modalService: NgbModal) { }
 

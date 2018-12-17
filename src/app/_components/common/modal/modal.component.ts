@@ -76,7 +76,9 @@ export class ModalComponent implements OnInit {
         mdlType: "",
         mdlOpener: "",
         mdlBtnAlign: "",
-        mdlSize: ""
+        mdlSize: "",
+        confirmationMsg: "",
+        successMsg: ""
     };
         /*
             mdlType: confirmation, success, error, custom       DEFAULT: custom
