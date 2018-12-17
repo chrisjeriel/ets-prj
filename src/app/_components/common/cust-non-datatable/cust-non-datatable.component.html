@@ -66,62 +66,61 @@
     </div>
 
     <!-- Testing -->
-    <div  *ngIf="passData.fixedCol" class="row table-scroll" id="cust-scroll">
-        <div class="row">
-            <div class="col-sm-2">
-                <table class="row-border hover dataTable no-footer fixedTable">
-                    <thead>
-                        <tr style="min-width: 96px">
-                            <th class="headcol" (click)="sort(dataKeys[i],sortBy);sortIndex=i;">
-                                <span class="gridHeader">{{passData.tHeader[0]}}</span>
-                                <i *ngIf="showSort(sortBy,i)" class="fa fa-caret-down"></i>
-                                <i *ngIf="showSort(!sortBy,i)" class="fa fa-caret-up"></i>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let data of displayData | paginate: { id:'non-editable', itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event)" (dblclick)="onRowDblClick($event)">
-                            <td class="headcol" style="margin-top:1px">
-                                <span class="unclickable">{{data[dataKeys[0]]}}</span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="col-sm-10 no-padding">
-                <table class="row-border hover dataTable no-footer relative" id="cust-table" style="width: 100%">
-                    <thead>
-                        <tr style="min-width: 96px">
-                            <th *ngIf="passData.checkFlag"><input type="checkbox" name=""></th>
-                            <th *ngFor="let tHeader of passData.tHeader | slice: 1; let i = index" (click)="sort(dataKeys[i+1],sortBy);sortIndex=i;">
-                                <span *ngIf="passData.resizable[i]" 
-                                      class="ui-column-resizer" (mousedown) = "onMouseDown($event)"></span>
-                                <span class="gridHeader">{{tHeader}}</span>
-                                <i *ngIf="showSort(sortBy,i)" class="fa fa-caret-down"></i>
-                                <i *ngIf="showSort(!sortBy,i)" class="fa fa-caret-up"></i>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let data of displayData | paginate: { id:'non-editable', itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event)" (dblclick)="onRowDblClick($event)">
-                            <td *ngIf="passData.checkFlag"> <input type="checkbox" name=""></td>
-                            <!-- <ng-container *ngIf="from === 'quotation-processing'"> -->
-                            <td *ngFor="let key of dataKeys | slice: 1; let i = index" [ngSwitch]="dataTypes[i]">
-                                <span *ngSwitchCase="'date'" class="unclickable">{{ processData(key, data) | date: 'MM/dd/yyyy'}}</span>
-                                <span *ngSwitchDefault class="unclickable">{{ processData(key, data) }}</span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+    <div  *ngIf="passData.fixedCol" class="row">
+        <div class="col-sm-2" style="padding-right: 0px">
+            <table class="row-border hover dataTable no-footer" >
+                <thead>
+                    <tr>
+                        <th (click)="sort(dataKeys[i],sortBy);sortIndex=i;">
+                            <span class="gridHeader">{{passData.tHeader[0]}}</span>
+                            <i *ngIf="showSort(sortBy,i)" class="fa fa-caret-down"></i>
+                            <i *ngIf="showSort(!sortBy,i)" class="fa fa-caret-up"></i>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of displayData | paginate: { id:'non-editable', itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event)" (dblclick)="onRowDblClick($event)">
+                        <td style="margin-top:1px">
+                            <span class="unclickable">{{data[dataKeys[0]]}}</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
+
+       <div class="col-sm-10 table-scroll" id="cust-scroll" style="padding-left: 0px">
+            <table class="row-border hover dataTable no-footer" id="cust-table" style="border-left: 0px;">
+                <thead>
+                    <tr>
+                        <th *ngIf="passData.checkFlag"><input type="checkbox" name=""></th>
+                        <th *ngFor="let tHeader of passData.tHeader | slice: 1; let i = index" (click)="sort(dataKeys[i+1],sortBy);sortIndex=i;">
+                            <span *ngIf="passData.resizable[i]" 
+                                  class="ui-column-resizer" (mousedown) = "onMouseDown($event)"></span>
+                            <span class="gridHeader">{{tHeader}}</span>
+                            <i *ngIf="showSort(sortBy,i)" class="fa fa-caret-down"></i>
+                            <i *ngIf="showSort(!sortBy,i)" class="fa fa-caret-up"></i>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of displayData | paginate: { id:'non-editable', itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event)" (dblclick)="onRowDblClick($event)">
+                        <td *ngIf="passData.checkFlag"> <input type="checkbox" name=""></td>
+                        <!-- <ng-container *ngIf="from === 'quotation-processing'"> -->
+                        <td *ngFor="let key of dataKeys | slice: 1; let i = index" [ngSwitch]="dataTypes[i]">
+                            <span *ngSwitchCase="'date'" class="unclickable">{{ processData(key, data) | date: 'MM/dd/yyyy'}}</span>
+                            <span *ngSwitchDefault class="unclickable">{{ processData(key, data) }}</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
     </div>
     <!-- End Testing -->
 
 
     <div class="table-scroll" id="cust-scroll" *ngIf="!passData.fixedCol">
-        <table class="row-border hover dataTable no-footer" id="cust-table" style="width: 100%">
+        <table class="row-border hover dataTable no-footer" id="cust-table">
             <thead>
                 <tr style="min-width: 96px">
                     <th *ngIf="passData.checkFlag"><input type="checkbox" name=""></th>
