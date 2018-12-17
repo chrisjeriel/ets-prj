@@ -15,6 +15,7 @@ export class PolCoverageComponent implements OnInit {
   dataTypes: any[] = [];
   selOptions: any[] = [];
   magnifyingGlass: any[] = ['coverCode'];
+  optionsData: any[] = [];
 
   nData: UnderwritingCoverageInfo = new UnderwritingCoverageInfo(null, null, null, null, null, null);
   constructor(private underwritingservice: UnderwritingService) { }
@@ -38,6 +39,8 @@ export class PolCoverageComponent implements OnInit {
     this.selOptions.push({ selector: "section", vals: ["I", "II", "III"] });
     this.selOptions.push({ selector: "bulletNo", vals: ["1", "1.2", "1.3"] });
     this.selOptions.push({ selector: "sortSe", vals: ["10", "20", "30"] });
+
+    this.optionsData.push("USD", "PHP", "EUR");
 
     this.tableData = this.underwritingservice.getUWCoverageInfo();
 

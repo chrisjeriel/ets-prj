@@ -2,24 +2,30 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { QuotationService } from '../../_services';
 import { QuotationProcessing } from '../../_models';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+
 
 @Component({
   selector: 'app-quotation-processing',
   templateUrl: './quotation-processing.component.html',
-  styleUrls: ['./quotation-processing.component.css']
+  styleUrls: ['./quotation-processing.component.css'],
+  providers: [NgbModal, NgbActiveModal]
 })
 export class QuotationProcessingComponent implements OnInit {
   tableData: any[] = [];
   tHeader: any[] = [];
+  tHeader2: any[] = [];
   dataTypes: any[] = [];
   filters: any[] = [];
   rowData: any[] = [];
   disabledEditBtn: boolean = true;
+  disabledCopyBtn: boolean = true;
 
   line: string = "";
 
-  constructor(private quotationService: QuotationService, private modalService: NgbModal, private router: Router) { }
+  constructor(private quotationService: QuotationService, private modalService: NgbModal, private router: Router
+    , public activeModal: NgbActiveModal) { }
+
 
   ngOnInit() {
     this.rowData = this.quotationService.getRowData();
@@ -73,6 +79,8 @@ export class QuotationProcessingComponent implements OnInit {
     this.dataTypes.push("text");
 
     this.tableData = this.quotationService.getQuoProcessingData();
+
+    this.tHeader2.push("Risk Code", "Risk", "Region", "Province", "Town/City", "District", "Block");
   }
 
   editBtnEvent() {
@@ -84,40 +92,48 @@ export class QuotationProcessingComponent implements OnInit {
   }
 
   nextBtnEvent() {
-    if (this.line === 'CAR' || 
-      this.line === 'EAR' || 
-      this.line === 'EEI' || 
-      this.line === 'CEC' || 
-      this.line === 'MBI' || 
-      this.line === 'BPV' || 
-      this.line === 'MLP' || 
+    if (this.line === 'CAR' ||
+      this.line === 'EAR' ||
+      this.line === 'EEI' ||
+      this.line === 'CEC' ||
+      this.line === 'MBI' ||
+      this.line === 'BPV' ||
+      this.line === 'MLP' ||
       this.line === 'DOS') {
       this.modalService.dismissAll();
+      this.quotationService.toGenInfo = [];
+      this.quotationService.toGenInfo.push("add", this.line);
+      this.router.navigate(['/quotation']);
+    }
+
+  }
+
+  onRowClick(event) {
+    for (var i = 0; i < event.target.closest("tr").children.length; i++) {
+      this.quotationService.rowData[i] = event.target.closest("tr").children[i].innerText;
+    }
+
+    this.disabledEditBtn = false;
+    this.disabledCopyBtn = false;
+  }
+
+  onRowDblClick(event) {
+    for (var i = 0; i < event.target.closest("tr").children.length; i++) {
+      this.quotationService.rowData[i] = event.target.closest("tr").children[i].innerText;
+    }
+
+    this.line = this.quotationService.rowData[0].split("-")[0];
+
     this.quotationService.toGenInfo = [];
-    this.quotationService.toGenInfo.push("add", this.line);
+    this.quotationService.toGenInfo.push("edit", this.line);
     this.router.navigate(['/quotation']);
+
   }
-
-}
-
-onRowClick(event) {
-  for(var i = 0; i < event.target.closest("tr").children.length; i++) {
-    this.quotationService.rowData[i] = event.target.closest("tr").children[i].innerText;
+  showApprovalModal(content) {
+    this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
   }
-
-  this.disabledEditBtn = false;
-}
-
-onRowDblClick(event) {
-  for(var i = 0; i < event.target.closest("tr").children.length; i++) {
-    this.quotationService.rowData[i] = event.target.closest("tr").children[i].innerText;
+  closeModalPls(content) {
+    this.activeModal = content;
+    this.activeModal.dismiss;
   }
-
-  this.line = this.quotationService.rowData[0].split("-")[0]; 
-
-  this.quotationService.toGenInfo = [];
-  this.quotationService.toGenInfo.push("edit", this.line);
-  this.router.navigate(['/quotation']);
-
-}
 }

@@ -65,7 +65,12 @@ import { CustNonDatatableComponent } from './_components/common/cust-non-datatab
 import { CustEditableNonDatatableComponent } from './_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { SearchPipe } from './_pipes/search.pipe';
 import { PolDistListComponent } from './underwriting/distribution/pol-dist-list/pol-dist-list.component';
-
+import { SelectComponent } from './_components/common/select/select.component';
+import { MultipleSelectComponent } from './_components/common/multiple-select/multiple-select.component';
+import { DistributionByRiskComponent } from './underwriting/policy-distribution/pol-distribution/distribution-by-risk/distribution-by-risk.component';
+import { PolicyDistributionComponent } from './underwriting/policy-distribution/policy-distribution.component';
+import { PolDistributionComponent } from './underwriting/policy-distribution/pol-distribution/pol-distribution.component';
+import { PolDistComponent } from './underwriting/policy-distribution/pol-dist/pol-dist.component';
 
 @NgModule({
     imports: [
@@ -136,6 +141,12 @@ import { PolDistListComponent } from './underwriting/distribution/pol-dist-list/
         CustEditableNonDatatableComponent,
         SearchPipe,
         PolDistListComponent,
+        SelectComponent,
+        MultipleSelectComponent,
+        DistributionByRiskComponent,
+        PolDistComponent,
+        PolicyDistributionComponent,
+        PolDistributionComponent,
     ],
 
     providers: [

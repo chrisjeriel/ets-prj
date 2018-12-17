@@ -29,3 +29,4 @@ export * from './PolALOP';
 export * from './UnderwritingPolicyInquiryInfo';
 export * from './ItemInformation';
 export * from './UnderwritingPolicyDistList';
+export * from './DistributionByRiskInfo';

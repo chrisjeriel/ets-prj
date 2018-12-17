@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo, PolicyPrinting, PrinterList, ALOPItemInformation, UnderwritingPolicyInquiryInfo, ItemInformation, UnderwritingPolicyDistList } from '@app/_models';
+import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo, PolicyPrinting, PrinterList, ALOPItemInformation, UnderwritingPolicyInquiryInfo, ItemInformation, UnderwritingPolicyDistList, DistributionByRiskInfo } from '@app/_models';
 
 @Injectable({ providedIn: 'root' })
 export class UnderwritingService {
@@ -15,13 +15,14 @@ export class UnderwritingService {
     altParListingData: AltPARListing[] = [];
     polAttachmentInfoData: PolAttachmentInfo[] = [];
     expiryListing: ExpiryListing[] = [];
-    renewedPolicies: RenewedPolicy[]=[];
-    policyPrinting: PolicyPrinting[]=[];
-    printerList: PrinterList[]=[];
-    aLOPItemInfos: ALOPItemInformation[]=[];
+    renewedPolicies: RenewedPolicy[] = [];
+    policyPrinting: PolicyPrinting[] = [];
+    printerList: PrinterList[] = [];
+    aLOPItemInfos: ALOPItemInformation[] = [];
     policyInquiry: UnderwritingPolicyInquiryInfo[] = [];
     itemInfoData: ItemInformation[] = [];
     policyDistListData: UnderwritingPolicyDistList[] = [];
+    distributionByRiskData: DistributionByRiskInfo[] = [];
 
     constructor(private http: HttpClient) {
 
@@ -143,14 +144,14 @@ export class UnderwritingService {
         return this.renewedPolicies;
     }
 
-    printingPolicy(){
+    printingPolicy() {
         this.policyPrinting = [
             new PolicyPrinting(null,null,null,null)
         ];
         return this.policyPrinting;
     }
 
-    getPrinterName(){
+    getPrinterName() {
         this.printerList = [
             new PrinterList("\\\\printer-server\\HP LaserJet MFP M129-M134 PCLms"),
             new PrinterList("\\\\printer-server\\Canon Pixma MG4250"),
@@ -161,8 +162,8 @@ export class UnderwritingService {
 
     getALOPItemInfos(car:string){
         this.aLOPItemInfos = [
-            new ALOPItemInformation(1,5,"desc","rel import","min loss"),
-            new ALOPItemInformation(2,7,"description","relative import","min loss")
+            new ALOPItemInformation(1, 5, "desc", "rel import", "min loss"),
+            new ALOPItemInformation(2, 7, "description", "relative import", "min loss")
         ]
         if(car =="CAR"){
             this.aLOPItemInfos.forEach(function(itm){delete itm.relativeImportance;});
@@ -184,7 +185,6 @@ export class UnderwritingService {
             new ItemInformation(1002, "Description for item number 2"),
             new ItemInformation(1003, "Description for item number 3")
         ];
-
         return this.itemInfoData;
     }
 
@@ -204,5 +204,20 @@ export class UnderwritingService {
         ];
 
         return this.policyDistListData;
+    }
+
+    getDistByRiskData() {
+        this.distributionByRiskData = [
+            new DistributionByRiskInfo("", "1Surp", "PhilNaRe", "5.000000", "27.522220", "CAR"),
+            new DistributionByRiskInfo("", "1Surp", "Munich Re", "95.000000", "27.500000", "CAR"),
+            new DistributionByRiskInfo("", "2Surp", "PhilNaRe", "5.000000", "27.500000", "CAR"),
+            new DistributionByRiskInfo("", "2Surp", "Munich Re", "95.000000", "27.500000", "CAR"),
+            new DistributionByRiskInfo("", "Facul", "Munich Re", "100.000000", "26.000000", "CAR"),
+            new DistributionByRiskInfo("", "QS", "QS Pool", "60.000000", "30.000000", "CAR"),
+            new DistributionByRiskInfo("", "QS", "PhilNaRe", "2.000000", "30.000000", "CAR"),
+            new DistributionByRiskInfo("", "QS", "Munich Re", "38.000000", "30.000000", "CAR"),
+
+        ];
+        return this.distributionByRiskData;
     }
 }            
