@@ -19,6 +19,7 @@ export class QuotationProcessingComponent implements OnInit {
   filters: any[] = [];
   rowData: any[] = [];
   disabledEditBtn: boolean = true;
+  disabledCopyBtn: boolean = true;
 
   line: string = "";
 
@@ -113,6 +114,7 @@ export class QuotationProcessingComponent implements OnInit {
     }
 
     this.disabledEditBtn = false;
+    this.disabledCopyBtn = false;
   }
 
   onRowDblClick(event) {

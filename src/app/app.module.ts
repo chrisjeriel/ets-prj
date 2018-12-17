@@ -59,6 +59,10 @@ import { ChangeQuoteStatusComponent } from './quotation/change-quote-status/chan
 import { PolAlopComponent } from './underwriting/policy-issuance/pol-alop/pol-alop.component';
 import { InquiryComponent } from './underwriting/inquiry/inquiry.component';
 import { PolicyInquiryComponent } from './underwriting/inquiry/policy-inquiry/policy-inquiry.component';
+import { SelectComponent } from './_components/common/select/select.component';
+import { MultipleSelectComponent } from './_components/common/multiple-select/multiple-select.component';
+import { DistributionByRiskComponent } from './underwriting/distribution/distribution-by-risk/distribution-by-risk.component';
+import { DistributionComponent } from './underwriting/distribution/distribution.component';
 
 
 @NgModule({
@@ -124,6 +128,10 @@ import { PolicyInquiryComponent } from './underwriting/inquiry/policy-inquiry/po
         PolAlopComponent,
         InquiryComponent,
         PolicyInquiryComponent,
+        SelectComponent,
+        MultipleSelectComponent,
+        DistributionByRiskComponent,
+        DistributionComponent,
     ],
 
     providers: [

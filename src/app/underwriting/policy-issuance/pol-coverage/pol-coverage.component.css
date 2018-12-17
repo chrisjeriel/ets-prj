@@ -22,6 +22,6 @@
     padding-right:0; 
 }
 .fldst-height {
-    height: 200px;
-    padding-top: 15px !important; 
+    height: 100%;
+    /* padding-top: 15px !important;  */
 }
