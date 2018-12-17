@@ -171,8 +171,6 @@ export class AppComponent {
            });
       }
 
-
-   
   @HostListener('window:unload', ['$event'])
   unloadHandler(event) {
       window.localStorage.setItem("selectedTheme", this.theme);
