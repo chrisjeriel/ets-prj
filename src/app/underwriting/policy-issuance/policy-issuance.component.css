@@ -1,6 +1,8 @@
 .scheduler-border {
 	height: 100% !important;
 	margin: 0 !important;
+	width: 400px !important;
+	padding: 0.5em !important;
 }
 
 .cust-div {
