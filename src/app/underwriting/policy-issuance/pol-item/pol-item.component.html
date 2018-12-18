@@ -1,0 +1,78 @@
+<fieldset class="scheduler-border">
+    <legend class="scheduler-border">Policy Record Info</legend>
+    <div class="form-row custom-row-inline-inset">
+        <div class="input-group">
+            <label class="form-control-sm col-sm-1" for="xx">Policy No</label>
+            <input type="text" id="xx" value="EEI-2018-5081-077-0177" class="form-control form-control-sm cust-sm col-sm-2"
+                   placeholder="" readonly>
+            <label class="form-control-sm col-sm-1" for="xx">Insured</label>
+            <input type="text" id="xx" value="Insurer" class="form-control form-control-sm cust-sm col-sm-7" placeholder=""
+                   readonly>
+        </div>
+        <div class="input-group">
+            <label class="form-control-sm col-sm-1" for="xx">Risk</label>
+            <input type="text" id="xx" value="Risk Name" class="form-control form-control-sm cust-sm col-sm-10" placeholder=""
+                   readonly>
+        </div>
+    </div>
+</fieldset>
+
+<div *ngIf="polEEI">
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">Item Information</legend>
+        <app-cust-editable-non-datatable [checkFlag]="true" [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [tableData]="tableData_EEI_MBI_CEC" [tHeader]="tHeader_EEI_MBI_CEC" [dataTypes]="dataTypes_EEI_MBI_CEC" [nData]="nData_EEI_MBI_CEC"></app-cust-editable-non-datatable>
+        <br/>
+    </fieldset>
+    <div class="col-md-13 text-center">
+        <div class="cust-btn-container">
+            <button type="button" class="cust-btn"><a>Cancel</a></button>
+            <button type="button" class="cust-btn"><a>Save</a></button>
+        </div>
+    </div>	
+</div>
+
+<div *ngIf="polBPV">
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">Item Information</legend>
+        <app-cust-editable-non-datatable [checkFlag]="true" [addFlag]="true" [deleteFlag]="true" [tableData]="tableData_BPV" [tHeader]="tHeader_BPV" [dataTypes]="dataTypes_BPV" [nData]="nData_BPV"></app-cust-editable-non-datatable>
+        <br/>
+    </fieldset>
+    <div class="col-md-13 text-center">
+        <div class="cust-btn-container">
+            <button type="button" class="cust-btn"><a>Cancel</a></button>
+            <button type="button" class="cust-btn"><a>Save</a></button>
+        </div>
+    </div>	
+</div>
+
+<div class="MLP" *ngIf="polMLP">
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">Item Information</legend>
+        <app-cust-editable-non-datatable [tableData]="mlpTableData" [tHeader]="mlpTHeader" [checkFlag]="true" [addFlag]="true" [deleteFlag]="true" [dataTypes]="mlpDataTypes" [nData]="mlpNData"></app-cust-editable-non-datatable>
+        <br/>
+    </fieldset>
+    <div class="col-md-13 text-center">
+        <div class="cust-btn-container">
+            <button type="button" class="cust-btn"><a>Cancel</a></button>
+            <button type="button" class="cust-btn"><a>Save</a></button>
+        </div>
+    </div>	
+</div>
+
+<div class="DOS" *ngIf="polDOS">
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">List of Goods stored and Insured</legend>
+        <app-cust-editable-non-datatable [tableData]="dosGoodsTableData" [tHeader]="dosGoodsTHeader" [checkFlag]="true" [addFlag]="true" [deleteFlag]="true" [dataTypes]="dosGoodsDataTypes"></app-cust-editable-non-datatable>
+    </fieldset>
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">List of Goods stored and Insured</legend>
+        <app-cust-editable-non-datatable [tableData]="dosMachineryTableData" [tHeader]="dosMachineryTHeader" [checkFlag]="true" [addFlag]="true" [deleteFlag]="true" [dataTypes]="dosMachineryDataTypes"></app-cust-editable-non-datatable>
+        <br/>
+    </fieldset>
+    <div class="col-md-13 text-center">
+        <div class="cust-btn-container">
+            <button type="button" class="cust-btn"><a>Cancel</a></button>
+            <button type="button" class="cust-btn"><a>Save</a></button>
+        </div>
+    </div>	
+</div>

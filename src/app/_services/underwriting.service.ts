@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo, PolicyPrinting, PrinterList, ALOPItemInformation, UnderwritingPolicyInquiryInfo, ItemInformation, UnderwritingPolicyDistList, DistributionByRiskInfo, PolicyEndorsement } from '@app/_models';
+import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo, PolicyPrinting, PrinterList, ALOPItemInformation, UnderwritingPolicyInquiryInfo, ItemInformation, UnderwritingPolicyDistList, DistributionByRiskInfo, PolicyEndorsement, PolItem_MLP, PolGoods_DOS, PolMachinery_DOS } from '@app/_models';
 
 @Injectable({ providedIn: 'root' })
 export class UnderwritingService {
@@ -24,6 +24,9 @@ export class UnderwritingService {
     policyEndorsement: PolicyEndorsement[] = [];
     policyDistListData: UnderwritingPolicyDistList[] = [];
     distributionByRiskData: DistributionByRiskInfo[] = [];
+    polItemMLP : PolItem_MLP[] = [];
+    polGoodsDOS : PolGoods_DOS[] = [];
+    polMachineryDOS: PolMachinery_DOS[] = [];
 
 
     constructor(private http: HttpClient) {
@@ -231,5 +234,29 @@ export class UnderwritingService {
 
         ];
         return this.distributionByRiskData;
+    }
+
+    getPolItemMLPData(){
+        this.polItemMLP = [
+            new PolItem_MLP("Item 1",5,"sample item",4,3,2),
+            new PolItem_MLP("Item 1",5,"sample item",4,3,2),
+        ];
+        return this.polItemMLP;
+    }
+
+    getPolGoodsDOSData(){
+        this.polGoodsDOS = [
+            new PolGoods_DOS("item 1","chamber 1", "wet goods", "period", 506),
+            new PolGoods_DOS("item 2","chamber 2", "dry goods", "period", 152),
+        ];
+        return this.polGoodsDOS;
+    }
+
+    getPolMachineryDOSData(){
+        this.polMachineryDOS = [
+            new PolMachinery_DOS("item 1",2, "description", 2, 506),
+            new PolMachinery_DOS("item 2",5, "desc", 2, 506),
+        ];
+        return this.polMachineryDOS;
     }
 }            
