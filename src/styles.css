@@ -194,6 +194,10 @@ input.form-control-sm {
     padding: 5px 10px !important;
 }
 
+.cap-input {
+    text-transform: uppercase;
+}
+
 
 /*height: calc(1.8125rem + 2px);
 padding: 0.25rem 0.5rem;

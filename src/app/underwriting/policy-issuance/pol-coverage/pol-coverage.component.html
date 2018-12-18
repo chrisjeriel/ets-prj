@@ -1,3 +1,8 @@
+<ng-container *ngIf="!alteration">
+  <!-- dito na lang sir pag hindi alteration --> 
+</ng-container>
+
+<ng-container *ngIf="alteration">
 <div>
   <fieldset class="scheduler-border">
       <legend class="scheduler-border">Policy Record Info</legend>
@@ -182,3 +187,5 @@
     </div>
   </div>
 
+</div>
+</ng-container>
