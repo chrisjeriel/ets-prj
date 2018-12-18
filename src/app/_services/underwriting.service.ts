@@ -248,6 +248,7 @@ export class UnderwritingService {
             new PolicyInwardPolBalance("EXE-CODE","TEST",1,"TEST")
         ];
         return this.policyInwardPolicy;
+    }
 
     }
     
