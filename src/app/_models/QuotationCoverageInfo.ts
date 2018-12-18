@@ -1,5 +1,4 @@
 export class QuotationCoverageInfo {
-    selectAll: string;
     coverCode: string;
     section: string;
     bulletNo: string;
@@ -7,8 +6,7 @@ export class QuotationCoverageInfo {
     addSl: string;
 
 
-    constructor(selectAll: string, coverCode: string, section: string, bulletNo: string, sumInsured: string, addSl: string) {
-        this.selectAll = selectAll;
+    constructor(coverCode: string, section: string, bulletNo: string, sumInsured: string, addSl: string) {
         this.coverCode = coverCode;
         this.section = section;
         this.bulletNo = bulletNo;

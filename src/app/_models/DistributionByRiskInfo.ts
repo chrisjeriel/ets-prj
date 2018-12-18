@@ -1,5 +1,4 @@
 export class DistributionByRiskInfo {
-    selectAll: string;
     treaty: string;
     cedingCompany: string;
     share: string;
@@ -7,8 +6,7 @@ export class DistributionByRiskInfo {
     line: string;
 
 
-    constructor(selectAll: string, treaty: string, cedingCompany: string, share: string, commRate: string, line: string) {
-        this.selectAll = selectAll;
+    constructor(treaty: string, cedingCompany: string, share: string, commRate: string, line: string) {
         this.treaty = treaty;
         this.cedingCompany = cedingCompany;
         this.share = share;
