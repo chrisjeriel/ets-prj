@@ -8,11 +8,6 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 })
 export class ModalComponent implements OnInit, AfterViewInit {
 
-    @Input() modalSize: string = "modal-size";
-    
-    content1: any = "";
-    /*content: any;*/
-
     @Input() mdlConfig = {
         mdlType: "",
         mdlOpener: "",
@@ -29,6 +24,8 @@ export class ModalComponent implements OnInit, AfterViewInit {
             mdlTitle: ""                                        DEFAULT: null
 
         */
+
+    @Input() modalSize: string = "modal-size";
     @Input() btnTitle: string = "Open Modal from Child";
     
     @ViewChild('content') test: any;
@@ -40,7 +37,8 @@ export class ModalComponent implements OnInit, AfterViewInit {
 
     }
     ngAfterViewInit(){
-        //console.log(this.test);
+        console.log(this.test);
+        console.log("content >>> " + this.content);
     }
 
     open(content) {

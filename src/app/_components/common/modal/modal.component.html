@@ -15,20 +15,19 @@
     </div>
     <div class="modal-body">
             <div class="row" [ngSwitch]="mdlConfig.mdlType">
-               
                 <ng-container *ngSwitchCase="'confirmation'">
-                    <div  class="col-sm-2 align-items-center" style="border-style: solid;">
+                    <div class="col-sm-2 align-items-center" style="border-style: solid; max-width: 25%;">
                         <i class="fa fa-question-circle fa-4x mdl-icon" aria-hidden="true"></i>    
                     </div>
-                    <div  class="col-sm-10 d-flex align-items-center" style="border-style: solid; min-width: 50%;">
+                    <div class="col-sm-10" style="border-style: solid; max-width: 75%;">
                         <span class="message">{{ mdlConfig.confirmationMsg }}</span>
                     </div>
                 </ng-container>    
                 <ng-container *ngSwitchCase="'success'">
-                    <div  class="col-sm-2 d-flex align-items-center">
+                    <div class="col-sm-2 d-flex align-items-center">
                         <i class="fa fa-check-circle fa-4x mdl-icon" aria-hidden="true"></i>
                     </div>
-                    <div  class="col-sm-10 d-flex align-items-center">
+                    <div class="col-sm-10 d-flex align-items-center" style="min-width: 50%;">
                         <span class="message">{{ mdlConfig.successMsg }}</span>
                     </div>
                 </ng-container>
