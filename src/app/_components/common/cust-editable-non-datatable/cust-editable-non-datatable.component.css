@@ -206,3 +206,6 @@ div.input-group {
     -webkit-box-shadow: inset 0 0 6px rgba(45,89,134,.3);
     background-color: #2d5986;
 }
+.checkbox {
+	width: 0.1em;
+}

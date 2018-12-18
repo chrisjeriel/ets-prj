@@ -36,10 +36,10 @@ export class PolItem_BPV{
     serial: string;
     location: string;
     makerDesc: string;
-    yearOfMake: Date;
+    yearOfMake: string;
     sumInsured: number;
     
-    constructor(serial: string, location: string, makerDesc: string, yearOfMake: Date, sumInsured){
+    constructor(serial: string, location: string, makerDesc: string, yearOfMake: string, sumInsured){
         this.serial = serial;
         this.location = location;
         this.makerDesc = makerDesc;

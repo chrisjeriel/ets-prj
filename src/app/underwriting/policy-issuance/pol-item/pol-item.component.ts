@@ -16,14 +16,15 @@ export class PolItemComponent implements OnInit {
         ['10003', 23, 'Item Description 3', new Date(), 1, 30000],
     ];
     tableData_BPV: any[] = [
-        ['S10001', 'Region IV, Laguna, Calamba', '100001 Juan de la Cruz', new Date(), 90000],
+        //['S10001', 'Region IV, Laguna, Calamba', '100001 Juan de la Cruz', new Date(), 90000],
+        ['S10001', 'Region IV, Laguna, Calamba', '100001 Juan de la Cruz', '2018', 90000],
     ];
 
     tHeader_EEI_MBI_CEC: any[] = ['Item No.', 'Quantity', 'Description of Items', 'Year of Make', 'Deductible', 'Sum Insured'];
     tHeader_BPV: any[] = ['Serial No', 'Location', 'Description Maker\'s No. and Maker\'s Name', 'Year of Make', 'Sum Insured'];
 
     dataTypes_EEI_MBI_CEC: any[] = ['string', 'number', 'string', 'date', 'number', 'currency'];
-    dataTypes_BPV: any[] = ['string', 'string', 'string', 'date', 'currency'];
+    dataTypes_BPV: any[] = ['string', 'string', 'string', 'string', 'currency'];
 
     nData_EEI_MBI_CEC: PolItem_EEI_MBI_CEC = new PolItem_EEI_MBI_CEC(null, null, null, null, null, null);
     nData_BPV: PolItem_BPV = new PolItem_BPV(null, null, null, null, null);
