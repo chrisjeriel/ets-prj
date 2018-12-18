@@ -47,14 +47,14 @@
 <input *ngSwitchCase="'date'" type="date" class="form-control cust-sm">
 <input *ngSwitchCase="'text'" type="text" class="form-control cust-sm">
 </div> -->
-                <div class="input-group" *ngFor="let filt of filterObj;let i= index" [ngSwitch]="filterObj[i].dataType">
+                <div class="input-group" *ngFor="let filt of passData.filters;let i= index" [ngSwitch]="passData.filters[i].dataType">
                     <div class="input-group-prepend">
                         <div class="input-group-text">
                             <input type="checkbox" [(ngModel)]="filt.enabled"><span>&nbsp;{{filt.title}}</span>
                         </div>
                     </div>
-                    <input [disabled]="!filt.enabled" *ngSwitchCase="'text'"  type="text" class="form-control cust-sm" [(ngModel)]="filt.search" (ngModelChange)="filterDisplay(filterObj,searchString)">
-                    <input [disabled]="!filt.enabled" *ngSwitchCase="'date'"  type="date" class="form-control cust-sm" [(ngModel)]="filt.search" (ngModelChange)="filterDisplay(filterObj,searchString)">
+                    <input [disabled]="!filt.enabled" *ngSwitchCase="'text'"  type="text" class="form-control cust-sm" [(ngModel)]="filt.search" (ngModelChange)="filterDisplay(passData.filters,searchString)">
+                    <input [disabled]="!filt.enabled" *ngSwitchCase="'date'"  type="date" class="form-control cust-sm" [(ngModel)]="filt.search" (ngModelChange)="filterDisplay(passData.filters,searchString)">
                 </div>
 
 
@@ -68,7 +68,7 @@
     <!-- Testing -->
     <div  *ngIf="passData.fixedCol" class="row">
         <div class="col-sm-2" style="padding-right: 0px">
-            <table class="row-border hover dataTable no-footer" >
+            <table class="" id="non-datatable">
                 <thead>
                     <tr>
                         <th (click)="sort(dataKeys[i],sortBy);sortIndex=i;">
@@ -89,7 +89,7 @@
         </div>
 
        <div class="col-sm-10 table-scroll" id="cust-scroll" style="padding-left: 0px">
-            <table class="row-border hover dataTable no-footer" id="cust-table" style="border-left: 0px;">
+            <table class="" id="non-datatable" style="border-left: 0px;">
                 <thead>
                     <tr>
                         <th *ngIf="passData.checkFlag"><input type="checkbox" name=""></th>
