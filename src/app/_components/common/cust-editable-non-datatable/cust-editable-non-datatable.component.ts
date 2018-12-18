@@ -66,12 +66,13 @@ export class CustEditableNonDatatableComponent implements OnInit {
         }
         this.displayData = JSON.parse(JSON.stringify( this.tableData));
         this.displayLength = this.displayData.length;
-        this.autoFill = Array(this.pageLength).fill(this.newData);
-        if(this.displayData.length%this.pageLength != 0){
-            this.autoFill = Array(this.pageLength - this.displayData.length%this.pageLength).fill(this.newData);
-        }
-        if(typeof this.autoFill != "undefined")
-            this.displayData = this.displayData.concat(this.autoFill);
+        // this.autoFill = Array(this.pageLength).fill(this.newData);
+        // if(this.displayData.length%this.pageLength != 0){
+        //     this.autoFill = Array(this.pageLength - this.displayData.length%this.pageLength).fill(this.newData);
+        // }
+        // if(typeof this.autoFill != "undefined")
+        //     this.displayData = this.displayData.concat(this.autoFill);
+        this.addFiller();
         
     }
 
@@ -80,9 +81,8 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     onClickAdd() {
-        this.displayData.push(this.nData);
         this.tableData.push(this.nData);
-        this.displayLength = this.displayData.length;
+        this.search(this.searchString);
     }
 
     onClickDelete() {
@@ -115,6 +115,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     onRowClick(event) {
+        console.log(typeof event);
         this.rowClick.next(event);
     }
 
@@ -141,9 +142,20 @@ export class CustEditableNonDatatableComponent implements OnInit {
 
     search(event){
         this.displayData = this.tableData.filter((item) => this.dataKeys.some(key => item.hasOwnProperty(key) && new RegExp(event, 'gi').test(item[key])));
-        this.autoFill = Array(this.pageLength).fill(this.newData);
+        // this.autoFill = Array(this.pageLength).fill(this.newData);
+        // if(this.displayData.length%this.pageLength != 0){
+        //     this.autoFill = Array(this.pageLength -  this.displayData.length%this.pageLength).fill(this.newData);
+        // }
+        // this.displayLength = this.displayData.length;
+        // if(typeof this.autoFill != "undefined")
+        //     this.displayData = this.displayData.concat(this.autoFill);
+        this.addFiller();
+    }
+
+    addFiller(){
+        this.autoFill = Array(this.pageLength).fill(this.nData);
         if(this.displayData.length%this.pageLength != 0){
-            this.autoFill = Array(this.pageLength -  this.displayData.length%this.pageLength).fill(this.newData);
+            this.autoFill = Array(this.pageLength -  this.displayData.length%this.pageLength).fill(this.nData);
         }
         this.displayLength = this.displayData.length;
         if(typeof this.autoFill != "undefined")
