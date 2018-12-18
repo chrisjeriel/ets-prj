@@ -102,6 +102,7 @@ th, td{
 .search-filter{
     position: absolute !important;
     right: 39px;
+    z-index: 1000;
 }
 
 .pagination{
