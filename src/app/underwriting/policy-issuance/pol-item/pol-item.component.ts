@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { PolItem_MLP } from '@app/_models/PolItem';
+import { UnderwritingService } from '@app/_services';
+
 
 @Component({
   selector: 'app-pol-item',
@@ -7,7 +10,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PolItemComponent implements OnInit {
 
-  constructor() { }
+  constructor(private underwritingService: UnderwritingService) { }
 
   ngOnInit() {
   }
