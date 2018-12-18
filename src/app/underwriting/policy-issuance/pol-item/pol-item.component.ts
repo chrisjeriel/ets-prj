@@ -11,7 +11,7 @@ export class PolItemComponent implements OnInit {
 
     dtOptions: DataTables.Settings = {};
     tableData_EEI_MBI_CEC: any[] = [
-        ['10001', 45, 'Item Description 1', '2018', 5, 20000],
+        new PolItem_EEI_MBI_CEC('10001', 45, 'Item Description 1', '2018', 5, 20000),
     ];
     tableData_BPV: any[] = [
         //['S10001', 'Region IV, Laguna, Calamba', '100001 Juan de la Cruz', new Date(), 90000],
@@ -30,6 +30,7 @@ export class PolItemComponent implements OnInit {
     mlpTableData: PolItem_MLP[];
     mlpTHeader: string[] = ['Item No','Quantity','Description of Machinery','Indemnity Period(months)','Relative Importance(%)','Spare Parts in stock standby Units'];
     mlpDataTypes: string[] = ['text','number','text','number','percent','number'];
+    mlpNData: PolItem_MLP = new PolItem_MLP(null,null,null,null,null,null);
 
     dosGoodsTableData: PolGoods_DOS[];
     dosGoodsTHeader: string[] = ["Item No", "Refrigerating Chamber No", "Type of Goods", "No-Claims Period","Sum Insured"];

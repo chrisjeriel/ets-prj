@@ -209,3 +209,7 @@ div.input-group {
 .checkbox {
 	width: 0.1em;
 }
+
+tbody tr{
+    height: 33px;
+}

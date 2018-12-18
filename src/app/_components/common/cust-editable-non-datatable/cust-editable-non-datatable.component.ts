@@ -130,7 +130,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         this.rowDblClick.next(event);
     }
     sort(str,sortBy){
-        this.displayData = this.displayData.sort(function(a, b) {
+        this.tableData = this.tableData.sort(function(a, b) {
             if(sortBy){
                 if(a[str] < b[str]) { return -1; }
                 if(a[str] > b[str]) { return 1; }
@@ -140,6 +140,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
             }
         });
         this.sortBy = !this.sortBy;
+        this.search(this.searchString);
    
     }
 
