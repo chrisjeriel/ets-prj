@@ -71,6 +71,8 @@ import { DistributionByRiskComponent } from './underwriting/policy-distribution/
 import { PolicyDistributionComponent } from './underwriting/policy-distribution/policy-distribution.component';
 import { PolDistributionComponent } from './underwriting/policy-distribution/pol-distribution/pol-distribution.component';
 import { PolDistComponent } from './underwriting/policy-distribution/pol-dist/pol-dist.component';
+import { PolIssuanceCoverOpenLetterComponent } from './underwriting/policy-issuance/pol-issuance-cover-open-letter.component';
+import { PolGenInfoCoverOpenLetterComponent } from './underwriting/policy-issuance/pol-gen-info-cover-open-letter/pol-gen-info-cover-open-letter.component';
 
 @NgModule({
     imports: [
@@ -146,6 +148,9 @@ import { PolDistComponent } from './underwriting/policy-distribution/pol-dist/po
         PolDistComponent,
         PolicyDistributionComponent,
         PolDistributionComponent,
+        PolIssuanceCoverOpenLetterComponent,
+        PolGenInfoCoverOpenLetterComponent
+        
     ],
 
     providers: [
