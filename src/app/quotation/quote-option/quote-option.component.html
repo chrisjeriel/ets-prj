@@ -2,22 +2,27 @@
 	<fieldset class="scheduler-border">
 		<legend class="scheduler-border">Quotation Info</legend>
 		<div class="form-row custom-row-inline-inset">
-            <div class="input-group" >
-                <label class="form-control-sm col-sm-2" for="inputQuonum">Quotation No </label>
-                <input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-2" placeholder="CAR-2018-5081-077-0177" disabled="disabled">
-                <label class="form-control-sm col-sm-1" for="inputInname" >Insured</label>
-                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-6" placeholder="Insured Name" disabled="disabled">
-            </div>
-            <div class="input-group">
-                <label class="form-control-sm col-sm-2" for="inputRisk" >Risk</label>
-                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-9" placeholder="Risk" disabled="disabled">
-            </div>
-        </div>
+			<div class="input-group">
+				<label class="form-control-sm col-sm-2" for="inputQuonum">Quotation No </label>
+				<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-2" placeholder="CAR-2018-5081-077-0177"
+				 disabled="disabled">
+				<label class="form-control-sm col-sm-1" for="inputInname">Insured</label>
+				<input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-6" placeholder="Insured Name"
+				 disabled="disabled">
+			</div>
+			<div class="input-group">
+				<label class="form-control-sm col-sm-2" for="inputRisk">Risk</label>
+				<input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-9" placeholder="Risk"
+				 disabled="disabled">
+			</div>
+		</div>
 	</fieldset>
 
 	<fieldset class="scheduler-border">
 		<legend class="scheduler-border">Quotation Option</legend>
-		<app-cust-editable-table [checkFlag]="true" [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="quoteOptionNData" [tableData]="quoteOptionTableData" [tHeader]="quoteOptionTHeader" [dataTypes]="quoteOptionDataType" [magnifyingGlass]="magnifyingGlass" [(editedData)]="quoteOptionEdited" [columnId]="'optionNo'" (rowClick)="clickRow($event)"></app-cust-editable-table>
+		<app-cust-editable-table [checkFlag]="true" [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="quoteOptionNData"
+		 [tableData]="quoteOptionTableData" [tHeader]="quoteOptionTHeader" [dataTypes]="quoteOptionDataType"
+		 [magnifyingGlass]="magnifyingGlass" [(editedData)]="quoteOptionEdited" [columnId]="'optionNo'" (rowClick)="clickRow($event)"></app-cust-editable-table>
 	</fieldset>
 
 	<!-- <fieldset class="scheduler-border">
@@ -27,7 +32,8 @@
 
 	<fieldset class="scheduler-border">
 		<legend class="scheduler-border">Quotation Other Rates</legend>
-		<app-cust-editable-table [checkFlag]="true" [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="otherRatesNData" [tableData]="otherRatesTableData" [tHeader]="otherRatesTHeader" [dataTypes]="otherRatesDataType" [magnifyingGlass]="otherRatesMagnify"></app-cust-editable-table>
+		<app-cust-editable-table [checkFlag]="true" [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="otherRatesNData"
+		 [tableData]="otherRatesTableData" [tHeader]="otherRatesTHeader" [dataTypes]="otherRatesDataType" [magnifyingGlass]="otherRatesMagnify"></app-cust-editable-table>
 	</fieldset>
 
 	<div class="form-row">
@@ -35,9 +41,9 @@
 			<div class="col-md-13 text-center">
 				<br>
 				<div class="cust-btn-container">
-				<button type="button" class="cust-btn"><a>Cancel</a></button>
-				<button type="button" class="cust-btn"><a>Save</a></button>
-			</div>
+					<button type="button" class="cust-btn"><a>Cancel</a></button>
+					<button type="button" class="cust-btn"><a>Save</a></button>
+				</div>
 			</div>
 		</div>
 	</div>

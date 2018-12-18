@@ -21,7 +21,7 @@ export class CoverageComponent implements OnInit {
   msHeaderTxt: string = "";
   msData: any[] = [];
 
-  nData: QuotationCoverageInfo = new QuotationCoverageInfo(null, null, null, null, null, null);
+  nData: QuotationCoverageInfo = new QuotationCoverageInfo(null, null, null, null, null);
   //nData: NotesReminders = new NotesReminders(null, null, null, null, null, null, 'user', new Date());
 
   constructor(private quotationService: QuotationService, private notesService: NotesService) { }
@@ -33,7 +33,7 @@ export class CoverageComponent implements OnInit {
   }
 
   getMS(event) {
-    console.log(event.allSelectedData);
+    console.log(event.allSelectedData + ' : ' + event.ids);
   }
 
   ngOnInit() {
@@ -41,17 +41,15 @@ export class CoverageComponent implements OnInit {
     this.optionsData2.push("a", "b", "c");
 
     this.msHeaderTxt = "COVERAGE";
-    this.msData.push("one", "two", "three");
+    this.msData.push("one", "two", "three", "one", "two");
 
 
-    this.tHeader.push("");
     this.tHeader.push("Cover Code");
     this.tHeader.push("Section");
     this.tHeader.push("Bullet No");
     this.tHeader.push("Sum Insured");
     this.tHeader.push("Add Sl");
 
-    this.dataTypes.push("checkbox");
     this.dataTypes.push("text");
     this.dataTypes.push("select");
     this.dataTypes.push("select");
