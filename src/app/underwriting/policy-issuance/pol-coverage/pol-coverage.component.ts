@@ -66,24 +66,24 @@ export class PolCoverageComponent implements OnInit {
                                 {header: "Previous", span: 3}, {header: "This Alteration", span: 3},
                                 {header: "Cumulative", span: 3}, {header: "", span: 1});
 
-   /* this.tableData = this.underwritingservice.getUWCoverageInfo();*/
-    this.tableData = [
-    {
-      coverCode: "ASD",
-      section: "I",
-      bulletNo: 1.2,
-      prevSumInsured: 20,
-      prevRate: 5,
-      prevPremium: 100,
-      thisAltSumInsured: 60,
-      thisAltRate: 5,
-      thisAltPremium: 50,
-      cumuSumInsured: 90,
-      cumuRate: 5,
-      cumuPremium: 800,
-      addSl: ""
-    }
-    ];
+    this.tableData = this.underwritingservice.getUWCoverageInfo();
+    // this.tableData = [
+    // {
+    //   coverCode: "ASD",
+    //   section: "I",
+    //   bulletNo: 1.2,
+    //   prevSumInsured: 20,
+    //   prevRate: 5,
+    //   prevPremium: 100,
+    //   thisAltSumInsured: 60,
+    //   thisAltRate: 5,
+    //   thisAltPremium: 50,
+    //   cumuSumInsured: 90,
+    //   cumuRate: 5,
+    //   cumuPremium: 800,
+    //   addSl: ""
+    // }
+    // ];
 
   }
 
