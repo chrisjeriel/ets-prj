@@ -11,7 +11,7 @@ export class ModalComponent implements OnInit, AfterViewInit {
     @Input() modalSize: string = "modal-size";
     
     content1: any = "";
-    content: any;
+    /*content: any;*/
 
     @Input() mdlConfig = {
         mdlType: "",
