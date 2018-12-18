@@ -25,6 +25,7 @@ export class PolCoverageComponent implements OnInit {
 
   ngOnInit() {
 
+
     if(!this.alteration){
       this.tHeader.push("Cover Code");
       this.tHeader.push("Section");
@@ -106,7 +107,6 @@ export class PolCoverageComponent implements OnInit {
        }
       ];  
     }
-
   }
 
 }
