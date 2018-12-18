@@ -35,3 +35,8 @@ legend.scheduler-border {
     margin-bottom: -11px;
     color: #2d5986;
 }
+
+.fs {
+    height: 100% !important;
+}
+

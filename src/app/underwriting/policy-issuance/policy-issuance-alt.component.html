@@ -1,15 +1,15 @@
 <div class="cust-tabs-container">
 	<h4>Policy / Policy Issuance / Create Alteration</h4>
-	<ngb-tabset>
+	<ngb-tabset (tabChange)="beforeChange($event)">
 
 		<ngb-tab class="ngb-tab" title="General Info">
 			<ng-template ngbTabContent>
-				<app-pol-gen-info></app-pol-gen-info>
+				<app-pol-gen-info [alteration]="true"></app-pol-gen-info>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab title="Coverage">
 			<ng-template ngbTabContent>
-				<app-pol-coverage></app-pol-coverage>
+				<app-pol-coverage [alteration]="true"></app-pol-coverage>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab title="Other Rates">
@@ -24,7 +24,7 @@
 		</ngb-tab>
 		<ngb-tab title="ALOP">
 			<ng-template ngbTabContent>
-				<app-pol-alop ></app-pol-alop>
+				<app-pol-alop></app-pol-alop>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab title="CoInsurance">
@@ -44,14 +44,82 @@
 		</ngb-tab>
 		<ngb-tab title="Post">
 			<ng-template ngbTabContent>
-				 <app-pol-post></app-pol-post>
+				<app-pol-post></app-pol-post>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab title="Print">
-			<ng-template ngbTabContent>
 
+		<ngb-tab id="approval-tab">
+			<ng-template #content>
+				<div class="modal-header">
+					<span class="modal-title" id="modal-basic-title">&nbsp;</span>
+				</div>
+				<div class="modal-body">
+					<fieldset class="scheduler-border">
+						<div class="custom-row-inline-inset">
+							<div class="input-group" style="margin-bottom:3px !important;">
+								<div class="col-sm-2"></div>&nbsp;&nbsp;&nbsp;&nbsp;
+								<div class="col-sm-8">
+									<input type="checkbox" style="vertical-align: middle">&nbsp;<label>Print as Draft</label>
+									&nbsp;&nbsp;&nbsp;&nbsp;
+									<input type="checkbox" style="vertical-align: middle">&nbsp;<label>Include Endorsement</label>
+									<div class="col-sm-1"></div>
+								</div>
+							</div>
+							<div class="input-group" style="margin-bottom:3px !important;">
+								<label class="col-sm-3">Report</label>
+								<select class="form-control form-control-sm cust-sm col-sm-8">
+									<option value=""></option>
+								</select>
+								<div class="col-sm-1"></div>
+							</div>
+							<div class="input-group" style="margin-bottom:6px !important;">
+								<label class="col-sm-3">No. Of Copies</label>
+								<input type="text" class="form-control form-control-sm cust-sm col-sm-8" style="text-align: right" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
+								<div class="col-sm-1"></div>
+							</div>
+							<div class="input-group" style="margin-bottom:3px !important;">
+								<label class="col-sm-3">Destination</label>
+								<select class="form-control form-control-sm cust-sm col-sm-8">
+									<option value=""></option>
+								</select>
+								<div class="col-sm-1"></div>
+							</div>
+							<div class="input-group" style="margin-bottom:3px !important;">
+								<label class="col-sm-3">Printer Name</label>
+								<select class="form-control form-control-sm cust-sm col-sm-8">
+									<option value=""></option>
+								</select>
+								<div class="col-sm-1"></div>
+							</div>
+						</div>
+					</fieldset>
+
+				</div>
+				<!-- <div class="modal-footer" style="text-align: center !important;">
+						<div>
+							<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+							<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Print</a></button>
+						</div>
+					</div> -->
+				<div class="form-row">
+					<div class="form-group col-sm">
+						<div class="col-md-13 text-center">
+							<br>
+							<div class="cust-btn-container">
+								<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+								<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Print</a></button>
+							</div>
+						</div>
+					</div>
+				</div>
 			</ng-template>
+
+			<ng-template ngbTabTitle>
+				<div (click)="showApprovalModal(content)">Print</div>
+			</ng-template>
+
 		</ngb-tab>
+
 		<ngb-tab title="Exit">
 			<ng-template ngbTabContent>
 

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo, PolicyPrinting, PrinterList, ALOPItemInformation, UnderwritingPolicyInquiryInfo, ItemInformation, UnderwritingPolicyDistList, DistributionByRiskInfo, PolicyEndorsement } from '@app/_models';
+import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo, PolicyPrinting, PrinterList, ALOPItemInformation, UnderwritingPolicyInquiryInfo, ItemInformation, UnderwritingPolicyDistList, DistributionByRiskInfo, PolicyEndorsement, PolItem_MLP, PolGoods_DOS, PolMachinery_DOS, PolicyInwardPolBalance } from '@app/_models';
+
 
 @Injectable({ providedIn: 'root' })
 export class UnderwritingService {
@@ -24,6 +25,10 @@ export class UnderwritingService {
     policyEndorsement: PolicyEndorsement[] = [];
     policyDistListData: UnderwritingPolicyDistList[] = [];
     distributionByRiskData: DistributionByRiskInfo[] = [];
+    policyInwardPolicy: PolicyInwardPolBalance[] = [];
+    polItemMLP : PolItem_MLP[] = [];
+    polGoodsDOS : PolGoods_DOS[] = [];
+    polMachineryDOS: PolMachinery_DOS[] = [];
 
 
     constructor(private http: HttpClient) {
@@ -62,17 +67,17 @@ export class UnderwritingService {
 
     getCoInsurance() {
         this.coInsuranceData = [
-            new PolicyCoInsurance("CAR-2018-000001-099-0001-000","EN-CAR-2018-0000001-00", "Malayan", 12.2, 10000, 500000),
-            new PolicyCoInsurance("CAR-2018-000001-099-0001-000","EN-CAR-2018-0000001-00", "Company 1", 6.23, 20000, 600000),
-            new PolicyCoInsurance("CAR-2018-000001-099-0001-000","EN-CAR-2018-0000001-00", "Company 2", 15.16, 30000, 700000),
+            new PolicyCoInsurance("CAR-2018-000001-099-0001-000", "EN-CAR-2018-0000001-00", "Malayan", 12.2, 10000, 500000),
+            new PolicyCoInsurance("CAR-2018-000001-099-0001-000", "EN-CAR-2018-0000001-00", "Company 1", 6.23, 20000, 600000),
+            new PolicyCoInsurance("CAR-2018-000001-099-0001-000", "EN-CAR-2018-0000001-00", "Company 2", 15.16, 30000, 700000),
         ];
         return this.coInsuranceData;
     }
 
     getUWCoverageInfo() {
         this.uwcoverageInfoData = [
-            new UnderwritingCoverageInfo("1", "I", "3", "1000000","12.2", "69000", "70000"),
-            new UnderwritingCoverageInfo("2", 'II', "2","150000","15.16", "123000", "456000")
+            new UnderwritingCoverageInfo("1", "I", "3", "1000000", "12.2", "69000", "70000"),
+            new UnderwritingCoverageInfo("2", 'II', "2", "150000", "15.16", "123000", "456000")
         ];
         return this.uwcoverageInfoData;
     }
@@ -149,7 +154,7 @@ export class UnderwritingService {
 
     printingPolicy() {
         this.policyPrinting = [
-            new PolicyPrinting(null,null,null,null)
+            new PolicyPrinting(null, null, null, null)
         ];
         return this.policyPrinting;
     }
@@ -163,13 +168,13 @@ export class UnderwritingService {
         return this.printerList;
     }
 
-    getALOPItemInfos(car:string){
+    getALOPItemInfos(car: string) {
         this.aLOPItemInfos = [
             new ALOPItemInformation(1, 5, "desc", "rel import", "min loss"),
             new ALOPItemInformation(2, 7, "description", "relative import", "min loss")
         ]
-        if(car =="CAR"){
-            this.aLOPItemInfos.forEach(function(itm){delete itm.relativeImportance;});
+        if (car == "CAR") {
+            this.aLOPItemInfos.forEach(function (itm) { delete itm.relativeImportance; });
         }
         return this.aLOPItemInfos;
     }
@@ -192,14 +197,14 @@ export class UnderwritingService {
     }
 
 
-    getPolicyEndorsement(){
+    getPolicyEndorsement() {
         this.policyEndorsement = [
-            new PolicyEndorsement("TEST","TEST","TEST","TEST")
+            new PolicyEndorsement("TEST", "TEST", "TEST", "TEST")
         ]
         return this.policyEndorsement;
     }
 
-    getPolicyDistListInfo(){
+    getPolicyDistListInfo() {
         this.policyDistListData = [
             new UnderwritingPolicyDistList(10001, 10001, 'Distributed but not posted', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT'),
             new UnderwritingPolicyDistList(10002, 10002, 'Distributed but not posted', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT'),
@@ -220,16 +225,53 @@ export class UnderwritingService {
 
     getDistByRiskData() {
         this.distributionByRiskData = [
-            new DistributionByRiskInfo("", "1Surp", "PhilNaRe", "5.000000", "27.522220", "CAR"),
-            new DistributionByRiskInfo("", "1Surp", "Munich Re", "95.000000", "27.500000", "CAR"),
-            new DistributionByRiskInfo("", "2Surp", "PhilNaRe", "5.000000", "27.500000", "CAR"),
-            new DistributionByRiskInfo("", "2Surp", "Munich Re", "95.000000", "27.500000", "CAR"),
-            new DistributionByRiskInfo("", "Facul", "Munich Re", "100.000000", "26.000000", "CAR"),
-            new DistributionByRiskInfo("", "QS", "QS Pool", "60.000000", "30.000000", "CAR"),
-            new DistributionByRiskInfo("", "QS", "PhilNaRe", "2.000000", "30.000000", "CAR"),
-            new DistributionByRiskInfo("", "QS", "Munich Re", "38.000000", "30.000000", "CAR"),
+            new DistributionByRiskInfo("1Surp", "PhilNaRe", "5.000000", "27.522220", "CAR"),
+            new DistributionByRiskInfo("1Surp", "Munich Re", "95.000000", "27.500000", "CAR"),
+            new DistributionByRiskInfo("2Surp", "PhilNaRe", "5.000000", "27.500000", "CAR"),
+            new DistributionByRiskInfo("2Surp", "Munich Re", "95.000000", "27.500000", "CAR"),
+            new DistributionByRiskInfo("Facul", "Munich Re", "100.000000", "26.000000", "CAR"),
+            new DistributionByRiskInfo("QS", "QS Pool", "60.000000", "30.000000", "CAR"),
+            new DistributionByRiskInfo("QS", "PhilNaRe", "2.000000", "30.000000", "CAR"),
+            new DistributionByRiskInfo("QS", "Munich Re", "38.000000", "30.000000", "CAR"),
 
         ];
         return this.distributionByRiskData;
+    }
+
+
+    getInwardPolBalance(){
+        this.policyInwardPolicy = [
+            new PolicyInwardPolBalance("EXE-CODE","TEST",1,"TEST"),
+            new PolicyInwardPolBalance("EXE-CODE","TEST",1,"TEST"),
+            new PolicyInwardPolBalance("EXE-CODE","TEST",1,"TEST"),
+            new PolicyInwardPolBalance("EXE-CODE","TEST",1,"TEST"),
+            new PolicyInwardPolBalance("EXE-CODE","TEST",1,"TEST")
+        ];
+        return this.policyInwardPolicy;
+    }
+
+    getPolItemMLPData(){
+        this.polItemMLP = [
+            new PolItem_MLP("Item 1",5,"sample item",4,3,2),
+            new PolItem_MLP("Item 1",5,"sample item",4,3,2),
+        ];
+        return this.polItemMLP;
+    }
+
+    getPolGoodsDOSData(){
+        this.polGoodsDOS = [
+            new PolGoods_DOS("item 1","chamber 1", "wet goods", "period", 506),
+            new PolGoods_DOS("item 2","chamber 2", "dry goods", "period", 152),
+        ];
+        return this.polGoodsDOS;
+    }
+
+    getPolMachineryDOSData(){
+        this.polMachineryDOS = [
+            new PolMachinery_DOS("item 1",2, "description", 2, 506),
+            new PolMachinery_DOS("item 2",5, "desc", 2, 506),
+        ];
+        return this.polMachineryDOS;
+
     }
 }            

@@ -1,4 +1,5 @@
-<div>
+<ng-container *ngIf="!alteration">
+  <div>
   <fieldset class="scheduler-border">
       <legend class="scheduler-border">Policy Record Info</legend>
       <div class="form-row custom-row-inline-inset">
@@ -144,4 +145,193 @@
       </div>
     </div>
   </div>
+</div>
+</ng-container>
 
+<ng-container *ngIf="alteration">
+<div>
+  <fieldset class="scheduler-border">
+      <legend class="scheduler-border">Policy Record Info</legend>
+      <div class="form-row custom-row-inline-inset">
+        <div class="input-group">
+          <label class="form-control-sm col-sm-1" for="xx">Policy No</label>
+          <input type="text" id="xx" value="CAR-2018-5081-077-0177" class="form-control form-control-sm cust-sm col-sm-2"
+            placeholder="" readonly>
+          <label class="form-control-sm col-sm-1" for="xx">Insured</label>
+          <input type="text" id="xx" value="Insurer" class="form-control form-control-sm cust-sm col-sm-7" placeholder=""
+            readonly>
+        </div>
+        <div class="input-group">
+          <label class="form-control-sm col-sm-1" for="xx">Risk</label>
+          <input type="text" id="xx" value="Risk Name" class="form-control form-control-sm cust-sm col-sm-10" placeholder=""
+            readonly>
+        </div>
+      </div>
+  </fieldset>
+  <fieldset class="scheduler-border">
+    <legend class="scheduler-border">Section Covers</legend>
+    <app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData"
+      [tHeader]="tHeader" [dataTypes]="dataTypes" [opts]="selOptions" [magnifyingGlass]="magnifyingGlass" [checkFlag]="true" [headerWithColspan]="headerWithColspan"></app-cust-editable-table>
+  </fieldset>
+  <div class="row">
+    <div class="col-sm-6">
+    <fieldset class="scheduler-border fs">
+      <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+        <div class="cust-sm">
+           <div class="cust-sm col-sm-1"></div>
+            <div class="row" style="margin-right: 0px; margin-bottom: 11px;">
+                    <div class="input-group" style="margin-top: -10px;">
+                        &nbsp;
+                    </div>
+                    <div class="input-group">
+                            <span class="col-sm-2"></span>
+                            <label class="form-control-sm col-sm-2">Currency</label>
+                            <input type="text" class="form-control form-control-sm col-sm-2">
+                            <label class="form-control-sm col-sm-2" style="margin-left: -30px !important;">Exch. Rt.</label>
+                            <input type="text" class="form-control form-control-sm col-sm-2">
+                            <span class="col-sm-2"></span>
+                    </div>
+                    <br />
+                    <br />
+                    <div class="input-group" style="margin-left: -18px !important">
+                            <span class="col-sm-3"></span>
+                            <label class="form-control-sm col-sm-3" style="text-align: center !important; font-size: 11px !important; margin-bottom: 1px !important;">Previous</label>
+                            <label class="form-control-sm col-sm-3" style="text-align: center !important; font-size: 11px !important; margin-bottom: 1px !important;">This Alteration</label>
+                            <label class="form-control-sm col-sm-3" style="text-align: center !important; font-size: 11px !important; margin-bottom: 1px !important;">Cumulative</label>
+    
+                    </div>
+                    <div class="input-group" style="margin-left: -15px !important">
+                            <label class="form-control-sm col-sm-3">Total Premium</label>
+                            <input type="text" class="form-control form-control-sm col-sm-3" disabled="true">
+                            &nbsp;
+                            <input type="text" class="form-control form-control-sm col-sm-3">
+                            &nbsp;
+                            <input type="text" class="form-control form-control-sm col-sm-3" disabled="true">
+                            &nbsp;
+                    </div>
+                    <div class="input-group" style="margin-left: -15px !important">
+                            <label class="form-control-sm col-sm-3">Total Sum Insured</label>
+                            <input type="text" class="form-control form-control-sm col-sm-3" disabled="true">
+                            &nbsp;
+                            <input type="text" class="form-control form-control-sm col-sm-3">
+                            &nbsp;
+                            <input type="text" class="form-control form-control-sm col-sm-3"  disabled="true">
+                            &nbsp;
+                    </div>
+            </div>
+        </div>
+    </fieldset>
+    </div>
+   <div class="cust-sm col-sm-6">
+        <fieldset class="scheduler-border fs">
+          <legend class="scheduler-border">SI per Section</legend>
+           <div class="cust-sm">
+            <div class="cust-sm col-sm-1"></div>
+              <div class="row" style="margin-right: 0px; margin-bottom: 11px;">
+                    <div class="input-group" style="margin-top: -10px;">
+                        &nbsp;
+                    </div>
+                    <div class="input-group" style="margin-left: -18px !important">
+                            <span class="col-sm-3"></span>
+                            <label class="form-control-sm col-sm-3" style="text-align: center !important; font-size: 11px !important; margin-bottom: 1px !important;">Previous</label>
+                            <label class="form-control-sm col-sm-3" style="text-align: center !important; font-size: 11px !important; margin-bottom: 1px !important;">This Alteration</label>
+                            <label class="form-control-sm col-sm-3" style="text-align: center !important; font-size: 11px !important; margin-bottom: 1px !important;">Cumulative</label>
+    
+                    </div>
+                    <div class="input-group" style="margin-left: -15px !important">
+                            <label class="form-control-sm col-sm-3">Section I</label>
+                            <input type="text" class="form-control form-control-sm col-sm-3" disabled="true">
+                            &nbsp;
+                            <input type="text" class="form-control form-control-sm col-sm-3">
+                            &nbsp;
+                            <input type="text" class="form-control form-control-sm col-sm-3" disabled="true">
+                            &nbsp;
+                    </div>
+                    <div class="input-group" style="margin-left: -15px !important">
+                            <label class="form-control-sm col-sm-3">Section II</label>
+                            <input type="text" class="form-control form-control-sm col-sm-3" disabled="true">
+                            &nbsp;
+                            <input type="text" class="form-control form-control-sm col-sm-3">
+                            &nbsp;
+                            <input type="text" class="form-control form-control-sm col-sm-3"  disabled="true">
+                            &nbsp;
+                    </div>
+                    <div class="input-group" style="margin-left: -15px !important">
+                            <label class="form-control-sm col-sm-3">Section III</label>
+                            <input type="text" class="form-control form-control-sm col-sm-3" disabled="true">
+                            &nbsp;
+                            <input type="text" class="form-control form-control-sm col-sm-3">
+                            &nbsp;
+                            <input type="text" class="form-control form-control-sm col-sm-3"  disabled="true">
+                            &nbsp;
+                    </div>
+            </div>
+            <div class="cust-sm col-sm-1"></div>
+          </div>
+      </fieldset>
+    </div>
+  </div>
+  <div class="row">
+    <div class="cust-sm col-sm-6">
+        <fieldset class="scheduler-border">
+          <legend class="scheduler-border">Share Details</legend>
+           <div class="cust-sm">
+            <div class="cust-sm col-sm-1"></div>
+              <div class="row" style="margin-right: 0px; margin-bottom: 11px;">
+                    <div class="input-group" style="margin-top: -10px;">
+                        &nbsp;
+                    </div>
+                    <div class="input-group">
+                            <label class="form-control-sm col-sm-3">Share(%)</label>
+                            <input type="text" class="form-control form-control-sm">
+                            <label class="form-control-sm col-sm-2">PML(%)</label>
+                            <input type="text" class="form-control form-control-sm">
+                            <span class="col-sm-1"></span>
+                    </div>
+                    <div class="input-group">
+                            <label class="form-control-sm col-sm-3">Part Of(100%)</label>
+                            <input type="text" class="form-control form-control-sm">
+                            <span class="col-sm-1"></span>
+                    </div>
+            </div>
+            <div class="cust-sm col-sm-1"></div>
+
+        </div>
+      </fieldset>
+    </div>
+    <div class="cust-sm col-sm-6">
+        <fieldset class="scheduler-border">
+         <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+        <div class="cust-sm">
+           <div class="cust-sm col-sm-1"></div>
+            <div class="row" style="margin-right: 0px; margin-bottom: 11px;">
+                    <div class="input-group" style="margin-top: -10px;">
+                        &nbsp;
+                    </div>
+                   <div class="input-group">
+                       <label class="form-control-sm col-sm-1">Remarks</label>
+                       <textarea class="form-control-sm form-control" style="font-size: 11px; min-height: 65px; margin-bottom: 10px; margin-left: 8px"></textarea> 
+                    </div>
+                    <div class="input-group">
+                            <span class="col-sm-3"></span>
+                            <span class="cust-sm"></span>
+                    </div>
+            </div>
+        </div>
+      </fieldset>
+    </div>
+</div>
+    <div class="form-row">
+    <div class="form-group col-sm">
+      <div class="col-md-13 text-center">
+        <br>
+        <div class="cust-btn-container">
+          <button type="button" class="cust-btn" (click)="pol($event)"><a>Cancel</a></button>
+          <button type="button" class="cust-btn"><a>Save</a></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</ng-container>

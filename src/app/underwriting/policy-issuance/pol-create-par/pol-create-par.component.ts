@@ -81,7 +81,6 @@ export class PolCreatePARComponent implements OnInit {
         this.quoteLine === 'BPV' || 
         this.quoteLine === 'MLP' || 
         this.quoteLine === 'DOS') {
-      console.log(this.quoteLine);
       this.router.navigate(['/policy-issuance', { line: this.quoteLine }], {skipLocationChange: true});
     }
     
