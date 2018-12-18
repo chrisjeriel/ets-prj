@@ -10,7 +10,7 @@ export * from './QuoteOption';
 export * from './IntCompAdvInfo';
 export * from './NotesReminders';
 export * from './QuotationProcessing';
-export * from './CreatePAR';
+export * from './CreatePolicy';
 export * from './PolicyCoInsurance';
 export * from './PARListing'
 export * from './AltPARListing';
@@ -28,4 +28,6 @@ export * from './PrinterList';
 export * from './PolALOP';
 export * from './UnderwritingPolicyInquiryInfo';
 export * from './ItemInformation';
+export * from './PolicyEndorsement';
+export * from './UnderwritingPolicyDistList';
 export * from './DistributionByRiskInfo';

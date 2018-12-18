@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { QuotationList } from '@app/_models';
 import { QuotationService } from '../../../_services';
 
 @Component({
@@ -10,13 +13,25 @@ export class ListOfQuotationsComponent implements OnInit {
     tableData: any[] = [];
     allData: any[] = [];
     tHeader: any[] = [];
+    resizables: boolean[] = [];
     dataTypes: any[] = [];
     filters: any[] = [];
     pageLength: number;
     i: number;
-    a: any;
-    
-    constructor(private quotationService: QuotationService) { 
+    line: string = "";
+    quoteList: QuotationList = new QuotationList(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+
+    passData: any = {
+        tableData: [], 
+        tHeader: ['Quotation No.','Type of Cession','Line Class','Status','Ceding Company','Principal','Contractor','Insured','Risk','Object','Site','Policy No','Currency'],
+        dataTypes: [],
+        resizable: [false, false, true, true, true, true, true, true, true, true, true, false, false],
+        filters: [],
+        pageLength: 10,
+        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: true, printBtn: true, 
+    }
+
+    constructor(private quotationService: QuotationService, private router: Router) { 
         this.pageLength = 10;
     }
 
@@ -31,15 +46,10 @@ export class ListOfQuotationsComponent implements OnInit {
         this.tHeader.push("Insured");
         this.tHeader.push("Risk");
         this.tHeader.push("Object");
-        this.tHeader.push("Location");
-        this.tHeader.push("Policy Number");
+        this.tHeader.push("Site");
+        this.tHeader.push("Policy No.");
         this.tHeader.push("Currency");
-        //remove this
-       /* this.tHeader.push("Quote Date");
-        this.tHeader.push("Validity Date");
-        this.tHeader.push("Requested By");
-        this.tHeader.push("Created By");*/
-        
+
         this.filters.push("Quotation No.");
         this.filters.push("Type of Cession");
         this.filters.push("Line Class");
@@ -50,9 +60,23 @@ export class ListOfQuotationsComponent implements OnInit {
         this.filters.push("Insured");
         this.filters.push("Risk");
         this.filters.push("Object");
-        this.filters.push("Location");
-        this.filters.push("Policy Number");
+        this.filters.push("Site");
+        this.filters.push("Policy No.");
         this.filters.push("Currency");
+
+        this.resizables.push(false);
+        this.resizables.push(false);
+        this.resizables.push(true);
+        this.resizables.push(true);
+        this.resizables.push(true);
+        this.resizables.push(true);
+        this.resizables.push(true);
+        this.resizables.push(true);
+        this.resizables.push(true);
+        this.resizables.push(true);
+        this.resizables.push(true);
+        this.resizables.push(false);
+        this.resizables.push(false);
 
         this.dataTypes.push("text");
         this.dataTypes.push("text");
@@ -67,12 +91,33 @@ export class ListOfQuotationsComponent implements OnInit {
         this.dataTypes.push("text");
         this.dataTypes.push("text");
         this.dataTypes.push("text");
-        //remove this
-       /* this.dataTypes.push("date");
-        this.dataTypes.push("date");
-        this.dataTypes.push("text");
-        this.dataTypes.push("text");*/
-        
-        this.tableData = this.quotationService.getQuotationListInfo();
+
+        this.passData.tableData = this.quotationService.getQuotationListInfo();
+        this.passData.tableData.forEach(function(e){
+            delete e.quoteDate;
+            delete e.validityDate;
+            delete e.createdBy;
+            delete e.requestedBy;
+        });
+        this.allData = this.quotationService.getQuotationListInfo();
+    }
+    onRowClick(event) {
+        for(var i = 0; i < event.target.parentElement.children.length; i++) {
+            this.quotationService.rowData[i] = event.target.parentElement.children[i].innerText;
+        }
+
+        this.quoteList = this.allData[event.path[1].rowIndex - 1];
+    }
+
+    onRowDblClick(event) {
+        for(var i = 0; i < event.target.parentElement.children.length; i++) {
+            this.quotationService.rowData[i] = event.target.parentElement.children[i].innerText;
+        }
+
+        this.line = this.quotationService.rowData[0].split("-")[0]; 
+
+        this.quotationService.toGenInfo = [];
+        this.quotationService.toGenInfo.push("edit", this.line);
+        this.router.navigate(['/quotation']);
     }
 }

@@ -10,7 +10,7 @@
 				</div>
 				<div class="input-group">
 					<label class="form-control-sm col-sm-2" for="inputRisk" >Risk</label>
-				    <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-9" placeholder="Risk" disabled="disabled">
+				    <input type="text" id="inputRisk" class="form-control form-control-sm cust-sm col-sm-9" placeholder="Risk" disabled="disabled">
 				</div>
 			</div>
 	</fieldset>
@@ -18,7 +18,7 @@
 <div>
 	<fieldset class="scheduler-border">
 		<legend class="scheduler-border">Advice Details	</legend>
-		<app-cust-editable-table [checkFlag]="true" [addFlag]="true" [deleteFlag]="true" [editFlag]="false" [nData]="nData" [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes" [opts]="opts" [magnifyingGlass]="magnifyingGlass"></app-cust-editable-table>
+		<app-cust-editable-table [checkFlag]="true" [addFlag]="true" [deleteFlag]="true" [editFlag]="false" [nData]="nData" [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes" [opts]="opts" [magnifyingGlass]="magnifyingGlass" (rowClick)="clickRow($event)"></app-cust-editable-table>
 	</fieldset>
 </div>
 <div class="form-row">

@@ -12,10 +12,10 @@ export class QuotationList{
     location: string;
     policyNo: string;
     currency: string;
-   /* quoteDate: Date;
+    quoteDate: Date;
     validityDate: Date;
     requestedBy: string;
-    createdBy: string;*/
+    createdBy: string;
 
     constructor(quotationNo: string,
                  cessionType: string,
@@ -30,10 +30,10 @@ export class QuotationList{
                  location: string,
                  policyNo: string,
                  currency: string,
-                /* quoteDate: Date,
+                 quoteDate: Date,
                  validityDate: Date,
                  requestedBy: string,
-                 createdBy: string*/
+                 createdBy: string
                 )
     {
         this.quotationNo = quotationNo;
@@ -49,10 +49,10 @@ export class QuotationList{
         this.location = location;
         this.policyNo = policyNo;
         this.currency = currency;
-       /* this.quoteDate = quoteDate;
+        this.quoteDate = quoteDate;
         this.validityDate = validityDate;
         this.requestedBy = requestedBy;
-        this.createdBy = createdBy;*/
+        this.createdBy = createdBy;
     }
 }
 

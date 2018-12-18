@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, Input} from '@angular/core';
 import { NgbModalConfig, NgbModal, NgbProgressbarConfig } from '@ng-bootstrap/ng-bootstrap';
+import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-pol-post',
@@ -17,8 +18,8 @@ export class PolPostComponent implements OnInit {
   @ViewChild('content') content;
   @ViewChild('successinfo') successinfo;
   @Input() alterationFlag ;
-
-  constructor(config: NgbModalConfig, configprogress: NgbProgressbarConfig, private modalService: NgbModal) {
+  theme =  window.localStorage.getItem("selectedTheme");
+  constructor(config: NgbModalConfig, configprogress: NgbProgressbarConfig, private modalService: NgbModal, private app: AppComponent) {
   	config.backdrop = 'static';
     config.keyboard = false;
     configprogress.max = 100;
@@ -33,6 +34,9 @@ export class PolPostComponent implements OnInit {
     }
     setTimeout(() => {
       this.modalService.open(this.content,  { centered: true, windowClass : 'modal-size'});
+      setTimeout(() => {
+        this.app.changeTheme(this.theme);
+      });
       this.fakeProgress(); 
     });
 
@@ -50,8 +54,11 @@ export class PolPostComponent implements OnInit {
              this.progress = 0;
              this.modalService.dismissAll(true);
                  this.modalService.open(this.successinfo,  { centered: true , windowClass : 'modal-size'});
+                 setTimeout(() => {
+                    this.app.changeTheme(this.theme);
+                 });
            }
-    },100);
+    },50);
 
     }
 
