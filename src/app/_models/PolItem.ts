@@ -19,11 +19,11 @@ export class PolItem_EEI_MBI_CEC{
     itemNo: string;
     quantity: number;
     itemDesc: string;
-    yearOfMake: Date;
+    yearOfMake: string;
     deductible: number;
     sumInsured: number;
     
-    constructor(itemNo: string, quantity: number, itemDesc: string, yearOfMake: Date, deductible: number, sumInsured: number){
+    constructor(itemNo: string, quantity: number, itemDesc: string, yearOfMake: string, deductible: number, sumInsured: number){
         this.itemNo = itemNo;
         this.quantity = quantity;
         this.itemDesc = itemDesc;

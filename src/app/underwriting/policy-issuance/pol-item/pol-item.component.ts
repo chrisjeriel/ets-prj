@@ -11,9 +11,7 @@ export class PolItemComponent implements OnInit {
 
     dtOptions: DataTables.Settings = {};
     tableData_EEI_MBI_CEC: any[] = [
-        ['10001', 45, 'Item Description 1', new Date(), 5, 20000],
-        ['10002', 96, 'Item Description 2', new Date(), 2, 40000],
-        ['10003', 23, 'Item Description 3', new Date(), 1, 30000],
+        ['10001', 45, 'Item Description 1', '2018', 5, 20000],
     ];
     tableData_BPV: any[] = [
         //['S10001', 'Region IV, Laguna, Calamba', '100001 Juan de la Cruz', new Date(), 90000],
@@ -23,7 +21,7 @@ export class PolItemComponent implements OnInit {
     tHeader_EEI_MBI_CEC: any[] = ['Item No.', 'Quantity', 'Description of Items', 'Year of Make', 'Deductible', 'Sum Insured'];
     tHeader_BPV: any[] = ['Serial No', 'Location', 'Description Maker\'s No. and Maker\'s Name', 'Year of Make', 'Sum Insured'];
 
-    dataTypes_EEI_MBI_CEC: any[] = ['string', 'number', 'string', 'date', 'number', 'currency'];
+    dataTypes_EEI_MBI_CEC: any[] = ['string', 'number', 'string', 'string', 'number', 'currency'];
     dataTypes_BPV: any[] = ['string', 'string', 'string', 'string', 'currency'];
 
     nData_EEI_MBI_CEC: PolItem_EEI_MBI_CEC = new PolItem_EEI_MBI_CEC(null, null, null, null, null, null);
@@ -41,8 +39,10 @@ export class PolItemComponent implements OnInit {
     dosMachineryTHeader: string[] = ["Item No","Number of Units", "Description of Items (Technical Data including Capacity)", "Year of Make", "Sum Insured"];
     dosMachineryDataTypes:string[] = ["text","number","text","number","currency"];
 
-    polEEI: boolean = false;
-    polBPV: boolean = true;
+    polEEI: boolean = true;
+    polBPV: boolean = false;
+    polMLP: boolean = false;
+    polDOS: boolean = false;
 
     constructor(private underwritingService: UnderwritingService) { }
 
