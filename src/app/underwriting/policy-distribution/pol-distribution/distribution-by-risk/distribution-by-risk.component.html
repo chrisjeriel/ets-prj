@@ -1,0 +1,163 @@
+<div class="row">
+  <div class="col-sm-8">
+    <fieldset class="scheduler-border">
+      <legend class="scheduler-border">Policy Details</legend>
+      <div class="custom-row-inline-inset">
+        <div class="input-group">
+          <label class="form-control-sm col-sm-2" for="xx">Risk Dist No</label>
+          <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm-3">
+          <label class="form-control-sm col-sm-1" for="xx">Policy No</label>
+          <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm-6">
+        </div>
+        <div class="input-group">
+          <label class="form-control-sm col-sm-2" for="xx">Ceding Co</label>
+          <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm-1">
+          &nbsp;
+          <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm-9">
+        </div>
+        <div class="input-group">
+          <label class="form-control-sm col-sm-2" for="xx">Insured</label>
+          <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm-10">
+        </div>
+        <div class="input-group">
+          <label class="form-control-sm col-sm-2" for="xx">Risk</label>
+          <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm-10">
+        </div>
+        <div class="input-group">
+          <label class="form-control-sm col-sm-2" for="xx">Province</label>
+          <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm-4">
+          <label class="form-control-sm col-sm-0" for="xx">City/Town</label>
+          <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm-5">
+        </div>
+        <div class="input-group">
+          <label class="form-control-sm col-sm-2" for="xx">District</label>
+          <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm-2">
+          <label class="form-control-sm col-sm-1" for="xx">Block</label>
+          <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm-1">
+        </div>
+      </div>
+    </fieldset>
+  </div>
+  <div class="col-sm-4">
+    <fieldset class="scheduler-border">
+      <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+      <div class="custom-row-inline-inset">
+        <div class="input-group">
+          <label class="form-control-sm col-sm-4" for="xx">Currency</label>
+          <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm">
+          <label class="form-control-sm col-sm-2" for="xx">Exch.Rt.</label>
+          <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm">
+        </div>
+        <div class="input-group">
+          <label class="form-control-sm col-sm-4" for="xx">Section I</label>
+          <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm">
+        </div>
+        <div class="input-group">
+          <label class="form-control-sm col-sm-4" for="xx">Section II</label>
+          <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm">
+        </div>
+        <div class="input-group">
+          <label class="form-control-sm col-sm-4" for="xx">Section III</label>
+          <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm">
+        </div>
+        <div class="input-group">
+          <label class="form-control-sm col-sm-4" for="xx">Total Sum Insured</label>
+          <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm">
+        </div>
+        <div class="input-group">
+          <label class="form-control-sm col-sm-4" for="xx">Total Premium</label>
+          <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm">
+        </div>
+      </div>
+    </fieldset>
+  </div>
+</div>
+<div>
+  <fieldset class="scheduler-border">
+    <legend class="scheduler-border">Distribution By Risk</legend>
+    <app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData"
+      [tHeader]="tHeader" [dataTypes]="dataTypes"></app-cust-editable-table>
+  </fieldset>
+</div>
+
+<div class="row">
+  <div class="col-sm-4">
+    <fieldset class="scheduler-border">
+      <legend class="scheduler-border">Quota Pool</legend>
+      <div class="custom-row-inline-inset">
+        <div class="input-group">
+          <label class="form-control-sm col-sm-3" for="xx">Retention Line</label>
+          <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm txt-content-rght"
+            placeholder="200,000.00">
+        </div>
+        <div class="input-group">
+          <label class="form-control-sm col-sm-3" for="xx">1st Retention</label>
+          <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm txt-content-rght"
+            placeholder="40">
+        </div>
+        <div class="input-group">
+          <label class="form-control-sm col-sm-3" for="xx">2nd Retention</label>
+          <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm txt-content-rght"
+            placeholder="4,098">
+        </div>
+      </div>
+    </fieldset>
+  </div>
+  <div class="col-sm-4">
+    <fieldset class="scheduler-border" style="height: 104% !important;">
+      <legend class="scheduler-border">Limits</legend>
+      <div class="custom-row-inline-inset" style="padding-top:20px;">
+        <div class="input-group">
+          <label class="form-control-sm col-sm-4" for="xx">Quota + 1st Surplus</label>
+          <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm txt-content-rght"
+            placeholder="1,500,000.00">
+        </div>
+        <div class="input-group">
+          <label class="form-control-sm col-sm-4" for="xx">2nd Surplus</label>
+          <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm txt-content-rght"
+            placeholder="1,500,000.00">
+        </div>
+      </div>
+    </fieldset>
+  </div>
+  <div class="col-sm-4">
+    <fieldset class="scheduler-border" style="height: 104% !important;">
+      <legend class="scheduler-border">Distribute</legend>
+      <div class="custom-row-inline-inset" style="padding-top:20px;">
+        <div class="form-row">
+          <div class="col-sm-3"></div>
+          <div class="col-sm-6">
+            <div class="row">
+              <div class="col-sm-1"></div>
+              <div class="col-sm-10">
+                <!-- <div class="input-group-prepend"> -->
+                <input type="checkbox">&nbsp;&nbsp;
+                <label style="vertical-align: middle">Auto Calculation</label>
+                <!-- </div> -->
+              </div>
+              <div class="col-sm-1"></div>
+            </div>
+            <div style="text-align: center;">
+              <button type="button" style="width: 100px;" class="cust-btn"><a>Distribute</a></button>
+            </div>
+          </div>
+          <div class="col-sm-3"></div>
+        </div>
+
+      </div>
+    </fieldset>
+  </div>
+</div>
+<div class="form-row">
+  <div class="form-group col-sm">
+    <div class="col-md-12" style="text-align: center">
+      <br>
+      <div class="cust-btn-container">
+        <button type="button" class="cust-btn"><a>Cancel</a></button>
+        <button type="button" class="cust-btn"><a>Save</a></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- -->

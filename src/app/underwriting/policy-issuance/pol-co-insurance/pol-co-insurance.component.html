@@ -1,3 +1,4 @@
+
 <!--<div *ngIf="!alteration">
 	<fieldset class="scheduler-border">
 		<legend class="scheduler-border" >Policy Record Info</legend>
@@ -16,6 +17,7 @@
 		</div>
 	</fieldset>
 </div>
+
 <div *ngIf="alteration">
 	<fieldset class="scheduler-border">
 		<legend class="scheduler-border" >Policy Record Info</legend>
@@ -35,27 +37,32 @@
             </div>
 		</div>
 	</fieldset>
+<<<<<<< HEAD
 </div>-->
 <fieldset class="scheduler-border">
-  <legend class="scheduler-border">Policy Record Info</legend>
-  <div class="form-row custom-row-inline-inset">
-    <div class="input-group">
-      <label class="form-control-sm col-sm-1" for="xx">Policy No</label>
-      <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-2" placeholder="" readonly>
-      <label class="form-control-sm col-sm-1" for="xx">Insured</label>
-      <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-7" placeholder="" readonly>
+    <legend class="scheduler-border">Policy Record Info</legend>
+    <div class="form-row custom-row-inline-inset">
+      <div class="input-group">
+        <label class="form-control-sm col-sm-1" for="xx">Policy No</label>
+        <input type="text" id="xx" value="CAR-2018-5081-077-0177" class="form-control form-control-sm cust-sm col-sm-2"
+          placeholder="" readonly>
+        <label class="form-control-sm col-sm-1" for="xx">Insured</label>
+        <input type="text" id="xx" value="Insurer" class="form-control form-control-sm cust-sm col-sm-7" placeholder=""
+          readonly>
+      </div>
+      <div class="input-group">
+        <label class="form-control-sm col-sm-1" for="xx">Risk</label>
+        <input type="text" id="xx" value="Risk Name" class="form-control form-control-sm cust-sm col-sm-10" placeholder=""
+          readonly>
+      </div>
     </div>
-    <div class="input-group">
-      <div class="col-sm-3"></div>
-      <label class="form-control-sm col-sm-1" for="xx">Risk</label>
-      <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-7" placeholder="" readonly>
-    </div>
-  </div>
 </fieldset>
+
+
 <div>
 	<fieldset class="scheduler-border">
 		 <legend class="scheduler-border">Co-Insurance</legend>
-		 	<app-cust-editable-table [checkFlag]="true" [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes" [nData]="nData" [magnifyingGlass]="magnifyingGlass"></app-cust-editable-table>
+		 	<app-cust-editable-table [checkFlag]="false" [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes" [nData]="nData"></app-cust-editable-table>
 
 	</fieldset>
 </div>

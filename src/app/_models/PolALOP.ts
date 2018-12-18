@@ -19,7 +19,6 @@ export class ALOPInfo{
 	insured2:string;
 	address1:string;
 	address2:string;
-	address3:string;
 	business:string;
 	amountSI:number;
 	maxSI:number;

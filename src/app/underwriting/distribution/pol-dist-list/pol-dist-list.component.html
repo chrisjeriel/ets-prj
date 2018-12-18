@@ -5,8 +5,10 @@
             <ng-template ngbTabContent>
                 <br/>
                 <div>
-                    <button type="button" class="cust-btn" (click)="add()">Add</button>
-                    <app-cust-non-datatable [passData]="passData"></app-cust-non-datatable>
+                    <button type="button" [routerLink]="['/pol-dist']" style="z-index: 99999; position: relative;" class="cust-btn" (click)="add()">Add</button>
+                    <div style="margin-top: -50px; z-index: 200">
+                        <app-cust-non-datatable [passData]="passData"></app-cust-non-datatable>
+                    </div>
                 </div>
             </ng-template>
         </ngb-tab>

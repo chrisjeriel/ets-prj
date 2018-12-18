@@ -30,4 +30,4 @@ export * from './UnderwritingPolicyInquiryInfo';
 export * from './ItemInformation';
 export * from './PolicyEndorsement';
 export * from './UnderwritingPolicyDistList';
-
+export * from './DistributionByRiskInfo';
