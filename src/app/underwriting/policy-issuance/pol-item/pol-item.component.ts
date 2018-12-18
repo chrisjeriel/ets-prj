@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PolItem_MLP, PolItem_EEI_MBI_CEC, PolItem_BPV } from '@app/_models';
+import { PolItem_MLP, PolItem_EEI_MBI_CEC, PolItem_BPV, PolGoods_DOS, PolMachinery_DOS } from '@app/_models';
 import { UnderwritingService } from '../../../_services';
 
 @Component({
@@ -28,12 +28,27 @@ export class PolItemComponent implements OnInit {
     nData_EEI_MBI_CEC: PolItem_EEI_MBI_CEC = new PolItem_EEI_MBI_CEC(null, null, null, null, null, null);
     nData_BPV: PolItem_BPV = new PolItem_BPV(null, null, null, null, null);
 
+    mlpTableData: PolItem_MLP[];
+    mlpTHeader: string[] = ['Item No','Quantity','Description of Machinery','Indemnity Period(months)','Relative Importance(%)','Spare Parts in stock standby Units'];
+    mlpDataTypes: string[] = ['text','number','text','number','percent','number'];
+
+    dosGoodsTableData: PolGoods_DOS[];
+    dosGoodsTHeader: string[] = ["Item No", "Refrigerating Chamber No", "Type of Goods", "No-Claims Period","Sum Insured"];
+    dosGoodsDataTypes:string[] = ["text","text","text","text","currency"];
+
+    dosMachineryTableData: PolMachinery_DOS[];
+    dosMachineryTHeader: string[] = ["Item No","Number of Units", "Description of Items (Technical Data including Capacity)", "Year of Make", "Sum Insured"];
+    dosMachineryDataTypes:string[] = ["text","number","text","number","currency"];
+
     polEEI: boolean = false;
     polBPV: boolean = true;
 
     constructor(private underwritingService: UnderwritingService) { }
 
     ngOnInit() {
+        this.mlpTableData = this.underwritingService.getPolItemMLPData();
+        this.dosGoodsTableData = this.underwritingService.getPolGoodsDOSData();
+        this.dosMachineryTableData = this.underwritingService.getPolMachineryDOSData();
     }
 
 }

@@ -25,3 +25,32 @@
         <app-cust-editable-table [checkFlag]="true" [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [tableData]="tableData_BPV" [tHeader]="tHeader_BPV" [dataTypes]="dataTypes_BPV" [nData]="nData_BPV"></app-cust-editable-table>
     </div>
 </fieldset>
+<div class="MLP" style="display: none;">
+	<fieldset class="scheduler-border">
+		<legend class="scheduler-border">Item Information</legend>
+		<app-cust-editable-table [tableData]="mlpTableData" [tHeader]="mlpTHeader" [checkFlag]="true" [addFlag]="true" [deleteFlag]="true" [dataTypes]="mlpDataTypes"></app-cust-editable-table>
+	</fieldset>
+	<div class="col-md-13 text-center">
+		<div class="cust-btn-container">
+			<button type="button" class="cust-btn"><a>Cancel</a></button>
+			<button type="button" class="cust-btn"><a>Save</a></button>
+		</div>
+	</div>	
+</div>
+
+<div class="DOS" style="display: none;">
+	<fieldset class="scheduler-border">
+		<legend class="scheduler-border">List of Goods stored and Insured</legend>
+		<app-cust-editable-table [tableData]="dosGoodsTableData" [tHeader]="dosGoodsTHeader" [checkFlag]="true" [addFlag]="true" [deleteFlag]="true" [dataTypes]="dosGoodsDataTypes"></app-cust-editable-table>
+	</fieldset>
+	<fieldset class="scheduler-border">
+		<legend class="scheduler-border">List of Goods stored and Insured</legend>
+		<app-cust-editable-table [tableData]="dosMachineryTableData" [tHeader]="dosMachineryTHeader" [checkFlag]="true" [addFlag]="true" [deleteFlag]="true" [dataTypes]="dosMachineryDataTypes"></app-cust-editable-table>
+	</fieldset>
+	<div class="col-md-13 text-center">
+		<div class="cust-btn-container">
+			<button type="button" class="cust-btn"><a>Cancel</a></button>
+			<button type="button" class="cust-btn"><a>Save</a></button>
+		</div>
+	</div>	
+</div>
