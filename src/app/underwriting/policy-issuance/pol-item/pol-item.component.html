@@ -17,7 +17,7 @@
     </div>
 </fieldset>
 
-<div *ngIf="polEEI">
+<div *ngIf="line=='EEI' || line=='MBI' || line=='CEC'">
     <fieldset class="scheduler-border">
         <legend class="scheduler-border">Item Information</legend>
         <app-cust-editable-non-datatable [checkFlag]="true" [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [tableData]="tableData_EEI_MBI_CEC" [tHeader]="tHeader_EEI_MBI_CEC" [dataTypes]="dataTypes_EEI_MBI_CEC" [nData]="nData_EEI_MBI_CEC"></app-cust-editable-non-datatable>
@@ -31,7 +31,7 @@
     </div>	
 </div>
 
-<div *ngIf="polBPV">
+<div *ngIf="line=='BPV'">
     <fieldset class="scheduler-border">
         <legend class="scheduler-border">Item Information</legend>
         <app-cust-editable-non-datatable [checkFlag]="true" [addFlag]="true" [deleteFlag]="true" [tableData]="tableData_BPV" [tHeader]="tHeader_BPV" [dataTypes]="dataTypes_BPV" [nData]="nData_BPV"></app-cust-editable-non-datatable>
@@ -45,7 +45,7 @@
     </div>	
 </div>
 
-<div class="MLP" *ngIf="polMLP">
+<div class="MLP" *ngIf="line=='MLP'">
     <fieldset class="scheduler-border">
         <legend class="scheduler-border">Item Information</legend>
         <app-cust-editable-non-datatable [tableData]="mlpTableData" [tHeader]="mlpTHeader" [checkFlag]="true" [addFlag]="true" [deleteFlag]="true" [dataTypes]="mlpDataTypes" [nData]="mlpNData"></app-cust-editable-non-datatable>
@@ -59,14 +59,14 @@
     </div>	
 </div>
 
-<div class="DOS" *ngIf="polDOS">
+<div class="DOS" *ngIf="line=='DOS'">
     <fieldset class="scheduler-border">
         <legend class="scheduler-border">List of Goods stored and Insured</legend>
-        <app-cust-editable-non-datatable [tableData]="dosGoodsTableData" [tHeader]="dosGoodsTHeader" [checkFlag]="true" [addFlag]="true" [deleteFlag]="true" [dataTypes]="dosGoodsDataTypes"></app-cust-editable-non-datatable>
+        <app-cust-editable-non-datatable [tableData]="dosGoodsTableData" [tHeader]="dosGoodsTHeader" [checkFlag]="true" [addFlag]="true" [deleteFlag]="true" [dataTypes]="dosGoodsDataTypes" [nData]="dosGoodsNData"></app-cust-editable-non-datatable>
     </fieldset>
     <fieldset class="scheduler-border">
         <legend class="scheduler-border">List of Goods stored and Insured</legend>
-        <app-cust-editable-non-datatable [tableData]="dosMachineryTableData" [tHeader]="dosMachineryTHeader" [checkFlag]="true" [addFlag]="true" [deleteFlag]="true" [dataTypes]="dosMachineryDataTypes"></app-cust-editable-non-datatable>
+        <app-cust-editable-non-datatable [tableData]="dosMachineryTableData" [tHeader]="dosMachineryTHeader" [checkFlag]="true" [addFlag]="true" [deleteFlag]="true" [dataTypes]="dosMachineryDataTypes" [nData]="dosMachineryNData"></app-cust-editable-non-datatable>
         <br/>
     </fieldset>
     <div class="col-md-13 text-center">
