@@ -198,6 +198,7 @@ export class UnderwritingService {
             new PolicyEndorsement("TEST","TEST","TEST","TEST")
         ]
         return this.policyEndorsement;
+    }
 
     getPolicyDistListInfo(){
         this.policyDistListData = [

@@ -30,7 +30,6 @@ export class PolCoverageComponent implements OnInit {
     this.tHeader.push("Sum Insured");
     this.tHeader.push("Add Sl");
 
-    
     this.dataTypes.push("text");
     this.dataTypes.push("select");
     this.dataTypes.push("select");
