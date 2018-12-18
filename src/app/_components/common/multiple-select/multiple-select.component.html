@@ -1,0 +1,27 @@
+<div style=" width: fit-content; text-align: center">
+  <div>
+    <div class="custom-row-inline-inset">
+      <div class="form-row">
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <div class="input-group-text">
+                <input type="checkbox" (click)="selectAll($event)" [checked]="headerChecked">
+              </div>
+            </div>
+            <input type="text" style="font-size: 11px !important;" value="{{ msHeaderTxt }}" disabled class="form-control form-control-sm">
+          </div>
+          <div class="input-group" *ngFor="let data of msData">
+            <div class="input-group-prepend">
+              <div class="input-group-text">
+                <input type="checkbox" [checked]="checkboxes" value="{{ data }}" (click)="dataSelected($event)">
+                <!-- [(ngModel)]="returnData" -->
+              </div>
+            </div>
+            <input type="text" style="font-size: 11px !important;" value="{{ data }}" disabled class="form-control form-control-sm">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

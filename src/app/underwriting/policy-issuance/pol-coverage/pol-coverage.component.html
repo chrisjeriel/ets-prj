@@ -1,213 +1,139 @@
 <div>
-    <fieldset class="scheduler-border">
-        <legend class="scheduler-border">Policy Record Info</legend>
-        <div class="form-row custom-row-inline-inset">
-            <div class="input-group">
-                <label class="form-control-sm col-sm-2" for="inputPolnum">Policy No</label>
-                <input type="text" id="xx" value="CAR-2018-5081-077-0177" class="form-control form-control-sm cust-sm col-sm-2" placeholder="" readonly>
-                <label class="form-control-sm col-sm-1" for="inputInname">Insured</label>
-                <input type="text" id="xx" value="Insurer" class="form-control form-control-sm cust-sm col-sm-6" placeholder="" readonly>
-            </div>
-            <div class="input-group">
-                <label class="form-control-sm col-sm-2" for="inputRisk">Risk</label>
-                <input type="text" id="inputrisk" value="Risk Name" class="form-control form-control-sm cust-sm col-sm-9" placeholder="" readonly>
-            </div>
+  <fieldset class="scheduler-border">
+      <legend class="scheduler-border">Policy Record Info</legend>
+      <div class="form-row custom-row-inline-inset">
+        <div class="input-group">
+          <label class="form-control-sm col-sm-1" for="xx">Policy No</label>
+          <input type="text" id="xx" value="CAR-2018-5081-077-0177" class="form-control form-control-sm cust-sm col-sm-2"
+            placeholder="" readonly>
+          <label class="form-control-sm col-sm-1" for="xx">Insured</label>
+          <input type="text" id="xx" value="Insurer" class="form-control form-control-sm cust-sm col-sm-7" placeholder=""
+            readonly>
         </div>
-    </fieldset>
-</div>
-<div>
+        <div class="input-group">
+          <label class="form-control-sm col-sm-1" for="xx">Risk</label>
+          <input type="text" id="xx" value="Risk Name" class="form-control form-control-sm cust-sm col-sm-10" placeholder=""
+            readonly>
+        </div>
+      </div>
+  </fieldset>
+  <fieldset class="scheduler-border">
+    <legend class="scheduler-border">Section Covers</legend>
+    <app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData"
+      [tHeader]="tHeader" [dataTypes]="dataTypes" [opts]="selOptions" [magnifyingGlass]="magnifyingGlass" [checkFlag]="true"></app-cust-editable-table>
+  </fieldset>
+  <div class="row">
+    <div class="col-sm-6">
     <fieldset class="scheduler-border">
-        <legend class="scheduler-border">Section Covers</legend>
-        <app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData"
-          [tHeader]="tHeader" [dataTypes]="dataTypes" [opts]="selOptions" [magnifyingGlass]="magnifyingGlass"></app-cust-editable-table>
-    </fieldset>
-</div>
-<div>
-    <div class="row">
-        <div class="input-group" style="margin-top: 17px">
-            <div class="col-sm-6">
-              <fieldset class="scheduler-border" >
-                 <div class="form-row custom-row-inline-inset">
-                    <div class="input-group" style="margin-top: 3px">
-                      <div class="col-sm-1"></div>
-                      <label class="form-control-sm col-sm-3" for="inputCurrency">Currency</label>
-                      <input type="text" id="intCurrency" value="USD" class="form-control form-control-sm cust-sm" placeholder="" readonly>
-                      <label class="form-control-sm col-sm-2" for="inputExchRt">Exch. Rt</label>
-                      <input type="text" id="intExchRt" value="53.07" class="form-control form-control-sm cust-sm txt-content-rght" placeholder="" readonly>
-                      <div class="col-sm-2"></div>
+      <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+        <div class="cust-sm">
+           <div class="cust-sm col-sm-1"></div>
+            <div class="row" style="margin-right: 0px; margin-bottom: 11px;">
+                    <div class="input-group" style="margin-top: -10px;">
+                        &nbsp;
                     </div>
                     <div class="input-group">
-                      <div class="col-sm-1"></div>
-                      <label class="form-control-sm col-sm-3" for="inputTotPreium">Total Premium</label>
-                      <input type="text" id="intTotPreium" value="100,000.00" class="form-control form-control-sm cust-sm text-right number" placeholder="" readonly>
-                      <div class="col-sm-2"></div>
+                            <label class="form-control-sm col-sm-3">Currency</label>
+                            <input type="text" class="form-control form-control-sm">
+                            <label class="form-control-sm col-sm-2">Exch. Rt.</label>
+                            <input type="text" class="form-control form-control-sm">
+                            <span class="col-sm-1"></span>
                     </div>
-                     <div class="input-group">
-                      <div class="col-sm-1"></div>
-                      <label class="form-control-sm col-sm-3" for="inputTotSumInsured">Total Sum Insured</label>
-                      <input type="text" id="intTotSumInsured" value="1,000,000.00" class="form-control form-control-sm cust-sm text-right number" placeholder="" readonly>
-                      <div class="col-sm-2"></div>
+                    <div class="input-group">
+                            <label class="form-control-sm col-sm-3">Total Prenium</label>
+                            <input type="text" class="form-control form-control-sm">
+                            <span class="col-sm-1"></span>
                     </div>
-                </div>
-              </fieldset>
-            </div>
-            <div class="col-sm-6" style="margin-top: -17px">
-               <fieldset class="scheduler-border">
-                  <legend class="scheduler-border">SI per Section</legend>
-                    <div class="form-row custom-row-inline-inset">
-                      <div class="input-group">
-                          <div class="col-sm-2"></div>
-                           <label class="form-control-sm col-sm-2" for="intputSection1">Section I</label>
-                            <input type="text" id="intSection1" class="form-control form-control-sm cust-sm txt-content-rght" readonly
-                            placeholder="0.00">
-                          <div class="col-sm-2"></div>
-                      </div>
-                       <div class="input-group">
-                          <div class="col-sm-2"></div>
-                            <label class="form-control-sm col-sm-2" for="intputSection2">Section II</label>
-                            <input type="text" id="intSection2" class="form-control form-control-sm cust-sm txt-content-rght" readonly
-                            placeholder="0.00">
-                          <div class="col-sm-2"></div>
-                      </div>
-                      <div class="input-group">
-                          <div class="col-sm-2"></div>
-                            <label class="form-control-sm col-sm-2" for="intputSection3">Section III</label>
-                            <input type="text" id="intSection3" class="form-control form-control-sm cust-sm txt-content-rght" readonly
-                            placeholder="0.00">
-                          <div class="col-sm-2"></div>
-                      </div>
+                    <div class="input-group">
+                            <label class="form-control-sm col-sm-3">Total Sum Insured</label>
+                            <input type="text" class="form-control form-control-sm">
+                            <span class="col-sm-1"></span>
                     </div>
-              </fieldset>
             </div>
         </div>
+    </fieldset>
     </div>
-</div>
-<div>
+   <div class="cust-sm col-sm-6">
+        <fieldset class="scheduler-border">
+          <legend class="scheduler-border">SI per Section</legend>
+           <div class="cust-sm">
+            <div class="cust-sm col-sm-1"></div>
+              <div class="row" style="margin-right: 0px; margin-bottom: 11px;">
+                    <div class="input-group" style="margin-top: -10px;">
+                        &nbsp;
+                    </div>
+                    <div class="input-group">
+                            <label class="form-control-sm col-sm-4">SECTION I</label>
+                            <input type="text" class="form-control form-control-sm">
+                            <span class="col-sm-2"></span>
+                    </div>
+                    <div class="input-group">
+                            <label class="form-control-sm col-sm-4">SECTION II</label>
+                            <input type="text" class="form-control form-control-sm">
+                            <span class="col-sm-2"></span>
+                    </div>
+                    <div class="input-group">
+                            <label class="form-control-sm col-sm-4">SECTION III</label>
+                            <input type="text" class="form-control form-control-sm">
+                            <span class="col-sm-2"></span>
+                    </div>
+            </div>
+            <div class="cust-sm col-sm-1"></div>
+          </div>
+      </fieldset>
+    </div>
+  </div>
   <div class="row">
-        <div class="input-group" style="margin-top: 5px">
-           <div class="col-sm-6">
-              <fieldset class="scheduler-border" >
-                <legend class="scheduler-border">Share Details</legend>
-                <div class="form-row custom-row-inline-inset">
-                  <div class="input-group">
-                      <div class="col-sm-1"></div>
-                      <label class="form-control-sm col-sm-3" for="inputShare">Share (%)</label>
-                      <input type="text" id="intShare" value="" class="form-control form-control-sm cust-sm txt-content-rght" placeholder="" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
-                      <label class="form-control-sm col-sm-2" for="inputPML">PML (%)</label>
-                      <input type="text" id="intPML" value="" class="form-control form-control-sm cust-sm txt-content-rght" placeholder="" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
-                      <div class="col-sm-2"></div>
-                  </div>
-                  <div class="input-group">
-                      <div class="col-sm-1"></div>
-                      <label class="form-control-sm col-sm-3" for="inputShare">Part Of (100%) </label>
-                      <input type="text" id="intPartof100" value="" class="form-control form-control-sm cust-sm txt-content-rght" placeholder="" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
-                      <div class="col-sm-2"></div>
-                  </div>
-                </div>
-              </fieldset>
-          </div>
-          <div class="col-sm-6" style="margin-top: 17px">
-             <fieldset class="scheduler-border">
-                <div class="form-row custom-row-inline-inset">
-                  <div class="input-group" style="margin-top: 3px">
-                        <label class="form-control-sm top-label col-sm-2" for="xx">Remarks</label>
-                        <textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 58px"></textarea>
-                  </div>
-                  <div class="input-group" style="height: 20px"></div>
-                </div>
-             </fieldset>
-          </div>
-        </div>
-  </div>
-</div>
-<div>
-  <div class="form-row">
-      <div class="form-group col-sm">
-        <div class="col-md-13 text-center">
-          <br>
-          <div class="cust-btn-container">
-            <button type="button" class="cust-btn"><a>Cancel</a></button>
-            <button type="button" class="cust-btn"><a>Save</a></button>
-          </div>
-        </div>
-      </div>
-  </div>
-</div>
-<!-- <div class="col-sm-6">
-          <fieldset class="scheduler-border fieldset-height">
-              <div class="col-sm-1"></div>
-              <div class="input-group">
-                  <label class="form-control-sm col-sm-1" for="inputCurrency">Currency</label>
-                  <input type="text" id="intCurrency" value="" class="form-control form-control-sm cust-sm" placeholder="">
-                  <label class="form-control-sm col-sm-1" for="inputExchRt">Exch. Rt</label>
-                  <input type="text" id="inputExchRt" value="" class="form-control form-control-sm cust-sm" placeholder="">
-              </div>
-              <div class="input-group">
-                  <label class="form-control-sm col-sm-2" for="xx">Exch. Rt.</label>
-                    <select class="form-control form-control-sm cust-sm">
-                      <option value=""></option>
-                    </select>
-              </div>
-              <div class="input-group">
-                  <label class="form-control-sm col-sm-2" for="xx">Premium</label>
-                    <input type="text" id="xx" class="form-control form-control-sm cust-sm txt-content-rght">
-              </div>
-              <div class="col-sm-1"></div>
-          </fieldset>
-</div> -->
-<!--   <div class="col-sm-3">
+    <div class="cust-sm col-sm-6">
         <fieldset class="scheduler-border">
           <legend class="scheduler-border">Share Details</legend>
-          <div class="custom-row-inline-inset">
-            <div class="row">
-              <div class="col-sm-1"></div>
-              <div class="col-sm-10 form-row">
-                <div class="form-group col-sm-6">
-                  <label class="form-control-sm top-label" for="xx">Share (%)</label>
-                  <input type="text" id="xx" class="form-control form-control-sm txt-content-rght" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
-                </div>
-                <div class="form-group col-sm-6">
-                  <label class="form-control-sm top-label" for="xx">PML (%)</label>
-                  <input type="text" id="xx" class="form-control form-control-sm txt-content-rght" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
-                </div>
-                <div class="form-group col-sm-12">
-                  <label class="form-control-sm top-label" for="xx">Part
-                    Of (100%)</label>
-                  <input type="text" id="xx" class="form-control form-control-sm txt-content-rght" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
-                </div>
-              </div>
-              <div class="col-sm-1"></div>
+           <div class="cust-sm">
+            <div class="cust-sm col-sm-1"></div>
+              <div class="row" style="margin-right: 0px; margin-bottom: 11px;">
+                    <div class="input-group" style="margin-top: -10px;">
+                        &nbsp;
+                    </div>
+                    <div class="input-group">
+                            <label class="form-control-sm col-sm-3">Share(%)</label>
+                            <input type="text" class="form-control form-control-sm">
+                            <label class="form-control-sm col-sm-2">PML(%)</label>
+                            <input type="text" class="form-control form-control-sm">
+                            <span class="col-sm-1"></span>
+                    </div>
+                    <div class="input-group">
+                            <label class="form-control-sm col-sm-3">Part Of(100%)</label>
+                            <input type="text" class="form-control form-control-sm">
+                            <span class="col-sm-1"></span>
+                    </div>
             </div>
-          </div>
-        </fieldset>
-      </div>
+            <div class="cust-sm col-sm-1"></div>
 
-      <div class="col-sm-4">
-        <div class="mrgn-fieldset">
-          <fieldset class="scheduler-border fieldset-height">
-            <div class="custom-row-inline-inset">
-              <div class="row">
-                <div class="col-sm-1"></div>
-                <div class="col-sm-10 form-row">
-                  <div class="form-group col-sm-12">
-                    <label class="form-control-sm top-label" for="xx">Remarks</label>
-                    <input type="text" id="xx" class="form-control form-control-sm txt-content-rght" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
-                  </div>
-                  <div class="form-group col-sm-12">
-                    <label class="form-control-sm top-label" for="xx">Average Rate</label>
-                    <input type="text" id="xx" class="form-control form-control-sm txt-content-rght" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
-                  </div>
-                </div>
-                <div class="col-sm-1"></div>
-              </div>
-            </div>
-          </fieldset>
         </div>
-      </div>
+      </fieldset>
     </div>
-  </div>
-
-<div class="form-row">
+    <div class="cust-sm col-sm-6">
+        <fieldset class="scheduler-border">
+         <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+        <div class="cust-sm">
+           <div class="cust-sm col-sm-1"></div>
+            <div class="row" style="margin-right: 0px; margin-bottom: 11px;">
+                    <div class="input-group" style="margin-top: -10px;">
+                        &nbsp;
+                    </div>
+                   <div class="input-group">
+                       <label class="form-control-sm col-sm-1">Remarks</label>
+                       <textarea class="form-control-sm form-control" style="font-size: 11px; min-height: 65px; margin-bottom: 10px; margin-left: 8px"></textarea> 
+                    </div>
+                    <div class="input-group">
+                            <span class="col-sm-3"></span>
+                            <span class="cust-sm"></span>
+                    </div>
+            </div>
+        </div>
+      </fieldset>
+    </div>
+</div>
+    <div class="form-row">
     <div class="form-group col-sm">
       <div class="col-md-13 text-center">
         <br>
@@ -218,4 +144,4 @@
       </div>
     </div>
   </div>
-</div> -->
+
