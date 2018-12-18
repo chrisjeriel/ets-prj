@@ -17,7 +17,7 @@ export class PolItemComponent implements OnInit {
     ];
     tableData_BPV: any[] = [
         //['S10001', 'Region IV, Laguna, Calamba', '100001 Juan de la Cruz', new Date(), 90000],
-        ['S10001', 'Region IV, Laguna, Calamba', '100001 Juan de la Cruz', '2018', 90000],
+        //['S10001', 'Region IV, Laguna, Calamba', '100001 Juan de la Cruz', '2018', 90000],
     ];
 
     tHeader_EEI_MBI_CEC: any[] = ['Item No.', 'Quantity', 'Description of Items', 'Year of Make', 'Deductible', 'Sum Insured'];
