@@ -165,7 +165,11 @@ export class CustEditableNonDatatableComponent implements OnInit {
             this.autoFill = Array(this.pageLength -  this.displayData.length%this.pageLength).fill(this.fillData);
         }
         this.displayLength = this.displayData.length;
-        if((typeof this.autoFill != "undefined" && this.displayData.length%this.pageLength != 0) || this.displayData.length)
+        if((typeof this.autoFill != "undefined" && this.displayData.length%this.pageLength != 0) || this.displayData.length==0)
             this.displayData = this.displayData.concat(this.autoFill);
+    }
+
+    addCheckFlag(cell){
+        return !(cell===this.fillData);
     }
 }
