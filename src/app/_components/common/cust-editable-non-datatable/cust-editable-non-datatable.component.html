@@ -25,7 +25,7 @@
             <button *ngIf="editFlag" class="cust-btn" (click)="onClickEdit()"><a class="paginate_button previous">Edit</a></button>
             <button *ngIf="deleteFlag" class="cust-btn" (click)="onClickDelete()"><a class="paginate_button previous">Delete</a></button>
         </div>
-        <div class="search-filter">
+        <div class="search-filter" *ngIf="searchFlag">
             <!--<div class="search-filter" *ngIf="passData.hasSearch">-->
             <label>Search: &nbsp;
                 <input type="search" class="form-control-sm cust-search-form" [(ngModel)]="searchString" (ngModelChange)="search($event)">
@@ -103,7 +103,7 @@
             </thead>
 
             <tbody>
-                <tr *ngFor="let data of displayData | paginate: { id: 'editable', itemsPerPage: pageLength, currentPage: p2 };let ti = index" (click)="onRowClick(data)" (dblclick)="onRowDblClick($event)">
+                <tr *ngFor="let data of displayData | paginate: { id: 'editable', itemsPerPage: pageLength, currentPage: p2 };let ti = index" (click)="onRowClick($event)" (dblclick)="onRowDblClick($event)">
                     <td *ngIf="checkFlag">&nbsp;&nbsp;&nbsp;<input type="checkbox" name="checkbox"></td>
                     <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]">
                         <div>
@@ -148,7 +148,7 @@
             </tbody>
         </table>
     </div>
-    <div class="pagingStatus">
+    <div class="pagingStatus" *ngIf="infoFlag">
         <!--<div class="pagingStatus" *ngIf="passData.hasPageInfo">-->
         <!-- <pagination-template #api="paginationApi" (pageChange)="p = $event">
 <label *ngIf="!api.isLastPage()">Showing {{ (api.getCurrent() - 1) * passData.pageLength + 1 }} - {{ api.getCurrent() * passData.pageLength }} of {{displayData.length}} entries</label>
@@ -163,7 +163,7 @@
             <label *ngIf="displayLength < 1">Showing 0 - 0 of 0 entries</label>
         </pagination-template>
     </div>
-    <div class="pagination">
+    <div class="pagination" *ngIf="paginateFlag">
         <!--<div class="pagination" *ngIf="passData.hasPagination">-->
         <!-- <pagination-template class="" #api="paginationApi" (pageChange)="p = $event"><a (click)="api.setCurrent(1)">&laquo;</a></pagination-template>-->
         <pagination-controls id="editable" class="my-pagination" (pageChange)="p2 = $event" previousLabel="" nextLabel="">

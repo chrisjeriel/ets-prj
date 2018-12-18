@@ -24,6 +24,9 @@ export class CustEditableNonDatatableComponent implements OnInit {
     @Input() addFlag;
     @Input() editFlag;
     @Input() deleteFlag;
+    @Input() paginateFlag;
+    @Input() infoFlag;
+    @Input() searchFlag;
 
     @Input() checkboxFlag;
     @Input() columnId;
@@ -52,6 +55,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     searchString: string;
     displayLength: number;
     p:number = 1;
+    fillData:any = {};
 
     constructor(config: NgbDropdownConfig, public renderer: Renderer) { 
         config.placement = 'bottom-right';
@@ -72,7 +76,11 @@ export class CustEditableNonDatatableComponent implements OnInit {
         // }
         // if(typeof this.autoFill != "undefined")
         //     this.displayData = this.displayData.concat(this.autoFill);
+
         this.addFiller();
+        for (var i = this.dataKeys.length - 1; i >= 0; i--) {
+           this.fillData[this.dataKeys[i]] = null;
+        }
         
     }
 
@@ -86,9 +94,8 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     onClickDelete() {
-        this.displayData.pop();
         this.tableData.pop();
-        this.displayLength = this.displayData.length;
+        this.search(this.searchString);
     }
     private onMouseDown(event){
         this.start = event.target;
@@ -153,12 +160,12 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     addFiller(){
-        this.autoFill = Array(this.pageLength).fill(this.nData);
+        this.autoFill = Array(this.pageLength).fill(this.fillData);
         if(this.displayData.length%this.pageLength != 0){
-            this.autoFill = Array(this.pageLength -  this.displayData.length%this.pageLength).fill(this.nData);
+            this.autoFill = Array(this.pageLength -  this.displayData.length%this.pageLength).fill(this.fillData);
         }
         this.displayLength = this.displayData.length;
-        if(typeof this.autoFill != "undefined")
+        if(typeof this.autoFill != "undefined" && this.displayData.length%this.pageLength != 0)
             this.displayData = this.displayData.concat(this.autoFill);
     }
 }
