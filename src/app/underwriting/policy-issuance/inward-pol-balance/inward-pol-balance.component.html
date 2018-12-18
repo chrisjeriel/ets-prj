@@ -25,13 +25,13 @@
     <fieldset class="scheduler-border">
       <legend class="scheduler-border">Invoice Information</legend>
       	<div class="row">
-      		  <div class="input-group" style="margin-top: -10px;">
-                        &nbsp;
-              </div>
-		      <div class="cust-sm col-sm-12">
-		      		<app-cust-editable-table [nData]="nData"
-      [tHeader]="tHeader2" [opts]="options" [dataTypes]="dataTypes"></app-cust-editable-table>
+      		  <div class="col-sm-1"></div>
+		      <div class="cust-sm invoice" style="margin-left: 110px">
+		      		<!-- <app-cust-editable-table [nData]="nData"
+      [tHeader]="tHeader2" [opts]="options" [dataTypes]="dataTypes"></app-cust-editable-table> -->
+      				<app-cust-editable-non-datatable [tableData]="tableData_InvoiceInformation" [tHeader]="tHeader_Invoice" [dataTypes]="dataTypes_Invoice" [pageLength]="pageLength_Invoice"></app-cust-editable-non-datatable>
 		      </div>
+		      
 		</div>
       	<div class="row">
       		  <div class="input-group" style="margin-top: -10px;">
@@ -197,11 +197,19 @@
 	<fieldset class="scheduler-border">
 		<legend class="scheduler-border">Tax Information</legend>
 			<div class="cust-sm">
-				<div class="cust-sm col-sm-1"></div>
-				<div class="cust-sm">
-					 <app-cust-editable-table [addFlag]="true" [deleteFlag]="true" [nData]="nData" [tableData]="tableData"
-      [tHeader]="tHeader" [opts]="options" [dataTypes]="dataTypes"></app-cust-editable-table>
+				<div class="row">
+					<div class="col-sm-2"></div>
+					<div class="col-sm">
+						 <!-- <app-cust-editable-table [addFlag]="true" [deleteFlag]="true" [nData]="nData" [tableData]="tableData"
+	      [tHeader]="tHeader" [opts]="options" [dataTypes]="dataTypes"></app-cust-editable-table> -->
+
+	      			<app-cust-editable-non-datatable [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [tableData]="tableData_taxInfo" [tHeader]="tHeader" [dataTypes]="dataTypes" [opts]="options" [pageLength]="pageLength"></app-cust-editable-non-datatable>
+	      			<br>
+					</div>
+					<div class="col-sm-2"></div>
 				</div>
+				
+
 			</div>
 	</fieldset>
 </div>

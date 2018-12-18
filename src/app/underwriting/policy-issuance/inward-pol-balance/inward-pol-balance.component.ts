@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { UnderwritingService } from '@app/_services/underwriting.service';
-import { PolicyInwardPolBalance } from '@app/_models';
+import { PolicyInwardPolBalance, InvoiceInformation } from '@app/_models';
 
 @Component({
   selector: 'app-inward-pol-balance',
@@ -11,36 +11,45 @@ export class InwardPolBalanceComponent implements OnInit {
 
   tableData: any[] = [];
   tableData2: any[] = [];  
-  tHeader: any[] = [];
   tHeader2: any[] = [];
   options: any[] = [];
-  dataTypes: any[] = [];
+  pageLength: number = 5;
+  pageLength_Invoice: number = 3;
+
+  dtOptions: DataTables.Settings = {};
   
+  tableData_taxInfo: any[] = [
+        new PolicyInwardPolBalance("TEST","TEST",1,"TEST"),
+        new PolicyInwardPolBalance("TEST","TEST",1,"TEST"),
+        new PolicyInwardPolBalance("TEST","TEST",1,"TEST"),
+   ];
+
+   tHeader: any[] = ["Tax Code","Tax Description","Tax Amount","Tax Allocation"];
+   dataTypes: any[] = ["select","text","currency","select"];
+   
+   tableData_InvoiceInformation: any[] = [
+   		new InvoiceInformation("TEST","TEST","TEST",1,1),
+   		new InvoiceInformation("TEST","TEST","TEST",1,1),
+   		new InvoiceInformation("TEST","TEST","TEST",1,1),
+   ]
+
+    tHeader_Invoice: any[] = ["Takeup Seq No","Booking Date","Premium","Total Tax","Amount Due"];
+    dataTypes_Invoice: any[] = ["text","text","text","currency","currency"];
 
   constructor(private underwritingservice: UnderwritingService) { }
 
   ngOnInit() {
-  	this.tHeader.push("Cover Code");
-    this.tHeader.push("Section");
-    this.tHeader.push("Bullet No");
-    this.tHeader.push("Premium");
 
-    this.tHeader2.push("Takeup Seq No");
-    this.tHeader2.push("Booking Date");
-    this.tHeader2.push("Premium");
-    this.tHeader2.push("Total Tax");
-    this.tHeader2.push("Amount Due");
-
-    this.dataTypes.push("select");
-    this.dataTypes.push("text");
-    this.dataTypes.push("text");
-    this.dataTypes.push("select");
+    this.tHeader2.push("");
+    this.tHeader2.push("");
+    this.tHeader2.push("");
+    this.tHeader2.push("");
+    this.tHeader2.push("");
 
     this.options.push({ selector: "taxCode", vals: ["","EXE-CODE", "EXC-CODE", "EXC-CODE"] });
     this.options.push({ selector: "taxAllocation", vals: ["","Fire", "Flood", "Calamity"] });
 
-    this.tableData = this.underwritingservice.getInwardPolBalance();
-    this.tableData2 = this.underwritingservice.getInwardPolBalance();
+    
 
   }
 

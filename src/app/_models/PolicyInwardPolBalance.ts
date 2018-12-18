@@ -11,3 +11,19 @@ export class PolicyInwardPolBalance{
 		this.taxAllocation = taxAllocation;
 	}
 }
+
+export class InvoiceInformation {
+	takeUpSeqNo: string;
+	bookingDate: string;
+	prenium: string;
+	totalTax: number;
+	amountDue: number;
+
+	constructor(takeUpSeqNo: string, bookingDate: string, prenium:string, totalTax: number, amountDue: number){
+		this.takeUpSeqNo = takeUpSeqNo;
+		this.bookingDate = bookingDate;
+		this.prenium = prenium;
+		this.totalTax = totalTax;
+		this.amountDue = amountDue;
+	}
+}
