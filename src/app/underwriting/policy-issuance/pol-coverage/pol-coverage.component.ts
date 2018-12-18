@@ -16,29 +16,57 @@ export class PolCoverageComponent implements OnInit {
   selOptions: any[] = [];
   magnifyingGlass: any[] = ['coverCode'];
   optionsData: any[] = [];
+  headerWithColspan: any[] = [];
 
   nData: UnderwritingCoverageInfo = new UnderwritingCoverageInfo(null, null, null, null, null, null, null);
   constructor(private underwritingservice: UnderwritingService) { }
 
   @Input() alteration: boolean;
   ngOnInit() {
-    
+
     this.tHeader.push("Cover Code");
     this.tHeader.push("Section");
     this.tHeader.push("Bullet No");
-    this.tHeader.push("Premium");
-    this.tHeader.push("Rate");
     this.tHeader.push("Sum Insured");
+    this.tHeader.push("Rate");
+    this.tHeader.push("Premium");
+    this.tHeader.push("Sum Insured");
+    this.tHeader.push("Rate");
+    this.tHeader.push("Premium");
+    this.tHeader.push("Sum Insured");
+    this.tHeader.push("Rate");
+    this.tHeader.push("Premium");
     this.tHeader.push("Add Sl");
 
-    
     this.dataTypes.push("text");
     this.dataTypes.push("select");
     this.dataTypes.push("select");
     this.dataTypes.push("currency");
     this.dataTypes.push("percent");
     this.dataTypes.push("currency");
+    this.dataTypes.push("currency");
+    this.dataTypes.push("percent");
+    this.dataTypes.push("currency");
+    this.dataTypes.push("currency");
+    this.dataTypes.push("percent");
+    this.dataTypes.push("currency");
     this.dataTypes.push("checkbox");
+
+    /*this.tHeader.push("Cover Code");
+    this.tHeader.push("Section");
+    this.tHeader.push("Bullet No");
+    this.tHeader.push("Premium");
+    this.tHeader.push("Rate");
+    this.tHeader.push("Sum Insured");
+    this.tHeader.push("Add Sl");*/
+
+    /*this.dataTypes.push("text");
+    this.dataTypes.push("select");
+    this.dataTypes.push("select");
+    this.dataTypes.push("currency");
+    this.dataTypes.push("percent");
+    this.dataTypes.push("currency");
+    this.dataTypes.push("checkbox");*/
 
     this.selOptions.push({ selector: "section", vals: ["I", "II", "III"] });
     this.selOptions.push({ selector: "bulletNo", vals: ["1", "1.2", "1.3"] });
@@ -46,7 +74,28 @@ export class PolCoverageComponent implements OnInit {
 
     this.optionsData.push("USD", "PHP", "EUR");
 
-    this.tableData = this.underwritingservice.getUWCoverageInfo();
+    this.headerWithColspan.push({header: "", span: 1}, {header: "", span: 3},
+                                {header: "Previous", span: 3}, {header: "This Alteration", span: 3},
+                                {header: "Cumulative", span: 3}, {header: "", span: 1});
+
+   /* this.tableData = this.underwritingservice.getUWCoverageInfo();*/
+    this.tableData = [
+    {
+      coverCode: "ASD",
+      section: "I",
+      bulletNo: 1.2,
+      prevSumInsured: 20,
+      prevRate: 5,
+      prevPremium: 100,
+      thisAltSumInsured: 60,
+      thisAltRate: 5,
+      thisAltPremium: 50,
+      cumuSumInsured: 90,
+      cumuRate: 5,
+      cumuPremium: 800,
+      addSl: ""
+    }
+    ];
 
   }
 

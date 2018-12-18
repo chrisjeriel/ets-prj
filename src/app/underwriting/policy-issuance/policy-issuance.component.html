@@ -1,6 +1,6 @@
 <div class="cust-tabs-container">
 	<h4>Policy / Policy Issuance / Create Policy</h4>
-	<ngb-tabset>
+	<ngb-tabset (tabChange)="beforeChange($event)">
 
 		<ngb-tab class="ngb-tab" title="General Info">
 			<ng-template ngbTabContent>
@@ -24,7 +24,7 @@
 		</ngb-tab>
 		<ngb-tab title="Inward Pol Balance">
 			<ng-template ngbTabContent>
-				
+
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab title="Endorsement">
@@ -42,14 +42,71 @@
 				<app-pol-attachment [alterationFlag]="false"></app-pol-attachment>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab title="Print">
-			<ng-template ngbTabContent>
 
+
+		<ngb-tab id="approval-tab">
+			<ng-template #content>
+				<div class="modal-header">
+					<span class="modal-title" id="modal-basic-title">&nbsp;</span>
+					<div class="close" style="padding-bottom: 5px;">
+						<a class="btn-cust" aria-label="Close" (click)="modalService.dismissAll();" aria-hidden="true"><span style="padding-right: 3px;"
+							 id="closes">&times;&nbsp;&nbsp;</span></a>
+					</div>
+				</div>
+				<div class="modal-body">
+					<fieldset class="scheduler-border">
+						<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+						<div class="custom-row-inline-inset">
+							<div class="form-row" style="margin-bottom:3px !important;">
+								<div class="col-sm-3"></div>
+								<div class="col-sm-9">
+									<input type="checkbox"><label>Print as Draft</label>
+									<input type="checkbox"><label>Include Endorsement</label>
+								</div>
+							</div>
+							<div class="form-row" style="margin-bottom:3px !important;">
+								<label class="col-sm-3">Report</label>
+								<select class="form-control form-control-sm cust-sm col-sm-9">
+									<option value=""></option>
+								</select>
+							</div>
+							<div class="form-row" style="margin-bottom:3px !important;">
+								<label class="col-sm-3">No. Of Copies</label>
+								<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-9" required>
+							</div>
+							<div class="form-row" style="margin-bottom:3px !important;">
+								<label class="col-sm-3">Destination</label>
+								<select class="form-control form-control-sm cust-sm col-sm-9">
+									<option value=""></option>
+								</select>
+							</div>
+							<div class="form-row" style="margin-bottom:3px !important;">
+								<label class="col-sm-3">Printer Name</label>
+								<select class="form-control form-control-sm cust-sm col-sm-9">
+									<option value=""></option>
+								</select>
+							</div>
+						</div>
+					</fieldset>
+
+				</div>
+				<div class="modal-footer" style="text-align: center !important;">
+					<div>
+						<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+						<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Print</a></button>
+					</div>
+				</div>
 			</ng-template>
+
+			<ng-template ngbTabTitle>
+				<div (click)="showApprovalModal(content)">Print</div>
+			</ng-template>
+
 		</ngb-tab>
+
 		<ngb-tab title="Post">
 			<ng-template ngbTabContent>
-                <app-pol-post [alterationFlag]="false"></app-pol-post>
+				<app-pol-post [alterationFlag]="false"></app-pol-post>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab title="Exit">

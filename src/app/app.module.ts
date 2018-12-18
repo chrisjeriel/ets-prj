@@ -72,6 +72,7 @@ import { PolicyDistributionComponent } from './underwriting/policy-distribution/
 import { PolDistributionComponent } from './underwriting/policy-distribution/pol-distribution/pol-distribution.component';
 import { PolDistComponent } from './underwriting/policy-distribution/pol-dist/pol-dist.component';
 import { PolItemComponent } from './underwriting/policy-issuance/pol-item/pol-item.component';
+import { PolCreateOpenCoverComponent } from './underwriting/policy-issuance/pol-create-open-cover/pol-create-open-cover.component';
 
 @NgModule({
     imports: [
@@ -148,6 +149,7 @@ import { PolItemComponent } from './underwriting/policy-issuance/pol-item/pol-it
         PolicyDistributionComponent,
         PolDistributionComponent,
         PolItemComponent,
+        PolCreateOpenCoverComponent,
     ],
 
     providers: [

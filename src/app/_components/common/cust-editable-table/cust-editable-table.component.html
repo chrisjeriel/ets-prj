@@ -84,6 +84,13 @@
 		<div class="table-scroll">
 			<table id="sample2" datatable [dtOptions]="dtOptions" class="row-border hover">
 				<thead>
+					<tr *ngIf="headerWithColspan != null">
+						<ng-container *ngFor="let header of headerWithColspan">
+							<th [colSpan]="header.span" style="text-align: center;">
+								<span class="gridHeader">{{ header.header }}</span>
+							</th>	
+						</ng-container>
+					</tr>
 					<tr>
 						<th *ngIf="checkFlag"><div class="checkbox"><input type="checkbox" id="check" [(ngModel)]="checked"></div></th>
 						

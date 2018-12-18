@@ -8,7 +8,24 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 })
 export class ModalComponent implements OnInit, AfterViewInit {
 
-    @Input() modalSize: string = "modal-size"
+    @Input() mdlConfig = {
+        mdlType: "",
+        mdlOpener: "",
+        mdlBtnAlign: "",
+        mdlSize: "",
+        confirmationMsg: "",
+        successMsg: ""
+    };
+        /*
+            mdlType: confirmation, success, error, custom       DEFAULT: custom
+            mdlOpener: button, a, div, icon;                    DEFAULT: button
+            mdlBtnAlign: left, center, right;                   DEFAULT: right
+            mdlSize: sm, md, lg;                                DEFAULT: md
+            mdlTitle: ""                                        DEFAULT: null
+
+        */
+
+    @Input() modalSize: string = "modal-size";
     @Input() btnTitle: string = "Open Modal from Child";
     
     @ViewChild('content') test: any;
@@ -20,7 +37,8 @@ export class ModalComponent implements OnInit, AfterViewInit {
 
     }
     ngAfterViewInit(){
-        //console.log(this.test);
+        console.log(this.test);
+        console.log("content >>> " + this.content);
     }
 
     open(content) {
@@ -28,7 +46,6 @@ export class ModalComponent implements OnInit, AfterViewInit {
         this.modalService.dismissAll();
         this.modalService.open(this.content, { centered: true, backdrop: 'static', windowClass : this.modalSize });
     }
-
 
 
 }

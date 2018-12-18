@@ -141,7 +141,7 @@ export class CustTableComponent implements OnInit {
   }
 
   onRowDblClick(event) {
-    this.rowDblClick.next(event);
+    this.rowDblClick.emit(event);
   }
   
   checkResizable(tHeader){

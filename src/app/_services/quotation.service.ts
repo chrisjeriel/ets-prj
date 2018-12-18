@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { QuotationList, HoldCoverMonitoringList, DummyInfo, QuoteEndorsement, QuotationOption, QuotationOtherRates, IntCompAdvInfo, AttachmentInfo, QuotationProcessing, QuotationCoverageInfo,QuotationHoldCover, ItemInformation } from '@app/_models';
+import { QuotationList, HoldCoverMonitoringList, DummyInfo, QuoteEndorsement, QuotationOption, QuotationOtherRates, IntCompAdvInfo, AttachmentInfo, QuotationProcessing, QuotationCoverageInfo, QuotationHoldCover, ItemInformation } from '@app/_models';
 
 
 @Injectable({ providedIn: 'root' })
@@ -51,8 +51,8 @@ export class QuotationService {
 
     getCoverageInfo() {
         this.coverageInfoData = [
-            new QuotationCoverageInfo("data", "1", "I", "3", "69000", ""),
-            new QuotationCoverageInfo("data", "2", 'II', "2", "123000", "")
+            new QuotationCoverageInfo("1", "I", "3", "69000", ""),
+            new QuotationCoverageInfo("2", 'II', "2", "123000", "")
         ];
         return this.coverageInfoData;
     }
@@ -302,21 +302,21 @@ export class QuotationService {
     }
 
 
-    getEndorsements(optionNo:number) {
+    getEndorsements(optionNo: number) {
 
         this.endorsementData = [
-            new QuoteEndorsement(1,"111",'Endt Title', 'Endt Description', 'Wording'),
-            new QuoteEndorsement(1,"112",'This is the title', 'sample Description', 'Sample Wording'),
-            new QuoteEndorsement(2,"221",'Endt Title', 'Endt Description', 'Wording'),
-            new QuoteEndorsement(2,"222",'This is the title', 'sample Description', 'Sample Wording'),
-            new QuoteEndorsement(3,"331",'Endt Title', 'Endt Description', 'Wording'),
-            new QuoteEndorsement(3,"332",'This is the title', 'sample Description', 'Sample Wording')
+            new QuoteEndorsement(1, "111", 'Endt Title', 'Endt Description', 'Wording'),
+            new QuoteEndorsement(1, "112", 'This is the title', 'sample Description', 'Sample Wording'),
+            new QuoteEndorsement(2, "221", 'Endt Title', 'Endt Description', 'Wording'),
+            new QuoteEndorsement(2, "222", 'This is the title', 'sample Description', 'Sample Wording'),
+            new QuoteEndorsement(3, "331", 'Endt Title', 'Endt Description', 'Wording'),
+            new QuoteEndorsement(3, "332", 'This is the title', 'sample Description', 'Sample Wording')
         ];
 
-        var endorsmentData = this.endorsementData.filter(function(itm){
+        var endorsmentData = this.endorsementData.filter(function (itm) {
             return itm.optionNo == optionNo;
         });
-        endorsmentData.forEach(function(itm){delete itm.optionNo;});
+        endorsmentData.forEach(function (itm) { delete itm.optionNo; });
         return endorsmentData;
     }
 
@@ -349,11 +349,11 @@ export class QuotationService {
             new DummyInfo(3, 'Elmon', 'Hagacer', 'H', 'Male', 25, "January 21, 2018"),
             new DummyInfo(1, 'Christopher Jeriel', 'Sarsonas', 'Alcala', 'Male', 25, "January 21, 2018"),
             new DummyInfo(2, 'Veronica', 'Raymundo', 'C', 'Female', 25, "January 21, 2018"),
-            new DummyInfo(3, 'Elmon', 'Hagacer', 'H', 'Male', 25, "January 21, 2018"),new DummyInfo(1, 'Christopher Jeriel', 'Sarsonas', 'Alcala', 'Male', 25, "January 21, 2018"),
+            new DummyInfo(3, 'Elmon', 'Hagacer', 'H', 'Male', 25, "January 21, 2018"), new DummyInfo(1, 'Christopher Jeriel', 'Sarsonas', 'Alcala', 'Male', 25, "January 21, 2018"),
             new DummyInfo(2, 'Veronica', 'Raymundo', 'C', 'Female', 25, "January 21, 2018"),
-            new DummyInfo(3, 'Elmon', 'Hagacer', 'H', 'Male', 25, "January 21, 2018"),new DummyInfo(1, 'Christopher Jeriel', 'Sarsonas', 'Alcala', 'Male', 25, "January 21, 2018"),
+            new DummyInfo(3, 'Elmon', 'Hagacer', 'H', 'Male', 25, "January 21, 2018"), new DummyInfo(1, 'Christopher Jeriel', 'Sarsonas', 'Alcala', 'Male', 25, "January 21, 2018"),
             new DummyInfo(2, 'Veronica', 'Raymundo', 'C', 'Female', 25, "January 21, 2018"),
-            new DummyInfo(3, 'Elmon', 'Hagacer', 'H', 'Male', 25, "January 21, 2018"),new DummyInfo(1, 'Christopher Jeriel', 'Sarsonas', 'Alcala', 'Male', 25, "January 21, 2018"),
+            new DummyInfo(3, 'Elmon', 'Hagacer', 'H', 'Male', 25, "January 21, 2018"), new DummyInfo(1, 'Christopher Jeriel', 'Sarsonas', 'Alcala', 'Male', 25, "January 21, 2018"),
             new DummyInfo(2, 'Veronica', 'Raymundo', 'C', 'Female', 25, "January 21, 2018"),
             new DummyInfo(3, 'Elmon', 'Hagacer', 'H', 'Male', 25, "January 21, 2018"),
             new DummyInfo(1, 'Christopher Jeriel', 'Sarsonas', 'Alcala', 'Male', 25, "January 21, 2018"),
@@ -363,7 +363,7 @@ export class QuotationService {
             new DummyInfo(2, 'Veronica', 'Raymundo', 'C', 'Female', 25, "January 21, 2018"),
             new DummyInfo(3, 'Elmon', 'Hagacer', 'H', 'Male', 25, "January 21, 2018"),
         ];
-        
+
 
         /*return this.http.get<User[]>(`${environment.apiUrl}/quotation`);*/
         return this.dummyInfoData;
@@ -372,19 +372,19 @@ export class QuotationService {
 
     getQuoProcessingData() {
         this.quoProcessingData = [
-            new QuotationProcessing('CAR-2015-0000289-01', 'Direct', 'CAR Wet Risks', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers','Region IV, Laguna, Calamba, Pansol, Block 308', new Date('2015-02-09'),
+            new QuotationProcessing('CAR-2015-0000289-01', 'Direct', 'CAR Wet Risks', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba, Pansol, Block 308', new Date('2015-02-09'),
                 new Date('2015-03-09'), 'Inigo Flores', 'cuaresma'),
-            new QuotationProcessing('CAR-2015-0000289-02', 'Retrocession', 'CAR Wet Risks', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'Fairmont Hotel', 'Cooling Towers','Region IV, Laguna, Calamba, Pansol, Block 308', new Date('2015-02-09'),
+            new QuotationProcessing('CAR-2015-0000289-02', 'Retrocession', 'CAR Wet Risks', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'Fairmont Hotel', 'Cooling Towers', 'Region IV, Laguna, Calamba, Pansol, Block 308', new Date('2015-02-09'),
                 new Date('2015-03-09'), 'Inigo Flores', 'cuaresma'),
-            new QuotationProcessing('EAR-2016-0000289-03', 'Retrocession', 'EAR', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'Fairmont Hotel', 'Cooling Towers','Region IV, Laguna, Calamba, Pansol, Block 308', new Date('2015-02-09'),
+            new QuotationProcessing('EAR-2016-0000289-03', 'Retrocession', 'EAR', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'Fairmont Hotel', 'Cooling Towers', 'Region IV, Laguna, Calamba, Pansol, Block 308', new Date('2015-02-09'),
                 new Date('2015-03-09'), 'Inigo Flores', 'cuaresma'),
-            new QuotationProcessing('EEI-2017-0000289-04', 'Retrocession', 'EEI', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'Fairmont Hotel', 'Cooling Towers','Region IV, Laguna, Calamba, Pansol, Block 308', new Date('2015-02-09'),
+            new QuotationProcessing('EEI-2017-0000289-04', 'Retrocession', 'EEI', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'Fairmont Hotel', 'Cooling Towers', 'Region IV, Laguna, Calamba, Pansol, Block 308', new Date('2015-02-09'),
                 new Date('2015-03-09'), 'Inigo Flores', 'cuaresma'),
-            new QuotationProcessing('MBI-2018-0000289-05', 'Direct', 'MBI', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'Fairmont Hotel', 'Cooling Towers','Region IV, Laguna, Calamba, Pansol, Block 308', new Date('2015-02-09'),
+            new QuotationProcessing('MBI-2018-0000289-05', 'Direct', 'MBI', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'Fairmont Hotel', 'Cooling Towers', 'Region IV, Laguna, Calamba, Pansol, Block 308', new Date('2015-02-09'),
                 new Date('2015-03-09'), 'Inigo Flores', 'cuaresma'),
-            new QuotationProcessing('MLP-2018-0000289-06', 'Direct', 'MLP', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'Fairmont Hotel', 'Cooling Towers','Region IV, Laguna, Calamba, Pansol, Block 308', new Date('2015-02-09'),
+            new QuotationProcessing('MLP-2018-0000289-06', 'Direct', 'MLP', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'Fairmont Hotel', 'Cooling Towers', 'Region IV, Laguna, Calamba, Pansol, Block 308', new Date('2015-02-09'),
                 new Date('2015-03-09'), 'Inigo Flores', 'cuaresma'),
-            new QuotationProcessing('DOS-2018-0000289-07', 'Direct', 'DOS', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'Fairmont Hotel', 'Cooling Towers','Region IV, Laguna, Calamba, Pansol, Block 308', new Date('2015-02-09'),
+            new QuotationProcessing('DOS-2018-0000289-07', 'Direct', 'DOS', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'Fairmont Hotel', 'Cooling Towers', 'Region IV, Laguna, Calamba, Pansol, Block 308', new Date('2015-02-09'),
                 new Date('2015-03-09'), 'Inigo Flores', 'cuaresma')
         ];
 
@@ -401,25 +401,25 @@ export class QuotationService {
         return this.quotataionOption;
     }
 
-    getQuotataionOtherRates(optionNo:number ) {
+    getQuotataionOtherRates(optionNo: number) {
         this.quotataionOtherRates = [
-            new QuotationOtherRates(1,'Others11', 50, 'sample deductibles'),
-            new QuotationOtherRates(1,'Others12', 41, 'sample deductibles'),
-            new QuotationOtherRates(1,'Others13', 75, 'deductibles'),
-            new QuotationOtherRates(2,'Others21', 60, 'deductibles'),
-            new QuotationOtherRates(2,'Others22', 50, 'sample deductible'),
-            new QuotationOtherRates(2,'Others23', 65, 'demo'),
-            new QuotationOtherRates(2,'Others24', 41, 'sample ony'),
-            new QuotationOtherRates(3,'Others31', 4, 'for demo'),
-            new QuotationOtherRates(3,'Others32', 3, 'sample data'),
-            new QuotationOtherRates(3,'Others33', 5, 'sample'),
-            new QuotationOtherRates(3,'Others34', 6, 'deductibles'),
+            new QuotationOtherRates(1, 'Others11', 50, 'sample deductibles'),
+            new QuotationOtherRates(1, 'Others12', 41, 'sample deductibles'),
+            new QuotationOtherRates(1, 'Others13', 75, 'deductibles'),
+            new QuotationOtherRates(2, 'Others21', 60, 'deductibles'),
+            new QuotationOtherRates(2, 'Others22', 50, 'sample deductible'),
+            new QuotationOtherRates(2, 'Others23', 65, 'demo'),
+            new QuotationOtherRates(2, 'Others24', 41, 'sample ony'),
+            new QuotationOtherRates(3, 'Others31', 4, 'for demo'),
+            new QuotationOtherRates(3, 'Others32', 3, 'sample data'),
+            new QuotationOtherRates(3, 'Others33', 5, 'sample'),
+            new QuotationOtherRates(3, 'Others34', 6, 'deductibles'),
 
         ];
-        var quotataionOtherRates =  this.quotataionOtherRates.filter(function(itm){
+        var quotataionOtherRates = this.quotataionOtherRates.filter(function (itm) {
             return itm.optionNo == optionNo;
         });
-        quotataionOtherRates.forEach(function(itm){delete itm.optionNo;});
+        quotataionOtherRates.forEach(function (itm) { delete itm.optionNo; });
         return quotataionOtherRates;
     }
 
@@ -430,7 +430,7 @@ export class QuotationService {
         /*intCompAdvInfo Data Array*/
         this.intCompAdvInfo = [
             new IntCompAdvInfo(1, 'CPI', '  Qwerty 123', '  Developer', 'N', 'good', '  etc', new Date(), 'etc', new Date()),
-            new IntCompAdvInfo(2, 'CPI', '  ABCDE 246', '  SA', 'Y', 'very good', '  etc', new Date(),'etc',new Date() )
+            new IntCompAdvInfo(2, 'CPI', '  ABCDE 246', '  SA', 'Y', 'very good', '  etc', new Date(), 'etc', new Date())
         ];
 
         /*return this.http.get<User[]>(`${environment.apiUrl}/quotation`);*/
@@ -442,8 +442,8 @@ export class QuotationService {
         return this.rowData;
     }
 
-    getQuoteOptionNos(){
-        this.quoteOptionNos = [1,2,3];
+    getQuoteOptionNos() {
+        this.quoteOptionNos = [1, 2, 3];
         //,4,5,6,7,8,1,4,5,7,8,9,2,3,4,5,6,7,2,3,4,5,6,1,8,9
         return this.quoteOptionNos;
     }
@@ -467,7 +467,7 @@ export class QuotationService {
 
         return this.quotationToHoldCover;
 
-    
+
     }
     getItemInfoData() {
         this.itemInfoData = [
