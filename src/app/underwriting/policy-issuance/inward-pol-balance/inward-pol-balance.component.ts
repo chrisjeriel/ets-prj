@@ -9,8 +9,10 @@ import { PolicyInwardPolBalance } from '@app/_models';
 })
 export class InwardPolBalanceComponent implements OnInit {
 
-  tableData: any[] = []; 
+  tableData: any[] = [];
+  tableData2: any[] = [];  
   tHeader: any[] = [];
+  tHeader2: any[] = [];
   options: any[] = [];
   dataTypes: any[] = [];
   
@@ -21,7 +23,13 @@ export class InwardPolBalanceComponent implements OnInit {
   	this.tHeader.push("Cover Code");
     this.tHeader.push("Section");
     this.tHeader.push("Bullet No");
-    this.tHeader.push("Premium")
+    this.tHeader.push("Premium");
+
+    this.tHeader2.push("Takeup Seq No");
+    this.tHeader2.push("Booking Date");
+    this.tHeader2.push("Premium");
+    this.tHeader2.push("Total Tax");
+    this.tHeader2.push("Amount Due");
 
     this.dataTypes.push("select");
     this.dataTypes.push("text");
@@ -32,6 +40,8 @@ export class InwardPolBalanceComponent implements OnInit {
     this.options.push({ selector: "taxAllocation", vals: ["","Fire", "Flood", "Calamity"] });
 
     this.tableData = this.underwritingservice.getInwardPolBalance();
+    this.tableData2 = this.underwritingservice.getInwardPolBalance();
+
   }
 
 }

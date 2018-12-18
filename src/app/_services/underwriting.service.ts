@@ -62,17 +62,17 @@ export class UnderwritingService {
 
     getCoInsurance() {
         this.coInsuranceData = [
-            new PolicyCoInsurance("CAR-2018-000001-099-0001-000","EN-CAR-2018-0000001-00", "Malayan", 12.2, 10000, 500000),
-            new PolicyCoInsurance("CAR-2018-000001-099-0001-000","EN-CAR-2018-0000001-00", "Company 1", 6.23, 20000, 600000),
-            new PolicyCoInsurance("CAR-2018-000001-099-0001-000","EN-CAR-2018-0000001-00", "Company 2", 15.16, 30000, 700000),
+            new PolicyCoInsurance("CAR-2018-000001-099-0001-000", "EN-CAR-2018-0000001-00", "Malayan", 12.2, 10000, 500000),
+            new PolicyCoInsurance("CAR-2018-000001-099-0001-000", "EN-CAR-2018-0000001-00", "Company 1", 6.23, 20000, 600000),
+            new PolicyCoInsurance("CAR-2018-000001-099-0001-000", "EN-CAR-2018-0000001-00", "Company 2", 15.16, 30000, 700000),
         ];
         return this.coInsuranceData;
     }
 
     getUWCoverageInfo() {
         this.uwcoverageInfoData = [
-            new UnderwritingCoverageInfo("1", "I", "3", "1000000","12.2", "69000", "70000"),
-            new UnderwritingCoverageInfo("2", 'II', "2","150000","15.16", "123000", "456000")
+            new UnderwritingCoverageInfo("1", "I", "3", "1000000", "12.2", "69000", "70000"),
+            new UnderwritingCoverageInfo("2", 'II', "2", "150000", "15.16", "123000", "456000")
         ];
         return this.uwcoverageInfoData;
     }
@@ -149,7 +149,7 @@ export class UnderwritingService {
 
     printingPolicy() {
         this.policyPrinting = [
-            new PolicyPrinting(null,null,null,null)
+            new PolicyPrinting(null, null, null, null)
         ];
         return this.policyPrinting;
     }
@@ -163,13 +163,13 @@ export class UnderwritingService {
         return this.printerList;
     }
 
-    getALOPItemInfos(car:string){
+    getALOPItemInfos(car: string) {
         this.aLOPItemInfos = [
             new ALOPItemInformation(1, 5, "desc", "rel import", "min loss"),
             new ALOPItemInformation(2, 7, "description", "relative import", "min loss")
         ]
-        if(car =="CAR"){
-            this.aLOPItemInfos.forEach(function(itm){delete itm.relativeImportance;});
+        if (car == "CAR") {
+            this.aLOPItemInfos.forEach(function (itm) { delete itm.relativeImportance; });
         }
         return this.aLOPItemInfos;
     }
@@ -192,14 +192,14 @@ export class UnderwritingService {
     }
 
 
-    getPolicyEndorsement(){
+    getPolicyEndorsement() {
         this.policyEndorsement = [
-            new PolicyEndorsement("TEST","TEST","TEST","TEST")
+            new PolicyEndorsement("TEST", "TEST", "TEST", "TEST")
         ]
         return this.policyEndorsement;
     }
 
-    getPolicyDistListInfo(){
+    getPolicyDistListInfo() {
         this.policyDistListData = [
             new UnderwritingPolicyDistList(10001, 10001, 'Distributed but not posted', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT'),
             new UnderwritingPolicyDistList(10002, 10002, 'Distributed but not posted', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT'),
@@ -220,14 +220,14 @@ export class UnderwritingService {
 
     getDistByRiskData() {
         this.distributionByRiskData = [
-            new DistributionByRiskInfo("", "1Surp", "PhilNaRe", "5.000000", "27.522220", "CAR"),
-            new DistributionByRiskInfo("", "1Surp", "Munich Re", "95.000000", "27.500000", "CAR"),
-            new DistributionByRiskInfo("", "2Surp", "PhilNaRe", "5.000000", "27.500000", "CAR"),
-            new DistributionByRiskInfo("", "2Surp", "Munich Re", "95.000000", "27.500000", "CAR"),
-            new DistributionByRiskInfo("", "Facul", "Munich Re", "100.000000", "26.000000", "CAR"),
-            new DistributionByRiskInfo("", "QS", "QS Pool", "60.000000", "30.000000", "CAR"),
-            new DistributionByRiskInfo("", "QS", "PhilNaRe", "2.000000", "30.000000", "CAR"),
-            new DistributionByRiskInfo("", "QS", "Munich Re", "38.000000", "30.000000", "CAR"),
+            new DistributionByRiskInfo("1Surp", "PhilNaRe", "5.000000", "27.522220", "CAR"),
+            new DistributionByRiskInfo("1Surp", "Munich Re", "95.000000", "27.500000", "CAR"),
+            new DistributionByRiskInfo("2Surp", "PhilNaRe", "5.000000", "27.500000", "CAR"),
+            new DistributionByRiskInfo("2Surp", "Munich Re", "95.000000", "27.500000", "CAR"),
+            new DistributionByRiskInfo("Facul", "Munich Re", "100.000000", "26.000000", "CAR"),
+            new DistributionByRiskInfo("QS", "QS Pool", "60.000000", "30.000000", "CAR"),
+            new DistributionByRiskInfo("QS", "PhilNaRe", "2.000000", "30.000000", "CAR"),
+            new DistributionByRiskInfo("QS", "Munich Re", "38.000000", "30.000000", "CAR"),
 
         ];
         return this.distributionByRiskData;
