@@ -165,7 +165,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
             this.autoFill = Array(this.pageLength -  this.displayData.length%this.pageLength).fill(this.fillData);
         }
         this.displayLength = this.displayData.length;
-        if(typeof this.autoFill != "undefined" && this.displayData.length%this.pageLength != 0)
+        if((typeof this.autoFill != "undefined" && this.displayData.length%this.pageLength != 0) || this.displayData.length)
             this.displayData = this.displayData.concat(this.autoFill);
     }
 }
