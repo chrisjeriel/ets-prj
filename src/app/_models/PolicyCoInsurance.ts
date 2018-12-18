@@ -1,18 +1,21 @@
 export class PolicyCoInsurance{
-    risk: string;
+    policyNum: string;
+    refPolNum: string;
     company: string;
     sharePercentage: number;
     shareSumInsured: number;
     sharePremium: number;
 
-    constructor(risk: string,
+    constructor(policyNum: string,
+                refPolNum: string,
                 company: string,
                 sharePercentage: number,
                 shareSumInsured: number,
                 sharePremium: number
                 )
     {
-        this.risk = risk;
+        this.policyNum = policyNum;
+        this.refPolNum = refPolNum;
         this.company = company;
         this.sharePercentage = sharePercentage;
         this.shareSumInsured = shareSumInsured;

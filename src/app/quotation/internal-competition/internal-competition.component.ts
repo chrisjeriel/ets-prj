@@ -38,6 +38,11 @@ export class InternalCompetitionComponent implements OnInit {
    
   }
 
+  clickRow(event) {
+       // var result = event.target.closest('tr').children[1].innerText;
+       //  console.log(result);
+       // for(var i = 0; i < event.target.closest("tr").children.length; i++) {
+       //   console.log(event.target.closest("tr").children[i].ng-reflect-model.text);
+      }
+  }
 
-
-}

@@ -1,9 +1,37 @@
 .txt-content-rght{
     text-align: right
 }
-.mrgn-fieldset{
+  .mrgn-fieldset{
     margin-top: 17px;
-}
-.fieldset-height{
+} 
+/* .fieldset-height{
     height: 104%;
+} */
+.prnt-dv{
+    position: relative;
+}
+.chld-dv1{
+    position: absolute;
+    bottom: 0;
+    right: 33.25%;
+}
+.chld-dv2{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding-right:0; 
+}
+.fldst-height {
+    height: 100%;
+    /* padding-top: 15px !important;  */
+}
+
+legend.scheduler-border {
+    font-size: 10.5px !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    width:auto;
+    padding:10px 10px;
+    margin-bottom: -11px;
+    color: #2d5986;
 }

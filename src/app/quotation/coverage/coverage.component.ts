@@ -15,6 +15,11 @@ export class CoverageComponent implements OnInit {
   dataTypes: any[] = [];
   selOptions: any[] = [];
   magnifyingGlass: any[] = ['coverCode'];
+  optionsData: any[] = [];
+  optionsData2: any[] = [];
+
+  msHeaderTxt: string = "";
+  msData: any[] = [];
 
   nData: QuotationCoverageInfo = new QuotationCoverageInfo(null, null, null, null, null, null);
   //nData: NotesReminders = new NotesReminders(null, null, null, null, null, null, 'user', new Date());
@@ -23,7 +28,21 @@ export class CoverageComponent implements OnInit {
 
   temp: number = 0;
 
+  printSelectedValue(event) {
+    console.log(event.item);
+  }
+
+  getMS(event) {
+    console.log(event.allSelectedData);
+  }
+
   ngOnInit() {
+    this.optionsData.push("USD", "PHP", "EUR");
+    this.optionsData2.push("a", "b", "c");
+
+    this.msHeaderTxt = "COVERAGE";
+    this.msData.push("one", "two", "three");
+
 
     this.tHeader.push("");
     this.tHeader.push("Cover Code");
@@ -45,8 +64,6 @@ export class CoverageComponent implements OnInit {
 
     this.tableData = this.quotationService.getCoverageInfo();
 
-    //this.tableData = this.notesService.getNotesReminders();
-
     // this.quotationCoverageInfo = new QuotationCoverageInfo(null, null, null, null, null, null, null, null);
     // this.quotationCoverageInfo.quotationNo = "MOCK DATA";
     // this.quotationCoverageInfo.insured = "MOCK DATA";
@@ -57,7 +74,5 @@ export class CoverageComponent implements OnInit {
     // this.quotationCoverageInfo.deductibles = "MOCK DATA";
     // this.quotationCoverageInfo.remarks = "MOCK DATA";
   }
-
-
 
 }

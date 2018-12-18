@@ -15,7 +15,7 @@ export class QuoteEndorsementComponent implements OnInit {
 
   quoteOptionTableData: any[] = [];
   quoteOptionTHeader : any[] = ['Option No','Rate(%)','Conditions','Comm Rate Quota(%)', 'Comm Rate Surplus(%)','Comm Rate Fac(%)'];
-  quoteOptionDataType: any[] = ['text','percent','text','percent','percent','percent'];
+  quoteOptionDataType: any[] = ['text','percent','text','percent','percent','percent','percent'];
   quoteOptionNData: QuotationOption = new QuotationOption(null,null,null,null,null,null);
   quoteOptionMagnifyingGlass:any[] = ['conditions'];
   quoteOptionEdited:QuotationOption[]=[];  
@@ -48,6 +48,7 @@ export class QuoteEndorsementComponent implements OnInit {
   }
 
   clickRow(event){
-    this.tableData = this.quotationService.getEndorsements(event.path[1].childNodes[3].childNodes[2].innerText);
+    console.log(event);
+    this.tableData = this.quotationService.getEndorsements(event.target.closest("tr").children[1].innerText);
   }
 }

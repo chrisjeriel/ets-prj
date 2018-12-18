@@ -15,17 +15,16 @@ export class PolOtherRatesComponent implements OnInit {
   magnifyingGlass: any[] = ['deductible', 'others'];
 
 
-  nData: UnderwritingOtherRatesInfo = new UnderwritingOtherRatesInfo(null, null, null, null);
+  nData: UnderwritingOtherRatesInfo = new UnderwritingOtherRatesInfo(null, null, null);
 
   constructor(private underwritingservice: UnderwritingService) { }
   @Input() alteration: boolean;
+  
   ngOnInit() {
-    this.tHeader.push("");
     this.tHeader.push("Others");
     this.tHeader.push("Amounts");
     this.tHeader.push("Deductible");
 
-    this.dataTypes.push("checkbox");
     this.dataTypes.push("text");
     this.dataTypes.push("currency");
     this.dataTypes.push("text");

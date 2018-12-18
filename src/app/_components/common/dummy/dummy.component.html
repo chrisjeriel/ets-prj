@@ -2,10 +2,13 @@
     <h4>Available Components: </h4>
     <fieldset class="scheduler-border">
         <legend class="scheduler-border">Table Sample</legend>
-        <app-cust-table [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes"></app-cust-table>
+        <app-cust-table [filters]="filters" [tableData]="tableData" [tHeader] = "tHeader" [dataTypes] = "dataTypes" [filterDataTypes] = "filterDataTypes"></app-cust-table>
         <app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData2" [tHeader]="tHeader"></app-cust-editable-table>
     </fieldset>
-    <app-modal>
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">Modal Sample</legend>
+        <br/>
+        <app-modal>
         <div header>TESTING</div>
         <div body>
             <app-cust-table [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes"></app-cust-table>
@@ -22,4 +25,18 @@
             </app-modal>
         </div>
     </app-modal>
+    <button type="button" class="cust-btn" (click)="open()">Open Modal from Parent </button>
+    </fieldset>
+    <br/>
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">Table Samples (Non DataTables)</legend>
+       <!-- <app-cust-non-datatable [tableData]="tableData3" [tHeader]="tHeader2" [dataTypes]="dataTypes2" [resizable]="resizables" [filters]="filters"></app-cust-non-datatable>-->
+        <app-cust-non-datatable [passData] = "passData" [filterDataTypes] = "filterDataTypes2"></app-cust-non-datatable>
+        <br/>
+        <app-cust-editable-non-datatable [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData2" [tHeader]="tHeader"></app-cust-editable-non-datatable>
+    </fieldset>
+    <br>
+    <br>
+    <br>
+    <button type="button" name="random" (click)="random()">Random</button> >
 </div>

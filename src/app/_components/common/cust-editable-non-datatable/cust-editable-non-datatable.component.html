@@ -1,0 +1,173 @@
+<style>
+    thead tr th {
+        position: relative;
+    }
+    span.ui-column-resizer {
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 0;
+        width: 8px;
+        height: 100%;
+        padding: 0;
+        cursor: col-resize;
+    }
+
+</style>
+
+
+<div id="cust-table-container">
+    <br />
+    <div ngbDropdown>
+        <div class="cust-btn-container">
+            <button *ngIf="addFlag" class="cust-btn" (click)="onClickAdd()"><a>Add</a></button>
+            <button *ngIf="editFlag" class="cust-btn" (click)="onClickEdit()"><a class="paginate_button previous">Edit</a></button>
+            <button *ngIf="deleteFlag" class="cust-btn" (click)="onClickDelete()"><a class="paginate_button previous">Delete</a></button>
+        </div>
+        <div class="search-filter">
+            <!--<div class="search-filter" *ngIf="passData.hasSearch">-->
+            <label>Search: &nbsp;
+                <input type="search" class="form-control-sm cust-search-form" [(ngModel)]="searchString" (ngModelChange)="search($event)">
+            </label>
+        </div>
+        <div ngbDropdownMenu aria-labelledby="dropdownConfig">
+            <div class="dropdown-item">
+                <span class="cust-tbl-label">Filter by:</span>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <input type="checkbox"><span>&nbsp;Quote No</span>
+                        </div>
+                    </div>
+                    <input type="text" class="form-control cust-sm">
+                </div>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <input type="checkbox"><span>&nbsp;Branch</span>
+                        </div>
+                    </div>
+                    <input type="text" class="form-control cust-sm">
+                </div>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <input type="checkbox"><span>&nbsp;Line Class</span>
+                        </div>
+                    </div>
+                    <input type="text" class="form-control cust-sm">
+                </div>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <input type="checkbox"><span>&nbsp;Insured</span>
+                        </div>
+                    </div>
+                    <input type="text" class="form-control cust-sm">
+                </div>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <input type="checkbox"><span>&nbsp;Quote Date</span>
+                        </div>
+                    </div>
+                    <input type="date" class="form-control cust-sm">
+                </div>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <input type="checkbox"><span>&nbsp;Validity Date</span>
+                        </div>
+                    </div>
+                    <input type="date" class="form-control cust-sm">
+                </div>
+                <div class="input-group">
+                    <button class="cust-filter cust-tbl-submit"><a>Ok</a></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="table-scroll" id="cust-scroll">
+        <table id="sample2" class="row-border hover dataTable no-footer">
+            <thead>
+                <tr style="min-width: 96px">
+                    <th *ngIf="checkFlag"></th>
+                    <th *ngFor="let tHeader of tHeader; let i = index" (click)="sort(dataKeys[i],sortBy);sortIndex=i;">
+                        <span class="ui-column-resizer" (mousedown)="onMouseDown($event)"></span>
+                        <span class="gridHeader">{{tHeader}}</span>
+                        <i *ngIf="showSort(sortBy,i)" class="fa fa-caret-down"></i>
+                        <i *ngIf="showSort(!sortBy,i)" class="fa fa-caret-up"></i>
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let data of displayData | paginate: { id: 'editable', itemsPerPage: pageLength, currentPage: p2 };let ti = index" (click)="onRowClick($event)" (dblclick)="onRowDblClick($event)">
+                    <td *ngIf="checkFlag">&nbsp;&nbsp;&nbsp;<input type="checkbox" name="checkbox"></td>
+                    <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]">
+                        <div>
+                            <a><i *ngIf="magnifyingGlass.indexOf(key)!=-1" class="fa fa-search"></i></a> &nbsp;
+                            <input *ngSwitchCase="'percent'" class="editable-text text-right number" type="text" [ngModel]="processData(key, data) | number:'1.7-7'"
+                                   [ngModelOptions]="{updateOn:'blur'}" (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
+                            <input *ngSwitchCase="'number'" class="editable-text text-right number" type="text" [ngModel]="processData(key, data)"
+                                   [ngModelOptions]="{updateOn:'blur'}" (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
+                            <input *ngSwitchCase="'currency'" class="editable-text text-right number" type="text" [ngModel]="processData(key, data) | number:'1.2-2'"
+                                   [ngModelOptions]="{updateOn:'blur'}" (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
+                            <input *ngSwitchCase="'checkbox'" type="checkbox">
+                            <select *ngSwitchCase="'select'" class="editable-select" [value]="processData(key, data)">
+                                <ng-container *ngFor="let data of opts">
+                                    <ng-container *ngIf="key == data.selector">
+                                        <option *ngFor="let val of data.vals">{{ val }}</option>
+                                    </ng-container>
+                                </ng-container>
+                            </select>
+
+                            <input *ngSwitchCase="'date'" class="editable-date" type="date" [ngModel]="processData(key, data) | date:'yyyy-MM-dd'"
+                                   (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
+                            <input *ngSwitchCase="'time'" class="editable-date" type="time" [ngModel]="processData(key, data) | date:'HH:mm'">
+                            <input *ngSwitchCase="'datetime'" class="editable-date" type="datetime-local" [ngModel]="processData(key, data) | date:'yyyy-MM-ddTHH:mm'">
+                            <input *ngSwitchDefault class="editable-text " type="text" [ngModel]="processData(key, data)" (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
+                        </div>
+                    </td>
+                    <td *ngIf="tHeader.indexOf('Edit Flag')!= -1">
+                        <div align="center">
+                            <input type="checkbox" name="">
+                        </div>
+                    </td>
+                    <td *ngIf="selectFlag">
+                        <select class="editable-select">
+                            <option *ngFor="let options of options">{{options}}</option>
+                        </select>
+                    </td>
+                    <td *ngIf="tHeader.indexOf('Actions')!=-1" class="icon">
+                        <button class="fa fa-upload" title="Upload"></button>
+                        <button class="fa fa-download" title="Download"></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="pagingStatus">
+        <!--<div class="pagingStatus" *ngIf="passData.hasPageInfo">-->
+        <!-- <pagination-template #api="paginationApi" (pageChange)="p = $event">
+<label *ngIf="!api.isLastPage()">Showing {{ (api.getCurrent() - 1) * passData.pageLength + 1 }} - {{ api.getCurrent() * passData.pageLength }} of {{displayData.length}} entries</label>
+<label *ngIf="api.isLastPage()">Showing {{ (api.getCurrent() - 1) * passData.pageLength + 1 }} - {{displayData.length}} of {{displayData.length}} entries</label>
+</pagination-template>-->
+        <pagination-template #api="paginationApi" id="editable" (pageChange)="p2 = $event">
+            <!--  <label *ngIf="!api.isLastPage() && displayLength > 0">Showing {{ (api.getCurrent() - 1) * passData.pageLength + 1 }} - {{ api.getCurrent() * passData.pageLength }} of {{displayLength}} entries {{api.getCurrent()}}</label>
+<label *ngIf="api.isLastPage() && displayLength > 0">Showing {{ (api.getCurrent() - 1) * passData.pageLength + 1 }} - {{displayLength}} of {{displayLength}} entries</label>
+<label *ngIf="displayLength < 1">Showing 0 - 0 of 0 entries</label>-->
+            <label *ngIf="!api.isLastPage() && displayLength > 0">Showing {{ (api.getCurrent() - 1) * pageLength + 1 }} - {{ api.getCurrent() * pageLength }} of {{displayLength}} entries</label>
+            <label *ngIf="api.isLastPage() && displayLength > 0">Showing {{ (api.getCurrent() - 1) * pageLength + 1 }} - {{displayLength}} of {{displayLength}} entries</label>
+            <label *ngIf="displayLength < 1">Showing 0 - 0 of 0 entries</label>
+        </pagination-template>
+    </div>
+    <div class="pagination">
+        <!--<div class="pagination" *ngIf="passData.hasPagination">-->
+        <!-- <pagination-template class="" #api="paginationApi" (pageChange)="p = $event"><a (click)="api.setCurrent(1)">&laquo;</a></pagination-template>-->
+        <pagination-controls id="editable" class="my-pagination" (pageChange)="p2 = $event" previousLabel="" nextLabel="">
+        </pagination-controls>
+        <!--<pagination-template class="" #api="paginationApi" (pageChange)="p = $event"> <a (click)="api.setCurrent(api.getLastPage())">&raquo;</a></pagination-template>-->
+    </div>
+</div>

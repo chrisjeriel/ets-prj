@@ -7,6 +7,7 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SidebarModule } from 'ng-sidebar';
 import { DataTablesModule } from 'angular-datatables';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 // used to create fake backend
 import { fakeBackendProvider } from './_helpers';
@@ -59,10 +60,17 @@ import { ChangeQuoteStatusComponent } from './quotation/change-quote-status/chan
 import { PolAlopComponent } from './underwriting/policy-issuance/pol-alop/pol-alop.component';
 import { InquiryComponent } from './underwriting/inquiry/inquiry.component';
 import { PolicyInquiryComponent } from './underwriting/inquiry/policy-inquiry/policy-inquiry.component';
-import { PolDistComponent } from './underwriting/policy-distribution/pol-dist/pol-dist.component';
+import { QuoAlopComponent } from './quotation/quo-alop/quo-alop.component';
+import { CustNonDatatableComponent } from './_components/common/cust-non-datatable/cust-non-datatable.component';
+import { CustEditableNonDatatableComponent } from './_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { SearchPipe } from './_pipes/search.pipe';
+import { PolDistListComponent } from './underwriting/distribution/pol-dist-list/pol-dist-list.component';
+import { SelectComponent } from './_components/common/select/select.component';
+import { MultipleSelectComponent } from './_components/common/multiple-select/multiple-select.component';
+import { DistributionByRiskComponent } from './underwriting/policy-distribution/pol-distribution/distribution-by-risk/distribution-by-risk.component';
 import { PolicyDistributionComponent } from './underwriting/policy-distribution/policy-distribution.component';
 import { PolDistributionComponent } from './underwriting/policy-distribution/pol-distribution/pol-distribution.component';
-
+import { PolDistComponent } from './underwriting/policy-distribution/pol-dist/pol-dist.component';
 
 @NgModule({
     imports: [
@@ -76,7 +84,7 @@ import { PolDistributionComponent } from './underwriting/policy-distribution/pol
         SidebarModule.forRoot(),
         FormsModule,
         DataTablesModule,
-
+        NgxPaginationModule,
     ],
     declarations: [
         AppComponent,
@@ -127,6 +135,14 @@ import { PolDistributionComponent } from './underwriting/policy-distribution/pol
         PolAlopComponent,
         InquiryComponent,
         PolicyInquiryComponent,
+        QuoAlopComponent,
+        CustNonDatatableComponent,
+        CustEditableNonDatatableComponent,
+        SearchPipe,
+        PolDistListComponent,
+        SelectComponent,
+        MultipleSelectComponent,
+        DistributionByRiskComponent,
         PolDistComponent,
         PolicyDistributionComponent,
         PolDistributionComponent,

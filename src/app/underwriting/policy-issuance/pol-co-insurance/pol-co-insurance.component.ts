@@ -16,8 +16,7 @@ export class PolCoInsuranceComponent implements OnInit {
     tHeader: any[] = [];
     options: any[] = [];
     dataTypes: any[] = [];
-    nData: PolicyCoInsurance = new PolicyCoInsurance(null, null, null, null, null);
-    magnifyingGlass: any[] = ["company"];
+    nData: PolicyCoInsurance = new PolicyCoInsurance(null, null, null, null, null, null);
     
     @Input() alteration: boolean;
 
@@ -28,14 +27,16 @@ export class PolCoInsuranceComponent implements OnInit {
 
     ngOnInit() : void{
         //this.tHeader.push("");
-        this.tHeader.push("Risk");
-        this.tHeader.push("Company");
+        this.tHeader.push("Policy No");
+         this.tHeader.push("Ref Policy No");
+        this.tHeader.push("Ceding Company");
         this.tHeader.push("Share Percentage");
         this.tHeader.push("Share Sum Insured");
         this.tHeader.push("Share Premium");
         //this.tHeader.push("Actions");
 
         //this.dataTypes.push("checkbox");
+        this.dataTypes.push("string");
         this.dataTypes.push("string");
         this.dataTypes.push("string");
         this.dataTypes.push("percent");

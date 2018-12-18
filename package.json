@@ -34,6 +34,8 @@
     "jquery": "^3.3.1",
     "ng-bootstrap": "^1.6.3",
     "ng-sidebar": "^8.0.0",
+    "ngx-pagination": "^3.2.1",
+    "random-words": "^1.1.0",
     "rxjs": "~6.3.3",
     "zone.js": "~0.8.26"
   },
