@@ -26,9 +26,9 @@ export class PolCoverageComponent implements OnInit {
     this.tHeader.push("Cover Code");
     this.tHeader.push("Section");
     this.tHeader.push("Bullet No");
-    this.tHeader.push("Premium");
-    this.tHeader.push("Rate");
     this.tHeader.push("Sum Insured");
+    this.tHeader.push("Rate");
+    this.tHeader.push("Prenium");
     this.tHeader.push("Add Sl");
 
     this.dataTypes.push("text");

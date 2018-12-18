@@ -1,0 +1,219 @@
+<div>
+	<fieldset class="scheduler-border">
+	    <legend class="scheduler-border">Policy Record Info</legend>
+	    <div class="form-row custom-row-inline-inset">
+	      <div class="input-group">
+	        <label class="form-control-sm col-sm-1" for="xx">Policy No</label>
+	        <input type="text" id="xx" value="CAR-2018-5081-077-0177" class="form-control form-control-sm cust-sm col-sm-2"
+	          placeholder="" readonly>
+	        <label class="form-control-sm col-sm-1" for="xx">Insured</label>
+	        <input type="text" id="xx" value="Insurer" class="form-control form-control-sm cust-sm col-sm-7" placeholder=""
+	          readonly>
+	      </div>
+	      <div class="input-group">
+	        <label class="form-control-sm col-sm-1" for="xx">Risk</label>
+	        <input type="text" id="xx" value="Risk Name" class="form-control form-control-sm cust-sm col-sm-10" placeholder=""
+	          readonly>
+	      </div>
+	    </div>
+	</fieldset>
+</div>
+
+
+<div class="row">
+    <div class="col-sm-12">
+    <fieldset class="scheduler-border">
+      <legend class="scheduler-border">Invoice Information</legend>
+      	<div class="row">
+      		  <div class="input-group" style="margin-top: -10px;">
+                        &nbsp;
+              </div>
+		      <div class="cust-sm col-sm-12">
+		      		<app-cust-editable-table [nData]="nData" [tableData]="tableData"
+      [tHeader]="tHeader" [opts]="options" [dataTypes]="dataTypes"></app-cust-editable-table>
+		      </div>
+		</div>
+      	<div class="row">
+      		  <div class="input-group" style="margin-top: -10px;">
+                        &nbsp;
+              </div>
+		      <div class="cust-sm col-sm-1"></div>
+		      <div class="col-sm-3">
+		      	<div class="input-group">
+		      		<label class="form-control-sm col-sm-4">Take Up</label>
+		            <input type="text" class="form-control form-control-sm cust-sm col-sm-8">
+		      	</div>
+		      </div>
+		      <div class="col-sm-3">
+		      	<div class="input-group">
+		      		<label class="form-control-sm col-sm-5">Multi Booking Date</label>
+		            <input type="text" class="form-control form-control-sm cust-sm col-sm-7">
+		      	</div>
+		      </div>
+		      <div class="col-sm-1"></div>
+		      <div class="col-sm-3">
+		      	<div class="input-group">
+		      		<label class="form-control-sm col-sm-4">Prenium</label>
+		            <input type="text" class="form-control form-control-sm cust-sm">
+		      	</div>
+		      </div>
+		</div>
+		<div class="row">
+			<div class="cust-sm col-sm-1"></div>
+		      <div class="col-sm-3">
+		      	<div class="input-group">
+		      		<label class="form-control-sm col-sm-4">Pay Term</label>
+		            <select class="form-control form-control-sm drp-dwn-cstmz col-sm-3">
+                            <option class="form-control form-control-sm"></option>
+                            <option class="form-control form-control-sm">Cash</option>
+                            <option class="form-control form-control-sm">Installment</option>
+                    </select>
+                    <input type="text" class="form-control form-control-sm col-sm-5">
+		      	</div>
+		      </div>
+		      <div class="col-sm-3">
+		      	<div class="input-group">
+		      		<label class="form-control-sm col-sm-5">Ref Invoice No</label>
+		            <input type="text" class="form-control form-control-sm cust-sm">
+		      	</div>
+		      </div>
+		      <div class="col-sm-1"></div>
+		      <div class="col-sm-3">
+		      	<div class="input-group">
+		      		<label class="form-control-sm col-sm-4">Total Tax</label>
+		            <input type="text" class="form-control form-control-sm cust-sm">
+		      	</div>
+		      </div>
+		</div>
+		<div class="row">
+			<div class="cust-sm col-sm-1"></div>
+		      <div class="col-sm-3">
+		      	<div class="input-group">
+		      		<label class="form-control-sm col-sm-4">Due Date</label>
+                    <input type="date" class="form-control form-control-sm col-sm-8">
+		      	</div>
+		      </div>
+		      <div class="col-sm-3">
+		      	<div class="input-group">
+		      		<label class="form-control-sm col-sm-5">Payment Type</label>
+		            <select class="form-control form-control-sm drp-dwn-cstmz col-sm-7">
+                            <option class="form-control form-control-sm"></option>
+                            <option class="form-control form-control-sm">Cash</option>
+                            <option class="form-control form-control-sm">Installment</option>
+                    </select>
+		      	</div>
+		      </div>
+		      <div class="col-sm-1"></div>
+		      <div class="col-sm-3">
+		      	<div class="input-group">
+		      		<label class="form-control-sm col-sm-4">Amount Due</label>
+		            <input type="text" class="form-control form-control-sm cust-sm">
+		      	</div>
+		      </div>
+		</div>
+		<div class="row">
+			<div class="cust-sm col-sm-1"></div>
+		      <div class="col-sm-6">
+		      	<div class="input-group">
+		      		<label class="form-control-sm col-sm-2">Remarks</label>
+                    <input type="date" class="form-control form-control-sm">
+		      	</div>
+		      </div>
+		      <div class="col-sm-1"></div>
+		      <div class="col-sm-3">
+		      	<div class="input-group">
+		      		<label class="form-control-sm col-sm-4">Currency</label>
+		            <input type="text" class="form-control form-control-sm cust-sm">
+		      	</div>
+		      </div>
+		</div>
+		<div class="row">
+			<div class="col-sm-6"></div>
+			<div class="col-sm-1">
+				<button class="cust-btn btn">Update</button>
+			</div>
+			<div class="col-sm-6"></div>
+		</div>
+    </fieldset>
+    </div>
+</div>
+<!-- 
+<div>
+	 <fieldset class="scheduler-border">
+       <legend class="scheduler-border">Invoice Information</legend>
+       	<div></div>
+        <div class="cust-sm">
+          <div class="cust-sm col-sm-1"></div>
+          	<div class="cust-sm">
+            <div class="row" style="margin-right: 0px; margin-bottom: 11px;">
+                    <div class="input-group" style="margin-top: -10px;">
+                        &nbsp;
+                    </div>
+                    <div class="input-group">
+                            <label class="form-control-sm col-sm-2">Take Up</label>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-4">
+                            <label class="form-control-sm col-sm-2">Multi Booking Date</label>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-4">
+                            <label class="form-control-sm col-sm-2">Prenium</label>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-4">
+                    </div>
+                    <div class="input-group">
+                            <label class="form-control-sm col-sm-2">Pay Term</label>
+                            <select class="form-control form-control-sm drp-dwn-cstmz col-sm-1">
+                            	<option class="form-control form-control-sm"></option>
+                            	<option class="form-control form-control-sm">Cash</option>
+                            	<option class="form-control form-control-sm">Installment</option>
+                            </select>
+                            <input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 5px;">
+                            <label class="form-control-sm col-sm-2">Ref Invoice No</label>
+                            <input type="text" class="form-control form-control-sm">
+                            <label class="form-control-sm col-sm-2">Total Tax</label>
+                            <input type="text" class="form-control form-control-sm">
+                    </div>
+                    <div class="input-group">
+                            <label class="form-control-sm col-sm-2">Dute Date</label>
+                            <input type="Date" class="form-control form-control-sm">
+                            <label class="form-control-sm col-sm-2">Payment Type</label>
+                            <select class="form-control form-control-sm drp-dwn-cstmz">
+                            	<option class="form-control form-control-sm"></option>
+                            	<option class="form-control form-control-sm">Cash</option>
+                            	<option class="form-control form-control-sm">Installment</option>
+                            </select>
+                            <label class="form-control-sm col-sm-2">Amount Due</label>
+                            <input type="text" class="form-control form-control-sm">
+                    </div>
+                    <div class="input-group">
+                            <label class="form-control-sm col-sm-2">Remarks</label>
+                            <input type="text" class="form-control form-control-sm">
+                            <label class="form-control-sm col-sm-2">Currency</label>
+                            <input type="text" class="form-control form-control-sm">
+                    </div>
+            </div>
+            </div>
+        </div>
+    </fieldset>
+</div> -->
+<div>
+	<fieldset class="scheduler-border">
+		<legend class="scheduler-border">Tax Information</legend>
+			<div class="cust-sm">
+				<div class="cust-sm col-sm-1"></div>
+				<div class="cust-sm">
+					 <app-cust-editable-table [addFlag]="true" [deleteFlag]="true" [nData]="nData" [tableData]="tableData"
+      [tHeader]="tHeader" [opts]="options" [dataTypes]="dataTypes"></app-cust-editable-table>
+				</div>
+			</div>
+	</fieldset>
+</div>
+
+ <div class="form-row">
+    <div class="form-group col-sm">
+      <div class="col-md-13 text-center">
+        <br>
+        <div class="cust-btn-container">
+          <button type="button" class="cust-btn" (click)="pol($event)"><a>Cancel</a></button>
+          <button type="button" class="cust-btn"><a>Save</a></button>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo, PolicyPrinting, PrinterList, ALOPItemInformation, UnderwritingPolicyInquiryInfo, ItemInformation, UnderwritingPolicyDistList, DistributionByRiskInfo, PolicyEndorsement } from '@app/_models';
+import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo, PolicyPrinting, PrinterList, ALOPItemInformation, UnderwritingPolicyInquiryInfo, ItemInformation, UnderwritingPolicyDistList, DistributionByRiskInfo, PolicyEndorsement, PolicyInwardPolBalance } from '@app/_models';
 
 @Injectable({ providedIn: 'root' })
 export class UnderwritingService {
@@ -24,7 +24,7 @@ export class UnderwritingService {
     policyEndorsement: PolicyEndorsement[] = [];
     policyDistListData: UnderwritingPolicyDistList[] = [];
     distributionByRiskData: DistributionByRiskInfo[] = [];
-
+    policyInwardPolicy: PolicyInwardPolBalance[] = [];
 
     constructor(private http: HttpClient) {
 
@@ -231,5 +231,16 @@ export class UnderwritingService {
 
         ];
         return this.distributionByRiskData;
+    }
+
+    getInwardPolBalance(){
+        this.policyInwardPolicy = [
+            new PolicyInwardPolBalance("EXE-CODE","TEST",1,"TEST"),
+            new PolicyInwardPolBalance("EXE-CODE","TEST",1,"TEST"),
+            new PolicyInwardPolBalance("EXE-CODE","TEST",1,"TEST"),
+            new PolicyInwardPolBalance("EXE-CODE","TEST",1,"TEST"),
+            new PolicyInwardPolBalance("EXE-CODE","TEST",1,"TEST")
+        ];
+        return this.policyInwardPolicy;
     }
 }            

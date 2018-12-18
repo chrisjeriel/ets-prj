@@ -71,6 +71,7 @@ import { DistributionByRiskComponent } from './underwriting/policy-distribution/
 import { PolicyDistributionComponent } from './underwriting/policy-distribution/policy-distribution.component';
 import { PolDistributionComponent } from './underwriting/policy-distribution/pol-distribution/pol-distribution.component';
 import { PolDistComponent } from './underwriting/policy-distribution/pol-dist/pol-dist.component';
+import { InwardPolBalanceComponent } from './underwriting/policy-issuance/inward-pol-balance/inward-pol-balance.component';
 
 @NgModule({
     imports: [
@@ -146,6 +147,7 @@ import { PolDistComponent } from './underwriting/policy-distribution/pol-dist/po
         PolDistComponent,
         PolicyDistributionComponent,
         PolDistributionComponent,
+        InwardPolBalanceComponent,
     ],
 
     providers: [

@@ -2,18 +2,18 @@ export class UnderwritingCoverageInfo {
     coverCode: string;
     section: string;
     bulletNo: string;
-    premium: string;
-    rate: string;
     sumInsured: string;
+    rate: string;
+    premium: string;
     addSl: string;
 
     constructor(
                 coverCode: string, 
                 section: string, 
-                bulletNo: string, 
-                premium: string, 
+                bulletNo: string,
+                sumInsured: string,  
                 rate: string, 
-                sumInsured: string, 
+                premium: string,
                 addSl: string) {
         this.coverCode = coverCode;
         this.section = section;
