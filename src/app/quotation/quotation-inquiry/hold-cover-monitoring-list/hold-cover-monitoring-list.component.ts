@@ -21,6 +21,73 @@ export class HoldCoverMonitoringListComponent implements OnInit {
         this.pageLength = 10;
     }
 
+    passData: any = {
+        tableData: [], 
+        tHeader: ['Hold Cover No.','Status','Ceding Company','Quotation No.','Risk','Insured', 'Period From','Period To','Comp. Ref. Hold Cover No.','Requested By', 'Request Date'],
+        dataTypes: [],
+        resizable: [false, false, true, false, true, true, false, false, false, true, false],
+        filters: [
+            {
+                key: 'holdCoverNo',
+                title:'Hold Cover No.',
+                dataType: 'text'
+            },
+            {
+                key: 'status',
+                title:'Status',
+                dataType: 'text'
+            },
+            {
+                key: 'cedingCompany',
+                title:'Ceding Company',
+                dataType: 'text'
+            },
+            {
+                key: 'quotationNo',
+                title:'Quotation No',
+                dataType: 'text'
+            },
+            {
+                key: 'risk',
+                title:'Risk',
+                dataType: 'text'
+            },
+            {
+                key: 'insured',
+                title:'Insured',
+                dataType: 'text'
+            },
+            {
+                key: 'periodFrom',
+                title:'Period From',
+                dataType: 'date'
+            },
+            {
+                key: 'periodTo',
+                title:'Period To',
+                dataType: 'date'
+            },
+            {
+                key: 'compRefHoldCoverNo',
+                title:'Comp. Ref. Hold Cover No.',
+                dataType: 'text'
+            },
+            {
+                key: 'requestedBy',
+                title:'Requested By',
+                dataType: 'text'
+            },
+            {
+                key: 'requestDate',
+                title:'Request Date',
+                dataType: 'date'
+            },
+
+        ],
+        pageLength: 10,
+        expireFilter: true, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, 
+    }
+
     ngOnInit() {
         this.tHeader.push("Hold Cover No.");
         this.tHeader.push("Status");
@@ -34,43 +101,44 @@ export class HoldCoverMonitoringListComponent implements OnInit {
         this.tHeader.push("Requested By");
         this.tHeader.push("Request Date");
 
-        this.filters.push("Ced. Company");
-        this.filters.push("Quotation No.");
-        this.filters.push("Hold Cover No.");
-        this.filters.push("Risk");
-        this.filters.push("Insured");
-        this.filters.push("Period From");
-        this.filters.push("Period To");
-        this.filters.push("Comp. Ref. Hold Cover No.");
-        this.filters.push("Requested By");
-        this.filters.push("Request Date");
-        this.filters.push("Status");
+        this.passData.filters.push("Hold Cover No.");
+        this.passData.filters.push("Status");
+        this.passData.filters.push("Ced. Company");
+        this.passData.filters.push("Quotation No.");
+        this.passData.filters.push("Risk");
+        this.passData.filters.push("Insured");
+        this.passData.filters.push("Period From");
+        this.passData.filters.push("Period To");
+        this.passData.filters.push("Comp. Ref. Hold Cover No.");
+        this.passData.filters.push("Requested By");
+        this.passData.filters.push("Request Date");
 
         this.filterDataTypes.push("text");
         this.filterDataTypes.push("text");
         this.filterDataTypes.push("text");
         this.filterDataTypes.push("text");
         this.filterDataTypes.push("text");
-        this.filterDataTypes.push("date");
-        this.filterDataTypes.push("date");
-        this.filterDataTypes.push("text");
         this.filterDataTypes.push("text");
         this.filterDataTypes.push("date");
+        this.filterDataTypes.push("date");
         this.filterDataTypes.push("text");
-
-        this.dataTypes.push("text");
-        this.dataTypes.push("text");
-        this.dataTypes.push("text");
-        this.dataTypes.push("text");
-        this.dataTypes.push("text");
-        this.dataTypes.push("text");
-        this.dataTypes.push("date");
-        this.dataTypes.push("date");
-        this.dataTypes.push("text");
-        this.dataTypes.push("text");
-        this.dataTypes.push("date");
+        this.filterDataTypes.push("text");
+        this.filterDataTypes.push("date");
         
-        this.tableData = this.quotationService.getQuotationHoldCoverInfo();
+
+        this.passData.dataTypes.push("text");
+        this.passData.dataTypes.push("text");
+        this.passData.dataTypes.push("text");
+        this.passData.dataTypes.push("text");
+        this.passData.dataTypes.push("text");
+        this.passData.dataTypes.push("text");
+        this.passData.dataTypes.push("date");
+        this.passData.dataTypes.push("date");
+        this.passData.dataTypes.push("text");
+        this.passData.dataTypes.push("text");
+        this.passData.dataTypes.push("date");
+
+        this.passData.tableData = this.quotationService.getQuotationHoldCoverInfo();
     }
     onRowClick(event) {
         for(var i = 0; i < event.target.parentElement.children.length; i++) {
