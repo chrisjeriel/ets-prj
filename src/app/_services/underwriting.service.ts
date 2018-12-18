@@ -249,6 +249,8 @@ export class UnderwritingService {
         ];
         return this.policyInwardPolicy;
 
+    }
+    
     getPolItemMLPData(){
         this.polItemMLP = [
             new PolItem_MLP("Item 1",5,"sample item",4,3,2),
