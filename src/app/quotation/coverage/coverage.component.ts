@@ -33,7 +33,7 @@ export class CoverageComponent implements OnInit {
   }
 
   getMS(event) {
-    console.log(event.allSelectedData);
+    console.log(event.allSelectedData + ' : ' + event.ids);
   }
 
   ngOnInit() {
@@ -41,7 +41,7 @@ export class CoverageComponent implements OnInit {
     this.optionsData2.push("a", "b", "c");
 
     this.msHeaderTxt = "COVERAGE";
-    this.msData.push("one", "two", "three");
+    this.msData.push("one", "two", "three", "one", "two");
 
 
     this.tHeader.push("Cover Code");
