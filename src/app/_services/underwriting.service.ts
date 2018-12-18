@@ -249,8 +249,6 @@ export class UnderwritingService {
         ];
         return this.policyInwardPolicy;
     }
-
-    }
     
     getPolItemMLPData(){
         this.polItemMLP = [

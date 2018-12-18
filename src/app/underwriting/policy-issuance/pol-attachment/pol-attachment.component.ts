@@ -14,9 +14,8 @@ export class PolAttachmentComponent implements OnInit {
   @Input() alterationFlag ;
 
    tableData: any[] = [];
-   tHeader: any[] = ["File Path","Description","Table Code","Actions"];
+   tHeader: any[] = ["File Path","Description","Actions"];
    nData: PolAttachmentInfo = new PolAttachmentInfo(null, null);
-   options: any[] = ["","Q - Quotation", "P - Policy", "C - Claim", "A - Accounting"];
  
 
   constructor(config: NgbDropdownConfig,private underwritingService: UnderwritingService) { 
