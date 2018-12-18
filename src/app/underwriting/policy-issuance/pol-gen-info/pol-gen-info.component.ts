@@ -15,6 +15,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   filters: any[] = [];
 
   @Input() mode;
+  @Input() alteration: boolean = false;
   line: string;
   private sub: any;
 
@@ -26,9 +27,9 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     this.filters.push("Item No", "Desc. of Items");
     this.tableData = this.underwritingService.getItemInfoData();
 
-  	this.sub = this.route.params.subscribe(params => {
-       this.line = params['line']; 
-  	});
+    this.sub = this.route.params.subscribe(params => {
+      this.line = params['line'];
+    });
   }
 
   ngOnDestroy() {
@@ -36,6 +37,6 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   }
 
   showItemInfoModal(content) {
-      this.modalService.open(content, { centered: true, backdrop: 'static', windowClass : "modal-size" });
+    this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
   }
 }
