@@ -9,6 +9,30 @@ th, td{
     max-width: 150px;
     overflow: hidden;
 }
+
+#non-datatable {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#non-datatable td, #non-datatable th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#non-datatable tr:nth-child(even){background-color: #f2f2f2;}
+
+#non-datatable tr:hover {background-color: #ddd;}
+
+#non-datatable th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #f5f5f5;
+    color: black;
+}
+
 .table-scroll{
     overflow: auto;
     max-width: 100%
@@ -207,7 +231,7 @@ div.input-group {
     background-color: #2d5986;
 }
 .checkbox {
-	width: 0.1em;
+	width: 6px;
 }
 
 tbody tr{
