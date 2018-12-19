@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { QuotationService } from '../../_services';
 import { IntCompAdvInfo } from '@app/_models';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Title } from '@angular/platform-browser';
+
 
 @Component({
   selector: 'app-internal-competition',
@@ -10,39 +12,39 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 })
 export class InternalCompetitionComponent implements OnInit {
   tableData: any[] = [];
-  tHeader: any[] = ["Advice No.","Company","Attention","Position","Advice Option","Advice Wordings","Created By","Date Created", "Last Update By", "Last Update"];
-  dataTypes: any[] = ["text","text","text","text","select","text","text","date", "text", "date"];
-  magnifyingGlass: any[]=["attention","advWord"];
-  nData: IntCompAdvInfo = new IntCompAdvInfo( null,null, null, null, null, null, null, new Date(), null, new Date());
+  tHeader: any[] = ["Advice No.", "Company", "Attention", "Position", "Advice Option", "Advice Wordings", "Created By", "Date Created", "Last Update By", "Last Update"];
+  dataTypes: any[] = ["text", "text", "text", "text", "select", "text", "text", "date", "text", "date"];
+  magnifyingGlass: any[] = ["attention", "advWord"];
+  nData: IntCompAdvInfo = new IntCompAdvInfo(null, null, null, null, null, null, null, new Date(), null, new Date());
   opts: any[] = [];
 
-  constructor(private quotationService: QuotationService, private modalService: NgbModal) { }
+  constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title) { }
 
   ngOnInit() {
+    this.titleService.setTitle("Quo | Internal Competition");
+    this.tableData = this.quotationService.getIntCompAdvInfo();
 
-  	this.tableData = this.quotationService.getIntCompAdvInfo();
-
-    this.opts.push({selector: "advOpt", vals:["Pending", "On Going", "Done"]});
+    this.opts.push({ selector: "advOpt", vals: ["Pending", "On Going", "Done"] });
 
   }
 
   onClickPrint() {
-   
+
   }
 
   onClickCancel() {
-    
+
   }
 
   onClickSave() {
-   
+
   }
 
   clickRow(event) {
-       // var result = event.target.closest('tr').children[1].innerText;
-       //  console.log(result);
-       // for(var i = 0; i < event.target.closest("tr").children.length; i++) {
-       //   console.log(event.target.closest("tr").children[i].ng-reflect-model.text);
-      }
+    // var result = event.target.closest('tr').children[1].innerText;
+    //  console.log(result);
+    // for(var i = 0; i < event.target.closest("tr").children.length; i++) {
+    //   console.log(event.target.closest("tr").children[i].ng-reflect-model.text);
   }
+}
 

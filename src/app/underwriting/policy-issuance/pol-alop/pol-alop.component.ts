@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { UnderwritingService } from '../../../_services';
 import { ALOPItemInformation, ALOPInfo } from '../../../_models';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -10,41 +11,41 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./pol-alop.component.css']
 })
 export class PolAlopComponent implements OnInit {
-  aLOPInfo:ALOPInfo = new ALOPInfo();
-  tableData: any[] = [["test","Test","Test"],
-                      ["test","Test","Test"],
-                      ["test","Test","Test"],
-                      ["test","Test","Test"],
-                      ["test","Test","Test"],
-                      ["test","Test","Test"],
-                      ["test","Test","Test"],
-                      ["test","Test","Test"],
-                      ["test","Test","Test"],
-                      ["test","Test","Test"],
-                      ["test","Test","Test"],
-                      ];
-  tableData2: any[] = [["Test","Test","Test","Test","Test"],
-                       ["Test","Test","Test","Test","Test"],
-                       ["Test","Test","Test","Test","Test"],
-                       ["Test","Test","Test","Test","Test"],
-                       ["Test","Test","Test","Test","Test"],
-                       ["Test","Test","Test","Test","Test"],
-                       ["Test","Test","Test","Test","Test"],
-                       ["Test","Test","Test","Test","Test"],
-                       ["Test","Test","Test","Test","Test"],
-                       ["Test","Test","Test","Test","Test"],
-                       ["Test","Test","Test","Test","Test"],
-                      ]
-  tHeader:string[] = [];
-  tHeader2:string[] = [];
-  policyRecordInfo:any = {};
+  aLOPInfo: ALOPInfo = new ALOPInfo();
+  tableData: any[] = [["test", "Test", "Test"],
+  ["test", "Test", "Test"],
+  ["test", "Test", "Test"],
+  ["test", "Test", "Test"],
+  ["test", "Test", "Test"],
+  ["test", "Test", "Test"],
+  ["test", "Test", "Test"],
+  ["test", "Test", "Test"],
+  ["test", "Test", "Test"],
+  ["test", "Test", "Test"],
+  ["test", "Test", "Test"],
+  ];
+  tableData2: any[] = [["Test", "Test", "Test", "Test", "Test"],
+  ["Test", "Test", "Test", "Test", "Test"],
+  ["Test", "Test", "Test", "Test", "Test"],
+  ["Test", "Test", "Test", "Test", "Test"],
+  ["Test", "Test", "Test", "Test", "Test"],
+  ["Test", "Test", "Test", "Test", "Test"],
+  ["Test", "Test", "Test", "Test", "Test"],
+  ["Test", "Test", "Test", "Test", "Test"],
+  ["Test", "Test", "Test", "Test", "Test"],
+  ["Test", "Test", "Test", "Test", "Test"],
+  ["Test", "Test", "Test", "Test", "Test"],
+  ]
+  tHeader: string[] = [];
+  tHeader2: string[] = [];
+  policyRecordInfo: any = {};
   dataTypes: string[] = [];
   dataTypes2: string[] = [];
-  nData:ALOPItemInformation = new ALOPItemInformation(null,null,null,null,null);
+  nData: ALOPItemInformation = new ALOPItemInformation(null, null, null, null, null);
   line: string;
   sub: any;
 
-  constructor(private underwritingService: UnderwritingService,private modalService: NgbModal,private route: ActivatedRoute) { }
+  constructor(private underwritingService: UnderwritingService, private modalService: NgbModal, private route: ActivatedRoute, private titleService: Title) { }
 
   ngOnInit() {
   	/*this.policyRecordInfo.policyNo = "CAR-2018-5081-077-0177";
@@ -57,6 +58,7 @@ export class PolAlopComponent implements OnInit {
     }
 
   	this.tableData = this.underwritingService.getALOPItemInfos(this.policyRecordInfo.policyNo.substr(0,3));*/
+    this.titleService.setTitle("Pol | ALOP");
 
     this.tHeader.push("Item No");
     this.tHeader.push("Description");
@@ -80,11 +82,11 @@ export class PolAlopComponent implements OnInit {
 
 
     this.sub = this.route.params.subscribe(params => {
-           this.line = params['line']; 
-        });
+      this.line = params['line'];
+    });
   }
 
-  save(){
+  save() {
     console.log(this.aLOPInfo);
   }
 

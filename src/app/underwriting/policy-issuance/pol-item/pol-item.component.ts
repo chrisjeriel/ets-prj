@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PolItem_MLP, PolItem_EEI_MBI_CEC, PolItem_BPV, PolGoods_DOS, PolMachinery_DOS } from '@app/_models';
 import { UnderwritingService } from '../../../_services';
 import { ActivatedRoute } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-pol-item',
@@ -29,19 +30,19 @@ export class PolItemComponent implements OnInit {
     nData_BPV: PolItem_BPV = new PolItem_BPV(null, null, null, null, null);
 
     mlpTableData: PolItem_MLP[];
-    mlpTHeader: string[] = ['Item No','Quantity','Description of Machinery','Indemnity Period(months)','Relative Importance(%)','Spare Parts in stock standby Units'];
-    mlpDataTypes: string[] = ['text','number','text','number','percent','number'];
-    mlpNData: PolItem_MLP = new PolItem_MLP(null,null,null,null,null,null);
+    mlpTHeader: string[] = ['Item No', 'Quantity', 'Description of Machinery', 'Indemnity Period(months)', 'Relative Importance(%)', 'Spare Parts in stock standby Units'];
+    mlpDataTypes: string[] = ['text', 'number', 'text', 'number', 'percent', 'number'];
+    mlpNData: PolItem_MLP = new PolItem_MLP(null, null, null, null, null, null);
 
     dosGoodsTableData: PolGoods_DOS[];
-    dosGoodsTHeader: string[] = ["Item No", "Refrigerating Chamber No", "Type of Goods", "No-Claims Period","Sum Insured"];
-    dosGoodsDataTypes:string[] = ["text","text","text","text","currency"];
-    dosGoodsNData: PolGoods_DOS = new PolGoods_DOS(null,null,null,null,null);
+    dosGoodsTHeader: string[] = ["Item No", "Refrigerating Chamber No", "Type of Goods", "No-Claims Period", "Sum Insured"];
+    dosGoodsDataTypes: string[] = ["text", "text", "text", "text", "currency"];
+    dosGoodsNData: PolGoods_DOS = new PolGoods_DOS(null, null, null, null, null);
 
     dosMachineryTableData: PolMachinery_DOS[];
-    dosMachineryTHeader: string[] = ["Item No","Number of Units", "Description of Items (Technical Data including Capacity)", "Year of Make", "Sum Insured"];
-    dosMachineryDataTypes:string[] = ["text","number","text","number","currency"];
-    dosMachinerysNData: PolMachinery_DOS = new PolMachinery_DOS(null,null,null,null,null);
+    dosMachineryTHeader: string[] = ["Item No", "Number of Units", "Description of Items (Technical Data including Capacity)", "Year of Make", "Sum Insured"];
+    dosMachineryDataTypes: string[] = ["text", "number", "text", "number", "currency"];
+    dosMachinerysNData: PolMachinery_DOS = new PolMachinery_DOS(null, null, null, null, null);
 
     polEEI: boolean = true;
     polBPV: boolean = false;
@@ -51,15 +52,16 @@ export class PolItemComponent implements OnInit {
     line: string;
     sub: any;
 
-    constructor(private route: ActivatedRoute,private underwritingService: UnderwritingService) { }
+    constructor(private route: ActivatedRoute, private underwritingService: UnderwritingService, private titleService: Title) { }
 
     ngOnInit() {
+        this.titleService.setTitle("Pol | Item");
         this.mlpTableData = this.underwritingService.getPolItemMLPData();
         this.dosGoodsTableData = this.underwritingService.getPolGoodsDOSData();
         this.dosMachineryTableData = this.underwritingService.getPolMachineryDOSData();
 
         this.sub = this.route.params.subscribe(params => {
-           this.line = params['line']; 
+            this.line = params['line'];
         });
         console.log(this.line);
     }

@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { UnderwritingService } from '@app/_services/underwriting.service';
 import { UnderwritingCoverageInfo } from '@app/_models';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-pol-coverage',
@@ -10,7 +11,7 @@ import { UnderwritingCoverageInfo } from '@app/_models';
 export class PolCoverageComponent implements OnInit {
 
   private underwritingCoverageInfo: UnderwritingCoverageInfo;
-  tableData: any[] = []; 
+  tableData: any[] = [];
   tHeader: any[] = [];
   dataTypes: any[] = [];
   selOptions: any[] = [];
@@ -21,12 +22,12 @@ export class PolCoverageComponent implements OnInit {
   @Input() alteration: boolean;
 
   nData: UnderwritingCoverageInfo = new UnderwritingCoverageInfo(null, null, null, null, null, null, null);
-  constructor(private underwritingservice: UnderwritingService) { }
+  constructor(private underwritingservice: UnderwritingService, private titleService: Title) { }
 
   ngOnInit() {
 
-
-    if(!this.alteration){
+    this.titleService.setTitle("Pol | Coverage");
+    if (!this.alteration) {
       this.tHeader.push("Cover Code");
       this.tHeader.push("Section");
       this.tHeader.push("Bullet No");
@@ -85,27 +86,27 @@ export class PolCoverageComponent implements OnInit {
 
       this.optionsData.push("USD", "PHP", "EUR");
 
-      this.headerWithColspan.push({header: "", span: 1}, {header: "", span: 3},
-                                {header: "Previous", span: 3}, {header: "This Alteration", span: 3},
-                                {header: "Cumulative", span: 3}, {header: "", span: 1});
+      this.headerWithColspan.push({ header: "", span: 1 }, { header: "", span: 3 },
+        { header: "Previous", span: 3 }, { header: "This Alteration", span: 3 },
+        { header: "Cumulative", span: 3 }, { header: "", span: 1 });
 
       this.tableData = [
-       {
-         coverCode: "ASD",
-         section: "I",
-         bulletNo: 1.2,
-         prevSumInsured: 20,
-         prevRate: 5,
-         prevPremium: 100,
-         thisAltSumInsured: 60,
-         thisAltRate: 5,
-         thisAltPremium: 50,
-         cumuSumInsured: 90,
-         cumuRate: 5,
-         cumuPremium: 800,
-         addSl: ""
-       }
-      ];  
+        {
+          coverCode: "ASD",
+          section: "I",
+          bulletNo: 1.2,
+          prevSumInsured: 20,
+          prevRate: 5,
+          prevPremium: 100,
+          thisAltSumInsured: 60,
+          thisAltRate: 5,
+          thisAltPremium: 50,
+          cumuSumInsured: 90,
+          cumuRate: 5,
+          cumuPremium: 800,
+          addSl: ""
+        }
+      ];
     }
   }
 

@@ -1,7 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import {NgbDropdownConfig} from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { UnderwritingService } from '../../../_services';
 import { PolicyCoInsurance } from '@app/_models';
+import { Title } from '@angular/platform-browser';
+
 
 @Component({
     selector: 'app-pol-co-insurance',
@@ -17,18 +19,20 @@ export class PolCoInsuranceComponent implements OnInit {
     options: any[] = [];
     dataTypes: any[] = [];
     nData: PolicyCoInsurance = new PolicyCoInsurance(null, null, null, null, null, null);
-    
+
     @Input() alteration: boolean;
 
-    constructor(config: NgbDropdownConfig, private underwritingService: UnderwritingService) { 
+    constructor(config: NgbDropdownConfig, private underwritingService: UnderwritingService, private titleService: Title
+    ) {
         config.placement = 'bottom-right';
         config.autoClose = false;
     }
 
-    ngOnInit() : void{
+    ngOnInit(): void {
+        this.titleService.setTitle("Pol | Co-Insurance");
         //this.tHeader.push("");
         this.tHeader.push("Policy No");
-         this.tHeader.push("Ref Policy No");
+        this.tHeader.push("Ref Policy No");
         this.tHeader.push("Ceding Company");
         this.tHeader.push("Share Percentage");
         this.tHeader.push("Share Sum Insured");
@@ -46,11 +50,11 @@ export class PolCoInsuranceComponent implements OnInit {
         this.tableData = this.underwritingService.getCoInsurance();
     }
 
-    onClickCancel(){
+    onClickCancel() {
 
     }
 
-    onClickSave(){
+    onClickSave() {
 
     }
 }

@@ -134,6 +134,9 @@ export class CustNonDatatableComponent implements OnInit {
             this.filterObj[filt].search='';
             this.filterObj[filt].enabled=false;
         }
+        /*if(this.passData.tableOnly){
+            document.getElementById('#non-datatable').style.marginTop = "0px";
+        }*/
     }
 
     processData(key: any, data: any) {
