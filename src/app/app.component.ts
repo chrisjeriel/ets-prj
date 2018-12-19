@@ -163,13 +163,12 @@ export class AppComponent  {
         }
      }
 
-     @HostListener('document:keyup', ['$event'])
+ /*    @HostListener('document:keyup', ['$event'])
       handleKeyboardEvent(event: KeyboardEvent) { 
         if(this.eRef.nativeElement.contains(event.target)){
                 this.changeTheme(this.theme);
         } 
-      } 
-
+      } */
 
 
      ngOnInit(){
