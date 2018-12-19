@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PolIssuanceCoverOpenLetterComponent } from './pol-issuance-cover-open-letter.component';
+import { PolIssuanceOpenCoverLetterComponent } from './pol-issuance-open-cover-letter.component';
 
 describe('PolIssuanceCoverOpenLetterComponent', () => {
-  let component: PolIssuanceCoverOpenLetterComponent;
-  let fixture: ComponentFixture<PolIssuanceCoverOpenLetterComponent>;
+  let component:  PolIssuanceOpenCoverLetterComponent;
+  let fixture: ComponentFixture< PolIssuanceOpenCoverLetterComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PolIssuanceCoverOpenLetterComponent ]
+      declarations: [  PolIssuanceOpenCoverLetterComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PolIssuanceCoverOpenLetterComponent);
+    fixture = TestBed.createComponent( PolIssuanceOpenCoverLetterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
