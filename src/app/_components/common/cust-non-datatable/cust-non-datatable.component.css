@@ -68,7 +68,7 @@ th, td{
 .expire{
     position: absolute !important;
     right: 250px;
-    top: 2px;
+    top: 1px;
     font-size: 11px;
     text-decoration: none !important;
     outline: none !important;
