@@ -34,7 +34,7 @@ th, td{
 
 #non-datatable tr:nth-child(even){background-color: #f2f2f2;}
 
-#non-datatable tr:hover {background-color: #ddd;}
+#non-datatable tr:hover {background-color: #ffffb3;}
 
 #non-datatable th {
     padding-top: 12px;
@@ -68,7 +68,7 @@ th, td{
 .expire{
     position: absolute !important;
     right: 250px;
-    top: 25px;
+    top: 2px;
     font-size: 11px;
     text-decoration: none !important;
     outline: none !important;
@@ -77,7 +77,7 @@ th, td{
 }
 .print{
     position: absolute;
-    top: 25px;
+    top: 2px;
     z-index: 9999 !important;
 }
 .expireIn{

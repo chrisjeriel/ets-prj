@@ -23,7 +23,7 @@ th, td{
 
 #non-datatable tr:nth-child(even){background-color: #f2f2f2;}
 
-#non-datatable tr:hover {background-color: #ddd;}
+#non-datatable tr:hover {background-color: #ffffb3;}
 
 #non-datatable th {
     padding-top: 12px;
