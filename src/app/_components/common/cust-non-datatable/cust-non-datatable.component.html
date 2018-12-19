@@ -129,7 +129,7 @@
         <table id="non-datatable">
             <thead>
                 <tr style="min-width: 96px">
-                    <th *ngIf="passData.checkFlag">&nbsp;&nbsp;<input type="checkbox" name=""></th>
+                    <th *ngIf="passData.checkFlag" style="text-align: center"><input type="checkbox" name=""></th>
                     <th *ngFor="let tHeader of passData.tHeader; let i = index" (click)="sort(dataKeys[i],sortBy);sortIndex=i;">
                         <span *ngIf="passData.resizable[i]" 
                               class="ui-column-resizer" (mousedown) = "onMouseDown($event)"></span>
@@ -141,7 +141,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let data of displayData | paginate: { id:'non-editable', itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event)" (dblclick)="onRowDblClick($event)">
-                    <td *ngIf="passData.checkFlag">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name=""></td>
+                    <td *ngIf="passData.checkFlag" style="text-align: center"><input type="checkbox" name=""></td>
                     <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]">
                         <span *ngSwitchCase="'date'" class="unclickable">{{ processData(key, data) | date: 'MM/dd/yyyy'}}</span>
                         <span *ngSwitchDefault class="unclickable">{{ processData(key, data) }}</span>
