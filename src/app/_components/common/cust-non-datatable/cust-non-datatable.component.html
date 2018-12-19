@@ -17,6 +17,11 @@
 
 
 <div id="cust-table-container">
+    <div class="cust-btn-container">
+            <button *ngIf="addFlag" class="cust-btn" (click)="onClickAdd()"><a>Add</a></button>
+            <button *ngIf="editFlag" class="cust-btn" (click)="onClickEdit()"><a class="paginate_button previous">Edit</a></button>
+            <button *ngIf="deleteFlag" class="cust-btn" (click)="onClickDelete()"><a class="paginate_button previous">Delete</a></button>
+    </div>
     <div class="print" *ngIf="passData.printBtn" align="left">
         <button class="cust-btn" type="button"><a>Print</a></button>
     </div>

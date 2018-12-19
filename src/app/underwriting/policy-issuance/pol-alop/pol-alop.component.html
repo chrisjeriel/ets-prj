@@ -108,26 +108,49 @@
 		</div>
 	</fieldset>
 
+
 	<div class="form-row bottom-button-container">
 		<div class="form-group col-sm">
-			<div class="col-md-13 text-center">
-				<br>
-				<div class="cust-btn-container">
-				<app-modal [btnTitle]="'Item Information'" style="margin-bottom: 2px;">
-					<div header>Item Information</div>	
-            		<div body>
-            			<app-cust-editable-table [addFlag]="true" [deleteFlag]="true" [nData]="nData" [tableData]="tableData" [editFlag]="false" [tHeader]="tHeader" [dataTypes]="dataTypes"></app-cust-editable-table>
-            		</div>
-            		<div footer class="text-center">
-							<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
-							<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Save</a></button>
-            		</div>
-				</app-modal>
-				<button type="button" class="cust-btn"><a>Cancel</a></button>
-				<button type="button" class="cust-btn" (click)="save()"><a>Save</a></button>
+			<div *ngIf="line=='CAR'">
+				<div class="col-md-13 text-center">
+					<br>
+						<div class="cust-btn-container">
+							<app-modal [btnTitle]="'Item Information'" style="margin-bottom: 2px;">
+								<div header>Item Information</div>	
+            					<div body>
+            						<app-cust-editable-non-datatable [addFlag]="true" [deleteFlag]="true" [nData]="nData" [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes"></app-cust-editable-non-datatable>
+            					</div>
+            					<div footer class="text-center">
+									<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
+									<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Save</a></button>
+            					</div>
+							</app-modal>
+							<button type="button" class="cust-btn"><a>Cancel</a></button>
+							<button type="button" class="cust-btn" (click)="save()"><a>Save</a></button>
+						</div>
+				</div>
 			</div>
+
+				
+			<div *ngIf="line=='EAR'">
+				<div class="col-md-13 text-center">
+					<br>
+						<div class="cust-btn-container">
+							<app-modal [btnTitle]="'Item Information'" style="margin-bottom: 2px;">
+								<div header>Item Information</div>	
+            					<div body>
+            						<app-cust-editable-non-datatable [addFlag]="true" [deleteFlag]="true" [nData]="nData" [tableData]="tableData2" [tHeader]="tHeader2" [dataTypes]="dataTypes2"></app-cust-editable-non-datatable>
+            					</div>
+            					<div footer class="text-center">
+									<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
+									<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Save</a></button>
+            					</div>
+							</app-modal>
+								<button type="button" class="cust-btn"><a>Cancel</a></button>
+								<button type="button" class="cust-btn" (click)="save()"><a>Save</a></button>
+						</div>
+				</div>
 			</div>
 		</div>
 	</div>
-
 </div>			
