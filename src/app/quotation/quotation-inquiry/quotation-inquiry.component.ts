@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-quotation-inquiry',
@@ -7,9 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class QuotationInquiryComponent implements OnInit {
 
-  constructor() { }
+  constructor(private titleService: Title
+  ) { }
 
   ngOnInit() {
+    this.titleService.setTitle("Quo | Quotation Inquiry");
   }
 
 }

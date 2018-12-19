@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { QuotationInfo, QuotationOption, QuotationOtherRates } from '../../_models';
-import { QuotationService } from '../../_services'
+import { QuotationService } from '../../_services';
+import { Title } from '@angular/platform-browser';
+
 
 
 @Component({
@@ -14,35 +16,36 @@ export class QuoteOptionComponent implements OnInit {
   private quotationOtherRates: QuotationOtherRates;
 
   quoteOptionTableData: any[] = [];
-  quoteOptionTHeader : any[] = ['Option No','Rate(%)','Conditions','Comm Rate Quota(%)', 'Comm Rate Surplus(%)','Comm Rate Fac(%)'];
-  quoteOptionDataType: any[] = ['text','percent','text','percent','percent','percent'];
-  quoteOptionNData: QuotationOption = new QuotationOption(null,null,null,null,null,null);
-  magnifyingGlass:any[] = ['conditions'];
-  quoteOptionEdited:QuotationOption[]=[];
+  quoteOptionTHeader: any[] = ['Option No', 'Rate(%)', 'Conditions', 'Comm Rate Quota(%)', 'Comm Rate Surplus(%)', 'Comm Rate Fac(%)'];
+  quoteOptionDataType: any[] = ['text', 'percent', 'text', 'percent', 'percent', 'percent'];
+  quoteOptionNData: QuotationOption = new QuotationOption(null, null, null, null, null, null);
+  magnifyingGlass: any[] = ['conditions'];
+  quoteOptionEdited: QuotationOption[] = [];
 
 
   otherRatesTableData: any[] = [];
   otherRatesTHeader: any[] = ['Others', 'Amounts', 'Deductible'];
-  otherRatesDataType:any[] = ['text','currency','text'];
-  otherRatesMagnify: any[] = ['others','deductible'];
-  otherRatesNData: QuotationOtherRates = new QuotationOtherRates(null,null,null,null);
+  otherRatesDataType: any[] = ['text', 'currency', 'text'];
+  otherRatesMagnify: any[] = ['others', 'deductible'];
+  otherRatesNData: QuotationOtherRates = new QuotationOtherRates(null, null, null, null);
 
-  constructor(private quotationService: QuotationService) { }
+  constructor(private quotationService: QuotationService, private titleService: Title) { }
 
   ngOnInit() {
-  	this.quotationInfo = new QuotationInfo();
-  	this.quotationInfo.quotationNo = "SMP-0000-0000-00";
-  	this.quotationInfo.insuredName ="Insured Name";
+    this.titleService.setTitle("Quo | Quote Otion");
+    this.quotationInfo = new QuotationInfo();
+    this.quotationInfo.quotationNo = "SMP-0000-0000-00";
+    this.quotationInfo.insuredName = "Insured Name";
 
     this.quoteOptionTableData = this.quotationService.getQuoteOptions();
     this.otherRatesTableData = this.quotationService.getQuotataionOtherRates(1);
   }
-  
-  save(){
-  	console.log(this.quoteOptionEdited);
+
+  save() {
+    console.log(this.quoteOptionEdited);
   }
 
-  clickRow(event){
+  clickRow(event) {
     console.log(event);
     this.otherRatesTableData = this.quotationService.getQuotataionOtherRates(event.target.closest("tr").children[1].children[0].children[1].value);
   }

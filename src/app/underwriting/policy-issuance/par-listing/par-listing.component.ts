@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UnderwritingService } from '../../../_services';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-par-listing',
@@ -13,26 +14,27 @@ export class ParListingComponent implements OnInit {
   filters: any[] = [];
   line: string = "CAR";
 
-  constructor(private uwService: UnderwritingService) { }
+  constructor(private uwService: UnderwritingService, private titleService: Title) { }
 
   ngOnInit() {
-  	this.tHeader.push("Policy No");
-  	this.tHeader.push("Status");
-  	this.tHeader.push("Type of Cession");
-  	this.tHeader.push("Line Class");
-  	this.tHeader.push("Ceding Company");
-  	this.tHeader.push("Principal");
-  	this.tHeader.push("Contractor");
-  	this.tHeader.push("Created By");
+    this.titleService.setTitle("Pol | Policy List");
+    this.tHeader.push("Policy No");
+    this.tHeader.push("Status");
+    this.tHeader.push("Type of Cession");
+    this.tHeader.push("Line Class");
+    this.tHeader.push("Ceding Company");
+    this.tHeader.push("Principal");
+    this.tHeader.push("Contractor");
+    this.tHeader.push("Created By");
 
-  	this.filters.push("Policy No");
-  	this.filters.push("Status");
-  	this.filters.push("Type of Cession");
-  	this.filters.push("Line Class");
-  	this.filters.push("Ceding Company");
-  	this.filters.push("Principal");
-  	this.filters.push("Contractor");
-  	this.filters.push("Created By");
+    this.filters.push("Policy No");
+    this.filters.push("Status");
+    this.filters.push("Type of Cession");
+    this.filters.push("Line Class");
+    this.filters.push("Ceding Company");
+    this.filters.push("Principal");
+    this.filters.push("Contractor");
+    this.filters.push("Created By");
 
     this.dataTypes.push("text");
     this.dataTypes.push("text");
@@ -43,7 +45,7 @@ export class ParListingComponent implements OnInit {
     this.dataTypes.push("text");
     this.dataTypes.push("text");
 
-  	this.tableData = this.uwService.getParListing();
+    this.tableData = this.uwService.getParListing();
   }
 
 }

@@ -3,6 +3,7 @@ import { QuotationGenInfo } from '../../_models';
 import { callLifecycleHooksChildrenFirst } from '@angular/core/src/view/provider';
 import { QuotationService } from '../../_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Title } from '@angular/platform-browser';
 
 
 @Component({
@@ -18,16 +19,17 @@ export class GeneralInfoComponent implements OnInit {
 	tHeader: any[] = [];
 	dataTypes: any[] = [];
 	filters: any[] = [];
-	
 
-	constructor(private quotationService: QuotationService, private modalService: NgbModal) { }
+
+	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title) { }
 	ngOnInit() {
+		this.titleService.setTitle("Quo | General Info");
 		this.tHeader.push("Item No", "Description of Items");
 		this.dataTypes.push("text", "text");
 		this.filters.push("Item No", "Desc. of Items");
 		this.tableData = this.quotationService.getItemInfoData();
 
-		if(this.quotationService.toGenInfo[0] == "edit"){
+		if (this.quotationService.toGenInfo[0] == "edit") {
 			console.log(this.quotationService.rowData);
 
 			this.quotationNum = this.quotationService.rowData[0].split("-");
@@ -118,12 +120,12 @@ export class GeneralInfoComponent implements OnInit {
 	}
 
 	reqMode: SelectRequestMode[] = [
-	{ name: '', value: '' },
-	{ name: 'Web Portal', value: 'Web Portal' },
-	{ name: 'Fax', value: 'Fax' },
-	{ name: 'Email', value: 'Email' },
-	{ name: 'Phone', value: 'Phone' },
-	{ name: 'etc', value: 'etc' },
+		{ name: '', value: '' },
+		{ name: 'Web Portal', value: 'Web Portal' },
+		{ name: 'Fax', value: 'Fax' },
+		{ name: 'Email', value: 'Email' },
+		{ name: 'Phone', value: 'Phone' },
+		{ name: 'etc', value: 'etc' },
 	];
 
 	//getting value
@@ -140,7 +142,7 @@ export class GeneralInfoComponent implements OnInit {
 	}
 
 	showItemInfoModal(content) {
-    	this.modalService.open(content, { centered: true, backdrop: 'static', windowClass : "modal-size" });
+		this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
 	}
 
 }

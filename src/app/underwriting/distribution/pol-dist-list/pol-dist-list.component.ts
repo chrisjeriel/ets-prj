@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {NgbDropdownConfig} from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 
 import { UnderwritingService } from '../../../_services';
+import { Title } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-pol-dist-list',
@@ -10,7 +11,7 @@ import { UnderwritingService } from '../../../_services';
 })
 export class PolDistListComponent implements OnInit {
 
-    
+
     passData: any = {
         tHeader: [
             "Dist No.", "Risk Dist No.", "Status", "Policy No.",
@@ -21,24 +22,25 @@ export class PolDistListComponent implements OnInit {
             "Ceding Company", "Insured", "Risk"
         ],
         resizable: [
-            false,false,true,false,true,true,true
+            false, false, true, false, true, true, true
         ],
         dataTypes: [
-            "number","number","text","text","text","text","text"
+            "number", "number", "text", "text", "text", "text", "text"
         ],
         tableData: this.underwritingService.getPolicyDistListInfo(),
         pageLength: 10,
-        
+
     }
-     constructor(config: NgbDropdownConfig, private underwritingService: UnderwritingService) { 
+    constructor(config: NgbDropdownConfig, private underwritingService: UnderwritingService, private titleService: Title) {
         config.placement = 'bottom-right';
         config.autoClose = false;
     }
 
     ngOnInit() {
+        this.titleService.setTitle("Pol | Policy Distribution List");
     }
-    
-    add(){
+
+    add() {
         //do something
     }
 

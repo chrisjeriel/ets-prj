@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { QuotationCoverageInfo, NotesReminders } from '../../_models';
 import { QuotationService, NotesService } from '@app/_services';
+import { Title } from '@angular/platform-browser';
+
 
 @Component({
   selector: 'app-coverage',
@@ -18,13 +20,12 @@ export class CoverageComponent implements OnInit {
   optionsData: any[] = [];
   optionsData2: any[] = [];
 
-  msHeaderTxt: string = "";
-  msData: any[] = [];
+  multiSelectHeaderTxt: string = "";
+  multiSelectData: any[] = [];
 
   nData: QuotationCoverageInfo = new QuotationCoverageInfo(null, null, null, null, null);
-  //nData: NotesReminders = new NotesReminders(null, null, null, null, null, null, 'user', new Date());
 
-  constructor(private quotationService: QuotationService, private notesService: NotesService) { }
+  constructor(private quotationService: QuotationService, private titleService: Title) { }
 
   temp: number = 0;
 
@@ -33,15 +34,17 @@ export class CoverageComponent implements OnInit {
   }
 
   getMS(event) {
-    console.log(event.allSelectedData + ' : ' + event.ids);
+    //console.log(event.allSelectedData + ' : ' + event.allSelectedData[2].value);
+    console.log('VALUE : ' + event.returnValue + ' ' + 'ID : ' + event.returnId);
   }
 
   ngOnInit() {
+    this.titleService.setTitle("Quo | Coverage");
     this.optionsData.push("USD", "PHP", "EUR");
     this.optionsData2.push("a", "b", "c");
 
-    this.msHeaderTxt = "COVERAGE";
-    this.msData.push("one", "two", "three", "one", "two");
+    this.multiSelectHeaderTxt = "COVERAGE";
+    this.multiSelectData.push("zero", "one", "two", "three", "four");
 
 
     this.tHeader.push("Cover Code");

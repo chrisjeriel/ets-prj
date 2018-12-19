@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DistributionByRiskInfo } from '@app/_models';
 import { UnderwritingService } from '@app/_services';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-distribution-by-risk',
@@ -15,10 +16,11 @@ export class DistributionByRiskComponent implements OnInit {
   dataTypes: any[] = [];
   nData: DistributionByRiskInfo = new DistributionByRiskInfo(null, null, null, null, null);
 
-  constructor(private polService: UnderwritingService) { }
+  constructor(private polService: UnderwritingService, private titleService: Title) { }
 
 
   ngOnInit() {
+    this.titleService.setTitle("Pol | Risk Distribution");
     this.tHeader.push("Treaty");
     this.tHeader.push("Ceding Company");
     this.tHeader.push("Share (%)");
