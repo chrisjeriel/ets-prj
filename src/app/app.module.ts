@@ -74,8 +74,10 @@ import { PolDistComponent } from './underwriting/policy-distribution/pol-dist/po
 import { InwardPolBalanceComponent } from './underwriting/policy-issuance/inward-pol-balance/inward-pol-balance.component';
 import { PolItemComponent } from './underwriting/policy-issuance/pol-item/pol-item.component';
 import { PolCreateOpenCoverComponent } from './underwriting/policy-issuance/pol-create-open-cover/pol-create-open-cover.component';
-import { PolIssuanceCoverOpenLetterComponent } from './underwriting/policy-issuance/pol-issuance-cover-open-letter.component';
-import { PolGenInfoCoverOpenLetterComponent } from './underwriting/policy-issuance/pol-gen-info-cover-open-letter/pol-gen-info-cover-open-letter.component';
+import { PolIssuanceOpenCoverLetterComponent } from './underwriting/policy-issuance/pol-issuance-open-cover-letter.component';
+import { PolGenInfoOpenCoverComponent } from './underwriting/policy-issuance/pol-gen-info-open-cover/pol-gen-info-open-cover.component';
+import { PolSumInsuredOpenCoverComponent } from './underwriting/policy-issuance/pol-sum-insured-open-cover/pol-sum-insured-open-cover.component';
+
 @NgModule({
     imports: [
         BrowserModule,
@@ -153,8 +155,9 @@ import { PolGenInfoCoverOpenLetterComponent } from './underwriting/policy-issuan
         InwardPolBalanceComponent,
         PolItemComponent,
         PolCreateOpenCoverComponent,
-        PolIssuanceCoverOpenLetterComponent,
-        PolGenInfoCoverOpenLetterComponent
+        PolIssuanceOpenCoverLetterComponent,
+        PolGenInfoOpenCoverComponent,
+        PolSumInsuredOpenCoverComponent,
     ],
 
     providers: [

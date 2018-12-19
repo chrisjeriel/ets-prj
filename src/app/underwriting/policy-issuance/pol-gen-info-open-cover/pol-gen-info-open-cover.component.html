@@ -107,7 +107,7 @@
 								<input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;">
 							</div>
 							<div class="input-group col-sm-6" style="margin-top: 20px; padding: 0px;">
-								<label class="form-control-sm col-sm-4">Distribution Date</label>
+								<label class="form-control-sm">Distribution Date</label>
 								<input type="date" class="form-control form-control-sm">
 								<input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;">
 							</div>
@@ -119,7 +119,7 @@
 								<input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;">
 							</div>
 							<div class="input-group col-sm-6" style="padding: 0px;">
-								<label class="form-control-sm col-sm-4">Accounting Date</label>
+								<label class="form-control-sm">Accounting Date</label>
 								<input type="date" class="form-control form-control-sm">
 								<input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;">
 							</div>
@@ -132,7 +132,7 @@
 <div>
 	<div class="row">
 		<div class="col-sm-8">
-			<fieldset  class="scheduler-border cust-fs-padlr-offset">
+			<fieldset *ngIf="line === 'CAR'" class="scheduler-border cust-fs-padlr-offset">
 				<legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
 					<div class="col-sm-1">
 					</div>
@@ -221,12 +221,12 @@
 							<div class="input-group" style="margin-top: 10px;">
 								<label class="form-control-sm col-sm-1">Principal</label>
 								<input type="text" class="form-control form-control-sm col-sm-1">
-								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<div class="text-search-ico"><a><i class="fa fa-search" style="margin-left: 3px;"></i></a></div>
 								<span>&nbsp;</span>
 								<input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
 								<label class="form-control-sm col-sm-1">Contractor</label>
 								<input type="text" class="form-control form-control-sm col-sm-1">
-								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<div class="text-search-ico"><a><i class="fa fa-search" style="margin-left: 3px;"></i></a></div>
 								<span>&nbsp;</span>
 								<input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
 							</div>
@@ -241,10 +241,16 @@
 							<div class="input-group">
 								<label class="form-control-sm col-sm-1">Object</label>
 								<input type="text" class="form-control form-control-sm">
-								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<div class="text-search-ico"><a><i class="fa fa-search" style="margin-left: 3px;"></i></a></div>
 								<span>&nbsp;</span>
-								<label class="form-control-sm col-sm-1">Region</label>
-								<input type="text" class="form-control form-control-sm">
+								<div class="col-sm-6">
+									<div class="row">
+										<div class="input-group">
+											<label class="form-control-sm col-sm-2">Region</label>
+											<input type="text" class="form-control form-control-sm">
+										</div>
+									</div>
+								</div>
 							</div>
 							<div class="input-group">
 								<label class="form-control-sm col-sm-1">Nature of Work</label>
@@ -309,7 +315,7 @@
 							<div class="input-group" style="margin-top: 10px;">
 								<label class="form-control-sm col-sm-1">Insured</label>
 								<input type="text" class="form-control form-control-sm col-sm-1">
-								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<div class="text-search-ico"><a><i class="fa fa-search"  style="margin-left: 3px;"></i></a></div>
 								<span>&nbsp;</span>
 								<input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
 							</div>
@@ -324,26 +330,32 @@
 							<div class="input-group">
 								<label class="form-control-sm col-sm-1">Object</label>
 								<input type="text" class="form-control form-control-sm">
-								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<div class="text-search-ico"><a><i class="fa fa-search" style="margin-left: 3px;"></i></a></div>
 								<span>&nbsp;</span>
-								<label class="form-control-sm col-sm-1">Region</label>
-								<input type="text" class="form-control form-control-sm">
+								<div class="col-sm-6">
+									<div class="row">
+										<div class="input-group">
+											<label class="form-control-sm col-sm-3">Region</label>
+											<input type="text" class="form-control form-control-sm">
+										</div>
+									</div>
+								</div>
 							</div>
 							<div class="input-group">
 								<label class="form-control-sm col-sm-1">Items to be Insured</label>
 								<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;"></textarea>
-								<div class="text-search-ico" (click)="showItemInfoModal(content)"><a><i class="fa fa-plus-circle"></i></a></div>
+								<div class="text-search-ico" (click)="showItemInfoModal(content)"><a><i class="fa fa-plus-circle" style="margin-left: 3px;"></i></a></div>
 								<span>&nbsp;</span>
-								<div class="col-sm">
+								<div class="col-sm-6">
 									<div class="row">
 										<div class="input-group">
-											<label class="form-control-sm col-sm-2">Province</label>
+											<label class="form-control-sm col-sm-3">Province</label>
 											<input type="text" class="form-control form-control-sm">
 										</div>
 									</div>
 									<div class="row">
 										<div class="input-group">
-											<label class="form-control-sm col-sm-2">City/Town</label>
+											<label class="form-control-sm col-sm-3">City/Town</label>
 											<input type="text" class="form-control form-control-sm">
 										</div>
 									</div>
@@ -356,7 +368,7 @@
 								<div class="col-sm">
 									<div class="row">
 										<div class="input-group">
-											<label class="form-control-sm col-sm-2">District</label>
+											<label class="form-control-sm col-sm-3">District</label>
 											<input type="text" class="form-control form-control-sm">
 											<label class="form-control-sm col-sm-2">Block</label>
 											<input type="text" class="form-control form-control-sm">
@@ -364,7 +376,7 @@
 									</div>
 									<div class="row">
 										<div class="input-group">
-											<label class="form-control-sm col-sm-2">Lat</label>
+											<label class="form-control-sm col-sm-3">Lat</label>
 											<input type="text" class="form-control form-control-sm">
 											<label class="form-control-sm col-sm-2">Long</label>
 											<input type="text" class="form-control form-control-sm">
@@ -387,7 +399,7 @@
 							<div class="input-group" style="margin-top: 10px;">
 								<label class="form-control-sm col-sm-1">Insured</label>
 								<input type="text" class="form-control form-control-sm col-sm-1">
-								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<div class="text-search-ico"><a><i class="fa fa-search" style="margin-left: 3px;"></i></a></div>
 								<span>&nbsp;</span>
 								<input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
 							</div>
@@ -402,26 +414,32 @@
 							<div class="input-group">
 								<label class="form-control-sm col-sm-1">Object</label>
 								<input type="text" class="form-control form-control-sm">
-								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<div class="text-search-ico"><a><i class="fa fa-search"  style="margin-left: 3px;"></i></a></div>
 								<span>&nbsp;</span>
-								<label class="form-control-sm col-sm-1">Region</label>
-								<input type="text" class="form-control form-control-sm">
+								<div class="col-sm-6">
+									<div class="row">
+										<div class="input-group">
+											<label class="form-control-sm col-sm-3">Region</label>
+											<input type="text" class="form-control form-control-sm">
+										</div>
+									</div>
+								</div>
 							</div>
 							<div class="input-group">
 								<label class="form-control-sm col-sm-1">Items to be Insured</label>
 								<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;"></textarea>
-								<div class="text-search-ico" (click)="showItemInfoModal(content)"><a><i class="fa fa-plus-circle"></i></a></div>
+								<div class="text-search-ico" (click)="showItemInfoModal(content)"><a><i class="fa fa-plus-circle"  style="margin-left: 3px;"></i></a></div>
 								<span>&nbsp;</span>
-								<div class="col-sm">
+								<div class="col-sm-6">
 									<div class="row">
 										<div class="input-group">
-											<label class="form-control-sm col-sm-2">Province</label>
+											<label class="form-control-sm col-sm-3">Province</label>
 											<input type="text" class="form-control form-control-sm">
 										</div>
 									</div>
 									<div class="row">
 										<div class="input-group">
-											<label class="form-control-sm col-sm-2">City/Town</label>
+											<label class="form-control-sm col-sm-3">City/Town</label>
 											<input type="text" class="form-control form-control-sm">
 										</div>
 									</div>
@@ -430,13 +448,12 @@
 							<div class="input-group">
 								<label class="form-control-sm col-sm-1">Site</label>
 								<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;"></textarea>
-
 								<div class="col-sm">
 									<div class="row">
 										<div class="input-group">
-											<label class="form-control-sm col-sm-2">District</label>
+											<label class="form-control-sm col-sm-3">District</label>
 											<input type="text" class="form-control form-control-sm">
-											<label class="form-control-sm col-sm-2">Block</label>
+											<label class="form-control-sm col-sm-3">Block</label>
 											<input type="text" class="form-control form-control-sm">
 										</div>
 									</div>
@@ -457,7 +474,7 @@
 							<div class="input-group" style="margin-top: 10px;">
 								<label class="form-control-sm col-sm-1">Insured</label>
 								<input type="text" class="form-control form-control-sm col-sm-1">
-								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<div class="text-search-ico"><a><i class="fa fa-search" style="margin-left: 3px;"></i></a></div>
 								<span>&nbsp;</span>
 								<input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
 							</div>
@@ -472,26 +489,32 @@
 							<div class="input-group">
 								<label class="form-control-sm col-sm-1">Object</label>
 								<input type="text" class="form-control form-control-sm">
-								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<div class="text-search-ico"><a><i class="fa fa-search" style="margin-left: 3px;"></i></a></div>
 								<span>&nbsp;</span>
-								<label class="form-control-sm col-sm-1">Region</label>
-								<input type="text" class="form-control form-control-sm">
+								<div class="col-sm-6">
+									<div class="row">
+										<div class="input-group">
+											<label class="form-control-sm col-sm-3">Region</label>
+											<input type="text" class="form-control form-control-sm">
+										</div>
+									</div>
+								</div>
 							</div>
 							<div class="input-group">
 								<label class="form-control-sm col-sm-1">Items to be Insured</label>
 								<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;"></textarea>
-								<div class="text-search-ico" (click)="showItemInfoModal(content)"><a><i class="fa fa-plus-circle"></i></a></div>
+								<div class="text-search-ico" (click)="showItemInfoModal(content)"><a><i class="fa fa-plus-circle" style="margin-left: 3px;"></i></a></div>
 								<span>&nbsp;</span>
-								<div class="col-sm">
+								<div class="col-sm-6">
 									<div class="row">
 										<div class="input-group">
-											<label class="form-control-sm col-sm-2">Province</label>
+											<label class="form-control-sm col-sm-3">Province</label>
 											<input type="text" class="form-control form-control-sm">
 										</div>
 									</div>
 									<div class="row">
 										<div class="input-group">
-											<label class="form-control-sm col-sm-2">City/Town</label>
+											<label class="form-control-sm col-sm-3">City/Town</label>
 											<input type="text" class="form-control form-control-sm">
 										</div>
 									</div>
@@ -504,7 +527,7 @@
 								<div class="col-sm">
 									<div class="row">
 										<div class="input-group">
-											<label class="form-control-sm col-sm-2">District</label>
+											<label class="form-control-sm col-sm-3">District</label>
 											<input type="text" class="form-control form-control-sm">
 											<label class="form-control-sm col-sm-2">Block</label>
 											<input type="text" class="form-control form-control-sm">
@@ -512,7 +535,7 @@
 									</div>
 									<div class="row">
 										<div class="input-group">
-											<label class="form-control-sm col-sm-2">Time Exc.</label>
+											<label class="form-control-sm col-sm-3">Time Exc.</label>
 											<input type="text" class="form-control form-control-sm">
 											<label class="form-control-sm col-sm-2">ILP</label>
 											<input type="text" class="form-control form-control-sm">
@@ -535,7 +558,7 @@
 							<div class="input-group" style="margin-top: 10px;">
 								<label class="form-control-sm col-sm-1">Insured</label>
 								<input type="text" class="form-control form-control-sm col-sm-1">
-								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<div class="text-search-ico"><a><i class="fa fa-search" style="margin-left: 3px;"></i></a></div>
 								<span>&nbsp;</span>
 								<input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
 							</div>
@@ -550,24 +573,31 @@
 							<div class="input-group">
 								<label class="form-control-sm col-sm-1">Object</label>
 								<input type="text" class="form-control form-control-sm col-sm-5">
-								<label class="form-control-sm col-sm-1">Region</label>
-								<input type="text" class="form-control form-control-sm">
-							</div>
-							<div class="input-group">
-								<label class="form-control-sm col-sm-1">Items to be Insured</label>
-								<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;"></textarea>
-								<div class="text-search-ico" (click)="showItemInfoModal(content)"><a><i class="fa fa-plus-circle"></i></a></div>
-								<span>&nbsp;</span>
-								<div class="col-sm">
+								<div class="col-sm-6">
 									<div class="row">
 										<div class="input-group">
-											<label class="form-control-sm col-sm-2">Province</label>
+											<label class="form-control-sm col-sm-3">Region</label>
+											<input type="text" class="form-control form-control-sm">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="input-group">
+
+								<label class="form-control-sm col-sm-1">Items to be Insured</label>
+								<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;"></textarea>
+								<div class="text-search-ico" (click)="showItemInfoModal(content)"><a><i class="fa fa-plus-circle" style="margin-left: 3px;"></i></a></div>
+								<span>&nbsp;</span>
+								<div class="col-sm-6">
+									<div class="row">
+										<div class="input-group">
+											<label class="form-control-sm col-sm-3">Province</label>
 											<input type="text" class="form-control form-control-sm">
 										</div>
 									</div>
 									<div class="row">
 										<div class="input-group">
-											<label class="form-control-sm col-sm-2">City/Town</label>
+											<label class="form-control-sm col-sm-3">City/Town</label>
 											<input type="text" class="form-control form-control-sm">
 										</div>
 									</div>
@@ -580,7 +610,7 @@
 								<div class="col-sm">
 									<div class="row">
 										<div class="input-group">
-											<label class="form-control-sm col-sm-2">District</label>
+											<label class="form-control-sm col-sm-3">District</label>
 											<input type="text" class="form-control form-control-sm">
 											<label class="form-control-sm col-sm-2">Block</label>
 											<input type="text" class="form-control form-control-sm">
@@ -588,7 +618,7 @@
 									</div>
 									<div class="row">
 										<div class="input-group">
-											<label class="form-control-sm col-sm-2">No Claim</label>
+											<label class="form-control-sm col-sm-3">No Claim</label>
 											<input type="text" class="form-control form-control-sm">
 										</div>
 									</div>
@@ -692,7 +722,7 @@
 				</div>
 			</div>
 
-		</div>
+		</div> 
 		<div class="modal-footer">
 			<div>
 				<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
