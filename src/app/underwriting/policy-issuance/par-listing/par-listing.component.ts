@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import  { PARListing } from '@app/_models'
 import { UnderwritingService } from '../../../_services';
 
 @Component({
@@ -13,7 +14,26 @@ export class ParListingComponent implements OnInit {
   filters: any[] = [];
   line: string = "CAR";
 
-  constructor(private uwService: UnderwritingService) { }
+  constructor(private underwritingService: UnderwritingService) { }
+
+  passData: any = {
+         tHeader: [
+             "Policy No", "Type Cession", "Line Class", "Status", "Ceding Company", "Principal", "Contractor", "Insured", "Risk", "Object", "Site", "Quotation No", "Company", "Issue Date", "Inception Date", "Expiry Date", "Created By"
+         ],
+       
+        resizable: [
+            true,true,true,true,true,true,true,true,true,true,true,false,
+            false,false,false,false, true
+        ],
+        dataTypes: [
+            "text","text","text","text","text","text","text","text","text",
+            "text","text","text","text","date","date","date","text"
+        ],
+        
+        tableData: this.underwritingService.getParListing(),
+        pageLength: 10,
+        
+    }
 
   ngOnInit() {
   	this.tHeader.push("Policy No");
@@ -43,7 +63,7 @@ export class ParListingComponent implements OnInit {
     this.dataTypes.push("text");
     this.dataTypes.push("text");
 
-  	this.tableData = this.uwService.getParListing();
+  	this.tableData = this.underwritingService.getParListing();
   }
 
 }
