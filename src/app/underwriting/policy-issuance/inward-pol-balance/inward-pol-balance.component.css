@@ -8,5 +8,18 @@
 }
 
 .invoice {
-	margin-left: 90px;
+	margin-left: 80px;
+	margin-top: -15px;
+}
+
+.taxInfo {
+	margin-top: 8px;
+}
+
+.remarks {
+	margin-left: -6px;
+}
+
+.remarks-label {
+	padding-right: 14px;
 }

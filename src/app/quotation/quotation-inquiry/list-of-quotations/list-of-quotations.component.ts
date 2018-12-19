@@ -19,13 +19,13 @@ export class ListOfQuotationsComponent implements OnInit {
     pageLength: number;
     i: number;
     line: string = "";
-    quoteList: QuotationList = new QuotationList(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+    quoteList: QuotationList = new QuotationList(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
 
     passData: any = {
         tableData: [], 
         tHeader: ['Quotation No.','Type of Cession','Line Class','Status','Ceding Company','Principal','Contractor','Insured','Risk','Object','Site','Policy No','Currency'],
         dataTypes: [],
-        resizable: [false, false, true, true, true, true, true, true, true, true, true, false, false],
+        resizable: [false, false, true, true, true, true, true, true, true, true, false, false],
         filters: [],
         pageLength: 10,
         expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: true, printBtn: true, 
@@ -98,6 +98,7 @@ export class ListOfQuotationsComponent implements OnInit {
             delete e.validityDate;
             delete e.createdBy;
             delete e.requestedBy;
+            delete e.approvedBy;
         });
         this.allData = this.quotationService.getQuotationListInfo();
     }

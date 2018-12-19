@@ -16,6 +16,7 @@ export class QuotationList{
     validityDate: Date;
     requestedBy: string;
     createdBy: string;
+    approvedBy: string;
 
     constructor(quotationNo: string,
                  cessionType: string,
@@ -33,7 +34,8 @@ export class QuotationList{
                  quoteDate: Date,
                  validityDate: Date,
                  requestedBy: string,
-                 createdBy: string
+                 createdBy: string,
+                 approvedBy: string,
                 )
     {
         this.quotationNo = quotationNo;
@@ -53,6 +55,7 @@ export class QuotationList{
         this.validityDate = validityDate;
         this.requestedBy = requestedBy;
         this.createdBy = createdBy;
+        this.approvedBy = approvedBy;
     }
 }
 

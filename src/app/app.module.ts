@@ -8,6 +8,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SidebarModule } from 'ng-sidebar';
 import { DataTablesModule } from 'angular-datatables';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 // used to create fake backend
 import { fakeBackendProvider } from './_helpers';
@@ -91,6 +92,7 @@ import { PolSumInsuredOpenCoverComponent } from './underwriting/policy-issuance/
         FormsModule,
         DataTablesModule,
         NgxPaginationModule,
+        AngularEditorModule
     ],
     declarations: [
         AppComponent,
