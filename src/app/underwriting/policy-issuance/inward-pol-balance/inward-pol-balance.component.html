@@ -26,7 +26,7 @@
       <legend class="scheduler-border">Invoice Information</legend>
       	<div class="row">
       		  <div class="col-sm-1"></div>
-		      <div class="cust-sm invoice" style="margin-left: 110px">
+		      <div class="cust-sm invoice">
 		      		<!-- <app-cust-editable-table [nData]="nData"
       [tHeader]="tHeader2" [opts]="options" [dataTypes]="dataTypes"></app-cust-editable-table> -->
       				<app-cust-editable-non-datatable [tableData]="tableData_InvoiceInformation" [tHeader]="tHeader_Invoice" [dataTypes]="dataTypes_Invoice" [pageLength]="pageLength_Invoice"></app-cust-editable-non-datatable>
@@ -115,8 +115,8 @@
 			<div class="cust-sm col-sm-1"></div>
 		      <div class="col-sm-6">
 		      	<div class="input-group">
-		      		<label class="form-control-sm col-sm-2">Remarks</label>
-                    <input type="date" class="form-control form-control-sm">
+		      		<label class="form-control-sm col-sm-2 remarks-label">Remarks</label>
+                    <input type="date" class="form-control form-control-sm remarks">
 		      	</div>
 		      </div>
 		      <div class="col-sm-1"></div>
@@ -199,7 +199,7 @@
 			<div class="cust-sm">
 				<div class="row">
 					<div class="col-sm-2"></div>
-					<div class="col-sm">
+					<div class="col-sm taxInfo">
 						 <!-- <app-cust-editable-table [addFlag]="true" [deleteFlag]="true" [nData]="nData" [tableData]="tableData"
 	      [tHeader]="tHeader" [opts]="options" [dataTypes]="dataTypes"></app-cust-editable-table> -->
 

@@ -37,6 +37,7 @@ th, td{
     overflow: auto;
     max-width: 100%;
 }
+
 #cust-table-container {
     position: relative !important;
 }
@@ -110,7 +111,7 @@ input.form-control {
 }
 
 div.input-group {
-    margin-bottom: 2px !important;
+    margin-bottom: 1px !important;
 }
 
 .cust-tbl-submit {

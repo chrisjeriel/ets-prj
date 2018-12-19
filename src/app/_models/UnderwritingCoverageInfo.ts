@@ -25,3 +25,18 @@ export class UnderwritingCoverageInfo {
     }
 
 }
+
+export class CoverageInfo {
+    currency: string;
+    exchRt: string;
+    totalPrenium: number;
+    totalSumInsured: number;
+    sectionI: string;
+    sectionII: string;
+    sectionIII: string;
+    share: number;
+    pml: number;
+    partOf: number;
+    remarks: string;
+
+}
