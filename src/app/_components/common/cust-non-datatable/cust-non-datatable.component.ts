@@ -137,6 +137,16 @@ export class CustNonDatatableComponent implements OnInit {
         /*if(this.passData.tableOnly){
             document.getElementById('#non-datatable').style.marginTop = "0px";
         }*/
+
+        this.tableData.push([" ", " ", " ", " ", " "]);
+        this.tableData.push([" ", " ", " ", " ", " "]);
+        this.tableData.push([" ", " ", " ", " ", " "]);
+        this.tableData.push([" ", " ", " ", " ", " "]);
+        this.tableData.push([" ", " ", " ", " ", " "]);
+        this.tableData.push([" ", " ", " ", " ", " "]);
+        this.tableData.push([" ", " ", " ", " ", " "]);
+        this.tableData.push([" ", " ", " ", " ", " "]);
+        this.tableData.push([" ", " ", " ", " ", " "]);
     }
 
     processData(key: any, data: any) {
