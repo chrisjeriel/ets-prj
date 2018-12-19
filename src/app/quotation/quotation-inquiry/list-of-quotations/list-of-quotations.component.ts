@@ -19,7 +19,7 @@ export class ListOfQuotationsComponent implements OnInit {
     pageLength: number;
     i: number;
     line: string = "";
-    quoteList: QuotationList = new QuotationList(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+    quoteList: QuotationList = new QuotationList(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
 
     passData: any = {
         tableData: [], 
@@ -98,6 +98,7 @@ export class ListOfQuotationsComponent implements OnInit {
             delete e.validityDate;
             delete e.createdBy;
             delete e.requestedBy;
+            delete e.approvedBy;
         });
         this.allData = this.quotationService.getQuotationListInfo();
     }
