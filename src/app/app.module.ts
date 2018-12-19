@@ -75,8 +75,8 @@ import { PolDistComponent } from './underwriting/policy-distribution/pol-dist/po
 import { InwardPolBalanceComponent } from './underwriting/policy-issuance/inward-pol-balance/inward-pol-balance.component';
 import { PolItemComponent } from './underwriting/policy-issuance/pol-item/pol-item.component';
 import { PolCreateOpenCoverComponent } from './underwriting/policy-issuance/pol-create-open-cover/pol-create-open-cover.component';
-
-
+import { PolIssuanceCoverOpenLetterComponent } from './underwriting/policy-issuance/pol-issuance-cover-open-letter.component';
+import { PolGenInfoCoverOpenLetterComponent } from './underwriting/policy-issuance/pol-gen-info-cover-open-letter/pol-gen-info-cover-open-letter.component';
 @NgModule({
     imports: [
         BrowserModule,
@@ -155,6 +155,8 @@ import { PolCreateOpenCoverComponent } from './underwriting/policy-issuance/pol-
         InwardPolBalanceComponent,
         PolItemComponent,
         PolCreateOpenCoverComponent,
+        PolIssuanceCoverOpenLetterComponent,
+        PolGenInfoCoverOpenLetterComponent
     ],
 
     providers: [
