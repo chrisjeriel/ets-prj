@@ -25,7 +25,7 @@ export class ListOfQuotationsComponent implements OnInit {
         tableData: [], 
         tHeader: ['Quotation No.','Type of Cession','Line Class','Status','Ceding Company','Principal','Contractor','Insured','Risk','Object','Site','Policy No','Currency'],
         dataTypes: [],
-        resizable: [false, false, true, true, true, true, true, true, true, true, true, false, false],
+        resizable: [false, false, true, true, true, true, true, true, true, true, false, false],
         filters: [],
         pageLength: 10,
         expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: true, printBtn: true, 
