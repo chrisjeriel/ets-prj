@@ -98,6 +98,7 @@ export class ListOfQuotationsComponent implements OnInit {
             delete e.validityDate;
             delete e.createdBy;
             delete e.requestedBy;
+            delete e.approvedBy;
         });
         this.allData = this.quotationService.getQuotationListInfo();
     }
