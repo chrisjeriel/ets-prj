@@ -61,6 +61,7 @@ th, td{
 }
 #cust-table-container {
     position: relative !important;
+    margin-top: 1%;
 }
 
 
