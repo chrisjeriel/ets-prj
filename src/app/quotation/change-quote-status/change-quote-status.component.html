@@ -1,137 +1,144 @@
 <div class="cust-tabs-container">
-    <h4>Quotation / Change Quote Status</h4>
+    <h4>Quotation</h4>
+    <ngb-tabset>
+        <ngb-tab title="Change Quote Status">
+            <ng-template ngbTabContent>
+                <div class="row">
+                    <div class="col-sm-9">
+                        <app-cust-table [tableOnly]="true" [tHeader]="tHeader" [tableData]="tableData" [checkFlag]="true"></app-cust-table>
+                    </div>
+                    <div class="col-sm-3">
+                        <div id="fieldsetLabel"><label>Batch Option</label></div>
+                        <fieldset class="scheduler-border">
+                            <div class="form-group">
+                                <input type="radio" name="batchOption" value="Did Not Materialized"><span class="radioLabels">&nbsp; Did Not Materialize</span>
+                                <br/>
+                                <input type="radio" name="batchOption" value="Risk Not Commensurate"><span class="radioLabels">&nbsp; Risk Not Commensurate</span>
+                                <br/>
+                                <input type="radio" name="batchOption" value="Spoiled"><span class="radioLabels">&nbsp; Spoiled</span>
+                            </div>
+                        </fieldset>
+                        <div class="buttons">
+                            <button class="cust-btn cust-btn-extend" type="button"><a>Process</a></button>
+                            <br/>
+                            <button class="cust-btn cust-btn-extend" type="button"><a>Untag All</a></button>
+                            <br/>
+                            <button class="cust-btn cust-btn-extend" type="button" (click)="query()"><a>Query</a></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-9">
+                        <fieldset class="scheduler-border">
+                            <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+                            <div class="form-row custom-row-inline-inset">
+                                <div class="input-group alignment" style="margin-right: 10%; margin-bottom: -14px !important;">
+                                    <label class="form-control-sm col-sm-2 text-right">Quotation No</label>
+                                    <input type="text" class="form-control form-control-sm col-sm-4">
+                                    <label class="form-control-sm col-sm-2 text-right">Status</label>
+                                    <input type="text" name="" class="form-control form-control-sm col-sm-4"> 
+                                </div>
+                            </div>
+                            <div class="form-row custom-row-inline-inset">
+                                <div class="input-group alignment" style="margin-right: 10%; margin-bottom: -14px !important;">
+                                    <label class="form-control-sm col-sm-2 text-right">Ceding Co</label>
+                                    <input type="text" class="form-control form-control-sm col-sm-4">
+                                    <label class="form-control-sm col-sm-2 text-right">Insured</label>
+                                    <input type="text" name="" class="form-control form-control-sm col-sm-4"> 
+                                </div>
+                            </div>
+                            <div class="form-row custom-row-inline-inset">
+                                <div class="input-group alignment" style="margin-right: 10%; margin-bottom: -14px !important;">
+                                    <label class="form-control-sm col-sm-2 text-right">Risk</label>
+                                    <input type="text" class="form-control form-control-sm col-sm-4">
+                                    <label class="form-control-sm col-sm-2 text-right">Processor</label>
+                                    <input type="text" name="" class="form-control form-control-sm col-sm-4"> 
+                                </div>
+                            </div>
+                            <div class="form-row custom-row-inline-inset">
+                                <div class="input-group alignment" style="margin-right: 10%; margin-bottom: -10px !important;">
+                                    <label class="form-control-sm col-sm-2 text-right">Reason</label>
+                                    <input type="text" class="form-control form-control-sm col-sm-1" style="margin-right: 4px !important;">
+                                    <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+                                    <div class="col-sm-3" style="padding-left: 1px; padding-right: 0px;">
+                                        <input type="text" class="form-control form-control-sm">
+                                    </div>
+                                    <label class="form-control-sm col-sm-2 text-right">Remarks</label>
+                                    <div class="col-sm-4" style="padding-left: 0px; padding-right: 0px">
+                                        <input type="text" name="" class="form-control form-control-sm" style="padding-left: 1px"> 
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-sm-3"></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12" align="center">
+                        <div class="col-md-13 text-center">
+                            <br>
+                            <div class="cust-btn-container">
+                                <button type="button" class="cust-btn"><a>Cancel</a></button>
+                                <button type="button" class="cust-btn" (click)="save()"><a>Save</a></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br/><br/>
+
+                <app-modal class="hidden">
+                    <div header>Query</div>
+                    <div body>
+                        <div class="max-size">
+                            <fieldset class="scheduler-border">
+                                <br/>
+                                <div class="form-row custom-row-inline-inset">
+                                    <div class="input-group alignment">
+                                        <label class="form-control-sm col-sm-2 text-right">Quotation No</label>
+                                        <input type="text" class="form-control form-control-sm">
+                                        <input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
+                                        <input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
+                                        <input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
+                                        <input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
+                                        <a style="margin-left: 5px;"><i class="fa fa-search"></i></a>
+                                    </div>
+                                </div>
+                                <div class="form-row custom-row-inline-inset">
+                                    <div class="input-group alignment">
+                                        <label class="form-control-sm col-sm-2 text-right">Type of Cession</label>
+                                        <input type="text" class="form-control form-control-sm col-sm-2" >
+                                        <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+                                        <input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;">
+                                    </div>
+                                </div>
+                                <div class="form-row custom-row-inline-inset">
+                                    <div class="input-group alignment">
+                                        <label class="form-control-sm col-sm-2 text-right">Ceding Company</label>
+                                        <input type="text" class="form-control form-control-sm col-sm-2">
+                                        <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+                                        <input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;">
+                                    </div>
+                                </div>
+                                <div class="form-row custom-row-inline-inset">
+                                    <div class="input-group alignment">
+                                        <label class="form-control-sm col-sm-2 text-right">Risk</label>
+                                        <input type="text" class="form-control form-control-sm col-sm-2">
+                                        <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+                                        <input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;">
+                                    </div>
+                                </div>
+                                <br>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div footer>
+                        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+                        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+                    </div>
+                </app-modal>
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
 </div>
 <br/>
-<div class="row">
-    <div class="col-sm-9">
-        <app-cust-table [tableOnly]="true" [tHeader]="tHeader" [tableData]="tableData" [checkFlag]="true"></app-cust-table>
-    </div>
-    <div class="col-sm-3">
-        <div id="fieldsetLabel"><label>Batch Option</label></div>
-        <fieldset class="scheduler-border">
-            <div class="form-group">
-                <input type="radio" name="batchOption" value="Did Not Materialized"><span class="radioLabels">&nbsp; Did Not Materialize</span>
-                <br/>
-                <input type="radio" name="batchOption" value="Risk Not Commensurate"><span class="radioLabels">&nbsp; Risk Not Commensurate</span>
-                <br/>
-                <input type="radio" name="batchOption" value="Spoiled"><span class="radioLabels">&nbsp; Spoiled</span>
-            </div>
-        </fieldset>
-        <div class="buttons">
-            <button class="cust-btn cust-btn-extend" type="button"><a>Process</a></button>
-            <br/>
-            <button class="cust-btn cust-btn-extend" type="button"><a>Untag All</a></button>
-            <br/>
-            <button class="cust-btn cust-btn-extend" type="button" (click)="query()"><a>Query</a></button>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-sm-9">
-        <fieldset class="scheduler-border">
-            <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
-                <div class="form-row custom-row-inline-inset">
-                    <div class="input-group alignment" style="margin-right: 10%; margin-bottom: -14px !important;">
-                        <label class="form-control-sm col-sm-2 text-right">Quotation No</label>
-                        <input type="text" class="form-control form-control-sm col-sm-4">
-                        <label class="form-control-sm col-sm-2 text-right">Status</label>
-                        <input type="text" name="" class="form-control form-control-sm col-sm-4"> 
-                    </div>
-                </div>
-                <div class="form-row custom-row-inline-inset">
-                    <div class="input-group alignment" style="margin-right: 10%; margin-bottom: -14px !important;">
-                        <label class="form-control-sm col-sm-2 text-right">Ceding Co</label>
-                        <input type="text" class="form-control form-control-sm col-sm-4">
-                        <label class="form-control-sm col-sm-2 text-right">Insured</label>
-                        <input type="text" name="" class="form-control form-control-sm col-sm-4"> 
-                    </div>
-                </div>
-                <div class="form-row custom-row-inline-inset">
-                    <div class="input-group alignment" style="margin-right: 10%; margin-bottom: -14px !important;">
-                        <label class="form-control-sm col-sm-2 text-right">Risk</label>
-                        <input type="text" class="form-control form-control-sm col-sm-4">
-                        <label class="form-control-sm col-sm-2 text-right">Processor</label>
-                        <input type="text" name="" class="form-control form-control-sm col-sm-4"> 
-                    </div>
-                </div>
-                <div class="form-row custom-row-inline-inset">
-                    <div class="input-group alignment" style="margin-right: 10%; margin-bottom: -10px !important;">
-                        <label class="form-control-sm col-sm-2 text-right">Reason</label>
-                        <input type="text" class="form-control form-control-sm col-sm-1" style="margin-right: 4px !important;">
-                        <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-                        <div class="col-sm-3" style="padding-left: 1px; padding-right: 0px;">
-                            <input type="text" class="form-control form-control-sm">
-                        </div>
-                        <label class="form-control-sm col-sm-2 text-right">Remarks</label>
-                        <div class="col-sm-4" style="padding-left: 0px; padding-right: 0px">
-                            <input type="text" name="" class="form-control form-control-sm" style="padding-left: 1px"> 
-                        </div>
-                    </div>
-                </div>
-        </fieldset>
-    </div>
-    <div class="col-sm-3"></div>
-</div>
-<div class="row">
-    <div class="col-sm-12" align="center">
-        <div class="col-md-13 text-center">
-            <br>
-            <div class="cust-btn-container">
-                <button type="button" class="cust-btn"><a>Cancel</a></button>
-                <button type="button" class="cust-btn" (click)="save()"><a>Save</a></button>
-            </div>
-        </div>
-    </div>
-</div>
-<br/><br/>
 
-<app-modal class="hidden">
-    <div header>Query</div>
-    <div body>
-        <div class="max-size">
-            <fieldset class="scheduler-border">
-                <br/>
-                <div class="form-row custom-row-inline-inset">
-                    <div class="input-group alignment">
-                        <label class="form-control-sm col-sm-2 text-right">Quotation No</label>
-                        <input type="text" class="form-control form-control-sm">
-                        <input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
-                        <input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
-                        <input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
-                        <input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
-                        <a style="margin-left: 5px;"><i class="fa fa-search"></i></a>
-                    </div>
-                </div>
-                <div class="form-row custom-row-inline-inset">
-                    <div class="input-group alignment">
-                        <label class="form-control-sm col-sm-2 text-right">Type of Cession</label>
-                        <input type="text" class="form-control form-control-sm col-sm-2" >
-                        <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-                        <input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;">
-                    </div>
-                </div>
-                <div class="form-row custom-row-inline-inset">
-                    <div class="input-group alignment">
-                        <label class="form-control-sm col-sm-2 text-right">Ceding Company</label>
-                        <input type="text" class="form-control form-control-sm col-sm-2">
-                        <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-                        <input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;">
-                    </div>
-                </div>
-                <div class="form-row custom-row-inline-inset">
-                    <div class="input-group alignment">
-                        <label class="form-control-sm col-sm-2 text-right">Risk</label>
-                        <input type="text" class="form-control form-control-sm col-sm-2">
-                        <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-                        <input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;">
-                    </div>
-                </div>
-                <br>
-            </fieldset>
-        </div>
-    </div>
-    <div footer>
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
-    </div>
-</app-modal>
