@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Title } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-change-quote-status',
@@ -10,20 +11,21 @@ export class ChangeQuoteStatusComponent implements OnInit {
 
     tHeader: any[] = [];
     tableData: any[] = [];
-    
-    constructor(private modalService: NgbModal) {
+
+    constructor(private modalService: NgbModal, private titleService: Title) {
     }
 
     ngOnInit() {
-        setTimeout(function(){$('#modalBtn').trigger('click');}, 100);
+        this.titleService.setTitle("Quo | Change Quote Status");
+        setTimeout(function () { $('#modalBtn').trigger('click'); }, 100);
         this.tHeader.push("Quotation No.");
         this.tHeader.push("Type of Cession");
         this.tHeader.push("Ceding Company");
         this.tHeader.push("Insured");
         this.tHeader.push("Risk");
-        
+
         //temporary
-        this.tableData.push(["CAR-2015-0002832-01", "Retrocession", "Malayan", "5K Builders & ABE International Corp", "ABC Building"]);     
+        this.tableData.push(["CAR-2015-0002832-01", "Retrocession", "Malayan", "5K Builders & ABE International Corp", "ABC Building"]);
         /*this.tableData.push([" ", " ", " ", " ", " "]);
         this.tableData.push([" ", " ", " ", " ", " "]);
         this.tableData.push([" ", " ", " ", " ", " "]);
@@ -35,12 +37,12 @@ export class ChangeQuoteStatusComponent implements OnInit {
         this.tableData.push([" ", " ", " ", " ", " "]);*/
         //end temporary
     }
-    
-    save(){
+
+    save() {
         //do something
     }
-    query(){
-        $('#modalBtn').trigger('click'); 
+    query() {
+        $('#modalBtn').trigger('click');
     }
 
 }

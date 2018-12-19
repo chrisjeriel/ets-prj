@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ExpiryParameters, LastExtraction } from '../../../_models';
 import { UnderwritingService } from '../../../_services';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-extract-expiring-policies',
@@ -12,27 +13,27 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
 
   expiryParameters: ExpiryParameters = new ExpiryParameters();
   lastExtraction: LastExtraction = new LastExtraction();
-  constructor(private underWritingService: UnderwritingService,private modalService: NgbModal) { }
-  byDate:boolean = true;
+  constructor(private underWritingService: UnderwritingService, private modalService: NgbModal, private titleService: Title) { }
+  byDate: boolean = true;
   extractedPolicies: number = 0;
   ngOnInit() {
-
+    this.titleService.setTitle("Pol | Extract Expiring Policy");
   }
 
-  save(){
-  	this.extractedPolicies =  this.underWritingService.extractExpiringPolicies();
+  save() {
+    this.extractedPolicies = this.underWritingService.extractExpiringPolicies();
   }
 
-  clearDates(){
+  clearDates() {
     $('#fromDate').val("");
     $('#toDate').val("");
-    this.expiryParameters.fromMonth=null;
-    this.expiryParameters.fromYear=null;
-    this.expiryParameters.toMonth=null;
-    this.expiryParameters.toYear=null;
+    this.expiryParameters.fromMonth = null;
+    this.expiryParameters.fromYear = null;
+    this.expiryParameters.toMonth = null;
+    this.expiryParameters.toYear = null;
   }
 
-  clearAll(){
+  clearAll() {
     this.clearDates();
     this.expiryParameters.branch1 = null;
     this.expiryParameters.branch2 = null;

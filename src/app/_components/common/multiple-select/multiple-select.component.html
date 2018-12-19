@@ -43,13 +43,14 @@
 
       <div class="list-group" id="list1">
 
-        <div class="list-group-item active"> {{ msHeaderTxt }}<input title="toggle all" type="checkbox" class="all pull-right"
+        <div class="list-group-item active"> {{ multiSelectHeaderTxt }}<input title="toggle all" type="checkbox" class="all pull-right"
             (click)="selectAll($event)" [checked]="headerChecked">
         </div>
 
-        <div *ngFor="let data of msData">
-          <div class="list-group-item">{{ data }} <input type="checkbox" class="pull-right" [checked]="checkboxes"
-              value="{{ data }}" (click)="dataSelected($event)">
+        <div *ngFor="let data of returnValueId">
+          <div class="list-group-item">{{ data.value }}
+            <input type="checkbox" class="pull-right" [checked]="checkboxes" value="{{ data.value }}" id="{{ data.id }}"
+              (click)="dataSelected($event)">
           </div>
         </div>
 

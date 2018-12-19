@@ -3,6 +3,7 @@ import { UnderwritingService } from '../../../_services';
 import { CreateParInfo } from '../../../_models/CreatePolicy';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-pol-create-par',
@@ -10,31 +11,33 @@ import { Router } from '@angular/router';
   styleUrls: ['./pol-create-par.component.css']
 })
 export class PolCreatePARComponent implements OnInit {
-  
-  private createParInfo : CreateParInfo
+
+  private createParInfo: CreateParInfo
   tableData: any[] = [];
   tHeader: any[] = [];
   dataTypes: any[] = [];
   fromQuotation: boolean = true;
   quoteLine: any;
 
-  constructor(private underwritingService : UnderwritingService, private modalService : NgbModal, private router : Router ) {
+  constructor(private underwritingService: UnderwritingService,
+    private modalService: NgbModal, private router: Router, private titleService: Title) {
 
-   }
+  }
 
   ngOnInit() {
-  	this.tHeader.push("Quotation No");
-  	this.tHeader.push("Branch");
-  	this.tHeader.push("Line Class");
-  	this.tHeader.push("Quote Status");
-  	this.tHeader.push("Ceding Company");
-  	this.tHeader.push("Principal");
-  	this.tHeader.push("Contractor");
-  	this.tHeader.push("Insured");
-  	this.tHeader.push("Quote Date");
-  	this.tHeader.push("Validity Date");
-  	this.tHeader.push("Requested By");
-  	this.tHeader.push("Created By");
+    this.titleService.setTitle("Pol | Create Policy");
+    this.tHeader.push("Quotation No");
+    this.tHeader.push("Branch");
+    this.tHeader.push("Line Class");
+    this.tHeader.push("Quote Status");
+    this.tHeader.push("Ceding Company");
+    this.tHeader.push("Principal");
+    this.tHeader.push("Contractor");
+    this.tHeader.push("Insured");
+    this.tHeader.push("Quote Date");
+    this.tHeader.push("Validity Date");
+    this.tHeader.push("Requested By");
+    this.tHeader.push("Created By");
 
     this.dataTypes.push("text");
     this.dataTypes.push("text");
@@ -48,8 +51,8 @@ export class PolCreatePARComponent implements OnInit {
     this.dataTypes.push("date");
     this.dataTypes.push("text");
     this.dataTypes.push("text");
-        
-   // this.tableData = this.quotationService.getQuotationListInfo();
+
+    // this.tableData = this.quotationService.getQuotationListInfo();
     this.tableData = this.underwritingService.getAlterationFromQuotation();
 
     this.createParInfo = new CreateParInfo();
@@ -62,27 +65,27 @@ export class PolCreatePARComponent implements OnInit {
     this.createParInfo.cedingCompany = "test";
 
   }
-  
-  fromHoldCover(){
+
+  fromHoldCover() {
     this.fromQuotation = false;
   }
 
-  fromQuotationList(){
+  fromQuotationList() {
     this.fromQuotation = true;
   }
 
   navigateToGenInfo() {
 
-    if (this.quoteLine === 'CAR' || 
-        this.quoteLine === 'EAR' || 
-        this.quoteLine === 'EEI' || 
-        this.quoteLine === 'CEC' || 
-        this.quoteLine === 'MBI' || 
-        this.quoteLine === 'BPV' || 
-        this.quoteLine === 'MLP' || 
-        this.quoteLine === 'DOS') {
-      this.router.navigate(['/policy-issuance', { line: this.quoteLine }], {skipLocationChange: true});
+    if (this.quoteLine === 'CAR' ||
+      this.quoteLine === 'EAR' ||
+      this.quoteLine === 'EEI' ||
+      this.quoteLine === 'CEC' ||
+      this.quoteLine === 'MBI' ||
+      this.quoteLine === 'BPV' ||
+      this.quoteLine === 'MLP' ||
+      this.quoteLine === 'DOS') {
+      this.router.navigate(['/policy-issuance', { line: this.quoteLine }], { skipLocationChange: true });
     }
-    
+
   }
 }
