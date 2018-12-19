@@ -78,7 +78,7 @@ import { PolCreateOpenCoverComponent } from './underwriting/policy-issuance/pol-
 import { PolIssuanceOpenCoverLetterComponent } from './underwriting/policy-issuance/pol-issuance-open-cover-letter.component';
 import { PolGenInfoOpenCoverComponent } from './underwriting/policy-issuance/pol-gen-info-open-cover/pol-gen-info-open-cover.component';
 import { PolSumInsuredOpenCoverComponent } from './underwriting/policy-issuance/pol-sum-insured-open-cover/pol-sum-insured-open-cover.component';
-
+import { ReadyForPrintingComponent } from './quotation/quotation-inquiry/ready-for-printing/ready-for-printing.component';
 @NgModule({
     imports: [
         BrowserModule,
@@ -160,6 +160,7 @@ import { PolSumInsuredOpenCoverComponent } from './underwriting/policy-issuance/
         PolIssuanceOpenCoverLetterComponent,
         PolGenInfoOpenCoverComponent,
         PolSumInsuredOpenCoverComponent,
+        ReadyForPrintingComponent
     ],
 
     providers: [
