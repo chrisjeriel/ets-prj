@@ -96,14 +96,20 @@ export class UnderwritingService {
 
     getParListing() {
         this.parListingData = [
-            new PARListing("CAR-2018-0001", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "cuaresma"),
-            new PARListing("CAR-2018-0002", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "cuaresma"),
-            new PARListing("CAR-2018-0003", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "cuaresma"),
-            new PARListing("CAR-2018-0004", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "cuaresma"),
-            new PARListing("CAR-2018-0005", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "cuaresma"),
-            new PARListing("CAR-2018-0006", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "cuaresma"),
-            new PARListing("CAR-2018-0007", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "cuaresma"),
-            new PARListing("CAR-2018-0008", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "cuaresma")
+            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress",  "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(),"POLECOH"),
+            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress",  "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(),"POLECOH"),
+            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress",  "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(),"POLECOH"),
+            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress",  "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(),"POLECOH"),
+            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress",  "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(),"POLECOH"),
+            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress",  "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(),"POLECOH"),
+            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress",  "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(),"POLECOH"),
+            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress",  "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(),"POLECOH"),
+            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress",  "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(),"POLECOH"),
+            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress",  "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(),"POLECOH"),
+            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress",  "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(),"POLECOH"),
+            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress",  "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(),"POLECOH"),
+            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress",  "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(),"POLECOH"),
+            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress",  "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(),"POLECOH"),
         ];
 
         return this.parListingData;
@@ -111,14 +117,14 @@ export class UnderwritingService {
 
     getAltParListing() {
         this.altParListingData = [
-            new PARListing("CAR-2018-0001", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "user"),
-            new PARListing("CAR-2018-0002", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "user"),
-            new PARListing("CAR-2018-0003", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "user"),
-            new PARListing("CAR-2018-0004", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "user"),
-            new PARListing("CAR-2018-0005", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "user"),
-            new PARListing("CAR-2018-0006", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "user"),
-            new PARListing("CAR-2018-0007", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "user"),
-            new PARListing("CAR-2018-0008", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "user")
+            new AltPARListing("CAR-2018-0001", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "user"),
+            new AltPARListing("CAR-2018-0002", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "user"),
+            new AltPARListing("CAR-2018-0003", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "user"),
+            new AltPARListing("CAR-2018-0004", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "user"),
+            new AltPARListing("CAR-2018-0005", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "user"),
+            new AltPARListing("CAR-2018-0006", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "user"),
+            new AltPARListing("CAR-2018-0007", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "user"),
+            new AltPARListing("CAR-2018-0008", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "user")
         ];
 
         return this.altParListingData;

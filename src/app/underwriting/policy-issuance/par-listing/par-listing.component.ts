@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PARListing } from '@app/_models'
 import { UnderwritingService } from '../../../_services';
 import { Title } from '@angular/platform-browser';
 
@@ -14,7 +15,26 @@ export class ParListingComponent implements OnInit {
   filters: any[] = [];
   line: string = "CAR";
 
+
   constructor(private uwService: UnderwritingService, private titleService: Title) { }
+  passData: any = {
+    tHeader: [
+      "Policy No", "Type Cession", "Line Class", "Status", "Ceding Company", "Principal", "Contractor", "Insured", "Risk", "Object", "Site", "Quotation No", "Company", "Issue Date", "Inception Date", "Expiry Date", "Created By"
+    ],
+
+    resizable: [
+      true, true, true, true, true, true, true, true, true, true, true, false,
+      false, false, false, false, true
+    ],
+    dataTypes: [
+      "text", "text", "text", "text", "text", "text", "text", "text", "text",
+      "text", "text", "text", "text", "date", "date", "date", "text"
+    ],
+
+    tableData: this.uwService.getParListing(),
+    pageLength: 10,
+
+  }
 
   ngOnInit() {
     this.titleService.setTitle("Pol | Policy List");

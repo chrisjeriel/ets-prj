@@ -86,10 +86,11 @@
                 </div>
             </div>
             <div class="form-row custom-row-inline-inset">
-                <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
-                    <label class="form-control-sm col-sm-2 text-right">Created By</label>
+                <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -10px !important;">
+                    <label class="form-control-sm col-sm-2 text-right">Prepared By</label>
                     <input type="text" class="form-control form-control-sm col-sm-4" [value]="quoteList.createdBy" readonly>
-                    <div class="col-sm-6"></div>
+                    <label class="form-control-sm col-sm-2 text-right">Approved By</label>
+                    <input type="text" name="" class="form-control form-control-sm col-sm-4" [value]="quoteList.approvedBy" readonly> 
                 </div>
             </div>
         </fieldset>
@@ -125,12 +126,12 @@
             </div>
             <div class="form-row custom-row-inline-inset">
                 <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
-                    <label class="form-control-sm col-sm-2 text-right">Location</label>
+                    <label class="form-control-sm col-sm-2 text-right">Site</label>
                     <input type="text" class="form-control form-control-sm col-sm-10" [value]="quoteList.location" readonly>
                 </div>
             </div>
             <div class="form-row custom-row-inline-inset">
-                <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
+                <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -10px !important;">
                     <label class="form-control-sm col-sm-2 text-right">Object</label>
                     <input type="text" class="form-control form-control-sm col-sm-4" [value]="quoteList.object" readonly>
                     <label class="form-control-sm col-sm-2 text-right">Currency</label>

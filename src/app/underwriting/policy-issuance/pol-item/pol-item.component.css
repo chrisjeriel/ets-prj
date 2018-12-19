@@ -5,3 +5,8 @@
 fieldset{
 	padding-top: 7px !important;
 }
+.total{
+    background: #ddd;
+    background-clip: padding-box;
+    text-align: right;
+}
