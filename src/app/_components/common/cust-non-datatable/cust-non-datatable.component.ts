@@ -90,7 +90,7 @@ export class CustNonDatatableComponent implements OnInit {
     //@Input() fixedCol: boolean = false;
     
     //test
-    @Input() newData: any = new QuotationList(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null);
+    @Input() newData: any = new QuotationList(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null);
     @Input() passData: any = {
         tableData: [], tHeader: [], dataTypes: [], resizable: [], filters: [],
         pageLength: 10,

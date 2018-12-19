@@ -115,6 +115,7 @@ export class UnderwritingService {
         return this.parListingData;
     }
 
+
     getAltParListing() {
         this.altParListingData = [
             new AltPARListing("CAR-2018-0001", "In Progress", "Direct", "CAR Wet Risks", "FLT Prime", "2nd Inn, Inc.", "2nd Inn, Inc.", "user"),
@@ -280,4 +281,5 @@ export class UnderwritingService {
         return this.polMachineryDOS;
 
     }
+
 }            
