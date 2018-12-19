@@ -5,11 +5,13 @@
             <ng-template ngbTabContent>
                 <div class="row">
                     <div class="col-sm-9">
-                        <app-cust-table [tableOnly]="true" [tHeader]="tHeader" [tableData]="tableData" [checkFlag]="true"></app-cust-table>
+                        <!--<app-cust-table [tableOnly]="true" [tHeader]="tHeader" [tableData]="tableData" [checkFlag]="true" [resizable] = "resizable"></app-cust-table>-->
+                        <app-cust-non-datatable [passData] = "passData"></app-cust-non-datatable>
                     </div>
                     <div class="col-sm-3">
-                        <div id="fieldsetLabel"><label>Batch Option</label></div>
+                        <br/>
                         <fieldset class="scheduler-border">
+                            <legend class="scheduler-border">Batch Option</legend>
                             <div class="form-group">
                                 <input type="radio" name="batchOption" value="Did Not Materialized"><span class="radioLabels">&nbsp; Did Not Materialize</span>
                                 <br/>
@@ -20,8 +22,6 @@
                         </fieldset>
                         <div class="buttons">
                             <button class="cust-btn cust-btn-extend" type="button"><a>Process</a></button>
-                            <br/>
-                            <button class="cust-btn cust-btn-extend" type="button"><a>Untag All</a></button>
                             <br/>
                             <button class="cust-btn cust-btn-extend" type="button" (click)="query()"><a>Query</a></button>
                         </div>

@@ -12,7 +12,22 @@ export class ChangeQuoteStatusComponent implements OnInit {
     tHeader: any[] = [];
     tableData: any[] = [];
 
+    resizable: boolean[] = [false, false, true, true, true];
+    
+    passData: any = {
+        tableData: [
+            ["CAR-2015-0002832-01", "Retrocession", "Malayan", "5K Builders & ABE International Corp", "ABC Building"]
+        ], 
+        tHeader: ['Quotation No.','Type of Cession','Ceding Company','Insured','Risk'],
+        dataTypes: [],
+        resizable: [false, false, true, true, true],
+        filters: [],
+        pageLength: 10,
+        expireFilter: false, checkFlag: true, tableOnly: true, fixedCol: false, printBtn: false, 
+    }
+
     constructor(private modalService: NgbModal, private titleService: Title) {
+
     }
 
     ngOnInit() {
