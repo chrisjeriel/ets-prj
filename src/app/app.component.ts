@@ -117,7 +117,7 @@ export class AppComponent  {
          $('legend.scheduler-border').css({"color":"#2D5986"});
          $(' aside.ng-sidebar ').css({"background-color":"#00194A"});
          $('.nav-link').css({"color":""});
-         $('.ngx-pagination .current').css({"background":'linear-gradient(to bottom, #4080bf 0%, #2d5986 100%)'});
+         $('.my-pagination .ngx-pagination .current').css({"background":'linear-gradient(to bottom, #4080bf 0%, #2d5986 100%)'});
     }
 
     setColorTheme(color1 : string , color2 : string, color3 : string , color4 : string){
@@ -147,7 +147,7 @@ export class AppComponent  {
             $(' aside.ng-sidebar ').css({"background-color":color3});
             $('.nav-link ').css({"color":color2});
             $('.nav-link.active ').css({"color":"#495057"});
-            $('.ngx-pagination .current').css({"background":'linear-gradient(to bottom,'+color2+' 0%, '+color3+' 100%)'});
+            $('.my-pagination .ngx-pagination .current').css({"background":'linear-gradient(to bottom,'+color2+' 0%, '+color3+' 100%)'});
     }
 
     applyTheme(){
@@ -163,7 +163,7 @@ export class AppComponent  {
         }
      }
 
- /*    @HostListener('document:keyup', ['$event'])
+   /*  @HostListener('document:keyup', ['$event'])
       handleKeyboardEvent(event: KeyboardEvent) { 
         if(this.eRef.nativeElement.contains(event.target)){
                 this.changeTheme(this.theme);
