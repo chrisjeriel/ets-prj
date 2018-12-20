@@ -23,8 +23,11 @@ th{
     margin: 0px !important;
 }
 td{
-    padding: 5px !important;
+    padding: 4px !important;
     margin: 0px !important;
+}
+div.filler{
+    padding: 6px;
 }
 .table-scroll{
     overflow: auto;
@@ -36,6 +39,9 @@ td{
     max-width: 142px;
 }
 
+.checkbox{
+    height: 11px;
+}
 #non-datatable {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
