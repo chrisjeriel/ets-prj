@@ -4,6 +4,12 @@ fieldset.scheduler-border-endorsements{
 
 .copyEndt {
 	position: absolute;
-    top: 207px;
+    top: 192px;
     left: 226px;
 }
+
+fieldset {
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+}
+
