@@ -202,9 +202,9 @@ div.input-group {
 }
 
 .cust-search-form{
-    height: 25px !important;
+    height: calc(1.3rem + 1px) !important;
     width: 189px !important;
-    font-size: 12px !important;
+    font-size: 0.7rem !important;
 }
 
 .search-filter{
@@ -235,6 +235,36 @@ div.input-group {
 	width: 6px;
 }
 
-tbody tr{
-    height: 33px;
+tbody tr, thead tr{
+    height: calc(1.3rem + 1px);
+}
+
+td, td div input, td div select{
+    padding: 0px !important;
+    margin: 0px !important;
+    padding-right: 4px !important;
+    vertical-align: middle;
+}
+
+th{
+    padding: 8px!important;
+    overflow: hidden;
+}
+
+td div input , td div select{
+    padding: 5px !important;
+}
+
+td.checkbox, th.checkbox{
+    text-align: center !important;
+    padding: 0px !important;
+}
+
+div.filler{
+    padding: 5px!important;
+    height: calc(1.3rem + 1px) !important;
+}
+
+td div select{
+    height: calc(1.3rem + 1px) !important;  
 }

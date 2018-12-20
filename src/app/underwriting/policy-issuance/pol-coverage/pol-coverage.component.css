@@ -1,30 +1,7 @@
-.txt-content-rght{
-    text-align: right
-}
-  .mrgn-fieldset{
-    margin-top: 17px;
-} 
+
 /* .fieldset-height{
     height: 104%;
 } */
-.prnt-dv{
-    position: relative;
-}
-.chld-dv1{
-    position: absolute;
-    bottom: 0;
-    right: 33.25%;
-}
-.chld-dv2{
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    padding-right:0; 
-}
-.fldst-height {
-    height: 100%;
-    /* padding-top: 15px !important;  */
-}
 
 legend.scheduler-border {
     font-size: 10.5px !important;
@@ -40,13 +17,19 @@ legend.scheduler-border {
     height: 100% !important;
 }
 
-.input-group {
-    margin-bottom: -14px !important;
-}
-
 .text-search-ico {
     margin-left: -18px;
     z-index: 100;
     font-size: 14px;
 }
+
+
+fieldset {
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+}
+
+.input-group {
+    margin-bottom: -5px !important;
+}   
 
