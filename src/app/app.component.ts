@@ -1,4 +1,4 @@
-import { Component, Inject,  ViewChild } from '@angular/core';
+import { Component, Inject,  ViewChild} from '@angular/core';
 import { Router } from '@angular/router';
 import { ResizeEvent } from 'angular-resizable-element';
 import { HostListener, ElementRef } from '@angular/core';
@@ -11,7 +11,7 @@ import { DOCUMENT } from '@angular/platform-browser';
     selector: 'app',
     templateUrl: 'app.component.html',
 })
-export class AppComponent {
+export class AppComponent  {
     datetime: number;
     currentUser: User;
     public style: object = {};
@@ -29,7 +29,7 @@ export class AppComponent {
 
     content: any;
     theme : any;
-    
+
     constructor(
     private router: Router,
      private authenticationService: AuthenticationService,
@@ -161,25 +161,32 @@ export class AppComponent {
         } else {
                       this.changeTheme(this.theme);
         }
-     }    
+     }
+
+ /*    @HostListener('document:keyup', ['$event'])
+      handleKeyboardEvent(event: KeyboardEvent) { 
+        if(this.eRef.nativeElement.contains(event.target)){
+                this.changeTheme(this.theme);
+        } 
+      } */
+
 
      ngOnInit(){
        this.theme = window.localStorage.getItem("selectedTheme");
-           setTimeout(() => {    
-             this.changeTheme(this.theme);
-           });
+           setTimeout(() => { this.changeTheme(this.theme);});
       }
 
-  @HostListener('window:unload', ['$event'])
-  unloadHandler(event) {
-      window.localStorage.setItem("selectedTheme", this.theme);
-  }
+    @HostListener('window:unload', ['$event'])
+    unloadHandler(event) {
+        window.localStorage.setItem("selectedTheme", this.theme);
+    }
 
-  @HostListener('window:popstate', ['$event'])
-  onPopState(event) {
-      setTimeout(() => {    
-             this.changeTheme(this.theme);
-      });
-  }
+    @HostListener('window:popstate', ['$event'])
+    onPopState(event) {
+        setTimeout(() => {    
+               this.changeTheme(this.theme);
+        });
+    }
 
 }
+

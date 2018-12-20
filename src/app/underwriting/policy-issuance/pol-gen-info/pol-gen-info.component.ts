@@ -2,6 +2,7 @@ import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UnderwritingService } from '../../../_services';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-pol-gen-info',
@@ -19,9 +20,11 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   line: string;
   private sub: any;
 
-  constructor(private route: ActivatedRoute, private modalService: NgbModal, private underwritingService: UnderwritingService) { }
+  constructor(private route: ActivatedRoute, private modalService: NgbModal,
+    private underwritingService: UnderwritingService, private titleService: Title) { }
 
   ngOnInit() {
+    this.titleService.setTitle("Pol | General Info");
     this.tHeader.push("Item No", "Description of Items");
     this.dataTypes.push("text", "text");
     this.filters.push("Item No", "Desc. of Items");

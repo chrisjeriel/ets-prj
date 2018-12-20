@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { QuotationService } from '../../_services';
 import { QuotationProcessing } from '../../_models';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Title } from '@angular/platform-browser';
 
 
 @Component({
@@ -33,10 +34,12 @@ export class QuotationProcessingComponent implements OnInit {
   }
 
   constructor(private quotationService: QuotationService, private modalService: NgbModal, private router: Router
-    , public activeModal: NgbActiveModal) { }
+    , public activeModal: NgbActiveModal, private titleService: Title
+  ) { }
 
 
   ngOnInit() {
+    this.titleService.setTitle("Quo | List Of Quotations");
     this.rowData = this.quotationService.getRowData();
 
     this.tHeader.push("Quotation No");
@@ -110,11 +113,11 @@ export class QuotationProcessingComponent implements OnInit {
       this.line === 'DOS') {
       this.modalService.dismissAll();
 
-    this.quotationService.rowData = [];
-    this.quotationService.toGenInfo = [];
-    this.quotationService.toGenInfo.push("add", this.line);
-    this.router.navigate(['/quotation']);
-  }
+      this.quotationService.rowData = [];
+      this.quotationService.toGenInfo = [];
+      this.quotationService.toGenInfo.push("add", this.line);
+      this.router.navigate(['/quotation']);
+    }
 
   }
 

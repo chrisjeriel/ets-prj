@@ -27,7 +27,7 @@ import { PolDistListComponent } from './underwriting/distribution/pol-dist-list/
 import { PolDistComponent } from './underwriting/policy-distribution/pol-dist/pol-dist.component';
 import { PolicyDistributionComponent } from './underwriting/policy-distribution/policy-distribution.component';
 import { PolCreateOpenCoverComponent } from './underwriting/policy-issuance/pol-create-open-cover/pol-create-open-cover.component';
-import { PolIssuanceCoverOpenLetterComponent } from './underwriting/policy-issuance/pol-issuance-cover-open-letter.component';
+import { PolIssuanceOpenCoverLetterComponent } from './underwriting/policy-issuance/pol-issuance-open-cover-letter.component';
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -57,7 +57,7 @@ const appRoutes: Routes = [
     { path: 'pol-dist', component: PolDistComponent },
     { path: 'policy-dist', component: PolicyDistributionComponent },
     { path: 'create-open-cover', component: PolCreateOpenCoverComponent },
-     { path: 'create-cover-open-letter', component: PolIssuanceCoverOpenLetterComponent },
+     { path: 'create-open-cover-letter', component: PolIssuanceOpenCoverLetterComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

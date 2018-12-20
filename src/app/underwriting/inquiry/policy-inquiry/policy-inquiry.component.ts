@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UnderwritingPolicyInquiryInfo } from '@app/_models';
 import { UnderwritingService } from '@app/_services';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-policy-inquiry',
@@ -12,10 +13,10 @@ export class PolicyInquiryComponent implements OnInit {
   tHeader: any[] = [];
   dataTypes: any[] = [];
 
-  constructor(private underwritingService: UnderwritingService) { }
+  constructor(private underwritingService: UnderwritingService, private titleService: Title) { }
 
   ngOnInit() {
-
+    this.titleService.setTitle("Pol | Policy Inquiry");
     this.tHeader.push("Policy No");
     this.tHeader.push("Branch");
     this.tHeader.push("Ceding Company");
