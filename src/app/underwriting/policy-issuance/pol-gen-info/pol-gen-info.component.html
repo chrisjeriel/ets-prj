@@ -27,7 +27,8 @@
 				<div class="row">
 					<div class="col-sm">
 						<fieldset class="scheduler-border cust-fs-padlr-offset">
-							<legend class="scheduler-border" style="margin-left: 16px !important;">Policy Record</legend>
+							<legend class="scheduler-border" style="margin-left: 16px !important;padding-bottom: 1px !important;">Policy
+								Record</legend>
 							<div class="col-sm-1">
 							</div>
 							<div class="col-sm">
@@ -95,7 +96,7 @@
 								<input type="date" class="form-control form-control-sm">
 								<input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;">
 							</div>
-							<div class="input-group col-sm-6" style="margin-top: 10px; padding: 0px;">
+							<div class="input-group col-sm-6" style="margin-top: 10px; margin-bottom: -20px !important;">
 								<label class="form-control-sm col-sm-4">Expiry Date</label>
 								<input type="date" class="form-control form-control-sm">
 								<input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;">
@@ -168,8 +169,9 @@
 		<div class="row">
 			<div class="col-sm-8">
 				<!-- LINE: CAR -->
-				<fieldset *ngIf="line === 'CAR'" class="scheduler-border cust-fs-padlr-offset">
-					<legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
+				<fieldset *ngIf="line === 'CAR'" class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 6px !important;
+				padding-top: 6px !important;">
+					<legend class="scheduler-border" style="margin-left: 16px !important;">Insured Detail</legend>
 					<div class="col-sm-1">
 					</div>
 					<div class="col-sm">
@@ -665,7 +667,7 @@
 						</div>
 					</div>
 				</fieldset>
-				<fieldset class="scheduler-border">
+				<fieldset class="scheduler-border" style="padding-bottom: 4px !important;">
 					<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 					<div class="custom-row-inline-inset">
 						<div class="form-row" style="margin-top: 10px; margin-bottom: -4px;">
@@ -890,7 +892,8 @@
 							</div>
 							<div class="col-sm">
 								<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
-									<div class="input-group" style="margin-top: 10px;">
+									<div class="input-group" style="    margin-top: -2px !important;
+									margin-bottom: -12px !important;">
 										<label class="form-control-sm col-sm-2">Policy No</label>
 										<input type="text" class="form-control form-control-sm col-sm-1 cap-input" ngbTooltip="Line">
 										<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 5px;"
@@ -941,16 +944,16 @@
 				</div>
 			</div>
 			<div class="col-sm-6" style="padding-left: 0px;">
-				<fieldset class="scheduler-border cust-fs-padlr-offset" style=" padding-bottom: 15px !important;">
+				<fieldset class="scheduler-border cust-fs-padlr-offset" style="padding-top: 13px !important; padding-bottom: 13px !important;">
 					<!-- style="height: 100%;" -->
 					<legend class="scheduler-border" style="margin-left: 16px !important;">Period of Insurance</legend>
 					<div class="col-sm-1">
 					</div>
 					<div class="col-sm">
-						<div class="row">
+						<div class="row" style="margin-bottom: -13px !important;">
 							<div class="col-sm-1"></div>
 							<div class="col-sm-10">
-								<div class="custom-row-inline-inset">
+								<div class="custom-row-inline-inset" style=" margin-top: 4px !important;">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-5" for="xx">Previous Inception
 											Date</label>
@@ -968,8 +971,9 @@
 							</div>
 							<div class="col-sm-1"></div>
 						</div>
-						<div class="form-row" style="margin-right: 0px;">
-							<div class="input-group col-sm-6" style="margin-top: 10px; padding: 0px;">
+						<div class="form-row" style="margin-right: 0px; margin-bottom: -7px !important;
+						">
+							<div class="input-group col-sm-6">
 								<label class="form-control-sm col-sm-4">Expiry Date</label>
 								<input type="date" class="form-control form-control-sm">
 								<input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;">
@@ -978,26 +982,27 @@
 
 							</div>
 						</div>
-						<div class="form-row" style="margin-right: 0px;">
-							<div class="input-group col-sm-6" style="padding: 0px;">
+						<div class="form-row" style="margin-right: 0px; margin-bottom: -7px !important;">
+							<div class="input-group col-sm-6">
 								<label class="form-control-sm col-sm-4">Lapse From</label>
 								<input type="date" class="form-control form-control-sm">
 								<input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;">
 							</div>
-							<div class="input-group col-sm-6" style="padding: 0px;">
+							<div class="input-group col-sm-6" style="margin-right: 0px;">
 								<label class="form-control-sm col-sm-4">Lapse To</label>
 								<input type="date" class="form-control form-control-sm">
 								<input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;">
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
-							<div class="input-group col-sm-6" style="padding: 0px;">
+							<div class="input-group col-sm-6">
 								<label class="form-control-sm col-sm-4">Maintenance From</label>
 								<input type="date" class="form-control form-control-sm">
 								<input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;">
 							</div>
-							<div class="input-group col-sm-6" style="padding: 0px;">
-								<label class="form-control-sm col-sm-4">Maintenance To</label>
+							<div class="input-group col-sm-6" style="margin-right: 0px;">
+								<label class=" form-control-sm col-sm-4">Maintenance
+									To</label>
 								<input type="date" class="form-control form-control-sm">
 								<input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;">
 							</div>
@@ -1013,7 +1018,7 @@
 		<div class="row">
 			<div class="col-sm-8">
 				<!-- LINE: CAR -->
-				<fieldset *ngIf="line === 'CAR'" class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 10px !important;">
+				<fieldset *ngIf="line === 'CAR'" class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 6px !important; padding-top: 6px !important;">
 					<legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
 					<div class="col-sm-1">
 					</div>
@@ -1028,8 +1033,9 @@
 								<input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
 							</div>
 							<div class="input-group">
-								<label class="form-control-sm col-sm-1">Insured</label>
-								<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 8px;"></textarea>
+								<label class="form-control-sm col-sm-1" style="margin-right: 2px
+								!important">Insured</label>
+								<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 15px !important;"></textarea>
 							</div>
 							<div class="input-group">
 								<label class="form-control-sm col-sm-1">Risk</label>
@@ -1047,8 +1053,9 @@
 								</div>
 							</div>
 							<div class="input-group">
-								<label class="form-control-sm col-sm-1">Nature of Work</label>
-								<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;"></textarea>
+								<label class="form-control-sm col-sm-1" style="margin-right: 2px
+								!important">Nature of Work</label>
+								<textarea class="form-control form-control-sm col-sm-5" style="margin-bottom: 18px !important;font-size: 11px; min-height: 47px; margin-bottom: 12px;"></textarea>
 
 								<div class="col-sm">
 									<div class="row">
@@ -1066,8 +1073,9 @@
 								</div>
 							</div>
 							<div class="input-group">
-								<label class="form-control-sm col-sm-1">Site</label>
-								<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;"></textarea>
+								<label class="form-control-sm col-sm-1" style="margin-right: 2px
+								!important">Site</label>
+								<textarea class="form-control form-control-sm col-sm-5" style="margin-bottom: 18px !important;font-size: 11px; min-height: 47px; margin-bottom: 12px;"></textarea>
 
 								<div class="col-sm">
 									<div class="row">
@@ -1537,7 +1545,7 @@
 					<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 					<div class="custom-row-inline-inset">
 						<div class="input-group">
-							<label class="form-control-sm" for="xx">Currency</label>
+							<label class="form-control-sm" for="xx" style="margin-right:2px !important;">Currency</label>
 							<select class="form-control form-control-sm cust-sm">
 								<option value=""></option>
 								<option value="USD">USD</option>
@@ -1598,7 +1606,7 @@
 				</fieldset>
 			</div>
 			<div class="col-sm-4" style="padding-left: 0px;">
-				<fieldset class="scheduler-border ">
+				<fieldset class="scheduler-border" style="padding-bottom:4px !important;">
 					<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 					<div class="custom-row-inline-inset">
 						<div class="form-row" style="margin-top: 10px; margin-bottom: -4px;">
