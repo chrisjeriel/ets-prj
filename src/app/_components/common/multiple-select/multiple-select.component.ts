@@ -37,11 +37,11 @@ export class MultipleSelectComponent implements OnInit {
         }
       }
     }
-    if (this.returnValue.length == this.returnValueId.length) {
-      this.headerChecked = true;
-    } else {
-      this.headerChecked = false;
-    }
+    // if (this.returnValue.length == this.returnValueId.length) {
+    //   this.headerChecked = true;
+    // } else {
+    //   this.headerChecked = false;
+    // }
     this.multiSelectDataSelected.emit({ returnId: this.returnId, returnValue: this.returnValue });
   }
 

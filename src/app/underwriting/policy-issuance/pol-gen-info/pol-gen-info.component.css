@@ -3,3 +3,6 @@
 	z-index: 200;
 	font-size: 14px;
 }
+.input-group-prepend {
+	height: calc(1.3rem + 1px) !important;
+}
