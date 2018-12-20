@@ -26,8 +26,8 @@ export class QuotationProcessingComponent implements OnInit {
   passData: any = {
         tableData: [], 
         tHeader: ['Quotation No.','Type of Cession','Line Class','Status','Ceding Company','Principal','Contractor','Insured','Risk','Object','Site','Policy No','Currency', 'Quote Date', 'Valid Until', 'Request Date', 'Create Date'],
-        dataTypes: ['text','text','text','text','text','text','text','text','text','text','text','text','text','date','date','date','date'],
-        resizable: [false, false, true, true, true, true, true, true, true, true, true, false, false, true, true, true, true],
+        dataTypes: ['text','text','text','text','text','text','text','text','text','text','text','text','date','date','date','date'],
+        resizable: [false, true, true, true, true, true, true, true, true, true, false, false, true, true, true, true],
         filters: [],
         pageLength: 10,
         expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: true, printBtn: false, 
