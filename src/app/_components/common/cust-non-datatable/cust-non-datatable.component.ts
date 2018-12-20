@@ -176,12 +176,12 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     onRowClick(event) {
-
+/*
         for(var i = 0; i < event.target.parentElement.parentElement.children.length; i++) {
             event.target.parentElement.parentElement.children[i].style.backgroundColor = "";
         }
 
-        event.target.parentElement.style.backgroundColor = "#67b4fc";
+        event.target.parentElement.style.backgroundColor = "#67b4fc";*/
         this.rowClick.next(event);
     }
 
