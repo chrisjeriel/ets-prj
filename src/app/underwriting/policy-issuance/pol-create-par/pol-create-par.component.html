@@ -28,6 +28,10 @@
         margin-bottom: -10px !important;
     }
 
+    .input-ig-row {
+        margin-left: 2px !important;
+    }
+
 </style>
 
 <div class="cust-tabs-container">
@@ -62,18 +66,18 @@
                         <div class="input-group ig-row">
                             <label class="form-control-sm col-sm-2">Quotation No</label>
                             <input type="text" [(ngModel)]="quoteLine" class="form-control form-control-sm" [disabled]="!fromQuotation">
-                            <input type="text" class="form-control form-control-sm" [disabled]="!fromQuotation" style="margin-left: 4px;">
-                            <input type="text" class="form-control form-control-sm" [disabled]="!fromQuotation" style="margin-left: 4px;">
-                            <input type="text" class="form-control form-control-sm" [disabled]="!fromQuotation" style="margin-left: 4px;">
-                            <input type="text" class="form-control form-control-sm" [disabled]="!fromQuotation" style="margin-left: 4px;">
+                            <input type="text" class="form-control form-control-sm input-ig-row" [disabled]="!fromQuotation">
+                            <input type="text" class="form-control form-control-sm input-ig-row" [disabled]="!fromQuotation">
+                            <input type="text" class="form-control form-control-sm input-ig-row" [disabled]="!fromQuotation">
+                            <input type="text" class="form-control form-control-sm input-ig-row" [disabled]="!fromQuotation">
                             <span>&nbsp;</span>
                             <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
                         </div>
                         <div class="input-group ig-row">
                             <label class="form-control-sm col-sm-2">Hold Cover No</label>
                             <input type="text" class="form-control form-control-sm" [disabled]="fromQuotation">
-                            <input type="text" class="form-control form-control-sm" style="margin-left: 4px;" [disabled]="fromQuotation">
-                            <input type="text" class="form-control form-control-sm" style="margin-left: 4px;" [disabled]="fromQuotation">
+                            <input type="text" class="form-control form-control-sm input-ig-row" [disabled]="fromQuotation">
+                            <input type="text" class="form-control form-control-sm input-ig-row" [disabled]="fromQuotation">
                             <span>&nbsp;</span>
                             <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
                         </div>
