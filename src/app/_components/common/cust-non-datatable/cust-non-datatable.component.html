@@ -75,7 +75,7 @@
             <table class="" id="non-datatable">
                 <thead>
                     <tr>
-                        <th (click)="sort(dataKeys[i],sortBy);sortIndex=i;">
+                        <th (click)="sort(dataKeys[0],sortBy);sortIndex=i;" class="height-control">
                             <span class="gridHeader">{{passData.tHeader[0]}}</span>
                             <i *ngIf="showSort(sortBy,i)" class="fa fa-caret-down"></i>
                             <i *ngIf="showSort(!sortBy,i)" class="fa fa-caret-up"></i>
@@ -84,7 +84,7 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let data of displayData | paginate: { id:'non-editable', itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event)" (dblclick)="onRowDblClick($event)">
-                        <td style="margin-top:1px">
+                        <td class="height-control" style="margin-top:1px">
                             <span class="unclickable">{{data[dataKeys[0]]}}</span>
                         </td>
                     </tr>
