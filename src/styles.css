@@ -478,3 +478,8 @@ input[type=date] {
 aside.ng-sidebar{
     background-color: rgb(0, 25, 74);
 }
+
+input.form-control-sm, select.form-control.form-control-sm.cust-sm {
+    height: calc(1.3rem + 1px) !important;
+    font-size: 0.7rem !important;
+}
