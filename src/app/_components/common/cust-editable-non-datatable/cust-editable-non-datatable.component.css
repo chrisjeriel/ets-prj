@@ -239,10 +239,11 @@ tbody tr, thead tr{
     height: calc(1.3rem + 1px);
 }
 
-td, td div input{
+td, td div input, td div select{
     padding: 0px !important;
     margin: 0px !important;
     padding-right: 4px !important;
+    vertical-align: middle;
 }
 
 th{
@@ -250,9 +251,8 @@ th{
     overflow: hidden;
 }
 
-td div input {
+td div input , td div select{
     padding: 5px !important;
-
 }
 
 td.checkbox, th.checkbox{
@@ -263,4 +263,8 @@ td.checkbox, th.checkbox{
 div.filler{
     padding: 5px!important;
     height: calc(1.3rem + 1px) !important;
+}
+
+td div select{
+    height: calc(1.3rem + 1px) !important;  
 }
