@@ -16,7 +16,7 @@ export class PolicyIssuanceAltComponent implements OnInit {
     ngOnInit() {
     }
     public beforeChange($event: NgbTabChangeEvent) {
-        if ($event.nextId === 'approval-tab') {
+        if ($event.nextId === 'print-tab') {
             $event.preventDefault();
         }
     }
