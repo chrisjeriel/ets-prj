@@ -2,14 +2,29 @@
 
 table{
     margin-top: 30px;
+    width: 100%;
+}
+table
+tr{
+    height: calc(1.3rem + 1px) !important;
 }
 th, td{
     white-space: nowrap;
-    /*min-width: 0px;
-    max-width: 1px;*/
+    font-size: 0.7rem !important;
+    /*margin: 0px !important;
+    padding: 0px !important;*/
+    height: calc(1.3rem + 1px) !important;
     min-width: 30px; 
     max-width: 160px;
     overflow: hidden;
+}
+th{
+    padding: 8px !important;
+    margin: 0px !important;
+}
+td{
+    padding: 5px !important;
+    margin: 0px !important;
 }
 .table-scroll{
     overflow: auto;
@@ -29,7 +44,6 @@ th, td{
 
 #non-datatable td, #non-datatable th {
     border: 1px solid #ddd;
-    padding: 8px;
 }
 
 #non-datatable tr:nth-child(even){background-color: #f2f2f2;}
@@ -68,7 +82,7 @@ th, td{
 .expire{
     position: absolute !important;
     right: 250px;
-    top: 1px;
+    top: 2px;
     font-size: 11px;
     text-decoration: none !important;
     outline: none !important;
@@ -81,9 +95,9 @@ th, td{
     z-index: 9999 !important;
 }
 .expireIn{
-    height: calc(1.5rem + 1px) !important;
+    height: calc(1.3rem + 1px) !important;
     padding: 0.1rem 0.25rem !important;
-    font-size: 12px !important;
+    font-size: 0.7rem !important;
     line-height: .7 !important;
     border-radius: 0.2rem !important;
     margin-bottom: -5px !important;
@@ -95,10 +109,11 @@ th, td{
 }
 
 .cust-filter {
+    height: calc(1.3rem + 1px) !important;
     position: absolute !important;
     right: 1px;
-    top: 1px;
-    font-size: 14px;
+    top: 2px;
+    font-size: 0.7rem !important;
     color: white !important;
     text-align: center;
     text-decoration: none !important;
@@ -114,9 +129,9 @@ th, td{
 }
 
 .cust-search-form{
-    height: 25px !important;
+    height: calc(1.3rem + 1px) !important;
     width: 150px !important;
-    font-size: 12px !important;
+    font-size: 0.7rem !important;
     border-radius: 0.2rem !important;
     margin-bottom: -5px !important;
     overflow: visible !important;
@@ -127,7 +142,7 @@ th, td{
 
 .search-filter{
     position: absolute !important;
-    right: 39px;
+    right: 34px;
     z-index: 1000;
 }
 
@@ -246,8 +261,4 @@ padding: 0;
 .fa-caret-down, .fa-caret-up{
     position: absolute;
     right: 5px;
-}
-
-tr{
-    height: 29px;
 }

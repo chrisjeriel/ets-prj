@@ -28,7 +28,7 @@
     <div class="expire" *ngIf="passData.expireFilter" align="right">
         <!-- remove -->
         <label>Expires in (Days): &nbsp; </label>
-        <input type="search" class="expireIn" placeholder="">
+        <input type="search" class="form-control-sm expireIn" placeholder="" >
         <!-- end remove -->
     </div>
     <div class="search-filter" *ngIf="!passData.tableOnly">
@@ -75,7 +75,7 @@
             <table class="" id="non-datatable">
                 <thead>
                     <tr>
-                        <th (click)="sort(dataKeys[0],sortBy);sortIndex=i;" class="height-control">
+                        <th (click)="sort(dataKeys[0],sortBy);sortIndex=i;">
                             <span class="gridHeader">{{passData.tHeader[0]}}</span>
                             <i *ngIf="showSort(sortBy,i)" class="fa fa-caret-down"></i>
                             <i *ngIf="showSort(!sortBy,i)" class="fa fa-caret-up"></i>
@@ -84,7 +84,7 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let data of displayData | paginate: { id:'non-editable', itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event)" (dblclick)="onRowDblClick($event)">
-                        <td class="height-control" style="margin-top:1px">
+                        <td style="margin-top:1px">
                             <span class="unclickable">{{data[dataKeys[0]]}}</span>
                         </td>
                     </tr>
@@ -150,6 +150,7 @@
             </tbody>
         </table>
     </div>
+    
     <div class="pagingStatus" *ngIf="!passData.tableOnly">
         <pagination-template #paw="paginationApi" id="non-editable" (pageChange)="p = $event">
             <label *ngIf="!paw.isLastPage() && displayLength > 0">Showing {{ (paw.getCurrent() - 1) * passData.pageLength + 1 }} - {{ paw.getCurrent() * passData.pageLength }} of {{displayLength}} entries </label>
