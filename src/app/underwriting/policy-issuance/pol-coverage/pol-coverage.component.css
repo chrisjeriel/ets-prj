@@ -40,3 +40,13 @@ legend.scheduler-border {
     height: 100% !important;
 }
 
+.input-group {
+    margin-bottom: -14px !important;
+}
+
+.text-search-ico {
+    margin-left: -18px;
+    z-index: 100;
+    font-size: 14px;
+}
+

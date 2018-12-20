@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { UnderwritingService } from '@app/_services/underwriting.service';
 import { UnderwritingCoverageInfo } from '@app/_models';
 import { Title } from '@angular/platform-browser';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-pol-coverage',
@@ -19,10 +20,11 @@ export class PolCoverageComponent implements OnInit {
   optionsData: any[] = [];
   headerWithColspan: any[] = [];
 
+  textArea: any;
   @Input() alteration: boolean;
 
   nData: UnderwritingCoverageInfo = new UnderwritingCoverageInfo(null, null, null, null, null, null, null);
-  constructor(private underwritingservice: UnderwritingService, private titleService: Title) { }
+  constructor(private underwritingservice: UnderwritingService, private titleService: Title, private modalService: NgbModal) { }
 
   ngOnInit() {
 
@@ -110,4 +112,7 @@ export class PolCoverageComponent implements OnInit {
     }
   }
 
+  showTextEditorModal(content) {
+    this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
+  }
 }
