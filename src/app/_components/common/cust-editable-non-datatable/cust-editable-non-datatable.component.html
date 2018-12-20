@@ -91,7 +91,7 @@
         <table id="non-datatable">
             <thead>
                 <tr style="min-width: 96px">
-                    <th *ngIf="checkFlag" class="checkbox"><input type="checkbox" name="checkbox" ></th>
+                    <th *ngIf="checkFlag" class="checkbox"><input type="checkbox" name="checkbox" [(ngModel)]="checked" ></th>
                     <th *ngFor="let tHeader of tHeader; let i = index" (click)="sort(dataKeys[i],sortBy);sortIndex=i;">
                         <span class="ui-column-resizer" (mousedown)="onMouseDown($event)"></span>
                         <span class="gridHeader">{{tHeader}}</span>
@@ -103,7 +103,7 @@
 
             <tbody>
                 <tr *ngFor="let data of displayData | paginate: { id: 'editable', itemsPerPage: pageLength, currentPage: p2 };let ti = index" (click)="onRowClick($event)" (dblclick)="onRowDblClick($event)">
-                    <td *ngIf="checkFlag" class="checkbox"><input *ngIf="addCheckFlag(data)" type="checkbox" name="checkbox" ></td>
+                    <td *ngIf="checkFlag" class="checkbox"><input *ngIf="addCheckFlag(data)" type="checkbox" name="checkbox" [checked]="checked"></td>
                     <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]">
                         <div *ngIf="addCheckFlag(data)">
                             <a><i *ngIf="magnifyingGlass.indexOf(key)!=-1" class="fa fa-search"></i></a> &nbsp;
@@ -140,8 +140,8 @@
                         </select>
                     </td>
                     <td *ngIf="tHeader.indexOf('Actions')!=-1" class="icon">
-                        <button class="fa fa-upload" title="Upload"></button>
-                        <button class="fa fa-download" title="Download"></button>
+                        <button class="fa fa-paperclip" title="Attach File"></button>
+                        <button class="fa fa-folder-open" title="Open File"></button>
                     </td>
                 </tr>
             </tbody>

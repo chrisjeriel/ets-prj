@@ -111,7 +111,7 @@ export class CustNonDatatableComponent implements OnInit {
     searchString: string;
     displayLength: number;
     p:number = 1;
-
+    checked:boolean;
     constructor(config: NgbDropdownConfig, public renderer: Renderer, private quotationService: QuotationService,) {
         config.placement = 'bottom-right';
         config.autoClose = false;

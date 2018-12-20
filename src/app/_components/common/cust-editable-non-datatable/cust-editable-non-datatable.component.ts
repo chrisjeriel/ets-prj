@@ -56,7 +56,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     displayLength: number;
     p:number = 1;
     fillData:any = {};
-
+    checked: boolean;
     constructor(config: NgbDropdownConfig, public renderer: Renderer) { 
         config.placement = 'bottom-right';
         config.autoClose = false;

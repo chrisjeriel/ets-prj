@@ -1,27 +1,44 @@
+<style type="text/css">
+    .input-group label {
+      margin: 0px !important;
+    }
+
+</style>
+
 <ng-container *ngIf="!alteration">
   <div>
   <fieldset class="scheduler-border">
       <legend class="scheduler-border">Policy Record Info</legend>
-      <div class="form-row custom-row-inline-inset">
+      <div class="form-row custom-row-inline-inset" style="margin: -2px !important">
+        
+
         <div class="input-group">
+          <div class="form-control-sm col-sm-1"></div>
           <label class="form-control-sm col-sm-1" for="xx">Policy No</label>
           <input type="text" id="xx" value="CAR-2018-5081-077-0177" class="form-control form-control-sm cust-sm col-sm-2"
             placeholder="" readonly>
           <label class="form-control-sm col-sm-1" for="xx">Insured</label>
-          <input type="text" id="xx" value="Insurer" class="form-control form-control-sm cust-sm col-sm-7" placeholder=""
+          <input type="text" id="xx" value="Insurer" class="form-control form-control-sm col-sm cust-sm" placeholder=""
             readonly>
+          <div class="form-control-sm col-sm-1"></div>
         </div>
+
+
         <div class="input-group">
+          <div class="form-control-sm col-sm-1"></div>
           <label class="form-control-sm col-sm-1" for="xx">Risk</label>
           <input type="text" id="xx" value="Risk Name" class="form-control form-control-sm cust-sm col-sm-10" placeholder=""
             readonly>
+          <div class="form-control-sm col-sm-1"></div>
         </div>
       </div>
   </fieldset>
   <fieldset class="scheduler-border">
     <legend class="scheduler-border">Section Covers</legend>
-    <app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData"
-      [tHeader]="tHeader" [dataTypes]="dataTypes" [opts]="selOptions" [magnifyingGlass]="magnifyingGlass" [checkFlag]="true"></app-cust-editable-table>
+    <div class="test" style="margin-top: 5px !important; margin-bottom: 15px;">
+    <app-cust-editable-non-datatable [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData"
+      [tHeader]="tHeader" [dataTypes]="dataTypes" [opts]="selOptions" [magnifyingGlass]="magnifyingGlass" [checkFlag]="true"></app-cust-editable-non-datatable>
+    </div>
   </fieldset>
   <div class="row">
     <div class="col-sm-6">
@@ -54,9 +71,9 @@
         </div>
     </fieldset>
     </div>
-   <div class="cust-sm col-sm-6">
+   <div class="cust-sm col-sm-6" style="padding-left: 0px;">
         <fieldset class="scheduler-border">
-          <legend class="scheduler-border">SI per Section</legend>
+          <legend class="scheduler-border" style="margin-left: 16px !important;">SI per Section</legend>
            <div class="cust-sm">
             <div class="cust-sm col-sm-1"></div>
               <div class="row" style="margin-right: 0px; margin-bottom: 11px;">
@@ -112,7 +129,7 @@
         </div>
       </fieldset>
     </div>
-    <div class="cust-sm col-sm-6">
+    <div class="cust-sm col-sm-6" style="padding-left: 0px;">
         <fieldset class="scheduler-border">
          <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
         <div class="cust-sm">
@@ -123,7 +140,7 @@
                     </div>
                    <div class="input-group">
                        <label class="form-control-sm col-sm-1">Remarks</label>
-                       <textarea class="form-control-sm form-control" style="font-size: 11px; min-height: 65px; margin-bottom: 10px; margin-left: 8px"></textarea> 
+                       <textarea class="form-control-sm form-control" style="font-size: 11px; min-height: 49px; margin-bottom: 10px; margin-left: 8px"></textarea> 
                     </div>
                     <div class="input-group">
                             <span class="col-sm-3"></span>
