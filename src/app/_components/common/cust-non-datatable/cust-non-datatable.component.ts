@@ -94,7 +94,7 @@ export class CustNonDatatableComponent implements OnInit {
     @Input() passData: any = {
         tableData: [], tHeader: [], dataTypes: [], resizable: [], filters: [],
         pageLength: 10,
-        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false,
+        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, pageStatus: true, pagination: true
     }
 
     dataKeys: any[] = [];

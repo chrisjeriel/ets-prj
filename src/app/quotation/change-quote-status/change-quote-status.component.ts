@@ -23,7 +23,7 @@ export class ChangeQuoteStatusComponent implements OnInit {
         resizable: [false, false, true, true, true],
         filters: [],
         pageLength: 10,
-        expireFilter: false, checkFlag: true, tableOnly: true, fixedCol: false, printBtn: false, 
+        expireFilter: false, checkFlag: true, tableOnly: true, fixedCol: false, printBtn: false, pageStatus: true, pagination: true,
     }
 
     constructor(private modalService: NgbModal, private titleService: Title) {

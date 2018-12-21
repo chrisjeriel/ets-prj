@@ -55,12 +55,13 @@ div.filler{
 #non-datatable tr:nth-child(even){background-color: #f2f2f2;}
 
 #non-datatable tr:hover {background-color: #ffffb3;}
+#non-datatable tr:active {background-color: #67b4fc;}
 
 #non-datatable th {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
-    background-color: #f5f5f5;
+    background-color: #c1c0c0;
     color: black;
 }
 .headcol {
