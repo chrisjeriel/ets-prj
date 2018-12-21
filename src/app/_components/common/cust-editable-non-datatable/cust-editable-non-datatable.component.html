@@ -20,11 +20,11 @@
 <div id="cust-table-container">
     <div ngbDropdown>
         <div class="cust-btn-container">
-            <button *ngIf="addFlag" class="cust-btn" (click)="onClickAdd()"><a>Add</a></button>
-            <button *ngIf="editFlag" class="cust-btn" (click)="onClickEdit()"><a class="paginate_button previous">Edit</a></button>
-            <button *ngIf="deleteFlag" class="cust-btn" (click)="onClickDelete()"><a class="paginate_button previous">Delete</a></button>
+            <button *ngIf="passData.addFlag" class="cust-btn" (click)="onClickAdd()"><a>Add</a></button>
+            <button *ngIf="passData.editFlag" class="cust-btn" (click)="onClickEdit()"><a class="paginate_button previous">Edit</a></button>
+            <button *ngIf="passData.deleteFlag" class="cust-btn" (click)="onClickDelete()"><a class="paginate_button previous">Delete</a></button>
         </div>
-        <div class="search-filter" *ngIf="searchFlag">
+        <div class="search-filter" *ngIf="passData.searchFlag">
             <!--<div class="search-filter" *ngIf="passData.hasSearch">-->
             <label>Search: &nbsp;
                 <input type="search" class="form-control-sm cust-search-form" [(ngModel)]="searchString" (ngModelChange)="search($event)">
@@ -91,42 +91,52 @@
         <table id="non-datatable">
             <thead>
                 <tr style="min-width: 96px">
-                    <th *ngIf="checkFlag" class="checkbox"><input type="checkbox" name="checkbox" ></th>
-                    <th *ngFor="let tHeader of tHeader; let i = index" (click)="sort(dataKeys[i],sortBy);sortIndex=i;">
+                    <th *ngIf="passData.checkFlag" class="checkbox"><input type="checkbox" name="checkbox" [(ngModel)]="checked" ></th>
+                    <th *ngFor="let tHeader of passData.tHeader; let i = index" (click)="sort(dataKeys[i],sortBy);sortIndex=i;"
+                    [style.width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]">
                         <span class="ui-column-resizer" (mousedown)="onMouseDown($event)"></span>
-                        <span class="gridHeader">{{tHeader}}</span>
-                        <i *ngIf="showSort(sortBy,i)" class="fa fa-caret-down"></i>
-                        <i *ngIf="showSort(!sortBy,i)" class="fa fa-caret-up"></i>
+                        <span *ngIf="isNumber(i)" class="gridHeader number text-right">{{tHeader}}
+                            <i *ngIf="showSort(sortBy,i)" class="fa fa-caret-down"></i>
+                            <i *ngIf="showSort(!sortBy,i)" class="fa fa-caret-up"></i>
+                        </span>
+                        <span *ngIf="!isNumber(i)" class="gridHeader">{{tHeader}}
+                            <i *ngIf="showSort(sortBy,i)" class="fa fa-caret-down"></i>
+                            <i *ngIf="showSort(!sortBy,i)" class="fa fa-caret-up"></i>
+                        </span>
                     </th>
                 </tr>
             </thead>
 
             <tbody>
-                <tr *ngFor="let data of displayData | paginate: { id: 'editable', itemsPerPage: pageLength, currentPage: p2 };let ti = index" (click)="onRowClick($event)" (dblclick)="onRowDblClick($event)">
-                    <td *ngIf="checkFlag" class="checkbox"><input *ngIf="addCheckFlag(data)" type="checkbox" name="checkbox" ></td>
-                    <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]">
+                <tr *ngFor="let data of displayData | paginate: { id: 'editable', itemsPerPage: passData.pageLength, currentPage: p2 };let ti = index" (click)="onRowClick($event)" (dblclick)="onRowDblClick($event)">
+                    <td *ngIf="passData.checkFlag" class="checkbox"><input *ngIf="addCheckFlag(data)" type="checkbox" name="checkbox" [checked]="checked"></td>
+                    <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]">
                         <div *ngIf="addCheckFlag(data)">
                             <a><i *ngIf="magnifyingGlass.indexOf(key)!=-1" class="fa fa-search"></i></a> &nbsp;
-                            <input *ngSwitchCase="'percent'" class="editable-text text-right number" type="text" [ngModel]="processData(key, data) | number:'1.7-7'"
+                            <input *ngSwitchCase="'percent'" class="editable-text text-right number form-control-sm" type="text" [ngModel]="processData(key, data) | number:'1.7-7'"
                                    [ngModelOptions]="{updateOn:'blur'}" (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
-                            <input *ngSwitchCase="'number'" class="editable-text text-right number" type="text" [ngModel]="processData(key, data)"
+                            <input *ngSwitchCase="'number'" class="editable-text text-right number form-control-sm" type="text" [ngModel]="processData(key, data)"
                                    [ngModelOptions]="{updateOn:'blur'}" (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
-                            <input *ngSwitchCase="'currency'" class="editable-text text-right number" type="text" [ngModel]="processData(key, data) | number:'1.2-2'"
+                            <input *ngSwitchCase="'currency'" class="editable-text text-right number form-control-sm" type="text" [ngModel]="processData(key, data) | number:'1.2-2'"
                                    [ngModelOptions]="{updateOn:'blur'}" (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
                             <input *ngSwitchCase="'checkbox'" type="checkbox">
-                            <select *ngSwitchCase="'select'" class="editable-select" [value]="processData(key, data)">
-                                <ng-container *ngFor="let data of opts">
+                            <select *ngSwitchCase="'select'" class="editable-select form-control-sm" [value]="processData(key, data)">
+                                <ng-container *ngFor="let data of passData.opts">
                                     <ng-container *ngIf="key == data.selector">
                                         <option *ngFor="let val of data.vals">{{ val }}</option>
                                     </ng-container>
                                 </ng-container>
                             </select>
 
-                            <input *ngSwitchCase="'date'" class="editable-date" type="date" [ngModel]="processData(key, data) | date:'yyyy-MM-dd'"
+                            <input *ngSwitchCase="'date'" class="editable-date form-control-sm" type="date" [ngModel]="processData(key, data) | date:'yyyy-MM-dd'"
                                    (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
-                            <input *ngSwitchCase="'time'" class="editable-date" type="time" [ngModel]="processData(key, data) | date:'HH:mm'">
-                            <input *ngSwitchCase="'datetime'" class="editable-date" type="datetime-local" [ngModel]="processData(key, data) | date:'yyyy-MM-ddTHH:mm'">
-                            <input *ngSwitchDefault class="editable-text " type="text" [ngModel]="processData(key, data)" (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
+                            <input *ngSwitchCase="'time'" class="editable-date form-control-sm" type="time" [ngModel]="processData(key, data) | date:'HH:mm'">
+                            <input *ngSwitchCase="'datetime'" class="editable-date form-control-sm" type="datetime-local" [ngModel]="processData(key, data) | date:'yyyy-MM-ddTHH:mm'">
+                            <input *ngSwitchDefault class="editable-text form-control-sm" type="text" [ngModel]="processData(key, data)" (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
+                            
+                        </div>
+                        <div *ngIf="!addCheckFlag(data)" class="filler">
+                            
                         </div>
                     </td>
                     <td *ngIf="tHeader.indexOf('Edit Flag')!= -1">
@@ -134,20 +144,28 @@
                             <input type="checkbox" name="">
                         </div>
                     </td>
-                    <td *ngIf="selectFlag">
+                    <td *ngIf="passData.selectFlag">
                         <select class="editable-select">
                             <option *ngFor="let options of options">{{options}}</option>
                         </select>
                     </td>
                     <td *ngIf="tHeader.indexOf('Actions')!=-1" class="icon">
-                        <button class="fa fa-upload" title="Upload"></button>
-                        <button class="fa fa-download" title="Download"></button>
+                        <button class="fa fa-paperclip" title="Attach File"></button>
+                        <button class="fa fa-folder-open" title="Open File"></button>
+                    </td>
+                </tr>       
+                <tr *ngIf="passData.totalFlag" class="total-tr">
+                    <td *ngIf="passData.checkFlag"></td>
+                    <td [attr.colspan]="dataKeys.length-1"></td>
+                    <td class="total">
+                        <span class="editable-text form-control-sm label">Total Sum Insured</span>
+                        <span class="editable-text text-right number form-control-sm">20,000.00</span>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
-    <div class="pagingStatus" *ngIf="infoFlag">
+    <div class="pagingStatus" *ngIf="passData.infoFlag">
         <!--<div class="pagingStatus" *ngIf="passData.hasPageInfo">-->
         <!-- <pagination-template #api="paginationApi" (pageChange)="p = $event">
 <label *ngIf="!api.isLastPage()">Showing {{ (api.getCurrent() - 1) * passData.pageLength + 1 }} - {{ api.getCurrent() * passData.pageLength }} of {{displayData.length}} entries</label>
@@ -157,12 +175,12 @@
             <!--  <label *ngIf="!api.isLastPage() && displayLength > 0">Showing {{ (api.getCurrent() - 1) * passData.pageLength + 1 }} - {{ api.getCurrent() * passData.pageLength }} of {{displayLength}} entries {{api.getCurrent()}}</label>
 <label *ngIf="api.isLastPage() && displayLength > 0">Showing {{ (api.getCurrent() - 1) * passData.pageLength + 1 }} - {{displayLength}} of {{displayLength}} entries</label>
 <label *ngIf="displayLength < 1">Showing 0 - 0 of 0 entries</label>-->
-            <label *ngIf="!api.isLastPage() && displayLength > 0">Showing {{ (api.getCurrent() - 1) * pageLength + 1 }} - {{ api.getCurrent() * pageLength }} of {{displayLength}} entries</label>
+            <label *ngIf="!api.isLastPage() && displayLength > 0">Showing {{ (api.getCurrent() - 1) * passData.pageLength + 1 }} - {{ api.getCurrent() * passData.pageLength }} of {{displayLength}} entries</label>
             <label *ngIf="api.isLastPage() && displayLength > 0">Showing {{ (api.getCurrent() - 1) * pageLength + 1 }} - {{displayLength}} of {{displayLength}} entries</label>
             <label *ngIf="displayLength < 1">Showing 0 - 0 of 0 entries</label>
         </pagination-template>
     </div>
-    <div class="pagination" *ngIf="paginateFlag">
+    <div class="pagination" *ngIf="passData.paginateFlag">
         <!--<div class="pagination" *ngIf="passData.hasPagination">-->
         <!-- <pagination-template class="" #api="paginationApi" (pageChange)="p = $event"><a (click)="api.setCurrent(1)">&laquo;</a></pagination-template>-->
         <pagination-controls id="editable" class="my-pagination" (pageChange)="p2 = $event" previousLabel="" nextLabel="">

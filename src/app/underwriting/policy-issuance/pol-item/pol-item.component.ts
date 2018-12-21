@@ -29,20 +29,49 @@ export class PolItemComponent implements OnInit {
     nData_EEI_MBI_CEC: PolItem_EEI_MBI_CEC = new PolItem_EEI_MBI_CEC(null, null, null, null, null, null);
     nData_BPV: PolItem_BPV = new PolItem_BPV(null, null, null, null, null);
 
-    mlpTableData: PolItem_MLP[];
-    mlpTHeader: string[] = ['Item No', 'Quantity', 'Description of Machinery', 'Indemnity Period(months)', 'Relative Importance(%)', 'Spare Parts in stock standby Units'];
-    mlpDataTypes: string[] = ['text', 'number', 'text', 'number', 'percent', 'number'];
-    mlpNData: PolItem_MLP = new PolItem_MLP(null, null, null, null, null, null);
+    
+    mlpPassData: any = {
+        tableData: [],
+        tHeader:  ['Item No', 'Quantity', 'Description of Machinery', 'Indemnity Period(months)', 'Relative Importance(%)', 'Spare Parts in stock standby Units'],
+        dataTypes:  ['text', 'number', 'text', 'number', 'percent', 'number'],
+        nData:  new PolItem_MLP(null, null, null, null, null, null),
+        checkFlag:"true",
+        addFlag:"true",
+        deleteFlag:"true",
+        widths:  ['1','1','auto','1','1','1'],
+        searchFlag : true
+    }
+    
+    dosGoodsPassData: any = {
+        tableData: [],
+        tHeader: ["Item No", "Refrigerating Chamber No", "Type of Goods", "No-Claims Period", "Sum Insured"],
+        dataTypes: ["text", "text", "text", "text", "currency"],
+        nData: new PolGoods_DOS(null, null, null, null, null),
+        widths: ['1','1','auto','1','228'],
+        // pageLength: 5,
+        checkFlag:true,
+        addFlag:true,
+        deleteFlag:true,
+        totalFlag:true,
+        pageLength: 5,
+        searchFlag:true
+    }
 
-    dosGoodsTableData: PolGoods_DOS[];
-    dosGoodsTHeader: string[] = ["Item No", "Refrigerating Chamber No", "Type of Goods", "No-Claims Period", "Sum Insured"];
-    dosGoodsDataTypes: string[] = ["text", "text", "text", "text", "currency"];
-    dosGoodsNData: PolGoods_DOS = new PolGoods_DOS(null, null, null, null, null);
+    dosMachineryPassData: any = {
+        tableData: [],
+        tHeader: ["Item No", "Number of Units", "Description of Items (Technical Data including Capacity)", "Year of Make", "Sum Insured"],
+        dataTypes: ["text", "number", "text", "text", "currency"],
+        nData: new PolMachinery_DOS(null, null, null, null, null),
+        widths:  ['1','1','auto','1','228'],
+        pageLength: 5,
+        checkFlag:true,
+        addFlag:true,
+        deleteFlag:true,
+        totalFlag:true,
+        searchFlag: true
+        }
 
-    dosMachineryTableData: PolMachinery_DOS[];
-    dosMachineryTHeader: string[] = ["Item No", "Number of Units", "Description of Items (Technical Data including Capacity)", "Year of Make", "Sum Insured"];
-    dosMachineryDataTypes: string[] = ["text", "number", "text", "number", "currency"];
-    dosMachinerysNData: PolMachinery_DOS = new PolMachinery_DOS(null, null, null, null, null);
+    
 
     polEEI: boolean = true;
     polBPV: boolean = false;
@@ -56,14 +85,13 @@ export class PolItemComponent implements OnInit {
 
     ngOnInit() {
         this.titleService.setTitle("Pol | Item");
-        this.mlpTableData = this.underwritingService.getPolItemMLPData();
-        this.dosGoodsTableData = this.underwritingService.getPolGoodsDOSData();
-        this.dosMachineryTableData = this.underwritingService.getPolMachineryDOSData();
+        this.mlpPassData.tableData = this.underwritingService.getPolItemMLPData();
+        this.dosGoodsPassData.tableData = this.underwritingService.getPolGoodsDOSData();
+        this.dosMachineryPassData.tableData = this.underwritingService.getPolMachineryDOSData();
 
         this.sub = this.route.params.subscribe(params => {
             this.line = params['line'];
         });
-        console.log(this.line);
     }
 
 

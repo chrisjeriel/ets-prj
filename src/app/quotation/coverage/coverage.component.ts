@@ -34,7 +34,6 @@ export class CoverageComponent implements OnInit {
   }
 
   getMS(event) {
-    //console.log(event.allSelectedData + ' : ' + event.allSelectedData[2].value);
     console.log('VALUE : ' + event.returnValue + ' ' + 'ID : ' + event.returnId);
   }
 
