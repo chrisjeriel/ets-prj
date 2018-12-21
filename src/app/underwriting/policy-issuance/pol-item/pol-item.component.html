@@ -22,10 +22,10 @@
 <div *ngIf="line=='EEI' || line=='MBI' || line=='CEC'">
     <fieldset class="scheduler-border">
         <legend class="scheduler-border">Item Information</legend>
-        <app-cust-editable-non-datatable [checkFlag]="true" [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [tableData]="tableData_EEI_MBI_CEC" [tHeader]="tHeader_EEI_MBI_CEC" [dataTypes]="dataTypes_EEI_MBI_CEC" [nData]="nData_EEI_MBI_CEC"></app-cust-editable-non-datatable>
-        <div class="total">
+        <app-cust-editable-non-datatable [passData]="eeiPassData"></app-cust-editable-non-datatable>
+        <!-- <div class="total">
             <label>Total Sum Insured: 20,000 &nbsp;&nbsp;&nbsp;&nbsp;</label>
-        </div>
+        </div> -->
         <br/>
     </fieldset>
     <div class="col-md-13 text-center">
@@ -39,7 +39,7 @@
 <div *ngIf="line=='BPV'">
     <fieldset class="scheduler-border">
         <legend class="scheduler-border">Item Information</legend>
-        <app-cust-editable-non-datatable [checkFlag]="true" [addFlag]="true" [deleteFlag]="true" [tableData]="tableData_BPV" [tHeader]="tHeader_BPV" [dataTypes]="dataTypes_BPV" [nData]="nData_BPV"></app-cust-editable-non-datatable>
+        <app-cust-editable-non-datatable [passData]="bpvPassData"></app-cust-editable-non-datatable>
         <br/>
     </fieldset>
     <div class="col-md-13 text-center">

@@ -29,6 +29,33 @@ export class PolItemComponent implements OnInit {
     nData_EEI_MBI_CEC: PolItem_EEI_MBI_CEC = new PolItem_EEI_MBI_CEC(null, null, null, null, null, null);
     nData_BPV: PolItem_BPV = new PolItem_BPV(null, null, null, null, null);
 
+    eeiPassData:any={
+        tableData:[
+            new PolItem_EEI_MBI_CEC('10001', 45, 'Item Description 1', '2018', 5, 20000),
+        ],
+        tHeader: ['Item No.', 'Quantity', 'Description of Items', 'Year of Make', 'Deductible', 'Sum Insured'],
+        dataTypes:['string', 'number', 'string', 'string', 'number', 'currency'],
+        nData: new PolItem_EEI_MBI_CEC(null, null, null, null, null, null),
+        checkFlag:true,
+        addFlag:true,
+        deleteFlag:true,
+        totalFlag:true,
+        widths: ["1","1","auto","1","1","228"]
+
+    }
+
+    bpvPassData: any = {
+        tableData:[
+            new PolItem_BPV('S10001', 'Region IV, Laguna, Calamba', '100001 Juan de la Cruz', "2018", 90000),
+        ],
+        tHeader: ['Serial No', 'Location', 'Description Maker\'s No. and Maker\'s Name', 'Year of Make', 'Sum Insured'],
+        dataTypes:['string', 'string', 'string', 'string', 'currency'],
+        nData: new PolItem_BPV(null, null, null, null, null),
+        checkFlag:true,
+        addFlag:true,
+        deleteFlag:true,
+        //widths: ["1","1","auto","1","1","228"]
+    }
     
     mlpPassData: any = {
         tableData: [],
