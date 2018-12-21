@@ -42,28 +42,32 @@ div.filler{
 .checkbox{
     height: 11px;
 }
-#non-datatable {
+.non-datatable {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 100%;
 }
 
-#non-datatable td, #non-datatable th {
+.non-datatable td, .non-datatable th {
     border: 1px solid #ddd;
 }
 
-#non-datatable tr:nth-child(even){background-color: #f2f2f2;}
+.non-datatable tr:nth-child(even){background-color: #f2f2f2;}
 
-#non-datatable tr:hover {background-color: #ffffb3;}
-#non-datatable tr:active {background-color: #67b4fc;}
+.non-datatable tr:hover {background-color: #ffffb3;}
+/*#non-datatable tr:active {background-color: #67b4fc;}*/
 
-#non-datatable th {
+.non-datatable th {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
     background-color: #c1c0c0;
     color: black;
 }
+.selected{
+    background-color: #67b4fc !important;
+}
+
 .headcol {
     position: absolute;
     left: inherit;

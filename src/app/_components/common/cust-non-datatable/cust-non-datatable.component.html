@@ -73,7 +73,7 @@
     <div  *ngIf="passData.fixedCol" class="row">
         <div class="col-sm-2" style="padding-right: 0px; flex: 0 0 13.666667%;
     max-width: 13.666667%;">
-            <table class="" id="non-datatable">
+            <table class="" class="non-datatable">
                 <thead>
                     <tr>
                         <th *ngIf="passData.checkFlag" style="text-align: center"><input type="checkbox" name=""></th>
@@ -85,7 +85,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let data of displayData | paginate: { id:'non-editable', itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event)" (dblclick)="onRowDblClick($event)">
+                    <tr *ngFor="let data of displayData | paginate: { id:'non-editable', itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event); highlight($event, data)" (dblclick)="onRowDblClick($event)" [class.selected]="data === selected">
                         <td *ngIf="passData.checkFlag" style="text-align: center"><input type="checkbox" name="" *ngIf="addCheckFlag(data)"></td>
                         <td style="margin-top:1px">
                             <div *ngIf="addCheckFlag(data)">
@@ -103,7 +103,7 @@
         <div class="col-sm-10" style="padding-left: 0px;    max-width: 86.3333%;
     flex: 0 0 86.3333%;">
             <div class="col-sm-10 table-scroll" id="cust-scroll" style="padding-left: 0px">
-                <table class="" id="non-datatable" style="border-left: 0px;">
+                <table class="" class="non-datatable" style="border-left: 0px;">
                     <thead>
                         <tr>
                             <!-- <th *ngIf="passData.checkFlag" ><input type="checkbox" name=""></th>-->
@@ -117,7 +117,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let data of displayData | paginate: { id:'non-editable', itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event)" (dblclick)="onRowDblClick($event)">
+                        <tr *ngFor="let data of displayData | paginate: { id:'non-editable', itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event);highlight($event, data)" (dblclick)="onRowDblClick($event)" [class.selected]="data === selected">
                             <td *ngIf="passData.checkFlag"> <input type="checkbox" name=""></td>
                             <td *ngFor="let key of dataKeys | slice: 1; let i = index" [ngSwitch]="passData.dataTypes[i]">
                                 <div *ngIf="addCheckFlag(data)">
@@ -140,7 +140,7 @@
 
 
     <div class="table-scroll" id="cust-scroll" *ngIf="!passData.fixedCol">
-        <table id="non-datatable">
+        <table class="non-datatable">
             <thead>
                 <tr style="min-width: 96px">
                     <th *ngIf="passData.checkFlag" style="text-align: center"><input type="checkbox" name="" [(ngModel)]="checked"></th>
@@ -154,7 +154,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let data of displayData | paginate: { id:'non-editable', itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event)" (dblclick)="onRowDblClick($event)">
+                <tr *ngFor="let data of displayData | paginate: { id:'non-editable', itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event); highlight($event, data)" (dblclick)="onRowDblClick($event)" [class.selected]="data === selected">
                     <td *ngIf="passData.checkFlag" style="text-align: center"><input type="checkbox" name="" *ngIf="addCheckFlag(data)" class="checkbox" [checked]="checked"></td>
                     <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]">
                         <div *ngIf="addCheckFlag(data)">
