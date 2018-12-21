@@ -89,6 +89,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     ngOnInit() {
+        console.log(this.passData);
         this.passData.pageLength = typeof this.passData.pageLength == 'undefined' ? 10 : this.passData.pageLength;
         this.passData.dataTypes = typeof this.passData.dataTypes == 'undefined' ? [] : this.passData.dataTypes;
         if (this.passData.tableData.length > 0) {

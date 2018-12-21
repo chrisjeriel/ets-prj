@@ -25,7 +25,27 @@ export class InwardPolBalanceComponent implements OnInit {
   //   new PolicyInwardPolBalance("TEST", "TEST", 1, "TEST"),
   // ];
 
-  
+   passDataInstallmentInfo: any = {
+        tHeader: ["Inst No", "Due Date", "Booking Date", "Prenium", "Other Charges", "Amount Due"],
+        dataTypes: [
+                    "text", "date", "date", "currency", "currency", "currency"
+                   ],
+        tableData: [["","","","","",""]],
+        addFlag:true,
+        deleteFlag:true,
+        pageLength: 10,
+    };
+
+    passDataOtherCharges: any = {
+        tHeader: ["Code", "Charge Description", "Amount"],
+        dataTypes: [
+                    "text","text","text" 
+                   ],
+        tableData: [["","",""]],
+        addFlag:true,
+        deleteFlag:true,
+        pageLength: 10,
+    };
 
   tHeader: any[] = ["Code", "Charge Description", "Amount"];
   dataTypes: any[] = ["text", "text", "text"];
@@ -33,11 +53,7 @@ export class InwardPolBalanceComponent implements OnInit {
     ["","",""],
   ];
 
-  tHeader_Invoice: any[] = ["Inst No", "Due Date", "Booking Date", "Prenium", "Other Charges","Amount Due"];
-  dataTypes_Invoice: any[] = ["text", "date", "date", "currency", "currency","currency"];
-  tableData_Invoice: any[] = [
-    ["","","","","",""],
-  ];
+
   constructor(private underwritingservice: UnderwritingService, private titleService: Title
   ) { }
 

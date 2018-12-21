@@ -24,6 +24,30 @@ export class PolCoverageComponent implements OnInit {
   pageLength = 3 ;
   textArea: any;
 
+  passDataSectionCover: any = {
+        tHeader: ["Cover Code", "Section", "Bullet No", "Sum Insured", "Rate", "Prenium", "Add Sl"],
+        dataTypes: [
+                    "text", "select", "select", "currency", "percent", "currency", "checkbox"
+                   ],
+        opts: [{ selector: "section", vals: ["I", "II", "III"] }, { selector: "bulletNo", vals: ["1", "1.2", "1.3"] }],
+        checkFlag:true,
+        addFlag:true,
+        deleteFlag:true,
+        pageLength: 10,
+        searchFlag:true,
+    };
+
+
+  passDataTotalPerSection: any = {
+        tHeader: ["Section", "Sum Insured", "Prenium"],
+        dataTypes: [
+                    "text", "text", "text"
+                   ],
+        tableData: [["SECTION I","",""],["SECTION II","",""],["SECTION III","",""]],
+        pageLength:3,
+    };
+
+
   @Input() alteration: boolean;
 
   nData: UnderwritingCoverageInfo = new UnderwritingCoverageInfo(null, null, null, null, null, null, null);
@@ -33,34 +57,10 @@ export class PolCoverageComponent implements OnInit {
 
     this.titleService.setTitle("Pol | Coverage");
     if (!this.alteration) {
-      this.tHeader.push("Cover Code");
-      this.tHeader.push("Section");
-      this.tHeader.push("Bullet No");
-      this.tHeader.push("Sum Insured");
-      this.tHeader.push("Rate");
-      this.tHeader.push("Prenium");
-      this.tHeader.push("Add Sl");
 
-      this.tHeader2.push("Section");
-      this.tHeader2.push("Sum Insured");
-      this.tHeader2.push("Prenium");
+      this.passDataSectionCover.tableData = this.underwritingservice.getUWCoverageInfo();
+      //this.passDataTotalPerSection.tableData = this.underwritingservice.getTotalPerSection();
 
-      this.dataTypes.push("text");
-      this.dataTypes.push("select");
-      this.dataTypes.push("select");
-      this.dataTypes.push("currency");
-      this.dataTypes.push("percent");
-      this.dataTypes.push("currency");
-      this.dataTypes.push("checkbox");
-
-      this.selOptions.push({ selector: "section", vals: ["I", "II", "III"] });
-      this.selOptions.push({ selector: "bulletNo", vals: ["1", "1.2", "1.3"] });
-      this.selOptions.push({ selector: "sortSe", vals: ["10", "20", "30"] });
-
-      this.optionsData.push("USD", "PHP", "EUR");
-
-      this.tableData = this.underwritingservice.getUWCoverageInfo();
-      this.tableData2 = [["SECTION I","",""],["SECTION II","",""],["SECTION III","",""]];
     } else {
       this.tHeader.push("Cover Code");
       this.tHeader.push("Section");
