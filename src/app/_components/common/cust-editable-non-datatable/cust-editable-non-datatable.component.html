@@ -90,6 +90,13 @@
     <div class="table-scroll" id="cust-scroll">
         <table id="non-datatable">
             <thead>
+                <tr *ngIf="passData.tHeaderWithColspan != null">
+                    <ng-container *ngFor="let header of passData.tHeaderWithColspan">
+                        <th [colSpan]="header.span" style="text-align: center;">
+                            <span class="gridHeader">{{ header.header }}</span>
+                        </th>   
+                    </ng-container>
+                </tr>
                 <tr style="min-width: 96px">
                     <th *ngIf="passData.checkFlag" class="checkbox"><input type="checkbox" name="checkbox" [(ngModel)]="checked" ></th>
                     <th *ngFor="let tHeader of passData.tHeader; let i = index" (click)="sort(dataKeys[i],sortBy);sortIndex=i;"

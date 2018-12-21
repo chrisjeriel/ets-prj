@@ -40,6 +40,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     @Input() passData: any = {
         tableData:[],
         tHeader:[],
+        tHeaderWithColspan:[],
         magnifyingGlass:[],
         options:[],
         dataTypes:[],

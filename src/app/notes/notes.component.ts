@@ -20,31 +20,56 @@ export class NotesComponent implements OnInit {
 		confirmationMsg: "Do you want to save the changes you have made?"
 	};
 
+  passData: any = {
+        tableData:[],
+        tHeader:[],
+        magnifyingGlass:[],
+        options:[],
+        dataTypes:[],
+        opts:[],
+        addFlag: true,
+        editFlag: true,
+        paginateFlag: true,
+        searchFlag: true,
+        nData: {}
+    };
+
 	constructor(private notesService: NotesService, private modalService: NgbModal, private titleService: Title) { }
 
 	ngOnInit() {
 		this.titleService.setTitle("Notes and Reminders");
-		this.tHeader.push("Type");
-		this.tHeader.push("Details");
-		this.tHeader.push("Alarm User");
-		this.tHeader.push("Alarm Date");
-		this.tHeader.push("Alarm Time");
-		this.tHeader.push("Status");
-		this.tHeader.push("Created By");
-		this.tHeader.push("Date Created");
+		this.passData.tHeader.push("Type");
+		this.passData.tHeader.push("Details");
+		this.passData.tHeader.push("Alarm User");
+		this.passData.tHeader.push("Alarm Date");
+		this.passData.tHeader.push("Alarm Time");
+		this.passData.tHeader.push("Status");
+		this.passData.tHeader.push("Created By");
+		this.passData.tHeader.push("Date Created");
 
-		this.dataTypes.push("select");
-		this.dataTypes.push("text");
-		this.dataTypes.push("text");
-		this.dataTypes.push("date");
-		this.dataTypes.push("time");
-		this.dataTypes.push("select");
-		this.dataTypes.push("text");
-		this.dataTypes.push("datetime");
+		this.passData.dataTypes.push("select");
+		this.passData.dataTypes.push("text");
+		this.passData.dataTypes.push("text");
+		this.passData.dataTypes.push("date");
+		this.passData.dataTypes.push("time");
+		this.passData.dataTypes.push("select");
+		this.passData.dataTypes.push("text");
+		this.passData.dataTypes.push("datetime");
 
-		this.opts.push({ selector: "type", vals: ["Reminder", "Note"] },
+		this.passData.opts.push({ selector: "type", vals: ["Reminder", "Note"] },
 			{ selector: "status", vals: ["N/A", "Pending", "Done"] });
 
-		this.tableData = this.notesService.getNotesReminders();
+		this.passData.tableData = this.notesService.getNotesReminders();
+
+    this.passData.nData = {
+          type: "",
+          details: "",
+          alarmUser: "",
+          alarmDate: "",
+          alarmTime: "",
+          status: "",
+          createdBy: "",
+          dateCreated: ""
+        }
 	}
 }

@@ -1,7 +1,7 @@
 <style type="text/css">
-    .input-group label {
-      margin: 0px !important;
-    }
+.input-group label {
+  margin: 0px !important;
+}
 
 </style>
 
@@ -9,173 +9,139 @@
   <fieldset class="scheduler-border">
     <legend class="scheduler-border">Policy Record Info</legend>
     <div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;">
-        <div class="input-group">
-            <label class="col-sm-1"></label>
-            <label class="form-control-sm col-sm-1" for="xx">Policy No</label>
-            <input type="text" id="xx" value="CAR-2018-5081-077-0177" class="form-control form-control-sm cust-sm col-sm-2"
-                   placeholder="" readonly>
-            <label class="form-control-sm col-sm-1" for="xx">Insured</label>
-            <input type="text" id="xx" value="Insurer" class="form-control form-control-sm cust-sm col-sm-5" placeholder=""
-                   readonly>
-        </div>
-        <div class="input-group">
-            <label class="col-sm-1"></label>
-            <label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Risk</label>
-            <input type="text" id="xx" value="Risk Name" class="form-control form-control-sm cust-sm col-sm-8" placeholder=""
-                   readonly>
-        </div>
+      <div class="input-group">
+        <label class="col-sm-1"></label>
+        <label class="form-control-sm col-sm-1" for="xx">Policy No</label>
+        <input type="text" id="xx" value="CAR-2018-5081-077-0177" class="form-control form-control-sm cust-sm col-sm-2"
+        placeholder="" readonly>
+        <label class="form-control-sm col-sm-1" for="xx">Insured</label>
+        <input type="text" id="xx" value="Insurer" class="form-control form-control-sm cust-sm col-sm-5" placeholder=""
+        readonly>
+      </div>
+      <div class="input-group">
+        <label class="col-sm-1"></label>
+        <label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Risk</label>
+        <input type="text" id="xx" value="Risk Name" class="form-control form-control-sm cust-sm col-sm-8" placeholder=""
+        readonly>
+      </div>
     </div>
-</fieldset>
+  </fieldset>
   <fieldset class="scheduler-border">
     <legend class="scheduler-border">Section Covers</legend>
     <div class="test" style="margin-top: 0px !important; margin-bottom: 15px;">
-    <app-cust-editable-non-datatable [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData"
+      <app-cust-editable-non-datatable [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData"
       [tHeader]="tHeader" [dataTypes]="dataTypes" [opts]="selOptions" [magnifyingGlass]="magnifyingGlass" [checkFlag]="true"></app-cust-editable-non-datatable>
     </div>
   </fieldset>
   <div class="row">
     <div class="col-sm-6">
-    <fieldset class="scheduler-border">
-      <legend class="scheduler-border">Section Covers</legend>
-      <app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData"
-      [tHeader]="tHeader" [dataTypes]="dataTypes" [opts]="selOptions" [magnifyingGlass]="magnifyingGlass" [checkFlag]="true"></app-cust-editable-table>
-    </fieldset>
-    <div class="row">
-      <div class="col-sm-6">
-        <fieldset class="scheduler-border">
-          <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
-          <div class="cust-sm">
-           <div class="cust-sm col-sm-1"></div>
-            <div class="row" style="margin-right: 0px; margin-bottom: 11px;">
-                    <div class="input-group" style="margin-top: -16px;">
-                        &nbsp;
-                    </div>
-                    <div class="input-group" style="margin-top: -5px;">
-                            <label class="form-control-sm col-sm-3">Currency</label>
-                            <input type="text" class="form-control form-control-sm">
-                            <label class="form-control-sm col-sm-2">Exch. Rt.</label>
-                            <input type="text" class="form-control form-control-sm">
-                            <span class="col-sm-1"></span>
-                    </div>
-                    <div class="input-group">
-                            <label class="form-control-sm col-sm-3">Total Prenium</label>
-                            <input type="text" class="form-control form-control-sm">
-                            <span class="col-sm-1"></span>
-                    </div>
-                    <div class="input-group" style="margin-bottom: -17px !important;">
-                            <label class="form-control-sm col-sm-3">Total Sum Insured</label>
-                            <input type="text" class="form-control form-control-sm">
-                            <span class="col-sm-1"></span>
-                    </div>
-            </div>
-            <div class="input-group">
-              <label class="form-control-sm col-sm-3">Total Prenium</label>
-              <input type="text" class="form-control form-control-sm">
-              <span class="col-sm-1"></span>
-            </div>
-            <div class="input-group">
-              <label class="form-control-sm col-sm-3">Total Sum Insured</label>
-              <input type="text" class="form-control form-control-sm">
-              <span class="col-sm-1"></span>
-            </div>
-          </div>
-        </div>
-      </fieldset>
-    </div>
-   <div class="cust-sm col-sm-6" style="padding-left: 0px;">
-        <fieldset class="scheduler-border">
-          <legend class="scheduler-border" style="margin-left: 16px !important;">SI per Section</legend>
-           <div class="cust-sm">
-            <div class="cust-sm col-sm-1"></div>
-              <div class="row" style="margin-right: 0px; margin-bottom: 11px;">
-                    <div class="input-group" style="margin-top: -16px;">
-                        &nbsp;
-                    </div>
-                    <div class="input-group" style="margin-top: -5px;">
-                            <label class="form-control-sm col-sm-4">SECTION I</label>
-                            <input type="text" class="form-control form-control-sm">
-                            <span class="col-sm-2"></span>
-                    </div>
-                    <div class="input-group">
-                            <label class="form-control-sm col-sm-4">SECTION II</label>
-                            <input type="text" class="form-control form-control-sm">
-                            <span class="col-sm-2"></span>
-                    </div>
-                    <div class="input-group" style="margin-bottom: -17px !important;">
-                            <label class="form-control-sm col-sm-4">SECTION III</label>
-                            <input type="text" class="form-control form-control-sm">
-                            <span class="col-sm-2"></span>
-                    </div>
-            </div>
-          </div>
-          <div class="cust-sm col-sm-1"></div>
-        </div>
-      </fieldset>
-    </div>
-  </div>
-  <div class="row">
-    <div class="cust-sm col-sm-6">
-        <fieldset class="scheduler-border">
-          <legend class="scheduler-border">Share Details</legend>
-           <div class="cust-sm">
-            <div class="cust-sm col-sm-1"></div>
-              <div class="row" style="margin-right: 0px; margin-bottom: 11px;">
-                    <div class="input-group" style="margin-top: -16px;">
-                        &nbsp;
-                    </div>
-                    <div class="input-group" style="margin-top: -5px;">
-                            <label class="form-control-sm col-sm-3">Share(%)</label>
-                            <input type="text" class="form-control form-control-sm">
-                            <label class="form-control-sm col-sm-2">PML(%)</label>
-                            <input type="text" class="form-control form-control-sm">
-                            <span class="col-sm-1"></span>
-                    </div>
-                    <div class="input-group" style="margin-bottom: -17px !important;">
-                            <label class="form-control-sm col-sm-3">Part Of(100%)</label>
-                            <input type="text" class="form-control form-control-sm">
-                            <span class="col-sm-1"></span>
-                    </div>
-            </div>
-            <div class="input-group">
-              <label class="form-control-sm col-sm-3">Share(%)</label>
-              <input type="text" class="form-control form-control-sm">
-              <label class="form-control-sm col-sm-2">PML(%)</label>
-              <input type="text" class="form-control form-control-sm">
-              <span class="col-sm-1"></span>
-            </div>
-            <div class="input-group">
-              <label class="form-control-sm col-sm-3">Part Of(100%)</label>
-              <input type="text" class="form-control form-control-sm">
-              <span class="col-sm-1"></span>
-            </div>
-          </div>
-          <div class="cust-sm col-sm-1"></div>
-
-        </div>
-      </fieldset>
-    </div>
-    <div class="cust-sm col-sm-6" style="padding-left: 0px;">
-        <fieldset class="scheduler-border">
-         <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+      <fieldset class="scheduler-border">
+        <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
         <div class="cust-sm">
-           <div class="cust-sm col-sm-1"></div>
-            <div class="row" style="margin-right: 0px; margin-bottom: 0px;">
-                    <div class="input-group" style="margin-top: -16px;">
-                        &nbsp;
-                    </div>
-                   <div class="input-group" style="margin-top: -5px;">
-                       <label class="form-control-sm col-sm-1">Remarks</label>
-                       <textarea class="form-control-sm form-control" style="font-size: 11px; min-height: 49px; margin-bottom: 10px; margin-left: 8px"></textarea> 
-                    </div>
-                    <div class="input-group">
-                            <span class="col-sm-3"></span>
-                            <span class="cust-sm"></span>
-                    </div>
-            </div>
+         <div class="cust-sm col-sm-1"></div>
+         <div class="row" style="margin-right: 0px; margin-bottom: 11px;">
+          <div class="input-group" style="margin-top: -16px;">
+            &nbsp;
+          </div>
+          <div class="input-group" style="margin-top: -5px;">
+            <label class="form-control-sm col-sm-3">Currency</label>
+            <input type="text" class="form-control form-control-sm">
+            <label class="form-control-sm col-sm-2">Exch. Rt.</label>
+            <input type="text" class="form-control form-control-sm">
+            <span class="col-sm-1"></span>
+          </div>
+          <div class="input-group">
+            <label class="form-control-sm col-sm-3">Total Prenium</label>
+            <input type="text" class="form-control form-control-sm">
+            <span class="col-sm-1"></span>
+          </div>
+          <div class="input-group" style="margin-bottom: -17px !important;">
+            <label class="form-control-sm col-sm-3">Total Sum Insured</label>
+            <input type="text" class="form-control form-control-sm">
+            <span class="col-sm-1"></span>
+          </div>
         </div>
       </div>
+    </fieldset>
+  </div>
+  <div class="cust-sm col-sm-6" style="padding-left: 0px;">
+    <fieldset class="scheduler-border">
+      <legend class="scheduler-border" style="margin-left: 16px !important;">SI per Section</legend>
+      <div class="cust-sm">
+        <div class="cust-sm col-sm-1"></div>
+        <div class="row" style="margin-right: 0px; margin-bottom: 11px;">
+          <div class="input-group" style="margin-top: -16px;">
+            &nbsp;
+          </div>
+          <div class="input-group" style="margin-top: -5px;">
+            <label class="form-control-sm col-sm-4">SECTION I</label>
+            <input type="text" class="form-control form-control-sm">
+            <span class="col-sm-2"></span>
+          </div>
+          <div class="input-group">
+            <label class="form-control-sm col-sm-4">SECTION II</label>
+            <input type="text" class="form-control form-control-sm">
+            <span class="col-sm-2"></span>
+          </div>
+          <div class="input-group" style="margin-bottom: -17px !important;">
+            <label class="form-control-sm col-sm-4">SECTION III</label>
+            <input type="text" class="form-control form-control-sm">
+            <span class="col-sm-2"></span>
+          </div>
+        </div>
+        <div class="cust-sm col-sm-1"></div>
+      </div>
+    </fieldset>
+  </div>
+</div>
+<div class="row">
+  <div class="cust-sm col-sm-6">
+    <fieldset class="scheduler-border">
+      <legend class="scheduler-border">Share Details</legend>
+      <div class="cust-sm">
+        <div class="cust-sm col-sm-1"></div>
+        <div class="row" style="margin-right: 0px; margin-bottom: 11px;">
+          <div class="input-group" style="margin-top: -16px;">
+            &nbsp;
+          </div>
+          <div class="input-group" style="margin-top: -5px;">
+            <label class="form-control-sm col-sm-3">Share(%)</label>
+            <input type="text" class="form-control form-control-sm">
+            <label class="form-control-sm col-sm-2">PML(%)</label>
+            <input type="text" class="form-control form-control-sm">
+            <span class="col-sm-1"></span>
+          </div>
+          <div class="input-group" style="margin-bottom: -17px !important;">
+            <label class="form-control-sm col-sm-3">Part Of(100%)</label>
+            <input type="text" class="form-control form-control-sm">
+            <span class="col-sm-1"></span>
+          </div>
+        </div>
+        <div class="cust-sm col-sm-1"></div>
+
+      </div>
+    </fieldset>
+  </div>
+  <div class="cust-sm col-sm-6" style="padding-left: 0px;">
+    <fieldset class="scheduler-border">
+     <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+     <div class="cust-sm">
+       <div class="cust-sm col-sm-1"></div>
+       <div class="row" style="margin-right: 0px; margin-bottom: 0px;">
+        <div class="input-group" style="margin-top: -16px;">
+          &nbsp;
+        </div>
+        <div class="input-group" style="margin-top: -5px;">
+         <label class="form-control-sm col-sm-1">Remarks</label>
+         <textarea class="form-control-sm form-control" style="font-size: 11px; min-height: 49px; margin-bottom: 10px; margin-left: 8px"></textarea> 
+       </div>
+       <div class="input-group">
+        <span class="col-sm-3"></span>
+        <span class="cust-sm"></span>
+      </div>
     </div>
-  </fieldset>
+  </div>
+</fieldset>
 </div>
 </div>
 <div class="form-row">
@@ -186,8 +152,8 @@
         <button type="button" class="cust-btn" (click)="pol($event)"><a>Cancel</a></button>
         <button type="button" class="cust-btn"><a>Save</a></button>
       </div>
+    </div>
   </div>
-</div>
 </div>
 </ng-container>
 
@@ -215,8 +181,7 @@
     </fieldset>
     <fieldset class="scheduler-border">
       <legend class="scheduler-border">Section Covers</legend>
-      <app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData"
-      [tHeader]="tHeader" [dataTypes]="dataTypes" [opts]="selOptions" [magnifyingGlass]="magnifyingGlass" [checkFlag]="true" [headerWithColspan]="headerWithColspan"></app-cust-editable-table>
+      <app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
     </fieldset>
     <div class="row">
       <div class="col-sm-12">
@@ -235,10 +200,6 @@
               <label class="form-control-sm col-sm-1" style="margin-left: -30px !important; z-index: -1;">Exch. Rt.</label>
               <input type="text" class="form-control form-control-sm col-sm-1">
               <span class="col-sm-4"></span>
-              
-            </div>
-            <div class="input-group">
-              <hr/>
             </div>
             <div class="input-group" style="margin-left: 52px !important; margin-bottom: -10px !important; margin-top: 5px !important;">
               <span class="col-sm-3"></span>
@@ -269,60 +230,18 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="cust-sm col-sm-12">
-      <fieldset class="scheduler-border fs">
-        <legend class="scheduler-border">Totals per Section</legend>
-        <div class="cust-sm">
-          <div class="cust-sm col-sm-1"></div>
-          <div class="row" style="margin-right: 0px; margin-bottom: 11px;">
-            <div class="input-group" style="margin-top: -10px;">
-              &nbsp;
-            </div>
-            
-              <div class="row">
-                <div class="col-sm-1" style="border: 1px solid"></div>
-                <div class="col-sm-10">
-                  <app-cust-editable-table class="col-sm" [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData"
-                    [tHeader]="tHeader" [dataTypes]="dataTypes" [opts]="selOptions" [magnifyingGlass]="magnifyingGlass" [checkFlag]="true" [headerWithColspan]="headerWithColspan"></app-cust-editable-table>
-                </div>
-                <div class="col-sm-1" style="border: 1px solid"></div>
-              </div>
-              
-           
-            <!-- <div class="input-group" style="margin-left: -15px !important">
-              <label class="form-control-sm col-sm-3">Section I</label>
-              <input type="text" class="form-control form-control-sm col-sm-3" disabled="true">
-              &nbsp;
-              <input type="text" class="form-control form-control-sm col-sm-3">
-              &nbsp;
-              <input type="text" class="form-control form-control-sm col-sm-3" disabled="true">
-              &nbsp;
-            </div>
-            <div class="input-group" style="margin-left: -15px !important">
-              <label class="form-control-sm col-sm-3">Section II</label>
-              <input type="text" class="form-control form-control-sm col-sm-3" disabled="true">
-              &nbsp;
-              <input type="text" class="form-control form-control-sm col-sm-3">
-              &nbsp;
-              <input type="text" class="form-control form-control-sm col-sm-3"  disabled="true">
-              &nbsp;
-            </div>
-            <div class="input-group" style="margin-left: -15px !important">
-              <label class="form-control-sm col-sm-3">Section III</label>
-              <input type="text" class="form-control form-control-sm col-sm-3" disabled="true">
-              &nbsp;
-              <input type="text" class="form-control form-control-sm col-sm-3">
-              &nbsp;
-              <input type="text" class="form-control form-control-sm col-sm-3"  disabled="true">
-              &nbsp;
-            </div> -->
-          </div>
-          <div class="cust-sm col-sm-1"></div>
-        </div>
-      </fieldset>
+  
+  <fieldset class="scheduler-border">
+    <legend class="scheduler-border">Totals per Section</legend>
+    <div class="row">
+      <div class="col-sm-1"></div>
+      <div class="col-sm-10">
+        <app-cust-editable-non-datatable [passData]="passData2"></app-cust-editable-non-datatable>   
+      </div>
+      <div class="col-sm-1"></div>
     </div>
-  </div>
+  </fieldset>
+
 
   <div class="row">
     <div class="cust-sm col-sm-6">
@@ -415,3 +334,32 @@
   <br />
   <quill-editor [ngModel]="textArea"></quill-editor>
   <br /> -->
+
+
+   <!-- <div class="input-group" style="margin-left: -15px !important">
+              <label class="form-control-sm col-sm-3">Section I</label>
+              <input type="text" class="form-control form-control-sm col-sm-3" disabled="true">
+              &nbsp;
+              <input type="text" class="form-control form-control-sm col-sm-3">
+              &nbsp;
+              <input type="text" class="form-control form-control-sm col-sm-3" disabled="true">
+              &nbsp;
+            </div>
+            <div class="input-group" style="margin-left: -15px !important">
+              <label class="form-control-sm col-sm-3">Section II</label>
+              <input type="text" class="form-control form-control-sm col-sm-3" disabled="true">
+              &nbsp;
+              <input type="text" class="form-control form-control-sm col-sm-3">
+              &nbsp;
+              <input type="text" class="form-control form-control-sm col-sm-3"  disabled="true">
+              &nbsp;
+            </div>
+            <div class="input-group" style="margin-left: -15px !important">
+              <label class="form-control-sm col-sm-3">Section III</label>
+              <input type="text" class="form-control form-control-sm col-sm-3" disabled="true">
+              &nbsp;
+              <input type="text" class="form-control form-control-sm col-sm-3">
+              &nbsp;
+              <input type="text" class="form-control form-control-sm col-sm-3"  disabled="true">
+              &nbsp;
+            </div> -->
