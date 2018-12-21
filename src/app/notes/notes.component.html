@@ -4,12 +4,14 @@
 		<ngb-tab class="ngb-tab" title="List of Notes and Reminders">
 			<ng-template ngbTabContent>
 
-				<app-cust-editable-table [addFlag]="true" [editFlag]="true" [deleteFlag]="false" [nData]="nData" [tableData]="tableData"
-				[tHeader]="tHeader" [dataTypes]="dataTypes" [opts]="opts"></app-cust-editable-table>
-
+				<!-- <app-cust-editable-table [addFlag]="true" [editFlag]="true" [deleteFlag]="false" [nData]="nData" [tableData]="tableData"
+				[tHeader]="tHeader" [dataTypes]="dataTypes" [opts]="opts"></app-cust-editable-table> -->
+				<br />
+				<app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
+				<br />
 				<div class="form-row">
 					<div class="form-group col-sm">
-						<div class="col-md-13 text-center">
+						<div class="col-md-12 text-center">
 							<br>
 							<div class="cust-btn-container">
 								<button type="button" class="cust-btn"><a>Cancel</a></button>

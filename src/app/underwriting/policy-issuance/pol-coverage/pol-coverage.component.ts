@@ -21,6 +21,7 @@ export class PolCoverageComponent implements OnInit {
   magnifyingGlass: any[] = ['coverCode'];
   optionsData: any[] = [];
   headerWithColspan: any[] = [];
+
   pageLength = 3 ;
   textArea: any;
 
@@ -48,6 +49,31 @@ export class PolCoverageComponent implements OnInit {
     };
 
 
+
+  passData: any = {
+    tableData:[],
+    tHeader:[],
+    tHeaderWithColspan:[],
+    options:[],
+    dataTypes:[],
+    opts:[],
+    addFlag: true,
+    deleteFlag: true,
+    paginateFlag: true,
+    searchFlag: true,
+    checkFlag: true
+  };
+
+  passData2: any = {
+    tableData:[],
+    tHeader:[],
+    tHeaderWithColspan:[],
+    options:[],
+    dataTypes:[],
+    pageLength: 3
+  };
+
+  textArea: string = "";
   @Input() alteration: boolean;
 
   nData: UnderwritingCoverageInfo = new UnderwritingCoverageInfo(null, null, null, null, null, null, null);
@@ -62,47 +88,47 @@ export class PolCoverageComponent implements OnInit {
       //this.passDataTotalPerSection.tableData = this.underwritingservice.getTotalPerSection();
 
     } else {
-      this.tHeader.push("Cover Code");
-      this.tHeader.push("Section");
-      this.tHeader.push("Bullet No");
-      this.tHeader.push("Sum Insured");
-      this.tHeader.push("Rate");
-      this.tHeader.push("Premium");
-      this.tHeader.push("Sum Insured");
-      this.tHeader.push("Rate");
-      this.tHeader.push("Premium");
-      this.tHeader.push("Sum Insured");
-      this.tHeader.push("Rate");
-      this.tHeader.push("Premium");
-      this.tHeader.push("Add Sl");
+      this.passData.tHeader.push("Cover Code");
+      this.passData.tHeader.push("Section");
+      this.passData.tHeader.push("Bullet No");
+      this.passData.tHeader.push("Sum Insured");
+      this.passData.tHeader.push("Rate");
+      this.passData.tHeader.push("Premium");
+      this.passData.tHeader.push("Sum Insured");
+      this.passData.tHeader.push("Rate");
+      this.passData.tHeader.push("Premium");
+      this.passData.tHeader.push("Sum Insured");
+      this.passData.tHeader.push("Rate");
+      this.passData.tHeader.push("Premium");
+      this.passData.tHeader.push("Add Sl");
 
-      this.dataTypes.push("text");
-      this.dataTypes.push("select");
-      this.dataTypes.push("select");
-      this.dataTypes.push("currency");
-      this.dataTypes.push("percent");
-      this.dataTypes.push("currency");
-      this.dataTypes.push("currency");
-      this.dataTypes.push("percent");
-      this.dataTypes.push("currency");
-      this.dataTypes.push("currency");
-      this.dataTypes.push("percent");
-      this.dataTypes.push("currency");
-      this.dataTypes.push("checkbox");
+      this.passData.dataTypes.push("text");
+      this.passData.dataTypes.push("select");
+      this.passData.dataTypes.push("select");
+      this.passData.dataTypes.push("currency");
+      this.passData.dataTypes.push("percent");
+      this.passData.dataTypes.push("currency");
+      this.passData.dataTypes.push("currency");
+      this.passData.dataTypes.push("percent");
+      this.passData.dataTypes.push("currency");
+      this.passData.dataTypes.push("currency");
+      this.passData.dataTypes.push("percent");
+      this.passData.dataTypes.push("currency");
+      this.passData.dataTypes.push("checkbox");
 
-      this.selOptions.push({ selector: "section", vals: ["I", "II", "III"] });
-      this.selOptions.push({ selector: "bulletNo", vals: ["1", "1.2", "1.3"] });
-      this.selOptions.push({ selector: "sortSe", vals: ["10", "20", "30"] });
+      this.passData.opts.push({ selector: "section", vals: ["I", "II", "III"] });
+      this.passData.opts.push({ selector: "bulletNo", vals: ["1", "1.2", "1.3"] });
+      this.passData.opts.push({ selector: "sortSe", vals: ["10", "20", "30"] });
 
       this.optionsData.push("USD", "PHP", "EUR");
 
-      this.headerWithColspan.push({ header: "", span: 1 }, { header: "", span: 3 },
+      this.passData.tHeaderWithColspan.push({ header: "", span: 1 }, { header: "", span: 3 },
         { header: "Previous", span: 3 }, { header: "This Alteration", span: 3 },
         { header: "Cumulative", span: 3 }, { header: "", span: 1 });
 
-      this.tableData = [
+      this.passData.tableData = [
         {
-          coverCode: "ASD",
+          coverCode: "ABC",
           section: "I",
           bulletNo: 1.2,
           prevSumInsured: 20,
@@ -115,6 +141,57 @@ export class PolCoverageComponent implements OnInit {
           cumuRate: 5,
           cumuPremium: 800,
           addSl: ""
+        }
+      ];
+
+      //
+
+      this.passData2.tHeader.push("Section");
+      this.passData2.tHeader.push("Sum Insured");
+      this.passData2.tHeader.push("Premium");
+      this.passData2.tHeader.push("Sum Insured");
+      this.passData2.tHeader.push("Premium");
+      this.passData2.tHeader.push("Sum Insured");
+      this.passData2.tHeader.push("Premium");
+
+      this.passData2.dataTypes.push("text");
+      this.passData2.dataTypes.push("currency");
+      this.passData2.dataTypes.push("currency");
+      this.passData2.dataTypes.push("currency");
+      this.passData2.dataTypes.push("currency");
+      this.passData2.dataTypes.push("currency");
+      this.passData2.dataTypes.push("currency");
+
+      this.passData2.tHeaderWithColspan.push({ header: "", span: 1 }, { header: "Previous", span: 2 }, 
+        { header: "This Alteration", span: 2 }, { header: "Cumulative", span: 2 });
+
+      this.passData2.tableData = [
+        {
+          section: 'Section I',
+          pSumInsured: '',
+          pPremium: '',
+          tSumInsured: '',
+          tPremium: '',
+          cSumInsured: '',
+          cPremium: ''
+        },
+        {
+          section: 'Section II',
+          pSumInsured: '',
+          pPremium: '',
+          tSumInsured: '',
+          tPremium: '',
+          cSumInsured: '',
+          cPremium: ''
+        },
+        {
+          section: 'Section III',
+          pSumInsured: '',
+          pPremium: '',
+          tSumInsured: '',
+          tPremium: '',
+          cSumInsured: '',
+          cPremium: ''
         }
       ];
     }
