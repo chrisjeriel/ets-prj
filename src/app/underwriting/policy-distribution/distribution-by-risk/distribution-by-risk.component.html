@@ -73,10 +73,18 @@
   </div>
 </div>
 <div>
-  <fieldset class="scheduler-border">
+  <!-- <fieldset class="scheduler-border">
     <legend class="scheduler-border">Distribution By Risk</legend>
     <app-cust-editable-table [checkFlag]="true" [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData"
       [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes"></app-cust-editable-table>
+  </fieldset> -->
+
+  <fieldset class="scheduler-border">
+    <legend class="scheduler-border">Distribution By Risk</legend>
+    <br>
+    <app-cust-editable-non-datatable [passData]="passData">
+    </app-cust-editable-non-datatable>
+    <br>
   </fieldset>
 </div>
 

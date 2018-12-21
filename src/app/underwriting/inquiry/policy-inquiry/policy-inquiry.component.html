@@ -158,8 +158,15 @@
         </div>
 
         <div>
-          <app-cust-table [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes"></app-cust-table>
+          <!-- <app-cust-table [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes"></app-cust-table> -->
         </div>
+        <fieldset class="scheduler-border">
+          <legend class="scheduler-border">Section Covers</legend>
+          <br>
+          <app-cust-editable-non-datatable [passData]="passData">
+          </app-cust-editable-non-datatable>
+          <br>
+        </fieldset>
       </ng-template>
     </ngb-tab>
   </ngb-tabset>

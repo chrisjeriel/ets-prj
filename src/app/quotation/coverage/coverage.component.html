@@ -18,10 +18,17 @@
     </div>
   </fieldset>
 
-  <fieldset class="scheduler-border">
+  <!-- <fieldset class="scheduler-border">
     <legend class="scheduler-border">Section Covers</legend>
     <app-cust-editable-table [checkFlag]="true" [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData"
       [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes" [magnifyingGlass]="magnifyingGlass" [opts]="selOptions"></app-cust-editable-table>
+  </fieldset> -->
+  <fieldset class="scheduler-border">
+    <legend class="scheduler-border">Section Covers</legend>
+    <br>
+    <app-cust-editable-non-datatable [passData]="passData">
+    </app-cust-editable-non-datatable>
+    <br>
   </fieldset>
   <div class="row">
     <div class="col-sm-4 mrgn-fieldset">
@@ -33,7 +40,8 @@
               <br>
               <div class="input-group">
                 <label class="form-control-sm" for="xx">Currency</label>
-                <select class="form-control form-control-sm cust-sm" disabled>
+                <select class="form-control form-control-sm cust-sm">
+                  <option value=""></option>
                   <option value="USD">USD</option>
                   <option value="PHP">PHP</option>
                   <option value="EUR">EUR</option>
