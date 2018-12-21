@@ -151,7 +151,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     onRowClick(event) {
-        console.log(typeof event);
         this.rowClick.next(event);
     }
 
