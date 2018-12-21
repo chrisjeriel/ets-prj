@@ -39,24 +39,49 @@
 	</fieldset>
 <<<<<<< HEAD
 </div>-->
-<fieldset class="scheduler-border">
-    <legend class="scheduler-border">Policy Record Info</legend>
-    <div class="form-row custom-row-inline-inset">
-      <div class="input-group">
-        <label class="form-control-sm col-sm-1" for="xx">Policy No</label>
-        <input type="text" id="xx" value="CAR-2018-5081-077-0177" class="form-control form-control-sm cust-sm col-sm-2"
-          placeholder="" readonly>
-        <label class="form-control-sm col-sm-1" for="xx">Insured</label>
-        <input type="text" id="xx" value="Insurer" class="form-control form-control-sm cust-sm col-sm-7" placeholder=""
-          readonly>
-      </div>
-      <div class="input-group">
-        <label class="form-control-sm col-sm-1" for="xx">Risk</label>
-        <input type="text" id="xx" value="Risk Name" class="form-control form-control-sm cust-sm col-sm-10" placeholder=""
-          readonly>
-      </div>
-    </div>
-</fieldset>
+<style type="text/css">
+	.input-group {
+        padding: 0px !important;
+        margin: 0px !important;
+    }
+
+    .input-group label {
+        padding: 0px !important;
+        margin: 0px !important;
+    }
+
+	.input-ig-row {
+        margin-left: 2px !important;
+    }
+    .ig-row {
+        margin : -3px !important;
+        /*margin-bottom: -14px ! important;*/
+    }
+    .ig-row label {
+        margin-right: 5px !important;
+    }
+</style>
+<div>
+	<fieldset class="scheduler-border cust-fs-padlr-offset">
+	    <legend class="scheduler-border">Policy Record Info</legend>
+		    <div class="form-row custom-row-inline-inset" style="margin-bottom: 1px ! important;">
+			      <div class="input-group ig-row">
+				        <label class="form-control-sm col-sm-2" for="xx">Policy No</label>
+				        <input type="text" id="xx" value="CAR-2018-5081-077-0177" class="form-control form-control-sm cust-sm col-sm-2" placeholder="" readonly>
+				        <label class="form-control-sm col-sm-1" for="xx">Insured</label>
+				        <input type="text" id="xx" value="Insurer" class="form-control form-control-sm cust-sm col-sm-7" placeholder=""
+				          readonly>
+				        <div class="col-sm-1"></div>
+			      </div>
+			      <div class="input-group ig-row">
+				        <label class="form-control-sm col-sm-2" for="xx">Risk</label>
+				        <input type="text" id="xx" value="Risk Name" class="form-control form-control-sm cust-sm col-sm-10" placeholder=""
+				          readonly>
+				        <div class="col-sm-1"></div>
+			      </div>
+		    </div>
+	</fieldset>
+</div>
 
 
 <div>

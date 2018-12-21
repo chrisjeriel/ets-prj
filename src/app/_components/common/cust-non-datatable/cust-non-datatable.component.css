@@ -73,12 +73,12 @@ th, td{
     text-decoration: none !important;
     outline: none !important;
     border-style: none;
-    z-index: 9999 !important;
+    z-index: 1000 !important;
 }
 .print{
     position: absolute;
     top: 2px;
-    z-index: 9999 !important;
+    z-index: 1000 !important;
 }
 .expireIn{
     height: calc(1.5rem + 1px) !important;

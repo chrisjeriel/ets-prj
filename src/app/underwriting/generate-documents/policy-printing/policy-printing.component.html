@@ -1,42 +1,59 @@
+<style type="text/css">
+    .input-group {
+        padding: 0px !important;
+        margin: 0px !important;
+    }
+    .input-group label {
+        padding: 0px !important;
+        margin: 0px !important;
+    }
+    .ig-row {
+        margin: -3px !important;
+    }
+    .ig-row label {
+        margin-right: 5px !important;
+    }
+    .input-ig-row {
+        margin-left: 2px !important;
+    }
+</style>
 <div class="cust-tabs-container">
 	<h4>Underwriting / Generate Documents</h4>
 		<ngb-tabset>
 			<ngb-tab title="Policy Printing">
 				<ng-template ngbTabContent>
 					<div class="row" style="justify-content: center;">
-						<div class="col-sm-6">
+						<div class="col-sm-3"></div>
+						<div class="col-sm">
 							<fieldset class="scheduler-border"> 
 								<legend class="scheduler-border">Regenerate Policy Documents</legend>
-									<div class="input-group" style="margin-top: 15px;">
-										<label class="form-control-sm col-sm-3">Policy No </label>
-				    					<input type="text" id="inputQuonumA" class="form-control form-control-sm cust-sm">
-				    					<input type="text" id="inputQuonumB" class="form-control form-control-sm cust-sm" style="margin-left: 3px;">
-				    				<input type="text" id="inputQuonumC" class="form-control form-control-sm cust-sm" style="margin-left: 3px;">
-				    				<input type="text" id="inputQuonumD" class="form-control form-control-sm cust-sm" style="margin-left: 3px;">
-				    				<i class="fa fa-search" style="margin-left: 3px; margin-top: 5px"></i>
-									<div class="col-sm-1"></div>
-									</div>
-									<div class="input-group">
-										<label class="form-control-sm col-sm-3" for="intCedComp">Ceding Company </label>
-										<input type="text" id="intCedComp" class="form-control form-control-sm cust-sm">
-										<div class="col-sm-1"></div>
-									</div>
-									<div class="input-group">
-										<label class="form-control-sm col-sm-3" for="intInsured">Insured</label>
-										<input type="text" id="intInsured" class="form-control form-control-sm cust-sm">
-										<div class="col-sm-1"></div>
-									</div>
-									<div class="input-group" >
-										<label class="form-control-sm col-sm-3" for="intRisk">Risk</label>
-										<input type="text" id="intRisk" class="form-control form-control-sm cust-sm">
-										<div class="col-sm-1"></div>
-									</div>
-									<div style="margin-bottom: 10px;">
+									<div class="form-row custom-row-inline-inset" style="margin-bottom: 2px ! important;margin-top: 10px ! important">
+										<div class="input-group ig-row">
+											<label class="form-control-sm col-sm-3">Policy No</label>
+					    					<input type="text" id="inputPolnumA" class="form-control form-control-sm cust-sm">
+					    					<input type="text" id="inputPolnumB" class="form-control form-control-sm cust-sm input-ig-row">
+					    					<input type="text" id="inputPolnumC" class="form-control form-control-sm cust-sm input-ig-row" >
+					    					<input type="text" id="inputPolnumD" class="form-control form-control-sm cust-sm input-ig-row">
+					    					<i class="fa fa-search" style="margin-left: 3px; margin-top: 2px"></i>
+										</div>
+										<div class="input-group ig-row">
+											<label class="form-control-sm col-sm-3" for="intCedComp">Ceding Company</label>
+											<input type="text" id="intCedComp" class="form-control form-control-sm cust-sm">
+										</div>
+										<div class="input-group ig-row">
+											<label class="form-control-sm col-sm-3" for="intInsured">Insured</label>
+											<input type="text" id="intInsured" class="form-control form-control-sm cust-sm">
+										</div>
+										<div class="input-group ig-row" >
+											<label class="form-control-sm col-sm-3" for="intRisk">Risk</label>
+											<input type="text" id="intRisk" class="form-control form-control-sm cust-sm">
+										</div>
 									</div>
 							</fieldset>
 						</div>
+						<div class="col-sm-3"></div>
 					</div>
-					<div class="row" style="justify-content: center;">
+					<div class="row" style="justify-content: center; margin-top: -15px ! important">
 						<div class="col-sm-6">
 							<app-cust-editable-table [checkFlag]="false" [addFlag]="true" [deleteFlag]="true" [editFlag]="false" [nData]="nData" [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes" [opts]="opts"></app-cust-editable-table>
 						</div>
