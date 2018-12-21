@@ -12,13 +12,15 @@ export class PolCoverageComponent implements OnInit {
 
   private underwritingCoverageInfo: UnderwritingCoverageInfo;
   tableData: any[] = [];
+  tableData2: any[] = [];
   tHeader: any[] = [];
+  tHeader2: any[] = [];
   dataTypes: any[] = [];
   selOptions: any[] = [];
   magnifyingGlass: any[] = ['coverCode'];
   optionsData: any[] = [];
   headerWithColspan: any[] = [];
-
+  pageLength = 3 ;
   @Input() alteration: boolean;
 
   nData: UnderwritingCoverageInfo = new UnderwritingCoverageInfo(null, null, null, null, null, null, null);
@@ -36,6 +38,10 @@ export class PolCoverageComponent implements OnInit {
       this.tHeader.push("Prenium");
       this.tHeader.push("Add Sl");
 
+      this.tHeader2.push("Section");
+      this.tHeader2.push("Sum Insured");
+      this.tHeader2.push("Prenium");
+
       this.dataTypes.push("text");
       this.dataTypes.push("select");
       this.dataTypes.push("select");
@@ -51,6 +57,7 @@ export class PolCoverageComponent implements OnInit {
       this.optionsData.push("USD", "PHP", "EUR");
 
       this.tableData = this.underwritingservice.getUWCoverageInfo();
+      this.tableData2 = [["SECTION I","",""],["SECTION II","",""],["SECTION III","",""]];
     } else {
       this.tHeader.push("Cover Code");
       this.tHeader.push("Section");
