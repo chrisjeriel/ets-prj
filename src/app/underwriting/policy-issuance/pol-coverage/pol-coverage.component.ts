@@ -20,7 +20,7 @@ export class PolCoverageComponent implements OnInit {
   optionsData: any[] = [];
   headerWithColspan: any[] = [];
 
-  textArea: any;
+  textArea: string = "<b>Test</b>";
   @Input() alteration: boolean;
 
   nData: UnderwritingCoverageInfo = new UnderwritingCoverageInfo(null, null, null, null, null, null, null);
