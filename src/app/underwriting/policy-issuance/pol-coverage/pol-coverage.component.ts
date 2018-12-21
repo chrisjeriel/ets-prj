@@ -40,7 +40,7 @@ export class PolCoverageComponent implements OnInit {
     tHeaderWithColspan:[],
     options:[],
     dataTypes:[],
-    paginateFlag: true,
+    pageLength: 3
   };
 
   textArea: string = "";
