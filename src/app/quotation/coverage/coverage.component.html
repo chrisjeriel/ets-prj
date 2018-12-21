@@ -22,12 +22,11 @@
     <legend class="scheduler-border">Section Covers</legend>
     <app-cust-editable-table [checkFlag]="true" [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData"
       [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes" [magnifyingGlass]="magnifyingGlass" [opts]="selOptions"></app-cust-editable-table>
-
   </fieldset>
   <div class="row">
     <div class="col-sm-4 mrgn-fieldset">
       <fieldset class="scheduler-border fieldset-height">
-        <div class="custom-row-inline-inset">
+        <div class="custom-row-inline-inset" style="margin-top: 0px !important;">
           <div class="row">
             <div class="col-sm-1"></div>
             <div class="col-sm-10">
@@ -111,6 +110,7 @@
 
 <!-- <app-multiple-select [multiSelectHeaderTxt]="multiSelectHeaderTxt" [multiSelectData]="multiSelectData"
   (multiSelectDataSelected)="getMS($event)"></app-multiple-select> -->
+
 
 
 <!-- <input type="text" value="name" class="form-control form-control-sm cust-sm txt-content-rght"> 
