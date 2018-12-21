@@ -1,3 +1,4 @@
+
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { QuotationService } from '../../../_services';
 import { DummyInfo } from '../../../_models';
@@ -50,7 +51,21 @@ export class DummyComponent implements OnInit {
         tableData: this.quotationService.getQuotationListInfo(),
         pageLength: 10,
         
-    }
+    };
+
+    passDataEditable: any = {
+        tableData: [],
+        tHeader: ["ID", "First Name", "Last Name", "Middle Name", "Gender", "Age", "Birth Date"],
+        nData: new DummyInfo(null, null, null, null, null, null, null),
+        checkFlag:true,
+        addFlag:true,
+        deleteFlag:true,
+        //totalFlag:true,
+        pageLength: 5,
+        searchFlag:true,
+        infoFlag: true,
+        paginateFlag: true
+    };
 
     constructor(private quotationService: QuotationService, private modalService: NgbModal) { 
     }
@@ -173,6 +188,8 @@ export class DummyComponent implements OnInit {
             delete e.createdBy;
             delete e.requestedBy;
         });
+
+         this.passDataEditable.tableData = this.quotationService.getDummyEditableInfo();
     }
 
     open(){
