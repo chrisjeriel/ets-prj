@@ -1,62 +1,18 @@
-<!-- <div style=" width: fit-content; text-align: center">
-  <div>
-    <div class="custom-row-inline-inset">
-      <div class="form-row">
-        <div class="form-group">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <div class="input-group-text">
-                <input type="checkbox" (click)="selectAll($event)" [checked]="headerChecked">
-              </div>
-            </div>
-            <input type="text" style="font-size: 11px !important;" value="{{ msHeaderTxt }}" disabled class="form-control form-control-sm">
-          </div>
-          <div class="input-group" *ngFor="let data of msData">
-            <div class="input-group-prepend">
-              <div class="input-group-text">
-                <input type="checkbox" [checked]="checkboxes" value="{{ data }}" (click)="dataSelected($event)">
-              </div>
-            </div>
-            <input type="text" style="font-size: 11px !important;" value="{{ data }}" disabled class="form-control form-control-sm">
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> -->
-
-<!-- <div style=" width: fit-content; text-align: center">
-  <ul class="list-group">
-    <li class="list-group-item"><input type="checkbox" (click)="selectAll($event)" [checked]="headerChecked">
-      {{ msHeaderTxt }}</li>
-    <div *ngFor="let data of msData">
-      <li class="list-group-item"><input type="checkbox" [checked]="checkboxes" value="{{ data }}" (click)="dataSelected($event)">
-        {{ data }}</li>
-    </div>
-  </ul>
-</div> -->
-
 <div class="container">
   <div class="row">
-
     <div class="col-sm-4 col-sm-offset-1">
-
       <div class="list-group" id="list1">
-
-        <div class="list-group-item active"> {{ multiSelectHeaderTxt }}<input title="toggle all" type="checkbox" class="all pull-right"
+        <div class="list-group-item modal-header" style="padding:20px !important;">
+          {{ multiSelectHeaderTxt }}<input title="toggle all" type="checkbox" class="all pull-right" style="vertical-align: middle !important;"
             (click)="selectAll($event)" [checked]="headerChecked">
         </div>
-
         <div *ngFor="let data of returnValueId">
           <div class="list-group-item">{{ data.value }}
             <input type="checkbox" class="pull-right" [checked]="checkboxes" value="{{ data.value }}" id="{{ data.id }}"
               (click)="dataSelected($event)">
           </div>
         </div>
-
       </div>
-
     </div>
-
   </div>
 </div>
