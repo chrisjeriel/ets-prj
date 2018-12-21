@@ -154,7 +154,7 @@ div.filler{
 }
 
 .pagination{
-    margin-top: 1%;
+    margin-top: 2%;
     float: right;
 }
 
@@ -208,18 +208,17 @@ div.input-group {
     pointer-events: none;
 }
 
-.my-pagination /deep/ .ngx-pagination .current {
-    background: linear-gradient(to bottom, #4080bf 0%, #2d5986 100%);
-    font-size: 11px;
-    font-weight: bold;
-    color: white !important;
-    text-align: center;
-    text-decoration: none !important;
-    outline: none !important;
-    border-style: none;
-    border: 1px solid gray;
-    border-radius: 2px;
+.my-pagination /deep/ .ngx-pagination {
+    font-size: 9px;
+    border-radius: 4px;
 }
+
+.my-pagination /deep/ .ngx-pagination .current {
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 4px;
+}
+
 .pagingStatus{
     float: left;
 }
@@ -239,7 +238,7 @@ div.input-group {
     border: 1px solid #4CAF50;
 }
 
-.pagination a:hover:not(.active) {background-color: #ddd;}
+.pagination a:hover:not(.active) {background-color: #bde8ff;}
 /*/deep/ ul.ngx-pagination {
 border: 1px solid gray;
 border-radius: 2px;
