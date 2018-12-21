@@ -36,9 +36,61 @@ export class DummyComponent implements OnInit {
             "Object", "Site", "Policy No", "Currency","Period From"
         ],
         filters: [
-            "Quotation No.", "Type of Cession", "Line Class", "Status",
-            "Ceding Company", "Principal", "Contractor", "Insured", "Risk",
-            "Object", "Site", "Policy No", "Currency","Period From"
+            {
+                key: 'quotationNo',
+                title:'Quotation No.',
+                dataType: 'text'
+            },
+            {
+                key: 'cessionType',
+                title:'Type of Cession',
+                dataType: 'text'
+            },
+            {
+                key: 'lineClass',
+                title:'Line Class',
+                dataType: 'text'
+            },
+            {
+                key: 'quoteStatus',
+                title:'Quote Status',
+                dataType: 'text'
+            },
+            {
+                key: 'cedingCompany',
+                title:'Ceding Company',
+                dataType: 'text'
+            },
+            {
+                key: 'principal',
+                title:'Principal',
+                dataType: 'text'
+            },
+            {
+                key: 'insured',
+                title:'Insured',
+                dataType: 'text'
+            },
+            {
+                key: 'risk',
+                title:'Risk',
+                dataType: 'text'
+            },
+            {
+                key: 'object',
+                title:'Object',
+                dataType: 'text'
+            },
+            {
+                key: 'location',
+                title:'Insured',
+                dataType: 'text'
+            },
+            {
+                key: 'quoteDate',
+                title:'Period From',
+                dataType: 'date'
+            },
         ],
         resizable: [
             false,false,true,true,true,true,true,true,true,true,true,false,
@@ -50,6 +102,7 @@ export class DummyComponent implements OnInit {
         ],
         tableData: this.quotationService.getQuotationListInfo(),
         pageLength: 10,
+        expireFilter: true, 
         
     };
 
@@ -66,7 +119,7 @@ export class DummyComponent implements OnInit {
         infoFlag: true,
         paginateFlag: true
     };
-
+        
     constructor(private quotationService: QuotationService, private modalService: NgbModal) { 
     }
 
@@ -158,7 +211,7 @@ export class DummyComponent implements OnInit {
         this.resizables.push(true);
         this.resizables.push(false);
         this.resizables.push(false);
-        
+
         this.dataTypes2.push("text");
         this.dataTypes2.push("text");
         this.dataTypes2.push("text");
@@ -172,7 +225,7 @@ export class DummyComponent implements OnInit {
         this.dataTypes2.push("text");
         this.dataTypes2.push("text");
         this.dataTypes2.push("text");
-        
+
         this.tableData = this.quotationService.getDummyInfo();
         this.tableData2 = this.quotationService.getDummyEditableInfo();
         this.tableData3 = this.quotationService.getQuotationListInfo();
@@ -182,8 +235,8 @@ export class DummyComponent implements OnInit {
             delete e.createdBy;
             delete e.requestedBy;
         });
-         this.passData.tableData.forEach(function(e){
-            
+        this.passData.tableData.forEach(function(e){
+
             delete e.validityDate;
             delete e.createdBy;
             delete e.requestedBy;

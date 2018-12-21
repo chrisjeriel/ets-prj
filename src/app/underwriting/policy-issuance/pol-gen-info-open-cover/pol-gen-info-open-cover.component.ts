@@ -21,7 +21,7 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
     this.dataTypes.push("text", "text");
     this.filters.push("Item No", "Desc. of Items");
     this.tableData = this.underwritingService.getItemInfoData();
-  	 this.line = 'CAR';
+  	 this.line = 'EAR';
   }
 
   showItemInfoModal(content) {
