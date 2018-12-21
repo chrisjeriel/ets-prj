@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-12" style="padding: 0">
             <!--<app-cust-table [tableData]="tableData" [tHeader] = "tHeader" [dataTypes] = "dataTypes" [filters]="filters" [pageLength]="pageLength" [printBtn]="true" (rowClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)" [resizable]="resizables"></app-cust-table>-->
             <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)"></app-cust-non-datatable>
         </div>
@@ -43,7 +43,7 @@
 -->
 
     <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-6" style="padding-left: 0px">
             <fieldset class="scheduler-border">
                 <!--<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>-->
                 <div class="form-row custom-row-inline-inset">
@@ -66,7 +66,7 @@
                     <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
                         <label class="form-control-sm col-sm-2 text-right">Ceding Company</label>
                         <input type="text" class="form-control form-control-sm col-sm-2">
-                        <input type="text" class="form-control form-control-sm col-sm-8" [value]="quoteList.cedingCompany" readonly style="margin-left: 5px;">
+                        <input type="text" class="form-control form-control-sm col-sm-8" [value]="quoteList.cedingCompany" readonly style="margin-left: 2px !important;">
                     </div>
                 </div>
                 <div class="form-row custom-row-inline-inset">
@@ -95,47 +95,59 @@
                 </div>
             </fieldset>
         </div>
-        <div class="col-sm-6" style="padding-left: 0px;">
+        <div class="col-sm-6" style="padding: 0">
             <fieldset class="scheduler-border">
                 <!--<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>-->
                 <div class="form-row custom-row-inline-inset">
                     <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
+                        <div class="col-sm-1"></div>
                         <label class="form-control-sm col-sm-2 text-right">Principal</label>
                         <input type="text" class="form-control form-control-sm col-sm-2">
-                        <input type="text" class="form-control form-control-sm col-sm-8" [value]="quoteList.principal" readonly style="margin-left: 5px;">
+                        <input type="text" class="form-control form-control-sm col-sm-6" [value]="quoteList.principal" readonly style="margin-left: 2px !important;">
+                        <div class="col-sm-1"></div>
                     </div>
                 </div>
                 <div class="form-row custom-row-inline-inset">
                     <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
+                        <div class="col-sm-1"></div>
                         <label class="form-control-sm col-sm-2 text-right">Contractor</label>
                         <input type="text" class="form-control form-control-sm col-sm-2">
-                        <input type="text" class="form-control form-control-sm col-sm-8" [value]="quoteList.contractor" readonly style="margin-left: 5px;">
+                        <input type="text" class="form-control form-control-sm col-sm-6" [value]="quoteList.contractor" readonly style="margin-left: 2px !important;">
+                        <div class="col-sm-1"></div>
                     </div>
                 </div>
                 <div class="form-row custom-row-inline-inset">
                     <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
+                        <div class="col-sm-1"></div>
                         <label class="form-control-sm col-sm-2 text-right">Insured</label>
-                        <input type="text" class="form-control form-control-sm col-sm-10" [value]="quoteList.insured" readonly>
+                        <input type="text" class="form-control form-control-sm col-sm-8" [value]="quoteList.insured" readonly>
+                        <div class="col-sm-1"></div>
                     </div>
                 </div>
                 <div class="form-row custom-row-inline-inset">
                     <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
+                        <div class="col-sm-1"></div>
                         <label class="form-control-sm col-sm-2 text-right">Risk</label>
-                        <input type="text" class="form-control form-control-sm col-sm-10" [value]="quoteList.risk" readonly>
+                        <input type="text" class="form-control form-control-sm col-sm-8" [value]="quoteList.risk" readonly>
+                        <div class="col-sm-1"></div>
                     </div>
                 </div>
                 <div class="form-row custom-row-inline-inset">
                     <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
+                        <div class="col-sm-1"></div>
                         <label class="form-control-sm col-sm-2 text-right">Site</label>
-                        <input type="text" class="form-control form-control-sm col-sm-10" [value]="quoteList.location" readonly>
+                        <input type="text" class="form-control form-control-sm col-sm-8" [value]="quoteList.location" readonly>
+                        <div class="col-sm-1"></div>
                     </div>
                 </div>
                 <div class="form-row custom-row-inline-inset">
                     <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -10px !important;">
+                        <div class="col-sm-1"></div>
                         <label class="form-control-sm col-sm-2 text-right">Object</label>
-                        <input type="text" class="form-control form-control-sm col-sm-4" [value]="quoteList.object" readonly>
+                        <input type="text" class="form-control form-control-sm col-sm-3" [value]="quoteList.object" readonly>
                         <label class="form-control-sm col-sm-2 text-right">Currency</label>
-                        <input type="text" name="" class="form-control form-control-sm col-sm-4" [value]="quoteList.currency" readonly> 
+                        <input type="text" name="" class="form-control form-control-sm col-sm-3" [value]="quoteList.currency" readonly> 
+                        <div class="col-sm-1"></div>
                     </div>
                 </div>
             </fieldset>
