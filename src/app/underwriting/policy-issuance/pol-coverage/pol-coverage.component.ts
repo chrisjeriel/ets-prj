@@ -43,7 +43,7 @@ export class PolCoverageComponent implements OnInit {
     paginateFlag: true,
   };
 
-  textArea: string = "<b>Test</b>";
+  textArea: string = "";
   @Input() alteration: boolean;
 
   nData: UnderwritingCoverageInfo = new UnderwritingCoverageInfo(null, null, null, null, null, null, null);
