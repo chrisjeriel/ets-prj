@@ -1,17 +1,19 @@
 <fieldset class="scheduler-border">
     <legend class="scheduler-border">Policy Record Info</legend>
-    <div class="form-row custom-row-inline-inset">
+    <div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;">
         <div class="input-group">
+            <label class="col-sm-1"></label>
             <label class="form-control-sm col-sm-1" for="xx">Policy No</label>
             <input type="text" id="xx" value="CAR-2018-5081-077-0177" class="form-control form-control-sm cust-sm col-sm-2"
                    placeholder="" readonly>
             <label class="form-control-sm col-sm-1" for="xx">Insured</label>
-            <input type="text" id="xx" value="Insurer" class="form-control form-control-sm cust-sm col-sm-7" placeholder=""
+            <input type="text" id="xx" value="Insurer" class="form-control form-control-sm cust-sm col-sm-5" placeholder=""
                    readonly>
         </div>
         <div class="input-group">
-            <label class="form-control-sm col-sm-1" for="xx">Risk</label>
-            <input type="text" id="xx" value="Risk Name" class="form-control form-control-sm cust-sm col-sm-10" placeholder=""
+            <label class="col-sm-1"></label>
+            <label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Risk</label>
+            <input type="text" id="xx" value="Risk Name" class="form-control form-control-sm cust-sm col-sm-8" placeholder=""
                    readonly>
         </div>
     </div>
@@ -51,7 +53,7 @@
 <div class="MLP" *ngIf="line=='MLP'">
     <fieldset class="scheduler-border">
         <legend class="scheduler-border">Item Information</legend>
-        <app-cust-editable-non-datatable [tableData]="mlpTableData" [tHeader]="mlpTHeader" [checkFlag]="true" [addFlag]="true" [deleteFlag]="true" [dataTypes]="mlpDataTypes" [nData]="mlpNData"></app-cust-editable-non-datatable>
+        <app-cust-editable-non-datatable [passData]="mlpPassData"></app-cust-editable-non-datatable>
         <br/>
     </fieldset>
     <div class="col-md-13 text-center">
@@ -65,19 +67,17 @@
 <div class="DOS" *ngIf="line=='DOS'">
     <fieldset class="scheduler-border">
         <legend class="scheduler-border">List of Goods stored and Insured</legend>
-        <app-cust-editable-non-datatable [tableData]="dosGoodsTableData" [tHeader]="dosGoodsTHeader" [checkFlag]="true" [addFlag]="true" [deleteFlag]="true" [dataTypes]="dosGoodsDataTypes" [nData]="dosGoodsNData"></app-cust-editable-non-datatable>
-        <div class="total">
+        <app-cust-editable-non-datatable [passData]="dosGoodsPassData"></app-cust-editable-non-datatable>
+        <!-- <div class="total">
             <label>Total Sum Insured: 20,000 &nbsp;&nbsp;&nbsp;&nbsp;</label>
-        </div>
-        <br/>
+        </div> -->
     </fieldset>
     <fieldset class="scheduler-border">
         <legend class="scheduler-border">List of Goods stored and Insured</legend>
-        <app-cust-editable-non-datatable [tableData]="dosMachineryTableData" [tHeader]="dosMachineryTHeader" [checkFlag]="true" [addFlag]="true" [deleteFlag]="true" [dataTypes]="dosMachineryDataTypes" [nData]="dosMachineryNData"></app-cust-editable-non-datatable>
-        <div class="total">
-            <label>Total Sum Insured: 20,000 &nbsp;&nbsp;&nbsp;&nbsp;</label>
-        </div>
-        <br/>
+        <app-cust-editable-non-datatable [passData]="dosMachineryPassData"></app-cust-editable-non-datatable>
+        <!-- <div class="total">
+            <label>Total Sum Insured: 20,000.00&nbsp;&nbsp;</label>
+        </div> -->
     </fieldset>
     <div class="col-md-13 text-center">
         <div class="cust-btn-container">

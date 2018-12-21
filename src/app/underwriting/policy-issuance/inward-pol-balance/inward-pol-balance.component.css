@@ -1,5 +1,5 @@
 .drp-dwn-cstmz {
-    height:27px; 
+    height:22px; 
     padding: 0px;
 }
 
@@ -23,3 +23,12 @@
 .remarks-label {
 	padding-right: 14px;
 }
+
+fieldset {
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+}
+
+.input-group {
+    margin-bottom: -5px !important;
+}   

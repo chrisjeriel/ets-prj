@@ -1,7 +1,7 @@
 <div class="cust-tabs-container">
-	<h4>Quotation / Quotation Processing</h4>
+	<h4>Quotation</h4>
 	<ngb-tabset>
-		<ngb-tab class="ngb-tab" title="List of Quotations">
+		<ngb-tab class="ngb-tab" title="Quotation Processing">
 			<ng-template ngbTabContent>
 				<br />
 				<app-modal [btnTitle]="'Add'">
@@ -47,10 +47,14 @@
 				<button *ngIf="!disabledCopyBtn" class="cust-btn">Copy</button>
 
 				<div style="margin-top: -10px; z-index: 99998">
-					<app-cust-table [filters]="filters" [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes" (rowClick)="onRowClick($event)"
+					<!-- <app-cust-table [filters]="filters" [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes" (rowClick)="onRowClick($event)"
 					 (rowDblClick)="onRowDblClick($event)"></app-cust-table>
+ -->
+					 <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)"></app-cust-non-datatable>
 				</div>
 			</ng-template>
+		</ngb-tab>
+		<ngb-tab class="ngb-tab" title="Ready for Printing">
 		</ngb-tab>
 	</ngb-tabset>
 </div>
