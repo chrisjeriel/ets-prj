@@ -37,6 +37,30 @@ export class CustEditableNonDatatableComponent implements OnInit {
     @Output() rowClick: EventEmitter<any> = new EventEmitter();
     @Output() rowDblClick: EventEmitter<any> = new EventEmitter();
 
+    @Input() passData: any = {
+        tableData:[],
+        tHeader:[],
+        magnifyingGlass:[],
+        options:[],
+        dataTypes:[],
+        opts:[],
+        nData:{},
+        checkFlag:false,
+        selectFlag:false,
+        addFlag:false,
+        editFlag:false,
+        deleteFlag:false,
+        paginateFlag:false,
+        infoFlag:false,
+        searchFlag:false,
+        checkboxFlag:false,
+        pageLength:10,
+        //set width for columns 
+        //"1" to fit the header columns
+        // "auto" to auto-adjust
+        widths: []
+    };
+
     dataKeys: any[] = [];
     tableLoad: boolean = true;
     nextId: number = 0;
@@ -56,31 +80,36 @@ export class CustEditableNonDatatableComponent implements OnInit {
     displayLength: number;
     p:number = 1;
     fillData:any = {};
-
+    checked: boolean;
+    @Input() totalFlag = false;
+    @Input() widths: string[] = [];
     constructor(config: NgbDropdownConfig, public renderer: Renderer) { 
         config.placement = 'bottom-right';
         config.autoClose = false;
     }
 
     ngOnInit() {
-        if (this.tableData.length > 0) {
-            this.dataKeys = Object.keys(this.tableData[0]);
+        this.passData.pageLength = typeof this.passData.pageLength == 'undefined' ? 10 : this.passData.pageLength;
+        this.passData.dataTypes = typeof this.passData.dataTypes == 'undefined' ? [] : this.passData.dataTypes;
+        if (this.passData.tableData.length > 0) {
+            this.dataKeys = Object.keys(this.passData.tableData[0]);
         } else {
-            this.tHeader.push("No Data");
+            //this.passData.tHeader.push("No Data");
         }
-        this.displayData = JSON.parse(JSON.stringify( this.tableData));
+        this.displayData = JSON.parse(JSON.stringify( this.passData.tableData));
         this.displayLength = this.displayData.length;
-        // this.autoFill = Array(this.pageLength).fill(this.newData);
-        // if(this.displayData.length%this.pageLength != 0){
-        //     this.autoFill = Array(this.pageLength - this.displayData.length%this.pageLength).fill(this.newData);
+        // this.autoFill = Array(this.passData.pageLength).fill(this.newData);
+        // if(this.displayData.length%this.passData.pageLength != 0){
+        //     this.autoFill = Array(this.passData.pageLength - this.displayData.length%this.passData.pageLength).fill(this.newData);
         // }
         // if(typeof this.autoFill != "undefined")
         //     this.displayData = this.displayData.concat(this.autoFill);
 
-        this.addFiller();
+        
         for (var i = this.dataKeys.length - 1; i >= 0; i--) {
            this.fillData[this.dataKeys[i]] = null;
         }
+        this.addFiller();
         
     }
 
@@ -89,12 +118,12 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     onClickAdd() {
-        this.tableData.push(this.nData);
+        this.passData.tableData.push(this.passData.nData);
         this.search(this.searchString);
     }
 
     onClickDelete() {
-        this.tableData.pop();
+        this.passData.tableData.pop();
         this.search(this.searchString);
     }
     private onMouseDown(event){
@@ -130,7 +159,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         this.rowDblClick.next(event);
     }
     sort(str,sortBy){
-        this.tableData = this.tableData.sort(function(a, b) {
+        this.passData.tableData = this.passData.tableData.sort(function(a, b) {
             if(sortBy){
                 if(a[str] < b[str]) { return -1; }
                 if(a[str] > b[str]) { return 1; }
@@ -149,10 +178,10 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     search(event){
-        this.displayData = this.tableData.filter((item) => this.dataKeys.some(key => item.hasOwnProperty(key) && new RegExp(event, 'gi').test(item[key])));
-        // this.autoFill = Array(this.pageLength).fill(this.newData);
-        // if(this.displayData.length%this.pageLength != 0){
-        //     this.autoFill = Array(this.pageLength -  this.displayData.length%this.pageLength).fill(this.newData);
+        this.displayData = this.passData.tableData.filter((item) => this.dataKeys.some(key => item.hasOwnProperty(key) && new RegExp(event, 'gi').test(item[key])));
+        // this.autoFill = Array(this.passData.pageLength).fill(this.newData);
+        // if(this.displayData.length%this.passData.pageLength != 0){
+        //     this.autoFill = Array(this.passData.pageLength -  this.displayData.length%this.passData.pageLength).fill(this.newData);
         // }
         // this.displayLength = this.displayData.length;
         // if(typeof this.autoFill != "undefined")
@@ -161,16 +190,25 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     addFiller(){
-        this.autoFill = Array(this.pageLength).fill(this.fillData);
-        if(this.displayData.length%this.pageLength != 0){
-            this.autoFill = Array(this.pageLength -  this.displayData.length%this.pageLength).fill(this.fillData);
+        this.autoFill = Array(this.passData.pageLength).fill(this.fillData);
+        if(this.displayData.length%this.passData.pageLength != 0){
+            this.autoFill = Array(this.passData.pageLength -  this.displayData.length%this.passData.pageLength).fill(this.fillData);
         }
         this.displayLength = this.displayData.length;
-        if((typeof this.autoFill != "undefined" && this.displayData.length%this.pageLength != 0) || this.displayData.length==0)
+        if((typeof this.autoFill != "undefined" && this.displayData.length%this.passData.pageLength != 0) || this.displayData.length==0)
             this.displayData = this.displayData.concat(this.autoFill);
     }
 
     addCheckFlag(cell){
         return !(cell===this.fillData);
+    }
+
+    isNumber(i){
+        if(typeof this.passData.dataTypes=='undefined' || i>=this.passData.dataTypes.length)
+            return false;
+        else if(this.passData.dataTypes[i]=="currency" ||this.passData.dataTypes[i]=="number" ||this.passData.dataTypes[i]=="percentage")
+            return true;
+        else
+            return false;
     }
 }

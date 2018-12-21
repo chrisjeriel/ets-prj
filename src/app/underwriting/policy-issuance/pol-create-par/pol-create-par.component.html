@@ -65,19 +65,19 @@
                         </div>
                         <div class="input-group ig-row">
                             <label class="form-control-sm col-sm-2">Quotation No</label>
-                            <input type="text" [(ngModel)]="quoteLine" class="form-control form-control-sm" [disabled]="!fromQuotation">
-                            <input type="text" class="form-control form-control-sm input-ig-row" [disabled]="!fromQuotation">
-                            <input type="text" class="form-control form-control-sm input-ig-row" [disabled]="!fromQuotation">
-                            <input type="text" class="form-control form-control-sm input-ig-row" [disabled]="!fromQuotation">
-                            <input type="text" class="form-control form-control-sm input-ig-row" [disabled]="!fromQuotation">
+                            <input type="text" [(ngModel)]="quoteLine" class="form-control form-control-sm cap-input" ngbTooltip="Line" [disabled]="!fromQuotation">
+                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Year" [disabled]="!fromQuotation">
+                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Sequence No" [disabled]="!fromQuotation">
+                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Revision No" [disabled]="!fromQuotation">
+                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Company No" [disabled]="!fromQuotation">
                             <span>&nbsp;</span>
                             <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
                         </div>
                         <div class="input-group ig-row">
                             <label class="form-control-sm col-sm-2">Hold Cover No</label>
-                            <input type="text" class="form-control form-control-sm" [disabled]="fromQuotation">
-                            <input type="text" class="form-control form-control-sm input-ig-row" [disabled]="fromQuotation">
-                            <input type="text" class="form-control form-control-sm input-ig-row" [disabled]="fromQuotation">
+                            <input type="text" class="form-control form-control-sm cap-input" ngbTooltip="Line" [disabled]="fromQuotation">
+                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Year" [disabled]="fromQuotation">
+                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Sequence No" [disabled]="fromQuotation">
                             <span>&nbsp;</span>
                             <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
                         </div>

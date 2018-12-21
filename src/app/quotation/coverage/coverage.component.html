@@ -34,15 +34,12 @@
               <br>
               <div class="input-group">
                 <label class="form-control-sm" for="xx">Currency</label>
-                <select class="form-control form-control-sm cust-sm">
-                  <option value=""></option>
+                <select class="form-control form-control-sm cust-sm" disabled>
                   <option value="USD">USD</option>
                   <option value="PHP">PHP</option>
                   <option value="EUR">EUR</option>
                 </select>
-                <!-- <div class="form-control form-control-sm cust-sm " style="padding: 0px !important;">
-                  <app-select [optionsData]="optionsData" (optionsValues)="printSelectedValue($event)"></app-select>
-                </div> -->
+                <!-- <app-select [optionsData]="optionsData" (optionsValues)="printSelectedValue($event)"></app-select> -->
                 <label class="form-control-sm" for="xx">Exch. Rt.</label>
                 <input type="text" id="xx" class="form-control form-control-sm cust-sm txt-content-rght" required
                   placeholder="0.00" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
@@ -111,5 +108,14 @@
   </div>
 </div>
 
-<!-- <app-multiple-select [multiSelectHeaderTxt]="multiSelectHeaderTxt" [multiSelectData]="multiSelectData"
-  (multiSelectDataSelected)="getMS($event)"></app-multiple-select> -->
+<app-multiple-select [multiSelectHeaderTxt]="multiSelectHeaderTxt" [multiSelectData]="multiSelectData"
+  (multiSelectDataSelected)="getMS($event)"></app-multiple-select>
+
+
+<!-- <input type="text" value="name" class="form-control form-control-sm cust-sm txt-content-rght"> 
+<select class="form-control form-control-sm cust-sm">
+  <option>first option</option>
+  <option>second option</option>
+</select>
+
+<br><br><br> -->

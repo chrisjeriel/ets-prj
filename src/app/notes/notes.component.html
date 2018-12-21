@@ -1,22 +1,26 @@
-<div class="notes-div">
+<div class="cust-tabs-container">
 	<h4>Notes and Reminders</h4>
+	<ngb-tabset>
+		<ngb-tab class="ngb-tab" title="List of Notes and Reminders">
+			<ng-template ngbTabContent>
 
-	<p>List of Notes and Reminders</p>
+				<app-cust-editable-table [addFlag]="true" [editFlag]="true" [deleteFlag]="false" [nData]="nData" [tableData]="tableData"
+				[tHeader]="tHeader" [dataTypes]="dataTypes" [opts]="opts"></app-cust-editable-table>
 
-	<app-cust-editable-table [addFlag]="true" [editFlag]="true" [deleteFlag]="false" [nData]="nData" [tableData]="tableData"
-	 [tHeader]="tHeader" [dataTypes]="dataTypes" [opts]="opts"></app-cust-editable-table>
-
-	<div class="form-row">
-		<div class="form-group col-sm">
-			<div class="col-md-13 text-center">
-				<br>
-				<div class="cust-btn-container">
-					<button type="button" class="cust-btn"><a>Cancel</a></button>
-					<button type="button" class="cust-btn"><a>Save</a></button>
+				<div class="form-row">
+					<div class="form-group col-sm">
+						<div class="col-md-13 text-center">
+							<br>
+							<div class="cust-btn-container">
+								<button type="button" class="cust-btn"><a>Cancel</a></button>
+								<button type="button" class="cust-btn"><a>Save</a></button>
+							</div>
+						</div>
+					</div>
 				</div>
-			</div>
-		</div>
-	</div>
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
 </div>
 
 <!-- <app-modal [mdlConfig]="mdlConfig">

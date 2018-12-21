@@ -3,3 +3,23 @@
 	z-index: 200;
 	font-size: 14px;
 }
+.input-group-prepend {
+	height: calc(1.3rem + 1px) !important;
+}
+.input-group {
+	margin-bottom: -14px !important;
+	margin-top:0px !important;
+}
+.custom-row-inline-inset{
+	/* margin-bottom: 0px !important; */
+	margin-top: 0px !important;
+}
+.form-row{
+	margin-top: 7px !important;
+}
+input{
+	margin-left: 2px !important;
+}
+fieldset{
+	margin-bottom: -3px !important;
+}

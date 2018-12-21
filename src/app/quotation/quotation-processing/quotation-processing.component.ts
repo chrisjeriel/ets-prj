@@ -15,7 +15,6 @@ import { Title } from '@angular/platform-browser';
 export class QuotationProcessingComponent implements OnInit {
   tableData: any[] = [];
   tHeader: any[] = [];
-  tHeader2: any[] = [];
   dataTypes: any[] = [];
   filters: any[] = [];
   rowData: any[] = [];
@@ -23,6 +22,16 @@ export class QuotationProcessingComponent implements OnInit {
   disabledCopyBtn: boolean = true;
 
   line: string = "";
+
+  passData: any = {
+        tableData: [], 
+        tHeader: ['Quotation No.','Type of Cession','Line Class','Status','Ceding Company','Principal','Contractor','Insured','Risk','Object','Site','Policy No','Currency', 'Quote Date', 'Valid Until', 'Request Date', 'Create Date'],
+        dataTypes: ['text','text','text','text','text','text','text','text','text','text','text','text','date','date','date','date'],
+        resizable: [false, true, true, true, true, true, true, true, true, true, false, false, true, true, true, true],
+        filters: [],
+        pageLength: 10,
+        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: true, printBtn: false, 
+  }
 
   constructor(private quotationService: QuotationService, private modalService: NgbModal, private router: Router
     , public activeModal: NgbActiveModal, private titleService: Title
@@ -81,9 +90,8 @@ export class QuotationProcessingComponent implements OnInit {
     this.dataTypes.push("text");
     this.dataTypes.push("text");
 
-    this.tableData = this.quotationService.getQuoProcessingData();
+    this.passData.tableData = this.quotationService.getQuoProcessingData();
 
-    this.tHeader2.push("Risk Code", "Risk", "Region", "Province", "Town/City", "District", "Block");
   }
 
   editBtnEvent() {

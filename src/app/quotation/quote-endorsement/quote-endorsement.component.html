@@ -16,8 +16,8 @@
 	</fieldset>
 
 	<fieldset class="scheduler-border">
-		<legend class="scheduler-border">Quotation Option</legend>
-		<app-cust-table [checkFlag]="true" [tableData]="quoteOptionTableData" [tHeader]="quoteOptionTHeader" [dataTypes]="quoteOptionDataType" (rowClick)="clickRow($event)"></app-cust-table>
+		<legend class="scheduler-border">Options</legend>
+		<app-cust-table [checkFlag]="false" [tableData]="quoteOptionTableData" [tHeader]="quoteOptionTHeader" [dataTypes]="quoteOptionDataType" (rowClick)="clickRow($event)"></app-cust-table>
 	</fieldset>
 	<fieldset class="scheduler-border" style="position: relative;">
 		<legend class="scheduler-border">Endorsements</legend>

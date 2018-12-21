@@ -111,6 +111,7 @@ export class CustNonDatatableComponent implements OnInit {
     searchString: string;
     displayLength: number;
     p:number = 1;
+    checked:boolean;
     fillData:any = {};
 
     constructor(config: NgbDropdownConfig, public renderer: Renderer, private quotationService: QuotationService,) {

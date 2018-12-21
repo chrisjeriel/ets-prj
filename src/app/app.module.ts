@@ -9,6 +9,7 @@ import { SidebarModule } from 'ng-sidebar';
 import { DataTablesModule } from 'angular-datatables';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AngularEditorModule } from '@kolkov/angular-editor';
+import { QuillModule } from 'ngx-quill'
 
 // used to create fake backend
 import { fakeBackendProvider } from './_helpers';
@@ -92,7 +93,8 @@ import { ReadyForPrintingComponent } from './quotation/quotation-inquiry/ready-f
         FormsModule,
         DataTablesModule,
         NgxPaginationModule,
-        AngularEditorModule
+        AngularEditorModule,
+        QuillModule
     ],
     declarations: [
         AppComponent,

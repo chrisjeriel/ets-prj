@@ -1,16 +1,40 @@
+<style type="text/css">
+	.input-group {
+        padding: 0px !important;
+        margin: 0px !important;
+    }
+
+    .input-group label {
+        padding: 0px !important;
+        margin: 0px !important;
+    }
+
+	.input-ig-row {
+        margin-left: 2px !important;
+    }
+    .ig-row {
+        margin : -3px !important;
+        /*margin-bottom: -14px ! important;*/
+    }
+    .ig-row label {
+        margin-right: 5px !important;
+    }
+</style>
 <div>
 	<fieldset class="scheduler-border cust-fs-padlr-offset"> 
 		<legend class="scheduler-border">Open Cover Details</legend>
-			<div class="form-row custom-row-inline-inset">
-				<div class="input-group" >
-					<label class="form-control-sm col-sm-2" for="inputOCPolNo">Open Cover Pol No</label>
+			<div class="form-row custom-row-inline-inset" style="margin-bottom: 1px ! important;">
+				<div class="input-group ig-row">
+					<label class="form-control-sm col-sm-2" for="inputOCPolNo" >Open Cover Pol No</label>
 				    <input type="text" id="inputOCPolNo" class="form-control form-control-sm cust-sm col-sm-2" placeholder="" value="" readonly>
 				    <label class="form-control-sm col-sm-1" for="inputInname" >Insured</label>
 				    <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-6" placeholder="" value="" readonly>
+				    <div class="col-sm-1"></div>
 				</div>
-				<div class="input-group">
+				<div class="input-group ig-row">
 					<label class="form-control-sm col-sm-2" for="inputRisk" >Risk</label>
 				    <input type="text" id="inputRisk" class="form-control form-control-sm cust-sm col-sm-9" placeholder="" value="" readonly>
+				    <div class="col-sm-1"></div>
 				</div>
 			</div>
 	</fieldset>
@@ -19,44 +43,44 @@
 	<div class="row">
 		<div class="col-sm" style="margin-top: 16px;">
 			<fieldset class="scheduler-border">
-				<div class="form-row custom-row-inline-inset">
-					<div class="col-sm-2"></div>
-					<div class="col-sm-8" style="margin-top: 5px">
-						<div class="input-group" >
-							<label class="form-control-sm col-sm-4" for="xx">Currency</label>
-							<input type="text" id="xxx" class="form-control form-control-sm cust-sm txt-content-rght" required onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
-								 readonly>
-							<label class="form-control-sm" for="xx">Exch. Rt.</label>
-							<input type="text" id="xxx" class="form-control form-control-sm cust-sm txt-content-rght" required onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' readonly>
-						</div>
-						<div class="input-group">
-							<label class="form-control-sm col-sm-4" for="xx">Max Sum Insured</label>
-							<input type="text" id="xxx" class="form-control form-control-sm cust-sm txt-content-rght" required onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
-							 readonly>
-						</div>
+				<div class="form-row custom-row-inline-inset" style="margin-bottom: 2px ! important;margin-top: 12px ! important">
+					<div class="input-group  ig-row" >
+						<div class="col-sm-2"></div>
+						<label class="form-control-sm col-sm-2" for="xx">Currency</label>
+						<input type="text" id="xxx" class="form-control form-control-sm cust-sm txt-content-rght" required onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
+						readonly>
+						<label class="form-control-sm col-sm-1" for="xx">Exch. Rt.</label>
+						<input type="text" id="xxx" class="form-control form-control-sm cust-sm txt-content-rght" required onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' readonly>
+						<div class="col-sm-2"></div>
 					</div>
-					<div class="col-sm-2"></div>
+					<div class="input-group  ig-row">
+						<div class="col-sm-2"></div>
+						<label class="form-control-sm col-sm-2" for="xx">Max Sum Insured</label>
+						<input type="text" id="xxx" class="form-control form-control-sm cust-sm txt-content-rght" required onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
+						readonly>
+						<div class="col-sm-2"></div>
+					</div>
 				</div>
 			</fieldset>
 		</div>
 		<div class="col-sm"style="padding-left: 0px;">
 			<fieldset class="scheduler-border">
 				<legend class="scheduler-border">Share Details</legend>
-					<div class="form-row custom-row-inline-inset">
-						<div class="col-sm-2"></div>
-						<div class="col-sm-8">
-							<div class="input-group" >
-								<label class="form-control-sm col-sm-3">Share(%)</label>
-                            	<input type="text" class="form-control form-control-sm">
-                            	<label class="form-control-sm col-sm-2">PML(%)</label>
-                            	<input type="text" class="form-control form-control-sm">
-							</div>
-							<div class="input-group">
-	                            <label class="form-control-sm col-sm-3">Part Of(100%)</label>
-	                            <input type="text" class="form-control form-control-sm">
-                    		</div>
+					<div class="form-row custom-row-inline-inset" style="margin-bottom: 2px ! important;">
+						<div class="input-group ig-row" >
+							<div class="col-sm-2"></div>
+							<label class="form-control-sm col-sm-2">Share(%)</label>
+                            <input type="text" class="form-control form-control-sm">
+                            <label class="form-control-sm col-sm-1">PML(%)</label>
+                            <input type="text" class="form-control form-control-sm">
+                            <div class="col-sm-2"></div>
 						</div>
-						<div class="col-sm-2"></div>
+						<div class="input-group ig-row">
+							<div class="col-sm-2"></div>
+	                        <label class="form-control-sm col-sm-2">Part Of(100%)</label>
+	                        <input type="text" class="form-control form-control-sm">
+	                        <div class="col-sm-2"></div>
+                    	</div>
 					</div>
 			</fieldset>
 		</div>
