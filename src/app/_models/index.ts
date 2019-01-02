@@ -34,4 +34,4 @@ export * from './DistributionByRiskInfo';
 export * from './PolicyInwardPolBalance';
 export * from './PolItem';
 export * from './QuotationReadyForPrinting';
-
+export * from './PurgeExtractedPolicy';

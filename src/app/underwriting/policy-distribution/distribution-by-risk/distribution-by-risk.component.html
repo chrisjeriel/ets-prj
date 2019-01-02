@@ -4,35 +4,35 @@
       <legend class="scheduler-border">Policy Details</legend>
       <div class="custom-row-inline-inset">
         <div class="input-group">
-          <label class="form-control-sm col-sm-2" for="xx">Risk Dist No</label>
+          <label class="form-control-sm col-sm-2">Risk Dist No</label>
           <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm-3">
-          <label class="form-control-sm col-sm-1" for="xx">Policy No</label>
+          <label class="form-control-sm col-sm-1">Policy No</label>
           <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm-6">
         </div>
         <div class="input-group">
-          <label class="form-control-sm col-sm-2" for="xx">Ceding Co</label>
+          <label class="form-control-sm col-sm-2">Ceding Co</label>
           <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm-1">
           &nbsp;
           <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm-9">
         </div>
         <div class="input-group">
-          <label class="form-control-sm col-sm-2" for="xx">Insured</label>
+          <label class="form-control-sm col-sm-2">Insured</label>
           <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm-10">
         </div>
         <div class="input-group">
-          <label class="form-control-sm col-sm-2" for="xx">Risk</label>
+          <label class="form-control-sm col-sm-2">Risk</label>
           <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm-10">
         </div>
         <div class="input-group">
-          <label class="form-control-sm col-sm-2" for="xx">Province</label>
+          <label class="form-control-sm col-sm-2">Province</label>
           <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm-4">
-          <label class="form-control-sm col-sm-0" for="xx">City/Town</label>
+          <label class="form-control-sm col-sm-0">City/Town</label>
           <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm-5">
         </div>
         <div class="input-group">
-          <label class="form-control-sm col-sm-2" for="xx">District</label>
+          <label class="form-control-sm col-sm-2">District</label>
           <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm-2">
-          <label class="form-control-sm col-sm-1" for="xx">Block</label>
+          <label class="form-control-sm col-sm-1">Block</label>
           <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm-1">
         </div>
       </div>
@@ -43,29 +43,29 @@
       <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
       <div class="custom-row-inline-inset">
         <div class="input-group">
-          <label class="form-control-sm col-sm-4" for="xx">Currency</label>
+          <label class="form-control-sm col-sm-4">Currency</label>
           <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm">
-          <label class="form-control-sm col-sm-2" for="xx">Exch.Rt.</label>
-          <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm">
-        </div>
-        <div class="input-group">
-          <label class="form-control-sm col-sm-4" for="xx">Section I</label>
+          <label class="form-control-sm col-sm-2">Exch.Rt.</label>
           <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm">
         </div>
         <div class="input-group">
-          <label class="form-control-sm col-sm-4" for="xx">Section II</label>
+          <label class="form-control-sm col-sm-4">Section I</label>
           <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm">
         </div>
         <div class="input-group">
-          <label class="form-control-sm col-sm-4" for="xx">Section III</label>
+          <label class="form-control-sm col-sm-4">Section II</label>
           <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm">
         </div>
         <div class="input-group">
-          <label class="form-control-sm col-sm-4" for="xx">Total Sum Insured</label>
+          <label class="form-control-sm col-sm-4">Section III</label>
           <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm">
         </div>
         <div class="input-group">
-          <label class="form-control-sm col-sm-4" for="xx">Total Premium</label>
+          <label class="form-control-sm col-sm-4">Total Sum Insured</label>
+          <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm">
+        </div>
+        <div class="input-group">
+          <label class="form-control-sm col-sm-4">Total Premium</label>
           <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm">
         </div>
       </div>
@@ -81,10 +81,10 @@
 
   <fieldset class="scheduler-border">
     <legend class="scheduler-border">Distribution By Risk</legend>
-    <br>
-    <app-cust-editable-non-datatable [passData]="passData">
-    </app-cust-editable-non-datatable>
-    <br>
+    <div style="padding-top: 5px;">
+      <app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
+    </div>
+    
   </fieldset>
 </div>
 
@@ -94,17 +94,17 @@
       <legend class="scheduler-border">Quota Pool</legend>
       <div class="custom-row-inline-inset">
         <div class="input-group">
-          <label class="form-control-sm col-sm-3" for="xx">Retention Line</label>
+          <label class="form-control-sm col-sm-3">Retention Line</label>
           <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm txt-content-rght"
             placeholder="200,000.00">
         </div>
         <div class="input-group">
-          <label class="form-control-sm col-sm-3" for="xx">1st Retention</label>
+          <label class="form-control-sm col-sm-3">1st Retention</label>
           <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm txt-content-rght"
             placeholder="40">
         </div>
         <div class="input-group">
-          <label class="form-control-sm col-sm-3" for="xx">2nd Retention</label>
+          <label class="form-control-sm col-sm-3">2nd Retention</label>
           <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm txt-content-rght"
             placeholder="4,098">
         </div>
@@ -116,12 +116,12 @@
       <legend class="scheduler-border">Limits</legend>
       <div class="custom-row-inline-inset">
         <div class="input-group">
-          <label class="form-control-sm col-sm-4" for="xx">Quota + 1st Surplus</label>
+          <label class="form-control-sm col-sm-4">Quota + 1st Surplus</label>
           <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm txt-content-rght"
             placeholder="1,500,000.00">
         </div>
         <div class="input-group">
-          <label class="form-control-sm col-sm-4" for="xx">2nd Surplus</label>
+          <label class="form-control-sm col-sm-4">2nd Surplus</label>
           <input type="text" id="xx" class="form-control form-control-sm txt-content-rght col-sm txt-content-rght"
             placeholder="1,500,000.00">
         </div>
