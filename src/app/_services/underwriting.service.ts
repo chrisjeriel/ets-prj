@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo, PolicyPrinting, PrinterList, ALOPItemInformation, UnderwritingPolicyInquiryInfo, ItemInformation, UnderwritingPolicyDistList, DistributionByRiskInfo, PolicyEndorsement, PolItem_MLP, PolGoods_DOS, PolMachinery_DOS, PolicyInwardPolBalance , PolItem_CEC} from '@app/_models';
+import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo, PolicyPrinting, PrinterList, ALOPItemInformation, UnderwritingPolicyInquiryInfo, ItemInformation, UnderwritingPolicyDistList, DistributionByRiskInfo, PolicyEndorsement, PolItem_MLP, PolGoods_DOS, PolMachinery_DOS, PolicyInwardPolBalance , PolItem_CEC, TotalPerSection} from '@app/_models';
 
 
 @Injectable({ providedIn: 'root' })
@@ -30,7 +30,7 @@ export class UnderwritingService {
     polGoodsDOS : PolGoods_DOS[] = [];
     polMachineryDOS: PolMachinery_DOS[] = [];
     polCEC: PolItem_CEC[] = []; 
-
+    totalPerSection: TotalPerSection[] = [];
 
     constructor(private http: HttpClient) {
 
@@ -290,5 +290,12 @@ export class UnderwritingService {
         return this.polCEC;
     }
 
+    getTotalPerSection(){
+        this.totalPerSection = [
+            new TotalPerSection("SECTION I","",""),
+            new TotalPerSection("SECTION II","",""),
+            new TotalPerSection("SECTION III","",""),
+        ]
+    }
 
 }            

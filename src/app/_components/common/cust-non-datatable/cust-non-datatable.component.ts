@@ -94,7 +94,7 @@ export class CustNonDatatableComponent implements OnInit {
     @Input() passData: any = {
         tableData: [], tHeader: [], dataTypes: [], resizable: [], filters: [],
         pageLength: 10,
-        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false,
+        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, pageStatus: true, pagination: true
     }
 
     dataKeys: any[] = [];
@@ -112,6 +112,7 @@ export class CustNonDatatableComponent implements OnInit {
     displayLength: number;
     p:number = 1;
     checked:boolean;
+    selected: any;
     fillData:any = {};
 
     constructor(config: NgbDropdownConfig, public renderer: Renderer, private quotationService: QuotationService,) {
@@ -177,13 +178,18 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     onRowClick(event) {
-/*
-        for(var i = 0; i < event.target.parentElement.parentElement.children.length; i++) {
-            event.target.parentElement.parentElement.children[i].style.backgroundColor = "";
+        
+        /*for(var i = 0; i < event.target.parentElement.children.length; i++) {
+            event.target.parentElement.children[i].style.backgroundColor = "";
         }
 
-        event.target.parentElement.style.backgroundColor = "#67b4fc";*/
+        event.target.parentElement.parentElement.style.backgroundColor = "#67b4fc";
+        console.log(event.target.parentElement.parentElement);*/
         this.rowClick.next(event);
+    }
+    
+    highlight(event, data){
+        this.selected = data;
     }
 
     onRowDblClick(event) {

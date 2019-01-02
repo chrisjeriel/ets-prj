@@ -60,9 +60,8 @@
 	<fieldset class="scheduler-border">
 		 <legend class="scheduler-border">Endorsements</legend>
 		 <button type="button" class="cust-btn copyEndt" (click)="onClickCancel()"><a>Copy Endt</a></button>
-		 <div class="test" style="margin-top: 7px !important; margin-bottom: 2px;">
-         <app-cust-editable-non-datatable [checkFlag]="true" [addFlag]="true" [deleteFlag]="true" [nData]="nData" [tableData]="tableData" [editFlag]="false" 
-		 [tHeader]="tHeader" [magnifyingGlass]="magnifyingGlass"></app-cust-editable-non-datatable>
+		 <div class="test" style="margin-top: 3px !important; margin-bottom: 2px;">
+         <app-cust-editable-non-datatable [passData]="passDataEndorsement"></app-cust-editable-non-datatable>
 		 </div>
 	</fieldset>
 </div>

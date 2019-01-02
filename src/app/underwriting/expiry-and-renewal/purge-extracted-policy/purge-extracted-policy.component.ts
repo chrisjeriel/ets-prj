@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ExtractedPolicy } from '@app/_models';
 
-
 @Component({
   selector: 'app-purge-extracted-policy',
   templateUrl: './purge-extracted-policy.component.html',

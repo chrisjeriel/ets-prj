@@ -18,6 +18,17 @@ export class PolAttachmentComponent implements OnInit {
   tHeader: any[] = ["File Path", "Description", "Actions"];
   nData: PolAttachmentInfo = new PolAttachmentInfo(null, null);
 
+  passDataAttachment: any = {
+        tHeader: ["File Name", "Description", "Actions"],
+        dataTypes: [
+                    "text", "text"
+                   ],
+        checkFlag:true,
+        addFlag:true,
+        deleteFlag:true,
+        pageLength: 10,
+        searchFlag:true,
+    };
 
   constructor(config: NgbDropdownConfig, private underwritingService: UnderwritingService, private titleService: Title
   ) {
@@ -27,7 +38,7 @@ export class PolAttachmentComponent implements OnInit {
 
   ngOnInit() {
     this.titleService.setTitle("Pol | Attachment");
-    this.tableData = this.underwritingService.getPolAttachment();
+    this.passDataAttachment.tableData = this.underwritingService.getPolAttachment();
   }
 
 }
