@@ -15,7 +15,7 @@ th, td{
     padding: 10px !important;
     height: calc(1.3rem + 1px) !important;
     min-width: 30px; 
-    max-width: 160px;
+    max-width: 165px;
     overflow: hidden;
 }
 th{
@@ -37,6 +37,11 @@ div.filler{
     position: absolute;
     min-width: 30px;
     max-width: 142px;
+}
+
+.btnDisabled{
+    background: gray !important;
+    cursor: context-menu;
 }
 
 .checkbox-container-header{
@@ -100,6 +105,12 @@ div.filler{
     margin-top: 1%;
 }
 
+.cust-btn-container {
+    position: absolute !important;
+    left: 1px;
+    top: 1px;
+    z-index: 99 !important;
+}
 
 .expire{
     position: absolute !important;

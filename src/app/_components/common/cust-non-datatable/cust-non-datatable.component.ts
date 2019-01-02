@@ -22,6 +22,7 @@ export class CustNonDatatableComponent implements OnInit {
     @Input() tableOnly: boolean = false;
     @Input() filterDataTypes: any[] = [];
     
+    btnDisabled: boolean = true;
     
     
     @Input() filterObj:any[] = [
@@ -94,7 +95,7 @@ export class CustNonDatatableComponent implements OnInit {
     @Input() passData: any = {
         tableData: [], tHeader: [], dataTypes: [], resizable: [], filters: [],
         pageLength: 10,
-        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, pageStatus: true, pagination: true
+        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, pageStatus: true, pagination: true, addFlag: false, editFlag: false, deleteFlag: false,
     }
 
     dataKeys: any[] = [];
@@ -178,7 +179,7 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     onRowClick(event) {
-        
+        this.btnDisabled = false;
         /*for(var i = 0; i < event.target.parentElement.children.length; i++) {
             event.target.parentElement.children[i].style.backgroundColor = "";
         }
