@@ -70,7 +70,8 @@ export class PolItemComponent implements OnInit {
         deleteFlag:true,
         searchFlag:true,
         widths: ["1","228","auto","1","228"],
-        pageLength: 'unli'
+        pageLength: 'unli',
+        totalFlag: true
     }
     
     mlpPassData: any = {

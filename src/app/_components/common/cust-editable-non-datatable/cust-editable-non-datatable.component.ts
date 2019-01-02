@@ -91,6 +91,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.passData.magnifyingGlass = typeof this.passData.magnifyingGlass == 'undefined'? [] : this.passData.magnifyingGlass;
         this.unliFlag = this.passData.pageLength == 'unli';
         this.passData.pageLength = typeof this.passData.pageLength != 'number' ? 10 : this.passData.pageLength;
         this.unliTableLength();

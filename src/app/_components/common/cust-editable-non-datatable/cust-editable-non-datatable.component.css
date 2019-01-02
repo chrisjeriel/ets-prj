@@ -1,5 +1,6 @@
 table{
     margin-top: 30px;
+    width: 100%
 }
 th, td{
     white-space: nowrap;
@@ -41,6 +42,7 @@ th, td{
 
 #cust-table-container {
     position: relative !important;
+    width: 100%
 }
 
 .cust-btn-container {
@@ -168,7 +170,8 @@ div.input-group {
 
 .fa-search {
     float: right;
-    width: 4%
+    width: 4%;
+    line-height : calc(1.3rem + 1px);
 }
 
 .number{
