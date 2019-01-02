@@ -82,6 +82,8 @@ import { PolSumInsuredOpenCoverComponent } from './underwriting/policy-issuance/
 import { ReadyForPrintingComponent } from './quotation/quotation-inquiry/ready-for-printing/ready-for-printing.component';
 import { PurgeExtractedPolicyComponent } from './underwriting/expiry-and-renewal/purge-extracted-policy/purge-extracted-policy.component';
 import { SafeTextPipe } from './safe-text.pipe';
+import { UpdateInformationComponent } from './utilities/update-information/update-information.component';
+import { UpdateGeneralInfoComponent } from './utilities/update-information/update-general-info/update-general-info.component';
 
 @NgModule({
     imports: [
@@ -167,7 +169,9 @@ import { SafeTextPipe } from './safe-text.pipe';
         PolSumInsuredOpenCoverComponent,
         ReadyForPrintingComponent,
         PurgeExtractedPolicyComponent,
-        SafeTextPipe
+        SafeTextPipe,
+        UpdateInformationComponent,
+        UpdateGeneralInfoComponent
     ],
 
     providers: [

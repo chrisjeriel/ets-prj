@@ -15,27 +15,44 @@ export class InwardPolBalanceComponent implements OnInit {
   tHeader2: any[] = [];
   options: any[] = [];
   pageLength: number = 5;
-  pageLength_Invoice: number = 3;
+  pageLength_Invoice: number = 5;
 
   dtOptions: DataTables.Settings = {};
 
+  // tableData_taxInfo: any[] = [
+  //   new PolicyInwardPolBalance("TEST", "TEST", 1, "TEST"),
+  //   new PolicyInwardPolBalance("TEST", "TEST", 1, "TEST"),
+  //   new PolicyInwardPolBalance("TEST", "TEST", 1, "TEST"),
+  // ];
+
+   passDataInstallmentInfo: any = {
+        tHeader: ["Inst No", "Due Date", "Booking Date", "Prenium", "Other Charges", "Amount Due"],
+        dataTypes: [
+                    "text", "date", "date", "currency", "currency", "currency"
+                   ],
+        tableData: [["","","","","",""]],
+        addFlag:true,
+        deleteFlag:true,
+        pageLength: 10,
+    };
+
+    passDataOtherCharges: any = {
+        tHeader: ["Code", "Charge Description", "Amount"],
+        dataTypes: [
+                    "text","text","text" 
+                   ],
+        tableData: [["","",""]],
+        addFlag:true,
+        deleteFlag:true,
+        pageLength: 10,
+    };
+
+  tHeader: any[] = ["Code", "Charge Description", "Amount"];
+  dataTypes: any[] = ["text", "text", "text"];
   tableData_taxInfo: any[] = [
-    new PolicyInwardPolBalance("TEST", "TEST", 1, "TEST"),
-    new PolicyInwardPolBalance("TEST", "TEST", 1, "TEST"),
-    new PolicyInwardPolBalance("TEST", "TEST", 1, "TEST"),
+    ["","",""],
   ];
 
-  tHeader: any[] = ["Tax Code", "Tax Description", "Tax Amount", "Tax Allocation"];
-  dataTypes: any[] = ["select", "text", "currency", "select"];
-
-  tableData_InvoiceInformation: any[] = [
-    new InvoiceInformation("TEST", "TEST", "TEST", 1, 1),
-    new InvoiceInformation("TEST", "TEST", "TEST", 1, 1),
-    new InvoiceInformation("TEST", "TEST", "TEST", 1, 1),
-  ]
-
-  tHeader_Invoice: any[] = ["Takeup Seq No", "Booking Date", "Premium", "Total Tax", "Amount Due"];
-  dataTypes_Invoice: any[] = ["text", "text", "text", "currency", "currency"];
 
   constructor(private underwritingservice: UnderwritingService, private titleService: Title
   ) { }

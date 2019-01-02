@@ -19,6 +19,10 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   @Input() alteration: boolean = false;
   line: string;
   private sub: any;
+  hcChecked: boolean = false;
+  ocChecked: boolean = false;
+  decChecked: boolean = false;
+  typeOfCession: string = "";
 
   constructor(private route: ActivatedRoute, private modalService: NgbModal,
     private underwritingService: UnderwritingService, private titleService: Title) { }

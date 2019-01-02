@@ -32,8 +32,7 @@ export class PolAttachmentComponent implements OnInit {
         pageLength: 10
     }
 
-    constructor(config: NgbDropdownConfig, private underwritingService: UnderwritingService, private titleService: Title
-                ) {
+    constructor(config: NgbDropdownConfig, private underwritingService: UnderwritingService, private titleService: Title) {
         config.placement = 'bottom-right';
         config.autoClose = false;
     }

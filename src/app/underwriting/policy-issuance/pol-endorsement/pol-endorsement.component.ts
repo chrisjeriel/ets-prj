@@ -18,7 +18,18 @@ export class PolEndorsementComponent implements OnInit {
     magnifyingGlass: any[] = ["endtCode"];
     nData: PolicyEndorsement = new PolicyEndorsement(null, null, null, null);
 
-    tHeader: any[] = ['C', 'Endt Code', 'Endt Title', 'Remarks'];
+    passDataEndorsement: any = {
+        tHeader: ['C', 'Endt Code', 'Endt Title', 'Remarks'],
+        dataTypes: [
+                    "text", "text", "text", "text"
+                   ],
+        checkFlag:true,
+        addFlag:true,
+        deleteFlag:true,
+        pageLength: 10,
+        searchFlag:true,
+    };
+
 
     @Input() alteration: boolean;
 
@@ -30,7 +41,7 @@ export class PolEndorsementComponent implements OnInit {
 
     ngOnInit() {
         this.titleService.setTitle("Pol | Endorsement");
-        this.tableData = this.underwritingService.getPolicyEndorsement();
+        this.passDataEndorsement.tableData = this.underwritingService.getPolicyEndorsement();
     }
 
     onClickCancel() {

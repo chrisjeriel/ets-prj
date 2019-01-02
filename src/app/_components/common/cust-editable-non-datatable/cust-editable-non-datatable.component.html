@@ -118,11 +118,11 @@
             <tbody>
                 <tr *ngFor="let data of displayData | paginate: { id: 'editable', itemsPerPage: passData.pageLength, currentPage: p2 };let ti = index"
                     (click)="onRowClick($event)" (dblclick)="onRowDblClick($event)">
-                    <td *ngIf="passData.checkFlag" class="checkbox"><input *ngIf="addCheckFlag(data)" type="checkbox"
+                    <td *ngIf="passData.checkFlag" class="checkbox align-middle"><input *ngIf="addCheckFlag(data)" type="checkbox"
                             name="checkbox" [checked]="checked"></td>
-                    <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]">
-                        <div *ngIf="addCheckFlag(data)">
-                            <a><i *ngIf="magnifyingGlass.indexOf(key)!=-1" class="fa fa-search"></i></a> &nbsp;
+                    <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]" class="align-middle">
+                        <div *ngIf="addCheckFlag(data)" class="align-middle">
+                            <a  *ngIf="passData.magnifyingGlass.indexOf(key)!=-1"><i class="fa fa-search align-middle"></i></a> 
                             <input *ngSwitchCase="'percent'" class="editable-text text-right number form-control-sm"
                                 type="text" [ngModel]="processData(key, data) | number:'1.7-7'" [ngModelOptions]="{updateOn:'blur'}"
                                 (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
@@ -132,7 +132,9 @@
                             <input *ngSwitchCase="'currency'" class="editable-text text-right number form-control-sm"
                                 type="text" [ngModel]="processData(key, data) | number:'1.2-2'" [ngModelOptions]="{updateOn:'blur'}"
                                 (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
-                            <input *ngSwitchCase="'checkbox'" type="checkbox">
+                            <div *ngSwitchCase="'checkbox'" style="text-align: center;">
+                                <input  type="checkbox">
+                            </div>
                             <select *ngSwitchCase="'select'" class="editable-select form-control-sm" [value]="processData(key, data)">
                                 <ng-container *ngFor="let data of passData.opts">
                                     <ng-container *ngIf="key == data.selector">
@@ -155,9 +157,7 @@
                         </div>
                     </td>
                     <td *ngIf="passData.tHeader.indexOf('Edit Flag')!= -1">
-                        <div align="center" *ngIf="addCheckFlag(data)">
-                            <input type="checkbox" name="">
-                        </div>
+                        <input type="checkbox" name="" *ngIf="addCheckFlag(data)">
                     </td>
                     <td *ngIf="passData.selectFlag">
                         <select class="editable-select" *ngIf="addCheckFlag(data)">

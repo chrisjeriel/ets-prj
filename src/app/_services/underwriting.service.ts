@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo, PolicyPrinting, PrinterList, ALOPItemInformation, UnderwritingPolicyInquiryInfo, ItemInformation, UnderwritingPolicyDistList, DistributionByRiskInfo, PolicyEndorsement, PolItem_MLP, PolGoods_DOS, PolMachinery_DOS, PolicyInwardPolBalance , PolItem_CEC} from '@app/_models';
+import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo, PolicyPrinting, PrinterList, ALOPItemInformation, UnderwritingPolicyInquiryInfo, ItemInformation, UnderwritingPolicyDistList, DistributionByRiskInfo, PolicyEndorsement, PolItem_MLP, PolGoods_DOS, PolMachinery_DOS, PolicyInwardPolBalance , PolItem_CEC, TotalPerSection} from '@app/_models';
 
 
 @Injectable({ providedIn: 'root' })
@@ -30,7 +30,7 @@ export class UnderwritingService {
     polGoodsDOS : PolGoods_DOS[] = [];
     polMachineryDOS: PolMachinery_DOS[] = [];
     polCEC: PolItem_CEC[] = []; 
-
+    totalPerSection: TotalPerSection[] = [];
 
     constructor(private http: HttpClient) {
 
@@ -233,15 +233,14 @@ export class UnderwritingService {
 
     getDistByRiskData() {
         this.distributionByRiskData = [
-            new DistributionByRiskInfo("1Surp", "PhilNaRe", "5.000000", "27.522220", "CAR"),
-            new DistributionByRiskInfo("1Surp", "Munich Re", "95.000000", "27.500000", "CAR"),
-            new DistributionByRiskInfo("2Surp", "PhilNaRe", "5.000000", "27.500000", "CAR"),
-            new DistributionByRiskInfo("2Surp", "Munich Re", "95.000000", "27.500000", "CAR"),
-            new DistributionByRiskInfo("Facul", "Munich Re", "100.000000", "26.000000", "CAR"),
-            new DistributionByRiskInfo("QS", "QS Pool", "60.000000", "30.000000", "CAR"),
-            new DistributionByRiskInfo("QS", "PhilNaRe", "2.000000", "30.000000", "CAR"),
-            new DistributionByRiskInfo("QS", "Munich Re", "38.000000", "30.000000", "CAR"),
-
+            new DistributionByRiskInfo("QS", "QS Pool", "38.000000", "570,000,000.00", "142,500.00","30.000000"),
+            new DistributionByRiskInfo("QS", "PhilNaRe", "2.000000", "30,000,000.00", "7,500.00","30.000000"),
+            new DistributionByRiskInfo("QS", "Munich Re", "60.000000", "627,800,000.00", "156,950.00","30.000000"),
+            new DistributionByRiskInfo("1Surp", "PhilNaRe", "95.000000", "258,590,000.00", "64,647.50","64,647.50"),
+            new DistributionByRiskInfo("1Surp", "Munich Re", "5.000000", "13,610,000.00", "3,420.50","3420.50"),
+            new DistributionByRiskInfo("2Surp", "PhilNaRe", "95.000000", "1,425,000,000.00", "356,250.00","356,250.00"),
+            new DistributionByRiskInfo("2Surp", "Munich Re", "5.000000", "75,000,000.00", "18,750.00","18,750.00"),
+            new DistributionByRiskInfo("Facul", "Munich Re", "100.000000", "1,000,000,000.00", "250,000.00","250,000.00"),
         ];
         return this.distributionByRiskData;
     }
@@ -268,16 +267,16 @@ export class UnderwritingService {
 
     getPolGoodsDOSData(){
         this.polGoodsDOS = [
-            new PolGoods_DOS("item 1","chamber 1", "wet goods", "period", 506),
-            new PolGoods_DOS("item 2","chamber 2", "dry goods", "period", 152),
+            new PolGoods_DOS("item 1","chamber 1", "wet goods", "period", 15458),
+            new PolGoods_DOS("item 2","chamber 2", "dry goods", "period", 4542),
         ];
         return this.polGoodsDOS;
     }
 
     getPolMachineryDOSData(){
         this.polMachineryDOS = [
-            new PolMachinery_DOS("item 1",2, "description", 2, 506),
-            new PolMachinery_DOS("item 2",5, "desc", 2, 506),
+            new PolMachinery_DOS("item 1",2, "description", 2, 7453),
+            new PolMachinery_DOS("item 2",5, "desc", 2, 12547),
         ];
         return this.polMachineryDOS;
     }
@@ -290,5 +289,12 @@ export class UnderwritingService {
         return this.polCEC;
     }
 
+    getTotalPerSection(){
+        this.totalPerSection = [
+            new TotalPerSection("SECTION I","",""),
+            new TotalPerSection("SECTION II","",""),
+            new TotalPerSection("SECTION III","",""),
+        ]
+    }
 
 }            
