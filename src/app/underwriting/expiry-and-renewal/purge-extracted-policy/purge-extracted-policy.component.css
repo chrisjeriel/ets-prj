@@ -5,3 +5,10 @@ label.form-control-sm{
 .list{
 	margin-bottom: -16px;
 }
+
+.cancel-btn {
+	margin-left: 7px;
+    width: 93px;
+    height: 21px;
+    margin-bottom: 5px;
+}

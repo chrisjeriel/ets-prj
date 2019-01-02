@@ -40,6 +40,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     @Input() passData: any = {
         tableData:[],
         tHeader:[],
+        tHeaderWithColspan:[],
         magnifyingGlass:[],
         options:[],
         dataTypes:[],
@@ -83,13 +84,16 @@ export class CustEditableNonDatatableComponent implements OnInit {
     checked: boolean;
     @Input() totalFlag = false;
     @Input() widths: string[] = [];
+    unliFlag:boolean = false;
     constructor(config: NgbDropdownConfig, public renderer: Renderer) { 
         config.placement = 'bottom-right';
         config.autoClose = false;
     }
 
     ngOnInit() {
-        this.passData.pageLength = typeof this.passData.pageLength == 'undefined' ? 10 : this.passData.pageLength;
+        this.unliFlag = this.passData.pageLength == 'unli';
+        this.passData.pageLength = typeof this.passData.pageLength != 'number' ? 10 : this.passData.pageLength;
+        this.unliTableLength();
         this.passData.dataTypes = typeof this.passData.dataTypes == 'undefined' ? [] : this.passData.dataTypes;
         if (this.passData.tableData.length > 0) {
             this.dataKeys = Object.keys(this.passData.tableData[0]);
@@ -119,11 +123,13 @@ export class CustEditableNonDatatableComponent implements OnInit {
 
     onClickAdd() {
         this.passData.tableData.push(this.passData.nData);
+        this.unliTableLength();    
         this.search(this.searchString);
     }
 
     onClickDelete() {
         this.passData.tableData.pop();
+        this.unliTableLength();
         this.search(this.searchString);
     }
     private onMouseDown(event){
@@ -209,5 +215,14 @@ export class CustEditableNonDatatableComponent implements OnInit {
             return true;
         else
             return false;
+    }
+
+    unliTableLength(){
+        if(this.unliFlag){
+            console.log(this.passData.pageLength <= 10);
+            this.passData.pageLength = this.passData.tableData.length <= 10 ? 10 :this.passData.tableData.length;
+            console.log(this.passData.tableData.length);
+        }
+        
     }
 }

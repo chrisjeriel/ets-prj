@@ -14,6 +14,18 @@ export class PolItemComponent implements OnInit {
     dtOptions: DataTables.Settings = {};
     tableData_EEI_MBI_CEC: any[] = [
         new PolItem_EEI_MBI_CEC('10001', 45, 'Item Description 1', '2018', 5, 20000),
+        new PolItem_EEI_MBI_CEC('10001', 45, 'Item Description 1', '2018', 5, 20000),
+        new PolItem_EEI_MBI_CEC('10001', 45, 'Item Description 1', '2018', 5, 20000),
+        new PolItem_EEI_MBI_CEC('10001', 45, 'Item Description 1', '2018', 5, 20000),
+        new PolItem_EEI_MBI_CEC('10001', 45, 'Item Description 1', '2018', 5, 20000),
+        new PolItem_EEI_MBI_CEC('10001', 45, 'Item Description 1', '2018', 5, 20000),
+        new PolItem_EEI_MBI_CEC('10001', 45, 'Item Description 1', '2018', 5, 20000),
+        new PolItem_EEI_MBI_CEC('10001', 45, 'Item Description 1', '2018', 5, 20000),
+        new PolItem_EEI_MBI_CEC('10001', 45, 'Item Description 1', '2018', 5, 20000),
+        new PolItem_EEI_MBI_CEC('10001', 45, 'Item Description 1', '2018', 5, 20000),
+        new PolItem_EEI_MBI_CEC('10001', 45, 'Item Description 1', '2018', 5, 20000),
+        new PolItem_EEI_MBI_CEC('10001', 45, 'Item Description 1', '2018', 5, 20000),
+        new PolItem_EEI_MBI_CEC('10001', 45, 'Item Description 1', '2018', 5, 20000),
     ];
     tableData_BPV: any[] = [
         new PolItem_BPV('S10001', 'Region IV, Laguna, Calamba', '100001 Juan de la Cruz', "2018", 90000),
@@ -30,9 +42,7 @@ export class PolItemComponent implements OnInit {
     nData_BPV: PolItem_BPV = new PolItem_BPV(null, null, null, null, null);
 
     eeiPassData:any={
-        tableData:[
-            new PolItem_EEI_MBI_CEC('10001', 45, 'Item Description 1', '2018', 5, 20000),
-        ],
+        tableData:this.tableData_EEI_MBI_CEC,
         tHeader: ['Item No.', 'Quantity', 'Description of Items', 'Year of Make', 'Deductible', 'Sum Insured'],
         dataTypes:['string', 'number', 'string', 'string', 'number', 'currency'],
         nData: new PolItem_EEI_MBI_CEC(null, null, null, null, null, null),
@@ -40,7 +50,9 @@ export class PolItemComponent implements OnInit {
         addFlag:true,
         deleteFlag:true,
         totalFlag:true,
-        widths: ["1","1","auto","1","1","228"]
+        widths: ["1","1","auto","1","1","228"],
+        searchFlag:true,
+         pageLength:'unli'
 
     }
 

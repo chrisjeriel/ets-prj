@@ -12,3 +12,7 @@
 .fieldset-height{
     height: 104%;
 }
+
+.input-group {
+    margin-bottom: -14px !important;
+}
