@@ -135,7 +135,6 @@
                             <div *ngSwitchCase="'checkbox'" style="text-align: center;">
                                 <input  type="checkbox">
                             </div>
-                            
                             <select *ngSwitchCase="'select'" class="editable-select form-control-sm" [value]="processData(key, data)">
                                 <ng-container *ngFor="let data of passData.opts">
                                     <ng-container *ngIf="key == data.selector">
