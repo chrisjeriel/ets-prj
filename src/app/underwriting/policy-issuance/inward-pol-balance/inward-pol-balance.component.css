@@ -4,16 +4,13 @@
 }
 
 .btn {
-	    margin-bottom: 7px;
+	margin-bottom: 7px;
 }
 
 .invoice {
 	margin-left: 80px;
-	margin-top: -15px;
-}
-
-.taxInfo {
-	margin-top: 8px;
+	margin-top: -28px;
+	margin-bottom: 2px;
 }
 
 .remarks {
@@ -29,6 +26,6 @@ fieldset {
     padding-bottom: 4px !important;
 }
 
-.input-group {
-    margin-bottom: -5px !important;
-}   
+.taxInfo {
+	    margin-bottom: -18px;
+}

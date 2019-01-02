@@ -12,13 +12,57 @@ import { Title } from '@angular/platform-browser';
 export class CoverageComponent implements OnInit {
 
   private quotationCoverageInfo: QuotationCoverageInfo;
+
   tableData: any[] = [];
+  //tableDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
   tHeader: any[] = [];
-  dataTypes: any[] = [];
-  selOptions: any[] = [];
   magnifyingGlass: any[] = ['coverCode'];
+  options: any[] = [];
+  dataTypes: any[] = [];
+  opts: any[] = [];
+  checkFlag;
+  selectFlag;
+  addFlag;
+  editFlag;
+  deleteFlag;
+  paginateFlag;
+  infoFlag;
+  searchFlag;
+
+  checkboxFlag;
+  columnId;
+  pageLength = 10;
+
+  editedData: any[] = [];
+  // editedDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
+  // rowClick: EventEmitter<any> = new EventEmitter();
+  // rowDblClick: EventEmitter<any> = new EventEmitter();
+
   optionsData: any[] = [];
   optionsData2: any[] = [];
+  selOptions: any[] = [];
+
+  passData: any = {
+    tableData: [],
+    tHeader: [],
+    magnifyingGlass: [],
+    options: [],
+    dataTypes: [],
+    opts: [],
+    nData: {},
+    checkFlag: true,
+    selectFlag: false,
+    addFlag: true,
+    editFlag: false,
+    deleteFlag: true,
+    paginateFlag: true,
+    infoFlag: true,
+    searchFlag: true,
+    checkboxFlag: true,
+    pageLength: 10,
+    widths: []
+  };
+
 
   multiSelectHeaderTxt: string = "";
   multiSelectData: any[] = [];
@@ -63,6 +107,27 @@ export class CoverageComponent implements OnInit {
     this.selOptions.push({ selector: "sortSe", vals: ["10", "20", "30"] });
 
     this.tableData = this.quotationService.getCoverageInfo();
+
+    this.passData.tHeader.push("Cover Code");
+    this.passData.tHeader.push("Section");
+    this.passData.tHeader.push("Bullet No");
+    this.passData.tHeader.push("Sum Insured");
+    this.passData.tHeader.push("Add Sl");
+
+    this.passData.dataTypes.push("text");
+    this.passData.dataTypes.push("select");
+    this.passData.dataTypes.push("select");
+    this.passData.dataTypes.push("currency");
+    this.passData.dataTypes.push("checkbox");
+
+    this.passData.opts.push({ selector: "section", vals: ["I", "II", "III"] });
+    this.passData.opts.push({ selector: "bulletNo", vals: ["1", "1.2", "1.3"] });
+    this.passData.opts.push({ selector: "sortSe", vals: ["10", "20", "30"] });
+
+    this.passData.widths.push("1", "auto", "auto", "auto", "1", "1");
+    this.passData.magnifyingGlass.push("coverCode");
+
+    this.passData.tableData = this.quotationService.getCoverageInfo();
 
     // this.quotationCoverageInfo = new QuotationCoverageInfo(null, null, null, null, null, null, null, null);
     // this.quotationCoverageInfo.quotationNo = "MOCK DATA";
