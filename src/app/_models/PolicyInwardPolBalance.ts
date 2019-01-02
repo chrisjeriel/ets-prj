@@ -1,30 +1,19 @@
-export class PolicyInwardPolBalance{
-	taxCode: string;
-	taxDescription: string;
-	taxAmount: number;
-	taxAllocation: string;
-
-	constructor(taxCode:string, taxDescription: string, taxAmount: number, taxAllocation: string){
-		this.taxCode = taxCode;
-		this.taxDescription = taxDescription;
-		this.taxAmount = taxAmount;
-		this.taxAllocation = taxAllocation;
-	}
-}
-
-export class InvoiceInformation {
-	takeUpSeqNo: string;
+export class PolicyInwardPolBalance {
+	instNo: string;
+	dueDate: string;
 	bookingDate: string;
-	prenium: string;
-	totalTax: number;
-	amountDue: number;
+	premium: string;
+	otherCharges: string;
+	amountDue: string;
 
-	constructor(takeUpSeqNo: string, bookingDate: string, prenium:string, totalTax: number, amountDue: number){
-		this.takeUpSeqNo = takeUpSeqNo;
+	constructor(instNo: string, dueDate: string, bookingDate: string, premium: string, otherCharges: string, amountDue: string) {
+		this.instNo = instNo;
+		this.dueDate = dueDate;
 		this.bookingDate = bookingDate;
-		this.prenium = prenium;
-		this.totalTax = totalTax;
+		this.premium = premium;
+		this.otherCharges = otherCharges;
 		this.amountDue = amountDue;
 	}
 }
+
 

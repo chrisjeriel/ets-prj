@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo, PolicyPrinting, PrinterList, ALOPItemInformation, UnderwritingPolicyInquiryInfo, ItemInformation, UnderwritingPolicyDistList, DistributionByRiskInfo, PolicyEndorsement, PolItem_MLP, PolGoods_DOS, PolMachinery_DOS, PolicyInwardPolBalance } from '@app/_models';
+import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo, PolicyPrinting, PrinterList, ALOPItemInformation, UnderwritingPolicyInquiryInfo, ItemInformation, UnderwritingPolicyDistList, DistributionByRiskInfo, PolicyEndorsement, PolItem_MLP, PolGoods_DOS, PolMachinery_DOS, PolicyInwardPolBalance, PolInwardPolBalanceOtherCharges } from '@app/_models';
 
 
 @Injectable({ providedIn: 'root' })
@@ -26,8 +26,9 @@ export class UnderwritingService {
     policyDistListData: UnderwritingPolicyDistList[] = [];
     distributionByRiskData: DistributionByRiskInfo[] = [];
     policyInwardPolicy: PolicyInwardPolBalance[] = [];
-    polItemMLP : PolItem_MLP[] = [];
-    polGoodsDOS : PolGoods_DOS[] = [];
+    polInwardBalOtherCharges: PolInwardPolBalanceOtherCharges[] = [];
+    polItemMLP: PolItem_MLP[] = [];
+    polGoodsDOS: PolGoods_DOS[] = [];
     polMachineryDOS: PolMachinery_DOS[] = [];
 
 
@@ -96,20 +97,20 @@ export class UnderwritingService {
 
     getParListing() {
         this.parListingData = [
-            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress",  "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(),"POLECOH"),
-            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress",  "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(),"POLECOH"),
-            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress",  "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(),"POLECOH"),
-            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress",  "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(),"POLECOH"),
-            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress",  "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(),"POLECOH"),
-            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress",  "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(),"POLECOH"),
-            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress",  "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(),"POLECOH"),
-            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress",  "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(),"POLECOH"),
-            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress",  "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(),"POLECOH"),
-            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress",  "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(),"POLECOH"),
-            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress",  "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(),"POLECOH"),
-            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress",  "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(),"POLECOH"),
-            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress",  "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(),"POLECOH"),
-            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress",  "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(),"POLECOH"),
+            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(), "POLECOH"),
+            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(), "POLECOH"),
+            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(), "POLECOH"),
+            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(), "POLECOH"),
+            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(), "POLECOH"),
+            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(), "POLECOH"),
+            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(), "POLECOH"),
+            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(), "POLECOH"),
+            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(), "POLECOH"),
+            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(), "POLECOH"),
+            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(), "POLECOH"),
+            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(), "POLECOH"),
+            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(), "POLECOH"),
+            new PARListing("CAR-2018-0001", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(), "POLECOH"),
         ];
 
         return this.parListingData;
@@ -206,7 +207,7 @@ export class UnderwritingService {
 
     getPolicyEndorsement() {
         this.policyEndorsement = [
-            new PolicyEndorsement("TEST", "TEST", "TEST", "TEST")
+            new PolicyEndorsement("", "code 101", "title", "remarks"),
         ]
         return this.policyEndorsement;
     }
@@ -246,37 +247,43 @@ export class UnderwritingService {
     }
 
 
-    getInwardPolBalance(){
+    getInwardPolBalance() {
         this.policyInwardPolicy = [
-            new PolicyInwardPolBalance("EXE-CODE","TEST",1,"TEST"),
-            new PolicyInwardPolBalance("EXE-CODE","TEST",1,"TEST"),
-            new PolicyInwardPolBalance("EXE-CODE","TEST",1,"TEST"),
-            new PolicyInwardPolBalance("EXE-CODE","TEST",1,"TEST"),
-            new PolicyInwardPolBalance("EXE-CODE","TEST",1,"TEST")
+            new PolicyInwardPolBalance("1", "02/01/2019", "01/01/2019", "25000", "25000", "50000"),
+            new PolicyInwardPolBalance("2", "02/25/2019", "01/15/2019", "15000", "15000", "30000"),
         ];
         return this.policyInwardPolicy;
     }
-    
-    getPolItemMLPData(){
+
+    getInwardPolBalanceOtherCharges() {
+        this.polInwardBalOtherCharges = [
+            new PolInwardPolBalanceOtherCharges("101", "Description 101", "20000"),
+            new PolInwardPolBalanceOtherCharges("102", "Description 102", "800000"),
+        ];
+        return this.polInwardBalOtherCharges;
+    }
+
+
+    getPolItemMLPData() {
         this.polItemMLP = [
-            new PolItem_MLP("Item 1",5,"sample item",4,3,2),
-            new PolItem_MLP("Item 1",5,"sample item",4,3,2),
+            new PolItem_MLP("Item 1", 5, "sample item", 4, 3, 2),
+            new PolItem_MLP("Item 1", 5, "sample item", 4, 3, 2),
         ];
         return this.polItemMLP;
     }
 
-    getPolGoodsDOSData(){
+    getPolGoodsDOSData() {
         this.polGoodsDOS = [
-            new PolGoods_DOS("item 1","chamber 1", "wet goods", "period", 506),
-            new PolGoods_DOS("item 2","chamber 2", "dry goods", "period", 152),
+            new PolGoods_DOS("item 1", "chamber 1", "wet goods", "period", 506),
+            new PolGoods_DOS("item 2", "chamber 2", "dry goods", "period", 152),
         ];
         return this.polGoodsDOS;
     }
 
-    getPolMachineryDOSData(){
+    getPolMachineryDOSData() {
         this.polMachineryDOS = [
-            new PolMachinery_DOS("item 1",2, "description", 2, 506),
-            new PolMachinery_DOS("item 2",5, "desc", 2, 506),
+            new PolMachinery_DOS("item 1", 2, "description", 2, 506),
+            new PolMachinery_DOS("item 2", 5, "desc", 2, 506),
         ];
         return this.polMachineryDOS;
 

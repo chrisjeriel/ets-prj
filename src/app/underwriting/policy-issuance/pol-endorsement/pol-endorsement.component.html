@@ -1,79 +1,45 @@
-<!--<div *ngIf="!alteration">
-	<fieldset class="scheduler-border">
-		<legend class="scheduler-border">Policy Record Info</legend>
-		<div class="form-row custom-row-inline-inset">
-		    <div class="input-group">
-		      <label class="form-control-sm col-sm-1" for="xx">Policy No</label>
-		      <input type="text" id="xx" value="CAR-2018-5081-077-0177" class="form-control form-control-sm cust-sm col-sm-2" placeholder="" readonly>
-		      <label class="form-control-sm col-sm-1" for="xx">Insured</label>
-		      <input type="text" id="xx" value="Insurer" class="form-control form-control-sm cust-sm col-sm-7" placeholder="" readonly>
-		    </div>
-		    <div class="input-group">
-		      <div class="col-sm-3"></div>
-		      <label class="form-control-sm col-sm-1" for="xx">Risk</label>
-		      <input type="text" id="xx" value="Risk Name" class="form-control form-control-sm cust-sm col-sm-7" placeholder="" readonly>
-		    </div>
-		  </div>
-	</fieldset>
-</div>
-<div *ngIf="alteration">
-	<fieldset class="scheduler-border">
-		<legend class="scheduler-border" >Policy Record Info</legend>
-		<div class="form-row custom-row-inline-inset">
-			<div class="input-group">
-				<label class="form-control-sm col-sm-1" for="xx">PAR No</label>
-				<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-2" 
-				 readonly>
-				<label class="form-control-sm col-sm-1" for="xx">Insured</label>
-				<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-7"
-				 readonly>
-			</div>
-            <div class="input-group">
-                <label class="form-control-sm col-sm-1" for="xx">Policy No</label>
-				<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-2" 
-				 readonly>
-            </div>
-		</div>
-	</fieldset>
-</div>-->
 <fieldset class="scheduler-border">
-    <legend class="scheduler-border">Policy Record Info</legend>
-    <div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;">
-        <div class="input-group" style="margin-bottom: -13px !important; margin-top: 3px !important">
-            <label class="col-sm-1"></label>
-            <label class="form-control-sm col-sm-1" for="xx">Policy No</label>
-            <input type="text" id="xx" value="CAR-2018-5081-077-0177" class="form-control form-control-sm cust-sm col-sm-2"
-                   placeholder="" readonly>
-            <label class="form-control-sm col-sm-1" for="xx">Insured</label>
-            <input type="text" id="xx" value="Insurer" class="form-control form-control-sm cust-sm col-sm-5" placeholder=""
-                   readonly>
-        </div>
-        <div class="input-group" style="margin-bottom: -13px !important;">
-            <label class="col-sm-1"></label>
-            <label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Risk</label>
-            <input type="text" id="xx" value="Risk Name" class="form-control form-control-sm cust-sm col-sm-8" placeholder=""
-                   readonly>
-        </div>
-    </div>
+	<legend class="scheduler-border" *ngIf="!holdCover">Policy Record Info</legend>
+	<legend class="scheduler-border" *ngIf="holdCover">Open Cover Details</legend>
+	<div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;">
+		<div class="input-group" style="margin-bottom: -13px !important; margin-top: 3px !important">
+			<label class="col-sm-1" *ngIf="!holdCover"></label>
+			<label class="form-control-sm col-sm-1" *ngIf="!holdCover">Policy No</label>
+			<label class="form-control-sm col-sm-2" *ngIf="holdCover">Open Cover Pol No</label>
+			<input type="text" value="CAR-2018-5081-077-0177" class="form-control form-control-sm cust-sm col-sm-2" placeholder=""
+			 readonly>
+			<label class="form-control-sm col-sm-1" for="xx">Insured</label>
+			<input type="text" value="Insurer" class="form-control form-control-sm cust-sm col-sm-5" placeholder="" readonly>
+		</div>
+		<div class="input-group" style="margin-bottom: -13px !important;">
+			<label class="col-sm-1"></label>
+			<label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Risk</label>
+			<input type="text" value="Risk Name" class="form-control form-control-sm cust-sm col-sm-8" placeholder="" readonly>
+		</div>
+	</div>
 </fieldset>
-<div>
-	<fieldset class="scheduler-border">
-		 <legend class="scheduler-border">Endorsements</legend>
-		 <button type="button" class="cust-btn copyEndt" (click)="onClickCancel()"><a>Copy Endt</a></button>
-		 <div class="test" style="margin-top: 7px !important; margin-bottom: 2px;">
-         <app-cust-editable-non-datatable [checkFlag]="true" [addFlag]="true" [deleteFlag]="true" [nData]="nData" [tableData]="tableData" [editFlag]="false" 
-		 [tHeader]="tHeader" [magnifyingGlass]="magnifyingGlass"></app-cust-editable-non-datatable>
-		 </div>
-	</fieldset>
-</div>
+
+<fieldset class="scheduler-border">
+	<legend class="scheduler-border">Endorsements</legend>
+	<button type="button" class="cust-btn" style="margin-left: 227px !important;">Copy Endt</button>
+	<div class="row" style="margin-top: -26px !important;">
+		<div class="col-sm-1"></div>
+		<div class="col-sm-10">
+			<app-cust-editable-non-datatable [passData]="passData">
+			</app-cust-editable-non-datatable>
+		</div>
+		<div class="col-sm-1"></div>
+	</div>
+
+</fieldset>
+
 <div class="form-row">
 	<div class="form-group col-sm">
 		<div class="col-md-13 text-center">
 			<div class="cust-btn-container">
-			<br>
-			<button type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
-			<button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
-		</div>
+				<button type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
+				<button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+			</div>
 		</div>
 	</div>
 </div>
