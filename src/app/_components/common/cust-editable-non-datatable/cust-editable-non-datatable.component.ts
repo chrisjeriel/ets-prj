@@ -84,14 +84,17 @@ export class CustEditableNonDatatableComponent implements OnInit {
     checked: boolean;
     @Input() totalFlag = false;
     @Input() widths: string[] = [];
+    unliFlag:boolean = false;
     constructor(config: NgbDropdownConfig, public renderer: Renderer) { 
         config.placement = 'bottom-right';
         config.autoClose = false;
     }
 
     ngOnInit() {
-        console.log(this.passData);
-        this.passData.pageLength = typeof this.passData.pageLength == 'undefined' ? 10 : this.passData.pageLength;
+        this.passData.magnifyingGlass = typeof this.passData.magnifyingGlass == 'undefined'? [] : this.passData.magnifyingGlass;
+        this.unliFlag = this.passData.pageLength == 'unli';
+        this.passData.pageLength = typeof this.passData.pageLength != 'number' ? 10 : this.passData.pageLength;
+        this.unliTableLength();
         this.passData.dataTypes = typeof this.passData.dataTypes == 'undefined' ? [] : this.passData.dataTypes;
         if (this.passData.tableData.length > 0) {
             this.dataKeys = Object.keys(this.passData.tableData[0]);
@@ -121,11 +124,13 @@ export class CustEditableNonDatatableComponent implements OnInit {
 
     onClickAdd() {
         this.passData.tableData.push(this.passData.nData);
+        this.unliTableLength();    
         this.search(this.searchString);
     }
 
     onClickDelete() {
         this.passData.tableData.pop();
+        this.unliTableLength();
         this.search(this.searchString);
     }
     private onMouseDown(event){
@@ -207,9 +212,18 @@ export class CustEditableNonDatatableComponent implements OnInit {
     isNumber(i){
         if(typeof this.passData.dataTypes=='undefined' || i>=this.passData.dataTypes.length)
             return false;
-        else if(this.passData.dataTypes[i]=="currency" ||this.passData.dataTypes[i]=="number" ||this.passData.dataTypes[i]=="percentage")
+        else if(this.passData.dataTypes[i]=="currency" ||this.passData.dataTypes[i]=="number" ||this.passData.dataTypes[i]=="percent")
             return true;
         else
             return false;
+    }
+
+    unliTableLength(){
+        if(this.unliFlag){
+            console.log(this.passData.pageLength <= 10);
+            this.passData.pageLength = this.passData.tableData.length <= 10 ? 10 :this.passData.tableData.length;
+            console.log(this.passData.tableData.length);
+        }
+        
     }
 }

@@ -34,6 +34,8 @@ export class PolCoverageComponent implements OnInit {
         deleteFlag:true,
         pageLength: 10,
         searchFlag:true,
+        magnifyingGlass: ['coverCode'],
+        widths:[228,1,1,200,1,1,1]
     };
 
 
@@ -59,7 +61,8 @@ export class PolCoverageComponent implements OnInit {
     deleteFlag: true,
     paginateFlag: true,
     searchFlag: true,
-    checkFlag: true
+    checkFlag: true,
+    magnifyingGlass: ['coverCode']
   };
 
   passData2: any = {

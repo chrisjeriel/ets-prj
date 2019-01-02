@@ -1,4 +1,3 @@
-
 export class ExtractedPolicy {
 	policyNo: string;
 	tSIAmount: number;
