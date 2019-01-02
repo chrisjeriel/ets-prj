@@ -1,5 +1,5 @@
 export class LastExtraction{
-	userID:string;
+	extractedBy:string;
 	extractionDate:Date;
 }
 
@@ -14,6 +14,7 @@ export class ExpiryParameters {
 	line2:string;
 	branch1:string;
 	branch2:string;
-	cedingCompany:string;
+	cedingCompany1:string;
+	cedingCompany2:string;
 	
 }

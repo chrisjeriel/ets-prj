@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ExtractedPolicy } from '@app/_models';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-purge-extracted-policy',
@@ -16,9 +17,19 @@ export class PurgeExtractedPolicyComponent implements OnInit {
 
   }
 
-  constructor() { }
+  byDate: boolean = true;
+
+  constructor(private modalService: NgbModal) { }
 
   ngOnInit() {
   }
 
+  parameter() {
+        $('#modalBtn').trigger('click');
+    }
+
+   clearDates() {
+    $('#fromDate').val("");
+    $('#toDate').val("");
+  }
 }

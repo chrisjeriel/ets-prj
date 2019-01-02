@@ -14,9 +14,19 @@ export class ExpiryListingComponent implements OnInit {
   expiryParameters: ExpiryParameters = new ExpiryParameters();
   tableData: ExpiryListing[] = [];
   renewedPolicyList: RenewedPolicy[] = [];
-  renewedPolicyHeader: string[] = ["Original Policy No.", "Policy Record No."];
-  tHeader: any[] = ["Policy No", "Line", "Branch", "Ceding Company", "Insured", "Project Description", "Principal", "Contractor", "Currency", "Section I", "SI", "Premium"];
   byDate: boolean = true;
+  
+  passData: any = {
+        tHeader: ["P", "RA", "RC", "NR", "Policy No", "Ceding Company", "Co Ref No","Ren TSI Amount","Ren Pre Amount","TSI Amount","Prem Amount","Co Ref No","S","B","C","R","RP"],
+        dataTypes: [
+                    "checkbox", "checkbox", "checkbox", "checkbox", "text", "text","text","text","text","text","text","text","text","checkbox","checkbox","checkbox", "checkbox"
+                   ],
+        tableData: [[false,false,false,false,"TEST","TEST","TEST","TEST","TEST","TEST","TEST","TEST","TEST",false,false,false,false]],
+        pageLength: 10,
+        paginateFlag:true,
+        infoFlag:true
+   };
+
   constructor(private underWritingService: UnderwritingService, private modalService: NgbModal, private titleService: Title) { }
 
   ngOnInit() {

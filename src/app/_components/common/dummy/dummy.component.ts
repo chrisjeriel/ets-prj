@@ -250,6 +250,7 @@ export class DummyComponent implements OnInit {
         this.modalService.dismissAll();
         this.modalService.open(this.modalComp.test, { centered: true, backdrop: 'static', windowClass : 'modal-size' });
     }
+    
     openAgain(){
         this.modalService.dismissAll();
     }
