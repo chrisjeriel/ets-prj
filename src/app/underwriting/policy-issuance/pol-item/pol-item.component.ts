@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PolItem_MLP, PolItem_EEI_MBI_CEC, PolItem_BPV, PolGoods_DOS, PolMachinery_DOS } from '@app/_models';
+import { PolItem_MLP, PolItem_EEI_MBI_CEC, PolItem_BPV, PolGoods_DOS, PolMachinery_DOS, PolItem_CEC } from '@app/_models';
 import { UnderwritingService } from '../../../_services';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
@@ -14,18 +14,18 @@ export class PolItemComponent implements OnInit {
     dtOptions: DataTables.Settings = {};
     tableData_EEI_MBI_CEC: any[] = [
         new PolItem_EEI_MBI_CEC('10001', 45, 'Item Description 1', '2018', 5, 20000),
-        new PolItem_EEI_MBI_CEC('10001', 45, 'Item Description 1', '2018', 5, 20000),
-        new PolItem_EEI_MBI_CEC('10001', 45, 'Item Description 1', '2018', 5, 20000),
-        new PolItem_EEI_MBI_CEC('10001', 45, 'Item Description 1', '2018', 5, 20000),
-        new PolItem_EEI_MBI_CEC('10001', 45, 'Item Description 1', '2018', 5, 20000),
-        new PolItem_EEI_MBI_CEC('10001', 45, 'Item Description 1', '2018', 5, 20000),
-        new PolItem_EEI_MBI_CEC('10001', 45, 'Item Description 1', '2018', 5, 20000),
-        new PolItem_EEI_MBI_CEC('10001', 45, 'Item Description 1', '2018', 5, 20000),
-        new PolItem_EEI_MBI_CEC('10001', 45, 'Item Description 1', '2018', 5, 20000),
-        new PolItem_EEI_MBI_CEC('10001', 45, 'Item Description 1', '2018', 5, 20000),
-        new PolItem_EEI_MBI_CEC('10001', 45, 'Item Description 1', '2018', 5, 20000),
-        new PolItem_EEI_MBI_CEC('10001', 45, 'Item Description 1', '2018', 5, 20000),
-        new PolItem_EEI_MBI_CEC('10001', 45, 'Item Description 1', '2018', 5, 20000),
+        new PolItem_EEI_MBI_CEC('10002', 45, 'Item Description 1', '2018', 5, 20000),
+        new PolItem_EEI_MBI_CEC('10003', 45, 'Item Description 1', '2018', 5, 20000),
+        new PolItem_EEI_MBI_CEC('10004', 45, 'Item Description 1', '2018', 5, 20000),
+        new PolItem_EEI_MBI_CEC('10005', 45, 'Item Description 1', '2018', 5, 20000),
+        new PolItem_EEI_MBI_CEC('10006', 45, 'Item Description 1', '2018', 5, 20000),
+        new PolItem_EEI_MBI_CEC('10007', 45, 'Item Description 1', '2018', 5, 20000),
+        new PolItem_EEI_MBI_CEC('10008', 45, 'Item Description 1', '2018', 5, 20000),
+        new PolItem_EEI_MBI_CEC('10009', 45, 'Item Description 1', '2018', 5, 20000),
+        new PolItem_EEI_MBI_CEC('10010', 45, 'Item Description 1', '2018', 5, 20000),
+        new PolItem_EEI_MBI_CEC('10011', 45, 'Item Description 1', '2018', 5, 20000),
+        new PolItem_EEI_MBI_CEC('10012', 45, 'Item Description 1', '2018', 5, 20000),
+        new PolItem_EEI_MBI_CEC('10013', 45, 'Item Description 1', '2018', 5, 20000),
     ];
     tableData_BPV: any[] = [
         new PolItem_BPV('S10001', 'Region IV, Laguna, Calamba', '100001 Juan de la Cruz', "2018", 90000),
@@ -52,7 +52,7 @@ export class PolItemComponent implements OnInit {
         totalFlag:true,
         widths: ["1","1","auto","1","1","228"],
         searchFlag:true,
-         pageLength:'unli'
+        pageLength:'unli'
 
     }
 
