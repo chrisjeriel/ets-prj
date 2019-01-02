@@ -102,7 +102,8 @@ export class DummyComponent implements OnInit {
         ],
         tableData: this.quotationService.getQuotationListInfo(),
         pageLength: 10,
-        expireFilter: true, 
+        expireFilter: true,
+        checkFlag: true,
         
     };
 

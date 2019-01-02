@@ -12,15 +12,20 @@ import { Title } from '@angular/platform-browser';
 })
 
 export class PolCoInsuranceComponent implements OnInit {
-
-    dtOptions: DataTables.Settings = {};
-    tableData: any[] = [];
-    tHeader: any[] = [];
-    options: any[] = [];
-    dataTypes: any[] = [];
-    nData: PolicyCoInsurance = new PolicyCoInsurance(null, null, null, null, null, null);
-
-    @Input() alteration: boolean;
+    
+    coInsuranceData: any = {
+        tableData: this.underwritingService.getCoInsurance(),
+        tHeader: ['Policy No', 'Ref Policy No', 'Ceding Company', 'Share Percentage', 'Share Sum Insured', 'Share Premium'],
+        addFlag:false,
+        editFlag:false,
+        deleteFlag:false,
+        pageLength: 10,
+        nData: new PolicyCoInsurance(null, null, null, null, null, null),
+        dataTypes: ['string', 'string', 'string', 'percent', 'currency', 'currency'],
+        infoFlag: true,
+        paginateFlag: true,
+        widths: [1, 1, 1, 1, 1, 1]
+    }
 
     constructor(config: NgbDropdownConfig, private underwritingService: UnderwritingService, private titleService: Title
     ) {
@@ -30,24 +35,6 @@ export class PolCoInsuranceComponent implements OnInit {
 
     ngOnInit(): void {
         this.titleService.setTitle("Pol | Co-Insurance");
-        //this.tHeader.push("");
-        this.tHeader.push("Policy No");
-        this.tHeader.push("Ref Policy No");
-        this.tHeader.push("Ceding Company");
-        this.tHeader.push("Share Percentage");
-        this.tHeader.push("Share Sum Insured");
-        this.tHeader.push("Share Premium");
-        //this.tHeader.push("Actions");
-
-        //this.dataTypes.push("checkbox");
-        this.dataTypes.push("string");
-        this.dataTypes.push("string");
-        this.dataTypes.push("string");
-        this.dataTypes.push("percent");
-        this.dataTypes.push("currency");
-        this.dataTypes.push("currency");
-
-        this.tableData = this.underwritingService.getCoInsurance();
     }
 
     onClickCancel() {

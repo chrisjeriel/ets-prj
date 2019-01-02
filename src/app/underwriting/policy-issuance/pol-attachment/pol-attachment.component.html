@@ -1,31 +1,29 @@
+<fieldset class="scheduler-border">
+    <legend class="scheduler-border">Policy Record Info</legend>
+    <div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;">
+        <div class="input-group" style="margin-bottom: -13px !important; margin-top: 3px !important">
+            <label class="col-sm-1"></label>
+            <label class="form-control-sm col-sm-1" for="xx">Policy No</label>
+            <input type="text" id="xx" value="CAR-2018-5081-077-0177" class="form-control form-control-sm cust-sm col-sm-2"
+                   placeholder="" readonly>
+            <label class="form-control-sm col-sm-1" for="xx">Insured</label>
+            <input type="text" id="xx" value="Insurer" class="form-control form-control-sm cust-sm col-sm-5" placeholder=""
+                   readonly>
+        </div>
+        <div class="input-group" style="margin-bottom: -13px !important;">
+            <label class="col-sm-1"></label>
+            <label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Risk</label>
+            <input type="text" id="xx" value="Risk Name" class="form-control form-control-sm cust-sm col-sm-8" placeholder=""
+                   readonly>
+        </div>
+    </div>
+</fieldset>
 <div>
 	<fieldset class="scheduler-border">
-	    <legend class="scheduler-border">Policy Record Info</legend>
-	    <div class="form-row custom-row-inline-inset">
-	      <div class="input-group">
-	        <label class="form-control-sm col-sm-1" for="xx">Policy No</label>
-	        <input type="text" id="xx" value="CAR-2018-5081-077-0177" class="form-control form-control-sm cust-sm col-sm-2"
-	          placeholder="" readonly>
-	        <label class="form-control-sm col-sm-1" for="xx">Insured</label>
-	        <input type="text" id="xx" value="Insurer" class="form-control form-control-sm cust-sm col-sm-7" placeholder=""
-	          readonly>
-	      </div>
-	      <div class="input-group">
-	        <label class="form-control-sm col-sm-1" for="xx">Risk</label>
-	        <input type="text" id="xx" value="Risk Name" class="form-control form-control-sm cust-sm col-sm-10" placeholder=""
-	          readonly>
-	      </div>
-	    </div>
-	</fieldset>
-</div>
-
-
-<div>
-	<fieldset class="scheduler-border">
-		<legend class="scheduler-border">Attached Files</legend>
-			<div class="test" style="margin-top: 5px !important; margin-bottom: 15px;">
-			<app-cust-editable-non-datatable [addFlag]="true" [deleteFlag]="true" [checkFlag]="true" [nData]="nData" [tHeader]="tHeader" [tableData]="tableData"></app-cust-editable-non-datatable>
-			</div>
+        <legend class="scheduler-border">Attached Files</legend>
+        <div style="margin-top: 3px">
+            <app-cust-editable-non-datatable [passData]="attachmentData"></app-cust-editable-non-datatable>
+        </div>
 	</fieldset>
 </div>
 <div class="form-row">

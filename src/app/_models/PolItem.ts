@@ -32,6 +32,7 @@ export class PolItem_EEI_MBI_CEC{
         this.sumInsured = sumInsured;
     }
 }
+
 export class PolItem_BPV{
     serial: string;
     location: string;
@@ -75,5 +76,18 @@ export class PolMachinery_DOS{
 		this.description = description; 
 		this.yearOfMake = yearOfMake; 
 		this.sumInsured = sumInsured; 
+	}
+}
+
+export class PolItem_CEC{
+	itemNo:string;
+	insuredItemLoc:string;
+	deductible:string;
+	sumInsured:number;
+	constructor(itemNo:string,insuredItemLoc:string,deductible:string,sumInsured:number){
+		this.itemNo = itemNo;
+		this.insuredItemLoc = insuredItemLoc;
+		this.deductible = deductible;
+		this.sumInsured = sumInsured;
 	}
 }

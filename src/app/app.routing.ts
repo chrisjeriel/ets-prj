@@ -28,6 +28,8 @@ import { PolDistComponent } from './underwriting/policy-distribution/pol-dist/po
 import { PolicyDistributionComponent } from './underwriting/policy-distribution/policy-distribution.component';
 import { PolCreateOpenCoverComponent } from './underwriting/policy-issuance/pol-create-open-cover/pol-create-open-cover.component';
 import { PolIssuanceOpenCoverLetterComponent } from './underwriting/policy-issuance/pol-issuance-open-cover-letter.component';
+import { PurgeExtractedPolicyComponent } from './underwriting/expiry-and-renewal/purge-extracted-policy/purge-extracted-policy.component';
+import { UpdateInformationComponent } from './utilities/update-information/update-information.component'
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -57,7 +59,9 @@ const appRoutes: Routes = [
     { path: 'pol-dist', component: PolDistComponent },
     { path: 'policy-dist', component: PolicyDistributionComponent },
     { path: 'create-open-cover', component: PolCreateOpenCoverComponent },
-     { path: 'create-open-cover-letter', component: PolIssuanceOpenCoverLetterComponent },
+    { path: 'create-open-cover-letter', component: PolIssuanceOpenCoverLetterComponent },
+    { path: 'purge-extracted-policy' , component: PurgeExtractedPolicyComponent} ,
+    { path: 'update-info' , component: UpdateInformationComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

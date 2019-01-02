@@ -76,7 +76,7 @@ export class InwardPolBalanceComponent implements OnInit {
     this.passData2.dataTypes.push("text");
     this.passData2.dataTypes.push("currency");
 
-    this.passData2.widths.push("1", "auto", "auto");
+    this.passData2.widths.push("auto", "auto", "auto");
     this.passData2.magnifyingGlass.push("code");
 
     this.passData2.tableData = this.underwritingservice.getInwardPolBalanceOtherCharges();
