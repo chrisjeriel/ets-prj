@@ -1,0 +1,38 @@
+.sec-input{
+	margin-left: 2px !important;
+}
+
+.input-group{
+	    margin-bottom: -14px !important;
+}
+
+.top-row fieldset{
+	padding-top: 8px !important;
+    padding-right: 74px !important;
+    padding-left: 64px !important;
+}
+
+.top-row{
+	    margin-top: 12px;
+}
+
+.btn-cont{
+	margin-top: 3px !important;
+	margin-bottom: 8px !important;
+}
+
+.latLong{
+	position: absolute;
+	width: 50%;
+	top: 28px;
+    right: 0px;
+}
+
+.cont2 , .cont1{
+	position: relative;
+}
+
+.city{
+	position: absolute;
+	width: 50%;
+}
