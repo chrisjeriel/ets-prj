@@ -73,7 +73,7 @@
     <div  *ngIf="passData.fixedCol" class="row">
         <div class="col-sm-2" style="padding-right: 0px; flex: 0 0 13.666667%;
     max-width: 13.666667%;">
-            <table class="" class="non-datatable">
+            <table id="non-datatable">
                 <thead>
                     <tr>
                         <th *ngIf="passData.checkFlag" style="text-align: center"><input type="checkbox" name=""></th>
@@ -103,7 +103,7 @@
         <div class="col-sm-10" style="padding-left: 0px;    max-width: 86.3333%;
     flex: 0 0 86.3333%;">
             <div class="col-sm-10 table-scroll" id="cust-scroll" style="padding-left: 0px">
-                <table class="" class="non-datatable" style="border-left: 0px;">
+                <table id="non-datatable" style="border-left: 0px;">
                     <thead>
                         <tr>
                             <!-- <th *ngIf="passData.checkFlag" ><input type="checkbox" name=""></th>-->
@@ -140,10 +140,11 @@
 
 
     <div class="table-scroll" id="cust-scroll" *ngIf="!passData.fixedCol">
-        <table class="non-datatable">
+        <table id="non-datatable">
             <thead>
                 <tr style="min-width: 96px">
-                    <th *ngIf="passData.checkFlag" style="text-align: center; width: 6px"><input type="checkbox" name="" [(ngModel)]="checked"></th>
+                   <th *ngIf="passData.checkFlag" class="checkbox-container-header"><input type="checkbox" name="" [(ngModel)]="checked" class="checkbox"  [checked]="checked"></th>
+                    
                     <th *ngFor="let tHeader of passData.tHeader; let i = index" (click)="sort(dataKeys[i],sortBy);sortIndex=i;">
                         <span *ngIf="passData.resizable[i]" 
                               class="ui-column-resizer" (mousedown) = "onMouseDown($event)"></span>
@@ -155,7 +156,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let data of displayData | paginate: { id:'non-editable', itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event); highlight($event, data)" (dblclick)="onRowDblClick($event)" [class.selected]="data === selected || checked">
-                    <td *ngIf="passData.checkFlag" style="text-align: center"><input type="checkbox" name="" *ngIf="addCheckFlag(data)" class="checkbox" [checked]="checked"></td>
+                    <td *ngIf="passData.checkFlag" class="checkbox-container-body"><input type="checkbox" name="" *ngIf="addCheckFlag(data)" class="checkbox" [checked]="checked"></td>
                     <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]">
                         <div *ngIf="addCheckFlag(data)">
                             <span *ngSwitchCase="'date'" class="unclickable">{{ processData(key, data) | date: 'MM/dd/yyyy'}}</span>

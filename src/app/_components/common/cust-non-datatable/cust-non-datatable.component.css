@@ -39,25 +39,36 @@ div.filler{
     max-width: 142px;
 }
 
-.checkbox{
-    height: 11px;
+.checkbox-container-header{
+    text-align: center;
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
 }
-.non-datatable {
+
+.checkbox-container-body{
+    text-align: center; 
+    padding: 1px !important
+}
+
+.checkbox{
+    height: 13px;
+}
+#non-datatable {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 100%;
 }
 
-.non-datatable td, .non-datatable th{
+#non-datatable td, #non-datatable th{
     border: 1px solid #ddd;
 }
 
-.non-datatable tr:nth-child(even){background-color: #f2f2f2;}
+#non-datatable tr:nth-child(even){background-color: #f2f2f2;}
 
-.non-datatable tr:hover {background-color: #ffffb3;}
+#non-datatable tr:hover {background-color: #ffffb3;}
 /*#non-datatable tr:active {background-color: #67b4fc;}*/
 
-.non-datatable th {
+#non-datatable th {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
