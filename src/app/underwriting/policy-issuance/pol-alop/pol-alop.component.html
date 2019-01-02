@@ -1,21 +1,21 @@
 <div>
 	<fieldset class="scheduler-border">
-	    <legend class="scheduler-border">Policy Record Info</legend>
-	    <div class="form-row custom-row-inline-inset">
-	      <div class="input-group">
-	        <label class="form-control-sm col-sm-1" for="xx">Policy No</label>
-	        <input type="text" id="xx" value="CAR-2018-5081-077-0177" class="form-control form-control-sm cust-sm col-sm-2"
-	          placeholder="" readonly>
-	        <label class="form-control-sm col-sm-1" for="xx">Insured</label>
-	        <input type="text" id="xx" value="Insurer" class="form-control form-control-sm cust-sm col-sm-7" placeholder=""
-	          readonly>
-	      </div>
-	      <div class="input-group">
-	        <label class="form-control-sm col-sm-1" for="xx">Risk</label>
-	        <input type="text" id="xx" value="Risk Name" class="form-control form-control-sm cust-sm col-sm-10" placeholder=""
-	          readonly>
-	      </div>
-	    </div>
+		<legend class="scheduler-border">Policy Record Info</legend>
+		<div class="form-row custom-row-inline-inset">
+			<div class="input-group">
+				<label class="form-control-sm col-sm-1" for="xx">Policy No</label>
+				<input type="text" id="xx" value="CAR-2018-5081-077-0177" class="form-control form-control-sm cust-sm col-sm-2"
+				 placeholder="" readonly>
+				<label class="form-control-sm col-sm-1" for="xx">Insured</label>
+				<input type="text" id="xx" value="Insurer" class="form-control form-control-sm cust-sm col-sm-7" placeholder=""
+				 readonly>
+			</div>
+			<div class="input-group">
+				<label class="form-control-sm col-sm-1" for="xx">Risk</label>
+				<input type="text" id="xx" value="Risk Name" class="form-control form-control-sm cust-sm col-sm-10" placeholder=""
+				 readonly>
+			</div>
+		</div>
 	</fieldset>
 	<div class="row top">
 		<div class="col-sm-6 left-div">
@@ -25,7 +25,7 @@
 						<label class="form-control-sm col-sm-2 text-right" for="xx">Insured</label>
 						<input class="form-control form-control-sm  col-sm-2" type="text" name="" [(ngModel)]="aLOPInfo.insured1">
 						<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>&nbsp;
-						<input class="form-control form-control-sm  col-sm" type="text" name="" [(ngModel)]="aLOPInfo.insured2" >
+						<input class="form-control form-control-sm  col-sm" type="text" name="" [(ngModel)]="aLOPInfo.insured2">
 					</div>
 
 					<div class="input-group textarea">
@@ -38,7 +38,7 @@
 						<label class="form-control-sm col-sm-2 text-right" for="xx">Address</label>
 						<input class="form-control form-control-sm  col-sm" type="text" name="" [(ngModel)]="aLOPInfo.address2">
 					</div>
-					
+
 				</div>
 			</fieldset>
 		</div>
@@ -46,7 +46,7 @@
 			<fieldset class="scheduler-border col-sm-12 right">
 				<div class="form-row custom-row-inline-inset">
 					<div class="input-group">
-						<label  class="form-control-sm col-sm-3 text-left" for="xx">The Insured Business</label>
+						<label class="form-control-sm col-sm-3 text-left" for="xx">The Insured Business</label>
 					</div>
 
 					<div class="input-group textarea">
@@ -54,7 +54,7 @@
 					</div>
 				</div>
 			</fieldset>
-		</div>	
+		</div>
 	</div>
 
 	<fieldset class="scheduler-border middle">
@@ -84,7 +84,7 @@
 				<input class="form-control form-control-sm  col-sm-2" type="date" id="periodFrom" [(ngModel)]="aLOPInfo.fromDate">
 				<label class="form-control-sm col-sm-1" for="periodTo">to</label>
 				<input class="form-control form-control-sm  col-sm-2" type="date" id="periodTo" [(ngModel)]="aLOPInfo.toDate">
-				<label class="form-control-sm col-sm-2 text-left" >(Scheduled Date of Completion)</label>
+				<label class="form-control-sm col-sm-2 text-left">(Scheduled Date of Completion)</label>
 
 			</div>
 			<div class="input-group">
@@ -114,43 +114,45 @@
 			<div *ngIf="line=='CAR'">
 				<div class="col-md-13 text-center">
 					<br>
-						<div class="cust-btn-container">
-							<app-modal [btnTitle]="'Item Information'" style="margin-bottom: 2px;">
-								<div header>Item Information</div>	
-            					<div body>
-            						<app-cust-editable-non-datatable [addFlag]="true" [deleteFlag]="true" [nData]="nData" [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes"></app-cust-editable-non-datatable>
-            					</div>
-            					<div footer class="text-center">
-									<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
-									<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Save</a></button>
-            					</div>
-							</app-modal>
-							<button type="button" class="cust-btn"><a>Cancel</a></button>
-							<button type="button" class="cust-btn" (click)="save()"><a>Save</a></button>
-						</div>
+					<div class="cust-btn-container">
+						<app-modal [btnTitle]="'Item Information'" style="margin-bottom: 2px;">
+							<div header>Item Information</div>
+							<div body>
+								<app-cust-editable-non-datatable [addFlag]="true" [deleteFlag]="true" [nData]="nData" [tableData]="tableData"
+								 [tHeader]="tHeader" [dataTypes]="dataTypes"></app-cust-editable-non-datatable>
+							</div>
+							<div footer class="text-center">
+								<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
+								<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Save</a></button>
+							</div>
+						</app-modal>
+						<button type="button" class="cust-btn"><a>Cancel</a></button>
+						<button type="button" class="cust-btn" (click)="save()"><a>Save</a></button>
+					</div>
 				</div>
 			</div>
 
-				
+
 			<div *ngIf="line=='EAR'">
 				<div class="col-md-13 text-center">
 					<br>
-						<div class="cust-btn-container">
-							<app-modal [btnTitle]="'Item Information'" style="margin-bottom: 2px;">
-								<div header>Item Information</div>	
-            					<div body>
-            						<app-cust-editable-non-datatable [addFlag]="true" [deleteFlag]="true" [nData]="nData" [tableData]="tableData2" [tHeader]="tHeader2" [dataTypes]="dataTypes2"></app-cust-editable-non-datatable>
-            					</div>
-            					<div footer class="text-center">
-									<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
-									<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Save</a></button>
-            					</div>
-							</app-modal>
-								<button type="button" class="cust-btn"><a>Cancel</a></button>
-								<button type="button" class="cust-btn" (click)="save()"><a>Save</a></button>
-						</div>
+					<div class="cust-btn-container">
+						<app-modal [btnTitle]="'Item Information'" style="margin-bottom: 2px;">
+							<div header>Item Information</div>
+							<div body>
+								<app-cust-editable-non-datatable [addFlag]="true" [deleteFlag]="true" [nData]="nData" [tableData]="tableData2"
+								 [tHeader]="tHeader2" [dataTypes]="dataTypes2"></app-cust-editable-non-datatable>
+							</div>
+							<div footer class="text-center">
+								<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
+								<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Save</a></button>
+							</div>
+						</app-modal>
+						<button type="button" class="cust-btn"><a>Cancel</a></button>
+						<button type="button" class="cust-btn" (click)="save()"><a>Save</a></button>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>			
+</div>

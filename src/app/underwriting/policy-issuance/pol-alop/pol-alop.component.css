@@ -73,3 +73,7 @@ label.text-left{
 .left div{
 	padding-right: 10px !important;
 }
+
+.input-group {
+    margin-bottom: -14px !important;
+}
