@@ -268,16 +268,16 @@ export class UnderwritingService {
 
     getPolGoodsDOSData(){
         this.polGoodsDOS = [
-            new PolGoods_DOS("item 1","chamber 1", "wet goods", "period", 506),
-            new PolGoods_DOS("item 2","chamber 2", "dry goods", "period", 152),
+            new PolGoods_DOS("item 1","chamber 1", "wet goods", "period", 15458),
+            new PolGoods_DOS("item 2","chamber 2", "dry goods", "period", 4542),
         ];
         return this.polGoodsDOS;
     }
 
     getPolMachineryDOSData(){
         this.polMachineryDOS = [
-            new PolMachinery_DOS("item 1",2, "description", 2, 506),
-            new PolMachinery_DOS("item 2",5, "desc", 2, 506),
+            new PolMachinery_DOS("item 1",2, "description", 2, 7453),
+            new PolMachinery_DOS("item 2",5, "desc", 2, 12547),
         ];
         return this.polMachineryDOS;
     }

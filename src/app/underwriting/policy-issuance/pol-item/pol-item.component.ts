@@ -81,8 +81,9 @@ export class PolItemComponent implements OnInit {
         checkFlag:"true",
         addFlag:"true",
         deleteFlag:"true",
-        widths:  ['1','1','auto','1','1','1'],
-        searchFlag : true
+        widths:  ['1','1','auto','1','1','195'],
+        searchFlag : true,
+        pageLength: 'unli'
     }
     
     dosGoodsPassData: any = {
