@@ -37,7 +37,8 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
     this.clearDates();
     this.expiryParameters.branch1 = null;
     this.expiryParameters.branch2 = null;
-    this.expiryParameters.cedingCompany = null;
+    this.expiryParameters.cedingCompany1 = null;
+    this.expiryParameters.cedingCompany2 = null;
     this.expiryParameters.line1 = null;
     this.expiryParameters.line2 = null;
     this.lastExtraction.extractionDate = null;

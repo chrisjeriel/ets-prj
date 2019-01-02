@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ExtractedPolicy } from '@app/_models';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-purge-extracted-policy',
@@ -16,7 +17,7 @@ export class PurgeExtractedPolicyComponent implements OnInit {
 
   }
 
-  constructor() { }
+  constructor(private modalService: NgbModal) { }
 
   ngOnInit() {
   }
