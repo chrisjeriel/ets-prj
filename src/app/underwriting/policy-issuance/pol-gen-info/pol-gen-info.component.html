@@ -49,7 +49,7 @@
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Type of Cession</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="typeOfCession">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Line Class</label>
 										<input type="text" class="form-control form-control-sm">
 									</div>
@@ -64,6 +64,11 @@
 										<input type="text" class="form-control form-control-sm col-sm-2">
 										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px;">
 									</div>
+									<div *ngIf="typeOfCession.toUpperCase() == 'RETRO CESSION'" class="input-group">
+										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Direct Writing Co</label>
+										<input type="text" class="form-control form-control-sm col-sm-2">
+										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px;">
+									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Co Ref No</label>
 										<input type="text" class="form-control form-control-sm col-sm">
@@ -75,6 +80,18 @@
 									</div>
 									<div *ngIf="line === 'MLP' || line === 'DOS'" class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">MBI Ref No</label>
+										<input type="text" class="form-control form-control-sm">
+									</div>
+									<div *ngIf="hcChecked" class="input-group">
+										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Hold Cover No</label>
+										<input type="text" class="form-control form-control-sm col-sm">
+										<span class="form-control-sm col-sm-2">&nbsp;</span>
+										<span class="form-control-sm col-sm">&nbsp;</span>
+									</div>
+									<div *ngIf="ocChecked" class="input-group">
+										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Open Pol No</label>
+										<input type="text" class="form-control form-control-sm">
+										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Ref Open Pol No</label>
 										<input type="text" class="form-control form-control-sm">
 									</div>
 								</div>
@@ -174,8 +191,8 @@
 		<div class="row">
 			<div class="col-sm-8">
 				<!-- LINE: CAR -->
-				<fieldset *ngIf="line === 'CAR'" class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 6px !important;
-				padding-top: 5px !important;">
+				<fieldset *ngIf="line === 'CAR'" class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 19px !important;
+				padding-top: 19px !important;">
 				<legend class="scheduler-border" style="margin-left: 16px !important;">Insured Detail</legend>
 				<div class="col-sm-1">
 				</div>
@@ -346,8 +363,8 @@
 					<div class="col-sm-1">
 					</div>
 				</fieldset> -->
-				<fieldset *ngIf="line === 'EAR'" class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 6px !important;
-				padding-top: 5px !important;">
+				<fieldset *ngIf="line === 'EAR'" class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 7px !important;
+				padding-top: 7px !important;">
 				<legend class="scheduler-border" style="margin-left: 16px !important;">Insured Detail</legend>
 				<div class="col-sm-1">
 				</div>
@@ -438,7 +455,7 @@
 				</div>
 			</fieldset>
 
-			<fieldset *ngIf="line === 'EEI' || line === 'CEC'" class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 1px !important; padding-top: 5px !important;">
+			<fieldset *ngIf="line === 'EEI' || line === 'CEC'" class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 16px !important; padding-top: 17px !important;">
 				<legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
 				<div class="col-sm-1">
 				</div>
@@ -585,7 +602,7 @@
 				<div class="col-sm-1">
 				</div>
 			</fieldset> -->
-			<fieldset *ngIf="line === 'MBI' || line === 'BPV'" class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 1px !important; padding-top: 5px !important;">
+			<fieldset *ngIf="line === 'MBI' || line === 'BPV'" class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 16px !important; padding-top: 17px !important;">
 				<legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
 				<div class="col-sm-1">
 				</div>
@@ -732,7 +749,7 @@
 				<div class="col-sm-1">
 				</div>
 			</fieldset> -->
-			<fieldset *ngIf="line === 'MLP'" class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 1px !important; padding-top: 5px !important;">
+			<fieldset *ngIf="line === 'MLP'" class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 16px !important; padding-top: 17px !important;">
 				<legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
 				<div class="col-sm-1">
 				</div>
@@ -883,7 +900,7 @@
 				<div class="col-sm-1">
 				</div>
 			</fieldset> -->
-			<fieldset *ngIf="line === 'DOS'" class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 1px !important; padding-top: 5px !important;">
+			<fieldset *ngIf="line === 'DOS'" class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 16px !important; padding-top: 17px !important;">
 				<legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
 				<div class="col-sm-1">
 				</div>
@@ -1022,7 +1039,7 @@
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<div class="input-group-text">
-										<input type="checkbox">
+										<input type="checkbox" [(ngModel)]="ocChecked">
 									</div>
 								</div>
 								<input type="text" style="font-size: 11px !important;" value="Open Cover" disabled class="form-control form-control-sm">
@@ -1044,7 +1061,7 @@
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<div class="input-group-text">
-										<input type="checkbox">
+										<input type="checkbox" [(ngModel)]="hcChecked">
 									</div>
 								</div>
 								<input type="text" style="font-size: 11px !important;" value="Hold Cover" disabled class="form-control form-control-sm">
@@ -1066,7 +1083,7 @@
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<div class="input-group-text">
-										<input type="checkbox">
+										<input type="checkbox" [(ngModel)]="decChecked">
 									</div>
 								</div>
 								<input type="text" style="font-size: 11px !important;" value="Declaration" disabled class="form-control form-control-sm">
@@ -1082,42 +1099,48 @@
 								<input type="text" style="font-size: 11px !important;" value="Exclude Distribution" disabled class="form-control form-control-sm">
 							</div>
 						</div>
+						<div class="col-sm" style="padding-left: 39px !important;">
+							<div class="input-group">
+								<input type="radio" name="option" [disabled]="!decChecked" checked="true"><label class="form-control-sm" style="margin-bottom: -2px !important; font-weight: normal !important;">With Min Dep</label>
+							</div>
+							<div class="input-group">
+								<input type="radio" name="option" [disabled]="!decChecked"><label class="form-control-sm" style="margin-bottom: -5px !important; font-weight: normal !important;">Without Min Dep</label>
+							</div>
+						</div>
 					</div>
 				</div>
 			</fieldset>
-			<fieldset class="scheduler-border">
+			
+		</div>
+	</div>
+	<fieldset class="scheduler-border" style="padding-bottom: 12px !important;">
 				<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 				<div class="custom-row-inline-inset">
 					<div class="form-row ig-cust">
-						<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -10px;">
+						<div class="form-group col-sm-3" style="margin-bottom: 0px; margin-top: -14px;">
 							<label class="form-control-sm top-label">&nbsp;Created By</label>
 							<input type="text" class="form-control form-control-sm cust-sm">
 						</div>
-						<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -10px;">
+						<div class="form-group col-sm-3" style="margin-bottom: 0px; margin-top: -14px;">
 							<label class="form-control-sm top-label">&nbsp;Last Update By</label>
 							<input type="text" class="form-control form-control-sm cust-sm">
 						</div>
-					</div>
-					<div class="form-row">
-						<div class="form-group col-sm-6" style="margin-bottom: 8px;">
+						<div class="form-group col-sm-3" style="margin-bottom: 0px; margin-top: -14px;">
 							<label class="form-control-sm top-label">&nbsp;Date Created</label>
 							<input type="date" class="form-control form-control-sm cust-sm">
 						</div>
-						<div class="form-group col-sm-6" style="margin-bottom: 8px;">
+						<div class="form-group col-sm-3" style="margin-bottom: 0px; margin-top: -14px;">
 							<label class="form-control-sm top-label">&nbsp;Last Update</label>
 							<input type="date" class="form-control form-control-sm cust-sm">
 						</div>
 					</div>
 				</div>
 			</fieldset>
-		</div>
-	</div>
 </div>
 
-<div class="form-row">
+<div class="form-row" style="margin-top: 10px !important;">
 	<div class="form-group col-sm">
-		<div class="col-md-13 text-center">
-			<br>
+		<div class="col-md-12 text-center">
 			<div class="cust-btn-container">
 				<button type="button" class="cust-btn" (click)="pol($event)"><a>Cancel</a></button>
 				<button type="button" class="cust-btn"><a>Save</a></button>
