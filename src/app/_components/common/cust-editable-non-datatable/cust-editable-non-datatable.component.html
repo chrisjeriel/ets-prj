@@ -155,18 +155,18 @@
                         </div>
                     </td>
                     <td *ngIf="passData.tHeader.indexOf('Edit Flag')!= -1">
-                        <div align="center">
+                        <div align="center" *ngIf="addCheckFlag(data)">
                             <input type="checkbox" name="">
                         </div>
                     </td>
                     <td *ngIf="passData.selectFlag">
-                        <select class="editable-select">
+                        <select class="editable-select" *ngIf="addCheckFlag(data)">
                             <option *ngFor="let options of options">{{options}}</option>
                         </select>
                     </td>
                     <td *ngIf="passData.tHeader.indexOf('Actions')!=-1" class="icon">
-                        <button class="fa fa-paperclip" title="Attach File"></button>
-                        <button class="fa fa-folder-open" title="Open File"></button>
+                        <button class="fa fa-paperclip" title="Attach File" *ngIf="addCheckFlag(data)"></button>
+                        <button class="fa fa-folder-open" title="Open File" *ngIf="addCheckFlag(data)"></button>
                     </td>
                 </tr>
                 <tr *ngIf="passData.totalFlag" class="total-tr">

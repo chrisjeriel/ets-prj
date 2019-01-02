@@ -19,7 +19,7 @@
     </div>
 </fieldset>
 
-<div *ngIf="line=='EEI' || line=='MBI' || line=='CEC'">
+<div *ngIf="line=='EEI' || line=='MBI'">
     <fieldset class="scheduler-border">
         <legend class="scheduler-border">Item Information</legend>
         <app-cust-editable-non-datatable [passData]="eeiPassData"></app-cust-editable-non-datatable>
@@ -34,6 +34,23 @@
             <button type="button" class="cust-btn"><a>Save</a></button>
         </div>
     </div>	
+</div>
+
+<div *ngIf="line=='CEC'">
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">Item Information</legend>
+        <app-cust-editable-non-datatable [passData]="cecPassData"></app-cust-editable-non-datatable>
+        <!-- <div class="total">
+            <label>Total Sum Insured: 20,000 &nbsp;&nbsp;&nbsp;&nbsp;</label>
+        </div> -->
+        <br/>
+    </fieldset>
+    <div class="col-md-13 text-center">
+        <div class="cust-btn-container">
+            <button type="button" class="cust-btn"><a>Cancel</a></button>
+            <button type="button" class="cust-btn"><a>Save</a></button>
+        </div>
+    </div>  
 </div>
 
 <div *ngIf="line=='BPV'">
