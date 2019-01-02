@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo, PolicyPrinting, PrinterList, ALOPItemInformation, UnderwritingPolicyInquiryInfo, ItemInformation, UnderwritingPolicyDistList, DistributionByRiskInfo, PolicyEndorsement, PolItem_MLP, PolGoods_DOS, PolMachinery_DOS, PolicyInwardPolBalance, TotalPerSection } from '@app/_models';
+import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo, PolicyPrinting, PrinterList, ALOPItemInformation, UnderwritingPolicyInquiryInfo, ItemInformation, UnderwritingPolicyDistList, DistributionByRiskInfo, PolicyEndorsement, PolItem_MLP, PolGoods_DOS, PolMachinery_DOS, PolicyInwardPolBalance, TotalPerSection, PolItem_CEC } from '@app/_models';
 
 
 @Injectable({ providedIn: 'root' })
@@ -30,6 +30,7 @@ export class UnderwritingService {
     polGoodsDOS : PolGoods_DOS[] = [];
     polMachineryDOS: PolMachinery_DOS[] = [];
     totalPerSection: TotalPerSection[] = [];
+    polCEC: PolItem_CEC[] = []; 
 
     constructor(private http: HttpClient) {
 
@@ -278,7 +279,14 @@ export class UnderwritingService {
             new PolMachinery_DOS("item 2",5, "desc", 2, 506),
         ];
         return this.polMachineryDOS;
+    }
 
+    getPolCECData(){
+        this.polCEC = [
+            new PolItem_CEC('item 1','Item and Location','dedctibles',10000),
+            new PolItem_CEC('item 2','Item and Location','dedctibles',10000),
+        ]
+        return this.polCEC;
     }
 
     getTotalPerSection(){
@@ -288,5 +296,6 @@ export class UnderwritingService {
             new TotalPerSection("SECTION III","",""),
         ]
     }
+
 
 }            
