@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
-
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-policy-issuance',
@@ -9,9 +9,15 @@ import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 })
 export class PolicyIssuanceComponent implements OnInit {
 
-  constructor(private modalService: NgbModal) { }
+  line: string;
+  sub: any;
+  
+  constructor(private route: ActivatedRoute,private modalService: NgbModal) { }
 
   ngOnInit() {
+    this.sub = this.route.params.subscribe(params => {
+            this.line = params['line'];
+        });
   }
 
   public beforeChange($event: NgbTabChangeEvent) {

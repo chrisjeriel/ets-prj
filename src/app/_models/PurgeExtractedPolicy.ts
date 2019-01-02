@@ -1,4 +1,4 @@
-export class PurgeExtractedPolicy {
+export class ExtractedPolicy {
 	policyNo: string;
 	tSIAmount: number;
 	premiumAmount: number;
