@@ -103,7 +103,7 @@
 									<label class="form-control-sm col-sm-2 text-right">Policy No</label>
 									<input type="text" class="form-control form-control-sm col-sm-1" >
 									<input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 2px">
-									<input type="text" class="form-control form-control-sm col-sm-3" style="margin-left: 2px">
+									<input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 2px">
 									<input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 2px">
 									<input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 2px">
 									<input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 2px">
@@ -118,7 +118,7 @@
 								<div class="input-group">
 									<label class="form-control-sm col-sm-2">Extracted By</label>
 									<input [(ngModel)]="lastExtraction.extractedBy" class="form-control form-control-sm col-sm-3" type="text" name="optradio" checked="checked">
-									<label class="form-control-sm col-sm-2" style="margin-left: 30px;">Extraction Date</label>
+									<label class="form-control-sm col-sm-2" style="margin-left: 47px;">Extraction Date</label>
 									<input [(ngModel)]="lastExtraction.extractionDate" class="form-control form-control-sm col-sm-3" type="date" name="optradio" checked="checked" id="extractionDate">
 								</div>
 							</div>
@@ -131,7 +131,7 @@
 					<div class="form-group col-sm">
 						<div class="col-md-13 text-center">
 							<br>
-							<div class="cust-btn-container">
+							<div class="cust-btn-container" style="margin-top: -20px;">
 							<app-modal [btnTitle]="'Extract'" (click)="save()">
 								<div header><h4>Extract Expiring Policies</h4></div>
 						        <div body class="row">
@@ -151,7 +151,7 @@
 
 						        </div>
 						        <div footer>
-						            <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+						            <button class="cust-btn" type="button" ><a>Ok</a></button>
 						        </div>
 							</app-modal>
 							<button type="button" class="cust-btn" (click)="clearAll()"><a>Clear</a></button>

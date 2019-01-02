@@ -17,9 +17,19 @@ export class PurgeExtractedPolicyComponent implements OnInit {
 
   }
 
+  byDate: boolean = true;
+
   constructor(private modalService: NgbModal) { }
 
   ngOnInit() {
   }
 
+  parameter() {
+        $('#modalBtn').trigger('click');
+    }
+
+   clearDates() {
+    $('#fromDate').val("");
+    $('#toDate').val("");
+  }
 }

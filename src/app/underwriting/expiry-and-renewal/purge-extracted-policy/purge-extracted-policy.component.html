@@ -19,11 +19,11 @@
 									<div class="row">
 										<button type="button" class="cust-btn"  style="margin-left: 7px;
     width: 100%;
-    margin-bottom: 5px;"><a>Cancel</a></button>
+    margin-bottom: 5px;z-index: 99 !important"><a>Cancel</a></button>
 									</div>
 									<div class="row">
 										<button type="button" class="cust-btn"  style="margin-left: 7px;width: 100%;
-    margin-bottom: 5px;"><a>Purge</a></button>
+    margin-bottom: 5px;z-index: 99 !important"><a>Purge</a></button>
 									</div>
 								</div>
 								<div class=" col-sm-4">
@@ -42,35 +42,51 @@
 										<input type="checkbox" name="" id="both" class="form-control-sm"><label class="form-control-sm" for="both">Based on Parameter</label>
 									</div>
 									<div class="row list" style="margin-left: -5px;">
-										<app-modal [btnTitle]="'Parameter'"  style="margin-left: 7px;width:100% !important;margin-bottom: 5px;margin-top: 6px;">
-							                <div header>Parameter</div>
+										 <button class="cust-btn" (click)="parameter();" style="margin-left: 7px;width:100%;margin-bottom: 5px;margin-top: 6px;z-index: 99 !important">Parameter</button> 
+									</div>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+					<div class="col-sm-2" style="padding-left: 0px;">
+						<fieldset class="scheduler-border">
+							<legend class="scheduler-border">Legend</legend>
+								<label class="form-control-sm" style="margin: -3px !important;margin-bottom: -10px !important;margin-top: 13px !important;">X - Expired Policy</label>
+								<label class="form-control-sm" style="margin: -3px !important;margin-bottom: 4px !important;">P - Processed Policy</label>
+						</fieldset>
+					</div>
+					<div class="col-sm-2"></div>
+				</div>
+
+				 <app-modal class="hidden">
+                     <div header>Parameter</div>
 							                <div body>
 							                  <fieldset class="scheduler-border">
 													<div class="form-row custom-row-inline-inset">
-														<div class="input-group">
+														<div class="input-group" style="margin-left: 100px;">
 															<div class="col-sm-1"></div>
-															<input class="form-control-sm " type="radio" name="optradio" id="byDate" [value]="true" (click)="clearDates()">	
-															<label class="form-control-sm col-sm-4" for="byDate" style="margin-left: -119px;">&nbsp;By Date</label>
+															<input class="form-control-sm " type="radio" name="optradio" id="byDate" [value]="true" [(ngModel)]="byDate">	
+															<label class="form-control-sm col-sm-2" for="byDate" style="margin-left: -25px;">&nbsp;By Date</label>
 														</div>
 													</div>
 													<div class="form-row custom-row-inline-inset">
-														<div class="input-group" style="margin-top: -10px;">
+														<div class="input-group" style="margin-top: -10px;margin-left: 90px;">
 															<div class="col-sm-1"></div>
 															<label class="form-control-sm col-sm-1 cust-sm from" for="fromDate">From</label>
-															<input type="date" class="form-control form-control-sm cust-sm col-sm-3" id="fromDate" value="2018-12-04" [disabled]="!byDate" style="margin-left: 10px;">
+															<input type="date" class="form-control form-control-sm cust-sm col-sm-3" id="fromDate" value="2018-12-04" (click)="clearDates()" [disabled]="!byDate" style="margin-left: 10px;">
 															<label class="form-control-sm col-sm-1 cust-sm">To</label>
 															<input type="date" class="form-control form-control-sm cust-sm col-sm-3" id="toDate" value="2018-12-04" [disabled]="!byDate">
 														</div>
 													</div>
 													<div class="form-row custom-row-inline-inset">
-														<div class="input-group" style="margin-top: -11px;">
+														<div class="input-group" style="margin-top: -10px;margin-left: 100px;">
 															<div class="col-sm-1"></div>
-															<input class="form-control-sm " type="radio" name="optradio" id="byMonthYear" [value]="false" (click)="clearDates()">
-															<label class="form-control-sm col-sm-5 text-left" for="byMonthYear" style="margin-left: -130px;">&nbsp;By Month/Year</label>
+															<input class="form-control-sm " type="radio" name="optradio" id="byMonthYear" [value]="false" [(ngModel)]="byDate" (click)="clearDates()">
+															<label class="form-control-sm col-sm-3 text-left" for="byMonthYear" style="margin-left: -34px;">&nbsp;By Month/Year</label>
 														</div>
 													</div>
 													<div class="form-row custom-row-inline-inset">
-														<div class="input-group" style="margin-top: -11px;">
+														<div class="input-group" style="margin-top: -10px; margin-left: 90px;">
 															<div class="col-sm-1"></div>
 															<label class="form-control-sm col-sm-1 cust-sm from">From</label>
 															<select class="form-control form-control-sm cust-sm col-sm-2" name="fromMonth" [disabled]="byDate" style="margin-left: 8px;">
@@ -112,7 +128,7 @@
 															<label class="form-control-sm col-sm-2 text-right">Line</label>
 															<input type="text" class="form-control form-control-sm col-sm-2">
 															<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-															<input type="text" name="" class="form-control form-control-sm col-sm-7" style="margin-left: 7px">
+															<input type="text" name="" class="form-control form-control-sm col-sm" style="margin-left: 7px">
 														</div>
 													</div>
 													<div class="form-row custom-row-inline-inset">
@@ -120,7 +136,7 @@
 															<label class="form-control-sm col-sm-2 text-right">Type of Cession</label>
 															<input type="text" class="form-control form-control-sm col-sm-2">
 															<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-															<input type="text" name="" class="form-control form-control-sm col-sm-7" style="margin-left: 7px"> 
+															<input type="text" name="" class="form-control form-control-sm col-sm" style="margin-left: 7px"> 
 														</div>
 													</div>
 													<div class="form-row custom-row-inline-inset">
@@ -128,43 +144,33 @@
 															<label class="form-control-sm col-sm-2" style="padding-right: 4px;">Ceding Company</label>
 															<input type="text" class="form-control form-control-sm col-sm-2">
 															<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-															<input type="text" name="" class="form-control form-control-sm col-sm-7" style="margin-left: 7px"> 
+															<input type="text" name="" class="form-control form-control-sm col-sm" style="margin-left: 7px"> 
 														</div>	
 													</div>
-													<div class="form-row custom-row-inline-inset">
+													<!-- <div class="form-row custom-row-inline-inset">
 														<div class="input-group" style="margin-top: -8px;"> 
-															<label class="form-control-sm col-sm-2 text-right">Policy No</label>
-															<input type="text" class="form-control form-control-sm col-sm-1">
-															<input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 2px">
-															<input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 2px">
-															<input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 2px">
+															<label class="form-control-sm col-sm-2">Policy No</label>
+                            									<input type="text" class="form-control form-control-sm col-sm-1 cap-input" ngbTooltip="Line">
+									                            <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Year">
+									                            <input type="text" class="form-control form-control-sm col-sm-2 cap-input" style="margin-left: 3px;" ngbTooltip="Sequence No">
+									                            <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Co Code">
+									                            <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Co Code">
+									                            <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Co Code">  
+									                            <div style="padding-left: 14px;"><a><i class="fa fa-search"></i></a></div>
 
 														</div>	
-													</div>
+													</div> -->
 
 												</fieldset>
 							                </div>
 							                <div footer>
-							                    <button type="button" class="cust-btn" (click)="clearAll()"><a>Clear</a></button>
-							                    <button type="button" class="cust-btn" (click)="clearAll()"><a>Cancel</a></button>
-							                    <button type="button" class="cust-btn" (click)="clearAll()"><a>Ok</a></button>
-							                </div>
-							            </app-modal>
-										<!-- <button class="cust-btn" style="margin-left: 7px;width:100%;margin-bottom: 5px;margin-top: 6px;">Parameter</button> -->
-									</div>
-								</div>
-							</div>
-						</fieldset>
-					</div>
-					<div class="col-sm-2" style="padding-left: 0px;">
-						<fieldset class="scheduler-border">
-							<legend class="scheduler-border">Legend</legend>
-								<label class="form-control-sm" style="margin: -3px !important;margin-bottom: -10px !important;margin-top: 13px !important;">X - Expired Policy</label>
-								<label class="form-control-sm" style="margin: -3px !important;margin-bottom: 4px !important;">P - Processed Policy</label>
-						</fieldset>
-					</div>
-					<div class="col-sm-2"></div>
-				</div>
+							                	<div class="row" style="margin-right: 215px;">
+							                    <button type="button" class="cust-btn" (click)="modalService.dismissAll();"><a>Clear</a></button>
+							                    <button type="button" class="cust-btn" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+							                    <button type="button" class="cust-btn" (click)="modalService.dismissAll();"><a>Ok</a></button>
+												 </div>
+											</div>
+                </app-modal>
 			</ng-template>
 		</ngb-tab>
 	</ngb-tabset>
