@@ -232,15 +232,14 @@ export class UnderwritingService {
 
     getDistByRiskData() {
         this.distributionByRiskData = [
-            new DistributionByRiskInfo("1Surp", "PhilNaRe", "5.000000", "27.522220", "CAR"),
-            new DistributionByRiskInfo("1Surp", "Munich Re", "95.000000", "27.500000", "CAR"),
-            new DistributionByRiskInfo("2Surp", "PhilNaRe", "5.000000", "27.500000", "CAR"),
-            new DistributionByRiskInfo("2Surp", "Munich Re", "95.000000", "27.500000", "CAR"),
-            new DistributionByRiskInfo("Facul", "Munich Re", "100.000000", "26.000000", "CAR"),
-            new DistributionByRiskInfo("QS", "QS Pool", "60.000000", "30.000000", "CAR"),
-            new DistributionByRiskInfo("QS", "PhilNaRe", "2.000000", "30.000000", "CAR"),
-            new DistributionByRiskInfo("QS", "Munich Re", "38.000000", "30.000000", "CAR"),
-
+            new DistributionByRiskInfo("QS", "QS Pool", "38.000000", "570,000,000.00", "142,500.00","30.000000"),
+            new DistributionByRiskInfo("QS", "PhilNaRe", "2.000000", "30,000,000.00", "7,500.00","30.000000"),
+            new DistributionByRiskInfo("QS", "Munich Re", "60.000000", "627,800,000.00", "156,950.00","30.000000"),
+            new DistributionByRiskInfo("1Surp", "PhilNaRe", "95.000000", "258,590,000.00", "64,647.50","64,647.50"),
+            new DistributionByRiskInfo("1Surp", "Munich Re", "5.000000", "13,610,000.00", "3,420.50","3420.50"),
+            new DistributionByRiskInfo("2Surp", "PhilNaRe", "95.000000", "1,425,000,000.00", "356,250.00","356,250.00"),
+            new DistributionByRiskInfo("2Surp", "Munich Re", "5.000000", "75,000,000.00", "18,750.00","18,750.00"),
+            new DistributionByRiskInfo("Facul", "Munich Re", "100.000000", "1,000,000,000.00", "250,000.00","250,000.00"),
         ];
         return this.distributionByRiskData;
     }
