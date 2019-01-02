@@ -33,6 +33,98 @@ export class ParListingComponent implements OnInit {
         addFlag: true,
         editFlag: true,
         pageLength: 10,
+        filters: [
+            {
+                key: 'policyNo',
+                title:'Policy No.',
+                dataType: 'text'
+            },
+            {
+                key: 'cessionType',
+                title:'Type of Cession',
+                dataType: 'text'
+            },
+            {
+                key: 'lineClass',
+                title:'Line Class',
+                dataType: 'text'
+            },
+            {
+                key: 'status',
+                title:'Status',
+                dataType: 'text'
+            },
+            {
+                key: 'cedingCompany',
+                title:'Ceding Company',
+                dataType: 'text'
+            },
+            {
+                key: 'principal',
+                title:'Principal',
+                dataType: 'text'
+            },
+            {
+                key: 'contractor',
+                title:'Contractor',
+                dataType: 'text'
+            },
+            {
+                key: 'insured',
+                title:'Insured',
+                dataType: 'text'
+            },
+            {
+                key: 'risk',
+                title:'Risk',
+                dataType: 'text'
+            },
+            {
+                key: 'object',
+                title:'Object',
+                dataType: 'text'
+            },
+            {
+                key: 'site',
+                title:'Site',
+                dataType: 'text'
+            },
+            {
+                key: 'quoteDate',
+                title:'Period From',
+                dataType: 'date'
+            },
+            {
+                key: 'quotationNo',
+                title:'Quotation No',
+                dataType: 'text'
+            },
+            {
+                key: 'company',
+                title:'Company',
+                dataType: 'text'
+            },
+            {
+                key: 'issueDate',
+                title:'Issue Date',
+                dataType: 'date'
+            },
+            {
+                key: 'inceptionDate',
+                title:'Inception Date',
+                dataType: 'date'
+            },
+            {
+                key: 'expiryDate',
+                title:'Expiry Date',
+                dataType: 'date'
+            },
+            {
+                key: 'createdBy',
+                title:'Created By',
+                dataType: 'text'
+            },
+        ],
 
     }
 

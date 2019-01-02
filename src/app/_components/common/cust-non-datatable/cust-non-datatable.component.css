@@ -144,8 +144,8 @@ div.filler{
 .cust-filter {
     height: calc(1.3rem + 1px) !important;
     position: absolute !important;
-    right: 1px;
-    top: 2px;
+    right: 3px;
+    top: 2.9px;
     font-size: 0.7rem !important;
     color: white !important;
     text-align: center;
@@ -153,7 +153,7 @@ div.filler{
     outline: none !important;
     border-style: none;
     border: 1px solid gray;
-    z-index: 200 !important;
+    z-index: 1000 !important;
     background: linear-gradient(to bottom, #4080bf 0%, #2d5986 100%);
 }
 
