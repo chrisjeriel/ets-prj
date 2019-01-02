@@ -24,7 +24,7 @@ export class PolCoverageComponent implements OnInit {
   pageLength = 3 ;
 
   passDataSectionCover: any = {
-        tHeader: ["Cover Code", "Section", "Bullet No", "Sum Insured", "Rate", "Prenium", "Add Sl"],
+        tHeader: ["Cover Code", "Section", "Bullet No", "Sum Insured", "Rate", "Premium", "Add Sl"],
         dataTypes: [
                     "text", "select", "select", "currency", "percent", "currency", "checkbox"
                    ],
@@ -40,7 +40,7 @@ export class PolCoverageComponent implements OnInit {
 
 
   passDataTotalPerSection: any = {
-        tHeader: ["Section", "Sum Insured", "Prenium"],
+        tHeader: ["Section", "Sum Insured", "Premium"],
         dataTypes: [
                     "text", "text", "text"
                    ],
