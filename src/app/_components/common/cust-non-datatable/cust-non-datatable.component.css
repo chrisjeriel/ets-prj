@@ -4,15 +4,15 @@ table{
     margin-top: 30px;
     width: 100%;
 }
-table
-tr{
-    height: calc(1.3rem + 1px) !important;
+tbody tr, thead tr{
+    height: calc(1.3rem + 1px);
 }
 th, td{
     white-space: nowrap;
     font-size: 0.7rem !important;
     /*margin: 0px !important;
     padding: 0px !important;*/
+    padding: 10px !important;
     height: calc(1.3rem + 1px) !important;
     min-width: 30px; 
     max-width: 160px;
@@ -48,7 +48,7 @@ div.filler{
     width: 100%;
 }
 
-.non-datatable td, .non-datatable th {
+.non-datatable td, .non-datatable th{
     border: 1px solid #ddd;
 }
 
@@ -61,7 +61,7 @@ div.filler{
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
-    background-color: #c1c0c0;
+    background-color: #c9d9d9;
     color: black;
 }
 .selected{

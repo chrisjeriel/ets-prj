@@ -143,7 +143,7 @@
         <table class="non-datatable">
             <thead>
                 <tr style="min-width: 96px">
-                    <th *ngIf="passData.checkFlag" style="text-align: center"><input type="checkbox" name="" [(ngModel)]="checked"></th>
+                    <th *ngIf="passData.checkFlag" style="text-align: center; width: 6px"><input type="checkbox" name="" [(ngModel)]="checked"></th>
                     <th *ngFor="let tHeader of passData.tHeader; let i = index" (click)="sort(dataKeys[i],sortBy);sortIndex=i;">
                         <span *ngIf="passData.resizable[i]" 
                               class="ui-column-resizer" (mousedown) = "onMouseDown($event)"></span>
