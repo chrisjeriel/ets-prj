@@ -166,7 +166,7 @@ import { SafeTextPipe } from './safe-text.pipe';
         PolGenInfoOpenCoverComponent,
         PolSumInsuredOpenCoverComponent,
         ReadyForPrintingComponent,
-        PurgeExtractedPolicyComponent
+        PurgeExtractedPolicyComponent,
         SafeTextPipe
     ],
 

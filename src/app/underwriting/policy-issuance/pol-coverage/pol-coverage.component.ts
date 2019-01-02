@@ -21,9 +21,7 @@ export class PolCoverageComponent implements OnInit {
   magnifyingGlass: any[] = ['coverCode'];
   optionsData: any[] = [];
   headerWithColspan: any[] = [];
-
   pageLength = 3 ;
-  textArea: any;
 
   passDataSectionCover: any = {
         tHeader: ["Cover Code", "Section", "Bullet No", "Sum Insured", "Rate", "Prenium", "Add Sl"],
