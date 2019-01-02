@@ -15,7 +15,7 @@ th, td{
     padding: 10px !important;
     height: calc(1.3rem + 1px) !important;
     min-width: 30px; 
-    max-width: 160px;
+    max-width: 165px;
     overflow: hidden;
 }
 th{
@@ -37,6 +37,11 @@ div.filler{
     position: absolute;
     min-width: 30px;
     max-width: 142px;
+}
+
+.btnDisabled{
+    background: gray !important;
+    cursor: context-menu;
 }
 
 .checkbox-container-header{
@@ -100,6 +105,12 @@ div.filler{
     margin-top: 1%;
 }
 
+.cust-btn-container {
+    position: absolute !important;
+    left: 1px;
+    top: 1px;
+    z-index: 99 !important;
+}
 
 .expire{
     position: absolute !important;
@@ -133,8 +144,8 @@ div.filler{
 .cust-filter {
     height: calc(1.3rem + 1px) !important;
     position: absolute !important;
-    right: 1px;
-    top: 2px;
+    right: 3px;
+    top: 2.9px;
     font-size: 0.7rem !important;
     color: white !important;
     text-align: center;
@@ -142,7 +153,8 @@ div.filler{
     outline: none !important;
     border-style: none;
     border: 1px solid gray;
-    z-index: 200 !important;
+    border-radius: 0px 3px 3px 0px;
+    z-index: 1000 !important;
     background: linear-gradient(to bottom, #4080bf 0%, #2d5986 100%);
 }
 
