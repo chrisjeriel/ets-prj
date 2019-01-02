@@ -56,7 +56,8 @@ export class PolEndorsementComponent implements OnInit {
         this.titleService.setTitle("Pol | Endorsement");
         this.passData.tHeader.push("C", "Endt Code", "Endt Title", "Remarks");
         this.passData.dataTypes.push("text", "text", "text", "text");
-        this.passData.widths.push("1", "1", "auto", "auto");
+        this.passData.widths.push("1", "auto", "auto", "auto");
+        this.passData.magnifyingGlass.push("endtCode");
         this.passData.tableData = this.underwritingService.getPolicyEndorsement();
     }
 
