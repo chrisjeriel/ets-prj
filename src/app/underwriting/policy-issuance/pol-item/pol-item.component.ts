@@ -41,6 +41,8 @@ export class PolItemComponent implements OnInit {
     nData_EEI_MBI_CEC: PolItem_EEI_MBI_CEC = new PolItem_EEI_MBI_CEC(null, null, null, null, null, null);
     nData_BPV: PolItem_BPV = new PolItem_BPV(null, null, null, null, null);
 
+
+
     eeiPassData:any={
         tableData:this.tableData_EEI_MBI_CEC,
         tHeader: ['Item No.', 'Quantity', 'Description of Items', 'Year of Make', 'Deductible', 'Sum Insured'],
@@ -108,10 +110,23 @@ export class PolItemComponent implements OnInit {
         deleteFlag:true,
         totalFlag:true,
         searchFlag: true
-        }
+    }
+
+    cecPassData: any = {
+        tableData:[],
+        tHeader: ['Item No.', 'Insured Item and Location', 'Deductible', 'Sum Insured'],
+        dataTypes:['string','string', 'string', 'currency'],
+        nData: new PolItem_EEI_MBI_CEC(null, null, null, null, null, null),
+        checkFlag:true,
+        addFlag:true,
+        deleteFlag:true,
+        totalFlag:true,
+        widths: ["1","auto","auto","228"],
+        searchFlag:true,
+        pageLength:'unli'
+    }
 
     
-
     polEEI: boolean = true;
     polBPV: boolean = false;
     polMLP: boolean = false;
@@ -127,7 +142,7 @@ export class PolItemComponent implements OnInit {
         this.mlpPassData.tableData = this.underwritingService.getPolItemMLPData();
         this.dosGoodsPassData.tableData = this.underwritingService.getPolGoodsDOSData();
         this.dosMachineryPassData.tableData = this.underwritingService.getPolMachineryDOSData();
-
+        this.cecPassData.tableData = this.underwritingService.getPolCECData();
         this.sub = this.route.params.subscribe(params => {
             this.line = params['line'];
         });

@@ -211,7 +211,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     isNumber(i){
         if(typeof this.passData.dataTypes=='undefined' || i>=this.passData.dataTypes.length)
             return false;
-        else if(this.passData.dataTypes[i]=="currency" ||this.passData.dataTypes[i]=="number" ||this.passData.dataTypes[i]=="percentage")
+        else if(this.passData.dataTypes[i]=="currency" ||this.passData.dataTypes[i]=="number" ||this.passData.dataTypes[i]=="percent")
             return true;
         else
             return false;
