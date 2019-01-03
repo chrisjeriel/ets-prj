@@ -84,6 +84,9 @@ import { PurgeExtractedPolicyComponent } from './underwriting/expiry-and-renewal
 import { SafeTextPipe } from './safe-text.pipe';
 import { UpdateInformationComponent } from './utilities/update-information/update-information.component';
 import { UpdateGeneralInfoComponent } from './utilities/update-information/update-general-info/update-general-info.component';
+import { OpenCoverProcessingComponent } from './quotation/open-cover-processing/open-cover-processing.component';
+import { OpenCoverComponent } from './quotation/open-cover/open-cover.component';
+import { GenInfoComponent } from './quotation/open-cover/gen-info/gen-info.component';
 
 @NgModule({
     imports: [
@@ -171,7 +174,10 @@ import { UpdateGeneralInfoComponent } from './utilities/update-information/updat
         PurgeExtractedPolicyComponent,
         SafeTextPipe,
         UpdateInformationComponent,
-        UpdateGeneralInfoComponent
+        UpdateGeneralInfoComponent,
+        OpenCoverProcessingComponent,
+        OpenCoverComponent,
+        GenInfoComponent
     ],
 
     providers: [

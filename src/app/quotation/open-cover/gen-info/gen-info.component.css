@@ -1,0 +1,66 @@
+.drp-dwn-cstmz {
+    height:26px; 
+    padding: 0px;
+}
+.float-sm-center{
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+}
+
+.text-search-ico {
+	margin-left: -18px;
+	z-index: 200;
+	font-size: 14px;
+}
+
+.spec-ico {
+	margin-left: -50px;
+}
+
+.input-group label {
+	padding-left: 0px;
+	padding-right: 5px;
+}
+
+#close{
+	font-size: 27px;
+}
+
+.close{
+	color: #fff;
+	float: right;
+	opacity: 1;
+	line-height: .9;
+	padding-left: 5px !important;
+}
+
+#closes:hover {
+	color: #fff;
+	opacity: 1;
+}
+
+.modal-footer {
+	padding: 10px;
+}
+
+h6#modal-basic-title.modal-title {
+	margin: 5px 0px 5px 5px;
+}
+
+h4 {
+	font-size: 14px !important;
+}
+
+.form-row{
+	margin-top: 7px !important;
+}
+
+.input-group{
+    margin-bottom: -14px !important;
+    margin-top: 0px !important;
+}
+
+.input-group-prepend{
+	height: calc(1.3rem + 1px) !important;
+}
