@@ -12,8 +12,7 @@ export class SelectComponent implements OnInit {
 
   itemSelected: string = "";
 
-  //use this to get the selected value
-  //check quotation-coverage (currency) for example
+
   selected() {
     this.optionsValues.emit({ item: this.itemSelected });
   }

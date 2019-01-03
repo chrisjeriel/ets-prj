@@ -5,4 +5,27 @@
     border-style: hidden !important; 
     margin: 0px !important; 
     height: 100%;
+} 
+
+/* input {
+    width:100px;
+    height:50px;
+    vertical-align:top;
 }
+
+select {
+    border:1px solid #ccc;
+    vertical-align:top;
+    height:50px;
+}
+option {
+    color:red;
+    width:100px;
+    text-decoration:underline;
+}
+
+input, select {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+} */

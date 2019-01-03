@@ -22,7 +22,7 @@ export class QuoteEndorsementComponent implements OnInit {
   quoteOptionEdited: QuotationOption[] = [];
 
   tableData: any[] = [];
-  tHeader: any[] = ['Endt Code', 'Endt Title', 'Endt Description', 'Wording'];
+  tHeader: any[] = ['Endt Code', 'Endt Title', 'Endt Description', 'Remarks'];
   magnifyingGlass: any[] = ["endtCode"]
   nData: QuoteEndorsement = new QuoteEndorsement(null, null, null, null, null);
 

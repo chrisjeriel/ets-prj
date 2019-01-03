@@ -26,7 +26,63 @@ export class ListOfQuotationsComponent implements OnInit {
         tHeader: ['Quotation No.','Type of Cession','Line Class','Status','Ceding Company','Principal','Contractor','Insured','Risk','Object','Site','Policy No','Currency'],
         dataTypes: [],
         resizable: [false, false, true, true, true, true, true, true, true, true, false, false],
-        filters: [],
+        filters: [
+            {
+                key: 'quotationNo',
+                title:'Quotation No.',
+                dataType: 'text'
+            },
+            {
+                key: 'cessionType',
+                title:'Type of Cession',
+                dataType: 'text'
+            },
+            {
+                key: 'lineClass',
+                title:'Line Class',
+                dataType: 'text'
+            },
+            {
+                key: 'quoteStatus',
+                title:'Quote Status',
+                dataType: 'text'
+            },
+            {
+                key: 'cedingCompany',
+                title:'Ceding Company',
+                dataType: 'text'
+            },
+            {
+                key: 'principal',
+                title:'Principal',
+                dataType: 'text'
+            },
+            {
+                key: 'insured',
+                title:'Insured',
+                dataType: 'text'
+            },
+            {
+                key: 'risk',
+                title:'Risk',
+                dataType: 'text'
+            },
+            {
+                key: 'object',
+                title:'Object',
+                dataType: 'text'
+            },
+            {
+                key: 'location',
+                title:'Insured',
+                dataType: 'text'
+            },
+            {
+                key: 'quoteDate',
+                title:'Period From',
+                dataType: 'date'
+            },
+        ],
         pageLength: 10,
         expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: true, printBtn: true, 
     }
@@ -49,20 +105,6 @@ export class ListOfQuotationsComponent implements OnInit {
         this.tHeader.push("Site");
         this.tHeader.push("Policy No.");
         this.tHeader.push("Currency");
-
-        this.filters.push("Quotation No.");
-        this.filters.push("Type of Cession");
-        this.filters.push("Line Class");
-        this.filters.push("Quote Status");
-        this.filters.push("Company");
-        this.filters.push("Principal");
-        this.filters.push("Contractor");
-        this.filters.push("Insured");
-        this.filters.push("Risk");
-        this.filters.push("Object");
-        this.filters.push("Site");
-        this.filters.push("Policy No.");
-        this.filters.push("Currency");
 
         this.resizables.push(false);
         this.resizables.push(false);
@@ -106,8 +148,9 @@ export class ListOfQuotationsComponent implements OnInit {
         for(var i = 0; i < event.target.parentElement.children.length; i++) {
             this.quotationService.rowData[i] = event.target.parentElement.children[i].innerText;
         }
-
-        this.quoteList = this.allData[event.path[1].rowIndex - 1];
+        if(!Number.isNaN(event.path[2].rowIndex - 1)){
+            this.quoteList = this.allData[event.path[2].rowIndex - 1];
+        }
     }
 
     onRowDblClick(event) {

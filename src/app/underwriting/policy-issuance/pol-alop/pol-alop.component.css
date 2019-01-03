@@ -73,3 +73,14 @@ label.text-left{
 .left div{
 	padding-right: 10px !important;
 }
+
+.input-group {
+    margin-bottom: -14px !important;
+}
+.fieldset-padding-bottom {
+	padding-bottom: 7px !important;
+}
+
+.cust-btn-container{
+	margin-top: 10px !important;
+}

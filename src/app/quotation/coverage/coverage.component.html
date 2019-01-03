@@ -18,16 +18,22 @@
     </div>
   </fieldset>
 
-  <fieldset class="scheduler-border">
+  <!-- <fieldset class="scheduler-border">
     <legend class="scheduler-border">Section Covers</legend>
     <app-cust-editable-table [checkFlag]="true" [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData"
       [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes" [magnifyingGlass]="magnifyingGlass" [opts]="selOptions"></app-cust-editable-table>
-
+  </fieldset> -->
+  <fieldset class="scheduler-border">
+    <legend class="scheduler-border">Section Covers</legend>
+    <br>
+    <app-cust-editable-non-datatable [passData]="passData">
+    </app-cust-editable-non-datatable>
+    <br>
   </fieldset>
   <div class="row">
     <div class="col-sm-4 mrgn-fieldset">
       <fieldset class="scheduler-border fieldset-height">
-        <div class="custom-row-inline-inset">
+        <div class="custom-row-inline-inset" style="margin-top: 0px !important;">
           <div class="row">
             <div class="col-sm-1"></div>
             <div class="col-sm-10">
@@ -40,9 +46,7 @@
                   <option value="PHP">PHP</option>
                   <option value="EUR">EUR</option>
                 </select>
-                <!-- <div class="form-control form-control-sm cust-sm " style="padding: 0px !important;">
-                  <app-select [optionsData]="optionsData" (optionsValues)="printSelectedValue($event)"></app-select>
-                </div> -->
+                <!-- <app-select [optionsData]="optionsData" (optionsValues)="printSelectedValue($event)"></app-select> -->
                 <label class="form-control-sm" for="xx">Exch. Rt.</label>
                 <input type="text" id="xx" class="form-control form-control-sm cust-sm txt-content-rght" required
                   placeholder="0.00" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
@@ -113,3 +117,13 @@
 
 <!-- <app-multiple-select [multiSelectHeaderTxt]="multiSelectHeaderTxt" [multiSelectData]="multiSelectData"
   (multiSelectDataSelected)="getMS($event)"></app-multiple-select> -->
+
+
+
+<!-- <input type="text" value="name" class="form-control form-control-sm cust-sm txt-content-rght"> 
+<select class="form-control form-control-sm cust-sm">
+  <option>first option</option>
+  <option>second option</option>
+</select>
+
+<br><br><br> -->

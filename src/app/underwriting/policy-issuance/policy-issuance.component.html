@@ -7,7 +7,7 @@
 				<app-pol-gen-info [alteration]="false"></app-pol-gen-info>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab title="Item">
+		<ngb-tab title="Item" *ngIf="line=='EEI' || line=='MBI' || line=='CEC' || line=='BPV' || line=='MLP' || line=='DOS'">
 			<ng-template ngbTabContent>
 				<app-pol-item></app-pol-item>
 			</ng-template>
@@ -44,7 +44,7 @@
 		</ngb-tab>
 
 
-		<ngb-tab id="approval-tab">
+		<ngb-tab id="print-tab">
 			<ng-template #content>
 				<div class="modal-header">
 					<span class="modal-title" id="modal-basic-title">&nbsp;</span>
@@ -55,8 +55,8 @@
 				</div>
 				<div class="modal-body">
 					<fieldset class="scheduler-border">
-						<div class="custom-row-inline-inset">
-							<div class="input-group" style="margin-bottom:3px !important;">
+						<div class="custom-row-inline-inset" style="margin-bottom:-5px !important;">
+							<div class="input-group" style="margin-bottom:-5px !important;">
 								<div class="col-sm-2"></div>&nbsp;&nbsp;&nbsp;&nbsp;
 								<div class="col-sm-8">
 									<input type="checkbox" style="vertical-align: middle">&nbsp;<label>Print as Draft</label>
@@ -74,7 +74,7 @@
 								</select>
 								<div class="col-sm-1"></div>
 							</div>
-							<div class="input-group" style="margin-bottom:6px !important;">
+							<div class="input-group" style="margin-bottom:3px !important;">
 								<label class="col-sm-3">No. Of Copies</label>
 								<input type="text" class="form-control form-control-sm cust-sm col-sm-8 " placeholder="25" style="text-align: right"
 								 onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
@@ -111,7 +111,7 @@
 				<div class="form-row">
 					<div class="form-group col-sm">
 						<div class="col-md-13 text-center">
-							<br>
+
 							<div class="cust-btn-container">
 								<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
 								<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Print</a></button>

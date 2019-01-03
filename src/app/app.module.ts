@@ -9,6 +9,7 @@ import { SidebarModule } from 'ng-sidebar';
 import { DataTablesModule } from 'angular-datatables';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AngularEditorModule } from '@kolkov/angular-editor';
+import { QuillModule } from 'ngx-quill'
 
 // used to create fake backend
 import { fakeBackendProvider } from './_helpers';
@@ -68,7 +69,7 @@ import { SearchPipe } from './_pipes/search.pipe';
 import { PolDistListComponent } from './underwriting/distribution/pol-dist-list/pol-dist-list.component';
 import { SelectComponent } from './_components/common/select/select.component';
 import { MultipleSelectComponent } from './_components/common/multiple-select/multiple-select.component';
-import { DistributionByRiskComponent } from './underwriting/policy-distribution/pol-distribution/distribution-by-risk/distribution-by-risk.component';
+import { DistributionByRiskComponent } from './underwriting/policy-distribution/distribution-by-risk/distribution-by-risk.component';
 import { PolicyDistributionComponent } from './underwriting/policy-distribution/policy-distribution.component';
 import { PolDistributionComponent } from './underwriting/policy-distribution/pol-distribution/pol-distribution.component';
 import { PolDistComponent } from './underwriting/policy-distribution/pol-dist/pol-dist.component';
@@ -79,6 +80,11 @@ import { PolIssuanceOpenCoverLetterComponent } from './underwriting/policy-issua
 import { PolGenInfoOpenCoverComponent } from './underwriting/policy-issuance/pol-gen-info-open-cover/pol-gen-info-open-cover.component';
 import { PolSumInsuredOpenCoverComponent } from './underwriting/policy-issuance/pol-sum-insured-open-cover/pol-sum-insured-open-cover.component';
 import { ReadyForPrintingComponent } from './quotation/quotation-inquiry/ready-for-printing/ready-for-printing.component';
+import { PurgeExtractedPolicyComponent } from './underwriting/expiry-and-renewal/purge-extracted-policy/purge-extracted-policy.component';
+import { SafeTextPipe } from './safe-text.pipe';
+import { UpdateInformationComponent } from './utilities/update-information/update-information.component';
+import { UpdateGeneralInfoComponent } from './utilities/update-information/update-general-info/update-general-info.component';
+
 @NgModule({
     imports: [
         BrowserModule,
@@ -92,7 +98,8 @@ import { ReadyForPrintingComponent } from './quotation/quotation-inquiry/ready-f
         FormsModule,
         DataTablesModule,
         NgxPaginationModule,
-        AngularEditorModule
+        AngularEditorModule,
+        QuillModule
     ],
     declarations: [
         AppComponent,
@@ -160,7 +167,11 @@ import { ReadyForPrintingComponent } from './quotation/quotation-inquiry/ready-f
         PolIssuanceOpenCoverLetterComponent,
         PolGenInfoOpenCoverComponent,
         PolSumInsuredOpenCoverComponent,
-        ReadyForPrintingComponent
+        ReadyForPrintingComponent,
+        PurgeExtractedPolicyComponent,
+        SafeTextPipe,
+        UpdateInformationComponent,
+        UpdateGeneralInfoComponent
     ],
 
     providers: [

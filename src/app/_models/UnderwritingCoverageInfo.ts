@@ -26,6 +26,19 @@ export class UnderwritingCoverageInfo {
 
 }
 
+export class TotalPerSection {
+    section : string
+    sumInsured : string
+    prenium: string
+
+    constructor(section : string,sumInsured : string,prenium: string){
+        this.section = section
+        this.sumInsured = sumInsured
+        this.prenium = prenium
+    }
+}
+
+
 export class CoverageInfo {
     currency: string;
     exchRt: string;
