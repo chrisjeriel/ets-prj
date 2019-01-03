@@ -18,9 +18,10 @@
 
 <div id="cust-table-container">
     <div class="cust-btn-container">
-        <button *ngIf="passData.addFlag" class="cust-btn" (click)="onClickAdd()"><a>Add</a></button>
-        <button *ngIf="passData.editFlag" class="cust-btn" [class.btnDisabled]="btnDisabled"[disabled]="btnDisabled" (click)="onClickEdit()"><a class="paginate_button previous">Edit</a></button>
+        <button *ngIf="passData.addFlag" class="cust-btn" (click)="onClickAdd(event)"><a>Add</a></button>
+        <button *ngIf="passData.editFlag" class="cust-btn" [class.btnDisabled]="btnDisabled"[disabled]="btnDisabled" (click)="onClickEdit($event)"><a class="paginate_button previous">Edit</a></button>
         <button *ngIf="passData.deleteFlag" class="cust-btn" [class.btnDisabled]="btnDisabled" [disabled]="btnDisabled" (click)="onClickDelete()"><a class="paginate_button previous">Delete</a></button>
+         <button *ngIf="passData.copyFlag" class="cust-btn" [class.btnDisabled]="btnDisabled" [disabled]="btnDisabled" (click)="onClickCopy($event)"><a class="paginate_button previous">Copy</a></button>
     </div>
     <div class="print" *ngIf="passData.printBtn" align="left">
         <button class="cust-btn" type="button"><a>Print</a></button>

@@ -20,7 +20,9 @@ export class QuotationProcessingComponent implements OnInit {
   rowData: any[] = [];
   disabledEditBtn: boolean = true;
   disabledCopyBtn: boolean = true;
-
+/*  addQuoteFlag: boolean = true;
+  copyQuotationFlag: boolean = true;*/
+    
   line: string = "";
 
   passData: any = {
@@ -30,7 +32,7 @@ export class QuotationProcessingComponent implements OnInit {
         resizable: [false, true, true, true, true, true, true, true, true, true, false, false, true, true, true, true],
         filters: [],
         pageLength: 10,
-        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: true, printBtn: false, 
+        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: true, printBtn: false, addFlag: true, editFlag: true, copyFlag: true,
   }
 
   constructor(private quotationService: QuotationService, private modalService: NgbModal, private router: Router
@@ -93,13 +95,20 @@ export class QuotationProcessingComponent implements OnInit {
     this.passData.tableData = this.quotationService.getQuoProcessingData();
 
   }
+  
+  onClickAdd(event){
 
-  editBtnEvent() {
+  }
+  onClickEdit(event) {
     this.line = this.quotationService.rowData[0].split("-")[0];
 
     this.quotationService.toGenInfo = [];
     this.quotationService.toGenInfo.push("edit", this.line);
     this.router.navigate(['/quotation']);
+  }
+    
+  onClickCopy(event){
+      $('#modalAdd').trigger('click');
   }
 
   nextBtnEvent() {
