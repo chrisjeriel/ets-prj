@@ -143,10 +143,10 @@
       <legend class="scheduler-border">Limits</legend>
       <div class="custom-row-inline-inset">
         <div class="row" style="margin-top: -30px; margin-bottom: -1px !important;">
-            <div class="col-sm">
-              <app-cust-editable-non-datatable [passData]="passDataLimits">
-              </app-cust-editable-non-datatable>
-            </div>
+          <div class="col-sm">
+            <app-cust-editable-non-datatable [passData]="passDataLimits">
+            </app-cust-editable-non-datatable>
+          </div>
         </div>
       </div>
     </fieldset>
@@ -154,10 +154,8 @@
 
 </div>
 
-
-
 <div>
-  <fieldset *ngIf="distFlag === 'treaty'" class="scheduler-border" style="padding-bottom: 7px !important;">
+  <fieldset class="scheduler-border" style="padding-bottom: 7px !important;">
     <legend class="scheduler-border">Treaty Distribution</legend>
     <div class="row" style="padding-top: 5px;">
       <div class="col-sm-1">
@@ -168,11 +166,11 @@
       <div class="col-sm-1">
       </div>
     </div>
-    <div class="row">
+    <div class="row" style="margin-top: -18px;">
       <div class="col-sm-1">
       </div>
       <div class="col-sm-8">
-        <div class="input-group">
+        <div class="input-group" style="margin-bottom: -18px !important;">
           <label class="form-control-sm col-sm-2"></label>
           <label class="form-control-sm col-sm label-center">1st Retention</label>
           <label class="form-control-sm col-sm label-center">2nd Retention</label>
@@ -211,7 +209,7 @@
   </fieldset>
 
 
-  <fieldset *ngIf="distFlag === 'pool'" class="scheduler-border" style="padding-bottom: 7px !important;">
+  <!-- <fieldset *ngIf="distFlag === 'pool'" class="scheduler-border" style="padding-bottom: 7px !important;">
     <legend class="scheduler-border">Pool Distribution</legend>
     <div class="row" style="padding-top: 5px;">
       <div class="col-sm-1">
@@ -277,7 +275,7 @@
       </div>
     </div>
   </fieldset>
-</div>
+</div> -->
 
 <!-- <div class="row">
   <div class="col-sm-4">
@@ -349,17 +347,80 @@
 <div class="form-row">
   <div class="form-group col-sm">
     <div class="col-sm" style="text-align: center; padding: 10px;">
-      <div *ngIf="distFlag === 'treaty'" class="cust-btn-container">
-        <button type="button" (click)="this.onClickViewPoolDist()" class="cust-btn"><a>View Pool Dist</a></button>
-        <button type="button" (click)="this.onClickViewCoInsurance()" class="cust-btn"><a>View Co-Insurance</a></button>
-        <button type="button" class="cust-btn"><a>Cancel</a></button>
-        <button type="button" class="cust-btn"><a>Save</a></button>
-      </div>
-      <div *ngIf="distFlag != 'treaty'" class="cust-btn-container">
-        <button type="button" (click)="this.onClickReturn()" class="cust-btn"><a>Return</a></button>
-      </div>
+      <app-modal [btnTitle]="'View Pool Dist'">
+        <div header>Pool Distribution</div>
+        <div body>
+          <fieldset class="scheduler-border" style="padding-bottom: 7px !important; margin-bottom: -5px !important; padding-top: 3px !important;">
+            <div class="row" style="padding-top: 5px;">
+              <div class="col-sm" style="margin-top: -28px;">
+                <app-cust-editable-non-datatable [passData]="passDataPool"></app-cust-editable-non-datatable>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-2">
+              </div>
+              <div class="col-sm-8" style="margin-top: -22px; margin-left: -20px;">
+                <div class="input-group" style="margin-bottom: -18px !important;">
+                  <label class="form-control-sm col-sm-2"></label>
+                  <label class="form-control-sm col-sm label-center">1st Retention</label>
+                  <label class="form-control-sm col-sm label-center">2nd Retention</label>
+                  <label class="form-control-sm col-sm label-center">Total</label>
+                </div>
+                <div class="input-group">
+                  <label class="form-control-sm col-sm-2">SI Amount</label>
+                  <input type="text" placeholder="8,000,000.00" class="form-control form-control-sm txt-content-rght col-sm">
+                  <input type="text" placeholder="619,800,000.00" class="form-control form-control-sm txt-content-rght col-sm input-margin-left">
+                  <input type="text" placeholder="4,000,000,000.00" class="form-control form-control-sm txt-content-rght col-sm input-margin-left">
+                </div>
+                <div class="input-group">
+                  <label class="form-control-sm col-sm-2">Premium Amount</label>
+                  <input type="text" placeholder="2,5000.00" class="form-control form-control-sm txt-content-rght col-sm">
+                  <input type="text" placeholder="193,687.00" class="form-control form-control-sm txt-content-rght col-sm input-margin-left">
+                  <input type="text" placeholder="1,000,000.00" class="form-control form-control-sm txt-content-rght col-sm input-margin-left">
+                </div>
+              </div>
+              <div class="col-sm-2">
+              </div>
+            </div>
+          </fieldset>
+        </div>
+        <div footer class="d-flex justify-content-center" style="width: 100% !important;">
+          <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+          <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Save</a></button>
+        </div>
+      </app-modal>
+
+      <app-modal [btnTitle]="'View Co-Insurance'">
+        <div header>Co-Insurance Distribution</div>
+        <div body>
+          <fieldset class="scheduler-border" style="padding-bottom: 7px !important; margin-bottom: -5px !important; padding-top: 3px !important;">
+            <div class="row" style="padding-top: 5px;">
+              <div class="col-sm" style="margin-top: -28px;">
+                <app-cust-editable-non-datatable [passData]="passDataCoInsurance"></app-cust-editable-non-datatable>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-2">
+              </div>
+              <div class="col-sm-8" style="margin-top: -15px; margin-left: -20px;">
+                <div class="input-group">
+                  <label class="form-control-sm col-sm-2">Total SI Amount</label>
+                  <input type="text" placeholder="4,000,000,000.00" class="form-control form-control-sm txt-content-rght col-sm">
+                  <label class="form-control-sm col-sm-3">Total Premium Amount</label>
+                  <input type="text" placeholder="1,000,000.00" class="form-control form-control-sm txt-content-rght col-sm">
+                </div>
+              </div>
+              <div class="col-sm-2">
+              </div>
+            </div>
+          </fieldset>
+        </div>
+        <div footer class="d-flex justify-content-center" style="width: 100% !important;">
+          <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Return</a></button>
+        </div>
+      </app-modal>
+      <button type="button" class="cust-btn"><a>Cancel</a></button>
+      <button type="button" class="cust-btn"><a>Save</a></button>
     </div>
   </div>
 </div>
-
-<!-- -->
