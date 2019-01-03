@@ -169,7 +169,8 @@ div.input-group {
 }
 
 .fa-search {
-    float: right;
+    position: absolute;
+    right: 9px;
     width: 4%;
     line-height : calc(1.3rem + 1px);
 }
@@ -260,6 +261,7 @@ div.filler{
 
 td div select{
     height: calc(1.3rem + 1px) !important;  
+    padding-top: 4px !important;
 }
 
 tr td span{
