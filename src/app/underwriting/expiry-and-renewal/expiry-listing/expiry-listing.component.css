@@ -125,7 +125,7 @@ div h4{
     outline: none !important;
     border-style: none;
     border: 1px solid gray;
-    z-index: 9 !important;
+    z-index: 99 !important;
     border-radius: 2px;
     background: linear-gradient(to bottom, #4080bf 0%, #2d5986 100%);
     padding-top: 5px;

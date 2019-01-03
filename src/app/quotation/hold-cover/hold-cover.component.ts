@@ -16,6 +16,20 @@ export class HoldCoverComponent implements OnInit {
   tHeader: any[] = [];
   quoteLine: any;
   private holdCover: HoldCoverInfo;
+  passData: any = {
+        tHeader: [
+            "Quotation No.", "Ceding Company", "Insured", "Risk",
+        ],
+        resizable: [
+            false,false,false,false
+        ],
+        dataTypes: [
+            "text","text","text","text"
+        ],
+        tableData: this.quotationService.getListOfValuesHoldCover(),
+        pageLength: 10,
+        
+    };
 
   constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title) { }
 

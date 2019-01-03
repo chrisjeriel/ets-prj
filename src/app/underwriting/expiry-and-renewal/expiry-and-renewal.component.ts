@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./expiry-and-renewal.component.css']
 })
 export class ExpiryAndRenewalComponent implements OnInit {
-
+	
   constructor() { }
 
   ngOnInit() {
