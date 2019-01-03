@@ -85,7 +85,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let data of displayData | paginate: { id:'non-editable', itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event); highlight($event, data)" (dblclick)="onRowDblClick($event)" [class.selected]="data === selected">
+                    <tr *ngFor="let data of displayData | paginate: { id:'non-editable', itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event, data);" (dblclick)="onRowDblClick($event)" [class.selected]="data === indvSelect">
                         <td *ngIf="passData.checkFlag" style="text-align: center"><input type="checkbox" name="" *ngIf="addCheckFlag(data)"></td>
                         <td style="margin-top:1px">
                             <div *ngIf="addCheckFlag(data)">
@@ -117,7 +117,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let data of displayData | paginate: { id:'non-editable', itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event);highlight($event, data)" (dblclick)="onRowDblClick($event)" [class.selected]="data === selected">
+                        <tr *ngFor="let data of displayData | paginate: { id:'non-editable', itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event, data);" (dblclick)="onRowDblClick($event)" [class.selected]="data === indvSelect">
                             <td *ngIf="passData.checkFlag"> <input type="checkbox" name=""></td>
                             <td *ngFor="let key of dataKeys | slice: 1; let i = index" [ngSwitch]="passData.dataTypes[i]">
                                 <div *ngIf="addCheckFlag(data)">
@@ -155,8 +155,8 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let data of displayData | paginate: { id:'non-editable', itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event); highlight($event, data)" (dblclick)="onRowDblClick($event)" [class.selected]="data === selected || checked">
-                    <td *ngIf="passData.checkFlag" class="checkbox-container-body"><input type="checkbox" name="" *ngIf="addCheckFlag(data)" class="checkbox" [checked]="checked"></td>
+                <tr *ngFor="let data of displayData | paginate: { id:'non-editable', itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event, data);" (dblclick)="onRowDblClick($event)" [class.selected]="data === indvSelect || selected.includes(data) || checked">
+                    <td *ngIf="passData.checkFlag" class="checkbox-container-body"><input type="checkbox" name="" *ngIf="addCheckFlag(data)" class="checkbox" (change)="removeSelected($event, data)" [checked]="checked"></td>
                     <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]">
                         <div *ngIf="addCheckFlag(data)">
                             <span *ngSwitchCase="'date'" class="unclickable">{{ processData(key, data) | date: 'MM/dd/yyyy'}}</span>

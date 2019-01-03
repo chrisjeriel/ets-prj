@@ -113,7 +113,8 @@ export class CustNonDatatableComponent implements OnInit {
     displayLength: number;
     p:number = 1;
     checked:boolean;
-    selected: any;
+    selected: any[] = [];
+    indvSelect: any;
     fillData:any = {};
 
     constructor(config: NgbDropdownConfig, public renderer: Renderer, private quotationService: QuotationService,) {
@@ -178,8 +179,9 @@ export class CustNonDatatableComponent implements OnInit {
         });
     }
 
-    onRowClick(event) {
+    onRowClick(event, data) {
         this.btnDisabled = false;
+        this.indvSelect = data;
         /*for(var i = 0; i < event.target.parentElement.children.length; i++) {
             event.target.parentElement.children[i].style.backgroundColor = "";
         }
@@ -189,10 +191,19 @@ export class CustNonDatatableComponent implements OnInit {
         this.rowClick.next(event);
     }
     
-    highlight(event, data){
-        this.selected = data;
+    highlight(data){
+        this.selected.push(data);
+        console.log('data pushed'); 
     }
-
+    removeSelected(event, data){
+        if(!event.target.checked){
+            this.selected.splice(this.selected.indexOf(data), 1);
+            console.log('wow');
+        }else{
+            this.selected.push(data);
+        }
+        
+    }
     onRowDblClick(event) {
         this.rowDblClick.next(event);
     }
