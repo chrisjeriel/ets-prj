@@ -11,12 +11,19 @@
                     <div class="col-sm-3" style="margin-top: 2px;">
                         <fieldset class="scheduler-border">
                             <legend class="scheduler-border">Batch Option</legend>
-                            <div class="form-group">
-                                <input type="radio" name="batchOption" value="Did Not Materialized"><span class="radioLabels">&nbsp; Did Not Materialize</span>
-                                <br/>
-                                <input type="radio" name="batchOption" value="Risk Not Commensurate"><span class="radioLabels">&nbsp; Risk Not Commensurate</span>
-                                <br/>
-                                <input type="radio" name="batchOption" value="Spoiled"><span class="radioLabels">&nbsp; Spoiled</span>
+                            <div class="form-group" style="margin-bottom: 13px;margin-left: 48px;">
+                                <div class="input-group">
+                                <input class="form-control-sm" type="radio" name="batchOption" value="Did Not Materialized" style="    margin-top: 2px !important;">
+                                <label class="form-control-sm col-sm" style="margin-left: -82px;">Did Not Materialize</label>
+                                </div>
+                                <div class="input-group">
+                                <input class="form-control-sm" type="radio" name="batchOption" value="Risk Not Commensurate" style="    margin-top: 2px !important;">
+                                <label class="form-control-sm col-sm" style="margin-left: -60px;">Risk Not Commensurate</label>
+                                </div>
+                                <div class="input-group">
+                                <input class="form-control-sm" type="radio" name="batchOption" value="Spoiled" style="    margin-top: 2px !important;">
+                                <label class="form-control-sm col-sm" style="margin-left: -139px;">Spoiled</label>
+                                </div>
                             </div>
                         </fieldset>
                         <div class="buttons">
@@ -28,7 +35,7 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-9">
-                        <fieldset class="scheduler-border">
+                        <fieldset class="scheduler-border" style="margin-top: -15px !important;">
                             <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
                             <div class="form-row custom-row-inline-inset">
                                 <div class="input-group alignment" style="margin-right: 10%; margin-bottom: -14px !important;">
@@ -54,7 +61,7 @@
                                     <input type="text" name="" class="form-control form-control-sm col-sm-4"> 
                                 </div>
                             </div>
-                            <div class="form-row custom-row-inline-inset">
+                            <div class="form-row custom-row-inline-inset" style="margin-bottom: 11px !important;">
                                 <div class="input-group alignment" style="margin-right: 10%; margin-bottom: -10px !important;">
                                     <label class="form-control-sm col-sm-2 text-right">Reason</label>
                                     <input type="text" class="form-control form-control-sm col-sm-1" style="margin-right: 1px !important;">
@@ -76,7 +83,7 @@
                     <div class="col-sm-12" align="center">
                         <div class="col-md-13 text-center">
                             <br>
-                            <div class="cust-btn-container">
+                            <div class="cust-btn-container" style="margin-right: 255px !important;margin-top: -4px !important;">
                                 <button type="button" class="cust-btn"><a>Cancel</a></button>
                                 <button type="button" class="cust-btn" (click)="save()"><a>Save</a></button>
                             </div>
@@ -86,14 +93,14 @@
                 <br/><br/>
 
                 <app-modal class="hidden">
-                    <div header>Query</div>
+                    <div header>Search</div>
                     <div body>
                         <div class="max-size">
                             <fieldset class="scheduler-border">
                                 <br/>
-                                <div class="form-row custom-row-inline-inset">
-                                    <div class="input-group alignment">
-                                        <label class="form-control-sm col-sm-2 text-right">Quotation No</label>
+                                <div class="form-row custom-row-inline-inset" style="margin-top: -5px !important;">
+                                    <div class="input-group alignment" style="margin-bottom: -13px !important;">
+                                        <label class="form-control-sm col-sm-3 text-right">Quotation No</label>
                                         <input type="text" class="form-control form-control-sm">
                                         <input type="text" class="form-control form-control-sm" style="margin-left: 2px !important;">
                                         <input type="text" class="form-control form-control-sm" style="margin-left: 2px !important;">
@@ -103,24 +110,24 @@
                                     </div>
                                 </div>
                                 <div class="form-row custom-row-inline-inset">
-                                    <div class="input-group alignment">
-                                        <label class="form-control-sm col-sm-2 text-right">Type of Cession</label>
+                                    <div class="input-group alignment" style="margin-bottom: -13px !important;">
+                                        <label class="form-control-sm col-sm-3 text-right">Type of Cession</label>
                                         <input type="text" class="form-control form-control-sm col-sm-2" >
                                         <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
                                         <input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 2px !important;">
                                     </div>
                                 </div>
                                 <div class="form-row custom-row-inline-inset">
-                                    <div class="input-group alignment">
-                                        <label class="form-control-sm col-sm-2 text-right">Ceding Company</label>
+                                    <div class="input-group alignment" style="margin-bottom: -13px !important;">
+                                        <label class="form-control-sm col-sm-3 text-right">Ceding Company</label>
                                         <input type="text" class="form-control form-control-sm col-sm-2">
                                         <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
                                         <input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 2px !important;">
                                     </div>
                                 </div>
                                 <div class="form-row custom-row-inline-inset">
-                                    <div class="input-group alignment">
-                                        <label class="form-control-sm col-sm-2 text-right">Risk</label>
+                                    <div class="input-group alignment" style="margin-bottom: -20px !important;">
+                                        <label class="form-control-sm col-sm-3 text-right">Risk</label>
                                         <input type="text" class="form-control form-control-sm col-sm-2">
                                         <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
                                         <input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 2px !important;">
@@ -130,7 +137,7 @@
                             </fieldset>
                         </div>
                     </div>
-                    <div footer>
+                    <div footer style=" margin-right: 185px !important;">
                         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
                         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
                     </div>

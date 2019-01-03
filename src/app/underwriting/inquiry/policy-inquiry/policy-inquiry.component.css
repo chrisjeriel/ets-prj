@@ -21,3 +21,7 @@ input {
 .custom-row-inline-inset{
 	margin-top: 2px !important;
 }
+
+.input-group-prepend {
+	height: calc(1.3rem + 1px) !important;
+}
