@@ -1,61 +1,73 @@
 <div class="cust-tabs-container">
     <h4>Policy / Issuance</h4>
     <ngb-tabset>
-
         <ngb-tab class="ngb-tab" title="Create Open Cover">
             <ng-template ngbTabContent>
+                <br>
+                <div class="row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-8">
+                        <fieldset class="scheduler-border">
+                            <div class="col-sm-1"></div>
+                            <div class="col-sm">
 
+                                <div class="row" style="margin-right: 0px; margin-bottom: 11px;">
+                                    <div class="input-group" style="margin-top: -12px !important;">
+                                        &nbsp;
+                                    </div>
+                                    <div class="input-group">
+                                        <div class="input-group">
+                                            <label class="form-control-sm col-sm-2" style="margin-left: 11px !important;">Open
+                                                Cover
+                                                Quotation No</label>
+                                            <input type="text" class="form-control form-control-sm col-sm-1 cap-input"
+                                                [(ngModel)]="policyLine" style="margin-left: 3px;" ngbTooltip="Line">
+                                            <input type="text" class="form-control form-control-sm col-sm-2 cap-input"
+                                                style="margin-left: 3px;" ngbTooltip="Year">
+                                            <input type="text" class="form-control form-control-sm col-sm-2 cap-input"
+                                                style="margin-left: 3px;" ngbTooltip="Sequence No">
+                                            <input type="text" class="form-control form-control-sm col-sm-2 cap-input"
+                                                style="margin-left: 3px;" ngbTooltip="Co Code">
+                                            <input type="text" class="form-control form-control-sm col-sm-1 cap-input"
+                                                style="margin-left: 3px;" ngbTooltip="Co Series No">
+                                            <input type="text" class="form-control form-control-sm col-sm-2 cap-input"
+                                                style="margin-left: 3px;" ngbTooltip="Alt No">
+                                            <span>&nbsp;</span>
+                                            <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+                                        </div>
+
+                                        <div class="input-group ig-row" style="margin-top: -6px !important;">
+                                            <label class="form-control-sm col-sm-2" style="margin-left: 11px !important;">Ceding
+                                                Company</label>
+                                            <input type="text" class="form-control form-control-sm">
+                                        </div>
+                                        <div class="input-group ig-row">
+                                            <label class="form-control-sm col-sm-2" style="margin-left: 11px !important;">Insured</label>
+                                            <input type="text" class="form-control form-control-sm">
+                                        </div>
+                                        <div class="input-group ig-row">
+                                            <label class="form-control-sm col-sm-2" style="margin-left: 11px !important;">Risk</label>
+                                            <input type="text" class="form-control form-control-sm">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-sm">
+                        <div class="col-md-12 text-center">
+                            <br>
+                            <div class="cust-btn-container">
+                                <button type="button" class="cust-btn"><a>Cancel</a></button>
+                                <button type="button" (click)="navigateToGenInfo()" class="cust-btn"><a>Next</a></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </ng-template>
         </ngb-tab>
     </ngb-tabset>
-</div>
-<br>
-<div class="row">
-    <div class="col-sm-2"></div>
-    <div class="col-sm-8">
-        <fieldset class="scheduler-border" style="padding-bottom: 10px !important;">
-            <div class="col-sm-1"></div>
-            <div class="col-sm">
-                <div class="row" style="padding: 1%; margin-right: 5%;">
-                    <div class="input-group">
-                        <div class="input-group">
-                            <label class="form-control-sm col-sm-3">Open Cover Quotation No</label>
-                            <input type="text" [(ngModel)]="quoteLine" class="form-control form-control-sm col-sm-1 cap-input" ngbTooltip="Line">
-                            <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Year">
-                            <input type="text" class="form-control form-control-sm col-sm-3 cap-input" style="margin-left: 3px;" ngbTooltip="Sequence No">
-                            <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Co Code">
-                            <input type="text" class="form-control form-control-sm col-sm-2 cap-input" style="margin-left: 3px;" ngbTooltip="Co Series No">
-                            <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Alt No">
-                            <span>&nbsp;</span>
-                            <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-                        </div>
-                        <div class="input-group">
-                            <label class="form-control-sm col-sm-3">Ceding Company</label>
-                            <input type="text" class="form-control form-control-sm">
-                        </div>
-                        <div class="input-group">
-                            <label class="form-control-sm col-sm-3">Insured</label>
-                            <input type="text" class="form-control form-control-sm">
-                        </div>
-                        <div class="input-group">
-                            <label class="form-control-sm col-sm-3">Risk</label>
-                            <input type="text" class="form-control form-control-sm">
-                        </div>
-                    </div>
-            	</div>
-            </div>
-        </fieldset>
-    </div>
-    <div class="col-sm-2"></div>
-</div>
-<div class="form-row">
-    <div class="form-group col-sm">
-        <div class="col-md-12 text-center">
-            <br>
-            <div class="cust-btn-container">
-                <button type="button" class="cust-btn"><a>Cancel</a></button>
-                <button type="button" class="cust-btn"><a>Next</a></button>
-            </div>
-        </div>
-    </div>
 </div>
