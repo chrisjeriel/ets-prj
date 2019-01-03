@@ -87,6 +87,7 @@ import { UpdateGeneralInfoComponent } from './utilities/update-information/updat
 import { OpenCoverProcessingComponent } from './quotation/open-cover-processing/open-cover-processing.component';
 import { OpenCoverComponent } from './quotation/open-cover/open-cover.component';
 import { GenInfoComponent } from './quotation/open-cover/gen-info/gen-info.component';
+import { OpenCoverSumInsuredComponent } from './quotation/open-cover/open-cover-sum-insured/open-cover-sum-insured.component';
 
 @NgModule({
     imports: [
@@ -177,7 +178,8 @@ import { GenInfoComponent } from './quotation/open-cover/gen-info/gen-info.compo
         UpdateGeneralInfoComponent,
         OpenCoverProcessingComponent,
         OpenCoverComponent,
-        GenInfoComponent
+        GenInfoComponent,
+        OpenCoverSumInsuredComponent
     ],
 
     providers: [

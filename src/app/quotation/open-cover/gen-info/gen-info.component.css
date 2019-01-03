@@ -21,6 +21,7 @@
 .input-group label {
 	padding-left: 0px;
 	padding-right: 5px;
+	line-height: .9;
 }
 
 #close{
@@ -64,3 +65,4 @@ h4 {
 .input-group-prepend{
 	height: calc(1.3rem + 1px) !important;
 }
+
