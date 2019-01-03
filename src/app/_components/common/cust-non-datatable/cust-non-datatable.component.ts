@@ -86,6 +86,9 @@ export class CustNonDatatableComponent implements OnInit {
 
     @Output() rowClick: EventEmitter<any> = new EventEmitter();
     @Output() rowDblClick: EventEmitter<any> = new EventEmitter();
+     @Output() add: EventEmitter<any> = new EventEmitter();
+    @Output() edit: EventEmitter<any> = new EventEmitter();
+    @Output() copy: EventEmitter<any> = new EventEmitter();
 
     @Input() printBtn: boolean = false;
     //@Input() fixedCol: boolean = false;
@@ -95,7 +98,7 @@ export class CustNonDatatableComponent implements OnInit {
     @Input() passData: any = {
         tableData: [], tHeader: [], dataTypes: [], resizable: [], filters: [],
         pageLength: 10,
-        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, pageStatus: true, pagination: true, addFlag: false, editFlag: false, deleteFlag: false,
+        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, pageStatus: true, pagination: true, addFlag: false, editFlag: false, deleteFlag: false, copyFlag: false,
     }
 
     dataKeys: any[] = [];
@@ -113,7 +116,8 @@ export class CustNonDatatableComponent implements OnInit {
     displayLength: number;
     p:number = 1;
     checked:boolean;
-    selected: any;
+    selected: any[] = [];
+    indvSelect: any;
     fillData:any = {};
 
     constructor(config: NgbDropdownConfig, public renderer: Renderer, private quotationService: QuotationService,) {
@@ -178,8 +182,9 @@ export class CustNonDatatableComponent implements OnInit {
         });
     }
 
-    onRowClick(event) {
+    onRowClick(event, data) {
         this.btnDisabled = false;
+        this.indvSelect = data;
         /*for(var i = 0; i < event.target.parentElement.children.length; i++) {
             event.target.parentElement.children[i].style.backgroundColor = "";
         }
@@ -189,10 +194,19 @@ export class CustNonDatatableComponent implements OnInit {
         this.rowClick.next(event);
     }
     
-    highlight(event, data){
-        this.selected = data;
+    highlight(data){
+        this.selected.push(data);
+        console.log('data pushed'); 
     }
-
+    removeSelected(event, data){
+        if(!event.target.checked){
+            this.selected.splice(this.selected.indexOf(data), 1);
+            console.log('wow');
+        }else{
+            this.selected.push(data);
+        }
+        
+    }
     onRowDblClick(event) {
         this.rowDblClick.next(event);
     }
@@ -245,4 +259,20 @@ export class CustNonDatatableComponent implements OnInit {
         return !(cell===this.fillData);
     }
 
+    onClickAdd(event){
+        //do some adding
+         this.add.next(event);
+    }
+    
+    onClickEdit(event){
+        //do some editing
+        this.edit.next(event);
+    }
+    onClickDelete(){
+        //do some deleting
+    }
+    onClickCopy(event){
+        //do some copying
+        this.copy.next(event);
+    }
 }
