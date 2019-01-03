@@ -92,6 +92,7 @@
                                     <br/>
                                     <button [routerLink]="['/policy-HoldCover']" class="button btn btn-link">Policy To Hold Cover</button>
                                     <br/>
+                                    <button [routerLink]="['purge-extracted-policy']" class="button btn btn-link">Purge Extracted Policies</button>
                                 </ng-template>
                             </ngb-panel>
                             <ngb-panel title="Inquiry">
@@ -106,6 +107,12 @@
                                 </ng-template>  
                             </ngb-panel>
                             <ngb-panel title="Maintenance">
+                            </ngb-panel>
+                            <ngb-panel title="Utilities">
+                                <ng-template ngbPanelContent>
+                                    <button [routerLink]="['/update-info']" class="button btn btn-link">Update Information</button>
+                                    <br/>
+                                </ng-template>
                             </ngb-panel>
                         </ngb-accordion>
                     </ng-template>

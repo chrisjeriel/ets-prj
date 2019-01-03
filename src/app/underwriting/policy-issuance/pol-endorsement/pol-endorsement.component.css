@@ -4,7 +4,7 @@ fieldset.scheduler-border-endorsements{
 
 .copyEndt {
 	position: absolute;
-    top: 192px;
+    top: 188px;
     left: 226px;
 }
 
@@ -12,4 +12,6 @@ fieldset {
     padding-top: 4px !important;
     padding-bottom: 4px !important;
 }
-
+.cust-btn-container{
+	margin-top: 10px !important;
+}

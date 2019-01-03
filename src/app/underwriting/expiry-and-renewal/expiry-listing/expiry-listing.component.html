@@ -1,156 +1,99 @@
 <div class="cust-tabs-container">
-	<h4>Policy / Expiry & Renewal</h4>
+	<h4>Expiry & Renewal</h4>
 	<ngb-tabset>
-		<ngb-tab title="Expiry Listing">
+		<ngb-tab title="Expiry List">
 			<ng-template ngbTabContent>
 				<div class="row">
-					<div class="col-sm-4">
-						<fieldset class="scheduler-border left">
-							<legend class="scheduler-border">Parameters</legend>
-							<div class="form-row custom-row-inline-inset left-div">
-								<div class="input-group">
-									<input class="form-control-sm " type="radio" name="optradio" id="byDate" [value]="true" [(ngModel)]="byDate" (click)="clearDates()">	
-									<label class="form-control-sm col-sm-3" for="byDate">&nbsp;By Date</label>
-								</div>
-
-								<div class="input-group">
-									
-									<label class="form-control-sm col-sm-1 cust-sm" for="fromDate">From</label>
-									<input [(ngModel)]="expiryParameters.fromDate" type="date" class="form-control form-control-sm cust-sm col-sm-5" id="fromDate" value="2018-12-04" [disabled]="!byDate">
-									<label class="form-control-sm col-sm-1 cust-sm">To</label>
-									<input [(ngModel)]="expiryParameters.toDate" type="date" class="form-control cust-sm col-sm-5" id="toDate" value="2018-12-04" [disabled]="!byDate">
-								</div>
-
-
-								<div class="input-group">
-									<input class="form-control-sm " type="radio" name="optradio" id="byMonthYear" [value]="false" [(ngModel)]="byDate" (onChange)="clearDates()">
-									<label class="form-control-sm col-sm-4 text-left" for="byMonthYear">&nbsp;By Month/Year</label>
-								</div>
-
-									<div class="input-group">
-										
-										<label class="form-control-sm col-sm-1 cust-sm">From</label>
-										<select [(ngModel)]="expiryParameters.fromMonth" class="form-control drp-dwn-cstmz col-sm-3" name="fromMonth" [disabled]="byDate">
-											<option value="1">January</option>
-											<option value="2">February</option>
-											<option value="3">March</option>
-											<option value="4">April</option>
-											<option value="5">May</option>
-											<option value="6">June</option>
-											<option value="7">July</option>
-											<option value="8">August</option>
-											<option value="9">September</option>
-											<option value="10">October</option>
-											<option value="11">November</option>
-											<option value="12">December</option>
-										</select>
-										<input [(ngModel)]="expiryParameters.fromYear" class="form-control form-control-sm cust-sm col-sm-2" type="text" name="fromYear" [disabled]="byDate">
-										<label class="form-control-sm col-sm-1 cust-sm">To</label>
-										<select [(ngModel)]="expiryParameters.toMonth" class="form-control drp-dwn-cstmz col-sm-3" name="toMonth" [disabled]="byDate">
-											<option value="1">January</option>
-											<option value="2">February</option>
-											<option value="3">March</option>
-											<option value="4">April</option>
-											<option value="5">May</option>
-											<option value="6">June</option>
-											<option value="7">July</option>
-											<option value="8">August</option>
-											<option value="9">September</option>
-											<option value="10">October</option>
-											<option value="11">November</option>
-											<option value="12">December</option>
-										</select>
-										<input [(ngModel)]="expiryParameters.toYear" class="form-control form-control-sm cust-sm col-sm-2" type="text" name="toYear" [disabled]="byDate">
-									</div>
-							</div>
-						</fieldset>
+					<div class="col-sm-12" style=" margin-top: -30px;">
+					<app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
 					</div>
-
-					<div class="col-sm-5">
-						<fieldset class="scheduler-border middle">
-
-							<div class="form-row custom-row-inline-inset middle-div">
-								<div class="input-group">
-									<label class="form-control-sm col-sm-3 cust-lbl-left-offset">Line</label>
-									<input type="text" class="form-control form-control-sm col-sm-2">
-									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-									<span>&nbsp;</span>
-									<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px;">
-								</div>
-								<div class="input-group">
-									<label class="form-control-sm col-sm-3 cust-lbl-left-offset">Type of Cession</label>
-									<input type="text" class="form-control form-control-sm col-sm-2">
-									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-									<span>&nbsp;</span>
-									<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px;">
-								</div>	
-								<div class="input-group">
-										<label class="form-control-sm col-sm-3 text-right">Ceding Company</label>
-										<input [(ngModel)]="expiryParameters.cedingCompany" type="text" class="form-control form-control-sm col-sm-9">
-										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-								</div>	
-							</div>
-						</fieldset>
-					</div>
-
-					<div class="col-sm-3">
-						<fieldset class="scheduler-border right">
-							<div class="form-row custom-row-inline-inset right-div" style="margin-top: 2px !important">
-								<div class="input-group">
-									<input class="form-control-sm " type="radio" name="byExpiryList" id="list" [value]="true"  checked="checked">	
-									<label class="form-control-sm col-sm-8" for="list">&nbsp;Expiry List</label>
-								</div>
-							</div>
-							<div class="form-row custom-row-inline-inset" style="margin-top: -11px !important;margin-bottom: 5px !important;">
-								<div class="input-group">
-									<input class="form-control-sm " type="radio" name="byExpiryList" id="letters" [value]="false" >	
-									<label class="form-control-sm col-sm-8" for="letters" >&nbsp;Expiry/Renewwal Letters</label>
-								</div>
-							</div>
-						</fieldset>
-
-						<div class="form-row" style="margin-top: 5px;">
-							<div class="form-group col-sm">
-									<div class="col-md-13 text-center">
-										<div class="cust-btn-container">
-											<button type="button" class="cust-btn"><a>Print</a></button>
-											<app-modal [btnTitle]="'Process'">
-												<div header><h4>Process Expiring Policies</h4></div>
-										        <div body class="row">
-										           <div class="col-sm-1 text-right my-modal-icon">
-									           			<i class="fa fa-question-circle"></i>
-										           </div>
-										           <div class="col-sm-10 text-left my-modal-text">
-										           		<span class="align-middle">A policy record will be created for the selected expired policy. Do you want to continue?</span>
-										           </div>
-										        </div>
-										        <div footer class="my-modal-footer">
-							        				<app-modal [btnTitle]="'Yes'" (click)="renewPolicies()">
-														<div header>Process Expiring Policies</div>
-												        <div body>
-												        	<!-- <app-cust-table [tHeader]="renewedPolicyHeader" [tableData]="renewedPolicyList"></app-cust-table> -->
-												        </div>
-												        <div footer>
-												            <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
-												        </div>
-													</app-modal>
-										        	<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>No</a></button>
-										            <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-										        </div>
-											</app-modal>
+					<div class="col-sm-12">
+						<fieldset class="scheduler-border">
+							<div class="row">
+								<div class="col-sm-2"></div>
+								<div class="col-sm-8">
+									<div class="row">
+										<div class="col-sm">
+											<div class="row" style="margin-top: 0px;margin-right: -4px;">
+												<button class="cust col-sm">Delete</button>
+												<button class="cust col-sm">Edit</button>
+												<button class="cust col-sm">Purge</button>
+												<button class="cust col-sm">Save</button>
+											</div>
+											<div class="row" style="margin-right: -4px;">
+												<button class="cust col-sm">Print</button>
+												<button class="cust col-sm">Query</button>
+												<button class="cust col-sm">Update</button>
+												<button class="cust col-sm">Process</button>
+											</div>
+											<div class="row" style="margin-right: -5px !important;margin-top: 15px !important;">
+												<label class="form-control-sm col-sm-4 text-right">Reason For Non-renewal</label>
+												<input type="text" class="form-control form-control-sm col-sm-3">
+												<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+												<input type="text" class="form-control form-control-sm col-sm-5" style="margin-left: 5px !important;">
+											</div>
+											<div class="row" style="margin-top: -18px;margin-right: -5px !important;">
+												<label class="form-control-sm col-sm-4 text-right">Remarks</label>
+												<input type="text" class="form-control form-control-sm col-sm-8">
+											</div>
+											<div class="row">
+											<div class="col-sm-12"  style="padding: 0px !important">
+												<fieldset class="scheduler-border" style="margin-right: 8px !important;">
+													<div class="row">
+														<div class="col-sm-1"></div>
+															<label class="form-control-sm col-sm-2">Process:</label>
+															<input type="radio" name="Process" class="form-control-sm">
+															<label class="form-control-sm col-sm-2">Tag All</label>
+															<input type="radio" name="Process" class="form-control-sm">
+															<label class="form-control-sm col-sm-2">Untag All</label>
+															<input type="radio" name="Process" class="form-control-sm">
+															<label class="form-control-sm col-sm-3">Selected Policies</label>
+													</div>
+												</fieldset>
+											</div>
 										</div>
 									</div>
+										<div class="col-sm-3" style="margin-left: 5px; background-color: lightgray;    margin-bottom: 6px;">
+											<div class="row">
+												<div class="input-group" style="margin-bottom: -23px !important;margin-left: 10px;">
+													<label class="form-control-sm">Legend</label>
+												</div>
+												<div class="input-group" style="margin-bottom: -23px !important;margin-left: 10px;">
+													<label class="form-control-sm">P - Policy Process</label>
+												</div>
+												<div class="input-group" style="margin-bottom: -23px !important;margin-left: 10px;">
+													<label class="form-control-sm">RA - Renewal As Is</label>
+												</div>
+												<div class="input-group" style="margin-bottom: -23px !important;margin-left: 10px;">
+													<label class="form-control-sm">RC - Renewal With Change</label>
+												</div>
+												<div class="input-group" style="margin-bottom: -23px !important;margin-left: 10px;">
+													<label class="form-control-sm">NR - Non-renewal</label>
+												</div>
+												<div class="input-group" style="margin-bottom: -23px !important;margin-left: 10px;">
+													<label class="form-control-sm">S - Summarized</label>
+												</div>
+												<div class="input-group" style="margin-bottom: -23px !important;margin-left: 10px;">
+													<label class="form-control-sm">B - With Balance</label>
+												</div>
+												<div class="input-group" style="margin-bottom: -23px !important;margin-left: 10px;">
+													<label class="form-control-sm">C - With Claim</label>
+												</div>
+												<div class="input-group" style="margin-bottom: -23px !important;margin-left: 10px;">
+													<label class="form-control-sm">R - With Reminder</label>
+												</div>
+												<div class="input-group" style="margin-bottom: -23px !important;margin-left: 10px;">
+													<label class="form-control-sm">RP - Regular Policy</label>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-2"></div>
 							</div>
-						</div>
+						</fieldset>
 					</div>
 				</div>
-				<div class="col-md-13 text-center">
-					<div class="cust-btn-container">
-						<button type="button" class="cust-btn" (click)="save()"><a>Search</a></button>
-						<button type="button" class="cust-btn"><a>Clear</a></button>
-					</div>
-				</div>
-				<app-cust-table [tHeader]="tHeader" [tableData]="tableData" ></app-cust-table>
 			</ng-template>
 		</ngb-tab>
 	</ngb-tabset>

@@ -18,9 +18,6 @@ export * from './UnderwritingCoverageInfo';
 export * from './UnderwritingOtherRatesInfo';
 export * from './ExtractExpiringPolicies';
 export * from './ExpiryListing';
-export * from './PolicyCoInsurance';
-export * from './PARListing'
-export * from './AltPARListing';
 export * from './PolAttachmentInfo';
 export * from './PolicyToHoldCover';
 export * from './PolicyPrinting';
@@ -35,3 +32,4 @@ export * from './PolicyInwardPolBalance';
 export * from './PolItem';
 export * from './QuotationReadyForPrinting';
 export * from './PurgeExtractedPolicy';
+export * from './PolInwardPolBalanceOtherCharges';

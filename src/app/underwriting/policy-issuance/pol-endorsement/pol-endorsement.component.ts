@@ -16,11 +16,35 @@ export class PolEndorsementComponent implements OnInit {
     options: any[] = [];
     dataTypes: any[] = [];
     magnifyingGlass: any[] = ["endtCode"];
+    checkFlag;
+    checkboxFlag;
+    addFlag;
+    deleteFlag;
+    paginateFlag;
+    infoFlag;
+    searchFlag;
+
+    passData: any = {
+        tableData: [],
+        tHeader: [],
+        magnifyingGlass: [],
+        dataTypes: [],
+        nData: {},
+        checkFlag: true,
+        addFlag: true,
+        deleteFlag: true,
+        paginateFlag: true,
+        infoFlag: true,
+        searchFlag: true,
+        checkboxFlag: true,
+        pageLength: 10,
+        widths: []
+    };
     nData: PolicyEndorsement = new PolicyEndorsement(null, null, null, null);
 
-    tHeader: any[] = ['C', 'Endt Code', 'Endt Title', 'Remarks'];
 
     @Input() alteration: boolean;
+    holdCover: boolean;
 
     constructor(config: NgbDropdownConfig, private underwritingService: UnderwritingService, private titleService: Title
     ) {
@@ -30,14 +54,18 @@ export class PolEndorsementComponent implements OnInit {
 
     ngOnInit() {
         this.titleService.setTitle("Pol | Endorsement");
-        this.tableData = this.underwritingService.getPolicyEndorsement();
+        this.passData.tHeader.push("C", "Endt Code", "Endt Title", "Remarks");
+        this.passData.dataTypes.push("text", "text", "text", "text");
+        this.passData.widths.push("1", "auto", "auto", "auto");
+        this.passData.magnifyingGlass.push("endtCode");
+        this.passData.tableData = this.underwritingService.getPolicyEndorsement();
     }
 
     onClickCancel() {
-
+        this.holdCover = true;
     }
 
     onClickSave() {
-
+        this.holdCover = false;
     }
 }

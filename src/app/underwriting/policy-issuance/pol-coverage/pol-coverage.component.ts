@@ -13,12 +13,42 @@ export class PolCoverageComponent implements OnInit {
 
   private underwritingCoverageInfo: UnderwritingCoverageInfo;
   tableData: any[] = [];
+  tableData2: any[] = [];
   tHeader: any[] = [];
+  tHeader2: any[] = [];
   dataTypes: any[] = [];
   selOptions: any[] = [];
   magnifyingGlass: any[] = ['coverCode'];
   optionsData: any[] = [];
   headerWithColspan: any[] = [];
+  pageLength = 3 ;
+
+  passDataSectionCover: any = {
+        tHeader: ["Cover Code", "Section", "Bullet No", "Sum Insured", "Rate", "Premium", "Add Sl"],
+        dataTypes: [
+                    "text", "select", "select", "currency", "percent", "currency", "checkbox"
+                   ],
+        opts: [{ selector: "section", vals: ["I", "II", "III"] }, { selector: "bulletNo", vals: ["1", "1.2", "1.3"] }],
+        checkFlag:true,
+        addFlag:true,
+        deleteFlag:true,
+        pageLength: 10,
+        searchFlag:true,
+        magnifyingGlass: ['coverCode'],
+        widths:[228,1,1,200,1,1,1]
+    };
+
+
+  passDataTotalPerSection: any = {
+        tHeader: ["Section", "Sum Insured", "Premium"],
+        dataTypes: [
+                    "text", "text", "text"
+                   ],
+        tableData: [["SECTION I","",""],["SECTION II","",""],["SECTION III","",""]],
+        pageLength:3,
+    };
+
+
 
   passData: any = {
     tableData:[],
@@ -31,7 +61,8 @@ export class PolCoverageComponent implements OnInit {
     deleteFlag: true,
     paginateFlag: true,
     searchFlag: true,
-    checkFlag: true
+    checkFlag: true,
+    magnifyingGlass: ['coverCode']
   };
 
   passData2: any = {
@@ -53,29 +84,10 @@ export class PolCoverageComponent implements OnInit {
 
     this.titleService.setTitle("Pol | Coverage");
     if (!this.alteration) {
-      this.tHeader.push("Cover Code");
-      this.tHeader.push("Section");
-      this.tHeader.push("Bullet No");
-      this.tHeader.push("Sum Insured");
-      this.tHeader.push("Rate");
-      this.tHeader.push("Prenium");
-      this.tHeader.push("Add Sl");
 
-      this.dataTypes.push("text");
-      this.dataTypes.push("select");
-      this.dataTypes.push("select");
-      this.dataTypes.push("currency");
-      this.dataTypes.push("percent");
-      this.dataTypes.push("currency");
-      this.dataTypes.push("checkbox");
+      this.passDataSectionCover.tableData = this.underwritingservice.getUWCoverageInfo();
+      //this.passDataTotalPerSection.tableData = this.underwritingservice.getTotalPerSection();
 
-      this.selOptions.push({ selector: "section", vals: ["I", "II", "III"] });
-      this.selOptions.push({ selector: "bulletNo", vals: ["1", "1.2", "1.3"] });
-      this.selOptions.push({ selector: "sortSe", vals: ["10", "20", "30"] });
-
-      this.optionsData.push("USD", "PHP", "EUR");
-
-      this.tableData = this.underwritingservice.getUWCoverageInfo();
     } else {
       this.passData.tHeader.push("Cover Code");
       this.passData.tHeader.push("Section");

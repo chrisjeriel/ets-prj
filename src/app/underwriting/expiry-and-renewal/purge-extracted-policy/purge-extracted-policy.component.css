@@ -12,3 +12,13 @@ label.form-control-sm{
     height: 21px;
     margin-bottom: 5px;
 }
+
+.text-search-ico {
+	margin-left: -18px;
+	z-index: 99;
+	font-size: 14px;
+}
+
+.hidden{
+    display: none;
+}

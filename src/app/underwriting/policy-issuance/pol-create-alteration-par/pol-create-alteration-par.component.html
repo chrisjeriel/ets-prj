@@ -1,3 +1,38 @@
+<style type="text/css">
+    .input-group {
+        padding: 0px !important;
+        margin: 0px !important;
+    }
+
+    .input-group label {
+        padding: 0px !important;
+        margin: 0px !important;
+    }
+
+    .form-control-sm{
+        
+    }
+    /*.input-group > .form-control {
+        margin-bottom: 5px !important;
+    }*/
+
+    .ig-row {
+        margin: -3px !important;
+    }
+
+    .ig-row label {
+        margin-right: 5px !important;
+    }
+
+    .input-radio {
+        margin-bottom: -10px !important;
+    }
+
+    .input-ig-row {
+        margin-left: 2px !important;
+    }
+
+</style>
 <div class="cust-tabs-container">
     <h4>Policy / Policy Issuance</h4>
     <ngb-tabset>
@@ -11,21 +46,21 @@
 </div>
 <br>
 <div class="row">
-    <div class="col-sm-3"></div>
-    <div class="col-sm-6">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8">
         <fieldset class="scheduler-border">
             <div class="col-sm-1"></div>
             <div class="col-sm">
 
                 <div class="row" style="margin-right: 0px; margin-bottom: 11px;">
-                    <div class="input-group" style="margin-top: -6px;">
+                    <div class="input-group" style="margin-top: -12px !important;">
                         &nbsp;
                     </div>
                     <div class="input-group">
 
                         <div class="input-group">
                             <label class="form-control-sm col-sm-2">Policy No</label>
-                            <input type="text" [(ngModel)]="policyLine" class="form-control form-control-sm col-sm-2 cap-input" ngbTooltip="Line">
+                            <input type="text" [(ngModel)]="policyLine" style="margin-left: 3px;" class="form-control form-control-sm col-sm-2 cap-input" ngbTooltip="Line">
                             <input type="text" class="form-control form-control-sm col-sm-2 cap-input" style="margin-left: 3px;" ngbTooltip="Year">
                             <input type="text" class="form-control form-control-sm col-sm-3 cap-input" style="margin-left: 3px;" ngbTooltip="Sequence No">
                             <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Co Code">
@@ -60,24 +95,25 @@
                             <span>&nbsp;</span>
                             <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
                         </div>
-                        <div class="input-group">
+                    -->
+                        <div class="input-group ig-row" style="margin-top: -6px !important;">
                             <label class="form-control-sm col-sm-2">Ceding Company</label>
                             <input type="text" class="form-control form-control-sm">
                         </div>
-                        <div class="input-group">
+                        <div class="input-group ig-row">
                             <label class="form-control-sm col-sm-2">Insured</label>
                             <input type="text" class="form-control form-control-sm">
                         </div>
-                        <div class="input-group">
+                        <div class="input-group ig-row">
                             <label class="form-control-sm col-sm-2">Risk</label>
                             <input type="text" class="form-control form-control-sm">
-                        </div> -->
+                        </div>
                     </div>
                 </div>
             </div>
         </fieldset>
     </div>
-    <div class="col-sm-3"></div>
+    <div class="col-sm-2"></div>
 </div>
 <div class="form-row">
     <div class="form-group col-sm">

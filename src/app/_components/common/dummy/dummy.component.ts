@@ -102,7 +102,8 @@ export class DummyComponent implements OnInit {
         ],
         tableData: this.quotationService.getQuotationListInfo(),
         pageLength: 10,
-        expireFilter: true, 
+        expireFilter: true,
+        checkFlag: true,
         
     };
 
@@ -249,6 +250,7 @@ export class DummyComponent implements OnInit {
         this.modalService.dismissAll();
         this.modalService.open(this.modalComp.test, { centered: true, backdrop: 'static', windowClass : 'modal-size' });
     }
+    
     openAgain(){
         this.modalService.dismissAll();
     }
