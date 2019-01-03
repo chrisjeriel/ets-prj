@@ -24,6 +24,10 @@ export class QuotationProcessingComponent implements OnInit {
   copyQuotationFlag: boolean = true;*/
     
   line: string = "";
+    
+  mdlConfig = {
+      mdlBtnAlign: 'center',
+  }
 
   passData: any = {
         tableData: [], 
@@ -33,6 +37,18 @@ export class QuotationProcessingComponent implements OnInit {
         filters: [],
         pageLength: 10,
         expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: true, printBtn: false, addFlag: true, editFlag: true, copyFlag: true,
+  }
+    
+  riskData: any = {
+      tableData: [['10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV']],
+      tHeader: ['Risk Code', 'Risk', 'Region', 'Province', 'Town/City', 'District', 'Block'],
+      dataTypes: ['text', 'text', 'text', 'text', 'text', 'text', 'text'],
+      resizable: [false, true, false, true, true, false, false],
+      pageLength: 10,
+      searchFlag: true,
+      infoFlag: true,
+      paginateFlag: true,
+      fixedCol: false,
   }
 
   constructor(private quotationService: QuotationService, private modalService: NgbModal, private router: Router
@@ -97,7 +113,7 @@ export class QuotationProcessingComponent implements OnInit {
   }
   
   onClickAdd(event){
-
+      $('#addModal > #modalBtn').trigger('click');
   }
   onClickEdit(event) {
     this.line = this.quotationService.rowData[0].split("-")[0];
@@ -108,9 +124,13 @@ export class QuotationProcessingComponent implements OnInit {
   }
     
   onClickCopy(event){
-      $('#modalAdd').trigger('click');
+      $('#copyModal > #modalBtn').trigger('click');
   }
 
+  riskLOV(){
+      $('#riskModal > #modalBtn').trigger('click');
+  }
+    
   nextBtnEvent() {
     if (this.line === 'CAR' ||
       this.line === 'EAR' ||
