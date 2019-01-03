@@ -68,4 +68,5 @@ export class PolEndorsementComponent implements OnInit {
     onClickSave() {
         this.holdCover = false;
     }
+
 }

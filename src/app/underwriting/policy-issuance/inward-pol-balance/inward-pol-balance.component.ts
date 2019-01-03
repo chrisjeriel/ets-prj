@@ -18,7 +18,6 @@ export class InwardPolBalanceComponent implements OnInit {
   addFlag;
   deleteFlag;
 
-
   passData: any = {
     tableData: [],
     tHeader: [],
