@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { QuotationList, HoldCoverMonitoringList, DummyInfo, QuoteEndorsement, QuotationOption, QuotationOtherRates, IntCompAdvInfo, AttachmentInfo, QuotationProcessing, QuotationCoverageInfo, QuotationHoldCover, ItemInformation, ReadyForPrint } from '@app/_models';
+import { QuotationList, HoldCoverMonitoringList, DummyInfo, QuoteEndorsement, QuotationOption, QuotationOtherRates, IntCompAdvInfo, AttachmentInfo, QuotationProcessing, QuotationCoverageInfo, QuotationHoldCover, ItemInformation, ReadyForPrint, OpenCoverProcessing, Risks } from '@app/_models';
 
 
 @Injectable({ providedIn: 'root' })
@@ -20,6 +20,8 @@ export class QuotationService {
     quoteOptionNos: number[] = [];
     quotationToHoldCover: QuotationHoldCover[] = [];
     readyForPrinting: ReadyForPrint[] = [];
+    openCoverProcessing: OpenCoverProcessing[] = [];
+    risksData: Risks[] = [];
     
     rowData: any[] = [];
     toGenInfo: any[] = [];
@@ -196,41 +198,41 @@ export class QuotationService {
     getQuoProcessingData() {
         this.quoProcessingData = [
             new QuotationProcessing('CAR-2015-00088-00-99', 'Direct', 'CAR Wet Risks', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'CAR-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), new Date('2015-02-09'), new Date('2015-02-09')),
+                new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
             new QuotationProcessing('CAR-2015-00088-00-78', 'Retrocession', 'CAR Wet Risks', 'Concluded', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'CAR-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), new Date('2015-02-09'), new Date('2015-02-09')),
+                new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
             new QuotationProcessing('EEI-2015-00088-00-77', 'Direct', 'EEI', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'EEI-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), new Date('2015-02-09'), new Date('2015-02-09')),
+                new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
             new QuotationProcessing('EAR-2015-00088-00-55', 'Direct', 'EAR', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'EAR-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), new Date('2015-02-09'), new Date('2015-02-09')),
+                new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
             new QuotationProcessing('CEC-2015-00088-00-60', 'Direct', 'CEC', 'Concluded', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'CEC-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), new Date('2015-02-09'), new Date('2015-02-09')),
+                new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
             new QuotationProcessing('MBI-2015-00088-00-21', 'Direct', 'MBI', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'MBI-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), new Date('2015-02-09'), new Date('2015-02-09')),
+                new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
             new QuotationProcessing('MLP-2015-00088-00-33', 'Retrocession', 'MLP', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'MLP-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), new Date('2015-02-09'), new Date('2015-02-09')),
+                new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
             new QuotationProcessing('CAR-2015-00088-00-28', 'Direct', 'CAR Wet Risks', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'CAR-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), new Date('2015-02-09'), new Date('2015-02-09')),
+                new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
             new QuotationProcessing('DOS-2015-00088-00-75', 'Direct', 'DOS', 'Concluded', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'DOS-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), new Date('2015-02-09'), new Date('2015-02-09')),
+                new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
             new QuotationProcessing('CAR-2015-00088-00-99', 'Direct', 'CAR Wet Risks', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'CAR-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), new Date('2015-02-09'), new Date('2015-02-09')),
+                new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
             new QuotationProcessing('CAR-2015-00088-00-78', 'Retrocession', 'CAR Wet Risks', 'Concluded', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'CAR-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), new Date('2015-02-09'), new Date('2015-02-09')),
+                new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
             new QuotationProcessing('EEI-2015-00088-00-77', 'Direct', 'EEI', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'EEI-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), new Date('2015-02-09'), new Date('2015-02-09')),
+                new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
             new QuotationProcessing('EAR-2015-00088-00-55', 'Direct', 'EAR', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'EAR-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), new Date('2015-02-09'), new Date('2015-02-09')),
+                new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
             new QuotationProcessing('CEC-2015-00088-00-60', 'Direct', 'CEC', 'Concluded', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'CEC-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), new Date('2015-02-09'), new Date('2015-02-09')),
+                new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
             new QuotationProcessing('MBI-2015-00088-00-21', 'Direct', 'MBI', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'MBI-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), new Date('2015-02-09'), new Date('2015-02-09')),
+                new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
             new QuotationProcessing('MLP-2015-00088-00-33', 'Retrocession', 'MLP', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'MLP-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), new Date('2015-02-09'), new Date('2015-02-09')),
+                new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
             new QuotationProcessing('CAR-2015-00088-00-28', 'Direct', 'CAR Wet Risks', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'CAR-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), new Date('2015-02-09'), new Date('2015-02-09')),
+                new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
             new QuotationProcessing('DOS-2015-00088-00-75', 'Direct', 'DOS', 'Concluded', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'DOS-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), new Date('2015-02-09'), new Date('2015-02-09'))
+                new Date('2015-03-09'), 'Rose Lim', 'QUECOH')
         ];
 
         return this.quoProcessingData;
@@ -335,5 +337,56 @@ export class QuotationService {
         ];
         return this.readyForPrinting;
 
+    }
+
+    getOpenCoverProcessingData() {
+        this.openCoverProcessing = [
+            new OpenCoverProcessing('CAR-2015-00088-00-99', 'Direct', 'CAR Wet Risks', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
+                new Date('2015-03-09'), 'Requestor', 'Creator'),
+            new OpenCoverProcessing('CAR-2015-00088-00-78', 'Retrocession', 'CAR Wet Risks', 'Concluded', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
+                new Date('2015-03-09'), 'Requestor', 'Creator'),
+            new OpenCoverProcessing('EEI-2015-00088-00-77', 'Direct', 'EEI', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
+                new Date('2015-03-09'), 'Requestor', 'Creator'),
+            new OpenCoverProcessing('EAR-2015-00088-00-55', 'Direct', 'EAR', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
+                new Date('2015-03-09'), 'Requestor', 'Creator'),
+            new OpenCoverProcessing('CEC-2015-00088-00-60', 'Direct', 'CEC', 'Concluded', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
+                new Date('2015-03-09'), 'Requestor', 'Creator'),
+            new OpenCoverProcessing('MBI-2015-00088-00-21', 'Direct', 'MBI', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
+                new Date('2015-03-09'), 'Requestor', 'Creator'),
+            new OpenCoverProcessing('MLP-2015-00088-00-33', 'Retrocession', 'MLP', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
+                new Date('2015-03-09'), 'Requestor', 'Creator'),
+            new OpenCoverProcessing('CAR-2015-00088-00-28', 'Direct', 'CAR Wet Risks', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
+                new Date('2015-03-09'), 'Requestor', 'Creator'),
+            new OpenCoverProcessing('DOS-2015-00088-00-75', 'Direct', 'DOS', 'Concluded', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
+                new Date('2015-03-09'), 'Requestor', 'Creator'),
+            new OpenCoverProcessing('CAR-2015-00088-00-99', 'Direct', 'CAR Wet Risks', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
+                new Date('2015-03-09'), 'Requestor', 'Creator'),
+            new OpenCoverProcessing('CAR-2015-00088-00-78', 'Retrocession', 'CAR Wet Risks', 'Concluded', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
+                new Date('2015-03-09'), 'Requestor', 'Creator'),
+            new OpenCoverProcessing('EEI-2015-00088-00-77', 'Direct', 'EEI', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
+                new Date('2015-03-09'), 'Requestor', 'Creator'),
+            new OpenCoverProcessing('EAR-2015-00088-00-55', 'Direct', 'EAR', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
+                new Date('2015-03-09'), 'Requestor', 'Creator'),
+            new OpenCoverProcessing('CEC-2015-00088-00-60', 'Direct', 'CEC', 'Concluded', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
+                new Date('2015-03-09'), 'Requestor', 'Creator'),
+            new OpenCoverProcessing('MBI-2015-00088-00-21', 'Direct', 'MBI', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
+                new Date('2015-03-09'), 'Requestor', 'Creator'),
+            new OpenCoverProcessing('MLP-2015-00088-00-33', 'Retrocession', 'MLP', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
+                new Date('2015-03-09'), 'Requestor', 'Creator'),
+            new OpenCoverProcessing('CAR-2015-00088-00-28', 'Direct', 'CAR Wet Risks', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
+                new Date('2015-03-09'), 'Requestor', 'Creator'),
+            new OpenCoverProcessing('DOS-2015-00088-00-75', 'Direct', 'DOS', 'Concluded', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
+                new Date('2015-03-09'), 'Requestor', 'Creator'),
+        ];
+
+        return this.openCoverProcessing;
+    }    
+
+
+    getRisksLOV(){
+        this.risksData = [
+          new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+        ];
+        return this.risksData;
     }
 }

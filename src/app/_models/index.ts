@@ -33,3 +33,5 @@ export * from './PolItem';
 export * from './QuotationReadyForPrinting';
 export * from './PurgeExtractedPolicy';
 export * from './PolInwardPolBalanceOtherCharges';
+export * from './OpenCoverProcessing';
+export * from './Risks';

@@ -72,14 +72,14 @@ export class PolCreateAlterationPARComponent implements OnInit {
   }
 
   navigateToGenInfo() {
-    if (this.policyLine === 'CAR' ||
-      this.policyLine === 'EAR' ||
-      this.policyLine === 'EEI' ||
-      this.policyLine === 'CEC' ||
-      this.policyLine === 'MBI' ||
-      this.policyLine === 'BPV' ||
-      this.policyLine === 'MLP' ||
-      this.policyLine === 'DOS') {
+    if (this.policyLine.toUpperCase() === 'CAR' ||
+      this.policyLine.toUpperCase() === 'EAR' ||
+      this.policyLine.toUpperCase() === 'EEI' ||
+      this.policyLine.toUpperCase() === 'CEC' ||
+      this.policyLine.toUpperCase() === 'MBI' ||
+      this.policyLine.toUpperCase() === 'BPV' ||
+      this.policyLine.toUpperCase() === 'MLP' ||
+      this.policyLine.toUpperCase() === 'DOS') {
       console.log(this.policyLine);
       this.router.navigate(['/policy-issuance-alt', { line: this.policyLine }], { skipLocationChange: true });
     }

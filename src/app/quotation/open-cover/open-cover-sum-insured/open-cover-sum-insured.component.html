@@ -1,0 +1,74 @@
+<div>
+	<fieldset class="scheduler-border">
+	    <legend class="scheduler-border">Quotation Info</legend>
+	    <div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;">
+	        <div class="input-group" style="margin-bottom: -13px !important; margin-top: 3px !important">
+	            <label class="col-sm-1"></label>
+	            <label class="form-control-sm col-sm-1" for="xx">Policy No</label>
+	            <input type="text" id="xx" value="CAR-2018-5081-077-0177" class="form-control form-control-sm cust-sm col-sm-2"
+	                   placeholder="" readonly>
+	            <label class="form-control-sm col-sm-1" for="xx">Insured</label>
+	            <input type="text" id="xx" value="Insurer" class="form-control form-control-sm cust-sm col-sm-5" placeholder=""
+	                   readonly>
+	        </div>
+	        <div class="input-group" style="margin-bottom: -13px !important;">
+	            <label class="col-sm-1"></label>
+	            <label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Risk</label>
+	            <input type="text" id="xx" value="Risk Name" class="form-control form-control-sm cust-sm col-sm-8" placeholder=""
+	                   readonly>
+	        </div>
+	    </div>
+	</fieldset>
+
+	<div class="row" style="margin-top: -6px;">
+		<div class="col-sm-6" style="padding-right: 2px;">
+			<fieldset class="scheduler-border ">
+				<legend class="scheduler-border"  style="visibility: hidden;color: rgb(56, 142, 60);  padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+				<div class="custom-row-inline-inset">
+					<div class="input-group">
+						<label class="form-control-sm col-sm-4" for="inputRisk" >Currency</label>
+            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm">
+            			<label class="form-control-sm col-sm" for="inputRisk" >Exch. Rt.</label>
+            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" >
+            			<label class="col-sm-2"></label>
+					</div>
+					<div class="input-group">
+						<label class="form-control-sm col-sm-4" for="inputRisk" style="padding-left: 0px;">Max Sum Insured</label>
+            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm">
+            			<label class="col-sm-2"></label>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+		<div class="col-sm-6" style="padding-left: 2px;">
+			<fieldset class="scheduler-border ">
+				<legend class="scheduler-border"  style="visibility: hidden;color: rgb(56, 142, 60);  padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+				<div class="custom-row-inline-inset">
+					<div class="input-group">
+						<label class="form-control-sm col-sm-4" for="inputRisk" >Share (%)</label>
+            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm">
+            			<label class="form-control-sm col-sm" for="inputRisk" >PML (%)</label>
+            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" >
+            			<label class="col-sm-2"></label>
+					</div>
+					<div class="input-group">
+						<label class="form-control-sm col-sm-4" for="inputRisk" style="padding-left: 0px;">Part of (100%)</label>
+            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm">
+            			<label class="col-sm-2"></label>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+	</div>
+</div>
+
+<div class="form-row">
+	<div class="form-group col-sm">
+		<div class="col-md-13 text-center">
+			<div class="cust-btn-container">
+				<button type="button" class="cust-btn" 	(click)="pol($event)"><a>Cancel</a></button>
+				<button type="button" class="cust-btn"><a>Save</a></button>
+			</div>
+		</div>
+	</div>
+</div>

@@ -21,8 +21,9 @@
 
 <fieldset class="scheduler-border">
 	<legend class="scheduler-border">Endorsements</legend>
-	<button type="button" class="cust-btn" style="margin-left: 227px !important;">Copy Endt</button>
-	<div class="row" style="margin-top: -26px !important;">
+	<button (click)="pindot($event)" type="button" class="cust-btn" style="margin-left: 227px !important; margin-top: 1px !important; position:absolute !important;">Copy
+		Endt</button>
+	<div class="row">
 		<div class="col-sm-1"></div>
 		<div class="col-sm-10">
 			<app-cust-editable-non-datatable [passData]="passData">

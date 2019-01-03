@@ -36,92 +36,92 @@ export class ParListingComponent implements OnInit {
         filters: [
             {
                 key: 'policyNo',
-                title:'Policy No.',
+                title: 'Policy No.',
                 dataType: 'text'
             },
             {
                 key: 'cessionType',
-                title:'Type of Cession',
+                title: 'Type of Cession',
                 dataType: 'text'
             },
             {
                 key: 'lineClass',
-                title:'Line Class',
+                title: 'Line Class',
                 dataType: 'text'
             },
             {
                 key: 'status',
-                title:'Status',
+                title: 'Status',
                 dataType: 'text'
             },
             {
                 key: 'cedingCompany',
-                title:'Ceding Company',
+                title: 'Ceding Company',
                 dataType: 'text'
             },
             {
                 key: 'principal',
-                title:'Principal',
+                title: 'Principal',
                 dataType: 'text'
             },
             {
                 key: 'contractor',
-                title:'Contractor',
+                title: 'Contractor',
                 dataType: 'text'
             },
             {
                 key: 'insured',
-                title:'Insured',
+                title: 'Insured',
                 dataType: 'text'
             },
             {
                 key: 'risk',
-                title:'Risk',
+                title: 'Risk',
                 dataType: 'text'
             },
             {
                 key: 'object',
-                title:'Object',
+                title: 'Object',
                 dataType: 'text'
             },
             {
                 key: 'site',
-                title:'Site',
+                title: 'Site',
                 dataType: 'text'
             },
             {
                 key: 'quoteDate',
-                title:'Period From',
+                title: 'Period From',
                 dataType: 'date'
             },
             {
                 key: 'quotationNo',
-                title:'Quotation No',
+                title: 'Quotation No',
                 dataType: 'text'
             },
             {
                 key: 'company',
-                title:'Company',
+                title: 'Company',
                 dataType: 'text'
             },
             {
                 key: 'issueDate',
-                title:'Issue Date',
+                title: 'Issue Date',
                 dataType: 'date'
             },
             {
                 key: 'inceptionDate',
-                title:'Inception Date',
+                title: 'Inception Date',
                 dataType: 'date'
             },
             {
                 key: 'expiryDate',
-                title:'Expiry Date',
+                title: 'Expiry Date',
                 dataType: 'date'
             },
             {
                 key: 'createdBy',
-                title:'Created By',
+                title: 'Created By',
                 dataType: 'text'
             },
         ],
