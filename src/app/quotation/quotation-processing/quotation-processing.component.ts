@@ -31,8 +31,8 @@ export class QuotationProcessingComponent implements OnInit {
 
   passData: any = {
         tableData: [], 
-        tHeader: ['Quotation No.','Type of Cession','Line Class','Status','Ceding Company','Principal','Contractor','Insured','Risk','Object','Site','Policy No','Currency', 'Quote Date', 'Valid Until', 'Request Date', 'Create Date'],
-        dataTypes: ['text','text','text','text','text','text','text','text','text','text','text','text','date','date','date','date'],
+        tHeader: ['Quotation No.','Type of Cession','Line Class','Status','Ceding Company','Principal','Contractor','Insured','Risk','Object','Site','Policy No','Currency', 'Quote Date', 'Valid Until', 'Requested By', 'Created By'],
+        dataTypes: ['text','text','text','text','text','text','text','text','text','text','text','text','date','date','text','text'],
         resizable: [false, true, true, true, true, true, true, true, true, true, false, false, true, true, true, true],
         filters: [],
         pageLength: 10,
@@ -40,7 +40,7 @@ export class QuotationProcessingComponent implements OnInit {
   }
     
   riskData: any = {
-      tableData: [['10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV']],
+      tableData: this.quotationService.getRisksLOV(),
       tHeader: ['Risk Code', 'Risk', 'Region', 'Province', 'Town/City', 'District', 'Block'],
       dataTypes: ['text', 'text', 'text', 'text', 'text', 'text', 'text'],
       resizable: [false, true, false, true, true, false, false],

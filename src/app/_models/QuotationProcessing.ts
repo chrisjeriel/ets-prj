@@ -14,10 +14,10 @@ export class QuotationProcessing {
 	currency: string;
 	quoteDate: Date;
 	validityDate: Date;
-	requestDate: Date;
-	createDate: Date;
+	requestedBy: string;
+	createdBy: string;
 
-	constructor(quotationNo: string,typeOfCession: string,lineClass: string,status: string,cedingCompany: string,principal: string,contractor: string,insured: string,risk: string,qObject: string,site: string,policyNo: string,currency: string,quoteDate: Date,validityDate: Date,requestDate: Date,createDate: Date) {
+	constructor(quotationNo: string,typeOfCession: string,lineClass: string,status: string,cedingCompany: string,principal: string,contractor: string,insured: string,risk: string,qObject: string,site: string,policyNo: string,currency: string,quoteDate: Date,validityDate: Date,requestedBy: string, createdBy: string) {
 		this.quotationNo = quotationNo;
 		this.typeOfCession = typeOfCession;
 		this.lineClass = lineClass;
@@ -33,8 +33,8 @@ export class QuotationProcessing {
 		this.currency = currency;
 		this.quoteDate = quoteDate;
 		this.validityDate = validityDate;
-		this.requestDate = requestDate;
-		this.createDate = createDate;
+		this.requestedBy = requestedBy;
+		this.createdBy = createdBy;
 	}
 
 }
