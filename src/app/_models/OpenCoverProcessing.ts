@@ -1,5 +1,5 @@
-export class QuotationProcessing {
-	quotationNo: string;
+export class OpenCoverProcessing {
+	openCoverQuotationNo: string;
 	typeOfCession: string;
 	lineClass: string;
 	status: string;
@@ -10,15 +10,15 @@ export class QuotationProcessing {
 	risk: string;
 	qObject: string;
 	site: string;
-	policyNo: string;
 	currency: string;
+	//policyNo: string;
 	quoteDate: Date;
 	validityDate: Date;
-	requestedBy: string;
-	createdBy: string;
+	requestBy: string;
+	createBy: string;
 
-	constructor(quotationNo: string,typeOfCession: string,lineClass: string,status: string,cedingCompany: string,principal: string,contractor: string,insured: string,risk: string,qObject: string,site: string,policyNo: string,currency: string,quoteDate: Date,validityDate: Date,requestedBy: string, createdBy: string) {
-		this.quotationNo = quotationNo;
+	constructor(openCoverQuotationNo: string,typeOfCession: string,lineClass: string,status: string,cedingCompany: string,principal: string,contractor: string,insured: string,risk: string,qObject: string,site: string,currency: string,quoteDate: Date,validityDate: Date,requestBy: string,createBy: string) {
+		this.openCoverQuotationNo = openCoverQuotationNo;
 		this.typeOfCession = typeOfCession;
 		this.lineClass = lineClass;
 		this.status = status;
@@ -29,12 +29,11 @@ export class QuotationProcessing {
 		this.risk = risk;
 		this.qObject = qObject;
 		this.site = site;
-		this.policyNo = policyNo;
 		this.currency = currency;
 		this.quoteDate = quoteDate;
 		this.validityDate = validityDate;
-		this.requestedBy = requestedBy;
-		this.createdBy = createdBy;
+		this.requestBy = requestBy;
+		this.createBy = createBy;
 	}
 
 }

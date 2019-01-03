@@ -30,6 +30,8 @@ import { PolCreateOpenCoverComponent } from './underwriting/policy-issuance/pol-
 import { PolIssuanceOpenCoverLetterComponent } from './underwriting/policy-issuance/pol-issuance-open-cover-letter.component';
 import { PurgeExtractedPolicyComponent } from './underwriting/expiry-and-renewal/purge-extracted-policy/purge-extracted-policy.component';
 import { UpdateInformationComponent } from './utilities/update-information/update-information.component'
+import { OpenCoverProcessingComponent } from './quotation/open-cover-processing/open-cover-processing.component';
+import { OpenCoverComponent } from './quotation/open-cover/open-cover.component';
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -62,6 +64,8 @@ const appRoutes: Routes = [
     { path: 'create-open-cover-letter', component: PolIssuanceOpenCoverLetterComponent },
     { path: 'purge-extracted-policy' , component: PurgeExtractedPolicyComponent} ,
     { path: 'update-info' , component: UpdateInformationComponent},
+    { path: 'open-cover-processing' , component: OpenCoverProcessingComponent},
+    { path: 'open-cover' , component: OpenCoverComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

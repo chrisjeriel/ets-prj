@@ -18,53 +18,61 @@
     }
 </style>
 <div class="cust-tabs-container">
-	<h4>Underwriting / Generate Documents</h4>
-		<ngb-tabset>
-			<ngb-tab title="Policy Printing">
-				<ng-template ngbTabContent>
-					<div class="row" style="justify-content: center;">
-						<div class="col-sm-3"></div>
-						<div class="col-sm">
-							<fieldset class="scheduler-border"> 
-								<legend class="scheduler-border">Regenerate Policy Documents</legend>
-									<div class="form-row custom-row-inline-inset" style="margin-bottom: 2px ! important;margin-top: 10px ! important">
-										<div class="input-group ig-row">
-											<label class="form-control-sm col-sm-3">Policy No</label>
-					    					<input type="text" id="inputPolnumA" class="form-control form-control-sm cust-sm">
-					    					<input type="text" id="inputPolnumB" class="form-control form-control-sm cust-sm input-ig-row">
-					    					<input type="text" id="inputPolnumC" class="form-control form-control-sm cust-sm input-ig-row" >
-					    					<input type="text" id="inputPolnumD" class="form-control form-control-sm cust-sm input-ig-row">
-					    					<i class="fa fa-search" style="margin-left: 3px; margin-top: 2px"></i>
+	<h4>Policy / Generate Documents</h4>
+	<ngb-tabset>
+		<ngb-tab title="Policy Printing">
+			<ng-template ngbTabContent>
+				<div class="row" style="justify-content: center;">
+					<div class="col-sm-6">
+						<fieldset class="scheduler-border">
+							<legend class="scheduler-border">Regenerate Policy Documents</legend>
+							<div class="col-sm-1"></div>
+							<div class="col-sm">
+								<div class="row" style="margin-right: 0px; margin-bottom: 11px;">
+									<div class="input-group">
+										<div class="input-group">
+											<label class="form-control-sm col-sm-2" style="margin-left: 8px !important;">Policy No</label>
+											<input type="text" [(ngModel)]="policyLine" style="margin-left: 3px;" class="form-control form-control-sm col-sm cap-input">
+											<input type="text" class="form-control form-control-sm col-sm cap-input" style="margin-left: 3px;">
+											<input type="text" class="form-control form-control-sm col-sm cap-input" style="margin-left: 3px;">
+											<input type="text" class="form-control form-control-sm col-sm cap-input" style="margin-left: 3px;">
+											<span>&nbsp;</span>
+											<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+										</div>
+
+										<div class="input-group ig-row" style="margin-top: -6px !important;">
+											<label class="form-control-sm col-sm-2" style="margin-left: 8px !important;">Ceding Company</label>
+											<input type="text" class="form-control form-control-sm">
 										</div>
 										<div class="input-group ig-row">
-											<label class="form-control-sm col-sm-3" for="intCedComp">Ceding Company</label>
-											<input type="text" id="intCedComp" class="form-control form-control-sm cust-sm">
+											<label class="form-control-sm col-sm-2" style="margin-left: 8px !important;">Insured</label>
+											<input type="text" class="form-control form-control-sm">
 										</div>
 										<div class="input-group ig-row">
-											<label class="form-control-sm col-sm-3" for="intInsured">Insured</label>
-											<input type="text" id="intInsured" class="form-control form-control-sm cust-sm">
-										</div>
-										<div class="input-group ig-row" >
-											<label class="form-control-sm col-sm-3" for="intRisk">Risk</label>
-											<input type="text" id="intRisk" class="form-control form-control-sm cust-sm">
+											<label class="form-control-sm col-sm-2" style="margin-left: 8px !important;">Risk</label>
+											<input type="text" class="form-control form-control-sm">
 										</div>
 									</div>
-							</fieldset>
-						</div>
-						<div class="col-sm-3"></div>
+								</div>
+							</div>
+						</fieldset>
 					</div>
-					<div class="row" style="justify-content: center; margin-top: -15px ! important">
-						<div class="col-sm-6">
-							<app-cust-editable-table [checkFlag]="false" [addFlag]="true" [deleteFlag]="true" [editFlag]="false" [nData]="nData" [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes" [opts]="opts"></app-cust-editable-table>
-						</div>
+				</div>
+				<br>
+				<div class="row" style="justify-content: center;">
+					<div class="col-sm-6">
+						<app-cust-editable-non-datatable [passData]="passData">
+						</app-cust-editable-non-datatable>
 					</div>
-					<div class="row"  style="justify-content: center;">
-						<div class="col-sm-6 text-center">
-								<button type="button" class="cust-btn" routerLink="''"><a>Cancel</a></button>
-								<button type="button" class="cust-btn"><a>Print</a></button>
-						</div>
+				</div>
+				<br>
+				<div class="row" style="justify-content: center;">
+					<div class="col-sm-6 text-center">
+						<button type="button" class="cust-btn" routerLink="''"><a>Cancel</a></button>
+						<button type="button" class="cust-btn"><a>Print</a></button>
 					</div>
-				</ng-template>
-			</ngb-tab>
-		</ngb-tabset>
+				</div>
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
 </div>

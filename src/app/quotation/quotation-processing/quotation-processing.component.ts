@@ -20,17 +20,35 @@ export class QuotationProcessingComponent implements OnInit {
   rowData: any[] = [];
   disabledEditBtn: boolean = true;
   disabledCopyBtn: boolean = true;
-
+/*  addQuoteFlag: boolean = true;
+  copyQuotationFlag: boolean = true;*/
+    
   line: string = "";
+    
+  mdlConfig = {
+      mdlBtnAlign: 'center',
+  }
 
   passData: any = {
         tableData: [], 
-        tHeader: ['Quotation No.','Type of Cession','Line Class','Status','Ceding Company','Principal','Contractor','Insured','Risk','Object','Site','Policy No','Currency', 'Quote Date', 'Valid Until', 'Request Date', 'Create Date'],
-        dataTypes: ['text','text','text','text','text','text','text','text','text','text','text','text','date','date','date','date'],
+        tHeader: ['Quotation No.','Type of Cession','Line Class','Status','Ceding Company','Principal','Contractor','Insured','Risk','Object','Site','Policy No','Currency', 'Quote Date', 'Valid Until', 'Requested By', 'Created By'],
+        dataTypes: ['text','text','text','text','text','text','text','text','text','text','text','text','date','date','text','text'],
         resizable: [false, true, true, true, true, true, true, true, true, true, false, false, true, true, true, true],
         filters: [],
         pageLength: 10,
-        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: true, printBtn: false, 
+        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: true, printBtn: false, addFlag: true, editFlag: true, copyFlag: true,
+  }
+    
+  riskData: any = {
+      tableData: this.quotationService.getRisksLOV(),
+      tHeader: ['Risk Code', 'Risk', 'Region', 'Province', 'Town/City', 'District', 'Block'],
+      dataTypes: ['text', 'text', 'text', 'text', 'text', 'text', 'text'],
+      resizable: [false, true, false, true, true, false, false],
+      pageLength: 10,
+      searchFlag: true,
+      infoFlag: true,
+      paginateFlag: true,
+      fixedCol: false,
   }
 
   constructor(private quotationService: QuotationService, private modalService: NgbModal, private router: Router
@@ -93,15 +111,26 @@ export class QuotationProcessingComponent implements OnInit {
     this.passData.tableData = this.quotationService.getQuoProcessingData();
 
   }
-
-  editBtnEvent() {
+  
+  onClickAdd(event){
+      $('#addModal > #modalBtn').trigger('click');
+  }
+  onClickEdit(event) {
     this.line = this.quotationService.rowData[0].split("-")[0];
 
     this.quotationService.toGenInfo = [];
     this.quotationService.toGenInfo.push("edit", this.line);
     this.router.navigate(['/quotation']);
   }
+    
+  onClickCopy(event){
+      $('#copyModal > #modalBtn').trigger('click');
+  }
 
+  riskLOV(){
+      $('#riskModal > #modalBtn').trigger('click');
+  }
+    
   nextBtnEvent() {
     if (this.line === 'CAR' ||
       this.line === 'EAR' ||

@@ -121,17 +121,14 @@
                     <td *ngIf="passData.checkFlag" class="checkbox align-middle"><input *ngIf="addCheckFlag(data)" type="checkbox"
                             name="checkbox" [checked]="checked"></td>
                     <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]" class="align-middle">
-                        <div *ngIf="addCheckFlag(data)" class="align-middle">
+                        <div *ngIf="addCheckFlag(data)" class="align-middle" style="position: relative;">
                             <a  *ngIf="passData.magnifyingGlass.indexOf(key)!=-1"><i class="fa fa-search align-middle"></i></a> 
                             <input *ngSwitchCase="'percent'" class="editable-text text-right number form-control-sm"
-                                type="text" [ngModel]="processData(key, data) | number:'1.7-7'" [ngModelOptions]="{updateOn:'blur'}"
-                                (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
+                                type="text" [ngModel]="processData(key, data) | number:'1.7-7'" (blur)="format($event , key, ti)">
                             <input *ngSwitchCase="'number'" class="editable-text text-right number form-control-sm"
-                                type="text" [ngModel]="processData(key, data)" [ngModelOptions]="{updateOn:'blur'}"
-                                (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
+                                type="text" [ngModel]="data[key]" [ngModelOptions]="{updateOn:'change'}">
                             <input *ngSwitchCase="'currency'" class="editable-text text-right number form-control-sm"
-                                type="text" [ngModel]="processData(key, data) | number:'1.2-2'" [ngModelOptions]="{updateOn:'blur'}"
-                                (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
+                                type="text" [ngModel]="data[key] | number:'1.2-2'" (blur)="format($event , key, ti)">
                             <div *ngSwitchCase="'checkbox'" style="text-align: center;">
                                 <input  type="checkbox">
                             </div>
@@ -143,13 +140,11 @@
                                 </ng-container>
                             </select>
 
-                            <input *ngSwitchCase="'date'" class="editable-date form-control-sm" type="date" [ngModel]="processData(key, data) | date:'yyyy-MM-dd'"
-                                (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
+                            <input *ngSwitchCase="'date'" class="editable-date form-control-sm" type="date" [ngModel]="processData(key, data) | date:'yyyy-MM-dd'">
                             <input *ngSwitchCase="'time'" class="editable-date form-control-sm" type="time" [ngModel]="processData(key, data) | date:'HH:mm'">
                             <input *ngSwitchCase="'datetime'" class="editable-date form-control-sm" type="datetime-local"
                                 [ngModel]="processData(key, data) | date:'yyyy-MM-ddTHH:mm'">
-                            <input *ngSwitchDefault class="editable-text form-control-sm" type="text" [ngModel]="processData(key, data)"
-                                (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
+                            <input *ngSwitchDefault class="editable-text form-control-sm" type="text" [ngModel]="processData(key, data)">
 
                         </div>
                         <div *ngIf="!addCheckFlag(data)" class="filler">

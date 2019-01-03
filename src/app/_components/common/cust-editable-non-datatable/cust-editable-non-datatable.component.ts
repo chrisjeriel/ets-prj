@@ -226,4 +226,8 @@ export class CustEditableNonDatatableComponent implements OnInit {
         }
         
     }
+
+   format(event,key, index){
+       this.displayData[index][key] = parseFloat(event.target.value.split(',').join(''));
+   }
 }
