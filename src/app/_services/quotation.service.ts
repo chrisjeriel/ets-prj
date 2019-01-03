@@ -327,11 +327,8 @@ export class QuotationService {
 
     getReadyForPrinting(){
         this.readyForPrinting = [
-            new ReadyForPrint("TEST","TEST","TEST","TEST","TEST","TEST","TEST","TEST"),
-            new ReadyForPrint("TEST","TEST","TEST","TEST","TEST","TEST","TEST","TEST"),
-            new ReadyForPrint("TEST","TEST","TEST","TEST","TEST","TEST","TEST","TEST"),
-            new ReadyForPrint("TEST","TEST","TEST","TEST","TEST","TEST","TEST","TEST"),
-            new ReadyForPrint("TEST","TEST","TEST","TEST","TEST","TEST","TEST","TEST"),
+            new ReadyForPrint("CAR-2018-00088-00-99","Direct","CAR Wet Risks","In Progress","Malayan","5K Builders","ABE International Corp","5K Builders & ABE International Corp"),
+            new ReadyForPrint("CAR-2018-00088-00-78","Retrocession","CAR Wet Risks","In Progress","FLT Primes","5K Builders","ABE International Corp","5K Builders & ABE International Corp"),
         ];
         return this.readyForPrinting;
 
