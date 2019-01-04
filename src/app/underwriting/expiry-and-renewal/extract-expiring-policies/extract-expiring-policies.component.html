@@ -4,38 +4,41 @@
 		<ngb-tab title="Extract Expiring Policies">
 			<ng-template ngbTabContent>
 				<div class="row">
-					<div class="col-sm-3"></div>
-					<div class="col-sm-6">
+					<div class="col-sm-2"></div>
+					<div class="col-sm-8">
 						<fieldset class="scheduler-border">
 							<legend class="scheduler-border">Parameter</legend>
 							<div class="form-row custom-row-inline-inset">
 								<div class="input-group">
-									<div class="col-sm-1"></div>
+									<div class="col-sm-2"></div>
 									<input class="form-control-sm " type="radio" name="optradio" id="byDate" [value]="true" [(ngModel)]="byDate" (click)="clearDates()">	
 									<label class="form-control-sm col-sm-4" for="byDate">&nbsp;By Date</label>
+									<div class="col-sm-1"></div>
 								</div>
 							</div>
 							<div class="form-row custom-row-inline-inset">
 								<div class="input-group" style="margin-top: -19px;">
-									<div class="col-sm-1"></div>
-									<label class="form-control-sm col-sm-1 cust-sm from" for="fromDate">From</label>
+									<div class="col-sm-2"></div>
+									<label class="form-control-sm cust-sm from" for="fromDate">From</label>
 									<input [(ngModel)]="expiryParameters.fromDate" type="date" class="form-control form-control-sm cust-sm col-sm-4" id="fromDate" value="2018-12-04" [disabled]="!byDate">
 									<label class="form-control-sm col-sm-1 cust-sm">To</label>
 									<input [(ngModel)]="expiryParameters.toDate" type="date" class="form-control form-control-sm cust-sm col-sm-4" id="toDate" value="2018-12-04" [disabled]="!byDate">
+									<div class="col-sm-1"></div>
 								</div>
 							</div>
 							<div class="form-row custom-row-inline-inset">
 								<div class="input-group" style="margin-top: -11px;">
-									<div class="col-sm-1"></div>
+									<div class="col-sm-2"></div>
 									<input class="form-control-sm " type="radio" name="optradio" id="byMonthYear" [value]="false" [(ngModel)]="byDate" (click)="clearDates()">
 									<label class="form-control-sm col-sm-5 text-left" for="byMonthYear">&nbsp;By Month/Year</label>
+									<div class="col-sm-1"></div>
 								</div>
 							</div>
 
 							<div class="form-row custom-row-inline-inset">
 								<div class="input-group" style="margin-top: -19px;">
-									<div class="col-sm-1"></div>
-									<label class="form-control-sm col-sm-1 cust-sm from">From</label>
+									<div class="col-sm-2"></div>
+									<label class="form-control-sm cust-sm from">From</label>
 									<select [(ngModel)]="expiryParameters.fromMonth" class="form-control form-control-sm cust-sm col-sm-3" name="fromMonth" [disabled]="byDate">
 										<option value="1">January</option>
 										<option value="2">February</option>
@@ -67,38 +70,42 @@
 										<option value="12">December</option>
 									</select>
 									<input [(ngModel)]="expiryParameters.toYear" class="form-control form-control-sm cust-sm col-sm-1" type="text" name="toYear" [disabled]="byDate">
+									<div class="col-sm-1"></div>
 								</div>
 							</div>
 							<br>
 							<div class="form-row custom-row-inline-inset">
-								<div class="input-group" style="margin-top: -22px;">
+								<div class="input-group" style="margin-top: -35px;">
 									<div class="col-sm-1"></div>
 									<label class="form-control-sm col-sm-2 text-right">Line</label>
-									<input [(ngModel)]="expiryParameters.line1" type="text" class="form-control form-control-sm col-sm-2">
+									<input [(ngModel)]="expiryParameters.line1" type="text" class="form-control form-control-sm col-sm-1">
 									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-									<input [(ngModel)]="expiryParameters.line2" type="text" name="" class="form-control form-control-sm col-sm-6"> 
+									<input [(ngModel)]="expiryParameters.line2" type="text" name="" class="form-control form-control-sm"> 
+									<div class="col-sm-1"></div>
 								</div>
 							</div>
 							<div class="form-row custom-row-inline-inset">
-								<div class="input-group" style="margin-top: -14px;">
+								<div class="input-group" style="margin-top: -18px;">
 									<div class="col-sm-1"></div>
 									<label class="form-control-sm col-sm-2 text-right">Type of Cession</label>
-									<input [(ngModel)]="expiryParameters.branch1" type="text" class="form-control form-control-sm col-sm-2">
+									<input [(ngModel)]="expiryParameters.branch1" type="text" class="form-control form-control-sm col-sm-1">
 									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-									<input [(ngModel)]="expiryParameters.branch2" type="text" name="" class="form-control form-control-sm col-sm-6"> 
+									<input [(ngModel)]="expiryParameters.branch2" type="text" name="" class="form-control form-control-sm">
+									<div class="col-sm-1"></div> 
 								</div>
 							</div>
 							<div class="form-row custom-row-inline-inset">
-								<div class="input-group" style="margin-top: -14px;"> 
+								<div class="input-group" style="margin-top: -16px;"> 
 									<div class="col-sm-1"></div>
 									<label class="form-control-sm col-sm-2" style="padding-right: 3px;">Ceding Company</label>
-									<input [(ngModel)]="expiryParameters.cedingCompany1" type="text" class="form-control form-control-sm col-sm-2">
+									<input [(ngModel)]="expiryParameters.cedingCompany1" type="text" class="form-control form-control-sm col-sm-1">
 									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-									<input [(ngModel)]="expiryParameters.cedingCompany2" type="text" name="" class="form-control form-control-sm col-sm-6"> 
+									<input [(ngModel)]="expiryParameters.cedingCompany2" type="text" name="" class="form-control form-control-sm"> 
+									<div class="col-sm-1"></div> 
 								</div>	
 							</div>
-							<div class="form-row custom-row-inline-inset">
-								<div class="input-group" style="margin-top: -14px;"> 
+							<div class="form-row custom-row-inline-inset" style="margin-bottom: 5px ! important;"> 
+								<div class="input-group" style="margin-top: -16px;"> 
 									<div class="col-sm-1"></div>
 									<label class="form-control-sm col-sm-2 text-right">Policy No</label>
 									<input type="text" class="form-control form-control-sm col-sm-1" ngbTooltip="Line">
@@ -114,18 +121,26 @@
 
 						<fieldset class="scheduler-border">
 							<legend class="scheduler-border">Last Extraction</legend>
-							<div class="form-row custom-row-inline-inset">
-								<div class="input-group">
-									<label class="form-control-sm col-sm-2">Extracted By</label>
-									<input [(ngModel)]="lastExtraction.extractedBy" class="form-control form-control-sm col-sm-3" type="text" name="optradio" checked="checked">
-									<label class="form-control-sm col-sm-2" style="margin-left: 47px;">Extraction Date</label>
-									<input [(ngModel)]="lastExtraction.extractionDate" class="form-control form-control-sm col-sm-3" type="date" name="optradio" checked="checked" id="extractionDate">
+								<div class="form-row custom-row-inline-inset" style="margin-bottom: 6px ! important;">
+									<div class="input-group">
+										<div class="col-sm-1"></div>
+										<div class="col-sm input-group" style="
+											padding-left: 0px !important;
+											padding-right: 3px !important;">
+											<label class="form-control-sm col-sm-4">Extracted By</label>
+											<input [(ngModel)]="lastExtraction.extractedBy" class="form-control form-control-sm col-sm" type="text" name="optradio" checked="checked">
+										</div>
+										<div class="col-sm input-group" style="padding-left: 0px !important; padding-right: 0px !important;">
+											<label class="form-control-sm col-sm-4">Extraction Date</label>
+											<input [(ngModel)]="lastExtraction.extractionDate" class="form-control form-control-sm col-sm" type="date" name="optradio" checked="checked" id="extractionDate">
+										</div>
+										<div class="col-sm-1"></div>
+									</div>
 								</div>
-							</div>
 						</fieldset>
 
 					</div>
-					<div class="col-sm-3"></div>
+					<div class="col-sm-2"></div>
 				</div>
 				<div class="form-row">
 					<div class="form-group col-sm">
@@ -133,7 +148,7 @@
 							<br>
 							<div class="cust-btn-container" style="margin-top: -20px;">
 							<app-modal [btnTitle]="'Extract'" (click)="save()">
-								<div header><h4>Extract Expiring Policies</h4></div>
+								<div header>Extract Expiring Policies</div>
 						        <div body class="row">
 						           <!-- <div class="col-sm-1 text-right my-modal-icon">
 							            <i class="fa fa-check-circle"></i>

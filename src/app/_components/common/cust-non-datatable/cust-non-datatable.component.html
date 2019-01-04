@@ -16,7 +16,7 @@
 </style>
 
 
-<div id="cust-table-container">
+<div id="cust-table-container" >
     <div class="cust-btn-container">
         <button *ngIf="passData.addFlag" class="cust-btn" (click)="onClickAdd(event)"><a>Add</a></button>
         <button *ngIf="passData.editFlag" class="cust-btn" [class.btnDisabled]="btnDisabled"[disabled]="btnDisabled" (click)="onClickEdit($event)"><a class="paginate_button previous">Edit</a></button>
@@ -88,7 +88,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let data of displayData | paginate: { id:'non-editable', itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event, data);" (dblclick)="onRowDblClick($event)" [class.selected]="data === indvSelect">
+                    <tr *ngFor="let data of displayData | paginate: { id:'non-editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event, data);" (dblclick)="onRowDblClick($event)" [class.selected]="data === indvSelect">
                         <td *ngIf="passData.checkFlag" style="text-align: center"><input type="checkbox" name="" *ngIf="addCheckFlag(data)"></td>
                         <td style="margin-top:1px">
                             <div *ngIf="addCheckFlag(data)">
@@ -120,7 +120,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let data of displayData | paginate: { id:'non-editable', itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event, data);" (dblclick)="onRowDblClick($event)" [class.selected]="data === indvSelect">
+                        <tr *ngFor="let data of displayData | paginate: { id:'non-editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event, data);" (dblclick)="onRowDblClick($event)" [class.selected]="data === indvSelect">
                             <td *ngIf="passData.checkFlag"> <input type="checkbox" name=""></td>
                             <td *ngFor="let key of dataKeys | slice: 1; let i = index" [ngSwitch]="passData.dataTypes[i]">
                                 <div *ngIf="addCheckFlag(data)">
@@ -161,7 +161,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let data of displayData | paginate: { id: 'non-editable', itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event, data);" (dblclick)="onRowDblClick($event)" [class.selected]="data === indvSelect || selected.includes(data) || checked">
+                <tr *ngFor="let data of displayData | paginate: { id: 'non-editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event, data);" (dblclick)="onRowDblClick($event)" [class.selected]="data === indvSelect || selected.includes(data) || checked">
                     <td *ngIf="passData.checkFlag" class="checkbox-container-body"><input type="checkbox" name="" *ngIf="addCheckFlag(data)" class="checkbox" (change)="removeSelected($event, data)" [checked]="checked"></td>
                     <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]">
                         <div *ngIf="addCheckFlag(data)">
@@ -184,7 +184,7 @@
     </div>
 
     <div class="pagingStatus" *ngIf="!passData.tableOnly || passData.pageStatus">
-        <pagination-template #paw="paginationApi" id="non-editable" (pageChange)="p = $event">
+        <pagination-template #paw="paginationApi" [id]="'non-editable'+passData.pageID" (pageChange)="p = $event">
             <label *ngIf="!paw.isLastPage() && displayLength > 0">Showing {{ (paw.getCurrent() - 1) * passData.pageLength + 1 }} - {{ paw.getCurrent() * passData.pageLength }} of {{displayLength}} entries </label>
             <label *ngIf="paw.isLastPage() && displayLength > 0">Showing {{ (paw.getCurrent() - 1) * passData.pageLength + 1 }} - {{displayLength}} of {{displayLength}} entries</label>
             <label *ngIf="displayLength < 1">Showing 0 - 0 of 0 entries</label>
@@ -193,7 +193,7 @@
     <div class="pagination" *ngIf="!passData.tableOnly || passData.pagination">
         <!--<div class="pagination" *ngIf="passData.hasPagination">-->
         <!-- <pagination-template class="" #paw="paginationApi" (pageChange)="p = $event"><a (click)="paw.setCurrent(1)">&laquo;</a></pagination-template>-->
-        <pagination-controls id="non-editable" class="my-pagination" (pageChange)="p = $event" previousLabel="" nextLabel="">
+        <pagination-controls [id]="'non-editable'+passData.pageID" class="my-pagination" (pageChange)="p = $event;paul($event)" previousLabel="" nextLabel="">
         </pagination-controls>
         <!--<pagination-template class="" #paw="paginationApi" (pageChange)="p = $event"> <a (click)="paw.setCurrent(paw.getLastPage())">&raquo;</a></pagination-template>-->
     </div>
