@@ -1,0 +1,58 @@
+<div class="cust-tabs-container">
+    <h4>Claims / Payment Requests</h4>
+    <ngb-tabset>
+        <ngb-tab title="Generate Payment Requests">
+            <ng-template ngbTabContent>
+                <div>
+                    <fieldset class="scheduler-border" style="padding-left: 25px ! important; padding-right: 25px ! important">    
+                        <legend class="scheduler-border">Payment Request Info</legend>  
+                            <div class="form-row custom-row-inline-inset" style="margin-top: 8px !important;">
+                                <div class="col-sm-4">
+                                    <div class="input-group" style="padding-right : 5px ! important; padding-left : 5px ! important;">
+                                        <label class="form-control-sm col-sm-4" for="xx">Payment Request No</label>
+                                        <input type="text" id="xx" value="" class="form-control form-control-sm cust-sm col-sm" placeholder="" readonly>
+                                    </div>
+                                     <div class="input-group" style="padding-right : 5px ! important; padding-left : 5px ! important; margin-top : -14px ! important; margin-bottom : -14px ! important; ">
+                                        <label class="form-control-sm col-sm-4" for="xx">Status</label>
+                                        <input type="text" id="xx" value="" class="form-control form-control-sm cust-sm" placeholder="" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="input-group" style="padding-right : 5px ! important; padding-left : 5px ! important;">
+                                        <label class="form-control-sm col-sm-5" for="xx">Payment Request Amount</label>
+                                        <input type="text" id="xx" value="" class="form-control form-control-sm cust-sm col-sm-2" placeholder="" readonly>
+                                        <input type="text" id="xx" value="" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px" placeholder="" readonly>
+                                    </div>
+                                     <div class="input-group" style="padding-right : 5px ! important; padding-left : 5px ! important; margin-top : -14px ! important; margin-bottom : -14px ! important; ">
+                                        <label class="form-control-sm col-sm-5" for="xx">Total Paid</label>
+                                        <input type="text" id="xx" value="" class="form-control form-control-sm cust-sm col-sm-2" placeholder="" readonly>
+                                        <input type="text" id="xx" value="" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px" placeholder="" readonly>
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="input-group" style="padding-right : 5px ! important; padding-left : 5px ! important;">
+                                        <label class="form-control-sm col-sm-4" for="xx">Requested By</label>
+                                        <input type="text" id="xx" value="" class="form-control form-control-sm cust-sm col-sm" placeholder="" readonly>
+                                    </div>
+                                    <div class="input-group" style="padding-right : 5px ! important; padding-left : 5px ! important; margin-top : -14px ! important; margin-bottom : -14px ! important; ">
+                                        <label class="form-control-sm col-sm-4" for="xx">Date Requested</label>
+                                        <input type="text" id="xx" value="" class="form-control form-control-sm cust-sm col-sm" placeholder="" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                    </fieldset>
+                </div>
+                <div>
+                    <fieldset class="scheduler-border">
+                         <legend class="scheduler-border">Claim History Listing</legend>  
+
+                    </fieldset>
+                </div>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab title="Exit">
+
+        </ngb-tab>
+    </ngb-tabset>
+</div>

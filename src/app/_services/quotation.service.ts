@@ -147,17 +147,11 @@ export class QuotationService {
 
     getAttachment() {
         this.attachmentInfoData = [
-            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project"),
-            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project"),
-            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project"),
-            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project"),
-            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project"),
-            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project"),
-            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project"),
-            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project"),
-            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project"),
-            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project"),
-            new AttachmentInfo("C:/Users/CPI/Desktop/Proj/ets-prj", "Project"),
+            new AttachmentInfo("NSO_Birth_Certificate_001", "Policyholder’s details such as name, date of birth, address, gender, occupation"),
+            new AttachmentInfo("Registration_Number_001", "Vehicle registration number and registration certificate (RC) number"),
+            new AttachmentInfo("Driving_License_001", "Policyholder’s driving licence information"),
+            new AttachmentInfo("Passport_Photo_001", "Recent passport sized photograph"),
+            new AttachmentInfo("Post_Office_Passbook_001", "Proof of address documents "),
         ];
 
         return this.attachmentInfoData;
@@ -383,6 +377,26 @@ export class QuotationService {
     getRisksLOV(){
         this.risksData = [
           new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
         ];
         return this.risksData;
     }
