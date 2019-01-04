@@ -1,3 +1,40 @@
+<style type="text/css">
+    .input-group {
+        padding: 0px !important;
+        margin: 0px !important;
+    }
+
+    .input-group label {
+        padding: 0px !important;
+        margin: 0px !important;
+    }
+
+    .form-control-sm{
+        
+    }
+    /*.input-group > .form-control {
+        margin-bottom: 5px !important;
+    }*/
+
+    .ig-row {
+        margin: -3px !important;
+    }
+
+    .ig-row label {
+        margin-right: 5px !important;
+    }
+
+    .input-radio {
+        margin-bottom: -10px !important;
+    }
+
+    .input-ig-row {
+        margin-left: 2px !important;
+    }
+
+</style>
+
+
 <div class="cust-tabs-container">
     <h4>Policy / Expiry & Renewal</h4>
     <ngb-tabset>
@@ -6,7 +43,42 @@
                 <div class="row" style="margin-top: 10px;">
                     <div class="col-sm-2"></div>
                     <div class="col-sm-8">
-                        <fieldset class="scheduler-border">
+                          <fieldset class="scheduler-border">
+                            <legend class="scheduler-border">Policy Info</legend>
+                            <div class="col-sm-1"></div>
+                            <div class="col-sm">
+                                <div class="row" style="margin-right: 0px; margin-bottom: 11px;">
+                                    <div class="input-group" style="margin-top: -12px !important;">
+                                    &nbsp; 
+                                    </div>
+                                    <div class="input-group">
+                                        <div class="input-group">
+                                            <label class="form-control-sm col-sm-2">Policy No</label>
+                                            <input type="text" [(ngModel)]="policyLine" style="margin-left: 3px;" class="form-control form-control-sm col-sm-2 cap-input" ngbTooltip="Line">
+                                            <input type="text" class="form-control form-control-sm col-sm-2 cap-input" style="margin-left: 3px;" ngbTooltip="Year">
+                                            <input type="text" class="form-control form-control-sm col-sm-4 cap-input" style="margin-left: 3px;" ngbTooltip="Sequence No">
+                                            <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Revision No">
+                                            <input type="text" class="form-control form-control-sm col-sm-4 cap-input" style="margin-left: 3px;" ngbTooltip="Company No">
+                                            <span>&nbsp;</span>
+                                            <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+                                        </div>
+                                        <div class="input-group ig-row" style="margin-top: -6px !important;">
+                                            <label class="form-control-sm col-sm-2">Ceding Company</label>
+                                            <input type="text" class="form-control form-control-sm">
+                                        </div>
+                                        <div class="input-group ig-row">
+                                            <label class="form-control-sm col-sm-2">Insured</label>
+                                            <input type="text" class="form-control form-control-sm">
+                                        </div>
+                                        <div class="input-group ig-row">
+                                            <label class="form-control-sm col-sm-2">Risk</label>
+                                            <input type="text" class="form-control form-control-sm">
+                                        </div>
+                                     </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <!-- <fieldset class="scheduler-border">
                             <legend class="scheduler-border">Policy Info</legend>
                             <div class="col-sm-1"></div>
                             <div class="col-sm">
@@ -40,11 +112,80 @@
                                     </div>
                                 </div>
                             </div>
+                        </fieldset> -->
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                 <div class="row" style="margin-top: 10px;">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-8">
+                          <fieldset class="scheduler-border">
+                            <legend class="scheduler-border">Hold Cover Details</legend>
+                            <div class="col-sm-1"></div>
+                            <div class="col-sm">
+                                <div class="row" style="margin-right: 0px; margin-bottom: 8px;">
+                                    <div class="input-group" style="margin-top: -12px !important;">
+                                    &nbsp; 
+                                    </div>
+                                    <div class="input-group">
+                                        <div class="col-sm input-group" style="
+                                            padding-left: 0px !important;
+                                            padding-right: 3px !important;">
+                                            <label class="form-control-sm col-sm-4">Hold Cover No</label>
+                                            <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Line" style="margin-left: 3px;">
+                                            <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Year" style="margin-left: 3px;">
+                                            <input type="text" class="form-control form-control-sm cap-input col-sm-4" ngbTooltip="Sequence No" style="margin-left: 3px;">
+                                        </div>
+                                        <div class="col-sm input-group" style="
+                                            padding-left: 0px !important;
+                                            padding-right: 3px !important;">
+                                            <label class="form-control-sm col-sm-4">Period From</label>
+                                            <input type="date" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px;">
+                                        </div>
+                                    </div>
+                                    <div class="input-group" style="margin-top: -6px !important;">
+                                        <div class="col-sm input-group" style="
+                                            padding-left: 0px !important;
+                                            padding-right: 3px !important;">
+                                            <label class="form-control-sm col-sm-4">Co. Ref. Hold Cover No</label>
+                                            <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;">
+                                        </div>
+                                         <div class="col-sm input-group" style="
+                                            padding-left: 0px !important;
+                                            padding-right: 3px !important;">
+                                            <label class="form-control-sm col-sm-4">Period To</label>
+                                            <input type="date" class="form-control form-control-sm cust-sm col-sm" id="inputQuotation" style="margin-left: 3px;">
+                                        </div>
+                                    </div>
+                                    <div class="input-group" style="margin-top: -6px !important;">
+                                        <div class="col-sm input-group" style="
+                                            padding-left: 0px !important;
+                                            padding-right: 3px !important;">
+                                            <label class="form-control-sm col-sm-4">Requested By</label>
+                                            <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;">
+                                        </div>
+                                         <div class="col-sm input-group" style="
+                                            padding-left: 0px !important;
+                                            padding-right: 3px !important;">
+                                            <label class="form-control-sm col-sm-4">Request Date</label>
+                                            <input type="date" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px;">
+                                        </div>
+                                    </div>
+                                    <div class="input-group" style="margin-top: -6px !important;">
+                                        <div class="col-sm-6 input-group" style="
+                                            padding-left: 0px !important;
+                                            padding-right: 3px !important;">
+                                            <label class="form-control-sm col-sm-4">Status</label>
+                                            <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </fieldset>
                     </div>
                     <div class="col-sm-2"></div>
                 </div>
-                <br>
+               <!--  <br>
                 <div class="row">
                     <div class="col-sm-2"></div>
                     <div class="col-sm-8">
@@ -87,7 +228,7 @@
                         </fieldset>
                     </div>
                     <div class="col-sm-2"></div>
-                </div>
+                </div> -->
                 <div class="form-row">
                     <div class="form-group col-sm">
                         <div class="col-md-13 text-center">

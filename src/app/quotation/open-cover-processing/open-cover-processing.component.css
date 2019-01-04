@@ -63,3 +63,10 @@ h6#modal-basic-title.modal-title {
 h4 {
 	font-size: 14px !important;
 }
+
+.cust-btn-container{
+	    position: absolute !important;
+    left: 1px;
+    top: 1px;
+    z-index: 99 !important;
+}
