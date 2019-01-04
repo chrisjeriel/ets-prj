@@ -22,7 +22,7 @@
 </style>
 <ng-container *ngIf="!alteration">
 	<div>
-		<div class="row">
+		<div class="row" style="margin-bottom: -5px;">
 			<div class="col-sm-6">
 				<div class="row" style="height: 100% !important;">
 					<div class="col-sm">
@@ -64,14 +64,18 @@
 										<input type="text" class="form-control form-control-sm col-sm-2">
 										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px;">
 									</div>
-									<div *ngIf="typeOfCession.toUpperCase() == 'RETRO CESSION'" class="input-group">
-										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Direct Writing Co</label>
-										<input type="text" class="form-control form-control-sm col-sm-2">
-										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px;">
-									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Co Ref No</label>
 										<input type="text" class="form-control form-control-sm col-sm">
+									</div>
+									<div *ngIf="typeOfCession.toUpperCase() == 'RETRO CESSION'" class="input-group">
+										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Reinsurance From</label>
+										<input type="text" class="form-control form-control-sm col-sm-2">
+										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px;">
+									</div>
+									<div *ngIf="typeOfCession.toUpperCase() == 'RETRO CESSION'" class="input-group">
+										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">RI Binder No</label>
+										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px;">
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Intermediary</label>
@@ -101,7 +105,7 @@
 				</div>
 			</div>
 			<div class="col-sm-6" style="padding-left: 0px;">
-				<fieldset class="scheduler-border cust-fs-padlr-offset">
+				<fieldset class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 12px !important;">
 					<!-- style="height: 100%;" -->
 					<legend class="scheduler-border" style="margin-left: 16px !important;">Period of Issuance</legend>
 					<div class="col-sm-1">
@@ -136,7 +140,11 @@
 								<input type="text" class="form-control form-control-sm col-sm-3" style="margin-left: 5px; text-align: center;">
 							</div>
 						</div>
-						<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
+						<!-- <div class="form-row ig-cust" style="margin-right: 0px;">
+							<div class="input-group col-sm-6" style="padding: 0px;"><label class="form-control-sm col-sm-4">&nbsp;</label>
+							</div>
+						</div> -->
+						<div *ngIf="line === 'CAR' || line === 'EAR'; else notCARorEAR" class="form-row ig-cust" style="margin-right: 0px; margin-bottom: 5px;">
 							<div class="input-group col-sm-6" style="padding: 0px;">
 								<label class="form-control-sm col-sm-4">Maintenance From</label>
 								<input type="date" class="form-control form-control-sm">
@@ -148,6 +156,12 @@
 								<input type="text" class="form-control form-control-sm col-sm-3" style="margin-left: 5px; text-align: center;">
 							</div>
 						</div>
+						<ng-template #notCARorEAR>
+							<div class="form-row ig-cust" style="margin-right: 0px;">
+								<div class="input-group col-sm-6" style="padding: 0px;"><label class="form-control-sm col-sm-4">&nbsp;</label>
+								</div>
+							</div>
+						</ng-template>
 					</div>
 				</fieldset>
 				<fieldset class="scheduler-border cust-fs-padlr-offset">
@@ -191,8 +205,8 @@
 		<div class="row">
 			<div class="col-sm-8">
 				<!-- LINE: CAR -->
-				<fieldset *ngIf="line === 'CAR'" class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 19px !important;
-				padding-top: 19px !important;">
+				<fieldset *ngIf="line === 'CAR'" class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 21px !important;
+				padding-top: 17px !important;">
 				<legend class="scheduler-border" style="margin-left: 16px !important;">Insured Detail</legend>
 				<div class="col-sm-1">
 				</div>
@@ -363,8 +377,8 @@
 					<div class="col-sm-1">
 					</div>
 				</fieldset> -->
-				<fieldset *ngIf="line === 'EAR'" class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 7px !important;
-				padding-top: 7px !important;">
+				<fieldset *ngIf="line === 'EAR'" class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 10px !important;
+				padding-top: 4px !important;">
 				<legend class="scheduler-border" style="margin-left: 16px !important;">Insured Detail</legend>
 				<div class="col-sm-1">
 				</div>
@@ -969,6 +983,29 @@
 				<div class="col-sm-1">
 				</div>
 			</fieldset>
+			<fieldset class="scheduler-border" style="padding-bottom: 12px !important;">
+				<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+				<div class="custom-row-inline-inset">
+					<div class="form-row ig-cust">
+						<div class="form-group col-sm-3" style="margin-bottom: 0px; margin-top: -14px;">
+							<label class="form-control-sm top-label">&nbsp;Created By</label>
+							<input type="text" class="form-control form-control-sm cust-sm">
+						</div>
+						<div class="form-group col-sm-3" style="margin-bottom: 0px; margin-top: -14px;">
+							<label class="form-control-sm top-label">&nbsp;Last Update By</label>
+							<input type="text" class="form-control form-control-sm cust-sm">
+						</div>
+						<div class="form-group col-sm-3" style="margin-bottom: 0px; margin-top: -14px;">
+							<label class="form-control-sm top-label">&nbsp;Date Created</label>
+							<input type="date" class="form-control form-control-sm cust-sm">
+						</div>
+						<div class="form-group col-sm-3" style="margin-bottom: 0px; margin-top: -14px;">
+							<label class="form-control-sm top-label">&nbsp;Last Update</label>
+							<input type="date" class="form-control form-control-sm cust-sm">
+						</div>
+					</div>
+				</div>
+			</fieldset>
 		</div>
 		<div class="col-sm-4" style="padding-left: 0px;">
 			<fieldset class="scheduler-border">
@@ -987,7 +1024,7 @@
 					</div>
 				</div>
 			</fieldset>
-			<fieldset class="scheduler-border" style="padding-top: 2px !important; padding-bottom: 8px !important;">
+			<fieldset class="scheduler-border" style="padding-top: 25px !important; padding-bottom: 18px !important;">
 				<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 				<div class="custom-row-inline-inset">
 					<div class="form-row" style="margin-top: 10px; margin-bottom: -4px;">
@@ -1083,7 +1120,7 @@
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<div class="input-group-text">
-										<input type="checkbox" [(ngModel)]="decChecked">
+										<input type="checkbox" [(ngModel)]="decChecked" (click)="toggleRadioBtnSet();">
 									</div>
 								</div>
 								<input type="text" style="font-size: 11px !important;" value="Declaration" disabled class="form-control form-control-sm">
@@ -1099,21 +1136,25 @@
 								<input type="text" style="font-size: 11px !important;" value="Exclude Distribution" disabled class="form-control form-control-sm">
 							</div>
 						</div>
-						<div class="col-sm" style="padding-left: 39px !important;">
-							<div class="input-group">
-								<input type="radio" name="option" [disabled]="!decChecked" checked="true"><label class="form-control-sm" style="margin-bottom: -2px !important; font-weight: normal !important;">With Min Dep</label>
-							</div>
-							<div class="input-group">
-								<input type="radio" name="option" [disabled]="!decChecked"><label class="form-control-sm" style="margin-bottom: -5px !important; font-weight: normal !important;">Without Min Dep</label>
+					</div>
+					<div class="form-row">
+						<div class="form-group col-sm-6">
+							<div id="radioBtnSet" class="input-group-text" style="display: block; margin-top: -4px; padding-left: 33px; padding-right: 0px;">
+								<div class="input-group">
+									<input type="radio" name="option" [disabled]="!decChecked" checked="true"><label class="form-control-sm" style="margin-bottom: -2px !important; font-weight: normal !important;">With Min Dep</label>
+								</div>
+								<div class="input-group">
+									<input type="radio" name="option" [disabled]="!decChecked"><label class="form-control-sm" style="margin-bottom: -5px !important; font-weight: normal !important;">Without Min Dep</label>
+								</div>
 							</div>
 						</div>
-					</div>
+					</div>							
 				</div>
 			</fieldset>
 			
 		</div>
 	</div>
-	<fieldset class="scheduler-border" style="padding-bottom: 12px !important;">
+	<!-- <fieldset class="scheduler-border" style="padding-bottom: 12px !important;">
 				<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 				<div class="custom-row-inline-inset">
 					<div class="form-row ig-cust">
@@ -1135,208 +1176,208 @@
 						</div>
 					</div>
 				</div>
-			</fieldset>
-</div>
-
-<div class="form-row" style="margin-top: 10px !important;">
-	<div class="form-group col-sm">
-		<div class="col-md-12 text-center">
-			<div class="cust-btn-container">
-				<button type="button" class="cust-btn" (click)="pol($event)"><a>Cancel</a></button>
-				<button type="button" class="cust-btn"><a>Save</a></button>
-			</div>
+			</fieldset> -->
 		</div>
-	</div>
-</div>
 
-<ng-template #content>
-	<div class="modal-header">
-		<span class="modal-title" id="modal-basic-title">Item Information</span>
-		<div class="close" style="padding-bottom: 5px;">
-			<a class="btn-cust" aria-label="Close" (click)="modalService.dismissAll();" aria-hidden="true"><span style="padding-right: 3px;"
-				id="closes">&times;&nbsp;&nbsp;</span></a>
-			</div>
-		</div>
-		<div class="modal-body">
-			<div class="row">
-				<div class="col-sm">
-					<button class="cust-btn">Add</button>
-					<button class="cust-btn">Delete</button>
+		<div class="form-row" style="margin-top: 10px !important;">
+			<div class="form-group col-sm">
+				<div class="col-md-12 text-center">
+					<div class="cust-btn-container">
+						<button type="button" class="cust-btn" (click)="pol($event)"><a>Cancel</a></button>
+						<button type="button" class="cust-btn"><a>Save</a></button>
+					</div>
 				</div>
 			</div>
-			<div class="row">
-				<div class="col-sm">
-					<app-cust-table [filters]="filters" [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes"></app-cust-table>
+		</div>
+
+		<ng-template #content>
+			<div class="modal-header">
+				<span class="modal-title" id="modal-basic-title">Item Information</span>
+				<div class="close" style="padding-bottom: 5px;">
+					<a class="btn-cust" aria-label="Close" (click)="modalService.dismissAll();" aria-hidden="true"><span style="padding-right: 3px;"
+						id="closes">&times;&nbsp;&nbsp;</span></a>
+					</div>
 				</div>
-			</div>
-
-		</div>
-		<div class="modal-footer">
-			<div>
-				<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-				<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Save</a></button>
-			</div>
-		</div>
-	</ng-template>
-
-</ng-container>
-
-
-
-<ng-container *ngIf="alteration">
-
-	<style type="text/css">
-	.offsetFormGroup {
-		margin-bottom: 0px !important;
-	}
-
-	.custom-row-inline-inset {
-		margin-top: 10px !important;
-	}
-
-	.cust-lbl-left-offset {
-		padding-left: 0px !important;
-	}
-
-	.cust-fs-padlr-offset {
-		padding-right: 0px !important;
-		padding-left: 0px !important;
-	}
-
-	.input-group label {
-		line-height: .9;
-	}
-</style>
-<div>
-	<div class="row">
-		<div class="col-sm-6">
-			<div class="row">
-				<div class="col-sm">
-					<fieldset class="scheduler-border cust-fs-padlr-offset">
-						<legend class="scheduler-border" style="margin-left: 16px !important;">Policy Record</legend>
-						<div class="col-sm-1">
-						</div>
+				<div class="modal-body">
+					<div class="row">
 						<div class="col-sm">
-							<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
-								<div class="input-group" style="    margin-top: -2px !important;
-								margin-bottom: -12px !important;">
-								<label class="form-control-sm col-sm-2">Policy No</label>
-								<input type="text" class="form-control form-control-sm col-sm-1 cap-input" ngbTooltip="Line">
-								<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 5px;"
-								ngbTooltip="Year">
-								<input type="text" class="form-control form-control-sm col-sm-4 cap-input" style="margin-left: 5px;"
-								ngbTooltip="Sequence No">
-								<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 5px;"
-								ngbTooltip="Co Code">
-								<input type="text" class="form-control form-control-sm col-sm-2 cap-input" style="margin-left: 5px;"
-								ngbTooltip="Co Series No">
-								<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 5px;"
-								ngbTooltip="Alt No">
-							</div>
-							<div class="input-group">
-								<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Type of Cession</label>
-								<input type="text" class="form-control form-control-sm">
-								<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Line Class</label>
-								<input type="text" class="form-control form-control-sm">
-							</div>
-							<div class="input-group">
-								<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Quotation No</label>
-								<input type="text" class="form-control form-control-sm">
-								<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Status</label>
-								<input type="text" class="form-control form-control-sm">
-							</div>
-							<div class="input-group">
-								<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Ceding Company</label>
-								<input type="text" class="form-control form-control-sm col-sm-2">
-								<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px;">
-							</div>
-							<div class="input-group">
-								<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Co Ref No</label>
-								<input type="text" class="form-control form-control-sm col-sm">
-							</div>
-							<div class="input-group">
-								<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Intermediary</label>
-								<input type="text" class="form-control form-control-sm col-sm-2">
-								<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px;">
-							</div>
-							<div *ngIf="line === 'MLP' || line === 'DOS'" class="input-group">
-								<label class="form-control-sm col-sm-2 cust-lbl-left-offset">MBI Ref No</label>
-								<input type="text" class="form-control form-control-sm">
-							</div>
+							<button class="cust-btn">Add</button>
+							<button class="cust-btn">Delete</button>
 						</div>
 					</div>
-				</fieldset>
-			</div>
-		</div>
-	</div>
-	<div class="col-sm-6" style="padding-left: 0px;">
-		<fieldset class="scheduler-border cust-fs-padlr-offset" style="padding-top: 13px !important; padding-bottom: 13px !important;">
-			<!-- style="height: 100%;" -->
-			<legend class="scheduler-border" style="margin-left: 16px !important;">Period of Insurance</legend>
-			<div class="col-sm-1">
-			</div>
-			<div class="col-sm">
-				<div class="row" style="margin-bottom: -13px !important;">
-					<div class="col-sm-1"></div>
-					<div class="col-sm-10">
-						<div class="custom-row-inline-inset" style=" margin-top: 4px !important;">
-							<div class="input-group">
-								<label class="form-control-sm col-sm-5" for="xx">Previous Inception
-								Date</label>
-								<input type="date" class="form-control form-control-sm col-sm">
-								<input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;">
-								<div class="col-sm-1"></div>
-							</div>
-							<div class="input-group">
-								<label class="form-control-sm col-sm-5" for="xx">This Alteration Inception Date</label>
-								<input type="date" class="form-control form-control-sm">
-								<input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;">
-								<div class="col-sm-1"></div>
-							</div>
+					<div class="row">
+						<div class="col-sm">
+							<app-cust-table [filters]="filters" [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes"></app-cust-table>
 						</div>
 					</div>
-					<div class="col-sm-1"></div>
-				</div>
-				<div class="form-row" style="margin-right: 0px; margin-bottom: -7px !important;
-				">
-				<div class="input-group col-sm-6">
-					<label class="form-control-sm col-sm-4">Expiry Date</label>
-					<input type="date" class="form-control form-control-sm">
-					<input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;">
-				</div>
-				<div class="input-group col-sm-6" style="margin-top: 10px; padding: 0px;">
 
 				</div>
+				<div class="modal-footer">
+					<div>
+						<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+						<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Save</a></button>
+					</div>
+				</div>
+			</ng-template>
+
+		</ng-container>
+
+
+
+		<ng-container *ngIf="alteration">
+
+			<style type="text/css">
+			.offsetFormGroup {
+				margin-bottom: 0px !important;
+			}
+
+			.custom-row-inline-inset {
+				margin-top: 10px !important;
+			}
+
+			.cust-lbl-left-offset {
+				padding-left: 0px !important;
+			}
+
+			.cust-fs-padlr-offset {
+				padding-right: 0px !important;
+				padding-left: 0px !important;
+			}
+
+			.input-group label {
+				line-height: .9;
+			}
+		</style>
+		<div>
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="row">
+						<div class="col-sm">
+							<fieldset class="scheduler-border cust-fs-padlr-offset">
+								<legend class="scheduler-border" style="margin-left: 16px !important;">Policy Record</legend>
+								<div class="col-sm-1">
+								</div>
+								<div class="col-sm">
+									<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
+										<div class="input-group" style="    margin-top: -2px !important;
+										margin-bottom: -12px !important;">
+										<label class="form-control-sm col-sm-2">Policy No</label>
+										<input type="text" class="form-control form-control-sm col-sm-1 cap-input" ngbTooltip="Line">
+										<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 5px;"
+										ngbTooltip="Year">
+										<input type="text" class="form-control form-control-sm col-sm-4 cap-input" style="margin-left: 5px;"
+										ngbTooltip="Sequence No">
+										<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 5px;"
+										ngbTooltip="Co Code">
+										<input type="text" class="form-control form-control-sm col-sm-2 cap-input" style="margin-left: 5px;"
+										ngbTooltip="Co Series No">
+										<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 5px;"
+										ngbTooltip="Alt No">
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Type of Cession</label>
+										<input type="text" class="form-control form-control-sm">
+										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Line Class</label>
+										<input type="text" class="form-control form-control-sm">
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Quotation No</label>
+										<input type="text" class="form-control form-control-sm">
+										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Status</label>
+										<input type="text" class="form-control form-control-sm">
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Ceding Company</label>
+										<input type="text" class="form-control form-control-sm col-sm-2">
+										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px;">
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Co Ref No</label>
+										<input type="text" class="form-control form-control-sm col-sm">
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Intermediary</label>
+										<input type="text" class="form-control form-control-sm col-sm-2">
+										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px;">
+									</div>
+									<div *ngIf="line === 'MLP' || line === 'DOS'" class="input-group">
+										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">MBI Ref No</label>
+										<input type="text" class="form-control form-control-sm">
+									</div>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+				</div>
 			</div>
-			<div class="form-row" style="margin-right: 0px; margin-bottom: -7px !important;">
-				<div class="input-group col-sm-6">
-					<label class="form-control-sm col-sm-4">Lapse From</label>
-					<input type="date" class="form-control form-control-sm">
-					<input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;">
+			<div class="col-sm-6" style="padding-left: 0px;">
+				<fieldset class="scheduler-border cust-fs-padlr-offset" style="padding-top: 13px !important; padding-bottom: 13px !important;">
+					<!-- style="height: 100%;" -->
+					<legend class="scheduler-border" style="margin-left: 16px !important;">Period of Insurance</legend>
+					<div class="col-sm-1">
+					</div>
+					<div class="col-sm">
+						<div class="row" style="margin-bottom: -13px !important;">
+							<div class="col-sm-1"></div>
+							<div class="col-sm-10">
+								<div class="custom-row-inline-inset" style=" margin-top: 4px !important;">
+									<div class="input-group">
+										<label class="form-control-sm col-sm-5" for="xx">Previous Inception
+										Date</label>
+										<input type="date" class="form-control form-control-sm col-sm">
+										<input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;">
+										<div class="col-sm-1"></div>
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-5" for="xx">This Alteration Inception Date</label>
+										<input type="date" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;">
+										<div class="col-sm-1"></div>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-1"></div>
+						</div>
+						<div class="form-row" style="margin-right: 0px; margin-bottom: -7px !important;
+						">
+						<div class="input-group col-sm-6">
+							<label class="form-control-sm col-sm-4">Expiry Date</label>
+							<input type="date" class="form-control form-control-sm">
+							<input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;">
+						</div>
+						<div class="input-group col-sm-6" style="margin-top: 10px; padding: 0px;">
+
+						</div>
+					</div>
+					<div class="form-row" style="margin-right: 0px; margin-bottom: -7px !important;">
+						<div class="input-group col-sm-6">
+							<label class="form-control-sm col-sm-4">Lapse From</label>
+							<input type="date" class="form-control form-control-sm">
+							<input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;">
+						</div>
+						<div class="input-group col-sm-6" style="margin-right: 0px;">
+							<label class="form-control-sm col-sm-4">Lapse To</label>
+							<input type="date" class="form-control form-control-sm">
+							<input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;">
+						</div>
+					</div>
+					<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
+						<div class="input-group col-sm-6">
+							<label class="form-control-sm col-sm-4">Maintenance From</label>
+							<input type="date" class="form-control form-control-sm">
+							<input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;">
+						</div>
+						<div class="input-group col-sm-6" style="margin-right: 0px;">
+							<label class=" form-control-sm col-sm-4">Maintenance
+							To</label>
+							<input type="date" class="form-control form-control-sm">
+							<input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;">
+						</div>
+					</div>
 				</div>
-				<div class="input-group col-sm-6" style="margin-right: 0px;">
-					<label class="form-control-sm col-sm-4">Lapse To</label>
-					<input type="date" class="form-control form-control-sm">
-					<input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;">
-				</div>
-			</div>
-			<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
-				<div class="input-group col-sm-6">
-					<label class="form-control-sm col-sm-4">Maintenance From</label>
-					<input type="date" class="form-control form-control-sm">
-					<input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;">
-				</div>
-				<div class="input-group col-sm-6" style="margin-right: 0px;">
-					<label class=" form-control-sm col-sm-4">Maintenance
-					To</label>
-					<input type="date" class="form-control form-control-sm">
-					<input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;">
-				</div>
-			</div>
+			</fieldset>
 		</div>
-	</fieldset>
-</div>
-</div>
+	</div>
 </div>
 
 
