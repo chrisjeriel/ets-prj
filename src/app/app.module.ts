@@ -91,6 +91,9 @@ import { OpenCoverSumInsuredComponent } from './quotation/open-cover/open-cover-
 import { NegateDistributionComponent } from './underwriting/policy-distribution/negate-distribution/negate-distribution.component';
 import { ClaimsAttachmentComponent } from './underwriting/policy-distribution/negate-distribution/claims-attachment/claims-attachment.component';
 
+
+import { DummyComponent2 } from './_components/common/dummy2/dummy2.component';
+
 @NgModule({
     imports: [
         BrowserModule,

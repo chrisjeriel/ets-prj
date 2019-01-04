@@ -34,6 +34,9 @@ import { OpenCoverProcessingComponent } from './quotation/open-cover-processing/
 import { OpenCoverComponent } from './quotation/open-cover/open-cover.component';
 import { NegateDistributionComponent } from './underwriting/policy-distribution/negate-distribution/negate-distribution.component';
 
+
+import { DummyComponent2 } from './_components/common/dummy2/dummy2.component'
+
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
     { path: 'quotation', component: QuotationComponent, canActivate: [AuthGuard] },
