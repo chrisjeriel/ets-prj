@@ -1,4 +1,5 @@
 <style type="text/css">
+
     .float-sm-center{
     width: 100%;
     text-align: center;
@@ -36,12 +37,21 @@
     </fieldset>
 </div>
 <div>
-    <fieldset class="scheduler-border">
+   <!-- <fieldset class="scheduler-border">
         <legend class="scheduler-border">Attached Files</legend>
         <app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData" [tHeader]="tHeader" [checkFlag]="true" [pageLength]="pageLength"></app-cust-editable-table>
-        <!-- <app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData" [tHeader]="tHeader" [checkFlag]="true" [options] = "options" [selectFlag]="true" [dataTypes]="dataTypes"></app-cust-editable-table> -->
-
-    </fieldset>
+       <app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData" [tHeader]="tHeader" [checkFlag]="true" [options] = "options" [selectFlag]="true" [dataTypes]="dataTypes"></app-cust-editable-table>
+       </fieldset> --> 
+        <fieldset class="scheduler-border">
+            <legend class="scheduler-border">Attached Files</legend>
+                <div class="row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-8" style="padding-top: 8px; padding-bottom: 15px;">
+                        <app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
+                    </div>
+                    <div class="col-sm-2"></div>
+                 </div>
+        </fieldset>
 </div>
 <div class="form-row">
     <div class="form-group col-sm">
