@@ -31,7 +31,7 @@ export class QuotationProcessingComponent implements OnInit {
   
 
   passData: any = {
-        tableData: this.quotationService.getQuoProcessingData(), 
+        tableData: [], 
         tHeader: ['Quotation No.','Type of Cession','Line Class','Status','Ceding Company','Principal','Contractor','Insured','Risk','Object','Site','Policy No','Currency', 'Quote Date', 'Valid Until', 'Requested By', 'Created By'],
         dataTypes: ['text','text','text','text','text','text','text','text','text','text','text','text','text','date','date','text',],
         resizable: [false, true, true, true, true, true, true, true, true, true, false, false, true, true, true, true],
@@ -118,11 +118,11 @@ export class QuotationProcessingComponent implements OnInit {
             },
         ],
         pageLength: 10,
-        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, addFlag: true, editFlag: true, copyFlag: true, pageStatus: true, pagination: true, 
+        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, addFlag: true, editFlag: true, copyFlag: true, pageStatus: true, pagination: true, pageID: 1
   }
     
   riskData: any = {
-      tableData: this.quotationService.getRisksLOV(),
+      tableData: [],
       tHeader: ['Risk Code', 'Risk', 'Region', 'Province', 'Town/City', 'District', 'Block'],
       dataTypes: ['text', 'text', 'text', 'text', 'text', 'text', 'text'],
       resizable: [false, true, false, true, true, false, false],
@@ -131,6 +131,7 @@ export class QuotationProcessingComponent implements OnInit {
       pageStatus: true,
       pagination: true,
       fixedCol: false,
+      pageID: 2
   }
 
   constructor(private quotationService: QuotationService, private modalService: NgbModal, private router: Router
@@ -141,6 +142,8 @@ export class QuotationProcessingComponent implements OnInit {
   ngOnInit() {
     this.titleService.setTitle("Quo | List Of Quotations");
     this.rowData = this.quotationService.getRowData();
+      this.passData.tableData = this.quotationService.getQuoProcessingData();
+      this.riskData.tableData = this.quotationService.getRisksLOV();
   }
   
   onClickAdd(event){

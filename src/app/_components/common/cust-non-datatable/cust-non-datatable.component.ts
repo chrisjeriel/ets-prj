@@ -99,7 +99,7 @@ export class CustNonDatatableComponent implements OnInit {
     @Input() passData: any = {
         tableData: [], tHeader: [], dataTypes: [], resizable: [], filters: [],
         pageLength: 10,
-        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, pageStatus: true, pagination: true, addFlag: false, editFlag: false, deleteFlag: false, copyFlag: false, 
+        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, pageStatus: true, pagination: true, addFlag: false, editFlag: false, deleteFlag: false, copyFlag: false, pageID: 1
     }
 
     dataKeys: any[] = [];
@@ -128,7 +128,7 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        console.log(this.passData.conditions)
+        this.passData.pageID = typeof this.passData.pageID == "undefined" ? 1 : this.passData.pageID;
         if (this.passData.tableData.length > 0) {
             this.dataKeys = Object.keys(this.passData.tableData[0]);
         } else {
@@ -280,4 +280,9 @@ export class CustNonDatatableComponent implements OnInit {
         //do some copying
         this.print.next(event);
     }
+    
+    paul(event){
+        console.log(event);
+    }
+
 }
