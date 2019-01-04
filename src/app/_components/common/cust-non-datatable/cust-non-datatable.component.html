@@ -16,16 +16,17 @@
 </style>
 
 
-<div id="cust-table-container">
+<div id="cust-table-container" >
     <div class="cust-btn-container">
         <button *ngIf="passData.addFlag" class="cust-btn" (click)="onClickAdd(event)"><a>Add</a></button>
         <button *ngIf="passData.editFlag" class="cust-btn" [class.btnDisabled]="btnDisabled"[disabled]="btnDisabled" (click)="onClickEdit($event)"><a class="paginate_button previous">Edit</a></button>
         <button *ngIf="passData.deleteFlag" class="cust-btn" [class.btnDisabled]="btnDisabled" [disabled]="btnDisabled" (click)="onClickDelete()"><a class="paginate_button previous">Delete</a></button>
          <button *ngIf="passData.copyFlag" class="cust-btn" [class.btnDisabled]="btnDisabled" [disabled]="btnDisabled" (click)="onClickCopy($event)"><a class="paginate_button previous">Copy</a></button>
+        <button *ngIf="passData.printBtn" class="cust-btn" type="button" (click)="onClickPrint($event)"><a>Print</a></button>
     </div>
-    <div class="print" *ngIf="passData.printBtn" align="left">
+   <!-- <div class="print" *ngIf="passData.printBtn" align="left">
         <button class="cust-btn" type="button"><a>Print</a></button>
-    </div>
+    </div>-->
     <div class="expire" *ngIf="passData.expireFilter" align="right" style="margin-top: 1px !important;">
         <!-- remove -->
         <label>Expires in (Days): &nbsp; </label>
@@ -53,16 +54,17 @@
 <input *ngSwitchCase="'text'" type="text" class="form-control cust-sm">
 </div> -->
                 <div class="input-group" *ngFor="let filt of passData.filters;let i= index" [ngSwitch]="passData.filters[i].dataType">
-                    <div class="input-group-prepend">
+                    <div class="input-group-prepend" style="margin-right: 2px !important">
                         <div class="input-group-text">
                             <input type="checkbox" [(ngModel)]="filt.enabled"><span>&nbsp;{{filt.title}}</span>
                         </div>
                     </div>
                     <input [disabled]="!filt.enabled" *ngSwitchCase="'text'"  type="text" class="form-control cust-sm" [(ngModel)]="filt.search" (ngModelChange)="filterDisplay(passData.filters,searchString)">
                     <input [disabled]="!filt.enabled" *ngSwitchCase="'date'"  type="date" class="form-control cust-sm" [(ngModel)]="filt.search" (ngModelChange)="filterDisplay(passData.filters,searchString)">
+                    <input [disabled]="!filt.enabled"  *ngSwitchCase="'datespan'" type="date" class="form-control cust-sm" [(ngModel)]="filt.search" (ngModelChange)="filterDisplay(passData.filters,searchString)">
+                    <span class="cust-sm" *ngSwitchCase="'datespan'">-</span>
+                    <input [disabled]="!filt.enabled" *ngSwitchCase="'datespan'" type="date" class="form-control cust-sm" [(ngModel)]="filt.search2" (ngModelChange)="filterDisplay(passData.filters,searchString)">
                 </div>
-
-
                 <div class="input-group">
                     <button class="cust-filter cust-tbl-submit" (click)="filterDisplay(filterObj,searchString)"><a>Ok</a></button>
                 </div>
@@ -86,7 +88,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let data of displayData | paginate: { id:'non-editable', itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event, data);" (dblclick)="onRowDblClick($event)" [class.selected]="data === indvSelect">
+                    <tr *ngFor="let data of displayData | paginate: { id:'non-editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event, data);" (dblclick)="onRowDblClick($event)" [class.selected]="data === indvSelect">
                         <td *ngIf="passData.checkFlag" style="text-align: center"><input type="checkbox" name="" *ngIf="addCheckFlag(data)"></td>
                         <td style="margin-top:1px">
                             <div *ngIf="addCheckFlag(data)">
@@ -118,7 +120,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let data of displayData | paginate: { id:'non-editable', itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event, data);" (dblclick)="onRowDblClick($event)" [class.selected]="data === indvSelect">
+                        <tr *ngFor="let data of displayData | paginate: { id:'non-editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event, data);" (dblclick)="onRowDblClick($event)" [class.selected]="data === indvSelect">
                             <td *ngIf="passData.checkFlag"> <input type="checkbox" name=""></td>
                             <td *ngFor="let key of dataKeys | slice: 1; let i = index" [ngSwitch]="passData.dataTypes[i]">
                                 <div *ngIf="addCheckFlag(data)">
@@ -146,21 +148,30 @@
                 <tr style="min-width: 96px">
                    <th *ngIf="passData.checkFlag" class="checkbox-container-header"><input type="checkbox" name="" [(ngModel)]="checked" class="checkbox"  [checked]="checked"></th>
                     
-                    <th *ngFor="let tHeader of passData.tHeader; let i = index" (click)="sort(dataKeys[i],sortBy);sortIndex=i;">
+                    <th *ngFor="let tHeader of passData.tHeader; let i = index" [ngSwitch]="passData.dataTypes[i]" (click)="sort(dataKeys[i],sortBy);sortIndex=i;">
                         <span *ngIf="passData.resizable[i]" 
                               class="ui-column-resizer" (mousedown) = "onMouseDown($event)"></span>
-                        <span class="gridHeader">{{tHeader}}</span>
+                        <div *ngIf="passData.dataTypes[i] == 'currency' || passData.dataTypes[i] == 'percent'" style="text-align: right">
+                            <span class="gridHeader">{{tHeader}}</span>
+                        </div>
+                        <span *ngSwitchDefault class="gridHeader">{{tHeader}}</span>
                         <i *ngIf="showSort(sortBy,i)" class="fa fa-caret-down"></i>
                         <i *ngIf="showSort(!sortBy,i)" class="fa fa-caret-up"></i>
                     </th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let data of displayData | paginate: { id:'non-editable', itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event, data);" (dblclick)="onRowDblClick($event)" [class.selected]="data === indvSelect || selected.includes(data) || checked">
+                <tr *ngFor="let data of displayData | paginate: { id: 'non-editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event, data);" (dblclick)="onRowDblClick($event)" [class.selected]="data === indvSelect || selected.includes(data) || checked">
                     <td *ngIf="passData.checkFlag" class="checkbox-container-body"><input type="checkbox" name="" *ngIf="addCheckFlag(data)" class="checkbox" (change)="removeSelected($event, data)" [checked]="checked"></td>
                     <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]">
                         <div *ngIf="addCheckFlag(data)">
+                            <div *ngIf="passData.dataTypes[i] == 'currency' || passData.dataTypes[i] == 'percent'" style="text-align: right">
+                                <span *ngSwitchCase="'percent'" class="unclickable">{{ processData(key, data) | number: '1.7-7'}}</span>
+                                <span *ngSwitchCase="'currency'" class="unclickable">{{ processData(key, data) | number: '1.2-2'}}</span>
+                            </div>
                             <span *ngSwitchCase="'date'" class="unclickable">{{ processData(key, data) | date: 'MM/dd/yyyy'}}</span>
+                            <span *ngSwitchCase="'time'" class="unclickable">{{ processData(key, data) | date: 'HH:mm'}}</span>
+                            <span *ngSwitchCase="'datetime'" class="unclickable">{{ processData(key, data) | date: 'yyyy-MM-ddTHH:mm'}}</span>
                             <span *ngSwitchDefault class="unclickable">{{ processData(key, data) }}</span>
                         </div>
                         <div *ngIf="!addCheckFlag(data)" class="filler">
@@ -173,7 +184,7 @@
     </div>
 
     <div class="pagingStatus" *ngIf="!passData.tableOnly || passData.pageStatus">
-        <pagination-template #paw="paginationApi" id="non-editable" (pageChange)="p = $event">
+        <pagination-template #paw="paginationApi" [id]="'non-editable'+passData.pageID" (pageChange)="p = $event">
             <label *ngIf="!paw.isLastPage() && displayLength > 0">Showing {{ (paw.getCurrent() - 1) * passData.pageLength + 1 }} - {{ paw.getCurrent() * passData.pageLength }} of {{displayLength}} entries </label>
             <label *ngIf="paw.isLastPage() && displayLength > 0">Showing {{ (paw.getCurrent() - 1) * passData.pageLength + 1 }} - {{displayLength}} of {{displayLength}} entries</label>
             <label *ngIf="displayLength < 1">Showing 0 - 0 of 0 entries</label>
@@ -182,11 +193,9 @@
     <div class="pagination" *ngIf="!passData.tableOnly || passData.pagination">
         <!--<div class="pagination" *ngIf="passData.hasPagination">-->
         <!-- <pagination-template class="" #paw="paginationApi" (pageChange)="p = $event"><a (click)="paw.setCurrent(1)">&laquo;</a></pagination-template>-->
-        <pagination-controls id="non-editable" class="my-pagination" (pageChange)="p = $event" previousLabel="" nextLabel="">
+        <pagination-controls [id]="'non-editable'+passData.pageID" class="my-pagination" (pageChange)="p = $event;paul($event)" previousLabel="" nextLabel="">
         </pagination-controls>
         <!--<pagination-template class="" #paw="paginationApi" (pageChange)="p = $event"> <a (click)="paw.setCurrent(paw.getLastPage())">&raquo;</a></pagination-template>-->
     </div>
 </div>
-
-
 
