@@ -32,6 +32,7 @@ import { PurgeExtractedPolicyComponent } from './underwriting/expiry-and-renewal
 import { UpdateInformationComponent } from './utilities/update-information/update-information.component'
 import { OpenCoverProcessingComponent } from './quotation/open-cover-processing/open-cover-processing.component';
 import { OpenCoverComponent } from './quotation/open-cover/open-cover.component';
+import { NegateDistributionComponent } from './underwriting/policy-distribution/negate-distribution/negate-distribution.component';
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -66,6 +67,7 @@ const appRoutes: Routes = [
     { path: 'update-info' , component: UpdateInformationComponent},
     { path: 'open-cover-processing' , component: OpenCoverProcessingComponent},
     { path: 'open-cover' , component: OpenCoverComponent},
+    { path: 'negate-distribution' , component: NegateDistributionComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
