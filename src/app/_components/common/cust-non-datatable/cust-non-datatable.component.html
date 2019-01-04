@@ -151,7 +151,7 @@
                     <th *ngFor="let tHeader of passData.tHeader; let i = index" [ngSwitch]="passData.dataTypes[i]" (click)="sort(dataKeys[i],sortBy);sortIndex=i;">
                         <span *ngIf="passData.resizable[i]" 
                               class="ui-column-resizer" (mousedown) = "onMouseDown($event)"></span>
-                        <div *ngSwitchCase="'currency' || 'percent'" style="text-align: right">
+                        <div *ngIf="passData.dataTypes[i] == 'currency' || passData.dataTypes[i] == 'percent'" style="text-align: right">
                             <span class="gridHeader">{{tHeader}}</span>
                         </div>
                         <span *ngSwitchDefault class="gridHeader">{{tHeader}}</span>
@@ -161,13 +161,13 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let data of displayData | paginate: { id: 'passData.paginateID', itemsPerPage: passData.pageLength, currentPage: passData.currentPageID }" (click)="onRowClick($event, data);" (dblclick)="onRowDblClick($event)" [class.selected]="data === indvSelect || selected.includes(data) || checked">
+                <tr *ngFor="let data of displayData | paginate: { id: 'non-editable', itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event, data);" (dblclick)="onRowDblClick($event)" [class.selected]="data === indvSelect || selected.includes(data) || checked">
                     <td *ngIf="passData.checkFlag" class="checkbox-container-body"><input type="checkbox" name="" *ngIf="addCheckFlag(data)" class="checkbox" (change)="removeSelected($event, data)" [checked]="checked"></td>
                     <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]">
                         <div *ngIf="addCheckFlag(data)">
-                            <div *ngSwitchCase="'percent' || 'currency'" style="text-align: right">
+                            <div *ngIf="passData.dataTypes[i] == 'currency' || passData.dataTypes[i] == 'percent'" style="text-align: right">
                                 <span *ngSwitchCase="'percent'" class="unclickable">{{ processData(key, data) | number: '1.7-7'}}</span>
-                            <span *ngSwitchCase="'currency'" class="unclickable">{{ processData(key, data) | number: '1.2-2'}}</span>
+                                <span *ngSwitchCase="'currency'" class="unclickable">{{ processData(key, data) | number: '1.2-2'}}</span>
                             </div>
                             <span *ngSwitchCase="'date'" class="unclickable">{{ processData(key, data) | date: 'MM/dd/yyyy'}}</span>
                             <span *ngSwitchCase="'time'" class="unclickable">{{ processData(key, data) | date: 'HH:mm'}}</span>
@@ -184,9 +184,7 @@
     </div>
 
     <div class="pagingStatus" *ngIf="!passData.tableOnly || passData.pageStatus">
-        {{passData.paginateID}}
-        {{passData.currentPageID}}
-        <pagination-template #paw="paginationApi" id="passData.paginateID" (pageChange)="passData.currentPageID = $event">
+        <pagination-template #paw="paginationApi" id="non-editable" (pageChange)="p = $event">
             <label *ngIf="!paw.isLastPage() && displayLength > 0">Showing {{ (paw.getCurrent() - 1) * passData.pageLength + 1 }} - {{ paw.getCurrent() * passData.pageLength }} of {{displayLength}} entries </label>
             <label *ngIf="paw.isLastPage() && displayLength > 0">Showing {{ (paw.getCurrent() - 1) * passData.pageLength + 1 }} - {{displayLength}} of {{displayLength}} entries</label>
             <label *ngIf="displayLength < 1">Showing 0 - 0 of 0 entries</label>
@@ -195,7 +193,7 @@
     <div class="pagination" *ngIf="!passData.tableOnly || passData.pagination">
         <!--<div class="pagination" *ngIf="passData.hasPagination">-->
         <!-- <pagination-template class="" #paw="paginationApi" (pageChange)="p = $event"><a (click)="paw.setCurrent(1)">&laquo;</a></pagination-template>-->
-        <pagination-controls id="passData.paginateID" class="my-pagination" (pageChange)="passData.currentPageID = $event" previousLabel="" nextLabel="">
+        <pagination-controls id="non-editable" class="my-pagination" (pageChange)="p = $event" previousLabel="" nextLabel="">
         </pagination-controls>
         <!--<pagination-template class="" #paw="paginationApi" (pageChange)="p = $event"> <a (click)="paw.setCurrent(paw.getLastPage())">&raquo;</a></pagination-template>-->
     </div>

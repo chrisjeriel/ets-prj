@@ -4,7 +4,7 @@
         <ngb-tab class="ngb-tab" title="Quotation Processing">
             <ng-template ngbTabContent style="padding-top: 10px !important;">
                 <div>
-                    <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)" (add)="onClickAdd($event)" (edit)="onClickEdit($event)" (copy)="onClickCopy($event)"></app-cust-non-datatable>
+                    <app-cust-non-datatable  [passData]="passData" (rowClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)" (add)="onClickAdd($event)" (edit)="onClickEdit($event)" (copy)="onClickCopy($event)"></app-cust-non-datatable>
                 </div>
             </ng-template>
         </ngb-tab>
@@ -88,7 +88,7 @@
         <fieldset class="scheduler-border">
             <!-- ERROR RangeError: Maximum call stack size exceeded -->
             <!--<app-cust-non-datatable [passData]="riskData"></app-cust-non-datatable>-->
-            <app-cust-non-datatable [passData]="riskData"></app-cust-non-datatable>
+            <app-cust-editable-non-datatable [passData]="riskData"></app-cust-editable-non-datatable>
         </fieldset>
     </div>
     <div footer>

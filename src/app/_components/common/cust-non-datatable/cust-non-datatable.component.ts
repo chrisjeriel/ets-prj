@@ -100,8 +100,6 @@ export class CustNonDatatableComponent implements OnInit {
         tableData: [], tHeader: [], dataTypes: [], resizable: [], filters: [],
         pageLength: 10,
         expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, pageStatus: true, pagination: true, addFlag: false, editFlag: false, deleteFlag: false, copyFlag: false, 
-        paginateID: 'table1', //REQUIRED
-        currentPageID: 1
     }
 
     dataKeys: any[] = [];
