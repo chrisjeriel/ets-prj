@@ -45,8 +45,8 @@ div.filler{
 }
 
 .checkbox-container-header{
-    text-align: center;
-    padding-top: 4px !important;
+    text-align: center !important;
+    padding-top: 8px !important;
     padding-bottom: 4px !important;
 }
 
