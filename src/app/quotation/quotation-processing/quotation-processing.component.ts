@@ -129,6 +129,8 @@ export class QuotationProcessingComponent implements OnInit {
       searchFlag: true,
      /* pageStatus: true,
       pagination: true,*/
+      paginateFlag: true,
+      infoFlag: true,
       fixedCol: false,
   }
 
