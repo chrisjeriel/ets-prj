@@ -41,7 +41,7 @@ export class PolDistListComponent implements OnInit {
             },
             {
                 key: 'cedingCompany',
-                title:'Ceding Company',
+                title:'Ceding Co.',
                 dataType: 'text'
             },
             {
@@ -57,7 +57,7 @@ export class PolDistListComponent implements OnInit {
             {
                 key: 'accountingDate',
                 title:'Accounting Date',
-                dataType: 'date'
+                dataType: 'datespan'
             },
         ],
         resizable: [

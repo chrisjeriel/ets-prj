@@ -34,7 +34,88 @@ export class QuotationProcessingComponent implements OnInit {
         tHeader: ['Quotation No.','Type of Cession','Line Class','Status','Ceding Company','Principal','Contractor','Insured','Risk','Object','Site','Policy No','Currency', 'Quote Date', 'Valid Until', 'Requested By', 'Created By'],
         dataTypes: ['text','text','text','text','text','text','text','text','text','text','text','text','text','date','date','text',],
         resizable: [false, true, true, true, true, true, true, true, true, true, false, false, true, true, true, true],
-        filters: [],
+        filters: [
+            {
+                key: 'quotationNo',
+                title:'Quotation No.',
+                dataType: 'text'
+            },
+            {
+                key: 'cessionType',
+                title:'Type of Cession',
+                dataType: 'text'
+            },
+            {
+                key: 'lineClass',
+                title:'Line Class',
+                dataType: 'text'
+            },
+            {
+                key: 'quoteStatus',
+                title:'Quote Status',
+                dataType: 'text'
+            },
+            {
+                key: 'cedingCompany',
+                title:'Ceding Co.',
+                dataType: 'text'
+            },
+            {
+                key: 'principal',
+                title:'Principal',
+                dataType: 'text'
+            },
+            {
+                key: 'insured',
+                title:'Insured',
+                dataType: 'text'
+            },
+            {
+                key: 'risk',
+                title:'Risk',
+                dataType: 'text'
+            },
+            {
+                key: 'object',
+                title:'Object',
+                dataType: 'text'
+            },
+            {
+                key: 'location',
+                title:'Site',
+                dataType: 'text'
+            },
+            {
+                key: 'policyNo',
+                title:'Policy No.',
+                dataType: 'text'
+            },
+            {
+                key: 'currency',
+                title:'Currency.',
+                dataType: 'text'
+            },
+            {
+                key: 'quoteDate',
+                title:'Quote Date.',
+                dataType: 'date'
+            },
+            {
+                key: 'validUntil',
+                title:'Valid Until',
+                dataType: 'date'
+            },
+            {
+                key: 'requestedBy',
+                title:'Requested By',
+                dataType: 'text'
+            },
+            {
+                key: 'createdBy',
+                title:'Created By',
+                dataType: 'text'
+            },
+        ],
         pageLength: 10,
         expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, addFlag: true, editFlag: true, copyFlag: true, pageStatus: true, pagination: true,
   }

@@ -54,16 +54,17 @@
 <input *ngSwitchCase="'text'" type="text" class="form-control cust-sm">
 </div> -->
                 <div class="input-group" *ngFor="let filt of passData.filters;let i= index" [ngSwitch]="passData.filters[i].dataType">
-                    <div class="input-group-prepend">
+                    <div class="input-group-prepend" style="margin-right: 2px !important">
                         <div class="input-group-text">
                             <input type="checkbox" [(ngModel)]="filt.enabled"><span>&nbsp;{{filt.title}}</span>
                         </div>
                     </div>
                     <input [disabled]="!filt.enabled" *ngSwitchCase="'text'"  type="text" class="form-control cust-sm" [(ngModel)]="filt.search" (ngModelChange)="filterDisplay(passData.filters,searchString)">
                     <input [disabled]="!filt.enabled" *ngSwitchCase="'date'"  type="date" class="form-control cust-sm" [(ngModel)]="filt.search" (ngModelChange)="filterDisplay(passData.filters,searchString)">
+                    <input [disabled]="!filt.enabled"  *ngSwitchCase="'datespan'" type="date" class="form-control cust-sm" [(ngModel)]="filt.search" (ngModelChange)="filterDisplay(passData.filters,searchString)">
+                    <span class="cust-sm" *ngSwitchCase="'datespan'">-</span>
+                    <input [disabled]="!filt.enabled" *ngSwitchCase="'datespan'" type="date" class="form-control cust-sm" [(ngModel)]="filt.search2" (ngModelChange)="filterDisplay(passData.filters,searchString)">
                 </div>
-
-
                 <div class="input-group">
                     <button class="cust-filter cust-tbl-submit" (click)="filterDisplay(filterObj,searchString)"><a>Ok</a></button>
                 </div>

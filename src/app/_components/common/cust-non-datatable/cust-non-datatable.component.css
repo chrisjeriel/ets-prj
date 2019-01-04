@@ -191,9 +191,10 @@ div.filler{
 }
 
 .dropdown-item{
-    width: 300px;
+    width: 400px;
     height: 200px;
     overflow: auto;
+    padding: 10px;
 }
 
 div.input-group-text {
