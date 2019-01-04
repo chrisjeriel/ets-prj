@@ -213,7 +213,7 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     sort(str,sortBy){
-        this.displayData = this.displayData.sort(function(a, b) {
+        this.passData.tableData = this.passData.tableData.sort(function(a, b) {
             if(sortBy){
                 if(a[str] < b[str]) { return -1; }
                 if(a[str] > b[str]) { return 1; }
@@ -223,7 +223,7 @@ export class CustNonDatatableComponent implements OnInit {
             }
         });
         this.sortBy = !this.sortBy;
-   
+        this.filterDisplay(this.filterObj, this.searchString);
     }
 
     showSort(sortBy,i){
