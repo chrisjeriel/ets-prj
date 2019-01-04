@@ -49,8 +49,8 @@ export class AttachmentComponent implements OnInit {
     addFlag: true,
     editFlag: false,
     deleteFlag: true,
-    paginateFlag: false,
-    infoFlag: false,
+    paginateFlag: true,
+    infoFlag: true,
     searchFlag: true,
     checkboxFlag: true,
     pageLength: 10,
@@ -61,15 +61,14 @@ export class AttachmentComponent implements OnInit {
     private quotationService: QuotationService, private titleService: Title) {
     config.placement = 'bottom-right';
     config.autoClose = false;
-    this.pageLength = 10;
   }
 
   ngOnInit(): void {
 
-   /* this.titleService.setTitle("Quo | Attachment");
-    this.tHeader.push("File Name");
+    this.titleService.setTitle("Quo | Attachment");
+    /*this.tHeader.push("File Name");
     this.tHeader.push("Description");
-    this.tHeader.push("Actions");
+    this.tHeader.push("Actions");*/
     // this.options.push("");
     // this.options.push("Q - Quotation");
     // this.options.push("P - Policy");
@@ -79,7 +78,7 @@ export class AttachmentComponent implements OnInit {
     // this.dataTypes.push("text");
     // this.dataTypes.push("select1");
     // this.dataTypes.push("text");
-    this.tableData = this.quotationService.getAttachment();*/
+    /*this.tableData = this.quotationService.getAttachment();*/
 
     this.passData.tHeader.push("File Name");
     this.passData.tHeader.push("Description");
