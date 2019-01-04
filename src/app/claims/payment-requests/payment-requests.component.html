@@ -1,29 +1,80 @@
-<style type="text/css">
-    .input-group {
-        padding: 0px !important;
-        margin: 0px !important;
-    }
-    .input-group label {
-        padding: 0px !important;
-        margin: 0px !important;
-    }
-    .ig-row {
-        margin: -3px !important;
-    }
-    .ig-row label {
-        margin-right: 5px !important;
-    }
-    .input-ig-row {
-        margin-left: 2px !important;
-    }
-</style>
 <div class="cust-tabs-container">
     <h4>Claims / Payment Requests</h4>
     <ngb-tabset>
         <ngb-tab title="Generate Payment Requests">
             <ng-template ngbTabContent>
+                <div>
+                    <fieldset class="scheduler-border" style="padding-left: 25px ! important; padding-right: 25px ! important">    
+                        <legend class="scheduler-border">Payment Request Info</legend>  
+                            <div class="form-row custom-row-inline-inset" style="margin-top: 8px !important;">
+                                <div class="col-sm-4">
+                                    <div class="input-group" style="padding-right : 5px ! important; padding-left : 5px ! important;">
+                                        <label class="form-control-sm col-sm-4" for="xx">Payment Request No</label>
+                                        <input type="text" id="xx" value="" class="form-control form-control-sm cust-sm col-sm" placeholder="" readonly>
+                                    </div>
+                                     <div class="input-group" style="padding-right : 5px ! important; padding-left : 5px ! important; margin-top : -14px ! important; margin-bottom : -14px ! important; ">
+                                        <label class="form-control-sm col-sm-4" for="xx">Status</label>
+                                        <input type="text" id="xx" value="" class="form-control form-control-sm cust-sm" placeholder="" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="input-group" style="padding-right : 5px ! important; padding-left : 5px ! important;">
+                                        <label class="form-control-sm col-sm-5" for="xx">Payment Request Amount</label>
+                                        <input type="text" id="xx" value="" class="form-control form-control-sm cust-sm col-sm-2" placeholder="" readonly>
+                                        <input type="text" id="xx" value="" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px" placeholder="" readonly>
+                                    </div>
+                                     <div class="input-group" style="padding-right : 5px ! important; padding-left : 5px ! important; margin-top : -14px ! important; margin-bottom : -14px ! important; ">
+                                        <label class="form-control-sm col-sm-5" for="xx">Total Paid</label>
+                                        <input type="text" id="xx" value="" class="form-control form-control-sm cust-sm col-sm-2" placeholder="" readonly>
+                                        <input type="text" id="xx" value="" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px" placeholder="" readonly>
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="input-group" style="padding-right : 5px ! important; padding-left : 5px ! important;">
+                                        <label class="form-control-sm col-sm-4" for="xx">Requested By</label>
+                                        <input type="text" id="xx" value="" class="form-control form-control-sm cust-sm col-sm" placeholder="" readonly>
+                                    </div>
+                                    <div class="input-group" style="padding-right : 5px ! important; padding-left : 5px ! important; margin-top : -14px ! important; margin-bottom : -14px ! important; ">
+                                        <label class="form-control-sm col-sm-4" for="xx">Date Requested</label>
+                                        <input type="text" id="xx" value="" class="form-control form-control-sm cust-sm col-sm" placeholder="" readonly>
+                                    </div>
+                                </div>
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+                                <!-- <div class="input-group" style="padding-right : 5px ! important; padding-left : 5px ! important;">
+                                    <label class="form-control-sm" for="xx">Payment Request No</label>
+                                    <input type="text" id="xx" value="" class="form-control form-control-sm cust-sm col-sm-3" placeholder="" readonly>
+                                     <label class="form-control-sm col-sm-2" for="xx">Payment Request Amount</label>
+                                     <input type="text" id="xx" value="" class="form-control form-control-sm cust-sm col-sm-1" placeholder="" readonly>
+                                     <input type="text" id="xx" value="" class="form-control form-control-sm cust-sm col-sm-3" style="margin-left: 3px" placeholder="" readonly>
+                                     <label class="form-control-sm col-sm-1" for="xx">Requested By</label>
+                                    <input type="text" id="xx" value="" class="form-control form-control-sm cust-sm col-sm-3" placeholder="" readonly>
+                                </div>
+                                <div class="input-group" style="padding-right : 5px ! important; padding-left : 5px ! important; margin-top : -8px ! important; margin-bottom : -14px ! important ">
+                                    <label class="form-control-sm" for="xx">Status</label>
+                                    <input type="text" id="xx" value="" class="form-control form-control-sm cust-sm col-sm-3" placeholder="" readonly>
+                                     <label class="form-control-sm col-sm-2" for="xx">Payment Request Amount</label>
+                                     <input type="text" id="xx" value="" class="form-control form-control-sm cust-sm col-sm-1" placeholder="" readonly>
+                                     <input type="text" id="xx" value="" class="form-control form-control-sm cust-sm col-sm-3" style="margin-left: 3px" placeholder="" readonly>
+                                     <label class="form-control-sm col-sm-1" for="xx">Requested By</label>
+                                    <input type="text" id="xx" value="" class="form-control form-control-sm cust-sm col-sm-3" placeholder="" readonly>
+                                </div> -->
+                            </div>
+                    </fieldset>
+                </div>
             </ng-template>
         </ngb-tab>
         <ngb-tab title="Exit">
