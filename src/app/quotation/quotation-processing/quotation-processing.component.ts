@@ -117,7 +117,7 @@ export class QuotationProcessingComponent implements OnInit {
             },
         ],
         pageLength: 10,
-        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, addFlag: true, editFlag: true, copyFlag: true, pageStatus: true, pagination: true,
+        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, addFlag: true, editFlag: true, copyFlag: true, pageStatus: true, pagination: true, paginateID: 'table1', currentPageID: 1
   }
     
   riskData: any = {
@@ -127,11 +127,11 @@ export class QuotationProcessingComponent implements OnInit {
       resizable: [false, true, false, true, true, false, false],
       pageLength: 10,
       searchFlag: true,
-     /* pageStatus: true,
-      pagination: true,*/
-      paginateFlag: true,
-      infoFlag: true,
+      pageStatus: true,
+      pagination: true,
       fixedCol: false,
+      paginateID: 'table2',
+      currentPageID: 1,
   }
 
   constructor(private quotationService: QuotationService, private modalService: NgbModal, private router: Router
