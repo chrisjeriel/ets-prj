@@ -38,7 +38,7 @@ export class NegateDistributionComponent implements OnInit {
   	tableData:[
   		['QS','MAPFRE INSULAR',1,200000,62.50,199,39800000,12437.50],
   	],
-  	tHeader: ['Treaty', 'Treaty Company','1st Ret Line', '1st Ret SI Amt','1st Ret Prem Amt', '2nd Ret Line', '2nd Ret SI Amt'],
+  	tHeader: ['Treaty', 'Treaty Company','1st Ret Line', '1st Ret SI Amt','1st Ret Prem Amt', '2nd Ret Line', '2nd Ret SI Amt', '2nd Ret Prem Amt'],
   	dataTypes:['text','text', 'number', 'currency', 'currency', 'number', 'currency', 'currency'],
   	pageLength: 10,
   	resizable: [true,true,true,true,true,true],

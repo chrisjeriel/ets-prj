@@ -22,6 +22,7 @@
 										ngbTooltip="Co Series No">
 										<input type="text" class="form-control form-control-sm col-sm-1 cap-input  text-center" [ngModel]="policyNo.split('-')[5]" style="margin-left: 5px;"
 										ngbTooltip="Alt No">
+										
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Dist No</label>
@@ -154,7 +155,7 @@
 													<div class="form-row">
 														<div class="col-sm">
 															<div class="form-row">
-																<app-cust-non-datatable [passData]="distributionPassData"  style="min-width:100%;margin-top: -33px;"></app-cust-non-datatable>
+																<app-cust-non-datatable [passData]="poolPassData"  style="min-width:100%;margin-top: -33px;"></app-cust-non-datatable>
 															</div>
 															<div class="form-row" style="margin-top: -20px;">
 																<div class="input-group">
