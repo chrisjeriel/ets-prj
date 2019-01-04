@@ -89,6 +89,7 @@ export class CustNonDatatableComponent implements OnInit {
      @Output() add: EventEmitter<any> = new EventEmitter();
     @Output() edit: EventEmitter<any> = new EventEmitter();
     @Output() copy: EventEmitter<any> = new EventEmitter();
+    @Output() print: EventEmitter<any> = new EventEmitter();
 
     @Input() printBtn: boolean = false;
     //@Input() fixedCol: boolean = false;
@@ -274,5 +275,9 @@ export class CustNonDatatableComponent implements OnInit {
     onClickCopy(event){
         //do some copying
         this.copy.next(event);
+    }
+    onClickPrint(event){
+        //do some copying
+        this.print.next(event);
     }
 }
