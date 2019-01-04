@@ -82,7 +82,7 @@
                <span class="col-sm-1"></span>
           </div>
           <div class="input-group" style="margin-bottom: -6px !important">
-               <label class="form-control-sm col-sm-3">Part Of(100%)</label>
+               <label class="form-control-sm col-sm-3">100% Value</label>
                <input type="text" class="form-control form-control-sm">
                <span class="col-sm-1"></span>
           </div>
@@ -111,17 +111,30 @@
       </fieldset>
   </div>
 </div>
-<div class="form-row">
+
+    <div class="form-row">
     <div class="form-group col-sm">
       <div class="col-md-13 text-center">
         <br>
         <div class="cust-btn-container">
+          <button type="button" class="cust-btn" (click)="CATPerils()" *ngIf="line == 'CAR' || line =='EAR' || line =='EEI' || line =='CEC'"><a>CAT Perils</a></button>
           <button type="button" class="cust-btn" (click)="pol($event)"><a>Cancel</a></button>
           <button type="button" class="cust-btn"><a>Save</a></button>
         </div>
       </div>
     </div>
   </div>
+<app-modal class="hidden">
+    <div header>CAT Perils Exposure</div>
+    <div body style=" margin-top: -33px !important;">
+       <app-cust-editable-non-datatable [passData]="passDataCATPerils"></app-cust-editable-non-datatable>
+    </div>                
+    <div footer style="margin-right: 170px !important;">
+      <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+      <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Save</a></button>
+    </div>
+</app-modal>
+
 </ng-container>
 
 <ng-container *ngIf="alteration">
@@ -269,7 +282,7 @@
                <span class="col-sm-1"></span>
           </div>
           <div class="input-group" style="margin-bottom: -6px !important">
-               <label class="form-control-sm col-sm-3">Part Of(100%)</label>
+               <label class="form-control-sm col-sm-3">100% Values</label>
                <input type="text" class="form-control form-control-sm">
                <span class="col-sm-1"></span>
           </div>
@@ -306,6 +319,7 @@
   <div class="form-group col-sm">
     <div class="col-sm text-center">
       <div class="cust-btn-container">
+        <button type="button" class="cust-btn" (click)="CATPerils()" *ngIf="line == 'CAR' || line =='EAR' || line =='EEI' || line =='CEC'"><a>CAT Perils</a></button>
         <button type="button" class="cust-btn" (click)="pol($event)"><a>Cancel</a></button>
         <button type="button" class="cust-btn"><a>Save</a></button>
       </div>
@@ -313,6 +327,16 @@
   </div>
 </div>
 
+<app-modal class="hidden">
+    <div header>CAT Perils Exposure</div>
+    <div body style=" margin-top: -33px !important;">
+       <app-cust-editable-non-datatable [passData]="passDataCATPerils"></app-cust-editable-non-datatable>
+    </div>                
+    <div footer style="margin-right: 170px !important;">
+      <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+      <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Save</a></button>
+    </div>
+</app-modal>
 </div>
 </ng-container>
 

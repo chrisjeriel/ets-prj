@@ -6,6 +6,7 @@ fieldset.scheduler-border-endorsements{
 	position: absolute;
     top: 188px;
     left: 226px;
+ 	z-index: 1000 ! important;
 }
 
 fieldset {

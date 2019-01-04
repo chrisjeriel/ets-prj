@@ -35,6 +35,9 @@ import { OpenCoverComponent } from './quotation/open-cover/open-cover.component'
 import { ClmClaimProcessingComponent } from './claims/claim/clm-claim-processing/clm-claim-processing.component';
 import { ClmGenInfoClaimComponent } from './claims/claim/clm-claim-processing/clm-gen-info-claim/clm-gen-info-claim.component';
 import { ClaimComponent } from './claims/claim/claim.component';
+import { NegateDistributionComponent } from './underwriting/policy-distribution/negate-distribution/negate-distribution.component';
+import { DummyComponent2 } from './_components/common/dummy2/dummy2.component'
+
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -57,7 +60,7 @@ const appRoutes: Routes = [
     { path: 'expiry-listing', component: ExpiryListingComponent },
     { path: 'quotation-HoldCover', component: HoldCoverComponent },
     { path: 'policy-printing', component: PolicyPrintingComponent },
-    { path: 'policy-HoldCover', component: PolicyToHoldCoverComponent },
+    { path: 'policy-holdcover', component: PolicyToHoldCoverComponent },
     { path: 'change-quote-status', component: ChangeQuoteStatusComponent },
     { path: 'policy-inquiry', component: PolicyInquiryComponent },
     { path: 'pol-dist-list', component: PolDistListComponent },
@@ -72,6 +75,7 @@ const appRoutes: Routes = [
     { path: 'clm-claim-processing', component: ClmClaimProcessingComponent },
     { path: 'clm-gen-info-claim', component: ClmGenInfoClaimComponent },
     { path: 'claims-claim', component: ClaimComponent },
+    { path: 'negate-distribution', component: NegateDistributionComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
