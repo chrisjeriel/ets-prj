@@ -75,16 +75,17 @@ export class PolCreatePARComponent implements OnInit {
   }
 
   navigateToGenInfo() {
+    var qLine = this.quoteLine.toUpperCase();
 
-    if (this.quoteLine === 'CAR' ||
-      this.quoteLine === 'EAR' ||
-      this.quoteLine === 'EEI' ||
-      this.quoteLine === 'CEC' ||
-      this.quoteLine === 'MBI' ||
-      this.quoteLine === 'BPV' ||
-      this.quoteLine === 'MLP' ||
-      this.quoteLine === 'DOS') {
-      this.router.navigate(['/policy-issuance', { line: this.quoteLine }], { skipLocationChange: true });
+    if (qLine === 'CAR' ||
+      qLine === 'EAR' ||
+      qLine === 'EEI' ||
+      qLine === 'CEC' ||
+      qLine === 'MBI' ||
+      qLine === 'BPV' ||
+      qLine === 'MLP' ||
+      qLine === 'DOS') {
+      this.router.navigate(['/policy-issuance', { line: qLine }], { skipLocationChange: true });
     }
 
   }

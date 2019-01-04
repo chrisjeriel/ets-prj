@@ -35,6 +35,7 @@ import { OpenCoverComponent } from './quotation/open-cover/open-cover.component'
 import { ClmClaimProcessingComponent } from './claims/claim/clm-claim-processing/clm-claim-processing.component';
 import { ClmGenInfoClaimComponent } from './claims/claim/clm-claim-processing/clm-gen-info-claim/clm-gen-info-claim.component';
 import { ClaimComponent } from './claims/claim/claim.component';
+import { PaymentRequestsComponent } from './claims/payment-requests/payment-requests.component';
 import { NegateDistributionComponent } from './underwriting/policy-distribution/negate-distribution/negate-distribution.component';
 import { DummyComponent2 } from './_components/common/dummy2/dummy2.component'
 
@@ -75,6 +76,12 @@ const appRoutes: Routes = [
     { path: 'clm-claim-processing', component: ClmClaimProcessingComponent },
     { path: 'clm-gen-info-claim', component: ClmGenInfoClaimComponent },
     { path: 'claims-claim', component: ClaimComponent },
+    { path: 'negate-distribution', component: NegateDistributionComponent },
+    { path: 'purge-extracted-policy', component: PurgeExtractedPolicyComponent },
+    { path: 'update-info', component: UpdateInformationComponent },
+    { path: 'open-cover-processing', component: OpenCoverProcessingComponent },
+    { path: 'open-cover', component: OpenCoverComponent },
+    { path: 'payment-request', component: PaymentRequestsComponent },
     { path: 'negate-distribution', component: NegateDistributionComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }

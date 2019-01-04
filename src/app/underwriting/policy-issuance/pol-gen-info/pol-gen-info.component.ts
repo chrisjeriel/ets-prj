@@ -47,4 +47,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   showItemInfoModal(content) {
     this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
   }
+
+  toggleRadioBtnSet() {
+    document.getElementById('radioBtnSet').style.background = (!this.decChecked) ? '#ffffff' : '#e9ecef';
+  }
 }
