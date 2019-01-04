@@ -3,6 +3,7 @@ import { UnderwritingService } from '@app/_services/underwriting.service';
 import { UnderwritingCoverageInfo } from '@app/_models';
 import { Title } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-pol-coverage',
@@ -48,6 +49,14 @@ export class PolCoverageComponent implements OnInit {
         pageLength:3,
     };
 
+  passDataCATPerils: any = {
+        tHeader: ["CAT Perils", "Probable Maximum Loss", "Percentage(%)"],
+        dataTypes: [
+                    "text", "currency", "percent"
+                   ],
+        tableData: [["Earthquake",40000000,"15"],["Typhoon",30000000,"10"],["Flood",50000000,"10"],["Volcanic Eruption",10000000,"1"]],
+        pageLength:10,
+    };
 
 
   passData: any = {
@@ -77,9 +86,12 @@ export class PolCoverageComponent implements OnInit {
 
   textArea: string = "";
   @Input() alteration: boolean;
+  line: string;
+  sub: any;
+
 
   nData: UnderwritingCoverageInfo = new UnderwritingCoverageInfo(null, null, null, null, null, null, null);
-  constructor(private underwritingservice: UnderwritingService, private titleService: Title, private modalService: NgbModal) { }
+  constructor(private underwritingservice: UnderwritingService, private titleService: Title, private modalService: NgbModal,private route: ActivatedRoute) { }
 
   ngOnInit() {
 
@@ -197,9 +209,19 @@ export class PolCoverageComponent implements OnInit {
         }
       ];
     }
+
+    this.sub = this.route.params.subscribe(params => {
+            this.line = params['line'];
+        });
   }
 
   showTextEditorModal(content) {
     this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
   }
+
+  CATPerils() {
+        $('#modalBtn').trigger('click');
+    }
+
+
 }

@@ -1,17 +1,17 @@
 <div class="cust-tabs-container">
-	<h4>Expiry & Renewal</h4>
+	<h4>Policy/ Expiry & Renewal/ Expiry List</h4>
 	<ngb-tabset>
-		<ngb-tab title="Expiry List">
+		<ngb-tab title="Annual Policies">
 			<ng-template ngbTabContent>
 				<div class="row">
 					<div class="col-sm-12" style=" margin-top: -30px;">
-					<app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
+					<app-cust-editable-non-datatable [passData]="passDataAnnualPolicies"></app-cust-editable-non-datatable>
 					</div>
 					<div class="col-sm-12">
 						<fieldset class="scheduler-border">
 							<div class="row">
-								<div class="col-sm-2"></div>
-								<div class="col-sm-8">
+								<div class="col-sm-3"></div>
+								<div class="col-sm-6">
 									<div class="row">
 										<div class="col-sm">
 											<div class="row" style="margin-top: 0px;margin-right: -4px;">
@@ -22,7 +22,73 @@
 											</div>
 											<div class="row" style="margin-right: -4px;">
 												<button class="cust col-sm">Print</button>
-												<button class="cust col-sm">Query</button>
+												<button class="cust col-sm">Search</button>
+												<button class="cust col-sm">Update</button>
+												<button class="cust col-sm">Process</button>
+											</div>
+											<div class="row" style="margin-right: -5px !important;margin-top: 15px !important;">
+												<label class="form-control-sm col-sm-4 text-right">Changes</label>
+												<textarea class="form-control form-control-sm col-sm-8"></textarea>
+											</div>
+											<div class="row" style="margin-right: -5px !important;margin-top: 5px !important;">
+												<label class="form-control-sm col-sm-4 text-right">Reason For Non-renewal</label>
+												<input type="text" class="form-control form-control-sm col-sm-3">
+												<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+												<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 8px !important;">
+											</div>
+											<div class="row" style="margin-top: -18px;margin-right: -5px !important;">
+												<label class="form-control-sm col-sm-4 text-right">Remarks</label>
+												<input type="text" class="form-control form-control-sm col-sm-8">
+											</div>
+											<div class="row">
+											<div class="col-sm-12"  style="padding: 0px !important;margin-bottom: 7px;">
+												<fieldset class="scheduler-border" style="margin-right: 8px !important;    margin-top: -5px !important;">
+													<div class="row" style="margin-top: 10px;margin-bottom: -8px;margin-right: -20px;">
+														<div class="col-sm-1"></div>
+															<label class="form-control-sm col-sm-2" style="margin-left: 88px;">Process:</label>
+															<input type="radio" name="Process" class="form-control-sm" style="margin-top: 1px;margin-left: -30px !important">
+															<label class="form-control-sm col-sm-2" style="margin-right: 10px;    margin-left: -3px;">Tag All</label>
+															<input type="radio" name="Process" class="form-control-sm" style="margin-top: 1px;margin-left: -48px !important">
+															<label class="form-control-sm col-sm-2" style="margin-right: 10px;    margin-left: -3px;">Untag All</label>
+															<input type="radio" name="Process" class="form-control-sm" style="margin-top: 1px;margin-left: -38px !important">
+															<label class="form-control-sm col-sm-3" style="margin-right: 10px;    margin-left: -3px;">Selected Policies</label>
+														<div class="col-sm-1"></div>
+													</div>
+												</fieldset>
+											</div>
+										</div>
+									</div>
+									</div>
+								</div>
+								<div class="col-sm-3"></div>
+							</div>
+						</fieldset>
+					</div>
+				</div>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab title="Extension Policies ">
+			<ng-template ngbTabContent>
+				<div class="row">
+					<div class="col-sm-12" style=" margin-top: -30px;">
+					<app-cust-editable-non-datatable [passData]="passDataExtensionPolicies"></app-cust-editable-non-datatable>
+					</div>
+					<div class="col-sm-12">
+						<fieldset class="scheduler-border">
+							<div class="row">
+								<div class="col-sm-3"></div>
+								<div class="col-sm-6">
+									<div class="row">
+										<div class="col-sm">
+											<div class="row" style="margin-top: 0px;margin-right: -4px;">
+												<button class="cust col-sm">Delete</button>
+												<button class="cust col-sm">Edit</button>
+												<button class="cust col-sm">Purge</button>
+												<button class="cust col-sm">Save</button>
+											</div>
+											<div class="row" style="margin-right: -4px;">
+												<button class="cust col-sm">Print</button>
+												<button class="cust col-sm">Search</button>
 												<button class="cust col-sm">Update</button>
 												<button class="cust col-sm">Process</button>
 											</div>
@@ -38,61 +104,108 @@
 											</div>
 											<div class="row">
 											<div class="col-sm-12"  style="padding: 0px !important;margin-bottom: 7px;">
-												<fieldset class="scheduler-border" style="margin-right: 8px !important;">
-													<div class="row" style="margin-top: 10px;margin-bottom: -8px;">
+												<fieldset class="scheduler-border" style="margin-right: 8px !important;    margin-top: -5px !important;">
+													<div class="row" style="margin-top: 10px;margin-bottom: -8px;margin-right: -20px;">
 														<div class="col-sm-1"></div>
-															<label class="form-control-sm col-sm-2" style="margin-left: 15px;">Process:</label>
-															<input type="radio" name="Process" class="form-control-sm" style="margin-top: 1px;">
-															<label class="form-control-sm col-sm-2">Tag All</label>
-															<input type="radio" name="Process" class="form-control-sm" style="margin-top: 1px;">
-															<label class="form-control-sm col-sm-2">Untag All</label>
-															<input type="radio" name="Process" class="form-control-sm" style="margin-top: 1px;">
-															<label class="form-control-sm col-sm-3">Selected Policies</label>
+															<label class="form-control-sm col-sm">Process:</label>
+															<input type="radio" name="Process" class="form-control-sm">
+															<label class="form-control-sm col-sm">Tag All</label>
+															<input type="radio" name="Process" class="form-control-sm">
+															<label class="form-control-sm col-sm">Untag All</label>
+															<input type="radio" name="Process" class="form-control-sm">
+															<label class="form-control-sm col-sm">Selected Policies</label>
 														<div class="col-sm-1"></div>
 													</div>
 												</fieldset>
 											</div>
 										</div>
 									</div>
-										<div class="col-sm-3" style="margin-left: 5px; background-color: lightgray;    margin-bottom: 12px;">
-											<div class="row">
-												<div class="input-group" style="margin-bottom: -23px !important;margin-left: 10px;    margin-top: -5px;">
-													<label class="form-control-sm">Legend</label>
-												</div>
-												<div class="input-group" style="margin-bottom: -23px !important;margin-left: 10px;">
-													<label class="form-control-sm">P - Policy Process</label>
-												</div>
-												<div class="input-group" style="margin-bottom: -23px !important;margin-left: 10px;">
-													<label class="form-control-sm">RA - Renewal As Is</label>
-												</div>
-												<div class="input-group" style="margin-bottom: -23px !important;margin-left: 10px;">
-													<label class="form-control-sm">RC - Renewal With Change</label>
-												</div>
-												<div class="input-group" style="margin-bottom: -23px !important;margin-left: 10px;">
-													<label class="form-control-sm">NR - Non-renewal</label>
-												</div>
-												<div class="input-group" style="margin-bottom: -23px !important;margin-left: 10px;">
-													<label class="form-control-sm">S - Summarized</label>
-												</div>
-												<div class="input-group" style="margin-bottom: -23px !important;margin-left: 10px;">
-													<label class="form-control-sm">B - With Balance</label>
-												</div>
-												<div class="input-group" style="margin-bottom: -23px !important;margin-left: 10px;">
-													<label class="form-control-sm">C - With Claim</label>
-												</div>
-												<div class="input-group" style="margin-bottom: -23px !important;margin-left: 10px;">
-													<label class="form-control-sm">R - With Reminder</label>
-												</div>
-												<div class="input-group" style="margin-bottom: -23px !important;margin-left: 10px;">
-													<label class="form-control-sm">RP - Regular Policy</label>
-												</div>
-											</div>
-										</div>
 									</div>
 								</div>
-								<div class="col-sm-2"></div>
+								<div class="col-sm-3"></div>
 							</div>
 						</fieldset>
+					</div>
+				</div>
+			</ng-template>
+		</ngb-tab>
+
+
+
+
+
+
+
+		<ngb-tab title="Claim History">
+			<ng-template ngbTabContent>
+				<div class="row">
+					<div class="col-sm-12">
+					<fieldset class="scheduler-border">
+						<legend class="scheduler-border">Claim Info</legend>
+						<div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;" style="margin-top: 10px !important;">
+							<div class="input-group" style="margin-bottom: -13px !important; margin-top: 3px !important">
+								<div class="col-sm-1"></div>
+								<label class="form-control-sm col-sm-1" for="xx">Claim No</label>
+								<input type="text" value="CAR-2018-000001" class="form-control form-control-sm cust-sm col-sm-3" placeholder=""
+								 readonly>
+								<label class="form-control-sm col-sm-1" for="xx">Insured</label>
+								<input type="text" value="2nd Inn. Inc" class="form-control form-control-sm cust-sm col-sm-5" placeholder="" readonly>
+								<div class="col-sm-1"></div>
+							</div>
+							<div class="input-group" style="margin-bottom: -13px !important;">
+								<div class="col-sm-1"></div>
+								<label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Policy No</label>
+								<input type="text" value="CAR-2018-00001-99-0001-000" class="form-control form-control-sm cust-sm col-sm-3	" placeholder="" readonly>
+								<label class="form-control-sm col-sm-1" for="xx">Risk</label>
+								<input type="text" value="Ayala Wakeboard" class="form-control form-control-sm cust-sm col-sm-5" placeholder="" readonly>
+								<div class="col-sm-1"></div>
+							</div>
+						</div>
+					</fieldset>
+					</div>
+					<div class="col-sm-12">
+
+						<fieldset class="scheduler-border">
+						<legend class="scheduler-border">History</legend>
+							<div class="history" style="margin-top: 10px !important;margin-bottom: 65px !important">
+								<app-cust-editable-non-datatable [passData]="passDataHistory"></app-cust-editable-non-datatable>
+							</div>
+							<div class="row">
+								<div class="col-sm-3">
+									<div class="input-group">
+										<label class="form-control-sm col-sm-3">Created By</label>
+              						<input type="text" class="form-control form-control-sm col-sm-9">
+									</div>
+									
+								</div>
+								<div class="col-sm-3" style="margin-left: -33px !important;">
+									<div class="input-group">
+										<label class="form-control-sm col-sm-3">Date Created</label>
+              						<input type="text" class="form-control form-control-sm col-sm-9">
+									</div>
+									
+								</div>
+								<div class="col-sm-3" style="margin-left: -25px !important;">
+									<div class="input-group">
+										<label class="form-control-sm col-sm-4">Last Update By</label>
+              						<input type="text" class="form-control form-control-sm">
+									</div>
+									
+								</div>
+								<div class="col-sm-3" style="margin-left: -40px !important;">
+									<div class="input-group">
+										<label class="form-control-sm col-sm-4">Last Update</label>
+              						<input type="text" class="form-control form-control-sm">
+									</div>
+									
+								</div>
+							</div>
+					</fieldset>
+
+					</div>
+					<div class="col-sm-12 text-center" style="margin-top: 17px !important" >
+                        <button type="button" class="cust-btn"><a>Cancel</a></button>
+						<button type="button" class="cust-btn"><a>Save</a></button>
 					</div>
 				</div>
 			</ng-template>

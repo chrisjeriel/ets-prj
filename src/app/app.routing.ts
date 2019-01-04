@@ -54,7 +54,7 @@ const appRoutes: Routes = [
     { path: 'expiry-listing', component: ExpiryListingComponent },
     { path: 'quotation-HoldCover', component: HoldCoverComponent },
     { path: 'policy-printing', component: PolicyPrintingComponent },
-    { path: 'policy-HoldCover', component: PolicyToHoldCoverComponent },
+    { path: 'policy-holdcover', component: PolicyToHoldCoverComponent },
     { path: 'change-quote-status', component: ChangeQuoteStatusComponent },
     { path: 'policy-inquiry', component: PolicyInquiryComponent },
     { path: 'pol-dist-list', component: PolDistListComponent },
