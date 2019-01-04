@@ -386,6 +386,26 @@ export class QuotationService {
     getRisksLOV(){
         this.risksData = [
           new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
         ];
         return this.risksData;
     }

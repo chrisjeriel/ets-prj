@@ -28,15 +28,97 @@ export class QuotationProcessingComponent implements OnInit {
   mdlConfig = {
       mdlBtnAlign: 'center',
   }
+  
 
   passData: any = {
-        tableData: [], 
+        tableData: this.quotationService.getQuoProcessingData(), 
         tHeader: ['Quotation No.','Type of Cession','Line Class','Status','Ceding Company','Principal','Contractor','Insured','Risk','Object','Site','Policy No','Currency', 'Quote Date', 'Valid Until', 'Requested By', 'Created By'],
-        dataTypes: ['text','text','text','text','text','text','text','text','text','text','text','text','date','date','text','text'],
+        dataTypes: ['text','text','text','text','text','text','text','text','text','text','text','text','text','date','date','text',],
         resizable: [false, true, true, true, true, true, true, true, true, true, false, false, true, true, true, true],
-        filters: [],
+        filters: [
+            {
+                key: 'quotationNo',
+                title:'Quotation No.',
+                dataType: 'text'
+            },
+            {
+                key: 'cessionType',
+                title:'Type of Cession',
+                dataType: 'text'
+            },
+            {
+                key: 'lineClass',
+                title:'Line Class',
+                dataType: 'text'
+            },
+            {
+                key: 'quoteStatus',
+                title:'Quote Status',
+                dataType: 'text'
+            },
+            {
+                key: 'cedingCompany',
+                title:'Ceding Co.',
+                dataType: 'text'
+            },
+            {
+                key: 'principal',
+                title:'Principal',
+                dataType: 'text'
+            },
+            {
+                key: 'insured',
+                title:'Insured',
+                dataType: 'text'
+            },
+            {
+                key: 'risk',
+                title:'Risk',
+                dataType: 'text'
+            },
+            {
+                key: 'object',
+                title:'Object',
+                dataType: 'text'
+            },
+            {
+                key: 'location',
+                title:'Site',
+                dataType: 'text'
+            },
+            {
+                key: 'policyNo',
+                title:'Policy No.',
+                dataType: 'text'
+            },
+            {
+                key: 'currency',
+                title:'Currency.',
+                dataType: 'text'
+            },
+            {
+                key: 'quoteDate',
+                title:'Quote Date.',
+                dataType: 'date'
+            },
+            {
+                key: 'validUntil',
+                title:'Valid Until',
+                dataType: 'date'
+            },
+            {
+                key: 'requestedBy',
+                title:'Requested By',
+                dataType: 'text'
+            },
+            {
+                key: 'createdBy',
+                title:'Created By',
+                dataType: 'text'
+            },
+        ],
         pageLength: 10,
-        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: true, printBtn: false, addFlag: true, editFlag: true, copyFlag: true,
+        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, addFlag: true, editFlag: true, copyFlag: true, pageStatus: true, pagination: true, 
   }
     
   riskData: any = {
@@ -46,8 +128,8 @@ export class QuotationProcessingComponent implements OnInit {
       resizable: [false, true, false, true, true, false, false],
       pageLength: 10,
       searchFlag: true,
-      infoFlag: true,
-      paginateFlag: true,
+      pageStatus: true,
+      pagination: true,
       fixedCol: false,
   }
 
@@ -59,57 +141,6 @@ export class QuotationProcessingComponent implements OnInit {
   ngOnInit() {
     this.titleService.setTitle("Quo | List Of Quotations");
     this.rowData = this.quotationService.getRowData();
-
-    this.tHeader.push("Quotation No");
-    this.tHeader.push("Type of Cession");
-    this.tHeader.push("Line Class");
-    this.tHeader.push("Status");
-    this.tHeader.push("Ceding Company");
-    this.tHeader.push("Principal");
-    this.tHeader.push("Contractor");
-    this.tHeader.push("Insured");
-    this.tHeader.push("Risk");
-    this.tHeader.push("Object");
-    this.tHeader.push("Location");
-    this.tHeader.push("Quote Date");
-    this.tHeader.push("Validity Date");
-    this.tHeader.push("Requested By");
-    this.tHeader.push("Created By");
-
-    this.filters.push("Quotation No");
-    this.filters.push("Type of Cession");
-    this.filters.push("Line Class");
-    this.filters.push("Status");
-    this.filters.push("Ceding Company");
-    this.filters.push("Principal");
-    this.filters.push("Contractor");
-    this.filters.push("Insured");
-    this.filters.push("Risk");
-    this.filters.push("Object");
-    this.filters.push("Location");
-    this.filters.push("Quote Date");
-    this.filters.push("Validity Date");
-    this.filters.push("Requested By");
-    this.filters.push("Created By");
-
-    this.dataTypes.push("text");
-    this.dataTypes.push("text");
-    this.dataTypes.push("text");
-    this.dataTypes.push("text");
-    this.dataTypes.push("text");
-    this.dataTypes.push("text");
-    this.dataTypes.push("text");
-    this.dataTypes.push("text");
-    this.dataTypes.push("text");
-    this.dataTypes.push("text");
-    this.dataTypes.push("text");
-    this.dataTypes.push("date");
-    this.dataTypes.push("date");
-    this.dataTypes.push("text");
-    this.dataTypes.push("text");
-
-    this.passData.tableData = this.quotationService.getQuoProcessingData();
-
   }
   
   onClickAdd(event){

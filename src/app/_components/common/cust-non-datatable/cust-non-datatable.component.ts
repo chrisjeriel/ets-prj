@@ -89,6 +89,7 @@ export class CustNonDatatableComponent implements OnInit {
      @Output() add: EventEmitter<any> = new EventEmitter();
     @Output() edit: EventEmitter<any> = new EventEmitter();
     @Output() copy: EventEmitter<any> = new EventEmitter();
+    @Output() print: EventEmitter<any> = new EventEmitter();
 
     @Input() printBtn: boolean = false;
     //@Input() fixedCol: boolean = false;
@@ -98,7 +99,7 @@ export class CustNonDatatableComponent implements OnInit {
     @Input() passData: any = {
         tableData: [], tHeader: [], dataTypes: [], resizable: [], filters: [],
         pageLength: 10,
-        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, pageStatus: true, pagination: true, addFlag: false, editFlag: false, deleteFlag: false, copyFlag: false,
+        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, pageStatus: true, pagination: true, addFlag: false, editFlag: false, deleteFlag: false, copyFlag: false, 
     }
 
     dataKeys: any[] = [];
@@ -274,5 +275,9 @@ export class CustNonDatatableComponent implements OnInit {
     onClickCopy(event){
         //do some copying
         this.copy.next(event);
+    }
+    onClickPrint(event){
+        //do some copying
+        this.print.next(event);
     }
 }
