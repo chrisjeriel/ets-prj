@@ -1,7 +1,7 @@
 <div class="cust-tabs-container">
 	<h4>Policy/ Expiry & Renewal/ Expiry List</h4>
 	<ngb-tabset>
-		<ngb-tab title="Annual Policies">
+		<ngb-tab class="ngb-tab" title="Annual Policies">
 			<ng-template ngbTabContent>
 				<div class="row">
 					<div class="col-sm-12" style=" margin-top: -30px;">
@@ -43,16 +43,30 @@
 											<div class="row">
 											<div class="col-sm-12"  style="padding: 0px !important;margin-bottom: 7px;">
 												<fieldset class="scheduler-border" style="margin-right: 8px !important;    margin-top: -5px !important;">
-													<div class="row" style="margin-top: 10px;margin-bottom: -8px;margin-right: -20px;">
-														<div class="col-sm-1"></div>
-															<label class="form-control-sm col-sm-2" style="margin-left: 88px;">Process:</label>
-															<input type="radio" name="Process" class="form-control-sm" style="margin-top: 1px;margin-left: -30px !important">
-															<label class="form-control-sm col-sm-2" style="margin-right: 10px;    margin-left: -3px;">Tag All</label>
-															<input type="radio" name="Process" class="form-control-sm" style="margin-top: 1px;margin-left: -48px !important">
-															<label class="form-control-sm col-sm-2" style="margin-right: 10px;    margin-left: -3px;">Untag All</label>
-															<input type="radio" name="Process" class="form-control-sm" style="margin-top: 1px;margin-left: -38px !important">
-															<label class="form-control-sm col-sm-3" style="margin-right: 10px;    margin-left: -3px;">Selected Policies</label>
-														<div class="col-sm-1"></div>
+													<div class="row" style="margin-top: 10px;margin-bottom: 0px;margin-right: -20px;">
+														<div class="col-sm-3">
+															<div class="input-group" style="    margin-left: 100px !important;">
+															<label class="form-control-sm col-sm-2" >Process:</label>
+															</div>
+														</div>
+														<div class="col-sm-3">
+															<div class="input-group" style="    margin-left: 29px !important;">
+															<input type="radio" name="Process" class="form-control-sm" id="test" style="margin-top: 1px !important;">
+															<label class="form-control-sm col-sm" for="test" style="margin-left: 3px !important;">Tag All</label>
+															</div>
+														</div>
+														<div class="col-sm-3">
+															<div class="input-group" style="    margin-left: -41px !important;">
+															<input type="radio" name="Process" class="form-control-sm" id="test" style="margin-top: 1px !important;">
+															<label class="form-control-sm col-sm" for="test" style="margin-left: 3px !important;">Untag All</label>
+															</div>
+														</div>
+														<div class="col-sm-3">
+															<div class="input-group" style="margin-left: -102px !important;">
+															<input type="radio" name="Process" class="form-control-sm" id="test" style="margin-top: 1px !important;">
+															<label class="form-control-sm col-sm" for="test" style="margin-left: 3px !important;">Selected Policies</label>
+															</div>
+														</div>
 													</div>
 												</fieldset>
 											</div>
@@ -67,7 +81,7 @@
 				</div>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab title="Extension Policies ">
+		<ngb-tab class="ngb-tab" title="Extension Policies ">
 			<ng-template ngbTabContent>
 				<div class="row">
 					<div class="col-sm-12" style=" margin-top: -30px;">
@@ -105,16 +119,37 @@
 											<div class="row">
 											<div class="col-sm-12"  style="padding: 0px !important;margin-bottom: 7px;">
 												<fieldset class="scheduler-border" style="margin-right: 8px !important;    margin-top: -5px !important;">
-													<div class="row" style="margin-top: 10px;margin-bottom: -8px;margin-right: -20px;">
-														<div class="col-sm-1"></div>
-															<label class="form-control-sm col-sm">Process:</label>
-															<input type="radio" name="Process" class="form-control-sm">
-															<label class="form-control-sm col-sm">Tag All</label>
-															<input type="radio" name="Process" class="form-control-sm">
-															<label class="form-control-sm col-sm">Untag All</label>
-															<input type="radio" name="Process" class="form-control-sm">
-															<label class="form-control-sm col-sm">Selected Policies</label>
-														<div class="col-sm-1"></div>
+													<div class="row" style="margin-top: 10px;margin-bottom: 0px;margin-right: -20px;">
+														<div class="col-sm-3">
+															<div class="input-group" style="    margin-left: 100px !important;">
+															<label class="form-control-sm col-sm-2" >Process:</label>
+															</div>
+														</div>
+														<div class="col-sm-3">
+															<div class="input-group" style="    margin-left: 29px !important;">
+															<input type="radio" name="Process" class="form-control-sm" id="test" style="margin-top: 1px !important;">
+															<label class="form-control-sm col-sm" for="test" style="margin-left: 3px !important;">Tag All</label>
+															</div>
+														</div>
+														<div class="col-sm-3">
+															<div class="input-group" style="    margin-left: -41px !important;">
+															<input type="radio" name="Process" class="form-control-sm" id="test" style="margin-top: 1px !important;">
+															<label class="form-control-sm col-sm" for="test" style="margin-left: 3px !important;">Untag All</label>
+															</div>
+														</div>
+														<div class="col-sm-3">
+															<div class="input-group" style="margin-left: -102px !important;">
+															<input type="radio" name="Process" class="form-control-sm" id="test" style="margin-top: 1px !important;">
+															<label class="form-control-sm col-sm" for="test" style="margin-left: 3px !important;">Selected Policies</label>
+															</div>
+														</div>
+
+															
+															
+															
+															
+														
+														
 													</div>
 												</fieldset>
 											</div>
@@ -136,7 +171,7 @@
 
 
 
-		<ngb-tab title="Claim History">
+		<ngb-tab class="ngb-tab" title="Claim History">
 			<ng-template ngbTabContent>
 				<div class="row">
 					<div class="col-sm-12">
@@ -170,32 +205,32 @@
 							<div class="history" style="margin-top: 10px !important;margin-bottom: 65px !important">
 								<app-cust-editable-non-datatable [passData]="passDataHistory"></app-cust-editable-non-datatable>
 							</div>
-							<div class="row">
+							<div class="row" style="margin-left: 35px !important;">
 								<div class="col-sm-3">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-3">Created By</label>
-              						<input type="text" class="form-control form-control-sm col-sm-9">
+              						<input type="text" class="form-control form-control-sm col-sm-9" placeholder="cuaresma">
 									</div>
 									
 								</div>
-								<div class="col-sm-3" style="margin-left: -33px !important;">
-									<div class="input-group">
-										<label class="form-control-sm col-sm-3">Date Created</label>
-              						<input type="text" class="form-control form-control-sm col-sm-9">
+								<div class="col-sm-3">
+									<div class="input-group" style="margin-left: -24px !important;">
+										<label class="form-control-sm col-sm-4">Date Created</label>
+              						<input type="date" class="form-control form-control-sm col-sm-8">
 									</div>
 									
 								</div>
-								<div class="col-sm-3" style="margin-left: -25px !important;">
-									<div class="input-group">
+								<div class="col-sm-3">
+									<div class="input-group" style="margin-left: -40px !important;">
 										<label class="form-control-sm col-sm-4">Last Update By</label>
-              						<input type="text" class="form-control form-control-sm">
+              						<input type="text" class="form-control form-control-sm col-sm-8" placeholder="cuaresma">
 									</div>
 									
 								</div>
-								<div class="col-sm-3" style="margin-left: -40px !important;">
-									<div class="input-group">
+								<div class="col-sm-3">
+									<div class="input-group" style="margin-left: -70px !important;">
 										<label class="form-control-sm col-sm-4">Last Update</label>
-              						<input type="text" class="form-control form-control-sm">
+              						<input type="date" class="form-control form-control-sm">
 									</div>
 									
 								</div>
