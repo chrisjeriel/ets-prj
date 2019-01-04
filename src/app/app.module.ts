@@ -88,6 +88,10 @@ import { OpenCoverProcessingComponent } from './quotation/open-cover-processing/
 import { OpenCoverComponent } from './quotation/open-cover/open-cover.component';
 import { GenInfoComponent } from './quotation/open-cover/gen-info/gen-info.component';
 import { OpenCoverSumInsuredComponent } from './quotation/open-cover/open-cover-sum-insured/open-cover-sum-insured.component';
+import { ClaimsComponent } from './claims/claims.component';
+import { ClaimComponent } from './claims/claim/claim.component';
+import { ClmClaimProcessingComponent } from './claims/claim/clm-claim-processing/clm-claim-processing.component';
+import { ClmGenInfoClaimComponent } from './claims/claim/clm-claim-processing/clm-gen-info-claim/clm-gen-info-claim.component';
 import { PaymentRequestsComponent } from './claims/payment-requests/payment-requests.component';
 import { NegateDistributionComponent } from './underwriting/policy-distribution/negate-distribution/negate-distribution.component';
 import { ClaimsAttachmentComponent } from './underwriting/policy-distribution/negate-distribution/claims-attachment/claims-attachment.component';
@@ -185,6 +189,10 @@ import { DummyComponent2 } from './_components/common/dummy2/dummy2.component';
         OpenCoverComponent,
         GenInfoComponent,
         OpenCoverSumInsuredComponent,
+        ClaimsComponent,
+        ClaimComponent,
+        ClmClaimProcessingComponent,
+        ClmGenInfoClaimComponent,
         PaymentRequestsComponent,
         NegateDistributionComponent,
         ClaimsAttachmentComponent
