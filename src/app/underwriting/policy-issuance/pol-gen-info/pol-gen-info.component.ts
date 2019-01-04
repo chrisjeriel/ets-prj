@@ -36,6 +36,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
     this.sub = this.route.params.subscribe(params => {
       this.line = params['line'];
+      this.alteration = params['alteration'];
     });
   }
 

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UnderwritingService } from '../../../_services';
 import { Title } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-alt-par-listing',
@@ -12,6 +13,7 @@ export class AltParListingComponent implements OnInit {
     tHeader: any[] = [];
     dataTypes: any[] = [];
     filters: any[] = [];
+    line: string = "";
 
     altParListData: any = {
         tableData: this.uwService.getAltParListing(),
@@ -33,99 +35,99 @@ export class AltParListingComponent implements OnInit {
         filters: [
             {
                 key: 'policyNo',
-                title:'Policy No.',
+                title: 'Policy No.',
                 dataType: 'text'
             },
             {
                 key: 'cessionType',
-                title:'Type of Cession',
+                title: 'Type of Cession',
                 dataType: 'text'
             },
             {
                 key: 'lineClass',
-                title:'Line Class',
+                title: 'Line Class',
                 dataType: 'text'
             },
             {
                 key: 'status',
-                title:'Status',
+                title: 'Status',
                 dataType: 'text'
             },
             {
                 key: 'cedingCompany',
-                title:'Ceding Company',
+                title: 'Ceding Company',
                 dataType: 'text'
             },
             {
                 key: 'principal',
-                title:'Principal',
+                title: 'Principal',
                 dataType: 'text'
             },
             {
                 key: 'contractor',
-                title:'Contractor',
+                title: 'Contractor',
                 dataType: 'text'
             },
             {
                 key: 'insured',
-                title:'Insured',
+                title: 'Insured',
                 dataType: 'text'
             },
             {
                 key: 'risk',
-                title:'Risk',
+                title: 'Risk',
                 dataType: 'text'
             },
             {
                 key: 'object',
-                title:'Object',
+                title: 'Object',
                 dataType: 'text'
             },
             {
                 key: 'site',
-                title:'Site',
+                title: 'Site',
                 dataType: 'text'
             },
             {
                 key: 'quoteDate',
-                title:'Period From',
+                title: 'Period From',
                 dataType: 'date'
             },
             {
                 key: 'quotationNo',
-                title:'Quotation No',
+                title: 'Quotation No',
                 dataType: 'text'
             },
             {
                 key: 'company',
-                title:'Company',
+                title: 'Company',
                 dataType: 'text'
             },
             {
                 key: 'issueDate',
-                title:'Issue Date',
+                title: 'Issue Date',
                 dataType: 'date'
             },
             {
                 key: 'inceptionDate',
-                title:'Inception Date',
+                title: 'Inception Date',
                 dataType: 'date'
             },
             {
                 key: 'expiryDate',
-                title:'Expiry Date',
+                title: 'Expiry Date',
                 dataType: 'date'
             },
             {
                 key: 'createdBy',
-                title:'Created By',
+                title: 'Created By',
                 dataType: 'text'
             },
         ],
-        
+
     }
 
-    constructor(private uwService: UnderwritingService, private titleService: Title) { }
+    constructor(private uwService: UnderwritingService, private titleService: Title, private router: Router) { }
 
     ngOnInit() {
         this.titleService.setTitle("Pol | Alteration List");
@@ -158,5 +160,17 @@ export class AltParListingComponent implements OnInit {
 
         this.tableData = this.uwService.getAltParListing();
     }
+    slctd: string = "";
+    slctdArr: any[] = [];
+    polLine: string = "";
 
+    onRowDblClick(event) {
+        this.slctd = event.target.closest("tr").children[0].innerText;
+        this.slctdArr = this.slctd.split("-");
+        for (var i = 0; i < this.slctdArr.length; i++) {
+            this.polLine = this.slctdArr[0];
+        }
+        //console.log(this.polLine);
+        this.router.navigate(['/policy-issuance', { line: this.polLine, alteration: true }], { skipLocationChange: true });
+    }
 }
