@@ -1,13 +1,18 @@
 <div class="cust-tabs-container">
 	<h4>Policy / Distribution</h4>
 	<ngb-tabset>
+		<ngb-tab class="ngb-tab" title="Claim Attachment">
+			<ng-template ngbTabContent>
+				<app-claims-attachment></app-claims-attachment>
+			</ng-template>
+		</ngb-tab>
 		<ngb-tab class="ngb-tab" title="Negate Distribution">
 			<ng-template ngbTabContent>
 				<div>
 					<fieldset class="scheduler-border">
 						<legend class="scheduler-border">Distribution Info</legend>
-						<div class="custom-row-inline-inset">
-							<div class="form-row">
+							<div class="custom-row-inline-inset">
+								<div class="form-row">
 								<div class="col-sm-6">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Policy No</label>
@@ -22,7 +27,7 @@
 										ngbTooltip="Co Series No">
 										<input type="text" class="form-control form-control-sm col-sm-1 cap-input  text-center" [ngModel]="policyNo.split('-')[5]" style="margin-left: 5px;"
 										ngbTooltip="Alt No">
-										
+
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Dist No</label>
@@ -81,7 +86,7 @@
 									<div class="form-row">
 										<div class="input-group" > 
 											<label class="form-control-sm col-sm-4">One Retention Line</label>
-											<input type="text" class="form-control form-control-sm col-sm">
+											<input type="text" class="form-control form-control-sm col-sm text-right" placeholder="200,000.00">
 										</div>
 										<div class="input-group">
 											<label class="form-control-sm col-sm-4">1st Retention Line</label>
@@ -125,16 +130,16 @@
 										</div>
 										<div class="input-group">
 											<label class="form-control-sm col-sm-2">SI Amount</label>
-											<input type="text" class="form-control form-control-sm col-sm">
-											<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px">
-											<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px">
+											<input type="text" class="form-control form-control-sm col-sm text-right"  placeholder="8,000,000.00">
+											<input type="text" class="form-control form-control-sm col-sm text-right"  placeholder="619,800,000.00"  style="margin-left: 5px">
+											<input type="text" class="form-control form-control-sm col-sm text-right"  placeholder="4,000,000,000.00"  style="margin-left: 5px">
 											<label class="form-control-sm col-sm-1"></label>
 										</div>
 										<div class="input-group">
 											<label class="form-control-sm col-sm-2">Premium Amount</label>
-											<input type="text" class="form-control form-control-sm col-sm">
-											<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px">
-											<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px">
+											<input type="text" class="form-control form-control-sm col-sm text-right" placeholder="2,500.00">
+											<input type="text" class="form-control form-control-sm col-sm text-right"  placeholder="193,687.50"  style="margin-left: 5px">
+											<input type="text" class="form-control form-control-sm col-sm text-right"  placeholder="1,000,000.00"  style="margin-left: 5px">
 											<label class="form-control-sm col-sm-1"></label>
 										</div>
 									</div>
@@ -192,12 +197,13 @@
 									</app-modal>
 									<button type="button" class="cust-btn" (click)="test()"><a>Cancel</a></button>
 									<button type="button" class="cust-btn"><a>Save</a></button>
-								</div>
+									</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</ng-template>
 		</ngb-tab>
+		
 	</ngb-tabset>
 </div>

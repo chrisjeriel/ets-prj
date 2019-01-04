@@ -22,7 +22,15 @@ export class NegateDistributionComponent implements OnInit {
 
   distributionPassData:any = {
   	tableData:[
-  		['QS','Munich Rice',38,570000000,142500,30],
+  		['QS','Munich Re',38,570000000,142500,30],
+      ['QS','PhilNaRe',2,30000000,7500,30],
+      ['QS','Pool',60,627800000,156950,30],
+      ['1Surp','Munich Re',95,258590000,64647.50,30],
+      ['1Surp','PhilNaRe',5,13610000,3420.50,30],
+      ['2Surp','Munich Re',95,1425000000,356250,30],
+      ['2Surp','PhilNaRe',5,75000000,18750,30],
+      ['Facul','Munich Re',100,1000000000,250000,30],
+
   	],
   	tHeader: ['Treaty', 'Treaty Company','Share (%)', 'SI Amount', 'Premium Amount', 'Comm Share (%)'],
   	dataTypes:['text','text', 'percent', 'currency', 'currency', 'percent'],
