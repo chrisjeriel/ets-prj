@@ -33,7 +33,8 @@ import { UpdateInformationComponent } from './utilities/update-information/updat
 import { OpenCoverProcessingComponent } from './quotation/open-cover-processing/open-cover-processing.component';
 import { OpenCoverComponent } from './quotation/open-cover/open-cover.component';
 import { PaymentRequestsComponent } from './claims/payment-requests/payment-requests.component';
-
+import { NegateDistributionComponent } from './underwriting/policy-distribution/negate-distribution/negate-distribution.component';
+import { DummyComponent2 } from './_components/common/dummy2/dummy2.component'
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -69,6 +70,7 @@ const appRoutes: Routes = [
     { path: 'open-cover-processing' , component: OpenCoverProcessingComponent},
     { path: 'open-cover' , component: OpenCoverComponent},
     { path: 'payment-request' , component: PaymentRequestsComponent},
+    { path: 'negate-distribution' , component: NegateDistributionComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

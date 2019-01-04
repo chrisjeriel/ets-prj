@@ -89,6 +89,10 @@ import { OpenCoverComponent } from './quotation/open-cover/open-cover.component'
 import { GenInfoComponent } from './quotation/open-cover/gen-info/gen-info.component';
 import { OpenCoverSumInsuredComponent } from './quotation/open-cover/open-cover-sum-insured/open-cover-sum-insured.component';
 import { PaymentRequestsComponent } from './claims/payment-requests/payment-requests.component';
+import { NegateDistributionComponent } from './underwriting/policy-distribution/negate-distribution/negate-distribution.component';
+import { ClaimsAttachmentComponent } from './underwriting/policy-distribution/negate-distribution/claims-attachment/claims-attachment.component';
+import { DummyComponent2 } from './_components/common/dummy2/dummy2.component';
+
 
 @NgModule({
     imports: [
@@ -181,7 +185,9 @@ import { PaymentRequestsComponent } from './claims/payment-requests/payment-requ
         OpenCoverComponent,
         GenInfoComponent,
         OpenCoverSumInsuredComponent,
-        PaymentRequestsComponent
+        PaymentRequestsComponent,
+        NegateDistributionComponent,
+        ClaimsAttachmentComponent
     ],
 
     providers: [

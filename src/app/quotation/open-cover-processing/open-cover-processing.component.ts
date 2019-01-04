@@ -47,7 +47,7 @@ export class OpenCoverProcessingComponent implements OnInit {
     this.line = this.quotationService.rowData[0].split("-")[0];
     this.quotationService.toGenInfo = [];
     this.quotationService.toGenInfo.push("edit", this.line);
-    this.router.navigate(['/quotation']);
+    this.router.navigate(['/open-cover']);
   }
 
   nextBtnEvent() {

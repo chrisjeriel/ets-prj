@@ -89,6 +89,7 @@ export class CustNonDatatableComponent implements OnInit {
      @Output() add: EventEmitter<any> = new EventEmitter();
     @Output() edit: EventEmitter<any> = new EventEmitter();
     @Output() copy: EventEmitter<any> = new EventEmitter();
+    @Output() print: EventEmitter<any> = new EventEmitter();
 
     @Input() printBtn: boolean = false;
     //@Input() fixedCol: boolean = false;
@@ -98,7 +99,7 @@ export class CustNonDatatableComponent implements OnInit {
     @Input() passData: any = {
         tableData: [], tHeader: [], dataTypes: [], resizable: [], filters: [],
         pageLength: 10,
-        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, pageStatus: true, pagination: true, addFlag: false, editFlag: false, deleteFlag: false, copyFlag: false,
+        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, pageStatus: true, pagination: true, addFlag: false, editFlag: false, deleteFlag: false, copyFlag: false, pageID: 1
     }
 
     dataKeys: any[] = [];
@@ -127,7 +128,7 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        console.log(this.passData.conditions)
+        this.passData.pageID = typeof this.passData.pageID == "undefined" ? 1 : this.passData.pageID;
         if (this.passData.tableData.length > 0) {
             this.dataKeys = Object.keys(this.passData.tableData[0]);
         } else {
@@ -212,7 +213,7 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     sort(str,sortBy){
-        this.displayData = this.displayData.sort(function(a, b) {
+        this.passData.tableData = this.passData.tableData.sort(function(a, b) {
             if(sortBy){
                 if(a[str] < b[str]) { return -1; }
                 if(a[str] > b[str]) { return 1; }
@@ -222,7 +223,7 @@ export class CustNonDatatableComponent implements OnInit {
             }
         });
         this.sortBy = !this.sortBy;
-   
+        this.filterDisplay(this.filterObj, this.searchString);
     }
 
     showSort(sortBy,i){
@@ -275,4 +276,13 @@ export class CustNonDatatableComponent implements OnInit {
         //do some copying
         this.copy.next(event);
     }
+    onClickPrint(event){
+        //do some copying
+        this.print.next(event);
+    }
+    
+    paul(event){
+        console.log(event);
+    }
+
 }

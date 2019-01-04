@@ -1,0 +1,55 @@
+<div>
+	<fieldset class="scheduler-border">
+		<legend class="scheduler-border">Claim Info</legend>
+		<div class="custom-row-inline-inset">
+			<div class="form-row">
+				<div class="col-sm-1"></div>
+				<div class="col-sm">
+					<div class="input-group">
+						<label class="form-control-sm col-sm-1">Claim No</label>
+						<input type="text" class="form-control form-control-sm col-sm">
+						<label class="form-control-sm col-sm-1">Insured</label>
+						<input type="text" class="form-control form-control-sm col-sm">
+					</div>
+					<div class="input-group">
+						<label class="form-control-sm col-sm-1">Policy No</label>
+						<input type="text" class="form-control form-control-sm col-sm">
+						<label class="form-control-sm col-sm-1">Risk</label>
+						<input type="text" class="form-control form-control-sm col-sm">
+					</div>
+				</div>
+				<div class="col-sm-1"></div>
+			</div>
+		</div>
+	</fieldset>
+	<fieldset class="scheduler-border">
+		<legend class="scheduler-border">Claim Info</legend>
+		<div class="custom-row-inline-inset">
+			<div class="form-row">
+				<app-cust-editable-non-datatable [passData]="passData" style="width: 100%"></app-cust-editable-non-datatable>
+			</div>
+			<div class="form-row" style="margin-top: -10px;">
+				<div class="input-group" style="margin-left: -20px;">
+					<label class="form-control-sm col-sm-1">Created By</label>
+					<input type="text" class="form-control form-control-sm col-sm">
+					<label class="form-control-sm col-sm-1">Date Created</label>
+					<input type="text" class="form-control form-control-sm col-sm">	
+					<label class="form-control-sm col-sm-1">Last Updated By</label>
+					<input type="text" class="form-control form-control-sm col-sm">
+					<label class="form-control-sm col-sm-1">Last Update</label>
+					<input type="text" class="form-control form-control-sm col-sm">	
+				</div>
+			</div>
+		</div>
+	</fieldset>
+	<div class="form-row" style="margin-top: 5px;">
+		<div class="form-group col-sm">
+			<div class="col-md-13 text-center">
+				<div class="cust-btn-container">
+					<button type="button" class="cust-btn"><a>Cancel</a></button>
+					<button type="button" class="cust-btn"><a>Negate</a></button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

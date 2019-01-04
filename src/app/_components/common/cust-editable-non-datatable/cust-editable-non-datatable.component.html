@@ -159,7 +159,7 @@
                             <option *ngFor="let options of options">{{options}}</option>
                         </select>
                     </td>
-                    <td *ngIf="passData.tHeader.indexOf('Actions')!=-1" class="icon">
+                    <td *ngIf="passData.tHeader.indexOf('Actions')!=-1 || passData.tHeader.indexOf('Action')!=-1" class="icon" style="padding-right: 0px !important">
                         <button class="fa fa-paperclip" title="Attach File" *ngIf="addCheckFlag(data)"></button>
                         <button class="fa fa-folder-open" title="Open File" *ngIf="addCheckFlag(data)"></button>
                     </td>
