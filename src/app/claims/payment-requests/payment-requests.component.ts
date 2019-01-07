@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ClaimPaymentRequests } from  '@app/_models';
 import { Router } from '@angular/router';
 import { ClaimsService } from '../../_services';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Title } from '@angular/platform-browser';
+
 @Component({
   selector: 'app-payment-requests',
   templateUrl: './payment-requests.component.html',
@@ -9,6 +12,8 @@ import { ClaimsService } from '../../_services';
 })
 export class PaymentRequestsComponent implements OnInit {
 
+  btnDisabled: boolean;
+  btnDisabled_neg: boolean;
   tableData: any[] = [];
   allData: any[] = [];
   tHeader: any[] = [];
@@ -68,12 +73,19 @@ export class PaymentRequestsComponent implements OnInit {
         expireFilter: false, checkFlag: true, tableOnly: false, fixedCol: false, printBtn: false, 
   }
 
-  constructor(private claimsService: ClaimsService, private router: Router) { }
+   @ViewChild('confirmation') confirmation;
+   
+  constructor(private claimsService: ClaimsService, private router: Router, private modalService: NgbModal, private titleService: Title) { }
 
   ngOnInit() {
-
+  	this.btnDisabled = false;
+  	this.btnDisabled_neg = true;
+  	this.titleService.setTitle("Clm | Payment Requests");
   	this.passData.tableData = this.claimsService.getClaimPaymentRequestList();
-
   }
 
+  open(content) {
+        this.modalService.dismissAll();
+        this.modalService.open(this.confirmation,  { centered: true, windowClass : 'modal-size'} );
+    }
 }

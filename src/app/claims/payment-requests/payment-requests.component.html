@@ -1,3 +1,4 @@
+
 <div class="cust-tabs-container">
     <h4>Claims / Payment Requests</h4>
     <ngb-tabset>
@@ -47,7 +48,7 @@
                     <fieldset class="scheduler-border">
                          <legend class="scheduler-border">Claim History Listing</legend>  
                           <div class="col-sm-12" style="padding: 0">
-                            <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)"></app-cust-non-datatable>
+                            <app-cust-non-datatable [passData]="passData"></app-cust-non-datatable>
                          </div>
                          <div class="col-sm" style="margin-top: 50px !important; margin-bottom: 10px ! important;padding: 0">
                                 <div class="input-group">
@@ -81,8 +82,8 @@
                 </div>
                 <div class="col-sm-12 text-center" style="margin-top: 17px !important" >
                     <button type="button" class="cust-btn"><a>Return</a></button>
-                    <button type="button" class="cust-btn"><a>Generate</a></button>
-                    <button type="button" class="cust-btn btnDisabled"><a>Negate</a></button>
+                     <button type="button" class="cust-btn" [class.btnDisabled]="btnDisabled" [disabled]="btnDisabled" (click)="open(content)"><a>Generate</a></button>
+                    <button type="button" class="cust-btn" [class.btnDisabled]="btnDisabled_neg" [disabled]="btnDisabled_neg"><a>Negate</a></button>
                  </div>
 
             </ng-template>
@@ -92,3 +93,26 @@
         </ngb-tab>
     </ngb-tabset>
 </div>
+<ng-template #confirmation let-modal>
+        <div class="modal-header"> <span class="modal-title" style="margin-bottom: 10px">Confirmation</span></div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-sm-1 text-right my-modal-icon">
+                    <i class="fa fa-question-circle"></i>
+                </div>
+                <div class="col-sm-10 text-left my-modal-text">
+                    <span class="align-middle">Are you sure you want to generate a claim payment requests for these selected claims?</span>
+                </div>
+            </div>
+         </div>
+         <div class="modal-footer">
+            <button class="cust-btn" type="button" (click)="modal.close('Close click');this.btnDisabled = true;
+    this.btnDisabled_neg = false;" ><a>Yes</a></button>
+            <button class="cust-btn" type="button" (click)="modal.close('Close click')" ><a>No</a></button>
+         </div>
+
+</ng-template>
+
+
+
+
