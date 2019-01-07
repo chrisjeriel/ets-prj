@@ -1,0 +1,75 @@
+
+		<ngb-tab class="ngb-tab" title="Claim History">
+			<ng-template ngbTabContent>
+				<div class="row">
+					<div class="col-sm-12">
+					<fieldset class="scheduler-border">
+						<legend class="scheduler-border">Claim Info</legend>
+						<div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;" style="margin-top: 10px !important;">
+							<div class="input-group" style="margin-bottom: -13px !important; margin-top: 3px !important">
+								<div class="col-sm-1"></div>
+								<label class="form-control-sm col-sm-1" for="xx">Claim No</label>
+								<input type="text" value="CAR-2018-000001" class="form-control form-control-sm cust-sm col-sm-3" placeholder=""
+								 readonly>
+								<label class="form-control-sm col-sm-1" for="xx">Insured</label>
+								<input type="text" value="2nd Inn. Inc" class="form-control form-control-sm cust-sm col-sm-5" placeholder="" readonly>
+								<div class="col-sm-1"></div>
+							</div>
+							<div class="input-group" style="margin-bottom: -13px !important;">
+								<div class="col-sm-1"></div>
+								<label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Policy No</label>
+								<input type="text" value="CAR-2018-00001-99-0001-000" class="form-control form-control-sm cust-sm col-sm-3	" placeholder="" readonly>
+								<label class="form-control-sm col-sm-1" for="xx">Risk</label>
+								<input type="text" value="Ayala Wakeboard" class="form-control form-control-sm cust-sm col-sm-5" placeholder="" readonly>
+								<div class="col-sm-1"></div>
+							</div>
+						</div>
+					</fieldset>
+					</div>
+					<div class="col-sm-12">
+
+						<fieldset class="scheduler-border">
+						<legend class="scheduler-border">History</legend>
+							<div class="history" style="margin-top: 10px !important;margin-bottom: 65px !important">
+								<app-cust-editable-non-datatable [passData]="passDataHistory"></app-cust-editable-non-datatable>
+							</div>
+							<div class="row" style="margin-left: 35px !important;">
+								<div class="col-sm-3">
+									<div class="input-group">
+										<label class="form-control-sm col-sm-3">Created By</label>
+              						<input type="text" class="form-control form-control-sm col-sm-9" placeholder="cuaresma">
+									</div>
+									
+								</div>
+								<div class="col-sm-3">
+									<div class="input-group" style="margin-left: -24px !important;">
+										<label class="form-control-sm col-sm-4">Date Created</label>
+              						<input type="date" class="form-control form-control-sm col-sm-8">
+									</div>
+									
+								</div>
+								<div class="col-sm-3">
+									<div class="input-group" style="margin-left: -40px !important;">
+										<label class="form-control-sm col-sm-4">Last Update By</label>
+              						<input type="text" class="form-control form-control-sm col-sm-8" placeholder="cuaresma">
+									</div>
+									
+								</div>
+								<div class="col-sm-3">
+									<div class="input-group" style="margin-left: -70px !important;">
+										<label class="form-control-sm col-sm-4">Last Update</label>
+              						<input type="date" class="form-control form-control-sm">
+									</div>
+									
+								</div>
+							</div>
+					</fieldset>
+
+					</div>
+					<div class="col-sm-12 text-center" style="margin-top: 17px !important" >
+                        <button type="button" class="cust-btn"><a>Cancel</a></button>
+						<button type="button" class="cust-btn"><a>Save</a></button>
+					</div>
+				</div>
+			</ng-template>
+		</ngb-tab>
