@@ -49,6 +49,7 @@ export class QuoteEndorsementComponent implements OnInit {
         deleteFlag: true,
         infoFlag: true,
         paginateFlag: true,
+        searchFlag: true,
     }
     
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title) { }

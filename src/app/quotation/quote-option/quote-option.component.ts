@@ -41,11 +41,12 @@ export class QuoteOptionComponent implements OnInit {
         checkFlag: true,
         paginateFlag: true,
         infoFlag: true,
+        searchFlag: true,
         pageID: 1,
     }
     deductiblesData: any = {
         tableData: this.quotationService.getDeductibles(),
-        tHeader: ['Deductible Title', 'Rate', 'Amount', 'Deductible Text'],
+        tHeader: ['Deductible Title', 'Rate(%)', 'Amount', 'Deductible Text'],
         dataTypes: ['text', 'percent', 'currency', 'text'],
         nData: new QuotationDeductibles(null, null, null, null),
         pageLength: 5,
@@ -54,12 +55,13 @@ export class QuoteOptionComponent implements OnInit {
         checkFlag: true,
         paginateFlag: true,
         infoFlag: true,
+        searchFlag: true,   
         pageID: 2,
     }
     
     otherRatesData: any = {
         tableData: this.quotationService.getQuotataionOtherRates(1),
-        tHeader: ['Others', 'Rate', 'Amount'],
+        tHeader: ['Others', 'Rate(%)', 'Amount'],
         dataTypes: ['text', 'percent', 'currency'],
         nData: new QuotationOtherRates(null, null, null, null),
         magnifyingGlass: ['others'],
@@ -69,6 +71,7 @@ export class QuoteOptionComponent implements OnInit {
         checkFlag: true,
         paginateFlag: true,
         infoFlag: true,
+        searchFlag: true,
         pageID: 3,
     }
 
