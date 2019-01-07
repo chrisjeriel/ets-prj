@@ -20,15 +20,28 @@ export class QuotationOption{
 	}
 }
 
+export class QuotationDeductibles{
+    deductibleTitle: string;
+    rate: number;
+    amount: number;
+    deductibleText: string;
+    constructor(deductibleTitle: string, rate: number, amount: number, deductibleText: string){
+        this.deductibleTitle = deductibleTitle;
+        this.rate = rate;
+        this.amount = amount;
+        this.deductibleText = deductibleText;
+    }
+}
+
 export class QuotationOtherRates{
 	optionNo:number;
 	others:string;
+    rate: number;
 	amounts:number;
-	deductible:string;
-	constructor(optionNo:number,others:string,amounts:number,deductible:string){
+	constructor(optionNo:number,others:string,rate: number, amounts:number){
 		this.optionNo = optionNo;
 		this.others=others;
+        this.rate = rate;
 		this.amounts=amounts;
-		this.deductible=deductible;
 	}
 }
