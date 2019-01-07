@@ -18,7 +18,9 @@ export class ClaimDistributionComponent implements OnInit {
   	dataTypes: ['text','number','currency','text'],
   	pageLength:5,
   	resizable:[true,true,true,true],
-  	pageID:1
+  	pageID:1,
+    pagination:true,
+    pageStatus: true
   }
 
   treatyDistPassData: any = {
@@ -31,7 +33,10 @@ export class ClaimDistributionComponent implements OnInit {
   	dataTypes: ['text','text','text','percent','currency'],
   	pageLength:10,
   	resizable:[true,true,true,true,true],
-  	pageID:2
+  	pageID:2,
+    tableOnly:true,
+    pagination:true,
+    pageStatus: true
   }
 
   poolDistPassData: any = {
