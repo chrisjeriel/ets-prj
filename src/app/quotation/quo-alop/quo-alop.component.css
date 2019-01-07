@@ -1,3 +1,22 @@
+.float-sm-center{
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+}
+.txt-content-rght{
+    text-align: right
+}
+.mrgn-fieldset{
+    margin-top: 17px;
+}
+.fieldset-height{
+    height: 104%;
+}
+
+.input-group {
+    margin-bottom: -14px !important;
+}
+
 .text-search-ico {
 	margin-left: -18px;
 	z-index: 100;

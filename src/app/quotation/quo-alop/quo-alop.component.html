@@ -18,15 +18,15 @@
 	<div class="row top">
 		<div class="col-sm-6 left-div">
 			<fieldset class="scheduler-border col-sm-12 left">
-				<div class="form-row custom-row-inline-inset">
+				<div class="form-row custom-row-inline-inset" style="margin-right: 9px; margin-top: 11px !important;">
 					<div class="input-group">
 						<label class="form-control-sm col-sm-2 text-right" for="xx">Insured</label>
 						<input class="form-control form-control-sm  col-sm-2" type="text" name="" [(ngModel)]="aLOPInfo.insured1">
 						<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>&nbsp;
-						<input class="form-control form-control-sm  col-sm" type="text" name="" [(ngModel)]="aLOPInfo.insured2" >
+						<input class="form-control form-control-sm  col-sm" type="text" name="" [(ngModel)]="aLOPInfo.insured2" style="margin-left: -7px;">
 					</div>
 
-					<div class="input-group textarea">
+					<div class="input-group textarea" style="padding-bottom: 7px;">
 						<label class="form-control-sm col-sm-2"></label>
 						<textarea class="form-control form-control-sm col-sm" rows="2" [(ngModel)]="aLOPInfo.address1"></textarea>
 						<br>
@@ -42,13 +42,13 @@
 		</div>
 		<div class="col-sm-6 right-div">
 			<fieldset class="scheduler-border col-sm-12 right">
-				<div class="form-row custom-row-inline-inset">
+				<div class="form-row custom-row-inline-inset" style="margin-top: 3px !important;">
 					<div class="input-group">
 						<label  class="form-control-sm col-sm-3 text-left" for="xx">The Insured Business</label>
 					</div>
 
 					<div class="input-group textarea">
-						<textarea class="form-control form-control-sm col-sm-12" rows="3" [(ngModel)]="aLOPInfo.business"></textarea>
+						<textarea class="form-control form-control-sm col-sm-12" rows="3" style="height: 83% !important;" [(ngModel)]="aLOPInfo.business"></textarea>
 					</div>
 				</div>
 			</fieldset>
@@ -57,7 +57,7 @@
 
 	<fieldset class="scheduler-border middle">
 		<div class="form-row custom-row-inline-inset">
-			<div class="input-group">
+			<div class="input-group" style="padding-bottom: 1%;">
 				<label class="col-sm-1 "></label>
 				<label class="col-sm-4">Insured Interest: Gross Profit and Increased Cost of Working</label>
 			</div>
@@ -66,7 +66,7 @@
 				<label class=" form-control-sm col-sm-2" for="annSumInsured">Annual Sum Insured</label>
 				<input class="form-control form-control-sm  col-sm-5" type="text" id="annSumInsured" [(ngModel)]="aLOPInfo.amountSI">
 			</div>
-			<div class="input-group">
+			<div class="input-group" style="padding-bottom: 0.9%;">
 				<label class="col-sm-4"></label>
 				<label class="form-control-sm col-sm-2 text-left" for="sumInsForMaxIndem">Sum Insured for Maximum Indemnity Period</label>
 				<input class="form-control form-control-sm  col-sm-5" type="text" id="sumInsForMaxIndem" [(ngModel)]="aLOPInfo.maxSI">
@@ -76,7 +76,7 @@
 
 
 	<fieldset class="scheduler-border bottom">
-		<div class="form-row custom-row-inline-inset">
+		<div class="form-row custom-row-inline-inset" style="margin-top: 12px !important;">
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" for="periodFrom">Period of Insurance from</label>
 				<input class="form-control form-control-sm  col-sm-2" type="date" id="periodFrom" [(ngModel)]="aLOPInfo.fromDate">
@@ -106,26 +106,28 @@
 		</div>
 	</fieldset>
 
-	<div class="form-row bottom-button-container">
-		<div class="form-group col-sm">
-			<div class="col-md-13 text-center">
-				<br>
-				<div class="cust-btn-container">
-				<app-modal [btnTitle]="'Item Information'" style="margin-bottom: 2px;">
-					<div header>Item Information</div>	
-            		<div body>
-            			<app-cust-editable-table [addFlag]="true" [deleteFlag]="true" [nData]="nData" [tableData]="tableData" [editFlag]="false" [tHeader]="tHeader" [dataTypes]="dataTypes"></app-cust-editable-table>
-            		</div>
-            		<div footer class="text-center">
-							<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
-							<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Save</a></button>
-            		</div>
-				</app-modal>
-				<button type="button" class="cust-btn"><a>Cancel</a></button>
-				<button type="button" class="cust-btn" (click)="save()"><a>Save</a></button>
-			</div>
-			</div>
-		</div>
-	</div>
+    <div class="form-row">
+        <div class="form-group col-sm">
+            <div class="col-md-13 text-center">
+                <div class="cust-btn-container" style="padding-top: 13px">
+                    <app-modal [btnTitle]="' Item Info '" style="margin-bottom: 2px;">
+                        <div header>Item Information</div>	
+                        <div body>
+                            <!--<app-cust-editable-table [addFlag]="true" [deleteFlag]="true" [nData]="nData" [tableData]="tableData" [editFlag]="false" [tHeader]="tHeader" [dataTypes]="dataTypes"></app-cust-editable-table>-->
+                            <div style="margin-bottom: -90px !important">
+                                <app-cust-editable-non-datatable [passData]="itemInfoData"></app-cust-editable-non-datatable>
+                            </div>  
+                        </div>
+                        <div footer class="text-center">
+                                <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
+                                <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Save</a></button>
+                        </div>
+                    </app-modal>
+                    <button type="button" class="cust-btn"><a>Cancel</a></button>
+                    <button type="button" class="cust-btn" (click)="save()"><a>Save</a></button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>			
