@@ -1,0 +1,82 @@
+<div class="row">
+	<div class="col-sm-10">
+		<fieldset class="scheduler-border">
+			<legend class="scheduler-border">Claim Info</legend>
+			<div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;" style="margin-top: 10px !important;">
+              <div class="input-group" style="margin-bottom: -13px !important; margin-top: 3px !important">
+                <div class="col-sm-1"></div>
+                <label class="form-control-sm col-sm-1" for="xx">Claim No</label>
+                <input type="text" value="CAR-2018-000001" class="form-control form-control-sm cust-sm col-sm-3" placeholder=""
+                 readonly>
+                <label class="form-control-sm col-sm-1" for="xx">Insured</label>
+                <input type="text" value="2nd Inn. Inc" class="form-control form-control-sm cust-sm col-sm-5" placeholder="" readonly>
+                <div class="col-sm-1"></div>
+              </div>
+              <div class="input-group" style="margin-bottom: -13px !important;">
+                <div class="col-sm-1"></div>
+                <label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Policy No</label>
+                <input type="text" value="CAR-2018-00001-99-0001-000" class="form-control form-control-sm cust-sm col-sm-3  " placeholder="" readonly>
+                <label class="form-control-sm col-sm-1" for="xx">Risk</label>
+                <input type="text" value="Ayala Wakeboard" class="form-control form-control-sm cust-sm col-sm-5" placeholder="" readonly>
+                <div class="col-sm-1"></div>
+              </div>
+            </div>
+		</fieldset>
+	</div>
+	<div class="col-sm-2 header-buttons">
+		<div class="input-group">
+			<button type="button" class="cust-btn"><a>Distribute</a></button>
+		</div>
+		<div class="input-group">
+			<button type="button" class="cust-btn"><a>Post</a></button>
+		</div>
+		<div class="input-group">
+			<button type="button" class="cust-btn"><a>Cancel</a></button>
+		</div>
+	</div>
+</div>
+
+<div class="row main-row">
+	<div class="col-sm-6" style="padding-right: 5px">
+		<fieldset class="scheduler-border" style="padding-bottom: 5px !important;">
+			<legend class="scheduler-border">Distribution Header</legend>
+			<app-cust-non-datatable [passData]="distHeaderPassData"></app-cust-non-datatable>
+		</fieldset>
+		<fieldset class="scheduler-border" style="padding-bottom: 5px !important;">
+			<legend class="scheduler-border">Treaty / Facultative Distribution</legend>
+			<div style="margin-top: -24px;">
+				<app-cust-non-datatable [passData]="treatyDistPassData"></app-cust-non-datatable>
+			</div>
+		</fieldset>
+	</div>
+
+	<div class="col-sm-6" style="padding-left: 5px">
+		<fieldset class="scheduler-border" style="height: 100%">
+			<legend class="scheduler-border">Quota Share Pool Distribution</legend>
+			<div style="height:95%;overflow-y: scroll;margin-top:2px;">
+				<app-cust-non-datatable [passData]="poolDistPassData" ></app-cust-non-datatable>
+			</div>
+			<div>
+				<div></div>
+			</div>
+		</fieldset>	
+	</div>
+</div>	
+
+<fieldset class="scheduler-border" style="margin-bottom: 5px">
+	<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+	<div class="custom-row-inline-inset">
+		<div class="form-row">
+			<div class="input-group" style="margin-left: -20px;">
+				<label class="form-control-sm col-sm-1">Created By</label>
+				<input type="text" class="form-control form-control-sm col-sm">
+				<label class="form-control-sm col-sm-1">Date Created</label>
+				<input type="text" class="form-control form-control-sm col-sm">	
+				<label class="form-control-sm col-sm-1">Last Updated By</label>
+				<input type="text" class="form-control form-control-sm col-sm">
+				<label class="form-control-sm col-sm-1">Last Update</label>
+				<input type="text" class="form-control form-control-sm col-sm">	
+			</div>
+		</div>
+	</div>
+</fieldset>
