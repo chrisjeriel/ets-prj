@@ -1,0 +1,86 @@
+<div class="cust-tabs-container">
+  <h4>Claim</h4>
+  <ngb-tabset>
+    <ngb-tab title="Claim Processing">
+      <ng-template ngbTabContent>
+        <br>
+        <app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
+        <br><br>
+        <div class="cust-btn-container">
+          <app-modal [btnTitle]="'Add (Temporary)'" style="margin-bottom: 2px;">
+            <div header style="width: 600px !important;">Enter General Info</div>
+            <div body style="width: 600px !important;">
+              <fieldset class="scheduler-border col-sm-12 left" style="padding-top: 7px !important;padding-bottom: 2px !important;">
+                <div class="form-row custom-row-inline-inset" style="margin-left: -56px !important;">
+
+                  <div class="input-group">
+                    <label class="form-control-sm col-sm-3">Policy No</label>
+                    <input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyLine" style="margin-left: 3px;"
+                      ngbTooltip="Line">
+                    <input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px;"
+                      ngbTooltip="Year">
+                    <input type="text" class="form-control form-control-sm col-sm-3" style="margin-left: 3px;"
+                      ngbTooltip="Sequence No">
+                    <input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px;"
+                      ngbTooltip="Co Code">
+                    <input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 3px;"
+                      ngbTooltip="Co Series No">
+                    <input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px;"
+                      ngbTooltip="Alt No">
+                    <span>&nbsp;</span>
+                    <div class="text-search-ico" style=" margin-right: 19px !important;"><a><i class="fa fa-search"></i></a></div>
+                  </div>
+
+                  <div class="input-group">
+                    <label class="form-control-sm col-sm-3">Ceding
+                      Company</label>
+                    <input type="text" class="form-control form-control-sm" style="margin-left: 3px; margin-right: 19px !important;">
+                  </div>
+
+                  <div class="input-group">
+                    <label class="form-control-sm col-sm-3">Insured</label>
+                    <input type="text" class="form-control form-control-sm" style="margin-left: 3px;  margin-right: 19px !important;">
+                  </div>
+
+                  <div class="input-group">
+                    <label class="form-control-sm col-sm-3">Risk</label>
+                    <input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px;">
+                    <div class="text-search-ico magni-pos"><a><i class="fa fa-search"></i></a></div>
+                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px; margin-right: 19px !important;">
+                  </div>
+
+                  <div class="input-group">
+                    <label class="form-control-sm col-sm-3">Region</label>
+                    <input type="text" class="form-control form-control-sm" style="margin-left: 3px;  margin-right: 19px !important;">
+                  </div>
+
+                  <div class="input-group">
+                    <label class="form-control-sm col-sm-3">Province</label>
+                    <input type="text" class="form-control form-control-sm" style="margin-left: 3px;  margin-right: 19px !important;">
+                  </div>
+
+                  <div class="input-group">
+                    <label class="form-control-sm col-sm-3">City/Town</label>
+                    <input type="text" class="form-control form-control-sm" style="margin-left: 3px;  margin-right: 19px !important;">
+                  </div>
+
+                  <div class="input-group">
+                    <label class="form-control-sm col-sm-3">District</label>
+                    <input type="text" class="form-control form-control-sm" style="margin-left: 3px;">
+                    <label class="form-control-sm col-sm-1">Block</label>
+                    <input type="text" class="form-control form-control-sm" style="margin-left: 3px;  margin-right: 19px !important;">
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+            <div footer class="text-center" style="width:100% !important;margin-top: -15px !important;">
+              <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
+              <button type="button" class="cust-btn" (click)="modalService.dismissAll()" [routerLink]="['/claims-claim']"><a>Next</a></button>
+            </div>
+
+          </app-modal>
+        </div>
+      </ng-template>
+    </ngb-tab>
+  </ngb-tabset>
+</div>

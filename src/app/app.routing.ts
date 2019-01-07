@@ -32,9 +32,13 @@ import { PurgeExtractedPolicyComponent } from './underwriting/expiry-and-renewal
 import { UpdateInformationComponent } from './utilities/update-information/update-information.component'
 import { OpenCoverProcessingComponent } from './quotation/open-cover-processing/open-cover-processing.component';
 import { OpenCoverComponent } from './quotation/open-cover/open-cover.component';
+import { ClmClaimProcessingComponent } from './claims/claim/clm-claim-processing/clm-claim-processing.component';
+import { ClmGenInfoClaimComponent } from './claims/claim/clm-claim-processing/clm-gen-info-claim/clm-gen-info-claim.component';
+import { ClaimComponent } from './claims/claim/claim.component';
 import { PaymentRequestsComponent } from './claims/payment-requests/payment-requests.component';
 import { NegateDistributionComponent } from './underwriting/policy-distribution/negate-distribution/negate-distribution.component';
 import { DummyComponent2 } from './_components/common/dummy2/dummy2.component'
+
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -55,7 +59,7 @@ const appRoutes: Routes = [
     { path: 'policy-listing', component: ParListingComponent },
     { path: 'alt-policy-listing', component: AltParListingComponent },
     { path: 'expiry-listing', component: ExpiryListingComponent },
-    { path: 'quotation-HoldCover', component: HoldCoverComponent },
+    { path: 'quotation-holdcover', component: HoldCoverComponent },
     { path: 'policy-printing', component: PolicyPrintingComponent },
     { path: 'policy-holdcover', component: PolicyToHoldCoverComponent },
     { path: 'change-quote-status', component: ChangeQuoteStatusComponent },
@@ -65,12 +69,20 @@ const appRoutes: Routes = [
     { path: 'policy-dist', component: PolicyDistributionComponent },
     { path: 'create-open-cover', component: PolCreateOpenCoverComponent },
     { path: 'create-open-cover-letter', component: PolIssuanceOpenCoverLetterComponent },
-    { path: 'purge-extracted-policy' , component: PurgeExtractedPolicyComponent} ,
-    { path: 'update-info' , component: UpdateInformationComponent},
-    { path: 'open-cover-processing' , component: OpenCoverProcessingComponent},
-    { path: 'open-cover' , component: OpenCoverComponent},
-    { path: 'payment-request' , component: PaymentRequestsComponent},
-    { path: 'negate-distribution' , component: NegateDistributionComponent},
+    { path: 'purge-extracted-policy', component: PurgeExtractedPolicyComponent },
+    { path: 'update-info', component: UpdateInformationComponent },
+    { path: 'open-cover-processing', component: OpenCoverProcessingComponent },
+    { path: 'open-cover', component: OpenCoverComponent },
+    { path: 'clm-claim-processing', component: ClmClaimProcessingComponent },
+    { path: 'clm-gen-info-claim', component: ClmGenInfoClaimComponent },
+    { path: 'claims-claim', component: ClaimComponent },
+    { path: 'negate-distribution', component: NegateDistributionComponent },
+    { path: 'purge-extracted-policy', component: PurgeExtractedPolicyComponent },
+    { path: 'update-info', component: UpdateInformationComponent },
+    { path: 'open-cover-processing', component: OpenCoverProcessingComponent },
+    { path: 'open-cover', component: OpenCoverComponent },
+    { path: 'payment-request', component: PaymentRequestsComponent },
+    { path: 'negate-distribution', component: NegateDistributionComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

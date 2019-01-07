@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PARListing } from '@app/_models'
 import { UnderwritingService } from '../../../_services';
 import { Title } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-par-listing',
@@ -13,9 +14,9 @@ export class ParListingComponent implements OnInit {
     tHeader: any[] = [];
     dataTypes: any[] = [];
     filters: any[] = [];
-    line: string = "CAR";
+    line: string = "";
 
-    constructor(private uwService: UnderwritingService, private titleService: Title) { }
+    constructor(private uwService: UnderwritingService, private titleService: Title, private router: Router) { }
     passData: any = {
         tHeader: [
             "Policy No", "Type Cession", "Line Class", "Status", "Ceding Company", "Principal", "Contractor", "Insured", "Risk", "Object", "Site", "Quotation No", "Company", "Issue Date", "Inception Date", "Expiry Date", "Created By"
@@ -158,6 +159,20 @@ export class ParListingComponent implements OnInit {
         this.dataTypes.push("text");
 
         this.tableData = this.uwService.getParListing();
+    }
+
+    slctd: string = "";
+    slctdArr: any[] = [];
+    polLine: string = "";
+
+    onRowDblClick(event) {
+        this.slctd = event.target.closest("tr").children[0].innerText;
+        this.slctdArr = this.slctd.split("-");
+        for (var i = 0; i < this.slctdArr.length; i++) {
+            this.polLine = this.slctdArr[0];
+        }
+        //console.log(this.polLine);
+        this.router.navigate(['/policy-issuance', { line: this.polLine }], { skipLocationChange: true });
     }
 
 }

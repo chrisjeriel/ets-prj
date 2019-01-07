@@ -1,10 +1,10 @@
 <div class="cust-tabs-container">
 	<h4>Policy / Policy Issuance</h4>
 	<ngb-tabset>
-	  <ngb-tab class="ngb-tab" title="Alteration List">
-	    <ng-template ngbTabContent>
-            <app-cust-non-datatable [passData]="altParListData"></app-cust-non-datatable>
-	    </ng-template>
-	  </ngb-tab>
+		<ngb-tab class="ngb-tab" title="Alteration List">
+			<ng-template ngbTabContent>
+				<app-cust-non-datatable [passData]="altParListData" (rowDblClick)="onRowDblClick($event)"></app-cust-non-datatable>
+			</ng-template>
+		</ngb-tab>
 	</ngb-tabset>
 </div>
