@@ -36,22 +36,45 @@
 	</div>
 </div>
 
-<div class="row">
+<div class="row main-row">
 	<div class="col-sm-6" style="padding-right: 5px">
-		<fieldset class="scheduler-border">
+		<fieldset class="scheduler-border" style="padding-bottom: 5px !important;">
 			<legend class="scheduler-border">Distribution Header</legend>
 			<app-cust-non-datatable [passData]="distHeaderPassData"></app-cust-non-datatable>
 		</fieldset>
-		<fieldset class="scheduler-border">
+		<fieldset class="scheduler-border" style="padding-bottom: 5px !important;">
 			<legend class="scheduler-border">Treaty / Facultative Distribution</legend>
 			<app-cust-non-datatable [passData]="treatyDistPassData"></app-cust-non-datatable>
 		</fieldset>
 	</div>
 
 	<div class="col-sm-6" style="padding-left: 5px">
-		<fieldset class="scheduler-border">
+		<fieldset class="scheduler-border" style="height: 100%">
 			<legend class="scheduler-border">Quota Share Pool Distribution</legend>
-			<app-cust-non-datatable [passData]="poolDistPassData"></app-cust-non-datatable>
-		</fieldset>
+			<div style="height:90%;overflow-y: scroll;margin-top:2px;">
+				<app-cust-non-datatable [passData]="poolDistPassData" ></app-cust-non-datatable>
+			</div>
+			<div>
+				<div></div>
+			</div>
+		</fieldset>	
 	</div>
 </div>	
+
+<fieldset class="scheduler-border">
+	<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+	<div class="custom-row-inline-inset">
+		<div class="form-row" style="margin-top: -10px;">
+			<div class="input-group" style="margin-left: -20px;">
+				<label class="form-control-sm col-sm-1">Created By</label>
+				<input type="text" class="form-control form-control-sm col-sm">
+				<label class="form-control-sm col-sm-1">Date Created</label>
+				<input type="text" class="form-control form-control-sm col-sm">	
+				<label class="form-control-sm col-sm-1">Last Updated By</label>
+				<input type="text" class="form-control form-control-sm col-sm">
+				<label class="form-control-sm col-sm-1">Last Update</label>
+				<input type="text" class="form-control form-control-sm col-sm">	
+			</div>
+		</div>
+	</div>
+</fieldset>
