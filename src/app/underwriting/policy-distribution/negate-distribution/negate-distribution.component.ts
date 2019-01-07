@@ -30,7 +30,6 @@ export class NegateDistributionComponent implements OnInit {
       ['2Surp','Munich Re',95,1425000000,356250,30],
       ['2Surp','PhilNaRe',5,75000000,18750,30],
       ['Facul','Munich Re',100,1000000000,250000,30],
-
   	],
   	tHeader: ['Treaty', 'Treaty Company','Share (%)', 'SI Amount', 'Premium Amount', 'Comm Share (%)'],
   	dataTypes:['text','text', 'percent', 'currency', 'currency', 'percent'],
