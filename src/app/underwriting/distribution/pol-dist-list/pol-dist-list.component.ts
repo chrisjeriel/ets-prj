@@ -70,6 +70,8 @@ export class PolDistListComponent implements OnInit {
         pageLength: 10,
         printBtn: true,
         addFlag: true,
+        pagination: true,
+        pageStatus: true,
 
     }
     constructor(config: NgbDropdownConfig, private underwritingService: UnderwritingService, private titleService: Title, private route: Router) {
