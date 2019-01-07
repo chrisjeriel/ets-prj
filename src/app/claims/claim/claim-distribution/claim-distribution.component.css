@@ -1,0 +1,12 @@
+.header-buttons div{
+	margin-bottom: 1px !important;
+}
+
+.header-buttons div button{
+	width: 70px !important;
+}
+
+.header-buttons{
+    margin-left: -12px;
+    margin-top: 12px;
+}

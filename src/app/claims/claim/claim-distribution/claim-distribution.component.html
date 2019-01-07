@@ -1,0 +1,56 @@
+<div class="row">
+	<div class="col-sm-11">
+		<fieldset class="scheduler-border">
+			<legend class="scheduler-border">Claim Info</legend>
+			<div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;" style="margin-top: 10px !important;">
+              <div class="input-group" style="margin-bottom: -13px !important; margin-top: 3px !important">
+                <div class="col-sm-1"></div>
+                <label class="form-control-sm col-sm-1" for="xx">Claim No</label>
+                <input type="text" value="CAR-2018-000001" class="form-control form-control-sm cust-sm col-sm-3" placeholder=""
+                 readonly>
+                <label class="form-control-sm col-sm-1" for="xx">Insured</label>
+                <input type="text" value="2nd Inn. Inc" class="form-control form-control-sm cust-sm col-sm-5" placeholder="" readonly>
+                <div class="col-sm-1"></div>
+              </div>
+              <div class="input-group" style="margin-bottom: -13px !important;">
+                <div class="col-sm-1"></div>
+                <label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Policy No</label>
+                <input type="text" value="CAR-2018-00001-99-0001-000" class="form-control form-control-sm cust-sm col-sm-3  " placeholder="" readonly>
+                <label class="form-control-sm col-sm-1" for="xx">Risk</label>
+                <input type="text" value="Ayala Wakeboard" class="form-control form-control-sm cust-sm col-sm-5" placeholder="" readonly>
+                <div class="col-sm-1"></div>
+              </div>
+            </div>
+		</fieldset>
+	</div>
+	<div class="col-sm-1 header-buttons">
+		<div class="input-group">
+			<button type="button" class="cust-btn"><a>Distribute</a></button>
+		</div>
+		<div class="input-group">
+			<button type="button" class="cust-btn"><a>Post</a></button>
+		</div>
+		<div class="input-group">
+			<button type="button" class="cust-btn"><a>Cancel</a></button>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-6">
+		<fieldset class="scheduler-border">
+			<legend class="scheduler-border">Distribution Header</legend>
+			<app-cust-non-datatable [passData]="distHeaderPassData"></app-cust-non-datatable>
+		</fieldset>
+		<fieldset class="scheduler-border">
+			<legend class="scheduler-border">Treaty / Facultative Distribution</legend>
+			<app-cust-non-datatable [passData]="treatyDistPassData"></app-cust-non-datatable>
+		</fieldset>
+	</div>
+
+	<div class="col-sm-6">
+		<fieldset class="scheduler-border">
+			<legend class="scheduler-border">Quota Share Pool Distribution</legend>
+		</fieldset>
+	</div>
+</div>
