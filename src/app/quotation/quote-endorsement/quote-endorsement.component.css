@@ -1,22 +1,80 @@
 .copy-endt{
 	position: absolute;
-	top:45px;
-	left:144px;
+	top: 31px;
+    left: 241px;
 	z-index: 100;
 }	
 
-th, td{
-    white-space: nowrap;
-    min-width: 0px;
-    max-width: 1px;
-    overflow: hidden;
-}
-
-th{
-	line-height: 12px;
-	font-size: 10.4px !important;
-}
-
 .copyCheckBox{
 	float: right;
+}
+
+.float-sm-center{
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+}
+.txt-content-rght{
+    text-align: right
+}
+.mrgn-fieldset{
+    margin-top: 17px;
+}
+.fieldset-height{
+    height: 104%;
+}
+
+.input-group {
+    margin-bottom: -14px !important;
+}
+.table-container{
+    margin-top: -2.7%;
+    padding-left: 4em;
+    padding-right: 4em;
+}
+#non-datatable {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+
+
+#non-datatable tr:nth-child(even){background-color: #f2f2f2;}
+
+#non-datatable tr:hover {background-color: #ffffb3;}
+/*#non-datatable tr:active {background-color: #67b4fc;}*/
+
+#non-datatable th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #c9d9d9;
+    color: black;
+}
+table{
+    margin-top: 30px;
+    width: 100%;
+}
+tbody tr, thead tr{
+    height: calc(1.3rem + 1px);
+}
+th, td{
+    white-space: nowrap;
+    font-size: 0.7rem !important;
+    /*margin: 0px !important;
+    padding: 0px !important;*/
+    padding: 10px !important;
+    height: calc(1.3rem + 1px) !important;
+    min-width: 30px; 
+    max-width: 165px;
+    overflow: hidden;
+}
+th{
+    padding: 8px !important;
+    margin: 0px !important;
+}
+td{
+    padding: 4px !important;
+    margin: 0px !important;
 }
