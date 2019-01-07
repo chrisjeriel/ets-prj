@@ -1,0 +1,4 @@
+.btnDisabled{
+    background: gray !important;
+    cursor: context-menu;
+}

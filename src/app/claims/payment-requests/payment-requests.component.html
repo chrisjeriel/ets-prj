@@ -46,9 +46,45 @@
                 <div>
                     <fieldset class="scheduler-border">
                          <legend class="scheduler-border">Claim History Listing</legend>  
-
+                          <div class="col-sm-12" style="padding: 0">
+                            <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)"></app-cust-non-datatable>
+                         </div>
+                         <div class="col-sm" style="margin-top: 50px !important; margin-bottom: 10px ! important;padding: 0">
+                                <div class="input-group">
+                                    <div class="col-sm-3" style="padding: 0">
+                                        <div class="input-group">
+                                            <label class="form-control-sm">Created By</label>
+                                            <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma">
+                                        </div>
+                                    </div>
+                                     <div class="col-sm-3" style="padding: 0">
+                                        <div class="input-group">
+                                            <label class="form-control-sm">Date Created</label>
+                                            <input type="date" class="form-control form-control-sm col-sm">
+                                        </div>
+                                    </div>
+                                     <div class="col-sm-3" style="padding: 0">
+                                         <div class="input-group">
+                                            <label class="form-control-sm">Last Update By</label>
+                                            <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma">
+                                        </div>
+                                    </div>
+                                     <div class="col-sm-3" style="padding: 0">
+                                        <div class="input-group">
+                                            <label class="form-control-sm">Last Update</label>
+                                            <input type="date" class="form-control form-control-sm col-sm">
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
                     </fieldset>
                 </div>
+                <div class="col-sm-12 text-center" style="margin-top: 17px !important" >
+                    <button type="button" class="cust-btn"><a>Return</a></button>
+                    <button type="button" class="cust-btn"><a>Generate</a></button>
+                    <button type="button" class="cust-btn btnDisabled"><a>Negate</a></button>
+                 </div>
+
             </ng-template>
         </ngb-tab>
         <ngb-tab title="Exit">
