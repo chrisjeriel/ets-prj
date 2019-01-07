@@ -1,6 +1,4 @@
 
-		<ngb-tab class="ngb-tab" title="Claim History">
-			<ng-template ngbTabContent>
 				<div class="row">
 					<div class="col-sm-12">
 					<fieldset class="scheduler-border">
@@ -27,49 +25,35 @@
 					</fieldset>
 					</div>
 					<div class="col-sm-12">
-
-						<fieldset class="scheduler-border">
-						<legend class="scheduler-border">History</legend>
-							<div class="history" style="margin-top: 10px !important;margin-bottom: 65px !important">
-								<app-cust-editable-non-datatable [passData]="passDataHistory"></app-cust-editable-non-datatable>
-							</div>
-							<div class="row" style="margin-left: 35px !important;margin-bottom: 9px !important">
-								<div class="col-sm-3">
-									<div class="input-group">
-										<label class="form-control-sm col-sm-4">Created By</label>
-              						<input type="text" class="form-control form-control-sm col-sm-9" placeholder="cuaresma">
-									</div>
-									
-								</div>
-								<div class="col-sm-3">
-									<div class="input-group" style="margin-left: -24px !important;">
-										<label class="form-control-sm col-sm-4">Date Created</label>
-              						<input type="date" class="form-control form-control-sm col-sm-8">
-									</div>
-									
-								</div>
-								<div class="col-sm-3">
-									<div class="input-group" style="margin-left: -55px !important;">
-										<label class="form-control-sm col-sm-5">Last Update By</label>
-              						<input type="text" class="form-control form-control-sm col-sm-8" placeholder="cuaresma">
-									</div>
-									
-								</div>
-								<div class="col-sm-3">
-									<div class="input-group" style="margin-left: -80px !important;">
-										<label class="form-control-sm col-sm-4">Last Update</label>
-              						<input type="date" class="form-control form-control-sm">
-									</div>
-									
-								</div>
-							</div>
-					</fieldset>
-
-					</div>
-					<div class="col-sm-12 text-center" style="margin-top: 17px !important" >
-                        <button type="button" class="cust-btn"><a>Cancel</a></button>
-						<button type="button" class="cust-btn"><a>Save</a></button>
-					</div>
+				<fieldset class="scheduler-border">
+		<legend class="scheduler-border">History</legend>
+		<div class="custom-row-inline-inset">
+				<div class="row">
+					<div class="col-sm-12">
+				<app-cust-editable-non-datatable [passData]="passDataHistory"></app-cust-editable-non-datatable>
 				</div>
-			</ng-template>
-		</ngb-tab>
+				</div>
+			<div class="form-row" style="margin-top: -10px;">
+				<div class="input-group" >
+					<label class="form-control-sm col-sm-1">Created By</label>
+					<input type="text" class="form-control form-control-sm col-sm">
+					<label class="form-control-sm col-sm-1">Date Created</label>
+					<input type="text" class="form-control form-control-sm col-sm">	
+					<label class="form-control-sm col-sm-1">Last Updated By</label>
+					<input type="text" class="form-control form-control-sm col-sm">
+					<label class="form-control-sm col-sm-1">Last Update</label>
+					<input type="text" class="form-control form-control-sm col-sm">	
+				</div>
+			</div>
+		</div>
+	</fieldset>
+	<div class="form-row">
+		<div class="form-group col-sm">
+			<div class="col-md-13 text-center">
+				<div class="cust-btn-container" style="margin-top: 10px;">
+					<button type="button" class="cust-btn"><a>Cancel</a></button>
+					<button type="button" class="cust-btn"><a>Save</a></button>
+				</div>
+			</div>
+		</div>
+	</div>
