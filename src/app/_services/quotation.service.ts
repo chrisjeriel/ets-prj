@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { QuotationList, HoldCoverMonitoringList, DummyInfo, QuoteEndorsement, QuotationOption, QuotationOtherRates, IntCompAdvInfo, AttachmentInfo, QuotationProcessing, QuotationCoverageInfo, QuotationHoldCover, ItemInformation, ReadyForPrint, OpenCoverProcessing, Risks } from '@app/_models';
+import { QuotationList, HoldCoverMonitoringList, DummyInfo, QuoteEndorsement, QuotationOption, QuotationOtherRates, IntCompAdvInfo, AttachmentInfo, QuotationProcessing, QuotationCoverageInfo, QuotationHoldCover, ItemInformation, ReadyForPrint, OpenCoverProcessing, Risks, QuotationDeductibles } from '@app/_models';
 
 
 @Injectable({ providedIn: 'root' })
@@ -22,6 +22,7 @@ export class QuotationService {
     readyForPrinting: ReadyForPrint[] = [];
     openCoverProcessing: OpenCoverProcessing[] = [];
     risksData: Risks[] = [];
+    quoteDeductiblesData: QuotationDeductibles[] = [];
     
     rowData: any[] = [];
     toGenInfo: any[] = [];
@@ -244,17 +245,17 @@ export class QuotationService {
 
     getQuotataionOtherRates(optionNo: number) {
         this.quotataionOtherRates = [
-            new QuotationOtherRates(1, 'Others11', 50, 'sample deductibles'),
-            new QuotationOtherRates(1, 'Others12', 41, 'sample deductibles'),
-            new QuotationOtherRates(1, 'Others13', 75, 'deductibles'),
-            new QuotationOtherRates(2, 'Others21', 60, 'deductibles'),
-            new QuotationOtherRates(2, 'Others22', 50, 'sample deductible'),
-            new QuotationOtherRates(2, 'Others23', 65, 'demo'),
-            new QuotationOtherRates(2, 'Others24', 41, 'sample ony'),
-            new QuotationOtherRates(3, 'Others31', 4, 'for demo'),
-            new QuotationOtherRates(3, 'Others32', 3, 'sample data'),
-            new QuotationOtherRates(3, 'Others33', 5, 'sample'),
-            new QuotationOtherRates(3, 'Others34', 6, 'deductibles'),
+            new QuotationOtherRates(1, 'Others11', 50, 25000),
+            new QuotationOtherRates(1, 'Others12', 41, 25000),
+            new QuotationOtherRates(1, 'Others13', 75, 750000),
+            new QuotationOtherRates(2, 'Others21', 60, 750000),
+            new QuotationOtherRates(2, 'Others22', 50, 250000),
+            new QuotationOtherRates(2, 'Others23', 65, 13000),
+            new QuotationOtherRates(2, 'Others24', 41, 29000),
+            new QuotationOtherRates(3, 'Others31', 4, 50000),
+            new QuotationOtherRates(3, 'Others32', 3, 83000),
+            new QuotationOtherRates(3, 'Others33', 5, 131000),
+            new QuotationOtherRates(3, 'Others34', 6, 123400),
 
         ];
         var quotataionOtherRates = this.quotataionOtherRates.filter(function (itm) {
@@ -399,5 +400,12 @@ export class QuotationService {
             new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
         ];
         return this.risksData;
+    }
+    
+    getDeductibles(){
+        this.quoteDeductiblesData = [
+            new QuotationDeductibles('Deductible Title', 12, 23000, 'Deductible Text'),
+        ];
+        return this.quoteDeductiblesData;
     }
 }

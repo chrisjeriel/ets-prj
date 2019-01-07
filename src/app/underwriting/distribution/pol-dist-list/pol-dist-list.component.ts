@@ -64,7 +64,7 @@ export class PolDistListComponent implements OnInit {
             false, false, true, false, true, true, true, false,
         ],
         dataTypes: [
-            "number", "number", "text", "text", "text", "text", "text", "date"
+            "text", "text", "text", "text", "text", "text", "text", "date"
         ],
         tableData: this.underwritingService.getPolicyDistListInfo(),
         pageLength: 10,
