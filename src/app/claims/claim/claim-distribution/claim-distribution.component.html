@@ -1,5 +1,5 @@
 <div class="row">
-	<div class="col-sm-11">
+	<div class="col-sm-10">
 		<fieldset class="scheduler-border">
 			<legend class="scheduler-border">Claim Info</legend>
 			<div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;" style="margin-top: 10px !important;">
@@ -23,7 +23,7 @@
             </div>
 		</fieldset>
 	</div>
-	<div class="col-sm-1 header-buttons">
+	<div class="col-sm-2 header-buttons">
 		<div class="input-group">
 			<button type="button" class="cust-btn"><a>Distribute</a></button>
 		</div>
@@ -37,7 +37,7 @@
 </div>
 
 <div class="row">
-	<div class="col-sm-6">
+	<div class="col-sm-6" style="padding-right: 5px">
 		<fieldset class="scheduler-border">
 			<legend class="scheduler-border">Distribution Header</legend>
 			<app-cust-non-datatable [passData]="distHeaderPassData"></app-cust-non-datatable>
@@ -48,9 +48,10 @@
 		</fieldset>
 	</div>
 
-	<div class="col-sm-6">
+	<div class="col-sm-6" style="padding-left: 5px">
 		<fieldset class="scheduler-border">
 			<legend class="scheduler-border">Quota Share Pool Distribution</legend>
+			<app-cust-non-datatable [passData]="poolDistPassData"></app-cust-non-datatable>
 		</fieldset>
 	</div>
-</div>
+</div>	
