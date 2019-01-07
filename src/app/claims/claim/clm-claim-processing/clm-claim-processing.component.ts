@@ -85,4 +85,7 @@ export class ClmClaimProcessingComponent implements OnInit {
     this.router.navigate(['/claims-claim', { line: this.polLine }], { skipLocationChange: true });
   }
 
+  onClickAdd(event) {
+    $('#addClaim > #modalBtn').trigger('click');
+  }
 }
