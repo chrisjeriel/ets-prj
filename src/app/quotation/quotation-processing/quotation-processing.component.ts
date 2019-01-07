@@ -166,19 +166,21 @@ export class QuotationProcessingComponent implements OnInit {
   }
     
   nextBtnEvent() {
-    if (this.line === 'CAR' ||
-      this.line === 'EAR' ||
-      this.line === 'EEI' ||
-      this.line === 'CEC' ||
-      this.line === 'MBI' ||
-      this.line === 'BPV' ||
-      this.line === 'MLP' ||
-      this.line === 'DOS') {
+    var qLine = this.line.toUpperCase();
+
+    if (qLine === 'CAR' ||
+      qLine === 'EAR' ||
+      qLine === 'EEI' ||
+      qLine === 'CEC' ||
+      qLine === 'MBI' ||
+      qLine === 'BPV' ||
+      qLine === 'MLP' ||
+      qLine === 'DOS') {
       this.modalService.dismissAll();
 
       this.quotationService.rowData = [];
       this.quotationService.toGenInfo = [];
-      this.quotationService.toGenInfo.push("add", this.line);
+      this.quotationService.toGenInfo.push("add", qLine);
       this.router.navigate(['/quotation']);
     }
 
