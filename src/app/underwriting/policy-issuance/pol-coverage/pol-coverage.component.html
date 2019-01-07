@@ -58,7 +58,7 @@
     </fieldset>
     </div>
     <div class="cust-sm col-sm-6" style="padding-left: 1px !important;">
-        <fieldset class="scheduler-border">
+        <fieldset class="scheduler-border" style="padding-bottom: 7px !important;">
           <legend class="scheduler-border">Total Per Section</legend>
              <div class="cust-sm totalPerSection" >
                  <app-cust-editable-non-datatable [passData]="passDataTotalPerSection"></app-cust-editable-non-datatable>
@@ -90,7 +90,7 @@
     </fieldset>
     </div>
     <div class="cust-sm col-sm-6" style="padding-left: 0px;">
-        <fieldset class="scheduler-border">
+        <fieldset class="scheduler-border" style="padding-bottom: 9px !important;">
          <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
         <div class="cust-sm">
            <div class="cust-sm col-sm-1"></div>
@@ -114,8 +114,7 @@
 
     <div class="form-row">
     <div class="form-group col-sm">
-      <div class="col-md-13 text-center">
-        <br>
+      <div class="col-md-13 text-center" style="margin-top: 10px;">
         <div class="cust-btn-container">
           <button type="button" class="cust-btn" (click)="CATPerils()" *ngIf="line == 'CAR' || line =='EAR' || line =='EEI' || line =='CEC'"><a>CAT Perils</a></button>
           <button type="button" class="cust-btn" (click)="pol($event)"><a>Cancel</a></button>
