@@ -33,6 +33,8 @@ export class ParListingComponent implements OnInit {
         tableData: this.uwService.getParListing(),
         addFlag: true,
         editFlag: true,
+        pageStatus: true,
+        pagination: true,
         pageLength: 10,
         filters: [
             {

@@ -84,7 +84,7 @@ export class ListOfQuotationsComponent implements OnInit {
             },
         ],
         pageLength: 10,
-        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: true, printBtn: true, 
+        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: true, printBtn: true, pagination: true, pageStatus: true,
     }
 
     constructor(private quotationService: QuotationService, private router: Router) { 
