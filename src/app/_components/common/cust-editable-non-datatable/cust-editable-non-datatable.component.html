@@ -23,14 +23,15 @@
             <button *ngIf="passData.addFlag" class="cust-btn" (click)="onClickAdd()"><a>Add</a></button>
             <button *ngIf="passData.editFlag" class="cust-btn" (click)="onClickEdit()"><a class="paginate_button previous">Edit</a></button>
             <button *ngIf="passData.deleteFlag" class="cust-btn" (click)="onClickDelete()"><a class="paginate_button previous">Delete</a></button>
-        </div>
-        <div class="search-filter" *ngIf="passData.searchFlag">
+            <div class="search-filter" *ngIf="passData.searchFlag">
             <!--<div class="search-filter" *ngIf="passData.hasSearch">-->
             <label>Search: &nbsp;
                 <input type="search" class="form-control-sm cust-search-form" [(ngModel)]="searchString"
                     (ngModelChange)="search($event)">
             </label>
         </div>
+        </div>
+        
         <div ngbDropdownMenu aria-labelledby="dropdownConfig">
             <div class="dropdown-item">
                 <span class="cust-tbl-label">Filter by:</span>
@@ -116,7 +117,7 @@
             </thead>
 
             <tbody>
-                <tr *ngFor="let data of displayData | paginate: { id: 'editable', itemsPerPage: passData.pageLength, currentPage: p2 };let ti = index"
+                <tr *ngFor="let data of displayData | paginate: { id: 'editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p2 };let ti = index"
                     (click)="onRowClick($event)" (dblclick)="onRowDblClick($event)">
                     <td *ngIf="passData.checkFlag" class="checkbox align-middle"><input *ngIf="addCheckFlag(data)" type="checkbox"
                             name="checkbox" [checked]="checked"></td>
@@ -181,7 +182,7 @@
 <label *ngIf="!api.isLastPage()">Showing {{ (api.getCurrent() - 1) * passData.pageLength + 1 }} - {{ api.getCurrent() * passData.pageLength }} of {{displayData.length}} entries</label>
 <label *ngIf="api.isLastPage()">Showing {{ (api.getCurrent() - 1) * passData.pageLength + 1 }} - {{displayData.length}} of {{displayData.length}} entries</label>
 </pagination-template>-->
-        <pagination-template #api="paginationApi" id="editable" (pageChange)="p2 = $event">
+        <pagination-template #api="paginationApi"  [id]="'editable'+passData.pageID" (pageChange)="p2 = $event">
             <!--  <label *ngIf="!api.isLastPage() && displayLength > 0">Showing {{ (api.getCurrent() - 1) * passData.pageLength + 1 }} - {{ api.getCurrent() * passData.pageLength }} of {{displayLength}} entries {{api.getCurrent()}}</label>
 <label *ngIf="api.isLastPage() && displayLength > 0">Showing {{ (api.getCurrent() - 1) * passData.pageLength + 1 }} - {{displayLength}} of {{displayLength}} entries</label>
 <label *ngIf="displayLength < 1">Showing 0 - 0 of 0 entries</label>-->
@@ -195,7 +196,7 @@
     <div class="pagination" *ngIf="passData.paginateFlag">
         <!--<div class="pagination" *ngIf="passData.hasPagination">-->
         <!-- <pagination-template class="" #api="paginationApi" (pageChange)="p = $event"><a (click)="api.setCurrent(1)">&laquo;</a></pagination-template>-->
-        <pagination-controls id="editable" class="my-pagination" (pageChange)="p2 = $event" previousLabel="" nextLabel="">
+        <pagination-controls [id]="'editable'+passData.pageID" class="my-pagination" (pageChange)="p2 = $event" previousLabel="" nextLabel="">
         </pagination-controls>
         <!--<pagination-template class="" #api="paginationApi" (pageChange)="p = $event"> <a (click)="api.setCurrent(api.getLastPage())">&raquo;</a></pagination-template>-->
     </div>

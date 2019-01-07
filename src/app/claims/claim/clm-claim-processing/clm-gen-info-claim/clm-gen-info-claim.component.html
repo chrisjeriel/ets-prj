@@ -1,3 +1,25 @@
+<style type="text/css">
+    .offsetFormGroup {
+        margin-bottom: 0px !important;
+    }
+
+    .custom-row-inline-inset {
+        margin-top: 10px !important;
+    }
+
+    .cust-lbl-left-offset {
+        padding-left: 0px !important;
+    }
+
+    .cust-fs-padlr-offset {
+        padding-right: 0px !important;
+        padding-left: 0px !important;
+    }
+
+    .input-group label {
+        line-height: .9;
+    }
+</style>
 <div>
     <fieldset class="scheduler-border">
         <legend class="scheduler-border">Claim Record</legend>
@@ -72,7 +94,7 @@
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Loss Date</label>
                     <input type="date" class="form-control form-control-sm col-sm-3" style="margin-left: 3px;">
-                    <input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 3px;"
+                    <input type="text" class="form-control form-control-sm col-sm-2 text-center" style="margin-left: 3px;"
                         placeholder="03:00 PM">
                     <label class="form-control-sm col-sm-2">Loss Period</label>
                     <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;margin-right: -12px;"
@@ -83,7 +105,7 @@
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Report Date</label>
                     <input type="date" class="form-control form-control-sm col-sm-3" style="margin-left: 3px;">
-                    <input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 3px;"
+                    <input type="text" class="form-control form-control-sm col-sm-2 text-center" style="margin-left: 3px;"
                         placeholder="03:00 PM">
                     <label class="form-control-sm col-sm-2">Reported By</label>
                     <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;margin-right: 9px !important;"
@@ -92,7 +114,7 @@
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Create Date</label>
                     <input type="date" class="form-control form-control-sm col-sm-3" style="margin-left: 3px;">
-                    <input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 3px;"
+                    <input type="text" class="form-control form-control-sm col-sm-2 text-center" style="margin-left: 3px;"
                         placeholder="03:00 PM" readonly>
                     <label class="form-control-sm col-sm-2">In House Adj</label>
                     <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;margin-right: 9px !important;"
@@ -130,32 +152,421 @@
     </fieldset>
     <div class="row">
         <div class="col-sm-8">
-            <fieldset class="scheduler-border">
-                <legend class="scheduler-border">Insured Details</legend>
-                <div class="form-row custom-row-inline-inset">
-                    <div class="input-group" style="margin-left: -27px !important;">
-                        <label class="form-control-sm col-sm-2">Principal</label>
-                        <input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px;">
-                        <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;">
-                        <label class="form-control-sm col-sm-2">Contractor</label>
-                        <input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px;">
-                        <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;">
-                    </div>
-                    <div class="input-group" style="margin-left: -27px !important;">
-                        <label class="form-control-sm col-sm-2">Insured</label>
-                        <textarea class="form-control form-control-sm col-sm-10" style="margin-left: 3px;"></textarea>
-                    </div>
-                    <div class="input-group" style="margin-left: -27px !important;">
-                        <label class="form-control-sm col-sm-2">Risk</label>
-                        <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;">
+            <fieldset *ngIf="line === 'CAR'" class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 21px !important;
+				padding-top: 17px !important; margin-right: -7px !important">
+                <legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm">
+                    <div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
+                        <div class="input-group" style="margin-top: 10px;">
+                            <label class="form-control-sm col-sm-1">Principal</label>
+                            <input type="text" class="form-control form-control-sm col-sm-1">
+                            <input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
+                            <label class="form-control-sm col-sm-1">Contractor</label>
+                            <input type="text" class="form-control form-control-sm col-sm-1">
+                            <input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
+                        </div>
+                        <div class="input-group">
+                            <label class="form-control-sm col-sm-1">Insured</label>
+                            <textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;"></textarea>
+                        </div>
+                        <div class="input-group">
+                            <label class="form-control-sm col-sm-1">Risk</label>
+                            <input type="text" class="form-control form-control-sm">
+                        </div>
+                        <div class="input-group" style="margin-bottom: 0px !important;">
+                            <div class="col-sm-6 input-group" style="padding: 0px;">
+                                <label class="form-control-sm col-sm-2">Object</label>
+                                <input type="text" class="form-control form-control-sm col-sm-2">
+                                <input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;">
+                            </div>
+                            <div class="col-sm-6 input-group" style="padding: 0px;">
+                                <label class="form-control-sm col-sm-2">Region</label>
+                                <input type="text" class="form-control form-control-sm col-sm-10">
+                            </div>
+                        </div>
+                        <div class="input-group">
+
+
+                            <label class="form-control-sm col-sm-1">Nature of Work</label>
+                            <textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;"></textarea>
+
+
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="input-group">
+                                        <label class="form-control-sm col-sm-2">Province</label>
+                                        <input type="text" class="form-control form-control-sm">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-group">
+                                        <label class="form-control-sm col-sm-2">City/Town</label>
+                                        <input type="text" class="form-control form-control-sm">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label class="form-control-sm col-sm-1">Site</label>
+                            <textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 12px; margin-left: 2px;"></textarea>
+
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="input-group">
+                                        <label class="form-control-sm col-sm-2">District</label>
+                                        <input type="text" class="form-control form-control-sm">
+                                        <label class="form-control-sm col-sm-2">Block</label>
+                                        <input type="text" class="form-control form-control-sm">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-group">
+                                        <label class="form-control-sm col-sm-2">Lat</label>
+                                        <input type="text" class="form-control form-control-sm">
+                                        <label class="form-control-sm col-sm-2">Long</label>
+                                        <input type="text" class="form-control form-control-sm">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <div class="col-sm-1">
+                </div>
             </fieldset>
+
+            <fieldset *ngIf="line === 'EAR'" class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 10px !important;
+				padding-top: 4px !important; margin-right: -7px !important">
+                <legend class="scheduler-border" style="margin-left: 16px !important;">Insured Detail</legend>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm">
+                    <div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
+                        <div class="input-group" style="margin-top: 10px;">
+                            <label class="form-control-sm col-sm-1">Principal</label>
+                            <input type="text" class="form-control form-control-sm col-sm-1">
+                            <input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
+                            <label class="form-control-sm col-sm-1">Contractor</label>
+                            <input type="text" class="form-control form-control-sm col-sm-1">
+                            <input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
+                        </div>
+                        <div class="input-group">
+                            <label class="form-control-sm col-sm-1">Insured</label>
+                            <textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;"></textarea>
+                        </div>
+                        <div class="input-group">
+                            <label class="form-control-sm col-sm-1">Risk</label>
+                            <input type="text" class="form-control form-control-sm">
+                        </div>
+                        <div class="input-group" style="margin-bottom: 0px !important;">
+                            <div class="col-sm-6 input-group" style="padding: 0px;">
+                                <label class="form-control-sm col-sm-2">Object</label>
+                                <input type="text" class="form-control form-control-sm col-sm-2">
+                                <input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;">
+                            </div>
+                            <div class="col-sm-6 input-group" style="padding: 0px;">
+                                <label class="form-control-sm col-sm-2">Region</label>
+                                <input type="text" class="form-control form-control-sm col-sm-10">
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label class="form-control-sm col-sm-1">Nature of Work</label>
+                            <textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;"></textarea>
+
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="input-group">
+                                        <label class="form-control-sm col-sm-2">Province</label>
+                                        <input type="text" class="form-control form-control-sm">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-group">
+                                        <label class="form-control-sm col-sm-2">City/Town</label>
+                                        <input type="text" class="form-control form-control-sm">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label class="form-control-sm col-sm-1">Site</label>
+                            <textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;"></textarea>
+
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="input-group">
+                                        <label class="form-control-sm col-sm-2">District</label>
+                                        <input type="text" class="form-control form-control-sm">
+                                        <label class="form-control-sm col-sm-2">Block</label>
+                                        <input type="text" class="form-control form-control-sm">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-group">
+                                        <label class="form-control-sm col-sm-2">Lat</label>
+                                        <input type="text" class="form-control form-control-sm">
+                                        <label class="form-control-sm col-sm-2">Long</label>
+                                        <input type="text" class="form-control form-control-sm">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="input-group">
+                                        <label class="form-control-sm col-sm-2" style="margin-bottom: 16px !important;">Testing</label>
+                                        <input type="text" class="form-control form-control-sm col-sm-10">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                </div>
+            </fieldset>
+
+            <fieldset *ngIf="line === 'EEI' || line === 'CEC'" class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 16px !important; padding-top: 17px !important; margin-right: -7px !important">
+                <legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm">
+                    <div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
+                        <div class="input-group" style="margin-top: 10px;">
+                            <label class="form-control-sm col-sm-1">Insured</label>
+                            <input type="text" class="form-control form-control-sm col-sm-1">
+                            <input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
+                        </div>
+                        <div class="input-group">
+                            <label class="form-control-sm col-sm-1"></label>
+                            <textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;"></textarea>
+                        </div>
+                        <div class="input-group">
+                            <label class="form-control-sm col-sm-1">Risk</label>
+                            <input type="text" class="form-control form-control-sm">
+                        </div>
+                        <div class="input-group" style="margin-bottom: 0px !important;">
+                            <div class="col-sm-6 input-group" style="padding: 0px;">
+                                <label class="form-control-sm col-sm-2">Object</label>
+                                <input type="text" class="form-control form-control-sm col-sm-2">
+                                <input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;">
+                            </div>
+                            <div class="col-sm-6 input-group" style="padding: 0px;">
+                                <label class="form-control-sm col-sm-2">Region</label>
+                                <input type="text" class="form-control form-control-sm col-sm-10">
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label class="form-control-sm col-sm-1">Items<br />to be Insured</label>
+                            <textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;"></textarea>
+
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="input-group">
+                                        <label class="form-control-sm col-sm-2">Province</label>
+                                        <input type="text" class="form-control form-control-sm">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-group">
+                                        <label class="form-control-sm col-sm-2">City/Town</label>
+                                        <input type="text" class="form-control form-control-sm">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label class="form-control-sm col-sm-1">Site</label>
+                            <textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;"></textarea>
+
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="input-group">
+                                        <label class="form-control-sm col-sm-2">District</label>
+                                        <input type="text" class="form-control form-control-sm">
+                                        <label class="form-control-sm col-sm-2">Block</label>
+                                        <input type="text" class="form-control form-control-sm">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-group">
+                                        <label class="form-control-sm col-sm-2">Lat</label>
+                                        <input type="text" class="form-control form-control-sm">
+                                        <label class="form-control-sm col-sm-2">Long</label>
+                                        <input type="text" class="form-control form-control-sm">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                </div>
+            </fieldset>
+
+            <fieldset *ngIf="line === 'MBI' || line === 'BPV' || line === 'DOS'" class="scheduler-border cust-fs-padlr-offset"
+                style="padding-bottom: 16px !important; padding-top: 17px !important; margin-right: -7px !important ">
+                <legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm">
+                    <div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
+                        <div class="input-group" style="margin-top: 10px;">
+                            <label class="form-control-sm col-sm-1">Insured</label>
+                            <input type="text" class="form-control form-control-sm col-sm-1">
+                            <input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
+                        </div>
+                        <div class="input-group">
+                            <label class="form-control-sm col-sm-1"></label>
+                            <textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;"></textarea>
+                        </div>
+                        <div class="input-group">
+                            <label class="form-control-sm col-sm-1">Risk</label>
+                            <input type="text" class="form-control form-control-sm">
+                        </div>
+                        <div class="input-group" style="margin-bottom: 0px !important;">
+                            <div class="col-sm-6 input-group" style="padding: 0px;">
+                                <label class="form-control-sm col-sm-2">Object</label>
+                                <input type="text" class="form-control form-control-sm col-sm-2">
+                                <input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;">
+                            </div>
+                            <div class="col-sm-6 input-group" style="padding: 0px;">
+                                <label class="form-control-sm col-sm-2">Region</label>
+                                <input type="text" class="form-control form-control-sm col-sm-10">
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label class="form-control-sm col-sm-1">Items<br />to be Insured</label>
+                            <textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;"></textarea>
+
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="input-group">
+                                        <label class="form-control-sm col-sm-2">Province</label>
+                                        <input type="text" class="form-control form-control-sm">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-group">
+                                        <label class="form-control-sm col-sm-2">City/Town</label>
+                                        <input type="text" class="form-control form-control-sm">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label class="form-control-sm col-sm-1">Site</label>
+                            <textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;"></textarea>
+
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="input-group">
+                                        <label class="form-control-sm col-sm-2">District</label>
+                                        <input type="text" class="form-control form-control-sm">
+                                        <label class="form-control-sm col-sm-2">Block</label>
+                                        <input type="text" class="form-control form-control-sm">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                </div>
+            </fieldset>
+
+            <fieldset *ngIf="line === 'MLP'" class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 16px !important; padding-top: 17px !important;  margin-right: -7px !important">
+                <legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
+                <div class="col-sm-1">
+                </div>
+                <div class="col-sm">
+                    <div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
+                        <div class="input-group" style="margin-top: 10px;">
+                            <label class="form-control-sm col-sm-1">Insured</label>
+                            <input type="text" class="form-control form-control-sm col-sm-1">
+                            <input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
+                        </div>
+                        <div class="input-group">
+                            <label class="form-control-sm col-sm-1"></label>
+                            <textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;"></textarea>
+                        </div>
+                        <div class="input-group">
+                            <label class="form-control-sm col-sm-1">Risk</label>
+                            <input type="text" class="form-control form-control-sm">
+                        </div>
+                        <div class="input-group" style="margin-bottom: 0px !important;">
+                            <div class="col-sm-6 input-group" style="padding: 0px;">
+                                <label class="form-control-sm col-sm-2">Object</label>
+                                <input type="text" class="form-control form-control-sm col-sm-2">
+                                <input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;">
+                            </div>
+                            <div class="col-sm-6 input-group" style="padding: 0px;">
+                                <label class="form-control-sm col-sm-2">Region</label>
+                                <input type="text" class="form-control form-control-sm col-sm-10">
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label class="form-control-sm col-sm-1">Items<br />to be Insured</label>
+                            <textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;"></textarea>
+
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="input-group">
+                                        <label class="form-control-sm col-sm-2">Province</label>
+                                        <input type="text" class="form-control form-control-sm">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-group">
+                                        <label class="form-control-sm col-sm-2">City/Town</label>
+                                        <input type="text" class="form-control form-control-sm">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label class="form-control-sm col-sm-1">Site</label>
+                            <textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;"></textarea>
+
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="input-group">
+                                        <label class="form-control-sm col-sm-2">District</label>
+                                        <input type="text" class="form-control form-control-sm">
+                                        <label class="form-control-sm col-sm-2">Block</label>
+                                        <input type="text" class="form-control form-control-sm">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-group">
+                                        <label class="form-control-sm col-sm-2">IPL</label>
+                                        <input type="text" class="form-control form-control-sm">
+                                        <label class="form-control-sm col-sm-2">Time Exc.</label>
+                                        <input type="text" class="form-control form-control-sm">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                </div>
+            </fieldset>
+
         </div>
         <div class="col-sm-4">
-            <fieldset class="scheduler-border" style="margin-left: -7px !important;">
+            <fieldset class="scheduler-border" style="margin-left: -7px !important;padding-bottom: 4px !important; padding-top: 5px !important;">
                 <legend class="scheduler-border">Period of Insurance</legend>
                 <div class="custom-row-inline-inset">
+                    <ng-template *ngIf="!CAR || !EAR">
+                        <div class="form-row ig-cust" style="margin-right: 0px;margin-bottom: 28px !important;">
+                            <div class="input-group col-sm-6" style="padding: 0px;"><label class="form-control-sm col-sm-4">&nbsp;</label>
+                            </div>
+                        </div>
+                    </ng-template>
                     <div class="form-row">
                         <div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -14px;">
                             <label class="form-control-sm top-label">&nbsp;Inception Date</label>
@@ -176,8 +587,18 @@
                             <input type="date" class="form-control form-control-sm cust-sm">
                         </div>
                     </div>
-                    <div class="form-row" style="margin-bottom: -12px !important;">
-                        <div class="form-group col-sm-6" >
+                    <div *ngIf="line === 'CAR' || line === 'EAR'; else notCARorEAR" class="form-row ig-cust" style="margin-bottom: -12px !important;">
+                        <!-- <div class="input-group col-sm-6" style="padding: 0px;">
+                            <label class="form-control-sm col-sm-4">Maintenance From</label>
+                            <input type="date" class="form-control form-control-sm">
+                            <input type="text" class="form-control form-control-sm col-sm-3" style="margin-left: 5px; text-align: center;">
+                        </div>
+                        <div class="input-group col-sm-6" style="padding: 0px;">
+                            <label class="form-control-sm col-sm-4">Maintenance To</label>
+                            <input type="date" class="form-control form-control-sm">
+                            <input type="text" class="form-control form-control-sm col-sm-3" style="margin-left: 5px; text-align: center;">
+                        </div> -->
+                        <div class="form-group col-sm-6">
                             <label class="form-control-sm top-label">&nbsp;Maintenance From</label>
                             <input type="date" class="form-control form-control-sm cust-sm">
                         </div>
@@ -186,6 +607,12 @@
                             <input type="date" class="form-control form-control-sm cust-sm">
                         </div>
                     </div>
+                    <ng-template #notCARorEAR>
+                        <div class="form-row ig-cust" style="margin-right: 0px;margin-bottom: 28px !important;">
+                            <div class="input-group col-sm-6" style="padding: 0px;"><label class="form-control-sm col-sm-4">&nbsp;</label>
+                            </div>
+                        </div>
+                    </ng-template>
                 </div>
             </fieldset>
             <fieldset class="scheduler-border" style="margin-left: -7px !important;">
@@ -196,15 +623,18 @@
                         <input type="text" class="form-control form-control-sm cust-sm" required>
 
                         <label class="form-control-sm">% Share</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" required onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' style="text-align: right;">
+                        <input type="text" class="form-control form-control-sm cust-sm" required onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
+                            style="text-align: right;">
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3">Total SI</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" required onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' style="text-align: right;">
+                        <input type="text" class="form-control form-control-sm cust-sm" required onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
+                            style="text-align: right;">
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3">100% Value</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" required onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' placeholder="PHP 1,000,000,000.00" style="text-align: right;">
+                        <input type="text" class="form-control form-control-sm cust-sm" required onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
+                            placeholder="PHP 1,000,000,000.00" style="text-align: right;">
                     </div>
                 </div>
             </fieldset>
@@ -212,26 +642,35 @@
     </div>
     <div class="row">
         <div class="col-sm-6">
-            <fieldset class="scheduler-border" style="margin-right: -7px !important;">
+            <fieldset class="scheduler-border" style="margin-right: -7px !important; padding-bottom: 4px !important;padding-top: 4px !important;">
                 <legend class="scheduler-border">Reserve and Payments</legend>
                 <div class="custom-row-inline-inset">
                     <div class="input-group">
                         <label class="form-control-sm col-sm-2">Loss Reserve</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" required>
+                        <input type="text" class="form-control form-control-sm cust-sm text-right" placeholder="10,000,000.00"
+                            onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
+                            required>
                         <label class="form-control-sm col-sm-2">Losses Paid</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" required>
+                        <input type="text" class="form-control form-control-sm cust-sm text-right" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
+                            required>
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-2">Expense Reserve</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" required>
+                        <input type="text" class="form-control form-control-sm cust-sm text-right" placeholder="300,000.00"
+                            onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
+                            required>
                         <label class="form-control-sm col-sm-2">Expense Paid</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" required>
+                        <input type="text" class="form-control form-control-sm cust-sm text-right" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
+                            required>
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-2">Total Reserve</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" required>
+                        <input type="text" class="form-control form-control-sm cust-sm text-right" placeholder="10,300,000.00"
+                            onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
+                            required>
                         <label class="form-control-sm col-sm-2">Total Payment</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" required>
+                        <input type="text" class="form-control form-control-sm cust-sm text-right" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
+                            required>
                     </div>
                 </div>
             </fieldset>
@@ -244,14 +683,15 @@
                         <div class="col-sm-1"></div>
                         <div class="form-group col-sm-5" style="margin-bottom: 0px; margin-top: -14px;">
                             <label class="form-control-sm top-label">&nbsp;Status</label>
-                            <input type="text" class="form-control form-control-sm cust-sm">
+                            <input type="text" class="form-control form-control-sm cust-sm" placeholder="In Progress">
 
                         </div>
                         <div class="text-search-ico" style="z-index: 1 !important; margin: 8px 9px -10px -24px !important;">
-                        <a><i class="fa fa-search"></i></a></div>
+                            <a><i class="fa fa-search"></i></a></div>
                         <div class="form-group col-sm-5" style="margin-bottom: 0px; margin-top: -14px;">
                             <label class="form-control-sm top-label">&nbsp;Approved Amount</label>
-                            <input type="text" class="form-control form-control-sm cust-sm" placeholder="15,000,000.00" style="text-align: right;">
+                            <input type="text" class="form-control form-control-sm cust-sm text-right" placeholder="15,000,000.00"
+                                onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
                         </div>
                         <div class="col-sm-1"></div>
                     </div>
@@ -259,10 +699,10 @@
                         <div class="col-sm-1"></div>
                         <div class="form-group col-sm-5" style="margin-bottom: 0px;">
                             <label class="form-control-sm top-label">&nbsp;Approved By</label>
-                            <input type="text" class="form-control form-control-sm cust-sm">
+                            <input type="text" class="form-control form-control-sm cust-sm" placeholder="Monica Reyes">
                         </div>
                         <div class="text-search-ico" style="z-index: 1 !important; margin: 22px 9px -10px -24px !important;">
-                        <a><i class="fa fa-search"></i></a></div>
+                            <a><i class="fa fa-search"></i></a></div>
                         <div class="form-group col-sm-5" style="margin-bottom: 0px;">
                             <label class="form-control-sm top-label">&nbsp;Date Approved</label>
                             <input type="datetime-local" class="form-control form-control-sm cust-sm" placeholder="hello">
@@ -271,6 +711,17 @@
                     </div>
                 </div>
             </fieldset>
+        </div>
+    </div>
+</div>
+
+<div class="form-row" style="margin-top: 15px !important;margin-left: -4px !important;">
+    <div class="form-group col-sm">
+        <div class="col-md-13 text-center">
+            <div class="cust-btn-container">
+                <button type="button" class="cust-btn"><a>Cancel</a></button>
+                <button type="button" class="cust-btn"><a>Save</a></button>
+            </div>
         </div>
     </div>
 </div>
