@@ -33,8 +33,8 @@ export class QuoteEndorsementComponent implements OnInit {
         tHeader: ['Option No', 'Rate(%)', 'Conditions', 'Comm Rate Quota(%)', 'Comm Rate Surplus(%)', 'Comm Rate Fac(%)'],
         dataTypes: ['text', 'percent', 'text', 'percent', 'percent', 'percent', 'percent'],
         resizable: [false, false, true, false, false, false],
-        pagination: false,
-        pageStatus: false,
+        pagination: true,
+        pageStatus: true,
         tableOnly: true,
         pageLength: 3,
     }
