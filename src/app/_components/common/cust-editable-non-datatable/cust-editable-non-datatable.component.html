@@ -23,14 +23,15 @@
             <button *ngIf="passData.addFlag" class="cust-btn" (click)="onClickAdd()"><a>Add</a></button>
             <button *ngIf="passData.editFlag" class="cust-btn" (click)="onClickEdit()"><a class="paginate_button previous">Edit</a></button>
             <button *ngIf="passData.deleteFlag" class="cust-btn" (click)="onClickDelete()"><a class="paginate_button previous">Delete</a></button>
-        </div>
-        <div class="search-filter" *ngIf="passData.searchFlag">
+            <div class="search-filter" *ngIf="passData.searchFlag">
             <!--<div class="search-filter" *ngIf="passData.hasSearch">-->
             <label>Search: &nbsp;
                 <input type="search" class="form-control-sm cust-search-form" [(ngModel)]="searchString"
                     (ngModelChange)="search($event)">
             </label>
         </div>
+        </div>
+        
         <div ngbDropdownMenu aria-labelledby="dropdownConfig">
             <div class="dropdown-item">
                 <span class="cust-tbl-label">Filter by:</span>
