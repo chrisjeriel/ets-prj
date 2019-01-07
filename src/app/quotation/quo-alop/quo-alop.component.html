@@ -105,29 +105,27 @@
 			</div>
 		</div>
 	</fieldset>
-
-    <div class="form-row">
-        <div class="form-group col-sm">
-            <div class="col-md-13 text-center">
-                <div class="cust-btn-container" style="padding-top: 13px">
-                    <app-modal [btnTitle]="' Item Info '" style="margin-bottom: 2px;">
-                        <div header>Item Information</div>	
-                        <div body>
-                            <!--<app-cust-editable-table [addFlag]="true" [deleteFlag]="true" [nData]="nData" [tableData]="tableData" [editFlag]="false" [tHeader]="tHeader" [dataTypes]="dataTypes"></app-cust-editable-table>-->
-                            <div style="margin-bottom: -90px !important">
+	<div class="form-row bottom-button-container">
+		<div class="form-group col-sm">
+			<div class="col-md-13 text-center">
+				<div class="cust-btn-container" style="margin-top: 10px;">
+				<app-modal [btnTitle]="'Item Information'" style="margin-bottom: 2px;">
+					<div header>Item Information</div>	
+            		<div body>
+            			 <div style="margin-bottom: -90px !important">
                                 <app-cust-editable-non-datatable [passData]="itemInfoData"></app-cust-editable-non-datatable>
-                            </div>  
-                        </div>
-                        <div footer class="text-center">
-                                <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
-                                <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Save</a></button>
-                        </div>
-                    </app-modal>
-                    <button type="button" class="cust-btn"><a>Cancel</a></button>
-                    <button type="button" class="cust-btn" (click)="save()"><a>Save</a></button>
-                </div>
-            </div>
-        </div>
-    </div>
+                         </div>  
+            		</div>
+            		<div footer class="text-center">
+							<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
+							<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Save</a></button>
+            		</div>
+				</app-modal>
+				<button type="button" class="cust-btn"><a>Cancel</a></button>
+				<button type="button" class="cust-btn" (click)="save()"><a>Save</a></button>
+			</div>
+			</div>
+		</div>
+	</div>
 
 </div>			
