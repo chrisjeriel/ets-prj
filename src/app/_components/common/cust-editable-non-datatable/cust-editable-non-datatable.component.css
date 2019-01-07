@@ -1,5 +1,5 @@
 table{
-    margin-top: 30px;
+    /*margin-top: 30px;*/
     width: 100%
 }
 th, td{
@@ -46,9 +46,10 @@ th, td{
 }
 
 .cust-btn-container {
-    position: absolute !important;
+    /*position: absolute !important;
     left: 1px;
-    top: 1px;
+    top: 1px;*/
+    margin-bottom: 5px;
     z-index: 99 !important;
 }
 .icon {
@@ -202,8 +203,9 @@ div.input-group {
 }
 
 .search-filter{
-    position: absolute !important;
-    right: 0px;
+    /*position: absolute !important;
+    right: 0px;*/
+    float: right;
 }
 
 #cust-scroll::-webkit-scrollbar-track
