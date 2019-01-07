@@ -16,16 +16,28 @@ export class ExpiryListingComponent implements OnInit {
   renewedPolicyList: RenewedPolicy[] = [];
   byDate: boolean = true;
   
-  passData: any = {
-        tHeader: ["P", "RA", "RC", "NR", "Policy No", "Ceding Company", "Co Ref No","Ren TSI Amount","Ren Pre Amount","TSI Amount","Prem Amount","Co Ref No","S","B","C","R","RP"],
+  passDataAnnualPolicies: any = {
+        tHeader: ["P", "RA", "RC", "NR", "Policy No", "Type of Cession", "Ceding Company", "Co Ref No","Ren TSI Amount","Ren Pre Amount","TSI Amount","Prem Amount","Co Ref No","S","B","C","R","RP"],
         dataTypes: [
-                    "checkbox", "checkbox", "checkbox", "checkbox", "text", "text","text","text","text","text","text","text","text","checkbox","checkbox","checkbox", "checkbox"
+                    "checkbox", "checkbox", "checkbox", "checkbox", "text", "text","text","text","text","text","text","text","text","checkbox","checkbox","checkbox","checkbox", "checkbox"
                    ],
-        tableData: [[false,false,false,false,"TEST","TEST","TEST","TEST","TEST","TEST","TEST","TEST","TEST",false,false,false,false]],
+        tableData: [[false,false,false,false,"TEST","TEST","TEST","TEST","TEST","TEST","TEST","TEST","TEST",false,false,false,false,false]],
         pageLength: 10,
         paginateFlag:true,
         infoFlag:true
    };
+
+   passDataExtensionPolicies: any = {
+        tHeader: ["P","Policy No", "Type of Cession", "Ceding Company", "Co Ref No","TSI Amount","Prem Amount","Co Ref No","S","B","C","R","RP"],
+        dataTypes: [
+                    "checkbox", "text", "text","text","text","text","text","text","checkbox","checkbox","checkbox","checkbox", "checkbox"
+                   ],
+        tableData: [[false,"TEST","TEST","TEST","TEST","TEST","TEST","TEST",false,false,false,false,false]],
+        pageLength: 10,
+        paginateFlag:true,
+        infoFlag:true
+   };
+
 
   constructor(private underWritingService: UnderwritingService, private modalService: NgbModal, private titleService: Title) { }
 

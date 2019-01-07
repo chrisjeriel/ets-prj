@@ -30,19 +30,20 @@
 		<div class="col-sm-8">
 			<div class="row">
 				<div class="col-sm">
-					<fieldset class="scheduler-border cust-fs-padlr-offset">
+					<fieldset class="scheduler-border cust-fs-padlr-offset" style="padding-top: 2px !important">
 						<legend class="scheduler-border">Quotation Details</legend>
 						<div class="row">
 							<div class="col-sm-8" style="padding-right: 0px !important;">
 								<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
-									<div class="input-group" style="margin-top: 10px;">
+									<div class="input-group ig-cust" style="margin-top: 10px;">
 										<label class="form-control-sm col-sm-2">Quotation No</label>
-										<input type="text" [(ngModel)]="quotationNum[0]" class="form-control form-control-sm">
-										<input type="text" [(ngModel)]="quotationNum[1]" class="form-control form-control-sm" style="margin-left: 5px;">
-										<input type="text" [(ngModel)]="quotationNum[2]" class="form-control form-control-sm" style="margin-left: 5px;">
-										<input type="text" [(ngModel)]="quotationNum[3]" class="form-control form-control-sm" style="margin-left: 5px;">
+										<input type="text" [(ngModel)]="quotationNum[0]" class="form-control form-control-sm" ngbTooltip="Line">
+										<input type="text" [(ngModel)]="quotationNum[1]" class="form-control form-control-sm ig-mrgn" ngbTooltip="Year">
+										<input type="text" [(ngModel)]="quotationNum[1]" class="form-control form-control-sm ig-mrgn" ngbTooltip="Sequence No">
+										<input type="text" [(ngModel)]="quotationNum[2]" class="form-control form-control-sm ig-mrgn" ngbTooltip="Revision No">
+										<input type="text" [(ngModel)]="quotationNum[3]" class="form-control form-control-sm ig-mrgn" ngbTooltip="Company No">
 									</div>
-									<div class="input-group">
+									<div class="input-group ig-cust">
 										<label class="form-control-sm col-sm-2">Type of Cession</label>
 										<input type="text" class="form-control form-control-sm">
 										<label class="form-control-sm col-sm-2">Line Class</label>
@@ -50,18 +51,18 @@
 										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 										<span>&nbsp;</span>
 									</div>
-									<div class="input-group">
-										<label class="form-control-sm col-sm-2">Policy No</label>
+									<div class="input-group ig-cust">
+										<label class="form-control-sm col-sm-2">Policy Number</label>
 										<input type="text" class="form-control form-control-sm">
 										<label class="form-control-sm col-sm-2">Status</label>
 										<input type="text" [(ngModel)]="quotationGenInfo.quoteStatus" class="form-control form-control-sm">
 									</div>
-									<div class="input-group">
+									<div class="input-group ig-cust">
 										<label class="form-control-sm col-sm-2">Ceding Company</label>
 										<input type="text" class="form-control form-control-sm col-sm-2">
 										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 										<span>&nbsp;</span>
-										<input type="text" [(ngModel)]="quotationGenInfo.cedingCompany" class="form-control form-control-sm col-sm"
+										<input type="text" [(ngModel)]="quotationGenInfo.cedingCompany" class="form-control form-control-sm col-sm ig-mrgn"
 										 style="margin-left: 5px;">
 									</div>
 									<div class="input-group">
@@ -69,25 +70,25 @@
 										<input type="text" class="form-control form-control-sm col-sm-2">
 										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 										<span>&nbsp;</span>
-										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px;">
+										<input type="text" class="form-control form-control-sm col-sm ig-mrgn" style="margin-left: 5px;">
 									</div>
 								</div>
 							</div>
 							<div class="col-sm-4">
 								<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
-									<div class="input-group" style="margin-top: 10px;">
+									<div class="input-group ig-cust" style="margin-top: 10px;">
 										<label class="form-control-sm col-sm-4">Quote Date</label>
 										<input type="date" [(ngModel)]="quotationGenInfo.quoteDate" class="form-control form-control-sm">
 									</div>
-									<div class="input-group">
+									<div class="input-group ig-cust">
 										<label class="form-control-sm col-sm-4">Valid Until</label>
 										<input type="date" [(ngModel)]="quotationGenInfo.validUntil" class="form-control form-control-sm">
 									</div>
-									<div class="input-group">
+									<div class="input-group ig-cust">
 										<label class="form-control-sm col-sm-4">Requested By</label>
 										<input type="text" class="form-control form-control-sm">
 									</div>
-									<div class="input-group">
+									<div class="input-group ig-cust">
 										<label class="form-control-sm col-sm-4">Request Date</label>
 										<input type="text" class="form-control form-control-sm">
 									</div>
@@ -111,7 +112,7 @@
 
 			<fieldset class="scheduler-border">
 				<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
-				<div class="custom-row-inline-inset">
+				<div class="custom-row-inline-inset" style="margin-bottom: 0px !important;">
 					<div class="form-row">
 						<div class="form-group col-sm-6 offsetFormGroup">
 							<div class="input-group">
@@ -133,7 +134,7 @@
 			</fieldset>
 
 
-			<fieldset class="scheduler-border" style="padding-top: 9px !important; padding-bottom: 8px !important;">
+			<fieldset class="scheduler-border" style="padding-top: 2px !important; padding-bottom: 3px !important;">
 				<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 				<div class="custom-row-inline-inset">
 					<div class="form-row" style="margin-top: 15px;">
@@ -199,41 +200,42 @@
 						</div>
 						<div class="col-sm" style="padding-right: 0px !important;">
 							<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
-								<div class="input-group" style="margin-top: 10px;">
+								<div class="input-group ig-cust" style="margin-top: 10px;">
 									<label class="form-control-sm col-sm-1">Principal</label>
 									<input type="text" class="form-control form-control-sm col-sm-1">
 									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 									<span>&nbsp;</span>
-									<input type="text" [(ngModel)]="quotationGenInfo.principal" class="form-control form-control-sm" style="margin-left: 5px;">
+									<input type="text" [(ngModel)]="quotationGenInfo.principal" class="form-control form-control-sm col-sm-4 ig-mrgn">
 									<label class="form-control-sm col-sm-1">Contractor</label>
 									<input type="text" class="form-control form-control-sm col-sm-1">
 									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 									<span>&nbsp;</span>
-									<input type="text" [(ngModel)]="quotationGenInfo.contractor" class="form-control form-control-sm" style="margin-left: 5px;">
+									<input type="text" [(ngModel)]="quotationGenInfo.contractor" class="form-control form-control-sm col-sm-4 ig-mrgn">
 								</div>
 								<div class="input-group">
 									<label class="form-control-sm col-sm-1">Insured</label>
-									<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 8px;"></textarea>
+									<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;"></textarea>
 								</div>
-								<div class="input-group">
+								<div class="input-group ig-cust">
 									<label class="form-control-sm col-sm-1">Risk</label>
-									<input type="text" [(ngModel)]="quotationGenInfo.risk" class="form-control form-control-sm">
-								</div>
-								<div class="input-group">
-									<label class="form-control-sm col-sm-1">Object</label>
-									<input type="text" [(ngModel)]="quotationGenInfo.object" class="form-control form-control-sm">
-									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-									<span>&nbsp;</span>
-									<label class="form-control-sm col-sm-1">Region</label>
 									<input type="text" class="form-control form-control-sm">
 								</div>
-								<div class="input-group">
+								<div class="input-group ig-cust">
+									<label class="form-control-sm col-sm-1">Object</label>
+									<input type="text" class="form-control form-control-sm col-sm-1">
+									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+									<span>&nbsp;</span>
+									<input type="text" [(ngModel)]="quotationGenInfo.object" class="form-control form-control-sm col-sm-4 ig-mrgn">
+									<label class="form-control-sm col-sm-1">Region</label>
+									<input type="text" class="form-control form-control-sm col-sm-5">
+								</div>
+								<div class="input-group" style="margin-bottom: -8px !important;">
 									<label class="form-control-sm col-sm-1">Nature of Work</label>
-									<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;"></textarea>
+									<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;"></textarea>
 
 									<div class="col-sm">
 										<div class="row">
-											<div class="input-group">
+											<div class="input-group ig-cust">
 												<label class="form-control-sm col-sm-2">Province</label>
 												<input type="text" class="form-control form-control-sm">
 											</div>
@@ -246,13 +248,13 @@
 										</div>
 									</div>
 								</div>
-								<div class="input-group">
+								<div class="input-group" style="margin-bottom: -8px !important;">
 									<label class="form-control-sm col-sm-1">Site</label>
-									<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;"></textarea>
+									<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 8px;"></textarea>
 
 									<div class="col-sm">
 										<div class="row">
-											<div class="input-group">
+											<div class="input-group ig-cust">
 												<label class="form-control-sm col-sm-2">District</label>
 												<input type="text" class="form-control form-control-sm">
 												<label class="form-control-sm col-sm-2">Block</label>
@@ -269,7 +271,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="input-group">
+								<div class="input-group" style="margin-bottom: -10px !important;">
 									<label class="form-control-sm col-sm-1">Duration</label>
 									<input type="text" class="form-control form-control-sm col-sm-5">
 								</div>
@@ -685,16 +687,31 @@
 				<legend class="scheduler-border">Quotation Wordings</legend>
 				<div class="col-sm-1">
 				</div>
-				<div class="col-sm">
+				<div class="col-sm" style="margin-bottom: -8px; margin-top: 7px;">
 					<div class="form-row">
-						<div class="col-sm">
+						<!-- <div class="col-sm">
 							<label for="inputEmail4" class="form-control-sm top-label">Opening Paragraph</label>
 							<textarea style="font-size: 12px; margin-bottom: 38px;" class="form-control form-control-sm" placeholder="Further to our Quotation No.."></textarea>
-						</div>
-						<div class="col-sm">
+						</div> -->
+						<div class="input-group">
+									<label for="inputEmail4" class="form-control-sm top-label col-sm-6" style="text-align: left !important;">Opening Paragraph</label>
+									<label for="inputEmail4" class="form-control-sm top-label col-sm-6" style="text-align: left !important; padding-left: 7px !important;">Closing Paragraph</label>
+								</div>
+								<div class="input-group" style="margin-top: 2px;">
+							<textarea style="font-size: 12px; margin-bottom: 38px;" class="form-control form-control-sm col-sm-6"></textarea>	
+									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+									<span>&nbsp;</span>
+									<div class="text-search-ico"><a><i class="fa fa-file-text" style="margin-top: 22px !important;"></i></a></div>
+								
+							<textarea style="font-size: 12px; margin-bottom: 38px; margin-left: 10px !important;" class="form-control form-control-sm col-sm-6"></textarea>	
+									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+									<span>&nbsp;</span>
+									<div class="text-search-ico"><a><i class="fa fa-file-text" style="margin-top: 22px !important;"></i></a></div>
+								</div>
+						<!-- <div class="col-sm">
 							<label for="inputEmail4" class="form-control-sm top-label">Closing Paragraph</label>
 							<textarea style="font-size: 12px; margin-bottom: 38px;" class="form-control form-control-sm" placeholder="This quotation is subject.."></textarea>
-						</div>
+						</div> -->
 					</div>
 				</div>
 				<div class="col-sm-1">
@@ -702,10 +719,10 @@
 			</fieldset>
 		</div>
 		<div class="col-sm-4" style="padding-left: 0px;">
-			<fieldset class="scheduler-border" style="padding-bottom: 8px !important;">
+			<fieldset class="scheduler-border" style="padding-bottom: 16px !important; padding-top: 2px !important;">
 				<legend class="scheduler-border">Share Details</legend>
-				<div class="custom-row-inline-inset">
-					<div class="form-row" style="margin-bottom: -3px;">
+				<div class="custom-row-inline-inset" style="margin-top: 2px !important;">
+					<div class="form-row ig-cust">
 						<div class="form-group col-sm">
 							<label class="form-control-sm top-label">Total Sl</label>
 							<input type="text" class="form-control form-control-sm">
@@ -716,7 +733,7 @@
 							<label class="form-control-sm top-label">% Share</label>
 							<input type="text" class="form-control form-control-sm cust-sm">
 						</div>
-						<div class="form-group col-sm">
+						<div class="form-group col-sm" style="margin-left: -6px !important;">
 							<label class="form-control-sm top-label">Part of (100%)</label>
 							<input type="text" class="form-control form-control-sm cust-sm">
 						</div>
@@ -724,47 +741,46 @@
 				</div>
 			</fieldset>
 
-			<fieldset class="scheduler-border">
+			<fieldset class="scheduler-border" style="padding-top: 8px !important; padding-bottom: 8px !important;">
 				<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
-				<div class="custom-row-inline-inset">
-					<div class="col-sm-1"></div>
-					<div class="input-group">
+				<div class="custom-row-inline-inset" style="margin-left: -22px !important;">
+					<div class="input-group ig-cust">
 						<label class="form-control-sm col-sm-4">Prepared By</label>
 						<input type="text" class="form-control form-control-sm col-sm-7">
 					</div>
-					<div class="input-group">
+					<div class="input-group ig-cust">
 						<label class="form-control-sm col-sm-4">Approved By</label>
 						<input type="text" class="form-control form-control-sm col-sm-7">
 					</div>
-					<div class="input-group">
+					<div class="input-group ig-cust">
 						<label class="form-control-sm col-sm-4">Printed By</label>
 						<input type="text" class="form-control form-control-sm col-sm-7">
 					</div>
-					<div class="input-group">
+					<div class="input-group ig-cust">
 						<label class="form-control-sm col-sm-4">Print Date</label>
 						<input type="date" class="form-control form-control-sm col-sm-7">
 					</div>
 				</div>
 			</fieldset>
-			<fieldset class="scheduler-border">
+			<fieldset class="scheduler-border" style="padding-top: 0px !important; padding-bottom: 0px !important;">
 				<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 				<div class="custom-row-inline-inset">
 					<div class="form-row">
-						<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -10px;">
+						<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -10px; margin-left: 3px;">
 							<label class="form-control-sm top-label">Created By</label>
 							<input type="text" class="form-control form-control-sm cust-sm">
 						</div>
-						<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -10px;">
+						<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -10px; margin-left: -5px;">
 							<label class="form-control-sm top-label">Last Update By</label>
 							<input type="text" class="form-control form-control-sm cust-sm">
 						</div>
 					</div>
 					<div class="form-row">
-						<div class="form-group col-sm-6" style="margin-bottom: 8px;">
+						<div class="form-group col-sm-6" style="margin-bottom: 8px; margin-left: 3px;">
 							<label class="form-control-sm top-label">Date Created</label>
 							<input type="date" class="form-control form-control-sm cust-sm">
 						</div>
-						<div class="form-group col-sm-6" style="margin-bottom: 8px;">
+						<div class="form-group col-sm-6" style="margin-bottom: 8px; margin-left: -5px;">
 							<label class="form-control-sm top-label">Last Update</label>
 							<input type="date" class="form-control form-control-sm cust-sm">
 						</div>
@@ -775,7 +791,7 @@
 	</div>
 </div>
 
-<div class="form-row">
+<div class="form-row" style="margin-top: -12px !important;">
 	<div class="form-group col-sm">
 		<div class="col-md-13 text-center">
 			<br>

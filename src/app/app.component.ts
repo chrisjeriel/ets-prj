@@ -98,7 +98,7 @@ export class AppComponent  {
          $('.cust-side-nav-bg').css({"background-color":"#00194A"});
          $('.cust-ng-sidebar').css({"background-color":"#00194A"});
          $("button.btn.btn-link").css({"color":"#0003B4"});    
-         $('.cust-btn').css({"background":'linear-gradient(to bottom,#4080bf 0%, #2d5986 100%)'});    
+         $('.cust-btn').css({"background":'linear-gradient(to bottom,#4080bf 0%, #2d5986 100%)'});     
           $(".cust-btn").hover(function() {
             $(this).css("background",'linear-gradient(to bottom,#4080bf 0%, #2d5986 100%)');
             }, function() {
@@ -118,6 +118,7 @@ export class AppComponent  {
          $(' aside.ng-sidebar ').css({"background-color":"#00194A"});
          $('.nav-link').css({"color":""});
          $('.ngx-pagination .current').css({"background":'linear-gradient(to bottom, #4080bf 0%, #2d5986 100%)'});
+         $('.cust').css({"background":'linear-gradient(to bottom,#4080bf 0%, #2d5986 100%)'}); 
     }
 
     setColorTheme(color1 : string , color2 : string, color3 : string , color4 : string){
@@ -148,6 +149,7 @@ export class AppComponent  {
             $('.nav-link ').css({"color":color2});
             $('.nav-link.active ').css({"color":"#495057"});
             $('.ngx-pagination .current').css({"background":'linear-gradient(to bottom,'+color2+' 0%, '+color3+' 100%)'});
+            $('.cust').css({"background":'linear-gradient(to bottom,'+color2+' 0%, '+color3+' 100%)'});
     }
 
     applyTheme(){
@@ -164,12 +166,11 @@ export class AppComponent  {
      }
 
  /*    @HostListener('document:keyup', ['$event'])
-      handleKeyboardEvent(event: KeyboardEvent) { 
-        if(this.eRef.nativeElement.contains(event.target)){
+       handleKeyboardEvent(event: KeyboardEvent) { 
+              if (event.key == 'Backspace' || event.key == ' ') {
                 this.changeTheme(this.theme);
-        } 
-      } */
-
+              }
+    }*/
 
      ngOnInit(){
        this.theme = window.localStorage.getItem("selectedTheme");
