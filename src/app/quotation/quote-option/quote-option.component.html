@@ -19,21 +19,42 @@
 	</fieldset>
 
 	<fieldset class="scheduler-border">
-		<legend class="scheduler-border">Quotation Option</legend>
-		<app-cust-editable-table [checkFlag]="true" [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="quoteOptionNData"
+		<legend class="scheduler-border">Options</legend>
+		<!--<app-cust-editable-table [checkFlag]="true" [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="quoteOptionNData"
 		 [tableData]="quoteOptionTableData" [tHeader]="quoteOptionTHeader" [dataTypes]="quoteOptionDataType"
-		 [magnifyingGlass]="magnifyingGlass" [(editedData)]="quoteOptionEdited" [columnId]="'optionNo'" (rowClick)="clickRow($event)"></app-cust-editable-table>
+		 [magnifyingGlass]="magnifyingGlass" [(editedData)]="quoteOptionEdited" [columnId]="'optionNo'" (rowClick)="clickRow($event)"></app-cust-editable-table>-->
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="co-sm-11" style="margin-top: 0.5em; margin-left: 4%; margin-bottom: -0.21em;">
+                <app-cust-editable-non-datatable [passData]="optionsData"></app-cust-editable-non-datatable>
+            </div>
+            <!--<div class="col-sm-1"></div>-->
+        </div>
 	</fieldset>
 
-	<!-- <fieldset class="scheduler-border">
-		<legend class="scheduler-border">Quotation Other Rates</legend>
-		<app-cust-editable-table [checkFlag]="true" [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="otherRatesNData" [tableData]="otherRatesTableData" [tHeader]="otherRatesTHeader" [dataTypes]="otherRatesDataType"></app-cust-editable-table>
-	</fieldset> -->
+	 <fieldset class="scheduler-border">
+		<legend class="scheduler-border">Deductibles</legend>
+		<!--<app-cust-editable-table [checkFlag]="true" [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="otherRatesNData" [tableData]="otherRatesTableData" [tHeader]="otherRatesTHeader" [dataTypes]="otherRatesDataType"></app-cust-editable-table>-->
+         <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="co-sm-11" style="margin-top: 0.5em; margin-left: 17%; margin-bottom: -0.21em;">
+                <app-cust-editable-non-datatable [passData]="deductiblesData"></app-cust-editable-non-datatable>
+            </div>
+            <!--<div class="col-sm-1"></div>-->
+        </div>
+	</fieldset> 
 
 	<fieldset class="scheduler-border">
-		<legend class="scheduler-border">Quotation Other Rates</legend>
-		<app-cust-editable-table [checkFlag]="true" [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="otherRatesNData"
-		 [tableData]="otherRatesTableData" [tHeader]="otherRatesTHeader" [dataTypes]="otherRatesDataType" [magnifyingGlass]="otherRatesMagnify"></app-cust-editable-table>
+		<legend class="scheduler-border">Other Rates</legend>
+		<!--<app-cust-editable-table [checkFlag]="true" [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="otherRatesNData"
+		 [tableData]="otherRatesTableData" [tHeader]="otherRatesTHeader" [dataTypes]="otherRatesDataType" [magnifyingGlass]="otherRatesMagnify"></app-cust-editable-table>-->
+         <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="co-sm-11" style="margin-top: 0.5em; margin-left: 23%; margin-bottom: -0.21em;">
+                <app-cust-editable-non-datatable [passData]="otherRatesData"></app-cust-editable-non-datatable>
+            </div>
+            <!--<div class="col-sm-1"></div>-->
+        </div>
 	</fieldset>
 
 	<div class="form-row">
