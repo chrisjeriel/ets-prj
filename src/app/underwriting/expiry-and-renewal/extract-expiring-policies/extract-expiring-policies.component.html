@@ -21,7 +21,7 @@
 									<div class="col-sm-2"></div>
 									<label class="form-control-sm cust-sm from" for="fromDate">From</label>
 									<input [(ngModel)]="expiryParameters.fromDate" type="date" class="form-control form-control-sm cust-sm col-sm-4" id="fromDate" value="2018-12-04" [disabled]="!byDate">
-									<label class="form-control-sm col-sm-1 cust-sm">To</label>
+									<label class="form-control-sm cust-sm" style="margin-left: 15px">To</label>
 									<input [(ngModel)]="expiryParameters.toDate" type="date" class="form-control form-control-sm cust-sm col-sm-4" id="toDate" value="2018-12-04" [disabled]="!byDate">
 									<div class="col-sm-2"></div>
 								</div>
@@ -54,7 +54,7 @@
 										<option value="12">December</option>
 									</select>
 									<input [(ngModel)]="expiryParameters.fromYear" class="form-control form-control-sm cust-sm col-sm-1" type="text" name="fromYear" [disabled]="byDate">
-									<label class="form-control-sm col-sm-1 cust-sm toMonth">To</label>
+									<label class="form-control-sm cust-sm toMonth" style="margin-left: 15px">To</label>
 									<select [(ngModel)]="expiryParameters.toMonth" class="form-control form-control-sm cust-sm col-sm-3" name="toMonth" [disabled]="byDate">
 										<option value="1">January</option>
 										<option value="2">February</option>

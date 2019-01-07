@@ -35,3 +35,6 @@ export * from './PurgeExtractedPolicy';
 export * from './PolInwardPolBalanceOtherCharges';
 export * from './OpenCoverProcessing';
 export * from './Risks';
+export * from './Claims-History';
+export * from './ClaimPaymentRequests';
+
