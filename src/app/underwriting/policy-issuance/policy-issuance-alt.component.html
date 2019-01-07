@@ -7,7 +7,7 @@
 				<app-pol-gen-info [alteration]="true"></app-pol-gen-info>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab title="Item">
+		<ngb-tab title="Item" *ngIf="line=='EEI' || line=='MBI' || line=='CEC' || line=='BPV' || line=='MLP' || line=='DOS'">
 			<ng-template ngbTabContent>
 				<app-pol-item></app-pol-item>
 			</ng-template>
