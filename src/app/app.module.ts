@@ -94,7 +94,7 @@ import { ClmClaimProcessingComponent } from './claims/claim/clm-claim-processing
 import { ClmGenInfoClaimComponent } from './claims/claim/clm-claim-processing/clm-gen-info-claim/clm-gen-info-claim.component';
 import { PaymentRequestsComponent } from './claims/payment-requests/payment-requests.component';
 import { NegateDistributionComponent } from './underwriting/policy-distribution/negate-distribution/negate-distribution.component';
-import { ClaimsAttachmentComponent } from './underwriting/policy-distribution/negate-distribution/claims-attachment/claims-attachment.component';
+import { ClaimsAttachmentComponent } from './claims/claim/claims-attachment/claims-attachment.component';
 import { DummyComponent2 } from './_components/common/dummy2/dummy2.component';
 
 
