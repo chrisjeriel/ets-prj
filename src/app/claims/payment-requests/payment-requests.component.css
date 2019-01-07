@@ -1,0 +1,37 @@
+.btnDisabled{
+    background: gray !important;
+    cursor: context-menu;
+}
+
+.fa-question-circle{
+	font-size: 60px;
+	color: #557a95;
+	/*margin-left: 15px;*/
+}
+
+.fa-check-circle{
+	font-size: 60px;
+	color: #557a95;
+	/*margin-left: 15px;*/
+}
+
+
+.my-modal-icon{
+	margin-left: 10px;
+}
+
+.my-modal-text{
+	padding-right: 0px;
+	margin:auto;
+	margin-right: 0px;
+	margin-left: 25px;
+}
+
+.my-modal-text span{
+	font-size: 13px;
+}
+
+div h4{
+	font-size: 15px;
+	margin: auto;
+}

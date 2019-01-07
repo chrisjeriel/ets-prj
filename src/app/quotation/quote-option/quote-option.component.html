@@ -25,10 +25,10 @@
 		 [magnifyingGlass]="magnifyingGlass" [(editedData)]="quoteOptionEdited" [columnId]="'optionNo'" (rowClick)="clickRow($event)"></app-cust-editable-table>-->
         <div class="row">
             <div class="col-sm-1"></div>
-            <div class="co-sm-11" style="margin-top: 0.5em; margin-left: 4%; margin-bottom: -0.21em;">
+            <div class="col-sm-10" style="margin-top: 0.5em; margin-bottom: -0.21em;">
                 <app-cust-editable-non-datatable [passData]="optionsData"></app-cust-editable-non-datatable>
             </div>
-            <!--<div class="col-sm-1"></div>-->
+            <div class="col-sm-1"></div>
         </div>
 	</fieldset>
 
@@ -36,11 +36,11 @@
 		<legend class="scheduler-border">Deductibles</legend>
 		<!--<app-cust-editable-table [checkFlag]="true" [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="otherRatesNData" [tableData]="otherRatesTableData" [tHeader]="otherRatesTHeader" [dataTypes]="otherRatesDataType"></app-cust-editable-table>-->
          <div class="row">
-            <div class="col-sm-1"></div>
-            <div class="co-sm-11" style="margin-top: 0.5em; margin-left: 17%; margin-bottom: -0.21em;">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-8" style="margin-top: 0.5em; margin-bottom: -0.21em;">
                 <app-cust-editable-non-datatable [passData]="deductiblesData"></app-cust-editable-non-datatable>
             </div>
-            <!--<div class="col-sm-1"></div>-->
+            <div class="col-sm-2"></div>
         </div>
 	</fieldset> 
 
@@ -49,11 +49,11 @@
 		<!--<app-cust-editable-table [checkFlag]="true" [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="otherRatesNData"
 		 [tableData]="otherRatesTableData" [tHeader]="otherRatesTHeader" [dataTypes]="otherRatesDataType" [magnifyingGlass]="otherRatesMagnify"></app-cust-editable-table>-->
          <div class="row">
-            <div class="col-sm-1"></div>
-            <div class="co-sm-11" style="margin-top: 0.5em; margin-left: 23%; margin-bottom: -0.21em;">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6" style="margin-top: 0.5em; margin-bottom: -0.21em;">
                 <app-cust-editable-non-datatable [passData]="otherRatesData"></app-cust-editable-non-datatable>
             </div>
-            <!--<div class="col-sm-1"></div>-->
+            <div class="col-sm-3"></div>
         </div>
 	</fieldset>
 
