@@ -111,6 +111,7 @@ export class CustNonDatatableComponent implements OnInit {
 
     displayData:any[];
     
+    unliFlag: boolean = false;
     sortBy:boolean = true;
     sortIndex:number;
     searchString: string;
@@ -129,6 +130,9 @@ export class CustNonDatatableComponent implements OnInit {
 
     ngOnInit(): void {
         this.passData.pageID = typeof this.passData.pageID == "undefined" ? 1 : this.passData.pageID;
+        this.unliFlag = this.passData.pageLength == 'unli';
+        this.passData.pageLength = typeof this.passData.pageLength != 'number' ? 10 : this.passData.pageLength;
+        this.unliTableLength();
         if (this.passData.tableData.length > 0) {
             this.dataKeys = Object.keys(this.passData.tableData[0]);
         } else {
@@ -158,6 +162,16 @@ export class CustNonDatatableComponent implements OnInit {
     consoled(){
         console.log(this.displayData);
     }
+
+    unliTableLength(){
+        if(this.unliFlag){
+            console.log(this.passData.pageLength <= 10);
+            this.passData.pageLength = this.passData.tableData.length <= 10 ? 10 :this.passData.tableData.length;
+            console.log(this.passData.tableData.length);
+        }
+        
+    }
+
     private onMouseDown(event){
         this.start = event.target;
         this.pressed = true;
@@ -247,12 +261,12 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     addFiller(){
-        this.autoFill = Array(this.pageLength).fill(this.fillData);
-        if(this.displayData.length%this.pageLength != 0){
-            this.autoFill = Array(this.pageLength -  this.displayData.length%this.pageLength).fill(this.fillData);
+        this.autoFill = Array(this.passData.pageLength).fill(this.fillData);
+        if(this.displayData.length%this.passData.pageLength != 0){
+            this.autoFill = Array(this.passData.pageLength -  this.displayData.length%this.passData.pageLength).fill(this.fillData);
         }
         this.displayLength = this.displayData.length;
-        if((typeof this.autoFill != "undefined" && this.displayData.length%this.pageLength != 0) || this.displayData.length==0)
+        if((typeof this.autoFill != "undefined" && this.displayData.length%this.passData.pageLength != 0) || this.displayData.length==0)
             this.displayData = this.displayData.concat(this.autoFill);
     }
 
@@ -281,8 +295,5 @@ export class CustNonDatatableComponent implements OnInit {
         this.print.next(event);
     }
     
-    paul(event){
-        console.log(event);
-    }
 
 }

@@ -17,7 +17,8 @@ export class ClaimsAttachmentComponent implements OnInit {
   	addFlag:true,
   	deleteFlag:true,
   	infoFlag:true,
-  	paginateFlag:true
+  	paginateFlag:true,
+  	nData:[null,null]
   };
 
   constructor() { }
