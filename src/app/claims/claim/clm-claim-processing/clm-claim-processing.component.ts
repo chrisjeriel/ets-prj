@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-clm-claim-processing',
@@ -21,6 +22,9 @@ export class ClmClaimProcessingComponent implements OnInit {
   paginateFlag;
   infoFlag;
   searchFlag;
+  polLine;
+  slctd: string = "";
+  slctdArr: any[] = [];
 
   checkboxFlag;
   columnId;
@@ -38,7 +42,7 @@ export class ClmClaimProcessingComponent implements OnInit {
     pageLength: 10,
     widths: []
   };
-  constructor(private titleService: Title, private modalService: NgbModal) { }
+  constructor(private titleService: Title, private modalService: NgbModal, private router: Router) { }
 
   ngOnInit() {
     this.titleService.setTitle("Clm | Claim Processing");
@@ -47,5 +51,31 @@ export class ClmClaimProcessingComponent implements OnInit {
     this.passData.widths.push("1", "auto", "auto", "1", "auto", "auto", "auto", "1");
     this.passData.tableData = this.tableData;
   }
+  navigateToGenInfo() {
+    var pLine = this.polLine.toUpperCase();
+
+    if (pLine === 'CAR' ||
+      pLine === 'EAR' ||
+      pLine === 'EEI' ||
+      pLine === 'CEC' ||
+      pLine === 'MBI' ||
+      pLine === 'BPV' ||
+      pLine === 'MLP' ||
+      pLine === 'DOS') {
+      this.modalService.dismissAll();
+      this.router.navigate(['/claims-claim', { line: pLine }], { skipLocationChange: true });
+    }
+
+  }
+
+  // onRowDblClick(event) {
+  //   this.slctd = event.target.closest("tr").children;
+  //   // this.slctdArr = this.slctd.split("-");
+  //   // for (var i = 0; i < this.slctdArr.length; i++) {
+  //   //   this.polLine = this.slctdArr[0];
+  //   // }
+  //   console.log(this.slctd);
+  //   //this.router.navigate(['/claims-claim', { line: this.polLine }], { skipLocationChange: true });
+  // }
 
 }
