@@ -59,7 +59,7 @@ export class CoverageComponent implements OnInit {
     infoFlag: false,
     searchFlag: true,
     checkboxFlag: true,
-    pageLength: 10,
+    pageLength: 'unli',
     widths: []
   };
 
