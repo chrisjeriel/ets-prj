@@ -51,7 +51,6 @@ export class ClmClaimProcessingComponent implements OnInit {
 
   constructor(private titleService: Title, private modalService: NgbModal, private router: Router) { }
 
-
   ngOnInit() {
     this.titleService.setTitle("Clm | Claim Processing");
 

@@ -31,6 +31,8 @@ export class AltParListingComponent implements OnInit {
         ],
         addFlag: true,
         editFlag: true,
+        pageStatus: true,
+        pagination: true,
         pageLength: 10,
         filters: [
             {

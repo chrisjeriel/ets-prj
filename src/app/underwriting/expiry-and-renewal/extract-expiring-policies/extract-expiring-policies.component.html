@@ -136,8 +136,7 @@
 				<div class="form-row">
 					<div class="form-group col-sm">
 						<div class="col-md-13 text-center">
-							<br>
-							<div class="cust-btn-container" style="margin-top: -20px;">
+							<div class="cust-btn-container" style="margin-top: 5px;">
 							<app-modal [btnTitle]="'Extract'" (click)="save()">
 								<div header>Extract Expiring Policies</div>
 						        <div body class="row">
@@ -157,7 +156,7 @@
 
 						        </div>
 						        <div footer>
-						            <button class="cust-btn" type="button" ><a>Ok</a></button>
+						            <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
 						        </div>
 							</app-modal>
 							<button type="button" class="cust-btn" (click)="modalService.dismissAll();"><a>Clear</a></button>
