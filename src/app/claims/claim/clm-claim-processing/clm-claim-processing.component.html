@@ -3,11 +3,13 @@
   <ngb-tabset>
     <ngb-tab title="Claim Processing">
       <ng-template ngbTabContent>
-        <br>
-        <app-cust-editable-non-datatable [passData]="passData" (rowDblClick)="onRowDblClick($event)"></app-cust-editable-non-datatable>
+        <div style="margin-top: 12px">
+        <app-cust-editable-non-datatable [passData]="passData" (rowDblClick)="onRowDblClick($event)" (add)="onClickAdd($event)"></app-cust-editable-non-datatable>
+        </div>
+
         <br><br>
         <div class="cust-btn-container">
-          <app-modal [btnTitle]="'Add (Temporary)'" style="margin-bottom: 2px;">
+          <app-modal hidden [btnTitle]="'Add (Temporary)'" style="margin-bottom: 2px;" id="addClaim">
             <div header style="width: 600px !important;">Enter General Info</div>
             <div body style="width: 600px !important;">
               <fieldset class="scheduler-border col-sm-12 left" style="padding-top: 7px !important;padding-bottom: 2px !important;">
