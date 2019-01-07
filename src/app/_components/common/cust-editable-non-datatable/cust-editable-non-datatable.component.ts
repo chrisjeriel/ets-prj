@@ -59,7 +59,9 @@ export class CustEditableNonDatatableComponent implements OnInit {
         //set width for columns 
         //"1" to fit the header columns
         // "auto" to auto-adjust
-        widths: []
+        widths: [],
+        //use if you have different tables in 1 page
+        pageID:1,
     };
 
     dataKeys: any[] = [];
