@@ -11,8 +11,13 @@ import { Router } from '@angular/router';
 export class ClmClaimProcessingComponent implements OnInit {
   tableData: any[] = [
     ["0001", "Claimed", "CAR-2018-000002-021-0192-000", "CPI", "5K Builders & ABE international", "ABC Building", "01/01/2019", "data"],
-    ["0002", "Claimed", "CAR-2018-000002-021-0192-000", "CPI", "5K Builders & ABE international", "ABC Building", "01/01/2019", "data"],
-    ["0003", "Claimed", "CAR-2018-000002-021-0192-000", "CPI", "5K Builders & ABE international", "ABC Building", "01/01/2019", "data"],
+    ["0002", "Claimed", "EAR-2018-000002-021-0192-000", "CPI", "5K Builders & ABE international", "ABC Building", "01/01/2019", "data"],
+    ["0003", "Claimed", "DOS-2018-000002-021-0192-000", "CPI", "5K Builders & ABE international", "ABC Building", "01/01/2019", "data"],
+    ["0004", "Claimed", "CEC-2018-000002-021-0192-000", "CPI", "5K Builders & ABE international", "ABC Building", "01/01/2019", "data"],
+    ["0005", "Claimed", "EEI-2018-000002-021-0192-000", "CPI", "5K Builders & ABE international", "ABC Building", "01/01/2019", "data"],
+    ["0006", "Claimed", "BPV-2018-000002-021-0192-000", "CPI", "5K Builders & ABE international", "ABC Building", "01/01/2019", "data"],
+    ["0007", "Claimed", "MBI-2018-000002-021-0192-000", "CPI", "5K Builders & ABE international", "ABC Building", "01/01/2019", "data"],
+
   ];
   //tableDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
   tHeader: any[] = [];
@@ -68,14 +73,13 @@ export class ClmClaimProcessingComponent implements OnInit {
 
   }
 
-  // onRowDblClick(event) {
-  //   this.slctd = event.target.closest("tr").children;
-  //   // this.slctdArr = this.slctd.split("-");
-  //   // for (var i = 0; i < this.slctdArr.length; i++) {
-  //   //   this.polLine = this.slctdArr[0];
-  //   // }
-  //   console.log(this.slctd);
-  //   //this.router.navigate(['/claims-claim', { line: this.polLine }], { skipLocationChange: true });
-  // }
+  onRowDblClick(event) {
+    this.slctd = event.target.closest("tr").children[2].children[0].children[0].value;
+    this.slctdArr = this.slctd.split("-");
+    for (var i = 0; i < this.slctdArr.length; i++) {
+      this.polLine = this.slctdArr[0];
+    }
+    this.router.navigate(['/claims-claim', { line: this.polLine }], { skipLocationChange: true });
+  }
 
 }
