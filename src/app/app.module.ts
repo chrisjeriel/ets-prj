@@ -96,6 +96,7 @@ import { PaymentRequestsComponent } from './claims/payment-requests/payment-requ
 import { NegateDistributionComponent } from './underwriting/policy-distribution/negate-distribution/negate-distribution.component';
 import { ClaimsAttachmentComponent } from './underwriting/policy-distribution/negate-distribution/claims-attachment/claims-attachment.component';
 import { DummyComponent2 } from './_components/common/dummy2/dummy2.component';
+import { ClmClaimHistoryComponent } from './claims/claim/clm-claim-processing/clm-claim-history/clm-claim-history.component';
 
 
 @NgModule({
@@ -195,7 +196,8 @@ import { DummyComponent2 } from './_components/common/dummy2/dummy2.component';
         ClmGenInfoClaimComponent,
         PaymentRequestsComponent,
         NegateDistributionComponent,
-        ClaimsAttachmentComponent
+        ClaimsAttachmentComponent,
+        ClmClaimHistoryComponent
     ],
 
     providers: [
