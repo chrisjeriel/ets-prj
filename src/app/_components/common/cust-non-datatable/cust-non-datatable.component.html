@@ -213,6 +213,19 @@
                         </div>
                     </td>
                 </tr>
+                <tr *ngIf="passData.total !== undefined">
+                    <th *ngFor="let data of passData.total; let i = index" [ngSwitch]="passData.dataTypes[i]">
+                        <div *ngSwitchCase="'currency'" style="text-align: right">
+                                <span class="unclickable">{{ getSum(data) | number: '1.2-2'}}</span>
+                        </div>
+                        <div  *ngSwitchCase="'number'" style="text-align: right">
+                            <span class="unclickable">{{ getSum(data) | number: '1.0-0'}}</span>
+                        </div>
+                        <div  *ngSwitchDefault style="text-align: right">
+                                <span class="unclickable">{{ getSum(data)}}</span>
+                        </div>
+                    </th>
+                </tr>
             </tbody>
         </table>
     </div>
