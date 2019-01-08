@@ -10,26 +10,29 @@ export class ReadyForPrintingComponent implements OnInit {
 
 
   constructor(private quotationService: QuotationService) { }
-
+  btnDisabled: boolean;
   passData: any = {
     tHeader: [
-      "Quotation No", "Type Cession", "Line Class", "Status", "Ceding Company", "Principal", "Contractor", "Insured"
+      "Quotation No", "Approved By", "Type Cession", "Line Class", "Status", "Ceding Company", "Principal", "Contractor", "Insured"
     ],
 
     resizable: [
-      true, true, true, true, true, true, true
+      true, true, true, true, true, true, true, true
     ],
     dataTypes: [
-      "text", "text", "text", "text", "text", "text", "text", "text"
+      "text", "text","text", "text", "text", "text", "text", "text", "text"
     ],
 
     tableData: this.quotationService.getReadyForPrinting(),
     pageLength: 10,
+    checkFlag: true,
+    pagination: true, 
+    pageStatus: true,
 
   }
 
   ngOnInit() {
-
+    this.btnDisabled = true;
   }
 
 }
