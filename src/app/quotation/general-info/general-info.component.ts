@@ -19,7 +19,7 @@ export class GeneralInfoComponent implements OnInit {
 	tHeader: any[] = [];
 	dataTypes: any[] = [];
 	filters: any[] = [];
-
+	numberr:'3';
 
 	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title) { }
 	ngOnInit() {
