@@ -40,15 +40,15 @@
 									<div class="form-row" style="margin-right: 0px;">
 										<div class="input-group ig-cust" style="margin-top: 10px;">
 											<label class="form-control-sm col-sm-2">Quotation No</label>
-											<input type="text" [(ngModel)]="quotationNum[0]" class="form-control form-control-sm" ngbTooltip="Line">
-											<input type="text" [(ngModel)]="quotationNum[1]" class="form-control form-control-sm ig-mrgn" ngbTooltip="Year">
+											<input type="text" [(ngModel)]="quotationNum[0]" class="form-control form-control-sm" ngbTooltip="Line" [appCharactersLength]="'3'">
+											<input type="text" [(ngModel)]="quotationNum[1]" class="form-control form-control-sm ig-mrgn" ngbTooltip="Year" [appCharactersLength]="'4'">
 											<input type="text" class="form-control form-control-sm ig-mrgn" ngbTooltip="Sequence No">
 											<input type="text" [(ngModel)]="quotationNum[2]" class="form-control form-control-sm ig-mrgn" ngbTooltip="Revision No">
 											<input type="text" [(ngModel)]="quotationNum[3]" class="form-control form-control-sm ig-mrgn" ngbTooltip="Company No">
 										</div>
 										<div class="input-group ig-cust">
 											<label class="form-control-sm col-sm-2">Type of Cession</label>
-											<input type="text" class="form-control form-control-sm">
+											<input appRequired type="text" class="form-control form-control-sm" [(ngModel)]="cessionType">
 											<label class="form-control-sm col-sm-2">Line Class</label>
 											<input type="text" [(ngModel)]="quotationGenInfo.lineClass" class="form-control form-control-sm">
 											<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
