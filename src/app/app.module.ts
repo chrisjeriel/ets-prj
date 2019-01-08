@@ -99,6 +99,7 @@ import { DummyComponent2 } from './_components/common/dummy2/dummy2.component';
 import { ClmClaimHistoryComponent } from './claims/claim/clm-claim-processing/clm-claim-history/clm-claim-history.component';
 import { ClaimDistributionComponent } from './claims/claim/claim-distribution/claim-distribution.component';
 import { RequiredDirective } from './_directives/required.directive';
+import { CurrencyDirective } from './_directives/currency.directive';
 
 
 @NgModule({
@@ -201,7 +202,8 @@ import { RequiredDirective } from './_directives/required.directive';
         ClaimsAttachmentComponent,
         ClmClaimHistoryComponent,
         ClaimDistributionComponent,
-        RequiredDirective
+        RequiredDirective,
+        CurrencyDirective
     ],
 
     providers: [
