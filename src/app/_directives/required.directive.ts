@@ -1,4 +1,5 @@
 import { Directive, ElementRef, HostListener } from '@angular/core';
+import { unHighlight, highlight} from './highlight';
 
 @Directive({
     selector: '[appRequired]'
@@ -10,23 +11,18 @@ export class RequiredDirective {
     }
     @HostListener('blur', ['$event.target.value']) onBlur(value){
         if(value === null || typeof value === 'undefined' || value == ''){
-            this.highlight('0 0 5px #ff3333');
+            highlight(this.er);
         }else{
-            this.highlight(null);
+            unHighlight(this.er);
         }
     }
     
     @HostListener('ngModelChange', ['$event']) onNgModelChange(value){
         if(value === null || typeof value === 'undefined' || value == ''){
-            this.highlight('0 0 5px #ff3333');
+            highlight(this.er);
         }else{
-            this.highlight(null);
+            unHighlight(this.er);
         }
-    }
-
-    private highlight(color: string) {
-        this.er.nativeElement.style.boxShadow = color;
-        this.er.nativeElement.setAttribute('title', 'Required');
     }
 
 }
