@@ -45,7 +45,7 @@
 										</div>
 										<div class="input-group ig-cust">
 											<label class="form-control-sm col-sm-2">Type of Cession</label>
-											<input appRequired type="text" class="form-control form-control-sm" [(ngModel)]="cessionType" appRequired>
+											<input appRequired type="text" class="form-control form-control-sm" [(ngModel)]="cessionType">
 											<label class="form-control-sm col-sm-2">Line Class</label>
 											<input type="text" [(ngModel)]="quotationGenInfo.lineClass" class="form-control form-control-sm" appRequired>
 											<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
@@ -1140,7 +1140,7 @@
 					<div class="form-row ig-cust">
 						<div class="form-group col-sm">
 							<label class="form-control-sm top-label">Total Sl</label>
-							<input appCurrency type="text" class="form-control form-control-sm" ngbTooltip="''" appCurrency>
+							<input appCurrency type="text" class="form-control form-control-sm">
 						</div>
 					</div>
 					<div class="form-row" style="margin-bottom: -16px; margin-top: -10px;">
