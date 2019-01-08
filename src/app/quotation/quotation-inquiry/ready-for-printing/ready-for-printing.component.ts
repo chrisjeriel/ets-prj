@@ -13,14 +13,14 @@ export class ReadyForPrintingComponent implements OnInit {
   btnDisabled: boolean;
   passData: any = {
     tHeader: [
-      "Quotation No", "Approved By", "Type Cession", "Line Class", "Status", "Ceding Company", "Principal", "Contractor", "Insured"
+      "Quotation No", "Approved By", "Type of Cession", "Line Class","Status", "Ceding Company", "Principal", "Contractor", "Insured","Risk","Object","Site","Currency","Quote Date","Valid Until","Requested By"
     ],
 
     resizable: [
-      true, true, true, true, true, true, true, true
+      true, true, true, true, true, true, true,true,true, true, true, true, true, true, true,true
     ],
     dataTypes: [
-      "text", "text","text", "text", "text", "text", "text", "text", "text"
+      "text", "text", "text", "text", "text", "text", "text", "text","text", "text", "text", "text", "text", "date", "date", "text"
     ],
 
     tableData: this.quotationService.getReadyForPrinting(),
