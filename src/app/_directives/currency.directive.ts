@@ -27,4 +27,21 @@ export class CurrencyDirective {
     }
   }
 
+  @HostListener("mouseenter", ["$event.target"]) onFocus(target,message) {
+  	let x = parseInt(this.el.nativeElement.getBoundingClientRect()['x']);
+  	let y = parseInt(this.el.nativeElement.getBoundingClientRect()['y']);
+  	let width = parseInt(this.el.nativeElement.getBoundingClientRect()['width']);
+  	let height = parseInt(this.el.nativeElement.getBoundingClientRect()['height']);
+  	$('#cust-tooltip').css({left: x+(width/3)+'px', top: y-height-1+'px'});
+  	$('#cust-tooltip').css({display:'block'});
+  }
+
+  @HostListener("mouseleave", ["$event.target"]) onLeave(target,message) {
+  	let x = parseInt(this.el.nativeElement.getBoundingClientRect()['x']);
+  	let y = parseInt(this.el.nativeElement.getBoundingClientRect()['y']);
+  	let width = parseInt(this.el.nativeElement.getBoundingClientRect()['width']);
+  	let height = parseInt(this.el.nativeElement.getBoundingClientRect()['height']);
+  	$('#cust-tooltip').css({display:'none'});
+  }
+
 }
