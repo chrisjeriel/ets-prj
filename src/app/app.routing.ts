@@ -39,6 +39,9 @@ import { PaymentRequestsComponent } from './claims/payment-requests/payment-requ
 import { NegateDistributionComponent } from './underwriting/policy-distribution/negate-distribution/negate-distribution.component';
 import { DummyComponent2 } from './_components/common/dummy2/dummy2.component'
 import { PolBatchProcessingComponent } from './underwriting/policy-distribution/pol-batch-processing/pol-batch-processing.component'
+import { DeductibleComponent } from './underwriting/maintenance/deductible/deductible.component';
+import { RiskListComponent } from './underwriting/maintenance/risk-list/risk-list.component';
+import { RiskFormComponent } from './underwriting/maintenance/risk-form/risk-form.component';
 
 
 const appRoutes: Routes = [
@@ -85,6 +88,9 @@ const appRoutes: Routes = [
     { path: 'payment-request', component: PaymentRequestsComponent },
     { path: 'negate-distribution', component: NegateDistributionComponent },
     { path: 'batch-processing', component: PolBatchProcessingComponent },
+    { path: 'maintenance-deductible', component: DeductibleComponent },
+    { path: 'maintenance-risk-list', component: RiskListComponent },
+    { path: 'maintenance-risk', component: RiskFormComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

@@ -102,6 +102,9 @@ import { CharactersLengthDirective } from './_directives/characters-length.direc
 import { RequiredDirective } from './_directives/required.directive';
 import { CurrencyDirective } from './_directives/currency.directive';
 import { PolBatchProcessingComponent } from './underwriting/policy-distribution/pol-batch-processing/pol-batch-processing.component';
+import { DeductibleComponent } from './underwriting/maintenance/deductible/deductible.component';
+import { RiskListComponent } from './underwriting/maintenance/risk-list/risk-list.component';
+import { RiskFormComponent } from './underwriting/maintenance/risk-form/risk-form.component';
 import { MonthDirective } from './_directives/month.directive';
 
 
@@ -209,6 +212,9 @@ import { MonthDirective } from './_directives/month.directive';
         RequiredDirective,
         CurrencyDirective,
         PolBatchProcessingComponent,
+        DeductibleComponent,
+        RiskListComponent,
+        RiskFormComponent,
         MonthDirective
     ],
 
