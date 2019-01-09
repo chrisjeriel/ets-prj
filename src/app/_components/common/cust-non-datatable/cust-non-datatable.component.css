@@ -32,8 +32,17 @@ div.filler{
     margin-top: 30px;
 }
 .table-scroll{
-    overflow: auto;
+    overflow-x: auto;
+    overflow-y: auto;
     max-width: 100%;
+}
+.table-scroll-unli{
+    max-height: 34em;
+}
+.sticky{
+    position: -webkit-sticky !important; /* Safari */
+    position: sticky !important;
+    top: -0.55px;
 }
 .fixedTable{
     position: absolute;

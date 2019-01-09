@@ -165,13 +165,13 @@
     <!-- End Fixed Column version -->
 
 
-    <div class="table-scroll" id="cust-scroll" *ngIf="!passData.fixedCol">
-        <table id="non-datatable" [class.margin-table]="passData.addFlag || passData.editFlag || passData.deleteFlag || passData.copyFlag || passData.printBtn || passData.expireFilter || !passData.tableOnly">
-            <thead>
-                <tr style="min-width: 96px">
-                    <th *ngIf="passData.checkFlag" class="checkbox-container-header"><input type="checkbox" name="" [(ngModel)]="checked" class="checkbox"  [checked]="checked"></th>
+    <div class="table-scroll table-scroll-unli" id="cust-scroll" *ngIf="!passData.fixedCol">
+        <table id="non-datatable" [ngClass]="{'margin-table': passData.addFlag || passData.editFlag || passData.deleteFlag || passData.copyFlag || passData.printBtn || passData.expireFilter || !passData.tableOnly, 'table-scroll-unli': unliFlag}">
+            <thead >
+                <tr style="min-width: 96px" >
+                    <th *ngIf="passData.checkFlag" class="checkbox-container-header"><input type="checkbox" name="" [(ngModel)]="checked" class="checkbox"  [checked]="checked" [class.sticky]="unliFlag"></th>
 
-                    <th *ngFor="let tHeader of passData.tHeader; let i = index" [ngSwitch]="passData.dataTypes[i]" (click)="sort(dataKeys[i],sortBy);sortIndex=i;">
+                    <th *ngFor="let tHeader of passData.tHeader; let i = index" [ngSwitch]="passData.dataTypes[i]" (click)="sort(dataKeys[i],sortBy);sortIndex=i;" [class.sticky]="unliFlag">
                         <span *ngIf="passData.resizable[i]" 
                               class="ui-column-resizer" (mousedown) = "onMouseDown($event)"></span>
                         <div *ngSwitchCase="'currency'" style="text-align: right">
