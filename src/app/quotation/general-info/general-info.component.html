@@ -37,17 +37,17 @@
 									<div class="form-row" style="margin-right: 0px;">
 										<div class="input-group ig-cust" style="margin-top: 10px;">
 											<label class="form-control-sm col-sm-2">Quotation No</label>
-											<input type="text" [(ngModel)]="quotationNum[0]" class="form-control form-control-sm" ngbTooltip="Line" [appCharactersLength]="'3'">
-											<input type="text" [(ngModel)]="quotationNum[1]" class="form-control form-control-sm ig-mrgn" ngbTooltip="Year" [appCharactersLength]="'4'">
-											<input type="text" class="form-control form-control-sm ig-mrgn" ngbTooltip="Sequence No">
-											<input type="text" [(ngModel)]="quotationNum[2]" class="form-control form-control-sm ig-mrgn" ngbTooltip="Revision No">
-											<input type="text" [(ngModel)]="quotationNum[3]" class="form-control form-control-sm ig-mrgn" ngbTooltip="Company No">
+											<input type="text" [(ngModel)]="quotationNum[0]" class="form-control form-control-sm" ngbTooltip="Line" [appCharactersLength]="'3'" appRequired>
+											<input type="text" [(ngModel)]="quotationNum[1]" class="form-control form-control-sm ig-mrgn" ngbTooltip="Year" [appCharactersLength]="'4'" appRequired>
+											<input type="text" class="form-control form-control-sm ig-mrgn" ngbTooltip="Sequence No" [appCharactersLength]="'5'" appRequired>
+											<input type="text" [(ngModel)]="quotationNum[2]" class="form-control form-control-sm ig-mrgn" ngbTooltip="Revision No" [appCharactersLength]="'2'" appRequired>
+											<input type="text" [(ngModel)]="quotationNum[3]" class="form-control form-control-sm ig-mrgn" ngbTooltip="Company No" [appCharactersLength]="'2'" appRequired>
 										</div>
 										<div class="input-group ig-cust">
 											<label class="form-control-sm col-sm-2">Type of Cession</label>
 											<input appRequired type="text" class="form-control form-control-sm" [(ngModel)]="cessionType">
 											<label class="form-control-sm col-sm-2">Line Class</label>
-											<input type="text" [(ngModel)]="quotationGenInfo.lineClass" class="form-control form-control-sm">
+											<input type="text" [(ngModel)]="quotationGenInfo.lineClass" class="form-control form-control-sm" appRequired>
 											<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 											<span>&nbsp;</span>
 										</div>
@@ -55,30 +55,30 @@
 											<label class="form-control-sm col-sm-2">Policy Number</label>
 											<input type="text" class="form-control form-control-sm">
 											<label class="form-control-sm col-sm-2">Status</label>
-											<input type="text" [(ngModel)]="quotationGenInfo.quoteStatus" class="form-control form-control-sm">
+											<input type="text" [(ngModel)]="quotationGenInfo.quoteStatus" class="form-control form-control-sm" appRequired>
 										</div>
 										<div class="input-group ig-cust">
 											<label class="form-control-sm col-sm-2">Ceding Company</label>
-											<input type="text" class="form-control form-control-sm col-sm-2">
+											<input type="text" class="form-control form-control-sm col-sm-2" appRequired>
 											<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 											<span>&nbsp;</span>
 											<input type="text" [(ngModel)]="quotationGenInfo.cedingCompany" class="form-control form-control-sm col-sm ig-mrgn"
-											style="margin-left: 5px;">
+											style="margin-left: 5px;" appRequired>
 										</div>
 										<div *ngIf="quotationService.toGenInfo[1] === 'MLP'" class="input-group ig-cust">
 											<label class="form-control-sm col-sm-2">Reinsurance From</label>
-											<input type="text" class="form-control form-control-sm col-sm-2">
+											<input type="text" class="form-control form-control-sm col-sm-2" appRequired>
 											<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 											<span>&nbsp;</span>
 											<input type="text" [(ngModel)]="quotationGenInfo.cedingCompany" class="form-control form-control-sm col-sm ig-mrgn"
-											style="margin-left: 5px;">
+											style="margin-left: 5px;" appRequired>
 										</div>
 										<div class="input-group">
 											<label class="form-control-sm col-sm-2">Intermediary</label>
-											<input type="text" class="form-control form-control-sm col-sm-2">
+											<input type="text" class="form-control form-control-sm col-sm-2" appRequired>
 											<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 											<span>&nbsp;</span>
-											<input type="text" class="form-control form-control-sm col-sm ig-mrgn" style="margin-left: 5px;">
+											<input type="text" class="form-control form-control-sm col-sm ig-mrgn" style="margin-left: 5px;" appRequired>
 										</div>
 									</div>
 								</div>
@@ -86,23 +86,23 @@
 									<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 										<div class="input-group ig-cust" style="margin-top: 10px;">
 											<label class="form-control-sm col-sm-4">Quote Date</label>
-											<input type="date" [(ngModel)]="quotationGenInfo.quoteDate" class="form-control form-control-sm">
+											<input type="date" [(ngModel)]="quotationGenInfo.quoteDate" class="form-control form-control-sm" appRequired>
 										</div>
 										<div class="input-group ig-cust">
 											<label class="form-control-sm col-sm-4">Valid Until</label>
-											<input type="date" [(ngModel)]="quotationGenInfo.validUntil" class="form-control form-control-sm">
+											<input type="date" [(ngModel)]="quotationGenInfo.validUntil" class="form-control form-control-sm" appRequired>
 										</div>
 										<div class="input-group ig-cust">
 											<label class="form-control-sm col-sm-4">Requested By</label>
-											<input type="text" class="form-control form-control-sm">
+											<input type="text" class="form-control form-control-sm" appRequired>
 										</div>
 										<div class="input-group ig-cust">
 											<label class="form-control-sm col-sm-4">Request Date</label>
-											<input type="text" class="form-control form-control-sm">
+											<input type="text" class="form-control form-control-sm" appRequired>
 										</div>
 										<div class="input-group ig-cust">
 											<label class="form-control-sm col-sm-4">Request Mode</label>
-											<select class="form-control form-control-sm cust-sm">
+											<select class="form-control form-control-sm cust-sm" appRequired>
 												<option value=""></option>
 												<option value="USD">Value 1</option>
 												<option value="PHP">Value 2</option>
@@ -110,7 +110,7 @@
 										</div>
 										<div *ngIf="quotationService.toGenInfo[1] === 'MLP' || quotationService.toGenInfo[1] === 'DOS'" class="input-group ig-cust">
 											<label class="form-control-sm col-sm-4">MBI Ref No</label>
-											<input type="text" class="form-control form-control-sm">
+											<input type="text" class="form-control form-control-sm" appRequired>
 										</div>
 									</div>
 								</div>
@@ -129,7 +129,7 @@
 							<div class="form-group col-sm-6 offsetFormGroup">
 								<div class="input-group">
 									<label class="form-control-sm col-sm-4">Currency</label>
-									<input type="text" class="form-control form-control-sm">
+									<input type="text" class="form-control form-control-sm" appRequired>
 									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 									<span>&nbsp;</span>
 								</div>
@@ -137,7 +137,7 @@
 							<div class="form-group col-sm-6 offsetFormGroup">
 								<div class="input-group">
 									<label class="form-control-sm col-sm-4">Exch. Rt.</label>
-									<input type="text" class="form-control form-control-sm">
+									<input type="text" class="form-control form-control-sm" appRequired>
 									<span>&nbsp;</span>
 								</div>
 							</div>
@@ -157,7 +157,7 @@
 											<input type="checkbox">
 										</div>
 									</div>
-									<input type="text" style="font-size: 11px !important;" value="Government" disabled class="form-control form-control-sm">
+									<input type="text" style="font-size: 11px !important;" value="Government" disabled class="form-control form-control-sm" appRequired>
 								</div>
 							</div>
 							<div class="col-sm-6">
@@ -167,7 +167,7 @@
 											<input type="checkbox">
 										</div>
 									</div>
-									<input type="text" style="font-size: 11px !important;" value="Indicative" disabled class="form-control form-control-sm">
+									<input type="text" style="font-size: 11px !important;" value="Indicative" disabled class="form-control form-control-sm" appRequired>
 								</div>
 							</div>
 						</div>
@@ -179,7 +179,7 @@
 											<input type="checkbox">
 										</div>
 									</div>
-									<input type="text" style="font-size: 11px !important;" value="Open Cover" disabled class="form-control form-control-sm">
+									<input type="text" style="font-size: 11px !important;" value="Open Cover" disabled class="form-control form-control-sm" appRequired>
 								</div>
 							</div>
 							<div class="col-sm-6">
@@ -189,7 +189,7 @@
 											<input type="checkbox">
 										</div>
 									</div>
-									<input type="text" style="font-size: 11px !important;" value="Declaration" disabled class="form-control form-control-sm">
+									<input type="text" style="font-size: 11px !important;" value="Declaration" disabled class="form-control form-control-sm" appRequired	>
 								</div>
 							</div>
 						</div>
@@ -211,38 +211,38 @@
 							<div class="form-row" style="margin-right: 0px;">
 								<div class="input-group ig-cust col-sm-6" style="margin-top: 10px;">
 									<label class="form-control-sm col-sm-2">Principal</label>
-									<input type="text" class="form-control form-control-sm col-sm-2">
+									<input type="text" class="form-control form-control-sm col-sm-2" appRequired>
 									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 									<span>&nbsp;</span>
-									<input type="text" [(ngModel)]="quotationGenInfo.principal" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;">
+									<input type="text" [(ngModel)]="quotationGenInfo.principal" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;" appRequired>
 								</div>
 								<div class="input-group ig-cust col-sm-6" style="margin-top: 10px;">
 									<label class="form-control-sm col-sm-2">Contractor</label>
-									<input type="text" class="form-control form-control-sm col-sm-2">
+									<input type="text" class="form-control form-control-sm col-sm-2" appRequired>
 									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 									<span>&nbsp;</span>
-									<input type="text" [(ngModel)]="quotationGenInfo.contractor" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 2px !important;">
+									<input type="text" [(ngModel)]="quotationGenInfo.contractor" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 2px !important;" appRequired>
 								</div>
 							</div>
 							<div class="form-row" style="margin-right: 0px;">
 								<div class="input-group col-sm-12">
 									<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Insured</label>
-									<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;"></textarea>
+									<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;" appRequired></textarea>
 								</div>
 							</div>
 							<div class="form-row" style="margin-right: 0px;">
 								<div class="input-group ig-cust col-sm-12">
 									<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Risk</label>
-									<input type="text" class="form-control form-control-sm">
+									<input type="text" class="form-control form-control-sm" appRequired>
 								</div>
 							</div>
 							<div class="form-row" style="margin-right: 0px;">
 								<div class="input-group ig-cust col-sm-6">
 									<label class="form-control-sm col-sm-2">Object</label>
-									<input type="text" class="form-control form-control-sm col-sm-2">
+									<input type="text" class="form-control form-control-sm col-sm-2" appRequired>
 									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 									<span>&nbsp;</span>
-									<input type="text" [(ngModel)]="quotationGenInfo.object" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;">
+									<input type="text" [(ngModel)]="quotationGenInfo.object" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;" appRequired>
 								</div>
 								<div class="input-group ig-cust col-sm-6">
 									<label class="form-control-sm col-sm-2">Region</label>
@@ -252,7 +252,7 @@
 							<div class="form-row" style="margin-right: 0px;">
 								<div class="input-group col-sm-6" style="margin-bottom: -8px !important;">
 									<label class="form-control-sm col-sm-2">Nature of Work</label>
-									<textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;"></textarea>
+									<textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;" appRequired></textarea>
 								</div>
 								<div class="input-group col-sm-6">
 									<div class="input-group ig-cust">
@@ -288,7 +288,7 @@
 							<div class="form-row" style="margin-right: 0px; margin-top: -2px;">
 								<div class="input-group col-sm-6">
 									<label class="form-control-sm col-sm-2">Duration</label>
-									<input type="text" class="form-control form-control-sm">
+									<input type="text" class="form-control form-control-sm" appRequired>
 								</div>
 							</div>
 						</fieldset>
@@ -301,38 +301,38 @@
 							<div class="form-row" style="margin-right: 0px;">
 								<div class="input-group ig-cust col-sm-6" style="margin-top: 10px;">
 									<label class="form-control-sm col-sm-2">Principal</label>
-									<input type="text" class="form-control form-control-sm col-sm-2">
+									<input type="text" class="form-control form-control-sm col-sm-2" appRequired>
 									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 									<span>&nbsp;</span>
-									<input type="text" [(ngModel)]="quotationGenInfo.principal" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;">
+									<input type="text" [(ngModel)]="quotationGenInfo.principal" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;" appRequired>
 								</div>
 								<div class="input-group ig-cust col-sm-6" style="margin-top: 10px;">
 									<label class="form-control-sm col-sm-2">Contractor</label>
-									<input type="text" class="form-control form-control-sm col-sm-2">
+									<input type="text" class="form-control form-control-sm col-sm-2" appRequired>
 									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 									<span>&nbsp;</span>
-									<input type="text" [(ngModel)]="quotationGenInfo.contractor" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 2px !important;">
+									<input type="text" [(ngModel)]="quotationGenInfo.contractor" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 2px !important;" appRequired>
 								</div>
 							</div>
 							<div class="form-row" style="margin-right: 0px;">
 								<div class="input-group col-sm-12">
 									<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Insured</label>
-									<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;"></textarea>
+									<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;" appRequired></textarea>
 								</div>
 							</div>
 							<div class="form-row" style="margin-right: 0px;">
 								<div class="input-group ig-cust col-sm-12">
 									<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Risk</label>
-									<input type="text" class="form-control form-control-sm">
+									<input type="text" class="form-control form-control-sm" appRequired>
 								</div>
 							</div>
 							<div class="form-row" style="margin-right: 0px;">
 								<div class="input-group ig-cust col-sm-6">
 									<label class="form-control-sm col-sm-2">Object</label>
-									<input type="text" class="form-control form-control-sm col-sm-2">
+									<input type="text" class="form-control form-control-sm col-sm-2" appRequired>
 									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 									<span>&nbsp;</span>
-									<input type="text" [(ngModel)]="quotationGenInfo.object" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;">
+									<input type="text" [(ngModel)]="quotationGenInfo.object" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;" appRequired>
 								</div>
 								<div class="input-group ig-cust col-sm-6">
 									<label class="form-control-sm col-sm-2">Region</label>
@@ -342,7 +342,7 @@
 							<div class="form-row" style="margin-right: 0px;">
 								<div class="input-group col-sm-6" style="margin-bottom: -8px !important;">
 									<label class="form-control-sm col-sm-2">Nature of Work</label>
-									<textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;"></textarea>
+									<textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;" appRequired></textarea>
 								</div>
 								<div class="input-group col-sm-6">
 									<div class="input-group ig-cust">
@@ -378,11 +378,11 @@
 							<div class="form-row" style="margin-right: 0px; margin-top: -2px;">
 								<div class="input-group col-sm-6">
 									<label class="form-control-sm col-sm-2">Duration</label>
-									<input type="text" class="form-control form-control-sm">
+									<input type="text" class="form-control form-control-sm" appRequired>
 								</div>
 								<div class="input-group col-sm-6">
 									<label class="form-control-sm col-sm-2">Testing</label>
-									<input type="text" class="form-control form-control-sm">
+									<input type="text" class="form-control form-control-sm" appRequired>
 								</div>
 							</div>
 						</fieldset>
@@ -488,10 +488,10 @@
 							<div class="form-row" style="margin-right: 0px;">
 								<div class="input-group ig-cust col-sm-12" style="margin-top: 10px;">
 									<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Insured</label>
-									<input type="text" class="form-control form-control-sm col-sm-1">
+									<input type="text" class="form-control form-control-sm col-sm-1" appRequired>
 									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 									<span>&nbsp;</span>
-									<input type="text" [(ngModel)]="quotationGenInfo.principal" class="form-control form-control-sm col-sm-10 ig-mrgn" style="margin-left: 3px !important;">
+									<input type="text" [(ngModel)]="quotationGenInfo.principal" class="form-control form-control-sm col-sm-10 ig-mrgn" style="margin-left: 3px !important;" appRequired>
 								</div>
 							</div>
 							<div class="form-row" style="margin-right: 0px;">
@@ -503,16 +503,16 @@
 							<div class="form-row" style="margin-right: 0px;">
 								<div class="input-group ig-cust col-sm-12">
 									<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Risk</label>
-									<input type="text" class="form-control form-control-sm">
+									<input type="text" class="form-control form-control-sm" appRequired>
 								</div>
 							</div>
 							<div class="form-row" style="margin-right: 0px;">
 								<div class="input-group ig-cust col-sm-6">
 									<label class="form-control-sm col-sm-2">Object</label>
-									<input type="text" class="form-control form-control-sm col-sm-2">
+									<input type="text" class="form-control form-control-sm col-sm-2" appRequired>
 									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 									<span>&nbsp;</span>
-									<input type="text" [(ngModel)]="quotationGenInfo.object" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;">
+									<input type="text" [(ngModel)]="quotationGenInfo.object" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;" appRequired>
 								</div>
 								<div class="input-group ig-cust col-sm-6">
 									<label class="form-control-sm col-sm-2">Region</label>
@@ -522,7 +522,7 @@
 							<div class="form-row" style="margin-right: 0px;">
 								<div class="input-group col-sm-6" style="margin-bottom: -8px !important;">
 									<label class="form-control-sm col-sm-2">Items<br/>to be Insured</label>
-									<textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;"></textarea>
+									<textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;" appRequired></textarea>
 								</div>
 								<div class="input-group col-sm-6">
 									<div class="input-group ig-cust">
@@ -647,10 +647,10 @@
 							<div class="form-row" style="margin-right: 0px;">
 								<div class="input-group ig-cust col-sm-12" style="margin-top: 10px;">
 									<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Insured</label>
-									<input type="text" class="form-control form-control-sm col-sm-1">
+									<input type="text" class="form-control form-control-sm col-sm-1" appRequired>
 									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 									<span>&nbsp;</span>
-									<input type="text" [(ngModel)]="quotationGenInfo.principal" class="form-control form-control-sm col-sm-10 ig-mrgn" style="margin-left: 3px !important;">
+									<input type="text" [(ngModel)]="quotationGenInfo.principal" class="form-control form-control-sm col-sm-10 ig-mrgn" style="margin-left: 3px !important;" appRequired>
 								</div>
 							</div>
 							<div class="form-row" style="margin-right: 0px;">
@@ -662,16 +662,16 @@
 							<div class="form-row" style="margin-right: 0px;">
 								<div class="input-group ig-cust col-sm-12">
 									<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Risk</label>
-									<input type="text" class="form-control form-control-sm">
+									<input type="text" class="form-control form-control-sm" appRequired>
 								</div>
 							</div>
 							<div class="form-row" style="margin-right: 0px;">
 								<div class="input-group ig-cust col-sm-6">
 									<label class="form-control-sm col-sm-2">Object</label>
-									<input type="text" class="form-control form-control-sm col-sm-2">
+									<input type="text" class="form-control form-control-sm col-sm-2" appRequired>
 									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 									<span>&nbsp;</span>
-									<input type="text" [(ngModel)]="quotationGenInfo.object" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;">
+									<input type="text" [(ngModel)]="quotationGenInfo.object" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;" appRequired>
 								</div>
 								<div class="input-group ig-cust col-sm-6">
 									<label class="form-control-sm col-sm-2">Region</label>
@@ -681,7 +681,7 @@
 							<div class="form-row" style="margin-right: 0px;">
 								<div class="input-group col-sm-6" style="margin-bottom: -8px !important;">
 									<label class="form-control-sm col-sm-2">Items<br/>to be Insured</label>
-									<textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;"></textarea>
+									<textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;" appRequired></textarea>
 								</div>
 								<div class="input-group col-sm-6">
 									<div class="input-group ig-cust">
@@ -791,10 +791,10 @@
 							<div class="form-row" style="margin-right: 0px;">
 								<div class="input-group ig-cust col-sm-12" style="margin-top: 10px;">
 									<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Insured</label>
-									<input type="text" class="form-control form-control-sm col-sm-1">
+									<input type="text" class="form-control form-control-sm col-sm-1" appRequired>
 									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 									<span>&nbsp;</span>
-									<input type="text" [(ngModel)]="quotationGenInfo.principal" class="form-control form-control-sm col-sm-10 ig-mrgn" style="margin-left: 3px !important;">
+									<input type="text" [(ngModel)]="quotationGenInfo.principal" class="form-control form-control-sm col-sm-10 ig-mrgn" style="margin-left: 3px !important;" appRequired>
 								</div>
 							</div>
 							<div class="form-row" style="margin-right: 0px;">
@@ -806,16 +806,16 @@
 							<div class="form-row" style="margin-right: 0px;">
 								<div class="input-group ig-cust col-sm-12">
 									<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Risk</label>
-									<input type="text" class="form-control form-control-sm">
+									<input type="text" class="form-control form-control-sm" appRequired>
 								</div>
 							</div>
 							<div class="form-row" style="margin-right: 0px;">
 								<div class="input-group ig-cust col-sm-6">
 									<label class="form-control-sm col-sm-2">Object</label>
-									<input type="text" class="form-control form-control-sm col-sm-2">
+									<input type="text" class="form-control form-control-sm col-sm-2" appRequired>
 									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 									<span>&nbsp;</span>
-									<input type="text" [(ngModel)]="quotationGenInfo.object" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;">
+									<input type="text" [(ngModel)]="quotationGenInfo.object" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;" appRequired>
 								</div>
 								<div class="input-group ig-cust col-sm-6">
 									<label class="form-control-sm col-sm-2">Region</label>
@@ -825,7 +825,7 @@
 							<div class="form-row" style="margin-right: 0px;">
 								<div class="input-group col-sm-6" style="margin-bottom: -8px !important;">
 									<label class="form-control-sm col-sm-2">Items<br/>to be Insured</label>
-									<textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;"></textarea>
+									<textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;" appRequired></textarea>
 								</div>
 								<div class="input-group col-sm-6">
 									<div class="input-group ig-cust">
@@ -852,7 +852,7 @@
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">IPL</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" >
 										<label class="form-control-sm col-sm-2">Time Exc</label>
 										<input type="text" class="form-control form-control-sm">
 									</div>
@@ -952,10 +952,10 @@
 							<div class="form-row" style="margin-right: 0px;">
 								<div class="input-group ig-cust col-sm-12" style="margin-top: 10px;">
 									<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Insured</label>
-									<input type="text" class="form-control form-control-sm col-sm-1">
+									<input type="text" class="form-control form-control-sm col-sm-1" appRequired>
 									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 									<span>&nbsp;</span>
-									<input type="text" [(ngModel)]="quotationGenInfo.principal" class="form-control form-control-sm col-sm-10 ig-mrgn" style="margin-left: 3px !important;">
+									<input type="text" [(ngModel)]="quotationGenInfo.principal" class="form-control form-control-sm col-sm-10 ig-mrgn" style="margin-left: 3px !important;" appRequired>
 								</div>
 							</div>
 							<div class="form-row" style="margin-right: 0px;">
@@ -967,16 +967,16 @@
 							<div class="form-row" style="margin-right: 0px;">
 								<div class="input-group ig-cust col-sm-12">
 									<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Risk</label>
-									<input type="text" class="form-control form-control-sm">
+									<input type="text" class="form-control form-control-sm" appRequired>
 								</div>
 							</div>
 							<div class="form-row" style="margin-right: 0px;">
 								<div class="input-group ig-cust col-sm-6">
 									<label class="form-control-sm col-sm-2">Object</label>
-									<input type="text" class="form-control form-control-sm col-sm-2">
+									<input type="text" class="form-control form-control-sm col-sm-2" appRequired>
 									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 									<span>&nbsp;</span>
-									<input type="text" [(ngModel)]="quotationGenInfo.object" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;">
+									<input type="text" [(ngModel)]="quotationGenInfo.object" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;" appRequired>
 								</div>
 								<div class="input-group ig-cust col-sm-6">
 									<label class="form-control-sm col-sm-2">Region</label>
@@ -986,7 +986,7 @@
 							<div class="form-row" style="margin-right: 0px;">
 								<div class="input-group col-sm-6" style="margin-bottom: -8px !important;">
 									<label class="form-control-sm col-sm-2">Items<br/>to be Insured</label>
-									<textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;"></textarea>
+									<textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;" appRequired></textarea>
 								</div>
 								<div class="input-group col-sm-6">
 									<div class="input-group ig-cust">
@@ -1113,12 +1113,12 @@
 							<label for="inputEmail4" class="form-control-sm top-label col-sm-6" style="text-align: left !important; padding-left: 7px !important;">Closing Paragraph</label>
 						</div>
 						<div class="input-group" style="margin-top: 2px;">
-							<textarea style="font-size: 12px; margin-bottom: 38px;" class="form-control form-control-sm col-sm-6"></textarea>	
+							<textarea style="font-size: 12px; margin-bottom: 38px;" class="form-control form-control-sm col-sm-6" appRequired></textarea>	
 							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 							<span>&nbsp;</span>
 							<div class="text-search-ico"><a><i class="fa fa-file-text" style="margin-top: 22px !important;"></i></a></div>
 
-							<textarea style="font-size: 12px; margin-bottom: 38px; margin-left: 10px !important;" class="form-control form-control-sm col-sm-6"></textarea>	
+							<textarea style="font-size: 12px; margin-bottom: 38px; margin-left: 10px !important;" class="form-control form-control-sm col-sm-6" appRequired></textarea>	
 							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 							<span>&nbsp;</span>
 							<div class="text-search-ico"><a><i class="fa fa-file-text" style="margin-top: 22px !important;"></i></a></div>
@@ -1140,7 +1140,7 @@
 					<div class="form-row ig-cust">
 						<div class="form-group col-sm">
 							<label class="form-control-sm top-label">Total Sl</label>
-							<input appCurrency type="text" class="form-control form-control-sm" ngbTooltip="''">
+							<input appCurrency type="text" class="form-control form-control-sm">
 						</div>
 					</div>
 					<div class="form-row" style="margin-bottom: -16px; margin-top: -10px;">
@@ -1183,21 +1183,21 @@
 					<div class="form-row">
 						<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -10px; margin-left: 3px;">
 							<label class="form-control-sm top-label">Created By</label>
-							<input type="text" class="form-control form-control-sm cust-sm">
+							<input type="text" class="form-control form-control-sm cust-sm" appRequired>
 						</div>
 						<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -10px; margin-left: -5px;">
 							<label class="form-control-sm top-label">Last Update By</label>
-							<input type="text" class="form-control form-control-sm cust-sm">
+							<input type="text" class="form-control form-control-sm cust-sm" appRequired>
 						</div>
 					</div>
 					<div class="form-row">
 						<div class="form-group col-sm-6" style="margin-bottom: 8px; margin-left: 3px;">
 							<label class="form-control-sm top-label">Date Created</label>
-							<input type="date" class="form-control form-control-sm cust-sm">
+							<input type="date" class="form-control form-control-sm cust-sm" appRequired>
 						</div>
 						<div class="form-group col-sm-6" style="margin-bottom: 8px; margin-left: -5px;">
 							<label class="form-control-sm top-label">Last Update</label>
-							<input type="date" class="form-control form-control-sm cust-sm">
+							<input type="date" class="form-control form-control-sm cust-sm" appRequired>
 						</div>
 					</div>
 				</div>

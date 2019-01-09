@@ -21,20 +21,20 @@
 				<div class="form-row custom-row-inline-inset" style="margin-right: 9px; margin-top: 11px !important;">
 					<div class="input-group">
 						<label class="form-control-sm col-sm-2 text-right" for="xx">Insured</label>
-						<input class="form-control form-control-sm  col-sm-2" type="text" name="" [(ngModel)]="aLOPInfo.insured1">
+						<input class="form-control form-control-sm  col-sm-2" type="text" name="" [(ngModel)]="aLOPInfo.insured1" appRequired>
 						<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>&nbsp;
-						<input class="form-control form-control-sm  col-sm" type="text" name="" [(ngModel)]="aLOPInfo.insured2" style="margin-left: -7px;">
+						<input class="form-control form-control-sm  col-sm" type="text" name="" [(ngModel)]="aLOPInfo.insured2" style="margin-left: -7px;" appRequired>
 					</div>
 
 					<div class="input-group textarea" style="padding-bottom: 7px;">
 						<label class="form-control-sm col-sm-2"></label>
-						<textarea class="form-control form-control-sm col-sm" rows="2" [(ngModel)]="aLOPInfo.address1"></textarea>
+						<textarea class="form-control form-control-sm col-sm" rows="2" [(ngModel)]="aLOPInfo.address1" appRequired></textarea>
 						<br>
 					</div>
 
 					<div class="input-group">
 						<label class="form-control-sm col-sm-2 text-right" for="xx">Address</label>
-						<input class="form-control form-control-sm  col-sm" type="text" name="" [(ngModel)]="aLOPInfo.address2">
+						<input class="form-control form-control-sm  col-sm" type="text" name="" [(ngModel)]="aLOPInfo.address2" appRequired>
 					</div>
 					
 				</div>
@@ -48,7 +48,7 @@
 					</div>
 
 					<div class="input-group textarea">
-						<textarea class="form-control form-control-sm col-sm-12" rows="3" style="height: 83% !important;" [(ngModel)]="aLOPInfo.business"></textarea>
+						<textarea class="form-control form-control-sm col-sm-12" rows="3" style="height: 83% !important;" [(ngModel)]="aLOPInfo.business" appRequired></textarea>
 					</div>
 				</div>
 			</fieldset>
@@ -64,12 +64,12 @@
 			<div class="input-group">
 				<label class="col-sm-4"></label>
 				<label class=" form-control-sm col-sm-2" for="annSumInsured">Annual Sum Insured</label>
-				<input class="form-control form-control-sm  col-sm-4" type="text" id="annSumInsured" [(ngModel)]="aLOPInfo.amountSI">
+				<input class="form-control form-control-sm  col-sm-4" type="text" id="annSumInsured" [(ngModel)]="aLOPInfo.amountSI" appRequired appCurrency>
 			</div>
 			<div class="input-group" style="padding-bottom: 0.9%;">
 				<label class="col-sm-4"></label>
 				<label class="form-control-sm col-sm-2 text-left" for="sumInsForMaxIndem">Sum Insured for Maximum Indemnity Period</label>
-				<input class="form-control form-control-sm  col-sm-4" type="text" id="sumInsForMaxIndem" [(ngModel)]="aLOPInfo.maxSI">
+				<input class="form-control form-control-sm  col-sm-4" type="text" id="sumInsForMaxIndem" [(ngModel)]="aLOPInfo.maxSI" appRequired appCurrency>
 			</div>
 		</div>
 	</fieldset>
@@ -79,9 +79,9 @@
 		<div class="form-row custom-row-inline-inset" style="margin-top: 12px !important;">
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" for="periodFrom">Period of Insurance from</label>
-				<input class="form-control form-control-sm  col-sm-2" type="date" id="periodFrom" [(ngModel)]="aLOPInfo.fromDate">
+				<input class="form-control form-control-sm  col-sm-2" type="date" id="periodFrom" [(ngModel)]="aLOPInfo.fromDate" appRequired>
 				<label class="form-control-sm col-sm-1" style="margin-left: -5.19%;" for="periodTo" >to</label>
-				<input class="form-control form-control-sm  col-sm-2" type="date" id="periodTo" [(ngModel)]="aLOPInfo.toDate">
+				<input class="form-control form-control-sm  col-sm-2" type="date" id="periodTo" [(ngModel)]="aLOPInfo.toDate" appRequired>
 				<label class="form-control-sm col-sm-2 text-left" >(Scheduled Date of Completion)</label>
 
 			</div>
@@ -92,11 +92,11 @@
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" for="fromIndem">from</label>
-				<input class="form-control form-control-sm  col-sm-2" type="date" id="fromIndem" [(ngModel)]="aLOPInfo.fromDatePeriod">
+				<input class="form-control form-control-sm  col-sm-2" type="date" id="fromIndem" [(ngModel)]="aLOPInfo.fromDatePeriod" appRequired>
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" for="timeExcess">Time Excess</label>
-				<input class="form-control form-control-sm  col-sm-6" type="text" id="fromIndem" [(ngModel)]="aLOPInfo.timeExcess">
+				<input class="form-control form-control-sm  col-sm-6" type="text" id="fromIndem" [(ngModel)]="aLOPInfo.timeExcess" appRequired>
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" for="interval">Progress reports to be presented at intervals of</label>
