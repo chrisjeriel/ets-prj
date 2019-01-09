@@ -15,8 +15,8 @@ export class PolDistListComponent implements OnInit {
 
     passData: any = {
         tHeader: [
-            "Dist No.", "Risk Dist No.", "Status", "Policy No.",
-            "Ceding Company", "Insured", "Risk", "Accounting Date"
+            "Dist No.", "Risk Dist No.", "Status","Line", "Policy No.",
+            "Ceding Company", "Insured", "Risk","Currency","Sum Insured","Distribution Date", "Accounting Date"
         ],
         filters: [
            {
@@ -61,10 +61,10 @@ export class PolDistListComponent implements OnInit {
             },
         ],
         resizable: [
-            false, false, true, false, true, true, true, false,
+            false, false, true,false, false, true, true, true,false,true,false, false,
         ],
         dataTypes: [
-            "text", "text", "text", "text", "text", "text", "text", "date"
+            "text", "text", "text","text", "text", "text", "text", "text","text","currency","date", "date"
         ],
         tableData: this.underwritingService.getPolicyDistListInfo(),
         pageLength: 10,
