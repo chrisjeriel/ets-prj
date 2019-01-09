@@ -10,14 +10,7 @@ import { Router } from '@angular/router';
 })
 export class ClmClaimProcessingComponent implements OnInit {
   tableData: any[] = [
-    ["0001", "Claimed", "CAR-2018-000002-021-0192-000", "CPI", "5K Builders & ABE international", "ABC Building", "01/01/2019", "data"],
-    ["0002", "Claimed", "EAR-2018-000002-021-0192-000", "CPI", "5K Builders & ABE international", "ABC Building", "01/01/2019", "data"],
-    ["0003", "Claimed", "DOS-2018-000002-021-0192-000", "CPI", "5K Builders & ABE international", "ABC Building", "01/01/2019", "data"],
-    ["0004", "Claimed", "CEC-2018-000002-021-0192-000", "CPI", "5K Builders & ABE international", "ABC Building", "01/01/2019", "data"],
-    ["0005", "Claimed", "EEI-2018-000002-021-0192-000", "CPI", "5K Builders & ABE international", "ABC Building", "01/01/2019", "data"],
-    ["0006", "Claimed", "BPV-2018-000002-021-0192-000", "CPI", "5K Builders & ABE international", "ABC Building", "01/01/2019", "data"],
-    ["0007", "Claimed", "MBI-2018-000002-021-0192-000", "CPI", "5K Builders & ABE international", "ABC Building", "01/01/2019", "data"],
-    ["0008", "Claimed", "MLP-2018-000002-021-0192-000", "CPI", "5K Builders & ABE international", "ABC Building", "01/01/2019", "data"],
+    ["CAR-2018-00013", "In Progress", "CAR-2018-00001-099-0001-000", "ASIA INSURANCE (PHILIPPINES) CORP", "Cornerdot Contructions / Solid Builders Corp", "C-National Steel/Iligan City", "03/09/2018", "Damaged electricl cables and supply line on 2nd", "PHP", "1,000,000.00", "330,000.00", "TLP Adj./ ACD Co Inc.", "CLETC"],
 
   ];
   //tableDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
@@ -55,8 +48,12 @@ export class ClmClaimProcessingComponent implements OnInit {
   ngOnInit() {
     this.titleService.setTitle("Clm | Claim Processing");
 
-    this.passData.tHeader.push("Claim No", "Status", "Policy No", "Ceding Company", "Insured", "Risk", "Loss Date", "In House Adj");
-    this.passData.widths.push("1", "auto", "auto", "1", "auto", "auto", "auto", "1");
+    this.passData.tHeader.push("Claim No", "Status", "Policy No", "Ceding Company", "Insured",
+      "Risk", "Loss Date", "Loss Details", "Currency", "Total Reserve", "Total Payment", "Adjusters",
+      "Processed By");
+    this.passData.widths.push("auto", "auto", "auto", "auto", "auto",
+      "auto", "auto", "auto", "auto", "auto",
+      "auto", "auto", "auto");
     this.passData.tableData = this.tableData;
   }
   navigateToGenInfo() {

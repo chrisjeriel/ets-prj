@@ -209,7 +209,8 @@ import { MonthDirective } from './_directives/month.directive';
         CharactersLengthDirective,
         RequiredDirective,
         CurrencyDirective,
-        MonthDirective
+        MonthDirective,
+        NumbersOnlyDirective
     ],
 
     providers: [
