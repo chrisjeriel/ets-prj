@@ -37,7 +37,8 @@ import { ClmGenInfoClaimComponent } from './claims/claim/clm-claim-processing/cl
 import { ClaimComponent } from './claims/claim/claim.component';
 import { PaymentRequestsComponent } from './claims/payment-requests/payment-requests.component';
 import { NegateDistributionComponent } from './underwriting/policy-distribution/negate-distribution/negate-distribution.component';
-import { DummyComponent2 } from './_components/common/dummy2/dummy2.component'
+import { DummyComponent2 } from './_components/common/dummy2/dummy2.component';
+import { PolMxLineComponent } from './underwriting/policy-maintenance/pol-mx-line/pol-mx-line.component';
 
 
 const appRoutes: Routes = [
@@ -83,6 +84,7 @@ const appRoutes: Routes = [
     { path: 'open-cover', component: OpenCoverComponent },
     { path: 'payment-request', component: PaymentRequestsComponent },
     { path: 'negate-distribution', component: NegateDistributionComponent },
+    { path: 'maintenance-line', component: PolMxLineComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

@@ -311,7 +311,7 @@
       </fieldset>
     </div> -->
     <div class="cust-sm col-sm-6" style="padding-left: 0px;">
-      <fieldset class="scheduler-border">
+      <fieldset class="scheduler-border" style="padding-right: 0px !important; padding-top: 10px !important;">
        <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
        <div class="cust-sm">
          <div class="cust-sm col-sm-1"></div>
@@ -321,20 +321,15 @@
           </div>
           <div class="input-group" style="margin-top: -5px;">
            <label class="form-control-sm col-sm-1">Remarks</label>
-           <!-- <textarea class="form-control-sm form-control" style="font-size: 11px; min-height: 61px; margin-bottom: 10px; margin-left: 8px"></textarea> -->
            <div class="form-control-sm col-sm" style="height: 60px; margin-bottom: 10px;">
-             <!-- <quill-editor [class]="preC" [ngModel]="textArea" (ngModelChange)="textArea = $event" [style]="{height: '100%', width: '100%', font: '11px arial'}" [modules]="{toolbar: false}" [readOnly]="false" [sanitize]="false"></quill-editor> -->
              <text-editor [editorContent]="textArea"></text-editor>
            </div>
-           <!-- <div class="text-search-ico"><a><i class="fa fa-pencil" (click)="showTextEditorModal(content)"></i></a></div>&nbsp; -->
          </div>
        </div>
      </div>
    </fieldset>
  </div>
 </div>
-
-
 
 <div class="form-row">
   <div class="form-group col-sm">
@@ -353,63 +348,10 @@
   <div body style=" margin-top: -33px !important;">
    <app-cust-editable-non-datatable [passData]="passDataCATPerils"></app-cust-editable-non-datatable>
  </div>                
- <div footer style="margin-right: 170px !important;">
+ <div footer class="d-flex justify-content-center" style="width: 100% !important;">
   <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
   <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Save</a></button>
 </div>
 </app-modal>
 </div>
 </ng-container>
-
-<!-- <ng-template #content>
-  <div class="modal-header">
-    <span class="modal-title" id="modal-basic-title">Text Editor</span>
-    <div class="close" style="padding-bottom: 5px;">
-      <a class="btn-cust" aria-label="Close" (click)="modalService.dismissAll();" aria-hidden="true" ><span style="padding-right: 3px;" id="closes">&times;&nbsp;&nbsp;</span></a>
-    </div>
-  </div>
-  <div class="modal-body">
-    <quill-editor [class]="preC" [ngModel]="textArea" (ngModelChange)="textArea = $event" [style]="{height: '300px', width: '900px', font: '11px arial'}" [modules]="{toolbar: true}" [sanitize]="false"></quill-editor> 
-  </div>
-  <div class="modal-footer">
-    <div>
-      <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
-    </div>
-  </div>
-</ng-template> -->
-
-<!-- <div contenteditable="true" [innerHTML]="textArea | safeText: 'html'" style="border: 1px solid;"> -->
-
-  <!-- </div> -->
-  <!-- <br />[(ngModel)]="textArea"
-  <quill-editor [ngModel]="textArea"></quill-editor>
-  <br /> -->
-
-
-   <!-- <div class="input-group" style="margin-left: -15px !important">
-              <label class="form-control-sm col-sm-3">Section I</label>
-              <input type="text" class="form-control form-control-sm col-sm-3" disabled="true">
-              &nbsp;
-              <input type="text" class="form-control form-control-sm col-sm-3">
-              &nbsp;
-              <input type="text" class="form-control form-control-sm col-sm-3" disabled="true">
-              &nbsp;
-            </div>
-            <div class="input-group" style="margin-left: -15px !important">
-              <label class="form-control-sm col-sm-3">Section II</label>
-              <input type="text" class="form-control form-control-sm col-sm-3" disabled="true">
-              &nbsp;
-              <input type="text" class="form-control form-control-sm col-sm-3">
-              &nbsp;
-              <input type="text" class="form-control form-control-sm col-sm-3"  disabled="true">
-              &nbsp;
-            </div>
-            <div class="input-group" style="margin-left: -15px !important">
-              <label class="form-control-sm col-sm-3">Section III</label>
-              <input type="text" class="form-control form-control-sm col-sm-3" disabled="true">
-              &nbsp;
-              <input type="text" class="form-control form-control-sm col-sm-3">
-              &nbsp;
-              <input type="text" class="form-control form-control-sm col-sm-3"  disabled="true">
-              &nbsp;
-            </div> -->

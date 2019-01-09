@@ -103,6 +103,7 @@ import { CharactersLengthDirective } from './_directives/characters-length.direc
 import { RequiredDirective } from './_directives/required.directive';
 import { CurrencyDirective } from './_directives/currency.directive';
 import { MonthDirective } from './_directives/month.directive';
+import { PolMxLineComponent } from './underwriting/policy-maintenance/pol-mx-line/pol-mx-line.component';
 
 
 @NgModule({
@@ -209,7 +210,8 @@ import { MonthDirective } from './_directives/month.directive';
         CharactersLengthDirective,
         RequiredDirective,
         CurrencyDirective,
-        MonthDirective
+        MonthDirective,
+        PolMxLineComponent
     ],
 
     providers: [
