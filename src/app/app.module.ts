@@ -104,6 +104,7 @@ import { RequiredDirective } from './_directives/required.directive';
 import { CurrencyDirective } from './_directives/currency.directive';
 import { MonthDirective } from './_directives/month.directive';
 import { PolMxLineComponent } from './underwriting/policy-maintenance/pol-mx-line/pol-mx-line.component';
+import { ClmSectionCoversComponent } from './claims/claim/clm-claim-processing/clm-section-covers/clm-section-covers.component';
 
 
 @NgModule({
@@ -211,7 +212,8 @@ import { PolMxLineComponent } from './underwriting/policy-maintenance/pol-mx-lin
         RequiredDirective,
         CurrencyDirective,
         MonthDirective,
-        PolMxLineComponent
+        PolMxLineComponent,
+        ClmSectionCoversComponent
     ],
 
     providers: [

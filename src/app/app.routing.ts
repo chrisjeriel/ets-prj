@@ -40,7 +40,6 @@ import { NegateDistributionComponent } from './underwriting/policy-distribution/
 import { DummyComponent2 } from './_components/common/dummy2/dummy2.component';
 import { PolMxLineComponent } from './underwriting/policy-maintenance/pol-mx-line/pol-mx-line.component';
 
-
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
     { path: 'quotation', component: QuotationComponent, canActivate: [AuthGuard] },
