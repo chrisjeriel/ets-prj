@@ -86,7 +86,7 @@ export class HoldCoverMonitoringListComponent implements OnInit {
 
         ],
         pageLength: 10,
-        expireFilter: true, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, pagination: true, pageStatus: true
+        expireFilter: true, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: true, pagination: true, pageStatus: true
     }
 
     ngOnInit() {

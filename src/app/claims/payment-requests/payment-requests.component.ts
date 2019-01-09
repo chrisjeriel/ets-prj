@@ -70,7 +70,7 @@ export class PaymentRequestsComponent implements OnInit {
             },
         ],
         pageLength: 10,
-        expireFilter: false, checkFlag: true, tableOnly: false, fixedCol: false, printBtn: false, 
+        expireFilter: false, checkFlag: true, tableOnly: false, fixedCol: false, printBtn: false,pagination: true, pageStatus: true,
   }
 
    @ViewChild('confirmation') confirmation;

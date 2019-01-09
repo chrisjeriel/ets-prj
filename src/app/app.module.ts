@@ -102,6 +102,7 @@ import { CharactersLengthDirective } from './_directives/characters-length.direc
 import { RequiredDirective } from './_directives/required.directive';
 import { CurrencyDirective } from './_directives/currency.directive';
 import { PolBatchProcessingComponent } from './underwriting/policy-distribution/pol-batch-processing/pol-batch-processing.component';
+import { MonthDirective } from './_directives/month.directive';
 
 
 @NgModule({
@@ -207,7 +208,8 @@ import { PolBatchProcessingComponent } from './underwriting/policy-distribution/
         CharactersLengthDirective,
         RequiredDirective,
         CurrencyDirective,
-        PolBatchProcessingComponent
+        PolBatchProcessingComponent,
+        MonthDirective
     ],
 
     providers: [
