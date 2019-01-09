@@ -38,4 +38,5 @@ export * from './Risks';
 export * from './Claims-History';
 export * from './ClaimPaymentRequests';
 export * from './ClaimDistribution';
+export * from './MaintenanceDeductibles';
 

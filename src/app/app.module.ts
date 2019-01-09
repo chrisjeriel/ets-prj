@@ -101,6 +101,8 @@ import { ClaimDistributionComponent } from './claims/claim/claim-distribution/cl
 import { CharactersLengthDirective } from './_directives/characters-length.directive';
 import { RequiredDirective } from './_directives/required.directive';
 import { CurrencyDirective } from './_directives/currency.directive';
+import { DeductibleComponent } from './underwriting/maintenance/deductible/deductible.component';
+import { RiskListComponent } from './underwriting/maintenance/risk-list/risk-list.component';
 
 
 
@@ -206,7 +208,9 @@ import { CurrencyDirective } from './_directives/currency.directive';
         ClaimDistributionComponent,
         CharactersLengthDirective,
         RequiredDirective,
-        CurrencyDirective
+        CurrencyDirective,
+        DeductibleComponent,
+        RiskListComponent
     ],
 
     providers: [

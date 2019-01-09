@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo, PolicyPrinting, PrinterList, ALOPItemInformation, UnderwritingPolicyInquiryInfo, ItemInformation, UnderwritingPolicyDistList, DistributionByRiskInfo, PolicyEndorsement, PolItem_MLP, PolGoods_DOS, PolMachinery_DOS, PolicyInwardPolBalance, PolInwardPolBalanceOtherCharges, PolItem_CEC, TotalPerSection } from '@app/_models';
+import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo, PolicyPrinting, PrinterList, ALOPItemInformation, UnderwritingPolicyInquiryInfo, ItemInformation, UnderwritingPolicyDistList, DistributionByRiskInfo, PolicyEndorsement, PolItem_MLP, PolGoods_DOS, PolMachinery_DOS, PolicyInwardPolBalance, PolInwardPolBalanceOtherCharges, PolItem_CEC, TotalPerSection, MaintenanceDeductibles } from '@app/_models';
 
 
 @Injectable({ providedIn: 'root' })
@@ -32,6 +32,7 @@ export class UnderwritingService {
     polMachineryDOS: PolMachinery_DOS[] = [];
     polCEC: PolItem_CEC[] = [];
     totalPerSection: TotalPerSection[] = [];
+    maintenanceDeductiblesData: MaintenanceDeductibles[] = [];
 
     constructor(private http: HttpClient) {
 
@@ -303,6 +304,15 @@ export class UnderwritingService {
             new TotalPerSection("SECTION II", "", ""),
             new TotalPerSection("SECTION III", "", ""),
         ]
+    }
+    
+    getMaintenanceDeductibles(){
+        this.maintenanceDeductiblesData = [
+            new MaintenanceDeductibles(true,'AOG30', 'ACTS OF GOD 30', 'L', 0.4, 10000000000),
+            new MaintenanceDeductibles(true,'OC31', 'OTHER CAUSES 31', 'L', 0.5, 10000000),
+            new MaintenanceDeductibles(false,'TPL5', 'THIRD PARTY LIABILITY 30', 'F', 0.4, 20000000000),
+        ];
+        return this.maintenanceDeductiblesData;
     }
 
 }            

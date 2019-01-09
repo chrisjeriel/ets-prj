@@ -206,6 +206,9 @@
                             <span *ngSwitchCase="'date'" class="unclickable">{{ processData(key, data) | date: 'MM/dd/yyyy'}}</span>
                             <span *ngSwitchCase="'time'" class="unclickable">{{ processData(key, data) | date: 'HH:mm'}}</span>
                             <span *ngSwitchCase="'datetime'" class="unclickable">{{ processData(key, data) | date: 'yyyy-MM-ddTHH:mm'}}</span>
+                            <div *ngSwitchCase="'checkbox'" style="text-align: center;">
+                                <input  type="checkbox" [checked]="data[key]">
+                            </div>
                             <span *ngSwitchDefault class="unclickable">{{ processData(key, data) }}</span>
                         </div>
                         <div *ngIf="!addCheckFlag(data)" class="filler">
