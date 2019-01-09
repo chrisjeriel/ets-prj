@@ -6,7 +6,6 @@ import { unHighlight, highlight, hideTooltip, showTooltip} from './highlight';
   selector: '[appCurrency]'
 })
 export class CurrencyDirective {
-  errMessage: string = "Invalid format";
   constructor(private el: ElementRef) {
 
   }
@@ -25,11 +24,11 @@ export class CurrencyDirective {
    }else {
 	    unHighlight(this.el);
     }
-    
+
   }
 
   @HostListener("mouseenter") mouseEnter(){
-  	showTooltip(this.el,this.errMessage);
+  	showTooltip(this.el,"Invalid format.");
   }
 
   @HostListener("mouseleave") mouseLeave(){	

@@ -204,8 +204,8 @@ import { CurrencyDirective } from './_directives/currency.directive';
         ClaimsAttachmentComponent,
         ClmClaimHistoryComponent,
         ClaimDistributionComponent,
+        RequiredDirective, //keep this as first directive declared
         CharactersLengthDirective,
-        RequiredDirective,
         CurrencyDirective
     ],
 

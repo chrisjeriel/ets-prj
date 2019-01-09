@@ -1,5 +1,5 @@
 import { Directive, ElementRef,Input, HostListener } from '@angular/core';
-import { unHighlight, highlight} from './highlight';
+import { unHighlight, highlight, showTooltip, hideTooltip} from './highlight';
 
 @Directive({
   selector: '[appCharactersLength]'
@@ -24,17 +24,21 @@ export class CharactersLengthDirective {
 }
 
  @HostListener("blur", ["$event.target.value"]) onBlur(value) {
- 	if (value != ''){
+
  		if(value.length != parseInt(this.charLength) && value != ''){
-            highlight(this.el);
-        }else{
-            unHighlight(this.el);
-        }
-    }else if(!this.el.nativeElement.hasAttribute('appRequired')){
-    	unHighlight(this.el);
+      highlight(this.el);
     }else{
-    	highlight(this.el);
+      unHighlight(this.el);
     }
+
  }
+
+  @HostListener("mouseenter") mouseEnter(){
+      showTooltip(this.el,this.charLength+" characters needed.");
+  }
+
+  @HostListener("mouseleave") mouseLeave(){
+      hideTooltip();
+  }
 
 }
