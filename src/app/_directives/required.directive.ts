@@ -1,5 +1,5 @@
 import { Directive, ElementRef, HostListener } from '@angular/core';
-import { unHighlight, highlight} from './highlight';
+import { unHighlight, highlight, hideTooltip, showTooltip} from './highlight';
 
 @Directive({
     selector: '[appRequired]'
@@ -24,5 +24,13 @@ export class RequiredDirective {
             unHighlight(this.er);
         }
     }
+
+    @HostListener("mouseenter") mouseEnter(){
+      showTooltip(this.er,'required');
+  }
+
+  @HostListener("mouseleave") mouseLeave(){
+      hideTooltip();
+  }
 
 }

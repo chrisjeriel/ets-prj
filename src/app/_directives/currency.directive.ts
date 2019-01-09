@@ -22,21 +22,26 @@ export class CurrencyDirective {
 	    	sNum[1] = sNum[1] !== undefined ? sNum[1] : '00';
 	  		target.value = sNum.join('.');
 	    }
-
-
-   }else{
-	    	unHighlight(this.el);
+   }else {
+	    unHighlight(this.el);
     }
-
+    
   }
 
   @HostListener("mouseenter") mouseEnter(){
   	showTooltip(this.el,this.errMessage);
   }
 
-  @HostListener("mouseleave") mouseLeave(){
+  @HostListener("mouseleave") mouseLeave(){	
   	hideTooltip();
   }
 
-  
+  @HostListener("keydown", ["$event"]) onChange(event) {
+  	let allowed:string[] = ['.',',','Tab','Backspace','ArrowDown','ArrowUp','ArrowLeft','ArrowRight'];
+  	if(/\D/.test(event.key) && allowed.indexOf(event.key) == -1){
+  		// event.target.value = event.target.value.substring(0,event.target.value.length-1);
+  		event.preventDefault();
+  	}
+  }
+
 }
