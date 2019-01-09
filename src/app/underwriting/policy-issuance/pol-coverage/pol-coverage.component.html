@@ -288,7 +288,7 @@
         </div>
     </fieldset>
     </div>
-    <div class="cust-sm col-sm-6" style="padding-left: 0px;">
+    <!-- <div class="cust-sm col-sm-6" style="padding-left: 0px;">
         <fieldset class="scheduler-border">
          <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
         <div class="cust-sm">
@@ -300,6 +300,31 @@
                    <div class="input-group" style="margin-top: -5px;">
                        <label class="form-control-sm col-sm-1">Remarks</label>
                        <textarea class="form-control-sm form-control" style="font-size: 11px; min-height: 61px; margin-bottom: 10px; margin-left: 8px"></textarea> 
+                       <div class="text-search-ico"><a><i class="fa fa-pencil" (click)="showTextEditorModal(content)"></i></a></div>&nbsp;
+                    </div>
+                    <div class="input-group">
+                            <span class="col-sm-3"></span>
+                            <span class="cust-sm"></span>
+                    </div>
+            </div>
+          </div>
+      </fieldset>
+  </div> -->
+  <div class="cust-sm col-sm-6" style="padding-left: 0px;">
+        <fieldset class="scheduler-border">
+         <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+        <div class="cust-sm">
+           <div class="cust-sm col-sm-1"></div>
+            <div class="row" style="margin-right: 0px; margin-bottom: 0px;">
+                    <div class="input-group" style="margin-top: -16px;">
+                        &nbsp;
+                    </div>
+                   <div class="input-group" style="margin-top: -5px;">
+                       <label class="form-control-sm col-sm-1">Remarks</label>
+                       <!-- <textarea class="form-control-sm form-control" style="font-size: 11px; min-height: 61px; margin-bottom: 10px; margin-left: 8px"></textarea> -->
+                       <div class="form-control-sm col-sm" style="height: 61px; margin-bottom: 10px;">
+                       <quill-editor [ngModel]="textArea" (ngModelChange)="textArea = $event" [style]="{height: '100%', width: '100%', font: '11px arial'}" [modules]="{toolbar: false}" [readOnly]="false" [sanitize]="false"></quill-editor> 
+                     </div>
                        <div class="text-search-ico"><a><i class="fa fa-pencil" (click)="showTextEditorModal(content)"></i></a></div>&nbsp;
                     </div>
                     <div class="input-group">
@@ -347,7 +372,7 @@
     </div>
   </div>
   <div class="modal-body">
-    <quill-editor [(ngModel)]="textArea" [style]="{height: '300px', width: '900px'}"></quill-editor> 
+    <quill-editor [ngModel]="textArea" (ngModelChange)="textArea = $event" [style]="{height: '300px', width: '900px', font: '11px arial'}" [modules]="{toolbar: true}" [sanitize]="false"></quill-editor> 
   </div>
   <div class="modal-footer">
     <div>
@@ -356,10 +381,10 @@
   </div>
 </ng-template>
 
-  <!-- <div contenteditable="true" [innerHTML]="textArea | safeText: 'html'" style="border: 1px solid;">
+  <!-- <div contenteditable="true" [innerHTML]="textArea | safeText: 'html'" style="border: 1px solid;"> -->
    
-  </div>
-  <br />
+  <!-- </div> -->
+  <!-- <br />[(ngModel)]="textArea"
   <quill-editor [ngModel]="textArea"></quill-editor>
   <br /> -->
 

@@ -84,7 +84,7 @@ export class PolCoverageComponent implements OnInit {
     pageLength: 3
   };
 
-  textArea: string = "";
+  textArea: any = null;
   @Input() alteration: boolean;
   line: string;
   sub: any;
