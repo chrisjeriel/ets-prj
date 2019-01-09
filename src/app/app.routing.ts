@@ -38,6 +38,7 @@ import { ClaimComponent } from './claims/claim/claim.component';
 import { PaymentRequestsComponent } from './claims/payment-requests/payment-requests.component';
 import { NegateDistributionComponent } from './underwriting/policy-distribution/negate-distribution/negate-distribution.component';
 import { DummyComponent2 } from './_components/common/dummy2/dummy2.component'
+import { PolBatchProcessingComponent } from './underwriting/policy-distribution/pol-batch-processing/pol-batch-processing.component'
 
 
 const appRoutes: Routes = [
@@ -83,6 +84,7 @@ const appRoutes: Routes = [
     { path: 'open-cover', component: OpenCoverComponent },
     { path: 'payment-request', component: PaymentRequestsComponent },
     { path: 'negate-distribution', component: NegateDistributionComponent },
+    { path: 'batch-processing', component: PolBatchProcessingComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

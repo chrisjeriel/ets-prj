@@ -101,7 +101,7 @@ import { ClaimDistributionComponent } from './claims/claim/claim-distribution/cl
 import { CharactersLengthDirective } from './_directives/characters-length.directive';
 import { RequiredDirective } from './_directives/required.directive';
 import { CurrencyDirective } from './_directives/currency.directive';
-
+import { PolBatchProcessingComponent } from './underwriting/policy-distribution/pol-batch-processing/pol-batch-processing.component';
 
 
 @NgModule({
@@ -206,7 +206,8 @@ import { CurrencyDirective } from './_directives/currency.directive';
         ClaimDistributionComponent,
         CharactersLengthDirective,
         RequiredDirective,
-        CurrencyDirective
+        CurrencyDirective,
+        PolBatchProcessingComponent
     ],
 
     providers: [
