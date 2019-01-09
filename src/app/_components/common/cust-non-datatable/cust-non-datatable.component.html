@@ -76,7 +76,7 @@
     <div  *ngIf="passData.fixedCol" class="row">
         <div class="col-sm-2" style="padding-right: 0px; flex: 0 0 13.666667%;
                                      max-width: 13.666667%;">
-            <table id="non-datatable">
+            <table id="non-datatable" [class.margin-table]="passData.addFlag || passData.editFlag || passData.deleteFlag || passData.copyFlag || passData.printBtn || passData.expireFilter || !passData.tableOnly">
                 <thead>
                     <tr>
                         <th *ngIf="passData.checkFlag" style="text-align: center"><input type="checkbox" name=""></th>
@@ -109,7 +109,7 @@
         <div class="col-sm-10" style="padding-left: 0px;    max-width: 86.3333%;
                                       flex: 0 0 86.3333%;">
             <div class="col-sm-10 table-scroll" id="cust-scroll" style="padding-left: 0px">
-                <table id="non-datatable" style="border-left: 0px;">
+                <table id="non-datatable" [class.margin-table]="passData.addFlag || passData.editFlag || passData.deleteFlag || passData.copyFlag || passData.printBtn || passData.expireFilter || !passData.tableOnly" style="border-left: 0px;">
                     <thead>
                         <tr>
                             <!-- <th *ngIf="passData.checkFlag" ><input type="checkbox" name=""></th>-->
@@ -166,7 +166,7 @@
 
 
     <div class="table-scroll" id="cust-scroll" *ngIf="!passData.fixedCol">
-        <table id="non-datatable">
+        <table id="non-datatable" [class.margin-table]="passData.addFlag || passData.editFlag || passData.deleteFlag || passData.copyFlag || passData.printBtn || passData.expireFilter || !passData.tableOnly">
             <thead>
                 <tr style="min-width: 96px">
                     <th *ngIf="passData.checkFlag" class="checkbox-container-header"><input type="checkbox" name="" [(ngModel)]="checked" class="checkbox"  [checked]="checked"></th>
