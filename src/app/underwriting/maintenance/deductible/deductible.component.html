@@ -40,13 +40,13 @@
                             <div class="form-row custom-row-inline-inset" style="margin-top: 0.2em !important;">
                                 <div class="input-group ig-row input-radio">
                                     <label class="form-control-sm col-sm-2"></label>
-                                    <input class="form-control-sm radioBtn" type="radio" name="optradio" [value]="true" (click)="fromQuotationList()" checked="checked">    
-                                    <label class="form-control-sm col-sm-2" for="list" style="margin-top: 2px !important; margin-left: 2px !important; text-align: left !important">Fixed Amount</label>
-                                    <input class="form-control-sm radioBtn" type="radio" name="optradio" [value]="false" (click)="fromHoldCover()">
+                                    <input class="form-control-sm radioBtn" type="radio" name="optradio" [value]="true" checked="checked" (click)="FixedAmount()">    
+                                    <label class="form-control-sm col-sm-2" for="list" style="margin-top: 2px !important; margin-left: 2px !important; text-align: left !important" >Fixed Amount</label>
+                                    <input class="form-control-sm radioBtn" type="radio" name="optradio" [value]="false" (click)="NotFixedAmount()">
                                     <label class="form-control-sm col-sm-2" for="list" style="margin-top: 2px !important; margin-left: 2px !important; text-align: left !important">% of Loss Amount</label>
-                                    <input class="form-control-sm radioBtn" type="radio" name="optradio" [value]="false" (click)="fromHoldCover()">
+                                    <input class="form-control-sm radioBtn" type="radio" name="optradio" [value]="false" (click)="NotFixedAmount()">
                                     <label class="form-control-sm col-sm-2" for="list" style="margin-top: 2px !important; margin-left: 2px !important; text-align: left !important">% of TSI Amount</label>
-                                    <input class="form-control-sm radioBtn" type="radio" name="optradio" [value]="false" (click)="fromHoldCover()">
+                                    <input class="form-control-sm radioBtn" type="radio" name="optradio" [value]="false" (click)="NotFixedAmount()">
                                     <label class="form-control-sm col-sm-2" for="list" style="margin-top: 2px !important; margin-left: 2px !important; text-align: left !important">% of Insured's Value at the Time of Loss</label>
                                 </div>
                             </div>
@@ -67,17 +67,17 @@
                             <div class="form-row custom-row-inline-inset">
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-2 text-right labels">Deductible Amount</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-4">
+                                    <input type="text" class="form-control form-control-sm col-sm-4" [disabled]="!fixedAmount">
                                     <label class="form-control-sm col-sm-2 text-right labels">% of Loss Amount</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-3">
+                                    <input type="text" class="form-control form-control-sm col-sm-3" [disabled]="fixedAmount">
                                 </div>
                             </div>
                             <div class="form-row custom-row-inline-inset">
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-2 text-right labels">Minimum Amount</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-4" placeholder="10,000,000.00">
+                                    <input type="text" class="form-control form-control-sm col-sm-4" placeholder="10,000,000.00" [disabled]="fixedAmount">
                                     <label class="form-control-sm col-sm-2 text-right labels">Maximum Amount</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-3">
+                                    <input type="text" class="form-control form-control-sm col-sm-3" [disabled]="fixedAmount">
                                 </div>
                             </div>
                             <div class="form-row custom-row-inline-inset">

@@ -9,7 +9,7 @@ import { UnderwritingService } from '../../../_services';
     styleUrls: ['./deductible.component.css']
 })
 export class DeductibleComponent implements OnInit {
-
+    fixedAmount: boolean = true;
     maintenanceDeductibleData: any = {
         tableData: this.underwritingService.getMaintenanceDeductibles(),
         tHeader: ['Active', 'Deductible', 'Title', 'Deductible Type', 'Rate', 'Deductible Amount'],
@@ -25,6 +25,14 @@ export class DeductibleComponent implements OnInit {
 
     ngOnInit() {
         this.titleService.setTitle('Pol | Deductible')
+    }
+
+    FixedAmount(){
+        this.fixedAmount = true;
+    }
+
+    NotFixedAmount(){
+        this.fixedAmount = false;
     }
 
 }
