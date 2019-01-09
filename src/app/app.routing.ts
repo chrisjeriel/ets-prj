@@ -40,6 +40,7 @@ import { NegateDistributionComponent } from './underwriting/policy-distribution/
 import { DummyComponent2 } from './_components/common/dummy2/dummy2.component';
 import { DeductibleComponent } from './underwriting/maintenance/deductible/deductible.component';
 import { RiskListComponent } from './underwriting/maintenance/risk-list/risk-list.component';
+import { RiskFormComponent } from './underwriting/maintenance/risk-form/risk-form.component';
 
 
 const appRoutes: Routes = [
@@ -87,6 +88,7 @@ const appRoutes: Routes = [
     { path: 'negate-distribution', component: NegateDistributionComponent },
     { path: 'maintenance-deductible', component: DeductibleComponent },
     { path: 'maintenance-risk-list', component: RiskListComponent },
+    { path: 'maintenance-risk', component: RiskFormComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

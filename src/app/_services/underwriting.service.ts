@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo, PolicyPrinting, PrinterList, ALOPItemInformation, UnderwritingPolicyInquiryInfo, ItemInformation, UnderwritingPolicyDistList, DistributionByRiskInfo, PolicyEndorsement, PolItem_MLP, PolGoods_DOS, PolMachinery_DOS, PolicyInwardPolBalance, PolInwardPolBalanceOtherCharges, PolItem_CEC, TotalPerSection, MaintenanceDeductibles } from '@app/_models';
+import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo, PolicyPrinting, PrinterList, ALOPItemInformation, UnderwritingPolicyInquiryInfo, ItemInformation, UnderwritingPolicyDistList, DistributionByRiskInfo, PolicyEndorsement, PolItem_MLP, PolGoods_DOS, PolMachinery_DOS, PolicyInwardPolBalance, PolInwardPolBalanceOtherCharges, PolItem_CEC, TotalPerSection, MaintenanceDeductibles, MaintenanceRisks } from '@app/_models';
 
 
 @Injectable({ providedIn: 'root' })
@@ -33,6 +33,7 @@ export class UnderwritingService {
     polCEC: PolItem_CEC[] = [];
     totalPerSection: TotalPerSection[] = [];
     maintenanceDeductiblesData: MaintenanceDeductibles[] = [];
+    maintenanceRiskListData: MaintenanceRisks[] = [];
 
     constructor(private http: HttpClient) {
 
@@ -313,6 +314,13 @@ export class UnderwritingService {
             new MaintenanceDeductibles(false,'TPL5', 'THIRD PARTY LIABILITY 30', 'F', 0.4, 20000000000),
         ];
         return this.maintenanceDeductiblesData;
+    }
+    
+    getMaintenanceRisksListData(){
+        this.maintenanceRiskListData = [
+            new MaintenanceRisks(true, '00001', 'Filsyn - MBI', 'Filsyn', 'SOUTHERN TAGALOG', 'LAGUNA', 'SANTA ROSA', 'STA.ROSA/BEL-AIR', 'UNBLK', '', ''),
+        ];
+        return this.maintenanceRiskListData;
     }
 
 }            

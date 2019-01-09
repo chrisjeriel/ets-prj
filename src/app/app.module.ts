@@ -103,6 +103,7 @@ import { RequiredDirective } from './_directives/required.directive';
 import { CurrencyDirective } from './_directives/currency.directive';
 import { DeductibleComponent } from './underwriting/maintenance/deductible/deductible.component';
 import { RiskListComponent } from './underwriting/maintenance/risk-list/risk-list.component';
+import { RiskFormComponent } from './underwriting/maintenance/risk-form/risk-form.component';
 
 
 
@@ -210,7 +211,8 @@ import { RiskListComponent } from './underwriting/maintenance/risk-list/risk-lis
         RequiredDirective,
         CurrencyDirective,
         DeductibleComponent,
-        RiskListComponent
+        RiskListComponent,
+        RiskFormComponent
     ],
 
     providers: [
