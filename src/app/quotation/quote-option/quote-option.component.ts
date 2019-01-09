@@ -28,7 +28,7 @@ export class QuoteOptionComponent implements OnInit {
     otherRatesDataType: any[] = ['text', 'currency', 'text'];
     otherRatesMagnify: any[] = ['others', 'deductible'];
     otherRatesNData: QuotationOtherRates = new QuotationOtherRates(null, null, null, null);
-    
+
     optionsData: any = {
         tableData: this.quotationService.getQuoteOptions(),
         tHeader: ['Option No', 'Rate(%)', 'Conditions', 'Comm Rate Quota(%)', 'Comm Rate Surplus(%)', 'Comm Rate Fac(%)'],
@@ -55,13 +55,13 @@ export class QuoteOptionComponent implements OnInit {
         checkFlag: true,
         paginateFlag: true,
         infoFlag: true,
-        searchFlag: true,   
+        searchFlag: true,
         pageID: 2,
     }
-    
+
     otherRatesData: any = {
         tableData: this.quotationService.getQuotataionOtherRates(1),
-        tHeader: ['Others', 'Rate(%)', 'Amount'],
+        tHeader: ['Cover Code', 'Rate(%)', 'Amount'],
         dataTypes: ['text', 'percent', 'currency'],
         nData: new QuotationOtherRates(null, null, null, null),
         magnifyingGlass: ['others'],
