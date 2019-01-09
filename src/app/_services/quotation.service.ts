@@ -324,8 +324,10 @@ export class QuotationService {
 
     getReadyForPrinting(){
         this.readyForPrinting = [
-            new ReadyForPrint("CAR-2018-00088-00-99","Direct","CAR Wet Risks","In Progress","Malayan","5K Builders","ABE International Corp","5K Builders & ABE International Corp"),
-            new ReadyForPrint("CAR-2018-00088-00-78","Retrocession","CAR Wet Risks","In Progress","FLT Primes","5K Builders","ABE International Corp","5K Builders & ABE International Corp"),
+            new ReadyForPrint("CAR-2018-00088-00-99","Rose Lim","Direct","CAR Wet Risks","In Progress","Malayan","5K Builders","ABE International Corp","5K Builders & ABE International Corp","TEST","TEST","TEST","TEST",new Date(),new Date(),"TEST"),
+            new ReadyForPrint("CAR-2018-00088-00-99","Henry Tui","Direct","CAR Wet Risks","In Progress","Malayan","5K Builders","ABE International Corp","5K Builders & ABE International Corp","TEST","TEST","TEST","TEST",new Date(),new Date(),"TEST"),
+            new ReadyForPrint("CAR-2018-00088-00-99","Rose Lim","Direct","CAR Wet Risks","In Progress","Malayan","5K Builders","ABE International Corp","5K Builders & ABE International Corp","TEST","TEST","TEST","TEST",new Date(),new Date(),"TEST"),
+            new ReadyForPrint("CAR-2018-00088-00-99","Rose Lim","Direct","CAR Wet Risks","In Progress","Malayan","5K Builders","ABE International Corp","5K Builders & ABE International Corp","TEST","TEST","TEST","TEST",new Date(),new Date(),"TEST"),
         ];
         return this.readyForPrinting;
 

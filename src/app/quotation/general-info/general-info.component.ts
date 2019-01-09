@@ -20,7 +20,6 @@ export class GeneralInfoComponent implements OnInit {
 	dataTypes: any[] = [];
 	filters: any[] = [];
 
-
 	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title) { }
 	ngOnInit() {
 		this.titleService.setTitle("Quo | General Info");
