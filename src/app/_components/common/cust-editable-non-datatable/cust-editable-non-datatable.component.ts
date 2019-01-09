@@ -36,6 +36,8 @@ export class CustEditableNonDatatableComponent implements OnInit {
     @Output() editedDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
     @Output() rowClick: EventEmitter<any> = new EventEmitter();
     @Output() rowDblClick: EventEmitter<any> = new EventEmitter();
+    @Output() add: EventEmitter<any> = new EventEmitter();
+    @Output() edit: EventEmitter<any> = new EventEmitter();
 
     @Input() passData: any = {
         tableData:[],
@@ -231,5 +233,9 @@ export class CustEditableNonDatatableComponent implements OnInit {
 
    format(event,key, index){
        this.displayData[index][key] = parseFloat(event.target.value.split(',').join(''));
+   }
+
+   addClicked(event) {
+       this.add.next(event);
    }
 }

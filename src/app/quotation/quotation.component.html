@@ -67,58 +67,61 @@
 							 id="closes">&times;&nbsp;&nbsp;</span></a>
 					</div>
 				</div>
-				<div class="modal-body" style="width: 550px">
+				<div class="modal-body" style="width: 580px">
 					<div class="row">
 						<div class="col-sm-6" style="padding-right : 10px ! important;">
 							<fieldset class="scheduler-border" style="padding-left : 20px ! important; padding-right : 10px ! important">
 								<div class="custom-row-inline-inset">
 									<div class="input-group" style="margin-top : 50px ! important">
-										<div class="col-sm-7" style="padding-left : 0px ! important; padding-right : 0px ! important;">
+										<div class="col-sm-8" style="padding-left : 0px ! important; padding-right : 0px ! important;">
 											<div class="input-group" style="margin-bottom : -8px ! important">
-												<label class="form-control-sm col-sm-5" for="xx">Status</label>
+												<label class="form-control-sm" for="xx" style="padding-left: 0px">Status</label>
 												<input type="text" id="xx" class="form-control form-control-sm col-sm">
 											</div>
 										</div>
 									</div>
 
 									<div class="input-group">
-										<div class="col-sm-7" style="padding-left : 0px ! important; padding-right : 0px ! important">
-											<select class="form-control form-control-sm cust-sm col-sm">
-												<option>user1</option>
-												<option>user2</option>
-												<option>user3</option>
-												<option>user1</option>
-												<option>user2</option>
-												<option>user3</option>
-											</select>
+										<div class="col-sm" style="padding-left : 0px ! important; padding-right : 0px ! important">
+											<div class="input-group">
+												<select class="form-control form-control-sm cust-sm col-sm-8">
+													<option>user1</option>
+													<option>user2</option>
+													<option>user3</option>
+													<option>user1</option>
+													<option>user2</option>
+													<option>user3</option>
+												</select>
+												<button class="cust">Approve</button>
+											</div>
 										</div>
-										<div class="col-sm-5" style="padding-left : 0px ! important; padding-right : 0px ! important; text-align: center">
-											<button class="cust-btn">Approve</button>
-										</div>
+										<!-- <div class="col-sm-4" style="padding-left : 0px ! important; padding-right : 0px ! important; text-align: center">
+											<button class="cust">Approve</button>
+										</div> -->
 									</div>
 								</div>
 							</fieldset>
 						</div>
 						<div class="col-sm-6" style="padding-left : 10px ! important;">
-							<fieldset class="scheduler-border" style="padding-left : 10px ! important; padding-right : 20px ! important">
+							<fieldset class="scheduler-border" style="padding-left : 20px ! important; padding-right : 20px ! important">
 								<div class="custom-row-inline-inset">
 									<div class="input-group" style="margin-bottom : -18px ! important">
-										<input class="form-control-sm" type="checkbox" name="optcheck" id="printDraft" [value]="false" [(ngModel)]="printDraft" style="margin-left: 90px">
+										<input class="form-control-sm" type="checkbox" name="optcheck" id="printDraft" [value]="false" [(ngModel)]="printDraft" style="margin-left: 78px">
 										<label class="form-control-sm" for="xx">Print as Draft</label>
 									</div>
 									<div class="input-group" style="margin-bottom : -14px ! important">
-										<label class="form-control-sm col-sm-5" for="xx">Report</label>
-										<select class="form-control form-control-sm cust-sm col-sm-7">
+										<label class="form-control-sm" for="xx">Report</label>
+										<select class="form-control form-control-sm cust-sm" style="margin-left: 30px">
 
 										</select>
 									</div>
 									<div class="input-group" style="margin-bottom : -14px ! important">
-										<label class="form-control-sm col-sm-5" for="xx">No. of Copies</label>
-										<input type="text" id="xx" class="form-control form-control-sm col-sm-7">
+										<label class="form-control-sm" for="xx">No. of Copies</label>
+										<input type="text" id="xx" class="form-control form-control-sm">
 									</div>
 									<div class="input-group" style="margin-bottom : -14px ! important">
-										<label class="form-control-sm col-sm-5" for="xx">Destination</label>
-										<select class="form-control form-control-sm cust-sm col-sm-7">
+										<label class="form-control-sm" for="xx">Destination</label>
+										<select class="form-control form-control-sm cust-sm" style="margin-left: 10px">
 											<option>Screen</option>
 											<option>PDF</option>
 											<option>Printer</option>
@@ -126,8 +129,8 @@
 										</select>
 									</div>
 									<div class="input-group">
-										<label class="form-control-sm col-sm-5" for="xx">Printer Name</label>
-										<select class="form-control form-control-sm cust-sm col-sm-7">
+										<label class="form-control-sm" for="xx">Printer Name</label>
+										<select class="form-control form-control-sm cust-sm" style="margin-left: 2px">
 											<option>Printer A</option>
 											<option>Printer B</option>
 											<option>Printer C</option>

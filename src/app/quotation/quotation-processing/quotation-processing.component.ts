@@ -175,23 +175,24 @@ export class QuotationProcessingComponent implements OnInit {
     }
 
     nextBtnEvent() {
-        if (this.line === 'CAR' ||
-            this.line === 'EAR' ||
-            this.line === 'EEI' ||
-            this.line === 'CEC' ||
-            this.line === 'MBI' ||
-            this.line === 'BPV' ||
-            this.line === 'MLP' ||
-            this.line === 'DOS') {
-            this.modalService.dismissAll();
+    var qLine = this.line.toUpperCase();
 
-            this.quotationService.rowData = [];
-            this.quotationService.toGenInfo = [];
-            this.quotationService.toGenInfo.push("add", this.line);
-            this.router.navigate(['/quotation']);
-        }
+    if (qLine === 'CAR' ||
+      qLine === 'EAR' ||
+      qLine === 'EEI' ||
+      qLine === 'CEC' ||
+      qLine === 'MBI' ||
+      qLine === 'BPV' ||
+      qLine === 'MLP' ||
+      qLine === 'DOS') {
+      this.modalService.dismissAll();
 
+      this.quotationService.rowData = [];
+      this.quotationService.toGenInfo = [];
+      this.quotationService.toGenInfo.push("add", qLine);
+      this.router.navigate(['/quotation']);
     }
+}
 
     onRowClick(event) {
         for (var i = 0; i < event.target.closest("tr").children.length; i++) {
@@ -217,6 +218,7 @@ export class QuotationProcessingComponent implements OnInit {
     showApprovalModal(content) {
         this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
     }
+
     closeModalPls(content) {
         this.activeModal = content;
         this.activeModal.dismiss;
