@@ -24,11 +24,17 @@ export class CharactersLengthDirective {
 }
 
  @HostListener("blur", ["$event.target.value"]) onBlur(value) {
- 	if(value.length != parseInt(this.charLength) && value != ''){
+ 	if (value != ''){
+ 		if(value.length != parseInt(this.charLength) && value != ''){
             highlight(this.el);
         }else{
             unHighlight(this.el);
         }
+    }else if(!this.el.nativeElement.hasAttribute('appRequired')){
+    	unHighlight(this.el);
+    }else{
+    	highlight(this.el);
+    }
  }
 
 }
