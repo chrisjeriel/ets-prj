@@ -5,17 +5,15 @@ import { AppComponent } from 'src/app/app.component';
   selector: '[appChangetheme]'
 })
 export class ChangethemeDirective {
-
-  constructor(private el: ElementRef) { }
-
- @HostListener('document:click', ['$event'])
-      clickout(event) {
-        if(this.el.nativeElement.contains(event.target)) {
-                      console.log("Click");
-        } else {
-                     console.log("Click"); 
-        }
-     }
-
+  theme =  window.localStorage.getItem("selectedTheme");
+  constructor(private el: ElementRef,private app: AppComponent) { }
+  	
+	@HostListener("keyup", ["$event.target"]) onkeyup(target) {	
+        console.log(target.value);
+         if (target.value == "") {
+         	 this.app.changeTheme(this.theme);
+         }
+        
+	}
 
 }

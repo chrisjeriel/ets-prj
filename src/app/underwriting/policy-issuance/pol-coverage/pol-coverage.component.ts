@@ -109,6 +109,7 @@ export class PolCoverageComponent implements OnInit {
 
   textArea: any = null;
 
+
   /*passDataDeductibles: any = {
         tHeader: ["Deductible title","Rate (%)", "Amount Deductible Text"],
         dataTypes: [

@@ -15,7 +15,6 @@ export class ParListingComponent implements OnInit {
     dataTypes: any[] = [];
     filters: any[] = [];
     line: string = "";
-
     constructor(private uwService: UnderwritingService, private titleService: Title, private router: Router) { }
     passData: any = {
         tHeader: [
@@ -163,7 +162,9 @@ export class ParListingComponent implements OnInit {
             this.polLine = this.slctdArr[0];
         }
       /*  console.log(this.polLine);*/
-        this.router.navigate(['/policy-issuance', { line: this.polLine }], { skipLocationChange: true });
+        setTimeout(() => {
+               this.router.navigate(['/policy-issuance', { line: this.polLine }], { skipLocationChange: true });
+        },100); 
     }
 
 }
