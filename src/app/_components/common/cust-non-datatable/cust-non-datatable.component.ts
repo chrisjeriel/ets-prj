@@ -146,11 +146,13 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        console.log(this.passData.colSize);
         this.passData.pageID = typeof this.passData.pageID == "undefined" ? 1 : this.passData.pageID;
         this.passData.colSize = typeof this.passData.colSize == "undefined" ? [] : this.passData.colSize;
         this.unliFlag = this.passData.pageLength == 'unli';
         this.passData.pageLength = typeof this.passData.pageLength != 'number' ? 10 : this.passData.pageLength;
         this.unliTableLength();
+        
         if (this.passData.tableData.length > 0) {
             this.dataKeys = Object.keys(this.passData.tableData[0]);
         } else {
@@ -204,7 +206,8 @@ export class CustNonDatatableComponent implements OnInit {
                 let width = this.startWidth + (event.x - this.startX);
                 $(this.start).parent().css({'min-width': width, 'max-width': width, 'width': width});
                 let index = $(this.start).parent().index() + 1;
-                $('.glowTableBody tr td:nth-child(' + index + ')').css({'min-width': width, 'max-width': width, 'width': width});
+                $('.content-container tr td:nth-child(' + index + ')').css({'min-width': width, 'max-width': width, 'width': width});
+                
             }
         });
         this.renderer.listenGlobal('body', 'mouseup', (event) => {

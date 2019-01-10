@@ -25,13 +25,18 @@ td{
 div.filler{
     padding: 6px;
 }
+.content-container{
+    /*min-width: inherit;
+    max-width: inherit;
+    width: inherit;*/
+}
 .margin-table{
     margin-top: 30px;
 }
 .table-scroll{
     overflow-x: auto;
     overflow-y: auto;
-    width: 100%;
+    max-width: 100%;
 }
 .table-scroll-unli{
     max-height: 34em;
@@ -95,6 +100,12 @@ div.filler{
     background-color: #67b4fc !important;
 }
 
+.headcol {
+    position: absolute;
+    left: inherit;
+    min-width: 30px; 
+    max-width: 150px;
+}
 .no-padding{
     padding: 0;
 }
