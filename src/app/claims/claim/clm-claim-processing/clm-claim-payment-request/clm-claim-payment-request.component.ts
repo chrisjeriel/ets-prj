@@ -8,12 +8,8 @@ import { Title } from '@angular/platform-browser';
 })
 export class ClmClaimPaymentRequestComponent implements OnInit {
   tableData: any[] = [
-    ["TSR-2018-12-00001", "Issued", "1", "Loss", "Initial Reserve", "PHP", 500000, 0, "JV-000996", new Date("2018-11-14")],
-    ["TSR-2018-12-00002", "Issued", "2", "Loss", "Increase Reserve", "PHP", 300000, 0, "JV-000999", new Date("2018-11-14")],
-    ["TSR-2018-12-00003", "Issued", "3", "Loss", "Decrease Reserve", "PHP", -100000, 0, "JV-001000", new Date("2018-11-20")],
     ["CSR-2018-12-00001", "Issued", "4", "Loss", "Partial Payment", "PHP", -351000, 350842.89, "CV-000101", new Date("2018-11-24")],
-    ["CSR-2018-12-00002", "Issued", "5", "Loss", "Full Payment", "PHP", 0, 384532.75, "CV-000102", new Date("2018-11-24")],
-
+    ["CSR-2018-12-00002", "Issued", "5", "Loss", "Full Payment", "PHP", 0, 348532.75, "CV-000102", new Date("2018-11-24")],
   ];
 
   tHeader: string[] = [];
