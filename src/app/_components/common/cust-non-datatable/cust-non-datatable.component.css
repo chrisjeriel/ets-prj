@@ -44,6 +44,9 @@ div.filler{
     position: sticky !important;
     top: -0.55px;
 }
+.isCheckBox{
+    width: 10px !important;
+}
 .fixedTable{
     position: absolute;
     min-width: 30px;
