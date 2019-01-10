@@ -1,0 +1,15 @@
+.txt-edtr {
+	white-space: pre;      
+    white-space: -moz-pre;
+    white-space: -pre;
+    white-space: -o-pre;
+    word-wrap: break-word;
+}
+
+.text-search-ico {
+	position: relative;
+	float: right;
+    margin-right: 5px;
+    z-index: 100;
+    font-size: 14px;
+}

@@ -1,0 +1,12 @@
+.radioBtn{
+    margin-top: 4px;
+}
+.checkbox{
+    margin-top: 5px;
+    margin-left: 3%;
+}
+.labels{
+    margin-bottom: 0px !important;
+    padding-bottom: 0px !important;
+    max-height: 2.3em
+}

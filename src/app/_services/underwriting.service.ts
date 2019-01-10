@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo, PolicyPrinting, PrinterList, ALOPItemInformation, UnderwritingPolicyInquiryInfo, ItemInformation, UnderwritingPolicyDistList, DistributionByRiskInfo, PolicyEndorsement, PolItem_MLP, PolGoods_DOS, PolMachinery_DOS, PolicyInwardPolBalance, PolInwardPolBalanceOtherCharges, PolItem_CEC, TotalPerSection } from '@app/_models';
+import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo, PolicyPrinting, PrinterList, ALOPItemInformation, UnderwritingPolicyInquiryInfo, ItemInformation, UnderwritingPolicyDistList, DistributionByRiskInfo, PolicyEndorsement, PolItem_MLP, PolGoods_DOS, PolMachinery_DOS, PolicyInwardPolBalance, PolInwardPolBalanceOtherCharges, PolItem_CEC, TotalPerSection, UnderwritingBatchPosting, UnderwritingBatchDistribution, MaintenanceDeductibles, MaintenanceRisks } from '@app/_models';
+
 
 
 @Injectable({ providedIn: 'root' })
@@ -32,6 +33,10 @@ export class UnderwritingService {
     polMachineryDOS: PolMachinery_DOS[] = [];
     polCEC: PolItem_CEC[] = [];
     totalPerSection: TotalPerSection[] = [];
+    batchPosting: UnderwritingBatchPosting[]= [];
+    batchDistribution: UnderwritingBatchDistribution[] = [];
+    maintenanceDeductiblesData: MaintenanceDeductibles[] = [];
+    maintenanceRiskListData: MaintenanceRisks[] = [];
 
     constructor(private http: HttpClient) {
 
@@ -303,6 +308,61 @@ export class UnderwritingService {
             new TotalPerSection("SECTION II", "", ""),
             new TotalPerSection("SECTION III", "", ""),
         ]
+    }
+    
+    getMaintenanceDeductibles(){
+        this.maintenanceDeductiblesData = [
+            new MaintenanceDeductibles(true,'AOG30', 'ACTS OF GOD 30', 'L', 0.4, 10000000000),
+            new MaintenanceDeductibles(true,'OC31', 'OTHER CAUSES 31', 'L', 0.5, 10000000),
+            new MaintenanceDeductibles(false,'TPL5', 'THIRD PARTY LIABILITY 30', 'F', 0.4, 20000000000),
+        ];
+        return this.maintenanceDeductiblesData;
+    }
+    
+    getMaintenanceRisksListData(){
+        this.maintenanceRiskListData = [
+            new MaintenanceRisks(true, '00001', 'Filsyn - MBI', 'Filsyn', 'SOUTHERN TAGALOG', 'LAGUNA', 'SANTA ROSA', 'STA.ROSA/BEL-AIR', 'UNBLK', '', ''),
+        ];
+        return this.maintenanceRiskListData;
+    }
+
+    getPolicyBatchPosting() {
+        this.batchPosting = [
+            new UnderwritingPolicyDistList(10001, 10001, 'Distributed but not posted', 'CAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10002, 10002, 'Distributed but not posted', 'CAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10003, 10003, 'Distributed but not posted', 'CAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10004, 10004, 'Distributed but not posted', 'CAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10005, 10005, 'Distributed but not posted', 'CAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10006, 10006, 'Distributed but not posted', 'EAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10007, 10007, 'Distributed but not posted', 'EAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10008, 10008, 'Distributed but not posted', 'EAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10009, 10009, 'Distributed but not posted', 'EAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10010, 10010, 'Distributed but not posted', 'EAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10011, 10011, 'Distributed but not posted', 'EAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+        ];
+
+        return this.batchPosting;
+
+    }
+
+
+    getPolicyBatchDistribution() {
+        this.batchDistribution = [
+            new UnderwritingPolicyDistList(10001, 10001, 'Undistributed', 'CAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10002, 10002, 'Undistributed', 'CAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10003, 10003, 'Undistributed', 'CAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10004, 10004, 'Undistributed', 'CAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10005, 10005, 'Undistributed', 'CAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10006, 10006, 'Undistributed', 'EAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10007, 10007, 'Undistributed', 'EAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10008, 10008, 'Undistributed', 'EAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10009, 10009, 'Undistributed', 'EAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10010, 10010, 'Undistributed', 'EAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10011, 10011, 'Undistributed', 'EAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+        ];
+
+        return this.batchDistribution;
+
     }
 
 }            
