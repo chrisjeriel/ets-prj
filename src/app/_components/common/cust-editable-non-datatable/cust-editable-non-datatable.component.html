@@ -131,7 +131,7 @@
                             <input *ngSwitchCase="'currency'" class="editable-text text-right number form-control-sm"
                                 type="text" [ngModel]="data[key] | number:'1.2-2'" (blur)="format($event , key, ti)">
                             <div *ngSwitchCase="'checkbox'" style="text-align: center;">
-                                <input  type="checkbox">
+                                <input [checked]="data[key] === true ? true : false" type="checkbox">
                             </div>
                             <select *ngSwitchCase="'select'" class="editable-select form-control-sm" [value]="processData(key, data)">
                                 <ng-container *ngFor="let data of passData.opts">

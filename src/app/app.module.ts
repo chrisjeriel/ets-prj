@@ -98,6 +98,7 @@ import { ClaimsAttachmentComponent } from './claims/claim/claims-attachment/clai
 import { DummyComponent2 } from './_components/common/dummy2/dummy2.component';
 import { ClmClaimHistoryComponent } from './claims/claim/clm-claim-processing/clm-claim-history/clm-claim-history.component';
 import { ClaimDistributionComponent } from './claims/claim/claim-distribution/claim-distribution.component';
+import { TextEditorComponent } from './_components/common/text-editor/text-editor.component';
 import { NumbersOnlyDirective } from './_directives/numbers-only.directive';
 import { CharactersLengthDirective } from './_directives/characters-length.directive';
 import { RequiredDirective } from './_directives/required.directive';
@@ -107,6 +108,9 @@ import { DeductibleComponent } from './underwriting/maintenance/deductible/deduc
 import { RiskListComponent } from './underwriting/maintenance/risk-list/risk-list.component';
 import { RiskFormComponent } from './underwriting/maintenance/risk-form/risk-form.component';
 import { MonthDirective } from './_directives/month.directive';
+import { PolMxLineComponent } from './underwriting/policy-maintenance/pol-mx-line/pol-mx-line.component';
+import { ClmSectionCoversComponent } from './claims/claim/clm-claim-processing/clm-section-covers/clm-section-covers.component';
+import { ClmClaimPaymentRequestComponent } from './claims/claim/clm-claim-processing/clm-claim-payment-request/clm-claim-payment-request.component';
 
 
 @NgModule({
@@ -209,14 +213,22 @@ import { MonthDirective } from './_directives/month.directive';
         ClaimsAttachmentComponent,
         ClmClaimHistoryComponent,
         ClaimDistributionComponent,
+        TextEditorComponent,
         CharactersLengthDirective,
         RequiredDirective,
         CurrencyDirective,
+        MonthDirective,
+        NumbersOnlyDirective,
+        ClmClaimPaymentRequestComponent,
         PolBatchProcessingComponent,
         DeductibleComponent,
         RiskListComponent,
         RiskFormComponent,
-        MonthDirective
+        MonthDirective,
+        PolMxLineComponent,
+        NumbersOnlyDirective,
+        ClmSectionCoversComponent
+
     ],
 
     providers: [
