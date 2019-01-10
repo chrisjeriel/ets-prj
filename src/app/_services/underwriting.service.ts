@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo, PolicyPrinting, PrinterList, ALOPItemInformation, UnderwritingPolicyInquiryInfo, ItemInformation, UnderwritingPolicyDistList, DistributionByRiskInfo, PolicyEndorsement, PolItem_MLP, PolGoods_DOS, PolMachinery_DOS, PolicyInwardPolBalance, PolInwardPolBalanceOtherCharges, PolItem_CEC, TotalPerSection } from '@app/_models';
+import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo, PolicyPrinting, PrinterList, ALOPItemInformation, UnderwritingPolicyInquiryInfo, ItemInformation, UnderwritingPolicyDistList, DistributionByRiskInfo, PolicyEndorsement, PolItem_MLP, PolGoods_DOS, PolMachinery_DOS, PolicyInwardPolBalance, PolInwardPolBalanceOtherCharges, PolItem_CEC, TotalPerSection , CoverageDeductibles } from '@app/_models';
 
 
 @Injectable({ providedIn: 'root' })
@@ -9,6 +9,7 @@ export class UnderwritingService {
 
     dummyInfoData: DummyInfo[] = [];
     alterationFromQuotation: CreateParTable[] = [];
+    uwCoverageDeductible : CoverageDeductibles[];
     uwcoverageInfoData: UnderwritingCoverageInfo[] = [];
     uwotherRatesInfoData: UnderwritingOtherRatesInfo[] = [];
     coInsuranceData: PolicyCoInsurance[] = [];
@@ -83,6 +84,17 @@ export class UnderwritingService {
         ];
         return this.uwcoverageInfoData;
     }
+
+    getUWCoverageDeductibles() {
+        this. uwCoverageDeductible = [
+            new CoverageDeductibles("AOG30", "ACTS OF GOD 30", 0.50 ,null, "Acts of Nature - Php 1,800,000.00 each and every loss"),
+            new CoverageDeductibles("AOC31", '39,000 - AOC',null,39000, "Any Other Cause = Php 39,000.00 for each and every loss")
+        ];
+        return this.uwCoverageDeductible ;
+    }
+
+
+
     getUWOtherRatesInfo() {
         this.uwotherRatesInfoData = [
             new UnderwritingOtherRatesInfo("Sample 1", 123000, "Remarks 1"),
