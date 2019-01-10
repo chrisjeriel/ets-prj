@@ -43,9 +43,7 @@ export class ClmGenInfoClaimComponent implements OnInit {
     paginateFlag: true,
     infoFlag: true,
     pageLength: 10,
-    magnifyingGlass: ['0'],
-    widths: [],
-    nData: [null, null, null]
+    widths: []
   };
   constructor(private router: ActivatedRoute, private modalService: NgbModal, private titleService: Title) { }
 

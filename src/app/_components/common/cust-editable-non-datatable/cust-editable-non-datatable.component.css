@@ -172,7 +172,6 @@ div.input-group {
 .fa-search {
     position: absolute;
     right: 9px;
-    top: 1px;
     width: 4%;
     line-height : calc(1.3rem + 1px);
 }
@@ -181,8 +180,6 @@ div.input-group {
     width: 93%;	 
     float: right;
 }
-
-
 
 .icon .fa:not(:first-child) {
     margin-left: 5px;
@@ -311,9 +308,4 @@ tr td span{
    font-size: 12px;
    font-weight: bold;
    border-radius: 4px;
-}
-
-td div input.number{
-    padding-right: 16px!important;
-    width: auto;
 }
