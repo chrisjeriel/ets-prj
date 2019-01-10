@@ -6,7 +6,6 @@ import { interceptingHandler } from '@angular/common/http/src/module';
 })
 
 export class NumbersOnlyDirective {
-  strArr = [];
 
   inputElement: HTMLElement;
   constructor(public el: ElementRef) {
@@ -15,33 +14,7 @@ export class NumbersOnlyDirective {
 
   @HostListener('blur', ['$event'])
   onblur(event) {
-    var content = "";
-    var newCont = "";
-    var contentArr = [];
-    var newContArr = [];
-    content = (event.target.value).toString();
-    contentArr = content.split("");
-
-    content = this.remComParNeg(contentArr);
-    contentArr = content.split("");
-
-    for (var i = contentArr.length - 1; i >= 0; i--) {
-      newContArr.push(contentArr[i]);
-    }
-
-    for (var j = newContArr.length - 1; j >= 0; j--) {
-      if (j % 3 == 0) {
-        if (j != 0) {
-          newCont += (newContArr[j] + ",");
-        } else {
-          newCont += newContArr[j];
-        }
-      } else {
-        newCont += newContArr[j];
-      }
-    }
-
-    event.target.value = this.cvrtNeg(newCont);
+    event.target.value = this.cvrtNeg(event.target.value);
   }
 
   @HostListener('focus', ['$event'])
@@ -49,19 +22,6 @@ export class NumbersOnlyDirective {
     var content = "";
     content = (event.target.value).toString();
     event.target.value = this.addNegSign(content);
-
-  }
-
-  remComParNeg(strArr) {
-    var newCont = "";
-    for (var i = 0; i < strArr.length; i++) {
-      if (strArr[i] == "," || strArr[i] == "(" || strArr[i] == ")") {
-        newCont += "";
-      } else {
-        newCont += strArr[i];
-      }
-    }
-    return newCont;
   }
 
   addNegSign(str) {
@@ -84,12 +44,7 @@ export class NumbersOnlyDirective {
       return str;
     }
   }
-  // @HostListener('keydown', ['$event'])
-  // onkeydown(e: KeyboardEvent) {
-  //   if(e.keyCode === 190 && e.keyCode === 1110){
-  //     console.log("");
-  //   }
-  // }
+
 
   @HostListener('keydown', ['$event'])
   onKeyDown(e: KeyboardEvent) {
@@ -111,7 +66,6 @@ export class NumbersOnlyDirective {
       (e.keyCode >= 35 && e.keyCode <= 39) // Allow: Home, End, Left, Right
 
     ) {
-      // let it happen, don't do anything
       return;
     }
     // Ensure that it is a number and stop the keypress
