@@ -1,0 +1,21 @@
+<div class="cust-tabs-container">
+	<h4>Policy / Distribution</h4>
+	<ngb-tabset>
+		<ngb-tab class="ngb-tab" title="Batch Distribution">
+			<ng-template ngbTabContent>
+				<div style="margin-top: 10px !important;">
+					<app-cust-editable-non-datatable [passData]="passDataDistribution"></app-cust-editable-non-datatable>
+				</div>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab class="ngb-tab" title="Batch Posting">
+			<ng-template ngbTabContent>
+				<div class="row">
+					<div class="col-sm-12" style="margin-top: 10px !important;">
+						 <app-cust-editable-non-datatable [passData]="passDataPosting"></app-cust-editable-non-datatable>
+					</div>
+				</div>
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>

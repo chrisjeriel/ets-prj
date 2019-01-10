@@ -1,7 +1,6 @@
 
 
 table{
-    margin-top: 30px;
     width: 100%;
 }
 tbody tr, thead tr{
@@ -29,9 +28,21 @@ td{
 div.filler{
     padding: 6px;
 }
+.margin-table{
+    margin-top: 30px;
+}
 .table-scroll{
-    overflow: auto;
+    overflow-x: auto;
+    overflow-y: auto;
     max-width: 100%;
+}
+.table-scroll-unli{
+    max-height: 34em;
+}
+.sticky{
+    position: -webkit-sticky !important; /* Safari */
+    position: sticky !important;
+    top: -0.55px;
 }
 .fixedTable{
     position: absolute;
