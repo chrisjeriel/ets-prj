@@ -33,7 +33,7 @@ export class PolBatchProcessingComponent implements OnInit {
   //  };
 
     passDataPosting: any = {
-        tableData: this.underwritingService.getPolicyBatchDistribution(),
+        tableData: this.underwritingService.getPolicyBatchPosting(),
         tHeader: [
             "Dist No.", "Risk Dist No." , "Status","Line", "Policy No.","Type of Cession",
             "Ceding Company", "Insured", "Risk","Object","Site","Currency","Sum Insured","Premium","Issue Date","Inception Date","Expiry Date", "Accounting Date","Distribution Date"
@@ -103,7 +103,7 @@ export class PolBatchProcessingComponent implements OnInit {
         checkFlag: true,
         pageStatus: true, 
         pagination: true,
-        resizable: [false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false] 
+        resizable: [false,false,true,false,false,false,true,true,true,true,true,false,true,true,false,false,false,false,false] 
        
     }
    // passDataDistribution: any = {
@@ -193,7 +193,7 @@ export class PolBatchProcessingComponent implements OnInit {
         checkFlag: true,
         pageStatus: true, 
         pagination: true,
-        resizable: [false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false] 
+        resizable: [false,false,true,false,false,false,true,true,true,true,true,false,true,true,false,false,false,false,false] 
        
     }
 
