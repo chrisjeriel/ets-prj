@@ -37,17 +37,13 @@ import { ClmGenInfoClaimComponent } from './claims/claim/clm-claim-processing/cl
 import { ClaimComponent } from './claims/claim/claim.component';
 import { PaymentRequestsComponent } from './claims/payment-requests/payment-requests.component';
 import { NegateDistributionComponent } from './underwriting/policy-distribution/negate-distribution/negate-distribution.component';
-<<<<<<< HEAD
-import { DummyComponent2 } from './_components/common/dummy2/dummy2.component';
 import { PolMxLineComponent } from './underwriting/policy-maintenance/pol-mx-line/pol-mx-line.component';
-=======
 import { DummyComponent2 } from './_components/common/dummy2/dummy2.component'
 import { PolBatchProcessingComponent } from './underwriting/policy-distribution/pol-batch-processing/pol-batch-processing.component'
 import { DeductibleComponent } from './underwriting/maintenance/deductible/deductible.component';
 import { RiskListComponent } from './underwriting/maintenance/risk-list/risk-list.component';
 import { RiskFormComponent } from './underwriting/maintenance/risk-form/risk-form.component';
 
->>>>>>> 2c311f344cc7b7516562ed8a138bfe5cca967b74
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -92,14 +88,11 @@ const appRoutes: Routes = [
     { path: 'open-cover', component: OpenCoverComponent },
     { path: 'payment-request', component: PaymentRequestsComponent },
     { path: 'negate-distribution', component: NegateDistributionComponent },
-<<<<<<< HEAD
     { path: 'maintenance-line', component: PolMxLineComponent },
-=======
     { path: 'batch-processing', component: PolBatchProcessingComponent },
     { path: 'maintenance-deductible', component: DeductibleComponent },
     { path: 'maintenance-risk-list', component: RiskListComponent },
     { path: 'maintenance-risk', component: RiskFormComponent },
->>>>>>> 2c311f344cc7b7516562ed8a138bfe5cca967b74
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

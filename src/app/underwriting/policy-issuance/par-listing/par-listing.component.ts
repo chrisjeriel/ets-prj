@@ -15,7 +15,6 @@ export class ParListingComponent implements OnInit {
     dataTypes: any[] = [];
     filters: any[] = [];
     line: string = "";
-
     constructor(private uwService: UnderwritingService, private titleService: Title, private router: Router) { }
     passData: any = {
         tHeader: [
