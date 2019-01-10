@@ -101,14 +101,14 @@
                 </tr>
                 <tr style="min-width: 96px">
                     <th *ngIf="passData.checkFlag" class="checkbox"><input type="checkbox" name="checkbox" [(ngModel)]="checked"></th>
-                    <th *ngFor="let tHeader of passData.tHeader; let i = index" (click)="sort(dataKeys[i],sortBy);sortIndex=i;"
-                        [style.width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]">
+                    <th container="body"  *ngFor="let tHeader of passData.tHeader; let i = index" (click)="sort(dataKeys[i],sortBy);sortIndex=i;"
+                        [style.width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [ngbTooltip]="passData.tooltip !== undefined ? passData.tooltip[i] :null">
                         <span class="ui-column-resizer" (mousedown)="onMouseDown($event)"></span>
-                        <span *ngIf="isNumber(i)" class="gridHeader number text-right">{{tHeader}}
+                        <span *ngIf="isNumber(i)" class="gridHeader number text-right" >{{tHeader}}
                             <i *ngIf="showSort(sortBy,i)" class="fa fa-caret-down"></i>
                             <i *ngIf="showSort(!sortBy,i)" class="fa fa-caret-up"></i>
                         </span>
-                        <span *ngIf="!isNumber(i)" class="gridHeader">{{tHeader}}
+                        <span container="body"  *ngIf="!isNumber(i)" class="gridHeader">{{tHeader}}
                             <i *ngIf="showSort(sortBy,i)" class="fa fa-caret-down"></i>
                             <i *ngIf="showSort(!sortBy,i)" class="fa fa-caret-up"></i>
                         </span>
@@ -131,7 +131,7 @@
                             <input *ngSwitchCase="'currency'" class="editable-text text-right number form-control-sm"
                                 type="text" [ngModel]="data[key] | number:'1.2-2'" (blur)="format($event , key, ti)">
                             <div *ngSwitchCase="'checkbox'" style="text-align: center;">
-                                <input  type="checkbox">
+                                <input  type="checkbox" [ngModel]="data[key]">
                             </div>
                             <select *ngSwitchCase="'select'" class="editable-select form-control-sm" [value]="processData(key, data)">
                                 <ng-container *ngFor="let data of passData.opts">
