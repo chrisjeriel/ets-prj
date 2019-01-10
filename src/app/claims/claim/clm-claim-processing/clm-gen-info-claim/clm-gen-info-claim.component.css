@@ -12,7 +12,8 @@
 }
 .custom-row-inline-inset{
 	/* margin-bottom: 0px !important; */
-	margin-top: 0px !important;
+	/* margin-top: 0px !important; */
+	margin-top: 10px !important;
 }
 .form-row{
 	margin-top: 7px !important;
@@ -26,4 +27,20 @@ fieldset{
 
 .ig-cust {
 	margin-bottom: -7px !important;
+}
+.offsetFormGroup {
+	margin-bottom: 0px !important;
+}
+
+.cust-lbl-left-offset {
+	padding-left: 0px !important;
+}
+
+.cust-fs-padlr-offset {
+	padding-right: 0px !important;
+	padding-left: 0px !important;
+}
+
+.input-group label {
+	line-height: .9;
 }

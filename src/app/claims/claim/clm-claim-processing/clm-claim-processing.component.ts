@@ -17,6 +17,7 @@ export class ClmClaimProcessingComponent implements OnInit {
     ["0005", "Claimed", "EEI-2018-000002-021-0192-000", "CPI", "5K Builders & ABE international", "ABC Building", "01/01/2019", "data"],
     ["0006", "Claimed", "BPV-2018-000002-021-0192-000", "CPI", "5K Builders & ABE international", "ABC Building", "01/01/2019", "data"],
     ["0007", "Claimed", "MBI-2018-000002-021-0192-000", "CPI", "5K Builders & ABE international", "ABC Building", "01/01/2019", "data"],
+    ["0008", "Claimed", "MLP-2018-000002-021-0192-000", "CPI", "5K Builders & ABE international", "ABC Building", "01/01/2019", "data"],
 
   ];
   //tableDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
