@@ -84,6 +84,8 @@ export class PolCoverageComponent implements OnInit {
     pageLength: 3
   };
 
+  textArea: any = null;
+
   passDataDeductibles: any = {
         tHeader: ["Deductible title","Rate (%)", "Amount Deductible Text"],
         dataTypes: [
@@ -98,8 +100,7 @@ export class PolCoverageComponent implements OnInit {
         paginateFlag:true,
         infoFlag:true,
     };
-
-  textArea: string = "";
+    
   @Input() alteration: boolean;
   line: string;
   sub: any;
