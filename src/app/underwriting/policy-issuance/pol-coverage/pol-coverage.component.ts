@@ -117,10 +117,8 @@ export class PolCoverageComponent implements OnInit {
   constructor(private underwritingservice: UnderwritingService, private titleService: Title, private modalService: NgbModal,private route: ActivatedRoute) { }
 
   ngOnInit() {
-
     this.titleService.setTitle("Pol | Coverage");
     if (!this.alteration) {
-
       this.passDataSectionCover.tableData = this.underwritingservice.getUWCoverageInfo();
       this.passDataDeductibles.tableData = this.underwritingservice.getUWCoverageDeductibles();
       //this.passDataTotalPerSection.tableData = this.underwritingservice.getTotalPerSection();
@@ -244,13 +242,11 @@ export class PolCoverageComponent implements OnInit {
     this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
   }
 
-  CATPerils() {
-        $('#modalBtn').trigger('click');
-    }
-
   showDeductiblesModal(deductibles){
     this.modalService.open(deductibles, { centered: true, backdrop: 'static', windowClass: "modal-size" });
   }
 
-
+  CATPerils() {
+        $('#modalBtn').trigger('click');
+    }
 }

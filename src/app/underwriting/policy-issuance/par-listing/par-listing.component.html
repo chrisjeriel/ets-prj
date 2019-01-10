@@ -11,7 +11,7 @@
 		
 				 <app-cust-table [filters]="filters" [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes"></app-cust-table> -->
 
-				<app-cust-non-datatable [passData]="passData" (rowDblClick)="onRowDblClick($event)"></app-cust-non-datatable>
+				<app-cust-non-datatable appChangetheme [passData]="passData" (rowDblClick)="onRowDblClick($event)"></app-cust-non-datatable>
 			</ng-template>
 		</ngb-tab>
 	</ngb-tabset>
