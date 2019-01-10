@@ -37,8 +37,8 @@ import { ClmGenInfoClaimComponent } from './claims/claim/clm-claim-processing/cl
 import { ClaimComponent } from './claims/claim/claim.component';
 import { PaymentRequestsComponent } from './claims/payment-requests/payment-requests.component';
 import { NegateDistributionComponent } from './underwriting/policy-distribution/negate-distribution/negate-distribution.component';
+import { DummyComponent2 } from './_components/common/dummy2/dummy2.component';
 import { PolMxLineComponent } from './underwriting/policy-maintenance/pol-mx-line/pol-mx-line.component';
-import { DummyComponent2 } from './_components/common/dummy2/dummy2.component'
 import { PolBatchProcessingComponent } from './underwriting/policy-distribution/pol-batch-processing/pol-batch-processing.component'
 import { DeductibleComponent } from './underwriting/maintenance/deductible/deductible.component';
 import { RiskListComponent } from './underwriting/maintenance/risk-list/risk-list.component';
