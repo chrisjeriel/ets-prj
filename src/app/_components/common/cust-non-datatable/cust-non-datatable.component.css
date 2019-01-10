@@ -1,5 +1,4 @@
 
-
 table{
     width: 100%;
 }
@@ -14,7 +13,7 @@ th, td{
     padding: 10px !important;
     height: calc(1.3rem + 1px) !important;
     min-width: 30px; 
-    max-width: 165px;
+    max-width: 100%;
     overflow: hidden;
 }
 th{
