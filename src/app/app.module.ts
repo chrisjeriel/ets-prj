@@ -112,6 +112,7 @@ import { ChangethemeDirective } from './_directives/changetheme.directive';
 import { PolMxLineComponent } from './underwriting/policy-maintenance/pol-mx-line/pol-mx-line.component';
 import { ClmSectionCoversComponent } from './claims/claim/clm-claim-processing/clm-section-covers/clm-section-covers.component';
 import { ClmClaimPaymentRequestComponent } from './claims/claim/clm-claim-processing/clm-claim-payment-request/clm-claim-payment-request.component';
+import { ClmChangeClaimStatusComponent } from './claims/claim/clm-change-claim-status/clm-change-claim-status.component';
 
 @NgModule({
     imports: [
@@ -228,7 +229,8 @@ import { ClmClaimPaymentRequestComponent } from './claims/claim/clm-claim-proces
         MonthDirective,
         PolMxLineComponent,
         NumbersOnlyDirective,
-        ClmSectionCoversComponent
+        ClmSectionCoversComponent,
+        ClmChangeClaimStatusComponent
 
     ],
 
