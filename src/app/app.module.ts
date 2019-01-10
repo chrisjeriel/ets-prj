@@ -213,9 +213,9 @@ import { ClmClaimPaymentRequestComponent } from './claims/claim/clm-claim-proces
         ClaimsAttachmentComponent,
         ClmClaimHistoryComponent,
         ClaimDistributionComponent,
+        RequiredDirective, //keep this as first directive declared
         TextEditorComponent,
         CharactersLengthDirective,
-        RequiredDirective,
         CurrencyDirective,
         MonthDirective,
         ChangethemeDirective,
