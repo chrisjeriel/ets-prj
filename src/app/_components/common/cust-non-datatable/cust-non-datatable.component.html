@@ -168,10 +168,10 @@
     <div class="table-scroll table-scroll-unli" id="cust-scroll" *ngIf="!passData.fixedCol">
         <table id="non-datatable" [ngClass]="{'margin-table': passData.addFlag || passData.editFlag || passData.deleteFlag || passData.copyFlag || passData.printBtn || passData.expireFilter || !passData.tableOnly, 'table-scroll-unli': unliFlag}">
             <thead >
-                <tr style="min-width: 96px" >
+                <tr>
                     <th *ngIf="passData.checkFlag" class="checkbox-container-header isCheckBox"><input type="checkbox" name="" [(ngModel)]="checked" class="checkbox"  [checked]="checked" [class.sticky]="unliFlag"></th>
 
-                    <th *ngFor="let tHeader of passData.tHeader; let i = index" [ngSwitch]="passData.dataTypes[i]" (click)="sort(dataKeys[i],sortBy);sortIndex=i;" [ngClass]="{'sticky': unliFlag, 'isCheckBox': passData.dataTypes[i] == 'checkbox'}">
+                    <th *ngFor="let tHeader of passData.tHeader; let i = index" [ngSwitch]="passData.dataTypes[i]" (click)="sort(dataKeys[i],sortBy);sortIndex=i;" [ngClass]="{'sticky': unliFlag, 'isCheckBox': passData.dataTypes[i] == 'checkbox'}" [ngStyle]="{'max-width': passData.colSize[i] == '' ? '100%' : passData.colSize[i]}">
                         <span *ngIf="passData.resizable[i]" 
                               class="ui-column-resizer" (mousedown) = "onMouseDown($event)"></span>
                         <div *ngSwitchCase="'currency'" style="text-align: right">
@@ -192,8 +192,8 @@
             <tbody>
                 <tr *ngFor="let data of displayData | paginate: { id: 'non-editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event, data);" (dblclick)="onRowDblClick($event)" [class.selected]="data === indvSelect || selected.includes(data) || checked">
                     <td *ngIf="passData.checkFlag" class="checkbox-container-body isCheckBox"><input type="checkbox" name="" *ngIf="addCheckFlag(data)" class="checkbox" (change)="removeSelected($event, data)" [checked]="checked"></td>
-                    <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]" [class.isCheckBox]="passData.dataTypes[i] == 'checkbox'">
-                        <div *ngIf="addCheckFlag(data)">
+                    <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]" [class.isCheckBox]="passData.dataTypes[i] == 'checkbox'" [ngStyle]="{'max-width': passData.colSize[i] == '' ? '100%' : passData.colSize[i]}">
+                        <div *ngIf="addCheckFlag(data)" style="overflow: hidden">
                             <div *ngSwitchCase="'percent'" style="text-align: right">
                                 <span class="unclickable">{{ processData(key, data) | number: '1.7-7'}}</span>
                             </div>
@@ -217,7 +217,7 @@
                     </td>
                 </tr>
                 <tr *ngIf="passData.total !== undefined">
-                    <th *ngFor="let data of passData.total; let i = index" [ngSwitch]="passData.dataTypes[i]">
+                    <th *ngFor="let data of passData.total; let i = index" [ngSwitch]="passData.dataTypes[i]" [ngStyle]="{'max-width': passData.colSize[i] == '' ? '100%' : passData.colSize[i]}">
                         <div *ngSwitchCase="'currency'" style="text-align: right">
                                 <span class="unclickable">{{ getSum(data) | number: '1.2-2'}}</span>
                         </div>

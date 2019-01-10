@@ -1,7 +1,4 @@
 
-table{
-    width: 100%;
-}
 tbody tr, thead tr{
     height: calc(1.3rem + 1px);
 }
@@ -12,8 +9,9 @@ th, td{
     padding: 0px !important;*/
     padding: 10px !important;
     height: calc(1.3rem + 1px) !important;
-    min-width: 30px; 
-    max-width: 100%;
+    /*min-width: 30px; */
+    /*max-width: 100%;*/
+    /*max-width: 165px;*/
     overflow: hidden;
 }
 th{
@@ -33,7 +31,7 @@ div.filler{
 .table-scroll{
     overflow-x: auto;
     overflow-y: auto;
-    max-width: 100%;
+    width: 100%;
 }
 .table-scroll-unli{
     max-height: 34em;
@@ -97,12 +95,6 @@ div.filler{
     background-color: #67b4fc !important;
 }
 
-.headcol {
-    position: absolute;
-    left: inherit;
-    min-width: 30px; 
-    max-width: 150px;
-}
 .no-padding{
     padding: 0;
 }

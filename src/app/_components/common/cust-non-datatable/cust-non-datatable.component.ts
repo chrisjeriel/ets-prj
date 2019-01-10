@@ -97,9 +97,26 @@ export class CustNonDatatableComponent implements OnInit {
     //test
     @Input() newData: any = new QuotationList(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null);
     @Input() passData: any = {
-        tableData: [], tHeader: [], dataTypes: [], resizable: [], filters: [],
-        pageLength: 10,
-        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, pageStatus: true, pagination: true, addFlag: false, editFlag: false, deleteFlag: false, copyFlag: false, pageID: 1
+        tableData: [],          //REQUIRED. 
+        tHeader: [],            //REQUIRED.
+        dataTypes: [],          //REQUIRED.
+        resizable: [],          //REQUIRED.
+        filters: [],            //Required if tableOnly is false.
+        colSize: [],            //REQUIRED. STRING VALUE. DEFAULT VALUE is '100%'. Just add '' as a value
+        pageLength: 10,         //specify max number of rows in the table before it breaks to pagination.
+                                //use 'unli' as pageLength for unlimited rows.
+        expireFilter: false,    //expire filter 
+        checkFlag: false,       //checkbox column
+        tableOnly: false,       //disable search and filter
+        fixedCol: false,        //fix first column
+        printBtn: false,        //print btn
+        pageStatus: true,       //pagination labels. must always be assigned unless you don't want this
+        pagination: true,       //pagination buttons. must always be assigned unless you don't want this
+        addFlag: false,         //add btn
+        editFlag: false,        //edit btn
+        deleteFlag: false,      //delete btn
+        copyFlag: false,        //copy btn
+        pageID: 1               //if you use multiple instances of this component, this is a must
     }
 
     dataKeys: any[] = [];
@@ -130,6 +147,7 @@ export class CustNonDatatableComponent implements OnInit {
 
     ngOnInit(): void {
         this.passData.pageID = typeof this.passData.pageID == "undefined" ? 1 : this.passData.pageID;
+        this.passData.colSize = typeof this.passData.colSize == "undefined" ? [] : this.passData.colSize;
         this.unliFlag = this.passData.pageLength == 'unli';
         this.passData.pageLength = typeof this.passData.pageLength != 'number' ? 10 : this.passData.pageLength;
         this.unliTableLength();
@@ -184,9 +202,9 @@ export class CustNonDatatableComponent implements OnInit {
         this.renderer.listenGlobal('body', 'mousemove', (event) => {
             if(this.pressed) {
                 let width = this.startWidth + (event.x - this.startX);
-                $(this.start).parent().css({'min-width': width, 'max-width': width});
+                $(this.start).parent().css({'min-width': width, 'max-width': width, 'width': width});
                 let index = $(this.start).parent().index() + 1;
-                $('.glowTableBody tr td:nth-child(' + index + ')').css({'min-width': width, 'max-width': width});
+                $('.glowTableBody tr td:nth-child(' + index + ')').css({'min-width': width, 'max-width': width, 'width': width});
             }
         });
         this.renderer.listenGlobal('body', 'mouseup', (event) => {

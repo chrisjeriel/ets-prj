@@ -100,6 +100,9 @@ export class DummyComponent implements OnInit {
             "text","text","text","text","text","text","text","text","text",
             "text","text","text","text","date"
         ],
+        colSize: [
+            '', '', '', '', '', '', '', '', '900px', '', '', '', '',  
+        ],
         tableData: this.quotationService.getQuotationListInfo(),
         pageLength: 10,
         expireFilter: true,
