@@ -50,7 +50,7 @@ export class ClmClaimHistoryComponent implements OnInit {
     infoFlag: true,
     addFlag: true,
     tableData: [],
-    widths: [],
+    widths: [1,1,147,67,91,118,78,1,'auto'],
     nData: new ClaimsHistoryInfo(null, null, null, null, null, null, null, null, null)
   };
 
