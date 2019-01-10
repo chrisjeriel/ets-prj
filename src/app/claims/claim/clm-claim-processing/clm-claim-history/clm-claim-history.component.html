@@ -38,13 +38,13 @@
 				<div class="form-row" style="margin-top: -10px;">
 					<div class="input-group">
 						<label class="form-control-sm col-sm-1">Processed By</label>
-						<input type="text" class="form-control form-control-sm col-sm">
+						<input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma">
 						<label class="form-control-sm col-sm-1">Processed Date</label>
-						<input type="text" class="form-control form-control-sm col-sm">
+						<input type="datetime-local" class="form-control form-control-sm col-sm">
 						<label class="form-control-sm col-sm-1">Last Updated By</label>
-						<input type="text" class="form-control form-control-sm col-sm">
+						<input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma">
 						<label class="form-control-sm col-sm-1">Last Update</label>
-						<input type="text" class="form-control form-control-sm col-sm">
+						<input type="datetime-local" class="form-control form-control-sm col-sm">
 					</div>
 				</div>
 			</div>
@@ -88,14 +88,13 @@
 				</fieldset>
 			</div>
 			<div class="col-sm-4">
-				<fieldset class="scheduler-border" style="margin-left: -7px !important; padding-top: 2px !important; padding-bottom: 6px !important;">
+				<fieldset class="scheduler-border" style="margin-left: -7px !important; padding-top: 3px !important; padding-bottom: 12px !important;">
 					<legend class="scheduler-border">Status Info</legend>
 					<div class="custom-row-inline-inset">
 						<div class="form-row">
 							<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -14px;">
 								<label class="form-control-sm top-label">&nbsp;Status</label>
 								<input type="text" class="form-control form-control-sm cust-sm" placeholder="In Progress">
-
 							</div>
 							<div class="text-search-ico" style="z-index: 1 !important; margin: 8px 9px -10px -24px !important;padding-top: 2px !important;">
 								<a><i class="fa fa-search"></i></a></div>
@@ -122,8 +121,54 @@
 			<div class="form-group col-sm">
 				<div class="col-md-13 text-center">
 					<div class="cust-btn-container" style="margin-top: 10px; width: 100% !important;">
-						<button type="button" class="cust-btn" style="max-width: 50%!important;"><a>Reserve Status</a></button>
-						<button type="button" class="cust-btn" style="max-width: 50%!important;"><a>Approved Amount</a></button>
+						<app-modal [btnTitle]="'Reserve Status'" style="margin-bottom: 2px;padding-top: 2px !important;">
+							<div header style="width: 800px !important;">Reserve Status</div>
+							<div body>
+								<fieldset class="scheduler-border" style="margin-top: -23px !important;">
+									<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+									<div class="custom-row-inline-inset">
+										<div class="input-group">
+											<label class="form-control-sm col-sm-2" style="margin-left: -36px !important;">Loss Reserve</label>
+											<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" placeholder="700,000.00"
+											 onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' required>
+											<label class="form-control-sm col-sm-1">Status</label>
+											<input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="Open" required>
+											<div class="text-search-ico">
+												<a><i class="fa fa-search"></i></a></div>
+											<label class="form-control-sm col-sm-2" style="margin-left: -32px !important;">Losses Paid</label>
+											<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
+											 placeholder="699,375.64" required>
+										</div>
+										<div class="input-group">
+											<label class="form-control-sm col-sm-2" style="margin-left: -36px !important;">Expense Reserve</label>
+											<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" placeholder="0.00"
+											 onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' required>
+											<label class="form-control-sm col-sm-1">Status</label>
+											<input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="Open" required>
+											<div class="text-search-ico">
+												<a><i class="fa fa-search"></i></a></div>
+											<label class="form-control-sm col-sm-2" style="margin-left: -32px !important;">Expense Paid</label>
+											<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
+											 placeholder="0.00" required>
+										</div>
+									</div>
+								</fieldset>
+							</div>
+							<div footer class="text-center" style="width: 100% !important;margin-top: -17px !important;">
+								<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
+								<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Save</a></button>
+							</div>
+						</app-modal>
+						<app-modal [btnTitle]="'Approved Amount'" style="margin-bottom: 2px;padding-top: 2px !important;">
+							<div header style="width: 800px !important;">Adjusters</div>
+							<div body>
+								<app-cust-editable-non-datatable [passData]="passDataAdj"></app-cust-editable-non-datatable>
+							</div>
+							<div footer class="text-center" style="width: 100% !important;margin-top: -17px !important;">
+								<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
+								<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Save</a></button>
+							</div>
+						</app-modal>
 						<button type="button" class="cust-btn"><a>Cancel</a></button>
 						<button type="button" class="cust-btn"><a>Save</a></button>
 					</div>

@@ -60,7 +60,7 @@ export class ClmGenInfoClaimComponent implements OnInit {
     });
     this.titleService.setTitle("Clm | General Info");
     this.passData.tHeader.push("Adjuster No", "Adjuster Name", "Adjuster Reference No");
-    this.passData.dataTypes.push("text", "text", "text");
+    this.passData.dataTypes.push("number", "text", "text");
     this.passData.widths.push("1", "auto", "auto");
     this.passData.tableData = this.tableData;
   }

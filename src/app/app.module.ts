@@ -103,6 +103,7 @@ import { CharactersLengthDirective } from './_directives/characters-length.direc
 import { RequiredDirective } from './_directives/required.directive';
 import { CurrencyDirective } from './_directives/currency.directive';
 import { MonthDirective } from './_directives/month.directive';
+import { ClmClaimPaymentRequestComponent } from './claims/claim/clm-claim-processing/clm-claim-payment-request/clm-claim-payment-request.component';
 
 
 
@@ -210,7 +211,8 @@ import { MonthDirective } from './_directives/month.directive';
         RequiredDirective,
         CurrencyDirective,
         MonthDirective,
-        NumbersOnlyDirective
+        NumbersOnlyDirective,
+        ClmClaimPaymentRequestComponent
     ],
 
     providers: [
