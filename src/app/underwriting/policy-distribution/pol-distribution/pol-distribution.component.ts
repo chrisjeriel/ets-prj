@@ -30,10 +30,10 @@ export class PolDistributionComponent implements OnInit {
     deleteFlag: false,
     paginateFlag: false,
     infoFlag: false,
-    searchFlag: false,
+    searchFlag: true,
     checkboxFlag: false,
     pageLength: 10,
-    widths: []
+    widths: [],
   };
 
   passDataTreatyCharges: any = {

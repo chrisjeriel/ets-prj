@@ -309,3 +309,7 @@ tr td span{
    font-weight: bold;
    border-radius: 4px;
 }
+
+td div input.number-magnify{
+    padding-right: 16px !important;
+}
