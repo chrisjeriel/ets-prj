@@ -1,0 +1,66 @@
+<div>
+  <fieldset class="scheduler-border">
+    <legend class="scheduler-border">Claim Info</legend>
+    <div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;" style="margin-top: 10px !important;">
+      <div class="input-group" style="margin-bottom: -13px !important; margin-top: 3px !important">
+        <div class="col-sm-1"></div>
+        <label class="form-control-sm col-sm-1" for="xx">Claim No</label>
+        <input type="text" value="CAR-2018-000001" class="form-control form-control-sm cust-sm col-sm-3" placeholder=""
+          readonly>
+        <label class="form-control-sm col-sm-1" for="xx">Insured</label>
+        <input type="text" value="2nd Inn. Inc" class="form-control form-control-sm cust-sm col-sm-5" placeholder=""
+          readonly>
+        <div class="col-sm-1"></div>
+      </div>
+      <div class="input-group" style="margin-bottom: -13px !important;">
+        <div class="col-sm-1"></div>
+        <label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Policy No</label>
+        <input type="text" value="CAR-2018-00001-99-0001-000" class="form-control form-control-sm cust-sm col-sm-3	"
+          placeholder="" readonly>
+        <label class="form-control-sm col-sm-1" for="xx">Risk</label>
+        <input type="text" value="Ayala Wakeboard" class="form-control form-control-sm cust-sm col-sm-5" placeholder=""
+          readonly>
+        <div class="col-sm-1"></div>
+      </div>
+    </div>
+  </fieldset>
+</div>
+
+<div>
+  <fieldset class="scheduler-border">
+    <legend class="scheduler-border">Payment Request No</legend>
+    <div class="custom-row-inline-inset">
+      <div class="row">
+        <div class="col-sm-12">
+          <app-cust-non-datatable [passData]="passData">
+          </app-cust-non-datatable>
+        </div>
+      </div>
+      <div class="form-row" style="margin-top: -10px;">
+        <div class="input-group">
+          <label class="form-control-sm col-sm-1">Processed By</label>
+          <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma">
+          <label class="form-control-sm col-sm-1">Processed Date</label>
+          <input type="datetime-local" class="form-control form-control-sm col-sm">
+          <label class="form-control-sm col-sm-1">Last Updated By</label>
+          <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma">
+          <label class="form-control-sm col-sm-1">Last Update</label>
+          <input type="datetime-local" class="form-control form-control-sm col-sm">
+        </div>
+      </div>
+    </div>
+  </fieldset>
+</div>
+<div class="form-row" style="margin-top: 15px !important;margin-left: -4px !important;">
+  <div class="form-group col-sm">
+    <div class="col-md-13 text-center">
+      <div class="cust-btn-container">
+        <button type="button" class="cust-btn"><a>Generate Request</a></button>
+        <button type="button" class="cust-btn"><a>Approve Request</a></button>
+        <button type="button" class="cust-btn"><a>Cancel Request</a></button>
+        <button type="button" class="cust-btn"><a>Print</a></button>
+        <button type="button" class="cust-btn"><a>Cancel</a></button>
+      </div>
+    </div>
+  </div>
+</div>

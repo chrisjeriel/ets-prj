@@ -1,24 +1,26 @@
-export class ClaimsHistoryInfo{
-	historyNo : string;
-	amountType: string;
-	historyType: string;
+
+export class ClaimsHistoryInfo {
+	histNo: string;
+	histType: string;
+	type: string;
 	currency: string;
-	amount: number;
+	reserve: number;
+	paymentAmount: number;
+	refNo: string;
+	refDate: Date;
 	remarks: string;
-	accountingTranId: number
-	accountingDate:  Date;
 
-constructor(historyNo : string,amountType: string,historyType: string,currency: string,amount: number,remarks: string,accountingTranId: number,accountingDate:  Date){
+	constructor(histNo: string, histType: string, type: string, currency: string, reserve: number, paymentAmount: number, refNo: string, refDate: Date, remarks: string) {
+		this.histNo = histNo;
+		this.histType = histType;
+		this.type = type;
+		this.currency = currency;
+		this.reserve = reserve;
+		this.paymentAmount = paymentAmount;
+		this.refNo = refNo;
+		this.refDate = refDate;
+		this.remarks = remarks;
 
-	this.historyNo = historyNo;
-	this.amountType = amountType;
-	this.historyType = historyType;
-	this.currency = currency;
-	this.amount = amount;
-	this.remarks = remarks;
-	this.accountingTranId = accountingTranId;
-	this.accountingDate = accountingDate;
-}
-
+	}
 }
 

@@ -28,7 +28,7 @@
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Policy No</label>
                     <input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px;"
-                        ngbTooltip="Line" placeholder="CAR">
+                        ngbTooltip="Line" placeholder="" [(ngModel)]="line">
                     <input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px;"
                         ngbTooltip="Year" placeholder="2018">
                     <input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 3px;"
@@ -43,7 +43,7 @@
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Claim No</label>
                     <input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px;"
-                        placeholder="CAR">
+                        placeholder="" [(ngModel)]="line">
                     <input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px;"
                         placeholder="2018">
                     <input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 3px;"
@@ -55,7 +55,7 @@
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Co Claim No</label>
                     <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;"
-                        placeholder="CAR-HO-2018-00015666">
+                        placeholder="" [(ngModel)]="coClaimNo">
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Type of Cession</label>
@@ -63,7 +63,7 @@
                         readonly>
                     <label class="form-control-sm col-sm-2">Line Class</label>
                     <input type="text" class="form-control form-control-sm" style="margin-left: 3px; margin-right: 1px !important;"
-                        placeholder="CAR Wet Risk" readonly>
+                        placeholder="CAR Wet Risk" [(ngModel)]="lineClass" readonly>
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Ceding Company</label>
@@ -75,19 +75,40 @@
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Co Ref No</label>
                     <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;"
-                        placeholder="EN-CAR-HO-2018-006792-01" readonly>
+                        placeholder="EN-CAR-HO-2018-006792-01" [(ngModel)]="coRefNo" readonly>
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Adjuster</label>
                     <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;margin-right: -15px !important;"
-                        placeholder="AArema Adjusters and Surveyors, Inc.">
+                        placeholder="AArema Adjusters and Surveyors, Inc. / TLP Adj. / ACD Co. Inc.">
                     <div class="text-search-ico" style="margin-right: 8px !important; margin-left: -6px !important;"><a><i
                                 class="fa fa-search"></i></a></div>
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Adjuster Ref No</label>
-                    <input type="text" class="form-control form-control-sm col-sm-5" style="margin-left: 3px;"
-                        placeholder="PMMSC-CAR-2018-025">
+                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;"
+                        placeholder="PMMSC-CAR-2018-025 / ADJ2 REF 001 / ADJ3 REF 001" [(ngModel)]="adjRefNo">
+                    <div class="cust-btn-container col-sm-2" style="padding-right: 0px !important;
+                        padding-bottom: 0px !important; 
+                        padding-left: 3px !important;
+                        margin-right: -29px !important;
+                        margin-top: -3px !important;
+                        margin-top: 0px !important;
+                        line-height: 13px !important;">
+                        <app-modal [btnTitle]="'Adjusters'" style="margin-bottom: 2px;padding-top: 2px !important;">
+                            <div header style="width: 800px !important;">Adjusters</div>
+                            <div body>
+                                <app-cust-editable-non-datatable [passData]="passData">
+                                </app-cust-editable-non-datatable>
+                            </div>
+                            <div footer class="text-center" style="width: 100% !important;">
+                                <button type="button" class="cust-btn" style="max-width: 50%!important;" (click)="modalService.dismissAll()"><a>Adjusters
+                                        Maintenance</a></button>
+                                <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
+                                <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Save</a></button>
+                            </div>
+                        </app-modal>
+                    </div>
                 </div>
             </div>
             <div class="col-sm-6">
@@ -96,11 +117,7 @@
                     <input type="date" class="form-control form-control-sm col-sm-3" style="margin-left: 3px;">
                     <input type="text" class="form-control form-control-sm col-sm-2 text-center" style="margin-left: 3px;"
                         placeholder="03:00 PM">
-                    <label class="form-control-sm col-sm-2">Loss Period</label>
-                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;margin-right: -12px;"
-                        placeholder="Basic Period">
-                    <div class="text-search-ico" style="margin-right: 15px !important; margin-left: -7px !important;">
-                        <a><i class="fa fa-search"></i></a></div>
+                    <div class="col-sm" style="margin-left: 87px !important;"></div>
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Report Date</label>
@@ -112,41 +129,59 @@
                         placeholder="Juan Dela Cruz">
                 </div>
                 <div class="input-group">
-                    <label class="form-control-sm col-sm-2">Create Date</label>
+                    <label class="form-control-sm col-sm-2">Creation Date</label>
                     <input type="date" class="form-control form-control-sm col-sm-3" style="margin-left: 3px;">
                     <input type="text" class="form-control form-control-sm col-sm-2 text-center" style="margin-left: 3px;"
                         placeholder="03:00 PM" readonly>
-                    <label class="form-control-sm col-sm-2">In House Adj</label>
+                    <label class="form-control-sm col-sm-2">Processed By</label>
                     <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;margin-right: 9px !important;"
                         placeholder="Juan Dela Cruz">
+                </div>
+                <div class="input-group" style="padding-left: 103px !important;">
+                    <div class="col-sm-6">
+                        <div class="row" style="margin-left: -143px !important;margin-right: -14px !important;"><label
+                                class="form-control-sm col-sm-4">Loss Cause</label><input class="form-control form-control-sm col-sm"
+                                placeholder="E.Q. Volcanism" style="margin-left: 3px;margin-right: -12px;" type="text">
+                            <div class="text-search-ico" style="margin-right: 13px !important; margin-left: -7px !important;">
+                                <a><i class="fa fa-search"></i></a></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="row" style="padding-left: 15px !important;">
+                            <label class="form-control-sm col-sm-4">Loss Period</label>
+                            <input class="form-control form-control-sm col-sm" placeholder="Basic Period" style="margin-left: 3px;margin-right: -12px;"
+                                type="text">
+                            <div class="text-search-ico" style="margin-right: 15px !important; margin-left: -7px !important;">
+                                <a><i class="fa fa-search"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group" style="padding-left: 103px !important;">
+                    <div class="col-sm-6">
+                        <div class="row" style="margin-left: -143px !important;margin-right: -14px !important;"><label
+                                class="form-control-sm col-sm-4">Event Type</label><input class="form-control form-control-sm col-sm"
+                                placeholder="Earthquake" style="margin-left: 3px;margin-right: -12px;" type="text">
+                            <div class="text-search-ico" style="margin-right: 13px !important; margin-left: -7px !important;">
+                                <a><i class="fa fa-search"></i></a></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="row" style="padding-left: 15px !important;">
+                            <label class="form-control-sm col-sm-4">Event</label>
+                            <input class="form-control form-control-sm col-sm" placeholder="The Big 1 (Magnitude 7.5)"
+                                style="margin-left: 3px;margin-right: -12px;" type="text">
+                            <div class="text-search-ico" style="margin-right: 15px !important; margin-left: -7px !important;">
+                                <a><i class="fa fa-search"></i></a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Loss Details</label>
                     <!-- <textarea class="form-control form-control-sm col-sm" style="font-size: 12px !important;margin-bottom: 17px !important;margin-left: 3px;margin-right: 9px !important;min-height: 72px !important;" -->
                     <textarea class="form-control form-control-sm col-sm" style="margin-bottom: 17px !important;margin-left: 2px;margin-right: 9px !important;min-height: 72px !important; font-size: 0.7rem !important"
                         placeholder="Damaged electric cables and supply lines on 2nd and 3rd floors due to earthquake."></textarea>
-                </div>
-                <div class="input-group">
-                    <label class="form-control-sm col-sm-2">Loss Cause</label>
-                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;margin-right: -12px;"
-                        placeholder="E.Q. Volcanism">
-                    <div class="text-search-ico" style="margin-right: 13px !important; margin-left: -7px !important;">
-                        <a><i class="fa fa-search"></i></a></div>
-                    <label class="form-control-sm col-sm-2">Loss Cover</label>
-                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;margin-right: -12px;"
-                        placeholder="Material Damage">
-                    <div class="text-search-ico" style="margin-right: 15px !important; margin-left: -7px !important;">
-                        <a><i class="fa fa-search"></i></a></div>
-                </div>
-                <div class="input-group">
-                    <label class="form-control-sm col-sm-2">Event</label>
-                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;margin-right: -12px;"
-                        placeholder="The Big 1 (Magnitude 7.5)">
-                    <div class="text-search-ico" style="margin-right: 13px !important; margin-left: -7px !important;">
-                        <a><i class="fa fa-search"></i></a></div>
-                    <label class="form-control-sm col-sm-2">Event Type</label>
-                    <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;margin-right: 9px !important;"
-                        placeholder="Earthquake" readonly>
                 </div>
             </div>
         </div>
@@ -162,64 +197,66 @@
                     <div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
                         <div class="input-group" style="margin-top: 10px;">
                             <label class="form-control-sm col-sm-1">Principal</label>
-                            <input type="text" class="form-control form-control-sm col-sm-1">
-                            <input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
+                            <input type="text" class="form-control form-control-sm col-sm-1" placeholder="001">
+                            <input type="text" class="form-control form-control-sm" style="margin-left: 5px;"
+                                placeholder="Seirgreich Solutions, Inc.">
                             <label class="form-control-sm col-sm-1">Contractor</label>
-                            <input type="text" class="form-control form-control-sm col-sm-1">
-                            <input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
+                            <input type="text" class="form-control form-control-sm col-sm-1" placeholder="002">
+                            <input type="text" class="form-control form-control-sm" style="margin-left: 5px;"
+                                placeholder="CJM Electromechanical Services">
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-1">Insured</label>
-                            <textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;"></textarea>
+                            <textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;"
+                                placeholder="Seirgreich Solutions, Inc. / CJM Electromechanical Services"></textarea>
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-1">Risk</label>
-                            <input type="text" class="form-control form-control-sm">
+                            <input type="text" class="form-control form-control-sm" placeholder="La Perla Warehouse Mandaluyong">
                         </div>
                         <div class="input-group" style="margin-bottom: 0px !important;">
                             <div class="col-sm-6 input-group" style="padding: 0px;">
                                 <label class="form-control-sm col-sm-2">Object</label>
-                                <input type="text" class="form-control form-control-sm col-sm-2">
-                                <input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;">
+                                <input type="text" class="form-control form-control-sm col-sm-2" placeholder="009">
+                                <input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;"
+                                    placeholder="Hall Buildings">
                             </div>
                             <div class="col-sm-6 input-group" style="padding: 0px;">
                                 <label class="form-control-sm col-sm-2">Region</label>
-                                <input type="text" class="form-control form-control-sm col-sm-10">
+                                <input type="text" class="form-control form-control-sm col-sm-10" placeholder="NATIONAL CAPITAL REGION">
                             </div>
                         </div>
                         <div class="input-group">
-
-
                             <label class="form-control-sm col-sm-1">Nature of Work</label>
-                            <textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;"></textarea>
-
-
+                            <textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;"
+                                placeholder="Warehouse"></textarea>
                             <div class="col-sm-6">
                                 <div class="row">
                                     <div class="input-group">
                                         <label class="form-control-sm col-sm-2">Province</label>
-                                        <input type="text" class="form-control form-control-sm">
+                                        <input type="text" class="form-control form-control-sm" placeholder="METRO MANILA">
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="input-group">
                                         <label class="form-control-sm col-sm-2">City/Town</label>
-                                        <input type="text" class="form-control form-control-sm">
+                                        <input type="text" class="form-control form-control-sm" placeholder="MANDALUYONG CITY">
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="input-group">
                             <label class="form-control-sm col-sm-1">Site</label>
-                            <textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 12px; margin-left: 2px;"></textarea>
+                            <textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 12px; margin-left: 2px;"
+                                placeholder="Sheridan cor. Reliance St. Mandaluyong City"></textarea>
 
                             <div class="col-sm-6">
                                 <div class="row">
                                     <div class="input-group">
                                         <label class="form-control-sm col-sm-2">District</label>
-                                        <input type="text" class="form-control form-control-sm">
+                                        <input type="text" class="form-control form-control-sm" placeholder="HIGH WAY HILLS">
                                         <label class="form-control-sm col-sm-2">Block</label>
-                                        <input type="text" class="form-control form-control-sm">
+                                        <input type="text" class="form-control form-control-sm" placeholder="442B">
                                     </div>
                                 </div>
                                 <div class="row">
@@ -394,9 +431,9 @@
                                 </div>
                                 <div class="row">
                                     <div class="input-group">
-                                        <label class="form-control-sm col-sm-2">Lat</label>
-                                        <input type="text" class="form-control form-control-sm">
                                         <label class="form-control-sm col-sm-2">Long</label>
+                                        <input type="text" class="form-control form-control-sm">
+                                        <label class="form-control-sm col-sm-2">Lat</label>
                                         <input type="text" class="form-control form-control-sm">
                                     </div>
                                 </div>
@@ -635,80 +672,82 @@
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3">100% Value</label>
                         <input type="text" class="form-control form-control-sm cust-sm" required onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
-                            placeholder="PHP 1,000,000,000.00" style="text-align: right;">
+                            placeholder="1,000,000,000.00" style="text-align: right;">
                     </div>
                 </div>
             </fieldset>
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-8">
             <fieldset class="scheduler-border" style="margin-right: -7px !important; padding-bottom: 4px !important;padding-top: 4px !important;">
                 <legend class="scheduler-border">Reserve and Payments</legend>
                 <div class="custom-row-inline-inset">
                     <div class="input-group">
-                        <label class="form-control-sm col-sm-2">Loss Reserve</label>
-                        <input type="text" class="form-control form-control-sm cust-sm text-right" placeholder="10,000,000.00"
+                        <label class="form-control-sm col-sm-2" style="margin-left: -36px !important;">Loss Reserve</label>
+                        <input type="text" class="form-control form-control-sm cust-sm text-right col-sm" placeholder="700,000.00"
                             onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
                             required>
-                        <label class="form-control-sm col-sm-2">Losses Paid</label>
-                        <input type="text" class="form-control form-control-sm cust-sm text-right" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
+                        <label class="form-control-sm col-sm-1">Status</label>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="Open"
                             required>
+                        <label class="form-control-sm col-sm-2" style="margin-left: -32px !important;">Losses Paid</label>
+                        <input type="text" class="form-control form-control-sm cust-sm text-right col-sm" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
+                            placeholder="699,375.64" required>
                     </div>
                     <div class="input-group">
-                        <label class="form-control-sm col-sm-2">Expense Reserve</label>
-                        <input type="text" class="form-control form-control-sm cust-sm text-right" placeholder="300,000.00"
+                        <label class="form-control-sm col-sm-2" style="margin-left: -36px !important;">Expense Reserve</label>
+                        <input type="text" class="form-control form-control-sm cust-sm text-right col-sm" placeholder="0.00"
                             onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
                             required>
-                        <label class="form-control-sm col-sm-2">Expense Paid</label>
-                        <input type="text" class="form-control form-control-sm cust-sm text-right" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
+                        <label class="form-control-sm col-sm-1">Status</label>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="Open"
                             required>
+                        <label class="form-control-sm col-sm-2" style="margin-left: -32px !important;">Expense Paid</label>
+                        <input type="text" class="form-control form-control-sm cust-sm text-right col-sm" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
+                            placeholder="0.00" required>
                     </div>
                     <div class="input-group">
-                        <label class="form-control-sm col-sm-2">Total Reserve</label>
-                        <input type="text" class="form-control form-control-sm cust-sm text-right" placeholder="10,300,000.00"
+                        <label class="form-control-sm col-sm-2" style="margin-left: -36px !important;">Total Reserve</label>
+                        <input type="text" class="form-control form-control-sm cust-sm text-right col-sm" placeholder="700,000.00"
                             onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
                             required>
-                        <label class="form-control-sm col-sm-2">Total Payment</label>
-                        <input type="text" class="form-control form-control-sm cust-sm text-right" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
-                            required>
+                        <div class="col-sm-2" style="margin-left: -80px !important;"></div>
+                        <div class="col-sm"></div>
+                        <label class="form-control-sm col-sm-2" style="margin-left: -32px !important;">Total Payment</label>
+                        <input type="text" class="form-control form-control-sm cust-sm text-right col-sm" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
+                            placeholder="699,375.64" required>
                     </div>
                 </div>
             </fieldset>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-4">
             <fieldset class="scheduler-border" style="margin-left: -7px !important; padding-top: 2px !important; padding-bottom: 6px !important;">
                 <legend class="scheduler-border">Status Info</legend>
                 <div class="custom-row-inline-inset">
                     <div class="form-row">
-                        <div class="col-sm-1"></div>
-                        <div class="form-group col-sm-5" style="margin-bottom: 0px; margin-top: -14px;">
+                        <div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -14px;">
                             <label class="form-control-sm top-label">&nbsp;Status</label>
                             <input type="text" class="form-control form-control-sm cust-sm" placeholder="In Progress">
 
                         </div>
                         <div class="text-search-ico" style="z-index: 1 !important; margin: 8px 9px -10px -24px !important;padding-top: 2px !important;">
                             <a><i class="fa fa-search"></i></a></div>
-                        <div class="form-group col-sm-5" style="margin-bottom: 0px; margin-top: -14px;">
+                        <div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -14px;">
                             <label class="form-control-sm top-label">&nbsp;Approved Amount</label>
-                            <input type="text" class="form-control form-control-sm cust-sm text-right" placeholder="15,000,000.00"
+                            <input type="text" class="form-control form-control-sm cust-sm text-right" placeholder="800,000.00"
                                 onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
                         </div>
-                        <div class="col-sm-1"></div>
                     </div>
                     <div class="form-row">
-                        <div class="col-sm-1"></div>
-                        <div class="form-group col-sm-5" style="margin-bottom: 0px;">
+                        <div class="form-group col-sm-6" style="margin-bottom: 0px;">
                             <label class="form-control-sm top-label">&nbsp;Approved By</label>
                             <input type="text" class="form-control form-control-sm cust-sm" placeholder="Monica Reyes">
                         </div>
-                        <div class="text-search-ico" style="z-index: 1 !important; margin: 22px 9px -10px -24px !important;padding-top: 2px !important;">
-                            <a><i class="fa fa-search"></i></a></div>
-                        <div class="form-group col-sm-5" style="margin-bottom: 0px;">
-                            <label class="form-control-sm top-label">&nbsp;Date Approved</label>
+                        <div class="form-group col-sm-6" style="margin-bottom: 0px;">
+                            <label class="form-control-sm top-label">&nbsp;Approved Date</label>
                             <input type="datetime-local" class="form-control form-control-sm cust-sm" placeholder="hello">
                         </div>
-                        <div class="col-sm-1"></div>
                     </div>
                 </div>
             </fieldset>
@@ -720,6 +759,7 @@
     <div class="form-group col-sm">
         <div class="col-md-13 text-center">
             <div class="cust-btn-container">
+                <button type="button" class="cust-btn"><a>Refresh</a></button>
                 <button type="button" class="cust-btn"><a>Cancel</a></button>
                 <button type="button" class="cust-btn"><a>Save</a></button>
             </div>

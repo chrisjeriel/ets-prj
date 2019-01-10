@@ -110,6 +110,8 @@ import { RiskFormComponent } from './underwriting/maintenance/risk-form/risk-for
 import { MonthDirective } from './_directives/month.directive';
 import { PolMxLineComponent } from './underwriting/policy-maintenance/pol-mx-line/pol-mx-line.component';
 import { ClmSectionCoversComponent } from './claims/claim/clm-claim-processing/clm-section-covers/clm-section-covers.component';
+import { ClmClaimPaymentRequestComponent } from './claims/claim/clm-claim-processing/clm-claim-payment-request/clm-claim-payment-request.component';
+
 
 @NgModule({
     imports: [
@@ -215,6 +217,9 @@ import { ClmSectionCoversComponent } from './claims/claim/clm-claim-processing/c
         CharactersLengthDirective,
         RequiredDirective,
         CurrencyDirective,
+        MonthDirective,
+        NumbersOnlyDirective,
+        ClmClaimPaymentRequestComponent,
         PolBatchProcessingComponent,
         DeductibleComponent,
         RiskListComponent,
@@ -223,6 +228,7 @@ import { ClmSectionCoversComponent } from './claims/claim/clm-claim-processing/c
         PolMxLineComponent,
         NumbersOnlyDirective,
         ClmSectionCoversComponent
+
     ],
 
     providers: [
