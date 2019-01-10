@@ -1,44 +1,57 @@
 export class PARListing {
 
+	line : string
 	policyNo : string
 	typeCession : string
-	lineClass : string
-	status : string
 	cedingCompany : string
-	principal: string
-	contractor : string
 	insured : string
-
 	risk: string
 	object : string
 	site : string
-	quotationNo : string
-	company : string
+	currency : string
+	sumInsured : number
+	premium : number
 	issueDate : Date
 	inceptionDate : Date
 	expiryDate : Date
-	createdBy : string
+	accountingDate : Date
+	status : string
 
 
-	constructor(policyNo : string,typeCession : string,lineClass : string,status : string,cedingCompany : string,principal:string,contractor : string,insured : string,risk: string,object : string,site : string,quotationNo : string,company : string,issueDate : Date,inceptionDate : Date,expiryDate : Date,createdBy : string) {
+	constructor(
+		line : string,
+		policyNo : string,
+		typeCession : string,
+		cedingCompany : string,
+		insured : string,
+		risk: string,
+		object : string,
+		site : string,
+		currency : string,
+		sumInsured : number,
+		premium : number,
+		issueDate : Date,
+		inceptionDate : Date,
+		expiryDate : Date,
+		accountingDate : Date,
+		status : string) {
 		
+		this.line = line;
 		this.policyNo = policyNo;
 		this.typeCession = typeCession;
-		this.lineClass = lineClass;
-		this.status = status;
 		this.cedingCompany = cedingCompany;
-		this.principal = principal;
-		this.contractor = contractor;
 		this.insured = insured;
 		this.risk = risk;
 		this.object = object;
 		this.site= site;
-		this.quotationNo = quotationNo;
-		this.company = company;
+		this.currency = currency;
+		this.sumInsured = sumInsured;
+		this.premium = premium;
 		this.issueDate = issueDate;
 		this.inceptionDate = inceptionDate;
 		this.expiryDate = expiryDate;
-		this.createdBy = createdBy;
+		this.accountingDate = accountingDate;
+		this.status = status;
 	}
 
 }
