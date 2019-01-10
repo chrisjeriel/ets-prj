@@ -36,11 +36,11 @@ export class CurrencyDirective {
   }
 
   @HostListener("keydown", ["$event"]) onChange(event) {
+  	console.log(event);
   	let allowed:string[] = ['.',',','Tab','Backspace','ArrowDown','ArrowUp','ArrowLeft','ArrowRight'];
-  	if(/\D/.test(event.key) && allowed.indexOf(event.key) == -1){
+  	if(/\D/.test(event.key) && allowed.indexOf(event.key) == -1 && !event.ctrlKey){
   		// event.target.value = event.target.value.substring(0,event.target.value.length-1);
   		event.preventDefault();
   	}
   }
-
 }
