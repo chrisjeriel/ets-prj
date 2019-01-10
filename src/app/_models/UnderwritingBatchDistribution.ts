@@ -1,4 +1,4 @@
-export class UnderwritingPolicyDistList{
+export class UnderwritingBatchDistribution{
     distNo: number;
     riskDistNo: number;
     status: string;

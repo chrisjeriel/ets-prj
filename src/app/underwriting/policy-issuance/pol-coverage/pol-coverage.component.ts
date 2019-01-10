@@ -50,11 +50,11 @@ export class PolCoverageComponent implements OnInit {
     };
 
   passDataCATPerils: any = {
-        tHeader: ["CAT Perils", "Probable Maximum Loss", "Percentage(%)"],
+        tHeader: ["CAT Perils", "Percentage Share on Premium(%)"],
         dataTypes: [
                     "text", "currency", "percent"
                    ],
-        tableData: [["Earthquake",40000000,"15"],["Typhoon",30000000,"10"],["Flood",50000000,"10"],["Volcanic Eruption",10000000,"1"]],
+        tableData: [["Earthquake","15"],["Typhoon","10"],["Flood","10"],["Volcanic Eruption","1"]],
         pageLength:10,
     };
 
@@ -85,6 +85,22 @@ export class PolCoverageComponent implements OnInit {
   };
 
   textArea: any = null;
+
+  passDataDeductibles: any = {
+        tHeader: ["Deductible title","Rate (%)", "Amount Deductible Text"],
+        dataTypes: [
+                    "text", "percent", "text"
+                   ],
+        tableData: [["TEST",1,"TEST"],["TEST",1,"TEST"],["TEST",10,"TEST"],["TEST",1,"TEST"]],
+        checkFlag:true,
+        addFlag:true,
+        deleteFlag:true,
+        pageLength: 5,
+        searchFlag:true,
+        paginateFlag:true,
+        infoFlag:true,
+    };
+    
   @Input() alteration: boolean;
   line: string;
   sub: any;
@@ -220,8 +236,11 @@ export class PolCoverageComponent implements OnInit {
   }
 
   CATPerils() {
-        $('#modalBtn').trigger('click');
-    }
+        $('#CATPerils >#modalBtn').trigger('click');
+  }
 
+  deductibles() {
+        $('#Deductibles >#modalBtn').trigger('click');
+  }
 
 }

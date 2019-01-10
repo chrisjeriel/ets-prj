@@ -1,0 +1,21 @@
+.radioBtn{
+    margin-top: 4px;
+}
+.checkbox{
+    margin-top: 5px;
+    margin-left: 3%;
+}
+.labels{
+    margin-bottom: 0px !important;
+    padding-bottom: 0px !important;
+    max-height: 2.3em
+}
+.next-fieldsets{
+    margin-top: 0px !important;
+}
+
+.text-search-ico {
+	margin-left: -18px;
+	z-index: 99999;
+	font-size: 14px;
+}

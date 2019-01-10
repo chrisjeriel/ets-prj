@@ -134,6 +134,12 @@
 </div>
 </app-modal>
 
+
+
+
+
+
+
 </ng-container>
 
 <ng-container *ngIf="alteration">
@@ -151,10 +157,9 @@
           readonly>
         </div>
         <div class="input-group" style="margin-bottom: -13px !important;">
-          <label class="col-sm-1"></label>
-          <label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Risk</label>
-          <input type="text" id="xx" value="Risk Name" class="form-control form-control-sm cust-sm col-sm-8" placeholder=""
-          readonly>
+            <label class="col-sm-1"></label>
+            <label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Risk</label>
+            <input type="text" id="xx" value="Risk Name" class="form-control form-control-sm cust-sm col-sm-8" placeholder="" readonly>
         </div>
       </div>
     </fieldset>
@@ -335,6 +340,7 @@
   <div class="form-group col-sm">
     <div class="col-sm text-center">
       <div class="cust-btn-container" style="margin-top: 10px;">
+        <button type="button" class="cust-btn" (click)="deductibles()"><a>Deductibles</a></button>
         <button type="button" class="cust-btn" (click)="CATPerils()" *ngIf="line == 'CAR' || line =='EAR' || line =='EEI' || line =='CEC'"><a>CAT Perils</a></button>
         <button type="button" class="cust-btn" (click)="pol($event)"><a>Cancel</a></button>
         <button type="button" class="cust-btn"><a>Save</a></button>
@@ -342,16 +348,80 @@
     </div>
   </div>
 </div>
+</div>
 
-<app-modal class="hidden">
-  <div header>CAT Perils Exposure</div>
-  <div body style=" margin-top: -33px !important;">
-   <app-cust-editable-non-datatable [passData]="passDataCATPerils"></app-cust-editable-non-datatable>
- </div>                
- <div footer class="d-flex justify-content-center" style="width: 100% !important;">
-  <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-  <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Save</a></button>
-</div>
+<app-modal class="hidden" id="Deductibles">
+    <div header>Deductibles</div>
+    <div body style="width: 400px !important">
+       <app-cust-editable-non-datatable [passData]="passDataDeductibles"></app-cust-editable-non-datatable>
+    </div>                
+    <div footer class="cust-btn-container text-center" style="margin-right: 140px !important;">
+      <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+      <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Save</a></button>
+    </div>
 </app-modal>
-</div>
+
+<app-modal class="hidden" id="CATPerils">
+    <div header>CAT Perils Exposure</div>
+    <div body style="width: 400px !important">
+       <app-cust-editable-non-datatable [passData]="passDataCATPerils"></app-cust-editable-non-datatable>
+    </div>                
+    <div footer class="cust-btn-container text-center" style="margin-right: 140px !important;">
+      <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+      <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Save</a></button>
+    </div>
+</app-modal>
 </ng-container>
+
+<!-- <ng-template #content>
+  <div class="modal-header">
+    <span class="modal-title" id="modal-basic-title">Text Editor</span>
+    <div class="close" style="padding-bottom: 5px;">
+      <a class="btn-cust" aria-label="Close" (click)="modalService.dismissAll();" aria-hidden="true" ><span style="padding-right: 3px;" id="closes">&times;&nbsp;&nbsp;</span></a>
+    </div>
+  </div>
+  <div class="modal-body">
+    <quill-editor [(ngModel)]="textArea" [style]="{height: '300px', width: '900px'}"></quill-editor> 
+  </div>
+  <div class="modal-footer">
+    <div>
+      <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
+    </div>
+  </div>
+</ng-template> -->
+
+  <!-- <div contenteditable="true" [innerHTML]="textArea | safeText: 'html'" style="border: 1px solid;">
+   
+  </div>
+  <br />
+  <quill-editor [ngModel]="textArea"></quill-editor>
+  <br /> -->
+
+
+   <!-- <div class="input-group" style="margin-left: -15px !important">
+              <label class="form-control-sm col-sm-3">Section I</label>
+              <input type="text" class="form-control form-control-sm col-sm-3" disabled="true">
+              &nbsp;
+              <input type="text" class="form-control form-control-sm col-sm-3">
+              &nbsp;
+              <input type="text" class="form-control form-control-sm col-sm-3" disabled="true">
+              &nbsp;
+            </div>
+            <div class="input-group" style="margin-left: -15px !important">
+              <label class="form-control-sm col-sm-3">Section II</label>
+              <input type="text" class="form-control form-control-sm col-sm-3" disabled="true">
+              &nbsp;
+              <input type="text" class="form-control form-control-sm col-sm-3">
+              &nbsp;
+              <input type="text" class="form-control form-control-sm col-sm-3"  disabled="true">
+              &nbsp;
+            </div>
+            <div class="input-group" style="margin-left: -15px !important">
+              <label class="form-control-sm col-sm-3">Section III</label>
+              <input type="text" class="form-control form-control-sm col-sm-3" disabled="true">
+              &nbsp;
+              <input type="text" class="form-control form-control-sm col-sm-3">
+              &nbsp;
+              <input type="text" class="form-control form-control-sm col-sm-3"  disabled="true">
+              &nbsp;
+            </div> -->

@@ -29,7 +29,7 @@ export class OpenCoverProcessingComponent implements OnInit {
         resizable: [false, true, true, true, true, true, true, true, true, true, false, false, true, true, true, true],
         filters: [],
         pageLength: 10,
-        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: true, printBtn: false, 
+        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: true, printBtn: false, pagination: true, pageStatus: true,
   }
 
   constructor(private quotationService: QuotationService, private modalService: NgbModal, private router: Router
