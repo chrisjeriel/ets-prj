@@ -19,16 +19,16 @@ export class ParListingComponent implements OnInit {
     constructor(private uwService: UnderwritingService, private titleService: Title, private router: Router) { }
     passData: any = {
         tHeader: [
-            "Policy No", "Type Cession", "Line Class", "Status", "Ceding Company", "Principal", "Contractor", "Insured", "Risk", "Object", "Site", "Quotation No", "Company", "Issue Date", "Inception Date", "Expiry Date", "Created By"
+            "Line","Policy No", "Type Cession","Ceding Company", "Insured", "Risk", "Object", "Site", "Currency", "Sum Insured", "Premium" , "Issue Date", "Inception Date", "Expiry Date","Accounting Date","Status"
         ],
 
         resizable: [
-            false, false, true, true, true, true, true, true, true, true, true, false,
-            false, false, false, false, true
+            false,false, false, true, true, true, true, true, false, true, true, false,
+            false, false, false, false
         ],
         dataTypes: [
-            "text", "text", "text", "text", "text", "text", "text", "text", "text",
-            "text", "text", "text", "text", "date", "date", "date", "text"
+            "text","text", "text", "text", "text", "text", "text", "text",
+            "text", "currency", "currency", "date", "date", "date", "date", "text"
         ],
         tableData: this.uwService.getParListing(),
         addFlag: true,
@@ -37,39 +37,24 @@ export class ParListingComponent implements OnInit {
         pagination: true,
         pageLength: 10,
         filters: [
+             {
+                key: 'line',
+                title: 'Line',
+                dataType: 'text'
+            },
             {
                 key: 'policyNo',
                 title: 'Policy No.',
                 dataType: 'text'
             },
             {
-                key: 'cessionType',
+                key: 'typeCession',
                 title: 'Type of Cession',
-                dataType: 'text'
-            },
-            {
-                key: 'lineClass',
-                title: 'Line Class',
-                dataType: 'text'
-            },
-            {
-                key: 'status',
-                title: 'Status',
                 dataType: 'text'
             },
             {
                 key: 'cedingCompany',
                 title: 'Ceding Company',
-                dataType: 'text'
-            },
-            {
-                key: 'principal',
-                title: 'Principal',
-                dataType: 'text'
-            },
-            {
-                key: 'contractor',
-                title: 'Contractor',
                 dataType: 'text'
             },
             {
@@ -93,18 +78,18 @@ export class ParListingComponent implements OnInit {
                 dataType: 'text'
             },
             {
-                key: 'quoteDate',
-                title: 'Period From',
+                key: 'currency',
+                title: 'PCurrency',
                 dataType: 'date'
             },
             {
-                key: 'quotationNo',
-                title: 'Quotation No',
+                key: 'sumInsured',
+                title: 'Sum Insured',
                 dataType: 'text'
             },
             {
-                key: 'company',
-                title: 'Company',
+                key: 'premium',
+                title: 'Premium',
                 dataType: 'text'
             },
             {
@@ -122,9 +107,14 @@ export class ParListingComponent implements OnInit {
                 title: 'Expiry Date',
                 dataType: 'date'
             },
+               {
+                key: 'accountingDate',
+                title: 'Accounting Date',
+                dataType: 'date'
+            },
             {
-                key: 'createdBy',
-                title: 'Created By',
+                key: 'status',
+                title: 'Status',
                 dataType: 'text'
             },
         ],
@@ -133,8 +123,7 @@ export class ParListingComponent implements OnInit {
 
     ngOnInit() {
         this.titleService.setTitle("Pol | Policy List");
-        this.tHeader.push("Policy No");
-        this.tHeader.push("Status");
+       /* this.tHeader.push("Policy No");
         this.tHeader.push("Type of Cession");
         this.tHeader.push("Line Class");
         this.tHeader.push("Ceding Company");
@@ -160,7 +149,7 @@ export class ParListingComponent implements OnInit {
         this.dataTypes.push("text");
         this.dataTypes.push("text");
 
-        this.tableData = this.uwService.getParListing();
+        this.tableData = this.uwService.getParListing();*/
     }
 
     slctd: string = "";
@@ -168,12 +157,12 @@ export class ParListingComponent implements OnInit {
     polLine: string = "";
 
     onRowDblClick(event) {
-        this.slctd = event.target.closest("tr").children[0].innerText;
+        this.slctd = event.target.closest("tr").children[1].innerText;
         this.slctdArr = this.slctd.split("-");
         for (var i = 0; i < this.slctdArr.length; i++) {
             this.polLine = this.slctdArr[0];
         }
-        //console.log(this.polLine);
+      /*  console.log(this.polLine);*/
         this.router.navigate(['/policy-issuance', { line: this.polLine }], { skipLocationChange: true });
     }
 
