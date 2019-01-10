@@ -44,6 +44,7 @@ import { DeductibleComponent } from './underwriting/maintenance/deductible/deduc
 import { RiskListComponent } from './underwriting/maintenance/risk-list/risk-list.component';
 import { RiskFormComponent } from './underwriting/maintenance/risk-form/risk-form.component';
 import { ClmChangeClaimStatusComponent } from './claims/claim/clm-change-claim-status/clm-change-claim-status.component';
+import { ClmClaimsInquiryComponent } from './claims/claim/clm-claims-inquiry/clm-claims-inquiry.component';
 
 
 const appRoutes: Routes = [
@@ -95,6 +96,7 @@ const appRoutes: Routes = [
     { path: 'maintenance-risk-list', component: RiskListComponent },
     { path: 'maintenance-risk', component: RiskFormComponent },
     { path: 'clm-change-claim-status', component: ClmChangeClaimStatusComponent },
+    { path: 'claims-inquiry', component: ClmClaimsInquiryComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
