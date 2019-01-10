@@ -128,14 +128,15 @@
 
 <app-modal class="hidden">
     <div header>CAT Perils Exposure</div>
-    <div body style=" margin-top: -10px !important;">
+    <div body style=" margin-top: -10px !important; width: 400px ! important">
        <app-cust-editable-non-datatable [passData]="passDataCATPerils"></app-cust-editable-non-datatable>
     </div>                
-    <div footer style="margin-right: 160px !important;">
+    <div footer style="margin-right: 145px !important;">
       <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
       <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Save</a></button>
     </div>
 </app-modal>
+
 
 </ng-container>
 
@@ -156,8 +157,7 @@
         <div class="input-group" style="margin-bottom: -13px !important;">
             <label class="col-sm-1"></label>
             <label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Risk</label>
-            <input type="text" id="xx" value="Risk Name" class="form-control form-control-sm cust-sm col-sm-8" placeholder=""
-                   readonly>
+            <input type="text" id="xx" value="Risk Name" class="form-control form-control-sm cust-sm col-sm-8" placeholder=""readonly>
         </div>
     </div>
  </fieldset>
@@ -315,30 +315,20 @@
   </div>
 </div>
 
-
-
-<div class="form-row">
-  <div class="form-group col-sm">
-    <div class="col-sm text-center">
-      <div class="cust-btn-container" style="margin-top: 10px;">
-        <button type="button" class="cust-btn" (click)="CATPerils()" *ngIf="line == 'CAR' || line =='EAR' || line =='EEI' || line =='CEC'"><a>CAT Perils</a></button>
-        <button type="button" class="cust-btn" (click)="showDeductiblesModal(deductibles)"><a>Deductibles</a></button>
-        <button type="button" class="cust-btn" (click)="pol($event)"><a>Cancel</a></button>
-        <button type="button" class="cust-btn"><a>Save</a></button>
+    <div class="form-row">
+      <div class="form-group col-sm">
+        <div class="col-sm text-center">
+          <div class="cust-btn-container" style="margin-top: 10px;">
+            <button type="button" class="cust-btn" (click)="deductibles()"><a>Deductibles</a></button>
+            <button type="button" class="cust-btn" (click)="CATPerils()" *ngIf="line == 'CAR' || line =='EAR' || line =='EEI' || line =='CEC'"><a>CAT Perils</a></button>
+            <button type="button" class="cust-btn" (click)="showDeductiblesModal(deductibles)"><a>Deductibles</a></button>
+            <button type="button" class="cust-btn" (click)="pol($event)"><a>Cancel</a></button>
+            <button type="button" class="cust-btn"><a>Save</a></button>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
-<app-modal class="hidden">
-    <div header>CAT Perils Exposures</div>
-    <div body style=" margin-top: -10px !important;">
-       <app-cust-editable-non-datatable [passData]="passDataCATPerils"></app-cust-editable-non-datatable>
-    </div>                
-    <div footer style="margin-right: 160px !important;">
-      <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-      <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Save</a></button>
-    </div>
-</app-modal>
+    
 </div>
 </ng-container>
 

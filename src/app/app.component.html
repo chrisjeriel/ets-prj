@@ -86,6 +86,8 @@
                                     <br/>
                                     <button [routerLink]="['/negate-distribution']" class="button btn btn-link">Negate Distribution</button>
                                     <br/>
+                                    <button [routerLink]="['/batch-processing']" class="button btn btn-link">Batch Processing</button>
+                                    <br>
                                 </ng-template>
                             </ngb-panel>
                             <ngb-panel title="Expiry & Renewal">
@@ -111,6 +113,12 @@
                                 </ng-template>  
                             </ngb-panel>
                             <ngb-panel title="Maintenance">
+                                <ng-template ngbPanelContent>
+                                    <button [routerLink]="['/maintenance-deductible']" class="button btn btn-link">Deductible</button>
+                                    <br/>
+                                     <button [routerLink]="['/maintenance-risk-list']" class="button btn btn-link">Risk</button>
+                                    <br/>
+                                </ng-template>
                             </ngb-panel>
                             <ngb-panel title="Utilities">
                                 <ng-template ngbPanelContent>

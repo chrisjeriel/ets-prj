@@ -55,11 +55,11 @@ export class PolCoverageComponent implements OnInit {
     };
 
   passDataCATPerils: any = {
-        tHeader: ["CAT Perils", "Probable Maximum Loss", "Percentage(%)"],
+        tHeader: ["CAT Perils", "Percentage Share on Premium(%)"],
         dataTypes: [
                     "text", "currency", "percent"
                    ],
-        tableData: [["Earthquake",40000000,"15"],["Typhoon",30000000,"10"],["Flood",50000000,"10"],["Volcanic Eruption",10000000,"1"]],
+        tableData: [["Earthquake","15"],["Typhoon","10"],["Flood","10"],["Volcanic Eruption","1"]],
         pageLength:10,
     };
 
@@ -247,6 +247,16 @@ export class PolCoverageComponent implements OnInit {
   }
 
   CATPerils() {
+<<<<<<< HEAD
         $('#modalBtn').trigger('click');
     }
+=======
+        $('#CATPerils >#modalBtn').trigger('click');
+  }
+
+  deductibles() {
+        $('#Deductibles >#modalBtn').trigger('click');
+  }
+
+>>>>>>> 2c311f344cc7b7516562ed8a138bfe5cca967b74
 }
