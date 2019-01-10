@@ -20,7 +20,7 @@
 <div id="cust-table-container">
     <div ngbDropdown>
         <div class="cust-btn-container">
-            <button *ngIf="passData.addFlag" class="cust-btn" (click)="addClicked(event)"><a>Add</a></button>
+            <button *ngIf="passData.addFlag" class="cust-btn" (click)="passData.nData == null ? addClicked(event) : onClickAdd()"><a>Add</a></button>
             <button *ngIf="passData.editFlag" class="cust-btn" (click)="onClickEdit()"><a class="paginate_button previous">Edit</a></button>
             <button *ngIf="passData.deleteFlag" class="cust-btn" (click)="onClickDelete()"><a class="paginate_button previous">Delete</a></button>
             <div class="search-filter" *ngIf="passData.searchFlag">
@@ -103,7 +103,7 @@
                     <th *ngIf="passData.checkFlag" class="checkbox"><input type="checkbox" name="checkbox" [(ngModel)]="checked"></th>
                     <th container="body"  *ngFor="let tHeader of passData.tHeader; let i = index" (click)="sort(dataKeys[i],sortBy);sortIndex=i;"
                         [style.width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [ngbTooltip]="passData.tooltip !== undefined ? passData.tooltip[i] :null">
-                        <span class="ui-column-resizer" (mousedown)="onMouseDown($event)"></span>
+                        <span class="ui-column-resizer"  (mousedown)="onMouseDown($event)" *ngIf="passData.resizable === undefined ||  passData.resizable[i]"></span>
                         <span *ngIf="isNumber(i)" class="gridHeader number text-right" >{{tHeader}}
                             <i *ngIf="showSort(sortBy,i)" class="fa fa-caret-down"></i>
                             <i *ngIf="showSort(!sortBy,i)" class="fa fa-caret-up"></i>
@@ -165,6 +165,7 @@
                         <button class="fa fa-folder-open" title="Open File" *ngIf="addCheckFlag(data)"></button>
                     </td>
                 </tr>
+               
                 <tr *ngIf="passData.totalFlag" class="total-tr">
                     <td *ngIf="passData.checkFlag"></td>
                     <td [attr.colspan]="dataKeys.length-1"></td>
