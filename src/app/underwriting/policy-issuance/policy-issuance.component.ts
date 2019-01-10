@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute } from '@angular/router';
 
+
 @Component({
   selector: 'app-policy-issuance',
   templateUrl: './policy-issuance.component.html',
   styleUrls: ['./policy-issuance.component.css']
 })
 export class PolicyIssuanceComponent implements OnInit {
-
   line: string;
   sub: any;
   

@@ -214,9 +214,9 @@ import { ClmChangeClaimStatusComponent } from './claims/claim/clm-change-claim-s
         ClaimsAttachmentComponent,
         ClmClaimHistoryComponent,
         ClaimDistributionComponent,
+        RequiredDirective, //keep this as first directive declared
         TextEditorComponent,
         CharactersLengthDirective,
-        RequiredDirective,
         CurrencyDirective,
         MonthDirective,
         ChangethemeDirective,

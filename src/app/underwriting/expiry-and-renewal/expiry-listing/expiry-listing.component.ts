@@ -24,7 +24,8 @@ export class ExpiryListingComponent implements OnInit {
         tableData: [[false,false,false,false,"TEST","TEST","TEST","TEST","TEST","TEST","TEST","TEST","TEST",false,false,false,false,false]],
         pageLength: 10,
         paginateFlag:true,
-        infoFlag:true
+        infoFlag:true,
+        tooltip:['Process Policy','Renewal As Is', 'Renewal With Change', 'Non-renewal',null,null,null,null,null,null,null,null,null,'Summarized','With Balance','With Claim','With Reminder','Reqular Policy']
    };
 
    passDataExtensionPolicies: any = {
@@ -35,7 +36,9 @@ export class ExpiryListingComponent implements OnInit {
         tableData: [[false,"TEST","TEST","TEST","TEST","TEST","TEST","TEST",false,false,false,false,false]],
         pageLength: 10,
         paginateFlag:true,
-        infoFlag:true
+        infoFlag:true,
+        tooltip:['Process Policy',null,null,null,null,null,null,null,'Summarized','With Balance','With Claim','With Reminder','Reqular Policy']
+
    };
 
 
