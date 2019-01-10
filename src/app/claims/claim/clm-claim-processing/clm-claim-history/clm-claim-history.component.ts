@@ -62,7 +62,7 @@ export class ClmClaimHistoryComponent implements OnInit {
 
     this.passDataHistory.tHeader.push("Hist. No.", "Hist. Type", "Type", "Curr", "Reserve", "Payment Amount", "Ref. No", "Ref. Date", "Remarks");
     this.passDataHistory.dataTypes.push("number", "select", "select", "select", "currency", "currency", "text", "date", "text");
-    this.passDataHistory.opts.push({ selector: "histType", vals: ["Loss"] });
+    this.passDataHistory.opts.push({ selector: "histType", vals: ["Loss", "Adjuster's Expense", "Other Expenses"] });
     this.passDataHistory.opts.push({ selector: "type", vals: ["Initial Reserve", "Increase Reserve", "Decrease Reserve", "Partial Payment", "Full Payment"] });
     this.passDataHistory.opts.push({ selector: "currency", vals: ["PHP", "USD", "SGD"] });
     this.passDataHistory.widths.push("1", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto");
