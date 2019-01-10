@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { UnderwritingService } from '@app/_services/underwriting.service';
-import { UnderwritingCoverageInfo } from '@app/_models';
+import { UnderwritingCoverageInfo, CoverageDeductibles } from '@app/_models';
 import { Title } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute } from '@angular/router';
@@ -23,6 +23,11 @@ export class PolCoverageComponent implements OnInit {
   optionsData: any[] = [];
   headerWithColspan: any[] = [];
   pageLength = 3 ;
+  searchFlag;
+  addFlag;
+  deleteFlag;
+  paginateFlag;
+  infoFlag;
 
   passDataSectionCover: any = {
         tHeader: ["Cover Code", "Section", "Bullet No", "Sum Insured", "Rate", "Premium", "Add Sl"],
@@ -58,6 +63,23 @@ export class PolCoverageComponent implements OnInit {
         pageLength:10,
     };
 
+  passDataDeductibles: any = {
+        tHeader: ["Deductible Code","Deductible Title", "Rate(%)", "Amount", "Deductible Text"],
+        dataTypes: [
+                    "text","text", "percent", "currency","text"
+                   ],
+        pageLength:5,
+        addFlag: true,
+        deleteFlag: true,
+        searchFlag: true,
+        checkFlag: true,
+        infoFlag: true,
+        paginateFlag: true,
+        widths: [1, 1, 1, 1, 1, 1],
+        magnifyingGlass: ['deductibleCode'],
+        nData2: {},
+    };
+
 
   passData: any = {
     tableData:[],
@@ -84,9 +106,11 @@ export class PolCoverageComponent implements OnInit {
     pageLength: 3
   };
 
+
   textArea: any = null;
 
-  passDataDeductibles: any = {
+
+  /*passDataDeductibles: any = {
         tHeader: ["Deductible title","Rate (%)", "Amount Deductible Text"],
         dataTypes: [
                     "text", "percent", "text"
@@ -99,25 +123,25 @@ export class PolCoverageComponent implements OnInit {
         searchFlag:true,
         paginateFlag:true,
         infoFlag:true,
-    };
+    };*/
     
   @Input() alteration: boolean;
   line: string;
   sub: any;
 
-
+  nData2: CoverageDeductibles = new CoverageDeductibles(null,null,null,null,null);
   nData: UnderwritingCoverageInfo = new UnderwritingCoverageInfo(null, null, null, null, null, null, null);
   constructor(private underwritingservice: UnderwritingService, private titleService: Title, private modalService: NgbModal,private route: ActivatedRoute) { }
 
   ngOnInit() {
-
     this.titleService.setTitle("Pol | Coverage");
     if (!this.alteration) {
-
       this.passDataSectionCover.tableData = this.underwritingservice.getUWCoverageInfo();
+      this.passDataDeductibles.tableData = this.underwritingservice.getUWCoverageDeductibles();
       //this.passDataTotalPerSection.tableData = this.underwritingservice.getTotalPerSection();
 
     } else {
+      this.passDataDeductibles.tableData = this.underwritingservice.getUWCoverageDeductibles();
       this.passData.tHeader.push("Cover Code");
       this.passData.tHeader.push("Section");
       this.passData.tHeader.push("Bullet No");
@@ -235,7 +259,12 @@ export class PolCoverageComponent implements OnInit {
     this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
   }
 
+  showDeductiblesModal(deductibles){
+    this.modalService.open(deductibles, { centered: true, backdrop: 'static', windowClass: "modal-size" });
+  }
+
   CATPerils() {
+        /*$('#modalBtn').trigger('click');*/
         $('#CATPerils >#modalBtn').trigger('click');
   }
 

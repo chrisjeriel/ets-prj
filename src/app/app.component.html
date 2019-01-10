@@ -1,164 +1,194 @@
 ﻿<style>
     .btn-link:hover {
-        color: #0056b3;
-        text-decoration: none;
-        background-color: transparent;
-        border-color: transparent;
-        background-color: #f1f1f1;
-        width: 95%;
-        text-align: left;
-    }
-    
+    color: #0056b3;
+    text-decoration: none;
+    background-color: transparent;
+    border-color: transparent;
+    background-color: #f1f1f1;
+    width: 95%;
+    text-align: left;
+}
+
 </style>
 <div id="cust-tooltip" style="position: absolute;z-index: 99999;background-color: rgb(25,25,25);color: rgb(217,217,217);font-size: 9px !important; display: none ; padding: 3px 5px;">
         test
     </div>
 <ng-sidebar-container style="position: static;" (onBackdropClicked)="_onBackdropClicked()">
-  <ng-sidebar
-    [(opened)]="_opened"
-    [mode]="'push'" 
-    [keyClose]="_keyClose"
-    [position]="'left'"
-    [dock]="'true'"
-    [dockedSize]="'0px'"
-    [sidebarClass]="'demo-sidebar'"
-    [closeOnClickOutside]="_closeOnClickOutside" *ngIf="currentUser">
-    
-    <div class="cust-ng-sidebar">
-      <div class="cust-side-nav-bg">
-          <div class="side-nav-header">
-              <div class="text-center">
-                  <img src="app/resources/images/PMMSC-blank-sq.png" alt="logo.png" id="logo">
-              </div>
-              
-                <h3 class="text-center">
-                    PMMSC
-              </h3>
-                <p>Module Id: QLR101</p>
-                <p>Database: PMMSC</p>
-                <!--<p>Server Time: Nov 21, 2018 10:32:10 AM</p>-->
-                <p>Server Time: {{datetime | date: 'medium'}}</p>
-                <p>User Id: {{ currentUser.username }}</p>
-          </div>
-          <hr>
-          <div class="side-nav-body">
-            <ngb-accordion #acc="ngbAccordion">
-                <ngb-panel>
-                    <ng-template ngbPanelTitle>
-                        <fa name="file"></fa>&nbsp;Quotation
-                    </ng-template>
-                    <ng-template ngbPanelContent>
-                        <button [routerLink]="['/quotation-processing']" class="button btn btn-link">Quotation Processing</button>
-                        <br/>
-                        <button [routerLink]="['/quotation-inquiry']" class="button btn btn-link">Quotation Inquiry</button>
-                        <br>
-                        <button [routerLink]="['/quotation-holdcover']" class="button btn btn-link">Quotation to Hold Cover</button>
-                        <br/>
-                        <button [routerLink]="['/hold-cover-monitoring']" class="button btn btn-link">Hold Cover Monitoring</button>
-                        <br/>
-                        <button [routerLink]="['/change-quote-status']" class="button btn btn-link">Change Quote Status</button>
-                        <br/>
-                        <button [routerLink]="['/open-cover-processing']" class="button btn btn-link"> Open Cover Processing</button>
-                    </ng-template>
-                </ngb-panel>
-                <ngb-panel>
-                    <ng-template ngbPanelTitle>
-                        <fa name="list-ul"></fa>&nbsp;Policy
-                    </ng-template>
-                    <ng-template ngbPanelContent>
-                        <ngb-accordion #acc="ngbAccordion">
-                            <ngb-panel title="Issuance">
-                                <ng-template ngbPanelContent>
-                                    <button [routerLink]="['/create-policy']" class="button btn btn-link">Create Policy</button>
-                                    <br/>
-                                    <button [routerLink]="['/policy-listing']" class="button btn btn-link">Policy List</button>
-                                    <br/>
-                                    <button [routerLink]="['/create-alteration']" class="button btn btn-link">Create Alteration</button>
-                                    <br/>
-                                    <button [routerLink]="['/alt-policy-listing']" class="button btn btn-link">Alteration List</button>
-                                    <br/>
-                                    <button [routerLink]="['/create-open-cover']" class="button btn btn-link">Create Open Cover</button>
-                                </ng-template>
-                            </ngb-panel>
-                            <ngb-panel title="Distribution">
-                                <ng-template ngbPanelContent>
-                                    <button [routerLink]="['/pol-dist']" class="button btn btn-link">Policy Distribution</button>
-                                    <br/>
-                                    <button [routerLink]="['/pol-dist-list']" class="button btn btn-link">Policy Distribution List</button>
-                                    <br/>
-                                    <button [routerLink]="['/negate-distribution']" class="button btn btn-link">Negate Distribution</button>
-                                    <br/>
-                                    <button [routerLink]="['/batch-processing']" class="button btn btn-link">Batch Processing</button>
-                                    <br>
-                                </ng-template>
-                            </ngb-panel>
-                            <ngb-panel title="Expiry & Renewal">
-                                <ng-template ngbPanelContent>
-                                    <button [routerLink]="['/extract-expiring-policies']" class="button btn btn-link">Extract Expiring Policies</button>
-                                    <br/>
-                                    <button [routerLink]="['/expiry-listing']" class="button btn btn-link">Expiry Listing</button>
-                                    <br/>
-                                    <button [routerLink]="['/policy-holdcover']" class="button btn btn-link">Policy To Hold Cover</button>
-                                    <br/>
-                                    <button [routerLink]="['purge-extracted-policy']" class="button btn btn-link">Purge Extracted Policies</button>
-                                </ng-template>
-                            </ngb-panel>
-                            <ngb-panel title="Inquiry">
-                                <ng-template ngbPanelContent>
-                                    <button [routerLink]="['/policy-inquiry']" class="button btn btn-link">Policy Inquiry</button>
-                                    <br />
-                                </ng-template>
-                            </ngb-panel>
-                            <ngb-panel title="Generate Documents">
-                                 <ng-template ngbPanelContent>
-                                    <button [routerLink]="['/policy-printing']" class="button btn btn-link">Policy Printing</button>  
-                                </ng-template>  
-                            </ngb-panel>
-                            <ngb-panel title="Maintenance">
-                                <ng-template ngbPanelContent>
-                                    <button [routerLink]="['/maintenance-line']" class="button btn btn-link">Line</button>
-                                    <br />
-                                    <button [routerLink]="['/maintenance-deductible']" class="button btn btn-link">Deductible</button>
-                                    <br/>
-                                     <button [routerLink]="['/maintenance-risk-list']" class="button btn btn-link">Risk</button>
-                                    <br/>
-                                </ng-template>
-                            </ngb-panel>
-                            <ngb-panel title="Utilities">
-                                <ng-template ngbPanelContent>
-                                    <button [routerLink]="['/update-info']" class="button btn btn-link">Update Information</button>
-                                    <br/>
-                                </ng-template>
-                            </ngb-panel>
-                        </ngb-accordion>
-                    </ng-template>
-                </ngb-panel>
-                <ngb-panel>
-                    <ng-template ngbPanelTitle>
-                        <fa name="vcard"></fa>&nbsp;Claims
-                    </ng-template>
-                        <ng-template ngbPanelContent>
-                             <button [routerLink]="['/clm-claim-processing']" class="button btn btn-link">Claim
-                                            Processing</button>
-                                        <br />
-                             <button [routerLink]="['/payment-request']" class="button btn btn-link">Payment Requests</button>
-                             <br/>
-                        </ng-template>
-                </ngb-panel>
-                <ngb-panel>
-                    <ng-template ngbPanelTitle>
-                        <fa name="calculator"></fa>&nbsp;Accounting
-                    </ng-template>
-                </ngb-panel>
-                <ngb-panel>
-                    <ng-template ngbPanelTitle>
-                        <fa name="user-secret"></fa>&nbsp;Security
-                    </ng-template>
-                </ngb-panel>
-            </ngb-accordion>
-           </div>
+    <ng-sidebar [(opened)]="_opened" [mode]="'push'" [keyClose]="_keyClose" [position]="'left'" [dock]="'true'"
+        [dockedSize]="'0px'" [sidebarClass]="'demo-sidebar'" [closeOnClickOutside]="_closeOnClickOutside" *ngIf="currentUser">
+
+        <div class="cust-ng-sidebar">
+            <div class="cust-side-nav-bg">
+                <div class="side-nav-header">
+                    <div class="text-center">
+                        <img src="app/resources/images/PMMSC-blank-sq.png" alt="logo.png" id="logo">
+                    </div>
+
+                    <h3 class="text-center">
+                        PMMSC
+                    </h3>
+                    <p>Module Id: QLR101</p>
+                    <p>Database: PMMSC</p>
+                    <!--<p>Server Time: Nov 21, 2018 10:32:10 AM</p>-->
+                    <p>Server Time: {{datetime | date: 'medium'}}</p>
+                    <p>User Id: {{ currentUser.username }}</p>
+                </div>
+                <hr>
+                <div class="side-nav-body">
+                    <ngb-accordion #acc="ngbAccordion">
+                        <ngb-panel>
+                            <ng-template ngbPanelTitle>
+                                <fa name="file"></fa>&nbsp;Quotation
+                            </ng-template>
+                            <ng-template ngbPanelContent>
+                                <button [routerLink]="['/quotation-processing']" class="button btn btn-link">Quotation
+                                    Processing</button>
+                                <br />
+                                <button [routerLink]="['/quotation-inquiry']" class="button btn btn-link">Quotation
+                                    Inquiry</button>
+                                <br>
+                                <button [routerLink]="['/quotation-holdcover']" class="button btn btn-link">Quotation
+                                    to Hold Cover</button>
+                                <br />
+                                <button [routerLink]="['/hold-cover-monitoring']" class="button btn btn-link">Hold
+                                    Cover Monitoring</button>
+                                <br />
+                                <button [routerLink]="['/change-quote-status']" class="button btn btn-link">Change
+                                    Quote Status</button>
+                                <br />
+                                <button [routerLink]="['/open-cover-processing']" class="button btn btn-link"> Open
+                                    Cover Processing</button>
+                            </ng-template>
+                        </ngb-panel>
+                        <ngb-panel>
+                            <ng-template ngbPanelTitle>
+                                <fa name="list-ul"></fa>&nbsp;Policy
+                            </ng-template>
+                            <ng-template ngbPanelContent>
+                                <ngb-accordion #acc="ngbAccordion">
+                                    <ngb-panel title="Issuance">
+                                        <ng-template ngbPanelContent>
+                                            <button [routerLink]="['/create-policy']" class="button btn btn-link">Create
+                                                Policy</button>
+                                            <br />
+                                            <button [routerLink]="['/policy-listing']" class="button btn btn-link">Policy
+                                                List</button>
+                                            <br />
+                                            <button [routerLink]="['/create-alteration']" class="button btn btn-link">Create
+                                                Alteration</button>
+                                            <br />
+                                            <button [routerLink]="['/alt-policy-listing']" class="button btn btn-link">Alteration
+                                                List</button>
+                                            <br />
+                                            <button [routerLink]="['/create-open-cover']" class="button btn btn-link">Create
+                                                Open Cover</button>
+                                        </ng-template>
+                                    </ngb-panel>
+                                    <ngb-panel title="Distribution">
+                                        <ng-template ngbPanelContent>
+                                            <button [routerLink]="['/pol-dist']" class="button btn btn-link">Policy
+                                                Distribution</button>
+                                            <br />
+                                            <button [routerLink]="['/pol-dist-list']" class="button btn btn-link">Policy
+                                                Distribution List</button>
+                                            <br />
+                                            <button [routerLink]="['/negate-distribution']" class="button btn btn-link">Negate
+                                                Distribution</button>
+                                            <br />
+                                            <button [routerLink]="['/batch-processing']" class="button btn btn-link">Batch
+                                                Processing</button>
+                                            <br>
+                                        </ng-template>
+                                    </ngb-panel>
+                                    <ngb-panel title="Expiry & Renewal">
+                                        <ng-template ngbPanelContent>
+                                            <button [routerLink]="['/extract-expiring-policies']" class="button btn btn-link">Extract
+                                                Expiring Policies</button>
+                                            <br />
+                                            <button [routerLink]="['/expiry-listing']" class="button btn btn-link">Expiry
+                                                Listing</button>
+                                            <br />
+                                            <button [routerLink]="['/policy-holdcover']" class="button btn btn-link">Policy
+                                                To Hold Cover</button>
+                                            <br />
+                                            <button [routerLink]="['purge-extracted-policy']" class="button btn btn-link">Purge
+                                                Extracted Policies</button>
+                                        </ng-template>
+                                    </ngb-panel>
+                                    <ngb-panel title="Inquiry">
+                                        <ng-template ngbPanelContent>
+                                            <button [routerLink]="['/policy-inquiry']" class="button btn btn-link">Policy
+                                                Inquiry</button>
+                                            <br />
+                                        </ng-template>
+                                    </ngb-panel>
+                                    <ngb-panel title="Generate Documents">
+                                        <ng-template ngbPanelContent>
+                                            <button [routerLink]="['/policy-printing']" class="button btn btn-link">Policy
+                                                Printing</button>
+                                        </ng-template>
+                                    </ngb-panel>
+                                    <ngb-panel title="Maintenance">
+                                        <ng-template ngbPanelContent>
+                                            <button [routerLink]="['/maintenance-line']" class="button btn btn-link">Line</button>
+                                            <br />
+                                            <button [routerLink]="['/maintenance-deductible']" class="button btn btn-link">Deductible</button>
+                                            <br />
+                                            <button [routerLink]="['/maintenance-risk-list']" class="button btn btn-link">Risk</button>
+                                            <br />
+                                        </ng-template>
+                                    </ngb-panel>
+                                    <ngb-panel title="Utilities">
+                                        <ng-template ngbPanelContent>
+                                            <button [routerLink]="['/update-info']" class="button btn btn-link">Update
+                                                Information</button>
+                                            <br />
+                                        </ng-template>
+                                    </ngb-panel>
+                                </ngb-accordion>
+                            </ng-template>
+                        </ngb-panel>
+                        <ngb-panel>
+                            <ng-template ngbPanelTitle>
+                                <fa name="vcard"></fa>&nbsp;Claims
+                            </ng-template>
+                            <ng-template ngbPanelContent>
+                                <button [routerLink]="['/clm-claim-processing']" class="button btn btn-link">Claims
+                                    Processing</button>
+                                <br />
+                                <button [routerLink]="['']" class="button btn btn-link">Change Claim Status</button>
+                                <br />
+                                <button [routerLink]="['']" class="button btn btn-link">Claim
+                                    Recovery</button>
+                                <br />
+                                <ngb-accordion #acc="ngbAccordion">
+                                    <ngb-panel>
+                                        <ng-template ngbPanelTitle>
+                                            Inquiry
+                                        </ng-template>
+                                        <ng-template ngbPanelContent>
+                                            <button [routerLink]="['']" class="button btn btn-link">Claim
+                                                Inquiry</button>
+                                            <br />
+                                        </ng-template>
+                                    </ngb-panel>
+                                </ngb-accordion>
+                            </ng-template>
+                        </ngb-panel>
+                        <ngb-panel>
+                            <ng-template ngbPanelTitle>
+                                <fa name="calculator"></fa>&nbsp;Accounting
+                            </ng-template>
+                        </ngb-panel>
+                        <ngb-panel>
+                            <ng-template ngbPanelTitle>
+                                <fa name="user-secret"></fa>&nbsp;Security
+                            </ng-template>
+                        </ngb-panel>
+                    </ngb-accordion>
+                </div>
+            </div>
         </div>
-    </div>
     </ng-sidebar>
 
     <div ng-sidebar-content>
