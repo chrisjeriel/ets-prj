@@ -1,0 +1,16 @@
+<quill-editor class="txt-edtr" [ngModel]="editorContent" (ngModelChange)="editorContent = $event" [style]="{height: '100%', width: '100%', font: '11px arial'}" [modules]="{toolbar: false}" [readOnly]="true" [sanitize]="false" [placeholder]="''"></quill-editor>
+
+<!-- <div style="margin-top: -52px;" class="text-search-ico"><a><i class="fa fa-search"></i></a></div> -->
+<div style="margin-top: -52px;"class="text-search-ico"><a><i class="fa fa-pencil" (click)="showTextEditorModal(content);"></i></a></div>
+
+<ng-template #content>
+	<div class="modal-header">
+		<span class="modal-title" id="modal-basic-title">Text Editor</span>
+	</div>
+	<div class="modal-body">
+		<quill-editor class="txt-edtr" [ngModel]="editorContent" (ngModelChange)="editorContent = $event" [style]="{height: '300px', width: '900px', font: '11px arial'}" [modules]="{toolbar: false}" [sanitize]="false"></quill-editor> 
+	</div>
+	<div class="modal-footer d-flex justify-content-center" style="width: 100% !important;">
+		<button class="cust-btn" type="button" (click)="closeTextEditorModal($event)"><a>Done</a></button>
+	</div>
+</ng-template>
