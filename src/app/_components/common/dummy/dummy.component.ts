@@ -102,8 +102,10 @@ export class DummyComponent implements OnInit {
         ],
         tableData: this.quotationService.getQuotationListInfo(),
         pageLength: 10,
-        expireFilter: true,
-        checkFlag: true,
+        expireFilter: false,
+        tableOnly:true,
+        pagination:true,
+        checkFlag:true
         
     };
 
