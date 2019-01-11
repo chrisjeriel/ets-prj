@@ -92,18 +92,18 @@ export class DummyComponent implements OnInit {
                 dataType: 'date'
             },
         ],
-        resizable: [
+        /*resizable: [
             false,false,true,true,true,true,true,true,true,true,true,false,
             false,true
-        ],
-        dataTypes: [
+        ],*/
+        /*dataTypes: [
             "text","text","text","text","text","text","text","text","text",
             "text","text","text","text","date"
-        ],
+        ],*/
         colSize: [
             '', '', '', '', '', '', '', '', '900px', '', '', '', '',  
         ],
-        tableData: this.quotationService.getQuotationListInfo(),
+           tableData: this.quotationService.getQuotationListInfo(),
         pageLength: 10,
         expireFilter: true,
         checkFlag: true,

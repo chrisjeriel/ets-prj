@@ -99,12 +99,15 @@ export class CustNonDatatableComponent implements OnInit {
     @Input() passData: any = {
         tableData: [],          //REQUIRED. 
         tHeader: [],            //REQUIRED.
-        dataTypes: [],          //REQUIRED.
-        resizable: [],          //REQUIRED.
+        dataTypes: [],          //DEFAULT is 'text'. Set 'percent', 
+                                //'number', 'time', 'datetime', 'date', 'text', 'checkbox' accordingly.
+        
+        resizable: [],          //Set to determine what columns need to be resized. Default is all columns are resizable.
         filters: [],            //Required if tableOnly is false.
         colSize: [],            //REQUIRED. STRING VALUE. DEFAULT VALUE is '100%'. Just add '' as a value
         pageLength: 10,         //specify max number of rows in the table before it breaks to pagination.
                                 //use 'unli' as pageLength for unlimited rows.
+        
         expireFilter: false,    //expire filter 
         checkFlag: false,       //checkbox column
         tableOnly: false,       //disable search and filter
@@ -146,11 +149,12 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        console.log(this.passData.colSize);
         this.passData.pageID = typeof this.passData.pageID == "undefined" ? 1 : this.passData.pageID;
         this.passData.colSize = typeof this.passData.colSize == "undefined" ? [] : this.passData.colSize;
         this.unliFlag = this.passData.pageLength == 'unli';
         this.passData.pageLength = typeof this.passData.pageLength != 'number' ? 10 : this.passData.pageLength;
+        this.passData.tHeader = typeof this.passData.tHeader == 'undefined' ? ['No Data'] : this.passData.tHeader;
+        this.passData.tableData = typeof this.passData.tableData == 'undefined' ? [['No Data']] : this.passData.tableData;
         this.unliTableLength();
         
         if (this.passData.tableData.length > 0) {
@@ -174,6 +178,20 @@ export class CustNonDatatableComponent implements OnInit {
         /*if(this.passData.tableOnly){
             document.getElementById('#non-datatable').style.marginTop = "0px";
         }*/
+
+        if(typeof this.passData.resizable === "undefined"){
+            this.passData.resizable = [];
+            for(let i = 0; i < this.passData.tHeader.length; i++){
+                this.passData.resizable.push(true);
+            }
+        }
+        
+        if(typeof this.passData.dataTypes === "undefined"){
+            this.passData.dataTypes = [];
+            for(let i = 0; i < this.passData.tHeader.length; i++){
+                this.passData.dataTypes.push('text');
+            }
+        }
     }
 
     processData(key: any, data: any) {
