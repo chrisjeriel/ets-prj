@@ -1,167 +1,176 @@
-<div class="row top-row">
-	<div class="col-sm-2"></div>
-	<fieldset class="scheduler-border col-sm">
-		<div class="row">
-			<div class="col-sm-1">
-				
-			</div>
-			<div class="col-sm">
-				<div class="input-group ">
-					<label class="form-control-sm col-sm-2">Policy No</label>
-					<input type="text" class="form-control form-control-sm col-sm-1 cap-input" ngbTooltip="Line">
-					<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;"
-					ngbTooltip="Year">
-					<input type="text" class="form-control form-control-sm col-sm-3 cap-input" style="margin-left: 3px;"
-					ngbTooltip="Sequence No">
-					<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;"
-					ngbTooltip="Co Code">
-					<input type="text" class="form-control form-control-sm col-sm-2 cap-input" style="margin-left: 3px;"
-					ngbTooltip="Co Series No">
-					<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;"
-					ngbTooltip="Alt No">
-					<span>&nbsp;</span>
-					<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+<div class="cust-tabs-container">
+	<h4>Policy / Utilities / Update Information</h4>
+	<ngb-tabset>
+		<ngb-tab class="ngb-tab" title="Update General Info">
+			<ng-template ngbTabContent>
+				<div class="row top-row">
+					<div class="col-sm-2"></div>
+					<fieldset class="scheduler-border col-sm">
+						<div class="row">
+							<div class="col-sm-1">
+
+							</div>
+							<div class="col-sm">
+								<div class="input-group ">
+									<label class="form-control-sm col-sm-2">Policy No</label>
+									<input type="text" class="form-control form-control-sm col-sm-1 cap-input" ngbTooltip="Line">
+									<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;"
+									 ngbTooltip="Year">
+									<input type="text" class="form-control form-control-sm col-sm-3 cap-input" style="margin-left: 3px;"
+									 ngbTooltip="Sequence No">
+									<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;"
+									 ngbTooltip="Co Code">
+									<input type="text" class="form-control form-control-sm col-sm-2 cap-input" style="margin-left: 3px;"
+									 ngbTooltip="Co Series No">
+									<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;"
+									 ngbTooltip="Alt No">
+									<span>&nbsp;</span>
+									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								</div>
+								<div class="btn-cont text-center">
+									<div class="cust-btn-container">
+										<button type="button" class="cust-btn"><a>Clear</a></button>
+										<button type="button" class="cust-btn"><a>Search</a></button>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-1">
+
+							</div>
+
+						</div>
+
+					</fieldset>
+					<div class="col-sm-2"></div>
 				</div>
-				<div class="btn-cont text-center">
-			        <div class="cust-btn-container">
-			            <button type="button" class="cust-btn"><a>Clear</a></button>
-			            <button type="button" class="cust-btn"><a>Search</a></button>
-			        </div>
+				<div class="row">
+					<div class="col-sm-2"></div>
+					<fieldset class="scheduler-border col-sm">
+						<legend class="scheduler-border">Policy Record</legend>
+
+						<div class="form-row custom-row-inline-inset">
+							<div class="input-group">
+								<label class="col-sm-1"></label>
+								<label class="form-control-sm col-sm-2" for="inputQuonum">Type of Cession</label>
+								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="typeOfCession">
+								<label class="form-control-sm col-sm-2" for="inputQuonum">Line Class</label>
+								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-3" disabled="disabled">
+								<label class="col-sm-1"></label>
+							</div>
+							<div class="input-group">
+								<label class="col-sm-1"></label>
+								<label class="form-control-sm col-sm-2" for="inputQuonum">Quotation No</label>
+								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-3" disabled="disabled">
+								<label class="form-control-sm col-sm-2" for="inputQuonum">Status</label>
+								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-3" disabled="disabled">
+								<label class="col-sm-1"></label>
+							</div>
+							<div class="input-group">
+								<label class="col-sm-1"></label>
+								<label class="form-control-sm col-sm-2" for="inputQuonum">Ceding Company</label>
+								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-1" disabled="disabled">
+								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm sec-input" disabled="disabled">
+								<label class="col-sm-1"></label>
+							</div>
+							<div class="input-group">
+								<label class="col-sm-1"></label>
+								<label class="form-control-sm col-sm-2" for="inputQuonum">Co Ref No</label>
+								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm">
+								<label class="col-sm-1"></label>
+							</div>
+							<div class="input-group" *ngIf="checkRetrocession()">
+								<label class="col-sm-1"></label>
+								<label class="form-control-sm col-sm-2" for="inputQuonum">Reinsurance From</label>
+								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-1" disabled="disabled">
+								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm sec-input" disabled="disabled">
+								<label class="col-sm-1"></label>
+							</div>
+							<div class="input-group" *ngIf="checkRetrocession()">
+								<label class="col-sm-1"></label>
+								<label class="form-control-sm col-sm-2" for="inputQuonum">RI Binder No</label>
+								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm">
+								<label class="col-sm-1"></label>
+							</div>
+							<div class="input-group">
+								<label class="col-sm-1"></label>
+								<label class="form-control-sm col-sm-2" for="inputQuonum">Intermediary</label>
+								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-1" disabled="disabled">
+								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm sec-input" disabled="disabled">
+								<label class="col-sm-1"></label>
+							</div>
+						</div>
+					</fieldset>
+					<div class="col-sm-2"></div>
 				</div>
-			</div>
-			<div class="col-sm-1">
-				
-			</div>
-			
-		</div>
-		
-	</fieldset>
-	<div class="col-sm-2"></div>
-</div>
-<div class="row">
-	<div class="col-sm-2"></div>
-	<fieldset class="scheduler-border col-sm">
-		<legend class="scheduler-border">Policy Record</legend>
 
-		<div class="form-row custom-row-inline-inset">
-			<div class="input-group" >
-				<label class="col-sm-1"></label>
-				<label class="form-control-sm col-sm-2" for="inputQuonum" >Type of Cession</label>
-				<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="typeOfCession">
-				<label class="form-control-sm col-sm-2" for="inputQuonum">Line Class</label>
-				<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-3"  disabled="disabled">
-				<label class="col-sm-1"></label>
-			</div>
-			<div class="input-group" >
-				<label class="col-sm-1"></label>
-				<label class="form-control-sm col-sm-2" for="inputQuonum">Quotation No</label>
-				<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-3"  disabled="disabled">
-				<label class="form-control-sm col-sm-2" for="inputQuonum">Status</label>
-				<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-3"  disabled="disabled">
-				<label class="col-sm-1"></label>
-			</div>
-			<div class="input-group" >
-				<label class="col-sm-1"></label>
-				<label class="form-control-sm col-sm-2" for="inputQuonum">Ceding Company</label>
-				<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-1"  disabled="disabled">
-				<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm sec-input"  disabled="disabled">
-				<label class="col-sm-1"></label>
-			</div>
-			<div class="input-group" >
-				<label class="col-sm-1"></label>
-				<label class="form-control-sm col-sm-2" for="inputQuonum">Co Ref No</label>
-				<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm">
-				<label class="col-sm-1"></label>
-			</div>
-			<div class="input-group" *ngIf="checkRetrocession()">
-				<label class="col-sm-1"></label>
-				<label class="form-control-sm col-sm-2" for="inputQuonum">Reinsurance From</label>
-				<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-1"  disabled="disabled">
-				<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm sec-input"  disabled="disabled">
-				<label class="col-sm-1"></label>
-			</div>
-			<div class="input-group" *ngIf="checkRetrocession()">
-				<label class="col-sm-1"></label>
-				<label class="form-control-sm col-sm-2" for="inputQuonum">RI Binder No</label>
-				<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm">
-				<label class="col-sm-1"></label>
-			</div>
-			<div class="input-group" >
-				<label class="col-sm-1"></label>
-				<label class="form-control-sm col-sm-2" for="inputQuonum">Intermediary</label>
-				<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-1"  disabled="disabled">
-				<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm sec-input"  disabled="disabled">
-				<label class="col-sm-1"></label>
-			</div>
-		</div>
-	</fieldset>
-	<div class="col-sm-2"></div>
-</div>
+				<div class="row">
+					<div class="col-sm-2"></div>
+					<fieldset class="scheduler-border col-sm">
+						<legend class="scheduler-border">Insured Details</legend>
 
-<div class="row">
-	<div class="col-sm-2"></div>
-	<fieldset class="scheduler-border col-sm">
-		<legend class="scheduler-border">Insured Details</legend>
+						<div class="form-row custom-row-inline-inset">
+							<div class="input-group">
+								<label class="form-control-sm col-sm-2" for="inputQuonum">Principal</label>
+								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-1" disabled="disabled">
+								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-3 sec-input" disabled="disabled">
+								<label class="form-control-sm col-sm-1" for="inputQuonum">Contractor</label>
+								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-1" disabled="disabled">
+								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm sec-input" disabled="disabled">
+							</div>
+							<div class="input-group">
+								<label class="form-control-sm col-sm-2" for="inputQuonum">Insured</label>
+								<textarea class="form-control form-control-sm cust-sm col-sm"></textarea>
+							</div>
+							<div class="input-group">
+								<label class="form-control-sm col-sm-2" for="inputQuonum">Risk</label>
+								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm" disabled="disabled">
+							</div>
+							<div class="input-group">
+								<label class="form-control-sm col-sm-2" for="inputQuonum">Object</label>
+								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-1" disabled="disabled">
+								<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-3 sec-input" disabled="disabled">
+								<label class="form-control-sm col-sm-1" for="inputQuonum">Region</label>
+								<input type="text" class="form-control form-control-sm cust-sm col-sm-5" disabled="disabled">
+							</div>
 
-		<div class="form-row custom-row-inline-inset">
-			<div class="input-group" >
-				<label class="form-control-sm col-sm-2" for="inputQuonum">Principal</label>
-				<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-1"  disabled="disabled">
-				<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-3 sec-input"  disabled="disabled">
-				<label class="form-control-sm col-sm-1" for="inputQuonum">Contractor</label>
-				<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-1"  disabled="disabled">
-				<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm sec-input"  disabled="disabled">
-			</div>
-			<div class="input-group" >
-				<label class="form-control-sm col-sm-2" for="inputQuonum">Insured</label>
-				<textarea class="form-control form-control-sm cust-sm col-sm"></textarea> 
-			</div>
-			<div class="input-group" >
-				<label class="form-control-sm col-sm-2" for="inputQuonum">Risk</label>
-				<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm"  disabled="disabled">
-			</div>
-			<div class="input-group" >
-				<label class="form-control-sm col-sm-2" for="inputQuonum">Object</label>
-				<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-1"  disabled="disabled">
-				<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-3 sec-input"  disabled="disabled">
-				<label class="form-control-sm col-sm-1" for="inputQuonum">Region</label>
-				<input type="text" class="form-control form-control-sm cust-sm col-sm-5"  disabled="disabled">
-			</div>
 
-			
-			<div class="input-group cont2">
-				<label class="form-control-sm col-sm-2" for="inputQuonum">Nature of Work / Items</label>
-				<textarea class="form-control form-control-sm cust-sm col-sm-4" rows="3"  disabled="disabled"></textarea> 
-				<label class="form-control-sm col-sm-1" for="inputQuonum">Province</label>
-				<input  id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-5"  disabled="disabled">
-				<div class="input-group latLong">
-					<label class="form-control-sm col-sm-2" for="inputQuonum">City/Town</label>
-					<input  id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-10"  disabled="disabled">
+							<div class="input-group cont2">
+								<label class="form-control-sm col-sm-2" for="inputQuonum">Nature of Work / Items</label>
+								<textarea class="form-control form-control-sm cust-sm col-sm-4" rows="3" disabled="disabled"></textarea>
+								<label class="form-control-sm col-sm-1" for="inputQuonum">Province</label>
+								<input id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-5" disabled="disabled">
+								<div class="input-group latLong">
+									<label class="form-control-sm col-sm-2" for="inputQuonum">City/Town</label>
+									<input id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-10" disabled="disabled">
+								</div>
+							</div>
+							<div class="input-group cont1">
+								<label class="form-control-sm col-sm-2" for="inputQuonum">Site</label>
+								<textarea class="form-control form-control-sm cust-sm col-sm-4" rows="3" disabled="disabled"></textarea>
+								<label class="form-control-sm col-sm-1" for="inputQuonum">District</label>
+								<input id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-2" disabled="disabled">
+								<label class="form-control-sm col-sm-1" for="inputQuonum">Block</label>
+								<input id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-2" disabled="disabled">
+								<div class="input-group latLong">
+									<label class="form-control-sm col-sm-2" for="inputQuonum">Lat</label>
+									<input id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-4">
+									<label class="form-control-sm col-sm-2" for="inputQuonum">Long</label>
+									<input id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-4">
+								</div>
+							</div>
+						</div>
+
+					</fieldset>
+					<div class="col-sm-2"></div>
 				</div>
-			</div>
-			<div class="input-group cont1">
-				<label class="form-control-sm col-sm-2" for="inputQuonum">Site</label>
-				<textarea class="form-control form-control-sm cust-sm col-sm-4" rows="3"  disabled="disabled"></textarea> 
-				<label class="form-control-sm col-sm-1" for="inputQuonum">District</label>
-				<input  id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-2"  disabled="disabled">
-				<label class="form-control-sm col-sm-1" for="inputQuonum">Block</label>
-				<input  id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-2"  disabled="disabled">
-				<div class="input-group latLong">
-					<label class="form-control-sm col-sm-2" for="inputQuonum">Lat</label>
-					<input  id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-4">
-					<label class="form-control-sm col-sm-2" for="inputQuonum">Long</label>
-					<input  id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-4">
-				</div>
-			</div>
-		</div>
-		
-	</fieldset>
-	<div class="col-sm-2"></div>
-</div>
 
-<div class="col-md-13 text-center" style="margin-top: 10px; margin-bottom: 5px;">
-        <div class="cust-btn-container">
-            <button type="button" class="cust-btn"><a>Cancel</a></button>
-            <button type="button" class="cust-btn"><a>Save</a></button>
-        </div>
+				<div class="col-md-13 text-center" style="margin-top: 10px; margin-bottom: 5px;">
+					<div class="cust-btn-container">
+						<button type="button" class="cust-btn"><a>Cancel</a></button>
+						<button type="button" class="cust-btn"><a>Save</a></button>
+					</div>
+				</div>
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
 </div>

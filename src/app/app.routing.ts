@@ -45,7 +45,8 @@ import { RiskListComponent } from './underwriting/maintenance/risk-list/risk-lis
 import { RiskFormComponent } from './underwriting/maintenance/risk-form/risk-form.component';
 import { ClmClaimsInquiryComponent } from './claims/claim/clm-claims-inquiry/clm-claims-inquiry.component';
 import { ClmChangeClaimStatusComponent } from './claims/claim/clm-change-claim-status/clm-change-claim-status.component';
-
+import { UpdateGeneralInfoComponent } from './utilities/update-information/update-general-info/update-general-info.component';
+import { UpdateInstallmentComponent } from './utilities/update-information/update-installment/update-installment.component';
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -97,6 +98,8 @@ const appRoutes: Routes = [
     { path: 'maintenance-risk', component: RiskFormComponent },
     { path: 'claims-inquiry', component: ClmClaimsInquiryComponent },
     { path: 'clm-change-claim-status', component: ClmChangeClaimStatusComponent },
+    { path: 'pol-util-gen-info', component: UpdateGeneralInfoComponent },
+    { path: 'pol-util-installment', component: UpdateInstallmentComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
