@@ -54,4 +54,5 @@ export class ClmChangeClaimStatusComponent implements OnInit {
   search(event) {
     $('#modalSearch > #modalBtn').trigger('click');
   }
+
 }
