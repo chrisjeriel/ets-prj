@@ -86,7 +86,7 @@ export class CustNonDatatableComponent implements OnInit {
 
     @Output() rowClick: EventEmitter<any> = new EventEmitter();
     @Output() rowDblClick: EventEmitter<any> = new EventEmitter();
-     @Output() add: EventEmitter<any> = new EventEmitter();
+    @Output() add: EventEmitter<any> = new EventEmitter();
     @Output() edit: EventEmitter<any> = new EventEmitter();
     @Output() copy: EventEmitter<any> = new EventEmitter();
     @Output() print: EventEmitter<any> = new EventEmitter();
@@ -115,10 +115,18 @@ export class CustNonDatatableComponent implements OnInit {
         printBtn: false,        //print btn
         pageStatus: true,       //pagination labels. must always be assigned unless you don't want this
         pagination: true,       //pagination buttons. must always be assigned unless you don't want this
-        addFlag: false,         //add btn
+        addFlag: false,         //add btn. 
+                                //add functionality by placing it with [passData] as (add)="onClickAdd($event)"
+        
         editFlag: false,        //edit btn
+                                //add functionality by placing it with [passData] as (edit)="onClickEdit($event)"
+        
         deleteFlag: false,      //delete btn
+                                //add functionality by placing it with [passData] as (delete)="onClickDelete($event)"
+        
         copyFlag: false,        //copy btn
+                                //add functionality by placing it with [passData] as (copy)="onClickCopy($copy)"
+        
         pageID: 1               //if you use multiple instances of this component, this is a must
     }
 
@@ -288,7 +296,7 @@ export class CustNonDatatableComponent implements OnInit {
         for (var filt in filterObj) {    
             if (!filterObj[filt]["enabled"]) {continue;}
             this.displayData = this.displayData.filter(function(itm){
-                return itm[filterObj[filt].key].toLowerCase( ).includes(filterObj[filt].search.toLowerCase( ));
+                return itm[filterObj[filt].key].toString().toLowerCase( ).includes(filterObj[filt].search.toLowerCase( ));
 /*=======
                      if(filterObj[filt]["dataType"]=="date")
                     return itm[filterObj[filt].key].toString().includes(new Date(filterObj[filt].search).toString());

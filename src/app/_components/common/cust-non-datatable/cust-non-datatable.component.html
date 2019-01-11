@@ -24,17 +24,11 @@
         <button *ngIf="passData.copyFlag" class="cust-btn" [class.btnDisabled]="btnDisabled" [disabled]="btnDisabled" (click)="onClickCopy($event)"><a class="paginate_button previous">Copy</a></button>
         <button *ngIf="passData.printBtn" class="cust-btn" type="button" (click)="onClickPrint($event)"><a>Print</a></button>
     </div>
-    <!-- <div class="print" *ngIf="passData.printBtn" align="left">
-<button class="cust-btn" type="button"><a>Print</a></button>
-</div>-->
     <div class="expire" *ngIf="passData.expireFilter" align="right" style="margin-top: 1px !important;">
-        <!-- remove -->
         <label>Expires in (Days): &nbsp; </label>
         <input type="search" class="form-control-sm expireIn" placeholder="" >
-        <!-- end remove -->
     </div>
     <div class="search-filter" *ngIf="!passData.tableOnly">
-        <!--<div class="search-filter" *ngIf="passData.hasSearch">-->
         <label>Search: &nbsp;
             <input type="search" class="form-control-sm cust-search-form" [(ngModel)]="searchString" (ngModelChange)="filterDisplay(filterObj,$event)">
         </label>
@@ -44,15 +38,6 @@
         <div ngbDropdownMenu aria-labelledby="dropdownConfig">
             <div class="dropdown-item">
                 <span class="cust-tbl-label">Filter by:</span>
-                <!-- <div class="input-group" *ngFor="let filt of passData.filters;let i= index" [ngSwitch]="filterDataTypes[i]">
-<div class="input-group-prepend">
-<div class="input-group-text">
-<input type="checkbox"><span>&nbsp;{{filt}}</span>
-</div>
-</div>
-<input *ngSwitchCase="'date'" type="date" class="form-control cust-sm">
-<input *ngSwitchCase="'text'" type="text" class="form-control cust-sm">
-</div> -->
                 <div class="input-group" *ngFor="let filt of passData.filters;let i= index" [ngSwitch]="passData.filters[i].dataType">
                     <div class="input-group-prepend" style="margin-right: 2px !important">
                         <div class="input-group-text">
@@ -112,7 +97,6 @@
                 <table class="content-container" id="non-datatable" [class.margin-table]="passData.addFlag || passData.editFlag || passData.deleteFlag || passData.copyFlag || passData.printBtn || passData.expireFilter || !passData.tableOnly" style="border-left: 0px;">
                     <thead>
                         <tr>
-                            <!-- <th *ngIf="passData.checkFlag" ><input type="checkbox" name=""></th>-->
                             <th *ngFor="let tHeader of passData.tHeader | slice: 1; let i = index" [ngSwitch]="passData.dataTypes[i]" [ngStyle]="{'max-width': (passData.colSize[i] == '' || passData.colSize.length == 0) ? '100%' : passData.colSize[i]}" [ngbTooltip]="passData.tooltip !== undefined ? passData.tooltip[i] :null">
                                 <span *ngIf="passData.resizable[i]" 
                                       class="ui-column-resizer" (mousedown) = "onMouseDown($event)"></span>
