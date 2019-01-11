@@ -35,6 +35,7 @@ export class ClmClaimHistoryComponent implements OnInit {
     infoFlag: true,
     pageLength: 10,
     pageID: 2,
+    nData: [null, null, null, null, null],
     widths: []
   }
 
@@ -49,7 +50,7 @@ export class ClmClaimHistoryComponent implements OnInit {
     infoFlag: true,
     addFlag: true,
     tableData: [],
-    widths: [],
+    widths: [1,1,147,67,91,118,78,1,'auto'],
     nData: new ClaimsHistoryInfo(null, null, null, null, null, null, null, null, null)
   };
 
@@ -62,7 +63,7 @@ export class ClmClaimHistoryComponent implements OnInit {
 
     this.passDataHistory.tHeader.push("Hist. No.", "Hist. Type", "Type", "Curr", "Reserve", "Payment Amount", "Ref. No", "Ref. Date", "Remarks");
     this.passDataHistory.dataTypes.push("number", "select", "select", "select", "currency", "currency", "text", "date", "text");
-    this.passDataHistory.opts.push({ selector: "histType", vals: ["Loss"] });
+    this.passDataHistory.opts.push({ selector: "histType", vals: ["Loss", "Adjuster's Expense", "Other Expenses"] });
     this.passDataHistory.opts.push({ selector: "type", vals: ["Initial Reserve", "Increase Reserve", "Decrease Reserve", "Partial Payment", "Full Payment"] });
     this.passDataHistory.opts.push({ selector: "currency", vals: ["PHP", "USD", "SGD"] });
     this.passDataHistory.widths.push("1", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto");

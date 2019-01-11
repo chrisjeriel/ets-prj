@@ -111,6 +111,7 @@ export class DummyComponent implements OnInit {
         tableData: [],
         tHeader: ["ID", "First Name", "Last Name", "Middle Name", "Gender", "Age", "Birth Date"],
         nData: new DummyInfo(null, null, null, null, null, null, null),
+        dataTypes: ['number','text','text','text','text','number','text'],
         checkFlag:true,
         addFlag:true,
         deleteFlag:true,
@@ -118,7 +119,8 @@ export class DummyComponent implements OnInit {
         pageLength: 5,
         searchFlag:true,
         infoFlag: true,
-        paginateFlag: true
+        paginateFlag: true,
+        magnifyingGlass:['id']
     };
         
     constructor(private quotationService: QuotationService, private modalService: NgbModal) { 

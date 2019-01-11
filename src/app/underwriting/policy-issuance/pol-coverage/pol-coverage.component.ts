@@ -109,6 +109,22 @@ export class PolCoverageComponent implements OnInit {
 
   textArea: any = null;
 
+
+  /*passDataDeductibles: any = {
+        tHeader: ["Deductible title","Rate (%)", "Amount Deductible Text"],
+        dataTypes: [
+                    "text", "percent", "text"
+                   ],
+        tableData: [["TEST",1,"TEST"],["TEST",1,"TEST"],["TEST",10,"TEST"],["TEST",1,"TEST"]],
+        checkFlag:true,
+        addFlag:true,
+        deleteFlag:true,
+        pageLength: 5,
+        searchFlag:true,
+        paginateFlag:true,
+        infoFlag:true,
+    };*/
+    
   @Input() alteration: boolean;
   line: string;
   sub: any;
@@ -248,8 +264,10 @@ export class PolCoverageComponent implements OnInit {
   }
 
   CATPerils() {
-        $('#modalBtn').trigger('click');
-    }
+        /*$('#modalBtn').trigger('click');*/
+        $('#CATPerils >#modalBtn').trigger('click');
+  }
+
   deductibles() {
         $('#Deductibles >#modalBtn').trigger('click');
   }
