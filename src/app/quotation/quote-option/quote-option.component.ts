@@ -46,9 +46,9 @@ export class QuoteOptionComponent implements OnInit {
     }
     deductiblesData: any = {
         tableData: this.quotationService.getDeductibles(),
-        tHeader: ['Deductible Title', 'Rate(%)', 'Amount', 'Deductible Text'],
-        dataTypes: ['text', 'percent', 'currency', 'text'],
-        nData: new QuotationDeductibles(null, null, null, null),
+        tHeader: ['Deductible Code','Deductible Title', 'Rate(%)', 'Amount', 'Deductible Text'],
+        dataTypes: ['text','text', 'percent', 'currency', 'text'],
+        nData: new QuotationDeductibles(null,null, null, null, null),
         pageLength: 5,
         addFlag: true,
         deleteFlag: true,
