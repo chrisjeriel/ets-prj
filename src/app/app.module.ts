@@ -114,6 +114,7 @@ import { ClmSectionCoversComponent } from './claims/claim/clm-claim-processing/c
 import { ClmClaimPaymentRequestComponent } from './claims/claim/clm-claim-processing/clm-claim-payment-request/clm-claim-payment-request.component';
 import { ClmClaimsInquiryComponent } from './claims/claim/clm-claims-inquiry/clm-claims-inquiry.component';
 import { ClmChangeClaimStatusComponent } from './claims/claim/clm-change-claim-status/clm-change-claim-status.component';
+import { PolMxCedingCoComponent } from './underwriting/policy-maintenance/pol-mx-ceding-co/pol-mx-ceding-co.component';
 
 @NgModule({
     imports: [
@@ -233,6 +234,7 @@ import { ClmChangeClaimStatusComponent } from './claims/claim/clm-change-claim-s
         ClmSectionCoversComponent,
         ClmClaimsInquiryComponent,
         ClmChangeClaimStatusComponent,
+        PolMxCedingCoComponent,
     ],
 
     providers: [
