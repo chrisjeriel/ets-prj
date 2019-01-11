@@ -1,0 +1,76 @@
+<div class="cust-tabs-container">
+	<h4>Claims / Inquiry</h4>
+	<ngb-tabset>
+		<ngb-tab title="Claim Inquiry">
+			<ng-template ngbTabContent>
+				<div class="row">
+					<div class="col-sm-12">
+						<app-cust-non-datatable [passData]="passData"></app-cust-non-datatable>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6">
+						<fieldset class="scheduler-border" style="padding-bottom: 18px !important; margin-right: -5px !important;">
+							<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+							<div style="margin-right: 20px;">
+								<div class="input-group" style="margin-top: 10px !important;">
+									<label class="form-control-sm col-sm-2">Claim No</label>
+									<input type="text"class="form-control form-control-sm cust-sm col-sm" value="EEI-2018-00043">
+									<label class="form-control-sm col-sm-2">Status</label>
+									<input type="text"class="form-control form-control-sm cust-sm col-sm" value="Withdrawn">
+								</div>
+								<div class="input-group cust-ig">
+									<label class="form-control-sm col-sm-2">Policy No</label>
+									<input type="text"class="form-control form-control-sm cust-sm col-sm" value="EEI-2018-00066-078-0008-000">
+								</div>
+								<div class="input-group cust-ig">
+									<label class="form-control-sm col-sm-2">Ceding Co</label>
+									<input type="text"class="form-control form-control-sm cust-sm col-sm" value="CHARTER PING AN INSURANCE CORP.">
+								</div>
+								<div class="input-group cust-ig">
+									<label class="form-control-sm col-sm-2">Insured</label>
+									<input type="text"class="form-control form-control-sm cust-sm col-sm" value="A. B. Industries, Inc.">
+								</div>
+								<div class="input-group cust-ig">
+									<label class="form-control-sm col-sm-2">Risk</label>
+									<textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 38px;">C-Ayala Land, Inc./Gatewalk Central Estate</textarea>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+					<div class="col-sm-6">
+						<fieldset class="scheduler-border" style="padding-bottom: 1px !important; margin-left: -5px !important;">
+							<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+							<div style="margin-right: 20px;">
+								<div class="input-group" style="margin-top: 10px !important;">
+									<label class="form-control-sm col-sm-2">Loss Date</label>
+									<input type="datetime-local"class="form-control form-control-sm cust-sm col-sm">
+									<label class="form-control-sm col-sm-2">Currency</label>
+									<input type="text"class="form-control form-control-sm cust-sm col-sm" value="PHP">
+								</div>
+								<div class="input-group cust-ig">
+									<label class="form-control-sm col-sm-2">Loss Details</label>
+									<textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 17px !important;">Damage electric cables and supply lines on 2nd</textarea>
+								</div>
+								<div class="input-group cust-ig">
+									<label class="form-control-sm col-sm-2">Total Reserve</label>
+									<input type="text"class="form-control form-control-sm cust-sm col-sm text-right" value="0.00">
+									<label class="form-control-sm col-sm-2">Total Payment</label>
+									<input type="text"class="form-control form-control-sm cust-sm col-sm text-right" value="0.00">
+								</div>
+								<div class="input-group cust-ig">
+									<label class="form-control-sm col-sm-2">Adjusters</label>
+									<input type="text"class="form-control form-control-sm cust-sm col-sm" value="TLP Adj. / ACD Co. Inc.">
+								</div>
+								<div class="input-group cust-ig">
+									<label class="form-control-sm col-sm-2">Processed By</label>
+									<input type="text"class="form-control form-control-sm cust-sm col-sm" value="CLECOH">
+								</div>
+							</div>
+						</fieldset>
+					</div>
+				</div>
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>
