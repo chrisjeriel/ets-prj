@@ -51,4 +51,7 @@ export class ClmChangeClaimStatusComponent implements OnInit {
     this.passData.tableData = this.tableData;
   }
 
+  search(event) {
+    $('#modalSearch > #modalBtn').trigger('click');
+  }
 }
