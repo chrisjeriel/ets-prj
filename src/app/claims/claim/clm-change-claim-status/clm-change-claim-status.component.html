@@ -1,0 +1,135 @@
+<div class="cust-tabs-container">
+  <h4>Claims</h4>
+  <ngb-tabset>
+    <ngb-tab title="Change Claim Status">
+      <ng-template ngbTabContent>
+        <div class="custom-row-inline-inset">
+          <div class="row">
+            <div class="col-sm-10">
+              <app-cust-non-datatable [passData]="passData"></app-cust-non-datatable>
+            </div>
+            <div class="col-sm-2">
+              <fieldset class="scheduler-border">
+                <legend class="scheduler-border">Batch Option</legend>
+                <div class="custom-row-inline-inset">
+                  <div style="margin-left: 47px !important;">
+                    <div class="form-row">
+                      <input type="radio" class="form-control-sm"><label class="rd-lbl">Open</label>
+                    </div>
+                    <div class="form-row">
+                      <input type="radio" class="form-control-sm"><label class="rd-lbl">Close</label>
+                    </div>
+                    <div class="form-row">
+                      <input type="radio" class="form-control-sm"><label class="rd-lbl">Withdraw</label>
+                    </div>
+                    <div class="form-row">
+                      <input type="radio" class="form-control-sm"><label class="rd-lbl">Spoil</label>
+                    </div>
+                    <div class="form-row">
+                      <input type="radio" class="form-control-sm"><label class="rd-lbl">Deny</label>
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
+              <div class="form-row">
+                <div class="form-group col-sm">
+                  <div class="text-center">
+                    <div class="cust-btn-container">
+                      <div class="input-group">
+                        <button type="button" class="cust-btn" style="min-width: 100% !important; margin-top: 3px !important;"><a>Process</a></button>
+                      </div>
+                      <div class="input-group">
+                        <button type="button" class="cust-btn" style="min-width: 100% !important;margin-top: 16px !important;"><a>Search</a></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="custom-row-inline-inset">
+          <div class="row">
+            <div class="col-sm-10">
+              <fieldset class="scheduler-border" style="margin-left: -7px !important;">
+                <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+                <div class="custom-row-inline-inset" style="margin-left: -26px !important;">
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <div class="input-group">
+                        <label class="form-control-sm col-sm-2">Claim No</label>
+                        <input type="text" class="form-control form-control-sm cust-sm" required>
+                        <label class="form-control-sm col-sm-2">Status</label>
+                        <input type="text" class="form-control form-control-sm cust-sm" required>
+                      </div>
+                      <div class="input-group">
+                        <label class="form-control-sm col-sm-2">Policy No</label>
+                        <input type="text" class="form-control form-control-sm cust-sm" required>
+                      </div>
+                      <div class="input-group">
+                        <label class="form-control-sm col-sm-2">Ceding Co</label>
+                        <input type="text" class="form-control form-control-sm cust-sm" required>
+                      </div>
+                      <div class="input-group">
+                        <label class="form-control-sm col-sm-2">Insured</label>
+                        <input type="text" class="form-control form-control-sm cust-sm" required>
+                      </div>
+                      <div class="input-group">
+                        <label class="form-control-sm col-sm-2">Risk</label>
+                        <textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 17px;"
+                          placeholder=""></textarea>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                      <div class="input-group">
+                        <label class="form-control-sm col-sm-2">Loss Date</label>
+                        <input type="text" class="form-control form-control-sm cust-sm" required>
+                        <label class="form-control-sm col-sm-2">Currency</label>
+                        <input type="text" class="form-control form-control-sm cust-sm" required>
+                      </div>
+                      <div class="input-group">
+                        <label class="form-control-sm col-sm-2">Loss Details</label>
+                        <textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 17px;"
+                          placeholder=""></textarea>
+                      </div>
+                      <div class="input-group">
+                        <label class="form-control-sm col-sm-2">Total Reserve</label>
+                        <input type="text" class="form-control form-control-sm cust-sm" required>
+                        <label class="form-control-sm col-sm-2" style="padding-right: 3px !important;">Total Payment</label>
+                        <input type="text" class="form-control form-control-sm cust-sm" required>
+                      </div>
+                      <div class="input-group">
+                        <label class="form-control-sm col-sm-2">Adjusters</label>
+                        <input type="text" class="form-control form-control-sm cust-sm" required>
+                      </div>
+                      <div class="input-group">
+                        <label class="form-control-sm col-sm-2">Processed By</label>
+                        <input type="text" class="form-control form-control-sm cust-sm" required>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="input-group">
+                        <label class="form-control-sm col-sm-1" style="margin-left:-3px !important;">Reason</label>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-1" required>
+                        <!-- <div class="text-search-ico" style="z-index: 1 !important; margin: 8px 9px -10px -24px !important;padding-top: 2px !important;">
+                          <a><i class="fa fa-search"></i></a></div> -->
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px !important;"
+                          required>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+
+      </ng-template>
+    </ngb-tab>
+  </ngb-tabset>
+</div>

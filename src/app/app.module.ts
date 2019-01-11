@@ -108,10 +108,11 @@ import { DeductibleComponent } from './underwriting/maintenance/deductible/deduc
 import { RiskListComponent } from './underwriting/maintenance/risk-list/risk-list.component';
 import { RiskFormComponent } from './underwriting/maintenance/risk-form/risk-form.component';
 import { MonthDirective } from './_directives/month.directive';
+import { ChangethemeDirective } from './_directives/changetheme.directive';
 import { PolMxLineComponent } from './underwriting/policy-maintenance/pol-mx-line/pol-mx-line.component';
 import { ClmSectionCoversComponent } from './claims/claim/clm-claim-processing/clm-section-covers/clm-section-covers.component';
 import { ClmClaimPaymentRequestComponent } from './claims/claim/clm-claim-processing/clm-claim-payment-request/clm-claim-payment-request.component';
-
+import { ClmChangeClaimStatusComponent } from './claims/claim/clm-change-claim-status/clm-change-claim-status.component';
 
 @NgModule({
     imports: [
@@ -213,11 +214,12 @@ import { ClmClaimPaymentRequestComponent } from './claims/claim/clm-claim-proces
         ClaimsAttachmentComponent,
         ClmClaimHistoryComponent,
         ClaimDistributionComponent,
+        RequiredDirective, //keep this as first directive declared
         TextEditorComponent,
         CharactersLengthDirective,
-        RequiredDirective,
         CurrencyDirective,
         MonthDirective,
+        ChangethemeDirective,
         NumbersOnlyDirective,
         ClmClaimPaymentRequestComponent,
         PolBatchProcessingComponent,
@@ -227,7 +229,8 @@ import { ClmClaimPaymentRequestComponent } from './claims/claim/clm-claim-proces
         MonthDirective,
         PolMxLineComponent,
         NumbersOnlyDirective,
-        ClmSectionCoversComponent
+        ClmSectionCoversComponent,
+        ClmChangeClaimStatusComponent
 
     ],
 

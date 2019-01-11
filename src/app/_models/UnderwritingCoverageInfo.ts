@@ -53,3 +53,24 @@ export class CoverageInfo {
     remarks: string;
 
 }
+
+export class CoverageDeductibles {
+    deductibleCode: string;
+    deductibleTitle: string;
+    rate: number;
+    amount: number;
+    deductibleText: string;
+
+    constructor(
+                deductibleCode: string, 
+                deductibleTitle: string, 
+                rate: number,
+                amount: number,  
+                deductibleText: string) {
+        this.deductibleCode = deductibleCode
+        this.deductibleTitle = deductibleTitle
+        this.rate = rate
+        this.amount = amount
+        this.deductibleText = deductibleText
+    }
+}

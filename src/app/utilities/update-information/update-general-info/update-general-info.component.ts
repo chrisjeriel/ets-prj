@@ -6,10 +6,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./update-general-info.component.css']
 })
 export class UpdateGeneralInfoComponent implements OnInit {
-
+  typeOfCession:string='';
+  
   constructor() { }
 
   ngOnInit() {
+  }
+
+  checkRetrocession(){
+  	if(this.typeOfCession.toLowerCase() == 'retrocession')
+  		return true;
+  	return false;
   }
 
 }

@@ -20,7 +20,7 @@
 <div id="cust-table-container">
     <div ngbDropdown>
         <div class="cust-btn-container">
-            <button *ngIf="passData.addFlag" class="cust-btn" (click)="addClicked(event)"><a>Add</a></button>
+            <button *ngIf="passData.addFlag" class="cust-btn" (click)="passData.nData == null ? addClicked(event) : onClickAdd()"><a>Add</a></button>
             <button *ngIf="passData.editFlag" class="cust-btn" (click)="onClickEdit()"><a class="paginate_button previous">Edit</a></button>
             <button *ngIf="passData.deleteFlag" class="cust-btn" (click)="onClickDelete()"><a class="paginate_button previous">Delete</a></button>
             <div class="search-filter" *ngIf="passData.searchFlag">
@@ -101,14 +101,14 @@
                 </tr>
                 <tr style="min-width: 96px">
                     <th *ngIf="passData.checkFlag" class="checkbox"><input type="checkbox" name="checkbox" [(ngModel)]="checked"></th>
-                    <th *ngFor="let tHeader of passData.tHeader; let i = index" (click)="sort(dataKeys[i],sortBy);sortIndex=i;"
-                        [style.width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]">
-                        <span class="ui-column-resizer" (mousedown)="onMouseDown($event)"></span>
-                        <span *ngIf="isNumber(i)" class="gridHeader number text-right">{{tHeader}}
+                    <th container="body"  *ngFor="let tHeader of passData.tHeader; let i = index" (click)="sort(dataKeys[i],sortBy);sortIndex=i;"
+                        [style.width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [ngbTooltip]="passData.tooltip !== undefined ? passData.tooltip[i] :null">
+                        <span class="ui-column-resizer"  (mousedown)="onMouseDown($event)" *ngIf="passData.resizable === undefined ||  passData.resizable[i]"></span>
+                        <span *ngIf="isNumber(i)" class="gridHeader number text-right" >{{tHeader}}
                             <i *ngIf="showSort(sortBy,i)" class="fa fa-caret-down"></i>
                             <i *ngIf="showSort(!sortBy,i)" class="fa fa-caret-up"></i>
                         </span>
-                        <span *ngIf="!isNumber(i)" class="gridHeader">{{tHeader}}
+                        <span container="body"  *ngIf="!isNumber(i)" class="gridHeader">{{tHeader}}
                             <i *ngIf="showSort(sortBy,i)" class="fa fa-caret-down"></i>
                             <i *ngIf="showSort(!sortBy,i)" class="fa fa-caret-up"></i>
                         </span>
@@ -123,13 +123,13 @@
                             name="checkbox" [checked]="checked"></td>
                     <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]" class="align-middle">
                         <div *ngIf="addCheckFlag(data)" class="align-middle" style="position: relative;">
-                            <a  *ngIf="passData.magnifyingGlass.indexOf(key)!=-1"><i class="fa fa-search align-middle"></i></a> 
+                            
                             <input *ngSwitchCase="'percent'" class="editable-text text-right number form-control-sm"
-                                type="text" [ngModel]="processData(key, data) | number:'1.7-7'" (blur)="format($event , key, ti)">
+                                type="text" [ngModel]="processData(key, data) | number:'1.7-7'" (blur)="format($event , key, ti)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1">
                             <input *ngSwitchCase="'number'" class="editable-text text-right number form-control-sm"
-                                type="text" [ngModel]="data[key]" [ngModelOptions]="{updateOn:'change'}">
+                                type="text" [ngModel]="data[key]" [ngModelOptions]="{updateOn:'change'}" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1">
                             <input *ngSwitchCase="'currency'" class="editable-text text-right number form-control-sm"
-                                type="text" [ngModel]="data[key] | number:'1.2-2'" (blur)="format($event , key, ti)">
+                                type="text" [ngModel]="data[key] | number:'1.2-2'" (blur)="format($event , key, ti)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1">
                             <div *ngSwitchCase="'checkbox'" style="text-align: center;">
                                 <input [checked]="data[key] === true ? true : false" type="checkbox">
                             </div>
@@ -146,7 +146,7 @@
                             <input *ngSwitchCase="'datetime'" class="editable-date form-control-sm" type="datetime-local"
                                 [ngModel]="processData(key, data) | date:'yyyy-MM-ddTHH:mm'">
                             <input *ngSwitchDefault class="editable-text form-control-sm" type="text" [ngModel]="processData(key, data)">
-
+                            <a  *ngIf="passData.magnifyingGlass.indexOf(key)!=-1"><i class="fa fa-search align-middle"></i></a> 
                         </div>
                         <div *ngIf="!addCheckFlag(data)" class="filler">
 
@@ -165,6 +165,7 @@
                         <button class="fa fa-folder-open" title="Open File" *ngIf="addCheckFlag(data)"></button>
                     </td>
                 </tr>
+               
                 <tr *ngIf="passData.totalFlag" class="total-tr">
                     <td *ngIf="passData.checkFlag"></td>
                     <td [attr.colspan]="dataKeys.length-1"></td>
