@@ -1,5 +1,5 @@
 export class UnderwritingPolicyInquiryInfo {
-   line : string
+    line : string
     policyNo : string
     typeCession : string
     cedingCompany : string

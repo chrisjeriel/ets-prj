@@ -27,6 +27,10 @@ export class PolicyInquiryComponent implements OnInit {
   columnId;
   pageLength = 10;
   editedData: any[] = [];
+  policyList: UnderwritingPolicyInquiryInfo = new UnderwritingPolicyInquiryInfo(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+  allData: any[] = [];
+  cedNum = "";
+
 
   // editedDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
   // rowClick: EventEmitter<any> = new EventEmitter();
@@ -147,7 +151,21 @@ export class PolicyInquiryComponent implements OnInit {
   ngOnInit() {
     this.titleService.setTitle("Pol | Policy Inquiry");
     this.passData.tableData = this.underwritingService.getPolicyInquiry();
-
+    this.allData = this.underwritingService.getPolicyInquiry();
   }
+
+  onRowClick(event) {
+        for(var i = 0; i < event.target.parentElement.children.length; i++) {
+            this.underwritingService.rowData[i] = event.target.parentElement.children[i].innerText;
+        }
+        if(!Number.isNaN(event.path[2].rowIndex - 1)){
+            this.policyList = this.allData[event.path[2].rowIndex - 1];
+            var ced = this.policyList.policyNo;
+            var arr = ced.split("-");
+            this.cedNum = arr[3];
+        }
+
+
+    }
 
 }

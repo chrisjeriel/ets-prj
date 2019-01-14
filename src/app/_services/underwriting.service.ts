@@ -38,6 +38,8 @@ export class UnderwritingService {
     batchDistribution: UnderwritingBatchDistribution[] = [];
     maintenanceDeductiblesData: MaintenanceDeductibles[] = [];
     maintenanceRiskListData: MaintenanceRisks[] = [];
+    rowData: any[] = [];
+
 
     constructor(private http: HttpClient) {
 
@@ -384,5 +386,10 @@ export class UnderwritingService {
         return this.batchDistribution;
 
     }
+
+     getRowData() {
+        return this.rowData;
+    }
+
 
 }            
