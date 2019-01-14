@@ -232,7 +232,7 @@ import { ClmChangeClaimStatusComponent } from './claims/claim/clm-change-claim-s
         NumbersOnlyDirective,
         ClmSectionCoversComponent,
         ClmClaimsInquiryComponent,
-        ClmChangeClaimStatusComponent,
+        ClmChangeClaimStatusComponent
     ],
 
     providers: [

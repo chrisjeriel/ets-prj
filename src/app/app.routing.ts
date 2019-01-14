@@ -46,7 +46,6 @@ import { RiskFormComponent } from './underwriting/maintenance/risk-form/risk-for
 import { ClmClaimsInquiryComponent } from './claims/claim/clm-claims-inquiry/clm-claims-inquiry.component';
 import { ClmChangeClaimStatusComponent } from './claims/claim/clm-change-claim-status/clm-change-claim-status.component';
 
-
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
     { path: 'quotation', component: QuotationComponent, canActivate: [AuthGuard] },
@@ -97,6 +96,7 @@ const appRoutes: Routes = [
     { path: 'maintenance-risk', component: RiskFormComponent },
     { path: 'claims-inquiry', component: ClmClaimsInquiryComponent },
     { path: 'clm-change-claim-status', component: ClmChangeClaimStatusComponent },
+    { path: 'claims-inquiry', component: ClmClaimsInquiryComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
