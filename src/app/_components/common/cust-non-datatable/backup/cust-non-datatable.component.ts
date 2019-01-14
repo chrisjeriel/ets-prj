@@ -1,9 +1,9 @@
 import { Component, OnInit, Input, Renderer, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
-import { QuotationService } from '../../../_services';
-import { DummyInfo } from '../../../_models';
-import { IntCompAdvInfo, QuotationList } from '../../../_models';
+import { QuotationService } from '../../../../_services';
+import { DummyInfo } from '../../../../_models';
+import { IntCompAdvInfo, QuotationList } from '../../../../_models';
 
 @Component({
     selector: 'app-cust-non-datatable',
