@@ -249,7 +249,7 @@ export class CustNonDatatableComponent implements OnInit {
         for (var filt in filterObj) {    
             if (!filterObj[filt]["enabled"]) {continue;}
             this.displayData = this.displayData.filter(function(itm){
-                return itm[filterObj[filt].key].toString().toLowerCase( ).includes(filterObj[filt].search.toLowerCase( ));
+                return itm[filterObj[filt].key].toString() .toLowerCase( ).includes(filterObj[filt].search.toLowerCase( ));
 /*=======
                      if(filterObj[filt]["dataType"]=="date")
                     return itm[filterObj[filt].key].toString().includes(new Date(filterObj[filt].search).toString());
