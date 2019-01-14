@@ -46,13 +46,13 @@
               <div class="row">
                 <div class="col-sm-6">
                   <div class="input-group">
-                    <label class="form-control-sm col-sm-3" style="margin-left: -52px !important;">Ceding Company</label>
+                    <label class="form-control-sm col-sm-3" style="margin-left: -17px !important;">Ceding Company</label>
                     <input type="text" class="form-control form-control-sm col-sm">
                   </div>
                 </div>
                 <div class="col-sm-6">
-                  <div class="input-group">
-                    <label class="form-control-sm col-sm-2" style="margin-left: -38px !important;">Risk</label>
+                  <div class="input-group" style="padding-right: 38px !important;">
+                    <label class="form-control-sm col-sm-3" style="margin-left: -86px !important;">Risk</label>
                     <input type="text" class="form-control form-control-sm col-sm">
                   </div>
                 </div>
@@ -61,7 +61,7 @@
               <div class="row">
                 <div class="col-sm-6">
                   <div class="input-group">
-                    <label class="form-control-sm col-sm-3" style="margin-left: -52px !important;">Insured</label>
+                    <label class="form-control-sm col-sm-3" style="margin-left: -17px !important;">Insured</label>
                     <input type="text" class="form-control form-control-sm col-sm">
                   </div>
                 </div>
@@ -69,13 +69,13 @@
                   <div class="row">
                     <div class="col-sm-4">
                       <div class="input-group">
-                        <label class="form-control-sm col-sm-4">Currency</label>
-                        <input type="text" class="form-control form-control-sm col-sm">
+                        <label class="form-control-sm col-sm-4" style="margin-left: -14px !important;">Currency</label>
+                        <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px !important;">
                       </div>
                     </div>
-                    <div class="col-sm-8">
+                    <div class="col-sm-8" style="padding-right: 53px !important;">
                       <div class="input-group">
-                        <label class="form-control-sm col-sm-3">Total Premium</label>
+                        <label class="form-control-sm col-sm-4" style="margin-left: -36px !important;">Total Premium</label>
                         <input type="text" class="form-control form-control-sm col-sm">
                       </div>
                     </div>
@@ -89,9 +89,38 @@
         <div>
           <fieldset class="scheduler-border">
             <legend class="scheduler-border">Installment Info</legend>
-            <app-cust-editable-non-datatable [passData]="passDataInstallmentInfo"></app-cust-editable-non-datatable>
+            <div class="custom-row-inline-inset">
+              <app-cust-editable-non-datatable [passData]="passDataInstallmentInfo"></app-cust-editable-non-datatable>
+            </div>
           </fieldset>
         </div>
+
+        <div>
+          <fieldset class="scheduler-border">
+            <legend class="scheduler-border">Other Charges</legend>
+            <div class="custom-row-inline-inset">
+              <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-8">
+                  <app-cust-editable-non-datatable [passData]="passDataOtherCharges"></app-cust-editable-non-datatable>
+                </div>
+                <div class="col-sm-2"></div>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-sm">
+            <div class="text-center" style="margin-top: 8px !important;">
+              <div class="cust-btn-container">
+                <button type="button" class="cust-btn"><a>Cancel</a></button>
+                <button type="button" class="cust-btn"><a>Save</a></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </ng-template>
     </ngb-tab>
   </ngb-tabset>
