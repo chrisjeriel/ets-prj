@@ -155,16 +155,22 @@ export class PolicyInquiryComponent implements OnInit {
   }
 
   onRowClick(event) {
+        this.policyList  = new UnderwritingPolicyInquiryInfo(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+        this.cedNum =  '';
         for(var i = 0; i < event.target.parentElement.children.length; i++) {
             this.underwritingService.rowData[i] = event.target.parentElement.children[i].innerText;
         }
         if(!Number.isNaN(event.path[2].rowIndex - 1)){
             this.policyList = this.allData[event.path[2].rowIndex - 1];
-            var ced = this.policyList.policyNo;
-            var arr = ced.split("-");
-            this.cedNum = arr[3];
-        }
-
+            console.log(this.policyList);
+             if (this.policyList == undefined){
+              this.policyList  = new UnderwritingPolicyInquiryInfo(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+            } else {
+              var ced = this.policyList.policyNo;
+              var arr = ced.split("-");
+              this.cedNum = arr[3];
+            }
+        } 
 
     }
 
