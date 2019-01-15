@@ -122,8 +122,7 @@
                     <td *ngIf="passData.checkFlag" class="checkbox align-middle"><input *ngIf="addCheckFlag(data)" type="checkbox"
                             name="checkbox" [checked]="checked"></td>
                     <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]" class="align-middle">
-                        <div *ngIf="addCheckFlag(data)" class="align-middle" style="position: relative;">
-                            
+                        <div *ngIf="addCheckFlag(data) && ( passData.uneditable === undefined || !passData.uneditable[i] )" class="align-middle" style="position: relative;">
                             <input *ngSwitchCase="'percent'" class="editable-text text-right number form-control-sm"
                                 type="text" [ngModel]="processData(key, data) | number:'1.7-7'" (blur)="format($event , key, ti)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1">
                             <input *ngSwitchCase="'number'" class="editable-text text-right number form-control-sm"
@@ -140,7 +139,6 @@
                                     </ng-container>
                                 </ng-container>
                             </select>
-
                             <input *ngSwitchCase="'date'" class="editable-date form-control-sm" type="date" [ngModel]="processData(key, data) | date:'yyyy-MM-dd'">
                             <input *ngSwitchCase="'time'" class="editable-date form-control-sm" type="time" [ngModel]="processData(key, data) | date:'HH:mm'">
                             <input *ngSwitchCase="'datetime'" class="editable-date form-control-sm" type="datetime-local"
@@ -148,6 +146,26 @@
                             <input *ngSwitchDefault class="editable-text form-control-sm" type="text" [ngModel]="processData(key, data)">
                             <a  *ngIf="passData.magnifyingGlass.indexOf(key)!=-1"><i class="fa fa-search align-middle"></i></a> 
                         </div>
+
+                        <div *ngIf="addCheckFlag(data) && ( passData.uneditable!== undefined && passData.uneditable[i] )">
+                            <div *ngSwitchCase="'percent'" style="text-align: right">
+                                <span class="unclickable">{{ processData(key, data) | number: '1.7-7'}}</span>
+                            </div>
+                            <div *ngSwitchCase="'currency'" style="text-align: right">
+                                <span class="unclickable">{{ processData(key, data) | number: '1.2-2'}}</span>
+                            </div>
+                            <div  *ngSwitchCase="'number'" style="text-align: right">
+                                <span class="unclickable">{{ processData(key, data) | number: '1.0-0'}}</span>
+                            </div>
+                            <span *ngSwitchCase="'date'" class="unclickable">{{ processData(key, data) | date: 'MM/dd/yyyy'}}</span>
+                            <span *ngSwitchCase="'time'" class="unclickable">{{ processData(key, data) | date: 'HH:mm'}}</span>
+                            <span *ngSwitchCase="'datetime'" class="unclickable">{{ processData(key, data) | date: 'yyyy-MM-ddTHH:mm'}}</span>
+                            <div *ngSwitchCase="'checkbox'" style="text-align: center;">
+                                <input  type="checkbox" [checked]="data[key]">
+                            </div>
+                            <span *ngSwitchDefault class="unclickable">{{ processData(key, data) }}</span>
+                        </div>
+
                         <div *ngIf="!addCheckFlag(data)" class="filler">
 
                         </div>
@@ -173,6 +191,20 @@
                         <span class="editable-text form-control-sm label">Total Sum Insured</span>
                         <span class="editable-text text-right number form-control-sm">20,000.00</span>
                     </td>
+                </tr>
+                <tr *ngIf="passData.total !== undefined">
+                    <th *ngIf="passData.checkFlag"> </th>
+                    <th *ngFor="let data of passData.total; let i = index" [ngSwitch]="passData.dataTypes[i]">
+                        <div *ngSwitchCase="'currency'" style="text-align: right">
+                                <span class="unclickable">{{ getSum(data) | number: '1.2-2'}}</span>
+                        </div>
+                        <div  *ngSwitchCase="'number'" style="text-align: right">
+                            <span class="unclickable">{{ getSum(data) | number: '1.0-0'}}</span>
+                        </div>
+                        <div  *ngSwitchDefault style="text-align: right">
+                                <span class="unclickable">{{ getSum(data)}}</span>
+                        </div>
+                    </th>
                 </tr>
             </tbody>
         </table>

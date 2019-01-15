@@ -238,4 +238,19 @@ export class CustEditableNonDatatableComponent implements OnInit {
    addClicked(event) {
        this.add.next(event);
    }
+
+   getSum(data){
+        let sum = 0;
+        if(this.dataKeys.indexOf(data)==-1){
+            return data;
+        }
+        else{
+            for (var i = this.displayData.length - 1; i >= 0; i--) {
+                if(this.displayData[i][data] !== null){
+                    sum += this.displayData[i][data];
+                }            
+            }
+            return sum;
+        }
+    }
 }
