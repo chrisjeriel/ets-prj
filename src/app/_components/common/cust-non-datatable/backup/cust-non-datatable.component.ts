@@ -149,6 +149,7 @@ export class CustNonDatatableComponent implements OnInit {
     selected: any[] = [];
     indvSelect: any;
     fillData:any = {};
+    nullKey: any;
 
     constructor(config: NgbDropdownConfig, public renderer: Renderer, private quotationService: QuotationService,) {
         config.placement = 'bottom-right';
@@ -203,6 +204,7 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     processData(key: any, data: any) {
+        this.nullKey = key;
         return data[key];
     }
     consoled(){
@@ -245,8 +247,10 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     onRowClick(event, data) {
-        this.btnDisabled = false;
-        this.indvSelect = data;
+        if(data[this.nullKey] !== null){
+            this.btnDisabled = false;
+            this.indvSelect = data;
+        }
         /*for(var i = 0; i < event.target.parentElement.children.length; i++) {
             event.target.parentElement.children[i].style.backgroundColor = "";
         }
