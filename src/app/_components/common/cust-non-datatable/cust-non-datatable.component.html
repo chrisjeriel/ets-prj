@@ -168,7 +168,7 @@
                     <tr>
                         <th *ngIf="passData.checkFlag && pinKeys.length != 0" class="checkbox-container-header"><input type="checkbox" name="" [(ngModel)]="checked" class="checkbox"  [checked]="checked" [class.sticky]="unliFlag"></th>
                         <th (click)="sort(dataKeys[0],sortBy);sortIndex=i;" *ngFor="let header of passData.tHeader;let i = index" [class.d-none]="pinDataHeader.indexOf(header) == -1">
-                            <i class="fa fa-map-marker" (click)="unPinColumn($event,pinDataHeader.indexOf(header))"></i>
+                            <i class="fa fa-map-pin" (click)="unPinColumn($event,pinDataHeader.indexOf(header))"></i>
                             <span class="gridHeader">{{header}}</span>
                             <i *ngIf="showSort(sortBy,i)" class="fa fa-caret-down"></i>
                             <i *ngIf="showSort(!sortBy,i)" class="fa fa-caret-up"></i>
@@ -216,7 +216,7 @@
                         <th *ngIf="passData.checkFlag && pinKeys.length==0" class="checkbox-container-header"><input type="checkbox" name="" [(ngModel)]="checked" class="checkbox"  [checked]="checked" [class.sticky]="unliFlag"></th>
 
                         <th *ngFor="let tHeader of passData.tHeader; let i = index" [ngSwitch]="passData.dataTypes[i]"  [class.sticky]="unliFlag" [class.d-none]="pinDataHeader.indexOf(tHeader) != -1">
-                            <i class="fa fa-map-marker" (click)="pinColumn($event,i)"></i>
+                            <!-- <i class="fa fa-map-pin" (click)="pinColumn($event,i)"></i> -->
                             <span *ngIf="passData.resizable[i]" 
                                   class="ui-column-resizer" (mousedown) = "onMouseDown($event)"></span>
                             <div *ngSwitchCase="'currency'" style="text-align: right">
