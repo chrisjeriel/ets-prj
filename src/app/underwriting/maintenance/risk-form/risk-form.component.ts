@@ -1,15 +1,35 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-risk-form',
-  templateUrl: './risk-form.component.html',
-  styleUrls: ['./risk-form.component.css']
+    selector: 'app-risk-form',
+    templateUrl: './risk-form.component.html',
+    styleUrls: ['./risk-form.component.css']
 })
-export class RiskFormComponent implements OnInit {
+export class RiskFormComponent implements OnInit, OnDestroy {
 
-  constructor() { }
+    private sub: any;
+    info: string;
+    newForm: boolean;
 
-  ngOnInit() {
-  }
+    constructor(private route: ActivatedRoute, private titleService: Title) { }
+
+    ngOnInit() {
+        this.titleService.setTitle("Pol | Risk");
+
+        this.sub = this.route.params.subscribe(params => {
+            this.info = params['info'];
+        });
+        if(this.info == 'new'){
+            this.newForm = true;
+        }else{
+            this.newForm = false;
+        }
+    }
+
+    ngOnDestroy(){
+        this.sub.unsubscribe();
+    }
 
 }

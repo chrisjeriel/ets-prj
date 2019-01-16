@@ -122,10 +122,12 @@ import { ClaimRecoveryComponent } from './accounting/claim-recovery/claim-recove
 import { AttachmentsComponent } from './accounting/attachments/attachments.component';
 import { AccountingInTrustComponent } from './accounting-in-trust/accounting-in-trust.component';
 import { AccountingServiceComponent } from './accounting-service/accounting-service.component';
+import { CheckVoucherComponent } from './accounting-in-trust/check-voucher/check-voucher.component';
+import { GenerateCvComponent } from './accounting-in-trust/check-voucher/generate-cv/generate-cv.component';
+import { CvDetailsComponent } from './accounting-in-trust/check-voucher/generate-cv/cv-details/cv-details.component';
 import { QsoaComponent } from './accounting-in-trust/qsoa/qsoa.component';
 import { AccAttachmentsComponent } from './accounting-in-trust/acc-attachments/acc-attachments.component';
 import { SequencePipe } from './_pipes/sequence.pipe';
-
 
 @NgModule({
     imports: [
@@ -254,8 +256,11 @@ import { SequencePipe } from './_pipes/sequence.pipe';
         AttachmentsComponent,
         AccountingInTrustComponent,
         AccountingServiceComponent,
-        AccAttachmentsComponent,
-        SequencePipe
+        SequencePipe,
+        CvDetailsComponent,
+        CheckVoucherComponent,
+        GenerateCvComponent,
+        AccAttachmentsComponent
     ],
 
     providers: [
