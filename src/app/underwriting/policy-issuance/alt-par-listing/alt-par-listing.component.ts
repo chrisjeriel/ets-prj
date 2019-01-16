@@ -174,5 +174,6 @@ export class AltParListingComponent implements OnInit {
         }
         //console.log(this.polLine);
         this.router.navigate(['/policy-issuance-alt', { line: this.polLine, alteration: true }], { skipLocationChange: true });
+        /*this.router.navigate(['/policy-issuance-alt', { line: this.polLine }], { skipLocationChange: true });*/
     }
 }

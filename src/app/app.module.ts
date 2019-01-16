@@ -115,6 +115,7 @@ import { ClmClaimPaymentRequestComponent } from './claims/claim/clm-claim-proces
 import { ClmClaimsInquiryComponent } from './claims/claim/clm-claims-inquiry/clm-claims-inquiry.component';
 import { ClmChangeClaimStatusComponent } from './claims/claim/clm-change-claim-status/clm-change-claim-status.component';
 import { UpdateInstallmentComponent } from './utilities/update-information/update-installment/update-installment.component';
+import { PolMxCedingCoComponent } from './underwriting/policy-maintenance/pol-mx-ceding-co/pol-mx-ceding-co.component';
 import { AccountingComponent } from './accounting/accounting.component';
 import { ArEntryComponent } from './accounting/ar-entry/ar-entry.component';
 import { ArDetailsComponent } from './accounting-in-trust/ar-details/ar-details.component';
@@ -124,6 +125,8 @@ import { QsoaComponent } from './accounting/qsoa/qsoa.component';
 import { AttachmentsComponent } from './accounting/attachments/attachments.component';
 import { AccountingInTrustComponent } from './accounting-in-trust/accounting-in-trust.component';
 import { AccountingServiceComponent } from './accounting-service/accounting-service.component';
+import { AcctArListingsComponent } from './accounting-in-trust/acct-ar-listings/acct-ar-listings.component';
+import { AcctArEntryComponent } from './accounting-in-trust/acct-ar-entry/acct-ar-entry.component';
 
 @NgModule({
     imports: [
@@ -244,6 +247,7 @@ import { AccountingServiceComponent } from './accounting-service/accounting-serv
         ClmClaimsInquiryComponent,
         ClmChangeClaimStatusComponent,
         UpdateInstallmentComponent,
+        PolMxCedingCoComponent,
         AccountingComponent,
         ArEntryComponent,
         ArDetailsComponent,
@@ -252,7 +256,9 @@ import { AccountingServiceComponent } from './accounting-service/accounting-serv
         QsoaComponent,
         AttachmentsComponent,
         AccountingInTrustComponent,
-        AccountingServiceComponent
+        AccountingServiceComponent,
+        AcctArListingsComponent,
+        AcctArEntryComponent,
     ],
 
     providers: [
