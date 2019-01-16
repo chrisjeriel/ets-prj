@@ -124,6 +124,7 @@ import { AttachmentsComponent } from './accounting/attachments/attachments.compo
 import { AccountingInTrustComponent } from './accounting-in-trust/accounting-in-trust.component';
 import { AccountingServiceComponent } from './accounting-service/accounting-service.component';
 import { GenerateCvComponent } from './accounting-in-trust/check-voucher/generate-cv/generate-cv.component';
+import { CvDetailsComponent } from './accounting-in-trust/check-voucher/generate-cv/cv-details/cv-details.component';
 
 @NgModule({
     imports: [
@@ -252,7 +253,8 @@ import { GenerateCvComponent } from './accounting-in-trust/check-voucher/generat
         AttachmentsComponent,
         AccountingInTrustComponent,
         AccountingServiceComponent,
-        GenerateCvComponent
+        GenerateCvComponent,
+        CvDetailsComponent
     ],
 
     providers: [
