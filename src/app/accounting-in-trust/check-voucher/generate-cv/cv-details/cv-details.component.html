@@ -50,7 +50,26 @@
 				<div>Tax Details</div>
 			</ng-template>
 			<ng-template ngbTabContent>
-				<!--Add your content here -->
+                <div>
+            		<div class="col-sm-12" style="margin-top: 15px !important;">
+                        <fieldset class="scheduler-border">
+                            <div class="custom-row-inline-inset">
+                                <div class="form-row" style="margin-bottom: -10px;">
+                                    <div class="input-group">
+                                        <label class="form-control-sm col-sm-1">Created By</label>
+                                        <input type="text" appCurrency class="form-control form-control-sm col-sm" placeholder="cuaresma">
+                                        <label class="form-control-sm col-sm-1">Date Created</label>
+                                        <input type="date" class="form-control form-control-sm col-sm">
+                                        <label class="form-control-sm col-sm-1">Last Updated By</label>
+                                        <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma">
+                                        <label class="form-control-sm col-sm-1">Last Update</label>
+                                        <input type="date" class="form-control form-control-sm col-sm">
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
 			</ng-template>
 		</ngb-tab>
 	</ngb-tabset>
