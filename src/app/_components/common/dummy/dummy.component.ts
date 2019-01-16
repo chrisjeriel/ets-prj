@@ -102,24 +102,28 @@ export class DummyComponent implements OnInit {
         ],
         tableData: this.quotationService.getQuotationListInfo(),
         pageLength: 10,
-        expireFilter: true,
-        checkFlag: true,
-
+        expireFilter: false,
+        tableOnly:true,
+        pagination:true,
+        checkFlag:true
     };
 
     passDataEditable: any = {
         tableData: [],
-        tHeader: ["ID", "First Name", "Last Name", "Middle Name", "Gender", "Age", "Birth Date"],
+        tHeader: ["ID", "First Name", "Last Name", "Middle Name", "Gender", "Age", "Birth Date","Actions"],
+        total : [null,null,null,null,"Total","age",null,null],
         nData: new DummyInfo(null, null, null, null, null, null, null),
-        dataTypes: ['number', 'text', 'text', 'text', 'text', 'number', 'text'],
-        checkFlag: true,
-        addFlag: true,
-        deleteFlag: true,
+        dataTypes: ['number','text','text','text','text','currency','date'],
+        checkFlag:true,
+        addFlag:true,
+        deleteFlag:true,
         //totalFlag:true,
         pageLength: 5,
         searchFlag: true,
         infoFlag: true,
-        paginateFlag: true
+        paginateFlag: true,
+        magnifyingGlass:['id'],
+        uneditable:[true,false,false,false,true,true,true],
     };
 
     constructor(private quotationService: QuotationService, private modalService: NgbModal) {

@@ -45,6 +45,10 @@ import { RiskListComponent } from './underwriting/maintenance/risk-list/risk-lis
 import { RiskFormComponent } from './underwriting/maintenance/risk-form/risk-form.component';
 import { ClmClaimsInquiryComponent } from './claims/claim/clm-claims-inquiry/clm-claims-inquiry.component';
 import { ClmChangeClaimStatusComponent } from './claims/claim/clm-change-claim-status/clm-change-claim-status.component';
+import { AccountingComponent } from './accounting/accounting.component';
+import { AccountingInTrustComponent } from './accounting-in-trust/accounting-in-trust.component';
+import { GenerateCvComponent } from './accounting-in-trust/check-voucher/generate-cv/generate-cv.component';
+
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -97,6 +101,9 @@ const appRoutes: Routes = [
     { path: 'claims-inquiry', component: ClmClaimsInquiryComponent },
     { path: 'clm-change-claim-status', component: ClmChangeClaimStatusComponent },
     { path: 'claims-inquiry', component: ClmClaimsInquiryComponent },
+    { path: 'accounting', component: AccountingComponent },
+    { path: 'accounting-in-trust', component: AccountingInTrustComponent },
+    { path: 'generate-cv', component: GenerateCvComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

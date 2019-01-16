@@ -22,6 +22,103 @@ export class PolBatchProcessingComponent implements OnInit {
         dataTypes: [
             "text", "text", "text","text", "text", "text", "text", "text","text","currency","date", "date"
         ],
+        filters: [
+            {
+                key: 'distNo',
+                title: 'Dist No.',
+                dataType: 'text'
+            },
+            {
+                key: 'riskDistNo',
+                title: 'Risk Dist No',
+                dataType: 'text'
+            },
+            {
+                key: 'status',
+                title: 'Status',
+                dataType: 'text'
+            },
+            {
+                key: 'line',
+                title: 'Line',
+                dataType: 'text'
+            },
+            {
+                key: 'policyNo',
+                title: 'Policy No',
+                dataType: 'text'
+            },
+            {
+                key: 'typeOfCession',
+                title: 'Type of Cession',
+                dataType: 'text'
+            },
+            {
+                key: 'cedingCompany',
+                title: 'Ceding Company',
+                dataType: 'text'
+            },
+            {
+                key: 'insured',
+                title: 'Insured',
+                dataType: 'text'
+            },
+            {
+                key: 'risk',
+                title: 'Risk',
+                dataType: 'text'
+            },
+            {
+                key: 'object',
+                title: 'Object.',
+                dataType: 'text'
+            },
+            {
+                key: 'site',
+                title: 'Site',
+                dataType: 'text'
+            },
+            {
+                key: 'currency',
+                title: 'Currency',
+                dataType: 'text'
+            },
+            {
+                key: 'sumInsured',
+                title: 'Sum Insured',
+                dataType: 'text'
+            },
+            {
+                key: 'prenium',
+                title: 'Prenium',
+                dataType: 'text'
+            },
+            {
+                key: 'issueDate',
+                title: 'Issue Date',
+                dataType: 'date'
+            },
+            {
+                key: 'inceptionDate',
+                title: 'Inception Date',
+                dataType: 'date'
+            },
+            {
+                key: 'expiryDate',
+                title: 'Expiry Date',
+                dataType: 'date'
+            },
+            {
+                key: 'accountingDate',
+                title: 'Accounting Date',
+                dataType: 'date'
+            },
+            {
+                key: 'distributionDate',
+                title: 'Distribution Date',
+                dataType: 'date    '
+            },
+        ],
         tableData: this.underwritingService.getPolicyBatchPosting(),
         checkFlag:true,
         addFlag:true,
@@ -42,6 +139,103 @@ export class PolBatchProcessingComponent implements OnInit {
         ],
         dataTypes: [
             "text", "text", "text","text", "text", "text", "text", "text","text","currency","date", "date"
+        ],
+        filters: [
+            {
+                key: 'distNo',
+                title: 'Dist No.',
+                dataType: 'text'
+            },
+            {
+                key: 'riskDistNo',
+                title: 'Risk Dist No',
+                dataType: 'text'
+            },
+            {
+                key: 'status',
+                title: 'Status',
+                dataType: 'text'
+            },
+            {
+                key: 'line',
+                title: 'Line',
+                dataType: 'text'
+            },
+            {
+                key: 'policyNo',
+                title: 'Policy No',
+                dataType: 'text'
+            },
+            {
+                key: 'typeOfCession',
+                title: 'Type of Cession',
+                dataType: 'text'
+            },
+            {
+                key: 'cedingCompany',
+                title: 'Ceding Company',
+                dataType: 'text'
+            },
+            {
+                key: 'insured',
+                title: 'Insured',
+                dataType: 'text'
+            },
+            {
+                key: 'risk',
+                title: 'Risk',
+                dataType: 'text'
+            },
+            {
+                key: 'object',
+                title: 'Object.',
+                dataType: 'text'
+            },
+            {
+                key: 'site',
+                title: 'Site',
+                dataType: 'text'
+            },
+            {
+                key: 'currency',
+                title: 'Currency',
+                dataType: 'text'
+            },
+            {
+                key: 'sumInsured',
+                title: 'Sum Insured',
+                dataType: 'text'
+            },
+            {
+                key: 'prenium',
+                title: 'Prenium',
+                dataType: 'text'
+            },
+            {
+                key: 'issueDate',
+                title: 'Issue Date',
+                dataType: 'date'
+            },
+            {
+                key: 'inceptionDate',
+                title: 'Inception Date',
+                dataType: 'date'
+            },
+            {
+                key: 'expiryDate',
+                title: 'Expiry Date',
+                dataType: 'date'
+            },
+            {
+                key: 'accountingDate',
+                title: 'Accounting Date',
+                dataType: 'date'
+            },
+            {
+                key: 'distributionDate',
+                title: 'Distribution Date',
+                dataType: 'date'
+            },
         ],
         tableData: this.underwritingService.getPolicyBatchDistribution(),
         checkFlag:true,

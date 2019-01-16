@@ -5,3 +5,4 @@ export * from './quotation.service';
 export * from './notes.service';
 export * from './underwriting.service';
 export * from './claims.service';
+export * from './accounting.service';

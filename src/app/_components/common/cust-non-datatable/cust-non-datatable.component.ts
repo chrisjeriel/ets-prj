@@ -110,7 +110,7 @@ export class CustNonDatatableComponent implements OnInit {
     autoFill: number[];
 
     displayData:any[];
-    
+
     unliFlag: boolean = false;
     sortBy:boolean = true;
     sortIndex:number;
@@ -122,6 +122,9 @@ export class CustNonDatatableComponent implements OnInit {
     indvSelect: any;
     fillData:any = {};
 
+    pinDataHeader:any[] = [];
+    pinKeys:any[] = [];
+    pinDatatypes:any[] = [];
     constructor(config: NgbDropdownConfig, public renderer: Renderer, private quotationService: QuotationService,) {
         config.placement = 'bottom-right';
         config.autoClose = false;
@@ -249,7 +252,7 @@ export class CustNonDatatableComponent implements OnInit {
         for (var filt in filterObj) {    
             if (!filterObj[filt]["enabled"]) {continue;}
             this.displayData = this.displayData.filter(function(itm){
-                return itm[filterObj[filt].key].toLowerCase( ).includes(filterObj[filt].search.toLowerCase( ));
+                return itm[filterObj[filt].key].toString() .toLowerCase( ).includes(filterObj[filt].search.toLowerCase( ));
 /*=======
                      if(filterObj[filt]["dataType"]=="date")
                     return itm[filterObj[filt].key].toString().includes(new Date(filterObj[filt].search).toString());
@@ -307,6 +310,29 @@ export class CustNonDatatableComponent implements OnInit {
             }
             return sum;
         }
+    }
+
+    pinColumn(event,index:number){
+        this.pinKeys.push(this.dataKeys[index]);
+        this.pinDataHeader.push(this.passData.tHeader[index]);
+        this.pinDatatypes.push(this.passData.dataTypes[index]);
+        let addWidth = $(event.path[1]).outerWidth();
+        let startWidth = $('#pinTable'+this.passData.pageID).width();
+        if(this.pinKeys.length == 1)
+            addWidth += 30;
+        $('#notPin'+this.passData.pageID).css('padding-left',startWidth+addWidth);
+    }
+
+    unPinColumn(event,index:number){
+        this.pinKeys.splice(index,1);
+        this.pinDataHeader.splice(index,1);
+        this.pinDatatypes.splice(index,1);
+        console.log(this.pinKeys);
+        let minusWidth = $(event.path[1]).outerWidth();
+        let startWidth = $('#pinTable'+this.passData.pageID).outerWidth();
+        if(this.pinKeys.length == 0)
+            minusWidth += 30;
+        $('#notPin'+this.passData.pageID).css('padding-left',startWidth-minusWidth);
     }
 
 }
