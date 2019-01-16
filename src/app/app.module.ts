@@ -125,6 +125,7 @@ import { AccountingInTrustComponent } from './accounting-in-trust/accounting-in-
 import { AccountingServiceComponent } from './accounting-service/accounting-service.component';
 import { CheckVoucherComponent } from './accounting-in-trust/check-voucher/check-voucher.component';
 import { GenerateCvComponent } from './accounting-in-trust/check-voucher/generate-cv/generate-cv.component';
+import { CvEntryComponent } from './accounting-in-trust/check-voucher/generate-cv/cv-entry/cv-entry.component';
 
 @NgModule({
     imports: [
@@ -254,7 +255,8 @@ import { GenerateCvComponent } from './accounting-in-trust/check-voucher/generat
         AccountingInTrustComponent,
         AccountingServiceComponent,
         CheckVoucherComponent,
-        GenerateCvComponent
+        GenerateCvComponent,
+        CvEntryComponent
     ],
 
     providers: [
