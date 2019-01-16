@@ -149,8 +149,8 @@
                             <a  *ngIf="passData.magnifyingGlass.indexOf(key)!=-1"><i class="fa fa-search align-middle"></i></a> 
                         </div>
 
-                        <div *ngIf="addCheckFlag(data) && ( passData.uneditable!== undefined && passData.uneditable[i] )">
-                            <a  *ngIf="passData.magnifyingGlass.indexOf(key)!=-1"><i class="fa fa-search align-middle"></i></a> 
+                        <div *ngIf="addCheckFlag(data) && ( passData.uneditable!== undefined && passData.uneditable[i] )" class="align-middle" style="position: relative;">
+                            <a   *ngIf="passData.magnifyingGlass.indexOf(key)!=-1"><i class="fa fa-search align-middle"></i></a> 
                             <div *ngSwitchCase="'percent'" style="text-align: right">
                                 <span class="unclickable">{{ processData(key, data) | number: '1.7-7'}}</span>
                             </div>

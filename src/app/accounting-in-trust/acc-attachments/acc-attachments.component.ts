@@ -18,7 +18,7 @@ export class AccAttachmentsComponent implements OnInit {
   	infoFlag:true,
   	paginateFlag: true,
   	widths:['auto','auto',71],
-  	nData: new AttachmentInfo(null,null);
+  	nData: new AttachmentInfo(null,null),
 
   };
 
