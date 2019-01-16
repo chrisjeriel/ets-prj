@@ -112,7 +112,15 @@ import { ChangethemeDirective } from './_directives/changetheme.directive';
 import { PolMxLineComponent } from './underwriting/policy-maintenance/pol-mx-line/pol-mx-line.component';
 import { ClmSectionCoversComponent } from './claims/claim/clm-claim-processing/clm-section-covers/clm-section-covers.component';
 import { ClmClaimPaymentRequestComponent } from './claims/claim/clm-claim-processing/clm-claim-payment-request/clm-claim-payment-request.component';
+import { ClmClaimsInquiryComponent } from './claims/claim/clm-claims-inquiry/clm-claims-inquiry.component';
 import { ClmChangeClaimStatusComponent } from './claims/claim/clm-change-claim-status/clm-change-claim-status.component';
+import { AccountingComponent } from './accounting/accounting.component';
+import { ArEntryComponent } from './accounting/ar-entry/ar-entry.component';
+import { ArDetailsComponent } from './accounting/ar-details/ar-details.component';
+import { InwardPolicyBalancesComponent } from './accounting/inward-policy-balances/inward-policy-balances.component';
+import { ClaimRecoveryComponent } from './accounting/claim-recovery/claim-recovery.component';
+import { QsoaComponent } from './accounting/qsoa/qsoa.component';
+import { AttachmentsComponent } from './accounting/attachments/attachments.component';
 
 @NgModule({
     imports: [
@@ -230,8 +238,15 @@ import { ClmChangeClaimStatusComponent } from './claims/claim/clm-change-claim-s
         PolMxLineComponent,
         NumbersOnlyDirective,
         ClmSectionCoversComponent,
-        ClmChangeClaimStatusComponent
-
+        ClmClaimsInquiryComponent,
+        ClmChangeClaimStatusComponent,
+        AccountingComponent,
+        ArEntryComponent,
+        ArDetailsComponent,
+        InwardPolicyBalancesComponent,
+        ClaimRecoveryComponent,
+        QsoaComponent,
+        AttachmentsComponent
     ],
 
     providers: [

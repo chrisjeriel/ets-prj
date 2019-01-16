@@ -43,7 +43,9 @@ import { PolBatchProcessingComponent } from './underwriting/policy-distribution/
 import { DeductibleComponent } from './underwriting/maintenance/deductible/deductible.component';
 import { RiskListComponent } from './underwriting/maintenance/risk-list/risk-list.component';
 import { RiskFormComponent } from './underwriting/maintenance/risk-form/risk-form.component';
+import { ClmClaimsInquiryComponent } from './claims/claim/clm-claims-inquiry/clm-claims-inquiry.component';
 import { ClmChangeClaimStatusComponent } from './claims/claim/clm-change-claim-status/clm-change-claim-status.component';
+import { AccountingComponent } from './accounting/accounting.component';
 
 
 const appRoutes: Routes = [
@@ -94,7 +96,9 @@ const appRoutes: Routes = [
     { path: 'maintenance-deductible', component: DeductibleComponent },
     { path: 'maintenance-risk-list', component: RiskListComponent },
     { path: 'maintenance-risk', component: RiskFormComponent },
+    { path: 'claims-inquiry', component: ClmClaimsInquiryComponent },
     { path: 'clm-change-claim-status', component: ClmChangeClaimStatusComponent },
+    { path: 'accounting', component: AccountingComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

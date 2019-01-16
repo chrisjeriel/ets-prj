@@ -14,32 +14,106 @@
                 <div class="custom-row-inline-inset">
                   <div style="margin-left: 47px !important;">
                     <div class="form-row">
-                      <input type="radio" class="form-control-sm"><label class="rd-lbl">Open</label>
+                      <input type="radio" class="form-control-sm" name="batchOption"><label class="rd-lbl">Open</label>
                     </div>
                     <div class="form-row">
-                      <input type="radio" class="form-control-sm"><label class="rd-lbl">Close</label>
+                      <input type="radio" class="form-control-sm" name="batchOption"><label class="rd-lbl">Close</label>
                     </div>
                     <div class="form-row">
-                      <input type="radio" class="form-control-sm"><label class="rd-lbl">Withdraw</label>
+                      <input type="radio" class="form-control-sm" name="batchOption"><label class="rd-lbl">Withdraw</label>
                     </div>
                     <div class="form-row">
-                      <input type="radio" class="form-control-sm"><label class="rd-lbl">Spoil</label>
+                      <input type="radio" class="form-control-sm" name="batchOption"><label class="rd-lbl">Spoil</label>
                     </div>
                     <div class="form-row">
-                      <input type="radio" class="form-control-sm"><label class="rd-lbl">Deny</label>
+                      <input type="radio" class="form-control-sm" name="batchOption"><label class="rd-lbl">Deny</label>
                     </div>
                   </div>
                 </div>
               </fieldset>
               <div class="form-row">
                 <div class="form-group col-sm">
-                  <div class="text-center">
+                  <div class="text-center" class="min-width: 100% !important;">
                     <div class="cust-btn-container">
-                      <div class="input-group">
-                        <button type="button" class="cust-btn" style="min-width: 100% !important; margin-top: 3px !important;"><a>Process</a></button>
+                      <div class="input-group" style="margin-bottom: 3px !important;">
+                        <button type="button" class="cust-btn" style="z-index: 0 !important;min-width: 100% !important; margin-top: 3px !important;"><a>Process</a></button>
                       </div>
                       <div class="input-group">
-                        <button type="button" class="cust-btn" style="min-width: 100% !important;margin-top: 16px !important;"><a>Search</a></button>
+                        <button type="button" class="cust-btn" style="z-index: 0 !important; min-width: 100% !important;"
+                          (click)="search($event)"><a>Search</a></button>
+                        <app-modal [btnTitle]="'Search'" hidden id="modalSearch">
+                          <div header style="width: 800px !important;">Search</div>
+                          <div body>
+                            <fieldset class="scheduler-border" style="margin-top: -21px !important;">
+                              <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+                              <div class="custom-row-inline-inset">
+                                <div class="input-group">
+                                  <label class="form-control-sm col-sm-2" style="margin-left: -45px !important;">Claim
+                                    No</label>
+                                  <input type="text" class="form-control form-control-sm cust-sm col-sm-1" placeholder=""
+                                    style="margin-left: 3px !important;" required>
+                                  <input type="text" class="form-control form-control-sm cust-sm col-sm-1" placeholder="2018"
+                                    style="margin-left: 3px !important;" required>
+                                  <input type="text" class="form-control form-control-sm cust-sm col-sm-3" placeholder=""
+                                    style="margin-left: 3px !important;" required>
+                                  <div class="text-search-ico" style="margin-left: 3px !important;">
+                                    <a><i class="fa fa-search"></i></a></div>
+                                </div>
+                                <div class="input-group">
+                                  <label class="form-control-sm col-sm-2" style="margin-left: -45px !important;">Policy
+                                    No</label>
+                                  <input type="text" class="form-control form-control-sm cust-sm col-sm-1" placeholder=""
+                                    style="margin-left: 3px !important;" required>
+                                  <input type="text" class="form-control form-control-sm cust-sm col-sm-1" placeholder=""
+                                    style="margin-left: 3px !important;" required>
+                                  <input type="text" class="form-control form-control-sm cust-sm col-sm-3" placeholder=""
+                                    style="margin-left: 3px !important;" required>
+                                  <input type="text" class="form-control form-control-sm cust-sm col-sm-1" placeholder=""
+                                    style="margin-left: 3px !important;" required>
+                                  <input type="text" class="form-control form-control-sm cust-sm col-sm-3" placeholder=""
+                                    style="margin-left: 3px !important;" required>
+                                  <input type="text" class="form-control form-control-sm cust-sm col-sm-1" placeholder=""
+                                    style="margin-left: 3px !important;" required>
+                                  <div class="text-search-ico" style="margin-left: 3px !important;">
+                                    <a><i class="fa fa-search"></i></a></div>
+                                </div>
+                                <div class="input-group">
+                                  <label class="form-control-sm col-sm-2" style="margin-left: -45px !important;">Type
+                                    of Cession</label>
+                                  <input type="text" class="form-control form-control-sm cust-sm col-sm-1" placeholder="Direct"
+                                    style="margin-left: 3px !important;" required>
+                                  <div class="text-search-ico" style="margin: -2px 5px 17px -18px !important;padding-top: 2px !important;">
+                                    <a><i class="fa fa-search"></i></a></div>
+                                  <input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="Direct"
+                                    style="margin-left: 3px !important;" required>
+                                </div>
+                                <div class="input-group">
+                                  <label class="form-control-sm col-sm-2" style="margin-left: -45px !important;">Ceding
+                                    Company</label>
+                                  <input type="text" class="form-control form-control-sm cust-sm col-sm-1" placeholder=""
+                                    style="margin-left: 3px !important;" required>
+                                  <div class="text-search-ico" style="margin: -2px 5px 17px -18px !important;padding-top: 2px !important;">
+                                    <a><i class="fa fa-search"></i></a></div>
+                                  <input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder=""
+                                    style="margin-left: 3px !important;" required>
+                                </div>
+                                <div class="input-group">
+                                  <label class="form-control-sm col-sm-2" style="margin-left: -45px !important;">Risk</label>
+                                  <input type="text" class="form-control form-control-sm cust-sm col-sm-1" placeholder="00004"
+                                    style="margin-left: 3px !important;" required>
+                                  <div class="text-search-ico" style="margin: -2px 5px 17px -18px !important;padding-top: 2px !important;">
+                                    <a><i class="fa fa-search"></i></a></div>
+                                  <input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="C-Ayala Land, Inc./Gatewalk Central Estate"
+                                    style="margin-left: 3px !important;" required>
+                                </div>
+                              </div>
+                            </fieldset>
+                          </div>
+                          <div footer class="text-center" style="width: 100% !important;">
+                            <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
+                            <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Save</a></button>
+                          </div>
+                        </app-modal>
                       </div>
                     </div>
                   </div>
@@ -51,7 +125,7 @@
 
         <div class="custom-row-inline-inset">
           <div class="row">
-            <div class="col-sm-10">
+            <div class="col-sm-10" style="margin-top: -25px !important;">
               <fieldset class="scheduler-border" style="margin-left: -7px !important;">
                 <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
                 <div class="custom-row-inline-inset" style="margin-left: -26px !important;">
@@ -59,72 +133,95 @@
                     <div class="col-sm-6">
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Claim No</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" required>
+                        <input type="text" class="form-control form-control-sm cust-sm" placeholder="EEI-2018-00043"
+                          required>
                         <label class="form-control-sm col-sm-2">Status</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" required>
+                        <input type="text" class="form-control form-control-sm cust-sm" placeholder="In Progress"
+                          required>
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Policy No</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" required>
+                        <input type="text" class="form-control form-control-sm cust-sm" placeholder="EEI-2018-00066-078-0008-000"
+                          required>
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Ceding Co</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" required>
+                        <input type="text" class="form-control form-control-sm cust-sm" placeholder="CHARTER PING AN INSURANCE CORP."
+                          required>
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Insured</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" required>
+                        <input type="text" class="form-control form-control-sm cust-sm" placeholder="A.B. Industries, Inc."
+                          required>
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Risk</label>
                         <textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 17px;"
-                          placeholder=""></textarea>
+                          placeholder="C. Ayala Land, Inc. / Gatewalk Central Estate"></textarea>
                       </div>
                     </div>
 
                     <div class="col-sm-6">
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Loss Date</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" required>
+                        <input type="text" class="form-control form-control-sm cust-sm" placeholder="05/09/2018"
+                          required>
                         <label class="form-control-sm col-sm-2">Currency</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" required>
+                        <input type="text" class="form-control form-control-sm cust-sm" placeholder="PHP" required>
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Loss Details</label>
                         <textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 17px;"
-                          placeholder=""></textarea>
+                          placeholder="Damage electric cables and suppply lines on 2nd"></textarea>
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Total Reserve</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" required>
-                        <label class="form-control-sm col-sm-2" style="padding-right: 3px !important;">Total Payment</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" required>
+                        <input type="text" class="form-control form-control-sm cust-sm text-right" placeholder="4,000,000.00"
+                          numbers-only required>
+                        <label class="form-control-sm col-sm-2" style="padding-right: 3px !important;">Total
+                          Payment</label>
+                        <input type="text" class="form-control form-control-sm cust-sm text-right" placeholder="0.00"
+                          numbers-only required>
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Adjusters</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" required>
+                        <input type="text" class="form-control form-control-sm cust-sm" placeholder="TLP Adj. / ACD Co. Inc."
+                          required>
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Processed By</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" required>
+                        <input type="text" class="form-control form-control-sm cust-sm" placeholder="CLECOH" required>
                       </div>
                     </div>
                   </div>
+                  <br>
                   <div class="row">
                     <div class="col-sm-12">
                       <div class="input-group">
                         <label class="form-control-sm col-sm-1" style="margin-left:-3px !important;">Reason</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-1" required>
-                        <!-- <div class="text-search-ico" style="z-index: 1 !important; margin: 8px 9px -10px -24px !important;padding-top: 2px !important;">
-                          <a><i class="fa fa-search"></i></a></div> -->
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-1" style="margin-right: 4px !important;"
+                          placeholder="IND" required>
+                        <div class="text-search-ico" style="margin: -2px 6px 18px -23px !important;padding-top: 2px !important;">
+                          <a><i class="fa fa-search"></i></a></div>
                         <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px !important;"
-                          required>
+                          placeholder="Incomplete documents" required>
                       </div>
                     </div>
 
                   </div>
                 </div>
               </fieldset>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row" style="margin-left: -4px !important;">
+          <div class="form-group col-sm-10">
+            <div class="text-center">
+              <div class="cust-btn-container">
+                <button type="button" class="cust-btn"><a>Cancel</a></button>
+                <button type="button" class="cust-btn"><a>Save</a></button>
+              </div>
             </div>
           </div>
         </div>

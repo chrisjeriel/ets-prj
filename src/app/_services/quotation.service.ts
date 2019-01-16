@@ -410,7 +410,7 @@ export class QuotationService {
     
     getDeductibles(){
         this.quoteDeductiblesData = [
-            new QuotationDeductibles('Deductible Title', 12, 23000, 'Deductible Text'),
+            new QuotationDeductibles('Deductible Code','Deductible Title', 12, 23000, 'Deductible Text'),
         ];
         return this.quoteDeductiblesData;
     }

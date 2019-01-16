@@ -339,9 +339,9 @@
       <div class="form-group col-sm">
         <div class="col-sm text-center">
           <div class="cust-btn-container" style="margin-top: 10px;">
-            <button type="button" class="cust-btn" (click)="deductibles()"><a>Deductibles</a></button>
-            <button type="button" class="cust-btn" (click)="CATPerils()" *ngIf="line == 'CAR' || line =='EAR' || line =='EEI' || line =='CEC'"><a>CAT Perils</a></button>
             <button type="button" class="cust-btn" (click)="showDeductiblesModal(deductibles)"><a>Deductibles</a></button>
+            <button type="button" class="cust-btn" (click)="CATPerils()" *ngIf="line == 'CAR' || line =='EAR' || line =='EEI' || line =='CEC'"><a>CAT Perils</a></button>
+            
             <button type="button" class="cust-btn" (click)="pol($event)"><a>Cancel</a></button>
             <button type="button" class="cust-btn"><a>Save</a></button>
           </div>
