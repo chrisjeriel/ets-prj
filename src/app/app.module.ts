@@ -122,6 +122,8 @@ import { InwardPolicyBalancesComponent } from './accounting/inward-policy-balanc
 import { ClaimRecoveryComponent } from './accounting/claim-recovery/claim-recovery.component';
 import { QsoaComponent } from './accounting/qsoa/qsoa.component';
 import { AttachmentsComponent } from './accounting/attachments/attachments.component';
+import { AccountingInTrustComponent } from './accounting-in-trust/accounting-in-trust.component';
+import { AccountingServiceComponent } from './accounting-service/accounting-service.component';
 
 @NgModule({
     imports: [
@@ -248,7 +250,9 @@ import { AttachmentsComponent } from './accounting/attachments/attachments.compo
         InwardPolicyBalancesComponent,
         ClaimRecoveryComponent,
         QsoaComponent,
-        AttachmentsComponent
+        AttachmentsComponent,
+        AccountingInTrustComponent,
+        AccountingServiceComponent
     ],
 
     providers: [

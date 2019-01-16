@@ -33,7 +33,7 @@
 				<app-quote-endorsement></app-quote-endorsement>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab>
+		<ngb-tab *ngIf="line=='CAR' || line=='EAR'">
 			<ng-template ngbTabTitle>
 				<div>ALOP</div>
 			</ng-template>
