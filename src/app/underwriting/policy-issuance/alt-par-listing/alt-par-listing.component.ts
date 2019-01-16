@@ -173,6 +173,6 @@ export class AltParListingComponent implements OnInit {
             this.polLine = this.slctdArr[0];
         }
         //console.log(this.polLine);
-        this.router.navigate(['/policy-issuance', { line: this.polLine, alteration: true }], { skipLocationChange: true });
+        this.router.navigate(['/policy-issuance-alt', { line: this.polLine, alteration: true }], { skipLocationChange: true });
     }
 }

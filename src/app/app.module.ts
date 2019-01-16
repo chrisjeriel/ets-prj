@@ -114,11 +114,12 @@ import { ClmSectionCoversComponent } from './claims/claim/clm-claim-processing/c
 import { ClmClaimPaymentRequestComponent } from './claims/claim/clm-claim-processing/clm-claim-payment-request/clm-claim-payment-request.component';
 import { ClmClaimsInquiryComponent } from './claims/claim/clm-claims-inquiry/clm-claims-inquiry.component';
 import { ClmChangeClaimStatusComponent } from './claims/claim/clm-change-claim-status/clm-change-claim-status.component';
+import { UpdateInstallmentComponent } from './utilities/update-information/update-installment/update-installment.component';
 import { AccountingComponent } from './accounting/accounting.component';
 import { ArEntryComponent } from './accounting/ar-entry/ar-entry.component';
-import { ArDetailsComponent } from './accounting/ar-details/ar-details.component';
-import { InwardPolicyBalancesComponent } from './accounting/inward-policy-balances/inward-policy-balances.component';
-import { ClaimRecoveryComponent } from './accounting/claim-recovery/claim-recovery.component';
+import { ArDetailsComponent } from './accounting-in-trust/ar-details/ar-details.component';
+import { InwardPolicyBalancesComponent } from './accounting-in-trust/inward-policy-balances/inward-policy-balances.component';
+import { ClaimRecoveryComponent } from './accounting-in-trust/claim-recovery/claim-recovery.component';
 import { QsoaComponent } from './accounting/qsoa/qsoa.component';
 import { AttachmentsComponent } from './accounting/attachments/attachments.component';
 import { AccountingInTrustComponent } from './accounting-in-trust/accounting-in-trust.component';
@@ -242,6 +243,7 @@ import { AccountingServiceComponent } from './accounting-service/accounting-serv
         ClmSectionCoversComponent,
         ClmClaimsInquiryComponent,
         ClmChangeClaimStatusComponent,
+        UpdateInstallmentComponent,
         AccountingComponent,
         ArEntryComponent,
         ArDetailsComponent,

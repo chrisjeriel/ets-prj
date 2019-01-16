@@ -14,7 +14,7 @@ import { Title } from '@angular/platform-browser';
 
 export class AttachmentComponent implements OnInit {
 
- /* dtOptions: DataTables.Settings = {};*/
+  /* dtOptions: DataTables.Settings = {};*/
   tableData: any[] = [];
   tHeader: any[] = [];
   options: any[] = [];
