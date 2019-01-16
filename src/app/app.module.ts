@@ -262,7 +262,6 @@ import { SequencePipe } from './_pipes/sequence.pipe';
         GenerateCvComponent,
         CvEntryComponent,
         AccAttachmentsComponent,
-        AccAttachmentsComponent,
         SequencePipe
     ],
 
