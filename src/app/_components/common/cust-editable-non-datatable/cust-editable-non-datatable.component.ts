@@ -38,6 +38,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     @Output() rowDblClick: EventEmitter<any> = new EventEmitter();
     @Output() add: EventEmitter<any> = new EventEmitter();
     @Output() edit: EventEmitter<any> = new EventEmitter();
+    @Output() genericBtn : EventEmitter<any> = new EventEmitter();
 
     @Input() passData: any = {
         tableData:[],
@@ -252,5 +253,9 @@ export class CustEditableNonDatatableComponent implements OnInit {
             }
             return sum;
         }
+    }
+
+    onClickGeneric(){
+        this.genericBtn.next();
     }
 }

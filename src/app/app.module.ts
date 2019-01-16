@@ -119,10 +119,11 @@ import { ArEntryComponent } from './accounting/ar-entry/ar-entry.component';
 import { ArDetailsComponent } from './accounting/ar-details/ar-details.component';
 import { InwardPolicyBalancesComponent } from './accounting/inward-policy-balances/inward-policy-balances.component';
 import { ClaimRecoveryComponent } from './accounting/claim-recovery/claim-recovery.component';
-import { QsoaComponent } from './accounting/qsoa/qsoa.component';
 import { AttachmentsComponent } from './accounting/attachments/attachments.component';
 import { AccountingInTrustComponent } from './accounting-in-trust/accounting-in-trust.component';
 import { AccountingServiceComponent } from './accounting-service/accounting-service.component';
+import { QsoaComponent } from './accounting-in-trust/qsoa/qsoa.component';
+
 
 @NgModule({
     imports: [
