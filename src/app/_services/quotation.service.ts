@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { QuotationList, HoldCoverMonitoringList, DummyInfo, QuoteEndorsement, QuotationOption, QuotationOtherRates, IntCompAdvInfo, AttachmentInfo, QuotationProcessing, QuotationCoverageInfo, QuotationHoldCover, ItemInformation, ReadyForPrint, OpenCoverProcessing, Risks, QuotationDeductibles } from '@app/_models';
+import { QuotationList, HoldCoverMonitoringList, DummyInfo, QuoteEndorsement, QuotationOption, QuotationOtherRates, IntCompAdvInfo, AttachmentInfo, QuotationProcessing, QuotationCoverageInfo, QuotationHoldCover, ItemInformation, ReadyForPrint, OpenCoverProcessing, Risks, QuotationDeductibles, EditableDummyInfo } from '@app/_models';
 
 
 @Injectable({ providedIn: 'root' })
@@ -23,6 +23,7 @@ export class QuotationService {
     openCoverProcessing: OpenCoverProcessing[] = [];
     risksData: Risks[] = [];
     quoteDeductiblesData: QuotationDeductibles[] = [];
+    editableDummyInfoData: EditableDummyInfo[] = [];
     
     rowData: any[] = [];
     toGenInfo: any[] = [];
@@ -160,33 +161,36 @@ export class QuotationService {
 
     getDummyEditableInfo() {
         /*Dummy Data Array*/
-        this.dummyInfoData = [
-            new DummyInfo(1, 'Christopher Jeriel', 'Sarsonas', 'Alcala', 'Male', 25, "January 21, 2018"),
-            new DummyInfo(2, 'Veronica', 'Raymundo', 'C', 'Female', 25, "January 21, 2018"),
-            new DummyInfo(3, 'Elmon', 'Hagacer', 'H', 'Male', 25, "January 21, 2018"),
-            new DummyInfo(1, 'Christopher Jeriel', 'Sarsonas', 'Alcala', 'Male', 25, "January 21, 2018"),
-            new DummyInfo(2, 'Veronica', 'Raymundo', 'C', 'Female', 25, "January 21, 2018"),
-            new DummyInfo(3, 'Elmon', 'Hagacer', 'H', 'Male', 25, "January 21, 2018"),
-            new DummyInfo(1, 'Christopher Jeriel', 'Sarsonas', 'Alcala', 'Male', 25, "January 21, 2018"),
-            new DummyInfo(2, 'Veronica', 'Raymundo', 'C', 'Female', 25, "January 21, 2018"),
-            new DummyInfo(3, 'Elmon', 'Hagacer', 'H', 'Male', 25, "January 21, 2018"), new DummyInfo(1, 'Christopher Jeriel', 'Sarsonas', 'Alcala', 'Male', 25, "January 21, 2018"),
-            new DummyInfo(2, 'Veronica', 'Raymundo', 'C', 'Female', 25, "January 21, 2018"),
-            new DummyInfo(3, 'Elmon', 'Hagacer', 'H', 'Male', 25, "January 21, 2018"), new DummyInfo(1, 'Christopher Jeriel', 'Sarsonas', 'Alcala', 'Male', 25, "January 21, 2018"),
-            new DummyInfo(2, 'Veronica', 'Raymundo', 'C', 'Female', 25, "January 21, 2018"),
-            new DummyInfo(3, 'Elmon', 'Hagacer', 'H', 'Male', 25, "January 21, 2018"), new DummyInfo(1, 'Christopher Jeriel', 'Sarsonas', 'Alcala', 'Male', 25, "January 21, 2018"),
-            new DummyInfo(2, 'Veronica', 'Raymundo', 'C', 'Female', 25, "January 21, 2018"),
-            new DummyInfo(3, 'Elmon', 'Hagacer', 'H', 'Male', 25, "January 21, 2018"),
-            new DummyInfo(1, 'Christopher Jeriel', 'Sarsonas', 'Alcala', 'Male', 25, "January 21, 2018"),
-            new DummyInfo(2, 'Veronica', 'Raymundo', 'C', 'Female', 25, "January 21, 2018"),
-            new DummyInfo(3, 'Elmon', 'Hagacer', 'H', 'Male', 25, "January 21, 2018"),
-            new DummyInfo(1, 'Christopher Jeriel', 'Sarsonas', 'Alcala', 'Male', 25, "January 21, 2018"),
-            new DummyInfo(2, 'Veronica', 'Raymundo', 'C', 'Female', 25, "January 21, 2018"),
-            new DummyInfo(3, 'Elmon', 'Hagacer', 'H', 'Male', 25, "January 21, 2018"),
+        this.editableDummyInfoData = [
+            new EditableDummyInfo(1, 'Christopher Jeriel', 'Sarsonas', 'Alcala', 'Male', 25, new Date()),
+            new EditableDummyInfo(2, 'Veronica', 'Raymundo', 'C', 'Female', 25, new Date()),
+            new EditableDummyInfo(3, 'Elmon', 'Hagacer', 'H', 'Male', 25, new Date()),
+            new EditableDummyInfo(1, 'Christopher Jeriel', 'Sarsonas', 'Alcala', 'Male', 25, new Date()),
+            new EditableDummyInfo(2, 'Veronica', 'Raymundo', 'C', 'Female', 25, new Date()),
+            new EditableDummyInfo(3, 'Elmon', 'Hagacer', 'H', 'Male', 25, new Date()),
+            new EditableDummyInfo(1, 'Christopher Jeriel', 'Sarsonas', 'Alcala', 'Male', 25, new Date()),
+            new EditableDummyInfo(2, 'Veronica', 'Raymundo', 'C', 'Female', 25, new Date()),
+            new EditableDummyInfo(3, 'Elmon', 'Hagacer', 'H', 'Male', 25, new Date()), 
+            new EditableDummyInfo(1, 'Christopher Jeriel', 'Sarsonas', 'Alcala', 'Male', 25, new Date()),
+            new EditableDummyInfo(2, 'Veronica', 'Raymundo', 'C', 'Female', 25, new Date()),
+            new EditableDummyInfo(3, 'Elmon', 'Hagacer', 'H', 'Male', 25, new Date()),
+            new EditableDummyInfo(1, 'Christopher Jeriel', 'Sarsonas', 'Alcala', 'Male', 25, new Date()),
+            new EditableDummyInfo(2, 'Veronica', 'Raymundo', 'C', 'Female', 25, new Date()),
+            new EditableDummyInfo(3, 'Elmon', 'Hagacer', 'H', 'Male', 25, new Date()), 
+            new EditableDummyInfo(1, 'Christopher Jeriel', 'Sarsonas', 'Alcala', 'Male', 25, new Date()),
+            new EditableDummyInfo(2, 'Veronica', 'Raymundo', 'C', 'Female', 25, new Date()),
+            new EditableDummyInfo(3, 'Elmon', 'Hagacer', 'H', 'Male', 25, new Date()),
+            new EditableDummyInfo(1, 'Christopher Jeriel', 'Sarsonas', 'Alcala', 'Male', 25, new Date()),
+            new EditableDummyInfo(2, 'Veronica', 'Raymundo', 'C', 'Female', 25, new Date()),
+            new EditableDummyInfo(3, 'Elmon', 'Hagacer', 'H', 'Male', 25, new Date()),
+            new EditableDummyInfo(1, 'Christopher Jeriel', 'Sarsonas', 'Alcala', 'Male', 25, new Date()),
+            new EditableDummyInfo(2, 'Veronica', 'Raymundo', 'C', 'Female', 25, new Date()),
+            new EditableDummyInfo(3, 'Elmon', 'Hagacer', 'H', 'Male', 25, new Date()),
         ];
 
 
         /*return this.http.get<User[]>(`${environment.apiUrl}/quotation`);*/
-        return this.dummyInfoData;
+        return this.editableDummyInfoData;
 
     }
 
