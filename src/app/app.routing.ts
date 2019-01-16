@@ -46,6 +46,8 @@ import { RiskFormComponent } from './underwriting/maintenance/risk-form/risk-for
 import { ClmClaimsInquiryComponent } from './claims/claim/clm-claims-inquiry/clm-claims-inquiry.component';
 import { ClmChangeClaimStatusComponent } from './claims/claim/clm-change-claim-status/clm-change-claim-status.component';
 import { PolMxCedingCoComponent } from './underwriting/policy-maintenance/pol-mx-ceding-co/pol-mx-ceding-co.component';
+import { AccountingComponent } from './accounting/accounting.component';
+
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -98,6 +100,7 @@ const appRoutes: Routes = [
     { path: 'claims-inquiry', component: ClmClaimsInquiryComponent },
     { path: 'clm-change-claim-status', component: ClmChangeClaimStatusComponent },
     { path: 'maintenance-ceding-co', component: PolMxCedingCoComponent },
+    { path: 'accounting', component: AccountingComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

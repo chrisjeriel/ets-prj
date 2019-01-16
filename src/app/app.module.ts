@@ -115,6 +115,13 @@ import { ClmClaimPaymentRequestComponent } from './claims/claim/clm-claim-proces
 import { ClmClaimsInquiryComponent } from './claims/claim/clm-claims-inquiry/clm-claims-inquiry.component';
 import { ClmChangeClaimStatusComponent } from './claims/claim/clm-change-claim-status/clm-change-claim-status.component';
 import { PolMxCedingCoComponent } from './underwriting/policy-maintenance/pol-mx-ceding-co/pol-mx-ceding-co.component';
+import { AccountingComponent } from './accounting/accounting.component';
+import { ArEntryComponent } from './accounting/ar-entry/ar-entry.component';
+import { ArDetailsComponent } from './accounting/ar-details/ar-details.component';
+import { InwardPolicyBalancesComponent } from './accounting/inward-policy-balances/inward-policy-balances.component';
+import { ClaimRecoveryComponent } from './accounting/claim-recovery/claim-recovery.component';
+import { QsoaComponent } from './accounting/qsoa/qsoa.component';
+import { AttachmentsComponent } from './accounting/attachments/attachments.component';
 
 @NgModule({
     imports: [
@@ -235,6 +242,13 @@ import { PolMxCedingCoComponent } from './underwriting/policy-maintenance/pol-mx
         ClmClaimsInquiryComponent,
         ClmChangeClaimStatusComponent,
         PolMxCedingCoComponent,
+        AccountingComponent,
+        ArEntryComponent,
+        ArDetailsComponent,
+        InwardPolicyBalancesComponent,
+        ClaimRecoveryComponent,
+        QsoaComponent,
+        AttachmentsComponent
     ],
 
     providers: [

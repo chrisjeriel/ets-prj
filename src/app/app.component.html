@@ -182,6 +182,16 @@
                             <ng-template ngbPanelTitle>
                                 <fa name="calculator"></fa>&nbsp;Accounting
                             </ng-template>
+                            <ng-template ngbPanelContent>
+                                <ngb-accordion #acc="ngbAccordion">
+                                    <ngb-panel title="In-Trust">
+                                        <ng-template ngbPanelContent>
+                                            <button [routerLink]="['/accounting']" class="button btn btn-link"> Acknowledgement Receipt </button>
+                                            <br />
+                                        </ng-template>
+                                    </ngb-panel>
+                                </ngb-accordion>
+                            </ng-template>
                         </ngb-panel>
                         <ngb-panel>
                             <ng-template ngbPanelTitle>
