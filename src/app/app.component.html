@@ -168,7 +168,7 @@
                                             Inquiry
                                         </ng-template>
                                         <ng-template ngbPanelContent>
-                                            <button [routerLink]="['']" class="button btn btn-link">Claim
+                                            <button [routerLink]="['claims-inquiry']" class="button btn btn-link">Claims
                                                 Inquiry</button>
                                             <br />
                                         </ng-template>
@@ -176,7 +176,7 @@
                                 </ngb-accordion>
                             </ng-template>
                         </ngb-panel>
-                        <ngb-panel>
+                        <!-- <ngb-panel>
                             <ng-template ngbPanelTitle>
                                 <fa name="calculator"></fa>&nbsp;Accounting In-Trust
                             </ng-template>
@@ -191,6 +191,20 @@
                             </ng-template>
                             <ng-template ngbPanelContent>
                                
+                            </ng-template>
+                        </ngb-panel> -->
+                        <ngb-panel>
+                            <ng-template ngbPanelTitle>
+                                <fa name="calculator"></fa>&nbsp;Accounting In-Trust
+                            </ng-template>
+                            <ng-template ngbPanelContent>
+                                <button [routerLink]="['/accounting-in-trust']" class="button btn btn-link"> Acknowledgement Receipt </button>
+                                <br />
+                            </ng-template>
+                        </ngb-panel>
+                        <ngb-panel>
+                            <ng-template ngbPanelTitle>
+                                <fa name="calculator"></fa>&nbsp;Accounting Service
                             </ng-template>
                         </ngb-panel>
                         <ngb-panel>
