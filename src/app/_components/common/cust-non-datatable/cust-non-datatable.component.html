@@ -234,6 +234,7 @@
                                 <span *ngSwitchCase="'date'" class="unclickable">{{ processData(key, data) | date: 'MM/dd/yyyy'}}</span>
                                 <span *ngSwitchCase="'time'" class="unclickable">{{ processData(key, data) | date: 'HH:mm'}}</span>
                                 <span *ngSwitchCase="'datetime'" class="unclickable">{{ processData(key, data) | date: 'yyyy-MM-ddTHH:mm'}}</span>
+                                <span *ngSwitchCase="'year'" class="unclickable">{{ processData(key, data) | date: 'yyyy'}}</span>
                                 <div *ngSwitchCase="'checkbox'" style="text-align: center;">
                                     <input  type="checkbox" [checked]="data[key]">
                                 </div>
