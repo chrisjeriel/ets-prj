@@ -14,7 +14,7 @@ export class CheckVoucherComponent implements OnInit {
   passDataCVListing: any = {
         tableData: this.accountingService.getCVListing(),
         tHeader: ["CV Year", "CV No", "Payee", "CV Date", "Status","Particulars","Amount"],
-        dataTypes: ['year','text','text','date','text','text','currency',],
+        dataTypes: ['year','sequence-8','text','date','text','text','currency',],
         addFlag:true,
         editFlag:true,
         //totalFlag:true,

@@ -16,17 +16,17 @@
                     <label class="form-control-sm col-sm-1" for="xx">Tran ID</label>
                     <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-2" placeholder="">
                     <label class="form-control-sm col-sm-1" for="xx">Status</label>
-                    <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-2" placeholder="">
-                    <div style="margin-left: -19px !important;margin-right: 6px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+                    <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-2" placeholder="" style="margin-right: 2px !important">
+                    <div style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Payee</label>
-                    <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-11" placeholder="">
-                    <div style="margin-left: -19px !important;margin-right: 6px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+                    <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-11" placeholder="" style="margin-right: 2px !important">
+                    <div style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Particulars</label>
-                    <textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;"></textarea>
+                    <textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;margin-right: 5px !important;"></textarea>
                 </div>
                 <div class="input-group" style="margin-bottom: -5px !important;">
                     <label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Amount</label>
@@ -36,28 +36,28 @@
                     <div class="col-sm-3"></div>
                     <label class="form-control-sm col-sm-2" for="xx" style="height: auto;">Local Amount</label>
                     <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-1" placeholder="" style="margin-right: 4px !important;">
-                    <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-2" placeholder="">
+                    <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-2" placeholder="" style="margin-right: 5px !important;">
                 </div>
             </div>
         </fieldset>
     </div>
     <div class="col-sm-2" style="padding-left: 10px !important;">
-        <fieldset class="scheduler-border" style="padding-bottom: 20px !important;">
+        <fieldset class="scheduler-border" style="padding-bottom: 16px !important;padding-left: 0px !important;    padding-right: 0px !important;">
             <legend class="scheduler-border">CV Info</legend>
-            <div class="cust-btn-container" style="margin-top: 19px !important;margin-left: 10px !important;"> 
-            <button class="cust-btn" style="width: 100%;margin-bottom: 10px !important;">New CV</button>
-            <button class="cust-btn" style="width: 100%;margin-bottom: 10px !important;">Save</button>
-            <button class="cust-btn" style="width: 100%">Print</button>
+            <div class="cust-btn-container" style="margin-top: 19px !important;margin-left: 10px !important;margin-right: 10px !important;"> 
+            <button class="cust-btn cust-btn-extend" style="width: 100%;margin-bottom: 10px !important;">New CV</button>
+            <button class="cust-btn cust-btn-extend" style="width: 100%;margin-bottom: 10px !important;">Save</button>
+            <button class="cust-btn cust-btn-extend" style="width: 100%">Print</button>
             </div>
         </fieldset>
     </div>
     <div class="col-sm-12">
         <fieldset class="scheduler-border" style="padding-bottom: 20px !important;">
             <legend class="scheduler-border">Check Details</legend>
-            <div class="col-sm-12" style="margin-top: 10px !important;">
+            <div class="test" style="margin-top: 10px !important;">
                 <app-cust-editable-non-datatable [passData]="passDataCheckDetails"></app-cust-editable-non-datatable>
             </div>
-            <div class="col-sm-12" style="margin-top: 63px !important;">
+            <div class="col-sm-12" style="margin-top: 64px !important;">
              <div class="form-row custom-row-inline-inset">
                 <div class="input-group">
                     <label class="form-control-sm col-sm-1" for="xx">Prepared By</label>
