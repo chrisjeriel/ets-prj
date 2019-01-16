@@ -50,6 +50,8 @@ export class CustEditableNonDatatableComponent implements OnInit {
         opts:[],
         nData:{},
         checkFlag:false,
+
+
         selectFlag:false,
         addFlag:false,
         editFlag:false,
@@ -128,7 +130,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     onClickAdd() {
-        this.passData.tableData.push(this.passData.nData);
+        this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
         this.unliTableLength();    
         this.search(this.searchString);
     }
