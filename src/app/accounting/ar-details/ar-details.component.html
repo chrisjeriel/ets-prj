@@ -30,33 +30,19 @@
 		<ngb-tab class="ngb-tab" title="Amount Details">
 			<ng-template ngbTabContent>
 				<div class="row">
-					<div class="col-sm-12">
-						
-					</div>
 					<div class="col-sm-12" style="margin-top: 10px !important;">
-						<fieldset class="scheduler-border">
-						<div class="custom-row-inline-inset">
-						    <div class="form-row" style="margin-bottom: -10px;">
-						        <div class="input-group">
-						          <label class="form-control-sm col-sm-1">Created By</label>
-						          <input type="text" appCurrency class="form-control form-control-sm col-sm" placeholder="cuaresma">
-						          <label class="form-control-sm col-sm-1">Date Created</label>
-						          <input type="datetime-local" class="form-control form-control-sm col-sm">
-						          <label class="form-control-sm col-sm-1">Last Updated By</label>
-						          <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma">
-						          <label class="form-control-sm col-sm-1">Last Update</label>
-						          <input type="datetime-local" class="form-control form-control-sm col-sm">
-						        </div>
-						    </div>
-						</div>
-						</fieldset>
+						<app-cust-editable-non-datatable [passData]="passDataAmountDetails"></app-cust-editable-non-datatable>
 					</div>
 				</div>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab class="ngb-tab" title="Accounting Entries">
 			<ng-template ngbTabContent>
-				<p>Accounting Entries</p>
+				<div class="row">
+					<div class="col-sm-12" style="margin-top: 10px !important;">
+						<app-cust-editable-non-datatable [passData]="passDataAccountingEntries"></app-cust-editable-non-datatable>
+					</div>
+				</div>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab class="ngb-tab" title="Tax Details">
@@ -66,13 +52,23 @@
 		</ngb-tab>
 	</ngb-tabset>
 </div>
-<div class="form-row">
-	<div class="form-group col-sm">
-		<div class="col-md-13 text-center" style="margin-top:10px">
-			<div class="cust-btn-container">
-			<button type="button" class="cust-btn"><a>Cancel</a></button>
-			<button type="button" class="cust-btn"><a>Save</a></button>
-		</div>
-		</div>
+<div class="row">
+	<div class="col-sm-12" style="margin-top: 5px !important;">
+		<fieldset class="scheduler-border">
+			<div class="custom-row-inline-inset">
+				<div class="form-row" style="margin-bottom: -10px;">
+					<div class="input-group">
+						<label class="form-control-sm col-sm-1">Created By</label>
+						<input type="text" appCurrency class="form-control form-control-sm col-sm" placeholder="cuaresma">
+						<label class="form-control-sm col-sm-1">Date Created</label>
+						<input type="date" class="form-control form-control-sm col-sm">
+						<label class="form-control-sm col-sm-1">Last Updated By</label>
+						<input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma">
+						<label class="form-control-sm col-sm-1">Last Update</label>
+						<input type="date" class="form-control form-control-sm col-sm">
+					</div>
+				</div>
+			</div>
+		</fieldset>
 	</div>
 </div>
