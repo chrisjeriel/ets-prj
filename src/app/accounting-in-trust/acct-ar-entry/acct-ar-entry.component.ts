@@ -15,7 +15,7 @@ export class AcctArEntryComponent implements OnInit {
         ],
         tHeader: ['Pay Mode','Curr','Curr Rate','Amount','Bank','Check No.','Check Date','Check Class'],
         magnifyingGlass: ['0','1','4','7'],
-        dataTypes: ['text','text','percent','currency','text','number','date','text'];
+        dataTypes: ['text','text','percent','currency','text','number','date','text'],
         paginateFlag: true,
         infoFlag: true,
         pageLength: 5,
