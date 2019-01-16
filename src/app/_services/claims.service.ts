@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ClaimPaymentRequests, ClaimsHistoryInfo } from '@app/_models';
+import { ClaimPaymentRequests, ClaimsHistoryInfo, QSOA } from '@app/_models';
 
 @Injectable({
 	providedIn: 'root'
@@ -9,6 +9,7 @@ export class ClaimsService {
 
 	claimPaymentRequestData: ClaimPaymentRequests[] = [];
 	claimsHistoryInfo: ClaimsHistoryInfo[] = [];
+	qsoaData: QSOA[] = [];
 
 	constructor(private http: HttpClient) { }
 
@@ -33,6 +34,14 @@ export class ClaimsService {
 			new ClaimsHistoryInfo("5", "Loss", "Full Payment", "PHP", 0, 384532.75, "CV-000102", new Date("2018-11-24"), "Final Payment"),
 		];
 		return this.claimsHistoryInfo;
+	}
+
+	getQSOAData(){
+		this.qsoaData = [
+			new QSOA("Q Ending",1341234,3424,42342,141),
+			new QSOA("Q Ending",1341234,3424,35223,1231345),
+		];
+		return this.qsoaData;
 	}
 
 }

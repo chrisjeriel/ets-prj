@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV } from '@app/_models';
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo } from '@app/_models';
 
 @Injectable({
 	providedIn: 'root'
@@ -12,6 +12,8 @@ export class AccountingService {
 	cvListing: CVListing[]=[];
 	amountDetailsCVData: AmountDetailsCV[] = [];
 	accountingEntriesCVData: AccountingEntriesCV[] = []; 
+	qsoaData: QSOA[] = [];
+	attachmentInfo: AttachmentInfo[] = [];
 
 	constructor(private http: HttpClient) { }
 
@@ -65,5 +67,21 @@ export class AccountingService {
 			new AccountingEntriesCV(null,null,null,null,null,null),
 		];
 		return this.accountingEntriesCVData;
+	}
+
+	getQSOAData(){
+		this.qsoaData = [
+			new QSOA("Q Ending",1341234,3424,42342,141),
+			new QSOA("Q Ending",1341234,3424,35223,1231345),
+		];
+		return this.qsoaData;
+	}
+
+	getAttachmentInfo(){
+		this.attachmentInfo = [
+			new AttachmentInfo("Path","Description"),
+		]
+		return this.attachmentInfo;
+
 	}
 }

@@ -316,3 +316,7 @@ tr td span{
 td div input.number-magnify{
     padding-right: 16px !important;
 }
+
+table td div span{
+    display: block;
+}
