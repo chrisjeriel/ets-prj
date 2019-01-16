@@ -23,6 +23,7 @@ export class CvDetailsComponent implements OnInit {
   	addFlag: true,
   	deleteFlag: true,
   	total: [null, null, null, 'Total', 'amountPlusMinus'],
+  	genericBtn: 'Save'
   }
 
   accountingEntriesData: any = {

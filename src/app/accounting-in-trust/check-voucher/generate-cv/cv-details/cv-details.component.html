@@ -2,12 +2,14 @@
     <legend class="scheduler-border">A.R. Info</legend>
     <div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;">
         <div class="input-group" style="margin-bottom: -13px !important; margin-top: 3px !important">
-            <label class="form-control-sm col-sm-1" for="xx">A.R. No</label>
-            <input type="text" id="xx" value="CAR-2018-5081-077-0177" class="form-control form-control-sm cust-sm col-sm-1"
-                   placeholder="">
+            <label class="form-control-sm col-sm-1" for="xx">CV No</label>
+            <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-1"
+                   placeholder="2015">
+           	<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-1"
+           	placeholder="00000001">
             <label class="form-control-sm col-sm-1" for="xx">Date</label>
-            <input type="text" id="xx" value="Insurer" class="form-control form-control-sm cust-sm col-sm-1" placeholder="">
-            <label class="form-control-sm col-sm-1" for="xx">Payment Type</label>
+            <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-1" placeholder="10/01/2018 11:49 AM">
+            <label class="form-control-sm col-sm-1" for="xx">Tran ID</label>
             <input type="text" id="xx" value="Insurer" class="form-control form-control-sm cust-sm col-sm-1" placeholder="">
             <label class="form-control-sm col-sm-1" for="xx">Status</label>
             <input type="text" id="xx" value="Insurer" class="form-control form-control-sm cust-sm col-sm-1" placeholder="">
@@ -35,7 +37,15 @@
 			<ng-template ngbTabContent>
 				<div class="row" style="margin-top: 0.6em">
 					<div class="col-sm-1"></div>
-					<div class="col-sm-10">
+					<div class="col-sm-10" style="position: relative;">
+						<div style="position: absolute; right: 19px;">
+							 <div class="form-row custom-row-inline-inset">
+                                <div class="input-group">
+                                     <label class="form-control-sm labels" style="text-align: left !important">Auto Compute</label>
+                                    <input type="checkbox" class="checkbox text-right">
+                                </div>
+                            </div>
+						</div>
 						<app-cust-editable-non-datatable [passData]="amountDetailsData"></app-cust-editable-non-datatable>
 					</div>
 					<div class="col-sm-1"></div>
@@ -49,7 +59,10 @@
 			<ng-template ngbTabContent>
 				<div class="row" style="margin-top: 0.6em; padding-bottom: 3.7em;">
 					<div class="col-sm-1"></div>
-					<div class="col-sm-10">
+					<div class="col-sm-10" style="position: relative;">
+						<div style="position: absolute; right: 12px;">
+							<button class="cust-btn">Print AE</button>
+						</div>
 						<app-cust-editable-non-datatable [passData]="accountingEntriesData"></app-cust-editable-non-datatable>
 					</div>
 					<div class="col-sm-1"></div>
