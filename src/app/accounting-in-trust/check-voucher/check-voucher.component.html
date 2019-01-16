@@ -4,7 +4,7 @@
 		<ngb-tabset>
 		<ngb-tab class="ngb-tab" title="CV Listings">
 			<ng-template ngbTabContent>
-				<app-cust-non-datatable [passData]="passDataCVListing"></app-cust-non-datatable>
+				<app-cust-non-datatable [passData]="passDataCVListing" (add)="onClickAdd($event)" (edit)="onClickEdit($event)"></app-cust-non-datatable>
 			</ng-template>
 		</ngb-tab>
 	</ngb-tabset>

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountingService } from '../../_services';
 import { CVListing } from '@app/_models'
+import { Title } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-check-voucher',
@@ -21,9 +23,18 @@ export class CheckVoucherComponent implements OnInit {
         pagination: true,
     };
 
-  constructor(private accountingService: AccountingService) { }
+  constructor(private accountingService: AccountingService, private titleService: Title, private router: Router) { }
 
   ngOnInit() {
+    this.titleService.setTitle("Acc In Trust | Check Voucher");
+  }
+
+  onClickAdd(event){
+      this.router.navigate(['/generate-cv']); 
+  }
+
+  onClickEdit(event){
+      this.router.navigate(['/generate-cv']); 
   }
 
 }
