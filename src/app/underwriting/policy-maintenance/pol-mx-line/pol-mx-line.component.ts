@@ -21,13 +21,35 @@ export class PolMxLineComponent implements OnInit {
 		addFlag:false,
 		editFlag:false,
 		deleteFlag:false,
-		paginateFlag: false,
-		infoFlag:false,
-		searchFlag:false,
+		pagination: false,
+		pageStatus: false,
+		searchFlag: false,
 		checkboxFlag:false,
 		pageLength:10,
-		widths: [],
+		resizable: [],
 		pageID:1,
+		filters: [
+			{
+            	key: 'lineCode',
+            	title:'Line Code',
+            	dataType: 'text'
+        	},
+        	{
+            	key: 'description',
+            	title:'description',
+            	dataType: 'text'
+        	},
+        	{
+            	key: 'ref',
+            	title:'Ref',
+            	dataType: 'text'
+        	},
+        	{
+            	key: 'sortSeq',
+            	title:'Sort Seq',
+            	dataType: 'text'
+        	}
+        ]
 	};
 
 	activeCb: boolean = false;
@@ -51,9 +73,9 @@ export class PolMxLineComponent implements OnInit {
 									 [true, false, false, "DOS", "Deterioration of Stocks", "1900", "7"],
 									 [true, true, true, "CEC", "Civil Engineering Completed Risk", "9999", "8"]);
 		this.passData.dataTypes.push("checkbox", "checkbox", "checkbox", "text", "text", "number", "number");
-		this.passData.widths.push("1", "1", "1", "1", "auto", "auto", "1")
-		this.passData.paginateFlag = true;
-		this.passData.infoFlag = true;
+		this.passData.resizable.push(true, true, true, false, true, true, false)
+		this.passData.pagination = true;
+		this.passData.pageStatus = true;
 	}
 
 	ngOnChanges() {

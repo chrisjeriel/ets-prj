@@ -72,7 +72,7 @@ export class PolMxCedingCoComponent implements OnInit {
             	key: 'inactiveDate',
             	title:'Inactive Date',
             	dataType: 'date'
-        	},
+        	}
 		],
 		pageID: 1,
 	};
