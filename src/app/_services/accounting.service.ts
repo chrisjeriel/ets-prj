@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV } from '@app/_models';
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV } from '@app/_models';
 
 @Injectable({
 	providedIn: 'root'
@@ -11,6 +11,7 @@ export class AccountingService {
 	accountingEntries:  AccountingEntries[]=[];
 	cvListing: CVListing[]=[];
 	amountDetailsCVData: AmountDetailsCV[] = [];
+	accountingEntriesCVData: AccountingEntriesCV[] = []; 
 
 	constructor(private http: HttpClient) { }
 
@@ -57,5 +58,12 @@ export class AccountingService {
 			new AmountDetailsCV('Witholding Tax (2%)', 500.24, 500.24, 'Less', -500.24),
 		];
 		return this.amountDetailsCVData;
+	}
+
+	getAccountingEntriesCV(){
+		this.accountingEntriesCVData = [
+			new AccountingEntriesCV(null,null,null,null,null,null),
+		];
+		return this.accountingEntriesCVData;
 	}
 }

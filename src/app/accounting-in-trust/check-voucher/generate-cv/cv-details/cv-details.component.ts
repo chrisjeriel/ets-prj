@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { AmountDetailsCV } from '@app/_models';
+import { AmountDetailsCV, AccountingEntriesCV } from '@app/_models';
 
 import { AccountingService } from '../../../../_services/accounting.service';
 
@@ -23,6 +23,17 @@ export class CvDetailsComponent implements OnInit {
   	addFlag: true,
   	deleteFlag: true,
   	total: [null, null, null, 'Total', 'amountPlusMinus'],
+  }
+
+  accountingEntriesData: any = {
+  	tableData: this.accountingService.getAccountingEntriesCV(),
+  	tHeader: ['Code', 'Account', 'SL Type', 'SL Name', 'Debit', 'Credit'],
+  	dataTypes: ['text', 'text', 'text', 'text', 'currency', 'currency'],
+  	nData: new AccountingEntriesCV(null,null,null,null,null,null),
+  	pageID: 2,
+  	addFlag: true,
+  	deleteFlag: true,
+  	total: [null, null, null, 'Total', null, null],
   }
 
   constructor(private accountingService: AccountingService) { }
