@@ -54,7 +54,7 @@ export class ClaimDistributionComponent implements OnInit {
       ["QS","BPI/MS","1",200000,124,24800000],
       ["QS","ASIA UNITED","1",200000,99,19800000]
   	],
-  	tHeader: ['Treaty','Treaty Company', '1st Ret Line','2nd Ret Amount','2nd Ret Line', '2nd Ret Amount'],
+  	tHeader: ['Treaty','Treaty Company', '1st Ret Line','1st Ret Amount','2nd Ret Line', '2nd Ret Amount'],
   	dataTypes: ['text','text','number','currency','number','currency'],
   	pageLength:'10',
   	resizable: [true,true,true,true,true,true],
