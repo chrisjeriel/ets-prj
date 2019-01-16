@@ -123,6 +123,7 @@ import { QsoaComponent } from './accounting/qsoa/qsoa.component';
 import { AttachmentsComponent } from './accounting/attachments/attachments.component';
 import { AccountingInTrustComponent } from './accounting-in-trust/accounting-in-trust.component';
 import { AccountingServiceComponent } from './accounting-service/accounting-service.component';
+import { CheckVoucherComponent } from './accounting-in-trust/check-voucher/check-voucher.component';
 
 @NgModule({
     imports: [
@@ -250,7 +251,8 @@ import { AccountingServiceComponent } from './accounting-service/accounting-serv
         QsoaComponent,
         AttachmentsComponent,
         AccountingInTrustComponent,
-        AccountingServiceComponent
+        AccountingServiceComponent,
+        CheckVoucherComponent
     ],
 
     providers: [

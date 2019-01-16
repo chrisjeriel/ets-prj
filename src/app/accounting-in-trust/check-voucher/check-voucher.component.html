@@ -1,0 +1,11 @@
+<div class="cust-tabs-container">
+	<h4>Accounting In-Trust/Check Voucher</h4>
+	<!-- <ngb-tabset (tabChange)="beforeChange($event)"> -->
+		<ngb-tabset>
+		<ngb-tab class="ngb-tab" title="CV Listings">
+			<ng-template ngbTabContent>
+				<app-cust-non-datatable [passData]="passDataCVListing"></app-cust-non-datatable>
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>
