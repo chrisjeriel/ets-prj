@@ -41,3 +41,5 @@ export * from './ClaimDistribution';
 export * from './UnderwritingBatchPosting';
 export * from './UnderwritingBatchDistribution';
 export * from './MaintenanceDeductibles';
+export * from './AccountingARDetails';
+export * from './AccountingCheckVoucher';

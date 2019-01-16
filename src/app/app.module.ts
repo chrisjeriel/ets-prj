@@ -123,6 +123,7 @@ import { QsoaComponent } from './accounting/qsoa/qsoa.component';
 import { AttachmentsComponent } from './accounting/attachments/attachments.component';
 import { AccountingInTrustComponent } from './accounting-in-trust/accounting-in-trust.component';
 import { AccountingServiceComponent } from './accounting-service/accounting-service.component';
+import { CheckVoucherComponent } from './accounting-in-trust/check-voucher/check-voucher.component';
 import { GenerateCvComponent } from './accounting-in-trust/check-voucher/generate-cv/generate-cv.component';
 import { CvDetailsComponent } from './accounting-in-trust/check-voucher/generate-cv/cv-details/cv-details.component';
 
@@ -253,8 +254,9 @@ import { CvDetailsComponent } from './accounting-in-trust/check-voucher/generate
         AttachmentsComponent,
         AccountingInTrustComponent,
         AccountingServiceComponent,
-        GenerateCvComponent,
-        CvDetailsComponent
+        CvDetailsComponent,
+        CheckVoucherComponent,
+        GenerateCvComponent
     ],
 
     providers: [
