@@ -44,3 +44,6 @@ export * from './MaintenanceDeductibles';
 export * from './AccountingARDetails';
 export * from './AccountingCheckVoucher';
 export * from './AccountingCVEntry';
+export * from './AmountDetailsCV';
+export * from './AccountingEntriesCV';
+export * from './QSOA';

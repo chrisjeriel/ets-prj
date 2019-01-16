@@ -1,0 +1,60 @@
+<fieldset class="scheduler-border">
+    <legend class="scheduler-border">A.R. Info</legend>
+    <div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;">
+        <div class="input-group" style="margin-bottom: -13px !important; margin-top: 3px !important">
+            <div class="col-sm-8" style="padding-left: 37px;padding-right: 3px">
+                <div class="input-group">
+                    <label class="form-control-sm col-sm-1" for="xx">A.R. No</label>
+                    <input type="text" id="xx" value="000001" class="form-control form-control-sm cust-sm col-sm-1"
+                           placeholder="">
+                    <label class="form-control-sm col-sm-1" for="xx">Date</label>
+                    <input type="datetime-local" id="xx"  class="form-control form-control-sm cust-sm col-sm-3" placeholder="" style="margin-right: -21px;">
+                    <label class="form-control-sm col-sm-2" for="xx">Payment Type</label>
+                    <input type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm" placeholder="">
+                    <label class="form-control-sm col-sm-1" for="xx">Status</label>
+                    <input type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm-1" placeholder="">
+                </div>
+            </div>
+            <label class="form-control-sm col-sm-1" for="xx" style="margin-left: -3px;">Amount</label>
+            <input type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm-1" placeholder="" style="margin-right: 4px !important;">
+            <input type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="">
+        </div>
+        <div class="input-group" style="margin-bottom: -13px !important;">
+            <label class="form-control-sm col-sm-1" for="xx">Payor</label>
+            <input type="text" id="xx" value="Risk Name" class="form-control form-control-sm cust-sm col-sm-7" placeholder=""
+                   readonly>
+            <label class="form-control-sm col-sm-1" for="xx">Local Amount</label>
+            <input type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm-1" placeholder="" style="margin-right: 4px !important;">
+            <input type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="">
+        </div>
+    </div>
+</fieldset>
+
+<fieldset class="scheduler-border">
+	<legend class="scheduler-border">QSOA Balances</legend>
+	<div class="form-row custom-row-inline-inset" style="margin-bottom: -8px !important;">
+		<app-cust-editable-non-datatable [passData]="passData" style="width: 100%"></app-cust-editable-non-datatable>
+	</div>
+
+	<div class="input-group" style="margin-left: -20px;">
+		<label class="form-control-sm col-sm-1">Created By</label>
+		<input type="text" class="form-control form-control-sm col-sm">
+		<label class="form-control-sm col-sm-1">Date Created</label>
+		<input type="date" class="form-control form-control-sm col-sm">	
+		<label class="form-control-sm col-sm-1">Last Updated By</label>
+		<input type="text" class="form-control form-control-sm col-sm">
+		<label class="form-control-sm col-sm-1">Last Update</label>
+		<input type="date" class="form-control form-control-sm col-sm">	
+	</div>
+</fieldset>
+
+<div class="form-row bottom-button-container">
+		<div class="form-group col-sm">
+			<div class="col-md-13 text-center">
+				<div class="cust-btn-container" style="margin-top: 10px;">
+				<button type="button" class="cust-btn"><a>Cancel</a></button>
+				<button type="button" class="cust-btn"><a>Save</a></button>
+			</div>
+			</div>
+		</div>
+	</div>

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ARDetails, AccountingEntries, CVListing, CheckDetails } from '@app/_models';
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails } from '@app/_models';
 
 @Injectable({
 	providedIn: 'root'
@@ -11,6 +11,10 @@ export class AccountingService {
 	accountingEntries:  AccountingEntries[]=[];
 	cvListing: CVListing[]=[];
 	checkDetails:  CheckDetails[]=[];
+	amountDetailsCVData: AmountDetailsCV[] = [];
+	accountingEntriesCVData: AccountingEntriesCV[] = []; 
+	qsoaData: QSOA[] = [];
+	attachmentInfo: AttachmentInfo[] = [];
 
 	constructor(private http: HttpClient) { }
 
@@ -61,5 +65,37 @@ export class AccountingService {
 		]
 
 		return this.checkDetails;
+	}
+
+	getAmountDetailsCV(){
+		this.amountDetailsCVData = [
+			new AmountDetailsCV('Gross Amount (VAT Inc)', 28013.44, 28013.44, 'None', 0),
+			new AmountDetailsCV('Ex-VAT', 25012, 25012, 'Add', 25012),
+			new AmountDetailsCV('VAT (12%)', 3001.44, 3001.44, 'Add', 3001.44),
+			new AmountDetailsCV('Witholding Tax (2%)', 500.24, 500.24, 'Less', -500.24),
+		];
+		return this.amountDetailsCVData;
+	}
+
+	getAccountingEntriesCV(){
+		this.accountingEntriesCVData = [
+			new AccountingEntriesCV(null,null,null,null,null,null),
+		];
+		return this.accountingEntriesCVData;
+	}
+
+	getQSOAData(){
+		this.qsoaData = [
+			new QSOA("Q Ending",1341234,3424,42342,141),
+			new QSOA("Q Ending",1341234,3424,35223,1231345),
+		];
+		return this.qsoaData;
+	}
+
+	getAttachmentInfo(){
+		this.attachmentInfo = [
+			new AttachmentInfo("Path","Description"),
+		]
+		return this.attachmentInfo;
 	}
 }

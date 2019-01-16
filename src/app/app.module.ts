@@ -119,7 +119,6 @@ import { ArEntryComponent } from './accounting/ar-entry/ar-entry.component';
 import { ArDetailsComponent } from './accounting/ar-details/ar-details.component';
 import { InwardPolicyBalancesComponent } from './accounting/inward-policy-balances/inward-policy-balances.component';
 import { ClaimRecoveryComponent } from './accounting/claim-recovery/claim-recovery.component';
-import { QsoaComponent } from './accounting/qsoa/qsoa.component';
 import { AttachmentsComponent } from './accounting/attachments/attachments.component';
 import { AccountingInTrustComponent } from './accounting-in-trust/accounting-in-trust.component';
 import { AccountingServiceComponent } from './accounting-service/accounting-service.component';
@@ -127,6 +126,8 @@ import { CheckVoucherComponent } from './accounting-in-trust/check-voucher/check
 import { GenerateCvComponent } from './accounting-in-trust/check-voucher/generate-cv/generate-cv.component';
 import { CvEntryComponent } from './accounting-in-trust/check-voucher/generate-cv/cv-entry/cv-entry.component';
 import { CvDetailsComponent } from './accounting-in-trust/check-voucher/generate-cv/cv-details/cv-details.component';
+import { QsoaComponent } from './accounting-in-trust/qsoa/qsoa.component';
+import { AccAttachmentsComponent } from './accounting-in-trust/acc-attachments/acc-attachments.component';
 
 @NgModule({
     imports: [
@@ -258,7 +259,8 @@ import { CvDetailsComponent } from './accounting-in-trust/check-voucher/generate
         CvDetailsComponent,
         CheckVoucherComponent,
         GenerateCvComponent,
-        CvEntryComponent
+        CvEntryComponent,
+        AccAttachmentsComponent
     ],
 
     providers: [
