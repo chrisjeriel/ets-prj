@@ -124,6 +124,7 @@ import { AccountingInTrustComponent } from './accounting-in-trust/accounting-in-
 import { AccountingServiceComponent } from './accounting-service/accounting-service.component';
 import { QsoaComponent } from './accounting-in-trust/qsoa/qsoa.component';
 import { AccAttachmentsComponent } from './accounting-in-trust/acc-attachments/acc-attachments.component';
+import { SequencePipe } from './_pipes/sequence.pipe';
 
 
 @NgModule({
@@ -253,7 +254,8 @@ import { AccAttachmentsComponent } from './accounting-in-trust/acc-attachments/a
         AttachmentsComponent,
         AccountingInTrustComponent,
         AccountingServiceComponent,
-        AccAttachmentsComponent
+        AccAttachmentsComponent,
+        SequencePipe
     ],
 
     providers: [
