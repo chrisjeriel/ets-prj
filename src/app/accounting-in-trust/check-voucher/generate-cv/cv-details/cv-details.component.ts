@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { AmountDetailsCV, AccountingEntriesCV } from '@app/_models';
+import { AmountDetailsCV, AccountingEntriesCV, VATDetails, CreditableTax } from '@app/_models';
 
 import { AccountingService } from '../../../../_services/accounting.service';
 
@@ -36,6 +36,30 @@ export class CvDetailsComponent implements OnInit {
   	deleteFlag: true,
   	total: [null, null, null, 'Total', null, null],
   	genericBtn: 'Save',
+  }
+
+  accountingVATTaxDetails: any = {
+    tableData: this.accountingService.getVATDetails(),
+    tHeader: ['VAT Type', 'BIR RLF Purchase Type', 'Payor', 'Base Amount', 'VAT Amount'],
+    dataTypes: ['text', 'text', 'text', 'currency', 'currency'],
+    nData: new VATDetails(null,null,null,null,null),
+    pageID: 3,
+    addFlag: true,
+    deleteFlag: true,
+    total: [null, null, 'Total', null, 'vatAmount'],
+    genericBtn: 'Save',
+  }
+
+  accountingCreditableTaxDetails: any = {
+    tableData: this.accountingService.getCreditableTax(),
+    tHeader: ['BIR Tax Code', 'Description', 'WTax Rate', 'Payor','Base Amount', 'VAT Amount'],
+    dataTypes: ['text', 'text', 'currency','text', 'currency', 'currency'],
+    nData: new CreditableTax(null,null,null,null,null,null),
+    pageID: 4,
+    addFlag: true,
+    deleteFlag: true,
+    total: [null, null, null, 'Total', null, 'wTaxAmount'],
+    genericBtn: 'Save',
   }
 
   constructor(private accountingService: AccountingService) { }

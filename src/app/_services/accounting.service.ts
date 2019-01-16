@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails } from '@app/_models';
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax } from '@app/_models';
 
 @Injectable({
 	providedIn: 'root'
@@ -15,6 +15,8 @@ export class AccountingService {
 	accountingEntriesCVData: AccountingEntriesCV[] = []; 
 	qsoaData: QSOA[] = [];
 	attachmentInfo: AttachmentInfo[] = [];
+	vatDetails: VATDetails[]=[];
+	creditableTax: CreditableTax[]=[];
 
 	constructor(private http: HttpClient) { }
 
@@ -106,5 +108,19 @@ export class AccountingService {
 			new AttachmentInfo("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\05-Accounting\\Sample_10.doc","Accounting Specifications Sample 10 "),
 		]
 		return this.attachmentInfo;
+	}
+
+	getVATDetails(){
+		this.vatDetails = [
+			new VATDetails("Output","Services","San Miguel Corporation",25012,3001.44),
+		]
+		return this.vatDetails;
+	}
+
+	getCreditableTax(){
+		this.creditableTax = [
+			new CreditableTax("WC002","WTax on Investment Income PHP",2,"BPI/MS INSURANCE CORPORATION",25012,500.24),
+		]
+		return this.creditableTax;
 	}
 }
