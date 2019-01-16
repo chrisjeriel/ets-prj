@@ -26,17 +26,22 @@
     </div>
 </fieldset>
 
-<div class="cust-tabs-container" style="margin-top: 0.6em;">
+<div class="cust-tabs-container border-tab" style="margin-top: 0.6em;">
 	<ngb-tabset>
-		<ngb-tab id="idko">
+		<ngb-tab>
 			<ng-template ngbTabTitle>
 				<div>Amount Details</div>
 			</ng-template>
 			<ng-template ngbTabContent>
-
+				<div class="row" style="margin-top: 0.6em">
+					<div class="col-sm-1"></div>
+					<div class="col-sm-10">
+						<app-cust-editable-non-datatable [passData]="amountDetailsData"></app-cust-editable-non-datatable>
+					</div>
+					<div class="col-sm-1"></div>
+				</div>
 			</ng-template>
 		</ngb-tab>
-
 		<ngb-tab>
 			<ng-template ngbTabTitle>
 				<div>Accounting Entries</div>
@@ -55,3 +60,18 @@
 		</ngb-tab>
 	</ngb-tabset>
 </div>
+
+<fieldset class="scheduler-border">
+	<div class="form-row custom-row-inline-inset" style="margin-left: -27px;">
+        <div class="input-group">
+            <label class="form-control-sm col-sm-1 text-right labels">Created By</label>
+            <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma">
+            <label class="form-control-sm col-sm-1 text-right labels">Date Created</label>
+            <input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM">
+            <label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
+            <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma">
+            <label class="form-control-sm col-sm-1 text-right labels">Last Update</label>
+            <input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM">
+        </div>
+    </div>
+</fieldset>
