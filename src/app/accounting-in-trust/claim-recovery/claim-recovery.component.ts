@@ -21,6 +21,41 @@ export class ClaimRecoveryComponent implements OnInit {
     nData: [null, null, null, null, null, null, null, null, null],
     pageLength: 10,
   };
+
+  passDataDistributionTreaty: any = {
+    tableData: [
+      ["Proportional", "Quota Share", "MunichRe", "-11400"],
+      ["Proportional", "Quota Share", "PhilNaRe", "-600"],
+      ["Proportional", "Quota Share", "QS Pool", "-18000"],
+    ],
+    tHeader: ["Treaty Type", "Treaty", "Company", "Amount"],
+    dataTypes: ["text", "text", "text", "currency"],
+    pageStatus: true,
+    pagination: true,
+    pageLength: 5,
+    resizable: true,
+    tableOnly: true,
+
+  };
+
+  passDataDistributionQuotaShare: any = {
+    tableData: [
+      ["AFP", "-450", "0"],
+      ["AlliedBankers", "-450", "0"],
+      ["Alpha", "-450", "0"],
+      ["Asia Insurance", "-450", "0"],
+      ["Asia United", "-450", "0"],
+    ],
+    tHeader: ["Company", "1st Retention", "2nd Retention"],
+    dataTypes: ["text", "currency", "currency"],
+    pageStatus: true,
+    pagination: true,
+    pageLength: 5,
+    resizable: true,
+    tableOnly: true,
+
+  };
+
   constructor(private titleService: Title, private modalService: NgbModal) { }
 
   ngOnInit() {
