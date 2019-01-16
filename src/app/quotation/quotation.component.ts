@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -9,9 +10,14 @@ import { Title } from '@angular/platform-browser';
 	styleUrls: ['./quotation.component.css']
 })
 export class QuotationComponent implements OnInit {
-	constructor(private modalService: NgbModal, private titleService: Title) { }
+	constructor(private route: ActivatedRoute,private modalService: NgbModal, private titleService: Title) { }
 	docTitle: string = "";
+	sub: any;
+	line: string;
 	ngOnInit() {
+		this.sub = this.route.params.subscribe(params => {
+            this.line = params['line'];
+        });
 	}
 
 	public beforeChange($event: NgbTabChangeEvent) {

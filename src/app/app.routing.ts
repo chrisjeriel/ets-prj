@@ -48,6 +48,7 @@ import { ClmChangeClaimStatusComponent } from './claims/claim/clm-change-claim-s
 import { UpdateGeneralInfoComponent } from './utilities/update-information/update-general-info/update-general-info.component';
 import { UpdateInstallmentComponent } from './utilities/update-information/update-installment/update-installment.component';
 import { AccountingComponent } from './accounting/accounting.component';
+import { AccountingInTrustComponent } from './accounting-in-trust/accounting-in-trust.component';
 
 
 const appRoutes: Routes = [
@@ -103,6 +104,7 @@ const appRoutes: Routes = [
     { path: 'pol-util-gen-info', component: UpdateGeneralInfoComponent },
     { path: 'pol-util-installment', component: UpdateInstallmentComponent },
     { path: 'accounting', component: AccountingComponent },
+    { path: 'accounting-in-trust', component: AccountingInTrustComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
