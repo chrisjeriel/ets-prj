@@ -43,8 +43,13 @@ export class PolBatchProcessingComponent implements OnInit {
         ],
         filters: [
             {
-                key: 'holdCoverNo',
-                title: 'Hold Cover No.',
+                key: 'distNo',
+                title: 'Dist No.',
+                dataType: 'text'
+            },
+            {
+                key: 'riskDistNo',
+                title: 'Risk Dist No',
                 dataType: 'text'
             },
             {
@@ -53,18 +58,23 @@ export class PolBatchProcessingComponent implements OnInit {
                 dataType: 'text'
             },
             {
+                key: 'line',
+                title: 'Line',
+                dataType: 'text'
+            },
+            {
+                key: 'policyNo',
+                title: 'Policy No',
+                dataType: 'text'
+            },
+            {
+                key: 'typeOfCession',
+                title: 'Type of Cession',
+                dataType: 'text'
+            },
+            {
                 key: 'cedingCompany',
                 title: 'Ceding Company',
-                dataType: 'text'
-            },
-            {
-                key: 'quotationNo',
-                title: 'Quotation No',
-                dataType: 'text'
-            },
-            {
-                key: 'risk',
-                title: 'Risk',
                 dataType: 'text'
             },
             {
@@ -73,31 +83,60 @@ export class PolBatchProcessingComponent implements OnInit {
                 dataType: 'text'
             },
             {
-                key: 'periodFrom',
-                title: 'Period From',
-                dataType: 'date'
-            },
-            {
-                key: 'periodTo',
-                title: 'Period To',
-                dataType: 'date'
-            },
-            {
-                key: 'compRefHoldCoverNo',
-                title: 'Comp. Ref. Hold Cover No.',
+                key: 'risk',
+                title: 'Risk',
                 dataType: 'text'
             },
             {
-                key: 'requestedBy',
-                title: 'Requested By',
+                key: 'object',
+                title: 'Object.',
                 dataType: 'text'
             },
             {
-                key: 'requestDate',
-                title: 'Request Date',
+                key: 'site',
+                title: 'Site',
+                dataType: 'text'
+            },
+            {
+                key: 'currency',
+                title: 'Currency',
+                dataType: 'text'
+            },
+            {
+                key: 'sumInsured',
+                title: 'Sum Insured',
+                dataType: 'text'
+            },
+            {
+                key: 'prenium',
+                title: 'Prenium',
+                dataType: 'text'
+            },
+            {
+                key: 'issueDate',
+                title: 'Issue Date',
                 dataType: 'date'
             },
-
+            {
+                key: 'inceptionDate',
+                title: 'Inception Date',
+                dataType: 'date'
+            },
+            {
+                key: 'expiryDate',
+                title: 'Expiry Date',
+                dataType: 'date'
+            },
+            {
+                key: 'accountingDate',
+                title: 'Accounting Date',
+                dataType: 'date'
+            },
+            {
+                key: 'distributionDate',
+                title: 'Distribution Date',
+                dataType: 'date    '
+            },
         ],
         pageLength: 10,
         checkFlag: true,
@@ -133,8 +172,13 @@ export class PolBatchProcessingComponent implements OnInit {
         ],
         filters: [
             {
-                key: 'holdCoverNo',
-                title: 'Hold Cover No.',
+                key: 'distNo',
+                title: 'Dist No.',
+                dataType: 'text'
+            },
+            {
+                key: 'riskDistNo',
+                title: 'Risk Dist No',
                 dataType: 'text'
             },
             {
@@ -143,18 +187,23 @@ export class PolBatchProcessingComponent implements OnInit {
                 dataType: 'text'
             },
             {
+                key: 'line',
+                title: 'Line',
+                dataType: 'text'
+            },
+            {
+                key: 'policyNo',
+                title: 'Policy No',
+                dataType: 'text'
+            },
+            {
+                key: 'typeOfCession',
+                title: 'Type of Cession',
+                dataType: 'text'
+            },
+            {
                 key: 'cedingCompany',
                 title: 'Ceding Company',
-                dataType: 'text'
-            },
-            {
-                key: 'quotationNo',
-                title: 'Quotation No',
-                dataType: 'text'
-            },
-            {
-                key: 'risk',
-                title: 'Risk',
                 dataType: 'text'
             },
             {
@@ -163,31 +212,60 @@ export class PolBatchProcessingComponent implements OnInit {
                 dataType: 'text'
             },
             {
-                key: 'periodFrom',
-                title: 'Period From',
-                dataType: 'date'
-            },
-            {
-                key: 'periodTo',
-                title: 'Period To',
-                dataType: 'date'
-            },
-            {
-                key: 'compRefHoldCoverNo',
-                title: 'Comp. Ref. Hold Cover No.',
+                key: 'risk',
+                title: 'Risk',
                 dataType: 'text'
             },
             {
-                key: 'requestedBy',
-                title: 'Requested By',
+                key: 'object',
+                title: 'Object.',
                 dataType: 'text'
             },
             {
-                key: 'requestDate',
-                title: 'Request Date',
+                key: 'site',
+                title: 'Site',
+                dataType: 'text'
+            },
+            {
+                key: 'currency',
+                title: 'Currency',
+                dataType: 'text'
+            },
+            {
+                key: 'sumInsured',
+                title: 'Sum Insured',
+                dataType: 'text'
+            },
+            {
+                key: 'prenium',
+                title: 'Prenium',
+                dataType: 'text'
+            },
+            {
+                key: 'issueDate',
+                title: 'Issue Date',
                 dataType: 'date'
             },
-
+            {
+                key: 'inceptionDate',
+                title: 'Inception Date',
+                dataType: 'date'
+            },
+            {
+                key: 'expiryDate',
+                title: 'Expiry Date',
+                dataType: 'date'
+            },
+            {
+                key: 'accountingDate',
+                title: 'Accounting Date',
+                dataType: 'date'
+            },
+            {
+                key: 'distributionDate',
+                title: 'Distribution Date',
+                dataType: 'date'
+            },
         ],
         pageLength: 10,
         checkFlag: true,

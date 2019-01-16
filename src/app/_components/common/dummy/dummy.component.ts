@@ -117,7 +117,7 @@ export class DummyComponent implements OnInit {
         tHeader: ["ID", "First Name", "Last Name", "Middle Name", "Gender", "Age", "Birth Date","Actions"],
         total : [null,null,null,null,"Total","age",null,null],
         nData: new DummyInfo(null, null, null, null, null, null, null),
-        dataTypes: ['number','text','text','text','text','number','date'],
+        dataTypes: ['number','text','text','text','text','currency','date'],
         checkFlag:true,
         addFlag:true,
         deleteFlag:true,
