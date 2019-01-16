@@ -124,6 +124,8 @@ import { QsoaComponent } from './accounting/qsoa/qsoa.component';
 import { AttachmentsComponent } from './accounting/attachments/attachments.component';
 import { AccountingInTrustComponent } from './accounting-in-trust/accounting-in-trust.component';
 import { AccountingServiceComponent } from './accounting-service/accounting-service.component';
+import { AcctArListingsComponent } from './accounting-in-trust/acct-ar-listings/acct-ar-listings.component';
+import { AcctArEntryComponent } from './accounting-in-trust/acct-ar-entry/acct-ar-entry.component';
 
 @NgModule({
     imports: [
@@ -252,7 +254,9 @@ import { AccountingServiceComponent } from './accounting-service/accounting-serv
         QsoaComponent,
         AttachmentsComponent,
         AccountingInTrustComponent,
-        AccountingServiceComponent
+        AccountingServiceComponent,
+        AcctArListingsComponent,
+        AcctArEntryComponent,
     ],
 
     providers: [

@@ -48,6 +48,7 @@ import { ClmChangeClaimStatusComponent } from './claims/claim/clm-change-claim-s
 import { PolMxCedingCoComponent } from './underwriting/policy-maintenance/pol-mx-ceding-co/pol-mx-ceding-co.component';
 import { AccountingComponent } from './accounting/accounting.component';
 import { AccountingInTrustComponent } from './accounting-in-trust/accounting-in-trust.component';
+import { AcctArListingsComponent } from './accounting-in-trust/acct-ar-listings/acct-ar-listings.component';
 
 
 const appRoutes: Routes = [
@@ -103,6 +104,7 @@ const appRoutes: Routes = [
     { path: 'maintenance-ceding-co', component: PolMxCedingCoComponent },
     { path: 'accounting', component: AccountingComponent },
     { path: 'accounting-in-trust', component: AccountingInTrustComponent },
+    { path: 'acct-ar-listings', component: AcctArListingsComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
