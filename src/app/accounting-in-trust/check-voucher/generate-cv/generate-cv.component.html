@@ -1,7 +1,7 @@
 <div class="cust-tabs-container">
 	<h4>Accounting In-Trust / Check Voucher / Generate CV</h4>
 	<!-- <ngb-tabset (tabChange)="beforeChange($event)"> -->
-		<ngb-tabset>
+		<ngb-tabset (tabChange)="onTabChange($event)">
 			<ngb-tab id="idko">
 				<ng-template ngbTabTitle>
 					<div>CV Entry</div>
@@ -36,12 +36,18 @@
 					<app-cv-attachment></app-cv-attachment>
 				</ng-template>
 			</ngb-tab>
-			<ngb-tab>
+			<!-- <ngb-tab>
 				<ng-template ngbTabTitle>
 					<div>Exit</div>
 				</ng-template>
 				<ng-template ngbTabContent>
 				</ng-template>
-			</ngb-tab>
+			</ngb-tab> -->
+			<ngb-tab id="Exit">
+				<ng-template ngbTabTitle>
+					<div>Exit</div>
+				</ng-template>
+    			<ng-template ngbTabContent></ng-template>
+  			</ngb-tab>
 	</ngb-tabset>
 </div>
