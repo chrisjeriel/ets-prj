@@ -11,8 +11,8 @@
 
 </style>
 <div id="cust-tooltip" style="position: absolute;z-index: 99999;background-color: rgb(25,25,25);color: rgb(217,217,217);font-size: 9px !important; display: none ; padding: 3px 5px;">
-        test
-    </div>
+    test
+</div>
 <ng-sidebar-container style="position: static;" (onBackdropClicked)="_onBackdropClicked()">
     <ng-sidebar [(opened)]="_opened" [mode]="'push'" [keyClose]="_keyClose" [position]="'left'" [dock]="'true'"
         [dockedSize]="'0px'" [sidebarClass]="'demo-sidebar'" [closeOnClickOutside]="_closeOnClickOutside" *ngIf="currentUser">
@@ -132,6 +132,8 @@
                                         <ng-template ngbPanelContent>
                                             <button [routerLink]="['/maintenance-line']" class="button btn btn-link">Line</button>
                                             <br />
+                                            <button [routerLink]="['/maintenance-ceding-co']" class="button btn btn-link">Ceding Companies</button>
+                                            <br />
                                             <button [routerLink]="['/maintenance-deductible']" class="button btn btn-link">Deductible</button>
                                             <br />
                                             <button [routerLink]="['/maintenance-risk-list']" class="button btn btn-link">Risk</button>
@@ -140,9 +142,18 @@
                                     </ngb-panel>
                                     <ngb-panel title="Utilities">
                                         <ng-template ngbPanelContent>
-                                            <button [routerLink]="['/update-info']" class="button btn btn-link">Update
-                                                Information</button>
-                                            <br />
+                                            <ngb-accordion #acc="ngbAccordion">
+                                                <ngb-panel title="Update Information">
+                                                    <ng-template ngbPanelContent>
+                                                        <button [routerLink]="['/pol-util-gen-info']" class="button btn btn-link">Update
+                                                            General Info</button>
+                                                        <br />
+                                                        <button [routerLink]="['/pol-util-installment']" class="button btn btn-link">Update
+                                                            Installment</button>
+                                                        <br />
+                                                    </ng-template>
+                                                </ngb-panel>
+                                            </ngb-accordion>
                                         </ng-template>
                                     </ngb-panel>
                                 </ngb-accordion>
@@ -196,7 +207,10 @@
                                 <fa name="calculator"></fa>&nbsp;Accounting In-Trust
                             </ng-template>
                             <ng-template ngbPanelContent>
-                                <button [routerLink]="['/accounting-in-trust']" class="button btn btn-link"> Acknowledgement Receipt </button>
+                                <!-- <button [routerLink]="['/accounting-in-trust']" class="button btn btn-link"> Acknowledgement Receipt </button>
+                                <br /> -->
+                                <button [routerLink]="['/acct-ar-listings']" class="button btn btn-link"> Acknowledgement Receipt </button>
+                                <br />
                             </ng-template>
                         </ngb-panel>
                         <ngb-panel>

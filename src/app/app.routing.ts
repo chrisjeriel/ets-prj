@@ -45,9 +45,13 @@ import { RiskListComponent } from './underwriting/maintenance/risk-list/risk-lis
 import { RiskFormComponent } from './underwriting/maintenance/risk-form/risk-form.component';
 import { ClmClaimsInquiryComponent } from './claims/claim/clm-claims-inquiry/clm-claims-inquiry.component';
 import { ClmChangeClaimStatusComponent } from './claims/claim/clm-change-claim-status/clm-change-claim-status.component';
+import { UpdateGeneralInfoComponent } from './utilities/update-information/update-general-info/update-general-info.component';
+import { UpdateInstallmentComponent } from './utilities/update-information/update-installment/update-installment.component';
+import { PolMxCedingCoComponent } from './underwriting/policy-maintenance/pol-mx-ceding-co/pol-mx-ceding-co.component';
 import { AccountingComponent } from './accounting/accounting.component';
 import { AccountingInTrustComponent } from './accounting-in-trust/accounting-in-trust.component';
 import { GenerateCvComponent } from './accounting-in-trust/check-voucher/generate-cv/generate-cv.component';
+import { AcctArListingsComponent } from './accounting-in-trust/acct-ar-listings/acct-ar-listings.component';
 
 
 const appRoutes: Routes = [
@@ -104,6 +108,12 @@ const appRoutes: Routes = [
     { path: 'accounting', component: AccountingComponent },
     { path: 'accounting-in-trust', component: AccountingInTrustComponent },
     { path: 'generate-cv', component: GenerateCvComponent },
+    { path: 'pol-util-gen-info', component: UpdateGeneralInfoComponent },
+    { path: 'pol-util-installment', component: UpdateInstallmentComponent },
+    { path: 'maintenance-ceding-co', component: PolMxCedingCoComponent },
+    { path: 'accounting', component: AccountingComponent },
+    { path: 'accounting-in-trust', component: AccountingInTrustComponent },
+    { path: 'acct-ar-listings', component: AcctArListingsComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

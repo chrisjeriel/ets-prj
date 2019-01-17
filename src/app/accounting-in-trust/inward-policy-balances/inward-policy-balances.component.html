@@ -1,0 +1,85 @@
+<fieldset class="scheduler-border">
+  <legend class="scheduler-border">A.R. Info</legend>
+  <div class="form-row custom-row-inline-inset">
+    <div class="col-sm-8">
+      <div class="input-group">
+        <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">A.R. No.</label>
+        <input type="text" value="000001" class="form-control form-control-sm cust-sm col-sm-1 text-right" numbers-only
+          placeholder="">
+        <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Date</label>
+        <input type="text" value="10/01/2018 10:45 AM" class="form-control form-control-sm cust-sm col-sm-2"
+          placeholder="">
+        <label class="form-control-sm col-sm-2" style="padding-left:0px !important; margin-left: -19px !important;">Payment
+          Type</label>
+        <input type="text" value="Inward Policy Balances" class="form-control form-control-sm cust-sm col-sm"
+          placeholder="">
+        <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Status</label>
+        <input type="text" value="New" class="form-control form-control-sm cust-sm col-sm-1" placeholder="">
+      </div>
+      <div class="input-group">
+        <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Payor</label>
+        <input type="text" value="BPI/MS INSURANCE CORPORATION" class="form-control form-control-sm cust-sm col-sm"
+          placeholder="">
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="input-group">
+        <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Amount</label>
+        <input type="text" value="PHP" class="form-control form-control-sm cust-sm col-sm-1" placeholder="">
+        <input type="text" value="1,642,857.14" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
+          placeholder="">
+      </div>
+      <div class="input-group">
+        <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Local Amount</label>
+        <input type="text" value="PHP" class="form-control form-control-sm cust-sm col-sm-1" placeholder="">
+        <input type="text" value="1,642,857.14" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
+          placeholder="">
+      </div>
+    </div>
+  </div>
+</fieldset>
+
+<fieldset class="scheduler-border">
+  <legend class="scheduler-border">Balance Details</legend>
+  <div class="form-row custom-row-inline-inset">
+    <div class="input-group">
+      <div class="col-sm-1"></div>
+      <label class="form-control-sm col-sm" style="padding-left:0px !important;">Payment Amount</label>
+      <input type="text" value="1,642857.14" class="form-control form-control-sm cust-sm col-sm text-right"
+        numbers-only placeholder="">
+      <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Total Balance for Selected Policy
+        Transactions</label>
+      <input type="text" value="1,642857.14" class="form-control form-control-sm cust-sm col-sm text-right"
+        numbers-only placeholder="">
+      <label class="form-control-sm col-sm" style="padding-left:0px !important;">Variance</label>
+      <input type="text" value="0.00" class="form-control form-control-sm cust-sm col-sm text-right" numbers-only
+        placeholder="">
+      <div class="col-sm-1"></div>
+    </div>
+    <div class="input-group">
+      <div class="col-sm-12">
+        <app-cust-editable-non-datatable [passData]="passDataBalanceDetails"></app-cust-editable-non-datatable>
+      </div>
+    </div>
+  </div>
+</fieldset>
+
+<div class="col-sm-12" style="margin-top: 10px !important;padding-left: 0px !important;
+padding-right: 0px !important;">
+  <fieldset class="scheduler-border" style="padding-bottom: 7px !important;">
+    <div class="custom-row-inline-inset">
+      <div class="form-row" style="margin-bottom: -10px;">
+        <div class="input-group">
+          <label class="form-control-sm col-sm-1">Created By</label>
+          <input type="text" appCurrency class="form-control form-control-sm col-sm" placeholder="cuaresma">
+          <label class="form-control-sm col-sm-1">Date Created</label>
+          <input type="datetime-local" class="form-control form-control-sm col-sm">
+          <label class="form-control-sm col-sm-1">Last Updated By</label>
+          <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma">
+          <label class="form-control-sm col-sm-1">Last Update</label>
+          <input type="datetime-local" class="form-control form-control-sm col-sm">
+        </div>
+      </div>
+    </div>
+  </fieldset>
+</div>
