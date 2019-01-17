@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo } from '@app/_models';
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax } from '@app/_models';
 
 @Injectable({
 	providedIn: 'root'
@@ -10,10 +10,13 @@ export class AccountingService {
 	arDetails: ARDetails[]=[];
 	accountingEntries:  AccountingEntries[]=[];
 	cvListing: CVListing[]=[];
+	checkDetails:  CheckDetails[]=[];
 	amountDetailsCVData: AmountDetailsCV[] = [];
 	accountingEntriesCVData: AccountingEntriesCV[] = []; 
 	qsoaData: QSOA[] = [];
 	attachmentInfo: AttachmentInfo[] = [];
+	vatDetails: VATDetails[]=[];
+	creditableTax: CreditableTax[]=[];
 
 	constructor(private http: HttpClient) { }
 
@@ -43,13 +46,27 @@ export class AccountingService {
 
 	getCVListing(){
 		this.cvListing = [
-			new CVListing(null,null,null,null,null,null,null),
-			new CVListing(null,null,null,null,null,null,null),
-			new CVListing(null,null,null,null,null,null,null),
-			new CVListing(null,null,null,null,null,null,null),
+			new CVListing(new Date(2016,1,1),1,"SM Prime Holdings, Inc",new Date(),"Printed","Check for SM Prime Holdings Inc",1642857.14),
+			new CVListing(new Date(),1,"Rustans, Inc",new Date(),"Printed","Check for Rustans Inc",200000),
+			new CVListing(new Date(),1,"San Miguel Corp",new Date(),"Printed","Check for San Miguel Corp",100000),
+			new CVListing(new Date(),1,"DMCI",new Date(),"Printed","Check for DMCI",1000000),
+			new CVListing(new Date(),1,"ABS-CBN",new Date(),"Printed","Check for ABS-CBN",710716.12),
+			new CVListing(new Date(),1,"SMDC",new Date(),"Certified","Check for SMDC",756929),
+			new CVListing(new Date(),1,"Universal Robina, Inc",new Date(),"Approved","Check for Universal Robina, Inc",300000),
+			new CVListing(new Date(),1,"SGV & Co",new Date(),"Approved","Check for SGV & Co",1000000),
+			new CVListing(new Date(),1,"Accenture",new Date(),"New","Check for Accenture",230000),
+			new CVListing(new Date(),1,"NSO",new Date(),"New","Check for NSO",1500000),
 		]
 
 		return this.cvListing;
+	}
+
+	getCheckDetails(){
+		this.checkDetails = [
+			new CheckDetails("Banco De Oro","PCPA-9091-7001-7389",new Date(),1794832,"Local Clearing","PHP",27513.29),
+		]
+
+		return this.checkDetails;
 	}
 
 	getAmountDetailsCV(){
@@ -79,9 +96,31 @@ export class AccountingService {
 
 	getAttachmentInfo(){
 		this.attachmentInfo = [
-			new AttachmentInfo("Path","Description"),
+			new AttachmentInfo("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\05-Accounting\\Sample_01.doc","Accounting Specifications Sample 1"),
+			new AttachmentInfo("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\05-Accounting\\Sample_02.doc","Accounting Specifications Sample 2"),
+			new AttachmentInfo("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\05-Accounting\\Sample_03.doc","Accounting Specifications Sample 3"),
+			new AttachmentInfo("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\05-Accounting\\Sample_04.doc","Accounting Specifications Sample 4"),
+			new AttachmentInfo("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\05-Accounting\\Sample_05.doc","Accounting Specifications Sample 5"),
+			new AttachmentInfo("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\05-Accounting\\Sample_06.doc","Accounting Specifications Sample 6"),
+			new AttachmentInfo("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\05-Accounting\\Sample_07.doc","Accounting Specifications Sample 7"),
+			new AttachmentInfo("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\05-Accounting\\Sample_08.doc","Accounting Specifications Sample 8"),
+			new AttachmentInfo("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\05-Accounting\\Sample_09.doc","Accounting Specifications Sample 9"),
+			new AttachmentInfo("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\05-Accounting\\Sample_10.doc","Accounting Specifications Sample 10 "),
 		]
 		return this.attachmentInfo;
+	}
 
+	getVATDetails(){
+		this.vatDetails = [
+			new VATDetails("Output","Services","San Miguel Corporation",25012,3001.44),
+		]
+		return this.vatDetails;
+	}
+
+	getCreditableTax(){
+		this.creditableTax = [
+			new CreditableTax("WC002","WTax on Investment Income PHP",2,"BPI/MS INSURANCE CORPORATION",25012,500.24),
+		]
+		return this.creditableTax;
 	}
 }
