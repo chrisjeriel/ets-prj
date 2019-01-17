@@ -90,8 +90,8 @@ export class AccountingService {
 
 	getQSOAData(){
 		this.qsoaData = [
-			new QSOA("Q Ending",1341234,3424,42342,141),
-			new QSOA("Q Ending",1341234,3424,35223,1231345),
+			new QSOA(new Date(2018,	2,31),500000,100000,6000000,500000,6500000,600000),
+			new QSOA(new Date(2018,5,30),500000,700000,500000,800000,1000000,1500000),
 		];
 		return this.qsoaData;
 	}

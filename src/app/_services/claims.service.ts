@@ -27,21 +27,13 @@ export class ClaimsService {
 	getClaimsHistoryInfo() {
 		this.claimsHistoryInfo = [
 			// new ClaimsHistoryInfo("1","Loss","Initial Reserve","Php",10000000,"Initial OS Reserve",34800,new Date()),
-			new ClaimsHistoryInfo("1", "Loss", "Initial Reserve", "PHP", 500000, 0, "JV-000996", new Date("2018-11-14"), ""),
-			new ClaimsHistoryInfo("2", "Loss", "Increase Reserve", "PHP", 300000, 0, "JV-000999", new Date("2018-11-14"), "Ceding Company Info"),
-			new ClaimsHistoryInfo("3", "Loss", "Decrease Reserve", "PHP", -100000, 0, "JV-001000", new Date("2018-11-20"), "Email: Reserve Adjustment"),
-			new ClaimsHistoryInfo("4", "Loss", "Partial Payment", "PHP", -351000, 350842.89, "CV-000101", new Date("2018-11-24"), ""),
-			new ClaimsHistoryInfo("5", "Loss", "Full Payment", "PHP", 0, 384532.75, "CV-000102", new Date("2018-11-24"), "Final Payment"),
+			new ClaimsHistoryInfo("1", "Loss", "Initial Reserve",false, "PHP", 500000, 0, "JV-000996", new Date("2018-11-14"), ""),
+			new ClaimsHistoryInfo("2", "Loss", "Increase Reserve",false, "PHP", 300000, 0, "JV-000999", new Date("2018-11-14"), "Ceding Company Info"),
+			new ClaimsHistoryInfo("3", "Loss", "Decrease Reserve",false, "PHP", -100000, 0, "JV-001000", new Date("2018-11-20"), "Email: Reserve Adjustment"),
+			new ClaimsHistoryInfo("4", "Loss", "Partial Payment",false, "PHP", -351000, 350842.89, "CV-000101", new Date("2018-11-24"), ""),
+			new ClaimsHistoryInfo("5", "Loss", "Full Payment",false, "PHP", 0, 384532.75, "CV-000102", new Date("2018-11-24"), "Final Payment"),
 		];
 		return this.claimsHistoryInfo;
-	}
-
-	getQSOAData(){
-		this.qsoaData = [
-			new QSOA("Q Ending",1341234,3424,42342,141),
-			new QSOA("Q Ending",1341234,3424,35223,1231345),
-		];
-		return this.qsoaData;
 	}
 
 }
