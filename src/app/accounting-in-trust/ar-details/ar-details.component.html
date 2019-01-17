@@ -5,11 +5,11 @@
 			<div class="input-group">
 				<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">A.R. No.</label>
 				<input type="text" value="000001" class="form-control form-control-sm cust-sm col-sm-1 text-right" numbers-only
-				 placeholder="">
+				placeholder="">
 				<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Date</label>
 				<input type="text" value="10/01/2018 10:45 AM" class="form-control form-control-sm cust-sm col-sm-2" placeholder="">
 				<label class="form-control-sm col-sm-2" style="padding-left:0px !important; margin-left: -19px !important;">Payment
-					Type</label>
+				Type</label>
 				<input type="text" value="Inward Policy Balances" class="form-control form-control-sm cust-sm col-sm" placeholder="">
 				<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Status</label>
 				<input type="text" value="New" class="form-control form-control-sm cust-sm col-sm-1" placeholder="">
@@ -17,7 +17,7 @@
 			<div class="input-group">
 				<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Payor</label>
 				<input type="text" value="BPI/MS INSURANCE CORPORATION" class="form-control form-control-sm cust-sm col-sm"
-				 placeholder="">
+				placeholder="">
 			</div>
 		</div>
 		<div class="col-sm-4">
@@ -25,13 +25,13 @@
 				<label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Amount</label>
 				<input type="text" value="PHP" class="form-control form-control-sm cust-sm col-sm-1" placeholder="">
 				<input type="text" value="1,642,857.14" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
-				 placeholder="">
+				placeholder="">
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Local Amount</label>
 				<input type="text" value="PHP" class="form-control form-control-sm cust-sm col-sm-1" placeholder="">
 				<input type="text" value="1,642,857.14" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
-				 placeholder="">
+				placeholder="">
 			</div>
 		</div>
 	</div>
@@ -41,17 +41,38 @@
 	<ngb-tabset>
 		<ngb-tab class="ngb-tab" title="Amount Details">
 			<ng-template ngbTabContent>
-				<div class="row">
-					<div class="col-sm-12">
-
+				<div class="input-group cust-border" style="padding-top: 0.6em">
+					<div class="col-sm-12" style="position: relative;">
+						<div style="position: absolute; right: 19px;">
+							<div class="form-row custom-row-inline-inset">
+								<div class="input-group">
+									<label class="form-control-sm labels" style="text-align: left !important">Auto Compute</label>
+									<input type="checkbox" class="checkbox text-right" style="margin-top: 0.3em" checked>
+								</div>
+							</div>
+						</div>
+						<app-cust-editable-non-datatable [passData]="amountDetailsData"></app-cust-editable-non-datatable>
 					</div>
-
 				</div>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab class="ngb-tab" title="Accounting Entries">
 			<ng-template ngbTabContent>
-				<p>Accounting Entries</p>
+				<div class="input-group cust-border" style="padding-top: 0.6em">
+					<!-- <div class="col-sm-12" style="position: relative;">
+							<div style="position: absolute; right: 12px;">
+								<button class="cust-btn">Print AE</button>
+							</div>
+							<app-cust-editable-non-datatable [passData]="accountingEntriesData"></app-cust-editable-non-datatable>
+						</div>
+					</div> -->
+					<div class="col-sm-12" style="position: relative;">
+						<div style="position: absolute; right: 12px;">
+							<button class="cust-btn">Print AE</button>
+						</div>
+						<app-cust-editable-non-datatable [passData]="accEntriesData"></app-cust-editable-non-datatable>
+					</div>
+				</div>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab class="ngb-tab" title="Tax Details">
@@ -74,22 +95,22 @@
 		</ngb-tab>
 	</ngb-tabset>
 </div>
-<div class="col-sm-12" style="margin-top: 10px !important;padding-left: 0px !important;
+<div class="col-sm-12" style="margin-top: 25px !important;padding-left: 0px !important;
 padding-right: 0px !important;">
-	<fieldset class="scheduler-border" style="padding-bottom: 7px !important;">
-		<div class="custom-row-inline-inset">
-			<div class="form-row" style="margin-bottom: -10px;">
-				<div class="input-group">
-					<label class="form-control-sm col-sm-1">Created By</label>
-					<input type="text" appCurrency class="form-control form-control-sm col-sm" placeholder="cuaresma">
-					<label class="form-control-sm col-sm-1">Date Created</label>
-					<input type="datetime-local" class="form-control form-control-sm col-sm">
-					<label class="form-control-sm col-sm-1">Last Updated By</label>
-					<input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma">
-					<label class="form-control-sm col-sm-1">Last Update</label>
-					<input type="datetime-local" class="form-control form-control-sm col-sm">
-				</div>
+<fieldset class="scheduler-border" style="padding-bottom: 7px !important;">
+	<div class="custom-row-inline-inset">
+		<div class="form-row" style="margin-bottom: -10px;">
+			<div class="input-group">
+				<label class="form-control-sm col-sm-1">Created By</label>
+				<input type="text" appCurrency class="form-control form-control-sm col-sm" placeholder="cuaresma">
+				<label class="form-control-sm col-sm-1">Date Created</label>
+				<input type="datetime-local" class="form-control form-control-sm col-sm">
+				<label class="form-control-sm col-sm-1">Last Update By</label>
+				<input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma">
+				<label class="form-control-sm col-sm-1">Last Update</label>
+				<input type="datetime-local" class="form-control form-control-sm col-sm">
 			</div>
 		</div>
-	</fieldset>
+	</div>
+</fieldset>
 </div>

@@ -38,7 +38,23 @@ export class AcctArListingsComponent implements OnInit {
   ngOnInit() {
   }
 
-  toGenerateAR() {
-  	this.router.navigate(['/accounting-in-trust'], { skipLocationChange: true });
+  toGenerateARAdd() {
+  	this.router.navigate(['/accounting-in-trust', { action: 'add' }], { skipLocationChange: true });
+  }
+
+  toGenerateAREdit(event) {
+    var selectedRow = event.target.closest('tr').children;
+
+    var record = {
+                   arNo: selectedRow[0].innerText,
+                   payor: selectedRow[1].innerText,
+                   arDate: selectedRow[2].innerText,
+                   paymentType: selectedRow[3].innerText,
+                   status: selectedRow[4].innerText,
+                   particulars: selectedRow[5].innerText,
+                   amount: selectedRow[6].innerText
+                 }
+
+    this.router.navigate(['/accounting-in-trust', { slctd: JSON.stringify(record), action: 'edit' }], { skipLocationChange: true });
   }
 }
