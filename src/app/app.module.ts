@@ -123,6 +123,8 @@ import { InwardPolicyBalancesComponent } from './accounting-in-trust/inward-poli
 import { ClaimRecoveryComponent } from './accounting-in-trust/claim-recovery/claim-recovery.component';
 import { AccountingInTrustComponent } from './accounting-in-trust/accounting-in-trust.component';
 import { AccountingServiceComponent } from './accounting-service/accounting-service.component';
+import { CvPaymentRequestListComponent } from './accounting-in-trust/check-voucher/cv-payment-request-list/cv-payment-request-list.component';
+import { CvAttachmentComponent } from './accounting-in-trust/check-voucher/cv-attachment/cv-attachment.component';
 import { AcctArListingsComponent } from './accounting-in-trust/acct-ar-listings/acct-ar-listings.component';
 import { AcctArEntryComponent } from './accounting-in-trust/acct-ar-entry/acct-ar-entry.component';
 import { CheckVoucherComponent } from './accounting-in-trust/check-voucher/check-voucher.component';
@@ -266,6 +268,9 @@ import { JvEntryComponent } from './accounting-in-trust/journal-voucher/generate
         QsoaComponent,
         AccountingInTrustComponent,
         AccountingServiceComponent,
+        CvPaymentRequestListComponent,
+        GenerateCvComponent,
+        CvAttachmentComponent,
         AcctArListingsComponent,
         AcctArEntryComponent,
         CvDetailsComponent,

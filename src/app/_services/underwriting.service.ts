@@ -38,6 +38,8 @@ export class UnderwritingService {
     batchDistribution: UnderwritingBatchDistribution[] = [];
     maintenanceDeductiblesData: MaintenanceDeductibles[] = [];
     maintenanceRiskListData: MaintenanceRisks[] = [];
+    rowData: any[] = [];
+
 
     constructor(private http: HttpClient) {
 
@@ -211,8 +213,14 @@ export class UnderwritingService {
 
     getPolicyInquiry() {
         this.policyInquiry = [
-            new UnderwritingPolicyInquiryInfo("data", "data", "data", "data", "data", "data", "data", "data", "data", "data", "data", "data"),
-            new UnderwritingPolicyInquiryInfo("data2", "data2", "data2", "data2", "data2", "data2", "data2", "data2", "data2", "data2", "data2", "data2"),
+            new UnderwritingPolicyInquiryInfo("CAR","CAR-2018-000002-099-0001-000", "Direct","Malayan", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date("02-09-2018"), new Date("02-09-2018"), new Date("02-09-2018"), new Date("02-28-2018"), "In Progress"),
+            new UnderwritingPolicyInquiryInfo("CAR","CAR-2018-000002-099-0001-000", "Direct","FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",1080000,131000, new Date("02-09-2018"), new Date("02-09-2018"), new Date("02-09-2018"), new Date("03-30-2018"), "Issued"),
+            new UnderwritingPolicyInquiryInfo("CAR","CAR-2018-000002-099-0001-000", "Direct","FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",8090000,131000, new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-30-2018"), "In-Force"),
+            new UnderwritingPolicyInquiryInfo("CAR","CAR-2018-000002-099-0001-000", "Direct","FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",9000000,131000, new Date("05-09-2018"), new Date("05-09-2018"), new Date("05-09-2018"), new Date("05-30-2018"), "In-Force"),
+            new UnderwritingPolicyInquiryInfo("CAR","CAR-2018-000002-099-0001-000", "Direct","FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date("06-09-2018"), new Date("06-09-2018"), new Date("06-09-2018"), new Date("06-30-2018"), "Spoiled"),
+            new UnderwritingPolicyInquiryInfo("CAR","CAR-2018-000002-099-0001-000", "Direct","FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date("07-09-2018"), new Date("07-09-2018"), new Date("07-09-2018"), new Date("07-30-2018"), "Cancelled"),
+            new UnderwritingPolicyInquiryInfo("CAR","CAR-2018-000002-099-0001-000", "Direct","FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",1080000,131000, new Date("08-09-2018"), new Date("08-09-2018"), new Date("08-09-2018"), new Date("08-30-2018"), "In-force"),
+            new UnderwritingPolicyInquiryInfo("CAR","CAR-2018-000002-099-0001-000", "Direct","Malayan", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date("08-10-2018"), new Date("08-10-2018"), new Date("08-10-2018"), new Date("08-30-2018"), "In Progress")
         ];
         return this.policyInquiry;
     }
@@ -343,18 +351,19 @@ export class UnderwritingService {
 
     getPolicyBatchPosting() {
         this.batchPosting = [
-            new UnderwritingBatchDistribution(10001, 10001, 'Dist. but not posted', 'CAR', 'CAR-2018-000001-099-0001-000', 'Direct','Phil Guaranty', 'Aboitiz Marketing / A. C. G.', 'Consoldt\'d Orix Leasing','Cooling Towers','Brgy Silang, Naic, Cavite','Php',10000000,131000,new Date(),new Date,new Date(), new Date(),null),
-            new UnderwritingBatchDistribution(10002, 10001, 'Dist. but not posted', 'CAR', 'CAR-2018-000002-021-0192-090', 'Direct','Summa Ins.', 'Aboitiz Marketing / A. C. G.', 'Consoldt\'d Orix Leasing','Cooling Towers','Brgy Silang, Naic, Cavite','Php',1080000,131000,new Date(),new Date,new Date(), new Date(),null),
-            new UnderwritingBatchDistribution(10003, 10001, 'Dist. but not posted', 'CAR', 'CAR-2018-000002-021-0192-090', 'Direct','Trust Assurance', 'Aboitiz Marketing / A. C. G.', 'Consoldt\'d Orix Leasing','Cooling Towers','Brgy Silang, Naic, Cavite','Php',8090000,131000,new Date(),new Date,new Date(), new Date(),null),
-            new UnderwritingBatchDistribution(10004, 10001, 'Dist. but not posted', 'CAR', 'CAR-2018-000002-021-0192-090', 'Direct','Charter Ins.', 'Aboitiz Marketing / A. C. G.', 'Consoldt\'d Orix Leasing','Cooling Towers','Brgy Silang, Naic, Cavite','Php',90000000,131000,new Date(),new Date,new Date(), new Date(),null),
-            new UnderwritingBatchDistribution(10005, 10001, 'Dist. but not posted', 'CAR', 'CAR-2018-000002-021-0192-090', 'Direct','Capital Insurance', 'Aboitiz Marketing / A. C. G.', 'Consoldt\'d Orix Leasing','Cooling Towers','Brgy Silang, Naic, Cavite','Php',100000000,131000,new Date(),new Date,new Date(), new Date(),null),
-            new UnderwritingBatchDistribution(10006, 10001, 'Dist. but not posted', 'CAR', 'CAR-2018-000002-021-0192-090', 'Direct','Afisco Ins.', 'Aboitiz Marketing / A. C. G.', 'Consoldt\'d Orix Leasing','Cooling Towers','Brgy Silang, Naic, Cavite','Php',100000000,131000,new Date(),new Date,new Date(), new Date(),null),
-            new UnderwritingBatchDistribution(10007, 10002, 'Dist. but not posted', 'EAR', 'EAR-2018-000002-021-0192-090', 'Direct','Battad Insurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Cooling Towers','Brgy Silang, Naic Cavite','Php',1080000,131000,new Date(),new Date,new Date(), new Date(),null),
-            new UnderwritingBatchDistribution(10008, 10002, 'Dist. but not posted', 'EAR', 'EAR-2018-000002-021-0192-090', 'Direct','Battad Insurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Cooling Towers','Brgy Silang, Naic Cavite','Php',9000000,131000,new Date(),new Date,new Date(), new Date(),null),
-            new UnderwritingBatchDistribution(10009, 10002, 'Dist. but not posted', 'EAR', 'EAR-2018-000002-021-0192-090', 'Retrocession','Battad Insurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Cooling Towers','Brgy Silang, Naic Cavite','Php',8090000,131000,new Date(),new Date,new Date(), new Date(),null),
-            new UnderwritingBatchDistribution(10010, 10002, 'Dist. but not posted', 'EAR', 'EAR-2018-000002-021-0192-090', 'Retrocession','Battad Insurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Cooling Towers','Brgy Silang, Naic Cavite','Php',8870000,131000,new Date(),new Date,new Date(), new Date(),null),
-            
+            new UnderwritingPolicyDistList(10001, 10001, 'Distributed but not posted', 'CAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10002, 10002, 'Distributed but not posted', 'CAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10003, 10003, 'Distributed but not posted', 'CAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10004, 10004, 'Distributed but not posted', 'CAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10005, 10005, 'Distributed but not posted', 'CAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10006, 10006, 'Distributed but not posted', 'EAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10007, 10007, 'Distributed but not posted', 'EAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10008, 10008, 'Distributed but not posted', 'EAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10009, 10009, 'Distributed but not posted', 'EAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10010, 10010, 'Distributed but not posted', 'EAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10011, 10011, 'Distributed but not posted', 'EAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
         ];
+
         return this.batchPosting;
 
     }
@@ -362,21 +371,26 @@ export class UnderwritingService {
 
     getPolicyBatchDistribution() {
         this.batchDistribution = [
-            new UnderwritingBatchDistribution(10001, 10001, 'Undistributed', 'CAR', 'CAR-2018-000001-099-0001-000', 'Direct','Phil Guaranty', 'Aboitiz Marketing / A. C. G.', 'Consoldt\'d Orix Leasing','Cooling Towers','Brgy Silang, Naic, Cavite','Php',10000000,131000,new Date(),new Date,new Date(), new Date(),null),
-            new UnderwritingBatchDistribution(10002, 10001, 'Undistributed', 'CAR', 'CAR-2018-000002-021-0192-090', 'Direct','Summa Ins.', 'Aboitiz Marketing / A. C. G.', 'Consoldt\'d Orix Leasing','Cooling Towers','Brgy Silang, Naic, Cavite','Php',1080000,131000,new Date(),new Date,new Date(), new Date(),null),
-            new UnderwritingBatchDistribution(10003, 10001, 'Undistributed', 'CAR', 'CAR-2018-000002-021-0192-090', 'Direct','Trust Assurance', 'Aboitiz Marketing / A. C. G.', 'Consoldt\'d Orix Leasing','Cooling Towers','Brgy Silang, Naic, Cavite','Php',8090000,131000,new Date(),new Date,new Date(), new Date(),null),
-            new UnderwritingBatchDistribution(10004, 10001, 'Undistributed', 'CAR', 'CAR-2018-000002-021-0192-090', 'Direct','Charter Ins.', 'Aboitiz Marketing / A. C. G.', 'Consoldt\'d Orix Leasing','Cooling Towers','Brgy Silang, Naic, Cavite','Php',90000000,131000,new Date(),new Date,new Date(), new Date(),null),
-            new UnderwritingBatchDistribution(10005, 10001, 'Undistributed', 'CAR', 'CAR-2018-000002-021-0192-090', 'Direct','Capital Insurance', 'Aboitiz Marketing / A. C. G.', 'Consoldt\'d Orix Leasing','Cooling Towers','Brgy Silang, Naic, Cavite','Php',100000000,131000,new Date(),new Date,new Date(), new Date(),null),
-            new UnderwritingBatchDistribution(10006, 10001, 'Undistributed', 'CAR', 'CAR-2018-000002-021-0192-090', 'Direct','Afisco Ins.', 'Aboitiz Marketing / A. C. G.', 'Consoldt\'d Orix Leasing','Cooling Towers','Brgy Silang, Naic, Cavite','Php',100000000,131000,new Date(),new Date,new Date(), new Date(),null),
-            new UnderwritingBatchDistribution(10007, 10002, 'Undistributed', 'EAR', 'EAR-2018-000002-021-0192-090', 'Direct','Battad Insurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Cooling Towers','Brgy Silang, Naic Cavite','Php',1080000,131000,new Date(),new Date,new Date(), new Date(),null),
-            new UnderwritingBatchDistribution(10008, 10002, 'Undistributed', 'EAR', 'EAR-2018-000002-021-0192-090', 'Direct','Battad Insurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Cooling Towers','Brgy Silang, Naic Cavite','Php',9000000,131000,new Date(),new Date,new Date(), new Date(),null),
-            new UnderwritingBatchDistribution(10009, 10002, 'Undistributed', 'EAR', 'EAR-2018-000002-021-0192-090', 'Retrocession','Battad Insurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Cooling Towers','Brgy Silang, Naic Cavite','Php',8090000,131000,new Date(),new Date,new Date(), new Date(),null),
-            new UnderwritingBatchDistribution(10010, 10002, 'Undistributed', 'EAR', 'EAR-2018-000002-021-0192-090', 'Retrocession','Battad Insurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Cooling Towers','Brgy Silang, Naic Cavite','Php',8870000,131000,new Date(),new Date,new Date(), new Date(),null),
-            
+            new UnderwritingPolicyDistList(10001, 10001, 'Undistributed', 'CAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10002, 10002, 'Undistributed', 'CAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10003, 10003, 'Undistributed', 'CAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10004, 10004, 'Undistributed', 'CAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10005, 10005, 'Undistributed', 'CAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10006, 10006, 'Undistributed', 'EAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10007, 10007, 'Undistributed', 'EAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10008, 10008, 'Undistributed', 'EAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10009, 10009, 'Undistributed', 'EAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10010, 10010, 'Undistributed', 'EAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
+            new UnderwritingPolicyDistList(10011, 10011, 'Undistributed', 'EAR', 'CAR-2018-000002-021-0192-090', 'Trust Assurance', 'ACM Builders / Adfran Corporation', 'C-Siemens/PLDT','Php',1000000,new Date(), new Date(),),
         ];
 
         return this.batchDistribution;
 
     }
+
+     getRowData() {
+        return this.rowData;
+    }
+
 
 }            

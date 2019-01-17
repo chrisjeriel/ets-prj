@@ -265,7 +265,6 @@ export class PolCoverageComponent implements OnInit {
 
   CATPerils() {
         $('#modalBtn').trigger('click');
-        /*$('#CATPerils >#modalBtn').trigger('click');*/
   }
 
   deductibles() {

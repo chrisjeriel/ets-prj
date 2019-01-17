@@ -27,30 +27,11 @@
             <div class="col-sm-6">
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Policy No</label>
-                    <input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px;"
-                        ngbTooltip="Line" placeholder="" [(ngModel)]="line">
-                    <input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px;"
-                        ngbTooltip="Year" placeholder="2018">
-                    <input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 3px;"
-                        ngbTooltip="Sequence No" placeholder="00001">
-                    <input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px;"
-                        ngbTooltip="Co Code" placeholder="99">
-                    <input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 3px;"
-                        ngbTooltip="Co Series No" placeholder="0001">
-                    <input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px;"
-                        ngbTooltip="Alt No" placeholder="000">
+                    <input type="text" class="form-control form-control-sm col-sm" ngbTooltip="Line" placeholder="" [ngModel]="line+'-2018-00001-99-0001-000'">
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Claim No</label>
-                    <input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px;"
-                        placeholder="" [(ngModel)]="line">
-                    <input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px;"
-                        placeholder="2018">
-                    <input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 3px;"
-                        placeholder="000001">
-                    <div class="col-sm-1" style="margin-right: 6px !important;"></div>
-                    <div class="col-sm-2"></div>
-                    <div class="col-sm-1"></div>
+                    <input type="text" class="form-control form-control-sm col-sm" [ngModel]="line+'-2018-00001'">
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-2">Co Claim No</label>
@@ -66,7 +47,7 @@
                         placeholder="CAR Wet Risk" [(ngModel)]="lineClass" readonly>
                 </div>
                 <div class="input-group">
-                    <label class="form-control-sm col-sm-2">Ceding Company</label>
+                    <label class="form-control-sm col-sm-2" style="font-size: 9.5px !important;">Ceding Company</label>
                     <input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px;"
                         placeholder="99" readonly>
                     <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;"

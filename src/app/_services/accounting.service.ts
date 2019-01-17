@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, JVListing} from '@app/_models';
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, JVListing, AccCVPayReqList, AccCvAttachement} from '@app/_models';
+
 
 @Injectable({
 	providedIn: 'root'
@@ -18,6 +19,8 @@ export class AccountingService {
 	vatDetails: VATDetails[]=[];
 	creditableTax: CreditableTax[]=[];
 	jvListing: JVListing[]=[];
+	accCvPayReqList : AccCVPayReqList[] = [];	
+  	accCvAttachment : AccCvAttachement[] = [];
 	constructor(private http: HttpClient) { }
 
 	getAmountDetails(){
@@ -88,8 +91,8 @@ export class AccountingService {
 
 	getQSOAData(){
 		this.qsoaData = [
-			new QSOA("Q Ending",1341234,3424,42342,141),
-			new QSOA("Q Ending",1341234,3424,35223,1231345),
+			new QSOA(new Date(2018,	2,31),500000,100000,6000000,500000,6500000,600000),
+			new QSOA(new Date(2018,5,30),500000,700000,500000,800000,1000000,1500000),
 		];
 		return this.qsoaData;
 	}
@@ -124,6 +127,7 @@ export class AccountingService {
 		return this.creditableTax;
 	}
 
+
 	getJVListing() {
 		this.jvListing = [
 			new JVListing("2015-00000001",new Date(2015,10,1),"To correct entries in","Error Connection","2014-00004342","Ronwaldo Roque","Printed",1642857.14),
@@ -139,4 +143,27 @@ export class AccountingService {
 		]
 		return this.jvListing;
 	}
+
+	getAccCVPayReqList() {
+  	this.accCvPayReqList = [
+  		new AccCVPayReqList( "OPR-2018-01-0001","San Miguel Corporation","Others","Open",new Date("09-20-18"),"Payment for San Miguel","Rosalinda Mercedez","PHP",27513)
+  	];
+  	return this.accCvPayReqList;
+  }
+
+  	getAccCVAttachment(){
+  	this.accCvAttachment = [
+  		new AccCvAttachement("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\SRS\\05-Accounting\\Sample_01","Accounting Specifications Sample 1"),
+  		new AccCvAttachement("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\SRS\\05-Accounting\\Sample_02","Accounting Specifications Sample 2"),
+  		new AccCvAttachement("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\SRS\\05-Accounting\\Sample_03","Accounting Specifications Sample 3"),
+  		new AccCvAttachement("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\SRS\\05-Accounting\\Sample_04","Accounting Specifications Sample 4"),
+  		new AccCvAttachement("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\SRS\\05-Accounting\\Sample_05","Accounting Specifications Sample 5"),
+  		new AccCvAttachement("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\SRS\\05-Accounting\\Sample_06","Accounting Specifications Sample 6"),
+  		new AccCvAttachement("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\SRS\\05-Accounting\\Sample_07","Accounting Specifications Sample 7"),
+  		new AccCvAttachement("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\SRS\\05-Accounting\\Sample_08","Accounting Specifications Sample 8"),
+  		new AccCvAttachement("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\SRS\\05-Accounting\\Sample_09","Accounting Specifications Sample 9"),
+  		new AccCvAttachement("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\SRS\\05-Accounting\\Sample_10","Accounting Specifications Sample 10"),
+  	];
+  	return this.accCvAttachment;
+  }
 }

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { QsoaComponent } from './qsoa.component';
+import { CvAttachmentComponent } from './cv-attachment.component';
 
-describe('QsoaComponent', () => {
-  let component: QsoaComponent;
-  let fixture: ComponentFixture<QsoaComponent>;
+describe('CvAttachmentComponent', () => {
+  let component: CvAttachmentComponent;
+  let fixture: ComponentFixture<CvAttachmentComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ QsoaComponent ]
+      declarations: [ CvAttachmentComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(QsoaComponent);
+    fixture = TestBed.createComponent(CvAttachmentComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

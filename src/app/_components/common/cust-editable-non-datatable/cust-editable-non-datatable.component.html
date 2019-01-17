@@ -205,10 +205,12 @@
                     <th *ngIf="passData.checkFlag"> </th>
                     <th *ngFor="let data of passData.total; let i = index" [ngSwitch]="passData.dataTypes[i]">
                         <div *ngSwitchCase="'currency'" style="text-align: right">
-                                <span class="unclickable">{{ getSum(data) | number: '1.2-2'}}</span>
+                                <span *ngIf="typeOf(getSum(data)) == 'number'" class="unclickable">{{ getSum(data) | number: '1.2-2'}}</span>
+                                <span *ngIf="typeOf(getSum(data)) == 'string'" class="unclickable">{{ getSum(data) }}</span>
                         </div>
                         <div  *ngSwitchCase="'number'" style="text-align: right">
-                            <span class="unclickable">{{ getSum(data) | number: '1.0-0'}}</span>
+                            <span *ngIf="typeOf(getSum(data)) == 'number'" class="unclickable">{{ getSum(data) | number: '1.0-0'}}</span>
+                            <span *ngIf="typeOf(getSum(data)) == 'string'" class="unclickable">{{ getSum(data) }}</span>
                         </div>
                         <div  *ngSwitchDefault style="text-align: right">
                                 <span class="unclickable">{{ getSum(data)}}</span>
