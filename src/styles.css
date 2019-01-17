@@ -115,7 +115,47 @@ input.form-control-sm {
 }
 
 .cust-tabs-container ul li a {
-    font-size: 12px !important;
+    font-size: 17px !important;
+}
+
+.cust-tabs-container ul li a:focus {
+    outline: none;
+}
+
+
+.cust-tabs-container ul li.pagination-previous a {
+    font-size: 17px !important;
+    padding: 0px;
+}
+
+.cust-tabs-container ul li.pagination-next a {
+    font-size: 17px !important;
+    padding: 0px;
+}
+
+.ngx-pagination .disabled{
+    display: none !important;
+}
+
+ul.ngx-pagination{
+    position: relative;
+    z-index: 1;
+    margin-top: -5px;
+}
+
+.table-scroll{
+    z-index: 2;
+    position: relative;
+}
+
+.pagination-previous a::before{
+    vertical-align: top !important;
+    margin: 0px !important;
+}
+
+.pagination-next a::after {
+    vertical-align: text-top !important;
+    margin: 0px !important;
 }
 
 .input-group {

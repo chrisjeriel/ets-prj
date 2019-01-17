@@ -127,6 +127,7 @@ export class DummyComponent implements OnInit {
         paginateFlag: true,
         magnifyingGlass:['id'],
         uneditable:[true,false,false,false,true,true,true],
+        widths:[46]
     };
 
     constructor(private quotationService: QuotationService, private modalService: NgbModal) {
