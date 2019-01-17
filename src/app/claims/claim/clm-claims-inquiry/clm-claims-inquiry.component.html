@@ -8,7 +8,7 @@
 						<app-cust-non-datatable [passData]="passData"></app-cust-non-datatable>
 					</div>
 				</div>
-				<div class="row">
+				<div class="row" style="margin-bottom:10px !important; margin-top: -19px;">
 					<div class="col-sm-6">
 						<fieldset class="scheduler-border" style="padding-bottom: 18px !important; margin-right: -5px !important;">
 							<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
@@ -24,12 +24,30 @@
 									<input type="text" class="form-control form-control-sm cust-sm col-sm" value="EEI-2018-00066-078-0008-000">
 								</div>
 								<div class="input-group cust-ig">
-									<label class="form-control-sm col-sm-2">Ceding Co</label>
+									<label class="form-control-sm col-sm-2">Co Claim No</label>
+									<input type="text" class="form-control form-control-sm cust-sm col-sm" value="CAR-HO-2018-00015666">
+								</div>
+								<div class="input-group cust-ig" >
+									<label class="form-control-sm col-sm-2">Type of Cession</label>
+									<input type="text" class="form-control form-control-sm cust-sm col-sm" value="Direct">
+									<label class="form-control-sm col-sm-2">Line Class</label>
+									<input type="text" class="form-control form-control-sm cust-sm col-sm" value="EEI Class">
+								</div>
+								<div class="input-group cust-ig">
+									<label class="form-control-sm col-sm-2">Ceding Company</label>
 									<input type="text" class="form-control form-control-sm cust-sm col-sm" value="CHARTER PING AN INSURANCE CORP.">
 								</div>
 								<div class="input-group cust-ig">
-									<label class="form-control-sm col-sm-2">Insured</label>
-									<input type="text" class="form-control form-control-sm cust-sm col-sm" value="A. B. Industries, Inc.">
+									<label class="form-control-sm col-sm-2">Co Ref No</label>
+									<input type="text" class="form-control form-control-sm cust-sm col-sm" value="EN-CAR-HO-2018-006792-01">
+								</div>
+								<div class="input-group cust-ig">
+									<label class="form-control-sm col-sm-2">Adjuster</label>
+									<input type="text" class="form-control form-control-sm cust-sm col-sm" value="AArema Adjusters and Surveyors, Inc. / TLP Adj. / ACD Co. Inc.">
+								</div>
+								<div class="input-group cust-ig">
+									<label class="form-control-sm col-sm-2">Adjuster Ref No</label>
+									<input type="text" class="form-control form-control-sm cust-sm col-sm" value="PMMSC-CA-2018-025 / ADJ2 REF 001 / ADJ3 REF 001">
 								</div>
 								<div class="input-group cust-ig">
 									<label class="form-control-sm col-sm-2">Risk</label>
@@ -44,27 +62,47 @@
 							<div style="margin-right: 20px;">
 								<div class="input-group" style="margin-top: 10px !important;">
 									<label class="form-control-sm col-sm-2">Loss Date</label>
-									<input type="datetime-local" class="form-control form-control-sm cust-sm col-sm">
-									<label class="form-control-sm col-sm-2">Currency</label>
-									<input type="text" class="form-control form-control-sm cust-sm col-sm" value="PHP">
+									<input type="datetime-local" class="form-control form-control-sm cust-sm col-sm-4">
 								</div>
 								<div class="input-group cust-ig">
+									<label class="form-control-sm col-sm-2">Report Date</label>
+									<input type="text" class="form-control form-control-sm cust-sm col-sm-2" value="05/09/2018" >
+									<input type="text" class="form-control form-control-sm cust-sm col-sm" value="02:00 AM" style="margin-left: 3px;" >
+									<label class="form-control-sm col-sm-2">Reported By</label>
+									<input type="text" class="form-control form-control-sm cust-sm col-sm-4" value="Juan Dela Cruz">
+								</div>
+								<div class="input-group cust-ig">
+									<label class="form-control-sm col-sm-2">Creation Date</label>
+									<input type="text" class="form-control form-control-sm cust-sm col-sm-2" value="05/09/2018" >
+									<input type="text" class="form-control form-control-sm cust-sm col-sm" value="02:00 AM" style="margin-left: 3px;" >
+									<label class="form-control-sm col-sm-2">Processed By</label>
+									<input type="text" class="form-control form-control-sm cust-sm col-sm-4" value="CLETC">
+								</div>
+								<div class="input-group cust-ig">
+									<label class="form-control-sm col-sm-2">Loss Cause</label>
+									<input type="text" class="form-control form-control-sm cust-sm col-sm" value="EQ, Volcanism">
+									<label class="form-control-sm col-sm-2">Loss Period</label>
+									<input type="text" class="form-control form-control-sm cust-sm col-sm" value="Base Period">
+								</div>
+								<div class="input-group cust-ig">
+									<label class="form-control-sm col-sm-2">Event Type</label>
+									<input type="text" class="form-control form-control-sm cust-sm col-sm" value="Earthquake">
+									<label class="form-control-sm col-sm-2">Event</label>
+									<input type="text" class="form-control form-control-sm cust-sm col-sm" value="The Big 1 (Magnitude 7.5)">
+								</div>
+								<div class="input-group cust-ig" style="margin-bottom: 25px !important;">
 									<label class="form-control-sm col-sm-2">Loss Details</label>
-									<textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 17px !important;">Damage electric cables and supply lines on 2nd</textarea>
+									<textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 17px !important;">Damage electric cables and supply lines on 2nd and 3rd floors due to earthquake</textarea>
+								</div>
+								<div class="input-group cust-ig">
+									<label class="form-control-sm col-sm-2">Currency</label>
+									<input type="text" class="form-control form-control-sm cust-sm col-sm-4" value="PHP">
 								</div>
 								<div class="input-group cust-ig">
 									<label class="form-control-sm col-sm-2">Total Reserve</label>
 									<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" value="0.00">
 									<label class="form-control-sm col-sm-2">Total Payment</label>
 									<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" value="0.00">
-								</div>
-								<div class="input-group cust-ig">
-									<label class="form-control-sm col-sm-2">Adjusters</label>
-									<input type="text" class="form-control form-control-sm cust-sm col-sm" value="TLP Adj. / ACD Co. Inc.">
-								</div>
-								<div class="input-group cust-ig">
-									<label class="form-control-sm col-sm-2">Processed By</label>
-									<input type="text" class="form-control form-control-sm cust-sm col-sm" value="CLECOH">
 								</div>
 							</div>
 						</fieldset>
