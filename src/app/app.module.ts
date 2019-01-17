@@ -9,7 +9,7 @@ import { SidebarModule } from 'ng-sidebar';
 import { DataTablesModule } from 'angular-datatables';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AngularEditorModule } from '@kolkov/angular-editor';
-import { QuillModule } from 'ngx-quill'
+import { QuillModule } from 'ngx-quill';
 
 // used to create fake backend
 import { fakeBackendProvider } from './_helpers';
@@ -27,8 +27,8 @@ import { GeneralInfoComponent } from './quotation/general-info/general-info.comp
 import { CoverageComponent } from './quotation/coverage/coverage.component';
 import { QuoteOptionComponent } from './quotation/quote-option/quote-option.component';
 import { InternalCompetitionComponent } from './quotation/internal-competition/internal-competition.component';
-import { HoldCoverComponent } from './quotation/hold-cover/hold-cover.component';;
-import { AttachmentComponent } from './quotation/attachment/attachment.component'
+import { HoldCoverComponent } from './quotation/hold-cover/hold-cover.component';
+import { AttachmentComponent } from './quotation/attachment/attachment.component';
 import { DummyComponent } from './_components/common/dummy/dummy.component';
 import { QuoteEndorsementComponent } from './quotation/quote-endorsement/quote-endorsement.component';
 import { CustTableComponent } from './_components/common/cust-table/cust-table.component';
@@ -36,7 +36,7 @@ import { CustEditableTableComponent } from './_components/common/cust-editable-t
 import { QuotationInquiryComponent } from './quotation/quotation-inquiry/quotation-inquiry.component';
 import { ListOfQuotationsComponent } from './quotation/quotation-inquiry/list-of-quotations/list-of-quotations.component';
 import { HoldCoverMonitoringListComponent } from './quotation/quotation-inquiry/hold-cover-monitoring-list/hold-cover-monitoring-list.component';
-import { NotesComponent } from './notes/notes.component';;
+import { NotesComponent } from './notes/notes.component';
 import { QuotationProcessingComponent } from './quotation/quotation-processing/quotation-processing.component';
 import { ParListingComponent } from './underwriting/policy-issuance/par-listing/par-listing.component';
 import { PolEndorsementComponent } from './underwriting/policy-issuance/pol-endorsement/pol-endorsement.component';
@@ -114,14 +114,17 @@ import { ClmSectionCoversComponent } from './claims/claim/clm-claim-processing/c
 import { ClmClaimPaymentRequestComponent } from './claims/claim/clm-claim-processing/clm-claim-payment-request/clm-claim-payment-request.component';
 import { ClmClaimsInquiryComponent } from './claims/claim/clm-claims-inquiry/clm-claims-inquiry.component';
 import { ClmChangeClaimStatusComponent } from './claims/claim/clm-change-claim-status/clm-change-claim-status.component';
+import { UpdateInstallmentComponent } from './utilities/update-information/update-installment/update-installment.component';
+import { PolMxCedingCoComponent } from './underwriting/policy-maintenance/pol-mx-ceding-co/pol-mx-ceding-co.component';
 import { AccountingComponent } from './accounting/accounting.component';
 import { ArEntryComponent } from './accounting/ar-entry/ar-entry.component';
-import { ArDetailsComponent } from './accounting/ar-details/ar-details.component';
-import { InwardPolicyBalancesComponent } from './accounting/inward-policy-balances/inward-policy-balances.component';
-import { ClaimRecoveryComponent } from './accounting/claim-recovery/claim-recovery.component';
-import { AttachmentsComponent } from './accounting/attachments/attachments.component';
+import { ArDetailsComponent } from './accounting-in-trust/ar-details/ar-details.component';
+import { InwardPolicyBalancesComponent } from './accounting-in-trust/inward-policy-balances/inward-policy-balances.component';
+import { ClaimRecoveryComponent } from './accounting-in-trust/claim-recovery/claim-recovery.component';
 import { AccountingInTrustComponent } from './accounting-in-trust/accounting-in-trust.component';
 import { AccountingServiceComponent } from './accounting-service/accounting-service.component';
+import { AcctArListingsComponent } from './accounting-in-trust/acct-ar-listings/acct-ar-listings.component';
+import { AcctArEntryComponent } from './accounting-in-trust/acct-ar-entry/acct-ar-entry.component';
 import { CheckVoucherComponent } from './accounting-in-trust/check-voucher/check-voucher.component';
 import { GenerateCvComponent } from './accounting-in-trust/check-voucher/generate-cv/generate-cv.component';
 import { CvEntryComponent } from './accounting-in-trust/check-voucher/generate-cv/cv-entry/cv-entry.component';
@@ -248,15 +251,18 @@ import { SequencePipe } from './_pipes/sequence.pipe';
         ClmSectionCoversComponent,
         ClmClaimsInquiryComponent,
         ClmChangeClaimStatusComponent,
+        UpdateInstallmentComponent,
+        PolMxCedingCoComponent,
         AccountingComponent,
         ArEntryComponent,
         ArDetailsComponent,
         InwardPolicyBalancesComponent,
         ClaimRecoveryComponent,
         QsoaComponent,
-        AttachmentsComponent,
         AccountingInTrustComponent,
         AccountingServiceComponent,
+        AcctArListingsComponent,
+        AcctArEntryComponent,
         CvDetailsComponent,
         CheckVoucherComponent,
         GenerateCvComponent,

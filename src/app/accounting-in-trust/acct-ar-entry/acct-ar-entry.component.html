@@ -1,0 +1,133 @@
+<div class="row">
+	<div class="col-sm-10">
+		<fieldset class="scheduler-border" style="margin-right: -10px !important; padding-top: 10px !important; padding-bottom: 10px !important;">
+			<legend class="scheduler-border">A.R. Info</legend>
+			<div class="input-group cust-ig">
+				<label class="form-control-sm col-sm-1">A.R. No.</label>
+				<input type="text" placeholder="000001" class="form-control form-control-sm cust-sm text-right col-sm-1">
+				<label class="form-control-sm col-sm-1">Date</label>
+				<input type="date" class="form-control form-control-sm cust-sm col-sm-2">
+				<input type="text" placeholder="10:45 AM" class="form-control form-control-sm cust-sm text-center cust-mrgn col-sm-1">
+				<label class="form-control-sm col-sm-1" style="padding-left: 0px !important; margin-left: 20px !important">Payment Type</label>
+				<input type="text" placeholder="Inward Policy Balances" class="form-control form-control-sm cust-sm col-sm-3" (keyup)="tabController($event);" [(ngModel)]="paymentType">
+				<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+				<label class="form-control-sm col-sm-1">Status</label>
+				<input type="text" placeholder="New" class="form-control form-control-sm cust-sm col-sm-1">
+				<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+			</div>
+			<div class="input-group cust-ig">
+				<label class="form-control-sm col-sm-1">Payor</label>
+				<input type="text" placeholder="BPI/MS INSURANCE CORPORATION" class="form-control form-control-sm cust-sm">
+				<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+			</div>
+			<div class="input-group cust-ig">
+				<label class="form-control-sm col-sm-1">Address</label>
+				<textarea placeholder="16th Flr., 6811 BPI-Philam Life Makati, Ayala Ave., Salcedo Village Bel-Air, Makati City, Metro Manila, Philippines 1209" class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 17px !important;"></textarea>
+			</div>
+			<div class="input-group cust-ig">
+				<label class="form-control-sm col-sm-1">TIN</label>
+				<input type="text" placeholder="777 - 888 - 999 - 0000" class="form-control form-control-sm cust-sm col-sm">
+				<label class="form-control-sm col-sm-1">Business</label>
+				<input type="text" placeholder="Non-Life Insurance" class="form-control form-control-sm cust-sm col-sm">
+				<label class="form-control-sm col-sm-1">Amount</label>
+				<input type="text" placeholder="PHP" class="form-control form-control-sm cust-sm col-sm-1">
+				<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+				<input type="text" placeholder="1,642,857.14" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm">
+				<label class="form-control-sm col-sm-1" style="padding-left: 0px !important; margin-left: 20px !important">Local Amount</label>
+				<input type="text" placeholder="PHP" class="form-control form-control-sm cust-sm col-sm-1">
+				<input type="text" placeholder="1,642,857.14" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm">
+			</div>
+			<div class="input-group cust-ig">
+				<label class="form-control-sm col-sm-1">Particulars</label>
+				<textarea placeholder="Representing payment for premium of policy CAR-2018-00001-99-0001-000" class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 60px; margin-bottom: 17px !important;"></textarea>
+			</div>
+		</fieldset>
+	</div>
+	<div class="col-sm-2">
+		<fieldset class="scheduler-border" style="margin-left: -5px !important; padding-top: 5px !important; padding-bottom: 5px !important;">
+			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+			<div class="input-group" style="margin-bottom: 5px !important;">
+				<div class="col-sm-12 text-center">
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;">New AR</button>
+				</div>					
+			</div>
+			<div class="input-group cust-ig">
+				<label class="form-control-sm col-sm-3">Type</label>
+				<input type="text" placeholder="VAT" class="form-control form-control-sm cust-sm col-sm">
+				<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+			</div>
+		</fieldset>
+		<fieldset class="scheduler-border" style="margin-left: -5px !important; padding-top: 5px !important; padding-bottom: 5px !important;">
+			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+			<div class="input-group" style="margin-bottom: 2px !important;">
+				<div class="col-sm-12 text-center">
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;">Save</button>
+				</div>					
+			</div>
+		</fieldset>
+		<fieldset class="scheduler-border" style="margin-left: -5px !important; padding-top: 7px !important; padding-bottom: 7px !important;">
+			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+			<div class="input-group" style="margin-bottom: 4px !important;">
+				<div class="col-sm-12 text-center">
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;">Print AR</button>
+				</div>					
+			</div>
+			<div class="input-group" style="margin-bottom: 2px !important;">
+				<div class="col-sm-12 text-center">
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;">Reprint AR</button>
+				</div>					
+			</div>
+		</fieldset>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-12">
+		<fieldset class="scheduler-border" style="padding-top: 6px !important; padding-bottom: 10px !important;">
+			<legend class="scheduler-border">Payment Details</legend>
+			<div class="row">
+				<div class="col-sm-12">
+					<app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-5">
+					<div class="input-group cust-ig">
+						<label class="form-control-sm col-sm-2">P.R. No.</label>
+						<input type="text" placeholder="000001" class="form-control form-control-sm cust-sm text-right col-sm-2">
+						<label class="form-control-sm col-sm-2">Date</label>
+						<input type="date" class="form-control form-control-sm cust-sm col-sm-4">
+						<input type="text" placeholder="10:45 AM" class="form-control form-control-sm cust-sm text-center cust-mrgn col-sm-2" style="margin-right: -2px;">
+					</div>
+					<div class="input-group cust-ig">
+						<label class="form-control-sm col-sm-2">Prepared By</label>
+						<input type="text" placeholder="Ma. Cecilia Dela Paz - Castro" class="form-control form-control-sm cust-sm col-sm-8">
+						<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+					</div>
+					<div class="input-group cust-ig">
+						<label class="form-control-sm col-sm-2"></label>
+						<input type="text" placeholder="Accountant II" class="form-control form-control-sm cust-sm col-sm-8">
+					</div>
+				</div>
+				<div class="col-sm-7">
+					<div class="input-group cust-ig">
+						<label class="form-control-sm col-sm-2"></label>
+					</div>
+					<div class="input-group cust-ig">
+						<span class="col-sm-1"></span>
+						<label class="form-control-sm col-sm-2">Created By</label>
+						<input type="text" placeholder="cuaresma" class="form-control form-control-sm cust-sm col-sm">
+						<label class="form-control-sm col-sm-2">Date Created</label>
+						<input type="date" class="form-control form-control-sm cust-sm col-sm">
+					</div>
+					<div class="input-group cust-ig">
+						<span class="col-sm-1"></span>
+						<label class="form-control-sm col-sm-2">Last Update By</label>
+						<input type="text" placeholder="cuaresma" class="form-control form-control-sm cust-sm col-sm">
+						<label class="form-control-sm col-sm-2">Last Update</label>
+						<input type="date" class="form-control form-control-sm cust-sm col-sm">
+					</div>
+				</div>
+			</div>
+		</fieldset>
+	</div>
+</div>

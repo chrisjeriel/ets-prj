@@ -1,9 +1,14 @@
 <div class="cust-tabs-container">
-	<h4>Policy / Policy Issuance / Create Policy</h4>
+	<h4>Policy / Utilities / Update Information</h4>
 	<ngb-tabset (tabChange)="beforeChange($event)">
 		<ngb-tab class="ngb-tab" title="Update General Info">
 			<ng-template ngbTabContent>
 				<app-update-general-info></app-update-general-info>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab class="ngb-tab" title="Update Installment">
+			<ng-template ngbTabContent>
+				<app-update-installment></app-update-installment>
 			</ng-template>
 		</ngb-tab>
 	</ngb-tabset>
