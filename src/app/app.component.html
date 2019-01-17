@@ -1,4 +1,4 @@
-<style>
+﻿<style>
     .btn-link:hover {
     color: #0056b3;
     text-decoration: none;
@@ -189,17 +189,19 @@
                         </ngb-panel>
                         <!-- <ngb-panel>
                             <ng-template ngbPanelTitle>
-                                <fa name="calculator"></fa>&nbsp;Accounting
+                                <fa name="calculator"></fa>&nbsp;Accounting In-Trust
                             </ng-template>
                             <ng-template ngbPanelContent>
-                                <ngb-accordion #acc="ngbAccordion">
-                                    <ngb-panel title="In-Trust">
-                                        <ng-template ngbPanelContent>
-                                            <button [routerLink]="['/accounting']" class="button btn btn-link"> Acknowledgement Receipt </button>
-                                            <br />
-                                        </ng-template>
-                                    </ngb-panel>
-                                </ngb-accordion>
+                                <button [routerLink]="['/accounting']" class="button btn btn-link"> Acknowledgement Receipt </button>
+                                <br />
+                           </ng-template>
+                        </ngb-panel>
+                        <ngb-panel>
+                            <ng-template ngbPanelTitle>
+                                <fa name="calculator"></fa>&nbsp;Accounting Service
+                            </ng-template>
+                            <ng-template ngbPanelContent>
+                               
                             </ng-template>
                         </ngb-panel> -->
                         <ngb-panel>
@@ -210,6 +212,8 @@
                                 <!-- <button [routerLink]="['/accounting-in-trust']" class="button btn btn-link"> Acknowledgement Receipt </button>
                                 <br /> -->
                                 <button [routerLink]="['/acct-ar-listings']" class="button btn btn-link"> Acknowledgement Receipt </button>
+                                <br />
+                                <button [routerLink]="['/check-voucher']" class="button btn btn-link"> Check Voucher </button>
                                 <br />
                             </ng-template>
                         </ngb-panel>

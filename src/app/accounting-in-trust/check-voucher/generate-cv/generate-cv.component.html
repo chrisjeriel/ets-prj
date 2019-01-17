@@ -2,27 +2,46 @@
 	<h4>Accounting In-Trust / Check Voucher / Generate CV</h4>
 	<!-- <ngb-tabset (tabChange)="beforeChange($event)"> -->
 		<ngb-tabset>
-		<ngb-tab class="ngb-tab" title="CV Entry">
-			<ng-template ngbTabContent>
-			</ng-template>
-		</ngb-tab>
-		<ngb-tab class="ngb-tab" title="CV Details">
-			<ng-template ngbTabContent>
-			</ng-template>
-		</ngb-tab>
-		<ngb-tab class="ngb-tab" title="Payment Requests List">
-			<ng-template ngbTabContent>
-				<app-cv-payment-request-list></app-cv-payment-request-list>
-			</ng-template>
-		</ngb-tab>
-		<ngb-tab class="ngb-tab" title="Attachments">
-			<ng-template ngbTabContent>
-				<app-cv-attachment></app-cv-attachment>
-			</ng-template>
-		</ngb-tab>
-		<ngb-tab title="Exit">
-			<ng-template ngbTabContent>
-			</ng-template>
-		</ngb-tab>
+			<ngb-tab id="idko">
+				<ng-template ngbTabTitle>
+					<div>CV Entry</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+					<app-cv-entry></app-cv-entry>
+				</ng-template>
+			</ngb-tab>
+
+			<ngb-tab>
+				<ng-template ngbTabTitle>
+					<div>CV Details</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+					<app-cv-details></app-cv-details>
+				</ng-template>
+			</ngb-tab>
+
+			<ngb-tab>
+				<ng-template ngbTabTitle>
+					<div>Payment Requests List</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+					<app-cv-payment-request-list></app-cv-payment-request-list>
+				</ng-template>
+			</ngb-tab>
+			<ngb-tab>
+				<ng-template ngbTabTitle>
+					<div>Attachments</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+					<app-cv-attachment></app-cv-attachment>
+				</ng-template>
+			</ngb-tab>
+			<ngb-tab>
+				<ng-template ngbTabTitle>
+					<div>Exit</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+				</ng-template>
+			</ngb-tab>
 	</ngb-tabset>
 </div>

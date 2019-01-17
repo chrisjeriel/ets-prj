@@ -188,7 +188,7 @@ div.input-group {
 
 
 .pagination{
-    margin-top: 2%;
+    margin-top: 0.5%;
     float: right;
 }
 
@@ -300,16 +300,24 @@ tr td span{
 }
 
 .my-pagination /deep/ .ngx-pagination {
-   font-size: 9px;
+   font-size: 5px;
    border-radius: 4px;
 }
 
 .my-pagination /deep/ .ngx-pagination .current {
-   font-size: 12px;
+   font-size: 10px;
    font-weight: bold;
    border-radius: 4px;
 }
 
+/deep/ .cust-tabs-container ul li a span{
+    font-size: 10px !important;
+}
+
 td div input.number-magnify{
     padding-right: 16px !important;
+}
+
+table td div span{
+    display: block;
 }

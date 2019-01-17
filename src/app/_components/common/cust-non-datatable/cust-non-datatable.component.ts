@@ -86,7 +86,7 @@ export class CustNonDatatableComponent implements OnInit {
 
     @Output() rowClick: EventEmitter<any> = new EventEmitter();
     @Output() rowDblClick: EventEmitter<any> = new EventEmitter();
-     @Output() add: EventEmitter<any> = new EventEmitter();
+    @Output() add: EventEmitter<any> = new EventEmitter();
     @Output() edit: EventEmitter<any> = new EventEmitter();
     @Output() copy: EventEmitter<any> = new EventEmitter();
     @Output() print: EventEmitter<any> = new EventEmitter();
@@ -97,9 +97,37 @@ export class CustNonDatatableComponent implements OnInit {
     //test
     @Input() newData: any = new QuotationList(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null);
     @Input() passData: any = {
-        tableData: [], tHeader: [], dataTypes: [], resizable: [], filters: [],
-        pageLength: 10,
-        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, pageStatus: true, pagination: true, addFlag: false, editFlag: false, deleteFlag: false, copyFlag: false, pageID: 1
+        tableData: [],          //REQUIRED. 
+        tHeader: [],            //REQUIRED.
+        dataTypes: [],          //DEFAULT is 'text'. Set 'percent', 
+                                //'number', 'time', 'datetime', 'date', 'text', 'checkbox' accordingly.
+        
+        resizable: [],          //Set to determine what columns need to be resized. Default is all columns are resizable.
+        filters: [],            //Required if tableOnly is false.
+        colSize: [],            //REQUIRED. STRING VALUE. DEFAULT VALUE is '100%'. Just add '' as a value
+        pageLength: 10,         //specify max number of rows in the table before it breaks to pagination.
+                                //use 'unli' as pageLength for unlimited rows.
+        
+        expireFilter: false,    //expire filter 
+        checkFlag: false,       //checkbox column
+        tableOnly: false,       //disable search and filter
+        fixedCol: false,        //fix first column
+        printBtn: false,        //print btn
+        pageStatus: true,       //pagination labels. must always be assigned unless you don't want this
+        pagination: true,       //pagination buttons. must always be assigned unless you don't want this
+        addFlag: false,         //add btn. 
+                                //add functionality by placing it with [passData] as (add)="onClickAdd($event)"
+        
+        editFlag: false,        //edit btn
+                                //add functionality by placing it with [passData] as (edit)="onClickEdit($event)"
+        
+        deleteFlag: false,      //delete btn
+                                //add functionality by placing it with [passData] as (delete)="onClickDelete($event)"
+        
+        copyFlag: false,        //copy btn
+                                //add functionality by placing it with [passData] as (copy)="onClickCopy($copy)"
+        
+        pageID: 1               //if you use multiple instances of this component, this is a must
     }
 
     dataKeys: any[] = [];
@@ -121,6 +149,7 @@ export class CustNonDatatableComponent implements OnInit {
     selected: any[] = [];
     indvSelect: any;
     fillData:any = {};
+    nullKey: any;
 
     pinDataHeader:any[] = [];
     pinKeys:any[] = [];
@@ -133,9 +162,13 @@ export class CustNonDatatableComponent implements OnInit {
 
     ngOnInit(): void {
         this.passData.pageID = typeof this.passData.pageID == "undefined" ? 1 : this.passData.pageID;
+        this.passData.colSize = typeof this.passData.colSize == "undefined" ? [] : this.passData.colSize;
         this.unliFlag = this.passData.pageLength == 'unli';
         this.passData.pageLength = typeof this.passData.pageLength != 'number' ? 10 : this.passData.pageLength;
+        this.passData.tHeader = typeof this.passData.tHeader == 'undefined' ? ['No Data'] : this.passData.tHeader;
+        this.passData.tableData = typeof this.passData.tableData == 'undefined' ? [['No Data']] : this.passData.tableData;
         this.unliTableLength();
+        
         if (this.passData.tableData.length > 0) {
             this.dataKeys = Object.keys(this.passData.tableData[0]);
         } else {
@@ -157,9 +190,24 @@ export class CustNonDatatableComponent implements OnInit {
         /*if(this.passData.tableOnly){
             document.getElementById('#non-datatable').style.marginTop = "0px";
         }*/
+
+        if(typeof this.passData.resizable === "undefined"){
+            this.passData.resizable = [];
+            for(let i = 0; i < this.passData.tHeader.length; i++){
+                this.passData.resizable.push(true);
+            }
+        }
+        
+        if(typeof this.passData.dataTypes === "undefined"){
+            this.passData.dataTypes = [];
+            for(let i = 0; i < this.passData.tHeader.length; i++){
+                this.passData.dataTypes.push('text');
+            }
+        }
     }
 
     processData(key: any, data: any) {
+        this.nullKey = key;
         return data[key];
     }
     consoled(){
@@ -187,9 +235,10 @@ export class CustNonDatatableComponent implements OnInit {
         this.renderer.listenGlobal('body', 'mousemove', (event) => {
             if(this.pressed) {
                 let width = this.startWidth + (event.x - this.startX);
-                $(this.start).parent().css({'min-width': width, 'max-width': width});
+                $(this.start).parent().css({'min-width': width, 'max-width': width, 'width': width});
                 let index = $(this.start).parent().index() + 1;
-                $('.glowTableBody tr td:nth-child(' + index + ')').css({'min-width': width, 'max-width': width});
+                $('.content-container tr td:nth-child(' + index + ')').css({'min-width': width, 'max-width': width, 'width': width});
+                
             }
         });
         this.renderer.listenGlobal('body', 'mouseup', (event) => {
@@ -201,8 +250,10 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     onRowClick(event, data) {
-        this.btnDisabled = false;
-        this.indvSelect = data;
+        if(data[this.nullKey] !== null){
+            this.btnDisabled = false;
+            this.indvSelect = data;
+        }
         /*for(var i = 0; i < event.target.parentElement.children.length; i++) {
             event.target.parentElement.children[i].style.backgroundColor = "";
         }
@@ -252,7 +303,8 @@ export class CustNonDatatableComponent implements OnInit {
         for (var filt in filterObj) {    
             if (!filterObj[filt]["enabled"]) {continue;}
             this.displayData = this.displayData.filter(function(itm){
-                return itm[filterObj[filt].key].toString() .toLowerCase( ).includes(filterObj[filt].search.toLowerCase( ));
+                return itm[filterObj[filt].key].toString().toLowerCase( ).includes(filterObj[filt].search.toLowerCase( ));
+
 /*=======
                      if(filterObj[filt]["dataType"]=="date")
                     return itm[filterObj[filt].key].toString().includes(new Date(filterObj[filt].search).toString());
