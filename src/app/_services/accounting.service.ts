@@ -63,7 +63,7 @@ export class AccountingService {
 
 	getCheckDetails(){
 		this.checkDetails = [
-			new CheckDetails("Banco De Oro","PCPA-9091-7001-7389",new Date(),1794832,"Local Clearing","PHP",27513.29),
+			new CheckDetails("Banco De Oro","PCPA-9091-7001-7389",new Date(),17948303,"Local Clearing","PHP",27513.29),
 		]
 
 		return this.checkDetails;
