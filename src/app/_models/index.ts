@@ -48,3 +48,4 @@ export * from './AmountDetailsCV';
 export * from './AccountingEntriesCV';
 export * from './QSOA';
 export * from './AccountingTaxDetailsCV';
+export * from './AccountingRequestsListRP';

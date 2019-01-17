@@ -133,6 +133,9 @@ import { CvDetailsComponent } from './accounting-in-trust/check-voucher/generate
 import { QsoaComponent } from './accounting-in-trust/qsoa/qsoa.component';
 import { AccAttachmentsComponent } from './accounting-in-trust/acc-attachments/acc-attachments.component';
 import { SequencePipe } from './_pipes/sequence.pipe';
+import { RequestForPaymentComponent } from './accounting-in-trust/request-for-payment/request-for-payment.component';
+import { GeneratePaymentRequestComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/generate-payment-request.component';
+import { PaymentRequestEntryComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/payment-request-entry/payment-request-entry.component';
 
 @NgModule({
     imports: [
@@ -269,7 +272,10 @@ import { SequencePipe } from './_pipes/sequence.pipe';
         GenerateCvComponent,
         CvEntryComponent,
         AccAttachmentsComponent,
-        SequencePipe
+        SequencePipe,
+        RequestForPaymentComponent,
+        GeneratePaymentRequestComponent,
+        PaymentRequestEntryComponent
     ],
 
     providers: [

@@ -1,0 +1,55 @@
+<div class="cust-tabs-container">
+	<h4>Accounting In-Trust / Request for Payment / Generate Request</h4>
+	<!-- <ngb-tabset (tabChange)="beforeChange($event)"> -->
+		<ngb-tabset>
+			<ngb-tab>
+				<ng-template ngbTabTitle>
+					<div>Request Entry</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+					<app-payment-request-entry></app-payment-request-entry>
+				</ng-template>
+			</ngb-tab>
+
+			<ngb-tab>
+				<ng-template ngbTabTitle>
+					<div>Claims</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+					<!-- Claims Component -->
+				</ng-template>
+			</ngb-tab>
+
+			<ngb-tab>
+				<ng-template ngbTabTitle>
+					<div>Premium Returns</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+					<!-- Premium Returns Component -->
+				</ng-template>
+			</ngb-tab>
+			<ngb-tab>
+				<ng-template ngbTabTitle>
+					<div>QSOA Balances</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+					<!-- QSOA Balances Component -->
+				</ng-template>
+			</ngb-tab>
+			<ngb-tab>
+				<ng-template ngbTabTitle>
+					<div>Others</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+					<!-- Others Component -->
+				</ng-template>
+			</ngb-tab>
+			<ngb-tab>
+				<ng-template ngbTabTitle>
+					<div>Exit</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+				</ng-template>
+			</ngb-tab>
+	</ngb-tabset>
+</div>

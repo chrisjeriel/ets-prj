@@ -1,0 +1,13 @@
+.text-search-ico {
+	margin-left: -18px;
+	z-index: 99999;
+	font-size: 14px;
+}
+.labels{
+    margin-bottom: 7px !important;
+    padding-bottom: 0px !important;
+    max-height: 2.3em
+}
+.checkbox{
+    margin-top: 5px;
+}
