@@ -53,6 +53,9 @@ import { AccountingInTrustComponent } from './accounting-in-trust/accounting-in-
 import { AcctArListingsComponent } from './accounting-in-trust/acct-ar-listings/acct-ar-listings.component';
 import { CheckVoucherComponent } from './accounting-in-trust/check-voucher/check-voucher.component';
 import { GenerateCvComponent } from './accounting-in-trust/check-voucher/generate-cv/generate-cv.component';
+import { OpenCoverInquiryComponent } from './quotation/open-cover-inquiry/open-cover-inquiry.component';
+import { JournalVoucherComponent } from './accounting-in-trust/journal-voucher/journal-voucher.component';
+import { GenerateJvComponent } from './accounting-in-trust/journal-voucher/generate-jv/generate-jv.component';
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -112,6 +115,9 @@ const appRoutes: Routes = [
     { path: 'acct-ar-listings', component: AcctArListingsComponent },
     { path: 'check-voucher', component: CheckVoucherComponent },
     { path: 'generate-cv', component: GenerateCvComponent },
+    { path: 'open-cover-inquiry', component: OpenCoverInquiryComponent },
+    { path: 'journal-voucher', component: JournalVoucherComponent },
+    { path: 'generate-jv', component: GenerateJvComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

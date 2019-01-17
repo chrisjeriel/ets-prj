@@ -13,3 +13,4 @@ export class AmountDetailsCV{
 		this.amountPlusMinus = amountPlusMinus;
 	}
 }
+

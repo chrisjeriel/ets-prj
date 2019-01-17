@@ -1,12 +1,12 @@
 <div class="cust-tabs-container">
-	<h4>Accounting In-Trust/Check Voucher</h4>
+	<h4>Accounting In-Trust/Journal Voucher</h4>
 	<!-- <ngb-tabset (tabChange)="beforeChange($event)"> -->
 		<ngb-tabset>
-		<ngb-tab class="ngb-tab" title="CV Listings">
+		<ngb-tab class="ngb-tab" title="JV Listings">
 			<ng-template ngbTabContent>
 				<div class="row">
 					<div class="col-sm-12">
-						<app-cust-non-datatable [passData]="passDataCVListing" (add)="onClickAdd($event)" (edit)="onClickEdit($event)"></app-cust-non-datatable>
+						<app-cust-non-datatable [passData]="passDataJVListing" (add)="onClickAdd($event)" (edit)="onClickEdit($event)"></app-cust-non-datatable>
 					</div>
 					<div class="col-sm-12">
 						<div class="form-row custom-row-inline-inset" style="margin-left: -27px;">

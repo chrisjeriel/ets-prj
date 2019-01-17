@@ -98,3 +98,49 @@ export class HoldCoverMonitoringList{
 
     }
 }
+
+export class OpenCoverList{
+    openCoverQuotationNo: string;
+    typeofCession: string
+    lineClass: string;
+    status: string;
+    cedingCompany: string;
+    principal: string;
+    contractor: string;
+    insured: string;
+    risk: string;
+    object: string;
+    location: string;
+    policyNo: string;
+    currency: string;
+
+    constructor(openCoverQuotationNo: string,
+                 typeofCession: string,
+                 lineClass: string,
+                 status: string,
+                 cedingCompany: string,
+                 principal: string,
+                 contractor: string,
+                 insured: string,
+                 risk: string,
+                 object: string,
+                 location: string,
+                 policyNo: string,
+                 currency: string
+                )
+    {
+        this.openCoverQuotationNo = openCoverQuotationNo;
+        this.typeofCession = typeofCession;
+        this.lineClass = lineClass;
+        this.status = status;
+        this.cedingCompany = cedingCompany;
+        this.principal = principal;
+        this.contractor = contractor;
+        this.insured = insured;
+        this.risk = risk;
+        this.object = object;
+        this.location = location;
+        this.policyNo = policyNo;
+        this.currency = currency;
+}
+}
