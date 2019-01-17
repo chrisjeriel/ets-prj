@@ -23,6 +23,8 @@
             <button *ngIf="passData.addFlag" class="cust-btn" (click)="passData.nData == null ? addClicked(event) : onClickAdd()"><a>Add</a></button>
             <button *ngIf="passData.editFlag" class="cust-btn" (click)="onClickEdit()"><a class="paginate_button previous">Edit</a></button>
             <button *ngIf="passData.deleteFlag" class="cust-btn" (click)="onClickDelete()"><a class="paginate_button previous">Delete</a></button>
+            <button *ngIf="passData.genericBtn !== undefined" class="cust-btn" (click)="onClickGeneric()"><a class="paginate_button previous">{{passData.genericBtn}}</a></button>
+
             <div class="search-filter" *ngIf="passData.searchFlag">
             <!--<div class="search-filter" *ngIf="passData.hasSearch">-->
             <label>Search: &nbsp;
@@ -103,7 +105,8 @@
                     <th *ngIf="passData.checkFlag" class="checkbox"><input type="checkbox" name="checkbox" [(ngModel)]="checked"></th>
                     <th container="body"  *ngFor="let tHeader of passData.tHeader; let i = index" (click)="sort(dataKeys[i],sortBy);sortIndex=i;"
                         [style.width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [ngbTooltip]="passData.tooltip !== undefined ? passData.tooltip[i] :null">
-                        <span class="ui-column-resizer"  (mousedown)="onMouseDown($event)" *ngIf="passData.resizable === undefined ||  passData.resizable[i]"></span>
+                        <!-- <span class="ui-column-resizer"  (mousedown)="onMouseDown($event)" *ngIf="passData.resizable === undefined ||  passData.resizable[i]"></span> -->
+                        <span class="ui-column-resizer"  (mousedown)="onMouseDown($event)"></span>
                         <span *ngIf="isNumber(i)" class="gridHeader number text-right" >{{tHeader}}
                             <i *ngIf="showSort(sortBy,i)" class="fa fa-caret-down"></i>
                             <i *ngIf="showSort(!sortBy,i)" class="fa fa-caret-up"></i>
@@ -132,6 +135,8 @@
                             <div *ngSwitchCase="'checkbox'" style="text-align: center;">
                                 <input [checked]="data[key] === true ? true : false" type="checkbox">
                             </div>
+                            <input *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'sequence' ? passData.dataTypes[i] : ''" class="editable-text text-right number form-control-sm"
+                                type="text" [ngModel]="data[key] | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence" (blur)="format($event , key, ti)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1">
                             <select *ngSwitchCase="'select'" class="editable-select form-control-sm" [value]="processData(key, data)">
                                 <ng-container *ngFor="let data of passData.opts">
                                     <ng-container *ngIf="key == data.selector">
@@ -147,7 +152,8 @@
                             <a  *ngIf="passData.magnifyingGlass.indexOf(key)!=-1"><i class="fa fa-search align-middle"></i></a> 
                         </div>
 
-                        <div *ngIf="addCheckFlag(data) && ( passData.uneditable!== undefined && passData.uneditable[i] )">
+                        <div *ngIf="addCheckFlag(data) && ( passData.uneditable!== undefined && passData.uneditable[i] )" class="align-middle" style="position: relative;">
+                            <a   *ngIf="passData.magnifyingGlass.indexOf(key)!=-1"><i class="fa fa-search align-middle"></i></a> 
                             <div *ngSwitchCase="'percent'" style="text-align: right">
                                 <span class="unclickable">{{ processData(key, data) | number: '1.7-7'}}</span>
                             </div>
@@ -162,6 +168,9 @@
                             <span *ngSwitchCase="'datetime'" class="unclickable">{{ processData(key, data) | date: 'yyyy-MM-ddTHH:mm'}}</span>
                             <div *ngSwitchCase="'checkbox'" style="text-align: center;">
                                 <input  type="checkbox" [checked]="data[key]">
+                            </div>
+                            <div  *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'sequence' ? passData.dataTypes[i] : ''" style="text-align: right">
+                                <span class="unclickable">{{ processData(key, data) | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence}}</span>
                             </div>
                             <span *ngSwitchDefault class="unclickable">{{ processData(key, data) }}</span>
                         </div>

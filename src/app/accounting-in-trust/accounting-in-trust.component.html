@@ -1,7 +1,7 @@
 <div class="cust-tabs-container">
 	<h4>Accounting In-Trust / Acknowledgement Receipt / Generate AR</h4>
 		<ngb-tabset>
-		<ngb-tab class="ngb-tab" title="AR Entry">
+		<!-- <ngb-tab class="ngb-tab" title="AR Entry">
 			<ng-template ngbTabContent>
 				<app-acct-ar-entry (onChange)="checkTabs($event);"></app-acct-ar-entry>
 			</ng-template>
@@ -44,6 +44,16 @@
 		<ngb-tab class="ngb-tab" title="Claim Recovery">
 			<ng-template ngbTabContent>
 				<app-claim-recovery></app-claim-recovery>
+			</ng-template>
+		</ngb-tab> -->
+		<ngb-tab class="ngb-tab" title="Attachments">
+			<ng-template ngbTabContent>
+				<app-acc-attachments></app-acc-attachments>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab class="ngb-tab" title="QSOA">
+			<ng-template ngbTabContent>
+				<app-qsoa></app-qsoa>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab title="Exit">

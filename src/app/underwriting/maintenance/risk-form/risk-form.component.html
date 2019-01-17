@@ -10,7 +10,7 @@
                             <div class="form-row custom-row-inline-inset">
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-2 text-right labels">Risk No.</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-2" placeholder="00001" style="text-align: right">
+                                    <input type="text" class="form-control form-control-sm col-sm-2" [placeholder]="newForm ? '' : '00001'" style="text-align: right">
                                     <input type="checkbox" class="checkbox text-right" checked>
                                     <label class="form-control-sm labels" style="text-align: left !important">Active Tag</label>
                                 </div>
@@ -18,13 +18,13 @@
                             <div class="form-row custom-row-inline-inset">
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-2 text-right labels">Description</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-9" placeholder="Filsys - MBI">
+                                    <input type="text" class="form-control form-control-sm col-sm-9" [placeholder]="newForm ? '' : 'Filsys - MBI'">
                                 </div>
                             </div>
                             <div class="form-row custom-row-inline-inset" style="margin-bottom: 14px !important;">
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-2 text-right labels">Abbreviation</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-9" placeholder="Filsys">
+                                    <input type="text" class="form-control form-control-sm col-sm-9" [placeholder]="newForm ? '' : 'Filsys'">
                                 </div>
                             </div>
                         </fieldset>
@@ -39,45 +39,45 @@
                             <div class="form-row custom-row-inline-inset">
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-1 text-right labels">Region</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-1" placeholder="4">
+                                    <input type="text" class="form-control form-control-sm col-sm-1" [placeholder]="newForm ? '' : '4'">
                                     <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-                                    <input type="text" class="form-control form-control-sm col-sm-4" placeholder="SOUTHERN TAGALOG" style="margin-left: 6px !important">
+                                    <input type="text" class="form-control form-control-sm col-sm-4" [placeholder]="newForm ? '' : 'SOUTHERN TAGALOG'" style="margin-left: 6px !important">
                                     <label class="form-control-sm col-sm-1 text-right labels">Province</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-1" placeholder="403">
+                                    <input type="text" class="form-control form-control-sm col-sm-1" [placeholder]="newForm ? '' : '403'">
                                     <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-                                    <input type="text" class="form-control form-control-sm col-sm-4" placeholder="LAGUNA" style="margin-left: 6px !important">
+                                    <input type="text" class="form-control form-control-sm col-sm-4" [placeholder]="newForm ? '' : 'LAGUNA'" style="margin-left: 6px !important">
                                 </div>
                             </div>
                             <div class="form-row custom-row-inline-inset">
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-1 text-right labels">City/Town</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-1" placeholder="40328">
+                                    <input type="text" class="form-control form-control-sm col-sm-1" [placeholder]="newForm ? '' : '40328'">
                                     <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-                                    <input type="text" class="form-control form-control-sm col-sm-4" placeholder="SANTA ROSA" style="margin-left: 6px !important">
+                                    <input type="text" class="form-control form-control-sm col-sm-4" [placeholder]="newForm ? '' : 'SANTA ROSA'" style="margin-left: 6px !important">
                                     <label class="form-control-sm col-sm-1 text-right labels">District</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-1" placeholder="LGSR">
+                                    <input type="text" class="form-control form-control-sm col-sm-1" [placeholder]="newForm ? '' : 'LGSR'">
                                     <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-                                    <input type="text" class="form-control form-control-sm col-sm-4" placeholder="STA.ROSA/BEL-AIR" style="margin-left: 6px !important">
+                                    <input type="text" class="form-control form-control-sm col-sm-4" [placeholder]="newForm ? '' : 'STA.ROSA/BEL-AIR'" style="margin-left: 6px !important">
                                 </div>
                             </div>
                             <div class="form-row custom-row-inline-inset">
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-1 text-right labels">Block</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-1" placeholder="UNBLK">
+                                    <input type="text" class="form-control form-control-sm col-sm-1" [placeholder]="newForm ? '' : 'UNBLK'">
                                     <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-                                    <input type="text" class="form-control form-control-sm col-sm-4" placeholder="STA.ROSA/BEL-AIR UNBLK" style="margin-left: 6px !important">
+                                    <input type="text" class="form-control form-control-sm col-sm-4" [placeholder]="newForm ? '' : 'STA.ROSA/BEL-AIR UNBLK'" style="margin-left: 6px !important">
                                     <label class="form-control-sm col-sm-1 text-right labels">Lat</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-2" placeholder="38.8951">
+                                    <input type="text" class="form-control form-control-sm col-sm-2" [placeholder]="newForm ? '' : '38.8951'">
                                     <label class="form-control-sm col-sm-1 text-right labels">Long</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-2" placeholder="-77.0364">
+                                    <input type="text" class="form-control form-control-sm col-sm-2" [placeholder]="newForm ? '' : '-77.0364'">
                                 </div>
                             </div>
                             <div class="form-row custom-row-inline-inset" style="margin-bottom: 16px !important;">
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-1 text-right labels" style="padding: 0; padding-right: 0.96px;">CRESTA Zone</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-1" placeholder="6">
+                                    <input type="text" class="form-control form-control-sm col-sm-1" [placeholder]="newForm ? '' : '6'">
                                     <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-                                    <input type="text" class="form-control form-control-sm col-sm-10" placeholder="Zone 6 (Albay, Bataan, Batangas, Bulacan, Camarines Norte, Catanduanes, Cavite, Laguna, Marinduque)" style="margin-left: 6px !important">
+                                    <input type="text" class="form-control form-control-sm col-sm-10" [placeholder]="newForm ? '' : 'Zone 6 (Albay, Bataan, Batangas, Bulacan, Camarines Norte, Catanduanes, Cavite, Laguna, Marinduque)'" style="margin-left: 6px !important">
                                 </div>
                             </div>
                         </fieldset>
@@ -92,13 +92,13 @@
                             <div class="form-row custom-row-inline-inset">
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-2 text-right labels">Remarks</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-9" placeholder="Added Latitude and Longitude">
+                                    <input type="text" class="form-control form-control-sm col-sm-9" [placeholder]="newForm ? '' : 'Added Latitude and Longitude'">
                                 </div>
                             </div>
                             <div class="form-row custom-row-inline-inset">
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-2 text-right labels">Created By</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-4" placeholder="CUARESMA">
+                                    <input type="text" class="form-control form-control-sm col-sm-4" [placeholder]="newForm ? '' : 'CUARESMA'">
                                     <label class="form-control-sm col-sm-2 text-right labels">Date Created</label>
                                     <input type="date" class="form-control form-control-sm col-sm-3">
                                 </div>
@@ -106,7 +106,7 @@
                             <div class="form-row custom-row-inline-inset" style="margin-bottom: 16px !important;">
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-2 text-right labels">Last Updated By</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-4" placeholder="POLECOM">
+                                    <input type="text" class="form-control form-control-sm col-sm-4" [placeholder]="newForm ? '' : 'POLECOM'">
                                     <label class="form-control-sm col-sm-2 text-right labels">Last Update</label>
                                     <input type="date" class="form-control form-control-sm col-sm-3">
                                 </div>

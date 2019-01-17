@@ -51,7 +51,8 @@ import { PolMxCedingCoComponent } from './underwriting/policy-maintenance/pol-mx
 import { AccountingComponent } from './accounting/accounting.component';
 import { AccountingInTrustComponent } from './accounting-in-trust/accounting-in-trust.component';
 import { AcctArListingsComponent } from './accounting-in-trust/acct-ar-listings/acct-ar-listings.component';
-
+import { CheckVoucherComponent } from './accounting-in-trust/check-voucher/check-voucher.component';
+import { GenerateCvComponent } from './accounting-in-trust/check-voucher/generate-cv/generate-cv.component';
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -109,6 +110,8 @@ const appRoutes: Routes = [
     { path: 'accounting', component: AccountingComponent },
     { path: 'accounting-in-trust', component: AccountingInTrustComponent },
     { path: 'acct-ar-listings', component: AcctArListingsComponent },
+    { path: 'check-voucher', component: CheckVoucherComponent },
+    { path: 'generate-cv', component: GenerateCvComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

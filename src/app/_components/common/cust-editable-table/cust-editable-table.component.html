@@ -114,10 +114,6 @@
 								<input *ngSwitchCase="'currency'" class="editable-text text-right number" type="text" [ngModel]="processData(key, data) | number:'1.2-2'"
 								 [ngModelOptions]="{updateOn:'blur'}" (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
 								<input *ngSwitchCase="'checkbox'" type="checkbox">
-								
-<!-- =======
-								<div *ngSwitchCase="'checkbox'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox"></div>
->>>>>>> b1c3410835a529fe6647f1324d64311af1ffe184 -->
 								<select *ngSwitchCase="'select'" class="editable-select" [value]="processData(key, data)">
 									<ng-container *ngFor="let data of opts">
 										<ng-container *ngIf="key == data.selector">

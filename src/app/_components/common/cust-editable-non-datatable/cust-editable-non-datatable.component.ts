@@ -38,6 +38,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     @Output() rowDblClick: EventEmitter<any> = new EventEmitter();
     @Output() add: EventEmitter<any> = new EventEmitter();
     @Output() edit: EventEmitter<any> = new EventEmitter();
+    @Output() genericBtn : EventEmitter<any> = new EventEmitter();
 
     @Input() passData: any = {
         tableData:[],
@@ -49,6 +50,8 @@ export class CustEditableNonDatatableComponent implements OnInit {
         opts:[],
         nData:{},
         checkFlag:false,
+
+
         selectFlag:false,
         addFlag:false,
         editFlag:false,
@@ -127,7 +130,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     onClickAdd() {
-        this.passData.tableData.push(this.passData.nData);
+        this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
         this.unliTableLength();    
         this.search(this.searchString);
     }
@@ -252,5 +255,9 @@ export class CustEditableNonDatatableComponent implements OnInit {
             }
             return sum;
         }
+    }
+
+    onClickGeneric(){
+        this.genericBtn.next();
     }
 }

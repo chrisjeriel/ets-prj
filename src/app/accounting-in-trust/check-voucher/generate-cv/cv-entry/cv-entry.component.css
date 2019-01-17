@@ -1,0 +1,11 @@
+.text-search-ico {
+	margin-left: -20px !important;
+    margin-right: 5px !important;
+    z-index: 200;
+}
+
+.cust-btn-extend{
+    max-width: inherit;
+    width: 100%;
+    margin-bottom: 5px;
+}

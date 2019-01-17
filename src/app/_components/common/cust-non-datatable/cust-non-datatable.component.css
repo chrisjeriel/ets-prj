@@ -1,8 +1,4 @@
 
-
-table{
-    width: 100%;
-}
 tbody tr, thead tr{
     height: calc(1.3rem + 1px);
 }
@@ -13,8 +9,9 @@ th, td{
     padding: 0px !important;*/
     padding: 10px !important;
     height: calc(1.3rem + 1px) !important;
-    min-width: 30px; 
-    max-width: 165px;
+    /*min-width: 30px; */
+    /*max-width: 100%;*/
+    /*max-width: 165px;*/
     overflow: hidden;
 }
 th{
@@ -27,6 +24,11 @@ td{
 }
 div.filler{
     padding: 6px;
+}
+.content-container{
+    /*min-width: inherit;
+    max-width: inherit;
+    width: inherit;*/
 }
 .margin-table{
     margin-top: 30px;
@@ -43,6 +45,9 @@ div.filler{
     position: -webkit-sticky !important; /* Safari */
     position: sticky !important;
     top: -0.55px;
+}
+.isCheckBox{
+    width: 10px !important;
 }
 .fixedTable{
     position: absolute;
@@ -192,7 +197,7 @@ div.filler{
 }
 
 .pagination{
-    margin-top: 2%;
+    margin-top: 0.5%;
     float: right;
 }
 
@@ -248,14 +253,17 @@ div.input-group {
 }
 
 .my-pagination /deep/ .ngx-pagination {
-    font-size: 9px;
+    font-size: 5px;
     border-radius: 4px;
 }
 
 .my-pagination /deep/ .ngx-pagination .current {
-    font-size: 12px;
+    font-size: 10px;
     font-weight: bold;
     border-radius: 4px;
+}
+/deep/ .cust-tabs-container ul li a span{
+    font-size: 10px !important;
 }
 
 .pagingStatus{

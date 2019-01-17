@@ -31,7 +31,7 @@ export class RiskListComponent implements OnInit {
     }
     
     onClickAdd(event){
-        this.router.navigate(['/maintenance-risk']);
+        this.router.navigate(['/maintenance-risk', { info: 'new'}], {skipLocationChange: true});
     }
     
     onClickEdit(event){
