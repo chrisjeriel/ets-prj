@@ -1,5 +1,4 @@
 import { Directive, ElementRef, HostListener } from '@angular/core';
-import { interceptingHandler } from '@angular/common/http/src/module';
 
 @Directive({
   selector: '[numbers-only]'

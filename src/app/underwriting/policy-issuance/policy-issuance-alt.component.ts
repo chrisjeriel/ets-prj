@@ -8,10 +8,7 @@ import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 })
 export class PolicyIssuanceAltComponent implements OnInit {
 
-    alteration: boolean;
-    constructor(private modalService: NgbModal) {
-        this.alteration = true;
-    }
+    constructor(private modalService: NgbModal) {}
 
     ngOnInit() {
     }
