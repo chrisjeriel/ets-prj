@@ -4,7 +4,7 @@ import { QuotationService } from '../../../_services';
 import { DummyInfo } from '../../../_models';
 import { ModalComponent } from '../../../_components/common/modal/modal.component';
 
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 @Component({
     selector: 'app-dummy',
     templateUrl: './dummy.component.html',
@@ -33,62 +33,62 @@ export class DummyComponent implements OnInit {
         tHeader: [
             "Quotation No.", "Type of Cession", "Line Class", "Status",
             "Ceding Company", "Principal", "Contractor", "Insured", "Risk",
-            "Object", "Site", "Policy No", "Currency", "Period From"
+            "Object", "Site", "Policy No", "Currency","Period From"
         ],
         filters: [
             {
                 key: 'quotationNo',
-                title: 'Quotation No.',
+                title:'Quotation No.',
                 dataType: 'text'
             },
             {
                 key: 'cessionType',
-                title: 'Type of Cession',
+                title:'Type of Cession',
                 dataType: 'text'
             },
             {
                 key: 'lineClass',
-                title: 'Line Class',
+                title:'Line Class',
                 dataType: 'text'
             },
             {
                 key: 'quoteStatus',
-                title: 'Quote Status',
+                title:'Quote Status',
                 dataType: 'text'
             },
             {
                 key: 'cedingCompany',
-                title: 'Ceding Company',
+                title:'Ceding Company',
                 dataType: 'text'
             },
             {
                 key: 'principal',
-                title: 'Principal',
+                title:'Principal',
                 dataType: 'text'
             },
             {
                 key: 'insured',
-                title: 'Insured',
+                title:'Insured',
                 dataType: 'text'
             },
             {
                 key: 'risk',
-                title: 'Risk',
+                title:'Risk',
                 dataType: 'text'
             },
             {
                 key: 'object',
-                title: 'Object',
+                title:'Object',
                 dataType: 'text'
             },
             {
                 key: 'location',
-                title: 'Insured',
+                title:'Insured',
                 dataType: 'text'
             },
             {
                 key: 'quoteDate',
-                title: 'Period From',
+                title:'Period From',
                 dataType: 'date'
             },
         ],
@@ -109,6 +109,7 @@ export class DummyComponent implements OnInit {
         tableOnly:true,
         pagination:true,
         checkFlag:true
+        
     };
 
     passDataEditable: any = {
@@ -122,14 +123,14 @@ export class DummyComponent implements OnInit {
         deleteFlag:true,
         //totalFlag:true,
         pageLength: 5,
-        searchFlag: true,
+        searchFlag:true,
         infoFlag: true,
         paginateFlag: true,
         magnifyingGlass:['id'],
         uneditable:[true,false,false,false,true,true,true],
     };
-
-    constructor(private quotationService: QuotationService, private modalService: NgbModal) {
+        
+    constructor(private quotationService: QuotationService, private modalService: NgbModal) { 
     }
 
     ngOnInit() {
@@ -238,28 +239,28 @@ export class DummyComponent implements OnInit {
         this.tableData = this.quotationService.getDummyInfo();
         this.tableData2 = this.quotationService.getDummyEditableInfo();
         this.tableData3 = this.quotationService.getQuotationListInfo();
-        this.tableData3.forEach(function (e) {
+        this.tableData3.forEach(function(e){
             delete e.quoteDate;
             delete e.validityDate;
             delete e.createdBy;
             delete e.requestedBy;
         });
-        this.passData.tableData.forEach(function (e) {
+        this.passData.tableData.forEach(function(e){
 
             delete e.validityDate;
             delete e.createdBy;
             delete e.requestedBy;
         });
 
-        this.passDataEditable.tableData = this.quotationService.getDummyEditableInfo();
+         this.passDataEditable.tableData = this.quotationService.getDummyEditableInfo();
     }
 
-    open() {
+    open(){
         this.modalService.dismissAll();
-        this.modalService.open(this.modalComp.test, { centered: true, backdrop: 'static', windowClass: 'modal-size' });
+        this.modalService.open(this.modalComp.test, { centered: true, backdrop: 'static', windowClass : 'modal-size' });
     }
-
-    openAgain() {
+    
+    openAgain(){
         this.modalService.dismissAll();
     }
 

@@ -1,56 +1,30 @@
 export class UnderwritingPolicyInquiryInfo {
-    line : string
-    policyNo : string
-    typeCession : string
-    cedingCompany : string
-    insured : string
-    risk: string
-    object : string
-    site : string
-    currency : string
-    sumInsured : number
-    premium : number
-    issueDate : Date
-    inceptionDate : Date
-    expiryDate : Date
-    accountingDate : Date
-    status : string
+    policyNo: string;
+    branch: string;
+    cedingCompany: string;
+    principal: string;
+    contractor: string;
+    intermediary: string;
+    insured: string;
+    status: string;
+    sectionISI: string;
+    sectionIISI: string;
+    sectionIIISI: string;
+    object: string;
 
-
-    constructor(
-        line : string,
-        policyNo : string,
-        typeCession : string,
-        cedingCompany : string,
-        insured : string,
-        risk: string,
-        object : string,
-        site : string,
-        currency : string,
-        sumInsured : number,
-        premium : number,
-        issueDate : Date,
-        inceptionDate : Date,
-        expiryDate : Date,
-        accountingDate : Date,
-        status : string) {
-        
-        this.line = line;
+    constructor(policyNo: string, branch: string, cedingCompany: string, principal: string, contractor: string, intermediary: string, insured: string, status: string, sectionISI: string, sectionIISI: string, sectionIIISI: string, object: string) {
         this.policyNo = policyNo;
-        this.typeCession = typeCession;
+        this.branch = branch;
         this.cedingCompany = cedingCompany;
+        this.principal = principal;
+        this.contractor = contractor;
+        this.intermediary = intermediary;
         this.insured = insured;
-        this.risk = risk;
-        this.object = object;
-        this.site= site;
-        this.currency = currency;
-        this.sumInsured = sumInsured;
-        this.premium = premium;
-        this.issueDate = issueDate;
-        this.inceptionDate = inceptionDate;
-        this.expiryDate = expiryDate;
-        this.accountingDate = accountingDate;
         this.status = status;
+        this.sectionISI = sectionISI;
+        this.sectionIISI = sectionIISI;
+        this.sectionIIISI = sectionIIISI;
+        this.object = object;
     }
 }
 
