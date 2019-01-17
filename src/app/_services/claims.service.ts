@@ -36,12 +36,4 @@ export class ClaimsService {
 		return this.claimsHistoryInfo;
 	}
 
-	getQSOAData(){
-		this.qsoaData = [
-			new QSOA("Q Ending",1341234,3424,42342,141),
-			new QSOA("Q Ending",1341234,3424,35223,1231345),
-		];
-		return this.qsoaData;
-	}
-
 }

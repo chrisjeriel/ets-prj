@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { QsoaComponent } from './qsoa.component';
+import { PolMxCedingCoComponent } from './pol-mx-ceding-co.component';
 
-describe('QsoaComponent', () => {
-  let component: QsoaComponent;
-  let fixture: ComponentFixture<QsoaComponent>;
+describe('PolMxCedingCoComponent', () => {
+  let component: PolMxCedingCoComponent;
+  let fixture: ComponentFixture<PolMxCedingCoComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ QsoaComponent ]
+      declarations: [ PolMxCedingCoComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(QsoaComponent);
+    fixture = TestBed.createComponent(PolMxCedingCoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

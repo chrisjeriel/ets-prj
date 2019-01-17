@@ -36,7 +36,6 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
     this.sub = this.route.params.subscribe(params => {
       this.line = params['line'];
-      this.alteration = params['alteration'];
     });
   }
 
@@ -49,6 +48,6 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   }
 
   toggleRadioBtnSet() {
-    document.getElementById('radioBtnSet').style.background = (!this.decChecked) ? '#ffffff' : '#e9ecef';
+    $('#radioBtnSet').css('backgroundColor', (!this.decChecked) ? '#ffffff' : '#e9ecef');
   }
 }
