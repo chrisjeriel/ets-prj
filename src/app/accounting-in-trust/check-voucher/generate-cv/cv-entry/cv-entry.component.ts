@@ -18,7 +18,7 @@ export class CvEntryComponent implements OnInit {
         addFlag:true,
         editFlag:true,
         //totalFlag:true,
-        pageLength: 10,
+        pageLength: 5,
         infoFlag: true,
         paginateFlag: true,
     };
