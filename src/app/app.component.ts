@@ -7,6 +7,7 @@ import { User } from './_models';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DOCUMENT } from '@angular/platform-browser';
 
+
 @Component({ 
     selector: 'app',
     templateUrl: 'app.component.html',
@@ -175,6 +176,11 @@ export class AppComponent  {
      ngOnInit(){
        this.theme = window.localStorage.getItem("selectedTheme");
            setTimeout(() => { this.changeTheme(this.theme);});
+
+       this.router.events.subscribe(path => {
+           setTimeout(() => { this.changeTheme(this.theme);});
+        });
+
       }
 
     @HostListener('window:unload', ['$event'])

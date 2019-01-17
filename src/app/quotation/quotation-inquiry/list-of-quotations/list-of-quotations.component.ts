@@ -163,8 +163,5 @@ export class ListOfQuotationsComponent implements OnInit {
         this.quotationService.toGenInfo = [];
         this.quotationService.toGenInfo.push("edit", this.line);
         this.router.navigate(['/quotation']);
-        
     }
-
-    
 }
