@@ -1,6 +1,5 @@
 export class AccCVPayReqList {
-	year : string;
-	seqNo : string;
+	payReqNo : string;
 	payee: string;
 	paymentType : string;
 	status : string;
@@ -11,8 +10,7 @@ export class AccCVPayReqList {
 	amount : number;
 
 	constructor(
-			year : string,
-			seqNo : string,
+			payReqNo : string,
 			payee : string,
 			paymentType : string,
 			status : string,
@@ -22,8 +20,7 @@ export class AccCVPayReqList {
 			curr : string,
 			amount : number){
 
-		this.year = year;
-		this.seqNo = seqNo;
+		this.payReqNo = payReqNo;
 		this.payee = payee;
 		this.paymentType = paymentType;
 		this.status = status;

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { AccountingService } from '@app/_services';
+import { AccCvAttachement } from '@app/_models'
 
 @Component({
   selector: 'app-cv-attachment',
@@ -15,6 +16,7 @@ export class CvAttachmentComponent implements OnInit {
     magnifyingGlass: [],
     options: [],
     dataTypes: [],
+    nData: new AccCvAttachement(null,null),
     opts: [],
     checkFlag: true,
     selectFlag: false,

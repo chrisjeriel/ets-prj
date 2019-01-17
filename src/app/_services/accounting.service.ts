@@ -15,7 +15,7 @@ export class AccountingService {
 
   getAccCVPayReqList() {
   	this.accCvPayReqList = [
-  		new AccCVPayReqList( "2018","00000034","San Miguel Corporation","Others","Open",new Date("09-20-18"),"Payment for San Miguel","Rosalinda Mercedez","PHP",27513)
+  		new AccCVPayReqList( "OPR-2018-01-0001","San Miguel Corporation","Others","Open",new Date("09-20-18"),"Payment for San Miguel","Rosalinda Mercedez","PHP",27513)
   	];
   	return this.accCvPayReqList;
   }

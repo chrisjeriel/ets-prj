@@ -17,11 +17,11 @@ export class CvPaymentRequestListComponent implements OnInit {
 
   passData: any = {
     tableData: [],
-    tHeader: ['Year','Seq. No.','Payee','Payment Type','Status','Request Date','Particulars','Requested By','Curr','Amount'],
-    resizable: [true, true, true, true, true, true, true, true, true, true],
-    dataTypes: ['text','text','text','text','text','date','text','text','text','currency'],
-    nData: new AccCVPayReqList(null,null,null,null,null,new Date(),null,null,null,null),
-    total:[null,null,null,null,null,null,null,null,'Total','amount'],
+    tHeader: ['Payment Request No.','Payee','Payment Type','Status','Request Date','Particulars','Requested By','Curr','Amount'],
+    resizable: [true, true, true, true, true, true, true, true, true],
+    dataTypes: ['text','text','text','text','date','text','text','text','currency'],
+    nData: new AccCVPayReqList(null,null,null,null,new Date(),null,null,null,null),
+    total:[null,null,null,null,null,null,null,'Total','amount'],
     checkFlag: true,
     addFlag: true,
     deleteFlag: true,
@@ -34,14 +34,15 @@ export class CvPaymentRequestListComponent implements OnInit {
     selectFlag: false,
     editFlag: false,
     pageLength: 10,
-    widths: [42,70,200,'auto',70,50,200,150,42,'auto']
+    widths: [100,200,'auto',70,50,200,150,42,'auto']
   };
 
 
 
-  constructor(private accountingService: AccountingService) { }
+  constructor(private accountingService: AccountingService,private titleService: Title) { }
 
   ngOnInit() {
+    this.titleService.setTitle(" Acct | CV | Payment Request List");
   	this.passData.tableData = this.accountingService.getAccCVPayReqList();
   }
 
