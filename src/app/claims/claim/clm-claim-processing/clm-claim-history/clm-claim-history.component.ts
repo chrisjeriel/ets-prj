@@ -35,7 +35,6 @@ export class ClmClaimHistoryComponent implements OnInit {
     infoFlag: true,
     pageLength: 10,
     pageID: 2,
-    nData: [null, null, null, null, null],
     widths: []
   }
 

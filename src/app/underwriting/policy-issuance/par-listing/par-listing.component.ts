@@ -78,7 +78,7 @@ export class ParListingComponent implements OnInit {
             },
             {
                 key: 'currency',
-                title: 'PCurrency',
+                title: 'Currency',
                 dataType: 'date'
             },
             {
