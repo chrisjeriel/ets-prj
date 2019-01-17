@@ -1,0 +1,111 @@
+ <div class="row">
+    <div class="col-sm-10" style="padding-right: 0px !important;">
+        <fieldset class="scheduler-border">
+            <legend class="scheduler-border">CV Info</legend>
+               <div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;">
+                <div class="input-group" style="margin-bottom: -13px !important; margin-top: 10px !important">
+                    <label class="form-control-sm col-sm-1" for="xx">CV. No</label>
+                    <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-1"
+                           placeholder="" style="margin-right: 4px !important;">
+                    <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-1"
+                           placeholder="">
+                    <label class="form-control-sm col-sm-1" for="xx">Date</label>
+                    <input type="date" id="xx" class="form-control form-control-sm cust-sm col-sm" placeholder="" style="margin-right: 4px !important;">
+                    <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-1"
+                           placeholder="">
+                    <label class="form-control-sm col-sm-1" for="xx">Tran ID</label>
+                    <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-2" placeholder="">
+                    <label class="form-control-sm col-sm-1" for="xx">Status</label>
+                    <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-2" placeholder="" style="margin-right: 2px !important">
+                    <div style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+                </div>
+                <div class="input-group">
+                    <label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Payee</label>
+                    <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-11" placeholder="" style="margin-right: 2px !important">
+                    <div style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+                </div>
+                <div class="input-group">
+                    <label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Particulars</label>
+                    <textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;margin-right: 5px !important;"></textarea>
+                </div>
+                <div class="input-group" style="margin-bottom: -5px !important;">
+                    <label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Amount</label>
+                    <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-1" placeholder="" style="margin-right: 4px !important;">
+                    <div style="margin-left: -20px !important;margin-right: 6px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+                    <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-2" placeholder="">
+                    <div class="col-sm-3"></div>
+                    <label class="form-control-sm col-sm-2" for="xx" style="height: auto;">Local Amount</label>
+                    <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-1" placeholder="" style="margin-right: 4px !important;">
+                    <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-2" placeholder="" style="margin-right: 5px !important;">
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <div class="col-sm-2" style="padding-left: 10px !important;">
+        <fieldset class="scheduler-border" style="padding-bottom: 16px !important;padding-left: 0px !important;    padding-right: 0px !important;">
+            <legend class="scheduler-border">CV Info</legend>
+            <div class="cust-btn-container" style="margin-top: 19px !important;margin-left: 10px !important;margin-right: 10px !important;"> 
+            <button class="cust-btn cust-btn-extend" style="width: 100%;margin-bottom: 10px !important;">New CV</button>
+            <button class="cust-btn cust-btn-extend" style="width: 100%;margin-bottom: 10px !important;">Save</button>
+            <button class="cust-btn cust-btn-extend" style="width: 100%">Print</button>
+            </div>
+        </fieldset>
+    </div>
+    <div class="col-sm-12">
+        <fieldset class="scheduler-border" style="padding-bottom: 20px !important;">
+            <legend class="scheduler-border">Check Details</legend>
+            <div class="test" style="margin-top: 10px !important;">
+                <app-cust-editable-non-datatable [passData]="passDataCheckDetails"></app-cust-editable-non-datatable>
+            </div>
+            <div class="col-sm-12" style="margin-top: 43px !important;">
+             <div class="form-row custom-row-inline-inset">
+                <div class="input-group">
+                    <label class="form-control-sm col-sm-1" for="xx">Prepared By</label>
+                    <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-3" placeholder="">
+                    <div style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+                    <label class="form-control-sm col-sm-1" for="xx">Certified Correct</label>
+                    <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-3" placeholder="">
+                    <div style="margin-left: -19px !important;margin-right: 6px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+                    <label class="form-control-sm col-sm-1" for="xx">Approved By</label>
+                    <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-3" placeholder="">
+                    <div style="margin-left: -19px !important;margin-right: 6px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+                </div>
+                <div class="input-group" style="margin-top: -7px !important;">
+                    <div class="col-sm-1"></div>
+                    <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-3" placeholder="">
+                    <div class="col-sm-1"></div>
+                    <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-3" placeholder="">
+                    <div class="col-sm-1"></div>
+                    <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-3" placeholder="">
+                </div>
+                <div class="input-group" style="margin-top: 15px !important;margin-bottom: -25px !important;">
+                    <label class="form-control-sm col-sm-1" for="xx">Date Prepared</label>
+                    <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-3" placeholder="">
+                    <label class="form-control-sm col-sm-1" for="xx">Date Certified</label>
+                    <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-3" placeholder="">
+                    <label class="form-control-sm col-sm-1" for="xx">Date Approved</label>
+                    <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-3" placeholder="">
+                </div>
+            </div>
+            </div>
+        </fieldset>
+    </div>
+    <div class="col-sm-12" style="margin-top: 15px !important;">
+        <fieldset class="scheduler-border">
+            <div class="custom-row-inline-inset">
+                <div class="form-row" style="margin-bottom: -10px;">
+                    <div class="input-group">
+                        <label class="form-control-sm col-sm-1">Created By</label>
+                        <input type="text" appCurrency class="form-control form-control-sm col-sm" placeholder="cuaresma">
+                        <label class="form-control-sm col-sm-1">Date Created</label>
+                        <input type="date" class="form-control form-control-sm col-sm">
+                        <label class="form-control-sm col-sm-1">Last Updated By</label>
+                        <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma">
+                        <label class="form-control-sm col-sm-1">Last Update</label>
+                        <input type="date" class="form-control form-control-sm col-sm">
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>

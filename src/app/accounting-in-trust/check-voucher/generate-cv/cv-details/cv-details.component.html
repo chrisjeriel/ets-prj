@@ -72,8 +72,8 @@
 				<fieldset class="scheduler-border" style="margin: 0px !important; border: 1px solid #ddd !important;">
 					<div class="row" style="margin-top: 0.6em">
 					<!-- <div class="col-sm-1"></div> -->
-						<div class="col-sm-12" style="position: relative; padding-left: 4em; padding-right: 4em;">
-							<div style="position: absolute; right: 68px;">
+						<div class="col-sm-12" style="position: relative;">
+							<div style="position: absolute; right: 19px;">
 								 <div class="form-row custom-row-inline-inset">
 	                                <div class="input-group">
 	                                     <label class="form-control-sm labels" style="text-align: left !important">Auto Compute</label>
@@ -96,8 +96,8 @@
 				<fieldset class="scheduler-border" style="margin: 0px !important; border: 1px solid #ddd !important;">
 					<div class="row" style="margin-top: 0.6em; padding-bottom: 2.65em;">
 						<!-- <div class="col-sm-1"></div> -->
-						<div class="col-sm-12" style="position: relative; padding-left: 2em; padding-right: 2em;">
-							<div style="position: absolute; right: 29px;">
+						<div class="col-sm-12" style="position: relative;">
+							<div style="position: absolute; right: 12px;">
 								<button class="cust-btn">Print AE</button>
 							</div>
 							<app-cust-editable-non-datatable [passData]="accountingEntriesData"></app-cust-editable-non-datatable>
@@ -112,7 +112,18 @@
 				<div>Tax Details</div>
 			</ng-template>
 			<ng-template ngbTabContent>
-				<!--Add your content here -->
+                <fieldset class="scheduler-border" style="margin: 0px !important; border: 1px solid #ddd !important;">
+               <legend class="scheduler-border">VAT Details</legend>
+                    <div class="test" style="margin-top: 10px !important;margin-bottom: 10px !important;">
+                        <app-cust-editable-non-datatable [passData]="accountingVATTaxDetails"></app-cust-editable-non-datatable>
+                    </div>
+                </fieldset>
+                <fieldset class="scheduler-border" style="margin: 0px !important; border: 1px solid #ddd !important;">
+               <legend class="scheduler-border">Creditable WTax Details</legend>
+                    <div class="test" style="margin-top: 10px !important;margin-bottom: 10px !important;">
+                        <app-cust-editable-non-datatable [passData]="accountingCreditableTaxDetails"></app-cust-editable-non-datatable>
+                    </div>
+                </fieldset>
 			</ng-template>
 		</ngb-tab>
 	</ngb-tabset>

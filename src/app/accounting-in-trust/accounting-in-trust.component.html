@@ -11,17 +11,17 @@
 				<app-ar-details></app-ar-details>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab class="ngb-tab" title="Inward Policy Balances"> <!-- [disabled]="ipbTab"> -->
+		<ngb-tab class="ngb-tab" title="Inward Policy Balances" [disabled]="ipbTab">
 			<ng-template ngbTabContent>
 				<app-inward-policy-balances></app-inward-policy-balances>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab class="ngb-tab" title="Claim Recovery"> <!-- [disabled]="crTab"> -->
+		<ngb-tab class="ngb-tab" title="Claim Recovery" [disabled]="crTab">
 			<ng-template ngbTabContent>
 				<app-claim-recovery></app-claim-recovery>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab class="ngb-tab" title="QSOA">
+		<ngb-tab class="ngb-tab" title="QSOA" [disabled]="qsoaTab">
 			<ng-template ngbTabContent>
 				<app-qsoa></app-qsoa>
 			</ng-template>
