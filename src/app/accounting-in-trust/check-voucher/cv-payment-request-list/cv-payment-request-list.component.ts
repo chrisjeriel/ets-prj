@@ -21,6 +21,7 @@ export class CvPaymentRequestListComponent implements OnInit {
     resizable: [true, true, true, true, true, true, true, true, true, true],
     dataTypes: ['text','text','text','text','text','date','text','text','text','currency'],
     nData: new AccCVPayReqList(null,null,null,null,null,new Date(),null,null,null,null),
+    total:[null,null,null,null,null,null,null,null,'Total','amount'],
     checkFlag: true,
     addFlag: true,
     deleteFlag: true,
@@ -33,6 +34,7 @@ export class CvPaymentRequestListComponent implements OnInit {
     selectFlag: false,
     editFlag: false,
     pageLength: 10,
+    widths: [42,70,200,'auto',70,50,200,150,42,'auto']
   };
 
 

@@ -42,3 +42,4 @@ export * from './UnderwritingBatchPosting';
 export * from './UnderwritingBatchDistribution';
 export * from './MaintenanceDeductibles';
 export * from './AccCVPayReqList';
+export * from './AccCVAttachement';
