@@ -1,37 +1,9 @@
-<style type="text/css">
-  .input-group {
-        padding: 0px !important;
-        margin: 0px !important;
-    }
-
-    .input-group label {
-        padding: 0px !important;
-        margin: 0px !important;
-    }
-
-  .input-ig-row {
-        margin-left: 2px !important;
-    }
-    .ig-row {
-        margin : -3px !important;
-        /*margin-bottom: -14px ! important;*/
-    }
-    .ig-row label {
-        margin-right: 5px !important;
-    }
-</style>
 <div class="cust-tabs-container">
   <h4>Policy / Inquiry </h4>
   <ngb-tabset>
     <ngb-tab title="Policy Inquiry">
       <ng-template ngbTabContent>
-        <div class="container-fluid">
-         <div class="row">
-            <div class="col-sm" style="padding: 0">
-                <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)"></app-cust-non-datatable>
-            </div>
-          </div>
-   <!--      <fieldset class="scheduler-border">
+        <fieldset class="scheduler-border">
           <legend class="scheduler-border">Policy Info</legend>
           <div class="row">
             <div class="col-sm-1"></div>
@@ -182,8 +154,8 @@
           <div class="col-sm-4"></div>
         </div>
 
-        <div> -->
-          <!-- <app-cust-table [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes"></app-cust-table>
+        <div>
+          <!-- <app-cust-table [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes"></app-cust-table> -->
         </div>
         <fieldset class="scheduler-border" style="margin-top: -10px !important;padding-bottom: 0px !important">
           <legend class="scheduler-border">Section Covers</legend>
@@ -191,75 +163,7 @@
             <app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
           </div>
         </fieldset>
-        <br> -->
-
-        <div class="row">
-         <div class="col-sm-6" style="padding-left: 0px;padding-right: 8px">
-            <fieldset class="scheduler-border">
-               <div class="form-row" style="margin-right: 0px; margin-bottom: 1px;">
-                  <div class="input-group ig-row" style="margin-top: 9px ! important;margin-left: 10px ! important;margin-right: 25px ! important" >
-                      <label class="form-control-sm col-sm-2">Policy No</label>
-                      <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 8px ! important" readonly [value]="policyList.policyNo">
-                  </div>
-                  <div class="input-group ig-row" style="margin-right: 25px ! important;;margin-left: 10px ! important" >
-                      <label class="form-control-sm col-sm-2">Type of Cession</label>
-                      <input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important" readonly [value]="policyList.typeCession">
-                      <label class="form-control-sm col-sm-2">Status</label>
-                      <input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 5px ! important" readonly [value]="policyList.status">
-                  </div>
-                  <div class="input-group ig-row" style="margin-right: 25px ! important;;margin-left: 10px ! important" >
-                      <label class="form-control-sm col-sm-2">Ceding Company</label>
-                      <input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 8px ! important" readonly [value]="cedNum">
-                      <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px ! important" readonly [value]="policyList.cedingCompany">
-                  </div>
-                  <div class="input-group ig-row" style="margin-right: 25px ! important;;margin-left: 10px ! important" >
-                      <label class="form-control-sm col-sm-2">Inception Date</label>
-                      <input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important" readonly [value]="policyList.inceptionDate | date: 'MM-dd-yyyy hh:mm a'">
-                      <label class="form-control-sm col-sm-2">Expiry Date</label>
-                      <input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important" readonly  [value]="policyList.expiryDate  | date: 'MM-dd-yyyy hh:mm a'">
-                  </div>
-                  <div class="input-group ig-row" style="margin-right: 25px ! important;;margin-left: 10px ! important" >
-                      <label class="form-control-sm col-sm-2">Issue Date</label>
-                      <input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important" readonly  [value]="policyList.issueDate  | date: 'MM-dd-yyyy hh:mm a'">
-                      <label class="form-control-sm col-sm-2">Acct. Date</label>
-                      <input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important" readonly  [value]="policyList.accountingDate  | date: 'MM-dd-yyyy hh:mm a'">
-                  </div>
-               </div>
-            </fieldset>              
-         </div>
-         <div class="col-sm-6" style="padding-right: 0px;padding-left: 8px">
-              <fieldset class="scheduler-border">
-               <div class="form-row" style="margin-right: 0px; margin-bottom: 1px;">
-                  <div class="input-group ig-row" style="margin-top: 9px ! important;margin-left: 10px ! important;margin-right: 25px ! important" >
-                      <label class="form-control-sm col-sm-2">Insured</label>
-                      <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 8px ! important" readonly [value]="policyList.insured">
-                  </div>
-                  <div class="input-group ig-row" style="margin-right: 25px ! important;;margin-left: 10px ! important" >
-                      <label class="form-control-sm col-sm-2">Risk</label>
-                      <input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important" readonly [value]="policyList.risk">
-                  </div>
-                  <div class="input-group ig-row" style="margin-right: 25px ! important;;margin-left: 10px ! important" >
-                      <label class="form-control-sm col-sm-2">Site</label>
-                      <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 8px ! important" readonly [value]="policyList.site">
-                  </div>
-                  <div class="input-group ig-row" style="margin-right: 25px ! important;;margin-left: 10px ! important" >
-                      <label class="form-control-sm col-sm-2">Object</label>
-                      <input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important" readonly [value]="policyList.object">
-                      <label class="form-control-sm col-sm-2">Currency</label>
-                      <input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important" readonly [value]="policyList.currency">
-                  </div>
-                  <div class="input-group ig-row" style="margin-right: 25px ! important;;margin-left: 10px ! important" >
-                      <label class="form-control-sm col-sm-2">Sum Insured</label>
-                      <input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important;text-align: right" readonly [value]="policyList.sumInsured | number: '1.2-2'">
-                      <label class="form-control-sm col-sm-2">Premium</label>
-                      <input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important;text-align: right" readonly [value]="policyList.premium | number: '1.2-2'">
-                  </div>
-               </div>
-            </fieldset>        
-
-            </div>
-          </div>
-        </div>
+        <br>
       </ng-template>
     </ngb-tab>
   </ngb-tabset>
