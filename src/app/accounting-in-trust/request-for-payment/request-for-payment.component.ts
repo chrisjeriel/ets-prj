@@ -37,7 +37,17 @@ export class RequestForPaymentComponent implements OnInit {
 
   onClickEdit(event){
     console.log(this.routeData);
-  	this.router.navigate(['generate-payt-req', {data: this.routeData}], {skipLocationChange: true});
+  	this.router.navigate(['generate-payt-req',
+         {reqNo: this.routeData.paytReqNo,
+          payee: this.routeData.payee,
+          paymentType: this.routeData.paymentType,
+          status: this.routeData.status,
+          amount: this.routeData.amount,
+          currency: this.routeData.currency,
+          particulars: this.routeData.particulars,
+          reqDate: this.routeData.requestDate,
+          reqBy: this.routeData.requestedBy,
+          }], {skipLocationChange: true});
   }
 
   onRowClick(data){

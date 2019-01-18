@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-payment-request-entry',
@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./payment-request-entry.component.css']
 })
 export class PaymentRequestEntryComponent implements OnInit {
+
+  @Input() data: any = {};
 
   constructor() { }
 

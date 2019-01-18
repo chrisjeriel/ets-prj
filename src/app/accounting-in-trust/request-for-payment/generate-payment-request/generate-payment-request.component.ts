@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -6,18 +6,33 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './generate-payment-request.component.html',
   styleUrls: ['./generate-payment-request.component.css']
 })
-export class GeneratePaymentRequestComponent implements OnInit {
+export class GeneratePaymentRequestComponent implements OnInit, OnDestroy {
 
   private sub: any;
   rowData: any;
+
+  paymentData: any = {};
 
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
   	this.sub = this.route.params.subscribe(params => {
-      this.rowData = params['data'];
+      this.paymentData = {
+      		reqNo: params['reqNo'],
+      		payee: params['payee'],
+      		paymentType: params['paymentType'],
+      		status: params['status'],
+      		amount: params['amount'],
+      		currency: params['currency'],
+      		particulars: params['particulars'],
+      		reqDate: params['reqDate'],
+      		reqBy: params['reqBy']
+      }
     });
-    console.log(this.rowData.payee);
+  }
+
+  ngOnDestroy(){
+  	this.sub.unsubscribe();
   }
 
 }
