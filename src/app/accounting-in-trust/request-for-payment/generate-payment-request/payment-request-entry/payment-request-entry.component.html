@@ -25,7 +25,7 @@
    		                    </div>
    		                    <label class="form-control-sm col-sm-1" for="xx">Status</label>
    	                    	<div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-12" [value]="data.status"
+   		                    	<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-12" [value]="data.status == undefined ? '' : data.status"
    		                    	       placeholder="Open">
    		                    	<div style="margin-left: -19px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
    		                    </div>
@@ -34,34 +34,34 @@
    		                <div class="input-group" style="margin-bottom: -14px !important;">
    		                    <label class="form-control-sm col-sm-1" for="xx">Payment Type</label>
    	                    	<div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-12" [value]="data.paymentType"
+   		                    	<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-12" [value]="data.paymentType == undefined ? '' : data.paymentType"
    		                    	       placeholder="Claim Payment">
    		                    	<div style="margin-left: -19px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
    		                    </div>
    		                    <label class="form-control-sm col-sm-1" for="xx">Amount</label>
    		                    <div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-4" [value]="data.currency" placeholder="PHP" style="margin-right: 4px !important;">
+   		                    	<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-4" [value]="data.currency == undefined ? '' : data.currency" placeholder="PHP" style="margin-right: 4px !important;">
    			                    <div style="margin-left: -19px !important;margin-right: 4px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
-   			                    <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-8" style="text-align: right" [value]="data.amount"
+   			                    <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-8" style="text-align: right" [value]="data.amount == undefined ? '' : data.amount"
    			                           placeholder="10,000,000.00">
    		                    </div>
    		                   	<label class="form-control-sm col-sm-1" for="xx">Local Amount</label>
    		                    <div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-4" [value]="data.currency" placeholder="PHP" style="margin-right: 4px !important;">
+   		                    	<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-4" [value]="data.currency == undefined ? '' : data.currency" placeholder="PHP" style="margin-right: 4px !important;">
    			                    <div style="margin-left: -19px !important;margin-right: 4px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
-   			                    <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-8" style="text-align: right" [value]="data.amount"
+   			                    <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-8" style="text-align: right" [value]="data.amount == undefined ? '' : data.amount"
    			                           placeholder="10,000,000.00">
    		                    </div>
    		                </div>
 
    		                <div class="input-group">
    		                    <label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Payee</label>
-   		                    <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-11" [value]="data.payee" placeholder="San Miguel Corporation">
+   		                    <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-11" [value]="data.payee == undefined ? '' : data.payee" placeholder="San Miguel Corporation">
    		                    <div style="margin-left: -19px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
    		                </div>
    		                <div class="input-group">
    		                    <label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Particulars</label>
-   		                    <textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;" [value]="data.particulars" placeholder="Representing claim payment for San Miguel Corporation"></textarea>
+   		                    <textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;" [value]="data.particulars == undefined ? '' : data.particulars" placeholder="Representing claim payment for San Miguel Corporation"></textarea>
    		                </div>
    		                <div class="input-group" style="    margin-bottom: -19px !important;">
    		                   	<label class="form-control-sm col-sm-1 labels" for="xx">PR ID</label>
@@ -89,7 +89,7 @@
    		                    </div>
    		                    <label class="form-control-sm col-sm-1 labels" for="xx">Requested By</label>
    	                    	<div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-12" [value]="data.reqBy"
+   		                    	<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-12" [value]="data.reqBy == undefined ? '' : data.reqBy"
    		                    	       placeholder="Juan Dela Cruz">
    		                    	<div style="margin-left: -19px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
    		                    </div>
