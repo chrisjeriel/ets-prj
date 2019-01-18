@@ -28,10 +28,10 @@
     </div>
 </fieldset> -->
 
-<fieldset class="scheduler-border">
-    <legend class="scheduler-border">C.V. Info</legend>
+<!-- <fieldset class="scheduler-border">
+    <legend class="scheduler-border">CV. Info</legend>
     <div class="form-row custom-row-inline-inset" style="margin-top: 1px !important;margin-left: -3em;margin-right: 1em;">
-        <div class="input-group" style="margin-bottom: -11px !important; margin-top: 7px !important;">
+        <div class="input-group" style="margin-bottom: -14px !important; margin-top: 7px !important;">
             <div class="col-sm-8" style="padding-left: 37px;padding-right: 3px">
                 <div class="input-group">
                     <label class="form-control-sm col-sm-1" for="xx">CV No</label>
@@ -48,16 +48,61 @@
                 </div>
             </div>
             <label class="form-control-sm col-sm-1" for="xx" style="margin-left: -3px;">Amount</label>
-            <input type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm-1" placeholder="PHP" style="margin-right: 4px !important;" readonly>
-            <input type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="27,153.30" style="text-align: right" readonly>
+            <input type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm-1" placeholder="PHP" readonly>
+            <input type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="27,153.30" style="text-align: right; margin-left: 2px !important;" readonly>
         </div>
         <div class="input-group" style="margin-bottom: -13px !important;">
-            <label class="form-control-sm col-sm-1" for="xx">Payee</label>
-            <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-7" placeholder="San Miguel Corporation"
-                   readonly>
-            <label class="form-control-sm col-sm-1" for="xx">Local Amount</label>
-            <input type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm-1" placeholder="PHP" style="margin-right: 4px !important;" readonly>
-            <input type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="27,153.30" style="text-align: right" readonly>
+            <div class="col-sm-8" style="padding-left: 37px;padding-right: 3px">
+                <div class="input-group">
+                    <label class="form-control-sm col-sm-1" for="xx">Payee</label>
+                    <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-11" placeholder="San Miguel Corporation"
+                           readonly>
+                </div>
+            </div>
+            
+            <label class="form-control-sm col-sm-1" for="xx" style="margin-left: -3px;">Local Amount</label>
+            <input type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm-1" placeholder="PHP" readonly>
+            <input type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="27,153.30" style="text-align: right; margin-left: 2px !important; margin-right: 1px !important" readonly>
+        </div>
+    </div>
+</fieldset>
+ -->
+ <fieldset class="scheduler-border">
+    <legend class="scheduler-border">CV Info</legend>
+    <div class="form-row custom-row-inline-inset">
+        <div class="col-sm-8">
+            <div class="input-group">
+                <label class="form-control-sm col-sm-1" for="xx" style="padding-left:0px !important;">CV No</label>
+                <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-1"
+                       placeholder="2015" style="text-align: right" readonly>
+               <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-2"
+               placeholder="00000001" style="text-align: right; margin-left: 2px;" readonly>
+                <label class="form-control-sm col-sm-1" for="xx">Date</label>
+                <input type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="10/01/2018 11:49 AM" readonly>
+                <label class="form-control-sm col-sm-1 text-right" for="xx">Tran ID</label>
+                <input type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="000284723" style="text-align: right" readonly>
+                <label class="form-control-sm col-sm-1" for="xx">Status</label>
+                <input type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm-1" placeholder="New" readonly>
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-1" for="xx" style="padding-left:0px !important;">Payee</label>
+                <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm" placeholder="San Miguel Corporation"
+                       readonly>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="input-group">
+                <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Amount</label>
+                <input type="text" value="PHP" class="form-control form-control-sm cust-sm col-sm-1" placeholder="" readonly>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
+                 placeholder="27,153.30" readonly>
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Local Amount</label>
+                <input type="text" value="PHP" class="form-control form-control-sm cust-sm col-sm-1" placeholder="" readonly>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
+                 placeholder="27,153.30" readonly>
+            </div>
         </div>
     </div>
 </fieldset>
@@ -129,8 +174,8 @@
 	</ngb-tabset>
 </div>
 
-<fieldset class="scheduler-border" style="margin: 0px !important; margin-top: 12px !important;">
-	<div class="form-row custom-row-inline-inset" style="margin-left: -27px;">
+<fieldset class="scheduler-border" style="margin: 0px !important; margin-top: 12px !important; ">
+	<div class="form-row custom-row-inline-inset" style="margin-left: -27px; margin-bottom: 15px !important;">
         <div class="input-group">
             <label class="form-control-sm col-sm-1 text-right labels">Created By</label>
             <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma">

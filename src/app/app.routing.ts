@@ -53,6 +53,9 @@ import { AccountingInTrustComponent } from './accounting-in-trust/accounting-in-
 import { AcctArListingsComponent } from './accounting-in-trust/acct-ar-listings/acct-ar-listings.component';
 import { CheckVoucherComponent } from './accounting-in-trust/check-voucher/check-voucher.component';
 import { GenerateCvComponent } from './accounting-in-trust/check-voucher/generate-cv/generate-cv.component';
+import { RequestForPaymentComponent } from './accounting-in-trust/request-for-payment/request-for-payment.component';
+import { GeneratePaymentRequestComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/generate-payment-request.component';
+import { AcctItCancelledTransactionsComponent } from './accounting-in-trust/accounting-inquiry/acct-it-cancelled-transactions/acct-it-cancelled-transactions.component';
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -112,6 +115,9 @@ const appRoutes: Routes = [
     { path: 'acct-ar-listings', component: AcctArListingsComponent },
     { path: 'check-voucher', component: CheckVoucherComponent },
     { path: 'generate-cv', component: GenerateCvComponent },
+    { path: 'payt-req', component: RequestForPaymentComponent },
+    { path: 'generate-payt-req', component: GeneratePaymentRequestComponent },
+    { path: 'acct-it-cancelled-trans', component: AcctItCancelledTransactionsComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

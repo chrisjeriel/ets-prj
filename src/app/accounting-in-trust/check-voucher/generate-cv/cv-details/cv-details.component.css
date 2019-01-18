@@ -11,3 +11,7 @@
 .checkbox{
     margin-top: 5px;
 }
+
+.input-group {
+    margin-bottom: -14px !important;
+}

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 import { AmountDetailsCV, AccountingEntriesCV, VATDetails, CreditableTax } from '@app/_models';
 
@@ -62,10 +63,10 @@ export class CvDetailsComponent implements OnInit {
     genericBtn: 'Save',
   }
 
-  constructor(private accountingService: AccountingService) { }
+  constructor(private accountingService: AccountingService, private titleService: Title) { }
 
   ngOnInit() {
-
+     this.titleService.setTitle("Acct-IT | CV Details");
   }
 
 }
