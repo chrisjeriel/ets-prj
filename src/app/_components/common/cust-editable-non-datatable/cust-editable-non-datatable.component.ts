@@ -260,4 +260,8 @@ export class CustEditableNonDatatableComponent implements OnInit {
     onClickGeneric(){
         this.genericBtn.next();
     }
+
+    typeOf(data){
+        return typeof data;
+    }
 }
