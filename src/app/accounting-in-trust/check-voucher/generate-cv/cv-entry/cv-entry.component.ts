@@ -13,7 +13,7 @@ export class CvEntryComponent implements OnInit {
   passDataCheckDetails: any = {
         tableData: this.accountingService.getCheckDetails(),
         tHeader: ["Bank", "Account No", "Check Date", "Check No", "Check Class","Curr","Amount"],
-        dataTypes: ['text','text','date','number','text','text','currency',],
+        dataTypes: ['text','text','date','sequence-8','text','text','currency',],
         uneditable:[true,true,false,true,false,true,true],
         addFlag:true,
         editFlag:true,

@@ -50,3 +50,4 @@ export * from './QSOA';
 export * from './AccountingTaxDetailsCV';
 export * from './AccountingRequestsListRP';
 export * from './AccountingITCancelledTransactions';
+export * from './AccountingJVListing';

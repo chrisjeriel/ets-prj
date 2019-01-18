@@ -137,8 +137,13 @@ import { RequestForPaymentComponent } from './accounting-in-trust/request-for-pa
 import { GeneratePaymentRequestComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/generate-payment-request.component';
 import { PaymentRequestEntryComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/payment-request-entry/payment-request-entry.component';
 import { AcctItCancelledTransactionsComponent } from './accounting-in-trust/accounting-inquiry/acct-it-cancelled-transactions/acct-it-cancelled-transactions.component';
+import { JournalVoucherComponent } from './accounting-in-trust/journal-voucher/journal-voucher.component';
+import { GenerateJvComponent } from './accounting-in-trust/journal-voucher/generate-jv/generate-jv.component';
+import { JvEntryComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-entry/jv-entry.component';
 import { AccountingEntriesComponent } from './accounting-in-trust/extract/accounting-entries/accounting-entries.component';
 import { ExtractComponent } from './accounting-in-trust/extract/accounting-entries/extract/extract.component';
+import { TrialBalanceComponent } from './accounting-in-trust/extract/trial-balance/trial-balance.component';
+import { TrialBalanceExtractComponent } from './accounting-in-trust/extract/trial-balance/trial-balance-extract/trial-balance-extract.component';
 
 @NgModule({
     imports: [
@@ -280,8 +285,13 @@ import { ExtractComponent } from './accounting-in-trust/extract/accounting-entri
         GeneratePaymentRequestComponent,
         PaymentRequestEntryComponent,
         AcctItCancelledTransactionsComponent,
+        JournalVoucherComponent,
+        GenerateJvComponent,
+        JvEntryComponent,
         AccountingEntriesComponent,
         ExtractComponent,
+        TrialBalanceComponent,
+        TrialBalanceExtractComponent
     ],
 
     providers: [

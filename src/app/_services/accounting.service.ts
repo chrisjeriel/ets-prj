@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions } from '@app/_models';
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing } from '@app/_models';
 
 @Injectable({
 	providedIn: 'root'
@@ -19,6 +19,7 @@ export class AccountingService {
 	creditableTax: CreditableTax[]=[];
 	paytRequestListData: AccountingRequestsListRP[] = [];
 	cancelledTransactionsData: AccountingITCancelledTransactions[] = [];
+	jvListing: JVListing[]=[];
 
 	constructor(private http: HttpClient) { }
 
@@ -65,7 +66,7 @@ export class AccountingService {
 
 	getCheckDetails(){
 		this.checkDetails = [
-			new CheckDetails("Banco De Oro","PCPA-9091-7001-7389",new Date(),1794832,"Local Clearing","PHP",27513.29),
+			new CheckDetails("Banco De Oro","PCPA-9091-7001-7389",new Date(),17948303,"Local Clearing","PHP",27513.29),
 		]
 
 		return this.checkDetails;
@@ -179,4 +180,20 @@ export class AccountingService {
 
 		return this.cancelledTransactionsData;
 	}
+	getJVListing() {
+		this.jvListing = [
+			new JVListing("2015-00000001",new Date(2015,10,1),"To correct entries in","Error Connection","2014-00004342","Ronwaldo Roque","Printed",1642857.14),
+			new JVListing("2017-00000001",new Date(2015,10,1),"To correct entries in","Error Connection","2016-00001644","Chie Reyes","Printed",200000),
+			new JVListing("2017-00000002",new Date(2015,10,1),"To correct entries in","Error Connection","2016-00001645","Lourdes Gualvez","Printed",100000),
+			new JVListing("2017-00000003",new Date(2015,10,1),"To correct entries in","Error Connection","2016-00001646","Chie Reyes","Printed",1000000),
+			new JVListing("2018-00000001",new Date(2015,10,1),"To correct entries in","Error Connection","2017-00000324","Chie Reyes","Printed",710716.12),
+			new JVListing("2018-00000010",new Date(2015,10,1),"To correct entries in","Error Connection","2018-00000009","Lourdes Gualvez","Open",756929),
+			new JVListing("2018-00000016",new Date(2015,10,1),"To correct entries in","Error Connection","2018-00000012","Lourdes Gualvez","Cancelled",300000),
+			new JVListing("2018-00000045",new Date(2015,10,1),"To correct entries in","Error Connection","2018-00000041","Ronwaldo Roque","Cancelled",1000000),
+			new JVListing("2018-00000099",new Date(2015,10,1),"To correct entries in","Error Connection","2018-00000098","Ronwaldo Roque","Open",230000),
+			new JVListing("2018-00000123",new Date(2015,10,1),"To correct entries in","Error Connection","2018-00000122","Ronwaldo Roque","Open",1500000),
+		]
+		return this.jvListing;
+	}
+
 }
