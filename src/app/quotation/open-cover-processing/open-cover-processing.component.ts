@@ -29,9 +29,90 @@ export class OpenCoverProcessingComponent implements OnInit {
     //dataTypes: ['text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', "text", 'date', 'date', 'text', 'text'],
     dataTypes: ["text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text"],
     resizable: [false, true, true, true, true, true, true, true, true, true, false, false, true, true, true, true],
-    filters: [],
     pageLength: 10,
     expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: true, printBtn: false, pagination: true, pageStatus: true,
+    filters: [
+      {
+        key: 'openCoverQuotationNo',
+        title: 'OC Quo. No',
+        dataType: 'text'
+      },
+      {
+        key: 'typeOfCession',
+        title: 'Type of Cession',
+        dataType: 'text'
+      },
+      {
+        key: 'lineClass',
+        title: 'Line Class',
+        dataType: 'text'
+      },
+      {
+        key: 'status',
+        title: 'Status',
+        dataType: 'text'
+      },
+      {
+        key: 'cedingCompany',
+        title: 'Ceding Co',
+        dataType: 'text'
+      },
+      {
+        key: 'principal',
+        title: 'Principal',
+        dataType: 'text'
+      },
+      {
+        key: 'contractor',
+        title: 'Contractor',
+        dataType: 'text'
+      },
+      {
+        key: 'insured',
+        title: 'Insured',
+        dataType: 'text'
+      },
+      {
+        key: 'risk',
+        title: 'Risk',
+        dataType: 'text'
+      },
+      {
+        key: 'qObject',
+        title: 'Object',
+        dataType: 'text'
+      },
+      {
+        key: 'site',
+        title: 'Site',
+        dataType: 'text'
+      },
+      {
+        key: 'currency',
+        title: 'Currency',
+        dataType: 'text'
+      },
+      {
+        key: 'quoteDate',
+        title: 'Quote Date',
+        dataType: 'date'
+      },
+      {
+        key: 'validatyDate',
+        title: 'Validity Date',
+        dataType: 'date'
+      },
+      {
+        key: 'requestBy',
+        title: 'Requested By',
+        dataType: 'text'
+      },
+      {
+        key: 'createBy',
+        title: 'Created By',
+        dataType: 'text'
+      },
+    ],
   }
 
   constructor(private quotationService: QuotationService, private modalService: NgbModal, private router: Router

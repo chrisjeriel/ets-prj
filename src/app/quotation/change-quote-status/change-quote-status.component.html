@@ -4,32 +4,37 @@
         <ngb-tab title="Change Quote Status">
             <ng-template ngbTabContent>
                 <div class="row">
-                    <div class="col-sm-9" >
+                    <div class="col-sm-9">
                         <!--<app-cust-table [tableOnly]="true" [tHeader]="tHeader" [tableData]="tableData" [checkFlag]="true" [resizable] = "resizable"></app-cust-table>-->
-                        <app-cust-non-datatable [passData] = "passData"></app-cust-non-datatable>
+                        <app-cust-non-datatable [passData]="passData"></app-cust-non-datatable>
                     </div>
                     <div class="col-sm-3" style="margin-top: 2px;">
                         <fieldset class="scheduler-border">
                             <legend class="scheduler-border">Batch Option</legend>
                             <div class="form-group" style="margin-bottom: 13px;margin-left: 35px !important;">
                                 <div class="input-group">
-                                <input class="form-control-sm" type="radio" name="batchOption" value="Did Not Materialized" style="    margin-top: 2px !important;">
-                                <label class="form-control-sm col-sm-10" style="text-align: left !important;">Did Not Materialize</label>
+                                    <input class="form-control-sm" type="radio" name="batchOption" value="Did Not Materialized"
+                                        style="    margin-top: 2px !important;">
+                                    <label class="form-control-sm col-sm-10" style="text-align: left !important;">Did
+                                        Not Materialize</label>
                                 </div>
                                 <div class="input-group">
-                                <input class="form-control-sm" type="radio" name="batchOption" value="Risk Not Commensurate" style="    margin-top: 2px !important;">
-                                <label class="form-control-sm col-sm-10" style="text-align: left !important;">Risk Not Commensurate</label>
+                                    <input class="form-control-sm" type="radio" name="batchOption" value="Risk Not Commensurate"
+                                        style="    margin-top: 2px !important;">
+                                    <label class="form-control-sm col-sm-10" style="text-align: left !important;">Risk
+                                        Not Commensurate</label>
                                 </div>
                                 <div class="input-group">
-                                <input class="form-control-sm" type="radio" name="batchOption" value="Spoiled" style="    margin-top: 2px !important;">
-                                <label class="form-control-sm col-sm-10" style="text-align: left !important;">Spoiled</label>
+                                    <input class="form-control-sm" type="radio" name="batchOption" value="Spoiled"
+                                        style="    margin-top: 2px !important;">
+                                    <label class="form-control-sm col-sm-10" style="text-align: left !important;">Spoiled</label>
                                 </div>
                             </div>
                         </fieldset>
                         <div class="buttons">
                             <button class="cust-btn cust-btn-extend" type="button"><a>Process</a></button>
-                            <br/>
-                            <button class="cust-btn cust-btn-extend" type="button" (click)="query()"><a>Query</a></button>
+                            <br />
+                            <button class="cust-btn cust-btn-extend" type="button" (click)="query()"><a>Search</a></button>
                         </div>
                     </div>
                 </div>
@@ -42,7 +47,7 @@
                                     <label class="form-control-sm col-sm-2 text-right">Quotation No</label>
                                     <input type="text" class="form-control form-control-sm col-sm-4">
                                     <label class="form-control-sm col-sm-2 text-right">Status</label>
-                                    <input type="text" name="" class="form-control form-control-sm col-sm-4"> 
+                                    <input type="text" name="" class="form-control form-control-sm col-sm-4">
                                 </div>
                             </div>
                             <div class="form-row custom-row-inline-inset">
@@ -50,7 +55,7 @@
                                     <label class="form-control-sm col-sm-2 text-right">Ceding Co</label>
                                     <input type="text" class="form-control form-control-sm col-sm-4">
                                     <label class="form-control-sm col-sm-2 text-right">Insured</label>
-                                    <input type="text" name="" class="form-control form-control-sm col-sm-4"> 
+                                    <input type="text" name="" class="form-control form-control-sm col-sm-4">
                                 </div>
                             </div>
                             <div class="form-row custom-row-inline-inset">
@@ -58,7 +63,7 @@
                                     <label class="form-control-sm col-sm-2 text-right">Risk</label>
                                     <input type="text" class="form-control form-control-sm col-sm-4">
                                     <label class="form-control-sm col-sm-2 text-right">Processor</label>
-                                    <input type="text" name="" class="form-control form-control-sm col-sm-4"> 
+                                    <input type="text" name="" class="form-control form-control-sm col-sm-4">
                                 </div>
                             </div>
                             <div class="form-row custom-row-inline-inset" style="margin-bottom: 11px !important;">
@@ -71,7 +76,7 @@
                                     </div>
                                     <label class="form-control-sm col-sm-2 text-right">Remarks</label>
                                     <div class="col-sm-4" style="padding-left: 0px; padding-right: 0px">
-                                        <input type="text" name="" class="form-control form-control-sm" style="padding-left: 1px"> 
+                                        <input type="text" name="" class="form-control form-control-sm" style="padding-left: 1px">
                                     </div>
                                 </div>
                             </div>
@@ -89,14 +94,14 @@
                         </div>
                     </div>
                 </div>
-                <br/><br/>
+                <br /><br />
 
                 <app-modal class="hidden">
                     <div header>Search</div>
                     <div body>
                         <div class="max-size">
                             <fieldset class="scheduler-border">
-                                <br/>
+                                <br />
                                 <div class="form-row custom-row-inline-inset" style="margin-top: -5px !important;">
                                     <div class="input-group alignment" style="margin-bottom: -13px !important;">
                                         <label class="form-control-sm col-sm-3 text-right">Quotation No</label>
@@ -111,7 +116,7 @@
                                 <div class="form-row custom-row-inline-inset">
                                     <div class="input-group alignment" style="margin-bottom: -13px !important;">
                                         <label class="form-control-sm col-sm-3 text-right">Type of Cession</label>
-                                        <input type="text" class="form-control form-control-sm col-sm-2" >
+                                        <input type="text" class="form-control form-control-sm col-sm-2">
                                         <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
                                         <input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 2px !important;">
                                     </div>
@@ -145,5 +150,4 @@
         </ngb-tab>
     </ngb-tabset>
 </div>
-<br/>
-
+<br />

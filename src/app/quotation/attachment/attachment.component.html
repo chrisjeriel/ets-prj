@@ -1,22 +1,25 @@
 <style type="text/css">
+    .float-sm-center {
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+    }
 
-    .float-sm-center{
-    width: 100%;
-    text-align: center;
-    padding: 10px;
+    .txt-content-rght {
+        text-align: right
     }
-    .txt-content-rght{
-    text-align: right
+
+    .mrgn-fieldset {
+        margin-top: 17px;
     }
-    .mrgn-fieldset{
-    margin-top: 17px;
+
+    .fieldset-height {
+        height: 104%;
     }
-    .fieldset-height{
-    height: 104%;
-    }
+
     .input-group {
-    margin-bottom: -14px !important;
-}
+        margin-bottom: -14px !important;
+    }
 </style>
 
 <div>
@@ -25,9 +28,11 @@
         <div class="form-row custom-row-inline-inset">
             <div class="input-group">
                 <label class="form-control-sm col-sm-2">Quotation No </label>
-                <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="CAR-2018-5081-077-0177" disabled="disabled">
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="CAR-2018-5081-077-0177"
+                    disabled="disabled">
                 <label class="form-control-sm col-sm-1">Insured</label>
-                <input type="text" class="form-control form-control-sm cust-sm col-sm-6" placeholder="Insured Name" disabled="disabled">
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-6" placeholder="Insured Name"
+                    disabled="disabled">
             </div>
             <div class="input-group">
                 <label class="form-control-sm col-sm-2">Risk</label>
@@ -37,21 +42,21 @@
     </fieldset>
 </div>
 <div>
-   <!-- <fieldset class="scheduler-border">
+    <!-- <fieldset class="scheduler-border">
         <legend class="scheduler-border">Attached Files</legend>
         <app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData" [tHeader]="tHeader" [checkFlag]="true" [pageLength]="pageLength"></app-cust-editable-table>
        <app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData" [tHeader]="tHeader" [checkFlag]="true" [options] = "options" [selectFlag]="true" [dataTypes]="dataTypes"></app-cust-editable-table>
-       </fieldset> --> 
-        <fieldset class="scheduler-border">
-            <legend class="scheduler-border">Attached Files</legend>
-                <div class="row">
-                    <div class="col-sm-2"></div>
-                    <div class="col-sm-8" style="padding-top: 8px; padding-bottom: 15px;">
-                        <app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
-                    </div>
-                    <div class="col-sm-2"></div>
-                 </div>
-        </fieldset>
+       </fieldset> -->
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">Attached Files</legend>
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-10" style="padding-top: 8px; padding-bottom: 15px;">
+                <app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
+            </div>
+            <div class="col-sm-1"></div>
+        </div>
+    </fieldset>
 </div>
 <div class="form-row">
     <div class="form-group col-sm">
@@ -63,4 +68,3 @@
         </div>
     </div>
 </div>
-

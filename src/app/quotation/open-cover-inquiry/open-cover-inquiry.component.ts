@@ -28,6 +28,73 @@ export class OpenCoverInquiryComponent implements OnInit {
     pageStatus: true,
     pagination: true,
     printBtn: true,
+    filters: [
+      {
+        key: 'ocQuotationNo',
+        title: 'OC Quo No',
+        dataType: 'text'
+      },
+      {
+        key: 'typeOfCession',
+        title: 'Type Of Cession',
+        dataType: 'text'
+      },
+      {
+        key: 'lineClass',
+        title: 'Line Class',
+        dataType: 'text'
+      },
+      {
+        key: 'status',
+        title: 'Status',
+        dataType: 'text'
+      },
+      {
+        key: 'cedingCompany',
+        title: 'Ceding Co.',
+        dataType: 'text'
+      },
+      {
+        key: 'principal',
+        title: 'Principal',
+        dataType: 'text'
+      },
+      {
+        key: 'contractor',
+        title: 'Contractor',
+        dataType: 'text'
+      },
+      {
+        key: 'insured',
+        title: 'Insured',
+        dataType: 'text'
+      },
+      {
+        key: 'risk',
+        title: 'Risk',
+        dataType: 'text'
+      },
+      {
+        key: 'object',
+        title: 'Object',
+        dataType: 'text'
+      },
+      {
+        key: 'site',
+        title: 'Site',
+        dataType: 'text'
+      },
+      {
+        key: 'policyNo',
+        title: 'Policy',
+        dataType: 'text'
+      },
+      {
+        key: 'currency',
+        title: 'Currency',
+        dataType: 'text'
+      },
+    ]
   };
 
   constructor(private titleService: Title, private router: Router) { }
