@@ -1,7 +1,7 @@
 <div class="cust-tabs-container">
     <h4>Quotation</h4>
     <ngb-tabset>
-        <ngb-tab title=" Quotation to Hold Cover">
+        <ngb-tab title="Quotation to Hold Cover">
             <ng-template ngbTabContent>
                  <div class="row">
                     <div class="col-sm-2"></div>
@@ -15,7 +15,7 @@
                                         &nbsp;
                                     </div>
                                     <div class="input-group">
-                                        <div class="input-group" style="margin-bottom: -13px !important;">
+                                        <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Quotation No</label>
                                             <input type="text" class="form-control form-control-sm cap-input col-sm-1" ngbTooltip="Line" [(ngModel)]="quoteLine">
                                             <input type="text" class="form-control form-control-sm cap-input col-sm-1" ngbTooltip="Year" style="margin-left: 2px;">
@@ -25,11 +25,11 @@
                                             <span>&nbsp;</span>
                                             <div class="text-search-ico"><a (click)="search()"><i class="fa fa-search"></i></a></div>
                                         </div>
-                                        <div class="input-group" style="margin-bottom: -13px !important;">
+                                        <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Ceding Company</label>
                                             <input type="text" class="form-control form-control-sm">
                                         </div>
-                                        <div class="input-group" style="margin-bottom: -13px !important;">
+                                        <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Insured</label>
                                             <input type="text" class="form-control form-control-sm">
                                         </div>
@@ -57,7 +57,7 @@
                                         &nbsp;
                                     </div>
                                     <div class="input-group">
-                                        <div class="input-group" style="margin-bottom: -13px !important;">
+                                        <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Hold Cover No</label>
                                             <input type="text" class="form-control form-control-sm col-sm cap-input col-sm-1" ngbTooltip="HC Prefix" value="HC">
                                             <input type="text" class="form-control form-control-sm col-sm cap-input col-sm-1" ngbTooltip="Line" style="margin-left: 2px;">
@@ -66,19 +66,19 @@
                                             <input type="text" class="form-control form-control-sm col-sm col-sm-1" style="margin-left: 2px;"ngbTooltip="Revision No">
 
                                         </div>
-                                         <div class="input-group" style="margin-bottom: -13px !important;">
+                                         <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Period From</label>
                                             <input type="date" class="form-control form-control-sm cust-sm" id="inputQuotation">
                                             <label class="form-control-sm col-sm-2">Requested By</label>
                                             <input type="text" class="form-control form-control-sm col-sm-7">
                                         </div>
-                                        <div class="input-group" style="margin-bottom: -13px !important;">
+                                        <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Period To</label>
                                             <input type="date" class="form-control form-control-sm cust-sm" id="inputQuotation">
                                             <label class="form-control-sm col-sm-2">Request Date</label>
                                             <input type="date" class="form-control form-control-sm cust-sm col-sm-7" id="inputQuotation">
                                         </div>
-                                        <div class="input-group" style="margin-bottom: -13px !important;">
+                                        <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Co. Ref. Hold Cover No</label>
                                             <input type="text" class="form-control form-control-sm">
                                             <label class="form-control-sm col-sm-2">Prepared By</label>
@@ -99,7 +99,7 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group col-sm">
-                        <div class="col-md-13 text-center">
+                        <div class="col-md-12 text-center">
                             <div class="cust-btn-container" style="margin-top: 10px !important;">
                                  <app-modal [btnTitle]="'Approval'">
                                     <div header>Approval</div>
@@ -111,7 +111,7 @@
                                                     <label class="form-control-sm" style="margin-left: -1px !important;">Status</label>
                                                     <input type="text" class="form-control form-control-sm col-sm" style=" margin-right: 85px !important;">
                                                     </div>
-                                                    <div class="row" style="margin-top: -13px !important;">
+                                                    <div class="row" style="margin-top: -14px !important;">
                                                         <select  class="form-control form-control-sm col-sm cust-sm" style="    margin-left: 6px;"></select>
                                                         <button class="cust" style="margin-right: 0px; margin-left: 3px !important;">For Approval</button>
                                                     </div>
@@ -140,7 +140,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div footer style=" margin-right: 200px !important;">
+                                    <div footer class="text-center w-100">
                                         <div class="col-sm-12 text-center">
                                         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
                                         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Print</a></button>
@@ -154,12 +154,12 @@
                     </div>
                 </div>
 
-                <app-modal class="hidden" >
+                <app-modal id="lovMdl" class="hidden" >
                 <div header>List of Values</div>
-                <div body>
-                    <app-cust-non-datatable [passData] = "passData"></app-cust-non-datatable>
+                <div body style="min-width: 700px !important;">
+                    <app-cust-non-datatable [passData]="passData"></app-cust-non-datatable>
                 </div>
-                <div footer style="    margin-right: 190px !important;">
+                <div footer class="text-center w-100">
                     <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
                     <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
                 </div>
@@ -177,7 +177,7 @@
                                 <label class="form-control-sm" style="margin-left: -1px !important;">Status</label>
                                 <input type="text" class="form-control form-control-sm col-sm" style=" margin-right: 60px !important;">
                                 </div>
-                                <div class="row" style="margin-top: -13px !important;">
+                                <div class="row" style="margin-top: -14px !important;">
                                     <select  class="form-control form-control-sm col-sm cust-sm" style="    margin-left: 6px;"></select>
                                     <button class="cust" style="margin-right: 0px; margin-left: 3px !important;">Approve</button>
                                 </div>

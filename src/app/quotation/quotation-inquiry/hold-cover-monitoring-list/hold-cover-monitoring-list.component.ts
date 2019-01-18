@@ -103,31 +103,6 @@ export class HoldCoverMonitoringListComponent implements OnInit {
         this.tHeader.push("Requested By");
         this.tHeader.push("Request Date");
 
-        this.passData.filters.push("Hold Cover No.");
-        this.passData.filters.push("Status");
-        this.passData.filters.push("Ced. Company");
-        this.passData.filters.push("Quotation No.");
-        this.passData.filters.push("Risk");
-        this.passData.filters.push("Insured");
-        this.passData.filters.push("Period From");
-        this.passData.filters.push("Period To");
-        this.passData.filters.push("Comp. Ref. Hold Cover No.");
-        this.passData.filters.push("Requested By");
-        this.passData.filters.push("Request Date");
-
-        this.filterDataTypes.push("text");
-        this.filterDataTypes.push("text");
-        this.filterDataTypes.push("text");
-        this.filterDataTypes.push("text");
-        this.filterDataTypes.push("text");
-        this.filterDataTypes.push("text");
-        this.filterDataTypes.push("date");
-        this.filterDataTypes.push("date");
-        this.filterDataTypes.push("text");
-        this.filterDataTypes.push("text");
-        this.filterDataTypes.push("date");
-
-
         this.passData.dataTypes.push("text");
         this.passData.dataTypes.push("text");
         this.passData.dataTypes.push("text");

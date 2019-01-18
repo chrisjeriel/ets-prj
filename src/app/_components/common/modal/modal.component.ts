@@ -37,8 +37,7 @@ export class ModalComponent implements OnInit, AfterViewInit {
 
     }
     ngAfterViewInit(){
-        console.log(this.test);
-        console.log("content >>> " + this.content);
+        
     }
 
     open(content) {

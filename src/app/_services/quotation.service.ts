@@ -122,8 +122,8 @@ export class QuotationService {
 
     getQuotationHoldCoverInfo() {
         this.holdCoverMonitoringListData = [
-            new HoldCoverMonitoringList("HC-CAR-2015-00001-00", "Open", "Phil. Guaranty", "CAR-2015-00028-32-01", "Malayan", "5K Builders & ABE International Corp", new Date(), new Date(), "P8M001KJ", "Inigo Flores", new Date()),
-            new HoldCoverMonitoringList("HC-EEI-2015-00001-01", "Expired", "Tan-Gatue Adjustment", "EEI-2015-00128-56-21", "FLT Prime", "5K Builders & ABE International Corp", new Date(), new Date(), "MC-MPC-HO-0001", "Rose Lim", new Date()),
+            new HoldCoverMonitoringList("HC-CAR-2018-00001-00", "Open", "Phil. Guaranty", "CAR-2018-00066-00-31", "Malayan", "5K Builders", new Date('2018-12-01'), new Date('2018-12-31'), "P8M001KJ", "Juan Cruz", new Date('2018-12-01')),
+            new HoldCoverMonitoringList("HC-EEI-2018-00001-01", "Expired", "Tan-Gatue Adjustment", "EEI-2018-00088-00-67", "FLT Prime", "5K Builders", new Date('2018-11-01'), new Date('2018-11-31'), "MC-MPC-HO-0001", "Rose Lim", new Date('2019-09-09')),
         ];
         return this.holdCoverMonitoringListData;
     }
