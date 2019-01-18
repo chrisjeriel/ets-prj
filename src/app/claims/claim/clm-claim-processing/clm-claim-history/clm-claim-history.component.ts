@@ -50,8 +50,8 @@ export class ClmClaimHistoryComponent implements OnInit {
     infoFlag: true,
     addFlag: true,
     tableData: [],
-    widths: [1,1,147,67,91,118,78,1,'auto'],
-    nData: new ClaimsHistoryInfo(null, null, null, null, null, null, null, null, null)
+    widths: [1,1,147,1,67,91,118,78,1,'auto'],
+    nData: new ClaimsHistoryInfo(null, null, null, null, null, null, null, null, null,null)
   };
 
   constructor(private claimsService: ClaimsService, private modalService: NgbModal, private titleService: Title) {
@@ -61,12 +61,11 @@ export class ClmClaimHistoryComponent implements OnInit {
   ngOnInit() {
     this.titleService.setTitle("Clm | Claim History");
 
-    this.passDataHistory.tHeader.push("Hist. No.", "Hist. Type", "Type", "Curr", "Reserve", "Payment Amount", "Ref. No", "Ref. Date", "Remarks");
-    this.passDataHistory.dataTypes.push("number", "select", "select", "select", "currency", "currency", "text", "date", "text");
+    this.passDataHistory.tHeader.push("Hist. No.", "Hist. Type", "Type",'Ex-Gratia', "Curr", "Reserve", "Payment Amount", "Ref. No", "Ref. Date", "Remarks");
+    this.passDataHistory.dataTypes.push("number", "select", "select", 'checkbox' ,"select", "currency", "currency", "text", "date", "text");
     this.passDataHistory.opts.push({ selector: "histType", vals: ["Loss", "Adjuster's Expense", "Other Expenses"] });
     this.passDataHistory.opts.push({ selector: "type", vals: ["Initial Reserve", "Increase Reserve", "Decrease Reserve", "Partial Payment", "Full Payment"] });
     this.passDataHistory.opts.push({ selector: "currency", vals: ["PHP", "USD", "SGD"] });
-    this.passDataHistory.widths.push("1", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto");
     this.passDataHistory.tableData = this.claimsService.getClaimsHistoryInfo();
 
     this.passDataAdj.tHeader.push("Hist No", "Approved Amount", "Approved By", "Approved Date", "Remarks");

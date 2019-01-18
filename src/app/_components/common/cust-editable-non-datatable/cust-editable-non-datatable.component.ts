@@ -122,7 +122,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
            this.fillData[this.dataKeys[i]] = null;
         }
         this.addFiller();
-        
     }
 
     processData(key: any, data: any) {
@@ -260,4 +259,9 @@ export class CustEditableNonDatatableComponent implements OnInit {
     onClickGeneric(){
         this.genericBtn.next();
     }
+
+    typeOf(data){
+        return typeof data;
+    }
+ 
 }

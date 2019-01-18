@@ -43,7 +43,7 @@
   <div class="custom-row-inline-inset">
     <div class="text-right">
       <div class="cust-btn-container">
-        <button class="cust-btn" (click)="onViewDetailsDistribute($event)">View Details/Distribution</button>
+        <!-- <button class="cust-btn" (click)="onViewDetailsDistribute($event)">View Details/Distribution</button> -->
         <app-modal hidden [btnTitle]="'View Details/Distribution'" id="idMdl">
           <div header style="width: 600px !important;">Recovery Information</div>
           <div body style="width: 880px  !important;">
@@ -157,7 +157,12 @@
         </app-modal>
       </div>
     </div>
-    <app-cust-editable-non-datatable [passData]="passDataClaimsForRecovery"></app-cust-editable-non-datatable>
+    <app-cust-editable-non-datatable [passData]="passDataClaimsForRecovery">
+      <ng-container controls-r>
+        <button class="cust-btn" style="margin-right: 0px !important;" (click)="onViewDetailsDistribute($event)">View
+          Details/Distribution</button>
+      </ng-container>
+    </app-cust-editable-non-datatable>
   </div>
 </fieldset>
 

@@ -6,7 +6,7 @@
 				<ng-template ngbTabContent>
 					<div class="row">
 						<div class="col-sm">
-							<app-cust-non-datatable (add)="toGenerateAR();" [passData]="passData"></app-cust-non-datatable>
+							<app-cust-non-datatable (add)="toGenerateARAdd();" (rowDblClick)="toGenerateAREdit($event);" [passData]="passData"></app-cust-non-datatable>
 						</div>
 					</div>
 					<div class="form-row" style="margin-left: -30px !important;">

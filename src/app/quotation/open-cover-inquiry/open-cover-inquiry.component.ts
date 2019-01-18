@@ -55,7 +55,7 @@ export class OpenCoverInquiryComponent implements OnInit {
   checkLine(cline: string) {
     if (cline === 'CAR' ||
       cline === 'EAR') {
-      this.router.navigate(['/open-cover', { line: cline, typeOfCession: this.ocTypeOfCession }], { skipLocationChange: true });
+      this.router.navigate(['/open-cover', { line: cline, typeOfCession: this.ocTypeOfCession, from: "oc-inquiry" }], { skipLocationChange: true });
     }
   }
 

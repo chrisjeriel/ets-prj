@@ -8,10 +8,10 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class GenInfoComponent implements OnInit {
 
-  quotationNum: any[] = [];
   typeOfCession: string = "";
   line: string;
   private sub: any;
+  from: string;
 
 
   constructor(private route: ActivatedRoute) { }
@@ -20,13 +20,20 @@ export class GenInfoComponent implements OnInit {
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
       this.line = params['line'];
-      this.typeOfCession = params['typeOfCession'];
-      console.log(this.typeOfCession);
+      this.from = params['from'];
+      if (this.from == "oc-inquiry") {
+        this.typeOfCession = params['typeOfCession'];
+      }
     });
+
+    this.checkTypeOfCession();
   }
 
   ngOnDestroy() {
     this.sub.unsubscribe();
   }
 
+  checkTypeOfCession() {
+    return (this.typeOfCession.trim().toUpperCase() === 'RETROCESSION') ? true : false;
+  }
 }

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { QsoaComponent } from './qsoa.component';
+import { ArDetailsComponent } from './ar-details.component';
 
-describe('QsoaComponent', () => {
-  let component: QsoaComponent;
-  let fixture: ComponentFixture<QsoaComponent>;
+describe('ArDetailsComponent', () => {
+  let component: ArDetailsComponent;
+  let fixture: ComponentFixture<ArDetailsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ QsoaComponent ]
+      declarations: [ ArDetailsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(QsoaComponent);
+    fixture = TestBed.createComponent(ArDetailsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
