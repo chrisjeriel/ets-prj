@@ -37,7 +37,7 @@ span.ui-column-resizer {
         <div #ctrlR style="float: right;">
             <ng-content select="[controls-r]"></ng-content>    
         </div>
-              
+
     </div>
     <div ngbDropdown>
         <div class="cust-btn-container">
@@ -74,6 +74,7 @@ span.ui-column-resizer {
                                 </div>
                                 <input type="text" class="form-control cust-sm">
                             </div>
+
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">
@@ -178,11 +179,17 @@ span.ui-column-resizer {
                                     <div *ngSwitchCase="'percent'" style="text-align: right">
                                         <span class="unclickable">{{ processData(key, data) | number: '1.7-7'}}</span>
                                     </div>
-                                    <div *ngSwitchCase="'currency'" style="text-align: right">
+                                    <!-- <div *ngSwitchCase="'currency'" style="text-align: right">
                                         <span class="unclickable">{{ processData(key, data) | number: '1.2-2'}}</span>
                                     </div>
                                     <div  *ngSwitchCase="'number'" style="text-align: right">
                                         <span class="unclickable">{{ processData(key, data) | number: '1.0-0'}}</span>
+                                    </div> -->
+                                    <div *ngSwitchCase="'currency'" style="text-align: right" >
+                                        <span [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" class="unclickable">{{ processData(key, data) | number: '1.2-2'}}</span>
+                                    </div>
+                                    <div  *ngSwitchCase="'number'" style="text-align: right">
+                                        <span [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" class="unclickable">{{ processData(key, data) | number: '1.0-0'}}</span>
                                     </div>
                                     <span *ngSwitchCase="'date'" class="unclickable">{{ processData(key, data) | date: 'MM/dd/yyyy'}}</span>
                                     <span *ngSwitchCase="'time'" class="unclickable">{{ processData(key, data) | date: 'HH:mm'}}</span>
@@ -264,5 +271,8 @@ passData.pageLength + 1 }} - {{ api.getCurrent() * passData.pageLength }} of {{d
         <pagination-controls [id]="'editable'+passData.pageID" class="my-pagination" (pageChange)="p2 = $event" previousLabel="" nextLabel="">
         </pagination-controls>
         <!--<pagination-template class="" #api="paginationApi" (pageChange)="p = $event"> <a (click)="api.setCurrent(api.getLastPage())">&raquo;</a></pagination-template>-->
+    </div>
+    <div *ngIf="passData.paginateFlag" style="height: 42px;float: right;">
+        <label></label>
     </div>
 </div>

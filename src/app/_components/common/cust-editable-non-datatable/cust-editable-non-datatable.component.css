@@ -38,6 +38,8 @@ th, td{
     overflow: auto;
     max-width: 100%;
     width: 100%;
+    z-index: 2;
+    position: relative;
 }
 
 #cust-table-container {
@@ -191,7 +193,7 @@ div.input-group {
 
 
 .pagination{
-    margin-top: 0.5%;
+    /*margin-top: 0.5%;*/
     float: right;
 }
 
@@ -323,7 +325,7 @@ tr td span{
     font-size: 10px !important;
 }
 
-td div input.number-magnify{
+td div input.number-magnify, td div span.number-magnify{
     padding-right: 16px !important;
 }
 
