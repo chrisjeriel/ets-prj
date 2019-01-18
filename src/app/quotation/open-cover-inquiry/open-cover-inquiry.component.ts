@@ -11,11 +11,15 @@ import { Router } from '@angular/router';
 export class OpenCoverInquiryComponent implements OnInit {
   line: string = "";
   selectedArr: any = [];
+  ocLine: string = "";
+  ocTypeOfCession = "";
 
   passDataOpenCoverInquiry: any = {
     tableData: [
       ["OC-CAR-2018-00088-0099", "Direct", "CAR Wet Risks", "Concluded", "Malayan", "5K Builders", "ABE International Corp", "5K Builders and ABE International Corp", "Direct", "CAR Wet Risks", "Region IV, Laguna, Calamba", "CAR-2018-00001-099-0001-000", "PHP"],
-      ["OC-CAR-2018-00089-0078", "Retrocession", "CAR Wet Risks", "Concluded", "FLT Prime", "5K Builders", "ABE International Corp", "5K Builders and ABE International Corp", "Retrocession", "CAR Wet Risks", "Region IV, Laguna, Calamba", "CAR-2018-00001-099-0001-000", "PHP"]
+      ["OC-CAR-2018-00089-0078", "Retrocession", "CAR Wet Risks", "Concluded", "FLT Prime", "5K Builders", "ABE International Corp", "5K Builders and ABE International Corp", "Retrocession", "CAR Wet Risks", "Region IV, Laguna, Calamba", "CAR-2018-00001-099-0001-000", "PHP"],
+      ["OC-EAR-2018-00089-0078", "Retrocession", "CAR Wet Risks", "Concluded", "FLT Prime", "5K Builders", "ABE International Corp", "5K Builders and ABE International Corp", "Retrocession", "CAR Wet Risks", "Region IV, Laguna, Calamba", "CAR-2018-00001-099-0001-000", "PHP"],
+      ["OC-EAR-2018-00089-0078", "Retrocession", "CAR Wet Risks", "Concluded", "FLT Prime", "5K Builders", "ABE International Corp", "5K Builders and ABE International Corp", "Retrocession", "CAR Wet Risks", "Region IV, Laguna, Calamba", "CAR-2018-00001-099-0001-000", "PHP"],
     ],
     tHeader: ["Open Cover Quoation No", "Type of Cession", "Line Class", "Status", "Ceding Company", "Principal", "Contractor", "Insured", "Risk", "Object", "Site", "Policy No", "Currency"],
     dataTypes: ["text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text"],
@@ -33,28 +37,26 @@ export class OpenCoverInquiryComponent implements OnInit {
   }
 
   onRowDblClick(event) {
+    //line
     this.selectedArr = (event.target.closest('tr').children[0].innerText).split("-");
+    this.ocLine = this.selectedArr[1];
+    //end line
 
-    // for (var i = 0; i < this.selectedArr.length; i++) {
-    //   console.log(this.selectedArr[i]);
-    // }
-    this.line = this.selectedArr[1];
-    //this.checkLine(this.line);
-    this.router.navigate(['/open-cover', { line: this.line }], { skipLocationChange: true });
+    //type of cession
+    this.ocTypeOfCession = event.target.closest('tr').children[1].innerText;
+    //end type of cession
+
+    setTimeout(() => {
+      this.checkLine(this.ocLine);
+    }, 100);
+
   }
 
-  // checkLine(cline: string) {
-  //   if (cline === 'CAR' ||
-  //     cline === 'EAR' ||
-  //     cline === 'EEI' ||
-  //     cline === 'CEC' ||
-  //     cline === 'MBI' ||
-  //     cline === 'BPV' ||
-  //     cline === 'MLP' ||
-  //     cline === 'DOS') {
-  //     this.router.navigate(['/quotation', { line: cline }], { skipLocationChange: false });
-  //     console.log(cline);
-  //   }
-  // }
+  checkLine(cline: string) {
+    if (cline === 'CAR' ||
+      cline === 'EAR') {
+      this.router.navigate(['/open-cover', { line: cline, typeOfCession: this.ocTypeOfCession }], { skipLocationChange: true });
+    }
+  }
 
 }

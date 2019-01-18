@@ -21,15 +21,17 @@ export class OpenCoverProcessingComponent implements OnInit {
   disabledCopyBtn: boolean = true;
 
   line: string = "";
+  ocLine: string = '';
 
   passData: any = {
-        tableData: [], 
-        tHeader: ['Open Cover Quotation No.','Type of Cession','Line Class','Status','Ceding Company','Principal','Contractor','Insured','Risk','Object','Site','Currency', 'Quote Date', 'Valid Until', 'Request By', 'Created By'],
-        dataTypes: ['text','text','text','text','text','text','text','text','text','text','text','date','date','text','text'],
-        resizable: [false, true, true, true, true, true, true, true, true, true, false, false, true, true, true, true],
-        filters: [],
-        pageLength: 10,
-        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: true, printBtn: false, pagination: true, pageStatus: true,
+    tableData: [],
+    tHeader: ['Open Cover Quotation No.', 'Type of Cession', 'Line Class', 'Status', 'Ceding Company', 'Principal', 'Contractor', 'Insured', 'Risk', 'Object', 'Site', 'Currency', 'Quote Date', 'Valid Until', 'Request By', 'Created By'],
+    //dataTypes: ['text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', "text", 'date', 'date', 'text', 'text'],
+    dataTypes: ["text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text"],
+    resizable: [false, true, true, true, true, true, true, true, true, true, false, false, true, true, true, true],
+    filters: [],
+    pageLength: 10,
+    expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: true, printBtn: false, pagination: true, pageStatus: true,
   }
 
   constructor(private quotationService: QuotationService, private modalService: NgbModal, private router: Router
@@ -44,11 +46,15 @@ export class OpenCoverProcessingComponent implements OnInit {
   }
 
   editBtnEvent() {
-    this.line = this.quotationService.rowData[0].split("-")[0];
-    this.quotationService.toGenInfo = [];
-    this.quotationService.toGenInfo.push("edit", this.line);
-    this.router.navigate(['/open-cover']);
+    // this.line = this.quotationService.rowData[0].split("-")[0];
+    // this.quotationService.toGenInfo = [];
+    // this.quotationService.toGenInfo.push("edit", this.line);
+    // this.router.navigate(['/open-cover']);
+    setTimeout(() => {
+      this.router.navigate(['/open-cover', { line: this.ocLine }], { skipLocationChange: true });
+    }, 100);
   }
+
 
   nextBtnEvent() {
     if (this.line === 'CAR' ||
@@ -62,17 +68,24 @@ export class OpenCoverProcessingComponent implements OnInit {
       this.modalService.dismissAll();
 
       this.quotationService.rowData = [];
-      this.quotationService.toGenInfo = [];
-      this.quotationService.toGenInfo.push("add", this.line);
-      this.router.navigate(['/open-cover']);
+      // this.quotationService.toGenInfo = [];
+      // this.quotationService.toGenInfo.push("add", this.line);
+      // this.router.navigate(['/open-cover']);
+
+      this.ocLine = this.line;
+      setTimeout(() => {
+        this.router.navigate(['/open-cover', { line: this.ocLine }], { skipLocationChange: true });
+      }, 100);
     }
 
   }
+
 
   onRowClick(event) {
     for (var i = 0; i < event.target.closest("tr").children.length; i++) {
       this.quotationService.rowData[i] = event.target.closest("tr").children[i].innerText;
     }
+    this.ocLine = this.ocLine = this.quotationService.rowData[0].split("-")[0];
 
     this.disabledEditBtn = false;
     this.disabledCopyBtn = false;
@@ -82,14 +95,14 @@ export class OpenCoverProcessingComponent implements OnInit {
     for (var i = 0; i < event.target.closest("tr").children.length; i++) {
       this.quotationService.rowData[i] = event.target.closest("tr").children[i].innerText;
     }
-
-    this.line = this.quotationService.rowData[0].split("-")[0];
-
-    this.quotationService.toGenInfo = [];
-    this.quotationService.toGenInfo.push("edit", this.line);
-    this.router.navigate(['/open-cover']);
-
+    this.ocLine = this.quotationService.rowData[0].split("-")[0];
+    setTimeout(() => {
+      this.router.navigate(['/open-cover', { line: this.ocLine }], { skipLocationChange: true });
+    }, 100);
+    // this.quotationService.toGenInfo = [];
+    // this.quotationService.toGenInfo.push("edit", this.line);
   }
+
   showApprovalModal(content) {
     this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
   }
