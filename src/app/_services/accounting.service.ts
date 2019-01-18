@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery } from '@app/_models';
-
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment , AccCVPayReqList } from '@app/_models';
 
 @Injectable({
 	providedIn: 'root'
@@ -25,6 +24,8 @@ export class AccountingService {
 	arTaxDetailsWTAX: ARTaxDetailsWTAX[] = [];
 	arInwdPolBalDetails: ARInwdPolBalDetails[] = [];
 	arClaimsRecovery: ARClaimsRecovery[] = [];
+	accCvAttachment: AccCvAttachment[]=[];
+	accCvPayReqList: AccCVPayReqList[]=[];
 
 	constructor(private http: HttpClient) { }
 
@@ -228,4 +229,28 @@ export class AccountingService {
 		]
 		return this.arClaimsRecovery;
 	}
+	getAccCVAttachment(){
+		this.accCvAttachment = [ 
+			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_01.doc","Accounting Specifications Sample 1"),
+			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_02.doc","Accounting Specifications Sample 2"),
+			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_03.doc","Accounting Specifications Sample 3"),
+			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_04.doc","Accounting Specifications Sample 4"),
+			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_05.doc","Accounting Specifications Sample 5"),
+			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_06.doc","Accounting Specifications Sample 6"),
+			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_07.doc","Accounting Specifications Sample 7"),
+			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_08.doc","Accounting Specifications Sample 8"),
+			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_09.doc","Accounting Specifications Sample 9"),
+			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_10.doc","Accounting Specifications Sample 10"),
+		]
+		return this.accCvAttachment;
+	}
+
+	getAccCVPayReqList(){
+		this.accCvPayReqList = [
+			new AccCVPayReqList("OPR-2018-01-0001","San Miguel Corporation","Others","Open", new Date("09/20/2018"),"Payment for San Miguel","Rosalinda Mercedez","PHP",27513.20)
+		]
+		return this.accCvPayReqList;
+	}
+
+
 }

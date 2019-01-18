@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-
+import { ActivatedRoute, Router } from '@angular/router';
+import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-accounting-in-trust',
   templateUrl: './accounting-in-trust.component.html',
@@ -24,7 +24,7 @@ export class AccountingInTrustComponent implements OnInit {
                  };
   action: string;
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
   	this.sub = this.route.params.subscribe(params => {
@@ -72,4 +72,12 @@ export class AccountingInTrustComponent implements OnInit {
   		this.qsoaTab = true;
   	}
   }
+
+   onTabChange($event: NgbTabChangeEvent) {
+      if ($event.nextId === 'Exit') {
+        this.router.navigateByUrl('');
+      } 
+  
+  }
+
 }

@@ -6,7 +6,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
     templateUrl: './modal.component.html',
     styleUrls: ['./modal.component.css']
 })
-export class ModalComponent implements OnInit, AfterViewInit {
+export class ModalComponent implements OnInit/*, AfterViewInit*/ {
 
     @Input() mdlConfig = {
         mdlType: "",
@@ -39,6 +39,7 @@ export class ModalComponent implements OnInit, AfterViewInit {
     ngAfterViewInit(){
         
     }
+
 
     open(content) {
         this.content = content;

@@ -1,170 +1,104 @@
+
+<style type="text/css">
+  .input-group {
+        padding: 0px !important;
+        margin: 0px !important;
+    }
+
+    .input-group label {
+        padding: 0px !important;
+        margin: 0px !important;
+    }
+
+  .input-ig-row {
+        margin-left: 2px !important;
+    }
+    .ig-row {
+        margin : -3px !important;
+        /*margin-bottom: -14px ! important;*/
+    }
+    .ig-row label {
+        margin-right: 5px !important;
+    }
+</style>
 <div class="cust-tabs-container">
-  <h4>Policy / Inquiry </h4>
-  <ngb-tabset>
-    <ngb-tab title="Policy Inquiry">
-      <ng-template ngbTabContent>
-        <fieldset class="scheduler-border">
-          <legend class="scheduler-border">Policy Info</legend>
-          <div class="row">
-            <div class="col-sm-1"></div>
-            <div class="col-sm-10">
-              <div class="form-row">
-                <div class="form-group col-sm-1">
-                  <label for="inputEmail4" class="form-control-sm top-label">Line</label>
-                  <div class="input-group">
-                    <input type="text" class="form-control form-control-sm cust-sm">
-                    <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-                  </div>
-                </div>
-                <div class="form-group col-sm-1">
-                  <label for="inputEmail4" class="form-control-sm top-label">Year</label>
-                  <input type="text" class="form-control form-control-sm cust-sm" placeholder="" style="margin-left: -2px !important;">
-                </div>
-                <div class="form-group col-sm-1">
-                  <label for="inputEmail4" style="margin-left: -9px !important;" class="form-control-sm top-label">Seq
-                    No</label>
-                  <input type="text" style="margin-left: -10px !important;" class="form-control form-control-sm cust-sm"
-                    placeholder="">
-                </div>
-                <div class="form-group col-sm-1">
-                  <label for="inputEmail4" class="form-control-sm top-label" style="margin-left: -16px !important;">Alt
-                    No</label>
-                  <input type="text" style="margin-left: -18px !important;" class="form-control form-control-sm cust-sm"
-                    placeholder="">
-                </div>
-                <div class="form-group col-sm-2">
-                  <label for="inputEmail4" class="form-control-sm top-label" style="margin-left: -23px !important;">Status</label>
-                  <select class="form-control form-control-sm cust-sm" style="margin-left: -26px !important;">
-                    <option></option>
-                  </select>
-                </div>
-                <div class="form-group col-sm-2">
-                  <label for="inputEmail4" style="margin-left: -28px !important;" class="form-control-sm top-label">Branch</label>
-                  <div class="input-group">
-                    <input type="text" style="margin-left: -34px !important;" class="form-control form-control-sm cust-sm"
-                      placeholder="">
-                    <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-                  </div>
-                </div>
-                <div class="form-group col-sm-2">
-                  <label for="inputEmail4" class="form-control-sm top-label">Line Class</label>
-                  <div class="input-group">
-                    <input type="text" class="form-control form-control-sm cust-sm" placeholder="" style="margin-left: -3px !important">
-                    <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-                  </div>
-                </div>
-                <div class="form-group col-sm-2">
-                  <label for="inputEmail4" class="form-control-sm top-label">Ceding Company</label>
-                  <div class="input-group">
-                    <input type="text" class="form-control form-control-sm cust-sm" placeholder="" style="margin-left: -3px !important">
-                    <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-1"></div>
-          </div>
-        </fieldset>
-
-        <div class="row">
-          <div class="col-sm-4" style="padding-right: 0px;">
-            <fieldset class="scheduler-border" style="padding-bottom: 7px !important;">
-              <legend class="scheduler-border">Period of Issuance</legend>
-              <div class="form-row">
-                <div class="form-group col-sm-6">
-                  <label class="form-control-sm top-label" style="margin-left: 5px;">Inception Date</label>
-                  <input type="date" class="form-control form-control-sm cust-sm" style="margin-left: 3px !important;">
-                </div>
-                <div class="form-group col-sm-6">
-                  <label class="form-control-sm top-label" style="margin-left: -3px !important;">Expiry Date</label>
-                  <input type="date" class="form-control form-control-sm cust-sm" style="margin-left: -1px !important;">
-                </div>
-              </div>
-            </fieldset>
-          </div>
-          <div class="col-sm-6" style="padding-left: 10px;padding-right: 0px;">
-            <fieldset class="scheduler-border" style="padding-bottom: 3px !important;">
-              <legend class="scheduler-border">Insured Details</legend>
-              <div class="form-row">
-                <div class="form-group col-sm-6">
-                  <label class="form-control-sm top-label">Principal</label>
-                  <div class="input-group">
-                    <input type="text" class="form-control form-control-sm cust-sm">
-                    <div class="text-search-ico" style="margin-bottom: 6px;"><a><i class="fa fa-search"></i></a></div>
-                  </div>
-                </div>
-                <div class="form-group col-sm-6">
-                  <label class="form-control-sm top-label">Contractor</label>
-                  <div class="input-group">
-                    <input type="text" class="form-control form-control-sm cust-sm" style="margin-left: -1px !important;">
-                    <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-                  </div>
-                </div>
-              </div>
-            </fieldset>
-          </div>
-          <div class="col-sm-2" style="padding-left: 10px;">
-            <fieldset class="scheduler-border" style="    padding-bottom: 6px !important;">
-              <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
-              <div class="custom-row-inline-inset">
-                <div class="form-row" style="margin-top: 7px !important">
-                  <div class="" style="margin-bottom: 10px;">
-                    <div class="input-group">
-                      <div class="input-group-prepend">
-                        <div class="input-group-text">
-                          <input type="checkbox">
+    <h4>Policy / Inquiry </h4>
+    <ngb-tabset>
+        <ngb-tab title="Policy Inquiry">
+            <ng-template ngbTabContent>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm" style="padding: 0">
+                            <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)"></app-cust-non-datatable>
                         </div>
-                      </div>
-                      <input type="text" style="font-size: 11px !important; margin-left: 1px !important; height: 22px !important;"
-                        value="Open Cover" disabled class="form-control form-control-sm">
                     </div>
-                  </div>
-                </div>
-                <div class="form-row">
-                  <div class="" style="margin-bottom: 2px;">
-                    <div class="input-group">
-                      <div class="input-group-prepend">
-                        <div class="input-group-text">
-                          <input type="checkbox">
+                    <div class="row">
+                         <div class="col-sm-6" style="padding-left: 0px;padding-right: 8px">
+                            <fieldset class="scheduler-border">
+                                 <div class="form-row" style="margin-right: 0px; margin-bottom: 1px;">
+                                     <div class="input-group ig-row" style="margin-top: 9px ! important;margin-left: 10px ! important;margin-right: 25px ! important" >
+                                        <label class="form-control-sm col-sm-2">Policy No</label>
+                                        <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 8px ! important" readonly [value]="policyList.policyNo">
+                                    </div>
+                                    <div class="input-group ig-row" style="margin-right: 25px ! important;;       margin-left: 10px ! important" >
+                                        <label class="form-control-sm col-sm-2">Type of Cession</label>
+                                        <input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important" readonly [value]="policyList.typeCession">
+                                        <label class="form-control-sm col-sm-2">Status</label>
+                                        <input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 5px ! important" readonly [value]="policyList.status">
+                                    </div>
+                                    <div class="input-group ig-row" style="margin-right: 25px ! important;;margin-left: 10px ! important" >
+                                        <label class="form-control-sm col-sm-2">Ceding Company</label>
+                                        <input type="text" class="form-control form-control-sm col-sm-2" style="  margin-left: 8px ! important" readonly [value]="cedNum">
+                                        <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px ! important" readonly [value]="policyList.cedComp">
+                                    </div>
+                                    <div class="input-group ig-row" style="margin-right: 25px ! important;;margin-left: 10px ! important" >
+                                        <label class="form-control-sm col-sm-2">Inception Date</label>
+                                        <input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important" readonly [value]="policyList.inceptionDate | date: 'MM-dd-yyyy hh:mm a'">
+                                        <label class="form-control-sm col-sm-2">Expiry Date</label>
+                                        <input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important" readonly  [value]="policyList.expiryDate  | date: 'MM-dd-yyyy hh:mm a'">
+                                    </div>
+                                    <div class="input-group ig-row" style="margin-right: 25px ! important;;margin-left: 10px ! important" >
+                                      <label class="form-control-sm col-sm-2">Issue Date</label>
+                                      <input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important" readonly  [value]="policyList.issueDate  | date: 'MM-dd-yyyy hh:mm a'">
+                                      <label class="form-control-sm col-sm-2">Acct. Date</label>
+                                      <input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important" readonly  [value]="policyList.accDate  | date: 'MM-dd-yyyy hh:mm a'">
+                                  </div>
+                                </div>
+                            </fieldset>
                         </div>
-                      </div>
-                      <input type="text" style="font-size: 11px !important; margin-left: 1px !important;height: 22px !important;" value="Declaration" disabled class="form-control form-control-sm">
-                    </div>
-                  </div>
+                        <div class="col-sm-6" style="padding-right: 0px;padding-left: 8px">
+                              <fieldset class="scheduler-border">
+                               <div class="form-row" style="margin-right: 0px; margin-bottom: 1px;">
+                                  <div class="input-group ig-row" style="margin-top: 9px ! important;margin-left: 10px ! important;margin-right: 25px ! important" >
+                                      <label class="form-control-sm col-sm-2">Insured</label>
+                                      <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 8px ! important" readonly [value]="policyList.insured">
+                                  </div>
+                                  <div class="input-group ig-row" style="margin-right: 25px ! important;;margin-left: 10px ! important" >
+                                      <label class="form-control-sm col-sm-2">Risk</label>
+                                      <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 8px ! important" readonly [value]="policyList.risk">
+                                  </div>
+                                  <div class="input-group ig-row" style="margin-right: 25px ! important;;margin-left: 10px ! important" >
+                                      <label class="form-control-sm col-sm-2">Site</label>
+                                      <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 8px ! important" readonly [value]="policyList.site">
+                                  </div>
+                                  <div class="input-group ig-row" style="margin-right: 25px ! important;;margin-left: 10px ! important" >
+                                      <label class="form-control-sm col-sm-2">Object</label>
+                                      <input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important" readonly [value]="policyList.object">
+                                      <label class="form-control-sm col-sm-2">Currency</label>
+                                      <input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important" readonly [value]="policyList.curr">
+                                  </div>
+                                  <div class="input-group ig-row" style="margin-right: 25px ! important;;margin-left: 10px ! important" >
+                                      <label class="form-control-sm col-sm-2">Sum Insured</label>
+                                      <input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important;text-align: right" readonly [value]="policyList.sumInsured | number: '1.2-2'">
+                                      <label class="form-control-sm col-sm-2">Premium</label>
+                                      <input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important;text-align: right" readonly [value]="policyList.premium | number: '1.2-2'">
+                                  </div>
+                               </div>
+                              </fieldset>        
+                            </div>
+                         </div>
                 </div>
-              </div>
-            </fieldset>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-4"></div>
-          <div class="col-sm-4">
-            <div class="form-row">
-              <div class="form-group col-sm">
-                <div class="col-md-13 text-center">
-                  <div class="cust-btn-container" style="margin-right: 35px !important;margin-top: 10px !important;"> 
-                    <button type="button" class="cust-btn"><a>Search</a></button>
-                    <button type="button" class="cust-btn"><a>Clear</a></button>
-                    <button type="button" class="cust-btn"><a>Print</a></button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-4"></div>
-        </div>
-
-        <div>
-          <!-- <app-cust-table [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes"></app-cust-table> -->
-        </div>
-        <fieldset class="scheduler-border" style="margin-top: -10px !important;padding-bottom: 0px !important">
-          <legend class="scheduler-border">Section Covers</legend>
-          <div style="padding-top: 5px;">
-            <app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
-          </div>
-        </fieldset>
-        <br>
-      </ng-template>
-    </ngb-tab>
-  </ngb-tabset>
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
 </div>

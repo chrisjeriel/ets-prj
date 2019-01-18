@@ -1,7 +1,7 @@
 <div class="cust-tabs-container">
 	<h4>Quotation / Quotation Processing</h4>
 	<!-- <ngb-tabset (tabChange)="beforeChange($event)"> -->
-		<ngb-tabset>
+		<ngb-tabset  (tabChange)="onTabChange($event)">
 		<ngb-tab class="ngb-tab" title="General Info">
 			<ng-template ngbTabContent>
 				<app-general-info></app-general-info>
@@ -33,6 +33,7 @@
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab *ngIf="line=='CAR' || line=='EAR'">
+	<!-- 	<ngb-tab> -->
 			<ng-template ngbTabTitle>
 				<div>ALOP</div>
 			</ng-template>
@@ -150,9 +151,11 @@
 			</ng-template>
 
 		</ngb-tab>
-		<ngb-tab title="Exit">
-			<ng-template ngbTabContent>
-			</ng-template>
-		</ngb-tab>
+		<ngb-tab id="Exit">
+				<ng-template ngbTabTitle>
+					<div>Exit</div>
+				</ng-template>
+    			<ng-template ngbTabContent></ng-template>
+  		</ngb-tab>
 	</ngb-tabset>
 </div>

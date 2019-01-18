@@ -20,6 +20,7 @@ export class GeneralInfoComponent implements OnInit {
 	tHeader: any[] = [];
 	dataTypes: any[] = [];
 	filters: any[] = [];
+	cessionType: string = "";
 
 	typeOfCession: string = "";
 	private sub: any;
