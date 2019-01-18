@@ -167,7 +167,7 @@ export class AppComponent  {
      }
 
  /*    @HostListener('document:keyup', ['$event'])
-       handleKeyboardEvent(event: KeyboardEvent) { 
+       handleKeyboardEvent(event: KeyboardEvent) { ''
               if (event.key == 'Backspace' || event.key == ' ') {
                 this.changeTheme(this.theme);
               }

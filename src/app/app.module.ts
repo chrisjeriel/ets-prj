@@ -263,9 +263,6 @@ import { SequencePipe } from './_pipes/sequence.pipe';
         QsoaComponent,
         AccountingInTrustComponent,
         AccountingServiceComponent,
-        CvPaymentRequestListComponent,
-        GenerateCvComponent,
-        CvAttachmentComponent,
         AcctArListingsComponent,
         AcctArEntryComponent,
         CvDetailsComponent,
@@ -273,7 +270,9 @@ import { SequencePipe } from './_pipes/sequence.pipe';
         GenerateCvComponent,
         CvEntryComponent,
         AccAttachmentsComponent,
-        SequencePipe
+        SequencePipe,
+        CvPaymentRequestListComponent,
+        CvAttachmentComponent,
     ],
 
     providers: [
