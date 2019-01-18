@@ -157,7 +157,10 @@ export class QuotationProcessingComponent implements OnInit {
 
         this.quotationService.toGenInfo = [];
         this.quotationService.toGenInfo.push("edit", this.line);
-        this.router.navigate(['/quotation']);
+        /*this.router.navigate(['/quotation']);*/
+        setTimeout(() => {
+               this.router.navigate(['/quotation', { line: this.line }], { skipLocationChange: true });
+        },100); 
     }
 
     onClickCopy(event){
@@ -190,7 +193,10 @@ export class QuotationProcessingComponent implements OnInit {
       this.quotationService.rowData = [];
       this.quotationService.toGenInfo = [];
       this.quotationService.toGenInfo.push("add", qLine);
-      this.router.navigate(['/quotation']);
+      /*this.router.navigate(['/quotation']);*/
+      setTimeout(() => {
+               this.router.navigate(['/quotation', { line: qLine }], { skipLocationChange: true });
+      },100); 
     }
 }
 
@@ -212,7 +218,10 @@ export class QuotationProcessingComponent implements OnInit {
 
         this.quotationService.toGenInfo = [];
         this.quotationService.toGenInfo.push("edit", this.line);
-        this.router.navigate(['/quotation']);
+      /*  this.router.navigate(['/quotation']);*/
+        setTimeout(() => {
+               this.router.navigate(['/quotation', { line: this.line }], { skipLocationChange: true });
+        },100); 
 
     }
     showApprovalModal(content) {

@@ -45,7 +45,7 @@
 										</div>
 										<div class="input-group ig-cust">
 											<label class="form-control-sm col-sm-2">Type of Cession</label>
-											<input appRequired type="text" class="form-control form-control-sm" [(ngModel)]="cessionType">
+											<input appRequired type="text" class="form-control form-control-sm cap-input" [(ngModel)]="cessionType">
 											<label class="form-control-sm col-sm-2">Line Class</label>
 											<input type="text" [(ngModel)]="quotationGenInfo.lineClass" class="form-control form-control-sm" appRequired>
 											<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
@@ -65,7 +65,8 @@
 											<input type="text" [(ngModel)]="quotationGenInfo.cedingCompany" class="form-control form-control-sm col-sm ig-mrgn"
 											style="margin-left: 5px;" appRequired>
 										</div>
-										<div *ngIf="quotationService.toGenInfo[1] === 'MLP'" class="input-group ig-cust">
+										<!-- <div *ngIf="quotationService.toGenInfo[1] === 'MLP'" class="input-group ig-cust"> -->
+										<div *ngIf="cessionType.toUpperCase() == 'RETROCESSION'" class="input-group ig-cust">
 											<label class="form-control-sm col-sm-2">Reinsurance From</label>
 											<input type="text" class="form-control form-control-sm col-sm-2" appRequired>
 											<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
@@ -163,7 +164,7 @@
 									</div>
 									<div class="input-group ig-cust">
 										<label class="form-control-sm col-sm-4">Request Date</label>
-										<input appRequired type="text" class="form-control form-control-sm">
+										<input appRequired type="date" class="form-control form-control-sm">
 									</div>
 									<div class="input-group ig-cust">
 										<label class="form-control-sm col-sm-4">Request Mode</label>
@@ -194,15 +195,15 @@
 						<div class="form-group col-sm-6 offsetFormGroup">
 							<div class="input-group">
 								<label class="form-control-sm col-sm-4">Currency</label>
-								<input appRequired type="text" class="form-control form-control-sm">
+								<input appRequired type="text" class="form-control form-control-sm" placeholder="PHP">
 								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 								<span>&nbsp;</span>
 							</div>
 						</div>
 						<div class="form-group col-sm-6 offsetFormGroup">
 							<div class="input-group">
-								<label class="form-control-sm col-sm-4">Exch. Rt.</label>
-								<input appRequired type="text" class="form-control form-control-sm">
+								<label class="form-control-sm col-sm-4 ">Exch. Rt.</label>
+								<input appRequired type="text" class="form-control form-control-sm txt-content-rght" placeholder="0" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
 								<span>&nbsp;</span>
 							</div>
 						</div>
@@ -1221,17 +1222,17 @@
 					<div class="form-row ig-cust">
 						<div class="form-group col-sm">
 							<label class="form-control-sm top-label">Total Sl</label>
-							<input appCurrency type="text" class="form-control form-control-sm">
+							<input appCurrency type="text" class="form-control form-control-sm" readonly>
 						</div>
 					</div>
 					<div class="form-row" style="margin-bottom: -16px; margin-top: -10px;">
 						<div class="form-group col-sm-3">
 							<label class="form-control-sm top-label">% Share</label>
-							<input type="text" class="form-control form-control-sm cust-sm">
+							<input type="text" class="form-control form-control-sm cust-sm" readonly>
 						</div>
 						<div class="form-group col-sm" style="margin-left: -6px !important;">
 							<label class="form-control-sm top-label">100% Value</label>
-							<input type="text" class="form-control form-control-sm cust-sm">
+							<input type="text" class="form-control form-control-sm cust-sm" readonly>
 						</div>
 					</div>
 				</div>

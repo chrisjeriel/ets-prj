@@ -19,6 +19,7 @@ export class GeneralInfoComponent implements OnInit {
 	tHeader: any[] = [];
 	dataTypes: any[] = [];
 	filters: any[] = [];
+	cessionType: string = "";
 
 	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title) { }
 	ngOnInit() {
