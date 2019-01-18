@@ -11,7 +11,7 @@ import { AccountingService } from '../../_services';
 })
 export class RequestForPaymentComponent implements OnInit {
 
-  routeData: any;
+  private routeData: any;
 
   requestsListData: any = {
   	tableData: this.accountingService.getPaytRequestsList(),
@@ -36,7 +36,6 @@ export class RequestForPaymentComponent implements OnInit {
   }
 
   onClickEdit(event){
-    console.log(this.routeData);
   	this.router.navigate(['generate-payt-req',
          {reqNo: this.routeData.paytReqNo,
           payee: this.routeData.payee,
