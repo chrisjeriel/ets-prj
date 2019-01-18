@@ -61,6 +61,7 @@ export class AcctItCancelledTransactionsComponent implements OnInit {
   		    dataType: 'text'
   		},
   	],
+    colSize: ['30px', '40px', '40px', '', '60px', '', '40px', '', '40px'],
   	total: [null,null,null,null,'Total',null,null,null,null],
   	pageLength: 20,
   	pagination: true,
