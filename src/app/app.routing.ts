@@ -53,6 +53,7 @@ import { AccountingInTrustComponent } from './accounting-in-trust/accounting-in-
 import { AcctArListingsComponent } from './accounting-in-trust/acct-ar-listings/acct-ar-listings.component';
 import { CheckVoucherComponent } from './accounting-in-trust/check-voucher/check-voucher.component';
 import { GenerateCvComponent } from './accounting-in-trust/check-voucher/generate-cv/generate-cv.component';
+import { AccountingEntriesComponent } from './accounting-in-trust/extract/accounting-entries/accounting-entries.component';
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -112,6 +113,7 @@ const appRoutes: Routes = [
     { path: 'acct-ar-listings', component: AcctArListingsComponent },
     { path: 'check-voucher', component: CheckVoucherComponent },
     { path: 'generate-cv', component: GenerateCvComponent },
+    { path: 'accounting-entries', component: AccountingEntriesComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
