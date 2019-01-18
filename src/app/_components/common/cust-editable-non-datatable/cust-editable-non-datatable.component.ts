@@ -150,12 +150,11 @@ export class CustEditableNonDatatableComponent implements OnInit {
 
     private initResizableColumns() {
         this.renderer.listenGlobal('body', 'mousemove', (event) => {
-            console.log(event);
             if(this.pressed) {
                 let width = this.startWidth + (event.x - this.startX);
-                $(this.start).parent().css({'min-width': width, 'max-width': width});
+                $(this.start).parent().css({'min-width': width, 'max-width': width,'width':width});
                 let index = $(this.start).parent().index() + 1;
-                $('.glowTableBody tr td:nth-child(' + index + ')').css({'min-width': width, 'max-width': width});
+                $('.glowTableBody tr td:nth-child(' + index + ')').css({'min-width': width, 'max-width': width,'width':width});
             }
         });
         this.renderer.listenGlobal('body', 'mouseup', (event) => {

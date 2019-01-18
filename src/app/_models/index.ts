@@ -49,5 +49,3 @@ export * from './AccountingEntriesCV';
 export * from './QSOA';
 export * from './AccountingTaxDetailsCV';
 export * from './AccountingJVListing';
-export * from './AccCVPayReqList';
-export * from './AccCVAttachement';
