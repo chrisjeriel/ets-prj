@@ -23,6 +23,7 @@ export class AccCVPayReqList{
 		this.payee = payee;
 		this.payType = payType;
 		this.status = status;
+		this.reqDate = reqDate;
 		this.particulars = particulars;
 		this.requestedBy = requestedBy;
 		this.curr = curr;
