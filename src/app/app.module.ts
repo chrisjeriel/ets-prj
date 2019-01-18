@@ -132,6 +132,7 @@ import { CvDetailsComponent } from './accounting-in-trust/check-voucher/generate
 import { QsoaComponent } from './accounting-in-trust/qsoa/qsoa.component';
 import { AccAttachmentsComponent } from './accounting-in-trust/acc-attachments/acc-attachments.component';
 import { SequencePipe } from './_pipes/sequence.pipe';
+import { OpenCoverInquiryComponent } from './quotation/open-cover-inquiry/open-cover-inquiry.component';
 
 @NgModule({
     imports: [
@@ -268,7 +269,8 @@ import { SequencePipe } from './_pipes/sequence.pipe';
         GenerateCvComponent,
         CvEntryComponent,
         AccAttachmentsComponent,
-        SequencePipe
+        SequencePipe,
+        OpenCoverInquiryComponent
     ],
 
     providers: [
