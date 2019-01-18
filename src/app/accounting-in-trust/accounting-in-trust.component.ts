@@ -29,17 +29,15 @@ export class AccountingInTrustComponent implements OnInit {
   ngOnInit() {
   	this.sub = this.route.params.subscribe(params => {
       this.action = params['action'];
+
+      if(this.action == 'edit') {
+        this.record = JSON.parse(params['slctd']);
+
+        this.tabController(this.record.paymentType.toUpperCase());
+      } else {
+        this.tabController('');
+      }
     });
-
-    if(this.action == 'edit') {
-    	this.sub = this.route.params.subscribe(params => {
-      		this.record = JSON.parse(params['slctd']);
-    	});
-    	this.tabController(this.record.paymentType.toUpperCase());
-
-    } else {
-    	this.tabController('');
-    }
   }
 
   ngOnDestroy() {
