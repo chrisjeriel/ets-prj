@@ -42,17 +42,22 @@
 		<ngb-tab class="ngb-tab" title="Amount Details">
 			<ng-template ngbTabContent>
 				<div class="input-group cust-border" style="padding-top: 0.6em">
-					<div class="col-sm-12" style="position: relative;">
-						<div style="position: absolute; right: 19px;">
+					<div class="col-sm-12 text-right">
+						<button class="cust-btn">Clue</button>
+					</div>
+					<div class="col-sm-12">
+						<!-- <div style="position: absolute; right: 19px;">
 							<div class="form-row custom-row-inline-inset">
 								<div class="input-group">
 									<label class="form-control-sm labels" style="text-align: left !important">Auto Compute</label>
 									<input type="checkbox" class="checkbox text-right" style="margin-top: 0.3em" checked>
 								</div>
 							</div>
-						</div>
+						</div> -->
+						
 						<app-cust-editable-non-datatable [passData]="amountDetailsData"></app-cust-editable-non-datatable>
 					</div>
+
 				</div>
 			</ng-template>
 		</ngb-tab>
