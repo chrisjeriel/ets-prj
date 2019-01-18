@@ -136,6 +136,7 @@ import { SequencePipe } from './_pipes/sequence.pipe';
 import { RequestForPaymentComponent } from './accounting-in-trust/request-for-payment/request-for-payment.component';
 import { GeneratePaymentRequestComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/generate-payment-request.component';
 import { PaymentRequestEntryComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/payment-request-entry/payment-request-entry.component';
+import { AcctItCancelledTransactionsComponent } from './accounting-in-trust/accounting-inquiry/acct-it-cancelled-transactions/acct-it-cancelled-transactions.component';
 
 @NgModule({
     imports: [
@@ -275,7 +276,8 @@ import { PaymentRequestEntryComponent } from './accounting-in-trust/request-for-
         SequencePipe,
         RequestForPaymentComponent,
         GeneratePaymentRequestComponent,
-        PaymentRequestEntryComponent
+        PaymentRequestEntryComponent,
+        AcctItCancelledTransactionsComponent
     ],
 
     providers: [

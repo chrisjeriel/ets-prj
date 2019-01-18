@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP } from '@app/_models';
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions } from '@app/_models';
 
 @Injectable({
 	providedIn: 'root'
@@ -18,6 +18,7 @@ export class AccountingService {
 	vatDetails: VATDetails[]=[];
 	creditableTax: CreditableTax[]=[];
 	paytRequestListData: AccountingRequestsListRP[] = [];
+	cancelledTransactionsData: AccountingITCancelledTransactions[] = [];
 
 	constructor(private http: HttpClient) { }
 
@@ -141,5 +142,41 @@ export class AccountingService {
 			new AccountingRequestsListRP('QBR-2019-05-0032', 'Robinsons', 'Others', 'Open', new Date(), 'Miscellaneous payment for', 'USD', 1342752.24, 'Chie Reyes'),
 		];
 		return this.paytRequestListData;
+	}
+
+	getCancelledTransactions(){
+		this.cancelledTransactionsData = [
+			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+		];
+
+		return this.cancelledTransactionsData;
 	}
 }

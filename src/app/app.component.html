@@ -217,6 +217,17 @@
                                 <br />
                                 <button [routerLink]="['/payt-req']" class="button btn btn-link"> Request for Payment </button>
                                 <br />
+                                <ngb-accordion #acc="ngbAccordion">
+                                    <ngb-panel>
+                                        <ng-template ngbPanelTitle>
+                                            Inquiry
+                                        </ng-template>
+                                        <ng-template ngbPanelContent>
+                                            <button [routerLink]="['acct-it-cancelled-trans']" class="button btn btn-link">Cancelled Transactions</button>
+                                            <br />
+                                        </ng-template>
+                                    </ngb-panel>
+                                </ngb-accordion>
                             </ng-template>
                         </ngb-panel>
                         <ngb-panel>
