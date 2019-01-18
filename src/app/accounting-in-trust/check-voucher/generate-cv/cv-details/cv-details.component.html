@@ -167,7 +167,7 @@
    <ng-template ngbTabTitle>
     <div>Tax Details</div>
 </ng-template>
-<ng-template ngbTabContent>
+<!-- <ng-template ngbTabContent>
     <fieldset class="scheduler-border" style="margin: 0px !important; border: 1px solid #ddd !important;">
         <legend class="scheduler-border">VAT Details</legend>
         <div class="test" style="margin-top: 10px !important;margin-bottom: 10px !important;">
@@ -180,26 +180,34 @@
             <app-cust-editable-non-datatable [passData]="accountingCreditableTaxDetails"></app-cust-editable-non-datatable>
         </div>
     </fieldset>
-</ng-template>
+</ng-template> -->
+
+<ng-template ngbTabContent>
+                <div class="input-group cust-border" style="padding-top: 0.6em">
+                    <div class="col-sm-12">
+                        <fieldset class="scheduler-border">
+                            <legend class="scheduler-border">VAT Details</legend>
+                            <div class="custom-row-inline-inset">
+                                <app-cust-editable-non-datatable [passData]="accountingVATTaxDetails"></app-cust-editable-non-datatable>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-sm-12">
+                        <fieldset class="scheduler-border" style="margin-bottom:10px !important;">
+                            <legend class="scheduler-border">Creditable WTax Details</legend>
+                            <div class="custom-row-inline-inset">
+                                <app-cust-editable-non-datatable [passData]="accountingCreditableTaxDetails">
+                                    <ng-container controls-r>
+                                        <button class="cust-btn" style="margin-right: 0px !important;">BIR 2307</button>
+                                    </ng-container>
+                                </app-cust-editable-non-datatable>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </ng-template>
 </ngb-tab>
 </ngb-tabset>
-<!-- =======
-                <fieldset class="scheduler-border" style="margin: 0px !important; border: 1px solid #ddd !important;">
-                    <legend class="scheduler-border">VAT Details</legend>
-                        <div class="test" style="margin-top: 10px !important;margin-bottom: 10px !important;">
-                            <app-cust-editable-non-datatable [passData]="accountingVATTaxDetails"></app-cust-editable-non-datatable>
-                        </div>
-                </fieldset>
-                <fieldset class="scheduler-border" style="margin: 0px !important; border: 1px solid #ddd !important;">
-                    <legend class="scheduler-border">Creditable WTax Details</legend>
-                        <div class="test" style="margin-top: 10px !important;margin-bottom: 10px !important;">
-                            <app-cust-editable-non-datatable [passData]="accountingCreditableTaxDetails"></app-cust-editable-non-datatable>
-                        </div>
-                </fieldset>
-			</ng-template>
-		</ngb-tab>
-	</ngb-tabset>
-    >>>>>>> 4f3a1b6919028aa2729b9b864da16284d1321cdb -->
 </div>
 
 <fieldset class="scheduler-border" style="margin: 0px !important; margin-top: 12px !important; ">

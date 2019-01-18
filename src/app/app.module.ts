@@ -144,6 +144,7 @@ import { AccountingEntriesComponent } from './accounting-in-trust/extract/accoun
 import { ExtractComponent } from './accounting-in-trust/extract/accounting-entries/extract/extract.component';
 import { TrialBalanceComponent } from './accounting-in-trust/extract/trial-balance/trial-balance.component';
 import { TrialBalanceExtractComponent } from './accounting-in-trust/extract/trial-balance/trial-balance-extract/trial-balance-extract.component';
+import { OpenCoverInquiryComponent } from './quotation/open-cover-inquiry/open-cover-inquiry.component';
 
 @NgModule({
     imports: [
@@ -291,7 +292,8 @@ import { TrialBalanceExtractComponent } from './accounting-in-trust/extract/tria
         AccountingEntriesComponent,
         ExtractComponent,
         TrialBalanceComponent,
-        TrialBalanceExtractComponent
+        TrialBalanceExtractComponent,
+        OpenCoverInquiryComponent,
     ],
 
     providers: [

@@ -64,7 +64,7 @@ export class QuotationService {
     }
     getQuotationListInfo() {
         this.quotationListData = [
-            new QuotationList("CAR-2015-00028-32-01", "Direct", "Fire", "Concluded", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna, Calamba", "CAR-2018-00001-023-0002-01", "PHP", new Date("12-20-2018"), new Date(), "Inigo Flores", "Cuaresma", "Juan Cruz" ),
+            new QuotationList("CAR-2015-00028-32-01", "Direct", "Fire", "Concluded", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna, Calamba", "CAR-2018-00001-023-0002-01", "PHP", new Date("12-20-2018"), new Date(), "Inigo Flores", "Cuaresma", "Juan Cruz"),
             new QuotationList("DOS-2015-00028-32-02", "Retrocession", "Calamity", "Concluded", "La Salle", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", "Fairmont Hotel", "Cooling Towers", "Region IV, Laguna, Calamba", "CAR-2018-00001-023-0002-02", "PHP", new Date(), new Date(), "Inigo Flores", "Cuaresma", "Juan Cruz"),
             new QuotationList("CEC-2015-00028-32-03", "Direct", "Fire", "Concluded", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna, Calamba", "CAR-2018-00001-023-0002-01", "PHP", new Date(), new Date(), "Inigo Flores", "Cuaresma", "Juan Cruz"),
             new QuotationList("CAR-2015-00028-32-04", "Direct", "CAR Wet Risks", "Concluded", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", "Fairmont Hotel", "Cooling Towers", "Region IV, Laguna, Calamba", "CAR-2018-00001-023-0002-02", "PHP", new Date(), new Date(), "Inigo Flores", "Cuaresma", "Juan Cruz"),
@@ -171,13 +171,13 @@ export class QuotationService {
             new EditableDummyInfo(3, 'Elmon', 'Hagacer', 'H', 'Male', 25, new Date()),
             new EditableDummyInfo(1, 'Christopher Jeriel', 'Sarsonas', 'Alcala', 'Male', 25, new Date()),
             new EditableDummyInfo(2, 'Veronica', 'Raymundo', 'C', 'Female', 25, new Date()),
-            new EditableDummyInfo(3, 'Elmon', 'Hagacer', 'H', 'Male', 25, new Date()), 
+            new EditableDummyInfo(3, 'Elmon', 'Hagacer', 'H', 'Male', 25, new Date()),
             new EditableDummyInfo(1, 'Christopher Jeriel', 'Sarsonas', 'Alcala', 'Male', 25, new Date()),
             new EditableDummyInfo(2, 'Veronica', 'Raymundo', 'C', 'Female', 25, new Date()),
             new EditableDummyInfo(3, 'Elmon', 'Hagacer', 'H', 'Male', 25, new Date()),
             new EditableDummyInfo(1, 'Christopher Jeriel', 'Sarsonas', 'Alcala', 'Male', 25, new Date()),
             new EditableDummyInfo(2, 'Veronica', 'Raymundo', 'C', 'Female', 25, new Date()),
-            new EditableDummyInfo(3, 'Elmon', 'Hagacer', 'H', 'Male', 25, new Date()), 
+            new EditableDummyInfo(3, 'Elmon', 'Hagacer', 'H', 'Male', 25, new Date()),
             new EditableDummyInfo(1, 'Christopher Jeriel', 'Sarsonas', 'Alcala', 'Male', 25, new Date()),
             new EditableDummyInfo(2, 'Veronica', 'Raymundo', 'C', 'Female', 25, new Date()),
             new EditableDummyInfo(3, 'Elmon', 'Hagacer', 'H', 'Male', 25, new Date()),
@@ -327,12 +327,12 @@ export class QuotationService {
 
     }
 
-    getReadyForPrinting(){
+    getReadyForPrinting() {
         this.readyForPrinting = [
-            new ReadyForPrint("CAR-2018-00088-00-99","Rose Lim","Direct","CAR Wet Risks","In Progress","Malayan","5K Builders","ABE International Corp","5K Builders & ABE International Corp","TEST","TEST","TEST","TEST",new Date(),new Date(),"TEST"),
-            new ReadyForPrint("CAR-2018-00088-00-99","Henry Tui","Direct","CAR Wet Risks","In Progress","Malayan","5K Builders","ABE International Corp","5K Builders & ABE International Corp","TEST","TEST","TEST","TEST",new Date(),new Date(),"TEST"),
-            new ReadyForPrint("CAR-2018-00088-00-99","Rose Lim","Direct","CAR Wet Risks","In Progress","Malayan","5K Builders","ABE International Corp","5K Builders & ABE International Corp","TEST","TEST","TEST","TEST",new Date(),new Date(),"TEST"),
-            new ReadyForPrint("CAR-2018-00088-00-99","Rose Lim","Direct","CAR Wet Risks","In Progress","Malayan","5K Builders","ABE International Corp","5K Builders & ABE International Corp","TEST","TEST","TEST","TEST",new Date(),new Date(),"TEST"),
+            new ReadyForPrint("CAR-2018-00088-00-99", "Rose Lim", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', "PHP", new Date(), new Date(), "Rose Lim"),
+            new ReadyForPrint("CAR-2018-00088-00-99", "Henry Tui", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', "PHP", new Date(), new Date(), "Rose Lim"),
+            new ReadyForPrint("CAR-2018-00088-00-99", "Rose Lim", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', "PHP", new Date(), new Date(), "Rose Lim"),
+            new ReadyForPrint("CAR-2018-00088-00-99", "Rose Lim", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', "PHP", new Date(), new Date(), "Rose Lim"),
         ];
         return this.readyForPrinting;
 
@@ -344,74 +344,54 @@ export class QuotationService {
                 new Date('2015-03-09'), 'Requestor', 'Creator'),
             new OpenCoverProcessing('CAR-2015-00088-00-78', 'Retrocession', 'CAR Wet Risks', 'Concluded', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
                 new Date('2015-03-09'), 'Requestor', 'Creator'),
-            new OpenCoverProcessing('EEI-2015-00088-00-77', 'Direct', 'EEI', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Requestor', 'Creator'),
             new OpenCoverProcessing('EAR-2015-00088-00-55', 'Direct', 'EAR', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
                 new Date('2015-03-09'), 'Requestor', 'Creator'),
-            new OpenCoverProcessing('CEC-2015-00088-00-60', 'Direct', 'CEC', 'Concluded', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Requestor', 'Creator'),
-            new OpenCoverProcessing('MBI-2015-00088-00-21', 'Direct', 'MBI', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Requestor', 'Creator'),
-            new OpenCoverProcessing('MLP-2015-00088-00-33', 'Retrocession', 'MLP', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Requestor', 'Creator'),
             new OpenCoverProcessing('CAR-2015-00088-00-28', 'Direct', 'CAR Wet Risks', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Requestor', 'Creator'),
-            new OpenCoverProcessing('DOS-2015-00088-00-75', 'Direct', 'DOS', 'Concluded', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
                 new Date('2015-03-09'), 'Requestor', 'Creator'),
             new OpenCoverProcessing('CAR-2015-00088-00-99', 'Direct', 'CAR Wet Risks', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
                 new Date('2015-03-09'), 'Requestor', 'Creator'),
             new OpenCoverProcessing('CAR-2015-00088-00-78', 'Retrocession', 'CAR Wet Risks', 'Concluded', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
                 new Date('2015-03-09'), 'Requestor', 'Creator'),
-            new OpenCoverProcessing('EEI-2015-00088-00-77', 'Direct', 'EEI', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Requestor', 'Creator'),
             new OpenCoverProcessing('EAR-2015-00088-00-55', 'Direct', 'EAR', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
                 new Date('2015-03-09'), 'Requestor', 'Creator'),
-            new OpenCoverProcessing('CEC-2015-00088-00-60', 'Direct', 'CEC', 'Concluded', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Requestor', 'Creator'),
-            new OpenCoverProcessing('MBI-2015-00088-00-21', 'Direct', 'MBI', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Requestor', 'Creator'),
-            new OpenCoverProcessing('MLP-2015-00088-00-33', 'Retrocession', 'MLP', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Requestor', 'Creator'),
             new OpenCoverProcessing('CAR-2015-00088-00-28', 'Direct', 'CAR Wet Risks', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Requestor', 'Creator'),
-            new OpenCoverProcessing('DOS-2015-00088-00-75', 'Direct', 'DOS', 'Concluded', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
                 new Date('2015-03-09'), 'Requestor', 'Creator'),
         ];
 
         return this.openCoverProcessing;
-    }    
+    }
 
 
-    getRisksLOV(){
+    getRisksLOV() {
         this.risksData = [
-          new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
-            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
-            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
-            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
-            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
-            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
-            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
-            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
-            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
-            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
-            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
-            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
-            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
-            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
-            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
-            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
-            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
-            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
-            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
-            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
-            new Risks('10001','Earthquake','Region IV','Calamba','Laguna','District I','Block IV'),
+            new Risks('10001', 'Earthquake', 'Region IV', 'Calamba', 'Laguna', 'District I', 'Block IV'),
+            new Risks('10001', 'Earthquake', 'Region IV', 'Calamba', 'Laguna', 'District I', 'Block IV'),
+            new Risks('10001', 'Earthquake', 'Region IV', 'Calamba', 'Laguna', 'District I', 'Block IV'),
+            new Risks('10001', 'Earthquake', 'Region IV', 'Calamba', 'Laguna', 'District I', 'Block IV'),
+            new Risks('10001', 'Earthquake', 'Region IV', 'Calamba', 'Laguna', 'District I', 'Block IV'),
+            new Risks('10001', 'Earthquake', 'Region IV', 'Calamba', 'Laguna', 'District I', 'Block IV'),
+            new Risks('10001', 'Earthquake', 'Region IV', 'Calamba', 'Laguna', 'District I', 'Block IV'),
+            new Risks('10001', 'Earthquake', 'Region IV', 'Calamba', 'Laguna', 'District I', 'Block IV'),
+            new Risks('10001', 'Earthquake', 'Region IV', 'Calamba', 'Laguna', 'District I', 'Block IV'),
+            new Risks('10001', 'Earthquake', 'Region IV', 'Calamba', 'Laguna', 'District I', 'Block IV'),
+            new Risks('10001', 'Earthquake', 'Region IV', 'Calamba', 'Laguna', 'District I', 'Block IV'),
+            new Risks('10001', 'Earthquake', 'Region IV', 'Calamba', 'Laguna', 'District I', 'Block IV'),
+            new Risks('10001', 'Earthquake', 'Region IV', 'Calamba', 'Laguna', 'District I', 'Block IV'),
+            new Risks('10001', 'Earthquake', 'Region IV', 'Calamba', 'Laguna', 'District I', 'Block IV'),
+            new Risks('10001', 'Earthquake', 'Region IV', 'Calamba', 'Laguna', 'District I', 'Block IV'),
+            new Risks('10001', 'Earthquake', 'Region IV', 'Calamba', 'Laguna', 'District I', 'Block IV'),
+            new Risks('10001', 'Earthquake', 'Region IV', 'Calamba', 'Laguna', 'District I', 'Block IV'),
+            new Risks('10001', 'Earthquake', 'Region IV', 'Calamba', 'Laguna', 'District I', 'Block IV'),
+            new Risks('10001', 'Earthquake', 'Region IV', 'Calamba', 'Laguna', 'District I', 'Block IV'),
+            new Risks('10001', 'Earthquake', 'Region IV', 'Calamba', 'Laguna', 'District I', 'Block IV'),
+            new Risks('10001', 'Earthquake', 'Region IV', 'Calamba', 'Laguna', 'District I', 'Block IV'),
         ];
         return this.risksData;
     }
-    
-    getDeductibles(){
+
+    getDeductibles() {
         this.quoteDeductiblesData = [
-            new QuotationDeductibles('Deductible Code','Deductible Title', 12, 23000, 'Deductible Text'),
+            new QuotationDeductibles('Deductible Code', 'Deductible Title', 12, 23000, 'Deductible Text'),
         ];
         return this.quoteDeductiblesData;
     }

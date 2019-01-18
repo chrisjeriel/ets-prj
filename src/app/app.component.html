@@ -23,7 +23,6 @@
                 <div class="text-center">
                     <img src="app/resources/images/PMMSC-blank-sq.png" alt="logo.png" id="logo">
                 </div>
-
                 <h3 class="text-center">
                     PMMSC
                 </h3>
@@ -59,8 +58,8 @@
                             <button [routerLink]="['/open-cover-processing']" class="button btn btn-link"> Open
                             Cover Processing</button>
                             <br />
-                                <!-- <button [routerLink]="['/open-cover-inquiry']" class="button btn btn-link">Open Cover Inquiry</button>
-                                    <br /> -->
+                            <button [routerLink]="['/open-cover-inquiry']" class="button btn btn-link"> Open
+                                    Cover Inquiry</button>
                                 </ng-template>
                             </ngb-panel>
                             <ngb-panel>
@@ -71,8 +70,7 @@
                                     <ngb-accordion #acc="ngbAccordion">
                                         <ngb-panel title="Issuance">
                                             <ng-template ngbPanelContent>
-                                                <button [routerLink]="['/create-policy']" class="button btn btn-link">Create
-                                                Policy</button>
+                                                <button [routerLink]="['/create-policy']" class="button btn btn-link">Create Policy</button>
                                                 <br />
                                                 <button [routerLink]="['/policy-listing']" class="button btn btn-link">Policy
                                                 List</button>
@@ -212,8 +210,6 @@
                                 <fa name="calculator"></fa>&nbsp;Accounting In-Trust
                             </ng-template>
                             <ng-template ngbPanelContent>
-                                <!-- <button [routerLink]="['/accounting-in-trust']" class="button btn btn-link"> Acknowledgement Receipt </button>
-                                    <br /> -->
                                     <button [routerLink]="['/acct-ar-listings']" class="button btn btn-link"> Acknowledgement Receipt </button>
                                     <br />
                                     <button [routerLink]="['/check-voucher']" class="button btn btn-link"> Check Voucher </button>

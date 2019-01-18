@@ -60,6 +60,7 @@ import { JournalVoucherComponent } from './accounting-in-trust/journal-voucher/j
 import { GenerateJvComponent } from './accounting-in-trust/journal-voucher/generate-jv/generate-jv.component';
 import { AccountingEntriesComponent } from './accounting-in-trust/extract/accounting-entries/accounting-entries.component';
 import { TrialBalanceComponent } from './accounting-in-trust/extract/trial-balance/trial-balance.component';
+import { OpenCoverInquiryComponent } from './quotation/open-cover-inquiry/open-cover-inquiry.component';
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -126,6 +127,7 @@ const appRoutes: Routes = [
     { path: 'generate-jv', component: GenerateJvComponent },
     { path: 'accounting-entries', component: AccountingEntriesComponent},
     { path: 'trial-balance', component: TrialBalanceComponent},
+    { path: 'open-cover-inquiry', component: OpenCoverInquiryComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
