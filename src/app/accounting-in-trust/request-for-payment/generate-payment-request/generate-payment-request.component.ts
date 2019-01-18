@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-generate-payment-request',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GeneratePaymentRequestComponent implements OnInit {
 
-  constructor() { }
+  private sub: any;
+  rowData: any;
+
+  constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
+  	this.sub = this.route.params.subscribe(params => {
+      this.rowData = params['data'];
+    });
+    console.log(this.rowData.payee);
   }
 
 }

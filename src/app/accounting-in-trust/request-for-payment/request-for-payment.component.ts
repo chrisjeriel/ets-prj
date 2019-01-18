@@ -11,6 +11,8 @@ import { AccountingService } from '../../_services';
 })
 export class RequestForPaymentComponent implements OnInit {
 
+  routeData: any;
+
   requestsListData: any = {
   	tableData: this.accountingService.getPaytRequestsList(),
   	tHeader: ['Payment Request No.', 'Payee', 'Payment Type', 'Status', 'Request Date', 'Particulars', 'Curr', 'Amount', 'Requested By'],
@@ -34,6 +36,12 @@ export class RequestForPaymentComponent implements OnInit {
   }
 
   onClickEdit(event){
-  	this.router.navigate(['generate-payt-req']);
+    console.log(this.routeData);
+  	this.router.navigate(['generate-payt-req', {data: this.routeData}], {skipLocationChange: true});
+  }
+
+  onRowClick(data){
+      this.routeData = data;
+    //console.log(this.accountingService.getPaytRequestsList());
   }
 }

@@ -6,7 +6,7 @@
 			<ng-template ngbTabContent>
 				<div class="row">
 					<div class="col-sm">
-						<app-cust-non-datatable [passData]="requestsListData" (add)="onClickAdd($event)" (edit)="onClickEdit($event)"></app-cust-non-datatable>
+						<app-cust-non-datatable [passData]="requestsListData" (add)="onClickAdd($event)" (edit)="onClickEdit($event)" (rowClick)="onRowClick($event)"></app-cust-non-datatable>
 					</div>
 				</div>
 				<div class="form-row" style="margin-left: -30px !important;">
