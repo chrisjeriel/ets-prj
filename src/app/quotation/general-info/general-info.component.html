@@ -25,63 +25,70 @@
 	}
 </style>
 
-	<div>
-		<div class="row">
-			<div class="col-sm-8">
-				<div class="row">
-					<div class="col-sm">
-						<fieldset class="scheduler-border cust-fs-padlr-offset" style="padding-top: 2px !important; padding-bottom: 4px !important;">
-							<legend class="scheduler-border">Quotation Details</legend>
-							<div class="row">
-								<div class="col-sm-8" style="padding-right: 0px !important;">
-									<div class="form-row" style="margin-right: 0px;">
-										<div class="input-group ig-cust" style="margin-top: 10px;">
-											<label class="form-control-sm col-sm-2">Quotation No</label>
-											<!-- <input type="text" [(ngModel)]="quotationNum[0]" class="form-control form-control-sm" ngbTooltip="Line" [appCharactersLength]="'3'" appRequired>
+<div>
+	<div class="row">
+		<div class="col-sm-8">
+			<div class="row">
+				<div class="col-sm">
+					<fieldset class="scheduler-border cust-fs-padlr-offset" style="padding-top: 2px !important; padding-bottom: 4px !important;">
+						<legend class="scheduler-border">Quotation Details</legend>
+						<div class="row">
+							<div class="col-sm-8" style="padding-right: 0px !important;">
+								<div class="form-row" style="margin-right: 0px;">
+									<div class="input-group ig-cust" style="margin-top: 10px;">
+										<label class="form-control-sm col-sm-2">Quotation No</label>
+										<!-- <input type="text" [(ngModel)]="quotationNum[0]" class="form-control form-control-sm" ngbTooltip="Line" [appCharactersLength]="'3'" appRequired>
 											<input type="text" [(ngModel)]="quotationNum[1]" class="form-control form-control-sm ig-mrgn" ngbTooltip="Year" [appCharactersLength]="'4'" appRequired pattern="[0-9]">
 											<input type="text" class="form-control form-control-sm ig-mrgn" ngbTooltip="Sequence No" [appCharactersLength]="'5'" appRequired>
 											<input type="text" [(ngModel)]="quotationNum[2]" class="form-control form-control-sm ig-mrgn" ngbTooltip="Revision No" [appCharactersLength]="'2'" appRequired>
 											<input type="text" [(ngModel)]="quotationNum[3]" class="form-control form-control-sm ig-mrgn" ngbTooltip="Company No" [appCharactersLength]="'2'" appRequired> -->
-											<input appRequired type="text" class="form-control form-control-sm">
-										</div>
-										<div class="input-group ig-cust">
-											<label class="form-control-sm col-sm-2">Type of Cession</label>
-											<input appRequired type="text" class="form-control form-control-sm" [(ngModel)]="cessionType">
-											<label class="form-control-sm col-sm-2">Line Class</label>
-											<input type="text" [(ngModel)]="quotationGenInfo.lineClass" class="form-control form-control-sm" style="margin-right: 1px;" appRequired>
-											<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-											<span>&nbsp;</span>
-										</div>
-										<div class="input-group ig-cust">
-											<label class="form-control-sm col-sm-2">Policy Number</label>
-											<input type="text" class="form-control form-control-sm">
-											<label class="form-control-sm col-sm-2">Status</label>
-											<input type="text" [(ngModel)]="quotationGenInfo.quoteStatus" class="form-control form-control-sm" appRequired>
-										</div>
-										<div class="input-group ig-cust">
-											<label class="form-control-sm col-sm-2">Ceding Company</label>
-											<input type="text" class="form-control form-control-sm col-sm-2" appRequired>
-											<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-											<span>&nbsp;</span>
-											<input type="text" [(ngModel)]="quotationGenInfo.cedingCompany" class="form-control form-control-sm col-sm ig-mrgn"
-											style="margin-left: 5px;" appRequired>
-										</div>
-										<div *ngIf="quotationService.toGenInfo[1] === 'MLP'" class="input-group ig-cust">
-											<label class="form-control-sm col-sm-2">Reinsurance From</label>
-											<input type="text" class="form-control form-control-sm col-sm-2" appRequired>
-											<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-											<span>&nbsp;</span>
-											<input type="text" [(ngModel)]="quotationGenInfo.cedingCompany" class="form-control form-control-sm col-sm ig-mrgn"
-											style="margin-left: 5px;" appRequired>
-										</div>
-										<div class="input-group">
-											<label class="form-control-sm col-sm-2">Intermediary</label>
-											<input type="text" class="form-control form-control-sm col-sm-2" appRequired>
-											<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-											<span>&nbsp;</span>
-											<input type="text" class="form-control form-control-sm col-sm ig-mrgn" style="margin-left: 5px;" appRequired>
-										</div>
-<!-- =======
+										<input appRequired type="text" class="form-control form-control-sm">
+									</div>
+									<div class="input-group ig-cust">
+										<label class="form-control-sm col-sm-2">Type of Cession</label>
+										<input appRequired type="text" class="form-control form-control-sm" [(ngModel)]="cessionType">
+										<label class="form-control-sm col-sm-2">Line Class</label>
+										<input type="text" [(ngModel)]="quotationGenInfo.lineClass" class="form-control form-control-sm" style="margin-right: 1px;"
+										 appRequired>
+										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+										<span>&nbsp;</span>
+									</div>
+									<div class="input-group ig-cust">
+										<label class="form-control-sm col-sm-2">Policy Number</label>
+										<input type="text" class="form-control form-control-sm">
+										<label class="form-control-sm col-sm-2">Status</label>
+										<input type="text" [(ngModel)]="quotationGenInfo.quoteStatus" class="form-control form-control-sm"
+										 appRequired>
+									</div>
+									<div class="input-group ig-cust">
+										<label class="form-control-sm col-sm-2">Ceding Company</label>
+										<input type="text" class="form-control form-control-sm col-sm-2" appRequired>
+										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+										<span>&nbsp;</span>
+										<input type="text" [(ngModel)]="quotationGenInfo.cedingCompany" class="form-control form-control-sm col-sm ig-mrgn"
+										 style="margin-left: 5px;" appRequired>
+									</div>
+									<div *ngIf="checkTypeOfCession()" class="input-group ig-cust">
+										<label class="form-control-sm col-sm-2">Reinsurance From</label>
+										<input type="text" class="form-control form-control-sm col-sm-2" appRequired>
+										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+										<span>&nbsp;</span>
+										<input type="text" [(ngModel)]="quotationGenInfo.cedingCompany" class="form-control form-control-sm col-sm ig-mrgn"
+										 style="margin-left: 5px;" appRequired>
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-2">Intermediary</label>
+										<input type="text" class="form-control form-control-sm col-sm-2" appRequired>
+										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+										<span>&nbsp;</span>
+										<input type="text" class="form-control form-control-sm col-sm ig-mrgn" style="margin-left: 5px;" appRequired>
+									</div>
+									<!-- <div *ngIf="ocChecked" class="input-group">
+										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Open Pol No</label>
+										<input type="text" class="form-control form-control-sm">
+										
+									</div> -->
+									<!-- =======
 
 <div>
 	<div class="row">
@@ -182,6 +189,31 @@
 							</div>
 						</div>
 					</fieldset>
+
+					<fieldset class="scheduler-border" *ngIf="ocChecked">
+						<legend class="scheduler-border">Open Cover Details</legend>
+						<div class="form-row custom-row-inline-inset">
+							<div class="col-sm-1"></div>
+							<div class="col-sm-10">
+								<div class="input-group">
+									<label class="form-control-sm col-sm-3">Open Cover Quotation No</label>
+									<input appRequired type="text" class="form-control form-control-sm col-sm-1" style="margin-left:3px !important;">
+									<input appRequired type="text" class="form-control form-control-sm col-sm-1" style="margin-left:3px !important;">
+									<input appRequired type="text" class="form-control form-control-sm col-sm-1" style="margin-left:3px !important;">
+									<input appRequired type="text" class="form-control form-control-sm col-sm-3" style="margin-left:3px !important;">
+									<input appRequired type="text" class="form-control form-control-sm col-sm-1" style="margin-left:3px !important;">
+									<input appRequired type="text" class="form-control form-control-sm col-sm-1" style="margin-left:3px !important;">
+									<input appRequired type="text" class="form-control form-control-sm col-sm-1" style="margin-left:3px !important;">
+									<div class="text-search-ico" style="margin-left: 3px !important;"><a><i class="fa fa-search"></i></a></div>
+									<span>&nbsp;</span>
+								</div>
+							</div>
+							<div class="col-sm-1"></div>
+
+						</div>
+					</fieldset>
+
+
 				</div>
 			</div>
 		</div>
@@ -242,7 +274,7 @@
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<div class="input-group-text">
-										<input type="checkbox">
+										<input type="checkbox" [(ngModel)]="ocChecked">
 									</div>
 								</div>
 								<input type="text" style="font-size: 11px !important;" value="Open Cover" disabled class="form-control form-control-sm">

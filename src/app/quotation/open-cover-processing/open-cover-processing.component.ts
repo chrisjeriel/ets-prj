@@ -166,7 +166,7 @@ export class OpenCoverProcessingComponent implements OnInit {
     for (var i = 0; i < event.target.closest("tr").children.length; i++) {
       this.quotationService.rowData[i] = event.target.closest("tr").children[i].innerText;
     }
-    this.ocLine = this.ocLine = this.quotationService.rowData[0].split("-")[0];
+    this.ocLine = this.quotationService.rowData[0].split("-")[0];
 
     this.disabledEditBtn = false;
     this.disabledCopyBtn = false;

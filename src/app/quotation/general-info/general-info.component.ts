@@ -4,6 +4,7 @@ import { callLifecycleHooksChildrenFirst } from '@angular/core/src/view/provider
 import { QuotationService } from '../../_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -20,7 +21,14 @@ export class GeneralInfoComponent implements OnInit {
 	dataTypes: any[] = [];
 	filters: any[] = [];
 
-	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title) { }
+	typeOfCession: string = "";
+	private sub: any;
+	from: string;
+	line: string;
+	ocChecked: boolean = false;
+
+
+	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute) { }
 	ngOnInit() {
 		this.titleService.setTitle("Quo | General Info");
 		this.tHeader.push("Item No", "Description of Items");
@@ -116,6 +124,22 @@ export class GeneralInfoComponent implements OnInit {
 			this.quotationGenInfo.lastUpdate;
 			this.quotationGenInfo.lastUpdateBy = "";
 		}
+
+		this.sub = this.route.params.subscribe(params => {
+			this.from = params['from'];
+			if (this.from == "quo-processing") {
+				this.typeOfCession = params['typeOfCession'];
+			}
+		});
+		this.checkTypeOfCession();
+	}
+
+	ngOnDestroy() {
+		this.sub.unsubscribe();
+	}
+
+	checkTypeOfCession() {
+		return (this.typeOfCession.trim().toUpperCase() === 'RETROCESSION') ? true : false;
 	}
 
 	reqMode: SelectRequestMode[] = [
