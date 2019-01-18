@@ -138,6 +138,8 @@ import { GenerateJvComponent } from './accounting-in-trust/journal-voucher/gener
 import { JvEntryComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-entry/jv-entry.component';
 import { AccountingEntriesComponent } from './accounting-in-trust/extract/accounting-entries/accounting-entries.component';
 import { ExtractComponent } from './accounting-in-trust/extract/accounting-entries/extract/extract.component';
+import { TrialBalanceComponent } from './accounting-in-trust/extract/trial-balance/trial-balance.component';
+import { TrialBalanceExtractComponent } from './accounting-in-trust/extract/trial-balance/trial-balance-extract/trial-balance-extract.component';
 
 @NgModule({
     imports: [
@@ -280,7 +282,9 @@ import { ExtractComponent } from './accounting-in-trust/extract/accounting-entri
         GenerateJvComponent,
         JvEntryComponent,
         AccountingEntriesComponent,
-        ExtractComponent
+        ExtractComponent,
+        TrialBalanceComponent,
+        TrialBalanceExtractComponent
     ],
 
     providers: [
