@@ -56,7 +56,7 @@ import { GenerateCvComponent } from './accounting-in-trust/check-voucher/generat
 import { OpenCoverInquiryComponent } from './quotation/open-cover-inquiry/open-cover-inquiry.component';
 import { JournalVoucherComponent } from './accounting-in-trust/journal-voucher/journal-voucher.component';
 import { GenerateJvComponent } from './accounting-in-trust/journal-voucher/generate-jv/generate-jv.component';
-
+import { AccountingEntriesComponent } from './accounting-in-trust/extract/accounting-entries/accounting-entries.component';
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
     { path: 'quotation', component: QuotationComponent, canActivate: [AuthGuard] },
@@ -118,6 +118,7 @@ const appRoutes: Routes = [
     { path: 'open-cover-inquiry', component: OpenCoverInquiryComponent },
     { path: 'journal-voucher', component: JournalVoucherComponent },
     { path: 'generate-jv', component: GenerateJvComponent },
+    { path: 'accounting-entries', component: AccountingEntriesComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

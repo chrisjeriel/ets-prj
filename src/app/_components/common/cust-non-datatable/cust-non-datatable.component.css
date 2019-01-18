@@ -197,9 +197,10 @@ div.filler{
 }
 
 .pagination{
-    margin-top: 0.5%;
+    /*margin-top: 0.5%;*/
     float: right;
 }
+
 
 .dropdown-menu {
     padding: 0px !important;
