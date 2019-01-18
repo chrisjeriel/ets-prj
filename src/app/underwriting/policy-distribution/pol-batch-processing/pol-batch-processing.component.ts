@@ -11,16 +11,35 @@ import { Title } from '@angular/platform-browser';
 })
 export class PolBatchProcessingComponent implements OnInit {
   
-  passDataPosting: any = {
+  // passDataPosting: any = {
+  //       tHeader: [
+  //           "Dist No.", "Risk Dist No.", "Status","Line", "Policy No.",
+  //           "Ceding Company", "Insured", "Risk","Currency","Sum Insured","Distribution Date", "Accounting Date"
+  //       ],
+  //       resizable: [
+  //           false, false, true,false, false, true, true, true,false,true,false, false,
+  //       ],
+  //       dataTypes: [
+  //           "text", "text", "text","text", "text", "text", "text", "text","text","currency","date", "date"
+  //       ],
+  //       tableData: this.underwritingService.getPolicyBatchPosting(),
+  //       checkFlag:true,
+  //       addFlag:true,
+  //       deleteFlag:true,
+  //       pageLength: 10,
+  //       searchFlag:true,
+  //       paginateFlag:true,
+  //       infoFlag:true,
+  //  };
+
+    passDataPosting: any = {
+        tableData: this.underwritingService.getPolicyBatchPosting(),
         tHeader: [
-            "Dist No.", "Risk Dist No.", "Status","Line", "Policy No.",
-            "Ceding Company", "Insured", "Risk","Currency","Sum Insured","Distribution Date", "Accounting Date"
-        ],
-        resizable: [
-            false, false, true,false, false, true, true, true,false,true,false, false,
+            "Dist No.", "Risk Dist No." , "Status","Line", "Policy No.","Type of Cession",
+            "Ceding Company", "Insured", "Risk","Object","Site","Currency","Sum Insured","Premium","Issue Date","Inception Date","Expiry Date", "Accounting Date","Distribution Date"
         ],
         dataTypes: [
-            "text", "text", "text","text", "text", "text", "text", "text","text","currency","date", "date"
+            "text", "text", "text","text", "text", "text","text", "text", "text","text","text","text","currency","currency","date", "date","date","date","date"
         ],
         filters: [
             {
@@ -119,26 +138,37 @@ export class PolBatchProcessingComponent implements OnInit {
                 dataType: 'date    '
             },
         ],
-        tableData: this.underwritingService.getPolicyBatchPosting(),
-        checkFlag:true,
-        addFlag:true,
-        deleteFlag:true,
         pageLength: 10,
-        searchFlag:true,
-        paginateFlag:true,
-        infoFlag:true,
-   };
+        checkFlag: true,
+        pageStatus: true, 
+        pagination: true,
+        resizable: [false,false,true,false,false,false,true,true,true,true,true,false,true,true,false,false,false,false,false] 
+       
+    }
+   // passDataDistribution: any = {
+   //      tHeader: [
+   //          "Dist No.", "Risk Dist No." , "Status","Line", "Policy No.","Type of Cession",
+   //          "Ceding Company", "Insured", "Risk","Object","Site","Currency","Sum Insured","Premium","Issue Date","Inception Date","Expiry Date", "Accounting Date","Distribution Date"
+   //      ],
+   //      dataTypes: [
+   //          "text", "text", "text","text", "text", "text","text", "text", "text","text","text","text","currency","currency","date", "date","date","date","date"
+   //      ],
+   //      tableData: this.underwritingService.getPolicyBatchDistribution(),
+   //      checkFlag:true,
+   //      pageLength: 10,
+   //      searchFlag:true,
+   //      paginateFlag:true,
+   //      infoFlag:true,
+   // };
 
    passDataDistribution: any = {
+        tableData: this.underwritingService.getPolicyBatchDistribution(),
         tHeader: [
-            "Dist No.", "Risk Dist No." , "Status","Line", "Policy No.",
-            "Ceding Company", "Insured", "Risk","Currency","Sum Insured","Distribution Date", "Accounting Date"
-        ],
-        resizable: [
-            false, false, true,false, false, true, true, true,false,true,false, false,
+            "Dist No.", "Risk Dist No." , "Status","Line", "Policy No.","Type of Cession",
+            "Ceding Company", "Insured", "Risk","Object","Site","Currency","Sum Insured","Premium","Issue Date","Inception Date","Expiry Date", "Accounting Date","Distribution Date"
         ],
         dataTypes: [
-            "text", "text", "text","text", "text", "text", "text", "text","text","currency","date", "date"
+            "text", "text", "text","text", "text", "text","text", "text", "text","text","text","text","currency","currency","date", "date","date","date","date"
         ],
         filters: [
             {
@@ -237,15 +267,13 @@ export class PolBatchProcessingComponent implements OnInit {
                 dataType: 'date'
             },
         ],
-        tableData: this.underwritingService.getPolicyBatchDistribution(),
-        checkFlag:true,
-        addFlag:true,
-        deleteFlag:true,
         pageLength: 10,
-        searchFlag:true,
-        paginateFlag:true,
-        infoFlag:true,
-   };
+        checkFlag: true,
+        pageStatus: true, 
+        pagination: true,
+        resizable: [false,false,true,false,false,false,true,true,true,true,true,false,true,true,false,false,false,false,false] 
+       
+    }
 
   constructor(private titleService: Title, private underwritingService: UnderwritingService) { }
 
