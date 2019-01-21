@@ -1,0 +1,115 @@
+<div class="row">
+	<div class="col-sm-8">
+		<fieldset class="scheduler-border" style="padding-top: 5px !important; padding-bottom: 20px !important;">
+			<legend class="scheduler-border">Printing Parameters</legend>
+			<div class="row">
+				<div class="col-sm-1"></div>
+				<div class="col-sm-10">
+					<fieldset class="scheduler-border" style="padding-top: 10px !important; padding-bottom: 10px !important;">
+						<legend class="scheduler-border">Period</legend>
+						<div class="row">
+							<div class="col-sm-3"></div>
+							<div class="col-sm-4">
+								<input type="radio" style="vertical-align: middle;" name="dateRadio"><label class="form-control-sm" style="margin-bottom: 0px !important;">Transaction Date</label>
+							</div>
+							<div class="col-sm-4">
+								<input type="radio" style="vertical-align: middle;" name="dateRadio" checked><label class="form-control-sm" style="margin-bottom: 0px !important;">Posting Date</label>
+							</div>
+							<div class="col-sm-1"></div>
+						</div>
+						<div class="input-group" style="margin-left: 16px !important; margin-top: 8px !important;">
+							<div class="col-sm-1"></div>
+							<label class="form-control-sm col-sm-1">From</label>
+							<input type="date" class="form-control form-control-sm col-sm-3" value="2018-12-01">
+							<div class="col-sm-1"></div>
+							<label class="form-control-sm col-sm-1">To</label>
+							<input type="date" class="form-control form-control-sm col-sm-3" value="2018-12-31">
+							<div class="col-sm-1"></div>
+						</div>
+					</fieldset>
+				</div>
+				<div class="col-sm-1"></div>
+			</div>
+			<div class="row">
+				<div class="col-sm-1"></div>
+				<div class="col-sm-10">
+					<fieldset class="scheduler-border" style="margin-top: 12px !important; padding-top: 10px !important; padding-bottom: 7px !important;">
+						<div class="input-group cust-ig">
+							<label class="form-control-sm col-sm-2">JV Type</label>
+							<input type="text" class="form-control form-control-sm col-sm-2">
+							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+							<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 2px !important;" value="ALL JV TYPES">
+						</div>
+					</fieldset>
+				</div>
+				<div class="col-sm-1"></div>
+			</div>
+			<div class="row">
+				<div class="col-sm-1"></div>
+				<div class="col-sm-5">
+					<fieldset class="scheduler-border" style="margin-right: -8px !important; padding-top: 4px !important;">
+						<legend class="scheduler-border">Report Type</legend>
+						<div style="padding-left: 18px">
+							<div class="row">
+								<div class="col-sm" style="margin-bottom: -8px !important;">
+									<input type="radio" style="vertical-align: middle;" name="typeRadio"><label class="form-control-sm" style="margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;">Summary</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm" style="margin-top: -8px !important;">
+									<input type="radio" style="vertical-align: middle;" name="typeRadio"><label class="form-control-sm" style="margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;">Detailed</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm" style="margin-bottom: -8px !important;">
+									<input type="checkbox" checked style="vertical-align: middle;"><label class="form-control-sm" style="margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;">Include Closed Transactions</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm" style="margin-top: -8px !important;">
+									<input type="checkbox" checked style="vertical-align: middle;"><label class="form-control-sm" style="margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;">Include Cancelled Transactions</label>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+				</div>
+				<div class="col-sm-5">
+					<fieldset class="scheduler-border" style="margin-left: -8px !important; padding-top: 11px !important;">
+						<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+						<div class="input-group cust-ig">
+							<label class="form-control-sm col-sm-4">Destination</label>
+							<select class="form-control form-control-sm cust-sm" disabled>
+								<option selected>Printer</option>
+								<option>Option 2</option>
+								<option>Option 3</option>
+							</select>
+						</div>
+						<div class="input-group cust-ig" style="padding-top: 8px !important; margin-bottom: -16px !important;">
+							<label class="form-control-sm col-sm-5"></label>
+							<input type="radio" style="vertical-align: middle;" name="outputRadio" disabled><label class="form-control-sm" style="margin-bottom: 0px !important; margin-top: -5px;">PDF</label>
+							<input type="radio" style="vertical-align: middle; margin-left: 18px;" name="outputRadio" disabled><label class="form-control-sm" style="margin-bottom: 0px !important; margin-top: -5px;">Excel</label>
+						</div>
+						<div class="input-group cust-ig">
+							<label class="form-control-sm col-sm-4">Printer Name</label>
+							<select class="form-control form-control-sm cust-sm" disabled>
+								<option selected>EPSON 3600i</option>
+								<option>Option 2</option>
+								<option>Option 3</option>
+							</select>
+						</div>
+						<div class="input-group">
+							<label class="form-control-sm col-sm-4">No. Of Copies</label>
+							<input type="text" class="form-control form-control-sm col-sm text-right" value="1" disabled>
+						</div>
+					</fieldset>
+				</div>
+				<div class="col-sm-1"></div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12 text-center" style="margin-top: 10px !important;">
+					<button class="cust-btn">Print</button>
+				</div>
+			</div>
+		</fieldset>
+	</div>
+</div>

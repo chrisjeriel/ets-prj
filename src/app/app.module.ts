@@ -147,6 +147,11 @@ import { ExtractComponent } from './accounting-in-trust/extract/accounting-entri
 import { TrialBalanceComponent } from './accounting-in-trust/extract/trial-balance/trial-balance.component';
 import { TrialBalanceExtractComponent } from './accounting-in-trust/extract/trial-balance/trial-balance-extract/trial-balance-extract.component';
 import { OpenCoverInquiryComponent } from './quotation/open-cover-inquiry/open-cover-inquiry.component';
+import { RegistersComponent } from './accounting-in-trust/reports/registers/registers.component';
+import { ArRegisterComponent } from './accounting-in-trust/reports/registers/ar-register/ar-register.component';
+import { CvRegisterComponent } from './accounting-in-trust/reports/registers/cv-register/cv-register.component';
+import { ChecksRegisterComponent } from './accounting-in-trust/reports/registers/checks-register/checks-register.component';
+import { JvRegisterComponent } from './accounting-in-trust/reports/registers/jv-register/jv-register.component';
 
 @NgModule({
     imports: [
@@ -298,6 +303,11 @@ import { OpenCoverInquiryComponent } from './quotation/open-cover-inquiry/open-c
         OpenCoverInquiryComponent,
         CvPaymentRequestListComponent,
         CvAttachmentComponent,
+        RegistersComponent,
+        ArRegisterComponent,
+        CvRegisterComponent,
+        ChecksRegisterComponent,
+        JvRegisterComponent,
     ],
 
     providers: [

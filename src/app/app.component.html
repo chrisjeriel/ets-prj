@@ -242,6 +242,17 @@
                                             </ng-template>
                                         </ngb-panel>
                                     </ngb-accordion>
+                                    <ngb-accordion #acc="ngbAccordion">
+                                        <ngb-panel>
+                                            <ng-template ngbPanelTitle>
+                                                Reports
+                                            </ng-template>
+                                            <ng-template ngbPanelContent>
+                                                <button [routerLink]="['print-registers']" class="button btn btn-link">Registers</button>
+                                                <br />
+                                            </ng-template>
+                                        </ngb-panel>
+                                    </ngb-accordion>
                                 </ng-template>
                             </ngb-panel>
                             <ngb-panel>
