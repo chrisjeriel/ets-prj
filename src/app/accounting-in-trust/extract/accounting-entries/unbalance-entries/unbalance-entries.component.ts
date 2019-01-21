@@ -50,7 +50,9 @@ export class UnbalanceEntriesComponent implements OnInit {
 
   }
   tranType:string;
-
+  dateExtracted:string;
+  periodFrom: string;
+  periodTo: string;
   constructor( private route: Router) { }
 
   ngOnInit() {
@@ -58,8 +60,10 @@ export class UnbalanceEntriesComponent implements OnInit {
   		new UnbalanceEntries('AR','2018-00372890',new Date(2018,11,2),'UCPBGEN','Payment for','New',282883,29930,29900,30),
       new UnbalanceEntries('CV','2018-00372900',new Date(2018,11,25),'BPI/MS','Payment for','New',282883,193038.99,193039,0.01),
       new UnbalanceEntries('JV','2018-00000093',new Date(2019,0,21),'SM PRIME HOLDINGS','Payment for','New',283000,1525850,1500000,25850)
-    
-  	]
+  	];
+    this.dateExtracted = new Date().toISOString().slice(0, 16);
+    this.periodFrom = '2018-12-01';
+    this.periodTo = '2018-12-31';
   }
 
   onRowClick(data){

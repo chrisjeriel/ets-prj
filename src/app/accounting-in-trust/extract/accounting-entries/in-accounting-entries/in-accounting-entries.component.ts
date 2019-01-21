@@ -21,12 +21,17 @@ export class InAccountingEntriesComponent implements OnInit {
   	tableData:[],
   	pageLength: 15
   }
+  dateExtracted: string;
   constructor() { }
 
   ngOnInit() {
   	this.passData.tableData = [
-  		new ExtractedData(new Date(),'tran','2018-00001','COD','Sample Description', 'Sample Particular', 'SL','Printed', 498431,4643213)
+  		new ExtractedData(new Date(2018,11,2),'AR','2018-00372890','1-01-03-01','BPI Savings Account No 0074-0073-92', 'Payment for', '','New', 282883,282883),
+      new ExtractedData(new Date(2018,11,25),'CV','2018-00372900','1-01-03-01','BPI Savings Account No 0074-0073-92', 'Payment for', '','New', 193039,193039),
+      new ExtractedData(new Date(2019,0,21),'JV','2018-00000093','1-01-03-01','BPI Savings Account No 0074-0073-92', 'Payment for', '','New', 1500000,1500000),
+
   	];
+    this.dateExtracted = new Date().toISOString().slice(0, 16);
   }
 
 }
