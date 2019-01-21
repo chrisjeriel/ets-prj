@@ -57,7 +57,7 @@ export class PolCoverageComponent implements OnInit {
   passDataCATPerils: any = {
         tHeader: ["CAT Perils", "Percentage Share on Premium(%)"],
         dataTypes: [
-                    "text", "currency", "percent"
+                    "text", "percent"
                    ],
         tableData: [["Earthquake","15"],["Typhoon","10"],["Flood","10"],["Volcanic Eruption","1"]],
         pageLength:10,
