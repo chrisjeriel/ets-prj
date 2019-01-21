@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-open-cover',
@@ -8,7 +9,7 @@ import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 })
 export class OpenCoverComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
   }
@@ -18,4 +19,11 @@ export class OpenCoverComponent implements OnInit {
 			$event.preventDefault();
 		}
 	}
+
+  onTabChange($event: NgbTabChangeEvent) {
+      if ($event.nextId === 'Exit') {
+        this.router.navigateByUrl('');
+      } 
+  
+  }
 }

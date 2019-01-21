@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-acct-ar-listings',
@@ -69,9 +70,10 @@ export class AcctArListingsComponent implements OnInit {
     pageID: 1
   }
 
-  constructor(private router: Router) { }
+  constructor(private router: Router,private titleService: Title) { }
 
   ngOnInit() {
+    this.titleService.setTitle("Acct-IT | Acknowledgement Receipt");
   }
 
   toGenerateARAdd() {

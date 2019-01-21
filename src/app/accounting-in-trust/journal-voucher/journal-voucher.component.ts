@@ -22,9 +22,10 @@ export class JournalVoucherComponent implements OnInit {
         pagination: true,
     };
 
-  constructor(private accountingService: AccountingService,private router: Router) { }
+  constructor(private accountingService: AccountingService,private router: Router, private titleService: Title) { }
 
   ngOnInit() {
+     this.titleService.setTitle("Acct-IT | Journal Voucher");
   }
 
   onClickAdd(event){

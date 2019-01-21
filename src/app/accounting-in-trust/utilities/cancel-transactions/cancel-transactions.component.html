@@ -1,26 +1,26 @@
 <div class="cust-tabs-container">
-	<h4>Accounting In-Trust / Utilities / Change Transaction Status to New</h4>
+	<h4>Accounting In-Trust / Utilities / Cancel Transactions</h4>
 	<ngb-tabset (tabChange)="onTabChange($event)">
-		<ngb-tab class="ngb-tab" title="Acknowledge Receipt">
+		<ngb-tab class="ngb-tab" title="Acknowledgement Receipt">
 			<ng-template ngbTabContent>
-				<app-change-to-new-ar></app-change-to-new-ar>
+				<app-cancel-ar></app-cancel-ar>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab class="ngb-tab" title="Check Voucher">
 			<ng-template ngbTabContent>
-				<app-change-to-new-cv></app-change-to-new-cv>
+				<app-cancel-cv></app-cancel-cv>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab class="ngb-tab" title="Journal Voucher">
 			<ng-template ngbTabContent>
-				<app-change-to-new-jv></app-change-to-new-jv>
+				<app-cancel-jv></app-cancel-jv>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab id="Exit">
-			<ng-template ngbTabTitle>
-				<div>Exit</div>
-			</ng-template>
-			<ng-template ngbTabContent></ng-template>
+				<ng-template ngbTabTitle>
+					<div>Exit</div>
+				</ng-template>
+    			<ng-template ngbTabContent></ng-template>
   		</ngb-tab>
 	</ngb-tabset>
 </div>

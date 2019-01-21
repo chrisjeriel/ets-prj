@@ -1,6 +1,6 @@
 <div class="cust-tabs-container">
   <h4>Claim / Claim Processing</h4>
-  <ngb-tabset>
+  <ngb-tabset (tabChange)="onTabChange($event)">
     <ngb-tab title="General Info">
       <ng-template ngbTabContent>
         <app-clm-gen-info-claim></app-clm-gen-info-claim>
@@ -41,10 +41,11 @@
 
       </ng-template>
     </ngb-tab>
-    <ngb-tab title="Exit">
-      <ng-template ngbTabContent>
-
-      </ng-template>
-    </ngb-tab>
+     <ngb-tab id="Exit">
+        <ng-template ngbTabTitle>
+          <div>Exit</div>
+        </ng-template>
+          <ng-template ngbTabContent></ng-template>
+      </ngb-tab>
   </ngb-tabset>
 </div>

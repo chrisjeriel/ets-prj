@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
+import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-change-trans-stat-to-new',
-  templateUrl: './change-trans-stat-to-new.component.html',
-  styleUrls: ['./change-trans-stat-to-new.component.css']
+  selector: 'app-cancel-transactions',
+  templateUrl: './cancel-transactions.component.html',
+  styleUrls: ['./cancel-transactions.component.css']
 })
-export class ChangeTransStatToNewComponent implements OnInit {
+export class CancelTransactionsComponent implements OnInit {
 
   constructor( private router: Router) { }
 

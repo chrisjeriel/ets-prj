@@ -154,6 +154,10 @@ import { ChangeToNewJvComponent } from './accounting-in-trust/utilities/change-t
 import { InAccountingEntriesComponent } from './accounting-in-trust/extract/accounting-entries/in-accounting-entries/in-accounting-entries.component';
 import { UnbalanceEntriesComponent } from './accounting-in-trust/extract/accounting-entries/unbalance-entries/unbalance-entries.component';
 import { EditAccountingEntriesComponent } from './accounting-in-trust/utilities/edit-accounting-entries/edit-accounting-entries.component';
+import { CancelTransactionsComponent } from './accounting-in-trust/utilities/cancel-transactions/cancel-transactions.component';
+import { CancelArComponent } from './accounting-in-trust/utilities/cancel-transactions/cancel-ar/cancel-ar.component';
+import { CancelCvComponent } from './accounting-in-trust/utilities/cancel-transactions/cancel-cv/cancel-cv.component';
+import { CancelJvComponent } from './accounting-in-trust/utilities/cancel-transactions/cancel-jv/cancel-jv.component';
 
 @NgModule({
     imports: [
@@ -312,6 +316,10 @@ import { EditAccountingEntriesComponent } from './accounting-in-trust/utilities/
         InAccountingEntriesComponent,
         UnbalanceEntriesComponent,
         EditAccountingEntriesComponent,
+        CancelTransactionsComponent,
+        CancelArComponent,
+        CancelCvComponent,
+        CancelJvComponent,
     ],
 
     providers: [

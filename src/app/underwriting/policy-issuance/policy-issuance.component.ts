@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
@@ -12,7 +12,7 @@ export class PolicyIssuanceComponent implements OnInit {
   line: string;
   sub: any;
   
-  constructor(private route: ActivatedRoute,private modalService: NgbModal) { }
+  constructor(private route: ActivatedRoute,private modalService: NgbModal, private router: Router) { }
 
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
@@ -29,4 +29,12 @@ export class PolicyIssuanceComponent implements OnInit {
   showApprovalModal(content) {
     this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
   }
+
+  onTabChange($event: NgbTabChangeEvent) {
+      if ($event.nextId === 'Exit') {
+        this.router.navigateByUrl('');
+      } 
+  
+  }
+  
 }

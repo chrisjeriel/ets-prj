@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-accounting-entries',
@@ -8,7 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class AccountingEntriesComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private router: Router,private route: ActivatedRoute) { }
 
   sub: any;
   activeID: string;
@@ -19,6 +20,9 @@ export class AccountingEntriesComponent implements OnInit {
 
   }
 
-
-
+  onTabChange($event: NgbTabChangeEvent) {
+      if ($event.nextId === 'Exit') {
+        this.router.navigateByUrl('');
+      } 
+  }
 }
