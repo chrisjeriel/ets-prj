@@ -147,6 +147,7 @@ import { ExtractComponent } from './accounting-in-trust/extract/accounting-entri
 import { TrialBalanceComponent } from './accounting-in-trust/extract/trial-balance/trial-balance.component';
 import { TrialBalanceExtractComponent } from './accounting-in-trust/extract/trial-balance/trial-balance-extract/trial-balance-extract.component';
 import { OpenCoverInquiryComponent } from './quotation/open-cover-inquiry/open-cover-inquiry.component';
+import { InvestmentsComponent } from './accounting-in-trust/investments/investments.component';
 import { ChangeTransStatToNewComponent } from './accounting-in-trust/utilities/change-trans-stat-to-new/change-trans-stat-to-new.component';
 import { ChangeToNewArComponent } from './accounting-in-trust/utilities/change-trans-stat-to-new/change-to-new-ar/change-to-new-ar.component';
 import { ChangeToNewCvComponent } from './accounting-in-trust/utilities/change-trans-stat-to-new/change-to-new-cv/change-to-new-cv.component';
@@ -158,6 +159,7 @@ import { CancelTransactionsComponent } from './accounting-in-trust/utilities/can
 import { CancelArComponent } from './accounting-in-trust/utilities/cancel-transactions/cancel-ar/cancel-ar.component';
 import { CancelCvComponent } from './accounting-in-trust/utilities/cancel-transactions/cancel-cv/cancel-cv.component';
 import { CancelJvComponent } from './accounting-in-trust/utilities/cancel-transactions/cancel-jv/cancel-jv.component';
+
 
 @NgModule({
     imports: [
@@ -309,6 +311,7 @@ import { CancelJvComponent } from './accounting-in-trust/utilities/cancel-transa
         OpenCoverInquiryComponent,
         CvPaymentRequestListComponent,
         CvAttachmentComponent,
+        InvestmentsComponent,
         ChangeTransStatToNewComponent,
         ChangeToNewArComponent,
         ChangeToNewCvComponent,
@@ -320,6 +323,7 @@ import { CancelJvComponent } from './accounting-in-trust/utilities/cancel-transa
         CancelArComponent,
         CancelCvComponent,
         CancelJvComponent,
+
     ],
 
     providers: [

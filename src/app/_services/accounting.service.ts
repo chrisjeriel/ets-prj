@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment , AccCVPayReqList , AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV} from '@app/_models';
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment , AccCVPayReqList , AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments} from '@app/_models';
 
 @Injectable({
 	providedIn: 'root'
@@ -26,6 +26,7 @@ export class AccountingService {
 	arClaimsRecovery: ARClaimsRecovery[] = [];
 	accCvAttachment: AccCvAttachment[]=[];
 	accCvPayReqList: AccCVPayReqList[]=[];
+	accInvestments: AccInvestments[]=[];
 	chngTxToNewAR: AcknowledgementReceipt[] = [];
 	chngTxToNewCV: CheckVoucher[] = [];
 	chngTxToNewJv: JournalVoucher[] = [];
@@ -265,6 +266,14 @@ export class AccountingService {
 		];
 
 		return this.accountingEntriesCVData;
+	}
+
+	getAccInvestments(){
+		this.accInvestments = [
+			new AccInvestments("BPI","BPI 1", 5, "Years", 8.875000, new Date("10/20/2018"), new Date("10/20/2018"), 14000000, 1812500 ),
+			new AccInvestments("RCBC","RCBC 1",35,"Days", 1.500000,new Date("09/26/2018"),new Date("10/31/2018"),10000000,10150000)
+		]
+		return this.accInvestments;
 	}
 
 	getChangeTxToNewAR(){

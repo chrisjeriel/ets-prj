@@ -145,12 +145,19 @@ export class ListOfQuotationsComponent implements OnInit {
         this.allData = this.quotationService.getQuotationListInfo();
     }
     onRowClick(event) {
-        for(var i = 0; i < event.target.parentElement.children.length; i++) {
+       /* for(var i = 0; i < event.target.parentElement.children.length; i++) {
             this.quotationService.rowData[i] = event.target.parentElement.children[i].innerText;
         }
         if(!Number.isNaN(event.path[2].rowIndex - 1)){
             this.quoteList = this.allData[event.path[2].rowIndex - 1];
-        }
+        }*/
+       this.quoteList = event;
+       for(let val in this.allData){
+          if(this.quoteList.quotationNo == this.allData[val].quotationNo){
+              this.quoteList = this.allData[val];
+              break;
+          }
+       }
     }
 
     onRowDblClick(event) {
