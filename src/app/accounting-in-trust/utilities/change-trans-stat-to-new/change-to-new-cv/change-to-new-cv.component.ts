@@ -53,11 +53,15 @@ export class ChangeToNewCvComponent implements OnInit {
     ]
 
   }
+  dateCreated:string;
+  lastUpdate:string;
 
   constructor(private accountingService: AccountingService) { }
 
   ngOnInit() {
   	this.passData.tableData = this.accountingService.getChangeTxToNewCV();
+    this.dateCreated = new Date(2018,10,1).toISOString().slice(0, 16);
+    this.lastUpdate = new Date().toISOString().slice(0, 16);
   }
 
 }
