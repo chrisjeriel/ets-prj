@@ -5,22 +5,22 @@
 		<ngb-tab class="ngb-tab" title="Requests List">
 			<ng-template ngbTabContent>
 				<div class="row">
-					<div class="col-sm">
+					<div class="col-sm-12">
 						<app-cust-non-datatable [passData]="requestsListData" (add)="onClickAdd($event)" (edit)="onClickEdit($event)" (rowClick)="onRowClick($event)"></app-cust-non-datatable>
 					</div>
-				</div>
-				<div class="form-row" style="margin-left: -30px !important;">
-					<div class="col-sm">
-						<div class="input-group">
-							<label class="form-control-sm col-sm-1">Created By</label>
-							<input type="text" class="form-control form-control-sm col-sm" value="cuaresma">
-							<label class="form-control-sm col-sm-1">Date Created</label>
-							<input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-01T09:00">
-							<label class="form-control-sm col-sm-1">Last Update By</label>
-							<input type="text" class="form-control form-control-sm col-sm" value="cuaresma">
-							<label class="form-control-sm col-sm-1">Last Update</label>
-							<input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-02T15:58">
-						</div>
+					<div class="col-sm-12">
+						<div class="form-row custom-row-inline-inset" style="margin-left: -27px;">
+			        		<div class="input-group" style="margin-top: -10px !important;">
+			            		<label class="form-control-sm col-sm-1 text-right labels">Created By</label>
+			            		<input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma">
+			            		<label class="form-control-sm col-sm-1 text-right labels" style="margin-left: -5px !important;">Date Created</label>
+			            		<input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM">
+			            		<label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
+			            		<input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma">
+			            		<label class="form-control-sm col-sm-1 text-right labels" style="margin-left: -17px !important;">Last Update</label>
+			            		<input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM">
+			        		</div>
+			    		</div>
 					</div>
 				</div>
 			</ng-template>

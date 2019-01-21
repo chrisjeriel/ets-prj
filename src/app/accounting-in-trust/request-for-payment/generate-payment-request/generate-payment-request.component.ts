@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-generate-payment-request',
@@ -13,7 +14,7 @@ export class GeneratePaymentRequestComponent implements OnInit, OnDestroy {
 
   paymentData: any = {};
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute,  private router: Router) { }
 
   ngOnInit() {
   	this.sub = this.route.params.subscribe(params => {
@@ -33,6 +34,13 @@ export class GeneratePaymentRequestComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(){
   	this.sub.unsubscribe();
+  }
+  
+  onTabChange($event: NgbTabChangeEvent) {
+      if ($event.nextId === 'Exit') {
+        this.router.navigateByUrl('');
+      } 
+  
   }
 
 }

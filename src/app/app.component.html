@@ -244,6 +244,19 @@
                                             </ng-template>
                                         </ngb-panel>
                                     </ngb-accordion>
+                                    <ngb-accordion #acc="ngbAccordion">
+                                        <ngb-panel>
+                                            <ng-template ngbPanelTitle>
+                                                Utilities
+                                            </ng-template>
+                                            <ng-template ngbPanelContent>
+                                                <button [routerLink]="['change-trans-stat-to-new']" class="button btn btn-link">Change Transaction Status to New</button>
+                                                <br />
+                                                <button [routerLink]="['cancel-transaction']" class="button btn btn-link">Cancel Transaction</button>
+                                                <br />
+                                            </ng-template>
+                                        </ngb-panel>
+                                    </ngb-accordion>
                                 </ng-template>
                             </ngb-panel>
                             <ngb-panel>

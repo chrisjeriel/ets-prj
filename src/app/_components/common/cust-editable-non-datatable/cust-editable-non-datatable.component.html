@@ -24,7 +24,7 @@ span.ui-column-resizer {
         <button *ngIf="passData.addFlag" class="cust-btn" (click)="passData.nData == null ? addClicked(event) : onClickAdd()"><a>Add</a></button>
         <button *ngIf="passData.editFlag" class="cust-btn" (click)="onClickEdit()"><a class="paginate_button previous">Edit</a></button>
         <button *ngIf="passData.deleteFlag" class="cust-btn" (click)="onClickDelete()"><a class="paginate_button previous">Delete</a></button>
-        <button *ngIf="passData.genericBtn !== undefined" class="cust-btn" (click)="onClickGeneric()"><a class="paginate_button previous">{{passData.genericBtn}}</a></button>
+        <button *ngIf="passData.genericBtn !== undefined" class="cust-btn genericBtn" (click)="onClickGeneric()"><a class="paginate_button previous">{{passData.genericBtn}}</a></button>
         <div class="search-filter" *ngIf="passData.searchFlag">
             <label>Search: &nbsp;
                 <input type="search" class="form-control-sm cust-search-form" [(ngModel)]="searchString"

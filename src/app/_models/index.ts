@@ -56,3 +56,6 @@ export * from './AccountingITClaimRecovery';
 export * from './AccountingCVAttachment';
 export * from './AccountingCVPayRequestList';
 export * from './AccountingInvestments';
+export * from './ChangeTransactionStatusToNew';
+export * from './AccountingUtilitiesCancelTransactions';
+
