@@ -332,3 +332,9 @@ td div input.number-magnify, td div span.number-magnify{
 table td div span{
     display: block;
 }
+
+.genericBtn{
+    min-width: 60px;
+    max-width: max-content;
+    width: auto;
+}

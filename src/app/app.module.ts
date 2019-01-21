@@ -147,6 +147,10 @@ import { ExtractComponent } from './accounting-in-trust/extract/accounting-entri
 import { TrialBalanceComponent } from './accounting-in-trust/extract/trial-balance/trial-balance.component';
 import { TrialBalanceExtractComponent } from './accounting-in-trust/extract/trial-balance/trial-balance-extract/trial-balance-extract.component';
 import { OpenCoverInquiryComponent } from './quotation/open-cover-inquiry/open-cover-inquiry.component';
+import { ChangeTransStatToNewComponent } from './accounting-in-trust/utilities/change-trans-stat-to-new/change-trans-stat-to-new.component';
+import { ChangeToNewArComponent } from './accounting-in-trust/utilities/change-trans-stat-to-new/change-to-new-ar/change-to-new-ar.component';
+import { ChangeToNewCvComponent } from './accounting-in-trust/utilities/change-trans-stat-to-new/change-to-new-cv/change-to-new-cv.component';
+import { ChangeToNewJvComponent } from './accounting-in-trust/utilities/change-trans-stat-to-new/change-to-new-jv/change-to-new-jv.component';
 
 @NgModule({
     imports: [
@@ -298,6 +302,10 @@ import { OpenCoverInquiryComponent } from './quotation/open-cover-inquiry/open-c
         OpenCoverInquiryComponent,
         CvPaymentRequestListComponent,
         CvAttachmentComponent,
+        ChangeTransStatToNewComponent,
+        ChangeToNewArComponent,
+        ChangeToNewCvComponent,
+        ChangeToNewJvComponent,
     ],
 
     providers: [
