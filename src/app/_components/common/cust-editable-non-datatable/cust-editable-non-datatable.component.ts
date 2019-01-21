@@ -121,6 +121,12 @@ export class CustEditableNonDatatableComponent implements OnInit {
         for (var i = this.dataKeys.length - 1; i >= 0; i--) {
            this.fillData[this.dataKeys[i]] = null;
         }
+
+        for(var filt in this.passData.filterObj){
+            this.passData.filterObj[filt].search='';
+            this.passData.filterObj[filt].enabled=false;
+        }
+
         this.addFiller();
     }
 
@@ -262,6 +268,18 @@ export class CustEditableNonDatatableComponent implements OnInit {
 
     typeOf(data){
         return typeof data;
+    }
+
+
+    filterDisplay(filterObj,searchString){
+        this.displayData = this.passData.tableData.filter((item) => this.dataKeys.some(key => item.hasOwnProperty(key) && new RegExp(searchString, 'gi').test(item[key])));
+        for (var filt in filterObj) {    
+            if (!filterObj[filt]["enabled"]) {continue;}
+            this.displayData = this.displayData.filter(function(itm){
+                return itm[filterObj[filt].key].toString().toLowerCase( ).includes(filterObj[filt].search.toLowerCase( ));
+            })
+        }
+        this.addFiller();
     }
  
 }

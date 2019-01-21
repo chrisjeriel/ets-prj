@@ -18,7 +18,39 @@ export class ChangeToNewCvComponent implements OnInit {
   	infoFlag:true,
   	paginateFlag:true,
   	checkFlag:true,
-  	widths:[1,'auto',1,1,'auto',105]
+  	widths:[1,'auto',1,1,'auto',105],
+    filters:[
+      {
+          key: 'cvNo',
+          title:'CV No.',
+          dataType: 'text'
+      },
+      {
+          key: 'payee',
+          title:'Payee',
+          dataType: 'text'
+      },
+      {
+          key: 'cvDate',
+          title:'CV Date',
+          dataType: 'datespan'
+      },
+      {
+          key: 'status',
+          title:'Status',
+          dataType: 'text'
+      },
+      {
+          key: 'particulars',
+          title:'Particulars',
+          dataType: 'text'
+      },
+      {
+          key: 'amount',
+          title:'Amount',
+          dataType: 'text'
+      },
+    ]
 
   }
 
