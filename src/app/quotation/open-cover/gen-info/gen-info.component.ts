@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-gen-info',
@@ -7,11 +8,32 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GenInfoComponent implements OnInit {
 
-  quotationNum: any[] = [];
-  
-  constructor() { }
+  typeOfCession: string = "";
+  line: string;
+  private sub: any;
+  from: string;
+
+
+  constructor(private route: ActivatedRoute) { }
+
 
   ngOnInit() {
+    this.sub = this.route.params.subscribe(params => {
+      this.line = params['line'];
+      this.from = params['from'];
+      if (this.from == "oc-inquiry") {
+        this.typeOfCession = params['typeOfCession'];
+      }
+    });
+
+    this.checkTypeOfCession();
   }
 
+  ngOnDestroy() {
+    this.sub.unsubscribe();
+  }
+
+  checkTypeOfCession() {
+    return (this.typeOfCession.trim().toUpperCase() === 'RETROCESSION') ? true : false;
+  }
 }

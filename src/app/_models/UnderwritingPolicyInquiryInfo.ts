@@ -1,30 +1,54 @@
 export class UnderwritingPolicyInquiryInfo {
+    line: string;
     policyNo: string;
-    branch: string;
-    cedingCompany: string;
-    principal: string;
-    contractor: string;
-    intermediary: string;
+    typeCession: string;
+    cedComp: string;
     insured: string;
-    status: string;
-    sectionISI: string;
-    sectionIISI: string;
-    sectionIIISI: string;
+    risk: string;
     object: string;
+    site: string;
+    curr: string;
+    sumInsured: number;
+    premium: number;
+    issueDate: Date;
+    inceptionDate: Date;
+    expiryDate: Date;
+    accDate: Date;
+    status: string;
 
-    constructor(policyNo: string, branch: string, cedingCompany: string, principal: string, contractor: string, intermediary: string, insured: string, status: string, sectionISI: string, sectionIISI: string, sectionIIISI: string, object: string) {
+    constructor(line: string, 
+         policyNo: string,
+         typeCession: string, 
+         cedComp: string, 
+         insured: string, 
+         risk: string,
+         object: string,
+         site: string, 
+         curr: string, 
+         sumInsured: number, 
+         premium: number, 
+         issueDate: Date,
+         inceptionDate: Date,
+         expiryDate: Date,
+         accDate: Date,
+         status: string
+         ) {
+        this.line = line;
         this.policyNo = policyNo;
-        this.branch = branch;
-        this.cedingCompany = cedingCompany;
-        this.principal = principal;
-        this.contractor = contractor;
-        this.intermediary = intermediary;
+        this.typeCession = typeCession;
+        this.cedComp = cedComp;
         this.insured = insured;
-        this.status = status;
-        this.sectionISI = sectionISI;
-        this.sectionIISI = sectionIISI;
-        this.sectionIIISI = sectionIIISI;
+        this.risk = risk;
         this.object = object;
+        this.site = site;
+        this.curr = curr;
+        this.sumInsured = sumInsured;
+        this.premium = premium;
+        this.issueDate = issueDate;
+        this.inceptionDate = inceptionDate;
+        this.expiryDate = expiryDate;
+        this.accDate = accDate;
+        this.status = status;
     }
 }
 

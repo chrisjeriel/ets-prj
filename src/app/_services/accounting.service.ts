@@ -1,77 +1,84 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions } from '@app/_models';
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment , AccCVPayReqList } from '@app/_models';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class AccountingService {
 
-	arDetails: ARDetails[]=[];
-	accountingEntries:  AccountingEntries[]=[];
-	cvListing: CVListing[]=[];
-	checkDetails:  CheckDetails[]=[];
+	arDetails: ARDetails[] = [];
+	accountingEntries: AccountingEntries[] = [];
+	cvListing: CVListing[] = [];
+	checkDetails: CheckDetails[] = [];
 	amountDetailsCVData: AmountDetailsCV[] = [];
-	accountingEntriesCVData: AccountingEntriesCV[] = []; 
+	accountingEntriesCVData: AccountingEntriesCV[] = [];
 	qsoaData: QSOA[] = [];
 	attachmentInfo: AttachmentInfo[] = [];
 	vatDetails: VATDetails[]=[];
 	creditableTax: CreditableTax[]=[];
 	paytRequestListData: AccountingRequestsListRP[] = [];
 	cancelledTransactionsData: AccountingITCancelledTransactions[] = [];
+	jvListing: JVListing[]=[];
+	arTaxDetailsVAT: ARTaxDetailsVAT[] = [];
+	arTaxDetailsWTAX: ARTaxDetailsWTAX[] = [];
+	arInwdPolBalDetails: ARInwdPolBalDetails[] = [];
+	arClaimsRecovery: ARClaimsRecovery[] = [];
+	accCvAttachment: AccCvAttachment[]=[];
+	accCvPayReqList: AccCVPayReqList[]=[];
 
 	constructor(private http: HttpClient) { }
 
-	getAmountDetails(){
+	getAmountDetails() {
 		this.arDetails = [
-			new ARDetails("Gross Amount",2000000,2000000,"None",0),
-			new ARDetails("Vatable Sales",1785714.29,1785714.29,"Add",1785714.29),
-			new ARDetails("VAT-Exempt Sales",0,0,"Add",0),
-			new ARDetails("VAT Zero-Rated Sales",0,0,"Add",0),
-			new ARDetails("VAT (12%)",214285.71,214285.71,"Add",214285.71),
-			new ARDetails("Creditable WTax (20%)",357142.86,357142.86,"Minus",357142.86),
+			new ARDetails("Gross Amount", 2000000, 2000000, "None", 0),
+			new ARDetails("Vatable Sales", 1785714.29, 1785714.29, "Add", 1785714.29),
+			new ARDetails("VAT-Exempt Sales", 0, 0, "Add", 0),
+			new ARDetails("VAT Zero-Rated Sales", 0, 0, "Add", 0),
+			new ARDetails("VAT (12%)", 214285.71, 214285.71, "Add", 214285.71),
+			new ARDetails("Creditable WTax (20%)", 357142.86, 357142.86, "Minus", 357142.86),
 		]
 
 		return this.arDetails;
 	}
 
-	getAccountingEntries(){
+	getAccountingEntries() {
 		this.accountingEntries = [
-			new AccountingEntries(null,null,null,null,null,null),
-			new AccountingEntries(null,null,null,null,null,null),
-			new AccountingEntries(null,null,null,null,null,null),
-			new AccountingEntries(null,null,null,null,null,null),
+			new AccountingEntries(null, null, null, null, null, null),
+			new AccountingEntries(null, null, null, null, null, null),
+			new AccountingEntries(null, null, null, null, null, null),
+			new AccountingEntries(null, null, null, null, null, null),
 		]
 
 		return this.accountingEntries;
 	}
 
-	getCVListing(){
+	getCVListing() {
 		this.cvListing = [
-			new CVListing(new Date(2016,1,1),1,"SM Prime Holdings, Inc",new Date(),"Printed","Check for SM Prime Holdings Inc",1642857.14),
-			new CVListing(new Date(),1,"Rustans, Inc",new Date(),"Printed","Check for Rustans Inc",200000),
-			new CVListing(new Date(),1,"San Miguel Corp",new Date(),"Printed","Check for San Miguel Corp",100000),
-			new CVListing(new Date(),1,"DMCI",new Date(),"Printed","Check for DMCI",1000000),
-			new CVListing(new Date(),1,"ABS-CBN",new Date(),"Printed","Check for ABS-CBN",710716.12),
-			new CVListing(new Date(),1,"SMDC",new Date(),"Certified","Check for SMDC",756929),
-			new CVListing(new Date(),1,"Universal Robina, Inc",new Date(),"Approved","Check for Universal Robina, Inc",300000),
-			new CVListing(new Date(),1,"SGV & Co",new Date(),"Approved","Check for SGV & Co",1000000),
-			new CVListing(new Date(),1,"Accenture",new Date(),"New","Check for Accenture",230000),
-			new CVListing(new Date(),1,"NSO",new Date(),"New","Check for NSO",1500000),
+			new CVListing(new Date(2016, 1, 1), 1, "SM Prime Holdings, Inc", new Date(), "Printed", "Check for SM Prime Holdings Inc", 1642857.14),
+			new CVListing(new Date(), 1, "Rustans, Inc", new Date(), "Printed", "Check for Rustans Inc", 200000),
+			new CVListing(new Date(), 1, "San Miguel Corp", new Date(), "Printed", "Check for San Miguel Corp", 100000),
+			new CVListing(new Date(), 1, "DMCI", new Date(), "Printed", "Check for DMCI", 1000000),
+			new CVListing(new Date(), 1, "ABS-CBN", new Date(), "Printed", "Check for ABS-CBN", 710716.12),
+			new CVListing(new Date(), 1, "SMDC", new Date(), "Certified", "Check for SMDC", 756929),
+			new CVListing(new Date(), 1, "Universal Robina, Inc", new Date(), "Approved", "Check for Universal Robina, Inc", 300000),
+			new CVListing(new Date(), 1, "SGV & Co", new Date(), "Approved", "Check for SGV & Co", 1000000),
+			new CVListing(new Date(), 1, "Accenture", new Date(), "New", "Check for Accenture", 230000),
+			new CVListing(new Date(), 1, "NSO", new Date(), "New", "Check for NSO", 1500000),
 		]
 
 		return this.cvListing;
 	}
 
-	getCheckDetails(){
+	getCheckDetails() {
 		this.checkDetails = [
-			new CheckDetails("Banco De Oro","PCPA-9091-7001-7389",new Date(),1794832,"Local Clearing","PHP",27513.29),
+			new CheckDetails("Banco De Oro","PCPA-9091-7001-7389",new Date(),17948303,"Local Clearing","PHP",27513.29),
 		]
 
 		return this.checkDetails;
 	}
 
-	getAmountDetailsCV(){
+	getAmountDetailsCV() {
 		this.amountDetailsCVData = [
 			new AmountDetailsCV('Gross Amount (VAT Inc)', 28013.44, 28013.44, 'None', 0),
 			new AmountDetailsCV('Ex-VAT', 25012, 25012, 'Add', 25012),
@@ -81,47 +88,47 @@ export class AccountingService {
 		return this.amountDetailsCVData;
 	}
 
-	getAccountingEntriesCV(){
+	getAccountingEntriesCV() {
 		this.accountingEntriesCVData = [
-			new AccountingEntriesCV(null,null,null,null,null,null),
+			new AccountingEntriesCV(null, null, null, null, null, null),
 		];
 		return this.accountingEntriesCVData;
 	}
 
-	getQSOAData(){
+	getQSOAData() {
 		this.qsoaData = [
-			new QSOA(new Date(2018,	2,31),500000,100000,6000000,500000,6500000,600000),
-			new QSOA(new Date(2018,5,30),500000,700000,500000,800000,1000000,1500000),
+			new QSOA(new Date(2018, 2, 31), 500000, 100000, 6000000, 500000, 6500000, 600000),
+			new QSOA(new Date(2018, 5, 30), 500000, 700000, 500000, 800000, 1000000, 1500000),
 		];
 		return this.qsoaData;
 	}
 
-	getAttachmentInfo(){
+	getAttachmentInfo() {
 		this.attachmentInfo = [
-			new AttachmentInfo("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\05-Accounting\\Sample_01.doc","Accounting Specifications Sample 1"),
-			new AttachmentInfo("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\05-Accounting\\Sample_02.doc","Accounting Specifications Sample 2"),
-			new AttachmentInfo("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\05-Accounting\\Sample_03.doc","Accounting Specifications Sample 3"),
-			new AttachmentInfo("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\05-Accounting\\Sample_04.doc","Accounting Specifications Sample 4"),
-			new AttachmentInfo("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\05-Accounting\\Sample_05.doc","Accounting Specifications Sample 5"),
-			new AttachmentInfo("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\05-Accounting\\Sample_06.doc","Accounting Specifications Sample 6"),
-			new AttachmentInfo("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\05-Accounting\\Sample_07.doc","Accounting Specifications Sample 7"),
-			new AttachmentInfo("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\05-Accounting\\Sample_08.doc","Accounting Specifications Sample 8"),
-			new AttachmentInfo("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\05-Accounting\\Sample_09.doc","Accounting Specifications Sample 9"),
-			new AttachmentInfo("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\05-Accounting\\Sample_10.doc","Accounting Specifications Sample 10 "),
+			new AttachmentInfo("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\05-Accounting\\Sample_01.doc", "Accounting Specifications Sample 1"),
+			new AttachmentInfo("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\05-Accounting\\Sample_02.doc", "Accounting Specifications Sample 2"),
+			new AttachmentInfo("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\05-Accounting\\Sample_03.doc", "Accounting Specifications Sample 3"),
+			new AttachmentInfo("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\05-Accounting\\Sample_04.doc", "Accounting Specifications Sample 4"),
+			new AttachmentInfo("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\05-Accounting\\Sample_05.doc", "Accounting Specifications Sample 5"),
+			new AttachmentInfo("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\05-Accounting\\Sample_06.doc", "Accounting Specifications Sample 6"),
+			new AttachmentInfo("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\05-Accounting\\Sample_07.doc", "Accounting Specifications Sample 7"),
+			new AttachmentInfo("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\05-Accounting\\Sample_08.doc", "Accounting Specifications Sample 8"),
+			new AttachmentInfo("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\05-Accounting\\Sample_09.doc", "Accounting Specifications Sample 9"),
+			new AttachmentInfo("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\05-Accounting\\Sample_10.doc", "Accounting Specifications Sample 10 "),
 		]
 		return this.attachmentInfo;
 	}
 
-	getVATDetails(){
+	getVATDetails() {
 		this.vatDetails = [
-			new VATDetails("Output","Services","San Miguel Corporation",25012,3001.44),
+			new VATDetails("Output", "Services", "San Miguel Corporation", 25012, 3001.44),
 		]
 		return this.vatDetails;
 	}
 
-	getCreditableTax(){
+	getCreditableTax() {
 		this.creditableTax = [
-			new CreditableTax("WC002","WTax on Investment Income PHP",2,"BPI/MS INSURANCE CORPORATION",25012,500.24),
+			new CreditableTax("WC002", "WTax on Investment Income PHP", 2, "BPI/MS INSURANCE CORPORATION", 25012, 500.24),
 		]
 		return this.creditableTax;
 	}
@@ -179,4 +186,71 @@ export class AccountingService {
 
 		return this.cancelledTransactionsData;
 	}
+	getJVListing() {
+		this.jvListing = [
+			new JVListing("2015-00000001",new Date(2015,10,1),"To correct entries in","Error Connection","2014-00004342","Ronwaldo Roque","Printed",1642857.14),
+			new JVListing("2017-00000001",new Date(2015,10,1),"To correct entries in","Error Connection","2016-00001644","Chie Reyes","Printed",200000),
+			new JVListing("2017-00000002",new Date(2015,10,1),"To correct entries in","Error Connection","2016-00001645","Lourdes Gualvez","Printed",100000),
+			new JVListing("2017-00000003",new Date(2015,10,1),"To correct entries in","Error Connection","2016-00001646","Chie Reyes","Printed",1000000),
+			new JVListing("2018-00000001",new Date(2015,10,1),"To correct entries in","Error Connection","2017-00000324","Chie Reyes","Printed",710716.12),
+			new JVListing("2018-00000010",new Date(2015,10,1),"To correct entries in","Error Connection","2018-00000009","Lourdes Gualvez","Open",756929),
+			new JVListing("2018-00000016",new Date(2015,10,1),"To correct entries in","Error Connection","2018-00000012","Lourdes Gualvez","Cancelled",300000),
+			new JVListing("2018-00000045",new Date(2015,10,1),"To correct entries in","Error Connection","2018-00000041","Ronwaldo Roque","Cancelled",1000000),
+			new JVListing("2018-00000099",new Date(2015,10,1),"To correct entries in","Error Connection","2018-00000098","Ronwaldo Roque","Open",230000),
+			new JVListing("2018-00000123",new Date(2015,10,1),"To correct entries in","Error Connection","2018-00000122","Ronwaldo Roque","Open",1500000),
+		]
+		return this.jvListing;
+	}
+
+	getARTaxDetailsVAT() {
+		this.arTaxDetailsVAT = [
+			new ARTaxDetailsVAT("Output", "Services", "Ma. Teresa Leonora", 1785714.29, 214285.71),
+		]
+		return this.arTaxDetailsVAT;
+	}
+
+	getARTaxDetailsWTAX() {
+		this.arTaxDetailsWTAX = [
+			new ARTaxDetailsWTAX("WC020", "WTax on Investment Income PHP", 20, "BPI/MS INSURANCE CORPORATION", 1785714.29, 357142.86),
+		]
+		return this.arTaxDetailsWTAX;
+	}
+
+	getARInwdPolBalDetails() {
+		this.arInwdPolBalDetails = [
+			new ARInwdPolBalDetails("CAR-2018-00001-99-0001-000", "01", new Date('09/25/2018'), "PHP", 3000000, 0, 0, 1642857.14, 1357142.86, 0, 1642857.14),
+		]
+		return this.arInwdPolBalDetails;
+	}
+
+	getARClaimsRecovery() {
+		this.arClaimsRecovery = [
+			new ARClaimsRecovery("CAR-2018-000001", 3, "Loss", "Recovery", "Salvage for Construction Materials", "PHP", 1, 30000, 30000),
+		]
+		return this.arClaimsRecovery;
+	}
+	getAccCVAttachment(){
+		this.accCvAttachment = [ 
+			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_01.doc","Accounting Specifications Sample 1"),
+			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_02.doc","Accounting Specifications Sample 2"),
+			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_03.doc","Accounting Specifications Sample 3"),
+			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_04.doc","Accounting Specifications Sample 4"),
+			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_05.doc","Accounting Specifications Sample 5"),
+			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_06.doc","Accounting Specifications Sample 6"),
+			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_07.doc","Accounting Specifications Sample 7"),
+			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_08.doc","Accounting Specifications Sample 8"),
+			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_09.doc","Accounting Specifications Sample 9"),
+			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_10.doc","Accounting Specifications Sample 10"),
+		]
+		return this.accCvAttachment;
+	}
+
+	getAccCVPayReqList(){
+		this.accCvPayReqList = [
+			new AccCVPayReqList("OPR-2018-01-0001","San Miguel Corporation","Others","Open", new Date("09/20/2018"),"Payment for San Miguel","Rosalinda Mercedez","PHP",27513.20)
+		]
+		return this.accCvPayReqList;
+	}
+
+
 }

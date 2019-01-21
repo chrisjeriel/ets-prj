@@ -66,17 +66,17 @@
         </div>
     </div>
 </fieldset>
- -->
- <fieldset class="scheduler-border">
+-->
+<fieldset class="scheduler-border">
     <legend class="scheduler-border">CV Info</legend>
     <div class="form-row custom-row-inline-inset">
         <div class="col-sm-8">
             <div class="input-group">
                 <label class="form-control-sm col-sm-1" for="xx" style="padding-left:0px !important;">CV No</label>
                 <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-1"
-                       placeholder="2015" style="text-align: right" readonly>
-               <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-2"
-               placeholder="00000001" style="text-align: right; margin-left: 2px;" readonly>
+                placeholder="2015" style="text-align: right" readonly>
+                <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-2"
+                placeholder="00000001" style="text-align: right; margin-left: 2px;" readonly>
                 <label class="form-control-sm col-sm-1" for="xx">Date</label>
                 <input type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="10/01/2018 11:49 AM" readonly>
                 <label class="form-control-sm col-sm-1 text-right" for="xx">Tran ID</label>
@@ -87,7 +87,7 @@
             <div class="input-group">
                 <label class="form-control-sm col-sm-1" for="xx" style="padding-left:0px !important;">Payee</label>
                 <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm" placeholder="San Miguel Corporation"
-                       readonly>
+                readonly>
             </div>
         </div>
         <div class="col-sm-4">
@@ -95,28 +95,35 @@
                 <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Amount</label>
                 <input type="text" value="PHP" class="form-control form-control-sm cust-sm col-sm-1" placeholder="" readonly>
                 <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
-                 placeholder="27,153.30" readonly>
+                placeholder="27,153.30" readonly>
             </div>
             <div class="input-group">
                 <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Local Amount</label>
                 <input type="text" value="PHP" class="form-control form-control-sm cust-sm col-sm-1" placeholder="" readonly>
                 <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
-                 placeholder="27,153.30" readonly>
+                placeholder="27,153.30" readonly>
             </div>
         </div>
     </div>
 </fieldset>
 
-<div class="cust-tabs-container border-tab" style="margin-top: 0.6em;">
+<div class="cust-tabs-container border-tab" style="margin-top: 10px;">
 	<ngb-tabset>
 		<ngb-tab>
 			<ng-template ngbTabTitle>
 				<div>Amount Details</div>
 			</ng-template>
 			<ng-template ngbTabContent>
-				<fieldset class="scheduler-border" style="margin: 0px !important; border: 1px solid #ddd !important;">
-					<div class="row" style="margin-top: 0.6em">
-					<!-- <div class="col-sm-1"></div> -->
+				<div class="input-group cust-border" style="padding-top: 0.6em">
+                    <div class="col-sm-12">
+                        <app-cust-editable-non-datatable [passData]="amountDetailsData">
+                            <ng-container controls-r>
+                                <label class="form-control-sm" style="text-align: left !important">Auto Compute</label>
+                                <input type="checkbox" class="checkbox text-right" style="vertical-align: middle;" checked>
+                            </ng-container>
+                        </app-cust-editable-non-datatable>
+                    </div>
+					<!-- <div class="row" style="margin-top: 0.6em">
 						<div class="col-sm-12" style="position: relative;">
 							<div style="position: absolute; right: 19px;">
 								 <div class="form-row custom-row-inline-inset">
@@ -128,9 +135,8 @@
 							</div>
 							<app-cust-editable-non-datatable [passData]="amountDetailsData"></app-cust-editable-non-datatable>
 						</div>
-						<!-- <div class="col-sm-1"></div> -->
-					</div>
-				</fieldset>
+					</div> -->
+				</div>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab>
@@ -138,40 +144,70 @@
 				<div>Accounting Entries</div>
 			</ng-template>
 			<ng-template ngbTabContent>
-				<fieldset class="scheduler-border" style="margin: 0px !important; border: 1px solid #ddd !important;">
-					<div class="row" style="margin-top: 0.6em; padding-bottom: 2.65em;">
-						<!-- <div class="col-sm-1"></div> -->
-						<div class="col-sm-12" style="position: relative;">
-							<div style="position: absolute; right: 12px;">
-								<button class="cust-btn">Print AE</button>
-							</div>
-							<app-cust-editable-non-datatable [passData]="accountingEntriesData"></app-cust-editable-non-datatable>
-						</div>
-						<!-- <div class="col-sm-1"></div> -->
-				</div>
-				</fieldset>
-			</ng-template>
-		</ngb-tab>
-		<ngb-tab>
-			<ng-template ngbTabTitle>
-				<div>Tax Details</div>
-			</ng-template>
-			<ng-template ngbTabContent>
-                <fieldset class="scheduler-border" style="margin: 0px !important; border: 1px solid #ddd !important;">
-               <legend class="scheduler-border">VAT Details</legend>
-                    <div class="test" style="margin-top: 10px !important;margin-bottom: 10px !important;">
-                        <app-cust-editable-non-datatable [passData]="accountingVATTaxDetails"></app-cust-editable-non-datatable>
+				<div class="input-group cust-border" style="padding-top: 0.6em">
+                    <div class="col-sm-12">
+                        <app-cust-editable-non-datatable [passData]="accountingEntriesData">
+                            <ng-container controls-r>
+                                <button class="cust-btn" style="margin-right: 0px !important;">Print AE</button>
+                            </ng-container>
+                        </app-cust-editable-non-datatable>
                     </div>
-                </fieldset>
-                <fieldset class="scheduler-border" style="margin: 0px !important; border: 1px solid #ddd !important;">
-               <legend class="scheduler-border">Creditable WTax Details</legend>
-                    <div class="test" style="margin-top: 10px !important;margin-bottom: 10px !important;">
-                        <app-cust-editable-non-datatable [passData]="accountingCreditableTaxDetails"></app-cust-editable-non-datatable>
+                    <!-- <div class="row" style="margin-top: 0.6em; padding-bottom: 2.65em;">
+                      <div class="col-sm-12" style="position: relative;">
+                       <div style="position: absolute; right: 12px;">
+                        <button class="cust-btn">Print AE</button>
                     </div>
-                </fieldset>
-			</ng-template>
-		</ngb-tab>
-	</ngb-tabset>
+                    <app-cust-editable-non-datatable [passData]="accountingEntriesData"></app-cust-editable-non-datatable>
+                </div>  
+            </div> -->
+        </div>
+    </ng-template>
+</ngb-tab>
+<ngb-tab>
+   <ng-template ngbTabTitle>
+    <div>Tax Details</div>
+</ng-template>
+<!-- <ng-template ngbTabContent>
+    <fieldset class="scheduler-border" style="margin: 0px !important; border: 1px solid #ddd !important;">
+        <legend class="scheduler-border">VAT Details</legend>
+        <div class="test" style="margin-top: 10px !important;margin-bottom: 10px !important;">
+            <app-cust-editable-non-datatable [passData]="accountingVATTaxDetails"></app-cust-editable-non-datatable>
+        </div>
+    </fieldset>
+    <fieldset class="scheduler-border" style="margin: 0px !important; border: 1px solid #ddd !important;">
+        <legend class="scheduler-border">Creditable WTax Details</legend>
+        <div class="test" style="margin-top: 10px !important;margin-bottom: 10px !important;">
+            <app-cust-editable-non-datatable [passData]="accountingCreditableTaxDetails"></app-cust-editable-non-datatable>
+        </div>
+    </fieldset>
+</ng-template> -->
+
+<ng-template ngbTabContent>
+                <div class="input-group cust-border" style="padding-top: 0.6em">
+                    <div class="col-sm-12">
+                        <fieldset class="scheduler-border">
+                            <legend class="scheduler-border">VAT Details</legend>
+                            <div class="custom-row-inline-inset">
+                                <app-cust-editable-non-datatable [passData]="accountingVATTaxDetails"></app-cust-editable-non-datatable>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-sm-12">
+                        <fieldset class="scheduler-border" style="margin-bottom:10px !important;">
+                            <legend class="scheduler-border">Creditable WTax Details</legend>
+                            <div class="custom-row-inline-inset">
+                                <app-cust-editable-non-datatable [passData]="accountingCreditableTaxDetails">
+                                    <ng-container controls-r>
+                                        <button class="cust-btn" style="margin-right: 0px !important;">BIR 2307</button>
+                                    </ng-container>
+                                </app-cust-editable-non-datatable>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </ng-template>
+</ngb-tab>
+</ngb-tabset>
 </div>
 
 <fieldset class="scheduler-border" style="margin: 0px !important; margin-top: 12px !important; ">

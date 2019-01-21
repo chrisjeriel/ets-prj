@@ -236,7 +236,7 @@
                                 <span *ngSwitchCase="'datetime'" class="unclickable">{{ processData(key, data) | date: 'yyyy-MM-ddTHH:mm'}}</span>
                                 <span *ngSwitchCase="'year'" class="unclickable">{{ processData(key, data) | date: 'yyyy'}}</span>
                                 <div  *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'sequence' ? passData.dataTypes[i] : ''" style="text-align: right">
-                                    <span class="unclickable">{{ processData(key, data) | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence}}</span>
+                                <span class="unclickable">{{ processData(key, data) | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence}}</span>
                                 </div>
                                 <div *ngSwitchCase="'checkbox'" style="text-align: center;">
                                     <input  type="checkbox" [checked]="data[key]">
@@ -279,6 +279,8 @@
         <pagination-controls [id]="'non-editable'+passData.pageID" class="my-pagination" (pageChange)="p = $event;" previousLabel="" nextLabel="">
         </pagination-controls>
         <!--<pagination-template class="" #paw="paginationApi" (pageChange)="p = $event"> <a (click)="paw.setCurrent(paw.getLastPage())">&raquo;</a></pagination-template>-->
+    </div>
+    <div *ngIf="passData.pagination" style="height: 42px;float: right;">
     </div>
 </div>
 

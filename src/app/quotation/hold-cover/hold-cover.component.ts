@@ -14,7 +14,7 @@ export class HoldCoverComponent implements OnInit {
 
   tableData: any[] = [];
   tHeader: any[] = [];
-  quoteLine: any;
+  quoteLine: string = "";
   private holdCover: HoldCoverInfo;
   passData: any = {
         tHeader: [
@@ -28,7 +28,28 @@ export class HoldCoverComponent implements OnInit {
         ],
         tableData: this.quotationService.getListOfValuesHoldCover(),
         pageLength: 10,
-        
+        filters: [
+          {
+            key: 'quotationNo',
+            title:'Quotation No.',
+            dataType: 'text'
+          },
+          {
+            key: 'cedingCo',
+            title:'Ceding Company',
+            dataType: 'text'
+          },
+          {
+            key: 'insured',
+            title:'Insured',
+            dataType: 'text'
+          },
+          {
+            key: 'risk',
+            title:'Risk',
+            dataType: 'text'
+          }
+        ]
     };
 
   constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title) { }
@@ -59,16 +80,18 @@ export class HoldCoverComponent implements OnInit {
   }
 
   search() {
-    if (this.quoteLine === 'CAR' ||
-      this.quoteLine === 'EAR' ||
-      this.quoteLine === 'EEI' ||
-      this.quoteLine === 'CEC' ||
-      this.quoteLine === 'MBI' ||
-      this.quoteLine === 'BPV' ||
-      this.quoteLine === 'MLP' ||
-      this.quoteLine === 'DOS') {
+    var qLine = this.quoteLine.toUpperCase();
 
-      $('#modalBtn').trigger('click');
+    if (qLine === 'CAR' ||
+      qLine === 'EAR' ||
+      qLine === 'EEI' ||
+      qLine === 'CEC' ||
+      qLine === 'MBI' ||
+      qLine === 'BPV' ||
+      qLine === 'MLP' ||
+      qLine === 'DOS') {
+
+      $('#lovMdl > #modalBtn').trigger('click');
     }
 
   }

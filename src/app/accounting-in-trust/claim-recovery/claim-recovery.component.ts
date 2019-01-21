@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AccountingService } from '@app/_services';
+import { ARClaimsRecovery } from '@app/_models';
+
 @Component({
   selector: 'app-claim-recovery',
   templateUrl: './claim-recovery.component.html',
@@ -9,7 +12,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class ClaimRecoveryComponent implements OnInit {
 
   passDataClaimsForRecovery: any = {
-    tableData: [["CAR-2018-000001", "3", "Loss", "Recovery", "Salvage for Construction Materials", "PHP", "1", "30000", "30000"]],
+    tableData: this.accountingService.getARClaimsRecovery(),
     tHeader: ["Claim No.", "Hist No.", "Amount Type", "History Type", "Remarks", "Curr", "Rate", "Amount", "Amount(PHP)"],
     dataTypes: ["text", "number", "text", "text", "text", "text", "percent", "currency", "currency"],
     addFlag: true,
@@ -18,7 +21,8 @@ export class ClaimRecoveryComponent implements OnInit {
     paginateFlag: true,
     checkFlag: true,
     widths: ["auto", "1", "auto", "auto", "auto", "1", "auto", "auto", "auto"],
-    nData: [null, null, null, null, null, null, null, null, null],
+    nData: new ARClaimsRecovery(null, null, null, null, null, null, null, null, null),
+    total: [null, null, null, null, null, 'Total', null, 'amount', 'amountPHP'],
     pageLength: 10,
   };
 
@@ -56,10 +60,13 @@ export class ClaimRecoveryComponent implements OnInit {
 
   };
 
-  constructor(private titleService: Title, private modalService: NgbModal) { }
+  constructor(private titleService: Title, private modalService: NgbModal, private accountingService: AccountingService) { }
 
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | Claim Recovery");
+  }
+  onViewDetailsDistribute(event) {
+    $('#idMdl > #modalBtn').trigger('click');
   }
 
 }

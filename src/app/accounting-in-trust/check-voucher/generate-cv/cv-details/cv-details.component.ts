@@ -48,6 +48,7 @@ export class CvDetailsComponent implements OnInit {
     addFlag: true,
     deleteFlag: true,
     total: [null, null, 'Total', null, 'vatAmount'],
+    pageLength:5,
     genericBtn: 'Save',
   }
 
@@ -59,6 +60,7 @@ export class CvDetailsComponent implements OnInit {
     pageID: 4,
     addFlag: true,
     deleteFlag: true,
+    pageLength:5,
     total: [null, null, null, 'Total', null, 'wTaxAmount'],
     genericBtn: 'Save',
   }
