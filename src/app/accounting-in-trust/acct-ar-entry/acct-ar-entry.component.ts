@@ -21,6 +21,7 @@ export class AcctArEntryComponent implements OnInit {
         pageID: 1,
     };
 
+  itest: any = null;
   @Input() record: any = {
                    arNo: null,
                    payor: null,
@@ -39,5 +40,9 @@ export class AcctArEntryComponent implements OnInit {
 
   tabController(event) {
   	this.onChange.emit({ type: this.record.paymentType });
+  }
+
+  test(event) {
+    this.itest = event;
   }
 }

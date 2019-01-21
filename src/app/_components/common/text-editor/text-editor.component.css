@@ -6,10 +6,9 @@
     word-wrap: break-word;
 }
 
-.text-search-ico {
-	position: relative;
-	float: right;
-    margin-right: 5px;
-    z-index: 100;
-    font-size: 14px;
+.edtr-opnr {
+    float: right;
+    position: relative;
+    z-index: 1;
+    margin-right: 3px;
 }

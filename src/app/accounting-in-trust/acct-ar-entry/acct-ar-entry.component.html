@@ -22,7 +22,10 @@
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Address</label>
-				<textarea placeholder="16th Flr., 6811 BPI-Philam Life Makati, Ayala Ave., Salcedo Village Bel-Air, Makati City, Metro Manila, Philippines 1209" class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 17px !important;"></textarea>
+				<!-- <textarea placeholder="16th Flr., 6811 BPI-Philam Life Makati, Ayala Ave., Salcedo Village Bel-Air, Makati City, Metro Manila, Philippines 1209" class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 17px !important;"></textarea> -->
+				<div class="form-control-sm col-sm edtr-cont" style="height: 42px;">
+					<text-editor [editorPlaceholder]="'16th Flr., 6811 BPI-Philam Life Makati, Ayala Ave., Salcedo Village Bel-Air, Makati City, Metro Manila, Philippines 1209'" (fetchContent)="test($event)"></text-editor>
+				</div>
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">TIN</label>
@@ -39,7 +42,10 @@
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Particulars</label>
-				<textarea placeholder="Representing payment for premium of policy CAR-2018-00001-99-0001-000" class="form-control form-control-sm col-sm" [(ngModel)]="record.particulars" style="font-size: 11px; min-height: 60px; margin-bottom: 17px !important;"></textarea>
+				<!-- <textarea placeholder="Representing payment for premium of policy CAR-2018-00001-99-0001-000" class="form-control form-control-sm col-sm" [(ngModel)]="record.particulars" style="font-size: 11px; min-height: 60px; margin-bottom: 17px !important;"></textarea> -->
+				<div class="form-control-sm col-sm edtr-cont" style="height: 60px;">
+					<text-editor [editorContent]="itest" [editorPlaceholder]="'Representing payment for premium of policy CAR-2018-00001-99-0001-000'"></text-editor>
+				</div>
 			</div>
 		</fieldset>
 	</div>

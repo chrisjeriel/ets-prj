@@ -538,3 +538,8 @@ input.form-control-sm, select.form-control.form-control-sm.cust-sm, select.edita
 select.editable-select {
     line-height: .9 !important;
 }
+
+.edtr-cont {
+    padding: 0px !important;
+    margin-bottom: 17px !important;
+}

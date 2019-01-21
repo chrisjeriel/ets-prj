@@ -60,4 +60,4 @@ export * from './ChangeTransactionStatusToNew';
 export * from './ExtractAccountingEntries';
 export * from './UnbalanceEntries';
 export * from './AccountingUtilitiesCancelTransactions';
-
+export * from './AccountingITEditedAcctEntries';

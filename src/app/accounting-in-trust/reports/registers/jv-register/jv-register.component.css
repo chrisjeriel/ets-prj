@@ -1,10 +1,6 @@
-.cust-mrgn {
-	margin-left: 2px !important;
-}
-
 .text-search-ico {
 	margin-left: -18px;
-	z-index: 1;
+	z-index: 99999;
 	font-size: 14px;
 	position: relative;
 	padding-right: 5px !important;
