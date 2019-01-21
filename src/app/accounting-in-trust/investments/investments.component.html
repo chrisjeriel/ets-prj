@@ -1,0 +1,112 @@
+<div class="cust-tabs-container">
+	<h4>Accounting In-Trust / Investments</h4>
+		<ngb-tabset (tabChange)="onTabChange($event)">
+			<ngb-tab class="ngb-tab" title="Inventory of Investments">
+				<ng-template ngbTabContent>
+					<div>
+						 <fieldset class="scheduler-border">
+						 	<legend class="scheduler-border">Filter Options</legend>
+            						<div class="form-row custom-row-inline-inset">
+            							<div class="input-group" style="margin-bottom: -13px ! important">
+            								   <label class="form-control-sm" for="xx" style="margin-left: 5px ! important">Bank</label>
+            								   <input type="text" placeholder="ALL" class="form-control form-control-sm cust-sm col-sm-2">
+            								   <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+            								   <label class="form-control-sm col-sm-1" for="xx"  >Duration Unit</label>
+            								    <input type="text" placeholder="ALL" class="form-control form-control-sm cust-sm col-sm-1">
+            								   <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+            								   <label class="form-control-sm col-sm-1" for="xx"  >Maturity Date:</label>
+            								   <label class="form-control-sm" for="xx" style="margin-left: 5px ! important">From</label>
+            								    <input type="date" placeholder="10/01/2018" class="form-control form-control-sm cust-sm col-sm">
+            								    <label class="form-control-sm" for="xx" style="msargin-left: 5px ! important">To</label>
+            								     <input type="date" placeholder="10/31/2018" class="form-control form-control-sm cust-sm col-sm">
+            								     <button type="button" class="cust col-sm-1" style="margin-left: 20px ! important;">Execute</button>
+            								     <div class="col-sm-1"></div>
+            							</div>
+            						</div>
+						 </fieldset> 
+					</div>
+					<div>
+						 <fieldset class="scheduler-border">
+						 	<legend class="scheduler-border">List of Edited Transactions</legend>
+						 	  	<div class="row">
+					                <div class="col-sm-12" style="margin-top: 10px; margin-bottom: -20px" >
+					                   <!--  <button type="button" class="cust-btn" style="position: absolute;top: 0px;left: 141px;z-index: 100;"><a>Save</a></button> -->
+					                    <app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
+					                </div>
+            					</div>
+	            				<div class="row">
+					                <div class="col-sm-12">
+					                    <div class="col-sm" style="padding: 0; margin-top: 10px; margin-bottom: 10px">
+					                        <div class="input-group">
+					                            <div class="col-sm-3" style="padding: 0">
+					                                <div class="input-group">
+					                                    <label class="form-control-sm">Created By</label>
+					                                    <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma" readonly>
+					                                </div>
+					                            </div>
+					                            <div class="col-sm-3" style="padding: 0">
+					                                <div class="input-group">
+					                                    <label class="form-control-sm">Date Created</label>
+					                                    <input type="text" class="form-control form-control-sm col-sm" placeholder="DD/MM/YYYY HH:MM" readonly>
+					                                </div>
+					                            </div>
+					                            <div class="col-sm-3" style="padding: 0">
+					                                <div class="input-group">
+					                                    <label class="form-control-sm">Last Update By</label>
+					                                    <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma" readonly>
+					                                </div>
+					                            </div>
+					                            <div class="col-sm-3" style="padding: 0">
+					                                <div class="input-group">
+					                                    <label class="form-control-sm">Last Update</label>
+					                                    <input type="text" class="form-control form-control-sm col-sm" placeholder="DD/MM/YYYY HH:MM" readonly>
+					                                </div>
+					                            </div>
+					                        </div>
+					                    </div>
+					                </div>
+					            </div>
+						 </fieldset>
+					</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				</ng-template>
+			</ngb-tab>
+			<ngb-tab id="Exit">
+				<ng-template ngbTabTitle>
+					<div>Exit</div>
+				</ng-template>
+				<ng-template ngbTabContent></ng-template>
+			</ngb-tab>
+		</ngb-tabset>
+</div>
