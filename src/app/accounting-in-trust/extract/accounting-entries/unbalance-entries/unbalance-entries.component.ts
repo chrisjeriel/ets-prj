@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UnbalanceEntries } from '@app/_models';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-unbalance-entries',
@@ -48,13 +49,32 @@ export class UnbalanceEntriesComponent implements OnInit {
   	pageLength: 14
 
   }
+  tranType:string;
 
-  constructor() { }
+  constructor( private route: Router) { }
 
   ngOnInit() {
   	this.passData.tableData = [
-  		new UnbalanceEntries('AR','2018-00372890',new Date(2018,11,2),'UCPBGEN','Payment for','New',282883,29930,29900,30)
+  		new UnbalanceEntries('AR','2018-00372890',new Date(2018,11,2),'UCPBGEN','Payment for','New',282883,29930,29900,30),
+      new UnbalanceEntries('CV','2018-00372900',new Date(2018,11,25),'BPI/MS','Payment for','New',282883,193038.99,193039,0.01),
+      new UnbalanceEntries('JV','2018-00000093',new Date(2019,0,21),'SM PRIME HOLDINGS','Payment for','New',283000,1525850,1500000,25850)
+    
   	]
   }
 
+  onRowClick(data){
+    this.tranType = data.tranType;
+  }
+
+  viewTranDetails(){
+    if(this.tranType == 'AR'){
+      this.route.navigate(['accounting-in-trust',{link:'/accounting-entries',tab:'Unbalance'}],{ skipLocationChange: true });
+    }else if(this.tranType == 'CV'){
+      this.route.navigate(['generate-cv',{link:'/accounting-entries',tab:'Unbalance'}],{ skipLocationChange: true });
+    }else if(this.tranType == 'JV'){
+      this.route.navigate(['generate-jv',{link:'/accounting-entries',tab:'Unbalance'}],{ skipLocationChange: true });
+    }else{
+      //do something
+    }
+  }
 }

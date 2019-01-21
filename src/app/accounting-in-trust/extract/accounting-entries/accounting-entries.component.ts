@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-accounting-entries',
@@ -7,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AccountingEntriesComponent implements OnInit {
 
-  constructor() { }
+  constructor(private route: ActivatedRoute) { }
 
+  sub: any;
+  activeID: string;
   ngOnInit() {
+  	this.sub = this.route.params.subscribe(params => {
+  		this.activeID = params['tabID'];
+  	});
+
   }
+
+
 
 }

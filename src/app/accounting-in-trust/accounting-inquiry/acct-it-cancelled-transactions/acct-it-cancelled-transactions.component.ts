@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 import { AccountingService } from '../../../_services/accounting.service';
 
@@ -61,17 +62,35 @@ export class AcctItCancelledTransactionsComponent implements OnInit {
   		    dataType: 'text'
   		},
   	],
-    colSize: ['30px', '40px', '40px', '', '60px', '', '40px', '', '40px'],
+    colSize: ['30px', '50px', '40px', '', '60px', '', '40px', '', '40px'],
   	total: [null,null,null,null,'Total',null,null,null,null],
   	pageLength: 20,
   	pagination: true,
   	pageStatus: true,
   }
 
-  constructor(private titleService: Title, private accountingService: AccountingService) { }
+  tranType: string = '';
+
+  constructor(private titleService: Title, private accountingService: AccountingService, private route: Router) { }
 
   ngOnInit() {
   	this.titleService.setTitle("Acct-IT | Cancelled Tran");
+  }
+
+  onRowClick(data){
+    this.tranType = data.tranType;
+  }
+
+  viewTranDetails(){
+    if(this.tranType == 'AR'){
+      this.route.navigate(['accounting-in-trust',{link:'/acct-it-cancelled-trans'}],{ skipLocationChange: true });
+    }else if(this.tranType == 'CV'){
+      this.route.navigate(['generate-cv',{link:'/acct-it-cancelled-trans'}],{ skipLocationChange: true });
+    }else if(this.tranType == 'JV'){
+      this.route.navigate(['generate-jv',{link:'/acct-it-cancelled-trans'}],{ skipLocationChange: true });
+    }else{
+      //do something
+    }
   }
 
 }

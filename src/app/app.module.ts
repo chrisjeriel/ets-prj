@@ -153,6 +153,7 @@ import { ChangeToNewCvComponent } from './accounting-in-trust/utilities/change-t
 import { ChangeToNewJvComponent } from './accounting-in-trust/utilities/change-trans-stat-to-new/change-to-new-jv/change-to-new-jv.component';
 import { InAccountingEntriesComponent } from './accounting-in-trust/extract/accounting-entries/in-accounting-entries/in-accounting-entries.component';
 import { UnbalanceEntriesComponent } from './accounting-in-trust/extract/accounting-entries/unbalance-entries/unbalance-entries.component';
+import { EditAccountingEntriesComponent } from './accounting-in-trust/utilities/edit-accounting-entries/edit-accounting-entries.component';
 
 @NgModule({
     imports: [
@@ -310,6 +311,7 @@ import { UnbalanceEntriesComponent } from './accounting-in-trust/extract/account
         ChangeToNewJvComponent,
         InAccountingEntriesComponent,
         UnbalanceEntriesComponent,
+        EditAccountingEntriesComponent,
     ],
 
     providers: [

@@ -50,7 +50,7 @@
 <fieldset class="scheduler-border">
 	<legend class="scheduler-border">Extracted Data</legend>
 	<div style="position: relative;">
-		<button class="cust-btn" style="position:absolute; left: 0px; max-width: 200px !important;">View Transaction Details</button>
-		<app-cust-non-datatable [passData]="passData"></app-cust-non-datatable>
+		<button class="cust-btn" style="position:absolute; left: 0px; max-width: 200px !important;" (click)="viewTranDetails()">View Transaction Details</button>
+		<app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)"></app-cust-non-datatable>
 	</div>
 </fieldset>

@@ -1,13 +1,13 @@
 <div class="cust-tabs-container">
 	<h4>Accounting In-Trust / Journal Voucher / Generate JV</h4>
 	<!-- <ngb-tabset (tabChange)="beforeChange($event)"> -->
-		<ngb-tabset>
+		<ngb-tabset (tabChange)="onTabChange($event)">
 			<ngb-tab id="idko">
 				<ng-template ngbTabTitle>
 					<div>JV Entry</div>
 				</ng-template>
 				<ng-template ngbTabContent>
-					<app-jv-entry></app-jv-entry>
+					<app-jv-entry></app-jv-entry>	
 				</ng-template>
 			</ngb-tab>
 
@@ -46,7 +46,7 @@
 				<ng-template ngbTabContent>
 				</ng-template>
 			</ngb-tab>
-			<ngb-tab>
+			<ngb-tab id="Exit">
 				<ng-template ngbTabTitle>
 					<div>Exit</div>
 				</ng-template>

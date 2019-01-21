@@ -1,7 +1,7 @@
 <div class="cust-tabs-container">
 	<h4>Accounting In-Trust / Extract / Accounting Entries</h4>
-	<ngb-tabset>
-		<ngb-tab class="ngb-tab" title="Extract">
+	<ngb-tabset [activeId]="activeID">
+		<ngb-tab class="ngb-tab" title="Extract" >
 			<ng-template ngbTabContent>
 				<app-extract></app-extract>
 			</ng-template>
@@ -11,7 +11,7 @@
 				<app-in-accounting-entries></app-in-accounting-entries>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab class="ngb-tab" title="Unbalance Entries">
+		<ngb-tab class="ngb-tab" title="Unbalance Entries" id="Unbalance">
 			<ng-template ngbTabContent>
 				<app-unbalance-entries></app-unbalance-entries>
 			</ng-template>
