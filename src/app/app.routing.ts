@@ -61,6 +61,7 @@ import { GenerateJvComponent } from './accounting-in-trust/journal-voucher/gener
 import { AccountingEntriesComponent } from './accounting-in-trust/extract/accounting-entries/accounting-entries.component';
 import { TrialBalanceComponent } from './accounting-in-trust/extract/trial-balance/trial-balance.component';
 import { OpenCoverInquiryComponent } from './quotation/open-cover-inquiry/open-cover-inquiry.component';
+import { AcctItEditedAcctEntriesComponent } from './accounting-in-trust/accounting-inquiry/acct-it-edited-acct-entries/acct-it-edited-acct-entries.component';
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -125,9 +126,10 @@ const appRoutes: Routes = [
     { path: 'acct-it-cancelled-trans', component: AcctItCancelledTransactionsComponent },
     { path: 'journal-voucher', component: JournalVoucherComponent },
     { path: 'generate-jv', component: GenerateJvComponent },
-    { path: 'accounting-entries', component: AccountingEntriesComponent},
-    { path: 'trial-balance', component: TrialBalanceComponent},
+    { path: 'accounting-entries', component: AccountingEntriesComponent },
+    { path: 'trial-balance', component: TrialBalanceComponent },
     { path: 'open-cover-inquiry', component: OpenCoverInquiryComponent },
+    { path: 'acct-it-edited-acct-entries', component: AcctItEditedAcctEntriesComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

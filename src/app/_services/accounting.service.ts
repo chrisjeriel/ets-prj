@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment , AccCVPayReqList } from '@app/_models';
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries } from '@app/_models';
 
 @Injectable({
 	providedIn: 'root'
@@ -15,17 +15,20 @@ export class AccountingService {
 	accountingEntriesCVData: AccountingEntriesCV[] = [];
 	qsoaData: QSOA[] = [];
 	attachmentInfo: AttachmentInfo[] = [];
-	vatDetails: VATDetails[]=[];
-	creditableTax: CreditableTax[]=[];
+	vatDetails: VATDetails[] = [];
+	creditableTax: CreditableTax[] = [];
 	paytRequestListData: AccountingRequestsListRP[] = [];
 	cancelledTransactionsData: AccountingITCancelledTransactions[] = [];
-	jvListing: JVListing[]=[];
+	jvListing: JVListing[] = [];
 	arTaxDetailsVAT: ARTaxDetailsVAT[] = [];
 	arTaxDetailsWTAX: ARTaxDetailsWTAX[] = [];
 	arInwdPolBalDetails: ARInwdPolBalDetails[] = [];
 	arClaimsRecovery: ARClaimsRecovery[] = [];
-	accCvAttachment: AccCvAttachment[]=[];
-	accCvPayReqList: AccCVPayReqList[]=[];
+	accCvAttachment: AccCvAttachment[] = [];
+	accCvPayReqList: AccCVPayReqList[] = [];
+	accItEditedTransactions: AccItEditedTransactions[] = [];
+	accItEditedOldAcctEntries: AccItEditedOldAcctEntries[] = [];
+	accItEditedLatestAcctEntries: AccItEditedLatestAcctEntries[] = [];
 
 	constructor(private http: HttpClient) { }
 
@@ -72,7 +75,7 @@ export class AccountingService {
 
 	getCheckDetails() {
 		this.checkDetails = [
-			new CheckDetails("Banco De Oro","PCPA-9091-7001-7389",new Date(),17948303,"Local Clearing","PHP",27513.29),
+			new CheckDetails("Banco De Oro", "PCPA-9091-7001-7389", new Date(), 17948303, "Local Clearing", "PHP", 27513.29),
 		]
 
 		return this.checkDetails;
@@ -133,7 +136,7 @@ export class AccountingService {
 		return this.creditableTax;
 	}
 
-	getPaytRequestsList(){
+	getPaytRequestsList() {
 		this.paytRequestListData = [
 			new AccountingRequestsListRP('CSR-2015-01-0001', 'SM Prime Holdings, Inc.', 'Claim Payment', 'Paid', new Date(), 'Payment for Claim No.', 'PHP', 1642857.14, 'Edward M. Salunson'),
 			new AccountingRequestsListRP('CSR-2017-12-0001', 'Rustan, Inc.', 'Claim Payment', 'Paid', new Date(), 'Payment for Claim No.', 'PHP', 200000, 'Christian M. Lumen'),
@@ -151,7 +154,7 @@ export class AccountingService {
 		return this.paytRequestListData;
 	}
 
-	getCancelledTransactions(){
+	getCancelledTransactions() {
 		this.cancelledTransactionsData = [
 			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
 			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
@@ -188,16 +191,16 @@ export class AccountingService {
 	}
 	getJVListing() {
 		this.jvListing = [
-			new JVListing("2015-00000001",new Date(2015,10,1),"To correct entries in","Error Connection","2014-00004342","Ronwaldo Roque","Printed",1642857.14),
-			new JVListing("2017-00000001",new Date(2015,10,1),"To correct entries in","Error Connection","2016-00001644","Chie Reyes","Printed",200000),
-			new JVListing("2017-00000002",new Date(2015,10,1),"To correct entries in","Error Connection","2016-00001645","Lourdes Gualvez","Printed",100000),
-			new JVListing("2017-00000003",new Date(2015,10,1),"To correct entries in","Error Connection","2016-00001646","Chie Reyes","Printed",1000000),
-			new JVListing("2018-00000001",new Date(2015,10,1),"To correct entries in","Error Connection","2017-00000324","Chie Reyes","Printed",710716.12),
-			new JVListing("2018-00000010",new Date(2015,10,1),"To correct entries in","Error Connection","2018-00000009","Lourdes Gualvez","Open",756929),
-			new JVListing("2018-00000016",new Date(2015,10,1),"To correct entries in","Error Connection","2018-00000012","Lourdes Gualvez","Cancelled",300000),
-			new JVListing("2018-00000045",new Date(2015,10,1),"To correct entries in","Error Connection","2018-00000041","Ronwaldo Roque","Cancelled",1000000),
-			new JVListing("2018-00000099",new Date(2015,10,1),"To correct entries in","Error Connection","2018-00000098","Ronwaldo Roque","Open",230000),
-			new JVListing("2018-00000123",new Date(2015,10,1),"To correct entries in","Error Connection","2018-00000122","Ronwaldo Roque","Open",1500000),
+			new JVListing("2015-00000001", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2014-00004342", "Ronwaldo Roque", "Printed", 1642857.14),
+			new JVListing("2017-00000001", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2016-00001644", "Chie Reyes", "Printed", 200000),
+			new JVListing("2017-00000002", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2016-00001645", "Lourdes Gualvez", "Printed", 100000),
+			new JVListing("2017-00000003", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2016-00001646", "Chie Reyes", "Printed", 1000000),
+			new JVListing("2018-00000001", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2017-00000324", "Chie Reyes", "Printed", 710716.12),
+			new JVListing("2018-00000010", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2018-00000009", "Lourdes Gualvez", "Open", 756929),
+			new JVListing("2018-00000016", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2018-00000012", "Lourdes Gualvez", "Cancelled", 300000),
+			new JVListing("2018-00000045", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2018-00000041", "Ronwaldo Roque", "Cancelled", 1000000),
+			new JVListing("2018-00000099", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2018-00000098", "Ronwaldo Roque", "Open", 230000),
+			new JVListing("2018-00000123", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2018-00000122", "Ronwaldo Roque", "Open", 1500000),
 		]
 		return this.jvListing;
 	}
@@ -229,28 +232,85 @@ export class AccountingService {
 		]
 		return this.arClaimsRecovery;
 	}
-	getAccCVAttachment(){
-		this.accCvAttachment = [ 
-			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_01.doc","Accounting Specifications Sample 1"),
-			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_02.doc","Accounting Specifications Sample 2"),
-			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_03.doc","Accounting Specifications Sample 3"),
-			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_04.doc","Accounting Specifications Sample 4"),
-			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_05.doc","Accounting Specifications Sample 5"),
-			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_06.doc","Accounting Specifications Sample 6"),
-			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_07.doc","Accounting Specifications Sample 7"),
-			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_08.doc","Accounting Specifications Sample 8"),
-			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_09.doc","Accounting Specifications Sample 9"),
-			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_10.doc","Accounting Specifications Sample 10"),
+	getAccCVAttachment() {
+		this.accCvAttachment = [
+			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_01.doc", "Accounting Specifications Sample 1"),
+			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_02.doc", "Accounting Specifications Sample 2"),
+			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_03.doc", "Accounting Specifications Sample 3"),
+			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_04.doc", "Accounting Specifications Sample 4"),
+			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_05.doc", "Accounting Specifications Sample 5"),
+			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_06.doc", "Accounting Specifications Sample 6"),
+			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_07.doc", "Accounting Specifications Sample 7"),
+			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_08.doc", "Accounting Specifications Sample 8"),
+			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_09.doc", "Accounting Specifications Sample 9"),
+			new AccCvAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETC\\SRS\\05-Accounting\\Sample_10.doc", "Accounting Specifications Sample 10"),
 		]
 		return this.accCvAttachment;
 	}
 
-	getAccCVPayReqList(){
+	getAccCVPayReqList() {
 		this.accCvPayReqList = [
-			new AccCVPayReqList("OPR-2018-01-0001","San Miguel Corporation","Others","Open", new Date("09/20/2018"),"Payment for San Miguel","Rosalinda Mercedez","PHP",27513.20)
+			new AccCVPayReqList("OPR-2018-01-0001", "San Miguel Corporation", "Others", "Open", new Date("09/20/2018"), "Payment for San Miguel", "Rosalinda Mercedez", "PHP", 27513.20)
 		]
 		return this.accCvPayReqList;
 	}
 
+	getAccItEditedTransactions() {
+		this.accItEditedTransactions = [
+			new AccItEditedTransactions("CV", "2018-00372881", new Date('2018-10-01'), "INVOICE COMMUNICATIONS INC.", "Billing for the period April 16 to March 16, 2019", "cuaresma", new Date('2018-10-12'), "Account should be Internet Expense, not Telephone Line", "New", 2999),
+			new AccItEditedTransactions("CV", "2018-00372890", new Date('2018-10-02'), "UCPBGEN", "Payment for Claim No.", "cuaresma", new Date('2018-10-12'), "Account should be Internet Expense, not Telephone Line", "New", 546043),
+			new AccItEditedTransactions("CV", "2018-00373244", new Date('2018-10-03'), "UCPBGEN", "Payment for Claim No.", "cuaresma", new Date('2018-10-12'), "Account should be Internet Expense, not Telephone Line", "New", 14000000),
+			new AccItEditedTransactions("CV", "2018-00372843", new Date('2018-10-04'), "STI", "Payment for Claim No.", "cuaresma", new Date('2018-10-12'), "Account should be Internet Expense, not Telephone Line", "New", 2404000),
+			new AccItEditedTransactions("CV", "2018-00372430", new Date('2018-10-05'), "UCPBGEN", "Premium Payments", "cuaresma", new Date('2018-10-12'), "Account should be Internet Expense, not Telephone Line", "New", 1000000),
+			new AccItEditedTransactions("CV", "2018-00372490", new Date('2018-10-06'), "UCPBGEN", "Payment for Claim No.", "cuaresma", new Date('2018-10-12'), "Account should be Internet Expense, not Telephone Line", "New", 1000000),
+			new AccItEditedTransactions("CV", "2018-00372567", new Date('2018-10-07'), "PNBGEN", "Premium Payments", "cuaresma", new Date('2018-10-12'), "Account should be Internet Expense, not Telephone Line", "New", 6000000),
+			new AccItEditedTransactions("CV", "2018-00372878", new Date('2018-10-08'), "MRS. SANTOS", "Payment for Claim No.", "cuaresma", new Date('2018-10-12'), "Account should be Internet Expense, not Telephone Line", "New", 100000000),
+			new AccItEditedTransactions("CV", "2018-00382890", new Date('2018-10-09'), "MALAYAN", "Payment for Claim No.", "cuaresma", new Date('2018-10-12'), "Account should be Internet Expense, not Telephone Line", "New", 2999),
+			new AccItEditedTransactions("CV", "2018-00572890", new Date('2018-10-09'), "SAN MIGUEL CORPORATION", "Payment for Claim No.", "cuaresma", new Date('2018-10-12'), "Account should be Internet Expense, not Telephone Line", "New", 34000000),
+			new AccItEditedTransactions("CV", "2018-00362890", new Date('2018-10-09'), "UCPBGEN", "Payment for Claim No.", "cuaresma", new Date('2018-10-12'), "Account should be Internet Expense, not Telephone Line", "New", 56000000),
+			new AccItEditedTransactions("CV", "2018-00374675", new Date('2018-10-10'), "UCPBGEN", "Payment for Claim No.", "cuaresma", new Date('2018-10-12'), "Account should be Internet Expense, not Telephone Line", "New", 2999),
+			new AccItEditedTransactions("CV", "2018-00372864", new Date('2018-10-13'), "ABS-CBN", "Payment for Claim No.", "cuaresma", new Date('2018-10-12'), "Account should be Internet Expense, not Telephone Line", "New", 3000000),
+			new AccItEditedTransactions("CV", "2018-00454390", new Date('2018-10-13'), "BPI/MS", "Premium Payments", "cuaresma", new Date('2018-10-12'), "Account should be Internet Expense, not Telephone Line", "New", 2999),
+			new AccItEditedTransactions("CV", "2018-00625466", new Date('2018-10-13'), "BPI/MS", "Payment for Claim No.", "cuaresma", new Date('2018-10-12'), "Account should be Internet Expense, not Telephone Line", "New", 1000000),
+			new AccItEditedTransactions("CV", "2018-00354362", new Date('2018-10-23'), "BPI/MS", "Payment for Claim No.", "cuaresma", new Date('2018-10-12'), "Account should be Internet Expense, not Telephone Line", "New", 1000000),
+			new AccItEditedTransactions("CV", "2018-00357543", new Date('2018-10-24'), "Charter", "Payment for Claim No.", "cuaresma", new Date('2018-10-12'), "Account should be Internet Expense, not Telephone Line", "New", 234000000),
+			new AccItEditedTransactions("CV", "2018-00325433", new Date('2018-10-24'), "Charter", "Payment for Claim No.", "cuaresma", new Date('2018-10-12'), "Account should be Internet Expense, not Telephone Line", "New", 32000000),
+			new AccItEditedTransactions("CV", "2018-00554722", new Date('2018-10-25'), "Charter", "Payment for Claim No.", "cuaresma", new Date('2018-10-12'), "Account should be Internet Expense, not Telephone Line", "New", 10000000),
+			new AccItEditedTransactions("CV", "2018-00446564", new Date('2018-10-26'), "Charter", "Premium Payments", "cuaresma", new Date('2018-10-12'), "Account should be Internet Expense, not Telephone Line", "New", 1400000),
+
+
+			new AccItEditedTransactions("CV", "2018-00362890", new Date('2018-10-09'), "UCPBGEN", "Payment for Claim No.", "cuaresma", new Date('2018-10-12'), "Account should be Internet Expense, not Telephone Line", "New", 56000000),
+			new AccItEditedTransactions("CV", "2018-00374675", new Date('2018-10-10'), "UCPBGEN", "Payment for Claim No.", "cuaresma", new Date('2018-10-12'), "Account should be Internet Expense, not Telephone Line", "New", 2999),
+			new AccItEditedTransactions("CV", "2018-00372864", new Date('2018-10-13'), "ABS-CBN", "Payment for Claim No.", "cuaresma", new Date('2018-10-12'), "Account should be Internet Expense, not Telephone Line", "New", 3000000),
+			new AccItEditedTransactions("CV", "2018-00454390", new Date('2018-10-13'), "BPI/MS", "Premium Payments", "cuaresma", new Date('2018-10-12'), "Account should be Internet Expense, not Telephone Line", "New", 2999),
+			new AccItEditedTransactions("CV", "2018-00625466", new Date('2018-10-13'), "BPI/MS", "Payment for Claim No.", "cuaresma", new Date('2018-10-12'), "Account should be Internet Expense, not Telephone Line", "New", 1000000),
+			new AccItEditedTransactions("CV", "2018-00354362", new Date('2018-10-23'), "BPI/MS", "Payment for Claim No.", "cuaresma", new Date('2018-10-12'), "Account should be Internet Expense, not Telephone Line", "New", 1000000),
+			new AccItEditedTransactions("CV", "2018-00357543", new Date('2018-10-24'), "Charter", "Payment for Claim No.", "cuaresma", new Date('2018-10-12'), "Account should be Internet Expense, not Telephone Line", "New", 234000000),
+			new AccItEditedTransactions("CV", "2018-00325433", new Date('2018-10-24'), "Charter", "Payment for Claim No.", "cuaresma", new Date('2018-10-12'), "Account should be Internet Expense, not Telephone Line", "New", 32000000),
+			new AccItEditedTransactions("CV", "2018-00554722", new Date('2018-10-25'), "Charter", "Payment for Claim No.", "cuaresma", new Date('2018-10-12'), "Account should be Internet Expense, not Telephone Line", "New", 10000000),
+			new AccItEditedTransactions("CV", "2018-00446564", new Date('2018-10-26'), "Charter", "Premium Payments", "cuaresma", new Date('2018-10-12'), "Account should be Internet Expense, not Telephone Line", "New", 1400000),
+		]
+		return this.accItEditedTransactions;
+	}
+
+	getAccItEditedOldAcctEntries() {
+		this.accItEditedOldAcctEntries = [
+			new AccItEditedOldAcctEntries("1-01-02-01", "BPI Current Account No. 0071-0438-94", "", "", 0, 2945.45),
+			new AccItEditedOldAcctEntries("5-01-13-04", "Telephone Line", "", "", 2677.68, 0),
+			new AccItEditedOldAcctEntries("1-09", "Input VAT", "", "", 321.32, 0),
+			new AccItEditedOldAcctEntries("2-03-02-04", "WC120 2%", "", "", 0, 53.55)
+		]
+		return this.accItEditedOldAcctEntries;
+	}
+
+	getAccItEditedLatestAcctEntries() {
+		this.accItEditedLatestAcctEntries = [
+			new AccItEditedLatestAcctEntries("1-01-02-01", "BPI Current Account No. 0071-0438-94", "", "", 0, 2945.45),
+			new AccItEditedLatestAcctEntries("5-01-13-04", "Telephone Line", "", "", 2677.68, 0),
+			new AccItEditedLatestAcctEntries("1-09", "Input VAT", "", "", 321.32, 0),
+			new AccItEditedLatestAcctEntries("2-03-02-04", "WC120 2%", "", "", 0, 53.55)
+		]
+		return this.accItEditedLatestAcctEntries;
+	}
 
 }
