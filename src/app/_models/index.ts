@@ -55,5 +55,6 @@ export * from './AccountingITARInwdPolBal';
 export * from './AccountingITClaimRecovery';
 export * from './AccountingCVAttachment';
 export * from './AccountingCVPayRequestList';
+export * from './AccountingITEditedAcctEntries';
 export * from './ChangeTransactionStatusToNew';
 export * from './AccountingUtilitiesCancelTransactions';
