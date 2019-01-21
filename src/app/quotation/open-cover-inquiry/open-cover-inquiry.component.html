@@ -1,133 +1,92 @@
 <div class="cust-tabs-container">
-    <h4>Quotation</h4>
-    <ngb-tabset>
-        <ngb-tab title="Open Cover Inquiry">
-            <ng-template ngbTabContent>
-                <div class="container-fluid">
-				    <div class="row">
-				        <div class="col-sm-12" style="padding: 0">
-				            <!--<app-cust-table [tableData]="tableData" [tHeader] = "tHeader" [dataTypes] = "dataTypes" [filters]="filters" [pageLength]="pageLength" [printBtn]="true" (rowClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)" [resizable]="resizables"></app-cust-table>-->
-				            <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)"></app-cust-non-datatable>
-				         </div>
-				    </div>
-					<div class="row">
-				        <div class="col-sm-6" style="padding-left: 0px">
-				            <fieldset class="scheduler-border">
-				                <!--<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>-->
-				                <div class="form-row custom-row-inline-inset">
-				                    <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
-				                        <label class="form-control-sm col-sm-2 text-right">OC Quotation No</label>
-				                        <input type="text" class="form-control form-control-sm col-sm-4" [value]="openCoverList.openCoverQuotationNo" readonly>
-				                        <label class="form-control-sm col-sm-2 text-right">Policy No</label>
-				                        <input type="text" name="" class="form-control form-control-sm col-sm-4" [value]="openCoverList.policyNo" readonly> 
-				                    </div>
-				                </div>
-				                <div class="form-row custom-row-inline-inset">
-				                    <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
-				                        <label class="form-control-sm col-sm-2 text-right">Type of Cession</label>
-				                        <input type="text" class="form-control form-control-sm col-sm-4"  [value]="openCoverList.typeofCession" readonly>
-				                        <label class="form-control-sm col-sm-2 text-right">Line Class</label>
-				                        <input type="text" name="" class="form-control form-control-sm col-sm-4" [value]="openCoverList.lineClass" readonly> 
-				                    </div>
-				                </div>
-				                <div class="form-row custom-row-inline-inset">
-				                    <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
-				                        <label class="form-control-sm col-sm-2 text-right">Ceding Company</label>
-				                        <input type="text" class="form-control form-control-sm col-sm-2">
-				                        <input type="text" class="form-control form-control-sm col-sm-8" [value]="openCoverList.cedingCompany" readonly style="margin-left: 2px !important;">
-				                    </div>
-				                </div>
-				                <div class="form-row custom-row-inline-inset">
-				                    <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
-				                        <label class="form-control-sm col-sm-2 text-right">Quote Date</label>
-				                        <input type="text" class="form-control form-control-sm col-sm-4" readonly>
-				                        <label class="form-control-sm col-sm-2 text-right">Valid Until</label>
-				                        <input type="text" name="" class="form-control form-control-sm col-sm-4"  readonly> 
-				                    </div>
-				                </div>
-				                <div class="form-row custom-row-inline-inset">
-				                    <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
-				                        <label class="form-control-sm col-sm-2 text-right">Requested By</label>
-				                        <input type="text" class="form-control form-control-sm col-sm-4" readonly>
-				                        <label class="form-control-sm col-sm-2 text-right">Status</label>
-				                        <input type="text" name="" class="form-control form-control-sm col-sm-4" readonly> 
-				                    </div>
-				                </div>
-				                <div class="form-row custom-row-inline-inset">
-				                    <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -10px !important;">
-				                        <label class="form-control-sm col-sm-2 text-right">Prepared By</label>
-				                        <input type="text" class="form-control form-control-sm col-sm-4" readonly>
-				                        <label class="form-control-sm col-sm-2 text-right">Approved By</label>
-				                        <input type="text" name="" class="form-control form-control-sm col-sm-4" readonly> 
-				                    </div>
-				                </div>
-				            </fieldset>
-				        </div>
-				        <div class="col-sm-6" style="padding: 0">
-				            <fieldset class="scheduler-border">
-				                <!--<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>-->
-				                <div class="form-row custom-row-inline-inset">
-				                    <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
-				                        <div class="col-sm-1"></div>
-				                        <label class="form-control-sm col-sm-2 text-right">Principal</label>
-				                        <input type="text" class="form-control form-control-sm col-sm-2">
-				                        <input type="text" class="form-control form-control-sm col-sm-6" readonly style="margin-left: 2px !important;" [value]="openCoverList.principal">
-				                        <div class="col-sm-1"></div>
-				                    </div>
-				                </div>
-				                <div class="form-row custom-row-inline-inset">
-				                    <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
-				                        <div class="col-sm-1"></div>
-				                        <label class="form-control-sm col-sm-2 text-right">Contractor</label>
-				                        <input type="text" class="form-control form-control-sm col-sm-2">
-				                        <input type="text" class="form-control form-control-sm col-sm-6" [value]="openCoverList.contractor" readonly style="margin-left: 2px !important;">
-				                        <div class="col-sm-1"></div>
-				                    </div>
-				                </div>
-				                <div class="form-row custom-row-inline-inset">
-				                    <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
-				                        <div class="col-sm-1"></div>
-				                        <label class="form-control-sm col-sm-2 text-right">Insured</label>
-				                        <input type="text" class="form-control form-control-sm col-sm-8" [value]="openCoverList.insured" readonly>
-				                        <div class="col-sm-1"></div>
-				                    </div>
-				                </div>
-				                <div class="form-row custom-row-inline-inset">
-				                    <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
-				                        <div class="col-sm-1"></div>
-				                        <label class="form-control-sm col-sm-2 text-right">Risk</label>
-				                        <input type="text" class="form-control form-control-sm col-sm-8" [value]="openCoverList.risk"readonly>
-				                        <div class="col-sm-1"></div>
-				                    </div>
-				                </div>
-				                <div class="form-row custom-row-inline-inset">
-				                    <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
-				                        <div class="col-sm-1"></div>
-				                        <label class="form-control-sm col-sm-2 text-right">Site</label>
-				                        <input type="text" class="form-control form-control-sm col-sm-8" readonly>
-				                        <div class="col-sm-1"></div>
-				                    </div>
-				                </div>
-				                <div class="form-row custom-row-inline-inset">
-				                    <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -10px !important;">
-				                        <div class="col-sm-1"></div>
-				                        <label class="form-control-sm col-sm-2 text-right">Object</label>
-				                        <input type="text" class="form-control form-control-sm col-sm-3" [value]="openCoverList.object"readonly>
-				                        <label class="form-control-sm col-sm-2 text-right">Currency</label>
-				                        <input type="text" name="" class="form-control form-control-sm col-sm-3" [value]="openCoverList.currency"readonly> 
-				                        <div class="col-sm-1"></div>
-				                    </div>
-				                </div>
-				            </fieldset>
-				        </div>
-				    </div>
-				</div>
-			</ng-template>
-        </ngb-tab>
-    </ngb-tabset>
+  <h4>Quotation</h4>
+  <ngb-tabset>
+    <ngb-tab class="ngb-tab" title="Open Cover Inquiry">
+      <ng-template ngbTabContent>
+        <app-cust-non-datatable [passData]="passDataOpenCoverInquiry" (rowDblClick)="onRowDblClick($event)"></app-cust-non-datatable>
+
+        <br><br>
+        <div class="row">
+          <div class="col-sm-6">
+            <fieldset class="scheduler-border" style="margin-right: -8px !important;">
+              <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+              <div class="form-row custom-row-inline-inset" style="padding-right: 25px !important; margin-left: -30px !important;">
+                <div class="input-group">
+                  <label class="form-control-sm col-sm-3">OC Quotation No</label>
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm">
+                  <label class="form-control-sm col-sm-2">Policy No</label>
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm">
+                </div>
+                <div class="input-group">
+                  <label class="form-control-sm col-sm-3">Type of Cession</label>
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm">
+                  <label class="form-control-sm col-sm-2">Line Class</label>
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm">
+                </div>
+                <div class="input-group">
+                  <label class="form-control-sm col-sm-3">Ceding Company</label>
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm-2">
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px !important;">
+                </div>
+                <div class="input-group">
+                  <label class="form-control-sm col-sm-3">Quote Date</label>
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm">
+                  <label class="form-control-sm col-sm-2">Valid Until</label>
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm">
+                </div>
+                <div class="input-group">
+                  <label class="form-control-sm col-sm-3">Requested By</label>
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm">
+                  <label class="form-control-sm col-sm-2">Status</label>
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm">
+                </div>
+                <div class="input-group">
+                  <label class="form-control-sm col-sm-3">Prepared By</label>
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm">
+                  <label class="form-control-sm col-sm-2">Approved By</label>
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm">
+                </div>
+              </div>
+            </fieldset>
+          </div>
+
+          <div class="col-sm-6">
+            <fieldset class="scheduler-border" style="margin-left: -8px !important;">
+              <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+              <div class="form-row custom-row-inline-inset" style="padding-right: 25px !important; margin-left: -70px !important;">
+                <div class="input-group">
+                  <label class="form-control-sm col-sm-3">Principal</label>
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm-2">
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px !important;">
+                </div>
+                <div class="input-group">
+                  <label class="form-control-sm col-sm-3">Contractor</label>
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm-2">
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px !important;">
+                </div>
+                <div class="input-group">
+                  <label class="form-control-sm col-sm-3">Insured</label>
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm">
+                </div>
+                <div class="input-group">
+                  <label class="form-control-sm col-sm-3">Risk</label>
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm">
+                </div>
+                <div class="input-group">
+                  <label class="form-control-sm col-sm-3">Site</label>
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm">
+                </div>
+                <div class="input-group">
+                  <label class="form-control-sm col-sm-3">Object</label>
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm">
+                  <label class="form-control-sm col-sm-2">Currency</label>
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm">
+                </div>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+      </ng-template>
+    </ngb-tab>
+  </ngb-tabset>
 </div>
-
-
-
-
-

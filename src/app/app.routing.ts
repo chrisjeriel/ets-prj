@@ -53,11 +53,14 @@ import { AccountingInTrustComponent } from './accounting-in-trust/accounting-in-
 import { AcctArListingsComponent } from './accounting-in-trust/acct-ar-listings/acct-ar-listings.component';
 import { CheckVoucherComponent } from './accounting-in-trust/check-voucher/check-voucher.component';
 import { GenerateCvComponent } from './accounting-in-trust/check-voucher/generate-cv/generate-cv.component';
-import { OpenCoverInquiryComponent } from './quotation/open-cover-inquiry/open-cover-inquiry.component';
+import { RequestForPaymentComponent } from './accounting-in-trust/request-for-payment/request-for-payment.component';
+import { GeneratePaymentRequestComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/generate-payment-request.component';
+import { AcctItCancelledTransactionsComponent } from './accounting-in-trust/accounting-inquiry/acct-it-cancelled-transactions/acct-it-cancelled-transactions.component';
 import { JournalVoucherComponent } from './accounting-in-trust/journal-voucher/journal-voucher.component';
 import { GenerateJvComponent } from './accounting-in-trust/journal-voucher/generate-jv/generate-jv.component';
 import { AccountingEntriesComponent } from './accounting-in-trust/extract/accounting-entries/accounting-entries.component';
 import { TrialBalanceComponent } from './accounting-in-trust/extract/trial-balance/trial-balance.component';
+import { OpenCoverInquiryComponent } from './quotation/open-cover-inquiry/open-cover-inquiry.component';
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -117,11 +120,14 @@ const appRoutes: Routes = [
     { path: 'acct-ar-listings', component: AcctArListingsComponent },
     { path: 'check-voucher', component: CheckVoucherComponent },
     { path: 'generate-cv', component: GenerateCvComponent },
-    { path: 'open-cover-inquiry', component: OpenCoverInquiryComponent },
+    { path: 'payt-req', component: RequestForPaymentComponent },
+    { path: 'generate-payt-req', component: GeneratePaymentRequestComponent },
+    { path: 'acct-it-cancelled-trans', component: AcctItCancelledTransactionsComponent },
     { path: 'journal-voucher', component: JournalVoucherComponent },
     { path: 'generate-jv', component: GenerateJvComponent },
     { path: 'accounting-entries', component: AccountingEntriesComponent},
     { path: 'trial-balance', component: TrialBalanceComponent},
+    { path: 'open-cover-inquiry', component: OpenCoverInquiryComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

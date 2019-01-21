@@ -121,8 +121,11 @@ import { ArEntryComponent } from './accounting/ar-entry/ar-entry.component';
 import { ArDetailsComponent } from './accounting-in-trust/ar-details/ar-details.component';
 import { InwardPolicyBalancesComponent } from './accounting-in-trust/inward-policy-balances/inward-policy-balances.component';
 import { ClaimRecoveryComponent } from './accounting-in-trust/claim-recovery/claim-recovery.component';
+import { AttachmentsComponent } from './accounting/attachments/attachments.component';
 import { AccountingInTrustComponent } from './accounting-in-trust/accounting-in-trust.component';
 import { AccountingServiceComponent } from './accounting-service/accounting-service.component';
+import { CvPaymentRequestListComponent } from './accounting-in-trust/check-voucher/generate-cv/cv-payment-request-list/cv-payment-request-list.component';
+import { CvAttachmentComponent } from './accounting-in-trust/check-voucher/generate-cv/cv-attachment/cv-attachment.component';
 import { AcctArListingsComponent } from './accounting-in-trust/acct-ar-listings/acct-ar-listings.component';
 import { AcctArEntryComponent } from './accounting-in-trust/acct-ar-entry/acct-ar-entry.component';
 import { CheckVoucherComponent } from './accounting-in-trust/check-voucher/check-voucher.component';
@@ -132,7 +135,10 @@ import { CvDetailsComponent } from './accounting-in-trust/check-voucher/generate
 import { QsoaComponent } from './accounting-in-trust/qsoa/qsoa.component';
 import { AccAttachmentsComponent } from './accounting-in-trust/acc-attachments/acc-attachments.component';
 import { SequencePipe } from './_pipes/sequence.pipe';
-import { OpenCoverInquiryComponent } from './quotation/open-cover-inquiry/open-cover-inquiry.component';
+import { RequestForPaymentComponent } from './accounting-in-trust/request-for-payment/request-for-payment.component';
+import { GeneratePaymentRequestComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/generate-payment-request.component';
+import { PaymentRequestEntryComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/payment-request-entry/payment-request-entry.component';
+import { AcctItCancelledTransactionsComponent } from './accounting-in-trust/accounting-inquiry/acct-it-cancelled-transactions/acct-it-cancelled-transactions.component';
 import { JournalVoucherComponent } from './accounting-in-trust/journal-voucher/journal-voucher.component';
 import { GenerateJvComponent } from './accounting-in-trust/journal-voucher/generate-jv/generate-jv.component';
 import { JvEntryComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-entry/jv-entry.component';
@@ -140,6 +146,7 @@ import { AccountingEntriesComponent } from './accounting-in-trust/extract/accoun
 import { ExtractComponent } from './accounting-in-trust/extract/accounting-entries/extract/extract.component';
 import { TrialBalanceComponent } from './accounting-in-trust/extract/trial-balance/trial-balance.component';
 import { TrialBalanceExtractComponent } from './accounting-in-trust/extract/trial-balance/trial-balance-extract/trial-balance-extract.component';
+import { OpenCoverInquiryComponent } from './quotation/open-cover-inquiry/open-cover-inquiry.component';
 
 @NgModule({
     imports: [
@@ -277,14 +284,20 @@ import { TrialBalanceExtractComponent } from './accounting-in-trust/extract/tria
         CvEntryComponent,
         AccAttachmentsComponent,
         SequencePipe,
-        OpenCoverInquiryComponent,
+        RequestForPaymentComponent,
+        GeneratePaymentRequestComponent,
+        PaymentRequestEntryComponent,
+        AcctItCancelledTransactionsComponent,
         JournalVoucherComponent,
         GenerateJvComponent,
         JvEntryComponent,
         AccountingEntriesComponent,
         ExtractComponent,
         TrialBalanceComponent,
-        TrialBalanceExtractComponent
+        TrialBalanceExtractComponent,
+        OpenCoverInquiryComponent,
+        CvPaymentRequestListComponent,
+        CvAttachmentComponent,
     ],
 
     providers: [

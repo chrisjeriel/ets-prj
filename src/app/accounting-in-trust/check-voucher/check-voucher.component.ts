@@ -26,7 +26,7 @@ export class CheckVoucherComponent implements OnInit {
   constructor(private accountingService: AccountingService, private titleService: Title, private router: Router) { }
 
   ngOnInit() {
-    this.titleService.setTitle("Acc In Trust | Check Voucher");
+    this.titleService.setTitle("Acct-IT | Check Voucher");
   }
 
   onClickAdd(event){

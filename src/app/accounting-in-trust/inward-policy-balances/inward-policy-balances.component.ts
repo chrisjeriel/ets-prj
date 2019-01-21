@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { AccountingService } from '@app/_services';
+import { ARInwdPolBalDetails } from '@app/_models';
 
 @Component({
   selector: 'app-inward-policy-balances',
@@ -9,7 +11,7 @@ import { Title } from '@angular/platform-browser';
 export class InwardPolicyBalancesComponent implements OnInit {
 
   passDataBalanceDetails: any = {
-    tableData: [["CAR-2018-00001-99-0001-000", "01", "09/25/2018", "PHP", "3000000", "0", "0", "1642857.14", "1357142.86", "0", "1642857.14"]],
+    tableData: this.accountingService.getARInwdPolBalDetails(),
     tHeader: ["Policy No", "Inst No.", "Due Date", "Curr", "Premium", "RI Comm", "Charges", "Net Due", "Payments", "Overdue Interest", "Balance"],
     dataTypes: ["text", "number", "date", "text", "currency", "currency", "currency", "currency", "currency", "currency", "currency"],
     addFlag: true,
@@ -20,10 +22,11 @@ export class InwardPolicyBalancesComponent implements OnInit {
     magnifyingGlass: ['0', '1'],
     pageLength: 10,
     widths: ["auto", "1", "auto", "1", "auto", "auto", "auto", "auto", "auto", "auto", "auto"],
-    nData: [null, null, null, null, null, null, null, null, null, null, null]
+    nData: new ARInwdPolBalDetails(null, null, null, null, null, null, null, null, null, null, null),
+    total: [null, null, null, 'Total', 'premium', 'riComm', 'charges', 'netDue', 'payments', 'overdueInterest', 'balance']
   };
 
-  constructor(private titleService: Title) { }
+  constructor(private titleService: Title, private accountingService: AccountingService) { }
 
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | Inward Policy Balances");

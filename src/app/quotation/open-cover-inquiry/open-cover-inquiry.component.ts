@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { QuotationService } from '../../_services';
 import { OpenCoverList } from '@app/_models';
+import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
 
@@ -10,103 +11,123 @@ import { Router } from '@angular/router';
   styleUrls: ['./open-cover-inquiry.component.css']
 })
 export class OpenCoverInquiryComponent implements OnInit {
-  i: number;
+
   line: string = "";
-  openCoverList: OpenCoverList = new OpenCoverList(null, null, null, null, null, null, null, null, null, null, null, null, null);
-  allData: any[] = [];
+  selectedArr: any = [];
+  ocLine: string = "";
+  ocTypeOfCession = "";
 
-  passData: any = {
-        tableData: this.quotationService.getOpenCoverListInfo(), 
-        tHeader: ['Open Cover Quotation No.','Type of Cession','Line Class','Status','Ceding Company','Principal','Contractor','Insured','Risk','Object','Site','Policy No','Currency'],
-        dataTypes: [],
-        resizable: [false, false, true, true, true, true, true, true, true, true, false, false],
-        filters: [
-            {
-                key: 'quotationNo',
-                title:'Quotation No.',
-                dataType: 'text'
-            },
-            {
-                key: 'cessionType',
-                title:'Type of Cession',
-                dataType: 'text'
-            },
-            {
-                key: 'lineClass',
-                title:'Line Class',
-                dataType: 'text'
-            },
-            {
-                key: 'quoteStatus',
-                title:'Quote Status',
-                dataType: 'text'
-            },
-            {
-                key: 'cedingCompany',
-                title:'Ceding Company',
-                dataType: 'text'
-            },
-            {
-                key: 'principal',
-                title:'Principal',
-                dataType: 'text'
-            },
-            {
-                key: 'insured',
-                title:'Insured',
-                dataType: 'text'
-            },
-            {
-                key: 'risk',
-                title:'Risk',
-                dataType: 'text'
-            },
-            {
-                key: 'object',
-                title:'Object',
-                dataType: 'text'
-            },
-            {
-                key: 'location',
-                title:'Insured',
-                dataType: 'text'
-            },
-            {
-                key: 'quoteDate',
-                title:'Period From',
-                dataType: 'date'
-            },
-        ],
-        pageLength: 10,
-        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: true, printBtn: true, pagination: true, pageStatus: true,
-    }
+  passDataOpenCoverInquiry: any = {
+    tableData: [
+      ["OC-CAR-2018-00088-0099", "Direct", "CAR Wet Risks", "Concluded", "Malayan", "5K Builders", "ABE International Corp", "5K Builders and ABE International Corp", "Direct", "CAR Wet Risks", "Region IV, Laguna, Calamba", "CAR-2018-00001-099-0001-000", "PHP"],
+      ["OC-CAR-2018-00089-0078", "Retrocession", "CAR Wet Risks", "Concluded", "FLT Prime", "5K Builders", "ABE International Corp", "5K Builders and ABE International Corp", "Retrocession", "CAR Wet Risks", "Region IV, Laguna, Calamba", "CAR-2018-00001-099-0001-000", "PHP"],
+      ["OC-EAR-2018-00089-0078", "Retrocession", "CAR Wet Risks", "Concluded", "FLT Prime", "5K Builders", "ABE International Corp", "5K Builders and ABE International Corp", "Retrocession", "CAR Wet Risks", "Region IV, Laguna, Calamba", "CAR-2018-00001-099-0001-000", "PHP"],
+      ["OC-EAR-2018-00089-0078", "Retrocession", "CAR Wet Risks", "Concluded", "FLT Prime", "5K Builders", "ABE International Corp", "5K Builders and ABE International Corp", "Retrocession", "CAR Wet Risks", "Region IV, Laguna, Calamba", "CAR-2018-00001-099-0001-000", "PHP"],
+    ],
+    tHeader: ["Open Cover Quoation No", "Type of Cession", "Line Class", "Status", "Ceding Company", "Principal", "Contractor", "Insured", "Risk", "Object", "Site", "Policy No", "Currency"],
+    dataTypes: ["text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text"],
+    colSize: ['100%', '100%', '100%', '100%', '100%', '100%', '100%', '100%', '100%', '100%', '100%', '100%', '100%'],
+    pageLength: 10,
+    pageStatus: true,
+    pagination: true,
+    printBtn: true,
+    addFlag: false,
+    pageID: 1,
+    filters: [
+      {
+        key: 'ocQuotationNo',
+        title: 'OC Quo No',
+        dataType: 'text'
+      },
+      {
+        key: 'typeOfCession',
+        title: 'Type Of Cession',
+        dataType: 'text'
+      },
+      {
+        key: 'lineClass',
+        title: 'Line Class',
+        dataType: 'text'
+      },
+      {
+        key: 'status',
+        title: 'Status',
+        dataType: 'text'
+      },
+      {
+        key: 'cedingCompany',
+        title: 'Ceding Co.',
+        dataType: 'text'
+      },
+      {
+        key: 'principal',
+        title: 'Principal',
+        dataType: 'text'
+      },
+      {
+        key: 'contractor',
+        title: 'Contractor',
+        dataType: 'text'
+      },
+      {
+        key: 'insured',
+        title: 'Insured',
+        dataType: 'text'
+      },
+      {
+        key: 'risk',
+        title: 'Risk',
+        dataType: 'text'
+      },
+      {
+        key: 'object',
+        title: 'Object',
+        dataType: 'text'
+      },
+      {
+        key: 'site',
+        title: 'Site',
+        dataType: 'text'
+      },
+      {
+        key: 'policyNo',
+        title: 'Policy',
+        dataType: 'text'
+      },
+      {
+        key: 'currency',
+        title: 'Currency',
+        dataType: 'text'
+      },
+    ]
+  };
 
-
-  constructor( private quotationService: QuotationService,  private router: Router ) { }
+  constructor(private titleService: Title, private router: Router) { }
 
   ngOnInit() {
-
-  	this.allData = this.quotationService.getOpenCoverListInfo();
+    this.titleService.setTitle("Quo | Open Cover Inquiry");
   }
 
-  onRowClick(event) {
-        for(var i = 0; i < event.target.parentElement.children.length; i++) {
-            this.quotationService.rowData[i] = event.target.parentElement.children[i].innerText;
-        }
-        if(!Number.isNaN(event.path[2].rowIndex - 1)){
-            this.openCoverList = this.allData[event.path[2].rowIndex - 1];
-        }
+  onRowDblClick(event) {
+    //line
+    this.selectedArr = (event.target.closest('tr').children[0].innerText).split("-");
+    this.ocLine = this.selectedArr[1];
+    //end line
+
+    //type of cession
+    this.ocTypeOfCession = event.target.closest('tr').children[1].innerText;
+    //end type of cession
+
+    setTimeout(() => {
+      this.checkLine(this.ocLine);
+    }, 100);
+
+  }
+
+  checkLine(cline: string) {
+    if (cline === 'CAR' ||
+      cline === 'EAR') {
+      this.router.navigate(['/open-cover', { line: cline, typeOfCession: this.ocTypeOfCession, from: "oc-inquiry" }], { skipLocationChange: true });
     }
-
-    onRowDblClick(event) {
-        for(var i = 0; i < event.target.parentElement.children.length; i++) {
-            this.quotationService.rowData[i] = event.target.parentElement.children[i].innerText;
-        }
-
-        this.line = this.quotationService.rowData[0].split("-")[0]; 
-
-        this.quotationService.toGenInfo = [];
-        this.quotationService.toGenInfo.push("edit", this.line);
-        this.router.navigate(['/open-cover']);
-    }
+  }
 }

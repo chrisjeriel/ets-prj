@@ -38,6 +38,7 @@ export class UnderwritingService {
     batchDistribution: UnderwritingBatchDistribution[] = [];
     maintenanceDeductiblesData: MaintenanceDeductibles[] = [];
     maintenanceRiskListData: MaintenanceRisks[] = [];
+    rowData: any[] = [];
 
     constructor(private http: HttpClient) {
 
@@ -211,8 +212,19 @@ export class UnderwritingService {
 
     getPolicyInquiry() {
         this.policyInquiry = [
-            new UnderwritingPolicyInquiryInfo("data", "data", "data", "data", "data", "data", "data", "data", "data", "data", "data", "data"),
-            new UnderwritingPolicyInquiryInfo("data2", "data2", "data2", "data2", "data2", "data2", "data2", "data2", "data2", "data2", "data2", "data2"),
+          new UnderwritingPolicyInquiryInfo("CAR", "CAR-2018-000001-099-0001-000", "Direct", "Malayan", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna, Calamba", "PHP", 10000000, 131000,  new Date("02-09-2018"), new Date("02-09-2018"), new Date("02-09-2018"), new Date("02-28-2019"),"In Progress"),
+          new UnderwritingPolicyInquiryInfo("CAR", "CAR-2018-000001-099-0001-000", "Direct", "FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna, Calamba", "PHP", 1080000, 131000,  new Date("03-09-2018"), new Date("03-09-2018"), new Date("03-09-2018"), new Date("03-30-2019"),"Issued"),
+          new UnderwritingPolicyInquiryInfo("EAR", "EAR-2018-000001-099-0001-000", "Direct", "FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna, Calamba", "PHP", 8090000, 131000,  new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-30-2019"),"In-Forced"),
+          new UnderwritingPolicyInquiryInfo("EEI", "EEI-2018-000001-099-0001-000", "Direct", "FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna, Calamba", "PHP", 8090000, 131000,  new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-30-2019"),"In-Forced"),
+          new UnderwritingPolicyInquiryInfo("MBI", "MBI-2018-000001-099-0001-000", "Direct", "FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna, Calamba", "PHP", 8090000, 131000,  new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-30-2019"),"Spolied"),
+          new UnderwritingPolicyInquiryInfo("MLP", "MLP-2018-000001-099-0001-000", "Direct", "FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna, Calamba", "PHP", 8090000, 131000,  new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-30-2019"),"Expired"),
+          new UnderwritingPolicyInquiryInfo("DOS", "DOS-2018-000001-099-0001-000", "Direct", "FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna, Calamba", "PHP", 8090000, 131000,  new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-30-2019"),"Cancelled"),
+          new UnderwritingPolicyInquiryInfo("CAR","CAR-2018-000002-099-0003-000", "Direct","FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",8090000,131000, new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-30-2018"), "In-Force"),
+          new UnderwritingPolicyInquiryInfo("CAR","CAR-2018-000002-099-0004-000", "Direct","FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",9000000,131000, new Date("05-09-2018"), new Date("05-09-2018"), new Date("05-09-2018"), new Date("05-30-2018"), "In-Force"),
+          new UnderwritingPolicyInquiryInfo("CAR","CAR-2018-000002-099-0005-000", "Direct","FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date("06-09-2018"), new Date("06-09-2018"), new Date("06-09-2018"), new Date("06-30-2018"), "Spoiled"),
+          new UnderwritingPolicyInquiryInfo("CAR","CAR-2018-000002-099-0006-000", "Direct","FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date("07-09-2018"), new Date("07-09-2018"), new Date("07-09-2018"), new Date("07-30-2018"), "Cancelled"),
+          new UnderwritingPolicyInquiryInfo("CAR","CAR-2018-000002-099-0007-000", "Direct","FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",1080000,131000, new Date("08-09-2018"), new Date("08-09-2018"), new Date("08-09-2018"), new Date("08-30-2018"), "In-force"),
+
         ];
         return this.policyInquiry;
     }
@@ -377,6 +389,11 @@ export class UnderwritingService {
 
         return this.batchDistribution;
 
+    }
+
+    
+    getRowData() {
+        return this.rowData;
     }
 
 }            

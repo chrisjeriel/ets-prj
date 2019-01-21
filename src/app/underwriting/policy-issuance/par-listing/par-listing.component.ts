@@ -78,7 +78,7 @@ export class ParListingComponent implements OnInit {
             },
             {
                 key: 'currency',
-                title: 'PCurrency',
+                title: 'Currency',
                 dataType: 'date'
             },
             {
@@ -161,7 +161,7 @@ export class ParListingComponent implements OnInit {
         for (var i = 0; i < this.slctdArr.length; i++) {
             this.polLine = this.slctdArr[0];
         }
-      /*  console.log(this.polLine);*/
+/*        console.log(this.polLine);*/
         setTimeout(() => {
                this.router.navigate(['/policy-issuance', { line: this.polLine }], { skipLocationChange: true });
         },100); 

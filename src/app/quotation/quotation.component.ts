@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+
 
 
 @Component({
@@ -10,10 +11,11 @@ import { ActivatedRoute } from '@angular/router';
 	styleUrls: ['./quotation.component.css']
 })
 export class QuotationComponent implements OnInit {
-	constructor(private route: ActivatedRoute,private modalService: NgbModal, private titleService: Title) { }
+	constructor(private route: ActivatedRoute,private modalService: NgbModal, private titleService: Title, private router: Router) { }
 	docTitle: string = "";
 	sub: any;
 	line: string;
+
 	ngOnInit() {
 		this.sub = this.route.params.subscribe(params => {
             this.line = params['line'];
@@ -29,6 +31,13 @@ export class QuotationComponent implements OnInit {
 	showApprovalModal(content) {
 		this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
 	}
+
+	onTabChange($event: NgbTabChangeEvent) {
+  		if ($event.nextId === 'Exit') {
+    		this.router.navigateByUrl('');
+  		} 
+  
+  	}
 
 	// setDocumentTitle(event) {
 	// 	console.log(event.target.closest('div').innerText);

@@ -38,7 +38,7 @@ export class QuoteEndorsementComponent implements OnInit {
         tableOnly: true,
         pageLength: 3,
     }
-    
+
     endorsementData: any = {
         tableData: this.quotationService.getEndorsements(1),
         tHeader: ['Endt Code', 'Endt Title', 'Endt Description', 'Remarks'],
@@ -51,7 +51,7 @@ export class QuoteEndorsementComponent implements OnInit {
         paginateFlag: true,
         searchFlag: true,
     }
-    
+
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title) { }
 
 
@@ -78,7 +78,11 @@ export class QuoteEndorsementComponent implements OnInit {
         console.log(event);
         this.tableData = this.quotationService.getEndorsements(event.target.closest("tr").children[1].innerText);
     }
-    save(){
+    save() {
         //do something
+    }
+
+    clickModal(event) {
+        $('#idMdl > #modalBtn').trigger('click');
     }
 }

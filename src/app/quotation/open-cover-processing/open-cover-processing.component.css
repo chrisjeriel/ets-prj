@@ -70,3 +70,6 @@ h4 {
     top: 1px;
     z-index: 99 !important;
 }
+.input-group {
+    margin-bottom: -14px !important;
+}

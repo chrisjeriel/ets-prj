@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-accounting-in-trust',
   templateUrl: './accounting-in-trust.component.html',
@@ -11,13 +12,47 @@ export class AccountingInTrustComponent implements OnInit {
   crTab: boolean = true;
   qsoaTab: boolean = true;
 
-  constructor() { }
+  private sub: any;
+  record: any = {
+                   arNo: null,
+                   payor: null,
+                   arDate: null,
+                   paymentType: null,
+                   status: null,
+                   particulars: null,
+                   amount: null
+                 };
+  action: string;
+
+  constructor(private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
+  	this.sub = this.route.params.subscribe(params => {
+      this.action = params['action'];
+
+      if(this.action == 'edit') {
+        this.record = JSON.parse(params['slctd']);
+
+        this.tabController(this.record.paymentType.toUpperCase());
+      } else {
+        this.tabController('');
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 
   checkTabs(event) {
   	var type = event.type.toUpperCase();
+
+  	this.tabController(type);
+  	
+  }
+
+  tabController(type) {
+  	type = type.trim();
 
   	if(type == 'INWARD POLICY BALANCES') {
   		this.ipbTab = false;
@@ -37,4 +72,12 @@ export class AccountingInTrustComponent implements OnInit {
   		this.qsoaTab = true;
   	}
   }
+
+   onTabChange($event: NgbTabChangeEvent) {
+      if ($event.nextId === 'Exit') {
+        this.router.navigateByUrl('');
+      } 
+  
+  }
+
 }
