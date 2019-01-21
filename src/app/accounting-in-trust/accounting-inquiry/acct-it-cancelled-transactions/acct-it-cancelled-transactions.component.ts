@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 import { AccountingService } from '../../../_services/accounting.service';
 
@@ -68,10 +69,28 @@ export class AcctItCancelledTransactionsComponent implements OnInit {
   	pageStatus: true,
   }
 
-  constructor(private titleService: Title, private accountingService: AccountingService) { }
+  tranType: string = '';
+
+  constructor(private titleService: Title, private accountingService: AccountingService, private route: Router) { }
 
   ngOnInit() {
   	this.titleService.setTitle("Acct-IT | Cancelled Tran");
+  }
+
+  onRowClick(data){
+    this.tranType = data.tranType;
+  }
+
+  viewTranDetails(){
+    if(this.tranType == 'AR'){
+      this.route.navigate(['accounting-in-trust']);
+    }else if(this.tranType == 'CV'){
+      this.route.navigate(['generate-cv']);
+    }else if(this.tranType == 'JV'){
+      this.route.navigate(['generate-jv']);
+    }else{
+      //do something
+    }
   }
 
 }

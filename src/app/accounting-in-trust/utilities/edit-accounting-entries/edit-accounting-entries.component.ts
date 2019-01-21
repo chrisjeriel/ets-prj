@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { AccountingEntriesCV } from '@app/_models';
 import { AccountingService } from '@app/_services';
 
@@ -19,7 +20,9 @@ export class EditAccountingEntriesComponent implements OnInit {
   	total: [null, null, null, 'Total', 'debit', 'credit'],
   }
 
-  constructor(private accountingService: AccountingService) { }
+  constructor(private accountingService: AccountingService, private titleService: Title) {
+  		this.titleService.setTitle("Acct-IT | Edit Acct Entries");
+   }
 
   ngOnInit() {
   }
