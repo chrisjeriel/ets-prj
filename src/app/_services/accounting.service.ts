@@ -311,16 +311,16 @@ export class AccountingService {
 
 	getCancelAR(){
 		this.cancelAR = [
-			new CancelTransactionAR(null,'BPI/MS INSURANCE CORPORATION',new Date(2018,9,1),'Inward Policy Balances','Cancelled','Representing payment for premium of policy CAR-2018-00001-00-0001-000',1642857.14),
-			new CancelTransactionAR(null,'PNBGEN',new Date(2018,9,1),'Inward Policy Balances','Cancelled','Representing payment for premium of policy CAR-2018-00001-00-0001-000',200000),
+			new CancelTransactionAR(null,'BPI/MS INSURANCE CORPORATION',new Date(2018,9,1),'Inward Policy Balances','New','Representing payment for premium of policy CAR-2018-00001-00-0001-000',1642857.14),
+			new CancelTransactionAR(null,'PNBGEN',new Date(2018,9,1),'Inward Policy Balances','New','Representing payment for premium of policy CAR-2018-00001-00-0001-000',200000),
 			new CancelTransactionAR(3,'Charter Ping An',new Date(2018,9,3),'Claim Recovery','Printed','Representing claim recovery payment for Claim No CAR-2018-000001',100000),
 			new CancelTransactionAR(4,'AXA',new Date(2018,9,4),'QSOA','Printed','Representing payment for the Quarterly Statement of Account balance of BPI/MS for 3rd Quarter',1000000),
-			new CancelTransactionAR(null,'Allied Bankers',new Date(2018,9,4),'QSOA','Cancelled','Representing payment for the Quarterly Statement of Account balance of BPI/MS for 3rd Quarter',710716.12),
-			new CancelTransactionAR(null,'Malayan',new Date(2018,9,5),'Inward Policy Balances','Cancelled','Representing payment for premium of policy CAR-2018-00001-00-0001-000',756929),
-			new CancelTransactionAR(null,'New India',new Date(2018,9,7),'Claim Recovery','Cancelled','Representing claim recovery payment for Claim No CAR-2018-000001',30000),
+			new CancelTransactionAR(null,'Allied Bankers',new Date(2018,9,4),'QSOA','New','Representing payment for the Quarterly Statement of Account balance of BPI/MS for 3rd Quarter',710716.12),
+			new CancelTransactionAR(null,'Malayan',new Date(2018,9,5),'Inward Policy Balances','New','Representing payment for premium of policy CAR-2018-00001-00-0001-000',756929),
+			new CancelTransactionAR(null,'New India',new Date(2018,9,7),'Claim Recovery','New','Representing claim recovery payment for Claim No CAR-2018-000001',30000),
 			new CancelTransactionAR(8,'BPI/MS INSURANCE CORPORATION',new Date(2018,9,7),'Claim Recovery','Printed','Representing claim recovery payment for Claim No CAR-2018-000001',10000),
 			new CancelTransactionAR(9,'UCPBGEN',new Date(2018,9,7),'QSOA','Printed','Representing payment for the Quarterly Statement of Account balance of BPI/MS for 3rd Quarter',230000),
-			new CancelTransactionAR(null,'FGIC',new Date(2018,9,7),'Inward Policy Balances','Cancelled','Representing payment for premium of policy CAR-2018-00001-00-0001-000',1500000),
+			new CancelTransactionAR(null,'FGIC',new Date(2018,9,7),'Inward Policy Balances','New','Representing payment for premium of policy CAR-2018-00001-00-0001-000',1500000),
 		];
 		return this.cancelAR;
 	}
