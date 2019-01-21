@@ -242,6 +242,17 @@
                                             </ng-template>
                                         </ngb-panel>
                                     </ngb-accordion>
+                                    <ngb-accordion #acc="ngbAccordion">
+                                        <ngb-panel>
+                                            <ng-template ngbPanelTitle>
+                                                Utilities
+                                            </ng-template>
+                                            <ng-template ngbPanelContent>
+                                                <button [routerLink]="['edit-acct-entries']" class="button btn btn-link">Edit Accounting Entries</button>
+                                                <br />
+                                            </ng-template>
+                                        </ngb-panel>
+                                    </ngb-accordion>
                                 </ng-template>
                             </ngb-panel>
                             <ngb-panel>

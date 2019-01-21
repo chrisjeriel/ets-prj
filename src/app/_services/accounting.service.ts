@@ -252,5 +252,12 @@ export class AccountingService {
 		return this.accCvPayReqList;
 	}
 
+	getAccountingEntriesUtil(){
+		this.accountingEntriesCVData = [
+			new AccountingEntriesCV('1-01-02-01', 'BPI Current Account No. 0071-0435-0438-94', '', '', 0, 2945.45),
+		];
+
+		return this.accountingEntriesCVData;
+	}
 
 }
