@@ -1,6 +1,6 @@
 <div class="cust-tabs-container">
 	<h4>Accounting In-Trust / Utilities / Change Transaction Status to New</h4>
-	<ngb-tabset>
+	<ngb-tabset (tabChange)="onTabChange($event)">
 		<ngb-tab class="ngb-tab" title="Acknowledge Receipt">
 			<ng-template ngbTabContent>
 				<app-change-to-new-ar></app-change-to-new-ar>
@@ -16,5 +16,11 @@
 				<app-change-to-new-jv></app-change-to-new-jv>
 			</ng-template>
 		</ngb-tab>
+		<ngb-tab id="Exit">
+			<ng-template ngbTabTitle>
+				<div>Exit</div>
+			</ng-template>
+			<ng-template ngbTabContent></ng-template>
+  		</ngb-tab>
 	</ngb-tabset>
 </div>
