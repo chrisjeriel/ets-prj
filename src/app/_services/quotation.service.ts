@@ -110,17 +110,6 @@ export class QuotationService {
         return this.quotationListData;
     }
 
-
-
-
-
-
-
-
-
-
-
-
     getQuotationHoldCoverInfo() {
         this.holdCoverMonitoringListData = [
             new HoldCoverMonitoringList("HC-CAR-2015-00001-00", "Open", "Phil. Guaranty", "CAR-2015-00028-32-01", "Malayan", "5K Builders & ABE International Corp", new Date(), new Date(), "P8M001KJ", "Inigo Flores", new Date()),
