@@ -7,9 +7,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ChecksRegisterComponent implements OnInit {
 
+  tDate: boolean = false;
+  pDate: boolean = false;
+
+
   constructor() { }
 
   ngOnInit() {
   }
 
+  tickBox(event) {
+  	var el = event.target.closest('input');
+
+  	this.tDate = false;
+  	this.pDate = false;
+
+  	$('.rdo').prop('checked', false);
+  	$(el).prop('checked', true);
+  }
 }

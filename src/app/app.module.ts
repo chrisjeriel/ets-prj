@@ -152,6 +152,14 @@ import { ArRegisterComponent } from './accounting-in-trust/reports/registers/ar-
 import { CvRegisterComponent } from './accounting-in-trust/reports/registers/cv-register/cv-register.component';
 import { ChecksRegisterComponent } from './accounting-in-trust/reports/registers/checks-register/checks-register.component';
 import { JvRegisterComponent } from './accounting-in-trust/reports/registers/jv-register/jv-register.component';
+import { ChangeTransStatToNewComponent } from './accounting-in-trust/utilities/change-trans-stat-to-new/change-trans-stat-to-new.component';
+import { ChangeToNewArComponent } from './accounting-in-trust/utilities/change-trans-stat-to-new/change-to-new-ar/change-to-new-ar.component';
+import { ChangeToNewCvComponent } from './accounting-in-trust/utilities/change-trans-stat-to-new/change-to-new-cv/change-to-new-cv.component';
+import { ChangeToNewJvComponent } from './accounting-in-trust/utilities/change-trans-stat-to-new/change-to-new-jv/change-to-new-jv.component';
+import { CancelTransactionsComponent } from './accounting-in-trust/utilities/cancel-transactions/cancel-transactions.component';
+import { CancelArComponent } from './accounting-in-trust/utilities/cancel-transactions/cancel-ar/cancel-ar.component';
+import { CancelCvComponent } from './accounting-in-trust/utilities/cancel-transactions/cancel-cv/cancel-cv.component';
+import { CancelJvComponent } from './accounting-in-trust/utilities/cancel-transactions/cancel-jv/cancel-jv.component';
 
 @NgModule({
     imports: [
@@ -308,6 +316,14 @@ import { JvRegisterComponent } from './accounting-in-trust/reports/registers/jv-
         CvRegisterComponent,
         ChecksRegisterComponent,
         JvRegisterComponent,
+        ChangeTransStatToNewComponent,
+        ChangeToNewArComponent,
+        ChangeToNewCvComponent,
+        ChangeToNewJvComponent,
+        CancelTransactionsComponent,
+        CancelArComponent,
+        CancelCvComponent,
+        CancelJvComponent,
     ],
 
     providers: [

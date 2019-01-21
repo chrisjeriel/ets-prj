@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ArRegisterComponent implements OnInit {
 
+  dateRadio: string = "1";
+
   constructor() { }
 
   ngOnInit() {

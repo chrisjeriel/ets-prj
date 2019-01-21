@@ -1,4 +1,5 @@
 <div class="row">
+	<div class="col-sm-2"></div>
 	<div class="col-sm-8">
 		<fieldset class="scheduler-border" style="padding-top: 5px !important; padding-bottom: 20px !important;">
 			<legend class="scheduler-border">Printing Parameters</legend>
@@ -10,23 +11,23 @@
 						<div class="row">
 							<div class="col-sm-3"></div>
 							<div class="col-sm-4">
-								<input type="checkbox" style="vertical-align: middle;" checked><label class="form-control-sm" style="margin-bottom: 0px !important;">Transaction Date</label>
+								<input type="checkbox" style="vertical-align: middle;" class="rdo" [(ngModel)]="tDate" (click)="tickBox($event);"><label class="form-control-sm" style="margin-bottom: 0px !important;">Transaction Date</label>
 							</div>
 							<div class="col-sm-4">
-								<input type="checkbox" style="vertical-align: middle;"><label class="form-control-sm" style="margin-bottom: 0px !important;">Posting Date</label>
+								<input type="checkbox" style="vertical-align: middle;" class="rdo" [(ngModel)]="pDate" (click)="tickBox($event);"><label class="form-control-sm" style="margin-bottom: 0px !important;">Posting Date</label>
 							</div>
 							<div class="col-sm-1"></div>
 						</div>
 						<div class="row">
 							<div class="col-sm-2"></div>
 							<div class="col-sm-3">
-								<input type="radio" style="vertical-align: middle;" name="dateRadio"><label class="form-control-sm" style="margin-bottom: 0px !important;">CV Date</label>
+								<input type="radio" style="vertical-align: middle;" name="dateRadio" [disabled]="pDate"><label class="form-control-sm" style="margin-bottom: 0px !important;">CV Date</label>
 							</div>
 							<div class="col-sm-3">
-								<input type="radio" style="vertical-align: middle;" name="dateRadio"><label class="form-control-sm" style="margin-bottom: 0px !important;">Check Date</label>
+								<input type="radio" style="vertical-align: middle;" name="dateRadio" [disabled]="pDate"><label class="form-control-sm" style="margin-bottom: 0px !important;">Check Date</label>
 							</div>
 							<div class="col-sm-3">
-								<input type="radio" style="vertical-align: middle;" name="dateRadio" checked><label class="form-control-sm" style="margin-bottom: 0px !important;">Check Print Date</label>
+								<input type="radio" style="vertical-align: middle;" name="dateRadio" [disabled]="pDate" checked><label class="form-control-sm" style="margin-bottom: 0px !important;">Check Print Date</label>
 							</div>
 							<div class="col-sm-1"></div>
 						</div>
@@ -60,7 +61,7 @@
 							<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 2px !important;" value="ALL BANK ACCOUNTS">
 						</div>
 						<div class="input-group cust-ig">
-							<div class="form-control-sm col-sm-2 text-right"><input type="checkbox" style="vertical-align: baseline;" checked></div>
+							<div class="form-control-sm col-sm-2 text-right"><input type="checkbox" style="vertical-align: baseline;" checked [disabled]="pDate"></div>
 							<label class="form-control-sm" style="margin-bottom: 0px !important; text-align: left !important; padding-left: 0px; margin-top: 1px;">Include Closed Transactions</label>
 						</div>
 						<div class="input-group">
@@ -79,7 +80,7 @@
 						<div style="padding-left: 18px">
 							<div class="row">
 								<div class="col-sm" style="margin-bottom: -8px !important;">
-									<input type="radio" style="vertical-align: middle;" name="sortRadio"><label class="form-control-sm" style="margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;">Date</label>
+									<input type="radio" style="vertical-align: middle;" name="sortRadio" checked><label class="form-control-sm" style="margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;">Date</label>
 								</div>
 							</div>
 							<div class="row">
@@ -134,4 +135,5 @@
 			</div>
 		</fieldset>
 	</div>
+	<div class="col-sm-2"></div>
 </div>

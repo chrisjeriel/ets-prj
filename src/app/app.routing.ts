@@ -62,6 +62,8 @@ import { AccountingEntriesComponent } from './accounting-in-trust/extract/accoun
 import { TrialBalanceComponent } from './accounting-in-trust/extract/trial-balance/trial-balance.component';
 import { OpenCoverInquiryComponent } from './quotation/open-cover-inquiry/open-cover-inquiry.component';
 import { RegistersComponent } from './accounting-in-trust/reports/registers/registers.component';
+import { ChangeTransStatToNewComponent } from './accounting-in-trust/utilities/change-trans-stat-to-new/change-trans-stat-to-new.component';
+import { CancelTransactionsComponent } from './accounting-in-trust/utilities/cancel-transactions/cancel-transactions.component';
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -130,6 +132,8 @@ const appRoutes: Routes = [
     { path: 'trial-balance', component: TrialBalanceComponent},
     { path: 'open-cover-inquiry', component: OpenCoverInquiryComponent },
     { path: 'print-registers', component: RegistersComponent },
+    { path: 'change-trans-stat-to-new', component: ChangeTransStatToNewComponent },
+    { path: 'cancel-transaction', component: CancelTransactionsComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
