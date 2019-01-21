@@ -329,21 +329,21 @@ export class QuotationService {
 
     getOpenCoverProcessingData() {
         this.openCoverProcessing = [
-            new OpenCoverProcessing('CAR-2015-00088-00-99', 'Direct', 'CAR Wet Risks', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
+            new OpenCoverProcessing('OC-CAR-2015-00088-00-99', 'Direct', 'CAR Wet Risks', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
                 new Date('2015-03-09'), 'Requestor', 'Creator'),
-            new OpenCoverProcessing('CAR-2015-00088-00-78', 'Retrocession', 'CAR Wet Risks', 'Concluded', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
+            new OpenCoverProcessing('OC-CAR-2015-00088-00-78', 'Retrocession', 'CAR Wet Risks', 'Concluded', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
                 new Date('2015-03-09'), 'Requestor', 'Creator'),
-            new OpenCoverProcessing('EAR-2015-00088-00-55', 'Direct', 'EAR', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
+            new OpenCoverProcessing('OC-EAR-2015-00088-00-55', 'Direct', 'EAR', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
                 new Date('2015-03-09'), 'Requestor', 'Creator'),
-            new OpenCoverProcessing('CAR-2015-00088-00-28', 'Direct', 'CAR Wet Risks', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
+            new OpenCoverProcessing('OC-CAR-2015-00088-00-28', 'Direct', 'CAR Wet Risks', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
                 new Date('2015-03-09'), 'Requestor', 'Creator'),
-            new OpenCoverProcessing('CAR-2015-00088-00-99', 'Direct', 'CAR Wet Risks', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
+            new OpenCoverProcessing('OC-CAR-2015-00088-00-99', 'Direct', 'CAR Wet Risks', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
                 new Date('2015-03-09'), 'Requestor', 'Creator'),
-            new OpenCoverProcessing('CAR-2015-00088-00-78', 'Retrocession', 'CAR Wet Risks', 'Concluded', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
+            new OpenCoverProcessing('OC-CAR-2015-00088-00-78', 'Retrocession', 'CAR Wet Risks', 'Concluded', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
                 new Date('2015-03-09'), 'Requestor', 'Creator'),
-            new OpenCoverProcessing('EAR-2015-00088-00-55', 'Direct', 'EAR', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
+            new OpenCoverProcessing('OC-EAR-2015-00088-00-55', 'Direct', 'EAR', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
                 new Date('2015-03-09'), 'Requestor', 'Creator'),
-            new OpenCoverProcessing('CAR-2015-00088-00-28', 'Direct', 'CAR Wet Risks', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
+            new OpenCoverProcessing('OC-CAR-2015-00088-00-28', 'Direct', 'CAR Wet Risks', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
                 new Date('2015-03-09'), 'Requestor', 'Creator'),
         ];
 
