@@ -9,6 +9,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class TextEditorComponent implements OnInit {
 
   @Input() editorContent: any = null;
+  @Input() editorPlaceholder: any = null;
   @Output() fetchContent: EventEmitter<any> = new EventEmitter();
 
   constructor(private modalService: NgbModal) { }
@@ -21,7 +22,7 @@ export class TextEditorComponent implements OnInit {
   }
 
   closeTextEditorModal(event) {
-  	this.fetchContent.next(event);
+  	this.fetchContent.next(this.editorContent);
   	this.modalService.dismissAll();
   }
 }
