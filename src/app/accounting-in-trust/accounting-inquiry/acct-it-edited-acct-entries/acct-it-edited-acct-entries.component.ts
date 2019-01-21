@@ -15,8 +15,9 @@ export class AcctItEditedAcctEntriesComponent implements OnInit {
     tableData: this.accountingService.getAccItEditedTransactions(),
     tHeader: ["Tran Type", "Ref. No.", "Tran Date", "Payee/Payor", "Particulars", "Edited By", "Date Edited", "Reason", "Status", "Amount"],
     dataTypes: ["text", "text", "date", "text", "text", "text", "date", "text", "text", "currency"],
-    colSize: ['100%', '100%', '100%', '100%', '150px', '100%', '100%', '100%', '100%', '100%'],
     total: [null, null, null, null, null, null, null, null, "Total", "amount"],
+    uneditable: [true, true, true, true, true, true, true, true, true, true],
+    genericBtn: 'View Edited Entries',
     filters: [
       {
         key: 'tranType',
@@ -69,9 +70,10 @@ export class AcctItEditedAcctEntriesComponent implements OnInit {
         dataType: 'text'
       },
     ],
-    pagination: true,
-    pageLength: 20,
-    pageStatus: true,
+    pageLength: 15,
+    searchFlag: true,
+    infoFlag: true,
+    paginateFlag: true,
     pageID: 1,
 
   };
@@ -102,4 +104,7 @@ export class AcctItEditedAcctEntriesComponent implements OnInit {
     this.titleService.setTitle("Acct-IT | Edited Accounting Entries");
   }
 
+  showModal(content) {
+    this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
+  }
 }

@@ -1,7 +1,7 @@
 <div class="cust-tabs-container">
 	<h4>Accounting In-Trust / Request for Payment / Generate Request</h4>
 	<!-- <ngb-tabset (tabChange)="beforeChange($event)"> -->
-		<ngb-tabset>
+		<ngb-tabset (tabChange)="onTabChange($event)">
 			<ngb-tab>
 				<ng-template ngbTabTitle>
 					<div>Request Entry</div>
@@ -44,12 +44,11 @@
 					<!-- Others Component -->
 				</ng-template>
 			</ngb-tab>
-			<ngb-tab>
+			<ngb-tab id="Exit">
 				<ng-template ngbTabTitle>
 					<div>Exit</div>
 				</ng-template>
-				<ng-template ngbTabContent>
-				</ng-template>
-			</ngb-tab>
+    			<ng-template ngbTabContent></ng-template>
+  		</ngb-tab>
 	</ngb-tabset>
 </div>

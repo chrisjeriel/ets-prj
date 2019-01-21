@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries } from '@app/_models';
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries } from '@app/_models';
 
 @Injectable({
 	providedIn: 'root'
@@ -26,6 +26,12 @@ export class AccountingService {
 	arClaimsRecovery: ARClaimsRecovery[] = [];
 	accCvAttachment: AccCvAttachment[] = [];
 	accCvPayReqList: AccCVPayReqList[] = [];
+	chngTxToNewAR: AcknowledgementReceipt[] = [];
+	chngTxToNewCV: CheckVoucher[] = [];
+	chngTxToNewJv: JournalVoucher[] = [];
+	cancelAR: CancelTransactionAR[] = [];
+	cancelCV: CancelTransactionCV[] = [];
+	cancelJV: CancelTransactionJV[] = [];
 	accItEditedTransactions: AccItEditedTransactions[] = [];
 	accItEditedOldAcctEntries: AccItEditedOldAcctEntries[] = [];
 	accItEditedLatestAcctEntries: AccItEditedLatestAcctEntries[] = [];
@@ -311,6 +317,104 @@ export class AccountingService {
 			new AccItEditedLatestAcctEntries("2-03-02-04", "WC120 2%", "", "", 0, 53.55)
 		]
 		return this.accItEditedLatestAcctEntries;
+	}
+
+	getChangeTxToNewAR() {
+		this.chngTxToNewAR = [
+			new AcknowledgementReceipt(1, 'BPI/MS INSURANCE CORPORATION', new Date(2018, 9, 1), 'Inward Policy Balances', 'Cancelled', 'Representing payment for premium of policy CAR-2018-00001-00-0001-000', 1642857.14),
+			new AcknowledgementReceipt(2, 'PNBGEN', new Date(2018, 9, 1), 'Inward Policy Balances', 'Cancelled', 'Representing payment for premium of policy CAR-2018-00001-00-0001-000', 200000),
+			new AcknowledgementReceipt(3, 'Charter Ping An', new Date(2018, 9, 3), 'Claim Recovery', 'Printed', 'Representing claim recovery payment for Claim No CAR-2018-000001', 100000),
+			new AcknowledgementReceipt(4, 'AXA', new Date(2018, 9, 4), 'QSOA', 'Printed', 'Representing payment for the Quarterly Statement of Account balance of BPI/MS for 3rd Quarter', 1000000),
+			new AcknowledgementReceipt(5, 'Allied Bankers', new Date(2018, 9, 4), 'QSOA', 'Cancelled', 'Representing payment for the Quarterly Statement of Account balance of BPI/MS for 3rd Quarter', 710716.12),
+			new AcknowledgementReceipt(6, 'Malayan', new Date(2018, 9, 5), 'Inward Policy Balances', 'Cancelled', 'Representing payment for premium of policy CAR-2018-00001-00-0001-000', 756929),
+			new AcknowledgementReceipt(7, 'New India', new Date(2018, 9, 7), 'Claim Recovery', 'Cancelled', 'Representing claim recovery payment for Claim No CAR-2018-000001', 30000),
+			new AcknowledgementReceipt(8, 'BPI/MS INSURANCE CORPORATION', new Date(2018, 9, 7), 'Claim Recovery', 'Printed', 'Representing claim recovery payment for Claim No CAR-2018-000001', 10000),
+			new AcknowledgementReceipt(9, 'UCPBGEN', new Date(2018, 9, 7), 'QSOA', 'Printed', 'Representing payment for the Quarterly Statement of Account balance of BPI/MS for 3rd Quarter', 230000),
+			new AcknowledgementReceipt(10, 'FGIC', new Date(2018, 9, 7), 'Inward Policy Balances', 'Cancelled', 'Representing payment for premium of policy CAR-2018-00001-00-0001-000', 1500000),
+		];
+		return this.chngTxToNewAR;
+	}
+
+	getChangeTxToNewCV() {
+		this.chngTxToNewCV = [
+			new CheckVoucher('2015-00000001', 'SM Prime Holdings, Inc', new Date(2015, 9, 1), 'Printed', 'Check for SM Prime Holdings, Inc', 1642857.14),
+			new CheckVoucher('2017-00000001', 'Rustan Inc.', new Date(2017, 9, 1), 'Printed', 'Check for Rustan Inc.', 200000),
+			new CheckVoucher('2017-00000002', 'San Miguel Corporation', new Date(2017, 9, 3), 'Printed', 'Check for San Miguel Corporation', 100000),
+			new CheckVoucher('2017-00000003', 'DMCI', new Date(2017, 9, 4), 'Printed', 'Check for DMCI', 1000000),
+			new CheckVoucher('2018-00000001', 'ABS-CBN', new Date(2018, 9, 4), 'Printed', 'Check for ABS-CBN', 710716.12),
+			new CheckVoucher('2018-00000010', 'SMDC', new Date(2018, 9, 5), 'Certified', 'Check for SMDC', 756929),
+			new CheckVoucher('2018-00000016', 'Universal Robina, Inc.', new Date(2018, 9, 7), 'Approved', 'Check for Unversal Robina, Inc.', 300000),
+			new CheckVoucher('2018-00000045', 'SGV & Co.', new Date(2018, 9, 7), 'Approved', 'Check for SGV & Co.', 1000000),
+			new CheckVoucher('2018-00000099', 'Accenture', new Date(2018, 9, 7), 'New', 'Check for Accenture', 230000),
+			new CheckVoucher('2018-00000123', 'NSO', new Date(2018, 9, 7), 'New', 'Check for NSO', 1500000),
+
+		];
+		return this.chngTxToNewCV
+	}
+
+	getChangeTxToNewJV() {
+		this.chngTxToNewJv = [
+			new JournalVoucher('2015-00000001', new Date(2015, 9, 1), 'To correct entries in', 'Error Correction', '2014-00004342', 'Ronwaldo Roque', 'Printed', 1642857.14),
+			new JournalVoucher('2017-00000001', new Date(2017, 9, 1), 'To correct entries in', 'Error Correction', '2016-00001644', 'Chie Reyes', 'Printed', 200000),
+			new JournalVoucher('2017-00000002', new Date(2017, 9, 3), 'To correct entries in', 'Error Correction', '2016-00001645', 'Lourdes Galvez', 'Printed', 100000),
+			new JournalVoucher('2017-00000003', new Date(2017, 9, 4), 'To correct entries in', 'Error Correction', '2016-00001646', 'Chie Reyes', 'Printed', 1000000),
+			new JournalVoucher('2018-00000001', new Date(2018, 9, 4), 'To correct entries in', 'Error Correction', '2017-00000324', 'Chie Reyes', 'Printed', 710716.12),
+			new JournalVoucher('2018-00000010', new Date(2018, 9, 5), 'To correct entries in', 'Error Correction', '2018-00000009', 'Lourdes Galvez', 'Open', 756929),
+			new JournalVoucher('2018-00000016', new Date(2018, 9, 7), 'To correct entries in', 'Error Correction', '2018-00000012', 'Lourdes Galvez', 'Open', 300000),
+			new JournalVoucher('2018-00000045', new Date(2018, 9, 7), 'To correct entries in', 'Error Correction', '3018-00000041', 'Ronwaldo Roque', 'Open', 1000000),
+			new JournalVoucher('2018-00000099', new Date(2018, 9, 7), 'To correct entries in', 'Error Correction', '2018-00000098', 'Ronwaldo Roque', 'Open', 230000),
+			new JournalVoucher('2018-00000123', new Date(2018, 9, 7), 'To correct entries in', 'Error Correction', '2018-00000122', 'Ronwaldo Roque', 'Open', 1500000),
+		];
+		return this.chngTxToNewJv;
+	}
+
+	getCancelAR() {
+		this.cancelAR = [
+			new CancelTransactionAR(1, 'BPI/MS INSURANCE CORPORATION', new Date(2018, 9, 1), 'Inward Policy Balances', 'Cancelled', 'Representing payment for premium of policy CAR-2018-00001-00-0001-000', 1642857.14),
+			new CancelTransactionAR(2, 'PNBGEN', new Date(2018, 9, 1), 'Inward Policy Balances', 'Cancelled', 'Representing payment for premium of policy CAR-2018-00001-00-0001-000', 200000),
+			new CancelTransactionAR(3, 'Charter Ping An', new Date(2018, 9, 3), 'Claim Recovery', 'Printed', 'Representing claim recovery payment for Claim No CAR-2018-000001', 100000),
+			new CancelTransactionAR(4, 'AXA', new Date(2018, 9, 4), 'QSOA', 'Printed', 'Representing payment for the Quarterly Statement of Account balance of BPI/MS for 3rd Quarter', 1000000),
+			new CancelTransactionAR(5, 'Allied Bankers', new Date(2018, 9, 4), 'QSOA', 'Cancelled', 'Representing payment for the Quarterly Statement of Account balance of BPI/MS for 3rd Quarter', 710716.12),
+			new CancelTransactionAR(6, 'Malayan', new Date(2018, 9, 5), 'Inward Policy Balances', 'Cancelled', 'Representing payment for premium of policy CAR-2018-00001-00-0001-000', 756929),
+			new CancelTransactionAR(7, 'New India', new Date(2018, 9, 7), 'Claim Recovery', 'Cancelled', 'Representing claim recovery payment for Claim No CAR-2018-000001', 30000),
+			new CancelTransactionAR(8, 'BPI/MS INSURANCE CORPORATION', new Date(2018, 9, 7), 'Claim Recovery', 'Printed', 'Representing claim recovery payment for Claim No CAR-2018-000001', 10000),
+			new CancelTransactionAR(9, 'UCPBGEN', new Date(2018, 9, 7), 'QSOA', 'Printed', 'Representing payment for the Quarterly Statement of Account balance of BPI/MS for 3rd Quarter', 230000),
+			new CancelTransactionAR(10, 'FGIC', new Date(2018, 9, 7), 'Inward Policy Balances', 'Cancelled', 'Representing payment for premium of policy CAR-2018-00001-00-0001-000', 1500000),
+		];
+		return this.cancelAR;
+	}
+
+	getCancelCV() {
+		this.cancelCV = [
+			new CancelTransactionCV('2015-00000001', 'SM Prime Holdings, Inc', new Date(2015, 9, 1), 'Printed', 'Check for SM Prime Holdings, Inc', 1642857.14),
+			new CancelTransactionCV('2017-00000001', 'Rustan Inc.', new Date(2017, 9, 1), 'Printed', 'Check for Rustan Inc.', 200000),
+			new CancelTransactionCV('2017-00000002', 'San Miguel Corporation', new Date(2017, 9, 3), 'Printed', 'Check for San Miguel Corporation', 100000),
+			new CancelTransactionCV('2017-00000003', 'DMCI', new Date(2017, 9, 4), 'Printed', 'Check for DMCI', 1000000),
+			new CancelTransactionCV('2018-00000001', 'ABS-CBN', new Date(2018, 9, 4), 'Printed', 'Check for ABS-CBN', 710716.12),
+			new CancelTransactionCV('2018-00000010', 'SMDC', new Date(2018, 9, 5), 'Certified', 'Check for SMDC', 756929),
+			new CancelTransactionCV('2018-00000016', 'Universal Robina, Inc.', new Date(2018, 9, 7), 'Approved', 'Check for Unversal Robina, Inc.', 300000),
+			new CancelTransactionCV('2018-00000045', 'SGV & Co.', new Date(2018, 9, 7), 'Approved', 'Check for SGV & Co.', 1000000),
+			new CancelTransactionCV('2018-00000099', 'Accenture', new Date(2018, 9, 7), 'New', 'Check for Accenture', 230000),
+			new CancelTransactionCV('2018-00000123', 'NSO', new Date(2018, 9, 7), 'New', 'Check for NSO', 1500000),
+
+		];
+		return this.cancelCV;
+	}
+
+	getCancelJV() {
+		this.cancelJV = [
+			new CancelTransactionJV('2015-00000001', new Date(2015, 9, 1), 'To correct entries in', 'Error Correction', '2014-00004342', 'Ronwaldo Roque', 'Printed', 1642857.14),
+			new CancelTransactionJV('2017-00000001', new Date(2017, 9, 1), 'To correct entries in', 'Error Correction', '2016-00001644', 'Chie Reyes', 'Printed', 200000),
+			new CancelTransactionJV('2017-00000002', new Date(2017, 9, 3), 'To correct entries in', 'Error Correction', '2016-00001645', 'Lourdes Galvez', 'Printed', 100000),
+			new CancelTransactionJV('2017-00000003', new Date(2017, 9, 4), 'To correct entries in', 'Error Correction', '2016-00001646', 'Chie Reyes', 'Printed', 1000000),
+			new CancelTransactionJV('2018-00000001', new Date(2018, 9, 4), 'To correct entries in', 'Error Correction', '2017-00000324', 'Chie Reyes', 'Printed', 710716.12),
+			new CancelTransactionJV('2018-00000010', new Date(2018, 9, 5), 'To correct entries in', 'Error Correction', '2018-00000009', 'Lourdes Galvez', 'Open', 756929),
+			new CancelTransactionJV('2018-00000016', new Date(2018, 9, 7), 'To correct entries in', 'Error Correction', '2018-00000012', 'Lourdes Galvez', 'Open', 300000),
+			new CancelTransactionJV('2018-00000045', new Date(2018, 9, 7), 'To correct entries in', 'Error Correction', '3018-00000041', 'Ronwaldo Roque', 'Open', 1000000),
+			new CancelTransactionJV('2018-00000099', new Date(2018, 9, 7), 'To correct entries in', 'Error Correction', '2018-00000098', 'Ronwaldo Roque', 'Open', 230000),
+			new CancelTransactionJV('2018-00000123', new Date(2018, 9, 7), 'To correct entries in', 'Error Correction', '2018-00000122', 'Ronwaldo Roque', 'Open', 1500000),
+		];
+		return this.cancelJV;
 	}
 
 }

@@ -20,9 +20,9 @@
                 <div class="input-group col-sm-5">
                   <label class="form-control-sm col-sm-1">Period:</label>
                   <label class="form-control-sm col-sm-2">From:</label>
-                  <input type="date" class="form-control form-control-sm col-sm-4">
+                  <input type="date" class="form-control form-control-sm col-sm-4" value="2018-10-01">
                   <label class="form-control-sm col-sm-1">To:</label>
-                  <input type="date" class="form-control form-control-sm col-sm-4">
+                  <input type="date" class="form-control form-control-sm col-sm-4" value="2018-10-31">
                 </div>
                 <div class="col-sm-1">
                   <button class="cust-btn">Execute</button>
@@ -35,57 +35,60 @@
         <fieldset class="scheduler-border">
           <legend class="scheduler-border">List of Edited Transactions</legend>
           <div class="custom-row-inline-inset" style="position: relative;">
-            <!-- <button type="button" class="cust-btn">View Edited Entries</button> -->
-            <app-modal [btnTitle]="'View Edited Entries'" style="position: absolute; z-index: 9999 !important;">
-              <div header style="width: 600px !important;">Edited Entries</div>
-              <div body style="width: 1050px  !important;">
+            <ng-template #content>
+              <div class="modal-header">
+                <span class="modal-title" id="modal-basic-title">Edited Entries</span>
+              </div>
+              <div class="modal-body" style="max-width: 1090px !important;">
                 <fieldset class="scheduler-border">
                   <legend class="scheduler-border">Transaction Info</legend>
                   <div class="form-row custom-row-inline-inset">
                     <div class="col-sm-6">
                       <div class="input-group">
                         <label class="form-control-sm col-sm-3">Transaction Type</label>
-                        <input type="text" class="form-control form-control-sm col-sm">
+                        <input type="text" class="form-control form-control-sm col-sm-3" placeholder="Check Voucher">
                         <label class="form-control-sm col-sm-2">Tran Date</label>
-                        <input type="datetime-local" class="form-control form-control-sm col-sm">
+                        <input type="datetime-local" class="form-control form-control-sm col-sm" value="2015-05-28T09:00">
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-3">Reference Number</label>
-                        <input type="text" class="form-control form-control-sm col-sm">
+                        <input type="text" class="form-control form-control-sm col-sm-3" placeholder="2018-00372881">
                         <label class="form-control-sm col-sm-2">Tran Status</label>
-                        <input type="text" class="form-control form-control-sm col-sm">
+                        <input type="text" class="form-control form-control-sm col-sm" placeholder="New">
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-3">Payor/Payee</label>
-                        <input type="text" class="form-control form-control-sm col-sm">
+                        <input type="text" class="form-control form-control-sm col-sm" placeholder="INVOICE COMMUNICATIONS INC.">
                       </div>
                     </div>
 
                     <div class="col-sm-6">
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Amount</label>
-                        <input type="text" class="form-control form-control-sm col-sm-1">
-                        <input type="text" class="form-control form-control-sm col-sm" style="margin-left:3px !important;">
-                        <label class="form-control-sm col-sm-2">Edited By</label>
-                        <input type="text" class="form-control form-control-sm col-sm">
+                        <input type="text" class="form-control form-control-sm col-sm-1" placeholder="PHP">
+                        <input type="text" class="form-control form-control-sm col-sm-3 text-right" numbers-only style="margin-left:3px !important;"
+                          placeholder="2,999.00">
+                        <label class="form-control-sm col-sm-2" style="margin-left: -15px !important;">Edited By</label>
+                        <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma">
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Local Amount</label>
-                        <input type="text" class="form-control form-control-sm col-sm-1">
-                        <input type="text" class="form-control form-control-sm col-sm" style="margin-left:3px !important;">
-                        <label class="form-control-sm col-sm-2">Date Edited</label>
-                        <input type="datetime-local" class="form-control form-control-sm col-sm">
+                        <input type="text" class="form-control form-control-sm col-sm-1" placeholder="PHP">
+                        <input type="text" class="form-control form-control-sm col-sm-3 text-right" numbers-only style="margin-left:3px !important;"
+                          placeholder="2,999.00">
+                        <label class="form-control-sm col-sm-2" style="margin-left: -15px !important;">Date Edited</label>
+                        <input type="datetime-local" class="form-control form-control-sm col-sm" value="2015-05-28T09:00">
                       </div>
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Particulars</label>
-                        <input type="text" class="form-control form-control-sm col-sm">
+                        <input type="text" class="form-control form-control-sm col-sm" placeholder="Billing for the period of August 16 to September 15, 2018">
                       </div>
                     </div>
 
                     <div class="col-sm-12">
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2" style="margin-left: -43px !important;">Reason</label>
-                        <input type="text" class="form-control form-control-sm col-sm">
+                        <input type="text" class="form-control form-control-sm col-sm" placeholder="Account should be Internet Expense, not Telephone Line">
                         <div class="cust-btn-container" style="margin-left:3px !important;">
                           <button class="cust-btn col-sm-1" (click)="modalService.dismissAll()">Return</button>
                         </div>
@@ -112,10 +115,11 @@
                 </fieldset>
 
               </div>
-            </app-modal>
 
-            <app-cust-non-datatable [passData]="passDataListOfEditedTransactions">
-            </app-cust-non-datatable>
+            </ng-template>
+
+            <app-cust-editable-non-datatable [passData]="passDataListOfEditedTransactions" (genericBtn)="showModal(content)">
+            </app-cust-editable-non-datatable>
           </div>
         </fieldset>
 

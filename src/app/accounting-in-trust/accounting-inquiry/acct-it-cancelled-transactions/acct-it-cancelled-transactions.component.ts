@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-
 import { AccountingService } from '../../../_services/accounting.service';
+import { Router } from '@angular/router';
+import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-acct-it-cancelled-transactions',
@@ -68,10 +69,16 @@ export class AcctItCancelledTransactionsComponent implements OnInit {
   	pageStatus: true,
   }
 
-  constructor(private titleService: Title, private accountingService: AccountingService) { }
+  constructor(private titleService: Title, private accountingService: AccountingService, private router: Router) { }
 
   ngOnInit() {
   	this.titleService.setTitle("Acct-IT | Cancelled Tran");
   }
 
+  onTabChange($event: NgbTabChangeEvent) {
+      if ($event.nextId === 'Exit') {
+        this.router.navigateByUrl('');
+      } 
+  
+  }
 }
