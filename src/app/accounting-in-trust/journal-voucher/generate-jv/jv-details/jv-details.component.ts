@@ -1,17 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-
 import { AmountDetailsCV, AccountingEntriesCV, VATDetails, CreditableTax } from '@app/_models';
-
 import { AccountingService } from '../../../../_services/accounting.service';
 
 @Component({
-  selector: 'app-cv-details',
-  templateUrl: './cv-details.component.html',
-  styleUrls: ['./cv-details.component.css']
+  selector: 'app-jv-details',
+  templateUrl: './jv-details.component.html',
+  styleUrls: ['./jv-details.component.css']
 })
-export class CvDetailsComponent implements OnInit {
-
+export class JvDetailsComponent implements OnInit {
+  
   amountDetailsData: any = {
   	tableData: this.accountingService.getAmountDetailsCV(),
   	tHeader: ['Detail', 'Amount', 'Amount (PHP)', 'Plus/Minus', 'Amount Plus/Minus'],
@@ -65,10 +62,9 @@ export class CvDetailsComponent implements OnInit {
     genericBtn: 'Save',
   }
 
-  constructor(private accountingService: AccountingService, private titleService: Title) { }
+  constructor(private accountingService: AccountingService) { }
 
   ngOnInit() {
-     this.titleService.setTitle("Acct-IT | CV Details");
   }
 
 }
