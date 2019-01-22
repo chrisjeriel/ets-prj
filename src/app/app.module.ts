@@ -165,9 +165,16 @@ import { CancelArComponent } from './accounting-in-trust/utilities/cancel-transa
 import { CancelCvComponent } from './accounting-in-trust/utilities/cancel-transactions/cancel-cv/cancel-cv.component';
 import { CancelJvComponent } from './accounting-in-trust/utilities/cancel-transactions/cancel-jv/cancel-jv.component';
 import { AcctItEditedAcctEntriesComponent } from './accounting-in-trust/accounting-inquiry/acct-it-edited-acct-entries/acct-it-edited-acct-entries.component';
+import { JvAttachmentsComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-attachments/jv-attachments.component';
+import { JvDetailsComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-details/jv-details.component';
+import { PaymentPremiumReturnsComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/payment-premium-returns/payment-premium-returns.component';
+import { JvQsoaComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-qsoa/jv-qsoa.component';
+import { PaymentClaimsComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/payment-claims/payment-claims.component';
+import { PrQsoaComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/pr-qsoa/pr-qsoa.component';
 import { JvInwardPolBalanceComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-inward-pol-balance/jv-inward-pol-balance.component';
 import { JvPaymentRequestListComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-payment-request-list/jv-payment-request-list.component';
 import { TrialBalanceTbComponent } from './accounting-in-trust/extract/trial-balance/trial-balance-tb/trial-balance-tb.component';
+
 
 
 @NgModule({
@@ -338,10 +345,15 @@ import { TrialBalanceTbComponent } from './accounting-in-trust/extract/trial-bal
         CancelCvComponent,
         CancelJvComponent,
         AcctItEditedAcctEntriesComponent,
+        JvAttachmentsComponent,
+        JvDetailsComponent,
+        PaymentPremiumReturnsComponent,
+        JvQsoaComponent,
+        PaymentClaimsComponent,
+        PrQsoaComponent,
         JvInwardPolBalanceComponent,
         JvPaymentRequestListComponent,
         TrialBalanceTbComponent,
-
     ],
 
     providers: [

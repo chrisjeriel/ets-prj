@@ -14,7 +14,7 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
   expiryParameters: ExpiryParameters = new ExpiryParameters();
   lastExtraction: LastExtraction = new LastExtraction();
   constructor(private underWritingService: UnderwritingService, private modalService: NgbModal, private titleService: Title) { }
-  byDate: boolean = true;
+  byDate: any = '';
   extractedPolicies: number = 0;
   ngOnInit() {
     this.titleService.setTitle("Pol | Extract Expiring Policy");
@@ -24,6 +24,15 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
     this.extractedPolicies = this.underWritingService.extractExpiringPolicies();
   }
 
+  clearPolicyNo() {
+    this.expiryParameters.line = null;
+    this.expiryParameters.year = null;
+    this.expiryParameters.sequence = null;
+    this.expiryParameters.coCode = null;
+    this.expiryParameters.coSeriesNo = null;
+    this.expiryParameters.alt = null;
+  }
+
   clearDates() {
     $('#fromDate').val("");
     $('#toDate').val("");
@@ -31,6 +40,7 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
     this.expiryParameters.fromYear = null;
     this.expiryParameters.toMonth = null;
     this.expiryParameters.toYear = null;
+    this.clearPolicyNo();
   }
 
   clearAll() {
@@ -43,7 +53,7 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
     this.expiryParameters.line2 = null;
     this.lastExtraction.extractionDate = null;
     $("#extractionDate").val("");
-
+    this.clearPolicyNo();
   }
 
 }

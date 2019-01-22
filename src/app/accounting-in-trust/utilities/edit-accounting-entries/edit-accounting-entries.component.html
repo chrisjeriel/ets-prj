@@ -1,7 +1,7 @@
 <div class="cust-tabs-container">
 	<h4>Accounting In-Trust / Utilities / Edit Accounting Entries</h4>
 	<!-- <ngb-tabset (tabChange)="beforeChange($event)"> -->
-		<ngb-tabset>
+		<ngb-tabset (tabChange)="onTabChange($event)">
 			<ngb-tab>
 				<ng-template ngbTabTitle>
 					<div>Edit</div>
@@ -13,7 +13,8 @@
 						        <legend class="scheduler-border">Transaction Info</legend>
 						           <div class="container-fluid div-group">
 						           	   <div class="form-row custom-row-inline-inset" >
-						           	    <div class="input-group">
+						           	    <div class="input-group" style="margin-bottom: -8px !important;
+">
 						           	    	<label class="form-control-sm col-sm-2 outer-labels labels">Transaction Type</label>
 						           	    	<div class="input-group div-group col-sm-3">
 						           	    		<select class="form-control form-control-sm cust-sm col-sm-12">
@@ -24,31 +25,32 @@
 						           	    	</div>
 						           	    	<div class="input-group div-group col-sm-3">
 						           	    		<label class="form-control-sm col-sm-4" for="xx">Tran Date</label>
-						           	    		<input type="date" id="xx" class="form-control form-control-sm cust-sm col-sm-8">
+						           	    		<input type="date"  class="form-control form-control-sm cust-sm col-sm-8" value="2015-05-16">
 						           	    	</div>
 						           	    	<div class="input-group div-group col-sm-4">
 						           	    		<label class="form-control-sm col-sm-4" for="xx">Tran Status</label>
-						           	        	<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-8" placeholder="New">
+						           	        	<input type="text"  class="form-control form-control-sm cust-sm col-sm-8" placeholder="New">
 						           	    	</div>
 						           	    </div>
-						           	    <div class="input-group">
+						           	    <div class="input-group" style="margin-bottom: -8px !important;
+">
 						           	    	<label class="form-control-sm col-sm-2 outer-labels labels">Reference Number</label>
 						           	    	<div class="input-group div-group col-sm-3">
-						           	    		<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-12" placeholder="" >
+						           	    		<input type="text"  class="form-control form-control-sm cust-sm col-sm-12" placeholder="" >
 						           	    		<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 						           	    	</div>
 						           	    	<div class="input-group div-group col-sm-3">
 						           	    		<label class="form-control-sm col-sm-4" for="xx">Amount</label>
 						           	    		<div class="input-group div-group col-sm-8">
-						           	    			<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-3" placeholder="PHP" >
-						           	    			<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-9" placeholder="2,132,942.50" style="margin-left: 2px">
+						           	    			<input type="text"  class="form-control form-control-sm cust-sm col-sm-3" placeholder="PHP" >
+						           	    			<input type="text"  class="form-control form-control-sm cust-sm col-sm-9" placeholder="2,132,942.50" style="margin-left: 2px; text-align: right">
 						           	    		</div>
 						           	    	</div>
 						           	        <div class="input-group div-group col-sm-4">
 						           	    		<label class="form-control-sm col-sm-4" for="xx">Local Amount</label>
 						           	    		<div class="input-group div-group col-sm-8">
-						           	    			<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-3" placeholder="PHP" >
-						           	    			<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-9" placeholder="2,132,942.50" style="margin-left: 2px">
+						           	    			<input type="text"  class="form-control form-control-sm cust-sm col-sm-3" placeholder="PHP" >
+						           	    			<input type="text"  class="form-control form-control-sm cust-sm col-sm-9" placeholder="2,132,942.50" style="margin-left: 2px; text-align: right">
 						           	    		</div>
 						           	    	</div>
 						           	    </div>
@@ -71,7 +73,7 @@
 						<div class="col-sm-3" style="padding-left: 0px;">
 								<div class="col-sm-12 div-group">
 									<fieldset class="scheduler-border" style="margin-top: 0.756em !important;">
-										<div style="margin-top: 1.15em; margin-bottom: 1.15em;">
+										<div style="margin-top: 1em; margin-bottom: 0.9em;">
 											<div class="form-row">
 												<div class="form-group col-sm" style="margin-bottom: 0px">
 													<div class="col-sm-12 text-center">
@@ -153,7 +155,7 @@
 				</ng-template>
 			</ngb-tab>
 
-			<ngb-tab>
+			<ngb-tab id="Exit">
 				<ng-template ngbTabTitle>
 					<div>Exit</div>
 				</ng-template>
