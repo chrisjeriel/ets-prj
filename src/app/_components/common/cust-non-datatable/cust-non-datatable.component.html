@@ -19,9 +19,9 @@
 <div id="cust-table-container" >
     <div class="cust-btn-container" *ngIf="passData.addFlag || passData.editFlag || passData.deleteFlag || passData.copyFlag || passData.printBtn">
         <button *ngIf="passData.addFlag" class="cust-btn" (click)="onClickAdd(event)"><a>Add</a></button>
-        <button *ngIf="passData.editFlag" class="cust-btn" [class.btnDisabled]="btnDisabled"[disabled]="btnDisabled" (click)="onClickEdit($event)"><a class="paginate_button previous">Edit</a></button>
-        <button *ngIf="passData.deleteFlag" class="cust-btn" [class.btnDisabled]="btnDisabled" [disabled]="btnDisabled" (click)="onClickDelete()"><a class="paginate_button previous">Delete</a></button>
-        <button *ngIf="passData.copyFlag" class="cust-btn" [class.btnDisabled]="btnDisabled" [disabled]="btnDisabled" (click)="onClickCopy($event)"><a class="paginate_button previous">Copy</a></button>
+        <button *ngIf="passData.editFlag" class="cust-btn" [class.btnDisabled]="btnDisabled || passData.btnDisabled"[disabled]="btnDisabled || passData.btnDisabled" (click)="onClickEdit($event)"><a class="paginate_button previous">Edit</a></button>
+        <button *ngIf="passData.deleteFlag" class="cust-btn" [class.btnDisabled]="btnDisabled || passData.btnDisabled" [disabled]="btnDisabled || passData.btnDisabled" (click)="onClickDelete()"><a class="paginate_button previous">Delete</a></button>
+        <button *ngIf="passData.copyFlag" class="cust-btn" [class.btnDisabled]="btnDisabled || passData.btnDisabled" [disabled]="btnDisabled || passData.btnDisabled" (click)="onClickCopy($event)"><a class="paginate_button previous">Copy</a></button>
         <button *ngIf="passData.printBtn" class="cust-btn" type="button" (click)="onClickPrint($event)"><a>Print</a></button>
     </div>
     <div class="expire" *ngIf="passData.expireFilter" align="right" style="margin-top: 1px !important;">

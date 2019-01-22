@@ -167,6 +167,7 @@ import { CancelJvComponent } from './accounting-in-trust/utilities/cancel-transa
 import { AcctItEditedAcctEntriesComponent } from './accounting-in-trust/accounting-inquiry/acct-it-edited-acct-entries/acct-it-edited-acct-entries.component';
 import { JvAttachmentsComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-attachments/jv-attachments.component';
 import { JvDetailsComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-details/jv-details.component';
+import { PaymentPremiumReturnsComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/payment-premium-returns/payment-premium-returns.component';
 import { JvQsoaComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-qsoa/jv-qsoa.component';
 import { PrQsoaComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/pr-qsoa/pr-qsoa.component';
 
@@ -341,6 +342,7 @@ import { PrQsoaComponent } from './accounting-in-trust/request-for-payment/gener
         AcctItEditedAcctEntriesComponent,
         JvAttachmentsComponent,
         JvDetailsComponent,
+        PaymentPremiumReturnsComponent,
         JvQsoaComponent,
         PrQsoaComponent,
 
