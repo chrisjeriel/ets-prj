@@ -290,7 +290,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     onTestClick(index,key){
-        console.log(this.passData.tableData);
+        this.tableDataChange.emit(this.passData.tableData);
     }
  
 }
