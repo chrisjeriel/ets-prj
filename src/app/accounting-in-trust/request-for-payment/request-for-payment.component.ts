@@ -18,6 +18,7 @@ export class RequestForPaymentComponent implements OnInit {
   	tHeader: ['Payment Request No.', 'Payee', 'Payment Type', 'Status', 'Request Date', 'Particulars', 'Curr', 'Amount', 'Requested By'],
   	dataTypes: ['text', 'text', 'text', 'text', 'date', 'text', 'text', 'currency', 'text'],
   	colSize: ['80px', '', '', '', '53px', '', '30px', '', ''],
+    btnDisabled: true,
   	pagination: true,
   	pageStatus: true,
   	addFlag: true,
@@ -51,6 +52,11 @@ export class RequestForPaymentComponent implements OnInit {
 
   onRowClick(data){
       this.routeData = data;
+      if(data.status == 'Paid' || data.status == 'Cancelled'){
+        this.requestsListData.btnDisabled = true;
+      }else{
+        this.requestsListData.btnDisabled = false;
+      }
     //console.log(this.accountingService.getPaytRequestsList());
   }
   onRowDblClick(event) {
