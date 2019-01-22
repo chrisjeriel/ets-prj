@@ -1,28 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-
 import { AmountDetailsCV, AccountingEntriesCV, VATDetails, CreditableTax } from '@app/_models';
-
 import { AccountingService } from '../../../../_services/accounting.service';
 
 @Component({
-  selector: 'app-cv-details',
-  templateUrl: './cv-details.component.html',
-  styleUrls: ['./cv-details.component.css']
+  selector: 'app-jv-details',
+  templateUrl: './jv-details.component.html',
+  styleUrls: ['./jv-details.component.css']
 })
-export class CvDetailsComponent implements OnInit {
-
+export class JvDetailsComponent implements OnInit {
+  
   amountDetailsData: any = {
   	tableData: this.accountingService.getAmountDetailsCV(),
   	tHeader: ['Detail', 'Amount', 'Amount (PHP)', 'Plus/Minus', 'Amount Plus/Minus'],
-  	dataTypes: ['text', 'currency', 'currency', 'select', 'currency'],
+  	dataTypes: ['text', 'currency', 'currency', 'text', 'currency'],
   	nData: new AmountDetailsCV(null,null,null,null,null),
-    opts:[
-      {
-        selector: 'plusMinus',
-        vals: ['None', 'Add', 'Less'],
-      }
-    ],
   	paginateFlag: true,
   	infoFlag: true,
   	pageID: 1,
@@ -61,13 +52,7 @@ export class CvDetailsComponent implements OnInit {
   accountingCreditableTaxDetails: any = {
     tableData: this.accountingService.getCreditableTax(),
     tHeader: ['BIR Tax Code', 'Description', 'WTax Rate', 'Payor','Base Amount', 'WTax Amount'],
-    dataTypes: ['select', 'text', 'percent','text', 'currency', 'currency'],
-    opts:[
-      {
-        selector: 'birTaxCode',
-        vals: ['WC002', 'WC010', 'WC020'],
-      }
-    ],
+    dataTypes: ['text', 'text', 'currency','text', 'currency', 'currency'],
     nData: new CreditableTax(null,null,null,null,null,null),
     pageID: 4,
     addFlag: true,
@@ -77,42 +62,9 @@ export class CvDetailsComponent implements OnInit {
     genericBtn: 'Save',
   }
 
-  constructor(private accountingService: AccountingService, private titleService: Title) { }
+  constructor(private accountingService: AccountingService) { }
 
   ngOnInit() {
-     this.titleService.setTitle("Acct-IT | CV Details");
-  }
-
-  plusMinus(data){
-    console.log(data);
-    
-    for (var i = data.length - 1; i >= 0; i--) {
-      if(data[i].plusMinus == "None"){
-        data[i].amountPlusMinus = 0;
-      }else if(data[i].plusMinus == "Add"){
-        data[i].amountPlusMinus = Math.abs(data[i].amountPHP);
-      }else if(data[i].plusMinus == "Less"){
-        data[i].amountPlusMinus = Math.abs(data[i].amountPHP) * -1;
-      }
-    }
-    this.amountDetailsData.tableData = data;
-  }
-
-  computeWTax(data){
-    console.log(data);
-    
-    for (var i = data.length - 1; i >= 0; i--) {
-      if(data[i].birTaxCode == "WC002"){
-        data[i].wTaxRate = 2;
-      }else if(data[i].birTaxCode == "WC010"){
-        data[i].wTaxRate = 10;
-      }else if(data[i].birTaxCode == "WC020"){
-        data[i].wTaxRate = 20;
-      }
-      data[i].wTaxAmount = data[i].wTaxRate *  data[i].baseAmount / 100;
-    }
-
-    this.accountingCreditableTaxDetails.tableData = data;
   }
 
 }

@@ -23,13 +23,14 @@ export class ArDetailsComponent implements OnInit {
     nData: new ARTaxDetailsVAT(null, null, null, null, null),
     total: [null, null, 'Total', null, 'vatAmount'],
     genericBtn: 'Save',
-    opts: [{ selector: "vatType", vals: ["Input", "Output"] }]
+    opts: [{ selector: "vatType", vals: ["Input", "Output"] }],
+    uneditable: [false, false, false, false, true],
   };
 
   passDataTaxDetailsCreditableWtax: any = {
     tableData: this.accountingService.getARTaxDetailsWTAX(),
     tHeader: ["BIR Tax Code", "Description", "WTax Rate", "Payor", "Base Amount", "WTax Amount"],
-    dataTypes: ["select", "text", "currency", "text", "currency", "currency"],
+    dataTypes: ["select", "text", "percent", "text", "currency", "currency"],
     addFlag: true,
     deleteFlag: true,
     infoFlag: true,
@@ -39,35 +40,23 @@ export class ArDetailsComponent implements OnInit {
     nData: new ARTaxDetailsWTAX(null, null, null, null, null, null),
     total: [null, null, null, 'Total', null, 'wtaxAmount'],
     genericBtn: 'Save',
-    opts: [{ selector: "birTaxCode", vals: ["", "WC020", "WC002", "WC110"] }]
+    opts: [{ selector: "birTaxCode", vals: ["WC020", "WC002", "WC010"] }],
+    uneditable: [false, false, false, false, false, true],
   };
 
-  //temporary
-  kuha(event) {
-    var birTaxCode = event.target.closest('tr').children[0].closest('td').children[0].closest('div').children[0].value;
-    var wTaxRate = 0;
-    var baseAmount = event.target.closest('tr').children[4].closest('td').children[0].closest('div').children[0].value;
-
-    if (birTaxCode == "WC110") {
-      wTaxRate = 1.10;
-    } else if (birTaxCode == "WC002") {
-      wTaxRate = 0.02;
-    } else if (birTaxCode == "WC020") {
-      wTaxRate = 0.20;
+  creditableWTax(data) {
+    for (var i = 0; i < data.length; i++) {
+      if (data[i].birTaxCode == "WC002") {
+        data[i].wtaxRate = 2;
+      } else if (data[i].birTaxCode == "WC010") {
+        data[i].wtaxRate = 10;
+      } else if (data[i].birTaxCode == "WC020") {
+        data[i].wtaxRate = 20;
+      }
+      data[i].wtaxAmount = data[i].wtaxRate * data[i].baseAmount / 100;
     }
-    event.target.closest('tr').children[2].closest('td').children[0].closest('div').children[0].value = wTaxRate;
-    var wTaxAmount = wTaxRate * baseAmount;
-    event.target.closest('tr').children[5].closest('td').children[0].closest('div').children[0].value = wTaxAmount;
+    this.passDataTaxDetailsCreditableWtax.tableData = data;
   }
-
-  //temporary
-  // getSelected(event) {
-  //   var wTaxtRate = event.target.closest('tr').children[2].closest('td').children[0].closest('div').children[0].value;
-  //   var wTaxAmount = event.target.closest('tr').children[5].closest('td').children[0].closest('div').children[0].value;
-  //   var baseAmount = event.target.closest('tr').children[4].closest('td').children[0].closest('div').children[0].value
-  //   console.log('tax rate: ' + wTaxtRate + " / base amount: " + baseAmount + " / tax amount: " + wTaxAmount);
-  // }
-
 
   amountDetailsData: any = {
     tableData: [
@@ -148,10 +137,6 @@ export class ArDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | AR Details");
-    console.log(
-      this.passDataTaxDetailsCreditableWtax.opts.value
-    );
-
   }
 
 

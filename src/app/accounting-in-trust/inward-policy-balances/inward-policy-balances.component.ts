@@ -21,7 +21,7 @@ export class InwardPolicyBalancesComponent implements OnInit {
     checkFlag: true,
     magnifyingGlass: ['0', '1'],
     pageLength: 10,
-    widths: ["auto", "1", "auto", "1", "auto", "auto", "auto", "auto", "auto", "auto", "auto"],
+    widths: [178, "1", "auto", "1", "auto", "auto", "auto", "auto", "auto", "auto", "auto"],
     nData: new ARInwdPolBalDetails(null, null, null, null, null, null, null, null, null, null, null),
     total: [null, null, null, 'Total', 'premium', 'riComm', 'charges', 'netDue', 'payments', 'overdueInterest', 'balance']
   };

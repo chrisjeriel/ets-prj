@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries } from '@app/_models';
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV } from '@app/_models';
 
 
 @Injectable({
@@ -37,6 +37,10 @@ export class AccountingService {
 	accItEditedTransactions: AccItEditedTransactions[] = [];
 	accItEditedOldAcctEntries: AccItEditedOldAcctEntries[] = [];
 	accItEditedLatestAcctEntries: AccItEditedLatestAcctEntries[] = [];
+	amountDetailsJV: AmountDetailsJV[] = [];
+	accountingEntriesJV: AccountingEntriesJV[] = [];
+	vatDetailsJV: VATDetailsJV[] = [];
+	creditableTaxJV: CreditableTaxJV[] = [];
 
 	constructor(private http: HttpClient) { }
 
@@ -435,6 +439,38 @@ export class AccountingService {
 			new CancelTransactionJV('2018-00000123', new Date(2018, 9, 7), 'To correct entries in', 'Error Correction', '2018-00000122', 'Ronwaldo Roque', 'Open', 1500000),
 		];
 		return this.cancelJV;
+	}
+
+	getAmountDetailsJV() {
+		this.amountDetailsJV = [
+			new AmountDetailsJV('Gross Amount (VAT Inc)', 28013.44, 28013.44, 'None', 0),
+			new AmountDetailsJV('Ex-VAT', 25012, 25012, 'Add', 25012),
+			new AmountDetailsJV('VAT (12%)', 3001.44, 3001.44, 'Add', 3001.44),
+			new AmountDetailsJV('Witholding Tax (2%)', 500.24, 500.24, 'Less', -500.24),
+		]
+
+		return this.amountDetailsJV;
+	}
+
+	getAccountingEntriesJV() {
+		this.accountingEntriesJV = [
+			new AccountingEntriesJV(null, null, null, null, null, null),
+		]
+		return this.accountingEntriesJV;
+	}
+
+	getVATDetailsJV() {
+		this.vatDetailsJV = [
+			new VATDetailsJV("Output", "Services", "San Miguel Corporation", 25012, 3001.44),
+		]
+		return this.vatDetailsJV;
+	}
+
+	getCreditableTaxJV() {
+		this.creditableTaxJV = [
+			new CreditableTaxJV("WC002", "WTax on Investment Income PHP", 2, "BPI/MS INSURANCE CORPORATION", 25012, 500.24),
+		]
+		return this.creditableTaxJV;
 	}
 
 }

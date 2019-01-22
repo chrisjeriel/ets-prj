@@ -20,7 +20,7 @@ export class ClaimRecoveryComponent implements OnInit {
     infoFlag: true,
     paginateFlag: true,
     checkFlag: true,
-    widths: ["auto", "1", "auto", "auto", "auto", "1", "auto", "auto", "auto"],
+    widths: ["auto", "1", "auto", "auto", 220, "1", "auto", "auto", "auto"],
     nData: new ARClaimsRecovery(null, null, null, null, null, null, null, null, null),
     total: [null, null, null, null, null, 'Total', null, 'amount', 'amountPHP'],
     pageLength: 10,

@@ -82,7 +82,7 @@
 						<fieldset class="scheduler-border" style="margin-bottom:10px !important;">
 							<legend class="scheduler-border">Creditable WTax Details</legend>
 							<div class="custom-row-inline-inset">
-								<app-cust-editable-non-datatable (click)="kuha($event)" [passData]="passDataTaxDetailsCreditableWtax">
+								<app-cust-editable-non-datatable (tableDataChange)="creditableWTax($event)" [passData]="passDataTaxDetailsCreditableWtax">
 									<ng-container controls-r>
 										<button class="cust-btn" style="margin-right: 0px !important;">BIR 2307</button>
 									</ng-container>

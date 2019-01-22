@@ -167,6 +167,9 @@ import { CancelJvComponent } from './accounting-in-trust/utilities/cancel-transa
 import { AcctItEditedAcctEntriesComponent } from './accounting-in-trust/accounting-inquiry/acct-it-edited-acct-entries/acct-it-edited-acct-entries.component';
 import { ChartOfAccountsComponent } from './maintenance/accounting-in-trust/chart-of-accounts/chart-of-accounts.component';
 import { MaintChartTrstAcctComponent } from './maintenance/accounting-in-trust/chart-of-accounts/maint-chart-trst-acct/maint-chart-trst-acct.component';
+import { JvAttachmentsComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-attachments/jv-attachments.component';
+import { JvDetailsComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-details/jv-details.component';
+import { JvQsoaComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-qsoa/jv-qsoa.component';
 
 
 @NgModule({
@@ -339,6 +342,9 @@ import { MaintChartTrstAcctComponent } from './maintenance/accounting-in-trust/c
         AcctItEditedAcctEntriesComponent,
         ChartOfAccountsComponent,
         MaintChartTrstAcctComponent,
+        JvAttachmentsComponent,
+        JvDetailsComponent,
+        JvQsoaComponent,
 
     ],
 
