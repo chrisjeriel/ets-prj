@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-payment-request-entry',
@@ -8,10 +8,15 @@ import { Component, OnInit, Input } from '@angular/core';
 export class PaymentRequestEntryComponent implements OnInit {
 
   @Input() data: any = {};
+  @Output() onChange: EventEmitter<any> = new EventEmitter();
 
   constructor() { }
 
   ngOnInit() {
   }
 
+  tabController(event) {
+  	console.log(this.data.paymentType);
+  	this.onChange.emit(this.data.paymentType);
+  }
 }
