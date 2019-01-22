@@ -169,6 +169,8 @@ import { GenerateNumberSeriesComponent } from './maintenance/accounting-in-trust
 import { MaintArSeriesTrstComponent } from './maintenance/accounting-in-trust/generate-number-series/maint-ar-series-trst/maint-ar-series-trst.component';
 import { MaintCvSeriesTrstComponent } from './maintenance/accounting-in-trust/generate-number-series/maint-cv-series-trst/maint-cv-series-trst.component';
 import { MaintJvSeriesTrstComponent } from './maintenance/accounting-in-trust/generate-number-series/maint-jv-series-trst/maint-jv-series-trst.component';
+import { ChartOfAccountsComponent } from './maintenance/accounting-in-trust/chart-of-accounts/chart-of-accounts.component';
+import { MaintChartTrstAcctComponent } from './maintenance/accounting-in-trust/chart-of-accounts/maint-chart-trst-acct/maint-chart-trst-acct.component';
 import { JvAttachmentsComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-attachments/jv-attachments.component';
 import { JvDetailsComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-details/jv-details.component';
 import { PaymentPremiumReturnsComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/payment-premium-returns/payment-premium-returns.component';
@@ -353,6 +355,8 @@ import { TrialBalanceTbComponent } from './accounting-in-trust/extract/trial-bal
         MaintArSeriesTrstComponent,
         MaintCvSeriesTrstComponent,
         MaintJvSeriesTrstComponent,
+        ChartOfAccountsComponent,
+        MaintChartTrstAcctComponent,
         JvAttachmentsComponent,
         JvDetailsComponent,
         PaymentPremiumReturnsComponent,

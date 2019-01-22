@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment , AccCVPayReqList , AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments,  AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList,  AccJvInPolBal, AccJVPayReqList} from '@app/_models';
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList } from '@app/_models';
+
 
 
 @Injectable({
@@ -25,9 +26,9 @@ export class AccountingService {
 	arTaxDetailsWTAX: ARTaxDetailsWTAX[] = [];
 	arInwdPolBalDetails: ARInwdPolBalDetails[] = [];
 	arClaimsRecovery: ARClaimsRecovery[] = [];
-	accCvAttachment: AccCvAttachment[]=[];
-	accCvPayReqList: AccCVPayReqList[]=[];
-	accInvestments: AccInvestments[]=[];
+	accCvAttachment: AccCvAttachment[] = [];
+	accCvPayReqList: AccCVPayReqList[] = [];
+	accInvestments: AccInvestments[] = [];
 	chngTxToNewAR: AcknowledgementReceipt[] = [];
 	chngTxToNewCV: CheckVoucher[] = [];
 	chngTxToNewJv: JournalVoucher[] = [];
@@ -37,11 +38,11 @@ export class AccountingService {
 	accItEditedTransactions: AccItEditedTransactions[] = [];
 	accItEditedOldAcctEntries: AccItEditedOldAcctEntries[] = [];
 	accItEditedLatestAcctEntries: AccItEditedLatestAcctEntries[] = [];
-	amountDetailsJV: AmountDetailsJV[]= [];
-	accountingEntriesJV : AccountingEntriesJV[]= [];
-	vatDetailsJV: VATDetailsJV[]= [];
-	creditableTaxJV:CreditableTaxJV[]= [];
-	premiumReturnsList: PremiumReturnList[]= [];
+	amountDetailsJV: AmountDetailsJV[] = [];
+	accountingEntriesJV: AccountingEntriesJV[] = [];
+	vatDetailsJV: VATDetailsJV[] = [];
+	creditableTaxJV: CreditableTaxJV[] = [];
+	premiumReturnsList: PremiumReturnList[] = [];
 	accJvInPolBal: AccJvInPolBal[] = [];
 	accJvPayReqList: AccJVPayReqList[] = [];
 
@@ -73,16 +74,16 @@ export class AccountingService {
 
 	getCVListing() {
 		this.cvListing = [
-			new CVListing("2015-00000001", "SM Prime Holdings, Inc", new Date(2015,9,1), "Printed", "Check for SM Prime Holdings Inc", 1642857.14),
-			new CVListing( "2017-00000001", "Rustans, Inc", new Date(2017,9,1), "Printed", "Check for Rustans Inc", 200000),
-			new CVListing( "2017-00000002", "San Miguel Corp", new Date(2017,9,3), "Printed", "Check for San Miguel Corp", 100000),
-			new CVListing( "2017-00000003", "DMCI", new Date(2017,9,4), "Printed", "Check for DMCI", 1000000),
-			new CVListing( "2018-00000001", "ABS-CBN", new Date(2018,9,4), "Printed", "Check for ABS-CBN", 710716.12),
-			new CVListing( "2018-00000010", "SMDC", new Date(2018,9,5), "Certified", "Check for SMDC", 756929),
-			new CVListing( "2018-00000015", "Universal Robina, Inc", new Date(2018,9,7), "Approved", "Check for Universal Robina, Inc", 300000),
-			new CVListing( "2018-00000045", "SGV & Co", new Date(2018,9,7), "Approved", "Check for SGV & Co", 1000000),
-			new CVListing( "2018-00000099", "Accenture", new Date(2018,9,7), "New", "Check for Accenture", 230000),
-			new CVListing( "2018-00000123", "NSO", new Date(2018,9,7), "New", "Check for NSO", 1500000),
+			new CVListing("2015-00000001", "SM Prime Holdings, Inc", new Date(2015, 9, 1), "Printed", "Check for SM Prime Holdings Inc", 1642857.14),
+			new CVListing("2017-00000001", "Rustans, Inc", new Date(2017, 9, 1), "Printed", "Check for Rustans Inc", 200000),
+			new CVListing("2017-00000002", "San Miguel Corp", new Date(2017, 9, 3), "Printed", "Check for San Miguel Corp", 100000),
+			new CVListing("2017-00000003", "DMCI", new Date(2017, 9, 4), "Printed", "Check for DMCI", 1000000),
+			new CVListing("2018-00000001", "ABS-CBN", new Date(2018, 9, 4), "Printed", "Check for ABS-CBN", 710716.12),
+			new CVListing("2018-00000010", "SMDC", new Date(2018, 9, 5), "Certified", "Check for SMDC", 756929),
+			new CVListing("2018-00000015", "Universal Robina, Inc", new Date(2018, 9, 7), "Approved", "Check for Universal Robina, Inc", 300000),
+			new CVListing("2018-00000045", "SGV & Co", new Date(2018, 9, 7), "Approved", "Check for SGV & Co", 1000000),
+			new CVListing("2018-00000099", "Accenture", new Date(2018, 9, 7), "New", "Check for Accenture", 230000),
+			new CVListing("2018-00000123", "NSO", new Date(2018, 9, 7), "New", "Check for NSO", 1500000),
 		]
 
 		return this.cvListing;
@@ -271,7 +272,7 @@ export class AccountingService {
 	}
 
 
-	getAccountingEntriesUtil(){
+	getAccountingEntriesUtil() {
 		this.accountingEntriesCVData = [
 			new AccountingEntriesCV('1-01-02-01', 'BPI Current Account No. 0071-0435-0438-94', '', '', 0, 2945.45),
 		];
@@ -279,10 +280,10 @@ export class AccountingService {
 		return this.accountingEntriesCVData;
 	}
 
-	getAccInvestments(){
+	getAccInvestments() {
 		this.accInvestments = [
-			new AccInvestments("BPI","BPI 1", 5, "Years", 8.875000, new Date("10/20/2013"), new Date("10/20/2018"), 14000000, 1812500 ),
-			new AccInvestments("RCBC","RCBC 1",35,"Days", 1.500000,new Date("09/26/2018"),new Date("10/31/2018"),10000000,10150000)
+			new AccInvestments("BPI", "BPI 1", 5, "Years", 8.875000, new Date("10/20/2013"), new Date("10/20/2018"), 14000000, 1812500),
+			new AccInvestments("RCBC", "RCBC 1", 35, "Days", 1.500000, new Date("09/26/2018"), new Date("10/31/2018"), 10000000, 10150000)
 		]
 		return this.accInvestments;
 	}
@@ -397,16 +398,16 @@ export class AccountingService {
 
 	getCancelAR() {
 		this.cancelAR = [
-			new CancelTransactionAR(null,'BPI/MS INSURANCE CORPORATION',new Date(2018,9,1),'Inward Policy Balances','New','Representing payment for premium of policy CAR-2018-00001-00-0001-000',1642857.14),
-			new CancelTransactionAR(null,'PNBGEN',new Date(2018,9,1),'Inward Policy Balances','New','Representing payment for premium of policy CAR-2018-00001-00-0001-000',200000),
-			new CancelTransactionAR(3,'Charter Ping An',new Date(2018,9,3),'Claim Recovery','Printed','Representing claim recovery payment for Claim No CAR-2018-000001',100000),
-			new CancelTransactionAR(4,'AXA',new Date(2018,9,4),'QSOA','Printed','Representing payment for the Quarterly Statement of Account balance of BPI/MS for 3rd Quarter',1000000),
-			new CancelTransactionAR(null,'Allied Bankers',new Date(2018,9,4),'QSOA','New','Representing payment for the Quarterly Statement of Account balance of BPI/MS for 3rd Quarter',710716.12),
-			new CancelTransactionAR(null,'Malayan',new Date(2018,9,5),'Inward Policy Balances','New','Representing payment for premium of policy CAR-2018-00001-00-0001-000',756929),
-			new CancelTransactionAR(null,'New India',new Date(2018,9,7),'Claim Recovery','New','Representing claim recovery payment for Claim No CAR-2018-000001',30000),
-			new CancelTransactionAR(8,'BPI/MS INSURANCE CORPORATION',new Date(2018,9,7),'Claim Recovery','Printed','Representing claim recovery payment for Claim No CAR-2018-000001',10000),
-			new CancelTransactionAR(9,'UCPBGEN',new Date(2018,9,7),'QSOA','Printed','Representing payment for the Quarterly Statement of Account balance of BPI/MS for 3rd Quarter',230000),
-			new CancelTransactionAR(null,'FGIC',new Date(2018,9,7),'Inward Policy Balances','New','Representing payment for premium of policy CAR-2018-00001-00-0001-000',1500000),
+			new CancelTransactionAR(null, 'BPI/MS INSURANCE CORPORATION', new Date(2018, 9, 1), 'Inward Policy Balances', 'New', 'Representing payment for premium of policy CAR-2018-00001-00-0001-000', 1642857.14),
+			new CancelTransactionAR(null, 'PNBGEN', new Date(2018, 9, 1), 'Inward Policy Balances', 'New', 'Representing payment for premium of policy CAR-2018-00001-00-0001-000', 200000),
+			new CancelTransactionAR(3, 'Charter Ping An', new Date(2018, 9, 3), 'Claim Recovery', 'Printed', 'Representing claim recovery payment for Claim No CAR-2018-000001', 100000),
+			new CancelTransactionAR(4, 'AXA', new Date(2018, 9, 4), 'QSOA', 'Printed', 'Representing payment for the Quarterly Statement of Account balance of BPI/MS for 3rd Quarter', 1000000),
+			new CancelTransactionAR(null, 'Allied Bankers', new Date(2018, 9, 4), 'QSOA', 'New', 'Representing payment for the Quarterly Statement of Account balance of BPI/MS for 3rd Quarter', 710716.12),
+			new CancelTransactionAR(null, 'Malayan', new Date(2018, 9, 5), 'Inward Policy Balances', 'New', 'Representing payment for premium of policy CAR-2018-00001-00-0001-000', 756929),
+			new CancelTransactionAR(null, 'New India', new Date(2018, 9, 7), 'Claim Recovery', 'New', 'Representing claim recovery payment for Claim No CAR-2018-000001', 30000),
+			new CancelTransactionAR(8, 'BPI/MS INSURANCE CORPORATION', new Date(2018, 9, 7), 'Claim Recovery', 'Printed', 'Representing claim recovery payment for Claim No CAR-2018-000001', 10000),
+			new CancelTransactionAR(9, 'UCPBGEN', new Date(2018, 9, 7), 'QSOA', 'Printed', 'Representing payment for the Quarterly Statement of Account balance of BPI/MS for 3rd Quarter', 230000),
+			new CancelTransactionAR(null, 'FGIC', new Date(2018, 9, 7), 'Inward Policy Balances', 'New', 'Representing payment for premium of policy CAR-2018-00001-00-0001-000', 1500000),
 		];
 		return this.cancelAR;
 	}
@@ -444,7 +445,7 @@ export class AccountingService {
 		return this.cancelJV;
 	}
 
-	getAmountDetailsJV(){
+	getAmountDetailsJV() {
 		this.amountDetailsJV = [
 			new AmountDetailsJV('Gross Amount (VAT Inc)', 28013.44, 28013.44, 'None', 0),
 			new AmountDetailsJV('Ex-VAT', 25012, 25012, 'Add', 25012),
@@ -455,7 +456,7 @@ export class AccountingService {
 		return this.amountDetailsJV;
 	}
 
-	getAccountingEntriesJV(){
+	getAccountingEntriesJV() {
 		this.accountingEntriesJV = [
 			new AccountingEntriesJV(null, null, null, null, null, null),
 		]
@@ -476,28 +477,28 @@ export class AccountingService {
 		return this.creditableTaxJV;
 	}
 
-	getPremiumReturnList(){
+	getPremiumReturnList() {
 		this.premiumReturnsList = [
-			new PremiumReturnList(new Date(2018,9,25),"FLT PRIME","EAR-2018-00001-99-001-000",-250000,-75000,-9000,"PHP",-166000),
+			new PremiumReturnList(new Date(2018, 9, 25), "FLT PRIME", "EAR-2018-00001-99-001-000", -250000, -75000, -9000, "PHP", -166000),
 		]
 		return this.premiumReturnsList;
 	}
 
 	getAccJVInPolBal() {
 		this.accJvInPolBal = [
-			new AccJvInPolBal('CAR-2018-00001-99-0001-000','01', new Date("09/25/2018"), 'PHP', 3000000, 0.00, 0.00, 1642857.14,1357142.86,0.00,1642857.14),	
-			];
-		
+			new AccJvInPolBal('CAR-2018-00001-99-0001-000', '01', new Date("09/25/2018"), 'PHP', 3000000, 0.00, 0.00, 1642857.14, 1357142.86, 0.00, 1642857.14),
+		];
+
 		return this.accJvInPolBal;
 	}
 
 	getAccJVPayReqList() {
 		this.accJvPayReqList = [
-			new AccJVPayReqList("CSR-2018-09-0001", "PMMSC Cashier", "Claim Payment", "Open", new Date("09/20/2018"), "Replenishment of", "Rosalinda Mercedez", "PHP", 27513.20),	
-			new AccJVPayReqList("PRR-2018-09-0002", "Sample Supplier", "Premium Returns", "Open", new Date("09/27/2018"), "Payment for official", "Chie Reyes", "PHP", 50000),	
-			new AccJVPayReqList("OTR-2018-01-0001", "PMMSC", "Others", "Open", new Date("09/27/2018"), "Payroll for August 1-31, 2018", "Lourdes R. Guevarra", "PHP", 300000),	
-			];
-		
+			new AccJVPayReqList("CSR-2018-09-0001", "PMMSC Cashier", "Claim Payment", "Open", new Date("09/20/2018"), "Replenishment of", "Rosalinda Mercedez", "PHP", 27513.20),
+			new AccJVPayReqList("PRR-2018-09-0002", "Sample Supplier", "Premium Returns", "Open", new Date("09/27/2018"), "Payment for official", "Chie Reyes", "PHP", 50000),
+			new AccJVPayReqList("OTR-2018-01-0001", "PMMSC", "Others", "Open", new Date("09/27/2018"), "Payroll for August 1-31, 2018", "Lourdes R. Guevarra", "PHP", 300000),
+		];
+
 		return this.accJvPayReqList;
 	}
 

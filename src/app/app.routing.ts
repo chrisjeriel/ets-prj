@@ -68,6 +68,7 @@ import { EditAccountingEntriesComponent } from './accounting-in-trust/utilities/
 import { CancelTransactionsComponent } from './accounting-in-trust/utilities/cancel-transactions/cancel-transactions.component';
 import { AcctItEditedAcctEntriesComponent } from './accounting-in-trust/accounting-inquiry/acct-it-edited-acct-entries/acct-it-edited-acct-entries.component';
 import { GenerateNumberSeriesComponent } from './maintenance/accounting-in-trust/generate-number-series/generate-number-series.component';
+import { ChartOfAccountsComponent } from './maintenance/accounting-in-trust/chart-of-accounts/chart-of-accounts.component';
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -142,6 +143,7 @@ const appRoutes: Routes = [
     { path: 'cancel-transaction', component: CancelTransactionsComponent },
     { path: 'acct-it-edited-acct-entries', component: AcctItEditedAcctEntriesComponent },
     { path: 'generate-number-series', component: GenerateNumberSeriesComponent },
+    { path: 'chart-of-accounts', component: ChartOfAccountsComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
