@@ -10,7 +10,7 @@
                     <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
                            placeholder="00000001" style="text-align: right;">
                     <label class="form-control-sm col-sm-1">Date</label>
-                    <input type="date" class="form-control form-control-sm cust-sm col-sm" placeholder="" style="margin-right: 4px !important;">
+                    <input type="datetime-local" class="form-control form-control-sm cust-sm col-sm" placeholder="" style="margin-right: 4px !important;">
                     <label class="form-control-sm col-sm-1">Tran ID</label>
                     <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="000372921" style="text-align: right;">
                     <label class="form-control-sm col-sm-1">Status</label>
@@ -19,8 +19,11 @@
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-1" style="height: auto;">Payee</label>
-                    <input type="text" class="form-control form-control-sm cust-sm col-sm-11" style="margin-right: 2px !important">
-                    <div style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+                    <select class="form-control form-control-sm cust-sm col-sm-11" style="margin-right: 4px !important;">
+                        <option value="San Miguel Corporation">San Miguel Corporation</option>
+                        <option value="SM Prime Holdings, Inc">SM Prime Holdings, Inc</option>
+                        <option value="Rustans, Inc">Rustans, Inc</option>
+                    </select>
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-1" style="height: auto;">Particulars</label>
@@ -28,12 +31,21 @@
                 </div>
                 <div class="input-group" style="margin-bottom: -5px !important;">
                     <label class="form-control-sm col-sm-1" style="height: auto;">Amount</label>
-                    <input type="text" class="form-control form-control-sm cust-sm col-sm-1" placeholder="PHP" style="margin-right: 4px !important;">
-                    <div style="margin-left: -20px !important;margin-right: 6px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+                    <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-1" placeholder="PHP" style="margin-right: 4px !important;">
+                    <div style="margin-left: -20px !important;margin-right: 6px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div> -->
+                    <select class="form-control form-control-sm cust-sm col-sm-1" style="margin-right: 4px !important;">
+                        <option value="PHP">PHP</option>
+                        <option value="EUR">EUR</option>
+                        <option value="USD">USD</option>
+                    </select>
                     <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="27,513.29" style="text-align: right;">
                     <div class="col-sm-3"></div>
                     <label class="form-control-sm col-sm-2" style="height: auto;">Local Amount</label>
-                    <input type="text" class="form-control form-control-sm cust-sm col-sm-1" placeholder="PHP" style="margin-right: 4px !important;">
+                    <select class="form-control form-control-sm cust-sm col-sm-1" style="margin-right: 4px !important;">
+                        <option value="PHP">PHP</option>
+                        <option value="EUR">EUR</option>
+                        <option value="USD">USD</option>
+                    </select>
                     <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="27,513.29" style="margin-right: 5px !important;text-align: right !important;">
                 </div>
             </div>

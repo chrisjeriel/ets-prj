@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
 import { AmountDetailsCV, AccountingEntriesCV, VATDetails, CreditableTax } from '@app/_models';
-
 import { AccountingService } from '../../../../_services/accounting.service';
 
 @Component({
@@ -42,12 +41,13 @@ export class CvDetailsComponent implements OnInit {
   accountingVATTaxDetails: any = {
     tableData: this.accountingService.getVATDetails(),
     tHeader: ['VAT Type', 'BIR RLF Purchase Type', 'Payor', 'Base Amount', 'VAT Amount'],
-    dataTypes: ['text', 'text', 'text', 'currency', 'currency'],
+    dataTypes: ['select', 'text', 'text', 'currency', 'currency'],
+    opts: [{ selector: "vatType", vals: ["Output", "Input"] }],
     nData: new VATDetails(null,null,null,null,null),
     pageID: 3,
     addFlag: true,
     deleteFlag: true,
-    total: [null, null, 'Total', null, 'vatAmount'],
+    total: [null, null, null, 'Total', 'vatAmount'],
     pageLength:5,
     genericBtn: 'Save',
   }
@@ -61,7 +61,7 @@ export class CvDetailsComponent implements OnInit {
     addFlag: true,
     deleteFlag: true,
     pageLength:5,
-    total: [null, null, null, 'Total', null, 'wTaxAmount'],
+    total: [null, null, null, null,'Total', 'wTaxAmount'],
     genericBtn: 'Save',
   }
 

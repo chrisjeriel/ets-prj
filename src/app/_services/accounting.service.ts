@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment , AccCVPayReqList , AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments,  AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV} from '@app/_models';
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment , AccCVPayReqList , AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments,  AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList} from '@app/_models';
 
 
 @Injectable({
@@ -39,9 +39,9 @@ export class AccountingService {
 	accItEditedLatestAcctEntries: AccItEditedLatestAcctEntries[] = [];
 	amountDetailsJV: AmountDetailsJV[]= [];
 	accountingEntriesJV : AccountingEntriesJV[]= [];
-	vatDetailsJV: VATDetailsJV[] =[];
+	vatDetailsJV: VATDetailsJV[]= [];
 	creditableTaxJV:CreditableTaxJV[]= [];
-
+	premiumReturnsList: PremiumReturnList[]= [];
 	constructor(private http: HttpClient) { }
 
 	getAmountDetails() {
@@ -70,16 +70,16 @@ export class AccountingService {
 
 	getCVListing() {
 		this.cvListing = [
-			new CVListing(new Date(2016, 1, 1), 1, "SM Prime Holdings, Inc", new Date(), "Printed", "Check for SM Prime Holdings Inc", 1642857.14),
-			new CVListing(new Date(), 1, "Rustans, Inc", new Date(), "Printed", "Check for Rustans Inc", 200000),
-			new CVListing(new Date(), 1, "San Miguel Corp", new Date(), "Printed", "Check for San Miguel Corp", 100000),
-			new CVListing(new Date(), 1, "DMCI", new Date(), "Printed", "Check for DMCI", 1000000),
-			new CVListing(new Date(), 1, "ABS-CBN", new Date(), "Printed", "Check for ABS-CBN", 710716.12),
-			new CVListing(new Date(), 1, "SMDC", new Date(), "Certified", "Check for SMDC", 756929),
-			new CVListing(new Date(), 1, "Universal Robina, Inc", new Date(), "Approved", "Check for Universal Robina, Inc", 300000),
-			new CVListing(new Date(), 1, "SGV & Co", new Date(), "Approved", "Check for SGV & Co", 1000000),
-			new CVListing(new Date(), 1, "Accenture", new Date(), "New", "Check for Accenture", 230000),
-			new CVListing(new Date(), 1, "NSO", new Date(), "New", "Check for NSO", 1500000),
+			new CVListing("2015-00000001", "SM Prime Holdings, Inc", new Date(2015,9,1), "Printed", "Check for SM Prime Holdings Inc", 1642857.14),
+			new CVListing( "2017-00000001", "Rustans, Inc", new Date(2017,9,1), "Printed", "Check for Rustans Inc", 200000),
+			new CVListing( "2017-00000002", "San Miguel Corp", new Date(2017,9,3), "Printed", "Check for San Miguel Corp", 100000),
+			new CVListing( "2017-00000003", "DMCI", new Date(2017,9,4), "Printed", "Check for DMCI", 1000000),
+			new CVListing( "2018-00000001", "ABS-CBN", new Date(2018,9,4), "Printed", "Check for ABS-CBN", 710716.12),
+			new CVListing( "2018-00000010", "SMDC", new Date(2018,9,5), "Certified", "Check for SMDC", 756929),
+			new CVListing( "2018-00000015", "Universal Robina, Inc", new Date(2018,9,7), "Approved", "Check for Universal Robina, Inc", 300000),
+			new CVListing( "2018-00000045", "SGV & Co", new Date(2018,9,7), "Approved", "Check for SGV & Co", 1000000),
+			new CVListing( "2018-00000099", "Accenture", new Date(2018,9,7), "New", "Check for Accenture", 230000),
+			new CVListing( "2018-00000123", "NSO", new Date(2018,9,7), "New", "Check for NSO", 1500000),
 		]
 
 		return this.cvListing;
@@ -471,6 +471,13 @@ export class AccountingService {
 			new CreditableTaxJV("WC002", "WTax on Investment Income PHP", 2, "BPI/MS INSURANCE CORPORATION", 25012, 500.24),
 		]
 		return this.creditableTaxJV;
+	}
+
+	getPremiumReturnList(){
+		this.premiumReturnsList = [
+			new PremiumReturnList(new Date(2018,9,25),"FLT PRIME","EAR-2018-00001-99-001-000",-250000,-75000,-9000,"PHP",-166000),
+		]
+		return this.premiumReturnsList;
 	}
 
 }
