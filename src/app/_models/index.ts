@@ -65,4 +65,6 @@ export * from './AccountingJVDetails';
 export * from './AccountingPremiumReturns';
 export * from './AccountingJVInwardPolBal';
 export * from './AccountingJVPayRequestList';
+export * from './AccountingTBTotDebCred';
+export * from './AccountingTBNet';
 
