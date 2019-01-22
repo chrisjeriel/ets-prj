@@ -7,11 +7,11 @@
 					<div>Request Entry</div>
 				</ng-template>
 				<ng-template ngbTabContent>
-					<app-payment-request-entry [data]="paymentData"></app-payment-request-entry>
+					<app-payment-request-entry [data]="paymentData" (onChange)="tabController($event)"></app-payment-request-entry>
 				</ng-template>
 			</ngb-tab>
 
-			<ngb-tab>
+			<ngb-tab [disabled]="paymentType != 'Claim Payment'">
 				<ng-template ngbTabTitle>
 					<div>Claims</div>
 				</ng-template>
@@ -20,7 +20,7 @@
 				</ng-template>
 			</ngb-tab>
 
-			<ngb-tab>
+			<ngb-tab [disabled]="paymentType != 'Premium Returns'">
 				<ng-template ngbTabTitle>
 					<div>Premium Returns</div>
 				</ng-template>
@@ -28,7 +28,7 @@
 					<app-payment-premium-returns></app-payment-premium-returns>
 				</ng-template>
 			</ngb-tab>
-			<ngb-tab>
+			<ngb-tab [disabled]="paymentType != 'QSOA Balances'">
 				<ng-template ngbTabTitle>
 					<div>QSOA Balances</div>
 				</ng-template>
@@ -36,7 +36,7 @@
 					<app-pr-qsoa></app-pr-qsoa>
 				</ng-template>
 			</ngb-tab>
-			<ngb-tab>
+			<ngb-tab [disabled]="paymentType != 'Others'">
 				<ng-template ngbTabTitle>
 					<div>Others</div>
 				</ng-template>

@@ -14,6 +14,8 @@ export class GeneratePaymentRequestComponent implements OnInit, OnDestroy {
 
   paymentData: any = {};
 
+  paymentType: any;
+
   constructor(private route: ActivatedRoute,  private router: Router) { }
 
   ngOnInit() {
@@ -30,6 +32,7 @@ export class GeneratePaymentRequestComponent implements OnInit, OnDestroy {
       		reqBy: params['reqBy']
       }
     });
+    this.paymentType = this.paymentData.paymentType;
   }
 
   ngOnDestroy(){
@@ -41,6 +44,10 @@ export class GeneratePaymentRequestComponent implements OnInit, OnDestroy {
         this.router.navigateByUrl('');
       } 
   
+  }
+
+  tabController(paymentType){
+    this.paymentType = paymentType;
   }
 
 }

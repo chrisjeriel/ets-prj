@@ -19,7 +19,7 @@
    		                    </div>
    		                    <label class="form-control-sm col-sm-1" for="xx">Date</label>
    		                    <div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<input type="date" class="form-control form-control-sm cust-sm col-sm-8" placeholder="10/01/2018" style="margin-right: 3px !important;">
+   		                    	<input type="date" class="form-control form-control-sm cust-sm col-sm-8" placeholder="10/01/2018" style="margin-right: 3px !important;" value="2015-05-12">
    			                    <input type="text" class="form-control form-control-sm cust-sm col-sm-4" 
    			                           placeholder="10:45 AM">
    		                    </div>
@@ -34,9 +34,12 @@
    		                <div class="input-group" style="margin-bottom: -14px !important;">
    		                    <label class="form-control-sm col-sm-1" for="xx">Payment Type</label>
    	                    	<div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12" [value]="data.paymentType == undefined ? '' : data.paymentType"
-   		                    	       placeholder="Claim Payment">
-   		                    	<div style="margin-left: -19px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+   		                    	<select class="form-control form-control-sm cust-sm col-sm-12" [(ngModel)]="data.paymentType"  (change)="tabController($event);">
+                                 <option value="Claim Payment" [selected]="data.paymentType == 'Claim Payment'">Claim Payment</option>
+                                 <option value="Premium Returns" [selected]="data.paymentType == 'Premium Returns'">Premium Returns</option>
+                                 <option value="QSOA Balances" [selected]="data.paymentType == 'QSOA Balances'">QSOA Balances</option>
+                                 <option value="Others" [selected]="data.paymentType == 'Others'">Others</option>
+                              </select>
    		                    </div>
    		                    <label class="form-control-sm col-sm-1" for="xx">Amount</label>
    		                    <div class="input-group col-sm-3" style="padding: 0px;">
@@ -121,7 +124,7 @@
    		                   	<label class="form-control-sm col-sm-1 labels" for="xx">Date Prepared</label>
    	                    	<div class="input-group col-sm-3" style="padding: 0px;">
    		                    	<input type="date" class="form-control form-control-sm cust-sm col-sm-12"
-   		                    	       placeholder="">
+   		                    	       value="2015-10-16">
    		                    </div>
    		                    <label class="form-control-sm col-sm-1 labels" for="xx"></label>
    	                    	<div class="input-group col-sm-3" style="padding: 0px;">
@@ -129,7 +132,7 @@
    	                    	<label class="form-control-sm col-sm-1 labels" for="xx">Date Approved</label>
    	                    	<div class="input-group col-sm-3" style="padding: 0px;">
    		                    	<input type="date" class="form-control form-control-sm cust-sm col-sm-12"
-   		                    	       placeholder="">
+   		                    	       value="2015-11-03">
    		                    </div>
    		                </div>
    		            </div>

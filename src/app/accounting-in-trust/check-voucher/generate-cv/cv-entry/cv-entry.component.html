@@ -65,7 +65,7 @@
         <fieldset class="scheduler-border" style="padding-bottom: 20px !important;">
             <legend class="scheduler-border">Check Details</legend>
             <div class="test" style="margin-top: 10px !important;">
-                <app-cust-editable-non-datatable [passData]="passDataCheckDetails"></app-cust-editable-non-datatable>
+                <app-cust-editable-non-datatable [passData]="passDataCheckDetails" (tableDataChange)="changeAccountNumber($event)"></app-cust-editable-non-datatable>
             </div>
             <div class="col-sm-12" style="margin-top: 43px !important;">
              <div class="form-row custom-row-inline-inset">
