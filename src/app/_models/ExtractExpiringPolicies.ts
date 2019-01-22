@@ -4,6 +4,12 @@ export class LastExtraction{
 }
 
 export class ExpiryParameters {
+	line:string;
+    year:string;
+    sequence:string;
+    coCode:string;
+    coSeriesNo:string;
+    alt:string;
 	fromDate:Date;
 	toDate:Date;
 	fromMonth:number;
