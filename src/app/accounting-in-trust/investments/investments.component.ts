@@ -21,9 +21,10 @@ export class InvestmentsComponent implements OnInit {
    	 tableData: [],
    	 tHeader: ["Bank","Account No.", "Maturity Period","Duration Unit","Interest Rate","Date Purchased","Maturity Date","Investment","Maturity Value"],
    	 resizable: [true, true, true, true, true, true, true, true, true],
-   	 dataTypes: ['text','text','number','text','percent','date','date','currency','currency'],
+   	 dataTypes: ['select','text','number','select','percent','date','date','currency','currency'],
    	 nData: new AccInvestments(null,null,null,null,null,new Date,new Date,null,null),
    	 total:[null,null,null,null,null,null,'Total','investment','matValue'],
+     opts: [],
    	 addFlag: true,
    	 deleteFlag: true,
      searchFlag: true,
@@ -42,6 +43,9 @@ export class InvestmentsComponent implements OnInit {
   ngOnInit() {
   	this.titleService.setTitle("Acc | Investments");
   	this.passData.tableData = this.accountingService.getAccInvestments();
+    this.passData.opts.push({ selector: "bank", vals: ["BPI", "RCBC", "BDO"] });
+    this.passData.opts.push({ selector: "durUnit", vals: ["Years","Months","Weeks","Days"] });
+
   }
 
   onTabChange($event: NgbTabChangeEvent) {

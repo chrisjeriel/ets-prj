@@ -170,6 +170,9 @@ import { JvDetailsComponent } from './accounting-in-trust/journal-voucher/genera
 import { PaymentPremiumReturnsComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/payment-premium-returns/payment-premium-returns.component';
 import { JvQsoaComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-qsoa/jv-qsoa.component';
 import { PrQsoaComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/pr-qsoa/pr-qsoa.component';
+import { JvInwardPolBalanceComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-inward-pol-balance/jv-inward-pol-balance.component';
+import { JvPaymentRequestListComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-payment-request-list/jv-payment-request-list.component';
+import { TrialBalanceTbComponent } from './accounting-in-trust/extract/trial-balance/trial-balance-tb/trial-balance-tb.component';
 
 
 @NgModule({
@@ -345,7 +348,9 @@ import { PrQsoaComponent } from './accounting-in-trust/request-for-payment/gener
         PaymentPremiumReturnsComponent,
         JvQsoaComponent,
         PrQsoaComponent,
-
+        JvInwardPolBalanceComponent,
+        JvPaymentRequestListComponent,
+        TrialBalanceTbComponent,
     ],
 
     providers: [
