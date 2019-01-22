@@ -43,16 +43,24 @@
    		                    </div>
    		                    <label class="form-control-sm col-sm-1" for="xx">Amount</label>
    		                    <div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-4" [value]="data.currency == undefined ? '' : data.currency" placeholder="PHP" style="margin-right: 4px !important;">
-   			                    <div style="margin-left: -19px !important;margin-right: 4px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
-   			                    <input type="text" class="form-control form-control-sm cust-sm col-sm-8" style="text-align: right" [value]="data.amount == undefined ? '' : data.amount"
+                              <select class="form-control form-control-sm cust-sm col-sm-4">
+                                      <option value="PHP">PHP</option>
+                                      <option value="EUR">EUR</option>
+                                      <option value="USD">USD</option>
+                              </select>
+   		                    	<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-4" [value]="data.currency == undefined ? '' : data.currency" placeholder="PHP" style="margin-right: 4px !important;"> -->
+   			                    <input type="text" class="form-control form-control-sm cust-sm col-sm-8" style="text-align: right;margin-left: 2px;"
    			                           placeholder="10,000,000.00">
    		                    </div>
    		                   	<label class="form-control-sm col-sm-1" for="xx">Local Amount</label>
    		                    <div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-4" [value]="data.currency == undefined ? '' : data.currency" placeholder="PHP" style="margin-right: 4px !important;">
-   			                    <div style="margin-left: -19px !important;margin-right: 4px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
-   			                    <input type="text" class="form-control form-control-sm cust-sm col-sm-8" style="text-align: right" [value]="data.amount == undefined ? '' : data.amount"
+                              <select class="form-control form-control-sm cust-sm col-sm-4">
+                                      <option value="PHP">PHP</option>
+                                      <option value="EUR">EUR</option>
+                                      <option value="USD">USD</option>
+                              </select>
+   		                    	<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-4" [value]="data.currency == undefined ? '' : data.currency" placeholder="PHP" style="margin-right: 4px !important;"> -->
+   			                    <input type="text" class="form-control form-control-sm cust-sm col-sm-8" style="text-align: right; margin-left: 2px;"
    			                           placeholder="10,000,000.00">
    		                    </div>
    		                </div>
