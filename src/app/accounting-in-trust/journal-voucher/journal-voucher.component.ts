@@ -9,7 +9,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./journal-voucher.component.css']
 })
 export class JournalVoucherComponent implements OnInit {
-   
+   private routeData: any;
+
    passDataJVListing: any = {
         tableData: this.accountingService.getJVListing(),
         tHeader: ["JV No", "JV Date","Particulars","JV Type", "JV Ref. No.", "Prepared By","JV Status","Amount"],
@@ -80,5 +81,15 @@ export class JournalVoucherComponent implements OnInit {
 
   toGenerateAREdit(event) {
     this.router.navigateByUrl('/generate-jv');
+  }
+
+  onRowClick(data){
+      this.routeData = data;
+      if(data.jvStatus == 'Printed' || data.jvStatus == 'Cancelled'){
+        this.passDataJVListing.btnDisabled = true;
+      }else{
+        this.passDataJVListing.btnDisabled = false;
+      }
+    //console.log(this.accountingService.getPaytRequestsList());
   }
 }

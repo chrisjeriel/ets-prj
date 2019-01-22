@@ -31,14 +31,14 @@ export class AccountingInTrustComponent implements OnInit {
 
   ngOnInit() {
   	this.sub = this.route.params.subscribe(params => {
-      this.exitLink = params['link'] !== undefined ? params['link'] : 'adasdas';
-      this.exitTab = params['tab'] !== undefined ? params['tab'] : '';
+      /*this.exitLink = params['link'] !== undefined ? params['link'] : 'adasdas';
+      this.exitTab = params['tab'] !== undefined ? params['tab'] : '';*/
 
       this.action = params['action'];
 
       if(this.action == 'edit') {
         this.record = JSON.parse(params['slctd']);
-
+        console.log(this.record);
         this.tabController(this.record.paymentType.toUpperCase());
       } else {
         this.tabController('');
@@ -59,8 +59,6 @@ export class AccountingInTrustComponent implements OnInit {
   }
 
   tabController(type) {
-  	type = type.trim();
-
   	if(type == 'INWARD POLICY BALANCES') {
   		this.ipbTab = false;
   		this.crTab = true;
@@ -80,12 +78,18 @@ export class AccountingInTrustComponent implements OnInit {
   	}
   }
 
-   onTabChange($event: NgbTabChangeEvent) {
+  /* onTabChange($event: NgbTabChangeEvent) {
       if ($event.nextId === 'Exit') {
         // this.router.navigateByUrl('');
         this.router.navigate([this.exitLink,{tabID:this.exitTab}],{ skipLocationChange: true });
       } 
   
+  }*/
+
+  onTabChange($event: NgbTabChangeEvent) {
+    if ($event.nextId === 'Exit') {
+      this.router.navigateByUrl('acct-ar-listings');
+    }
   }
 
 

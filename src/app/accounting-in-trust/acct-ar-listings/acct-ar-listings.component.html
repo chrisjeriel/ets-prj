@@ -6,7 +6,7 @@
 				<ng-template ngbTabContent>
 					<div class="row">
 						<div class="col-sm-12">
-							<app-cust-non-datatable (add)="toGenerateARAdd();" (rowDblClick)="toGenerateAREdit($event);" [passData]="passData"></app-cust-non-datatable>
+							<app-cust-non-datatable (add)="toGenerateARAdd();" (edit)="toGenerateARAdd();" (rowClick)="onRowClick($event)" (rowDblClick)="toGenerateAREdit($event);" [passData]="passData"></app-cust-non-datatable>
 						</div>
 						<div class="col-sm-12">
 							<div class="form-row custom-row-inline-inset" style="margin-left: -27px;">

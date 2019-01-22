@@ -28,8 +28,11 @@ PremiumReturn : any = {
   }
 
   constructor(private accountingService: AccountingService, private titleService: Title) { }
-
+  	dateCreated:string;
+  	lastUpdate:string;
   ngOnInit() {
+  	this.dateCreated = new Date(2018,10,1).toISOString().slice(0, 16);
+    this.lastUpdate = new Date().toISOString().slice(0, 16);
   }
 
 }

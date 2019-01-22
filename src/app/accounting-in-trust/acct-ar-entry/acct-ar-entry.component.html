@@ -6,11 +6,16 @@
 				<label class="form-control-sm col-sm-1">A.R. No.</label>
 				<input type="text" placeholder="000001" class="form-control form-control-sm cust-sm text-right col-sm-1" [(ngModel)]="record.arNo">
 				<label class="form-control-sm col-sm-1">Date</label>
-				<input type="date" class="form-control form-control-sm cust-sm col-sm-2">
+				<input type="date" class="form-control form-control-sm cust-sm col-sm-2" value="2019-01-01">
 				<input type="text" placeholder="10:45 AM" class="form-control form-control-sm cust-sm text-center cust-mrgn col-sm-1">
 				<label class="form-control-sm col-sm-1" style="padding-left: 0px !important; margin-left: 20px !important">Payment Type</label>
-				<input type="text" placeholder="Inward Policy Balances" class="form-control form-control-sm cust-sm col-sm-3" (change)="tabController($event);" [(ngModel)]="record.paymentType">
-				<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+				<!-- <input type="text" placeholder="Inward Policy Balances" class="form-control form-control-sm cust-sm col-sm-3" (change)="tabController($event);" [(ngModel)]="record.paymentType"> -->
+				<select class="form-control form-control-sm cust-sm col-sm-3 cust-sm" (change)="tabController($event);" [(ngModel)]="record.paymentType">
+					<option value="Inward Policy Balances">Inward Policy Balances</option>
+					<option value="Claim Recovery">Claim Recovery</option>
+					<option value="QSOA">QSOA</option>
+				</select>
+				<!-- <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div> -->
 				<label class="form-control-sm col-sm-1">Status</label>
 				<input type="text" placeholder="New" class="form-control form-control-sm cust-sm col-sm-1" [(ngModel)]="record.status">
 				<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
@@ -22,14 +27,14 @@
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Address</label>
-				<!-- <textarea placeholder="16th Flr., 6811 BPI-Philam Life Makati, Ayala Ave., Salcedo Village Bel-Air, Makati City, Metro Manila, Philippines 1209" class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 17px !important;"></textarea> -->
-				<div class="form-control-sm col-sm edtr-cont" style="height: 42px;">
+				<textarea placeholder="16th Flr., 6811 BPI-Philam Life Makati, Ayala Ave., Salcedo Village Bel-Air, Makati City, Metro Manila, Philippines 1209" class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 17px !important;"></textarea>
+				<!-- <div class="form-control-sm col-sm edtr-cont" style="height: 42px;">
 					<text-editor [editorPlaceholder]="'16th Flr., 6811 BPI-Philam Life Makati, Ayala Ave., Salcedo Village Bel-Air, Makati City, Metro Manila, Philippines 1209'" (fetchContent)="test($event)"></text-editor>
-				</div>
+				</div> -->
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">TIN</label>
-				<input type="text" placeholder="777 - 888 - 999 - 0000" class="form-control form-control-sm cust-sm col-sm">
+				<input type="text" placeholder="777-888-999-0000" class="form-control form-control-sm cust-sm col-sm">
 				<label class="form-control-sm col-sm-1">Business</label>
 				<input type="text" placeholder="Non-Life Insurance" class="form-control form-control-sm cust-sm col-sm">
 				<label class="form-control-sm col-sm-1">Amount</label>
@@ -42,10 +47,10 @@
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Particulars</label>
-				<!-- <textarea placeholder="Representing payment for premium of policy CAR-2018-00001-99-0001-000" class="form-control form-control-sm col-sm" [(ngModel)]="record.particulars" style="font-size: 11px; min-height: 60px; margin-bottom: 17px !important;"></textarea> -->
-				<div class="form-control-sm col-sm edtr-cont" style="height: 60px;">
+				<textarea placeholder="Representing payment for premium of policy CAR-2018-00001-99-0001-000" class="form-control form-control-sm col-sm" [(ngModel)]="record.particulars" style="font-size: 11px; min-height: 60px; margin-bottom: 17px !important;"></textarea>
+				<!-- <div class="form-control-sm col-sm edtr-cont" style="height: 60px;">
 					<text-editor [editorContent]="itest" [editorPlaceholder]="'Representing payment for premium of policy CAR-2018-00001-99-0001-000'"></text-editor>
-				</div>
+				</div> -->
 			</div>
 		</fieldset>
 	</div>
@@ -59,8 +64,12 @@
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-3">Type</label>
-				<input type="text" placeholder="VAT" class="form-control form-control-sm cust-sm col-sm">
-				<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+				<!-- <input type="text" placeholder="VAT" class="form-control form-control-sm cust-sm col-sm"> -->
+				<select class="form-control form-control-sm cust-sm col-sm cust-sm">
+					<option value="vat" selected>VAT</option>
+					<option value="nonVat">Non-VAT</option>
+				</select>
+				<!-- <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div> -->
 			</div>
 		</fieldset>
 		<fieldset class="scheduler-border" style="margin-left: -5px !important; padding-top: 5px !important; padding-bottom: 5px !important;">
@@ -88,7 +97,7 @@
 </div>
 <div class="row">
 	<div class="col-sm-12">
-		<fieldset class="scheduler-border" style="padding-top: 6px !important; padding-bottom: 10px !important;">
+		<fieldset class="scheduler-border" style="padding-top: 10px !important; padding-bottom: 10px !important;">
 			<legend class="scheduler-border">Payment Details</legend>
 			<div class="row">
 				<div class="col-sm-12">
@@ -101,7 +110,7 @@
 						<label class="form-control-sm col-sm-2">P.R. No.</label>
 						<input type="text" placeholder="000001" class="form-control form-control-sm cust-sm text-right col-sm-2">
 						<label class="form-control-sm col-sm-2">Date</label>
-						<input type="date" class="form-control form-control-sm cust-sm col-sm-4">
+						<input type="date" class="form-control form-control-sm cust-sm col-sm-4" value="2019-01-01">
 						<input type="text" placeholder="10:45 AM" class="form-control form-control-sm cust-sm text-center cust-mrgn col-sm-2" style="margin-right: -2px;">
 					</div>
 					<div class="input-group cust-ig">
@@ -123,14 +132,14 @@
 						<label class="form-control-sm col-sm-2">Created By</label>
 						<input type="text" placeholder="cuaresma" class="form-control form-control-sm cust-sm col-sm">
 						<label class="form-control-sm col-sm-2">Date Created</label>
-						<input type="date" class="form-control form-control-sm cust-sm col-sm">
+						<input type="date" class="form-control form-control-sm cust-sm col-sm" value="2019-01-01">
 					</div>
 					<div class="input-group cust-ig">
 						<span class="col-sm-1"></span>
 						<label class="form-control-sm col-sm-2">Last Update By</label>
 						<input type="text" placeholder="cuaresma" class="form-control form-control-sm cust-sm col-sm">
 						<label class="form-control-sm col-sm-2">Last Update</label>
-						<input type="date" class="form-control form-control-sm cust-sm col-sm">
+						<input type="date" class="form-control form-control-sm cust-sm col-sm" value="2019-01-01">
 					</div>
 				</div>
 			</div>

@@ -7,7 +7,8 @@
 				<input type="text" value="000001" class="form-control form-control-sm cust-sm col-sm-1 text-right" numbers-only
 				 placeholder="">
 				<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Date</label>
-				<input type="text" value="10/01/2018 10:45 AM" class="form-control form-control-sm cust-sm col-sm-2" placeholder="">
+				<input type="datetime-local" value="2018-10-01T10:45" class="form-control form-control-sm cust-sm col-sm-3"
+				 placeholder="">
 				<label class="form-control-sm col-sm-2" style="padding-left:0px !important; margin-left: -19px !important;">Payment
 					Type</label>
 				<input type="text" value="Inward Policy Balances" class="form-control form-control-sm cust-sm col-sm" placeholder="">
@@ -23,13 +24,13 @@
 		<div class="col-sm-4">
 			<div class="input-group">
 				<label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Amount</label>
-				<input type="text" value="PHP" class="form-control form-control-sm cust-sm col-sm-1" placeholder="">
+				<input type="text" value="PHP" class="form-control form-control-sm cust-sm col-sm-2" placeholder="">
 				<input type="text" value="1,642,857.14" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
 				 placeholder="">
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Local Amount</label>
-				<input type="text" value="PHP" class="form-control form-control-sm cust-sm col-sm-1" placeholder="">
+				<input type="text" value="PHP" class="form-control form-control-sm cust-sm col-sm-2" placeholder="">
 				<input type="text" value="1,642,857.14" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
 				 placeholder="">
 			</div>
@@ -43,7 +44,7 @@
 			<ng-template ngbTabContent>
 				<div class="input-group cust-border" style="padding-top: 0.6em">
 					<div class="col-sm-12">
-						<app-cust-editable-non-datatable [passData]="amountDetailsData">
+						<app-cust-editable-non-datatable (tableDataChange)="amtDetails($event)" [passData]="amountDetailsData">
 							<ng-container controls-r>
 								<label class="form-control-sm labels" style="text-align: left !important">Auto Compute</label>
 								<input type="checkbox" class="checkbox text-right" style="vertical-align: middle;" checked>
@@ -81,7 +82,7 @@
 						<fieldset class="scheduler-border" style="margin-bottom:10px !important;">
 							<legend class="scheduler-border">Creditable WTax Details</legend>
 							<div class="custom-row-inline-inset">
-								<app-cust-editable-non-datatable [passData]="passDataTaxDetailsCreditableWtax">
+								<app-cust-editable-non-datatable (tableDataChange)="creditableWTax($event)" [passData]="passDataTaxDetailsCreditableWtax">
 									<ng-container controls-r>
 										<button class="cust-btn" style="margin-right: 0px !important;">BIR 2307</button>
 									</ng-container>
@@ -103,11 +104,11 @@ padding-right: 0px !important;">
 					<label class="form-control-sm col-sm-1">Created By</label>
 					<input type="text" appCurrency class="form-control form-control-sm col-sm" placeholder="cuaresma">
 					<label class="form-control-sm col-sm-1">Date Created</label>
-					<input type="datetime-local" class="form-control form-control-sm col-sm">
+					<input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-01T10:45">
 					<label class="form-control-sm col-sm-1">Last Update By</label>
 					<input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma">
 					<label class="form-control-sm col-sm-1">Last Update</label>
-					<input type="datetime-local" class="form-control form-control-sm col-sm">
+					<input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-02T10:00">
 				</div>
 			</div>
 		</div>

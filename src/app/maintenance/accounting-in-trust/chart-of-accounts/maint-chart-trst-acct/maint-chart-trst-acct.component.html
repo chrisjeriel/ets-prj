@@ -1,0 +1,42 @@
+<fieldset class="scheduler-border">
+  <legend class="scheduler-border">Filter Options</legend>
+  <div class="form-row custom-row-inline-inset">
+    <div class="col-sm-3">
+      <div class="input-group">
+        <label class="form-control-sm col-sm-4">Account Type</label>
+        <select class="form-control form-control-sm cust-sm col-sm">
+          <option value="all">ALL</option>
+          <option value="asset">Asset</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="input-group">
+        <label class="form-control-sm col-sm-1">Main</label>
+        <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px !important;">
+        <label class="form-control-sm col-sm-1">Sub1</label>
+        <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px !important;">
+        <label class="form-control-sm col-sm-1">Sub2</label>
+        <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px !important;">
+        <label class="form-control-sm col-sm-1">Sub3</label>
+        <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px !important;">
+      </div>
+    </div>
+    <div class="col-sm-5">
+      <div class="input-group">
+        <label class="form-control-sm col-sm-3">Account Description</label>
+        <input type="text" class="form-control form-control-sm col-sm">
+        <div class="cust-btn-container" style="margin-left:3px !important;margin-top: -2px !important;">
+          <button class="cust-btn col-sm-1">Search</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</fieldset>
+
+<fieldset class="scheduler-border">
+  <legend class="scheduler-border">Accounts Setup</legend>
+  <div class="custom-row-inline-inset">
+    <app-cust-non-datatable [passData]="passDataAccountsSetup"></app-cust-non-datatable>
+  </div>
+</fieldset>
