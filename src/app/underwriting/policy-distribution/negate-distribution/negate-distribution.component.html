@@ -12,16 +12,18 @@
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Policy No</label>
 										<input type="text" class="form-control form-control-sm col-sm-1 cap-input text-center" ngbTooltip="Line" [ngModel]="policyNo.split('-')[0]">
-										<input type="text" class="form-control form-control-sm col-sm-1 cap-input  text-center" [ngModel]="policyNo.split('-')[1]" style="margin-left: 5px;"
+										<input type="text" class="form-control form-control-sm col-sm-1 cap-input  text-center" [ngModel]="policyNo.split('-')[1]" style="margin-left: 3px;"
 										ngbTooltip="Year">
-										<input type="text" class="form-control form-control-sm col-sm-4 cap-input  text-center" [ngModel]="policyNo.split('-')[2]" style="margin-left: 5px;"
+										<input type="text" class="form-control form-control-sm col-sm-4 cap-input  text-center" [ngModel]="policyNo.split('-')[2]" style="margin-left: 3px;"
 										ngbTooltip="Sequence No">
-										<input type="text" class="form-control form-control-sm col-sm-1 cap-input  text-center" [ngModel]="policyNo.split('-')[3]" style="margin-left: 5px;"
+										<input type="text" class="form-control form-control-sm col-sm-1 cap-input  text-center" [ngModel]="policyNo.split('-')[3]" style="margin-left: 3px;"
 										ngbTooltip="Co Code">
-										<input type="text" class="form-control form-control-sm col-sm-2 cap-input  text-center" [ngModel]="policyNo.split('-')[4]" style="margin-left: 5px;"
+										<input type="text" class="form-control form-control-sm col-sm-2 cap-input  text-center" [ngModel]="policyNo.split('-')[4]" style="margin-left: 3px;"
 										ngbTooltip="Co Series No">
-										<input type="text" class="form-control form-control-sm col-sm-1 cap-input  text-center" [ngModel]="policyNo.split('-')[5]" style="margin-left: 5px;"
+										<input type="text" class="form-control form-control-sm col-sm-1 cap-input  text-center" [ngModel]="policyNo.split('-')[5]" style="margin-left: 3px;"
 										ngbTooltip="Alt No">
+										<span>&nbsp;</span>
+                            			<div class="text-search-ico" style="margin-top: -2px;"><a><i class="fa fa-search"></i></a></div>
 
 									</div>
 									<div class="input-group">
@@ -191,7 +193,7 @@
 										</div>
 									</app-modal>
 									<button type="button" class="cust-btn" (click)="test()"><a>Cancel</a></button>
-									<button type="button" class="cust-btn"><a>Save</a></button>
+									<button type="button" class="cust-btn"><a>Negate</a></button>
 									</div>
 							</div>
 						</div>
