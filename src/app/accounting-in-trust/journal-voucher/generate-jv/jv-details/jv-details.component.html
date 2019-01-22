@@ -20,7 +20,9 @@
                 <input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="San Miguel Corporation"
                 readonly>
                 <label class="form-control-sm col-sm-1 text-right">Ref No</label>
-                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="000284723" style="text-align: right;text-align: right;" readonly>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="
+2017 - 00023974
+" readonly>
                 <label class="form-control-sm col-sm-1">Date</label>
                 <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="10/01/2018 11:49 AM" readonly>
             </div>
@@ -51,7 +53,7 @@
 			<ng-template ngbTabContent>
 				<div class="input-group cust-border" style="padding-top: 0.6em">
                     <div class="col-sm-12">
-                        <app-cust-editable-non-datatable [passData]="amountDetailsData">
+                        <app-cust-editable-non-datatable [passData]="amountDetailsData" (tableDataChange)="plusMinus($event)">
                             <ng-container controls-r>
                                 <label class="form-control-sm" style="text-align: left !important">Auto Compute</label>
                                 <input type="checkbox" class="checkbox text-right" style="vertical-align: middle;" checked>
@@ -95,7 +97,7 @@
                         <fieldset class="scheduler-border" style="margin-bottom:10px !important;">
                             <legend class="scheduler-border">Creditable WTax Details</legend>
                             <div class="custom-row-inline-inset">
-                                <app-cust-editable-non-datatable [passData]="accountingCreditableTaxDetails">
+                                <app-cust-editable-non-datatable [passData]="accountingCreditableTaxDetails" (tableDataChange)="computeWTax($event)">
                                     <ng-container controls-r>
                                         <button class="cust-btn" style="margin-right: 0px !important;">BIR 2307</button>
                                     </ng-container>
