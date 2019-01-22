@@ -44,20 +44,6 @@ export class ArDetailsComponent implements OnInit {
     uneditable: [false, false, false, false, false, true],
   };
 
-  creditableWTax(data) {
-    for (var i = 0; i < data.length; i++) {
-      if (data[i].birTaxCode == "WC002") {
-        data[i].wtaxRate = 2;
-      } else if (data[i].birTaxCode == "WC010") {
-        data[i].wtaxRate = 10;
-      } else if (data[i].birTaxCode == "WC020") {
-        data[i].wtaxRate = 20;
-      }
-      data[i].wtaxAmount = data[i].wtaxRate * data[i].baseAmount / 100;
-    }
-    this.passDataTaxDetailsCreditableWtax.tableData = data;
-  }
-
   amountDetailsData: any = {
     tableData: [
       {
@@ -99,12 +85,12 @@ export class ArDetailsComponent implements OnInit {
         detail: 'Creditable Wtax (20%)',
         amount: 357142.86,
         amountPHP: 357142.86,
-        plusMinus: 'Add',
+        plusMinus: 'Less',
         amountPlusMinus: -357142.86
       },
     ],
     tHeader: ['Detail', 'Amount', 'Amount (PHP)', 'Plus/Minus', 'Amount Plus/Minus'],
-    dataTypes: ['text', 'currency', 'currency', 'text', 'currency'],
+    dataTypes: ['text', 'currency', 'currency', 'select', 'currency'],
     nData: [null, null, null, null, null],
     paginateFlag: true,
     infoFlag: true,
@@ -113,8 +99,16 @@ export class ArDetailsComponent implements OnInit {
     addFlag: true,
     deleteFlag: true,
     total: [null, null, null, 'Total', 'amountPlusMinus'],
-    genericBtn: 'Save'
+    genericBtn: 'Save',
+    opts: [
+      {
+        selector: 'plusMinus',
+        vals: ['Add', 'Less', 'None']
+      }
+    ]
   }
+
+
 
   accEntriesData: any = {
     tableData: [
@@ -139,5 +133,32 @@ export class ArDetailsComponent implements OnInit {
     this.titleService.setTitle("Acct-IT | AR Details");
   }
 
+  creditableWTax(data) {
+    for (var i = 0; i < data.length; i++) {
+      if (data[i].birTaxCode == "WC002") {
+        data[i].wtaxRate = 2;
+      } else if (data[i].birTaxCode == "WC010") {
+        data[i].wtaxRate = 10;
+      } else if (data[i].birTaxCode == "WC020") {
+        data[i].wtaxRate = 20;
+      }
+      data[i].wtaxAmount = data[i].wtaxRate * data[i].baseAmount / 100;
+    }
+    this.passDataTaxDetailsCreditableWtax.tableData = data;
+  }
+
+  amtDetails(data) {
+    for (var i = 0; i < data.length; i++) {
+      if (data[i].plusMinus == "None") {
+        data[i].amountPlusMinus = 0 * data[i].amountPHP;
+      } else if (data[i].plusMinus == "Less") {
+        data[i].amountPlusMinus = -1 * data[i].amountPHP;
+      } else if (data[i].plusMinus == "Add") {
+        data[i].amountPlusMinus = 1 * data[i].amountPHP;
+      }
+    }
+    this.amountDetailsData.tableData = data;
+  }
 
 }
+
