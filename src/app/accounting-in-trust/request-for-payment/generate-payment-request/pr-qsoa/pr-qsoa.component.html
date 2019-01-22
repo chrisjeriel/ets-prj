@@ -1,46 +1,38 @@
-<fieldset class="scheduler-border" style="padding-top: 4px !important; padding-bottom: 4px !important">
-    <legend class="scheduler-border" style="margin-bottom: -9px !important;">A.R. Info</legend>
-    <div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;">
-        <div class="input-group" style="margin-top: 3px !important">
-            <div class="col-sm-9" style="padding-right: 3px">
-                <div class="input-group">
-                    <label class="form-control-sm col-sm-1" for="xx">A.R. No</label>
-                    <input type="text" id="xx" value="000001" class="text-right form-control form-control-sm cust-sm col-sm-1"
-                           placeholder="" readonly>
-                    <label class="form-control-sm col-sm-1" for="xx">Date</label>
-                    <input readonly type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm-2" value="10/01/2018 10:45 AM" style="margin-right: -21px;">
-                    <label class="form-control-sm col-sm-2" for="xx">Payment Type</label>
-                    <input readonly type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm" value="Quarterly Statement of Accounts">
-                    <label class="form-control-sm col-sm-1" for="xx">Status</label>
-                    <input readonly type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm-1" value="New" >
-                </div>
+<fieldset class="scheduler-border" >
+    <legend class="scheduler-border">Request Info</legend>
+    <div class="form-row custom-row-inline-inset">
+        <div class="col-sm-8">
+            <div class="input-group">
+                <label class="form-control-sm col-sm-1" for="xx" style="padding-left:0px !important;">Request No</label>
+                <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-4"
+                placeholder="00000001" style="text-align: right; margin-left: 2px;" readonly>
+                <label class="form-control-sm col-sm-1" for="xx">Date</label>
+                <input type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="10/01/2018 11:49 AM" readonly>
+                <label class="form-control-sm col-sm-1" for="xx">Status</label>
+                <input type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm-3" placeholder="New" readonly>
             </div>
-            <div class="col-sm" style="padding-right: 3px">
-                <div class="input-group">
-                    <label class="form-control-sm col-sm-4" for="xx">Amount</label>
-                    <input readonly type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm-2" value="PHP" style="margin-right: 4px !important;">
-                    <input readonly type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm text-right" value="710,716.12">
-                </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-1" for="xx" style="padding-left:0px !important;">Payee</label>
+                <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm" placeholder="San Miguel Corporation"
+                readonly>
             </div>
         </div>
-        <div class="input-group" style="margin-bottom: -13px !important;">
-            <div class="col-sm-9" style="padding-right: 3px">
-                <div class="input-group">
-                    <label class="form-control-sm col-sm-1" for="xx">Payor</label>
-                    <input type="text" id="xx" value="Risk Name" class="form-control form-control-sm cust-sm col-sm" value="BPI/MS INSURANCE CORPORATION"
-                    readonly>
-                </div>
+        <div class="col-sm-4">
+            <div class="input-group">
+                <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Amount</label>
+                <input type="text" value="PHP" class="form-control form-control-sm cust-sm col-sm-1" placeholder="" readonly>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
+                placeholder="27,153.30" readonly>
             </div>
-            <div class="col-sm" style="padding-right: 3px">
-                <div class="input-group">
-                    <label class="form-control-sm col-sm-4" for="xx">Local Amount</label>
-                    <input readonly type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm-2" value="PHP" style="margin-right: 4px !important;">
-                    <input readonly type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm text-right" value="710,716.12">
-                </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Local Amount</label>
+                <input type="text" value="PHP" class="form-control form-control-sm cust-sm col-sm-1" placeholder="" readonly>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
+                placeholder="27,153.30" readonly>
             </div>
         </div>
     </div>
-</fieldset> 
+</fieldset>
 <fieldset class="scheduler-border">
 	<legend class="scheduler-border">QSOA Balances List</legend>
 	<div class="form-row custom-row-inline-inset" style="margin-bottom: -8px !important;">
