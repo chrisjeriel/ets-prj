@@ -24,6 +24,7 @@ PremiumReturn : any = {
     addFlag: true,
     deleteFlag: true,
     total: [null, null, 'Total', 'premium','riCommission','charges',null,'netDue'],
+    widths:['auto',107,214,'auto','auto','auto',62,'auto'],
     genericBtn: 'Save'
   }
 
