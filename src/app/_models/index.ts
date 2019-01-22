@@ -63,4 +63,6 @@ export * from './AccountingUtilitiesCancelTransactions';
 export * from './AccountingITEditedAcctEntries';
 export * from './AccountingJVInwardPolBal';
 export * from './AccountingJVPayRequestList';
+export * from './AccountingTBTotDebCred';
+export * from './AccountingTBNet';
 

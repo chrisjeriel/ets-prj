@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment , AccCVPayReqList , AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments,  AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AccJvInPolBal, AccJVPayReqList} from '@app/_models';
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment , AccCVPayReqList , AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments,  AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet} from '@app/_models';
 
 
 @Injectable({
@@ -39,6 +39,8 @@ export class AccountingService {
 	accItEditedLatestAcctEntries: AccItEditedLatestAcctEntries[] = [];
 	accJvInPolBal: AccJvInPolBal[] = [];
 	accJvPayReqList: AccJVPayReqList[] = [];
+	accTBTotDebCred: AccTBTotDebCred[] = [];
+	accTBNet: AccTBNet[] = [];
 
 
 	constructor(private http: HttpClient) { }
@@ -457,5 +459,22 @@ export class AccountingService {
 		
 		return this.accJvPayReqList;
 	}
+
+	getAccTBTotDebCred() {
+		this.accTBTotDebCred = [
+			new AccTBTotDebCred(null,null,null,null,null),
+				];
+		
+		return this.accTBTotDebCred;
+	}
+
+	getAccTBNet() {
+		this.accTBNet = [
+			new AccTBNet(null,null,null,null,null),
+				];
+		
+		return this.accTBNet;
+	}
+
 
 }
