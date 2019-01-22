@@ -165,6 +165,8 @@ import { CancelArComponent } from './accounting-in-trust/utilities/cancel-transa
 import { CancelCvComponent } from './accounting-in-trust/utilities/cancel-transactions/cancel-cv/cancel-cv.component';
 import { CancelJvComponent } from './accounting-in-trust/utilities/cancel-transactions/cancel-jv/cancel-jv.component';
 import { AcctItEditedAcctEntriesComponent } from './accounting-in-trust/accounting-inquiry/acct-it-edited-acct-entries/acct-it-edited-acct-entries.component';
+import { ChartOfAccountsComponent } from './maintenance/accounting-in-trust/chart-of-accounts/chart-of-accounts.component';
+import { MaintChartTrstAcctComponent } from './maintenance/accounting-in-trust/chart-of-accounts/maint-chart-trst-acct/maint-chart-trst-acct.component';
 
 
 @NgModule({
@@ -335,6 +337,8 @@ import { AcctItEditedAcctEntriesComponent } from './accounting-in-trust/accounti
         CancelCvComponent,
         CancelJvComponent,
         AcctItEditedAcctEntriesComponent,
+        ChartOfAccountsComponent,
+        MaintChartTrstAcctComponent,
 
     ],
 

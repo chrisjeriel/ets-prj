@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment , AccCVPayReqList , AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments,  AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries} from '@app/_models';
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries } from '@app/_models';
 
 
 @Injectable({
@@ -25,9 +25,9 @@ export class AccountingService {
 	arTaxDetailsWTAX: ARTaxDetailsWTAX[] = [];
 	arInwdPolBalDetails: ARInwdPolBalDetails[] = [];
 	arClaimsRecovery: ARClaimsRecovery[] = [];
-	accCvAttachment: AccCvAttachment[]=[];
-	accCvPayReqList: AccCVPayReqList[]=[];
-	accInvestments: AccInvestments[]=[];
+	accCvAttachment: AccCvAttachment[] = [];
+	accCvPayReqList: AccCVPayReqList[] = [];
+	accInvestments: AccInvestments[] = [];
 	chngTxToNewAR: AcknowledgementReceipt[] = [];
 	chngTxToNewCV: CheckVoucher[] = [];
 	chngTxToNewJv: JournalVoucher[] = [];
@@ -264,7 +264,7 @@ export class AccountingService {
 	}
 
 
-	getAccountingEntriesUtil(){
+	getAccountingEntriesUtil() {
 		this.accountingEntriesCVData = [
 			new AccountingEntriesCV('1-01-02-01', 'BPI Current Account No. 0071-0435-0438-94', '', '', 0, 2945.45),
 		];
@@ -272,10 +272,10 @@ export class AccountingService {
 		return this.accountingEntriesCVData;
 	}
 
-	getAccInvestments(){
+	getAccInvestments() {
 		this.accInvestments = [
-			new AccInvestments("BPI","BPI 1", 5, "Years", 8.875000, new Date("10/20/2018"), new Date("10/20/2018"), 14000000, 1812500 ),
-			new AccInvestments("RCBC","RCBC 1",35,"Days", 1.500000,new Date("09/26/2018"),new Date("10/31/2018"),10000000,10150000)
+			new AccInvestments("BPI", "BPI 1", 5, "Years", 8.875000, new Date("10/20/2018"), new Date("10/20/2018"), 14000000, 1812500),
+			new AccInvestments("RCBC", "RCBC 1", 35, "Days", 1.500000, new Date("09/26/2018"), new Date("10/31/2018"), 10000000, 10150000)
 		]
 		return this.accInvestments;
 	}
@@ -390,16 +390,16 @@ export class AccountingService {
 
 	getCancelAR() {
 		this.cancelAR = [
-			new CancelTransactionAR(null,'BPI/MS INSURANCE CORPORATION',new Date(2018,9,1),'Inward Policy Balances','New','Representing payment for premium of policy CAR-2018-00001-00-0001-000',1642857.14),
-			new CancelTransactionAR(null,'PNBGEN',new Date(2018,9,1),'Inward Policy Balances','New','Representing payment for premium of policy CAR-2018-00001-00-0001-000',200000),
-			new CancelTransactionAR(3,'Charter Ping An',new Date(2018,9,3),'Claim Recovery','Printed','Representing claim recovery payment for Claim No CAR-2018-000001',100000),
-			new CancelTransactionAR(4,'AXA',new Date(2018,9,4),'QSOA','Printed','Representing payment for the Quarterly Statement of Account balance of BPI/MS for 3rd Quarter',1000000),
-			new CancelTransactionAR(null,'Allied Bankers',new Date(2018,9,4),'QSOA','New','Representing payment for the Quarterly Statement of Account balance of BPI/MS for 3rd Quarter',710716.12),
-			new CancelTransactionAR(null,'Malayan',new Date(2018,9,5),'Inward Policy Balances','New','Representing payment for premium of policy CAR-2018-00001-00-0001-000',756929),
-			new CancelTransactionAR(null,'New India',new Date(2018,9,7),'Claim Recovery','New','Representing claim recovery payment for Claim No CAR-2018-000001',30000),
-			new CancelTransactionAR(8,'BPI/MS INSURANCE CORPORATION',new Date(2018,9,7),'Claim Recovery','Printed','Representing claim recovery payment for Claim No CAR-2018-000001',10000),
-			new CancelTransactionAR(9,'UCPBGEN',new Date(2018,9,7),'QSOA','Printed','Representing payment for the Quarterly Statement of Account balance of BPI/MS for 3rd Quarter',230000),
-			new CancelTransactionAR(null,'FGIC',new Date(2018,9,7),'Inward Policy Balances','New','Representing payment for premium of policy CAR-2018-00001-00-0001-000',1500000),
+			new CancelTransactionAR(null, 'BPI/MS INSURANCE CORPORATION', new Date(2018, 9, 1), 'Inward Policy Balances', 'New', 'Representing payment for premium of policy CAR-2018-00001-00-0001-000', 1642857.14),
+			new CancelTransactionAR(null, 'PNBGEN', new Date(2018, 9, 1), 'Inward Policy Balances', 'New', 'Representing payment for premium of policy CAR-2018-00001-00-0001-000', 200000),
+			new CancelTransactionAR(3, 'Charter Ping An', new Date(2018, 9, 3), 'Claim Recovery', 'Printed', 'Representing claim recovery payment for Claim No CAR-2018-000001', 100000),
+			new CancelTransactionAR(4, 'AXA', new Date(2018, 9, 4), 'QSOA', 'Printed', 'Representing payment for the Quarterly Statement of Account balance of BPI/MS for 3rd Quarter', 1000000),
+			new CancelTransactionAR(null, 'Allied Bankers', new Date(2018, 9, 4), 'QSOA', 'New', 'Representing payment for the Quarterly Statement of Account balance of BPI/MS for 3rd Quarter', 710716.12),
+			new CancelTransactionAR(null, 'Malayan', new Date(2018, 9, 5), 'Inward Policy Balances', 'New', 'Representing payment for premium of policy CAR-2018-00001-00-0001-000', 756929),
+			new CancelTransactionAR(null, 'New India', new Date(2018, 9, 7), 'Claim Recovery', 'New', 'Representing claim recovery payment for Claim No CAR-2018-000001', 30000),
+			new CancelTransactionAR(8, 'BPI/MS INSURANCE CORPORATION', new Date(2018, 9, 7), 'Claim Recovery', 'Printed', 'Representing claim recovery payment for Claim No CAR-2018-000001', 10000),
+			new CancelTransactionAR(9, 'UCPBGEN', new Date(2018, 9, 7), 'QSOA', 'Printed', 'Representing payment for the Quarterly Statement of Account balance of BPI/MS for 3rd Quarter', 230000),
+			new CancelTransactionAR(null, 'FGIC', new Date(2018, 9, 7), 'Inward Policy Balances', 'New', 'Representing payment for premium of policy CAR-2018-00001-00-0001-000', 1500000),
 		];
 		return this.cancelAR;
 	}

@@ -1,5 +1,5 @@
 ﻿<style>
-.btn-link:hover {
+    .btn-link:hover {
     color: #0056b3;
     text-decoration: none;
     background-color: transparent;
@@ -15,121 +15,122 @@
 </div>
 <ng-sidebar-container style="position: static;" (onBackdropClicked)="_onBackdropClicked()">
     <ng-sidebar [(opened)]="_opened" [mode]="'push'" [keyClose]="_keyClose" [position]="'left'" [dock]="'true'"
-    [dockedSize]="'0px'" [sidebarClass]="'demo-sidebar'" [closeOnClickOutside]="_closeOnClickOutside" *ngIf="currentUser">
+        [dockedSize]="'0px'" [sidebarClass]="'demo-sidebar'" [closeOnClickOutside]="_closeOnClickOutside" *ngIf="currentUser">
 
-    <div class="cust-ng-sidebar">
-        <div class="cust-side-nav-bg">
-            <div class="side-nav-header">
-                <div class="text-center">
-                    <img src="app/resources/images/PMMSC-blank-sq.png" alt="logo.png" id="logo">
+        <div class="cust-ng-sidebar">
+            <div class="cust-side-nav-bg">
+                <div class="side-nav-header">
+                    <div class="text-center">
+                        <img src="app/resources/images/PMMSC-blank-sq.png" alt="logo.png" id="logo">
+                    </div>
+                    <h3 class="text-center">
+                        PMMSC
+                    </h3>
+                    <p>Module Id: QLR101</p>
+                    <p>Database: PMMSC</p>
+                    <!--<p>Server Time: Nov 21, 2018 10:32:10 AM</p>-->
+                    <p>Server Time: {{datetime | date: 'medium'}}</p>
+                    <p>User Id: {{ currentUser.username }}</p>
                 </div>
-                <h3 class="text-center">
-                    PMMSC
-                </h3>
-                <p>Module Id: QLR101</p>
-                <p>Database: PMMSC</p>
-                <!--<p>Server Time: Nov 21, 2018 10:32:10 AM</p>-->
-                <p>Server Time: {{datetime | date: 'medium'}}</p>
-                <p>User Id: {{ currentUser.username }}</p>
-            </div>
-            <hr>
-            <div class="side-nav-body">
-                <ngb-accordion #acc="ngbAccordion">
-                    <ngb-panel>
-                        <ng-template ngbPanelTitle>
-                            <fa name="file"></fa>&nbsp;Quotation
-                        </ng-template>
-                        <ng-template ngbPanelContent>
-                            <button [routerLink]="['/quotation-processing']" class="button btn btn-link">Quotation
-                            Processing</button>
-                            <br />
-                            <button [routerLink]="['/quotation-inquiry']" class="button btn btn-link">Quotation
-                            Inquiry</button>
-                            <br>
-                            <button [routerLink]="['/quotation-holdcover']" class="button btn btn-link">Quotation
-                            to Hold Cover</button>
-                            <br />
-                            <button [routerLink]="['/hold-cover-monitoring']" class="button btn btn-link">Hold
-                            Cover Monitoring</button>
-                            <br />
-                            <button [routerLink]="['/change-quote-status']" class="button btn btn-link">Change
-                            Quote Status</button>
-                            <br />
-                            <button [routerLink]="['/open-cover-processing']" class="button btn btn-link"> Open
-                            Cover Processing</button>
-                            <br />
-                            <button [routerLink]="['/open-cover-inquiry']" class="button btn btn-link"> Open
-                            Cover Inquiry</button>
-                        </ng-template>
-                    </ngb-panel>
-                    <ngb-panel>
-                        <ng-template ngbPanelTitle>
-                            <fa name="list-ul"></fa>&nbsp;Policy
-                        </ng-template>
-                        <ng-template ngbPanelContent>
-                            <ngb-accordion #acc="ngbAccordion">
-                                <ngb-panel title="Issuance">
-                                    <ng-template ngbPanelContent>
-                                        <button [routerLink]="['/create-policy']" class="button btn btn-link">Create Policy</button>
-                                        <br />
-                                        <button [routerLink]="['/policy-listing']" class="button btn btn-link">Policy
-                                        List</button>
-                                        <br />
-                                        <button [routerLink]="['/create-alteration']" class="button btn btn-link">Create
-                                        Alteration</button>
-                                        <br />
-                                        <button [routerLink]="['/alt-policy-listing']" class="button btn btn-link">Alteration
-                                        List</button>
-                                        <br />
-                                        <button [routerLink]="['/create-open-cover']" class="button btn btn-link">Create
-                                        Open Cover</button>
-                                    </ng-template>
-                                </ngb-panel>
-                                <ngb-panel title="Distribution">
-                                    <ng-template ngbPanelContent>
-                                        <button [routerLink]="['/pol-dist']" class="button btn btn-link">Policy
-                                        Distribution</button>
-                                        <br />
-                                        <button [routerLink]="['/pol-dist-list']" class="button btn btn-link">Policy
-                                        Distribution List</button>
-                                        <br />
-                                        <button [routerLink]="['/negate-distribution']" class="button btn btn-link">Negate
-                                        Distribution</button>
-                                        <br />
-                                        <button [routerLink]="['/batch-processing']" class="button btn btn-link">Batch
-                                        Processing</button>
-                                        <br>
-                                    </ng-template>
-                                </ngb-panel>
-                                <ngb-panel title="Expiry & Renewal">
-                                    <ng-template ngbPanelContent>
-                                        <button [routerLink]="['/extract-expiring-policies']" class="button btn btn-link">Extract
-                                        Expiring Policies</button>
-                                        <br />
-                                        <button [routerLink]="['/expiry-listing']" class="button btn btn-link">Expiry
-                                        Listing</button>
-                                        <br />
-                                        <button [routerLink]="['/policy-holdcover']" class="button btn btn-link">Policy
-                                        To Hold Cover</button>
-                                        <br />
-                                        <button [routerLink]="['purge-extracted-policy']" class="button btn btn-link">Purge
-                                        Extracted Policies</button>
-                                    </ng-template>
-                                </ngb-panel>
-                                <ngb-panel title="Inquiry">
-                                    <ng-template ngbPanelContent>
-                                        <button [routerLink]="['/policy-inquiry']" class="button btn btn-link">Policy
-                                        Inquiry</button>
-                                        <br />
-                                    </ng-template>
-                                </ngb-panel>
-                                <ngb-panel title="Generate Documents">
-                                    <ng-template ngbPanelContent>
-                                        <button [routerLink]="['/policy-printing']" class="button btn btn-link">Policy
-                                        Printing</button>
-                                    </ng-template>
-                                </ngb-panel>
-                                        <!-- <ngb-panel title="Maintenance">
+                <hr>
+                <div class="side-nav-body">
+                    <ngb-accordion #acc="ngbAccordion">
+                        <ngb-panel>
+                            <ng-template ngbPanelTitle>
+                                <fa name="file"></fa>&nbsp;Quotation
+                            </ng-template>
+                            <ng-template ngbPanelContent>
+                                <button [routerLink]="['/quotation-processing']" class="button btn btn-link">Quotation
+                                    Processing</button>
+                                <br />
+                                <button [routerLink]="['/quotation-inquiry']" class="button btn btn-link">Quotation
+                                    Inquiry</button>
+                                <br>
+                                <button [routerLink]="['/quotation-holdcover']" class="button btn btn-link">Quotation
+                                    to Hold Cover</button>
+                                <br />
+                                <button [routerLink]="['/hold-cover-monitoring']" class="button btn btn-link">Hold
+                                    Cover Monitoring</button>
+                                <br />
+                                <button [routerLink]="['/change-quote-status']" class="button btn btn-link">Change
+                                    Quote Status</button>
+                                <br />
+                                <button [routerLink]="['/open-cover-processing']" class="button btn btn-link"> Open
+                                    Cover Processing</button>
+                                <br />
+                                <button [routerLink]="['/open-cover-inquiry']" class="button btn btn-link"> Open
+                                    Cover Inquiry</button>
+                            </ng-template>
+                        </ngb-panel>
+                        <ngb-panel>
+                            <ng-template ngbPanelTitle>
+                                <fa name="list-ul"></fa>&nbsp;Policy
+                            </ng-template>
+                            <ng-template ngbPanelContent>
+                                <ngb-accordion #acc="ngbAccordion">
+                                    <ngb-panel title="Issuance">
+                                        <ng-template ngbPanelContent>
+                                            <button [routerLink]="['/create-policy']" class="button btn btn-link">Create
+                                                Policy</button>
+                                            <br />
+                                            <button [routerLink]="['/policy-listing']" class="button btn btn-link">Policy
+                                                List</button>
+                                            <br />
+                                            <button [routerLink]="['/create-alteration']" class="button btn btn-link">Create
+                                                Alteration</button>
+                                            <br />
+                                            <button [routerLink]="['/alt-policy-listing']" class="button btn btn-link">Alteration
+                                                List</button>
+                                            <br />
+                                            <button [routerLink]="['/create-open-cover']" class="button btn btn-link">Create
+                                                Open Cover</button>
+                                        </ng-template>
+                                    </ngb-panel>
+                                    <ngb-panel title="Distribution">
+                                        <ng-template ngbPanelContent>
+                                            <button [routerLink]="['/pol-dist']" class="button btn btn-link">Policy
+                                                Distribution</button>
+                                            <br />
+                                            <button [routerLink]="['/pol-dist-list']" class="button btn btn-link">Policy
+                                                Distribution List</button>
+                                            <br />
+                                            <button [routerLink]="['/negate-distribution']" class="button btn btn-link">Negate
+                                                Distribution</button>
+                                            <br />
+                                            <button [routerLink]="['/batch-processing']" class="button btn btn-link">Batch
+                                                Processing</button>
+                                            <br>
+                                        </ng-template>
+                                    </ngb-panel>
+                                    <ngb-panel title="Expiry & Renewal">
+                                        <ng-template ngbPanelContent>
+                                            <button [routerLink]="['/extract-expiring-policies']" class="button btn btn-link">Extract
+                                                Expiring Policies</button>
+                                            <br />
+                                            <button [routerLink]="['/expiry-listing']" class="button btn btn-link">Expiry
+                                                Listing</button>
+                                            <br />
+                                            <button [routerLink]="['/policy-holdcover']" class="button btn btn-link">Policy
+                                                To Hold Cover</button>
+                                            <br />
+                                            <button [routerLink]="['purge-extracted-policy']" class="button btn btn-link">Purge
+                                                Extracted Policies</button>
+                                        </ng-template>
+                                    </ngb-panel>
+                                    <ngb-panel title="Inquiry">
+                                        <ng-template ngbPanelContent>
+                                            <button [routerLink]="['/policy-inquiry']" class="button btn btn-link">Policy
+                                                Inquiry</button>
+                                            <br />
+                                        </ng-template>
+                                    </ngb-panel>
+                                    <ngb-panel title="Generate Documents">
+                                        <ng-template ngbPanelContent>
+                                            <button [routerLink]="['/policy-printing']" class="button btn btn-link">Policy
+                                                Printing</button>
+                                        </ng-template>
+                                    </ngb-panel>
+                                    <!-- <ngb-panel title="Maintenance">
                                             <ng-template ngbPanelContent>
                                                 <button [routerLink]="['/maintenance-line']" class="button btn btn-link">Line</button>
                                                 <br />
@@ -141,53 +142,53 @@
                                                 <br />
                                             </ng-template>
                                         </ngb-panel> -->
-                                        <ngb-panel title="Utilities">
-                                            <ng-template ngbPanelContent>
-                                                <ngb-accordion #acc="ngbAccordion">
-                                                    <ngb-panel title="Update Information">
-                                                        <ng-template ngbPanelContent>
-                                                            <button [routerLink]="['/pol-util-gen-info']" class="button btn btn-link">Update
+                                    <ngb-panel title="Utilities">
+                                        <ng-template ngbPanelContent>
+                                            <ngb-accordion #acc="ngbAccordion">
+                                                <ngb-panel title="Update Information">
+                                                    <ng-template ngbPanelContent>
+                                                        <button [routerLink]="['/pol-util-gen-info']" class="button btn btn-link">Update
                                                             General Info</button>
-                                                            <br />
-                                                            <button [routerLink]="['/pol-util-installment']" class="button btn btn-link">Update
+                                                        <br />
+                                                        <button [routerLink]="['/pol-util-installment']" class="button btn btn-link">Update
                                                             Installment</button>
-                                                            <br />
-                                                        </ng-template>
-                                                    </ngb-panel>
-                                                </ngb-accordion>
-                                            </ng-template>
-                                        </ngb-panel>
-                                    </ngb-accordion>
-                                </ng-template>
-                            </ngb-panel>
-                            <ngb-panel>
-                                <ng-template ngbPanelTitle>
-                                    <fa name="vcard"></fa>&nbsp;Claims
-                                </ng-template>
-                                <ng-template ngbPanelContent>
-                                    <button [routerLink]="['/clm-claim-processing']" class="button btn btn-link">Claims
+                                                        <br />
+                                                    </ng-template>
+                                                </ngb-panel>
+                                            </ngb-accordion>
+                                        </ng-template>
+                                    </ngb-panel>
+                                </ngb-accordion>
+                            </ng-template>
+                        </ngb-panel>
+                        <ngb-panel>
+                            <ng-template ngbPanelTitle>
+                                <fa name="vcard"></fa>&nbsp;Claims
+                            </ng-template>
+                            <ng-template ngbPanelContent>
+                                <button [routerLink]="['/clm-claim-processing']" class="button btn btn-link">Claims
                                     Processing</button>
-                                    <br />
+                                <br />
                                 <!-- <button [routerLink]="['clm-change-claim-status']" class="button btn btn-link">Change
                                     Claim Status</button>
                                     <br /> -->
-                                    <button [routerLink]="['']" class="button btn btn-link">Claim
+                                <button [routerLink]="['']" class="button btn btn-link">Claim
                                     Recovery</button>
-                                    <br />
-                                    <ngb-accordion #acc="ngbAccordion">
-                                        <ngb-panel>
-                                            <ng-template ngbPanelTitle>
-                                                Inquiry
-                                            </ng-template>
-                                            <ng-template ngbPanelContent>
-                                                <button [routerLink]="['claims-inquiry']" class="button btn btn-link">Claims
+                                <br />
+                                <ngb-accordion #acc="ngbAccordion">
+                                    <ngb-panel>
+                                        <ng-template ngbPanelTitle>
+                                            Inquiry
+                                        </ng-template>
+                                        <ng-template ngbPanelContent>
+                                            <button [routerLink]="['claims-inquiry']" class="button btn btn-link">Claims
                                                 Inquiry</button>
-                                                <br />
-                                            </ng-template>
-                                        </ngb-panel>
-                                    </ngb-accordion>
-                                </ng-template>
-                            </ngb-panel>
+                                            <br />
+                                        </ng-template>
+                                    </ngb-panel>
+                                </ngb-accordion>
+                            </ng-template>
+                        </ngb-panel>
                         <!-- <ngb-panel>
                             <ng-template ngbPanelTitle>
                                 <fa name="calculator"></fa>&nbsp;Accounting In-Trust
@@ -210,88 +211,114 @@
                                 <fa name="calculator"></fa>&nbsp;Accounting In-Trust
                             </ng-template>
                             <ng-template ngbPanelContent>
-                                    <button [routerLink]="['/acct-ar-listings']" class="button btn btn-link"> Acknowledgement Receipt </button>
-                                    <br />
-                                    <button [routerLink]="['/check-voucher']" class="button btn btn-link"> Check Voucher </button>
-                                    <br />
-                                    <button [routerLink]="['/payt-req']" class="button btn btn-link"> Request for Payment </button>
-                                    <br />
-                                    <button [routerLink]="['/journal-voucher']" class="button btn btn-link"> Journal Voucher </button>
-                                    <br />
-                                    <button [routerLink]="['/investments']" class="button btn btn-link"> Investments </button>
-                                    <br />
-                                    <ngb-accordion #acc="ngbAccordion">
-                                        <ngb-panel>
-                                            <ng-template ngbPanelTitle>
-                                                Inquiry
-                                            </ng-template>
-                                            <ng-template ngbPanelContent>
-                                                <button [routerLink]="['acct-it-cancelled-trans']" class="button btn btn-link">Cancelled Transactions</button>
-                                                <br />
-                                                    <button [routerLink]="['acct-it-edited-acct-entries']" class="button btn btn-link">Edited
-                                                    Accounting Entries</button>
-                                                <br />
-                                            </ng-template>
-                                        </ngb-panel>
-                                    </ngb-accordion>
-                                    <ngb-accordion #acc="ngbAccordion">
-                                        <ngb-panel>
-                                            <ng-template ngbPanelTitle>
-                                                Extract
-                                            </ng-template>
-                                            <ng-template ngbPanelContent>
-                                                <button [routerLink]="['accounting-entries']" class="button btn btn-link">Accounting Entries</button>
-                                                <br />
-                                                <button [routerLink]="['trial-balance']" class="button btn btn-link">Trial Balance</button>
-                                                <br />
-                                            </ng-template>
-                                        </ngb-panel>
-                                    </ngb-accordion>
-                                    <ngb-accordion #acc="ngbAccordion">
-                                        <ngb-panel>
-                                            <ng-template ngbPanelTitle>
-                                                Reports
-                                            </ng-template>
-                                            <ng-template ngbPanelContent>
-                                                <button [routerLink]="['print-registers']" class="button btn btn-link">Registers</button>
-                                            </ng-template>
-                                        </ngb-panel>
-                                    </ngb-accordion>
-                                    <ngb-accordion #acc="ngbAccordion">
-                                        <ngb-panel>
-                                            <ng-template ngbPanelTitle>
-                                                Utilities
-                                            </ng-template>
-                                            <ng-template ngbPanelContent>
-                                                <button [routerLink]="['change-trans-stat-to-new']" class="button btn btn-link">Change Transaction Status to New</button>
-                                                <br/>
-                                                <button [routerLink]="['edit-acct-entries']" class="button btn btn-link">Edit Accounting Entries</button>
-                                                <br />
-                                                <button [routerLink]="['cancel-transaction']" class="button btn btn-link">Cancel Transaction</button>
-                                                <br />
-                                            </ng-template>
-                                        </ngb-panel>
-                                    </ngb-accordion>
-                                 </ng-template>
-                            </ngb-panel>
-                            <ngb-panel>
-                                <ng-template ngbPanelTitle>
-                                    <fa name="calculator"></fa>&nbsp;Accounting Service
-                                </ng-template>
-                            </ngb-panel>
-                            <ngb-panel>
+                                <button [routerLink]="['/acct-ar-listings']" class="button btn btn-link">
+                                    Acknowledgement Receipt </button>
+                                <br />
+                                <button [routerLink]="['/check-voucher']" class="button btn btn-link"> Check Voucher
+                                </button>
+                                <br />
+                                <button [routerLink]="['/payt-req']" class="button btn btn-link"> Request for Payment
+                                </button>
+                                <br />
+                                <button [routerLink]="['/journal-voucher']" class="button btn btn-link"> Journal
+                                    Voucher </button>
+                                <br />
+                                <button [routerLink]="['/investments']" class="button btn btn-link"> Investments
+                                </button>
+                                <br />
+                                <ngb-accordion #acc="ngbAccordion">
+                                    <ngb-panel>
+                                        <ng-template ngbPanelTitle>
+                                            Inquiry
+                                        </ng-template>
+                                        <ng-template ngbPanelContent>
+                                            <button [routerLink]="['acct-it-cancelled-trans']" class="button btn btn-link">Cancelled
+                                                Transactions</button>
+                                            <br />
+                                            <button [routerLink]="['acct-it-edited-acct-entries']" class="button btn btn-link">Edited
+                                                Accounting Entries</button>
+                                            <br />
+                                        </ng-template>
+                                    </ngb-panel>
+                                </ngb-accordion>
+                                <ngb-accordion #acc="ngbAccordion">
+                                    <ngb-panel>
+                                        <ng-template ngbPanelTitle>
+                                            Extract
+                                        </ng-template>
+                                        <ng-template ngbPanelContent>
+                                            <button [routerLink]="['accounting-entries']" class="button btn btn-link">Accounting
+                                                Entries</button>
+                                            <br />
+                                            <button [routerLink]="['trial-balance']" class="button btn btn-link">Trial
+                                                Balance</button>
+                                            <br />
+                                        </ng-template>
+                                    </ngb-panel>
+                                </ngb-accordion>
+                                <ngb-accordion #acc="ngbAccordion">
+                                    <ngb-panel>
+                                        <ng-template ngbPanelTitle>
+                                            Reports
+                                        </ng-template>
+                                        <ng-template ngbPanelContent>
+                                            <button [routerLink]="['print-registers']" class="button btn btn-link">Registers</button>
+                                        </ng-template>
+                                    </ngb-panel>
+                                </ngb-accordion>
+                                <ngb-accordion #acc="ngbAccordion">
+                                    <ngb-panel>
+                                        <ng-template ngbPanelTitle>
+                                            Utilities
+                                        </ng-template>
+                                        <ng-template ngbPanelContent>
+                                            <button [routerLink]="['change-trans-stat-to-new']" class="button btn btn-link">Change
+                                                Transaction Status to New</button>
+                                            <br />
+                                            <button [routerLink]="['edit-acct-entries']" class="button btn btn-link">Edit
+                                                Accounting Entries</button>
+                                            <br />
+                                            <button [routerLink]="['cancel-transaction']" class="button btn btn-link">Cancel
+                                                Transaction</button>
+                                            <br />
+                                        </ng-template>
+                                    </ngb-panel>
+                                </ngb-accordion>
+                            </ng-template>
+                        </ngb-panel>
+                        <ngb-panel>
+                            <ng-template ngbPanelTitle>
+                                <fa name="calculator"></fa>&nbsp;Accounting Service
+                            </ng-template>
+                        </ngb-panel>
+                        <ngb-panel>
                             <ng-template ngbPanelTitle>
                                 <fa name="wrench"></fa>&nbsp;Maintenance
                             </ng-template>
                             <ng-template ngbPanelContent>
                                 <button [routerLink]="['/maintenance-line']" class="button btn btn-link">Line</button>
                                 <br />
-                                <button [routerLink]="['/maintenance-ceding-co']" class="button btn btn-link">Ceding Companies</button>
+                                <button [routerLink]="['/maintenance-ceding-co']" class="button btn btn-link">Ceding
+                                    Companies</button>
                                 <br />
                                 <button [routerLink]="['/maintenance-deductible']" class="button btn btn-link">Deductible</button>
                                 <br />
                                 <button [routerLink]="['/maintenance-risk-list']" class="button btn btn-link">Risk</button>
                                 <br />
+                                <ngb-accordion #acc="ngbAccordion">
+                                    <ngb-panel>
+                                        <ng-template ngbPanelTitle>
+                                            Accounting In-Trust
+                                        </ng-template>
+                                        <ng-template ngbPanelContent>
+                                            <button [routerLink]="['chart-of-accounts']" class="button btn btn-link">Chart
+                                                of Accounts</button>
+                                            <br />
+                                            <button [routerLink]="['']" class="button btn btn-link">Generate Number
+                                                Series</button>
+                                        </ng-template>
+                                    </ngb-panel>
+                                </ngb-accordion>
                             </ng-template>
                         </ngb-panel>
                         <ngb-panel>
@@ -349,7 +376,7 @@
     <div class="modal-body">
         <div layout="row" layout-wrap layout-align="center center">
             <p style="font-size: 12px; text-align: center; margin-bottom: 5px"> Select a color from the Theme Color
-            Palettes below: </p>
+                Palettes below: </p>
         </div>
         <div layout="row" layout-wrap layout-align="center center">
             <div class="form-row" style="justify-content: center;">
@@ -357,22 +384,22 @@
                 </button>
                 <button class='btn col-sm-2' style="height : 40px; margin-left: 5px; 
                 background: #4CAF50"
-                (click)="changeTheme('green')">
-            </button>
-            <button class='btn col-sm-2' style="height : 40px; margin-left: 5px; background: #D32F2F" (click)="changeTheme('red')">
-            </button>
-            <button class='btn col-sm-2' style="height : 40px; margin-left: 5px; background: #536DFE" (click)="changeTheme('indigo')">
-            </button>
-            <button class='btn col-sm-2' style="height : 40px; margin-left: 5px; background: #E91E63" (click)="changeTheme('pink')">
-            </button>
+                    (click)="changeTheme('green')">
+                </button>
+                <button class='btn col-sm-2' style="height : 40px; margin-left: 5px; background: #D32F2F" (click)="changeTheme('red')">
+                </button>
+                <button class='btn col-sm-2' style="height : 40px; margin-left: 5px; background: #536DFE" (click)="changeTheme('indigo')">
+                </button>
+                <button class='btn col-sm-2' style="height : 40px; margin-left: 5px; background: #E91E63" (click)="changeTheme('pink')">
+                </button>
+            </div>
+
         </div>
 
     </div>
-
-</div>
-<div class="modal-footer" style="justify-content: center; margin-top: -5px">
-    <div class="row" style="margin-top: -5px">
-        <button type="button" class="cust-btn" style="margin-bottom: -5px" (click)="modal.close('Close click'); applyTheme()"><a>Apply</a></button>
+    <div class="modal-footer" style="justify-content: center; margin-top: -5px">
+        <div class="row" style="margin-top: -5px">
+            <button type="button" class="cust-btn" style="margin-bottom: -5px" (click)="modal.close('Close click'); applyTheme()"><a>Apply</a></button>
+        </div>
     </div>
-</div>
 </ng-template>
