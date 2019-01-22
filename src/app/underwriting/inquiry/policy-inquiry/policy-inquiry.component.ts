@@ -211,6 +211,21 @@ export class PolicyInquiryComponent implements OnInit {
               this.cedNum = arr[3];
             }
         }*/
+       this.policyList = event;
+
+       for(let val in this.allData){
+          if (this.policyList == undefined){
+              this.policyList  = new UnderwritingPolicyInquiryInfo(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+              break
+            } else {
+              var ced = this.policyList.policyNo;
+              var arr = ced.split("-");
+              this.cedNum = arr[3];
+              break
+            }
+       }
+
+
      } 
 
 }

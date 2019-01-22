@@ -17,14 +17,55 @@ export class ChangeToNewArComponent implements OnInit {
   	infoFlag:true,
   	paginateFlag:true,
   	checkFlag:true,
-  	widths:[1,210,1,1,1,'auto',105]
+  	widths:[1,210,1,1,1,'auto',105],
+    filters:[
+      {
+          key: 'arNo',
+          title:'A.R. No.',
+          dataType: 'text'
+      },
+      {
+          key: 'payor',
+          title:'Payor',
+          dataType: 'text'
+      },
+      {
+          key: 'arDate',
+          title:'AR Date',
+          dataType: 'datespan'
+      },
+      {
+          key: 'paymentType',
+          title:'Payment Type',
+          dataType: 'text'
+      },
+      {
+          key: 'status',
+          title:'Status',
+          dataType: 'text'
+      },
+      {
+          key: 'particulars',
+          title:'Particulars',
+          dataType: 'text'
+      },
+      {
+          key: 'amount',
+          title:'Amount',
+          dataType: 'text'
+      },
+    ]
 
   }
+  dateCreated:string;
+  lastUpdate:string;
 
   constructor(private accountingService: AccountingService) { }
 
   ngOnInit() {
   	this.passData.tableData = this.accountingService.getChangeTxToNewAR();
+    this.dateCreated = new Date(2018,10,1).toISOString().slice(0, 16);
+    this.lastUpdate = new Date().toISOString().slice(0, 16);
   }
 
 }

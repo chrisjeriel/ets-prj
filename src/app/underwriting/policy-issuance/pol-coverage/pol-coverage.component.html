@@ -116,8 +116,8 @@
     <div class="form-group col-sm">
       <div class="col-md-13 text-center" style="margin-top: 10px;">
         <div class="cust-btn-container">
-          <button type="button" class="cust-btn" (click)="CATPerils()" *ngIf="line == 'CAR' || line =='EAR' || line =='EEI' || line =='CEC'"><a>CAT Perils</a></button>
           <button type="button" class="cust-btn" (click)="showDeductiblesModal(deductibles)"><a>Deductibles</a></button>
+          <button type="button" class="cust-btn" (click)="CATPerils()" *ngIf="line == 'CAR' || line =='EAR' || line =='EEI' || line =='CEC'"><a>CAT Perils</a></button>
           <button type="button" class="cust-btn" (click)="pol($event)"><a>Cancel</a></button>
           <button type="button" class="cust-btn"><a>Save</a></button>
         </div>
@@ -314,7 +314,7 @@
       </fieldset>
     </div> -->
     <div class="cust-sm col-sm-6" style="padding-left: 0px;">
-      <fieldset class="scheduler-border" style="padding-right: 0px !important; padding-top: 10px !important;">
+      <fieldset class="scheduler-border" style="padding-top: 10px !important;">
        <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
        <div class="cust-sm">
          <div class="cust-sm col-sm-1"></div>
@@ -323,8 +323,8 @@
             &nbsp;
           </div>
           <div class="input-group" style="margin-top: -5px;">
-           <label class="form-control-sm col-sm-1">Remarks</label>
-           <div class="form-control-sm col-sm" style="height: 60px; margin-bottom: 10px;">
+           <label class="form-control-sm col-sm-1" style="margin-right: 10px">Remarks</label>
+           <div class="form-control-sm col-sm edtr-cont" style="height: 60px; margin-bottom: 10px;">
              <text-editor [editorContent]="textArea"></text-editor>
            </div>
          </div>
@@ -350,6 +350,17 @@
     </div>
     
 </div>
+
+<app-modal class="hidden">
+    <div header>CAT Perils Exposure</div>
+    <div body style=" margin-top: -10px !important; width: 400px ! important">
+       <app-cust-editable-non-datatable [passData]="passDataCATPerils"></app-cust-editable-non-datatable>
+    </div>                
+    <div footer style="margin-right: 145px !important;">
+      <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+      <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Save</a></button>
+    </div>
+</app-modal>
 </ng-container>
 
 <!-- <ng-template #content>

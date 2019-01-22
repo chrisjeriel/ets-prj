@@ -1,13 +1,23 @@
 <div class="cust-tabs-container">
 	<h4>Accounting In-Trust / Extract / Accounting Entries</h4>
-	<ngb-tabset (tabChange)="onTabChange($event)">
+	<ngb-tabset (tabChange)="onTabChange($event)" [activeId]="activeID">
 		<ngb-tab class="ngb-tab" title="Extract">
 			<ng-template ngbTabContent>
 				<app-extract></app-extract>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab id="Exit">
-			<ng-template ngbTabTitle>
+		<ngb-tab class="ngb-tab" title="Accounting Entries">
+			<ng-template ngbTabContent>
+				<app-in-accounting-entries></app-in-accounting-entries>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab class="ngb-tab" title="Unbalance Entries" id="Unbalance">
+			<ng-template ngbTabContent>
+				<app-unbalance-entries></app-unbalance-entries>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab class="ngb-tab" title="Exit" id="Exit">
+			<ng-template ngbTabContent>
 				<div>Exit</div>
 			</ng-template>
 			<ng-template ngbTabContent></ng-template>

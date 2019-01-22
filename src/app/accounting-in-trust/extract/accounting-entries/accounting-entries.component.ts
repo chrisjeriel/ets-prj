@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -9,15 +9,20 @@ import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 })
 export class AccountingEntriesComponent implements OnInit {
 
-  constructor( private router: Router) { }
+  constructor(private router: Router,private route: ActivatedRoute) { }
 
+  sub: any;
+  activeID: string;
   ngOnInit() {
+  	this.sub = this.route.params.subscribe(params => {
+  		this.activeID = params['tabID'];
+  	});
+
   }
 
   onTabChange($event: NgbTabChangeEvent) {
       if ($event.nextId === 'Exit') {
         this.router.navigateByUrl('');
       } 
-  
   }
 }

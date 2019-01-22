@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
-import { Router } from '@angular/router';
+import { ActivatedRoute,Router } from '@angular/router';
 
 @Component({
   selector: 'app-generate-cv',
@@ -9,14 +9,22 @@ import { Router } from '@angular/router';
 })
 export class GenerateCvComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  exitLink: string;
+  exitTab: string;
+  sub: any;
+
+  constructor(private route: ActivatedRoute ,private router: Router) { }
 
   ngOnInit() {
+    this.sub = this.route.params.subscribe(params => {
+      this.exitLink = params['link'] !== undefined ? params['link'] : 'adasdas';
+      this.exitTab = params['tab'] !== undefined ? params['tab'] : '';
+    });
   }
 
   onTabChange($event: NgbTabChangeEvent) {
   		if ($event.nextId === 'Exit') {
-    		this.router.navigateByUrl('');
+    		this.router.navigate([this.exitLink,{tabID:this.exitTab}],{ skipLocationChange: true });
   		} 
   
   }

@@ -18,14 +18,59 @@ export class ChangeToNewJvComponent implements OnInit {
 		infoFlag:true,
 		paginateFlag:true,
 		checkFlag:true,
-		widths:[1,1,'auto',1,1,1,1,105]
-
+		widths:[1,1,'auto',1,1,1,1,105],
+	    filters:[
+	      {
+	          key: 'jvNo',
+	          title:'JV No.',
+	          dataType: 'text'
+	      },
+	      {
+	          key: 'jvDate',
+	          title:'JV Date',
+	          dataType: 'datespan'
+	      },
+	      {
+	          key: 'particulars',
+	          title:'Particulars',
+	          dataType: 'text'
+	      },
+	      {
+	          key: 'jvType',
+	          title:'JV Type',
+	          dataType: 'text'
+	      },
+	      {
+	          key: 'jvRefNo',
+	          title:'JV Ref. No',
+	          dataType: 'text'
+	      },
+	      {
+	          key: 'preparedBy',
+	          title:'Prepared By',
+	          dataType: 'text'
+	      },
+	      {
+	          key: 'jvStatus',
+	          title:'JV Status',
+	          dataType: 'text'
+	      },
+	      {
+	          key: 'amount',
+	          title:'Amount',
+	          dataType: 'text'
+	      },
+    	]
 	}
+	dateCreated:string;
+  	lastUpdate:string;
 
 	constructor(private accountingService: AccountingService) { }
 
 	ngOnInit() {
 		this.passData.tableData = this.accountingService.getChangeTxToNewJV();
+		this.dateCreated = new Date(2018,10,1).toISOString().slice(0, 16);
+    	this.lastUpdate = new Date().toISOString().slice(0, 16);
 	}
 
 }

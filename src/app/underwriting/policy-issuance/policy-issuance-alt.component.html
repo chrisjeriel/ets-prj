@@ -1,6 +1,6 @@
 <div class="cust-tabs-container">
 	<h4>Policy / Policy Issuance / Create Alteration</h4>
-	<ngb-tabset (tabChange)="beforeChange($event)">
+	<ngb-tabset (tabChange)="beforeChange($event);onTabChange($event)">
 
 		<ngb-tab class="ngb-tab" title="General Info">
 			<ng-template ngbTabContent>
@@ -137,11 +137,11 @@
 				<app-pol-post></app-pol-post>
 			</ng-template>
 		</ngb-tab>
-
-		<ngb-tab title="Exit">
-			<ng-template ngbTabContent>
-
+		<ngb-tab id="Exit">
+			<ng-template ngbTabTitle>
+				<div>Exit</div>
 			</ng-template>
-		</ngb-tab>
+			<ng-template ngbTabContent></ng-template>
+  		</ngb-tab>
 	</ngb-tabset>
 </div>

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries } from '@app/_models';
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment , AccCVPayReqList , AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments,  AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries} from '@app/_models';
+
 
 @Injectable({
 	providedIn: 'root'
@@ -24,8 +25,9 @@ export class AccountingService {
 	arTaxDetailsWTAX: ARTaxDetailsWTAX[] = [];
 	arInwdPolBalDetails: ARInwdPolBalDetails[] = [];
 	arClaimsRecovery: ARClaimsRecovery[] = [];
-	accCvAttachment: AccCvAttachment[] = [];
-	accCvPayReqList: AccCVPayReqList[] = [];
+	accCvAttachment: AccCvAttachment[]=[];
+	accCvPayReqList: AccCVPayReqList[]=[];
+	accInvestments: AccInvestments[]=[];
 	chngTxToNewAR: AcknowledgementReceipt[] = [];
 	chngTxToNewCV: CheckVoucher[] = [];
 	chngTxToNewJv: JournalVoucher[] = [];
@@ -162,35 +164,35 @@ export class AccountingService {
 
 	getCancelledTransactions() {
 		this.cancelledTransactionsData = [
-			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
-			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
-			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
-			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
-			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
-			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
-			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
-			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
-			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
-			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
-			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
-			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
-			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
-			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
-			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
-			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
-			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
-			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
-			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
-			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
-			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
-			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
-			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
-			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
-			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
-			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
-			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
-			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
-			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2019'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00329482', new Date('1/6/2018'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('AR', '2018-02938210', new Date('1/7/2018'), 'Malayan', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('AR', '2018-00737323', new Date('1/7/2018'), 'Malayan', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('AR', '2018-00012837', new Date('1/7/2018'), 'Malayan', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('AR', '2018-00728347', new Date('1/8/2018'), 'STI', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00008837', new Date('1/8/2018'), 'STI', 'Premium Payments', 'Juan Dela Cruz', new Date(), 'Incorrect Amounts', 'Deleted'),
+			new AccountingITCancelledTransactions('JV', '2018-00273812', new Date('1/8/2018'), 'STI', 'Premium Payments', 'Juan Dela Cruz', new Date(), 'Incorrect Amounts', 'Deleted'),
+			new AccountingITCancelledTransactions('JV', '2018-07234812', new Date('1/10/2018'), 'UCPBGEN', 'Premium Payments', 'Juan Dela Cruz', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-08341023', new Date('1/10/2018'), 'UCPBGEN', 'Premium Payments', 'Juan Dela Cruz', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-07415123', new Date('1/10/2018'), 'UCPBGEN', 'Premium Payments', 'Juan Dela Cruz', new Date(), 'Incorrect Amounts', 'Deleted'),
+			new AccountingITCancelledTransactions('JV', '2018-00782348', new Date('1/10/2018'), 'San Miguel Corporation', 'Premium Payments', 'Juan Dela Cruz', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-19592323', new Date('1/10/2018'), 'SMDC', 'Premium Payments', 'Mark Anthony Castillo', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('CV', '2018-08437123', new Date('1/10/2018'), 'Charter', 'Premium Payments', 'Mark Anthony Castillo', new Date(), 'Incorrect Amounts', 'Deleted'),
+			new AccountingITCancelledTransactions('CV', '2018-89723489', new Date('1/10/2018'), 'UCPBGEN', 'Premium Payments', 'Mark Anthony Castillo', new Date(), 'Incorrect Amounts', 'Deleted'),
+			new AccountingITCancelledTransactions('CV', '2018-00876234', new Date('1/12/2018'), 'STI', 'Premium Payments', 'Mark Anthony Castillo', new Date(), 'Incorrect Amounts', 'Deleted'),
+			new AccountingITCancelledTransactions('CV', '2018-76349012', new Date('1/12/2018'), 'Malayan', 'Premium Payments', 'Mark Anthony Castillo', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00784651', new Date('1/12/2018'), 'ABS-CBN', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00837451', new Date('1/12/2018'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00872634', new Date('1/12/2018'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00897236', new Date('1/15/2018'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00872634', new Date('1/15/2018'), 'STI', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00726341', new Date('1/15/2018'), 'STI', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00786234', new Date('1/15/2018'), 'STI', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00263412', new Date('2/3/2018'), 'San Miguel Corporation', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00827364', new Date('2/3/2018'), 'San Miguel Corporation', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-08712634', new Date('2/3/2018'), 'San Miguel Corporation', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00087126', new Date('2/3/2018'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00928734', new Date('2/3/2018'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
+			new AccountingITCancelledTransactions('JV', '2018-00782364', new Date('2/3/2018'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 'Cancelled'),
 		];
 
 		return this.cancelledTransactionsData;
@@ -260,6 +262,24 @@ export class AccountingService {
 		]
 		return this.accCvPayReqList;
 	}
+
+
+	getAccountingEntriesUtil(){
+		this.accountingEntriesCVData = [
+			new AccountingEntriesCV('1-01-02-01', 'BPI Current Account No. 0071-0435-0438-94', '', '', 0, 2945.45),
+		];
+
+		return this.accountingEntriesCVData;
+	}
+
+	getAccInvestments(){
+		this.accInvestments = [
+			new AccInvestments("BPI","BPI 1", 5, "Years", 8.875000, new Date("10/20/2018"), new Date("10/20/2018"), 14000000, 1812500 ),
+			new AccInvestments("RCBC","RCBC 1",35,"Days", 1.500000,new Date("09/26/2018"),new Date("10/31/2018"),10000000,10150000)
+		]
+		return this.accInvestments;
+	}
+
 
 	getAccItEditedTransactions() {
 		this.accItEditedTransactions = [
@@ -370,16 +390,16 @@ export class AccountingService {
 
 	getCancelAR() {
 		this.cancelAR = [
-			new CancelTransactionAR(1, 'BPI/MS INSURANCE CORPORATION', new Date(2018, 9, 1), 'Inward Policy Balances', 'Cancelled', 'Representing payment for premium of policy CAR-2018-00001-00-0001-000', 1642857.14),
-			new CancelTransactionAR(2, 'PNBGEN', new Date(2018, 9, 1), 'Inward Policy Balances', 'Cancelled', 'Representing payment for premium of policy CAR-2018-00001-00-0001-000', 200000),
-			new CancelTransactionAR(3, 'Charter Ping An', new Date(2018, 9, 3), 'Claim Recovery', 'Printed', 'Representing claim recovery payment for Claim No CAR-2018-000001', 100000),
-			new CancelTransactionAR(4, 'AXA', new Date(2018, 9, 4), 'QSOA', 'Printed', 'Representing payment for the Quarterly Statement of Account balance of BPI/MS for 3rd Quarter', 1000000),
-			new CancelTransactionAR(5, 'Allied Bankers', new Date(2018, 9, 4), 'QSOA', 'Cancelled', 'Representing payment for the Quarterly Statement of Account balance of BPI/MS for 3rd Quarter', 710716.12),
-			new CancelTransactionAR(6, 'Malayan', new Date(2018, 9, 5), 'Inward Policy Balances', 'Cancelled', 'Representing payment for premium of policy CAR-2018-00001-00-0001-000', 756929),
-			new CancelTransactionAR(7, 'New India', new Date(2018, 9, 7), 'Claim Recovery', 'Cancelled', 'Representing claim recovery payment for Claim No CAR-2018-000001', 30000),
-			new CancelTransactionAR(8, 'BPI/MS INSURANCE CORPORATION', new Date(2018, 9, 7), 'Claim Recovery', 'Printed', 'Representing claim recovery payment for Claim No CAR-2018-000001', 10000),
-			new CancelTransactionAR(9, 'UCPBGEN', new Date(2018, 9, 7), 'QSOA', 'Printed', 'Representing payment for the Quarterly Statement of Account balance of BPI/MS for 3rd Quarter', 230000),
-			new CancelTransactionAR(10, 'FGIC', new Date(2018, 9, 7), 'Inward Policy Balances', 'Cancelled', 'Representing payment for premium of policy CAR-2018-00001-00-0001-000', 1500000),
+			new CancelTransactionAR(null,'BPI/MS INSURANCE CORPORATION',new Date(2018,9,1),'Inward Policy Balances','New','Representing payment for premium of policy CAR-2018-00001-00-0001-000',1642857.14),
+			new CancelTransactionAR(null,'PNBGEN',new Date(2018,9,1),'Inward Policy Balances','New','Representing payment for premium of policy CAR-2018-00001-00-0001-000',200000),
+			new CancelTransactionAR(3,'Charter Ping An',new Date(2018,9,3),'Claim Recovery','Printed','Representing claim recovery payment for Claim No CAR-2018-000001',100000),
+			new CancelTransactionAR(4,'AXA',new Date(2018,9,4),'QSOA','Printed','Representing payment for the Quarterly Statement of Account balance of BPI/MS for 3rd Quarter',1000000),
+			new CancelTransactionAR(null,'Allied Bankers',new Date(2018,9,4),'QSOA','New','Representing payment for the Quarterly Statement of Account balance of BPI/MS for 3rd Quarter',710716.12),
+			new CancelTransactionAR(null,'Malayan',new Date(2018,9,5),'Inward Policy Balances','New','Representing payment for premium of policy CAR-2018-00001-00-0001-000',756929),
+			new CancelTransactionAR(null,'New India',new Date(2018,9,7),'Claim Recovery','New','Representing claim recovery payment for Claim No CAR-2018-000001',30000),
+			new CancelTransactionAR(8,'BPI/MS INSURANCE CORPORATION',new Date(2018,9,7),'Claim Recovery','Printed','Representing claim recovery payment for Claim No CAR-2018-000001',10000),
+			new CancelTransactionAR(9,'UCPBGEN',new Date(2018,9,7),'QSOA','Printed','Representing payment for the Quarterly Statement of Account balance of BPI/MS for 3rd Quarter',230000),
+			new CancelTransactionAR(null,'FGIC',new Date(2018,9,7),'Inward Policy Balances','New','Representing payment for premium of policy CAR-2018-00001-00-0001-000',1500000),
 		];
 		return this.cancelAR;
 	}

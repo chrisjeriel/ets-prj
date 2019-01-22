@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -9,15 +9,23 @@ import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 })
 export class GenerateJvComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private route: ActivatedRoute, private router: Router) { }
+
+  exitLink: string;
+  exitTab: string;
+  sub: any;
 
   ngOnInit() {
+  	this.sub = this.route.params.subscribe(params => {
+      this.exitLink = params['link'] !== undefined ? params['link'] : 'adasdas';
+      this.exitTab = params['tab'] !== undefined ? params['tab'] : '';
+    });
   }
-  
+
   onTabChange($event: NgbTabChangeEvent) {
-      if ($event.nextId === 'Exit') {
-        this.router.navigateByUrl('');
-      } 
+  		if ($event.nextId === 'Exit') {
+    		this.router.navigate([this.exitLink,{tabID:this.exitTab}],{ skipLocationChange: true });
+  		} 
   
   }
 

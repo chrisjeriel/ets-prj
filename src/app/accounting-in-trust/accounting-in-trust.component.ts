@@ -24,10 +24,16 @@ export class AccountingInTrustComponent implements OnInit {
                  };
   action: string;
 
+  exitLink: string;
+  exitTab: string;
+
   constructor(private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
   	this.sub = this.route.params.subscribe(params => {
+      this.exitLink = params['link'] !== undefined ? params['link'] : 'adasdas';
+      this.exitTab = params['tab'] !== undefined ? params['tab'] : '';
+
       this.action = params['action'];
 
       if(this.action == 'edit') {
@@ -38,6 +44,7 @@ export class AccountingInTrustComponent implements OnInit {
         this.tabController('');
       }
     });
+
   }
 
   ngOnDestroy() {
@@ -75,9 +82,12 @@ export class AccountingInTrustComponent implements OnInit {
 
    onTabChange($event: NgbTabChangeEvent) {
       if ($event.nextId === 'Exit') {
-        this.router.navigateByUrl('');
+        // this.router.navigateByUrl('');
+        this.router.navigate([this.exitLink,{tabID:this.exitTab}],{ skipLocationChange: true });
       } 
   
   }
+
+
 
 }
