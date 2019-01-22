@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute,Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-generate-cv',
@@ -13,13 +14,15 @@ export class GenerateCvComponent implements OnInit {
   exitTab: string;
   sub: any;
 
-  constructor(private route: ActivatedRoute ,private router: Router) { }
+  constructor(private route: ActivatedRoute ,private router: Router,private titleService: Title) { }
 
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
       this.exitLink = params['link'] !== undefined ? params['link'] : 'adasdas';
       this.exitTab = params['tab'] !== undefined ? params['tab'] : '';
     });
+
+    this.titleService.setTitle("Acct-IT | Check Voucher");
   }
 
   onTabChange($event: NgbTabChangeEvent) {
