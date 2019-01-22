@@ -1,0 +1,96 @@
+   <fieldset class="scheduler-border">
+    <legend class="scheduler-border">JV Info</legend>
+    <div class="form-row custom-row-inline-inset">
+        <div class="col-sm-9">
+            <div class="input-group">
+                <label class="form-control-sm col-sm-1" for="xx" style="padding-left:0px !important;">JV No</label>
+                <div class="col-sm-3 d-flex" style="padding: 0">	
+                	<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-4" placeholder="2018" style="text-align: right" readonly>
+	                <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm" placeholder="00000001" style="text-align: right; margin-left: 2px;" readonly>
+                </div>
+                <label class="form-control-sm col-sm-1" for="xx">Date</label>
+                <input type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="10/01/2018 10:45 AM" readonly>
+                <div class="col-sm-5 d-flex" style="padding: 0">
+	                <label class="form-control-sm col-sm-2 text-right" for="xx">Tran ID</label>
+	                <input type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm" placeholder="000284723" style="text-align: right" readonly>
+	                <label class="form-control-sm col-sm-2" for="xx">Status</label>
+	                <input type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm" placeholder="New" readonly>
+	            </div>
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-1" for="xx" style="padding-left:0px !important;">Payee</label>
+                <input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-6" placeholder="San Miguel Corporation"
+                readonly>
+                <div class="col-sm-5 d-flex" style="padding: 0">
+	                <label class="form-control-sm col-sm-2 text-right" for="xx">Ref. No.</label>
+	                <input type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm" placeholder="2017-00023974" readonly>
+	                <label class="form-control-sm col-sm-2" for="xx">Date</label>
+	                <input type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm" placeholder="12/31/2017 09:00 AM" readonly>
+	            </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="input-group">
+                <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Amount</label>
+                <input type="text" value="PHP" class="form-control form-control-sm cust-sm col-sm-2" placeholder="" readonly>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
+                placeholder="377,513.20" readonly>
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Local Amount</label>
+                <input type="text" value="PHP" class="form-control form-control-sm cust-sm col-sm-2" placeholder="" readonly>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
+                placeholder="377,513.20" readonly>
+            </div>
+        </div>
+    </div>
+</fieldset>
+
+<fieldset class="scheduler-border">
+	<legend class="scheduler-border">Attached Files</legend>
+	<div class="form-row custom-row-inline-inset" style="margin-bottom: -8px !important;">
+		<app-cust-editable-non-datatable [passData]="passData" style="width: 100%"></app-cust-editable-non-datatable>
+	</div>
+
+	<div class="col-sm-12" style="margin-top: -15px;">
+                <div class="col-sm" style="padding: 0; margin-top: 10px; margin-bottom: 25px">
+                    <div class="input-group">
+                        <div class="col-sm-3" style="padding: 0">
+                            <div class="input-group">
+                                <label class="form-control-sm">Created By</label>
+                                <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma" >
+                            </div>
+                        </div>
+                        <div class="col-sm-3" style="padding: 0">
+                            <div class="input-group">
+                                <label class="form-control-sm">Date Created</label>
+                                <input type="text" class="form-control form-control-sm col-sm" placeholder="10/01/2018 11:49 AM" >
+                            </div>
+                        </div>
+                        <div class="col-sm-3" style="padding: 0">
+                            <div class="input-group">
+                                <label class="form-control-sm">Last Update By</label>
+                                <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma" >
+                            </div>
+                        </div>
+                        <div class="col-sm-3" style="padding: 0">
+                            <div class="input-group">
+                                <label class="form-control-sm">Last Update</label>
+                                <input type="text" class="form-control form-control-sm col-sm" placeholder="10/01/2018 11:49 AM" >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</fieldset>
+
+<div class="form-row bottom-button-container">
+		<div class="form-group col-sm">
+			<div class="col-md-13 text-center">
+				<div class="cust-btn-container" style="margin-top: 10px;">
+				<button type="button" class="cust-btn"><a>Cancel</a></button>
+				<button type="button" class="cust-btn"><a>Save</a></button>
+			</div>
+			</div>
+		</div>
+	</div>
