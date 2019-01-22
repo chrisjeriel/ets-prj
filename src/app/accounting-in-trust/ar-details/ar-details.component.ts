@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnChanges, Input } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AccountingService } from '@app/_services';
@@ -40,7 +40,7 @@ export class ArDetailsComponent implements OnInit {
     genericBtn: 'Save'
   };
 
-  amountDetailsData: any = {
+  @Input() amountDetailsData: any = {
     tableData: [
         {
           detail: 'Gross Amount (VAT Inc)',
@@ -54,6 +54,9 @@ export class ArDetailsComponent implements OnInit {
           amount: 1785714.29,
           amountPHP: 1785714.29,
           plusMinus: 'Add',
+          /*get amountPlusMinus(){
+            return (this.plusMinus == 'Add') ? 1 : 0;
+          }*/
           amountPlusMinus: 1785714.29
         },
         {
@@ -86,7 +89,7 @@ export class ArDetailsComponent implements OnInit {
         },
     ],
     tHeader: ['Detail', 'Amount', 'Amount (PHP)', 'Plus/Minus', 'Amount Plus/Minus'],
-    dataTypes: ['text', 'currency', 'currency', 'text', 'currency'],
+    dataTypes: ['text', 'currency', 'currency', 'select', 'currency'],
     nData: [null,null,null,null,null],
     paginateFlag: true,
     infoFlag: true,
@@ -95,7 +98,13 @@ export class ArDetailsComponent implements OnInit {
     addFlag: true,
     deleteFlag: true,
     total: [null, null, null, 'Total', 'amountPlusMinus'],
-    genericBtn: 'Save'
+    genericBtn: 'Save',
+    opts:[
+      {
+        selector: 'plusMinus',
+        vals: ['Add', 'Less', 'None']
+      }
+    ]
   }
 
   accEntriesData: any = {
@@ -122,4 +131,7 @@ export class ArDetailsComponent implements OnInit {
 
   }
 
+  ngOnChanges() {
+    console.log('nagbago   >>> ' + this.amountDetailsData);
+  }
 }

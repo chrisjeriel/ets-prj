@@ -80,12 +80,18 @@ export class AccountingInTrustComponent implements OnInit {
   	}
   }
 
-   onTabChange($event: NgbTabChangeEvent) {
+  /* onTabChange($event: NgbTabChangeEvent) {
       if ($event.nextId === 'Exit') {
         // this.router.navigateByUrl('');
         this.router.navigate([this.exitLink,{tabID:this.exitTab}],{ skipLocationChange: true });
       } 
   
+  }*/
+
+  onTabChange($event: NgbTabChangeEvent) {
+    if ($event.nextId === 'Exit') {
+      this.router.navigateByUrl('acct-ar-listings');
+    }
   }
 
 

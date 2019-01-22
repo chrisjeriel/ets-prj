@@ -165,6 +165,10 @@ import { CancelArComponent } from './accounting-in-trust/utilities/cancel-transa
 import { CancelCvComponent } from './accounting-in-trust/utilities/cancel-transactions/cancel-cv/cancel-cv.component';
 import { CancelJvComponent } from './accounting-in-trust/utilities/cancel-transactions/cancel-jv/cancel-jv.component';
 import { AcctItEditedAcctEntriesComponent } from './accounting-in-trust/accounting-inquiry/acct-it-edited-acct-entries/acct-it-edited-acct-entries.component';
+import { GenerateNumberSeriesComponent } from './maintenance/accounting-in-trust/generate-number-series/generate-number-series.component';
+import { MaintArSeriesTrstComponent } from './maintenance/accounting-in-trust/generate-number-series/maint-ar-series-trst/maint-ar-series-trst.component';
+import { MaintCvSeriesTrstComponent } from './maintenance/accounting-in-trust/generate-number-series/maint-cv-series-trst/maint-cv-series-trst.component';
+import { MaintJvSeriesTrstComponent } from './maintenance/accounting-in-trust/generate-number-series/maint-jv-series-trst/maint-jv-series-trst.component';
 
 
 @NgModule({
@@ -335,6 +339,10 @@ import { AcctItEditedAcctEntriesComponent } from './accounting-in-trust/accounti
         CancelCvComponent,
         CancelJvComponent,
         AcctItEditedAcctEntriesComponent,
+        GenerateNumberSeriesComponent,
+        MaintArSeriesTrstComponent,
+        MaintCvSeriesTrstComponent,
+        MaintJvSeriesTrstComponent,
 
     ],
 

@@ -292,6 +292,16 @@
                                 <br />
                                 <button [routerLink]="['/maintenance-risk-list']" class="button btn btn-link">Risk</button>
                                 <br />
+                                <ngb-accordion #acc="ngbAccordion">
+                                        <ngb-panel>
+                                            <ng-template ngbPanelTitle>
+                                                Accounting In-Trust
+                                            </ng-template>
+                                            <ng-template ngbPanelContent>
+                                                <button [routerLink]="['generate-number-series']" class="button btn btn-link">Generate Number Series</button>
+                                            </ng-template>
+                                        </ngb-panel>
+                                    </ngb-accordion>
                             </ng-template>
                         </ngb-panel>
                         <ngb-panel>

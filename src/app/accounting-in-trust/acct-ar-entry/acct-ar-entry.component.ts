@@ -9,16 +9,43 @@ export class AcctArEntryComponent implements OnInit {
 
   passData: any = {
         tableData:[
-        	['Check','PHP',1,1642857.14,'Bank of the Philippine Islands',22786739,new Date('2018-09-25'),'Local Clearing']
+          {
+            payMode: 'Check',
+            curr: 'PHP',
+            currRate: 1,
+            amount: 1642857.14,
+            bank: 'Bank of the Philippine Islands',
+            checkNo: 22786739,
+            checkDate: new Date('2018-09-25'),
+            checkClass: 'Local Clearing'
+          }
         ],
         tHeader: ['Pay Mode','Curr','Curr Rate','Amount','Bank','Check No.','Check Date','Check Class'],
         magnifyingGlass: ['0','1','4','7'],
-        dataTypes: ['text','text','percent','currency','text','number','date','text'],
+        dataTypes: ['select','select','percent','currency','select','number','date','select'],
         paginateFlag: true,
         infoFlag: true,
         pageLength: 5,
         widths: [],
         pageID: 1,
+        opts:[
+          {
+            selector: 'payMode',
+            vals: ['Bank Transfer','Cash','Check','Credit Card','Others']
+          },
+          {
+            selector: 'curr',
+            vals: ['EUR','PHP','USD']
+          },
+          {
+            selector: 'bank',
+            vals: ['Banco De Oro','Bank of the Philippine Islands','Philippine National Bank']
+          },
+          {
+            selector: 'checkClass',
+            vals: ['Local Clearing','Manager\'s Check','On-Us']
+          },
+        ]
     };
 
   itest: any = null;
@@ -42,7 +69,4 @@ export class AcctArEntryComponent implements OnInit {
   	this.onChange.emit({ type: this.record.paymentType });
   }
 
-  test(event) {
-    this.itest = event;
-  }
 }
