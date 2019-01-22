@@ -15,8 +15,14 @@ export class CvDetailsComponent implements OnInit {
   amountDetailsData: any = {
   	tableData: this.accountingService.getAmountDetailsCV(),
   	tHeader: ['Detail', 'Amount', 'Amount (PHP)', 'Plus/Minus', 'Amount Plus/Minus'],
-  	dataTypes: ['text', 'currency', 'currency', 'text', 'currency'],
+  	dataTypes: ['text', 'currency', 'currency', 'select', 'currency'],
   	nData: new AmountDetailsCV(null,null,null,null,null),
+    opts:[
+      {
+        selector: 'plusMinus',
+        vals: ['None', 'Add', 'Less'],
+      }
+    ],
   	paginateFlag: true,
   	infoFlag: true,
   	pageID: 1,

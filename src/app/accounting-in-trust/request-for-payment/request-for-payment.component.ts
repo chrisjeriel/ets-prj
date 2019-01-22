@@ -53,4 +53,10 @@ export class RequestForPaymentComponent implements OnInit {
       this.routeData = data;
     //console.log(this.accountingService.getPaytRequestsList());
   }
+  onRowDblClick(event) {
+        /*setTimeout(() => {
+               this.router.navigate(['/generate-payt-req']);
+        },100); */
+        this.onClickEdit(event);
+    }
 }
