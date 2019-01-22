@@ -9,11 +9,54 @@ import { Router } from '@angular/router';
   styleUrls: ['./journal-voucher.component.css']
 })
 export class JournalVoucherComponent implements OnInit {
-   
+   private routeData: any;
+
    passDataJVListing: any = {
         tableData: this.accountingService.getJVListing(),
         tHeader: ["JV No", "JV Date","Particulars","JV Type", "JV Ref. No.", "Prepared By","JV Status","Amount"],
         dataTypes: ['text','date','text','text','text','text','text','currency',],
+         filters: [
+        {
+          key: 'jvNo',
+          title: 'J.V. No.',
+          dataType: 'text'
+        },
+        {
+          key: 'jvDate',
+          title: 'JV Date',
+          dataType: 'date'
+        },
+        {
+          key: 'particulars',
+          title: 'Particulars',
+          dataType: 'text'
+        },
+        {
+          key: 'jvType',
+          title: 'J.V Type',
+          dataType: 'text'
+        },
+        {
+          key: 'jvRefNo',
+          title: 'J.V Ref No',
+          dataType: 'text'
+        },
+        {
+          key: 'preparedBy',
+          title: 'Prepared By',
+          dataType: 'text'
+        },
+        {
+          key: 'jvStatus',
+          title: 'J.V Status',
+          dataType: 'text'
+        },
+        {
+          key: 'amount',
+          title: 'Amount',
+          dataType: 'text'
+        }
+    ],
         addFlag:true,
         editFlag:true,
         //totalFlag:true,
@@ -36,4 +79,17 @@ export class JournalVoucherComponent implements OnInit {
       this.router.navigate(['/generate-jv']); 
   }
 
+  toGenerateAREdit(event) {
+    this.router.navigateByUrl('/generate-jv');
+  }
+
+  onRowClick(data){
+      this.routeData = data;
+      if(data.jvStatus == 'Printed' || data.jvStatus == 'Cancelled'){
+        this.passDataJVListing.btnDisabled = true;
+      }else{
+        this.passDataJVListing.btnDisabled = false;
+      }
+    //console.log(this.accountingService.getPaytRequestsList());
+  }
 }

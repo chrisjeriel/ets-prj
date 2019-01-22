@@ -12,7 +12,8 @@ export class JvDetailsComponent implements OnInit {
   amountDetailsData: any = {
   	tableData: this.accountingService.getAmountDetailsCV(),
   	tHeader: ['Detail', 'Amount', 'Amount (PHP)', 'Plus/Minus', 'Amount Plus/Minus'],
-  	dataTypes: ['text', 'currency', 'currency', 'text', 'currency'],
+  	dataTypes: ['text', 'currency', 'currency', 'select', 'currency'],
+  	opts: [{ selector: "plusMinus", vals: ["Add", "Less","None"] }],
   	nData: new AmountDetailsCV(null,null,null,null,null),
   	paginateFlag: true,
   	infoFlag: true,
@@ -39,7 +40,8 @@ export class JvDetailsComponent implements OnInit {
   accountingVATTaxDetails: any = {
     tableData: this.accountingService.getVATDetails(),
     tHeader: ['VAT Type', 'BIR RLF Purchase Type', 'Payor', 'Base Amount', 'VAT Amount'],
-    dataTypes: ['text', 'text', 'text', 'currency', 'currency'],
+    dataTypes: ['select', 'text', 'text', 'currency', 'currency'],
+    opts: [{ selector: "vatType", vals: ["Output", "Input"] }],
     nData: new VATDetails(null,null,null,null,null),
     pageID: 3,
     addFlag: true,

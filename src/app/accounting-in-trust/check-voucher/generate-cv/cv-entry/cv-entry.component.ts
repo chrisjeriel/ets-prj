@@ -13,8 +13,9 @@ export class CvEntryComponent implements OnInit {
   passDataCheckDetails: any = {
         tableData: this.accountingService.getCheckDetails(),
         tHeader: ["Bank", "Account No", "Check Date", "Check No", "Check Class","Curr","Amount"],
-        dataTypes: ['text','text','date','sequence-8','text','text','currency',],
-        uneditable:[true,true,false,true,false,true,true],
+        dataTypes: ['select','select','date','sequence-8','select','select','currency',],
+        opts: [{ selector: "bank", vals: ["Banco De Oro", "Bank of the Philippine Island", "Philippine National Bank"] }, { selector: "accountNo", vals: ["PCPA-9091-7001-7389", "PCPA-9095-3001-7529", "PCPA-9071-8001-7356"] }, { selector: "checkClass", vals: ["Local Clearing", "Manager's Check", "On Us"]}, { selector: "currency", vals: ["PHP", "EUR", "USD"]}],
+        uneditable:[false,false,false,true,false,false,true],
         addFlag:true,
         editFlag:true,
         //totalFlag:true,
@@ -23,9 +24,11 @@ export class CvEntryComponent implements OnInit {
         paginateFlag: true,
     };
 
-  constructor(private accountingService: AccountingService) { }
+  constructor(private accountingService: AccountingService,private titleService: Title) { }
 
   ngOnInit() {
+
+    this.titleService.setTitle("Acct-IT | CV Entry");
   }
 
 }

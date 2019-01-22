@@ -10,7 +10,7 @@
                             <input type="text" class="form-control form-control-sm cust-sm col-sm-3" style="margin-right: 2px !important" placeholder="2018" style="text-align: right;">
                             <input type="text" class="form-control form-control-sm cust-sm col-sm-3" placeholder="00000001" style="text-align: right;">
                             <label class="form-control-sm col-sm">Date</label>
-                             <input type="date" class="form-control form-control-sm cust-sm col-sm-4" style="margin-right: 2px !important;text-align: right;">
+                             <input type="date" class="form-control form-control-sm cust-sm col-sm-4" style="margin-right: 2px !important;text-align: right;" value="2018-10-01">
                         </div>
                     </div>
                     <input type="text" class="form-control form-control-sm cust-sm col-sm-1" style="margin-left: -10px !important;" placeholder="10:45 AM">
@@ -24,15 +24,24 @@
                     <label class="form-control-sm col-sm-1" style="height: auto;">JV Type</label>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 1px !important;" style="Error Correction">
-                        <div style="margin-left: -19px !important;margin-right: 0px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+                        <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 1px !important;" style="Error Correction"> -->
+                        <select class="form-control form-control-sm cust-sm col-sm">
+                            <option>Error Correction</option>
+                            <option>Reversal</option>
+                        </select>
+                        <!-- <div style="margin-left: -19px !important;margin-right: 0px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div> -->
                         </div>
                     </div>
                     <div class="col-sm-1"  style="margin-left: -10px !important;"></div>
                     <label class="form-control-sm col-sm-1">Ref No</label>
-                    <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="2017-00023974">
-                    <div style="margin-left: -19px !important;margin-right: 3px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
-                    <label class="form-control-sm col-sm-1" style="margin-left: 2px !important;">Ref No Date</label>
+                    <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="2017-00023974">
+                    <div style="margin-left: -19px !important;margin-right: 3px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div> -->
+                    <select class="form-control form-control-sm cust-sm col-sm-2">
+                        <option>2017-00023974</option>
+                        <option>2017-00023463</option>
+                        <option>2017-00023432</option>
+                    </select>
+                    <label class="form-control-sm col-sm-1" >Ref No Date</label>    
                     <input type="datetime-local" class="form-control form-control-sm cust-sm col-sm-2" placeholder="000372921" >
                 </div>
                 <div class="input-group">
@@ -55,8 +64,13 @@
                     <label class="form-control-sm col-sm-1" style="height: auto;">Amount</label>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="PHP" style="margin-right: -1px !important;">
-                            <div style="margin-left: -19px !important;margin-right: 6px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+                            <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="PHP" style="margin-right: -1px !important;"> -->
+                            <select class="form-control form-control-sm cust-sm col-sm-2" style="margin-right: -1px !important;">
+                                <option>PHP</option>
+                                <option>USD</option>
+                                <option>EUR</option>
+                            </select>
+                            <!-- <div style="margin-left: -19px !important;margin-right: 6px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div> -->
                             <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px !important;" style="text-align: right;" placeholder="27,513.20">
                             <label class="form-control-sm col-sm-3" style="height: auto;">Currency Rate</label>
                         </div>
@@ -65,7 +79,12 @@
                     <label class="form-control-sm col-sm-1" style="height: auto;">Local Amount</label>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="PHP" style="margin-right: 2px !important;">
+                            <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="PHP" style="margin-right: 2px !important;"> -->
+                            <select class="form-control form-control-sm cust-sm col-sm-2" style="margin-right: 2px !important;">
+                                <option>PHP</option>
+                                <option>USD</option>
+                                <option>EUR</option>
+                            </select>
                             <input type="text" class="form-control form-control-sm cust-sm col-sm" style="text-align: right;">
                         </div>
                     </div>

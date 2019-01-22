@@ -11,10 +11,44 @@ import { Router } from '@angular/router';
 })
 export class CheckVoucherComponent implements OnInit {
 
+  private routeData: any;
+
   passDataCVListing: any = {
         tableData: this.accountingService.getCVListing(),
-        tHeader: ["CV Year", "CV No", "Payee", "CV Date", "Status","Particulars","Amount"],
-        dataTypes: ['year','sequence-8','text','date','text','text','currency',],
+        tHeader: ["CV No", "Payee", "CV Date", "Status","Particulars","Amount"],
+        dataTypes: ['text','text','date','text','text','currency',],
+        filters: [
+        {
+          key: 'cvNo',
+          title: 'C.V. No.',
+          dataType: 'text'
+        },
+        {
+          key: 'payee',
+          title: 'Payee',
+          dataType: 'text'
+        },
+        {
+          key: 'cvDate',
+          title: 'CV Date',
+          dataType: 'date'
+        },
+        {
+          key: 'status',
+          title: 'Status',
+          dataType: 'text'
+        },
+        {
+          key: 'particulars',
+          title: 'Particulars',
+          dataType: 'text'
+        },
+        {
+          key: 'amount',
+          title: 'Amount',
+          dataType: 'text'
+        }
+    ],
         addFlag:true,
         editFlag:true,
         //totalFlag:true,
@@ -35,6 +69,20 @@ export class CheckVoucherComponent implements OnInit {
 
   onClickEdit(event){
       this.router.navigate(['/generate-cv']); 
+  }
+
+  toGenerateAREdit(event) {
+    this.router.navigateByUrl('/generate-cv');
+  }
+
+  onRowClick(data){
+      this.routeData = data;
+      if(data.status == 'Printed' || data.status == 'Cancelled'){
+        this.passDataCVListing.btnDisabled = true;
+      }else{
+        this.passDataCVListing.btnDisabled = false;
+      }
+    //console.log(this.accountingService.getPaytRequestsList());
   }
 
 }
