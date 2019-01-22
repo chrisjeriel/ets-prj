@@ -8,6 +8,8 @@ import { Title } from '@angular/platform-browser';
 })
 export class ExtractComponent implements OnInit {
 
+  postingDateFlag: any = '1';
+
   constructor(private titleService: Title) { }
 
   ngOnInit() {

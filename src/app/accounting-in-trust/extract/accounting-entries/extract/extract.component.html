@@ -30,11 +30,11 @@
 							<div class="input-group">
 								<label class="col-sm-1"></label>
 								<div class=" col-sm-1 ">
-									<input class="form-control-sm" type="radio" name="period" id="transaction" checked="checked">	
+									<input class="form-control-sm" type="radio" name="period" id="transaction" [value]="'1'" [(ngModel)]="postingDateFlag">	
 								</div>
 								<label class="form-control-sm col-sm text-left" for="All">&nbsp;Transaction Date</label>
 								<div class=" col-sm-1 ">
-									<input class="form-control-sm" type="radio" name="period" id="posting">	
+									<input class="form-control-sm" type="radio" name="period" id="posting" [value]="'2'" [(ngModel)]="postingDateFlag">	
 								</div>
 								<label class="form-control-sm col-sm text-left" for="All">&nbsp;Posting Date</label>
 								<label class="col-sm-1"></label>
@@ -106,7 +106,7 @@
 						<div class="form-row custom-row-inline-inset period">
 							<div class="input-group check-row">
 								<div class="col-sm-2">
-									<input type="checkbox" class="form-control-sm " name="" id="icto" checked="checked">
+									<input type="checkbox" class="form-control-sm " name="" id="icto" checked="checked" [disabled]="postingDateFlag=='2'">
 								</div>
 								<label for="icto" class="form-control-sm text-left col-sm">Include Closed Transactions Only</label>
 							</div>
