@@ -168,22 +168,21 @@ span.ui-column-resizer {
                     <tbody>
                         <tr *ngFor="let data of displayData | paginate: { id: 'editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p2 };let ti = index"
                         (click)="onRowClick($event)" (dblclick)="onRowDblClick($event)">
-                        <td *ngIf="passData.checkFlag" class="checkbox align-middle"><input *ngIf="addCheckFlag(data)" type="checkbox"
-                            name="checkbox" [checked]="checked"></td>
+                            <td *ngIf="passData.checkFlag" class="checkbox align-middle"><input *ngIf="addCheckFlag(data)" type="checkbox" name="checkbox" [checked]="checked"></td>
                             <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]" class="align-middle">
                                 <div *ngIf="addCheckFlag(data) && ( passData.uneditable === undefined || !passData.uneditable[i] )" class="align-middle" style="position: relative;">
                                     <input *ngSwitchCase="'percent'" class="editable-text text-right number form-control-sm"
-                                    type="text" [ngModel]="processData(key, data) | number:'1.7-7'" (blur)="format($event , key, ti)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1">
+                                    type="text" [ngModel]="processData(key, data) | number:'1.7-7'" (blur)="format($event , key, ti)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (ngModel)="onTestClick(ti,key)">
                                     <input *ngSwitchCase="'number'" class="editable-text text-right number form-control-sm"
                                     type="text" [ngModel]="data[key]" [ngModelOptions]="{updateOn:'change'}" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1">
                                     <input *ngSwitchCase="'currency'" class="editable-text text-right number form-control-sm"
-                                    type="text" [ngModel]="data[key] | number:'1.2-2'" (blur)="format($event , key, ti)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1">
+                                    type="text" [ngModel]="data[key] | number:'1.2-2'" (blur)="format($event , key, ti)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onTestClick(ti,key)">
                                     <div *ngSwitchCase="'checkbox'" style="text-align: center;">
                                         <input [checked]="data[key] === true ? true : false" type="checkbox">
                                     </div>
                                     <input *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'sequence' ? passData.dataTypes[i] : ''" class="editable-text text-right number form-control-sm"
                                     type="text" [ngModel]="data[key] | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence" (blur)="format($event , key, ti)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1">
-                                    <select *ngSwitchCase="'select'" class="editable-select form-control-sm" [value]="processData(key, data)">
+                                    <select *ngSwitchCase="'select'" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onTestClick(ti,key)">
                                         <ng-container *ngFor="let data of passData.opts">
                                             <ng-container *ngIf="key == data.selector">
                                                 <option *ngFor="let val of data.vals">{{ val }}</option>

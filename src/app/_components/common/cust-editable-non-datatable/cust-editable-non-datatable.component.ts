@@ -80,7 +80,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     startWidth: any;
     autoFill: number[];
 
-    displayData:any[];
+    displayData:any[] = [];
     newData: any = new DummyInfo(null,null,null,null,null,null,null);
     sortBy:boolean = true;
     sortIndex:number;
@@ -108,7 +108,11 @@ export class CustEditableNonDatatableComponent implements OnInit {
         } else {
             //this.passData.tHeader.push("No Data");
         }
-        this.displayData = JSON.parse(JSON.stringify( this.passData.tableData));
+        for(var i = 0 ;i<this.passData.tableData.length;i++){
+            this.displayData[i] = this.passData.tableData[i];
+        }
+
+        //this.displayData = JSON.parse(JSON.stringify( this.passData.tableData));
         this.displayLength = this.displayData.length;
         // this.autoFill = Array(this.passData.pageLength).fill(this.newData);
         // if(this.displayData.length%this.passData.pageLength != 0){
@@ -171,7 +175,10 @@ export class CustEditableNonDatatableComponent implements OnInit {
 
     onRowClick(event) {
         this.rowClick.next(event);
+        
     }
+
+
 
     onRowDblClick(event) {
         this.rowDblClick.next(event);
@@ -280,6 +287,10 @@ export class CustEditableNonDatatableComponent implements OnInit {
             })
         }
         this.addFiller();
+    }
+
+    onTestClick(index,key){
+        console.log(this.passData.tableData);
     }
  
 }
