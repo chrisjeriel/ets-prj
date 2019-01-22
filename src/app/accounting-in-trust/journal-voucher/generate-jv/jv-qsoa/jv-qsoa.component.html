@@ -43,50 +43,23 @@
 </fieldset>
 
 <fieldset class="scheduler-border">
-	<legend class="scheduler-border">Attached Files</legend>
+	<legend class="scheduler-border">QSOA Balances</legend>
 	<div class="form-row custom-row-inline-inset" style="margin-bottom: -8px !important;">
 		<app-cust-editable-non-datatable [passData]="passData" style="width: 100%"></app-cust-editable-non-datatable>
 	</div>
-
-	<div class="col-sm-12" style="margin-top: -15px;">
-                <div class="col-sm" style="padding: 0; margin-top: 10px; margin-bottom: 25px">
-                    <div class="input-group">
-                        <div class="col-sm-3" style="padding: 0">
-                            <div class="input-group">
-                                <label class="form-control-sm">Created By</label>
-                                <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma" >
-                            </div>
-                        </div>
-                        <div class="col-sm-3" style="padding: 0">
-                            <div class="input-group">
-                                <label class="form-control-sm">Date Created</label>
-                                <input type="text" class="form-control form-control-sm col-sm" placeholder="10/01/2018 11:49 AM" >
-                            </div>
-                        </div>
-                        <div class="col-sm-3" style="padding: 0">
-                            <div class="input-group">
-                                <label class="form-control-sm">Last Update By</label>
-                                <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma" >
-                            </div>
-                        </div>
-                        <div class="col-sm-3" style="padding: 0">
-                            <div class="input-group">
-                                <label class="form-control-sm">Last Update</label>
-                                <input type="text" class="form-control form-control-sm col-sm" placeholder="10/01/2018 11:49 AM" >
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 </fieldset>
 
-<div class="form-row bottom-button-container">
-		<div class="form-group col-sm">
-			<div class="col-md-13 text-center">
-				<div class="cust-btn-container" style="margin-top: 10px;">
-				<button type="button" class="cust-btn"><a>Cancel</a></button>
-				<button type="button" class="cust-btn"><a>Save</a></button>
-			</div>
-			</div>
-		</div>
-	</div>
+<fieldset class="scheduler-border" style="margin: 0px !important; margin-top: 11px !important; ">
+	<div class="form-row custom-row-inline-inset" style="margin-left: -27px; margin-bottom: 15px !important;">
+        <div class="input-group">
+            <label class="form-control-sm col-sm-1 text-right labels">Created By</label>
+            <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma">
+            <label class="form-control-sm col-sm-1 text-right labels">Date Created</label>
+            <input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM">
+            <label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
+            <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma">
+            <label class="form-control-sm col-sm-1 text-right labels">Last Update</label>
+            <input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM">
+        </div>
+    </div>
+</fieldset>
