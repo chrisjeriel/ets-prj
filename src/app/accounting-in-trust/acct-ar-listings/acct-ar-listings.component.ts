@@ -67,8 +67,19 @@ export class AcctArListingsComponent implements OnInit {
     pagination: true,
     addFlag: true,
     editFlag: true,
-    pageID: 1
+    pageID: 1,
+    btnDisabled: true
   }
+
+  record: any = {
+      arNo: null,
+      payor: null,
+      arDate: null,
+      paymentType: null,
+      status: null,
+      particulars: null,
+      amount: null
+    }
 
   constructor(private router: Router,private titleService: Title) { }
 
@@ -83,16 +94,24 @@ export class AcctArListingsComponent implements OnInit {
   toGenerateAREdit(event) {
     var selectedRow = event.target.closest('tr').children;
 
-    var record = {
+    this.record = {
       arNo: selectedRow[0].innerText,
       payor: selectedRow[1].innerText,
       arDate: selectedRow[2].innerText,
-      paymentType: selectedRow[3].innerText,
+      paymentType: selectedRow[3].innerText.trim(),
       status: selectedRow[4].innerText,
       particulars: selectedRow[5].innerText,
       amount: selectedRow[6].innerText
     }
 
-    this.router.navigate(['/accounting-in-trust', { slctd: JSON.stringify(record), action: 'edit' }], { skipLocationChange: true });
+    this.router.navigate(['/accounting-in-trust', { slctd: JSON.stringify(this.record), action: 'edit' }], { skipLocationChange: true });
+  }
+
+  onRowClick(data){
+      if(data[4] == 'Printed'){
+        this.passData.btnDisabled = true;
+      }else{
+        this.passData.btnDisabled = false;
+      }
   }
 }

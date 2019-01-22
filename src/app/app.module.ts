@@ -169,6 +169,8 @@ import { GenerateNumberSeriesComponent } from './maintenance/accounting-in-trust
 import { MaintArSeriesTrstComponent } from './maintenance/accounting-in-trust/generate-number-series/maint-ar-series-trst/maint-ar-series-trst.component';
 import { MaintCvSeriesTrstComponent } from './maintenance/accounting-in-trust/generate-number-series/maint-cv-series-trst/maint-cv-series-trst.component';
 import { MaintJvSeriesTrstComponent } from './maintenance/accounting-in-trust/generate-number-series/maint-jv-series-trst/maint-jv-series-trst.component';
+import { JvDetailsComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-details/jv-details.component';
+import { JvQsoaComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-qsoa/jv-qsoa.component';
 
 
 @NgModule({
@@ -343,6 +345,8 @@ import { MaintJvSeriesTrstComponent } from './maintenance/accounting-in-trust/ge
         MaintArSeriesTrstComponent,
         MaintCvSeriesTrstComponent,
         MaintJvSeriesTrstComponent,
+        JvDetailsComponent,
+        JvQsoaComponent,
 
     ],
 

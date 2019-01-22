@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AccountingService } from '@app/_services';
@@ -40,7 +40,7 @@ export class ArDetailsComponent implements OnInit {
     genericBtn: 'Save'
   };
 
-  @Input() amountDetailsData: any = {
+  amountDetailsData: any = {
     tableData: [
         {
           detail: 'Gross Amount (VAT Inc)',
@@ -54,9 +54,6 @@ export class ArDetailsComponent implements OnInit {
           amount: 1785714.29,
           amountPHP: 1785714.29,
           plusMinus: 'Add',
-          /*get amountPlusMinus(){
-            return (this.plusMinus == 'Add') ? 1 : 0;
-          }*/
           amountPlusMinus: 1785714.29
         },
         {
@@ -130,8 +127,5 @@ export class ArDetailsComponent implements OnInit {
     this.titleService.setTitle("Acct-IT | AR Details");
 
   }
-
-  ngOnChanges() {
-    console.log('nagbago   >>> ' + this.amountDetailsData);
-  }
+  
 }

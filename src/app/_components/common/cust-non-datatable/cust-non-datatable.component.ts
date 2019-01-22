@@ -126,7 +126,10 @@ export class CustNonDatatableComponent implements OnInit {
         
         copyFlag: false,        //copy btn
                                 //add functionality by placing it with [passData] as (copy)="onClickCopy($copy)"
-        
+
+        btnDisabled: true,      //your custom button disabler flag. Use this if you still need to disable button even after
+                                //selecting a row
+
         pageID: 1               //if you use multiple instances of this component, this is a must
     }
 
@@ -161,6 +164,7 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.passData.btnDisabled = false;
         this.passData.pageID = typeof this.passData.pageID == "undefined" ? 1 : this.passData.pageID;
         this.passData.colSize = typeof this.passData.colSize == "undefined" ? [] : this.passData.colSize;
         this.unliFlag = this.passData.pageLength == 'unli';
