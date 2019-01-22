@@ -54,7 +54,7 @@ export class CvDetailsComponent implements OnInit {
 
   accountingCreditableTaxDetails: any = {
     tableData: this.accountingService.getCreditableTax(),
-    tHeader: ['BIR Tax Code', 'Description', 'WTax Rate', 'Payor','Base Amount', 'VAT Amount'],
+    tHeader: ['BIR Tax Code', 'Description', 'WTax Rate', 'Payor','Base Amount', 'WTax Amount'],
     dataTypes: ['text', 'text', 'currency','text', 'currency', 'currency'],
     nData: new CreditableTax(null,null,null,null,null,null),
     pageID: 4,
