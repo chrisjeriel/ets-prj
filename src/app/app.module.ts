@@ -168,6 +168,7 @@ import { AcctItEditedAcctEntriesComponent } from './accounting-in-trust/accounti
 import { JvDetailsComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-details/jv-details.component';
 import { PaymentPremiumReturnsComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/payment-premium-returns/payment-premium-returns.component';
 import { JvQsoaComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-qsoa/jv-qsoa.component';
+import { PaymentClaimsComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/payment-claims/payment-claims.component';
 
 
 @NgModule({
@@ -341,6 +342,7 @@ import { JvQsoaComponent } from './accounting-in-trust/journal-voucher/generate-
         JvDetailsComponent,
         PaymentPremiumReturnsComponent,
         JvQsoaComponent,
+        PaymentClaimsComponent,
 
     ],
 

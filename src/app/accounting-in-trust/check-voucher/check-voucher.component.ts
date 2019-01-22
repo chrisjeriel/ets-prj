@@ -11,6 +11,8 @@ import { Router } from '@angular/router';
 })
 export class CheckVoucherComponent implements OnInit {
 
+  private routeData: any;
+
   passDataCVListing: any = {
         tableData: this.accountingService.getCVListing(),
         tHeader: ["CV No", "Payee", "CV Date", "Status","Particulars","Amount"],
@@ -71,6 +73,16 @@ export class CheckVoucherComponent implements OnInit {
 
   toGenerateAREdit(event) {
     this.router.navigateByUrl('/generate-cv');
+  }
+
+  onRowClick(data){
+      this.routeData = data;
+      if(data.status == 'Printed' || data.status == 'Cancelled'){
+        this.passDataCVListing.btnDisabled = true;
+      }else{
+        this.passDataCVListing.btnDisabled = false;
+      }
+    //console.log(this.accountingService.getPaytRequestsList());
   }
 
 }
