@@ -1,7 +1,7 @@
 <div class="cust-tabs-container">
 	<h4>Policy / Expiry & Renewal</h4>
 	<ngb-tabset>
-		<ngb-tab title="Extract Expiring Policies">
+		<ngb-tab title="Extract Expiring Policy">
 			<ng-template ngbTabContent>
 				<div class="row">
 					<div class="col-sm-2"></div>
@@ -11,7 +11,29 @@
 							<div class="form-row custom-row-inline-inset">
 								<div class="input-group">
 									<div class="col-sm-2"></div>
-									<input class="form-control-sm " type="radio" name="optradio" id="byDate" [value]="true" [(ngModel)]="byDate" (click)="clearDates()">	
+									<input class="form-control-sm " type="radio" name="optradio" id="byPolNo" value="bypolno" [(ngModel)]="byDate" (click)="clearDates()">	
+									<label class="form-control-sm col-sm-4" for="byDate">&nbsp;By Policy No</label>
+									<div class="col-sm-2"></div>
+								</div>
+							</div>
+							<div class="form-row custom-row-inline-inset">
+								<div class="input-group" style="margin-top: -19px;">
+									<div class="col-sm-2"></div>
+									<label class="form-control-sm cust-sm from" style="color:white;" for="fromDate">From</label>
+		                            <input [disabled]="byDate != 'bypolno'" type="text" class="form-control form-control-sm col-sm-2 cap-input" [(ngModel)]="expiryParameters.line" ngbTooltip="Line">
+		                            <input [disabled]="byDate != 'bypolno'" type="text" class="form-control form-control-sm col-sm cap-input" style="margin-left: 3px;" [(ngModel)]="expiryParameters.year" ngbTooltip="Year">
+		                            <input [disabled]="byDate != 'bypolno'" type="text" class="form-control form-control-sm col-sm cap-input" style="margin-left: 3px;" [(ngModel)]="expiryParameters.sequence" ngbTooltip="Sequence No">
+		                            <input [disabled]="byDate != 'bypolno'" type="text" class="form-control form-control-sm col-sm cap-input" style="margin-left: 3px;" [(ngModel)]="expiryParameters.coCode" ngbTooltip="Co Code">
+		                            <input [disabled]="byDate != 'bypolno'" type="text" class="form-control form-control-sm col-sm cap-input" style="margin-left: 3px;" [(ngModel)]="expiryParameters.coSeriesNo" ngbTooltip="Co Series No">
+		                             <input [disabled]="byDate != 'bypolno'" type="text" class="form-control form-control-sm col-sm cap-input" style="margin-left: 3px;" [(ngModel)]="expiryParameters.alt" ngbTooltip="Alt No">
+		                            <div style="padding-left: 3px; margin-top: -3px;"><a><i class="fa fa-search"></i></a></div>
+									<div class="col-sm-2"></div>
+								</div>
+							</div>
+							<div class="form-row custom-row-inline-inset">
+								<div class="input-group" style="margin-top: -11px;">
+									<div class="col-sm-2"></div>
+									<input class="form-control-sm " type="radio" name="optradio" id="byDate" value="bydate" [(ngModel)]="byDate" (click)="clearDates()">	
 									<label class="form-control-sm col-sm-4" for="byDate">&nbsp;By Date</label>
 									<div class="col-sm-2"></div>
 								</div>
@@ -20,16 +42,16 @@
 								<div class="input-group" style="margin-top: -19px;">
 									<div class="col-sm-2"></div>
 									<label class="form-control-sm cust-sm from" for="fromDate">From</label>
-									<input [(ngModel)]="expiryParameters.fromDate" type="date" class="form-control form-control-sm cust-sm col-sm-4" id="fromDate" value="2018-12-04" [disabled]="!byDate">
+									<input [(ngModel)]="expiryParameters.fromDate" type="date" class="form-control form-control-sm cust-sm col-sm-4" id="fromDate" value="2018-12-04" [disabled]="byDate != 'bydate'">
 									<label class="form-control-sm cust-sm" style="margin-left: 15px">To</label>
-									<input [(ngModel)]="expiryParameters.toDate" type="date" class="form-control form-control-sm cust-sm col-sm-4" id="toDate" value="2018-12-04" [disabled]="!byDate">
+									<input [(ngModel)]="expiryParameters.toDate" type="date" class="form-control form-control-sm cust-sm col-sm-4" id="toDate" value="2018-12-04" [disabled]="byDate != 'bydate'">
 									<div class="col-sm-2"></div>
 								</div>
 							</div>
 							<div class="form-row custom-row-inline-inset">
 								<div class="input-group" style="margin-top: -11px;">
 									<div class="col-sm-2"></div>
-									<input class="form-control-sm " type="radio" name="optradio" id="byMonthYear" [value]="false" [(ngModel)]="byDate" (click)="clearDates()">
+									<input class="form-control-sm " type="radio" name="optradio" id="byMonthYear" value="bymoyo" [(ngModel)]="byDate" (click)="clearDates()">
 									<label class="form-control-sm col-sm-5 text-left" for="byMonthYear">&nbsp;By Month/Year</label>
 									<div class="col-sm-2"></div>
 								</div>
@@ -39,7 +61,7 @@
 								<div class="input-group" style="margin-top: -19px;">
 									<div class="col-sm-2"></div>
 									<label class="form-control-sm cust-sm from">From</label>
-									<select [(ngModel)]="expiryParameters.fromMonth" class="form-control form-control-sm cust-sm col-sm-3" name="fromMonth" [disabled]="byDate">
+									<select [(ngModel)]="expiryParameters.fromMonth" class="form-control form-control-sm cust-sm col-sm-3" name="fromMonth" [disabled]="byDate != 'bymoyo'">
 										<option value="1">January</option>
 										<option value="2">February</option>
 										<option value="3">March</option>
@@ -53,9 +75,9 @@
 										<option value="11">November</option>
 										<option value="12">December</option>
 									</select>
-									<input [(ngModel)]="expiryParameters.fromYear" class="form-control form-control-sm cust-sm col-sm-1" type="text" name="fromYear" [disabled]="byDate">
+									<input [(ngModel)]="expiryParameters.fromYear" class="form-control form-control-sm cust-sm col-sm-1" type="text" name="fromYear" [disabled]="byDate != 'bymoyo'">
 									<label class="form-control-sm cust-sm toMonth" style="margin-left: 15px">To</label>
-									<select [(ngModel)]="expiryParameters.toMonth" class="form-control form-control-sm cust-sm col-sm-3" name="toMonth" [disabled]="byDate">
+									<select [(ngModel)]="expiryParameters.toMonth" class="form-control form-control-sm cust-sm col-sm-3" name="toMonth" [disabled]="byDate != 'bymoyo'">
 										<option value="1">January</option>
 										<option value="2">February</option>
 										<option value="3">March</option>
@@ -69,7 +91,7 @@
 										<option value="11">November</option>
 										<option value="12">December</option>
 									</select>
-									<input [(ngModel)]="expiryParameters.toYear" class="form-control form-control-sm cust-sm col-sm-1" type="text" name="toYear" [disabled]="byDate">
+									<input [(ngModel)]="expiryParameters.toYear" class="form-control form-control-sm cust-sm col-sm-1" type="text" name="toYear" [disabled]="byDate != 'bymoyo'">
 									<div class="col-sm-2"></div>
 								</div>
 							</div>
@@ -107,7 +129,7 @@
 									<input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 2px" ngbTooltip="Co Code">
 									<input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 2px" ngbTooltip="Co Series No">
 									<input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 2px" ngbTooltip="Alt No">
-									<div style="padding-left: 3px;"><a><i class="fa fa-search"></i></a></div>
+									<div style="padding-left: 3px; margin-top: -3px;"><a><i class="fa fa-search"></i></a></div>
 								</div>	
 							</div>
 						</fieldset>
@@ -120,11 +142,11 @@
 											padding-left: 40px !important;
 											padding-right: 3px !important;">
 											<label class="form-control-sm col-sm-4">Extracted By</label>
-											<input [(ngModel)]="lastExtraction.extractedBy" class="form-control form-control-sm col-sm" type="text" name="optradio" checked="checked">
+											<input [(ngModel)]="lastExtraction.extractedBy" class="form-control form-control-sm col-sm" type="text"  checked="checked">
 										</div>
 										<div class="col-sm input-group" style="padding-left: 0px !important; padding-right: 40px !important;">
 											<label class="form-control-sm col-sm-4">Extraction Date</label>
-											<input [(ngModel)]="lastExtraction.extractionDate" class="form-control form-control-sm col-sm" type="date" name="optradio" checked="checked" id="extractionDate">
+											<input [(ngModel)]="lastExtraction.extractionDate" class="form-control form-control-sm col-sm" type="date" checked="checked" id="extractionDate">
 										</div>
 									</div>
 								</div>

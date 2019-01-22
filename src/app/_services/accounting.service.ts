@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment , AccCVPayReqList , AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments,  AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList} from '@app/_models';
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment , AccCVPayReqList , AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments,  AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList,  AccJvInPolBal, AccJVPayReqList} from '@app/_models';
 
 
 @Injectable({
@@ -42,6 +42,9 @@ export class AccountingService {
 	vatDetailsJV: VATDetailsJV[]= [];
 	creditableTaxJV:CreditableTaxJV[]= [];
 	premiumReturnsList: PremiumReturnList[]= [];
+	accJvInPolBal: AccJvInPolBal[] = [];
+	accJvPayReqList: AccJVPayReqList[] = [];
+
 	constructor(private http: HttpClient) { }
 
 	getAmountDetails() {
@@ -278,7 +281,7 @@ export class AccountingService {
 
 	getAccInvestments(){
 		this.accInvestments = [
-			new AccInvestments("BPI","BPI 1", 5, "Years", 8.875000, new Date("10/20/2018"), new Date("10/20/2018"), 14000000, 1812500 ),
+			new AccInvestments("BPI","BPI 1", 5, "Years", 8.875000, new Date("10/20/2013"), new Date("10/20/2018"), 14000000, 1812500 ),
 			new AccInvestments("RCBC","RCBC 1",35,"Days", 1.500000,new Date("09/26/2018"),new Date("10/31/2018"),10000000,10150000)
 		]
 		return this.accInvestments;
@@ -478,6 +481,24 @@ export class AccountingService {
 			new PremiumReturnList(new Date(2018,9,25),"FLT PRIME","EAR-2018-00001-99-001-000",-250000,-75000,-9000,"PHP",-166000),
 		]
 		return this.premiumReturnsList;
+	}
+
+	getAccJVInPolBal() {
+		this.accJvInPolBal = [
+			new AccJvInPolBal('CAR-2018-00001-99-0001-000','01', new Date("09/25/2018"), 'PHP', 3000000, 0.00, 0.00, 1642857.14,1357142.86,0.00,1642857.14),	
+			];
+		
+		return this.accJvInPolBal;
+	}
+
+	getAccJVPayReqList() {
+		this.accJvPayReqList = [
+			new AccJVPayReqList("CSR-2018-09-0001", "PMMSC Cashier", "Claim Payment", "Open", new Date("09/20/2018"), "Replenishment of", "Rosalinda Mercedez", "PHP", 27513.20),	
+			new AccJVPayReqList("PRR-2018-09-0002", "Sample Supplier", "Premium Returns", "Open", new Date("09/27/2018"), "Payment for official", "Chie Reyes", "PHP", 50000),	
+			new AccJVPayReqList("OTR-2018-01-0001", "PMMSC", "Others", "Open", new Date("09/27/2018"), "Payroll for August 1-31, 2018", "Lourdes R. Guevarra", "PHP", 300000),	
+			];
+		
+		return this.accJvPayReqList;
 	}
 
 }
