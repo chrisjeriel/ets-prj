@@ -23,6 +23,7 @@ export class JvInwardPolBalanceComponent implements OnInit {
     dataTypes: ['text','text','date','text','currency','percent','percent','currency','currency','percent','currency'],
     nData: new AccJvInPolBal(null,null,new Date(),null,null,null,null,null,null,null,null),
     total:[null,null,'Total',null,'premium','riComm','charges','netDue','payments','overdueInt','bal'],
+    magnifyingGlass: ['polNo','instNo'],
     checkFlag: true,
     addFlag: true,
     deleteFlag: true,

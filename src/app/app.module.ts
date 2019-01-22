@@ -167,6 +167,7 @@ import { CancelJvComponent } from './accounting-in-trust/utilities/cancel-transa
 import { AcctItEditedAcctEntriesComponent } from './accounting-in-trust/accounting-inquiry/acct-it-edited-acct-entries/acct-it-edited-acct-entries.component';
 import { JvInwardPolBalanceComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-inward-pol-balance/jv-inward-pol-balance.component';
 import { JvPaymentRequestListComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-payment-request-list/jv-payment-request-list.component';
+import { TrialBalanceTbComponent } from './accounting-in-trust/extract/trial-balance/trial-balance-tb/trial-balance-tb.component';
 
 
 @NgModule({
@@ -339,6 +340,7 @@ import { JvPaymentRequestListComponent } from './accounting-in-trust/journal-vou
         AcctItEditedAcctEntriesComponent,
         JvInwardPolBalanceComponent,
         JvPaymentRequestListComponent,
+        TrialBalanceTbComponent,
 
     ],
 

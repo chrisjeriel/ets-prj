@@ -277,7 +277,7 @@ export class AccountingService {
 
 	getAccInvestments(){
 		this.accInvestments = [
-			new AccInvestments("BPI","BPI 1", 5, "Years", 8.875000, new Date("10/20/2018"), new Date("10/20/2018"), 14000000, 1812500 ),
+			new AccInvestments("BPI","BPI 1", 5, "Years", 8.875000, new Date("10/20/2013"), new Date("10/20/2018"), 14000000, 1812500 ),
 			new AccInvestments("RCBC","RCBC 1",35,"Days", 1.500000,new Date("09/26/2018"),new Date("10/31/2018"),10000000,10150000)
 		]
 		return this.accInvestments;
