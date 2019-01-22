@@ -277,6 +277,9 @@ export class AccountingService {
 	getAccountingEntriesUtil() {
 		this.accountingEntriesCVData = [
 			new AccountingEntriesCV('1-01-02-01', 'BPI Current Account No. 0071-0435-0438-94', '', '', 0, 2945.45),
+			new AccountingEntriesCV('5-01-13-02', 'Internet Expense', '', '', 2971.43, 0),
+			new AccountingEntriesCV('1-59', 'Input VAT', '', '', 321.32, 0),
+			new AccountingEntriesCV('2-03-02-04', 'WC120 2%', '', '', 0, 53.55),
 		];
 
 		return this.accountingEntriesCVData;
