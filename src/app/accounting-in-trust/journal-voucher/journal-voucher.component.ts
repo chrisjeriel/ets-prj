@@ -78,4 +78,7 @@ export class JournalVoucherComponent implements OnInit {
       this.router.navigate(['/generate-jv']); 
   }
 
+  toGenerateAREdit(event) {
+    this.router.navigateByUrl('/generate-jv');
+  }
 }

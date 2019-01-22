@@ -13,14 +13,9 @@ export class CheckVoucherComponent implements OnInit {
 
   passDataCVListing: any = {
         tableData: this.accountingService.getCVListing(),
-        tHeader: ["CV Year", "CV No", "Payee", "CV Date", "Status","Particulars","Amount"],
-        dataTypes: ['year','sequence-8','text','date','text','text','currency',],
+        tHeader: ["CV No", "Payee", "CV Date", "Status","Particulars","Amount"],
+        dataTypes: ['text','text','date','text','text','currency',],
         filters: [
-        {
-          key: 'cvYear',
-          title: 'C.V. Year.',
-          dataType: 'text'
-        },
         {
           key: 'cvNo',
           title: 'C.V. No.',
@@ -72,6 +67,10 @@ export class CheckVoucherComponent implements OnInit {
 
   onClickEdit(event){
       this.router.navigate(['/generate-cv']); 
+  }
+
+  toGenerateAREdit(event) {
+    this.router.navigateByUrl('/generate-cv');
   }
 
 }
