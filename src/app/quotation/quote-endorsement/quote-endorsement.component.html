@@ -1,0 +1,101 @@
+<div>
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">Quotation Info</legend>
+        <div class="form-row custom-row-inline-inset">
+            <div class="input-group">
+                <label class="form-control-sm col-sm-2" for="inputQuonum">Quotation No </label>
+                <input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-2" placeholder="CAR-2018-5081-077-0177"
+                    disabled="disabled">
+                <label class="form-control-sm col-sm-1" for="inputInname">Insured</label>
+                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-6" placeholder="Insured Name"
+                    disabled="disabled">
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-2" for="inputRisk">Risk</label>
+                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-9" placeholder="Risk"
+                    disabled="disabled">
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">Options</legend>
+        <!--<app-cust-table [checkFlag]="false" [tableData]="quoteOptionTableData" [tHeader]="quoteOptionTHeader" [dataTypes]="quoteOptionDataType" (rowClick)="clickRow($event)"></app-cust-table>-->
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-10" style=" margin-bottom: -0.4%;">
+                <app-cust-non-datatable [passData]="optionsData"></app-cust-non-datatable>
+            </div>
+            <div class="col-sm-1"></div>
+        </div>
+    </fieldset>
+    <fieldset class="scheduler-border" style="position: relative;">
+        <legend class="scheduler-border">Endorsements</legend>
+        <!-- <button type="button" class="cust-btn copy-endt"><a>Copy Endt</a></button> -->
+
+        <!--<app-cust-editable-table [checkFlag]="true" [addFlag]="true" [deleteFlag]="true" [nData]="nData" [tableData]="tableData" [editFlag]="false" 
+		 [tHeader]="tHeader" [magnifyingGlass]="magnifyingGlass"></app-cust-editable-table>-->
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-10" style="margin-top: 0.7em; margin-bottom: -0.4%;">
+                <app-cust-editable-non-datatable [passData]="endorsementData">
+                    <ng-container controls-l>
+                        <button class="cust-btn" (click)="clickModal($event)" style="margin-right: 0px !important;">Copy
+                            Endt</button>
+                    </ng-container>
+                </app-cust-editable-non-datatable>
+            </div>
+            <div class="col-sm-1"></div>
+        </div>
+
+    </fieldset>
+    <div class="form-row">
+        <div class="form-group col-sm">
+            <div class="col-md-13 text-center">
+                <div class="cust-btn-container" style="padding-top: 13px">
+                    <button type="button" class="cust-btn"><a>Cancel</a></button>
+                    <button type="button" class="cust-btn" (click)="save()"><a>Save</a></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-modal hidden [btnTitle]="'Copy Endt'" class="copy-endt" id="idMdl">
+    <div header>Copy Endorsment</div>
+    <div body>
+        <div style="margin-top: -2em;">
+            <table id="non-datatable">
+                <thead>
+                    <tr>
+                        <th class="noborder"><span class="gridHeader">Copy From</span></th>
+                        <th class="noborder"></th>
+                        <th><span class="gridHeader">Copy To</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of optionNos; let i = index">
+                        <td *ngIf="i%10==0">Option 1</td>
+                        <td *ngIf="i%10!=0"></td>
+                        <td style="text-align: center !important"><input type="checkbox" class="copyCheckBox" name=""></td>
+                        <td>Option No {{data}} </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div footer style="margin: auto;">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+    </div>
+</app-modal>

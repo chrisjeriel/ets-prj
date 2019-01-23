@@ -1,0 +1,206 @@
+<div class="cust-tabs-container">
+	<h4>Policy / Distribution</h4>
+	<ngb-tabset>
+		<ngb-tab class="ngb-tab" title="Negate Distribution">
+			<ng-template ngbTabContent>
+				<div>
+					<fieldset class="scheduler-border">
+						<legend class="scheduler-border">Distribution Info</legend>
+							<div class="custom-row-inline-inset">
+								<div class="form-row">
+								<div class="col-sm-6">
+									<div class="input-group">
+										<label class="form-control-sm col-sm-2">Policy No</label>
+										<input type="text" class="form-control form-control-sm col-sm-1 cap-input text-center" ngbTooltip="Line" [ngModel]="policyNo.split('-')[0]">
+										<input type="text" class="form-control form-control-sm col-sm-1 cap-input  text-center" [ngModel]="policyNo.split('-')[1]" style="margin-left: 3px;"
+										ngbTooltip="Year">
+										<input type="text" class="form-control form-control-sm col-sm-4 cap-input  text-center" [ngModel]="policyNo.split('-')[2]" style="margin-left: 3px;"
+										ngbTooltip="Sequence No">
+										<input type="text" class="form-control form-control-sm col-sm-1 cap-input  text-center" [ngModel]="policyNo.split('-')[3]" style="margin-left: 3px;"
+										ngbTooltip="Co Code">
+										<input type="text" class="form-control form-control-sm col-sm-2 cap-input  text-center" [ngModel]="policyNo.split('-')[4]" style="margin-left: 3px;"
+										ngbTooltip="Co Series No">
+										<input type="text" class="form-control form-control-sm col-sm-1 cap-input  text-center" [ngModel]="policyNo.split('-')[5]" style="margin-left: 3px;"
+										ngbTooltip="Alt No">
+										<span>&nbsp;</span>
+                            			<div class="text-search-ico" style="margin-top: -2px;"><a><i class="fa fa-search"></i></a></div>
+
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-2">Dist No</label>
+										<input type="text" class="form-control form-control-sm col-sm cap-input" placeholder="00001">
+										<label class="form-control-sm col-sm-2">Risk Dist No</label>
+										<input type="text" class="form-control form-control-sm col-sm cap-input" placeholder="00001">
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-2">Status</label>
+										<input type="text" class="form-control form-control-sm col-sm-4" placeholder="Distributed">
+									</div>
+								</div>
+								<div class="col-sm-6" style="margin-left: -21px;padding-left: 0px;">
+									<div class="input-group">
+										<label class="form-control-sm col-sm-2">Ceding Co</label>
+										<input type="text" class="form-control form-control-sm col-sm" placeholder="FLT Prime">
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-2">Insured</label>
+										<input type="text" class="form-control form-control-sm col-sm" placeholder="2nd Inn, Inc. (Sogo Cubao 2) and/or A.G. Sanches Const.">
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-2">Risk</label>
+										<input type="text" class="form-control form-control-sm col-sm" placeholder="APMC Bldg">
+									</div>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+					<div class="row">
+						<div class="col-sm-4">
+							<fieldset class="scheduler-border field1">
+								<legend class="scheduler-border">Policy Details</legend>
+								<div class="custom-row-inline-inset">
+									<div class="form-row">
+										<div class="input-group">
+											<label class="form-control-sm col-sm-3">Total SI</label>
+											<input type="text" class="form-control form-control-sm col-sm text-right" [value]="negateDistribution.totalSI | number:'1.2-2'" placeholder="4,000,000,000.00" >
+										</div>
+										<div class="input-group">
+											<label class="form-control-sm col-sm-3">Rate (%)</label>
+											<input type="text" class="form-control form-control-sm col-sm text-right" placeholder="0.025000">
+										</div>
+										<div class="input-group">	
+											<label class="form-control-sm col-sm-3">Total Premium</label>
+											<input type="text" class="form-control form-control-sm col-sm text-right" placeholder="1,000,000.00">
+										</div>
+									</div>
+								</div>
+							</fieldset>
+						</div>
+						<div class="col-sm-4" style="padding-left: 0px;padding-right: 0px;">
+							<fieldset class="scheduler-border field1">
+								<legend class="scheduler-border">Quota Pool</legend>
+								<div class="custom-row-inline-inset">
+									<div class="form-row">
+										<div class="input-group" > 
+											<label class="form-control-sm col-sm-4">One Retention Line</label>
+											<input type="text" class="form-control form-control-sm col-sm text-right" placeholder="200,000.00">
+										</div>
+										<div class="input-group">
+											<label class="form-control-sm col-sm-4">1st Retention Line</label>
+											<input type="text" class="form-control form-control-sm col-sm text-right" placeholder="40">
+										</div>
+										<div class="input-group">
+											<label class="form-control-sm col-sm-4">2nd Retention Line</label>
+											<input type="text" class="form-control form-control-sm col-sm text-right" placeholder="4,095">
+										</div>
+									</div>
+								</div>
+							</fieldset>
+						</div>
+						<div class="col-sm-4">
+							<fieldset class="scheduler-border">
+								<legend class="scheduler-border">Limits</legend>
+								<div class="custom-row-inline-inset">
+									<div class="form-row">
+										<app-cust-non-datatable [passData]="limitsPassData" style="min-width: 100%;margin-top: -3px;"></app-cust-non-datatable>
+									</div>
+								</div>
+							</fieldset>
+						</div>
+					</div>
+					<fieldset class="scheduler-border">
+						<legend class="scheduler-border">Distribution Share</legend>
+						<div class="custom-row-inline-inset">
+							<div class="form-row">
+								<div class="col-sm-1"></div>
+								<div class="col-sm">
+									<div class="form-row">
+										<app-cust-non-datatable [passData]="distributionPassData"  style="min-width:100%;margin-top: -3px;"></app-cust-non-datatable>
+									</div>
+									<div class="form-row" style="margin-top: -20px;">
+										<div class="input-group">
+											<label class="form-control-sm col-sm-2"></label>
+											<label class="form-control-sm col-sm text-center">1st Retention</label>
+											<label class="form-control-sm col-sm text-center">2nd Retention</label>
+											<label class="form-control-sm col-sm text-center">Total</label>
+											<label class="form-control-sm col-sm-1"></label>
+										</div>
+										<div class="input-group">
+											<label class="form-control-sm col-sm-2">SI Amount</label>
+											<input type="text" class="form-control form-control-sm col-sm text-right"  placeholder="8,000,000.00">
+											<input type="text" class="form-control form-control-sm col-sm text-right"  placeholder="619,800,000.00"  style="margin-left: 5px">
+											<input type="text" class="form-control form-control-sm col-sm text-right"  placeholder="4,000,000,000.00"  style="margin-left: 5px">
+											<label class="form-control-sm col-sm-1"></label>
+										</div>
+										<div class="input-group">
+											<label class="form-control-sm col-sm-2">Premium Amount</label>
+											<input type="text" class="form-control form-control-sm col-sm text-right" placeholder="2,500.00">
+											<input type="text" class="form-control form-control-sm col-sm text-right"  placeholder="193,687.50"  style="margin-left: 5px">
+											<input type="text" class="form-control form-control-sm col-sm text-right"  placeholder="1,000,000.00"  style="margin-left: 5px">
+											<label class="form-control-sm col-sm-1"></label>
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-1"></div>
+							</div>
+						</div>
+					</fieldset>
+					<div class="form-row" style="margin-top: 10px;">
+						<div class="form-group col-sm">
+							<div class="col-md-13 text-center">
+								<div class="cust-btn-container">
+									<app-modal [btnTitle]="'View Pool Dist'">
+										<div header>Pool Distribution</div>
+										<div body>
+											<fieldset class="scheduler-border">
+												<div class="custom-row-inline-inset">
+													<div class="form-row">
+														<div class="col-sm">
+															<div class="form-row">
+																<app-cust-non-datatable [passData]="poolPassData"  style="min-width:100%;margin-top: -3px;"></app-cust-non-datatable>
+															</div>
+															<div class="form-row" style="margin-top: -20px;">
+																<div class="input-group">
+																	<label class="form-control-sm col-sm-2"></label>
+																	<label class="form-control-sm col-sm text-center">1st Retention</label>
+																	<label class="form-control-sm col-sm text-center">2nd Retention</label>
+																	<label class="form-control-sm col-sm text-center">Total</label>
+																	<label class="form-control-sm col-sm-1"></label>
+																</div>
+																<div class="input-group">
+																	<label class="form-control-sm col-sm-2">SI Amount</label>
+																	<input type="text" class="form-control form-control-sm col-sm">
+																	<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px">
+																	<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px">
+																	<label class="form-control-sm col-sm-1"></label>
+																</div>
+																<div class="input-group">
+																	<label class="form-control-sm col-sm-2">Premium Amount</label>
+																	<input type="text" class="form-control form-control-sm col-sm">
+																	<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px">
+																	<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px">
+																	<label class="form-control-sm col-sm-1"></label>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</fieldset>
+
+										</div>
+										<div footer style="width: 100%; text-align: center;">
+											<button type="button" (click)="modalService.dismissAll();" class="cust-btn">Return</button>
+										</div>
+									</app-modal>
+									<button type="button" class="cust-btn" (click)="test()"><a>Cancel</a></button>
+									<button type="button" class="cust-btn"><a>Negate</a></button>
+									</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</ng-template>
+		</ngb-tab>
+		
+	</ngb-tabset>
+</div>

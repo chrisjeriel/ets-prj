@@ -1,245 +1,1403 @@
-<!-- ITEM 1 HERE -->
-<div>
-	<fieldset class="scheduler-border">
-	    <legend class="scheduler-border">Quotation Number</legend>
-	    <div class="form-row">
-		    <div class="form-group col-sm-1">
-		      <label for="inputEmail4" class="form-control-sm top-label">Line</label>
-		      <input type="text" [(ngModel)]="this.quotationGenInfo.line" class="form-control form-control-sm cust-sm" id="inputEmail4" placeholder="MC">
-		    </div>
-		    <div class="form-group col-sm-1">
-		      <label for="inputEmail4" class="form-control-sm top-label">Year</label>
-		      <input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4" placeholder="2018">
-		    </div>
-		    <div class="form-group col-sm-1">
-		      <label for="inputEmail4" class="form-control-sm top-label">Seq No</label>
-		      <input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4" placeholder="00001">
-		    </div>
-		    <div class="form-group col-sm-1">
-		      <label for="inputEmail4" class="form-control-sm top-label">Req Seq</label>
-		      <input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4" placeholder="MPC">
-		    </div>
-		    <div class="form-group col-sm-1">
-		      <label for="inputEmail4" class="form-control-sm top-label">Hist No</label>
-		      <input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4" placeholder="00001">
-		    </div>
-		    <div class="form-group col-sm">
-		      <label for="inputEmail4" class="form-control-sm top-label">Branch</label>
-		      <input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4" placeholder="MKT">
-		    </div>
-		    <div class="form-group col-sm">
-		      <label for="inputEmail4" class="form-control-sm top-label">Line Class</label>
-		      <input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4" placeholder="Engineering">
-		    </div>
-		    <div class="form-group col-sm">
-		      <label for="inputEmail4" class="form-control-sm top-label">Policy Number</label>
-		      <input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4" placeholder="000001">
-		    </div>
-		    <div class="form-group col-sm">
-		      <label for="inputEmail4" class="form-control-sm top-label">Printed By</label>
-		      <input type="text" class="form-control form-control-sm cust-sm" id="inputEmail4" placeholder="James Reid">
-		    </div>
-		    <div class="form-group col-sm">
-		      <label for="inputEmail4" class="form-control-sm top-label">Print Date</label>
-		      <input type="date" class="form-control form-control-sm cust-sm" id="inputEmail4" value="2018-01-01">
-		    </div>
-		</div>
-	</fieldset>
-</div>
+<style type="text/css">
+	.offsetFormGroup {
+		margin-bottom: 0px !important;
+	}
 
+	.custom-row-inline-inset {
+		margin-top: 10px !important;
+	}
+
+	/*.cust-lbl-left-offset {
+			padding-left: 0px !important;
+			}*/
+
+	/*.cust-fs-padlr-offset {
+			padding-right: 0px !important; 
+			padding-left: 0px !important;
+			}*/
+
+	label.cust-lbl-left-offset {
+		margin-left: 20px !important;
+	}
+
+	.input-group label {
+		line-height: .9 !important;
+	}
+</style>
 
 <div>
-	<fieldset class="scheduler-border">
-	    <legend class="scheduler-border">Quotation Details</legend>
-	    <div class="form-row">
-		    <div class="form-group col-sm">
-		      <label for="inputEmail4" class="form-control-sm top-label">Ceding Company</label>
-		      <input type="email" class="form-control form-control-sm" id="inputEmail4" placeholder="Banco De Oro">
-		    </div>
-		    <div class="form-group col-sm">
-		      <label for="inputEmail4" class="form-control-sm top-label">Quote Status</label>
-		      <input type="email" class="form-control form-control-sm" id="inputEmail4" placeholder="On Going">
-		    </div>
-		    <div class="form-group col-sm">
-		      <label for="inputEmail4" class="form-control-sm top-label">Quote Date</label>
-		      <input type="date" class="form-control form-control-sm" id="inputEmail4" value="2018-01-01">
-		    </div>
-		    <div class="form-group col-sm">
-		      <label for="inputEmail4" class="form-control-sm top-label">Valid Until</label>
-		      <input type="date" class="form-control form-control-sm" id="inputEmail4" value="2018-01-01">
-		    </div>
-		    <div class="form-group col-sm">
-		      <label for="inputEmail4" class="form-control-sm top-label">Requested By</label>
-		      <input type="text" class="form-control form-control-sm" id="inputEmail4" placeholder="Jobert Austria">
-		    </div>
-		    <div class="form-group col-sm">
-		      <label for="inputEmail4" class="form-control-sm top-label">Request Date</label>
-		      <input type="date" class="form-control form-control-sm" id="inputEmail4" value="2018-01-01">
-		    </div>
-		    <div class="form-group col-sm">
-		      <label for="inputEmail4" class="form-control-sm top-label">Request Mode</label>
-		      <input type="text" class="form-control form-control-sm" id="inputEmail4" placeholder="Intermediate">
-		    </div>
-		</div>
-	</fieldset>
-</div>
+	<div class="row">
+		<div class="col-sm-8">
+			<div class="row">
+				<div class="col-sm">
+					<fieldset class="scheduler-border cust-fs-padlr-offset" style="padding-top: 2px !important; padding-bottom: 4px !important;">
+						<legend class="scheduler-border">Quotation Details</legend>
+						<div class="row">
+							<div class="col-sm-8" style="padding-right: 0px !important;">
+								<div class="form-row" style="margin-right: 0px;">
+									<div class="input-group ig-cust" style="margin-top: 10px;">
+										<label class="form-control-sm col-sm-2">Quotation No</label>
+										<!-- <input type="text" [(ngModel)]="quotationNum[0]" class="form-control form-control-sm" ngbTooltip="Line" [appCharactersLength]="'3'" appRequired>
+											<input type="text" [(ngModel)]="quotationNum[1]" class="form-control form-control-sm ig-mrgn" ngbTooltip="Year" [appCharactersLength]="'4'" appRequired pattern="[0-9]">
+											<input type="text" class="form-control form-control-sm ig-mrgn" ngbTooltip="Sequence No" [appCharactersLength]="'5'" appRequired>
+											<input type="text" [(ngModel)]="quotationNum[2]" class="form-control form-control-sm ig-mrgn" ngbTooltip="Revision No" [appCharactersLength]="'2'" appRequired> -->
+											<!-- <input type="text" [(ngModel)]="quotationNum[3]" class="form-control form-control-sm ig-mrgn" ngbTooltip="Company No" [appCharactersLength]="'2'" appRequired> -->
+										<input appRequired type="text" class="form-control form-control-sm">
+									</div>
+									<div class="input-group ig-cust">
+										<label class="form-control-sm col-sm-2">Type of Cession</label>
+										<input appRequired type="text" class="form-control form-control-sm" [(ngModel)]="cessionType">
+										<label class="form-control-sm col-sm-2">Line Class</label>
+										<input type="text" [(ngModel)]="quotationGenInfo.lineClass" class="form-control form-control-sm" style="margin-right: 1px;"
+										 appRequired>
+										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+										<span>&nbsp;</span>
+									</div>
+									<div class="input-group ig-cust">
+										<label class="form-control-sm col-sm-2">Policy Number</label>
+										<input type="text" class="form-control form-control-sm">
+										<label class="form-control-sm col-sm-2">Status</label>
+										<input type="text" [(ngModel)]="quotationGenInfo.quoteStatus" class="form-control form-control-sm"
+										 appRequired>
+									</div>
+									<div class="input-group ig-cust">
+										<label class="form-control-sm col-sm-2">Ceding Company</label>
+										<input type="text" class="form-control form-control-sm col-sm-2" appRequired>
+										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+										<span>&nbsp;</span>
+										<input type="text" [(ngModel)]="quotationGenInfo.cedingCompany" class="form-control form-control-sm col-sm ig-mrgn"
+										 style="margin-left: 5px;" appRequired>
+									</div>
+									<div *ngIf="checkTypeOfCession() || cessionType.toUpperCase() == 'RETROCESSION'" class="input-group ig-cust">
+										<label class="form-control-sm col-sm-2">Reinsurance From</label>
+										<input type="text" class="form-control form-control-sm col-sm-2" appRequired>
+										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+										<span>&nbsp;</span>
+										<input type="text" [(ngModel)]="quotationGenInfo.cedingCompany" class="form-control form-control-sm col-sm ig-mrgn"
+										 style="margin-left: 5px;" appRequired>
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-2">Intermediary</label>
+										<input type="text" class="form-control form-control-sm col-sm-2" appRequired>
+										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+										<span>&nbsp;</span>
+										<input type="text" class="form-control form-control-sm col-sm ig-mrgn" style="margin-left: 5px;" appRequired>
+									</div>
+									<!-- <div *ngIf="ocChecked" class="input-group">
+										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Open Pol No</label>
+										<input type="text" class="form-control form-control-sm">
+										
+									</div> -->
+									<!--
+											<input type="text" [(ngModel)]="quotationNum[3]" class="form-control form-control-sm ig-mrgn" ngbTooltip="Company No" [appCharactersLength]="'2'" appRequired>
+										</div>
+										<div class="input-group ig-cust">
+											<label class="form-control-sm col-sm-2">Type of Cession</label>
+											<input appRequired type="text" class="form-control form-control-sm cap-input" [(ngModel)]="cessionType">
+											<label class="form-control-sm col-sm-2">Line Class</label>
+											<input type="text" [(ngModel)]="quotationGenInfo.lineClass" class="form-control form-control-sm" appRequired>
+											<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+											<span>&nbsp;</span>
+										</div>
+										<div class="input-group ig-cust">
+											<label class="form-control-sm col-sm-2">Policy Number</label>
+											<input type="text" class="form-control form-control-sm">
+											<label class="form-control-sm col-sm-2">Status</label>
+											<input type="text" [(ngModel)]="quotationGenInfo.quoteStatus" class="form-control form-control-sm" appRequired>
+										</div>
+										<div class="input-group ig-cust">
+											<label class="form-control-sm col-sm-2">Ceding Company</label>
+											<input type="text" class="form-control form-control-sm col-sm-2" appRequired>
+											<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+											<span>&nbsp;</span>
+											<input type="text" [(ngModel)]="quotationGenInfo.cedingCompany" class="form-control form-control-sm col-sm ig-mrgn"
+											style="margin-left: 5px;" appRequired>
+										</div>
+										 <div *ngIf="quotationService.toGenInfo[1] === 'MLP'" class="input-group ig-cust"> -->
+										<!-- <div *ngIf="cessionType.toUpperCase() == 'RETROCESSION'" class="input-group ig-cust">
+											<label class="form-control-sm col-sm-2">Reinsurance From</label>
+											<input type="text" class="form-control form-control-sm col-sm-2" appRequired>
+											<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+											<span>&nbsp;</span>
+											<input type="text" [(ngModel)]="quotationGenInfo.cedingCompany" class="form-control form-control-sm col-sm ig-mrgn"
+											style="margin-left: 5px;" appRequired>
+										</div>
+										<div class="input-group">
+											<label class="form-control-sm col-sm-2">Intermediary</label>
+											<input type="text" class="form-control form-control-sm col-sm-2" appRequired>
+											<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+											<span>&nbsp;</span>
+											<input type="text" class="form-control form-control-sm col-sm ig-mrgn" style="margin-left: 5px;" appRequired>
+										</div> -->
+<!-- 
 
-<div class="row">
-	<div class="col-sm-7 cust-col-right-offset">
-		<fieldset class="scheduler-border">
-			<legend class="scheduler-border">Insured Details</legend>
-			<div class="form-row custom-row-inline-inset">
-				<div class="input-group">
-					<label class="form-control-sm col-sm-2" for="xx">Principal</label>
-				    <input type="text" id="xx" class="form-control form-control-sm cust-sm">
-				    <label class="form-control-sm col-sm-2" for="xx">Contractor</label>
-				    <input type="text" class="form-control form-control-sm">
-				</div>
-				<div class="input-group">
-					<label class="form-control-sm col-sm-2" for="xx">Insured</label>
-				    <input type="text" id="xx" class="form-control form-control-sm">
-				</div>
-				<div class="input-group">
-					<label class="form-control-sm col-sm-2" for="xx">Property/Project</label>
-				    <input type="text" id="xx" class="form-control form-control-sm">
-				</div>
-				<div class="input-group">
-					<label class="form-control-sm col-sm-2" for="xx">Site</label>
-				    <input type="text" id="xx" class="form-control form-control-sm">
-				    <label class="form-control-sm col-sm-2" for="xx">Duration/Testing</label>
-				    <input type="text" class="form-control form-control-sm">
-				</div>
-				<div class="input-group">
-					<label class="form-control-sm col-sm-2" for="xx">Risk</label>
-				    <input type="text" id="xx" class="form-control form-control-sm">
-				    <label class="form-control-sm col-sm-2" for="xx">Object</label>
-				    <input type="text" class="form-control form-control-sm">
-				</div>
-				<div class="input-group">
-					<label class="form-control-sm col-sm-2" for="xx">Location</label>
-				    <input type="text" id="xx" class="form-control form-control-sm">
+<div>
+	<div class="row">
+		<div class="col-sm-8">
+			<div class="row">
+				<div class="col-sm">
+					<fieldset class="scheduler-border cust-fs-padlr-offset" style="padding-top: 2px !important; padding-bottom: 4px !important;">
+						<legend class="scheduler-border">Quotation Details</legend>
+						<div class="row">
+							<div class="col-sm-8" style="padding-right: 0px !important;">
+								<div class="form-row" style="margin-right: 0px;">
+									<div class="input-group ig-cust" style="margin-top: 10px;">
+										<label class="form-control-sm col-sm-2">Quotation No</label>
+										<input type="text" [(ngModel)]="quotationNum[0]" class="form-control form-control-sm" ngbTooltip="Line">
+										<input type="text" [(ngModel)]="quotationNum[1]" class="form-control form-control-sm ig-mrgn" ngbTooltip="Year">
+										<input type="text" class="form-control form-control-sm ig-mrgn" ngbTooltip="Sequence No">
+										<input type="text" [(ngModel)]="quotationNum[2]" class="form-control form-control-sm ig-mrgn" ngbTooltip="Revision No">
+										<input type="text" [(ngModel)]="quotationNum[3]" class="form-control form-control-sm ig-mrgn" ngbTooltip="Company No">
+									</div>
+									<div class="input-group ig-cust">
+										<label class="form-control-sm col-sm-2">Type of Cession</label>
+										<input type="text" class="form-control form-control-sm">
+										<label class="form-control-sm col-sm-2">Line Class</label>
+										<input type="text" [(ngModel)]="quotationGenInfo.lineClass" class="form-control form-control-sm">
+										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+										<span>&nbsp;</span>
+									</div>
+									<div class="input-group ig-cust">
+										<label class="form-control-sm col-sm-2">Policy Number</label>
+										<input type="text" class="form-control form-control-sm">
+										<label class="form-control-sm col-sm-2">Status</label>
+										<input type="text" [(ngModel)]="quotationGenInfo.quoteStatus" class="form-control form-control-sm">
+									</div>
+									<div class="input-group ig-cust">
+										<label class="form-control-sm col-sm-2">Ceding Company</label>
+										<input type="text" class="form-control form-control-sm col-sm-2">
+										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+										<span>&nbsp;</span>
+										<input type="text" [(ngModel)]="quotationGenInfo.cedingCompany" class="form-control form-control-sm col-sm ig-mrgn"
+										 style="margin-left: 5px;">
+									</div>
+									<div *ngIf="quotationService.toGenInfo[1] === 'MLP'" class="input-group ig-cust">
+										<label class="form-control-sm col-sm-2">Reinsurance From</label>
+										<input type="text" class="form-control form-control-sm col-sm-2">
+										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+										<span>&nbsp;</span>
+										<input type="text" [(ngModel)]="quotationGenInfo.cedingCompany" class="form-control form-control-sm col-sm ig-mrgn"
+										 style="margin-left: 5px;">
+
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-2">Intermediary</label>
+										<input type="text" class="form-control form-control-sm col-sm-2">
+										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+										<span>&nbsp;</span>
+										<input type="text" class="form-control form-control-sm col-sm ig-mrgn" style="margin-left: 5px;">
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-2">Intermediary</label>
+										<input type="text" class="form-control form-control-sm col-sm-2">
+										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+										<span>&nbsp;</span>
+										<input type="text" class="form-control form-control-sm col-sm ig-mrgn" style="margin-left: 5px;">
+									<!-- </div> -->
+								</div>
+							</div>
+							<div class="col-sm-4">
+								<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
+									<div class="input-group ig-cust" style="margin-top: 10px;">
+										<label class="form-control-sm col-sm-4">Quote Date</label>
+										<input appRequired type="date" [(ngModel)]="quotationGenInfo.quoteDate" class="form-control form-control-sm">
+									</div>
+									<div class="input-group ig-cust">
+										<label class="form-control-sm col-sm-4">Valid Until</label>
+										<input appRequired type="date" [(ngModel)]="quotationGenInfo.validUntil" class="form-control form-control-sm">
+									</div>
+									<div class="input-group ig-cust">
+										<label class="form-control-sm col-sm-4">Requested By</label>
+										<input appRequired type="text" class="form-control form-control-sm">
+									</div>
+									<div class="input-group ig-cust">
+										<label class="form-control-sm col-sm-4">Request Date</label>
+										<input appRequired type="date" class="form-control form-control-sm">
+									</div>
+									<div class="input-group ig-cust">
+										<label class="form-control-sm col-sm-4">Request Mode</label>
+										<select appRequired class="form-control form-control-sm cust-sm">
+											<option value=""></option>
+											<option value="USD">Value 1</option>
+											<option value="PHP">Value 2</option>
+										</select>
+									</div>
+									<div *ngIf="quotationService.toGenInfo[1] === 'MLP' || quotationService.toGenInfo[1] === 'DOS'" class="input-group ig-cust">
+										<label class="form-control-sm col-sm-4">MBI Ref No</label>
+										<input appRequired type="text" class="form-control form-control-sm">
+									</div>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+
+					<fieldset class="scheduler-border" *ngIf="ocChecked">
+						<legend class="scheduler-border">Open Cover Details</legend>
+						<div class="form-row custom-row-inline-inset">
+							<div class="col-sm-1"></div>
+							<div class="col-sm-10">
+								<div class="input-group">
+									<label class="form-control-sm col-sm-3">Open Cover Quotation No</label>
+									<input appRequired type="text" class="form-control form-control-sm col-sm-1" style="margin-left:3px !important;">
+									<input appRequired type="text" class="form-control form-control-sm col-sm-1" style="margin-left:3px !important;">
+									<input appRequired type="text" class="form-control form-control-sm col-sm-1" style="margin-left:3px !important;">
+									<input appRequired type="text" class="form-control form-control-sm col-sm-3" style="margin-left:3px !important;">
+									<input appRequired type="text" class="form-control form-control-sm col-sm-1" style="margin-left:3px !important;">
+									<input appRequired type="text" class="form-control form-control-sm col-sm-1" style="margin-left:3px !important;">
+									<input appRequired type="text" class="form-control form-control-sm col-sm-1" style="margin-left:3px !important;">
+									<div class="text-search-ico" style="margin-left: 3px !important;"><a><i class="fa fa-search"></i></a></div>
+									<span>&nbsp;</span>
+								</div>
+							</div>
+							<div class="col-sm-1"></div>
+
+						</div>
+					</fieldset>
+
+
 				</div>
 			</div>
-		</fieldset>
+		</div>
+		<div class="col-sm-4" style="padding-left: 0px;">
+
+
+			<fieldset class="scheduler-border">
+				<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+				<div class="custom-row-inline-inset" style="margin-bottom: 0px !important;">
+					<div class="form-row">
+						<div class="form-group col-sm-6 offsetFormGroup">
+							<div class="input-group">
+								<label class="form-control-sm col-sm-4">Currency</label>
+								<input appRequired type="text" class="form-control form-control-sm" placeholder="PHP">
+								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<span>&nbsp;</span>
+							</div>
+						</div>
+						<div class="form-group col-sm-6 offsetFormGroup">
+							<div class="input-group">
+								<label class="form-control-sm col-sm-4 ">Exch. Rt.</label>
+								<input appRequired type="text" class="form-control form-control-sm txt-content-rght" placeholder="0" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
+								<span>&nbsp;</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</fieldset>
+
+
+			<fieldset class="scheduler-border" style="padding-top: 2px !important; padding-bottom: 3px !important;">
+				<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+				<div class="custom-row-inline-inset">
+					<div class="form-row" style="margin-top: 15px;">
+						<div class="form-group col-sm-6">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<div class="input-group-text">
+										<input type="checkbox">
+									</div>
+								</div>
+								<input type="text" style="font-size: 11px !important;" value="Government" disabled class="form-control form-control-sm">
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<div class="input-group-text">
+										<input type="checkbox">
+									</div>
+								</div>
+								<input type="text" style="font-size: 11px !important;" value="Indicative" disabled class="form-control form-control-sm">
+							</div>
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="form-group col-sm-6">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<div class="input-group-text">
+										<input type="checkbox" [(ngModel)]="ocChecked">
+									</div>
+								</div>
+								<input type="text" style="font-size: 11px !important;" value="Open Cover" disabled class="form-control form-control-sm">
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<div class="input-group-text">
+										<input type="checkbox">
+									</div>
+								</div>
+								<input type="text" style="font-size: 11px !important;" value="Declaration" disabled class="form-control form-control-sm">
+							</div>
+						</div>
+					</div>
+				</div>
+			</fieldset>
+		</div>
 	</div>
-	<div class="col-sm-5">
-		<fieldset class="scheduler-border">
-			<legend class="scheduler-border">Share Details</legend>
-			<div class="custom-row-inline-inset">
-			  <!-- <div class="form-row"> -->
-			    <!-- <div class="form-group col-sm-6">
-			      <label for="inputEmail4" class="form-control-sm top-label">% Share</label>
-			      <input type="email" class="form-control form-control-sm" id="inputEmail4" placeholder="Email">
-			    </div>
-			    <div class="form-group col-sm-6">
-			      <label for="inputPassword4" class="form-control-sm top-label">Part of (100%)</label>
-			      <input type="password" class="form-control form-control-sm" id="inputPassword4" placeholder="Password">
-			    </div> -->
-			    <div class="input-group">
-					<label class="form-control-sm col-sm-3" for="xx">% Share</label>
-				    <input type="text" id="xx" class="form-control form-control-sm">
-				    <label class="form-control-sm col-sm-3" for="xx">Part of (100%)</label>
-				    <input type="text" id="xx" class="form-control form-control-sm">
+</div>
+
+
+<div>
+	<div class="row">
+		<div class="col-sm-8">
+			<ng-container [ngSwitch]="true">
+				<ng-container *ngSwitchCase="quotationService.toGenInfo[1] === 'CAR'">
+					<!-- FIELDSET FOR TYPE [CAR] -->
+					<fieldset class="scheduler-border">
+						<legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
+						<div class="form-row" style="margin-right: 0px;">
+							<div class="input-group ig-cust col-sm-6" style="margin-top: 10px;">
+								<label class="form-control-sm col-sm-2">Principal</label>
+								<input appRequired type="text" class="form-control form-control-sm col-sm-2">
+								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<span>&nbsp;</span>
+								<input appRequired type="text" [(ngModel)]="quotationGenInfo.principal" class="form-control form-control-sm col-sm-8 ig-mrgn"
+								 style="margin-left: 3px !important;">
+							</div>
+							<div class="input-group ig-cust col-sm-6" style="margin-top: 10px;">
+								<label class="form-control-sm col-sm-2">Contractor</label>
+								<input appRequired type="text" class="form-control form-control-sm col-sm-2">
+								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<span>&nbsp;</span>
+								<input appRequired type="text" [(ngModel)]="quotationGenInfo.contractor" class="form-control form-control-sm col-sm-8 ig-mrgn"
+								 style="margin-left: 2px !important;">
+							</div>
+						</div>
+						<div class="form-row" style="margin-right: 0px;">
+							<div class="input-group col-sm-12">
+								<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Insured</label>
+								<textarea appRequired class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;"></textarea>
+							</div>
+						</div>
+						<div class="form-row" style="margin-right: 0px;">
+							<div class="input-group ig-cust col-sm-12">
+								<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Risk</label>
+								<input appRequired type="text" class="form-control form-control-sm">
+							</div>
+						</div>
+						<div class="form-row" style="margin-right: 0px;">
+							<div class="input-group ig-cust col-sm-6">
+								<label class="form-control-sm col-sm-2">Object</label>
+								<input appRequired type="text" class="form-control form-control-sm col-sm-2">
+								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<span>&nbsp;</span>
+								<input appRequired type="text" [(ngModel)]="quotationGenInfo.object" class="form-control form-control-sm col-sm-8 ig-mrgn"
+								 style="margin-left: 3px !important;">
+							</div>
+							<div class="input-group ig-cust col-sm-6">
+								<label class="form-control-sm col-sm-2">Region</label>
+								<input type="text" class="form-control form-control-sm col-sm">
+							</div>
+						</div>
+						<div class="form-row" style="margin-right: 0px;">
+							<div class="input-group col-sm-6" style="margin-bottom: -8px !important;">
+								<label class="form-control-sm col-sm-2">Nature of Work</label>
+								<textarea appRequired class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;"></textarea>
+							</div>
+							<div class="input-group col-sm-6">
+								<div class="input-group ig-cust">
+									<label class="form-control-sm col-sm-2">Province</label>
+									<input type="text" class="form-control form-control-sm">
+								</div>
+								<div class="input-group">
+									<label class="form-control-sm col-sm-2">City/Town</label>
+									<input type="text" class="form-control form-control-sm">
+								</div>
+							</div>
+						</div>
+						<div class="form-row" style="margin-right: 0px; margin-top: -2px;">
+							<div class="input-group col-sm-6" style="margin-bottom: -8px !important;">
+								<label class="form-control-sm col-sm-2">Site</label>
+								<textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 8px;"></textarea>
+							</div>
+							<div class="input-group col-sm-6">
+								<div class="input-group ig-cust">
+									<label class="form-control-sm col-sm-2">District</label>
+									<input type="text" class="form-control form-control-sm">
+									<label class="form-control-sm col-sm-2">Block</label>
+									<input type="text" class="form-control form-control-sm">
+								</div>
+								<div class="input-group">
+									<label class="form-control-sm col-sm-2">Lat</label>
+									<input type="text" class="form-control form-control-sm">
+									<label class="form-control-sm col-sm-2">Long</label>
+									<input type="text" class="form-control form-control-sm">
+								</div>
+							</div>
+						</div>
+						<div class="form-row" style="margin-right: 0px; margin-top: -2px;">
+							<div class="input-group col-sm-6">
+								<label class="form-control-sm col-sm-2">Duration</label>
+								<input appRequired type="text" class="form-control form-control-sm">
+							</div>
+						</div>
+					</fieldset>
+				</ng-container>
+				<!-- FIELDSET FOR TYPE [EAR] -->
+
+				<ng-container *ngSwitchCase="quotationService.toGenInfo[1] === 'EAR'">
+					<fieldset class="scheduler-border">
+						<legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
+						<div class="form-row" style="margin-right: 0px;">
+							<div class="input-group ig-cust col-sm-6" style="margin-top: 10px;">
+								<label class="form-control-sm col-sm-2">Principal</label>
+								<input appRequired type="text" class="form-control form-control-sm col-sm-2">
+								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<span>&nbsp;</span>
+								<input appRequired type="text" [(ngModel)]="quotationGenInfo.principal" class="form-control form-control-sm col-sm-8 ig-mrgn"
+								 style="margin-left: 3px !important;">
+							</div>
+							<div class="input-group ig-cust col-sm-6" style="margin-top: 10px;">
+								<label class="form-control-sm col-sm-2">Contractor</label>
+								<input appRequired type="text" class="form-control form-control-sm col-sm-2">
+								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<span>&nbsp;</span>
+								<input appRequired type="text" [(ngModel)]="quotationGenInfo.contractor" class="form-control form-control-sm col-sm-8 ig-mrgn"
+								 style="margin-left: 2px !important;">
+							</div>
+						</div>
+						<div class="form-row" style="margin-right: 0px;">
+							<div class="input-group col-sm-12">
+								<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Insured</label>
+								<textarea appRequired class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;"></textarea>
+							</div>
+						</div>
+						<div class="form-row" style="margin-right: 0px;">
+							<div class="input-group ig-cust col-sm-12">
+								<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Risk</label>
+								<input appRequired type="text" class="form-control form-control-sm">
+							</div>
+						</div>
+						<div class="form-row" style="margin-right: 0px;">
+							<div class="input-group ig-cust col-sm-6">
+								<label class="form-control-sm col-sm-2">Object</label>
+								<input appRequired type="text" class="form-control form-control-sm col-sm-2">
+								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<span>&nbsp;</span>
+								<input appRequired type="text" [(ngModel)]="quotationGenInfo.object" class="form-control form-control-sm col-sm-8 ig-mrgn"
+								 style="margin-left: 3px !important;">
+							</div>
+							<div class="input-group ig-cust col-sm-6">
+								<label class="form-control-sm col-sm-2">Region</label>
+								<input type="text" class="form-control form-control-sm col-sm">
+							</div>
+						</div>
+						<div class="form-row" style="margin-right: 0px;">
+							<div class="input-group col-sm-6" style="margin-bottom: -8px !important;">
+								<label class="form-control-sm col-sm-2">Nature of Work</label>
+								<textarea appRequired class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;"></textarea>
+							</div>
+							<div class="input-group col-sm-6">
+								<div class="input-group ig-cust">
+									<label class="form-control-sm col-sm-2">Province</label>
+									<input type="text" class="form-control form-control-sm">
+								</div>
+								<div class="input-group">
+									<label class="form-control-sm col-sm-2">City/Town</label>
+									<input type="text" class="form-control form-control-sm">
+								</div>
+							</div>
+						</div>
+						<div class="form-row" style="margin-right: 0px; margin-top: -2px;">
+							<div class="input-group col-sm-6" style="margin-bottom: -8px !important;">
+								<label class="form-control-sm col-sm-2">Site</label>
+								<textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 8px;"></textarea>
+							</div>
+							<div class="input-group col-sm-6">
+								<div class="input-group ig-cust">
+									<label class="form-control-sm col-sm-2">District</label>
+									<input type="text" class="form-control form-control-sm">
+									<label class="form-control-sm col-sm-2">Block</label>
+									<input type="text" class="form-control form-control-sm">
+								</div>
+								<div class="input-group">
+									<label class="form-control-sm col-sm-2">Lat</label>
+									<input type="text" class="form-control form-control-sm">
+									<label class="form-control-sm col-sm-2">Long</label>
+									<input type="text" class="form-control form-control-sm">
+								</div>
+							</div>
+						</div>
+						<div class="form-row" style="margin-right: 0px; margin-top: -2px;">
+							<div class="input-group col-sm-6">
+								<label class="form-control-sm col-sm-2">Duration</label>
+								<input appRequired type="text" class="form-control form-control-sm">
+							</div>
+							<div class="input-group col-sm-6">
+								<label class="form-control-sm col-sm-2">Testing</label>
+								<input appRequired type="text" class="form-control form-control-sm">
+							</div>
+						</div>
+					</fieldset>
+				</ng-container>
+
+
+				<!-- <ng-container *ngSwitchCase="quotationService.toGenInfo[1] === 'EAR'">
+						<fieldset class="scheduler-border cust-fs-padlr-offset">
+							<legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
+							<div class="col-sm-1">
+							</div>
+							<div class="col-sm" style="padding-right: 0px !important;">
+								<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
+									<div class="input-group" style="margin-top: 10px;">
+										<label class="form-control-sm col-sm-1">Principal</label>
+										<input type="text" class="form-control form-control-sm col-sm-1">
+										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+										<span>&nbsp;</span>
+										<input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
+										<label class="form-control-sm col-sm-1">Contractor</label>
+										<input type="text" class="form-control form-control-sm col-sm-1">
+										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+										<span>&nbsp;</span>
+										<input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-1">Insured</label>
+										<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 8px;"></textarea>
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-1">Risk</label>
+										<input type="text" class="form-control form-control-sm">
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-1">Object</label>
+										<input type="text" class="form-control form-control-sm">
+										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+										<span>&nbsp;</span>
+										<label class="form-control-sm col-sm-1">Region</label>
+										<input type="text" class="form-control form-control-sm">
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-1">Nature of Work</label>
+										<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;"></textarea>
+	
+										<div class="col-sm">
+											<div class="row">
+												<div class="input-group">
+													<label class="form-control-sm col-sm-2">Province</label>
+													<input type="text" class="form-control form-control-sm">
+												</div>
+											</div>
+											<div class="row">
+												<div class="input-group">
+													<label class="form-control-sm col-sm-2">City/Town</label>
+													<input type="text" class="form-control form-control-sm">
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-1">Site</label>
+										<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;"></textarea>
+	
+										<div class="col-sm">
+											<div class="row">
+												<div class="input-group">
+													<label class="form-control-sm col-sm-2">District</label>
+													<input type="text" class="form-control form-control-sm">
+													<label class="form-control-sm col-sm-2">Block</label>
+													<input type="text" class="form-control form-control-sm">
+												</div>
+											</div>
+											<div class="row">
+												<div class="input-group">
+													<label class="form-control-sm col-sm-2">Lat</label>
+													<input type="text" class="form-control form-control-sm">
+													<label class="form-control-sm col-sm-2">Long</label>
+													<input type="text" class="form-control form-control-sm">
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-1">Duration</label>
+										<input type="text" class="form-control form-control-sm col-sm-5">
+										<label class="form-control-sm col-sm-1">Testing</label>
+										<input type="text" class="form-control form-control-sm col-sm-5">
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-1">
+							</div>
+						</fieldset>
+					</ng-container> -->
+
+				<!-- FIELDSET FOR TYPE [EEI & CEC]  -->
+
+
+				<ng-container *ngSwitchCase="quotationService.toGenInfo[1] === 'EEI' || quotationService.toGenInfo[1] === 'CEC'">
+					<fieldset class="scheduler-border" style="padding-top: 12px !important; padding-bottom: 19px !important;">
+						<legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
+						<div class="form-row" style="margin-right: 0px;">
+							<div class="input-group ig-cust col-sm-12" style="margin-top: 10px;">
+								<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Insured</label>
+								<input appRequired type="text" class="form-control form-control-sm col-sm-1">
+								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<span>&nbsp;</span>
+								<input appRequired type="text" [(ngModel)]="quotationGenInfo.principal" class="form-control form-control-sm col-sm-10 ig-mrgn"
+								 style="margin-left: 3px !important;">
+							</div>
+						</div>
+						<div class="form-row" style="margin-right: 0px;">
+							<div class="input-group col-sm-12">
+								<label class="form-control-sm col-sm-1" style="margin-right: -1px;"></label>
+								<textarea appRequired class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;"></textarea>
+							</div>
+						</div>
+						<div class="form-row" style="margin-right: 0px;">
+							<div class="input-group ig-cust col-sm-12">
+								<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Risk</label>
+								<input appRequired type="text" class="form-control form-control-sm">
+							</div>
+						</div>
+						<div class="form-row" style="margin-right: 0px;">
+							<div class="input-group ig-cust col-sm-6">
+								<label class="form-control-sm col-sm-2">Object</label>
+								<input appRequired type="text" class="form-control form-control-sm col-sm-2">
+								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<span>&nbsp;</span>
+								<input appRequired type="text" [(ngModel)]="quotationGenInfo.object" class="form-control form-control-sm col-sm-8 ig-mrgn"
+								 style="margin-left: 3px !important;">
+							</div>
+							<div class="input-group ig-cust col-sm-6">
+								<label class="form-control-sm col-sm-2">Region</label>
+								<input type="text" class="form-control form-control-sm col-sm">
+							</div>
+						</div>
+						<div class="form-row" style="margin-right: 0px;">
+							<div class="input-group col-sm-6" style="margin-bottom: -8px !important;">
+								<label class="form-control-sm col-sm-2">Items<br />to be Insured</label>
+								<textarea appRequired class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;"></textarea>
+							</div>
+							<div class="input-group col-sm-6">
+								<div class="input-group ig-cust">
+									<label class="form-control-sm col-sm-2">Province</label>
+									<input type="text" class="form-control form-control-sm">
+								</div>
+								<div class="input-group">
+									<label class="form-control-sm col-sm-2">City/Town</label>
+									<input type="text" class="form-control form-control-sm">
+								</div>
+							</div>
+						</div>
+						<div class="form-row" style="margin-right: 0px; margin-top: -2px;">
+							<div class="input-group col-sm-6" style="margin-bottom: -8px !important;">
+								<label class="form-control-sm col-sm-2">Site</label>
+								<textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 8px;"></textarea>
+							</div>
+							<div class="input-group col-sm-6">
+								<div class="input-group ig-cust">
+									<label class="form-control-sm col-sm-2">District</label>
+									<input type="text" class="form-control form-control-sm">
+									<label class="form-control-sm col-sm-2">Block</label>
+									<input type="text" class="form-control form-control-sm">
+								</div>
+								<div class="input-group">
+									<label class="form-control-sm col-sm-2">Lat</label>
+									<input type="text" class="form-control form-control-sm">
+									<label class="form-control-sm col-sm-2">Long</label>
+									<input type="text" class="form-control form-control-sm">
+								</div>
+							</div>
+						</div>
+					</fieldset>
+				</ng-container>
+
+
+				<!-- <ng-container *ngSwitchCase="quotationService.toGenInfo[1] === 'EEI' || quotationService.toGenInfo[1] === 'CEC'">
+						<fieldset class="scheduler-border cust-fs-padlr-offset">
+							<legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
+							<div class="col-sm-1">
+							</div>
+							<div class="col-sm" style="padding-right: 0px !important;">
+								<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
+									<div class="input-group" style="margin-top: 10px;">
+										<label class="form-control-sm col-sm-1">Insured</label>
+										<input type="text" class="form-control form-control-sm col-sm-1">
+										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+										<span>&nbsp;</span>
+										<input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-1"></label>
+										<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 8px;"></textarea>
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-1">Risk</label>
+										<input type="text" class="form-control form-control-sm">
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-1">Object</label>
+										<input type="text" class="form-control form-control-sm">
+										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+										<span>&nbsp;</span>
+										<label class="form-control-sm col-sm-1">Region</label>
+										<input type="text" class="form-control form-control-sm">
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-1">Items to be Insured</label>
+										<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;"></textarea>
+										<div class="text-search-ico" (click)="showItemInfoModal(content)"><a><i class="fa fa-plus-circle"></i></a></div>
+										<div class="col-sm">
+											<div class="row">
+												<div class="input-group">
+													<label class="form-control-sm col-sm-2">Province</label>
+													<input type="text" class="form-control form-control-sm">
+												</div>
+											</div>
+											<div class="row">
+												<div class="input-group">
+													<label class="form-control-sm col-sm-2">City/Town</label>
+													<input type="text" class="form-control form-control-sm">
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-1">Site</label>
+										<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;"></textarea>
+	
+										<div class="col-sm">
+											<div class="row">
+												<div class="input-group">
+													<label class="form-control-sm col-sm-2">District</label>
+													<input type="text" class="form-control form-control-sm">
+													<label class="form-control-sm col-sm-2">Block</label>
+													<input type="text" class="form-control form-control-sm">
+												</div>
+											</div>
+											<div class="row">
+												<div class="input-group">
+													<label class="form-control-sm col-sm-2">Lat</label>
+													<input type="text" class="form-control form-control-sm">
+													<label class="form-control-sm col-sm-2">Long</label>
+													<input type="text" class="form-control form-control-sm">
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-1">
+							</div>
+						</fieldset>
+					</ng-container> -->
+
+				<!-- FIELDSET FOR TYPE [MBI & BPV] -->
+
+
+				<ng-container *ngSwitchCase="quotationService.toGenInfo[1] === 'MBI' || quotationService.toGenInfo[1] === 'BPV'">
+					<fieldset class="scheduler-border" style="padding-top: 12px !important; padding-bottom: 19px !important;">
+						<legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
+						<div class="form-row" style="margin-right: 0px;">
+							<div class="input-group ig-cust col-sm-12" style="margin-top: 10px;">
+								<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Insured</label>
+								<input appRequired type="text" class="form-control form-control-sm col-sm-1">
+								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<span>&nbsp;</span>
+								<input appRequired type="text" [(ngModel)]="quotationGenInfo.principal" class="form-control form-control-sm col-sm-10 ig-mrgn"
+								 style="margin-left: 3px !important;">
+							</div>
+						</div>
+						<div class="form-row" style="margin-right: 0px;">
+							<div class="input-group col-sm-12">
+								<label class="form-control-sm col-sm-1" style="margin-right: -1px;"></label>
+								<textarea appRequired class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;"></textarea>
+							</div>
+						</div>
+						<div class="form-row" style="margin-right: 0px;">
+							<div class="input-group ig-cust col-sm-12">
+								<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Risk</label>
+								<input appRequired type="text" class="form-control form-control-sm">
+							</div>
+						</div>
+						<div class="form-row" style="margin-right: 0px;">
+							<div class="input-group ig-cust col-sm-6">
+								<label class="form-control-sm col-sm-2">Object</label>
+								<input appRequired type="text" class="form-control form-control-sm col-sm-2">
+								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<span>&nbsp;</span>
+								<input appRequired type="text" [(ngModel)]="quotationGenInfo.object" class="form-control form-control-sm col-sm-8 ig-mrgn"
+								 style="margin-left: 3px !important;">
+							</div>
+							<div class="input-group ig-cust col-sm-6">
+								<label class="form-control-sm col-sm-2">Region</label>
+								<input type="text" class="form-control form-control-sm col-sm">
+							</div>
+						</div>
+						<div class="form-row" style="margin-right: 0px;">
+							<div class="input-group col-sm-6" style="margin-bottom: -8px !important;">
+								<label class="form-control-sm col-sm-2">Items<br />to be Insured</label>
+								<textarea appRequired class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;"></textarea>
+							</div>
+							<div class="input-group col-sm-6">
+								<div class="input-group ig-cust">
+									<label class="form-control-sm col-sm-2">Province</label>
+									<input type="text" class="form-control form-control-sm">
+								</div>
+								<div class="input-group">
+									<label class="form-control-sm col-sm-2">City/Town</label>
+									<input type="text" class="form-control form-control-sm">
+								</div>
+							</div>
+						</div>
+						<div class="form-row" style="margin-right: 0px; margin-top: -2px;">
+							<div class="input-group col-sm-6" style="margin-bottom: -8px !important;">
+								<label class="form-control-sm col-sm-2">Site</label>
+								<textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 8px;"></textarea>
+							</div>
+							<div class="input-group col-sm-6">
+								<div class="input-group ig-cust">
+									<label class="form-control-sm col-sm-2">District</label>
+									<input type="text" class="form-control form-control-sm">
+									<label class="form-control-sm col-sm-2">Block</label>
+									<input type="text" class="form-control form-control-sm">
+								</div>
+							</div>
+						</div>
+					</fieldset>
+				</ng-container>
+
+
+				<!-- <ng-container *ngSwitchCase="quotationService.toGenInfo[1] === 'MBI' || quotationService.toGenInfo[1] === 'BPV'">
+						<fieldset class="scheduler-border cust-fs-padlr-offset">
+							<legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
+							<div class="col-sm-1">
+							</div>
+							<div class="col-sm" style="padding-right: 0px !important;">
+								<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
+									<div class="input-group" style="margin-top: 10px;">
+										<label class="form-control-sm col-sm-1">Insured</label>
+										<input type="text" class="form-control form-control-sm col-sm-1">
+										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+										<span>&nbsp;</span>
+										<input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-1"></label>
+										<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 8px;"></textarea>
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-1">Risk</label>
+										<input type="text" class="form-control form-control-sm">
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-1">Object</label>
+										<input type="text" class="form-control form-control-sm">
+										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+										<span>&nbsp;</span>
+										<label class="form-control-sm col-sm-1">Region</label>
+										<input type="text" class="form-control form-control-sm">
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-1">Items to be Insured</label>
+										<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;"></textarea>
+										<div class="text-search-ico" (click)="showItemInfoModal(content)"><a><i class="fa fa-plus-circle"></i></a></div>
+										<div class="col-sm">
+											<div class="row">
+												<div class="input-group">
+													<label class="form-control-sm col-sm-2">Province</label>
+													<input type="text" class="form-control form-control-sm">
+												</div>
+											</div>
+											<div class="row">
+												<div class="input-group">
+													<label class="form-control-sm col-sm-2">City/Town</label>
+													<input type="text" class="form-control form-control-sm">
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-1">Site</label>
+										<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;"></textarea>
+	
+										<div class="col-sm">
+											<div class="row">
+												<div class="input-group">
+													<label class="form-control-sm col-sm-2">District</label>
+													<input type="text" class="form-control form-control-sm">
+													<label class="form-control-sm col-sm-2">Block</label>
+													<input type="text" class="form-control form-control-sm">
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-1">
+							</div>
+						</fieldset>
+					</ng-container> -->
+
+				<!-- FIELDSET FOR TYPE [MLP] -->
+
+				<ng-container *ngSwitchCase="quotationService.toGenInfo[1] === 'MLP'">
+					<fieldset class="scheduler-border" style="padding-top: 12px !important; padding-bottom: 19px !important;">
+						<legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
+						<div class="form-row" style="margin-right: 0px;">
+							<div class="input-group ig-cust col-sm-12" style="margin-top: 10px;">
+								<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Insured</label>
+								<input appRequired type="text" class="form-control form-control-sm col-sm-1">
+								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<span>&nbsp;</span>
+								<input appRequired type="text" [(ngModel)]="quotationGenInfo.principal" class="form-control form-control-sm col-sm-10 ig-mrgn"
+								 style="margin-left: 3px !important;">
+							</div>
+						</div>
+						<div class="form-row" style="margin-right: 0px;">
+							<div class="input-group col-sm-12">
+								<label class="form-control-sm col-sm-1" style="margin-right: -1px;"></label>
+								<textarea appRequired class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;"></textarea>
+							</div>
+						</div>
+						<div class="form-row" style="margin-right: 0px;">
+							<div class="input-group ig-cust col-sm-12">
+								<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Risk</label>
+								<input appRequired type="text" class="form-control form-control-sm">
+							</div>
+						</div>
+						<div class="form-row" style="margin-right: 0px;">
+							<div class="input-group ig-cust col-sm-6">
+								<label class="form-control-sm col-sm-2">Object</label>
+								<input appRequired type="text" class="form-control form-control-sm col-sm-2">
+								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<span>&nbsp;</span>
+								<input appRequired type="text" [(ngModel)]="quotationGenInfo.object" class="form-control form-control-sm col-sm-8 ig-mrgn"
+								 style="margin-left: 3px !important;">
+							</div>
+							<div class="input-group ig-cust col-sm-6">
+								<label class="form-control-sm col-sm-2">Region</label>
+								<input type="text" class="form-control form-control-sm col-sm">
+							</div>
+						</div>
+						<div class="form-row" style="margin-right: 0px;">
+							<div class="input-group col-sm-6" style="margin-bottom: -8px !important;">
+								<label class="form-control-sm col-sm-2">Items<br />to be Insured</label>
+								<textarea appRequired class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;"></textarea>
+							</div>
+							<div class="input-group col-sm-6">
+								<div class="input-group ig-cust">
+									<label class="form-control-sm col-sm-2">Province</label>
+									<input type="text" class="form-control form-control-sm">
+								</div>
+								<div class="input-group">
+									<label class="form-control-sm col-sm-2">City/Town</label>
+									<input type="text" class="form-control form-control-sm">
+								</div>
+							</div>
+						</div>
+						<div class="form-row" style="margin-right: 0px; margin-top: -2px;">
+							<div class="input-group col-sm-6" style="margin-bottom: -8px !important;">
+								<label class="form-control-sm col-sm-2">Site</label>
+								<textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 8px;"></textarea>
+							</div>
+							<div class="input-group col-sm-6">
+								<div class="input-group ig-cust">
+									<label class="form-control-sm col-sm-2">District</label>
+									<input type="text" class="form-control form-control-sm">
+									<label class="form-control-sm col-sm-2">Block</label>
+									<input type="text" class="form-control form-control-sm">
+								</div>
+								<div class="input-group">
+									<label class="form-control-sm col-sm-2">IPL</label>
+									<input type="text" class="form-control form-control-sm">
+									<label class="form-control-sm col-sm-2">Time Exc</label>
+									<input type="text" class="form-control form-control-sm">
+								</div>
+							</div>
+						</div>
+					</fieldset>
+				</ng-container>
+
+
+
+				<!-- <ng-container *ngSwitchCase="quotationService.toGenInfo[1] === 'MLP'">
+						<fieldset class="scheduler-border cust-fs-padlr-offset">
+							<legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
+							<div class="col-sm-1">
+							</div>
+							<div class="col-sm" style="padding-right: 0px !important;">
+								<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
+									<div class="input-group" style="margin-top: 10px;">
+										<label class="form-control-sm col-sm-1">Insured</label>
+										<input type="text" class="form-control form-control-sm col-sm-1">
+										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+										<span>&nbsp;</span>
+										<input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-1"></label>
+										<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 8px;"></textarea>
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-1">Risk</label>
+										<input type="text" class="form-control form-control-sm">
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-1">Object</label>
+										<input type="text" class="form-control form-control-sm">
+										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+										<span>&nbsp;</span>
+										<label class="form-control-sm col-sm-1">Region</label>
+										<input type="text" class="form-control form-control-sm">
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-1">Items to be Insured</label>
+										<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;"></textarea>
+										<div class="text-search-ico" (click)="showItemInfoModal(content)"><a><i class="fa fa-plus-circle"></i></a></div>
+										<div class="col-sm">
+											<div class="row">
+												<div class="input-group">
+													<label class="form-control-sm col-sm-2">Province</label>
+													<input type="text" class="form-control form-control-sm">
+												</div>
+											</div>
+											<div class="row">
+												<div class="input-group">
+													<label class="form-control-sm col-sm-2">City/Town</label>
+													<input type="text" class="form-control form-control-sm">
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-1">Site</label>
+										<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;"></textarea>
+	
+										<div class="col-sm">
+											<div class="row">
+												<div class="input-group">
+													<label class="form-control-sm col-sm-2">District</label>
+													<input type="text" class="form-control form-control-sm">
+													<label class="form-control-sm col-sm-2">Block</label>
+													<input type="text" class="form-control form-control-sm">
+												</div>
+											</div>
+											<div class="row">
+												<div class="input-group">
+													<label class="form-control-sm col-sm-2">Time Exc.</label>
+													<input type="text" class="form-control form-control-sm">
+													<label class="form-control-sm col-sm-2">ILP</label>
+													<input type="text" class="form-control form-control-sm">
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-1">
+							</div>
+						</fieldset>
+					</ng-container> -->
+
+
+				<!-- FIELDSET FOR TYPE [DOS] -->
+
+
+				<ng-container *ngSwitchCase="quotationService.toGenInfo[1] === 'DOS'">
+					<fieldset class="scheduler-border" style="padding-top: 12px !important; padding-bottom: 19px !important;">
+						<legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
+						<div class="form-row" style="margin-right: 0px;">
+							<div class="input-group ig-cust col-sm-12" style="margin-top: 10px;">
+								<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Insured</label>
+								<input appRequired type="text" class="form-control form-control-sm col-sm-1">
+								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<span>&nbsp;</span>
+								<input appRequired type="text" [(ngModel)]="quotationGenInfo.principal" class="form-control form-control-sm col-sm-10 ig-mrgn"
+								 style="margin-left: 3px !important;">
+							</div>
+						</div>
+						<div class="form-row" style="margin-right: 0px;">
+							<div class="input-group col-sm-12">
+								<label class="form-control-sm col-sm-1" style="margin-right: -1px;"></label>
+								<textarea appRequired class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;"></textarea>
+							</div>
+						</div>
+						<div class="form-row" style="margin-right: 0px;">
+							<div class="input-group ig-cust col-sm-12">
+								<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Risk</label>
+								<input appRequired type="text" class="form-control form-control-sm">
+							</div>
+						</div>
+						<div class="form-row" style="margin-right: 0px;">
+							<div class="input-group ig-cust col-sm-6">
+								<label class="form-control-sm col-sm-2">Object</label>
+								<input appRequired type="text" class="form-control form-control-sm col-sm-2">
+								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<span>&nbsp;</span>
+								<input appRequired type="text" [(ngModel)]="quotationGenInfo.object" class="form-control form-control-sm col-sm-8 ig-mrgn"
+								 style="margin-left: 3px !important;">
+							</div>
+							<div class="input-group ig-cust col-sm-6">
+								<label class="form-control-sm col-sm-2">Region</label>
+								<input type="text" class="form-control form-control-sm col-sm">
+							</div>
+						</div>
+						<div class="form-row" style="margin-right: 0px;">
+							<div class="input-group col-sm-6" style="margin-bottom: -8px !important;">
+								<label class="form-control-sm col-sm-2">Items<br />to be Insured</label>
+								<textarea appRequired class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;"></textarea>
+							</div>
+							<div class="input-group col-sm-6">
+								<div class="input-group ig-cust">
+									<label class="form-control-sm col-sm-2">Province</label>
+									<input type="text" class="form-control form-control-sm">
+								</div>
+								<div class="input-group">
+									<label class="form-control-sm col-sm-2">City/Town</label>
+									<input type="text" class="form-control form-control-sm">
+								</div>
+							</div>
+						</div>
+						<div class="form-row" style="margin-right: 0px; margin-top: -2px;">
+							<div class="input-group col-sm-6" style="margin-bottom: -8px !important;">
+								<label class="form-control-sm col-sm-2">Site</label>
+								<textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 8px;"></textarea>
+							</div>
+							<div class="input-group col-sm-6">
+								<div class="input-group ig-cust">
+									<label class="form-control-sm col-sm-2">District</label>
+									<input type="text" class="form-control form-control-sm">
+									<label class="form-control-sm col-sm-2">Block</label>
+									<input type="text" class="form-control form-control-sm">
+								</div>
+								<div class="input-group">
+									<label class="form-control-sm col-sm-2">No Claim Pd</label>
+									<input type="text" class="form-control form-control-sm">
+								</div>
+							</div>
+						</div>
+					</fieldset>
+				</ng-container>
+
+
+				<!-- <ng-container *ngSwitchCase="quotationService.toGenInfo[1] === 'DOS'">
+						<fieldset class="scheduler-border cust-fs-padlr-offset">
+							<legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
+							<div class="col-sm-1">
+							</div>
+							<div class="col-sm" style="padding-right: 0px !important;">
+								<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
+									<div class="input-group" style="margin-top: 10px;">
+										<label class="form-control-sm col-sm-1">Insured</label>
+										<input type="text" class="form-control form-control-sm col-sm-1">
+										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+										<span>&nbsp;</span>
+										<input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-1"></label>
+										<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 8px;"></textarea>
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-1">Risk</label>
+										<input type="text" class="form-control form-control-sm">
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-1">Object</label>
+										<input type="text" class="form-control form-control-sm col-sm-5">
+										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+										<span>&nbsp;</span>
+										<label class="form-control-sm col-sm-1">Region</label>
+										<input type="text" class="form-control form-control-sm">
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-1">Items to be Insured</label>
+										<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;"></textarea>
+										<div class="text-search-ico" (click)="showItemInfoModal(content)"><a><i class="fa fa-plus-circle"></i></a></div>
+										<div class="col-sm">
+											<div class="row">
+												<div class="input-group">
+													<label class="form-control-sm col-sm-2">Province</label>
+													<input type="text" class="form-control form-control-sm">
+												</div>
+											</div>
+											<div class="row">
+												<div class="input-group">
+													<label class="form-control-sm col-sm-2">City/Town</label>
+													<input type="text" class="form-control form-control-sm">
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-1">Site</label>
+										<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;"></textarea>
+	
+										<div class="col-sm">
+											<div class="row">
+												<div class="input-group">
+													<label class="form-control-sm col-sm-2">District</label>
+													<input type="text" class="form-control form-control-sm">
+													<label class="form-control-sm col-sm-2">Block</label>
+													<input type="text" class="form-control form-control-sm">
+												</div>
+											</div>
+											<div class="row">
+												<div class="input-group">
+													<label class="form-control-sm col-sm-2">No Claim</label>
+													<input type="text" class="form-control form-control-sm">
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-1">
+							</div>
+						</fieldset>
+					</ng-container> -->
+			</ng-container>
+			<fieldset class="scheduler-border cust-fs-padlr-offset">
+				<legend class="scheduler-border">Quotation Wordings</legend>
+				<div class="col-sm-1">
 				</div>
-			  <!-- </div> -->
-			  <!-- <div class="form-group">
-			    <label for="inputAddress" class="form-control-sm top-label">Intermediary</label>
-			    <input type="text" class="form-control form-control-sm" id="inputAddress" placeholder="1234 Main St">
-			  </div> -->
-			  	<div class="input-group">
-					<label class="form-control-sm col-sm-3" for="xx">Intermediary</label>
-				    <input type="text" id="xx" class="form-control form-control-sm">
+				<div class="col-sm" style="margin-bottom: -8px; margin-top: 7px;">
+					<div class="form-row">
+						<!-- <div class="col-sm">
+								<label for="inputEmail4" class="form-control-sm top-label">Opening Paragraph</label>
+								<textarea style="font-size: 12px; margin-bottom: 38px;" class="form-control form-control-sm" placeholder="Further to our Quotation No.."></textarea>
+							</div> -->
+						<div class="input-group">
+							<label for="inputEmail4" class="form-control-sm top-label col-sm-6" style="text-align: left !important;">Opening
+								Paragraph</label>
+							<label for="inputEmail4" class="form-control-sm top-label col-sm-6" style="text-align: left !important; padding-left: 7px !important;">Closing
+								Paragraph</label>
+						</div>
+						<div class="input-group" style="margin-top: 2px;">
+							<textarea appRequired style="font-size: 12px; margin-bottom: 38px;" class="form-control form-control-sm col-sm-6"></textarea>
+							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+							<span>&nbsp;</span>
+							<div class="text-search-ico"><a><i class="fa fa-file-text" style="margin-top: 22px !important;"></i></a></div>
+
+							<textarea appRequired style="font-size: 12px; margin-bottom: 38px; margin-left: 10px !important;" class="form-control form-control-sm col-sm-6"></textarea>
+							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+							<span>&nbsp;</span>
+							<div class="text-search-ico"><a><i class="fa fa-file-text" style="margin-top: 22px !important;"></i></a></div>
+						</div>
+						<!-- <div class="col-sm">
+								<label for="inputEmail4" class="form-control-sm top-label">Closing Paragraph</label>
+								<textarea style="font-size: 12px; margin-bottom: 38px;" class="form-control form-control-sm" placeholder="This quotation is subject.."></textarea>
+							</div> -->
+					</div>
 				</div>
-			</div>
-		</fieldset>
-		<fieldset class="scheduler-border">
-			<legend class="scheduler-border">Tags</legend>
-			<div class="custom-row-inline-inset">
-			  <div class="form-row">
-			    <div class="form-group col-sm-6">
-			      	<div class="input-group">
-					  <div class="input-group-prepend">
-					    <div class="input-group-text">
-					    <input type="checkbox">
-					    </div>
-					  </div>
-					  <input type="text" value="Government Flag" disabled class="form-control form-control-sm">
-				    </div>
-			    </div>
-			    <div class="col-sm-6">
-			        <div class="input-group">
-					  <div class="input-group-prepend">
-					    <div class="input-group-text">
-					    <input type="checkbox">
-					    </div>
-					  </div>
-					  <input type="text" value="Indicative" disabled class="form-control form-control-sm">
-				    </div>
-			    </div>
-			  </div>
-			  <div class="form-row">
-			    <div class="form-group col-sm-6">
-			      	<div class="input-group">
-					  <div class="input-group-prepend">
-					    <div class="input-group-text">
-					    <input type="checkbox">
-					    </div>
-					  </div>
-					  <input type="text" value="Open Cover" disabled class="form-control form-control-sm">
-				    </div>
-			    </div>
-			    <div class="col-sm-6">
-			        <div class="input-group">
-					  <div class="input-group-prepend">
-					    <div class="input-group-text">
-					    <input type="checkbox">
-					    </div>
-					  </div>
-					  <input type="text" value="Declaration" disabled class="form-control form-control-sm">
-				    </div>
-			    </div>
-			  </div>
-			</div>
-		</fieldset>
+				<div class="col-sm-1">
+				</div>
+			</fieldset>
+		</div>
+		<div class="col-sm-4" style="padding-left: 0px;">
+			<fieldset class="scheduler-border" style="padding-bottom: 16px !important; padding-top: 2px !important;">
+				<legend class="scheduler-border">Share Details</legend>
+				<div class="custom-row-inline-inset" style="margin-top: 2px !important;">
+					<div class="form-row ig-cust">
+						<div class="form-group col-sm">
+							<label class="form-control-sm top-label">Total Sl</label>
+							<input appCurrency type="text" class="form-control form-control-sm" readonly>
+						</div>
+					</div>
+					<div class="form-row" style="margin-bottom: -16px; margin-top: -10px;">
+						<div class="form-group col-sm-3">
+							<label class="form-control-sm top-label">% Share</label>
+							<input type="text" class="form-control form-control-sm cust-sm" readonly>
+						</div>
+						<div class="form-group col-sm" style="margin-left: -6px !important;">
+							<label class="form-control-sm top-label">100% Value</label>
+							<input type="text" class="form-control form-control-sm cust-sm" readonly>
+						</div>
+					</div>
+				</div>
+			</fieldset>
+
+			<fieldset class="scheduler-border" style="padding-top: 7px !important; padding-bottom: 6px !important;">
+				<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+				<div class="custom-row-inline-inset" style="margin-left: -22px !important;">
+					<div class="input-group ig-cust">
+						<label class="form-control-sm col-sm-4">Prepared By</label>
+						<input type="text" class="form-control form-control-sm col-sm-7">
+					</div>
+					<div class="input-group ig-cust">
+						<label class="form-control-sm col-sm-4">Approved By</label>
+						<input type="text" class="form-control form-control-sm col-sm-7">
+					</div>
+					<div class="input-group ig-cust">
+						<label class="form-control-sm col-sm-4">Printed By</label>
+						<input type="text" class="form-control form-control-sm col-sm-7">
+					</div>
+					<div class="input-group ig-cust">
+						<label class="form-control-sm col-sm-4">Print Date</label>
+						<input type="date" class="form-control form-control-sm col-sm-7">
+					</div>
+				</div>
+			</fieldset>
+			<fieldset class="scheduler-border" style="padding-top: 0px !important; padding-bottom: 0px !important;">
+				<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+				<div class="custom-row-inline-inset">
+					<div class="form-row">
+						<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -10px; margin-left: 3px;">
+							<label class="form-control-sm top-label">Created By</label>
+							<input appRequired type="text" class="form-control form-control-sm cust-sm">
+						</div>
+						<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -10px; margin-left: -5px;">
+							<label class="form-control-sm top-label">Last Update By</label>
+							<input appRequired type="text" class="form-control form-control-sm cust-sm">
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="form-group col-sm-6" style="margin-bottom: 8px; margin-left: 3px;">
+							<label class="form-control-sm top-label">Date Created</label>
+							<input appRequired type="date" class="form-control form-control-sm cust-sm">
+						</div>
+						<div class="form-group col-sm-6" style="margin-bottom: 8px; margin-left: -5px;">
+							<label class="form-control-sm top-label">Last Update</label>
+							<input appRequired type="date" class="form-control form-control-sm cust-sm">
+						</div>
+					</div>
+				</div>
+			</fieldset>
+		</div>
 	</div>
 </div>
 
-<div>
-	<fieldset class="scheduler-border">
-	    <legend class="scheduler-border">Quotation Wordings</legend>
-	    <div class="form-row">
-		    <div class="col-sm">
-		      <label for="inputEmail4" class="form-control-sm top-label">Opening Paragraph</label>
-		      <textarea class="form-control form-control-sm" placeholder="This is the opening remarks."></textarea>
-		    </div>
-		    <div class="col-sm">
-		      <label for="inputEmail4" class="form-control-sm top-label">Closing Paragraph</label>
-		      <textarea class="form-control form-control-sm" placeholder="This is the closing remarks."></textarea>
-		    </div>
-		    <div class="col-sm">
-		    	 <div class="form-row">
-		    	 	<div class="form-group col-sm-6">
-		    	 		<label for="inputEmail4" class="form-control-sm top-label">Created By</label>
-					    <input type="text" class="form-control form-control-sm" id="inputEmail4" placeholder="xpact123">
-					    <label for="inputEmail4" class="form-control-sm top-label">Date Created</label>
-					    <input type="date" class="form-control form-control-sm" id="inputEmail4" value="2018-01-01">
-		    	 	</div>
-		    	 	<div class="form-group col-sm-6">
-		    	 		<label for="inputEmail4" class="form-control-sm top-label">Last Update By</label>
-					    <input type="text" class="form-control form-control-sm" id="inputEmail4" placeholder="chrisjeriel">
-					    <label for="inputEmail4" class="form-control-sm top-label">Last Update</label>
-					    <input type="date" class="form-control form-control-sm" id="inputEmail4" value="2018-01-01">
-		    	 	</div>
-		    	 </div>
-		    </div>
-		</div>
-	</fieldset>
-</div>
 <div class="form-row">
 	<div class="form-group col-sm">
-		<div class="float-sm-right">
-			<button type="button" class="btn btn-sm cust-btn-bg">Save</button>
-			<button type="button" class="btn btn-sm cust-btn-bg">Cancel</button>
+		<div class="col-md-13 text-center">
+			<div class="cust-btn-container" style="margin-top: 10px !important;">
+				<button type="button" class="cust-btn" (click)="pol($event)"><a>Cancel</a></button>
+				<button type="button" class="cust-btn"><a>Save</a></button>
+			</div>
 		</div>
 	</div>
 </div>
+
+<ng-template #content>
+	<div class="modal-header">
+		<span class="modal-title" id="modal-basic-title">Item Information</span>
+		<div class="close" style="padding-bottom: 5px;">
+			<a class="btn-cust" aria-label="Close" (click)="modalService.dismissAll();" aria-hidden="true"><span style="padding-right: 3px;"
+				 id="closes">&times;&nbsp;&nbsp;</span></a>
+		</div>
+	</div>
+	<div class="modal-body">
+		<div class="row">
+			<div class="col-sm">
+				<button class="cust-btn">Add</button>
+				<button class="cust-btn">Delete</button>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm">
+				<app-cust-table [filters]="filters" [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes"></app-cust-table>
+			</div>
+		</div>
+
+	</div>
+	<div class="modal-footer">
+		<div>
+			<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+			<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Save</a></button>
+		</div>
+	</div>
+</ng-template>

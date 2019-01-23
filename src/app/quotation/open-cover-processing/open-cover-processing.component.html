@@ -1,0 +1,81 @@
+<div class="cust-tabs-container">
+	<h4>Quotation</h4>
+	<ngb-tabset>
+		<ngb-tab class="ngb-tab" title="Open Cover Processing">
+			<ng-template ngbTabContent style="padding-top: 10px !important;">
+				<div style="position: relative;">
+					<div class="cust-btn-container">
+						<app-modal [btnTitle]="'Add'">
+							<div header>Enter General Info</div>
+							<div body>
+								<fieldset class="scheduler-border">
+									<div class="custom-row-inline-inset">
+										<div class="input-group">
+											<label class="form-control-sm col-sm-3" for="xx">Line</label>
+											<input type="text" [(ngModel)]="line" class="form-control form-control-sm col-sm-2 cap-input">
+											<div class="text-search-ico" (click)="showApprovalModal(content)"><a><i class="fa fa-search"></i></a></div>
+											&nbsp;&nbsp;
+											<input type="text" id="xx" class="form-control form-control-sm">
+										</div>
+										<div class="input-group">
+											<label class="form-control-sm col-sm-3" for="xx">Type of Cession</label>
+											<input type="text" id="xx" class="form-control form-control-sm col-sm-2">
+											<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+											&nbsp;&nbsp;
+											<input type="text" id="xx" class="form-control form-control-sm">
+										</div>
+										<div class="input-group">
+											<label class="form-control-sm col-sm-3" for="xx">Risk</label>
+											<input type="text" id="xx" class="form-control form-control-sm col-sm-2">
+											<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+											&nbsp;&nbsp;
+											<input type="text" id="xx" class="form-control form-control-sm">
+										</div>
+									</div>
+								</fieldset>
+							</div>
+							<div footer class="text-center w-100">
+								<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+								<button class="cust-btn" type="button" (click)="nextBtnEvent();"><a>Next</a></button>
+							</div>
+						</app-modal>
+						<button *ngIf="disabledEditBtn" class="cust-btn-disabled">Edit</button>
+						<button *ngIf="!disabledEditBtn" class="cust-btn" (click)="editBtnEvent()">Edit</button>
+					</div>
+					<div style="margin-top: 10px; z-index: 99998">
+						<!-- <app-cust-table [filters]="filters" [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes" (rowClick)="onRowClick($event)"
+						 (rowDblClick)="onRowDblClick($event)"></app-cust-table>
+	 -->
+						<app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)"></app-cust-non-datatable>
+					</div>
+				</div>
+			</ng-template>
+		</ngb-tab>
+
+	</ngb-tabset>
+</div>
+
+<!-- MODAL -->
+<ng-template #content>
+	<div class="modal-header">
+		<span class="modal-title" id="modal-basic-title">List of Values</span>
+		<div class="close" style="padding-bottom: 5px;">
+			<a class="btn-cust" aria-label="Close" (click)="modalService.dismissAll();" aria-hidden="true"><span style="padding-right: 3px;"
+				 id="closes">&times;&nbsp;&nbsp;</span></a>
+		</div>
+	</div>
+	<div class="modal-body">
+
+		<app-cust-table [filters]="filters" [tHeader]="tHeader2" [dataTypes]="dataTypes" (rowClick)="onRowClick($event)"
+		 (rowDblClick)="onRowDblClick($event)"></app-cust-table>
+	</div>
+	<div class="d-flex justify-content-center">
+		<div class="modal-footer">
+			<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Maintain Risk</a></button>
+			<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+			<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+		</div>
+	</div>
+</ng-template>
+
+<!-- <angular-editor [(ngModel)]="htmlContent"></angular-editor> -->

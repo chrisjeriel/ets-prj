@@ -1,43 +1,161 @@
 <div class="cust-tabs-container">
 	<h4>Quotation / Quotation Processing</h4>
-	<ngb-tabset>
-	  <ngb-tab class="ngb-tab" title="General Info">
-	    <ng-template ngbTabContent>
-	    	<app-general-info></app-general-info>
-	    </ng-template>
-	  </ngb-tab>
-	  <ngb-tab title="Coverage">
-	    <ng-template ngbTabContent>
-	    	<app-coverage></app-coverage>
-	    </ng-template>
-	  </ngb-tab>
-	  <ngb-tab title="Quote Option">
-	    <ng-template ngbTabContent>
-	    </ng-template>
-	  </ngb-tab>
-	  <ngb-tab title="Endorsement">
-	    <ng-template ngbTabContent>
-	    </ng-template>
-	  </ngb-tab>
-	  <ngb-tab title="Hold Cover">
-	    <ng-template ngbTabContent>
-	    </ng-template>
-	  </ngb-tab>
-	  <ngb-tab title="Internal Competition">
-	    <ng-template ngbTabContent>
-	    </ng-template>
-	  </ngb-tab>
-	  <ngb-tab title="Attachment">
-	    <ng-template ngbTabContent>
-	    </ng-template>
-	  </ngb-tab>
-	  <ngb-tab title="Print">
-	    <ng-template ngbTabContent>
-	    </ng-template>
-	  </ngb-tab>
-	  <ngb-tab title="Exit">
-	    <ng-template ngbTabContent>
-	    </ng-template>
-	  </ngb-tab>
+	<!-- <ngb-tabset (tabChange)="beforeChange($event)"> -->
+		<ngb-tabset  (tabChange)="onTabChange($event)">
+		<ngb-tab class="ngb-tab" title="General Info">
+			<ng-template ngbTabContent>
+				<app-general-info></app-general-info>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab id="idko">
+			<ng-template ngbTabTitle>
+				<div>Coverage</div>
+			</ng-template>
+			<ng-template ngbTabContent>
+				<app-coverage></app-coverage>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab>
+			<ng-template ngbTabTitle>
+				<div>Quote Option</div>
+			</ng-template>
+			<ng-template ngbTabContent>
+				<app-quote-option></app-quote-option>
+			</ng-template>
+		</ngb-tab>
+
+		<ngb-tab>
+			<ng-template ngbTabTitle>
+				<div>Endorsement</div>
+			</ng-template>
+			<ng-template ngbTabContent>
+				<app-quote-endorsement></app-quote-endorsement>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab *ngIf="line=='CAR' || line=='EAR'">
+	<!-- 	<ngb-tab> -->
+			<ng-template ngbTabTitle>
+				<div>ALOP</div>
+			</ng-template>
+			<ng-template ngbTabContent>
+				<app-quo-alop></app-quo-alop>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab>
+			<ng-template ngbTabTitle>
+				<div>Internal Competition</div>
+			</ng-template>
+			<ng-template ngbTabContent>
+				<app-internal-competition></app-internal-competition>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab>
+			<ng-template ngbTabTitle>
+				<div>Attachment</div>
+			</ng-template>
+			<ng-template ngbTabContent>
+				<app-attachment></app-attachment>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab id="approval-tab">
+
+			<ng-template #content>
+				<div class="modal-header">
+					<span class="modal-title" id="modal-basic-title">Approval</span>
+					<div class="close" style="padding-bottom: 5px;">
+						<a class="btn-cust" aria-label="Close" (click)="modalService.dismissAll();" aria-hidden="true"><span style="padding-right: 3px;"
+							 id="closes">&times;&nbsp;&nbsp;</span></a>
+					</div>
+				</div>
+				<div class="modal-body" style="width: 580px">
+					<div class="row">
+						<div class="col-sm-6" style="padding-right : 10px ! important;">
+							<fieldset class="scheduler-border" style="padding-left : 20px ! important; padding-right : 10px ! important">
+								<div class="custom-row-inline-inset">
+									<div class="input-group" style="margin-top : 45px ! important">
+										<div class="col-sm-8" style="padding-left : 0px ! important; padding-right : 0px ! important;">
+											<div class="input-group" style="margin-bottom : -8px ! important">
+												<label class="form-control-sm" for="xx" style="padding-left: 0px">Status</label>
+												<input type="text" id="xx" class="form-control form-control-sm col-sm">
+											</div>
+										</div>
+									</div>
+
+									<div class="input-group">
+										<div class="col-sm" style="padding-left : 0px ! important; padding-right : 0px ! important">
+											<div class="input-group">
+												<select class="form-control form-control-sm cust-sm col-sm-8">
+													<option>user1</option>
+													<option>user2</option>
+													<option>user3</option>
+													<option>user1</option>
+													<option>user2</option>
+													<option>user3</option>
+												</select>
+												<button class="cust">Approve</button>
+											</div>
+										</div>
+										<!-- <div class="col-sm-4" style="padding-left : 0px ! important; padding-right : 0px ! important; text-align: center">
+											<button class="cust">Approve</button>
+										</div> -->
+									</div>
+								</div>
+							</fieldset>
+						</div>
+						<div class="col-sm-6" style="padding-left : 10px ! important;">
+							<fieldset class="scheduler-border" style="padding-left : 20px ! important; padding-right : 20px ! important">
+								<div class="custom-row-inline-inset">
+									<div class="input-group" style="margin-bottom : -14px ! important; margin-top : 18px ! important">
+										<label class="form-control-sm" for="xx">Report</label>
+										<select class="form-control form-control-sm cust-sm" style="margin-left: 30px" appRequired>
+
+										</select>
+									</div>
+									<div class="input-group" style="margin-bottom : -14px ! important">
+										<label class="form-control-sm" for="xx">No. of Copies</label>
+										<input type="text" id="xx" class="form-control form-control-sm" appRequired>
+									</div>
+									<div class="input-group" style="margin-bottom : -14px ! important">
+										<label class="form-control-sm" for="xx">Destination</label>
+										<select class="form-control form-control-sm cust-sm" style="margin-left: 10px">
+											<option>Screen</option>
+											<option>PDF</option>
+											<option>Printer</option>
+											<option>Google Docs</option>
+										</select>
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm" for="xx">Printer Name</label>
+										<select class="form-control form-control-sm cust-sm" style="margin-left: 2px">
+											<option>Printer A</option>
+											<option>Printer B</option>
+											<option>Printer C</option>
+										</select>
+									</div>
+								</div>
+							</fieldset>
+						</div>
+					</div>
+
+				</div>
+				<div class="modal-footer" style="justify-content: center;">
+					<div >
+						<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+						<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Print</a></button>
+					</div>
+				</div>
+			</ng-template>
+
+			<ng-template ngbTabTitle>
+				<div (click)="showApprovalModal(content)">Approval</div>
+			</ng-template>
+
+		</ngb-tab>
+		<ngb-tab id="Exit">
+				<ng-template ngbTabTitle>
+					<div>Exit</div>
+				</ng-template>
+    			<ng-template ngbTabContent></ng-template>
+  		</ngb-tab>
 	</ngb-tabset>
 </div>

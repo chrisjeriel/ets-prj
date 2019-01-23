@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "angular-registration-login-example": {
+    "ets-prj": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -13,20 +13,26 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/angular-registration-login-example",
+            "outputPath": "dist/ets-prj",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+                "src/app/resources",
             ],
             "styles": [
+              "node_modules/font-awesome/css/font-awesome.css",
+              "node_modules/datatables.net-dt/css/jquery.dataTables.css",
               "src/styles.css",
-              "node_modules/font-awesome/css/font-awesome.css"
+              "node_modules/quill/dist/quill.snow.css"
             ],
             "scripts": [
+              "node_modules/jquery/dist/jquery.js",
+              "node_modules/datatables.net/js/jquery.dataTables.js",
+              "node_modules/colresizable/colResizable-1.6.min.js"
             ]
           },
           "configurations": {
@@ -59,18 +65,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "angular-registration-login-example:build"
+            "browserTarget": "ets-prj:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "angular-registration-login-example:build:production"
+              "browserTarget": "ets-prj:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "angular-registration-login-example:build"
+            "browserTarget": "ets-prj:build"
           }
         },
         "test": {
@@ -104,7 +110,7 @@
         }
       }
     },
-    "angular-registration-login-example-e2e": {
+    "ets-prj-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "prefix": "",
@@ -113,11 +119,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "angular-registration-login-example:serve"
+            "devServerTarget": "ets-prj:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "angular-registration-login-example:serve:production"
+              "devServerTarget": "ets-prj:serve:production"
             }
           }
         },
@@ -133,5 +139,5 @@
       }
     }
   },
-  "defaultProject": "angular-registration-login-example"
+  "defaultProject": "ets-prj"
 }

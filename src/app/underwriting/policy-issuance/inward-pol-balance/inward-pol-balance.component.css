@@ -1,0 +1,34 @@
+.drp-dwn-cstmz {
+    height:22px; 
+    padding: 0px;
+}
+
+.btn {
+	margin-bottom: 7px;
+}
+
+.invoice {
+	margin-left: 80px;
+	margin-top: -28px;
+	margin-bottom: 2px;
+}
+
+.remarks {
+	margin-left: -6px;
+}
+
+.remarks-label {
+	padding-right: 14px;
+}
+
+fieldset {
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+}
+
+.taxInfo {
+	    margin-bottom: -18px;
+}
+.cust-btn-container{
+	margin-top: 10px !important;
+}

@@ -1,0 +1,152 @@
+<style>
+	thead tr th {
+        position: relative;
+    }
+    span.ui-column-resizer {
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 0;
+        width: 8px;
+        height: 100%;
+        padding: 0;
+        cursor: col-resize;
+    }
+</style>
+
+
+<div id="cust-table-container">
+	<br />
+	<div ngbDropdown>
+		<div class="cust-btn-container">
+			<button *ngIf="addFlag" class="cust-btn" (click)="onClickAdd()"><a>Add</a></button>
+			<button *ngIf="editFlag" class="cust-btn" (click)="onClickEdit()"><a class="paginate_button previous">Edit</a></button>
+			<button *ngIf="deleteFlag" class="cust-btn" (click)="onClickDelete()"><a class="paginate_button previous">Delete</a></button>
+		</div>
+		<div ngbDropdownMenu aria-labelledby="dropdownConfig">
+			<div class="dropdown-item">
+				<span class="cust-tbl-label">Filter by:</span>
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<div class="input-group-text">
+							<input type="checkbox"><span>&nbsp;Quote No</span>
+						</div>
+					</div>
+					<input type="text" class="form-control cust-sm">
+				</div>
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<div class="input-group-text">
+							<input type="checkbox"><span>&nbsp;Branch</span>
+						</div>
+					</div>
+					<input type="text" class="form-control cust-sm">
+				</div>
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<div class="input-group-text">
+							<input type="checkbox"><span>&nbsp;Line Class</span>
+						</div>
+					</div>
+					<input type="text" class="form-control cust-sm">
+				</div>
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<div class="input-group-text">
+							<input type="checkbox"><span>&nbsp;Insured</span>
+						</div>
+					</div>
+					<input type="text" class="form-control cust-sm">
+				</div>
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<div class="input-group-text">
+							<input type="checkbox"><span>&nbsp;Quote Date</span>
+						</div>
+					</div>
+					<input type="date" class="form-control cust-sm">
+				</div>
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<div class="input-group-text">
+							<input type="checkbox"><span>&nbsp;Validity Date</span>
+						</div>
+					</div>
+					<input type="date" class="form-control cust-sm">
+				</div>
+				<div class="input-group">
+					<button class="cust-filter cust-tbl-submit"><a>Ok</a></button>
+				</div>
+			</div>
+		</div>
+
+		<div class="table-scroll">
+			<table id="sample2" datatable [dtOptions]="dtOptions" class="row-border hover">
+				<thead>
+					<tr *ngIf="headerWithColspan != null">
+						<ng-container *ngFor="let header of headerWithColspan">
+							<th [colSpan]="header.span" style="text-align: center;">
+								<span class="gridHeader">{{ header.header }}</span>
+							</th>	
+						</ng-container>
+					</tr>
+					<tr>
+						<th *ngIf="checkFlag"><div class="checkbox"><input type="checkbox" id="check" [(ngModel)]="checked"></div></th>
+						
+						<th *ngFor="let tHeader of tHeader">
+							<span class="ui-column-resizer" (mousedown)="onMouseDown($event)"></span>
+							<span class="gridHeader">{{tHeader}}</span>
+						</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr *ngFor="let data of tableData;let ti = index" (click)="onRowClick($event)" (dblclick)="onRowDblClick($event)">
+						<td *ngIf="checkFlag" class="checkbox">&nbsp;&nbsp;&nbsp;<input type="checkbox" name="checkbox" [checked]="checked"></td>
+						<td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="dataTypes[i]">
+							<div>
+								<a><i *ngIf="magnifyingGlass.indexOf(key)!=-1" class="fa fa-search"></i></a> &nbsp;
+								<input *ngSwitchCase="'percent'" class="editable-text text-right number" type="text" [ngModel]="processData(key, data) | number:'1.7-7'"
+								 [ngModelOptions]="{updateOn:'blur'}" (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
+								 <input *ngSwitchCase="'number'" class="editable-text text-right number" type="text" [ngModel]="processData(key, data)"
+								 [ngModelOptions]="{updateOn:'blur'}" (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
+								<input *ngSwitchCase="'currency'" class="editable-text text-right number" type="text" [ngModel]="processData(key, data) | number:'1.2-2'"
+								 [ngModelOptions]="{updateOn:'blur'}" (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
+								<input *ngSwitchCase="'checkbox'" type="checkbox">
+								<select *ngSwitchCase="'select'" class="editable-select" [value]="processData(key, data)">
+									<ng-container *ngFor="let data of opts">
+										<ng-container *ngIf="key == data.selector">
+											<option *ngFor="let val of data.vals">{{ val }}</option>
+										</ng-container>
+									</ng-container>
+								</select>
+
+								<input *ngSwitchCase="'date'" class="editable-date" type="date" [ngModel]="processData(key, data) | date:'yyyy-MM-dd'"
+								 (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
+								<input *ngSwitchCase="'time'" class="editable-date" type="time" [ngModel]="processData(key, data) | date:'HH:mm'">
+								<input *ngSwitchCase="'datetime'" class="editable-date" type="datetime-local" [ngModel]="processData(key, data) | date:'yyyy-MM-ddTHH:mm'">
+								<input *ngSwitchDefault class="editable-text " type="text" [ngModel]="processData(key, data)" (ngModelChange)="onChange(tableData[ti],ti,key,$event)">
+							</div>
+						</td>
+						<td *ngIf="tHeader.indexOf('Edit Flag')!= -1">
+							<div align="center">
+								<input type="checkbox" name="">
+							</div>
+						</td>
+						<td *ngIf="selectFlag">
+							<select class="editable-select">
+								<option *ngFor="let options of options">{{options}}</option>
+							</select>
+						</td>
+						<td *ngIf="tHeader.indexOf('Actions')!=-1" class="icon">
+							<button class="fa fa-paperclip" title="Attach File"></button>
+							<button class="fa fa-folder-open" title="Open File"></button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<hr />

@@ -1,0 +1,186 @@
+<fieldset class="scheduler-border">
+  <legend class="scheduler-border">A.R. Info</legend>
+  <div class="form-row custom-row-inline-inset">
+    <div class="col-sm-8">
+      <div class="input-group">
+        <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">A.R. No.</label>
+        <input type="text" value="000001" class="form-control form-control-sm cust-sm col-sm-1 text-right" numbers-only
+          placeholder="">
+        <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Date</label>
+        <input type="datetime-local" value="2018-10-01T10:45" class="form-control form-control-sm cust-sm col-sm-3"
+          placeholder="">
+        <label class="form-control-sm col-sm-2" style="padding-left:0px !important; margin-left: -19px !important;">Payment
+          Type</label>
+        <input type="text" value="Inward Policy Balances" class="form-control form-control-sm cust-sm col-sm"
+          placeholder="">
+        <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Status</label>
+        <input type="text" value="New" class="form-control form-control-sm cust-sm col-sm-1" placeholder="">
+      </div>
+      <div class="input-group">
+        <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Payor</label>
+        <input type="text" value="BPI/MS INSURANCE CORPORATION" class="form-control form-control-sm cust-sm col-sm"
+          placeholder="">
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="input-group">
+        <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Amount</label>
+        <input type="text" value="PHP" class="form-control form-control-sm cust-sm col-sm-2" placeholder="">
+        <input type="text" value="1,642,857.14" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
+          placeholder="">
+      </div>
+      <div class="input-group">
+        <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Local Amount</label>
+        <input type="text" value="PHP" class="form-control form-control-sm cust-sm col-sm-2" placeholder="">
+        <input type="text" value="1,642,857.14" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
+          placeholder="">
+      </div>
+    </div>
+  </div>
+</fieldset>
+
+<fieldset class="scheduler-border">
+  <legend class="scheduler-border">Claims for Recovery</legend>
+  <div class="custom-row-inline-inset">
+    <div class="text-right">
+      <div class="cust-btn-container">
+        <!-- <button class="cust-btn" (click)="onViewDetailsDistribute($event)">View Details/Distribution</button> -->
+        <app-modal hidden [btnTitle]="'View Details/Distribution'" id="idMdl">
+          <div header style="width: 600px !important;">Recovery Information</div>
+          <div body style="width: 880px  !important;">
+            <div class="cust-tabs-container" style="margin-top:10px !important">
+              <ngb-tabset>
+                <ngb-tab class="ngb-tab" title="Details">
+                  <ng-template ngbTabContent>
+                    <div class="form-row custom-row-inline-inset " style="padding-right: 15px !important;">
+                      <div class="col-sm-6">
+                        <div class="input-group">
+                          <label class="form-control-sm col-sm-3">Recovery No.</label>
+                          <input type="text" value="REC-CAR-2018-000001" class="form-control form-control-sm cust-sm col-sm"
+                            placeholder="">
+                        </div>
+                        <div class="input-group">
+                          <label class="form-control-sm col-sm-3">Status</label>
+                          <input type="text" value="In-Progress" class="form-control form-control-sm cust-sm col-sm"
+                            placeholder="">
+                        </div>
+                        <div class="input-group">
+                          <label class="form-control-sm col-sm-3">Recovery Type</label>
+                          <input type="text" value="Salvage Equipment" class="form-control form-control-sm cust-sm col-sm"
+                            placeholder="">
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="input-group">
+                          <label class="form-control-sm col-sm-3">Claim No.</label>
+                          <input type="text" value="CAR-2018-000001" class="form-control form-control-sm cust-sm col-sm"
+                            placeholder="">
+                        </div>
+                        <div class="input-group">
+                          <label class="form-control-sm col-sm-3">Policy No.</label>
+                          <input type="text" value="CAR-2018-000001-99-0001-000" class="form-control form-control-sm cust-sm col-sm"
+                            placeholder="">
+                        </div>
+                        <div class="input-group">
+                          <label class="form-control-sm col-sm-3">Recovered Amount</label>
+                          <input type="text" value="PHP" class="form-control form-control-sm cust-sm col-sm-2"
+                            placeholder="">
+                          <input type="text" value="30,000.00" class="form-control form-control-sm cust-sm col-sm text-right"
+                            style="margin-left: 3px !important;" placeholder="">
+                        </div>
+                      </div>
+
+                      <div class="col-sm-12" style="padding-left: 43px !important;margin-top: 20px !important; margin-bottom: 20px !important;">
+                        <div class="input-group">
+                          <label class="form-control-sm col-sm-1">Payor</label>
+                          <input type="text" value="UNIVERSAL ADJUSTERS-APPRAISERS CO., INC." class="form-control form-control-sm cust-sm col-sm"
+                            placeholder="">
+                        </div>
+                        <div class="input-group">
+                          <label class="form-control-sm col-sm-1">Description</label>
+                          <textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 80px; margin-bottom: 17px;">Construction materials and machineries: scaffoldings, jack hammer</textarea>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-6">
+                        <div class="input-group">
+                          <label class="form-control-sm col-sm-3">Created By</label>
+                          <input type="text" value="mcuaresma" class="form-control form-control-sm cust-sm col-sm"
+                            placeholder="">
+                        </div>
+                        <div class="input-group">
+                          <label class="form-control-sm col-sm-3">Last Updated By</label>
+                          <input type="text" value="mcuaresma" class="form-control form-control-sm cust-sm col-sm"
+                            placeholder="">
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="input-group">
+                          <label class="form-control-sm col-sm-3">Date Created</label>
+                          <input type="datetime-local" class="form-control form-control-sm cust-sm col-sm" value="2018-12-28T09:00">
+                        </div>
+                        <div class="input-group">
+                          <label class="form-control-sm col-sm-3">Last Updated</label>
+                          <input type="datetime-local" value="2018-12-28T18:00" class="form-control form-control-sm cust-sm col-sm">
+                        </div>
+                      </div>
+                    </div>
+                  </ng-template>
+                </ngb-tab>
+
+                <ngb-tab class="ngb-tab" title="Distribution">
+                  <ng-template ngbTabContent>
+                    <div class="custom-row-inline-inset">
+                      <fieldset class="scheduler-border">
+                        <legend class="scheduler-border">Treaty/Facultative Distribution</legend>
+                        <div class="custom-row-inline-inset">
+                          <app-cust-non-datatable [passData]="passDataDistributionTreaty"></app-cust-non-datatable>
+                        </div>
+                      </fieldset>
+                      <fieldset class="scheduler-border">
+                        <legend class="scheduler-border">Quota Share Pool Distribution</legend>
+                        <div class="custom-row-inline-inset">
+                          <app-cust-non-datatable [passData]="passDataDistributionQuotaShare"></app-cust-non-datatable>
+                        </div>
+                      </fieldset>
+                    </div>
+                  </ng-template>
+                </ngb-tab>
+
+              </ngb-tabset>
+            </div>
+          </div>
+          <div footer class="text-center w-100">
+            <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Return</a></button>
+          </div>
+        </app-modal>
+      </div>
+    </div>
+    <app-cust-editable-non-datatable [passData]="passDataClaimsForRecovery">
+      <ng-container controls-r>
+        <button class="cust-btn" style="margin-right: 0px !important;" (click)="onViewDetailsDistribute($event)">View
+          Details/Distribution</button>
+      </ng-container>
+    </app-cust-editable-non-datatable>
+  </div>
+</fieldset>
+
+<div class="col-sm-12" style="margin-top: 25px !important;padding-left: 0px !important;
+padding-right: 0px !important;">
+  <fieldset class="scheduler-border" style="padding-bottom: 7px !important;">
+    <div class="custom-row-inline-inset">
+      <div class="form-row" style="margin-bottom: -10px;">
+        <div class="input-group">
+          <label class="form-control-sm col-sm-1">Created By</label>
+          <input type="text" appCurrency class="form-control form-control-sm col-sm" placeholder="cuaresma">
+          <label class="form-control-sm col-sm-1">Date Created</label>
+          <input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-01T10:45">
+          <label class="form-control-sm col-sm-1">Last Update By</label>
+          <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma">
+          <label class="form-control-sm col-sm-1">Last Update</label>
+          <input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-02T10:00">
+        </div>
+      </div>
+    </div>
+  </fieldset>
+</div>

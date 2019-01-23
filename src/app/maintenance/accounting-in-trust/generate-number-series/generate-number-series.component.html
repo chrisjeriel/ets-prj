@@ -1,0 +1,26 @@
+<div class="cust-tabs-container">
+	<h4>Maintenance / Accounting In-Trust / Generate Number Series</h4>
+	<ngb-tabset (tabChange)="onTabChange($event)">
+		<ngb-tab class="ngb-tab" title="Acknowledgement Receipt">
+			<ng-template ngbTabContent>
+				<app-maint-ar-series-trst></app-maint-ar-series-trst>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab class="ngb-tab" title="Check Voucher">
+			<ng-template ngbTabContent>
+				<app-maint-cv-series-trst></app-maint-cv-series-trst>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab class="ngb-tab" title="Journal Voucher">
+			<ng-template ngbTabContent>
+				<app-maint-jv-series-trst></app-maint-jv-series-trst>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab id="Exit" >
+			<ng-template ngbTabTitle>
+				<div>Exit</div>
+			</ng-template>
+			<ng-template ngbTabContent></ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>

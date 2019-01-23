@@ -1,0 +1,125 @@
+<style type="text/css">
+    .input-group {
+        padding: 0px !important;
+        margin: 0px !important;
+    }
+
+    .input-group label {
+        padding: 0px !important;
+        margin: 0px !important;
+    }
+
+    .form-control-sm{
+        
+    }
+    /*.input-group > .form-control {
+        margin-bottom: 5px !important;
+    }*/
+
+    .ig-row {
+        margin: -3px !important;
+    }
+
+    .ig-row label {
+        margin-right: 5px !important;
+    }
+
+    .input-radio {
+        margin-bottom: -10px !important;
+    }
+
+    .input-ig-row {
+        margin-left: 2px !important;
+    }
+
+</style>
+
+<div class="cust-tabs-container">
+    <h4>Policy / Policy Issuance</h4>
+    <ngb-tabset>
+        <ngb-tab class="ngb-tab" title="Create Policy">
+            <ng-template ngbTabContent>
+
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
+</div>
+<br>
+<div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8">
+        <fieldset class="scheduler-border" style="padding-top: 6px !important;padding-bottom: 7px !important;">
+            <div class="col-sm-1"></div>
+            <div class="col-sm" style="padding: 7px 1em 5px 1em;">
+                <div class="row">
+<!--                     <div class="input-group" style="margin-top: -10px;">
+                        &nbsp;
+                    </div> -->
+                    <div class="input-group">
+                        <div class="input-group ig-row input-radio">
+                                    <label class="form-control-sm col-sm-2"></label>
+                                    <input class="form-control-sm " type="radio" name="optradio" [value]="true" (click)="fromQuotationList()" checked="checked">    
+                                    <label class="form-control-sm" for="list" style="margin-top: 2px !important; margin-left: 2px !important;">From Quotation</label>
+                                    <input class="form-control-sm " type="radio" name="optradio" [value]="false" (click)="fromHoldCover()" style="margin-left: 14px;">
+                                    <label class="form-control-sm" for="list" style="margin-top: 2px !important; margin-left: 2px !important;">From Hold Cover</label>
+                        </div>
+                        <div class="input-group ig-row">
+                            <label class="form-control-sm col-sm-2">Quotation No</label>
+                            <input type="text" [(ngModel)]="quoteLine" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Line" [disabled]="!fromQuotation">
+                            <input type="text" class="form-control form-control-sm input-ig-row cap-input col-sm" ngbTooltip="Year" [disabled]="!fromQuotation">
+                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Sequence No" [disabled]="!fromQuotation">
+                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Revision No" [disabled]="!fromQuotation">
+                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Company No" [disabled]="!fromQuotation">
+                            <span>&nbsp;</span>
+                            <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+                        </div>
+                        <div class="input-group ig-row">
+                            <label class="form-control-sm col-sm-2">Hold Cover No</label>
+                            <!-- <input type="text" class="form-control form-control-sm cap-input col-sm" ngbTooltip="Line" [disabled]="fromQuotation">
+                            <input type="text" class="form-control form-control-sm input-ig-row cap-input col-sm" ngbTooltip="Year" [disabled]="fromQuotation">
+                            <input type="text" class="form-control form-control-sm input-ig-row cap-input col-sm" ngbTooltip="Sequence No" [disabled]="fromQuotation">
+                            <span>&nbsp;</span>
+                            <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div> -->
+                            <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Line" [disabled]="fromQuotation">
+                            <input type="text" class="form-control form-control-sm input-ig-row cap-input col-sm" ngbTooltip="Year" [disabled]="fromQuotation">
+                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Sequence No" [disabled]="fromQuotation">
+                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Revision No" [disabled]="fromQuotation">
+                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Company No" [disabled]="fromQuotation">
+                            <span>&nbsp;</span>
+                            <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+                        </div>
+                        <div class="input-group ig-row" *ngIf="fromQuotation">
+                            <label class="form-control-sm col-sm-2">Option No</label>
+                            <input type="text" class="form-control form-control-sm col-sm-2">
+                            <div class="text-search-ico-inner"><a><i class="fa fa-search"></i></a></div>
+                            <input type="text" class="form-control form-control-sm" style="margin-left: 7px;">
+                        </div>
+                        <div class="input-group ig-row">
+                            <label class="form-control-sm col-sm-2">Ceding Company</label>
+                            <input type="text" class="form-control form-control-sm">
+                        </div>
+                        <div class="input-group ig-row">
+                            <label class="form-control-sm col-sm-2">Insured</label>
+                            <input type="text" class="form-control form-control-sm">
+                        </div>
+                        <div class="input-group ig-row">
+                            <label class="form-control-sm col-sm-2">Risk</label>
+                            <input type="text" class="form-control form-control-sm">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <div class="col-sm-2"></div>
+</div>
+<div class="form-row">
+    <div class="form-group col-sm">
+        <div class="col-md-13 text-center">
+            <div class="cust-btn-container" style="margin-top:10px">
+                <button type="button" class="cust-btn"><a>Cancel</a></button>
+                <button type="button" (click)="navigateToGenInfo()" class="cust-btn"><a>Next</a></button>
+            </div>
+        </div>
+    </div>
+</div>

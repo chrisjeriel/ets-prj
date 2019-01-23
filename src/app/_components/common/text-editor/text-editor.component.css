@@ -1,0 +1,14 @@
+.txt-edtr {
+	white-space: pre;      
+    white-space: -moz-pre;
+    white-space: -pre;
+    white-space: -o-pre;
+    word-wrap: break-word;
+}
+
+.edtr-opnr {
+    float: right;
+    position: relative;
+    z-index: 1;
+    margin-right: 3px;
+}

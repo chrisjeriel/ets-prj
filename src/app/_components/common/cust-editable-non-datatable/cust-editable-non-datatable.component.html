@@ -1,0 +1,301 @@
+<style>
+thead tr th {
+    position: relative;
+}
+span.ui-column-resizer {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    width: 8px;
+    height: 100%;
+    padding: 0;
+    cursor: col-resize;
+}
+
+</style>
+
+<br id="test" *ngIf="passData.addFlag || passData.editFlag || passData.deleteFlag || passData.searchFlag || (passData.genericBtn !== undefined) || ctrlL.innerHTML.trim() || ctrlR.innerHTML.trim()" />
+
+<div id="cust-table-container" style="position: relative;">
+    <div class="new-btn-container" style="position: absolute; margin-top:-28px;" [style.width]="(passData.searchFlag || ctrlR.innerHTML.trim()) ? '100%' : 'auto'" >
+
+        <button *ngIf="passData.addFlag" class="cust-btn" (click)="passData.nData == null ? addClicked(event) : onClickAdd()"><a>Add</a></button>
+        <button *ngIf="passData.editFlag" class="cust-btn" (click)="onClickEdit()"><a class="paginate_button previous">Edit</a></button>
+        <button *ngIf="passData.deleteFlag" class="cust-btn" (click)="onClickDelete()"><a class="paginate_button previous">Delete</a></button>
+        <button *ngIf="passData.genericBtn !== undefined" class="cust-btn genericBtn" (click)="onClickGeneric()"><a class="paginate_button previous">{{passData.genericBtn}}</a></button>
+        <div class="search-filter" *ngIf="passData.searchFlag">
+            <label [class.searchWithFilter]="passData.filters !== undefined">Search: &nbsp;
+                <input type="search" class="form-control-sm cust-search-form" [(ngModel)]="searchString"
+                (ngModelChange)="search($event)">
+            </label>
+            <div ngbDropdown *ngIf="passData.filters !== undefined">
+                <button class="cust-filter" ngbDropdownToggle><a><fa name="filter"></fa></a></button>
+                <div ngbDropdownMenu aria-labelledby="dropdownConfig">
+                    <div class="dropdown-item">
+                        <span class="cust-tbl-label">Filter by:</span>
+                        <div class="input-group" *ngFor="let filt of passData.filters;let i= index" [ngSwitch]="passData.filters[i].dataType">
+                            <div class="input-group-prepend" style="margin-right: 2px !important">
+                                <div class="input-group-text">
+                                    <input type="checkbox" [(ngModel)]="filt.enabled"><span>&nbsp;{{filt.title}}</span>
+                                </div>
+                            </div>
+                            <input [disabled]="!filt.enabled" *ngSwitchCase="'text'"  type="text" class="form-control cust-sm" [(ngModel)]="filt.search" (ngModelChange)="filterDisplay(passData.filters,searchString)">
+                            <input [disabled]="!filt.enabled" *ngSwitchCase="'date'"  type="date" class="form-control cust-sm" [(ngModel)]="filt.search" (ngModelChange)="filterDisplay(passData.filters,searchString)">
+                            <input [disabled]="!filt.enabled"  *ngSwitchCase="'datespan'" type="date" class="form-control cust-sm" [(ngModel)]="filt.search" (ngModelChange)="filterDisplay(passData.filters,searchString)">
+                            <span class="cust-sm" *ngSwitchCase="'datespan'">-</span>
+                            <input [disabled]="!filt.enabled" *ngSwitchCase="'datespan'" type="date" class="form-control cust-sm" [(ngModel)]="filt.search2" (ngModelChange)="filterDisplay(passData.filters,searchString)">
+                        </div>
+                        <div class="input-group">
+                            <button class="cust-filter cust-tbl-submit" (click)="filterDisplay(passData.filters,searchString)"><a>Ok</a></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <span #ctrlL>
+            <ng-content select="[controls-l]"></ng-content>    
+        </span>
+        <div #ctrlR style="float: right;">
+            <ng-content select="[controls-r]"></ng-content>    
+        </div>
+
+
+    </div>
+    <div ngbDropdown>
+        <div class="cust-btn-container">
+            <!-- <button *ngIf="passData.addFlag" class="cust-btn" (click)="passData.nData == null ? addClicked(event) : onClickAdd()"><a>Add</a></button>
+            <button *ngIf="passData.editFlag" class="cust-btn" (click)="onClickEdit()"><a class="paginate_button previous">Edit</a></button>
+            <button *ngIf="passData.deleteFlag" class="cust-btn" (click)="onClickDelete()"><a class="paginate_button previous">Delete</a></button>
+            <button *ngIf="passData.genericBtn !== undefined" class="cust-btn" (click)="onClickGeneric()"><a class="paginate_button previous">{{passData.genericBtn}}</a></button> -->
+
+            <!-- <div class="search-filter" *ngIf="passData.searchFlag"> -->
+                <!--<div class="search-filter" *ngIf="passData.hasSearch">-->
+                    <!-- <label>Search: &nbsp;
+                        <input type="search" class="form-control-sm cust-search-form" [(ngModel)]="searchString"
+                        (ngModelChange)="search($event)">
+                    </label> -->
+                    <!-- </div> -->
+                    <!-- </div> -->
+
+                    <div ngbDropdownMenu aria-labelledby="dropdownConfig">
+                        <div class="dropdown-item">
+                            <span class="cust-tbl-label">Filter by:</span>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <input type="checkbox"><span>&nbsp;Quote No</span>
+                                    </div>
+                                </div>
+                                <input type="text" class="form-control cust-sm">
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <input type="checkbox"><span>&nbsp;Branch</span>
+                                    </div>
+                                </div>
+                                <input type="text" class="form-control cust-sm">
+                            </div>
+
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <input type="checkbox"><span>&nbsp;Line Class</span>
+                                    </div>
+                                </div>
+                                <input type="text" class="form-control cust-sm">
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <input type="checkbox"><span>&nbsp;Insured</span>
+                                    </div>
+                                </div>
+                                <input type="text" class="form-control cust-sm">
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <input type="checkbox"><span>&nbsp;Quote Date</span>
+                                    </div>
+                                </div>
+                                <input type="date" class="form-control cust-sm">
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <input type="checkbox"><span>&nbsp;Validity Date</span>
+                                    </div>
+                                </div>
+                                <input type="date" class="form-control cust-sm">
+                            </div>
+                            <div class="input-group">
+                                <button class="cust-filter cust-tbl-submit"><a>Ok</a></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-scroll" id="cust-scroll">
+                    <table id="non-datatable">
+                        <thead>
+                            <tr *ngIf="passData.tHeaderWithColspan != null">
+                                <ng-container *ngFor="let header of passData.tHeaderWithColspan">
+                                    <th [colSpan]="header.span" style="text-align: center;">
+                                        <span class="gridHeader">{{ header.header }}</span>
+                                    </th>   
+                                </ng-container>
+                            </tr>
+                            <tr style="min-width: 96px">
+                                <th *ngIf="passData.checkFlag" class="checkbox"><input type="checkbox" name="checkbox" [(ngModel)]="checked"></th>
+                                <th container="body"  *ngFor="let tHeader of passData.tHeader; let i = index" (click)="sort(dataKeys[i],sortBy);sortIndex=i;"
+                                [style.width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [ngbTooltip]="passData.tooltip !== undefined ? passData.tooltip[i] :null">
+                                <!-- <span class="ui-column-resizer"  (mousedown)="onMouseDown($event)" *ngIf="passData.resizable === undefined ||  passData.resizable[i]"></span> -->
+                                <span class="ui-column-resizer"  (mousedown)="onMouseDown($event)"></span>
+                                <span *ngIf="isNumber(i)" class="gridHeader number text-right" >{{tHeader}}
+                                    <i *ngIf="showSort(sortBy,i)" class="fa fa-caret-down"></i>
+                                    <i *ngIf="showSort(!sortBy,i)" class="fa fa-caret-up"></i>
+                                </span>
+                                <span container="body"  *ngIf="!isNumber(i)" class="gridHeader">{{tHeader}}
+                                    <i *ngIf="showSort(sortBy,i)" class="fa fa-caret-down"></i>
+                                    <i *ngIf="showSort(!sortBy,i)" class="fa fa-caret-up"></i>
+                                </span>
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let data of displayData | paginate: { id: 'editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p2 };let ti = index"
+                        (click)="onRowClick($event)" (dblclick)="onRowDblClick($event)">
+                            <td *ngIf="passData.checkFlag" class="checkbox align-middle"><input *ngIf="addCheckFlag(data)" type="checkbox" name="checkbox" [checked]="checked"></td>
+                            <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]" class="align-middle">
+                                <div *ngIf="addCheckFlag(data) && ( passData.uneditable === undefined || !passData.uneditable[i] )" class="align-middle" style="position: relative;">
+                                    <input *ngSwitchCase="'percent'" class="editable-text text-right number form-control-sm"
+                                    type="text" [ngModel]="processData(key, data) | number:'1.7-7'" (blur)="format($event , key, ti)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (ngModel)="onTestClick(ti,key)">
+                                    <input *ngSwitchCase="'number'" class="editable-text text-right number form-control-sm"
+                                    type="text" [ngModel]="data[key]" [ngModelOptions]="{updateOn:'change'}" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1">
+                                    <input *ngSwitchCase="'currency'" class="editable-text text-right number form-control-sm"
+                                    type="text" [ngModel]="data[key] | number:'1.2-2'" (blur)="format($event , key, ti)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onTestClick(ti,key)">
+                                    <div *ngSwitchCase="'checkbox'" style="text-align: center;">
+                                        <input [checked]="data[key] === true ? true : false" type="checkbox">
+                                    </div>
+                                    <input *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'sequence' ? passData.dataTypes[i] : ''" class="editable-text text-right number form-control-sm"
+                                    type="text" [ngModel]="data[key] | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence" (blur)="format($event , key, ti)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1">
+                                    <select *ngSwitchCase="'select'" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onTestClick(ti,key)">
+                                        <ng-container *ngFor="let data of passData.opts">
+                                            <ng-container *ngIf="key == data.selector">
+                                                <option *ngFor="let val of data.vals">{{ val }}</option>
+                                            </ng-container>
+                                        </ng-container>
+                                    </select>
+                                    <input *ngSwitchCase="'date'" class="editable-date form-control-sm" type="date" [ngModel]="processData(key, data) | date:'yyyy-MM-dd'">
+                                    <input *ngSwitchCase="'time'" class="editable-date form-control-sm" type="time" [ngModel]="processData(key, data) | date:'HH:mm'">
+                                    <input *ngSwitchCase="'datetime'" class="editable-date form-control-sm" type="datetime-local"
+                                    [ngModel]="processData(key, data) | date:'yyyy-MM-ddTHH:mm'">
+                                    <input *ngSwitchDefault class="editable-text form-control-sm" type="text" [ngModel]="processData(key, data)">
+                                    <a  *ngIf="passData.magnifyingGlass.indexOf(key)!=-1"><i class="fa fa-search align-middle"></i></a> 
+                                </div>
+
+                                <div *ngIf="addCheckFlag(data) && ( passData.uneditable!== undefined && passData.uneditable[i] )" class="align-middle" style="position: relative;">
+                                    <a   *ngIf="passData.magnifyingGlass.indexOf(key)!=-1"><i class="fa fa-search align-middle"></i></a> 
+                                    <div *ngSwitchCase="'percent'" style="text-align: right">
+                                        <span class="unclickable">{{ processData(key, data) | number: '1.7-7'}}</span>
+                                    </div>
+                                    <!-- <div *ngSwitchCase="'currency'" style="text-align: right">
+                                        <span class="unclickable">{{ processData(key, data) | number: '1.2-2'}}</span>
+                                    </div>
+                                    <div  *ngSwitchCase="'number'" style="text-align: right">
+                                        <span class="unclickable">{{ processData(key, data) | number: '1.0-0'}}</span>
+                                    </div> -->
+                                    <div *ngSwitchCase="'currency'" style="text-align: right" >
+                                        <span [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" class="unclickable">{{ processData(key, data) | number: '1.2-2'}}</span>
+                                    </div>
+                                    <div  *ngSwitchCase="'number'" style="text-align: right">
+                                        <span [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" class="unclickable">{{ processData(key, data) | number: '1.0-0'}}</span>
+                                    </div>
+                                    <span *ngSwitchCase="'date'" class="unclickable">{{ processData(key, data) | date: 'MM/dd/yyyy'}}</span>
+                                    <span *ngSwitchCase="'time'" class="unclickable">{{ processData(key, data) | date: 'HH:mm'}}</span>
+                                    <span *ngSwitchCase="'datetime'" class="unclickable">{{ processData(key, data) | date: 'yyyy-MM-ddTHH:mm'}}</span>
+                                    <div *ngSwitchCase="'checkbox'" style="text-align: center;">
+                                        <input  type="checkbox" [checked]="data[key]">
+                                    </div>
+                                    <div  *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'sequence' ? passData.dataTypes[i] : ''" style="text-align: right">
+                                        <span class="unclickable">{{ processData(key, data) | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence}}</span>
+                                    </div>
+                                    <span *ngSwitchDefault class="unclickable">{{ processData(key, data) }}</span>
+                                </div>
+
+                                <div *ngIf="!addCheckFlag(data)" class="filler">
+
+                                </div>
+                            </td>
+                            <td *ngIf="passData.tHeader.indexOf('Edit Flag')!= -1">
+                                <input type="checkbox" name="" *ngIf="addCheckFlag(data)">
+                            </td>
+                            <td *ngIf="passData.selectFlag">
+                                <select class="editable-select" *ngIf="addCheckFlag(data)">
+                                    <option *ngFor="let options of options">{{options}}</option>
+                                </select>
+                            </td>
+                            <td *ngIf="passData.tHeader.indexOf('Actions')!=-1 || passData.tHeader.indexOf('Action')!=-1" class="icon" style="padding-right: 0px !important">
+                                <button class="fa fa-paperclip" title="Attach File" *ngIf="addCheckFlag(data)"></button>
+                                <button class="fa fa-folder-open" title="Open File" *ngIf="addCheckFlag(data)"></button>
+                            </td>
+                        </tr>
+
+                        <tr *ngIf="passData.totalFlag" class="total-tr">
+                            <td *ngIf="passData.checkFlag"></td>
+                            <td [attr.colspan]="dataKeys.length-1"></td>
+                            <td class="total">
+                                <span class="editable-text form-control-sm label">Total Sum Insured</span>
+                                <span class="editable-text text-right number form-control-sm">20,000.00</span>
+                            </td>
+                        </tr>
+                        <tr *ngIf="passData.total !== undefined">
+                            <th *ngIf="passData.checkFlag"> </th>
+                            <th *ngFor="let data of passData.total; let i = index" [ngSwitch]="passData.dataTypes[i]">
+                                <div *ngSwitchCase="'currency'" style="text-align: right">
+                                    <span *ngIf="typeOf(getSum(data)) == 'number'" class="unclickable">{{ getSum(data) | number: '1.2-2'}}</span>
+                                    <span *ngIf="typeOf(getSum(data)) == 'string'" class="unclickable">{{ getSum(data) }}</span>
+                                </div>
+                                <div  *ngSwitchCase="'number'" style="text-align: right">
+                                    <span *ngIf="typeOf(getSum(data)) == 'number'" class="unclickable">{{ getSum(data) | number: '1.0-0'}}</span>
+                                    <span *ngIf="typeOf(getSum(data)) == 'string'" class="unclickable">{{ getSum(data) }}</span>
+                                </div>
+                                <div  *ngSwitchDefault style="text-align: right">
+                                    <span class="unclickable">{{ getSum(data)}}</span>
+                                </div>
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="pagingStatus" *ngIf="passData.infoFlag">
+                <!--<div class="pagingStatus" *ngIf="passData.hasPageInfo">-->
+        <!-- <pagination-template #api="paginationApi" (pageChange)="p = $event">
+<label *ngIf="!api.isLastPage()">Showing {{ (api.getCurrent() - 1) * passData.pageLength + 1 }} - {{ api.getCurrent() * passData.pageLength }} of {{displayData.length}} entries</label>
+<label *ngIf="api.isLastPage()">Showing {{ (api.getCurrent() - 1) * passData.pageLength + 1 }} - {{displayData.length}} of {{displayData.length}} entries</label>
+</pagination-template>-->
+<pagination-template #api="paginationApi"  [id]="'editable'+passData.pageID" (pageChange)="p2 = $event">
+            <!--  <label *ngIf="!api.isLastPage() && displayLength > 0">Showing {{ (api.getCurrent() - 1) * passData.pageLength + 1 }} - {{ api.getCurrent() * passData.pageLength }} of {{displayLength}} entries {{api.getCurrent()}}</label>
+<label *ngIf="api.isLastPage() && displayLength > 0">Showing {{ (api.getCurrent() - 1) * passData.pageLength + 1 }} - {{displayLength}} of {{displayLength}} entries</label>
+<label *ngIf="displayLength < 1">Showing 0 - 0 of 0 entries</label>-->
+<label *ngIf="!api.isLastPage() && displayLength > 0">Showing {{ (api.getCurrent() - 1) *
+passData.pageLength + 1 }} - {{ api.getCurrent() * passData.pageLength }} of {{displayLength}} entries</label>
+<label *ngIf="api.isLastPage() && displayLength > 0">Showing {{ (api.getCurrent() - 1) * pageLength + 1 }}
+- {{displayLength}} of {{displayLength}} entries</label>
+<label *ngIf="displayLength < 1">Showing 0 - 0 of 0 entries</label>
+</pagination-template>
+</div>
+<div class="pagination" *ngIf="passData.paginateFlag">
+    <!--<div class="pagination" *ngIf="passData.hasPagination">-->
+        <!-- <pagination-template class="" #api="paginationApi" (pageChange)="p = $event"><a (click)="api.setCurrent(1)">&laquo;</a></pagination-template>-->
+        <pagination-controls [id]="'editable'+passData.pageID" class="my-pagination" (pageChange)="p2 = $event" previousLabel="" nextLabel="">
+        </pagination-controls>
+        <!--<pagination-template class="" #api="paginationApi" (pageChange)="p = $event"> <a (click)="api.setCurrent(api.getLastPage())">&raquo;</a></pagination-template>-->
+    </div>
+    <div *ngIf="passData.paginateFlag" style="height: 42px;float: right;">
+        <label></label>
+    </div>
+</div>

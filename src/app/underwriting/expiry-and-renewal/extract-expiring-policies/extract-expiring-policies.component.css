@@ -1,0 +1,87 @@
+/*input[type=radio]{
+	vertical-align: top;
+}*/
+
+
+.row{
+	margin-bottom: 5px;
+}
+
+fieldset .row:first-of-type, .row:first-of-type{
+	margin-top: 10px;
+}
+
+.drp-dwn-cstmz {
+    height: calc(1.6rem + 1px);
+    padding: 0px;
+    border-radius: 0.2rem !important;
+}
+
+.text-search-ico {
+	margin-left: -18px;
+	z-index: 99;
+	font-size: 14px;
+}
+
+.input-group label {
+	padding-left: 0px;
+}
+.input-group{
+	vertical-align: middle;
+}
+
+input[type=radio] + label {
+  text-align: left !important;
+}
+
+select + input {
+	margin-left: 2px !important;
+}
+
+input + div + input{
+	margin-left: 6px;
+}
+
+.fa-check-circle{
+	font-size: 60px;
+	color: #557a95;
+	margin-left: 15px;
+}
+
+
+.my-modal-icon{
+	margin-left: 10px;
+}
+
+.my-modal-text{
+	padding-right: 0px;
+	margin:auto;
+	margin-right: 0px;
+	margin-left: 50px;
+}
+
+.my-modal-text span{
+	font-size: 12px;
+}
+
+div h4{
+	font-size: 15px;
+	margin: auto;
+}
+
+.my-modal-footer{
+	padding: 0px !important;
+}
+
+.input-group .from{
+	text-align: left !important;
+}
+
+.toMonth{
+	margin-left: -2px;
+}
+
+
+.polNo {
+	margin-left: -2px !important;
+}

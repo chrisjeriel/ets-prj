@@ -1,0 +1,15 @@
+.cust-mrgn {
+	margin-left: 2px !important;
+}
+
+.text-search-ico {
+	margin-left: -18px;
+	z-index: 1;
+	font-size: 14px;
+	position: relative;
+	padding-right: 5px !important;
+}
+
+.cust-ig {
+	margin-bottom: -14px !important;
+}

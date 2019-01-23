@@ -1,0 +1,18 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-4 col-sm-offset-1">
+      <div class="list-group" id="list1">
+        <div class="list-group-item modal-header" style="padding:20px !important;">
+          {{ multiSelectHeaderTxt }}<input title="toggle all" type="checkbox" class="all pull-right" style="vertical-align: middle !important;"
+            (click)="selectAll($event)" [checked]="headerChecked">
+        </div>
+        <div *ngFor="let data of returnValueId">
+          <div class="list-group-item">{{ data.value }}
+            <input type="checkbox" class="pull-right" [checked]="checkboxes" value="{{ data.value }}" id="{{ data.id }}"
+              (click)="dataSelected($event)">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,18 @@
+.txt-content-rght{
+    text-align: right
+}
+.input-group {
+    margin-bottom: -14px !important;
+}
+
+.no-pad-left {
+	padding-left: 0;
+}
+
+.input-margin-left {
+	margin-left: 2px !important;
+}
+
+.label-center {
+	text-align: center !important;
+}

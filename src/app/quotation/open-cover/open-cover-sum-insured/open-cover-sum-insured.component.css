@@ -1,0 +1,16 @@
+.form-row{
+	margin-top: 7px !important;
+}
+
+.col-sm-8 label{
+	margin-bottom: 0px;
+}
+
+fieldset{
+	padding-top: 4px !important;
+    padding-bottom: 4px !important;
+}
+
+.input-group{
+	margin-bottom: -13px !important;
+}

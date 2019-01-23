@@ -1,0 +1,131 @@
+<div class="cust-tabs-container">
+	<h4>Policy / Maintenance</h4>
+    <ngb-tabset>
+        <ngb-tab title="Risk">
+            <ng-template ngbTabContent>
+                <div class="row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-8">
+                        <fieldset class="scheduler-border" style="margin-top: 10px !important;">
+                            <div class="form-row custom-row-inline-inset">
+                                <div class="input-group">
+                                    <label class="form-control-sm col-sm-2 text-right labels">Risk No.</label>
+                                    <input type="text" class="form-control form-control-sm col-sm-2" [placeholder]="newForm ? '' : '00001'" style="text-align: right">
+                                    <input type="checkbox" class="checkbox text-right" checked>
+                                    <label class="form-control-sm labels" style="text-align: left !important">Active Tag</label>
+                                </div>
+                            </div>
+                            <div class="form-row custom-row-inline-inset">
+                                <div class="input-group">
+                                    <label class="form-control-sm col-sm-2 text-right labels">Description</label>
+                                    <input type="text" class="form-control form-control-sm col-sm-9" [placeholder]="newForm ? '' : 'Filsys - MBI'">
+                                </div>
+                            </div>
+                            <div class="form-row custom-row-inline-inset" style="margin-bottom: 14px !important;">
+                                <div class="input-group">
+                                    <label class="form-control-sm col-sm-2 text-right labels">Abbreviation</label>
+                                    <input type="text" class="form-control form-control-sm col-sm-9" [placeholder]="newForm ? '' : 'Filsys'">
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-8">
+                        <fieldset class="scheduler-border next-fieldsets">
+                            <legend class="scheduler-border">Location</legend>
+                            <div class="form-row custom-row-inline-inset">
+                                <div class="input-group">
+                                    <label class="form-control-sm col-sm-1 text-right labels">Region</label>
+                                    <input type="text" class="form-control form-control-sm col-sm-1" [placeholder]="newForm ? '' : '4'">
+                                    <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+                                    <input type="text" class="form-control form-control-sm col-sm-4" [placeholder]="newForm ? '' : 'SOUTHERN TAGALOG'" style="margin-left: 6px !important">
+                                    <label class="form-control-sm col-sm-1 text-right labels">Province</label>
+                                    <input type="text" class="form-control form-control-sm col-sm-1" [placeholder]="newForm ? '' : '403'">
+                                    <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+                                    <input type="text" class="form-control form-control-sm col-sm-4" [placeholder]="newForm ? '' : 'LAGUNA'" style="margin-left: 6px !important">
+                                </div>
+                            </div>
+                            <div class="form-row custom-row-inline-inset">
+                                <div class="input-group">
+                                    <label class="form-control-sm col-sm-1 text-right labels">City/Town</label>
+                                    <input type="text" class="form-control form-control-sm col-sm-1" [placeholder]="newForm ? '' : '40328'">
+                                    <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+                                    <input type="text" class="form-control form-control-sm col-sm-4" [placeholder]="newForm ? '' : 'SANTA ROSA'" style="margin-left: 6px !important">
+                                    <label class="form-control-sm col-sm-1 text-right labels">District</label>
+                                    <input type="text" class="form-control form-control-sm col-sm-1" [placeholder]="newForm ? '' : 'LGSR'">
+                                    <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+                                    <input type="text" class="form-control form-control-sm col-sm-4" [placeholder]="newForm ? '' : 'STA.ROSA/BEL-AIR'" style="margin-left: 6px !important">
+                                </div>
+                            </div>
+                            <div class="form-row custom-row-inline-inset">
+                                <div class="input-group">
+                                    <label class="form-control-sm col-sm-1 text-right labels">Block</label>
+                                    <input type="text" class="form-control form-control-sm col-sm-1" [placeholder]="newForm ? '' : 'UNBLK'">
+                                    <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+                                    <input type="text" class="form-control form-control-sm col-sm-4" [placeholder]="newForm ? '' : 'STA.ROSA/BEL-AIR UNBLK'" style="margin-left: 6px !important">
+                                    <label class="form-control-sm col-sm-1 text-right labels">Lat</label>
+                                    <input type="text" class="form-control form-control-sm col-sm-2" [placeholder]="newForm ? '' : '38.8951'">
+                                    <label class="form-control-sm col-sm-1 text-right labels">Long</label>
+                                    <input type="text" class="form-control form-control-sm col-sm-2" [placeholder]="newForm ? '' : '-77.0364'">
+                                </div>
+                            </div>
+                            <div class="form-row custom-row-inline-inset" style="margin-bottom: 16px !important;">
+                                <div class="input-group">
+                                    <label class="form-control-sm col-sm-1 text-right labels" style="padding: 0; padding-right: 0.96px;">CRESTA Zone</label>
+                                    <input type="text" class="form-control form-control-sm col-sm-1" [placeholder]="newForm ? '' : '6'">
+                                    <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+                                    <input type="text" class="form-control form-control-sm col-sm-10" [placeholder]="newForm ? '' : 'Zone 6 (Albay, Bataan, Batangas, Bulacan, Camarines Norte, Catanduanes, Cavite, Laguna, Marinduque)'" style="margin-left: 6px !important">
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-8">
+                        <fieldset class="scheduler-border next-fieldsets">
+                            <legend class="scheduler-border">Other Info</legend>
+                            <div class="form-row custom-row-inline-inset">
+                                <div class="input-group">
+                                    <label class="form-control-sm col-sm-2 text-right labels">Remarks</label>
+                                    <input type="text" class="form-control form-control-sm col-sm-9" [placeholder]="newForm ? '' : 'Added Latitude and Longitude'">
+                                </div>
+                            </div>
+                            <div class="form-row custom-row-inline-inset">
+                                <div class="input-group">
+                                    <label class="form-control-sm col-sm-2 text-right labels">Created By</label>
+                                    <input type="text" class="form-control form-control-sm col-sm-4" [placeholder]="newForm ? '' : 'CUARESMA'">
+                                    <label class="form-control-sm col-sm-2 text-right labels">Date Created</label>
+                                    <input type="date" class="form-control form-control-sm col-sm-3">
+                                </div>
+                            </div>
+                            <div class="form-row custom-row-inline-inset" style="margin-bottom: 16px !important;">
+                                <div class="input-group">
+                                    <label class="form-control-sm col-sm-2 text-right labels">Last Updated By</label>
+                                    <input type="text" class="form-control form-control-sm col-sm-4" [placeholder]="newForm ? '' : 'POLECOM'">
+                                    <label class="form-control-sm col-sm-2 text-right labels">Last Update</label>
+                                    <input type="date" class="form-control form-control-sm col-sm-3">
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="form-row bottom-button-container">
+                    <div class="form-group col-sm">
+                        <div class="col-md-13 text-center">
+                            <div class="cust-btn-container" style="margin-top: 10px;">
+                                <button type="button" class="cust-btn"><a>Cancel</a></button>
+                                <button type="button" class="cust-btn" (click)="save()"><a>Save</a></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
+</div>

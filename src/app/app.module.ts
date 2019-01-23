@@ -1,29 +1,188 @@
-﻿import { NgModule }      from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { ReactiveFormsModule, FormsModule }    from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ResizableModule } from 'angular-resizable-element';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SidebarModule } from 'ng-sidebar';
+import { DataTablesModule } from 'angular-datatables';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { AngularEditorModule } from '@kolkov/angular-editor';
+import { QuillModule } from 'ngx-quill';
 
 // used to create fake backend
 import { fakeBackendProvider } from './_helpers';
 
-import { AppComponent }  from './app.component';
-import { routing }        from './app.routing';
+import { AppComponent } from './app.component';
+import { routing } from './app.routing';
 
-import { AlertComponent } from './_components';
+import { AlertComponent } from './_components/common/alert';
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 import { HomeComponent } from './home';
 import { LoginComponent } from './login';
 import { RegisterComponent } from './register';
-import { QuotationComponent } from './quotation/quotation.component';;
-import { GeneralInfoComponent } from './quotation/general-info/general-info.component'
-;
-import { CoverageComponent } from './quotation/coverage/coverage.component'
-;
-import { QuoteOptionComponent } from './quotation/quote-option/quote-option.component'
+import { QuotationComponent } from './quotation/quotation.component';
+import { GeneralInfoComponent } from './quotation/general-info/general-info.component';
+import { CoverageComponent } from './quotation/coverage/coverage.component';
+import { QuoteOptionComponent } from './quotation/quote-option/quote-option.component';
+import { InternalCompetitionComponent } from './quotation/internal-competition/internal-competition.component';
+import { HoldCoverComponent } from './quotation/hold-cover/hold-cover.component';
+import { AttachmentComponent } from './quotation/attachment/attachment.component';
+import { DummyComponent } from './_components/common/dummy/dummy.component';
+import { QuoteEndorsementComponent } from './quotation/quote-endorsement/quote-endorsement.component';
+import { CustTableComponent } from './_components/common/cust-table/cust-table.component';
+import { CustEditableTableComponent } from './_components/common/cust-editable-table/cust-editable-table.component';
+import { QuotationInquiryComponent } from './quotation/quotation-inquiry/quotation-inquiry.component';
+import { ListOfQuotationsComponent } from './quotation/quotation-inquiry/list-of-quotations/list-of-quotations.component';
+import { HoldCoverMonitoringListComponent } from './quotation/quotation-inquiry/hold-cover-monitoring-list/hold-cover-monitoring-list.component';
+import { NotesComponent } from './notes/notes.component';
+import { QuotationProcessingComponent } from './quotation/quotation-processing/quotation-processing.component';
+import { ParListingComponent } from './underwriting/policy-issuance/par-listing/par-listing.component';
+import { PolEndorsementComponent } from './underwriting/policy-issuance/pol-endorsement/pol-endorsement.component';
+import { PolCoInsuranceComponent } from './underwriting/policy-issuance/pol-co-insurance/pol-co-insurance.component';
+import { PolicyIssuanceComponent } from './underwriting/policy-issuance/policy-issuance.component';
+import { PolCreatePARComponent } from './underwriting/policy-issuance/pol-create-par/pol-create-par.component';
+import { PolCreateAlterationPARComponent } from './underwriting/policy-issuance/pol-create-alteration-par/pol-create-alteration-par.component';
+import { ModalComponent } from './_components/common/modal/modal.component';
+import { PolCoverageComponent } from './underwriting/policy-issuance/pol-coverage/pol-coverage.component';
+import { PolOtherRatesComponent } from './underwriting/policy-issuance/pol-other-rates/pol-other-rates.component';
+import { ExpiryAndRenewalComponent } from './underwriting/expiry-and-renewal/expiry-and-renewal.component';
+import { ExtractExpiringPoliciesComponent } from './underwriting/expiry-and-renewal/extract-expiring-policies/extract-expiring-policies.component';
+import { PolGenInfoComponent } from './underwriting/policy-issuance/pol-gen-info/pol-gen-info.component'
+import { AltParListingComponent } from './underwriting/policy-issuance/alt-par-listing/alt-par-listing.component';
+import { PolAttachmentComponent } from './underwriting/policy-issuance/pol-attachment/pol-attachment.component';
+import { PolPostComponent } from './underwriting/policy-issuance/pol-post/pol-post.component';
+import { ExpiryListingComponent } from './underwriting/expiry-and-renewal/expiry-listing/expiry-listing.component';
+import { PolicyIssuanceAltComponent } from './underwriting/policy-issuance/policy-issuance-alt.component';
+import { GenerateDocumentsComponent } from './underwriting/generate-documents/generate-documents.component';
+import { PolicyPrintingComponent } from './underwriting/generate-documents/policy-printing/policy-printing.component';
+import { PolicyToHoldCoverComponent } from './underwriting/expiry-and-renewal/policy-to-hold-cover/policy-to-hold-cover.component';
+import { ChangeQuoteStatusComponent } from './quotation/change-quote-status/change-quote-status.component';
+import { PolAlopComponent } from './underwriting/policy-issuance/pol-alop/pol-alop.component';
+import { InquiryComponent } from './underwriting/inquiry/inquiry.component';
+import { PolicyInquiryComponent } from './underwriting/inquiry/policy-inquiry/policy-inquiry.component';
+import { QuoAlopComponent } from './quotation/quo-alop/quo-alop.component';
+import { CustNonDatatableComponent } from './_components/common/cust-non-datatable/cust-non-datatable.component';
+import { CustEditableNonDatatableComponent } from './_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { SearchPipe } from './_pipes/search.pipe';
+import { PolDistListComponent } from './underwriting/distribution/pol-dist-list/pol-dist-list.component';
+import { SelectComponent } from './_components/common/select/select.component';
+import { MultipleSelectComponent } from './_components/common/multiple-select/multiple-select.component';
+import { DistributionByRiskComponent } from './underwriting/policy-distribution/distribution-by-risk/distribution-by-risk.component';
+import { PolicyDistributionComponent } from './underwriting/policy-distribution/policy-distribution.component';
+import { PolDistributionComponent } from './underwriting/policy-distribution/pol-distribution/pol-distribution.component';
+import { PolDistComponent } from './underwriting/policy-distribution/pol-dist/pol-dist.component';
+import { InwardPolBalanceComponent } from './underwriting/policy-issuance/inward-pol-balance/inward-pol-balance.component';
+import { PolItemComponent } from './underwriting/policy-issuance/pol-item/pol-item.component';
+import { PolCreateOpenCoverComponent } from './underwriting/policy-issuance/pol-create-open-cover/pol-create-open-cover.component';
+import { PolIssuanceOpenCoverLetterComponent } from './underwriting/policy-issuance/pol-issuance-open-cover-letter.component';
+import { PolGenInfoOpenCoverComponent } from './underwriting/policy-issuance/pol-gen-info-open-cover/pol-gen-info-open-cover.component';
+import { PolSumInsuredOpenCoverComponent } from './underwriting/policy-issuance/pol-sum-insured-open-cover/pol-sum-insured-open-cover.component';
+import { ReadyForPrintingComponent } from './quotation/quotation-inquiry/ready-for-printing/ready-for-printing.component';
+import { PurgeExtractedPolicyComponent } from './underwriting/expiry-and-renewal/purge-extracted-policy/purge-extracted-policy.component';
+import { SafeTextPipe } from './safe-text.pipe';
+import { UpdateInformationComponent } from './utilities/update-information/update-information.component';
+import { UpdateGeneralInfoComponent } from './utilities/update-information/update-general-info/update-general-info.component';
+import { OpenCoverProcessingComponent } from './quotation/open-cover-processing/open-cover-processing.component';
+import { OpenCoverComponent } from './quotation/open-cover/open-cover.component';
+import { GenInfoComponent } from './quotation/open-cover/gen-info/gen-info.component';
+import { OpenCoverSumInsuredComponent } from './quotation/open-cover/open-cover-sum-insured/open-cover-sum-insured.component';
+import { ClaimsComponent } from './claims/claims.component';
+import { ClaimComponent } from './claims/claim/claim.component';
+import { ClmClaimProcessingComponent } from './claims/claim/clm-claim-processing/clm-claim-processing.component';
+import { ClmGenInfoClaimComponent } from './claims/claim/clm-claim-processing/clm-gen-info-claim/clm-gen-info-claim.component';
+import { PaymentRequestsComponent } from './claims/payment-requests/payment-requests.component';
+import { NegateDistributionComponent } from './underwriting/policy-distribution/negate-distribution/negate-distribution.component';
+import { ClaimsAttachmentComponent } from './claims/claim/claims-attachment/claims-attachment.component';
+import { DummyComponent2 } from './_components/common/dummy2/dummy2.component';
+import { ClmClaimHistoryComponent } from './claims/claim/clm-claim-processing/clm-claim-history/clm-claim-history.component';
+import { ClaimDistributionComponent } from './claims/claim/claim-distribution/claim-distribution.component';
+import { TextEditorComponent } from './_components/common/text-editor/text-editor.component';
+import { NumbersOnlyDirective } from './_directives/numbers-only.directive';
+import { CharactersLengthDirective } from './_directives/characters-length.directive';
+import { RequiredDirective } from './_directives/required.directive';
+import { CurrencyDirective } from './_directives/currency.directive';
+import { PolBatchProcessingComponent } from './underwriting/policy-distribution/pol-batch-processing/pol-batch-processing.component';
+import { DeductibleComponent } from './underwriting/maintenance/deductible/deductible.component';
+import { RiskListComponent } from './underwriting/maintenance/risk-list/risk-list.component';
+import { RiskFormComponent } from './underwriting/maintenance/risk-form/risk-form.component';
+import { MonthDirective } from './_directives/month.directive';
+import { ChangethemeDirective } from './_directives/changetheme.directive';
+import { PolMxLineComponent } from './underwriting/policy-maintenance/pol-mx-line/pol-mx-line.component';
+import { ClmSectionCoversComponent } from './claims/claim/clm-claim-processing/clm-section-covers/clm-section-covers.component';
+import { ClmClaimPaymentRequestComponent } from './claims/claim/clm-claim-processing/clm-claim-payment-request/clm-claim-payment-request.component';
+import { ClmClaimsInquiryComponent } from './claims/claim/clm-claims-inquiry/clm-claims-inquiry.component';
+import { ClmChangeClaimStatusComponent } from './claims/claim/clm-change-claim-status/clm-change-claim-status.component';
+import { UpdateInstallmentComponent } from './utilities/update-information/update-installment/update-installment.component';
+import { PolMxCedingCoComponent } from './underwriting/policy-maintenance/pol-mx-ceding-co/pol-mx-ceding-co.component';
+import { AccountingComponent } from './accounting/accounting.component';
+import { ArEntryComponent } from './accounting/ar-entry/ar-entry.component';
+import { ArDetailsComponent } from './accounting-in-trust/ar-details/ar-details.component';
+import { InwardPolicyBalancesComponent } from './accounting-in-trust/inward-policy-balances/inward-policy-balances.component';
+import { ClaimRecoveryComponent } from './accounting-in-trust/claim-recovery/claim-recovery.component';
+import { AttachmentsComponent } from './accounting/attachments/attachments.component';
+import { AccountingInTrustComponent } from './accounting-in-trust/accounting-in-trust.component';
+import { AccountingServiceComponent } from './accounting-service/accounting-service.component';
+import { CvPaymentRequestListComponent } from './accounting-in-trust/check-voucher/generate-cv/cv-payment-request-list/cv-payment-request-list.component';
+import { CvAttachmentComponent } from './accounting-in-trust/check-voucher/generate-cv/cv-attachment/cv-attachment.component';
+import { AcctArListingsComponent } from './accounting-in-trust/acct-ar-listings/acct-ar-listings.component';
+import { AcctArEntryComponent } from './accounting-in-trust/acct-ar-entry/acct-ar-entry.component';
+import { CheckVoucherComponent } from './accounting-in-trust/check-voucher/check-voucher.component';
+import { GenerateCvComponent } from './accounting-in-trust/check-voucher/generate-cv/generate-cv.component';
+import { CvEntryComponent } from './accounting-in-trust/check-voucher/generate-cv/cv-entry/cv-entry.component';
+import { CvDetailsComponent } from './accounting-in-trust/check-voucher/generate-cv/cv-details/cv-details.component';
+import { QsoaComponent } from './accounting-in-trust/qsoa/qsoa.component';
+import { AccAttachmentsComponent } from './accounting-in-trust/acc-attachments/acc-attachments.component';
+import { SequencePipe } from './_pipes/sequence.pipe';
+import { RequestForPaymentComponent } from './accounting-in-trust/request-for-payment/request-for-payment.component';
+import { GeneratePaymentRequestComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/generate-payment-request.component';
+import { PaymentRequestEntryComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/payment-request-entry/payment-request-entry.component';
+import { AcctItCancelledTransactionsComponent } from './accounting-in-trust/accounting-inquiry/acct-it-cancelled-transactions/acct-it-cancelled-transactions.component';
+import { JournalVoucherComponent } from './accounting-in-trust/journal-voucher/journal-voucher.component';
+import { GenerateJvComponent } from './accounting-in-trust/journal-voucher/generate-jv/generate-jv.component';
+import { JvEntryComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-entry/jv-entry.component';
+import { AccountingEntriesComponent } from './accounting-in-trust/extract/accounting-entries/accounting-entries.component';
+import { ExtractComponent } from './accounting-in-trust/extract/accounting-entries/extract/extract.component';
+import { TrialBalanceComponent } from './accounting-in-trust/extract/trial-balance/trial-balance.component';
+import { TrialBalanceExtractComponent } from './accounting-in-trust/extract/trial-balance/trial-balance-extract/trial-balance-extract.component';
+import { OpenCoverInquiryComponent } from './quotation/open-cover-inquiry/open-cover-inquiry.component';
+import { InvestmentsComponent } from './accounting-in-trust/investments/investments.component';
+import { RegistersComponent } from './accounting-in-trust/reports/registers/registers.component';
+import { ArRegisterComponent } from './accounting-in-trust/reports/registers/ar-register/ar-register.component';
+import { CvRegisterComponent } from './accounting-in-trust/reports/registers/cv-register/cv-register.component';
+import { ChecksRegisterComponent } from './accounting-in-trust/reports/registers/checks-register/checks-register.component';
+import { JvRegisterComponent } from './accounting-in-trust/reports/registers/jv-register/jv-register.component';
+import { ChangeTransStatToNewComponent } from './accounting-in-trust/utilities/change-trans-stat-to-new/change-trans-stat-to-new.component';
+import { ChangeToNewArComponent } from './accounting-in-trust/utilities/change-trans-stat-to-new/change-to-new-ar/change-to-new-ar.component';
+import { ChangeToNewCvComponent } from './accounting-in-trust/utilities/change-trans-stat-to-new/change-to-new-cv/change-to-new-cv.component';
+import { ChangeToNewJvComponent } from './accounting-in-trust/utilities/change-trans-stat-to-new/change-to-new-jv/change-to-new-jv.component';
+import { InAccountingEntriesComponent } from './accounting-in-trust/extract/accounting-entries/in-accounting-entries/in-accounting-entries.component';
+import { UnbalanceEntriesComponent } from './accounting-in-trust/extract/accounting-entries/unbalance-entries/unbalance-entries.component';
+import { EditAccountingEntriesComponent } from './accounting-in-trust/utilities/edit-accounting-entries/edit-accounting-entries.component';
+import { CancelTransactionsComponent } from './accounting-in-trust/utilities/cancel-transactions/cancel-transactions.component';
+import { CancelArComponent } from './accounting-in-trust/utilities/cancel-transactions/cancel-ar/cancel-ar.component';
+import { CancelCvComponent } from './accounting-in-trust/utilities/cancel-transactions/cancel-cv/cancel-cv.component';
+import { CancelJvComponent } from './accounting-in-trust/utilities/cancel-transactions/cancel-jv/cancel-jv.component';
+import { AcctItEditedAcctEntriesComponent } from './accounting-in-trust/accounting-inquiry/acct-it-edited-acct-entries/acct-it-edited-acct-entries.component';
+import { GenerateNumberSeriesComponent } from './maintenance/accounting-in-trust/generate-number-series/generate-number-series.component';
+import { MaintArSeriesTrstComponent } from './maintenance/accounting-in-trust/generate-number-series/maint-ar-series-trst/maint-ar-series-trst.component';
+import { MaintCvSeriesTrstComponent } from './maintenance/accounting-in-trust/generate-number-series/maint-cv-series-trst/maint-cv-series-trst.component';
+import { MaintJvSeriesTrstComponent } from './maintenance/accounting-in-trust/generate-number-series/maint-jv-series-trst/maint-jv-series-trst.component';
+import { ChartOfAccountsComponent } from './maintenance/accounting-in-trust/chart-of-accounts/chart-of-accounts.component';
+import { MaintChartTrstAcctComponent } from './maintenance/accounting-in-trust/chart-of-accounts/maint-chart-trst-acct/maint-chart-trst-acct.component';
+import { JvAttachmentsComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-attachments/jv-attachments.component';
+import { JvDetailsComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-details/jv-details.component';
+import { PaymentPremiumReturnsComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/payment-premium-returns/payment-premium-returns.component';
+import { JvQsoaComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-qsoa/jv-qsoa.component';
+import { PaymentClaimsComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/payment-claims/payment-claims.component';
+import { PrQsoaComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/pr-qsoa/pr-qsoa.component';
+import { JvInwardPolBalanceComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-inward-pol-balance/jv-inward-pol-balance.component';
+import { JvPaymentRequestListComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-payment-request-list/jv-payment-request-list.component';
+import { TrialBalanceTbComponent } from './accounting-in-trust/extract/trial-balance/trial-balance-tb/trial-balance-tb.component';
+
+
+
 @NgModule({
     imports: [
         BrowserModule,
@@ -35,6 +194,10 @@ import { QuoteOptionComponent } from './quotation/quote-option/quote-option.comp
         NgbModule,
         SidebarModule.forRoot(),
         FormsModule,
+        DataTablesModule,
+        NgxPaginationModule,
+        AngularEditorModule,
+        QuillModule
     ],
     declarations: [
         AppComponent,
@@ -42,12 +205,169 @@ import { QuoteOptionComponent } from './quotation/quote-option/quote-option.comp
         HomeComponent,
         LoginComponent,
         RegisterComponent,
-        QuotationComponent
-,
-        GeneralInfoComponent
-,
-        CoverageComponent ,
-        QuoteOptionComponent   ],
+        QuotationComponent,
+        GeneralInfoComponent,
+        CoverageComponent,
+        QuoteOptionComponent,
+        InternalCompetitionComponent,
+        QuoteEndorsementComponent,
+        DummyComponent,
+        CustTableComponent,
+        NotesComponent,
+        QuotationProcessingComponent,
+        HoldCoverComponent,
+        AttachmentComponent,
+        CustEditableTableComponent,
+        QuotationInquiryComponent,
+        ListOfQuotationsComponent,
+        HoldCoverMonitoringListComponent,
+        DummyComponent,
+        CustTableComponent,
+        CustEditableTableComponent,
+        ParListingComponent,
+        PolEndorsementComponent,
+        PolCoInsuranceComponent,
+        PolicyIssuanceComponent,
+        PolCreatePARComponent,
+        PolCreateAlterationPARComponent,
+        ModalComponent,
+        PolCoverageComponent,
+        PolOtherRatesComponent,
+        ExpiryAndRenewalComponent,
+        ExtractExpiringPoliciesComponent,
+        PolGenInfoComponent,
+        AltParListingComponent,
+        PolAttachmentComponent,
+        PolPostComponent,
+        ExpiryListingComponent,
+        PolicyIssuanceAltComponent,
+        PolicyToHoldCoverComponent,
+        ChangeQuoteStatusComponent,
+        GenerateDocumentsComponent,
+        PolicyPrintingComponent,
+        PolAlopComponent,
+        InquiryComponent,
+        PolicyInquiryComponent,
+        QuoAlopComponent,
+        CustNonDatatableComponent,
+        CustEditableNonDatatableComponent,
+        SearchPipe,
+        PolDistListComponent,
+        SelectComponent,
+        MultipleSelectComponent,
+        DistributionByRiskComponent,
+        PolDistComponent,
+        PolicyDistributionComponent,
+        PolDistributionComponent,
+        InwardPolBalanceComponent,
+        PolItemComponent,
+        PolCreateOpenCoverComponent,
+        PolIssuanceOpenCoverLetterComponent,
+        PolGenInfoOpenCoverComponent,
+        PolSumInsuredOpenCoverComponent,
+        ReadyForPrintingComponent,
+        PurgeExtractedPolicyComponent,
+        SafeTextPipe,
+        UpdateInformationComponent,
+        UpdateGeneralInfoComponent,
+        OpenCoverProcessingComponent,
+        OpenCoverComponent,
+        GenInfoComponent,
+        OpenCoverSumInsuredComponent,
+        ClaimsComponent,
+        ClaimComponent,
+        ClmClaimProcessingComponent,
+        ClmGenInfoClaimComponent,
+        PaymentRequestsComponent,
+        NegateDistributionComponent,
+        ClaimsAttachmentComponent,
+        ClmClaimHistoryComponent,
+        ClaimDistributionComponent,
+        RequiredDirective, //keep this as first directive declared
+        TextEditorComponent,
+        CharactersLengthDirective,
+        CurrencyDirective,
+        MonthDirective,
+        ChangethemeDirective,
+        NumbersOnlyDirective,
+        ClmClaimPaymentRequestComponent,
+        PolBatchProcessingComponent,
+        DeductibleComponent,
+        RiskListComponent,
+        RiskFormComponent,
+        MonthDirective,
+        PolMxLineComponent,
+        NumbersOnlyDirective,
+        ClmSectionCoversComponent,
+        ClmClaimsInquiryComponent,
+        ClmChangeClaimStatusComponent,
+        UpdateInstallmentComponent,
+        PolMxCedingCoComponent,
+        AccountingComponent,
+        ArEntryComponent,
+        ArDetailsComponent,
+        InwardPolicyBalancesComponent,
+        ClaimRecoveryComponent,
+        QsoaComponent,
+        AccountingInTrustComponent,
+        AccountingServiceComponent,
+        AcctArListingsComponent,
+        AcctArEntryComponent,
+        CvDetailsComponent,
+        CheckVoucherComponent,
+        GenerateCvComponent,
+        CvEntryComponent,
+        AccAttachmentsComponent,
+        SequencePipe,
+        RequestForPaymentComponent,
+        GeneratePaymentRequestComponent,
+        PaymentRequestEntryComponent,
+        AcctItCancelledTransactionsComponent,
+        JournalVoucherComponent,
+        GenerateJvComponent,
+        JvEntryComponent,
+        AccountingEntriesComponent,
+        ExtractComponent,
+        TrialBalanceComponent,
+        TrialBalanceExtractComponent,
+        OpenCoverInquiryComponent,
+        CvPaymentRequestListComponent,
+        CvAttachmentComponent,
+        InvestmentsComponent,
+        RegistersComponent,
+        ArRegisterComponent,
+        CvRegisterComponent,
+        ChecksRegisterComponent,
+        JvRegisterComponent,
+        ChangeTransStatToNewComponent,
+        ChangeToNewArComponent,
+        ChangeToNewCvComponent,
+        ChangeToNewJvComponent,
+        InAccountingEntriesComponent,
+        UnbalanceEntriesComponent,
+        EditAccountingEntriesComponent,
+        CancelTransactionsComponent,
+        CancelArComponent,
+        CancelCvComponent,
+        CancelJvComponent,
+        AcctItEditedAcctEntriesComponent,
+        GenerateNumberSeriesComponent,
+        MaintArSeriesTrstComponent,
+        MaintCvSeriesTrstComponent,
+        MaintJvSeriesTrstComponent,
+        ChartOfAccountsComponent,
+        MaintChartTrstAcctComponent,
+        JvAttachmentsComponent,
+        JvDetailsComponent,
+        PaymentPremiumReturnsComponent,
+        JvQsoaComponent,
+        PaymentClaimsComponent,
+        PrQsoaComponent,
+        JvInwardPolBalanceComponent,
+        JvPaymentRequestListComponent,
+        TrialBalanceTbComponent,
+    ],
+
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
@@ -55,7 +375,7 @@ import { QuoteOptionComponent } from './quotation/quote-option/quote-option.comp
         // provider used to create fake backend
         fakeBackendProvider
     ],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
 })
 
 export class AppModule { }

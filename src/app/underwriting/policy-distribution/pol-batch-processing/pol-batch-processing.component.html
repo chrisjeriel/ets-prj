@@ -1,0 +1,48 @@
+<div class="cust-tabs-container">
+	<h4>Policy / Distribution</h4>
+	<ngb-tabset>
+		<ngb-tab class="ngb-tab" title="Batch Distribution">
+			<ng-template ngbTabContent>
+				<div class="form-row">
+					<div class="col-md-12">
+						<div style="margin-top: 10px !important;">
+							<app-cust-non-datatable [passData]="passDataDistribution"></app-cust-non-datatable>
+						</div>
+					</div>
+				</div>
+				<div class="form-row">
+				    <div class="form-group col-sm">
+				        <div class="col-md-12 text-center">
+				            <div class="cust-btn-container" style="margin-top: 10px">
+				                <button type="button" class="cust-btn"><a>Cancel</a></button>
+				                <button type="button" class="cust-btn"><a>Distribute</a></button>
+				            </div>
+				        </div>
+				    </div>
+				</div>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab class="ngb-tab" title="Batch Posting">
+			<ng-template ngbTabContent>
+				<div class="form-row">
+					<div class="col-md-12">
+						<div style="margin-top: 10px !important;">
+							<app-cust-non-datatable [passData]="passDataPosting"></app-cust-non-datatable>
+						</div>
+					</div>
+				</div>
+				<div class="form-row">
+				    <div class="form-group col-sm">
+				        <div class="col-md-12 text-center">
+				            <div class="cust-btn-container" style="margin-top: 10px">
+				            	<button type="button" class="cust-btn"><a>Print</a></button>
+				                <button type="button" class="cust-btn"><a>Cancel</a></button>
+				                <button type="button" class="cust-btn"><a>Post</a></button>
+				            </div>
+				        </div>
+				    </div>
+				</div>
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>

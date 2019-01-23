@@ -1,0 +1,141 @@
+<div class="cust-tabs-container">
+	<h4>Policy / Policy Issuance / Create Policy</h4>
+	<ngb-tabset (tabChange)="beforeChange($event);onTabChange($event)">
+
+		<ngb-tab class="ngb-tab" title="General Info">
+			<ng-template ngbTabContent>
+				<app-pol-gen-info [alteration]="false"></app-pol-gen-info>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab title="Item" *ngIf="line=='EEI' || line=='MBI' || line=='CEC' || line=='BPV' || line=='MLP' || line=='DOS'">
+			<ng-template ngbTabContent>
+				<app-pol-item></app-pol-item>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab title="Coverage">
+			<ng-template ngbTabContent>
+				<app-pol-coverage [alteration]="false"></app-pol-coverage>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab title="ALOP">
+			<ng-template ngbTabContent>
+				<app-pol-alop></app-pol-alop>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab title="Inward Pol Balance">
+			<ng-template ngbTabContent>
+				<app-inward-pol-balance></app-inward-pol-balance>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab title="Endorsement">
+			<ng-template ngbTabContent>
+				<app-pol-endorsement></app-pol-endorsement>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab title="CoInsurance">
+			<ng-template ngbTabContent>
+				<app-pol-co-insurance></app-pol-co-insurance>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab title="Attachment">
+			<ng-template ngbTabContent>
+				<app-pol-attachment [alterationFlag]="false"></app-pol-attachment>
+			</ng-template>
+		</ngb-tab>
+
+
+		<ngb-tab id="print-tab">
+			<ng-template #content>
+				<div class="modal-header">
+					<span class="modal-title" id="modal-basic-title">&nbsp;</span>
+					<!-- <div class="close" style="padding-bottom: 5px;">
+						<a class="btn-cust" aria-label="Close" (click)="modalService.dismissAll();" aria-hidden="true"><span style="padding-right: 3px;"
+							 id="closes">&times;&nbsp;&nbsp;</span></a>
+					</div> -->
+				</div>
+				<div class="modal-body">
+					<fieldset class="scheduler-border">
+						<div class="custom-row-inline-inset" style="margin-bottom:-5px !important;">
+							<div class="input-group" style="margin-bottom:3px !important;">
+								<label class="col-sm-3">Report</label>
+								<select class="form-control form-control-sm cust-sm col-sm-8">
+									<option value="">Report 1</option>
+									<option value="">Report 2</option>
+									<option value="">Report 3</option>
+								</select>
+								<div class="col-sm-1"></div>
+							</div>
+							<div class="input-group" style="margin-bottom:3px !important;">
+								<label class="col-sm-3">No. Of Copies</label>
+								<input type="text" class="form-control form-control-sm cust-sm col-sm-8 " placeholder="25" style="text-align: right"
+								 onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
+								<div class="col-sm-1"></div>
+							</div>
+							<div class="input-group" style="margin-bottom:3px !important;">
+								<label class="col-sm-3">Destination</label>
+								<select class="form-control form-control-sm cust-sm col-sm-8">
+									<option value="">C:\Users\CPI\Desktop\pmmsc\ets-prj</option>
+									<option value="">C:\Users\CPI\Desktop\pmmsc\ets-prj</option>
+									<option value="">C:\Users\CPI\Desktop\pmmsc\ets-prj</option>
+								</select>
+								<div class="col-sm-1"></div>
+							</div>
+							<div class="input-group" style="margin-bottom:3px !important;">
+								<label class="col-sm-3">Printer Name</label>
+								<select class="form-control form-control-sm cust-sm col-sm-8">
+									<option value="">CPI Printer</option>
+									<option value="">PMMSC Printer</option>
+									<option value="">Printer</option>
+								</select>
+								<div class="col-sm-1"></div>
+							</div>
+							<div class="input-group" style="margin-bottom:3px !important;">
+								<div class="col-sm-2"></div>&nbsp;&nbsp;&nbsp;&nbsp;
+								<div class="col-sm-8">
+									<!-- <input type="checkbox" style="vertical-align: middle">&nbsp;<label>Print as Draft</label>
+									&nbsp;&nbsp;&nbsp;&nbsp; -->
+									<input type="checkbox" style="vertical-align: middle">&nbsp;<label>Include Endorsement</label>
+									<div class="col-sm-1"></div>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+
+				</div>
+				<!-- <div class="modal-footer" style="text-align: center !important;">
+					<div>
+						<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+						<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Print</a></button>
+					</div>
+				</div> -->
+				<div class="form-row">
+					<div class="form-group col-sm">
+						<div class="col-md-13 text-center" style="margin-top: -6px;">
+							<div class="cust-btn-container">
+								<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+								<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Print</a></button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</ng-template>
+
+			<ng-template ngbTabTitle>
+				<div (click)="showApprovalModal(content)">Print</div>
+			</ng-template>
+
+		</ngb-tab>
+
+		<ngb-tab title="Post">
+			<ng-template ngbTabContent>
+				<app-pol-post [alterationFlag]="false"></app-pol-post>
+			</ng-template>
+		</ngb-tab>
+		 <ngb-tab id="Exit">
+				<ng-template ngbTabTitle>
+					<div>Exit</div>
+				</ng-template>
+    			<ng-template ngbTabContent></ng-template>
+  		</ngb-tab>
+	</ngb-tabset>
+</div>

@@ -1,0 +1,174 @@
+<div class="cust-tabs-container">
+	<h4>Accounting In-Trust / Utilities / Edit Accounting Entries</h4>
+	<!-- <ngb-tabset (tabChange)="beforeChange($event)"> -->
+		<ngb-tabset (tabChange)="onTabChange($event)">
+			<ngb-tab>
+				<ng-template ngbTabTitle>
+					<div>Edit</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+					<div class="row">
+						<div class="col-sm-9">
+						    <fieldset class="scheduler-border">
+						        <legend class="scheduler-border">Transaction Info</legend>
+						           <div class="container-fluid div-group">
+						           	   <div class="form-row custom-row-inline-inset" >
+						           	    <div class="input-group" style="margin-bottom: -8px !important;
+">
+						           	    	<label class="form-control-sm col-sm-2 outer-labels labels">Transaction Type</label>
+						           	    	<div class="input-group div-group col-sm-3">
+						           	    		<select class="form-control form-control-sm cust-sm col-sm-12">
+						           	    			<option value="AR">Acknowledgement Receipt</option>
+						           	    			<option value="CV">Check Voucher</option>
+						           	    			<option value="JV">Journal Voucher</option>
+						           	    		</select>
+						           	    	</div>
+						           	    	<div class="input-group div-group col-sm-3">
+						           	    		<label class="form-control-sm col-sm-4" for="xx">Tran Date</label>
+						           	    		<input type="date"  class="form-control form-control-sm cust-sm col-sm-8" value="2015-05-16">
+						           	    	</div>
+						           	    	<div class="input-group div-group col-sm-4">
+						           	    		<label class="form-control-sm col-sm-4" for="xx">Tran Status</label>
+						           	        	<input type="text"  class="form-control form-control-sm cust-sm col-sm-8" placeholder="New">
+						           	    	</div>
+						           	    </div>
+						           	    <div class="input-group" style="margin-bottom: -8px !important;
+">
+						           	    	<label class="form-control-sm col-sm-2 outer-labels labels">Reference Number</label>
+						           	    	<div class="input-group div-group col-sm-3">
+						           	    		<input type="text"  class="form-control form-control-sm cust-sm col-sm-12" placeholder="" >
+						           	    		<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+						           	    	</div>
+						           	    	<div class="input-group div-group col-sm-3">
+						           	    		<label class="form-control-sm col-sm-4" for="xx">Amount</label>
+						           	    		<div class="input-group div-group col-sm-8">
+						           	    			<select class="form-control form-control-sm cust-sm col-sm-4">
+   	    			                                      <option value="PHP">PHP</option>
+   	    			                                      <option value="EUR">EUR</option>
+   	    			                                      <option value="USD">USD</option>
+   	    			                              	</select>
+						           	    			<input type="text"  class="form-control form-control-sm cust-sm col-sm" placeholder="2,132,942.50" style="margin-left: 2px; text-align: right">
+						           	    		</div>
+						           	    	</div>
+						           	        <div class="input-group div-group col-sm-4">
+						           	    		<label class="form-control-sm col-sm-4" for="xx">Local Amount</label>
+						           	    		<div class="input-group div-group col-sm-8">
+						           	    			<select class="form-control form-control-sm cust-sm col-sm-3">
+   	    			                                      <option value="PHP">PHP</option>
+   	    			                                      <option value="EUR">EUR</option>
+   	    			                                      <option value="USD">USD</option>
+   	    			                              	</select>
+						           	    			<input type="text"  class="form-control form-control-sm cust-sm col-sm-9" placeholder="2,132,942.50" style="margin-left: 2px; text-align: right">
+						           	    		</div>
+						           	    	</div>
+						           	    </div>
+						           	    <div class="input-group">
+						           	    	<label class="form-control-sm col-sm-2 outer-labels labels">Payor/Payee</label>
+						           	    	<div class="input-group div-group col-sm-10">
+		           	    						<input type="text" class="form-control form-control-sm cust-sm col-sm-12" placeholder="San Miguel Corporation">
+						           	    	</div>
+						           	    </div>
+						           	    <div class="input-group" style="margin-bottom: 0px !important;">
+						           	    	<label class="form-control-sm col-sm-2 outer-labels labels">Particulars</label>
+						           	        <div class="input-group div-group col-sm-10">
+		           	    						<textarea class="form-control form-control-sm cust-sm col-sm-12" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;" placeholder="Billing for the period April 6 to May 15, 2015"></textarea>
+						           	    	</div>
+						           	    </div>
+						           	</div>
+						           </div>
+						    </fieldset>
+						</div>
+						<div class="col-sm-3" style="padding-left: 0px;">
+								<div class="col-sm-12 div-group">
+									<fieldset class="scheduler-border" style="margin-top: 0.756em !important;">
+										<div style="margin-top: 1em; margin-bottom: 0.9em;">
+											<div class="form-row">
+												<div class="form-group col-sm" style="margin-bottom: 0px">
+													<div class="col-sm-12 text-center">
+														<div class="cust-btn-container">
+															<button type="button" class="cust-btn"><a>Report</a></button>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="form-row" style="padding-right: 9px; margin-top: 4px;">
+												<div class="input-group">
+													<label class="form-control-sm col-sm-4 labels">Ref. No.</label>
+													<div class="input-group div-group col-sm">
+														<input type="text" class="form-control form-control-sm cust-sm col-sm">
+														<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+													</div>
+												</div>
+												<div class="input-group">
+													<label class="form-control-sm col-sm-4 labels">Back Up By</label>
+													<input type="text" class="form-control form-control-sm cust-sm col-sm">
+												</div>
+												<div class="input-group">
+													<label class="form-control-sm col-sm-4 labels">Back Up Date</label>
+													<input type="text" class="form-control form-control-sm cust-sm col-sm">
+												</div>
+											</div>
+										</div>
+								    </fieldset>
+								</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12">
+							<fieldset class="scheduler-border">
+								<legend class="scheduler-border">Accounting Entries</legend>
+								<div style="margin-bottom: 11px;margin-top:11px;">
+									<app-cust-editable-non-datatable [passData]="accountingEntriesUtilData"></app-cust-editable-non-datatable>
+									<div class="form-row" style="padding-top: 7px;">
+										<div class="input-group col-sm-2"></div>
+										<div class="input-group div-group col-sm-8">
+											<label class="form-control-sm col-sm-2">Reason for Change</label>
+											<textarea class="form-control form-control-sm cust-sm col-sm-10" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;" placeholder="Account should be Internet Expense not Telephone Line"></textarea>
+										</div>
+										<div class="input-group col-sm-2"></div>
+									</div>
+									<div class="form-row">
+										<div class="form-group col-sm" style="margin-bottom: 0px">
+											<div class="col-md-13 text-center" style="margin-top: 8px;">
+												<div class="cust-btn-container">
+													<button type="button" class="cust-btn"><a>Save</a></button>
+													<button type="button" class="cust-btn"><a>Cancel</a></button>
+													<button type="button" class="cust-btn"><a>Restore</a></button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</fieldset>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12">
+							<fieldset class="scheduler-border" style="margin: 0px !important; margin-top: 12px !important; ">
+								<div class="form-row custom-row-inline-inset" style="margin-left: -27px; margin-bottom: 15px !important;">
+							        <div class="input-group">
+							            <label class="form-control-sm col-sm-1 text-right footer-labels">Created By</label>
+							            <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma">
+							            <label class="form-control-sm col-sm-1 text-right footer-labels">Date Created</label>
+							            <input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM">
+							            <label class="form-control-sm col-sm-1 text-right footer-labels">Last Update By</label>
+							            <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma">
+							            <label class="form-control-sm col-sm-1 text-right footer-labels">Last Update</label>
+							            <input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM">
+							        </div>
+							    </div>
+							</fieldset>
+						</div>
+					</div>
+				</ng-template>
+			</ngb-tab>
+
+			<ngb-tab id="Exit">
+				<ng-template ngbTabTitle>
+					<div>Exit</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+				</ng-template>
+			</ngb-tab>
+		</ngb-tabset>
+</div>

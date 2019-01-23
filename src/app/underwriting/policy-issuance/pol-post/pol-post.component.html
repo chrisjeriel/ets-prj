@@ -1,0 +1,60 @@
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header" id="modal-header-pol">
+        <div class="modal-title" id="modal-basic-title">
+             Post
+        </div>
+       
+    </div>
+    <div class="modal-body">
+    	<p class="text-center" style="margin-bottom: 2px ! important; font-size: 14px;">Saving {{TabName[showTab]}} </p>
+    	<p style="width: 300px"><ngb-progressbar [value]="progress" type="info" ></ngb-progressbar></p>
+	</div>
+</ng-template>
+
+<ng-template #successinfo let-modal>
+    <div class="modal-header" style="justify-content: center;">
+        <div class="form-row">
+            <div class="input-group" style="justify-content: center;" >
+                <i class="fa fa-check fa-3x" aria-hidden="true"></i> 
+            </div>
+            <div class="input-group" style="justify-content: center;">
+                <span class="modal-title" style="margin-bottom: 10px">Saving successful</span>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body">
+    	<div class="form-row" style="width: 400px;">
+    		<div class="input-group" >
+        		<b class=" form-control-sm col-sm-4">Policy No.:</b>
+        		<p  class=" form-control-sm col-sm-8" >CAR-2018-5081-077-0177 
+                </p>
+        	</div>
+        	<div class="input-group" >
+        		<b class=" form-control-sm col-sm-4">Alteration No.: 
+        		</b >
+        		<p *ngIf="alterationFlag" class="col-sm-8 form-control-sm">{{alterNum}}
+                </p>
+                <p *ngIf="!alterationFlag" class="col-sm-8 form-control-sm">00
+                </p>
+        	</div>
+        	<div class="input-group" >
+        		<b  class="form-control-sm  col-sm-4">Ced Company: 
+        		</b >
+        		<p  class=" form-control-sm col-sm-8">Computer Professionals Inc. 
+                </p>
+        	</div>
+        	<div class="input-group">
+        		<b  class=" form-control-sm col-sm-4">Insured: 
+        		</b>
+        		<p  class="form-control-sm col-sm-8">Penthouse, Henrys Building, 80 Ortigas Avenue, Greenhills, San Juan City, Metro Manila, Philippines 1502
+        	</div>
+      	</div>
+    </div>
+    <div class="modal-footer" style="justify-content: center; padding-top: 10px;">
+        <div class="row">
+            <button type="button" class="cust-btn" (click)="modal.close('Close click')"><a>Print</a></button>
+            <button type="button" class="cust-btn" (click)="modal.close('Close click')" routerLink="''" ><a>Ok</a></button>
+        </div>
+    </div>
+</ng-template>
+

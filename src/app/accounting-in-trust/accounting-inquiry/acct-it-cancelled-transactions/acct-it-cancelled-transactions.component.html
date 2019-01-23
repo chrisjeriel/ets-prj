@@ -1,0 +1,52 @@
+<div class="cust-tabs-container">
+	<h4>Accounting In-Trust / Inquiry / Cancelled Transactions</h4>
+	<!-- <ngb-tabset (tabChange)="beforeChange($event)"> -->
+		<ngb-tabset (tabChange)="onTabChange($event)">
+			<ngb-tab>
+				<ng-template ngbTabTitle>
+					<div>Inquire</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+					<fieldset class="scheduler-border">
+						<legend class="scheduler-border">Filter Options</legend>
+						<div class="container-fluid">
+							<div class="form-row custom-row-inline-inset">
+								<div class="input-group">
+									<label class="form-control-sm col-sm-2 labels">Transaction Type</label>
+									<select class="form-control form-control-sm cust-sm col-sm-3">
+										<option value="ALL">All</option>
+										<option value="AR">Acknowledgement Receipt</option>
+										<option value="CV">Check Voucher</option>
+										<option value="JV">Journal Voucher</option>
+									</select>
+									<div class="input-group col-sm-5">
+										<label class="form-control-sm col-sm-1 labels">Period:</label>
+										<label class="form-control-sm col-sm-2 labels">From:</label>
+										<input type="date" class="form-control form-control-sm col-sm-4" value="2018-01-06">
+										<label class="form-control-sm col-sm-1 labels">To:</label>
+										<input type="date" class="form-control form-control-sm col-sm-4" value="2018-02-03">
+									</div>
+									<div class="input-group col-sm-1">
+										<button class="cust-btn" style="max-height: 71%;">Search</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+					<fieldset class="scheduler-border">
+						<legend class="scheduler-border">List of Cancelled/Deleted Transactions</legend>
+						<div style="position: relative;">
+							<button class="cust-btn" style="position:absolute; left: 0px; max-width: 200px !important;" (click)="viewTranDetails()">View Transaction Details</button>
+							<app-cust-non-datatable [passData]="cancelledTransactionsData" (rowClick)="onRowClick($event)"></app-cust-non-datatable>
+						</div>
+					</fieldset>
+				</ng-template>
+			</ngb-tab>
+			<ngb-tab id="Exit">
+				<ng-template ngbTabTitle>
+					<div>Exit</div>
+				</ng-template>
+    			<ng-template ngbTabContent></ng-template>
+  			</ngb-tab>
+		</ngb-tabset>
+</div>

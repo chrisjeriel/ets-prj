@@ -1,0 +1,132 @@
+<div>
+	<fieldset class="scheduler-border">
+		<legend class="scheduler-border">Quotation Info</legend>
+		<div class="form-row custom-row-inline-inset">
+            <div class="input-group" >
+                <label class="form-control-sm col-sm-2" for="inputQuonum">Quotation No </label>
+                <input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-2" placeholder="CAR-2018-5081-077-0177" disabled="disabled" [ngModel]="this.policyRecordInfo.policyNo">
+                <label class="form-control-sm col-sm-1" for="inputInname" >Insured</label>
+                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-6" placeholder="Insured Name" disabled="disabled">
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-2" for="inputRisk" >Risk</label>
+                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-9" placeholder="Risk" disabled="disabled">
+            </div>
+        </div>
+	</fieldset>
+
+	<div class="row top">
+		<div class="col-sm-6 left-div">
+			<fieldset class="scheduler-border col-sm-12 left">
+				<div class="form-row custom-row-inline-inset" style="margin-right: 9px; margin-top: 11px !important;">
+					<div class="input-group">
+						<label class="form-control-sm col-sm-2 text-right" for="xx">Insured</label>
+						<input class="form-control form-control-sm  col-sm-2" type="text" name="" [(ngModel)]="aLOPInfo.insured1" appRequired>
+						<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>&nbsp;
+						<input class="form-control form-control-sm  col-sm" type="text" name="" [(ngModel)]="aLOPInfo.insured2" style="margin-left: -7px;" appRequired>
+					</div>
+
+					<div class="input-group textarea" style="padding-bottom: 7px;">
+						<label class="form-control-sm col-sm-2"></label>
+						<textarea class="form-control form-control-sm col-sm" rows="2" [(ngModel)]="aLOPInfo.address1" appRequired></textarea>
+						<br>
+					</div>
+
+					<div class="input-group">
+						<label class="form-control-sm col-sm-2 text-right" for="xx">Address</label>
+						<input class="form-control form-control-sm  col-sm" type="text" name="" [(ngModel)]="aLOPInfo.address2" appRequired>
+					</div>
+					
+				</div>
+			</fieldset>
+		</div>
+		<div class="col-sm-6 right-div">
+			<fieldset class="scheduler-border col-sm-12 right">
+				<div class="form-row custom-row-inline-inset" style="margin-top: 3px !important;">
+					<div class="input-group">
+						<label  class="form-control-sm col-sm-3 text-left" for="xx">The Insured Business</label>
+					</div>
+
+					<div class="input-group textarea">
+						<textarea class="form-control form-control-sm col-sm-12" rows="3" style="height: 83% !important;" [(ngModel)]="aLOPInfo.business" appRequired></textarea>
+					</div>
+				</div>
+			</fieldset>
+		</div>	
+	</div>
+
+	<fieldset class="scheduler-border middle">
+		<div class="form-row custom-row-inline-inset">
+			<div class="input-group" style="padding-bottom: 1%;">
+				<label class="col-sm-1 "></label>
+				<label class="col-sm-4">Insured Interest: Gross Profit and Increased Cost of Working</label>
+			</div>
+			<div class="input-group">
+				<label class="col-sm-4"></label>
+				<label class=" form-control-sm col-sm-2" for="annSumInsured">Annual Sum Insured</label>
+				<input class="form-control form-control-sm  col-sm-4" type="text" id="annSumInsured" [(ngModel)]="aLOPInfo.amountSI" appRequired appCurrency>
+			</div>
+			<div class="input-group" style="padding-bottom: 0.9%;">
+				<label class="col-sm-4"></label>
+				<label class="form-control-sm col-sm-2 text-left" for="sumInsForMaxIndem">Sum Insured for Maximum Indemnity Period</label>
+				<input class="form-control form-control-sm  col-sm-4" type="text" id="sumInsForMaxIndem" [(ngModel)]="aLOPInfo.maxSI" appRequired appCurrency>
+			</div>
+		</div>
+	</fieldset>
+
+
+	<fieldset class="scheduler-border bottom">
+		<div class="form-row custom-row-inline-inset" style="margin-top: 12px !important;">
+			<div class="input-group">
+				<label class="form-control-sm col-sm-4" for="periodFrom">Period of Insurance from</label>
+				<input class="form-control form-control-sm  col-sm-2" type="date" id="periodFrom" [(ngModel)]="aLOPInfo.fromDate" appRequired>
+				<label class="form-control-sm col-sm-1" style="margin-left: -5.19%;" for="periodTo" >to</label>
+				<input class="form-control form-control-sm  col-sm-2" type="date" id="periodTo" [(ngModel)]="aLOPInfo.toDate" appRequired>
+				<label class="form-control-sm col-sm-2 text-left" >(Scheduled Date of Completion)</label>
+
+			</div>
+			<div class="input-group">
+				<label class="form-control-sm col-sm-4" for="maxIndemPeriod">Maximum Indemnity Period</label>
+				<input class="form-control form-control-sm  col-sm-1" type="number" id="maxIndemPeriod" [(ngModel)]="aLOPInfo.months" appMonth>
+				<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">months</label>
+			</div>
+			<div class="input-group">
+				<label class="form-control-sm col-sm-4" for="fromIndem">from</label>
+				<input class="form-control form-control-sm  col-sm-2" type="date" id="fromIndem" [(ngModel)]="aLOPInfo.fromDatePeriod" appRequired>
+			</div>
+			<div class="input-group">
+				<label class="form-control-sm col-sm-4" for="timeExcess">Time Excess</label>
+				<input class="form-control form-control-sm  col-sm-6" type="text" id="fromIndem" [(ngModel)]="aLOPInfo.timeExcess" appRequired>
+			</div>
+			<div class="input-group">
+				<label class="form-control-sm col-sm-4" for="interval">Progress reports to be presented at intervals of</label>
+				<input class="form-control form-control-sm  col-sm-1" type="number" id="interval" [(ngModel)]="aLOPInfo.reportInterval" appMonth>
+				<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">months</label>
+			</div>
+		</div>
+	</fieldset>
+
+	<div class="form-row bottom-button-container">
+		<div class="form-group col-sm">
+			<div class="col-md-13 text-center">
+				<div class="cust-btn-container" style="margin-top: 10px;">
+				<app-modal [btnTitle]="'Item Information'" style="margin-bottom: 2px;">
+					<div header>Item Information</div>	
+            		<div body>
+            			 <div style="margin-bottom: -90px !important">
+                                <app-cust-editable-non-datatable [passData]="itemInfoData"></app-cust-editable-non-datatable>
+                         </div>  
+            		</div>
+            		<div footer class="text-center">
+							<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
+							<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Save</a></button>
+            		</div>
+				</app-modal>
+				<button type="button" class="cust-btn"><a>Cancel</a></button>
+				<button type="button" class="cust-btn" (click)="save()"><a>Save</a></button>
+			</div>
+			</div>
+		</div>
+	</div>
+
+</div>			
