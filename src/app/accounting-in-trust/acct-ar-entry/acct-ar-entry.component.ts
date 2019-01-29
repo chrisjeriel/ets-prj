@@ -31,7 +31,7 @@ export class AcctArEntryComponent implements OnInit {
         opts:[
           {
             selector: 'payMode',
-            vals: ['Bank Transfer','Cash','Check','Credit Card','Others']
+            vals: ['Bank Transfer','Cash','Check','Credit Memo']
           },
           {
             selector: 'curr',
@@ -63,6 +63,7 @@ export class AcctArEntryComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.onChange.emit({ type: this.record.paymentType });
   }
 
   tabController(event) {

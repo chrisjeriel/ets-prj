@@ -4,21 +4,59 @@
 			<legend class="scheduler-border">A.R. Info</legend>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">A.R. No.</label>
-				<input type="text" placeholder="000001" class="form-control form-control-sm cust-sm text-right col-sm-1" [(ngModel)]="record.arNo">
-				<label class="form-control-sm col-sm-1">Date</label>
-				<input type="date" class="form-control form-control-sm cust-sm col-sm-2" value="2019-01-01">
+				<input type="text" placeholder="000001" class="form-control form-control-sm cust-sm text-right col-sm-2" [(ngModel)]="record.arNo">
+				<label class="form-control-sm col-sm-1" style="margin-left: -2px;">A.R. Date</label>
+				<input type="date" class="form-control form-control-sm cust-sm col-sm-2" value="2019-10-01">
 				<input type="text" placeholder="10:45 AM" class="form-control form-control-sm cust-sm text-center cust-mrgn col-sm-1">
-				<label class="form-control-sm col-sm-1" style="padding-left: 0px !important; margin-left: 20px !important">Payment Type</label>
+				<!-- <label class="form-control-sm col-sm-1" style="padding-left: 0px !important; margin-left: 20px !important">Payment Type</label> -->
 				<!-- <input type="text" placeholder="Inward Policy Balances" class="form-control form-control-sm cust-sm col-sm-3" (change)="tabController($event);" [(ngModel)]="record.paymentType"> -->
-				<select class="form-control form-control-sm cust-sm col-sm-3 cust-sm" (change)="tabController($event);" [(ngModel)]="record.paymentType">
+				<!-- <select class="form-control form-control-sm cust-sm col-sm-3 cust-sm" (change)="tabController($event);" [(ngModel)]="record.paymentType">
 					<option value="Inward Policy Balances">Inward Policy Balances</option>
 					<option value="Claim Recovery">Claim Recovery</option>
 					<option value="QSOA">QSOA</option>
-				</select>
+				</select> -->
 				<!-- <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div> -->
-				<label class="form-control-sm col-sm-1">Status</label>
-				<input type="text" placeholder="New" class="form-control form-control-sm cust-sm col-sm-1" [(ngModel)]="record.status">
+				<label class="form-control-sm col-sm-2">Status</label>
+				<input type="text" placeholder="New" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="record.status">
 				<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+			</div>
+			<div class="input-group cust-ig">
+				<label class="form-control-sm col-sm-1">DCB No.</label>
+				<div class="form-control-sm cust-sm col-sm-2" style="padding: 0;">
+					<div class="input-group">
+						<input type="text" placeholder="2018" class="form-control form-control-sm text-right cust-sm col-sm-4">
+						<input type="text" placeholder="001" class="form-control form-control-sm text-right cust-sm cust-mrgn col-sm-4">
+						<input type="text" placeholder="55" class="form-control form-control-sm text-right cust-sm cust-mrgn col-sm-4">
+					</div>
+				</div>
+				<div class="col-sm-4"></div>
+				<label class="form-control-sm col-sm-2">Payment Type</label>
+				<select class="form-control form-control-sm cust-sm col-sm cust-sm" (change)="tabController($event);" [(ngModel)]="record.paymentType">
+					<option value="Inward Policy Balances">Inward Policy Balances</option>
+					<option value="Claim Recovery">Claim Recovery</option>
+					<option value="QSOA">QSOA</option>
+					<option value="Claim Cash Call">Claim Cash Call</option>
+					<option value="Investment">Investment</option>
+					<option value="Loss Reserve Deposit">Loss Reserve Deposit</option>
+					<option value="Claim Over Payment">Claim Over Payment</option>
+					<option value="Payment for Advances">Payment for Advances</option>
+				</select>
+			</div>
+			<div class="input-group cust-ig">
+				<label class="form-control-sm col-sm-1">DCB Bank</label>
+				<input type="text" placeholder="Bank of the Philippine Islands" class="form-control form-control-sm cust-sm col-sm-6">
+				<label class="form-control-sm col-sm-2">DCB Bank Acct. No.</label>
+				<input type="text" placeholder="627-147839-8" class="form-control form-control-sm cust-sm col-sm-3">
+				<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+			</div>
+			<div class="input-group cust-ig">
+				<label class="form-control-sm col-sm-1">P.R. No.</label>
+				<input type="text" placeholder="435674" class="form-control form-control-sm cust-sm text-right col-sm-2">
+				<label class="form-control-sm col-sm-1" style="margin-left: -2px;">P.R. Date</label>
+				<input type="date" class="form-control form-control-sm cust-sm col-sm-2" value="2019-10-01">
+				<input type="text" placeholder="10:45 AM" class="form-control form-control-sm cust-sm text-center cust-mrgn col-sm-1">
+				<label class="form-control-sm col-sm-2">P.R. Prepared By</label>
+				<input type="text" placeholder="Ma. Cecilia Dela Paz - Castro" class="form-control form-control-sm cust-sm col-sm">
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Payor</label>
@@ -33,17 +71,25 @@
 				</div> -->
 			</div>
 			<div class="input-group cust-ig">
-				<label class="form-control-sm col-sm-1">TIN</label>
-				<input type="text" placeholder="777-888-999-0000" class="form-control form-control-sm cust-sm col-sm">
 				<label class="form-control-sm col-sm-1">Business</label>
-				<input type="text" placeholder="Non-Life Insurance" class="form-control form-control-sm cust-sm col-sm">
+				<input type="text" placeholder="Non-Life Insurance" class="form-control form-control-sm cust-sm col-sm-6">
+				<label class="form-control-sm col-sm-2">Tax Identification No.</label>
+				<input type="text" placeholder="777 - 888 - 999 - 0000" class="form-control form-control-sm cust-sm col-sm-3">
+			</div>
+			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Amount</label>
+				<div class="col-sm-6" style="padding: 0;">
+					<div class="input-group">
+						<input type="text" placeholder="PHP" class="form-control form-control-sm cust-sm col-sm-2">
+						<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+						<input type="text" placeholder="1,642,857.14" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-4">
+						<label class="form-control-sm col-sm-3">Currency Rate</label>
+						<input type="text" placeholder="1.000000" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-3">
+					</div>
+				</div>
+				<label class="form-control-sm col-sm-2">Local Amount</label>
 				<input type="text" placeholder="PHP" class="form-control form-control-sm cust-sm col-sm-1">
-				<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-				<input type="text" placeholder="1,642,857.14" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm">
-				<label class="form-control-sm col-sm-1" style="padding-left: 0px !important; margin-left: 20px !important">Local Amount</label>
-				<input type="text" placeholder="PHP" class="form-control form-control-sm cust-sm col-sm-1">
-				<input type="text" placeholder="1,642,857.14" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm">
+				<input type="text" placeholder="1,642,857.14" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-2">
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Particulars</label>
@@ -55,34 +101,38 @@
 		</fieldset>
 	</div>
 	<div class="col-sm-2">
-		<fieldset class="scheduler-border" style="margin-left: -5px !important; padding-top: 5px !important; padding-bottom: 5px !important;">
+		<fieldset class="scheduler-border" style="margin-left: -5px !important; padding-top: 18px !important; padding-bottom: 18px !important;">
 			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
-			<div class="input-group" style="margin-bottom: 5px !important;">
-				<div class="col-sm-12 text-center">
+			<div class="input-group" style="margin-bottom: 6px !important;">
+				<div class="col-sm-12 text-center" style="margin-bottom: 8px !important;">
 					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;">New AR</button>
+				</div>
+				<div class="col-sm-12 text-center" style="margin-bottom: 2px !important;">
+					<input type="text" placeholder="Non-VAT" class="form-control form-control-sm cust-sm col-sm text-center">
+				</div>				
+			</div>
+			<!-- <div class="input-group cust-ig">
+				<div class="col-sm-12 text-center">
+					<input type="text" placeholder="Non-VAT" class="form-control form-control-sm cust-sm col-sm text-center">
+				</div>	
+			</div> -->
+		</fieldset>
+		<fieldset class="scheduler-border" style="margin-left: -5px !important; padding-top: 16px !important; padding-bottom: 16px !important;">
+			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+			<div class="input-group" style="margin-bottom: 6px !important;">
+				<div class="col-sm-12 text-center">
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;">Cancel</button>
 				</div>					
 			</div>
-			<div class="input-group cust-ig">
-				<label class="form-control-sm col-sm-3">Type</label>
-				<!-- <input type="text" placeholder="VAT" class="form-control form-control-sm cust-sm col-sm"> -->
-				<select class="form-control form-control-sm cust-sm col-sm cust-sm">
-					<option value="vat" selected>VAT</option>
-					<option value="nonVat">Non-VAT</option>
-				</select>
-				<!-- <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div> -->
-			</div>
-		</fieldset>
-		<fieldset class="scheduler-border" style="margin-left: -5px !important; padding-top: 5px !important; padding-bottom: 5px !important;">
-			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 			<div class="input-group" style="margin-bottom: 2px !important;">
 				<div class="col-sm-12 text-center">
 					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;">Save</button>
 				</div>					
 			</div>
 		</fieldset>
-		<fieldset class="scheduler-border" style="margin-left: -5px !important; padding-top: 7px !important; padding-bottom: 7px !important;">
+		<fieldset class="scheduler-border" style="margin-left: -5px !important; padding-top: 15px !important; padding-bottom: 15px !important;">
 			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
-			<div class="input-group" style="margin-bottom: 4px !important;">
+			<div class="input-group" style="margin-bottom: 6px !important;">
 				<div class="col-sm-12 text-center">
 					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;">Print AR</button>
 				</div>					
@@ -97,14 +147,14 @@
 </div>
 <div class="row">
 	<div class="col-sm-12">
-		<fieldset class="scheduler-border" style="padding-top: 10px !important; padding-bottom: 10px !important;">
+		<fieldset class="scheduler-border" style="padding-top: 10px !important;">
 			<legend class="scheduler-border">Payment Details</legend>
 			<div class="row">
 				<div class="col-sm-12">
 					<app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
 				</div>
 			</div>
-			<div class="row">
+			<!-- <div class="row">
 				<div class="col-sm-5">
 					<div class="input-group cust-ig">
 						<label class="form-control-sm col-sm-2">P.R. No.</label>
@@ -142,7 +192,26 @@
 						<input type="date" class="form-control form-control-sm cust-sm col-sm" value="2019-01-01">
 					</div>
 				</div>
-			</div>
+			</div> -->
 		</fieldset>
 	</div>
+</div>
+<div class="col-sm-12" style="margin-top: 25px !important;padding-left: 0px !important;
+padding-right: 0px !important;">
+	<fieldset class="scheduler-border" style="margin-top: -12px !important; margin-bottom: 10px !important;">
+		<div class="custom-row-inline-inset">
+			<div class="form-row" style="margin-bottom: -10px;">
+				<div class="input-group">
+					<label class="form-control-sm col-sm-1">Created By</label>
+					<input type="text" appCurrency class="form-control form-control-sm col-sm" placeholder="cuaresma">
+					<label class="form-control-sm col-sm-1">Date Created</label>
+					<input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-01T10:45">
+					<label class="form-control-sm col-sm-1">Last Update By</label>
+					<input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma">
+					<label class="form-control-sm col-sm-1">Last Update</label>
+					<input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-02T10:00">
+				</div>
+			</div>
+		</div>
+	</fieldset>
 </div>
