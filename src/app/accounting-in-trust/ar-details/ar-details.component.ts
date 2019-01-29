@@ -48,7 +48,7 @@ export class ArDetailsComponent implements OnInit {
     pageID: 3
   };
 
-  @Input() paymentType: string = "type";
+  @Input() paymentType: string = "";
    
   constructor(private titleService: Title, private modalService: NgbModal, private accountingService: AccountingService, private route : ActivatedRoute) { }
 
