@@ -183,6 +183,8 @@ import { TrialBalanceTbComponent } from './accounting-in-trust/extract/trial-bal
 import { ArClaimCashCallComponent } from './accounting-in-trust/ar-details/ar-claim-cash-call/ar-claim-cash-call.component';
 import { ArLossReserveDepositComponent } from './accounting-in-trust/ar-details/ar-loss-reserve-deposit/ar-loss-reserve-deposit.component';
 import { ArClaimOverPaymentComponent } from './accounting-in-trust/ar-details/ar-claim-over-payment/ar-claim-over-payment.component';
+import { ArDetailsQsoaComponent } from './accounting-in-trust/ar-details/ar-details-qsoa/ar-details-qsoa.component';
+import { ArDetailsInvestmentsComponent } from './accounting-in-trust/ar-details/ar-details-investments/ar-details-investments.component';
 
 
 
@@ -372,6 +374,8 @@ import { ArClaimOverPaymentComponent } from './accounting-in-trust/ar-details/ar
         ArClaimCashCallComponent,
         ArLossReserveDepositComponent,
         ArClaimOverPaymentComponent,
+        ArDetailsQsoaComponent,
+        ArDetailsInvestmentsComponent,
     ],
 
     providers: [

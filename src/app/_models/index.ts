@@ -70,4 +70,5 @@ export * from './AccountingTBNet';
 export * from './AccountingItClaimCashCallAr';
 export * from './AccountingItLossReserveDepositAr';
 export * from './AccountingItClaimOverPaymentAr';
+export * from './AccountingARInvestments';
 

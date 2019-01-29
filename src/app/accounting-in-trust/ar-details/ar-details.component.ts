@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AccountingService } from '@app/_services';
-import { ARTaxDetailsVAT, ARTaxDetailsWTAX, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr } from '@app/_models';
+import { ARTaxDetailsVAT, ARTaxDetailsWTAX, AccARInvestments} from '@app/_models';
+import { ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-ar-details',
@@ -10,9 +11,6 @@ import { ARTaxDetailsVAT, ARTaxDetailsWTAX, AccountingItClaimCashCallAr, Account
   styleUrls: ['./ar-details.component.css']
 })
 export class ArDetailsComponent implements OnInit {
-  cccTab: boolean = true;
-  lrdTab: boolean = true;
-  copTab: boolean = true;
 
   passDataTaxDetailsVat: any = {
     tableData: this.accountingService.getARTaxDetailsVAT(),
@@ -29,6 +27,7 @@ export class ArDetailsComponent implements OnInit {
     genericBtn: 'Save',
     opts: [{ selector: "vatType", vals: ["Input", "Output"] }],
     uneditable: [false, false, false, false, true],
+    pageID: 4
   };
 
   passDataTaxDetailsCreditableWtax: any = {
@@ -46,6 +45,7 @@ export class ArDetailsComponent implements OnInit {
     genericBtn: 'Save',
     opts: [{ selector: "birTaxCode", vals: ["WC020", "WC002", "WC010"] }],
     uneditable: [false, false, false, false, false, true],
+    pageID: 3
   };
 
   amountDetailsData: any = {
