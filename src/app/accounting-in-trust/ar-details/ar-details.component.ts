@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AccountingService } from '@app/_services';
-import { ARTaxDetailsVAT, ARTaxDetailsWTAX,  QSOA, AccARInvestments} from '@app/_models';
+import { ARTaxDetailsVAT, ARTaxDetailsWTAX, AccARInvestments} from '@app/_models';
 import { ActivatedRoute} from '@angular/router';
 
 @Component({
@@ -131,61 +131,10 @@ export class ArDetailsComponent implements OnInit {
     genericBtn: 'Save'
   }
 
-
-  passDataQSOA: any = {
-    tableData:[],
-    tHeader:['Quarter Ending','DR Balance','CR Balance', 'Beginning Balance DR', 'Beginning Balance CR', 'Ending Balance DR', 'Ending Balance CR'],
-    dataTypes:['date','currency','currency','currency','currency','currency','currency'],
-    total:['Total','drBalance','crBalance','begBalDR','begBalCR','endBalDR','endBalCR'],
-    addFlag:true,
-    deleteFlag:true,
-    genericBtn: "Save",
-    infoFlag:true,
-    paginateFlag:true,  
-    nData: new QSOA(null, null, null, null, null, null, null),
-    checkFlag: true,
-    widths:['auto','auto','auto','auto','auto','auto','auto'],
-    pageID: 5
-  }
-
-  passDataInvestment: any = {
-    tableData:[],
-    tHeader:['Bank','Account No.','Maturity Period','Duration Unit','Interest Rate','Date Purchased','Maturity Date','Curr','Curr Rate','Bank Charge','Withholding Tax','Investment','Maturity Value','Income'],
-    dataTypes:['text','text','number','text','percent','date','date','text','percent','currency','currency','currency','currency','currency'],
-    total:[null,null,null,null,null,null,null,null,'Total','bankCharge','withTax','investment','matValue','income'],
-    addFlag:true,
-    deleteFlag:true,
-    genericBtn: "Save",
-    infoFlag:true,
-    paginateFlag:true, 
-    nData: new AccARInvestments(null, null, null, null, null, null, null, null, null, null, null, null, null, null ),
-    uneditable: [false, false, false, false, false, true, true, false, false, false, false, false, false, false ],
-    checkFlag: true,
-    pageID: 6,
-    widths:[1, 1, 1, 1, 1, 1, 1, 1, 1, 100, 100, 100, 100, 100]
-  }
-
-  sub:any;
-  action: any;
-  record:any;
-
-  constructor(private titleService: Title, private modalService: NgbModal, private accountingService: AccountingService, private route: ActivatedRoute) { }
+  constructor(private titleService: Title, private modalService: NgbModal, private accountingService: AccountingService) { }
 
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | AR Details");
-    this.passDataQSOA.tableData = this.accountingService.getQSOAData();
-    this.passDataInvestment.tableData = this.accountingService.getAccARInvestments();
-    this.sub = this.route.params.subscribe(params => {
-      /*this.exitLink = params['link'] !== undefined ? params['link'] : 'adasdas';
-      this.exitTab = params['tab'] !== undefined ? params['tab'] : '';*/
-
-      this.action = params['action'];
-
-      if(this.action == 'edit') {
-        this.record = JSON.parse(params['slctd']);
-      }
-    });
-    console.log(this.record);
   }
 
   creditableWTax(data) {

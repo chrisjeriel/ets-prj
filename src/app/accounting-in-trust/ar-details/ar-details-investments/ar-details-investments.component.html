@@ -1,0 +1,13 @@
+<div class="input-group cust-border" style="padding-top: 0.6em">
+	<div class="col-sm-12" style="position: relative;">
+		<div style="position: absolute;left: 240px; top: -6px" id="investment-btns">
+			<label class="form-control-sm labels">Payment for:</label>
+			<input type="radio" name="paymentFor" id="investment" checked="checked">
+			<label for="investment" class="form-control-sm labels">Investment Only</label>
+			<input id="income" type="radio" name="paymentFor" style="margin-left: 15px;">
+			<label for="income" class="form-control-sm labels">Income Only</label>
+		</div>
+		<app-cust-editable-non-datatable [passData]="passDataInvestment">
+		</app-cust-editable-non-datatable>
+	</div>
+</div>
