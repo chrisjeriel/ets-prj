@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments } from '@app/_models';
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, AccORSerFeeLoc } from '@app/_models';
 
 @Injectable({
 	providedIn: 'root'
@@ -49,6 +49,7 @@ export class AccountingService {
 	accountingItLossReserveDepositArData: AccountingItLossReserveDepositAr[] = [];
 	accountingItClaimOverPaymentArData: AccountingItClaimOverPaymentAr[] = [];
 	accARInvestments: AccARInvestments[] = [];
+	accORSerFeeLoc: AccORSerFeeLoc[] = [];
 
 	constructor(private http: HttpClient) { }
 
@@ -556,6 +557,14 @@ export class AccountingService {
 		];
 		return this.accARInvestments;
 	}
+
+	getAccORSerFeeLoc(){
+		this.accORSerFeeLoc = [
+			new AccORSerFeeLoc('AFP GENERAL INSURANCE CORP.', new Date(2018,8,30),'PHP',1,1642857.14,1642857.14)
+		];
+		return this.accORSerFeeLoc;
+	}
+
 
 
 }
