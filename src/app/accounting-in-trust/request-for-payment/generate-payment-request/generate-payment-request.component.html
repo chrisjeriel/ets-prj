@@ -10,38 +10,12 @@
 					<app-payment-request-entry [data]="paymentData" (onChange)="tabController($event)"></app-payment-request-entry>
 				</ng-template>
 			</ngb-tab>
-
-			<ngb-tab [disabled]="paymentType != 'Claim Payment'">
+			<ngb-tab>
 				<ng-template ngbTabTitle>
-					<div>Claims</div>
+					<div>Request Details</div>
 				</ng-template>
 				<ng-template ngbTabContent>
-					<app-payment-claims></app-payment-claims>
-				</ng-template>
-			</ngb-tab>
-
-			<ngb-tab [disabled]="paymentType != 'Premium Returns'">
-				<ng-template ngbTabTitle>
-					<div>Premium Returns</div>
-				</ng-template>
-				<ng-template ngbTabContent>
-					<app-payment-premium-returns></app-payment-premium-returns>
-				</ng-template>
-			</ngb-tab>
-			<ngb-tab [disabled]="paymentType != 'QSOA Balances'">
-				<ng-template ngbTabTitle>
-					<div>QSOA Balances</div>
-				</ng-template>
-				<ng-template ngbTabContent>
-					<app-pr-qsoa></app-pr-qsoa>
-				</ng-template>
-			</ngb-tab>
-			<ngb-tab [disabled]="paymentType != 'Others'">
-				<ng-template ngbTabTitle>
-					<div>Others</div>
-				</ng-template>
-				<ng-template ngbTabContent>
-					<!-- Others Component -->
+					<app-payment-request-details></app-payment-request-details>
 				</ng-template>
 			</ngb-tab>
 			<ngb-tab id="Exit">

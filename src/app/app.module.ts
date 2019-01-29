@@ -182,6 +182,7 @@ import { JvPaymentRequestListComponent } from './accounting-in-trust/journal-vou
 import { TrialBalanceTbComponent } from './accounting-in-trust/extract/trial-balance/trial-balance-tb/trial-balance-tb.component';
 import { UnappliedCollectionComponent } from './accounting-in-trust/unapplied-collection/unapplied-collection.component';
 import { ArOthersComponent } from './accounting-in-trust/ar-others/ar-others.component';
+import { PaymentRequestDetailsComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/payment-request-details/payment-request-details.component';
 
 
 
@@ -370,6 +371,7 @@ import { ArOthersComponent } from './accounting-in-trust/ar-others/ar-others.com
         TrialBalanceTbComponent,
         UnappliedCollectionComponent,
         ArOthersComponent,
+        PaymentRequestDetailsComponent,
     ],
 
     providers: [

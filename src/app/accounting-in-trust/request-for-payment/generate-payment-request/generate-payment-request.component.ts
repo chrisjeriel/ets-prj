@@ -35,6 +35,7 @@ export class GeneratePaymentRequestComponent implements OnInit, OnDestroy {
     this.paymentType = this.paymentData.paymentType;
   }
 
+
   ngOnDestroy(){
   	this.sub.unsubscribe();
   }

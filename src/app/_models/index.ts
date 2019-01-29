@@ -69,3 +69,6 @@ export * from './AccountingTBTotDebCred';
 export * from './AccountingTBNet';
 export * from './AccountingUnappliedCollection';
 export * from './AccountingAROthers';
+export * from './AccountingRequestDetails';
+export * from './AccountingServiceAttachment';
+

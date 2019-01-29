@@ -1,0 +1,116 @@
+<fieldset class="scheduler-border">
+    <legend class="scheduler-border">Request Info</legend>
+    <div class="form-row custom-row-inline-inset">
+        <div class="col-sm-8">
+            <div class="input-group">
+                <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Request No</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-3"
+                placeholder="CSR-2018-09-0001">
+                <label class="form-control-sm col-sm-1">Date</label>
+                <input type="datetime-local"  class="form-control form-control-sm cust-sm col-sm-3" [value]="dateCreated">
+                <label class="form-control-sm col-sm-1">Status</label>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-3" placeholder="New">
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-1">Payee</label>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm" placeholder="New">
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="input-group">
+                <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Amount</label>
+                <select class="form-control form-control-sm cust-sm col-sm-2">
+                        <option value="PHP">PHP</option>
+                        <option value="EUR">EUR</option>
+                        <option value="USD">USD</option>
+                </select>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"placeholder="10,000,000.00">
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Local Amount</label>
+                <select class="form-control form-control-sm cust-sm col-sm-2">
+                        <option value="PHP">PHP</option>
+                        <option value="EUR">EUR</option>
+                        <option value="USD">USD</option>
+                </select>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" placeholder="10,000,000.00">
+            </div>
+        </div>
+    </div>
+</fieldset>
+
+<div class="cust-tabs-container border-tab" style="margin-top: 10px;">
+	<ngb-tabset>
+		<ngb-tab *ngIf="paymentType == 'Claim Expense Payment to Adjusters'">
+			<ng-template ngbTabTitle>
+				<div>Claim Expense Payment to Adjuster</div>
+			</ng-template>
+			<ng-template ngbTabContent>
+                <div class="contain">
+				    <app-cust-editable-non-datatable [passData]="AdjustersData"></app-cust-editable-non-datatable>
+                </div>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab *ngIf="paymentType == 'Claim Expense Payment to Other Parties'">
+            <ng-template ngbTabTitle>
+                <div>Claim Expense Payment to Other Parties</div>
+            </ng-template>
+            <ng-template ngbTabContent>
+                <div class="contain">
+                    <app-cust-editable-non-datatable [passData]="OtherPartyData"></app-cust-editable-non-datatable>
+                </div>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab *ngIf="paymentType == 'Claim Payment to Ceding Company'">
+            <ng-template ngbTabTitle>
+                <div>Claim Payment to Ceding Company</div>
+            </ng-template>
+            <ng-template ngbTabContent>
+                <div class="contain">
+                    <app-cust-editable-non-datatable [passData]="CedingCompanyData"></app-cust-editable-non-datatable>
+                </div>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab *ngIf="paymentType == 'Payment of Service Fee'">
+            <ng-template ngbTabTitle>
+                <div>Inward Policy Balances - Return</div>
+            </ng-template>
+            <ng-template ngbTabContent>
+                <div class="contain">
+                    <app-cust-editable-non-datatable [passData]="PremiumReturnData"></app-cust-editable-non-datatable>
+                </div>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab *ngIf="paymentType == 'Payment of Service Fee'">
+            <ng-template ngbTabTitle>
+                <div>Payment of Service Fee</div>
+            </ng-template>
+            <ng-template ngbTabContent>
+                <div class="contain">
+                    <app-cust-editable-non-datatable [passData]="PremiumReturnData"></app-cust-editable-non-datatable>
+                </div>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab>
+            <ng-template ngbTabTitle>
+                <div>Attachment</div>
+            </ng-template>
+            <ng-template ngbTabContent>
+                <div class="contain">
+                    <app-cust-editable-non-datatable [passData]="AttachmentData"></app-cust-editable-non-datatable>
+                </div>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab>
+            <ng-template ngbTabTitle>
+                <div>Others</div>
+            </ng-template>
+            <ng-template ngbTabContent>
+                
+            </ng-template>
+		</ngb-tab>
+    </ngb-tabset>
+</div>
+
+
+
