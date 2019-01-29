@@ -75,3 +75,7 @@ export * from './AccountingUnappliedCollection';
 export * from './AccountingAROthers';
 export * from './AccountingRequestDetails';
 export * from './AccountingServiceAttachment';
+export * from './AccountingOrPreviewAmountDetails';
+export * from './AccountingOrPreviewAccEntries';
+export * from './AccountingOrPreviewTaxDet';
+export * from './AccountingOrPreviewCredWtaxDet';

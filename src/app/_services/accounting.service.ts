@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, ARUnappliedCollection, AROthers , 	PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AccServiceAttachment } from '@app/_models';
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, ARUnappliedCollection, AROthers , 	PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AccServiceAttachment, ORPrevAmountDetails , ORPrevAccEntries , ORPreVATDetails , ORPreCreditableWTaxDetails } from '@app/_models';
 
 
 @Injectable({
@@ -57,6 +57,10 @@ export class AccountingService {
 	paymentToCedingCompany: PaymentToCedingCompany[] = [];
 	premiumReturn: PremiumReturn[] = [];
 	accServiceAttachment: AccServiceAttachment[] = [];
+	orPrevAmountDetails:  ORPrevAmountDetails[] = [];
+	orPrevAccEntries : ORPrevAccEntries[] = [];
+	orPreVATDetails : ORPreVATDetails[] = [];
+	orPreCreditableWTaxDetails : ORPreCreditableWTaxDetails[] = [];
 
 	constructor(private http: HttpClient) { }
 
@@ -625,5 +629,39 @@ export class AccountingService {
 		];
 		return this.arOthers;
 	}
+
+
+	getORPrevAmountDetails(){
+		this.orPrevAmountDetails = [
+			new ORPrevAmountDetails(1,"A","Premium(Vatable)",1785714.29,"PHP",1.0,1785714.29),
+			new ORPrevAmountDetails(2,"A","VAT-Exempt Sales",0,"PHP",1.0,0),
+			new ORPrevAmountDetails(3,"A","VAT Zero-Rated Sales",0,"PHP",1.0,0),
+			new ORPrevAmountDetails(4,"A","VAT (12%)",2142285.71,"PHP",1.0,2142285.71),
+			new ORPrevAmountDetails(5,"A","Creditable Wtax (20%)",-357142.86,"PHP",1.0,-357142.86),
+		];
+		return this.orPrevAmountDetails;
+	}
+
+	getORPrevAccEntries(){
+		this.orPrevAccEntries = [
+			new ORPrevAccEntries(null,null,null,null,null,null),
+		];
+		return this.orPrevAccEntries;
+	}
+
+	getORPrevTaxDetails(){
+		this.orPreVATDetails = [
+			new ORPreVATDetails("Output","Services","San Miguel Corporation",25012,3001.44),
+		];
+		return this.orPreVATDetails;
+	}
+
+	getORPrevCredWTaxDetails(){
+		this.orPreCreditableWTaxDetails = [
+			new ORPreCreditableWTaxDetails("WC002","WTax on Investment Income PHP",2.0,"BPI/MS INSURANCE CORPORATION",25012,500.24),
+		];
+		return this.orPreCreditableWTaxDetails;
+	}
+
 
 }
