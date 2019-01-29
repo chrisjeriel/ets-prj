@@ -23,7 +23,8 @@ export class UnappliedCollectionComponent implements OnInit {
     pageLength: 10,
     widths: [220,150,'auto',50,100,150,150],
     paginateFlag:true,
-    infoFlag:true
+    infoFlag:true,
+    magnifyingGlass: ['cedCompany'],
   }
   constructor(private accountingService: AccountingService) { }
 

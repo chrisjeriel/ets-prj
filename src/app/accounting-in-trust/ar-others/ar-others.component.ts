@@ -14,7 +14,7 @@ export class ArOthersComponent implements OnInit {
     tHeader: ["Item", "Description", "Type", "Curr", "Curr Rate","Amount","Amount(PHP)"],
     dataTypes: ["text", "text", "select", "text", "percent","currency","currency"],
     resizable: [true, true, true, true, true, true, true],
-     nData: new AROthers(null,null,null,null,null,null,null),
+    nData: new AROthers(null,null,null,null,null,null,null),
     total:[null,null,null,null,'Total','amount','amountPHP'],
     checkFlag: true,
     addFlag: true,
