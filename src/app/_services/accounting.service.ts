@@ -584,9 +584,9 @@ export class AccountingService {
 
 	getPaymentForAdvances() {
 		this.paymentForAdvances = [
-			new PaymentForAdvances("BPI/MS INSURANCE CORPORATION","Advance payment collection (As of January 28,2019)","Php",1,500000,500000)
+			new PaymentForAdvances("BPI/MS INSURANCE CORPORATION","Advance payment collection (As of January 28,2019)","Php",1,500000,500000),
 		]
-		this.paymentForAdvances;
+		return this.paymentForAdvances;
 	}
 
 	getAccountingItClaimCashCallAR(){

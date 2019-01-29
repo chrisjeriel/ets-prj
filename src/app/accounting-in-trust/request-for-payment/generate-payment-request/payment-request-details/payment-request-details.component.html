@@ -71,7 +71,7 @@
                 </div>
             </ng-template>
         </ngb-tab>
-        <ngb-tab *ngIf="paymentType == 'Payment of Service Fee'">
+        <ngb-tab *ngIf="paymentType == 'Inward Policy Balances - Returns'">
             <ng-template ngbTabTitle>
                 <div>Inward Policy Balances - Return</div>
             </ng-template>
@@ -81,7 +81,7 @@
                 </div>
             </ng-template>
         </ngb-tab>
-        <ngb-tab *ngIf="paymentType == 'Payment of Service Fee'">
+        <ngb-tab *ngIf="paymentType == 'Payment of Service Fee by In-Trust to Service Accounting'">
             <ng-template ngbTabTitle>
                 <div>Payment of Service Fee</div>
             </ng-template>
@@ -93,20 +93,10 @@
         </ngb-tab>
         <ngb-tab>
             <ng-template ngbTabTitle>
-                <div>Attachment</div>
-            </ng-template>
-            <ng-template ngbTabContent>
-                <div class="contain">
-                    <app-cust-editable-non-datatable [passData]="AttachmentData"></app-cust-editable-non-datatable>
-                </div>
-            </ng-template>
-        </ngb-tab>
-        <ngb-tab>
-            <ng-template ngbTabTitle>
                 <div>Others</div>
             </ng-template>
             <ng-template ngbTabContent>
-                
+                <app-ar-others></app-ar-others>
             </ng-template>
 		</ngb-tab>
     </ngb-tabset>
