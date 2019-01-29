@@ -41,32 +41,18 @@
 <div class="cust-tabs-container" style="margin-top:10px !important">
 	<ngb-tabset>
 		<!--new -->
-		<ngb-tab class="ngb-tab" title="Claim Cash Call" *ngIf="cccTab">
-			<ng-template ngbTabContent>
-				<div class="input-group cust-border" style="padding-top: 0.6em">
-					<div class="col-sm-12">
-						<app-cust-editable-non-datatable [passData]="claimCashCallData">
-						</app-cust-editable-non-datatable>
-					</div>
-				</div>
+		<ngb-tab>
+			<ng-template ngbTabTitle>
+				<div>Claim Cash Call</div>
+				<!-- <div>Loss Reserve Deposit</div>
+				<div>Claim Over Payment</div> -->
 			</ng-template>
-		</ngb-tab>
-		<ngb-tab class="ngb-tab" title="Loss Reserve Deposit" *ngIf="lrdTab">
 			<ng-template ngbTabContent>
 				<div class="input-group cust-border" style="padding-top: 0.6em">
 					<div class="col-sm-12">
-						<app-cust-editable-non-datatable [passData]="lossReserveDepositData">
-						</app-cust-editable-non-datatable>
-					</div>
-				</div>
-			</ng-template>
-		</ngb-tab>
-		<ngb-tab class="ngb-tab" title="Claim Over Payment" *ngIf="copTab">
-			<ng-template ngbTabContent>
-				<div class="input-group cust-border" style="padding-top: 0.6em">
-					<div class="col-sm-12">
-						<app-cust-editable-non-datatable [passData]="claimOverPaymentData">
-						</app-cust-editable-non-datatable>
+						<app-ar-claim-cash-call></app-ar-claim-cash-call>
+						<!-- <app-ar-loss-reserve-deposit></app-ar-loss-reserve-deposit> -->
+						<!-- <app-ar-claim-over-payment></app-ar-claim-over-payment> -->
 					</div>
 				</div>
 			</ng-template>
