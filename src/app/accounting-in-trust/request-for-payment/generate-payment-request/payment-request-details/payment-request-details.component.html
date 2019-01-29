@@ -1,4 +1,4 @@
-<fieldset class="scheduler-border">
+<fieldset class="scheduler-border" style="margin-bottom: 15px !important;">
     <legend class="scheduler-border">Request Info</legend>
     <div class="form-row custom-row-inline-inset">
         <div class="col-sm-8">
@@ -39,7 +39,7 @@
     </div>
 </fieldset>
 
-<div class="cust-tabs-container border-tab" style="margin-top: 10px;">
+<!-- <div class="cust-tabs-container border-tab" style="margin-top: 10px;">
 	<ngb-tabset>
 		<ngb-tab *ngIf="paymentType == 'Claim Expense Payment to Adjusters'">
 			<ng-template ngbTabTitle>
@@ -101,6 +101,94 @@
 		</ngb-tab>
     </ngb-tabset>
 </div>
+ -->
+
+<div class="cust-tabs-container" style="margin-top:10px !important">
+    <ngb-tabset>
+      <ngb-tab>
+        <ng-template ngbTabTitle>
+          <ng-container [ngSwitch]="paymentType.toUpperCase()">
+           <div *ngSwitchCase ="'CLAIM EXPENSE PAYMENT TO ADJUSTERS'">Claim Expense Payment to Adjusters</div>
+              <div *ngSwitchCase ="'CLAIM EXPENSE PAYMENT TO OTHER PARTIES'">Claim Expense Payment to Other Parties</div>
+              <div *ngSwitchCase ="'CLAIM PAYMENT TO CEDING COMPANY'">Claim Payment to Ceding Company</div>
+              <div *ngSwitchCase ="'INWARD POLICY BALANCES - RETURNS'">Inward Policy Balances - Returns</div>
+              <div *ngSwitchCase ="'PAYMENT OF SERVICE FEE BY IN-TRUST TO SERVICE ACCOUNTING'">Payment of Service Fee by In-Trust to Service Accounting</div>
+              <div *ngSwitchCase ="'TREATY BALANCE DUE PARTICIPANT'">Treaty Balance Due Participant</div>
+              <div *ngSwitchCase ="'INVESTMENT (PLACEMENT)'">Investment (Placement)</div>
+              <div *ngSwitchCase ="'QSOA BALANCES'">QSOA Balances</div>
+              <div *ngSwitchCase ="'OTHERS - VISIBLE ON ANY PAYMENT TYPE'">Others - Visible on any Payment Type</div>
+          </ng-container>
+        </ng-template>
+        <ng-template ngbTabContent>
+          <div class="input-group cust-border" style="padding-top: 0.6em">
+            <div class="col-sm-12">
+              <ng-container [ngSwitch]="paymentType.toUpperCase()">
+                <ng-container *ngSwitchCase ="'CLAIM EXPENSE PAYMENT TO ADJUSTERS'">
+                    <app-cust-editable-non-datatable [passData]="AdjustersData"></app-cust-editable-non-datatable>
+                </ng-container>
+                <ng-container *ngSwitchCase ="'CLAIM EXPENSE PAYMENT TO OTHER PARTY'">
+                    <app-cust-editable-non-datatable [passData]="OtherPartyData"></app-cust-editable-non-datatable>
+                </ng-container>
+                <ng-container *ngSwitchCase ="'CLAIM PAYMENT TO CEDING COMPANY'">
+                    <app-cust-editable-non-datatable [passData]="CedingCompanyData"></app-cust-editable-non-datatable>
+                </ng-container>
+                <ng-container *ngSwitchCase ="'INWARD POLICY BALANCES - RETURNS'">
+                    <app-cust-editable-non-datatable [passData]="PremiumReturnData"></app-cust-editable-non-datatable>
+                </ng-container>
+                <ng-container *ngSwitchCase ="'PAYMENT OF SERVICE FEE BY IN-TRUST TO SERVICE ACCOUNTING'">
+                    <app-cust-editable-non-datatable [passData]="PremiumReturnData"></app-cust-editable-non-datatable>
+                </ng-container>
+                <ng-container *ngSwitchCase ="'TREATY BALANCE DUE PARTICIPANT'">
+                    
+                </ng-container>
+                <ng-container *ngSwitchCase ="'INVESTMENT (PLACEMENT)'">
+                    <app-payt-req-investment></app-payt-req-investment>
+                </ng-container>
+                <ng-container *ngSwitchCase="'QSOA BALANCES'">
+                    <app-pr-qsoa></app-pr-qsoa>
+                </ng-container>
+                <ng-container *ngSwitchCase ="'OTHERS - VISIBLE ON ANY PAYMENT TYPE'">
+                    
+                </ng-container>
+              </ng-container>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab *ngIf="paymentType.toUpperCase() === 'INWARD POLICY BALANCES'" class="ngb-tab" title="Unapplied Collection">
+        <ng-template ngbTabContent>
+          <div class="input-group cust-border" style="padding-top: 0.6em">
+            <div class="col-sm-12">
+              <app-unapplied-collection></app-unapplied-collection>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab class="ngb-tab" title="Others">
+        <ng-template ngbTabContent>
+          <app-ar-others></app-ar-others>
+        </ng-template>
+      </ngb-tab>
+    </ngb-tabset>
+  </div>
 
 
-
+  <div class="col-sm-12" style="margin-top: 25px !important;padding-left: 0px !important;
+  padding-right: 0px !important;">
+  <fieldset class="scheduler-border" style="padding-bottom: 7px !important;">
+    <div class="custom-row-inline-inset">
+      <div class="form-row" style="margin-bottom: -10px;">
+        <div class="input-group">
+          <label class="form-control-sm col-sm-1">Created By</label>
+          <input type="text" appCurrency class="form-control form-control-sm col-sm" placeholder="cuaresma">
+          <label class="form-control-sm col-sm-1">Date Created</label>
+          <input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-01T10:45">
+          <label class="form-control-sm col-sm-1">Last Update By</label>
+          <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma">
+          <label class="form-control-sm col-sm-1">Last Update</label>
+          <input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-02T10:00">
+        </div>
+      </div>
+    </div>
+  </fieldset>
+  </div>

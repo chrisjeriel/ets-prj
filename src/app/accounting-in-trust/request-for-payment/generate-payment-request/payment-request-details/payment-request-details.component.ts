@@ -9,7 +9,9 @@ import { Title } from '@angular/platform-browser';
   styleUrls: ['./payment-request-details.component.css']
 })
 export class PaymentRequestDetailsComponent implements OnInit {
-  
+
+  @Input() paymentType: string = "";
+
   AdjustersData: any = {
   	tableData: this.accountingService.getPaymentToAdjuster(),
   	tHeader: ['Claim Request No', 'Claim No', 'Adjusters', 'Insured', 'Hist No', 'Hist Type', 'Ex-Gratia', 'Reserve Amount', 'Curr','Curr Rate','Amount','Amount (Php)'],
@@ -74,11 +76,12 @@ export class PaymentRequestDetailsComponent implements OnInit {
     widths: ['auto','auto','auto','auto',1,'auto',1,100,1,2,100,100]
   }
 
-  @Input() paymentType: string = "type";
   constructor(private accountingService: AccountingService) { }
 
   ngOnInit() {
-    console.log(this.paymentType);
+    if(this.paymentType === null){
+      this.paymentType = "";
+    }
   }
 
 }

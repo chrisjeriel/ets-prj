@@ -34,7 +34,7 @@
    		                <div class="input-group" style="margin-bottom: -14px !important;">
    		                    <label class="form-control-sm col-sm-1" for="xx">Payment Type</label>
    	                    	<div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<select class="form-control form-control-sm cust-sm col-sm-12" [(ngModel)]="data.paymentType"  (change)="tabController($event);">
+   		                    	<select class="form-control form-control-sm cust-sm col-sm-12" [(ngModel)]="data.paymentType" (change)="tabController($event);">
                                  <option value="Claim Expense Payment to Adjusters" [selected]="data.paymentType == 'Claim Expense Payment to Adjusters'">Claim Expense Payment to Adjusters</option>
                                  <option value="Claim Expense Payment to Other Parties" [selected]="data.paymentType == 'Claim Expense Payment to Other Parties'">Claim Expense Payment to Other Parties</option>
                                  <option value="Claim Payment to Ceding Company" [selected]="data.paymentType == 'Claim Payment to Ceding Company'">Claim Payment to Ceding Company</option>

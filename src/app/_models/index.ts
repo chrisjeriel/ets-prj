@@ -70,6 +70,7 @@ export * from './AccountingTBNet';
 export * from './AccountingRequestDetails';
 export * from './AccountingServiceAttachment';
 export * from './AccountingPaymentForAdvances';
+export * from './AccountingSrvcOfficialReceipt';
 export * from './AccountingItClaimCashCallAr';
 export * from './AccountingItLossReserveDepositAr';
 export * from './AccountingItClaimOverPaymentAr';

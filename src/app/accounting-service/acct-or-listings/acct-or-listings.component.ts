@@ -103,6 +103,14 @@ export class AcctOrListingsComponent implements OnInit {
       amount: selectedRow[6].innerText
     }
 
-    this.router.navigate(['/accounting-servicetrust', { slctd: JSON.stringify(this.record), action: 'edit' }], { skipLocationChange: true });
+    this.router.navigate(['/accounting-service', { slctd: JSON.stringify(this.record), action: 'edit' }], { skipLocationChange: true });
+  }
+  
+  onRowClick(data){
+      if(data[4] == 'Printed'){
+        this.passData.btnDisabled = true;
+      }else{
+        this.passData.btnDisabled = false;
+      }
   }
 }
