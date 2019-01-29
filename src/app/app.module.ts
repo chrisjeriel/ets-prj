@@ -180,6 +180,7 @@ import { PrQsoaComponent } from './accounting-in-trust/request-for-payment/gener
 import { JvInwardPolBalanceComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-inward-pol-balance/jv-inward-pol-balance.component';
 import { JvPaymentRequestListComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-payment-request-list/jv-payment-request-list.component';
 import { TrialBalanceTbComponent } from './accounting-in-trust/extract/trial-balance/trial-balance-tb/trial-balance-tb.component';
+import { PaymentRequestDetailsComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/payment-request-details/payment-request-details.component';
 import { ArPreviewComponent } from './accounting-in-trust/ar-preview/ar-preview.component';
 import { ArClaimCashCallComponent } from './accounting-in-trust/ar-details/ar-claim-cash-call/ar-claim-cash-call.component';
 import { ArLossReserveDepositComponent } from './accounting-in-trust/ar-details/ar-loss-reserve-deposit/ar-loss-reserve-deposit.component';
@@ -195,6 +196,9 @@ import { AcctOrListingsComponent } from './accounting-service/acct-or-listings/a
 import { AcctOrEntryComponent } from './accounting-service/acct-or-entry/acct-or-entry.component';
 import { OrOthersComponent } from './accounting-service/official-receipt/generate-or/acct-or-official-receipt/or-others/or-others.component';
 import { OrServiceFeeLocalComponent } from './accounting-service/official-receipt/generate-or/acct-or-official-receipt/or-service-fee-local/or-service-fee-local.component';
+import { ArPaymentforAdvancesComponent } from './accounting-in-trust/ar-details/ar-paymentfor-advances/ar-paymentfor-advances.component';
+import { AcctAttachmentComponent } from './accounting-service/official-receipt/generate-or/acct-attachment/acct-attachment.component';
+
 
 
 @NgModule({
@@ -380,6 +384,7 @@ import { OrServiceFeeLocalComponent } from './accounting-service/official-receip
         JvInwardPolBalanceComponent,
         JvPaymentRequestListComponent,
         TrialBalanceTbComponent,
+        PaymentRequestDetailsComponent,
         ArPreviewComponent,
         ArClaimCashCallComponent,
         ArLossReserveDepositComponent,
@@ -388,6 +393,7 @@ import { OrServiceFeeLocalComponent } from './accounting-service/official-receip
         ArDetailsInvestmentsComponent,
         UnappliedCollectionComponent,
         ArOthersComponent,
+        PaymentRequestDetailsComponent,
         AcctOrOfficialReceiptComponent,
         OfficialReceiptComponent,
         GenerateOrComponent,
@@ -395,6 +401,8 @@ import { OrServiceFeeLocalComponent } from './accounting-service/official-receip
         AcctOrEntryComponent,
         OrOthersComponent,
         OrServiceFeeLocalComponent,
+        ArPaymentforAdvancesComponent,
+        AcctAttachmentComponent,
     ],
 
     providers: [
