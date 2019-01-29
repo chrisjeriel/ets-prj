@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn } from '@app/_models';
+import { PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AccServiceAttachment } from '@app/_models';
 import { AccountingService } from '../../../../_services/accounting.service';
 import { Title } from '@angular/platform-browser';
 
@@ -68,6 +68,18 @@ export class PaymentRequestDetailsComponent implements OnInit {
   	deleteFlag: true,
   	total: [null, null, 'Total', 'premium', 'riCommision','charges',null,'netDue'],
   	genericBtn: 'Save'
+  }
+
+  AttachmentData: any = {
+    tableData: this.accountingService.getAccServiceAttachment(),
+    tHeader: ['File Path', 'Description', 'Action'],
+    dataTypes: ['text', 'text'],
+    nData: new AccServiceAttachment(null,null),
+    paginateFlag: true,
+    infoFlag: true,
+    checkFlag: true,
+    addFlag: true,
+    deleteFlag: true,
   }
   constructor(private accountingService: AccountingService) { }
 

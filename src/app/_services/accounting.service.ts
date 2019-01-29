@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn } from '@app/_models';
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AccServiceAttachment } from '@app/_models';
 
 
 
@@ -51,6 +51,7 @@ export class AccountingService {
 	paymentToOtherParty: PaymentToOtherParty[] = [];
 	paymentToCedingCompany: PaymentToCedingCompany[] = [];
 	premiumReturn: PremiumReturn[] = [];
+	accServiceAttachment: AccServiceAttachment[] = [];
 
 	constructor(private http: HttpClient) { }
 
@@ -555,6 +556,23 @@ export class AccountingService {
 			new PremiumReturn("EAR-2018-00001-99-0001-00",new Date(25,10,2018), "FLT Prime", -250000, -75000, -9000, "Php", -166000)
 		];
 		return this.premiumReturn;
+	}
+
+
+	getAccServiceAttachment() {
+		this.accServiceAttachment = [
+			new AccServiceAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\SRS\\05-ACCOUNTING\\SAMPLE_01.doc", "Accounting Specifications Sample 1"),
+			new AccServiceAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\SRS\\05-ACCOUNTING\\SAMPLE_02.doc", "Accounting Specifications Sample 2"),
+			new AccServiceAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\SRS\\05-ACCOUNTING\\SAMPLE_03.doc", "Accounting Specifications Sample 3"),
+			new AccServiceAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\SRS\\05-ACCOUNTING\\SAMPLE_04.doc", "Accounting Specifications Sample 4"),
+			new AccServiceAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\SRS\\05-ACCOUNTING\\SAMPLE_05.doc", "Accounting Specifications Sample 5"),
+			new AccServiceAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\SRS\\05-ACCOUNTING\\SAMPLE_06.doc", "Accounting Specifications Sample 6"),
+			new AccServiceAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\SRS\\05-ACCOUNTING\\SAMPLE_07.doc", "Accounting Specifications Sample 7"),
+			new AccServiceAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\SRS\\05-ACCOUNTING\\SAMPLE_08.doc", "Accounting Specifications Sample 8"),
+			new AccServiceAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\SRS\\05-ACCOUNTING\\SAMPLE_09.doc", "Accounting Specifications Sample 9"),
+			new AccServiceAttachment("C:\\Users\\CPI\\Desktop\\PMMSC_ETS\\SRS\\05-ACCOUNTING\\SAMPLE_10.doc", "Accounting Specifications Sample 10"),
+		];
+		return this.accServiceAttachment;
 	}
 
 

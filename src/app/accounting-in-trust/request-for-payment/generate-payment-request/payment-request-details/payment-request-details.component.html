@@ -93,6 +93,16 @@
         </ngb-tab>
         <ngb-tab>
             <ng-template ngbTabTitle>
+                <div>Attachment</div>
+            </ng-template>
+            <ng-template ngbTabContent>
+                <div class="contain">
+                    <app-cust-editable-non-datatable [passData]="AttachmentData"></app-cust-editable-non-datatable>
+                </div>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab>
+            <ng-template ngbTabTitle>
                 <div>Others</div>
             </ng-template>
             <ng-template ngbTabContent>
