@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet } from '@app/_models';
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, AccARInvestments } from '@app/_models';
 
 
 
@@ -47,6 +47,7 @@ export class AccountingService {
 	accJvPayReqList: AccJVPayReqList[] = [];
 	accTBTotDebCred: AccTBTotDebCred[] = [];
 	accTBNet: AccTBNet[] = [];
+	accARInvestments: AccARInvestments[] = [];
 
 	constructor(private http: HttpClient) { }
 
@@ -521,6 +522,15 @@ export class AccountingService {
 				];
 		
 		return this.accTBNet;
+	}
+
+	getAccARInvestments(){
+		this.accARInvestments = [
+			new AccARInvestments('BPI','BPI 1',5,'Years',8.875, new Date(2013,9,20),new Date(2018,9,20),'PHP',1,18112.50,82250,14000000,18112500,4112500),
+			new AccARInvestments('RCBC','RCBC 1',35,'Days',1.5, new Date(2018,8,26),new Date(2018,9,31),'PHP',1,10150,3000,10000000,10150000,150000)
+		];
+		return this.accARInvestments;
+
 	}
 
 

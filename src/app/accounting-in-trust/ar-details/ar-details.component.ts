@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AccountingService } from '@app/_services';
-import { ARTaxDetailsVAT, ARTaxDetailsWTAX } from '@app/_models';
+import { ARTaxDetailsVAT, ARTaxDetailsWTAX,  QSOA, AccARInvestments} from '@app/_models';
+import { ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-ar-details',
@@ -10,6 +11,7 @@ import { ARTaxDetailsVAT, ARTaxDetailsWTAX } from '@app/_models';
   styleUrls: ['./ar-details.component.css']
 })
 export class ArDetailsComponent implements OnInit {
+
   passDataTaxDetailsVat: any = {
     tableData: this.accountingService.getARTaxDetailsVAT(),
     tHeader: ["VAT Type", "BIR RLF Purchase Type", "Payor", "Base Amount", "VAT Amount"],
@@ -25,6 +27,7 @@ export class ArDetailsComponent implements OnInit {
     genericBtn: 'Save',
     opts: [{ selector: "vatType", vals: ["Input", "Output"] }],
     uneditable: [false, false, false, false, true],
+    pageID: 4
   };
 
   passDataTaxDetailsCreditableWtax: any = {
@@ -42,6 +45,7 @@ export class ArDetailsComponent implements OnInit {
     genericBtn: 'Save',
     opts: [{ selector: "birTaxCode", vals: ["WC020", "WC002", "WC010"] }],
     uneditable: [false, false, false, false, false, true],
+    pageID: 3
   };
 
   amountDetailsData: any = {
@@ -128,10 +132,60 @@ export class ArDetailsComponent implements OnInit {
   }
 
 
-  constructor(private titleService: Title, private modalService: NgbModal, private accountingService: AccountingService) { }
+  passDataQSOA: any = {
+    tableData:[],
+    tHeader:['Quarter Ending','DR Balance','CR Balance', 'Beginning Balance DR', 'Beginning Balance CR', 'Ending Balance DR', 'Ending Balance CR'],
+    dataTypes:['date','currency','currency','currency','currency','currency','currency'],
+    total:['Total','drBalance','crBalance','begBalDR','begBalCR','endBalDR','endBalCR'],
+    addFlag:true,
+    deleteFlag:true,
+    genericBtn: "Save",
+    infoFlag:true,
+    paginateFlag:true,  
+    nData: new QSOA(null, null, null, null, null, null, null),
+    checkFlag: true,
+    widths:['auto','auto','auto','auto','auto','auto','auto'],
+    pageID: 5
+  }
+
+  passDataInvestment: any = {
+    tableData:[],
+    tHeader:['Bank','Account No.','Maturity Period','Duration Unit','Interest Rate','Date Purchased','Maturity Date','Curr','Curr Rate','Bank Charge','Withholding Tax','Investment','Maturity Value','Income'],
+    dataTypes:['text','text','number','text','percent','date','date','text','percent','currency','currency','currency','currency','currency'],
+    total:[null,null,null,null,null,null,null,null,'Total','bankCharge','withTax','investment','matValue','income'],
+    addFlag:true,
+    deleteFlag:true,
+    genericBtn: "Save",
+    infoFlag:true,
+    paginateFlag:true, 
+    nData: new AccARInvestments(null, null, null, null, null, null, null, null, null, null, null, null, null, null ),
+    uneditable: [false, false, false, false, false, true, true, false, false, false, false, false, false, false ],
+    checkFlag: true,
+    pageID: 6,
+    widths:[1, 1, 1, 1, 1, 1, 1, 1, 1, 100, 100, 100, 100, 100]
+  }
+
+  sub:any;
+  action: any;
+  record:any;
+
+  constructor(private titleService: Title, private modalService: NgbModal, private accountingService: AccountingService, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | AR Details");
+    this.passDataQSOA.tableData = this.accountingService.getQSOAData();
+    this.passDataInvestment.tableData = this.accountingService.getAccARInvestments();
+    this.sub = this.route.params.subscribe(params => {
+      /*this.exitLink = params['link'] !== undefined ? params['link'] : 'adasdas';
+      this.exitTab = params['tab'] !== undefined ? params['tab'] : '';*/
+
+      this.action = params['action'];
+
+      if(this.action == 'edit') {
+        this.record = JSON.parse(params['slctd']);
+      }
+    });
+    console.log(this.record);
   }
 
   creditableWTax(data) {

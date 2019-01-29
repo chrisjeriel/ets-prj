@@ -165,7 +165,7 @@ div.input-group {
 }
 
 .editable-date {
-    width: 90%;
+    /*width: 90%;*/
     padding: 0px;
     border: none;
     background-color: inherit;
