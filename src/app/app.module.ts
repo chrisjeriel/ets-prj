@@ -181,6 +181,11 @@ import { JvInwardPolBalanceComponent } from './accounting-in-trust/journal-vouch
 import { JvPaymentRequestListComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-payment-request-list/jv-payment-request-list.component';
 import { TrialBalanceTbComponent } from './accounting-in-trust/extract/trial-balance/trial-balance-tb/trial-balance-tb.component';
 import { ArPreviewComponent } from './accounting-in-trust/ar-preview/ar-preview.component';
+import { ArClaimCashCallComponent } from './accounting-in-trust/ar-details/ar-claim-cash-call/ar-claim-cash-call.component';
+import { ArLossReserveDepositComponent } from './accounting-in-trust/ar-details/ar-loss-reserve-deposit/ar-loss-reserve-deposit.component';
+import { ArClaimOverPaymentComponent } from './accounting-in-trust/ar-details/ar-claim-over-payment/ar-claim-over-payment.component';
+import { ArDetailsQsoaComponent } from './accounting-in-trust/ar-details/ar-details-qsoa/ar-details-qsoa.component';
+import { ArDetailsInvestmentsComponent } from './accounting-in-trust/ar-details/ar-details-investments/ar-details-investments.component';
 
 
 
@@ -368,6 +373,11 @@ import { ArPreviewComponent } from './accounting-in-trust/ar-preview/ar-preview.
         JvPaymentRequestListComponent,
         TrialBalanceTbComponent,
         ArPreviewComponent,
+        ArClaimCashCallComponent,
+        ArLossReserveDepositComponent,
+        ArClaimOverPaymentComponent,
+        ArDetailsQsoaComponent,
+        ArDetailsInvestmentsComponent,
     ],
 
     providers: [

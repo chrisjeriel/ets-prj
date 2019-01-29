@@ -2,8 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AccountingService } from '@app/_services';
-import { ARTaxDetailsVAT, ARTaxDetailsWTAX } from '@app/_models';
-import { ActivatedRoute } from '@angular/router';
+import { ARTaxDetailsVAT, ARTaxDetailsWTAX, AccARInvestments} from '@app/_models';
+import { ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-ar-details',
@@ -11,6 +11,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./ar-details.component.css']
 })
 export class ArDetailsComponent implements OnInit {
+
   passDataTaxDetailsVat: any = {
     tableData: this.accountingService.getARTaxDetailsVAT(),
     tHeader: ["VAT Type", "BIR RLF Purchase Type", "Payor", "Base Amount", "VAT Amount"],
@@ -26,6 +27,7 @@ export class ArDetailsComponent implements OnInit {
     genericBtn: 'Save',
     opts: [{ selector: "vatType", vals: ["Input", "Output"] }],
     uneditable: [false, false, false, false, true],
+    pageID: 4
   };
 
   passDataTaxDetailsCreditableWtax: any = {
@@ -43,6 +45,7 @@ export class ArDetailsComponent implements OnInit {
     genericBtn: 'Save',
     opts: [{ selector: "birTaxCode", vals: ["WC020", "WC002", "WC010"] }],
     uneditable: [false, false, false, false, false, true],
+    pageID: 3
   };
 
   @Input() paymentType: string = "type";

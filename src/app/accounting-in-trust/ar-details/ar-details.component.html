@@ -49,18 +49,19 @@
 
 <div class="cust-tabs-container" style="margin-top:10px !important">
 	<ngb-tabset>
+<<<<<<< HEAD
 		<ngb-tab>
 			<ng-template ngbTabTitle>
 				<ng-container [ngSwitch]="paymentType.toUpperCase()">
 					<div *ngSwitchCase="'INWARD POLICY BALANCES'">Inward Policy Balances</div>
 					<div *ngSwitchCase="'CLAIM RECOVERY'">Claim Recovery</div>
 					<div *ngSwitchCase="'QSOA'">QSOA</div>
+					<div *ngSwitchCase="'CLAIM CASH CALL'">Claim Cash Call</div>
+					<div *ngSwitchCase="'INVESTMENT'">Investment</div>
+					<div *ngSwitchCase="'LOSS RESERVE DEPOSIT'">Loss Reserve Deposit</div>
+					<div *ngSwitchCase="'CLAIM OVER PAYMENT'">Claim Over Payment</div>
+					<div *ngSwitchCase="'PAYMENT FOR ADVANCES'">Payment for Advances</div>
 				</ng-container>
-				<!-- <div >Claim Cash Call</div>
-				<div>Investment</div>
-				<div>Loss Reserve Deposit</div>
-				<div>Claim Over Payment</div>
-				<div>Payment for Advances</div> -->
 			</ng-template>
 			<ng-template ngbTabContent>
 				<div class="input-group cust-border" style="padding-top: 0.6em">
@@ -71,6 +72,24 @@
 							</ng-container>
 							<ng-container *ngSwitchCase="'CLAIM RECOVERY'">
 								<app-claim-recovery></app-claim-recovery>
+							</ng-container>
+							<ng-container *ngSwitchCase="'QSOA'">
+								<app-ar-details-qsoa></app-ar-details-qsoa>
+							</ng-container>
+							<ng-container *ngSwitchCase="'CLAIM CASH CALL'">
+								<app-ar-claim-cash-call></app-ar-claim-cash-call>
+							</ng-container>
+							<ng-container *ngSwitchCase="'INVESTMENT'">
+								<app-ar-details-investments></app-ar-details-investments>
+							</ng-container>
+							<ng-container *ngSwitchCase="'LOSS RESERVE DEPOSIT'">
+								<app-ar-loss-reserve-deposit></app-ar-loss-reserve-deposit>
+							</ng-container>
+							<ng-container *ngSwitchCase="'CLAIM OVER PAYMENT'">
+								<app-ar-claim-over-payment></app-ar-claim-over-payment>
+							</ng-container>
+							<ng-container *ngSwitchCase="'PAYMENT FOR ADVANCES'">
+								
 							</ng-container>
 						</ng-container>
 					</div>
