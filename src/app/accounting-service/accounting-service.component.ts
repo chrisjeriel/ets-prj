@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 
@@ -11,6 +11,8 @@ import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 export class AccountingServiceComponent implements OnInit {
   
   paymentType: string = "";
+  private sub: any;
+  action: string;
   record: any = {
                    arNo: null,
                    payor: null,
@@ -21,14 +23,21 @@ export class AccountingServiceComponent implements OnInit {
                    amount: null
                  };
 
-  constructor(private router: Router, private titleService: Title) { }
+  constructor(private router: Router, private route: ActivatedRoute, private titleService: Title) { }
 
   ngOnInit() {
+  	this.sub = this.route.params.subscribe(params => {
+  		this.action = params['action'];
+
+  		if(this.action == 'edit'){
+  			this.record = JSON.parse(params['slctd']);
+  		}
+    });
   }
 
   checkTabs(event) {
   	var type = event.type;
-  	this.paymentType = type;  	
+  	this.paymentType = type; 	
   }
 
   onTabChange($event: NgbTabChangeEvent) {

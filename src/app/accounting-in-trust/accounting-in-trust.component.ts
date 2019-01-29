@@ -39,9 +39,6 @@ export class AccountingInTrustComponent implements OnInit {
 
       if(this.action == 'edit') {
         this.record = JSON.parse(params['slctd']);
-        
-      } else {
-        
       }
     });
 

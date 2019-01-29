@@ -198,6 +198,7 @@ import { OrOthersComponent } from './accounting-service/official-receipt/generat
 import { OrServiceFeeLocalComponent } from './accounting-service/official-receipt/generate-or/acct-or-official-receipt/or-service-fee-local/or-service-fee-local.component';
 import { ArPaymentforAdvancesComponent } from './accounting-in-trust/ar-details/ar-paymentfor-advances/ar-paymentfor-advances.component';
 import { AcctAttachmentComponent } from './accounting-service/official-receipt/generate-or/acct-attachment/acct-attachment.component';
+import { PaytReqInvestmentComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/payt-req-investment/payt-req-investment.component';
 
 
 
@@ -403,6 +404,7 @@ import { AcctAttachmentComponent } from './accounting-service/official-receipt/g
         OrServiceFeeLocalComponent,
         ArPaymentforAdvancesComponent,
         AcctAttachmentComponent,
+        PaytReqInvestmentComponent,
     ],
 
     providers: [
