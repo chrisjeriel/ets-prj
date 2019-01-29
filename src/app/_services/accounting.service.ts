@@ -651,6 +651,13 @@ export class AccountingService {
 		return this.arOthers;
 	}
 
+	getAcctServices(){
+		this.arOthers = [
+			new AROthers("Utilities","Service fee for the period of","Refund","PHP",1.0,-50000,-50000),
+		];
+		return this.arOthers;
+	}
+
 	getAccountingSOthersOr(){
 		this.accountingSOthersOrData = [
 			new AccountingSOthersOr("Utilities", "Payment For", "PHP", 1, 100000, 100000),
