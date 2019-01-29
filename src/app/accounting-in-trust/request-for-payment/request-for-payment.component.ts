@@ -33,20 +33,47 @@ export class RequestForPaymentComponent implements OnInit {
   }
 
   onClickAdd(event){
-  	this.router.navigate(['generate-payt-req']);
+    
+   this.router.navigate(['generate-payt-req',
+         {reqNo: "",
+          payee: "",
+          paymentType: "",
+          status: "",
+          amount: "",
+          currency: "",
+          particulars: "",
+          reqDate: "",
+          reqBy: "",
+          }], {skipLocationChange: true});
   }
 
+  record:any;
   onClickEdit(event){
-  	this.router.navigate(['generate-payt-req',
-         {reqNo: this.routeData.paytReqNo,
-          payee: this.routeData.payee,
-          paymentType: this.routeData.paymentType,
-          status: this.routeData.status,
-          amount: this.routeData.amount,
-          currency: this.routeData.currency,
-          particulars: this.routeData.particulars,
-          reqDate: this.routeData.requestDate,
-          reqBy: this.routeData.requestedBy,
+    //  var selectedRow = event.target.closest('tr').children;
+
+    //   this.record = {
+    //     reqNo: selectedRow[0].innerText,
+    //     payee: selectedRow[1].innerText,
+    //     paymentType: selectedRow[2].innerText,
+    //     status: selectedRow[3].innerText.trim(),
+    //     amount: selectedRow[4].innerText,
+    //     currency: selectedRow[5].innerText,
+    //     particulars: selectedRow[6].innerText,
+    //     reqDate: selectedRow[7].innerText,
+    //     reqBy: selectedRow[8].innerText
+    //   }
+    //   this.router.navigate(['/generate-payt-req', { slctd: JSON.stringify(this.record) }], { skipLocationChange: true });
+
+    this.router.navigate(['generate-payt-req',
+         {reqNo: "",
+          payee: "",
+          paymentType: "",
+          status: "",
+          amount: "",
+          currency: "",
+          particulars: "",
+          reqDate: "",
+          reqBy: "",
           }], {skipLocationChange: true});
   }
 

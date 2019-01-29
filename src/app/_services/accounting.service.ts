@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, OfficialReceipt} from '@app/_models';
-
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, ARUnappliedCollection, AROthers, OfficialReceipt } from '@app/_models';
 
 
 @Injectable({
@@ -48,6 +47,12 @@ export class AccountingService {
 	accTBTotDebCred: AccTBTotDebCred[] = [];
 	accTBNet: AccTBNet[] = [];
 	officialReceipt : OfficialReceipt[] = [];
+	accountingItClaimCashCallArData: AccountingItClaimCashCallAr[] = [];
+	accountingItLossReserveDepositArData: AccountingItLossReserveDepositAr[] = [];
+	accountingItClaimOverPaymentArData: AccountingItClaimOverPaymentAr[] = [];
+	accARInvestments: AccARInvestments[] = [];
+	arUnappliedCollection : ARUnappliedCollection[] = [];
+	arOthers: AROthers[] = [];
 
 	constructor(private http: HttpClient) { }
 
@@ -240,7 +245,7 @@ export class AccountingService {
 
 	getARInwdPolBalDetails() {
 		this.arInwdPolBalDetails = [
-			new ARInwdPolBalDetails("CAR-2018-00001-99-0001-000", "01", new Date('09/25/2018'), "PHP", 3000000, 0, 0, 1642857.14, 1357142.86, 0, 1642857.14),
+			new ARInwdPolBalDetails("CAR-2018-00001-99-0001-000","CAR-2018-00001-99-0001-000", "EN-CAR-HO-18","01","Payment", new Date('09/25/2018'),new Date('09/25/2018'), "PHP",1, 3000000, 0, 0, 1642857.14, 1357142.86, 0, 1642857.14),
 		]
 		return this.arInwdPolBalDetails;
 	}
@@ -531,5 +536,52 @@ export class AccountingService {
 		return this.officialReceipt;
 	}
 
+	getAccountingItClaimCashCallAR(){
+		this.accountingItClaimCashCallArData = [
+			new AccountingItClaimCashCallAr('CAR-2018-000001', 'CAR-2018-00001-99-0001-000', 'DMCI', new Date(2018,9,1), 'Damaged Material', 1000000, 'PHP', 1, 300000, 300000),
+		];
+
+		return this.accountingItClaimCashCallArData;
+	}
+
+	getAccountingItLossReserveDepositAR(){
+		this.accountingItLossReserveDepositArData = [
+			new AccountingItLossReserveDepositAr('BPI/MS INSURANCE CORPORATION', new Date(2018,9,1), 'Loss reserve deposit for', 'PHP', 1, 500000, 500000),
+		];
+
+		return this.accountingItLossReserveDepositArData;
+	}
+
+	getAccountingItClaimOverPaymentAR(){
+		this.accountingItClaimOverPaymentArData = [
+			new AccountingItClaimOverPaymentAr('CAR-2018-000001', 'CAR-2018-00001-99-0001-000', 'DMCI', new Date(2018,9,1), 'Damaged Material', 1000000, 'PHP', 1, 300000, 300000),
+		];
+
+		return this.accountingItClaimOverPaymentArData
+	}
+
+	getAccARInvestments(){
+		this.accARInvestments = [
+			new AccARInvestments('BPI','BPI 1',5,'Years',8.875, new Date(2013,9,20),new Date(2018,9,20),'PHP',1,18112.50,82250,14000000,18112500,4112500),
+			new AccARInvestments('RCBC','RCBC 1',35,'Days',1.5, new Date(2018,8,26),new Date(2018,9,31),'PHP',1,10150,3000,10000000,10150000,150000)
+		];
+		return this.accARInvestments;
+	}
+
+
+	getARUnappliedCollection() {
+		this.arUnappliedCollection = [
+			new ARUnappliedCollection("BPI/MS INSURANCE CORPORATION",new Date("01/25/2019"),"Unapplied collection (As of January 28, 2019)","PHP",1.0,500000,500000),
+				];
+		
+		return this.arUnappliedCollection;
+	}
+
+	getAROthers(){
+		this.arOthers = [
+			new AROthers("Utilities","Payment For","Refund","PHP",1.0,-50000,-50000),
+		];
+		return this.arOthers;
+	}
 
 }

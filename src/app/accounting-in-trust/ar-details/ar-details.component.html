@@ -5,29 +5,28 @@
 			<div class="input-group">
 				<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">A.R. No.</label>
 				<input type="text" value="000001" class="form-control form-control-sm cust-sm col-sm-2 text-right" numbers-only
-				 style="z-index: 1 !important;">
+				style="z-index: 1 !important;">
 				<label class="form-control-sm col-sm-2" style="padding-left:0px !important;margin-left: -35px !important;">A.R. Date</label>
 				<input type="datetime-local" value="2018-10-01T10:45" class="form-control form-control-sm cust-sm col-sm"
 				style="z-index: 1 !important;">
-				 <label class="form-control-sm col-sm-2" style="padding-left:0px !important;margin-left: -40px !important;">DCB No.</label>
-					<input type="text" value="2018-001-55" numbers-only class="form-control form-control-sm cust-sm col-sm-3 text-right"
-					style="z-index: 1 !important;">
+				<label class="form-control-sm col-sm-2" style="padding-left:0px !important;margin-left: -40px !important;">DCB No.</label>
+				<input type="text" value="2018-001-55" numbers-only class="form-control form-control-sm cust-sm col-sm-3 text-right"
+				style="z-index: 1 !important;">
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Payor</label>
 				<input type="text" value="BPI/MS INSURANCE CORPORATION" class="form-control form-control-sm cust-sm col-sm"
-				 placeholder=""  >
+				placeholder=""  >
 			</div>
 		</div>
 		<div class="col-sm-3">
 			<div class="input-group">
-				<label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Payment
-					Type</label>
-				<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)] = "record.paymentType" placeholder="">
+				<label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Payment Type</label>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="paymentType">
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Status</label>
-				 <input type="text" value="New" class="form-control form-control-sm cust-sm col-sm" placeholder="">
+				<input type="text" value="New" class="form-control form-control-sm cust-sm col-sm" placeholder="">
 			</div>
 		</div>
 
@@ -36,82 +35,103 @@
 				<label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Amount</label>
 				<input type="text" value="PHP" class="form-control form-control-sm cust-sm col-sm-2" placeholder="">
 				<input type="text" value="30,000" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
-				 placeholder="">
+				placeholder="">
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Local Amount</label>
 				<input type="text" value="PHP" class="form-control form-control-sm cust-sm col-sm-2" placeholder="">
 				<input type="text" value="30,000" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
-				 placeholder="">
+				placeholder="">
 			</div>
 		</div>
 	</div>
 </fieldset>
 
-<div  class="cust-tabs-container" style="margin-top:10px !important">
+<div class="cust-tabs-container" style="margin-top:10px !important">
 	<ngb-tabset>
-		<ngb-tab class="ngb-tab" title="Inward Policy Balances">
+		<ngb-tab>
+			<ng-template ngbTabTitle>
+				<ng-container [ngSwitch]="paymentType.toUpperCase()">
+					<div *ngSwitchCase="'INWARD POLICY BALANCES'">Inward Policy Balances</div>
+					<div *ngSwitchCase="'CLAIM RECOVERY'">Claim Recovery</div>
+					<div *ngSwitchCase="'QSOA'">QSOA</div>
+					<div *ngSwitchCase="'CLAIM CASH CALL'">Claim Cash Call</div>
+					<div *ngSwitchCase="'INVESTMENT'">Investment</div>
+					<div *ngSwitchCase="'LOSS RESERVE DEPOSIT'">Loss Reserve Deposit</div>
+					<div *ngSwitchCase="'CLAIM OVER PAYMENT'">Claim Over Payment</div>
+					<div *ngSwitchCase="'PAYMENT FOR ADVANCES'">Payment for Advances</div>
+				</ng-container>
+			</ng-template>
 			<ng-template ngbTabContent>
 				<div class="input-group cust-border" style="padding-top: 0.6em">
 					<div class="col-sm-12">
-						<app-inward-policy-balances></app-inward-policy-balances>
+						<ng-container [ngSwitch]="paymentType.toUpperCase()">
+							<ng-container *ngSwitchCase="'INWARD POLICY BALANCES'">
+								<app-inward-policy-balances></app-inward-policy-balances>
+							</ng-container>
+							<ng-container *ngSwitchCase="'CLAIM RECOVERY'">
+								<app-claim-recovery></app-claim-recovery>
+							</ng-container>
+							<ng-container *ngSwitchCase="'QSOA'">
+								<app-ar-details-qsoa></app-ar-details-qsoa>
+							</ng-container>
+							<ng-container *ngSwitchCase="'CLAIM CASH CALL'">
+								<app-ar-claim-cash-call></app-ar-claim-cash-call>
+							</ng-container>
+							<ng-container *ngSwitchCase="'INVESTMENT'">
+								<app-ar-details-investments></app-ar-details-investments>
+							</ng-container>
+							<ng-container *ngSwitchCase="'LOSS RESERVE DEPOSIT'">
+								<app-ar-loss-reserve-deposit></app-ar-loss-reserve-deposit>
+							</ng-container>
+							<ng-container *ngSwitchCase="'CLAIM OVER PAYMENT'">
+								<app-ar-claim-over-payment></app-ar-claim-over-payment>
+							</ng-container>
+							<ng-container *ngSwitchCase="'PAYMENT FOR ADVANCES'">
+								
+							</ng-container>
+						</ng-container>
 					</div>
 				</div>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab class="ngb-tab" title="Unapplied Collection">
+		<ngb-tab *ngIf="paymentType.toUpperCase() === 'INWARD POLICY BALANCES'" class="ngb-tab" title="Unapplied Collection">
 			<ng-template ngbTabContent>
 				<div class="input-group cust-border" style="padding-top: 0.6em">
 					<div class="col-sm-12">
-						<app-claim-recovery></app-claim-recovery>
+						<app-unapplied-collection></app-unapplied-collection>
 					</div>
 				</div>
 			</ng-template>
 		</ngb-tab>
+		<!-- <ngb-tab class="ngb-tab" title="Unapplied Collection">
+			<ng-template ngbTabContent>
+				<app-unapplied-collection></app-unapplied-collection>
+			</ng-template>
+		</ngb-tab> -->
 		<ngb-tab class="ngb-tab" title="Others">
 			<ng-template ngbTabContent>
-				<div class="input-group cust-border" style="padding-top: 0.6em">
-					<div class="col-sm-12">
-						<fieldset class="scheduler-border">
-							<legend class="scheduler-border">VAT Details</legend>
-							<div class="custom-row-inline-inset">
-								<app-cust-editable-non-datatable [passData]="passDataTaxDetailsVat"></app-cust-editable-non-datatable>
-							</div>
-						</fieldset>
-					</div>
-					<div class="col-sm-12">
-						<fieldset class="scheduler-border" style="margin-bottom:10px !important;">
-							<legend class="scheduler-border">Creditable WTax Details</legend>
-							<div class="custom-row-inline-inset">
-								<app-cust-editable-non-datatable (tableDataChange)="creditableWTax($event)" [passData]="passDataTaxDetailsCreditableWtax">
-									<ng-container controls-r>
-										<button class="cust-btn" style="margin-right: 0px !important;">BIR 2307</button>
-									</ng-container>
-								</app-cust-editable-non-datatable>
-							</div>
-						</fieldset>
-					</div>
-				</div>
+				<app-ar-others></app-ar-others>
 			</ng-template>
 		</ngb-tab>
 	</ngb-tabset>
 </div>
 <div class="col-sm-12" style="margin-top: 25px !important;padding-left: 0px !important;
 padding-right: 0px !important;">
-	<fieldset class="scheduler-border" style="padding-bottom: 7px !important;">
-		<div class="custom-row-inline-inset">
-			<div class="form-row" style="margin-bottom: -10px;">
-				<div class="input-group">
-					<label class="form-control-sm col-sm-1">Created By</label>
-					<input type="text" appCurrency class="form-control form-control-sm col-sm" placeholder="cuaresma">
-					<label class="form-control-sm col-sm-1">Date Created</label>
-					<input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-01T10:45">
-					<label class="form-control-sm col-sm-1">Last Update By</label>
-					<input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma">
-					<label class="form-control-sm col-sm-1">Last Update</label>
-					<input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-02T10:00">
-				</div>
+<fieldset class="scheduler-border" style="padding-bottom: 7px !important;">
+	<div class="custom-row-inline-inset">
+		<div class="form-row" style="margin-bottom: -10px;">
+			<div class="input-group">
+				<label class="form-control-sm col-sm-1">Created By</label>
+				<input type="text" appCurrency class="form-control form-control-sm col-sm" placeholder="cuaresma">
+				<label class="form-control-sm col-sm-1">Date Created</label>
+				<input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-01T10:45">
+				<label class="form-control-sm col-sm-1">Last Update By</label>
+				<input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma">
+				<label class="form-control-sm col-sm-1">Last Update</label>
+				<input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-02T10:00">
 			</div>
 		</div>
-	</fieldset>
+	</div>
+</fieldset>
 </div>

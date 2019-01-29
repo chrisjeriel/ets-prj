@@ -1,0 +1,9 @@
+.cust-border {
+	border-bottom: 1px solid rgb(224,227,231);
+	border-left: 1px solid rgb(224,227,231);
+	border-right: 1px solid rgb(224,227,231);
+}
+
+#investment-btns input[type="radio"]{
+	vertical-align: text-bottom;
+}

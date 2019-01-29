@@ -8,10 +8,10 @@
 		</ngb-tab>
 		<ngb-tab class="ngb-tab" title="AR Details">
 			<ng-template ngbTabContent>
-				<app-ar-details></app-ar-details>
+				<app-ar-details [paymentType]="paymentType"></app-ar-details>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab class="ngb-tab" title="Inward Policy Balances" [disabled]="ipbTab">
+		<!-- <ngb-tab class="ngb-tab" title="Inward Policy Balances" [disabled]="ipbTab">
 			<ng-template ngbTabContent>
 				<app-inward-policy-balances></app-inward-policy-balances>
 			</ng-template>
@@ -24,6 +24,11 @@
 		<ngb-tab class="ngb-tab" title="QSOA" [disabled]="qsoaTab">
 			<ng-template ngbTabContent>
 				<app-qsoa></app-qsoa>
+			</ng-template>
+		</ngb-tab> -->
+		<ngb-tab class="ngb-tab" title="AR Preview">
+			<ng-template ngbTabContent>
+				<app-ar-preview></app-ar-preview>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab class="ngb-tab" title="Attachments">

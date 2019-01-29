@@ -180,9 +180,18 @@ import { PrQsoaComponent } from './accounting-in-trust/request-for-payment/gener
 import { JvInwardPolBalanceComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-inward-pol-balance/jv-inward-pol-balance.component';
 import { JvPaymentRequestListComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-payment-request-list/jv-payment-request-list.component';
 import { TrialBalanceTbComponent } from './accounting-in-trust/extract/trial-balance/trial-balance-tb/trial-balance-tb.component';
+import { ArPreviewComponent } from './accounting-in-trust/ar-preview/ar-preview.component';
+import { ArClaimCashCallComponent } from './accounting-in-trust/ar-details/ar-claim-cash-call/ar-claim-cash-call.component';
+import { ArLossReserveDepositComponent } from './accounting-in-trust/ar-details/ar-loss-reserve-deposit/ar-loss-reserve-deposit.component';
+import { ArClaimOverPaymentComponent } from './accounting-in-trust/ar-details/ar-claim-over-payment/ar-claim-over-payment.component';
+import { ArDetailsQsoaComponent } from './accounting-in-trust/ar-details/ar-details-qsoa/ar-details-qsoa.component';
+import { ArDetailsInvestmentsComponent } from './accounting-in-trust/ar-details/ar-details-investments/ar-details-investments.component';
+import { UnappliedCollectionComponent } from './accounting-in-trust/unapplied-collection/unapplied-collection.component';
+import { ArOthersComponent } from './accounting-in-trust/ar-others/ar-others.component';
 import { AcctOrOfficialReceiptComponent } from './accounting-service/official-receipt/generate-or/acct-or-official-receipt/acct-or-official-receipt.component';
 import { OfficialReceiptComponent } from './accounting-service/official-receipt/official-receipt.component';
 import { GenerateOrComponent } from './accounting-service/official-receipt/generate-or/generate-or.component';
+import { PaymentRequestDetailsComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/payment-request-details/payment-request-details.component';
 
 
 
@@ -369,9 +378,18 @@ import { GenerateOrComponent } from './accounting-service/official-receipt/gener
         JvInwardPolBalanceComponent,
         JvPaymentRequestListComponent,
         TrialBalanceTbComponent,
+        ArPreviewComponent,
+        ArClaimCashCallComponent,
+        ArLossReserveDepositComponent,
+        ArClaimOverPaymentComponent,
+        ArDetailsQsoaComponent,
+        ArDetailsInvestmentsComponent,
+        UnappliedCollectionComponent,
+        ArOthersComponent,
         AcctOrOfficialReceiptComponent,
         OfficialReceiptComponent,
         GenerateOrComponent,
+        PaymentRequestDetailsComponent,
     ],
 
     providers: [

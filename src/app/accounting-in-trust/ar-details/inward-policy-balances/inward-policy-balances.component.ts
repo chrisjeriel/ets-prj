@@ -12,19 +12,20 @@ export class InwardPolicyBalancesComponent implements OnInit {
 
   passDataBalanceDetails: any = {
     tableData: this.accountingService.getARInwdPolBalDetails(),
-    tHeader: ["Policy No", "Inst No.", "Due Date", "Curr", "Premium", "RI Comm", "Charges", "Net Due", "Payments", "Overdue Interest", "Balance"],
-    dataTypes: ["text", "number", "date", "text", "currency", "currency", "currency", "currency", "currency", "currency", "currency"],
+    tHeader: ["SOA No.","Policy No","Co. Ref. No.", "Inst No.","Type","Eff Date", "Due Date", "Curr","Curr Rate", "Premium", "RI Comm", "Charges", "Net Due", "Payments", "Overdue Interest", "Balance"],
+    dataTypes: ["text","text","text", "text","select", "date", "date", "text", "percent", "currency", "currency", "currency", "currency", "currency", "currency", "currency"],
     addFlag: true,
     deleteFlag: true,
     infoFlag: true,
     paginateFlag: true,
     checkFlag: true,
-    magnifyingGlass: ['0', '1'],
+    magnifyingGlass: ['soaNo','instNo'],
     pageLength: 10,
-    widths: [178, "1", "auto", "1", "auto", "auto", "auto", "auto", "auto", "auto", "auto"],
-    nData: new ARInwdPolBalDetails(null, null, null, null, null, null, null, null, null, null, null),
-    total: [null, null, null, 'Total', 'premium', 'riComm', 'charges', 'netDue', 'payments', 'overdueInterest', 'balance'],
-    genericBtn: 'Save'
+    widths: ["auto", "auto","auto","auto","auto", "auto","auto", "1", "auto", "auto", "auto", "auto", "auto", "auto", "auto","auto"],
+    nData: new ARInwdPolBalDetails(null, null, null, null, null, null, null, null, null, null, null,null,null,null,null,null,),
+    total: [null,null,null,null,null,null, null, null, 'Total', 'premium', 'riComm', 'charges', 'netDue', 'payments', 'overdueInterest', 'balance'],
+    genericBtn: 'Save',
+    opts: [{ selector: 'type', vals: ["Payment"] }]
   };
 
   constructor(private titleService: Title, private accountingService: AccountingService) { }
