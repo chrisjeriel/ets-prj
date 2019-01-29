@@ -14,11 +14,12 @@ export class MaintChartTrstAcctComponent implements OnInit {
     ],
     tHeader: ["Acct ID", "Type", "Main", "Sub1", "Sub2", "Sub3", "Long Description", "Short Code", "SL Type", "Dr/Cr (Normal)", "Post Tag", "Active"],
     dataTypes: ["number", "text", "number", "number", "number", "number", "text", "text", "text", "text", "text", "checkbox"],
-    pageLength: 15,
+    pageLength: 10,
     pageStatus: true,
     pagination: true,
     addFlag: true,
     deleteFlag: true,
+    colSize: ['100%','100%','100%','100%','100%','100%','100%','100%','100%','100%','100%','100%'],
   };
 
   constructor(private titleService: Title) { }
