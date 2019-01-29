@@ -11,21 +11,6 @@
 				<app-ar-details [paymentType]="paymentType"></app-ar-details>
 			</ng-template>
 		</ngb-tab>
-		<!-- <ngb-tab class="ngb-tab" title="Inward Policy Balances" [disabled]="ipbTab">
-			<ng-template ngbTabContent>
-				<app-inward-policy-balances></app-inward-policy-balances>
-			</ng-template>
-		</ngb-tab>
-		<ngb-tab class="ngb-tab" title="Claim Recovery" [disabled]="crTab">
-			<ng-template ngbTabContent>
-				<app-claim-recovery></app-claim-recovery>
-			</ng-template>
-		</ngb-tab>
-		<ngb-tab class="ngb-tab" title="QSOA" [disabled]="qsoaTab">
-			<ng-template ngbTabContent>
-				<app-qsoa></app-qsoa>
-			</ng-template>
-		</ngb-tab> -->
 		<ngb-tab class="ngb-tab" title="AR Preview">
 			<ng-template ngbTabContent>
 				<app-ar-preview></app-ar-preview>
@@ -37,10 +22,10 @@
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab id="Exit" >
-				<ng-template ngbTabTitle>
-					<div>Exit</div>
-				</ng-template>
-    			<ng-template ngbTabContent></ng-template>
+			<ng-template ngbTabTitle>
+				<div>Exit</div>
+			</ng-template>
+    		<ng-template ngbTabContent></ng-template>
   		</ngb-tab>
 	</ngb-tabset>
 </div>

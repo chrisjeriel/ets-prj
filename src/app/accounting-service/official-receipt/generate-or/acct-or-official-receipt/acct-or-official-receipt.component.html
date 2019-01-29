@@ -49,7 +49,7 @@
   </fieldset>
 
 
-  <div  class="cust-tabs-container" style="margin-top:10px !important">
+  <!-- <div  class="cust-tabs-container" style="margin-top:10px !important">
       <ngb-tabset>
         <ngb-tab class="ngb-tab" title="Official Receipt">
           <ng-template ngbTabContent>
@@ -70,7 +70,39 @@
           </ng-template>
         </ngb-tab>
       </ngb-tabset>
-    </div>
+    </div> -->
+
+    <div class="cust-tabs-container" style="margin-top:10px !important">
+  <ngb-tabset>
+    <ngb-tab>
+      <ng-template ngbTabTitle>
+        <ng-container [ngSwitch]="asd">
+          <div *ngSwitchCase="'OFFICIAL RECEIPT'">Official Receipt</div>
+          <div *ngSwitchCase="'OFFICIAL RECEIPT SERVICE FEE LOCAL'">Official Receipt Service Fee Local</div>
+        </ng-container>
+      </ng-template>
+      <ng-template ngbTabContent>
+        <div class="input-group cust-border" style="padding-top: 0.6em">
+          <div class="col-sm-12">
+            <ng-container [ngSwitch]="asd">
+              <ng-container *ngSwitchCase="'OFFICIAL RECEIPT'">
+                
+              </ng-container>
+              <ng-container *ngSwitchCase="'OFFICIAL RECEIPT SERVICE FEE LOCAL'">
+                
+              </ng-container>
+            </ng-container>
+          </div>
+        </div>
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab class="ngb-tab" title="Others">
+      <ng-template ngbTabContent>
+        
+      </ng-template>
+    </ngb-tab>
+  </ngb-tabset>
+</div>
 
 <div class="col-sm-12" style="margin-top: 25px !important;padding-left: 0px !important;
 padding-right: 0px !important;">

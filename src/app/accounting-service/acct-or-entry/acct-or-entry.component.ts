@@ -1,11 +1,11 @@
-import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-acct-ar-entry',
-  templateUrl: './acct-ar-entry.component.html',
-  styleUrls: ['./acct-ar-entry.component.css']
+  selector: 'app-acct-or-entry',
+  templateUrl: './acct-or-entry.component.html',
+  styleUrls: ['./acct-or-entry.component.css']
 })
-export class AcctArEntryComponent implements OnInit {
+export class AcctOrEntryComponent implements OnInit {
 
   passData: any = {
         tableData:[
@@ -57,16 +57,10 @@ export class AcctArEntryComponent implements OnInit {
                    particulars: null,
                    amount: null
                  };
-  @Output() onChange: EventEmitter<any> = new EventEmitter();
 
   constructor() { }
 
   ngOnInit() {
-    this.onChange.emit({ type: this.record.paymentType });
-  }
-
-  tabController(event) {
-  	this.onChange.emit({ type: this.record.paymentType });
   }
 
 }

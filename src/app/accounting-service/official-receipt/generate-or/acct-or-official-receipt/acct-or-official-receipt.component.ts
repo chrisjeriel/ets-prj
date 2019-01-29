@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AcctOrOfficialReceiptComponent implements OnInit {
 
+  asd: string = 'asd';
+
   constructor() { }
 
   ngOnInit() {

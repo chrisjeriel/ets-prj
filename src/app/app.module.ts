@@ -191,6 +191,8 @@ import { ArOthersComponent } from './accounting-in-trust/ar-others/ar-others.com
 import { AcctOrOfficialReceiptComponent } from './accounting-service/official-receipt/generate-or/acct-or-official-receipt/acct-or-official-receipt.component';
 import { OfficialReceiptComponent } from './accounting-service/official-receipt/official-receipt.component';
 import { GenerateOrComponent } from './accounting-service/official-receipt/generate-or/generate-or.component';
+import { AcctOrListingsComponent } from './accounting-service/acct-or-listings/acct-or-listings.component';
+import { AcctOrEntryComponent } from './accounting-service/acct-or-entry/acct-or-entry.component';
 
 
 
@@ -388,6 +390,8 @@ import { GenerateOrComponent } from './accounting-service/official-receipt/gener
         AcctOrOfficialReceiptComponent,
         OfficialReceiptComponent,
         GenerateOrComponent,
+        AcctOrListingsComponent,
+        AcctOrEntryComponent,
     ],
 
     providers: [

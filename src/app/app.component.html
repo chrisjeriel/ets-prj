@@ -291,17 +291,8 @@
                                 <fa name="calculator"></fa>&nbsp;Accounting Service
                             </ng-template>
                             <ng-template ngbPanelContent>
-                                    <ngb-accordion #acc="ngbAccordion">
-                                            <ngb-panel>
-                                                <ng-template ngbPanelTitle>
-                                                    Official Receipt
-                                                </ng-template>
-                                                <ng-template ngbPanelContent>
-                                                    <button [routerLink]="['official-receipt']" class="button btn btn-link">Generate OR</button>
-                                                    <br />
-                                                </ng-template>
-                                            </ngb-panel>
-                                        </ngb-accordion>
+                                <button [routerLink]="['acct-or-listings']" class="button btn btn-link">Official Receipt</button>
+                                <br />
                             </ng-template>
                         </ngb-panel>
                         <ngb-panel>
