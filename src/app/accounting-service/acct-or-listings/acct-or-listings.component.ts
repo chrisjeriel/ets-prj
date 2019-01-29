@@ -11,16 +11,16 @@ export class AcctOrListingsComponent implements OnInit {
 
   passData: any = {
     tableData: [
-    ['1','BPI/MS INSURANCE CORPORATION',new Date('2018-10-1'),'Inward Policy Balances','New','Representing payment for premium of policy CAR-2018-00001-99-0001-000',1642857.14],
-    ['2','PNBGEN',new Date('2018-10-1'),'Inward Policy Balances','New','Representing payment for premium of policy CAR-2018-00001-99-0001-000',200000],
-    ['3','Charter Ping An',new Date('2018-10-3'),'Claim Recovery','Printed','Representing claim recovery payment for Claim No. CAR-2018-000001',100000],
-    ['4','AXA',new Date('2018-10-4'),'QSOA','Printed','Representing payment for the Quarterly Statement of Accounts balances of BPI/MS for the 3rd Quarter',1000000],
-    ['5','Allied Bankers',new Date('2018-10-4'),'QSOA','New','Representing payment for the Quarterly Statement of Accounts balances of BPI/MS for the 3rd Quarter',710716.12],
-    ['6','Malayan',new Date('2018-10-5'),'Inward Policy Balances','New','Representing payment for premium of policy CAR-2018-00001-99-0001-000',756929],
-    ['7','New India',new Date('2018-10-7'),'Claim Recovery','New','Representing claim recovery payment for Claim No. CAR-2018-000001',30000],
-    ['8','BPI/MS INSURANCE CORPORATION',new Date('2018-10-7'),'Claim Recovery','Printed','Representing claim recovery payment for Claim No. CAR-2018-000001',10000],
-    ['9','UCPBGEN',new Date('2018-10-7'),'QSOA','Printed','Representing payment for the Quarterly Statement of Accounts balances of BPI/MS for the 3rd Quarter',230000],
-    ['10','FGIC',new Date('2018-10-7'),'Inward Policy Balances','New','Representing payment for premium of policy CAR-2018-00001-99-0001-000',1500000],
+    ['1','AFP GENERAL INSURANCE CORP.',new Date('2018-10-1'),'Official Receipt','New','Representing payment for 09/15/2018 transactions',1642857.14],
+    ['2','ALIIEDBANKERS INSURANCE CORP.',new Date('2018-10-1'),'Official Receipt Service Fee Local','New','Service fee for the quarter ending 09/30/2018',200000],
+    ['3','BLUE CROSS INSURANCE, INC.',new Date('2018-10-3'),'Official Receipt','Printed','Representing payment for 09/15/2018 transactions',100000],
+    ['4','BG GENERAL INSURANCE CO., INC.',new Date('2018-10-4'),'Official Receipt','Printed','Representing payment for 09/15/2018 transactions',1000000],
+    ['5','CCC INSURANCE CORPORATION',new Date('2018-10-4'),'Official Receipt','New','Representing payment for 09/15/2018 transactions',710716.12],
+    ['6','CIBELES INSURANCE CORP.',new Date('2018-10-5'),'Official Receipt Service Fee Local','New','Service fee for the quarter ending 09/30/2018',756929],
+    ['7','COMMONWEALTH INSURANCE CO.',new Date('2018-10-7'),'Official Receipt Service Fee Local','New','Service fee for the quarter ending 09/30/2018',30000],
+    ['8','CICI GENERAL INSURANCE CORP.',new Date('2018-10-7'),'Official Receipt Service Fee Local','Printed','Service fee for the quarter ending 09/30/2018',10000],
+    ['9','DEVELOPMENT INSURANCE AND SURETY CORP.',new Date('2018-10-7'),'Official Receipt Service Fee Local','Printed','Service fee for the quarter ending 09/30/2018',230000],
+    ['10','DOMESTIC INS. CO. OF THE PHIL.',new Date('2018-10-7'),'Official Receipt Service Fee Local','New','Service fee for the quarter ending 09/30/2018',1500000],
     ],
     tHeader: ['O.R. No.','Payor','OR Date','Payment Type','Status','Particulars','Amount'],
     dataTypes: ['sequence-6','text','date','text','text','text','currency'],
@@ -71,6 +71,16 @@ export class AcctOrListingsComponent implements OnInit {
     btnDisabled: true
   }
 
+  record: any = {
+      arNo: null,
+      payor: null,
+      arDate: null,
+      paymentType: null,
+      status: null,
+      particulars: null,
+      amount: null
+    }
+
   constructor(private router: Router, private titleService: Title) { }
 
   ngOnInit() {
@@ -78,5 +88,21 @@ export class AcctOrListingsComponent implements OnInit {
 
   toGenerateORAdd() {
     this.router.navigate(['/accounting-service', { action: 'add' }], { skipLocationChange: true });
+  }
+
+  toGenerateOREdit(event) {
+    var selectedRow = event.target.closest('tr').children;
+
+    this.record = {
+      arNo: selectedRow[0].innerText,
+      payor: selectedRow[1].innerText,
+      arDate: selectedRow[2].innerText,
+      paymentType: selectedRow[3].innerText.trim(),
+      status: selectedRow[4].innerText,
+      particulars: selectedRow[5].innerText,
+      amount: selectedRow[6].innerText
+    }
+
+    this.router.navigate(['/accounting-servicetrust', { slctd: JSON.stringify(this.record), action: 'edit' }], { skipLocationChange: true });
   }
 }

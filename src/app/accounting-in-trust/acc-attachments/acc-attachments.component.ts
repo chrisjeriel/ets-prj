@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountingService } from '@app/_services';
 import { AttachmentInfo } from '@app/_models';
+import { ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-acc-attachments',
@@ -21,11 +22,22 @@ export class AccAttachmentsComponent implements OnInit {
   	nData: new AttachmentInfo(null,null),
 
   };
+  sub: any;
+  action:any;
+  paymentType: string;
 
-  constructor(private accountingService: AccountingService) { }
+  constructor(private accountingService: AccountingService, private route : ActivatedRoute) { }
 
   ngOnInit() {
   	this.passData.tableData = this.accountingService.getAttachmentInfo();
+    this.sub = this.route.params.subscribe(params => {
+      this.action = params['action'];
+       this.paymentType = JSON.parse(params['slctd']).paymentType;
+    });
+
+    if(this.paymentType == null){
+      this.paymentType = "";
+    }
   }
 
 }

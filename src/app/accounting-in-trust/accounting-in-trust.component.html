@@ -1,6 +1,6 @@
 <div class="cust-tabs-container">
 	<h4>Accounting In-Trust / Acknowledgement Receipt / Generate AR</h4>
-		<ngb-tabset (tabChange)="onTabChange($event)">
+	<ngb-tabset (tabChange)="onTabChange($event)">
 		<ngb-tab class="ngb-tab" title="AR Entry">
 			<ng-template ngbTabContent>
 				<app-acct-ar-entry [record]="record" (onChange)="checkTabs($event);"></app-acct-ar-entry>
@@ -25,7 +25,7 @@
 			<ng-template ngbTabTitle>
 				<div>Exit</div>
 			</ng-template>
-    		<ng-template ngbTabContent></ng-template>
-  		</ngb-tab>
+			<ng-template ngbTabContent></ng-template>
+		</ngb-tab>
 	</ngb-tabset>
 </div>

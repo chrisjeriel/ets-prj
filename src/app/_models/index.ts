@@ -74,3 +74,4 @@ export * from './AccountingARInvestments';
 export * from './AccountingUnappliedCollection';
 export * from './AccountingAROthers';
 export * from './AccountingSOthersOr';
+export * from './AccountingORSerFeeLoc';

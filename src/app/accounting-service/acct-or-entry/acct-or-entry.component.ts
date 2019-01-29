@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-acct-or-entry',
@@ -57,10 +57,17 @@ export class AcctOrEntryComponent implements OnInit {
                    particulars: null,
                    amount: null
                  };
+  
+  @Output() onChange: EventEmitter<any> = new EventEmitter();
 
   constructor() { }
 
   ngOnInit() {
+    this.onChange.emit({ type: this.record.paymentType });
+  }
+
+  tabController(event) {
+  	this.onChange.emit({ type: this.record.paymentType });
   }
 
 }

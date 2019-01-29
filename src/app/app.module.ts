@@ -194,7 +194,7 @@ import { GenerateOrComponent } from './accounting-service/official-receipt/gener
 import { AcctOrListingsComponent } from './accounting-service/acct-or-listings/acct-or-listings.component';
 import { AcctOrEntryComponent } from './accounting-service/acct-or-entry/acct-or-entry.component';
 import { OrOthersComponent } from './accounting-service/official-receipt/generate-or/acct-or-official-receipt/or-others/or-others.component';
-
+import { OrServiceFeeLocalComponent } from './accounting-service/official-receipt/generate-or/acct-or-official-receipt/or-service-fee-local/or-service-fee-local.component';
 
 
 @NgModule({
@@ -394,6 +394,7 @@ import { OrOthersComponent } from './accounting-service/official-receipt/generat
         AcctOrListingsComponent,
         AcctOrEntryComponent,
         OrOthersComponent,
+        OrServiceFeeLocalComponent,
     ],
 
     providers: [

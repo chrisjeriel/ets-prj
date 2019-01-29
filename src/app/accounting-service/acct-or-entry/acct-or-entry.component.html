@@ -1,11 +1,11 @@
 <div class="row">
 	<div class="col-sm-10">
 		<fieldset class="scheduler-border" style="margin-right: -10px !important; padding-top: 10px !important; padding-bottom: 10px !important;">
-			<legend class="scheduler-border">A.R. Info</legend>
+			<legend class="scheduler-border">O.R. Info</legend>
 			<div class="input-group cust-ig">
-				<label class="form-control-sm col-sm-1">A.R. No.</label>
+				<label class="form-control-sm col-sm-1">O.R. No.</label>
 				<input type="text" placeholder="000001" class="form-control form-control-sm cust-sm text-right col-sm-2" [(ngModel)]="record.arNo">
-				<label class="form-control-sm col-sm-1" style="margin-left: -2px;">A.R. Date</label>
+				<label class="form-control-sm col-sm-1" style="margin-left: -2px;">O.R. Date</label>
 				<input type="date" class="form-control form-control-sm cust-sm col-sm-2" value="2019-10-01">
 				<input type="text" placeholder="10:45 AM" class="form-control form-control-sm cust-sm text-center cust-mrgn col-sm-1">
 				<!-- <label class="form-control-sm col-sm-1" style="padding-left: 0px !important; margin-left: 20px !important">Payment Type</label> -->
@@ -32,14 +32,9 @@
 				<div class="col-sm-4"></div>
 				<label class="form-control-sm col-sm-2">Payment Type</label>
 				<select class="form-control form-control-sm cust-sm col-sm cust-sm" (change)="tabController($event);" [(ngModel)]="record.paymentType">
-					<option value="Inward Policy Balances">Inward Policy Balances</option>
-					<option value="Claim Recovery">Claim Recovery</option>
-					<option value="QSOA">QSOA</option>
-					<option value="Claim Cash Call">Claim Cash Call</option>
-					<option value="Investment">Investment</option>
-					<option value="Loss Reserve Deposit">Loss Reserve Deposit</option>
-					<option value="Claim Over Payment">Claim Over Payment</option>
-					<option value="Payment for Advances">Payment for Advances</option>
+					<option value="Official Receipt">Official Receipt</option>
+					<option value="Official Receipt Service Fee Local">Official Receipt Service Fee Local</option>
+					<option value="Official Receipt Service Fee Munich Re">Official Receipt Service Fee Munich Re</option>
 				</select>
 			</div>
 			<div class="input-group cust-ig">
@@ -51,7 +46,7 @@
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">P.R. No.</label>
-				<input type="text" placeholder="435674" class="form-control form-control-sm cust-sm text-right col-sm-2">
+				<input type="text" placeholder="888543" class="form-control form-control-sm cust-sm text-right col-sm-2">
 				<label class="form-control-sm col-sm-1" style="margin-left: -2px;">P.R. Date</label>
 				<input type="date" class="form-control form-control-sm cust-sm col-sm-2" value="2019-10-01">
 				<input type="text" placeholder="10:45 AM" class="form-control form-control-sm cust-sm text-center cust-mrgn col-sm-1">
@@ -65,7 +60,7 @@
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Address</label>
-				<textarea placeholder="16th Flr., 6811 BPI-Philam Life Makati, Ayala Ave., Salcedo Village Bel-Air, Makati City, Metro Manila, Philippines 1209" class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 17px !important;"></textarea>
+				<textarea placeholder="Col. Boni Serrano Road E. Delos Santos Ave., Quezon City, Metro Manila, Philippines 1209" class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 17px !important;"></textarea>
 				<!-- <div class="form-control-sm col-sm edtr-cont" style="height: 42px;">
 					<text-editor [editorPlaceholder]="'16th Flr., 6811 BPI-Philam Life Makati, Ayala Ave., Salcedo Village Bel-Air, Makati City, Metro Manila, Philippines 1209'" (fetchContent)="test($event)"></text-editor>
 				</div> -->
@@ -105,7 +100,7 @@
 			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 			<div class="input-group" style="margin-bottom: 6px !important;">
 				<div class="col-sm-12 text-center" style="margin-bottom: 8px !important;">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;">New AR</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;">New OR</button>
 				</div>
 				<div class="col-sm-12 text-center" style="margin-bottom: 2px !important;">
 					<input type="text" placeholder="Non-VAT" class="form-control form-control-sm cust-sm col-sm text-center">
@@ -134,12 +129,12 @@
 			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 			<div class="input-group" style="margin-bottom: 6px !important;">
 				<div class="col-sm-12 text-center">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;">Print AR</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;">Print OR</button>
 				</div>					
 			</div>
 			<div class="input-group" style="margin-bottom: 2px !important;">
 				<div class="col-sm-12 text-center">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;">Reprint AR</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;">Reprint OR</button>
 				</div>					
 			</div>
 		</fieldset>
