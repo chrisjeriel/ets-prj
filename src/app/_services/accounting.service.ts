@@ -59,6 +59,7 @@ export class AccountingService {
 	arUnappliedCollection : ARUnappliedCollection[] = [];
 	arOthers: AROthers[] = [];
 
+
 	constructor(private http: HttpClient) { }
 
 	getAmountDetails() {
@@ -534,7 +535,6 @@ export class AccountingService {
 		return this.accTBNet;
 	}
 
-
 	getPaymentToAdjuster() {
 		this.paymentToAdjuster = [
 			new PaymentToAdjusters("CSR-2018-10-00022","CAR-2018-000048","AArena Adjusters and Surveyors","2nd inn. inc", 4, "Adjuster's Expense","",-351000,"Php",1,350842.89,350842.89)
@@ -636,6 +636,6 @@ export class AccountingService {
 		];
 		return this.arOthers;
 	}
-	
+
 
 }
