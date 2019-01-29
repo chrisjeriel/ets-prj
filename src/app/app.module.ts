@@ -201,7 +201,6 @@ import { AcctAttachmentComponent } from './accounting-service/official-receipt/g
 import { PaytReqInvestmentComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/payt-req-investment/payt-req-investment.component';
 
 
-
 @NgModule({
     imports: [
         BrowserModule,
@@ -405,6 +404,7 @@ import { PaytReqInvestmentComponent } from './accounting-in-trust/request-for-pa
         ArPaymentforAdvancesComponent,
         AcctAttachmentComponent,
         PaytReqInvestmentComponent,
+        PaymentRequestDetailsComponent,
     ],
 
     providers: [

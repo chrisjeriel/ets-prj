@@ -55,7 +55,7 @@
           <ng-template ngbTabContent>
             <div class="input-group cust-border" style="padding-top: 0.6em">
               <div class="col-sm-12">
-               
+               <app-cust-editable-non-datatable [passData]="passDataOfficialReceipt"></app-cust-editable-non-datatable>
               </div>
             </div>
           </ng-template>
@@ -96,7 +96,7 @@
               <div class="col-sm-12">
                 <ng-container [ngSwitch]="paymentType.toUpperCase()">
                   <ng-container *ngSwitchCase="'OFFICIAL RECEIPT'">
-                    
+                    <app-cust-editable-non-datatable [passData]="passDataOfficialReceipt"></app-cust-editable-non-datatable>
                   </ng-container>
                   <ng-container *ngSwitchCase="'OFFICIAL RECEIPT SERVICE FEE LOCAL'">
                     <app-or-service-fee-local></app-or-service-fee-local>

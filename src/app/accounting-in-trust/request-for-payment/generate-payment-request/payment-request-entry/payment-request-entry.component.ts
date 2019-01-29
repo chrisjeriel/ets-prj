@@ -23,7 +23,6 @@ export class PaymentRequestEntryComponent implements OnInit {
   }
 
   tabController(event) {
-  	console.log(this.data.paymentType);
   	this.onChange.emit(this.data.paymentType);
   }
 

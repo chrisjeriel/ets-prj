@@ -48,6 +48,7 @@ export class GeneratePaymentRequestComponent implements OnInit, OnDestroy {
   }
 
   tabController(paymentType){
+    console.log(this.paymentType);
     this.paymentType = paymentType;
   }
 

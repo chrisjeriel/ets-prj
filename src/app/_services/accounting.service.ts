@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AccServiceAttachment, PaymentForAdvances, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, ARUnappliedCollection, AROthers, AccountingSOthersOr, AccORSerFeeLoc} from '@app/_models';
-
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AccServiceAttachment, PaymentForAdvances, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, ARUnappliedCollection, AROthers, AccountingSOthersOr, AccORSerFeeLoc, OfficialReceipt } from '@app/_models';
 
 @Injectable({
 	providedIn: 'root'
@@ -52,6 +51,7 @@ export class AccountingService {
 	premiumReturn: PremiumReturn[] = [];
 	accServiceAttachment: AccServiceAttachment[] = [];
 	paymentForAdvances: PaymentForAdvances[] = [];
+	officialReceipt : OfficialReceipt[] = [];
 	accountingItClaimCashCallArData: AccountingItClaimCashCallAr[] = [];
 	accountingItLossReserveDepositArData: AccountingItLossReserveDepositAr[] = [];
 	accountingItClaimOverPaymentArData: AccountingItClaimOverPaymentAr[] = [];
@@ -253,7 +253,7 @@ export class AccountingService {
 
 	getARInwdPolBalDetails() {
 		this.arInwdPolBalDetails = [
-			new ARInwdPolBalDetails("CAR-2018-00001-99-0001-000", "01", new Date('09/25/2018'), "PHP", 3000000, 0, 0, 1642857.14, 1357142.86, 0, 1642857.14),
+			new ARInwdPolBalDetails("CAR-2018-00001-99-0001-000","CAR-2018-00001-99-0001-000", "EN-CAR-HO-18","01","Payment", new Date('09/25/2018'),new Date('09/25/2018'), "PHP",1, 3000000, 0, 0, 1642857.14, 1357142.86, 0, 1642857.14),
 		]
 		return this.arInwdPolBalDetails;
 	}
@@ -589,6 +589,12 @@ export class AccountingService {
 			new PaymentForAdvances("BPI/MS INSURANCE CORPORATION","Advance payment collection (As of January 28,2019)","Php",1,500000,500000),
 		]
 		return this.paymentForAdvances;
+	}
+	getOfficialReceipt(){
+		this.officialReceipt = [
+			new OfficialReceipt('Payment for','PHP',1,1642857.14,1642857.14),
+		];
+		return this.officialReceipt;
 	}
 
 	getAccountingItClaimCashCallAR(){
