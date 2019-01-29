@@ -13,17 +13,18 @@ export class ClaimRecoveryComponent implements OnInit {
 
   passDataClaimsForRecovery: any = {
     tableData: this.accountingService.getARClaimsRecovery(),
-    tHeader: ["Claim No.", "Hist No.", "Amount Type", "History Type", "Remarks", "Curr", "Rate", "Amount", "Amount(PHP)"],
-    dataTypes: ["text", "number", "text", "text", "text", "text", "percent", "currency", "currency"],
+    tHeader: ["Recovery No.","Claim No.", "Hist No.", "Amount Type", "History Type", "Remarks", "Curr", "Curr Rate", "Amount", "Amount(PHP)"],
+    dataTypes: ["text","text", "number", "text", "text", "text", "text", "percent", "currency", "currency"],
     addFlag: true,
     deleteFlag: true,
     infoFlag: true,
     paginateFlag: true,
     checkFlag: true,
-    widths: ["auto", "1", "auto", "auto", 220, "1", "auto", "auto", "auto"],
-    nData: new ARClaimsRecovery(null, null, null, null, null, null, null, null, null),
-    total: [null, null, null, null, null, 'Total', null, 'amount', 'amountPHP'],
+    widths: [150,"auto", "1", "auto", "auto", 220, "1", "auto", "auto", "auto"],
+    nData: new ARClaimsRecovery(null,null, null, null, null, null, null, null, null, null),
+    total: [null, null, null, null, null, null, 'Total', null, 'amount', 'amountPHP'],
     pageLength: 10,
+    magnifyingGlass: ['recoveryNo']
   };
 
   passDataDistributionTreaty: any = {

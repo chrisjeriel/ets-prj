@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, AccORSerFeeLoc } from '@app/_models';
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, ARUnappliedCollection, AROthers, AccORSerFeeLoc } from '@app/_models';
 
 @Injectable({
 	providedIn: 'root'
@@ -49,6 +49,8 @@ export class AccountingService {
 	accountingItLossReserveDepositArData: AccountingItLossReserveDepositAr[] = [];
 	accountingItClaimOverPaymentArData: AccountingItClaimOverPaymentAr[] = [];
 	accARInvestments: AccARInvestments[] = [];
+	arUnappliedCollection : ARUnappliedCollection[] = [];
+	arOthers: AROthers[] = [];
 	accORSerFeeLoc: AccORSerFeeLoc[] = [];
 
 	constructor(private http: HttpClient) { }
@@ -249,7 +251,7 @@ export class AccountingService {
 
 	getARClaimsRecovery() {
 		this.arClaimsRecovery = [
-			new ARClaimsRecovery("CAR-2018-000001", 3, "Loss", "Recovery", "Salvage for Construction Materials", "PHP", 1, 30000, 30000),
+			new ARClaimsRecovery("REC-CAR-2018-000001","CAR-2018-000001", 3, "Loss", "Recovery", "Salvage for Construction Materials", "PHP", 1, 30000, 30000),
 		]
 		return this.arClaimsRecovery;
 	}
@@ -566,5 +568,20 @@ export class AccountingService {
 	}
 
 
+
+	getARUnappliedCollection() {
+		this.arUnappliedCollection = [
+			new ARUnappliedCollection("BPI/MS INSURANCE CORPORATION",new Date("01/25/2019"),"Unapplied collection (As of January 28, 2019)","PHP",1.0,500000,500000),
+				];
+		
+		return this.arUnappliedCollection;
+	}
+
+	getAROthers(){
+		this.arOthers = [
+			new AROthers("Utilities","Payment For","Refund","PHP",1.0,-50000,-50000),
+		];
+		return this.arOthers;
+	}
 
 }

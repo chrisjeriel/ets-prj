@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-payment-request-entry',
@@ -10,8 +11,11 @@ export class PaymentRequestEntryComponent implements OnInit {
   lastUpdate:string;
   @Input() data: any = {};
   @Output() onChange: EventEmitter<any> = new EventEmitter();
+  paymentData: any = {};
+  paymentType: any;
+  private sub: any;
 
-  constructor() { }
+  constructor(private route: ActivatedRoute,  private router: Router) { }
 
   ngOnInit() {
   	this.dateCreated = new Date(2018,10,1).toISOString().slice(0, 16);
@@ -21,5 +25,9 @@ export class PaymentRequestEntryComponent implements OnInit {
   tabController(event) {
   	console.log(this.data.paymentType);
   	this.onChange.emit(this.data.paymentType);
+    
+
   }
+
+
 }
