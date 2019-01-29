@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AccServiceAttachment } from '@app/_models';
 import { AccountingService } from '../../../../_services/accounting.service';
 import { Title } from '@angular/platform-browser';
@@ -81,9 +81,11 @@ export class PaymentRequestDetailsComponent implements OnInit {
     addFlag: true,
     deleteFlag: true,
   }
+  @Input() paymentType: string = "type";
   constructor(private accountingService: AccountingService) { }
 
   ngOnInit() {
+    console.log(this.paymentType);
   }
 
 }
