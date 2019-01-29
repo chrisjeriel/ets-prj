@@ -567,8 +567,6 @@ export class AccountingService {
 		return this.accORSerFeeLoc;
 	}
 
-
-
 	getARUnappliedCollection() {
 		this.arUnappliedCollection = [
 			new ARUnappliedCollection("BPI/MS INSURANCE CORPORATION",new Date("01/25/2019"),"Unapplied collection (As of January 28, 2019)","PHP",1.0,500000,500000),
