@@ -188,6 +188,9 @@ import { ArDetailsQsoaComponent } from './accounting-in-trust/ar-details/ar-deta
 import { ArDetailsInvestmentsComponent } from './accounting-in-trust/ar-details/ar-details-investments/ar-details-investments.component';
 import { UnappliedCollectionComponent } from './accounting-in-trust/unapplied-collection/unapplied-collection.component';
 import { ArOthersComponent } from './accounting-in-trust/ar-others/ar-others.component';
+import { AcctOrOfficialReceiptComponent } from './accounting-service/official-receipt/generate-or/acct-or-official-receipt/acct-or-official-receipt.component';
+import { OfficialReceiptComponent } from './accounting-service/official-receipt/official-receipt.component';
+import { GenerateOrComponent } from './accounting-service/official-receipt/generate-or/generate-or.component';
 
 
 
@@ -382,6 +385,9 @@ import { ArOthersComponent } from './accounting-in-trust/ar-others/ar-others.com
         ArDetailsInvestmentsComponent,
         UnappliedCollectionComponent,
         ArOthersComponent,
+        AcctOrOfficialReceiptComponent,
+        OfficialReceiptComponent,
+        GenerateOrComponent,
     ],
 
     providers: [
