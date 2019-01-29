@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AccountingService } from '@app/_services';
-import { ARTaxDetailsVAT, ARTaxDetailsWTAX } from '@app/_models';
+import { ARTaxDetailsVAT, ARTaxDetailsWTAX, AccARInvestments} from '@app/_models';
+import { ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-ar-details',
@@ -10,6 +11,7 @@ import { ARTaxDetailsVAT, ARTaxDetailsWTAX } from '@app/_models';
   styleUrls: ['./ar-details.component.css']
 })
 export class ArDetailsComponent implements OnInit {
+
   passDataTaxDetailsVat: any = {
     tableData: this.accountingService.getARTaxDetailsVAT(),
     tHeader: ["VAT Type", "BIR RLF Purchase Type", "Payor", "Base Amount", "VAT Amount"],
@@ -25,6 +27,7 @@ export class ArDetailsComponent implements OnInit {
     genericBtn: 'Save',
     opts: [{ selector: "vatType", vals: ["Input", "Output"] }],
     uneditable: [false, false, false, false, true],
+    pageID: 4
   };
 
   passDataTaxDetailsCreditableWtax: any = {
@@ -42,97 +45,26 @@ export class ArDetailsComponent implements OnInit {
     genericBtn: 'Save',
     opts: [{ selector: "birTaxCode", vals: ["WC020", "WC002", "WC010"] }],
     uneditable: [false, false, false, false, false, true],
+    pageID: 3
   };
 
-  amountDetailsData: any = {
-    tableData: [
-      {
-        detail: 'Gross Amount (VAT Inc)',
-        amount: 2000000,
-        amountPHP: 2000000,
-        plusMinus: 'None',
-        amountPlusMinus: 0
-      },
-      {
-        detail: 'Vatable Sales',
-        amount: 1785714.29,
-        amountPHP: 1785714.29,
-        plusMinus: 'Add',
-        amountPlusMinus: 1785714.29
-      },
-      {
-        detail: 'VAT-Exempt Sales',
-        amount: 0,
-        amountPHP: 0,
-        plusMinus: 'Add',
-        amountPlusMinus: 0
-      },
-      {
-        detail: 'VAT Zero-Rated Sales',
-        amount: 0,
-        amountPHP: 0,
-        plusMinus: 'Add',
-        amountPlusMinus: 0
-      },
-      {
-        detail: 'VAT (12%)',
-        amount: 214285.71,
-        amountPHP: 214285.71,
-        plusMinus: 'Add',
-        amountPlusMinus: 214285.71
-      },
-      {
-        detail: 'Creditable Wtax (20%)',
-        amount: 357142.86,
-        amountPHP: 357142.86,
-        plusMinus: 'Less',
-        amountPlusMinus: -357142.86
-      },
-    ],
-    tHeader: ['Detail', 'Amount', 'Amount (PHP)', 'Plus/Minus', 'Amount Plus/Minus'],
-    dataTypes: ['text', 'currency', 'currency', 'select', 'currency'],
-    nData: [null, null, null, null, null],
-    paginateFlag: true,
-    infoFlag: true,
-    pageID: 1,
-    checkFlag: true,
-    addFlag: true,
-    deleteFlag: true,
-    total: [null, null, null, 'Total', 'amountPlusMinus'],
-    genericBtn: 'Save',
-    opts:[
+  @Input() paymentType: string = "type";
+   
+  constructor(private titleService: Title, private modalService: NgbModal, private accountingService: AccountingService, private route : ActivatedRoute) { }
 
-      {
-        selector: 'plusMinus',
-        vals: ['Add', 'Less', 'None']
-      }
-    ]
-  }
-
-
-
-  accEntriesData: any = {
-    tableData: [
-      [null, null, null, null, null, null]
-    ],
-    tHeader: ['Code', 'Account', 'SL Type', 'SL Name', 'Debit', 'Credit'],
-    dataTypes: ['text', 'text', 'text', 'text', 'currency', 'currency'],
-    nData: [null, null, null, null, null, null],
-    paginateFlag: true,
-    infoFlag: true,
-    pageID: 2,
-    addFlag: true,
-    deleteFlag: true,
-    total: [null, null, null, 'Total', null, null],
-    genericBtn: 'Save'
-  }
-
-
-  constructor(private titleService: Title, private modalService: NgbModal, private accountingService: AccountingService) { }
-
+  action:string;
+  private sub: any;
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | AR Details");
+    this.sub = this.route.params.subscribe(params => {
+      this.action = params['action'];
+    });
+
+    if(this.paymentType == null){
+      this.paymentType = "";
+    }
   }
+
 
   creditableWTax(data) {
     for (var i = 0; i < data.length; i++) {
@@ -148,18 +80,7 @@ export class ArDetailsComponent implements OnInit {
     this.passDataTaxDetailsCreditableWtax.tableData = data;
   }
 
-  amtDetails(data) {
-    for (var i = 0; i < data.length; i++) {
-      if (data[i].plusMinus == "None") {
-        data[i].amountPlusMinus = 0 * data[i].amountPHP;
-      } else if (data[i].plusMinus == "Less") {
-        data[i].amountPlusMinus = -1 * data[i].amountPHP;
-      } else if (data[i].plusMinus == "Add") {
-        data[i].amountPlusMinus = 1 * data[i].amountPHP;
-      }
-    }
-    this.amountDetailsData.tableData = data;
-  }
+  
   
 }
 

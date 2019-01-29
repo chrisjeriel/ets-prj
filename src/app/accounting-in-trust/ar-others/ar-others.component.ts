@@ -39,4 +39,3 @@ export class ArOthersComponent implements OnInit {
   }
   }
 
-}
