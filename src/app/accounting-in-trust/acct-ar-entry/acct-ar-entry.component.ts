@@ -63,6 +63,7 @@ export class AcctArEntryComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.onChange.emit({ type: this.record.paymentType });
   }
 
   tabController(event) {

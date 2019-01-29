@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AccountingService } from '@app/_services';
@@ -45,20 +45,21 @@ export class ArDetailsComponent implements OnInit {
     uneditable: [false, false, false, false, false, true],
   };
 
- 
+  @Input() paymentType: string = "type";
+   
   constructor(private titleService: Title, private modalService: NgbModal, private accountingService: AccountingService, private route : ActivatedRoute) { }
 
   action:string;
-  record: any;
   private sub: any;
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | AR Details");
     this.sub = this.route.params.subscribe(params => {
       this.action = params['action'];
-      this.record = JSON.parse(params['slctd']);
     });
 
-
+    if(this.paymentType == null){
+      this.paymentType = "";
+    }
   }
 
 

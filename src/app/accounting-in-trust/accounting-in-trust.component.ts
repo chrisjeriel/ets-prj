@@ -26,6 +26,7 @@ export class AccountingInTrustComponent implements OnInit {
 
   exitLink: string;
   exitTab: string;
+  paymentType: string = "";
 
   constructor(private route: ActivatedRoute, private router: Router) { }
 
@@ -38,10 +39,9 @@ export class AccountingInTrustComponent implements OnInit {
 
       if(this.action == 'edit') {
         this.record = JSON.parse(params['slctd']);
-        console.log(this.record);
-        this.tabController(this.record.paymentType.toUpperCase());
+        
       } else {
-        this.tabController('');
+        
       }
     });
 
@@ -52,13 +52,12 @@ export class AccountingInTrustComponent implements OnInit {
   }
 
   checkTabs(event) {
-  	var type = event.type.toUpperCase();
+  	var type = event.type;
 
-  	this.tabController(type);
-  	
+  	this.paymentType = type;  	
   }
 
-  tabController(type) {
+  /*tabController(type) {
   	if(type == 'INWARD POLICY BALANCES') {
   		this.ipbTab = false;
   		this.crTab = true;
@@ -76,7 +75,7 @@ export class AccountingInTrustComponent implements OnInit {
   		this.crTab = true;
   		this.qsoaTab = true;
   	}
-  }
+  }*/
 
   /* onTabChange($event: NgbTabChangeEvent) {
       if ($event.nextId === 'Exit') {
