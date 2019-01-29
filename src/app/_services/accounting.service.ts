@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, AccountingItClaimCashCallAr } from '@app/_models';
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr } from '@app/_models';
 
 
 
@@ -48,6 +48,8 @@ export class AccountingService {
 	accTBTotDebCred: AccTBTotDebCred[] = [];
 	accTBNet: AccTBNet[] = [];
 	accountingItClaimCashCallArData: AccountingItClaimCashCallAr[] = [];
+	accountingItLossReserveDepositArData: AccountingItLossReserveDepositAr[] = [];
+	accountingItClaimOverPaymentArData: AccountingItClaimOverPaymentAr[] = [];
 
 	constructor(private http: HttpClient) { }
 
@@ -522,6 +524,30 @@ export class AccountingService {
 				];
 		
 		return this.accTBNet;
+	}
+
+	getAccountingItClaimCashCallAR(){
+		this.accountingItClaimCashCallArData = [
+			new AccountingItClaimCashCallAr('CAR-2018-000001', 'CAR-2018-00001-99-0001-000', 'DMCI', new Date(2018,9,1), 'Damaged Material', 1000000, 'PHP', 1, 300000, 300000),
+		];
+
+		return this.accountingItClaimCashCallArData;
+	}
+
+	getAccountingItLossReserveDepositAR(){
+		this.accountingItLossReserveDepositArData = [
+			new AccountingItLossReserveDepositAr('BPI/MS INSURANCE CORPORATION', new Date(2018,9,1), 'Loss reserve deposit for', 'PHP', 1, 500000, 500000),
+		];
+
+		return this.accountingItLossReserveDepositArData;
+	}
+
+	getAccountingItClaimOverPaymentAR(){
+		this.accountingItClaimOverPaymentArData = [
+			new AccountingItClaimOverPaymentAr('CAR-2018-000001', 'CAR-2018-00001-99-0001-000', 'DMCI', new Date(2018,9,1), 'Damaged Material', 1000000, 'PHP', 1, 300000, 300000),
+		];
+
+		return this.accountingItClaimOverPaymentArData
 	}
 
 

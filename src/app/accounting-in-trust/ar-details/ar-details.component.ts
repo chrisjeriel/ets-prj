@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AccountingService } from '@app/_services';
-import { ARTaxDetailsVAT, ARTaxDetailsWTAX } from '@app/_models';
+import { ARTaxDetailsVAT, ARTaxDetailsWTAX, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr } from '@app/_models';
 
 @Component({
   selector: 'app-ar-details',
@@ -10,6 +10,10 @@ import { ARTaxDetailsVAT, ARTaxDetailsWTAX } from '@app/_models';
   styleUrls: ['./ar-details.component.css']
 })
 export class ArDetailsComponent implements OnInit {
+  cccTab: boolean = true;
+  lrdTab: boolean = true;
+  copTab: boolean = true;
+
   passDataTaxDetailsVat: any = {
     tableData: this.accountingService.getARTaxDetailsVAT(),
     tHeader: ["VAT Type", "BIR RLF Purchase Type", "Payor", "Base Amount", "VAT Amount"],
@@ -125,6 +129,58 @@ export class ArDetailsComponent implements OnInit {
     deleteFlag: true,
     total: [null, null, null, 'Total', null, null],
     genericBtn: 'Save'
+  }
+
+  //new
+  claimCashCallData: any = {
+    tableData: this.accountingService.getAccountingItClaimCashCallAR(),
+    tHeader: ['Claim No.', 'Policy No.', 'Insured', 'Loss Date', 'Loss Cover', 'Reserve Amount', 'Curr', 'Curr Rate', 'Amount', 'Amount (PHP)'],
+    dataTypes: ['text', 'text', 'text', 'date', 'text', 'currency', 'text', 'percent', 'currency', 'currency'],
+    nData: new AccountingItClaimCashCallAr(null, null, null, null, null, null, null, null, null, null),
+    magnifyingGlass: ['claimNo'],
+    paginateFlag: true,
+    infoFlag: true,
+    pageID: 3,
+    addFlag: true,
+    deleteFlag: true,
+    checkFlag: true,
+    genericBtn: 'Save',
+    total: [null, null, null, null, null, null, null, 'Total', 'amount', 'amountPhp'],
+    widths: [130,180,'auto',1,'auto',100,1,2,100,100],
+  }
+
+  lossReserveDepositData: any = {
+    tableData: this.accountingService.getAccountingItLossReserveDepositAR(),
+    tHeader: ['Ceding Company', 'Membership Date', 'Remarks', 'Curr', 'Curr Rate', 'Amount', 'Amount (PHP)'],
+    dataTypes: ['text', 'date', 'text', 'text', 'percent', 'currency', 'currency'],
+    nData: new AccountingItLossReserveDepositAr(null, null, null, null, null, null, null),
+    magnifyingGlass: ['cedingCompany'],
+    paginateFlag: true,
+    infoFlag: true,
+    pageID: 4,
+    addFlag: true,
+    deleteFlag: true,
+    checkFlag: true,
+    genericBtn: 'Save',
+    total: [null, null, null, null, 'Total', 'amount', 'amountPhp'],
+    widths: ['auto',1,'auto',1,2,100,100],
+  }
+
+  claimOverPaymentData: any = {
+    tableData: this.accountingService.getAccountingItClaimOverPaymentAR(),
+    tHeader: ['Claim No.', 'Policy No.', 'Insured', 'Loss Date', 'Loss Cover', 'Claim Paid Amount', 'Curr', 'Curr Rate', 'Amount', 'Amount (PHP)'],
+    dataTypes: ['text', 'text', 'text', 'date', 'text', 'currency', 'text', 'percent', 'currency', 'currency'],
+    nData: new AccountingItClaimOverPaymentAr(null, null, null, null, null, null, null, null, null, null),
+    magnifyingGlass: ['claimNo'],
+    paginateFlag: true,
+    infoFlag: true,
+    pageID: 5,
+    addFlag: true,
+    deleteFlag: true,
+    checkFlag: true,
+    genericBtn: 'Save',
+    total: [null, null, null, null, null, null, null, 'Total', 'amount', 'amountPhp'],
+    widths: [130,180,'auto',1,'auto',100,1,2,100,100],
   }
 
 

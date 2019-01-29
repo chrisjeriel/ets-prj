@@ -68,4 +68,6 @@ export * from './AccountingJVPayRequestList';
 export * from './AccountingTBTotDebCred';
 export * from './AccountingTBNet';
 export * from './AccountingItClaimCashCallAr';
+export * from './AccountingItLossReserveDepositAr';
+export * from './AccountingItClaimOverPaymentAr';
 
