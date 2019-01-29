@@ -49,7 +49,6 @@
 
 <div class="cust-tabs-container" style="margin-top:10px !important">
 	<ngb-tabset>
-<<<<<<< HEAD
 		<ngb-tab>
 			<ng-template ngbTabTitle>
 				<ng-container [ngSwitch]="paymentType.toUpperCase()">
@@ -100,14 +99,19 @@
 			<ng-template ngbTabContent>
 				<div class="input-group cust-border" style="padding-top: 0.6em">
 					<div class="col-sm-12">
-						<p>unapplied</p>
+						<app-unapplied-collection></app-unapplied-collection>
 					</div>
 				</div>
 			</ng-template>
 		</ngb-tab>
+		<!-- <ngb-tab class="ngb-tab" title="Unapplied Collection">
+			<ng-template ngbTabContent>
+				<app-unapplied-collection></app-unapplied-collection>
+			</ng-template>
+		</ngb-tab> -->
 		<ngb-tab class="ngb-tab" title="Others">
 			<ng-template ngbTabContent>
-				<p>others</p>
+				<app-ar-others></app-ar-others>
 			</ng-template>
 		</ngb-tab>
 	</ngb-tabset>

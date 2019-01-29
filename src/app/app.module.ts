@@ -186,6 +186,8 @@ import { ArLossReserveDepositComponent } from './accounting-in-trust/ar-details/
 import { ArClaimOverPaymentComponent } from './accounting-in-trust/ar-details/ar-claim-over-payment/ar-claim-over-payment.component';
 import { ArDetailsQsoaComponent } from './accounting-in-trust/ar-details/ar-details-qsoa/ar-details-qsoa.component';
 import { ArDetailsInvestmentsComponent } from './accounting-in-trust/ar-details/ar-details-investments/ar-details-investments.component';
+import { UnappliedCollectionComponent } from './accounting-in-trust/unapplied-collection/unapplied-collection.component';
+import { ArOthersComponent } from './accounting-in-trust/ar-others/ar-others.component';
 
 
 
@@ -378,6 +380,8 @@ import { ArDetailsInvestmentsComponent } from './accounting-in-trust/ar-details/
         ArClaimOverPaymentComponent,
         ArDetailsQsoaComponent,
         ArDetailsInvestmentsComponent,
+        UnappliedCollectionComponent,
+        ArOthersComponent,
     ],
 
     providers: [
