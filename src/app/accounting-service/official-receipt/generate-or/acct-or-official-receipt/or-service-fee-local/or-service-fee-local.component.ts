@@ -21,7 +21,7 @@ export class OrServiceFeeLocalComponent implements OnInit {
 		checkFlag: true,
 		infoFlag:true,
 		paginateFlag: true,
-		magnifying:['cedingCompany']
+		magnifyingGlass:['cedingCompany']
 	}
   constructor(private accountingService: AccountingService ) { }
 
