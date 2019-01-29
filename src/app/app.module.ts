@@ -119,8 +119,8 @@ import { PolMxCedingCoComponent } from './underwriting/policy-maintenance/pol-mx
 import { AccountingComponent } from './accounting/accounting.component';
 import { ArEntryComponent } from './accounting/ar-entry/ar-entry.component';
 import { ArDetailsComponent } from './accounting-in-trust/ar-details/ar-details.component';
-import { InwardPolicyBalancesComponent } from './accounting-in-trust/inward-policy-balances/inward-policy-balances.component';
-import { ClaimRecoveryComponent } from './accounting-in-trust/claim-recovery/claim-recovery.component';
+import { InwardPolicyBalancesComponent } from './accounting-in-trust/ar-details/inward-policy-balances/inward-policy-balances.component';
+import { ClaimRecoveryComponent } from './accounting-in-trust/ar-details/claim-recovery/claim-recovery.component';
 import { AttachmentsComponent } from './accounting/attachments/attachments.component';
 import { AccountingInTrustComponent } from './accounting-in-trust/accounting-in-trust.component';
 import { AccountingServiceComponent } from './accounting-service/accounting-service.component';

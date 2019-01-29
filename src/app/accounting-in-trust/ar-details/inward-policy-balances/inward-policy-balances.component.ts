@@ -23,7 +23,8 @@ export class InwardPolicyBalancesComponent implements OnInit {
     pageLength: 10,
     widths: [178, "1", "auto", "1", "auto", "auto", "auto", "auto", "auto", "auto", "auto"],
     nData: new ARInwdPolBalDetails(null, null, null, null, null, null, null, null, null, null, null),
-    total: [null, null, null, 'Total', 'premium', 'riComm', 'charges', 'netDue', 'payments', 'overdueInterest', 'balance']
+    total: [null, null, null, 'Total', 'premium', 'riComm', 'charges', 'netDue', 'payments', 'overdueInterest', 'balance'],
+    genericBtn: 'Save'
   };
 
   constructor(private titleService: Title, private accountingService: AccountingService) { }

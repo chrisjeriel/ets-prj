@@ -246,7 +246,7 @@ export class AccountingService {
 
 	getARClaimsRecovery() {
 		this.arClaimsRecovery = [
-			new ARClaimsRecovery("CAR-2018-000001", 3, "Loss", "Recovery", "Salvage for Construction Materials", "PHP", 1, 30000, 30000),
+			new ARClaimsRecovery("REC-CAR-2018-000001","CAR-2018-000001", 3, "Loss", "Recovery", "Salvage for Construction Materials", "PHP", 1, 30000, 30000),
 		]
 		return this.arClaimsRecovery;
 	}

@@ -1,73 +1,74 @@
 <fieldset class="scheduler-border">
 	<legend class="scheduler-border">A.R. Info</legend>
 	<div class="form-row custom-row-inline-inset">
-		<div class="col-sm-8">
+		<div class="col-sm-6">
 			<div class="input-group">
 				<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">A.R. No.</label>
-				<input type="text" value="000001" class="form-control form-control-sm cust-sm col-sm-1 text-right" numbers-only
-				 placeholder="">
-				<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Date</label>
-				<input type="datetime-local" value="2018-10-01T10:45" class="form-control form-control-sm cust-sm col-sm-3"
-				 placeholder="">
-				<label class="form-control-sm col-sm-2" style="padding-left:0px !important; margin-left: -19px !important;">Payment
-					Type</label>
-				<input type="text" value="Inward Policy Balances" class="form-control form-control-sm cust-sm col-sm" placeholder="">
-				<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Status</label>
-				<input type="text" value="New" class="form-control form-control-sm cust-sm col-sm-1" placeholder="">
+				<input type="text" value="000001" class="form-control form-control-sm cust-sm col-sm-2 text-right" numbers-only
+				 style="z-index: 1 !important;">
+				<label class="form-control-sm col-sm-2" style="padding-left:0px !important;margin-left: -35px !important;">A.R. Date</label>
+				<input type="datetime-local" value="2018-10-01T10:45" class="form-control form-control-sm cust-sm col-sm"
+				style="z-index: 1 !important;">
+				 <label class="form-control-sm col-sm-2" style="padding-left:0px !important;margin-left: -40px !important;">DCB No.</label>
+					<input type="text" value="2018-001-55" numbers-only class="form-control form-control-sm cust-sm col-sm-3 text-right"
+					style="z-index: 1 !important;">
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Payor</label>
 				<input type="text" value="BPI/MS INSURANCE CORPORATION" class="form-control form-control-sm cust-sm col-sm"
-				 placeholder="">
+				 placeholder=""  >
 			</div>
 		</div>
-		<div class="col-sm-4">
+		<div class="col-sm-3">
 			<div class="input-group">
-				<label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Amount</label>
+				<label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Payment
+					Type</label>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)] = "record.paymentType" placeholder="">
+			</div>
+			<div class="input-group">
+				<label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Status</label>
+				 <input type="text" value="New" class="form-control form-control-sm cust-sm col-sm" placeholder="">
+			</div>
+		</div>
+
+		<div class="col-sm-3">
+			<div class="input-group">
+				<label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Amount</label>
 				<input type="text" value="PHP" class="form-control form-control-sm cust-sm col-sm-2" placeholder="">
-				<input type="text" value="1,642,857.14" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
+				<input type="text" value="30,000" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
 				 placeholder="">
 			</div>
 			<div class="input-group">
-				<label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Local Amount</label>
+				<label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Local Amount</label>
 				<input type="text" value="PHP" class="form-control form-control-sm cust-sm col-sm-2" placeholder="">
-				<input type="text" value="1,642,857.14" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
+				<input type="text" value="30,000" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
 				 placeholder="">
 			</div>
 		</div>
 	</div>
 </fieldset>
 
-<div class="cust-tabs-container" style="margin-top:10px !important">
+<div  class="cust-tabs-container" style="margin-top:10px !important">
 	<ngb-tabset>
-		<ngb-tab class="ngb-tab" title="Amount Details">
+		<ngb-tab class="ngb-tab" title="Inward Policy Balances">
 			<ng-template ngbTabContent>
 				<div class="input-group cust-border" style="padding-top: 0.6em">
 					<div class="col-sm-12">
-						<app-cust-editable-non-datatable (tableDataChange)="amtDetails($event)" [passData]="amountDetailsData">
-							<ng-container controls-r>
-								<label class="form-control-sm labels" style="text-align: left !important">Auto Compute</label>
-								<input type="checkbox" class="checkbox text-right" style="vertical-align: middle;" checked>
-							</ng-container>
-						</app-cust-editable-non-datatable>
+						<app-inward-policy-balances></app-inward-policy-balances>
 					</div>
 				</div>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab class="ngb-tab" title="Accounting Entries">
+		<ngb-tab class="ngb-tab" title="Unapplied Collection">
 			<ng-template ngbTabContent>
 				<div class="input-group cust-border" style="padding-top: 0.6em">
 					<div class="col-sm-12">
-						<app-cust-editable-non-datatable [passData]="accEntriesData">
-							<ng-container controls-r>
-								<button class="cust-btn" style="margin-right: 0px !important;">Print AE</button>
-							</ng-container>
-						</app-cust-editable-non-datatable>
+						<app-claim-recovery></app-claim-recovery>
 					</div>
 				</div>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab class="ngb-tab" title="Tax Details">
+		<ngb-tab class="ngb-tab" title="Others">
 			<ng-template ngbTabContent>
 				<div class="input-group cust-border" style="padding-top: 0.6em">
 					<div class="col-sm-12">
