@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet } from '@app/_models';
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet , ARUnappliedCollection, AROthers } from '@app/_models';
 
 
 
@@ -47,6 +47,8 @@ export class AccountingService {
 	accJvPayReqList: AccJVPayReqList[] = [];
 	accTBTotDebCred: AccTBTotDebCred[] = [];
 	accTBNet: AccTBNet[] = [];
+	arUnappliedCollection : ARUnappliedCollection[] = [];
+	arOthers: AROthers[] = [];
 
 	constructor(private http: HttpClient) { }
 
@@ -523,5 +525,20 @@ export class AccountingService {
 		return this.accTBNet;
 	}
 
+
+	getARUnappliedCollection() {
+		this.arUnappliedCollection = [
+			new ARUnappliedCollection("BPI/MS INSURANCE CORPORATION",new Date("01/25/2019"),"Unapplied collection (As of January 28, 2019)","PHP",1.0,500000,500000),
+				];
+		
+		return this.arUnappliedCollection;
+	}
+
+	getAROthers(){
+		this.arOthers = [
+			new AROthers("Utilities","Payment For","Refund","PHP",1.0,-50000,-50000),
+		];
+		return this.arOthers;
+	}
 
 }

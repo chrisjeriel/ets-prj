@@ -180,6 +180,8 @@ import { PrQsoaComponent } from './accounting-in-trust/request-for-payment/gener
 import { JvInwardPolBalanceComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-inward-pol-balance/jv-inward-pol-balance.component';
 import { JvPaymentRequestListComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-payment-request-list/jv-payment-request-list.component';
 import { TrialBalanceTbComponent } from './accounting-in-trust/extract/trial-balance/trial-balance-tb/trial-balance-tb.component';
+import { UnappliedCollectionComponent } from './accounting-in-trust/unapplied-collection/unapplied-collection.component';
+import { ArOthersComponent } from './accounting-in-trust/ar-others/ar-others.component';
 
 
 
@@ -366,6 +368,8 @@ import { TrialBalanceTbComponent } from './accounting-in-trust/extract/trial-bal
         JvInwardPolBalanceComponent,
         JvPaymentRequestListComponent,
         TrialBalanceTbComponent,
+        UnappliedCollectionComponent,
+        ArOthersComponent,
     ],
 
     providers: [
