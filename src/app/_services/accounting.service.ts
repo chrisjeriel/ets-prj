@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet } from '@app/_models';
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn } from '@app/_models';
 
 
 
@@ -47,6 +47,10 @@ export class AccountingService {
 	accJvPayReqList: AccJVPayReqList[] = [];
 	accTBTotDebCred: AccTBTotDebCred[] = [];
 	accTBNet: AccTBNet[] = [];
+	paymentToAdjuster: PaymentToAdjusters[] = [];
+	paymentToOtherParty: PaymentToOtherParty[] = [];
+	paymentToCedingCompany: PaymentToCedingCompany[] = [];
+	premiumReturn: PremiumReturn[] = [];
 
 	constructor(private http: HttpClient) { }
 
@@ -521,6 +525,36 @@ export class AccountingService {
 				];
 		
 		return this.accTBNet;
+	}
+
+	getPaymentToAdjuster() {
+		this.paymentToAdjuster = [
+			new PaymentToAdjusters("CSR-2018-10-00022","CAR-2018-000048","AArena Adjusters and Surveyors","2nd inn. inc", 4, "Adjuster's Expense","",-351000,"Php",1,350842.89,350842.89)
+		];
+		return this.paymentToAdjuster;
+		
+	}
+
+	getPaymentToOtherParty() {
+		this.paymentToOtherParty = [
+			new PaymentToOtherParty("CSR-2018-10-00022","CAR-2018-000048","Asia United Insurance Inc","2nd inn. inc", 5, "Other Expenses","",-351000,"Php",1,350842.89,350842.89)
+		];
+		return this.paymentToOtherParty;
+	}
+
+
+	getPaymentToCedingCompany() {
+		this.paymentToCedingCompany = [ 
+			new PaymentToCedingCompany("CSR-2018-10-00022","CAR-2018-000048","Asia United Insurance Inc","2nd inn. inc", 3, "Loss","",-351000,"Php",1,350842.89,350842.89)
+		];
+		return this.paymentToCedingCompany;
+	}
+
+	getPremiumReturn() {
+		this.premiumReturn = [
+			new PremiumReturn("EAR-2018-00001-99-0001-00",new Date(25,10,2018), "FLT Prime", -250000, -75000, -9000, "Php", -166000)
+		];
+		return this.premiumReturn;
 	}
 
 
