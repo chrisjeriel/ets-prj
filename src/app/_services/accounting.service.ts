@@ -659,10 +659,10 @@ export class AccountingService {
 
 	getORPrevAmountDetails(){
 		this.orPrevAmountDetails = [
-			new ORPrevAmountDetails(1,"A","Premium(Vatable)",1785714.29,"PHP",1.0,1785714.29),
+			new ORPrevAmountDetails(1,"A","Premium (Vatable)",1785714.29,"PHP",1.0,1785714.29),
 			new ORPrevAmountDetails(2,"A","VAT-Exempt Sales",0,"PHP",1.0,0),
 			new ORPrevAmountDetails(3,"A","VAT Zero-Rated Sales",0,"PHP",1.0,0),
-			new ORPrevAmountDetails(4,"A","VAT (12%)",2142285.71,"PHP",1.0,2142285.71),
+			new ORPrevAmountDetails(4,"A","VAT (12%)",214285.71,"PHP",1.0,214285.71),
 			new ORPrevAmountDetails(5,"A","Creditable Wtax (20%)",-357142.86,"PHP",1.0,-357142.86),
 		];
 		return this.orPrevAmountDetails;
