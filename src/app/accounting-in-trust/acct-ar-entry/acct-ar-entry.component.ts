@@ -48,7 +48,6 @@ export class AcctArEntryComponent implements OnInit {
         ]
     };
 
-  itest: any = null;
   @Input() record: any = {
                    arNo: null,
                    payor: null,

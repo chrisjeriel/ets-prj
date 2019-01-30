@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, ARUnappliedCollection, AROthers , 	PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AccServiceAttachment, ORPrevAmountDetails , ORPrevAccEntries , ORPreVATDetails , ORPreCreditableWTaxDetails } from '@app/_models';
 
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, 
+	PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AccServiceAttachment, PaymentForAdvances, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, ARUnappliedCollection, AROthers, AccountingSOthersOr, AccORSerFeeLoc, OfficialReceipt, ORPrevAmountDetails, ORPrevAccEntries, ORPreVATDetails , ORPreCreditableWTaxDetails   } from '@app/_models';
 
 @Injectable({
 	providedIn: 'root'
@@ -46,21 +47,26 @@ export class AccountingService {
 	accJvPayReqList: AccJVPayReqList[] = [];
 	accTBTotDebCred: AccTBTotDebCred[] = [];
 	accTBNet: AccTBNet[] = [];
+	paymentToAdjuster: PaymentToAdjusters[] = [];
+	paymentToOtherParty: PaymentToOtherParty[] = [];
+	paymentToCedingCompany: PaymentToCedingCompany[] = [];
+	premiumReturn: PremiumReturn[] = [];
+	accServiceAttachment: AccServiceAttachment[] = [];
+	paymentForAdvances: PaymentForAdvances[] = [];
+	officialReceipt : OfficialReceipt[] = [];
 	accountingItClaimCashCallArData: AccountingItClaimCashCallAr[] = [];
 	accountingItLossReserveDepositArData: AccountingItLossReserveDepositAr[] = [];
 	accountingItClaimOverPaymentArData: AccountingItClaimOverPaymentAr[] = [];
 	accARInvestments: AccARInvestments[] = [];
 	arUnappliedCollection : ARUnappliedCollection[] = [];
 	arOthers: AROthers[] = [];
-	paymentToAdjuster: PaymentToAdjusters[] = [];
-	paymentToOtherParty: PaymentToOtherParty[] = [];
-	paymentToCedingCompany: PaymentToCedingCompany[] = [];
-	premiumReturn: PremiumReturn[] = [];
-	accServiceAttachment: AccServiceAttachment[] = [];
 	orPrevAmountDetails:  ORPrevAmountDetails[] = [];
 	orPrevAccEntries : ORPrevAccEntries[] = [];
 	orPreVATDetails : ORPreVATDetails[] = [];
 	orPreCreditableWTaxDetails : ORPreCreditableWTaxDetails[] = [];
+	accountingSOthersOrData: AccountingSOthersOr[] = [];
+	accORSerFeeLoc: AccORSerFeeLoc[] = [];
+
 
 	constructor(private http: HttpClient) { }
 
@@ -253,7 +259,7 @@ export class AccountingService {
 
 	getARInwdPolBalDetails() {
 		this.arInwdPolBalDetails = [
-			new ARInwdPolBalDetails("CAR-2018-00001-99-0001-000", "01", new Date('09/25/2018'), "PHP", 3000000, 0, 0, 1642857.14, 1357142.86, 0, 1642857.14),
+			new ARInwdPolBalDetails("CAR-2018-00001-99-0001-000","CAR-2018-00001-99-0001-000", "EN-CAR-HO-18","01","Payment", new Date('09/25/2018'),new Date('09/25/2018'), "PHP",1, 3000000, 0, 0, 1642857.14, 1357142.86, 0, 1642857.14),
 		]
 		return this.arInwdPolBalDetails;
 	}
@@ -536,6 +542,7 @@ export class AccountingService {
 		
 		return this.accTBNet;
 	}
+
 	getPaymentToAdjuster() {
 		this.paymentToAdjuster = [
 			new PaymentToAdjusters("CSR-2018-10-00022","CAR-2018-000048","AArena Adjusters and Surveyors","2nd inn. inc", 4, "Adjuster's Expense","",-351000,"Php",1,350842.89,350842.89)
@@ -582,6 +589,20 @@ export class AccountingService {
 		];
 		return this.accServiceAttachment;
 	}
+
+	getPaymentForAdvances() {
+		this.paymentForAdvances = [
+			new PaymentForAdvances("BPI/MS INSURANCE CORPORATION","Advance payment collection (As of January 28,2019)","Php",1,500000,500000),
+		]
+		return this.paymentForAdvances;
+	}
+	getOfficialReceipt(){
+		this.officialReceipt = [
+			new OfficialReceipt('Payment for','PHP',1,1642857.14,1642857.14),
+		];
+		return this.officialReceipt;
+	}
+
 	getAccountingItClaimCashCallAR(){
 		this.accountingItClaimCashCallArData = [
 			new AccountingItClaimCashCallAr('CAR-2018-000001', 'CAR-2018-00001-99-0001-000', 'DMCI', new Date(2018,9,1), 'Damaged Material', 1000000, 'PHP', 1, 300000, 300000),
@@ -614,6 +635,12 @@ export class AccountingService {
 		return this.accARInvestments;
 	}
 
+	getAccORSerFeeLoc(){
+		this.accORSerFeeLoc = [
+			new AccORSerFeeLoc('AFP GENERAL INSURANCE CORP.', new Date(2018,8,30),'PHP',1,1642857.14,1642857.14)
+		];
+		return this.accORSerFeeLoc;
+	}
 
 	getARUnappliedCollection() {
 		this.arUnappliedCollection = [
@@ -629,7 +656,6 @@ export class AccountingService {
 		];
 		return this.arOthers;
 	}
-
 
 	getORPrevAmountDetails(){
 		this.orPrevAmountDetails = [
@@ -663,5 +689,20 @@ export class AccountingService {
 		return this.orPreCreditableWTaxDetails;
 	}
 
+
+	getAcctServices(){
+		this.arOthers = [
+			new AROthers("Utilities","Service fee for the period of","Refund","PHP",1.0,-50000,-50000),
+		];
+		return this.arOthers;
+	}
+
+	getAccountingSOthersOr(){
+		this.accountingSOthersOrData = [
+			new AccountingSOthersOr("Utilities", "Payment For", "PHP", 1, 100000, 100000),
+		];
+
+		return this.accountingSOthersOrData;
+	}
 
 }

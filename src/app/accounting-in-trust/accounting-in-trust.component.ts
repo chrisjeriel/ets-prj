@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-accounting-in-trust',
   templateUrl: './accounting-in-trust.component.html',
@@ -39,9 +39,6 @@ export class AccountingInTrustComponent implements OnInit {
 
       if(this.action == 'edit') {
         this.record = JSON.parse(params['slctd']);
-        
-      } else {
-        
       }
     });
 

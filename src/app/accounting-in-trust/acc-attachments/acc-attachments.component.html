@@ -1,46 +1,53 @@
-<fieldset class="scheduler-border" style="padding-top: 4px !important; padding-bottom: 4px !important">
-    <legend class="scheduler-border" style="margin-bottom: -9px !important;">A.R. Info</legend>
-    <div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;">
-        <div class="input-group" style="margin-top: 3px !important">
-            <div class="col-sm-9" style="padding-right: 3px">
-                <div class="input-group">
-                    <label class="form-control-sm col-sm-1" for="xx">A.R. No</label>
-                    <input type="text" id="xx" value="000001" class="form-control form-control-sm cust-sm col-sm-1 text-right"
-                           placeholder="" readonly>
-                    <label class="form-control-sm col-sm-1" for="xx">Date</label>
-                    <input readonly type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm-2" value="10/01/2018 10:45 AM" style="margin-right: -21px;">
-                    <label class="form-control-sm col-sm-2" for="xx">Payment Type</label>
-                    <input readonly type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm" value="Quarterly Statement of Accounts">
-                    <label class="form-control-sm col-sm-1" for="xx">Status</label>
-                    <input readonly type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm-1" value="New" >
-                </div>
-            </div>
-            <div class="col-sm" style="padding-right: 3px">
-                <div class="input-group">
-                    <label class="form-control-sm col-sm-4" for="xx">Amount</label>
-                    <input readonly type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm-2" value="PHP" style="margin-right: 4px !important;">
-                    <input readonly type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm text-right" value="710,716.12">
-                </div>
-            </div>
+<fieldset class="scheduler-border">
+    <legend class="scheduler-border">A.R. Info</legend>
+    <div class="form-row custom-row-inline-inset">
+      <div class="col-sm-6">
+        <div class="input-group">
+          <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">A.R. No.</label>
+          <input type="text" value="000001" class="form-control form-control-sm cust-sm col-sm-2 text-right" numbers-only
+           style="z-index: 1 !important;">
+          <label class="form-control-sm col-sm-2" style="padding-left:0px !important;margin-left: -35px !important;">A.R. Date</label>
+          <input type="datetime-local" value="2018-10-01T10:45" class="form-control form-control-sm cust-sm col-sm"
+          style="z-index: 1 !important;">
+           <label class="form-control-sm col-sm-2" style="padding-left:0px !important;margin-left: -40px !important;">DCB No.</label>
+            <input type="text" value="2018-001-55" numbers-only class="form-control form-control-sm cust-sm col-sm-3 text-right"
+            style="z-index: 1 !important;">
         </div>
-        <div class="input-group" style="margin-bottom: -13px !important;">
-            <div class="col-sm-9" style="padding-right: 3px">
-                <div class="input-group">
-                    <label class="form-control-sm col-sm-1" for="xx">Payor</label>
-                    <input type="text" id="xx" value="Risk Name" class="form-control form-control-sm cust-sm col-sm" value="BPI/MS INSURANCE CORPORATION"
-                    readonly>
-                </div>
-            </div>
-            <div class="col-sm" style="padding-right: 3px">
-                <div class="input-group">
-                    <label class="form-control-sm col-sm-4" for="xx">Local Amount</label>
-                    <input readonly type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm-2" value="PHP" style="margin-right: 4px !important;">
-                    <input readonly type="text" id="xx"  class="form-control form-control-sm cust-sm col-sm text-right" value="710,716.12">
-                </div>
-            </div>
+        <div class="input-group">
+          <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Payor</label>
+          <input type="text" value="BPI/MS INSURANCE CORPORATION" class="form-control form-control-sm cust-sm col-sm"
+           placeholder=""  >
         </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="input-group">
+          <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Payment
+            Type</label>
+          <input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="" [ngModel]="paymentType">
+        </div>
+        <div class="input-group">
+          <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Status</label>
+           <input type="text" value="New" class="form-control form-control-sm cust-sm col-sm" placeholder="">
+        </div>
+      </div>
+  
+      <div class="col-sm-3">
+        <div class="input-group">
+          <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Amount</label>
+          <input type="text" value="PHP" class="form-control form-control-sm cust-sm col-sm-2" placeholder="">
+          <input type="text" value="30,000" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
+           placeholder="">
+        </div>
+        <div class="input-group">
+          <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Local Amount</label>
+          <input type="text" value="PHP" class="form-control form-control-sm cust-sm col-sm-2" placeholder="">
+          <input type="text" value="30,000" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
+           placeholder="">
+        </div>
+      </div>
     </div>
-</fieldset>
+  </fieldset>
+
 
 <fieldset class="scheduler-border">
 	<legend class="scheduler-border">Attached Files</legend>
@@ -48,7 +55,7 @@
 		<app-cust-editable-non-datatable [passData]="passData" style="width: 100%"></app-cust-editable-non-datatable>
 	</div>
 
-	<div class="input-group" style="margin-left: -20px;">
+	<div class="input-group" style="margin-left: -20px;margin-bottom: -6px !important;">
 		<label class="form-control-sm col-sm-1">Created By</label>
 		<input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma">
 		<label class="form-control-sm col-sm-1">Date Created</label>
