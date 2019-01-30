@@ -126,7 +126,7 @@
                 <ng-container *ngSwitchCase ="'CLAIM EXPENSE PAYMENT TO ADJUSTERS'">
                     <app-cust-editable-non-datatable [passData]="AdjustersData"></app-cust-editable-non-datatable>
                 </ng-container>
-                <ng-container *ngSwitchCase ="'CLAIM EXPENSE PAYMENT TO OTHER PARTY'">
+                <ng-container *ngSwitchCase ="'CLAIM EXPENSE PAYMENT TO OTHER PARTIES'">
                     <app-cust-editable-non-datatable [passData]="OtherPartyData"></app-cust-editable-non-datatable>
                 </ng-container>
                 <ng-container *ngSwitchCase ="'CLAIM PAYMENT TO CEDING COMPANY'">
@@ -136,7 +136,7 @@
                     <app-cust-editable-non-datatable [passData]="PremiumReturnData"></app-cust-editable-non-datatable>
                 </ng-container>
                 <ng-container *ngSwitchCase ="'PAYMENT OF SERVICE FEE BY IN-TRUST TO SERVICE ACCOUNTING'">
-                    <app-cust-editable-non-datatable [passData]="PremiumReturnData"></app-cust-editable-non-datatable>
+                    <app-cust-editable-non-datatable [passData]="ServiceAccountingData"></app-cust-editable-non-datatable>
                 </ng-container>
                 <ng-container *ngSwitchCase ="'TREATY BALANCE DUE PARTICIPANT'">
                     

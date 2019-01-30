@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn } from '@app/_models';
+import { PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AROthers } from '@app/_models';
 import { AccountingService } from '../../../../_services/accounting.service';
 import { Title } from '@angular/platform-browser';
 
@@ -76,12 +76,37 @@ export class PaymentRequestDetailsComponent implements OnInit {
     widths: ['auto','auto','auto','auto',1,'auto',1,100,1,2,100,100]
   }
 
+  ServiceAccountingData: any = {
+    tableData: [],
+    tHeader: ["Item", "Description", "Type", "Curr", "Curr Rate","Amount","Amount(PHP)"],
+    dataTypes: ["text", "text", "select", "text", "percent","currency","currency"],
+    resizable: [true, true, true, true, true, true, true],
+    nData: new AROthers(null,null,null,null,null,null,null),
+    total:[null,null,null,null,'Total','amount','amountPHP'],
+    checkFlag: true,
+    addFlag: true,
+    deleteFlag: true,
+    genericBtn: 'Save',
+    pageLength: 10,
+    widths: [220,'auto',150,50,100,150,150],
+    paginateFlag:true,
+    infoFlag:true,
+    opts:[
+          {
+            selector: 'type',
+            vals: ['Payment','Refund']
+          },
+    ]
+  }
+
   constructor(private accountingService: AccountingService) { }
 
   ngOnInit() {
     if(this.paymentType === null){
       this.paymentType = "";
     }
+
+    this.ServiceAccountingData.tableData = this.accountingService.getAcctServices();
   }
 
 }
