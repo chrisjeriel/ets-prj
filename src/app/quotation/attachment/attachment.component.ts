@@ -33,8 +33,11 @@ export class AttachmentComponent implements OnInit {
   pageLength;
   editedData: any[] = [];
   nData: AttachmentInfo = new AttachmentInfo(null, null);
-  test: boolean = true;
+  test: boolean = false;
+  attachmentInfoData: AttachmentInfo[] = [];
   private attachmentInfo: AttachmentInfo;
+
+
 
   passData: any = {
     tableData: [],
@@ -56,7 +59,11 @@ export class AttachmentComponent implements OnInit {
     pageLength: 10,
     widths: []
   };
+  datasample = {
+    fileName : '',
+    description : ''
 
+  }
   constructor(config: NgbDropdownConfig,
     private quotationService: QuotationService, private titleService: Title) {
     config.placement = 'bottom-right';
@@ -83,8 +90,14 @@ export class AttachmentComponent implements OnInit {
     this.passData.tHeader.push("File Name");
     this.passData.tHeader.push("Description");
     this.passData.tHeader.push("Actions");
-    this.passData.tableData = this.quotationService.getAttachment();
 
+    let arrayData = [];
+    this.quotationService.getAttachment().subscribe((data: any) => {
+      for (var i = 0; i <  data.quotation.length ; i++) {
+        arrayData.push(new AttachmentInfo(data.quotation[i].attachment.fileName, data.quotation[i].attachment.description));
+      }
+     });
+    this.passData.tableData = arrayData;
   }
 
 }

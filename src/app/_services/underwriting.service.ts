@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo, PolicyPrinting, PrinterList, ALOPItemInformation, UnderwritingPolicyInquiryInfo, ItemInformation, UnderwritingPolicyDistList, DistributionByRiskInfo, PolicyEndorsement, PolItem_MLP, PolGoods_DOS, PolMachinery_DOS, PolicyInwardPolBalance, PolInwardPolBalanceOtherCharges, PolItem_CEC, TotalPerSection, UnderwritingBatchPosting, UnderwritingBatchDistribution, MaintenanceDeductibles, MaintenanceRisks, CoverageDeductibles } from '@app/_models';
+import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo, PolicyPrinting, PrinterList, ALOPItemInformation, UnderwritingPolicyInquiryInfo, ItemInformation, UnderwritingPolicyDistList, DistributionByRiskInfo, PolicyEndorsement, PolItem_MLP, PolGoods_DOS, PolMachinery_DOS, PolicyInwardPolBalance, PolInwardPolBalanceOtherCharges, PolItem_CEC, TotalPerSection, UnderwritingBatchPosting, UnderwritingBatchDistribution, MaintenanceDeductibles, MaintenanceRisks, CoverageDeductibles, CedingCompanyList, CedingCompany } from '@app/_models';
 
 
 
@@ -38,6 +38,9 @@ export class UnderwritingService {
     batchDistribution: UnderwritingBatchDistribution[] = [];
     maintenanceDeductiblesData: MaintenanceDeductibles[] = [];
     maintenanceRiskListData: MaintenanceRisks[] = [];
+    cedingCompanyList: CedingCompanyList[] = [];
+    cedingComapny: CedingCompany[]=[];
+
     rowData: any[] = [];
 
     constructor(private http: HttpClient) {
@@ -394,6 +397,18 @@ export class UnderwritingService {
     
     getRowData() {
         return this.rowData;
+    }
+
+    getCedingCompanyList(){
+        /*this.cedingCompanyList = [
+            new CedingCompanyList('y','y','',1,'AFP GENERAL INSURANCE CORP.','AFP', 'Col. Boni Serrano Road E. Delos Santos Ave.', new Date(2015,2,9),null,null),
+        ]
+        return this.cedingCompanyList; */  
+        return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMaintenanceCedingCompanyListing');
+    }
+
+    getCedingCompany(){
+        return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMaintenanceCedingCompany');
     }
 
 }            

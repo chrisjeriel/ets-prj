@@ -42,6 +42,17 @@ export class QuoAlopComponent implements OnInit {
         }
 
         this.itemInfoData.tableData = this.uwService.getALOPItemInfos(this.policyRecordInfo.policyNo.substr(0, 3));
+
+
+        /*this.quotationService.getALOPItemInfos(this.policyRecordInfo.policyNo.substr(0, 3)).subscribe ((data: any) =>{
+            for (var i = 0; i <  data.quotation.length ; i++) {
+            
+            arrayData.push(new ALOPItemInformation(data.quotation[i].alop.alopitem.itemNo, data.quotation[i].alop.alopitem.quantity, data.quotation[i].alop.alopitem.description, null,data.quotation[i].alop.alopitem.lossMin));
+
+
+      }
+        });
+        this.itemInfoData.tableData = arrayData;*/
     }
 
     save() {

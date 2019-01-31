@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { QuotationList, HoldCoverMonitoringList, DummyInfo, QuoteEndorsement, QuotationOption, QuotationOtherRates, IntCompAdvInfo, AttachmentInfo, QuotationProcessing, QuotationCoverageInfo, QuotationHoldCover, ItemInformation, ReadyForPrint, OpenCoverProcessing, Risks, QuotationDeductibles, EditableDummyInfo, OpenCoverList } from '@app/_models';
+import { QuotationList, HoldCoverMonitoringList, DummyInfo, QuoteEndorsement, QuotationOption, QuotationOtherRates, IntCompAdvInfo, AttachmentInfo, QuotationProcessing, QuotationCoverageInfo, QuotationHoldCover, ItemInformation, ReadyForPrint, OpenCoverProcessing, Risks, QuotationDeductibles, EditableDummyInfo, OpenCoverList, ALOPItemInformation } from '@app/_models';
 
 
 @Injectable({ providedIn: 'root' })
@@ -25,6 +25,7 @@ export class QuotationService {
     quoteDeductiblesData: QuotationDeductibles[] = [];
     editableDummyInfoData: EditableDummyInfo[] = [];
     openCoverList: OpenCoverList[]=[];
+    aLOPItemInfos: ALOPItemInformation[]=[];
 
     rowData: any[] = [];
     toGenInfo: any[] = [];
@@ -138,15 +139,16 @@ export class QuotationService {
     }
 
     getAttachment() {
-        this.attachmentInfoData = [
-            new AttachmentInfo("NSO_Birth_Certificate_001", "Policyholder’s details such as name, date of birth, address, gender, occupation"),
-            new AttachmentInfo("Registration_Number_001", "Vehicle registration number and registration certificate (RC) number"),
-            new AttachmentInfo("Driving_License_001", "Policyholder’s driving licence information"),
-            new AttachmentInfo("Passport_Photo_001", "Recent passport sized photograph"),
-            new AttachmentInfo("Post_Office_Passbook_001", "Proof of address documents "),
-        ];
+        // this.attachmentInfoData = [
+        //     new AttachmentInfo("NSO_Birth_Certificate_001", "Policyholder’s details such as name, date of birth, address, gender, occupation"),
+        //     new AttachmentInfo("Registration_Number_001", "Vehicle registration number and registration certificate (RC) number"),
+        //     new AttachmentInfo("Driving_License_001", "Policyholder’s driving licence information"),
+        //     new AttachmentInfo("Passport_Photo_001", "Recent passport sized photograph"),
+        //     new AttachmentInfo("Post_Office_Passbook_001", "Proof of address documents "),
+        // ];
 
-        return this.attachmentInfoData;
+        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteAttachment');
+        // return this.attachmentInfoData;
     }
 
     getDummyEditableInfo() {
@@ -431,5 +433,17 @@ export class QuotationService {
             new OpenCoverList("OC-CAR-2015-0002832-02", "Retrocession", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", "Fairmont Hotel", "Cooling Towers", "Region IV, Laguna, Calamba", "CAR-2018-00001-023-0002-02","PHP"),
         ];
         return this.openCoverList;
+    }
+
+
+    getALOPItemInfos(car: string) {
+        /*this.aLOPItemInfos = [
+            new ALOPItemInformation(1, 5, "desc", "rel import", "min loss"),
+            new ALOPItemInformation(2, 7, "description", "relative import", "min loss")
+        ]*/
+        if (car == "CAR") {
+            this.aLOPItemInfos.forEach(function (itm) { delete itm.relativeImportance; });
+        }
+        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteAlopItem');;
     }
 }
