@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient , HttpParams} from '@angular/common/http';
 import { environment } from '@environments/environment';
 import { QuotationList, HoldCoverMonitoringList, DummyInfo, QuoteEndorsement, QuotationOption, QuotationOtherRates, IntCompAdvInfo, AttachmentInfo, QuotationProcessing, QuotationCoverageInfo, QuotationHoldCover, ItemInformation, ReadyForPrint, OpenCoverProcessing, Risks, QuotationDeductibles, EditableDummyInfo, OpenCoverList } from '@app/_models';
 
@@ -62,6 +62,17 @@ export class QuotationService {
         ];
         return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteCoverage");
     }
+
+
+
+
+
+
+
+
+
+
+
     getQuotationListInfo() {
         this.quotationListData = [
             new QuotationList("CAR-2015-00028-32-01", "Direct", "Fire", "Concluded", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna, Calamba", "CAR-2018-00001-023-0002-01", "PHP", new Date("12-20-2018"), new Date(), "Inigo Flores", "Cuaresma", "Juan Cruz"),
@@ -316,6 +327,15 @@ export class QuotationService {
 
     }
 
+
+
+    getQuoteGenInfo(quoteId : string, quotationNo: string){
+
+       let params = new HttpParams().set("quoteId",quoteId).set("quotationNo", quotationNo);
+
+       return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteGeneralInfo", {params : params});
+    }
+
     getReadyForPrinting() {
         this.readyForPrinting = [
             new ReadyForPrint("CAR-2018-00088-00-99", "Rose Lim", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', "PHP", new Date(), new Date(), "Rose Lim"),
@@ -324,7 +344,6 @@ export class QuotationService {
             new ReadyForPrint("CAR-2018-00088-00-99", "Rose Lim", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', "PHP", new Date(), new Date(), "Rose Lim"),
         ];
         return this.readyForPrinting;
-
     }
 
     getOpenCoverProcessingData() {

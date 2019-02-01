@@ -27,6 +27,7 @@ export class GeneralInfoComponent implements OnInit {
 	from: string;
 	line: string;
 	ocChecked: boolean = false;
+	genInfoData: any;
 
 
 	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute) { }
@@ -37,8 +38,13 @@ export class GeneralInfoComponent implements OnInit {
 		this.filters.push("Item No", "Desc. of Items");
 		this.tableData = this.quotationService.getItemInfoData();
 
+		this.quotationService.getQuoteGenInfo('1','CAR-2019-1-0-1').subscribe((data: any) => {
+			this.genInfoData = data.quotationGeneralInfo;
+			console.log(this.genInfoData);
+		});
+
 		if (this.quotationService.toGenInfo[0] == "edit") {
-			console.log(this.quotationService.rowData);
+/*			console.log(this.quotationService.rowData);*/
 
 			this.quotationNum = this.quotationService.rowData[0].split("-");
 
