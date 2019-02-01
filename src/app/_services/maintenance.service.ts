@@ -13,4 +13,8 @@ export class MaintenanceService{
 		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnDistrict");
 	}
 
+	getMtnCity(){
+		/*return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnCity");*/
+	}
+
 }
