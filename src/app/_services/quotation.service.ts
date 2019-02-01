@@ -151,6 +151,10 @@ export class QuotationService {
         // return this.attachmentInfoData;
     }
 
+    getAttachmentOc(){
+        return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteAttachmentOc");
+    }
+
     getDummyEditableInfo() {
         /*Dummy Data Array*/
         this.editableDummyInfoData = [
@@ -272,7 +276,8 @@ export class QuotationService {
         ];
 
         /*return this.http.get<User[]>(`${environment.apiUrl}/quotation`);*/
-        return this.intCompAdvInfo;
+        //return this.intCompAdvInfo;
+        return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteCompetition");
     }
 
 
@@ -450,4 +455,5 @@ export class QuotationService {
     getALop(){
         return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteAlop');
     }
+
 }

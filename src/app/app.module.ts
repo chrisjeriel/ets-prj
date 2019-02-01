@@ -200,6 +200,9 @@ import { OrServiceFeeLocalComponent } from './accounting-service/official-receip
 import { ArPaymentforAdvancesComponent } from './accounting-in-trust/ar-details/ar-paymentfor-advances/ar-paymentfor-advances.component';
 import { AcctAttachmentComponent } from './accounting-service/official-receipt/generate-or/acct-attachment/acct-attachment.component';
 import { PaytReqInvestmentComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/payt-req-investment/payt-req-investment.component';
+import { AttachmentOcComponent } from './quotation/open-cover/attachment-oc/attachment-oc.component';
+import { MtnDistrictComponent } from './maintenance/mtn-district/mtn-district.component';
+import { MtnCityComponent } from './maintenance/mtn-city/mtn-city.component';
 
 
 
@@ -408,6 +411,9 @@ import { PaytReqInvestmentComponent } from './accounting-in-trust/request-for-pa
         AcctAttachmentComponent,
         PaytReqInvestmentComponent,
         PaymentRequestDetailsComponent,
+        AttachmentOcComponent,
+        MtnDistrictComponent,
+        MtnCityComponent,
     ],
 
     providers: [
