@@ -21,6 +21,8 @@ export class GeneralInfoComponent implements OnInit {
 	dataTypes: any[] = [];
 	filters: any[] = [];
 	cessionType: string = "";
+	principalCd:string = "";
+	contractorCd: String = "";
 
 	typeOfCession: string = "";
 	private sub: any;
@@ -168,6 +170,26 @@ export class GeneralInfoComponent implements OnInit {
 	showItemInfoModal(content) {
 		this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
 	}
+
+	showPrincipalLOV(){
+		$('#principalLOV #modalBtn').trigger('click');
+	}
+
+	setPrincipal(data){
+		this.quotationGenInfo.principal = data.insuredName;
+		this.principalCd = data.insuredId;
+	}
+
+	showContractorLOV(){
+		$('#contractorLOV #modalBtn').trigger('click');
+	}
+
+	setContractor(data){
+		this.quotationGenInfo.contractor = data.insuredName;
+		this.contractorCd = data.insuredId;
+	}
+
+
 
 }
 export interface SelectRequestMode {
