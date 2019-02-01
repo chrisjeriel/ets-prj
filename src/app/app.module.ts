@@ -192,6 +192,7 @@ import { ArOthersComponent } from './accounting-in-trust/ar-others/ar-others.com
 import { AcctOrOfficialReceiptComponent } from './accounting-service/official-receipt/generate-or/acct-or-official-receipt/acct-or-official-receipt.component';
 import { OfficialReceiptComponent } from './accounting-service/official-receipt/official-receipt.component';
 import { GenerateOrComponent } from './accounting-service/official-receipt/generate-or/generate-or.component';
+import { OrPreviewComponent } from './accounting-service/official-receipt/generate-or/or-preview/or-preview.component';
 import { AcctOrListingsComponent } from './accounting-service/acct-or-listings/acct-or-listings.component';
 import { AcctOrEntryComponent } from './accounting-service/acct-or-entry/acct-or-entry.component';
 import { OrOthersComponent } from './accounting-service/official-receipt/generate-or/acct-or-official-receipt/or-others/or-others.component';
@@ -199,6 +200,7 @@ import { OrServiceFeeLocalComponent } from './accounting-service/official-receip
 import { ArPaymentforAdvancesComponent } from './accounting-in-trust/ar-details/ar-paymentfor-advances/ar-paymentfor-advances.component';
 import { AcctAttachmentComponent } from './accounting-service/official-receipt/generate-or/acct-attachment/acct-attachment.component';
 import { PaytReqInvestmentComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/payt-req-investment/payt-req-investment.component';
+
 
 
 @NgModule({
@@ -397,6 +399,7 @@ import { PaytReqInvestmentComponent } from './accounting-in-trust/request-for-pa
         AcctOrOfficialReceiptComponent,
         OfficialReceiptComponent,
         GenerateOrComponent,
+        OrPreviewComponent,
         AcctOrListingsComponent,
         AcctOrEntryComponent,
         OrOthersComponent,

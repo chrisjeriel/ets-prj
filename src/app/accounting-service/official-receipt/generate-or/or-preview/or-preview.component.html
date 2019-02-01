@@ -47,14 +47,70 @@
       </div>
     </div>
   </fieldset>
-<fieldset class="scheduler-border">
-	<legend class="scheduler-border">Attached Files</legend>
-		<div class="contain">
-		<app-cust-editable-non-datatable [passData]="AttachmentData"></app-cust-editable-non-datatable>
-		</div>
-</fieldset>
 
-<div class="col-sm-12" style="margin-top: 16px !important;padding-left: 0px !important;
+
+  <div  class="cust-tabs-container" style="margin-top:10px !important">
+      <ngb-tabset>
+        <ngb-tab class="ngb-tab" title="Amount Details">
+          <ng-template ngbTabContent>
+            <div class="input-group cust-border" style="padding-top: 0.6em">
+              <div class="col-sm-12">
+                  <app-cust-editable-non-datatable (tableDataChange)="amountDetails($event)" [passData]="passDataAmountDetails"></app-cust-editable-non-datatable>
+              </div>
+            </div>
+          </ng-template>
+        </ngb-tab>
+        <ngb-tab class="ngb-tab" title="Accounting Entries">
+          <ng-template ngbTabContent>
+            <div class="input-group cust-border" style="padding-top: 0.6em">
+              <div class="col-sm-12">
+                  <app-cust-editable-non-datatable (tableDataChange)="accountingEntries($event)" [passData]="passDataAccountingEntries"></app-cust-editable-non-datatable>
+              </div>
+            </div>
+          </ng-template>
+        </ngb-tab>
+        <ngb-tab>
+            <ng-template ngbTabTitle>
+                <div>Tax Details</div>
+            </ng-template>
+            <ng-template ngbTabContent>
+                <div class="input-group cust-border" style="padding-top: 0.6em">
+                    <div class="col-sm-12">
+                        <fieldset class="scheduler-border" style="padding-top: 5px !important; margin-top: -12px !important;">
+                            <legend class="scheduler-border">VAT Details</legend>
+                            <div class="custom-row-inline-inset">
+                                <app-cust-editable-non-datatable [passData]="passDataAccountingVATTaxDetails"></app-cust-editable-non-datatable>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-sm-12">
+                        <fieldset class="scheduler-border" style="margin-bottom:10px !important; padding-top: 5px !important;">
+                            <legend class="scheduler-border">Creditable WTax Details</legend>
+                            <div class="custom-row-inline-inset">
+                                <app-cust-editable-non-datatable [passData]="passDataAccountingCreditableTaxDetails" (tableDataChange)="computeWTax($event)">
+                                    <ng-container controls-r>
+                                        <button class="cust-btn" style="margin-right: 0px !important;">BIR 2307</button>
+                                    </ng-container>
+                                </app-cust-editable-non-datatable>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </ng-template>
+        </ngb-tab>
+   <!--      <ngb-tab class="ngb-tab" title="Taxes">
+          <ng-template ngbTabContent>
+            <div class="input-group cust-border" style="padding-top: 0.6em">
+              <div class="col-sm-12">
+                
+              </div>
+            </div>
+          </ng-template>
+        </ngb-tab> -->
+      </ngb-tabset>
+    </div>
+
+<div class="col-sm-12" style="margin-top: 25px !important;padding-left: 0px !important;
 padding-right: 0px !important;">
 	<fieldset class="scheduler-border" style="padding-bottom: 7px !important;">
 		<div class="custom-row-inline-inset">
