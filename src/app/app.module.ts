@@ -201,6 +201,7 @@ import { ArPaymentforAdvancesComponent } from './accounting-in-trust/ar-details/
 import { AcctAttachmentComponent } from './accounting-service/official-receipt/generate-or/acct-attachment/acct-attachment.component';
 import { PaytReqInvestmentComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/payt-req-investment/payt-req-investment.component';
 import { AttachmentOcComponent } from './quotation/open-cover/attachment-oc/attachment-oc.component';
+import { MtnDistrictComponent } from './maintenance/mtn-district/mtn-district.component';
 
 
 
@@ -410,6 +411,7 @@ import { AttachmentOcComponent } from './quotation/open-cover/attachment-oc/atta
         PaytReqInvestmentComponent,
         PaymentRequestDetailsComponent,
         AttachmentOcComponent,
+        MtnDistrictComponent,
     ],
 
     providers: [
