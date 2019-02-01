@@ -102,7 +102,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
         for(var i = 0 ;i<this.passData.tableData.length;i++){
             this.displayData[i] = this.passData.tableData[i];
         }
-
         //this.displayData = JSON.parse(JSON.stringify( this.passData.tableData));
         this.displayLength = this.displayData.length;
         this.unliTableLength();
