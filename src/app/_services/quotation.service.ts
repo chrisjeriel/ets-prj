@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '@environments/environment';
 import { QuotationList, HoldCoverMonitoringList, DummyInfo, QuoteEndorsement, QuotationOption, QuotationOtherRates, IntCompAdvInfo, AttachmentInfo, QuotationProcessing, QuotationCoverageInfo, QuotationHoldCover, ItemInformation, ReadyForPrint, OpenCoverProcessing, Risks, QuotationDeductibles, EditableDummyInfo, OpenCoverList } from '@app/_models';
 
@@ -185,7 +185,7 @@ export class QuotationService {
     }
 
     getQuoProcessingData() {
-        this.quoProcessingData = [
+        /*this.quoProcessingData = [
             new QuotationProcessing('CAR-2015-00088-00-99', 'Direct', 'CAR Wet Risks', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'CAR-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
                 new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
             new QuotationProcessing('CAR-2015-00088-00-78', 'Retrocession', 'CAR Wet Risks', 'In Progress', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'CAR-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
@@ -222,9 +222,28 @@ export class QuotationService {
                 new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
             new QuotationProcessing('DOS-2015-00088-00-75', 'Direct', 'DOS', 'In Progress', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'DOS-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
                 new Date('2015-03-09'), 'Rose Lim', 'QUECOH')
-        ];
+        ];*/
 
-        return this.quoProcessingData;
+        const params = new HttpParams()
+                .set('quotationNo','')
+                .set('cessionDesc', '')
+                .set('lineClassCdDesc', '')
+                .set('status','')
+                .set('cedingName','')
+                .set('principalName','')
+                .set('contractorName','')
+                .set('insuredDesc','')
+                .set('riskName','')
+                .set('objectDesc','')
+                .set('site','')
+                .set('currencyCd','')
+                .set('issueDate','')
+                .set('expiryDate','')
+                .set('reqBy','')
+                .set('createUser','')
+
+        
+        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteListing', {params});
     }
 
 

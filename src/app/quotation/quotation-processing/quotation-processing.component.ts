@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { QuotationService } from '../../_services';
 import { QuotationProcessing, Risks } from '../../_models';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
+import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 
 
 @Component({
@@ -13,6 +14,7 @@ import { Title } from '@angular/platform-browser';
     providers: [NgbModal, NgbActiveModal]
 })
 export class QuotationProcessingComponent implements OnInit {
+    @ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
     tableData: any[] = [];
     tHeader: any[] = [];
     dataTypes: any[] = [];
@@ -122,7 +124,8 @@ export class QuotationProcessingComponent implements OnInit {
         },
         ],
         pageLength: 10,
-        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, addFlag: true, editFlag: true, copyFlag: true, pageStatus: true, pagination: true, pageID: 1
+        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, addFlag: true, editFlag: true, copyFlag: true, pageStatus: true, pagination: true, pageID: 1,
+        keys: ['quotationNo','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','insuredDesc','riskName','objectDesc','site','policyNo','currencyCd','issueDate','expiryDate','reqBy','createUser']
     }
 
     riskData: any = {
@@ -138,6 +141,8 @@ export class QuotationProcessingComponent implements OnInit {
         pageID: 2
     }
 
+    records: any[];
+
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private router: Router
         , public activeModal: NgbActiveModal, private titleService: Title
         ) { }
@@ -146,8 +151,16 @@ export class QuotationProcessingComponent implements OnInit {
     ngOnInit() {
         this.titleService.setTitle("Quo | List Of Quotations");
         this.rowData = this.quotationService.getRowData();
-        this.passData.tableData = this.quotationService.getQuoProcessingData();
         this.riskData.tableData = this.quotationService.getRisksLOV();
+
+        this.quotationService.getQuoProcessingData().subscribe(data => {
+            this.records = data['quotationList'];
+            for(let record of this.records){
+                this.passData.tableData.push(record);
+            }
+
+            this.table.refreshTable();
+        });
     }
 
     onClickAdd(event) {
