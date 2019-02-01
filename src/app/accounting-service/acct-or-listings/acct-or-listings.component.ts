@@ -14,7 +14,7 @@ export class AcctOrListingsComponent implements OnInit {
     ['1','AFP GENERAL INSURANCE CORP.',new Date('2018-10-1'),'Official Receipt','New','Representing payment for 09/15/2018 transactions',1642857.14],
     ['2','ALLIEDBANKERS INSURANCE CORP.',new Date('2018-10-1'),'Official Receipt Service Fee Local','New','Service fee for the quarter ending 09/30/2018',200000],
     ['3','BLUE CROSS INSURANCE, INC.',new Date('2018-10-3'),'Official Receipt','Printed','Representing payment for 09/15/2018 transactions',100000],
-    ['4','BG GENERAL INSURANCE CO., INC.',new Date('2018-10-4'),'Official Receipt','Printed','Representing payment for 09/15/2018 transactions',1000000],
+    ['4','BF GENERAL INSURANCE CO., INC.',new Date('2018-10-4'),'Official Receipt','Printed','Representing payment for 09/15/2018 transactions',1000000],
     ['5','CCC INSURANCE CORPORATION',new Date('2018-10-4'),'Official Receipt','New','Representing payment for 09/15/2018 transactions',710716.12],
     ['6','CIBELES INSURANCE CORP.',new Date('2018-10-5'),'Official Receipt Service Fee Local','New','Service fee for the quarter ending 09/30/2018',756929],
     ['7','COMMONWEALTH INSURANCE CO.',new Date('2018-10-7'),'Official Receipt Service Fee Local','New','Service fee for the quarter ending 09/30/2018',30000],
