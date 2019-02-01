@@ -11,6 +11,7 @@ import { Title } from '@angular/platform-browser';
   styleUrls: ['./open-cover-processing.component.css'],
   providers: [NgbModal, NgbActiveModal]
 })
+
 export class OpenCoverProcessingComponent implements OnInit {
   tableData: any[] = [];
   tHeader: any[] = [];
@@ -118,13 +119,16 @@ export class OpenCoverProcessingComponent implements OnInit {
   constructor(private quotationService: QuotationService, private modalService: NgbModal, private router: Router
     , public activeModal: NgbActiveModal, private titleService: Title
   ) { }
-
+ 
   ngOnInit() {
     this.titleService.setTitle("Quo | Open Cover Processing");
     this.rowData = this.quotationService.getRowData();
     this.passData.tableData = this.quotationService.getOpenCoverProcessingData();
-
+    
   }
+
+  
+
 
   editBtnEvent() {
     // this.line = this.quotationService.rowData[0].split("-")[0];

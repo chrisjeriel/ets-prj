@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpParams } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { QuotationList, HoldCoverMonitoringList, DummyInfo, QuoteEndorsement, QuotationOption, QuotationOtherRates, IntCompAdvInfo, AttachmentInfo, QuotationProcessing, QuotationCoverageInfo, QuotationHoldCover, ItemInformation, ReadyForPrint, OpenCoverProcessing, Risks, QuotationDeductibles, EditableDummyInfo, OpenCoverList } from '@app/_models';
+import { QuotationList, HoldCoverMonitoringList, DummyInfo, QuoteEndorsement, QuotationOption, QuotationOtherRates, IntCompAdvInfo, AttachmentInfo, QuotationProcessing, QuotationCoverageInfo, QuotationHoldCover, ItemInformation, ReadyForPrint, OpenCoverProcessing, Risks, QuotationDeductibles, EditableDummyInfo, OpenCoverList, OcGenInfoInfo } from '@app/_models';
+import { isNull, nullSafeIsEquivalent } from '@angular/compiler/src/output/output_ast';
+import { NULL_INJECTOR } from '@angular/core/src/render3/component';
+import { isNullOrUndefined } from 'util';
+import { NullTemplateVisitor } from '@angular/compiler';
 
 
 @Injectable({ providedIn: 'root' })
@@ -25,6 +29,7 @@ export class QuotationService {
     quoteDeductiblesData: QuotationDeductibles[] = [];
     editableDummyInfoData: EditableDummyInfo[] = [];
     openCoverList: OpenCoverList[]=[];
+    ocGenInfoData: OcGenInfoInfo[]=[];
 
     rowData: any[] = [];
     toGenInfo: any[] = [];
@@ -224,7 +229,7 @@ export class QuotationService {
                 new Date('2015-03-09'), 'Rose Lim', 'QUECOH')
         ];
 
-        return this.quoProcessingData;
+     return this.quoProcessingData;
     }
 
 
@@ -431,5 +436,18 @@ export class QuotationService {
             new OpenCoverList("OC-CAR-2015-0002832-02", "Retrocession", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", "Fairmont Hotel", "Cooling Towers", "Region IV, Laguna, Calamba", "CAR-2018-00001-023-0002-02","PHP"),
         ];
         return this.openCoverList;
+    }
+
+    getOcGenInfoData(){
+        this.ocGenInfoData = [
+        ];
+
+        //return OcGenInfoInfo;
+
+            const params = new HttpParams()
+             .set('quoteIdOc','1')
+             .set('openQuotationNo','OC-CAR-2018-1001-2-1')
+             
+            return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteGeneralInfoOc',{params});
     }
 }

@@ -1,5 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { OcGenInfoInfo } from '@app/_models/QuotationOcGenInfo';
+import { QuotationService } from '@app/_services';
+import { HttpClient } from '@angular/common/http';
+import { Observable} from 'rxjs';
+import { map, subscribeOn } from 'rxjs/operators';
+import { validateConfig } from '@angular/router/src/config';
 
 @Component({
   selector: 'app-gen-info',
@@ -14,9 +20,11 @@ export class GenInfoComponent implements OnInit {
   from: string;
 
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute, private quotationService: QuotationService, private http: HttpClient) {
+   }
 
-
+  b;
+  infos:any = [];
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
       this.line = params['line'];
@@ -27,7 +35,21 @@ export class GenInfoComponent implements OnInit {
     });
 
     this.checkTypeOfCession();
+
+    //this.quotationService.getOcGenInfoData().subscribe(a => this.b = a);
+    this.quotationService.getOcGenInfoData().subscribe(val => console.log(val) );
+
+    
+    // this.quotationService.getOcGenInfoData()
+    // .subscribe((data) =>{
+    //   this.infos.push(data);
+    // })
+
+
+
   }
+
+
 
   ngOnDestroy() {
     this.sub.unsubscribe();

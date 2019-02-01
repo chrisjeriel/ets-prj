@@ -79,3 +79,4 @@ export * from './AccountingUnappliedCollection';
 export * from './AccountingAROthers';
 export * from './AccountingSOthersOr';
 export * from './AccountingORSerFeeLoc';
+export * from './QuotationOcGenInfo';
