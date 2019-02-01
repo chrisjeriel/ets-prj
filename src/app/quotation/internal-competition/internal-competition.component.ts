@@ -35,7 +35,7 @@ export class InternalCompetitionComponent implements OnInit {
         infoFlag: true,
         checkFlag: true,
         pageLength: 10,
-        keys: ['advNo', 'company', 'attention', 'position', 'advOpt', 'wording', 'createdBy', 'dateCreated', 'lastUpdateBy', 'lastUpdate'],
+        keys: ['active','govt','member','coNo','name','abbreviation','address','membershipDate','terminationDate','inactiveDate'],
     }
 
     data: any;

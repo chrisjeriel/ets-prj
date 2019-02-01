@@ -62,7 +62,7 @@ export class PolMxCedingCoComponent implements OnInit {
         	}
 		],
 		pageID: 1,
-        keys:['activeTag','govtTag','membershipTag','cedingId','cedingName','cedingAbbr','address','membershipDate','terminationDate','inactiveDate']
+        keys:['active','govt','member','coNo','name','abbreviation','address','membershipDate','terminationDate','inactiveDate']
 	};
     cedingCompanyData: any;
 	passDataAddEdit: any = {
@@ -79,53 +79,28 @@ export class PolMxCedingCoComponent implements OnInit {
 		pageLength: 5,
 		widths: ['1','1','1','1','1','auto','auto','auto','1'],
 		pageID: 2,
-        keys:['defaultTag','designation','firstName','middleInitial','lastName','position','department','contactNo',
-               'eSignature']
+        keys:['defaultParam' ,'designation' ,'firstName' ,'mI' ,'lastName' ,'position' ,'department' ,'contactNo' ,'eSignature' ]
 	}
+
 
 	constructor(private underwritingService: UnderwritingService) { }
 
 	ngOnInit() {
-        /*let arrayData = [];
-        let passDataa = [];
-        this.underwritingService.getCedingCompanyList().subscribe((data: any) => {
-        for (var i = 0; i <  data.cedingcompany.length ; i++) {
-        
-        arrayData.push(new CedingCompanyList(data.cedingcompany[i].activeTag, data.cedingcompany[i].govtTag,
-                                             data.cedingcompany[i].membershipTag,data.cedingcompany[i].cedingId,
-                                             data.cedingcompany[i].cedingName,data.cedingcompany[i].cedingAbbr,
-                                             data.cedingcompany[i].address,data.cedingcompany[i].membershipDate,
-                                             data.cedingcompany[i].termindationDate,data.cedingcompany[i].inactiveDate));
-
-        }
-
-        });
-
-        this.passData.tableData = arrayData;
-        this.underwritingService.getCedingCompany().subscribe((dataa: any) => {
-
-        for (var i = 0; i <  dataa.cedingCompany.length ; i++) {
-            passDataa.push(new CedingCompany(dataa.cedingCompany[i].cedingRepresentative.defaultTag, dataa.cedingCompany[i].cedingRepresentative.designation, dataa.cedingCompany[i].cedingRepresentative.firstName, dataa.cedingCompany[i].cedingRepresentative.middleInitial, dataa.cedingCompany[i].cedingRepresentative.lastName, dataa.cedingCompany[i].cedingRepresentative.position, dataa.cedingCompany[i].cedingRepresentative.department, dataa.cedingCompany[i].cedingRepresentative.contactNo, dataa.cedingCompany[i].cedingRepresentative.eSignature));
-        }
-        });
-        this.passDataAddEdit.tableData = passDataa;*/
 
         this.underwritingService.getCedingCompanyList().subscribe((data: any) => {
 
             this.cedingCompanyListData = data.cedingcompany;
             for (var i = 0; i <  data.cedingcompany.length ; i++) {
-                 this.passData.tableData.push(data.cedingcompany[i]);
+                 this.passData.tableData.push(new CedingCompanyList(data.cedingcompany[i].activeTag,data.cedingcompany[i].govtTag,data.cedingcompany[i].membershipTag,data.cedingcompany[i].cedingId,data.cedingcompany[i].cedingName,data.cedingcompany[i].cedingAbbr,data.cedingcompany[i].address,data.cedingcompany[i].membershipDate,data.cedingcompany[i].terminationDate,data.cedingcompany[i].inactiveDate));
             }
-            console.log(data)
             this.table.refreshTable();
             
         });
 
-         this.underwritingService.getCedingCompany().subscribe((data: any) => {
-           console.log(data)
-            this.cedingCompanyData = data.cedingCompany;
-            for (var i = 0; i <  data.cedingCompany.length ; i++) {
-                 this.passDataAddEdit.tableData.push(data.cedingCompany[i].cedingRepresentative);
+        this.underwritingService.getCedingCompany().subscribe((data:any) => {
+            for (var i = 0; i < data.cedingCompany.length; i++) {
+                this.passDataAddEdit.tableData.push(new CedingCompany( data.cedingCompany[i].cedingRepresentative.defaultTag,  data.cedingCompany[i].cedingRepresentative.designation, data.cedingCompany[i].cedingRepresentative.firstName, data.cedingCompany[i].cedingRepresentative.middleInitial, data.cedingCompany[i].cedingRepresentative.lastName, data.cedingCompany[i].cedingRepresentative.position, data.cedingCompany[i].cedingRepresentative.department, data.cedingCompany[i].cedingRepresentative.contactNo, data.cedingCompany[i].cedingRepresentative.eSignature));
+
             }
             this.table.refreshTable();
         });
@@ -137,10 +112,5 @@ export class PolMxCedingCoComponent implements OnInit {
 		this.addEdit = true;
 	}
 }
-
-
-
-
-
   
 
