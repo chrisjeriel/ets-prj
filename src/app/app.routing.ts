@@ -69,8 +69,10 @@ import { CancelTransactionsComponent } from './accounting-in-trust/utilities/can
 import { AcctItEditedAcctEntriesComponent } from './accounting-in-trust/accounting-inquiry/acct-it-edited-acct-entries/acct-it-edited-acct-entries.component';
 import { GenerateNumberSeriesComponent } from './maintenance/accounting-in-trust/generate-number-series/generate-number-series.component';
 import { ChartOfAccountsComponent } from './maintenance/accounting-in-trust/chart-of-accounts/chart-of-accounts.component';
-import  { GenerateOrComponent } from './accounting-service/official-receipt/generate-or/generate-or.component';
-import  { OfficialReceiptComponent } from './accounting-service/official-receipt/official-receipt.component';
+import { GenerateOrComponent } from './accounting-service/official-receipt/generate-or/generate-or.component';
+import { OfficialReceiptComponent } from './accounting-service/official-receipt/official-receipt.component';
+import { AcctOrListingsComponent } from './accounting-service/acct-or-listings/acct-or-listings.component';
+import { AccountingServiceComponent } from './accounting-service/accounting-service.component';
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -148,6 +150,8 @@ const appRoutes: Routes = [
     { path: 'chart-of-accounts', component: ChartOfAccountsComponent },
     { path: 'generate-or', component: GenerateOrComponent },
     { path: 'official-receipt', component: OfficialReceiptComponent },
+    { path: 'acct-or-listings', component: AcctOrListingsComponent },
+    { path: 'accounting-service', component: AccountingServiceComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

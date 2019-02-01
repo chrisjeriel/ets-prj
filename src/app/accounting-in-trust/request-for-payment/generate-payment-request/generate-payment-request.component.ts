@@ -35,6 +35,7 @@ export class GeneratePaymentRequestComponent implements OnInit, OnDestroy {
     this.paymentType = this.paymentData.paymentType;
   }
 
+
   ngOnDestroy(){
   	this.sub.unsubscribe();
   }
@@ -47,6 +48,7 @@ export class GeneratePaymentRequestComponent implements OnInit, OnDestroy {
   }
 
   tabController(paymentType){
+    console.log(this.paymentType);
     this.paymentType = paymentType;
   }
 
