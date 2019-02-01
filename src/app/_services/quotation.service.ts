@@ -432,4 +432,6 @@ export class QuotationService {
         ];
         return this.openCoverList;
     }
+
+    
 }
