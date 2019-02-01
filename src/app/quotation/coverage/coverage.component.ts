@@ -1,7 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input,  ViewChild } from '@angular/core';
 import { QuotationCoverageInfo, NotesReminders } from '../../_models';
 import { QuotationService, NotesService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
 
 
 @Component({
@@ -12,7 +13,7 @@ import { Title } from '@angular/platform-browser';
 export class CoverageComponent implements OnInit {
 
   private quotationCoverageInfo: QuotationCoverageInfo;
-
+  @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   //tableDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
   tHeader: any[] = [];
   magnifyingGlass: any[] = ['coverCode'];
@@ -59,7 +60,8 @@ export class CoverageComponent implements OnInit {
     searchFlag: true,
     checkboxFlag: true,
     pageLength: 'unli',
-    widths: []
+    widths: [],
+    keys:['coverCd','section','bulletNo','sumInsured','addSi']
   };
 
   @Input() pageData:any;
@@ -71,7 +73,10 @@ export class CoverageComponent implements OnInit {
 
   nData: QuotationCoverageInfo = new QuotationCoverageInfo(null, null, null, null, null);
 
-  constructor(private quotationService: QuotationService, private titleService: Title) { }
+  constructor(private quotationService: QuotationService, private titleService: Title) {
+
+
+   }
 
   temp: number = 0;
 
@@ -84,20 +89,16 @@ export class CoverageComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.quotationService.getCoverageInfo().subscribe((data: any) => {
         this.coverageData = data.quotation.project.coverage;
-        this.passData.tableData = data.quotation.project.coverage.sectionCovers;
-        this.passData.tableData.forEach(function (itm) { 
-            delete itm.createUser;
-            delete itm.createDate;
-            delete itm.updateUser;
-            delete itm.updateDate;
-         });
-        this.dataLoaded = true;
-
+        // this.passData.tableData = data.quotation.project.coverage.sectionCovers;
+        for (var i = data.quotation.project.coverage.sectionCovers.length - 1; i >= 0; i--) {
+          this.passData.tableData.push(data.quotation.project.coverage.sectionCovers[i]);
+        }
+        this.table.refreshTable();
     });
 
+    console.log(this.passData.tableData);
     this.titleService.setTitle("Quo | Coverage");
     this.optionsData.push("USD", "PHP", "EUR");
     this.optionsData2.push("a", "b", "c");
@@ -151,6 +152,22 @@ export class CoverageComponent implements OnInit {
     // this.quotationCoverageInfo.sectionThree = "MOCK DATA";
     // this.quotationCoverageInfo.deductibles = "MOCK DATA";
     // this.quotationCoverageInfo.remarks = "MOCK DATA";
+  }
+
+  pindot(){
+
+
+    this.quotationService.getCoverageInfo().subscribe((data: any) => {
+      while(this.passData.tableData.length > 0) {
+          this.passData.tableData.pop();
+      }
+        this.coverageData = data.quotation.project.coverage;
+        // this.passData.tableData = data.quotation.project.coverage.sectionCovers;
+        for (var i = data.quotation.project.coverage.sectionCovers.length - 1; i >= 0; i--) {
+          this.passData.tableData.push(data.quotation.project.coverage.sectionCovers[i]);
+        }
+        this.table.refreshTable();
+    }); 
   }
 
 }
