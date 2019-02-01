@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { UnderwritingService } from '../../_services';
+import { Component, OnInit, Input,  ViewChild } from '@angular/core';
+import { QuotationService } from '../../_services';
 import { ALOPItemInformation, ALOPInfo } from '../../_models';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
+
 
 
 @Component({
@@ -17,7 +19,7 @@ export class QuoAlopComponent implements OnInit {
     policyRecordInfo: any = {};
     dataTypes: string[] = [];
     nData: ALOPItemInformation = new ALOPItemInformation(null, null, null, null, null);
-
+    alopItemData: any;
     itemInfoData: any = {
         tableData: [],
         tHeader: ["Item No", "Quantity", "Description", "Relative Importance", "Possible Loss Min"],
@@ -27,9 +29,10 @@ export class QuoAlopComponent implements OnInit {
         deleteFlag: true,
         infoFlag: true,
         paginateFlag: true,
+        keys:['itemNo','quantity','description','importance','lossMin']
     }
     
-    constructor(private uwService: UnderwritingService, private modalService: NgbModal, private titleService: Title) { }
+    constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title) { }
 
     ngOnInit() {
         this.titleService.setTitle("Quo | ALOP");
@@ -39,20 +42,22 @@ export class QuoAlopComponent implements OnInit {
         if (this.policyRecordInfo.policyNo.substr(0, 3) == "CAR") {
             this.itemInfoData.tHeader = ["Item No", "Quantity", "Description", "Possible Loss Min"];
             this.itemInfoData.dataTypes = ["number", "number", "text", "text"];
+            this.itemInfoData.keys = ['itemNo','quantity','description','lossMin'];
         }
 
-        this.itemInfoData.tableData = this.uwService.getALOPItemInfos(this.policyRecordInfo.policyNo.substr(0, 3));
+       // this.itemInfoData.tableData = this.uwService.getALOPItemInfos(this.policyRecordInfo.policyNo.substr(0, 3));
 
 
-        /*this.quotationService.getALOPItemInfos(this.policyRecordInfo.policyNo.substr(0, 3)).subscribe ((data: any) =>{
-            for (var i = 0; i <  data.quotation.length ; i++) {
-            
-            arrayData.push(new ALOPItemInformation(data.quotation[i].alop.alopitem.itemNo, data.quotation[i].alop.alopitem.quantity, data.quotation[i].alop.alopitem.description, null,data.quotation[i].alop.alopitem.lossMin));
+       this.quotationService.getALOPItemInfos(this.policyRecordInfo.policyNo.substr(0, 3)).subscribe((data: any) => {
+           /*this.alopItemData = data.quotation.project.coverage;
+           // this.passData.tableData = data.quotation.project.coverage.sectionCovers;
+           for (var i = data.quotation.project.coverage.sectionCovers.length - 1; i >= 0; i--) {
+             this.passData.tableData.push(data.quotation.project.coverage.sectionCovers[i]);
+           }
+           this.table.refreshTable();*/
+           console.log(data)
+       });
 
-
-      }
-        });
-        this.itemInfoData.tableData = arrayData;*/
     }
 
     save() {

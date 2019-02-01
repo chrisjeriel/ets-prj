@@ -4,7 +4,7 @@
 		<ngb-tab class="ngb-tab" title="Ceding Companies List">
 			<ng-template ngbTabContent>
 				<div class="row" style="margin-top: 10px;">
-					<div class="col-sm" *ngIf="passData.tableData.length > 0">
+					<div class="col-sm">
 						<app-cust-non-datatable [passData]="passData" (add)="toAddEdit();"></app-cust-non-datatable>
 					</div>
 				</div>
@@ -90,8 +90,8 @@
 						<div class="col-sm-8">
 							<fieldset class="scheduler-border" style="padding-top: 11px !important; padding-bottom: 10px !important;">
 								<legend class="scheduler-border">Membership</legend>
-								<div *ngIf="passDataAddEdit.tableData.length > 0" class="contain">
-									<app-cust-editable-non-datatable [passData]="passDataAddEdit"></app-cust-editable-non-datatable>
+								<div class="contain">
+									<!-- <app-cust-editable-non-datatable [passData]="passDataAddEdit"></app-cust-editable-non-datatable> -->
 								</div>
 							</fieldset>
 						</div>

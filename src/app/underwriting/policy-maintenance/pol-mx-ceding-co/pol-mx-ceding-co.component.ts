@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input,  ViewChild } from '@angular/core';
 import { UnderwritingService } from '../../../_services';
 import { CedingCompanyList, CedingCompany } from '../../../_models';
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 
 @Component({
 	selector: 'app-pol-mx-ceding-co',
@@ -8,8 +9,9 @@ import { CedingCompanyList, CedingCompany } from '../../../_models';
 	styleUrls: ['./pol-mx-ceding-co.component.css']
 })
 export class PolMxCedingCoComponent implements OnInit {
-
+    @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
 	addEdit: boolean = false;
+    cedingCompanyListData: any;
 
 	passData: any = {
 		//tableData : this.underwritingService.getCedingCompanyList(),
@@ -23,21 +25,6 @@ export class PolMxCedingCoComponent implements OnInit {
 		pageLength: 10,
 		resizable: [false,false,false,false,true,false,true,false,false,false],
 		filters: [
-			/*{
-            	key: 'active',
-            	title:'Active',
-            	dataType: 'checkbox'
-        	},
-        	{
-            	key: 'govt',
-            	title:'Government',
-            	dataType: 'checkbox'
-        	},
-        	{
-            	key: 'member',
-            	title:'Member',
-            	dataType: 'checkbox'
-        	},*/
         	{
             	key: 'coNo',
             	title:'Company No',
@@ -75,6 +62,7 @@ export class PolMxCedingCoComponent implements OnInit {
         	}
 		],
 		pageID: 1,
+        keys:['activeTag','govtTag','membershipTag','cedingName','cedingAbbr','address','membershipDate','terminationDate','inactiveDate']
 	};
 
 	passDataAddEdit: any = {
@@ -96,7 +84,7 @@ export class PolMxCedingCoComponent implements OnInit {
 	constructor(private underwritingService: UnderwritingService) { }
 
 	ngOnInit() {
-        let arrayData = [];
+        /*let arrayData = [];
         let passDataa = [];
         this.underwritingService.getCedingCompanyList().subscribe((data: any) => {
         for (var i = 0; i <  data.cedingcompany.length ; i++) {
@@ -118,10 +106,32 @@ export class PolMxCedingCoComponent implements OnInit {
             passDataa.push(new CedingCompany(dataa.cedingCompany[i].cedingRepresentative.defaultTag, dataa.cedingCompany[i].cedingRepresentative.designation, dataa.cedingCompany[i].cedingRepresentative.firstName, dataa.cedingCompany[i].cedingRepresentative.middleInitial, dataa.cedingCompany[i].cedingRepresentative.lastName, dataa.cedingCompany[i].cedingRepresentative.position, dataa.cedingCompany[i].cedingRepresentative.department, dataa.cedingCompany[i].cedingRepresentative.contactNo, dataa.cedingCompany[i].cedingRepresentative.eSignature));
         }
         });
-        this.passDataAddEdit.tableData = passDataa;
+        this.passDataAddEdit.tableData = passDataa;*/
+
+        this.underwritingService.getCedingCompanyList().subscribe((data: any) => {
+
+            this.cedingCompanyListData = data.cedingcompany;
+            for (var i = 0; i <  data.cedingcompany.length ; i++) {
+                 this.passData.tableData.push(data.cedingcompany[i]);
+            }
+            console.log(data)
+            this.table.refreshTable();
+            
+        });
+
+
 	}
+
+    
 
 	toAddEdit() {
 		this.addEdit = true;
 	}
 }
+
+
+
+
+
+  
+
