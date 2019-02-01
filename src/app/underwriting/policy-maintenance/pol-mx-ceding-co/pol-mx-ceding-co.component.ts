@@ -1,7 +1,7 @@
 import { Component, OnInit, Input,  ViewChild } from '@angular/core';
 import { UnderwritingService } from '../../../_services';
 import { CedingCompanyList, CedingCompany } from '../../../_models';
-import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 
 @Component({
 	selector: 'app-pol-mx-ceding-co',
@@ -9,12 +9,12 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 	styleUrls: ['./pol-mx-ceding-co.component.css']
 })
 export class PolMxCedingCoComponent implements OnInit {
-    @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
+    @ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
 	addEdit: boolean = false;
     cedingCompanyListData: any;
 
 	passData: any = {
-		//tableData : this.underwritingService.getCedingCompanyList(),
+		tableData : [],
         tHeader: ['Active','Govt','Member','Co No','Name','Abbreviation','Address','Membership Date','Termination Date','Inactive Date'],
 		dataTypes:['checkbox','checkbox','checkbox','sequence-3','text','text','text','date','date','date'],
 		addFlag: true,
@@ -62,9 +62,9 @@ export class PolMxCedingCoComponent implements OnInit {
         	}
 		],
 		pageID: 1,
-        keys:['activeTag','govtTag','membershipTag','cedingName','cedingAbbr','address','membershipDate','terminationDate','inactiveDate']
+        keys:['activeTag','govtTag','membershipTag','cedingId','cedingName','cedingAbbr','address','membershipDate','terminationDate','inactiveDate']
 	};
-
+    cedingCompanyData: any;
 	passDataAddEdit: any = {
 		tableData:[/*
 			[true,'Mr.','Henry','I','Tiu','Engg Head','Engineering Insurance','09178348984',null],
@@ -79,6 +79,8 @@ export class PolMxCedingCoComponent implements OnInit {
 		pageLength: 5,
 		widths: ['1','1','1','1','1','auto','auto','auto','1'],
 		pageID: 2,
+        keys:['defaultTag','designation','firstName','middleInitial','lastName','position','department','contactNo',
+               'eSignature']
 	}
 
 	constructor(private underwritingService: UnderwritingService) { }
@@ -119,7 +121,14 @@ export class PolMxCedingCoComponent implements OnInit {
             
         });
 
-
+         this.underwritingService.getCedingCompany().subscribe((data: any) => {
+           console.log(data)
+            this.cedingCompanyData = data.cedingCompany;
+            for (var i = 0; i <  data.cedingCompany.length ; i++) {
+                 this.passDataAddEdit.tableData.push(data.cedingCompany[i].cedingRepresentative);
+            }
+            this.table.refreshTable();
+        });
 	}
 
     

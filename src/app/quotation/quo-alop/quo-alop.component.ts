@@ -1,6 +1,6 @@
 import { Component, OnInit, Input,  ViewChild } from '@angular/core';
 import { QuotationService } from '../../_services';
-import { ALOPItemInformation, ALOPInfo } from '../../_models';
+import { QuoteALOPItemInformation, QuoteALOPInfo } from '../../_models';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
@@ -13,18 +13,20 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
     styleUrls: ['./quo-alop.component.css']
 })
 export class QuoAlopComponent implements OnInit {
-    aLOPInfo: ALOPInfo = new ALOPInfo();
+      @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
+    aLOPInfo: QuoteALOPInfo = new QuoteALOPInfo();
     tableData: any[] = [];
     tHeader: string[] = [];
     policyRecordInfo: any = {};
     dataTypes: string[] = [];
-    nData: ALOPItemInformation = new ALOPItemInformation(null, null, null, null, null);
+    nData: QuoteALOPItemInformation = new QuoteALOPItemInformation(null, null, null, null, null);
+    
     alopItemData: any;
     itemInfoData: any = {
         tableData: [],
         tHeader: ["Item No", "Quantity", "Description", "Relative Importance", "Possible Loss Min"],
         dataTypes: ["number", "number", "text", "text", "text"],
-        nData: new ALOPItemInformation(null, null, null, null, null),
+        nData: new QuoteALOPItemInformation(null, null, null, null, null),
         addFlag: true,
         deleteFlag: true,
         infoFlag: true,
@@ -45,19 +47,23 @@ export class QuoAlopComponent implements OnInit {
             this.itemInfoData.keys = ['itemNo','quantity','description','lossMin'];
         }
 
-       // this.itemInfoData.tableData = this.uwService.getALOPItemInfos(this.policyRecordInfo.policyNo.substr(0, 3));
-
 
        this.quotationService.getALOPItemInfos(this.policyRecordInfo.policyNo.substr(0, 3)).subscribe((data: any) => {
-           /*this.alopItemData = data.quotation.project.coverage;
-           // this.passData.tableData = data.quotation.project.coverage.sectionCovers;
-           for (var i = data.quotation.project.coverage.sectionCovers.length - 1; i >= 0; i--) {
-             this.passData.tableData.push(data.quotation.project.coverage.sectionCovers[i]);
+        
+           for (var i=0; i < data.quotation.length; i++) {
+               for (var j=0; j < data.quotation[i].alop.length; j++) {
+                   this.itemInfoData.tableData.push(data.quotation[i].alop[j].alopItem);
+               }
            }
-           this.table.refreshTable();*/
-           console.log(data)
+           this.table.refreshTable();
        });
 
+       this.quotationService.getALop().subscribe((data: any) => {
+            for (var i=0; i < data.quotation.length; i++) {
+                
+            }
+           console.log(data)
+       });
     }
 
     save() {

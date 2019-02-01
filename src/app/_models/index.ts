@@ -86,3 +86,4 @@ export * from './AccountingOrPreviewCredWtaxDet';
 export * from './AccountingSOthersOr';
 export * from './AccountingORSerFeeLoc';
 export * from './CedingCompany';
+export * from './QuotationAlop';

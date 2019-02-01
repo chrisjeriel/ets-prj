@@ -446,4 +446,8 @@ export class QuotationService {
         }
         return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteAlopItem');;
     }
+
+    getALop(){
+        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteAlop');
+    }
 }
