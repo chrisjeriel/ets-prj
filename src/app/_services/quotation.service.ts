@@ -445,8 +445,8 @@ export class QuotationService {
         //return OcGenInfoInfo;
 
             const params = new HttpParams()
-             .set('quoteIdOc','1')
-             .set('openQuotationNo','OC-CAR-2018-1001-2-1')
+             .set('quoteIdOc','2')
+             .set('openQuotationNo','OC-DOS-2018-1001-2-2323')
              
             return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteGeneralInfoOc',{params});
     }

@@ -3,9 +3,9 @@ export class OcGenInfoInfo {
 	openQuotationNo : string;
 	lineCd : string;
 	lineCdDesc : string;
-	Year : number;
-	SeqNo : number;
-	RevNo : number;
+	year : number;
+	seqNo : number;
+	revNo : number;
 	cedingId : number;
 	cessionId : number;
 	cedingName : string;
@@ -42,7 +42,7 @@ export class OcGenInfoInfo {
 	reasonCd : string;
 	reasonDesc : string;
 	createUser : string;
-	createDate : Date;
+	createDate : string;
 	updateUser : string;
     updateDate : Date;
     
@@ -61,19 +61,17 @@ export class OcGenInfoInfo {
 	updateUserProj : string;
 	updateDateProj : Date;
 
-    constructor(){
-        
-    }
-    // constructor(quoteIdOc : number,openQuotationNo : string,lineCd : string,lineCdDesc : string,Year : number,SeqNo : number,RevNo : number,cedingId : number,cessionId : number,cedingName : string,lineClassCd : string,lineClassDesc : string,refPolNo : string,policyIdOc : number,openPolicyNo : string,prinId : number,principalName : string,contractorId : number,contactorName : string,insuredDesc : string,status : string,reinsurerId : number,reinsurerName : string,intmId : number,intmName : string,issueDate : Date,expiryDate : Date,reqBy : string,reqDate : Date,reqMode : string,currencyCd : string,currencyRt : number,govtTag : string,indicativeTag : string,preparedBy : string,approvedBy : string,printedBy : string,printDate : Date,openingParag : string,closingParag : string,reasonCd : string,reasonDesc : string,createUser : string,createDate : Date,updateUser : string,updateDate : Date,        
+   
+    // constructor(quoteIdOc : number,openQuotationNo : string,lineCd : string,lineCdDesc : string,year : number,seqNo : number,revNo : number,cedingId : number,cessionId : number,cedingName : string,lineClassCd : string,lineClassDesc : string,refPolNo : string,policyIdOc : number,openPolicyNo : string,prinId : number,principalName : string,contractorId : number,contactorName : string,insuredDesc : string,status : string,reinsurerId : number,reinsurerName : string,intmId : number,intmName : string,issueDate : Date,expiryDate : Date,reqBy : string,reqDate : Date,reqMode : string,currencyCd : string,currencyRt : number,govtTag : string,indicativeTag : string,preparedBy : string,approvedBy : string,printedBy : string,printDate : Date,openingParag : string,closingParag : string,reasonCd : string,reasonDesc : string,createUser : string,createDate : Date,updateUser : string,updateDate : Date,        
     //     projId : number,projDesc : string,riskId : number,maxSi : number,pctShare : number,totalValue : number,objectId : number,site : string,duration : string,testing : string,createUserProj : string,createDateProj : Date,updateUserProj : string,updateDateProj : Date){
 
     // this.quoteIdOc  = quoteIdOc;
 	// this.openQuotationNo    = openQuotationNo;
 	// this.lineCd     = lineCd;
 	// this.lineCdDesc     = lineCdDesc;
-	// this.Year   = Year;
-	// this.SeqNo  = SeqNo;
-	// this.RevNo  = RevNo;
+	// this.year   = year;
+	// this.seqNo  = seqNo;
+	// this.revNo  = revNo;
 	// this.cedingId   = cedingId;
 	// this.cessionId  = cessionId;
 	// this.cedingName     = cedingName;
