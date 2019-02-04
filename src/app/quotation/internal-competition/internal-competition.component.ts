@@ -55,8 +55,8 @@ export class InternalCompetitionComponent implements OnInit {
             for(var i = 0; i < this.data.quotation.length; i++){
               this.intCompData.tableData.push(
                 new IntCompAdvInfo(this.data.quotation[i].competitionsList[0].adviceNo, 
-                                   this.data.quotation[i].competitionsList[0].cedingRepId, 
-                                   '', 
+                                   this.data.quotation[i].competitionsList[0].cedingName, 
+                                   this.data.quotation[i].competitionsList[0].cedingRepName,
                                    '', 
                                    this.data.quotation[i].competitionsList[0].option,
                                    this.data.quotation[i].competitionsList[0].wordings,
