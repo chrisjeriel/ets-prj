@@ -203,6 +203,7 @@ import { PaytReqInvestmentComponent } from './accounting-in-trust/request-for-pa
 import { AttachmentOcComponent } from './quotation/open-cover/attachment-oc/attachment-oc.component';
 import { MtnDistrictComponent } from './maintenance/mtn-district/mtn-district.component';
 import { MtnCityComponent } from './maintenance/mtn-city/mtn-city.component';
+import { MtnCrestaZoneComponent } from './maintenance/mtn-cresta-zone/mtn-cresta-zone.component';
 
 
 
@@ -414,6 +415,7 @@ import { MtnCityComponent } from './maintenance/mtn-city/mtn-city.component';
         AttachmentOcComponent,
         MtnDistrictComponent,
         MtnCityComponent,
+        MtnCrestaZoneComponent,
     ],
 
     providers: [

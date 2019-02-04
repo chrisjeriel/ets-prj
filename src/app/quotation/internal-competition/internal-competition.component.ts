@@ -35,7 +35,7 @@ export class InternalCompetitionComponent implements OnInit {
         infoFlag: true,
         checkFlag: true,
         pageLength: 10,
-        keys: ['advNo', 'company', 'attention', 'position', 'advOpt', 'wording', 'createdBy', 'dateCreated', 'lastUpdateBy', 'lastUpdate'],
+        keys: ['advNo', 'company', 'attention', 'position', 'advOpt', 'advWord', 'createdBy', 'dateCreated', 'lastUpdateBy', 'lastUpdate'],
     }
 
     data: any;
@@ -54,23 +54,23 @@ export class InternalCompetitionComponent implements OnInit {
             //console.log(this.data.quotation[0].competition[0].adviceNo);
             for(var i = 0; i < this.data.quotation.length; i++){
               this.intCompData.tableData.push(
-                new IntCompAdvInfo(this.data.quotation[i].competition[0].adviceNo, 
-                                   this.data.quotation[i].competition[0].cedingRepId, 
+                new IntCompAdvInfo(this.data.quotation[i].competitionsList[0].adviceNo, 
+                                   this.data.quotation[i].competitionsList[0].cedingRepId, 
                                    '', 
                                    '', 
-                                   this.data.quotation[i].competition[0].option,
-                                   this.data.quotation[i].competition[0].wording,
-                                   this.data.quotation[i].competition[0].createUser,
+                                   this.data.quotation[i].competitionsList[0].option,
+                                   this.data.quotation[i].competitionsList[0].wordings,
+                                   this.data.quotation[i].competitionsList[0].createUser,
                                    new Date(
-                                           this.data.quotation[i].competition[0].createDate[0],
-                                           this.data.quotation[i].competition[0].createDate[1] - 1,
-                                           this.data.quotation[i].competition[0].createDate[2],
+                                           this.data.quotation[i].competitionsList[0].createDate[0],
+                                           this.data.quotation[i].competitionsList[0].createDate[1] - 1,
+                                           this.data.quotation[i].competitionsList[0].createDate[2],
                                        ),
-                                   this.data.quotation[i].competition[0].updateUser,
+                                   this.data.quotation[i].competitionsList[0].updateUser,
                                    new Date(
-                                           this.data.quotation[i].competition[0].updateDate[0],
-                                           this.data.quotation[i].competition[0].updateDate[1] - 1,
-                                           this.data.quotation[i].competition[0].updateDate[2],
+                                           this.data.quotation[i].competitionsList[0].updateDate[0],
+                                           this.data.quotation[i].competitionsList[0].updateDate[1] - 1,
+                                           this.data.quotation[i].competitionsList[0].updateDate[2],
                                            
                                        ))
               );
