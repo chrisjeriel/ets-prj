@@ -32,7 +32,7 @@ export class AttachmentOcComponent implements OnInit {
     searchFlag: true,
     checkboxFlag: true,
     pageLength: 10,
-    widths: [],
+    widths: ['auto', 'auto', 1],
     keys: ['filePath', 'description'],
   };
 

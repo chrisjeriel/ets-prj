@@ -42,7 +42,7 @@ export class MtnCityComponent implements OnInit {
 
   ngOnInit() {
   	this.maintenanceService.getMtnCity().subscribe((data: any) =>{
-  		console.log(data);
+  		//console.log(data);
   		for(var regionCount = 0; regionCount < data.region.length; regionCount++){
   			for(var provinceCount = 0; provinceCount < data.region[regionCount].provinceList.length; provinceCount++){
   				for(var cityCount = 0; cityCount < data.region[regionCount].provinceList[provinceCount].cityList.length; cityCount++){
@@ -62,7 +62,7 @@ export class MtnCityComponent implements OnInit {
   			}
   		}
   		this.table.refreshTable();
-  		console.log(this.cityListing.tableData);
+  		//console.log(this.cityListing.tableData);
   	});
   }
 

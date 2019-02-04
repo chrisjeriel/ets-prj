@@ -16,6 +16,8 @@ export class RiskFormComponent implements OnInit, OnDestroy {
     districtName:string = "";
     cityCd: string = "";
     cityDesc: string = "";
+    zoneCd: string = "";
+    zoneDesc: string = "";
 
 
     constructor(private route: ActivatedRoute, private titleService: Title) { }
@@ -45,6 +47,10 @@ export class RiskFormComponent implements OnInit, OnDestroy {
         $('#cityModal #modalBtn').trigger('click');
     }
 
+    showCrestaZoneModal(){
+        $('#crestaZoneModal #modalBtn').trigger('click');
+    }
+
     setDistricts(data){
         console.log(data);
         this.districtCd = data.districtCd;
@@ -54,6 +60,11 @@ export class RiskFormComponent implements OnInit, OnDestroy {
     setCity(data){
         this.cityCd = data.cityCd;
         this.cityDesc = data.cityDesc;
+    }
+
+    setCrestaZone(data){
+        this.zoneCd = data.zoneCd;
+        this.zoneDesc = data.zoneDesc;
     }
 
 }
