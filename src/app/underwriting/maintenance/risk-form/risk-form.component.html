@@ -51,9 +51,9 @@
                             <div class="form-row custom-row-inline-inset">
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-1 text-right labels">City/Town</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-1" [placeholder]="newForm ? '' : '40328'">
-                                    <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-                                    <input type="text" class="form-control form-control-sm col-sm-4" [placeholder]="newForm ? '' : 'SANTA ROSA'" style="margin-left: 6px !important">
+                                    <input type="text" class="form-control form-control-sm col-sm-1" [placeholder]="newForm ? '' : '40328'" [ngModel]="cityCd">
+                                    <div class="text-search-ico"><a><i class="fa fa-search" (click)="showCityModal()" ></i></a></div>
+                                    <input type="text" class="form-control form-control-sm col-sm-4" [placeholder]="newForm ? '' : 'SANTA ROSA'" style="margin-left: 6px !important" [ngModel]="cityDesc">
                                     <label class="form-control-sm col-sm-1 text-right labels">District</label>
                                     <input type="text" class="form-control form-control-sm col-sm-1" [placeholder]="newForm ? '' : 'LGSR'" [ngModel]="districtCd">
                                     <div class="text-search-ico"><a><i class="fa fa-search" (click)="showDistrictModal()"></i></a></div>
@@ -131,4 +131,4 @@
 </div>
 
 <app-mtn-district id="districtModal" (selectedData)="setDistricts($event)"></app-mtn-district>
-<!-- <app-mtn-city></app-mtn-city> -->
+<app-mtn-city id="cityModal" (selectedData)="setCity($event)"></app-mtn-city>

@@ -14,7 +14,7 @@ export class MaintenanceService{
 	}
 
 	getMtnCity(){
-		/*return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnCity");*/
+		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnCity");
 	}
 
 }
