@@ -204,6 +204,7 @@ import { AttachmentOcComponent } from './quotation/open-cover/attachment-oc/atta
 import { MtnDistrictComponent } from './maintenance/mtn-district/mtn-district.component';
 import { MtnCityComponent } from './maintenance/mtn-city/mtn-city.component';
 import { MtnCrestaZoneComponent } from './maintenance/mtn-cresta-zone/mtn-cresta-zone.component';
+import { MtnCurrencyComponent } from './maintenance/mtn-currency/mtn-currency.component';
 
 
 
@@ -416,6 +417,7 @@ import { MtnCrestaZoneComponent } from './maintenance/mtn-cresta-zone/mtn-cresta
         MtnDistrictComponent,
         MtnCityComponent,
         MtnCrestaZoneComponent,
+        MtnCurrencyComponent,
     ],
 
     providers: [

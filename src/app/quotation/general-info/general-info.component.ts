@@ -28,6 +28,9 @@ export class GeneralInfoComponent implements OnInit {
 	line: string;
 	ocChecked: boolean = false;
 
+	currencyAbbr: string = "";
+	currencyRt: number = 0;
+
 
 	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute) { }
 	ngOnInit() {
@@ -168,6 +171,17 @@ export class GeneralInfoComponent implements OnInit {
 	showItemInfoModal(content) {
 		this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
 	}
+
+	showCurrencyModal(){
+		$('#currencyModal #modalBtn').trigger('click');
+	}
+
+	setCurrency(data){
+		this.currencyAbbr = data.currencyAbbr;
+		this.currencyRt = data.currencyRt;
+	}
+
+
 
 }
 export interface SelectRequestMode {
