@@ -442,18 +442,17 @@ export class QuotationService {
 
 
     getALOPItemInfos(car: string) {
-        /*this.aLOPItemInfos = [
-            new ALOPItemInformation(1, 5, "desc", "rel import", "min loss"),
-            new ALOPItemInformation(2, 7, "description", "relative import", "min loss")
-        ]*/
         if (car == "CAR") {
             this.aLOPItemInfos.forEach(function (itm) { delete itm.relativeImportance; });
         }
         return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteAlopItem');;
     }
 
-    getALop(){
-        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteAlop');
+    getALop(quoteId:number,quotationNo:string){
+        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteAlop'
+            +('?quoteId=' + quoteId)
+            +('&quotationNo='+ quotationNo)
+        );
     }
 
 }

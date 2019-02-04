@@ -204,6 +204,7 @@ import { AttachmentOcComponent } from './quotation/open-cover/attachment-oc/atta
 import { MtnDistrictComponent } from './maintenance/mtn-district/mtn-district.component';
 import { MtnCityComponent } from './maintenance/mtn-city/mtn-city.component';
 import { MtnInsuredComponent } from './maintenance/mtn-insured/mtn-insured.component';
+import { MtnBlockComponent } from './maintenance/mtn-block/mtn-block.component';
 
 
 
@@ -416,6 +417,7 @@ import { MtnInsuredComponent } from './maintenance/mtn-insured/mtn-insured.compo
         MtnDistrictComponent,
         MtnCityComponent,
         MtnInsuredComponent,
+        MtnBlockComponent,
     ],
 
     providers: [

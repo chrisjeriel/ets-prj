@@ -45,4 +45,7 @@ export class RiskFormComponent implements OnInit, OnDestroy {
         this.districtName = data.districtDesc;
     }
 
+    showBlockModal() {
+        $('#blockModal #modalBtn').trigger('click');
+    }
 }

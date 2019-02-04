@@ -22,6 +22,7 @@ export class QuoAlopComponent implements OnInit {
     nData: QuoteALOPItemInformation = new QuoteALOPItemInformation(null, null, null, null, null);
     
     alopItemData: any;
+    alopData: any;
     itemInfoData: any = {
         tableData: [],
         tHeader: ["Item No", "Quantity", "Description", "Relative Importance", "Possible Loss Min"],
@@ -51,18 +52,15 @@ export class QuoAlopComponent implements OnInit {
        this.quotationService.getALOPItemInfos(this.policyRecordInfo.policyNo.substr(0, 3)).subscribe((data: any) => {
         
            for (var i=0; i < data.quotation.length; i++) {
-               for (var j=0; j < data.quotation[i].alop.length; j++) {
-                   this.itemInfoData.tableData.push(data.quotation[i].alop[j].alopItem);
-               }
+                   this.itemInfoData.tableData.push(data.quotation[i].alop.alopItem);
+               
            }
            this.table.refreshTable();
+           console.log(data)
        });
 
-       this.quotationService.getALop().subscribe((data: any) => {
-            for (var i=0; i < data.quotation.length; i++) {
-                
-            }
-           console.log(data)
+       this.quotationService.getALop(3,'EAR-2019-1-0-3').subscribe((data: any) => {
+              this.alopItemData = data.quotation.alop
        });
     }
 

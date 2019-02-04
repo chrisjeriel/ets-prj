@@ -89,12 +89,11 @@ export class PolMxCedingCoComponent implements OnInit {
 
         this.underwritingService.getCedingCompanyList().subscribe((data: any) => {
 
-            this.cedingCompanyListData = data.cedingcompany;
+            
             for (var i = 0; i <  data.cedingcompany.length ; i++) {
-                 this.passData.tableData.push(new CedingCompanyList(data.cedingcompany[i].activeTag,data.cedingcompany[i].govtTag,data.cedingcompany[i].membershipTag,data.cedingcompany[i].cedingId,data.cedingcompany[i].cedingName,data.cedingcompany[i].cedingAbbr,data.cedingcompany[i].address,data.cedingcompany[i].membershipDate,data.cedingcompany[i].terminationDate,data.cedingcompany[i].inactiveDate));
+                 this.passData.tableData.push(new CedingCompanyList(data.cedingcompany[i].activeTag,data.cedingcompany[i].govtTag,data.cedingcompany[i].membershipTag,data.cedingcompany[i].cedingId,data.cedingcompany[i].cedingName,data.cedingcompany[i].cedingAbbr,data.cedingcompany[i].address,(data.cedingcompany[i].membershipDate == null ? null : new Date(data.cedingcompany[i].membershipDate[0],data.cedingcompany[i].membershipDate[1]-1,data.cedingcompany[i].membershipDate[2])),(data.cedingcompany[i].terminationDate == null ? null : new Date(data.cedingcompany[i].terminationDate[0],data.cedingcompany[i].terminationDate[1]-1,data.cedingcompany[i].terminationDate[2])),(data.cedingcompany[i].inactiveDate == null ? null : new Date(data.cedingcompany[i].inactiveDate[0],data.cedingcompany[i].inactiveDate[1]-1,data.cedingcompany[i].inactiveDate[2]))))
             }
             this.table.refreshTable();
-            
         });
 
         this.underwritingService.getCedingCompany().subscribe((data:any) => {

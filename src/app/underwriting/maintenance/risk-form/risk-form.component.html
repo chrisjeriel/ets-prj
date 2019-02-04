@@ -64,7 +64,7 @@
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-1 text-right labels">Block</label>
                                     <input type="text" class="form-control form-control-sm col-sm-1" [placeholder]="newForm ? '' : 'UNBLK'">
-                                    <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+                                    <div class="text-search-ico"><a><i class="fa fa-search" (click)="showBlockModal()"></i></a></div>
                                     <input type="text" class="form-control form-control-sm col-sm-4" [placeholder]="newForm ? '' : 'STA.ROSA/BEL-AIR UNBLK'" style="margin-left: 6px !important">
                                     <label class="form-control-sm col-sm-1 text-right labels">Lat</label>
                                     <input type="text" class="form-control form-control-sm col-sm-2" [placeholder]="newForm ? '' : '38.8951'">
@@ -132,3 +132,4 @@
 
 <app-mtn-district id="districtModal" (selectedData)="setDistricts($event)"></app-mtn-district>
 <!-- <app-mtn-city></app-mtn-city> -->
+<app-mtn-block id="blockModal" (selectedData)="setDistricts($event)"></app-mtn-block>
