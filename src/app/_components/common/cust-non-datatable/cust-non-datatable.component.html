@@ -22,6 +22,7 @@
         <button *ngIf="passData.editFlag" class="cust-btn" [class.btnDisabled]="btnDisabled || passData.btnDisabled"[disabled]="btnDisabled || passData.btnDisabled" (click)="onClickEdit($event)"><a class="paginate_button previous">Edit</a></button>
         <button *ngIf="passData.deleteFlag" class="cust-btn" [class.btnDisabled]="btnDisabled || passData.btnDisabled" [disabled]="btnDisabled || passData.btnDisabled" (click)="onClickDelete()"><a class="paginate_button previous">Delete</a></button>
         <button *ngIf="passData.copyFlag" class="cust-btn" [class.btnDisabled]="btnDisabled || passData.btnDisabled" [disabled]="btnDisabled || passData.btnDisabled" (click)="onClickCopy($event)"><a class="paginate_button previous">Copy</a></button>
+         <button *ngIf="passData.saveFlag" class="cust-btn" [class.btnDisabled]="btnDisabled || passData.btnDisabled" [disabled]="btnDisabled || passData.btnDisabled" (click)="onClicSave($event)"><a class="paginate_button previous">Save</a></button>
         <button *ngIf="passData.printBtn" class="cust-btn" type="button" (click)="onClickPrint($event)"><a>Print</a></button>
     </div>
     <div class="expire" *ngIf="passData.expireFilter" align="right" style="margin-top: 1px !important;">
