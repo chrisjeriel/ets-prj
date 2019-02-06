@@ -1,8 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , ViewChild} from '@angular/core';
 import { QuotationInfo, QuotationOption, QuoteEndorsement } from '../../_models';
 import { QuotationService } from '../../_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
+
+
 
 @Component({
     selector: 'app-quote-endorsement',
@@ -10,6 +14,13 @@ import { Title } from '@angular/platform-browser';
     styleUrls: ['./quote-endorsement.component.css']
 })
 export class QuoteEndorsementComponent implements OnInit {
+    @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
+    private sub: any;
+    from: string;
+    quotationNum: string;
+    genInfoData: any;
+    projectData: any;
+    endorsementsData: any[] = [];
     private quotationInfo: QuotationInfo;
     private quoteEndorsement: QuoteEndorsement;
     dtOptions: DataTables.Settings = {};
@@ -40,7 +51,7 @@ export class QuoteEndorsementComponent implements OnInit {
     }
 
     endorsementData: any = {
-        tableData: this.quotationService.getEndorsements(1),
+        tableData: [],
         tHeader: ['Endt Code', 'Endt Title', 'Endt Description', 'Remarks'],
         magnifyingGlass: ['endtCode'],
         nData: new QuoteEndorsement(null, null, null, null, null),
@@ -52,10 +63,18 @@ export class QuoteEndorsementComponent implements OnInit {
         searchFlag: true,
     }
 
-    constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title) { }
+    constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title,  private route: ActivatedRoute) { }
 
 
     ngOnInit() {
+
+        this.sub = this.route.params.subscribe(params => {
+            this.from = params['from'];
+                if (this.from == "quo-processing") {
+                    this.quotationNum = params['quotationNo'];
+                }
+        });
+
         this.titleService.setTitle("Quo | Endorsement");
         this.dtOptions = {
             ordering: false,
@@ -70,14 +89,39 @@ export class QuoteEndorsementComponent implements OnInit {
         this.quotationInfo.insuredName = "Insured Name";
         this.quoteOptionTableData = this.quotationService.getQuoteOptions();
 
-        this.tableData = this.quotationService.getEndorsements(1);
+/*        this.tableData = this.quotationService.getEndorsements(1);*/
+        if (this.quotationService.toGenInfo[0] == "edit") {
+            console.log("Edit- Quotation");
+            this.quotationService.getQuoteGenInfo(null,this.quotationNum).subscribe((data: any) => {
+                this.genInfoData = data.quotationGeneralInfo; 
+                this.projectData = data.project;                   
+            });
+            this.quotationService.getEndorsements(null,this.quotationNum,1).subscribe((data: any) => {
+               /* while(this.endorsementsData.tableData.length > 0) {
+                      this.endorsementsData.tableData.pop();
+                }*/
+                this.endorsementsData = data.endorsements;   
+                console.log(this.endorsementsData);
+                console.log(this.endorsementsData[1].endtCd);             
+/*
+                this.endorsementData.tableData.push();*/
+              /*  for (var i = this.endorsementsData.length - 1; i >= 0; i--) {
+                   this.endorsementData.tableData.push(this.endorsementsData[i]);
+                }
+                this.table.refreshTable();*/
+            });
+        }
+         this.endorsementData.tableData.push({ endtCode: this.endorsementsData[1].endtCd , endtTitle: this.endorsementsData[1].endtCd , 
+                    endtDescription: this.endorsementsData[1].description, endtWording: this.endorsementsData[1].remarks })
 
+        
     }
 
     clickRow(event) {
-        console.log(event);
-        this.tableData = this.quotationService.getEndorsements(event.target.closest("tr").children[1].innerText);
+        console.log(event.optionNo);
+      /*  this.tableData = this.quotationService.getEndorsements(event.target.closest("tr").children[1].innerText);*/
     }
+
     save() {
         //do something
     }
@@ -85,4 +129,9 @@ export class QuoteEndorsementComponent implements OnInit {
     clickModal(event) {
         $('#idMdl > #modalBtn').trigger('click');
     }
+
+    ngOnDestroy() {
+        this.sub.unsubscribe();
+    }
+
 }

@@ -25,6 +25,7 @@ export class QuotationProcessingComponent implements OnInit {
 
     line: string = "";
     quoTypeOfCession = "";
+    quotationNo = "";
 
     riskCodeFill: string = "";
     riskFill: string = "";
@@ -155,7 +156,6 @@ export class QuotationProcessingComponent implements OnInit {
     }
     onClickEdit(event) {
         this.line = this.quotationService.rowData[0].split("-")[0];
-
         this.quotationService.toGenInfo = [];
         this.quotationService.toGenInfo.push("edit", this.line);
         // this.router.navigate(['/quotation']);
@@ -219,13 +219,14 @@ onRowDblClick(event) {
     }
 
     this.line = this.quotationService.rowData[0].split("-")[0];
+    this.quotationNo = this.quotationService.rowData[0];
     this.quoTypeOfCession = event.target.closest('tr').children[1].innerText;
 
     this.quotationService.toGenInfo = [];
     this.quotationService.toGenInfo.push("edit", this.line);
     /*  this.router.navigate(['/quotation']);*/
     setTimeout(() => {
-        this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.quoTypeOfCession, from: 'quo-processing' }], { skipLocationChange: true });
+        this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.quoTypeOfCession,  quotationNo : this.quotationNo, from: 'quo-processing' }], { skipLocationChange: true });
     },100); 
 
 }

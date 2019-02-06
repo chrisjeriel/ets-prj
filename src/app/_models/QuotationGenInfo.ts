@@ -10,6 +10,7 @@ export class QuotationGenInfo {
 	printedBy: string;
 	printDate: Date;
 
+	cedingId : string;
 	cedingCompany: string;
 	quoteStatus: string;
 	quoteDate: Date;

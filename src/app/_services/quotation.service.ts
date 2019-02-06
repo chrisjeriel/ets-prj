@@ -63,16 +63,6 @@ export class QuotationService {
         return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteCoverage?");
     }
 
-
-
-
-
-
-
-
-
-
-
     getQuotationListInfo() {
         this.quotationListData = [
             new QuotationList("CAR-2015-00028-32-01", "Direct", "Fire", "Concluded", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna, Calamba", "CAR-2018-00001-023-0002-01", "PHP", new Date("12-20-2018"), new Date(), "Inigo Flores", "Cuaresma", "Juan Cruz"),
@@ -130,9 +120,16 @@ export class QuotationService {
     }
 
 
-    getEndorsements(optionNo: number) {
+    getEndorsements(quoteId: string, quotationNo: string, optionNo: number) {
+         if (quoteId == '' || quoteId == null ) {
+         return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteEndorsements?quotationNo="+quotationNo+"&optionId="+optionNo);
+         } else {
+         return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteEndorsement?quoteId="+quoteId+"&quotationNo="+quotationNo+"&optionId="+optionNo);
+     
+    }
 
-        this.endorsementData = [
+
+     /*   this.endorsementData = [
             new QuoteEndorsement(1, "111", 'Endt Title', 'Endt Description', 'Wording'),
             new QuoteEndorsement(1, "112", 'This is the title', 'sample Description', 'Sample Wording'),
             new QuoteEndorsement(2, "221", 'Endt Title', 'Endt Description', 'Wording'),
@@ -145,7 +142,7 @@ export class QuotationService {
             return itm.optionNo == optionNo;
         });
         endorsmentData.forEach(function (itm) { delete itm.optionNo; });
-        return endorsmentData;
+        return endorsmentData;*/
     }
 
     getAttachment() {
@@ -197,7 +194,7 @@ export class QuotationService {
 
     getQuoProcessingData() {
         this.quoProcessingData = [
-            new QuotationProcessing('CAR-2015-00088-00-99', 'Direct', 'CAR Wet Risks', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'CAR-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
+            new QuotationProcessing('CAR-2019-00010-00-01', 'Direct', 'CAR Wet Risks', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'CAR-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
                 new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
             new QuotationProcessing('CAR-2015-00088-00-78', 'Retrocession', 'CAR Wet Risks', 'In Progress', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'CAR-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
                 new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
@@ -327,13 +324,12 @@ export class QuotationService {
 
     }
 
-
-
-    getQuoteGenInfo(quoteId : string, quotationNo: string){
-
-       let params = new HttpParams().set("quoteId",quoteId).set("quotationNo", quotationNo);
-
-       return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteGeneralInfo", {params : params});
+    getQuoteGenInfo(quoteId : any, quotationNo: string ){
+      if (quoteId == '' || quoteId == null ) {
+         return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteGeneralInfo?quotationNo="+quotationNo);
+      } else {
+         return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteGeneralInfo?quoteId="+quoteId+"&quotationNo="+quotationNo);
+     }
     }
 
     getReadyForPrinting() {
