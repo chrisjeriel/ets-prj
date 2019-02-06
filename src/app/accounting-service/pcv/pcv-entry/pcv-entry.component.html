@@ -1,0 +1,126 @@
+<fieldset class="scheduler-border">
+	<legend class="scheduler-border">Petty Cash Info</legend>
+	<div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;">
+		<div class="col-sm-4" style="padding: 0px;">
+			<div class="input-group">
+				<label class="form-control-sm col-sm-3" for="xx">PCV No.</label>
+	            <input type="text" id="xx"class="form-control form-control-sm cust-sm col-sm-3 text-right" placeholder="2017">
+	            <input type="text" id="xx"class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px;" placeholder="000002"
+	            [ngModel]="record.pcvNo">
+			</div>
+			<div class="input-group">
+				<label class="form-control-sm col-sm-3" for="xx">PCV Type</label>
+	            <input type="text" id="xx"class="form-control form-control-sm cust-sm col-sm-9" [ngModel]="record.pcvType">
+	            <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+			</div>
+		</div>
+
+		<div class="col-sm-4" style="padding: 0px;">
+			<div class="input-group">
+				<label class="form-control-sm col-sm-4" for="xx">PCV Date</label>
+	            <input type="date" id="xx"class="form-control form-control-sm cust-sm col-sm-5" [ngModel]="record.pcvDate | date:'yyyy-MM-dd'">
+	            <input type="text" id="xx"class="form-control form-control-sm cust-sm col-sm " style="margin-left: 3px;" value="8:45 AM">
+			</div>
+			<div class="input-group">
+				<label class="form-control-sm col-sm-4" for="xx">Cash Advance</label>
+	            <input type="text" id="xx"class="form-control form-control-sm cust-sm col-sm-3" value="PHP">
+	            <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+	            <input type="text" id="xx"class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 8px;" [ngModel]="record.amount">
+			</div>
+		</div>
+
+		<div class="col-sm-4" style="padding: 0px;">
+			<div class="input-group">
+				<label class="form-control-sm col-sm-4" for="xx">Status</label>
+	            <input type="text" id="xx"class="form-control form-control-sm cust-sm col-sm" value="Open" [ngModel]="record.status">
+			</div>
+			<div class="input-group">
+				<label class="form-control-sm col-sm-4" for="xx">Total Expense</label>
+	            <input type="text" id="xx"class="form-control form-control-sm cust-sm col-sm-3" value="PHP">
+	            <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+	            <input type="text" id="xx"class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 8px;" value="500.00">
+			</div>
+		</div>
+		<div class="input-group">
+			<label class="form-control-sm col-sm-1" for="xx">Payee</label>
+            <input type="text" id="xx"class="form-control form-control-sm cust-sm col-sm-11" [ngModel]="record.payee">
+			<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+		</div>
+		<div class="input-group">
+			<label class="form-control-sm col-sm-1" for="xx">Purpose</label>
+            <textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 17px !important;">{{record.purpose}}</textarea>
+		</div>
+		<div class="input-group">
+			<div class="col-sm-2 offset-sm-10 text-right" >
+				<label class="form-control-sm" for="xx">Replenishment Flag</label>
+				<input type="checkbox" id="xx" style="vertical-align: text-bottom;" [checked]="record.repFlag">
+			</div>
+		</div>
+		<div class="col-sm-4" style="padding: 0px;">
+			<div class="input-group">
+				<label class="form-control-sm col-sm-3" for="xx">Prepared By</label>
+				<input type="text" id="xx"class="form-control form-control-sm cust-sm col-sm-9" value="Christian Lumen">
+	            <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+			</div>
+			<div class="input-group">
+				<label class="form-control-sm col-sm-3" for="xx"></label>
+				<input type="text" id="xx"class="form-control form-control-sm cust-sm col-sm-9" placeholder="Inspector">
+			</div>
+			<div class="input-group">
+				<label class="form-control-sm col-sm-3" for="xx" style="padding-left: 0px;">Date Prepared</label>
+				<input type="date" id="xx"class="form-control form-control-sm cust-sm col-sm-9">
+			</div>
+		</div>
+		<div class="col-sm-4" style="padding: 0px;">
+			<div class="input-group">
+				<label class="form-control-sm col-sm-3" for="xx">Cashier</label>
+				<input type="text" id="xx"class="form-control form-control-sm cust-sm col-sm-9" value="Chie Reyes">
+	            <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+			</div>
+			<div class="input-group">
+				<label class="form-control-sm col-sm-3" for="xx"></label>
+				<input type="text" id="xx"class="form-control form-control-sm cust-sm col-sm-9" placeholder="Cashier III">
+			</div>
+		</div>
+		<div class="col-sm-4" style="padding: 0px;">
+			<div class="input-group">
+				<label class="form-control-sm col-sm-3" for="xx">Approved By</label>
+				<input type="text" id="xx"class="form-control form-control-sm cust-sm col-sm-9" value="Lavarenti Zamora">
+	            <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+			</div>
+			<div class="input-group">
+				<label class="form-control-sm col-sm-3" for="xx"></label>
+				<input type="text" id="xx"class="form-control form-control-sm cust-sm col-sm-9" placeholder="Section Head">
+			</div>
+			<div class="input-group">
+				<label class="form-control-sm col-sm-3" for="xx" style="padding-left: 0px;">Date Approved</label>
+				<input type="date" id="xx"class="form-control form-control-sm cust-sm col-sm-9">
+			</div>
+		</div>
+	</div>
+	<div class="form-group col-sm text-center" style="margin-bottom: 5px">
+      <div class="cust-btn-container">
+        <button type="button" class="cust-btn"><a>New PCV</a></button>
+        <button type="button" class="cust-btn"><a>Save</a></button>
+        <button type="button" class="cust-btn"><a>Cancel PCV</a></button>
+		<button type="button" class="cust-btn"><a>Print</a></button>
+      </div>
+  </div>
+</fieldset>
+
+<fieldset class="scheduler-border" style="margin-top: 5px !important; margin-bottom: 10px !important; padding-bottom: 7px !important;">
+  <div class="custom-row-inline-inset">
+    <div class="form-row" style="margin-bottom: -10px;">
+      <div class="input-group">
+        <label class="form-control-sm col-sm-1">Created By</label>
+        <input type="text" appCurrency class="form-control form-control-sm col-sm" placeholder="cuaresma">
+        <label class="form-control-sm col-sm-1">Date Created</label>
+        <input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-01T10:45">
+        <label class="form-control-sm col-sm-1">Last Update By</label>
+        <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma">
+        <label class="form-control-sm col-sm-1">Last Update</label>
+        <input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-02T10:00">
+      </div>
+    </div>
+  </div>
+</fieldset>
