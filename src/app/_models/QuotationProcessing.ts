@@ -1,40 +1,40 @@
 export class QuotationProcessing {
 	quotationNo: string;
-	typeOfCession: string;
-	lineClass: string;
+	cessionDesc: string;
+	lineClassCdDesc: string;
 	status: string;
-	cedingCompany: string;
-	principal: string;
-	contractor: string;
-	insured: string;
-	risk: string;
-	qObject: string;
+	cedingName: string;
+	principalName: string;
+	contractorName: string;
+	insuredDesc: string;
+	riskName: string;
+	objectDesc: string;
 	site: string;
 	policyNo: string;
-	currency: string;
-	quoteDate: Date;
-	validityDate: Date;
-	requestedBy: string;
-	createdBy: string;
+	currencyCd: string;
+	issueDate: Date;
+	expiryDate: Date;
+	reqBy: string;
+	createUser: string;
 
-	constructor(quotationNo: string,typeOfCession: string,lineClass: string,status: string,cedingCompany: string,principal: string,contractor: string,insured: string,risk: string,qObject: string,site: string,policyNo: string,currency: string,quoteDate: Date,validityDate: Date,requestedBy: string, createdBy: string) {
+	constructor(quotationNo: string,cessionDesc: string,lineClassCdDesc: string,status: string,cedingName: string,principalName: string,contractorName: string,insuredDesc: string,riskName: string,objectDesc: string,site: string,policyNo: string,currencyCd: string,issueDate: Date,expiryDate: Date,reqBy: string, createUser: string) {
 		this.quotationNo = quotationNo;
-		this.typeOfCession = typeOfCession;
-		this.lineClass = lineClass;
+		this.cessionDesc = cessionDesc;
+		this.lineClassCdDesc = lineClassCdDesc;
 		this.status = status;
-		this.cedingCompany = cedingCompany;
-		this.principal = principal;
-		this.contractor = contractor;
-		this.insured = insured;
-		this.risk = risk;
-		this.qObject = qObject;
+		this.cedingName = cedingName;
+		this.principalName = principalName;
+		this.contractorName = contractorName;
+		this.insuredDesc = insuredDesc;
+		this.riskName = riskName;
+		this.objectDesc = objectDesc;
 		this.site = site;
 		this.policyNo = policyNo;
-		this.currency = currency;
-		this.quoteDate = quoteDate;
-		this.validityDate = validityDate;
-		this.requestedBy = requestedBy;
-		this.createdBy = createdBy;
+		this.currencyCd = currencyCd;
+		this.issueDate = issueDate;
+		this.expiryDate = expiryDate;
+		this.reqBy = reqBy;
+		this.createUser = createUser;
 	}
 
 }

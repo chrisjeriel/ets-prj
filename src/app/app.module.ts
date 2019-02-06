@@ -200,6 +200,7 @@ import { OrServiceFeeLocalComponent } from './accounting-service/official-receip
 import { ArPaymentforAdvancesComponent } from './accounting-in-trust/ar-details/ar-paymentfor-advances/ar-paymentfor-advances.component';
 import { AcctAttachmentComponent } from './accounting-service/official-receipt/generate-or/acct-attachment/acct-attachment.component';
 import { PaytReqInvestmentComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/payt-req-investment/payt-req-investment.component';
+import { AttachmentOcComponent } from './quotation/open-cover/attachment-oc/attachment-oc.component';
 import { MtnDistrictComponent } from './maintenance/mtn-district/mtn-district.component';
 import { MtnInsuredComponent } from './maintenance/mtn-insured/mtn-insured.component';
 import { MtnEndtCodeComponent } from './maintenance/mtn-endt-code/mtn-endt-code.component';
@@ -212,6 +213,26 @@ import { PcvAccEntriesComponent } from './accounting-service/pcv/pcv-acc-entries
 import { MeDataCheckingComponent } from './accounting-service/month-end/me-data-checking/me-data-checking.component';
 import { MeBatchProcComponent } from './accounting-service/month-end/me-batch-proc/me-batch-proc.component';
 import { MeTrialBalProcComponent } from './accounting-service/month-end/me-trial-bal-proc/me-trial-bal-proc.component';
+import { MtnCityComponent } from './maintenance/mtn-city/mtn-city.component';
+import { MtnCrestaZoneComponent } from './maintenance/mtn-cresta-zone/mtn-cresta-zone.component';
+import { MtnCurrencyComponent } from './maintenance/mtn-currency/mtn-currency.component';
+import { FixedAssetsComponent } from './accounting-service/fixed-assets/fixed-assets.component';
+import { AccSRequestForPaymentComponent } from './accounting-service/acc-s-request-for-payment/acc-s-request-for-payment.component';
+import { AccSRequestEntryComponent } from './accounting-service/acc-s-request-for-payment/acc-s-request-entry/acc-s-request-entry.component';
+import { AccSRequestDetailsComponent } from './accounting-service/acc-s-request-for-payment/acc-s-request-details/acc-s-request-details.component';
+import { AccSGenerateRequestComponent } from './accounting-service/acc-s-request-for-payment/acc-s-generate-request/acc-s-generate-request.component';
+import { CheckVoucherServiceComponent } from './accounting-service/check-voucher-service/check-voucher-service.component';
+import { CvEntryServiceComponent } from './accounting-service/check-voucher-service/generate-cv-service/cv-entry-service/cv-entry-service.component';
+import { GenerateCvServiceComponent } from './accounting-service/check-voucher-service/generate-cv-service/generate-cv-service.component';
+import { CvPaymentRequestListServiceComponent } from './accounting-service/check-voucher-service/generate-cv-service/cv-payment-request-list-service/cv-payment-request-list-service.component';
+import { CvPreviewServiceComponent } from './accounting-service/check-voucher-service/generate-cv-service/cv-preview-service/cv-preview-service.component';
+import { CvAttachmentsServiceComponent } from './accounting-service/check-voucher-service/generate-cv-service/cv-attachments-service/cv-attachments-service.component';
+import { JournalVoucherServiceComponent } from './accounting-service/journal-voucher-service/journal-voucher-service.component';
+import { GenerateJvServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/generate-jv-service.component';
+import { JvEntryServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-entry-service/jv-entry-service.component';
+import { JvPreviewServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-preview-service/jv-preview-service.component';
+import { JvAttachmentsServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-attachments-service/jv-attachments-service.component';
+>>>>>>> 127aab0f8ed9ec756734951c6947ce5e38f470f4
 
 
 
@@ -420,6 +441,7 @@ import { MeTrialBalProcComponent } from './accounting-service/month-end/me-trial
         AcctAttachmentComponent,
         PaytReqInvestmentComponent,
         PaymentRequestDetailsComponent,
+        AttachmentOcComponent,
         MtnDistrictComponent,
         MtnInsuredComponent,
         MtnEndtCodeComponent,
@@ -432,6 +454,25 @@ import { MeTrialBalProcComponent } from './accounting-service/month-end/me-trial
         MeDataCheckingComponent,
         MeBatchProcComponent,
         MeTrialBalProcComponent,
+        MtnCityComponent,
+        MtnCrestaZoneComponent,
+        MtnCurrencyComponent,
+        FixedAssetsComponent,
+        AccSRequestForPaymentComponent,
+        AccSRequestEntryComponent,
+        AccSRequestDetailsComponent,
+        AccSGenerateRequestComponent,
+        CheckVoucherServiceComponent,
+        CvEntryServiceComponent,
+        GenerateCvServiceComponent,
+        CvPaymentRequestListServiceComponent,
+        CvPreviewServiceComponent,
+        CvAttachmentsServiceComponent,
+        JournalVoucherServiceComponent,
+        GenerateJvServiceComponent,
+        JvEntryServiceComponent,
+        JvPreviewServiceComponent,
+        JvAttachmentsServiceComponent,
     ],
 
     providers: [

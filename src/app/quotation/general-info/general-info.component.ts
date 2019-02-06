@@ -30,6 +30,9 @@ export class GeneralInfoComponent implements OnInit {
 	line: string;
 	ocChecked: boolean = false;
 
+	currencyAbbr: string = "";
+	currencyRt: number = 0;
+
 
 	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute) { }
 	ngOnInit() {
@@ -187,6 +190,15 @@ export class GeneralInfoComponent implements OnInit {
 	setContractor(data){
 		this.quotationGenInfo.contractor = data.insuredName;
 		this.contractorCd = data.insuredId;
+	}
+
+	showCurrencyModal(){
+		$('#currencyModal #modalBtn').trigger('click');
+	}
+
+	setCurrency(data){
+		this.currencyAbbr = data.currencyAbbr;
+		this.currencyRt = data.currencyRt;
 	}
 
 
