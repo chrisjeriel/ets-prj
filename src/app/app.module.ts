@@ -206,6 +206,11 @@ import { GenerateCvServiceComponent } from './accounting-service/check-voucher-s
 import { CvPaymentRequestListServiceComponent } from './accounting-service/check-voucher-service/generate-cv-service/cv-payment-request-list-service/cv-payment-request-list-service.component';
 import { CvPreviewServiceComponent } from './accounting-service/check-voucher-service/generate-cv-service/cv-preview-service/cv-preview-service.component';
 import { CvAttachmentsServiceComponent } from './accounting-service/check-voucher-service/generate-cv-service/cv-attachments-service/cv-attachments-service.component';
+import { JournalVoucherServiceComponent } from './accounting-service/journal-voucher-service/journal-voucher-service.component';
+import { GenerateJvServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/generate-jv-service.component';
+import { JvEntryServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-entry-service/jv-entry-service.component';
+import { JvPreviewServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-preview-service/jv-preview-service.component';
+import { JvAttachmentsServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-attachments-service/jv-attachments-service.component';
 
 
 
@@ -420,6 +425,11 @@ import { CvAttachmentsServiceComponent } from './accounting-service/check-vouche
         CvPaymentRequestListServiceComponent,
         CvPreviewServiceComponent,
         CvAttachmentsServiceComponent,
+        JournalVoucherServiceComponent,
+        GenerateJvServiceComponent,
+        JvEntryServiceComponent,
+        JvPreviewServiceComponent,
+        JvAttachmentsServiceComponent,
     ],
 
     providers: [

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute,Router } from '@angular/router';
-import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-generate-cv-service',
@@ -14,7 +13,7 @@ export class GenerateCvServiceComponent implements OnInit {
   exitTab: string;
   sub: any;
 
-  constructor(private route: ActivatedRoute ,private router: Router,private titleService: Title) { }
+  constructor(private route: ActivatedRoute ,private router: Router) { }
 
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {

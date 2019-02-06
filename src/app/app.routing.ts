@@ -75,6 +75,8 @@ import { AcctOrListingsComponent } from './accounting-service/acct-or-listings/a
 import { AccountingServiceComponent } from './accounting-service/accounting-service.component';
 import { CheckVoucherServiceComponent } from './accounting-service/check-voucher-service/check-voucher-service.component';
 import { GenerateCvServiceComponent } from './accounting-service/check-voucher-service/generate-cv-service/generate-cv-service.component';
+import { JournalVoucherServiceComponent } from './accounting-service/journal-voucher-service/journal-voucher-service.component';
+import { GenerateJvServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/generate-jv-service.component';
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -156,6 +158,8 @@ const appRoutes: Routes = [
     { path: 'accounting-service', component: AccountingServiceComponent},
     { path: 'check-voucher-service', component: CheckVoucherServiceComponent },
     { path: 'generate-cv-service', component: GenerateCvServiceComponent },
+    { path: 'journal-voucher-service', component: JournalVoucherServiceComponent },
+    { path: 'generate-jv-service', component: GenerateJvServiceComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
