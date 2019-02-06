@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '@environments/environment';
 import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo, PolicyPrinting, PrinterList, ALOPItemInformation, UnderwritingPolicyInquiryInfo, ItemInformation, UnderwritingPolicyDistList, DistributionByRiskInfo, PolicyEndorsement, PolItem_MLP, PolGoods_DOS, PolMachinery_DOS, PolicyInwardPolBalance, PolInwardPolBalanceOtherCharges, PolItem_CEC, TotalPerSection, UnderwritingBatchPosting, UnderwritingBatchDistribution, MaintenanceDeductibles, MaintenanceRisks, CoverageDeductibles } from '@app/_models';
 
@@ -356,10 +356,25 @@ export class UnderwritingService {
     }
     
     getMaintenanceRisksListData(){
-        this.maintenanceRiskListData = [
+        /*this.maintenanceRiskListData = [
             new MaintenanceRisks(true, '00001', 'Filsyn - MBI', 'Filsyn', 'SOUTHERN TAGALOG', 'LAGUNA', 'SANTA ROSA', 'STA.ROSA/BEL-AIR', 'UNBLK', '', ''),
         ];
-        return this.maintenanceRiskListData;
+        return this.maintenanceRiskListData;*/
+
+        const params = new HttpParams()
+                .set('riskId','')
+                .set('riskAbbr','')
+                .set('riskName','')
+                .set('regionDesc','')
+                .set('provinceDesc','')
+                .set('cityDesc','')
+                .set('districtDesc','')
+                .set('blockDesc','')
+                .set('latitude','')
+                .set('longitude','')
+                .set('activeTag','');
+
+        return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMtnRiskListing', {params});
     }
 
     getPolicyBatchPosting() {

@@ -76,6 +76,10 @@ import { AccountingServiceComponent } from './accounting-service/accounting-serv
 import { FixedAssetsComponent } from './accounting-service/fixed-assets/fixed-assets.component';
 import { AccSRequestForPaymentComponent } from './accounting-service/acc-s-request-for-payment/acc-s-request-for-payment.component';
 import { AccSGenerateRequestComponent } from './accounting-service/acc-s-request-for-payment/acc-s-generate-request/acc-s-generate-request.component';
+import { CheckVoucherServiceComponent } from './accounting-service/check-voucher-service/check-voucher-service.component';
+import { GenerateCvServiceComponent } from './accounting-service/check-voucher-service/generate-cv-service/generate-cv-service.component';
+import { JournalVoucherServiceComponent } from './accounting-service/journal-voucher-service/journal-voucher-service.component';
+import { GenerateJvServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/generate-jv-service.component';
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -158,6 +162,10 @@ const appRoutes: Routes = [
     { path: 'fixed-assets', component: FixedAssetsComponent},
     { path: 'acc-s-request-for-payment', component: AccSRequestForPaymentComponent },
     { path: 'acc-s-generate-request', component: AccSGenerateRequestComponent },
+    { path: 'check-voucher-service', component: CheckVoucherServiceComponent },
+    { path: 'generate-cv-service', component: GenerateCvServiceComponent },
+    { path: 'journal-voucher-service', component: JournalVoucherServiceComponent },
+    { path: 'generate-jv-service', component: GenerateJvServiceComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
