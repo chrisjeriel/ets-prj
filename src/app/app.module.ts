@@ -209,6 +209,9 @@ import { PcvListingsComponent } from './accounting-service/pcv/pcv-listings/pcv-
 import { PcvEntryComponent } from './accounting-service/pcv/pcv-entry/pcv-entry.component';
 import { PcvDetailsComponent } from './accounting-service/pcv/pcv-details/pcv-details.component';
 import { PcvAccEntriesComponent } from './accounting-service/pcv/pcv-acc-entries/pcv-acc-entries.component';
+import { MeDataCheckingComponent } from './accounting-service/month-end/me-data-checking/me-data-checking.component';
+import { MeBatchProcComponent } from './accounting-service/month-end/me-batch-proc/me-batch-proc.component';
+import { MeTrialBalProcComponent } from './accounting-service/month-end/me-trial-bal-proc/me-trial-bal-proc.component';
 
 
 
@@ -426,6 +429,9 @@ import { PcvAccEntriesComponent } from './accounting-service/pcv/pcv-acc-entries
         PcvEntryComponent,
         PcvDetailsComponent,
         PcvAccEntriesComponent,
+        MeDataCheckingComponent,
+        MeBatchProcComponent,
+        MeTrialBalProcComponent,
     ],
 
     providers: [

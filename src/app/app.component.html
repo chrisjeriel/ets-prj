@@ -295,6 +295,21 @@
                                 <br />
                                 <button [routerLink]="['accounting-service-pcv-listings']" class="button btn btn-link">Petty Cash Voucher</button>
                                 <br />
+                                <ngb-accordion #acc="ngbAccordion">
+                                    <ngb-panel>
+                                        <ng-template ngbPanelTitle>
+                                            Month End
+                                        </ng-template>
+                                        <ng-template ngbPanelContent>
+                                            <button [routerLink]="['month-end-data-checking']" class="button btn btn-link">Data Checking</button>
+                                            <br />
+                                            <button [routerLink]="['month-end-batch-processing']" class="button btn btn-link">Batch Processing</button>
+                                            <br />
+                                            <button [routerLink]="['month-end-trial-bal-proc']" class="button btn btn-link">Trial Balance Processing</button>
+                                            <br />
+                                        </ng-template>
+                                    </ngb-panel>
+                                </ngb-accordion>
                             </ng-template>
                         </ngb-panel>
                         <ngb-panel>

@@ -1,0 +1,10 @@
+input[type="checkbox"]{
+	vertical-align: text-top;
+}
+
+.text-left{
+	text-align: left !important;
+}
+.input-group {
+    margin-bottom: -14px !important;
+}

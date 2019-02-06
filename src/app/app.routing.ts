@@ -75,6 +75,9 @@ import { AcctOrListingsComponent } from './accounting-service/acct-or-listings/a
 import { AccountingServiceComponent } from './accounting-service/accounting-service.component';
 import { PcvComponent } from './accounting-service/pcv/pcv.component';
 import { PcvListingsComponent } from './accounting-service/pcv/pcv-listings/pcv-listings.component';
+import { MeBatchProcComponent } from './accounting-service/month-end/me-batch-proc/me-batch-proc.component';
+import { MeDataCheckingComponent } from './accounting-service/month-end/me-data-checking/me-data-checking.component';
+import { MeTrialBalProcComponent } from './accounting-service/month-end/me-trial-bal-proc/me-trial-bal-proc.component';
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -156,6 +159,9 @@ const appRoutes: Routes = [
     { path: 'accounting-service', component: AccountingServiceComponent},
     { path: 'accounting-service-pcv-listings', component: PcvListingsComponent},
     { path: 'accounting-service-pcv', component: PcvComponent},
+    { path: 'month-end-batch-processing', component: MeBatchProcComponent},
+    { path: 'month-end-data-checking', component: MeDataCheckingComponent},
+    { path: 'month-end-trial-bal-proc', component: MeTrialBalProcComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
