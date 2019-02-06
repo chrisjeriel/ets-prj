@@ -203,6 +203,9 @@ import { PaytReqInvestmentComponent } from './accounting-in-trust/request-for-pa
 import { CheckVoucherServiceComponent } from './accounting-service/check-voucher-service/check-voucher-service.component';
 import { CvEntryServiceComponent } from './accounting-service/check-voucher-service/generate-cv-service/cv-entry-service/cv-entry-service.component';
 import { GenerateCvServiceComponent } from './accounting-service/check-voucher-service/generate-cv-service/generate-cv-service.component';
+import { CvPaymentRequestListServiceComponent } from './accounting-service/check-voucher-service/generate-cv-service/cv-payment-request-list-service/cv-payment-request-list-service.component';
+import { CvPreviewServiceComponent } from './accounting-service/check-voucher-service/generate-cv-service/cv-preview-service/cv-preview-service.component';
+import { CvAttachmentsServiceComponent } from './accounting-service/check-voucher-service/generate-cv-service/cv-attachments-service/cv-attachments-service.component';
 
 
 
@@ -414,6 +417,9 @@ import { GenerateCvServiceComponent } from './accounting-service/check-voucher-s
         CheckVoucherServiceComponent,
         CvEntryServiceComponent,
         GenerateCvServiceComponent,
+        CvPaymentRequestListServiceComponent,
+        CvPreviewServiceComponent,
+        CvAttachmentsServiceComponent,
     ],
 
     providers: [

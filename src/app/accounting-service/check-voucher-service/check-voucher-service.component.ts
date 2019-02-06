@@ -60,7 +60,7 @@ export class CheckVoucherServiceComponent implements OnInit {
   constructor(private accountingService: AccountingService, private titleService: Title, private router: Router) { }
 
   ngOnInit() {
-    this.titleService.setTitle("Acct-IT | Check Voucher");
+    this.titleService.setTitle("Acct-Service | Check Voucher");
   }
 
   onClickAdd(event){

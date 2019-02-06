@@ -22,13 +22,11 @@ export class GenerateCvServiceComponent implements OnInit {
       this.exitTab = params['tab'] !== undefined ? params['tab'] : '';
     });
 
-    this.titleService.setTitle("Acct-IT | Check Voucher");
   }
 
   onTabChange($event: NgbTabChangeEvent) {
-  		if ($event.nextId === 'Exit') {
-    		this.router.navigate([this.exitLink,{tabID:this.exitTab}],{ skipLocationChange: true });
-  		} 
-  
+    if ($event.nextId === 'Exit') {
+      this.router.navigateByUrl('check-voucher-service');
+    }
   }
 }
