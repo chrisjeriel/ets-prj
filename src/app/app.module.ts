@@ -203,6 +203,7 @@ import { PaytReqInvestmentComponent } from './accounting-in-trust/request-for-pa
 import { MtnDistrictComponent } from './maintenance/mtn-district/mtn-district.component';
 import { MtnInsuredComponent } from './maintenance/mtn-insured/mtn-insured.component';
 import { MtnEndtCodeComponent } from './maintenance/mtn-endt-code/mtn-endt-code.component';
+import { CvAccEntriesComponent } from './accounting-in-trust/check-voucher/generate-cv/cv-acc-entries/cv-acc-entries.component';
 
 
 
@@ -414,6 +415,7 @@ import { MtnEndtCodeComponent } from './maintenance/mtn-endt-code/mtn-endt-code.
         MtnDistrictComponent,
         MtnInsuredComponent,
         MtnEndtCodeComponent,
+        CvAccEntriesComponent,
     ],
 
     providers: [
