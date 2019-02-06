@@ -35,6 +35,7 @@ export class InternalCompetitionComponent implements OnInit {
         infoFlag: true,
         checkFlag: true,
         pageLength: 10,
+        widths: [1,'auto','auto',1,'auto', 'auto', 1, 1, 1, 1],
         keys: ['advNo', 'company', 'attention', 'position', 'advOpt', 'advWord', 'createdBy', 'dateCreated', 'lastUpdateBy', 'lastUpdate'],
     }
 
