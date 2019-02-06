@@ -140,7 +140,7 @@ export class CustNonDatatableComponent implements OnInit {
     startWidth: any;
     autoFill: number[];
 
-    displayData:any[];
+    displayData:any[]= [];
 
     unliFlag: boolean = false;
     sortBy:boolean = true;
@@ -163,6 +163,18 @@ export class CustNonDatatableComponent implements OnInit {
         
     }
 
+    refreshTable(){
+        for(var i = 0 ;i<this.passData.tableData.length;i++){
+            this.displayData[i] = this.passData.tableData[i];
+        }
+        
+        console.log(this.passData.tableData);
+        //this.displayData = JSON.parse(JSON.stringify( this.passData.tableData));
+        this.displayLength = this.displayData.length;
+        this.unliTableLength();
+        this.addFiller();
+    }
+
     ngOnInit(): void {
         this.passData.btnDisabled = false;
         this.passData.pageID = typeof this.passData.pageID == "undefined" ? 1 : this.passData.pageID;
@@ -173,15 +185,16 @@ export class CustNonDatatableComponent implements OnInit {
         this.passData.tableData = typeof this.passData.tableData == 'undefined' ? [['No Data']] : this.passData.tableData;
         this.unliTableLength();
         
-        if (this.passData.tableData.length > 0) {
+        if (this.passData.tableData.length > 0 && this.dataKeys.length == 0 ) {
             this.dataKeys = Object.keys(this.passData.tableData[0]);
         } else {
-            if(this.tHeader.length <= 0)
-            this.tHeader.push("No Data");
+            this.dataKeys = this.passData.keys;
         }
-        this.displayData = JSON.parse(JSON.stringify( this.passData.tableData));
-        this.displayLength = this.displayData.length;
-        this.addFiller();
+
+        // this.displayData = JSON.parse(JSON.stringify( this.passData.tableData));
+        // this.displayLength = this.displayData.length;
+        // this.addFiller();
+        this.refreshTable();
         
         for (var i = this.dataKeys.length - 1; i >= 0; i--) {
            this.fillData[this.dataKeys[i]] = null;
@@ -261,7 +274,6 @@ export class CustNonDatatableComponent implements OnInit {
         /*for(var i = 0; i < event.target.parentElement.children.length; i++) {
             event.target.parentElement.children[i].style.backgroundColor = "";
         }
-
         event.target.parentElement.parentElement.style.backgroundColor = "#67b4fc";
         console.log(event.target.parentElement.parentElement);*/
         this.rowClick.emit(data);

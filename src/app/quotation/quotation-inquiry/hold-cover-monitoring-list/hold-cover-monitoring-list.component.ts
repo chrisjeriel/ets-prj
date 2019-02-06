@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , ViewChild} from '@angular/core';
 import { Router } from '@angular/router';
 
 import { QuotationService } from '../../../_services';
 import { Title } from '@angular/platform-browser';
+import { HoldCoverMonitoringList } from '@app/_models/quotation-list';
+import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 
 @Component({
     selector: 'app-hold-cover-monitoring-list',
@@ -10,6 +12,8 @@ import { Title } from '@angular/platform-browser';
     styleUrls: ['./hold-cover-monitoring-list.component.css']
 })
 export class HoldCoverMonitoringListComponent implements OnInit {
+    @ViewChild(CustNonDatatableComponent) table:CustNonDatatableComponent; 
+    private holdCoverMonitoringList: HoldCoverMonitoringList;
 
     tableData: any[] = [];
     tHeader: any[] = [];
@@ -86,7 +90,9 @@ export class HoldCoverMonitoringListComponent implements OnInit {
 
         ],
         pageLength: 10,
-        expireFilter: true, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: true, pagination: true, pageStatus: true
+        expireFilter: true, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: true, pagination: true, pageStatus: true,
+        keys: ['holdCoverNo','status','cedingName','quotationNo','riskName',
+            'insuredDesc','periodFrom','periodTo','compRefHoldCovNo','reqBy','reqDate']
     }
 
     ngOnInit() {
@@ -115,7 +121,42 @@ export class HoldCoverMonitoringListComponent implements OnInit {
         this.passData.dataTypes.push("text");
         this.passData.dataTypes.push("date");
 
-        this.passData.tableData = this.quotationService.getQuotationHoldCoverInfo();
+        //this.passData.tableData = this.quotationService.getQuotationHoldCoverInfo();
+    
+        //this.holdCoverMonitoringList = new HoldCoverMonitoringList(null,null,null,null,null,null,null,null,null,null,null);
+        this.quotationService.getQuotationHoldCoverInfo()
+            .subscribe(val =>
+                {
+                    console.log(val);
+                    for(let i of val['quotationList']){
+                            // this.holdCoverMonitoringList.holdCoverNo        = i.holdCover.holdCoverNo;
+                            // this.holdCoverMonitoringList.status             = i.holdCover.status;
+                            // this.holdCoverMonitoringList.cedingCompany      = i.cedingName;
+                            // this.holdCoverMonitoringList.quotationNo        = i.quotationNo;
+                            // this.holdCoverMonitoringList.risk               = i.project.riskName;
+                            // this.holdCoverMonitoringList.insured            = i.insuredDesc;
+                            // this.holdCoverMonitoringList.periodFrom         = i.holdCover.periodFrom;
+                            // this.holdCoverMonitoringList.periodTo           = i.holdCover.periodTo;
+                            // this.holdCoverMonitoringList.compRefHoldCoverNo = i.holdCover.compRefHoldCovNo;
+                            // this.holdCoverMonitoringList.requestedBy        = i.holdCover.reqBy;
+                            // this.holdCoverMonitoringList.requestDate        = i.holdCover.reqDate;
+                         this.passData.tableData.push(new HoldCoverMonitoringList(
+                            i.holdCover.holdCoverNo,
+                            i.holdCover.status,
+                            i.cedingName,
+                            i.quotationNo,
+                            i.project.riskName,
+                            i.insuredDesc,
+                            new Date(this.formatDate(i.holdCover.periodFrom)),
+                            new Date(this.formatDate(i.holdCover.periodTo)),
+                            i.holdCover.compRefHoldCovNo,
+                            i.holdCover.reqBy,
+                            new Date(this.formatDate(i.holdCover.reqDate))
+                         ));
+                    }
+                    this.table.refreshTable();
+                }
+            );
     }
     onRowClick(event) {
         for (var i = 0; i < event.target.parentElement.children.length; i++) {
@@ -134,4 +175,12 @@ export class HoldCoverMonitoringListComponent implements OnInit {
         this.quotationService.toGenInfo.push("edit", this.line);
         this.router.navigate(['/quotation']);
     }
+
+    formatDate(date){
+        // if(date[1] < 9){
+        //   return date[0] + "-" + '0'+ date[1] + "-" + date[2];
+        // }else{
+          return date[0] + "-" +date[1] + "-" + date[2];
+        //}
+      }
 }

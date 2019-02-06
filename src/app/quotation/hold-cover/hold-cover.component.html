@@ -17,25 +17,25 @@
                                     <div class="input-group">
                                         <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Quotation No</label>
-                                            <input type="text" class="form-control form-control-sm cap-input col-sm-1" ngbTooltip="Line" [(ngModel)]="quoteLine">
-                                            <input type="text" class="form-control form-control-sm cap-input col-sm-1" ngbTooltip="Year" style="margin-left: 2px;">
-                                            <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Sequence No" style="margin-left: 2px;">
-                                            <input type="text" class="form-control form-control-sm cap-input col-sm-1" ngbTooltip="Revision No" style="margin-left: 2px;">
-                                            <input type="text" class="form-control form-control-sm cap-input col-sm-1" ngbTooltip="Company No" style="margin-left: 2px;">
+                                            <input type="text" class="form-control form-control-sm cap-input col-sm-1" ngbTooltip="Line" [(ngModel)]="qLine">
+                                            <input type="text" class="form-control form-control-sm cap-input col-sm-1" ngbTooltip="Year" style="margin-left: 2px;" [(ngModel)]="qYear">
+                                            <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Sequence No" style="margin-left: 2px;" [(ngModel)]="qSeqNo">
+                                            <input type="text" class="form-control form-control-sm cap-input col-sm-1" ngbTooltip="Revision No" style="margin-left: 2px;" [(ngModel)]="qRevNo">
+                                            <input type="text" class="form-control form-control-sm cap-input col-sm-1" ngbTooltip="Company No" style="margin-left: 2px;" [(ngModel)]="qCedingId">
                                             <span>&nbsp;</span>
                                             <div class="text-search-ico"><a (click)="search()"><i class="fa fa-search"></i></a></div>
                                         </div>
                                         <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Ceding Company</label>
-                                            <input type="text" class="form-control form-control-sm">
+                                            <input type="text" class="form-control form-control-sm"  [(ngModel)]="holdCoverInfo.cedingCompany">
                                         </div>
                                         <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Insured</label>
-                                            <input type="text" class="form-control form-control-sm">
+                                            <input type="text" class="form-control form-control-sm" [(ngModel)]="holdCoverInfo.insured">
                                         </div>
                                         <div class="input-group" style="margin-bottom: -9px !important;">
                                             <label class="form-control-sm col-sm-2">Risk</label>
-                                            <input type="text" class="form-control form-control-sm">
+                                            <input type="text" class="form-control form-control-sm" [(ngModel)]="holdCoverInfo.risk">
                                         </div>
                                     </div>
                                 </div>
@@ -60,35 +60,35 @@
                                         <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Hold Cover No</label>
                                             <input type="text" class="form-control form-control-sm col-sm cap-input col-sm-1" ngbTooltip="HC Prefix" value="HC">
-                                            <input type="text" class="form-control form-control-sm col-sm cap-input col-sm-1" ngbTooltip="Line" style="margin-left: 2px;">
-                                            <input type="text" class="form-control form-control-sm col-sm cap-input col-sm-1" ngbTooltip="Year" style="margin-left: 2px;">
-                                            <input type="text" class="form-control form-control-sm col-sm col-sm-2" style="margin-left: 2px;" ngbTooltip="Sequence No">
-                                            <input type="text" class="form-control form-control-sm col-sm col-sm-1" style="margin-left: 2px;"ngbTooltip="Revision No">
+                                            <input type="text" class="form-control form-control-sm col-sm cap-input col-sm-1" ngbTooltip="Line" style="margin-left: 2px;"[(ngModel)]="hcLine" >
+                                            <input type="text" class="form-control form-control-sm col-sm cap-input col-sm-1" ngbTooltip="Year" style="margin-left: 2px;" [(ngModel)]="hcYear">
+                                            <input type="text" class="form-control form-control-sm col-sm col-sm-2" style="margin-left: 2px;" ngbTooltip="Sequence No" [(ngModel)]="hcSeqNo">
+                                            <input type="text" class="form-control form-control-sm col-sm col-sm-1" style="margin-left: 2px;"ngbTooltip="Revision No" [(ngModel)]="hcRevNo">
 
                                         </div>
                                          <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Period From</label>
-                                            <input type="date" class="form-control form-control-sm cust-sm" id="inputQuotation">
+                                            <input type="date" class="form-control form-control-sm cust-sm" id="inputQuotation" [(ngModel)]="holdCoverInfo.periodFrom">
                                             <label class="form-control-sm col-sm-2">Requested By</label>
-                                            <input type="text" class="form-control form-control-sm col-sm-7">
+                                            <input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="holdCoverInfo.requestedBy">
                                         </div>
                                         <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Period To</label>
-                                            <input type="date" class="form-control form-control-sm cust-sm" id="inputQuotation">
+                                            <input type="date" class="form-control form-control-sm cust-sm" id="inputQuotation" [(ngModel)]="holdCoverInfo.periodTo">
                                             <label class="form-control-sm col-sm-2">Request Date</label>
-                                            <input type="date" class="form-control form-control-sm cust-sm col-sm-7" id="inputQuotation">
+                                            <input type="date" class="form-control form-control-sm cust-sm col-sm-7" id="inputQuotation" [(ngModel)]="holdCoverInfo.requestDate">
                                         </div>
                                         <div class="input-group" style="margin-bottom: -14px !important;">
-                                            <label class="form-control-sm col-sm-2">Co. Ref. Hold Cover No</label>
-                                            <input type="text" class="form-control form-control-sm">
+                                            <label class="form-control-sm col-sm-3" style="margin-left: -62px !important;  margin-right: 1px !important;">Co. Ref. Hold Cover No</label>
+                                            <input type="text" class="form-control form-control-sm" [(ngModel)]="holdCoverInfo.coRefHoldCoverNo">
                                             <label class="form-control-sm col-sm-2">Prepared By</label>
-                                            <input type="text" class="form-control form-control-sm col-sm-7">
+                                            <input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="holdCoverInfo.preparedBy">
                                         </div>
                                         <div class="input-group" style="margin-bottom: -9px !important;">
                                             <label class="form-control-sm col-sm-2">Status</label>
-                                            <input type="text" class="form-control form-control-sm">
+                                            <input type="text" class="form-control form-control-sm" [(ngModel)]="holdCoverInfo.status">
                                             <label class="form-control-sm col-sm-2">Approved By</label>
-                                            <input type="text" class="form-control form-control-sm col-sm-7">
+                                            <input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="holdCoverInfo.approvedBy">
                                         </div>
                                     </div>
                                 </div>
