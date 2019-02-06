@@ -10,7 +10,7 @@ import { NullTemplateVisitor } from '@angular/compiler';
 
 @Injectable({ providedIn: 'root' })
 export class QuotationService {
-    quotataionOption: QuotationOption[] = [];
+    quotationOption: QuotationOption[] = [];
     quotataionOtherRates: QuotationOtherRates[] = [];
     dummyInfoData: DummyInfo[] = [];
     endorsementData: QuoteEndorsement[] = [];
@@ -245,7 +245,11 @@ export class QuotationService {
                 .set('issueDate','')
                 .set('expiryDate','')
                 .set('reqBy','')
-                .set('createUser','')
+                .set('createUser','');
+                // .set('paginationRequest.position',null)
+                // .set('paginationRequest.count',null)
+                // .set('sortRequest.sortKey',null)
+                // .set('sortRequest.order',null);
 
         
         return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteListing', {params});
@@ -254,16 +258,22 @@ export class QuotationService {
 
 
     getQuoteOptions() {
-        this.quotataionOption = [
+        /*this.quotationOption = [
             new QuotationOption(1, 5.05, "Condition", 6, 8, 5),
             new QuotationOption(2, 8, "Stable", 7, 4, 3),
             new QuotationOption(3, 9, "Good", 6, 43, 2)
         ];
-        return this.quotataionOption;
+        return this.quotationOption;*/
+
+        const params = new HttpParams()
+                .set('quoteId','')
+                .set('quotationNo','');
+
+        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteOption', {params});
     }
 
     getQuotataionOtherRates(optionNo: number) {
-        this.quotataionOtherRates = [
+        /*this.quotataionOtherRates = [
             new QuotationOtherRates(1, 'Others11', 50, 25000),
             new QuotationOtherRates(1, 'Others12', 41, 25000),
             new QuotationOtherRates(1, 'Others13', 75, 750000),
@@ -281,7 +291,7 @@ export class QuotationService {
             return itm.optionNo == optionNo;
         });
         quotataionOtherRates.forEach(function (itm) { delete itm.optionNo; });
-        return quotataionOtherRates;
+        return quotataionOtherRates;*/
     }
 
 
@@ -353,7 +363,7 @@ export class QuotationService {
     }
 
     getOpenCoverProcessingData() {
-        this.openCoverProcessing = [
+        /*this.openCoverProcessing = [
             new OpenCoverProcessing('OC-CAR-2015-00088-00-99', 'Direct', 'CAR Wet Risks', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
                 new Date('2015-03-09'), 'Requestor', 'Creator'),
             new OpenCoverProcessing('OC-CAR-2015-00088-00-78', 'Retrocession', 'CAR Wet Risks', 'Concluded', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
@@ -372,7 +382,31 @@ export class QuotationService {
                 new Date('2015-03-09'), 'Requestor', 'Creator'),
         ];
 
-        return this.openCoverProcessing;
+        return this.openCoverProcessing;*/
+
+        const params = new HttpParams()
+                .set('quotationNo','')
+                .set('cessionDesc','')
+                .set('lineClassCdDesc','')
+                .set('status','')
+                .set('cedingName','')
+                .set('principalName','')
+                .set('contractorName','')
+                .set('insuredDesc','')
+                .set('riskName','')
+                .set('objectDesc','')
+                .set('site','')
+                .set('currencyCd','')
+                .set('issueDate','')
+                .set('expiryDate','')
+                .set('reqBy','')
+                .set('createUser','');
+                // .set('paginationRequest.position',null)
+                // .set('paginationRequest.count',null)
+                // .set('sortRequest.sortKey',null)
+                // .set('sortRequest.order',null);
+
+        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteListingOc', {params});
     }
 
 

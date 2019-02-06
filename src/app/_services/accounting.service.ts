@@ -259,7 +259,7 @@ export class AccountingService {
 
 	getARInwdPolBalDetails() {
 		this.arInwdPolBalDetails = [
-			new ARInwdPolBalDetails("CAR-2018-00001-99-0001-000","CAR-2018-00001-99-0001-000", "EN-CAR-HO-18","01","Payment", new Date('09/25/2018'),new Date('09/25/2018'), "PHP",1, 3000000, 0, 0, 1642857.14, 1357142.86, 0, 1642857.14),
+			new ARInwdPolBalDetails("CAR-2018-00001-99-0001-000","CAR-2018-00001-99-0001-000", "EN-CAR-HO-18","01","Payment", new Date('09/25/2018'),new Date('09/25/2018'), "PHP",1, 3000000, 0, 0, 1642857.14, 1357142.86, 1642857.14,0),
 		]
 		return this.arInwdPolBalDetails;
 	}

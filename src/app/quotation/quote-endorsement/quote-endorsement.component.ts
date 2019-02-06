@@ -68,7 +68,7 @@ export class QuoteEndorsementComponent implements OnInit {
         this.quotationInfo = new QuotationInfo();
         this.quotationInfo.quotationNo = "SMP-0000-0000-00";
         this.quotationInfo.insuredName = "Insured Name";
-        this.quoteOptionTableData = this.quotationService.getQuoteOptions();
+        //this.quoteOptionTableData = this.quotationService.getQuoteOptions();
 
         this.tableData = this.quotationService.getEndorsements(1);
 

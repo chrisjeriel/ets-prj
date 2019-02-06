@@ -48,47 +48,52 @@ export class QuotationProcessingComponent implements OnInit {
             dataType: 'text'
         },
         {
-            key: 'cessionType',
+            key: 'cessionDesc',
             title: 'Type of Cession',
             dataType: 'text'
         },
         {
-            key: 'lineClass',
+            key: 'lineClassCdDesc',
             title: 'Line Class',
             dataType: 'text'
         },
         {
-            key: 'quoteStatus',
-            title: 'Quote Status',
+            key: 'status',
+            title: 'Status',
             dataType: 'text'
         },
         {
-            key: 'cedingCompany',
+            key: 'cedingName',
             title: 'Ceding Co.',
             dataType: 'text'
         },
         {
-            key: 'principal',
+            key: 'principalName',
             title: 'Principal',
             dataType: 'text'
         },
         {
-            key: 'insured',
+            key: 'contractorName',
+            title: 'Contractor',
+            dataType: 'text'
+        },
+        {
+            key: 'insuredDesc',
             title: 'Insured',
             dataType: 'text'
         },
         {
-            key: 'risk',
+            key: 'riskName',
             title: 'Risk',
             dataType: 'text'
         },
         {
-            key: 'object',
+            key: 'objectDesc',
             title: 'Object',
             dataType: 'text'
         },
         {
-            key: 'location',
+            key: 'site',
             title: 'Site',
             dataType: 'text'
         },
@@ -98,27 +103,27 @@ export class QuotationProcessingComponent implements OnInit {
             dataType: 'text'
         },
         {
-            key: 'currency',
-            title: 'Currency.',
+            key: 'currencyCd',
+            title: 'Currency',
             dataType: 'text'
         },
         {
-            key: 'quoteDate',
-            title: 'Quote Date.',
+            key: 'issueDate',
+            title: 'Quote Date',
             dataType: 'date'
         },
         {
-            key: 'validUntil',
+            key: 'expiryDate',
             title: 'Valid Until',
             dataType: 'date'
         },
         {
-            key: 'requestedBy',
+            key: 'reqBy',
             title: 'Requested By',
             dataType: 'text'
         },
         {
-            key: 'createdBy',
+            key: 'createUser',
             title: 'Created By',
             dataType: 'text'
         },
@@ -141,8 +146,6 @@ export class QuotationProcessingComponent implements OnInit {
         pageID: 2
     }
 
-    records: any[];
-
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private router: Router
         , public activeModal: NgbActiveModal, private titleService: Title
         ) { }
@@ -154,9 +157,28 @@ export class QuotationProcessingComponent implements OnInit {
         this.riskData.tableData = this.quotationService.getRisksLOV();
 
         this.quotationService.getQuoProcessingData().subscribe(data => {
-            this.records = data['quotationList'];
-            for(let record of this.records){
-                this.passData.tableData.push(record);
+            var records = data['quotationList'];
+
+            for(let rec of records){
+                this.passData.tableData.push(new QuotationProcessing(
+                                                rec.quotationNo,
+                                                rec.cessionDesc,
+                                                rec.lineClassCdDesc,
+                                                rec.status,
+                                                rec.cedingName,
+                                                rec.principalName,
+                                                rec.contractorName,
+                                                rec.insuredDesc,
+                                                (rec.project == null) ? '' : rec.project.riskName,
+                                                (rec.project == null) ? '' : rec.project.objectDesc,
+                                                (rec.project == null) ? '' : rec.project.site,
+                                                rec.policyNo,
+                                                rec.currencyCd,
+                                                this.dateParser(rec.issueDate),
+                                                this.dateParser(rec.expiryDate),
+                                                rec.reqBy,
+                                                rec.createUser
+                                            ));
             }
 
             this.table.refreshTable();
@@ -249,5 +271,9 @@ showApprovalModal(content) {
 closeModalPls(content) {
     this.activeModal = content;
     this.activeModal.dismiss;
+}
+
+dateParser(arr){
+    return new Date(arr[0] + '-' + arr[1] + '-' + arr[2]);   
 }
 }

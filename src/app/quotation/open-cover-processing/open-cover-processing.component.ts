@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { QuotationService } from '../../_services';
 import { OpenCoverProcessing } from '../../_models';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
+import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 
 @Component({
   selector: 'app-open-cover-processing',
@@ -13,6 +14,7 @@ import { Title } from '@angular/platform-browser';
 })
 
 export class OpenCoverProcessingComponent implements OnInit {
+  @ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
   tableData: any[] = [];
   tHeader: any[] = [];
   dataTypes: any[] = [];
@@ -33,87 +35,93 @@ export class OpenCoverProcessingComponent implements OnInit {
     pageLength: 10,
     expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: true, printBtn: false, pagination: true, pageStatus: true,
     filters: [
-      {
-        key: 'openCoverQuotationNo',
-        title: 'OC Quo. No',
-        dataType: 'text'
-      },
-      {
-        key: 'typeOfCession',
-        title: 'Type of Cession',
-        dataType: 'text'
-      },
-      {
-        key: 'lineClass',
-        title: 'Line Class',
-        dataType: 'text'
-      },
-      {
-        key: 'status',
-        title: 'Status',
-        dataType: 'text'
-      },
-      {
-        key: 'cedingCompany',
-        title: 'Ceding Co',
-        dataType: 'text'
-      },
-      {
-        key: 'principal',
-        title: 'Principal',
-        dataType: 'text'
-      },
-      {
-        key: 'contractor',
-        title: 'Contractor',
-        dataType: 'text'
-      },
-      {
-        key: 'insured',
-        title: 'Insured',
-        dataType: 'text'
-      },
-      {
-        key: 'risk',
-        title: 'Risk',
-        dataType: 'text'
-      },
-      {
-        key: 'qObject',
-        title: 'Object',
-        dataType: 'text'
-      },
-      {
-        key: 'site',
-        title: 'Site',
-        dataType: 'text'
-      },
-      {
-        key: 'currency',
-        title: 'Currency',
-        dataType: 'text'
-      },
-      {
-        key: 'quoteDate',
-        title: 'Quote Date',
-        dataType: 'date'
-      },
-      {
-        key: 'validatyDate',
-        title: 'Validity Date',
-        dataType: 'date'
-      },
-      {
-        key: 'requestBy',
-        title: 'Requested By',
-        dataType: 'text'
-      },
-      {
-        key: 'createBy',
-        title: 'Created By',
-        dataType: 'text'
-      },
+        {
+            key: 'quotationNo',
+            title: 'Quotation No.',
+            dataType: 'text'
+        },
+        {
+            key: 'cessionDesc',
+            title: 'Type of Cession',
+            dataType: 'text'
+        },
+        {
+            key: 'lineClassCdDesc',
+            title: 'Line Class',
+            dataType: 'text'
+        },
+        {
+            key: 'status',
+            title: 'Status',
+            dataType: 'text'
+        },
+        {
+            key: 'cedingName',
+            title: 'Ceding Co.',
+            dataType: 'text'
+        },
+        {
+            key: 'principalName',
+            title: 'Principal',
+            dataType: 'text'
+        },
+        {
+            key: 'contractorName',
+            title: 'Contractor',
+            dataType: 'text'
+        },
+        {
+            key: 'insuredDesc',
+            title: 'Insured',
+            dataType: 'text'
+        },
+        {
+            key: 'riskName',
+            title: 'Risk',
+            dataType: 'text'
+        },
+        {
+            key: 'objectDesc',
+            title: 'Object',
+            dataType: 'text'
+        },
+        {
+            key: 'site',
+            title: 'Site',
+            dataType: 'text'
+        },
+        {
+            key: 'policyNo',
+            title: 'Policy No.',
+            dataType: 'text'
+        },
+        {
+            key: 'currencyCd',
+            title: 'Currency',
+            dataType: 'text'
+        },
+        {
+            key: 'issueDate',
+            title: 'Quote Date',
+            dataType: 'date'
+        },
+        {
+            key: 'expiryDate',
+            title: 'Valid Until',
+            dataType: 'date'
+        },
+        {
+            key: 'reqBy',
+            title: 'Requested By',
+            dataType: 'text'
+        },
+        {
+            key: 'createUser',
+            title: 'Created By',
+            dataType: 'text'
+        },
     ],
+    keys: ['quotationNo','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','insuredDesc','riskName','objectDesc','site','currencyCd','issueDate','expiryDate','reqBy','createUser']
   }
 
   constructor(private quotationService: QuotationService, private modalService: NgbModal, private router: Router
@@ -123,8 +131,34 @@ export class OpenCoverProcessingComponent implements OnInit {
   ngOnInit() {
     this.titleService.setTitle("Quo | Open Cover Processing");
     this.rowData = this.quotationService.getRowData();
-    this.passData.tableData = this.quotationService.getOpenCoverProcessingData();
+    // this.passData.tableData = this.quotationService.getOpenCoverProcessingData();
     
+    this.quotationService.getOpenCoverProcessingData().subscribe(data => {
+      var records = data['quotationOcList'];
+
+      for(let rec of records){
+        this.passData.tableData.push(new OpenCoverProcessing(
+            rec.quotationNo,
+            rec.cessionDesc,
+            rec.lineClassCdDesc,
+            rec.status,
+            rec.cedingName,
+            rec.principalName,
+            rec.contractorName,
+            rec.insuredDesc,
+            (rec.project == null) ? '' : rec.project.riskName,
+            (rec.project == null) ? '' : rec.project.objectDesc,
+            (rec.project == null) ? '' : rec.project.site,
+            rec.currencyCd,
+            this.dateParser(rec.issueDate),
+            this.dateParser(rec.expiryDate),
+            rec.reqBy,
+            rec.createUser
+          ));
+      }
+
+      this.table.refreshTable();
+    });
   }
 
   
@@ -195,6 +229,10 @@ export class OpenCoverProcessingComponent implements OnInit {
   closeModalPls(content) {
     this.activeModal = content;
     this.activeModal.dismiss;
+  }
+
+  dateParser(arr){
+    return new Date(arr[0] + '-' + arr[1] + '-' + arr[2]);   
   }
 
 }
