@@ -101,8 +101,7 @@ export class QuoteEndorsementComponent implements OnInit {
                       this.endorsementsData.tableData.pop();
                 }*/
                 this.endorsementsData = data.endorsements;   
-                console.log(this.endorsementsData);
-                console.log(this.endorsementsData[1].endtCd);             
+                console.log(this.endorsementsData);            
 /*
                 this.endorsementData.tableData.push();*/
               /*  for (var i = this.endorsementsData.length - 1; i >= 0; i--) {
@@ -111,8 +110,7 @@ export class QuoteEndorsementComponent implements OnInit {
                 this.table.refreshTable();*/
             });
         }
-         this.endorsementData.tableData.push({ endtCode: this.endorsementsData[1].endtCd , endtTitle: this.endorsementsData[1].endtCd , 
-                    endtDescription: this.endorsementsData[1].description, endtWording: this.endorsementsData[1].remarks })
+        
 
         
     }

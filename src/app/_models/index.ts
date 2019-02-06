@@ -85,3 +85,5 @@ export * from './AccountingOrPreviewTaxDet';
 export * from './AccountingOrPreviewCredWtaxDet';
 export * from './AccountingSOthersOr';
 export * from './AccountingORSerFeeLoc';
+export * from './AccSrvEditTaxDetails';
+export * from './AccSrvEditWTaxDetails';

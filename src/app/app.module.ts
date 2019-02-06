@@ -201,6 +201,7 @@ import { ArPaymentforAdvancesComponent } from './accounting-in-trust/ar-details/
 import { AcctAttachmentComponent } from './accounting-service/official-receipt/generate-or/acct-attachment/acct-attachment.component';
 import { PaytReqInvestmentComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/payt-req-investment/payt-req-investment.component';
 import { MtnDistrictComponent } from './maintenance/mtn-district/mtn-district.component';
+import { UtilitiesComponent } from './accounting-service/utilities/utilities.component';
 
 
 
@@ -410,6 +411,7 @@ import { MtnDistrictComponent } from './maintenance/mtn-district/mtn-district.co
         PaytReqInvestmentComponent,
         PaymentRequestDetailsComponent,
         MtnDistrictComponent,
+        UtilitiesComponent,
     ],
 
     providers: [

@@ -2,7 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, 
-	PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AccServiceAttachment, PaymentForAdvances, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, ARUnappliedCollection, AROthers, AccountingSOthersOr, AccORSerFeeLoc, OfficialReceipt, ORPrevAmountDetails, ORPrevAccEntries, ORPreVATDetails , ORPreCreditableWTaxDetails   } from '@app/_models';
+	PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, 
+	PremiumReturn, AccServiceAttachment, PaymentForAdvances, AccountingItClaimCashCallAr, 
+	AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, 
+	ARUnappliedCollection, AROthers, AccountingSOthersOr, AccORSerFeeLoc, OfficialReceipt, 
+	ORPrevAmountDetails, ORPrevAccEntries, ORPreVATDetails , ORPreCreditableWTaxDetails,
+	TaxDetails, WTaxDetails  } from '@app/_models';
 
 @Injectable({
 	providedIn: 'root'
@@ -66,6 +71,8 @@ export class AccountingService {
 	orPreCreditableWTaxDetails : ORPreCreditableWTaxDetails[] = [];
 	accountingSOthersOrData: AccountingSOthersOr[] = [];
 	accORSerFeeLoc: AccORSerFeeLoc[] = [];
+	taxDetails: TaxDetails[] = [];
+	wTaxDetails: WTaxDetails[] = [];
 
 
 	constructor(private http: HttpClient) { }
@@ -511,7 +518,7 @@ export class AccountingService {
 
 	getAccJVInPolBal() {
 		this.accJvInPolBal = [
-			new AccJvInPolBal('CAR-2018-00001-99-0001-000', '01', new Date("09/25/2018"), 'PHP', 3000000, 0.00, 0.00, 1642857.14, 1357142.86, 0.00, 1642857.14),
+			new AccJvInPolBal('CAR-2018-00001-99-0001-000','CAR-2018-00001-99-0001-000','EN-CAR-2018-00001-99-0001-000', 1, 'Payment', new Date("09/25/2018"), new Date("09/25/2018"), 'PHP', 1.0, 3000000, 0.00, 0.00, 1642857.14, 1357142.86, 1642857.14, 0.00),
 		];
 
 		return this.accJvInPolBal;
@@ -704,5 +711,24 @@ export class AccountingService {
 
 		return this.accountingSOthersOrData;
 	}
+
+	getTaxDetails(){
+		this.taxDetails = [
+			new TaxDetails("Output", "Services", "Payor", 25012, 3001.44),
+		];
+
+		return this.taxDetails;
+	}
+
+	getWTaxDetails(){
+		this.wTaxDetails = [
+			new WTaxDetails("WC002","WTax on Investment Income PHP", 2.00, "BPI/INSURANCE CORPORATION", 25012, 500.24),
+		];
+
+		return this.wTaxDetails;
+	}
+
+
+
 
 }
