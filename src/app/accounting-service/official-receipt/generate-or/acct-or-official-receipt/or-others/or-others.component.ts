@@ -22,7 +22,7 @@ export class OrOthersComponent implements OnInit {
     checkFlag: true,
     genericBtn: 'Save',
     total: [null, null, null, 'Total', 'amount', 'amountPhp'],
-    widths: ['auto','auto',1,1,80,1],
+    widths: ['auto',400,1,100,'auto','auto'],
   }
 
   constructor(private accountingService: AccountingService) { }
