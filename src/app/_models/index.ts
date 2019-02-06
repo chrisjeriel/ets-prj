@@ -87,3 +87,4 @@ export * from './AccountingSOthersOr';
 export * from './AccountingORSerFeeLoc';
 export * from './AccountingSFixedAssets';
 export * from './AccountingSMonthlyDepreciationDetails';
+export * from './AccountingSPaytReq';

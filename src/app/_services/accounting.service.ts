@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, 
-	PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AccServiceAttachment, PaymentForAdvances, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, ARUnappliedCollection, AROthers, AccountingSOthersOr, AccORSerFeeLoc, OfficialReceipt, ORPrevAmountDetails, ORPrevAccEntries, ORPreVATDetails , ORPreCreditableWTaxDetails, AccountingSFixedAssets, AccountingSMonthlyDepreciationDetails   } from '@app/_models';
+	PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AccServiceAttachment, PaymentForAdvances, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, ARUnappliedCollection, AROthers, AccountingSOthersOr, AccORSerFeeLoc, OfficialReceipt, ORPrevAmountDetails, ORPrevAccEntries, ORPreVATDetails , ORPreCreditableWTaxDetails, AccountingSFixedAssets, AccountingSMonthlyDepreciationDetails, AccountingSPaytReqCheckVoucher, AccountingSPaytReqPettyCashVoucher, AccountingSPaytReqPRMFE, AccountingSPaytReqOthers   } from '@app/_models';
 
 @Injectable({
 	providedIn: 'root'
@@ -68,7 +68,10 @@ export class AccountingService {
 	accORSerFeeLoc: AccORSerFeeLoc[] = [];
 	accountingSFixedAssets: AccountingSFixedAssets[] = [];
 	accountingSMonthlyDepreciationDetails: AccountingSMonthlyDepreciationDetails[] = [];
-
+	accountingSPaytReqCheckVoucher: AccountingSPaytReqCheckVoucher[] = [];
+	accountingSPaytReqPettyCashVoucher: AccountingSPaytReqPettyCashVoucher[] = [];
+	accountingSPaytReqPRMFE: AccountingSPaytReqPRMFE[] = [];
+	accountingSPaytReqOthers: AccountingSPaytReqOthers[] = [];
 
 	constructor(private http: HttpClient) { }
 
@@ -725,6 +728,39 @@ export class AccountingService {
 		];
 
 		return this.accountingSMonthlyDepreciationDetails;
+	}
+
+	getAccountingSPaytReqCheckVoucher(){
+		this.accountingSPaytReqCheckVoucher = [
+			new AccountingSPaytReqCheckVoucher('Printing of Forms', 'Printing of forms for the month of April 2015', 'PHP', 1, 7460.46, 7460.46),
+		];
+
+		return this.accountingSPaytReqCheckVoucher;
+	}
+
+	getAccountingSPaytReqPettyCashVoucher(){
+		this.accountingSPaytReqPettyCashVoucher = [
+			new AccountingSPaytReqPettyCashVoucher('2019', '00001', new Date(2019,1,31), 'Christian M. Lu', 'Cash Advance Re-inspection of Office', 'Y', 'New', 'PHP', 1, 600, 600),
+			new AccountingSPaytReqPettyCashVoucher('2019', '00002', new Date(2019,2,1), 'Christian M. Lu', 'Purchase of USB Memory Card', 'Y', 'New', 'PHP', 1, 900, 900),
+		];
+
+		return this.accountingSPaytReqPettyCashVoucher;
+	}
+
+	getAccountingSPaytReqPRMFE(){
+		this.accountingSPaytReqPRMFE = [
+			new AccountingSPaytReqPRMFE('00023', 'Rose Dela Cruz', 'Engineering', 'PHP', 1, 7460.46, 7460.46),
+		];
+
+		return this.accountingSPaytReqPRMFE;
+	}
+
+	getAccountingSPaytReqOthers(){
+		this.accountingSPaytReqOthers = [
+			new AccountingSPaytReqOthers('Utilities', 'Payment For', 'PHP', 1, 10000, 10000),
+		];
+
+		return this.accountingSPaytReqOthers;
 	}
 
 }

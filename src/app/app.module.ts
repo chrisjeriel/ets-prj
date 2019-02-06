@@ -206,6 +206,10 @@ import { MtnCityComponent } from './maintenance/mtn-city/mtn-city.component';
 import { MtnCrestaZoneComponent } from './maintenance/mtn-cresta-zone/mtn-cresta-zone.component';
 import { MtnCurrencyComponent } from './maintenance/mtn-currency/mtn-currency.component';
 import { FixedAssetsComponent } from './accounting-service/fixed-assets/fixed-assets.component';
+import { AccSRequestForPaymentComponent } from './accounting-service/acc-s-request-for-payment/acc-s-request-for-payment.component';
+import { AccSRequestEntryComponent } from './accounting-service/acc-s-request-for-payment/acc-s-request-entry/acc-s-request-entry.component';
+import { AccSRequestDetailsComponent } from './accounting-service/acc-s-request-for-payment/acc-s-request-details/acc-s-request-details.component';
+import { AccSGenerateRequestComponent } from './accounting-service/acc-s-request-for-payment/acc-s-generate-request/acc-s-generate-request.component';
 
 
 
@@ -420,6 +424,10 @@ import { FixedAssetsComponent } from './accounting-service/fixed-assets/fixed-as
         MtnCrestaZoneComponent,
         MtnCurrencyComponent,
         FixedAssetsComponent,
+        AccSRequestForPaymentComponent,
+        AccSRequestEntryComponent,
+        AccSRequestDetailsComponent,
+        AccSGenerateRequestComponent,
     ],
 
     providers: [
