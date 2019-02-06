@@ -1,0 +1,48 @@
+<div class="cust-tabs-container">
+	<h4>Accounting Service / Check Voucher / Generate CV</h4>
+	<!-- <ngb-tabset (tabChange)="beforeChange($event)"> -->
+		<ngb-tabset (tabChange)="onTabChange($event)">
+			<ngb-tab id="idko">
+				<ng-template ngbTabTitle>
+					<div>CV Entry</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+					<app-cv-entry-service></app-cv-entry-service>
+				</ng-template>
+			</ngb-tab>
+
+			<ngb-tab>
+				<ng-template ngbTabTitle>
+					<div>Payment Requests List</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+					
+				</ng-template>
+			</ngb-tab>
+
+			<ngb-tab>
+				<ng-template ngbTabTitle>
+					<div>CV Preview</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+					
+				</ng-template>
+			</ngb-tab>
+
+			<ngb-tab>
+				<ng-template ngbTabTitle>
+					<div>Attachments</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+					
+				</ng-template>
+			</ngb-tab>
+			
+			<ngb-tab id="Exit">
+				<ng-template ngbTabTitle>
+					<div>Exit</div>
+				</ng-template>
+    			<ng-template ngbTabContent></ng-template>
+  			</ngb-tab>
+	</ngb-tabset>
+</div>

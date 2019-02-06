@@ -73,6 +73,8 @@ import { GenerateOrComponent } from './accounting-service/official-receipt/gener
 import { OfficialReceiptComponent } from './accounting-service/official-receipt/official-receipt.component';
 import { AcctOrListingsComponent } from './accounting-service/acct-or-listings/acct-or-listings.component';
 import { AccountingServiceComponent } from './accounting-service/accounting-service.component';
+import { CheckVoucherServiceComponent } from './accounting-service/check-voucher-service/check-voucher-service.component';
+import { GenerateCvServiceComponent } from './accounting-service/check-voucher-service/generate-cv-service/generate-cv-service.component';
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -152,6 +154,8 @@ const appRoutes: Routes = [
     { path: 'official-receipt', component: OfficialReceiptComponent },
     { path: 'acct-or-listings', component: AcctOrListingsComponent },
     { path: 'accounting-service', component: AccountingServiceComponent},
+    { path: 'check-voucher-service', component: CheckVoucherServiceComponent },
+    { path: 'generate-cv-service', component: GenerateCvServiceComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

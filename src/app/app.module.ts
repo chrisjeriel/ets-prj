@@ -200,6 +200,9 @@ import { OrServiceFeeLocalComponent } from './accounting-service/official-receip
 import { ArPaymentforAdvancesComponent } from './accounting-in-trust/ar-details/ar-paymentfor-advances/ar-paymentfor-advances.component';
 import { AcctAttachmentComponent } from './accounting-service/official-receipt/generate-or/acct-attachment/acct-attachment.component';
 import { PaytReqInvestmentComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/payt-req-investment/payt-req-investment.component';
+import { CheckVoucherServiceComponent } from './accounting-service/check-voucher-service/check-voucher-service.component';
+import { CvEntryServiceComponent } from './accounting-service/check-voucher-service/generate-cv-service/cv-entry-service/cv-entry-service.component';
+import { GenerateCvServiceComponent } from './accounting-service/check-voucher-service/generate-cv-service/generate-cv-service.component';
 
 
 
@@ -408,6 +411,9 @@ import { PaytReqInvestmentComponent } from './accounting-in-trust/request-for-pa
         AcctAttachmentComponent,
         PaytReqInvestmentComponent,
         PaymentRequestDetailsComponent,
+        CheckVoucherServiceComponent,
+        CvEntryServiceComponent,
+        GenerateCvServiceComponent,
     ],
 
     providers: [
