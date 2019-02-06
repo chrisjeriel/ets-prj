@@ -1,6 +1,6 @@
 <div class="cust-tabs-container">
     <h4>Accounting Service / Fixed Assets</h4>
-      <ngb-tabset>
+      <ngb-tabset (tabChange)="onTabChange($event)">
 	      <ngb-tab class="ngb-tab" title="Fixed Asset Details">
 	        <ng-template ngbTabContent>
 	          <div>
@@ -70,10 +70,61 @@
 	      </ngb-tab>
 	      <ngb-tab class="ngb-tab" title="Monthly Depreciation Details">
 	        <ng-template ngbTabContent>
-	          
+	          <div>
+	          		<fieldset class="scheduler-border">
+	          			<legend class="scheduler-border">Filter Options</legend>
+	          			<div class="container-fluid">
+	          				<div class="form-row custom-row-inline-inset" style="margin-bottom: 0.2% !important;">
+	          					<div class="input-group">
+	          						<label class="form-control-sm col-sm-1">Month End</label>
+	          						<input type="date" class="form-control form-control-sm cust-sm col-sm-4" placeholder="All Locations">
+	          						<div class="input-group col-sm-2">
+	          							<button class="cust-btn cust-btn-extend" style="max-height: 56%;">Generate</button>
+	          						</div>
+	          					</div>
+	          				</div>
+	          			</div>
+	          		</fieldset>
+	          		<fieldset class="scheduler-border">
+	          			<legend class="scheduler-border">List of Fixed Assets</legend>
+	          			<div>
+	          				<app-cust-non-datatable [passData]="monthlyDepreciationDetails"></app-cust-non-datatable>
+	          			</div>
+	          			<div style="margin-top: -15px;">
+	          			    <div class="col-sm" style="padding: 0; margin-top: 10px; margin-bottom: 6px">
+	          			        <div class="input-group">
+	          			            <div class="col-sm-3" style="padding: 0">
+	          			                <div class="input-group">
+	          			                    <label class="form-control-sm">Created By</label>
+	          			                    <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma" readonly>
+	          			                </div>
+	          			            </div>
+	          			            <div class="col-sm-3" style="padding: 0">
+	          			                <div class="input-group">
+	          			                    <label class="form-control-sm">Date Created</label>
+	          			                    <input type="text" class="form-control form-control-sm col-sm" placeholder="10/01/2018 11:49 AM" readonly>
+	          			                </div>
+	          			            </div>
+	          			            <div class="col-sm-3" style="padding: 0">
+	          			                <div class="input-group">
+	          			                    <label class="form-control-sm">Last Update By</label>
+	          			                    <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma" readonly>
+	          			                </div>
+	          			            </div>
+	          			            <div class="col-sm-3" style="padding: 0">
+	          			                <div class="input-group">
+	          			                    <label class="form-control-sm">Last Update</label>
+	          			                    <input type="text" class="form-control form-control-sm col-sm" placeholder="10/01/2018 11:49 AM" readonly>
+	          			                </div>
+	          			            </div>
+	          			        </div>
+	          			    </div>
+	          			</div>
+	          		</fieldset>
+	          </div>
 	        </ng-template>
 	      </ngb-tab>
-	        <ngb-tab class="ngb-tab" title="Exit">
+	        <ngb-tab class="ngb-tab" title="Exit" id="Exit">
 	           <ng-template ngbTabContent>
 	                
 	           </ng-template>

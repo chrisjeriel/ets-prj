@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, 
-	PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AccServiceAttachment, PaymentForAdvances, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, ARUnappliedCollection, AROthers, AccountingSOthersOr, AccORSerFeeLoc, OfficialReceipt, ORPrevAmountDetails, ORPrevAccEntries, ORPreVATDetails , ORPreCreditableWTaxDetails, AccountingSFixedAssets   } from '@app/_models';
+	PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AccServiceAttachment, PaymentForAdvances, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, ARUnappliedCollection, AROthers, AccountingSOthersOr, AccORSerFeeLoc, OfficialReceipt, ORPrevAmountDetails, ORPrevAccEntries, ORPreVATDetails , ORPreCreditableWTaxDetails, AccountingSFixedAssets, AccountingSMonthlyDepreciationDetails   } from '@app/_models';
 
 @Injectable({
 	providedIn: 'root'
@@ -67,6 +67,7 @@ export class AccountingService {
 	accountingSOthersOrData: AccountingSOthersOr[] = [];
 	accORSerFeeLoc: AccORSerFeeLoc[] = [];
 	accountingSFixedAssets: AccountingSFixedAssets[] = [];
+	accountingSMonthlyDepreciationDetails: AccountingSMonthlyDepreciationDetails[] = [];
 
 
 	constructor(private http: HttpClient) { }
@@ -708,11 +709,22 @@ export class AccountingService {
 
 	getAccountingSFixedAssets(){
 		this.accountingSFixedAssets = [
-			new AccountingSFixedAssets('Electronics Equivalent', 1, 'Lenovo', 'Accounting', 'Camilo Hermin', new Date(2015,1,1), 30000, 'Straight Line', 60, 500, 2500, new Date(2016,5,31), null, ''),
-			new AccountingSFixedAssets('Transportation Equivalent', 2, '2015 Fortuner', 'General Management', 'Camilo Hermin', new Date(2015,1,1), 1000000, 'Straight Line', 60, 16666.66, 83333.30, new Date(2016,5,31), null, ''),
+			new AccountingSFixedAssets('Electronics Equivalent', 1, 'Lenovo', 'Accounting', 'Camilo Hermin', new Date(2015,0,1), 30000, 'Straight Line', 60, 500, 2500, new Date(2016,5,31), null, ''),
+			new AccountingSFixedAssets('Transportation Equivalent', 2, '2015 Fortuner A/T', 'General Management', 'Camilo Hermin', new Date(2015,0,1), 1000000, 'Straight Line', 60, 16666.66, 83333.30, new Date(2016,5,31), null, ''),
 		];
 
 		return this.accountingSFixedAssets;
+	}
+
+	getAccountingSMonthlyDepreciationDetails(){
+		this.accountingSMonthlyDepreciationDetails = [
+			new AccountingSMonthlyDepreciationDetails('Lenovo Laptop', new Date(2015,0,31), 500, ''),
+			new AccountingSMonthlyDepreciationDetails('Lenovo Laptop', new Date(2015,1,28), 500, ''),
+			new AccountingSMonthlyDepreciationDetails('2015 Fortuner A/T', new Date(2015,0,31), 16666.66, ''),
+			new AccountingSMonthlyDepreciationDetails('2015 Fortuner A/T', new Date(2015,1,28), 16666.66, ''),
+		];
+
+		return this.accountingSMonthlyDepreciationDetails;
 	}
 
 }
