@@ -138,7 +138,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
             this.passData.filterObj[filt].enabled=false;
         }
 
-        this.addFiller();
+        // this.addFiller();
     }
 
     processData(key: any, data: any) {
