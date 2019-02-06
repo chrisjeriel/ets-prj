@@ -1,6 +1,6 @@
 <div class="cust-tabs-container">
     <h4>Accounting Service / Utilities / Edit Tax Details</h4>
-    <ngb-tabset>
+    <ngb-tabset (tabChange)="onTabChange($event)">
       <ngb-tab class="ngb-tab" title="Edit">
         <ng-template ngbTabContent>
           <div class="input-group">
@@ -162,38 +162,9 @@
                 </div>
             </div>
         </fieldset>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         </ng-template>
       </ngb-tab>
-      <ngb-tab class="ngb-tab" title="Exit">
+      <ngb-tab class="ngb-tab" title="Exit" id="Exit">
            <ng-template ngbTabContent>
                 
            </ng-template>

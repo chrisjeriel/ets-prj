@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { AccountingService } from '@app/_services';
 import { TaxDetails } from '@app/_models';
+import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-utilities',
@@ -56,12 +58,27 @@ tableData: any[] = [];
   };
 
 
-  constructor(private accountingService: AccountingService,private titleService: Title) { }
+  constructor(private accountingService: AccountingService,private titleService: Title,  private router: Router, private route: ActivatedRoute) { }
+
+  exitLink: string;
+  exitTab: string;
+    sub: any;
 
   ngOnInit() {
   	this.titleService.setTitle(" Acct | Utilities | Edit Tax Details");
   	this.passData.tableData = this.accountingService.getTaxDetails();
   	this.passDataWTax.tableData = this.accountingService.getWTaxDetails();
+		this.sub = this.route.params.subscribe(params => {
+	      this.exitLink = params['link'] !== undefined ? params['link'] : 'adasdas';
+	      this.exitTab = params['tab'] !== undefined ? params['tab'] : '';
+	    });
+  }
+
+  onTabChange($event: NgbTabChangeEvent) {
+  		if ($event.nextId === 'Exit') {
+    		this.router.navigate([this.exitLink,{tabID:this.exitTab}],{ skipLocationChange: true });
+  		} 
+  
   }
 
 }
