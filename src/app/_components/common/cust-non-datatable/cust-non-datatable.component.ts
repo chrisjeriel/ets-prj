@@ -88,6 +88,7 @@ export class CustNonDatatableComponent implements OnInit {
     @Output() rowDblClick: EventEmitter<any> = new EventEmitter();
     @Output() add: EventEmitter<any> = new EventEmitter();
     @Output() edit: EventEmitter<any> = new EventEmitter();
+    @Output() delete: EventEmitter<any> = new EventEmitter();
     @Output() copy: EventEmitter<any> = new EventEmitter();
     @Output() print: EventEmitter<any> = new EventEmitter();
 
@@ -357,13 +358,14 @@ export class CustNonDatatableComponent implements OnInit {
     }
     onClickDelete(){
         //do some deleting
+        this.delete.next(event);
     }
     onClickCopy(event){
         //do some copying
         this.copy.next(event);
     }
     onClickPrint(event){
-        //do some copying
+        //do some printing
         this.print.next(event);
     }
     getSum(data){
