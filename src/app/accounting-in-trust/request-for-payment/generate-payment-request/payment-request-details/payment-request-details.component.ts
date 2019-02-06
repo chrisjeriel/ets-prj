@@ -14,7 +14,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
   AdjustersData: any = {
   	tableData: this.accountingService.getPaymentToAdjuster(),
-  	tHeader: ['Claim Request No', 'Claim No', 'Adjusters', 'Insured', 'Hist No', 'Hist Type', 'Ex-Gratia', 'Reserve Amount', 'Curr','Curr Rate','Amount','Amount (Php)'],
+  	tHeader: ['Claim Request No', 'Claim No', 'Payment For/To', 'Insured', 'Hist No', 'Hist Type', 'Ex-Gratia', 'Reserve Amount', 'Curr','Curr Rate','Amount','Amount (Php)'],
   	dataTypes: ['text', 'text', 'text', 'text', 'number', 'text', 'checkbox', 'currency', 'text', 'percent', 'currency', 'currency'],
   	nData: new PaymentToAdjusters(null,null,null,null,null,null,null,null,null,null,null,null),
   	paginateFlag: true,
