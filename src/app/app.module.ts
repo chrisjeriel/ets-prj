@@ -205,6 +205,7 @@ import { MtnDistrictComponent } from './maintenance/mtn-district/mtn-district.co
 import { MtnCityComponent } from './maintenance/mtn-city/mtn-city.component';
 import { MtnCrestaZoneComponent } from './maintenance/mtn-cresta-zone/mtn-cresta-zone.component';
 import { MtnCurrencyComponent } from './maintenance/mtn-currency/mtn-currency.component';
+import { FixedAssetsComponent } from './accounting-service/fixed-assets/fixed-assets.component';
 
 
 
@@ -418,6 +419,7 @@ import { MtnCurrencyComponent } from './maintenance/mtn-currency/mtn-currency.co
         MtnCityComponent,
         MtnCrestaZoneComponent,
         MtnCurrencyComponent,
+        FixedAssetsComponent,
     ],
 
     providers: [

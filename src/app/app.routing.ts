@@ -73,6 +73,7 @@ import { GenerateOrComponent } from './accounting-service/official-receipt/gener
 import { OfficialReceiptComponent } from './accounting-service/official-receipt/official-receipt.component';
 import { AcctOrListingsComponent } from './accounting-service/acct-or-listings/acct-or-listings.component';
 import { AccountingServiceComponent } from './accounting-service/accounting-service.component';
+import { FixedAssetsComponent } from './accounting-service/fixed-assets/fixed-assets.component';
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -152,6 +153,7 @@ const appRoutes: Routes = [
     { path: 'official-receipt', component: OfficialReceiptComponent },
     { path: 'acct-or-listings', component: AcctOrListingsComponent },
     { path: 'accounting-service', component: AccountingServiceComponent},
+    { path: 'fixed-assets', component: FixedAssetsComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
