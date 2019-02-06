@@ -11,6 +11,7 @@ import { Title } from '@angular/platform-browser';
 export class PaymentRequestDetailsComponent implements OnInit {
 
   @Input() paymentType: string = "";
+  date: string;
 
   AdjustersData: any = {
   	tableData: this.accountingService.getPaymentToAdjuster(),
@@ -30,7 +31,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
   OtherPartyData: any = {
   	tableData: this.accountingService.getPaymentToOtherParty(),
-  	tHeader: ['Claim Request No', 'Claim No', 'Ceding Company', 'Insured', 'Hist No', 'Hist Type', 'Ex-Gratia', 'Reserve Amount', 'Curr','Curr Rate','Amount','Amount (Php)'],
+  	tHeader: ['Claim Request No', 'Claim No', 'Payment For/To', 'Insured', 'Hist No', 'Hist Type', 'Ex-Gratia', 'Reserve Amount', 'Curr','Curr Rate','Amount','Amount (PHP)'],
   	dataTypes: ['text', 'text', 'text', 'text', 'number', 'text', 'checkbox', 'currency', 'text', 'percent', 'currency', 'currency'],
   	nData: new PaymentToOtherParty(null,null,null,null,null,null,null,null,null,null,null,null),
   	paginateFlag: true,
@@ -99,7 +100,9 @@ export class PaymentRequestDetailsComponent implements OnInit {
     ]
   }
 
-  constructor(private accountingService: AccountingService) { }
+  constructor(private accountingService: AccountingService) {
+      this.date = new Date().toISOString().slice(0,16);
+  }
 
   ngOnInit() {
     if(this.paymentType === null){
