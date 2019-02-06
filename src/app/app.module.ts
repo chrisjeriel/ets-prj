@@ -232,7 +232,6 @@ import { GenerateJvServiceComponent } from './accounting-service/journal-voucher
 import { JvEntryServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-entry-service/jv-entry-service.component';
 import { JvPreviewServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-preview-service/jv-preview-service.component';
 import { JvAttachmentsServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-attachments-service/jv-attachments-service.component';
->>>>>>> 127aab0f8ed9ec756734951c6947ce5e38f470f4
 
 
 
