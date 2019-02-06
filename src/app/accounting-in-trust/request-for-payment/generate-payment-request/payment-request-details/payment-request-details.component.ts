@@ -47,7 +47,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
   CedingCompanyData: any = {
   	tableData: this.accountingService.getPaymentToCedingCompany(),
-  	tHeader: ['Claim Request No', 'Claim No', 'Ceding Company', 'Insured', 'Hist No', 'Hist Type', 'Ex-Gratia', 'Reserve Amount', 'Curr','Curr Rate','Amount','Amount (Php)'],
+  	tHeader: ['Claim Request No', 'Claim No', 'Payment For/To', 'Insured', 'Hist No', 'Hist Type', 'Ex-Gratia', 'Reserve Amount', 'Curr','Curr Rate','Amount','Amount (Php)'],
   	dataTypes: ['text', 'text', 'text', 'text', 'number', 'text', 'checkbox', 'currency', 'text', 'percent', 'currency', 'currency'],
   	nData: new PaymentToCedingCompany(null,null,null,null,null,null,null,null,null,null,null,null),
   	paginateFlag: true,
