@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { AccountingSPaytReqCheckVoucher, AccountingSPaytReqOthers } from '@app/_models';
+import { AccountingSPaytReqCheckVoucher, AccountingSPaytReqPettyCashVoucher, AccountingSPaytReqPRMFE, AccountingSPaytReqOthers } from '@app/_models';
 import { AccountingService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 
@@ -27,6 +27,39 @@ export class AccSRequestDetailsComponent implements OnInit {
   	total: [null, null, null, 'Total', 'amount', 'amountPhp'],
   	genericBtn: 'Save',
     widths: ['auto','auto',1,100,90,90]
+  }
+
+  pettyCashVoucherData: any = {
+    tableData: this.accountingService.getAccountingSPaytReqPettyCashVoucher(),
+    tHeader: ['PCV Year', 'PCV No.', 'PCV Date', 'Payee', 'Purpose', 'Replenishment', 'Status', 'Curr', 'Curr Rate', 'Amount', 'Amount (PHP)'],
+    dataTypes: ['text', 'number', 'date', 'text', 'text', 'text', 'text', 'text', 'percent', 'currency', 'currency'],
+    nData: new AccountingSPaytReqPettyCashVoucher(null,null,null,null,null,null,null,null,null,null,null),
+    paginateFlag: true,
+    infoFlag: true,
+    pageID: 1,
+    checkFlag: true,
+    addFlag: true,
+    deleteFlag: true,
+    total: [null, null, null, null, null, null, null, null, 'Total', 'amount', 'amountPhp'],
+    genericBtn: 'Save',
+    widths: [20, 20, 90,'auto','auto', 1, 1 ,1,100,90,90]
+  }
+
+  PRMFEData: any = {
+    tableData: this.accountingService.getAccountingSPaytReqPRMFE(),
+    tHeader: ['Emp. No', 'Employee', 'Department', 'Curr', 'Curr Rate', 'Amount', 'Amount (PHP)'],
+    dataTypes: ['number', 'text', 'text', 'text', 'percent', 'currency', 'currency'],
+    nData: new AccountingSPaytReqPRMFE(null,null,null,null,null,null,null),
+    magnifyingGlass: ["empNo"],
+    paginateFlag: true,
+    infoFlag: true,
+    pageID: 3,
+    checkFlag: true,
+    addFlag: true,
+    deleteFlag: true,
+    total: [null, null, null, null, 'Total', 'amount', 'amountPhp'],
+    genericBtn: 'Save',
+    widths: [20, 'auto','auto', 1,100,90,90]
   }
 
   othersData: any = {

@@ -14,16 +14,16 @@ export class AccSRequestForPaymentComponent implements OnInit {
   private routeData: any;
 
   requestsListData: any = {
-  	tableData: this.accountingService.getPaytRequestsList(),
+  	tableData: this.accountingService.getAccountingSRequestsList(),
   	tHeader: ['Payment Request No.', 'Payee', 'Payment Type', 'Status', 'Request Date', 'Particulars', 'Curr', 'Amount', 'Requested By'],
   	dataTypes: ['text', 'text', 'text', 'text', 'date', 'text', 'text', 'currency', 'text'],
-  	colSize: ['80px', '', '', '', '53px', '', '30px', '', ''],
+  	colSize: ['100px', '', '', '', '60px', '', '30px', '', ''],
     btnDisabled: true,
   	pagination: true,
   	pageStatus: true,
   	addFlag: true,
   	editFlag: true,
-  	pageLength: 10
+  	pageLength: 10,
   }
 
   constructor(private titleService: Title, private router: Router, private accountingService: AccountingService) { }
@@ -34,7 +34,7 @@ export class AccSRequestForPaymentComponent implements OnInit {
 
   onClickAdd(event){
     
-   this.router.navigate(['generate-payt-req',
+   this.router.navigate(['acc-s-generate-request',
          {reqNo: "",
           payee: "",
           paymentType: "",

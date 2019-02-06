@@ -72,6 +72,7 @@ export class AccountingService {
 	accountingSPaytReqPettyCashVoucher: AccountingSPaytReqPettyCashVoucher[] = [];
 	accountingSPaytReqPRMFE: AccountingSPaytReqPRMFE[] = [];
 	accountingSPaytReqOthers: AccountingSPaytReqOthers[] = [];
+	accountingSPaytReqList: AccountingRequestsListRP[] = [];
 
 	constructor(private http: HttpClient) { }
 
@@ -728,6 +729,25 @@ export class AccountingService {
 		];
 
 		return this.accountingSMonthlyDepreciationDetails;
+	}
+
+	getAccountingSRequestsList(){
+		this.accountingSPaytReqList = [
+			new AccountingRequestsListRP('SCV-2015-01-0001', 'SM Prime Holdings, Inc.', 'Check Voucher', 'Paid', new Date(), 'Photocopying Charges for the month of December 2017', 'PHP', 1642857.14, 'Edward M. Salunson'),
+			new AccountingRequestsListRP('SCV-2017-12-0001', 'Rustan, Inc.', 'Check Voucher', 'Paid', new Date(), 'Photocopying Charges for the month of November 2017', 'PHP', 200000, 'Christian M. Lumen'),
+			new AccountingRequestsListRP('SCV-2017-12-0002', 'San Miguel Corporation', 'Check Voucher', 'Paid', new Date(), 'Photocopying Charges for the month of November 2017', 'PHP', 100000, 'Chie Reyes'),
+			new AccountingRequestsListRP('SCV-2017-12-0003', 'DMCI', 'Check Voucher', 'Cancelled', new Date(), 'Payment for Office Supplies per P.O. No. 567', 'USD', 1000000, 'Chie Reyes'),
+			new AccountingRequestsListRP('PRM-2018-01-0001', 'ABS-CBN', 'Payment of Risk Management Fee to Employees', 'Paid', new Date(), 'Payment of Risk Management Fee to Employees', 'PHP', 710716.12, 'Juan de la Cruz'),
+			new AccountingRequestsListRP('SCV-2018-02-0001', 'SMDC', 'Check Voucher', 'Paid', new Date(), 'Payment for Office Supplies per P.O. No. 567', 'SGD', 756929, 'Juan de la Cruz'),
+			new AccountingRequestsListRP('PRM-2018-02-0002', 'Universal Robina, Inc.', 'Payment of Risk Management Fee to Employees', 'Open', new Date(), 'Payment of Risk Management Fee to Employees', 'EUR', 300000, 'Juan de la Cruz'),
+			new AccountingRequestsListRP('SCV-2018-03-0001', 'SGV & Co.', 'Check Voucher', 'Open', new Date(), 'Payment for Office Supplies per P.O. No. 567', 'HKD', 1000000, 'Christian M. Lumen'),
+			new AccountingRequestsListRP('SCV-2018-09-0001', 'Accenture', 'Check Voucher', 'Open', new Date(), 'Miscellaneous payment for', 'PHP', 230000, 'Chie Reyes'),
+			new AccountingRequestsListRP('SCV-2018-11-0001', 'NSO', 'Check Voucher', 'Open', new Date(), 'Miscellaneous payment for', 'RMB', 1500000, 'Chie Reyes'),
+			new AccountingRequestsListRP('SCV-2019-04-0095', 'DFA', 'Check Voucher', 'Open', new Date(), 'Miscellaneous payment for', 'PHP', 1642857.14, 'Chie Reyes'),
+			new AccountingRequestsListRP('PRM-2019-05-0032', 'Robinsons', 'Payment of Risk Management Fee to Employees', 'Open', new Date(), 'Payment of Risk Management Fee to Employees', 'USD', 1342752.24, 'Chie Reyes'),
+		];
+
+		return this.accountingSPaytReqList;
 	}
 
 	getAccountingSPaytReqCheckVoucher(){
