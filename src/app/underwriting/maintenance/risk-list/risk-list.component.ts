@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 
 import { UnderwritingService } from '../../../_services';
 
@@ -10,24 +11,48 @@ import { UnderwritingService } from '../../../_services';
     styleUrls: ['./risk-list.component.css']
 })
 export class RiskListComponent implements OnInit {
+    @ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
 
     maintenanceRiskListData: any = {
-        tableData: this.underwritingService.getMaintenanceRisksListData(),
+        tableData: [],
         tHeader: ['Active', 'Risk No.', 'Description', 'Abbreviation', 'Region', 'Province', 'City/Town', 'District', 'Block', 'Lat', 'Long'],
-        dataTypes: ['checkbox', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text'],
+        dataTypes: ['checkbox', 'number', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text'],
         resizable: [false, false, true, false, true, true, true, true, true, true, true],
         tableOnly: false,
         addFlag: true,
         editFlag: true,
         pageStatus: true,
         pagination: true,
-        pageLength: 10
+        pageLength: 10,
+        keys: ['activeTag','riskId','riskName','riskAbbr','regionDesc','provinceDesc','cityDesc','districtDesc','blockDesc','latitude','longitude']
     }
     
     constructor(private titleService: Title, private underwritingService: UnderwritingService, private router: Router) { }
 
     ngOnInit() {
-        this.titleService.setTitle('Pol | Risk')
+        this.titleService.setTitle('Pol | Risk');
+
+        this.underwritingService.getMaintenanceRisksListData().subscribe(data => {
+            var records = data['risk'];
+
+            for(let rec of records){
+                this.maintenanceRiskListData.tableData.push({
+                    activeTag: (rec.activeTag.toUpperCase() === 'Y'),
+                    riskId: rec.riskId,
+                    riskName: rec.riskName,
+                    riskAbbr: rec.riskAbbr,
+                    regionDesc: rec.regionDesc,
+                    provinceDesc: rec.provinceDesc,
+                    cityDesc: rec.cityDesc,
+                    districtDesc: rec.districtDesc,
+                    blockDesc: rec.blockDesc,
+                    latitude: rec.latitude,
+                    longitude: rec.longitude
+                });
+            }
+
+            this.table.refreshTable();
+        });
     }
     
     onClickAdd(event){

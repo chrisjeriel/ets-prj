@@ -62,39 +62,30 @@ export class QuotationList{
 export class HoldCoverMonitoringList{
     holdCoverNo: string;
     status: string;
-    cedingCompany: string;
+    cedingName: string;
     quotationNo: string;
-    risk: string;
-    insured: string;
+    riskName: string;
+    insuredDesc: string;
     periodFrom: Date;
     periodTo: Date;
-    compRefHoldCoverNo: string;
-    requestedBy: string;
-    requestDate: Date;
+    compRefHoldCovNo: string;
+    reqBy: string;
+    reqDate: Date;
 
-    constructor(holdCoverNo: string,
-                 status: string,
-                 cedingCompany: string,
-                 quotationNo: string,
-                 risk: string,
-                 insured: string,
-                 periodFrom: Date,
-                 periodTo: Date,
-                 compRefHoldCoverNo: string,
-                 requestedBy: string,
-                 requestDate: Date)
+
+    constructor(holdCoverNo: string,status: string,cedingName: string,quotationNo: string,riskName: string,insuredDesc: string,periodFrom: Date,periodTo: Date,compRefHoldCovNo: string,reqBy: string,reqDate: Date)
     {
         this.holdCoverNo = holdCoverNo;
         this.status = status;
-        this.cedingCompany = cedingCompany;
+        this.cedingName = cedingName;
         this.quotationNo = quotationNo;
-        this.risk = risk;
-        this.insured = insured;
+        this.riskName = riskName;
+        this.insuredDesc = insuredDesc;
         this.periodFrom = periodFrom;
         this.periodTo = periodTo;
-        this.compRefHoldCoverNo = compRefHoldCoverNo;
-        this.requestedBy = requestedBy;
-        this.requestDate = requestDate;
+        this.compRefHoldCovNo = compRefHoldCovNo;
+        this.reqBy = reqBy;
+        this.reqDate = reqDate;
 
     }
 }

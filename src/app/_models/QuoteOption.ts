@@ -4,46 +4,46 @@ export class QuotationInfo {
 }
 
 export class QuotationOption{
-	optionNo: number;
-	rate: number;
-	conditions:string;
-	commRateQuota:number;
-	commRateSurplus:number;
-	commRateFac:number;
-	constructor(optionNo: number,rate: number,conditions:string,commRateQuota:number,commRateSurplus:number,commRateFac:number){
-		this.optionNo=optionNo;
-		this.rate=rate;
-		this.conditions=conditions;
-		this.commRateQuota=commRateQuota;
-		this.commRateSurplus=commRateSurplus;
-		this.commRateFac=commRateFac;
+	optionId: number;
+	optionRt: number;
+	condition:string;
+	commRtQuota:number;
+	commRtSurplus:number;
+	commRtFac:number;
+	constructor(optionId: number,optionRt: number,condition:string,commRtQuota:number,commRtSurplus:number,commRtFac:number){
+		this.optionId=optionId;
+		this.optionRt=optionRt;
+		this.condition=condition;
+		this.commRtQuota=commRtQuota;
+		this.commRtSurplus=commRtSurplus;
+		this.commRtFac=commRtFac;
 	}
 }
 
 export class QuotationDeductibles{
-	deductibleCode: string
+	deductibleCd: string
     deductibleTitle: string;
-    rate: number;
-    amount: number;
-    deductibleText: string;
-    constructor(deductibleCode:string,deductibleTitle: string, rate: number, amount: number, deductibleText: string){
-    	this.deductibleCode = deductibleCode;
+    deductibleRt: number;
+    deductibleAmt: number;
+    deductibleTxt: string;
+    constructor(deductibleCd:string,deductibleTitle: string, deductibleRt: number, deductibleAmt: number, deductibleTxt: string){
+    	this.deductibleCd = deductibleCd;
         this.deductibleTitle = deductibleTitle;
-        this.rate = rate;
-        this.amount = amount;
-        this.deductibleText = deductibleText;
+        this.deductibleRt = deductibleRt;
+        this.deductibleAmt = deductibleAmt;
+        this.deductibleTxt = deductibleTxt;
     }
 }
 
 export class QuotationOtherRates{
-	optionNo:number;
-	others:string;
+	coverCd:number;
+	coverCdDesc:string;
     rate: number;
-	amounts:number;
-	constructor(optionNo:number,others:string,rate: number, amounts:number){
-		this.optionNo = optionNo;
-		this.others=others;
+	amount:number;
+	constructor(coverCd:number,coverCdDesc:string,rate: number, amount:number){
+		this.coverCd = coverCd;
+		this.coverCdDesc=coverCdDesc;
         this.rate = rate;
-		this.amounts=amounts;
+		this.amount=amount;
 	}
 }

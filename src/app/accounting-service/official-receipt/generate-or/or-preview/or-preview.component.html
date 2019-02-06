@@ -60,15 +60,6 @@
             </div>
           </ng-template>
         </ngb-tab>
-        <ngb-tab class="ngb-tab" title="Accounting Entries">
-          <ng-template ngbTabContent>
-            <div class="input-group cust-border" style="padding-top: 0.6em">
-              <div class="col-sm-12">
-                  <app-cust-editable-non-datatable (tableDataChange)="accountingEntries($event)" [passData]="passDataAccountingEntries"></app-cust-editable-non-datatable>
-              </div>
-            </div>
-          </ng-template>
-        </ngb-tab>
         <ngb-tab>
             <ng-template ngbTabTitle>
                 <div>Tax Details</div>
@@ -98,6 +89,15 @@
                 </div>
             </ng-template>
         </ngb-tab>
+        <ngb-tab class="ngb-tab" title="Accounting Entries">
+            <ng-template ngbTabContent>
+              <div class="input-group cust-border" style="padding-top: 0.6em">
+                <div class="col-sm-12">
+                    <app-cust-editable-non-datatable (tableDataChange)="accountingEntries($event)" [passData]="passDataAccountingEntries"></app-cust-editable-non-datatable>
+                </div>
+              </div>
+            </ng-template>
+          </ngb-tab>
    <!--      <ngb-tab class="ngb-tab" title="Taxes">
           <ng-template ngbTabContent>
             <div class="input-group cust-border" style="padding-top: 0.6em">

@@ -1,0 +1,211 @@
+ <div class="row">
+ 	<div class="col-sm-10" style="padding-right: 0px !important;">
+ 		<fieldset class="scheduler-border" style="padding-top: 5px !important; padding-bottom: 6px !important;">
+ 			<legend class="scheduler-border">CV Info</legend>
+ 			<div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;">
+ 				<div class="input-group" style="margin-bottom: -13px !important; margin-top: 10px !important">
+ 					<label class="form-control-sm col-sm-1">CV No.</label>
+ 					<input type="text"   class="form-control form-control-sm cust-sm col-sm-1"
+ 					placeholder="2018" style="margin-right: 4px !important;" style="text-align: right;margin-right: 4px !important;">
+ 					<input type="text" class="form-control form-control-sm cust-sm col-sm-1"
+ 					placeholder="00000001" style="text-align: right;">
+ 					<label class="form-control-sm col-sm-1">Date</label>
+ 					<input type="date" class="form-control form-control-sm cust-sm col-sm" placeholder="" style="margin-right: 4px !important;">
+ 					<input type="text" class="form-control form-control-sm cust-sm col-sm-1 text-center" placeholder="10:45 AM" style="margin-right: 2px !important">
+ 					<span class="col-sm"></span>
+ 					<label class="form-control-sm col-sm-1">Status</label>
+ 					<input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="New" style="margin-right: 5px !important">
+ 				</div>
+ 				<div class="input-group">
+ 					<label class="form-control-sm col-sm-1" style="height: auto;">Payee</label>
+                    <!-- <select class="form-control form-control-sm cust-sm col-sm-11" style="margin-right: 4px !important;">
+                        <option value="San Miguel Corporation">San Miguel Corporation</option>
+                        <option value="SM Prime Holdings, Inc">SM Prime Holdings, Inc</option>
+                        <option value="Rustans, Inc">Rustans, Inc</option>
+                    </select> -->
+                    <input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="San Miguel Corporation" style="margin-right: 1px !important">
+                    <div style="margin-left: -19px !important;margin-right: 10px !important; z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+                </div>
+                <div class="input-group">
+                	<label class="form-control-sm col-sm-1" style="height: auto;">Particulars</label>
+                	<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 65px; margin-bottom: 5px;margin-right: 5px !important;" placeholder="Representing check payment for San Miguel Corporation"></textarea>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <div class="col-sm-2" style="padding-left: 10px !important;">
+    	<fieldset class="scheduler-border" style="padding-top: 11px !important; padding-bottom: 12px !important;">
+    		<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+    		<div class="input-group" style="margin-bottom: 5px !important;">
+    			<div class="col-sm-12 text-center">
+    				<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;">New CV</button>
+    			</div>					
+    		</div>
+    		<div class="input-group" style="margin-bottom: 5px !important;">
+    			<div class="col-sm-12 text-center">
+    				<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;">Save</button>
+    			</div>					
+    		</div>
+    		<div class="input-group" style="margin-bottom: 5px !important;">
+    			<div class="col-sm-12 text-center">
+    				<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;">Cancel CV</button>
+    			</div>					
+    		</div>
+    		<div class="input-group" style="margin-bottom: 5px !important;">
+    			<div class="col-sm-12 text-center">
+    				<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" (click)="showPrintModal()">Print</button>
+    			</div>					
+    		</div>
+    	</fieldset>
+    </div>
+    <div class="col-sm-12">
+    	<fieldset class="scheduler-border" style="padding-bottom: 20px !important;">
+    		<legend class="scheduler-border">Check Details</legend>
+    		<div class="row" style="padding-top: 15px">
+    			<div class="col-sm-6">
+    				<div class="input-group cust-ig">
+    					<span class="col-sm-3"></span>
+    					<label class="form-control-sm col-sm-3">Bank</label>
+    					<input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="San Miguel Corporation">
+    					<div style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+    				</div>
+    				<div class="input-group cust-ig">
+    					<span class="col-sm-3"></span>
+    					<label class="form-control-sm col-sm-3">Check Amount</label>
+    					<input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="PHP">
+    					<div style="margin-left: -18px !important;margin-right: 7px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+    					<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" placeholder="27,513.20">
+    				</div>
+    				<div class="input-group cust-ig">
+    					<span class="col-sm-3"></span>
+    					<label class="form-control-sm col-sm-3">Currency Rate</label>
+    					<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" placeholder="1.000000">
+    				</div>
+    				<div class="input-group cust-ig">
+    					<span class="col-sm-3"></span>
+    					<label class="form-control-sm col-sm-3">Local Amount</label>
+    					<input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="PHP">                   
+    					<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" placeholder="27,513.20" style="margin-left: 2px;">    				
+    				</div>
+    			</div>
+    			<div class="col-sm-6">
+    				<div class="input-group cust-ig">
+    					<label class="form-control-sm col-sm-3">Bank Account No.</label>
+    					<input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="PCPA - 9091 - 7001 - 7389">
+    					<span class="col-sm-3"></span>
+    				</div>
+    				<div class="input-group cust-ig">
+    					<label class="form-control-sm col-sm-3">Check No.</label>
+    					<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" placeholder="1324454234">
+    					<span class="col-sm-3"></span>
+    				</div>
+    				<div class="input-group cust-ig">
+    					<label class="form-control-sm col-sm-3">Check Date</label>
+    					<input type="date" class="form-control form-control-sm cust-sm col-sm" placeholder="" value="2018-10-01">
+    					<span class="col-sm-3"></span>
+    				</div>
+    				<div class="input-group cust-ig">
+    					<label class="form-control-sm col-sm-3">Check Class</label>
+    					<input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="Local Clearing">
+    					<div style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+    					<span class="col-sm-3"></span>
+    				</div>    			
+    			</div>
+    		</div>
+    		<div class="col-sm-12" style="margin-top: 43px !important;">
+    			<div class="form-row custom-row-inline-inset">
+    				<div class="input-group">
+    					<label class="form-control-sm col-sm-1">Prepared By</label>
+    					<input type="text" class="form-control form-control-sm cust-sm col-sm-3" placeholder="Ma Cecilia Dela Paz -  Castro">
+    					<div style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+    					<label class="form-control-sm col-sm-1">Certified Correct</label>
+    					<input type="text" class="form-control form-control-sm cust-sm col-sm-3" placeholder="Juan Dela Cruz">
+    					<div style="margin-left: -19px !important;margin-right: 6px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+    					<label class="form-control-sm col-sm-1">Approved By</label>
+    					<input type="text" class="form-control form-control-sm cust-sm col-sm-3" placeholder="Jose Reyes">
+    					<div style="margin-left: -19px !important;margin-right: 6px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+    				</div>
+    				<div class="input-group" style="margin-top: -7px !important;">
+    					<div class="col-sm-1"></div>
+    					<input type="text" class="form-control form-control-sm cust-sm col-sm-3" placeholder="Accountant I">
+    					<div class="col-sm-1"></div>
+    					<input type="text" class="form-control form-control-sm cust-sm col-sm-3" placeholder="Section Manager">
+    					<div class="col-sm-1"></div>
+    					<input type="text" class="form-control form-control-sm cust-sm col-sm-3" placeholder="Comptroller">
+    				</div>
+    				<div class="input-group" style="margin-top: 15px !important;margin-bottom: -25px !important;">
+    					<label class="form-control-sm col-sm-1">Date Prepared</label>
+    					<input type="datetime-local" class="form-control form-control-sm cust-sm col-sm-3" placeholder="">
+    					<label class="form-control-sm col-sm-1">Date Certified</label>
+    					<input type="datetime-local" class="form-control form-control-sm cust-sm col-sm-3" placeholder="">
+    					<label class="form-control-sm col-sm-1">Date Approved</label>
+    					<input type="datetime-local" class="form-control form-control-sm cust-sm col-sm-3" placeholder="">
+    				</div>
+    			</div>
+    		</div>
+    	</fieldset>
+    </div>
+    <div class="col-sm-12" style="margin-top: 0px !important;">
+    	<fieldset class="scheduler-border" style="margin: 0px !important; margin-top: 12px !important;">
+    		<div class="form-row custom-row-inline-inset" style="margin-left: -27px;">
+    			<div class="input-group" style="margin-bottom: -15px !important;">
+    				<label class="form-control-sm col-sm-1 text-right labels">Created By</label>
+    				<input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma">
+    				<label class="form-control-sm col-sm-1 text-right labels">Date Created</label>
+    				<input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM">
+    				<label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
+    				<input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma">
+    				<label class="form-control-sm col-sm-1 text-right labels">Last Update</label>
+    				<input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM">
+    			</div>
+    		</div>
+    	</fieldset>
+    </div>
+</div>
+
+<app-modal hidden [btnTitle]="''" id="printMdl">
+	<div header>Print Check/DV</div>
+	<div body>
+		<div class="row">
+			<div class="col-sm">
+				<div class="input-group cust-ig">
+					<label class="form-control-sm col-sm-5" style="margin-right: 5px !important;"></label> 
+					<input type="checkbox" checked />
+					<span class="cust-span">DV</span>
+					<input type="checkbox" style="margin-left: 20px;" />
+					<span class="cust-span">Check</span> 
+				</div>
+				<div class="input-group cust-ig">
+					<span class="col-sm-1"></span>
+					<label class="form-control-sm col-sm-4" style="text-align: left !important; padding-right: 0px !important;">Destination</label>    					
+    				<select class="form-control form-control-sm cust-sm col-sm" disabled>
+                        <option value="Printer">Printer</option>
+                        <option value="Option 2">Option 2</option>
+                        <option value="Option 3">Option 3</option>
+                    </select>
+                    <span class="col-sm-1"></span>
+				</div>
+				<div class="input-group cust-ig">
+					<span class="col-sm-1"></span>
+					<label class="form-control-sm col-sm-4" style="text-align: left !important; padding-right: 0px !important;">Printer Name</label>    					
+    				<select class="form-control form-control-sm cust-sm col-sm" disabled>
+                        <option value="EPSON 3600i">EPSON 3600i</option>
+                        <option value="Option 2">Option 2</option>
+                        <option value="Option 3">Option 3</option>
+                    </select>
+                    <span class="col-sm-1"></span>
+				</div>
+				<div class="input-group cust-ig">
+					<span class="col-sm-1"></span>
+					<label class="form-control-sm col-sm-4" style="text-align: left !important; padding-right: 0px !important;">No. Of Copies</label>
+					<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" placeholder="1" disabled>
+					<span class="col-sm-1"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div footer class="text-center w-100">
+		<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
+		<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Print</a></button>
+	</div>
+</app-modal>

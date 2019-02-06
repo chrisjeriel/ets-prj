@@ -90,3 +90,8 @@ export * from './QuotationAlop';
 export * from './MaintenaceBlock';
 export * from './AccountingServiceExpnsBudget';
 export * from './AccountingServiceExtract';
+export * from './AccountingSFixedAssets';
+export * from './AccountingSMonthlyDepreciationDetails';
+export * from './AccountingSPaytReq';
+export * from './QuotationOcGenInfo';
+export * from './AcctSrvcConsolidateWhtax';
