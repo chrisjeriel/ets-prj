@@ -202,6 +202,7 @@ import { AcctAttachmentComponent } from './accounting-service/official-receipt/g
 import { PaytReqInvestmentComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/payt-req-investment/payt-req-investment.component';
 import { MtnDistrictComponent } from './maintenance/mtn-district/mtn-district.component';
 import { MtnInsuredComponent } from './maintenance/mtn-insured/mtn-insured.component';
+import { MtnEndtCodeComponent } from './maintenance/mtn-endt-code/mtn-endt-code.component';
 
 
 
@@ -412,6 +413,7 @@ import { MtnInsuredComponent } from './maintenance/mtn-insured/mtn-insured.compo
         PaymentRequestDetailsComponent,
         MtnDistrictComponent,
         MtnInsuredComponent,
+        MtnEndtCodeComponent,
     ],
 
     providers: [
