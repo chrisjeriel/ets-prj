@@ -205,6 +205,15 @@ import { MtnDistrictComponent } from './maintenance/mtn-district/mtn-district.co
 import { MtnCityComponent } from './maintenance/mtn-city/mtn-city.component';
 import { MtnInsuredComponent } from './maintenance/mtn-insured/mtn-insured.component';
 import { MtnBlockComponent } from './maintenance/mtn-block/mtn-block.component';
+import { ExpenseBudgetComponent } from './accounting-service/expense-budget/expense-budget.component';
+import { BudgetDetailsComponent } from './accounting-service/expense-budget/budget-details/budget-details.component';
+import { ByMonthComponent } from './accounting-service/expense-budget/by-month/by-month.component';
+import { ExtractFromLastYearComponent } from './accounting-service/expense-budget/extract-from-last-year/extract-from-last-year.component';
+import { AccountingServiceExtractComponent } from './accounting-service/accounting-service-extract/accounting-service-extract.component';
+import { ExtractBirTaxComponent } from './accounting-service/accounting-service-extract/extract-bir-tax/extract-bir-tax.component';
+import { AcctEntriesComponent } from './accounting-service/accounting-service-extract/acct-entries/acct-entries.component';
+import { AcctDetailsComponent } from './accounting-service/accounting-service-extract/acct-details/acct-details.component';
+import { AcctUploadComponent } from './accounting-service/accounting-service-extract/acct-upload/acct-upload.component';
 
 
 
@@ -418,6 +427,15 @@ import { MtnBlockComponent } from './maintenance/mtn-block/mtn-block.component';
         MtnCityComponent,
         MtnInsuredComponent,
         MtnBlockComponent,
+        ExpenseBudgetComponent,
+        BudgetDetailsComponent,
+        ByMonthComponent,
+        ExtractFromLastYearComponent,
+        AccountingServiceExtractComponent,
+        ExtractBirTaxComponent,
+        AcctEntriesComponent,
+        AcctDetailsComponent,
+        AcctUploadComponent,
     ],
 
     providers: [

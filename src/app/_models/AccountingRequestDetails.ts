@@ -120,9 +120,53 @@ export class PremiumReturn {
 }
 
 
+export class PaymentOfSeviceFee {
+	item: string;
+	desc: string;
+	curr: string;
+	curRate: number;
+	amount: number;
+	amountPHP: number;
+
+	constructor(item: string, 
+		 desc: string,
+		 curr: string,
+		 curRate: number, 
+		 amount: number,
+		 amountPHP: number) {
+
+		this.item = item;
+		this.desc = desc;
+		this.curr = curr;
+		this.curRate = curRate;
+		this.amount = amount;
+		this.amountPHP = amountPHP;
+	}
+}
 
 
+export class TreatyBalance {
+	quarterEnding: Date;
+	drBalance: number;
+	crBalance: number;
+	beginningCRBalance: number;
+	beginningDRBalance: number;
+	endingCRBalance: number;
+	endingDRBalance: number;
 
+	constructor(quarterEnding: Date,drBalance: number,crBalance: number,
+				beginningCRBalance: number,beginningDRBalance: number,
+				endingCRBalance: number,endingDRBalance: number) {
 
+		this.quarterEnding = quarterEnding; 
+		this.drBalance = drBalance; 
+		this.crBalance = crBalance; 
+		this.beginningCRBalance = beginningCRBalance; 
+		this.beginningDRBalance = beginningDRBalance; 
+		this.endingDRBalance = endingDRBalance; 
+		this.endingCRBalance = endingCRBalance;
+	}
+}
 
+ 
 

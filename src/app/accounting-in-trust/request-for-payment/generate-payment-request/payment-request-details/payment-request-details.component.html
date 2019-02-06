@@ -112,7 +112,7 @@
               <div *ngSwitchCase ="'CLAIM EXPENSE PAYMENT TO OTHER PARTIES'">Claim Expense Payment to Other Parties</div>
               <div *ngSwitchCase ="'CLAIM PAYMENT TO CEDING COMPANY'">Claim Payment to Ceding Company</div>
               <div *ngSwitchCase ="'INWARD POLICY BALANCES - RETURNS'">Inward Policy Balances - Returns</div>
-              <div *ngSwitchCase ="'PAYMENT OF SERVICE FEE BY IN-TRUST TO SERVICE ACCOUNTING'">Payment of Service Fee by In-Trust to Service Accounting</div>
+              <div *ngSwitchCase ="'PAYMENT OF SERVICE FEE BY IN-TRUST TO SERVICE ACCOUNTING'">Payment of Service Fee</div>
               <div *ngSwitchCase ="'TREATY BALANCE DUE PARTICIPANT'">Treaty Balance Due Participant</div>
               <div *ngSwitchCase ="'INVESTMENT (PLACEMENT)'">Investment (Placement)</div>
               <div *ngSwitchCase ="'QSOA BALANCES'">QSOA Balances</div>
@@ -139,7 +139,7 @@
                     <app-cust-editable-non-datatable [passData]="ServiceAccountingData"></app-cust-editable-non-datatable>
                 </ng-container>
                 <ng-container *ngSwitchCase ="'TREATY BALANCE DUE PARTICIPANT'">
-                    
+                    <app-cust-editable-non-datatable [passData]="TreatyBalanceData"></app-cust-editable-non-datatable>
                 </ng-container>
                 <ng-container *ngSwitchCase ="'INVESTMENT (PLACEMENT)'">
                     <app-payt-req-investment></app-payt-req-investment>
