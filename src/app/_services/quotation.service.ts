@@ -60,7 +60,7 @@ export class QuotationService {
             new QuotationCoverageInfo("1", "I", "3", "69000", ""),
             new QuotationCoverageInfo("2", 'II', "2", "123000", "")
         ];
-        return this.coverageInfoData;
+        return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteCoverage?");
     }
     getQuotationListInfo() {
         this.quotationListData = [
@@ -147,6 +147,10 @@ export class QuotationService {
         ];
 
         return this.attachmentInfoData;
+    }
+
+    getAttachmentOc(){
+        return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteAttachmentOc");
     }
 
     getDummyEditableInfo() {
@@ -270,7 +274,8 @@ export class QuotationService {
         ];
 
         /*return this.http.get<User[]>(`${environment.apiUrl}/quotation`);*/
-        return this.intCompAdvInfo;
+        //return this.intCompAdvInfo;
+        return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteCompetition");
     }
 
 
@@ -432,4 +437,6 @@ export class QuotationService {
         ];
         return this.openCoverList;
     }
+
+    
 }

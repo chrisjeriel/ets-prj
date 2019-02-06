@@ -67,6 +67,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         widths: [],
         //use if you have different tables in 1 page
         pageID:1,
+        keys:[]
     };
 
     dataKeys: any[] = [];
@@ -97,23 +98,28 @@ export class CustEditableNonDatatableComponent implements OnInit {
         config.autoClose = false;
     }
 
+    refreshTable(){
+        for(var i = 0 ;i<this.passData.tableData.length;i++){
+            this.displayData[i] = this.passData.tableData[i];
+        }
+        //this.displayData = JSON.parse(JSON.stringify( this.passData.tableData));
+        this.displayLength = this.displayData.length;
+        this.unliTableLength();
+        this.addFiller();
+    }
+
     ngOnInit() {
         this.passData.magnifyingGlass = typeof this.passData.magnifyingGlass == 'undefined'? [] : this.passData.magnifyingGlass;
         this.unliFlag = this.passData.pageLength == 'unli';
         this.passData.pageLength = typeof this.passData.pageLength != 'number' ? 10 : this.passData.pageLength;
         this.unliTableLength();
         this.passData.dataTypes = typeof this.passData.dataTypes == 'undefined' ? [] : this.passData.dataTypes;
-        if (this.passData.tableData.length > 0) {
+        if (this.passData.tableData.length > 0 && this.dataKeys.length == 0 ) {
             this.dataKeys = Object.keys(this.passData.tableData[0]);
         } else {
-            //this.passData.tHeader.push("No Data");
+            this.dataKeys = this.passData.keys;
         }
-        for(var i = 0 ;i<this.passData.tableData.length;i++){
-            this.displayData[i] = this.passData.tableData[i];
-        }
-
-        //this.displayData = JSON.parse(JSON.stringify( this.passData.tableData));
-        this.displayLength = this.displayData.length;
+        this.refreshTable();
         // this.autoFill = Array(this.passData.pageLength).fill(this.newData);
         // if(this.displayData.length%this.passData.pageLength != 0){
         //     this.autoFill = Array(this.passData.pageLength - this.displayData.length%this.passData.pageLength).fill(this.newData);

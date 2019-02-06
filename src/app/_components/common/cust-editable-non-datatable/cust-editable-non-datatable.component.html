@@ -79,7 +79,7 @@ span.ui-column-resizer {
                     <!-- </div> -->
                     <!-- </div> -->
 
-                    <div ngbDropdownMenu aria-labelledby="dropdownConfig">
+                    <!-- <div ngbDropdownMenu aria-labelledby="dropdownConfig">
                         <div class="dropdown-item">
                             <span class="cust-tbl-label">Filter by:</span>
                             <div class="input-group">
@@ -136,7 +136,7 @@ span.ui-column-resizer {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <div class="table-scroll" id="cust-scroll">
                     <table id="non-datatable">
                         <thead>
@@ -189,11 +189,11 @@ span.ui-column-resizer {
                                             </ng-container>
                                         </ng-container>
                                     </select>
-                                    <input *ngSwitchCase="'date'" class="editable-date form-control-sm" type="date" [ngModel]="processData(key, data) | date:'yyyy-MM-dd'">
+                                    <input *ngSwitchCase="'date'" class="editable-date form-control-sm" type="date" [ngModel]="processData(key, data) | date:'yyyy-MM-dd'"> 
                                     <input *ngSwitchCase="'time'" class="editable-date form-control-sm" type="time" [ngModel]="processData(key, data) | date:'HH:mm'">
                                     <input *ngSwitchCase="'datetime'" class="editable-date form-control-sm" type="datetime-local"
                                     [ngModel]="processData(key, data) | date:'yyyy-MM-ddTHH:mm'">
-                                    <input *ngSwitchDefault class="editable-text form-control-sm" type="text" [ngModel]="processData(key, data)">
+                                    <input *ngSwitchDefault class="editable-text form-control-sm" type="text" [(ngModel)]="data[key]" (change)="onTestClick(ti,key)">
                                     <a  *ngIf="passData.magnifyingGlass.indexOf(key)!=-1"><i class="fa fa-search align-middle"></i></a> 
                                 </div>
 

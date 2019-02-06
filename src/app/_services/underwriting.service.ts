@@ -337,13 +337,22 @@ export class UnderwritingService {
         ]
     }
     
+    // getMaintenanceDeductibles(){
+    //     this.maintenanceDeductiblesData = [
+    //         new MaintenanceDeductibles(true,'AOG30', 'ACTS OF GOD 30', 'L', 0.4, 10000000000),
+    //         new MaintenanceDeductibles(true,'OC31', 'OTHER CAUSES 31', 'L', 0.5, 10000000),
+    //         new MaintenanceDeductibles(false,'TPL5', 'THIRD PARTY LIABILITY 30', 'F', 0.4, 20000000000),
+    //     ];
+    //     // return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnDeductibles");
+    //     return this.maintenanceDeductiblesData;
+    // }
     getMaintenanceDeductibles(){
         this.maintenanceDeductiblesData = [
             new MaintenanceDeductibles(true,'AOG30', 'ACTS OF GOD 30', 'L', 0.4, 10000000000),
             new MaintenanceDeductibles(true,'OC31', 'OTHER CAUSES 31', 'L', 0.5, 10000000),
             new MaintenanceDeductibles(false,'TPL5', 'THIRD PARTY LIABILITY 30', 'F', 0.4, 20000000000),
         ];
-        return this.maintenanceDeductiblesData;
+        return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnDeductibles");
     }
     
     getMaintenanceRisksListData(){

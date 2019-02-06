@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input,  ViewChild } from '@angular/core';
 import { QuotationCoverageInfo, NotesReminders } from '../../_models';
 import { QuotationService, NotesService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
 
 
 @Component({
@@ -12,8 +13,7 @@ import { Title } from '@angular/platform-browser';
 export class CoverageComponent implements OnInit {
 
   private quotationCoverageInfo: QuotationCoverageInfo;
-
-  tableData: any[] = [];
+  @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   //tableDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
   tHeader: any[] = [];
   magnifyingGlass: any[] = ['coverCode'];
@@ -43,8 +43,8 @@ export class CoverageComponent implements OnInit {
   selOptions: any[] = [];
 
   passData: any = {
-    tableData: [],
     tHeader: [],
+    tableData:[],
     magnifyingGlass: [],
     options: [],
     dataTypes: [],
@@ -55,21 +55,28 @@ export class CoverageComponent implements OnInit {
     addFlag: true,
     editFlag: false,
     deleteFlag: true,
-    paginateFlag: false,
+    paginateFlag: false,  
     infoFlag: false,
     searchFlag: true,
     checkboxFlag: true,
     pageLength: 'unli',
-    widths: []
+    widths: [],
+    keys:['coverCd','section','bulletNo','sumInsured','addSi']
   };
 
+  @Input() pageData:any;
 
   multiSelectHeaderTxt: string = "";
   multiSelectData: any[] = [];
+  coverageData: any;
+  dataLoaded:boolean = false;
 
   nData: QuotationCoverageInfo = new QuotationCoverageInfo(null, null, null, null, null);
 
-  constructor(private quotationService: QuotationService, private titleService: Title) { }
+  constructor(private quotationService: QuotationService, private titleService: Title) {
+
+
+   }
 
   temp: number = 0;
 
@@ -82,13 +89,22 @@ export class CoverageComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.quotationService.getCoverageInfo().subscribe((data: any) => {
+        this.coverageData = data.quotation.project.coverage;
+        // this.passData.tableData = data.quotation.project.coverage.sectionCovers;
+        for (var i = data.quotation.project.coverage.sectionCovers.length - 1; i >= 0; i--) {
+          this.passData.tableData.push(data.quotation.project.coverage.sectionCovers[i]);
+        }
+        this.table.refreshTable();
+    });
+
+    console.log(this.passData.tableData);
     this.titleService.setTitle("Quo | Coverage");
     this.optionsData.push("USD", "PHP", "EUR");
     this.optionsData2.push("a", "b", "c");
 
     this.multiSelectHeaderTxt = "COVERAGE";
     this.multiSelectData.push("zero", "one", "two", "three", "four");
-
 
     this.tHeader.push("Cover Code");
     this.tHeader.push("Section");
@@ -105,8 +121,6 @@ export class CoverageComponent implements OnInit {
     this.selOptions.push({ selector: "section", vals: ["I", "II", "III"] });
     this.selOptions.push({ selector: "bulletNo", vals: ["1", "1.2", "1.3"] });
     this.selOptions.push({ selector: "sortSe", vals: ["10", "20", "30"] });
-
-    this.tableData = this.quotationService.getCoverageInfo();
 
     this.passData.tHeader.push("Cover Code");
     this.passData.tHeader.push("Section");
@@ -127,7 +141,7 @@ export class CoverageComponent implements OnInit {
     this.passData.widths.push("1", "auto", "auto", "auto", "1", "1");
     this.passData.magnifyingGlass.push("coverCode");
 
-    this.passData.tableData = this.quotationService.getCoverageInfo();
+
 
     // this.quotationCoverageInfo = new QuotationCoverageInfo(null, null, null, null, null, null, null, null);
     // this.quotationCoverageInfo.quotationNo = "MOCK DATA";
@@ -138,6 +152,22 @@ export class CoverageComponent implements OnInit {
     // this.quotationCoverageInfo.sectionThree = "MOCK DATA";
     // this.quotationCoverageInfo.deductibles = "MOCK DATA";
     // this.quotationCoverageInfo.remarks = "MOCK DATA";
+  }
+
+  pindot(){
+
+
+    this.quotationService.getCoverageInfo().subscribe((data: any) => {
+      while(this.passData.tableData.length > 0) {
+          this.passData.tableData.pop();
+      }
+        this.coverageData = data.quotation.project.coverage;
+        // this.passData.tableData = data.quotation.project.coverage.sectionCovers;
+        for (var i = data.quotation.project.coverage.sectionCovers.length - 1; i >= 0; i--) {
+          this.passData.tableData.push(data.quotation.project.coverage.sectionCovers[i]);
+        }
+        this.table.refreshTable();
+    }); 
   }
 
 }

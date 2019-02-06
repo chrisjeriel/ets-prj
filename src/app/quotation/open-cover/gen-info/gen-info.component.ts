@@ -13,6 +13,8 @@ export class GenInfoComponent implements OnInit {
   private sub: any;
   from: string;
 
+  currencyAbbr: string = "";
+  currencyRt: number = 0;
 
   constructor(private route: ActivatedRoute) { }
 
@@ -35,5 +37,14 @@ export class GenInfoComponent implements OnInit {
 
   checkTypeOfCession() {
     return (this.typeOfCession.trim().toUpperCase() === 'RETROCESSION') ? true : false;
+  }
+
+  showCurrencyModal(){
+    $('#currencyModal #modalBtn').trigger('click');
+  }
+
+  setCurrency(data){
+    this.currencyAbbr = data.currencyAbbr;
+    this.currencyRt = data.currencyRt;
   }
 }

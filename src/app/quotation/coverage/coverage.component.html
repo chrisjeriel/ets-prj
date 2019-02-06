@@ -1,4 +1,4 @@
-<div>
+<div  >
     <fieldset class="scheduler-border">
         <legend class="scheduler-border">Quotation Info</legend>
         <div class="form-row custom-row-inline-inset">
@@ -29,8 +29,8 @@
             <div class="col-sm-2">
             </div>
             <div class="col-sm-8" style="padding-top: 8px; padding-bottom: 15px;">
-                 <app-cust-editable-non-datatable [passData]="passData">
-        </app-cust-editable-non-datatable>
+                 <app-cust-editable-non-datatable  [passData]="passData">
+                </app-cust-editable-non-datatable>
             </div>
             <div class="col-sm-2"></div>
         </div>
@@ -46,22 +46,21 @@
                             <br>
                             <div class="input-group">
                                 <label class="form-control-sm" for="xx">Currency</label>
-                                <select class="form-control form-control-sm cust-sm" disabled readonly appRequired>
+                                <select class="form-control form-control-sm cust-sm" disabled readonly appRequired [ngModel]="coverageData!== undefined ? coverageData.currencyCd : ''">
                                     <option value="PHP">PHP</option>
                                     <option value="USD">USD</option>
                                     <option value="EUR">EUR</option>
                                 </select>
-                                <!-- <app-select [optionsData]="optionsData" (optionsValues)="printSelectedValue($event)"></app-select> -->
                                 <label class="form-control-sm" for="xx">Exch. Rt.</label>
                                 <input type="text" id="xx" class="form-control form-control-sm cust-sm txt-content-rght" required
                                        placeholder="0.00" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
-                                       readonly>
+                                       readonly [ngModel]="coverageData!== undefined ? coverageData.currencyRt : ''">
                             </div>
                             <div class="input-group">&nbsp;
                                 <label class="form-control-sm" for="xx">Total SI</label>
                                 <input type="text" id="xx" class="form-control form-control-sm cust-sm txt-content-rght" required
                                        placeholder="0.00" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
-                                       readonly>
+                                       readonly [ngModel]="coverageData!== undefined ? coverageData.totalSi : ''">
                             </div>
                         </div>
                         <div class="col-sm-1"></div>
@@ -79,17 +78,17 @@
                             <div class="input-group">
                                 <label class="form-control-sm col-sm-3" for="xx">Section I</label>
                                 <input type="text" id="xx" class="form-control form-control-sm txt-content-rght" readonly placeholder="0.00"
-                                       onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
+                                       onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [ngModel]="coverageData!== undefined ? coverageData.sectionISi : ''">
                             </div>
                             <div class="input-group">
                                 <label class="form-control-sm col-sm-3" for="xx">Section II</label>
                                 <input type="text" id="xx" class="form-control form-control-sm txt-content-rght" readonly placeholder="0.00"
-                                       onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
+                                       onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [ngModel]="coverageData!== undefined ? coverageData.sectionIISi : ''">
                             </div>
                             <div class="input-group">
                                 <label class="form-control-sm col-sm-3" for="xx">Section III</label>
                                 <input type="text" id="xx" class="form-control form-control-sm txt-content-rght" readonly placeholder="0.00"
-                                       onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
+                                       onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [ngModel]="coverageData!== undefined ? coverageData.sectionIIISi : ''">
                             </div>
                         </div>
                         <div class="col-sm-1"> &nbsp;</div>
@@ -101,11 +100,11 @@
             <fieldset class="scheduler-border fieldset-height">
                 <div class="form-row custom-row-inline-inset">
                     <label for="inputEmail4" class="form-control-sm top-label">Remarks</label>
-                    <textarea class="form-control form-control-sm"></textarea>
+                    <textarea class="form-control form-control-sm">{{coverageData!== undefined ? coverageData.remarks : ''}}</textarea>
                 </div>
             </fieldset>
         </div>
-    </div>
+    </div> 
 
     <div class="form-row">
         <div class="form-group col-sm">

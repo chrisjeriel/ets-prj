@@ -103,15 +103,15 @@
 						<div class="form-group col-sm-6 offsetFormGroup">
 							<div class="input-group">
 								<label class="form-control-sm col-sm-4">Currency</label>
-								<input type="text" class="form-control form-control-sm">
-								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<input type="text" class="form-control form-control-sm" [ngModel]="currencyAbbr">
+								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showCurrencyModal()"></i></a></div>
 								<span>&nbsp;</span>
 							</div>
 						</div>
 						<div class="form-group col-sm-6 offsetFormGroup">
 							<div class="input-group">
 								<label class="form-control-sm col-sm-4">Exch. Rt.</label>
-								<input type="text" class="form-control form-control-sm">
+								<input type="text" class="form-control form-control-sm" [ngModel]="currencyRt">
 								<span>&nbsp;</span>
 							</div>
 						</div>
@@ -441,3 +441,5 @@
 		</div>
 	</div>
 </div>
+
+<app-mtn-currency id="currencyModal" (selectedData)="setCurrency($event)"></app-mtn-currency>

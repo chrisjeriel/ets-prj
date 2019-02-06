@@ -88,7 +88,9 @@ export class CustNonDatatableComponent implements OnInit {
     @Output() rowDblClick: EventEmitter<any> = new EventEmitter();
     @Output() add: EventEmitter<any> = new EventEmitter();
     @Output() edit: EventEmitter<any> = new EventEmitter();
+    @Output() delete: EventEmitter<any> = new EventEmitter();
     @Output() copy: EventEmitter<any> = new EventEmitter();
+    @Output() save: EventEmitter<any> = new EventEmitter();
     @Output() print: EventEmitter<any> = new EventEmitter();
 
     @Input() printBtn: boolean = false;
@@ -127,6 +129,8 @@ export class CustNonDatatableComponent implements OnInit {
         copyFlag: false,        //copy btn
                                 //add functionality by placing it with [passData] as (copy)="onClickCopy($copy)"
 
+        saveFlag: false,        //save btn
+                                //add functionality by placing it with [passData] as (save)="onClickSave($event)"
         btnDisabled: true,      //your custom button disabler flag. Use this if you still need to disable button even after
                                 //selecting a row
 
@@ -140,7 +144,7 @@ export class CustNonDatatableComponent implements OnInit {
     startWidth: any;
     autoFill: number[];
 
-    displayData:any[];
+    displayData:any[]= [];
 
     unliFlag: boolean = false;
     sortBy:boolean = true;
@@ -163,6 +167,18 @@ export class CustNonDatatableComponent implements OnInit {
         
     }
 
+    refreshTable(){
+        for(var i = 0 ;i<this.passData.tableData.length;i++){
+            this.displayData[i] = this.passData.tableData[i];
+        }
+        
+        console.log(this.passData.tableData);
+        //this.displayData = JSON.parse(JSON.stringify( this.passData.tableData));
+        this.displayLength = this.displayData.length;
+        this.unliTableLength();
+        this.addFiller();
+    }
+
     ngOnInit(): void {
         this.passData.btnDisabled = false;
         this.passData.pageID = typeof this.passData.pageID == "undefined" ? 1 : this.passData.pageID;
@@ -173,15 +189,16 @@ export class CustNonDatatableComponent implements OnInit {
         this.passData.tableData = typeof this.passData.tableData == 'undefined' ? [['No Data']] : this.passData.tableData;
         this.unliTableLength();
         
-        if (this.passData.tableData.length > 0) {
+        if (this.passData.tableData.length > 0 && this.dataKeys.length == 0 ) {
             this.dataKeys = Object.keys(this.passData.tableData[0]);
         } else {
-            if(this.tHeader.length <= 0)
-            this.tHeader.push("No Data");
+            this.dataKeys = this.passData.keys;
         }
-        this.displayData = JSON.parse(JSON.stringify( this.passData.tableData));
-        this.displayLength = this.displayData.length;
-        this.addFiller();
+
+        // this.displayData = JSON.parse(JSON.stringify( this.passData.tableData));
+        // this.displayLength = this.displayData.length;
+        // this.addFiller();
+        this.refreshTable();
         
         for (var i = this.dataKeys.length - 1; i >= 0; i--) {
            this.fillData[this.dataKeys[i]] = null;
@@ -344,13 +361,18 @@ export class CustNonDatatableComponent implements OnInit {
     }
     onClickDelete(){
         //do some deleting
+        this.delete.next(event);
     }
     onClickCopy(event){
         //do some copying
         this.copy.next(event);
     }
+    onClickSave(event){
+        //do some saving
+        this.save.next(event);
+    }
     onClickPrint(event){
-        //do some copying
+        //do some printing
         this.print.next(event);
     }
     getSum(data){
