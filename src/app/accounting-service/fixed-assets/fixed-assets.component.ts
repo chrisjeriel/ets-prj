@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AccountingService } from '@app/_services';
 
 @Component({
   selector: 'app-fixed-assets',
@@ -7,7 +8,124 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FixedAssetsComponent implements OnInit {
 
-  constructor() { }
+  fixedAssetDetailsData: any = {
+  	tableData: this.accountingService.getAccountingSFixedAssets(),
+  	tHeader: [
+  		'Type',
+  		'Prop No.',
+  		'Description',
+  		'Location',
+  		'User',
+  		'Acquisition Date',
+  		'Acquisition Cost',
+  		'Depreciation Method',
+  		'No. Of Month',
+  		'Monthly Depreciation',
+  		'Accum Depreciation',
+  		'Accum As Of',
+  		'Disposal Date',
+  		'Disposal Value'
+  	],
+  	dataTypes: ['text', 'number', 'text', 'text', 'text', 'date', 'currency', 'text', 'number', 'currency', 'currency', 'date', 'date', 'text'],
+  	filters: [
+  		{
+            key: 'type',
+            title:'Type',
+            dataType: 'text'
+        },
+        {
+            key: 'propNo',
+            title:'Prop No.',
+            dataType: 'text'
+        },
+        {
+            key: 'description',
+            title:'Description',
+            dataType: 'text'
+        },
+        {
+            key: 'location',
+            title:'Location',
+            dataType: 'text'
+        },
+        {
+            key: 'user',
+            title:'User',
+            dataType: 'text'
+        },
+        {
+            key: 'acquisitionDate',
+            title:'Acquisition Date',
+            dataType: 'date'
+        },
+        {
+            key: 'acquisitionCost',
+            title:'Acquisition Cost',
+            dataType: 'text'
+        },
+        {
+            key: 'depreciationMethod',
+            title:'Dep. Method',
+            dataType: 'text'
+        },
+        {
+            key: 'noOfMonth',
+            title:'No. of Month',
+            dataType: 'text'
+        },
+        {
+            key: 'monthlyDepreciation',
+            title:'Monthly Dep.',
+            dataType: 'text'
+        },
+        {
+            key: 'accumulatedDepreciation',
+            title:'Accum Dep.',
+            dataType: 'text'
+        },
+        {
+            key: 'accumulatedAsOf',
+            title:'Accum As Of',
+            dataType: 'date'
+        },
+        {
+            key: 'disposalDate',
+            title:'Disposal Date',
+            dataType: 'date'
+        },
+        {
+            key: 'disposalValue',
+            title:'Disposal Value',
+            dataType: 'text'
+        },
+  	],
+  	addFlag: true,
+  	deleteFlag: true,
+  	saveFlag: true,
+  	printBtn: true,
+  	pagination: true,
+  	pageStatus: true,
+  	pageId: 1,
+  	pageLength: 20,
+  	keys: [
+  		'type',
+  		'propNo',
+  		'description',
+  		'location',
+  		'user',
+  		'acquisitionDate',
+  		'acquisitionCost',
+  		'depreciationMethod',
+  		'noOfMonth',
+  		'monthlyDepreciation',
+  		'accumulatedDepreciation',
+  		'accumulatedAsOf',
+  		'disposalDate',
+  		'disposalValue'
+  	],
+  }
+
+  constructor(private accountingService: AccountingService) { }
 
   ngOnInit() {
   }

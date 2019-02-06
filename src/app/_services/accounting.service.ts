@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, 
-	PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AccServiceAttachment, PaymentForAdvances, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, ARUnappliedCollection, AROthers, AccountingSOthersOr, AccORSerFeeLoc, OfficialReceipt, ORPrevAmountDetails, ORPrevAccEntries, ORPreVATDetails , ORPreCreditableWTaxDetails   } from '@app/_models';
+	PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AccServiceAttachment, PaymentForAdvances, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, ARUnappliedCollection, AROthers, AccountingSOthersOr, AccORSerFeeLoc, OfficialReceipt, ORPrevAmountDetails, ORPrevAccEntries, ORPreVATDetails , ORPreCreditableWTaxDetails, AccountingSFixedAssets   } from '@app/_models';
 
 @Injectable({
 	providedIn: 'root'
@@ -66,6 +66,7 @@ export class AccountingService {
 	orPreCreditableWTaxDetails : ORPreCreditableWTaxDetails[] = [];
 	accountingSOthersOrData: AccountingSOthersOr[] = [];
 	accORSerFeeLoc: AccORSerFeeLoc[] = [];
+	accountingSFixedAssets: AccountingSFixedAssets[] = [];
 
 
 	constructor(private http: HttpClient) { }
@@ -703,6 +704,15 @@ export class AccountingService {
 		];
 
 		return this.accountingSOthersOrData;
+	}
+
+	getAccountingSFixedAssets(){
+		this.accountingSFixedAssets = [
+			new AccountingSFixedAssets('Electronics Equivalent', 1, 'Lenovo', 'Accounting', 'Camilo Hermin', new Date(2015,1,1), 30000, 'Straight Line', 60, 500, 2500, new Date(2016,5,31), null, ''),
+			new AccountingSFixedAssets('Transportation Equivalent', 2, '2015 Fortuner', 'General Management', 'Camilo Hermin', new Date(2015,1,1), 1000000, 'Straight Line', 60, 16666.66, 83333.30, new Date(2016,5,31), null, ''),
+		];
+
+		return this.accountingSFixedAssets;
 	}
 
 }
