@@ -38,9 +38,9 @@
         <div class="row">
             <div class="col-sm-1"></div>
             <div class="col-sm-10" style="margin-top: 0.7em; margin-bottom: -0.4%;">
-                <app-cust-editable-non-datatable [passData]="endorsementData">
+                <app-cust-editable-non-datatable [passData]="endorsementData" (clickLOV)="clickEndtLOV($event)">
                     <ng-container controls-l>
-                        <button class="cust-btn" (click)="clickModal($event)" style="margin-right: 0px !important;">Copy
+                        <button class="cust-btn" (click)="clickModal($event)"  style="margin-right: 0px !important;">Copy
                             Endt</button>
                     </ng-container>
                 </app-cust-editable-non-datatable>
@@ -99,3 +99,5 @@
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
     </div>
 </app-modal>
+
+<app-mtn-endt-code id="edntCodeLOV" (selectedData)="selectedEndtLOV($event)"></app-mtn-endt-code>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountingService } from '@app/_services';
+import { Title } from  '@angular/platform-browser';
 
 @Component({
   selector: 'app-acct-srvc-consolidate-data',
@@ -104,9 +105,10 @@ export class AcctSrvcConsolidateDataComponent implements OnInit {
     ]
   };
 
-  constructor(private accountingService: AccountingService) { }
+  constructor(private accountingService: AccountingService, private titleService: Title) { }
 
   ngOnInit() {
+    this.titleService.setTitle("Acct-Service | Consolidate Data");
   }
 
 }

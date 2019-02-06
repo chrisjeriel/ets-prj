@@ -1,0 +1,9 @@
+.input-group {
+    margin-bottom: -14px !important;
+}
+
+.labels{
+    margin-bottom: 5px !important;
+    padding-bottom: 0px !important;
+    max-height: 2.3em
+}

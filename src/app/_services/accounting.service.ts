@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, 
-	PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AccServiceAttachment, PaymentForAdvances, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, ARUnappliedCollection, AROthers, AccountingSOthersOr, AccORSerFeeLoc, OfficialReceipt, ORPrevAmountDetails, ORPrevAccEntries, ORPreVATDetails , ORPreCreditableWTaxDetails,AcctSrvcCWhtaxMonthlyTaxDetails,AcctSrvcCWhtaxConsolidateData   } from '@app/_models';
+	PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AccServiceAttachment, PaymentForAdvances, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, ARUnappliedCollection, AROthers, AccountingSOthersOr, AccORSerFeeLoc, OfficialReceipt, ORPrevAmountDetails, ORPrevAccEntries, ORPreVATDetails , ORPreCreditableWTaxDetails, AccountingSFixedAssets, AccountingSMonthlyDepreciationDetails, AccountingSPaytReqCheckVoucher, AccountingSPaytReqPettyCashVoucher, AccountingSPaytReqPRMFE, AccountingSPaytReqOthers,AcctSrvcCWhtaxMonthlyTaxDetails,AcctSrvcCWhtaxConsolidateData   } from '@app/_models';
 
 @Injectable({
 	providedIn: 'root'
@@ -66,9 +66,15 @@ export class AccountingService {
 	orPreCreditableWTaxDetails : ORPreCreditableWTaxDetails[] = [];
 	accountingSOthersOrData: AccountingSOthersOr[] = [];
 	accORSerFeeLoc: AccORSerFeeLoc[] = [];
+	accountingSFixedAssets: AccountingSFixedAssets[] = [];
+	accountingSMonthlyDepreciationDetails: AccountingSMonthlyDepreciationDetails[] = [];
+	accountingSPaytReqCheckVoucher: AccountingSPaytReqCheckVoucher[] = [];
+	accountingSPaytReqPettyCashVoucher: AccountingSPaytReqPettyCashVoucher[] = [];
+	accountingSPaytReqPRMFE: AccountingSPaytReqPRMFE[] = [];
+	accountingSPaytReqOthers: AccountingSPaytReqOthers[] = [];
+	accountingSPaytReqList: AccountingRequestsListRP[] = [];
 	acctSrvcCWhtaxMonthlyTaxDetails: AcctSrvcCWhtaxMonthlyTaxDetails[] = [];
 	acctSrvcCWhtaxConsolidateData: AcctSrvcCWhtaxConsolidateData[] = [];
-
 
 	constructor(private http: HttpClient) { }
 
@@ -261,7 +267,7 @@ export class AccountingService {
 
 	getARInwdPolBalDetails() {
 		this.arInwdPolBalDetails = [
-			new ARInwdPolBalDetails("CAR-2018-00001-99-0001-000","CAR-2018-00001-99-0001-000", "EN-CAR-HO-18","01","Payment", new Date('09/25/2018'),new Date('09/25/2018'), "PHP",1, 3000000, 0, 0, 1642857.14, 1357142.86, 0, 1642857.14),
+			new ARInwdPolBalDetails("CAR-2018-00001-99-0001-000","CAR-2018-00001-99-0001-000", "EN-CAR-HO-18","01","Payment", new Date('09/25/2018'),new Date('09/25/2018'), "PHP",1, 3000000, 0, 0, 1642857.14, 1357142.86, 1642857.14,0),
 		]
 		return this.arInwdPolBalDetails;
 	}
@@ -711,6 +717,78 @@ export class AccountingService {
 		];
 
 		return this.accountingSOthersOrData;
+	}
+
+	getAccountingSFixedAssets(){
+		this.accountingSFixedAssets = [
+			new AccountingSFixedAssets('Electronics Equivalent', 1, 'Lenovo', 'Accounting', 'Camilo Hermin', new Date(2015,0,1), 30000, 'Straight Line', 60, 500, 2500, new Date(2016,5,31), null, ''),
+			new AccountingSFixedAssets('Transportation Equivalent', 2, '2015 Fortuner A/T', 'General Management', 'Camilo Hermin', new Date(2015,0,1), 1000000, 'Straight Line', 60, 16666.66, 83333.30, new Date(2016,5,31), null, ''),
+		];
+
+		return this.accountingSFixedAssets;
+	}
+
+	getAccountingSMonthlyDepreciationDetails(){
+		this.accountingSMonthlyDepreciationDetails = [
+			new AccountingSMonthlyDepreciationDetails('Lenovo Laptop', new Date(2015,0,31), 500, ''),
+			new AccountingSMonthlyDepreciationDetails('Lenovo Laptop', new Date(2015,1,28), 500, ''),
+			new AccountingSMonthlyDepreciationDetails('2015 Fortuner A/T', new Date(2015,0,31), 16666.66, ''),
+			new AccountingSMonthlyDepreciationDetails('2015 Fortuner A/T', new Date(2015,1,28), 16666.66, ''),
+		];
+
+		return this.accountingSMonthlyDepreciationDetails;
+	}
+
+	getAccountingSRequestsList(){
+		this.accountingSPaytReqList = [
+			new AccountingRequestsListRP('SCV-2015-01-0001', 'SM Prime Holdings, Inc.', 'Check Voucher', 'Paid', new Date(), 'Photocopying Charges for the month of December 2017', 'PHP', 1642857.14, 'Edward M. Salunson'),
+			new AccountingRequestsListRP('SCV-2017-12-0001', 'Rustan, Inc.', 'Check Voucher', 'Paid', new Date(), 'Photocopying Charges for the month of November 2017', 'PHP', 200000, 'Christian M. Lumen'),
+			new AccountingRequestsListRP('SCV-2017-12-0002', 'San Miguel Corporation', 'Check Voucher', 'Paid', new Date(), 'Photocopying Charges for the month of November 2017', 'PHP', 100000, 'Chie Reyes'),
+			new AccountingRequestsListRP('SCV-2017-12-0003', 'DMCI', 'Check Voucher', 'Cancelled', new Date(), 'Payment for Office Supplies per P.O. No. 567', 'USD', 1000000, 'Chie Reyes'),
+			new AccountingRequestsListRP('PRM-2018-01-0001', 'ABS-CBN', 'Payment of Risk Management Fee to Employees', 'Paid', new Date(), 'Payment of Risk Management Fee to Employees', 'PHP', 710716.12, 'Juan de la Cruz'),
+			new AccountingRequestsListRP('SCV-2018-02-0001', 'SMDC', 'Check Voucher', 'Paid', new Date(), 'Payment for Office Supplies per P.O. No. 567', 'SGD', 756929, 'Juan de la Cruz'),
+			new AccountingRequestsListRP('PRM-2018-02-0002', 'Universal Robina, Inc.', 'Payment of Risk Management Fee to Employees', 'Open', new Date(), 'Payment of Risk Management Fee to Employees', 'EUR', 300000, 'Juan de la Cruz'),
+			new AccountingRequestsListRP('SCV-2018-03-0001', 'SGV & Co.', 'Check Voucher', 'Open', new Date(), 'Payment for Office Supplies per P.O. No. 567', 'HKD', 1000000, 'Christian M. Lumen'),
+			new AccountingRequestsListRP('SCV-2018-09-0001', 'Accenture', 'Check Voucher', 'Open', new Date(), 'Miscellaneous payment for', 'PHP', 230000, 'Chie Reyes'),
+			new AccountingRequestsListRP('SCV-2018-11-0001', 'NSO', 'Check Voucher', 'Open', new Date(), 'Miscellaneous payment for', 'RMB', 1500000, 'Chie Reyes'),
+			new AccountingRequestsListRP('SCV-2019-04-0095', 'DFA', 'Check Voucher', 'Open', new Date(), 'Miscellaneous payment for', 'PHP', 1642857.14, 'Chie Reyes'),
+			new AccountingRequestsListRP('PRM-2019-05-0032', 'Robinsons', 'Payment of Risk Management Fee to Employees', 'Open', new Date(), 'Payment of Risk Management Fee to Employees', 'USD', 1342752.24, 'Chie Reyes'),
+		];
+
+		return this.accountingSPaytReqList;
+	}
+
+	getAccountingSPaytReqCheckVoucher(){
+		this.accountingSPaytReqCheckVoucher = [
+			new AccountingSPaytReqCheckVoucher('Printing of Forms', 'Printing of forms for the month of April 2015', 'PHP', 1, 7460.46, 7460.46),
+		];
+
+		return this.accountingSPaytReqCheckVoucher;
+	}
+
+	getAccountingSPaytReqPettyCashVoucher(){
+		this.accountingSPaytReqPettyCashVoucher = [
+			new AccountingSPaytReqPettyCashVoucher('2019', '00001', new Date(2019,1,31), 'Christian M. Lu', 'Cash Advance Re-inspection of Office', 'Y', 'New', 'PHP', 1, 600, 600),
+			new AccountingSPaytReqPettyCashVoucher('2019', '00002', new Date(2019,2,1), 'Christian M. Lu', 'Purchase of USB Memory Card', 'Y', 'New', 'PHP', 1, 900, 900),
+		];
+
+		return this.accountingSPaytReqPettyCashVoucher;
+	}
+
+	getAccountingSPaytReqPRMFE(){
+		this.accountingSPaytReqPRMFE = [
+			new AccountingSPaytReqPRMFE('00023', 'Rose Dela Cruz', 'Engineering', 'PHP', 1, 7460.46, 7460.46),
+		];
+
+		return this.accountingSPaytReqPRMFE;
+	}
+
+	getAccountingSPaytReqOthers(){
+		this.accountingSPaytReqOthers = [
+			new AccountingSPaytReqOthers('Utilities', 'Payment For', 'PHP', 1, 10000, 10000),
+		];
+
+		return this.accountingSPaytReqOthers;
 	}
 
 	getAcctSrvcCWhtaxMonthlyTaxDetails(){

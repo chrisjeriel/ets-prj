@@ -105,7 +105,7 @@
 							<div class="input-group">
 								<label class="form-control-sm col-sm-4">Currency</label>
 								<input type="text" class="form-control form-control-sm" [(ngModel)]="ocQuoteGenInfo.currencyCd">
-								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showCurrencyModal()"></i></a></div>
 								<span>&nbsp;</span>
 							</div>
 						</div>
@@ -442,3 +442,5 @@
 		</div>
 	</div>
 </div>
+
+<app-mtn-currency id="currencyModal" (selectedData)="setCurrency($event)"></app-mtn-currency>

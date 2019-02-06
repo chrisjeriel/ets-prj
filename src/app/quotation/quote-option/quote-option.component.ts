@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
 import { QuotationInfo, QuotationOption, QuotationOtherRates, QuotationDeductibles } from '../../_models';
 import { QuotationService } from '../../_services';
 import { Title } from '@angular/platform-browser';
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 
 
 
@@ -11,6 +12,7 @@ import { Title } from '@angular/platform-browser';
     styleUrls: ['./quote-option.component.css']
 })
 export class QuoteOptionComponent implements OnInit {
+    @ViewChildren(CustEditableNonDatatableComponent) table: QueryList<CustEditableNonDatatableComponent>;
     private quotationInfo: QuotationInfo;
     private quotationOption: QuotationOption;
     private quotationOtherRates: QuotationOtherRates;
@@ -30,9 +32,9 @@ export class QuoteOptionComponent implements OnInit {
     otherRatesNData: QuotationOtherRates = new QuotationOtherRates(null, null, null, null);
 
     optionsData: any = {
-        tableData: this.quotationService.getQuoteOptions(),
+        tableData: [],
         tHeader: ['Option No', 'Rate(%)', 'Conditions', 'Comm Rate Quota(%)', 'Comm Rate Surplus(%)', 'Comm Rate Fac(%)'],
-        dataTypes: ['text', 'percent', 'text', 'percent', 'percent', 'percent'],
+        dataTypes: ['number', 'percent', 'text', 'percent', 'percent', 'percent'],
         magnifyingGlass: ['conditions'],
         nData: new QuotationOption(null, null, null, null, null, null),
         pageLength: 3,
@@ -43,9 +45,11 @@ export class QuoteOptionComponent implements OnInit {
         infoFlag: true,
         searchFlag: true,
         pageID: 1,
+        keys: ['optionId','optionRt','condition','commRtQuota','commRtSurplus','commRtFac']
     }
+
     deductiblesData: any = {
-        tableData: this.quotationService.getDeductibles(),
+        tableData: [],
         tHeader: ['Deductible Code','Deductible Title', 'Rate(%)', 'Amount', 'Deductible Text'],
         dataTypes: ['text','text', 'percent', 'currency', 'text'],
         nData: new QuotationDeductibles(null,null, null, null, null),
@@ -57,14 +61,15 @@ export class QuoteOptionComponent implements OnInit {
         infoFlag: true,
         searchFlag: true,
         pageID: 2,
+        keys: ['deductibleCd','deductibleTitle','deductibleRt','deductibleAmt','deductibleTxt']
     }
 
     otherRatesData: any = {
-        tableData: this.quotationService.getQuotataionOtherRates(1),
-        tHeader: ['Cover Code', 'Rate(%)', 'Amount'],
-        dataTypes: ['text', 'percent', 'currency'],
+        tableData: [],
+        tHeader: ['Cover Code','', 'Rate(%)', 'Amount'],
+        dataTypes: ['number', 'text', 'percent', 'currency'],
         nData: new QuotationOtherRates(null, null, null, null),
-        magnifyingGlass: ['others'],
+        magnifyingGlass: ['coverCd'],
         pageLength: 5,
         addFlag: true,
         deleteFlag: true,
@@ -73,8 +78,10 @@ export class QuoteOptionComponent implements OnInit {
         infoFlag: true,
         searchFlag: true,
         pageID: 3,
+        keys: ['coverCd','coverCdDesc','rate','amount']
     }
 
+    record: any[];
     constructor(private quotationService: QuotationService, private titleService: Title) { }
 
     ngOnInit() {
@@ -82,8 +89,48 @@ export class QuoteOptionComponent implements OnInit {
         this.quotationInfo = new QuotationInfo();
         this.quotationInfo.quotationNo = "SMP-0000-0000-00";
         this.quotationInfo.insuredName = "Insured Name";
-        this.quoteOptionTableData = this.quotationService.getQuoteOptions();
-        this.otherRatesTableData = this.quotationService.getQuotataionOtherRates(1);
+
+
+        this.quotationService.getQuoteOptions().subscribe(data => {  
+            var optionRecords = data['quotation'].optionsList;
+
+            for(let rec of optionRecords){
+                this.optionsData.tableData.push(new QuotationOption(
+                    rec.optionId, 
+                    rec.optionRt, 
+                    rec.condition, 
+                    rec.commRtQuota, 
+                    rec.commRtSurplus, 
+                    rec.commRtFac
+                ));                
+            }
+
+
+            for(let rec of optionRecords){
+                for(let r of rec.deductiblesList){                  
+                    this.deductiblesData.tableData.push(new QuotationDeductibles(
+                        r.deductibleCd,
+                        r.deductibleTitle,
+                        r.deductibleRt,
+                        r.deductibleAmt,
+                        r.deductibleTxt
+                    ));
+                }               
+            }
+
+            var otherRatesRecords = data['quotation'].otherRatesList;
+
+            for(let rec of otherRatesRecords){
+                this.otherRatesData.tableData.push(new QuotationOtherRates(
+                    rec.coverCd, 
+                    rec.coverCdDesc, 
+                    rec.rate, 
+                    rec.amount                    
+                ));                
+            }
+            
+            this.table.forEach(table => { table.refreshTable() });
+        });
     }
 
     save() {
@@ -91,8 +138,8 @@ export class QuoteOptionComponent implements OnInit {
     }
 
     clickRow(event) {
-        console.log(event);
-        this.otherRatesTableData = this.quotationService.getQuotataionOtherRates(event.target.closest("tr").children[1].children[0].children[1].value);
+        //console.log(event);
+        //this.otherRatesTableData = this.quotationService.getQuotataionOtherRates(event.target.closest("tr").children[1].children[0].children[1].value);
     }
 
 

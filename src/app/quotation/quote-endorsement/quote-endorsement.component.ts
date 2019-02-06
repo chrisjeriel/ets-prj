@@ -52,6 +52,8 @@ export class QuoteEndorsementComponent implements OnInit {
         searchFlag: true,
     }
 
+    endtCodeLOVRow : number;
+
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title) { }
 
 
@@ -68,14 +70,13 @@ export class QuoteEndorsementComponent implements OnInit {
         this.quotationInfo = new QuotationInfo();
         this.quotationInfo.quotationNo = "SMP-0000-0000-00";
         this.quotationInfo.insuredName = "Insured Name";
-        this.quoteOptionTableData = this.quotationService.getQuoteOptions();
+        //this.quoteOptionTableData = this.quotationService.getQuoteOptions();
 
         this.tableData = this.quotationService.getEndorsements(1);
 
     }
 
     clickRow(event) {
-        console.log(event);
         this.tableData = this.quotationService.getEndorsements(event.target.closest("tr").children[1].innerText);
     }
     save() {
@@ -84,5 +85,18 @@ export class QuoteEndorsementComponent implements OnInit {
 
     clickModal(event) {
         $('#idMdl > #modalBtn').trigger('click');
+    }
+
+    clickEndtLOV(data){
+        $('#edntCodeLOV #modalBtn').trigger('click');
+        data.tableData = this.endorsementData.tableData;
+        this.endtCodeLOVRow = data.index;
+    }
+
+    selectedEndtLOV(data){
+        this.endorsementData.tableData[this.endtCodeLOVRow].endtCode = data.endtCd; 
+        this.endorsementData.tableData[this.endtCodeLOVRow].endtTitle = data.endtTitle; 
+        this.endorsementData.tableData[this.endtCodeLOVRow].endtDescription = data.description; 
+        this.endorsementData.tableData[this.endtCodeLOVRow].endtWording  = data.remarks; 
     }
 }

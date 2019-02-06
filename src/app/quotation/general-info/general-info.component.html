@@ -268,15 +268,15 @@
 						<div class="form-group col-sm-6 offsetFormGroup">
 							<div class="input-group">
 								<label class="form-control-sm col-sm-4">Currency</label>
-								<input appRequired type="text" class="form-control form-control-sm" placeholder="PHP">
-								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<input appRequired type="text" class="form-control form-control-sm" placeholder="PHP" [ngModel]="currencyAbbr">
+								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showCurrencyModal()"></i></a></div>
 								<span>&nbsp;</span>
 							</div>
 						</div>
 						<div class="form-group col-sm-6 offsetFormGroup">
 							<div class="input-group">
 								<label class="form-control-sm col-sm-4 ">Exch. Rt.</label>
-								<input appRequired type="text" class="form-control form-control-sm txt-content-rght" placeholder="0" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
+								<input appRequired type="text" class="form-control form-control-sm txt-content-rght" placeholder="0" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [ngModel]="currencyRt">
 								<span>&nbsp;</span>
 							</div>
 						</div>
@@ -350,16 +350,16 @@
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-6" style="margin-top: 10px;">
 								<label class="form-control-sm col-sm-2">Principal</label>
-								<input appRequired type="text" class="form-control form-control-sm col-sm-2">
-								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<input appRequired type="text" class="form-control form-control-sm col-sm-2" [(ngModel)="principalCd"]>
+								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 								<span>&nbsp;</span>
 								<input appRequired type="text" [(ngModel)]="quotationGenInfo.principal" class="form-control form-control-sm col-sm-8 ig-mrgn"
 								 style="margin-left: 3px !important;">
 							</div>
 							<div class="input-group ig-cust col-sm-6" style="margin-top: 10px;">
 								<label class="form-control-sm col-sm-2">Contractor</label>
-								<input appRequired type="text" class="form-control form-control-sm col-sm-2">
-								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<input appRequired type="text" class="form-control form-control-sm col-sm-2" [ngModel]="contractorCd">
+								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showContractorLOV()"></i></a></div>
 								<span>&nbsp;</span>
 								<input appRequired type="text" [(ngModel)]="quotationGenInfo.contractor" class="form-control form-control-sm col-sm-8 ig-mrgn"
 								 style="margin-left: 2px !important;">
@@ -443,16 +443,16 @@
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-6" style="margin-top: 10px;">
 								<label class="form-control-sm col-sm-2">Principal</label>
-								<input appRequired type="text" class="form-control form-control-sm col-sm-2">
-								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<input appRequired type="text" class="form-control form-control-sm col-sm-2" [ngModel]="principalCd">
+								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 								<span>&nbsp;</span>
 								<input appRequired type="text" [(ngModel)]="quotationGenInfo.principal" class="form-control form-control-sm col-sm-8 ig-mrgn"
 								 style="margin-left: 3px !important;">
 							</div>
 							<div class="input-group ig-cust col-sm-6" style="margin-top: 10px;">
 								<label class="form-control-sm col-sm-2">Contractor</label>
-								<input appRequired type="text" class="form-control form-control-sm col-sm-2">
-								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<input appRequired type="text" class="form-control form-control-sm col-sm-2" [ngModel]="contractorCd">
+								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showContractorLOV()"></i></a></div>
 								<span>&nbsp;</span>
 								<input appRequired type="text" [(ngModel)]="quotationGenInfo.contractor" class="form-control form-control-sm col-sm-8 ig-mrgn"
 								 style="margin-left: 2px !important;">
@@ -633,8 +633,8 @@
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-12" style="margin-top: 10px;">
 								<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Insured</label>
-								<input appRequired type="text" class="form-control form-control-sm col-sm-1">
-								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<input appRequired type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="principalCd">
+								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 								<span>&nbsp;</span>
 								<input appRequired type="text" [(ngModel)]="quotationGenInfo.principal" class="form-control form-control-sm col-sm-10 ig-mrgn"
 								 style="margin-left: 3px !important;">
@@ -794,8 +794,8 @@
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-12" style="margin-top: 10px;">
 								<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Insured</label>
-								<input appRequired type="text" class="form-control form-control-sm col-sm-1">
-								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<input appRequired type="text" class="form-control form-control-sm col-sm-1" [ngModel]="principalCd">
+								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 								<span>&nbsp;</span>
 								<input appRequired type="text" [(ngModel)]="quotationGenInfo.principal" class="form-control form-control-sm col-sm-10 ig-mrgn"
 								 style="margin-left: 3px !important;">
@@ -940,8 +940,8 @@
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-12" style="margin-top: 10px;">
 								<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Insured</label>
-								<input appRequired type="text" class="form-control form-control-sm col-sm-1">
-								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<input appRequired type="text" class="form-control form-control-sm col-sm-1" [ngModel]="principalCd">
+								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 								<span>&nbsp;</span>
 								<input appRequired type="text" [(ngModel)]="quotationGenInfo.principal" class="form-control form-control-sm col-sm-10 ig-mrgn"
 								 style="margin-left: 3px !important;">
@@ -1103,8 +1103,8 @@
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-12" style="margin-top: 10px;">
 								<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Insured</label>
-								<input appRequired type="text" class="form-control form-control-sm col-sm-1">
-								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<input appRequired type="text" class="form-control form-control-sm col-sm-1" [ngModel]="principalCd">
+								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 								<span>&nbsp;</span>
 								<input appRequired type="text" [(ngModel)]="quotationGenInfo.principal" class="form-control form-control-sm col-sm-10 ig-mrgn"
 								 style="margin-left: 3px !important;">
@@ -1401,3 +1401,7 @@
 		</div>
 	</div>
 </ng-template>
+
+<app-mtn-insured id="principalLOV" (selectedData)="setPrincipal($event)"></app-mtn-insured>
+<app-mtn-insured id="contractorLOV" (selectedData)="setContractor($event)"></app-mtn-insured> 
+<app-mtn-currency id="currencyModal" (selectedData)="setCurrency($event)"></app-mtn-currency>

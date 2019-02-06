@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountingService } from '@app/_services';
+import { Title } from  '@angular/platform-browser';
 
 @Component({
   selector: 'app-acct-srvc-annual-details',
@@ -95,8 +96,9 @@ export class AcctSrvcAnnualDetailsComponent implements OnInit {
     ]
   };
 
-  constructor(private accountingService: AccountingService) { }
+  constructor(private accountingService: AccountingService, private titleService: Title) { }
   ngOnInit() {
+    this.titleService.setTitle("Acct-Service | Annual Details");
     this.optionsData.push("January","February","March","April","May","June","July",
                             "August","September","October","November","December");
   }

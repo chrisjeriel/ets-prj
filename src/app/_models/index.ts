@@ -85,5 +85,8 @@ export * from './AccountingOrPreviewTaxDet';
 export * from './AccountingOrPreviewCredWtaxDet';
 export * from './AccountingSOthersOr';
 export * from './AccountingORSerFeeLoc';
+export * from './AccountingSFixedAssets';
+export * from './AccountingSMonthlyDepreciationDetails';
+export * from './AccountingSPaytReq';
 export * from './QuotationOcGenInfo';
 export * from './AcctSrvcConsolidateWhtax';

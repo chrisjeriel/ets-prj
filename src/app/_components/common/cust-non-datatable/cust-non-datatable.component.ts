@@ -88,7 +88,9 @@ export class CustNonDatatableComponent implements OnInit {
     @Output() rowDblClick: EventEmitter<any> = new EventEmitter();
     @Output() add: EventEmitter<any> = new EventEmitter();
     @Output() edit: EventEmitter<any> = new EventEmitter();
+    @Output() delete: EventEmitter<any> = new EventEmitter();
     @Output() copy: EventEmitter<any> = new EventEmitter();
+    @Output() save: EventEmitter<any> = new EventEmitter();
     @Output() print: EventEmitter<any> = new EventEmitter();
 
     @Input() printBtn: boolean = false;
@@ -127,6 +129,8 @@ export class CustNonDatatableComponent implements OnInit {
         copyFlag: false,        //copy btn
                                 //add functionality by placing it with [passData] as (copy)="onClickCopy($copy)"
 
+        saveFlag: false,        //save btn
+                                //add functionality by placing it with [passData] as (save)="onClickSave($event)"
         btnDisabled: true,      //your custom button disabler flag. Use this if you still need to disable button even after
                                 //selecting a row
 
@@ -356,13 +360,18 @@ export class CustNonDatatableComponent implements OnInit {
     }
     onClickDelete(){
         //do some deleting
+        this.delete.next(event);
     }
     onClickCopy(event){
         //do some copying
         this.copy.next(event);
     }
+    onClickSave(event){
+        //do some saving
+        this.save.next(event);
+    }
     onClickPrint(event){
-        //do some copying
+        //do some printing
         this.print.next(event);
     }
     getSum(data){

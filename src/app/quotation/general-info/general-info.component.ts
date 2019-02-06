@@ -21,12 +21,17 @@ export class GeneralInfoComponent implements OnInit {
 	dataTypes: any[] = [];
 	filters: any[] = [];
 	cessionType: string = "";
+	principalCd:string = "";
+	contractorCd: String = "";
 
 	typeOfCession: string = "";
 	private sub: any;
 	from: string;
 	line: string;
 	ocChecked: boolean = false;
+
+	currencyAbbr: string = "";
+	currencyRt: number = 0;
 
 
 	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute) { }
@@ -168,6 +173,35 @@ export class GeneralInfoComponent implements OnInit {
 	showItemInfoModal(content) {
 		this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
 	}
+
+	showPrincipalLOV(){
+		$('#principalLOV #modalBtn').trigger('click');
+	}
+
+	setPrincipal(data){
+		this.quotationGenInfo.principal = data.insuredName;
+		this.principalCd = data.insuredId;
+	}
+
+	showContractorLOV(){
+		$('#contractorLOV #modalBtn').trigger('click');
+	}
+
+	setContractor(data){
+		this.quotationGenInfo.contractor = data.insuredName;
+		this.contractorCd = data.insuredId;
+	}
+
+	showCurrencyModal(){
+		$('#currencyModal #modalBtn').trigger('click');
+	}
+
+	setCurrency(data){
+		this.currencyAbbr = data.currencyAbbr;
+		this.currencyRt = data.currencyRt;
+	}
+
+
 
 }
 export interface SelectRequestMode {

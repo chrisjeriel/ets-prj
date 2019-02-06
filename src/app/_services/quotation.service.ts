@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient,HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '@environments/environment';
 import { QuotationList, HoldCoverMonitoringList, DummyInfo, QuoteEndorsement, QuotationOption, QuotationOtherRates, IntCompAdvInfo, AttachmentInfo, QuotationProcessing, QuotationCoverageInfo, QuotationHoldCover, ItemInformation, ReadyForPrint, OpenCoverProcessing, Risks, QuotationDeductibles, EditableDummyInfo, OpenCoverList, OcGenInfoInfo, HoldCoverInfo} from '@app/_models';
 import { isNull, nullSafeIsEquivalent } from '@angular/compiler/src/output/output_ast';
@@ -10,7 +10,7 @@ import { NullTemplateVisitor } from '@angular/compiler';
 
 @Injectable({ providedIn: 'root' })
 export class QuotationService {
-    quotataionOption: QuotationOption[] = [];
+    quotationOption: QuotationOption[] = [];
     quotataionOtherRates: QuotationOtherRates[] = [];
     dummyInfoData: DummyInfo[] = [];
     endorsementData: QuoteEndorsement[] = [];
@@ -66,7 +66,7 @@ export class QuotationService {
             new QuotationCoverageInfo("1", "I", "3", "69000", ""),
             new QuotationCoverageInfo("2", 'II', "2", "123000", "")
         ];
-        return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteCoverage");
+        return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteCoverage?");
     }
     getQuotationListInfo() {
         this.quotationListData = [
@@ -171,6 +171,10 @@ export class QuotationService {
         return this.attachmentInfoData;
     }
 
+    getAttachmentOc(){
+        return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteAttachmentOc");
+    }
+
     getDummyEditableInfo() {
         /*Dummy Data Array*/
         this.editableDummyInfoData = [
@@ -207,7 +211,7 @@ export class QuotationService {
     }
 
     getQuoProcessingData() {
-        this.quoProcessingData = [
+        /*this.quoProcessingData = [
             new QuotationProcessing('CAR-2015-00088-00-99', 'Direct', 'CAR Wet Risks', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'CAR-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
                 new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
             new QuotationProcessing('CAR-2015-00088-00-78', 'Retrocession', 'CAR Wet Risks', 'In Progress', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'CAR-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
@@ -244,23 +248,53 @@ export class QuotationService {
                 new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
             new QuotationProcessing('DOS-2015-00088-00-75', 'Direct', 'DOS', 'In Progress', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'DOS-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
                 new Date('2015-03-09'), 'Rose Lim', 'QUECOH')
-        ];
+        ];*/
 
-     return this.quoProcessingData;
+        const params = new HttpParams()
+                .set('quotationNo','')
+                .set('cessionDesc', '')
+                .set('lineClassCdDesc', '')
+                .set('status','')
+                .set('cedingName','')
+                .set('principalName','')
+                .set('contractorName','')
+                .set('insuredDesc','')
+                .set('riskName','')
+                .set('objectDesc','')
+                .set('site','')
+                .set('currencyCd','')
+                .set('issueDate','')
+                .set('expiryDate','')
+                .set('reqBy','')
+                .set('createUser','');
+                // .set('paginationRequest.position',null)
+                // .set('paginationRequest.count',null)
+                // .set('sortRequest.sortKey',null)
+                // .set('sortRequest.order',null);
+
+        
+        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteListing', {params});
+       
     }
 
 
     getQuoteOptions() {
-        this.quotataionOption = [
+        /*this.quotationOption = [
             new QuotationOption(1, 5.05, "Condition", 6, 8, 5),
             new QuotationOption(2, 8, "Stable", 7, 4, 3),
             new QuotationOption(3, 9, "Good", 6, 43, 2)
         ];
-        return this.quotataionOption;
+        return this.quotationOption;*/
+
+        const params = new HttpParams()
+                .set('quoteId','')
+                .set('quotationNo','');
+
+        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteOption', {params});
     }
 
     getQuotataionOtherRates(optionNo: number) {
-        this.quotataionOtherRates = [
+        /*this.quotataionOtherRates = [
             new QuotationOtherRates(1, 'Others11', 50, 25000),
             new QuotationOtherRates(1, 'Others12', 41, 25000),
             new QuotationOtherRates(1, 'Others13', 75, 750000),
@@ -278,7 +312,7 @@ export class QuotationService {
             return itm.optionNo == optionNo;
         });
         quotataionOtherRates.forEach(function (itm) { delete itm.optionNo; });
-        return quotataionOtherRates;
+        return quotataionOtherRates;*/
     }
 
 
@@ -292,7 +326,8 @@ export class QuotationService {
         ];
 
         /*return this.http.get<User[]>(`${environment.apiUrl}/quotation`);*/
-        return this.intCompAdvInfo;
+        //return this.intCompAdvInfo;
+        return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteCompetition");
     }
 
 
@@ -350,7 +385,7 @@ export class QuotationService {
     }
 
     getOpenCoverProcessingData() {
-        this.openCoverProcessing = [
+        /*this.openCoverProcessing = [
             new OpenCoverProcessing('OC-CAR-2015-00088-00-99', 'Direct', 'CAR Wet Risks', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
                 new Date('2015-03-09'), 'Requestor', 'Creator'),
             new OpenCoverProcessing('OC-CAR-2015-00088-00-78', 'Retrocession', 'CAR Wet Risks', 'Concluded', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
@@ -369,7 +404,31 @@ export class QuotationService {
                 new Date('2015-03-09'), 'Requestor', 'Creator'),
         ];
 
-        return this.openCoverProcessing;
+        return this.openCoverProcessing;*/
+
+        const params = new HttpParams()
+                .set('quotationNo','')
+                .set('cessionDesc','')
+                .set('lineClassCdDesc','')
+                .set('status','')
+                .set('cedingName','')
+                .set('principalName','')
+                .set('contractorName','')
+                .set('insuredDesc','')
+                .set('riskName','')
+                .set('objectDesc','')
+                .set('site','')
+                .set('currencyCd','')
+                .set('issueDate','')
+                .set('expiryDate','')
+                .set('reqBy','')
+                .set('createUser','');
+                // .set('paginationRequest.position',null)
+                // .set('paginationRequest.count',null)
+                // .set('sortRequest.sortKey',null)
+                // .set('sortRequest.order',null);
+
+        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteListingOc', {params});
     }
 
 
@@ -455,6 +514,7 @@ export class QuotationService {
         return this.openCoverList;
     }
 
+
     getOcGenInfoData(){
         this.ocGenInfoData = [
         ];
@@ -476,4 +536,5 @@ export class QuotationService {
              
             return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteHoldCover',{params});
     }
+    
 }

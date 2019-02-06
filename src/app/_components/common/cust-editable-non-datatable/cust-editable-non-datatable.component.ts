@@ -93,6 +93,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     @Input() totalFlag = false;
     @Input() widths: string[] = [];
     unliFlag:boolean = false;
+    @Output() clickLOV: EventEmitter<any> = new EventEmitter();
     constructor(config: NgbDropdownConfig, public renderer: Renderer) { 
         config.placement = 'bottom-right';
         config.autoClose = false;
@@ -102,7 +103,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
         for(var i = 0 ;i<this.passData.tableData.length;i++){
             this.displayData[i] = this.passData.tableData[i];
         }
-
         //this.displayData = JSON.parse(JSON.stringify( this.passData.tableData));
         this.displayLength = this.displayData.length;
         this.unliTableLength();
@@ -138,7 +138,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
             this.passData.filterObj[filt].enabled=false;
         }
 
-        this.addFiller();
+        // this.addFiller();
     }
 
     processData(key: any, data: any) {
@@ -296,8 +296,22 @@ export class CustEditableNonDatatableComponent implements OnInit {
         this.addFiller();
     }
 
-    onTestClick(index,key){
+    onDataChange(){
         this.tableDataChange.emit(this.passData.tableData);
+    }
+
+    onClickLOV(data,key){
+        let retData:any = {};
+        retData.key = key;
+        retData.tableData = this.passData.tableData;
+        for (var i = this.passData.tableData.length - 1; i >= 0; i--) {
+            if(data == this.passData.tableData[i]){
+                retData.index = i;
+                break;
+            }
+        }
+        
+        this.clickLOV.emit(retData);
     }
  
 }

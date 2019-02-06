@@ -10,26 +10,51 @@ import { ARUnappliedCollection } from '@app/_models';
 export class UnappliedCollectionComponent implements OnInit {
 
   passDataUnappliedDetails: any = {
-  	tableData: [],
-    tHeader: ["Ceding Company", "Membership Date", "Remarks", "Curr", "Curr Rate","Amount","Amount(PHP)"],
-    dataTypes: ["text", "date", "text", "text", "percent","currency","currency"],
-    resizable: [true, true, true, true, true, true, true],
-    nData: new ARUnappliedCollection(null,null,null,null,null,null,null),
-    total:[null,null,null,null,'Total','amount','amountPHP'],
+  	tableData: [
+      {
+        item: 'Policy Deposit from UCPBGEN',
+        referenceNo: 'EN-CAR-HO-18-00001-00',
+        description: 'Payment for policy from PNBGEN',
+        type: 'Payment',
+        curr: 'PHP',
+        currRate: 1,
+        amount: 1000000,
+        amountPHP: 1000000
+      }
+    ],
+    tHeader: ['Item','Reference No.','Description','Type','Curr','Curr Rate','Amount','Amount (PHP)'],
+    dataTypes: ['text','text','select','text','text','percent','currency','currency'],
+    resizable: [true, true, true, true, true, true, true, true],
+    nData: {
+      item: null,
+      referenceNo: null,
+      description: null,
+      type: null,
+      curr: null,
+      currRate: null,
+      amount: null,
+      amountPHP: null
+    },
+    total:[null,null,null,null,null,'Total','amount','amountPHP'],
     checkFlag: true,
     addFlag: true,
     deleteFlag: true,
     genericBtn: 'Save',
     pageLength: 10,
-    widths: [220,150,'auto',50,100,150,150],
+    widths: [210,160,'auto',80,60,80,120,120],
     paginateFlag:true,
     infoFlag:true,
-    magnifyingGlass: ['cedCompany'],
+    opts: [
+      { 
+        selector: 'description',
+        vals: ['Payment for policy from PNBGEN']
+      }
+    ]
   }
   constructor(private accountingService: AccountingService) { }
 
   ngOnInit() {
-  	this.passDataUnappliedDetails.tableData = this.accountingService.getARUnappliedCollection();
+  	//this.passDataUnappliedDetails.tableData = this.accountingService.getARUnappliedCollection();
   }
 
 }
