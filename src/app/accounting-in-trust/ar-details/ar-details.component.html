@@ -54,7 +54,7 @@
 				<ng-container [ngSwitch]="paymentType.toUpperCase()">
 					<div *ngSwitchCase="'INWARD POLICY BALANCES'">Inward Policy Balances</div>
 					<div *ngSwitchCase="'CLAIM RECOVERY'">Claim Recovery</div>
-					<div *ngSwitchCase="'QSOA'">QSOA</div>
+					<div *ngSwitchCase="'QSOA'">Treaty Balance Due to PMMSC</div>
 					<div *ngSwitchCase="'CLAIM CASH CALL'">Claim Cash Call</div>
 					<div *ngSwitchCase="'INVESTMENT'">Investment</div>
 					<div *ngSwitchCase="'LOSS RESERVE DEPOSIT'">Loss Reserve Deposit</div>
@@ -95,7 +95,7 @@
 				</div>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab *ngIf="paymentType.toUpperCase() === 'INWARD POLICY BALANCES'" class="ngb-tab" title="Unapplied Collection">
+		<ngb-tab class="ngb-tab" title="Unapplied Collection">
 			<ng-template ngbTabContent>
 				<div class="input-group cust-border" style="padding-top: 0.6em">
 					<div class="col-sm-12">
@@ -104,11 +104,6 @@
 				</div>
 			</ng-template>
 		</ngb-tab>
-		<!-- <ngb-tab class="ngb-tab" title="Unapplied Collection">
-			<ng-template ngbTabContent>
-				<app-unapplied-collection></app-unapplied-collection>
-			</ng-template>
-		</ngb-tab> -->
 		<ngb-tab class="ngb-tab" title="Others">
 			<ng-template ngbTabContent>
 				<app-ar-others></app-ar-others>
