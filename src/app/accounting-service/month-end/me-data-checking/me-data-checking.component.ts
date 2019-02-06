@@ -27,7 +27,7 @@ export class MeDataCheckingComponent implements OnInit {
   	checkFlag: true,
   	pageStatus: true,
     pagination: true,
-    // colSize:['44px','410px','410px']
+    colSize:['','','']
 
 
 
