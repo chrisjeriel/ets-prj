@@ -851,8 +851,8 @@ export class AccountingService {
 
 	getAccountingSFixedAssets(){
 		this.accountingSFixedAssets = [
-			new AccountingSFixedAssets('Electronics Equivalent', 1, 'Lenovo', 'Accounting', 'Camilo Hermin', new Date(2015,0,1), 30000, 'Straight Line', 60, 500, 2500, new Date(2016,5,31), null, ''),
-			new AccountingSFixedAssets('Transportation Equivalent', 2, '2015 Fortuner A/T', 'General Management', 'Camilo Hermin', new Date(2015,0,1), 1000000, 'Straight Line', 60, 16666.66, 83333.30, new Date(2016,5,31), null, ''),
+			new AccountingSFixedAssets('Electronics Equivalent', 1, 'Lenovo', 'Accounting', 'Camilo Hermin', new Date(2015,0,1), 900000000000, 'Straight Line', 60, 500231230482, 25002314123.53, new Date(2016,5,31), null, ''),
+			new AccountingSFixedAssets('Transportation Equivalent', 2, '2015 Fortuner A/T', 'General Management', 'Camilo Hermin', new Date(2015,0,1), 100000000000, 'Straight Line', 60, 16662341236.66, 8335123433.30, new Date(2016,5,31), null, ''),
 		];
 
 		return this.accountingSFixedAssets;
@@ -860,10 +860,10 @@ export class AccountingService {
 
 	getAccountingSMonthlyDepreciationDetails(){
 		this.accountingSMonthlyDepreciationDetails = [
-			new AccountingSMonthlyDepreciationDetails('Lenovo Laptop', new Date(2015,0,31), 500, ''),
-			new AccountingSMonthlyDepreciationDetails('Lenovo Laptop', new Date(2015,1,28), 500, ''),
-			new AccountingSMonthlyDepreciationDetails('2015 Fortuner A/T', new Date(2015,0,31), 16666.66, ''),
-			new AccountingSMonthlyDepreciationDetails('2015 Fortuner A/T', new Date(2015,1,28), 16666.66, ''),
+			new AccountingSMonthlyDepreciationDetails('Lenovo Laptop', new Date(2015,0,31), 25002314123.53, ''),
+			new AccountingSMonthlyDepreciationDetails('Lenovo Laptop', new Date(2015,1,28), 25002314123.53, ''),
+			new AccountingSMonthlyDepreciationDetails('2015 Fortuner A/T', new Date(2015,0,31), 16662341236.66, ''),
+			new AccountingSMonthlyDepreciationDetails('2015 Fortuner A/T', new Date(2015,1,28), 16662341236.66, ''),
 		];
 
 		return this.accountingSMonthlyDepreciationDetails;
@@ -890,7 +890,7 @@ export class AccountingService {
 
 	getAccountingSPaytReqCheckVoucher(){
 		this.accountingSPaytReqCheckVoucher = [
-			new AccountingSPaytReqCheckVoucher('Printing of Forms', 'Printing of forms for the month of April 2015', 'PHP', 1, 7460.46, 7460.46),
+			new AccountingSPaytReqCheckVoucher('Printing of Forms', 'Printing of forms for the month of April 2015', 'PHP', 1, 74602348231.46, 74602348231.46),
 		];
 
 		return this.accountingSPaytReqCheckVoucher;
@@ -898,8 +898,8 @@ export class AccountingService {
 
 	getAccountingSPaytReqPettyCashVoucher(){
 		this.accountingSPaytReqPettyCashVoucher = [
-			new AccountingSPaytReqPettyCashVoucher('2019', '00001', new Date(2019,1,31), 'Christian M. Lu', 'Cash Advance Re-inspection of Office', 'Y', 'New', 'PHP', 1, 600, 600),
-			new AccountingSPaytReqPettyCashVoucher('2019', '00002', new Date(2019,2,1), 'Christian M. Lu', 'Purchase of USB Memory Card', 'Y', 'New', 'PHP', 1, 900, 900),
+			new AccountingSPaytReqPettyCashVoucher('2019', '00001', new Date(2019,1,31), 'Christian M. Lu', 'Cash Advance Re-inspection of Office', 'Y', 'New', 'PHP', 1, 60000000000, 60000000000),
+			new AccountingSPaytReqPettyCashVoucher('2019', '00002', new Date(2019,2,1), 'Christian M. Lu', 'Purchase of USB Memory Card', 'Y', 'New', 'PHP', 1, 900000000000, 900000000000),
 		];
 
 		return this.accountingSPaytReqPettyCashVoucher;
@@ -907,7 +907,7 @@ export class AccountingService {
 
 	getAccountingSPaytReqPRMFE(){
 		this.accountingSPaytReqPRMFE = [
-			new AccountingSPaytReqPRMFE('00023', 'Rose Dela Cruz', 'Engineering', 'PHP', 1, 7460.46, 7460.46),
+			new AccountingSPaytReqPRMFE('00023', 'Rose Dela Cruz', 'Engineering', 'PHP', 1, 74602348231.46, 74602348231.46),
 		];
 
 		return this.accountingSPaytReqPRMFE;
@@ -915,7 +915,7 @@ export class AccountingService {
 
 	getAccountingSPaytReqOthers(){
 		this.accountingSPaytReqOthers = [
-			new AccountingSPaytReqOthers('Utilities', 'Payment For', 'PHP', 1, 10000, 10000),
+			new AccountingSPaytReqOthers('Utilities', 'Payment For', 'PHP', 1, 100000000000, 100000000000),
 		];
 
 		return this.accountingSPaytReqOthers;
