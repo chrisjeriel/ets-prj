@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AROthers } from '@app/_models';
+import { PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AROthers, PaymentOfSeviceFee, TreatyBalance } from '@app/_models';
 import { AccountingService } from '../../../../_services/accounting.service';
 import { Title } from '@angular/platform-browser';
 
@@ -78,27 +78,40 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   ServiceAccountingData: any = {
-    tableData: [],
-    tHeader: ["Item", "Description", "Type", "Curr", "Curr Rate","Amount","Amount(PHP)"],
-    dataTypes: ["text", "text", "select", "text", "percent","currency","currency"],
-    resizable: [true, true, true, true, true, true, true],
-    nData: new AROthers(null,null,null,null,null,null,null),
-    total:[null,null,null,null,'Total','amount','amountPHP'],
+    tableData: this.accountingService.getPaymentOfServiceFee(),
+    tHeader: ["Item", "Description", "Curr", "Curr Rate","Amount","Amount(PHP)"],
+    dataTypes: ["text", "text", "text", "percent","currency","currency"],
+    resizable: [true, true, true, true, true, true],
+    nData: new PaymentOfSeviceFee(null,null,null,null,null,null),
+    total:[null,null,null,'Total','amount','amountPHP'],
     checkFlag: true,
     addFlag: true,
     deleteFlag: true,
     genericBtn: 'Save',
     pageLength: 10,
-    widths: [220,'auto',150,50,100,150,150],
+    widths: [220,'auto',50,100,150,150],
     paginateFlag:true,
-    infoFlag:true,
-    opts:[
-          {
-            selector: 'type',
-            vals: ['Payment','Refund']
-          },
-    ]
+    infoFlag:true
   }
+
+
+  TreatyBalanceData: any = {
+    tableData: this.accountingService.getTreatyBalance(),
+    tHeader: ["Quarter Ending", "DR Balance", "CR Balance", "Beginning DR Balance","Beginning CR Balance","Ending DR Balance","Ending CR Balance"],
+    dataTypes: ["date","currency","currency","currency","currency","currency","currency"],
+    resizable: [true, true, true, true, true, true,true],
+    nData: new TreatyBalance(null,null,null,null,null,null,null),
+    total:['Total','drBalance','crBalance','beginningDrBalance','beginningCrBalance','endingDrBalance','endingCrBalance'],
+    checkFlag: true,
+    addFlag: true,
+    deleteFlag: true,
+    genericBtn: 'Save',
+    pageLength: 10,
+    widths: [220,150,150,150,150,150,150],
+    paginateFlag:true,
+    infoFlag:true
+  }
+
 
   constructor(private accountingService: AccountingService) {
       this.date = new Date().toISOString().slice(0,16);
@@ -109,7 +122,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.paymentType = "";
     }
 
-    this.ServiceAccountingData.tableData = this.accountingService.getAcctServices();
+    
   }
 
 }

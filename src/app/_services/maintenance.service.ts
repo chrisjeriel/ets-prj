@@ -12,6 +12,7 @@ export class MaintenanceService{
 	getMtnDistrict(){
 		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnDistrict");
 	}
+
 	getMtnInsured(){
 		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnInsured");
 	}
@@ -35,4 +36,7 @@ export class MaintenanceService{
 		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnCurrency");
 	}
 
+	getMtnBlock(){
+		return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMaintenanceBlock');
+	}
 }

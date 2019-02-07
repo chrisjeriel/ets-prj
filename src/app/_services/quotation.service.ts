@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { QuotationList, HoldCoverMonitoringList, DummyInfo, QuoteEndorsement, QuotationOption, QuotationOtherRates, IntCompAdvInfo, AttachmentInfo, QuotationProcessing, QuotationCoverageInfo, QuotationHoldCover, ItemInformation, ReadyForPrint, OpenCoverProcessing, Risks, QuotationDeductibles, EditableDummyInfo, OpenCoverList, OcGenInfoInfo, HoldCoverInfo} from '@app/_models';
+import { QuotationList, HoldCoverMonitoringList, DummyInfo, QuoteEndorsement, QuotationOption, QuotationOtherRates, IntCompAdvInfo, AttachmentInfo, QuotationProcessing, QuotationCoverageInfo, QuotationHoldCover, ItemInformation, ReadyForPrint, OpenCoverProcessing, Risks, QuotationDeductibles, EditableDummyInfo, OpenCoverList, ALOPItemInformation, OcGenInfoInfo, HoldCoverInfo } from '@app/_models';
 import { isNull, nullSafeIsEquivalent } from '@angular/compiler/src/output/output_ast';
 import { NULL_INJECTOR } from '@angular/core/src/render3/component';
 import { isNullOrUndefined } from 'util';
 import { NullTemplateVisitor } from '@angular/compiler';
+
 
 
 @Injectable({ providedIn: 'root' })
@@ -29,6 +30,7 @@ export class QuotationService {
     quoteDeductiblesData: QuotationDeductibles[] = [];
     editableDummyInfoData: EditableDummyInfo[] = [];
     openCoverList: OpenCoverList[]=[];
+    aLOPItemInfos: ALOPItemInformation[]=[];
     ocGenInfoData: OcGenInfoInfo[]=[];
     holdCoverInfo: HoldCoverInfo[]=[];
 
@@ -160,15 +162,16 @@ export class QuotationService {
     }
 
     getAttachment() {
-        this.attachmentInfoData = [
-            new AttachmentInfo("NSO_Birth_Certificate_001", "Policyholder’s details such as name, date of birth, address, gender, occupation"),
-            new AttachmentInfo("Registration_Number_001", "Vehicle registration number and registration certificate (RC) number"),
-            new AttachmentInfo("Driving_License_001", "Policyholder’s driving licence information"),
-            new AttachmentInfo("Passport_Photo_001", "Recent passport sized photograph"),
-            new AttachmentInfo("Post_Office_Passbook_001", "Proof of address documents "),
-        ];
+        // this.attachmentInfoData = [
+        //     new AttachmentInfo("NSO_Birth_Certificate_001", "Policyholder’s details such as name, date of birth, address, gender, occupation"),
+        //     new AttachmentInfo("Registration_Number_001", "Vehicle registration number and registration certificate (RC) number"),
+        //     new AttachmentInfo("Driving_License_001", "Policyholder’s driving licence information"),
+        //     new AttachmentInfo("Passport_Photo_001", "Recent passport sized photograph"),
+        //     new AttachmentInfo("Post_Office_Passbook_001", "Proof of address documents "),
+        // ];
 
-        return this.attachmentInfoData;
+        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteAttachment');
+        // return this.attachmentInfoData;
     }
 
     getAttachmentOc(){
@@ -515,6 +518,20 @@ export class QuotationService {
     }
 
 
+    getALOPItemInfos(car: string) {
+        if (car == "CAR") {
+            this.aLOPItemInfos.forEach(function (itm) { delete itm.relativeImportance; });
+        }
+        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteAlopItem');;
+    }
+
+    getALop(quoteId:number,quotationNo:string){
+        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteAlop'
+            +('?quoteId=' + quoteId)
+            +('&quotationNo='+ quotationNo)
+        );
+    }
+
     getOcGenInfoData(){
         this.ocGenInfoData = [
         ];
@@ -536,5 +553,5 @@ export class QuotationService {
              
             return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteHoldCover',{params});
     }
-    
+
 }
