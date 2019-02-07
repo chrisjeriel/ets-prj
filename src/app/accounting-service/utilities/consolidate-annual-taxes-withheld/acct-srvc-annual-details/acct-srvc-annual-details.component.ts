@@ -17,7 +17,7 @@ export class AcctSrvcAnnualDetailsComponent implements OnInit {
     dataTypes: ["text","text","number","sequence-6","text","text","text","text","text",
                 "date","text","percent","currency","currency"],
     total: [null,null,null,null,null,null,null,null,null,null,"TOTAL",null,"taxBase","taxAmount"],
-    widths: [],
+    colSize: ['','','','','','20%','20%','20%','','','','','20%','20%'],
     pageLength: 15,
     tableOnly: false,
     pageStatus: true,

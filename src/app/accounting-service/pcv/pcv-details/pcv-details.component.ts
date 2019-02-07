@@ -10,7 +10,7 @@ export class PcvDetailsComponent implements OnInit {
   passData: any = {
   	tHeader: ['Item No.','Particulars', 'Amount'],
   	dataTypes: ['sequence-2', 'text', 'currency'],
-  	widths: [1, 'auto', 110],
+  	widths: [1, 'auto', 150],
   	total: [ null, 'Total', '2'],
   	tableData: [
   		[1, 'Taxi Fare', 250],

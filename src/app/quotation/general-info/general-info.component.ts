@@ -15,7 +15,7 @@ import { ActivatedRoute } from '@angular/router';
 export class GeneralInfoComponent implements OnInit {
 	private quotationGenInfo: QuotationGenInfo;
 	rowData: any[] = this.quotationService.rowData;
-	quotationNum: any[] = [];
+	quotationNum: string;
 	tableData: any[] = [];
 	tHeader: any[] = [];
 	dataTypes: any[] = [];
@@ -29,6 +29,7 @@ export class GeneralInfoComponent implements OnInit {
 	from: string;
 	line: string;
 	ocChecked: boolean = false;
+	genInfoData: any;
 
 	currencyAbbr: string = "";
 	currencyRt: number = 0;
@@ -42,11 +43,25 @@ export class GeneralInfoComponent implements OnInit {
 		this.filters.push("Item No", "Desc. of Items");
 		this.tableData = this.quotationService.getItemInfoData();
 
+		this.sub = this.route.params.subscribe(params => {
+			this.from = params['from'];
+			if (this.from == "quo-processing") {
+				this.line = params['line'];
+				this.typeOfCession = params['typeOfCession'];
+				this.quotationNum = params['quotationNo'];
+				this.typeOfCession = this.typeOfCession.toUpperCase();
+			}
+		});
+
+
 		if (this.quotationService.toGenInfo[0] == "edit") {
-			console.log(this.quotationService.rowData);
+				this.quotationService.getQuoteGenInfo(null,this.quotationNum).subscribe((data: any) => {
+				this.genInfoData = data.quotationGeneralInfo;
+				console.log(this.genInfoData);
+				this.genInfoData.cessionDesc = this.genInfoData.cessionDesc.toUpperCase();
+			});
 
-			this.quotationNum = this.quotationService.rowData[0].split("-");
-
+/*			console.log(this.quotationService.rowData);*/
 			this.quotationGenInfo = new QuotationGenInfo();
 			this.quotationGenInfo.line = "";
 			this.quotationGenInfo.year = 0;
@@ -89,6 +104,7 @@ export class GeneralInfoComponent implements OnInit {
 			this.quotationGenInfo.lastUpdateBy = "MOCK DATA";
 
 		} else {
+
 			this.quotationGenInfo = new QuotationGenInfo();
 			this.quotationGenInfo.line = "";
 			this.quotationGenInfo.year;
@@ -131,13 +147,13 @@ export class GeneralInfoComponent implements OnInit {
 			this.quotationGenInfo.lastUpdateBy = "";
 		}
 
-		this.sub = this.route.params.subscribe(params => {
+		/*this.sub = this.route.params.subscribe(params => {
 			this.from = params['from'];
 			if (this.from == "quo-processing") {
-				this.typeOfCession = params['typeOfCession'];
+				this.typeOfCession = params['cessionDesc'];
 			}
-		});
-		this.checkTypeOfCession();
+		});*/
+		/*this.checkTypeOfCession();*/
 	}
 
 	ngOnDestroy() {
@@ -145,7 +161,7 @@ export class GeneralInfoComponent implements OnInit {
 	}
 
 	checkTypeOfCession() {
-		return (this.typeOfCession.trim().toUpperCase() === 'RETROCESSION') ? true : false;
+		return (this.typeOfCession.toUpperCase() === 'RETROCESSION') ? true : false;
 	}
 
 	reqMode: SelectRequestMode[] = [
