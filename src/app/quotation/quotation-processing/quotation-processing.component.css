@@ -41,6 +41,9 @@ p{
 .cust-btn {
 	cursor: pointer;
 }
+.cust-btn-extend{
+    max-width: 23%;
+}
 #close{
 	font-size: 27px;
 }
