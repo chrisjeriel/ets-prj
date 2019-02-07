@@ -33,12 +33,10 @@ export class MtnInsuredComponent implements OnInit {
 
   ngOnInit() {
   	  	this.mtnService.getMtnInsured().subscribe((data: any) => {
-  	  		console.log(data);
   	  		for (var a = data.insured.length - 1; a >= 0; a--) {
   	  			this.passData.tableData.push(data.insured[a]);
   	  		}
   	  		this.table.refreshTable();
-  	  		console.log(this.passData.tableData);
   	  	});
 
   }

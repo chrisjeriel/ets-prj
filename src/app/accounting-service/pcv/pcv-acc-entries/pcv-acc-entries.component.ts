@@ -10,7 +10,7 @@ export class PcvAccEntriesComponent implements OnInit {
   passData: any = {
   	tHeader: ['Code','Account', 'SL Type', 'SL Name', 'Debit', 'Credit'],
   	dataTypes: ['text', 'text', 'text', 'text', 'currency', 'currency'],
-  	widths: [110, 'auto', 110, 'auto', 110, 110],
+  	widths: [110, 'auto', 110, 'auto', 150, 150],
   	total: [null, null, null, 'Total', '4', '5'],
   	tableData: [
   		['5-01-11-05','Representation and Entertainment Others','', '', 250,0],

@@ -32,8 +32,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
     @Input() columnId;
     @Input() pageLength = 10;
 
-    @Input() editedData: any[] = [];
-    @Output() editedDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
     @Output() rowClick: EventEmitter<any> = new EventEmitter();
     @Output() rowDblClick: EventEmitter<any> = new EventEmitter();
     @Output() add: EventEmitter<any> = new EventEmitter();
@@ -100,7 +98,9 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     refreshTable(){
+
         for(var i = 0 ;i<this.passData.tableData.length;i++){
+            this.passData.tableData[i].edited = false;
             this.displayData[i] = this.passData.tableData[i];
         }
         //this.displayData = JSON.parse(JSON.stringify( this.passData.tableData));
@@ -115,6 +115,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         this.passData.pageLength = typeof this.passData.pageLength != 'number' ? 10 : this.passData.pageLength;
         this.unliTableLength();
         this.passData.dataTypes = typeof this.passData.dataTypes == 'undefined' ? [] : this.passData.dataTypes;
+
         if (this.passData.tableData.length > 0 && this.dataKeys.length == 0 ) {
             this.dataKeys = Object.keys(this.passData.tableData[0]);
         } else {
@@ -146,6 +147,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     onClickAdd() {
+
         this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
         this.unliTableLength();    
         this.search(this.searchString);
@@ -299,6 +301,8 @@ export class CustEditableNonDatatableComponent implements OnInit {
     onDataChange(){
         this.tableDataChange.emit(this.passData.tableData);
     }
+
+
 
     onClickLOV(data,key){
         let retData:any = {};

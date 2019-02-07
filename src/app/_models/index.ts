@@ -95,3 +95,6 @@ export * from './AccountingSMonthlyDepreciationDetails';
 export * from './AccountingSPaytReq';
 export * from './QuotationOcGenInfo';
 export * from './AcctSrvcConsolidateWhtax';
+export * from './AccSrvEditTaxDetails';
+export * from './AccSrvEditWTaxDetails';
+export * from './AccountingSrvExpenseBudget';

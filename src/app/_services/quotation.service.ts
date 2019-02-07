@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { environment } from '@environments/environment';
 import { QuotationList, HoldCoverMonitoringList, DummyInfo, QuoteEndorsement, QuotationOption, QuotationOtherRates, IntCompAdvInfo, AttachmentInfo, QuotationProcessing, QuotationCoverageInfo, QuotationHoldCover, ItemInformation, ReadyForPrint, OpenCoverProcessing, Risks, QuotationDeductibles, EditableDummyInfo, OpenCoverList, ALOPItemInformation, OcGenInfoInfo, HoldCoverInfo } from '@app/_models';
 import { isNull, nullSafeIsEquivalent } from '@angular/compiler/src/output/output_ast';
@@ -70,6 +70,7 @@ export class QuotationService {
         ];
         return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteCoverage?");
     }
+
     getQuotationListInfo() {
         this.quotationListData = [
             new QuotationList("CAR-2015-00028-32-01", "Direct", "Fire", "Concluded", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna, Calamba", "CAR-2018-00001-023-0002-01", "PHP", new Date("12-20-2018"), new Date(), "Inigo Flores", "Cuaresma", "Juan Cruz"),
@@ -143,9 +144,16 @@ export class QuotationService {
     }
 
 
-    getEndorsements(optionNo: number) {
+    getEndorsements(quoteId: string, quotationNo: string, optionNo: number) {
+         if (quoteId == '' || quoteId == null ) {
+         return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteEndorsements?quotationNo="+quotationNo+"&optionId="+optionNo);
+         } else {
+         return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteEndorsement?quoteId="+quoteId+"&quotationNo="+quotationNo+"&optionId="+optionNo);
+     
+    }
 
-        this.endorsementData = [
+
+     /*   this.endorsementData = [
             new QuoteEndorsement(1, "111", 'Endt Title', 'Endt Description', 'Wording'),
             new QuoteEndorsement(1, "112", 'This is the title', 'sample Description', 'Sample Wording'),
             new QuoteEndorsement(2, "221", 'Endt Title', 'Endt Description', 'Wording'),
@@ -158,10 +166,10 @@ export class QuotationService {
             return itm.optionNo == optionNo;
         });
         endorsmentData.forEach(function (itm) { delete itm.optionNo; });
-        return endorsmentData;
+        return endorsmentData;*/
     }
 
-    getAttachment() {
+    getAttachment(quoteId:string) {
         // this.attachmentInfoData = [
         //     new AttachmentInfo("NSO_Birth_Certificate_001", "Policyholder’s details such as name, date of birth, address, gender, occupation"),
         //     new AttachmentInfo("Registration_Number_001", "Vehicle registration number and registration certificate (RC) number"),
@@ -170,7 +178,10 @@ export class QuotationService {
         //     new AttachmentInfo("Post_Office_Passbook_001", "Proof of address documents "),
         // ];
 
-        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteAttachment');
+        const params = new HttpParams()
+             .set('quoteId',quoteId)
+
+        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteAttachment',{params});
         // return this.attachmentInfoData;
     }
 
@@ -376,6 +387,14 @@ export class QuotationService {
 
     }
 
+    getQuoteGenInfo(quoteId : any, quotationNo: string ){
+      if (quoteId == '' || quoteId == null ) {
+         return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteGeneralInfo?quotationNo="+quotationNo);
+      } else {
+         return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteGeneralInfo?quoteId="+quoteId+"&quotationNo="+quotationNo);
+     }
+    }
+
     getReadyForPrinting() {
         this.readyForPrinting = [
             new ReadyForPrint("CAR-2018-00088-00-99", "Rose Lim", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', "PHP", new Date(), new Date(), "Rose Lim"),
@@ -384,7 +403,6 @@ export class QuotationService {
             new ReadyForPrint("CAR-2018-00088-00-99", "Rose Lim", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE International Corp", 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', "PHP", new Date(), new Date(), "Rose Lim"),
         ];
         return this.readyForPrinting;
-
     }
 
     getOpenCoverProcessingData() {
@@ -552,6 +570,25 @@ export class QuotationService {
              .set('holdCoverNo','')
              
             return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteHoldCover',{params});
+    }
+
+    saveQuoteAttachment(quoteId:number ,attachmentList:any[]){
+        /*const params = new HttpParams()
+             .set('quoteId',quoteId.toString())
+             .set('attachmentsList',JSON.stringify(attachmentList))*/
+             
+        let params:any  = {
+            quoteId: quoteId,
+            attachmentsList: attachmentList
+        };
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        console.log(JSON.stringify(params));
+
+        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteAttachment', JSON.stringify(params), header);
     }
 
 }

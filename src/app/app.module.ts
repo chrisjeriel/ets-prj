@@ -209,6 +209,7 @@ import { MtnDistrictComponent } from './maintenance/mtn-district/mtn-district.co
 import { MtnCityComponent } from './maintenance/mtn-city/mtn-city.component';
 import { MtnInsuredComponent } from './maintenance/mtn-insured/mtn-insured.component';
 import { MtnBlockComponent } from './maintenance/mtn-block/mtn-block.component';
+import { UtilitiesComponent } from './accounting-service/utilities/utilities.component';
 import { ExpenseBudgetComponent } from './accounting-service/expense-budget/expense-budget.component';
 import { BudgetDetailsComponent } from './accounting-service/expense-budget/budget-details/budget-details.component';
 import { ByMonthComponent } from './accounting-service/expense-budget/by-month/by-month.component';
@@ -246,7 +247,6 @@ import { GenerateJvServiceComponent } from './accounting-service/journal-voucher
 import { JvEntryServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-entry-service/jv-entry-service.component';
 import { JvPreviewServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-preview-service/jv-preview-service.component';
 import { JvAttachmentsServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-attachments-service/jv-attachments-service.component';
-
 
 
 @NgModule({
@@ -463,6 +463,7 @@ import { JvAttachmentsServiceComponent } from './accounting-service/journal-vouc
         MtnCityComponent,
         MtnInsuredComponent,
         MtnBlockComponent,
+        UtilitiesComponent,
         ExpenseBudgetComponent,
         BudgetDetailsComponent,
         ByMonthComponent,
