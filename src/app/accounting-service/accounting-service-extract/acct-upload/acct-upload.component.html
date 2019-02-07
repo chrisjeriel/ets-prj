@@ -1,16 +1,24 @@
 <fieldset class="scheduler-border">
 	<legend class="scheduler-border">Extraction Info</legend>
 	<div class="form-row custom-row-inline-inset">
-		<div class="col-sm-5">
+		<div class="col-sm-1">
 			<div class="input-group">
-				<label class="form-control-sm col-sm-1">Period:</label>
-				<label class="form-control-sm col-sm-2">From</label>
-				<input type="text" class="form-control form-control-sm cust-sm col-sm-4">
-				<label class="form-control-sm col-sm-1">To</label>
-				<input type="text" class="form-control form-control-sm cust-sm col-sm-4">
+				<label class="form-control-sm col-sm-12">Period:</label>
 			</div>
 		</div>
-		<div class="col-sm-7">
+		<div class="col-sm-2">
+			<div class="input-group">
+				<label class="form-control-sm col-sm-3" style="margin-right: 7px !important">From</label>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm">
+			</div>
+		</div>
+		<div class="col-sm-2">
+			<div class="input-group">
+				<label class="form-control-sm col-sm-2">To</label>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm">
+			</div>
+		</div>
+		<div class="col-sm-6">
 			<div class="input-group">
 				<label class="form-control-sm col-sm-2">Extracted By</label>
 				<input type="text" class="form-control form-control-sm cust-sm col-sm-4">
@@ -18,32 +26,66 @@
 				<input type="text" class="form-control form-control-sm cust-sm col-sm-4">
 			</div>
 		</div>
+		<div class="col-sm-1">
+			<div class="input-group">
+				<div class="col-sm-12"></div>
+			</div>
+		</div>
+		<div class="col-sm-12">
+			<div class="input-group">
+				<label class="form-control-sm col-sm-8">Date Extracted</label>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-4">
+			</div>
+		</div>
 	</div>
 </fieldset>
 <fieldset class="scheduler-border">
 	<legend class="scheduler-border">Summary Per Payee</legend>
-		<div class="row">
-			<div *ngIf ="1==2"	>
-				<div class="col-sm-12" style="margin-top: 15px !important;">
-					<app-cust-editable-non-datatable [passData]="CreditableTaxData"></app-cust-editable-non-datatable>
-				</div>
-			</div>
-			<div *ngIf ="1==2">
-				<div class="col-sm-12" style="margin-top: 15px !important;">
-					<app-cust-editable-non-datatable [passData]="InputVatData"></app-cust-editable-non-datatable>
-				</div>
-			</div>
-			<div  >
-				<div class="col-sm-12" style="margin-top: 15px !important;">
-					<div style="position: relative;">
-						<button class="cust-btn" style="position:absolute; left: 0px; top:-3px; max-width: 200px !important;">Upload to BIR RLF</button>
-						<app-cust-editable-non-datatable [passData]="OutputVatData"></app-cust-editable-non-datatable>
+		<div class="row" [ngSwitch]="taxType">
+			<div class="col-sm-12" *ngSwitchCase ="'Creditable Withholding Tax'">
+				<div class="row">
+					<div class="col-sm-12" style="margin-top: 15px !important;">
+						<div style="position: relative;">
+							<button class="cust-btn" style="position:absolute; left: 0px; top:-5px; max-width: 200px !important;">Show Duplicates</button>
+							<button class="cust-btn" style="position:absolute; left: 101px; top:-5px; max-width: 200px !important;">Add to BIR TIN List</button>
+							<button class="cust-btn" style="position:absolute; left: 216px; top:-5px; max-width: 200px !important;">Upload to BIR Alpha</button>
+							<button class="cust-btn" style="position:absolute; left: 337px; top:-5px; max-width: 200px !important;">Save to BIR Text File</button>
+							<app-cust-editable-non-datatable [passData]="CreditableTaxData"></app-cust-editable-non-datatable>
+						</div>
 					</div>
 				</div>
 			</div>
-			<div *ngIf ="1==2">
-				<div class="col-sm-12" style="margin-top: 15px !important;">
-					<app-cust-editable-non-datatable [passData]="WithholdingTaxData"></app-cust-editable-non-datatable>
+			<div class="col-sm-12" *ngSwitchCase ="'Input VAT'">
+				<div class="row">
+					<div class="col-sm-12">
+						<div style="position: relative;">
+							<button class="cust-btn" style="position:absolute; left: 0px; top:13px; max-width: 200px !important;">Upload to BIR RLF</button>
+						</div>
+						<app-cust-non-datatable [passData]="InputVatData"></app-cust-non-datatable>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12" style="margin-top: 15px !important;" *ngSwitchCase ="'Output VAT'">
+				<div class="row">
+					<div class="col-sm-12">
+						<div style="position: relative;">
+							<button class="cust-btn" style="position:absolute; left: 0px; top:-3px; max-width: 200px !important;">Upload to BIR RLF</button>
+							<app-cust-editable-non-datatable [passData]="OutputVatData"></app-cust-editable-non-datatable>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12" style="margin-top: 15px !important;" *ngSwitchCase ="'Withholding Tax'">
+				<div class="row">
+					<div class="col-sm-12">
+						<div style="position: relative;">
+							<button class="cust-btn" style="position:absolute; left: 0px; top:-5px; max-width: 200px !important;">Show Duplicates</button>
+							<button class="cust-btn" style="position:absolute; left: 101px; top:-5px; max-width: 200px !important;">Add to BIR TIN List</button>
+							<button class="cust-btn" style="position:absolute; left: 216px; top:-5px; max-width: 200px !important;">Upload to BIR Alpha</button>
+							<button class="cust-btn" style="position:absolute; left: 337px; top:-5px; max-width: 200px !important;">Save to BIR Text File</button>
+							<app-cust-editable-non-datatable [passData]="WithholdingTaxData"></app-cust-editable-non-datatable>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

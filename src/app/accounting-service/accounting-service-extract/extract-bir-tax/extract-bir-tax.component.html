@@ -11,19 +11,19 @@
 								<legend class="scheduler-border">Tax Type</legend>
 									<div class="contain">
 										<div class="input group">
-											<input type="radio" name="taxtType">
+											<input type="radio" name="TaxtType" value="Creditable Withholding Tax" [checked]= "taxtType == 'Creditable Withholding Tax'" (change)="tabController($event);">
 											<label class="form-control-sm col-sm-7 text-left">Creditable Widthholding Tax </label>
 										</div>
 										<div class="input group top">
-											<input type="radio" name="taxtType">
+											<input type="radio" name="TaxtType" value="Input VAT" [checked]= "taxtType == 'Input VAT'" (change)="tabController($event);">
 											<label class="form-control-sm col-sm-5 text-left">Input VAT</label>
 										</div>
 										<div class="input group top">
-											<input type="radio" name="taxtType">
+											<input type="radio" name="TaxtType" value="Output VAT" [checked]= "taxtType == 'Output VAT'" (change)="tabController($event);">
 											<label class="form-control-sm col-sm-5 text-left">Output VAT </label>
 										</div>
 										<div class="input group top">
-											<input type="radio" name="taxtType">
+											<input type="radio" name="TaxtType" value="Withholding Tax" [checked]= "taxtType == 'Withholding Tax'" (change)="tabController($event);">
 											<label class="form-control-sm col-sm-5 text-left ">Withholding Tax </label>
 										</div>
 									</div>
@@ -72,10 +72,14 @@
 						</fieldset>
 						<fieldset class="scheduler-border bottom">
 							<div class="form-row custom-row-inline-inset">
+								<div class="input-group">
 								<label class="form-control-sm col-sm-3">Extracted By</label>
 								<input type="date" class="form-control form-control-sm cust-sm col-sm-8">
+							</div>
+								<div class="input-group">
 								<label class="form-control-sm col-sm-3">Detailed</label>
 								<input type="date" class="form-control form-control-sm cust-sm col-sm-8">
+							</div>
 							</div>
 						</fieldset>
 					</div>

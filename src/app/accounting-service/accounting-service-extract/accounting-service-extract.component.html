@@ -7,7 +7,7 @@
 					<div>Extract</div>
 				</ng-template>
 				<ng-template ngbTabContent>
-					<app-extract-bir-tax></app-extract-bir-tax>
+					<app-extract-bir-tax (onChange)="tabController($event)"></app-extract-bir-tax>
 				</ng-template>
 			</ngb-tab>
 			<ngb-tab>
@@ -23,7 +23,7 @@
 					<div>Details</div>
 				</ng-template>
 				<ng-template ngbTabContent>
-					<app-acct-details></app-acct-details>
+					<app-acct-details [taxType]="taxType"></app-acct-details>
 				</ng-template>
 			</ngb-tab>
 			<ngb-tab>
@@ -31,7 +31,7 @@
 					<div>Upload</div>
 				</ng-template>
 				<ng-template ngbTabContent>
-					<app-acct-upload></app-acct-upload>
+					<app-acct-upload [taxType]="taxType"></app-acct-upload>
 				</ng-template>
 			</ngb-tab>
 			<ngb-tab id="Exit">
