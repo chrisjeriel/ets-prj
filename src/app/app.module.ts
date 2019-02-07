@@ -200,13 +200,53 @@ import { OrServiceFeeLocalComponent } from './accounting-service/official-receip
 import { ArPaymentforAdvancesComponent } from './accounting-in-trust/ar-details/ar-paymentfor-advances/ar-paymentfor-advances.component';
 import { AcctAttachmentComponent } from './accounting-service/official-receipt/generate-or/acct-attachment/acct-attachment.component';
 import { PaytReqInvestmentComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/payt-req-investment/payt-req-investment.component';
+import { ConsolidateAnnualTaxesWithheldComponent } from './accounting-service/utilities/consolidate-annual-taxes-withheld/consolidate-annual-taxes-withheld.component';
+import { AcctSrvcImportComponent } from './accounting-service/utilities/consolidate-annual-taxes-withheld/acct-srvc-import/acct-srvc-import.component';
+import { AcctSrvcAnnualDetailsComponent } from './accounting-service/utilities/consolidate-annual-taxes-withheld/acct-srvc-annual-details/acct-srvc-annual-details.component';
+import { AcctSrvcConsolidateDataComponent } from './accounting-service/utilities/consolidate-annual-taxes-withheld/acct-srvc-consolidate-data/acct-srvc-consolidate-data.component';
+import { AttachmentOcComponent } from './quotation/open-cover/attachment-oc/attachment-oc.component';
 import { MtnDistrictComponent } from './maintenance/mtn-district/mtn-district.component';
+import { MtnCityComponent } from './maintenance/mtn-city/mtn-city.component';
+import { MtnInsuredComponent } from './maintenance/mtn-insured/mtn-insured.component';
+import { MtnBlockComponent } from './maintenance/mtn-block/mtn-block.component';
 import { UtilitiesComponent } from './accounting-service/utilities/utilities.component';
 import { ExpenseBudgetComponent } from './accounting-service/expense-budget/expense-budget.component';
 import { BudgetDetailsComponent } from './accounting-service/expense-budget/budget-details/budget-details.component';
 import { ByMonthComponent } from './accounting-service/expense-budget/by-month/by-month.component';
 import { ExtractFromLastYearComponent } from './accounting-service/expense-budget/extract-from-last-year/extract-from-last-year.component';
-
+import { AccountingServiceExtractComponent } from './accounting-service/accounting-service-extract/accounting-service-extract.component';
+import { ExtractBirTaxComponent } from './accounting-service/accounting-service-extract/extract-bir-tax/extract-bir-tax.component';
+import { AcctEntriesComponent } from './accounting-service/accounting-service-extract/acct-entries/acct-entries.component';
+import { AcctDetailsComponent } from './accounting-service/accounting-service-extract/acct-details/acct-details.component';
+import { AcctUploadComponent } from './accounting-service/accounting-service-extract/acct-upload/acct-upload.component';
+import { MtnEndtCodeComponent } from './maintenance/mtn-endt-code/mtn-endt-code.component';
+import { CvAccEntriesComponent } from './accounting-in-trust/check-voucher/generate-cv/cv-acc-entries/cv-acc-entries.component';
+import { PcvComponent } from './accounting-service/pcv/pcv.component';
+import { PcvListingsComponent } from './accounting-service/pcv/pcv-listings/pcv-listings.component';
+import { PcvEntryComponent } from './accounting-service/pcv/pcv-entry/pcv-entry.component';
+import { PcvDetailsComponent } from './accounting-service/pcv/pcv-details/pcv-details.component';
+import { PcvAccEntriesComponent } from './accounting-service/pcv/pcv-acc-entries/pcv-acc-entries.component';
+import { MeDataCheckingComponent } from './accounting-service/month-end/me-data-checking/me-data-checking.component';
+import { MeBatchProcComponent } from './accounting-service/month-end/me-batch-proc/me-batch-proc.component';
+import { MeTrialBalProcComponent } from './accounting-service/month-end/me-trial-bal-proc/me-trial-bal-proc.component';
+import { MtnCrestaZoneComponent } from './maintenance/mtn-cresta-zone/mtn-cresta-zone.component';
+import { MtnCurrencyComponent } from './maintenance/mtn-currency/mtn-currency.component';
+import { FixedAssetsComponent } from './accounting-service/fixed-assets/fixed-assets.component';
+import { AccSRequestForPaymentComponent } from './accounting-service/acc-s-request-for-payment/acc-s-request-for-payment.component';
+import { AccSRequestEntryComponent } from './accounting-service/acc-s-request-for-payment/acc-s-request-entry/acc-s-request-entry.component';
+import { AccSRequestDetailsComponent } from './accounting-service/acc-s-request-for-payment/acc-s-request-details/acc-s-request-details.component';
+import { AccSGenerateRequestComponent } from './accounting-service/acc-s-request-for-payment/acc-s-generate-request/acc-s-generate-request.component';
+import { CheckVoucherServiceComponent } from './accounting-service/check-voucher-service/check-voucher-service.component';
+import { CvEntryServiceComponent } from './accounting-service/check-voucher-service/generate-cv-service/cv-entry-service/cv-entry-service.component';
+import { GenerateCvServiceComponent } from './accounting-service/check-voucher-service/generate-cv-service/generate-cv-service.component';
+import { CvPaymentRequestListServiceComponent } from './accounting-service/check-voucher-service/generate-cv-service/cv-payment-request-list-service/cv-payment-request-list-service.component';
+import { CvPreviewServiceComponent } from './accounting-service/check-voucher-service/generate-cv-service/cv-preview-service/cv-preview-service.component';
+import { CvAttachmentsServiceComponent } from './accounting-service/check-voucher-service/generate-cv-service/cv-attachments-service/cv-attachments-service.component';
+import { JournalVoucherServiceComponent } from './accounting-service/journal-voucher-service/journal-voucher-service.component';
+import { GenerateJvServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/generate-jv-service.component';
+import { JvEntryServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-entry-service/jv-entry-service.component';
+import { JvPreviewServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-preview-service/jv-preview-service.component';
+import { JvAttachmentsServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-attachments-service/jv-attachments-service.component';
 
 
 @NgModule({
@@ -414,12 +454,53 @@ import { ExtractFromLastYearComponent } from './accounting-service/expense-budge
         AcctAttachmentComponent,
         PaytReqInvestmentComponent,
         PaymentRequestDetailsComponent,
+        ConsolidateAnnualTaxesWithheldComponent,
+        AcctSrvcImportComponent,
+        AcctSrvcAnnualDetailsComponent,
+        AcctSrvcConsolidateDataComponent,
+        AttachmentOcComponent,
         MtnDistrictComponent,
+        MtnCityComponent,
+        MtnInsuredComponent,
+        MtnBlockComponent,
         UtilitiesComponent,
         ExpenseBudgetComponent,
         BudgetDetailsComponent,
         ByMonthComponent,
         ExtractFromLastYearComponent,
+        AccountingServiceExtractComponent,
+        ExtractBirTaxComponent,
+        AcctEntriesComponent,
+        AcctDetailsComponent,
+        AcctUploadComponent,
+        MtnEndtCodeComponent,
+        CvAccEntriesComponent,
+        PcvComponent,
+        PcvListingsComponent,
+        PcvEntryComponent,
+        PcvDetailsComponent,
+        PcvAccEntriesComponent,
+        MeDataCheckingComponent,
+        MeBatchProcComponent,
+        MeTrialBalProcComponent,
+        MtnCrestaZoneComponent,
+        MtnCurrencyComponent,
+        FixedAssetsComponent,
+        AccSRequestForPaymentComponent,
+        AccSRequestEntryComponent,
+        AccSRequestDetailsComponent,
+        AccSGenerateRequestComponent,
+        CheckVoucherServiceComponent,
+        CvEntryServiceComponent,
+        GenerateCvServiceComponent,
+        CvPaymentRequestListServiceComponent,
+        CvPreviewServiceComponent,
+        CvAttachmentsServiceComponent,
+        JournalVoucherServiceComponent,
+        GenerateJvServiceComponent,
+        JvEntryServiceComponent,
+        JvPreviewServiceComponent,
+        JvAttachmentsServiceComponent,
     ],
 
     providers: [

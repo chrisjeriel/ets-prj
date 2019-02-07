@@ -1,0 +1,29 @@
+<div class="cust-tabs-container">
+	<h4>Accounting Service / Request for Payment</h4>
+	<!-- <ngb-tabset (tabChange)="beforeChange($event)"> -->
+		<ngb-tabset>
+		<ngb-tab class="ngb-tab" title="Requests List">
+			<ng-template ngbTabContent>
+				<div class="row">
+					<div class="col-sm-12">
+						<app-cust-non-datatable [passData]="requestsListData" (add)="onClickAdd($event)" (edit)="onClickEdit($event)" (rowClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)"></app-cust-non-datatable>
+					</div>
+					<div class="col-sm-12">
+						<div class="form-row custom-row-inline-inset" style="margin-left: -27px;">
+			        		<div class="input-group" style="margin-top: -10px !important;">
+			            		<label class="form-control-sm col-sm-1 text-right labels">Created By</label>
+			            		<input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma">
+			            		<label class="form-control-sm col-sm-1 text-right labels" style="margin-left: -5px !important;">Date Created</label>
+			            		<input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM">
+			            		<label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
+			            		<input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma">
+			            		<label class="form-control-sm col-sm-1 text-right labels" style="margin-left: -17px !important;">Last Update</label>
+			            		<input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM">
+			        		</div>
+			    		</div>
+					</div>
+				</div>
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>

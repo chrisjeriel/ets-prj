@@ -1,0 +1,44 @@
+<div class="cust-tabs-container">
+	<h4>Accounting Service / Extract / BIR Taxes</h4>
+	<!-- <ngb-tabset (tabChange)="beforeChange($event)"> -->
+		<ngb-tabset (tabChange)="onTabChange($event)">
+			<ngb-tab>
+				<ng-template ngbTabTitle>
+					<div>Extract</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+					<app-extract-bir-tax></app-extract-bir-tax>
+				</ng-template>
+			</ngb-tab>
+			<ngb-tab>
+				<ng-template ngbTabTitle>
+					<div>Accounting Entries</div>
+				</ng-template>
+				<ng-template ngbTabContent>					
+					<app-acct-entries></app-acct-entries>
+				</ng-template>
+			</ngb-tab>
+			<ngb-tab>
+				<ng-template ngbTabTitle>
+					<div>Details</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+					<app-acct-details></app-acct-details>
+				</ng-template>
+			</ngb-tab>
+			<ngb-tab>
+				<ng-template ngbTabTitle>
+					<div>Upload</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+					<app-acct-upload></app-acct-upload>
+				</ng-template>
+			</ngb-tab>
+			<ngb-tab id="Exit">
+				<ng-template ngbTabTitle>
+					<div>Exit</div>
+				</ng-template>
+    			<ng-template ngbTabContent></ng-template>
+  			</ngb-tab>
+	</ngb-tabset>
+</div>

@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input,  ViewChild } from '@angular/core';
+import { UnderwritingService } from '../../../_services';
+import { CedingCompanyList, CedingCompany } from '../../../_models';
+import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 
 @Component({
 	selector: 'app-pol-mx-ceding-co',
@@ -6,15 +9,14 @@ import { Component, OnInit } from '@angular/core';
 	styleUrls: ['./pol-mx-ceding-co.component.css']
 })
 export class PolMxCedingCoComponent implements OnInit {
-
+    @ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
 	addEdit: boolean = false;
+    cedingCompanyListData: any;
 
 	passData: any = {
-		tableData:[
-			[true,true,true,'001','AFP GENERAL INSURANCE CORP.','AFP','Col. Boni Serrano Road E. Delos Santos Ave.',new Date('2015-02-09'),null,null]
-		],
-		tHeader: ['Active','Govt','Member','Co No','Name','Abbreviation','Address','Membership Date','Termination Date','Inactive Date'],
-		dataTypes:['checkbox','checkbox','checkbox','text','text','text','text','date','date','date'],
+		tableData : [],
+        tHeader: ['Active','Govt','Member','Co No','Name','Abbreviation','Address','Membership Date','Termination Date','Inactive Date'],
+		dataTypes:['checkbox','checkbox','checkbox','sequence-3','text','text','text','date','date','date'],
 		addFlag: true,
 		editFlag: true,
 		pagination: true,
@@ -23,21 +25,6 @@ export class PolMxCedingCoComponent implements OnInit {
 		pageLength: 10,
 		resizable: [false,false,false,false,true,false,true,false,false,false],
 		filters: [
-			/*{
-            	key: 'active',
-            	title:'Active',
-            	dataType: 'checkbox'
-        	},
-        	{
-            	key: 'govt',
-            	title:'Government',
-            	dataType: 'checkbox'
-        	},
-        	{
-            	key: 'member',
-            	title:'Member',
-            	dataType: 'checkbox'
-        	},*/
         	{
             	key: 'coNo',
             	title:'Company No',
@@ -75,12 +62,13 @@ export class PolMxCedingCoComponent implements OnInit {
         	}
 		],
 		pageID: 1,
+        keys:['active','govt','member','coNo','name','abbreviation','address','membershipDate','terminationDate','inactiveDate']
 	};
-
+    cedingCompanyData: any;
 	passDataAddEdit: any = {
-		tableData:[
+		tableData:[/*
 			[true,'Mr.','Henry','I','Tiu','Engg Head','Engineering Insurance','09178348984',null],
-			[false,'Ms.','Rose','O','Lim','Acct Head','Accounting','09112233456',null]
+			[false,'Ms.','Rose','O','Lim','Acct Head','Accounting','09112233456',null]*/
 		],
 		tHeader: ['Default','Designation','First Name','M.I.','Last Name','Position','Department','Contact No','E-Signature'],
 		dataTypes:['checkbox','text','text','text','text','text','text','text','text'],
@@ -91,14 +79,37 @@ export class PolMxCedingCoComponent implements OnInit {
 		pageLength: 5,
 		widths: ['1','1','1','1','1','auto','auto','auto','1'],
 		pageID: 2,
+        keys:['defaultParam' ,'designation' ,'firstName' ,'mI' ,'lastName' ,'position' ,'department' ,'contactNo' ,'eSignature' ]
 	}
 
-	constructor() { }
+
+	constructor(private underwritingService: UnderwritingService) { }
 
 	ngOnInit() {
+
+        this.underwritingService.getCedingCompanyList().subscribe((data: any) => {
+
+            
+            for (var i = 0; i <  data.cedingcompany.length ; i++) {
+                 this.passData.tableData.push(new CedingCompanyList(data.cedingcompany[i].activeTag,data.cedingcompany[i].govtTag,data.cedingcompany[i].membershipTag,data.cedingcompany[i].cedingId,data.cedingcompany[i].cedingName,data.cedingcompany[i].cedingAbbr,data.cedingcompany[i].address,(data.cedingcompany[i].membershipDate == null ? null : new Date(data.cedingcompany[i].membershipDate[0],data.cedingcompany[i].membershipDate[1]-1,data.cedingcompany[i].membershipDate[2])),(data.cedingcompany[i].terminationDate == null ? null : new Date(data.cedingcompany[i].terminationDate[0],data.cedingcompany[i].terminationDate[1]-1,data.cedingcompany[i].terminationDate[2])),(data.cedingcompany[i].inactiveDate == null ? null : new Date(data.cedingcompany[i].inactiveDate[0],data.cedingcompany[i].inactiveDate[1]-1,data.cedingcompany[i].inactiveDate[2]))));
+            }
+            this.table.refreshTable();
+        });
+
+        this.underwritingService.getCedingCompany().subscribe((data:any) => {
+            for (var i = 0; i < data.cedingCompany.length; i++) {
+                this.passDataAddEdit.tableData.push(new CedingCompany( data.cedingCompany[i].cedingRepresentative.defaultTag,  data.cedingCompany[i].cedingRepresentative.designation, data.cedingCompany[i].cedingRepresentative.firstName, data.cedingCompany[i].cedingRepresentative.middleInitial, data.cedingCompany[i].cedingRepresentative.lastName, data.cedingCompany[i].cedingRepresentative.position, data.cedingCompany[i].cedingRepresentative.department, data.cedingCompany[i].cedingRepresentative.contactNo, data.cedingCompany[i].cedingRepresentative.eSignature));
+
+            }
+            this.table.refreshTable();
+        });
 	}
+
+    
 
 	toAddEdit() {
 		this.addEdit = true;
 	}
 }
+  
+

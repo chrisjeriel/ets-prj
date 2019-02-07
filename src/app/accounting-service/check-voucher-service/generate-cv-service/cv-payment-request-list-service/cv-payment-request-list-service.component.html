@@ -1,0 +1,68 @@
+<div>
+	<fieldset class="scheduler-border">
+		<legend class="scheduler-border">CV Info</legend>
+		<div class="form-row custom-row-inline-inset">
+			<div class="col-sm-8">
+				<div class="input-group cust-ig">
+					<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">CV No</label>
+					<input type="text" class="form-control form-control-sm cust-sm col-sm-1 text-right"
+					placeholder="2018" readonly>
+					<input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right"
+					placeholder="00000001" style="margin-left: 2px;" readonly>
+					<label class="form-control-sm col-sm-1">Date</label>
+					<input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="10/01/2018 11:49 AM" readonly>
+					<span class="col-sm-2"></span>
+					<label class="form-control-sm col-sm-1">Status</label>
+					<input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="New" readonly>
+				</div>
+				<div class="input-group cust-ig">
+					<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Payee</label>
+					<input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="San Miguel Corporation"
+					readonly>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="input-group cust-ig">
+					<label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Amount</label>
+					<input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="PHP" readonly>
+					<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
+					placeholder="27,153.30" readonly>
+				</div>
+				<div class="input-group cust-ig">
+					<label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Local Amount</label>
+					<input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="PHP" readonly>					
+					<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
+					placeholder="27,153.30" readonly>
+				</div>
+			</div>
+		</div>
+	</fieldset>
+	<fieldset class="scheduler-border" style="padding:0"> 
+		<legend class="scheduler-border">Payment Requests</legend>  
+		<div class="row">
+			<div class="col-sm-12" style="margin-top: 10px" >
+				<!--  <button type="button" class="cust-btn" style="position: absolute;top: 0px;left: 141px;z-index: 100;"><a>Save</a></button> -->
+				<app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
+			</div>
+		</div>
+	</fieldset>
+	<fieldset class="scheduler-border" style="margin: 0px !important; margin-top: 12px !important;">
+		<div class="form-row custom-row-inline-inset" style="margin-left: -27px;">
+			<div class="input-group" style="margin-bottom: -15px !important;">
+				<label class="form-control-sm col-sm-1 text-right labels">Created By</label>
+				<input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma">
+				<label class="form-control-sm col-sm-1 text-right labels">Date Created</label>
+				<input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM">
+				<label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
+				<input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma">
+				<label class="form-control-sm col-sm-1 text-right labels">Last Update</label>
+				<input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM">
+			</div>
+		</div>
+	</fieldset>
+</div>
+
+
+
+
+

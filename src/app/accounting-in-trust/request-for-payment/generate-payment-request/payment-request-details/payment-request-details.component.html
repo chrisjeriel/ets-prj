@@ -6,14 +6,14 @@
                 <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Request No</label>
                 <input type="text" class="form-control form-control-sm cust-sm col-sm-3"
                 placeholder="CSR-2018-09-0001">
-                <label class="form-control-sm col-sm-1">Date</label>
-                <input type="datetime-local"  class="form-control form-control-sm cust-sm col-sm-3" [value]="dateCreated">
+                <label class="form-control-sm col-sm-2">Request Date</label>
+                <input type="datetime-local"  class="form-control form-control-sm cust-sm col-sm-3" [value]="date">
                 <label class="form-control-sm col-sm-1">Status</label>
-                <input type="text"  class="form-control form-control-sm cust-sm col-sm-3" placeholder="New">
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="New">
             </div>
             <div class="input-group">
                 <label class="form-control-sm col-sm-1">Payee</label>
-                <input type="text"  class="form-control form-control-sm cust-sm col-sm" placeholder="New">
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm" placeholder="Engineering Builders Inc.">
             </div>
         </div>
         <div class="col-sm-4">
@@ -108,11 +108,11 @@
       <ngb-tab>
         <ng-template ngbTabTitle>
           <ng-container [ngSwitch]="paymentType.toUpperCase()">
-           <div *ngSwitchCase ="'CLAIM EXPENSE PAYMENT TO ADJUSTERS'">Claim Expense Payment to Adjusters</div>
+           <div *ngSwitchCase ="'CLAIM EXPENSE PAYMENT TO ADJUSTERS'">Claim Expense Payment to Adjuster</div>
               <div *ngSwitchCase ="'CLAIM EXPENSE PAYMENT TO OTHER PARTIES'">Claim Expense Payment to Other Parties</div>
               <div *ngSwitchCase ="'CLAIM PAYMENT TO CEDING COMPANY'">Claim Payment to Ceding Company</div>
               <div *ngSwitchCase ="'INWARD POLICY BALANCES - RETURNS'">Inward Policy Balances - Returns</div>
-              <div *ngSwitchCase ="'PAYMENT OF SERVICE FEE BY IN-TRUST TO SERVICE ACCOUNTING'">Payment of Service Fee by In-Trust to Service Accounting</div>
+              <div *ngSwitchCase ="'PAYMENT OF SERVICE FEE BY IN-TRUST TO SERVICE ACCOUNTING'">Payment of Service Fee</div>
               <div *ngSwitchCase ="'TREATY BALANCE DUE PARTICIPANT'">Treaty Balance Due Participant</div>
               <div *ngSwitchCase ="'INVESTMENT (PLACEMENT)'">Investment (Placement)</div>
               <div *ngSwitchCase ="'QSOA BALANCES'">QSOA Balances</div>
@@ -139,7 +139,7 @@
                     <app-cust-editable-non-datatable [passData]="ServiceAccountingData"></app-cust-editable-non-datatable>
                 </ng-container>
                 <ng-container *ngSwitchCase ="'TREATY BALANCE DUE PARTICIPANT'">
-                    
+                    <app-cust-editable-non-datatable [passData]="TreatyBalanceData"></app-cust-editable-non-datatable>
                 </ng-container>
                 <ng-container *ngSwitchCase ="'INVESTMENT (PLACEMENT)'">
                     <app-payt-req-investment></app-payt-req-investment>

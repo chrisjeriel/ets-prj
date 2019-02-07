@@ -3,6 +3,7 @@ import { HoldCoverInfo } from '../../_models/HoldCover';
 import { QuotationService } from '../../_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
+import { getLocaleFirstDayOfWeek, getLocaleDateFormat } from '@angular/common';
 
 
 @Component({
@@ -15,7 +16,7 @@ export class HoldCoverComponent implements OnInit {
   tableData: any[] = [];
   tHeader: any[] = [];
   quoteLine: string = "";
-  private holdCover: HoldCoverInfo;
+  private holdCoverInfo: HoldCoverInfo;
   passData: any = {
         tHeader: [
             "Quotation No.", "Ceding Company", "Insured", "Risk",
@@ -54,6 +55,12 @@ export class HoldCoverComponent implements OnInit {
 
   constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title) { }
 
+  qLine: string;
+  qYear: string;
+  qSeqNo: string;
+  qRevNo: string;
+  qCedingId: string;
+  
   ngOnInit() {
     this.titleService.setTitle("Quo | Quotation to Hold Cover");
     this.tHeader.push("Quotation No");
@@ -62,21 +69,67 @@ export class HoldCoverComponent implements OnInit {
     this.tHeader.push("Risk");
 
     this.tableData = this.quotationService.getListOfValuesHoldCover();
+    this.holdCoverInfo = new HoldCoverInfo();
 
-    this.holdCover = new HoldCoverInfo();
-    this.holdCover.quotationNo = "MOCK TEST";
-    this.holdCover.cedingCompany = "MOCK TEST";
-    this.holdCover.insured = "MOCK TEST";
-    this.holdCover.risk = "MOCK TEST";
-    this.holdCover.holdCoverNo = "MOCK TEST";
-    this.holdCover.periodFrom = new Date();
-    this.holdCover.requestedBy = "MOCK TEST";
-    this.holdCover.periodTo = new Date();
-    this.holdCover.requestDate = new Date();
-    this.holdCover.coRefHoldCoverNo = "MOCK TEST";
-    this.holdCover.preparedBy = "MOCK TEST"
-    this.holdCover.status = "MOCK TEST";
-    this.holdCover.approvedBy = "MOCK TEST";
+    this.quotationService.getHoldCoverInfo()
+        .subscribe(val => 
+            {
+              var rec = val['quotation'];
+              console.log(rec);
+              this.holdCoverInfo.quotationNo        = rec.quotationNo;
+              this.holdCoverInfo.cedingCompany      = rec.cedingName;
+              this.holdCoverInfo.insured            = rec.insuredDesc;
+              this.holdCoverInfo.risk               = rec.project['riskName'];
+              this.holdCoverInfo.holdCoverNo        = rec.holdCover['holdCoverNo'];
+              this.holdCoverInfo.periodFrom         = this.formatDate(rec.holdCover['periodFrom']);
+              this.holdCoverInfo.requestedBy        = rec.holdCover['reqBy'];
+              this.holdCoverInfo.periodTo           = this.formatDate(rec.holdCover['periodTo']);
+              this.holdCoverInfo.requestDate        = this.formatDate(rec.holdCover['reqDate']);
+              this.holdCoverInfo.coRefHoldCoverNo   = rec.holdCover['compRefHoldCovNo'];
+              this.holdCoverInfo.preparedBy         = rec.holdCover['preparedBy'];
+              this.holdCoverInfo.status             = rec.holdCover['status'];
+              this.holdCoverInfo.approvedBy         = rec.holdCover['approvedBy'];
+              
+              this.sliceQuoteNo(this.holdCoverInfo.quotationNo);
+              this.sliceHcNo(this.holdCoverInfo.holdCoverNo);
+              
+            }
+      );
+   
+  }
+
+  formatDate(date){
+    if(date[1] < 9){
+      return date[0] + "-" + '0'+ date[1] + "-" + date[2];
+    }else{
+      return date[0] + "-" +date[1] + "-" + date[2];
+    }
+    
+  }
+
+  sliceQuoteNo(qNo: string){
+    var qArr = qNo.split("-");
+    for(var i=0;i<qArr.length;i++){
+      this.qLine = qArr[0];
+      this.qYear = qArr[1];
+      this.qSeqNo = qArr[2];
+      this.qRevNo = qArr[3];
+      this.qCedingId = qArr[4];
+    }
+  }
+
+  hcLine: string;
+  hcYear: string;
+  hcSeqNo: string;
+  hcRevNo: string;
+  sliceHcNo(hcNo: string){
+    var hcArr = hcNo.split("-");
+    for(var i=0;i<hcArr.length;i++){
+      this.hcLine = hcArr[0];
+      this.hcYear = hcArr[1];
+      this.hcSeqNo = hcArr[2];
+      this.hcRevNo = hcArr[3];
+    }
   }
 
   search() {

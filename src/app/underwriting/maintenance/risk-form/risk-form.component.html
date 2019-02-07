@@ -51,9 +51,9 @@
                             <div class="form-row custom-row-inline-inset">
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-1 text-right labels">City/Town</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-1" [placeholder]="newForm ? '' : '40328'">
-                                    <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-                                    <input type="text" class="form-control form-control-sm col-sm-4" [placeholder]="newForm ? '' : 'SANTA ROSA'" style="margin-left: 6px !important">
+                                    <input type="text" class="form-control form-control-sm col-sm-1" [placeholder]="newForm ? '' : '40328'" [ngModel]="cityCd">
+                                    <div class="text-search-ico"><a><i class="fa fa-search" (click)="showCityModal()" ></i></a></div>
+                                    <input type="text" class="form-control form-control-sm col-sm-4" [placeholder]="newForm ? '' : 'SANTA ROSA'" style="margin-left: 6px !important" [ngModel]="cityDesc">
                                     <label class="form-control-sm col-sm-1 text-right labels">District</label>
                                     <input type="text" class="form-control form-control-sm col-sm-1" [placeholder]="newForm ? '' : 'LGSR'" [ngModel]="districtCd">
                                     <div class="text-search-ico"><a><i class="fa fa-search" (click)="showDistrictModal()"></i></a></div>
@@ -64,7 +64,7 @@
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-1 text-right labels">Block</label>
                                     <input type="text" class="form-control form-control-sm col-sm-1" [placeholder]="newForm ? '' : 'UNBLK'">
-                                    <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+                                    <div class="text-search-ico"><a><i class="fa fa-search" (click)="showBlockModal()"></i></a></div>
                                     <input type="text" class="form-control form-control-sm col-sm-4" [placeholder]="newForm ? '' : 'STA.ROSA/BEL-AIR UNBLK'" style="margin-left: 6px !important">
                                     <label class="form-control-sm col-sm-1 text-right labels">Lat</label>
                                     <input type="text" class="form-control form-control-sm col-sm-2" [placeholder]="newForm ? '' : '38.8951'">
@@ -75,9 +75,9 @@
                             <div class="form-row custom-row-inline-inset" style="margin-bottom: 16px !important;">
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-1 text-right labels" style="padding: 0; padding-right: 0.96px;">CRESTA Zone</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-1" [placeholder]="newForm ? '' : '6'">
-                                    <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-                                    <input type="text" class="form-control form-control-sm col-sm-10" [placeholder]="newForm ? '' : 'Zone 6 (Albay, Bataan, Batangas, Bulacan, Camarines Norte, Catanduanes, Cavite, Laguna, Marinduque)'" style="margin-left: 6px !important">
+                                    <input type="text" class="form-control form-control-sm col-sm-1" [placeholder]="newForm ? '' : '6'" [ngModel]="zoneCd">
+                                    <div class="text-search-ico"><a><i class="fa fa-search" (click)="showCrestaZoneModal()"></i></a></div>
+                                    <input type="text" class="form-control form-control-sm col-sm-10" [placeholder]="newForm ? '' : 'Zone 6 (Albay, Bataan, Batangas, Bulacan, Camarines Norte, Catanduanes, Cavite, Laguna, Marinduque)'" style="margin-left: 6px !important" [ngModel]="zoneDesc">
                                 </div>
                             </div>
                         </fieldset>
@@ -131,3 +131,8 @@
 </div>
 
 <app-mtn-district id="districtModal" (selectedData)="setDistricts($event)"></app-mtn-district>
+<!-- <app-mtn-city></app-mtn-city> -->
+<app-mtn-block id="blockModal" (selectedData)="setDistricts($event)"></app-mtn-block>
+<app-mtn-city id="cityModal" (selectedData)="setCity($event)"></app-mtn-city>
+<app-mtn-cresta-zone id="crestaZoneModal" (selectedData)="setCrestaZone($event)"></app-mtn-cresta-zone>
+

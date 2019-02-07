@@ -15,14 +15,15 @@ export class AcctArEntryComponent implements OnInit {
             currRate: 1,
             amount: 1642857.14,
             bank: 'Bank of the Philippine Islands',
+            bankAccNo: '345-676345-9',
             checkNo: 22786739,
             checkDate: new Date('2018-09-25'),
             checkClass: 'Local Clearing'
           }
         ],
-        tHeader: ['Pay Mode','Curr','Curr Rate','Amount','Bank','Check No.','Check Date','Check Class'],
+        tHeader: ['Pay Mode','Curr','Curr Rate','Amount','Bank','Bank Account No.','Check No.','Check Date','Check Class'],
         magnifyingGlass: ['0','1','4','7'],
-        dataTypes: ['select','select','percent','currency','select','number','date','select'],
+        dataTypes: ['select','select','percent','currency','select','text','number','date','select'],
         paginateFlag: true,
         infoFlag: true,
         pageLength: 5,

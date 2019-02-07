@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AccountingService } from '@app/_services';
+import { ExpenseBudget } from '@app/_models';
 import { Title } from '@angular/platform-browser';
 import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -9,10 +11,24 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./expense-budget.component.css']
 })
 export class ExpenseBudgetComponent implements OnInit {
+  
+  ExpenseBudgetData: any = {
+  	tableData: this.accountingService.getExpenseBudget(),
+  	tHeader: ['Budegt Month', 'Account Code', 'Account Name', 'SL Type', 'SL Name', 'Amount'],
+  	dataTypes: ['date', 'text', 'text', 'text', 'text','currency'],
+  	nData: new ExpenseBudget(null,null,null,null,null,null),
+  	paginateFlag: true,
+  	infoFlag: true,
+  	pageID: 1,
+  	addFlag: true,
+  	deleteFlag: true,
+  	total: [ null,null, null, null, 'Total', 'amount'],
+  	genericBtn: 'Save',
+    widths: ['auto','auto','auto','auto','auto','auto']
+  }
 
- 
 
-  constructor(private titleService: Title,private router: Router) { }
+  constructor(private titleService: Title,private router: Router,private accountingService: AccountingService,) { }
 
   ngOnInit() {
   	this.titleService.setTitle("Acc-Srv | Expense Budget") ;
@@ -22,6 +38,7 @@ export class ExpenseBudgetComponent implements OnInit {
     if ($event.nextId === 'Exit') {
       this.router.navigateByUrl('');
     }
-  }
-
+  } 
 }
+
+

@@ -96,13 +96,31 @@
               <div class="col-sm-12">
                 <ng-container [ngSwitch]="paymentType.toUpperCase()">
                   <ng-container *ngSwitchCase="'OFFICIAL RECEIPT'">
-                    <app-cust-editable-non-datatable [passData]="passDataOfficialReceipt"></app-cust-editable-non-datatable>
+                    <div class="input-group">
+                      <div class="col-sm-2"></div>
+                      <div class="col-sm-8">
+                          <app-cust-editable-non-datatable [passData]="passDataOfficialReceipt"></app-cust-editable-non-datatable>
+                      </div>
+                      <div class="col-sm-2"></div>
+                    </div>
                   </ng-container>
                   <ng-container *ngSwitchCase="'OFFICIAL RECEIPT SERVICE FEE LOCAL'">
-                    <app-or-service-fee-local></app-or-service-fee-local>
+                    <div class="input-group">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-8">
+                            <app-cust-editable-non-datatable [passData]="passDataServiceFeeLocal"></app-cust-editable-non-datatable>
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>
                   </ng-container>
                   <ng-container *ngSwitchCase="'OFFICIAL RECEIPT SERVICE FEE MUNICH RE'">
-                    <app-or-service-fee-local></app-or-service-fee-local>
+                      <div class="input-group">
+                          <div class="col-sm-2"></div>
+                          <div class="col-sm-8">
+                              <app-cust-editable-non-datatable [passData]="passDataServiceFeeMunichRe"></app-cust-editable-non-datatable>
+                          </div>
+                          <div class="col-sm-2"></div>
+                      </div>
                   </ng-container>
                 </ng-container>
               </div>

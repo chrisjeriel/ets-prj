@@ -84,10 +84,12 @@ export class AcctOrListingsComponent implements OnInit {
   constructor(private router: Router, private titleService: Title) { }
 
   ngOnInit() {
+    this.titleService.setTitle("Acct-Service | Official Receipt");
   }
 
   toGenerateORAdd() {
     this.router.navigate(['/accounting-service', { action: 'add' }], { skipLocationChange: true });
+    
   }
 
   toGenerateOREdit(event) {

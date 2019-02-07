@@ -1,13 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, 
-	PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, 
-	PremiumReturn, AccServiceAttachment, PaymentForAdvances, AccountingItClaimCashCallAr, 
-	AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, 
-	ARUnappliedCollection, AROthers, AccountingSOthersOr, AccORSerFeeLoc, OfficialReceipt, 
-	ORPrevAmountDetails, ORPrevAccEntries, ORPreVATDetails , ORPreCreditableWTaxDetails,
-	TaxDetails, WTaxDetails, ExpenseBudget, ExpenseBudgetByMonth  } from '@app/_models';
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AccServiceAttachment, PaymentForAdvances, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, ARUnappliedCollection, AROthers, AccountingSOthersOr, AccORSerFeeLoc, OfficialReceipt, ORPrevAmountDetails, ORPrevAccEntries, ORPreVATDetails , ORPreCreditableWTaxDetails, PaymentOfSeviceFee, TreatyBalance, ByMonth, ExtractFromLastYear, AccountingEntriesExtract, CredibleWithholdingTaxDetails, InputVatDetails, OutputVatDetails, WithholdingVATDetails, CredibleWithholdingTaxUpload, InputVatUpload, OutputVatUpload, WithholdingTaxUpload, AccountingSFixedAssets, AccountingSMonthlyDepreciationDetails, AccountingSPaytReqCheckVoucher, AccountingSPaytReqPettyCashVoucher, AccountingSPaytReqPRMFE, AccountingSPaytReqOthers,AcctSrvcCWhtaxMonthlyTaxDetails,AcctSrvcCWhtaxConsolidateData, TaxDetails, WTaxDetails, ExpenseBudget, ExpenseBudgetByMonth } from '@app/_models';
 
 @Injectable({
 	providedIn: 'root'
@@ -71,11 +65,32 @@ export class AccountingService {
 	orPreCreditableWTaxDetails : ORPreCreditableWTaxDetails[] = [];
 	accountingSOthersOrData: AccountingSOthersOr[] = [];
 	accORSerFeeLoc: AccORSerFeeLoc[] = [];
+	paymentOfServiceFee: PaymentOfSeviceFee[] = [];
+	treatyBalance: TreatyBalance[] =[];
+	byMonth: ByMonth[] = [];
+	extractFromLastYear: ExtractFromLastYear[] = [];
+	extract: AccountingEntriesExtract[] = [];
+	credibleWithholdingTaxDetails: CredibleWithholdingTaxDetails[] = [];
+	inputVatDetails: InputVatDetails[] = [];
+	outputVatDetails: OutputVatDetails[] =[];
+	withholdingVATDetails: WithholdingVATDetails[] = [];
+	credibleWithholdingTaxUpload: CredibleWithholdingTaxUpload[]=[];
+	inputVatUpload: InputVatUpload[] = [];
+	outputVatUpload: OutputVatUpload[] = [];
+	withholdingTaxUpload: WithholdingTaxUpload[]=[];
+	accountingSFixedAssets: AccountingSFixedAssets[] = [];
+	accountingSMonthlyDepreciationDetails: AccountingSMonthlyDepreciationDetails[] = [];
+	accountingSPaytReqCheckVoucher: AccountingSPaytReqCheckVoucher[] = [];
+	accountingSPaytReqPettyCashVoucher: AccountingSPaytReqPettyCashVoucher[] = [];
+	accountingSPaytReqPRMFE: AccountingSPaytReqPRMFE[] = [];
+	accountingSPaytReqOthers: AccountingSPaytReqOthers[] = [];
+	accountingSPaytReqList: AccountingRequestsListRP[] = [];
+	acctSrvcCWhtaxMonthlyTaxDetails: AcctSrvcCWhtaxMonthlyTaxDetails[] = [];
+	acctSrvcCWhtaxConsolidateData: AcctSrvcCWhtaxConsolidateData[] = [];
 	taxDetails: TaxDetails[] = [];
 	wTaxDetails: WTaxDetails[] = [];
 	expenseBudget: ExpenseBudget[] = [];
 	expenseBudgetByMonth: ExpenseBudgetByMonth[] = [];
-
 
 	constructor(private http: HttpClient) { }
 
@@ -268,7 +283,7 @@ export class AccountingService {
 
 	getARInwdPolBalDetails() {
 		this.arInwdPolBalDetails = [
-			new ARInwdPolBalDetails("CAR-2018-00001-99-0001-000","CAR-2018-00001-99-0001-000", "EN-CAR-HO-18","01","Payment", new Date('09/25/2018'),new Date('09/25/2018'), "PHP",1, 3000000, 0, 0, 1642857.14, 1357142.86, 0, 1642857.14),
+			new ARInwdPolBalDetails("CAR-2018-00001-99-0001-000","CAR-2018-00001-99-0001-000", "EN-CAR-HO-18","01","Payment", new Date('09/25/2018'),new Date('09/25/2018'), "PHP",1, 3000000, 0, 0, 1642857.14, 1357142.86, 1642857.14,0),
 		]
 		return this.arInwdPolBalDetails;
 	}
@@ -614,7 +629,7 @@ export class AccountingService {
 
 	getAccountingItClaimCashCallAR(){
 		this.accountingItClaimCashCallArData = [
-			new AccountingItClaimCashCallAr('CAR-2018-000001', 'CAR-2018-00001-99-0001-000', 'DMCI', new Date(2018,9,1), 'Damaged Material', 1000000, 'PHP', 1, 300000, 300000),
+			new AccountingItClaimCashCallAr('CAR-2018-000001', 'CAR-2018-00001-99-0001-000', 'DMCI', new Date(2018,9,1), 'Damaged Material','Loss',0, 1000000, 'PHP', 1, 300000, 300000),
 		];
 
 		return this.accountingItClaimCashCallArData;
@@ -622,7 +637,7 @@ export class AccountingService {
 
 	getAccountingItLossReserveDepositAR(){
 		this.accountingItLossReserveDepositArData = [
-			new AccountingItLossReserveDepositAr('BPI/MS INSURANCE CORPORATION', new Date(2018,9,1), 'Loss reserve deposit for', 'PHP', 1, 500000, 500000),
+			new AccountingItLossReserveDepositAr('BPI/MS INSURANCE CORPORATION', new Date(2018,9,1), 'PHP', 1, 500000, 500000),
 		];
 
 		return this.accountingItLossReserveDepositArData;
@@ -638,8 +653,8 @@ export class AccountingService {
 
 	getAccARInvestments(){
 		this.accARInvestments = [
-			new AccARInvestments('BPI','BPI 1',5,'Years',8.875, new Date(2013,9,20),new Date(2018,9,20),'PHP',1,18112.50,82250,14000000,18112500,4112500),
-			new AccARInvestments('RCBC','RCBC 1',35,'Days',1.5, new Date(2018,8,26),new Date(2018,9,31),'PHP',1,10150,3000,10000000,10150000,150000)
+			new AccARInvestments('BPI','BPI 1','Time',5,'Years',8.875, new Date(2013,9,20),new Date(2018,9,20),'PHP',1,18112.50,82250,14000000,4112500,18112500),
+			new AccARInvestments('RCBC','RCBC 1','Treasury',35,'Days',1.5, new Date(2018,8,26),new Date(2018,9,31),'PHP',1,10150,3000,10000000,150000,10150000)
 		];
 		return this.accARInvestments;
 	}
@@ -647,6 +662,12 @@ export class AccountingService {
 	getAccORSerFeeLoc(){
 		this.accORSerFeeLoc = [
 			new AccORSerFeeLoc('AFP GENERAL INSURANCE CORP.', new Date(2018,8,30),'PHP',1,1642857.14,1642857.14)
+		];
+		return this.accORSerFeeLoc;
+	}
+	getAccORSerFeeMunichRe(){
+		this.accORSerFeeLoc = [
+			new AccORSerFeeLoc('Munich Re', new Date(2018,8,30),'PHP',1,1642857.14,1642857.14)
 		];
 		return this.accORSerFeeLoc;
 	}
@@ -708,10 +729,248 @@ export class AccountingService {
 
 	getAccountingSOthersOr(){
 		this.accountingSOthersOrData = [
-			new AccountingSOthersOr("Utilities", "Payment For", "PHP", 1, 100000, 100000),
+			new AccountingSOthersOr("Utilities", "Payment For", "PHP", 1, 10000, 10000),
 		];
 
 		return this.accountingSOthersOrData;
+	}
+
+	getPaymentOfServiceFee(){
+		this.paymentOfServiceFee = [
+			new PaymentOfSeviceFee("Utilities","Service fee for the period of","PHP",1.0,-50000,-50000),
+		];
+		return this.paymentOfServiceFee;
+	}
+
+	getTreatyBalance(){
+		this.treatyBalance = [ 
+			new TreatyBalance(new Date(2018,3,21),500000,100000,6000000,500000,6500000,6000000)
+		]
+		return this.treatyBalance;
+	}
+
+
+
+	getExpenseBudget(){
+		this.expenseBudget = [
+			new ExpenseBudget(new Date(2018,1,31),'5-01-01-01','Salaries',null,null,18112500),
+			new ExpenseBudget(new Date(2018,2,28),'5-01-01-01','Salaries',null,null,10150000),
+			new ExpenseBudget(new Date(2018,3,31),'5-01-01-01','Salaries',null,null,1000000),
+			new ExpenseBudget(new Date(2018,4,30),'5-01-01-01','Salaries',null,null,1000000),
+			new ExpenseBudget(new Date(2018,5,31),'5-01-01-01','Salaries',null,null,1000000)
+		]
+		return this.expenseBudget;
+	}
+
+	getByMonth(){
+		this.byMonth = [ 
+			new ByMonth('501-01-01','Salaries',0,0,0,0,0,0,0,0,0,0,0,0,0),
+			new ByMonth('501-01-02','Overtime',0,0,0,0,0,0,0,0,0,0,0,0,0),
+			new ByMonth('501-01-03','Mid-Year Bonus',0,0,0,0,0,0,0,0,0,0,0,0,0),
+			new ByMonth('501-01-04','13thMonth Pay',0,0,0,0,0,0,0,0,0,0,0,0,0),
+			new ByMonth('501-01-05','Provision for Profit Sharing',0,0,0,0,0,0,0,0,0,0,0,0,0)
+		]
+		return this.byMonth;
+	}
+
+	getExtractFromLastYear(){
+		this.extractFromLastYear = [ 
+			new ExtractFromLastYear('501-01-01','Salaries',0,0,0,0,0,0,0,0,0,0,0,0,0),
+			new ExtractFromLastYear('501-01-02','Overtime',0,0,0,0,0,0,0,0,0,0,0,0,0),
+			new ExtractFromLastYear('501-01-03','Mid-Year Bonus',0,0,0,0,0,0,0,0,0,0,0,0,0),
+			new ExtractFromLastYear('501-01-04','13thMonth Pay',0,0,0,0,0,0,0,0,0,0,0,0,0),
+			new ExtractFromLastYear('501-01-05','Provision for Profit Sharing',0,0,0,0,0,0,0,0,0,0,0,0,0)
+		]
+		return this.extractFromLastYear;
+	}
+
+	getAccountingEntryExtract(){
+		this.extract = [
+			new AccountingEntriesExtract(null,null,null,null,null,null,null,null)
+		]
+		return this.extract;
+	}
+
+	getCredibleWithholdingTaxDetails(){
+		this.credibleWithholdingTaxDetails = [
+			new CredibleWithholdingTaxDetails(null,null,null,null,null,null,null,null,null)
+		]
+		return this.credibleWithholdingTaxDetails
+	}
+
+	getInputVatDetails(){
+		this.inputVatDetails = [
+			new InputVatDetails(null,null,null,null,null,null,null,null,null,null)
+		]
+		return this.inputVatDetails
+	}
+
+	getOutputVatDetails(){
+		this.outputVatDetails = [
+			new OutputVatDetails(null,null,null,null,null,null,null,null,null)
+		]
+		return this.outputVatDetails
+	}
+
+	getWithholdingVATDetails(){
+		this.withholdingVATDetails = [
+			new WithholdingVATDetails(null,null,null,null,null,null,null,null,null)
+		]
+		return this.withholdingVATDetails;
+	}
+	
+	getCredibleWithholdingTaxUpload(){
+		this.credibleWithholdingTaxUpload = [
+			new CredibleWithholdingTaxUpload(null,null,null,null,null,null,null,null,null,null,null,null)
+		]
+		return this.credibleWithholdingTaxUpload;
+	}
+
+	getInputVatUpload(){
+		this.inputVatUpload = [
+			new InputVatUpload(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+		]
+		return this.inputVatUpload;
+
+	}
+
+	getOutputVatUpload(){
+		this.outputVatUpload = [
+			new OutputVatUpload(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+		]
+		return this.outputVatUpload;
+
+	}
+
+	getWithholdingTaxUpload(){
+		this.withholdingTaxUpload = [
+			new WithholdingTaxUpload(null,null,null,null,null,null,null,null,null,null,null,null)
+		]
+		return this.withholdingTaxUpload;
+	}
+
+	getAccountingSFixedAssets(){
+		this.accountingSFixedAssets = [
+			new AccountingSFixedAssets('Electronics Equivalent', 1, 'Lenovo', 'Accounting', 'Camilo Hermin', new Date(2015,0,1), 30000, 'Straight Line', 60, 500, 2500, new Date(2016,5,31), null, ''),
+			new AccountingSFixedAssets('Transportation Equivalent', 2, '2015 Fortuner A/T', 'General Management', 'Camilo Hermin', new Date(2015,0,1), 1000000, 'Straight Line', 60, 16666.66, 83333.30, new Date(2016,5,31), null, ''),
+		];
+
+		return this.accountingSFixedAssets;
+	}
+
+	getAccountingSMonthlyDepreciationDetails(){
+		this.accountingSMonthlyDepreciationDetails = [
+			new AccountingSMonthlyDepreciationDetails('Lenovo Laptop', new Date(2015,0,31), 500, ''),
+			new AccountingSMonthlyDepreciationDetails('Lenovo Laptop', new Date(2015,1,28), 500, ''),
+			new AccountingSMonthlyDepreciationDetails('2015 Fortuner A/T', new Date(2015,0,31), 16666.66, ''),
+			new AccountingSMonthlyDepreciationDetails('2015 Fortuner A/T', new Date(2015,1,28), 16666.66, ''),
+		];
+
+		return this.accountingSMonthlyDepreciationDetails;
+	}
+
+	getAccountingSRequestsList(){
+		this.accountingSPaytReqList = [
+			new AccountingRequestsListRP('SCV-2015-01-0001', 'SM Prime Holdings, Inc.', 'Check Voucher', 'Paid', new Date(), 'Photocopying Charges for the month of December 2017', 'PHP', 1642857.14, 'Edward M. Salunson'),
+			new AccountingRequestsListRP('SCV-2017-12-0001', 'Rustan, Inc.', 'Check Voucher', 'Paid', new Date(), 'Photocopying Charges for the month of November 2017', 'PHP', 200000, 'Christian M. Lumen'),
+			new AccountingRequestsListRP('SCV-2017-12-0002', 'San Miguel Corporation', 'Check Voucher', 'Paid', new Date(), 'Photocopying Charges for the month of November 2017', 'PHP', 100000, 'Chie Reyes'),
+			new AccountingRequestsListRP('SCV-2017-12-0003', 'DMCI', 'Check Voucher', 'Cancelled', new Date(), 'Payment for Office Supplies per P.O. No. 567', 'USD', 1000000, 'Chie Reyes'),
+			new AccountingRequestsListRP('PRM-2018-01-0001', 'ABS-CBN', 'Payment of Risk Management Fee to Employees', 'Paid', new Date(), 'Payment of Risk Management Fee to Employees', 'PHP', 710716.12, 'Juan de la Cruz'),
+			new AccountingRequestsListRP('SCV-2018-02-0001', 'SMDC', 'Check Voucher', 'Paid', new Date(), 'Payment for Office Supplies per P.O. No. 567', 'SGD', 756929, 'Juan de la Cruz'),
+			new AccountingRequestsListRP('PRM-2018-02-0002', 'Universal Robina, Inc.', 'Payment of Risk Management Fee to Employees', 'Open', new Date(), 'Payment of Risk Management Fee to Employees', 'EUR', 300000, 'Juan de la Cruz'),
+			new AccountingRequestsListRP('SCV-2018-03-0001', 'SGV & Co.', 'Check Voucher', 'Open', new Date(), 'Payment for Office Supplies per P.O. No. 567', 'HKD', 1000000, 'Christian M. Lumen'),
+			new AccountingRequestsListRP('SCV-2018-09-0001', 'Accenture', 'Check Voucher', 'Open', new Date(), 'Miscellaneous payment for', 'PHP', 230000, 'Chie Reyes'),
+			new AccountingRequestsListRP('SCV-2018-11-0001', 'NSO', 'Check Voucher', 'Open', new Date(), 'Miscellaneous payment for', 'RMB', 1500000, 'Chie Reyes'),
+			new AccountingRequestsListRP('SCV-2019-04-0095', 'DFA', 'Check Voucher', 'Open', new Date(), 'Miscellaneous payment for', 'PHP', 1642857.14, 'Chie Reyes'),
+			new AccountingRequestsListRP('PRM-2019-05-0032', 'Robinsons', 'Payment of Risk Management Fee to Employees', 'Open', new Date(), 'Payment of Risk Management Fee to Employees', 'USD', 1342752.24, 'Chie Reyes'),
+		];
+
+		return this.accountingSPaytReqList;
+	}
+
+	getAccountingSPaytReqCheckVoucher(){
+		this.accountingSPaytReqCheckVoucher = [
+			new AccountingSPaytReqCheckVoucher('Printing of Forms', 'Printing of forms for the month of April 2015', 'PHP', 1, 7460.46, 7460.46),
+		];
+
+		return this.accountingSPaytReqCheckVoucher;
+	}
+
+	getAccountingSPaytReqPettyCashVoucher(){
+		this.accountingSPaytReqPettyCashVoucher = [
+			new AccountingSPaytReqPettyCashVoucher('2019', '00001', new Date(2019,1,31), 'Christian M. Lu', 'Cash Advance Re-inspection of Office', 'Y', 'New', 'PHP', 1, 600, 600),
+			new AccountingSPaytReqPettyCashVoucher('2019', '00002', new Date(2019,2,1), 'Christian M. Lu', 'Purchase of USB Memory Card', 'Y', 'New', 'PHP', 1, 900, 900),
+		];
+
+		return this.accountingSPaytReqPettyCashVoucher;
+	}
+
+	getAccountingSPaytReqPRMFE(){
+		this.accountingSPaytReqPRMFE = [
+			new AccountingSPaytReqPRMFE('00023', 'Rose Dela Cruz', 'Engineering', 'PHP', 1, 7460.46, 7460.46),
+		];
+
+		return this.accountingSPaytReqPRMFE;
+	}
+
+	getAccountingSPaytReqOthers(){
+		this.accountingSPaytReqOthers = [
+			new AccountingSPaytReqOthers('Utilities', 'Payment For', 'PHP', 1, 10000, 10000),
+		];
+
+		return this.accountingSPaytReqOthers;
+	}
+
+	getAcctSrvcCWhtaxMonthlyTaxDetails(){
+		this.acctSrvcCWhtaxMonthlyTaxDetails = [
+			new AcctSrvcCWhtaxMonthlyTaxDetails("D4","D1604E",0,50,"0000","2GO EXPRESS","","","",new Date('2018-01-01'),"WC160",2,275.50,5.51),
+			new AcctSrvcCWhtaxMonthlyTaxDetails("D4","D1604E",1,850,"0057","2GO EXPRESS","","","",new Date('2018-01-01'),"WC160",2,169.50,3.39),
+			new AcctSrvcCWhtaxMonthlyTaxDetails("D4","D1604E",2,855,"0067","ABACUS BOOK","","","",new Date('2018-01-01'),"WC160",2,593.75,11.88),
+			new AcctSrvcCWhtaxMonthlyTaxDetails("D4","D1604E",3,299,"0568","ABACUS BOOK","","","",new Date('2018-01-01'),"WC158",1,613.19,6.13),
+			new AcctSrvcCWhtaxMonthlyTaxDetails("D4","D1604E",4,452,"0124","ABIVA BROTHERS","","","",new Date('2018-01-01'),"WC158",1,2352.93,23.53),
+			new AcctSrvcCWhtaxMonthlyTaxDetails("D4","D1604E",5,536646,"0099","ABIVA BROTHERS","","","",new Date('2018-01-01'),"WC011",15,1150,172.5),
+			new AcctSrvcCWhtaxMonthlyTaxDetails("D4","D1604E",6,584567,"0099","ACE HARDWARE","","","",new Date('2018-01-01'),"WC158",1,4618,46.18),
+			new AcctSrvcCWhtaxMonthlyTaxDetails("D4","D1604E",7,5322,"0004","ACE HARDWARE","","","",new Date('2018-01-01'),"WC158",1,21250,212.50),
+			new AcctSrvcCWhtaxMonthlyTaxDetails("D4","D1604E",8,1345,"0073","ACTUARIAL SOCIETY","","","",new Date('2018-01-01'),"WC158",1,14546,145.46),
+			new AcctSrvcCWhtaxMonthlyTaxDetails("D4","D1604E",9,974546,"0013","ALING TONYA'S SEAFOOD","","","",new Date('2018-01-01'),"WC011",15,1875,281.25),
+			new AcctSrvcCWhtaxMonthlyTaxDetails("D4","D1604E",10,688832,"0044","ALING TONYA'S SEAFOOD","","","",new Date('2018-01-01'),"WC011",15,100,15),
+			new AcctSrvcCWhtaxMonthlyTaxDetails("D4","D1604E",11,953453,"0134","AMBER'S RESTAURANT","","","",new Date('2018-01-01'),"WC160",2,5000,100),
+			new AcctSrvcCWhtaxMonthlyTaxDetails("D4","D1604E",12,4342,"0135","ATENEO DE MANILA","","","",new Date('2018-01-01'),"WC160",2,1000,20),
+			new AcctSrvcCWhtaxMonthlyTaxDetails("D4","D1604E",13,2335,"0054","ATENEO DE DAVAO","ALMADEN","CATHRINE","E",new Date('2018-01-01'),"WC160",2,352.83,7.06),
+			new AcctSrvcCWhtaxMonthlyTaxDetails("D4","D1604E",14,96322,"0053","AVE & BOY FLOWERSHOP","AQUINO","ROMMEL","I",new Date('2018-01-01'),"WC158",1,100,1),
+			new AcctSrvcCWhtaxMonthlyTaxDetails("D4","D1604E",15,55435,"0042","AVE & BOY FLOWERSHOP","","","",new Date('2018-01-01'),"WC160",2,300,6),
+			new AcctSrvcCWhtaxMonthlyTaxDetails("D4","D1604E",16,34,"0034","BBB SHELL SERVICE","","","",new Date('2018-01-01'),"WC011",15,2250,337.50),
+			new AcctSrvcCWhtaxMonthlyTaxDetails("D4","D1604E",17,4345,"0022","2GO EXPRESS","","","",new Date('2018-01-01'),"WC158",1,10000,100),
+			new AcctSrvcCWhtaxMonthlyTaxDetails("D4","D1604E",18,633,"0022","2GO EXPRESS","ALMADEN","CATHRINE","E",new Date('2018-01-01'),"WC160",2,300,6),
+			new AcctSrvcCWhtaxMonthlyTaxDetails("D4","D1604E",19,432,"0032","2GO EXPRESS","AQUINO","ROMMEL","I",new Date('2018-01-01'),"WC160",2,223,4.46),
+		];
+		return this.acctSrvcCWhtaxMonthlyTaxDetails;
+	}
+
+	getAcctSrvcCWhtaxConsolidateData(){
+		this.acctSrvcCWhtaxConsolidateData = [
+			new AcctSrvcCWhtaxConsolidateData("D4","D1604E","005376602","0000",new Date('2018-12-31'),0,50,"0000","2GO EXPRESS","","","","WC160",2,275.50,5.51),
+			new AcctSrvcCWhtaxConsolidateData("D4","D1604E","005376602","0000",new Date('2018-12-31'),1,850,"0057","2GO EXPRESS","","","","WC160",2,169.50,3.39),
+			new AcctSrvcCWhtaxConsolidateData("D4","D1604E","005376602","0000",new Date('2018-12-31'),2,855,"0067","ABACUS BOOK","","","","WC160",2,593.75,11.88),
+			new AcctSrvcCWhtaxConsolidateData("D4","D1604E","005376602","0000",new Date('2018-12-31'),3,299,"0568","ABACUS BOOK","","","","WC158",1,613.19,6.13),
+			new AcctSrvcCWhtaxConsolidateData("D4","D1604E","005376602","0000",new Date('2018-12-31'),4,452,"0124","ABIVA BROTHERS","","","","WC158",1,2352.93,23.53),
+			new AcctSrvcCWhtaxConsolidateData("D4","D1604E","005376602","0000",new Date('2018-12-31'),5,536646,"0099","ABIVA BROTHERS","","","","WC011",15,1150,172.5),
+			new AcctSrvcCWhtaxConsolidateData("D4","D1604E","005376602","0000",new Date('2018-12-31'),6,584567,"0099","ACE HARDWARE","","","","WC158",1,4618,46.18),
+			new AcctSrvcCWhtaxConsolidateData("D4","D1604E","005376602","0000",new Date('2018-12-31'),7,5322,"0004","ACE HARDWARE","","","","WC158",1,21250,212.50),
+			new AcctSrvcCWhtaxConsolidateData("D4","D1604E","005376602","0000",new Date('2018-12-31'),8,1345,"0073","ACTUARIAL SOCIETY","","","","WC158",1,14546,145.46),
+			new AcctSrvcCWhtaxConsolidateData("D4","D1604E","005376602","0000",new Date('2018-12-31'),9,974546,"0013","ALING TONYA'S SEAFOOD","","","","WC011",15,1875,281.25),
+			new AcctSrvcCWhtaxConsolidateData("D4","D1604E","005376602","0000",new Date('2018-12-31'),10,688832,"0044","ALING TONYA'S SEAFOOD","","","","WC011",15,100,15),
+			new AcctSrvcCWhtaxConsolidateData("D4","D1604E","005376602","0000",new Date('2018-12-31'),11,953453,"0134","AMBER'S RESTAURANT","","","","WC160",2,5000,100),
+			new AcctSrvcCWhtaxConsolidateData("D4","D1604E","005376602","0000",new Date('2018-12-31'),12,4342,"0135","ATENEO DE MANILA","","","","WC160",2,1000,20),
+			new AcctSrvcCWhtaxConsolidateData("D4","D1604E","005376602","0000",new Date('2018-12-31'),13,2335,"0054","ATENEO DE DAVAO","ALMADEN","CATHRINE","E","WC160",2,352.83,7.06),
+			new AcctSrvcCWhtaxConsolidateData("D4","D1604E","005376602","0000",new Date('2018-12-31'),14,96322,"0053","AVE & BOY FLOWERSHOP","AQUINO","ROMMEL","I","WC158",1,100,1),
+			new AcctSrvcCWhtaxConsolidateData("D4","D1604E","005376602","0000",new Date('2018-12-31'),15,55435,"0042","AVE & BOY FLOWERSHOP","","","","WC160",2,300,6),
+			new AcctSrvcCWhtaxConsolidateData("D4","D1604E","005376602","0000",new Date('2018-12-31'),16,34,"0034","BBB SHELL SERVICE","","","","WC011",15,2250,337.50),
+			new AcctSrvcCWhtaxConsolidateData("D4","D1604E","005376602","0000",new Date('2018-12-31'),17,4345,"0022","2GO EXPRESS","","","","WC158",1,10000,100),
+			new AcctSrvcCWhtaxConsolidateData("D4","D1604E","005376602","0000",new Date('2018-12-31'),18,633,"0022","2GO EXPRESS","ALMADEN","CATHRINE","E","WC160",2,300,6),
+			new AcctSrvcCWhtaxConsolidateData("D4","D1604E","005376602","0000",new Date('2018-12-31'),19,432,"0032","2GO EXPRESS","AQUINO","ROMMEL","I","WC160",2,223,4.46),
+		];
+		return this.acctSrvcCWhtaxConsolidateData;
 	}
 
 	getTaxDetails(){
@@ -762,20 +1021,11 @@ export class AccountingService {
 			new ExpenseBudgetByMonth("5-01-02-05","Group Personal Accident",0,0,0,0,0,0,0,0,0,0,0,0,0),
 			new ExpenseBudgetByMonth("5-01-02-06","Company Outing",0,0,0,0,0,0,0,0,0,0,0,0,0),
 			new ExpenseBudgetByMonth("5-01-02-07","Sports and Other Activities",0,0,0,0,0,0,0,0,0,0,0,0,0),	
-			new ExpenseBudgetByMonth("5-01-02-08","Service Award",0,0,0,0,0,0,0,0,0,0,0,0,0),	
-
-
-
-
-
-					
-			
+			new ExpenseBudgetByMonth("5-01-02-08","Service Award",0,0,0,0,0,0,0,0,0,0,0,0,0),				
 		];
 
 		return this.expenseBudgetByMonth;
 	}
-
-
 
 
 }

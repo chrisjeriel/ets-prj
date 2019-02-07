@@ -13,10 +13,10 @@ export class ARInwdPolBalDetails {
     charges: number;
     netDue: number;
     payments: number;
-    overdueInterest: number;
     balance: number;
+    overdueInterest: number;
 
-    constructor(soaNo: string,polNo: string,coRefNo: string,instNo: string,type: string,effDate: Date,dueDate: Date,curr: string,currRate: number,premium: number,riComm: number,charges: number,netDue: number,payments: number,overdueInterest: number,balance: number) {
+    constructor(soaNo: string,polNo: string,coRefNo: string,instNo: string,type: string,effDate: Date,dueDate: Date,curr: string,currRate: number,premium: number,riComm: number,charges: number,netDue: number,payments: number,balance: number,overdueInterest: number) {
         this.soaNo = soaNo;
         this.polNo = polNo;
         this.coRefNo = coRefNo;
@@ -30,9 +30,9 @@ export class ARInwdPolBalDetails {
         this.riComm = riComm;
         this.charges = charges;
         this.netDue = netDue;
-        this.payments = payments;
-        this.overdueInterest = overdueInterest;
+        this.payments = payments;        
         this.balance = balance;
+        this.overdueInterest = overdueInterest;
     }
 
 }

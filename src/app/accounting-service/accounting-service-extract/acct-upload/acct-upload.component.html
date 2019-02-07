@@ -1,0 +1,50 @@
+<fieldset class="scheduler-border">
+	<legend class="scheduler-border">Extraction Info</legend>
+	<div class="form-row custom-row-inline-inset">
+		<div class="col-sm-5">
+			<div class="input-group">
+				<label class="form-control-sm col-sm-1">Period:</label>
+				<label class="form-control-sm col-sm-2">From</label>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-4">
+				<label class="form-control-sm col-sm-1">To</label>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-4">
+			</div>
+		</div>
+		<div class="col-sm-7">
+			<div class="input-group">
+				<label class="form-control-sm col-sm-2">Extracted By</label>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-4">
+				<label class="form-control-sm col-sm-2">Date Extracted</label>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-4">
+			</div>
+		</div>
+	</div>
+</fieldset>
+<fieldset class="scheduler-border">
+	<legend class="scheduler-border">Summary Per Payee</legend>
+		<div class="row">
+			<div *ngIf ="1==2"	>
+				<div class="col-sm-12" style="margin-top: 15px !important;">
+					<app-cust-editable-non-datatable [passData]="CreditableTaxData"></app-cust-editable-non-datatable>
+				</div>
+			</div>
+			<div *ngIf ="1==2">
+				<div class="col-sm-12" style="margin-top: 15px !important;">
+					<app-cust-editable-non-datatable [passData]="InputVatData"></app-cust-editable-non-datatable>
+				</div>
+			</div>
+			<div  >
+				<div class="col-sm-12" style="margin-top: 15px !important;">
+					<div style="position: relative;">
+						<button class="cust-btn" style="position:absolute; left: 0px; top:-3px; max-width: 200px !important;">Upload to BIR RLF</button>
+						<app-cust-editable-non-datatable [passData]="OutputVatData"></app-cust-editable-non-datatable>
+					</div>
+				</div>
+			</div>
+			<div *ngIf ="1==2">
+				<div class="col-sm-12" style="margin-top: 15px !important;">
+					<app-cust-editable-non-datatable [passData]="WithholdingTaxData"></app-cust-editable-non-datatable>
+				</div>
+			</div>
+		</div>
+</fieldset>

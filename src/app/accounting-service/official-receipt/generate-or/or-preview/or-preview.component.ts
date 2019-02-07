@@ -46,9 +46,9 @@ export class OrPreviewComponent implements OnInit {
    passDataAccountingVATTaxDetails: any = {
     tableData: [],
     tHeader: ['VAT Type', 'BIR RLF Purchase Type', 'Payor', 'Base Amount', 'VAT Amount'],
-    dataTypes: ['select', 'text', 'text', 'currency', 'currency'],
-    opts: [{ selector: "vatType", vals: ["Output", "Input"] }],
-	nData: new ORPreVATDetails(null,null,null,null,null),
+    dataTypes: ['text', 'text', 'text', 'currency', 'currency'],
+    //opts: [{ selector: "vatType", vals: ["Output", "Input"] }],
+	  nData: new ORPreVATDetails(null,null,null,null,null),
     pageID: 3,
     addFlag: true,
     deleteFlag: true,
@@ -63,13 +63,13 @@ export class OrPreviewComponent implements OnInit {
   passDataAccountingCreditableTaxDetails: any = {
    tableData: [],
     tHeader: ['BIR Tax Code', 'Description', 'WTax Rate', 'Payor','Base Amount', 'WTax Amount'],
-    dataTypes: ['select', 'text', 'percent','text', 'currency', 'currency'],
-    opts:[
-      {
-        selector: 'birTaxCode',
-        vals: ['WC002', 'WC010', 'WC020'],
-      }
-    ],
+    dataTypes: ['text', 'text', 'percent','text', 'currency', 'currency'],
+    // opts:[
+    //   {
+    //     selector: 'birTaxCode',
+    //     vals: ['WC002', 'WC010', 'WC020'],
+    //   }
+    // ],
     nData: new ORPreCreditableWTaxDetails(null,null,null,null,null,null),
     pageID: 4,
     addFlag: true,

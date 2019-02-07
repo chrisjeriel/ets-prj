@@ -10,7 +10,7 @@
 								<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 									<div class="input-group" style="margin-top: 10px;">
 										<label class="form-control-sm col-sm-2">Quotation No</label>
-										<input type="text" class="form-control form-control-sm col-sm cap-input">
+										<input type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="ocQuoteGenInfo.openQuotationNo">
 										<!-- <input type="text" class="form-control form-control-sm col-sm-1 cap-input" >
 										<input type="text" class="form-control form-control-sm col-sm-2 cap-input" style="margin-left: 3px;">
 										<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;">
@@ -22,41 +22,42 @@
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Ref Open Pol No</label>
-										<input type="text" class="form-control form-control-sm" style="margin-right: -4px;">
+										<input type="text" class="form-control form-control-sm" style="margin-right: -4px;"
+										[(ngModel)]="ocQuoteGenInfo.refPolNo">
 										<span>&nbsp;</span>
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Type of Cession</label>
 										<input type="text" class="form-control form-control-sm" [(ngModel)]="typeOfCession">
 										<label class="form-control-sm col-sm-2">Line Class</label>
-										<input type="text" class="form-control form-control-sm" style="margin-right: 1px;">
+										<input type="text" class="form-control form-control-sm" style="margin-right: 1px;" [(ngModel)]="ocQuoteGenInfo.lineClassCd">
 										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 										<span>&nbsp;</span>
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Open Policy No</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="ocQuoteGenInfo.openPolicyNo" >
 										<label class="form-control-sm col-sm-2">Status</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="ocQuoteGenInfo.status">
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2" style="font-size: 10px !important;">Ceding Company</label>
-										<input type="text" class="form-control form-control-sm col-sm-2">
+										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="ocQuoteGenInfo.cedingId">
 										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 										<span>&nbsp;</span>
-										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 4px;">
+										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 4px;" [(ngModel)]="ocQuoteGenInfo.cedingName">
 									</div>
 									<div *ngIf="checkTypeOfCession()" class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Reinsurance From</label>
-										<input type="text" class="form-control form-control-sm col-sm-2">
+										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="ocQuoteGenInfo.reinsurerId">
 										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 4px;">
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Intermediary</label>
-										<input type="text" class="form-control form-control-sm col-sm-2">
+										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="ocQuoteGenInfo.intmId">
 										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 										<span>&nbsp;</span>
-										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 4px;">
+										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 4px;" [(ngModel)]="ocQuoteGenInfo.intmName">
 									</div>
 								</div>
 							</div>
@@ -72,15 +73,15 @@
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-4">Requested By</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="ocQuoteGenInfo.reqBy">
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-4">Request Date</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="date" class="form-control form-control-sm" [(ngModel)]="ocQuoteGenInfo.reqDate">
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-4">Request Mode</label>
-										<select class="form-control form-control-sm cust-sm">
+										<select class="form-control form-control-sm cust-sm" [(ngModel)]="ocQuoteGenInfo.reqMode">
 											<option value=""></option>
 											<option value="USD">Value 1</option>
 											<option value="PHP">Value 2</option>
@@ -103,15 +104,15 @@
 						<div class="form-group col-sm-6 offsetFormGroup">
 							<div class="input-group">
 								<label class="form-control-sm col-sm-4">Currency</label>
-								<input type="text" class="form-control form-control-sm">
-								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<input type="text" class="form-control form-control-sm" [(ngModel)]="ocQuoteGenInfo.currencyCd">
+								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showCurrencyModal()"></i></a></div>
 								<span>&nbsp;</span>
 							</div>
 						</div>
 						<div class="form-group col-sm-6 offsetFormGroup">
 							<div class="input-group">
 								<label class="form-control-sm col-sm-4">Exch. Rt.</label>
-								<input type="text" class="form-control form-control-sm">
+								<input type="text" class="form-control form-control-sm" [(ngModel)]="ocQuoteGenInfo.currencyRt">
 								<span>&nbsp;</span>
 							</div>
 						</div>
@@ -128,7 +129,7 @@
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<div class="input-group-text">
-										<input type="checkbox">
+										<input type="checkbox" [checked]="govCheckbox">
 									</div>
 								</div>
 								<input type="text" style="font-size: 11px !important;" value="Government" disabled class="form-control form-control-sm">
@@ -138,7 +139,7 @@
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<div class="input-group-text">
-										<input type="checkbox">
+										<input type="checkbox" [checked]="indCheckbox">
 									</div>
 								</div>
 								<input type="text" style="font-size: 11px !important;" value="Indicative" disabled class="form-control form-control-sm">
@@ -162,19 +163,19 @@
 					<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 						<div class="input-group" style="margin-top: 10px;">
 							<label class="form-control-sm col-sm-1">Principal</label>
-							<input type="text" class="form-control form-control-sm col-sm-1">
+							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="ocQuoteGenInfo.principalId">
 							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 							<span>&nbsp;</span>
-							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
+							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="ocQuoteGenInfo.principalName">
 							<label class="form-control-sm col-sm-1">Contractor</label>
-							<input type="text" class="form-control form-control-sm col-sm-1">
+							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="ocQuoteGenInfo.contractorId">
 							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 							<span>&nbsp;</span>
-							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
+							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="ocQuoteGenInfo.contractorName">
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Insured</label>
-							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px;"></textarea>
+							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px;" [(ngModel)]="ocQuoteGenInfo.insuredDesc"></textarea>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Risk</label>
@@ -183,7 +184,7 @@
 						<div class="input-group" style="margin-bottom: 0px !important;">
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2">Object</label>
-								<input type="text" class="form-control form-control-sm col-sm-2">
+								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="ocQuoteGenInfo.objectId">
 								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 								<input type="text" class="form-control form-control-sm" style="margin-left: 9px;">
 							</div>
@@ -194,7 +195,7 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Nature of Work</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px;"></textarea>
+							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px;" [(ngModel)]="ocQuoteGenInfo.projDesc"></textarea>
 
 							<div class="col-sm">
 								<div class="row">
@@ -213,7 +214,7 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Site</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px;"></textarea>
+							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px;" [(ngModel)]="ocQuoteGenInfo.site"></textarea>
 
 							<div class="col-sm">
 								<div class="row">
@@ -236,7 +237,7 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Duration</label>
-							<input type="text" class="form-control form-control-sm col-sm-5">
+							<input type="text" class="form-control form-control-sm col-sm-5" [(ngModel)]="ocQuoteGenInfo.duration">
 						</div>
 					</div>
 				</div>
@@ -254,19 +255,19 @@
 					<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 						<div class="input-group" style="margin-top: 10px;">
 							<label class="form-control-sm col-sm-1">Principal</label>
-							<input type="text" class="form-control form-control-sm col-sm-1">
+							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="ocQuoteGenInfo.principalId">
 							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 							<span>&nbsp;</span>
-							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
+							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="ocQuoteGenInfo.principalName">
 							<label class="form-control-sm col-sm-1">Contractor</label>
-							<input type="text" class="form-control form-control-sm col-sm-1">
+							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="ocQuoteGenInfo.contractorId">
 							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 							<span>&nbsp;</span>
-							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
+							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="ocQuoteGenInfo.contractorName">
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Insured</label>
-							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px;"></textarea>
+							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px;" [(ngModel)]="ocQuoteGenInfo.insuredDesc"></textarea>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Risk</label>
@@ -275,7 +276,7 @@
 						<div class="input-group" style="margin-bottom: 0px !important;">
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2">Object</label>
-								<input type="text" class="form-control form-control-sm col-sm-2">
+								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="ocQuoteGenInfo.objectId">
 								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 								<input type="text" class="form-control form-control-sm" style="margin-left: 9px;">
 							</div>
@@ -286,7 +287,7 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Nature of Work</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px;"></textarea>
+							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px;" [(ngModel)]="ocQuoteGenInfo.projDesc"></textarea>
 
 							<div class="col-sm">
 								<div class="row">
@@ -305,7 +306,7 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Site</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px;"></textarea>
+							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px;" [(ngModel)]="ocQuoteGenInfo.site"></textarea>
 
 							<div class="col-sm">
 								<div class="row">
@@ -328,9 +329,9 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Duration</label>
-							<input type="text" class="form-control form-control-sm col-sm-5">
+							<input type="text" class="form-control form-control-sm col-sm-5" [(ngModel)]="ocQuoteGenInfo.duration">
 							<label class="form-control-sm col-sm-1">Testing</label>
-							<input type="text" class="form-control form-control-sm col-sm">
+							<input type="text" class="form-control form-control-sm col-sm" [(ngModel)] = "ocQuoteGenInfo.testing"> 
 						</div>
 					</div>
 				</div>
@@ -345,11 +346,11 @@
 					<div class="form-row">
 						<div class="col-sm">
 							<label for="inputEmail4" class="form-control-sm top-label">Opening Paragraph</label>
-							<textarea style="font-size: 12px; margin-bottom: 38px;" class="form-control form-control-sm" placeholder="Further to our Quotation No.."></textarea>
+							<textarea style="font-size: 12px; margin-bottom: 38px;" class="form-control form-control-sm" placeholder="Further to our Quotation No.." [(ngModel)]="ocQuoteGenInfo.openingParag"></textarea>
 						</div>
 						<div class="col-sm">
 							<label for="inputEmail4" class="form-control-sm top-label">Closing Paragraph</label>
-							<textarea style="font-size: 12px; margin-bottom: 38px;" class="form-control form-control-sm" placeholder="This quotation is subject.."></textarea>
+							<textarea style="font-size: 12px; margin-bottom: 38px;" class="form-control form-control-sm" placeholder="This quotation is subject.."[(ngModel)]="ocQuoteGenInfo.closingParag"></textarea>
 						</div>
 					</div>
 				</div>
@@ -364,17 +365,17 @@
 					<div class="form-row" style="margin-bottom: -3px;">
 						<div class="form-group col-sm">
 							<label class="form-control-sm top-label">Total Sl</label>
-							<input type="text" class="form-control form-control-sm">
+							<input type="text" class="form-control form-control-sm" [(ngModel)]="ocQuoteGenInfo.maxSi">
 						</div>
 					</div>
 					<div class="form-row" style="margin-bottom: -16px; margin-top: -10px !important;">
 						<div class="form-group col-sm-3">
 							<label class="form-control-sm top-label">% Share</label>
-							<input type="text" class="form-control form-control-sm cust-sm">
+							<input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="ocQuoteGenInfo.pctShare">
 						</div>
 						<div class="form-group col-sm">
 							<label class="form-control-sm top-label">Part of (100%)</label>
-							<input type="text" class="form-control form-control-sm cust-sm">
+							<input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="ocQuoteGenInfo.totalValue">
 						</div>
 					</div>
 				</div>
@@ -386,19 +387,19 @@
 					<div class="col-sm-1"></div>
 					<div class="input-group">
 						<label class="form-control-sm col-sm-4">Prepared By</label>
-						<input type="text" class="form-control form-control-sm col-sm-7">
+						<input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="ocQuoteGenInfo.preparedBy">
 					</div>
 					<div class="input-group">
 						<label class="form-control-sm col-sm-4">Approved By</label>
-						<input type="text" class="form-control form-control-sm col-sm-7">
+						<input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="ocQuoteGenInfo.approvedBy">
 					</div>
 					<div class="input-group">
 						<label class="form-control-sm col-sm-4">Printed By</label>
-						<input type="text" class="form-control form-control-sm col-sm-7">
+						<input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="ocQuoteGenInfo.printedBy">
 					</div>
 					<div class="input-group">
 						<label class="form-control-sm col-sm-4">Print Date</label>
-						<input type="date" class="form-control form-control-sm col-sm-7">
+						<input type="date" class="form-control form-control-sm col-sm-7" [(ngModel)]="ocQuoteGenInfo.printDate">
 					</div>
 				</div>
 			</fieldset>
@@ -408,21 +409,21 @@
 					<div class="form-row">
 						<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -10px;">
 							<label class="form-control-sm top-label">Created By</label>
-							<input type="text" class="form-control form-control-sm cust-sm">
+							<input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="ocQuoteGenInfo.createUser">
 						</div>
 						<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -10px;">
 							<label class="form-control-sm top-label">Last Update By</label>
-							<input type="text" class="form-control form-control-sm cust-sm">
+							<input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="ocQuoteGenInfo.updateUser">
 						</div>
 					</div>
 					<div class="form-row">
 						<div class="form-group col-sm-6" style="margin-bottom: 8px;">
 							<label class="form-control-sm top-label">Date Created</label>
-							<input type="date" class="form-control form-control-sm cust-sm">
+							<input type="date" class="form-control form-control-sm cust-sm" [(ngModel)]="ocQuoteGenInfo.createDate" >
 						</div>
 						<div class="form-group col-sm-6" style="margin-bottom: 8px;">
 							<label class="form-control-sm top-label">Last Update</label>
-							<input type="date" class="form-control form-control-sm cust-sm">
+							<input type="date" class="form-control form-control-sm cust-sm" [(ngModel)]="ocQuoteGenInfo.updateDate">
 						</div>
 					</div>
 				</div>
@@ -441,3 +442,5 @@
 		</div>
 	</div>
 </div>
+
+<app-mtn-currency id="currencyModal" (selectedData)="setCurrency($event)"></app-mtn-currency>

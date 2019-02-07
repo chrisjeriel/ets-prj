@@ -1,6 +1,7 @@
 export class AccARInvestments {
 	bank: string;
-	acctNo: string;
+	certificateNo: string;
+	investmentType: string;
 	matPeriod: number;
 	durUnit: string;
 	intRate: number;
@@ -11,12 +12,14 @@ export class AccARInvestments {
 	bankCharge: number;
 	withTax: number;
 	investment: number;
-	matValue: number;
 	income: number;
+	matValue: number;
+
 
 
 	constructor(bank: string, 
-		acctNo: string,
+		certificateNo: string,
+		investmentType: string,
 		matPeriod: number, 
 		durUnit: string,
 		intRate: number,
@@ -27,11 +30,12 @@ export class AccARInvestments {
 		bankCharge: number,
 		withTax: number,
 		investment: number,
-		matValue: number,
-		income: number) {
+		income: number,
+		matValue: number) {
 
 		this.bank = bank;
-		this.acctNo = acctNo;
+		this.certificateNo = certificateNo;
+		this.investmentType	= investmentType;
 		this.matPeriod = matPeriod;
 		this.durUnit = durUnit;
 		this.intRate = intRate;
@@ -42,7 +46,7 @@ export class AccARInvestments {
 		this.bankCharge = bankCharge;
 		this.withTax = withTax;
 		this.investment = investment;
-		this.matValue = matValue;
 		this.income = income;
+		this.matValue = matValue;
 	}
 }

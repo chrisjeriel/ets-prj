@@ -63,10 +63,6 @@ export class MtnDistrictComponent implements OnInit {
   	});
   }
 
-  showDistrictModal(content) {
-      this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
-  }
-
   select(data){
   	  this.selected = data;
   }

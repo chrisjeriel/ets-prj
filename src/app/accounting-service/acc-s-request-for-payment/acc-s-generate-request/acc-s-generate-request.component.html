@@ -1,0 +1,30 @@
+<div class="cust-tabs-container">
+	<h4>Accounting Service / Request for Payment / Generate Request</h4>
+	<!-- <ngb-tabset (tabChange)="beforeChange($event)"> -->
+		<ngb-tabset (tabChange)="onTabChange($event)">
+			<ngb-tab>
+				<ng-template ngbTabTitle>
+					<div>Request Entry</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+					<!-- <app-payment-request-entry [data]="paymentData" (onChange)="tabController($event)"></app-payment-request-entry> -->
+					<app-acc-s-request-entry [data]="paymentData" (onChange)="tabController($event)"></app-acc-s-request-entry>
+				</ng-template>
+			</ngb-tab>
+			<ngb-tab [disabled]="paymentData.paymentType == ''">
+				<ng-template ngbTabTitle>
+					<div>Request Details</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+					<!-- <app-payment-request-details [paymentType]="paymentType"></app-payment-request-details> -->
+					<app-acc-s-request-details [paymentType]="paymentType"></app-acc-s-request-details>
+				</ng-template>
+			</ngb-tab>
+			<ngb-tab id="Exit">
+				<ng-template ngbTabTitle>
+					<div>Exit</div>
+				</ng-template>
+    			<ng-template ngbTabContent></ng-template>
+  			</ngb-tab>
+	</ngb-tabset>
+</div>

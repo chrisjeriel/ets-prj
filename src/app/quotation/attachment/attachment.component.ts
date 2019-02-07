@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input,  ViewChild } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { QuotationService } from '../../_services';
 import { AttachmentInfo } from '../../_models/Attachment';
 import { Title } from '@angular/platform-browser';
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
 
 
 @Component({
@@ -13,7 +14,7 @@ import { Title } from '@angular/platform-browser';
 })
 
 export class AttachmentComponent implements OnInit {
-
+  @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   /* dtOptions: DataTables.Settings = {};*/
   tableData: any[] = [];
   tHeader: any[] = [];
@@ -33,9 +34,12 @@ export class AttachmentComponent implements OnInit {
   pageLength;
   editedData: any[] = [];
   nData: AttachmentInfo = new AttachmentInfo(null, null);
-  test: boolean = true;
+  test: boolean = false;
+  attachmentInfoData: AttachmentInfo[] = [];
   private attachmentInfo: AttachmentInfo;
 
+
+  attachmentData: any;
   passData: any = {
     tableData: [],
     tHeader: [],
@@ -54,9 +58,10 @@ export class AttachmentComponent implements OnInit {
     searchFlag: true,
     checkboxFlag: true,
     pageLength: 10,
-    widths: []
+    widths: [],
+    keys:['fileName','description']
   };
-
+  
   constructor(config: NgbDropdownConfig,
     private quotationService: QuotationService, private titleService: Title) {
     config.placement = 'bottom-right';
@@ -83,8 +88,24 @@ export class AttachmentComponent implements OnInit {
     this.passData.tHeader.push("File Name");
     this.passData.tHeader.push("Description");
     this.passData.tHeader.push("Actions");
-    this.passData.tableData = this.quotationService.getAttachment();
 
+    /*let arrayData = [];
+    this.quotationService.getAttachment().subscribe((data: any) => {
+      for (var i = 0; i <  data.quotation.length ; i++) {
+        arrayData.push(new AttachmentInfo(data.quotation[i].attachment.fileName, data.quotation[i].attachment.description));
+      }
+     });
+    this.passData.tableData = arrayData;
+*/
+
+    this.quotationService.getAttachment().subscribe((data: any) => {
+        this.attachmentData = data.quotation;
+        // this.passData.tableData = data.quotation.project.coverage.sectionCovers;
+        for (var i = 0; i < data.quotation.length; i++) {
+          this.passData.tableData.push(data.quotation[i].attachment);
+        }
+        this.table.refreshTable();
+    });
   }
 
 }

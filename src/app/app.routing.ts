@@ -73,9 +73,22 @@ import { GenerateOrComponent } from './accounting-service/official-receipt/gener
 import { OfficialReceiptComponent } from './accounting-service/official-receipt/official-receipt.component';
 import { AcctOrListingsComponent } from './accounting-service/acct-or-listings/acct-or-listings.component';
 import { AccountingServiceComponent } from './accounting-service/accounting-service.component';
-import { UtilitiesComponent } from './accounting-service/utilities/utilities.component';
 import { ExpenseBudgetComponent } from './accounting-service/expense-budget/expense-budget.component';
-
+import { AccountingServiceExtractComponent } from './accounting-service/accounting-service-extract/accounting-service-extract.component';
+import { ConsolidateAnnualTaxesWithheldComponent } from './accounting-service/utilities/consolidate-annual-taxes-withheld/consolidate-annual-taxes-withheld.component';
+import { PcvComponent } from './accounting-service/pcv/pcv.component';
+import { PcvListingsComponent } from './accounting-service/pcv/pcv-listings/pcv-listings.component';
+import { MeBatchProcComponent } from './accounting-service/month-end/me-batch-proc/me-batch-proc.component';
+import { MeDataCheckingComponent } from './accounting-service/month-end/me-data-checking/me-data-checking.component';
+import { MeTrialBalProcComponent } from './accounting-service/month-end/me-trial-bal-proc/me-trial-bal-proc.component';
+import { FixedAssetsComponent } from './accounting-service/fixed-assets/fixed-assets.component';
+import { AccSRequestForPaymentComponent } from './accounting-service/acc-s-request-for-payment/acc-s-request-for-payment.component';
+import { AccSGenerateRequestComponent } from './accounting-service/acc-s-request-for-payment/acc-s-generate-request/acc-s-generate-request.component';
+import { CheckVoucherServiceComponent } from './accounting-service/check-voucher-service/check-voucher-service.component';
+import { GenerateCvServiceComponent } from './accounting-service/check-voucher-service/generate-cv-service/generate-cv-service.component';
+import { JournalVoucherServiceComponent } from './accounting-service/journal-voucher-service/journal-voucher-service.component';
+import { GenerateJvServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/generate-jv-service.component';
+import { UtilitiesComponent } from './accounting-service/utilities/utilities.component';
 
 
 const appRoutes: Routes = [
@@ -158,6 +171,21 @@ const appRoutes: Routes = [
     { path: 'official-receipt', component: OfficialReceiptComponent },
     { path: 'acct-or-listings', component: AcctOrListingsComponent },
     { path: 'accounting-service', component: AccountingServiceComponent},
+    { path: 'accounting-service-expense-budget', component: ExpenseBudgetComponent},
+    { path: 'accounting-service-extract', component: AccountingServiceExtractComponent},
+    { path: 'acct-srvc-util-catw', component: ConsolidateAnnualTaxesWithheldComponent },
+    { path: 'accounting-service-pcv-listings', component: PcvListingsComponent},
+    { path: 'accounting-service-pcv', component: PcvComponent},
+    { path: 'month-end-batch-processing', component: MeBatchProcComponent},
+    { path: 'month-end-data-checking', component: MeDataCheckingComponent},
+    { path: 'month-end-trial-bal-proc', component: MeTrialBalProcComponent},
+    { path: 'fixed-assets', component: FixedAssetsComponent},
+    { path: 'acc-s-request-for-payment', component: AccSRequestForPaymentComponent },
+    { path: 'acc-s-generate-request', component: AccSGenerateRequestComponent },
+    { path: 'check-voucher-service', component: CheckVoucherServiceComponent },
+    { path: 'generate-cv-service', component: GenerateCvServiceComponent },
+    { path: 'journal-voucher-service', component: JournalVoucherServiceComponent },
+    { path: 'generate-jv-service', component: GenerateJvServiceComponent },
     { path: 'accounting-service-utilities', component: UtilitiesComponent },
     { path: 'accounting-service-exp-budget', component: ExpenseBudgetComponent },
     // otherwise redirect to home

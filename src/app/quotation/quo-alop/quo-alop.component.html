@@ -28,13 +28,13 @@
 
 					<div class="input-group textarea" style="padding-bottom: 7px;">
 						<label class="form-control-sm col-sm-2"></label>
-						<textarea class="form-control form-control-sm col-sm" rows="2" [(ngModel)]="aLOPInfo.address1" appRequired></textarea>
+						<textarea class="form-control form-control-sm col-sm" rows="2" [ngModel]="alopItemData!== undefined ? alopItemData.insuredDesc : ''" appRequired></textarea>
 						<br>
 					</div>
 
 					<div class="input-group">
 						<label class="form-control-sm col-sm-2 text-right" for="xx">Address</label>
-						<input class="form-control form-control-sm  col-sm" type="text" name="" [(ngModel)]="aLOPInfo.address2" appRequired>
+						<input class="form-control form-control-sm  col-sm" type="text" name="" [ngModel]="alopItemData!== undefined ? alopItemData.address : ''" appRequired>
 					</div>
 					
 				</div>
@@ -48,7 +48,7 @@
 					</div>
 
 					<div class="input-group textarea">
-						<textarea class="form-control form-control-sm col-sm-12" rows="3" style="height: 83% !important;" [(ngModel)]="aLOPInfo.business" appRequired></textarea>
+						<textarea class="form-control form-control-sm col-sm-12" rows="3" style="height: 83% !important;" [ngModel]="alopItemData!== undefined ? alopItemData.insuredBusiness : ''" appRequired></textarea>
 					</div>
 				</div>
 			</fieldset>
@@ -64,12 +64,12 @@
 			<div class="input-group">
 				<label class="col-sm-4"></label>
 				<label class=" form-control-sm col-sm-2" for="annSumInsured">Annual Sum Insured</label>
-				<input class="form-control form-control-sm  col-sm-4" type="text" id="annSumInsured" [(ngModel)]="aLOPInfo.amountSI" appRequired appCurrency>
+				<input class="form-control form-control-sm  col-sm-4" type="text" id="annSumInsured" [ngModel]="alopItemData!== undefined ? alopItemData.annSi : ''" appRequired appCurrency>
 			</div>
 			<div class="input-group" style="padding-bottom: 0.9%;">
 				<label class="col-sm-4"></label>
 				<label class="form-control-sm col-sm-2 text-left" for="sumInsForMaxIndem">Sum Insured for Maximum Indemnity Period</label>
-				<input class="form-control form-control-sm  col-sm-4" type="text" id="sumInsForMaxIndem" [(ngModel)]="aLOPInfo.maxSI" appRequired appCurrency>
+				<input class="form-control form-control-sm  col-sm-4" type="text" id="sumInsForMaxIndem" [ngModel]="alopItemData!== undefined ? alopItemData.maxIndemPdSi : ''"  appRequired appCurrency>
 			</div>
 		</div>
 	</fieldset>
@@ -87,7 +87,7 @@
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" for="maxIndemPeriod">Maximum Indemnity Period</label>
-				<input class="form-control form-control-sm  col-sm-1" type="number" id="maxIndemPeriod" [(ngModel)]="aLOPInfo.months" appMonth>
+				<input class="form-control form-control-sm  col-sm-1" type="number" id="maxIndemPeriod" [ngModel]="alopItemData!== undefined ? alopItemData. maxIndemPd : ''" appMonth>
 				<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">months</label>
 			</div>
 			<div class="input-group">
@@ -96,11 +96,11 @@
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" for="timeExcess">Time Excess</label>
-				<input class="form-control form-control-sm  col-sm-6" type="text" id="fromIndem" [(ngModel)]="aLOPInfo.timeExcess" appRequired>
+				<input class="form-control form-control-sm  col-sm-6" type="text" id="fromIndem" [ngModel]="alopItemData!== undefined ? alopItemData. timeExc : ''" appRequired>
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" for="interval">Progress reports to be presented at intervals of</label>
-				<input class="form-control form-control-sm  col-sm-1" type="number" id="interval" [(ngModel)]="aLOPInfo.reportInterval" appMonth>
+				<input class="form-control form-control-sm  col-sm-1" type="number" id="interval" [ngModel]="alopItemData!== undefined ? alopItemData. repInterval : ''" appMonth>
 				<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">months</label>
 			</div>
 		</div>

@@ -1,5 +1,5 @@
 <div *ngIf="!addEdit; else addEditCedingCo" class="cust-tabs-container">
-	<h4>Policy / Maintenance</h4>
+	<h4>Maintenance</h4>
 	<ngb-tabset>
 		<ngb-tab class="ngb-tab" title="Ceding Companies List">
 			<ng-template ngbTabContent>
@@ -15,7 +15,7 @@
 
 <ng-template #addEditCedingCo>
 	<div class="cust-tabs-container">
-		<h4>Policy / Maintenance / Ceding Companies List</h4>
+		<h4> Maintenance / Ceding Companies List</h4>
 		<ngb-tabset>
 			<ngb-tab class="ngb-tab" title="Ceding Company">
 				<ng-template ngbTabContent>
@@ -90,7 +90,9 @@
 						<div class="col-sm-8">
 							<fieldset class="scheduler-border" style="padding-top: 11px !important; padding-bottom: 10px !important;">
 								<legend class="scheduler-border">Membership</legend>
-								<app-cust-editable-non-datatable [passData]="passDataAddEdit"></app-cust-editable-non-datatable>
+								<div class="contain">
+									<app-cust-editable-non-datatable [passData]="passDataAddEdit"></app-cust-editable-non-datatable>
+								</div>
 							</fieldset>
 						</div>
 						<div class="col-sm-2"></div>
