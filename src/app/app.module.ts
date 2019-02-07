@@ -218,7 +218,6 @@ import { ExtractBirTaxComponent } from './accounting-service/accounting-service-
 import { AcctEntriesComponent } from './accounting-service/accounting-service-extract/acct-entries/acct-entries.component';
 import { AcctDetailsComponent } from './accounting-service/accounting-service-extract/acct-details/acct-details.component';
 import { AcctUploadComponent } from './accounting-service/accounting-service-extract/acct-upload/acct-upload.component';
-import { MtnInsuredComponent } from './maintenance/mtn-insured/mtn-insured.component';
 import { MtnEndtCodeComponent } from './maintenance/mtn-endt-code/mtn-endt-code.component';
 import { CvAccEntriesComponent } from './accounting-in-trust/check-voucher/generate-cv/cv-acc-entries/cv-acc-entries.component';
 import { PcvComponent } from './accounting-service/pcv/pcv.component';
@@ -229,7 +228,6 @@ import { PcvAccEntriesComponent } from './accounting-service/pcv/pcv-acc-entries
 import { MeDataCheckingComponent } from './accounting-service/month-end/me-data-checking/me-data-checking.component';
 import { MeBatchProcComponent } from './accounting-service/month-end/me-batch-proc/me-batch-proc.component';
 import { MeTrialBalProcComponent } from './accounting-service/month-end/me-trial-bal-proc/me-trial-bal-proc.component';
-import { MtnCityComponent } from './maintenance/mtn-city/mtn-city.component';
 import { MtnCrestaZoneComponent } from './maintenance/mtn-cresta-zone/mtn-cresta-zone.component';
 import { MtnCurrencyComponent } from './maintenance/mtn-currency/mtn-currency.component';
 import { FixedAssetsComponent } from './accounting-service/fixed-assets/fixed-assets.component';
@@ -474,7 +472,6 @@ import { JvAttachmentsServiceComponent } from './accounting-service/journal-vouc
         AcctEntriesComponent,
         AcctDetailsComponent,
         AcctUploadComponent,
-        MtnInsuredComponent,
         MtnEndtCodeComponent,
         CvAccEntriesComponent,
         PcvComponent,
@@ -485,7 +482,6 @@ import { JvAttachmentsServiceComponent } from './accounting-service/journal-vouc
         MeDataCheckingComponent,
         MeBatchProcComponent,
         MeTrialBalProcComponent,
-        MtnCityComponent,
         MtnCrestaZoneComponent,
         MtnCurrencyComponent,
         FixedAssetsComponent,
