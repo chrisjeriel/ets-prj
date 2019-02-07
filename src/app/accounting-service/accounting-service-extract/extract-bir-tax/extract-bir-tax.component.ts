@@ -11,6 +11,8 @@ export class ExtractBirTaxComponent implements OnInit {
 
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   taxType: any;
+  defaultTab: false;
+
   constructor() { }
 
   ngOnInit() {
