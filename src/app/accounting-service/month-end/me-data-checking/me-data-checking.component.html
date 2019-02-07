@@ -1,0 +1,50 @@
+<div class="cust-tabs-container">
+  <h4>Accounting Service / Month End / Data Checking</h4>
+  <ngb-tabset (tabChange)="onTabChange($event)">
+    <ngb-tab class="ngb-tab" title="Month End Data Checking">
+      <ng-template ngbTabContent>
+        <div class="d-flex">
+        	<div class="col-sm-1"></div>
+        	<fieldset class="scheduler-border col-sm-10">
+        		<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+        		<div class="row justify-content-sm-center pt-1">
+        			<div class="col-sm-5 d-flex">
+				        <label class="form-control-sm col-sm-4 pl-0 pr-1 text-right mb-0" style="font-size: 9.5px !important;">Booling Month / Year</label>
+				      	<select class="form-control form-control-sm cust-sm col-sm-5">
+		                        <option value="Jan">January</option>
+		                        <option value="Feb">February</option>
+		                        <option value="Mar">March</option>
+		                        <option value="Apr">April</option>
+		                        <option value="May">May</option>
+		                        <option value="Jun">June</option>
+		                        <option value="Jul">July</option>
+		                        <option value="Aug">August</option>
+		                        <option value="Sep">September</option>
+		                        <option value="Oct">October</option>
+		                        <option value="Nov">November</option>
+		                        <option value="Dec">December</option>
+		                </select>
+		                <select class="form-control form-control-sm cust-sm col-sm-2 ml-1">
+		                        <option value="PHP">2019</option>
+		                        <option value="EUR">2018</option>
+		                        <option value="USD">2017</option>
+		                </select>
+				    </div>
+        		</div>
+        		<app-cust-non-datatable [passData]="passData" style="margin-top: -20px" class="d-block"></app-cust-non-datatable>
+    			<div class="form-group col-sm text-center" style="margin-bottom: 5px;margin-top: 28px;">
+    		      <div class="cust-btn-container">
+    		        <button type="button" class="cust-btn"><a>Generate to Excel</a></button>
+    		      </div>
+    		    </div>
+        	</fieldset>
+        </div>
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab class="ngb-tab" title="Exit" id="Exit">
+      <ng-template ngbTabContent>
+
+      </ng-template>
+    </ngb-tab>
+  </ngb-tabset>
+</div>

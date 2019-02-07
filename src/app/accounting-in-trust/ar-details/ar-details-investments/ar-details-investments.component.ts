@@ -11,19 +11,19 @@ export class ArDetailsInvestmentsComponent implements OnInit {
   
   passDataInvestment: any = {
     tableData:[],
-    tHeader:['Bank','Account No.','Maturity Period','Duration Unit','Interest Rate','Date Purchased','Maturity Date','Curr','Curr Rate','Bank Charge','Withholding Tax','Investment','Maturity Value','Income'],
-    dataTypes:['text','text','number','text','percent','date','date','text','percent','currency','currency','currency','currency','currency'],
-    total:[null,null,null,null,null,null,null,null,'Total','bankCharge','withTax','investment','matValue','income'],
+    tHeader:['Bank','Certificate No.','Investment Type','Maturity Period','Duration Unit','Interest Rate','Date Purchased','Maturity Date','Curr','Curr Rate','Bank Charge','Withholding Tax','Investment','Income','Maturity Value'],
+    dataTypes:['text','text','text','number','text','percent','date','date','text','percent','currency','currency','currency','currency','currency'],
+    total:[null,null,null,null,null,null,null,null,null,'Total','bankCharge','withTax','investment','income','matValue'],
     addFlag:true,
     deleteFlag:true,
     genericBtn: "Save",
     infoFlag:true,
     paginateFlag:true, 
-    nData: new AccARInvestments(null, null, null, null, null, null, null, null, null, null, null, null, null, null ),
-    uneditable: [false, false, false, false, false, true, true, false, false, false, false, false, false, false ],
+    nData: new AccARInvestments(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null ),
+    uneditable: [false, false, false, false, false,false, true, true, false, false, false, false, false, false, false ],
     checkFlag: true,
     pageID: 6,
-    widths:[1, 1, 1, 1, 1, 1, 1, 1, 1, 100, 100, 100, 100, 100]
+    widths:[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 100, 100, 100, 100, 100]
   }
 
   constructor(private accountingService: AccountingService) { }

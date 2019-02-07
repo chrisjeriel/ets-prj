@@ -87,6 +87,7 @@ export class ArPreviewComponent implements OnInit {
     nData: [null, null, null, null, null, null],
     paginateFlag: true,
     infoFlag: true,
+    checkFlag: true,
     pageID: 2,
     addFlag: true,
     deleteFlag: true,

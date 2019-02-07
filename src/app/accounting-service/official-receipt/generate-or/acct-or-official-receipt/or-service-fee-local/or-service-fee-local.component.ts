@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { AccORSerFeeLoc } from '@app/_models';
 import { AccountingService } from '@app/_services';
 
@@ -25,8 +25,14 @@ export class OrServiceFeeLocalComponent implements OnInit {
 	}
   constructor(private accountingService: AccountingService ) { }
 
+	@Input() paymentType;
+
   ngOnInit() {
-  	this.passData.tableData = this.accountingService.getAccORSerFeeLoc();
+		this.passData.tableData = this.accountingService.getAccORSerFeeLoc();
+		if(this.paymentType == null){
+      this.paymentType = "";
+		}
+		console.log(this.paymentType);
   }
 
 }

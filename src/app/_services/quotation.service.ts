@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '@environments/environment';
-import { QuotationList, HoldCoverMonitoringList, DummyInfo, QuoteEndorsement, QuotationOption, QuotationOtherRates, IntCompAdvInfo, AttachmentInfo, QuotationProcessing, QuotationCoverageInfo, QuotationHoldCover, ItemInformation, ReadyForPrint, OpenCoverProcessing, Risks, QuotationDeductibles, EditableDummyInfo, OpenCoverList, OcGenInfoInfo } from '@app/_models';
+import { QuotationList, HoldCoverMonitoringList, DummyInfo, QuoteEndorsement, QuotationOption, QuotationOtherRates, IntCompAdvInfo, AttachmentInfo, QuotationProcessing, QuotationCoverageInfo, QuotationHoldCover, ItemInformation, ReadyForPrint, OpenCoverProcessing, Risks, QuotationDeductibles, EditableDummyInfo, OpenCoverList, OcGenInfoInfo, HoldCoverInfo} from '@app/_models';
 import { isNull, nullSafeIsEquivalent } from '@angular/compiler/src/output/output_ast';
 import { NULL_INJECTOR } from '@angular/core/src/render3/component';
 import { isNullOrUndefined } from 'util';
@@ -30,6 +30,7 @@ export class QuotationService {
     editableDummyInfoData: EditableDummyInfo[] = [];
     openCoverList: OpenCoverList[]=[];
     ocGenInfoData: OcGenInfoInfo[]=[];
+    holdCoverInfo: HoldCoverInfo[]=[];
 
     rowData: any[] = [];
     toGenInfo: any[] = [];
@@ -120,7 +121,23 @@ export class QuotationService {
             new HoldCoverMonitoringList("HC-CAR-2018-00001-00", "Open", "Phil. Guaranty", "CAR-2018-00066-00-31", "Malayan", "5K Builders", new Date('2018-12-01'), new Date('2018-12-31'), "P8M001KJ", "Juan Cruz", new Date('2018-12-01')),
             new HoldCoverMonitoringList("HC-EEI-2018-00001-01", "Expired", "Tan-Gatue Adjustment", "EEI-2018-00088-00-67", "FLT Prime", "5K Builders", new Date('2018-11-01'), new Date('2018-11-31'), "MC-MPC-HO-0001", "Rose Lim", new Date('2019-09-09')),
         ];
-        return this.holdCoverMonitoringListData;
+        //return this.holdCoverMonitoringListData;
+        
+        const params = new HttpParams()
+             .set('holdCoverNo','')
+             .set('status','')
+             .set('cedingName','')
+             .set('quotationNo','')
+             .set('riskName','')
+             .set('insuredDesc','')
+             .set('periodFrom','')
+             .set('periodTo','')
+             .set('compRefHoldCovNo','')
+             .set('reqBy','')
+             .set('reqDate','')
+             .set('expiringInDays','')
+             
+            return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteHoldCoverListing',{params});
     }
 
 
@@ -505,10 +522,19 @@ export class QuotationService {
         //return OcGenInfoInfo;
 
             const params = new HttpParams()
-             .set('quoteIdOc','2')
-             .set('openQuotationNo','OC-DOS-2018-1001-2-2323')
+             .set('quoteIdOc','')
+             .set('openQuotationNo','')
              
             return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteGeneralInfoOc',{params});
+    }
+
+    getHoldCoverInfo(){
+        this.holdCoverInfo = [];
+        const params = new HttpParams()
+             .set('holdCoverId','')
+             .set('holdCoverNo','')
+             
+            return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteHoldCover',{params});
     }
     
 }

@@ -73,6 +73,12 @@ import { GenerateOrComponent } from './accounting-service/official-receipt/gener
 import { OfficialReceiptComponent } from './accounting-service/official-receipt/official-receipt.component';
 import { AcctOrListingsComponent } from './accounting-service/acct-or-listings/acct-or-listings.component';
 import { AccountingServiceComponent } from './accounting-service/accounting-service.component';
+import { ConsolidateAnnualTaxesWithheldComponent } from './accounting-service/utilities/consolidate-annual-taxes-withheld/consolidate-annual-taxes-withheld.component';
+import { PcvComponent } from './accounting-service/pcv/pcv.component';
+import { PcvListingsComponent } from './accounting-service/pcv/pcv-listings/pcv-listings.component';
+import { MeBatchProcComponent } from './accounting-service/month-end/me-batch-proc/me-batch-proc.component';
+import { MeDataCheckingComponent } from './accounting-service/month-end/me-data-checking/me-data-checking.component';
+import { MeTrialBalProcComponent } from './accounting-service/month-end/me-trial-bal-proc/me-trial-bal-proc.component';
 import { FixedAssetsComponent } from './accounting-service/fixed-assets/fixed-assets.component';
 import { AccSRequestForPaymentComponent } from './accounting-service/acc-s-request-for-payment/acc-s-request-for-payment.component';
 import { AccSGenerateRequestComponent } from './accounting-service/acc-s-request-for-payment/acc-s-generate-request/acc-s-generate-request.component';
@@ -159,6 +165,12 @@ const appRoutes: Routes = [
     { path: 'official-receipt', component: OfficialReceiptComponent },
     { path: 'acct-or-listings', component: AcctOrListingsComponent },
     { path: 'accounting-service', component: AccountingServiceComponent},
+    { path: 'acct-srvc-util-catw', component: ConsolidateAnnualTaxesWithheldComponent },
+    { path: 'accounting-service-pcv-listings', component: PcvListingsComponent},
+    { path: 'accounting-service-pcv', component: PcvComponent},
+    { path: 'month-end-batch-processing', component: MeBatchProcComponent},
+    { path: 'month-end-data-checking', component: MeDataCheckingComponent},
+    { path: 'month-end-trial-bal-proc', component: MeTrialBalProcComponent},
     { path: 'fixed-assets', component: FixedAssetsComponent},
     { path: 'acc-s-request-for-payment', component: AccSRequestForPaymentComponent },
     { path: 'acc-s-generate-request', component: AccSGenerateRequestComponent },

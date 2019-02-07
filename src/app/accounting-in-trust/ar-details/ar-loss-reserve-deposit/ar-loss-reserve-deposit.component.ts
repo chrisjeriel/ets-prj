@@ -11,9 +11,9 @@ export class ArLossReserveDepositComponent implements OnInit {
 
   lossReserveDepositData: any = {
     tableData: this.accountingService.getAccountingItLossReserveDepositAR(),
-    tHeader: ['Ceding Company', 'Membership Date', 'Remarks', 'Curr', 'Curr Rate', 'Amount', 'Amount (PHP)'],
-    dataTypes: ['text', 'date', 'text', 'text', 'percent', 'currency', 'currency'],
-    nData: new AccountingItLossReserveDepositAr(null, null, null, null, null, null, null),
+    tHeader: ['Ceding Company', 'Membership Date', 'Curr', 'Curr Rate', 'Amount', 'Amount (PHP)'],
+    dataTypes: ['text', 'date', 'text', 'percent', 'currency', 'currency'],
+    nData: new AccountingItLossReserveDepositAr(null, null, null, null, null, null),
     magnifyingGlass: ['cedingCompany'],
     paginateFlag: true,
     infoFlag: true,
@@ -22,8 +22,8 @@ export class ArLossReserveDepositComponent implements OnInit {
     deleteFlag: true,
     checkFlag: true,
     genericBtn: 'Save',
-    total: [null, null, null, null, 'Total', 'amount', 'amountPhp'],
-    widths: ['auto',1,'auto',1,2,100,100],
+    total: [null, null,  null, 'Total', 'amount', 'amountPhp'],
+    widths: ['auto',1,1,2,150,150],
   }
   constructor(private accountingService: AccountingService) { }
 

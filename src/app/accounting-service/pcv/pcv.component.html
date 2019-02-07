@@ -1,0 +1,25 @@
+<div class="cust-tabs-container">
+  <h4>Accounting Service / Petty Cash / Generate Voucher</h4>
+  <ngb-tabset (tabChange)="onTabChange($event)">
+    <ngb-tab class="ngb-tab" title="PCV Entry">
+      <ng-template ngbTabContent>
+        <app-pcv-entry [record]="record"></app-pcv-entry>
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab class="ngb-tab" title="PCV Details">
+      <ng-template ngbTabContent>
+        <app-pcv-details></app-pcv-details>
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab class="ngb-tab" title="Accounting Entries">
+      <ng-template ngbTabContent>
+        <app-pcv-acc-entries></app-pcv-acc-entries>
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab class="ngb-tab" title="Exit" id="Exit">
+      <ng-template ngbTabContent>
+
+      </ng-template>
+    </ngb-tab>
+  </ngb-tabset>
+</div>      
