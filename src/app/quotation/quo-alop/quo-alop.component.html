@@ -21,9 +21,9 @@
 				<div class="form-row custom-row-inline-inset" style="margin-right: 9px; margin-top: 11px !important;">
 					<div class="input-group">
 						<label class="form-control-sm col-sm-2 text-right" for="xx">Insured</label>
-						<input class="form-control form-control-sm  col-sm-2" type="text" name="" [(ngModel)]="aLOPInfo.insured1" appRequired>
+						<input class="form-control form-control-sm  col-sm-2" type="text" name="" appRequired [ngModel]="alopItemData!== undefined ? alopItemData.insuredId : ''">
 						<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>&nbsp;
-						<input class="form-control form-control-sm  col-sm" type="text" name="" [(ngModel)]="aLOPInfo.insured2" style="margin-left: -7px;" appRequired>
+						<input class="form-control form-control-sm  col-sm" type="text" name="" [ngModel]="alopItemData!== undefined ? alopItemData.insuredName : ''" style="margin-left: -7px;" appRequired>
 					</div>
 
 					<div class="input-group textarea" style="padding-bottom: 7px;">
