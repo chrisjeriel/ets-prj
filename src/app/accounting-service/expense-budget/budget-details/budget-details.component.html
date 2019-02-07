@@ -1,3 +1,4 @@
+<!-- <<<<<<< HEAD
 <fieldset class="scheduler-border">
 	<legend class="scheduler-border">Filter Options</legend>
 	<div class="form-row custom-row-inline-inset" style="margin-bottom: 15px !important;">
@@ -52,3 +53,71 @@
 		</div>
 	</div>
 </fieldset>
+======= -->
+					<div class="input-group">
+	 		  			<div class="col-sm" style="padding: 0px">
+	 		  				 <fieldset class="scheduler-border">
+	 		  				 	<legend class="scheduler-border">Filter Options</legend>
+	 		  				 		<div class="input-group" style="margin-top: 10px">
+	 		  				 			<label class="form-control-sm" for="xx" style="padding-left:0px !important;">Selected Month</label>
+			                             <select class="form-control form-control-sm cust-sm col-sm-2">
+			                                <option value="All Months">ALL Months</option>
+			                             </select>
+			                             <label class="form-control-sm col-sm-1" for="xx" style="padding-left:0px !important;">Account Code</label>
+			                            <input type="text" placeholder="ALL Account Codes" class="form-control form-control-sm cust-sm col-sm-2">
+			                            <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+			                            <label class="form-control-sm col-sm-1" for="xx" style="padding-left:0px !important;">Account Name</label>
+			                            <input type="text" placeholder="ALL Accounts" class="form-control form-control-sm cust-sm col-sm-4">
+			                             <button class="cust col-sm-1 form-control form-control-sm" style="margin-left: 10px ! important" type="button"><a>Search</a></button>
+				 		  			</div>
+	 		  				 </fieldset>
+	 		  			</div>
+					</div>
+	 		  		<fieldset class="scheduler-border">
+	 		  			<legend class="scheduler-border">List of Budget Accounts</legend>
+	 		  				<div class="container-fluid">
+	 		  					<div class="row">
+			                        <div class="col-sm-12" style="padding: 0">
+			                            <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)"></app-cust-non-datatable>
+			                        </div>
+	                    		</div>
+	 		  				</div>	
+	 		  		</fieldset> 
+	 		  		<fieldset class="scheduler-border" style="margin-top: 8px ! important"> 
+			            <div class="row">
+			                <div class="col-sm-12">
+			                    <div class="col-sm" style="padding: 0; margin-top: 10px; margin-bottom: 5px">
+			                        <div class="input-group">
+			                            <div class="col-sm-3" style="padding: 0">
+			                                <div class="input-group">
+			                                    <label class="form-control-sm">Created By</label>
+			                                    <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma" readonly>
+			                                </div>
+			                            </div>
+			                            <div class="col-sm-3" style="padding: 0">
+			                                <div class="input-group">
+			                                    <label class="form-control-sm">Date Created</label>
+			                                    <input type="text" class="form-control form-control-sm col-sm" placeholder="10/01/2018 11:49 AM" readonly>
+			                                </div>
+			                            </div>
+			                            <div class="col-sm-3" style="padding: 0">
+			                                <div class="input-group">
+			                                    <label class="form-control-sm">Last Update By</label>
+			                                    <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma" readonly>
+			                                </div>
+			                            </div>
+			                            <div class="col-sm-3" style="padding: 0">
+			                                <div class="input-group">
+			                                    <label class="form-control-sm">Last Update</label>
+			                                    <input type="text" class="form-control form-control-sm col-sm" placeholder="10/01/2018 11:49 AM" readonly>
+			                                </div>
+			                            </div>
+			                        </div>
+			                    </div>
+			                </div>
+			            </div>
+        			</fieldset>
+
+
+
+<!-- >>>>>>> 978e0a86388844d0fc07436f2327abfe7de2467c -->

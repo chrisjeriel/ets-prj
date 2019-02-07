@@ -88,8 +88,12 @@ import { CheckVoucherServiceComponent } from './accounting-service/check-voucher
 import { GenerateCvServiceComponent } from './accounting-service/check-voucher-service/generate-cv-service/generate-cv-service.component';
 import { JournalVoucherServiceComponent } from './accounting-service/journal-voucher-service/journal-voucher-service.component';
 import { GenerateJvServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/generate-jv-service.component';
+import { UtilitiesComponent } from './accounting-service/utilities/utilities.component';
+
 
 const appRoutes: Routes = [
+
+
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
     { path: 'quotation', component: QuotationComponent, canActivate: [AuthGuard] },
     { path: 'policy-issuance', component: PolicyIssuanceComponent },
@@ -182,6 +186,8 @@ const appRoutes: Routes = [
     { path: 'generate-cv-service', component: GenerateCvServiceComponent },
     { path: 'journal-voucher-service', component: JournalVoucherServiceComponent },
     { path: 'generate-jv-service', component: GenerateJvServiceComponent },
+    { path: 'accounting-service-utilities', component: UtilitiesComponent },
+    { path: 'accounting-service-exp-budget', component: ExpenseBudgetComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
