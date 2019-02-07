@@ -155,8 +155,6 @@ export class CoverageComponent implements OnInit {
   }
 
   pindot(){
-
-
     this.quotationService.getCoverageInfo().subscribe((data: any) => {
       while(this.passData.tableData.length > 0) {
           this.passData.tableData.pop();

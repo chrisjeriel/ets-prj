@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
+
 @Component({
 	selector: 'app-pol-mx-line',
 	templateUrl: './pol-mx-line.component.html',
@@ -76,14 +77,18 @@ export class PolMxLineComponent implements OnInit {
 		this.passData.resizable.push(true, true, true, false, true, true, false)
 		this.passData.pagination = true;
 		this.passData.pageStatus = true;
-	}
 
-	ngOnChanges() {
+  }
+
+
+
+}
+
+/*	ngOnChanges() {
 		
 	}
-
+*/
 	/*tempAddToTable(){
 		this.passData.tableData.push([this.activeCb, this.withCatCb, this.renewalCb, this.lineCode, this.description, this.referenceNo, this.sortSeq]);
 		console.log(this.passData.tableData);
 	}*/
-}

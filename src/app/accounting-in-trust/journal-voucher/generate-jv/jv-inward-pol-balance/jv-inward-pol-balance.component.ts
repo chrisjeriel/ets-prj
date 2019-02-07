@@ -18,12 +18,12 @@ export class JvInwardPolBalanceComponent implements OnInit {
 
   passData: any = {
     tableData: [],
-    tHeader: ['Policy No.','Inst No.','Due Date','Curr','Premium','RI Comm','Charges','Net Due','Payments',"Overdue Interest","Balance"],
-    resizable: [true, true, true, true, true, true, true, true, true,true,true],
-    dataTypes: ['text','text','date','text','currency','percent','percent','currency','currency','percent','currency'],
-    nData: new AccJvInPolBal(null,null,new Date(),null,null,null,null,null,null,null,null),
-    total:[null,null,'Total',null,'premium','riComm','charges','netDue','payments','overdueInt','bal'],
-    magnifyingGlass: ['polNo','instNo'],
+    tHeader: ['Soa No','Policy No.','Co. Ref No.','Inst No.', 'Type', 'Eff Date','Due Date','Curr','Curr Rate','Premium','RI Comm','Charges','Net Due','Payments','Balance',"Overdue Interest"],
+    resizable: [true, true, true, true, true, true, true, true, true,true,true,true,true,true,true,true],
+    dataTypes: ['text','text','text','number','text','date','date','text','percent','currency','percent','percent','currency','currency','currency','percent'],
+    nData: new AccJvInPolBal(null,null,null,null,null,new Date(),new Date(),null,null,null,null,null,null,null,null,null),
+    total:[null,null,null,null,null,null,null,null,'Total','premium','riComm','charges','netDue','payments','bal','overdueInt'],
+    magnifyingGlass: ['soaNo','instNo'],
     checkFlag: true,
     addFlag: true,
     deleteFlag: true,
@@ -36,7 +36,6 @@ export class JvInwardPolBalanceComponent implements OnInit {
     selectFlag: false,
     editFlag: false,
     pageLength: 10,
-    widths: [180,50,'auto',60,'auto','auto','auto','auto','auto','auto','auto'],
     genericBtn: 'Save'
   };
 

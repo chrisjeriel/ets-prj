@@ -1,4 +1,4 @@
-export class ExpenseBudget {
+export class ExpenseBudget2 {
 	budgetMonth: Date
 	accountCode: string
 	accountName: string

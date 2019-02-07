@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, 
-	PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AccServiceAttachment, PaymentForAdvances, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, ARUnappliedCollection, AROthers, AccountingSOthersOr, AccORSerFeeLoc, OfficialReceipt, ORPrevAmountDetails, ORPrevAccEntries, ORPreVATDetails , ORPreCreditableWTaxDetails, PaymentOfSeviceFee, TreatyBalance, ExpenseBudget, ByMonth, ExtractFromLastYear, AccountingEntriesExtract, CredibleWithholdingTaxDetails, InputVatDetails, OutputVatDetails, WithholdingVATDetails, CredibleWithholdingTaxUpload, InputVatUpload, OutputVatUpload, WithholdingTaxUpload, AccountingSFixedAssets, AccountingSMonthlyDepreciationDetails, AccountingSPaytReqCheckVoucher, AccountingSPaytReqPettyCashVoucher, AccountingSPaytReqPRMFE, AccountingSPaytReqOthers,AcctSrvcCWhtaxMonthlyTaxDetails,AcctSrvcCWhtaxConsolidateData } from '@app/_models';
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AccServiceAttachment, PaymentForAdvances, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, ARUnappliedCollection, AROthers, AccountingSOthersOr, AccORSerFeeLoc, OfficialReceipt, ORPrevAmountDetails, ORPrevAccEntries, ORPreVATDetails , ORPreCreditableWTaxDetails, PaymentOfSeviceFee, TreatyBalance, ByMonth, ExtractFromLastYear, AccountingEntriesExtract, CredibleWithholdingTaxDetails, InputVatDetails, OutputVatDetails, WithholdingVATDetails, CredibleWithholdingTaxUpload, InputVatUpload, OutputVatUpload, WithholdingTaxUpload, AccountingSFixedAssets, AccountingSMonthlyDepreciationDetails, AccountingSPaytReqCheckVoucher, AccountingSPaytReqPettyCashVoucher, AccountingSPaytReqPRMFE, AccountingSPaytReqOthers,AcctSrvcCWhtaxMonthlyTaxDetails,AcctSrvcCWhtaxConsolidateData, TaxDetails, WTaxDetails, ExpenseBudget, ExpenseBudgetByMonth } from '@app/_models';
 
 @Injectable({
 	providedIn: 'root'
@@ -68,7 +67,6 @@ export class AccountingService {
 	accORSerFeeLoc: AccORSerFeeLoc[] = [];
 	paymentOfServiceFee: PaymentOfSeviceFee[] = [];
 	treatyBalance: TreatyBalance[] =[];
-	expenseBudget: ExpenseBudget[]= [];
 	byMonth: ByMonth[] = [];
 	extractFromLastYear: ExtractFromLastYear[] = [];
 	extract: AccountingEntriesExtract[] = [];
@@ -89,6 +87,10 @@ export class AccountingService {
 	accountingSPaytReqList: AccountingRequestsListRP[] = [];
 	acctSrvcCWhtaxMonthlyTaxDetails: AcctSrvcCWhtaxMonthlyTaxDetails[] = [];
 	acctSrvcCWhtaxConsolidateData: AcctSrvcCWhtaxConsolidateData[] = [];
+	taxDetails: TaxDetails[] = [];
+	wTaxDetails: WTaxDetails[] = [];
+	expenseBudget: ExpenseBudget[] = [];
+	expenseBudgetByMonth: ExpenseBudgetByMonth[] = [];
 
 	constructor(private http: HttpClient) { }
 
@@ -533,7 +535,7 @@ export class AccountingService {
 
 	getAccJVInPolBal() {
 		this.accJvInPolBal = [
-			new AccJvInPolBal('CAR-2018-00001-99-0001-000', '01', new Date("09/25/2018"), 'PHP', 3000000, 0.00, 0.00, 1642857.14, 1357142.86, 0.00, 1642857.14),
+			new AccJvInPolBal('CAR-2018-00001-99-0001-000','CAR-2018-00001-99-0001-000','EN-CAR-2018-00001-99-0001-000', 1, 'Payment', new Date("09/25/2018"), new Date("09/25/2018"), 'PHP', 1.0, 3000000, 0.00, 0.00, 1642857.14, 1357142.86, 1642857.14, 0.00),
 		];
 
 		return this.accJvInPolBal;
@@ -969,6 +971,60 @@ export class AccountingService {
 			new AcctSrvcCWhtaxConsolidateData("D4","D1604E","005376602","0000",new Date('2018-12-31'),19,432,"0032","2GO EXPRESS","AQUINO","ROMMEL","I","WC160",2,223,4.46),
 		];
 		return this.acctSrvcCWhtaxConsolidateData;
+	}
+
+	getTaxDetails(){
+		this.taxDetails = [
+			new TaxDetails("Output", "Services", "Payor", 25012, 3001.44),
+		];
+
+		return this.taxDetails;
+	}
+
+	getWTaxDetails(){
+		this.wTaxDetails = [
+			new WTaxDetails("WC002","WTax on Investment Income PHP", 2.00, "BPI/INSURANCE CORPORATION", 25012, 500.24),
+		];
+
+		return this.wTaxDetails;
+	}
+
+	getListBudAcc(){
+		this.expenseBudget = [
+			new ExpenseBudget(new Date("01/31/2018"),"5-01-01-01","Salaries", null, null, 18112500),
+			new ExpenseBudget(new Date("02/28/2018"),"5-01-01-01","Salaries", null, null, 10150000),
+			new ExpenseBudget(new Date("03/31/2018"),"5-01-01-01","Salaries", null, null, 1000000),
+			new ExpenseBudget(new Date("04/30/2018"),"5-01-01-01","Salaries", null, null, 1000000),
+			new ExpenseBudget(new Date("05/31/2018"),"5-01-01-01","Salaries", null, null, 1000000),
+			new ExpenseBudget(new Date("06/30/2018"),"5-01-01-01","Salaries", null, null, 1000000),
+			new ExpenseBudget(new Date("07/31/2018"),"5-01-01-01","Salaries", null, null, 1000000),
+			new ExpenseBudget(new Date("08/31/2018"),"5-01-01-01","Salaries", null, null, 1000000),
+			new ExpenseBudget(new Date("09/30/2018"),"5-01-01-01","Salaries", null, null, 1000000),
+			new ExpenseBudget(new Date("10/31/2018"),"5-01-01-01","Salaries", null, null, 1000000),
+		];
+
+		return this.expenseBudget;
+	}
+
+
+	getListBudAccByMonth(){
+		this.expenseBudgetByMonth = [
+			new ExpenseBudgetByMonth("5-01-01-01","Salaries",0,0,0,0,0,0,0,0,0,0,0,0,0),
+			new ExpenseBudgetByMonth("5-01-01-02","Overtime",0,0,0,0,0,0,0,0,0,0,0,0,0),
+			new ExpenseBudgetByMonth("5-01-01-03","Mid-Year Bonus",0,0,0,0,0,0,0,0,0,0,0,0,0),
+			new ExpenseBudgetByMonth("5-01-01-04","13th Month Pay",0,0,0,0,0,0,0,0,0,0,0,0,0),
+			new ExpenseBudgetByMonth("5-01-01-05","Provision for Profit Sharing",0,0,0,0,0,0,0,0,0,0,0,0,0),
+			new ExpenseBudgetByMonth("5-01-02-01","Leave Conversion",0,0,0,0,0,0,0,0,0,0,0,0,0),
+			new ExpenseBudgetByMonth("5-01-02-02","Employee Uniform",0,0,0,0,0,0,0,0,0,0,0,0,0),
+			new ExpenseBudgetByMonth("5-01-02-03","Health Care",0,0,0,0,0,0,0,0,0,0,0,0,0),
+			new ExpenseBudgetByMonth("5-01-02-04","Group Life",0,0,0,0,0,0,0,0,0,0,0,0,0),
+			new ExpenseBudgetByMonth("5-01-02-05","Group Personal Accident",0,0,0,0,0,0,0,0,0,0,0,0,0),
+			new ExpenseBudgetByMonth("5-01-02-06","Company Outing",0,0,0,0,0,0,0,0,0,0,0,0,0),
+			new ExpenseBudgetByMonth("5-01-02-07","Sports and Other Activities",0,0,0,0,0,0,0,0,0,0,0,0,0),	
+			new ExpenseBudgetByMonth("5-01-02-08","Service Award",0,0,0,0,0,0,0,0,0,0,0,0,0),				
+		];
+
+		return this.expenseBudgetByMonth;
 	}
 
 
