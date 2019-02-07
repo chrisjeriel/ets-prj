@@ -888,7 +888,7 @@ export class AccountingService {
 
 	getAccountingSPaytReqCheckVoucher(){
 		this.accountingSPaytReqCheckVoucher = [
-			new AccountingSPaytReqCheckVoucher('Printing of Forms', 'Printing of forms for the month of April 2015', 'PHP', 1, 7460.46, 7460.46),
+			new AccountingSPaytReqCheckVoucher('Printing of Forms', 'Printing of forms for the month of April 2015', 'PHP', 1, 74602348231.46, 74602348231.46),
 		];
 
 		return this.accountingSPaytReqCheckVoucher;
@@ -896,8 +896,8 @@ export class AccountingService {
 
 	getAccountingSPaytReqPettyCashVoucher(){
 		this.accountingSPaytReqPettyCashVoucher = [
-			new AccountingSPaytReqPettyCashVoucher('2019', '00001', new Date(2019,1,31), 'Christian M. Lu', 'Cash Advance Re-inspection of Office', 'Y', 'New', 'PHP', 1, 600, 600),
-			new AccountingSPaytReqPettyCashVoucher('2019', '00002', new Date(2019,2,1), 'Christian M. Lu', 'Purchase of USB Memory Card', 'Y', 'New', 'PHP', 1, 900, 900),
+			new AccountingSPaytReqPettyCashVoucher('2019', '00001', new Date(2019,1,31), 'Christian M. Lu', 'Cash Advance Re-inspection of Office', 'Y', 'New', 'PHP', 1, 60000000000, 60000000000),
+			new AccountingSPaytReqPettyCashVoucher('2019', '00002', new Date(2019,2,1), 'Christian M. Lu', 'Purchase of USB Memory Card', 'Y', 'New', 'PHP', 1, 900000000000, 900000000000),
 		];
 
 		return this.accountingSPaytReqPettyCashVoucher;
@@ -905,7 +905,7 @@ export class AccountingService {
 
 	getAccountingSPaytReqPRMFE(){
 		this.accountingSPaytReqPRMFE = [
-			new AccountingSPaytReqPRMFE('00023', 'Rose Dela Cruz', 'Engineering', 'PHP', 1, 7460.46, 7460.46),
+			new AccountingSPaytReqPRMFE('00023', 'Rose Dela Cruz', 'Engineering', 'PHP', 1, 74602348231.46, 74602348231.46),
 		];
 
 		return this.accountingSPaytReqPRMFE;
@@ -913,7 +913,7 @@ export class AccountingService {
 
 	getAccountingSPaytReqOthers(){
 		this.accountingSPaytReqOthers = [
-			new AccountingSPaytReqOthers('Utilities', 'Payment For', 'PHP', 1, 10000, 10000),
+			new AccountingSPaytReqOthers('Utilities', 'Payment For', 'PHP', 1, 100000000000, 100000000000),
 		];
 
 		return this.accountingSPaytReqOthers;

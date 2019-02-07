@@ -26,7 +26,7 @@ export class AccSRequestDetailsComponent implements OnInit {
   	deleteFlag: true,
   	total: [null, null, null, 'Total', 'amount', 'amountPhp'],
   	genericBtn: 'Save',
-    widths: ['auto','auto',1,100,90,90]
+    widths: ['auto','auto',1,125,125,125]
   }
 
   pettyCashVoucherData: any = {
@@ -42,7 +42,7 @@ export class AccSRequestDetailsComponent implements OnInit {
     deleteFlag: true,
     total: [null, null, null, null, null, null, null, null, 'Total', 'amount', 'amountPhp'],
     genericBtn: 'Save',
-    widths: [20, 20, 90,'auto','auto', 1, 1 ,1,100,90,90]
+    widths: [20, 20, 90,'auto','auto', 1, 1 ,1,125,125,125]
   }
 
   PRMFEData: any = {
@@ -59,7 +59,7 @@ export class AccSRequestDetailsComponent implements OnInit {
     deleteFlag: true,
     total: [null, null, null, null, 'Total', 'amount', 'amountPhp'],
     genericBtn: 'Save',
-    widths: [20, 'auto','auto', 1,100,90,90]
+    widths: [150, 'auto','auto', 1,125,125,125]
   }
 
   othersData: any = {
@@ -75,7 +75,7 @@ export class AccSRequestDetailsComponent implements OnInit {
     deleteFlag: true,
     total: [null, null, null, 'Total', 'amount', 'amountPhp'],
     genericBtn: 'Save',
-    widths: ['auto','auto',1,100,90,90]
+    widths: ['auto','auto',1,125,125,125]
   }
 
   constructor(private accountingService: AccountingService) {
