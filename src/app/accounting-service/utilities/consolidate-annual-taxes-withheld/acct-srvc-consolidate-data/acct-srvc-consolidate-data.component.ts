@@ -16,7 +16,7 @@ export class AcctSrvcConsolidateDataComponent implements OnInit {
     dataTypes: ["text","text","text","text","date","number","sequence-6","text","text","text","text","text",
                 "text","percent","currency","currency"],
     total: [null,null,null,null,null,null,null,null,null,null,null,null,"TOTAL",null,"income","taxAmount"],
-    widths: [],
+    colSize: ['','','','','','','','','20%','20%','20%','','','','20%','20%'],
     pageLength: 15,
     tableOnly: false,
     pageStatus: true,

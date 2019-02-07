@@ -18,6 +18,7 @@ export class AcctAttachmentComponent implements OnInit {
     checkFlag: true,
     addFlag: true,
     deleteFlag: true,
+    widths:['auto','auto',80]
   }
 
   constructor( private accountingService: AccountingService) { }

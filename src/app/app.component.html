@@ -310,8 +310,17 @@
                                 <br />
                                 <button [routerLink]="['accounting-service-pcv-listings']" class="button btn btn-link">Petty Cash Voucher</button>
                                 <br />
-                                <button [routerLink]="['acct-srvc-util-catw']" class="button btn btn-link">Utilities</button>
-                                <br />
+                                <ngb-accordion #acc="ngbAccordion">
+                                    <ngb-panel>
+                                        <ng-template ngbPanelTitle>
+                                            Utilities
+                                        </ng-template>
+                                        <ng-template ngbPanelContent>
+                                            <button [routerLink]="['acct-srvc-util-catw']" class="button btn btn-link">Consolidate Annual Taxes Withheld</button>
+                                            <br />
+                                        </ng-template>
+                                    </ngb-panel>
+                                </ngb-accordion>
                                 <ngb-accordion #acc="ngbAccordion">
                                     <ngb-panel>
                                         <ng-template ngbPanelTitle>

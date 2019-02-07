@@ -11,21 +11,26 @@ export class AcctOrListingsComponent implements OnInit {
 
   passData: any = {
     tableData: [
-    ['1','AFP GENERAL INSURANCE CORP.',new Date('2018-10-1'),'Official Receipt','New','Representing payment for 09/15/2018 transactions',1642857.14],
-    ['2','ALLIEDBANKERS INSURANCE CORP.',new Date('2018-10-1'),'Official Receipt Service Fee Local','New','Service fee for the quarter ending 09/30/2018',200000],
-    ['3','BLUE CROSS INSURANCE, INC.',new Date('2018-10-3'),'Official Receipt','Printed','Representing payment for 09/15/2018 transactions',100000],
-    ['4','BF GENERAL INSURANCE CO., INC.',new Date('2018-10-4'),'Official Receipt','Printed','Representing payment for 09/15/2018 transactions',1000000],
-    ['5','CCC INSURANCE CORPORATION',new Date('2018-10-4'),'Official Receipt','New','Representing payment for 09/15/2018 transactions',710716.12],
-    ['6','CIBELES INSURANCE CORP.',new Date('2018-10-5'),'Official Receipt Service Fee Local','New','Service fee for the quarter ending 09/30/2018',756929],
-    ['7','COMMONWEALTH INSURANCE CO.',new Date('2018-10-7'),'Official Receipt Service Fee Local','New','Service fee for the quarter ending 09/30/2018',30000],
-    ['8','CICI GENERAL INSURANCE CORP.',new Date('2018-10-7'),'Official Receipt Service Fee Local','Printed','Service fee for the quarter ending 09/30/2018',10000],
-    ['9','DEVELOPMENT INSURANCE AND SURETY CORP.',new Date('2018-10-7'),'Official Receipt Service Fee Local','Printed','Service fee for the quarter ending 09/30/2018',230000],
-    ['10','DOMESTIC INS. CO. OF THE PHIL.',new Date('2018-10-7'),'Official Receipt Service Fee Local','New','Service fee for the quarter ending 09/30/2018',1500000],
+    ['VAT','1','AFP GENERAL INSURANCE CORP.',new Date('2018-10-1'),'Official Receipt','New','Representing payment for 09/15/2018 transactions',1642857.14],
+    ['VAT','2','ALLIEDBANKERS INSURANCE CORP.',new Date('2018-10-1'),'Official Receipt Service Fee Local','New','Service fee for the quarter ending 09/30/2018',200000],
+    ['VAT','3','BLUE CROSS INSURANCE, INC.',new Date('2018-10-3'),'Official Receipt','Printed','Representing payment for 09/15/2018 transactions',100000],
+    ['VAT','4','BF GENERAL INSURANCE CO., INC.',new Date('2018-10-4'),'Official Receipt','Printed','Representing payment for 09/15/2018 transactions',1000000],
+    ['Non-VAT','5','CCC INSURANCE CORPORATION',new Date('2018-10-4'),'Official Receipt','New','Representing payment for 09/15/2018 transactions',710716.12],
+    ['VAT','6','CIBELES INSURANCE CORP.',new Date('2018-10-5'),'Official Receipt Service Fee Local','New','Service fee for the quarter ending 09/30/2018',756929],
+    ['VAT','7','COMMONWEALTH INSURANCE CO.',new Date('2018-10-7'),'Official Receipt Service Fee Local','New','Service fee for the quarter ending 09/30/2018',30000],
+    ['VAT','8','CICI GENERAL INSURANCE CORP.',new Date('2018-10-7'),'Official Receipt Service Fee Local','Printed','Service fee for the quarter ending 09/30/2018',10000],
+    ['VAT','9','DEVELOPMENT INSURANCE AND SURETY CORP.',new Date('2018-10-7'),'Official Receipt Service Fee Local','Printed','Service fee for the quarter ending 09/30/2018',230000],
+    ['VAT','10','DOMESTIC INS. CO. OF THE PHIL.',new Date('2018-10-7'),'Official Receipt Service Fee Local','New','Service fee for the quarter ending 09/30/2018',1500000],
     ],
-    tHeader: ['O.R. No.','Payor','OR Date','Payment Type','Status','Particulars','Amount'],
-    dataTypes: ['sequence-6','text','date','text','text','text','currency'],
-    resizable: [false,true,false,true,false,true,true],
+    tHeader: ['O.R. Type','O.R. No.','Payor','OR Date','Payment Type','Status','Particulars','Amount'],
+    dataTypes: ['text','sequence-6','text','date','text','text','text','currency'],
+    resizable: [false,false,true,false,true,false,true,true],
     filters: [
+        {
+          key: 'orType',
+          title: 'O.R. Type',
+          dataType: 'text'
+        },
         {
           key: 'orNo',
           title: 'O.R. No.',
