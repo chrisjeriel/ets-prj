@@ -202,6 +202,10 @@ import { AcctAttachmentComponent } from './accounting-service/official-receipt/g
 import { PaytReqInvestmentComponent } from './accounting-in-trust/request-for-payment/generate-payment-request/payt-req-investment/payt-req-investment.component';
 import { MtnDistrictComponent } from './maintenance/mtn-district/mtn-district.component';
 import { UtilitiesComponent } from './accounting-service/utilities/utilities.component';
+import { ExpenseBudgetComponent } from './accounting-service/expense-budget/expense-budget.component';
+import { BudgetDetailsComponent } from './accounting-service/expense-budget/budget-details/budget-details.component';
+import { ByMonthComponent } from './accounting-service/expense-budget/by-month/by-month.component';
+import { ExtractFromLastYearComponent } from './accounting-service/expense-budget/extract-from-last-year/extract-from-last-year.component';
 
 
 
@@ -412,6 +416,10 @@ import { UtilitiesComponent } from './accounting-service/utilities/utilities.com
         PaymentRequestDetailsComponent,
         MtnDistrictComponent,
         UtilitiesComponent,
+        ExpenseBudgetComponent,
+        BudgetDetailsComponent,
+        ByMonthComponent,
+        ExtractFromLastYearComponent,
     ],
 
     providers: [

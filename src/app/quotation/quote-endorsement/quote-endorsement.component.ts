@@ -61,6 +61,7 @@ export class QuoteEndorsementComponent implements OnInit {
         infoFlag: true,
         paginateFlag: true,
         searchFlag: true,
+        keys: ['endtCd','endtTitle','description','remarks']
     }
 
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title,  private route: ActivatedRoute) { }
@@ -100,14 +101,13 @@ export class QuoteEndorsementComponent implements OnInit {
                /* while(this.endorsementsData.tableData.length > 0) {
                       this.endorsementsData.tableData.pop();
                 }*/
-                this.endorsementsData = data.endorsements;   
-                console.log(this.endorsementsData);            
+                this.endorsementsData = data.endorsements;             
 /*
                 this.endorsementData.tableData.push();*/
-              /*  for (var i = this.endorsementsData.length - 1; i >= 0; i--) {
+                for (var i = this.endorsementsData.length - 1; i >= 0; i--) {
                    this.endorsementData.tableData.push(this.endorsementsData[i]);
                 }
-                this.table.refreshTable();*/
+                this.table.refreshTable();
             });
         }
         
@@ -116,7 +116,18 @@ export class QuoteEndorsementComponent implements OnInit {
     }
 
     clickRow(event) {
-        console.log(event.optionNo);
+           this.quotationService.getEndorsements(null,this.quotationNum,event.optionNo).subscribe((data: any) => {
+                 while(this.endorsementData.tableData.length > 0) {
+                  this.endorsementData.tableData.pop();
+              }    
+
+               this.endorsementsData = data.endorsements;  
+                for (var i = this.endorsementsData.length - 1; i >= 0; i--) {
+                   this.endorsementData.tableData.push(this.endorsementsData[i]);
+                }
+                this.table.refreshTable();
+           });
+
       /*  this.tableData = this.quotationService.getEndorsements(event.target.closest("tr").children[1].innerText);*/
     }
 

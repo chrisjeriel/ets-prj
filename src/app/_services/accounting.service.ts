@@ -7,7 +7,7 @@ import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEnt
 	AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, 
 	ARUnappliedCollection, AROthers, AccountingSOthersOr, AccORSerFeeLoc, OfficialReceipt, 
 	ORPrevAmountDetails, ORPrevAccEntries, ORPreVATDetails , ORPreCreditableWTaxDetails,
-	TaxDetails, WTaxDetails  } from '@app/_models';
+	TaxDetails, WTaxDetails, ExpenseBudget, ExpenseBudgetByMonth  } from '@app/_models';
 
 @Injectable({
 	providedIn: 'root'
@@ -73,6 +73,8 @@ export class AccountingService {
 	accORSerFeeLoc: AccORSerFeeLoc[] = [];
 	taxDetails: TaxDetails[] = [];
 	wTaxDetails: WTaxDetails[] = [];
+	expenseBudget: ExpenseBudget[] = [];
+	expenseBudgetByMonth: ExpenseBudgetByMonth[] = [];
 
 
 	constructor(private http: HttpClient) { }
@@ -726,6 +728,51 @@ export class AccountingService {
 		];
 
 		return this.wTaxDetails;
+	}
+
+	getListBudAcc(){
+		this.expenseBudget = [
+			new ExpenseBudget(new Date("01/31/2018"),"5-01-01-01","Salaries", null, null, 18112500),
+			new ExpenseBudget(new Date("02/28/2018"),"5-01-01-01","Salaries", null, null, 10150000),
+			new ExpenseBudget(new Date("03/31/2018"),"5-01-01-01","Salaries", null, null, 1000000),
+			new ExpenseBudget(new Date("04/30/2018"),"5-01-01-01","Salaries", null, null, 1000000),
+			new ExpenseBudget(new Date("05/31/2018"),"5-01-01-01","Salaries", null, null, 1000000),
+			new ExpenseBudget(new Date("06/30/2018"),"5-01-01-01","Salaries", null, null, 1000000),
+			new ExpenseBudget(new Date("07/31/2018"),"5-01-01-01","Salaries", null, null, 1000000),
+			new ExpenseBudget(new Date("08/31/2018"),"5-01-01-01","Salaries", null, null, 1000000),
+			new ExpenseBudget(new Date("09/30/2018"),"5-01-01-01","Salaries", null, null, 1000000),
+			new ExpenseBudget(new Date("10/31/2018"),"5-01-01-01","Salaries", null, null, 1000000),
+		];
+
+		return this.expenseBudget;
+	}
+
+
+	getListBudAccByMonth(){
+		this.expenseBudgetByMonth = [
+			new ExpenseBudgetByMonth("5-01-01-01","Salaries",0,0,0,0,0,0,0,0,0,0,0,0,0),
+			new ExpenseBudgetByMonth("5-01-01-02","Overtime",0,0,0,0,0,0,0,0,0,0,0,0,0),
+			new ExpenseBudgetByMonth("5-01-01-03","Mid-Year Bonus",0,0,0,0,0,0,0,0,0,0,0,0,0),
+			new ExpenseBudgetByMonth("5-01-01-04","13th Month Pay",0,0,0,0,0,0,0,0,0,0,0,0,0),
+			new ExpenseBudgetByMonth("5-01-01-05","Provision for Profit Sharing",0,0,0,0,0,0,0,0,0,0,0,0,0),
+			new ExpenseBudgetByMonth("5-01-02-01","Leave Conversion",0,0,0,0,0,0,0,0,0,0,0,0,0),
+			new ExpenseBudgetByMonth("5-01-02-02","Employee Uniform",0,0,0,0,0,0,0,0,0,0,0,0,0),
+			new ExpenseBudgetByMonth("5-01-02-03","Health Care",0,0,0,0,0,0,0,0,0,0,0,0,0),
+			new ExpenseBudgetByMonth("5-01-02-04","Group Life",0,0,0,0,0,0,0,0,0,0,0,0,0),
+			new ExpenseBudgetByMonth("5-01-02-05","Group Personal Accident",0,0,0,0,0,0,0,0,0,0,0,0,0),
+			new ExpenseBudgetByMonth("5-01-02-06","Company Outing",0,0,0,0,0,0,0,0,0,0,0,0,0),
+			new ExpenseBudgetByMonth("5-01-02-07","Sports and Other Activities",0,0,0,0,0,0,0,0,0,0,0,0,0),	
+			new ExpenseBudgetByMonth("5-01-02-08","Service Award",0,0,0,0,0,0,0,0,0,0,0,0,0),	
+
+
+
+
+
+					
+			
+		];
+
+		return this.expenseBudgetByMonth;
 	}
 
 

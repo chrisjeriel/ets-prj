@@ -1,0 +1,51 @@
+<fieldset class="scheduler-border">
+	 <legend class="scheduler-border">Budget Accounts Spread Across the Months of the Year</legend>
+	 	<div class="container-fluid">
+	 		<div class="row">
+			    <div class="col-sm-12" style="padding: 0">
+			    		<div class="input-group" style="margin-top: 10px">
+			    			<label class="form-control-sm">Year</label>
+			    			<input type="text" class="form-control-sm yearIn" placeholder="2019" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' >
+			    			  <button type="button" class="cust" style="margin-left: 10px !important; width: 60px;"><a>Print</a></button>
+			    		</div>
+			    	   	<div style="margin-top: -55px ! important">
+			    	   		<app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)"></app-cust-non-datatable>
+			    	   	</div>
+			    </div>
+	        </div>
+	 	</div>	
+</fieldset> 
+<fieldset class="scheduler-border" style="margin-top: 8px ! important"> 
+			            <div class="row">
+			                <div class="col-sm-12">
+			                    <div class="col-sm" style="padding: 0; margin-top: 10px; margin-bottom: 5px">
+			                        <div class="input-group">
+			                            <div class="col-sm-3" style="padding: 0">
+			                                <div class="input-group">
+			                                    <label class="form-control-sm">Created By</label>
+			                                    <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma" readonly>
+			                                </div>
+			                            </div>
+			                            <div class="col-sm-3" style="padding: 0">
+			                                <div class="input-group">
+			                                    <label class="form-control-sm">Date Created</label>
+			                                    <input type="text" class="form-control form-control-sm col-sm" placeholder="10/01/2018 11:49 AM" readonly>
+			                                </div>
+			                            </div>
+			                            <div class="col-sm-3" style="padding: 0">
+			                                <div class="input-group">
+			                                    <label class="form-control-sm">Last Update By</label>
+			                                    <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma" readonly>
+			                                </div>
+			                            </div>
+			                            <div class="col-sm-3" style="padding: 0">
+			                                <div class="input-group">
+			                                    <label class="form-control-sm">Last Update</label>
+			                                    <input type="text" class="form-control form-control-sm col-sm" placeholder="10/01/2018 11:49 AM" readonly>
+			                                </div>
+			                            </div>
+			                        </div>
+			                    </div>
+			                </div>
+			            </div>
+</fieldset>

@@ -74,6 +74,7 @@ import { OfficialReceiptComponent } from './accounting-service/official-receipt/
 import { AcctOrListingsComponent } from './accounting-service/acct-or-listings/acct-or-listings.component';
 import { AccountingServiceComponent } from './accounting-service/accounting-service.component';
 import { UtilitiesComponent } from './accounting-service/utilities/utilities.component';
+import { ExpenseBudgetComponent } from './accounting-service/expense-budget/expense-budget.component';
 
 
 
@@ -158,6 +159,7 @@ const appRoutes: Routes = [
     { path: 'acct-or-listings', component: AcctOrListingsComponent },
     { path: 'accounting-service', component: AccountingServiceComponent},
     { path: 'accounting-service-utilities', component: UtilitiesComponent },
+    { path: 'accounting-service-exp-budget', component: ExpenseBudgetComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
