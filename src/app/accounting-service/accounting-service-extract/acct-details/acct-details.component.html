@@ -22,25 +22,49 @@
 </fieldset>
 <fieldset class="scheduler-border">
 	<legend class="scheduler-border">Extraction Info</legend>
-		<div class="row">
-			<div *ngIf ="1==2">
-				<div class="col-sm-12" style="margin-top: 15px !important;">
-					<app-cust-editable-non-datatable [passData]="CreditableTaxData"></app-cust-editable-non-datatable>
+		<div class="row" [ngSwitch]="taxType">
+			<div class="col-sm-12" *ngSwitchCase ="'Creditable Withholding Tax'">
+				<div class="row">
+					<div class="col-sm-12" style="margin-top: 15px !important;">
+						<div style="position: relative;">
+							<input type="checkbox" class="checkbox text-right" style="position:absolute; left: 15px; top:5px;" checked>
+							<label class="form-control-sm col-sm-3" style="position:absolute; left: 25px;">Show records where Acct Entry <> VAT details total</label>
+						</div>
+							<app-cust-editable-non-datatable [passData]="CreditableTaxData"></app-cust-editable-non-datatable>
+					</div>
 				</div>
 			</div>
-			<div *ngIf ="1==2">
-				<div class="col-sm-12" style="margin-top: 15px !important;">
-					<app-cust-editable-non-datatable [passData]="InputVatDetailsData"></app-cust-editable-non-datatable>
+			<div class="col-sm-12" *ngSwitchCase ="'Input VAT'">
+				<div class="row">
+					<div class="col-sm-12" style="margin-top: 15px !important;">
+						<div style="position: relative;">
+							<input type="checkbox" class="checkbox text-right" style="position:absolute; left: 15px; top:5px;" checked>
+							<label class="form-control-sm col-sm-3" style="position:absolute; left: 25px;">Show records where Acct Entry <> VAT details total</label>
+						</div>
+							<app-cust-editable-non-datatable [passData]="InputVatDetailsData"></app-cust-editable-non-datatable>
+					</div>
 				</div>
 			</div>
-			<div *ngIf ="1==2">
-				<div class="col-sm-12" style="margin-top: 15px !important;">
-					<app-cust-editable-non-datatable [passData]="OutputVatDetailsData"></app-cust-editable-non-datatable>
+			<div class="col-sm-12" *ngSwitchCase ="'Output VAT'">
+				<div class="row">
+					<div class="col-sm-12" style="margin-top: 15px !important;">
+						<div style="position: relative;">
+							<input type="checkbox" class="checkbox text-right" style="position:absolute; left: 15px; top:5px;" checked>
+							<label class="form-control-sm col-sm-3" style="position:absolute; left: 25px;">Show records where Acct Entry <> VAT details total</label>
+						</div>
+							<app-cust-editable-non-datatable [passData]="OutputVatDetailsData"></app-cust-editable-non-datatable>
+					</div>
 				</div>
 			</div>
-			<div >
-				<div class="col-sm-12" style="margin-top: 15px !important;">
-					<app-cust-editable-non-datatable [passData]="WithholdingVatDetailsData"></app-cust-editable-non-datatable>
+			<div class="col-sm-12" *ngSwitchCase ="'Withholding Tax'">
+				<div class="row">
+					<div class="col-sm-12" style="margin-top: 15px !important;">
+						<div style="position: relative;">
+							<input type="checkbox" class="checkbox text-right" style="position:absolute; left: 15px; top:5px;" checked>
+							<label class="form-control-sm col-sm-3" style="position:absolute; left: 25px;">Show records where Acct Entry <> VAT details total</label>
+						</div>
+							<app-cust-editable-non-datatable [passData]="WithholdingVatDetailsData"></app-cust-editable-non-datatable>
+					</div>
 				</div>
 			</div>
 		</div>

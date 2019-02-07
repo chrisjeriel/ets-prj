@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-extract-bir-tax',
@@ -7,9 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ExtractBirTaxComponent implements OnInit {
 
+  @Output() onChange: EventEmitter<any> = new EventEmitter();
+  taxType: any;
+  defaultTab: false;
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+   tabController(event) {
+   	this.taxType = event.target.value;
+  	this.onChange.emit(this.taxType);
   }
 
 }
