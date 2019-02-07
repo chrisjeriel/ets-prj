@@ -93,7 +93,8 @@ export class FixedAssetsComponent implements OnInit {
   	pagination: true,
   	pageStatus: true,
   	pageId: 1,
-  	pageLength: 10,
+  	pageLength: 20,
+    colSize: [''],
   	keys: ['type', 'propNo', 'description', 'location','user', 'acquisitionDate', 'acquisitionCost', 'depreciationMethod', 'noOfMonth', 'monthlyDepreciation', 'accumulatedDepreciation', 'accumulatedAsOf', 'disposalDate', 'disposalValue'],
   }
 
@@ -130,7 +131,8 @@ export class FixedAssetsComponent implements OnInit {
   	pagination: true,
   	pageStatus: true,
   	pageId: 2,
-  	pageLength: 10,
+  	pageLength: 20,
+    colSize: ['', '50px', '100px', '250px'],
   	keys: ['assetDescription', 'monthEnd', 'depreciationAmount', 'referenceNo',],
   }
 

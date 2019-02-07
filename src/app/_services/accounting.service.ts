@@ -849,8 +849,8 @@ export class AccountingService {
 
 	getAccountingSFixedAssets(){
 		this.accountingSFixedAssets = [
-			new AccountingSFixedAssets('Electronics Equivalent', 1, 'Lenovo', 'Accounting', 'Camilo Hermin', new Date(2015,0,1), 30000, 'Straight Line', 60, 500, 2500, new Date(2016,5,31), null, ''),
-			new AccountingSFixedAssets('Transportation Equivalent', 2, '2015 Fortuner A/T', 'General Management', 'Camilo Hermin', new Date(2015,0,1), 1000000, 'Straight Line', 60, 16666.66, 83333.30, new Date(2016,5,31), null, ''),
+			new AccountingSFixedAssets('Electronics Equivalent', 1, 'Lenovo', 'Accounting', 'Camilo Hermin', new Date(2015,0,1), 900000000000, 'Straight Line', 60, 500231230482, 25002314123.53, new Date(2016,5,31), null, ''),
+			new AccountingSFixedAssets('Transportation Equivalent', 2, '2015 Fortuner A/T', 'General Management', 'Camilo Hermin', new Date(2015,0,1), 100000000000, 'Straight Line', 60, 16662341236.66, 8335123433.30, new Date(2016,5,31), null, ''),
 		];
 
 		return this.accountingSFixedAssets;
@@ -858,10 +858,10 @@ export class AccountingService {
 
 	getAccountingSMonthlyDepreciationDetails(){
 		this.accountingSMonthlyDepreciationDetails = [
-			new AccountingSMonthlyDepreciationDetails('Lenovo Laptop', new Date(2015,0,31), 500, ''),
-			new AccountingSMonthlyDepreciationDetails('Lenovo Laptop', new Date(2015,1,28), 500, ''),
-			new AccountingSMonthlyDepreciationDetails('2015 Fortuner A/T', new Date(2015,0,31), 16666.66, ''),
-			new AccountingSMonthlyDepreciationDetails('2015 Fortuner A/T', new Date(2015,1,28), 16666.66, ''),
+			new AccountingSMonthlyDepreciationDetails('Lenovo Laptop', new Date(2015,0,31), 25002314123.53, ''),
+			new AccountingSMonthlyDepreciationDetails('Lenovo Laptop', new Date(2015,1,28), 25002314123.53, ''),
+			new AccountingSMonthlyDepreciationDetails('2015 Fortuner A/T', new Date(2015,0,31), 16662341236.66, ''),
+			new AccountingSMonthlyDepreciationDetails('2015 Fortuner A/T', new Date(2015,1,28), 16662341236.66, ''),
 		];
 
 		return this.accountingSMonthlyDepreciationDetails;
