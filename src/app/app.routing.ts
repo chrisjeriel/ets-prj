@@ -73,6 +73,8 @@ import { GenerateOrComponent } from './accounting-service/official-receipt/gener
 import { OfficialReceiptComponent } from './accounting-service/official-receipt/official-receipt.component';
 import { AcctOrListingsComponent } from './accounting-service/acct-or-listings/acct-or-listings.component';
 import { AccountingServiceComponent } from './accounting-service/accounting-service.component';
+import { ExpenseBudgetComponent } from './accounting-service/expense-budget/expense-budget.component';
+import { AccountingServiceExtractComponent } from './accounting-service/accounting-service-extract/accounting-service-extract.component';
 import { ConsolidateAnnualTaxesWithheldComponent } from './accounting-service/utilities/consolidate-annual-taxes-withheld/consolidate-annual-taxes-withheld.component';
 import { PcvComponent } from './accounting-service/pcv/pcv.component';
 import { PcvListingsComponent } from './accounting-service/pcv/pcv-listings/pcv-listings.component';
@@ -165,6 +167,8 @@ const appRoutes: Routes = [
     { path: 'official-receipt', component: OfficialReceiptComponent },
     { path: 'acct-or-listings', component: AcctOrListingsComponent },
     { path: 'accounting-service', component: AccountingServiceComponent},
+    { path: 'accounting-service-expense-budget', component: ExpenseBudgetComponent},
+    { path: 'accounting-service-extract', component: AccountingServiceExtractComponent},
     { path: 'acct-srvc-util-catw', component: ConsolidateAnnualTaxesWithheldComponent },
     { path: 'accounting-service-pcv-listings', component: PcvListingsComponent},
     { path: 'accounting-service-pcv', component: PcvComponent},

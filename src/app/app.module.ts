@@ -206,7 +206,18 @@ import { AcctSrvcAnnualDetailsComponent } from './accounting-service/utilities/c
 import { AcctSrvcConsolidateDataComponent } from './accounting-service/utilities/consolidate-annual-taxes-withheld/acct-srvc-consolidate-data/acct-srvc-consolidate-data.component';
 import { AttachmentOcComponent } from './quotation/open-cover/attachment-oc/attachment-oc.component';
 import { MtnDistrictComponent } from './maintenance/mtn-district/mtn-district.component';
+import { MtnCityComponent } from './maintenance/mtn-city/mtn-city.component';
 import { MtnInsuredComponent } from './maintenance/mtn-insured/mtn-insured.component';
+import { MtnBlockComponent } from './maintenance/mtn-block/mtn-block.component';
+import { ExpenseBudgetComponent } from './accounting-service/expense-budget/expense-budget.component';
+import { BudgetDetailsComponent } from './accounting-service/expense-budget/budget-details/budget-details.component';
+import { ByMonthComponent } from './accounting-service/expense-budget/by-month/by-month.component';
+import { ExtractFromLastYearComponent } from './accounting-service/expense-budget/extract-from-last-year/extract-from-last-year.component';
+import { AccountingServiceExtractComponent } from './accounting-service/accounting-service-extract/accounting-service-extract.component';
+import { ExtractBirTaxComponent } from './accounting-service/accounting-service-extract/extract-bir-tax/extract-bir-tax.component';
+import { AcctEntriesComponent } from './accounting-service/accounting-service-extract/acct-entries/acct-entries.component';
+import { AcctDetailsComponent } from './accounting-service/accounting-service-extract/acct-details/acct-details.component';
+import { AcctUploadComponent } from './accounting-service/accounting-service-extract/acct-upload/acct-upload.component';
 import { MtnEndtCodeComponent } from './maintenance/mtn-endt-code/mtn-endt-code.component';
 import { CvAccEntriesComponent } from './accounting-in-trust/check-voucher/generate-cv/cv-acc-entries/cv-acc-entries.component';
 import { PcvComponent } from './accounting-service/pcv/pcv.component';
@@ -217,7 +228,6 @@ import { PcvAccEntriesComponent } from './accounting-service/pcv/pcv-acc-entries
 import { MeDataCheckingComponent } from './accounting-service/month-end/me-data-checking/me-data-checking.component';
 import { MeBatchProcComponent } from './accounting-service/month-end/me-batch-proc/me-batch-proc.component';
 import { MeTrialBalProcComponent } from './accounting-service/month-end/me-trial-bal-proc/me-trial-bal-proc.component';
-import { MtnCityComponent } from './maintenance/mtn-city/mtn-city.component';
 import { MtnCrestaZoneComponent } from './maintenance/mtn-cresta-zone/mtn-cresta-zone.component';
 import { MtnCurrencyComponent } from './maintenance/mtn-currency/mtn-currency.component';
 import { FixedAssetsComponent } from './accounting-service/fixed-assets/fixed-assets.component';
@@ -450,7 +460,18 @@ import { JvAttachmentsServiceComponent } from './accounting-service/journal-vouc
         AcctSrvcConsolidateDataComponent,
         AttachmentOcComponent,
         MtnDistrictComponent,
+        MtnCityComponent,
         MtnInsuredComponent,
+        MtnBlockComponent,
+        ExpenseBudgetComponent,
+        BudgetDetailsComponent,
+        ByMonthComponent,
+        ExtractFromLastYearComponent,
+        AccountingServiceExtractComponent,
+        ExtractBirTaxComponent,
+        AcctEntriesComponent,
+        AcctDetailsComponent,
+        AcctUploadComponent,
         MtnEndtCodeComponent,
         CvAccEntriesComponent,
         PcvComponent,
@@ -461,7 +482,6 @@ import { JvAttachmentsServiceComponent } from './accounting-service/journal-vouc
         MeDataCheckingComponent,
         MeBatchProcComponent,
         MeTrialBalProcComponent,
-        MtnCityComponent,
         MtnCrestaZoneComponent,
         MtnCurrencyComponent,
         FixedAssetsComponent,

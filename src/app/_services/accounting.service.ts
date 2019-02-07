@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, 
-	PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AccServiceAttachment, PaymentForAdvances, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, ARUnappliedCollection, AROthers, AccountingSOthersOr, AccORSerFeeLoc, OfficialReceipt, ORPrevAmountDetails, ORPrevAccEntries, ORPreVATDetails , ORPreCreditableWTaxDetails, AccountingSFixedAssets, AccountingSMonthlyDepreciationDetails, AccountingSPaytReqCheckVoucher, AccountingSPaytReqPettyCashVoucher, AccountingSPaytReqPRMFE, AccountingSPaytReqOthers,AcctSrvcCWhtaxMonthlyTaxDetails,AcctSrvcCWhtaxConsolidateData   } from '@app/_models';
+	PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AccServiceAttachment, PaymentForAdvances, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, ARUnappliedCollection, AROthers, AccountingSOthersOr, AccORSerFeeLoc, OfficialReceipt, ORPrevAmountDetails, ORPrevAccEntries, ORPreVATDetails , ORPreCreditableWTaxDetails, PaymentOfSeviceFee, TreatyBalance, ExpenseBudget, ByMonth, ExtractFromLastYear, AccountingEntriesExtract, CredibleWithholdingTaxDetails, InputVatDetails, OutputVatDetails, WithholdingVATDetails, CredibleWithholdingTaxUpload, InputVatUpload, OutputVatUpload, WithholdingTaxUpload, AccountingSFixedAssets, AccountingSMonthlyDepreciationDetails, AccountingSPaytReqCheckVoucher, AccountingSPaytReqPettyCashVoucher, AccountingSPaytReqPRMFE, AccountingSPaytReqOthers,AcctSrvcCWhtaxMonthlyTaxDetails,AcctSrvcCWhtaxConsolidateData } from '@app/_models';
 
 @Injectable({
 	providedIn: 'root'
@@ -66,6 +66,20 @@ export class AccountingService {
 	orPreCreditableWTaxDetails : ORPreCreditableWTaxDetails[] = [];
 	accountingSOthersOrData: AccountingSOthersOr[] = [];
 	accORSerFeeLoc: AccORSerFeeLoc[] = [];
+	paymentOfServiceFee: PaymentOfSeviceFee[] = [];
+	treatyBalance: TreatyBalance[] =[];
+	expenseBudget: ExpenseBudget[]= [];
+	byMonth: ByMonth[] = [];
+	extractFromLastYear: ExtractFromLastYear[] = [];
+	extract: AccountingEntriesExtract[] = [];
+	credibleWithholdingTaxDetails: CredibleWithholdingTaxDetails[] = [];
+	inputVatDetails: InputVatDetails[] = [];
+	outputVatDetails: OutputVatDetails[] =[];
+	withholdingVATDetails: WithholdingVATDetails[] = [];
+	credibleWithholdingTaxUpload: CredibleWithholdingTaxUpload[]=[];
+	inputVatUpload: InputVatUpload[] = [];
+	outputVatUpload: OutputVatUpload[] = [];
+	withholdingTaxUpload: WithholdingTaxUpload[]=[];
 	accountingSFixedAssets: AccountingSFixedAssets[] = [];
 	accountingSMonthlyDepreciationDetails: AccountingSMonthlyDepreciationDetails[] = [];
 	accountingSPaytReqCheckVoucher: AccountingSPaytReqCheckVoucher[] = [];
@@ -719,6 +733,120 @@ export class AccountingService {
 		return this.accountingSOthersOrData;
 	}
 
+	getPaymentOfServiceFee(){
+		this.paymentOfServiceFee = [
+			new PaymentOfSeviceFee("Utilities","Service fee for the period of","PHP",1.0,-50000,-50000),
+		];
+		return this.paymentOfServiceFee;
+	}
+
+	getTreatyBalance(){
+		this.treatyBalance = [ 
+			new TreatyBalance(new Date(2018,3,21),500000,100000,6000000,500000,6500000,6000000)
+		]
+		return this.treatyBalance;
+	}
+
+
+
+	getExpenseBudget(){
+		this.expenseBudget = [
+			new ExpenseBudget(new Date(2018,1,31),'5-01-01-01','Salaries',null,null,18112500),
+			new ExpenseBudget(new Date(2018,2,28),'5-01-01-01','Salaries',null,null,10150000),
+			new ExpenseBudget(new Date(2018,3,31),'5-01-01-01','Salaries',null,null,1000000),
+			new ExpenseBudget(new Date(2018,4,30),'5-01-01-01','Salaries',null,null,1000000),
+			new ExpenseBudget(new Date(2018,5,31),'5-01-01-01','Salaries',null,null,1000000)
+		]
+		return this.expenseBudget;
+	}
+
+	getByMonth(){
+		this.byMonth = [ 
+			new ByMonth('501-01-01','Salaries',0,0,0,0,0,0,0,0,0,0,0,0,0),
+			new ByMonth('501-01-02','Overtime',0,0,0,0,0,0,0,0,0,0,0,0,0),
+			new ByMonth('501-01-03','Mid-Year Bonus',0,0,0,0,0,0,0,0,0,0,0,0,0),
+			new ByMonth('501-01-04','13thMonth Pay',0,0,0,0,0,0,0,0,0,0,0,0,0),
+			new ByMonth('501-01-05','Provision for Profit Sharing',0,0,0,0,0,0,0,0,0,0,0,0,0)
+		]
+		return this.byMonth;
+	}
+
+	getExtractFromLastYear(){
+		this.extractFromLastYear = [ 
+			new ExtractFromLastYear('501-01-01','Salaries',0,0,0,0,0,0,0,0,0,0,0,0,0),
+			new ExtractFromLastYear('501-01-02','Overtime',0,0,0,0,0,0,0,0,0,0,0,0,0),
+			new ExtractFromLastYear('501-01-03','Mid-Year Bonus',0,0,0,0,0,0,0,0,0,0,0,0,0),
+			new ExtractFromLastYear('501-01-04','13thMonth Pay',0,0,0,0,0,0,0,0,0,0,0,0,0),
+			new ExtractFromLastYear('501-01-05','Provision for Profit Sharing',0,0,0,0,0,0,0,0,0,0,0,0,0)
+		]
+		return this.extractFromLastYear;
+	}
+
+	getAccountingEntryExtract(){
+		this.extract = [
+			new AccountingEntriesExtract(null,null,null,null,null,null,null,null)
+		]
+		return this.extract;
+	}
+
+	getCredibleWithholdingTaxDetails(){
+		this.credibleWithholdingTaxDetails = [
+			new CredibleWithholdingTaxDetails(null,null,null,null,null,null,null,null,null)
+		]
+		return this.credibleWithholdingTaxDetails
+	}
+
+	getInputVatDetails(){
+		this.inputVatDetails = [
+			new InputVatDetails(null,null,null,null,null,null,null,null,null,null)
+		]
+		return this.inputVatDetails
+	}
+
+	getOutputVatDetails(){
+		this.outputVatDetails = [
+			new OutputVatDetails(null,null,null,null,null,null,null,null,null)
+		]
+		return this.outputVatDetails
+	}
+
+	getWithholdingVATDetails(){
+		this.withholdingVATDetails = [
+			new WithholdingVATDetails(null,null,null,null,null,null,null,null,null)
+		]
+		return this.withholdingVATDetails;
+	}
+	
+	getCredibleWithholdingTaxUpload(){
+		this.credibleWithholdingTaxUpload = [
+			new CredibleWithholdingTaxUpload(null,null,null,null,null,null,null,null,null,null,null,null)
+		]
+		return this.credibleWithholdingTaxUpload;
+	}
+
+	getInputVatUpload(){
+		this.inputVatUpload = [
+			new InputVatUpload(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+		]
+		return this.inputVatUpload;
+
+	}
+
+	getOutputVatUpload(){
+		this.outputVatUpload = [
+			new OutputVatUpload(null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
+		]
+		return this.outputVatUpload;
+
+	}
+
+	getWithholdingTaxUpload(){
+		this.withholdingTaxUpload = [
+			new WithholdingTaxUpload(null,null,null,null,null,null,null,null,null,null,null,null)
+		]
+		return this.withholdingTaxUpload;
+	}
+
 	getAccountingSFixedAssets(){
 		this.accountingSFixedAssets = [
 			new AccountingSFixedAssets('Electronics Equivalent', 1, 'Lenovo', 'Accounting', 'Camilo Hermin', new Date(2015,0,1), 30000, 'Straight Line', 60, 500, 2500, new Date(2016,5,31), null, ''),
@@ -842,5 +970,6 @@ export class AccountingService {
 		];
 		return this.acctSrvcCWhtaxConsolidateData;
 	}
+
 
 }
