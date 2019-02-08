@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { environment } from '@environments/environment';
 import { QuotationList, HoldCoverMonitoringList, DummyInfo, QuoteEndorsement, QuotationOption, QuotationOtherRates, IntCompAdvInfo, AttachmentInfo, QuotationProcessing, QuotationCoverageInfo, QuotationHoldCover, ItemInformation, ReadyForPrint, OpenCoverProcessing, Risks, QuotationDeductibles, EditableDummyInfo, OpenCoverList, ALOPItemInformation, OcGenInfoInfo, HoldCoverInfo } from '@app/_models';
 import { isNull, nullSafeIsEquivalent } from '@angular/compiler/src/output/output_ast';
@@ -171,7 +171,7 @@ export class QuotationService {
         return endorsmentData;*/
     }
 
-    getAttachment() {
+    getAttachment(quoteId:string) {
         // this.attachmentInfoData = [
         //     new AttachmentInfo("NSO_Birth_Certificate_001", "Policyholder’s details such as name, date of birth, address, gender, occupation"),
         //     new AttachmentInfo("Registration_Number_001", "Vehicle registration number and registration certificate (RC) number"),
@@ -180,7 +180,10 @@ export class QuotationService {
         //     new AttachmentInfo("Post_Office_Passbook_001", "Proof of address documents "),
         // ];
 
-        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteAttachment');
+        const params = new HttpParams()
+             .set('quoteId',quoteId)
+
+        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteAttachment',{params});
         // return this.attachmentInfoData;
     }
 
@@ -387,11 +390,13 @@ export class QuotationService {
     }
 
     getQuoteGenInfo(quoteId : any, quotationNo: string ){
-      if (quoteId == '' || quoteId == null ) {
+     /* if (quoteId == '' || quoteId == null ) {
          return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteGeneralInfo?quotationNo="+quotationNo);
       } else {
          return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteGeneralInfo?quoteId="+quoteId+"&quotationNo="+quotationNo);
-     }
+     }*/
+
+     return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteGeneralInfo?quoteId="+quoteId+"&quotationNo="+quotationNo);
     }
 
     getReadyForPrinting() {
@@ -569,6 +574,25 @@ export class QuotationService {
              .set('holdCoverNo','')
              
             return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteHoldCover',{params});
+    }
+
+    saveQuoteAttachment(quoteId:number ,attachmentList:any[]){
+        /*const params = new HttpParams()
+             .set('quoteId',quoteId.toString())
+             .set('attachmentsList',JSON.stringify(attachmentList))*/
+             
+        let params:any  = {
+            quoteId: quoteId,
+            attachmentsList: attachmentList
+        };
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        console.log(JSON.stringify(params));
+
+        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteAttachment', JSON.stringify(params), header);
     }
 
 }

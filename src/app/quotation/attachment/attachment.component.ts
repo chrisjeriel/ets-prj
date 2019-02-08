@@ -61,6 +61,7 @@ export class AttachmentComponent implements OnInit {
     widths: [],
     keys:['fileName','description']
   };
+  savedData: any[];
   
   constructor(config: NgbDropdownConfig,
     private quotationService: QuotationService, private titleService: Title) {
@@ -97,15 +98,40 @@ export class AttachmentComponent implements OnInit {
      });
     this.passData.tableData = arrayData;
 */
-
-    this.quotationService.getAttachment().subscribe((data: any) => {
-        this.attachmentData = data.quotation;
+    
+    this.quotationService.getAttachment('1').subscribe((data: any) => {
+        this.attachmentData = data.quotation[0].attachmentsList;
+        console.log(data);
         // this.passData.tableData = data.quotation.project.coverage.sectionCovers;
-        for (var i = 0; i < data.quotation.length; i++) {
-          this.passData.tableData.push(data.quotation[i].attachment);
+        for (var i = 0; i < this.attachmentData.length; i++) {
+          this.passData.tableData.push(this.attachmentData[i]);
         }
         this.table.refreshTable();
     });
+  }
+
+  saveData(){
+    this.savedData = [];
+    console.log(this.editedData);
+    this.passData.tableData = this.passData.tableData.sort(function(a, b) {
+            return a.tableIndex - b.tableIndex;
+     });
+
+    console.log(this.passData.tableData);
+    for (var i = 0 ; this.editedData.length > i; i++) {
+      console.log(this.savedData);
+      this.savedData.push(this.passData.tableData[this.editedData[i]]);
+      this.savedData[i].createDate = new Date(this.savedData[i].createDate[0],this.savedData[i].createDate[1]-1,this.savedData[i].createDate[2]).toISOString();
+      this.savedData[i].updateDate = new Date(this.savedData[i].updateDate[0],this.savedData[i].updateDate[1]-1,this.savedData[i].updateDate[2]).toISOString();
+      // delete this.savedData[i].tableIndex;
+    }
+    this.quotationService.saveQuoteAttachment(1,this.savedData).subscribe((data: any) => {});
+    console.log(this.savedData);  
+
+  }
+
+  cancel(){
+    console.log(this.savedData);
   }
 
 }

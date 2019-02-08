@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '@environments/environment';
 
 @Injectable({ providedIn: 'root' })
@@ -43,4 +43,22 @@ export class MaintenanceService{
 	getLineLOV() {
        	return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMntLine');
     }
+
+	getMtnRiskListing(){
+		const params = new HttpParams()
+                .set('riskId','')
+                .set('riskAbbr','')
+                .set('riskName','')
+                .set('regionDesc','')
+                .set('provinceDesc','')
+                .set('cityDesc','')
+                .set('districtDesc','')
+                .set('blockDesc','')
+                .set('latitude','')
+                .set('longitude','')
+                .set('activeTag','');
+
+        return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMtnRiskListing', {params});
+	}
+
 }

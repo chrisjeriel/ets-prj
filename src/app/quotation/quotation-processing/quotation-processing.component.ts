@@ -27,7 +27,16 @@ export class QuotationProcessingComponent implements OnInit {
 
     line: string = "";
     description: string = "";
+    splittedLine: string[] = [];
     quoTypeOfCession = "";
+    riskName: string = "";
+    riskNameList: string[] = [];
+    //existingQuoteNoIndex: number = 0;
+    existingQuotationNo: string = "";
+
+    selectedQuotation: any = null;
+
+    fetchedData: any;
     quotationNo = "";
     lineDataInfo: any [];
 
@@ -175,8 +184,12 @@ export class QuotationProcessingComponent implements OnInit {
 
         this.quotationService.getQuoProcessingData().subscribe(data => {
             var records = data['quotationList'];
-
+            this.fetchedData = records;
             for(let rec of records){
+                //neco was here
+                this.splittedLine.push(rec.quotationNo.split("-", 1));
+                this.riskNameList.push((rec.project == null) ? '' : rec.project.riskName);
+                //neco ends here
                 this.passData.tableData.push(new QuotationProcessing(
                                                 rec.quotationNo,
                                                 rec.cessionDesc,
@@ -208,14 +221,15 @@ export class QuotationProcessingComponent implements OnInit {
         $('#addModal > #modalBtn').trigger('click');
     }
     onClickEdit(event) {
-        this.line = this.quotationService.rowData[0].split("-")[0];
+        this.quotationNo = this.selectedQuotation.quotationNo;
+        this.quoTypeOfCession = this.selectedQuotation.cessionDesc;
         this.quotationService.toGenInfo = [];
         this.quotationService.toGenInfo.push("edit", this.line);
         // this.router.navigate(['/quotation']);
-        this.router.navigate(['/quotation', { typeOfCession: this.quoTypeOfCession, from: 'quo-processing' }]);
+        // this.router.navigate(['/quotation', { typeOfCession: this.quoTypeOfCession, from: 'quo-processing' }]);
         /*this.router.navigate(['/quotation']);*/
         setTimeout(() => {
-            this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.quoTypeOfCession, from: 'quo-processing' }], { skipLocationChange: true });
+            this.router.navigate(['/quotation', { quotationNo: this.quotationNo, typeOfCession: this.quoTypeOfCession, from: 'quo-processing' }], { skipLocationChange: true });
         },100); 
     }
 
@@ -223,8 +237,8 @@ export class QuotationProcessingComponent implements OnInit {
         $('#copyModal > #modalBtn').trigger('click');
     }
 
-    riskLOV() {
-        $('#riskModal > #modalBtn').trigger('click');
+    showRiskLOV() {
+        $('#riskLOV #modalBtn').trigger('click');
     }
 
     showLineLOV(){
@@ -244,7 +258,43 @@ export class QuotationProcessingComponent implements OnInit {
     }
 
     nextBtnEvent() {
-        var qLine = this.line.toUpperCase();
+        //neco was here
+        this.existingQuotationNo = "";
+        for(var i = 0; i < this.splittedLine.length; i++){
+            if(this.line == this.splittedLine[i][0] && this.riskName == this.riskNameList[i] && this.riskNameList[i] != ""){
+                //this.existingQuoteNoIndex = i;
+                this.existingQuotationNo = this.passData.tableData[i].quotationNo;
+                break;
+            }
+        }
+
+        if(this.existingQuotationNo != ""){
+            $('#modIntModal > #modalBtn').trigger('click');
+
+        }else{
+            var qLine = this.line.toUpperCase();
+
+            if (qLine === 'CAR' ||
+                qLine === 'EAR' ||
+                qLine === 'EEI' ||
+                qLine === 'CEC' ||
+                qLine === 'MBI' ||
+                qLine === 'BPV' ||
+                qLine === 'MLP' ||
+                qLine === 'DOS') {
+                this.modalService.dismissAll();
+
+            this.quotationService.rowData = [];
+            this.quotationService.toGenInfo = [];
+            this.quotationService.toGenInfo.push("add", qLine);
+            /*this.router.navigate(['/quotation']);*/
+            setTimeout(() => {
+                this.router.navigate(['/quotation', { line: qLine, typeOfCession: this.quoTypeOfCession, from: 'quo-processing' }], { skipLocationChange: true });
+            },100); 
+        }
+        //neco's influence ends here
+
+        /*var qLine = this.line.toUpperCase();
 
         if (qLine === 'CAR' ||
             qLine === 'EAR' ||
@@ -258,22 +308,20 @@ export class QuotationProcessingComponent implements OnInit {
 
         this.quotationService.rowData = [];
         this.quotationService.toGenInfo = [];
-        this.quotationService.toGenInfo.push("add", qLine);
+        this.quotationService.toGenInfo.push("add", qLine);*/
         /*this.router.navigate(['/quotation']);*/
-        setTimeout(() => {
+        /*setTimeout(() => {
             this.router.navigate(['/quotation', { line: qLine, typeOfCession: this.quoTypeOfCession, from: 'quo-processing' }], { skipLocationChange: true });
-        },100); 
+        },100); */
     }
 }
 
 onRowClick(event) {
-    for (var i = 0; i < event.target.closest("tr").children.length; i++) {
-        this.quotationService.rowData[i] = event.target.closest("tr").children[i].innerText;
-    }
-
-    this.quoTypeOfCession = event.target.closest("tr").children[1].innerText;
+    this.selectedQuotation = event;
     this.disabledEditBtn = false;
     this.disabledCopyBtn = false;
+
+    console.log(this.selectedQuotation);
 }
 
 onRowDblClick(event) {

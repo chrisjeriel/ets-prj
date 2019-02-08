@@ -22,31 +22,31 @@ export class AcctOrEntryComponent implements OnInit {
           }
         ],
         tHeader: ['Pay Mode','Curr','Curr Rate','Amount','Bank','Bank Account No.','Check No.','Check Date','Check Class'],
-        magnifyingGlass: ['payMode','curr','bank','checkClass'],
-        dataTypes: ['text','text','percent','currency','text','number','number','date','text'],
+        //magnifyingGlass: ['payMode','curr','bank','checkClass'],
+        dataTypes: ['select','select','percent','currency','select','number','number','date','select'],
         paginateFlag: true,
         infoFlag: true,
         pageLength: 5,
-        widths: ['auto',50,80,'auto',200,1,100,1,'auto'],
+        widths: ['auto',80,80,'auto',200,1,100,1,'auto'],
         pageID: 1,
-        // opts:[
-        //   {
-        //     selector: 'payMode',
-        //     vals: ['Bank Transfer','Cash','Check','Credit Memo']
-        //   },
-        //   {
-        //     selector: 'curr',
-        //     vals: ['EUR','PHP','USD']
-        //   },
-        //   {
-        //     selector: 'bank',
-        //     vals: ['Banco De Oro','Bank of the Philippine Islands','Philippine National Bank']
-        //   },
-        //   {
-        //     selector: 'checkClass',
-        //     vals: ['Local Clearing','Manager\'s Check','On-Us']
-        //   },
-        // ]
+        opts:[
+          {
+            selector: 'payMode',
+            vals: ['Bank Transfer','Cash','Check','Credit Memo']
+          },
+          {
+            selector: 'curr',
+            vals: ['PHP','USD']
+          },
+          {
+            selector: 'bank',
+            vals: ['Banco De Oro','Bank of the Philippine Islands','Philippine National Bank']
+          },
+          {
+            selector: 'checkClass',
+            vals: ['Local Clearing','Manager\'s Check','On-Us']
+          },
+        ]
     };
 
   @Input() record: any = {
