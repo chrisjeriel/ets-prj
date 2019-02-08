@@ -25,11 +25,22 @@
                     <div class="col-sm-5">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
                         <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 1px !important;" style="Error Correction"> -->
-                            <select class="form-control form-control-sm cust-sm col-sm">
+
+                      <!--   <select class="form-control form-control-sm cust-sm col-sm">
+                            <option>Error Correction</option>
+                            <option>Reversal</option>
+                        </select> -->
+         <!--                    <select class="form-control form-control-sm cust-sm col-sm">
                                 <option>Error Correction</option>
                                 <option>Reversal</option>
-                            </select>
+                            </select> -->
                         <!-- <div style="margin-left: -19px !important;margin-right: 0px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div> -->
+                           <select class="form-control form-control-sm cust-sm col-sm" (change)="tabController($event);" [(ngModel)]="record.jvType">
+                                <option value="INWARD POLICY BALANCES">Inward Policy Balances</option>
+                                <option value="QSOA">QSOA Balances</option>
+                                <option value="PAYMENT REQUEST LIST">Payment Request List</option>
+                                <option value="ERROR CORRECTION">Error Correction</option>
+                            </select>
                         </div>
                     </div>
                     <!-- <div class="col-sm-1"  style="margin-left: -10px !important;"></div> -->

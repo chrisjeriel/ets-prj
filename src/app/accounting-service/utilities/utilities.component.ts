@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { AccountingService } from '@app/_services';
-import { TaxDetails } from '@app/_models';
+import { TaxDetails, WTaxDetails } from '@app/_models';
 import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -31,7 +31,7 @@ tableData: any[] = [];
     selectFlag: false,
     editFlag: false,
     pageLength: 3,
-    width:['auto','auto','auto','auto','auto'],
+    width:['auto','auto',200,'auto','auto'],
     genericBtn: 'Save'
   };
 
@@ -40,8 +40,8 @@ tableData: any[] = [];
     tHeader: ['Bill Tax Code','Description', 'WTax Rate','Payor','Base Amount', 'WTax AMount'],
     resizable: [true, true, true, true, true , true],
     dataTypes: ['text','text','percent','text','currency','currency'],
-  	nData: new TaxDetails(null,null,null,null,null),
-/*	total:[null,null,null,null,'Total','vatAmt'],*/
+  	nData: new WTaxDetails(null,null,null,null,null,null),
+	  total:[null,null,null,null,'Total','wTaxAmt'],
     checkFlag: false,
     addFlag: true,
     deleteFlag: true,
@@ -53,7 +53,7 @@ tableData: any[] = [];
     selectFlag: false,
     editFlag: false,
     pageLength: 3,
-    width:['auto','auto','auto','auto','auto','auto'],
+    width:[100,100,60,100,100,100],
     genericBtn: 'Save'
   };
 
