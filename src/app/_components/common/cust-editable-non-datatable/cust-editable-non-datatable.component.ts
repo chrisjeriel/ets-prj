@@ -298,7 +298,8 @@ export class CustEditableNonDatatableComponent implements OnInit {
         this.addFiller();
     }
 
-    onDataChange(){
+    onDataChange(data){
+        data.edited = true;
         this.tableDataChange.emit(this.passData.tableData);
     }
 

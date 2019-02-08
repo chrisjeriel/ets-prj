@@ -112,17 +112,13 @@ export class AttachmentComponent implements OnInit {
 
   saveData(){
     this.savedData = [];
-    console.log(this.editedData);
-    this.passData.tableData = this.passData.tableData.sort(function(a, b) {
-            return a.tableIndex - b.tableIndex;
-     });
 
-    console.log(this.passData.tableData);
-    for (var i = 0 ; this.editedData.length > i; i++) {
-      console.log(this.savedData);
-      this.savedData.push(this.passData.tableData[this.editedData[i]]);
-      this.savedData[i].createDate = new Date(this.savedData[i].createDate[0],this.savedData[i].createDate[1]-1,this.savedData[i].createDate[2]).toISOString();
-      this.savedData[i].updateDate = new Date(this.savedData[i].updateDate[0],this.savedData[i].updateDate[1]-1,this.savedData[i].updateDate[2]).toISOString();
+    for (var i = 0 ; this.passData.tableData.length > i; i++) {
+      if(this.passData.tableData.edited){
+          this.savedData.push(this.passData.tableData[this.editedData[i]]);
+          this.savedData[i].createDate = new Date(this.savedData[i].createDate[0],this.savedData[i].createDate[1]-1,this.savedData[i].createDate[2]).toISOString();
+          this.savedData[i].updateDate = new Date(this.savedData[i].updateDate[0],this.savedData[i].updateDate[1]-1,this.savedData[i].updateDate[2]).toISOString();
+        }
       // delete this.savedData[i].tableIndex;
     }
     this.quotationService.saveQuoteAttachment(1,this.savedData).subscribe((data: any) => {});
