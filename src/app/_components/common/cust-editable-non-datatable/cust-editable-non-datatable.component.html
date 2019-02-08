@@ -193,7 +193,7 @@ span.ui-column-resizer {
                                     <input *ngSwitchCase="'time'" class="editable-date form-control-sm" type="time" [ngModel]="processData(key, data) | date:'HH:mm'">
                                     <input *ngSwitchCase="'datetime'" class="editable-date form-control-sm" type="datetime-local"
                                     [ngModel]="processData(key, data) | date:'yyyy-MM-ddTHH:mm'">
-                                    <input *ngSwitchDefault class="editable-text form-control-sm" type="text" [(ngModel)]="data[key]" (change)="onDataChange(data.tableIndex)">
+                                    <input *ngSwitchDefault class="editable-text form-control-sm" type="text" [(ngModel)]="data[key]" (change)="onDataChange(data)">
                                     <a  *ngIf="passData.magnifyingGlass.indexOf(key)!=-1"><i (click)="onClickLOV(data,key)" class="fa fa-search align-middle"></i></a> 
                                 </div>
 

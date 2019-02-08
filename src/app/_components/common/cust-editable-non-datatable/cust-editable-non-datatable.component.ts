@@ -149,6 +149,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     onClickAdd() {
 
         this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
+        this.passData.tableData[this.passData.tableData.length-1].edited = true;
         this.unliTableLength();    
         this.search(this.searchString);
     }
@@ -298,7 +299,8 @@ export class CustEditableNonDatatableComponent implements OnInit {
         this.addFiller();
     }
 
-    onDataChange(){
+    onDataChange(data){
+        data.edited = true;
         this.tableDataChange.emit(this.passData.tableData);
     }
 
