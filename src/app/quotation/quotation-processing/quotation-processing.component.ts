@@ -28,6 +28,7 @@ export class QuotationProcessingComponent implements OnInit {
     line: string = "";
     splittedLine: string[] = [];
     quoTypeOfCession = "";
+    riskCd: string = "";
     riskName: string = "";
     riskNameList: string[] = [];
     //existingQuoteNoIndex: number = 0;
@@ -337,5 +338,11 @@ dateParser(arr){
         this.quotationService.saveQuoteCompetition(data);
     }
 //neco ends here
+
+    setRisks(data){
+        this.riskCd = data.riskId;
+        this.riskName = data.riskName;
+        this.onClickAdd();
+    }
 
 }
