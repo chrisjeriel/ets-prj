@@ -167,6 +167,8 @@ export class QuotationProcessingComponent implements OnInit {
         this.quotationService.getQuoProcessingData().subscribe(data => {
             var records = data['quotationList'];
             this.fetchedData = records;
+            console.log("fetched");
+            console.log(this.fetchedData);
             for(let rec of records){
                 //neco was here
                 this.splittedLine.push(rec.quotationNo.split("-", 1));
@@ -324,4 +326,15 @@ closeModalPls(content) {
 dateParser(arr){
     return new Date(arr[0] + '-' + arr[1] + '-' + arr[2]);   
 }
+//neco was here
+    toInternalCompetition(){
+        let data : any = {
+            quoteId: 'test',
+            things: 'test',
+            reason: 'just want to see how this object stringifies',
+        }
+        this.quotationService.saveQuoteCompetition(data);
+    }
+//neco ends here
+
 }

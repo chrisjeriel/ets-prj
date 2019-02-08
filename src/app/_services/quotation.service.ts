@@ -186,7 +186,8 @@ export class QuotationService {
     }
 
     getAttachmentOc(){
-        return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteAttachmentOc");
+        const params = new HttpParams().set('quoteIdOc', '');
+        return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteAttachmentOc", {params});
     }
 
     getDummyEditableInfo() {
@@ -589,6 +590,33 @@ export class QuotationService {
         console.log(JSON.stringify(params));
 
         return this.http.post('http://localhost:8888/api/quote-service/saveQuoteAttachment', JSON.stringify(params), header);
+    }
+
+    saveQuoteAttachmentOc(quoteIdOc:number ,attachmentListOc:any[]){
+        /*const params = new HttpParams()
+             .set('quoteId',quoteId.toString())
+             .set('attachmentsList',JSON.stringify(attachmentList))*/
+             
+        let params:any  = {
+            quoteIdOc: quoteIdOc,
+            attachmentsList: attachmentListOc
+        };
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+
+        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteAttachmentOc', JSON.stringify(params), header);
+    }
+
+    saveQuoteCompetition(saveQuoteCompetitionParams: any){
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+        console.log(JSON.stringify(saveQuoteCompetitionParams));
     }
 
 }
