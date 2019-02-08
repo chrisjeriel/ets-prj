@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { AmountDetailsCV, AccountingEntriesCV, VATDetails, CreditableTax } from '@app/_models';
 import { AccountingService } from '../../../../_services/accounting.service';
 
@@ -75,9 +75,15 @@ export class JvDetailsComponent implements OnInit {
     genericBtn: 'Save',
   }
 
+   @Input() jvType: string = "";
+
   constructor(private accountingService: AccountingService) { }
 
   ngOnInit() {
+    if(this.jvType == null){
+      this.jvType = "";
+    }
+
   }
 
   plusMinus(data){
