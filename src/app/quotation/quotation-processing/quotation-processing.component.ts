@@ -33,6 +33,8 @@ export class QuotationProcessingComponent implements OnInit {
     //existingQuoteNoIndex: number = 0;
     existingQuotationNo: string = "";
 
+    selectedQuotation: any = null;
+
     fetchedData: any;
     quotationNo = "";
 
@@ -203,14 +205,15 @@ export class QuotationProcessingComponent implements OnInit {
         $('#addModal > #modalBtn').trigger('click');
     }
     onClickEdit(event) {
-        this.line = this.quotationService.rowData[0].split("-")[0];
+        this.quotationNo = this.selectedQuotation.quotationNo;
+        this.quoTypeOfCession = this.selectedQuotation.cessionDesc;
         this.quotationService.toGenInfo = [];
         this.quotationService.toGenInfo.push("edit", this.line);
         // this.router.navigate(['/quotation']);
-        this.router.navigate(['/quotation', { typeOfCession: this.quoTypeOfCession, from: 'quo-processing' }]);
+        // this.router.navigate(['/quotation', { typeOfCession: this.quoTypeOfCession, from: 'quo-processing' }]);
         /*this.router.navigate(['/quotation']);*/
         setTimeout(() => {
-            this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.quoTypeOfCession, from: 'quo-processing' }], { skipLocationChange: true });
+            this.router.navigate(['/quotation', { quotationNo: this.quotationNo, typeOfCession: this.quoTypeOfCession, from: 'quo-processing' }], { skipLocationChange: true });
         },100); 
     }
 
@@ -218,8 +221,8 @@ export class QuotationProcessingComponent implements OnInit {
         $('#copyModal > #modalBtn').trigger('click');
     }
 
-    riskLOV() {
-        $('#riskModal > #modalBtn').trigger('click');
+    showRiskLOV() {
+        $('#riskLOV #modalBtn').trigger('click');
     }
 
     getRisk(event) {
@@ -288,13 +291,11 @@ export class QuotationProcessingComponent implements OnInit {
 }
 
 onRowClick(event) {
-    for (var i = 0; i < event.target.closest("tr").children.length; i++) {
-        this.quotationService.rowData[i] = event.target.closest("tr").children[i].innerText;
-    }
-
-    this.quoTypeOfCession = event.target.closest("tr").children[1].innerText;
+    this.selectedQuotation = event;
     this.disabledEditBtn = false;
     this.disabledCopyBtn = false;
+
+    console.log(this.selectedQuotation);
 }
 
 onRowDblClick(event) {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , OnDestroy} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 
@@ -15,6 +15,11 @@ export class GenerateJvComponent implements OnInit {
   exitTab: string;
   sub: any;
 
+  record: any = {
+                   jvType: null
+                 };
+  jvType: string = "";
+
   ngOnInit() {
   	this.sub = this.route.params.subscribe(params => {
       this.exitLink = params['link'] !== undefined ? params['link'] : 'adasdas';
@@ -28,5 +33,11 @@ export class GenerateJvComponent implements OnInit {
   		} 
   
   }
+
+  checkTabs(event) {
+    var type = event.type;
+    this.jvType = type;    
+  }
+
 
 }

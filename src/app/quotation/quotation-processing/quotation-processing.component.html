@@ -66,7 +66,7 @@
                     <label class="form-control-sm col-sm-3" for="xx" style="margin: 0;">Risk</label>
                     <input type="text" id="xx" class="form-control form-control-sm col-sm-2" style="margin-right: -1px !important"
                        >
-                    <div class="text-search-ico" (click)="modalService.dismissAll();riskLOV()"><a><i class="fa fa-search"></i></a></div>
+                    <div class="text-search-ico" (click)="showRiskLOV()"><a><i class="fa fa-search"></i></a></div>
                     &nbsp;&nbsp;
                     <input type="text" id="xx" class="form-control form-control-sm"  [(ngModel)]="riskName">
                 </div>
@@ -137,3 +137,5 @@
     </div>
 </app-modal>
 <!-- End Modification or Internal Competition Modal -->
+
+<app-mtn-risk id="riskLOV" (selectedData)="setRisks($event)"></app-mtn-risk>

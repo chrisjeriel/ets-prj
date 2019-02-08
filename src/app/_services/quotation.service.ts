@@ -389,11 +389,13 @@ export class QuotationService {
     }
 
     getQuoteGenInfo(quoteId : any, quotationNo: string ){
-      if (quoteId == '' || quoteId == null ) {
+     /* if (quoteId == '' || quoteId == null ) {
          return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteGeneralInfo?quotationNo="+quotationNo);
       } else {
          return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteGeneralInfo?quoteId="+quoteId+"&quotationNo="+quotationNo);
-     }
+     }*/
+
+     return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteGeneralInfo?quoteId="+quoteId+"&quotationNo="+quotationNo);
     }
 
     getReadyForPrinting() {
