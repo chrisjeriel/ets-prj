@@ -15,7 +15,7 @@ import { ActivatedRoute } from '@angular/router';
 export class GeneralInfoComponent implements OnInit {
 	private quotationGenInfo: QuotationGenInfo;
 	rowData: any[] = this.quotationService.rowData;
-	quotationNum: string;
+	quotationNo: string;
 	tableData: any[] = [];
 	tHeader: any[] = [];
 	dataTypes: any[] = [];
@@ -46,19 +46,21 @@ export class GeneralInfoComponent implements OnInit {
 		this.sub = this.route.params.subscribe(params => {
 			this.from = params['from'];
 			if (this.from == "quo-processing") {
-				this.line = params['line'];
+				this.line = params['quotationNo'].split('-')[0];
 				this.typeOfCession = params['typeOfCession'];
-				this.quotationNum = params['quotationNo'];
-				this.typeOfCession = this.typeOfCession.toUpperCase();
+				this.quotationNo = params['quotationNo'];
+				this.typeOfCession = this.typeOfCession;
 				/*console.log(this.line);*/
 			}
 		});
-		console.log(this.line);
+		console.log(this.quotationNo);
 
 		if (this.quotationService.toGenInfo[0] == "edit") {
-				this.quotationService.getQuoteGenInfo(1,'').subscribe((data: any) => {
+				this.quotationService.getQuoteGenInfo('', this.quotationNo).subscribe((data: any) => {
 				this.genInfoData = data.quotationGeneralInfo;
-				console.log(this.genInfoData);
+				
+				console.log('DATA >>>>> ' + data.quotationGeneralInfo);
+
 				/*this.genInfoData.cessionDesc = this.genInfoData.cessionDesc.toUpperCase();*/
 			});
 
@@ -70,7 +72,7 @@ export class GeneralInfoComponent implements OnInit {
 			this.quotationGenInfo.reqSeq;
 			this.quotationGenInfo.histNo = "MOCK DATA";
 			this.quotationGenInfo.branch = this.rowData[1];
-			this.quotationGenInfo.lineClass = this.quotationNum[0];
+			this.quotationGenInfo.lineClass = this.quotationNo[0];
 			this.quotationGenInfo.policyNumber = 0;
 			this.quotationGenInfo.printedBy = "MOCK DATA";
 			this.quotationGenInfo.printDate;
