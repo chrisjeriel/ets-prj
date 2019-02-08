@@ -536,11 +536,13 @@ export class QuotationService {
     }
 
 
-    getALOPItemInfos(car: string) {
+    getALOPItemInfos(car: string, quoteId: any, quotationNo?: any) {
         if (car == "CAR") {
             this.aLOPItemInfos.forEach(function (itm) { delete itm.relativeImportance; });
         }
-        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteAlopItem');;
+        const params = new HttpParams()
+             .set('quoteId',quoteId)
+        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteAlopItem',{params});
     }
 
     getALop(quoteId:number,quotationNo:string){
@@ -573,10 +575,6 @@ export class QuotationService {
     }
 
     saveQuoteAttachment(quoteId:number ,attachmentList:any[]){
-        /*const params = new HttpParams()
-             .set('quoteId',quoteId.toString())
-             .set('attachmentsList',JSON.stringify(attachmentList))*/
-             
         let params:any  = {
             quoteId: quoteId,
             attachmentsList: attachmentList
@@ -589,6 +587,29 @@ export class QuotationService {
         console.log(JSON.stringify(params));
 
         return this.http.post('http://localhost:8888/api/quote-service/saveQuoteAttachment', JSON.stringify(params), header);
+    }
+
+    saveQuoteAlop(alopData:any){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        alopData.issueDate = new Date(alopData.issueDate[0],alopData.issueDate[1]+1,alopData.issueDate[2]).toISOString();
+        alopData.expiryDate = new Date(alopData.expiryDate[0],alopData.expiryDate[1]+1,alopData.expiryDate[2]).toISOString();
+        alopData.indemFromDate = new Date(alopData.indemFromDate[0],alopData.indemFromDate[1]+1,alopData.indemFromDate[2]).toISOString();
+        alopData.createDate = new Date(alopData.createDate[0],alopData.createDate[1]+1,alopData.createDate[2]).toISOString();
+        alopData.updateDate = new Date(alopData.updateDate[0],alopData.updateDate[1]+1,alopData.updateDate[2]).toISOString();
+        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteAlop', JSON.stringify(alopData), header);
+    }
+
+    saveQuoteAlopItem(alopItemData:any){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteAlopItem', JSON.stringify(alopItemData), header);
     }
 
 }

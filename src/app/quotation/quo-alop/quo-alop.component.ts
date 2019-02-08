@@ -21,13 +21,45 @@ export class QuoAlopComponent implements OnInit {
     dataTypes: string[] = [];
     nData: QuoteALOPItemInformation = new QuoteALOPItemInformation(null, null, null, null, null);
     
-    alopItemData: any;
-    alopData: any;
+    alopData: any={address: "Quezon City Philippines",
+                  alopId: null,
+                  alopItem: null,
+                  alopItemList: null,
+                  annSi: null,
+                  annSiD: null,
+                  createDate:  null,
+                  createUser: null,
+                  expiryDate:  null,
+                  indemFromDate: null,
+                  insuredBusiness: null,
+                  insuredDesc: null,
+                  insuredId: null,
+                  insuredName: null,
+                  issueDate: null,
+                  maxIndemPd: null,
+                  maxIndemPdD: null,
+                  maxIndemPdSi: null,
+                  maxIndemPdSiD: null,
+                  repInterval: null,
+                  timeExc: null,
+                  updateDate: null,
+                  updateUser: null
+                };
     itemInfoData: any = {
         tableData: [],
         tHeader: ["Item No", "Quantity", "Description", "Relative Importance", "Possible Loss Min"],
         dataTypes: ["number", "number", "text", "text", "text"],
-        nData: new QuoteALOPItemInformation(null, null, null, null, null),
+        nData: {
+          createDate: [0,0,0],
+          createUser: "Paul",
+          description: null,
+          importance: 'N',
+          itemNo: null,
+          lossMin: null,
+          quantity: null,
+          updateDate: [0,0,0],
+          updateUser: "Paul",
+        },
         addFlag: true,
         deleteFlag: true,
         infoFlag: true,
@@ -49,7 +81,25 @@ export class QuoAlopComponent implements OnInit {
         }
 
 
-       this.quotationService.getALOPItemInfos(this.policyRecordInfo.policyNo.substr(0, 3)).subscribe((data: any) => {
+       
+
+       this.quotationService.getALop(3,'EAR-2019-1-0-3').subscribe((data: any) => {
+              this.alopData = data.quotation.alop;
+              console.log(this.alopData);
+       });
+
+    }
+
+    save() {
+      this.alopData.quoteId = 3;
+      this.quotationService.saveQuoteAlop(this.alopData).subscribe();
+    }
+
+    openAlopItem(){
+      while(this.itemInfoData.tableData.length>0){
+        this.itemInfoData.tableData.pop();
+      }
+      this.quotationService.getALOPItemInfos(this.policyRecordInfo.policyNo.substr(0, 3),3).subscribe((data: any) => {
         
            for (var i=0; i < data.quotation.length; i++) {
                    this.itemInfoData.tableData.push(data.quotation[i].alop.alopItem);
@@ -58,16 +108,24 @@ export class QuoAlopComponent implements OnInit {
            this.table.refreshTable();
            console.log(data)
        });
-
-       this.quotationService.getALop(3,'EAR-2019-1-0-3').subscribe((data: any) => {
-              this.alopItemData = data.quotation.alop;
-              console.log(data);
-       });
-
+      $('#alopItemModal #modalBtn').trigger('click');
     }
 
-    save() {
-        console.log(this.aLOPInfo);
-    }
+    saveAlopItem(){
+      let savedData: any = {};
+      savedData.quoteId = 3;
+      savedData.alopId = this.alopData.alopId;
+      savedData.alopItemList=[];
+
+      for (var i = 0 ; this.itemInfoData.tableData.length > i; i++) {
+        if(this.itemInfoData.tableData[i].edited){
+            savedData.alopItemList.push(this.itemInfoData.tableData[i]);
+            savedData.alopItemList[savedData.alopItemList.length-1].createDate = new Date(savedData.alopItemList[savedData.alopItemList.length-1].createDate[0],savedData.alopItemList[savedData.alopItemList.length-1].createDate[1]-1,savedData.alopItemList[savedData.alopItemList.length-1].createDate[2]).toISOString();
+            savedData.alopItemList[savedData.alopItemList.length-1].updateDate = new Date(savedData.alopItemList[savedData.alopItemList.length-1].updateDate[0],savedData.alopItemList[savedData.alopItemList.length-1].updateDate[1]-1,savedData.alopItemList[savedData.alopItemList.length-1].updateDate[2]).toISOString();
+          }
+      }
+      console.log(savedData);
+      this.quotationService.saveQuoteAlopItem(savedData).subscribe((data: any) => {});
+  }
 
 }
