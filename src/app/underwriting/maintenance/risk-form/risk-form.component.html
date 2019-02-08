@@ -63,9 +63,9 @@
                             <div class="form-row custom-row-inline-inset">
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-1 text-right labels">Block</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-1" [placeholder]="newForm ? '' : 'UNBLK'">
+                                    <input type="text" class="form-control form-control-sm col-sm-1" [placeholder]="newForm ? '' : 'UNBLK'" [ngModel]="blockCd"> 
                                     <div class="text-search-ico"><a><i class="fa fa-search" (click)="showBlockModal()"></i></a></div>
-                                    <input type="text" class="form-control form-control-sm col-sm-4" [placeholder]="newForm ? '' : 'STA.ROSA/BEL-AIR UNBLK'" style="margin-left: 6px !important">
+                                    <input type="text" class="form-control form-control-sm col-sm-4" [placeholder]="newForm ? '' : 'STA.ROSA/BEL-AIR UNBLK'" style="margin-left: 6px !important" [ngModel]="blockDesc">
                                     <label class="form-control-sm col-sm-1 text-right labels">Lat</label>
                                     <input type="text" class="form-control form-control-sm col-sm-2" [placeholder]="newForm ? '' : '38.8951'">
                                     <label class="form-control-sm col-sm-1 text-right labels">Long</label>

@@ -591,4 +591,21 @@ export class QuotationService {
         return this.http.post('http://localhost:8888/api/quote-service/saveQuoteAttachment', JSON.stringify(params), header);
     }
 
+    saveQuoteCoverage(quoteId:number,projId: number ,coverageData:any[]){
+        let params:any  = {
+            quoteId: quoteId,
+            projId: projId,
+            coverageData:coverageData
+        };
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+
+        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteCoverage', JSON.stringify(params), header);
+    }
+
+    
+
 }
