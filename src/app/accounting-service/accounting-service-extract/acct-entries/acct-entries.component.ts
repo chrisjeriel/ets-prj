@@ -14,6 +14,7 @@ export class AcctEntriesComponent implements OnInit {
     tHeader: ["Tran Type", "Ref. No.", "Ref. Date", "Payye/Payor","Particulars","Account Code","Account Name","Net Amount"],
     dataTypes: ["text","text","text","text","text","text","text","currency"],
     resizable: [true, true, true, true, true, true,true,true],
+    total:[null,null,null,null,null,null,'Total','netAmount'],
     nData: new AccountingEntriesExtract(null,null,null,null,null,null,null,null),
     pageLength: 20,
     widths: [1,220,150,150,150,150,150,150],

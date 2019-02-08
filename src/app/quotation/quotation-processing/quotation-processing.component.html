@@ -65,17 +65,17 @@
                 <div class="input-group" style="margin-top: -12px; margin-bottom: -10px ! important">
                     <label class="form-control-sm col-sm-3" for="xx" style="margin: 0;">Risk</label>
                     <input type="text" id="xx" class="form-control form-control-sm col-sm-2" style="margin-right: -1px !important"
-                        [value]="riskList.riskCode">
+                       >
                     <div class="text-search-ico" (click)="modalService.dismissAll();riskLOV()"><a><i class="fa fa-search"></i></a></div>
                     &nbsp;&nbsp;
-                    <input type="text" id="xx" class="form-control form-control-sm" [value]="riskList.risk">
+                    <input type="text" id="xx" class="form-control form-control-sm"  [(ngModel)]="riskName">
                 </div>
             </div>
         </fieldset>
     </div>
     <div footer class="text-center w-100">
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-        <button class="cust-btn" type="button" (click)="nextBtnEvent();"><a>Next</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); nextBtnEvent();"><a>Next</a></button>
     </div>
 </app-modal>
 
@@ -99,3 +99,41 @@
     </div>
 </app-modal>
 <!-- End Risk LOV Modal -->
+
+<!-- Risk LOV Modal -->
+<app-modal class="hidden" id="riskModal">
+    <div header>List of Values</div>
+    <div body>
+        <fieldset class="scheduler-border">
+            <!-- ERROR RangeError: Maximum call stack size exceeded -->
+            <!--<app-cust-non-datatable [passData]="riskData"></app-cust-non-datatable>-->
+            <app-cust-non-datatable [passData]="riskData" (rowClick)="getRisk($event)"></app-cust-non-datatable>
+        </fieldset>
+    </div>
+    <div footer>
+        <div class="d-flex justify-content-center">
+            <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+            <button class="cust-btn" type="button" (click)="modalService.dismissAll(); onClickAdd($event);"><a>Ok</a></button>
+        </div>
+    </div>
+</app-modal>
+<!-- End Risk LOV Modal -->
+
+<!-- Modification or Internal Competition Modal -->
+<app-modal class="hidden" id="modIntModal">
+    <div header>&nbsp;</div>
+    <div body>
+        <fieldset class="scheduler-border">
+            <div class="custom-row-inline-inset" style="text-align: center">
+                <p>Selected Line and Risk has an existing Quotation No</p>
+                <p style="color:#557a95"><strong>{{existingQuotationNo}}</strong></p>
+                <p>Please select an option:</p>
+            </div>
+        </fieldset>
+    </div>
+    <div footer class="text-center w-100">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Modification</a></button>
+        <button class="cust-btn cust-btn-extend" type="button" (click)="modalService.dismissAll();"><a>Internal Competition</a></button>
+    </div>
+</app-modal>
+<!-- End Modification or Internal Competition Modal -->

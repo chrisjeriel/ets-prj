@@ -5,35 +5,35 @@
             <div class="input-group">
                 <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Request No</label>
                 <input type="text" class="form-control form-control-sm cust-sm col-sm-3"
-                placeholder="CSR-2018-09-0001">
+                placeholder="CSR-2018-09-0001" disabled>
                 <label class="form-control-sm col-sm-2">Request Date</label>
-                <input type="datetime-local"  class="form-control form-control-sm cust-sm col-sm-3" [value]="date">
+                <input type="datetime-local"  class="form-control form-control-sm cust-sm col-sm-3" [value]="date" disabled>
                 <label class="form-control-sm col-sm-1">Status</label>
-                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="New">
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="New" disabled>
             </div>
             <div class="input-group">
                 <label class="form-control-sm col-sm-1">Payee</label>
-                <input type="text"  class="form-control form-control-sm cust-sm col-sm" placeholder="Engineering Builders Inc.">
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm" placeholder="Engineering Builders Inc." disabled>
             </div>
         </div>
         <div class="col-sm-4">
             <div class="input-group">
                 <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Amount</label>
-                <select class="form-control form-control-sm cust-sm col-sm-2">
+                <select class="form-control form-control-sm cust-sm col-sm-2" disabled>
                         <option value="PHP">PHP</option>
                         <option value="EUR">EUR</option>
                         <option value="USD">USD</option>
                 </select>
-                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"placeholder="10,000,000.00">
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"placeholder="10,000,000.00" disabled="">
             </div>
             <div class="input-group">
                 <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Local Amount</label>
-                <select class="form-control form-control-sm cust-sm col-sm-2">
+                <select class="form-control form-control-sm cust-sm col-sm-2" disabled>
                         <option value="PHP">PHP</option>
                         <option value="EUR">EUR</option>
                         <option value="USD">USD</option>
                 </select>
-                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" placeholder="10,000,000.00">
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" placeholder="10,000,000.00" disabled>
             </div>
         </div>
     </div>
@@ -122,15 +122,31 @@
                     <app-cust-editable-non-datatable [passData]="checkVoucherData"></app-cust-editable-non-datatable>
                 </ng-container>
                 <ng-container *ngSwitchCase ="'PETTY CASH VOUCHER'">
+                    <div style="position: relative;">
+                      <div style="position: absolute; right: 223px; top: -4px;">
+                        <div class="custom-row-inline-inset" style="margin-top: 0px !important">
+                          <div class="input-group">
+                            <label class="form-control-sm col-sm-2">PCV Date:</label>
+                              <label class="form-control-sm col-sm-1">From</label>
+                              <input type="date" class="form-control form-control-sm col-sm-3" [value]="'2017-12-10'">
+                              <label class="form-control-sm col-sm-1">To</label>
+                              <input type="date" class="form-control form-control-sm col-sm-3" [value]="'2017-12-10'">
+                              <div class="input-group col-sm-2">
+                                <button class="cust-btn cust-btn-extend" style="max-height: 45%;">Search</button>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                     <app-cust-editable-non-datatable [passData]="pettyCashVoucherData"></app-cust-editable-non-datatable>
                 </ng-container>
                 <ng-container *ngSwitchCase ="'PAYMENT OF RISK MANAGEMENT FEE TO EMPLOYEES'">
                   <div class="row">
-                    <div class="col-sm-2"></div>
-                    <div class="col-sm-8">
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-10 disabled">
                       <app-cust-editable-non-datatable [passData]="PRMFEData"></app-cust-editable-non-datatable>
                     </div>
-                    <div class="col-sm-2"></div>
+                    <div class="col-sm-1"></div>
                   </div>
                 </ng-container>
               </ng-container>

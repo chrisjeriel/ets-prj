@@ -1,6 +1,6 @@
 <div class="cust-tabs-container">
     <h4>Accounting Service / Utilities / Consolidate Annual Taxes Withheld</h4>
-      <ngb-tabset>
+    <ngb-tabset (tabChange)="onTabChange($event)">
       <ngb-tab class="ngb-tab" title="Import">
         <ng-template ngbTabContent>
             <app-acct-srvc-import></app-acct-srvc-import>
@@ -16,9 +16,8 @@
             <app-acct-srvc-consolidate-data></app-acct-srvc-consolidate-data>
           </ng-template>
         </ngb-tab>
-        <ngb-tab class="ngb-tab" title="Exit">
+        <ngb-tab id="Exit" class="ngb-tab" title="Exit">
            <ng-template ngbTabContent>
-                
            </ng-template>
         </ngb-tab>
     </ngb-tabset>

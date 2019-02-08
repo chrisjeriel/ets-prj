@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AmountDetailsCV, AccountingEntriesCV, VATDetails, CreditableTax } from '@app/_models';
+import { AmountDetailsCV, AccountingEntriesCV, VATDetails, CreditableTax, ORPrevAmountDetails, ORPreVATDetails, ORPreCreditableWTaxDetails } from '@app/_models';
 import { AccountingService } from '../../../../_services/accounting.service';
 
 @Component({
@@ -9,24 +9,20 @@ import { AccountingService } from '../../../../_services/accounting.service';
 })
 export class JvPreviewServiceComponent implements OnInit {
 amountDetailsData: any = {
-    tableData: this.accountingService.getAmountDetailsCV(),
-    tHeader: ['Detail', 'Amount', 'Amount (PHP)', 'Plus/Minus', 'Amount Plus/Minus'],
-    dataTypes: ['text', 'currency', 'currency', 'select', 'currency'],
-    nData: new AmountDetailsCV(null,null,null,null,null),
-    opts:[
-      {
-        selector: 'plusMinus',
-        vals: ['None', 'Add', 'Less'],
-      }
-    ],
-    paginateFlag: true,
-    infoFlag: true,
-    pageID: 1,
+  	tableData: this.accountingService.getORPrevAmountDetails(),
+    tHeader: ["Item No", "Gen Type", "Detail", "Original Amount", "Currency","Currency Rate","Local Amount"],
+    dataTypes: ["text", "text", "text", "currency", "text","percent","currency"],
+    resizable: [true, true, true, true, true, true, true],
+    nData: new ORPrevAmountDetails(null,null,null,null,null,null,null),
+    total:[null,null,'TOTAL',null,null,null,'localAmount'],
     checkFlag: true,
     addFlag: true,
     deleteFlag: true,
-    total: [null, null, null, 'Total', 'amountPlusMinus'],
-    genericBtn: 'Save'
+    genericBtn: 'Save',
+    pageLength: 10,
+    widths: [70,70,'auto',160,60,160,160],
+    paginateFlag:true,
+    infoFlag:true,
   }
 
   accountingEntriesData: any = {
@@ -42,29 +38,35 @@ amountDetailsData: any = {
   }
 
   accountingVATTaxDetails: any = {
-    tableData: this.accountingService.getVATDetails(),
+    tableData: this.accountingService.getORPrevTaxDetails(),
     tHeader: ['VAT Type', 'BIR RLF Purchase Type', 'Payor', 'Base Amount', 'VAT Amount'],
     dataTypes: ['text', 'text', 'text', 'currency', 'currency'],
-    nData: new VATDetails(null,null,null,null,null),
+	nData: new ORPreVATDetails(null,null,null,null,null),
     pageID: 3,
     addFlag: true,
     deleteFlag: true,
-    total: [null, null, 'Total', null, 'vatAmount'],
+    total: [null, null, null, 'Total', 'vatAmount'],
     pageLength:5,
     genericBtn: 'Save',
+    widths: [100,200,'auto',200,200,],
+    paginateFlag:true,
+    infoFlag:true
   }
 
   accountingCreditableTaxDetails: any = {
-    tableData: this.accountingService.getCreditableTax(),
+   tableData: this.accountingService.getORPrevCredWTaxDetails(),
     tHeader: ['BIR Tax Code', 'Description', 'WTax Rate', 'Payor','Base Amount', 'WTax Amount'],
-    dataTypes: ['text', 'text', 'percent','text', 'currency', 'currency'],    
-    nData: new CreditableTax(null,null,null,null,null,null),
+    dataTypes: ['text', 'text', 'percent','text', 'currency', 'currency'],
+    nData: new ORPreCreditableWTaxDetails(null,null,null,null,null,null),
     pageID: 4,
     addFlag: true,
     deleteFlag: true,
     pageLength:5,
     total: [null, null, null, null,'Total', 'wTaxAmount'],
+    widths: [100,200,150,'auto',150,150,],
     genericBtn: 'Save',
+    paginateFlag:true,
+    infoFlag:true
   }
 
   constructor(private accountingService: AccountingService) { }

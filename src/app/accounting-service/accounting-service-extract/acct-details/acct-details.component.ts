@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { AccountingEntriesExtract, CredibleWithholdingTaxDetails ,InputVatDetails, OutputVatDetails, WithholdingVATDetails } from '@app/_models';
 import { AccountingService } from '@app/_services';
 
@@ -8,10 +8,11 @@ import { AccountingService } from '@app/_services';
   styleUrls: ['./acct-details.component.css']
 })
 export class AcctDetailsComponent implements OnInit {
-  
+  @Input() taxType: string = "";
+
   CreditableTaxData: any = {
     tableData: this.accountingService.getCredibleWithholdingTaxDetails(),
-    tHeader: ["Ref. No.","Payye/Payor","BIR Code","Tax Description","TIN","TIN Branch","Income","Whtax Rate","Whtax AMount"],
+    tHeader: ["Ref. No.","Payee/Payor","BIR Code","Tax Description","TIN","TIN Branch","Income","Whtax Rate","Whtax AMount"],
     dataTypes: ["text","text","text","text","text","text","text","currency","currency"],
     resizable: [true, true, true, true, true, true,true,true,true],
     nData: new CredibleWithholdingTaxDetails(null,null,null,null,null,null,null,null,null),
@@ -24,6 +25,7 @@ export class AcctDetailsComponent implements OnInit {
     filters: []
   }
 
+  
   InputVatDetailsData: any = {
     tableData: this.accountingService.getInputVatDetails(),
     tHeader: ["Tran Type","Ref. No.","Payye/Payor", "Address 1", "Address 2", "TIN", "BIR RLF Purchase Type","Base Amount","VAT Rate","Input VAT Amount"],

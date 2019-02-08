@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-accounting-service-extract',
@@ -7,9 +9,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AccountingServiceExtractComponent implements OnInit {
 
-  constructor() { }
+  taxType: any;
+
+  constructor(private router: Router) { }
 
   ngOnInit() {
   }
 
+  tabController(taxType){
+    this.taxType = taxType;
+    console.log(this.taxType)
+  }
+
+  onTabChange($event: NgbTabChangeEvent) {
+      if ($event.nextId === 'Exit') {
+        this.router.navigateByUrl('');
+      } 
+  
+  }
 }
