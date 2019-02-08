@@ -11,7 +11,8 @@ export class PaytReqInvestmentComponent implements OnInit {
     tableData: [
       {
       	bank: 'BPI',
-      	accountNo: 'BPI 1',
+      	certificateNo: 'BPI 1',
+        investmentType: 'Treasury',
       	maturityPeriod: 5,
       	durationUnit: 'Years',
       	interestRate: 8.875,
@@ -26,7 +27,8 @@ export class PaytReqInvestmentComponent implements OnInit {
       },
       {
       	bank: 'RCBC',
-      	accountNo: 'RCBC1 1',
+      	certificateNo: 'RCBC1 1',
+        investmentType: 'Time Deposit',
       	maturityPeriod: 35,
       	durationUnit: 'Days',
       	interestRate: 1.5,
@@ -40,8 +42,8 @@ export class PaytReqInvestmentComponent implements OnInit {
       	maturityValue: 10150000
       },
     ],
-    tHeader: ['Bank', 'Account No.', 'Maturity Period', 'Duration Unit', 'Interest Rate', 'Date Purchased', 'Maturity Date', 'Curr', 'Curr Rate','Bank Charge', 'Witholding Tax', 'Investment', 'Maturity Value'],
-    dataTypes: ['text', 'text', 'number', 'text', 'percent', 'date', 'date', 'text','percent','currency','currency','currency','currency'],
+    tHeader: ['Bank', 'Certificate No.', 'Investment Type', 'Maturity Period', 'Duration Unit', 'Interest Rate', 'Date Purchased', 'Maturity Date', 'Curr', 'Curr Rate','Bank Charge', 'Witholding Tax', 'Investment', 'Maturity Value'],
+    dataTypes: ['text',  'text', 'text', 'number', 'text', 'percent', 'date', 'date', 'text','percent','currency','currency','currency','currency'],
     nData: {},
     widths: [],
     paginateFlag: true,
@@ -50,7 +52,7 @@ export class PaytReqInvestmentComponent implements OnInit {
     checkFlag: true,
     addFlag: true,
     deleteFlag: true,
-    total: [null, null, null,null,null,null,null,null, 'Total', 'bankCharge', 'witholdingTax', 'investment', 'maturityValue'],
+    total: [null, null, null,null,null,null,null,null,null, 'Total', 'bankCharge', 'witholdingTax', 'investment', 'maturityValue'],
     genericBtn: 'Save',
   }
 

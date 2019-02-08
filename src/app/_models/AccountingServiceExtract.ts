@@ -178,14 +178,14 @@ export class InputVatUpload {
 	taxableNetOfVat: number
 	exempt: number
 	zeroRated: number
-	servces: string
-	capitalGood:string
-	goodsOtherThanCapitalGoods: string
+	services: number
+	capitalGood:number
+	goodsOtherThanCapitalGoods: number
 	taxRate: number
 	totalInputTax: number
 
 
-	constructor(taxableMonth: string,seqNo: string,tin: string,registeredName: string,lastName: string,firstName: string,mi: string,address1: string,address2: string,totalPurchase: number,taxableNetOfVat: number,exempt: number,zeroRated: number,servces: string,capitalGood:string,goodsOtherThanCapitalGoods: string,taxRate: number,totalInputTax: number ){
+	constructor(taxableMonth: string,seqNo: string,tin: string,registeredName: string,lastName: string,firstName: string,mi: string,address1: string,address2: string,totalPurchase: number,taxableNetOfVat: number,exempt: number,zeroRated: number,services: number,capitalGood:number,goodsOtherThanCapitalGoods: number,taxRate: number,totalInputTax: number ){
 		
 		this.taxableMonth = taxableMonth;
 		this.seqNo = seqNo;
@@ -200,7 +200,7 @@ export class InputVatUpload {
 		this.taxableNetOfVat = taxableNetOfVat;
 		this.exempt = exempt;
 		this.zeroRated = zeroRated;
-		this.servces = servces;
+		this.services = services;
 		this.capitalGood = capitalGood;
 		this.goodsOtherThanCapitalGoods = goodsOtherThanCapitalGoods;
 		this.taxRate = taxRate;
