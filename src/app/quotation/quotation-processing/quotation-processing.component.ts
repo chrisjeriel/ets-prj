@@ -230,9 +230,8 @@ export class QuotationProcessingComponent implements OnInit {
         //neco was here
         this.existingQuotationNo = "";
         for(var i = 0; i < this.splittedLine.length; i++){
-            if(this.line == this.splittedLine[i][0] && this.riskName == this.riskNameList[i]){
+            if(this.line == this.splittedLine[i][0] && this.riskName == this.riskNameList[i] && this.riskNameList[i] != ""){
                 //this.existingQuoteNoIndex = i;
-                console.log("yeet");
                 this.existingQuotationNo = this.passData.tableData[i].quotationNo;
                 break;
             }
