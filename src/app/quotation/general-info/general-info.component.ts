@@ -50,15 +50,16 @@ export class GeneralInfoComponent implements OnInit {
 				this.typeOfCession = params['typeOfCession'];
 				this.quotationNum = params['quotationNo'];
 				this.typeOfCession = this.typeOfCession.toUpperCase();
+				/*console.log(this.line);*/
 			}
 		});
-
+		console.log(this.line);
 
 		if (this.quotationService.toGenInfo[0] == "edit") {
-				this.quotationService.getQuoteGenInfo(null,this.quotationNum).subscribe((data: any) => {
+				this.quotationService.getQuoteGenInfo(1,'').subscribe((data: any) => {
 				this.genInfoData = data.quotationGeneralInfo;
 				console.log(this.genInfoData);
-				this.genInfoData.cessionDesc = this.genInfoData.cessionDesc.toUpperCase();
+				/*this.genInfoData.cessionDesc = this.genInfoData.cessionDesc.toUpperCase();*/
 			});
 
 /*			console.log(this.quotationService.rowData);*/

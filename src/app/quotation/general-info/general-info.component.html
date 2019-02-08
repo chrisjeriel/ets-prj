@@ -47,10 +47,10 @@
 									<div class="input-group ig-cust">
 										<label class="form-control-sm col-sm-2">Type of Cession</label>
 										
-										<input appRequired type="text" class="form-control form-control-sm" [(ngModel)]="genInfoData.cessionDesc">
+										<input appRequired type="text" class="form-control form-control-sm" [(ngModel)]="typeOfCession">
 
 										<label class="form-control-sm col-sm-2">Line Class</label>
-										<input type="text" [(ngModel)]="genInfoData.lineCd" class="form-control form-control-sm" style="margin-right: 1px;"
+										<input type="text" [(ngModel)]="line" class="form-control form-control-sm" style="margin-right: 1px;"
 										 appRequired>
 										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 										<span>&nbsp;</span>
@@ -64,26 +64,26 @@
 									</div>
 									<div class="input-group ig-cust">
 										<label class="form-control-sm col-sm-2">Ceding Company</label>
-										<input type="text" class="form-control form-control-sm col-sm-2" appRequired [(ngModel)]="genInfoData.cedingId">
+										<input type="text" class="form-control form-control-sm col-sm-2" appRequired [ngModel]="genInfoData!== undefined ? genInfoData.cedingId : ''">
 										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 										<span>&nbsp;</span>
-										<input type="text" [(ngModel)]="genInfoData.cedingName" class="form-control form-control-sm col-sm ig-mrgn"
+										<input type="text" class="form-control form-control-sm col-sm ig-mrgn" [ngModel]="genInfoData!== undefined ? genInfoData.cedingName : ''"
 										 style="margin-left: 5px;" appRequired>
 									</div>
 									<div *ngIf="checkTypeOfCession() ||  typeOfCession == 'RETROCESSION'" class="input-group ig-cust">
 										<label class="form-control-sm col-sm-2">Reinsurance From</label>
 										<input type="text" class="form-control form-control-sm col-sm-2" appRequired>
-										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>re
+										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 										<span>&nbsp;</span>
 										<input type="text" [(ngModel)]="quotationGenInfo.cedingCompany" class="form-control form-control-sm col-sm ig-mrgn"
 										 style="margin-left: 5px;" appRequired>
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Intermediary</label>
-										<input type="text" class="form-control form-control-sm col-sm-2"  [(ngModel)]="genInfoData.intmId" appRequired>
+										<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="genInfoData!== undefined ? genInfoData.intmId : ''" appRequired>
 										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 										<span>&nbsp;</span>
-										<input type="text" class="form-control form-control-sm col-sm ig-mrgn" [(ngModel)]="genInfoData.intmName" style="margin-left: 5px;" appRequired>
+										<input type="text" class="form-control form-control-sm col-sm ig-mrgn" [ngModel]="genInfoData!== undefined ? genInfoData.intmName : ''" style="margin-left: 5px;" appRequired>
 									</div>
 									<!-- <div *ngIf="ocChecked" class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Open Pol No</label>
@@ -210,7 +210,7 @@
 									</div>
 									<div class="input-group ig-cust">
 										<label class="form-control-sm col-sm-4">Requested By</label>
-										<input appRequired type="text" class="form-control form-control-sm"  [(ngModel)]="genInfoData.reqBy">
+										<input appRequired type="text" class="form-control form-control-sm" [ngModel]="genInfoData!== undefined ? genInfoData.reqBy : ''" >
 									</div>
 									<div class="input-group ig-cust">
 										<label class="form-control-sm col-sm-4">Request Date</label>
@@ -345,14 +345,14 @@
 	<div class="row">
 		<div class="col-sm-8">
 			<ng-container [ngSwitch]="true">
-				<ng-container *ngSwitchCase="quotationService.toGenInfo[1]  === 'CAR'">
+				<ng-container *ngSwitchCase="this.line == 'CAR'">
 					<!-- FIELDSET FOR TYPE [CAR] -->
 					<fieldset class="scheduler-border">
 						<legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-6" style="margin-top: 10px;">
 								<label class="form-control-sm col-sm-2">Principal</label>
-								<input appRequired type="text" class="form-control form-control-sm col-sm-2" [(ngModel)="principalCd"]>
+								<input appRequired type="text" class="form-control form-control-sm col-sm-2" [ngModel]="principalCd">
 								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 								<span>&nbsp;</span>
 								<input appRequired type="text" [(ngModel)]="quotationGenInfo.principal" class="form-control form-control-sm col-sm-8 ig-mrgn"
