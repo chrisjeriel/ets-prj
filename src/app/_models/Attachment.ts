@@ -1,11 +1,11 @@
 export class AttachmentInfo {
-	filePath: string;
+	fileName: string;
 	description: string;
 	
 	 
 
-	constructor(filePath: string,description: string){
-		this.filePath = filePath;
+	constructor(fileName: string,description: string){
+		this.fileName = fileName;
 		this.description = description;
 	}
 

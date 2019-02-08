@@ -342,7 +342,7 @@ dateParser(arr){
     setRisks(data){
         this.riskCd = data.riskId;
         this.riskName = data.riskName;
-        this.onClickAdd();
+        this.onClickAdd(1);
     }
 
 }

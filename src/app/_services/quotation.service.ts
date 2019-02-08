@@ -601,7 +601,7 @@ export class QuotationService {
              
         let params:any  = {
             quoteIdOc: quoteIdOc,
-            attachmentsList: attachmentListOc
+            attachmentsOcList: attachmentListOc
         };
         let header : any = {
             headers: new HttpHeaders({
