@@ -146,11 +146,13 @@ export class QuotationService {
 
     getEndorsements(quoteId: string, quotationNo: string, optionNo: number) {
          if (quoteId == '' || quoteId == null ) {
-         return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteEndorsements?quotationNo="+quotationNo+"&optionId="+optionNo);
+               return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteEndorsements?quotationNo="+quotationNo+"&optionId="+optionNo);
+         } else if (quotationNo == '' || quotationNo == null ) {
+               return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteEndorsements?quoteId="+quoteId+"&optionId="+optionNo);
          } else {
-         return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteEndorsement?quoteId="+quoteId+"&quotationNo="+quotationNo+"&optionId="+optionNo);
-     
-    }
+               return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteEndorsements?quoteId="+quoteId+"&quotationNo="+quotationNo+"&optionId="+optionNo);
+         }
+           
 
 
      /*   this.endorsementData = [

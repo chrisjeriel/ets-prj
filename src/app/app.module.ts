@@ -247,6 +247,7 @@ import { GenerateJvServiceComponent } from './accounting-service/journal-voucher
 import { JvEntryServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-entry-service/jv-entry-service.component';
 import { JvPreviewServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-preview-service/jv-preview-service.component';
 import { JvAttachmentsServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-attachments-service/jv-attachments-service.component';
+import { MtnLineComponent } from './maintenance/mtn-line/mtn-line.component';
 
 
 @NgModule({
@@ -501,6 +502,7 @@ import { JvAttachmentsServiceComponent } from './accounting-service/journal-vouc
         JvEntryServiceComponent,
         JvPreviewServiceComponent,
         JvAttachmentsServiceComponent,
+        MtnLineComponent,
     ],
 
     providers: [

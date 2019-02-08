@@ -39,4 +39,8 @@ export class MaintenanceService{
 	getMtnBlock(){
 		return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMaintenanceBlock');
 	}
+
+	getLineLOV() {
+       	return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMntLine');
+    }
 }

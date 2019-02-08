@@ -50,10 +50,10 @@
             <div class="custom-row-inline-inset">
                 <div class="input-group">
                     <label class="form-control-sm col-sm-3">Line</label>
-                    <input type="text" [(ngModel)]="line" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important">
-                    <div class="text-search-ico" (click)="showApprovalModal(content)"><a><i class="fa fa-search"></i></a></div>
+                    <input type="text" [(ngModel)]="line" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" readonly>
+                    <div class="text-search-ico" (click)="modalService.dismissAll();showLineLOV()"><a><i class="fa fa-search"></i></a></div>
                     &nbsp;&nbsp;
-                    <input type="text" class="form-control form-control-sm">
+                    <input type="text" class="form-control form-control-sm" [(ngModel)]="description" readonly>
                 </div>
                 <div class="input-group" style="margin-top: -12px">
                     <label class="form-control-sm col-sm-3" for="xx">Type of Cession</label>
@@ -99,3 +99,4 @@
     </div>
 </app-modal>
 <!-- End Risk LOV Modal -->
+<app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
