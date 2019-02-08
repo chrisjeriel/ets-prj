@@ -41,15 +41,36 @@ export class CoverageComponent implements OnInit {
   optionsData: any[] = [];
   optionsData2: any[] = [];
   selOptions: any[] = [];
+  savedData = [];
+
+  coverageData: any = {
+    currency: null,
+    exchRt: null,
+    totalSi: null,
+    sectionI: null,
+    sectionII: null,
+    sectionIII: null,
+    reamrks: null
+  }
 
   passData: any = {
-    tHeader: [],
+    tHeader: ['Cover Code','Section','Bullet No','Sum Insured','Add Sl'],
     tableData:[],
     magnifyingGlass: [],
     options: [],
     dataTypes: [],
     opts: [],
-    nData: new QuotationCoverageInfo(null, null, null, null, null),
+    nData: {
+      createDate: [0,0,0],
+      createUser: "PCPR",
+      coverCode:null,
+      section:null,
+      bulletNo:null,
+      sumInsured:null,
+      addSl:null,
+      updateDate: [0,0,0],
+      updateUser: "PCPR"
+    },
     checkFlag: true,
     selectFlag: false,
     addFlag: true,
@@ -68,7 +89,6 @@ export class CoverageComponent implements OnInit {
 
   multiSelectHeaderTxt: string = "";
   multiSelectData: any[] = [];
-  coverageData: any;
   dataLoaded:boolean = false;
 
   nData: QuotationCoverageInfo = new QuotationCoverageInfo(null, null, null, null, null);
@@ -122,12 +142,6 @@ export class CoverageComponent implements OnInit {
     this.selOptions.push({ selector: "bulletNo", vals: ["1", "1.2", "1.3"] });
     this.selOptions.push({ selector: "sortSe", vals: ["10", "20", "30"] });
 
-    this.passData.tHeader.push("Cover Code");
-    this.passData.tHeader.push("Section");
-    this.passData.tHeader.push("Bullet No");
-    this.passData.tHeader.push("Sum Insured");
-    this.passData.tHeader.push("Add Sl");
-
     this.passData.dataTypes.push("text");
     this.passData.dataTypes.push("select");
     this.passData.dataTypes.push("select");
@@ -154,18 +168,21 @@ export class CoverageComponent implements OnInit {
     // this.quotationCoverageInfo.remarks = "MOCK DATA";
   }
 
-  pindot(){
-    this.quotationService.getCoverageInfo().subscribe((data: any) => {
-      while(this.passData.tableData.length > 0) {
-          this.passData.tableData.pop();
-      }
-        this.coverageData = data.quotation.project.coverage;
-        // this.passData.tableData = data.quotation.project.coverage.sectionCovers;
-        for (var i = data.quotation.project.coverage.sectionCovers.length - 1; i >= 0; i--) {
-          this.passData.tableData.push(data.quotation.project.coverage.sectionCovers[i]);
+  /*saveData(){
+    this.savedData = [];
+    this.savedData.push(this.coverageData);
+   for (var i = 0 ; this.passData.tableData.length > i; i++) {
+      if(this.passData.tableData[i].edited){
+          this.savedData.push(this.passData.tableData[i]);
+          this.savedData[this.savedData.length-1].createDate = new Date(this.savedData[this.savedData.length-1].createDate[0],this.savedData[this.savedData.length-1].createDate[1]-1,this.savedData[this.savedData.length-1].createDate[2]).toISOString();
+          this.savedData[this.savedData.length-1].updateDate = new Date(this.savedData[this.savedData.length-1].updateDate[0],this.savedData[this.savedData.length-1].updateDate[1]-1,this.savedData[this.savedData.length-1].updateDate[2]).toISOString();
         }
-        this.table.refreshTable();
-    }); 
-  }
+      // delete this.savedData[i].tableIndex;
+    }
+    //this.quotationService.saveQuoteCoverage(1,1,this.savedData).subscribe((data: any) => {});
+    for(var i=0; i < this.saveData.length; i++){
+      console.log(this.saveData[i]);
+    }
+  }*/
 
 }

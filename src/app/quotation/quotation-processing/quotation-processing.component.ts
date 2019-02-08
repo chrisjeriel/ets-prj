@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { QuotationService } from '../../_services';
-import { QuotationProcessing, Risks } from '../../_models';
+import { QuotationService, UnderwritingService } from '../../_services';
+import { QuotationProcessing, Risks, CedingCompanyList } from '../../_models';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
@@ -156,8 +156,60 @@ export class QuotationProcessingComponent implements OnInit {
         pageID: 2
     }
 
+    passDataCedingCompany: any = {
+        tableData : [],
+        tHeader: ['Active','Govt','Member','Co No','Name','Abbreviation','Address','Membership Date','Termination Date','Inactive Date'],
+        dataTypes:['checkbox','checkbox','checkbox','sequence-3','text','text','text','date','date','date'],
+        addFlag: true,
+        editFlag: true,
+        pagination: true,
+        pageStatus: true,
+        searchFlag: true,
+        pageLength: 10,
+        resizable: [false,false,false,false,true,false,true,false,false,false],
+        filters: [
+            {
+                key: 'coNo',
+                title:'Company No',
+                dataType: 'text'
+            },
+            {
+                key: 'name',
+                title:'Name',
+                dataType: 'text'
+            },
+            {
+                key: 'abbreviation',
+                title:'Abbreviation',
+                dataType: 'text'
+            },
+            {
+                key: 'address',
+                title:'Address',
+                dataType: 'text'
+            },
+            {
+                key: 'membershipDate',
+                title:'Membership Date',
+                dataType: 'date'
+            },
+            {
+                key: 'terminationDate',
+                title:'Termination Date',
+                dataType: 'date'
+            },
+            {
+                key: 'inactiveDate',
+                title:'Inactive Date',
+                dataType: 'date'
+            }
+        ],
+        pageID: 6,
+        keys:['active','govt','member','coNo','name','abbreviation','address','membershipDate','terminationDate','inactiveDate']
+    };
+
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private router: Router
-        , public activeModal: NgbActiveModal, private titleService: Title
+        , public activeModal: NgbActiveModal, private titleService: Title, private underwritingService: UnderwritingService 
         ) { }
 
 
@@ -197,6 +249,17 @@ export class QuotationProcessingComponent implements OnInit {
 
             this.table.refreshTable();
         });
+
+
+
+        this.underwritingService.getCedingCompanyList().subscribe((data: any) => {
+                /*for(var i=0;i< data.cedingcompany.length;i++){
+                    this.passDataCedingCompany.tableData.push(new CedingCompanyList(data.cedingcompany[i].activeTag,data.cedingcompany[i].govtTag,data.cedingcompany[i].membershipTag,data.cedingcompany[i].cedingId,data.cedingcompany[i].cedingName,data.cedingcompany[i].cedingAbbr,data.cedingcompany[i].address,(data.cedingcompany[i].membershipDate == null ? null : new Date(data.cedingcompany[i].membershipDate[0],data.cedingcompany[i].membershipDate[1]-1,data.cedingcompany[i].membershipDate[2])),(data.cedingcompany[i].terminationDate == null ? null : new Date(data.cedingcompany[i].terminationDate[0],data.cedingcompany[i].terminationDate[1]-1,data.cedingcompany[i].terminationDate[2])),(data.cedingcompany[i].inactiveDate == null ? null : new Date(data.cedingcompany[i].inactiveDate[0],data.cedingcompany[i].inactiveDate[1]-1,data.cedingcompany[i].inactiveDate[2]))));
+                }*/
+                 this.passDataCedingCompany.tableData.push(new CedingCompanyList(data.cedingcompany[0].activeTag,data.cedingcompany[0].govtTag,data.cedingcompany[0].membershipTag,data.cedingcompany[0].cedingId,data.cedingcompany[0].cedingName,data.cedingcompany[0].cedingAbbr,data.cedingcompany[0].address,(data.cedingcompany[0].membershipDate == null ? null : new Date(data.cedingcompany[0].membershipDate[0],data.cedingcompany[0].membershipDate[1]-1,data.cedingcompany[0].membershipDate[2])),(data.cedingcompany[0].terminationDate == null ? null : new Date(data.cedingcompany[0].terminationDate[0],data.cedingcompany[0].terminationDate[1]-1,data.cedingcompany[0].terminationDate[2])),(data.cedingcompany[0].inactiveDate == null ? null : new Date(data.cedingcompany[0].inactiveDate[0],data.cedingcompany[0].inactiveDate[1]-1,data.cedingcompany[0].inactiveDate[2]))));
+                 console.log(data)
+            });
+        
     }
 
     onClickAdd(event) {
@@ -292,8 +355,6 @@ onRowClick(event) {
     this.selectedQuotation = event;
     this.disabledEditBtn = false;
     this.disabledCopyBtn = false;
-
-    console.log(this.selectedQuotation);
 }
 
 onRowDblClick(event) {
@@ -325,4 +386,8 @@ closeModalPls(content) {
 dateParser(arr){
     return new Date(arr[0] + '-' + arr[1] + '-' + arr[2]);   
 }
+
+    showCedingModal() {
+            $('#cedingCompany #modalBtn').trigger('click');
+    }
 }

@@ -608,6 +608,20 @@ export class QuotationService {
         return this.http.post('http://localhost:8888/api/quote-service/saveQuoteCoverage', JSON.stringify(params), header);
     }
 
+    saveQuoteCoverageOc(quoteId:number,projId: number ,coverageOcData:any[]){
+        let params:any  = {
+            quoteId: quoteId,
+            projId: projId,
+            coverageOcData:coverageOcData
+        };
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+
+        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteCoverageOc', JSON.stringify(params), header);
+    }
     
 
 }

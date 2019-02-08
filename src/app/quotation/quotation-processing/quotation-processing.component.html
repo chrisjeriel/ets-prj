@@ -22,7 +22,7 @@
 
 <!-- Copy Modal -->
 <app-modal class="hidden" id="copyModal" [mdlConfig]="mdlConfig">
-    <div header>Quotation No.</div>
+    <!-- <div header>Quotation No.</div>
     <div body>
         <fieldset class="scheduler-border">
             <div class="custom-row-inline-inset" style="text-align: center">
@@ -37,6 +37,46 @@
         <div class="d-flex justify-content-center">
             <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
             <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+        </div>
+    </div> -->
+    <div header>Copy Quotation</div>
+    <div body>
+        <fieldset class="scheduler-border">
+                <div class="custom-row-inline-inset" style="text-align: center">
+                    <div class="input-group">
+                        <label class="form-control-sm col-sm-3">Ceding Company</label>
+                        <input type="text"class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important">
+                        <div class="text-search-ico" (click)="showCedingModal()"><a><i class="fa fa-search"></i></a></div>
+                        &nbsp;&nbsp;
+                        <input type="text" class="form-control form-control-sm">
+                    </div>
+                    <div class="input-group">
+                        <label class="form-control-sm col-sm-3">Risk</label>
+                        <input type="text"class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important">
+                        <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+                        &nbsp;&nbsp;
+                        <input type="text" class="form-control form-control-sm">
+                    </div>
+                </div>
+        </fieldset>
+    </div>
+    <div footer>
+        <div class="d-flex justify-content-center">
+            <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+            <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+        </div>
+    </div>
+</app-modal>
+
+<app-modal id="cedingCompany" class="d-none">
+    <div header>List of Values</div>
+    <div body>
+        <app-cust-non-datatable [passData]="passDataCedingCompany"></app-cust-non-datatable>
+    </div>
+    <div footer>
+        <div class="d-flex justify-content-center">
+            <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+            <button class="cust-btn" type="button" (click)="modalService.dismissAll(); okBtnClick($event);"><a>Ok</a></button>
         </div>
     </div>
 </app-modal>

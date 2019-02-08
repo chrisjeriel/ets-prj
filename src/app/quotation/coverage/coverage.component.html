@@ -29,7 +29,7 @@
             <div class="col-sm-2">
             </div>
             <div class="col-sm-8" style="padding-top: 8px; padding-bottom: 15px;">
-                 <app-cust-editable-non-datatable  [passData]="passData">
+                 <app-cust-editable-non-datatable  [passData]="passData" (onDataChange)="passData.tableData=$event">
                 </app-cust-editable-non-datatable>
             </div>
             <div class="col-sm-2"></div>
@@ -111,7 +111,7 @@
             <div class="col-md-13 text-center">
                 <div class="cust-btn-container" style="margin-top: 10px;">
                     <button type="button" class="cust-btn"><a>Cancel</a></button>
-                    <button type="button" class="cust-btn" (click)="pindot()"><a>Save</a></button>
+                    <button type="button" class="cust-btn" (click)="saveData()"><a>Save</a></button>
                 </div>
             </div>
         </div>
