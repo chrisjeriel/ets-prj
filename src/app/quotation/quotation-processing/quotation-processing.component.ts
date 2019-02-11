@@ -28,6 +28,7 @@ export class QuotationProcessingComponent implements OnInit {
     line: string = "";
     splittedLine: string[] = [];
     quoTypeOfCession = "";
+    riskCd: string = "";
     riskName: string = "";
     riskNameList: string[] = [];
     //existingQuoteNoIndex: number = 0;
@@ -142,7 +143,7 @@ export class QuotationProcessingComponent implements OnInit {
         ],
         pageLength: 10,
         expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, addFlag: true, editFlag: true, copyFlag: true, pageStatus: true, pagination: true, pageID: 1,
-        keys: ['quotationNo','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','insuredDesc','riskName','objectDesc','site','policyNo','currencyCd','issueDate','expiryDate','reqBy','createUser']
+        keys: ['quotationNo','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','insuredDesc','riskName','objectDesc','site','policyNo','currencyCd','issueDate','expiryDate','reqBy','createUser'],
     }
 
     riskData: any = {
@@ -171,6 +172,8 @@ export class QuotationProcessingComponent implements OnInit {
         this.quotationService.getQuoProcessingData().subscribe(data => {
             var records = data['quotationList'];
             this.fetchedData = records;
+            console.log("fetched");
+            console.log(this.fetchedData);
             for(let rec of records){
                 //neco was here
                 this.splittedLine.push(rec.quotationNo.split("-", 1));
@@ -335,10 +338,38 @@ dateParser(arr){
     return new Date(arr[0] + '-' + arr[1] + '-' + arr[2]);   
 }
 
+
 setCedingcompany(data){
         this.cedingCode = data.coNo;
         this.cedingName = data.name;
 }
 
+
+//neco was here
+    toInternalCompetition(){
+        let data : any = {
+            adviceNo: 0,
+            cedingId: 6, //hardcoded
+            cedingRepId: 'cedingrepid6',
+            createDate: new Date(),
+            createUser: 'Trinidad',
+            option: 'option1',
+            quoteId: 6,
+            updateDate: new Date(),
+            updateUser: 'Trinidad',
+            wordings: ''
+
+        }
+        this.quotationService.saveQuoteCompetition(data).subscribe((data: any) => {
+            console.log(data);
+        });
+    }
+//neco ends here
+
+    setRisks(data){
+        this.riskCd = data.riskId;
+        this.riskName = data.riskName;
+        this.onClickAdd(1);
+    }
 
 }

@@ -19,7 +19,9 @@
 	<fieldset class="scheduler-border">
 		<legend class="scheduler-border">Advice Details	</legend>
 		<!--<app-cust-editable-table [checkFlag]="true" [addFlag]="true" [deleteFlag]="true" [editFlag]="false" [nData]="nData" [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes" [opts]="opts" [magnifyingGlass]="magnifyingGlass" (rowClick)="clickRow($event)"></app-cust-editable-table>-->
-        <app-cust-editable-non-datatable [passData]="intCompData"></app-cust-editable-non-datatable>
+		<div style="padding-top: 8px;">
+        	<app-cust-editable-non-datatable [passData]="intCompData"></app-cust-editable-non-datatable>
+		</div>
 	</fieldset>
 </div>
 <div class="form-row">
