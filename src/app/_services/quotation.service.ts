@@ -618,7 +618,8 @@ export class QuotationService {
                 'Content-Type': 'application/json'
             })
         }
-        console.log(JSON.stringify(saveQuoteCompetitionParams));
+        //console.log(JSON.stringify(saveQuoteCompetitionParams));
+        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteCompetition', JSON.stringify(saveQuoteCompetitionParams), header);
     }
 
 }

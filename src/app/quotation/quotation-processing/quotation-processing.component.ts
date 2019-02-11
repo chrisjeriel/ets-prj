@@ -141,7 +141,7 @@ export class QuotationProcessingComponent implements OnInit {
         ],
         pageLength: 10,
         expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, addFlag: true, editFlag: true, copyFlag: true, pageStatus: true, pagination: true, pageID: 1,
-        keys: ['quotationNo','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','insuredDesc','riskName','objectDesc','site','policyNo','currencyCd','issueDate','expiryDate','reqBy','createUser']
+        keys: ['quotationNo','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','insuredDesc','riskName','objectDesc','site','policyNo','currencyCd','issueDate','expiryDate','reqBy','createUser'],
     }
 
     riskData: any = {
@@ -331,11 +331,21 @@ dateParser(arr){
 //neco was here
     toInternalCompetition(){
         let data : any = {
-            quoteId: 'test',
-            things: 'test',
-            reason: 'just want to see how this object stringifies',
+            adviceNo: 0,
+            cedingId: 6, //hardcoded
+            cedingRepId: 'cedingrepid6',
+            createDate: new Date(),
+            createUser: 'Trinidad',
+            option: 'option1',
+            quoteId: 6,
+            updateDate: new Date(),
+            updateUser: 'Trinidad',
+            wordings: ''
+
         }
-        this.quotationService.saveQuoteCompetition(data);
+        this.quotationService.saveQuoteCompetition(data).subscribe((data: any) => {
+            console.log(data);
+        });
     }
 //neco ends here
 
