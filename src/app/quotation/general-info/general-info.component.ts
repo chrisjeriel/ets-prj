@@ -146,51 +146,24 @@ export class GeneralInfoComponent implements OnInit {
 		if (this.quotationService.toGenInfo[0] == "edit") {
 				this.quotationService.getQuoteGenInfo('', this.plainQuotationNo(this.quotationNo)).subscribe(data => {
 				
-				this.project = (data['project'] == null) ? this.project : data['project'];
-				this.genInfoData = (data['quotationGeneralInfo'] == null) ? this.genInfoData : data['quotationGeneralInfo'];
-			});
+					if(data['quotationGeneralInfo'] != null) {
+						this.genInfoData = data['quotationGeneralInfo'];
+						
+						this.genInfoData.createDate = this.dateParser(this.genInfoData.createDate);
+						this.genInfoData.expiryDate = this.dateParser(this.genInfoData.expiryDate);
+						this.genInfoData.issueDate = this.dateParser(this.genInfoData.issueDate);
+						this.genInfoData.printDate = (this.genInfoData.printDate == null) ? '' : this.dateParser(this.genInfoData.issueDate);
+						this.genInfoData.reqDate = this.dateParser(this.genInfoData.reqDate);
+						this.genInfoData.updateDate = this.dateParser(this.genInfoData.updateDate);
+					}
 
-/*			console.log(this.quotationService.rowData);*/
-			this.quotationGenInfo = new QuotationGenInfo();
-			this.quotationGenInfo.line = "";
-			this.quotationGenInfo.year = 0;
-			this.quotationGenInfo.seqNo;
-			this.quotationGenInfo.reqSeq;
-			this.quotationGenInfo.histNo = "MOCK DATA";
-			this.quotationGenInfo.branch = this.rowData[1];
-			this.quotationGenInfo.lineClass = this.quotationNo[0];
-			this.quotationGenInfo.policyNumber = 0;
-			this.quotationGenInfo.printedBy = "MOCK DATA";
-			this.quotationGenInfo.printDate;
-			this.quotationGenInfo.cedingCompany = this.rowData[4];
-			this.quotationGenInfo.quoteStatus = this.rowData[3];
-			this.quotationGenInfo.quoteDate = new Date(this.rowData[11]);
-			this.quotationGenInfo.validUntil = new Date(this.rowData[12]);
-			this.quotationGenInfo.requestedBy = this.rowData[13];
-			this.quotationGenInfo.requestedDate;
-			this.quotationGenInfo.requestedMode = "MOCK DATA";
-			this.quotationGenInfo.principal = this.rowData[5];
-			this.quotationGenInfo.contractor = this.rowData[6];
-			this.quotationGenInfo.insured = this.rowData[7];
-			this.quotationGenInfo.propertyProjectDescription = "MOCK DATA";
-			this.quotationGenInfo.site = "MOCK DATA";
-			this.quotationGenInfo.durationTesting = "MOCK DATA";
-			this.quotationGenInfo.risk = this.rowData[8];
-			this.quotationGenInfo.object = this.rowData[9];
-			this.quotationGenInfo.location = this.rowData[10];
-			this.quotationGenInfo.share = "MOCK DATA";
-			this.quotationGenInfo.partOf100 = "MOCK DATA";
-			this.quotationGenInfo.intermediary = "MOCK DATA";
-			this.quotationGenInfo.governmentFlag = "MOCK DATA";
-			this.quotationGenInfo.indicative = "MOCK DATA";
-			this.quotationGenInfo.openCover = "MOCK DATA";
-			this.quotationGenInfo.declaration = "MOCK DATA";
-			this.quotationGenInfo.openingParagraph = "MOCK DATA";
-			this.quotationGenInfo.closingParagraph = "MOCK DATA";
-			this.quotationGenInfo.createdBy = "MOCK DATA";
-			this.quotationGenInfo.dateCreated;
-			this.quotationGenInfo.lastUpdate;
-			this.quotationGenInfo.lastUpdateBy = "MOCK DATA";
+					if(data['project'] != null) {
+						this.project = data['project'];
+						this.project.createDate = this.dateParser(this.project.createDate);
+						this.project.updateDate = this.dateParser(this.project.updateDate);
+					}
+					
+				});
 
 		} else {
 
@@ -284,8 +257,8 @@ export class GeneralInfoComponent implements OnInit {
 	}
 
 	setPrincipal(data){
-		this.quotationGenInfo.principal = data.insuredName;
-		this.principalCd = data.insuredId;
+		this.genInfoData.principalName = data.insuredName;
+		this.genInfoData.principalId = data.insuredId;
 	}
 
 	showContractorLOV(){
@@ -293,8 +266,8 @@ export class GeneralInfoComponent implements OnInit {
 	}
 
 	setContractor(data){
-		this.quotationGenInfo.contractor = data.insuredName;
-		this.contractorCd = data.insuredId;
+		this.genInfoData.contractorName = data.insuredName;
+		this.genInfoData.contractorId = data.insuredId;
 	}
 
 	showCurrencyModal(){
@@ -302,8 +275,8 @@ export class GeneralInfoComponent implements OnInit {
 	}
 
 	setCurrency(data){
-		this.currencyAbbr = data.currencyAbbr;
-		this.currencyRt = data.currencyRt;
+		this.genInfoData.currencyCd = data.currencyAbbr;
+		this.genInfoData.currencyRt = data.currencyRt;
 	}
 
 	plainQuotationNo(data: string){
@@ -321,6 +294,18 @@ export class GeneralInfoComponent implements OnInit {
         this.genInfoData.cedingName = event.name;
     }
 
+    showInsuredLOV(){
+		$('#insuredLOV #modalBtn').trigger('click');
+	}
+
+	setInsured(data){
+		//this.genInfoData.principal = data.insuredId;
+		this.genInfoData.insuredDesc = data.insuredName;
+	}
+
+	dateParser(arr){
+    	return new Date(arr[0] + '-' + arr[1] + '-' + arr[2]).toISOString().split('T')[0];   
+	}
 }
 export interface SelectRequestMode {
 	name: string;
