@@ -186,7 +186,8 @@ export class QuotationService {
     }
 
     getAttachmentOc(){
-        return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteAttachmentOc");
+        const params = new HttpParams().set('quoteIdOc', '');
+        return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteAttachmentOc", {params});
     }
 
     getDummyEditableInfo() {
@@ -592,5 +593,68 @@ export class QuotationService {
 
         return this.http.post('http://localhost:8888/api/quote-service/saveQuoteAttachment', JSON.stringify(params), header);
     }
+
+
+    saveQuoteCoverage(quoteId:number,projId: number ,coverageData:any[]){
+        let params:any  = {
+            quoteId: quoteId,
+            projId: projId,
+            coverageData:coverageData
+            };
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+
+              return this.http.post('http://localhost:8888/api/quote-service/saveQuoteCoverage', JSON.stringify(params), header);
+    }
+
+
+    saveQuoteAttachmentOc(quoteIdOc:number ,attachmentListOc:any[]){
+        /*const params = new HttpParams()
+             .set('quoteId',quoteId.toString())
+             .set('attachmentsList',JSON.stringify(attachmentList))*/
+             
+        let params:any  = {
+            quoteIdOc: quoteIdOc,
+            attachmentsOcList: attachmentListOc
+        }
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+           return this.http.post('http://localhost:8888/api/quote-service/saveQuoteAttachmentOc', JSON.stringify(params), header);
+    }
+
+      
+    saveQuoteCoverageOc(quoteId:number,projId: number ,coverageOcData:any[]){
+        let params:any  = {
+            quoteId: quoteId,
+            projId: projId,
+            coverageOcData:coverageOcData
+        };
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+
+        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteCoverageOc', JSON.stringify(params), header);
+    }
+    
+
+     
+    saveQuoteCompetition(saveQuoteCompetitionParams: any){
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+        //console.log(JSON.stringify(saveQuoteCompetitionParams));
+        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteCompetition', JSON.stringify(saveQuoteCompetitionParams), header);
+    }
+
 
 }
