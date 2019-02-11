@@ -94,11 +94,13 @@ export class QuoteEndorsementComponent implements OnInit {
 /*        this.tableData = this.quotationService.getEndorsements(1);*/
         if (this.quotationService.toGenInfo[0] == "edit") {
             console.log("Edit- Quotation");
-            this.quotationService.getQuoteGenInfo(null,this.quotationNum).subscribe((data: any) => {
+        /*    this.quotationService.getQuoteGenInfo(null,this.quotationNum).subscribe((data: any) => {*/
+            this.quotationService.getQuoteGenInfo(1,'CAR-2019-00010-00-01').subscribe((data: any) => {
                 this.genInfoData = data.quotationGeneralInfo; 
                 this.projectData = data.project;                   
             });
-            this.quotationService.getEndorsements(null,this.quotationNum,1).subscribe((data: any) => {
+/*            this.quotationService.getEndorsements(null,this.quotationNum,1).subscribe((data: any) => {*/
+            this.quotationService.getEndorsements('1','CAR-2019-00010-00-01',1).subscribe((data: any) => {
                /* while(this.endorsementsData.tableData.length > 0) {
                       this.endorsementsData.tableData.pop();
                 }*/
@@ -117,7 +119,8 @@ export class QuoteEndorsementComponent implements OnInit {
     }
 
     clickRow(event) {
-           this.quotationService.getEndorsements(null,this.quotationNum,event.optionNo).subscribe((data: any) => {
+/*           this.quotationService.getEndorsements(null,this.quotationNum,event.optionNo).subscribe((data: any) => {*/
+           this.quotationService.getEndorsements('1','CAR-2019-00010-00-01',event.optionNo).subscribe((data: any) => {
                  while(this.endorsementData.tableData.length > 0) {
                   this.endorsementData.tableData.pop();
               }    

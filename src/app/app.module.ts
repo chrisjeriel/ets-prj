@@ -250,6 +250,8 @@ import { JvAttachmentsServiceComponent } from './accounting-service/journal-vouc
 import { MtnObjectComponent } from './maintenance/mtn-object/mtn-object.component';
 import { MtnProvinceComponent } from './maintenance/mtn-region/mtn-province/mtn-province.component';
 import { MtnQuotationWordingsComponent } from './maintenance/mtn-quotation-wordings/mtn-quotation-wordings.component';
+import { MtnRiskComponent } from './maintenance/mtn-risk/mtn-risk.component';
+import { CedingCompanyComponent } from './underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
 
 
 @NgModule({
@@ -507,6 +509,8 @@ import { MtnQuotationWordingsComponent } from './maintenance/mtn-quotation-wordi
         MtnObjectComponent,
         MtnProvinceComponent,
         MtnQuotationWordingsComponent,
+        MtnRiskComponent,
+        CedingCompanyComponent,
     ],
 
     providers: [

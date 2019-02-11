@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { QuotationService } from '../../_services';
-import { QuotationProcessing, Risks } from '../../_models';
+import { QuotationService, UnderwritingService } from '../../_services';
+import { QuotationProcessing, Risks, CedingCompanyList } from '../../_models';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
@@ -28,10 +28,13 @@ export class QuotationProcessingComponent implements OnInit {
     line: string = "";
     splittedLine: string[] = [];
     quoTypeOfCession = "";
+    riskCd: string = "";
     riskName: string = "";
     riskNameList: string[] = [];
     //existingQuoteNoIndex: number = 0;
     existingQuotationNo: string = "";
+
+    selectedQuotation: any = null;
 
     fetchedData: any;
     quotationNo = "";
@@ -43,6 +46,8 @@ export class QuotationProcessingComponent implements OnInit {
     }
 
     riskList: Risks = new Risks(null, null, null, null, null, null, null);
+    cedingCode: any
+    cedingName: any
 
     passData: any = {
         tableData: [],
@@ -138,7 +143,7 @@ export class QuotationProcessingComponent implements OnInit {
         ],
         pageLength: 10,
         expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, addFlag: true, editFlag: true, copyFlag: true, pageStatus: true, pagination: true, pageID: 1,
-        keys: ['quotationNo','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','insuredDesc','riskName','objectDesc','site','policyNo','currencyCd','issueDate','expiryDate','reqBy','createUser']
+        keys: ['quotationNo','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','insuredDesc','riskName','objectDesc','site','policyNo','currencyCd','issueDate','expiryDate','reqBy','createUser'],
     }
 
     riskData: any = {
@@ -167,6 +172,8 @@ export class QuotationProcessingComponent implements OnInit {
         this.quotationService.getQuoProcessingData().subscribe(data => {
             var records = data['quotationList'];
             this.fetchedData = records;
+            console.log("fetched");
+            console.log(this.fetchedData);
             for(let rec of records){
                 //neco was here
                 this.splittedLine.push(rec.quotationNo.split("-", 1));
@@ -195,20 +202,27 @@ export class QuotationProcessingComponent implements OnInit {
 
             this.table.refreshTable();
         });
+
+
+
+        
+        
     }
 
     onClickAdd(event) {
         $('#addModal > #modalBtn').trigger('click');
     }
+    
     onClickEdit(event) {
-        this.line = this.quotationService.rowData[0].split("-")[0];
+        this.quotationNo = this.selectedQuotation.quotationNo;
+        this.quoTypeOfCession = this.selectedQuotation.cessionDesc;
         this.quotationService.toGenInfo = [];
         this.quotationService.toGenInfo.push("edit", this.line);
         // this.router.navigate(['/quotation']);
-        this.router.navigate(['/quotation', { typeOfCession: this.quoTypeOfCession, from: 'quo-processing' }]);
+        // this.router.navigate(['/quotation', { typeOfCession: this.quoTypeOfCession, from: 'quo-processing' }]);
         /*this.router.navigate(['/quotation']);*/
         setTimeout(() => {
-            this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.quoTypeOfCession, from: 'quo-processing' }], { skipLocationChange: true });
+            this.router.navigate(['/quotation', { quotationNo: this.quotationNo, typeOfCession: this.quoTypeOfCession, from: 'quo-processing' }], { skipLocationChange: true });
         },100); 
     }
 
@@ -216,8 +230,12 @@ export class QuotationProcessingComponent implements OnInit {
         $('#copyModal > #modalBtn').trigger('click');
     }
 
-    riskLOV() {
-        $('#riskModal > #modalBtn').trigger('click');
+    showRiskLOV() {
+        $('#riskLOV #modalBtn').trigger('click');
+    }
+
+    showCedingCompanyLOV() {
+        $('#cedingCompanyLOV #modalBtn').trigger('click');
     }
 
     getRisk(event) {
@@ -230,9 +248,8 @@ export class QuotationProcessingComponent implements OnInit {
         //neco was here
         this.existingQuotationNo = "";
         for(var i = 0; i < this.splittedLine.length; i++){
-            if(this.line == this.splittedLine[i][0] && this.riskName == this.riskNameList[i]){
+            if(this.line == this.splittedLine[i][0] && this.riskName == this.riskNameList[i] && this.riskNameList[i] != ""){
                 //this.existingQuoteNoIndex = i;
-                console.log("yeet");
                 this.existingQuotationNo = this.passData.tableData[i].quotationNo;
                 break;
             }
@@ -287,11 +304,7 @@ export class QuotationProcessingComponent implements OnInit {
 }
 
 onRowClick(event) {
-    for (var i = 0; i < event.target.closest("tr").children.length; i++) {
-        this.quotationService.rowData[i] = event.target.closest("tr").children[i].innerText;
-    }
-
-    this.quoTypeOfCession = event.target.closest("tr").children[1].innerText;
+    this.selectedQuotation = event;
     this.disabledEditBtn = false;
     this.disabledCopyBtn = false;
 }
@@ -325,4 +338,40 @@ closeModalPls(content) {
 dateParser(arr){
     return new Date(arr[0] + '-' + arr[1] + '-' + arr[2]);   
 }
+
+
+setCedingcompany(data){
+        this.cedingCode = data.coNo;
+        this.cedingName = data.name;
+        this.onClickCopy(1);
+}
+
+
+//neco was here
+    toInternalCompetition(){
+        let data : any = {
+            adviceNo: 0,
+            cedingId: 6, //hardcoded
+            cedingRepId: 'cedingrepid6',
+            createDate: new Date(),
+            createUser: 'Trinidad',
+            option: 'option1',
+            quoteId: 6,
+            updateDate: new Date(),
+            updateUser: 'Trinidad',
+            wordings: ''
+
+        }
+        this.quotationService.saveQuoteCompetition(data).subscribe((data: any) => {
+            console.log(data);
+        });
+    }
+//neco ends here
+
+    setRisks(data){
+        this.riskCd = data.riskId;
+        this.riskName = data.riskName;
+        this.onClickAdd(1);
+    }
+
 }

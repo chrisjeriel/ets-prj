@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import { HoldCoverInfo } from '../../_models/HoldCover';
 import { QuotationService } from '../../_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { getLocaleFirstDayOfWeek, getLocaleDateFormat } from '@angular/common';
+import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+
 
 
 @Component({
@@ -12,45 +14,22 @@ import { getLocaleFirstDayOfWeek, getLocaleDateFormat } from '@angular/common';
   styleUrls: ['./hold-cover.component.css']
 })
 export class HoldCoverComponent implements OnInit {
-
+  @ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
   tableData: any[] = [];
   tHeader: any[] = [];
   quoteLine: string = "";
   private holdCoverInfo: HoldCoverInfo;
-  passData: any = {
-        tHeader: [
-            "Quotation No.", "Ceding Company", "Insured", "Risk",
-        ],
-        resizable: [
-            false,false,false,false
-        ],
-        dataTypes: [
-            "text","text","text","text"
-        ],
-        tableData: this.quotationService.getListOfValuesHoldCover(),
-        pageLength: 10,
-        filters: [
-          {
-            key: 'quotationNo',
-            title:'Quotation No.',
-            dataType: 'text'
-          },
-          {
-            key: 'cedingCo',
-            title:'Ceding Company',
-            dataType: 'text'
-          },
-          {
-            key: 'insured',
-            title:'Insured',
-            dataType: 'text'
-          },
-          {
-            key: 'risk',
-            title:'Risk',
-            dataType: 'text'
-          }
-        ]
+  
+  passDataQuoteLOV : any = {
+      tableData: [],
+      tHeader:["Quotation No.", "Ceding Company", "Insured", "Risk"],
+      dataTypes: ["text","text","text","text"],
+      pageLength: 10,
+      resizable: [false,false,false,false],
+      tableOnly: true,
+      keys: ['quotationNo','cedingName','insuredDesc','riskName'],
+      pageStatus: true,
+      pagination: true,
     };
 
   constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title) { }
@@ -60,15 +39,15 @@ export class HoldCoverComponent implements OnInit {
   qSeqNo: string;
   qRevNo: string;
   qCedingId: string;
+
+  quoteNo:string;
+  cedCo:string;
+  insured:string;
+  risk:string;
   
   ngOnInit() {
     this.titleService.setTitle("Quo | Quotation to Hold Cover");
-    this.tHeader.push("Quotation No");
-    this.tHeader.push("Ceding Company");
-    this.tHeader.push("Insured");
-    this.tHeader.push("Risk");
-
-    this.tableData = this.quotationService.getListOfValuesHoldCover();
+    //this.tableData = this.quotationService.getListOfValuesHoldCover();
     this.holdCoverInfo = new HoldCoverInfo();
 
     this.quotationService.getHoldCoverInfo()
@@ -95,6 +74,22 @@ export class HoldCoverComponent implements OnInit {
               
             }
       );
+
+      this.quotationService.getQuoProcessingData()
+            .subscribe(val => {
+              var records = val['quotationList'];
+              for(let rec of records){
+                this.passDataQuoteLOV.tableData.push({
+                  quotationNo: rec.quotationNo,
+                  cedingName:  rec.cedingName,
+                  insuredDesc: rec.insuredDesc,
+                  riskName: (rec.project == null) ? '' : rec.project.riskName
+                }                                  
+                  
+                );
+              }
+              this.table.refreshTable();
+            });
    
   }
 
@@ -135,7 +130,7 @@ export class HoldCoverComponent implements OnInit {
   search() {
     var qLine = this.quoteLine.toUpperCase();
 
-    if (qLine === 'CAR' ||
+    if (qLine === '' ||
       qLine === 'EAR' ||
       qLine === 'EEI' ||
       qLine === 'CEC' ||
@@ -147,6 +142,12 @@ export class HoldCoverComponent implements OnInit {
       $('#lovMdl > #modalBtn').trigger('click');
     }
 
+  }
+
+  onRowClick(event){
+    this.insured = event.insuredDesc;
+    this.cedCo = event.cedingName;
+    this.risk = event.riskName;
   }
 
 }

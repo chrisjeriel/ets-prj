@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { OcGenInfoInfo } from '@app/_models/QuotationOcGenInfo';
-import { QuotationService } from '@app/_services';
+import { QuotationService, MaintenanceService } from '@app/_services';
 import { HttpClient } from '@angular/common/http';
 import { formatDate } from '@angular/common';
 
@@ -31,8 +31,21 @@ export class GenInfoComponent implements OnInit {
   closingWording:string;
   opWording:boolean;
 
+  riskId:string;
+  riskName:string;
+  regionDesc:string;
+  provinceDesc:string;
+  cityDesc:string;
+  districtDesc:string;
+  blockDesc:string;
+  lat:string;
+  long:string;
 
-  constructor(private route: ActivatedRoute, private quotationService: QuotationService, private http: HttpClient) {
+  cedingCoId:number;
+  cedingCoName:string;
+
+
+  constructor(private route: ActivatedRoute, private quotationService: QuotationService, private http: HttpClient, private mtnService: MaintenanceService) {
    }
 
    sampleId:string ="";
@@ -78,7 +91,7 @@ export class GenInfoComponent implements OnInit {
                   this.ocQuoteGenInfo.reqMode         = i.reqMode;
                   this.ocQuoteGenInfo.currencyCd      = i.currencyCd;
                   this.ocQuoteGenInfo.currencyRt      = i.currencyRt;
-                  this.ocQuoteGenInfo.govtTag         = 'Y';
+                  this.ocQuoteGenInfo.govtTag         = i.govtTag;
                   //this.govCheckbox = this.checkTag(this.ocQuoteGenInfo.govtTag);
                   this.govCheckbox = ((this.ocQuoteGenInfo.govtTag === 'y' || this.ocQuoteGenInfo.govtTag ==='Y') ? true: false);
                   this.ocQuoteGenInfo.indicativeTag   = i.indicativeTag;
@@ -93,7 +106,7 @@ export class GenInfoComponent implements OnInit {
                   this.ocQuoteGenInfo.objectId        = i.projectOc.objectId;
                   this.ocQuoteGenInfo.site            = i.projectOc.site;
                   this.ocQuoteGenInfo.duration        = i.projectOc.duration;
-                  this.ocQuoteGenInfo.testing        = i.projectOc.testing;
+                  this.ocQuoteGenInfo.testing         = i.projectOc.testing;
                   this.ocQuoteGenInfo.openingParag    = i.openingParag;
                   this.ocQuoteGenInfo.closingParag    = i.closingParag;
                   this.ocQuoteGenInfo.maxSi           = i.projectOc.maxSi;
@@ -107,11 +120,22 @@ export class GenInfoComponent implements OnInit {
                   this.ocQuoteGenInfo.createDate      = this.formatDate(i.createDate);
                   this.ocQuoteGenInfo.updateUser      = i.updateUser;
                   this.ocQuoteGenInfo.updateDate      = this.formatDate(i.updateDate);
-             }
-
+                  this.ocQuoteGenInfo.riskId          = i.projectOc.riskId;
+                }
+                this.mtnService.getMtnRisk(this.ocQuoteGenInfo.riskId)
+                        .subscribe(val => {
+                          //console.log(val['risk']. + "=====>JELELELELLELELEELL");
+                          this.riskName = val['risk'].riskName;
+                          this.regionDesc = val['risk'].regionDesc;
+                          this.provinceDesc = val['risk'].provinceDesc;
+                          this.cityDesc = val['risk'].cityDesc;
+                          this.districtDesc = val['risk'].districtDesc;
+                          this.blockDesc  = val['risk'].blockDesc;
+                          this.lat  = val['risk'].latitude;
+                          this.long = val['risk'].longitude;
+                        });
             }
       );
-
     
 
   }
@@ -184,5 +208,13 @@ export class GenInfoComponent implements OnInit {
   }
   setClosingWording(data){
     this.closingWording  = data.wording;
+  }
+
+  getCedingCoLov(){
+    $('#cedingCoIdLov #modalBtn').trigger('click');
+  }
+  setCedingCo(data){
+    this.cedingCoId  = data.coNo;
+    this.cedingCoName  = data.name;
   }
 }

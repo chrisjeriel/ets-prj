@@ -27,8 +27,10 @@ export class OpenCoverProcessingComponent implements OnInit {
   ocLine: string = '';
   ocQuoteNo: string = "";
   ocQuoteId: string = "";
-  riskName: string = "";
+  //riskName: string = "";
 
+  riskId:string;
+  riskName:string;
 
   passData: any = {
     tableData: [],
@@ -128,51 +130,51 @@ export class OpenCoverProcessingComponent implements OnInit {
     keys: ['quotationNo','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','insuredDesc','riskName','objectDesc','site','currencyCd','issueDate','expiryDate','reqBy','createUser']
   }
 
-  passDataRiskLOV:any = {
-    tableData: this.quotationService.getRisksLOV(),
-    tHeader: ["Risk Code", "Risk", "Region", "Province", "Town/City", "District", "Block"],
-    dataTypes: ["text","text","text","text","text","text","text"],
-    pagination: true,
-    pageLength:10,
-    pageStatus: true,
-    filters:[
-      {
-        key: 'riskCode',
-        title: 'Risk Code',
-        dataType: 'text'
-      },
-      {
-        key: 'risk',
-        title: 'Risk',
-        dataType: 'text'
-      },
-      {
-        key: 'region',
-        title: 'Region',
-        dataType: 'text'
-      },
-      {
-        key: 'province',
-        title: 'Province',
-        dataType: 'text'
-      },
-      {
-        key: 'townCity',
-        title: 'Town/City',
-        dataType: 'text'
-      },
-      {
-        key: 'district',
-        title: 'District',
-        dataType: 'text'
-      },
-      {
-        key: 'block',
-        title: 'Block',
-        dataType: 'text'
-      }
-    ]
-  }
+  // passDataRiskLOV:any = {
+  //   tableData: this.quotationService.getRisksLOV(),
+  //   tHeader: ["Risk Code", "Risk", "Region", "Province", "Town/City", "District", "Block"],
+  //   dataTypes: ["text","text","text","text","text","text","text"],
+  //   pagination: true,
+  //   pageLength:10,
+  //   pageStatus: true,
+  //   filters:[
+  //     {
+  //       key: 'riskCode',
+  //       title: 'Risk Code',
+  //       dataType: 'text'
+  //     },
+  //     {
+  //       key: 'risk',
+  //       title: 'Risk',
+  //       dataType: 'text'
+  //     },
+  //     {
+  //       key: 'region',
+  //       title: 'Region',
+  //       dataType: 'text'
+  //     },
+  //     {
+  //       key: 'province',
+  //       title: 'Province',
+  //       dataType: 'text'
+  //     },
+  //     {
+  //       key: 'townCity',
+  //       title: 'Town/City',
+  //       dataType: 'text'
+  //     },
+  //     {
+  //       key: 'district',
+  //       title: 'District',
+  //       dataType: 'text'
+  //     },
+  //     {
+  //       key: 'block',
+  //       title: 'Block',
+  //       dataType: 'text'
+  //     }
+  //   ]
+  // }
 
   constructor(private quotationService: QuotationService, private modalService: NgbModal, private router: Router
     , public activeModal: NgbActiveModal, private titleService: Title
@@ -287,6 +289,14 @@ export class OpenCoverProcessingComponent implements OnInit {
     }
     this.ocLine = this.quotationService.rowData[0].split("-")[1];
     this.ocQuoteNo  = this.quotationService.rowData[0];
+  }
+
+  getRiskLov(){
+    $('#riskIdLov #modalBtn').trigger('click');
+  }
+  setRisk(data){
+    this.riskId  = data.riskId;
+    this.riskName  = data.riskName;
   }
 
 }

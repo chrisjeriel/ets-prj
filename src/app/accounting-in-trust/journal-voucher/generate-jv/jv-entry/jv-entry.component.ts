@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,OnChanges,Input,Output,EventEmitter } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
 @Component({
@@ -8,10 +8,22 @@ import { Title } from '@angular/platform-browser';
 })
 export class JvEntryComponent implements OnInit {
 
+  @Input() record: any = {
+                  jvType: null
+                 };
+
+  @Output() onChange: EventEmitter<any> = new EventEmitter();
+
   constructor(private titleService: Title) { }
 
   ngOnInit() {
   	this.titleService.setTitle("Acc | Journal Voucher");
+  	this.onChange.emit({ type: this.record.jvType });
   }
+
+  tabController(event) {
+  	this.onChange.emit({ type: this.record.jvType });
+  }
+
 
 }

@@ -26,10 +26,10 @@
 										</div>
 										<div class="input-group">
 											<label class="form-control-sm col-sm-3" for="xx">Risk</label>
-											<input type="text" id="xx" class="form-control form-control-sm col-sm-2">
-											<div class="text-search-ico" (click)="riskLovModal($event)"><a><i class="fa fa-search"></i></a></div>
+											<input type="text" id="xx" class="form-control form-control-sm col-sm-2" [(ngModel)]="riskId">
+											<div class="text-search-ico" (click)="getRiskLov($event)"><a><i class="fa fa-search"></i></a></div>
 											&nbsp;&nbsp;
-											<input type="text" id="xx" class="form-control form-control-sm">
+											<input type="text" id="xx" class="form-control form-control-sm" [(ngModel)]="riskName">
 										</div>
 									</div>
 								</fieldset>
@@ -78,7 +78,7 @@
 
 <!-- <angular-editor [(ngModel)]="htmlContent"></angular-editor> -->
 
-<app-modal hidden [btnTitle]="'Next'" style="margin-bottom: 2px;" id="riskLovId">
+<!-- <app-modal hidden [btnTitle]="'Next'" style="margin-bottom: 2px;" id="riskLovId">
 	<div header style="width: 600px !important;">List of Values</div>
 	<div body style="width: 600px !important;">
 		<app-cust-non-datatable [passData]="passDataRiskLOV"></app-cust-non-datatable>
@@ -88,4 +88,7 @@
 		<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
 		<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
 	</div>
-</app-modal>
+</app-modal> -->
+
+
+<app-mtn-risk id="riskIdLov" (selectedData)="setRisk($event)"></app-mtn-risk>
