@@ -41,7 +41,8 @@ export class CoverageComponent implements OnInit {
   optionsData: any[] = [];
   optionsData2: any[] = [];
   selOptions: any[] = [];
-  savedData = [];
+
+  
 
   coverageData: any = {
     currency: null,
@@ -50,17 +51,8 @@ export class CoverageComponent implements OnInit {
     sectionI: null,
     sectionII: null,
     sectionIII: null,
-    reamrks: null,
-    addSl: null,
-    bulletNo: null,
-    coverCd: null,
-    coverCode: null,
-    createDate: null,
-    createUser: null,
-    section: null,
-    sumInsured: null,
-    updateDate: null,
-    updateUser: null,
+    remarks: null,
+    sectioncovers:[]
   }
 
   passData: any = {
@@ -77,7 +69,7 @@ export class CoverageComponent implements OnInit {
       section:null,
       bulletNo:null,
       sumInsured:null,
-      addSl:null,
+      addSi:"N",
       updateDate: [0,0,0],
       updateUser: "PCPR"
     },
@@ -111,7 +103,6 @@ export class CoverageComponent implements OnInit {
   temp: number = 0;
 
   printSelectedValue(event) {
-    console.log(event.item);
   }
 
   getMS(event) {
@@ -119,7 +110,9 @@ export class CoverageComponent implements OnInit {
   }
 
   ngOnInit() {
+
     this.quotationService.getCoverageInfo().subscribe((data: any) => {
+        this.coverageData = data.quotation.project.coverage;
         // this.passData.tableData = data.quotation.project.coverage.sectionCovers;
         for (var i = data.quotation.project.coverage.sectionCovers.length - 1; i >= 0; i--) {
           this.passData.tableData.push(data.quotation.project.coverage.sectionCovers[i]);
@@ -177,18 +170,35 @@ export class CoverageComponent implements OnInit {
   }
 
   saveData(){
-    this.savedData = [];
+   this.editedData = [];
    for (var i = 0 ; this.passData.tableData.length > i; i++) {
-      if(this.passData.tableData[i].edited){
-          this.savedData.push(this.coverageData,this.passData.tableData[i]);
-          this.savedData[this.savedData.length-1].createDate = new Date(this.savedData[this.savedData.length-1].createDate[0],this.savedData[this.savedData.length-1].createDate[1]-1,this.savedData[this.savedData.length-1].createDate[2]).toISOString();
-          this.savedData[this.savedData.length-1].updateDate = new Date(this.savedData[this.savedData.length-1].updateDate[0],this.savedData[this.savedData.length-1].updateDate[1]-1,this.savedData[this.savedData.length-1].updateDate[2]).toISOString();
-        }
+      /*if(this.passData.tableData[i].edited){
+          this.editedData.push(this.passData.tableData[i]);
+          this.editedData[this.editedData.length-1].createDate = new Date(this.editedData[this.editedData.length-1].createDate[0],this.editedData[this.editedData.length-1].createDate[1]-1,this.editedData[this.editedData.length-1].createDate[2]).toISOString();
+          this.editedData[this.editedData.length-1].updateDate = new Date(this.editedData[this.editedData.length-1].updateDate[0],this.editedData[this.editedData.length-1].updateDate[1]-1,this.editedData[this.editedData.length-1].updateDate[2]).toISOString();
+          this.editedData[this.editedData.length-1].lineCd = 'CAR';
+        }*/
      
+          this.editedData.push(this.passData.tableData[i]);
+          this.editedData[this.editedData.length-1].createDate = new Date(this.editedData[this.editedData.length-1].createDate[0],this.editedData[this.editedData.length-1].createDate[1]-1,this.editedData[this.editedData.length-1].createDate[2]).toISOString();
+          this.editedData[this.editedData.length-1].updateDate = new Date(this.editedData[this.editedData.length-1].updateDate[0],this.editedData[this.editedData.length-1].updateDate[1]-1,this.editedData[this.editedData.length-1].updateDate[2]).toISOString();
+          this.editedData[this.editedData.length-1].lineCd = 'CAR';
+        
     }
-    // this.quotationService.saveQuoteCoverage(1,1,this.savedData).subscribe((data: any) => {});
+    this.coverageData.createDate = new Date(this.coverageData.createDate[0],this.coverageData.createDate[1]-1,this.coverageData.createDate[2]).toISOString();
+    this.coverageData.updateDate = new Date(this.coverageData.updateDate[0],this.coverageData.updateDate[1]-1,this.coverageData.updateDate[2]).toISOString();
     
-    console.log(this.savedData)
+   
+    this.coverageData.sectionCovers =this.editedData;
+    this.coverageData.quoteId=1;
+    this.coverageData.projId=1;
+    this.coverageData.riskId=1;
+    this.quotationService.saveQuoteCoverage(10,10,this.coverageData).subscribe((data: any) => {});
+    
+  }
+
+  cancel(){
+    console.log(this.coverageData.totalSi);
   }
 
 }
