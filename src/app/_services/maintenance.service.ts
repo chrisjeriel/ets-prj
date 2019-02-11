@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '@environments/environment';
 
 @Injectable({ providedIn: 'root' })
@@ -38,5 +38,18 @@ export class MaintenanceService{
 
 	getMtnBlock(){
 		return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMaintenanceBlock');
+	}
+
+	getMtnObject(lineCd,objectId){
+		const params = new HttpParams()
+			.set('objectId',objectId)
+			.set('lineCd',lineCd)
+		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnObject",{params});
+	}
+	getMtnQuotationWordings(lineCd,type){
+		const params = new HttpParams()
+			.set('lineCd',lineCd)
+			.set('type',type)
+		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnQuotationWordings",{params});
 	}
 }

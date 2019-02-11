@@ -5,7 +5,7 @@ import { OpenCoverProcessing } from '../../_models';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
-
+import { formatDate } from '@angular/common';
 @Component({
   selector: 'app-open-cover-processing',
   templateUrl: './open-cover-processing.component.html',
@@ -25,12 +25,16 @@ export class OpenCoverProcessingComponent implements OnInit {
 
   line: string = "";
   ocLine: string = '';
+  ocQuoteNo: string = "";
+  ocQuoteId: string = "";
+  riskName: string = "";
+
 
   passData: any = {
     tableData: [],
     tHeader: ['Open Cover Quotation No.', 'Type of Cession', 'Line Class', 'Status', 'Ceding Company', 'Principal', 'Contractor', 'Insured', 'Risk', 'Object', 'Site', 'Currency', 'Quote Date', 'Valid Until', 'Request By', 'Created By'],
     //dataTypes: ['text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', "text", 'date', 'date', 'text', 'text'],
-    dataTypes: ["text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text"],
+    dataTypes: ["text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "date", "date", "text", "text", "text"],
     resizable: [false, true, true, true, true, true, true, true, true, true, false, false, true, true, true, true],
     pageLength: 10,
     expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: true, printBtn: false, pagination: true, pageStatus: true,
@@ -124,6 +128,52 @@ export class OpenCoverProcessingComponent implements OnInit {
     keys: ['quotationNo','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','insuredDesc','riskName','objectDesc','site','currencyCd','issueDate','expiryDate','reqBy','createUser']
   }
 
+  passDataRiskLOV:any = {
+    tableData: this.quotationService.getRisksLOV(),
+    tHeader: ["Risk Code", "Risk", "Region", "Province", "Town/City", "District", "Block"],
+    dataTypes: ["text","text","text","text","text","text","text"],
+    pagination: true,
+    pageLength:10,
+    pageStatus: true,
+    filters:[
+      {
+        key: 'riskCode',
+        title: 'Risk Code',
+        dataType: 'text'
+      },
+      {
+        key: 'risk',
+        title: 'Risk',
+        dataType: 'text'
+      },
+      {
+        key: 'region',
+        title: 'Region',
+        dataType: 'text'
+      },
+      {
+        key: 'province',
+        title: 'Province',
+        dataType: 'text'
+      },
+      {
+        key: 'townCity',
+        title: 'Town/City',
+        dataType: 'text'
+      },
+      {
+        key: 'district',
+        title: 'District',
+        dataType: 'text'
+      },
+      {
+        key: 'block',
+        title: 'Block',
+        dataType: 'text'
+      }
+    ]
+  }
+
   constructor(private quotationService: QuotationService, private modalService: NgbModal, private router: Router
     , public activeModal: NgbActiveModal, private titleService: Title
   ) { }
@@ -159,18 +209,15 @@ export class OpenCoverProcessingComponent implements OnInit {
 
       this.table.refreshTable();
     });
+    
   }
 
   
 
 
   editBtnEvent() {
-    // this.line = this.quotationService.rowData[0].split("-")[0];
-    // this.quotationService.toGenInfo = [];
-    // this.quotationService.toGenInfo.push("edit", this.line);
-    // this.router.navigate(['/open-cover']);
     setTimeout(() => {
-      this.router.navigate(['/open-cover', { line: this.ocLine }], { skipLocationChange: true });
+      this.router.navigate(['/open-cover', { line: this.ocLine, ocQuoteNo: this.ocQuoteNo }], { skipLocationChange: true });
     }, 100);
   }
 
@@ -202,11 +249,6 @@ export class OpenCoverProcessingComponent implements OnInit {
 
 
   onRowClick(event) {
-    for (var i = 0; i < event.target.closest("tr").children.length; i++) {
-      this.quotationService.rowData[i] = event.target.closest("tr").children[i].innerText;
-    }
-    this.ocLine = this.quotationService.rowData[0].split("-")[0];
-
     this.disabledEditBtn = false;
     this.disabledCopyBtn = false;
   }
@@ -215,12 +257,12 @@ export class OpenCoverProcessingComponent implements OnInit {
     for (var i = 0; i < event.target.closest("tr").children.length; i++) {
       this.quotationService.rowData[i] = event.target.closest("tr").children[i].innerText;
     }
-    this.ocLine = this.quotationService.rowData[0].split("-")[0];
+    this.ocLine = this.quotationService.rowData[0].split("-")[1];
+    this.ocQuoteNo  = this.quotationService.rowData[0];
+    
     setTimeout(() => {
-      this.router.navigate(['/open-cover', { line: this.ocLine }], { skipLocationChange: true });
+      this.router.navigate(['/open-cover', { line: this.ocLine, ocQuoteNo: this.ocQuoteNo }], { skipLocationChange: true });
     }, 100);
-    // this.quotationService.toGenInfo = [];
-    // this.quotationService.toGenInfo.push("edit", this.line);
   }
 
   showApprovalModal(content) {
@@ -233,6 +275,18 @@ export class OpenCoverProcessingComponent implements OnInit {
 
   dateParser(arr){
     return new Date(arr[0] + '-' + arr[1] + '-' + arr[2]);   
+  }
+
+  riskLovModal(event){
+    $('#riskLovId > #modalBtn').trigger('click');
+  }
+
+  clickRow(event){
+    for (var i = 0; i < event.target.closest("tr").children.length; i++) {
+      this.quotationService.rowData[i] = event.target.closest("tr").children[i].innerText;
+    }
+    this.ocLine = this.quotationService.rowData[0].split("-")[1];
+    this.ocQuoteNo  = this.quotationService.rowData[0];
   }
 
 }

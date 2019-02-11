@@ -13,7 +13,7 @@
 										<div class="input-group">
 											<label class="form-control-sm col-sm-3" for="xx">Line</label>
 											<input type="text" [(ngModel)]="line" class="form-control form-control-sm col-sm-2 cap-input">
-											<div class="text-search-ico" (click)="showApprovalModal(content)"><a><i class="fa fa-search"></i></a></div>
+											<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 											&nbsp;&nbsp;
 											<input type="text" id="xx" class="form-control form-control-sm">
 										</div>
@@ -27,7 +27,7 @@
 										<div class="input-group">
 											<label class="form-control-sm col-sm-3" for="xx">Risk</label>
 											<input type="text" id="xx" class="form-control form-control-sm col-sm-2">
-											<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+											<div class="text-search-ico" (click)="riskLovModal($event)"><a><i class="fa fa-search"></i></a></div>
 											&nbsp;&nbsp;
 											<input type="text" id="xx" class="form-control form-control-sm">
 										</div>
@@ -46,7 +46,7 @@
 						<!-- <app-cust-table [filters]="filters" [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes" (rowClick)="onRowClick($event)"
 						 (rowDblClick)="onRowDblClick($event)"></app-cust-table>
 	 -->
-						<app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)"></app-cust-non-datatable>
+						<app-cust-non-datatable [passData]="passData" (click)="clickRow($event)" (rowClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)"></app-cust-non-datatable>
 					</div>
 				</div>
 			</ng-template>
@@ -56,7 +56,7 @@
 </div>
 
 <!-- MODAL -->
-<ng-template #content>
+<!-- <ng-template #content>
 	<div class="modal-header">
 		<span class="modal-title" id="modal-basic-title">List of Values</span>
 		<div class="close" style="padding-bottom: 5px;">
@@ -65,9 +65,7 @@
 		</div>
 	</div>
 	<div class="modal-body">
-
-		<app-cust-table [filters]="filters" [tHeader]="tHeader2" [dataTypes]="dataTypes" (rowClick)="onRowClick($event)"
-		 (rowDblClick)="onRowDblClick($event)"></app-cust-table>
+		 <app-cust-non-datatable [passData]="passDataRiskLOV"></app-cust-non-datatable>
 	</div>
 	<div class="d-flex justify-content-center">
 		<div class="modal-footer">
@@ -76,6 +74,18 @@
 			<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
 		</div>
 	</div>
-</ng-template>
+</ng-template> -->
 
 <!-- <angular-editor [(ngModel)]="htmlContent"></angular-editor> -->
+
+<app-modal hidden [btnTitle]="'Next'" style="margin-bottom: 2px;" id="riskLovId">
+	<div header style="width: 600px !important;">List of Values</div>
+	<div body style="width: 600px !important;">
+		<app-cust-non-datatable [passData]="passDataRiskLOV"></app-cust-non-datatable>
+	</div>
+	<div footer class="text-center" style="width:100% !important;">
+		<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Maintain Risk</a></button>
+		<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+		<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+	</div>
+</app-modal>

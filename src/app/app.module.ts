@@ -247,6 +247,9 @@ import { GenerateJvServiceComponent } from './accounting-service/journal-voucher
 import { JvEntryServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-entry-service/jv-entry-service.component';
 import { JvPreviewServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-preview-service/jv-preview-service.component';
 import { JvAttachmentsServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-attachments-service/jv-attachments-service.component';
+import { MtnObjectComponent } from './maintenance/mtn-object/mtn-object.component';
+import { MtnProvinceComponent } from './maintenance/mtn-region/mtn-province/mtn-province.component';
+import { MtnQuotationWordingsComponent } from './maintenance/mtn-quotation-wordings/mtn-quotation-wordings.component';
 
 
 @NgModule({
@@ -501,6 +504,9 @@ import { JvAttachmentsServiceComponent } from './accounting-service/journal-vouc
         JvEntryServiceComponent,
         JvPreviewServiceComponent,
         JvAttachmentsServiceComponent,
+        MtnObjectComponent,
+        MtnProvinceComponent,
+        MtnQuotationWordingsComponent,
     ],
 
     providers: [

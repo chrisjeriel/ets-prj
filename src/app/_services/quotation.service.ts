@@ -127,10 +127,10 @@ export class QuotationService {
         //return this.holdCoverMonitoringListData;
         
         const params = new HttpParams()
-             .set('holdCoverNo','')
+             .set('quotationNo','')
              .set('status','')
              .set('cedingName','')
-             .set('quotationNo','')
+             .set('holdCoverNo','')
              .set('riskName','')
              .set('insuredDesc','')
              .set('periodFrom','')
@@ -550,15 +550,10 @@ export class QuotationService {
         );
     }
 
-    getOcGenInfoData(){
-        this.ocGenInfoData = [
-        ];
-
-        //return OcGenInfoInfo;
-
+    getOcGenInfoData(ocQuoteId: string, ocQuoteNo:string){
             const params = new HttpParams()
-             .set('quoteIdOc','')
-             .set('openQuotationNo','')
+             .set('quoteIdOc',ocQuoteId)
+             .set('openQuotationNo', ocQuoteNo)
              
             return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteGeneralInfoOc',{params});
     }
@@ -566,8 +561,8 @@ export class QuotationService {
     getHoldCoverInfo(){
         this.holdCoverInfo = [];
         const params = new HttpParams()
-             .set('holdCoverId','')
-             .set('holdCoverNo','')
+             .set('holdCoverId','75')
+             .set('holdCoverNo','CAR-2019-1-0')
              
             return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteHoldCover',{params});
     }

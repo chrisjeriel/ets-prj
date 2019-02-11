@@ -145,7 +145,7 @@ export class HoldCoverMonitoringListComponent implements OnInit {
                             i.holdCover.status,
                             i.cedingName,
                             i.quotationNo,
-                            i.project.riskName,
+                            (i.project == null) ? '' : i.project.riskName,
                             i.insuredDesc,
                             new Date(this.formatDate(i.holdCover.periodFrom)),
                             new Date(this.formatDate(i.holdCover.periodTo)),
