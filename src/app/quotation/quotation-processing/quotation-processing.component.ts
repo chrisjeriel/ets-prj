@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { QuotationService } from '../../_services';
-import { QuotationProcessing, Risks } from '../../_models';
+import { QuotationService, UnderwritingService } from '../../_services';
+import { QuotationProcessing, Risks, CedingCompanyList } from '../../_models';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
@@ -46,6 +46,8 @@ export class QuotationProcessingComponent implements OnInit {
     }
 
     riskList: Risks = new Risks(null, null, null, null, null, null, null);
+    cedingCode: any
+    cedingName: any
 
     passData: any = {
         tableData: [],
@@ -200,11 +202,17 @@ export class QuotationProcessingComponent implements OnInit {
 
             this.table.refreshTable();
         });
+
+
+
+        
+        
     }
 
     onClickAdd(event) {
         $('#addModal > #modalBtn').trigger('click');
     }
+    
     onClickEdit(event) {
         this.quotationNo = this.selectedQuotation.quotationNo;
         this.quoTypeOfCession = this.selectedQuotation.cessionDesc;
@@ -224,6 +232,10 @@ export class QuotationProcessingComponent implements OnInit {
 
     showRiskLOV() {
         $('#riskLOV #modalBtn').trigger('click');
+    }
+
+    showCedingCompanyLOV() {
+        $('#cedingCompanyLOV #modalBtn').trigger('click');
     }
 
     getRisk(event) {
@@ -295,8 +307,6 @@ onRowClick(event) {
     this.selectedQuotation = event;
     this.disabledEditBtn = false;
     this.disabledCopyBtn = false;
-
-    console.log(this.selectedQuotation);
 }
 
 onRowDblClick(event) {
@@ -328,6 +338,15 @@ closeModalPls(content) {
 dateParser(arr){
     return new Date(arr[0] + '-' + arr[1] + '-' + arr[2]);   
 }
+
+
+setCedingcompany(data){
+        this.cedingCode = data.coNo;
+        this.cedingName = data.name;
+        this.onClickCopy(1);
+}
+
+
 //neco was here
     toInternalCompetition(){
         /*let data : any = {

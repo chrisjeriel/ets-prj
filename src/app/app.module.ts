@@ -248,6 +248,7 @@ import { JvEntryServiceComponent } from './accounting-service/journal-voucher-se
 import { JvPreviewServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-preview-service/jv-preview-service.component';
 import { JvAttachmentsServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-attachments-service/jv-attachments-service.component';
 import { MtnRiskComponent } from './maintenance/mtn-risk/mtn-risk.component';
+import { CedingCompanyComponent } from './underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
 
 
 @NgModule({
@@ -503,6 +504,7 @@ import { MtnRiskComponent } from './maintenance/mtn-risk/mtn-risk.component';
         JvPreviewServiceComponent,
         JvAttachmentsServiceComponent,
         MtnRiskComponent,
+        CedingCompanyComponent,
     ],
 
     providers: [

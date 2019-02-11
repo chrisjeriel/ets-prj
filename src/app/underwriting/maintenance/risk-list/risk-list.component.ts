@@ -3,7 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 
-import { UnderwritingService } from '../../../_services';
+import { UnderwritingService, MaintenanceService } from '../../../_services';
 
 @Component({
     selector: 'app-risk-list',
@@ -27,12 +27,12 @@ export class RiskListComponent implements OnInit {
         keys: ['activeTag','riskId','riskName','riskAbbr','regionDesc','provinceDesc','cityDesc','districtDesc','blockDesc','latitude','longitude']
     }
     
-    constructor(private titleService: Title, private underwritingService: UnderwritingService, private router: Router) { }
+    constructor(private titleService: Title, private underwritingService: UnderwritingService, private maintenanceService: MaintenanceService, private router: Router) { }
 
     ngOnInit() {
         this.titleService.setTitle('Pol | Risk');
 
-        this.underwritingService.getMaintenanceRisksListData().subscribe(data => {
+        this.maintenanceService.getMtnRiskListing('','','','','','','','','','','').subscribe(data => {
             var records = data['risk'];
 
             for(let rec of records){
