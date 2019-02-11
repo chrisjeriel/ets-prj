@@ -330,7 +330,7 @@ dateParser(arr){
 }
 //neco was here
     toInternalCompetition(){
-        let data : any = {
+        /*let data : any = {
             adviceNo: 0,
             cedingId: 6, //hardcoded
             cedingRepId: 'cedingrepid6',
@@ -345,7 +345,7 @@ dateParser(arr){
         }
         this.quotationService.saveQuoteCompetition(data).subscribe((data: any) => {
             console.log(data);
-        });
+        });*/
     }
 //neco ends here
 
