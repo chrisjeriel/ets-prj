@@ -300,17 +300,30 @@
                                 <button [routerLink]="['/journal-voucher-service']" class="button btn btn-link"> Journal Voucher
                                 </button>
                                 <br /> 
-                                <button [routerLink]="['fixed-assets']" class="button btn btn-link">Fixed Assets</button>
+                                <!-- <button [routerLink]="['fixed-assets']" class="button btn btn-link">Fixed Assets</button>
                                 <br />
                                 <button [routerLink]="['accounting-service-expense-budget']" class="button btn btn-link">Expense Budget</button>
-                                <br />
-                                <button [routerLink]="['accounting-service-extract']" class="button btn btn-link">Extract</button>
-                                <br />
+                                <br /> -->
                                 <button [routerLink]="['acc-s-request-for-payment']" class="button btn btn-link">Request for Payment</button>
                                 <br />
-                                <button [routerLink]="['accounting-service-pcv-listings']" class="button btn btn-link">Petty Cash Voucher</button>
+                                <!-- <button [routerLink]="['accounting-service-pcv-listings']" class="button btn btn-link">Petty Cash Voucher</button>
                                 <br />
-                                <button [routerLink]="['accounting-service-exp-budget']" class="button btn btn-link">Expense Budget</button>
+                                <button [routerLink]="['accounting-service-exp-budget']" class="button btn btn-link">Expense Budget</button> -->
+                                <ngb-accordion #acc="ngbAccordion">
+                                    <ngb-panel>
+                                        <ng-template ngbPanelTitle>
+                                            Extract
+                                        </ng-template>
+                                        <ng-template ngbPanelContent>
+                                            <button [routerLink]="['accounting-service-extract']" class="button btn btn-link">Accounting
+                                                Entries</button>
+                                            <br />
+                                            <button [routerLink]="['accounting-service-trial-bal']" class="button btn btn-link">Trial
+                                                Balance</button>
+                                            <br />
+                                        </ng-template>
+                                    </ngb-panel>
+                                </ngb-accordion>
                                 <ngb-accordion #acc="ngbAccordion">
                                     <ngb-panel>
                                         <ng-template ngbPanelTitle>

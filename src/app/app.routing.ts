@@ -89,6 +89,7 @@ import { GenerateCvServiceComponent } from './accounting-service/check-voucher-s
 import { JournalVoucherServiceComponent } from './accounting-service/journal-voucher-service/journal-voucher-service.component';
 import { GenerateJvServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/generate-jv-service.component';
 import { UtilitiesComponent } from './accounting-service/utilities/utilities.component';
+import { AcctTrialBalComponent } from './accounting-service/accounting-service-extract/acct-trial-bal/acct-trial-bal.component';
 
 
 const appRoutes: Routes = [
@@ -188,6 +189,7 @@ const appRoutes: Routes = [
     { path: 'generate-jv-service', component: GenerateJvServiceComponent },
     { path: 'accounting-service-utilities', component: UtilitiesComponent },
     { path: 'accounting-service-exp-budget', component: ExpenseBudgetComponent },
+    { path: 'accounting-service-trial-bal', component: AcctTrialBalComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

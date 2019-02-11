@@ -248,6 +248,8 @@ import { JvEntryServiceComponent } from './accounting-service/journal-voucher-se
 import { JvPreviewServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-preview-service/jv-preview-service.component';
 import { JvAttachmentsServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-attachments-service/jv-attachments-service.component';
 import { MtnRiskComponent } from './maintenance/mtn-risk/mtn-risk.component';
+import { AcctUnbalanceEntriesComponent } from './accounting-service/accounting-service-extract/acct-unbalance-entries/acct-unbalance-entries.component';
+import { AcctTrialBalComponent } from './accounting-service/accounting-service-extract/acct-trial-bal/acct-trial-bal.component';
 
 
 @NgModule({
@@ -503,6 +505,8 @@ import { MtnRiskComponent } from './maintenance/mtn-risk/mtn-risk.component';
         JvPreviewServiceComponent,
         JvAttachmentsServiceComponent,
         MtnRiskComponent,
+        AcctUnbalanceEntriesComponent,
+        AcctTrialBalComponent,
     ],
 
     providers: [

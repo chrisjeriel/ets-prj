@@ -1,0 +1,50 @@
+<fieldset class="scheduler-border" style="padding-top: 4px !important;">
+    <legend class="scheduler-border" style="margin-bottom: -9px !important;">Extraction Info</legend>
+    <div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;">
+    	<div class="input-group" style="margin-top: 3px !important">
+    		<div class="col-sm-1" style="padding: 0">
+    			<label class="form-control-sm col-sm-6 text-left">Period</label>
+    			<label class="form-control-sm col-sm-6">From</label>
+    		</div>
+    		<input class="form-control-sm form-control col-sm-2" type="date" [value]="periodFrom  ">
+    		<label class="form-control-sm col-sm-1">To</label>
+    		<input class="form-control-sm form-control col-sm-2" type="date" [value]="periodTo">  
+    		<label class="form-control-sm col-sm-1">Tran Type:</label>
+    		<div class="col-sm-2 check-row" style="padding: 0" style="display: flex;">
+    			<div class="col-sm">
+					<input type="checkbox" class="form-control-sm " name="" id="ar" checked="checked">
+				</div>
+				<label for="ar" class="form-control-sm text-left col-sm">AR</label>
+				<div class="col-sm">
+					<input type="checkbox" class="form-control-sm " name="" id="cv" checked="checked">
+				</div>
+				<label for="cv" class="form-control-sm text-left col-sm">CV</label>
+				<div class="col-sm">
+					<input type="checkbox" class="form-control-sm " name="" id="jv" checked="checked">
+				</div>
+				<label for="jv" class="form-control-sm text-left col-sm">JV</label>
+    		</div>
+    	</div>
+    	<div class="input-group">
+    		<label class="form-control-sm col-sm-1">Account Code</label>
+    		<input class="form-control-sm form-control col-sm-3" type="text" style="margin-right: 3px">
+    		<input class="form-control-sm form-control col-sm-4" type="text" value="ALL ACCOUNTS">
+    	</div>
+    	<div class="input-group">
+    		<label class="form-control-sm col-sm-1">SL Type</label>
+    		<input class="form-control-sm form-control col-sm-2" type="text" style="margin-right: 3px">
+    		<input class="form-control-sm form-control col-sm-3" type="text" value="ALL SL TYPES">
+    		<label class="form-control-sm col-sm-1">Extracted By</label>
+    		<input class="form-control-sm form-control col-sm-2" type="text" value="cuaresma">
+    		<label class="form-control-sm col-sm-1">Date Extracted</label>
+    		<input class="form-control-sm form-control col-sm-2" type="datetime-local" [value]="dateExtracted">
+    	</div>
+    </div>
+</fieldset>
+<fieldset class="scheduler-border">
+	<legend class="scheduler-border">Extracted Data</legend>
+	<div style="position: relative;">
+		<button class="cust-btn" style="position:absolute; left: 0px; max-width: 200px !important;" (click)="viewTranDetails()">View Transaction Details</button>
+		<app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)"></app-cust-non-datatable>
+	</div>
+</fieldset>
