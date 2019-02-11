@@ -65,7 +65,7 @@ class Row {
 	intmId: number;
 	intmName: string;
 
-	constructor(intmId: string,
+	constructor(intmId: number,
 		intmName: string) {
 
 	this.intmId = intmId;

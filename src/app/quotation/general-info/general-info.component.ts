@@ -30,7 +30,7 @@ export class GeneralInfoComponent implements OnInit {
 	line: string;
 	lineClass: string;
 	lineClassCode: string;
-	lineCLassDesc: string;
+	lineClassDesc: string;
 	ocChecked: boolean = false;
 	genInfoData: any;
 

@@ -1,4 +1,6 @@
-import { Component, OnInit , ViewChild} from '@angular/core';
+
+
+import { Component, OnInit , ViewChild, Input} from '@angular/core';
 import { QuotationInfo, QuotationOption, QuoteEndorsement } from '../../_models';
 import { QuotationService } from '../../_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -14,12 +16,17 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
     styleUrls: ['./quote-endorsement.component.css']
 })
 export class QuoteEndorsementComponent implements OnInit {
+
+    @Input() endorsementType: string = "";
     @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
+    OpenCover: boolean;
     private sub: any;
     from: string;
     quotationNum: string;
-    genInfoData: any;
+    quoteNoData: any;
+    insured: any;
     projectData: any;
+    riskName: any;
     endorsementsData: any[] = [];
     private quotationInfo: QuotationInfo;
     private quoteEndorsement: QuoteEndorsement;
@@ -61,21 +68,24 @@ export class QuoteEndorsementComponent implements OnInit {
         infoFlag: true,
         paginateFlag: true,
         searchFlag: true,
-        keys: ['endtCd','endtTitle','description','remarks']
+        keys: ['endtCode','endtTitle','endtDescription','endtWording']
     }
 
     endtCodeLOVRow : number;
 
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title,  private route: ActivatedRoute) { }
 
-    ngOnInit() {
-
+    ngOnInit() {  
         this.sub = this.route.params.subscribe(params => {
             this.from = params['from'];
                 if (this.from == "quo-processing") {
                     this.quotationNum = params['quotationNo'];
                 }
         });
+
+        var quoteNum= this.quotationNum.split("-",5);
+        this.quotationNum = quoteNum[0] + '-' + quoteNum[1] + '-' + Number(quoteNum[2]).toString() + '-' + Number(quoteNum[3]).toString() + '-' + Number(quoteNum[4]).toString()
+
 
         this.titleService.setTitle("Quo | Endorsement");
         this.dtOptions = {
@@ -92,29 +102,40 @@ export class QuoteEndorsementComponent implements OnInit {
         //this.quoteOptionTableData = this.quotationService.getQuoteOptions();
 
 /*        this.tableData = this.quotationService.getEndorsements(1);*/
-        if (this.quotationService.toGenInfo[0] == "edit") {
-            
-            console.log("Edit- Quotation");
-        /*    this.quotationService.getQuoteGenInfo(null,this.quotationNum).subscribe((data: any) => {*/
-            this.quotationService.getQuoteGenInfo(null,'CAR-2019-10-0-1').subscribe((data: any) => {
-                this.genInfoData = data.quotationGeneralInfo; 
-                console.log(this.genInfoData.quotationNo);
-                this.projectData = data.project;                   
-            });
-/*            this.quotationService.getEndorsements(null,this.quotationNum,1).subscribe((data: any) => {*/
-            this.quotationService.getEndorsements('1','CAR-2019-10-0-1',1).subscribe((data: any) => {
-               /* while(this.endorsementsData.tableData.length > 0) {
-                      this.endorsementsData.tableData.pop();
-                }*/
-                this.endorsementsData = data.endorsements;             
-/*
-                this.endorsementData.tableData.push();*/
-                for (var i = this.endorsementsData.length - 1; i >= 0; i--) {
-                   this.endorsementData.tableData.push(this.endorsementsData[i]);
-                }
-                this.table.refreshTable();
-            });
-        }
+          if (this.endorsementType == "OC") {
+              this.OpenCover= true;
+            } else {
+              this.OpenCover= false;
+
+                if (this.quotationService.toGenInfo[0] == "edit") {  
+                    console.log("Edit- Quotation");
+
+                    this.quotationService.getQuoteGenInfo(null,this.quotationNum).subscribe((data: any) => {
+                        this.insured = data.quotationGeneralInfo.insuredDesc; 
+                        this.quoteNoData = data.quotationGeneralInfo.quotationNo;
+                        if(data.project == null){
+                             this.riskName = null;
+                        } else {
+                            this.riskName = data.project.riskName; 
+                        }
+                    });
+                    this.quotationService.getEndorsements(null,this.quotationNum,1).subscribe((data: any) => {
+                        for(var lineCount = 0; lineCount < data.endorsements.length; lineCount++){
+                              this.endorsementData.tableData.push(new QuoteEndorsement(
+                                                                           data.endorsements[lineCount].endtCd, 
+                                                                           data.endorsements[lineCount].endtTitle,
+                                                                           data.endorsements[lineCount].description,
+                                                                           data.endorsements[lineCount].remarks)
+                                                                   );          
+                          }
+                        this.table.refreshTable();
+                    });
+                }  
+
+
+            }
+
+
         
 
         
@@ -126,10 +147,13 @@ export class QuoteEndorsementComponent implements OnInit {
                  while(this.endorsementData.tableData.length > 0) {
                   this.endorsementData.tableData.pop();
               }    
-
-               this.endorsementsData = data.endorsements;  
-                for (var i = this.endorsementsData.length - 1; i >= 0; i--) {
-                   this.endorsementData.tableData.push(this.endorsementsData[i]);
+                for(var lineCount = 0; lineCount < data.endorsements.length; lineCount++){
+                              this.endorsementData.tableData.push(new QuoteEndorsement(
+                                                                           data.endorsements[lineCount].endtCd, 
+                                                                           data.endorsements[lineCount].endtTitle,
+                                                                           data.endorsements[lineCount].description,
+                                                                           data.endorsements[lineCount].remarks)
+                                                                   );          
                 }
                 this.table.refreshTable();
            });
