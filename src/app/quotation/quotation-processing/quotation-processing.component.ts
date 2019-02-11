@@ -212,6 +212,7 @@ export class QuotationProcessingComponent implements OnInit {
     onClickAdd(event) {
         $('#addModal > #modalBtn').trigger('click');
     }
+    
     onClickEdit(event) {
         this.quotationNo = this.selectedQuotation.quotationNo;
         this.quoTypeOfCession = this.selectedQuotation.cessionDesc;
@@ -342,6 +343,7 @@ dateParser(arr){
 setCedingcompany(data){
         this.cedingCode = data.coNo;
         this.cedingName = data.name;
+        this.onClickCopy(1);
 }
 
 

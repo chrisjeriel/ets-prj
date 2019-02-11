@@ -50,7 +50,17 @@ export class CoverageComponent implements OnInit {
     sectionI: null,
     sectionII: null,
     sectionIII: null,
-    reamrks: null
+    reamrks: null,
+    addSl: null,
+    bulletNo: null,
+    coverCd: null,
+    coverCode: null,
+    createDate: null,
+    createUser: null,
+    section: null,
+    sumInsured: null,
+    updateDate: null,
+    updateUser: null,
   }
 
   passData: any = {
@@ -110,7 +120,6 @@ export class CoverageComponent implements OnInit {
 
   ngOnInit() {
     this.quotationService.getCoverageInfo().subscribe((data: any) => {
-        this.coverageData = data.quotation.project.coverage;
         // this.passData.tableData = data.quotation.project.coverage.sectionCovers;
         for (var i = data.quotation.project.coverage.sectionCovers.length - 1; i >= 0; i--) {
           this.passData.tableData.push(data.quotation.project.coverage.sectionCovers[i]);
@@ -118,7 +127,6 @@ export class CoverageComponent implements OnInit {
         this.table.refreshTable();
     });
 
-    console.log(this.passData.tableData);
     this.titleService.setTitle("Quo | Coverage");
     this.optionsData.push("USD", "PHP", "EUR");
     this.optionsData2.push("a", "b", "c");
@@ -168,21 +176,19 @@ export class CoverageComponent implements OnInit {
     // this.quotationCoverageInfo.remarks = "MOCK DATA";
   }
 
-  /*saveData(){
+  saveData(){
     this.savedData = [];
-    this.savedData.push(this.coverageData);
    for (var i = 0 ; this.passData.tableData.length > i; i++) {
       if(this.passData.tableData[i].edited){
-          this.savedData.push(this.passData.tableData[i]);
+          this.savedData.push(this.coverageData,this.passData.tableData[i]);
           this.savedData[this.savedData.length-1].createDate = new Date(this.savedData[this.savedData.length-1].createDate[0],this.savedData[this.savedData.length-1].createDate[1]-1,this.savedData[this.savedData.length-1].createDate[2]).toISOString();
           this.savedData[this.savedData.length-1].updateDate = new Date(this.savedData[this.savedData.length-1].updateDate[0],this.savedData[this.savedData.length-1].updateDate[1]-1,this.savedData[this.savedData.length-1].updateDate[2]).toISOString();
         }
-      // delete this.savedData[i].tableIndex;
+     
     }
-    //this.quotationService.saveQuoteCoverage(1,1,this.savedData).subscribe((data: any) => {});
-    for(var i=0; i < this.saveData.length; i++){
-      console.log(this.saveData[i]);
-    }
-  }*/
+    // this.quotationService.saveQuoteCoverage(1,1,this.savedData).subscribe((data: any) => {});
+    
+    console.log(this.savedData)
+  }
 
 }
