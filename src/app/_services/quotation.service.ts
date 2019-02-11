@@ -68,7 +68,7 @@ export class QuotationService {
             new QuotationCoverageInfo("1", "I", "3", "69000", ""),
             new QuotationCoverageInfo("2", 'II', "2", "123000", "")
         ];
-        return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteCoverage?");
+        return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteCoverage?quoteId=1");
     }
 
     getQuotationListInfo() {
@@ -547,10 +547,10 @@ export class QuotationService {
         return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteAlopItem',{params});
     }
 
-    getALop(quoteId:number,quotationNo:string){
+    getALop(quoteId:number,quotationNo?:string){
         return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteAlop'
             +('?quoteId=' + quoteId)
-            +('&quotationNo='+ quotationNo)
+            //+('&quotationNo='+ quotationNo)
         );
     }
 
@@ -597,11 +597,14 @@ export class QuotationService {
                 'Content-Type': 'application/json'
             })
         };
-        alopData.issueDate = new Date(alopData.issueDate[0],alopData.issueDate[1]+1,alopData.issueDate[2]).toISOString();
-        alopData.expiryDate = new Date(alopData.expiryDate[0],alopData.expiryDate[1]+1,alopData.expiryDate[2]).toISOString();
-        alopData.indemFromDate = new Date(alopData.indemFromDate[0],alopData.indemFromDate[1]+1,alopData.indemFromDate[2]).toISOString();
-        alopData.createDate = new Date(alopData.createDate[0],alopData.createDate[1]+1,alopData.createDate[2]).toISOString();
-        alopData.updateDate = new Date(alopData.updateDate[0],alopData.updateDate[1]+1,alopData.updateDate[2]).toISOString();
+        alopData.issueDate = alopData.issueDate + 'T16:00:00.000Z';
+        alopData.expiryDate = alopData.expiryDate + 'T16:00:00.000Z';
+        alopData.indemFromDate = alopData.indemFromDate + 'T16:00:00.000Z';
+        // alopData.issueDate = new Date(alopData.issueDate[0],alopData.issueDate[1]-1,alopData.issueDate[2]).toISOString();
+        // alopData.expiryDate = new Date(alopData.expiryDate[0],alopData.expiryDate[1]-1,alopData.expiryDate[2]).toISOString();
+        // alopData.indemFromDate = new Date(alopData.indemFromDate[0],alopData.indemFromDate[1]-1,alopData.indemFromDate[2]).toISOString();
+        alopData.createDate = new Date(alopData.createDate[0],alopData.createDate[1]-1,alopData.createDate[2]).toISOString();
+        alopData.updateDate = new Date(alopData.updateDate[0],alopData.updateDate[1]-1,alopData.updateDate[2]).toISOString();
         return this.http.post('http://localhost:8888/api/quote-service/saveQuoteAlop', JSON.stringify(alopData), header);
     }
 

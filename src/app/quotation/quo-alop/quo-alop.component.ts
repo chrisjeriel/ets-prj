@@ -64,14 +64,17 @@ export class QuoAlopComponent implements OnInit {
         deleteFlag: true,
         infoFlag: true,
         paginateFlag: true,
-        keys:['itemNo','quantity','description','importance','lossMin']
+        keys:['itemNo','quantity','description','importance','lossMin'],
+        widths:[1,1,1,1,1,1]
     }
+
+    quoteId: number = 1;
     
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title) { }
 
     ngOnInit() {
         this.titleService.setTitle("Quo | ALOP");
-        this.policyRecordInfo.policyNo = "CAR-2018-5081-077-0177";
+        this.policyRecordInfo.policyNo = "EAR-2018-5081-077-0177";
         this.tHeader = ["Item No", "Quantity", "Description", "Relative Importance", "Possible Loss Min"];
         this.dataTypes = ["number", "number", "text", "text", "text"];
         if (this.policyRecordInfo.policyNo.substr(0, 3) == "CAR") {
@@ -80,40 +83,42 @@ export class QuoAlopComponent implements OnInit {
             this.itemInfoData.keys = ['itemNo','quantity','description','lossMin'];
         }
 
-
-       
-
-       this.quotationService.getALop(3,'EAR-2019-1-0-3').subscribe((data: any) => {
+       this.quotationService.getALop(this.quoteId).subscribe((data: any) => {
               this.alopData = data.quotation.alop;
-              console.log(this.alopData);
+              console.log(data);
+              this.alopData.issueDate = this.alopData.issueDate[0]+'-'+("0" + this.alopData.issueDate[1]).slice(-2)+'-'+  ("0" + this.alopData.issueDate[2]).slice(-2);
+              this.alopData.expiryDate = this.alopData.expiryDate[0]+'-'+("0" + this.alopData.expiryDate[1]).slice(-2)+'-'+ ("0" + this.alopData.expiryDate[2]).slice(-2);
+              this.alopData.indemFromDate = this.alopData.indemFromDate[0]+'-'+("0" + this.alopData.indemFromDate[1]).slice(-2)+'-'+("0" + this.alopData.indemFromDate[2]).slice(-2);
+              
        });
 
     }
 
     save() {
-      this.alopData.quoteId = 3;
+      this.alopData.quoteId = this.quoteId;
       this.quotationService.saveQuoteAlop(this.alopData).subscribe();
+      this.ngOnInit();
     }
 
     openAlopItem(){
       while(this.itemInfoData.tableData.length>0){
         this.itemInfoData.tableData.pop();
       }
-      this.quotationService.getALOPItemInfos(this.policyRecordInfo.policyNo.substr(0, 3),3).subscribe((data: any) => {
-        
-           for (var i=0; i < data.quotation.length; i++) {
-                   this.itemInfoData.tableData.push(data.quotation[i].alop.alopItem);
-               
+      
+      this.quotationService.getALOPItemInfos(this.policyRecordInfo.policyNo.substr(0, 3),this.quoteId).subscribe((data: any) => {
+           for (var i=0; i < data.quotation[0].alop.alopItemList.length; i++) {
+                   this.itemInfoData.tableData.push(data.quotation[0].alop.alopItemList[i]);
            }
+           console.log(this.itemInfoData.tableData);
            this.table.refreshTable();
-           console.log(data)
+
        });
       $('#alopItemModal #modalBtn').trigger('click');
     }
 
     saveAlopItem(){
       let savedData: any = {};
-      savedData.quoteId = 3;
+      savedData.quoteId = this.quoteId;
       savedData.alopId = this.alopData.alopId;
       savedData.alopItemList=[];
 
@@ -126,6 +131,15 @@ export class QuoAlopComponent implements OnInit {
       }
       console.log(savedData);
       this.quotationService.saveQuoteAlopItem(savedData).subscribe((data: any) => {});
+  }
+
+  showInsuredLOV(){
+    $('#insuredLOV #modalBtn').trigger('click');
+  }
+
+  setInsured(data){
+    this.alopData.insuredName = data.insuredName;
+    this.alopData.insuredId = data.insuredId;
   }
 
 }
