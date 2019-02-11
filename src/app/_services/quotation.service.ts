@@ -395,6 +395,8 @@ export class QuotationService {
       } else {
          return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteGeneralInfo?quoteId="+quoteId+"&quotationNo="+quotationNo);
      }*/
+     
+     
 
      return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteGeneralInfo?quoteId="+quoteId+"&quotationNo="+quotationNo);
     }
@@ -453,7 +455,7 @@ export class QuotationService {
                 // .set('sortRequest.sortKey',null)
                 // .set('sortRequest.order',null);
 
-        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteListingOc', {params});
+        return this.http.get('http://localhost:8888/api/quote-service/ ', {params});
     }
 
 

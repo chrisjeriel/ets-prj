@@ -249,6 +249,8 @@ import { JvPreviewServiceComponent } from './accounting-service/journal-voucher-
 import { JvAttachmentsServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-attachments-service/jv-attachments-service.component';
 import { MtnLineComponent } from './maintenance/mtn-line/mtn-line.component';
 import { MtnRiskComponent } from './maintenance/mtn-risk/mtn-risk.component';
+import { JvAccountingEntriesComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-accounting-entries/jv-accounting-entries.component';
+import { JvLossReserveDepositComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-loss-reserve-deposit/jv-loss-reserve-deposit.component';
 
 
 
@@ -506,6 +508,8 @@ import { MtnRiskComponent } from './maintenance/mtn-risk/mtn-risk.component';
         JvAttachmentsServiceComponent,
         MtnLineComponent,
         MtnRiskComponent,
+        JvAccountingEntriesComponent,
+        JvLossReserveDepositComponent,
     ],
 
     providers: [

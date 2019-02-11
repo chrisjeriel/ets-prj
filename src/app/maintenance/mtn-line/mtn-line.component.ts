@@ -50,11 +50,13 @@ lineListing: any = {
   onRowClick(data){
   	//console.log(data);
   	this.selected = data;
+     
   }
 
   confirm(){
-  	this.selectedData.emit(this.selected);
+    this.selectedData.emit(this.selected);
   }
+
 
 }
 

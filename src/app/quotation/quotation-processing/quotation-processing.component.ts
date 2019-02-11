@@ -248,7 +248,7 @@ export class QuotationProcessingComponent implements OnInit {
     setLine(data){
         this.line = data.lineCd;
         this.description = data.description;
-         $('#addModal > #modalBtn').trigger('click');
+        $('#addModal > #modalBtn').trigger('click');
     }
 
     getRisk(event) {
