@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { AccountingService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -14,14 +14,14 @@ export class TrialBalanceTbComponent implements OnInit {
   tableData: any[] = [];	
   tHeader: any[] = [];
   dataTypes: any[] = [];
-  accountCode: string;
+  @Input() accountCode: string;
 
   passDataTotal: any = {
     tableData: [/*{accCode:null,accDesc:null,slType:null,debit:null,credit:null}*/],
-    tHeader: ['Account Code','Account Description','SL Type','Debit','Credit'],
+    tHeader: ['Account Code','Account Name','SL Type','SL Name','Debit','Credit'],
     resizable: [true, true, true, true, true],
-    dataTypes: ['text','text','text','currency','currency'],
-    total:[null,null,'Total',null,'credit'],
+    dataTypes: ['text','text','text','text','currency','currency'],
+    total:[null,null,null,'Total','debit','credit'],
     searchFlag: true,
     pagination: true,
     pageStatus: true,
@@ -58,10 +58,10 @@ export class TrialBalanceTbComponent implements OnInit {
 
    passDataNet: any = {
     tableData: [/*{accCode:null,accDesc:null,slType:null,drBal:null,crBal:null}*/],
-    tHeader: ['Account Code','Account Description','SL Type','DR Balance','CR Balance'],
+    tHeader: ['Account Code','Account Name','SL Type','SL Name','DR Balance','CR Balance'],
     resizable: [true, true, true, true, true],
-    dataTypes: ['text','text','text','currency','currency'],
-    total:[null,null,'Total',null,'crBal'],
+    dataTypes: ['text','text','text','text','currency','currency'],
+    total:[null,null,null,'Total','drBal','crBal'],
     searchFlag: true,
     pagination: true,
     pageStatus: true,
@@ -100,9 +100,12 @@ export class TrialBalanceTbComponent implements OnInit {
 
   ngOnInit() {
   	this.titleService.setTitle("Acc | Trial Balance | Extract");
-  	this.accountCode = 'Total Debits and Credits' ;
+  	//this.accountCode = 'Total Debits and Credits' ;
   	this.passDataTotal.tableData = this.accountingService.getAccTBTotDebCred();
   	this.passDataNet.tableData = this.accountingService.getAccTBNet();
   }
 
+  test(){
+    console.log(this.accountCode);
+  }
 }

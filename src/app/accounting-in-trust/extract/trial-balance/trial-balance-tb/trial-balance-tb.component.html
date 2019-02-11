@@ -24,7 +24,7 @@
  	 			 			 <div class="input-group">
  	 			 			 	<label class="form-control-sm col-sm-5" for="xx" >Account Code</label>
  	 			 			 	<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm"
-	                       		placeholder="Total Debits and Credits" [(ngModel)]="accountcode" [value]="this.accountCode">
+	                       		placeholder="Total Debits and Credits" [(ngModel)]="accountCode">
  	 			 			 </div>
  	 			 			 <div class="input-group">
  	 			 			 	<label class="form-control-sm col-sm-5" for="xx">Date Extracted</label>
@@ -39,10 +39,10 @@
  	 <fieldset class="scheduler-border" style="padding: 0px"> 
  	 	 <legend class="scheduler-border">Extracted Data</legend>  
  	 	 	<div class="row">
-        	 	 	 <div *ngIf="this.accountCode == 'Total Debits and Credits' || accountcode == 'Total'" [hidden]= "accountcode == 'Net'"class="col-sm-12" style="margin-top: 0px" >
+        	 	 	 <div *ngIf="accountCode == 'Total'" [hidden]="accountcode == 'Net'"class="col-sm-12" style="margin-top: 0px" >
         	 	 	 	 <app-cust-non-datatable [passData]="passDataTotal"></app-cust-non-datatable>
         	 	 	 </div>
-        	 	 	  <div *ngIf="this.accountCode == 'Net' || accountcode == 'Net'" [hidden]= "accountcode == 'Total'" class="col-sm-12" style="margin-top: 0px" >
+        	 	 	  <div *ngIf="accountCode == 'Net'" [hidden]="accountcode == 'Total'" class="col-sm-12" style="margin-top: 0px" >
         	 	 	 	 <app-cust-non-datatable [passData]="passDataNet"></app-cust-non-datatable>
         	 	 	 </div>
         	 	</div>	

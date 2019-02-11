@@ -553,7 +553,7 @@ export class AccountingService {
 
 	getAccTBTotDebCred() {
 		this.accTBTotDebCred = [
-			new AccTBTotDebCred(null,null,null,null,null),
+			new AccTBTotDebCred(null,null,null,null,null,null),
 				];
 		
 		return this.accTBTotDebCred;
@@ -561,7 +561,7 @@ export class AccountingService {
 
 	getAccTBNet() {
 		this.accTBNet = [
-			new AccTBNet(null,null,null,null,null),
+			new AccTBNet(null,null,null,null,null,null),
 				];
 		
 		return this.accTBNet;
