@@ -251,6 +251,8 @@ import { MtnLineComponent } from './maintenance/mtn-line/mtn-line.component';
 import { MtnRiskComponent } from './maintenance/mtn-risk/mtn-risk.component';
 import { JvAccountingEntriesComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-accounting-entries/jv-accounting-entries.component';
 import { JvLossReserveDepositComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-loss-reserve-deposit/jv-loss-reserve-deposit.component';
+import { MtnIntermediaryComponent } from './maintenance/mtn-intermediary/mtn-intermediary.component';
+import { MtnLineClassComponent } from './maintenance/mtn-line-class/mtn-line-class.component';
 
 
 
@@ -510,6 +512,8 @@ import { JvLossReserveDepositComponent } from './accounting-in-trust/journal-vou
         MtnRiskComponent,
         JvAccountingEntriesComponent,
         JvLossReserveDepositComponent,
+        MtnIntermediaryComponent,
+        MtnLineClassComponent,
     ],
 
     providers: [

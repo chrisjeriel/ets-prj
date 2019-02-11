@@ -44,6 +44,10 @@ export class MaintenanceService{
        	return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMntLine');
     }
 
+    getIntLOV() {
+       	return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMntIntermediary');
+    }
+
 	getMtnRiskListing(){
 		const params = new HttpParams()
                 .set('riskId','')
@@ -59,6 +63,14 @@ export class MaintenanceService{
                 .set('activeTag','');
 
         return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMtnRiskListing', {params});
+	}
+
+	getLineClassLOV(line : string) {
+		
+		const params = new HttpParams()
+             .set('lineCd',line)
+
+   	   return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMntLineClass',{params});
 	}
 
 }

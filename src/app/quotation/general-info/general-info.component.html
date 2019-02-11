@@ -42,7 +42,7 @@
 											<input type="text" class="form-control form-control-sm ig-mrgn" ngbTooltip="Sequence No" [appCharactersLength]="'5'" appRequired>
 											<input type="text" [(ngModel)]="quotationNum[2]" class="form-control form-control-sm ig-mrgn" ngbTooltip="Revision No" [appCharactersLength]="'2'" appRequired> -->
 											<!-- <input type="text" [(ngModel)]="quotationNum[3]" class="form-control form-control-sm ig-mrgn" ngbTooltip="Company No" [appCharactersLength]="'2'" appRequired> -->
-										<input appRequired type="text" class="form-control form-control-sm" [(ngModel)]="quotationNum">
+										<input appRequired type="text" class="form-control form-control-sm" [(ngModel)]="quotationNo">
 									</div>
 									<div class="input-group ig-cust">
 										<label class="form-control-sm col-sm-2">Type of Cession</label>
@@ -50,9 +50,9 @@
 										<input appRequired type="text" class="form-control form-control-sm" [(ngModel)]="typeOfCession">
 
 										<label class="form-control-sm col-sm-2">Line Class</label>
-										<input type="text" [(ngModel)]="line" class="form-control form-control-sm" style="margin-right: 1px;"
+										<input type="text" [(ngModel)]="lineClass"  class="form-control form-control-sm" style="margin-right: 1px;"
 										 appRequired>
-										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+										<div class="text-search-ico"><a><i class="fa fa-search" (click)=showLineClassLOV()></i></a></div>
 										<span>&nbsp;</span>
 									</div>
 									<div class="input-group ig-cust">
@@ -80,10 +80,10 @@
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Intermediary</label>
-										<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="genInfoData!== undefined ? genInfoData.intmId : ''" appRequired>
-										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+										<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="genInfoData!== undefined ? genInfoData.intmId : '' || intId" appRequired>
+										<div class="text-search-ico" (click)="showIntLOV()"><a><i class="fa fa-search"></i></a></div>
 										<span>&nbsp;</span>
-										<input type="text" class="form-control form-control-sm col-sm ig-mrgn" [ngModel]="genInfoData!== undefined ? genInfoData.intmName : ''" style="margin-left: 5px;" appRequired>
+										<input type="text" class="form-control form-control-sm col-sm ig-mrgn" [ngModel]="genInfoData!== undefined ? genInfoData.intmName : '' || intName" style="margin-left: 5px;" appRequired>
 									</div>
 									<!-- <div *ngIf="ocChecked" class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Open Pol No</label>
@@ -1407,3 +1407,6 @@
 <app-mtn-insured id="principalLOV" (selectedData)="setPrincipal($event)"></app-mtn-insured>
 <app-mtn-insured id="contractorLOV" (selectedData)="setContractor($event)"></app-mtn-insured> 
 <app-mtn-currency id="currencyModal" (selectedData)="setCurrency($event)"></app-mtn-currency>
+<app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
+<app-mtn-intermediary id="intLOV" (selectedData)="setInt($event)"></app-mtn-intermediary>
+<app-mtn-line-class id="lineClassLOV" (selectedData)="setLineClass($event)" [line]="line"></app-mtn-line-class>
