@@ -312,6 +312,15 @@ export class GeneralInfoComponent implements OnInit {
 		return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]);
 	}
 
+	showCedingCompanyLOV() {
+        $('#cedingCompanyLOV #modalBtn').trigger('click');
+    }
+
+    setCedingcompany(event){
+    	this.genInfoData.cedingId = event.coNo;
+        this.genInfoData.cedingName = event.name;
+    }
+
 }
 export interface SelectRequestMode {
 	name: string;

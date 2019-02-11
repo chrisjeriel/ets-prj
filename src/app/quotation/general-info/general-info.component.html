@@ -65,7 +65,7 @@
 									<div class="input-group ig-cust">
 										<label class="form-control-sm col-sm-2">Ceding Company</label>
 										<input type="text" class="form-control form-control-sm col-sm-2" appRequired [(ngModel)]="genInfoData.cedingId">
-										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+										<div class="text-search-ico"><a><i class="fa fa-search" (click)="showCedingCompanyLOV()"></i></a></div>
 										<span>&nbsp;</span>
 										<input type="text" class="form-control form-control-sm col-sm ig-mrgn" [(ngModel)]="genInfoData.cedingName"
 										 style="margin-left: 5px;" appRequired>
@@ -1330,7 +1330,7 @@
 					</div>
 					<div class="input-group ig-cust">
 						<label class="form-control-sm col-sm-4">Print Date</label>
-						<input type="date" class="form-control form-control-sm col-sm-7" [ngModel]="genInfoData.printDate | date" (change)="console.log(genInfoData.printDate)">
+						<input type="date" class="form-control form-control-sm col-sm-7" [(ngModel)]="genInfoData.printDate">
 					</div>
 				</div>
 			</fieldset>
@@ -1407,3 +1407,4 @@
 <app-mtn-insured id="principalLOV" (selectedData)="setPrincipal($event)"></app-mtn-insured>
 <app-mtn-insured id="contractorLOV" (selectedData)="setContractor($event)"></app-mtn-insured> 
 <app-mtn-currency id="currencyModal" (selectedData)="setCurrency($event)"></app-mtn-currency>
+<app-ceding-company id="cedingCompanyLOV" (selectedData)="setCedingcompany($event)"></app-ceding-company>
