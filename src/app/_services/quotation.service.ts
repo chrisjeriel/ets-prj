@@ -144,7 +144,7 @@ export class QuotationService {
     }
 
 
-    getEndorsements(quoteId: string, quotationNo: string, optionNo: number) {
+    getEndorsements(quoteId: string, quotationNo: string, optionNo: string) {
 
          if (quoteId == '' || quoteId == null ) {
          const params = new HttpParams()

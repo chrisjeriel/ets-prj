@@ -43,7 +43,7 @@ export class QuoteEndorsementComponent implements OnInit {
     tableData: any[] = [];
     tHeader: any[] = ['Endt Code', 'Endt Title', 'Endt Description', 'Remarks'];
     magnifyingGlass: any[] = ["endtCode"]
-    nData: QuoteEndorsement = new QuoteEndorsement(null, null, null, null, null);
+    nData: QuoteEndorsement = new QuoteEndorsement(null, null, null, null);
 
     optionNos: number[] = [];
 
@@ -62,7 +62,7 @@ export class QuoteEndorsementComponent implements OnInit {
         tableData: [],
         tHeader: ['Endt Code', 'Endt Title', 'Endt Description', 'Remarks'],
         magnifyingGlass: ['endtCode'],
-        nData: new QuoteEndorsement(null, null, null, null, null),
+        nData: new QuoteEndorsement(null, null, null, null),
         checkFlag: true,
         addFlag: true,
         deleteFlag: true,
@@ -110,23 +110,21 @@ export class QuoteEndorsementComponent implements OnInit {
           if (this.endorsementType == "OC") {
               this.OpenCover= true;
           
- /*             this.sub = this.route.params.subscribe(params => {.
+              this.sub = this.route.params.subscribe(params => {
                 this.from = params['from'];
                     if (this.from == "open-cover-processing") {
                         this.quoteIdOc = params['quoteIdOc'];
                     }
                });
-*/
+
 /*                var quoteNum= this.quotationNum.split("-",5);
                 this.quotationNum = quoteNum[0] + '-' + quoteNum[1] + '-' + Number(quoteNum[2]).toString() + '-' + Number(quoteNum[3]).toString() + '-' + Number(quoteNum[4]).toString()
 */
 
-                this.quoteIdOc = 1;
+                this.quoteIdOc = '1';
 
                 this.quotationService.getEndorsementsOc(this.quoteIdOc,null).subscribe((data: any) => {
-                    console.log(data.endorsementsOc);
                     this.quoteNoData = data.endorsementsOc[0].quotationNo;
-                    console.log(data.endorsementsOc[0].endtCd)
                         for(var lineCount = 0; lineCount < data.endorsementsOc.length; lineCount++){
                               this.endorsementOCData.tableData.push(new QuoteEndorsementOC(
                                                                            data.endorsementsOc[lineCount].endtCd, 
@@ -164,7 +162,7 @@ export class QuoteEndorsementComponent implements OnInit {
                             this.riskName = data.project.riskName; 
                         }
                     });
-                    this.quotationService.getEndorsements(null,this.quotationNum,1).subscribe((data: any) => {
+                    this.quotationService.getEndorsements(null,this.quotationNum,'1').subscribe((data: any) => {
                         for(var lineCount = 0; lineCount < data.endorsements.length; lineCount++){
                               this.endorsementData.tableData.push(new QuoteEndorsement(
                                                                            data.endorsements[lineCount].endtCd, 
@@ -229,6 +227,7 @@ export class QuoteEndorsementComponent implements OnInit {
     }
 
     ngOnDestroy() {
+        
         this.sub.unsubscribe();
     }
 

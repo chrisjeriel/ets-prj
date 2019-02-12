@@ -99,3 +99,4 @@ export * from './AccSrvEditTaxDetails';
 export * from './AccSrvEditWTaxDetails';
 export * from './AccountingSrvExpenseBudget';
 export * from './AccountingJVLossResDep';
+export * from './AccountingServiceInquiry';
