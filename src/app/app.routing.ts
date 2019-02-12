@@ -91,6 +91,7 @@ import { GenerateJvServiceComponent } from './accounting-service/journal-voucher
 import { UtilitiesComponent } from './accounting-service/utilities/utilities.component';
 import { AccSChangeTranStatNewComponent } from './accounting-service/utilities/acc-s-change-tran-stat-new/acc-s-change-tran-stat-new.component';
 import { AccSEditAccountingEntriesComponent } from './accounting-service/utilities/acc-s-edit-accounting-entries/acc-s-edit-accounting-entries.component';
+import { AccSEditedAccountingEntriesComponent } from './accounting-service/inquiry/acc-s-edited-accounting-entries/acc-s-edited-accounting-entries.component';
 
 const appRoutes: Routes = [
 
@@ -191,6 +192,7 @@ const appRoutes: Routes = [
     { path: 'accounting-service-exp-budget', component: ExpenseBudgetComponent },
     { path: 'acc-s-change-tran-stat-new', component: AccSChangeTranStatNewComponent },
     { path: 'acc-s-edit-acct-entries', component: AccSEditAccountingEntriesComponent },
+    { path: 'acc-s-edited-acct-entries', component: AccSEditedAccountingEntriesComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

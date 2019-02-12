@@ -254,6 +254,7 @@ import { OrChangeTranStatComponent } from './accounting-service/utilities/acc-s-
 import { CvChangeTranStatComponent } from './accounting-service/utilities/acc-s-change-tran-stat-new/cv-change-tran-stat/cv-change-tran-stat.component';
 import { JvChangeTranStatComponent } from './accounting-service/utilities/acc-s-change-tran-stat-new/jv-change-tran-stat/jv-change-tran-stat.component';
 import { AccSEditAccountingEntriesComponent } from './accounting-service/utilities/acc-s-edit-accounting-entries/acc-s-edit-accounting-entries.component';
+import { AccSEditedAccountingEntriesComponent } from './accounting-service/inquiry/acc-s-edited-accounting-entries/acc-s-edited-accounting-entries.component';
 
 
 @NgModule({
@@ -515,6 +516,7 @@ import { AccSEditAccountingEntriesComponent } from './accounting-service/utiliti
         CvChangeTranStatComponent,
         JvChangeTranStatComponent,
         AccSEditAccountingEntriesComponent,
+        AccSEditedAccountingEntriesComponent,
     ],
 
     providers: [

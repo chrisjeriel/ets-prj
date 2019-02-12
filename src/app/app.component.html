@@ -314,6 +314,17 @@
                                 <ngb-accordion #acc="ngbAccordion">
                                     <ngb-panel>
                                         <ng-template ngbPanelTitle>
+                                            Inquiry
+                                        </ng-template>
+                                        <ng-template ngbPanelContent>
+                                            <button [routerLink]="['acc-s-edited-acct-entries']" class="button btn btn-link">Edited Accounting Entries</button>
+                                            <br />
+                                        </ng-template>
+                                    </ngb-panel>
+                                </ngb-accordion>
+                                <ngb-accordion #acc="ngbAccordion">
+                                    <ngb-panel>
+                                        <ng-template ngbPanelTitle>
                                             Utilities
                                         </ng-template>
                                         <ng-template ngbPanelContent>
