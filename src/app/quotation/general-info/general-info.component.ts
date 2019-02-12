@@ -147,8 +147,7 @@ export class GeneralInfoComponent implements OnInit {
 				this.quotationService.getQuoteGenInfo('', this.plainQuotationNo(this.quotationNo)).subscribe(data => {
 				
 					if(data['quotationGeneralInfo'] != null) {
-						this.genInfoData = data['quotationGeneralInfo'];
-						
+						this.genInfoData = data['quotationGeneralInfo'];						
 						this.genInfoData.createDate = this.dateParser(this.genInfoData.createDate);
 						this.genInfoData.expiryDate = this.dateParser(this.genInfoData.expiryDate);
 						this.genInfoData.issueDate = this.dateParser(this.genInfoData.issueDate);
@@ -303,8 +302,16 @@ export class GeneralInfoComponent implements OnInit {
 		this.genInfoData.insuredDesc = data.insuredName;
 	}
 
-	dateParser(arr){
-    	return new Date(arr[0] + '-' + arr[1] + '-' + arr[2]).toISOString().split('T')[0];   
+	dateParser(arr) {
+    	return new Date(arr[0] + '-' + arr[1] + '-' + arr[2]).toISOString();   
+	}
+
+	testChange() {
+		console.log('ISSUE DATE   >>>>>   ' + this.genInfoData.issueDate);
+	}
+
+	saveGenInfo() {
+		console.log('save btn');
 	}
 }
 export interface SelectRequestMode {
