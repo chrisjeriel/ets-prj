@@ -100,3 +100,4 @@ export * from './AccSrvEditWTaxDetails';
 export * from './AccountingSrvExpenseBudget';
 export * from './AccountingCreditDebit';
 export * from './AccountingEntryCMDM';
+export * from './AccountingSChangeTranStatNew';

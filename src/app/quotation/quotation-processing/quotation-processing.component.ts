@@ -349,7 +349,7 @@ setCedingcompany(data){
 
 //neco was here
     toInternalCompetition(){
-        let data : any = {
+        /*let data : any = {
             adviceNo: 0,
             cedingId: 6, //hardcoded
             cedingRepId: 'cedingrepid6',
@@ -364,7 +364,7 @@ setCedingcompany(data){
         }
         this.quotationService.saveQuoteCompetition(data).subscribe((data: any) => {
             console.log(data);
-        });
+        });*/
     }
 //neco ends here
 

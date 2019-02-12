@@ -42,48 +42,48 @@
 											<input type="text" class="form-control form-control-sm ig-mrgn" ngbTooltip="Sequence No" [appCharactersLength]="'5'" appRequired>
 											<input type="text" [(ngModel)]="quotationNum[2]" class="form-control form-control-sm ig-mrgn" ngbTooltip="Revision No" [appCharactersLength]="'2'" appRequired> -->
 											<!-- <input type="text" [(ngModel)]="quotationNum[3]" class="form-control form-control-sm ig-mrgn" ngbTooltip="Company No" [appCharactersLength]="'2'" appRequired> -->
-										<input appRequired type="text" class="form-control form-control-sm" [(ngModel)]="quotationNum">
+										<input appRequired type="text" class="form-control form-control-sm" [(ngModel)]="genInfoData.quotationNo">
 									</div>
 									<div class="input-group ig-cust">
 										<label class="form-control-sm col-sm-2">Type of Cession</label>
 										
-										<input appRequired type="text" class="form-control form-control-sm" [(ngModel)]="typeOfCession">
+										<input appRequired type="text" class="form-control form-control-sm" [(ngModel)]="genInfoData.cessionDesc">
 
 										<label class="form-control-sm col-sm-2">Line Class</label>
-										<input type="text" [(ngModel)]="line" class="form-control form-control-sm" style="margin-right: 1px;"
+										<input type="text" [(ngModel)]="genInfoData.lineCd" class="form-control form-control-sm" style="margin-right: 1px;"
 										 appRequired>
 										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 										<span>&nbsp;</span>
 									</div>
 									<div class="input-group ig-cust">
 										<label class="form-control-sm col-sm-2">Policy Number</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="genInfoData.policyNo">
 										<label class="form-control-sm col-sm-2">Status</label>
 										<input type="text"  class="form-control form-control-sm"
-										 appRequired>
+										 appRequired [(ngModel)]="genInfoData.status">
 									</div>
 									<div class="input-group ig-cust">
 										<label class="form-control-sm col-sm-2">Ceding Company</label>
-										<input type="text" class="form-control form-control-sm col-sm-2" appRequired [(ngModel)]="line">
-										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+										<input type="text" class="form-control form-control-sm col-sm-2" appRequired [(ngModel)]="genInfoData.cedingId">
+										<div class="text-search-ico"><a><i class="fa fa-search" (click)="showCedingCompanyLOV()"></i></a></div>
 										<span>&nbsp;</span>
-										<input type="text" class="form-control form-control-sm col-sm ig-mrgn" [ngModel]="line"
+										<input type="text" class="form-control form-control-sm col-sm ig-mrgn" [(ngModel)]="genInfoData.cedingName"
 										 style="margin-left: 5px;" appRequired>
 									</div>
-									<div *ngIf="checkTypeOfCession() ||  typeOfCession == 'RETROCESSION'" class="input-group ig-cust">
+									<div *ngIf="checkTypeOfCession() ||  genInfoData.cessionDesc.toUpperCase() == 'RETROCESSION'" class="input-group ig-cust">
 										<label class="form-control-sm col-sm-2">Reinsurance From</label>
-										<input type="text" class="form-control form-control-sm col-sm-2" appRequired>
+										<input type="text" class="form-control form-control-sm col-sm-2" appRequired [(ngModel)]="genInfoData.reinsurerId">
 										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 										<span>&nbsp;</span>
-										<input type="text" [(ngModel)]="quotationGenInfo.cedingCompany" class="form-control form-control-sm col-sm ig-mrgn"
+										<input type="text" [(ngModel)]="genInfoData.reinsurerName" class="form-control form-control-sm col-sm ig-mrgn"
 										 style="margin-left: 5px;" appRequired>
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Intermediary</label>
-										<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="genInfoData!== undefined ? genInfoData.intmId : ''" appRequired>
+										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="genInfoData.intmId" appRequired>
 										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 										<span>&nbsp;</span>
-										<input type="text" class="form-control form-control-sm col-sm ig-mrgn" [ngModel]="genInfoData!== undefined ? genInfoData.intmName : ''" style="margin-left: 5px;" appRequired>
+										<input type="text" class="form-control form-control-sm col-sm ig-mrgn" [(ngModel)]="genInfoData.intmName" style="margin-left: 5px;" appRequired>
 									</div>
 									<!-- <div *ngIf="ocChecked" class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Open Pol No</label>
@@ -195,45 +195,45 @@
 										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 										<span>&nbsp;</span>
 										<input type="text" class="form-control form-control-sm col-sm ig-mrgn" style="margin-left: 5px;">
-									<!-- </div> -->
+									 </div> -->
 								</div>
 							</div>
 							<div class="col-sm-4">
 								<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 									<div class="input-group ig-cust" style="margin-top: 10px;">
 										<label class="form-control-sm col-sm-4">Quote Date</label>
-										<input appRequired type="date" [(ngModel)]="quotationGenInfo.quoteDate" class="form-control form-control-sm">
+										<input appRequired type="date" [(ngModel)]="genInfoData.issueDate" class="form-control form-control-sm">
 									</div>
 									<div class="input-group ig-cust">
 										<label class="form-control-sm col-sm-4">Valid Until</label>
-										<input appRequired type="date" [(ngModel)]="quotationGenInfo.validUntil" class="form-control form-control-sm">
+										<input appRequired type="date" [(ngModel)]="genInfoData.expiryDate" class="form-control form-control-sm">
 									</div>
 									<div class="input-group ig-cust">
 										<label class="form-control-sm col-sm-4">Requested By</label>
-										<input appRequired type="text" class="form-control form-control-sm" [ngModel]="genInfoData!== undefined ? genInfoData.reqBy : ''" >
+										<input appRequired type="text" class="form-control form-control-sm" [(ngModel)]="genInfoData.reqBy" >
 									</div>
 									<div class="input-group ig-cust">
 										<label class="form-control-sm col-sm-4">Request Date</label>
-										<input appRequired type="date" class="form-control form-control-sm">
+										<input appRequired type="date" [(ngModel)]="genInfoData.reqDate" class="form-control form-control-sm">
 									</div>
 									<div class="input-group ig-cust">
 										<label class="form-control-sm col-sm-4">Request Mode</label>
-										<select appRequired class="form-control form-control-sm cust-sm">
-											<option value=""></option>
-											<option value="USD">Value 1</option>
-											<option value="PHP">Value 2</option>
+										<select appRequired class="form-control form-control-sm cust-sm" [(ngModel)]="genInfoData.reqMode">
+											<option value="E">Email</option>
+											<option value="F">Fax</option>
+											<option value="P">Phone</option>
 										</select>
 									</div>
-									<div *ngIf="quotationService.toGenInfo[1] === 'MLP' || quotationService.toGenInfo[1] === 'DOS'" class="input-group ig-cust">
+									<div *ngIf="line === 'MLP' || line === 'DOS'" class="input-group ig-cust">
 										<label class="form-control-sm col-sm-4">MBI Ref No</label>
-										<input appRequired type="text" class="form-control form-control-sm">
+										<input appRequired type="text" class="form-control form-control-sm" [(ngModel)]="genInfoData.mbiRefNo">
 									</div>
 								</div>
 							</div>
 						</div>
 					</fieldset>
 
-					<fieldset class="scheduler-border" *ngIf="ocChecked">
+					<fieldset class="scheduler-border" *ngIf="genInfoData.openCoverTag === 'Y'">
 						<legend class="scheduler-border">Open Cover Details</legend>
 						<div class="form-row custom-row-inline-inset">
 							<div class="col-sm-1"></div>
@@ -270,7 +270,7 @@
 						<div class="form-group col-sm-6 offsetFormGroup">
 							<div class="input-group">
 								<label class="form-control-sm col-sm-4">Currency</label>
-								<input appRequired type="text" class="form-control form-control-sm" placeholder="PHP" [ngModel]="currencyAbbr">
+								<input appRequired type="text" class="form-control form-control-sm" placeholder="PHP" [(ngModel)]="genInfoData.currencyCd">
 								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showCurrencyModal()"></i></a></div>
 								<span>&nbsp;</span>
 							</div>
@@ -278,7 +278,7 @@
 						<div class="form-group col-sm-6 offsetFormGroup">
 							<div class="input-group">
 								<label class="form-control-sm col-sm-4 ">Exch. Rt.</label>
-								<input appRequired type="text" class="form-control form-control-sm txt-content-rght" placeholder="0" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [ngModel]="currencyRt">
+								<input appRequired type="text" class="form-control form-control-sm txt-content-rght" placeholder="0" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="genInfoData.currencyRt">
 								<span>&nbsp;</span>
 							</div>
 						</div>
@@ -295,7 +295,7 @@
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<div class="input-group-text">
-										<input type="checkbox">
+										<input type="checkbox" [checked]="genInfoData.govtTag === 'Y'" (change)="genInfoData.govtTag = (genInfoData.govtTag === 'Y') ? 'N' : 'Y'">
 									</div>
 								</div>
 								<input type="text" style="font-size: 11px !important;" value="Government" disabled class="form-control form-control-sm">
@@ -304,8 +304,8 @@
 						<div class="col-sm-6">
 							<div class="input-group">
 								<div class="input-group-prepend">
-									<div class="input-group-text">
-										<input type="checkbox">
+									<div class="input-group-text">										
+										<input type="checkbox" [checked]="genInfoData.indicativeTag === 'Y'" (change)="genInfoData.indicativeTag = (genInfoData.indicativeTag === 'Y') ? 'N' : 'Y'">
 									</div>
 								</div>
 								<input type="text" style="font-size: 11px !important;" value="Indicative" disabled class="form-control form-control-sm">
@@ -317,7 +317,7 @@
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<div class="input-group-text">
-										<input type="checkbox" [(ngModel)]="ocChecked">
+										<input type="checkbox" [checked]="genInfoData.openCoverTag === 'Y'" (change)="genInfoData.openCoverTag = (genInfoData.openCoverTag === 'Y') ? 'N' : 'Y'">
 									</div>
 								</div>
 								<input type="text" style="font-size: 11px !important;" value="Open Cover" disabled class="form-control form-control-sm">
@@ -327,7 +327,7 @@
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<div class="input-group-text">
-										<input type="checkbox">
+										<input type="checkbox" [checked]="genInfoData.declarationTag === 'Y'" (change)="genInfoData.declarationTag = (genInfoData.declarationTag === 'Y') ? 'N' : 'Y'">
 									</div>
 								</div>
 								<input type="text" style="font-size: 11px !important;" value="Declaration" disabled class="form-control form-control-sm">
@@ -352,87 +352,87 @@
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-6" style="margin-top: 10px;">
 								<label class="form-control-sm col-sm-2">Principal</label>
-								<input appRequired type="text" class="form-control form-control-sm col-sm-2" [ngModel]="principalCd">
+								<input appRequired type="text" class="form-control form-control-sm col-sm-2" [ngModel]="genInfoData.principalId">
 								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 								<span>&nbsp;</span>
-								<input appRequired type="text" [(ngModel)]="quotationGenInfo.principal" class="form-control form-control-sm col-sm-8 ig-mrgn"
+								<input appRequired type="text" [(ngModel)]="genInfoData.principalName" class="form-control form-control-sm col-sm-8 ig-mrgn"
 								 style="margin-left: 3px !important;">
 							</div>
 							<div class="input-group ig-cust col-sm-6" style="margin-top: 10px;">
 								<label class="form-control-sm col-sm-2">Contractor</label>
-								<input appRequired type="text" class="form-control form-control-sm col-sm-2" [ngModel]="contractorCd">
+								<input appRequired type="text" class="form-control form-control-sm col-sm-2" [ngModel]="genInfoData.contractorId">
 								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showContractorLOV()"></i></a></div>
 								<span>&nbsp;</span>
-								<input appRequired type="text" [(ngModel)]="quotationGenInfo.contractor" class="form-control form-control-sm col-sm-8 ig-mrgn"
+								<input appRequired type="text" [(ngModel)]="genInfoData.contractorName" class="form-control form-control-sm col-sm-8 ig-mrgn"
 								 style="margin-left: 2px !important;">
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group col-sm-12">
 								<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Insured</label>
-								<textarea appRequired class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;"></textarea>
+								<textarea appRequired class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;" [(ngModel)]="genInfoData.insuredDesc"></textarea>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-12">
 								<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Risk</label>
-								<input appRequired type="text" class="form-control form-control-sm">
+								<input appRequired type="text" class="form-control form-control-sm" [(ngModel)]="project.riskName">
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-6">
 								<label class="form-control-sm col-sm-2">Object</label>
-								<input appRequired type="text" class="form-control form-control-sm col-sm-2">
+								<input appRequired type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="project.objectId">
 								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 								<span>&nbsp;</span>
-								<input appRequired type="text" [(ngModel)]="quotationGenInfo.object" class="form-control form-control-sm col-sm-8 ig-mrgn"
+								<input appRequired type="text" [(ngModel)]="project.objectDesc" class="form-control form-control-sm col-sm-8 ig-mrgn"
 								 style="margin-left: 3px !important;">
 							</div>
 							<div class="input-group ig-cust col-sm-6">
 								<label class="form-control-sm col-sm-2">Region</label>
-								<input type="text" class="form-control form-control-sm col-sm">
+								<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="project.regionDesc">
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group col-sm-6" style="margin-bottom: -8px !important;">
 								<label class="form-control-sm col-sm-2">Nature of Work</label>
-								<textarea appRequired class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;"></textarea>
+								<textarea appRequired class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;" [(ngModel)]="project.projDesc"></textarea>
 							</div>
 							<div class="input-group col-sm-6">
 								<div class="input-group ig-cust">
 									<label class="form-control-sm col-sm-2">Province</label>
-									<input type="text" class="form-control form-control-sm">
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.provinceDesc">
 								</div>
 								<div class="input-group">
 									<label class="form-control-sm col-sm-2">City/Town</label>
-									<input type="text" class="form-control form-control-sm">
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.cityDesc">
 								</div>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px; margin-top: -2px;">
 							<div class="input-group col-sm-6" style="margin-bottom: -8px !important;">
 								<label class="form-control-sm col-sm-2">Site</label>
-								<textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 8px;"></textarea>
+								<textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 8px;" [(ngModel)]="project.site"></textarea>
 							</div>
 							<div class="input-group col-sm-6">
 								<div class="input-group ig-cust">
 									<label class="form-control-sm col-sm-2">District</label>
-									<input type="text" class="form-control form-control-sm">
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.districtDesc">
 									<label class="form-control-sm col-sm-2">Block</label>
-									<input type="text" class="form-control form-control-sm">
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.blockDesc">
 								</div>
 								<div class="input-group">
 									<label class="form-control-sm col-sm-2">Lat</label>
-									<input type="text" class="form-control form-control-sm">
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.latitude">
 									<label class="form-control-sm col-sm-2">Long</label>
-									<input type="text" class="form-control form-control-sm">
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.longitude">
 								</div>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px; margin-top: -2px;">
 							<div class="input-group col-sm-6">
 								<label class="form-control-sm col-sm-2">Duration</label>
-								<input appRequired type="text" class="form-control form-control-sm">
+								<input appRequired type="text" class="form-control form-control-sm" [(ngModel)]="project.duration">
 							</div>
 						</div>
 					</fieldset>
@@ -445,25 +445,25 @@
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-6" style="margin-top: 10px;">
 								<label class="form-control-sm col-sm-2">Principal</label>
-								<input appRequired type="text" class="form-control form-control-sm col-sm-2" [ngModel]="principalCd">
+								<input appRequired type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="genInfoData.principalId">
 								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 								<span>&nbsp;</span>
-								<input appRequired type="text" [(ngModel)]="quotationGenInfo.principal" class="form-control form-control-sm col-sm-8 ig-mrgn"
+								<input appRequired type="text" [(ngModel)]="genInfoData.principalName" class="form-control form-control-sm col-sm-8 ig-mrgn"
 								 style="margin-left: 3px !important;">
 							</div>
 							<div class="input-group ig-cust col-sm-6" style="margin-top: 10px;">
 								<label class="form-control-sm col-sm-2">Contractor</label>
-								<input appRequired type="text" class="form-control form-control-sm col-sm-2" [ngModel]="contractorCd">
+								<input appRequired type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="genInfoData.contractorId">
 								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showContractorLOV()"></i></a></div>
 								<span>&nbsp;</span>
-								<input appRequired type="text" [(ngModel)]="quotationGenInfo.contractor" class="form-control form-control-sm col-sm-8 ig-mrgn"
+								<input appRequired type="text" [(ngModel)]="genInfoData.contractorName" class="form-control form-control-sm col-sm-8 ig-mrgn"
 								 style="margin-left: 2px !important;">
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group col-sm-12">
 								<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Insured</label>
-								<textarea appRequired class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;"></textarea>
+								<textarea appRequired class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;" [(ngModel)]="genInfoData.insuredDesc"></textarea>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
@@ -1270,12 +1270,12 @@
 								Paragraph</label>
 						</div>
 						<div class="input-group" style="margin-top: 2px;">
-							<textarea appRequired style="font-size: 12px; margin-bottom: 38px;" class="form-control form-control-sm col-sm-6"></textarea>
+							<textarea appRequired style="font-size: 12px; margin-bottom: 38px;" class="form-control form-control-sm col-sm-6" [(ngModel)]="genInfoData.openingParag"></textarea>
 							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 							<span>&nbsp;</span>
 							<div class="text-search-ico"><a><i class="fa fa-file-text" style="margin-top: 22px !important;"></i></a></div>
 
-							<textarea appRequired style="font-size: 12px; margin-bottom: 38px; margin-left: 10px !important;" class="form-control form-control-sm col-sm-6"></textarea>
+							<textarea appRequired style="font-size: 12px; margin-bottom: 38px; margin-left: 10px !important;" class="form-control form-control-sm col-sm-6" [(ngModel)]="genInfoData.closingParag"></textarea>
 							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 							<span>&nbsp;</span>
 							<div class="text-search-ico"><a><i class="fa fa-file-text" style="margin-top: 22px !important;"></i></a></div>
@@ -1297,17 +1297,17 @@
 					<div class="form-row ig-cust">
 						<div class="form-group col-sm">
 							<label class="form-control-sm top-label">Total Sl</label>
-							<input appCurrency type="text" class="form-control form-control-sm" readonly>
+							<input type="text" class="form-control form-control-sm text-right" readonly [ngModel]="project.totalSi | number:'1.2-2'">
 						</div>
 					</div>
 					<div class="form-row" style="margin-bottom: -16px; margin-top: -10px;">
 						<div class="form-group col-sm-3">
 							<label class="form-control-sm top-label">% Share</label>
-							<input type="text" class="form-control form-control-sm cust-sm" readonly>
+							<input type="text" class="form-control form-control-sm cust-sm text-right" readonly [(ngModel)]="project.pctShare">
 						</div>
 						<div class="form-group col-sm" style="margin-left: -6px !important;">
 							<label class="form-control-sm top-label">100% Value</label>
-							<input type="text" class="form-control form-control-sm cust-sm" readonly>
+							<input type="text" class="form-control form-control-sm cust-sm text-right" readonly [ngModel]="project.totalValue | number:'1.2-2'">
 						</div>
 					</div>
 				</div>
@@ -1318,19 +1318,19 @@
 				<div class="custom-row-inline-inset" style="margin-left: -22px !important;">
 					<div class="input-group ig-cust">
 						<label class="form-control-sm col-sm-4">Prepared By</label>
-						<input type="text" class="form-control form-control-sm col-sm-7">
+						<input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="genInfoData.preparedBy">
 					</div>
 					<div class="input-group ig-cust">
 						<label class="form-control-sm col-sm-4">Approved By</label>
-						<input type="text" class="form-control form-control-sm col-sm-7">
+						<input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="genInfoData.approvedBy">
 					</div>
 					<div class="input-group ig-cust">
 						<label class="form-control-sm col-sm-4">Printed By</label>
-						<input type="text" class="form-control form-control-sm col-sm-7">
+						<input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="genInfoData.printedBy">
 					</div>
 					<div class="input-group ig-cust">
 						<label class="form-control-sm col-sm-4">Print Date</label>
-						<input type="date" class="form-control form-control-sm col-sm-7">
+						<input type="date" class="form-control form-control-sm col-sm-7" [(ngModel)]="genInfoData.printDate">
 					</div>
 				</div>
 			</fieldset>
@@ -1340,21 +1340,21 @@
 					<div class="form-row">
 						<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -10px; margin-left: 3px;">
 							<label class="form-control-sm top-label">Created By</label>
-							<input appRequired type="text" class="form-control form-control-sm cust-sm">
+							<input appRequired type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="genInfoData.createUser">
 						</div>
 						<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -10px; margin-left: -5px;">
 							<label class="form-control-sm top-label">Last Update By</label>
-							<input appRequired type="text" class="form-control form-control-sm cust-sm">
+							<input appRequired type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="genInfoData.updateUser">
 						</div>
 					</div>
 					<div class="form-row">
 						<div class="form-group col-sm-6" style="margin-bottom: 8px; margin-left: 3px;">
 							<label class="form-control-sm top-label">Date Created</label>
-							<input appRequired type="date" class="form-control form-control-sm cust-sm">
+							<input appRequired type="date" class="form-control form-control-sm cust-sm" [(ngModel)]="genInfoData.createDate">
 						</div>
 						<div class="form-group col-sm-6" style="margin-bottom: 8px; margin-left: -5px;">
 							<label class="form-control-sm top-label">Last Update</label>
-							<input appRequired type="date" class="form-control form-control-sm cust-sm">
+							<input appRequired type="date" class="form-control form-control-sm cust-sm" [(ngModel)]="genInfoData.updateDate">
 						</div>
 					</div>
 				</div>
@@ -1407,3 +1407,4 @@
 <app-mtn-insured id="principalLOV" (selectedData)="setPrincipal($event)"></app-mtn-insured>
 <app-mtn-insured id="contractorLOV" (selectedData)="setContractor($event)"></app-mtn-insured> 
 <app-mtn-currency id="currencyModal" (selectedData)="setCurrency($event)"></app-mtn-currency>
+<app-ceding-company id="cedingCompanyLOV" (selectedData)="setCedingcompany($event)"></app-ceding-company>

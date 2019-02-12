@@ -251,6 +251,13 @@ import { MtnRiskComponent } from './maintenance/mtn-risk/mtn-risk.component';
 import { CedingCompanyComponent } from './underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
 import { CreditDebitMemoComponent } from './accounting-service/credit-debit-memo/credit-debit-memo.component';
 import { CmdmEntryComponent } from './accounting-service/credit-debit-memo/cmdm-entry/cmdm-entry.component';
+import { AccSChangeTranStatNewComponent } from './accounting-service/utilities/acc-s-change-tran-stat-new/acc-s-change-tran-stat-new.component';
+import { OrChangeTranStatComponent } from './accounting-service/utilities/acc-s-change-tran-stat-new/or-change-tran-stat/or-change-tran-stat.component';
+import { CvChangeTranStatComponent } from './accounting-service/utilities/acc-s-change-tran-stat-new/cv-change-tran-stat/cv-change-tran-stat.component';
+import { JvChangeTranStatComponent } from './accounting-service/utilities/acc-s-change-tran-stat-new/jv-change-tran-stat/jv-change-tran-stat.component';
+import { AccSEditAccountingEntriesComponent } from './accounting-service/utilities/acc-s-edit-accounting-entries/acc-s-edit-accounting-entries.component';
+import { AccSEditedAccountingEntriesComponent } from './accounting-service/inquiry/acc-s-edited-accounting-entries/acc-s-edited-accounting-entries.component';
+
 
 
 @NgModule({
@@ -509,6 +516,12 @@ import { CmdmEntryComponent } from './accounting-service/credit-debit-memo/cmdm-
         CedingCompanyComponent,
         CreditDebitMemoComponent,
         CmdmEntryComponent,
+        AccSChangeTranStatNewComponent,
+        OrChangeTranStatComponent,
+        CvChangeTranStatComponent,
+        JvChangeTranStatComponent,
+        AccSEditAccountingEntriesComponent,
+        AccSEditedAccountingEntriesComponent,
     ],
 
     providers: [

@@ -36,6 +36,7 @@ export class InternalCompetitionComponent implements OnInit {
     }
 
     data: any;
+    savedData: any[] = [];
     @ViewChild(CustEditableNonDatatableComponent) custEditableNonDatatableComponent : CustEditableNonDatatableComponent;
     
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title) { }
@@ -48,7 +49,6 @@ export class InternalCompetitionComponent implements OnInit {
         //this.opts.push({ selector: "advOpt", vals: ["Pending", "On Going", "Done"] });
 
         this.quotationService.getIntCompAdvInfo().subscribe((data: any) => {
-            console.log(data.quotation);
             this.data = data.quotation[0].competitionsList;
             for(var i = 0; i < this.data.length; i++){
               this.data[i].createDate = new Date(
@@ -77,7 +77,39 @@ export class InternalCompetitionComponent implements OnInit {
     }
 
     onClickSave() {
+      //console.log(this.data);
 
+      this.savedData = [];
+      
+      for (var i = 0 ; this.intCompData.tableData.length > i; i++) {
+        if(this.intCompData.tableData[i].edited){
+            this.savedData.push(this.intCompData.tableData[i]);
+            this.savedData[this.savedData.length-1].quoteId = 6;
+            this.savedData[this.savedData.length-1].createDate = new Date().toISOString();
+            this.savedData[this.savedData.length-1].updateDate = new Date().toISOString();
+          }
+
+        // delete this.savedData[i].tableIndex;
+      }
+       this.quotationService.saveQuoteCompetition(this.savedData).subscribe((data: any) => {
+            console.log(data);
+       });
+      /*let data : any = {
+            adviceNo: 0,
+            cedingId: 6, //hardcoded
+            cedingRepId: 'cedingrepid6',
+            createDate: new Date(),
+            createUser: 'Trinidad',
+            option: 'option1',
+            quoteId: 6,
+            updateDate: new Date(),
+            updateUser: 'Trinidad',
+            wordings: ''
+
+        }
+        this.quotationService.saveQuoteCompetition(data).subscribe((data: any) => {
+            console.log(data);
+        });*/
     }
 
     clickRow(event) {
