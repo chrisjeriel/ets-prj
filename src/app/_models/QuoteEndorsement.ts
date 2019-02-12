@@ -11,3 +11,18 @@ export class QuoteEndorsement{
 		this.endtWording = endtWording;
 	}
 }
+
+export class QuoteEndorsementOC{
+	endtCode: string;
+	endtTitle: string;
+	description: string;
+	remarks: string;
+
+	constructor(endtCode:string,endTitle: string,description: string,remarks: string){
+		this.endtCode = endtCode;
+		this.endtTitle = endTitle;
+		this.description = description;
+		this.remarks = remarks;
+	}
+}
+

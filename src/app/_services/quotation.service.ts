@@ -162,6 +162,8 @@ export class QuotationService {
 
 
 
+
+
 /*         if (quoteId == '' || quoteId == null ) {
                return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteEndorsements?quotationNo="+quotationNo+"&optionId="+optionNo);
          } else if (quotationNo == '' || quotationNo == null ) {
@@ -186,6 +188,28 @@ export class QuotationService {
         });
         endorsmentData.forEach(function (itm) { delete itm.optionNo; });
         return endorsmentData;*/
+    }
+
+
+    getEndorsementsOc(quoteIdOc: string, quotationNo: string) {
+
+         if (quoteIdOc == '' || quoteIdOc == null ) {
+         const params = new HttpParams()
+                .set('quoteId','')
+                .set('quotationNo',quotationNo);
+          return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteEndorsementsOc', {params});
+          } else if (quotationNo == '' || quotationNo == null ) {
+          const params = new HttpParams()
+                .set('quoteId',quoteIdOc)
+                .set('quotationNo','');
+          return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteEndorsementsOc', {params});
+         } else {
+           const params = new HttpParams()
+                .set('quoteId',quoteIdOc)
+                .set('quotationNo',quotationNo);
+          return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteEndorsementsOc', {params});   
+         }
+
     }
 
     getAttachment(quoteId:string) {

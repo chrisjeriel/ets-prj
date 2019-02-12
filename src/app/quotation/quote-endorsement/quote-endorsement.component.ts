@@ -1,7 +1,7 @@
 
 
 import { Component, OnInit , ViewChild, Input} from '@angular/core';
-import { QuotationInfo, QuotationOption, QuoteEndorsement } from '../../_models';
+import { QuotationInfo, QuotationOption, QuoteEndorsement , QuoteEndorsementOC} from '../../_models';
 import { QuotationService } from '../../_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
@@ -24,6 +24,7 @@ export class QuoteEndorsementComponent implements OnInit {
     from: string;
     quotationNum: string;
     quoteNoData: any;
+    quoteIdOc: any;
     insured: any;
     projectData: any;
     riskName: any;
@@ -71,21 +72,25 @@ export class QuoteEndorsementComponent implements OnInit {
         keys: ['endtCode','endtTitle','endtDescription','endtWording']
     }
 
+    endorsementOCData: any = {
+        tableData: [],
+        tHeader: ['Endt Code', 'Endt Title', 'Endt Description', 'Remarks'],
+        magnifyingGlass: ['endtCode'],
+        nData: new QuoteEndorsementOC(null, null, null, null),
+        checkFlag: true,
+        addFlag: true,
+        deleteFlag: true,
+        infoFlag: true,
+        paginateFlag: true,
+        searchFlag: true,
+        keys: ['endtCode','endtTitle','description','remarks']
+    }
+
     endtCodeLOVRow : number;
 
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title,  private route: ActivatedRoute) { }
 
     ngOnInit() {  
-        this.sub = this.route.params.subscribe(params => {
-            this.from = params['from'];
-                if (this.from == "quo-processing") {
-                    this.quotationNum = params['quotationNo'];
-                }
-        });
-
-        var quoteNum= this.quotationNum.split("-",5);
-        this.quotationNum = quoteNum[0] + '-' + quoteNum[1] + '-' + Number(quoteNum[2]).toString() + '-' + Number(quoteNum[3]).toString() + '-' + Number(quoteNum[4]).toString()
-
 
         this.titleService.setTitle("Quo | Endorsement");
         this.dtOptions = {
@@ -104,8 +109,48 @@ export class QuoteEndorsementComponent implements OnInit {
 /*        this.tableData = this.quotationService.getEndorsements(1);*/
           if (this.endorsementType == "OC") {
               this.OpenCover= true;
+          
+ /*             this.sub = this.route.params.subscribe(params => {.
+                this.from = params['from'];
+                    if (this.from == "open-cover-processing") {
+                        this.quoteIdOc = params['quoteIdOc'];
+                    }
+               });
+*/
+/*                var quoteNum= this.quotationNum.split("-",5);
+                this.quotationNum = quoteNum[0] + '-' + quoteNum[1] + '-' + Number(quoteNum[2]).toString() + '-' + Number(quoteNum[3]).toString() + '-' + Number(quoteNum[4]).toString()
+*/
+
+                this.quoteIdOc = 1;
+
+                this.quotationService.getEndorsementsOc(this.quoteIdOc,null).subscribe((data: any) => {
+                    console.log(data.endorsementsOc);
+                    this.quoteNoData = data.endorsementsOc[0].quotationNo;
+                    console.log(data.endorsementsOc[0].endtCd)
+                        for(var lineCount = 0; lineCount < data.endorsementsOc.length; lineCount++){
+                              this.endorsementOCData.tableData.push(new QuoteEndorsementOC(
+                                                                           data.endorsementsOc[lineCount].endtCd, 
+                                                                           data.endorsementsOc[lineCount].endtTitle,
+                                                                           data.endorsementsOc[lineCount].projDesc,
+                                                                           data.endorsementsOc[lineCount].remarks)
+                                                                   );          
+                          }
+                        this.table.refreshTable();
+                    });
+
+
             } else {
               this.OpenCover= false;
+
+              this.sub = this.route.params.subscribe(params => {
+                this.from = params['from'];
+                    if (this.from == "quo-processing") {
+                        this.quotationNum = params['quotationNo'];
+                    }
+               });
+
+                var quoteNum= this.quotationNum.split("-",5);
+                this.quotationNum = quoteNum[0] + '-' + quoteNum[1] + '-' + Number(quoteNum[2]).toString() + '-' + Number(quoteNum[3]).toString() + '-' + Number(quoteNum[4]).toString()
 
                 if (this.quotationService.toGenInfo[0] == "edit") {  
                     console.log("Edit- Quotation");
