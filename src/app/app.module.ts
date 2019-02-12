@@ -252,6 +252,7 @@ import { MtnProvinceComponent } from './maintenance/mtn-region/mtn-province/mtn-
 import { MtnQuotationWordingsComponent } from './maintenance/mtn-quotation-wordings/mtn-quotation-wordings.component';
 import { MtnRiskComponent } from './maintenance/mtn-risk/mtn-risk.component';
 import { CedingCompanyComponent } from './underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
+import { AcctSrvcCancelledTransactionsComponent } from './accounting-service/accounting-service-inquiry/acct-srvc-cancelled-transactions/acct-srvc-cancelled-transactions.component';
 
 
 @NgModule({
@@ -511,6 +512,7 @@ import { CedingCompanyComponent } from './underwriting/policy-maintenance/pol-mx
         MtnQuotationWordingsComponent,
         MtnRiskComponent,
         CedingCompanyComponent,
+        AcctSrvcCancelledTransactionsComponent,
     ],
 
     providers: [

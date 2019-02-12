@@ -304,6 +304,17 @@
                                 <br />
                                 <button [routerLink]="['accounting-service-expense-budget']" class="button btn btn-link">Expense Budget</button>
                                 <br />
+                                <ngb-accordion #acc="ngbAccordion">
+                                    <ngb-panel>
+                                        <ng-template ngbPanelTitle>
+                                            Inquiry
+                                        </ng-template>
+                                        <ng-template ngbPanelContent>
+                                            <button [routerLink]="['acct-srvc-inquiry-cncld-trans']" class="button btn btn-link">Cancelled Transactions</button>
+                                            <br />                                        
+                                        </ng-template>
+                                    </ngb-panel>
+                                </ngb-accordion>
                                 <button [routerLink]="['accounting-service-extract']" class="button btn btn-link">Extract</button>
                                 <br />
                                 <button [routerLink]="['acc-s-request-for-payment']" class="button btn btn-link">Request for Payment</button>

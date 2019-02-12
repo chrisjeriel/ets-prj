@@ -44,6 +44,63 @@ export class HoldCoverComponent implements OnInit {
   cedCo:string;
   insured:string;
   risk:string;
+
+  rowRec;
+
+  hcLine               : string;
+  hcYear               : string;
+  hcSeqNo              : string;
+  hcRevNo              : string;
+
+  quoteId: number;
+
+  holdCover: any = {
+    approvedBy:     "",
+    compRefHoldCovNo:     "",
+    createDate:     "",
+    createUser:     "",
+    holdCoverId:    "",
+    holdCoverNo:    "",
+    holdCoverRevNo:     "",
+    holdCoverSeqNo:     "",
+    holdCoverYear:    "",
+    lineCd:     "",
+    lineCdDesc:     "",
+    periodFrom:     "",
+    periodTo:     "",
+    preparedBy:     "",
+    reqBy:    "",
+    reqDate:    "",
+    status:     "",
+    updateDate:     "",
+    updateUser:     "",
+  }
+
+  project: any ={
+    coverage: "",
+    createDate: "",
+    createUser: "",
+    duration: "",
+    ipl: "",
+    noClaimPd: "",
+    objectDesc: "",
+    objectId: "",
+    pctShare: "",
+    pctShareI: "",
+    projDesc: "",
+    projId: "",
+    quoteId: "",
+    riskId: "",
+    riskName: "",
+    site: "",
+    testing: "",
+    timeExc: "",
+    totalSi: "",
+    totalSiI: "",
+    totalValue: "",
+    updateDate: "",
+    updateUser: "",
+  }
   
   ngOnInit() {
     this.titleService.setTitle("Quo | Quotation to Hold Cover");
@@ -54,23 +111,14 @@ export class HoldCoverComponent implements OnInit {
         .subscribe(val => 
             {
               var rec = val['quotation'];
-              console.log(rec);
-              this.holdCoverInfo.quotationNo        = rec.quotationNo;
-              this.holdCoverInfo.cedingCompany      = rec.cedingName;
-              this.holdCoverInfo.insured            = rec.insuredDesc;
-              this.holdCoverInfo.risk               = rec.project['riskName'];
-              this.holdCoverInfo.holdCoverNo        = rec.holdCover['holdCoverNo'];
-              this.holdCoverInfo.periodFrom         = this.formatDate(rec.holdCover['periodFrom']);
-              this.holdCoverInfo.requestedBy        = rec.holdCover['reqBy'];
-              this.holdCoverInfo.periodTo           = this.formatDate(rec.holdCover['periodTo']);
-              this.holdCoverInfo.requestDate        = this.formatDate(rec.holdCover['reqDate']);
-              this.holdCoverInfo.coRefHoldCoverNo   = rec.holdCover['compRefHoldCovNo'];
-              this.holdCoverInfo.preparedBy         = rec.holdCover['preparedBy'];
-              this.holdCoverInfo.status             = rec.holdCover['status'];
-              this.holdCoverInfo.approvedBy         = rec.holdCover['approvedBy'];
-              
-              this.sliceQuoteNo(this.holdCoverInfo.quotationNo);
-              this.sliceHcNo(this.holdCoverInfo.holdCoverNo);
+              console.log(rec);   
+              this.quoteId  = rec.quoteId;  
+              this.holdCover                    =  rec.holdCover;
+              this.holdCover.periodFrom         =  this.formatDate(this.holdCover.periodFrom);
+              this.holdCover.periodTo           =  this.formatDate(this.holdCover.periodTo);
+              this.holdCover.reqDate        =  this.formatDate(this.holdCover.reqDate);
+              //this.sliceQuoteNo(this.holdCoverInfo.quotationNo);
+              this.sliceHcNo(this.holdCover.holdCoverNo);
               
             }
       );
@@ -113,10 +161,7 @@ export class HoldCoverComponent implements OnInit {
     }
   }
 
-  hcLine: string;
-  hcYear: string;
-  hcSeqNo: string;
-  hcRevNo: string;
+
   sliceHcNo(hcNo: string){
     var hcArr = hcNo.split("-");
     for(var i=0;i<hcArr.length;i++){
@@ -145,9 +190,27 @@ export class HoldCoverComponent implements OnInit {
   }
 
   onRowClick(event){
-    this.insured = event.insuredDesc;
-    this.cedCo = event.cedingName;
-    this.risk = event.riskName;
+    this.rowRec = event;
+  }
+
+  onSaveClickLOV(){
+    this.sliceQuoteNo(this.rowRec.quotationNo);
+    this.quoteNo = this.rowRec.quotationNo;
+    this.insured = this.rowRec.insuredDesc;
+    this.cedCo = this.rowRec.cedingName;
+    this.risk = this.rowRec.riskName;
+    this.modalService.dismissAll();
+  }
+  
+
+  onSaveClick(){
+
+  console.log(JSON.stringify(this.holdCover));
+    //  this.quotationService.saveQuoteHoldCover(
+    //   this.holdCover.
+    //    )
+  
+   
   }
 
 }
