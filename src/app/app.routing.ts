@@ -89,6 +89,8 @@ import { GenerateCvServiceComponent } from './accounting-service/check-voucher-s
 import { JournalVoucherServiceComponent } from './accounting-service/journal-voucher-service/journal-voucher-service.component';
 import { GenerateJvServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/generate-jv-service.component';
 import { UtilitiesComponent } from './accounting-service/utilities/utilities.component';
+import { CancelTransactionsServiceComponent } from './accounting-service/utilities/cancel-transactions-service/cancel-transactions-service.component';
+import { RegistersServiceComponent } from './accounting-service/reports/registers-service/registers-service.component';
 
 
 const appRoutes: Routes = [
@@ -188,6 +190,8 @@ const appRoutes: Routes = [
     { path: 'generate-jv-service', component: GenerateJvServiceComponent },
     { path: 'accounting-service-utilities', component: UtilitiesComponent },
     { path: 'accounting-service-exp-budget', component: ExpenseBudgetComponent },
+    { path: 'cancel-transaction-service', component: CancelTransactionsServiceComponent },
+    { path: 'print-registers-service', component: RegistersServiceComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
