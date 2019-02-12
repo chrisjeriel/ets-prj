@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AccServiceAttachment, PaymentForAdvances, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, ARUnappliedCollection, AROthers, AccountingSOthersOr, AccORSerFeeLoc, OfficialReceipt, ORPrevAmountDetails, ORPrevAccEntries, ORPreVATDetails , ORPreCreditableWTaxDetails, PaymentOfSeviceFee, TreatyBalance, ByMonth, ExtractFromLastYear, AccountingEntriesExtract, CredibleWithholdingTaxDetails, InputVatDetails, OutputVatDetails, WithholdingVATDetails, CredibleWithholdingTaxUpload, InputVatUpload, OutputVatUpload, WithholdingTaxUpload, AccountingSFixedAssets, AccountingSMonthlyDepreciationDetails, AccountingSPaytReqCheckVoucher, AccountingSPaytReqPettyCashVoucher, AccountingSPaytReqPRMFE, AccountingSPaytReqOthers,AcctSrvcCWhtaxMonthlyTaxDetails,AcctSrvcCWhtaxConsolidateData, TaxDetails, WTaxDetails, ExpenseBudget, ExpenseBudgetByMonth } from '@app/_models';
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AccServiceAttachment, PaymentForAdvances, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, ARUnappliedCollection, AROthers, AccountingSOthersOr, AccORSerFeeLoc, OfficialReceipt, ORPrevAmountDetails, ORPrevAccEntries, ORPreVATDetails , ORPreCreditableWTaxDetails, PaymentOfSeviceFee, TreatyBalance, ByMonth, ExtractFromLastYear, AccountingEntriesExtract, CredibleWithholdingTaxDetails, InputVatDetails, OutputVatDetails, WithholdingVATDetails, CredibleWithholdingTaxUpload, InputVatUpload, OutputVatUpload, WithholdingTaxUpload, AccountingSFixedAssets, AccountingSMonthlyDepreciationDetails, AccountingSPaytReqCheckVoucher, AccountingSPaytReqPettyCashVoucher, AccountingSPaytReqPRMFE, AccountingSPaytReqOthers,AcctSrvcCWhtaxMonthlyTaxDetails,AcctSrvcCWhtaxConsolidateData, TaxDetails, WTaxDetails, ExpenseBudget, ExpenseBudgetByMonth, AccSChangeTranStatOR, AccSChangeTranStatCV, AccSChangeTranStatJV } from '@app/_models';
 
 @Injectable({
 	providedIn: 'root'
@@ -91,6 +91,9 @@ export class AccountingService {
 	wTaxDetails: WTaxDetails[] = [];
 	expenseBudget: ExpenseBudget[] = [];
 	expenseBudgetByMonth: ExpenseBudgetByMonth[] = [];
+	accSChangeTranStatOR: AccSChangeTranStatOR[] = [];
+	accSChangeTranStatCV: AccSChangeTranStatCV[] = [];
+	accSChangeTranStatJV: AccSChangeTranStatJV[] = [];
 
 	constructor(private http: HttpClient) { }
 
@@ -1025,6 +1028,64 @@ export class AccountingService {
 		];
 
 		return this.expenseBudgetByMonth;
+	}
+
+
+	getAccSChangeTranStatOR(){
+		this.accSChangeTranStatOR = [
+			new AccSChangeTranStatOR('VAT-000001', 'BPI/MS INSURANCE CORPORATION', new Date(2018,9,1), 'Official Receipt', 'Cancelled', 'Representing payment for premium of policy CAR-2018-00001-00-0001-000', 1642857.14),
+			new AccSChangeTranStatOR('VAT-000002', 'PNBGEN', new Date(2018,9,1), 'Official Receipt', 'Cancelled', 'Representing payment for premium of policy CAR-2018-00001-00-0001-000', 200000),
+			new AccSChangeTranStatOR('VAT-000003', 'Charter Ping An', new Date(2018,9,3), 'Official Receipt', 'Cancelled', 'Representing payment for premium of policy CAR-2018-00001-00-0001-000', 100000),
+			new AccSChangeTranStatOR('VAT-000004', 'AXA', new Date(2018,9,4), 'Official Receipt', 'Cancelled', 'Representing payment for premium of policy CAR-2018-00001-00-0001-000', 1000000),
+			new AccSChangeTranStatOR('VAT-000005', 'Allied Bankers', new Date(2018,9,4), 'Official Receipt', 'Cancelled', 'Representing payment for premium of policy CAR-2018-00001-00-0001-000', 710716.12),
+			new AccSChangeTranStatOR('VAT-000006', 'Malayan', new Date(2018,9,7), 'Official Receipt', 'Cancelled', 'Representing payment for premium of policy CAR-2018-00001-00-0001-000', 756929),
+			new AccSChangeTranStatOR('VAT-000007', 'New India', new Date(2018,9,7), 'Official Receipt', 'Cancelled', 'Representing payment for premium of policy CAR-2018-00001-00-0001-000', 30000),
+			new AccSChangeTranStatOR('VAT-000008', 'BPI/MS INSURANCE CORPORATION', new Date(2018,9,12), 'Official Receipt', 'Cancelled', 'Representing payment for premium of policy CAR-2018-00001-00-0001-000', 10000),
+			new AccSChangeTranStatOR('VAT-000009', 'PNBGEN', new Date(2018,9,13), 'Official Receipt', 'Cancelled', 'Representing payment for premium of policy CAR-2018-00001-00-0001-000', 230000),
+			new AccSChangeTranStatOR('VAT-000010', 'FGIC', new Date(2018,9,14), 'Official Receipt', 'Cancelled', 'Representing payment for premium of policy CAR-2018-00001-00-0001-000', 1500000),
+			new AccSChangeTranStatOR('VAT-000011', 'PNBGEN', new Date(2018,9,17), 'Official Receipt', 'Cancelled', 'Representing payment for premium of policy CAR-2018-00001-00-0001-000', 2342321),
+			new AccSChangeTranStatOR('VAT-000012', 'FGIC', new Date(2018,9,23), 'Official Receipt', 'Cancelled', 'Representing payment for premium of policy CAR-2018-00001-00-0001-000', 1532242.42),
+		];
+
+		return this.accSChangeTranStatOR;
+	}
+
+	getAccSChangeTranStatCV(){
+		this.accSChangeTranStatCV = [
+			new AccSChangeTranStatCV('2015-00000001', 'SM Prime Holdings, Inc.', new Date(2015,9,1), 'Printed', 'Check for SM Prime Holdings, Inc.', 1642857.14),
+			new AccSChangeTranStatCV('2017-00000001', 'Rustan Inc.', new Date(2017,9,1), 'Printed', 'Check for Rustan Inc.', 200000),
+			new AccSChangeTranStatCV('2017-00000002', 'San Miguel Corporation', new Date(2017,9,3), 'Printed', 'Check for San Miguel Corporation', 100000),
+			new AccSChangeTranStatCV('2017-00000003', 'DMCI', new Date(2017,9,4), 'Printed', 'Check for DMCI', 1000000),
+			new AccSChangeTranStatCV('2018-00000001', 'ABS-CBN', new Date(2018,9,4), 'Printed', 'Check for ABS-CBN', 710716.12),
+			new AccSChangeTranStatCV('2018-00000010', 'SMDC', new Date(2018,9,5), 'Certified', 'Check for SMDC', 756929),
+			new AccSChangeTranStatCV('2018-00000016', 'Universal Robina Inc.', new Date(2018,9,7), 'Approved', 'Check for Universal Robina Inc.', 30000),
+			new AccSChangeTranStatCV('2018-00000045', 'SGV & Co.', new Date(2018,9,7), 'Approved', 'Check for SGV & Co.', 10000),
+			new AccSChangeTranStatCV('2018-00000099', 'Accenture', new Date(2018,9,7), 'Cancelled', 'Check for Accenture', 230000),
+			new AccSChangeTranStatCV('2018-00000123', 'NSO', new Date(2018,9,7), 'Cancelled', 'Check for NSO', 1500000),
+			new AccSChangeTranStatCV('2019-00000001', 'SMDC', new Date(2018,9,7), 'Cancelled', 'Check for SMDC', 2342321),
+			new AccSChangeTranStatCV('2019-00000005', 'DMCI', new Date(2018,9,7), 'Cancelled', 'Check for DMCI', 1532242.42),
+		];
+
+		return this.accSChangeTranStatCV;
+	}
+
+	getAccSChangeTranStatJV(){
+		this.accSChangeTranStatJV = [
+			new AccSChangeTranStatJV('2015-00000001', new Date(2015,9,1), 'To correct entries in', 'Error Correction', '2014-00004342', 'Ronwaldo Roque', 'Printed', 1642857.14),
+			new AccSChangeTranStatJV('2017-00000001', new Date(2017,9,1), 'To correct entries in', 'Error Correction', '2016-00001644', 'Chie Reyes', 'Printed', 200000),
+			new AccSChangeTranStatJV('2017-00000002', new Date(2017,9,3), 'To correct entries in', 'Error Correction', '2016-00001645', 'Lourdez Gualvez', 'Printed', 100000),
+			new AccSChangeTranStatJV('2017-00000003', new Date(2017,9,4), 'To correct entries in', 'Error Correction', '2016-00001646', 'Chie Reyes', 'Printed', 1000000),
+			new AccSChangeTranStatJV('2018-00000001', new Date(2018,9,4), 'To correct entries in', 'Error Correction', '2017-00000324', 'Chie Reyes', 'Printed', 710716.12),
+			new AccSChangeTranStatJV('2018-00000010', new Date(2018,9,5), 'To correct entries in', 'Error Correction', '2018-00000009', 'Lourdes Gualvez', 'Certified', 756929),
+			new AccSChangeTranStatJV('2018-00000016', new Date(2018,9,7), 'To correct entries in', 'Error Correction', '2018-00000012', 'Lourdes Gualvez', 'Approved', 30000),
+			new AccSChangeTranStatJV('2018-00000045', new Date(2018,9,7), 'To correct entries in', 'Error Correction', '2018-00000041', 'Ronwaldo Roque', 'Approved', 10000),
+			new AccSChangeTranStatJV('2018-00000099', new Date(2018,9,7), 'To correct entries in', 'Error Correction', '2018-00000098', 'Ronwaldo Roque', 'Cancelled', 230000),
+			new AccSChangeTranStatJV('2018-00000123', new Date(2018,9,7), 'To correct entries in', 'Error Correction', '2018-00000122', 'Ronwaldo Roque', 'Cancelled', 1500000),
+			new AccSChangeTranStatJV('2019-00000001', new Date(2018,9,7), 'To correct entries in', 'Error Correction', '2018-00000123', 'Ronwaldo Roque', 'Cancelled', 2342321),
+			new AccSChangeTranStatJV('2019-00000005', new Date(2018,9,7), 'To correct entries in', 'Error Correction', '2018-00000144', 'Ronwaldo Roque', 'Cancelled', 1532242.42),
+		];
+
+		return this.accSChangeTranStatJV;
 	}
 
 

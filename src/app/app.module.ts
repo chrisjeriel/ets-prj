@@ -249,6 +249,10 @@ import { JvPreviewServiceComponent } from './accounting-service/journal-voucher-
 import { JvAttachmentsServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-attachments-service/jv-attachments-service.component';
 import { MtnRiskComponent } from './maintenance/mtn-risk/mtn-risk.component';
 import { CedingCompanyComponent } from './underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
+import { AccSChangeTranStatNewComponent } from './accounting-service/utilities/acc-s-change-tran-stat-new/acc-s-change-tran-stat-new.component';
+import { OrChangeTranStatComponent } from './accounting-service/utilities/acc-s-change-tran-stat-new/or-change-tran-stat/or-change-tran-stat.component';
+import { CvChangeTranStatComponent } from './accounting-service/utilities/acc-s-change-tran-stat-new/cv-change-tran-stat/cv-change-tran-stat.component';
+import { JvChangeTranStatComponent } from './accounting-service/utilities/acc-s-change-tran-stat-new/jv-change-tran-stat/jv-change-tran-stat.component';
 
 
 @NgModule({
@@ -505,6 +509,10 @@ import { CedingCompanyComponent } from './underwriting/policy-maintenance/pol-mx
         JvAttachmentsServiceComponent,
         MtnRiskComponent,
         CedingCompanyComponent,
+        AccSChangeTranStatNewComponent,
+        OrChangeTranStatComponent,
+        CvChangeTranStatComponent,
+        JvChangeTranStatComponent,
     ],
 
     providers: [
