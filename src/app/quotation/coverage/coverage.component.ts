@@ -52,7 +52,7 @@ export class CoverageComponent implements OnInit {
     sectionII: null,
     sectionIII: null,
     remarks: null,
-    sectioncovers:[]
+    sectionCovers:[]
   }
 
   passData: any = {

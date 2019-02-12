@@ -89,6 +89,8 @@ import { GenerateCvServiceComponent } from './accounting-service/check-voucher-s
 import { JournalVoucherServiceComponent } from './accounting-service/journal-voucher-service/journal-voucher-service.component';
 import { GenerateJvServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/generate-jv-service.component';
 import { UtilitiesComponent } from './accounting-service/utilities/utilities.component';
+import { CreditDebitMemoComponent } from './accounting-service/credit-debit-memo/credit-debit-memo.component';
+import { CmdmEntryComponent } from './accounting-service/credit-debit-memo/cmdm-entry/cmdm-entry.component';
 
 
 const appRoutes: Routes = [
@@ -188,6 +190,8 @@ const appRoutes: Routes = [
     { path: 'generate-jv-service', component: GenerateJvServiceComponent },
     { path: 'accounting-service-utilities', component: UtilitiesComponent },
     { path: 'accounting-service-exp-budget', component: ExpenseBudgetComponent },
+    { path: 'credit-debit-memo', component: CreditDebitMemoComponent },
+    { path: 'accounting-service-credit-debit-memo', component: CmdmEntryComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

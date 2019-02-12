@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AccServiceAttachment, PaymentForAdvances, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, ARUnappliedCollection, AROthers, AccountingSOthersOr, AccORSerFeeLoc, OfficialReceipt, ORPrevAmountDetails, ORPrevAccEntries, ORPreVATDetails , ORPreCreditableWTaxDetails, PaymentOfSeviceFee, TreatyBalance, ByMonth, ExtractFromLastYear, AccountingEntriesExtract, CredibleWithholdingTaxDetails, InputVatDetails, OutputVatDetails, WithholdingVATDetails, CredibleWithholdingTaxUpload, InputVatUpload, OutputVatUpload, WithholdingTaxUpload, AccountingSFixedAssets, AccountingSMonthlyDepreciationDetails, AccountingSPaytReqCheckVoucher, AccountingSPaytReqPettyCashVoucher, AccountingSPaytReqPRMFE, AccountingSPaytReqOthers,AcctSrvcCWhtaxMonthlyTaxDetails,AcctSrvcCWhtaxConsolidateData, TaxDetails, WTaxDetails, ExpenseBudget, ExpenseBudgetByMonth } from '@app/_models';
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AccServiceAttachment, PaymentForAdvances, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, ARUnappliedCollection, AROthers, AccountingSOthersOr, AccORSerFeeLoc, OfficialReceipt, ORPrevAmountDetails, ORPrevAccEntries, ORPreVATDetails , ORPreCreditableWTaxDetails, PaymentOfSeviceFee, TreatyBalance, ByMonth, ExtractFromLastYear, AccountingEntriesExtract, CredibleWithholdingTaxDetails, InputVatDetails, OutputVatDetails, WithholdingVATDetails, CredibleWithholdingTaxUpload, InputVatUpload, OutputVatUpload, WithholdingTaxUpload, AccountingSFixedAssets, AccountingSMonthlyDepreciationDetails, AccountingSPaytReqCheckVoucher, AccountingSPaytReqPettyCashVoucher, AccountingSPaytReqPRMFE, AccountingSPaytReqOthers,AcctSrvcCWhtaxMonthlyTaxDetails,AcctSrvcCWhtaxConsolidateData, TaxDetails, WTaxDetails, ExpenseBudget, ExpenseBudgetByMonth, CMDM, AccountingEntryCMDM } from '@app/_models';
 
 @Injectable({
 	providedIn: 'root'
@@ -91,6 +91,9 @@ export class AccountingService {
 	wTaxDetails: WTaxDetails[] = [];
 	expenseBudget: ExpenseBudget[] = [];
 	expenseBudgetByMonth: ExpenseBudgetByMonth[] = [];
+	creditDebit: CMDM[] = [];
+	accountingEntryCMDM : AccountingEntryCMDM[] = [];
+
 
 	constructor(private http: HttpClient) { }
 
@@ -1027,5 +1030,30 @@ export class AccountingService {
 		return this.expenseBudgetByMonth;
 	}
 
+	getCreditDebit(){
+		this.creditDebit = [
+			new CMDM("CM-CAR-2019-02-00001",new Date(2015,1,10),"UCPBGEN","To correct entries in","Policy","2014-00004342","Ronwaldo Roque",1642857.14),
+			new CMDM("DM-CAR-2019-02-00001",new Date(2017,1,10),"UCPBGEN","To correct entries in","Policy","2014-00001644","Chie Reyes",200000),
+			new CMDM("CM-CLM-2019-02-00001",new Date(2017,3,10),"Malayan","To correct entries in","Claims","2016-00001645","Lourdes Gualvez",100000),
+			new CMDM("CM-CLM-2019-02-00001",new Date(2017,4,10),"Malayan","To correct entries in","Claims","2016-00001646","Chie Reyes",100000000),
+			new CMDM("CM-CAR-2019-02-00001",new Date(2015,1,10),"UCPBGEN","To correct entries in","Policy","2014-00004342","Ronwaldo Roque",1642857.14),
+			new CMDM("DM-CAR-2019-02-00001",new Date(2017,1,10),"UCPBGEN","To correct entries in","Policy","2014-00001644","Chie Reyes",200000),
+			new CMDM("CM-CLM-2019-02-00001",new Date(2017,3,10),"Malayan","To correct entries in","Claims","2016-00001645","Lourdes Gualvez",100000),
+			new CMDM("CM-CLM-2019-02-00001",new Date(2017,4,10),"Malayan","To correct entries in","Claims","2016-00001646","Chie Reyes",100000000),
+			new CMDM("CM-CAR-2019-02-00001",new Date(2015,1,10),"UCPBGEN","To correct entries in","Policy","2014-00004342","Ronwaldo Roque",1642857.14),
+			new CMDM("DM-CAR-2019-02-00001",new Date(2017,1,10),"UCPBGEN","To correct entries in","Policy","2014-00001644","Chie Reyes",200000),
+			new CMDM("CM-CLM-2019-02-00001",new Date(2017,3,10),"Malayan","To correct entries in","Claims","2016-00001645","Lourdes Gualvez",100000),
+			new CMDM("CM-CLM-2019-02-00001",new Date(2017,4,10),"Malayan","To correct entries in","Claims","2016-00001646","Chie Reyes",100000000),
+		]
+		return this.creditDebit;
+	}
+
+
+	getAccountingEntryCMDM(){
+		this.accountingEntryCMDM = [
+			new AccountingEntryCMDM(null,null,null,null,null,null)
+		]
+		return this.accountingEntryCMDM;
+	}
 
 }

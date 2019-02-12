@@ -98,3 +98,5 @@ export * from './AcctSrvcConsolidateWhtax';
 export * from './AccSrvEditTaxDetails';
 export * from './AccSrvEditWTaxDetails';
 export * from './AccountingSrvExpenseBudget';
+export * from './AccountingCreditDebit';
+export * from './AccountingEntryCMDM';

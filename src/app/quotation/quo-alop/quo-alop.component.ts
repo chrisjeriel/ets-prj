@@ -61,7 +61,6 @@ export class QuoAlopComponent implements OnInit {
 
        this.quotationService.getALop(3,'EAR-2019-1-0-3').subscribe((data: any) => {
               this.alopItemData = data.quotation.alop;
-              console.log(data);
        });
 
     }
