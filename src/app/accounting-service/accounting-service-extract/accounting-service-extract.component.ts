@@ -11,9 +11,14 @@ export class AccountingServiceExtractComponent implements OnInit {
 
   taxType: any;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router,private route: ActivatedRoute) { }
 
+  sub:any;
+  activeID:any;
   ngOnInit() {
+    this.sub = this.route.params.subscribe(params => {
+      this.activeID = params['tabID'];
+    });
   }
 
   tabController(taxType){

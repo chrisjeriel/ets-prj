@@ -247,7 +247,14 @@ import { GenerateJvServiceComponent } from './accounting-service/journal-voucher
 import { JvEntryServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-entry-service/jv-entry-service.component';
 import { JvPreviewServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-preview-service/jv-preview-service.component';
 import { JvAttachmentsServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-attachments-service/jv-attachments-service.component';
+import { MtnLineComponent } from './maintenance/mtn-line/mtn-line.component';
 import { MtnRiskComponent } from './maintenance/mtn-risk/mtn-risk.component';
+import { AcctUnbalanceEntriesComponent } from './accounting-service/accounting-service-extract/acct-unbalance-entries/acct-unbalance-entries.component';
+import { AcctTrialBalComponent } from './accounting-service/accounting-service-extract/acct-trial-bal/acct-trial-bal.component';
+import { AcctEntriesExtractComponent } from './accounting-service/accounting-service-extract/acct-entries-extract/acct-entries-extract.component';
+import { ExtractBirTaxesComponent } from './accounting-service/accounting-service-extract/extract-bir-tax/extract-bir-taxes/extract-bir-taxes.component';
+import { AcctTrialBalExtractComponent } from './accounting-service/accounting-service-extract/acct-trial-bal/acct-trial-bal-extract/acct-trial-bal-extract.component';
+import { AcctTrialBalTbComponent } from './accounting-service/accounting-service-extract/acct-trial-bal/acct-trial-bal-tb/acct-trial-bal-tb.component';
 import { CedingCompanyComponent } from './underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
 import { CreditDebitMemoComponent } from './accounting-service/credit-debit-memo/credit-debit-memo.component';
 import { CmdmEntryComponent } from './accounting-service/credit-debit-memo/cmdm-entry/cmdm-entry.component';
@@ -261,6 +268,12 @@ import { InTrustCreditDebitComponent } from './accounting-in-trust/in-trust-cred
 import { GenerateCMDMComponent } from './accounting-in-trust/in-trust-credit-debit/generate-cmdm/generate-cmdm.component';
 import { AcctCmdmEntryComponent } from './accounting-in-trust/in-trust-credit-debit/generate-cmdm/acct-cmdm-entry/acct-cmdm-entry.component';
 import { CmdmAccntEntriesComponent } from './accounting-in-trust/in-trust-credit-debit/generate-cmdm/cmdm-accnt-entries/cmdm-accnt-entries.component';
+import { JvAccountingEntriesComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-accounting-entries/jv-accounting-entries.component';
+import { JvLossReserveDepositComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-loss-reserve-deposit/jv-loss-reserve-deposit.component';
+import { MtnIntermediaryComponent } from './maintenance/mtn-intermediary/mtn-intermediary.component';
+import { MtnLineClassComponent } from './maintenance/mtn-line-class/mtn-line-class.component';
+import { AccSrvInquiryComponent } from './accounting-service/acc-srv-inquiry/acc-srv-inquiry.component';
+
 
 
 @NgModule({
@@ -515,7 +528,14 @@ import { CmdmAccntEntriesComponent } from './accounting-in-trust/in-trust-credit
         JvEntryServiceComponent,
         JvPreviewServiceComponent,
         JvAttachmentsServiceComponent,
+        MtnLineComponent,
         MtnRiskComponent,
+        AcctUnbalanceEntriesComponent,
+        AcctTrialBalComponent,
+        AcctEntriesExtractComponent,
+        ExtractBirTaxesComponent,
+        AcctTrialBalExtractComponent,
+        AcctTrialBalTbComponent,
         CedingCompanyComponent,
         CreditDebitMemoComponent,
         CmdmEntryComponent,
@@ -529,6 +549,11 @@ import { CmdmAccntEntriesComponent } from './accounting-in-trust/in-trust-credit
         GenerateCMDMComponent,
         AcctCmdmEntryComponent,
         CmdmAccntEntriesComponent,
+        JvAccountingEntriesComponent,
+        JvLossReserveDepositComponent,
+        MtnIntermediaryComponent,
+        MtnLineClassComponent,
+        AccSrvInquiryComponent,
     ],
 
     providers: [

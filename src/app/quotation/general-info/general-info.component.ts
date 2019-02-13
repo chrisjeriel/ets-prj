@@ -28,6 +28,9 @@ export class GeneralInfoComponent implements OnInit {
 	private sub: any;
 	from: string;
 	line: string;
+	lineClass: string;
+	lineClassCode: string;
+	lineClassDesc: string;
 	ocChecked: boolean = false;
 
 	project: any = {
@@ -124,6 +127,8 @@ export class GeneralInfoComponent implements OnInit {
 
 	currencyAbbr: string = "";
 	currencyRt: number = 0;
+	intId: number;
+	intName: string = "";
 
 	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute, private maintenanceService: MaintenanceService) { }
 	ngOnInit() {
@@ -149,6 +154,15 @@ export class GeneralInfoComponent implements OnInit {
 				this.project = (data['project'] == null) ? this.project : data['project'];
 				this.genInfoData = (data['quotationGeneralInfo'] == null) ? this.genInfoData : data['quotationGeneralInfo'];
 			});
+
+			/*	this.quotationService.getQuoteGenInfo('', this.quotationNo).subscribe((data: any) => {
+				this.genInfoData = data.quotationGeneralInfo;
+				
+				console.log('DATA >>>>> ' + data.quotationGeneralInfo);*/
+
+				/*this.genInfoData.cessionDesc = this.genInfoData.cessionDesc.toUpperCase();*/
+			/*});*/
+
 
 /*			console.log(this.quotationService.rowData);*/
 			this.quotationGenInfo = new QuotationGenInfo();
@@ -245,6 +259,7 @@ export class GeneralInfoComponent implements OnInit {
 		/*this.checkTypeOfCession();*/
 	}
 
+
 	ngOnDestroy() {
 		this.sub.unsubscribe();
 	}
@@ -292,6 +307,16 @@ export class GeneralInfoComponent implements OnInit {
 		$('#contractorLOV #modalBtn').trigger('click');
 	}
 
+
+	showLineClassLOV(){
+		$('#lineClassLOV #modalBtn').trigger('click');
+	}
+
+	showIntLOV(){
+		$('#intLOV #modalBtn').trigger('click');
+	}
+
+
 	setContractor(data){
 		this.quotationGenInfo.contractor = data.insuredName;
 		this.contractorCd = data.insuredId;
@@ -306,6 +331,7 @@ export class GeneralInfoComponent implements OnInit {
 		this.currencyRt = data.currencyRt;
 	}
 
+
 	plainQuotationNo(data: string){
 		var arr = data.split('-');
 
@@ -319,6 +345,18 @@ export class GeneralInfoComponent implements OnInit {
     setCedingcompany(event){
     	this.genInfoData.cedingId = event.coNo;
         this.genInfoData.cedingName = event.name;
+	}
+
+	setLineClass(data){
+		this.lineClassCode = data.lineClassCd;
+        this.lineClassDesc = data.lineClassCdDesc;
+        this.lineClass = this.lineClassCode + ' - ' + this.lineClassDesc;
+
+    }
+
+    setInt(data){
+        this.intId = data.intmId;
+        this.intName = data.intmName;
     }
 
 }

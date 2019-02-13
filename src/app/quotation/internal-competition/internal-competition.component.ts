@@ -49,6 +49,7 @@ export class InternalCompetitionComponent implements OnInit {
         //this.opts.push({ selector: "advOpt", vals: ["Pending", "On Going", "Done"] });
 
         this.quotationService.getIntCompAdvInfo().subscribe((data: any) => {
+
             this.data = data.quotation[0].competitionsList;
             for(var i = 0; i < this.data.length; i++){
               this.data[i].createDate = new Date(

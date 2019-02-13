@@ -313,20 +313,21 @@
                                 <!-- <button [routerLink]="['accounting-service-exp-budget']" class="button btn btn-link">Expense Budget</button> -->
                                 <button [routerLink]="['/credit-debit-memo']" class="button btn btn-link">Credit/Debit Memo</button>
                                 <br />
+                                <button [routerLink]="['accounting-service-exp-budget']" class="button btn btn-link">Expense Budget</button>
+                                <br />
                                 <ngb-accordion #acc="ngbAccordion">
                                     <ngb-panel>
                                         <ng-template ngbPanelTitle>
                                             Extract
                                         </ng-template>
                                         <ng-template ngbPanelContent>
-                                           <button [routerLink]="['accounting-service-extract']" class="button btn btn-link">BIR Taxes</button>
-                                            <br />
-                                            <button [routerLink]="['accounting-entries']" class="button btn btn-link">Accounting
+                                            <button [routerLink]="['accounting-service-extract']" class="button btn btn-link">Accounting
                                                 Entries</button>
                                             <br />
-                                            <button [routerLink]="['trial-balance']" class="button btn btn-link">Trial
+                                            <button [routerLink]="['accounting-service-trial-bal']" class="button btn btn-link">Trial
                                                 Balance</button>
                                             <br />
+                                             <button [routerLink]="['extract-bir-taxes']" class="button btn btn-link">BIR Taxes</button>
                                         </ng-template>
                                     </ngb-panel>
                                 </ngb-accordion>
@@ -338,9 +339,13 @@
                                         <ng-template ngbPanelContent>
                                             <button [routerLink]="['acc-s-edited-acct-entries']" class="button btn btn-link">Edited Accounting Entries</button>
                                             <br />
+                                            <button [routerLink]="['accounting-service-inquiry']" class="button btn btn-link">Edited Tax Details</button>
+                                            <br />
                                         </ng-template>
                                     </ngb-panel>
                                 </ngb-accordion>
+                                
+                                
                                 <ngb-accordion #acc="ngbAccordion">
                                     <ngb-panel>
                                         <ng-template ngbPanelTitle>

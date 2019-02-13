@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -13,7 +14,7 @@ export class ExtractBirTaxComponent implements OnInit {
   taxType: any;
   defaultTab: false;
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
   }
@@ -21,6 +22,13 @@ export class ExtractBirTaxComponent implements OnInit {
    tabController(event) {
    	this.taxType = event.target.value;
   	this.onChange.emit(this.taxType);
+  }
+
+  onTabChange($event: NgbTabChangeEvent) {
+      if ($event.nextId === 'Exit') {
+        this.router.navigateByUrl('');
+      } 
+  
   }
 
 }

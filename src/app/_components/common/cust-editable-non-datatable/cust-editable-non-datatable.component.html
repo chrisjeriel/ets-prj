@@ -173,8 +173,10 @@ span.ui-column-resizer {
                                 <div *ngIf="addCheckFlag(data) && ( passData.uneditable === undefined || !passData.uneditable[i] )" class="align-middle" style="position: relative;">
                                     <input *ngSwitchCase="'percent'" class="editable-text text-right number form-control-sm"
                                     type="text" [ngModel]="processData(key, data) | number:'1.7-7'" (blur)="format($event , key, ti)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (ngModel)="onDataChange(data)">
-                                    <input *ngSwitchCase="'number'" class="editable-text text-right number form-control-sm"
-                                    type="text" [ngModel]="data[key]" [ngModelOptions]="{updateOn:'change'}" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (ngModel)="onDataChange(data)">
+                                    <input *ngSwitchCase="'number'" class="editable-text text-right number form-control-sm" (blur)="format($event , key, ti)"
+                                    type="text" [ngModel]="data[key]" [ngModelOptions]="{updateOn:'change'}" 
+                                    [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (ngModel)="onDataChange(data)">
+
                                     <input *ngSwitchCase="'currency'" class="editable-text text-right number form-control-sm"
                                     type="text" [ngModel]="data[key] | number:'1.2-2'" (blur)="format($event , key, ti)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange(data)">
                                     <div *ngSwitchCase="'checkbox'" style="text-align: center;">
