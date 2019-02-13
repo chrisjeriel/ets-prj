@@ -53,6 +53,7 @@ export class InternalCompetitionComponent implements OnInit {
 
         this.quotationService.getIntCompAdvInfo().subscribe((data: any) => {
             this.data = data;
+            console.log(data);
             //console.log(this.data.quotation[0].competition[0].adviceNo);
             for(var i = 0; i < this.data.quotation.length; i++){
               this.intCompData.tableData.push(

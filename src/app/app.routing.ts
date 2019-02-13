@@ -90,6 +90,7 @@ import { JournalVoucherServiceComponent } from './accounting-service/journal-vou
 import { GenerateJvServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/generate-jv-service.component';
 import { UtilitiesComponent } from './accounting-service/utilities/utilities.component';
 import { AcctTrialBalComponent } from './accounting-service/accounting-service-extract/acct-trial-bal/acct-trial-bal.component';
+import { ExtractBirTaxComponent } from './accounting-service/accounting-service-extract/extract-bir-tax/extract-bir-tax.component';
 
 
 const appRoutes: Routes = [
@@ -190,6 +191,7 @@ const appRoutes: Routes = [
     { path: 'accounting-service-utilities', component: UtilitiesComponent },
     { path: 'accounting-service-exp-budget', component: ExpenseBudgetComponent },
     { path: 'accounting-service-trial-bal', component: AcctTrialBalComponent },
+    { path: 'extract-bir-taxes', component: ExtractBirTaxComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

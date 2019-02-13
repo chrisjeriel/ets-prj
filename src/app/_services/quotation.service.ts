@@ -68,7 +68,7 @@ export class QuotationService {
             new QuotationCoverageInfo("1", "I", "3", "69000", ""),
             new QuotationCoverageInfo("2", 'II', "2", "123000", "")
         ];
-        return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteCoverage?quoteId=1");
+        return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteCoverage");
     }
 
     getQuotationListInfo() {

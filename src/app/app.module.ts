@@ -250,6 +250,10 @@ import { JvAttachmentsServiceComponent } from './accounting-service/journal-vouc
 import { MtnRiskComponent } from './maintenance/mtn-risk/mtn-risk.component';
 import { AcctUnbalanceEntriesComponent } from './accounting-service/accounting-service-extract/acct-unbalance-entries/acct-unbalance-entries.component';
 import { AcctTrialBalComponent } from './accounting-service/accounting-service-extract/acct-trial-bal/acct-trial-bal.component';
+import { AcctEntriesExtractComponent } from './accounting-service/accounting-service-extract/acct-entries-extract/acct-entries-extract.component';
+import { ExtractBirTaxesComponent } from './accounting-service/accounting-service-extract/extract-bir-tax/extract-bir-taxes/extract-bir-taxes.component';
+import { AcctTrialBalExtractComponent } from './accounting-service/accounting-service-extract/acct-trial-bal/acct-trial-bal-extract/acct-trial-bal-extract.component';
+import { AcctTrialBalTbComponent } from './accounting-service/accounting-service-extract/acct-trial-bal/acct-trial-bal-tb/acct-trial-bal-tb.component';
 
 
 @NgModule({
@@ -507,6 +511,10 @@ import { AcctTrialBalComponent } from './accounting-service/accounting-service-e
         MtnRiskComponent,
         AcctUnbalanceEntriesComponent,
         AcctTrialBalComponent,
+        AcctEntriesExtractComponent,
+        ExtractBirTaxesComponent,
+        AcctTrialBalExtractComponent,
+        AcctTrialBalTbComponent,
     ],
 
     providers: [
