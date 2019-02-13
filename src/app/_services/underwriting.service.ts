@@ -421,4 +421,10 @@ export class UnderwritingService {
         return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMaintenanceCedingCompany');
     }
 
+    getCedingCompanyLOV(cedingId: string){
+         const params = new HttpParams()
+            .set('cedingId',cedingId);
+        return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMaintenanceCedingCompany',{params});
+    }
+
 }            

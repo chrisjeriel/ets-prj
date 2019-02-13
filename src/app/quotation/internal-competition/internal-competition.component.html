@@ -20,7 +20,7 @@
 		<legend class="scheduler-border">Advice Details	</legend>
 		<!--<app-cust-editable-table [checkFlag]="true" [addFlag]="true" [deleteFlag]="true" [editFlag]="false" [nData]="nData" [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes" [opts]="opts" [magnifyingGlass]="magnifyingGlass" (rowClick)="clickRow($event)"></app-cust-editable-table>-->
 		<div style="padding-top: 8px;">
-        	<app-cust-editable-non-datatable [passData]="intCompData"></app-cust-editable-non-datatable>
+        	<app-cust-editable-non-datatable [passData]="intCompData" (clickLOV)="clickAdviceLOV($event);"></app-cust-editable-non-datatable>
 		</div>
 	</fieldset>
 </div>
@@ -85,3 +85,5 @@
 		</div>
 	</div>
 </div>
+<app-mtn-advice-wordings id="adviceWordingsLOV" (selectedData)="selectedAdviceLOV($event)"></app-mtn-advice-wordings>
+<app-mtn-attention id="attentionLOV" (selectedData)="selectedAttentionLOV($event)"></app-mtn-attention>

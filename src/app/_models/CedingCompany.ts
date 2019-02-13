@@ -24,6 +24,26 @@ export class CedingCompanyList{
 	}
 }
 
+export class CedingCompanyListing{
+	coNo: number
+	name: string
+	abbreviation: string
+	address: string
+	membershipDate: Date
+	terminationDate: Date
+	inactiveDate: Date
+
+	constructor(coNo: number,name: string,abbreviation: string,address: string,membershipDate: Date,terminationDate: Date,inactiveDate: Date){
+		this.coNo = coNo;
+		this.name = name;
+		this.abbreviation = abbreviation;
+		this.address = address;
+		this.membershipDate = membershipDate;
+		this.terminationDate = terminationDate;
+		this.inactiveDate = inactiveDate;
+	}
+}
+
 export class CedingCompany{
 	defaultParam: string
 	designation: string

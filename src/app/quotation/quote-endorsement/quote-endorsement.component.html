@@ -41,8 +41,7 @@
             <div class="col-sm-10" style="margin-top: 0.7em; margin-bottom: -0.4%;">
                 <app-cust-editable-non-datatable [passData]="endorsementData" (clickLOV)="clickEndtLOV($event)" *ngIf="!OpenCover">
                     <ng-container controls-l>
-                        <button class="cust-btn" (click)="clickModal($event)"  style="margin-right: 0px !important;">Copy
-                            Endt</button>
+                        <button class="cust-btn" (click)="clickModal($event)"  style="margin-right: 0px !important;">Copy Endt</button>
                     </ng-container>
                 </app-cust-editable-non-datatable>
                 <app-cust-editable-non-datatable [passData]="endorsementOCData" (clickLOV)="clickEndtLOV($event)" *ngIf="OpenCover">
