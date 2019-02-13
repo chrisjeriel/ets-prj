@@ -248,6 +248,9 @@ import { JvEntryServiceComponent } from './accounting-service/journal-voucher-se
 import { JvPreviewServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-preview-service/jv-preview-service.component';
 import { JvAttachmentsServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-attachments-service/jv-attachments-service.component';
 import { MtnLineComponent } from './maintenance/mtn-line/mtn-line.component';
+import { MtnObjectComponent } from './maintenance/mtn-object/mtn-object.component';
+import { MtnProvinceComponent } from './maintenance/mtn-region/mtn-province/mtn-province.component';
+import { MtnQuotationWordingsComponent } from './maintenance/mtn-quotation-wordings/mtn-quotation-wordings.component';
 import { MtnRiskComponent } from './maintenance/mtn-risk/mtn-risk.component';
 import { AcctUnbalanceEntriesComponent } from './accounting-service/accounting-service-extract/acct-unbalance-entries/acct-unbalance-entries.component';
 import { AcctTrialBalComponent } from './accounting-service/accounting-service-extract/acct-trial-bal/acct-trial-bal.component';
@@ -282,6 +285,7 @@ import { CrRegisterComponent } from './accounting-service/reports/registers-serv
 import { CvRegisterServiceComponent } from './accounting-service/reports/registers-service/cv-register-service/cv-register-service.component';
 import { ChecksRegisterServiceComponent } from './accounting-service/reports/registers-service/checks-register-service/checks-register-service.component';
 import { JvRegisterServiceComponent } from './accounting-service/reports/registers-service/jv-register-service/jv-register-service.component';
+import { AcctSrvcCancelledTransactionsComponent } from './accounting-service/accounting-service-inquiry/acct-srvc-cancelled-transactions/acct-srvc-cancelled-transactions.component';
 
 
 @NgModule({
@@ -537,6 +541,9 @@ import { JvRegisterServiceComponent } from './accounting-service/reports/registe
         JvPreviewServiceComponent,
         JvAttachmentsServiceComponent,
         MtnLineComponent,
+        MtnObjectComponent,
+        MtnProvinceComponent,
+        MtnQuotationWordingsComponent,
         MtnRiskComponent,
         AcctUnbalanceEntriesComponent,
         AcctTrialBalComponent,
@@ -571,6 +578,7 @@ import { JvRegisterServiceComponent } from './accounting-service/reports/registe
         CvRegisterServiceComponent,
         ChecksRegisterServiceComponent,
         JvRegisterServiceComponent,
+        AcctSrvcCancelledTransactionsComponent,
     ],
 
     providers: [

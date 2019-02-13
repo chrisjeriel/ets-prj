@@ -127,10 +127,10 @@ export class QuotationService {
         //return this.holdCoverMonitoringListData;
         
         const params = new HttpParams()
-             .set('holdCoverNo','')
+             .set('quotationNo','')
              .set('status','')
              .set('cedingName','')
-             .set('quotationNo','')
+             .set('holdCoverNo','')
              .set('riskName','')
              .set('insuredDesc','')
              .set('periodFrom','')
@@ -604,15 +604,10 @@ export class QuotationService {
         );
     }
 
-    getOcGenInfoData(){
-        this.ocGenInfoData = [
-        ];
-
-        //return OcGenInfoInfo;
-
+    getOcGenInfoData(ocQuoteId: string, ocQuoteNo:string){
             const params = new HttpParams()
-             .set('quoteIdOc','')
-             .set('openQuotationNo','')
+             .set('quoteIdOc',ocQuoteId)
+             .set('openQuotationNo', ocQuoteNo)
              
             return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteGeneralInfoOc',{params});
     }
@@ -620,8 +615,8 @@ export class QuotationService {
     getHoldCoverInfo(){
         this.holdCoverInfo = [];
         const params = new HttpParams()
-             .set('holdCoverId','')
-             .set('holdCoverNo','')
+             .set('holdCoverId','75')
+             .set('holdCoverNo','CAR-2019-1-0')
              
             return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteHoldCover',{params});
     }
@@ -726,6 +721,7 @@ export class QuotationService {
         return this.http.post('http://localhost:8888/api/quote-service/saveQuoteCompetition', params.substring(1,params.length-1), header);
     }
 
+
     saveQuoteGeneralInfo(saveQuoteGeneralInfoParam) {
         let header: any = {
             headers: new HttpHeaders({
@@ -735,5 +731,47 @@ export class QuotationService {
 
         return this.http.post('http://localhost:8888/api/quote-service/saveQuoteGeneralInfo', saveQuoteGeneralInfoParam, header);
     }
+
+    // saveQuoteHoldCover(quoteId:number,holdCoverId:number,lineCd:string,holdCoverYear:string,holdCoverSeqNo:string,holdCoverRevNo:string,periodFrom:string,periodTo:string,compRefHoldCovNo:string,status:string,reqBy:string,reqDate:string,preparedBy:string,approvedBy:string,createUser:string,createDate:Date,updateUser:string,updateDate:Date){
+    //    // let params: any = {
+    //         const params = new HttpParams()
+    //         .set('quoteId', quoteId.toLocaleString())
+    //         .set('holdCoverId',holdCoverId.toLocaleString())
+    //         .set('lineCd',lineCd)
+    //         .set('holdCoverYear',holdCoverYear)
+    //         .set('holdCoverSeqNo',holdCoverSeqNo)
+    //         .set('holdCoverRevNo',holdCoverRevNo)
+    //         .set('periodFrom',periodFrom)
+    //         .set('periodTo',periodTo)
+    //         .set('compRefHoldCovNo',compRefHoldCovNo)
+    //         .set('status',status)
+    //         .set('reqBy',reqBy)
+    //         .set('reqDate',reqDate)
+    //         .set('preparedBy',preparedBy)
+    //         .set('approvedBy',approvedBy)
+    //         .set('createUser',createUser)
+    //         .set('createDate',createDate.toLocaleDateString())
+    //         .set('updateUser',updateUser)
+    //         .set('updateDate',updateDate.toLocaleDateString())
+    //     //}
+    //     // let header : any = {
+    //     //     headers: new HttpHeaders({
+    //     //         'Content-Type': 'application/json'
+    //     //     })
+    //     // };
+    //     // return this.http.post('http://localhost:8888/api/quote-service/saveQuoteHoldCover', JSON.stringify(params), header);
+    //     return this.http.post('http://localhost:8888/api/quote-service/saveQuoteHoldCover',{params} );
+
+    // }
+
+    saveQuoteHoldCover(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post('http://localhost:8888/api/quote-service/saveQuoteHoldCover',params,header);
+ 
+     }
 
 }
