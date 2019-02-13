@@ -29,41 +29,7 @@
 		<div class="col-md-13 text-center">
 			<div class="cust-btn-container" style="margin-top: 10px;">
 			<button type="button" class="cust-btn"><a>Print</a></button>
-			<app-modal  [btnTitle]="'Cancel'" >
-				<div header>Confirmation</div>
-        		<div body>
-        			<div body class="row">
-        				<div class="col-sm-1 text-right my-modal-icon">
-							<i class="fa fa-question-circle"></i>
-						</div>
-
-						<div class="col-sm-10 text-left my-modal-text">
-							<span class="align-middle">Do you want to save the changes you have made?</span>
-						</div>
-        			</div>
-        			
-        		</div>
-        		<div footer>
-        			<app-modal [btnTitle]="'Yes'">
-            			<div header>Success Message</div>
-            			<div body class="row">
-        						<div class="col-sm-1 text-right my-modal-icon">
-									<i class="fa fa-check-circle"></i>
-								</div>
-								<div class="col-sm-9 text-left my-modal-text" style="margin-left: 30px;">
-									<span class="align-middle">Saving successful</span>
-								</div>
-        				</div>
-        			
-        				<div footer>
-            				<button class="cust-btn" type="button" (click)="modalService.dismissAll();" routerLink="/quotation-processing"><a>Ok</a></button>
-            			</div>
-            		</app-modal>
-
-					<button class="cust-btn" type="button" (click)="modalService.dismissAll();" routerLink="/quotation-processing"><a>No</a></button>
-            		<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-        		</div>
-			</app-modal>
+			<button type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
 
 			<!-- <app-modal [btnTitle]="'Save'">
             			<div header>Success Message</div>

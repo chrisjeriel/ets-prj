@@ -36,6 +36,7 @@ export class InternalCompetitionComponent implements OnInit {
     }
 
     data: any;
+    quoteIds: any[] = [];
     savedData: any[] = [];
     @ViewChild(CustEditableNonDatatableComponent) custEditableNonDatatableComponent : CustEditableNonDatatableComponent;
     
@@ -49,21 +50,24 @@ export class InternalCompetitionComponent implements OnInit {
         //this.opts.push({ selector: "advOpt", vals: ["Pending", "On Going", "Done"] });
 
         this.quotationService.getIntCompAdvInfo().subscribe((data: any) => {
-
-            this.data = data.quotation[0].competitionsList;
-            for(var i = 0; i < this.data.length; i++){
-              this.data[i].createDate = new Date(
-                  this.data[i].createDate[0],
-                  this.data[i].createDate[1] - 1,
-                  this.data[i].createDate[2]
-              );
-              this.data[i].updateDate = new Date(
-                  this.data[i].updateDate[0],
-                  this.data[i].updateDate[1] - 1,
-                  this.data[i].updateDate[2]
-              );
-              this.intCompData.tableData.push(this.data[i]);
+            for(var j = 0; j < data.quotation.length; j++){
+              this.data = data.quotation[j].competitionsList;
+              this.quoteIds.push(data.quotation[j].quoteId);
+              for(var i = 0; i < this.data.length; i++){
+                this.data[i].createDate = new Date(
+                    this.data[i].createDate[0],
+                    this.data[i].createDate[1] - 1,
+                    this.data[i].createDate[2]
+                );
+                this.data[i].updateDate = new Date(
+                    this.data[i].updateDate[0],
+                    this.data[i].updateDate[1] - 1,
+                    this.data[i].updateDate[2]
+                );
+                this.intCompData.tableData.push(this.data[i]);
+              }
             }
+            //console.log(this.intCompData.tableData);
             this.custEditableNonDatatableComponent.refreshTable();
       }
     );
@@ -74,7 +78,7 @@ export class InternalCompetitionComponent implements OnInit {
     }
 
     onClickCancel() {
-
+      console.log(this.quoteIds);
     }
 
     onClickSave() {
@@ -85,13 +89,14 @@ export class InternalCompetitionComponent implements OnInit {
       for (var i = 0 ; this.intCompData.tableData.length > i; i++) {
         if(this.intCompData.tableData[i].edited){
             this.savedData.push(this.intCompData.tableData[i]);
-            this.savedData[this.savedData.length-1].quoteId = 6;
+            this.savedData[this.savedData.length-1].quoteId = this.quoteIds[this.savedData.length-1];
             this.savedData[this.savedData.length-1].createDate = new Date().toISOString();
             this.savedData[this.savedData.length-1].updateDate = new Date().toISOString();
           }
 
         // delete this.savedData[i].tableIndex;
       }
+      console.log(this.savedData);
        this.quotationService.saveQuoteCompetition(this.savedData).subscribe((data: any) => {
             console.log(data);
        });
