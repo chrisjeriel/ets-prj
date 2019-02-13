@@ -44,6 +44,10 @@ export class GenInfoComponent implements OnInit {
   cedingCoId:number;
   cedingCoName:string;
 
+  linee:string;
+  lineClassCd:string;
+  lineClassDescr:string;
+
 
   constructor(private route: ActivatedRoute, private quotationService: QuotationService, private http: HttpClient, private mtnService: MaintenanceService) {
    }
@@ -216,5 +220,15 @@ export class GenInfoComponent implements OnInit {
   setCedingCo(data){
     this.cedingCoId  = data.coNo;
     this.cedingCoName  = data.name;
+  }
+
+  getLineClassLov(){
+    $('#lineClassIdLov #modalBtn').trigger('click');
+  }
+  setLineClass(data){
+    this.linee = data.lineCd;
+    this.lineClassCd  = data.lineClassCd;
+    this.lineClassDescr  = data.lineClassCdDesc;
+    console.log(data);
   }
 }

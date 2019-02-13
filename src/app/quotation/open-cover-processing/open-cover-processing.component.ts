@@ -127,7 +127,8 @@ export class OpenCoverProcessingComponent implements OnInit {
             dataType: 'text'
         },
     ],
-    keys: ['quotationNo','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','insuredDesc','riskName','objectDesc','site','currencyCd','issueDate','expiryDate','reqBy','createUser']
+    keys: ['quotationNo','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','insuredDesc','riskName','objectDesc','site','currencyCd','issueDate','expiryDate','reqBy','createUser'],
+    // addFlag:true
   }
 
   // passDataRiskLOV:any = {
@@ -249,6 +250,9 @@ export class OpenCoverProcessingComponent implements OnInit {
 
   }
 
+  onClickAdd(event) {
+    $('#addModal > #modalBtn').trigger('click');
+  }
 
   onRowClick(event) {
     this.disabledEditBtn = false;
@@ -297,6 +301,7 @@ export class OpenCoverProcessingComponent implements OnInit {
   setRisk(data){
     this.riskId  = data.riskId;
     this.riskName  = data.riskName;
+    this.onClickAdd("");
   }
 
 }

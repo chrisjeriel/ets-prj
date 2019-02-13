@@ -501,7 +501,7 @@ export class QuotationService {
                 // .set('sortRequest.sortKey',null)
                 // .set('sortRequest.order',null);
 
-        return this.http.get('http://localhost:8888/api/quote-service/ ', {params});
+        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteListingOc', {params});
     }
 
 
@@ -616,7 +616,7 @@ export class QuotationService {
         this.holdCoverInfo = [];
         const params = new HttpParams()
              .set('holdCoverId','75')
-             .set('holdCoverNo','CAR-2019-1-0')
+             .set('holdCoverNo','CAR-2019-1-1')
              
             return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteHoldCover',{params});
     }

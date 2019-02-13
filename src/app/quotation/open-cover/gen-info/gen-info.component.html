@@ -30,8 +30,8 @@
 										<label class="form-control-sm col-sm-2">Type of Cession</label>
 										<input type="text" class="form-control form-control-sm" [(ngModel)]="typeOfCession">
 										<label class="form-control-sm col-sm-2">Line Class</label>
-										<input type="text" class="form-control form-control-sm" style="margin-right: 1px;" [(ngModel)]="ocQuoteGenInfo.lineClassCd">
-										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+										<input type="text" class="form-control form-control-sm" style="margin-right: 1px;" [(ngModel)]="lineClassDescr">
+										<div class="text-search-ico" (click)="getLineClassLov($event)"><a><i class="fa fa-search"></i></a></div>
 										<span>&nbsp;</span>
 									</div>
 									<div class="input-group">
@@ -481,4 +481,5 @@
 <app-mtn-quotation-wordings *ngIf = "opWording === true" id="wordingOpeningIdLov" (selectedData)="setOpeningWording($event)"></app-mtn-quotation-wordings>
 <app-mtn-quotation-wordings *ngIf = "opWording === false" id="wordingClosingIdLov" (selectedData)="setClosingWording($event)"></app-mtn-quotation-wordings>
 <app-ceding-company id="cedingCoIdLov" (selectedData)="setCedingCo($event)"></app-ceding-company>
+<app-mtn-line-class id="lineClassIdLov" (selectedData)="setLineClass($event)"></app-mtn-line-class>
 
