@@ -106,7 +106,7 @@ export class AccSrvInquiryComponent implements OnInit {
     checkFlag: false,
     addFlag: true,
     deleteFlag: true,
-    infoFlag: true,]
+    infoFlag: true,
     paginateFlag: true,
     searchFlag: false,
     pagination: true,
