@@ -257,7 +257,10 @@ import { CvChangeTranStatComponent } from './accounting-service/utilities/acc-s-
 import { JvChangeTranStatComponent } from './accounting-service/utilities/acc-s-change-tran-stat-new/jv-change-tran-stat/jv-change-tran-stat.component';
 import { AccSEditAccountingEntriesComponent } from './accounting-service/utilities/acc-s-edit-accounting-entries/acc-s-edit-accounting-entries.component';
 import { AccSEditedAccountingEntriesComponent } from './accounting-service/inquiry/acc-s-edited-accounting-entries/acc-s-edited-accounting-entries.component';
-
+import { InTrustCreditDebitComponent } from './accounting-in-trust/in-trust-credit-debit/in-trust-credit-debit.component';
+import { GenerateCMDMComponent } from './accounting-in-trust/in-trust-credit-debit/generate-cmdm/generate-cmdm.component';
+import { AcctCmdmEntryComponent } from './accounting-in-trust/in-trust-credit-debit/generate-cmdm/acct-cmdm-entry/acct-cmdm-entry.component';
+import { CmdmAccntEntriesComponent } from './accounting-in-trust/in-trust-credit-debit/generate-cmdm/cmdm-accnt-entries/cmdm-accnt-entries.component';
 
 
 @NgModule({
@@ -522,6 +525,10 @@ import { AccSEditedAccountingEntriesComponent } from './accounting-service/inqui
         JvChangeTranStatComponent,
         AccSEditAccountingEntriesComponent,
         AccSEditedAccountingEntriesComponent,
+        InTrustCreditDebitComponent,
+        GenerateCMDMComponent,
+        AcctCmdmEntryComponent,
+        CmdmAccntEntriesComponent,
     ],
 
     providers: [
