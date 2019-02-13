@@ -14,7 +14,7 @@ export class MtnAttentionComponent implements OnInit {
  @Output() selectedData: EventEmitter<any> = new EventEmitter();
   constructor(private modalService: NgbModal, private underwritingService : UnderwritingService) { }
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
-  @Input() cedingId: string = "1";
+  @Input() cedingId: string = "";
    
 	passDataAttention: any = {
 		tableData:[/*
