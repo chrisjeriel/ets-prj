@@ -691,7 +691,17 @@ export class QuotationService {
          };
          return this.http.post('http://localhost:8888/api/quote-service/saveQuoteHoldCover',params,header);
  
-     }
+    }
+
+    saveQuoteEndorsements(params){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteEndorsements',params,header);
+
+    }
 
 
 }

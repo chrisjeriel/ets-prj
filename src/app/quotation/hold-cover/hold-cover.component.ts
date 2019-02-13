@@ -145,12 +145,7 @@ export class HoldCoverComponent implements OnInit {
   }
 
   formatDate(date){
-    if(date[1] < 9){
-      return (date[0] + "-" + '0'+ date[1] + "-" + date[2]);
-    }else{
-      return date[0] + "-" +date[1] + "-" + date[2];
-    }
-    
+    return new Date(date[0] + "/" + date[1] + "/" + date[2]).toISOString();
   }
 
   sliceQuoteNo(qNo: string){
