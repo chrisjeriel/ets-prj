@@ -77,7 +77,7 @@
 								<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 									<div class="input-group ig-cust" style="margin-top: 10px;">
 										<label class="form-control-sm col-sm-4">Quote Date</label>
-										<input appRequired type="date" [(ngModel)]="genInfoData.issueDate" class="form-control form-control-sm">
+										<input appRequired type="date" [(ngModel)]="genInfoData.issueDate.split('T')[0]" class="form-control form-control-sm">
 									</div>
 									<div class="input-group ig-cust">
 										<label class="form-control-sm col-sm-4">Valid Until</label>
@@ -89,7 +89,7 @@
 									</div>
 									<div class="input-group ig-cust">
 										<label class="form-control-sm col-sm-4">Request Date</label>
-										<input appRequired type="date" [(ngModel)]="genInfoData.reqDate" class="form-control form-control-sm">
+										<input appRequired type="date" [(ngModel)]="genInfoData.reqDate.split('T')[0]" class="form-control form-control-sm">
 									</div>
 									<div class="input-group ig-cust">
 										<label class="form-control-sm col-sm-4">Request Mode</label>
