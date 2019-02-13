@@ -1,129 +1,43 @@
-<div class="row">
-	<div class="col-sm-2"></div>
-	<div class="col-sm-8">
-		<fieldset class="scheduler-border">
-			<legend class="scheduler-border">Extract Parameters</legend>
-				<div class="input-group">
-					<div class="col-sm-2"></div>
-					<div class="col-sm-8">
-						<div class="input-group col-sm-12">
-							<fieldset class="scheduler-border col-sm" style="margin-bottom: 10px !important;">
-								<legend class="scheduler-border">Tax Type</legend>
-									<div class="contain">
-										<div class="input group">
-											<!-- <input type="radio" name="TaxtType" value="Creditable Withholding Tax" [checked]= "taxtType == 'Creditable Withholding Tax'" (change)="tabController($event);"> -->
-											<input type="radio" name="TaxtType" value="Creditable Withholding Tax" [checked]= "taxtType == 'Creditable Withholding Tax'" (change)="tabController($event);">
-											<label class="form-control-sm col-sm-7 text-left">Creditable Withholding Tax </label>
-										</div>
-										<div class="input group top">
-											<input type="radio" name="TaxtType" value="Input VAT" [checked]= "taxtType == 'Input VAT'" (change)="tabController($event);">
-											<label class="form-control-sm col-sm-5 text-left">Input VAT</label>
-										</div>
-										<div class="input group top">
-											<input type="radio" name="TaxtType" value="Output VAT" [checked]= "taxtType == 'Output VAT'" (change)="tabController($event);">
-											<label class="form-control-sm col-sm-5 text-left">Output VAT </label>
-										</div>
-										<div class="input group top">
-											<input type="radio" name="TaxtType" value="Withholding Tax" [checked]= "taxtType == 'Withholding Tax'" (change)="tabController($event);">
-											<label class="form-control-sm col-sm-5 text-left ">Withholding Tax </label>
-										</div>
-									</div>
-							</fieldset>
-						</div>
-						<div class="input-group col-sm-12">
-							<fieldset class="scheduler-border col-sm" style="margin-bottom: 25px !important;">
-								<legend class="scheduler-border">Period</legend>
-									<div class="form-row custom-row-inline-inset">
-										<label class="form-control-sm col-sm-2">From</label>
-										<input type="date"  class="form-control form-control-sm cust-sm col-sm-4">
-										<label class="form-control-sm col-sm-1">To</label>
-										<input type="date" class="form-control form-control-sm cust-sm col-sm-4">
-									</div>
-									<div class="form-row">
-									    <div class="form-group col-sm">
-									        <div class="col-md-13 text-center">
-									            <div class="cust-btn-container" style="margin-top:-15px">
-									                <button type="button" class="cust-btn"><a>Extract</a></button>
-									            </div>
-									        </div>
-									    </div>
-									</div>
-							</fieldset>
-						</div>
-					</div>
-					<div class="col-sm-2"></div>
-				</div>
-		</fieldset>
-		<fieldset class="scheduler-border col-sm" style="margin-bottom: 25px !important;">
-			<legend class="scheduler-border">Printing Parameters</legend>
-				<div class="row">
-					<div class="col-sm-6">
-						<fieldset class="scheduler-border bottom">
-							<legend class="scheduler-border">Report Type</legend>
-							<div class="left-contain">
-								<div class="input group" style="margin-top: 12px !important;">
-									<input type="radio" name="reportType" checked>
-									<label class="form-control-sm col-sm-7">Summary</label>
-								</div>
-								<div class="input group top">
-									<input type="radio" name="reportType">
-									<label class="form-control-sm col-sm-7">Detailed</label>
-								</div>
-							</div>
-						</fieldset>
-						<fieldset class="scheduler-border bottom">
-							<div class="form-row custom-row-inline-inset">
-								<div class="input-group">
-								<label class="form-control-sm col-sm-3">Extracted By</label>
-								<input type="date" class="form-control form-control-sm cust-sm col-sm-8">
-							</div>
-								<div class="input-group">
-								<label class="form-control-sm col-sm-3">Detailed</label>
-								<input type="date" class="form-control form-control-sm cust-sm col-sm-8">
-							</div>
-							</div>
-						</fieldset>
-					</div>
-					<div class="col-sm-6">
-						<fieldset class="scheduler-border" style="margin-top: 12px !important">
-							<div class="form-row custom-row-inline-inset">
-								<div class="input-group" style="margin-top: 17px !important">
-									<label class="form-control-sm col-sm-3">Destination</label>
-									<select class="form-control form-control-sm cust-sm col-sm-8">
-										<option>Printer</option>
-									</select>
-								</div>
-								<div class="input-group">
-									<div class="col-sm-3"></div>
-									<input type="radio" name="fileFormat" style="margin-top: 5px !important;" checked>
-									<label class="form-control-sm col-sm-2 text-left">PDF</label>
-									<input type="radio" name="fileFormat" style="margin-top: 5px !important;">
-									<label class="form-control-sm col-sm-2 text-left">Excel</label>
-								</div>
-								<div class="input-group">
-									<label class="form-control-sm col-sm-3">Printer Name</label>
-									<select class="form-control form-control-sm cust-sm col-sm-8">
-										<option>EPSON 36000i</option>
-									</select>
-								</div>
-								<div class="input-group" style="margin-bottom: 2px !important">
-									<label class="form-control-sm col-sm-3">No. Of Copies</label>
-									<input type="date" class="form-control form-control-sm cust-sm col-sm-8">
-								</div>
-							</div>
-						</fieldset>
-					</div>
-				</div>
-				<div class="form-row">
-				    <div class="form-group col-sm">
-				        <div class="col-md-13 text-center">
-				            <div class="cust-btn-container">
-				                <button type="button" class="cust-btn"><a>Print</a></button>
-				            </div>
-				        </div>
-				    </div>
-				</div>
-		</fieldset>
-	</div>
-	<div class="col-sm-2"></div>
+
+
+
+
+
+
+
+<div class="cust-tabs-container">
+	<h4>Accounting Service / Extract / BIR Taxes</h4>
+	<!-- <ngb-tabset (tabChange)="beforeChange($event)"> -->
+		<ngb-tabset (tabChange)="onTabChange($event)" [activeId]="activeID">
+			<ngb-tab>
+				<ng-template ngbTabTitle>
+					<div>Extract</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+					<app-extract-bir-taxes (onChange)="tabController($event)"></app-extract-bir-taxes>
+				</ng-template>
+			</ngb-tab>
+			<!-- <ngb-tab>
+				<ng-template ngbTabTitle>
+					<div>Details</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+					<app-acct-details [taxType]="taxType"></app-acct-details>
+				</ng-template>
+			</ngb-tab>
+			<ngb-tab>
+				<ng-template ngbTabTitle>
+					<div>Upload</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+					<app-acct-upload [taxType]="taxType"></app-acct-upload>
+				</ng-template>
+			</ngb-tab> -->
+			<ngb-tab id="Exit">
+				<ng-template ngbTabTitle>
+					<div>Exit</div>
+				</ng-template>
+    			<ng-template ngbTabContent></ng-template>
+  			</ngb-tab>
+	</ngb-tabset>
 </div>

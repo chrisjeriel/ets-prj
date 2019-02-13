@@ -1,0 +1,216 @@
+<div class="cust-tabs-container">
+	<h4>Accounting Service / Request for Payment</h4>
+		<ngb-tabset>
+			<ngb-tab class="ngb-tab" title="CM/DM Entry">
+				<ng-template ngbTabContent>
+					<div class="row">
+					    <div class="col-sm-12">
+					        <fieldset class="scheduler-border">
+					            <legend class="scheduler-border">CM/DM Info</legend>
+					            <div class="container-fluid" style="padding-left: 0px;">
+					               <div class="form-row custom-row-inline-inset">
+						                <div class="input-group bottom">
+						                	<div class="col-sm-4">
+						                		<div class="row">
+							                		<label class="form-control-sm col-sm-3">Memo Type</label>
+							                		<input type="text" class="form-control form-control-sm cust-sm col-sm-5	" placeholder="Debit Memo">
+							                		<div style="margin-left: -19px !important;margin-right: 7px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+						                		</div>
+						                	</div>
+						                	<div class="col-sm-5">
+						                		<div class="row">
+							                		<label class="form-control-sm col-sm-2">Tran Type</label>
+							                		<input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="Offsetting of Net Payable In Trust (Due Company) against Receivable In Trust">
+							                		<div style="margin-left: -19px !important;margin-right: 7px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+						                		</div>
+						                	</div>
+						                	<div class="col-sm-3">
+						                		<div class="row">
+							                		<label class="form-control-sm col-sm-4">Status</label>
+							                		<input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="New">
+						                		</div>
+						                	</div>
+						                </div>
+					                	<div class="input-group bottom">
+					                		<div class="col-sm-4">
+					                			<div class="row">
+						                			<label class="form-control-sm col-sm-3">Memo No</label>
+						                			<input type="text" class="form-control form-control-sm cust-sm col-sm-2 spacing">
+						                			<input type="text" class="form-control form-control-sm cust-sm col-sm spacing" placeholder="N..">
+						                			<input type="text" class="form-control form-control-sm cust-sm col-sm spacing" placeholder="2019" >
+						                			<input type="text" class="form-control form-control-sm cust-sm col-sm-1 spacing" placeholder="02">
+						                			<input type="text" class="form-control form-control-sm cust-sm col-sm-3" placeholder="000001">
+						                		</div>
+					                		</div>
+					                		<div class="col-sm-5">
+					                			<div class="row">
+						                			<label class="form-control-sm col-sm-2">Memo Date</label>
+						                			<input type="Date" class="form-control form-control-sm cust-sm col-sm-3 spacing">
+						                			<input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="10:45 AM">
+						                			<label class="form-control-sm col-sm-2">JV Ref No</label>
+						                			<input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="2017-00023974">
+						                			<div style="margin-left: -19px !important;margin-right: 7px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+						                		</div>
+					                		</div>
+					                		<div class="col-sm-3">
+					                			<div class="row">
+					                				<label class="form-control-sm col-sm-4">Ref. No. Date</label>
+					                				<input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="12/31/2018 9:00 AM">
+					                			</div>
+					                		</div>
+					                	</div>
+					                	<div class="input-group bottom">
+					                		<div class="col-sm-1">
+					                			<div class="row">
+					                				<label class="form-control-sm col-sm">Recipient</label>
+					                			</div>
+					                		</div>
+					                		<div class="col-sm-11">
+					                			<div class="row">
+					                				<input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="Company Name">
+					                			</div>
+					                		</div>
+					                	</div>
+					                	<div class="input-group bottom" style="margin-bottom: -6px !important;">
+					                		<div class="col-sm-1">
+					                			<div class="row">
+					                				<label class="form-control-sm col-sm">Particulars</label>
+					                			</div>
+					                		</div>
+					                		<div class="col-sm-11">
+					                			<div class="row">
+					                				<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 55px; margin-bottom: 11px;" placeholder="To offer Net Payable In Trust__________________________"></textarea>
+					                			</div>
+					                		</div>
+					                	</div>
+					                	<div class="input-group bottom">
+					                		<div class="col-sm-4">
+					                			<div class="row">
+					                				<label class="form-control-sm col-sm-3">Amount</label>
+					                				<input type="text" class="form-control form-control-sm cust-sm col-sm-2 spacing" placeholder="PHP">
+					                				<div style="margin-left: -19px !important;margin-right: 7px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+					                				<input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="27513.20">
+					                			</div>
+					                		</div>
+					                		<div class="col-sm-8">
+					                			<div class="row">
+					                				<label class="form-control-sm col-sm-3">Currency Rate</label>
+					                				<input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="1.0000000">
+					                				<label class="form-control-sm col-sm-3">Local Amount</label>
+					                				<input type="text" class="form-control form-control-sm cust-sm col-sm-1 spacing" placeholder="PHP">
+					                				<input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="27513.20">
+					                			</div>
+					                		</div>
+					                	</div>
+					            	</div>
+					            	 <div class="form-row">
+					            	    <div class="form-group col-sm">
+					            	        <div class="col-md-12 text-center">
+					            	            <div class="cust-btn-container" style="margin-top: 10px;">
+					            	                <button type="button" class="cust cust-btn" style="margin-right: 10px !important;"><a>New CMDM</a></button>
+					            	                <button type="button" class="cust cust-btn" style="margin-right: 10px !important;"><a>Save</a></button>
+					            	                <button type="button" class="cust cust-btn" style="margin-right: 10px !important;"><a>Cancel CM/DM</a></button>
+					            	                <button type="button" class="cust cust-btn" style="margin-right: 10px !important;"><a>Print</a></button>
+					            	            </div>
+					            	        </div>
+					            	    </div>
+					            	</div>
+					            </div>
+					        </fieldset>
+				            <fieldset class="scheduler-border" style="margin: 0px !important; margin-top: 12px !important;">
+				                <div class="form-row custom-row-inline-inset" style="margin-left: -27px;">
+				                    <div class="input-group" style="margin-bottom: -15px !important;">
+				                        <label class="form-control-sm col-sm-1 text-right labels">Created By</label>
+				                        <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma">
+				                        <label class="form-control-sm col-sm-1 text-right labels">Date Created</label>
+				                        <input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM">
+				                        <label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
+				                        <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma">
+				                        <label class="form-control-sm col-sm-1 text-right labels">Last Update</label>
+				                        <input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM">
+				                    </div>
+				                </div>
+				            </fieldset>
+						</div>
+					</div>
+				</ng-template>
+			</ngb-tab>
+			<ngb-tab class="ngb-tab" title="Accounting Entries">
+				<ng-template ngbTabContent>
+					<fieldset class="scheduler-border">
+					    <legend class="scheduler-border">CM/DM Info</legend>
+					    <div class="form-row custom-row-inline-inset">
+					        <div class="col-sm-9">
+					            <div class="input-group" style="margin-bottom: -12px !important;">
+					                <label class="form-control-sm col-sm-1">Memo No</label>
+					                <input type="text" class="form-control form-control-sm cust-sm col-sm-2"
+					                placeholder="2015" readonly>
+					                <label class="form-control-sm col-sm-1">Memo Date</label>
+					                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="10/01/2018 11:49 AM" readonly>
+					                <label class="form-control-sm col-sm-1">Status</label>
+					                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="New" readonly>
+					                <label class="form-control-sm col-sm-1 text-right">Ref No</label>
+					                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="2017 - 00023974" readonly>
+					            </div>
+					            <div class="input-group" style="margin-bottom: -11px !important;">
+					                <label class="form-control-sm col-sm-1">Tran Type</label>
+					                <input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="San Miguel Corporation"
+					                readonly>
+					                <label class="form-control-sm col-sm-1">Ref Date</label>
+					                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="10/01/2018 11:49 AM" readonly>
+					            </div>
+					        </div>
+					        <div class="col-sm-3">
+					            <div class="input-group" style="margin-bottom: -12px !important;">
+					                <label class="form-control-sm col-sm-4">Amount</label>
+					                 <select class="form-control form-control-sm cust-sm col-sm-2" readonly>
+					                           <option value="PHP">PHP</option>
+					                           <option value="EUR">EUR</option>
+					                           <option value="USD">USD</option>
+					                </select>
+					                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right"
+					                placeholder="27,153.30" readonly>
+					            </div>
+					            <div class="input-group" style="margin-bottom: -11px !important;">
+					                <label class="form-control-sm col-sm-4">Local Amount</label>
+					                 <select class="form-control form-control-sm cust-sm col-sm-2" readonly>
+					                           <option value="PHP">PHP</option>
+					                           <option value="EUR">EUR</option>
+					                           <option value="USD">USD</option>
+					                   </select>
+					                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" 
+					                placeholder="27,153.30" readonly>
+					            </div>
+					        </div>
+					    </div>
+					</fieldset>
+					<fieldset class="scheduler-border">
+						<legend class="scheduler-border">CM/DM Accounting Entries</legend>
+							<div class="row">
+								<div class="col-sm-12 table-cust">
+									<div style="position: relative;">
+										<button class="cust-btn" style="position:absolute; right: 0px;top: -4px; max-width: 200px !important;">Print AE</button>
+								 		<app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
+								 	</div>
+								</div>
+							</div>
+					</fieldset>
+
+					<fieldset class="scheduler-border" style="margin: 0px !important; margin-top: 15px !important; ">
+						<div class="form-row custom-row-inline-inset" style="margin-left: -27px; margin-bottom: 15px !important;">
+					        <div class="input-group" style="    margin-bottom: -17px !important;margin-top: 7px !important;">
+					            <label class="form-control-sm col-sm-1 text-right labels">Created By</label>
+					            <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma">
+					            <label class="form-control-sm col-sm-1 text-right labels">Date Created</label>
+					            <input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM">
+					            <label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
+					            <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma">
+					            <label class="form-control-sm col-sm-1 text-right labels">Last Update</label>
+					            <input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM">
+					        </div>
+					    </div>
+					</fieldset>
+				</ng-template>
+			</ngb-tab>
+		</ngb-tabset>
+</div>

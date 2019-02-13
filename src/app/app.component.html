@@ -226,6 +226,8 @@
                                 <button [routerLink]="['/investments']" class="button btn btn-link"> Investments
                                 </button>
                                 <br />
+                                <button [routerLink]="['acc-s-credit-debit-memo']" class="button btn btn-link">Credit/Debit Memo</button>
+                                <br />
                                 <ngb-accordion #acc="ngbAccordion">
                                     <ngb-panel>
                                         <ng-template ngbPanelTitle>
@@ -300,28 +302,60 @@
                                 <button [routerLink]="['/journal-voucher-service']" class="button btn btn-link"> Journal Voucher
                                 </button>
                                 <br /> 
-                                <button [routerLink]="['fixed-assets']" class="button btn btn-link">Fixed Assets</button>
+                                <!-- <button [routerLink]="['fixed-assets']" class="button btn btn-link">Fixed Assets</button>
                                 <br />
                                 <button [routerLink]="['accounting-service-expense-budget']" class="button btn btn-link">Expense Budget</button>
+                                <br /> -->
+                                <button [routerLink]="['acc-s-request-for-payment']" class="button btn btn-link">Request for Payment</button>
                                 <br />
+                               <!--  <button [routerLink]="['accounting-service-pcv-listings']" class="button btn btn-link">Petty Cash Voucher</button>
+                                <br /> -->
+                                <!-- <button [routerLink]="['accounting-service-exp-budget']" class="button btn btn-link">Expense Budget</button> -->
+                                <button [routerLink]="['/credit-debit-memo']" class="button btn btn-link">Credit/Debit Memo</button>
+                                <br />
+                                <button [routerLink]="['accounting-service-exp-budget']" class="button btn btn-link">Expense Budget</button>
+                                <br />
+                                <ngb-accordion #acc="ngbAccordion">
+                                    <ngb-panel>
+                                        <ng-template ngbPanelTitle>
+                                            Extract
+                                        </ng-template>
+                                        <ng-template ngbPanelContent>
+                                            <button [routerLink]="['accounting-service-extract']" class="button btn btn-link">Accounting
+                                                Entries</button>
+                                            <br />
+                                            <button [routerLink]="['accounting-service-trial-bal']" class="button btn btn-link">Trial
+                                                Balance</button>
+                                            <br />
+                                             <button [routerLink]="['extract-bir-taxes']" class="button btn btn-link">BIR Taxes</button>
+                                        </ng-template>
+                                    </ngb-panel>
+                                </ngb-accordion>
                                 <ngb-accordion #acc="ngbAccordion">
                                     <ngb-panel>
                                         <ng-template ngbPanelTitle>
                                             Inquiry
                                         </ng-template>
                                         <ng-template ngbPanelContent>
+                                            <button [routerLink]="['acc-s-edited-acct-entries']" class="button btn btn-link">Edited Accounting Entries</button>
+                                            <br />
+                                            <button [routerLink]="['accounting-service-inquiry']" class="button btn btn-link">Edited Tax Details</button>
+                                            <br />
                                             <button [routerLink]="['acct-srvc-inquiry-cncld-trans']" class="button btn btn-link">Cancelled Transactions</button>
-                                            <br />                                        
+                                            <br />   
                                         </ng-template>
                                     </ngb-panel>
                                 </ngb-accordion>
-                                <button [routerLink]="['accounting-service-extract']" class="button btn btn-link">Extract</button>
-                                <br />
-                                <button [routerLink]="['acc-s-request-for-payment']" class="button btn btn-link">Request for Payment</button>
-                                <br />
-                                <button [routerLink]="['accounting-service-pcv-listings']" class="button btn btn-link">Petty Cash Voucher</button>
-                                <br />
-                                <button [routerLink]="['accounting-service-exp-budget']" class="button btn btn-link">Expense Budget</button>
+                                <ngb-accordion #acc="ngbAccordion">
+                                    <ngb-panel>
+                                        <ng-template ngbPanelTitle>
+                                            Reports
+                                        </ng-template>
+                                        <ng-template ngbPanelContent>
+                                            <button [routerLink]="['print-registers-service']" class="button btn btn-link">Registers</button>
+                                        </ng-template>
+                                    </ngb-panel>
+                                </ngb-accordion>
                                 <ngb-accordion #acc="ngbAccordion">
                                     <ngb-panel>
                                         <ng-template ngbPanelTitle>
@@ -330,8 +364,13 @@
                                         <ng-template ngbPanelContent>
                                             <button [routerLink]="['accounting-service-utilities']" class="button btn btn-link">Edit Tax Details</button>
                                             <br />
+                                            <button [routerLink]="['acc-s-edit-acct-entries']" class="button btn btn-link">Edit Accounting Entries</button>
+                                            <br />
                                             <button [routerLink]="['acct-srvc-util-catw']" class="button btn btn-link">Consolidate Annual Taxes Withheld</button>
                                             <br />
+                                            <button [routerLink]="['acc-s-change-tran-stat-new']" class="button btn btn-link">Change Transaction Status to New</button>
+                                            <br />
+                                            <button [routerLink]="['cancel-transaction-service']" class="button btn btn-link">Cancel Transactions</button>
                                         </ng-template>
                                     </ngb-panel>
                                 </ngb-accordion>

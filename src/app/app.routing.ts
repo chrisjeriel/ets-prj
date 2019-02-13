@@ -89,6 +89,17 @@ import { GenerateCvServiceComponent } from './accounting-service/check-voucher-s
 import { JournalVoucherServiceComponent } from './accounting-service/journal-voucher-service/journal-voucher-service.component';
 import { GenerateJvServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/generate-jv-service.component';
 import { UtilitiesComponent } from './accounting-service/utilities/utilities.component';
+import { AcctTrialBalComponent } from './accounting-service/accounting-service-extract/acct-trial-bal/acct-trial-bal.component';
+import { ExtractBirTaxComponent } from './accounting-service/accounting-service-extract/extract-bir-tax/extract-bir-tax.component';
+import { CreditDebitMemoComponent } from './accounting-service/credit-debit-memo/credit-debit-memo.component';
+import { CmdmEntryComponent } from './accounting-service/credit-debit-memo/cmdm-entry/cmdm-entry.component';
+import { AccSChangeTranStatNewComponent } from './accounting-service/utilities/acc-s-change-tran-stat-new/acc-s-change-tran-stat-new.component';
+import { AccSEditAccountingEntriesComponent } from './accounting-service/utilities/acc-s-edit-accounting-entries/acc-s-edit-accounting-entries.component';
+import { AccSEditedAccountingEntriesComponent } from './accounting-service/inquiry/acc-s-edited-accounting-entries/acc-s-edited-accounting-entries.component';
+import { InTrustCreditDebitComponent } from './accounting-in-trust/in-trust-credit-debit/in-trust-credit-debit.component';
+import { AccSrvInquiryComponent } from './accounting-service/acc-srv-inquiry/acc-srv-inquiry.component';
+import { CancelTransactionsServiceComponent } from './accounting-service/utilities/cancel-transactions-service/cancel-transactions-service.component';
+import { RegistersServiceComponent } from './accounting-service/reports/registers-service/registers-service.component';
 import { AcctSrvcCancelledTransactionsComponent } from './accounting-service/accounting-service-inquiry/acct-srvc-cancelled-transactions/acct-srvc-cancelled-transactions.component';
 
 
@@ -189,6 +200,17 @@ const appRoutes: Routes = [
     { path: 'generate-jv-service', component: GenerateJvServiceComponent },
     { path: 'accounting-service-utilities', component: UtilitiesComponent },
     { path: 'accounting-service-exp-budget', component: ExpenseBudgetComponent },
+    { path: 'accounting-service-trial-bal', component: AcctTrialBalComponent },
+    { path: 'extract-bir-taxes', component: ExtractBirTaxComponent },
+    { path: 'credit-debit-memo', component: CreditDebitMemoComponent },
+    { path: 'accounting-service-credit-debit-memo', component: CmdmEntryComponent },
+    { path: 'acc-s-change-tran-stat-new', component: AccSChangeTranStatNewComponent },
+    { path: 'acc-s-edit-acct-entries', component: AccSEditAccountingEntriesComponent },
+    { path: 'acc-s-edited-acct-entries', component: AccSEditedAccountingEntriesComponent },
+    { path: 'acc-s-credit-debit-memo', component: InTrustCreditDebitComponent },
+    { path: 'accounting-service-inquiry', component: AccSrvInquiryComponent },
+    { path: 'cancel-transaction-service', component: CancelTransactionsServiceComponent },
+    { path: 'print-registers-service', component: RegistersServiceComponent },
     { path: 'acct-srvc-inquiry-cncld-trans', component: AcctSrvcCancelledTransactionsComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }

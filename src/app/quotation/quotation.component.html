@@ -29,7 +29,7 @@
 				<div>Endorsement</div>
 			</ng-template>
 			<ng-template ngbTabContent>
-				<app-quote-endorsement></app-quote-endorsement>
+				<app-quote-endorsement [endorsementType]="'General'"></app-quote-endorsement>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab *ngIf="line=='CAR' || line=='EAR'">
