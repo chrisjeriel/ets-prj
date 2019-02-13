@@ -169,6 +169,9 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     refreshTable(){
+        while(this.displayData.length>0){
+            this.displayData.pop();
+        }
         for(var i = 0 ;i<this.passData.tableData.length;i++){
             this.displayData[i] = this.passData.tableData[i];
         }

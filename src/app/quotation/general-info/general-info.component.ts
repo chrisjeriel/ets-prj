@@ -28,6 +28,9 @@ export class GeneralInfoComponent implements OnInit {
 	private sub: any;
 	from: string;
 	line: string;
+	lineClass: string;
+	lineClassCode: string;
+	lineClassDesc: string;
 	ocChecked: boolean = false;
 
 	project: any = {
@@ -121,6 +124,11 @@ export class GeneralInfoComponent implements OnInit {
 		updateDate: '',
 		updateUser: ''
 	};
+
+	currencyAbbr: string = "";
+	currencyRt: number = 0;
+	intId: number;
+	intName: string = "";
 
 	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute, private maintenanceService: MaintenanceService) { }
 	ngOnInit() {
@@ -223,6 +231,7 @@ export class GeneralInfoComponent implements OnInit {
 		/*this.checkTypeOfCession();*/
 	}
 
+
 	ngOnDestroy() {
 		this.sub.unsubscribe();
 	}
@@ -270,6 +279,16 @@ export class GeneralInfoComponent implements OnInit {
 		$('#contractorLOV #modalBtn').trigger('click');
 	}
 
+
+	showLineClassLOV(){
+		$('#lineClassLOV #modalBtn').trigger('click');
+	}
+
+	showIntLOV(){
+		$('#intLOV #modalBtn').trigger('click');
+	}
+
+
 	setContractor(data){
 		this.genInfoData.contractorName = data.insuredName;
 		this.genInfoData.contractorId = data.insuredId;
@@ -283,6 +302,7 @@ export class GeneralInfoComponent implements OnInit {
 		this.genInfoData.currencyCd = data.currencyAbbr;
 		this.genInfoData.currencyRt = data.currencyRt;
 	}
+
 
 	plainQuotationNo(data: string){
 		var arr = data.split('-');
@@ -307,6 +327,18 @@ export class GeneralInfoComponent implements OnInit {
 		//this.genInfoData.principal = data.insuredId;
 		this.genInfoData.insuredDesc = data.insuredName;
 	}
+
+	setLineClass(data){
+		this.lineClassCode = data.lineClassCd;
+        this.lineClassDesc = data.lineClassCdDesc;
+        this.lineClass = this.lineClassCode + ' - ' + this.lineClassDesc;
+
+    }
+
+    setInt(data){
+        this.intId = data.intmId;
+        this.intName = data.intmName;
+    }
 
 	dateParser(arr) {
 		return new Date(arr[0] + '-' + arr[1] + '-' + arr[2]).toISOString();   

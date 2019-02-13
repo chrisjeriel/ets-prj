@@ -27,15 +27,15 @@
                                         </div>
                                         <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Ceding Company</label>
-                                            <input type="text" class="form-control form-control-sm"  [(ngModel)]="holdCoverInfo.cedingCompany">
+                                            <input type="text" class="form-control form-control-sm"  [(ngModel)]="cedCo" readonly>
                                         </div>
                                         <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Insured</label>
-                                            <input type="text" class="form-control form-control-sm" [(ngModel)]="holdCoverInfo.insured">
+                                            <input type="text" class="form-control form-control-sm" [(ngModel)]="insured" readonly>
                                         </div>
                                         <div class="input-group" style="margin-bottom: -9px !important;">
                                             <label class="form-control-sm col-sm-2">Risk</label>
-                                            <input type="text" class="form-control form-control-sm" [(ngModel)]="holdCoverInfo.risk">
+                                            <input type="text" class="form-control form-control-sm" [(ngModel)]="risk" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -68,27 +68,27 @@
                                         </div>
                                          <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Period From</label>
-                                            <input type="date" class="form-control form-control-sm cust-sm" id="inputQuotation" [(ngModel)]="holdCoverInfo.periodFrom">
+                                            <input type="date" class="form-control form-control-sm cust-sm" [(ngModel)]="holdCover.periodFrom">
                                             <label class="form-control-sm col-sm-2">Requested By</label>
-                                            <input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="holdCoverInfo.requestedBy">
+                                            <input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="holdCover.reqBy">
                                         </div>
                                         <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Period To</label>
-                                            <input type="date" class="form-control form-control-sm cust-sm" id="inputQuotation" [(ngModel)]="holdCoverInfo.periodTo">
+                                            <input type="date" class="form-control form-control-sm cust-sm" [(ngModel)]="holdCover.periodTo">
                                             <label class="form-control-sm col-sm-2">Request Date</label>
-                                            <input type="date" class="form-control form-control-sm cust-sm col-sm-7" id="inputQuotation" [(ngModel)]="holdCoverInfo.requestDate">
+                                            <input type="date" class="form-control form-control-sm cust-sm col-sm-7" [(ngModel)]="holdCover.reqDate">
                                         </div>
                                         <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-3" style="margin-left: -62px !important;  margin-right: 1px !important;">Co. Ref. Hold Cover No</label>
-                                            <input type="text" class="form-control form-control-sm" [(ngModel)]="holdCoverInfo.coRefHoldCoverNo">
+                                            <input type="text" class="form-control form-control-sm" [(ngModel)]="holdCover.compRefHoldCovNo">
                                             <label class="form-control-sm col-sm-2">Prepared By</label>
-                                            <input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="holdCoverInfo.preparedBy">
+                                            <input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="holdCover.preparedBy">
                                         </div>
                                         <div class="input-group" style="margin-bottom: -9px !important;">
                                             <label class="form-control-sm col-sm-2">Status</label>
-                                            <input type="text" class="form-control form-control-sm" [(ngModel)]="holdCoverInfo.status">
+                                            <input type="text" class="form-control form-control-sm" [(ngModel)]="holdCover.status">
                                             <label class="form-control-sm col-sm-2">Approved By</label>
-                                            <input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="holdCoverInfo.approvedBy">
+                                            <input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="holdCover.approvedBy">
                                         </div>
                                     </div>
                                 </div>
@@ -148,22 +148,43 @@
                                     </div>
                                     </app-modal>
                                 <button type="button" class="cust-btn"><a>Cancel</a></button>
-                                <button type="button" class="cust-btn"><a>Save</a></button>
+                                <button type="button" class="cust-btn" (click)="onSaveClick()"><a>Save</a></button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <app-modal id="lovMdl" class="hidden" >
+                <div class="form-row">
+                    <div class="form-group col-sm">
+                        <div class="col-md-12 text-center">
+                            <div class="cust-btn-container" style="margin-top: 10px !important;">
+                                <app-modal hidden [btnTitle]="'List Of Values'" id="lovMdl">
+                                    <div header>List Of Values</div>
+                                    <div body>
+                                       <app-cust-non-datatable [passData]="passDataQuoteLOV" (rowClick)="onRowClick($event)"></app-cust-non-datatable>
+                                    </div>
+                                    <div footer class="text-center w-100">
+                                        <div class="col-sm-12 text-center">
+                                        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+                                        <button class="cust-btn" type="button" (click)="onSaveClickLOV()"><a>Save</a></button>
+                                        </div>
+                                    </div>
+                                </app-modal>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <app-modal id="lovMdl">
                 <div header>List of Values</div>
                 <div body style="min-width: 700px !important;">
-                    <app-cust-non-datatable [passData]="passData"></app-cust-non-datatable>
+                    <app-cust-non-datatable [passData]="passDataQuoteLOV"></app-cust-non-datatable>
                 </div>
                 <div footer class="text-center w-100">
-                    <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+                    <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Save</a></button>
                     <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
                 </div>
-                </app-modal>
+                </app-modal> -->
 
                
 

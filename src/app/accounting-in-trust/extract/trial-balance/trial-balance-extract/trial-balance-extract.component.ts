@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
 @Component({
@@ -12,6 +12,13 @@ export class TrialBalanceExtractComponent implements OnInit {
 
   ngOnInit() {
   	this.titleService.setTitle("Acc | Trial Balance");
+  }
+
+  accountCode:string = 'Total';
+  @Output() accCodeChange : EventEmitter<any> = new EventEmitter();
+
+  changeAccountCode(){
+  	this.accCodeChange.emit(this.accountCode);
   }
 
 }

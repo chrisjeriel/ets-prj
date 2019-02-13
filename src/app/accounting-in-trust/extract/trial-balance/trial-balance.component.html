@@ -3,12 +3,12 @@
 	<ngb-tabset (tabChange)="onTabChange($event)">
 		<ngb-tab class="ngb-tab" title="Extract">
 			<ng-template ngbTabContent>
-				<app-trial-balance-extract></app-trial-balance-extract>
+				<app-trial-balance-extract (accCodeChange)="accCodeChange($event)"></app-trial-balance-extract>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab class="ngb-tab" title="Trial Balance">
 			<ng-template ngbTabContent>
-				<app-trial-balance-tb></app-trial-balance-tb>
+				<app-trial-balance-tb [accountCode]="accountCode"></app-trial-balance-tb>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab id="Exit">

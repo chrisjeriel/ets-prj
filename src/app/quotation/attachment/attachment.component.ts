@@ -109,7 +109,6 @@ export class AttachmentComponent implements OnInit {
     
     this.quotationService.getAttachment('1').subscribe((data: any) => {
         this.attachmentData = data.quotation[0].attachmentsList;
-        console.log(data);
         // this.passData.tableData = data.quotation.project.coverage.sectionCovers;
         for (var i = 0; i < this.attachmentData.length; i++) {
           this.passData.tableData.push(this.attachmentData[i]);

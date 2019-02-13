@@ -30,7 +30,7 @@ export class ModalComponent implements OnInit/*, AfterViewInit*/ {
     
     @ViewChild('content') test: any;
     content: EventEmitter<Object> = new EventEmitter<Object>();
-
+    @Output() modalOpened: EventEmitter<Object> = new EventEmitter<Object>();
     constructor(private modalService: NgbModal) { }
 
     ngOnInit() {
@@ -45,6 +45,7 @@ export class ModalComponent implements OnInit/*, AfterViewInit*/ {
         this.content = content;
         this.modalService.dismissAll();
         this.modalService.open(this.content, { centered: true, backdrop: 'static', windowClass : this.modalSize });
+        this.modalOpened.emit();
     }
 
 

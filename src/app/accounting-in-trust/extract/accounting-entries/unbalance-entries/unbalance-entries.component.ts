@@ -10,8 +10,9 @@ import { Router } from '@angular/router';
 export class UnbalanceEntriesComponent implements OnInit {
   passData: any ={
   	tableData: [],
-  	tHeader: ['Tran Type', 'Ref. No.', 'Tran Date', 'Payee/Payor', 'Particulars', 'Status', 'Tran ID', 'Total Debit', 'Total Credit', 'Variance'],
-  	dataTypes: ['text','text','date','text','text','text','sequence-8','currency','currency','currency'],
+  	tHeader: ['Tran Type', 'Ref. No.', 'Tran Date', 'Payee/Payor', 'Particulars', 'Status',  'Total Debit', 'Total Credit', 'Variance'],
+    colSize: ['1px','1px','1px','auto','auto','1px','150px','150px','150px'],
+  	dataTypes: ['text','text','date','text','text','text','currency','currency','currency'],
   	pagination: true,
   	pageStatus: true,
   	filters:[
@@ -57,9 +58,9 @@ export class UnbalanceEntriesComponent implements OnInit {
 
   ngOnInit() {
   	this.passData.tableData = [
-  		new UnbalanceEntries('AR','2018-00372890',new Date(2018,11,2),'UCPBGEN','Payment for','New',282883,29930,29900,30),
-      new UnbalanceEntries('CV','2018-00372900',new Date(2018,11,25),'BPI/MS','Payment for','New',282883,193038.99,193039,0.01),
-      new UnbalanceEntries('JV','2018-00000093',new Date(2019,0,21),'SM PRIME HOLDINGS','Payment for','New',283000,1525850,1500000,25850)
+  		new UnbalanceEntries('AR','2018-00372890',new Date(2018,11,2),'UCPBGEN','Payment for','New',29930,29900,30),
+      new UnbalanceEntries('CV','2018-00372900',new Date(2018,11,25),'BPI/MS','Payment for','New',193038.99,193039,0.01),
+      new UnbalanceEntries('JV','2018-00000093',new Date(2019,0,21),'SM PRIME HOLDINGS','Payment for','New',1525850,1500000,25850)
   	];
     this.dateExtracted = new Date().toISOString().slice(0, 16);
     this.periodFrom = '2018-12-01';
