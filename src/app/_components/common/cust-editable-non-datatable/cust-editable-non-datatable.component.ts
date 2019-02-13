@@ -67,7 +67,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         pageID:1,
         keys:[]
     };
-
+    indvSelect: any;
     dataKeys: any[] = [];
     tableLoad: boolean = true;
     nextId: number = 0;
@@ -78,6 +78,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     startX:   any;
     startWidth: any;
     autoFill: number[];
+    selected: any[] = [];
 
     displayData:any[] = [];
     newData: any = new DummyInfo(null,null,null,null,null,null,null);
@@ -187,7 +188,10 @@ export class CustEditableNonDatatableComponent implements OnInit {
         });
     }
 
-    onRowClick(event) {
+    onRowClick(event,data) {
+         if(data != this.fillData){
+            this.indvSelect = data;
+        }
         this.rowClick.next(event);
         
     }
@@ -322,6 +326,16 @@ export class CustEditableNonDatatableComponent implements OnInit {
         }
         
         this.clickLOV.emit(retData);
+    }
+
+    removeSelected(event, data){
+        if(!event.target.checked){
+            this.selected.splice(this.selected.indexOf(data), 1);
+            console.log('wow');
+        }else{
+            this.selected.push(data);
+        }
+        
     }
  
 }

@@ -367,3 +367,7 @@ table td div span{
 .searchWithFilter{
     margin-right: 26px;
 }
+
+.selected{
+    background-color: #67b4fc !important;
+}
