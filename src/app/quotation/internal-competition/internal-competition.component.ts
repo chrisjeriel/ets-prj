@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { QuotationService } from '../../_services';
+import { QuotationService, MaintenanceService } from '../../_services';
 import { IntCompAdvInfo } from '@app/_models';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
@@ -13,7 +13,9 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
     styleUrls: ['./internal-competition.component.css']
 })
 export class InternalCompetitionComponent implements OnInit {
-
+    Description: string = "";
+    adviceLOVRow : number;
+    attentionLOVRow: number;
     intCompData: any = {
         tableData: [],
         tHeader: ["Advice No.", "Company", "Attention", "Position", "Advice Option", "Advice Wordings", "Created By", "Date Created", "Last Update By", "Last Update"],
@@ -40,7 +42,7 @@ export class InternalCompetitionComponent implements OnInit {
     savedData: any[] = [];
     @ViewChild(CustEditableNonDatatableComponent) custEditableNonDatatableComponent : CustEditableNonDatatableComponent;
     
-    constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title) { }
+    constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private maintenanceService: MaintenanceService) { }
 
     ngOnInit() {
         //var dateConvert: Date;
@@ -69,8 +71,13 @@ export class InternalCompetitionComponent implements OnInit {
             }
             //console.log(this.intCompData.tableData);
             this.custEditableNonDatatableComponent.refreshTable();
-      }
-    );
+      });
+
+
+
+      this.maintenanceService.getAdviceWordings().subscribe((data: any) => {
+        console.log(data);
+      });
 
     }
     onClickPrint() {
@@ -123,6 +130,30 @@ export class InternalCompetitionComponent implements OnInit {
         //  console.log(result);
         // for(var i = 0; i < event.target.closest("tr").children.length; i++) {
         //   console.log(event.target.closest("tr").children[i].ng-reflect-model.text);
+    }
+
+    clickAdviceLOV(data){
+      if(data.key=='wordings'){
+        $('#adviceWordingsLOV #modalBtn').trigger('click');
+        data.tableData = this.intCompData.tableData;
+        this.adviceLOVRow = data.index;
+      }
+      if(data.key=='cedingRepName'){
+        console.log(data)
+        $('#attentionLOV #modalBtn').trigger('click');
+        data.tableData = this.intCompData.tableData;
+        this.attentionLOVRow = data.index;
+      }
+    }
+
+    selectedAdviceLOV(data){
+      console.log(data)
+        this.intCompData.tableData[this.adviceLOVRow].wordings = data.description; 
+    }
+
+    selectedAttentionLOV(data){
+      console.log(data)
+         this.intCompData.tableData[this.attentionLOVRow].cedingRepName = data.firstName +' '+ data.mI + ' '+ data.lastName; 
     }
 }
 
