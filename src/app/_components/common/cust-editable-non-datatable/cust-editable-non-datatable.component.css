@@ -371,3 +371,8 @@ table td div span{
 .selected{
     background-color: #67b4fc !important;
 }
+
+tbody td div .negativeNumber{
+    padding-right: 0.5px !important;
+    color: red;
+}

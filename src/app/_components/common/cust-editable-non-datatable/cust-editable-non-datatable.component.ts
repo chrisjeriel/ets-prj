@@ -270,7 +270,16 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
    format(event,key, index){
-       this.displayData[index][key] = parseFloat(event.target.value.split(',').join(''));
+       let temp:string = event.target.value;
+       if(event.target.value.indexOf('(')!= -1){
+           temp = '-'+temp.substring(1,event.target.value.length-1);
+       }
+       console.log("parsed: "+ parseFloat(temp.split(',').join('')));
+       console.log("displayData: "+ this.displayData[index][key]);
+       console.log(this.displayData[index][key] != parseFloat(temp.split(',').join('')));
+       if(this.displayData[index][key] != parseFloat(temp.split(',').join(''))){
+           this.displayData[index][key] = parseFloat(temp.split(',').join('')) ;
+       }
    }
 
    addClicked(event) {

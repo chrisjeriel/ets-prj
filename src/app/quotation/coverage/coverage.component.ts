@@ -170,6 +170,7 @@ export class CoverageComponent implements OnInit {
   }
 
   saveData(){
+    console.log(this.passData.tableData);
    this.editedData = [];
    for (var i = 0 ; this.passData.tableData.length > i; i++) {
       /*if(this.passData.tableData[i].edited){
