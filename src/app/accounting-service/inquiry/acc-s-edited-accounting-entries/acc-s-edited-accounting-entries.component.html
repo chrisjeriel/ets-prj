@@ -1,6 +1,6 @@
 <div class="cust-tabs-container">
   <h4>Accounting Service / Inquiry / Edited Accounting Entries</h4>
-  <ngb-tabset>
+  <ngb-tabset (tabChange)="onTabChange($event)">
     <ngb-tab>
       <ng-template ngbTabTitle>
         <div>Inquire</div>
@@ -126,7 +126,7 @@
       </ng-template>
     </ngb-tab>
 
-    <ngb-tab>
+    <ngb-tab id="Exit">
       <ng-template ngbTabTitle>
         <div>Exit</div>
       </ng-template>
