@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { OcGenInfoInfo } from '@app/_models/QuotationOcGenInfo';
-import { QuotationService } from '@app/_services';
+import { QuotationService, MaintenanceService } from '@app/_services';
 import { HttpClient } from '@angular/common/http';
 import { formatDate } from '@angular/common';
 
@@ -17,22 +17,49 @@ export class GenInfoComponent implements OnInit {
   line: string;
   private sub: any;
   from: string;
+  ocQuoteNo: string;
 
   currencyAbbr: string = "";
   currencyRt: number = 0;
+  prinId: number;
+  prinName: string;
+  conId:number;
+  conName:string;
+  objId:number;
+  objName:string;
+  openingWording:string;
+  closingWording:string;
+  opWording:boolean;
 
-  constructor(private route: ActivatedRoute, private quotationService: QuotationService, private http: HttpClient) {
+  riskId:string;
+  riskName:string;
+  regionDesc:string;
+  provinceDesc:string;
+  cityDesc:string;
+  districtDesc:string;
+  blockDesc:string;
+  lat:string;
+  long:string;
+
+  cedingCoId:number;
+  cedingCoName:string;
+
+
+  constructor(private route: ActivatedRoute, private quotationService: QuotationService, private http: HttpClient, private mtnService: MaintenanceService) {
    }
 
+   sampleId:string ="";
+   sampleNo:string ="OC-DOS-2018-1001-2-2323";
   b;
   infos:any = [];
   govCheckbox: boolean;
   indCheckbox: boolean;
-
+  
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
       this.line = params['line'];
       this.from = params['from'];
+      this.ocQuoteNo = (params['ocQuoteNo']).trim();
       if (this.from == "oc-inquiry") {
         this.typeOfCession = params['typeOfCession'];
       }
@@ -41,11 +68,9 @@ export class GenInfoComponent implements OnInit {
     this.checkTypeOfCession();
 
     this.ocQuoteGenInfo = new OcGenInfoInfo();
-    //this.quotationService.getOcGenInfoData().subscribe(a => this.b = a);
-    this.quotationService.getOcGenInfoData()
+    this.quotationService.getOcGenInfoData(this.sampleId,this.ocQuoteNo)
         .subscribe(val => 
             {
-              console.log(val);
               //this.ocQuoteGenInfo = new OcGenInfoInfo(i.openQuotationNo);
               for(let i of val['quotationOc']) {
                 console.log(i.projectOc);
@@ -66,10 +91,12 @@ export class GenInfoComponent implements OnInit {
                   this.ocQuoteGenInfo.reqMode         = i.reqMode;
                   this.ocQuoteGenInfo.currencyCd      = i.currencyCd;
                   this.ocQuoteGenInfo.currencyRt      = i.currencyRt;
-                  this.ocQuoteGenInfo.govtTag         = 'y';
-                  this.govCheckbox = this.checkTag(this.ocQuoteGenInfo.govtTag);
-                  this.ocQuoteGenInfo.indicativeTag   = "n";
-                  this.indCheckbox = this.checkTag(this.ocQuoteGenInfo.indicativeTag);
+                  this.ocQuoteGenInfo.govtTag         = i.govtTag;
+                  //this.govCheckbox = this.checkTag(this.ocQuoteGenInfo.govtTag);
+                  this.govCheckbox = ((this.ocQuoteGenInfo.govtTag === 'y' || this.ocQuoteGenInfo.govtTag ==='Y') ? true: false);
+                  this.ocQuoteGenInfo.indicativeTag   = i.indicativeTag;
+                  //this.indCheckbox = this.checkTag(this.ocQuoteGenInfo.indicativeTag);
+                  this.indCheckbox = (this.ocQuoteGenInfo.indicativeTag === 'a' || this.ocQuoteGenInfo.indicativeTag === 'A') ? true : false;
                   this.ocQuoteGenInfo.prinId          = i.prinId;
                   this.ocQuoteGenInfo.principalName   = i.principalName;
                   this.ocQuoteGenInfo.contractorId    = i.contractorId;
@@ -79,7 +106,7 @@ export class GenInfoComponent implements OnInit {
                   this.ocQuoteGenInfo.objectId        = i.projectOc.objectId;
                   this.ocQuoteGenInfo.site            = i.projectOc.site;
                   this.ocQuoteGenInfo.duration        = i.projectOc.duration;
-                  this.ocQuoteGenInfo.testing        = i.projectOc.testing;
+                  this.ocQuoteGenInfo.testing         = i.projectOc.testing;
                   this.ocQuoteGenInfo.openingParag    = i.openingParag;
                   this.ocQuoteGenInfo.closingParag    = i.closingParag;
                   this.ocQuoteGenInfo.maxSi           = i.projectOc.maxSi;
@@ -93,22 +120,33 @@ export class GenInfoComponent implements OnInit {
                   this.ocQuoteGenInfo.createDate      = this.formatDate(i.createDate);
                   this.ocQuoteGenInfo.updateUser      = i.updateUser;
                   this.ocQuoteGenInfo.updateDate      = this.formatDate(i.updateDate);
-             }
-
+                  this.ocQuoteGenInfo.riskId          = i.projectOc.riskId;
+                }
+                this.mtnService.getMtnRisk(this.ocQuoteGenInfo.riskId)
+                        .subscribe(val => {
+                          //console.log(val['risk']. + "=====>JELELELELLELELEELL");
+                          this.riskName = val['risk'].riskName;
+                          this.regionDesc = val['risk'].regionDesc;
+                          this.provinceDesc = val['risk'].provinceDesc;
+                          this.cityDesc = val['risk'].cityDesc;
+                          this.districtDesc = val['risk'].districtDesc;
+                          this.blockDesc  = val['risk'].blockDesc;
+                          this.lat  = val['risk'].latitude;
+                          this.long = val['risk'].longitude;
+                        });
             }
       );
-
     
 
   }
 
-  checkTag(tag:string){
-    if(tag === "Y" || tag === "y"){
-      return true;
-    }else{
-      return false;
-    }
-  }
+  // checkTag(tag:string){
+  //   if(tag === "Y" || tag === "y"){
+  //     return true;
+  //   }else{
+  //     return false;
+  //   }
+  // }
 
   formatDate(date){
     if(date[1] < 9){
@@ -127,12 +165,56 @@ export class GenInfoComponent implements OnInit {
     return (this.typeOfCession.trim().toUpperCase() === 'RETROCESSION') ? true : false;
   }
 
-  showCurrencyModal(){
-    $('#currencyModal #modalBtn').trigger('click');
+  getCurrLov(){
+    $('#currIdLov #modalBtn').trigger('click');
   }
 
-  setCurrency(data){
+  setCurr(data){
     this.currencyAbbr = data.currencyAbbr;
     this.currencyRt = data.currencyRt;
+  }
+  getPrinLov(){
+    $('#prinIdLov  #modalBtn').trigger('click');
+  }
+  setPrin(data){
+   this.prinId  = data.insuredId;
+   this.prinName  = data.insuredName;
+  }
+  getConLov(){
+    $('#conIdLov  #modalBtn').trigger('click');
+  }
+  setCon(data){
+    this.conId  = data.insuredId;
+    this.conName  = data.insuredName;
+  }
+  getObjLov(){
+    $('#objIdLov #modalBtn').trigger('click');
+  }
+  setObj(data){
+    this.objId  = data.objectId;
+    this.objName  = data.description;
+  }
+
+  getOpeningWordingLov(){
+    $('#wordingOpeningIdLov #modalBtn').trigger('click');
+    this.opWording = true;
+  }
+  getClosingWordingLov(){
+    $('#wordingClosingIdLov #modalBtn').trigger('click');
+    this.opWording = false;
+  }
+  setOpeningWording(data){
+    this.openingWording  = data.wording;
+  }
+  setClosingWording(data){
+    this.closingWording  = data.wording;
+  }
+
+  getCedingCoLov(){
+    $('#cedingCoIdLov #modalBtn').trigger('click');
+  }
+  setCedingCo(data){
+    this.cedingCoId  = data.coNo;
+    this.cedingCoName  = data.name;
   }
 }
