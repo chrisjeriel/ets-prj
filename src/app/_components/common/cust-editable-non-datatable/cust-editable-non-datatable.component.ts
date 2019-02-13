@@ -99,12 +99,16 @@ export class CustEditableNonDatatableComponent implements OnInit {
 
     refreshTable(){
 
+        while(this.displayData.length>0){
+            this.displayData.pop();
+        }
+        
         for(var i = 0 ;i<this.passData.tableData.length;i++){
             this.passData.tableData[i].edited = false;
             this.displayData[i] = this.passData.tableData[i];
         }
         //this.displayData = JSON.parse(JSON.stringify( this.passData.tableData));
-        this.displayLength = this.displayData.length;
+        //this.displayLength = this.displayData.length;
         this.unliTableLength();
         this.addFiller();
     }

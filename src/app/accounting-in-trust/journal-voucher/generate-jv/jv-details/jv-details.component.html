@@ -10,9 +10,7 @@
                 placeholder="00000001" style="text-align: right; margin-left: 2px;text-align: right;" readonly>
                 <label class="form-control-sm col-sm-1" style="    margin-left: -2px !important;">Date</label>
                 <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="10/01/2018 11:49 AM" readonly>
-                <label class="form-control-sm col-sm-1 text-right">Tran ID</label>
-                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="000284723" style="text-align: right;text-align: right;" readonly>
-                <label class="form-control-sm col-sm-1">Status</label>
+                <label class="form-control-sm col-sm-4">Status</label>
                 <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="New" readonly>
             </div>
             <div class="input-group">
@@ -126,6 +124,7 @@
                     <div *ngSwitchCase="'INWARD POLICY BALANCES'">Inward Policy Balances</div>
                     <div *ngSwitchCase="'QSOA'">QSOA Balances</div>
                     <div *ngSwitchCase="'PAYMENT REQUEST LIST'">Payment Request List</div>
+                    <div *ngSwitchCase="'LOSS RESERVE DEPOSIT'">Loss Reserve Deposit</div>
                 </ng-container>
             </ng-template>
             <ng-template ngbTabContent>
@@ -140,6 +139,9 @@
                             </ng-container>
                             <ng-container *ngSwitchCase="'PAYMENT REQUEST LIST'">
                                 <app-jv-payment-request-list></app-jv-payment-request-list>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'LOSS RESERVE DEPOSIT'">
+                                <app-jv-loss-reserve-deposit></app-jv-loss-reserve-deposit>
                             </ng-container>
                         </ng-container>
                     </div>

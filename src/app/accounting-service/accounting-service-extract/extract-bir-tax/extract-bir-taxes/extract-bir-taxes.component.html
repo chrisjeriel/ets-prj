@@ -1,0 +1,225 @@
+<div class="row">
+	<div class="col-sm-2"></div>
+	<div class="col-sm-8" style="padding:0">
+		<fieldset class="scheduler-border">
+			<legend class="scheduler-border">Extract Parameters</legend>
+				<div class="input-group">
+					<div class="col-sm-2"></div>
+					<div class="col-sm-8">
+						<div class="input-group col-sm-12">
+							<fieldset class="scheduler-border col-sm" style="margin-bottom: 10px !important;">
+								<legend class="scheduler-border">Tax Type</legend>
+									<div class="contain">
+										<div class="input group">
+											<label class="col-sm-2"></label>
+											<input type="radio" name="TaxtType" value="Creditable Withholding Tax" [checked]= "taxtType == 'Creditable Withholding Tax'" (change)="tabController($event);">
+											<label class="form-control-sm col-sm-7 text-left">Creditable Withholding Tax </label>
+										</div>
+										<div class="input group top">
+											<label class="col-sm-2"></label>
+											<input type="radio" name="TaxtType" value="Input VAT" [checked]= "taxtType == 'Input VAT'" (change)="tabController($event);">
+											<label class="form-control-sm col-sm-7 text-left">Input VAT</label>
+										</div>
+										<div class="input group top">
+											<label class="col-sm-2"></label>
+											<input type="radio" name="TaxtType" value="Output VAT" [checked]= "taxtType == 'Output VAT'" (change)="tabController($event);">
+											<label class="form-control-sm col-sm-7 text-left">Output VAT </label>
+										</div>
+										<div class="input group top">
+											<label class="col-sm-2"></label>
+											<input type="radio" name="TaxtType" value="Withholding Tax" [checked]= "taxtType == 'Withholding Tax'" (change)="tabController($event);">
+											<label class="form-control-sm col-sm-7 text-left ">Withholding Tax </label>
+										</div>
+									</div>
+							</fieldset>
+
+
+						</div>
+						<div class="input-group col-sm-12">
+							<fieldset class="scheduler-border col-sm">
+								<legend class="scheduler-border">Period</legend>
+									<div class="form-row custom-row-inline-inset">
+										<div class="input-group" style="margin-bottom: -14px !important;">
+										    <label class="form-control-sm col-sm-1">From</label>
+										    <input type="date" id="xx" class="form-control form-control-sm cust-sm col-sm">
+										    <label class="form-control-sm col-sm-1">To</label>
+										    <input type="date" id="xx" class="form-control form-control-sm cust-sm col-sm">
+										</div>
+									</div>
+							</fieldset>
+						</div>
+						<div class="form-row" style="    margin-bottom: -5px !important;">
+		    		        <div class="form-group col-sm">
+		    		            <div class="col-md-12 text-center">
+		    		                <div class="cust-btn-container" style="margin-top: 10px;">
+		    		                    <button type="button" class="cust-btn" (click)="extract()"><a>Extract</a></button>
+		    		                </div>
+		    		            </div>
+		    		        </div>
+		    		    </div>
+					</div>
+					<div class="col-sm-2"></div>
+				</div>
+		</fieldset>
+		<!-- <fieldset class="scheduler-border col-sm" style="margin-bottom: 25px !important;">
+			<legend class="scheduler-border">Printing Parameters</legend>
+				<div class="row">
+					<div class="col-sm-6">
+						<fieldset class="scheduler-border bottom">
+							<legend class="scheduler-border">Report Type</legend>
+							<div class="left-contain">
+								<div class="input group" style="margin-top: 12px !important;">
+									<input type="radio" name="reportType" checked>
+									<label class="form-control-sm col-sm-7">Summary</label>
+								</div>
+								<div class="input group top">
+									<input type="radio" name="reportType">
+									<label class="form-control-sm col-sm-7">Detailed</label>
+								</div>
+							</div>
+						</fieldset>
+						<fieldset class="scheduler-border bottom">
+							<div class="form-row custom-row-inline-inset">
+								<div class="input-group">
+								<label class="form-control-sm col-sm-3">Extracted By</label>
+								<input type="date" class="form-control form-control-sm cust-sm col-sm-8">
+							</div>
+								<div class="input-group">
+								<label class="form-control-sm col-sm-3">Detailed</label>
+								<input type="date" class="form-control form-control-sm cust-sm col-sm-8">
+							</div>
+							</div>
+						</fieldset>
+					</div>
+					<div class="col-sm-6">
+						<fieldset class="scheduler-border" style="margin-top: 12px !important">
+							<div class="form-row custom-row-inline-inset">
+								<div class="input-group" style="margin-top: 17px !important">
+									<label class="form-control-sm col-sm-3">Destination</label>
+									<select class="form-control form-control-sm cust-sm col-sm-8">
+										<option>Printer</option>
+									</select>
+								</div>
+								<div class="input-group">
+									<div class="col-sm-3"></div>
+									<input type="radio" name="fileFormat" style="margin-top: 5px !important;" checked>
+									<label class="form-control-sm col-sm-2 text-left">PDF</label>
+									<input type="radio" name="fileFormat" style="margin-top: 5px !important;">
+									<label class="form-control-sm col-sm-2 text-left">Excel</label>
+								</div>
+								<div class="input-group">
+									<label class="form-control-sm col-sm-3">Printer Name</label>
+									<select class="form-control form-control-sm cust-sm col-sm-8">
+										<option>EPSON 36000i</option>
+									</select>
+								</div>
+								<div class="input-group" style="margin-bottom: 2px !important">
+									<label class="form-control-sm col-sm-3">No. Of Copies</label>
+									<input type="date" class="form-control form-control-sm cust-sm col-sm-8">
+								</div>
+							</div>
+						</fieldset>
+					</div>
+				</div>
+				<div class="form-row">
+				    <div class="form-group col-sm">
+				        <div class="col-md-13 text-center">
+				            <div class="cust-btn-container">
+				                <button type="button" class="cust-btn"><a>Print</a></button>
+				            </div>
+				        </div>
+				    </div>
+				</div>
+		</fieldset> -->
+
+		<fieldset class="scheduler-border printing-params">
+			<legend class="scheduler-border">Printing Parameters</legend>
+			<div class="form-row custom-row-inline-inset period" style="margin-top: -2px !important">
+				<div class="col-sm-2"></div>
+				<div class="col-sm" style="display: flex;padding: 0">
+					<div class="col-sm" style="padding:0;margin-right: 2px;">
+						<fieldset class="scheduler-border col-sm">
+							<legend class="scheduler-border">Report Type</legend>
+							<div class="form-row custom-row-inline-inset first-row" >
+								<div class="input-group " style="margin-bottom: -10px !important;">
+									<div class=" col-sm-2 ">
+										<input class="form-control-sm" type="radio" name="reportType" id="All" checked="checked">	
+									</div>
+									<label class="form-control-sm col-sm-6 text-left" for="All">&nbsp;Summary</label>
+								</div>
+								<div class="input-group " style="margin-bottom: -10px !important;">
+									<div class=" col-sm-2 ">
+										<input class="form-control-sm" type="radio" name="reportType" id="Unbalance">
+									</div>
+									<label class="form-control-sm col-sm-6 text-left" for="Unbalance">&nbsp;Detailed</label>
+								</div>
+							</div>
+						</fieldset>
+						<fieldset class="scheduler-border col-sm" style="margin-top: -12px !important;">
+							<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+							<div class="form-row custom-row-inline-inset" style="margin-top: 3px !important;margin-bottom: 3px !important;">
+								<div class="input-group">
+									<label class="form-control-sm col-sm-4">Extracted By</label>
+									<input class="form-control-sm form-control col-sm" type="text" id="from" value="cuaresma">	
+								</div>
+								<div class="input-group">
+									<label class="form-control-sm col-sm-4">Date Extracted</label>
+									<input class="form-control-sm form-control col-sm" type="datetime-local" id="from" value="2018-01-17T10:38">	
+								</div>
+							</div>
+						</fieldset>
+					</div>
+					<div class="col-sm" style="padding:0;margin-left: 2px;">
+						<fieldset class="scheduler-border col-sm">
+							<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+							<div class="form-row custom-row-inline-inset">
+								<div class="input-group">
+									<label class="form-control-sm col-sm-4">Destination</label>
+									<select class="form-control form-control-sm cust-sm col-sm">
+										<option>Printer</option>
+									</select>
+								</div>
+
+								<div class="input-group">
+									<label class="col-sm-4"></label>
+									<div class=" col-sm-1 ">
+										<input class="form-control-sm" type="radio" name="optradio" id="All" checked="checked">	
+									</div>
+									<label class="form-control-sm col-sm text-left" for="All">&nbsp;PDF</label>
+									<div class=" col-sm-1 ">
+										<input class="form-control-sm" type="radio" name="optradio" id="All">	
+									</div>
+									<label class="form-control-sm col-sm text-left" for="All">&nbsp;Excel</label>
+									<label class="col-sm-1"></label>
+								</div>
+
+								<div class="input-group">
+									<label class="form-control-sm col-sm-4">Printer Name</label>
+									<select class="form-control form-control-sm cust-sm col-sm">
+										<option>EPSON 3600I</option>
+									</select>
+								</div>
+								<div class="input-group">
+									<label class="form-control-sm col-sm-4">No of Copies</label>
+									<input class="form-control-sm form-control col-sm text-right" type="text" id="from">	
+								</div>
+							</div>	
+						</fieldset>
+					</div>
+				</div>
+				<div class="col-sm-2"></div>
+			</div>
+
+			<div class="form-row">
+				<div class="col-sm" style="margin-bottom: 5px;">
+					<div class="col-md-13 text-center">
+						<div class="cust-btn-container">
+							<button class="cust-btn" type="button"><a>Print</a></button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</fieldset>
+	</div>
+	<div class="col-sm-2"></div>
+</div>

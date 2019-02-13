@@ -42,9 +42,9 @@
 							<div class="input-group" >
 								<label class="col-sm-1"></label>
 								<label class="form-control-sm col-sm-1" for="from" style="padding-left: 0px">From</label>
-								<input class="form-control-sm form-control col-sm" type="date" id="from">		
+								<input class="form-control-sm form-control col-sm" type="date" id="from" value="2018-12-01">		
 								<label class="form-control-sm col-sm-1" for="to">To</label>
-								<input class="form-control-sm form-control col-sm" type="date" id="to">	
+								<input class="form-control-sm form-control col-sm" type="date" id="to" value="2018-12-31">	
 								<label class="col-sm-1"></label>
 							</div>
 						</div>
@@ -59,14 +59,10 @@
 					<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 					<div class="form-row custom-row-inline-inset mid" >
 						<div class="input-group ">
-							<label class="form-control-sm col-sm-2">Account Code</label>
-							<input class="form-control-sm form-control col-sm" type="text" id="from">		
+							<label class="form-control-sm col-sm-2">Account</label>
+							<input class="form-control-sm form-control col-sm-3" type="text" id="from">		
 							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-							<label class="col-sm-3"></label>
-						</div>
-						<div class="input-group ">
-							<label class="form-control-sm col-sm-2">Account Name</label>
-							<input class="form-control-sm form-control col-sm" type="text" id="from" value="ALL ACCOUNTS">
+							<input class="form-control-sm form-control col-sm" type="text" id="from" value="ALL ACCOUNTS" style="margin-left: 8px">
 						</div>
 						<div class="input-group ">
 							<label class="form-control-sm col-sm-2">SL Type</label>
@@ -82,7 +78,7 @@
 			<div class="form-row custom-row-inline-inset" style="margin-top: -11px !important;">
 				<div class="col-sm-2"></div>
 				<div class="col-sm d-flex" style="padding: 0 !important">
-					<fieldset class="scheduler-border col-sm" style="margin-right: 2px !important">
+					<fieldset class="scheduler-border col-sm-4" style="margin-right: 2px !important">
 						<legend class="scheduler-border">Transaction Type</legend>
 						<div class="form-row custom-row-inline-inset period">
 							<div class="input-group check-row">
@@ -90,10 +86,14 @@
 									<input type="checkbox" class="form-control-sm " name="" id="ar" checked="checked">
 								</div>
 								<label for="ar" class="form-control-sm text-left col-sm">AR</label>
+							</div>
+							<div class="input-group check-row">
 								<div class="col-sm">
 									<input type="checkbox" class="form-control-sm " name="" id="cv" checked="checked">
 								</div>
 								<label for="cv" class="form-control-sm text-left col-sm">CV</label>
+							</div>
+							<div class="input-group check-row">
 								<div class="col-sm">
 									<input type="checkbox" class="form-control-sm " name="" id="jv" checked="checked">
 								</div>
@@ -105,10 +105,22 @@
 						<legend class="scheduler-border">Other Options</legend>
 						<div class="form-row custom-row-inline-inset period">
 							<div class="input-group check-row">
-								<div class="col-sm-2">
+								<div class="col-sm-3">
 									<input type="checkbox" class="form-control-sm " name="" id="icto" checked="checked" [disabled]="postingDateFlag=='2'">
 								</div>
 								<label for="icto" class="form-control-sm text-left col-sm">Include Closed Transactions Only</label>
+							</div>
+							<div class="input-group check-row">
+								<div class="col-sm-3">
+									<input type="radio" class="form-control-sm " name="Other" id="NewExtract" checked="checked">
+								</div>
+								<label for="NewExtract" class="form-control-sm text-left col-sm">New Extract</label>
+							</div>
+							<div class="input-group check-row">
+								<div class="col-sm-3">
+									<input type="radio" class="form-control-sm " name="Other" id="Append">
+								</div>
+								<label for="Append" class="form-control-sm text-left col-sm">Append to Existing Project</label>
 							</div>
 						</div>
 					</fieldset>
@@ -158,7 +170,7 @@
 								</div>
 								<div class="input-group">
 									<label class="form-control-sm col-sm-4">Date Extracted</label>
-									<input class="form-control-sm form-control col-sm" type="date" id="from">	
+									<input class="form-control-sm form-control col-sm" type="datetime-local" id="from" value="2018-01-17T10:38">	
 								</div>
 							</div>
 						</fieldset>

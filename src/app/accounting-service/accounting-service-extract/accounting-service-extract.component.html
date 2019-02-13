@@ -1,13 +1,13 @@
 <div class="cust-tabs-container">
-	<h4>Accounting Service / Extract / BIR Taxes</h4>
+	<h4>Accounting Service / Extract / Accounting Entries</h4>
 	<!-- <ngb-tabset (tabChange)="beforeChange($event)"> -->
-		<ngb-tabset (tabChange)="onTabChange($event)">
+		<ngb-tabset (tabChange)="onTabChange($event)" [activeId]="activeID">
 			<ngb-tab>
 				<ng-template ngbTabTitle>
 					<div>Extract</div>
 				</ng-template>
 				<ng-template ngbTabContent>
-					<app-extract-bir-tax (onChange)="tabController($event)"></app-extract-bir-tax>
+					<app-acct-entries-extract (onChange)="tabController($event)"></app-acct-entries-extract>
 				</ng-template>
 			</ngb-tab>
 			<ngb-tab>
@@ -18,7 +18,15 @@
 					<app-acct-entries></app-acct-entries>
 				</ng-template>
 			</ngb-tab>
-			<ngb-tab>
+			<ngb-tab class="ngb-tab" id="Unbalance">
+				<ng-template ngbTabTitle>
+					<div>Unbalance Entries</div>
+				</ng-template>
+				<ng-template ngbTabContent>					
+					<app-acct-unbalance-entries></app-acct-unbalance-entries>
+				</ng-template>
+			</ngb-tab>
+			<!-- <ngb-tab>
 				<ng-template ngbTabTitle>
 					<div>Details</div>
 				</ng-template>
@@ -33,7 +41,7 @@
 				<ng-template ngbTabContent>
 					<app-acct-upload [taxType]="taxType"></app-acct-upload>
 				</ng-template>
-			</ngb-tab>
+			</ngb-tab> -->
 			<ngb-tab id="Exit">
 				<ng-template ngbTabTitle>
 					<div>Exit</div>

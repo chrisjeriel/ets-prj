@@ -43,6 +43,7 @@
 											<input type="text" [(ngModel)]="quotationNum[2]" class="form-control form-control-sm ig-mrgn" ngbTooltip="Revision No" [appCharactersLength]="'2'" appRequired> -->
 											<!-- <input type="text" [(ngModel)]="quotationNum[3]" class="form-control form-control-sm ig-mrgn" ngbTooltip="Company No" [appCharactersLength]="'2'" appRequired> -->
 										<input appRequired type="text" class="form-control form-control-sm" [(ngModel)]="genInfoData.quotationNo">
+
 									</div>
 									<div class="input-group ig-cust">
 										<label class="form-control-sm col-sm-2">Type of Cession</label>
@@ -52,7 +53,7 @@
 										<label class="form-control-sm col-sm-2">Line Class</label>
 										<input type="text" [(ngModel)]="genInfoData.lineCd" class="form-control form-control-sm" style="margin-right: 1px;"
 										 appRequired>
-										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+										<div class="text-search-ico"><a><i class="fa fa-search" (click)=showLineClassLOV()></i></a></div>
 										<span>&nbsp;</span>
 									</div>
 									<div class="input-group ig-cust">
@@ -1408,3 +1409,6 @@
 <app-mtn-insured id="contractorLOV" (selectedData)="setContractor($event)"></app-mtn-insured> 
 <app-mtn-currency id="currencyModal" (selectedData)="setCurrency($event)"></app-mtn-currency>
 <app-ceding-company id="cedingCompanyLOV" (selectedData)="setCedingcompany($event)"></app-ceding-company>
+<app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
+<app-mtn-intermediary id="intLOV" (selectedData)="setInt($event)"></app-mtn-intermediary>
+<app-mtn-line-class id="lineClassLOV" (selectedData)="setLineClass($event)" [line]="line"></app-mtn-line-class>

@@ -24,9 +24,12 @@ export class AccountingServiceComponent implements OnInit {
                  };
 
   constructor(private router: Router, private route: ActivatedRoute, private titleService: Title) { }
-
+  exitLink: string;
+  exitTab: string;
   ngOnInit() {
   	this.sub = this.route.params.subscribe(params => {
+      this.exitLink = params['link'] !== undefined ? params['link'] : 'acct-ar-listings';
+      this.exitTab = params['tab'] !== undefined ? params['tab'] : '';
   		this.action = params['action'];
 
   		if(this.action == 'edit'){
@@ -42,7 +45,7 @@ export class AccountingServiceComponent implements OnInit {
 
   onTabChange($event: NgbTabChangeEvent) {
     if ($event.nextId === 'Exit') {
-      this.router.navigateByUrl('acct-or-listings');
+     this.router.navigate([this.exitLink,{tabID:this.exitTab}],{ skipLocationChange: true });
     }
   }
 }
