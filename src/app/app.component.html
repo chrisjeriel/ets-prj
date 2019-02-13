@@ -344,8 +344,17 @@
                                         </ng-template>
                                     </ngb-panel>
                                 </ngb-accordion>
-                                
-                                
+                                <br />
+                                <ngb-accordion #acc="ngbAccordion">
+                                    <ngb-panel>
+                                        <ng-template ngbPanelTitle>
+                                            Reports
+                                        </ng-template>
+                                        <ng-template ngbPanelContent>
+                                            <button [routerLink]="['print-registers-service']" class="button btn btn-link">Registers</button>
+                                        </ng-template>
+                                    </ngb-panel>
+                                </ngb-accordion>
                                 <ngb-accordion #acc="ngbAccordion">
                                     <ngb-panel>
                                         <ng-template ngbPanelTitle>
@@ -354,12 +363,13 @@
                                         <ng-template ngbPanelContent>
                                             <button [routerLink]="['accounting-service-utilities']" class="button btn btn-link">Edit Tax Details</button>
                                             <br />
+                                            <button [routerLink]="['acc-s-edit-acct-entries']" class="button btn btn-link">Edit Accounting Entries</button>
+                                            <br />
                                             <button [routerLink]="['acct-srvc-util-catw']" class="button btn btn-link">Consolidate Annual Taxes Withheld</button>
                                             <br />
                                             <button [routerLink]="['acc-s-change-tran-stat-new']" class="button btn btn-link">Change Transaction Status to New</button>
                                             <br />
-                                            <button [routerLink]="['acc-s-edit-acct-entries']" class="button btn btn-link">Edit Accounting Entries</button>
-                                            <br />
+                                            <button [routerLink]="['cancel-transaction-service']" class="button btn btn-link">Cancel Transactions</button>
                                         </ng-template>
                                     </ngb-panel>
                                 </ngb-accordion>

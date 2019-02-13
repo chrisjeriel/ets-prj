@@ -98,6 +98,8 @@ import { AccSEditAccountingEntriesComponent } from './accounting-service/utiliti
 import { AccSEditedAccountingEntriesComponent } from './accounting-service/inquiry/acc-s-edited-accounting-entries/acc-s-edited-accounting-entries.component';
 import { InTrustCreditDebitComponent } from './accounting-in-trust/in-trust-credit-debit/in-trust-credit-debit.component';
 import { AccSrvInquiryComponent } from './accounting-service/acc-srv-inquiry/acc-srv-inquiry.component';
+import { CancelTransactionsServiceComponent } from './accounting-service/utilities/cancel-transactions-service/cancel-transactions-service.component';
+import { RegistersServiceComponent } from './accounting-service/reports/registers-service/registers-service.component';
 
 
 const appRoutes: Routes = [
@@ -206,6 +208,8 @@ const appRoutes: Routes = [
     { path: 'acc-s-edited-acct-entries', component: AccSEditedAccountingEntriesComponent },
     { path: 'acc-s-credit-debit-memo', component: InTrustCreditDebitComponent },
     { path: 'accounting-service-inquiry', component: AccSrvInquiryComponent },
+    { path: 'cancel-transaction-service', component: CancelTransactionsServiceComponent },
+    { path: 'print-registers-service', component: RegistersServiceComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

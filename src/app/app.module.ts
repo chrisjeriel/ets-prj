@@ -273,7 +273,15 @@ import { JvLossReserveDepositComponent } from './accounting-in-trust/journal-vou
 import { MtnIntermediaryComponent } from './maintenance/mtn-intermediary/mtn-intermediary.component';
 import { MtnLineClassComponent } from './maintenance/mtn-line-class/mtn-line-class.component';
 import { AccSrvInquiryComponent } from './accounting-service/acc-srv-inquiry/acc-srv-inquiry.component';
-
+import { CancelTransactionsServiceComponent } from './accounting-service/utilities/cancel-transactions-service/cancel-transactions-service.component';
+import { CancelOrComponent } from './accounting-service/utilities/cancel-transactions-service/cancel-or/cancel-or.component';
+import { CancelCvServiceComponent } from './accounting-service/utilities/cancel-transactions-service/cancel-cv-service/cancel-cv-service.component';
+import { CancelJvServiceComponent } from './accounting-service/utilities/cancel-transactions-service/cancel-jv-service/cancel-jv-service.component';
+import { RegistersServiceComponent } from './accounting-service/reports/registers-service/registers-service.component';
+import { CrRegisterComponent } from './accounting-service/reports/registers-service/cr-register/cr-register.component';
+import { CvRegisterServiceComponent } from './accounting-service/reports/registers-service/cv-register-service/cv-register-service.component';
+import { ChecksRegisterServiceComponent } from './accounting-service/reports/registers-service/checks-register-service/checks-register-service.component';
+import { JvRegisterServiceComponent } from './accounting-service/reports/registers-service/jv-register-service/jv-register-service.component';
 
 
 @NgModule({
@@ -554,6 +562,15 @@ import { AccSrvInquiryComponent } from './accounting-service/acc-srv-inquiry/acc
         MtnIntermediaryComponent,
         MtnLineClassComponent,
         AccSrvInquiryComponent,
+        CancelTransactionsServiceComponent,
+        CancelOrComponent,
+        CancelCvServiceComponent,
+        CancelJvServiceComponent,
+        RegistersServiceComponent,
+        CrRegisterComponent,
+        CvRegisterServiceComponent,
+        ChecksRegisterServiceComponent,
+        JvRegisterServiceComponent,
     ],
 
     providers: [
