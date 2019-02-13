@@ -121,6 +121,11 @@ export class CustEditableNonDatatableComponent implements OnInit {
         } else {
             this.dataKeys = this.passData.keys;
         }
+
+        if(this.dataKeys.indexOf('edited') != -1){
+           this.dataKeys.pop();
+        }
+
         this.refreshTable();
         // this.autoFill = Array(this.passData.pageLength).fill(this.newData);
         // if(this.displayData.length%this.passData.pageLength != 0){

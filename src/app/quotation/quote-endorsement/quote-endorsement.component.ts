@@ -1,6 +1,6 @@
 
 
-import { Component, OnInit , ViewChild, Input} from '@angular/core';
+import { Component, OnInit , ViewChild, Input, ViewChildren, QueryList} from '@angular/core';
 import { QuotationInfo, QuotationOption, QuoteEndorsement , QuoteEndorsementOC} from '../../_models';
 import { QuotationService } from '../../_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -18,7 +18,7 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 export class QuoteEndorsementComponent implements OnInit {
 
     @Input() endorsementType: string = "";
-    @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
+    @ViewChildren(CustEditableNonDatatableComponent) table: QueryList<CustEditableNonDatatableComponent>;
     OpenCover: boolean;
     private sub: any;
     from: string;
@@ -48,7 +48,7 @@ export class QuoteEndorsementComponent implements OnInit {
     optionNos: number[] = [];
 
     optionsData: any = {
-        tableData: this.quotationService.getQuoteOptions(),
+        tableData: [],
         tHeader: ['Option No', 'Rate(%)', 'Conditions', 'Comm Rate Quota(%)', 'Comm Rate Surplus(%)', 'Comm Rate Fac(%)'],
         dataTypes: ['text', 'percent', 'text', 'percent', 'percent', 'percent', 'percent'],
         resizable: [false, false, true, false, false, false],
@@ -56,6 +56,7 @@ export class QuoteEndorsementComponent implements OnInit {
         pageStatus: true,
         tableOnly: true,
         pageLength: 3,
+        keys: ['optionId','optionRt','condition','commRtQuota','commRtSurplus','commRtFac']
     }
 
     endorsementData: any = {
@@ -133,7 +134,7 @@ export class QuoteEndorsementComponent implements OnInit {
                                                                            data.endorsementsOc[lineCount].remarks)
                                                                    );          
                           }
-                        this.table.refreshTable();
+                        this.table.forEach(table => { table.refreshTable() });
                     });
 
 
@@ -168,11 +169,27 @@ export class QuoteEndorsementComponent implements OnInit {
                                                                            data.endorsements[lineCount].endtCd, 
                                                                            data.endorsements[lineCount].endtTitle,
                                                                            data.endorsements[lineCount].description,
-                                                                           data.endorsements[lineCount].remarks)
+                                                                           null)
                                                                    );          
                           }
-                        this.table.refreshTable();
+                        this.table.forEach(table => { table.refreshTable() });
                     });
+                    this.quotationService.getQuoteOptions().subscribe((data: any) => {
+                        var optionRecords = data['quotation'].optionsList;
+                         for(var lineCount = 0; lineCount < optionRecords.length; lineCount++){
+                             this.optionsData.tableDate.push(new QuotationOption(
+                                                             this.optionsData[lineCount].optionId,
+                                                             this.optionsData[lineCount].optionRt,
+                                                             this.optionsData[lineCount].condition,
+                                                             this.optionsData[lineCount].commRtQuota,
+                                                             this.optionsData[lineCount].commRtSurplus,
+                                                             this.optionsData[lineCount].commRtFac
+                                                             );
+
+                         }
+                        this.table.forEach(table => { table.refreshTable() });
+                    });
+               
                 }  
 
 
