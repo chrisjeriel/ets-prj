@@ -17,8 +17,6 @@ export class CedingCompanyComponent implements OnInit {
         tableData : [],
         tHeader: ['Co No','Name','Abbreviation','Address','Membership Date','Termination Date','Inactive Date'],
         dataTypes:['sequence-3','text','text','text','date','date','date'],
-        addFlag: true,
-        editFlag: true,
         pagination: true,
         pageStatus: true,
         searchFlag: true,

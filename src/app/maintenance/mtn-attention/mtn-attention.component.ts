@@ -23,8 +23,6 @@ export class MtnAttentionComponent implements OnInit {
 		],
 		tHeader: ['Designation','First Name','M.I.','Last Name','Position','Department','Contact No','E-Signature'],
 		dataTypes:['text','text','text','text','text','text','text','text'],
-		addFlag: true,
-		deleteFlag: true,
 		paginateFlag: true,
 		infoFlag: true,
 		pageLength: 5,

@@ -154,6 +154,7 @@ export class InternalCompetitionComponent implements OnInit {
     selectedAttentionLOV(data){
       console.log(data)
          this.intCompData.tableData[this.attentionLOVRow].cedingRepName = data.firstName +' '+ data.mI + ' '+ data.lastName; 
+         this.intCompData.tableData[this.attentionLOVRow].position = data.position; 
     }
 }
 
