@@ -288,6 +288,7 @@ import { JvRegisterServiceComponent } from './accounting-service/reports/registe
 import { AcctSrvcCancelledTransactionsComponent } from './accounting-service/accounting-service-inquiry/acct-srvc-cancelled-transactions/acct-srvc-cancelled-transactions.component';
 import { MtnAdviceWordingsComponent } from './maintenance/mtn-advice-wordings/mtn-advice-wordings.component';
 import { MtnAttentionComponent } from './maintenance/mtn-attention/mtn-attention.component';
+import { NegativeAmountPipe } from './_pipes/negative-amount.pipe';
 
 
 @NgModule({
@@ -583,6 +584,7 @@ import { MtnAttentionComponent } from './maintenance/mtn-attention/mtn-attention
         AcctSrvcCancelledTransactionsComponent,
         MtnAdviceWordingsComponent,
         MtnAttentionComponent,
+        NegativeAmountPipe,
     ],
 
     providers: [
