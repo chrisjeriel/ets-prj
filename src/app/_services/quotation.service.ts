@@ -144,13 +144,34 @@ export class QuotationService {
     }
 
 
-    getEndorsements(quoteId: string, quotationNo: string, optionNo: number) {
+    getEndorsements(quoteId: string, quotationNo: string, optionNo: string) {
+
          if (quoteId == '' || quoteId == null ) {
-         return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteEndorsements?quotationNo="+quotationNo+"&optionId="+optionNo);
+         const params = new HttpParams()
+                .set('quoteId','')
+                .set('quotationNo',quotationNo)
+                .set('optionId',optionNo);
+          return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteEndorsements', {params});
+          } else {
+          const params = new HttpParams()
+                .set('quoteId',quoteId)
+                .set('quotationNo',quotationNo)
+                .set('optionId',optionNo);
+          return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteEndorsements', {params});
+         }
+
+
+
+
+
+/*         if (quoteId == '' || quoteId == null ) {
+               return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteEndorsements?quotationNo="+quotationNo+"&optionId="+optionNo);
+         } else if (quotationNo == '' || quotationNo == null ) {
+               return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteEndorsements?quoteId="+quoteId+"&optionId="+optionNo);
          } else {
-         return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteEndorsement?quoteId="+quoteId+"&quotationNo="+quotationNo+"&optionId="+optionNo);
-     
-    }
+               return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteEndorsements?quoteId="+quoteId+"&quotationNo="+quotationNo+"&optionId="+optionNo);
+         }*/
+           
 
 
      /*   this.endorsementData = [
@@ -167,6 +188,28 @@ export class QuotationService {
         });
         endorsmentData.forEach(function (itm) { delete itm.optionNo; });
         return endorsmentData;*/
+    }
+
+
+    getEndorsementsOc(quoteIdOc: string, quotationNo: string) {
+
+         if (quoteIdOc == '' || quoteIdOc == null ) {
+         const params = new HttpParams()
+                .set('quoteId','')
+                .set('quotationNo',quotationNo);
+          return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteEndorsementsOc', {params});
+          } else if (quotationNo == '' || quotationNo == null ) {
+          const params = new HttpParams()
+                .set('quoteId',quoteIdOc)
+                .set('quotationNo','');
+          return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteEndorsementsOc', {params});
+         } else {
+           const params = new HttpParams()
+                .set('quoteId',quoteIdOc)
+                .set('quotationNo',quotationNo);
+          return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteEndorsementsOc', {params});   
+         }
+
     }
 
     getAttachment(quoteId:string) {
@@ -389,13 +432,19 @@ export class QuotationService {
     }
 
     getQuoteGenInfo(quoteId : any, quotationNo: string ){
-     /* if (quoteId == '' || quoteId == null ) {
-         return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteGeneralInfo?quotationNo="+quotationNo);
+     
+     if (quoteId == '' || quoteId == null ) {
+         const params = new HttpParams()
+                .set('quoteId','')
+                .set('quotationNo',quotationNo);
+          return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteGeneralInfo', {params});
       } else {
-         return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteGeneralInfo?quoteId="+quoteId+"&quotationNo="+quotationNo);
-     }*/
-
-     return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteGeneralInfo?quoteId="+quoteId+"&quotationNo="+quotationNo);
+          const params = new HttpParams()
+                .set('quoteId',quoteId)
+                .set('quotationNo',quotationNo);
+          return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteGeneralInfo', {params});
+     }
+     
     }
 
     getReadyForPrinting() {
@@ -452,7 +501,7 @@ export class QuotationService {
                 // .set('sortRequest.sortKey',null)
                 // .set('sortRequest.order',null);
 
-        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteListingOc', {params});
+        return this.http.get('http://localhost:8888/api/quote-service/ ', {params});
     }
 
 

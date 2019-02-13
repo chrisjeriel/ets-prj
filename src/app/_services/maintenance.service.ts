@@ -40,12 +40,22 @@ export class MaintenanceService{
 		return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMaintenanceBlock');
 	}
 
+
 	getMtnRisk(riskId) {
 		const params = new HttpParams()
                 .set('riskId',riskId);
 
-       	return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMtnRisk', {params});      
-	}
+       	return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMtnRisk', {params});    
+    }
+
+
+	getLineLOV() {
+       	return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMntLine');
+    }
+
+    getIntLOV() {
+       	return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMntIntermediary');
+    }
 
 	getMtnRiskListing(riskId,riskAbbr,riskName,regionDesc,provinceDesc,cityDesc,districtDesc,blockDesc,latitude,longitude,activeTag) {
 		const params = new HttpParams()
@@ -64,6 +74,7 @@ export class MaintenanceService{
         return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMtnRiskListing', {params});
 	}
 
+
 	getMtnSectionCovers(lineCd,coverCd) {
 		const params = new HttpParams()
                 .set('lineCd',lineCd)
@@ -78,4 +89,13 @@ export class MaintenanceService{
 
         return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMtnTypeOfCession', {params});     
 	}
+
+	getLineClassLOV(line : string) {
+		
+		const params = new HttpParams()
+             .set('lineCd',line)
+
+   	   return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMntLineClass',{params});
+	}
+
 }

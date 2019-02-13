@@ -97,6 +97,7 @@ import { AccSChangeTranStatNewComponent } from './accounting-service/utilities/a
 import { AccSEditAccountingEntriesComponent } from './accounting-service/utilities/acc-s-edit-accounting-entries/acc-s-edit-accounting-entries.component';
 import { AccSEditedAccountingEntriesComponent } from './accounting-service/inquiry/acc-s-edited-accounting-entries/acc-s-edited-accounting-entries.component';
 import { InTrustCreditDebitComponent } from './accounting-in-trust/in-trust-credit-debit/in-trust-credit-debit.component';
+import { AccSrvInquiryComponent } from './accounting-service/acc-srv-inquiry/acc-srv-inquiry.component';
 
 
 const appRoutes: Routes = [
@@ -204,6 +205,7 @@ const appRoutes: Routes = [
     { path: 'acc-s-edit-acct-entries', component: AccSEditAccountingEntriesComponent },
     { path: 'acc-s-edited-acct-entries', component: AccSEditedAccountingEntriesComponent },
     { path: 'acc-s-credit-debit-memo', component: InTrustCreditDebitComponent },
+    { path: 'accounting-service-inquiry', component: AccSrvInquiryComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
