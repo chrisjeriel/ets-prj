@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { QuotationGenInfo } from '../../_models';
 import { callLifecycleHooksChildrenFirst } from '@angular/core/src/view/provider';
-import { QuotationService } from '../../_services';
+import { QuotationService, MaintenanceService } from '../../_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
@@ -29,13 +29,103 @@ export class GeneralInfoComponent implements OnInit {
 	from: string;
 	line: string;
 	ocChecked: boolean = false;
-	genInfoData: any;
+
+	project: any = {
+		blockCd: '',
+		blockDesc: '',
+		cityCd: '',
+		cityDesc: '',
+		coverage: '',
+		createDate: '',
+		createUser: '',
+		districtCd: '',
+		districtDesc: '',
+		duration: '',
+		ipl: '',
+		latitude: '',
+		longitude: '',
+		noClaimPd: '',
+		objectDesc: '',
+		objectId: '',
+		pctShare: '',
+		pctShareI: '',
+		projDesc: '',
+		projId: '',
+		provinceCd: '',
+		provinceDesc: '',
+		quoteId: '',
+		regionCd: '',
+		regionDesc: '',
+		riskId: '',
+		riskName: '',
+		site: '',
+		testing: '',
+		timeExc: '',
+		totalSi: '',
+		totalSiI: '',
+		totalValue: '',
+		updateDate: '',
+		updateUser: ''
+	}
+
+	genInfoData: any = {
+		approvedBy: '',
+		cedingId: '',
+		cedingName: '',
+		cessionDesc: '',
+		cessionId: '',
+		closingParag: '',
+		contractorId: '',
+		contractorName: '',
+		createDate: '',
+		createUser: '',
+		currencyCd: '',
+		currencyRt: '',
+		declarationTag: '',
+		expiryDate: '',
+		govtTag: '',
+		indicativeTag: '',
+		insuredDesc: '',
+		intmId: '',
+		intmName: '',
+		issueDate: '',
+		lineCd: '',
+		lineCdDesc: '',
+		lineClassCd: '',
+		lineClassDesc: '',
+		mbiRefNo: '',
+		ocQuoted: '',
+		openCoverTag: '',
+		openQuotationNo: '',
+		openingParag: '',
+		policyId: '',
+		policyNo: '',
+		preparedBy: '',
+		principalId: '',
+		principalName: '',
+		printDate: '',
+		printedBy: '',
+		quotationNo: '',
+		quoteId: '',
+		quoteRevNo: '',
+		quoteSeqNo: '',
+		quoteYear: '',
+		reasonCd: '',
+		reasonDesc: '',
+		reinsurerId: '',
+		reinsurerName: '',
+		reqBy: '',
+		reqDate: '',
+		reqMode: '',
+		status: '',
+		updateDate: '',
+		updateUser: ''
+	};
 
 	currencyAbbr: string = "";
 	currencyRt: number = 0;
 
-
-	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute) { }
+	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute, private maintenanceService: MaintenanceService) { }
 	ngOnInit() {
 		this.titleService.setTitle("Quo | General Info");
 		this.tHeader.push("Item No", "Description of Items");
@@ -50,18 +140,14 @@ export class GeneralInfoComponent implements OnInit {
 				this.typeOfCession = params['typeOfCession'];
 				this.quotationNo = params['quotationNo'];
 				this.typeOfCession = this.typeOfCession;
-				/*console.log(this.line);*/
 			}
 		});
-		console.log(this.quotationNo);
 
 		if (this.quotationService.toGenInfo[0] == "edit") {
-				this.quotationService.getQuoteGenInfo('', this.quotationNo).subscribe((data: any) => {
-				this.genInfoData = data.quotationGeneralInfo;
+				this.quotationService.getQuoteGenInfo('', this.plainQuotationNo(this.quotationNo)).subscribe(data => {
 				
-				console.log('DATA >>>>> ' + data.quotationGeneralInfo);
-
-				/*this.genInfoData.cessionDesc = this.genInfoData.cessionDesc.toUpperCase();*/
+				this.project = (data['project'] == null) ? this.project : data['project'];
+				this.genInfoData = (data['quotationGeneralInfo'] == null) ? this.genInfoData : data['quotationGeneralInfo'];
 			});
 
 /*			console.log(this.quotationService.rowData);*/
@@ -164,7 +250,7 @@ export class GeneralInfoComponent implements OnInit {
 	}
 
 	checkTypeOfCession() {
-		return (this.typeOfCession.toUpperCase() === 'RETROCESSION') ? true : false;
+		return (this.genInfoData.cessionDesc.toUpperCase() === 'RETROCESSION') ? true : false;
 	}
 
 	reqMode: SelectRequestMode[] = [
@@ -220,7 +306,20 @@ export class GeneralInfoComponent implements OnInit {
 		this.currencyRt = data.currencyRt;
 	}
 
+	plainQuotationNo(data: string){
+		var arr = data.split('-');
 
+		return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]);
+	}
+
+	showCedingCompanyLOV() {
+        $('#cedingCompanyLOV #modalBtn').trigger('click');
+    }
+
+    setCedingcompany(event){
+    	this.genInfoData.cedingId = event.coNo;
+        this.genInfoData.cedingName = event.name;
+    }
 
 }
 export interface SelectRequestMode {
