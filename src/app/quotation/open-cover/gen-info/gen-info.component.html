@@ -42,10 +42,10 @@
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2" style="font-size: 10px !important;">Ceding Company</label>
-										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="ocQuoteGenInfo.cedingId">
-										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="cedingCoId">
+										<div class="text-search-ico" (click)="getCedingCoLov($event)"><a><i class="fa fa-search"></i></a></div>
 										<span>&nbsp;</span>
-										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 4px;" [(ngModel)]="ocQuoteGenInfo.cedingName">
+										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 4px;" [(ngModel)]="cedingCoName">
 									</div>
 									<div *ngIf="checkTypeOfCession()" class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Reinsurance From</label>
@@ -65,11 +65,11 @@
 								<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 									<div class="input-group" style="margin-top: 10px;">
 										<label class="form-control-sm col-sm-4">Quote Date</label>
-										<input type="date" class="form-control form-control-sm">
+										<input type="date" class="form-control form-control-sm"  [(ngModel)]="ocQuoteGenInfo.issueDate">
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-4">Valid Until</label>
-										<input type="date" class="form-control form-control-sm">
+										<input type="date" class="form-control form-control-sm"  [(ngModel)]="ocQuoteGenInfo.expiryDate">
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-4">Requested By</label>
@@ -104,15 +104,15 @@
 						<div class="form-group col-sm-6 offsetFormGroup">
 							<div class="input-group">
 								<label class="form-control-sm col-sm-4">Currency</label>
-								<input type="text" class="form-control form-control-sm" [(ngModel)]="ocQuoteGenInfo.currencyCd">
-								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showCurrencyModal()"></i></a></div>
+								<input type="text" class="form-control form-control-sm" [(ngModel)]="currencyAbbr">
+								<div class="text-search-ico" (click)=getCurrLov($event)><a><i class="fa fa-search"></i></a></div>
 								<span>&nbsp;</span>
 							</div>
 						</div>
 						<div class="form-group col-sm-6 offsetFormGroup">
 							<div class="input-group">
 								<label class="form-control-sm col-sm-4">Exch. Rt.</label>
-								<input type="text" class="form-control form-control-sm" [(ngModel)]="ocQuoteGenInfo.currencyRt">
+								<input type="text" class="form-control form-control-sm" [(ngModel)]="currencyRt">
 								<span>&nbsp;</span>
 							</div>
 						</div>
@@ -163,15 +163,15 @@
 					<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 						<div class="input-group" style="margin-top: 10px;">
 							<label class="form-control-sm col-sm-1">Principal</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="ocQuoteGenInfo.principalId">
-							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="prinId">
+							<div class="text-search-ico" (click)="getPrinLov($event)"><a><i class="fa fa-search"></i></a></div>
 							<span>&nbsp;</span>
-							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="ocQuoteGenInfo.principalName">
+							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="prinName">
 							<label class="form-control-sm col-sm-1">Contractor</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="ocQuoteGenInfo.contractorId">
-							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="conId">
+							<div class="text-search-ico" (click)="getConLov($event)"><a><i class="fa fa-search"></i></a></div>
 							<span>&nbsp;</span>
-							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="ocQuoteGenInfo.contractorName">
+							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="conName">
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Insured</label>
@@ -179,18 +179,18 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Risk</label>
-							<input type="text" class="form-control form-control-sm">
+							<input type="text" class="form-control form-control-sm" [(ngModel)]="riskName">
 						</div>
 						<div class="input-group" style="margin-bottom: 0px !important;">
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2">Object</label>
-								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="ocQuoteGenInfo.objectId">
-								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-								<input type="text" class="form-control form-control-sm" style="margin-left: 9px;">
+								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="objId">
+								<div class="text-search-ico" (click)="getObjLov($event)"><a><i class="fa fa-search"></i></a></div>
+								<input type="text" class="form-control form-control-sm" style="margin-left: 9px;" [(ngModel)]="objName">
 							</div>
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2">Region</label>
-								<input type="text" class="form-control form-control-sm col-sm-10">
+								<input type="text" class="form-control form-control-sm col-sm-10"  [(ngModel)]="regionDesc">
 							</div>
 						</div>
 						<div class="input-group">
@@ -201,13 +201,13 @@
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Province</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="provinceDesc">
 									</div>
 								</div>
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">City/Town</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="cityDesc">
 									</div>
 								</div>
 							</div>
@@ -220,9 +220,9 @@
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">District</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="districtDesc">
 										<label class="form-control-sm col-sm-2">Block</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="blockDesc">
 									</div>
 								</div>
 								<div class="row">
@@ -271,18 +271,18 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Risk</label>
-							<input type="text" class="form-control form-control-sm">
+							<input type="text" class="form-control form-control-sm" [(ngModel)]="riskName">
 						</div>
 						<div class="input-group" style="margin-bottom: 0px !important;">
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2">Object</label>
-								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="ocQuoteGenInfo.objectId">
+								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="objId">
 								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-								<input type="text" class="form-control form-control-sm" style="margin-left: 9px;">
+								<input type="text" class="form-control form-control-sm" style="margin-left: 9px;" [(ngModel)]="objName">
 							</div>
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2">Region</label>
-								<input type="text" class="form-control form-control-sm col-sm-10">
+								<input type="text" class="form-control form-control-sm col-sm-10" [(ngModel)]="regionDesc">
 							</div>
 						</div>
 						<div class="input-group">
@@ -293,13 +293,13 @@
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Province</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="provinceDesc">
 									</div>
 								</div>
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">City/Town</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="cityDesc">
 									</div>
 								</div>
 							</div>
@@ -312,9 +312,9 @@
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">District</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="districtDesc">
 										<label class="form-control-sm col-sm-2">Block</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="blockDesc">
 									</div>
 								</div>
 								<div class="row">
@@ -338,19 +338,50 @@
 				<div class="col-sm-1">
 				</div>
 			</fieldset>
-			<fieldset class="scheduler-border cust-fs-padlr-offset">
-				<legend class="scheduler-border">Quotation Wordings</legend>
-				<div class="col-sm-1">
+			<!-- <fieldset class="scheduler-border cust-fs-padlr-offset">
+				<legend class="scheduler-border">Quotation Wordings</legend> -->
+				<!-- <div class="col-sm-1">
 				</div>
 				<div class="col-sm">
 					<div class="form-row">
 						<div class="col-sm">
 							<label for="inputEmail4" class="form-control-sm top-label">Opening Paragraph</label>
 							<textarea style="font-size: 12px; margin-bottom: 38px;" class="form-control form-control-sm" placeholder="Further to our Quotation No.." [(ngModel)]="ocQuoteGenInfo.openingParag"></textarea>
+							<div class="text-search-ico" ><a><i class="fa fa-search"></i></a></div>
 						</div>
 						<div class="col-sm">
 							<label for="inputEmail4" class="form-control-sm top-label">Closing Paragraph</label>
 							<textarea style="font-size: 12px; margin-bottom: 38px;" class="form-control form-control-sm" placeholder="This quotation is subject.."[(ngModel)]="ocQuoteGenInfo.closingParag"></textarea>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-1">
+				</div> -->
+				
+			<!-- </fieldset> -->
+			<fieldset class="scheduler-border cust-fs-padlr-offset">
+				<legend class="scheduler-border">Quotation Wordings</legend>
+				<div class="col-sm-1">
+				</div>
+				<div class="col-sm" style="margin-bottom: -8px; margin-top: 7px;">
+					<div class="form-row">
+						<div class="input-group">
+							<label for="inputEmail4" class="form-control-sm top-label col-sm-6" style="text-align: left !important;">Opening
+								Paragraph</label>
+							<label for="inputEmail4" class="form-control-sm top-label col-sm-6" style="text-align: left !important; padding-left: 7px !important;">Closing
+								Paragraph</label>
+						</div>
+						<div class="input-group" style="margin-top: 14px !important;margin-bottom: 11px !important;">
+							<textarea appRequired style="font-size: 12px; margin-bottom: 38px;" class="form-control form-control-sm col-sm-6" [(ngModel)]="openingWording"></textarea>
+							<div class="text-search-ico" (click)="getOpeningWordingLov($event)"><a><i class="fa fa-search"></i></a></div>
+							<span>&nbsp;</span>
+							<textarea appRequired style="font-size: 12px; margin-bottom: 38px; margin-left: 10px !important;" class="form-control form-control-sm col-sm-6" [(ngModel)]="closingWording"></textarea>
+							<div class="text-search-ico" (click)="getClosingWordingLov($event)"><a><i class="fa fa-search"></i></a></div>
+							<span>&nbsp;</span>
+						</div>
+						<div class="input-group">
+							<div class="text-search-ico" style="margin-top: -76px !important;margin-left: 343px !important;"><a><i class="fa fa-file-text"></i></a></div>
+							<div class="text-search-ico" style="margin-top: -77px !important;margin-left: 357px !important;"><a><i class="fa fa-file-text"></i></a></div>
 						</div>
 					</div>
 				</div>
@@ -443,4 +474,11 @@
 	</div>
 </div>
 
-<app-mtn-currency id="currencyModal" (selectedData)="setCurrency($event)"></app-mtn-currency>
+<app-mtn-currency id="currIdLov" (selectedData)="setCurr($event)"></app-mtn-currency>
+<app-mtn-insured id="prinIdLov" (selectedData)="setPrin($event)"></app-mtn-insured>
+<app-mtn-insured id="conIdLov" (selectedData)="setCon($event)"></app-mtn-insured>
+<app-mtn-object id="objIdLov" (selectedData)="setObj($event)"></app-mtn-object>
+<app-mtn-quotation-wordings *ngIf = "opWording === true" id="wordingOpeningIdLov" (selectedData)="setOpeningWording($event)"></app-mtn-quotation-wordings>
+<app-mtn-quotation-wordings *ngIf = "opWording === false" id="wordingClosingIdLov" (selectedData)="setClosingWording($event)"></app-mtn-quotation-wordings>
+<app-ceding-company id="cedingCoIdLov" (selectedData)="setCedingCo($event)"></app-ceding-company>
+

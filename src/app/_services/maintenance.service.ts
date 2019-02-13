@@ -41,6 +41,19 @@ export class MaintenanceService{
 	}
 
 
+	getMtnObject(lineCd,objectId){
+		const params = new HttpParams()
+			.set('objectId',objectId)
+			.set('lineCd',lineCd)
+		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnObject",{params});
+	}
+	getMtnQuotationWordings(lineCd,type){
+		const params = new HttpParams()
+			.set('lineCd',lineCd)
+			.set('type',type)
+		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnQuotationWordings",{params});
+	}
+
 	getMtnRisk(riskId) {
 		const params = new HttpParams()
                 .set('riskId',riskId);
@@ -90,12 +103,26 @@ export class MaintenanceService{
         return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMtnTypeOfCession', {params});     
 	}
 
+
 	getLineClassLOV(line : string) {
 		
 		const params = new HttpParams()
              .set('lineCd',line)
 
    	   return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMntLineClass',{params});
+	}
+
+	getMtnRegion(regionCd){
+		const params = new HttpParams()
+			.set('regionCd',regionCd)
+		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnRegion",{params});
+	}
+
+	getMtnProvince(provinceCd,regionCd){
+		const params = new HttpParams()
+			.set('provinceCd',provinceCd)
+			.set('regionCd',regionCd)
+		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnProvince",{params});
 	}
 
 }
