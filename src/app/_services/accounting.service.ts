@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AccServiceAttachment, PaymentForAdvances, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, ARUnappliedCollection, AROthers, AccountingSOthersOr, AccORSerFeeLoc, OfficialReceipt, ORPrevAmountDetails, ORPrevAccEntries, ORPreVATDetails , ORPreCreditableWTaxDetails, PaymentOfSeviceFee, TreatyBalance, ByMonth, ExtractFromLastYear, AccountingEntriesExtract, CredibleWithholdingTaxDetails, InputVatDetails, OutputVatDetails, WithholdingVATDetails, CredibleWithholdingTaxUpload, InputVatUpload, OutputVatUpload, WithholdingTaxUpload, AccountingSFixedAssets, AccountingSMonthlyDepreciationDetails, AccountingSPaytReqCheckVoucher, AccountingSPaytReqPettyCashVoucher, AccountingSPaytReqPRMFE, AccountingSPaytReqOthers,AcctSrvcCWhtaxMonthlyTaxDetails,AcctSrvcCWhtaxConsolidateData, TaxDetails, WTaxDetails, ExpenseBudget, ExpenseBudgetByMonth, AccSChangeTranStatOR, AccSChangeTranStatCV, AccSChangeTranStatJV,  CMDM, AccountingEntryCMDM } from '@app/_models';
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AccServiceAttachment, PaymentForAdvances, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, ARUnappliedCollection, AROthers, AccountingSOthersOr, AccORSerFeeLoc, OfficialReceipt, ORPrevAmountDetails, ORPrevAccEntries, ORPreVATDetails , ORPreCreditableWTaxDetails, PaymentOfSeviceFee, TreatyBalance, ByMonth, ExtractFromLastYear, AccountingEntriesExtract, CredibleWithholdingTaxDetails, InputVatDetails, OutputVatDetails, WithholdingVATDetails, CredibleWithholdingTaxUpload, InputVatUpload, OutputVatUpload, WithholdingTaxUpload, AccountingSFixedAssets, AccountingSMonthlyDepreciationDetails, AccountingSPaytReqCheckVoucher, AccountingSPaytReqPettyCashVoucher, AccountingSPaytReqPRMFE, AccountingSPaytReqOthers,AcctSrvcCWhtaxMonthlyTaxDetails,AcctSrvcCWhtaxConsolidateData, TaxDetails, WTaxDetails, ExpenseBudget, ExpenseBudgetByMonth, AccSChangeTranStatOR, AccSChangeTranStatCV, AccSChangeTranStatJV, CMDM, AccountingEntryCMDM, AccJvLossResDep, AccSrvInquiry, AccountingSrvcCancelledTransactions } from '@app/_models';
+
 
 @Injectable({
 	providedIn: 'root'
@@ -96,6 +97,9 @@ export class AccountingService {
 	accSChangeTranStatOR: AccSChangeTranStatOR[] = [];
 	accSChangeTranStatCV: AccSChangeTranStatCV[] = [];
 	accSChangeTranStatJV: AccSChangeTranStatJV[] = [];
+	accJvLossResDep: AccJvLossResDep[] = [];
+	accSrvInquiry: AccSrvInquiry[] = [];
+	accountingSrvcCancelledTransactions: AccountingSrvcCancelledTransactions[] = [];
 
 	constructor(private http: HttpClient) { }
 
@@ -1032,6 +1036,43 @@ export class AccountingService {
 		return this.expenseBudgetByMonth;
 	}
 
+	getAccountingSrvcCancelledTransactions() {
+		this.accountingSrvcCancelledTransactions = [
+			new AccountingSrvcCancelledTransactions('JV', '2018-00329482', new Date('1/6/2018'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 100000),
+			new AccountingSrvcCancelledTransactions('OR', '2018-02938210', new Date('1/7/2018'), 'Malayan', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 546043),
+			new AccountingSrvcCancelledTransactions('OR', '2018-00737323', new Date('1/7/2018'), 'Malayan', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 14000000),
+			new AccountingSrvcCancelledTransactions('OR', '2018-00012837', new Date('1/7/2018'), 'Malayan', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 2404000),
+			new AccountingSrvcCancelledTransactions('OR', '2018-00728347', new Date('1/8/2018'), 'STI', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 1000000),
+			new AccountingSrvcCancelledTransactions('JV', '2018-00008837', new Date('1/8/2018'), 'STI', 'Premium Payments', 'Juan Dela Cruz', new Date(), 'Incorrect Amounts', 1000000),
+			new AccountingSrvcCancelledTransactions('JV', '2018-00273812', new Date('1/8/2018'), 'STI', 'Premium Payments', 'Juan Dela Cruz', new Date(), 'Incorrect Amounts', 6000000),
+			new AccountingSrvcCancelledTransactions('JV', '2018-07234812', new Date('1/10/2018'), 'UCPBGEN', 'Premium Payments', 'Juan Dela Cruz', new Date(), 'Incorrect Amounts', 100000000),
+			new AccountingSrvcCancelledTransactions('JV', '2018-08341023', new Date('1/10/2018'), 'UCPBGEN', 'Premium Payments', 'Juan Dela Cruz', new Date(), 'Incorrect Amounts', 10000000),
+			new AccountingSrvcCancelledTransactions('JV', '2018-07415123', new Date('1/10/2018'), 'UCPBGEN', 'Premium Payments', 'Juan Dela Cruz', new Date(), 'Incorrect Amounts', 34000000),
+			new AccountingSrvcCancelledTransactions('JV', '2018-00782348', new Date('1/10/2018'), 'San Miguel Corporation', 'Premium Payments', 'Juan Dela Cruz', new Date(), 'Incorrect Amounts', 56000000),
+			new AccountingSrvcCancelledTransactions('JV', '2018-19592323', new Date('1/10/2018'), 'SMDC', 'Premium Payments', 'Mark Anthony Castillo', new Date(), 'Incorrect Amounts', 20000000),
+			new AccountingSrvcCancelledTransactions('CV', '2018-08437123', new Date('1/10/2018'), 'Charter', 'Premium Payments', 'Mark Anthony Castillo', new Date(), 'Incorrect Amounts', 3000000),
+			new AccountingSrvcCancelledTransactions('CV', '2018-89723489', new Date('1/10/2018'), 'UCPBGEN', 'Premium Payments', 'Mark Anthony Castillo', new Date(), 'Incorrect Amounts', 56000),
+			new AccountingSrvcCancelledTransactions('CV', '2018-00876234', new Date('1/12/2018'), 'STI', 'Premium Payments', 'Mark Anthony Castillo', new Date(), 'Incorrect Amounts', 1000000),
+			new AccountingSrvcCancelledTransactions('CV', '2018-76349012', new Date('1/12/2018'), 'Malayan', 'Premium Payments', 'Mark Anthony Castillo', new Date(), 'Incorrect Amounts', 1000000),
+			new AccountingSrvcCancelledTransactions('JV', '2018-00784651', new Date('1/12/2018'), 'ABS-CBN', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 234000000),
+			new AccountingSrvcCancelledTransactions('JV', '2018-00837451', new Date('1/12/2018'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 32000000),
+			new AccountingSrvcCancelledTransactions('JV', '2018-00872634', new Date('1/12/2018'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 10000000),
+			new AccountingSrvcCancelledTransactions('JV', '2018-00897236', new Date('1/15/2018'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 1400000),
+			new AccountingSrvcCancelledTransactions('JV', '2018-00872634', new Date('1/15/2018'), 'STI', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 56000),
+			new AccountingSrvcCancelledTransactions('JV', '2018-00726341', new Date('1/15/2018'), 'STI', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 10000000),
+			new AccountingSrvcCancelledTransactions('JV', '2018-00786234', new Date('1/15/2018'), 'STI', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 14000000),
+			new AccountingSrvcCancelledTransactions('JV', '2018-00263412', new Date('2/3/2018'), 'San Miguel Corporation', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 32000000),
+			new AccountingSrvcCancelledTransactions('JV', '2018-00827364', new Date('2/3/2018'), 'San Miguel Corporation', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 3000000),
+			new AccountingSrvcCancelledTransactions('JV', '2018-08712634', new Date('2/3/2018'), 'San Miguel Corporation', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 56000),
+			new AccountingSrvcCancelledTransactions('JV', '2018-00087126', new Date('2/3/2018'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 10000000),
+			new AccountingSrvcCancelledTransactions('JV', '2018-00928734', new Date('2/3/2018'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 32000000),
+			new AccountingSrvcCancelledTransactions('JV', '2018-00782364', new Date('2/3/2018'), 'BPI/MS', 'Premium Payments', 'Chie Reyes', new Date(), 'Incorrect Amounts', 1400000),
+		];
+
+		return this.accountingSrvcCancelledTransactions;
+	}
+
+
 	getCreditDebit(){
 		this.creditDebit = [
 			new CMDM("CM-CAR-2019-02-00001",new Date(2015,0,10),"UCPBGEN","To correct entries in","Policy","2014-00004342","Ronwaldo Roque",1642857.14),
@@ -1113,6 +1154,44 @@ export class AccountingService {
 		];
 
 		return this.accSChangeTranStatJV;
+	}
+
+	getLossRepDep(){
+		this.accJvLossResDep = [
+			new AccJvLossResDep("BPI/IMS INSURANCE CORPORATION","Initial", new Date("01/25/2019"), "PHP",1.0,500000,500000),
+			new AccJvLossResDep("BPI/IMS INSURANCE CORPORATION","Additional", new Date("01/25/2019"), "PHP",1.0,20000,20000),
+			new AccJvLossResDep("BPI/IMS INSURANCE CORPORATION","CUMI", new Date("01/25/2019"), "PHP",1.0,500000,500000)
+			
+		];
+		return this.accJvLossResDep;
+	}
+
+	getAccSrvInquiry(){
+		this.accSrvInquiry = [
+		new AccSrvInquiry("CV","2018-00372881",new Date("10/01/2018"),"INVOICE COMMUNICATIONS","Billing for the Period of April 16 to May 01 2018", "cuaresma",new Date("10/12/2018"),"Account should be Internet","New",2999),
+		new AccSrvInquiry("CV","2018-00372882",new Date("10/02/2018"),"UCPBGEN","Payment For", "cuaresma",new Date("10/12/2018"),"Account should be Internet","New",546043),
+		new AccSrvInquiry("CV","2018-00372883",new Date("10/03/2018"),"UCPBGEN","Payment For", "cuaresma",new Date("10/12/2018"),"Account should be Internet","New",14000000),
+		new AccSrvInquiry("CV","2018-00372843",new Date("10/02/2018"),"STI","Payment For", "cuaresma",new Date("10/12/2018"),"Account should be Internet","New",2404000),
+		new AccSrvInquiry("CV","2018-00372844",new Date("10/02/2018"),"UCPBGEN","Premium Payments", "cuaresma",new Date("10/12/2018"),"Account should be Internet","New",1000000),
+		new AccSrvInquiry("CV","2018-00372490",new Date("10/02/2018"),"UCPBGEN","Payment For", "cuaresma",new Date("10/12/2018"),"Account should be Internet","New",1000000),
+		new AccSrvInquiry("CV","2018-00372491",new Date("10/02/2018"),"PNBBGEN","Premium Payments", "cuaresma",new Date("10/12/2018"),"Account should be Internet","New",6000000),
+		new AccSrvInquiry("CV","2018-00372500",new Date("10/01/2018"),"MRS. SANTOS","Payment For", "cuaresma",new Date("10/12/2018"),"Account should be Internet","New",10000000),
+		new AccSrvInquiry("CV","2018-00378913",new Date("10/02/2018"),"MALAYAN","Payment For", "cuaresma",new Date("10/12/2018"),"Account should be Internet","New",2990),
+		new AccSrvInquiry("CV","2018-00372454",new Date("10/03/2018"),"CHARTER","Payment For", "cuaresma",new Date("10/12/2018"),"Account should be Internet","New",14000000),
+		new AccSrvInquiry("CV","2018-00372654",new Date("10/02/2018"),"ABS-CBN","Payment For", "cuaresma",new Date("10/12/2018"),"Account should be Internet","New",2404000),
+		new AccSrvInquiry("CV","2018-00372553",new Date("10/02/2018"),"San Miguel Corporation","Premium Payments", "cuaresma",new Date("10/12/2018"),"Account should be Internet","New",234000644),
+		new AccSrvInquiry("CV","2018-00372765",new Date("10/02/2018"),"BPI/MS","Payment For", "cuaresma",new Date("10/12/2018"),"Account should be Internet","New",1000000),
+		new AccSrvInquiry("CV","2018-00372464",new Date("10/02/2018"),"Charter","Premium Payments", "cuaresma",new Date("10/12/2018"),"Account should be Internet","New",6000000),
+		new AccSrvInquiry("CV","2018-00378913",new Date("10/02/2018"),"MALAYAN","Payment For", "cuaresma",new Date("10/12/2018"),"Account should be Internet","New",2990),
+		new AccSrvInquiry("CV","2018-00372454",new Date("10/03/2018"),"CHARTER","Payment For", "cuaresma",new Date("10/12/2018"),"Account should be Internet","New",14000000),
+		new AccSrvInquiry("CV","2018-00372654",new Date("10/02/2018"),"ABS-CBN","Payment For", "cuaresma",new Date("10/12/2018"),"Account should be Internet","New",2404000),
+		new AccSrvInquiry("CV","2018-00372553",new Date("10/02/2018"),"San Miguel Corporation","Premium Payments", "cuaresma",new Date("10/12/2018"),"Account should be Internet","New",234000644),
+		new AccSrvInquiry("CV","2018-00372765",new Date("10/02/2018"),"BPI/MS","Payment For", "cuaresma",new Date("10/12/2018"),"Account should be Internet","New",1000000),
+		new AccSrvInquiry("CV","2018-00372464",new Date("10/02/2018"),"Charter","Premium Payments", "cuaresma",new Date("10/12/2018"),"Account should be Internet","New",6000000),
+	
+		];
+		
+		return this.accSrvInquiry;
 	}
 
 

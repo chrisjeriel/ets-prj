@@ -93,7 +93,7 @@ export class QuoteOptionComponent implements OnInit {
 
         this.quotationService.getQuoteOptions().subscribe(data => {  
             var optionRecords = data['quotation'].optionsList;
-            
+
             for(let rec of optionRecords){
                 this.optionsData.tableData.push(new QuotationOption(
                     rec.optionId, 

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
 import { Router } from '@angular/router';
 import { QuotationService, UnderwritingService } from '../../_services';
 import { QuotationProcessing, Risks, CedingCompanyList } from '../../_models';
@@ -14,7 +14,7 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
     providers: [NgbModal, NgbActiveModal]
 })
 export class QuotationProcessingComponent implements OnInit {
-    @ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
+    @ViewChildren(CustNonDatatableComponent) table: QueryList<CustNonDatatableComponent>;
     tableData: any[] = [];
     tHeader: any[] = [];
     dataTypes: any[] = [];
@@ -26,6 +26,7 @@ export class QuotationProcessingComponent implements OnInit {
     copyQuotationFlag: boolean = true;*/
 
     line: string = "";
+    description: string = "";
     splittedLine: string[] = [];
     quoTypeOfCession = "";
     riskCd: string = "";
@@ -38,6 +39,7 @@ export class QuotationProcessingComponent implements OnInit {
 
     fetchedData: any;
     quotationNo = "";
+    lineDataInfo: any [];
 
     riskCodeFill: string = "";
     riskFill: string = "";
@@ -159,6 +161,20 @@ export class QuotationProcessingComponent implements OnInit {
         pageID: 2
     }
 
+     lineData: any = {
+        tableData: [],
+        tHeader: ['Line', 'Description','Remarks'],
+        dataTypes: ['text', 'text', 'text'],
+        resizable: [true, true, true],
+        pageLength: 10,
+        searchFlag: true,
+        pageStatus: true,
+        pagination: true,
+        fixedCol: false,
+        pageID: 2,
+        keys:["lineCd","description","remarks"]
+    }
+
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private router: Router
         , public activeModal: NgbActiveModal, private titleService: Title
         ) { }
@@ -200,13 +216,10 @@ export class QuotationProcessingComponent implements OnInit {
                                             ));
             }
 
-            this.table.refreshTable();
+
+               this.table.forEach(table => { table.refreshTable() });
         });
 
-
-
-        
-        
     }
 
     onClickAdd(event) {
@@ -234,8 +247,19 @@ export class QuotationProcessingComponent implements OnInit {
         $('#riskLOV #modalBtn').trigger('click');
     }
 
+
     showCedingCompanyLOV() {
         $('#cedingCompanyLOV #modalBtn').trigger('click');
+    }
+
+    showLineLOV(){
+        $('#lineLOV #modalBtn').trigger('click');
+    }
+
+    setLine(data){
+        this.line = data.lineCd;
+        this.description = data.description;
+        $('#addModal > #modalBtn').trigger('click');
     }
 
     getRisk(event) {

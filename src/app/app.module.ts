@@ -247,6 +247,10 @@ import { GenerateJvServiceComponent } from './accounting-service/journal-voucher
 import { JvEntryServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-entry-service/jv-entry-service.component';
 import { JvPreviewServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-preview-service/jv-preview-service.component';
 import { JvAttachmentsServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-attachments-service/jv-attachments-service.component';
+import { MtnLineComponent } from './maintenance/mtn-line/mtn-line.component';
+import { MtnObjectComponent } from './maintenance/mtn-object/mtn-object.component';
+import { MtnProvinceComponent } from './maintenance/mtn-region/mtn-province/mtn-province.component';
+import { MtnQuotationWordingsComponent } from './maintenance/mtn-quotation-wordings/mtn-quotation-wordings.component';
 import { MtnRiskComponent } from './maintenance/mtn-risk/mtn-risk.component';
 import { AcctUnbalanceEntriesComponent } from './accounting-service/accounting-service-extract/acct-unbalance-entries/acct-unbalance-entries.component';
 import { AcctTrialBalComponent } from './accounting-service/accounting-service-extract/acct-trial-bal/acct-trial-bal.component';
@@ -263,6 +267,26 @@ import { CvChangeTranStatComponent } from './accounting-service/utilities/acc-s-
 import { JvChangeTranStatComponent } from './accounting-service/utilities/acc-s-change-tran-stat-new/jv-change-tran-stat/jv-change-tran-stat.component';
 import { AccSEditAccountingEntriesComponent } from './accounting-service/utilities/acc-s-edit-accounting-entries/acc-s-edit-accounting-entries.component';
 import { AccSEditedAccountingEntriesComponent } from './accounting-service/inquiry/acc-s-edited-accounting-entries/acc-s-edited-accounting-entries.component';
+import { InTrustCreditDebitComponent } from './accounting-in-trust/in-trust-credit-debit/in-trust-credit-debit.component';
+import { GenerateCMDMComponent } from './accounting-in-trust/in-trust-credit-debit/generate-cmdm/generate-cmdm.component';
+import { AcctCmdmEntryComponent } from './accounting-in-trust/in-trust-credit-debit/generate-cmdm/acct-cmdm-entry/acct-cmdm-entry.component';
+import { CmdmAccntEntriesComponent } from './accounting-in-trust/in-trust-credit-debit/generate-cmdm/cmdm-accnt-entries/cmdm-accnt-entries.component';
+import { JvAccountingEntriesComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-accounting-entries/jv-accounting-entries.component';
+import { JvLossReserveDepositComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-loss-reserve-deposit/jv-loss-reserve-deposit.component';
+import { MtnIntermediaryComponent } from './maintenance/mtn-intermediary/mtn-intermediary.component';
+import { MtnLineClassComponent } from './maintenance/mtn-line-class/mtn-line-class.component';
+import { AccSrvInquiryComponent } from './accounting-service/acc-srv-inquiry/acc-srv-inquiry.component';
+import { CancelTransactionsServiceComponent } from './accounting-service/utilities/cancel-transactions-service/cancel-transactions-service.component';
+import { CancelOrComponent } from './accounting-service/utilities/cancel-transactions-service/cancel-or/cancel-or.component';
+import { CancelCvServiceComponent } from './accounting-service/utilities/cancel-transactions-service/cancel-cv-service/cancel-cv-service.component';
+import { CancelJvServiceComponent } from './accounting-service/utilities/cancel-transactions-service/cancel-jv-service/cancel-jv-service.component';
+import { RegistersServiceComponent } from './accounting-service/reports/registers-service/registers-service.component';
+import { CrRegisterComponent } from './accounting-service/reports/registers-service/cr-register/cr-register.component';
+import { CvRegisterServiceComponent } from './accounting-service/reports/registers-service/cv-register-service/cv-register-service.component';
+import { ChecksRegisterServiceComponent } from './accounting-service/reports/registers-service/checks-register-service/checks-register-service.component';
+import { JvRegisterServiceComponent } from './accounting-service/reports/registers-service/jv-register-service/jv-register-service.component';
+import { AcctSrvcCancelledTransactionsComponent } from './accounting-service/accounting-service-inquiry/acct-srvc-cancelled-transactions/acct-srvc-cancelled-transactions.component';
+
 
 @NgModule({
     imports: [
@@ -516,6 +540,10 @@ import { AccSEditedAccountingEntriesComponent } from './accounting-service/inqui
         JvEntryServiceComponent,
         JvPreviewServiceComponent,
         JvAttachmentsServiceComponent,
+        MtnLineComponent,
+        MtnObjectComponent,
+        MtnProvinceComponent,
+        MtnQuotationWordingsComponent,
         MtnRiskComponent,
         AcctUnbalanceEntriesComponent,
         AcctTrialBalComponent,
@@ -532,6 +560,25 @@ import { AccSEditedAccountingEntriesComponent } from './accounting-service/inqui
         JvChangeTranStatComponent,
         AccSEditAccountingEntriesComponent,
         AccSEditedAccountingEntriesComponent,
+        InTrustCreditDebitComponent,
+        GenerateCMDMComponent,
+        AcctCmdmEntryComponent,
+        CmdmAccntEntriesComponent,
+        JvAccountingEntriesComponent,
+        JvLossReserveDepositComponent,
+        MtnIntermediaryComponent,
+        MtnLineClassComponent,
+        AccSrvInquiryComponent,
+        CancelTransactionsServiceComponent,
+        CancelOrComponent,
+        CancelCvServiceComponent,
+        CancelJvServiceComponent,
+        RegistersServiceComponent,
+        CrRegisterComponent,
+        CvRegisterServiceComponent,
+        ChecksRegisterServiceComponent,
+        JvRegisterServiceComponent,
+        AcctSrvcCancelledTransactionsComponent,
     ],
 
     providers: [

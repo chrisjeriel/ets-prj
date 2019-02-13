@@ -1,0 +1,193 @@
+<div class="cust-tabs-container">
+	 <h4>Accounting Service / Inquiry / Edited Tax Details</h4>
+	 	<ngb-tabset (tabChange)="onTabChange($event)">
+	 		  <ngb-tab class="ngb-tab" title="Inquire">
+	 		  	<ng-template ngbTabContent>
+	 				<div class="input-group">
+	 		  			<div class="col-sm" style="padding: 0px">
+	 		  				 <fieldset class="scheduler-border">
+	 		  				 	<legend class="scheduler-border">Filter Options</legend>
+	 		  				 		<div class="input-group" style="margin-top: 10px">
+	 		  				 			<label class="form-control-sm" for="xx" style="padding-left:0px !important;">Transaction Type</label>
+			                            <select class="form-control form-control-sm cust-sm col-sm-2">
+			                                <option value="Check Voucher">Check Voucher</option>
+			                            </select>
+			                            <label class="form-control-sm" for="xx" style="padding-left:0px !important; margin-left: 20px">Period:</label>
+			                            <label class="form-control-sm" for="xx" style="padding-left:0px !important;">From</label>
+			                            <input type="date" value="2018-10-01" class="form-control form-control-sm cust-sm col-sm-2">
+			                            <label class="form-control-sm" for="xx" style="padding-left:0px !important;margin-left: 20px">To</label>
+			                            <input type="date" value="2018-10-31" class="form-control form-control-sm cust-sm col-sm-2">
+			                            <button class="cust col-sm-1 form-control form-control-sm" style="margin-left: 25px ! important" type="button"><a>Search</a></button>
+				 		  			</div>
+	 		  				 </fieldset>
+	 		  			</div>
+					</div>
+					<fieldset class="scheduler-border">
+					  <legend class="scheduler-border">List of Edited Transactions</legend>
+					 	<div class="container-fluid">
+					 		<div class="row">
+							    <div class="col-sm-12" style="padding: 0">
+							    		<div class="input-group" style="margin-top: 10px">
+							    			<button type="button" class="cust" (click)="showEditTaxDetails(content)"><a>View Edited Tax Details</a></button>
+							    		</div>
+							    	   	<div style="margin-top: -35px ! important">
+							    	   		<app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)"></app-cust-non-datatable>
+							    	   	</div>
+							    </div>
+					        </div>
+					 	</div>	
+					</fieldset> 
+
+					<ng-template #content>
+						<div class="modal-header">
+							<span class="modal-title" id="modal-basic-title">Edit Tax Details</span>
+							<div class="close" style="padding-bottom: 5px;">
+								<a class="btn-cust" aria-label="Close" (click)="modalService.dismissAll();" aria-hidden="true"><span style="padding-right: 3px;"
+									 id="closes">&times;&nbsp;&nbsp;</span></a>
+							</div>
+						</div>
+						<div class="modal-body" style="width: 1050px">
+							<div class="row ">
+								<div class="col-sm-12">
+									<fieldset class="scheduler-border" style="margin-top: -20px ! important">
+										 <legend class="scheduler-border">Transaction Info</legend>
+										 	<div class="input-group">
+										 		 	<div class="col-sm-6" style="padding: 0px">
+													 	<div class="input-group" style="margin-top: 10px">
+													 			 <label class="form-control-sm col-sm-3" for="xx" style="padding-left:0px !important;">Transaction Type</label>
+													 			 <input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="Check Voucher">
+													 		  	<label class="form-control-sm col-sm-2" for="xx" style="padding-left:0px !important;">Tran Date</label>
+													 		  	<input type="datetime-local" class="form-control form-control-sm cust-sm col-sm" value="2015-05-28T09:00">
+													 	</div>
+													 	<div class="input-group" style="margin-top: -15px">
+													 			 <label class="form-control-sm  col-sm-3" for="xx" style="padding-left:0px !important;">Reference No.</label>
+														 		 <input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="2018-00372881">
+														 		 <label class="form-control-sm col-sm-2" for="xx" style="padding-left:0px !important;">Tran Status</label>
+														 		 <input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="New">
+										 				</div>
+										 				<div class="input-group" style="margin-top: -15px">
+										 						<label class="form-control-sm  col-sm-3" for="xx" style="padding-left:0px !important;">Payor/Payee</label>
+										 						<input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="INVOICE COMMUNICATIONS INC">
+										 				</div>
+
+										 			</div>
+												 	<div class="col-sm-6" style="padding: 0px">
+												 		<div class="input-group" style="margin-top: 10px">
+												 				<label class="form-control-sm col-sm-2" for="xx" style="padding-left:0px !important;">Amount</label>
+								                              	<input type="text" placeholder="PHP" class="form-control form-control-sm cust-sm col-sm-1">
+								                              	<input type="text" placeholder="2,999.00" class="form-control form-control-sm cust-sm col-sm" style="text-align: right; margin-left: 3px">
+								                              	<label class="form-control-sm col-sm-2" for="xx" style="padding-left:0px !important;">Edited By</label>
+													 		  	<input type="text" placeholder="cuaresma" class="form-control form-control-sm cust-sm col-sm">
+												 		</div>
+												 		<div class="input-group" style="margin-top: -15px">
+													 			 <label class="form-control-sm col-sm-2" for="xx" style="padding-left:0px !important;">Local Amount</label>
+									                             <input type="text" placeholder="PHP" class="form-control form-control-sm cust-sm col-sm-1">
+									                             <input type="text" placeholder="2,999.00" class="form-control form-control-sm cust-sm col-sm" style="text-align: right; margin-left: 3px">
+									                             <label class="form-control-sm col-sm-2" for="xx" style="padding-left:0px !important;">Date Edited</label>
+														 		 <input type="datetime-local" class="form-control form-control-sm cust-sm col-sm" value="2015-05-28T09:00">
+										 				</div>
+										 				<div class="input-group" style="margin-top: -15px">
+										 						<label class="form-control-sm col-sm-2" for="xx" style="padding-left:0px !important;">Particulars</label>
+										 		 				<input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="Billing for the Period August 16 to September 15, 2018">
+										 				</div>
+												 	</div>	
+										 	</div>
+										 	<div class="input-group" style="margin-top: -9px">
+										 		<label class="form-control-sm col-sm-2" for="xx" style="padding-right:51px !important;">Reason</label>
+										 		<input type="text" class="form-control form-control-sm cust-sm col-sm-9" placeholder="Tax should be input VAT credited to Universal Robina" style="margin-left:-43px !important;">
+										 		 <button class="cust col-sm-1 form-control form-control-sm" style="margin-left: 25px ! important" type="button"><a>Return</a></button>
+										 	</div>
+									</fieldset>
+									<div class="cust-tabs-container border-tab" style="margin-top: 10px;">
+										<ngb-tabset>
+											<ngb-tab>
+												<ng-template ngbTabTitle>
+													<div>VAT</div>
+												</ng-template>
+												<ng-template ngbTabContent>
+													<fieldset class="scheduler-border" style="padding: 0px"> 
+											             <legend class="scheduler-border">Old VAT</legend>  
+											                  <div class="row">
+											                     <div class="col-sm-12" style="margin-top: 15px" >
+											                       <app-cust-editable-non-datatable [passData]="passOldVatData"></app-cust-editable-non-datatable>
+											                     </div>
+											                  </div>  
+											        </fieldset>
+											        <fieldset class="scheduler-border" style="padding: 0px"> 
+											             <legend class="scheduler-border">New VAT</legend>  
+											                  <div class="row">
+											                     <div class="col-sm-12" style="margin-top: 15px" >
+											                       <app-cust-editable-non-datatable [passData]="passNewVatData"></app-cust-editable-non-datatable>
+											                     </div>
+											                  </div>  
+											        </fieldset>
+												</ng-template>
+											</ngb-tab>
+											<ngb-tab>
+												<ng-template ngbTabTitle>
+													<div>Withholding Tax</div>
+												</ng-template>
+												<ng-template ngbTabContent>
+													<fieldset class="scheduler-border" style="padding: 0px"> 
+											             <legend class="scheduler-border">Old WTax</legend>  
+											                  <div class="row">
+											                     <div class="col-sm-12" style="margin-top: 15px" >
+											                       <app-cust-editable-non-datatable [passData]="passDataOldWTax"></app-cust-editable-non-datatable>
+											                     </div>
+											                  </div>  
+											        </fieldset>
+											        <fieldset class="scheduler-border" style="padding: 0px"> 
+											             <legend class="scheduler-border">New WTax</legend>  
+											                  <div class="row">
+											                     <div class="col-sm-12" style="margin-top: 15px" >
+											                       <app-cust-editable-non-datatable [passData]="passDataNewWTax"></app-cust-editable-non-datatable>
+											                     </div>
+											                  </div>  
+											        </fieldset>
+
+												</ng-template>
+											</ngb-tab>
+										</ngb-tabset>
+								    </div>
+
+
+								</div>
+							</div>
+						</div>
+					</ng-template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	 		  	</ng-template>
+	 		  </ngb-tab>
+	 		  <ngb-tab class="ngb-tab" title="Exit" id="Exit">
+	 		  	<ng-template ngbTabContent>
+	 		  	</ng-template>
+	 		  </ngb-tab>
+	 	</ngb-tabset>
+</div>

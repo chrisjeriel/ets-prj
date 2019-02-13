@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
 import { AccountingService } from '@app/_services';
 
 @Component({
@@ -97,7 +98,7 @@ export class AccSEditedAccountingEntriesComponent implements OnInit {
     pageLength: 5,
   };
 
-  constructor(private titleService: Title, private modalService: NgbModal, private accountingService: AccountingService) { }
+  constructor(private titleService: Title, private modalService: NgbModal, private accountingService: AccountingService, private router: Router) { }
 
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | Edited Accounting Entries");
@@ -105,5 +106,12 @@ export class AccSEditedAccountingEntriesComponent implements OnInit {
 
   showModal(content) {
     this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
+  }
+
+  onTabChange($event: NgbTabChangeEvent) {
+      if ($event.nextId === 'Exit') {
+        this.router.navigateByUrl('');
+      } 
+  
   }
 }
