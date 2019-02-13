@@ -3,7 +3,6 @@ import { HoldCoverInfo } from '../../_models/HoldCover';
 import { QuotationService } from '../../_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
-import { getLocaleFirstDayOfWeek, getLocaleDateFormat } from '@angular/common';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 
 
@@ -101,6 +100,8 @@ export class HoldCoverComponent implements OnInit {
     updateDate: "",
     updateUser: "",
   }
+
+  
   
   ngOnInit() {
     this.titleService.setTitle("Quo | Quotation to Hold Cover");
@@ -116,7 +117,9 @@ export class HoldCoverComponent implements OnInit {
               this.holdCover                    =  rec.holdCover;
               this.holdCover.periodFrom         =  this.formatDate(this.holdCover.periodFrom);
               this.holdCover.periodTo           =  this.formatDate(this.holdCover.periodTo);
-              this.holdCover.reqDate        =  this.formatDate(this.holdCover.reqDate);
+              this.holdCover.reqDate            =  this.formatDate(this.holdCover.reqDate);
+              this.holdCover.createDate         =  this.formatDate(this.holdCover.createDate);
+              this.holdCover.updateDate         =  this.formatDate(this.holdCover.updateDate);
               //this.sliceQuoteNo(this.holdCoverInfo.quotationNo);
               this.sliceHcNo(this.holdCover.holdCoverNo);
               
@@ -143,7 +146,7 @@ export class HoldCoverComponent implements OnInit {
 
   formatDate(date){
     if(date[1] < 9){
-      return date[0] + "-" + '0'+ date[1] + "-" + date[2];
+      return (date[0] + "-" + '0'+ date[1] + "-" + date[2]);
     }else{
       return date[0] + "-" +date[1] + "-" + date[2];
     }
@@ -202,15 +205,31 @@ export class HoldCoverComponent implements OnInit {
     this.modalService.dismissAll();
   }
   
-
+  holdCoverReq:any
   onSaveClick(){
-
-  console.log(JSON.stringify(this.holdCover));
-    //  this.quotationService.saveQuoteHoldCover(
-    //   this.holdCover.
-    //    )
-  
-   
+    this.holdCoverReq = {
+      "approvedBy": this.holdCover.approvedBy,
+      "compRefHoldCovNo": this.holdCover.compRefHoldCovNo,
+      "createDate": this.holdCover.createDate,
+      "createUser": this.holdCover.createUser,
+      "holdCoverId": this.holdCover.holdCoverId,
+      "holdCoverRevNo": this.hcRevNo,
+      "holdCoverSeqNo": this.hcSeqNo,
+      "holdCoverYear": this.hcYear,
+      "lineCd": this.hcLine,
+      "periodFrom": this.holdCover.periodFrom,
+      "periodTo": this.holdCover.periodTo,
+      "preparedBy": this.holdCover.preparedBy,
+      "quoteId": this.quoteId,
+      "reqBy": this.holdCover.reqBy,
+      "reqDate": this.holdCover.reqDate,
+      "status": this.holdCover.status,
+      "updateDate": this.holdCover.updateDate,
+      "updateUser": this.holdCover.updateUser
+    }
+        this.quotationService.saveQuoteHoldCover(
+          JSON.stringify(this.holdCoverReq)
+        ).subscribe(data => console.log(data));
   }
 
 }

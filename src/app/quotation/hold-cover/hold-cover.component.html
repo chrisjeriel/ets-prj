@@ -27,15 +27,15 @@
                                         </div>
                                         <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Ceding Company</label>
-                                            <input type="text" class="form-control form-control-sm"  [(ngModel)]="cedCo">
+                                            <input type="text" class="form-control form-control-sm"  [(ngModel)]="cedCo" readonly>
                                         </div>
                                         <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Insured</label>
-                                            <input type="text" class="form-control form-control-sm" [(ngModel)]="insured">
+                                            <input type="text" class="form-control form-control-sm" [(ngModel)]="insured" readonly>
                                         </div>
                                         <div class="input-group" style="margin-bottom: -9px !important;">
                                             <label class="form-control-sm col-sm-2">Risk</label>
-                                            <input type="text" class="form-control form-control-sm" [(ngModel)]="risk">
+                                            <input type="text" class="form-control form-control-sm" [(ngModel)]="risk" readonly>
                                         </div>
                                     </div>
                                 </div>
@@ -68,15 +68,15 @@
                                         </div>
                                          <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Period From</label>
-                                            <input type="date" class="form-control form-control-sm cust-sm" id="inputQuotation" [(ngModel)]="holdCover.periodFrom">
+                                            <input type="date" class="form-control form-control-sm cust-sm" [(ngModel)]="holdCover.periodFrom">
                                             <label class="form-control-sm col-sm-2">Requested By</label>
                                             <input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="holdCover.reqBy">
                                         </div>
                                         <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Period To</label>
-                                            <input type="date" class="form-control form-control-sm cust-sm" id="inputQuotation" [(ngModel)]="holdCover.periodTo">
+                                            <input type="date" class="form-control form-control-sm cust-sm" [(ngModel)]="holdCover.periodTo">
                                             <label class="form-control-sm col-sm-2">Request Date</label>
-                                            <input type="date" class="form-control form-control-sm cust-sm col-sm-7" id="inputQuotation" [(ngModel)]="holdCover.reqDate">
+                                            <input type="date" class="form-control form-control-sm cust-sm col-sm-7" [(ngModel)]="holdCover.reqDate">
                                         </div>
                                         <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-3" style="margin-left: -62px !important;  margin-right: 1px !important;">Co. Ref. Hold Cover No</label>
