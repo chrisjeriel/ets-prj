@@ -312,6 +312,10 @@ export class GeneralInfoComponent implements OnInit {
 		return new Date(arr[0] + '-' + arr[1] + '-' + arr[2]).toISOString();   
 	}
 
+	toDateTime(date) {
+		return new Date(date).toISOString();
+	}
+
 	saveQuoteGenInfo() {		
 		console.log('PREPARING DATA >>> ' + this.prepareParam());
 
@@ -339,7 +343,7 @@ export class GeneralInfoComponent implements OnInit {
 			"ipl"			: this.project.ipl,
 			"issueDate"		: this.genInfoData.issueDate,
 			"lineCd"		: this.genInfoData.lineCd,
-			"lineClassCd"	: this.genInfoData.lineClassCd,
+			"lineClassCd"	: (this.genInfoData.quoteId === '') ? 'aa' : this.genInfoData.lineClassCd,
 			"mbiRefNo"		: this.genInfoData.mbiRefNo,
 			"noClaimPd"		: this.project.noClaimPd,
 			"objectId"		: this.project.objectId,
