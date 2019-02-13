@@ -40,6 +40,15 @@ export class MaintenanceService{
 		return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMaintenanceBlock');
 	}
 
+
+	getMtnRisk(riskId) {
+		const params = new HttpParams()
+                .set('riskId',riskId);
+
+       	return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMtnRisk', {params});    
+    }
+
+
 	getLineLOV() {
        	return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMntLine');
     }
@@ -48,21 +57,37 @@ export class MaintenanceService{
        	return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMntIntermediary');
     }
 
-	getMtnRiskListing(){
+	getMtnRiskListing(riskId,riskAbbr,riskName,regionDesc,provinceDesc,cityDesc,districtDesc,blockDesc,latitude,longitude,activeTag) {
 		const params = new HttpParams()
-                .set('riskId','')
-                .set('riskAbbr','')
-                .set('riskName','')
-                .set('regionDesc','')
-                .set('provinceDesc','')
-                .set('cityDesc','')
-                .set('districtDesc','')
-                .set('blockDesc','')
-                .set('latitude','')
-                .set('longitude','')
-                .set('activeTag','');
+                .set('riskId',riskId)
+                .set('riskAbbr',riskAbbr)
+                .set('riskName',riskName)
+                .set('regionDesc',regionDesc)
+                .set('provinceDesc',provinceDesc)
+                .set('cityDesc',cityDesc)
+                .set('districtDesc',districtDesc)
+                .set('blockDesc',blockDesc)
+                .set('latitude',latitude)
+                .set('longitude',longitude)
+                .set('activeTag',activeTag);
 
         return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMtnRiskListing', {params});
+	}
+
+
+	getMtnSectionCovers(lineCd,coverCd) {
+		const params = new HttpParams()
+                .set('lineCd',lineCd)
+                .set('coverCd',coverCd);
+
+        return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMtnSectionCovers', {params});     
+	}
+
+	getMtnTypeOfCession(cessionId) {
+		const params = new HttpParams()
+                .set('cessionId',cessionId);
+
+        return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMtnTypeOfCession', {params});     
 	}
 
 	getLineClassLOV(line : string) {

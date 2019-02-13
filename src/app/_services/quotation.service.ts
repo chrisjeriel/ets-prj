@@ -68,7 +68,7 @@ export class QuotationService {
             new QuotationCoverageInfo("1", "I", "3", "69000", ""),
             new QuotationCoverageInfo("2", 'II', "2", "123000", "")
         ];
-        return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteCoverage?");
+        return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteCoverage");
     }
 
     getQuotationListInfo() {
@@ -229,7 +229,8 @@ export class QuotationService {
     }
 
     getAttachmentOc(){
-        return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteAttachmentOc");
+        const params = new HttpParams().set('quoteIdOc', '');
+        return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteAttachmentOc", {params});
     }
 
     getDummyEditableInfo() {
@@ -587,17 +588,19 @@ export class QuotationService {
     }
 
 
-    getALOPItemInfos(car: string) {
+    getALOPItemInfos(car: string, quoteId: any, quotationNo?: any) {
         if (car == "CAR") {
             this.aLOPItemInfos.forEach(function (itm) { delete itm.relativeImportance; });
         }
-        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteAlopItem');;
+        const params = new HttpParams()
+             .set('quoteId',quoteId)
+        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteAlopItem',{params});
     }
 
-    getALop(quoteId:number,quotationNo:string){
+    getALop(quoteId:number,quotationNo?:string){
         return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteAlop'
             +('?quoteId=' + quoteId)
-            +('&quotationNo='+ quotationNo)
+            //+('&quotationNo='+ quotationNo)
         );
     }
 
@@ -624,10 +627,6 @@ export class QuotationService {
     }
 
     saveQuoteAttachment(quoteId:number ,attachmentList:any[]){
-        /*const params = new HttpParams()
-             .set('quoteId',quoteId.toString())
-             .set('attachmentsList',JSON.stringify(attachmentList))*/
-             
         let params:any  = {
             quoteId: quoteId,
             attachmentsList: attachmentList
@@ -640,6 +639,91 @@ export class QuotationService {
         console.log(JSON.stringify(params));
 
         return this.http.post('http://localhost:8888/api/quote-service/saveQuoteAttachment', JSON.stringify(params), header);
+    }
+
+
+    saveQuoteCoverage(quoteId:number,projId: number ,coverageData:any){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteCoverage', JSON.stringify(coverageData), header);
+    }
+
+    saveQuoteAlop(alopData:any){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        alopData.issueDate = alopData.issueDate + 'T16:00:00.000Z';
+        alopData.expiryDate = alopData.expiryDate + 'T16:00:00.000Z';
+        alopData.indemFromDate = alopData.indemFromDate + 'T16:00:00.000Z';
+        // alopData.issueDate = new Date(alopData.issueDate[0],alopData.issueDate[1]-1,alopData.issueDate[2]).toISOString();
+        // alopData.expiryDate = new Date(alopData.expiryDate[0],alopData.expiryDate[1]-1,alopData.expiryDate[2]).toISOString();
+        // alopData.indemFromDate = new Date(alopData.indemFromDate[0],alopData.indemFromDate[1]-1,alopData.indemFromDate[2]).toISOString();
+        alopData.createDate = new Date(alopData.createDate[0],alopData.createDate[1]-1,alopData.createDate[2]).toISOString();
+        alopData.updateDate = new Date(alopData.updateDate[0],alopData.updateDate[1]-1,alopData.updateDate[2]).toISOString();
+        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteAlop', JSON.stringify(alopData), header);
+    }
+
+    saveQuoteAlopItem(alopItemData:any){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteAlopItem', JSON.stringify(alopItemData), header);
+              
+    }
+
+
+    saveQuoteAttachmentOc(quoteIdOc:number ,attachmentListOc:any[]){
+        /*const params = new HttpParams()
+             .set('quoteId',quoteId.toString())
+             .set('attachmentsList',JSON.stringify(attachmentList))*/
+             
+        let params:any  = {
+            quoteIdOc: quoteIdOc,
+            attachmentsOcList: attachmentListOc
+        }
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteAttachmentOc', JSON.stringify(params), header);
+    }
+
+      
+    saveQuoteCoverageOc(quoteId:number,projId: number ,coverageOcData:any[]){
+        let params:any  = {
+            quoteId: quoteId,
+            projId: projId,
+            coverageOcData:coverageOcData
+        };
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+
+        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteCoverageOc', JSON.stringify(params), header);
+    }
+    
+
+     
+    saveQuoteCompetition(saveQuoteCompetitionParams: any){
+        let params: any = JSON.stringify(saveQuoteCompetitionParams);
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+        //console.log(saveQuoteCompetitionParams.join(","));
+        //console.log(params.substring(1,params.length-1));
+        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteCompetition', params.substring(1,params.length-1), header);
     }
 
 }

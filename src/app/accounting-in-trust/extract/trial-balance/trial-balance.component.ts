@@ -14,6 +14,12 @@ export class TrialBalanceComponent implements OnInit {
   ngOnInit() {
   }
 
+  accountCode: string = "Total";
+
+  accCodeChange(data){
+    this.accountCode = data;
+  }
+
   onTabChange($event: NgbTabChangeEvent) {
       if ($event.nextId === 'Exit') {
         this.router.navigateByUrl('');

@@ -13,14 +13,14 @@ export class MtnRiskComponent implements OnInit {
 
   riskListing: any = {
     tableData: [],
-    tHeader: ['Risk ID', 'Risk Name', 'Risk Abbr', 'Region','Province','City','District','Block','Latitude','Longitude'],
-    dataTypes: ['number', 'text', 'text','text','text','text','text','text','text','text'],
+    tHeader: ['Risk ID', 'Risk Name', 'Risk Abbr', 'Region','Province','City','District','Block'],
+    dataTypes: ['number', 'text', 'text','text','text','text','text','text'],
     pageLength: 10,
     searchFlag: true,
     pageStatus: true,
     pagination: true,
     fixedCol: false,
-    pageID: 4,
+    pageID: 1,
     keys:[
     	'riskId',
     	'riskName',
@@ -30,8 +30,7 @@ export class MtnRiskComponent implements OnInit {
     	'cityDesc',
     	'districtDesc',
     	'blockDesc',
-    	'latitude',
-    	'longitude']
+    	]
   };
 
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
@@ -40,7 +39,7 @@ export class MtnRiskComponent implements OnInit {
   constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal) { }
 
   ngOnInit() {
-  	this.maintenanceService.getMtnRiskListing().subscribe(data =>{
+  	this.maintenanceService.getMtnRiskListing('','','','','','','','','','','').subscribe(data =>{
   		var records = data['risk'];
 
             for(let rec of records){

@@ -359,25 +359,11 @@ export class UnderwritingService {
     }
     
     getMaintenanceRisksListData(){
-        /*this.maintenanceRiskListData = [
+        this.maintenanceRiskListData = [
             new MaintenanceRisks(true, '00001', 'Filsyn - MBI', 'Filsyn', 'SOUTHERN TAGALOG', 'LAGUNA', 'SANTA ROSA', 'STA.ROSA/BEL-AIR', 'UNBLK', '', ''),
         ];
-        return this.maintenanceRiskListData;*/
+        return this.maintenanceRiskListData;
 
-        const params = new HttpParams()
-                .set('riskId','')
-                .set('riskAbbr','')
-                .set('riskName','')
-                .set('regionDesc','')
-                .set('provinceDesc','')
-                .set('cityDesc','')
-                .set('districtDesc','')
-                .set('blockDesc','')
-                .set('latitude','')
-                .set('longitude','')
-                .set('activeTag','');
-
-        return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMtnRiskListing', {params});
     }
 
     getPolicyBatchPosting() {

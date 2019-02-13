@@ -13,21 +13,15 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
     styleUrls: ['./internal-competition.component.css']
 })
 export class InternalCompetitionComponent implements OnInit {
-    tableData: any[] = [];
-    tHeader: any[] = ["Advice No.", "Company", "Attention", "Position", "Advice Option", "Advice Wordings", "Created By", "Date Created", "Last Update By", "Last Update"];
-    dataTypes: any[] = ["text", "text", "text", "text", "select", "text", "text", "date", "text", "date"];
-    magnifyingGlass: any[] = ["attention", "advWord"];
-    nData: IntCompAdvInfo = new IntCompAdvInfo(null, null, null, null, null, null, null, new Date(), null, new Date());
-    opts: any[] = [];
 
     intCompData: any = {
         tableData: [],
         tHeader: ["Advice No.", "Company", "Attention", "Position", "Advice Option", "Advice Wordings", "Created By", "Date Created", "Last Update By", "Last Update"],
         dataTypes: ["text", "text", "text", "text", "select", "text", "text", "date", "text", "date"],
-        magnifyingGlass: ["attention", "advWord"],
+        magnifyingGlass: ["cedingRepName", "wordings"],
         nData: new IntCompAdvInfo(null, null, null, null, null, null, null, new Date(), null, new Date()),
         opts: [{
-            selector: 'advOpt',
+            selector: 'option',
             vals: ['option1', 'option2', 'option3', 'option4', 'option5'],
         }],
         searchFlag: true,
@@ -36,46 +30,39 @@ export class InternalCompetitionComponent implements OnInit {
         checkFlag: true,
         pageLength: 10,
         widths: [1,'auto','auto',1,'auto', 'auto', 1, 1, 1, 1],
-        keys: ['advNo', 'company', 'attention', 'position', 'advOpt', 'advWord', 'createdBy', 'dateCreated', 'lastUpdateBy', 'lastUpdate'],
+        //keys: ['advNo', 'company', 'attention', 'position', 'advOpt', 'advWord', 'createdBy', 'dateCreated', 'lastUpdateBy', 'lastUpdate'],
+        keys: ['adviceNo', 'cedingName', 'cedingRepName', 'position', 'option', 'wordings', 'createUser', 'createDate', 'updateUser', 'updateDate'],
 
     }
 
     data: any;
+    savedData: any[] = [];
     @ViewChild(CustEditableNonDatatableComponent) custEditableNonDatatableComponent : CustEditableNonDatatableComponent;
     
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title) { }
 
     ngOnInit() {
+        //var dateConvert: Date;
         this.titleService.setTitle("Quo | Internal Competition");
         //this.tableData = this.quotationService.getIntCompAdvInfo();
 
         //this.opts.push({ selector: "advOpt", vals: ["Pending", "On Going", "Done"] });
 
         this.quotationService.getIntCompAdvInfo().subscribe((data: any) => {
-            this.data = data;
-            //console.log(this.data.quotation[0].competition[0].adviceNo);
-            for(var i = 0; i < this.data.quotation.length; i++){
-              this.intCompData.tableData.push(
-                new IntCompAdvInfo(this.data.quotation[i].competitionsList[0].adviceNo, 
-                                   this.data.quotation[i].competitionsList[0].cedingName, 
-                                   this.data.quotation[i].competitionsList[0].cedingRepName,
-                                   '', 
-                                   this.data.quotation[i].competitionsList[0].option,
-                                   this.data.quotation[i].competitionsList[0].wordings,
-                                   this.data.quotation[i].competitionsList[0].createUser,
-                                   new Date(
-                                           this.data.quotation[i].competitionsList[0].createDate[0],
-                                           this.data.quotation[i].competitionsList[0].createDate[1] - 1,
-                                           this.data.quotation[i].competitionsList[0].createDate[2],
-                                       ),
-                                   this.data.quotation[i].competitionsList[0].updateUser,
-                                   new Date(
-                                           this.data.quotation[i].competitionsList[0].updateDate[0],
-                                           this.data.quotation[i].competitionsList[0].updateDate[1] - 1,
-                                           this.data.quotation[i].competitionsList[0].updateDate[2],
-                                           
-                                       ))
+
+            this.data = data.quotation[0].competitionsList;
+            for(var i = 0; i < this.data.length; i++){
+              this.data[i].createDate = new Date(
+                  this.data[i].createDate[0],
+                  this.data[i].createDate[1] - 1,
+                  this.data[i].createDate[2]
               );
+              this.data[i].updateDate = new Date(
+                  this.data[i].updateDate[0],
+                  this.data[i].updateDate[1] - 1,
+                  this.data[i].updateDate[2]
+              );
+              this.intCompData.tableData.push(this.data[i]);
             }
             this.custEditableNonDatatableComponent.refreshTable();
       }
@@ -91,7 +78,39 @@ export class InternalCompetitionComponent implements OnInit {
     }
 
     onClickSave() {
+      //console.log(this.data);
 
+      this.savedData = [];
+      
+      for (var i = 0 ; this.intCompData.tableData.length > i; i++) {
+        if(this.intCompData.tableData[i].edited){
+            this.savedData.push(this.intCompData.tableData[i]);
+            this.savedData[this.savedData.length-1].quoteId = 6;
+            this.savedData[this.savedData.length-1].createDate = new Date().toISOString();
+            this.savedData[this.savedData.length-1].updateDate = new Date().toISOString();
+          }
+
+        // delete this.savedData[i].tableIndex;
+      }
+       this.quotationService.saveQuoteCompetition(this.savedData).subscribe((data: any) => {
+            console.log(data);
+       });
+      /*let data : any = {
+            adviceNo: 0,
+            cedingId: 6, //hardcoded
+            cedingRepId: 'cedingrepid6',
+            createDate: new Date(),
+            createUser: 'Trinidad',
+            option: 'option1',
+            quoteId: 6,
+            updateDate: new Date(),
+            updateUser: 'Trinidad',
+            wordings: ''
+
+        }
+        this.quotationService.saveQuoteCompetition(data).subscribe((data: any) => {
+            console.log(data);
+        });*/
     }
 
     clickRow(event) {

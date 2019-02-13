@@ -38,36 +38,42 @@ export class MtnDistrictComponent implements OnInit {
     selected: any;
 
   ngOnInit() {
-  	this.mtnService.getMtnDistrict().subscribe((data: any) => {
-  		console.log(data);
-  		for (var a = data.region.length - 1; a >= 0; a--) {
-  			for (var b = data.region[a].provinceList.length - 1; b >= 0; b--) {
-  				for (var c = data.region[a].provinceList[b].cityList.length - 1; c >= 0; c--) {
-  					for (var d= data.region[a].provinceList[b].cityList[c].districtList.length - 1; d >= 0; d--) {
-  						this.passData.tableData.push(
-  								new Row(data.region[a].regionCd,
-  										data.region[a].regionDesc, 
-	  									data.region[a].provinceList[b].provinceCd, 
-	  									data.region[a].provinceList[b].provinceDesc,
-	  									data.region[a].provinceList[b].cityList[c].cityCd,
-	  									data.region[a].provinceList[b].cityList[c].cityDesc,
-	  									data.region[a].provinceList[b].cityList[c].districtList[d].districtCd,
-	  									data.region[a].provinceList[b].cityList[c].districtList[d].districtDesc )
-  							);
-  					}
-  				}
-  			}
-  		}
-  		this.table.refreshTable();
-  		console.log(this.passData.tableData);
-  	});
   }
 
+  openModal(){
+      
+      this.mtnService.getMtnDistrict().subscribe((data: any) => {
+        console.log(data);
+        for (var a = data.region.length - 1; a >= 0; a--) {
+          for (var b = data.region[a].provinceList.length - 1; b >= 0; b--) {
+            for (var c = data.region[a].provinceList[b].cityList.length - 1; c >= 0; c--) {
+              for (var d= data.region[a].provinceList[b].cityList[c].districtList.length - 1; d >= 0; d--) {
+                this.passData.tableData.push(
+                    new Row(data.region[a].regionCd,
+                        data.region[a].regionDesc, 
+                        data.region[a].provinceList[b].provinceCd, 
+                        data.region[a].provinceList[b].provinceDesc,
+                        data.region[a].provinceList[b].cityList[c].cityCd,
+                        data.region[a].provinceList[b].cityList[c].cityDesc,
+                        data.region[a].provinceList[b].cityList[c].districtList[d].districtCd,
+                        data.region[a].provinceList[b].cityList[c].districtList[d].districtDesc )
+                  );
+              }
+            }
+          }
+        }
+        this.table.refreshTable();
+        console.log(this.passData.tableData);
+      });
+    }
   select(data){
   	  this.selected = data;
   }
 
   okBtnClick(){
+    while(this.passData.tableData.length>0){
+      this.passData.tableData.pop();
+    }
   	this.selectedData.emit(this.selected);
   }
 

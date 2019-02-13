@@ -17,7 +17,7 @@ export class GenerateCvServiceComponent implements OnInit {
 
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
-      this.exitLink = params['link'] !== undefined ? params['link'] : 'adasdas';
+      this.exitLink = params['link'] !== undefined ? params['link'] : 'check-voucher-service';
       this.exitTab = params['tab'] !== undefined ? params['tab'] : '';
     });
 
@@ -25,7 +25,7 @@ export class GenerateCvServiceComponent implements OnInit {
 
   onTabChange($event: NgbTabChangeEvent) {
     if ($event.nextId === 'Exit') {
-      this.router.navigateByUrl('check-voucher-service');
+      this.router.navigate([this.exitLink,{tabID:this.exitTab}],{ skipLocationChange: true });
     }
   }
 }

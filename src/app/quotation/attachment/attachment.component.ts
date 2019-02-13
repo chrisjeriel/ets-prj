@@ -47,7 +47,15 @@ export class AttachmentComponent implements OnInit {
     options: [],
     dataTypes: [],
     opts: [],
-    nData: new AttachmentInfo(null, null),
+    nData: {
+      createDate: [0,0,0],
+      createUser: "PCPR",
+      description: null,
+      fileName: null,
+      fileNo: null,
+      updateDate: [0,0,0],
+      updateUser: "PCPR"
+    },
     checkFlag: true,
     selectFlag: false,
     addFlag: true,
@@ -101,7 +109,6 @@ export class AttachmentComponent implements OnInit {
     
     this.quotationService.getAttachment('1').subscribe((data: any) => {
         this.attachmentData = data.quotation[0].attachmentsList;
-        console.log(data);
         // this.passData.tableData = data.quotation.project.coverage.sectionCovers;
         for (var i = 0; i < this.attachmentData.length; i++) {
           this.passData.tableData.push(this.attachmentData[i]);
@@ -112,26 +119,20 @@ export class AttachmentComponent implements OnInit {
 
   saveData(){
     this.savedData = [];
-    console.log(this.editedData);
-    this.passData.tableData = this.passData.tableData.sort(function(a, b) {
-            return a.tableIndex - b.tableIndex;
-     });
-
-    console.log(this.passData.tableData);
-    for (var i = 0 ; this.editedData.length > i; i++) {
-      console.log(this.savedData);
-      this.savedData.push(this.passData.tableData[this.editedData[i]]);
-      this.savedData[i].createDate = new Date(this.savedData[i].createDate[0],this.savedData[i].createDate[1]-1,this.savedData[i].createDate[2]).toISOString();
-      this.savedData[i].updateDate = new Date(this.savedData[i].updateDate[0],this.savedData[i].updateDate[1]-1,this.savedData[i].updateDate[2]).toISOString();
+    
+    for (var i = 0 ; this.passData.tableData.length > i; i++) {
+      if(this.passData.tableData[i].edited){
+          this.savedData.push(this.passData.tableData[i]);
+          this.savedData[this.savedData.length-1].createDate = new Date(this.savedData[this.savedData.length-1].createDate[0],this.savedData[this.savedData.length-1].createDate[1]-1,this.savedData[this.savedData.length-1].createDate[2]).toISOString();
+          this.savedData[this.savedData.length-1].updateDate = new Date(this.savedData[this.savedData.length-1].updateDate[0],this.savedData[this.savedData.length-1].updateDate[1]-1,this.savedData[this.savedData.length-1].updateDate[2]).toISOString();
+        }
       // delete this.savedData[i].tableIndex;
     }
     this.quotationService.saveQuoteAttachment(1,this.savedData).subscribe((data: any) => {});
-    console.log(this.savedData);  
-
   }
 
   cancel(){
-    console.log(this.savedData);
+    console.log(this.passData.tableData);
   }
 
 }

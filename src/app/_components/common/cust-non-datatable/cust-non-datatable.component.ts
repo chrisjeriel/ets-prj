@@ -157,6 +157,7 @@ export class CustNonDatatableComponent implements OnInit {
     indvSelect: any;
     fillData:any = {};
     nullKey: any;
+    keyCounter: number = 0;
 
     pinDataHeader:any[] = [];
     pinKeys:any[] = [];
@@ -168,6 +169,9 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     refreshTable(){
+        while(this.displayData.length>0){
+            this.displayData.pop();
+        }
         for(var i = 0 ;i<this.passData.tableData.length;i++){
             this.displayData[i] = this.passData.tableData[i];
         }
@@ -228,7 +232,10 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     processData(key: any, data: any) {
-        this.nullKey = key;
+        if(this.keyCounter == 0){
+            this.nullKey = key;
+            this.keyCounter++;
+        }
         return data[key];
     }
     consoled(){
