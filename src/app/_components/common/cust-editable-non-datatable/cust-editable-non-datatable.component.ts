@@ -67,7 +67,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         pageID:1,
         keys:[]
     };
-
+    indvSelect: any;
     dataKeys: any[] = [];
     tableLoad: boolean = true;
     nextId: number = 0;
@@ -78,6 +78,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     startX:   any;
     startWidth: any;
     autoFill: number[];
+    selected: any[] = [];
 
     displayData:any[] = [];
     newData: any = new DummyInfo(null,null,null,null,null,null,null);
@@ -192,7 +193,10 @@ export class CustEditableNonDatatableComponent implements OnInit {
         });
     }
 
-    onRowClick(event) {
+    onRowClick(event,data) {
+         if(data != this.fillData){
+            this.indvSelect = data;
+        }
         this.rowClick.next(event);
         
     }
@@ -266,7 +270,13 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
    format(event,key, index){
-       this.displayData[index][key] = parseFloat(event.target.value.split(',').join(''));
+       let temp:string = event.target.value;
+       if(event.target.value.indexOf('(')!= -1){
+           temp = '-'+temp.substring(1,event.target.value.length-1);
+       }
+       if(this.displayData[index][key] != parseFloat(temp.split(',').join(''))){
+           this.displayData[index][key] = parseFloat(temp.split(',').join('')) ;
+       }
    }
 
    addClicked(event) {
@@ -327,6 +337,24 @@ export class CustEditableNonDatatableComponent implements OnInit {
         }
         
         this.clickLOV.emit(retData);
+    }
+
+    removeSelected(event, data){
+        if(!event.target.checked){
+            this.selected.splice(this.selected.indexOf(data), 1);
+            console.log('wow');
+        }else{
+            this.selected.push(data);
+        }
+        
+    }
+
+    assignChckbox(event,data,key){
+        console.log(event.target.checked);
+        if(typeof data[key] == 'boolean')
+            data[key] = event.target.checked;
+        else
+            data[key] = event.target.checked ? 'Y' : 'N';
     }
  
 }

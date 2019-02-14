@@ -286,6 +286,7 @@ import { CvRegisterServiceComponent } from './accounting-service/reports/registe
 import { ChecksRegisterServiceComponent } from './accounting-service/reports/registers-service/checks-register-service/checks-register-service.component';
 import { JvRegisterServiceComponent } from './accounting-service/reports/registers-service/jv-register-service/jv-register-service.component';
 import { AcctSrvcCancelledTransactionsComponent } from './accounting-service/accounting-service-inquiry/acct-srvc-cancelled-transactions/acct-srvc-cancelled-transactions.component';
+import { NegativeAmountPipe } from './_pipes/negative-amount.pipe';
 import { MtnAdviceWordingsComponent } from './maintenance/mtn-advice-wordings/mtn-advice-wordings.component';
 import { MtnAttentionComponent } from './maintenance/mtn-attention/mtn-attention.component';
 
@@ -581,6 +582,7 @@ import { MtnAttentionComponent } from './maintenance/mtn-attention/mtn-attention
         ChecksRegisterServiceComponent,
         JvRegisterServiceComponent,
         AcctSrvcCancelledTransactionsComponent,
+        NegativeAmountPipe,
         MtnAdviceWordingsComponent,
         MtnAttentionComponent,
     ],

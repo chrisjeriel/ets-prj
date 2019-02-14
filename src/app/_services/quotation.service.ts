@@ -63,12 +63,15 @@ export class QuotationService {
         return this.dummyInfoData;
     }
 
-    getCoverageInfo() {
+    getCoverageInfo(quotationNo?:any , quotationId?: string) {
         this.coverageInfoData = [
             new QuotationCoverageInfo("1", "I", "3", "69000", ""),
             new QuotationCoverageInfo("2", 'II', "2", "123000", "")
         ];
-        return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteCoverage");
+        const params = new HttpParams()
+             .set('quotationNo', (quotationNo === null || quotationNo === undefined ? '' : quotationNo) )
+             .set('quoteId',(quotationId === null || quotationId === undefined ? '' : quotationId) )
+        return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteCoverage",{params});
     }
 
     getQuotationListInfo() {

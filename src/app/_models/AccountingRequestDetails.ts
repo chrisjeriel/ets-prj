@@ -21,9 +21,9 @@ export class PaymentToAdjusters {
 		this.histNo = histNo;
 		this.histType = histType;
 		this.exGratia = exGratia;
-		this.reserveAmount = reserveAmount;
 		this.curr = curr;
 		this.currRate = currRate;
+		this.reserveAmount = reserveAmount;
 		this.amount = amount;
 		this.amountPhp = amountPhp;
 
@@ -38,9 +38,9 @@ export class PaymentToOtherParty {
 	histNo: number
 	histType: string
 	exGratia: string
-	reserveAmount: number
 	curr: string
 	currRate: number
+	reserveAmount: number
 	amount: number
 	amountPhp: number
 
@@ -53,9 +53,9 @@ export class PaymentToOtherParty {
 		this.histNo = histNo;
 		this.histType = histType;
 		this.exGratia = exGratia;
-		this.reserveAmount = reserveAmount;
 		this.curr = curr;
 		this.currRate = currRate;
+		this.reserveAmount = reserveAmount;
 		this.amount = amount;
 		this.amountPhp = amountPhp;
 
@@ -72,9 +72,9 @@ export class PaymentToCedingCompany {
 	histNo: number
 	histType: string
 	exGratia: string
-	reserveAmount: number
 	curr: string
 	currRate: number
+	reserveAmount: number
 	amount: number
 	amountPhp: number
 
@@ -87,9 +87,9 @@ export class PaymentToCedingCompany {
 		this.histNo = histNo;
 		this.histType = histType;
 		this.exGratia = exGratia;
-		this.reserveAmount = reserveAmount;
 		this.curr = curr;
 		this.currRate = currRate;
+		this.reserveAmount = reserveAmount;
 		this.amount = amount;
 		this.amountPhp = amountPhp;
 
@@ -105,16 +105,18 @@ export class PremiumReturn {
 	riCommision: number
 	charges: number
 	curr: string
+	currRate: number;
 	netDue: number
 
-	constructor(policyNo: string,dueDate: Date,cedingCompany: string,premium: number,riCommision: number,charges: number,curr: string,netDue: number){
+	constructor(policyNo: string,dueDate: Date,cedingCompany: string,premium: number,riCommision: number,charges: number,curr: string,netDue: number,currRate: number){
 		this.policyNo = policyNo;
 		this.dueDate = dueDate;
 		this.cedingCompany = cedingCompany;
+		this.curr = curr;
+		this.currRate = currRate;
 		this.premium = premium;
 		this.riCommision = riCommision;
 		this.charges = charges;
-		this.curr = curr;
 		this.netDue = netDue;
 	}
 }
@@ -147,24 +149,23 @@ export class PaymentOfSeviceFee {
 
 export class TreatyBalance {
 	quarterEnding: Date;
-	drBalance: number;
-	crBalance: number;
-	beginningCRBalance: number;
-	beginningDRBalance: number;
-	endingCRBalance: number;
-	endingDRBalance: number;
+	currency: string;
+	currencyRate:number;
+	amount: number;
+	amountPHP: number;
 
-	constructor(quarterEnding: Date,drBalance: number,crBalance: number,
-				beginningCRBalance: number,beginningDRBalance: number,
-				endingCRBalance: number,endingDRBalance: number) {
 
-		this.quarterEnding = quarterEnding; 
-		this.drBalance = drBalance; 
-		this.crBalance = crBalance; 
-		this.beginningCRBalance = beginningCRBalance; 
-		this.beginningDRBalance = beginningDRBalance; 
-		this.endingDRBalance = endingDRBalance; 
-		this.endingCRBalance = endingCRBalance;
+	constructor(quarterEnding: Date,
+	currency: string,
+	currencyRate:number,
+	amount: number,
+	amountPHP: number) {
+
+		this.quarterEnding = quarterEnding;
+		this.currency = currency;
+		this.currencyRate = currencyRate;
+		this.amount = amount;
+		this.amountPHP = amountPHP;
 	}
 }
 
