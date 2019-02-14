@@ -601,7 +601,7 @@ export class AccountingService {
 
 	getPremiumReturn() {
 		this.premiumReturn = [
-			new PremiumReturn("EAR-2018-00001-99-0001-00",new Date(25,10,2018), "FLT Prime", -250000, -75000, -9000, "Php", -166000)
+			new PremiumReturn("EAR-2018-00001-99-0001-00",new Date(25,10,2018), "FLT Prime", -250000, -75000, -9000, "Php", -166000, 1)
 		];
 		return this.premiumReturn;
 	}
@@ -753,7 +753,7 @@ export class AccountingService {
 
 	getTreatyBalance(){
 		this.treatyBalance = [ 
-			new TreatyBalance(new Date(2018,3,21),500000,100000,6000000,500000,6500000,6000000)
+			new TreatyBalance(new Date(2018,3,21),'PHP',1,100000,100000)
 		]
 		return this.treatyBalance;
 	}

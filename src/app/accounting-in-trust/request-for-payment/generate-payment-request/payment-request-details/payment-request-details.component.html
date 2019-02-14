@@ -108,7 +108,7 @@
       <ngb-tab>
         <ng-template ngbTabTitle>
           <ng-container [ngSwitch]="paymentType.toUpperCase()">
-           <div *ngSwitchCase ="'CLAIM EXPENSE PAYMENT TO ADJUSTERS'">Claim Expense Payment to Adjuster</div>
+           <div *ngSwitchCase ="'CLAIM EXPENSE PAYMENT TO ADJUSTERS'">Claim Expense Payment to Ceding Company</div>
               <div *ngSwitchCase ="'CLAIM EXPENSE PAYMENT TO OTHER PARTIES'">Claim Expense Payment to Other Parties</div>
               <div *ngSwitchCase ="'CLAIM PAYMENT TO CEDING COMPANY'">Claim Payment to Ceding Company</div>
               <div *ngSwitchCase ="'INWARD POLICY BALANCES - RETURNS'">Inward Policy Balances - Returns</div>
@@ -139,7 +139,13 @@
                     <app-cust-editable-non-datatable [passData]="ServiceAccountingData"></app-cust-editable-non-datatable>
                 </ng-container>
                 <ng-container *ngSwitchCase ="'TREATY BALANCE DUE PARTICIPANT'">
-                    <app-cust-editable-non-datatable [passData]="TreatyBalanceData"></app-cust-editable-non-datatable>
+                    <div class="d-flex p-0">
+                      <div class="col-sm-2"></div>
+                      <div class="col-sm">
+                        <app-cust-editable-non-datatable [passData]="TreatyBalanceData"></app-cust-editable-non-datatable>
+                      </div>
+                      <div class="col-sm-2"></div>
+                    </div>
                 </ng-container>
                 <ng-container *ngSwitchCase ="'INVESTMENT (PLACEMENT)'">
                     <app-payt-req-investment></app-payt-req-investment>
