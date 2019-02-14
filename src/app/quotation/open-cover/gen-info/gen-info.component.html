@@ -10,7 +10,7 @@
 								<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 									<div class="input-group" style="margin-top: 10px;">
 										<label class="form-control-sm col-sm-2">Quotation No</label>
-										<input type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="ocQuoteGenInfo.openQuotationNo">
+										<input type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="ocQuoteGenInfo.openQuotationNo" readonly>
 										<!-- <input type="text" class="form-control form-control-sm col-sm-1 cap-input" >
 										<input type="text" class="form-control form-control-sm col-sm-2 cap-input" style="margin-left: 3px;">
 										<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;">
@@ -30,7 +30,7 @@
 										<label class="form-control-sm col-sm-2">Type of Cession</label>
 										<input type="text" class="form-control form-control-sm" [(ngModel)]="typeOfCession">
 										<label class="form-control-sm col-sm-2">Line Class</label>
-										<input type="text" class="form-control form-control-sm" style="margin-right: 1px;" [(ngModel)]="lineClassDescr">
+										<input type="text" class="form-control form-control-sm" style="margin-right: 1px;" [(ngModel)]="lineClassCd">
 										<div class="text-search-ico" (click)="getLineClassLov($event)"><a><i class="fa fa-search"></i></a></div>
 										<span>&nbsp;</span>
 									</div>
@@ -54,10 +54,10 @@
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Intermediary</label>
-										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="ocQuoteGenInfo.intmId">
-										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="mtnIntmId">
+										<div class="text-search-ico" (click)="getIntmLov($event)"><a><i class="fa fa-search"></i></a></div>
 										<span>&nbsp;</span>
-										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 4px;" [(ngModel)]="ocQuoteGenInfo.intmName">
+										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 4px;" [(ngModel)]="mtnIntmName">
 									</div>
 								</div>
 							</div>
@@ -255,15 +255,15 @@
 					<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 						<div class="input-group" style="margin-top: 10px;">
 							<label class="form-control-sm col-sm-1">Principal</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="ocQuoteGenInfo.principalId">
-							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="prinId">
+							<div class="text-search-ico" (click)="getPrinLov($event)"><a><i class="fa fa-search"></i></a></div>
 							<span>&nbsp;</span>
-							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="ocQuoteGenInfo.principalName">
+							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="prinName">
 							<label class="form-control-sm col-sm-1">Contractor</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="ocQuoteGenInfo.contractorId">
-							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="conId">
+							<div class="text-search-ico" (click)="getConLov($event)"><a><i class="fa fa-search"></i></a></div>
 							<span>&nbsp;</span>
-							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="ocQuoteGenInfo.contractorName">
+							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="conName">
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Insured</label>
@@ -277,7 +277,7 @@
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2">Object</label>
 								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="objId">
-								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<div class="text-search-ico" (click)="getObjLov($event)"><a><i class="fa fa-search"></i></a></div>
 								<input type="text" class="form-control form-control-sm" style="margin-left: 9px;" [(ngModel)]="objName">
 							</div>
 							<div class="col-sm-6 input-group" style="padding: 0px;">
@@ -345,12 +345,12 @@
 				<div class="col-sm">
 					<div class="form-row">
 						<div class="col-sm">
-							<label for="inputEmail4" class="form-control-sm top-label">Opening Paragraph</label>
+							<label class="form-control-sm top-label">Opening Paragraph</label>
 							<textarea style="font-size: 12px; margin-bottom: 38px;" class="form-control form-control-sm" placeholder="Further to our Quotation No.." [(ngModel)]="ocQuoteGenInfo.openingParag"></textarea>
 							<div class="text-search-ico" ><a><i class="fa fa-search"></i></a></div>
 						</div>
 						<div class="col-sm">
-							<label for="inputEmail4" class="form-control-sm top-label">Closing Paragraph</label>
+							<label class="form-control-sm top-label">Closing Paragraph</label>
 							<textarea style="font-size: 12px; margin-bottom: 38px;" class="form-control form-control-sm" placeholder="This quotation is subject.."[(ngModel)]="ocQuoteGenInfo.closingParag"></textarea>
 						</div>
 					</div>
@@ -366,9 +366,9 @@
 				<div class="col-sm" style="margin-bottom: -8px; margin-top: 7px;">
 					<div class="form-row">
 						<div class="input-group">
-							<label for="inputEmail4" class="form-control-sm top-label col-sm-6" style="text-align: left !important;">Opening
+							<label class="form-control-sm top-label col-sm-6" style="text-align: left !important;">Opening
 								Paragraph</label>
-							<label for="inputEmail4" class="form-control-sm top-label col-sm-6" style="text-align: left !important; padding-left: 7px !important;">Closing
+							<label class="form-control-sm top-label col-sm-6" style="text-align: left !important; padding-left: 7px !important;">Closing
 								Paragraph</label>
 						</div>
 						<div class="input-group" style="margin-top: 14px !important;margin-bottom: 11px !important;">
@@ -478,8 +478,8 @@
 <app-mtn-insured id="prinIdLov" (selectedData)="setPrin($event)"></app-mtn-insured>
 <app-mtn-insured id="conIdLov" (selectedData)="setCon($event)"></app-mtn-insured>
 <app-mtn-object id="objIdLov" (selectedData)="setObj($event)"></app-mtn-object>
-<app-mtn-quotation-wordings *ngIf = "opWording === true" id="wordingOpeningIdLov" (selectedData)="setOpeningWording($event)"></app-mtn-quotation-wordings>
-<app-mtn-quotation-wordings *ngIf = "opWording === false" id="wordingClosingIdLov" (selectedData)="setClosingWording($event)"></app-mtn-quotation-wordings>
+<app-mtn-quotation-wordings  id="wordingOpeningIdLov" (selectedData)="setOpeningWording($event)"></app-mtn-quotation-wordings>
+<app-mtn-quotation-wordings  id="wordingClosingIdLov" (selectedData)="setClosingWording($event)"></app-mtn-quotation-wordings>
 <app-ceding-company id="cedingCoIdLov" (selectedData)="setCedingCo($event)"></app-ceding-company>
-<app-mtn-line-class id="lineClassIdLov" (selectedData)="setLineClass($event)"></app-mtn-line-class>
-
+<app-mtn-line-class id="lineClassIdLov" (selectedData)="setLineClass($event)" [line]="line"></app-mtn-line-class>
+<app-mtn-intermediary id="intmIdLov" (selectedData)="setIntm($event)"></app-mtn-intermediary>

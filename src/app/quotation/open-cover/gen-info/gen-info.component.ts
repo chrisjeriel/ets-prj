@@ -29,7 +29,6 @@ export class GenInfoComponent implements OnInit {
   objName:string;
   openingWording:string;
   closingWording:string;
-  opWording:boolean;
 
   riskId:string;
   riskName:string;
@@ -48,6 +47,9 @@ export class GenInfoComponent implements OnInit {
   lineClassCd:string;
   lineClassDescr:string;
 
+  mtnIntmId:number;
+  mtnIntmName:string;
+
 
   constructor(private route: ActivatedRoute, private quotationService: QuotationService, private http: HttpClient, private mtnService: MaintenanceService) {
    }
@@ -63,12 +65,27 @@ export class GenInfoComponent implements OnInit {
     this.sub = this.route.params.subscribe(params => {
       this.line = params['line'];
       this.from = params['from'];
-      this.ocQuoteNo = (params['ocQuoteNo']).trim();
-      if (this.from == "oc-inquiry") {
+      this.ocQuoteNo = (params['ocQuoteNo']);
+
+      if (this.from === "oc-inquiry") {
         this.typeOfCession = params['typeOfCession'];
+      }else if(this.from === "oc-processing"){
+        this.typeOfCession = params['typeOfCession'];
+        this.riskId = params['riskId'];
+
+        this.mtnService.getMtnRisk(this.riskId)
+                        .subscribe(val => {
+                          this.riskName = val['risk'].riskName;
+                          this.regionDesc = val['risk'].regionDesc;
+                          this.provinceDesc = val['risk'].provinceDesc;
+                          this.cityDesc = val['risk'].cityDesc;
+                          this.districtDesc = val['risk'].districtDesc;
+                          this.blockDesc  = val['risk'].blockDesc;
+                          this.lat  = val['risk'].latitude;
+                          this.long = val['risk'].longitude;
+                        });
       }
     });
-
     this.checkTypeOfCession();
 
     this.ocQuoteGenInfo = new OcGenInfoInfo();
@@ -96,11 +113,9 @@ export class GenInfoComponent implements OnInit {
                   this.ocQuoteGenInfo.currencyCd      = i.currencyCd;
                   this.ocQuoteGenInfo.currencyRt      = i.currencyRt;
                   this.ocQuoteGenInfo.govtTag         = i.govtTag;
-                  //this.govCheckbox = this.checkTag(this.ocQuoteGenInfo.govtTag);
                   this.govCheckbox = ((this.ocQuoteGenInfo.govtTag === 'y' || this.ocQuoteGenInfo.govtTag ==='Y') ? true: false);
                   this.ocQuoteGenInfo.indicativeTag   = i.indicativeTag;
-                  //this.indCheckbox = this.checkTag(this.ocQuoteGenInfo.indicativeTag);
-                  this.indCheckbox = (this.ocQuoteGenInfo.indicativeTag === 'a' || this.ocQuoteGenInfo.indicativeTag === 'A') ? true : false;
+                  this.indCheckbox = ((this.ocQuoteGenInfo.indicativeTag === 'a' || this.ocQuoteGenInfo.indicativeTag === 'A') ? true : false);
                   this.ocQuoteGenInfo.prinId          = i.prinId;
                   this.ocQuoteGenInfo.principalName   = i.principalName;
                   this.ocQuoteGenInfo.contractorId    = i.contractorId;
@@ -128,7 +143,6 @@ export class GenInfoComponent implements OnInit {
                 }
                 this.mtnService.getMtnRisk(this.ocQuoteGenInfo.riskId)
                         .subscribe(val => {
-                          //console.log(val['risk']. + "=====>JELELELELLELELEELL");
                           this.riskName = val['risk'].riskName;
                           this.regionDesc = val['risk'].regionDesc;
                           this.provinceDesc = val['risk'].provinceDesc;
@@ -143,14 +157,6 @@ export class GenInfoComponent implements OnInit {
     
 
   }
-
-  // checkTag(tag:string){
-  //   if(tag === "Y" || tag === "y"){
-  //     return true;
-  //   }else{
-  //     return false;
-  //   }
-  // }
 
   formatDate(date){
     if(date[1] < 9){
@@ -201,11 +207,9 @@ export class GenInfoComponent implements OnInit {
 
   getOpeningWordingLov(){
     $('#wordingOpeningIdLov #modalBtn').trigger('click');
-    this.opWording = true;
   }
   getClosingWordingLov(){
     $('#wordingClosingIdLov #modalBtn').trigger('click');
-    this.opWording = false;
   }
   setOpeningWording(data){
     this.openingWording  = data.wording;
@@ -226,9 +230,16 @@ export class GenInfoComponent implements OnInit {
     $('#lineClassIdLov #modalBtn').trigger('click');
   }
   setLineClass(data){
-    this.linee = data.lineCd;
+    this.line = data.lineCd;
     this.lineClassCd  = data.lineClassCd;
     this.lineClassDescr  = data.lineClassCdDesc;
-    console.log(data);
+  }
+
+  getIntmLov(){
+    $('#intmIdLov #modalBtn').trigger('click');
+  }
+  setIntm(data){
+    this.mtnIntmId  = data.intmId;
+    this.mtnIntmName  = data.intmName;
   }
 }
