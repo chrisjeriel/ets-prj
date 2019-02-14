@@ -300,7 +300,8 @@ export class AccountingService {
 
 	getARClaimsRecovery() {
 		this.arClaimsRecovery = [
-			new ARClaimsRecovery("REC-CAR-2018-000001","CAR-2018-000001", 3, "Loss", "Recovery", "Salvage for Construction Materials", "PHP", 1, 30000, 30000),
+			new ARClaimsRecovery("Recovery","CAR-2018-000001", "REC-CAR-2018-000001",3, "Loss", "Recovery", "Salvage for Construction Materials", "PHP", 1, 30000, 30000),
+			new ARClaimsRecovery("Overpayment","CAR-2018-000001", "",null, "", "", "Overpayment for the claim", "PHP", 1, 10000, 10000),
 		]
 		return this.arClaimsRecovery;
 	}
@@ -639,7 +640,7 @@ export class AccountingService {
 
 	getAccountingItClaimCashCallAR(){
 		this.accountingItClaimCashCallArData = [
-			new AccountingItClaimCashCallAr('CAR-2018-000001', 'CAR-2018-00001-99-0001-000', 'DMCI', new Date(2018,9,1), 'Damaged Material','Loss',0, 1000000, 'PHP', 1, 300000, 300000),
+			new AccountingItClaimCashCallAr('CAR-2018-000001', 'CAR-2018-00001-99-0001-000', 'DMCI', new Date(2018,9,1), 'Damaged Material','01','Loss',0, 1000000, 'PHP', 1, 300000, 300000),
 		];
 
 		return this.accountingItClaimCashCallArData;
@@ -663,8 +664,8 @@ export class AccountingService {
 
 	getAccARInvestments(){
 		this.accARInvestments = [
-			new AccARInvestments('BPI','BPI 1','Time',5,'Years',8.875, new Date(2013,9,20),new Date(2018,9,20),'PHP',1,18112.50,82250,14000000,4112500,18112500),
-			new AccARInvestments('RCBC','RCBC 1','Treasury',35,'Days',1.5, new Date(2018,8,26),new Date(2018,9,31),'PHP',1,10150,3000,10000000,150000,10150000)
+			new AccARInvestments('BPI','BPI 1','Time',5,'Years',8.875, new Date(2013,9,20),new Date(2018,9,20),'PHP',1,14000000,4112500,18112.50,82250,18112500),
+			new AccARInvestments('RCBC','RCBC 1','Treasury',35,'Days',1.5, new Date(2018,8,26),new Date(2018,9,31),'PHP',1,10000000,150000,10150,3000,10150000)
 		];
 		return this.accARInvestments;
 	}
@@ -692,7 +693,7 @@ export class AccountingService {
 
 	getAROthers(){
 		this.arOthers = [
-			new AROthers("Utilities","Payment For","PHP",1.0,-50000,-50000),
+			new AROthers("Utilities","Payment For","Refund","PHP",1.0,-50000,-50000),
 		];
 		return this.arOthers;
 	}
@@ -732,7 +733,7 @@ export class AccountingService {
 
 	getAcctServices(){
 		this.arOthers = [
-			new AROthers("Utilities","Service fee for the period of","PHP",1.0,-50000,-50000),
+			new AROthers("Utilities","Service fee for the period of","Payment","PHP",1.0,-50000,-50000),
 		];
 		return this.arOthers;
 	}

@@ -27,7 +27,7 @@ export class AcctArEntryComponent implements OnInit {
         paginateFlag: true,
         infoFlag: true,
         pageLength: 5,
-        widths: [],
+        widths: [130,70,100,150,210,1,"auto",100,180],
         pageID: 1,
         opts:[
           {

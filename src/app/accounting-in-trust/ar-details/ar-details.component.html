@@ -53,13 +53,13 @@
 			<ng-template ngbTabTitle>
 				<ng-container [ngSwitch]="paymentType.toUpperCase()">
 					<div *ngSwitchCase="'INWARD POLICY BALANCES'">Inward Policy Balances</div>
-					<div *ngSwitchCase="'CLAIM RECOVERY'">Claim Recovery</div>
-					<div *ngSwitchCase="'QSOA'">Treaty Balance Due to PMMSC</div>
-					<div *ngSwitchCase="'CLAIM CASH CALL'">Claim Cash Call</div>
+					<div *ngSwitchCase="'CLAIM RECOVERY / OVERPAYMENT'">Claim Recovery / Overpayment</div>
+					<div *ngSwitchCase="'QSOA'">Negative Treaty Balance</div>
+					<div *ngSwitchCase="'CLAIM CASH CALL'">Payment of Claim Cash Call by Company</div>
 					<div *ngSwitchCase="'INVESTMENT'">Investment Pull-Out</div>
 					<div *ngSwitchCase="'LOSS RESERVE DEPOSIT'">Loss Reserve Deposit</div>
 					<div *ngSwitchCase="'CLAIM OVER PAYMENT'">Claim Over Payment</div>
-					<div *ngSwitchCase="'PAYMENT FOR ADVANCES'">Payment For Advances</div>
+					<div *ngSwitchCase="'PAYMENT FOR ADVANCES'">Payment For Advances by Service</div>
 				</ng-container>
 			</ng-template>
 			<ng-template ngbTabContent>
@@ -69,7 +69,7 @@
 							<ng-container *ngSwitchCase="'INWARD POLICY BALANCES'">
 								<app-inward-policy-balances></app-inward-policy-balances>
 							</ng-container>
-							<ng-container *ngSwitchCase="'CLAIM RECOVERY'">
+							<ng-container *ngSwitchCase="'CLAIM RECOVERY / OVERPAYMENT'">
 								<app-claim-recovery></app-claim-recovery>
 							</ng-container>
 							<ng-container *ngSwitchCase="'QSOA'">

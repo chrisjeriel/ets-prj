@@ -9,10 +9,10 @@ export class AccARInvestments {
 	matDate: Date;
 	curr: string;
 	currRate: number;
-	bankCharge: number;
-	withTax: number;
 	investment: number;
 	income: number;
+	bankCharge: number;
+	withTax: number;
 	matValue: number;
 
 
@@ -27,10 +27,10 @@ export class AccARInvestments {
 		matDate: Date,
 		curr: string,
 		currRate: number,
-		bankCharge: number,
-		withTax: number,
 		investment: number,
 		income: number,
+		bankCharge: number,
+		withTax: number,
 		matValue: number) {
 
 		this.bank = bank;
@@ -43,10 +43,10 @@ export class AccARInvestments {
 		this.matDate = matDate;
 		this.curr = curr;
 		this.currRate = currRate;
-		this.bankCharge = bankCharge;
-		this.withTax = withTax;
 		this.investment = investment;
 		this.income = income;
+		this.bankCharge = bankCharge;
+		this.withTax = withTax;
 		this.matValue = matValue;
 	}
 }

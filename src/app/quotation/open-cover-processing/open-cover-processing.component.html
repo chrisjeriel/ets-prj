@@ -5,31 +5,31 @@
 			<ng-template ngbTabContent style="padding-top: 10px !important;">
 				<div style="position: relative;">
 					<div class="cust-btn-container">
-						<app-modal [btnTitle]="'Add'">
+						<app-modal [btnTitle]="'Add'" id="addModal">
 							<div header>Enter General Info</div>
 							<div body>
 								<fieldset class="scheduler-border">
 									<div class="custom-row-inline-inset">
 										<div class="input-group">
-											<label class="form-control-sm col-sm-3" for="xx">Line</label>
-											<input type="text" [(ngModel)]="line" class="form-control form-control-sm col-sm-2 cap-input">
-											<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+											<label class="form-control-sm col-sm-3">Line</label>
+											<input type="text" [(ngModel)]="mtnLineCd" class="form-control form-control-sm col-sm-2 cap-input" readonly>
+											<div class="text-search-ico"(click)="getLineLov($event)"><a><i class="fa fa-search"></i></a></div>
 											&nbsp;&nbsp;
-											<input type="text" id="xx" class="form-control form-control-sm">
+											<input type="text" class="form-control form-control-sm" [(ngModel)]="mtnLineDesc" readonly>
 										</div>
 										<div class="input-group">
-											<label class="form-control-sm col-sm-3" for="xx">Type of Cession</label>
-											<input type="text" id="xx" class="form-control form-control-sm col-sm-2">
-											<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+											<label class="form-control-sm col-sm-3">Type of Cession</label>
+											<input type="text" class="form-control form-control-sm col-sm-2"[(ngModel)]="mtnCessionId" readonly>
+											<div class="text-search-ico" (click)="getCessionLov($event)"><a><i class="fa fa-search"></i></a></div>
 											&nbsp;&nbsp;
-											<input type="text" id="xx" class="form-control form-control-sm">
+											<input type="text" class="form-control form-control-sm" [(ngModel)]="mtnCessionDesc" readonly>
 										</div>
 										<div class="input-group">
-											<label class="form-control-sm col-sm-3" for="xx">Risk</label>
-											<input type="text" id="xx" class="form-control form-control-sm col-sm-2" [(ngModel)]="riskId">
+											<label class="form-control-sm col-sm-3">Risk</label>
+											<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="riskId" readonly>
 											<div class="text-search-ico" (click)="getRiskLov($event)"><a><i class="fa fa-search"></i></a></div>
 											&nbsp;&nbsp;
-											<input type="text" id="xx" class="form-control form-control-sm" [(ngModel)]="riskName">
+											<input type="text" class="form-control form-control-sm" [(ngModel)]="riskName" readonly>
 										</div>
 									</div>
 								</fieldset>
@@ -39,6 +39,46 @@
 								<button class="cust-btn" type="button" (click)="nextBtnEvent();"><a>Next</a></button>
 							</div>
 						</app-modal>
+
+						<!-- hehrheherehrhehrerererere-->
+						<!-- <app-modal hidden id="addModal">
+							<div header>Enter General Info</div>
+							<div body>
+								<fieldset class="scheduler-border">
+									<div class="custom-row-inline-inset">
+										<div class="input-group">
+											<label class="form-control-sm col-sm-3">Line</label>
+											<input type="text" [(ngModel)]="line" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" readonly>
+											<div class="text-search-ico" (click)="modalService.dismissAll();showLineLOV()"><a><i class="fa fa-search"></i></a></div>
+											&nbsp;&nbsp;
+											<input type="text" class="form-control form-control-sm" [(ngModel)]="description" readonly>
+										</div>
+										<div class="input-group" style="margin-top: -12px">
+											<label class="form-control-sm col-sm-3">Type of Cession</label>
+											<input type="text" class="form-control form-control-sm col-sm-2" style="margin-right: -1px !important">
+											<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+											&nbsp;&nbsp;
+											<input type="text" class="form-control form-control-sm">
+										</div>
+										<div class="input-group" style="margin-top: -12px; margin-bottom: -10px ! important">
+											<label class="form-control-sm col-sm-3" style="margin: 0;">Risk</label>
+											<input type="text" class="form-control form-control-sm col-sm-2" style="margin-right: -1px !important"
+											  [(ngModel)] = "riskId" >
+											<div class="text-search-ico" (click)="getRiskLov($event)"><a><i class="fa fa-search"></i></a></div>
+											&nbsp;&nbsp;
+											<input type="text" class="form-control form-control-sm"  [(ngModel)]="riskName">
+										</div>
+									</div>
+								</fieldset>
+							</div>
+							<div footer class="text-center w-100">
+								<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+								<button class="cust-btn" type="button" (click)="modalService.dismissAll(); nextBtnEvent();"><a>Next</a></button>
+							</div>
+						</app-modal> -->
+
+				<!-- end -->
+					
 						<button *ngIf="disabledEditBtn" class="cust-btn-disabled">Edit</button>
 						<button *ngIf="!disabledEditBtn" class="cust-btn" (click)="editBtnEvent()">Edit</button>
 					</div>
@@ -92,3 +132,5 @@
 
 
 <app-mtn-risk id="riskIdLov" (selectedData)="setRisk($event)"></app-mtn-risk>
+<app-mtn-line id="lineIdLov" (selectedData)="setLine($event)"></app-mtn-line>
+<app-mtn-type-of-cession id="cessionIdLov" (selectedData)="setCession($event)"></app-mtn-type-of-cession>

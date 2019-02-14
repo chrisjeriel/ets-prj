@@ -289,7 +289,7 @@ import { AcctSrvcCancelledTransactionsComponent } from './accounting-service/acc
 import { MtnAdviceWordingsComponent } from './maintenance/mtn-advice-wordings/mtn-advice-wordings.component';
 import { MtnAttentionComponent } from './maintenance/mtn-attention/mtn-attention.component';
 import { NegativeAmountPipe } from './_pipes/negative-amount.pipe';
-
+import { MtnTypeOfCessionComponent } from './maintenance/mtn-type-of-cession/mtn-type-of-cession.component';
 
 
 @NgModule({
@@ -586,6 +586,7 @@ import { NegativeAmountPipe } from './_pipes/negative-amount.pipe';
         MtnAdviceWordingsComponent,
         MtnAttentionComponent,
         NegativeAmountPipe,
+        MtnTypeOfCessionComponent,
     ],
 
     providers: [

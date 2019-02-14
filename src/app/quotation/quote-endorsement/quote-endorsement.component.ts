@@ -93,7 +93,7 @@ export class QuoteEndorsementComponent implements OnInit {
 
     ngOnInit() {  
 
-        this.titleService.setTitle("Quo | Endorsement");
+        this.titleService.setTitle("Quo | Endorsementss");
         this.dtOptions = {
             ordering: false,
             pagingType: 'simple_numbers',

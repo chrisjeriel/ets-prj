@@ -142,7 +142,6 @@ export class GeneralInfoComponent implements OnInit {
 			this.from = params['from'];
 			if (this.from == "quo-processing") {
 				this.line = params['line'];
-				console.log('LINE SA LOOB NG IF >>> ' + this.line);
 				this.typeOfCession = params['typeOfCession'];				
 			}
 		});
@@ -341,7 +340,11 @@ export class GeneralInfoComponent implements OnInit {
     }
 
 	dateParser(arr) {
-		return new Date(arr[0] + '-' + arr[1] + '-' + arr[2]).toISOString();   
+		function pad(num){
+			return (num < 10) ? '0' + num : num;
+		}
+
+		return new Date(arr[0] + '-' + pad(arr[1]) + '-' + pad(arr[2])).toISOString();   
 	}
 
 	saveQuoteGenInfo() {		
@@ -409,6 +412,10 @@ export class GeneralInfoComponent implements OnInit {
 		}
 
 		return JSON.stringify(saveQuoteGeneralInfoParam);
+	}
+
+	toDateTime(ev) {
+		return new Date(ev).toISOString();
 	}
 }
 export interface SelectRequestMode {
