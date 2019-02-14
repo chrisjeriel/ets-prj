@@ -1,5 +1,3 @@
-
-
 import { Component, OnInit , ViewChild, Input} from '@angular/core';
 import { QuotationInfo, QuotationOption, QuoteEndorsement , QuoteEndorsementOC} from '../../_models';
 import { QuotationService } from '../../_services';

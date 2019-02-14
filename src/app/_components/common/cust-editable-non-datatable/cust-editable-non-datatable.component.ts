@@ -274,9 +274,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
        if(event.target.value.indexOf('(')!= -1){
            temp = '-'+temp.substring(1,event.target.value.length-1);
        }
-       console.log("parsed: "+ parseFloat(temp.split(',').join('')));
-       console.log("displayData: "+ this.displayData[index][key]);
-       console.log(this.displayData[index][key] != parseFloat(temp.split(',').join('')));
        if(this.displayData[index][key] != parseFloat(temp.split(',').join(''))){
            this.displayData[index][key] = parseFloat(temp.split(',').join('')) ;
        }
@@ -350,6 +347,14 @@ export class CustEditableNonDatatableComponent implements OnInit {
             this.selected.push(data);
         }
         
+    }
+
+    assignChckbox(event,data,key){
+        console.log(event.target.checked);
+        if(typeof data[key] == 'boolean')
+            data[key] = event.target.checked;
+        else
+            data[key] = event.target.checked ? 'Y' : 'N';
     }
  
 }

@@ -186,8 +186,8 @@ export class CoverageComponent implements OnInit {
           this.editedData[this.editedData.length-1].lineCd = 'CAR';
         
     }
+
     this.coverageData.createDate = new Date(this.coverageData.createDate[0],this.coverageData.createDate[1]-1,this.coverageData.createDate[2]).toISOString();
-    this.coverageData.updateDate = new Date(this.coverageData.updateDate[0],this.coverageData.updateDate[1]-1,this.coverageData.updateDate[2]).toISOString();
     
    
     this.coverageData.sectionCovers =this.editedData;

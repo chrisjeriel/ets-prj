@@ -287,6 +287,8 @@ import { ChecksRegisterServiceComponent } from './accounting-service/reports/reg
 import { JvRegisterServiceComponent } from './accounting-service/reports/registers-service/jv-register-service/jv-register-service.component';
 import { AcctSrvcCancelledTransactionsComponent } from './accounting-service/accounting-service-inquiry/acct-srvc-cancelled-transactions/acct-srvc-cancelled-transactions.component';
 import { NegativeAmountPipe } from './_pipes/negative-amount.pipe';
+import { MtnAdviceWordingsComponent } from './maintenance/mtn-advice-wordings/mtn-advice-wordings.component';
+import { MtnAttentionComponent } from './maintenance/mtn-attention/mtn-attention.component';
 
 
 @NgModule({
@@ -581,6 +583,8 @@ import { NegativeAmountPipe } from './_pipes/negative-amount.pipe';
         JvRegisterServiceComponent,
         AcctSrvcCancelledTransactionsComponent,
         NegativeAmountPipe,
+        MtnAdviceWordingsComponent,
+        MtnAttentionComponent,
     ],
 
     providers: [

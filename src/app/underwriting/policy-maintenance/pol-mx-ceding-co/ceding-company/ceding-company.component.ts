@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter} from '@angular/core';
 import { UnderwritingService } from '@app/_services';
-import { CedingCompanyList } from '@app/_models';
+import { CedingCompanyListing } from '@app/_models';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component'
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -15,15 +15,13 @@ export class CedingCompanyComponent implements OnInit {
   selected: any;
   passDataCedingCompany: any = {
         tableData : [],
-        tHeader: ['Active','Govt','Member','Co No','Name','Abbreviation','Address','Membership Date','Termination Date','Inactive Date'],
-        dataTypes:['checkbox','checkbox','checkbox','sequence-3','text','text','text','date','date','date'],
-        addFlag: true,
-        editFlag: true,
+        tHeader: ['Co No','Name','Abbreviation','Address','Membership Date','Termination Date','Inactive Date'],
+        dataTypes:['sequence-3','text','text','text','date','date','date'],
         pagination: true,
         pageStatus: true,
         searchFlag: true,
         pageLength: 10,
-        resizable: [false,false,false,false,true,false,true,false,false,false],
+        resizable: [false,true,false,true,false,false,false],
         filters: [
             {
                 key: 'coNo',
@@ -62,7 +60,7 @@ export class CedingCompanyComponent implements OnInit {
             }
         ],
         pageID: 6,
-        keys:['active','govt','member','coNo','name','abbreviation','address','membershipDate','terminationDate','inactiveDate']
+        keys:['coNo','name','abbreviation','address','membershipDate','terminationDate','inactiveDate']
     };
     
   constructor(private underwritingService: UnderwritingService, private modalService: NgbModal ) { }
@@ -70,7 +68,7 @@ export class CedingCompanyComponent implements OnInit {
   ngOnInit() {
   	this.underwritingService.getCedingCompanyList().subscribe((data: any) => {
                 for(var i=0;i< data.cedingcompany.length;i++){
-                    this.passDataCedingCompany.tableData.push(new CedingCompanyList(data.cedingcompany[i].activeTag,data.cedingcompany[i].govtTag,data.cedingcompany[i].membershipTag,data.cedingcompany[i].cedingId,data.cedingcompany[i].cedingName,data.cedingcompany[i].cedingAbbr,data.cedingcompany[i].address,(data.cedingcompany[i].membershipDate == null ? null : new Date(data.cedingcompany[i].membershipDate[i],data.cedingcompany[i].membershipDate[1]-1,data.cedingcompany[i].membershipDate[2])),(data.cedingcompany[i].terminationDate == null ? null : new Date(data.cedingcompany[i].terminationDate[i],data.cedingcompany[i].terminationDate[1]-1,data.cedingcompany[i].terminationDate[2])),(data.cedingcompany[i].inactiveDate == null ? null : new Date(data.cedingcompany[i].inactiveDate[i],data.cedingcompany[i].inactiveDate[1]-1,data.cedingcompany[i].inactiveDate[2]))));
+                    this.passDataCedingCompany.tableData.push(new CedingCompanyListing(data.cedingcompany[i].cedingId,data.cedingcompany[i].cedingName,data.cedingcompany[i].cedingAbbr,data.cedingcompany[i].address,(data.cedingcompany[i].membershipDate == null ? null : new Date(data.cedingcompany[i].membershipDate[i],data.cedingcompany[i].membershipDate[1]-1,data.cedingcompany[i].membershipDate[2])),(data.cedingcompany[i].terminationDate == null ? null : new Date(data.cedingcompany[i].terminationDate[i],data.cedingcompany[i].terminationDate[1]-1,data.cedingcompany[i].terminationDate[2])),(data.cedingcompany[i].inactiveDate == null ? null : new Date(data.cedingcompany[i].inactiveDate[i],data.cedingcompany[i].inactiveDate[1]-1,data.cedingcompany[i].inactiveDate[2]))));
                 }
 				this.table.refreshTable();          
     });
