@@ -13,8 +13,8 @@ export class MtnRiskComponent implements OnInit {
 
   riskListing: any = {
     tableData: [],
-    tHeader: ['Risk ID', 'Risk Name', 'Risk Abbr', 'Region','Province','City','District','Block'],
-    dataTypes: ['number', 'text', 'text','text','text','text','text','text'],
+    tHeader: ['Risk No','Risk','Region','Province','Town/City','District','Block'],
+    dataTypes: ['number', 'text','text','text','text','text','text'],
     pageLength: 10,
     searchFlag: true,
     pageStatus: true,
@@ -24,7 +24,6 @@ export class MtnRiskComponent implements OnInit {
     keys:[
     	'riskId',
     	'riskName',
-    	'riskAbbr',
     	'regionDesc',
     	'provinceDesc',
     	'cityDesc',
@@ -46,7 +45,6 @@ export class MtnRiskComponent implements OnInit {
             	this.riskListing.tableData.push({
                     riskId: rec.riskId,
                     riskName: rec.riskName,
-                    riskAbbr: rec.riskAbbr,
                     regionDesc: rec.regionDesc,
                     provinceDesc: rec.provinceDesc,
                     cityDesc: rec.cityDesc,

@@ -299,8 +299,15 @@ export class QuotationProcessingComponent implements OnInit {
             this.quotationService.toGenInfo = [];
             this.quotationService.toGenInfo.push("add", qLine);
             /*this.router.navigate(['/quotation']);*/
+
+            var addParams = {
+                cessionId: this.typeOfCessionId,
+                cessionDesc: this.typeOfCession,
+                riskId: this.riskCd,
+            }
+
             setTimeout(() => {
-                this.router.navigate(['/quotation', { line: qLine, typeOfCession: this.typeOfCession, from: 'quo-processing' }], { skipLocationChange: true });
+                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), from: 'quo-processing' }], { skipLocationChange: true });
             },100); 
         }
         //neco's influence ends here

@@ -1,0 +1,81 @@
+<div class="row">
+	<div class="col-sm-2"></div>
+	<div class="col-sm-8">
+		<fieldset class="scheduler-border"  style="padding: 15px !important;">
+			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+			<div class="input-group">
+				<span class="form-control-sm col-sm-1"></span>
+				<label class="form-control-sm col-sm-2">Period</label>
+				<input type="text" class="form-control form-control-sm col-sm-2" value="January" style="margin-right: 2px;">
+				<input type="text" class="form-control form-control-sm col-sm-1" value="2019">
+				<label class="form-control-sm col-sm-2">Method</label>
+				<input type="text" class="form-control form-control-sm col-sm-3" value="24th Method">				
+				<span class="form-control-sm col-sm-1"></span>
+			</div>
+			<div class="input-group">
+				<span class="form-control-sm col-sm-1"></span>
+				<label class="form-control-sm col-sm-2">Extracted By</label>
+				<input type="text" class="form-control form-control-sm col-sm-3" value="cuaresma">
+				<label class="form-control-sm col-sm-2">Extracted By</label>
+				<input type="datetime-local" class="form-control form-control-sm col-sm-3" value="2013-10-24T09:00">
+				<span class="form-control-sm col-sm-1"></span>
+			</div>
+
+			<div class="row">
+				<div class="col-sm">
+					<app-cust-non-datatable [passData]="passData"></app-cust-non-datatable>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-sm text-center">
+					<button class="cust-btn" (click)="openDetailsPerPolicy()">View Details</button>
+					<button class="cust-btn" style="max-width: 130px;">Generate Acct Entries</button>
+					<button class="cust-btn" (click)="openAccountingEntries()">View Acct Entries</button>					
+					<button class="cust-btn">Print</button>					
+				</div>
+			</div>
+		</fieldset>
+	</div>
+	<div class="col-sm-2"></div>
+</div>
+
+<app-modal class="d-none" id="detailsPerPolicy">
+	<div header>Details per Policy</div>
+	<div body>
+		<fieldset class="scheduler-border"  style="padding: 15px !important;">
+			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+			<div class="input-group">
+				<span class="form-control-sm col-sm-3"></span>
+				<label class="form-control-sm col-sm-1">Line</label>
+				<input type="text" class="form-control form-control-sm col-sm-1" value="CAR" style="margin-right: 2px;">
+				<input type="text" class="form-control form-control-sm col-sm-4" value="Construction All Risk">
+				<span class="form-control-sm col-sm-3"></span>
+			</div>
+			<app-cust-non-datatable [passData]="detailsPerPolicy"></app-cust-non-datatable>
+		</fieldset>
+	</div>
+	<div footer class="w-100 text-center">
+		<button class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>Return</a></button>            
+	</div>
+</app-modal>
+
+<app-modal class="d-none" id="accountingEntries">
+	<div header>Accounting Entries</div>
+	<div body>
+		<fieldset class="scheduler-border"  style="padding: 15px !important;">
+			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+			<div class="input-group">
+				<span class="form-control-sm col-sm-3"></span>
+				<label class="form-control-sm col-sm-1">Line</label>
+				<input type="text" class="form-control form-control-sm col-sm-1" value="CAR" style="margin-right: 2px;">
+				<input type="text" class="form-control form-control-sm col-sm-4" value="Construction All Risk">
+				<span class="form-control-sm col-sm-3"></span>
+			</div>
+			<app-cust-non-datatable [passData]="accountingEntries"></app-cust-non-datatable>
+		</fieldset>
+	</div>
+	<div footer class="w-100 text-center">
+		<button class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>Return</a></button>            
+	</div>
+</app-modal>

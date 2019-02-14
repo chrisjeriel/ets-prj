@@ -101,6 +101,10 @@ import { AccSrvInquiryComponent } from './accounting-service/acc-srv-inquiry/acc
 import { CancelTransactionsServiceComponent } from './accounting-service/utilities/cancel-transactions-service/cancel-transactions-service.component';
 import { RegistersServiceComponent } from './accounting-service/reports/registers-service/registers-service.component';
 import { AcctSrvcCancelledTransactionsComponent } from './accounting-service/accounting-service-inquiry/acct-srvc-cancelled-transactions/acct-srvc-cancelled-transactions.component';
+import { MonEndDataChkComponent } from './accounting-in-trust/month-end/mon-end-data-chk/mon-end-data-chk.component';
+import { MonEndBatchComponent } from './accounting-in-trust/month-end/mon-end-batch/mon-end-batch.component';
+import { MonEndTrialBalComponent } from './accounting-in-trust/month-end/mon-end-trial-bal/mon-end-trial-bal.component';
+import { FundsHeldComponent } from './accounting-in-trust/month-end/funds-held/funds-held.component';
 
 
 const appRoutes: Routes = [
@@ -212,6 +216,11 @@ const appRoutes: Routes = [
     { path: 'cancel-transaction-service', component: CancelTransactionsServiceComponent },
     { path: 'print-registers-service', component: RegistersServiceComponent },
     { path: 'acct-srvc-inquiry-cncld-trans', component: AcctSrvcCancelledTransactionsComponent },
+    { path: 'mon-end-data-chk-in-trust', component: MonEndDataChkComponent},
+    { path: 'mon-end-batch-in-trust', component: MonEndBatchComponent},
+    { path: 'mon-end-trial-bal-in-trust', component: MonEndTrialBalComponent},
+    { path: 'funds-held', component: FundsHeldComponent},
+
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

@@ -290,6 +290,12 @@ import { MtnAdviceWordingsComponent } from './maintenance/mtn-advice-wordings/mt
 import { MtnAttentionComponent } from './maintenance/mtn-attention/mtn-attention.component';
 import { NegativeAmountPipe } from './_pipes/negative-amount.pipe';
 import { MtnTypeOfCessionComponent } from './maintenance/mtn-type-of-cession/mtn-type-of-cession.component';
+import { MonEndDataChkComponent } from './accounting-in-trust/month-end/mon-end-data-chk/mon-end-data-chk.component';
+import { MonEndBatchComponent } from './accounting-in-trust/month-end/mon-end-batch/mon-end-batch.component';
+import { MonEndTrialBalComponent } from './accounting-in-trust/month-end/mon-end-trial-bal/mon-end-trial-bal.component';
+import { FundsHeldComponent } from './accounting-in-trust/month-end/funds-held/funds-held.component';
+import { ExtractRecordComponent } from './accounting-in-trust/month-end/funds-held/extract-record/extract-record.component';
+import { UnearnedPremiumComponent } from './accounting-in-trust/month-end/funds-held/unearned-premium/unearned-premium.component';
 
 
 @NgModule({
@@ -587,6 +593,12 @@ import { MtnTypeOfCessionComponent } from './maintenance/mtn-type-of-cession/mtn
         MtnAttentionComponent,
         NegativeAmountPipe,
         MtnTypeOfCessionComponent,
+        MonEndDataChkComponent,
+        MonEndBatchComponent,
+        MonEndTrialBalComponent,
+        FundsHeldComponent,
+        ExtractRecordComponent,
+        UnearnedPremiumComponent,
     ],
 
     providers: [
