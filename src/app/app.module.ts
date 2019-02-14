@@ -287,6 +287,12 @@ import { ChecksRegisterServiceComponent } from './accounting-service/reports/reg
 import { JvRegisterServiceComponent } from './accounting-service/reports/registers-service/jv-register-service/jv-register-service.component';
 import { AcctSrvcCancelledTransactionsComponent } from './accounting-service/accounting-service-inquiry/acct-srvc-cancelled-transactions/acct-srvc-cancelled-transactions.component';
 import { MtnTypeOfCessionComponent } from './maintenance/mtn-type-of-cession/mtn-type-of-cession.component';
+import { MonEndDataChkComponent } from './accounting-in-trust/month-end/mon-end-data-chk/mon-end-data-chk.component';
+import { MonEndBatchComponent } from './accounting-in-trust/month-end/mon-end-batch/mon-end-batch.component';
+import { MonEndTrialBalComponent } from './accounting-in-trust/month-end/mon-end-trial-bal/mon-end-trial-bal.component';
+import { FundsHeldComponent } from './accounting-in-trust/month-end/funds-held/funds-held.component';
+import { ExtractRecordComponent } from './accounting-in-trust/month-end/funds-held/extract-record/extract-record.component';
+import { UnearnedPremiumComponent } from './accounting-in-trust/month-end/funds-held/unearned-premium/unearned-premium.component';
 
 
 @NgModule({
@@ -581,6 +587,12 @@ import { MtnTypeOfCessionComponent } from './maintenance/mtn-type-of-cession/mtn
         JvRegisterServiceComponent,
         AcctSrvcCancelledTransactionsComponent,
         MtnTypeOfCessionComponent,
+        MonEndDataChkComponent,
+        MonEndBatchComponent,
+        MonEndTrialBalComponent,
+        FundsHeldComponent,
+        ExtractRecordComponent,
+        UnearnedPremiumComponent,
     ],
 
     providers: [
