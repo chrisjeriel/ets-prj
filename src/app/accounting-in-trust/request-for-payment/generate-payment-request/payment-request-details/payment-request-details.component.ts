@@ -94,6 +94,45 @@ export class PaymentRequestDetailsComponent implements OnInit {
     infoFlag:true
   }
 
+  MainCompanyServiceAccountingData:any = {
+    tHeader: ['Main Company Distribution','Precent Share(%)','Curr','Curr Rate','Amount','Amount (PHP)'],
+    widths:['auto',1,1,1,100,100],
+    dataTypes:['text','percent','text','percent','currency','currency'],
+    uneditable:[true,true,true,true,true,true],
+    total: [null,null,null,'Total','4','5'],
+    infoFlag: true,
+    paginateFlag: true,
+    pageLength: 3,
+    searchFlag:true,
+    tableData:[
+      ['Nat Re',4,'PHP',1,40000,40000]
+    ],
+    pageID:2
+  }
+
+  SubServiceAccountingData: any= {
+    tHeader: ['Sub-Distribution','Precent Share(%)','Curr','Curr Rate','Amount','Amount (PHP)'],
+    widths:['auto',1,1,1,100,100],
+    dataTypes:['text','percent','text','percent','currency','currency'],
+    uneditable:[true,true,true,true,true,true],
+    total: [null,null,null,'Total','4','5'],
+    infoFlag: true,
+    paginateFlag: true,
+    pageLength: 10,
+    tableData:[
+      ['Munich Re',10.00, 'PHP', 1, 96000, 96000 ],
+      ['Allied', 1.00, 'PHP', 1, 9600, 9600],
+      ['ASIA UNITED', 5.00, 'PHP', 1, 48000, 48000],
+      ['BPI/MS', 5.00, 'PHP', 1, 48000, 48000],
+      ['FEDERAL PHOENIX', 1.00, 'PHP', 1, 9600, 9600],
+      ['INTRA_STRATA', 1.00, 'PHP', 1, 9600, 9600],
+      ['LIBERTY', 10.00, 'PHP', 1, 96000, 96000],
+      ['MAPFRE', 5.00, 'PHP', 1, 43000, 43000],
+      ['MERIDIAN', 5.00, 'PHP', 1, 48000, 48000],
+      ['PHILFIRE', 1.00, 'PHP', 1, 9600, 9600],
+    ],
+    pageID:3
+  }
 
   TreatyBalanceData: any = {
     tableData: this.accountingService.getTreatyBalance(),
