@@ -3,7 +3,7 @@ import { QuotationCoverageInfo, NotesReminders } from '../../_models';
 import { QuotationService, NotesService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
-
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-coverage',
@@ -95,12 +95,17 @@ export class CoverageComponent implements OnInit {
 
   nData: QuotationCoverageInfo = new QuotationCoverageInfo(null, null, null, null, null);
 
-  constructor(private quotationService: QuotationService, private titleService: Title) {
+  quotationNo: string;
+  insuredName: string;
+  risk: string;
+
+  constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute) {
 
 
    }
 
   temp: number = 0;
+  sub: any;
 
   printSelectedValue(event) {
   }
@@ -110,8 +115,17 @@ export class CoverageComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    this.quotationService.getCoverageInfo().subscribe((data: any) => {
+    let quoteNo:string = "";
+    this.sub = this.route.params.subscribe(params => {
+      this.quotationNo = params["quotationNo"];
+      quoteNo = this.quotationNo.split(/[-]/g)[0]
+      for (var i = 1; i < this.quotationNo.split(/[-]/g).length; i++) {
+       quoteNo += '-' + parseInt(this.quotationNo.split(/[-]/g)[i]);
+     } 
+    });
+    
+    this.quotationService.getCoverageInfo(quoteNo,null).subscribe((data: any) => {
+      this.risk = data.quotation.project.riskName;
         this.coverageData = data.quotation.project.coverage;
         // this.passData.tableData = data.quotation.project.coverage.sectionCovers;
         for (var i = data.quotation.project.coverage.sectionCovers.length - 1; i >= 0; i--) {
