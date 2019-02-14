@@ -388,7 +388,10 @@ export class QuotationService {
 
         /*return this.http.get<User[]>(`${environment.apiUrl}/quotation`);*/
         //return this.intCompAdvInfo;
-        return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteCompetition");
+        const params = new HttpParams()
+                .set('quoteId','14')
+                .set('quotationNo','CAR-2019-2-0-4');
+        return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteCompetition", {params});
     }
 
 
@@ -721,6 +724,7 @@ export class QuotationService {
         }
         //console.log(saveQuoteCompetitionParams.join(","));
         //console.log(params.substring(1,params.length-1));
+        console.log(saveQuoteCompetitionParams);
         return this.http.post('http://localhost:8888/api/quote-service/saveQuoteCompetition', params.substring(1,params.length-1), header);
     }
 

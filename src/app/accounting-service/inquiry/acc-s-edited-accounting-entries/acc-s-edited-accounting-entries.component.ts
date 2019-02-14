@@ -101,7 +101,7 @@ export class AccSEditedAccountingEntriesComponent implements OnInit {
   constructor(private titleService: Title, private modalService: NgbModal, private accountingService: AccountingService, private router: Router) { }
 
   ngOnInit() {
-    this.titleService.setTitle("Acct-IT | Edited Accounting Entries");
+    this.titleService.setTitle("Acct-S | Edited Accounting Entries");
   }
 
   showModal(content) {
