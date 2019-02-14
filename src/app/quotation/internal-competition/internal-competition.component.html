@@ -18,7 +18,6 @@
 <div>
 	<fieldset class="scheduler-border">
 		<legend class="scheduler-border">Advice Details	</legend>
-		<!--<app-cust-editable-table [checkFlag]="true" [addFlag]="true" [deleteFlag]="true" [editFlag]="false" [nData]="nData" [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes" [opts]="opts" [magnifyingGlass]="magnifyingGlass" (rowClick)="clickRow($event)"></app-cust-editable-table>-->
 		<div style="padding-top: 8px;">
         	<app-cust-editable-non-datatable [passData]="intCompData" (clickLOV)="clickAdviceLOV($event);"></app-cust-editable-non-datatable>
 		</div>
@@ -30,23 +29,6 @@
 			<div class="cust-btn-container" style="margin-top: 10px;">
 			<button type="button" class="cust-btn"><a>Print</a></button>
 			<button type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
-
-			<!-- <app-modal [btnTitle]="'Save'">
-            			<div header>Success Message</div>
-
-            			<div body class="row">
-        						<div class="col-sm-1 text-right my-modal-icon">
-									<i class="fa fa-check-circle"></i>
-								</div>
-								<div class="col-sm-9 text-left my-modal-text" style="margin-left: 30px;">
-									<span class="align-middle">Saving successful</span>
-								</div>
-        				</div>
-
-        				<div footer>
-            				<button class="cust-btn" type="button" (click)="modalService.dismissAll();" routerLink="/quotation-processing"><a>Ok</a></button>
-            			</div>
-            </app-modal> -->
             <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
 		</div>
 	</div>

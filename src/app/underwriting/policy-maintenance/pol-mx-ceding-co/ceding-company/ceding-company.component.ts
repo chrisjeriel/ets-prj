@@ -13,6 +13,7 @@ export class CedingCompanyComponent implements OnInit {
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
   selected: any;
+
   passDataCedingCompany: any = {
         tableData : [],
         tHeader: ['Co No','Name','Abbreviation','Address','Membership Date','Termination Date','Inactive Date'],
@@ -82,5 +83,6 @@ export class CedingCompanyComponent implements OnInit {
   okBtnClick(){
   	this.selectedData.emit(this.selected);
   }
+
 
 }

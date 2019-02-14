@@ -5,7 +5,7 @@
 			<ng-template ngbTabContent>
 				<div class="row" style="margin-top: 10px;">
 					<div class="col-sm">
-						<app-cust-non-datatable [passData]="passData" (add)="toAddEdit();"></app-cust-non-datatable>
+						<app-cust-non-datatable [passData]="passData" (add)="toAddEdit();" (rowDblClick)="toGenerateCedingEdit($event);"></app-cust-non-datatable>
 					</div>
 				</div>
 			</ng-template>
@@ -27,7 +27,7 @@
 								<div style="margin-right: 50px;">
 									<div class="input-group cust-ig">
 										<label class="form-control-sm col-sm-2">Company No</label>
-										<input type="text" class="form-control form-control-sm col-sm-2">
+										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="companyNo">
 										<div class="cust-div col-sm-5" style="margin-left: 15px;"><input type="checkbox">&nbsp;<span class="cust-span">Active Tag</span>
 											<input style="margin-left: 64px;" type="checkbox">&nbsp;<span class="cust-span">Government</span>
 										</div>
