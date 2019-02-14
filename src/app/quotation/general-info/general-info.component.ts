@@ -141,70 +141,42 @@ export class GeneralInfoComponent implements OnInit {
 		this.sub = this.route.params.subscribe(params => {
 			this.from = params['from'];
 			if (this.from == "quo-processing") {
-				this.line = params['quotationNo'].split('-')[0];
-				this.typeOfCession = params['typeOfCession'];
-				this.quotationNo = params['quotationNo'];
-				this.typeOfCession = this.typeOfCession;
+				this.line = params['line'];
+				console.log('LINE SA LOOB NG IF >>> ' + this.line);
+				this.typeOfCession = params['typeOfCession'];				
 			}
 		});
 
 		if (this.quotationService.toGenInfo[0] == "edit") {
-				this.quotationService.getQuoteGenInfo('', this.plainQuotationNo(this.quotationNo)).subscribe(data => {
-				
-				this.project = (data['project'] == null) ? this.project : data['project'];
-				this.genInfoData = (data['quotationGeneralInfo'] == null) ? this.genInfoData : data['quotationGeneralInfo'];
+			this.sub = this.route.params.subscribe(params => {
+				this.from = params['from'];
+				if (this.from == "quo-processing") {
+					this.line = params['quotationNo'].split('-')[0];
+					this.typeOfCession = params['typeOfCession'];
+					this.quotationNo = params['quotationNo'];
+					this.typeOfCession = this.typeOfCession;
+				}
 			});
 
-			/*	this.quotationService.getQuoteGenInfo('', this.quotationNo).subscribe((data: any) => {
-				this.genInfoData = data.quotationGeneralInfo;
+			this.quotationService.getQuoteGenInfo('', this.plainQuotationNo(this.quotationNo)).subscribe(data => {
 				
-				console.log('DATA >>>>> ' + data.quotationGeneralInfo);*/
+				if(data['quotationGeneralInfo'] != null) {
+					this.genInfoData = data['quotationGeneralInfo'];						
+					this.genInfoData.createDate = this.dateParser(this.genInfoData.createDate);
+					this.genInfoData.expiryDate = this.dateParser(this.genInfoData.expiryDate);
+					this.genInfoData.issueDate = this.dateParser(this.genInfoData.issueDate);
+					this.genInfoData.printDate = (this.genInfoData.printDate == null) ? '' : this.dateParser(this.genInfoData.issueDate);
+					this.genInfoData.reqDate = this.dateParser(this.genInfoData.reqDate);
+					this.genInfoData.updateDate = this.dateParser(this.genInfoData.updateDate);
+				}
 
-				/*this.genInfoData.cessionDesc = this.genInfoData.cessionDesc.toUpperCase();*/
-			/*});*/
+				if(data['project'] != null) {
+					this.project = data['project'];
+					this.project.createDate = this.dateParser(this.project.createDate);
+					this.project.updateDate = this.dateParser(this.project.updateDate);
+				}
 
-
-/*			console.log(this.quotationService.rowData);*/
-			this.quotationGenInfo = new QuotationGenInfo();
-			this.quotationGenInfo.line = "";
-			this.quotationGenInfo.year = 0;
-			this.quotationGenInfo.seqNo;
-			this.quotationGenInfo.reqSeq;
-			this.quotationGenInfo.histNo = "MOCK DATA";
-			this.quotationGenInfo.branch = this.rowData[1];
-			this.quotationGenInfo.lineClass = this.quotationNo[0];
-			this.quotationGenInfo.policyNumber = 0;
-			this.quotationGenInfo.printedBy = "MOCK DATA";
-			this.quotationGenInfo.printDate;
-			this.quotationGenInfo.cedingCompany = this.rowData[4];
-			this.quotationGenInfo.quoteStatus = this.rowData[3];
-			this.quotationGenInfo.quoteDate = new Date(this.rowData[11]);
-			this.quotationGenInfo.validUntil = new Date(this.rowData[12]);
-			this.quotationGenInfo.requestedBy = this.rowData[13];
-			this.quotationGenInfo.requestedDate;
-			this.quotationGenInfo.requestedMode = "MOCK DATA";
-			this.quotationGenInfo.principal = this.rowData[5];
-			this.quotationGenInfo.contractor = this.rowData[6];
-			this.quotationGenInfo.insured = this.rowData[7];
-			this.quotationGenInfo.propertyProjectDescription = "MOCK DATA";
-			this.quotationGenInfo.site = "MOCK DATA";
-			this.quotationGenInfo.durationTesting = "MOCK DATA";
-			this.quotationGenInfo.risk = this.rowData[8];
-			this.quotationGenInfo.object = this.rowData[9];
-			this.quotationGenInfo.location = this.rowData[10];
-			this.quotationGenInfo.share = "MOCK DATA";
-			this.quotationGenInfo.partOf100 = "MOCK DATA";
-			this.quotationGenInfo.intermediary = "MOCK DATA";
-			this.quotationGenInfo.governmentFlag = "MOCK DATA";
-			this.quotationGenInfo.indicative = "MOCK DATA";
-			this.quotationGenInfo.openCover = "MOCK DATA";
-			this.quotationGenInfo.declaration = "MOCK DATA";
-			this.quotationGenInfo.openingParagraph = "MOCK DATA";
-			this.quotationGenInfo.closingParagraph = "MOCK DATA";
-			this.quotationGenInfo.createdBy = "MOCK DATA";
-			this.quotationGenInfo.dateCreated;
-			this.quotationGenInfo.lastUpdate;
-			this.quotationGenInfo.lastUpdateBy = "MOCK DATA";
+			});
 
 		} else {
 
@@ -269,12 +241,12 @@ export class GeneralInfoComponent implements OnInit {
 	}
 
 	reqMode: SelectRequestMode[] = [
-		{ name: '', value: '' },
-		{ name: 'Web Portal', value: 'Web Portal' },
-		{ name: 'Fax', value: 'Fax' },
-		{ name: 'Email', value: 'Email' },
-		{ name: 'Phone', value: 'Phone' },
-		{ name: 'etc', value: 'etc' },
+	{ name: '', value: '' },
+	{ name: 'Web Portal', value: 'Web Portal' },
+	{ name: 'Fax', value: 'Fax' },
+	{ name: 'Email', value: 'Email' },
+	{ name: 'Phone', value: 'Phone' },
+	{ name: 'etc', value: 'etc' },
 	];
 
 	//getting value
@@ -299,8 +271,8 @@ export class GeneralInfoComponent implements OnInit {
 	}
 
 	setPrincipal(data){
-		this.quotationGenInfo.principal = data.insuredName;
-		this.principalCd = data.insuredId;
+		this.genInfoData.principalName = data.insuredName;
+		this.genInfoData.principalId = data.insuredId;
 	}
 
 	showContractorLOV(){
@@ -318,8 +290,8 @@ export class GeneralInfoComponent implements OnInit {
 
 
 	setContractor(data){
-		this.quotationGenInfo.contractor = data.insuredName;
-		this.contractorCd = data.insuredId;
+		this.genInfoData.contractorName = data.insuredName;
+		this.genInfoData.contractorId = data.insuredId;
 	}
 
 	showCurrencyModal(){
@@ -327,8 +299,8 @@ export class GeneralInfoComponent implements OnInit {
 	}
 
 	setCurrency(data){
-		this.currencyAbbr = data.currencyAbbr;
-		this.currencyRt = data.currencyRt;
+		this.genInfoData.currencyCd = data.currencyAbbr;
+		this.genInfoData.currencyRt = data.currencyRt;
 	}
 
 
@@ -339,18 +311,27 @@ export class GeneralInfoComponent implements OnInit {
 	}
 
 	showCedingCompanyLOV() {
-        $('#cedingCompanyLOV #modalBtn').trigger('click');
-    }
+		$('#cedingCompanyLOV #modalBtn').trigger('click');
+	}
 
-    setCedingcompany(event){
-    	this.genInfoData.cedingId = event.coNo;
-        this.genInfoData.cedingName = event.name;
+	setCedingcompany(event){
+		this.genInfoData.cedingId = event.coNo;
+		this.genInfoData.cedingName = event.name;
+	}
+
+	showInsuredLOV(){
+		$('#insuredLOV #modalBtn').trigger('click');
+	}
+
+	setInsured(data){
+		//this.genInfoData.principal = data.insuredId;
+		this.genInfoData.insuredDesc = data.insuredName;
 	}
 
 	setLineClass(event){
 		this.lineClassCode = event.lineClassCd;
         this.lineClassDesc = event.lineClassCdDesc;
-        this.genInfoData.lineCd = this.lineClassCode + ' - ' + this.lineClassDesc;
+        this.genInfoData.lineCd = this.lineClassDesc;
 
     }
 
@@ -359,6 +340,76 @@ export class GeneralInfoComponent implements OnInit {
         this.genInfoData.intmName = event.intmName;
     }
 
+	dateParser(arr) {
+		return new Date(arr[0] + '-' + arr[1] + '-' + arr[2]).toISOString();   
+	}
+
+	saveQuoteGenInfo() {		
+		console.log('PREPARING DATA >>> ' + this.prepareParam());
+
+		this.quotationService.saveQuoteGeneralInfo(this.prepareParam()).subscribe(data => console.log(data));
+	}
+
+	prepareParam() {
+		var saveQuoteGeneralInfoParam = {
+			"approvedBy"	: this.genInfoData.approvedBy,
+			"cedingId"		: this.genInfoData.cedingId,
+			"cessionId"		: (this.genInfoData.cessionDesc.toUpperCase() === 'DIRECT') ? '1' : '2', //this.genInfoData.cessionId,
+			"closingParag"	: this.genInfoData.closingParag,
+			"contractorId"	: this.genInfoData.contractorId,
+			"createDate"	: this.genInfoData.createDate,
+			"createUser"	: this.genInfoData.createUser,
+			"currencyCd"	: this.genInfoData.currencyCd,
+			"currencyRt"	: this.genInfoData.currencyRt,
+			"declarationTag": this.genInfoData.declarationTag,
+			"duration"		: this.project.duration,
+			"expiryDate"	: this.genInfoData.expiryDate,
+			"govtTag"		: this.genInfoData.govtTag,
+			"indicativeTag"	: this.genInfoData.indicativeTag,
+			"insuredDesc"	: this.genInfoData.insuredDesc,
+			"intmId"		: this.genInfoData.intmId,
+			"ipl"			: this.project.ipl,
+			"issueDate"		: this.genInfoData.issueDate,
+			"lineCd"		: this.genInfoData.lineCd,
+			"lineClassCd"	: this.genInfoData.lineClassCd,
+			"mbiRefNo"		: this.genInfoData.mbiRefNo,
+			"noClaimPd"		: this.project.noClaimPd,
+			"objectId"		: this.project.objectId,
+			"openCoverTag"	: this.genInfoData.openCoverTag,
+			"openingParag"	: this.genInfoData.openingParag,
+			"pctShare"		: this.project.pctShare,
+			"policyId"		: this.genInfoData.policyId,
+			"preparedBy"	: this.genInfoData.preparedBy,
+			"prinId"		: this.genInfoData.principalId,
+			"printDate"		: this.genInfoData.printDate,
+			"printedBy"		: this.genInfoData.printedBy,
+			"prjCreateDate"	: this.project.createDate,
+			"prjCreateUser"	: this.project.createUser,
+			"prjUpdateDate"	: this.project.updateDate,
+			"prjUpdateUser"	: this.project.updateUser,
+			"projDesc"		: this.project.projDesc,
+			"projId"		: this.project.projId,
+			"quoteId"		: this.genInfoData.quoteId,
+			"quoteRevNo"	: (this.genInfoData.quoteId === '') ? '0' : this.genInfoData.quoteRevNo,
+			"quoteSeqNo"	: (this.genInfoData.quoteId === '') ? '1' : this.genInfoData.quoteSeqNo,
+			"quoteYear"		: (this.genInfoData.quoteId === '') ? new Date().getFullYear().toString() : this.genInfoData.quoteYear,
+			"reinsurerId"	: this.genInfoData.reinsurerId,
+			"reqBy"			: this.genInfoData.reqBy,
+			"reqDate"		: this.genInfoData.reqDate,
+			"reqMode"		: this.genInfoData.reqMode,
+			"riskId"		: this.project.riskId,
+			"site"			: this.project.site,
+			"status"		: this.genInfoData.status,
+			"testing"		: this.project.testing,
+			"timeExc"		: this.project.timeExc,
+			"totalSi"		: this.project.totalSi,
+			"totalValue"	: this.project.totalValue,
+			"updateDate"	: this.genInfoData.updateDate,
+			"updateUser"	: this.genInfoData.updateUser
+		}
+
+		return JSON.stringify(saveQuoteGeneralInfoParam);
+	}
 }
 export interface SelectRequestMode {
 	name: string;

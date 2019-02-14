@@ -26,9 +26,11 @@
  			 	<div class="col-sm-12" style="padding: 0px">
 		 			 <div class="input-group" style="margin-left: -15px !important;margin-top: -5px !important;">
 		 			 	<div class="col-sm-1"></div>
-		 			 	<label class="form-control-sm col-sm-1">Date Extracted</label>
+		 			 	<label class="form-control-sm col-sm-2" style="margin-left: -84px !important;">Date Extracted</label>
 		 			 	<input type="text" class="form-control form-control-sm cust-sm col-sm-6"
-           				placeholder="01/17/2018 10:38 AM" readonly>
+						   placeholder="01/17/2018 10:38 AM" readonly>
+        				<div class="text-search-ico" style="margin-left: -18px !important;margin-right: 12px !important;"><a><i
+                    		class="fa fa-search"></i></a></div>
            				<div class="cust-btn-container">
            				<button type="button" class="cust-btn cust-btn-extend" style="margin-left: 5px !important;height: 23px !important"><a>Search</a></button>
            				</div>
@@ -71,7 +73,8 @@
  </fieldset>
 </div>
 <fieldset class="scheduler-border">
-	<legend class="scheduler-border">Summary Per Payee</legend>
+	<legend *ngIf="taxType === 'Creditable Withholding Tax' || taxType === 'Withholding Tax'" class="scheduler-border">Summary Per Payee</legend>
+	<legend *ngIf="taxType === 'Input VAT' || taxType === 'Output VAT'" class="scheduler-border">{{ taxType }} Upload</legend>
 		<div class="row" [ngSwitch]="taxType">
 			<div class="col-sm-12" *ngSwitchCase ="'Creditable Withholding Tax'">
 				<div class="row">

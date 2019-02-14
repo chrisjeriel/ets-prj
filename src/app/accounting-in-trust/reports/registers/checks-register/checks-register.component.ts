@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ChecksRegisterComponent implements OnInit {
 
-  tDate: boolean = false;
+  tDate: boolean = true;
   pDate: boolean = false;
 
 

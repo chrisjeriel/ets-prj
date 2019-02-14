@@ -248,6 +248,9 @@ import { JvEntryServiceComponent } from './accounting-service/journal-voucher-se
 import { JvPreviewServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-preview-service/jv-preview-service.component';
 import { JvAttachmentsServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-attachments-service/jv-attachments-service.component';
 import { MtnLineComponent } from './maintenance/mtn-line/mtn-line.component';
+import { MtnObjectComponent } from './maintenance/mtn-object/mtn-object.component';
+import { MtnProvinceComponent } from './maintenance/mtn-region/mtn-province/mtn-province.component';
+import { MtnQuotationWordingsComponent } from './maintenance/mtn-quotation-wordings/mtn-quotation-wordings.component';
 import { MtnRiskComponent } from './maintenance/mtn-risk/mtn-risk.component';
 import { AcctUnbalanceEntriesComponent } from './accounting-service/accounting-service-extract/acct-unbalance-entries/acct-unbalance-entries.component';
 import { AcctTrialBalComponent } from './accounting-service/accounting-service-extract/acct-trial-bal/acct-trial-bal.component';
@@ -273,7 +276,18 @@ import { JvLossReserveDepositComponent } from './accounting-in-trust/journal-vou
 import { MtnIntermediaryComponent } from './maintenance/mtn-intermediary/mtn-intermediary.component';
 import { MtnLineClassComponent } from './maintenance/mtn-line-class/mtn-line-class.component';
 import { AccSrvInquiryComponent } from './accounting-service/acc-srv-inquiry/acc-srv-inquiry.component';
-
+import { CancelTransactionsServiceComponent } from './accounting-service/utilities/cancel-transactions-service/cancel-transactions-service.component';
+import { CancelOrComponent } from './accounting-service/utilities/cancel-transactions-service/cancel-or/cancel-or.component';
+import { CancelCvServiceComponent } from './accounting-service/utilities/cancel-transactions-service/cancel-cv-service/cancel-cv-service.component';
+import { CancelJvServiceComponent } from './accounting-service/utilities/cancel-transactions-service/cancel-jv-service/cancel-jv-service.component';
+import { RegistersServiceComponent } from './accounting-service/reports/registers-service/registers-service.component';
+import { CrRegisterComponent } from './accounting-service/reports/registers-service/cr-register/cr-register.component';
+import { CvRegisterServiceComponent } from './accounting-service/reports/registers-service/cv-register-service/cv-register-service.component';
+import { ChecksRegisterServiceComponent } from './accounting-service/reports/registers-service/checks-register-service/checks-register-service.component';
+import { JvRegisterServiceComponent } from './accounting-service/reports/registers-service/jv-register-service/jv-register-service.component';
+import { AcctSrvcCancelledTransactionsComponent } from './accounting-service/accounting-service-inquiry/acct-srvc-cancelled-transactions/acct-srvc-cancelled-transactions.component';
+import { MtnAdviceWordingsComponent } from './maintenance/mtn-advice-wordings/mtn-advice-wordings.component';
+import { MtnAttentionComponent } from './maintenance/mtn-attention/mtn-attention.component';
 
 
 @NgModule({
@@ -529,6 +543,9 @@ import { AccSrvInquiryComponent } from './accounting-service/acc-srv-inquiry/acc
         JvPreviewServiceComponent,
         JvAttachmentsServiceComponent,
         MtnLineComponent,
+        MtnObjectComponent,
+        MtnProvinceComponent,
+        MtnQuotationWordingsComponent,
         MtnRiskComponent,
         AcctUnbalanceEntriesComponent,
         AcctTrialBalComponent,
@@ -554,6 +571,18 @@ import { AccSrvInquiryComponent } from './accounting-service/acc-srv-inquiry/acc
         MtnIntermediaryComponent,
         MtnLineClassComponent,
         AccSrvInquiryComponent,
+        CancelTransactionsServiceComponent,
+        CancelOrComponent,
+        CancelCvServiceComponent,
+        CancelJvServiceComponent,
+        RegistersServiceComponent,
+        CrRegisterComponent,
+        CvRegisterServiceComponent,
+        ChecksRegisterServiceComponent,
+        JvRegisterServiceComponent,
+        AcctSrvcCancelledTransactionsComponent,
+        MtnAdviceWordingsComponent,
+        MtnAttentionComponent,
     ],
 
     providers: [

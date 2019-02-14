@@ -127,7 +127,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         }
 
         if(this.dataKeys.indexOf('edited') != -1){
-           this.dataKeys.pop();
+          this.dataKeys.pop();
         }
 
         this.refreshTable();

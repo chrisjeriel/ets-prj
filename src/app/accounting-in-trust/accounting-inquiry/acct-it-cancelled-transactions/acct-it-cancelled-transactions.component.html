@@ -26,8 +26,10 @@
 										<label class="form-control-sm col-sm-1 labels">To:</label>
 										<input type="date" class="form-control form-control-sm col-sm-4" value="2018-02-03">
 									</div>
-									<div class="input-group col-sm-1">
-										<button class="cust-btn" style="max-height: 71%;">Search</button>
+									<div class="input-group col-sm-2">
+										<div class="cust-btn-container">
+					    		        	<button type="button" class="cust cust-btn"><a>Search</a></button>
+					    		      	</div>
 									</div>
 								</div>
 							</div>
@@ -37,7 +39,7 @@
 						<legend class="scheduler-border">List of Cancelled/Deleted Transactions</legend>
 						<div style="position: relative;">
 							<button class="cust-btn" style="position:absolute; left: 0px; max-width: 200px !important;" (click)="viewTranDetails()">View Transaction Details</button>
-							<app-cust-non-datatable [passData]="cancelledTransactionsData" (rowClick)="onRowClick($event)"></app-cust-non-datatable>
+							<app-cust-non-datatable [passData]="cancelledTransactionsData" (rowClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)"></app-cust-non-datatable>
 						</div>
 					</fieldset>
 				</ng-template>
