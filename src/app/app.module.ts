@@ -286,6 +286,7 @@ import { CvRegisterServiceComponent } from './accounting-service/reports/registe
 import { ChecksRegisterServiceComponent } from './accounting-service/reports/registers-service/checks-register-service/checks-register-service.component';
 import { JvRegisterServiceComponent } from './accounting-service/reports/registers-service/jv-register-service/jv-register-service.component';
 import { AcctSrvcCancelledTransactionsComponent } from './accounting-service/accounting-service-inquiry/acct-srvc-cancelled-transactions/acct-srvc-cancelled-transactions.component';
+import { MtnTypeOfCessionComponent } from './maintenance/mtn-type-of-cession/mtn-type-of-cession.component';
 
 
 @NgModule({
@@ -579,6 +580,7 @@ import { AcctSrvcCancelledTransactionsComponent } from './accounting-service/acc
         ChecksRegisterServiceComponent,
         JvRegisterServiceComponent,
         AcctSrvcCancelledTransactionsComponent,
+        MtnTypeOfCessionComponent,
     ],
 
     providers: [
