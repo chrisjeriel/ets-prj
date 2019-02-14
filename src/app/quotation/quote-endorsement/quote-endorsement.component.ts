@@ -18,7 +18,8 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 export class QuoteEndorsementComponent implements OnInit {
 
     @Input() endorsementType: string = "";
-    @ViewChildren(CustEditableNonDatatableComponent) table: QueryList<CustEditableNonDatatableComponent>;
+/*    @ViewChildren(CustEditableNonDatatableComponent) table: QueryList<CustEditableNonDatatableComponent>;*/
+    @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
     OpenCover: boolean;
     private sub: any;
     from: string;
@@ -46,8 +47,9 @@ export class QuoteEndorsementComponent implements OnInit {
     nData: QuoteEndorsement = new QuoteEndorsement(null, null, null, null);
 
     optionNos: number[] = [];
+    optionRecords: any[] = [];
 
-    optionsData: any = {
+    quoteOptionsData: any = {
         tableData: [],
         tHeader: ['Option No', 'Rate(%)', 'Conditions', 'Comm Rate Quota(%)', 'Comm Rate Surplus(%)', 'Comm Rate Fac(%)'],
         dataTypes: ['text', 'percent', 'text', 'percent', 'percent', 'percent', 'percent'],
@@ -57,7 +59,7 @@ export class QuoteEndorsementComponent implements OnInit {
         tableOnly: true,
         pageLength: 3,
         keys: ['optionId','optionRt','condition','commRtQuota','commRtSurplus','commRtFac']
-    }
+    } 
 
     endorsementData: any = {
         tableData: [],
@@ -134,7 +136,8 @@ export class QuoteEndorsementComponent implements OnInit {
                                                                            data.endorsementsOc[lineCount].remarks)
                                                                    );          
                           }
-                        this.table.forEach(table => { table.refreshTable() });
+               /*         this.table.forEach(table => { table.refreshTable() });*/
+                          this.table.refreshTable();
                     });
 
 
@@ -172,24 +175,27 @@ export class QuoteEndorsementComponent implements OnInit {
                                                                            null)
                                                                    );          
                           }
-                        this.table.forEach(table => { table.refreshTable() });
+                        this.table.refreshTable();
                     });
                     this.quotationService.getQuoteOptions().subscribe((data: any) => {
-                        var optionRecords = data['quotation'].optionsList;
-                         for(var lineCount = 0; lineCount < optionRecords.length; lineCount++){
-                             this.optionsData.tableDate.push(new QuotationOption(
-                                                             this.optionsData[lineCount].optionId,
-                                                             this.optionsData[lineCount].optionRt,
-                                                             this.optionsData[lineCount].condition,
-                                                             this.optionsData[lineCount].commRtQuota,
-                                                             this.optionsData[lineCount].commRtSurplus,
-                                                             this.optionsData[lineCount].commRtFac
-                                                             );
-
-                         }
-                        this.table.forEach(table => { table.refreshTable() });
+                        this.optionRecords = data.quotation.optionsList;
+                        this.quoteOptionsData.tableData.push(this.optionRecords[0]);
+                        for(var i = data.quotation.optionsList.length - 1; i >= 0; i--){
+                    /*        this.quoteOptionsData.tableData.push( new QuotationOption(
+                                                                                data.quotation.optionsList[lineCount].optionId,
+                                                                                data.quotation.optionsList[lineCount].optionRt,
+                                                                                data.quotation.optionsList[lineCount].condition,
+                                                                                data.quotation.optionsList[lineCount].commRtQuota,
+                                                                                data.quotation.optionsList[lineCount].commRtSurplus,
+                                                                                data.quotation.optionsList[lineCount].commRtFac
+                                                                                )
+                                                                  );*/
+       /*                        this.quoteOptionsData.tableData.push(data.quotation.optionsList[i]
+                                                                  );
+*/
+                        }
+                         this.table.refreshTable();
                     });
-               
                 }  
 
 

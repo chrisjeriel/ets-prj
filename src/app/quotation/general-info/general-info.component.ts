@@ -347,16 +347,16 @@ export class GeneralInfoComponent implements OnInit {
         this.genInfoData.cedingName = event.name;
 	}
 
-	setLineClass(data){
-		this.lineClassCode = data.lineClassCd;
-        this.lineClassDesc = data.lineClassCdDesc;
-        this.lineClass = this.lineClassCode + ' - ' + this.lineClassDesc;
+	setLineClass(event){
+		this.lineClassCode = event.lineClassCd;
+        this.lineClassDesc = event.lineClassCdDesc;
+        this.genInfoData.lineCd = this.lineClassCode + ' - ' + this.lineClassDesc;
 
     }
 
-    setInt(data){
-        this.intId = data.intmId;
-        this.intName = data.intmName;
+    setInt(event){
+        this.genInfoData.intmId = event.intmId;
+        this.genInfoData.intmName = event.intmName;
     }
 
 }
