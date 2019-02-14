@@ -12,10 +12,10 @@
 									<div class="custom-row-inline-inset">
 										<div class="input-group">
 											<label class="form-control-sm col-sm-3" for="xx">Line</label>
-											<input type="text" [(ngModel)]="line" class="form-control form-control-sm col-sm-2 cap-input">
-											<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+											<input type="text" [(ngModel)]="mtnLineCd" class="form-control form-control-sm col-sm-2 cap-input">
+											<div class="text-search-ico"(click)="getLineLov($event)"><a><i class="fa fa-search"></i></a></div>
 											&nbsp;&nbsp;
-											<input type="text" id="xx" class="form-control form-control-sm">
+											<input type="text" id="xx" class="form-control form-control-sm" [(ngModel)]="mtnLineDesc">
 										</div>
 										<div class="input-group">
 											<label class="form-control-sm col-sm-3" for="xx">Type of Cession</label>
@@ -132,3 +132,4 @@
 
 
 <app-mtn-risk id="riskIdLov" (selectedData)="setRisk($event)"></app-mtn-risk>
+<app-mtn-line id="lineIdLov" (selectedData)="setLine($event)"></app-mtn-line>

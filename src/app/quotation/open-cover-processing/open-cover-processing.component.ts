@@ -31,6 +31,8 @@ export class OpenCoverProcessingComponent implements OnInit {
 
   riskId:string;
   riskName:string;
+  mtnLineCd: string;
+  mtnLineDesc: string;
 
   passData: any = {
     tableData: [],
@@ -301,6 +303,15 @@ export class OpenCoverProcessingComponent implements OnInit {
   setRisk(data){
     this.riskId  = data.riskId;
     this.riskName  = data.riskName;
+    this.onClickAdd("");
+  }
+
+  getLineLov(){
+    $('#lineIdLov #modalBtn').trigger('click');
+  }
+  setLine(data){
+    this.mtnLineCd  = data.lineCd;
+    this.mtnLineDesc  = data.description;
     this.onClickAdd("");
   }
 
