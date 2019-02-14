@@ -31,7 +31,7 @@ tableData: any[] = [];
     selectFlag: false,
     editFlag: false,
     pageLength: 3,
-    width:['auto','auto',200,'auto','auto'],
+    widths:[150,200,'auto',150,150],
     genericBtn: 'Save'
   };
 
@@ -53,7 +53,7 @@ tableData: any[] = [];
     selectFlag: false,
     editFlag: false,
     pageLength: 3,
-    width:[100,100,60,100,100,100],
+    widths:[150,200,'auto',150,150],
     genericBtn: 'Save'
   };
 

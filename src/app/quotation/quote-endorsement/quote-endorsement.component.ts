@@ -1,6 +1,6 @@
 
 
-import { Component, OnInit , ViewChild, Input} from '@angular/core';
+import { Component, OnInit , ViewChild, Input, ViewChildren, QueryList} from '@angular/core';
 import { QuotationInfo, QuotationOption, QuoteEndorsement , QuoteEndorsementOC} from '../../_models';
 import { QuotationService } from '../../_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -18,6 +18,7 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 export class QuoteEndorsementComponent implements OnInit {
 
     @Input() endorsementType: string = "";
+/*    @ViewChildren(CustEditableNonDatatableComponent) table: QueryList<CustEditableNonDatatableComponent>;*/
     @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
     OpenCover: boolean;
     private sub: any;
@@ -46,9 +47,10 @@ export class QuoteEndorsementComponent implements OnInit {
     nData: QuoteEndorsement = new QuoteEndorsement(null, null, null, null);
 
     optionNos: number[] = [];
+    optionRecords: any[] = [];
 
-    optionsData: any = {
-        tableData: this.quotationService.getQuoteOptions(),
+    quoteOptionsData: any = {
+        tableData: [],
         tHeader: ['Option No', 'Rate(%)', 'Conditions', 'Comm Rate Quota(%)', 'Comm Rate Surplus(%)', 'Comm Rate Fac(%)'],
         dataTypes: ['text', 'percent', 'text', 'percent', 'percent', 'percent', 'percent'],
         resizable: [false, false, true, false, false, false],
@@ -56,7 +58,8 @@ export class QuoteEndorsementComponent implements OnInit {
         pageStatus: true,
         tableOnly: true,
         pageLength: 3,
-    }
+        keys: ['optionId','optionRt','condition','commRtQuota','commRtSurplus','commRtFac']
+    } 
 
     endorsementData: any = {
         tableData: [],
@@ -133,7 +136,8 @@ export class QuoteEndorsementComponent implements OnInit {
                                                                            data.endorsementsOc[lineCount].remarks)
                                                                    );          
                           }
-                        this.table.refreshTable();
+               /*         this.table.forEach(table => { table.refreshTable() });*/
+                          this.table.refreshTable();
                     });
 
 
@@ -168,10 +172,29 @@ export class QuoteEndorsementComponent implements OnInit {
                                                                            data.endorsements[lineCount].endtCd, 
                                                                            data.endorsements[lineCount].endtTitle,
                                                                            data.endorsements[lineCount].description,
-                                                                           data.endorsements[lineCount].remarks)
+                                                                           null)
                                                                    );          
                           }
                         this.table.refreshTable();
+                    });
+                    this.quotationService.getQuoteOptions().subscribe((data: any) => {
+                        this.optionRecords = data.quotation.optionsList;
+                        this.quoteOptionsData.tableData.push(this.optionRecords[0]);
+                        for(var i = data.quotation.optionsList.length - 1; i >= 0; i--){
+                    /*        this.quoteOptionsData.tableData.push( new QuotationOption(
+                                                                                data.quotation.optionsList[lineCount].optionId,
+                                                                                data.quotation.optionsList[lineCount].optionRt,
+                                                                                data.quotation.optionsList[lineCount].condition,
+                                                                                data.quotation.optionsList[lineCount].commRtQuota,
+                                                                                data.quotation.optionsList[lineCount].commRtSurplus,
+                                                                                data.quotation.optionsList[lineCount].commRtFac
+                                                                                )
+                                                                  );*/
+       /*                        this.quoteOptionsData.tableData.push(data.quotation.optionsList[i]
+                                                                  );
+*/
+                        }
+                         this.table.refreshTable();
                     });
                 }  
 
