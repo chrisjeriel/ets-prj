@@ -152,7 +152,7 @@
 						<div class="form-group col-sm-6 offsetFormGroup">
 							<div class="input-group">
 								<label class="form-control-sm col-sm-4 ">Exch. Rt.</label>
-								<input appRequired type="text" class="form-control form-control-sm txt-content-rght" placeholder="0" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="genInfoData.currencyRt">
+								<input appRequired type="text" class="form-control form-control-sm text-right" placeholder="0" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="genInfoData.currencyRt">
 								<span>&nbsp;</span>
 							</div>
 						</div>
@@ -258,7 +258,7 @@
 							<div class="input-group ig-cust col-sm-6">
 								<label class="form-control-sm col-sm-2">Object</label>
 								<input appRequired type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="project.objectId">
-								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div>
 								<span>&nbsp;</span>
 								<input appRequired type="text" [(ngModel)]="project.objectDesc" class="form-control form-control-sm col-sm-8 ig-mrgn"
 								 style="margin-left: 3px !important;">
@@ -352,7 +352,7 @@
 							<div class="input-group ig-cust col-sm-6">
 								<label class="form-control-sm col-sm-2">Object</label>
 								<input appRequired type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="project.objectId">
-								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div>
 								<span>&nbsp;</span>
 								<input appRequired type="text" [(ngModel)]="project.objectDesc" class="form-control form-control-sm col-sm-8 ig-mrgn"
 								 style="margin-left: 3px !important;">
@@ -441,10 +441,10 @@
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-6">
 								<label class="form-control-sm col-sm-2">Object</label>
-								<input appRequired type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="genInfoData.objectId">
-								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<input appRequired type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="project.objectId">
+								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div>
 								<span>&nbsp;</span>
-								<input appRequired type="text" [(ngModel)]="genInfoData.objectDesc" class="form-control form-control-sm col-sm-8 ig-mrgn"
+								<input appRequired type="text" [(ngModel)]="project.objectDesc" class="form-control form-control-sm col-sm-8 ig-mrgn"
 								 style="margin-left: 3px !important;">
 							</div>
 							<div class="input-group ig-cust col-sm-6">
@@ -455,7 +455,7 @@
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group col-sm-6" style="margin-bottom: -8px !important;">
 								<label class="form-control-sm col-sm-2">Items<br />to be Insured</label>
-								<textarea appRequired class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;"></textarea>
+								<textarea appRequired class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;" [(ngModel)]="project.projDesc"></textarea>
 							</div>
 							<div class="input-group col-sm-6">
 								<div class="input-group ig-cust">
@@ -522,7 +522,7 @@
 							<div class="input-group ig-cust col-sm-6">
 								<label class="form-control-sm col-sm-2">Object</label>
 								<input appRequired type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="project.objectId">
-								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div>
 								<span>&nbsp;</span>
 								<input appRequired type="text" [(ngModel)]="project.objectDesc" class="form-control form-control-sm col-sm-8 ig-mrgn"
 								 style="margin-left: 3px !important;">
@@ -596,7 +596,7 @@
 							<div class="input-group ig-cust col-sm-6">
 								<label class="form-control-sm col-sm-2">Object</label>
 								<input appRequired type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="project.objectId">
-								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div>
 								<span>&nbsp;</span>
 								<input appRequired type="text" [(ngModel)]="project.objectDesc" class="form-control form-control-sm col-sm-8 ig-mrgn"
 								 style="margin-left: 3px !important;">
@@ -676,7 +676,7 @@
 							<div class="input-group ig-cust col-sm-6">
 								<label class="form-control-sm col-sm-2">Object</label>
 								<input appRequired type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="project.objectId">
-								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div>
 								<span>&nbsp;</span>
 								<input appRequired type="text" [(ngModel)]="project.objectDesc" class="form-control form-control-sm col-sm-8 ig-mrgn"
 								 style="margin-left: 3px !important;" >
@@ -728,7 +728,7 @@
 				<div class="col-sm-1">
 				</div>
 				<div class="col-sm" style="margin-bottom: -8px; margin-top: 7px;">
-					<div class="form-row">
+					<!-- <div class="form-row">
 						<div class="input-group">
 							<label for="inputEmail4" class="form-control-sm top-label col-sm-6" style="text-align: left !important;">Opening
 								Paragraph</label>
@@ -746,6 +746,26 @@
 							<span>&nbsp;</span>
 							<div class="text-search-ico"><a><i class="fa fa-file-text" style="margin-top: 22px !important;"></i></a></div>
 						</div>						
+					</div> -->
+					<div class="form-row">
+						<div class="input-group">
+							<label class="form-control-sm top-label col-sm-6" style="text-align: left !important;">Opening
+								Paragraph</label>
+							<label class="form-control-sm top-label col-sm-6" style="text-align: left !important; padding-left: 7px !important;">Closing
+								Paragraph</label>
+						</div>
+						<div class="input-group" style="margin-top: 14px !important;margin-bottom: 11px !important;">
+							<textarea appRequired style="font-size: 12px; margin-bottom: 38px;" class="form-control form-control-sm col-sm-6" [(ngModel)]="genInfoData.openingParag"></textarea>
+							<div class="text-search-ico" (click)="showOpeningWordingLov()"><a><i class="fa fa-search"></i></a></div>
+							<span>&nbsp;</span>
+							<textarea appRequired style="font-size: 12px; margin-bottom: 38px; margin-left: 10px !important;" class="form-control form-control-sm col-sm-6" [(ngModel)]="genInfoData.closingParag"></textarea>
+							<div class="text-search-ico" (click)="showClosingWordingLov()"><a><i class="fa fa-search"></i></a></div>
+							<span>&nbsp;</span>
+						</div>
+						<div class="input-group">
+							<div class="text-search-ico" style="margin-top: -76px !important;margin-left: 343px !important;"><a><i class="fa fa-file-text"></i></a></div>
+							<div class="text-search-ico" style="margin-top: -77px !important;margin-left: 357px !important;"><a><i class="fa fa-file-text"></i></a></div>
+						</div>
 					</div>
 				</div>
 				<div class="col-sm-1">
@@ -875,3 +895,6 @@
 <app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
 <app-mtn-intermediary id="intLOV" (selectedData)="setInt($event)"></app-mtn-intermediary>
 <app-mtn-line-class id="lineClassLOV" (selectedData)="setLineClass($event)" [line]="line"></app-mtn-line-class>
+<app-mtn-object id="objIdLov" (selectedData)="setObj($event)"></app-mtn-object>
+<app-mtn-quotation-wordings id="wordingOpeningIdLov" (selectedData)="setOpeningWording($event)"></app-mtn-quotation-wordings>
+<app-mtn-quotation-wordings id="wordingClosingIdLov" (selectedData)="setClosingWording($event)"></app-mtn-quotation-wordings>

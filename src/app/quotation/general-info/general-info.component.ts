@@ -166,7 +166,7 @@ export class GeneralInfoComponent implements OnInit {
 					this.genInfoData.createDate = this.dateParser(this.genInfoData.createDate);
 					this.genInfoData.expiryDate = this.dateParser(this.genInfoData.expiryDate);
 					this.genInfoData.issueDate = this.dateParser(this.genInfoData.issueDate);
-					this.genInfoData.printDate = (this.genInfoData.printDate == null) ? '' : this.dateParser(this.genInfoData.issueDate);
+					this.genInfoData.printDate = (this.genInfoData.printDate == null) ? 'T' : this.dateParser(this.genInfoData.printDate);
 					this.genInfoData.reqDate = this.dateParser(this.genInfoData.reqDate);
 					this.genInfoData.updateDate = this.dateParser(this.genInfoData.updateDate);
 				}
@@ -410,6 +410,43 @@ export class GeneralInfoComponent implements OnInit {
 	toDateTime(val) {
 		return new Date(val).toISOString();
 	}
+
+	showObjectLOV() {
+		$('#objIdLov #modalBtn').trigger('click');
+	}
+
+	setObj(data){
+    	this.project.objectId = data.objectId;
+    	this.project.objectDesc = data.description;
+  	}
+
+  	showOpeningWordingLov(){
+  		$('#wordingOpeningIdLov #modalBtn').trigger('click');
+  	}
+
+  	setOpeningWording(data) {
+  		this.genInfoData.openingParag = data.wording;
+  	}
+
+  	showClosingWordingLov(){
+  		$('#wordingClosingIdLov #modalBtn').trigger('click');
+  	}
+
+  	setClosingWording(data) {
+  		this.genInfoData.closingParag = data.wording;
+  	}
+
+  	updateInsuredDesc(data) {
+  		if(this.line == 'CAR' || this.line == 'EAR'){
+  			if(this.genInfoData.principalName != '' && this.genInfoData.contractorName != ''){
+  				this.genInfoData.insuredDesc = this.genInfoData.principalName + ' / ' + this.genInfoData.contractorName;
+  			}
+  		} else {
+  			this.genInfoData.insuredDesc = this.genInfoData.principalName;
+  		}
+  	}
+  		
+
 }
 export interface SelectRequestMode {
 	name: string;
