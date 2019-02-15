@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AccServiceAttachment, PaymentForAdvances, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, ARUnappliedCollection, AROthers, AccountingSOthersOr, AccORSerFeeLoc, OfficialReceipt, ORPrevAmountDetails, ORPrevAccEntries, ORPreVATDetails , ORPreCreditableWTaxDetails, PaymentOfSeviceFee, TreatyBalance, ByMonth, ExtractFromLastYear, AccountingEntriesExtract, CredibleWithholdingTaxDetails, InputVatDetails, OutputVatDetails, WithholdingVATDetails, CredibleWithholdingTaxUpload, InputVatUpload, OutputVatUpload, WithholdingTaxUpload, AccountingSFixedAssets, AccountingSMonthlyDepreciationDetails, AccountingSPaytReqCheckVoucher, AccountingSPaytReqPettyCashVoucher, AccountingSPaytReqPRMFE, AccountingSPaytReqOthers,AcctSrvcCWhtaxMonthlyTaxDetails,AcctSrvcCWhtaxConsolidateData, TaxDetails, WTaxDetails, ExpenseBudget, ExpenseBudgetByMonth, AccSChangeTranStatOR, AccSChangeTranStatCV, AccSChangeTranStatJV, CMDM, AccountingEntryCMDM, AccJvLossResDep, AccSrvInquiry, AccountingSrvcCancelledTransactions } from '@app/_models';
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AccServiceAttachment, PaymentForAdvances, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, ARUnappliedCollection, AROthers, AccountingSOthersOr, AccORSerFeeLoc, OfficialReceipt, ORPrevAmountDetails, ORPrevAccEntries, ORPreVATDetails , ORPreCreditableWTaxDetails, PaymentOfSeviceFee, TreatyBalance, ByMonth, ExtractFromLastYear, AccountingEntriesExtract, CredibleWithholdingTaxDetails, InputVatDetails, OutputVatDetails, WithholdingVATDetails, CredibleWithholdingTaxUpload, InputVatUpload, OutputVatUpload, WithholdingTaxUpload, AccountingSFixedAssets, AccountingSMonthlyDepreciationDetails, AccountingSPaytReqCheckVoucher, AccountingSPaytReqPettyCashVoucher, AccountingSPaytReqPRMFE, AccountingSPaytReqOthers,AcctSrvcCWhtaxMonthlyTaxDetails,AcctSrvcCWhtaxConsolidateData, TaxDetails, WTaxDetails, ExpenseBudget, ExpenseBudgetByMonth, AccSChangeTranStatOR, AccSChangeTranStatCV, AccSChangeTranStatJV, CMDM, AccountingEntryCMDM, AccJvLossResDep, AccSrvInquiry, AccountingSrvcCancelledTransactions, QSOABalances } from '@app/_models';
 
 
 @Injectable({
@@ -100,6 +100,7 @@ export class AccountingService {
 	accJvLossResDep: AccJvLossResDep[] = [];
 	accSrvInquiry: AccSrvInquiry[] = [];
 	accountingSrvcCancelledTransactions: AccountingSrvcCancelledTransactions[] = [];
+	qsoaBalances: QSOABalances[] = [];
 
 	constructor(private http: HttpClient) { }
 
@@ -299,7 +300,8 @@ export class AccountingService {
 
 	getARClaimsRecovery() {
 		this.arClaimsRecovery = [
-			new ARClaimsRecovery("REC-CAR-2018-000001","CAR-2018-000001", 3, "Loss", "Recovery", "Salvage for Construction Materials", "PHP", 1, 30000, 30000),
+			new ARClaimsRecovery("Recovery","CAR-2018-000001", "REC-CAR-2018-000001",3, "Loss", "Recovery", "Salvage for Construction Materials", "PHP", 1, 30000, 30000),
+			new ARClaimsRecovery("Overpayment","CAR-2018-000001", "",null, "", "", "Overpayment for the claim", "PHP", 1, 10000, 10000),
 		]
 		return this.arClaimsRecovery;
 	}
@@ -330,8 +332,8 @@ export class AccountingService {
 	getAccountingEntriesUtil() {
 		this.accountingEntriesCVData = [
 			new AccountingEntriesCV('1-01-02-01', 'BPI Current Account No. 0071-0435-0438-94', '', '', 0, 2945.45),
-			new AccountingEntriesCV('5-01-13-02', 'Internet Expense', '', '', 2971.43, 0),
-			new AccountingEntriesCV('1-59', 'Input VAT', '', '', 321.32, 0),
+			new AccountingEntriesCV('5-01-13-02', 'Internet Expense', '', '', 2677.68, 0),
+			new AccountingEntriesCV('1-09', 'Input VAT', '', '', 321.32, 0),
 			new AccountingEntriesCV('2-03-02-04', 'WC120 2%', '', '', 0, 53.55),
 		];
 
@@ -398,7 +400,7 @@ export class AccountingService {
 	getAccItEditedLatestAcctEntries() {
 		this.accItEditedLatestAcctEntries = [
 			new AccItEditedLatestAcctEntries("1-01-02-01", "BPI Current Account No. 0071-0438-94", "", "", 0, 2945.45),
-			new AccItEditedLatestAcctEntries("5-01-13-04", "Telephone Line", "", "", 2677.68, 0),
+			new AccItEditedLatestAcctEntries("5-01-13-04", "Internet Expense", "", "", 2677.68, 0),
 			new AccItEditedLatestAcctEntries("1-09", "Input VAT", "", "", 321.32, 0),
 			new AccItEditedLatestAcctEntries("2-03-02-04", "WC120 2%", "", "", 0, 53.55)
 		]
@@ -601,7 +603,7 @@ export class AccountingService {
 
 	getPremiumReturn() {
 		this.premiumReturn = [
-			new PremiumReturn("EAR-2018-00001-99-0001-00",new Date(25,10,2018), "FLT Prime", -250000, -75000, -9000, "Php", -166000)
+			new PremiumReturn("EAR-2018-00001-99-0001-00",new Date(25,10,2018), "FLT Prime", -250000, -75000, -9000, "Php", -166000, 1)
 		];
 		return this.premiumReturn;
 	}
@@ -638,7 +640,7 @@ export class AccountingService {
 
 	getAccountingItClaimCashCallAR(){
 		this.accountingItClaimCashCallArData = [
-			new AccountingItClaimCashCallAr('CAR-2018-000001', 'CAR-2018-00001-99-0001-000', 'DMCI', new Date(2018,9,1), 'Damaged Material','Loss',0, 1000000, 'PHP', 1, 300000, 300000),
+			new AccountingItClaimCashCallAr('CAR-2018-000001', 'CAR-2018-00001-99-0001-000', 'DMCI', new Date(2018,9,1), 'Damaged Material','01','Loss',0, 1000000, 'PHP', 1, 300000, 300000),
 		];
 
 		return this.accountingItClaimCashCallArData;
@@ -662,8 +664,8 @@ export class AccountingService {
 
 	getAccARInvestments(){
 		this.accARInvestments = [
-			new AccARInvestments('BPI','BPI 1','Time',5,'Years',8.875, new Date(2013,9,20),new Date(2018,9,20),'PHP',1,18112.50,82250,14000000,4112500,18112500),
-			new AccARInvestments('RCBC','RCBC 1','Treasury',35,'Days',1.5, new Date(2018,8,26),new Date(2018,9,31),'PHP',1,10150,3000,10000000,150000,10150000)
+			new AccARInvestments('BPI','BPI 1','Time',5,'Years',8.875, new Date(2013,9,20),new Date(2018,9,20),'PHP',1,14000000,4112500,18112.50,82250,18112500),
+			new AccARInvestments('RCBC','RCBC 1','Treasury',35,'Days',1.5, new Date(2018,8,26),new Date(2018,9,31),'PHP',1,10000000,150000,10150,3000,10150000)
 		];
 		return this.accARInvestments;
 	}
@@ -691,7 +693,7 @@ export class AccountingService {
 
 	getAROthers(){
 		this.arOthers = [
-			new AROthers("Utilities","Payment For","PHP",1.0,-50000,-50000),
+			new AROthers("Utilities","Payment For","Refund","PHP",1.0,-50000,-50000),
 		];
 		return this.arOthers;
 	}
@@ -731,7 +733,7 @@ export class AccountingService {
 
 	getAcctServices(){
 		this.arOthers = [
-			new AROthers("Utilities","Service fee for the period of","PHP",1.0,-50000,-50000),
+			new AROthers("Utilities","Service fee for the period of","Payment","PHP",1.0,-50000,-50000),
 		];
 		return this.arOthers;
 	}
@@ -753,7 +755,7 @@ export class AccountingService {
 
 	getTreatyBalance(){
 		this.treatyBalance = [ 
-			new TreatyBalance(new Date(2018,3,21),500000,100000,6000000,500000,6500000,6000000)
+			new TreatyBalance(new Date(2018,3,21),'PHP',1,100000,100000)
 		]
 		return this.treatyBalance;
 	}
@@ -1194,5 +1196,12 @@ export class AccountingService {
 		return this.accSrvInquiry;
 	}
 
+	getQSOABalancesData() {
+		this.qsoaBalances = [
+			new QSOABalances(new Date(2018, 2, 31), 'PHP', 1, 100000, 100000),
+			new QSOABalances(new Date(2018, 5, 30), 'PHP', 1, -500000, -500000),
+		];
+		return this.qsoaBalances;
+	}
 
 }

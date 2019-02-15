@@ -2,6 +2,7 @@ import { Component, OnInit, Input,  ViewChild } from '@angular/core';
 import { UnderwritingService } from '../../../_services';
 import { CedingCompanyList, CedingCompany } from '../../../_models';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-pol-mx-ceding-co',
@@ -12,6 +13,16 @@ export class PolMxCedingCoComponent implements OnInit {
     @ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
 	addEdit: boolean = false;
     cedingCompanyListData: any;
+
+    record: any = {
+      companyNo : null,
+      activeTag : null,
+      name : null,
+      abbreviation : null,
+      oldCompanyNo : null,
+      address : null,
+      zipCode : null,
+    }
 
 	passData: any = {
 		tableData : [],
@@ -84,7 +95,7 @@ export class PolMxCedingCoComponent implements OnInit {
 	}
 
 
-	constructor(private underwritingService: UnderwritingService) { }
+	constructor(private underwritingService: UnderwritingService, private router: Router) { }
 
 	ngOnInit() {
 
@@ -109,6 +120,21 @@ export class PolMxCedingCoComponent implements OnInit {
 	toAddEdit() {
 		this.addEdit = true;
 	}
+
+    toGenerateCedingEdit(event){
+      var selectedRow = event.target.closest('tr').children;
+
+      
+      this.record = {
+        companyNo: selectedRow[3].innerText,
+        name: selectedRow[4].innerText,
+        abbreviation: selectedRow[5].innerText,
+        address: selectedRow[6].innerText
+      }
+          this.addEdit = true;
+      /*this.router.navigate(['/maintenance-ceding-co', { slctd: JSON.stringify(this.record), action: 'edit' }], { skipLocationChange: true });
+  */
+    }
 }
   
 

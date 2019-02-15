@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
 import { Router } from '@angular/router';
-import { QuotationService, UnderwritingService } from '../../_services';
+import { QuotationService, UnderwritingService } from '@app/_services';
 import { QuotationProcessing, Risks, CedingCompanyList } from '../../_models';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
@@ -28,7 +28,8 @@ export class QuotationProcessingComponent implements OnInit {
     line: string = "";
     description: string = "";
     splittedLine: string[] = [];
-    quoTypeOfCession = "";
+    typeOfCessionId = "";
+    typeOfCession = "";
     riskCd: string = "";
     riskName: string = "";
     riskNameList: string[] = [];
@@ -228,14 +229,14 @@ export class QuotationProcessingComponent implements OnInit {
     
     onClickEdit(event) {
         this.quotationNo = this.selectedQuotation.quotationNo;
-        this.quoTypeOfCession = this.selectedQuotation.cessionDesc;
+        this.typeOfCession = this.selectedQuotation.cessionDesc;
         this.quotationService.toGenInfo = [];
         this.quotationService.toGenInfo.push("edit", this.line);
         // this.router.navigate(['/quotation']);
         // this.router.navigate(['/quotation', { typeOfCession: this.quoTypeOfCession, from: 'quo-processing' }]);
         /*this.router.navigate(['/quotation']);*/
         setTimeout(() => {
-            this.router.navigate(['/quotation', { quotationNo: this.quotationNo, typeOfCession: this.quoTypeOfCession, from: 'quo-processing' }], { skipLocationChange: true });
+            this.router.navigate(['/quotation', { quotationNo: this.quotationNo, typeOfCession: this.typeOfCession, from: 'quo-processing' }], { skipLocationChange: true });
         },100); 
     }
 
@@ -246,7 +247,6 @@ export class QuotationProcessingComponent implements OnInit {
     showRiskLOV() {
         $('#riskLOV #modalBtn').trigger('click');
     }
-
 
     showCedingCompanyLOV() {
         $('#cedingCompanyLOV #modalBtn').trigger('click');
@@ -299,8 +299,15 @@ export class QuotationProcessingComponent implements OnInit {
             this.quotationService.toGenInfo = [];
             this.quotationService.toGenInfo.push("add", qLine);
             /*this.router.navigate(['/quotation']);*/
+
+            var addParams = {
+                cessionId: this.typeOfCessionId,
+                cessionDesc: this.typeOfCession,
+                riskId: this.riskCd,
+            }
+
             setTimeout(() => {
-                this.router.navigate(['/quotation', { line: qLine, typeOfCession: this.quoTypeOfCession, from: 'quo-processing' }], { skipLocationChange: true });
+                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), from: 'quo-processing' }], { skipLocationChange: true });
             },100); 
         }
         //neco's influence ends here
@@ -340,13 +347,13 @@ onRowDblClick(event) {
 
     this.line = this.quotationService.rowData[0].split("-")[0];
     this.quotationNo = this.quotationService.rowData[0];
-    this.quoTypeOfCession = event.target.closest('tr').children[1].innerText;
+    this.typeOfCession = event.target.closest('tr').children[1].innerText;
 
     this.quotationService.toGenInfo = [];
     this.quotationService.toGenInfo.push("edit", this.line);
     /*  this.router.navigate(['/quotation']);*/
     setTimeout(() => {
-        this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.quoTypeOfCession,  quotationNo : this.quotationNo, from: 'quo-processing' }], { skipLocationChange: true });
+        this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.typeOfCession,  quotationNo : this.quotationNo, from: 'quo-processing' }], { skipLocationChange: true });
     },100); 
 
 }
@@ -398,4 +405,13 @@ setCedingcompany(data){
         this.onClickAdd(1);
     }
 
+    showTypeOfCessionLOV(){
+        $('#typeOfCessionLOV #modalBtn').trigger('click');
+    }
+
+    setTypeOfCession(data) {
+        this.typeOfCessionId = data.cessionId;
+        this.typeOfCession = data.description;
+        this.onClickAdd(1);
+    }
 }

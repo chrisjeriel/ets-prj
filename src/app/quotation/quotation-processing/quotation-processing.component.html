@@ -84,24 +84,24 @@
                 </div>
                 <div class="input-group" style="margin-top: -12px">
                     <label class="form-control-sm col-sm-3" for="xx">Type of Cession</label>
-                    <input type="text" id="xx" class="form-control form-control-sm col-sm-2" style="margin-right: -1px !important">
-                    <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+                    <input type="text" class="form-control form-control-sm col-sm-2" style="margin-right: -1px !important" [(ngModel)]="typeOfCessionId">
+                    <div class="text-search-ico" (click)="modalService.dismissAll(); showTypeOfCessionLOV()"><a><i class="fa fa-search"></i></a></div>
                     &nbsp;&nbsp;
-                    <input type="text" id="xx" class="form-control form-control-sm">
+                    <input type="text" class="form-control form-control-sm" [(ngModel)]="typeOfCession">
                 </div>
                 <div class="input-group" style="margin-top: -12px; margin-bottom: -10px ! important">
                     <label class="form-control-sm col-sm-3" for="xx" style="margin: 0;">Risk</label>
-                    <input type="text" id="xx" class="form-control form-control-sm col-sm-2" style="margin-right: -1px !important"
+                    <input type="text" class="form-control form-control-sm col-sm-2" style="margin-right: -1px !important"
                       [(ngModel)] = "riskCd" >
                     <div class="text-search-ico" (click)="showRiskLOV()"><a><i class="fa fa-search"></i></a></div>
                     &nbsp;&nbsp;
-                    <input type="text" id="xx" class="form-control form-control-sm"  [(ngModel)]="riskName">
+                    <input type="text" class="form-control form-control-sm"  [(ngModel)]="riskName">
                 </div>
             </div>
         </fieldset>
     </div>
     <div footer class="text-center w-100">
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>Cancel</a></button>
         <button class="cust-btn" type="button" (click)="modalService.dismissAll(); nextBtnEvent();"><a>Next</a></button>
     </div>
 </app-modal>
@@ -149,3 +149,4 @@
 <app-mtn-risk id="riskLOV" (selectedData)="setRisks($event)"></app-mtn-risk>
 <app-ceding-company id="cedingCompanyLOV" (selectedData)="setCedingcompany($event)"></app-ceding-company>
 <app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
+<app-mtn-type-of-cession id="typeOfCessionLOV" (selectedData)="setTypeOfCession($event)"></app-mtn-type-of-cession>

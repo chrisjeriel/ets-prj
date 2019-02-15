@@ -29,11 +29,16 @@
 						<input type="text" placeholder="55" class="form-control form-control-sm text-right cust-sm cust-mrgn col-sm-4">
 					</div>
 				</div>
-				<div class="col-sm-4"></div>
+				<div class="col-sm-4" style="padding: 0px !important;">
+					<div class="input-group">
+						<label class="form-control-sm col-sm-3" style="margin-right: -2px !important;padding-left: 0px !important;">Reference No.</label>
+						<input type="text" class="form-control form-control-sm cust-sm col-sm" value="INV-000001">
+					</div>
+				</div>
 				<label class="form-control-sm col-sm-2">Payment Type</label>
 				<select class="form-control form-control-sm cust-sm col-sm cust-sm" (change)="tabController($event);" [(ngModel)]="record.paymentType">
 					<option value="Inward Policy Balances">Inward Policy Balances</option>
-					<option value="Claim Recovery">Claim Recovery</option>
+					<option value="Claim Recovery / Overpayment">Claim Recovery / Overpayment</option>
 					<option value="QSOA">QSOA</option>
 					<option value="Claim Cash Call">Claim Cash Call</option>
 					<option value="Investment">Investment</option>
@@ -42,13 +47,13 @@
 					<option value="Payment for Advances">Payment for Advances</option>
 				</select>
 			</div>
-			<div class="input-group cust-ig">
+			<!-- <div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">DCB Bank</label>
 				<input type="text" placeholder="Bank of the Philippine Islands" class="form-control form-control-sm cust-sm col-sm-6">
 				<label class="form-control-sm col-sm-2">DCB Bank Acct. No.</label>
 				<input type="text" placeholder="627-147839-8" class="form-control form-control-sm cust-sm col-sm-3">
 				<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-			</div>
+			</div> -->
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">P.R. No.</label>
 				<input type="text" placeholder="435674" class="form-control form-control-sm cust-sm text-right col-sm-2">
@@ -101,7 +106,7 @@
 		</fieldset>
 	</div>
 	<div class="col-sm-2">
-		<fieldset class="scheduler-border" style="margin-left: -5px !important; padding-top: 18px !important; padding-bottom: 18px !important;">
+		<fieldset class="scheduler-border" style="margin-left: -5px !important; padding-top: 14px !important; padding-bottom: 13px !important;">
 			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 			<div class="input-group" style="margin-bottom: 6px !important;">
 				<div class="col-sm-12 text-center" style="margin-bottom: 8px !important;">
@@ -117,7 +122,7 @@
 				</div>	
 			</div> -->
 		</fieldset>
-		<fieldset class="scheduler-border" style="margin-left: -5px !important; padding-top: 16px !important; padding-bottom: 16px !important;">
+		<fieldset class="scheduler-border" style="margin-left: -5px !important; padding-top: 12px !important; padding-bottom: 12px !important;">
 			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 			<div class="input-group" style="margin-bottom: 6px !important;">
 				<div class="col-sm-12 text-center">
@@ -130,7 +135,7 @@
 				</div>					
 			</div>
 		</fieldset>
-		<fieldset class="scheduler-border" style="margin-left: -5px !important; padding-top: 15px !important; padding-bottom: 15px !important;">
+		<fieldset class="scheduler-border" style="margin-left: -5px !important; padding-top: 11px !important; padding-bottom: 11px !important;">
 			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 			<div class="input-group" style="margin-bottom: 6px !important;">
 				<div class="col-sm-12 text-center">
@@ -151,6 +156,16 @@
 			<legend class="scheduler-border">Payment Details</legend>
 			<div class="row">
 				<div class="col-sm-12">
+						<div class="input-group cust-ig">
+							<div class="col-sm-1"></div>
+							<label class="form-control-sm col-sm-1">DCB Bank</label>
+							<input type="text" placeholder="Bank of the Philippine Islands" class="form-control form-control-sm cust-sm col-sm-5">
+							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+							<label class="form-control-sm col-sm-2">DCB Bank Acct. No.</label>
+							<input type="text" placeholder="627-147839-8" class="form-control form-control-sm cust-sm col-sm-2">
+							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+							<div class="col-sm-1"></div>
+						</div>
 					<app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
 				</div>
 			</div>

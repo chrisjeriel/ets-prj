@@ -25,7 +25,7 @@ export class InwardPolicyBalancesComponent implements OnInit {
     nData: new ARInwdPolBalDetails(null, null, null, null, null, null, null, null, null, null, null,null,null,null,null,null,),
     total: [null,null,null,null,null,null, null, null, 'Total', 'premium', 'riComm', 'charges', 'netDue', 'payments', 'balance', 'overdueInterest'],
     genericBtn: 'Save',
-    opts: [{ selector: 'type', vals: ["Payment"] }]
+    opts: [{ selector: 'type', vals: ["Payment", "Refund"] }]
   };
 
   constructor(private titleService: Title, private accountingService: AccountingService) { }

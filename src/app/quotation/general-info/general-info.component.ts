@@ -84,10 +84,10 @@ export class GeneralInfoComponent implements OnInit {
 		createUser: '',
 		currencyCd: '',
 		currencyRt: '',
-		declarationTag: '',
+		declarationTag: 'N',
 		expiryDate: '',
-		govtTag: '',
-		indicativeTag: '',
+		govtTag: 'N',
+		indicativeTag: 'N',
 		insuredDesc: '',
 		intmId: '',
 		intmName: '',
@@ -98,7 +98,7 @@ export class GeneralInfoComponent implements OnInit {
 		lineClassDesc: '',
 		mbiRefNo: '',
 		ocQuoted: '',
-		openCoverTag: '',
+		openCoverTag: 'N',
 		openQuotationNo: '',
 		openingParag: '',
 		policyId: '',
@@ -121,6 +121,7 @@ export class GeneralInfoComponent implements OnInit {
 		reqDate: '',
 		reqMode: '',
 		status: '',
+		statusDesc: '',
 		updateDate: '',
 		updateUser: ''
 	};
@@ -139,11 +140,11 @@ export class GeneralInfoComponent implements OnInit {
 		this.tableData = this.quotationService.getItemInfoData();
 
 		this.sub = this.route.params.subscribe(params => {
+			console.log('ADD PARAMS >>>>> ' + params['addParams']);
 			this.from = params['from'];
 			if (this.from == "quo-processing") {
 				this.line = params['line'];
-				console.log('LINE SA LOOB NG IF >>> ' + this.line);
-				this.typeOfCession = params['typeOfCession'];				
+				//this.typeOfCession = params['typeOfCession'];				
 			}
 		});
 
@@ -179,47 +180,38 @@ export class GeneralInfoComponent implements OnInit {
 			});
 
 		} else {
+			this.route.params.subscribe(params => {	
+				this.genInfoData.lineCd 		= this.line;			
+				this.genInfoData.cessionId 		= JSON.parse(params['addParams']).cessionId;
+				this.genInfoData.cessionDesc 	= JSON.parse(params['addParams']).cessionDesc;
+				this.genInfoData.quoteYear 		= new Date().getFullYear().toString();
+				this.genInfoData.quoteRevNo 	= '0';
+				this.genInfoData.status 		= '2';
+				this.genInfoData.statusDesc 	= 'In Progress';
+				this.project.projId 			= '1';
 
-			this.quotationGenInfo = new QuotationGenInfo();
-			this.quotationGenInfo.line = "";
-			this.quotationGenInfo.year;
-			this.quotationGenInfo.seqNo;
-			this.quotationGenInfo.reqSeq;
-			this.quotationGenInfo.histNo = "";
-			this.quotationGenInfo.branch = "";
-			this.quotationGenInfo.lineClass = "";
-			this.quotationGenInfo.policyNumber;
-			this.quotationGenInfo.printedBy = "";
-			this.quotationGenInfo.printDate;
-			this.quotationGenInfo.cedingCompany = "";
-			this.quotationGenInfo.quoteStatus = "";
-			this.quotationGenInfo.quoteDate;
-			this.quotationGenInfo.validUntil;
-			this.quotationGenInfo.requestedBy = "";
-			this.quotationGenInfo.requestedDate;
-			this.quotationGenInfo.requestedMode = "";
-			this.quotationGenInfo.principal = "";
-			this.quotationGenInfo.contractor = "";
-			this.quotationGenInfo.insured = "";
-			this.quotationGenInfo.propertyProjectDescription = "";
-			this.quotationGenInfo.site = "";
-			this.quotationGenInfo.durationTesting = "";
-			this.quotationGenInfo.risk = "";
-			this.quotationGenInfo.object = "";
-			this.quotationGenInfo.location = "";
-			this.quotationGenInfo.share = "";
-			this.quotationGenInfo.partOf100 = "";
-			this.quotationGenInfo.intermediary = "";
-			this.quotationGenInfo.governmentFlag = "";
-			this.quotationGenInfo.indicative = "";
-			this.quotationGenInfo.openCover = "";
-			this.quotationGenInfo.declaration = "";
-			this.quotationGenInfo.openingParagraph = "";
-			this.quotationGenInfo.closingParagraph = "";
-			this.quotationGenInfo.createdBy = "";
-			this.quotationGenInfo.dateCreated;
-			this.quotationGenInfo.lastUpdate;
-			this.quotationGenInfo.lastUpdateBy = "";
+				this.maintenanceService.getMtnRisk(JSON.parse(params['addParams']).riskId).subscribe(data => {
+					console.log('RISK  >>>  ' + JSON.stringify(data));
+					var risk = data['risk'];
+
+					this.project.blockCd 		= risk.blockCd;
+					this.project.blockDesc 		= risk.blockDesc;
+					this.project.cityCd 		= risk.cityCd;
+					this.project.cityDesc 		= risk.cityDesc;
+					this.project.districtCd 	= risk.districtCd;
+					this.project.districtDesc 	= risk.districtDesc;
+					this.project.provinceCd 	= risk.provinceCd;
+					this.project.provinceDesc 	= risk.provinceDesc;
+					this.project.regionCd 		= risk.regionCd;
+					this.project.regionDesc 	= risk.regionDesc;
+					this.project.riskId 		= risk.riskId;
+					this.project.riskName 		= risk.riskName;
+					this.project.latitude 		= risk.latitude;
+					this.project.longitude 		= risk.longitude;
+
+				});
+			});
+
 		}
 
 		/*this.sub = this.route.params.subscribe(params => {
@@ -328,11 +320,11 @@ export class GeneralInfoComponent implements OnInit {
 		this.genInfoData.insuredDesc = data.insuredName;
 	}
 
-	setLineClass(event){
-		this.lineClassCode = event.lineClassCd;
-        this.lineClassDesc = event.lineClassCdDesc;
-        this.genInfoData.lineCd = this.lineClassDesc;
 
+	setLineClass(data){
+		this.genInfoData.lineClassCd = data.lineClassCd;
+        this.genInfoData.lineClassDesc = data.lineClassCdDesc;
+        //this.lineClass = this.lineClassCode + ' - ' + this.lineClassDesc;
     }
 
     setInt(event){
@@ -341,7 +333,11 @@ export class GeneralInfoComponent implements OnInit {
     }
 
 	dateParser(arr) {
-		return new Date(arr[0] + '-' + arr[1] + '-' + arr[2]).toISOString();   
+		function pad(num){
+			return (num < 10) ? '0' + num : num;
+		}
+
+		return new Date(arr[0] + '-' + pad(arr[1]) + '-' + pad(arr[2])).toISOString();   
 	}
 
 	saveQuoteGenInfo() {		
@@ -354,7 +350,7 @@ export class GeneralInfoComponent implements OnInit {
 		var saveQuoteGeneralInfoParam = {
 			"approvedBy"	: this.genInfoData.approvedBy,
 			"cedingId"		: this.genInfoData.cedingId,
-			"cessionId"		: (this.genInfoData.cessionDesc.toUpperCase() === 'DIRECT') ? '1' : '2', //this.genInfoData.cessionId,
+			"cessionId"		: this.genInfoData.cessionId,
 			"closingParag"	: this.genInfoData.closingParag,
 			"contractorId"	: this.genInfoData.contractorId,
 			"createDate"	: this.genInfoData.createDate,
@@ -367,7 +363,7 @@ export class GeneralInfoComponent implements OnInit {
 			"govtTag"		: this.genInfoData.govtTag,
 			"indicativeTag"	: this.genInfoData.indicativeTag,
 			"insuredDesc"	: this.genInfoData.insuredDesc,
-			"intmId"		: this.genInfoData.intmId,
+			"intmId"		: (this.genInfoData.intmId === '') ? '1' : this.genInfoData.intmId,
 			"ipl"			: this.project.ipl,
 			"issueDate"		: this.genInfoData.issueDate,
 			"lineCd"		: this.genInfoData.lineCd,
@@ -383,16 +379,16 @@ export class GeneralInfoComponent implements OnInit {
 			"prinId"		: this.genInfoData.principalId,
 			"printDate"		: this.genInfoData.printDate,
 			"printedBy"		: this.genInfoData.printedBy,
-			"prjCreateDate"	: this.project.createDate,
-			"prjCreateUser"	: this.project.createUser,
-			"prjUpdateDate"	: this.project.updateDate,
-			"prjUpdateUser"	: this.project.updateUser,
+			"prjCreateDate"	: this.genInfoData.createDate,//this.project.createDate,
+			"prjCreateUser"	: this.genInfoData.createUser,//this.project.createUser,
+			"prjUpdateDate"	: this.genInfoData.updateDate,//this.project.updateDate,
+			"prjUpdateUser"	: this.genInfoData.updateUser,//this.project.updateUser,
 			"projDesc"		: this.project.projDesc,
 			"projId"		: this.project.projId,
 			"quoteId"		: this.genInfoData.quoteId,
-			"quoteRevNo"	: (this.genInfoData.quoteId === '') ? '0' : this.genInfoData.quoteRevNo,
+			"quoteRevNo"	: this.genInfoData.quoteRevNo,
 			"quoteSeqNo"	: (this.genInfoData.quoteId === '') ? '1' : this.genInfoData.quoteSeqNo,
-			"quoteYear"		: (this.genInfoData.quoteId === '') ? new Date().getFullYear().toString() : this.genInfoData.quoteYear,
+			"quoteYear"		: this.genInfoData.quoteYear,
 			"reinsurerId"	: this.genInfoData.reinsurerId,
 			"reqBy"			: this.genInfoData.reqBy,
 			"reqDate"		: this.genInfoData.reqDate,
@@ -409,6 +405,10 @@ export class GeneralInfoComponent implements OnInit {
 		}
 
 		return JSON.stringify(saveQuoteGeneralInfoParam);
+	}
+
+	toDateTime(val) {
+		return new Date(val).toISOString();
 	}
 }
 export interface SelectRequestMode {

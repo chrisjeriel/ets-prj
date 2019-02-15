@@ -1,6 +1,7 @@
 export class ARClaimsRecovery {
-    recoveryNo: string;
+    paymentType: string;
     claimNo: string;
+    recoveryNo: string;
     histNo: number;
     amountType: string;
     historyType: string;
@@ -10,9 +11,10 @@ export class ARClaimsRecovery {
     amount: number;
     amountPHP: number;
 
-    constructor(recoveryNo:string, claimNo: string, histNo: number, amountType: string, historyType: string, remarks: string, curr: string, rate: number, amount: number, amountPHP: number) {
-        this.recoveryNo = recoveryNo;
+    constructor(paymentType:string, claimNo: string, recoveryNo:string,  histNo: number, amountType: string, historyType: string, remarks: string, curr: string, rate: number, amount: number, amountPHP: number) {
+        this.paymentType = paymentType;
         this.claimNo = claimNo;
+        this.recoveryNo = recoveryNo;
         this.histNo = histNo;
         this.amountType = amountType;
         this.historyType = historyType;

@@ -4,6 +4,7 @@ export class AccountingItClaimCashCallAr{
 	insured: string;
 	lossDate: Date;
 	lossCover: string;
+	histNo: string;
 	historyType: string;
 	paidAmount: number;
 	reserveAmount: number;
@@ -13,7 +14,7 @@ export class AccountingItClaimCashCallAr{
 	amountPhp: number;
 
 	constructor(claimNo: string, policyNo: string, insured: string, lossDate: Date,
-				lossCover: string, historyType: string, paidAmount: number, 
+				lossCover: string, histNo:string, historyType: string, paidAmount: number, 
 				reserveAmount: number, currency: string, currRate: number, 
 				amount: number, amountPhp: number){
 		this.claimNo = claimNo;
@@ -21,6 +22,7 @@ export class AccountingItClaimCashCallAr{
 		this.insured = insured;
 		this.lossDate = lossDate;
 		this.lossCover = lossCover;
+		this.histNo = histNo;
 		this.historyType = historyType;
 		this.paidAmount	= paidAmount;
 		this.reserveAmount = reserveAmount;

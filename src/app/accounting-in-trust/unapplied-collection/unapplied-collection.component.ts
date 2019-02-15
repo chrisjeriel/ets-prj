@@ -23,7 +23,7 @@ export class UnappliedCollectionComponent implements OnInit {
       }
     ],
     tHeader: ['Item','Reference No.','Description','Type','Curr','Curr Rate','Amount','Amount (PHP)'],
-    dataTypes: ['text','text','select','text','text','percent','currency','currency'],
+    dataTypes: ['text','text','text','select','text','percent','currency','currency'],
     resizable: [true, true, true, true, true, true, true, true],
     nData: {
       item: null,
@@ -41,14 +41,17 @@ export class UnappliedCollectionComponent implements OnInit {
     deleteFlag: true,
     genericBtn: 'Save',
     pageLength: 10,
-    widths: [210,160,'auto',80,60,80,120,120],
+    widths: [210,160,'auto',100,60,80,120,120],
     paginateFlag:true,
     infoFlag:true,
+    // opts: [
+    //   { 
+    //     selector: 'description',
+    //     vals: ['Payment for policy from PNBGEN']
+    //   }
+    // ]
     opts: [
-      { 
-        selector: 'description',
-        vals: ['Payment for policy from PNBGEN']
-      }
+      { selector: 'type', vals: ['Payment','Refund']}
     ]
   }
   constructor(private accountingService: AccountingService) { }

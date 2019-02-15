@@ -20,10 +20,7 @@ export class PaytReqInvestmentComponent implements OnInit {
       	maturityDate: new Date('2018-10-20'),
       	curr: 'PHP',
       	currRate: 1,
-      	bankCharge: 18112.50,
-      	witholdingTax: 82250,
       	investment: 14000000,
-      	maturityValue: 18112500
       },
       {
       	bank: 'RCBC',
@@ -36,23 +33,20 @@ export class PaytReqInvestmentComponent implements OnInit {
       	maturityDate: new Date('2018-10-31'),
       	curr: 'PHP',
       	currRate: 1,
-      	bankCharge: 10150,
-      	witholdingTax: 3000,
       	investment: 10000000,
-      	maturityValue: 10150000
       },
     ],
-    tHeader: ['Bank', 'Certificate No.', 'Investment Type', 'Maturity Period', 'Duration Unit', 'Interest Rate', 'Date Purchased', 'Maturity Date', 'Curr', 'Curr Rate','Bank Charge', 'Witholding Tax', 'Investment', 'Maturity Value'],
-    dataTypes: ['text',  'text', 'text', 'number', 'text', 'percent', 'date', 'date', 'text','percent','currency','currency','currency','currency'],
+    tHeader: ['Bank', 'Certificate No.', 'Investment Type', 'Maturity Period', 'Duration Unit', 'Interest Rate', 'Date Purchased', 'Maturity Date', 'Curr', 'Curr Rate', 'Investment'],
+    dataTypes: ['text',  'text', 'text', 'number', 'text', 'percent', 'date', 'date', 'text','percent','currency'],
     nData: {},
-    widths: [],
     paginateFlag: true,
     infoFlag: true,
     pageID: 1,
     checkFlag: true,
     addFlag: true,
     deleteFlag: true,
-    total: [null, null, null,null,null,null,null,null,null, 'Total', 'bankCharge', 'witholdingTax', 'investment', 'maturityValue'],
+    total: [null, null, null,null,null,null,null,null,null, 'Total','investment'],
+    widths:['auto',1,1,1,1,1,1,1,1,'auto','auto'],
     genericBtn: 'Save',
   }
 

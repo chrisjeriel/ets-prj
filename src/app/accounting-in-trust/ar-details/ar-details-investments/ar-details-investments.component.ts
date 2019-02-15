@@ -11,9 +11,9 @@ export class ArDetailsInvestmentsComponent implements OnInit {
   
   passDataInvestment: any = {
     tableData:[],
-    tHeader:['Bank','Certificate No.','Investment Type','Maturity Period','Duration Unit','Interest Rate','Date Purchased','Maturity Date','Curr','Curr Rate','Bank Charge','Withholding Tax','Investment','Income','Maturity Value'],
+    tHeader:['Bank','Certificate No.','Investment Type','Maturity Period','Duration Unit','Interest Rate','Date Purchased','Maturity Date','Curr','Curr Rate','Investment','Investment Income','Bank Charge','Withholding Tax','Maturity Value'],
     dataTypes:['text','text','text','number','text','percent','date','date','text','percent','currency','currency','currency','currency','currency'],
-    total:[null,null,null,null,null,null,null,null,null,'Total','bankCharge','withTax','investment','income','matValue'],
+    total:[null,null,null,null,null,null,null,null,null,'Total','investment','income','bankCharge','withTax','matValue'],
     addFlag:true,
     deleteFlag:true,
     genericBtn: "Save",

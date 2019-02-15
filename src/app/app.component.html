@@ -255,6 +255,7 @@
                                             <button [routerLink]="['trial-balance']" class="button btn btn-link">Trial
                                                 Balance</button>
                                             <br />
+                                            <button [routerLink]="['extract-bir-taxes']" class="button btn btn-link">BIR Taxes</button>
                                         </ng-template>
                                     </ngb-panel>
                                 </ngb-accordion>
@@ -282,6 +283,23 @@
                                             <br />
                                             <button [routerLink]="['cancel-transaction']" class="button btn btn-link">Cancel
                                                 Transaction</button>
+                                            <br />
+                                        </ng-template>
+                                    </ngb-panel>
+                                </ngb-accordion>
+                                <ngb-accordion #acc="ngbAccordion">
+                                    <ngb-panel>
+                                        <ng-template ngbPanelTitle>
+                                            Month End
+                                        </ng-template>
+                                        <ng-template ngbPanelContent>
+                                            <button [routerLink]="['mon-end-data-chk-in-trust']" class="button btn btn-link">Data Checking</button>
+                                            <br />                          
+                                            <button [routerLink]="['mon-end-batch-in-trust']" class="button btn btn-link">Batch Processing</button>
+                                            <br /> 
+                                            <button [routerLink]="['mon-end-trial-bal-in-trust']" class="button btn btn-link">Trial Balance Processing</button>
+                                            <br />
+                                            <button [routerLink]="['funds-held']" class="button btn btn-link">Funds Held</button>
                                             <br />
                                         </ng-template>
                                     </ngb-panel>

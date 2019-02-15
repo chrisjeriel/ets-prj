@@ -11,9 +11,9 @@ export class ArClaimCashCallComponent implements OnInit {
 
   claimCashCallData: any = {
     tableData: this.accountingService.getAccountingItClaimCashCallAR(),
-    tHeader: ['Claim No.', 'Policy No.', 'Insured', 'Loss Date', 'Loss Cover','History Type','Paid Amount','Reserve Amount', 'Curr', 'Curr Rate', 'Amount', 'Amount (PHP)'],
-    dataTypes: ['text', 'text', 'text', 'date', 'text','text','currency', 'currency', 'text', 'percent', 'currency', 'currency'],
-    nData: new AccountingItClaimCashCallAr(null, null, null, null, null, null, null, null, null, null,null,null),
+    tHeader: ['Claim No.', 'Policy No.', 'Insured', 'Loss Date', 'Loss Cover','Hist No.','History Type','Paid Amount','Reserve Amount', 'Curr', 'Curr Rate', 'Amount', 'Amount (PHP)'],
+    dataTypes: ['text', 'text', 'text', 'date', 'text','number','text','currency', 'currency', 'text', 'percent', 'currency', 'currency'],
+    nData: new AccountingItClaimCashCallAr(null, null, null, null, null, null, null, null, null, null, null,null,null),
     magnifyingGlass: ['claimNo'],
     paginateFlag: true,
     infoFlag: true,
@@ -22,8 +22,8 @@ export class ArClaimCashCallComponent implements OnInit {
     deleteFlag: true,
     checkFlag: true,
     genericBtn: 'Save',
-    total: [null, null, null, null, null, null,null,null,null, 'Total', 'amount', 'amountPhp'],
-    widths: [130,180,'auto',1,'auto','auto','auto',100,1,2,100,100],
+    total: [null, null, null, null, null,null, null,null,null,null, 'Total', 'amount', 'amountPhp'],
+    widths: [130,180,'auto',1,'auto',1,'auto','auto',100,1,2,100,100],
   }
 
   constructor(private accountingService: AccountingService) { }
