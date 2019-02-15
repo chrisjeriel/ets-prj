@@ -39,7 +39,11 @@ export class InternalCompetitionComponent implements OnInit {
 
     data: any;
     quoteIds: any[] = [];
+    cedingIds: any[] = [];
     savedData: any[] = [];
+
+    currentCedingId: string = "";
+
     @ViewChild(CustEditableNonDatatableComponent) custEditableNonDatatableComponent : CustEditableNonDatatableComponent;
     
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private maintenanceService: MaintenanceService) { }
@@ -52,9 +56,11 @@ export class InternalCompetitionComponent implements OnInit {
         //this.opts.push({ selector: "advOpt", vals: ["Pending", "On Going", "Done"] });
 
         this.quotationService.getIntCompAdvInfo().subscribe((data: any) => {
+            console.log("here");
             for(var j = 0; j < data.quotation.length; j++){
               this.data = data.quotation[j].competitionsList;
               this.quoteIds.push(data.quotation[j].quoteId);
+              this.cedingIds.push(data.quotation[j].competitionsList[0].cedingId.toString());
               for(var i = 0; i < this.data.length; i++){
                 this.data[i].createDate = new Date(
                     this.data[i].createDate[0],
@@ -76,7 +82,7 @@ export class InternalCompetitionComponent implements OnInit {
 
 
       this.maintenanceService.getAdviceWordings().subscribe((data: any) => {
-        console.log(data);
+        //console.log(data);
       });
 
     }
@@ -133,13 +139,14 @@ export class InternalCompetitionComponent implements OnInit {
     }
 
     clickAdviceLOV(data){
+      this.currentCedingId = this.cedingIds[data.index];
+      //console.log(this.currentCedingId);
       if(data.key=='wordings'){
         $('#adviceWordingsLOV #modalBtn').trigger('click');
         data.tableData = this.intCompData.tableData;
         this.adviceLOVRow = data.index;
       }
-      if(data.key=='cedingRepName'){
-        console.log(data)
+      else if(data.key=='cedingRepName'){
         $('#attentionLOV #modalBtn').trigger('click');
         data.tableData = this.intCompData.tableData;
         this.attentionLOVRow = data.index;
