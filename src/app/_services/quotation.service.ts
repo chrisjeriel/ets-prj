@@ -215,7 +215,7 @@ export class QuotationService {
 
     }
 
-    getAttachment(quoteId:string) {
+    getAttachment(quoteId:string,quotationNo?:string) {
         // this.attachmentInfoData = [
         //     new AttachmentInfo("NSO_Birth_Certificate_001", "Policyholder’s details such as name, date of birth, address, gender, occupation"),
         //     new AttachmentInfo("Registration_Number_001", "Vehicle registration number and registration certificate (RC) number"),
@@ -225,7 +225,8 @@ export class QuotationService {
         // ];
 
         const params = new HttpParams()
-             .set('quoteId',quoteId)
+             .set('quotationNo', (quotationNo === null || quotationNo === undefined ? '' : quotationNo) )
+             .set('quoteId',(quoteId === null || quoteId === undefined ? '' : quoteId) )
 
         return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteAttachment',{params});
         // return this.attachmentInfoData;
@@ -627,7 +628,7 @@ export class QuotationService {
             return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteHoldCover',{params});
     }
 
-    saveQuoteAttachment(quoteId:number ,attachmentList:any[]){
+    saveQuoteAttachment(quoteId:string ,attachmentList:any[]){
         let params:any  = {
             quoteId: quoteId,
             attachmentsList: attachmentList
