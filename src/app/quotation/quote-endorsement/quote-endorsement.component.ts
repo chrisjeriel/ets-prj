@@ -5,6 +5,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
+import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 
 
 
@@ -17,6 +18,7 @@ export class QuoteEndorsementComponent implements OnInit {
 
     @Input() endorsementType: string = "";
     @ViewChildren(CustEditableNonDatatableComponent) table: QueryList<CustEditableNonDatatableComponent>;
+    @ViewChild(CustNonDatatableComponent) tableNonEditable: CustNonDatatableComponent;
 /*    @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;*/
     OpenCover: boolean;
     private sub: any;
@@ -163,11 +165,15 @@ export class QuoteEndorsementComponent implements OnInit {
                     this.quotationService.getQuoteOptions().subscribe((data: any) => {
                         // this.optionRecords = data.QuotationOption.optionsList;
                         for(var i = data.quotation.optionsList.length - 1; i >= 0; i--){
-                           this.optionRecords.push(data.quotation.optionsList[i]);
+                           this.quoteOptionsData.tableData.push(new QuotationOption (
+                                                        data.quotation.optionsList[i].optionId,
+                                                        data.quotation.optionsList[i].optionRt,
+                                                        data.quotation.optionsList[i].condition,
+                                                        data.quotation.optionsList[i].commRtQuota,
+                                                        data.quotation.optionsList[i].commRtSurplus,
+                                                        data.quotation.optionsList[i].commRtFac));
                         }
-                       /* this.table.refreshTable();*/
-                        console.log(this.optionRecords);
-                       
+                         this.tableNonEditable.refreshTable();
                     });
                   
 
@@ -196,7 +202,7 @@ export class QuoteEndorsementComponent implements OnInit {
 
     clickRow(event) {
 /*           this.quotationService.getEndorsements(null,this.quotationNum,event.optionNo).subscribe((data: any) => {*/
-           this.quotationService.getEndorsements('1','',event.optionNo).subscribe((data: any) => {
+           this.quotationService.getEndorsements(null,this.plainQuotationNo(this.quotationNum),event.optionId).subscribe((data: any) => {
                  while(this.endorsementData.tableData.length > 0) {
                   this.endorsementData.tableData.pop();
               }    
