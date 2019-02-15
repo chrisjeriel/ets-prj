@@ -16,3 +16,20 @@ export class QSOA{
 		this.endBalCR = endBalCR;
 	}
 }
+
+export class QSOABalances {
+	quarterEnding:Date;
+	currency: string
+	currencyRate: number
+	amount: number
+	amountPhp: number
+
+	constructor(quarterEnding:Date,currency: string,currencyRate: number,amount: number,amountPhp: number){
+		this.quarterEnding = quarterEnding;
+		this.currency = currency;
+		this.currencyRate = currencyRate;
+		this.amount = amount;
+		this.amountPhp = amountPhp;
+	}
+}
+;

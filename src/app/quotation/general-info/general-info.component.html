@@ -36,7 +36,7 @@
 										<input appRequired type="text" class="form-control form-control-sm" [(ngModel)]="genInfoData.cessionDesc">
 
 										<label class="form-control-sm col-sm-2">Line Class</label>
-										<input type="text" [(ngModel)]="genInfoData.lineCd" class="form-control form-control-sm" style="margin-right: 1px;"
+										<input type="text" [(ngModel)]="genInfoData.lineClassCd" class="form-control form-control-sm" style="margin-right: 1px;"
 										 appRequired>
 										<div class="text-search-ico"><a><i class="fa fa-search" (click)=showLineClassLOV()></i></a></div>
 										<span>&nbsp;</span>
@@ -46,7 +46,7 @@
 										<input type="text" class="form-control form-control-sm" [(ngModel)]="genInfoData.policyNo">
 										<label class="form-control-sm col-sm-2">Status</label>
 										<input type="text"  class="form-control form-control-sm"
-										 appRequired [(ngModel)]="genInfoData.status">
+										 appRequired [(ngModel)]="genInfoData.statusDesc">
 									</div>
 									<div class="input-group ig-cust">
 										<label class="form-control-sm col-sm-2">Ceding Company</label>
@@ -345,7 +345,7 @@
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-12">
 								<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Risk</label>
-								<input appRequired type="text" class="form-control form-control-sm">
+								<input appRequired type="text" class="form-control form-control-sm" [(ngModel)]="project.riskName">
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">

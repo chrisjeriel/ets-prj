@@ -83,6 +83,18 @@ export class AcctItCancelledTransactionsComponent implements OnInit {
     this.tranType = data.tranType;
   }
 
+  onRowDblClick(event){
+     if(this.tranType == 'AR'){
+      this.route.navigate(['accounting-in-trust',{link:'/acct-it-cancelled-trans'}],{ skipLocationChange: true });
+    }else if(this.tranType == 'CV'){
+      this.route.navigate(['generate-cv',{link:'/acct-it-cancelled-trans'}],{ skipLocationChange: true });
+    }else if(this.tranType == 'JV'){
+      this.route.navigate(['generate-jv',{link:'/acct-it-cancelled-trans'}],{ skipLocationChange: true });
+    }else{
+      //do something
+    }
+  }
+
   viewTranDetails(){
     if(this.tranType == 'AR'){
       this.route.navigate(['accounting-in-trust',{link:'/acct-it-cancelled-trans'}],{ skipLocationChange: true });

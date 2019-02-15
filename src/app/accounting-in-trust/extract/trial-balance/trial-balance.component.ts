@@ -14,7 +14,7 @@ export class TrialBalanceComponent implements OnInit {
   ngOnInit() {
   }
 
-  accountCode: string = "Total";
+  accountCode: string = "Total Debits & Credits";
 
   accCodeChange(data){
     this.accountCode = data;

@@ -9,7 +9,7 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
   styleUrls: ['./mtn-endt-code.component.css']
 })
 export class MtnEndtCodeComponent implements OnInit {
-@Output() selectedData: EventEmitter<any> = new EventEmitter();
+  @Output() selectedData: EventEmitter<any> = new EventEmitter();
   constructor(private modalService: NgbModal, private mtnService : MaintenanceService) { }
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
   passData: any = {

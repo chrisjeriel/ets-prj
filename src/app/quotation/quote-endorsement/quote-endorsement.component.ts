@@ -1,5 +1,3 @@
-
-
 import { Component, OnInit , ViewChild, Input, ViewChildren, QueryList} from '@angular/core';
 import { QuotationInfo, QuotationOption, QuoteEndorsement , QuoteEndorsementOC} from '../../_models';
 import { QuotationService } from '../../_services';
@@ -18,8 +16,8 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 export class QuoteEndorsementComponent implements OnInit {
 
     @Input() endorsementType: string = "";
-/*    @ViewChildren(CustEditableNonDatatableComponent) table: QueryList<CustEditableNonDatatableComponent>;*/
-    @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
+    @ViewChildren(CustEditableNonDatatableComponent) table: QueryList<CustEditableNonDatatableComponent>;
+/*    @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;*/
     OpenCover: boolean;
     private sub: any;
     from: string;
@@ -136,8 +134,8 @@ export class QuoteEndorsementComponent implements OnInit {
                                                                            data.endorsementsOc[lineCount].remarks)
                                                                    );          
                           }
-               /*         this.table.forEach(table => { table.refreshTable() });*/
-                          this.table.refreshTable();
+                        this.table.forEach(table => { table.refreshTable() });
+      /*                    this.table.refreshTable();*/
                     });
 
 
@@ -151,13 +149,9 @@ export class QuoteEndorsementComponent implements OnInit {
                     }
                });
 
-                var quoteNum= this.quotationNum.split("-",5);
-                this.quotationNum = quoteNum[0] + '-' + quoteNum[1] + '-' + Number(quoteNum[2]).toString() + '-' + Number(quoteNum[3]).toString() + '-' + Number(quoteNum[4]).toString()
-
                 if (this.quotationService.toGenInfo[0] == "edit") {  
-                    console.log("Edit- Quotation");
-
-                    this.quotationService.getQuoteGenInfo(null,this.quotationNum).subscribe((data: any) => {
+                    console.log("<<<<<<<<<<<<<<<<Edit- Quotation>>>>>>>>>>>>>>>>>");
+                    this.quotationService.getQuoteGenInfo(null,this.plainQuotationNo(this.quotationNum)).subscribe((data: any) => {
                         this.insured = data.quotationGeneralInfo.insuredDesc; 
                         this.quoteNoData = data.quotationGeneralInfo.quotationNo;
                         if(data.project == null){
@@ -166,7 +160,18 @@ export class QuoteEndorsementComponent implements OnInit {
                             this.riskName = data.project.riskName; 
                         }
                     });
-                    this.quotationService.getEndorsements(null,this.quotationNum,'1').subscribe((data: any) => {
+                    this.quotationService.getQuoteOptions().subscribe((data: any) => {
+                        // this.optionRecords = data.QuotationOption.optionsList;
+                        for(var i = data.quotation.optionsList.length - 1; i >= 0; i--){
+                           this.optionRecords.push(data.quotation.optionsList[i]);
+                        }
+                       /* this.table.refreshTable();*/
+                        console.log(this.optionRecords);
+                       
+                    });
+                  
+
+                    this.quotationService.getEndorsements(null,this.plainQuotationNo(this.quotationNum),'1').subscribe((data: any) => {
                         for(var lineCount = 0; lineCount < data.endorsements.length; lineCount++){
                               this.endorsementData.tableData.push(new QuoteEndorsement(
                                                                            data.endorsements[lineCount].endtCd, 
@@ -175,29 +180,11 @@ export class QuoteEndorsementComponent implements OnInit {
                                                                            null)
                                                                    );          
                           }
-                        this.table.refreshTable();
-                    });
-                    this.quotationService.getQuoteOptions().subscribe((data: any) => {
-                        this.optionRecords = data.quotation.optionsList;
-                        this.quoteOptionsData.tableData.push(this.optionRecords[0]);
-                        for(var i = data.quotation.optionsList.length - 1; i >= 0; i--){
-                    /*        this.quoteOptionsData.tableData.push( new QuotationOption(
-                                                                                data.quotation.optionsList[lineCount].optionId,
-                                                                                data.quotation.optionsList[lineCount].optionRt,
-                                                                                data.quotation.optionsList[lineCount].condition,
-                                                                                data.quotation.optionsList[lineCount].commRtQuota,
-                                                                                data.quotation.optionsList[lineCount].commRtSurplus,
-                                                                                data.quotation.optionsList[lineCount].commRtFac
-                                                                                )
-                                                                  );*/
-       /*                        this.quoteOptionsData.tableData.push(data.quotation.optionsList[i]
-                                                                  );
-*/
-                        }
-                         this.table.refreshTable();
-                    });
+                        this.table.forEach(table => { table.refreshTable() });
+                    }); 
                 }  
 
+                
 
             }
 
@@ -218,7 +205,8 @@ export class QuoteEndorsementComponent implements OnInit {
                                                                            data.endorsements[lineCount].remarks)
                                                                    );          
                 }
-                this.table.refreshTable();
+               /* this.table.refreshTable();*/
+                this.table.forEach(table => { table.refreshTable() });
            });
 
       /*  this.tableData = this.quotationService.getEndorsements(event.target.closest("tr").children[1].innerText);*/
@@ -249,6 +237,11 @@ export class QuoteEndorsementComponent implements OnInit {
     ngOnDestroy() {
         
         this.sub.unsubscribe();
+    }
+
+    plainQuotationNo(data: string){
+        var arr = data.split('-');
+        return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]);
     }
 
 }

@@ -7,7 +7,7 @@
         	<div class="col-sm-1"></div>
         	<fieldset class="scheduler-border col-sm-10">
         		<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
-        		<div class="row justify-content-sm-center pt-1">
+        		<div class="row justify-content-sm-center pt-1" style="margin-top: 5px !important;">
         			<div class="col-sm-5 d-flex">
 				        <label class="form-control-sm col-sm-4 pl-0 pr-1 text-right mb-0" style="font-size: 9.5px !important;">Booling Month / Year</label>
 				      	<select class="form-control form-control-sm cust-sm col-sm-5">
@@ -30,13 +30,19 @@
 		                        <option value="USD">2017</option>
 		                </select>
 				    </div>
+            <div class="col-sm-12">
+              <app-cust-non-datatable [passData]="passData" style="margin-top: -20px" class="d-block"></app-cust-non-datatable>
+            </div>
         		</div>
-        		<app-cust-non-datatable [passData]="passData" style="margin-top: -20px" class="d-block"></app-cust-non-datatable>
-    			<div class="form-group col-sm text-center" style="margin-bottom: 5px;margin-top: 28px;">
-    		      <div class="cust-btn-container">
-    		        <button type="button" class="cust-btn"><a>Generate to Excel</a></button>
-    		      </div>
-    		    </div>
+             <div class="form-row">
+                <div class="form-group col-sm">
+                    <div class="col-md-12 text-center">
+                        <div class="cust-btn-container" style="margin-top: 10px;">
+                          <button type="button" class="cust-btn"><a>Generate to Excel</a></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         	</fieldset>
         </div>
       </ng-template>

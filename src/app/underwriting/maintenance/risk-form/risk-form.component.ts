@@ -54,7 +54,6 @@ export class RiskFormComponent implements OnInit, OnDestroy {
     }
 
     setDistricts(data){
-        console.log(data);
         this.districtCd = data.districtCd;
         this.districtName = data.districtDesc;
     }
