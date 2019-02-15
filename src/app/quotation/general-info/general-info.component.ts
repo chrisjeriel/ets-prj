@@ -166,7 +166,7 @@ export class GeneralInfoComponent implements OnInit {
 					this.genInfoData.createDate = this.dateParser(this.genInfoData.createDate);
 					this.genInfoData.expiryDate = this.dateParser(this.genInfoData.expiryDate);
 					this.genInfoData.issueDate = this.dateParser(this.genInfoData.issueDate);
-					this.genInfoData.printDate = (this.genInfoData.printDate == null) ? 'T' : this.dateParser(this.genInfoData.printDate);
+					this.genInfoData.printDate = (this.genInfoData.printDate == null) ? '' : this.dateParser(this.genInfoData.printDate);
 					this.genInfoData.reqDate = this.dateParser(this.genInfoData.reqDate);
 					this.genInfoData.updateDate = this.dateParser(this.genInfoData.updateDate);
 				}
@@ -265,6 +265,8 @@ export class GeneralInfoComponent implements OnInit {
 	setPrincipal(data){
 		this.genInfoData.principalName = data.insuredName;
 		this.genInfoData.principalId = data.insuredId;
+
+		this.updateInsuredDesc();
 	}
 
 	showContractorLOV(){
@@ -284,6 +286,8 @@ export class GeneralInfoComponent implements OnInit {
 	setContractor(data){
 		this.genInfoData.contractorName = data.insuredName;
 		this.genInfoData.contractorId = data.insuredId;
+
+		this.updateInsuredDesc();
 	}
 
 	showCurrencyModal(){
@@ -436,13 +440,13 @@ export class GeneralInfoComponent implements OnInit {
   		this.genInfoData.closingParag = data.wording;
   	}
 
-  	updateInsuredDesc(data) {
+  	updateInsuredDesc() {
   		if(this.line == 'CAR' || this.line == 'EAR'){
   			if(this.genInfoData.principalName != '' && this.genInfoData.contractorName != ''){
-  				this.genInfoData.insuredDesc = this.genInfoData.principalName + ' / ' + this.genInfoData.contractorName;
+  				this.genInfoData.insuredDesc = this.genInfoData.principalName.trim() + ' / ' + this.genInfoData.contractorName.trim();
   			}
   		} else {
-  			this.genInfoData.insuredDesc = this.genInfoData.principalName;
+  			this.genInfoData.insuredDesc = this.genInfoData.principalName.trim();
   		}
   	}
   		
