@@ -477,9 +477,9 @@
 <app-mtn-currency id="currIdLov" (selectedData)="setCurr($event)"></app-mtn-currency>
 <app-mtn-insured id="prinIdLov" (selectedData)="setPrin($event)"></app-mtn-insured>
 <app-mtn-insured id="conIdLov" (selectedData)="setCon($event)"></app-mtn-insured>
-<app-mtn-object id="objIdLov" (selectedData)="setObj($event)"></app-mtn-object>
-<app-mtn-quotation-wordings  id="wordingOpeningIdLov" (selectedData)="setOpeningWording($event)"></app-mtn-quotation-wordings>
-<app-mtn-quotation-wordings  id="wordingClosingIdLov" (selectedData)="setClosingWording($event)"></app-mtn-quotation-wordings>
+<app-mtn-object id="objIdLov" (selectedData)="setObj($event)" [line]="line"></app-mtn-object>
+<app-mtn-quotation-wordings  id="wordingOpeningIdLov" (selectedData)="setOpeningWording($event)" [line]="line"></app-mtn-quotation-wordings>
+<app-mtn-quotation-wordings  id="wordingClosingIdLov" (selectedData)="setClosingWording($event)" [line]="line"></app-mtn-quotation-wordings>
 <app-ceding-company id="cedingCoIdLov" (selectedData)="setCedingCo($event)"></app-ceding-company>
 <app-mtn-line-class id="lineClassIdLov" (selectedData)="setLineClass($event)" [line]="line"></app-mtn-line-class>
 <app-mtn-intermediary id="intmIdLov" (selectedData)="setIntm($event)"></app-mtn-intermediary>

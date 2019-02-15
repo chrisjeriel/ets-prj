@@ -43,8 +43,8 @@ export class MaintenanceService{
 
 	getMtnObject(lineCd,objectId){
 		const params = new HttpParams()
+		 	.set('lineCd',lineCd)
 			.set('objectId',objectId)
-			.set('lineCd',lineCd)
 		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnObject",{params});
 	}
 	getMtnQuotationWordings(lineCd,type){

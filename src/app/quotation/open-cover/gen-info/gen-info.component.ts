@@ -201,6 +201,7 @@ export class GenInfoComponent implements OnInit {
     $('#objIdLov #modalBtn').trigger('click');
   }
   setObj(data){
+    this.line = data.lineCd;
     this.objId  = data.objectId;
     this.objName  = data.description;
   }
@@ -212,9 +213,11 @@ export class GenInfoComponent implements OnInit {
     $('#wordingClosingIdLov #modalBtn').trigger('click');
   }
   setOpeningWording(data){
+    this.line = data.lineCd;
     this.openingWording  = data.wording;
   }
   setClosingWording(data){
+    this.line = data.lineCd;
     this.closingWording  = data.wording;
   }
 

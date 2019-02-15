@@ -37,6 +37,8 @@ export class OpenCoverProcessingComponent implements OnInit {
   mtnCessionId: number;
   mtnCessionDesc: string;
 
+  objId:number;
+
   passData: any = {
     tableData: [],
     tHeader: ['Open Cover Quotation No.', 'Type of Cession', 'Line Class', 'Status', 'Ceding Company', 'Principal', 'Contractor', 'Insured', 'Risk', 'Object', 'Site', 'Currency', 'Quote Date', 'Valid Until', 'Request By', 'Created By'],
@@ -211,6 +213,7 @@ export class OpenCoverProcessingComponent implements OnInit {
             rec.reqBy,
             rec.createUser
           ));
+
       }
 
       this.table.refreshTable();
