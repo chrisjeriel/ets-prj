@@ -99,10 +99,11 @@ export class QuoAlopComponent implements OnInit {
 
        this.quotationService.getALop(null,this.quoteNo).subscribe((data: any) => {
               this.alopData = data.quotation.alop;
+              this.quoteId = data.quotation.quoteId;
               this.alopData.issueDate = this.alopData.issueDate[0]+'-'+("0" + this.alopData.issueDate[1]).slice(-2)+'-'+  ("0" + this.alopData.issueDate[2]).slice(-2);
               this.alopData.expiryDate = this.alopData.expiryDate[0]+'-'+("0" + this.alopData.expiryDate[1]).slice(-2)+'-'+ ("0" + this.alopData.expiryDate[2]).slice(-2);
               this.alopData.indemFromDate = this.alopData.indemFromDate[0]+'-'+("0" + this.alopData.indemFromDate[1]).slice(-2)+'-'+("0" + this.alopData.indemFromDate[2]).slice(-2);
-              
+              console.log(data)
        });
 
     }
@@ -114,9 +115,6 @@ export class QuoAlopComponent implements OnInit {
     }
 
     openAlopItem(){
-      console.log('aloooooooooooooooop');
-      console.log(this.quoteNo);
-      console.log(this.quoteId);
       this.quotationService.getALOPItemInfos(this.quoteNo,this.quoteId).subscribe((data: any) => {
             for (var i=0; i < data.quotation[0].alop.alopItemList.length; i++) {
                     this.itemInfoData.tableData.push(data.quotation[0].alop.alopItemList[i]);
