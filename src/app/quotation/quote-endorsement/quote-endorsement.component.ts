@@ -201,9 +201,6 @@ export class QuoteEndorsementComponent implements OnInit {
 
             }
 
-
-        
-
         
     }
 
