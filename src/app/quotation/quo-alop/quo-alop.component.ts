@@ -4,6 +4,7 @@ import { QuoteALOPItemInformation, QuoteALOPInfo } from '../../_models';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
+import { ActivatedRoute } from '@angular/router';
 
 
 
@@ -21,6 +22,10 @@ export class QuoAlopComponent implements OnInit {
     dataTypes: string[] = [];
     nData: QuoteALOPItemInformation = new QuoteALOPItemInformation(null, null, null, null, null);
     
+    sub:any;
+    quotationNo: string;
+    quoteId: string;
+
     alopData: any={address: "Quezon City Philippines",
                   alopId: null,
                   alopItem: null,
@@ -45,6 +50,7 @@ export class QuoAlopComponent implements OnInit {
                   updateDate: null,
                   updateUser: null
                 };
+
     itemInfoData: any = {
         tableData: [],
         tHeader: ["Item No", "Quantity", "Description", "Relative Importance", "Possible Loss Min"],
@@ -68,11 +74,20 @@ export class QuoAlopComponent implements OnInit {
         widths:[1,1,1,1,1,1]
     }
 
-    quoteId: number = 1;
     
-    constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title) { }
+    constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute) { }
 
     ngOnInit() {
+
+      let quoteNo:string = "";
+      this.sub = this.route.params.subscribe(params => {
+        this.quotationNo = params["quotationNo"];
+        quoteNo = this.quotationNo.split(/[-]/g)[0]
+        for (var i = 1; i < this.quotationNo.split(/[-]/g).length; i++) {
+         quoteNo += '-' + parseInt(this.quotationNo.split(/[-]/g)[i]);
+       } 
+      });
+
         this.titleService.setTitle("Quo | ALOP");
         this.policyRecordInfo.policyNo = "EAR-2018-5081-077-0177";
         this.tHeader = ["Item No", "Quantity", "Description", "Relative Importance", "Possible Loss Min"];
@@ -83,14 +98,23 @@ export class QuoAlopComponent implements OnInit {
             this.itemInfoData.keys = ['itemNo','quantity','description','lossMin'];
         }
 
-       this.quotationService.getALop(this.quoteId).subscribe((data: any) => {
+       this.quotationService.getALop(null,quoteNo).subscribe((data: any) => {
               this.alopData = data.quotation.alop;
-              console.log(data);
               this.alopData.issueDate = this.alopData.issueDate[0]+'-'+("0" + this.alopData.issueDate[1]).slice(-2)+'-'+  ("0" + this.alopData.issueDate[2]).slice(-2);
               this.alopData.expiryDate = this.alopData.expiryDate[0]+'-'+("0" + this.alopData.expiryDate[1]).slice(-2)+'-'+ ("0" + this.alopData.expiryDate[2]).slice(-2);
               this.alopData.indemFromDate = this.alopData.indemFromDate[0]+'-'+("0" + this.alopData.indemFromDate[1]).slice(-2)+'-'+("0" + this.alopData.indemFromDate[2]).slice(-2);
               
        });
+
+
+       this.quotationService.getALOPItemInfos(quoteNo,this.quoteId).subscribe((data: any) => {
+            for (var i=0; i < data.quotation[0].alop.alopItemList.length; i++) {
+                    this.itemInfoData.tableData.push(data.quotation[0].alop.alopItemList[i]);
+            }
+            this.table.refreshTable();
+
+        });
+       
 
     }
 
@@ -104,15 +128,6 @@ export class QuoAlopComponent implements OnInit {
       while(this.itemInfoData.tableData.length>0){
         this.itemInfoData.tableData.pop();
       }
-      
-      this.quotationService.getALOPItemInfos(this.policyRecordInfo.policyNo.substr(0, 3),this.quoteId).subscribe((data: any) => {
-           for (var i=0; i < data.quotation[0].alop.alopItemList.length; i++) {
-                   this.itemInfoData.tableData.push(data.quotation[0].alop.alopItemList[i]);
-           }
-           console.log(this.itemInfoData.tableData);
-           this.table.refreshTable();
-
-       });
       $('#alopItemModal #modalBtn').trigger('click');
     }
 

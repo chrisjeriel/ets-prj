@@ -595,20 +595,24 @@ export class QuotationService {
     }
 
 
-    getALOPItemInfos(car: string, quoteId: any, quotationNo?: any) {
+    getALOPItemInfos(car: string, quoteId: string, quotationNo?: any) {
         if (car == "CAR") {
             this.aLOPItemInfos.forEach(function (itm) { delete itm.relativeImportance; });
         }
         const params = new HttpParams()
-             .set('quoteId',quoteId)
+             .set('quotationNo', (quotationNo === null || quotationNo === undefined ? '' : quotationNo) )
+             .set('quoteId',(quoteId === null || quoteId === undefined ? '' : quoteId) )
         return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteAlopItem',{params});
     }
 
-    getALop(quoteId:number,quotationNo?:string){
-        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteAlop'
-            +('?quoteId=' + quoteId)
+    getALop(quoteId:string,quotationNo?:string){
+          const params = new HttpParams()
+             .set('quotationNo', (quotationNo === null || quotationNo === undefined ? '' : quotationNo) )
+             .set('quoteId',(quoteId === null || quoteId === undefined ? '' : quoteId) )
+
+            return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteAlop',{params});
             //+('&quotationNo='+ quotationNo)
-        );
+        
     }
 
     getOcGenInfoData(ocQuoteId: string, ocQuoteNo:string){
