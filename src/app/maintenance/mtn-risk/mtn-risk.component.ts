@@ -20,7 +20,7 @@ export class MtnRiskComponent implements OnInit {
     pageStatus: true,
     pagination: true,
     fixedCol: false,
-    pageID: 1,
+    pageID: 10,
     keys:[
     	'riskId',
     	'riskName',
@@ -38,7 +38,7 @@ export class MtnRiskComponent implements OnInit {
   constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal) { }
 
   ngOnInit() {
-  	this.maintenanceService.getMtnRiskListing('','','','','','','','','','','').subscribe(data =>{
+  	/*this.maintenanceService.getMtnRiskListing('','','','','','','','','','','').subscribe(data =>{
   		var records = data['risk'];
 
             for(let rec of records){
@@ -56,7 +56,7 @@ export class MtnRiskComponent implements OnInit {
             }
 
   		this.table.refreshTable();
-  	});
+  	});*/
   }
 
   onRowClick(data){
@@ -66,6 +66,28 @@ export class MtnRiskComponent implements OnInit {
 
   confirm(){
   	this.selectedData.emit(this.selected);
+  }
+
+  openModal(){
+      this.maintenanceService.getMtnRiskListing('','','','','','','','','','','').subscribe(data =>{
+        var records = data['risk'];
+
+              for(let rec of records){
+                this.riskListing.tableData.push({
+                      riskId: rec.riskId,
+                      riskName: rec.riskName,
+                      regionDesc: rec.regionDesc,
+                      provinceDesc: rec.provinceDesc,
+                      cityDesc: rec.cityDesc,
+                      districtDesc: rec.districtDesc,
+                      blockDesc: rec.blockDesc,
+                      latitude: rec.latitude,
+                      longitude: rec.longitude
+                  });
+              }
+
+        this.table.refreshTable();
+      });
   }
 
 }
