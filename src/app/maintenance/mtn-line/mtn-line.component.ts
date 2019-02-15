@@ -21,7 +21,7 @@ lineListing: any = {
     pageStatus: true,
     pagination: true,
     fixedCol: false,
-    pageID: 5,
+    pageID: 11,
     keys:[
     	'lineCd',
     	'description',
@@ -34,7 +34,7 @@ lineListing: any = {
   constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal) { }
 
   ngOnInit() {
-  	this.maintenanceService.getLineLOV().subscribe((data: any) =>{
+  	/*this.maintenanceService.getLineLOV().subscribe((data: any) =>{
   		for(var lineCount = 0; lineCount < data.line.length; lineCount++){
   			this.lineListing.tableData.push(
   				new Row(data.line[lineCount].lineCd, 
@@ -43,7 +43,7 @@ lineListing: any = {
   			);  		
   		}
   		this.table.refreshTable();
-  	});
+  	});*/
 
   }
 
@@ -55,6 +55,18 @@ lineListing: any = {
 
   confirm(){
     this.selectedData.emit(this.selected);
+  }
+  openModal(){
+     this.maintenanceService.getLineLOV().subscribe((data: any) =>{
+           for(var lineCount = 0; lineCount < data.line.length; lineCount++){
+             this.lineListing.tableData.push(
+               new Row(data.line[lineCount].lineCd, 
+                   data.line[lineCount].description,
+                   data.line[lineCount].remarks)
+             );      
+           }
+           this.table.refreshTable();
+         });
   }
 
 
