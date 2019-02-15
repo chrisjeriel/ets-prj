@@ -40,6 +40,7 @@ export class InternalCompetitionComponent implements OnInit {
     data: any;
     quoteIds: any[] = [];
     cedingIds: any[] = [];
+    cedingRepIds: any[] = [];
     savedData: any[] = [];
 
     currentCedingId: string = "";
@@ -56,7 +57,6 @@ export class InternalCompetitionComponent implements OnInit {
         //this.opts.push({ selector: "advOpt", vals: ["Pending", "On Going", "Done"] });
 
         this.quotationService.getIntCompAdvInfo().subscribe((data: any) => {
-            console.log("here");
             for(var j = 0; j < data.quotation.length; j++){
               this.data = data.quotation[j].competitionsList;
               this.quoteIds.push(data.quotation[j].quoteId);
@@ -96,20 +96,17 @@ export class InternalCompetitionComponent implements OnInit {
 
     onClickSave() {
       //console.log(this.data);
-
       this.savedData = [];
-      
       for (var i = 0 ; this.intCompData.tableData.length > i; i++) {
         if(this.intCompData.tableData[i].edited){
             this.savedData.push(this.intCompData.tableData[i]);
-            this.savedData[this.savedData.length-1].quoteId = this.quoteIds[this.savedData.length-1];
+            this.savedData[this.savedData.length-1].quoteId = this.quoteIds[i];
             this.savedData[this.savedData.length-1].createDate = new Date().toISOString();
             this.savedData[this.savedData.length-1].updateDate = new Date().toISOString();
           }
 
         // delete this.savedData[i].tableIndex;
       }
-      console.log(this.savedData);
        this.quotationService.saveQuoteCompetition(this.savedData).subscribe((data: any) => {
             console.log(data);
        });
@@ -155,13 +152,16 @@ export class InternalCompetitionComponent implements OnInit {
 
     selectedAdviceLOV(data){
       console.log(data)
-        this.intCompData.tableData[this.adviceLOVRow].wordings = data.description; 
+        this.intCompData.tableData[this.adviceLOVRow].wordings = data.description;
+        this.intCompData.tableData[this.adviceLOVRow].edited = true;
     }
 
     selectedAttentionLOV(data){
-      console.log(data)
-         this.intCompData.tableData[this.attentionLOVRow].cedingRepName = data.firstName +' '+ data.mI + ' '+ data.lastName; 
+      //console.log(data)
+         this.intCompData.tableData[this.attentionLOVRow].cedingRepName = data.firstName +' '+ data.middleInitial + ' '+ data.lastName; 
          this.intCompData.tableData[this.attentionLOVRow].position = data.position; 
+         this.intCompData.tableData[this.attentionLOVRow].cedingRepId = data.cedingRepId.toString();
+         this.intCompData.tableData[this.attentionLOVRow].edited = true;
     }
 }
 

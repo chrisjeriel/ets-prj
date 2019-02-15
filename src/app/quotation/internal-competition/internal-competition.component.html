@@ -29,7 +29,18 @@
 			<div class="cust-btn-container" style="margin-top: 10px;">
 			<button type="button" class="cust-btn"><a>Print</a></button>
 			<button type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
-            <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+            <!-- <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button> -->
+            <app-modal [btnTitle]="'Save'" (click)="onClickSave()">
+            	<div header>
+            		Prompt
+            	</div>
+            	<div body>
+            		<p>Successfully saved!</p>
+            	</div>
+            	<div footer>
+            		<button type="button" class="cust-btn" (click)="modalService.dismissAll();"><a>Ok</a></button>
+            	</div>
+            </app-modal>
 		</div>
 	</div>
 </div>
