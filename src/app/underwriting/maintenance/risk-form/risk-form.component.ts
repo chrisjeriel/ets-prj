@@ -20,7 +20,7 @@ export class RiskFormComponent implements OnInit, OnDestroy {
     blockDesc: string = "";
     zoneCd: string = "";
     zoneDesc: string = "";
-
+    passLOV:any = {};
 
     constructor(private route: ActivatedRoute, private titleService: Title) { }
 
@@ -74,6 +74,19 @@ export class RiskFormComponent implements OnInit, OnDestroy {
     setCrestaZone(data){
         this.zoneCd = data.zoneCd;
         this.zoneDesc = data.zoneDesc;
+    }
+
+    openGenericLOV(selector){
+        this.passLOV.selector = selector;
+        $('#lov #modalBtn').trigger('click');
+    }
+
+    setLOVField(data){
+        if(data.selector == 'city'){
+            this.setCity(data.data);
+        }else if(data.selector == 'district'){
+            this.setDistricts(data.data);
+        }
     }
 
 }

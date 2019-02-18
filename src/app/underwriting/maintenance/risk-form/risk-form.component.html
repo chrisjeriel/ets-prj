@@ -52,7 +52,8 @@
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-1 text-right labels">City/Town</label>
                                     <input type="text" class="form-control form-control-sm col-sm-1" [placeholder]="newForm ? '' : '40328'" [ngModel]="cityCd">
-                                    <div class="text-search-ico"><a><i class="fa fa-search" (click)="showCityModal()" ></i></a></div>
+                                    <!-- <div class="text-search-ico"><a><i class="fa fa-search" (click)="showCityModal()" ></i></a></div> -->
+                                    <div class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('city')" ></i></a></div>
                                     <input type="text" class="form-control form-control-sm col-sm-4" [placeholder]="newForm ? '' : 'SANTA ROSA'" style="margin-left: 6px !important" [ngModel]="cityDesc">
                                     <label class="form-control-sm col-sm-1 text-right labels">District</label>
                                     <input type="text" class="form-control form-control-sm col-sm-1" [placeholder]="newForm ? '' : 'LGSR'" [ngModel]="districtCd">
@@ -135,4 +136,4 @@
 <app-mtn-block id="blockModal" (selectedData)="setBlock($event)"></app-mtn-block>
 <app-mtn-city id="cityModal" (selectedData)="setCity($event)"></app-mtn-city>
 <app-mtn-cresta-zone id="crestaZoneModal" (selectedData)="setCrestaZone($event)"></app-mtn-cresta-zone>
-
+<app-lov [passData]="passLOV" id="lov" (selectedData)="setLOVField($event)"></app-lov>

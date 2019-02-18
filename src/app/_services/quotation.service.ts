@@ -594,6 +594,7 @@ export class QuotationService {
         const params = new HttpParams()
              .set('quotationNo', (quotationNo === null || quotationNo === undefined ? '' : quotationNo) )
              .set('quoteId',(quoteId === null || quoteId === undefined ? '' : quoteId) )
+        console.log(params);
         return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteAlopItem',{params});
     }
 
@@ -624,10 +625,11 @@ export class QuotationService {
             return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteHoldCover',{params});
     }
 
-    saveQuoteAttachment(quoteId:string ,attachmentList:any[]){
+    saveQuoteAttachment(quoteId:string ,saveAttachmentsList:any[], deleteAttachmentsList:any[]){
         let params:any  = {
             quoteId: quoteId,
-            attachmentsList: attachmentList
+            saveAttachmentsList: saveAttachmentsList,
+            deleteAttachmentsList: deleteAttachmentsList
         };
         let header : any = {
             headers: new HttpHeaders({

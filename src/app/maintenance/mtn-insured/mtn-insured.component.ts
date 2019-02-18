@@ -22,7 +22,7 @@ export class MtnInsuredComponent implements OnInit {
         pagination: true,
         fixedCol: false,
         pageID: 'Insured',
-        keys:['insur  edId', 'insuredName' ]
+        keys:['insuredId', 'insuredName' ]
 
     }
 

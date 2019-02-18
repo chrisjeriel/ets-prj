@@ -296,6 +296,7 @@ import { MonEndTrialBalComponent } from './accounting-in-trust/month-end/mon-end
 import { FundsHeldComponent } from './accounting-in-trust/month-end/funds-held/funds-held.component';
 import { ExtractRecordComponent } from './accounting-in-trust/month-end/funds-held/extract-record/extract-record.component';
 import { UnearnedPremiumComponent } from './accounting-in-trust/month-end/funds-held/unearned-premium/unearned-premium.component';
+import { LovComponent } from './_components/common/lov/lov.component';
 
 
 @NgModule({
@@ -599,6 +600,7 @@ import { UnearnedPremiumComponent } from './accounting-in-trust/month-end/funds-
         FundsHeldComponent,
         ExtractRecordComponent,
         UnearnedPremiumComponent,
+        LovComponent,
     ],
 
     providers: [
