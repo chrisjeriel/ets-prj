@@ -22,7 +22,8 @@
 					<div class="input-group">
 						<label class="form-control-sm col-sm-2 text-right" for="xx">Insured</label>
 						<input class="form-control form-control-sm  col-sm-2" type="text" name="" appRequired [(ngModel)]="alopData.insuredId">
-						<div class="text-search-ico"><a (click)="showInsuredLOV()"><i class="fa fa-search"></i></a></div>&nbsp;
+						<!-- <div class="text-search-ico"><a (click)="showInsuredLOV()"><i class="fa fa-search"></i></a></div>&nbsp; -->
+						<div class="text-search-ico"><a (click)="openGenericLOV('insured')"><i class="fa fa-search"></i></a></div>&nbsp;
 						<input class="form-control form-control-sm  col-sm" type="text" name="" [(ngModel)]="alopData.insuredName" style="margin-left: -7px;" appRequired>
 					</div>
 
@@ -129,8 +130,9 @@
 	</div>
 	<div footer class="text-center">
 			<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
-			<button type="button" class="cust-btn" (click)="saveAlopItem();modalService.dismissAll()"><a>Save</a></button>
+			<button type="button" class="cust-btn" (click)="saveAlopItem(	);modalService.dismissAll()"><a>Save</a></button>
 	</div>
 </app-modal>
 
 <app-mtn-insured id="insuredLOV" (selectedData)="setInsured($event)"></app-mtn-insured>
+<app-lov id="lov" [passData]="passLOV" (selectedData)="setInsured($event)"></app-lov>

@@ -75,6 +75,9 @@ export class QuoAlopComponent implements OnInit {
         widths:[1,1,1,1,1,1]
     }
 
+    passLOV: any = {
+      selector: 'insured',
+    }
     
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute) { }
 
@@ -114,9 +117,6 @@ export class QuoAlopComponent implements OnInit {
     }
 
     openAlopItem(){
-      console.log('aloooooooooooooooop');
-      console.log(this.quoteNo);
-      console.log(this.quoteId);
       this.quotationService.getALOPItemInfos(this.quoteNo,this.quoteId).subscribe((data: any) => {
             for (var i=0; i < data.quotation[0].alop.alopItemList.length; i++) {
                     this.itemInfoData.tableData.push(data.quotation[0].alop.alopItemList[i]);
@@ -152,8 +152,15 @@ export class QuoAlopComponent implements OnInit {
   }
 
   setInsured(data){
-    this.alopData.insuredName = data.insuredName;
-    this.alopData.insuredId = data.insuredId;
+    // this.alopData.insuredName = data.insuredName;
+    // this.alopData.insuredId = data.insuredId;
+
+    this.alopData.insuredName = data.data.insuredName;
+    this.alopData.insuredId = data.data.insuredId;
   }
 
+  openGenericLOV(selector){
+    this.passLOV.selector = selector;
+    $('#lov #modalBtn').trigger('click');
+  }
 }
