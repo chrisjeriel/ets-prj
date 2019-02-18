@@ -71,6 +71,7 @@ export class AttachmentComponent implements OnInit {
     keys:['fileName','description']
   };
   savedData: any[];
+  deletedData: any[];
   sub:any;
   quotationNo: string;
   quoteId: string;
@@ -132,16 +133,21 @@ export class AttachmentComponent implements OnInit {
 
   saveData(){
     this.savedData = [];
+    this.deletedData = [];
     
     for (var i = 0 ; this.passData.tableData.length > i; i++) {
-      if(this.passData.tableData[i].edited){
+      if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
           this.savedData.push(this.passData.tableData[i]);
           this.savedData[this.savedData.length-1].createDate = new Date(this.savedData[this.savedData.length-1].createDate[0],this.savedData[this.savedData.length-1].createDate[1]-1,this.savedData[this.savedData.length-1].createDate[2]).toISOString();
           this.savedData[this.savedData.length-1].updateDate = new Date(this.savedData[this.savedData.length-1].updateDate[0],this.savedData[this.savedData.length-1].updateDate[1]-1,this.savedData[this.savedData.length-1].updateDate[2]).toISOString();
-        }
+      }else if(this.passData.tableData[i].edited && this.passData.tableData[i].deleted){
+        this.deletedData.push(this.passData.tableData[i]);
+        this.deletedData[this.deletedData.length-1].createDate = new Date(this.deletedData[this.deletedData.length-1].createDate[0],this.deletedData[this.deletedData.length-1].createDate[1]-1,this.deletedData[this.deletedData.length-1].createDate[2]).toISOString();
+        this.deletedData[this.deletedData.length-1].updateDate = new Date(this.deletedData[this.deletedData.length-1].updateDate[0],this.deletedData[this.deletedData.length-1].updateDate[1]-1,this.deletedData[this.deletedData.length-1].updateDate[2]).toISOString();
+      }
       // delete this.savedData[i].tableIndex;
     }
-    this.quotationService.saveQuoteAttachment(this.quoteId,this.savedData).subscribe((data: any) => {});
+    this.quotationService.saveQuoteAttachment(this.quoteId,this.savedData,this.deletedData).subscribe((data: any) => {});
   }
 
   cancel(){

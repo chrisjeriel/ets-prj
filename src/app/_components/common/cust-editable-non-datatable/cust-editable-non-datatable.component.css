@@ -376,3 +376,8 @@ tbody td div .negativeNumber{
     padding-right: 0.5px !important;
     color: red;
 }
+
+tbody th div .negativeNumber{
+    padding-right: 0.5px !important;
+    color: red;
+}
