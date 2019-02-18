@@ -13,14 +13,17 @@ export class OpenCoverSumInsuredComponent implements OnInit {
   risk: string;
   sub: any;
   quoteNo:string = '';
+  quoteIdOc: any;
+  riskId: any;
 
-  coverageOc: any = {
+  coverageOcData: any = {
   	currencyCd: null,
   	currencyRt: null,
   	maxSi: null,
   	pctShare: null,
   	pctPml: null,
   	totalValue: null
+
   }
 
   constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute) { }
@@ -41,14 +44,23 @@ export class OpenCoverSumInsuredComponent implements OnInit {
 	  	      this.passData.tableData.push(this.data[i]);
 	  	    }
 	  	    this.custEditableNonDatatableComponent.refreshTable();*/
-	  	    console.log("sum insured data");
 	  	    console.log(data);
+	  	    this.quoteIdOc = data.quotationOc[0].quoteIdOc;
+	  	    this.riskId = data.quotationOc[0].projectOc.riskId;
 	  	});
 
   }
 
   saveData(){
-   
+  	this.coverageOcData.quoteIdOc = this.quoteIdOc;
+  	this.coverageOcData.projId = 1;
+  	this.coverageOcData.riskId = this.riskId;
+  	this.coverageOcData.createUser = 'ETC';
+  	this.coverageOcData.createDate = new Date().toISOString();
+  	this.coverageOcData.updateUser = 'MBM';
+  	this.coverageOcData.updateDate = new Date().toISOString();
+    this.quotationService.saveQuoteCoverageOc(7,1,this.coverageOcData).subscribe();
+    this.ngOnInit();
   }
 
 }
