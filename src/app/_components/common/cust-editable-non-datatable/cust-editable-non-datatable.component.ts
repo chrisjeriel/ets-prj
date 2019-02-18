@@ -109,8 +109,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
             this.passData.tableData[i].checked = this.passData.tableData[i].checked ? true : false;
             if(!this.passData.tableData[i].deleted){
                 this.displayData.push(this.passData.tableData[i]);
-            }else{
-                console.log(this.displayData[i]);
             }
         }
         //this.displayData = JSON.parse(JSON.stringify( this.passData.tableData));
@@ -173,18 +171,20 @@ export class CustEditableNonDatatableComponent implements OnInit {
         this.passData.tableData[this.passData.tableData.length-1].edited = true;
         this.unliTableLength();    
         this.search(this.searchString);
+        this.tableDataChange.emit(this.passData.tableData);
     }
 
     onClickDelete() {
         for (var i = 0; i < this.passData.tableData.length; ++i) {
             if(this.passData.tableData[i].checked){
+                this.passData.tableData[i].checked = false;
                 this.passData.tableData[i].deleted = true;
                 this.passData.tableData[i].edited = true;
             }
         }
         this.refreshTable();
         this.search(this.searchString);
-        console.log(this.passData.tableData);
+        this.tableDataChange.emit(this.passData.tableData);
     }
     private onMouseDown(event){
         this.start = event.target;
@@ -360,7 +360,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
         data.checked = event.target.checked;
         if(!event.target.checked){
             this.selected.splice(this.selected.indexOf(data), 1);
-            console.log('wow');
         }else{
             this.selected.push(data);
         }

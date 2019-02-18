@@ -56,6 +56,7 @@ export class QuoAlopComponent implements OnInit {
         tableData: [],
         tHeader: ["Item No", "Quantity", "Description", "Relative Importance", "Possible Loss Min"],
         dataTypes: ["number", "number", "text", "text", "text"],
+        uneditable: [true,false,false,false,false,false],
         nData: {
           createDate: [0,0,0],
           createUser: "Paul",
@@ -72,7 +73,8 @@ export class QuoAlopComponent implements OnInit {
         infoFlag: true,
         paginateFlag: true,
         keys:['itemNo','quantity','description','importance','lossMin'],
-        widths:[1,1,1,1,1,1]
+        widths:[1,1,1,1,1,1],
+        checkFlag:true
     }
 
     passLOV: any = {
@@ -101,6 +103,7 @@ export class QuoAlopComponent implements OnInit {
         }
 
        this.quotationService.getALop(null,this.quoteNo).subscribe((data: any) => {
+             this.quoteId = data.quotation.quoteId;
               this.alopData = data.quotation.alop;
               this.alopData.issueDate = this.alopData.issueDate[0]+'-'+("0" + this.alopData.issueDate[1]).slice(-2)+'-'+  ("0" + this.alopData.issueDate[2]).slice(-2);
               this.alopData.expiryDate = this.alopData.expiryDate[0]+'-'+("0" + this.alopData.expiryDate[1]).slice(-2)+'-'+ ("0" + this.alopData.expiryDate[2]).slice(-2);
@@ -119,10 +122,11 @@ export class QuoAlopComponent implements OnInit {
     openAlopItem(){
       this.quotationService.getALOPItemInfos(this.quoteNo,this.quoteId).subscribe((data: any) => {
             for (var i=0; i < data.quotation[0].alop.alopItemList.length; i++) {
-                    this.itemInfoData.tableData.push(data.quotation[0].alop.alopItemList[i]);
+              this.itemInfoData.tableData.push(data.quotation[0].alop.alopItemList[i]);
             }
+            this.itemInfoData.tableData = this.itemInfoData.tableData.sort(function(a,b){return a.itemNo - b.itemNo})
             this.table.refreshTable();
-
+            this.itemInfoData.nData.itemNo = data.quotation[0].alop.alopItemList.length + 1; 
         });
       while(this.itemInfoData.tableData.length>0){
         this.itemInfoData.tableData.pop();
@@ -134,14 +138,19 @@ export class QuoAlopComponent implements OnInit {
       let savedData: any = {};
       savedData.quoteId = this.quoteId;
       savedData.alopId = this.alopData.alopId;
-      savedData.alopItemList=[];
-
+      savedData.saveAlopItemList=[];
+      savedData.deleteAlopItemList=[];
+      console.log(this.itemInfoData.tableData);
       for (var i = 0 ; this.itemInfoData.tableData.length > i; i++) {
-        if(this.itemInfoData.tableData[i].edited){
-            savedData.alopItemList.push(this.itemInfoData.tableData[i]);
-            savedData.alopItemList[savedData.alopItemList.length-1].createDate = new Date(savedData.alopItemList[savedData.alopItemList.length-1].createDate[0],savedData.alopItemList[savedData.alopItemList.length-1].createDate[1]-1,savedData.alopItemList[savedData.alopItemList.length-1].createDate[2]).toISOString();
-            savedData.alopItemList[savedData.alopItemList.length-1].updateDate = new Date(savedData.alopItemList[savedData.alopItemList.length-1].updateDate[0],savedData.alopItemList[savedData.alopItemList.length-1].updateDate[1]-1,savedData.alopItemList[savedData.alopItemList.length-1].updateDate[2]).toISOString();
-          }
+        if(this.itemInfoData.tableData[i].edited && !this.itemInfoData.tableData[i].deleted){
+            savedData.saveAlopItemList.push(this.itemInfoData.tableData[i]);
+            savedData.saveAlopItemList[savedData.saveAlopItemList.length-1].createDate = new Date(savedData.saveAlopItemList[savedData.saveAlopItemList.length-1].createDate[0],savedData.saveAlopItemList[savedData.saveAlopItemList.length-1].createDate[1]-1,savedData.saveAlopItemList[savedData.saveAlopItemList.length-1].createDate[2]).toISOString();
+            savedData.saveAlopItemList[savedData.saveAlopItemList.length-1].updateDate = new Date(savedData.saveAlopItemList[savedData.saveAlopItemList.length-1].updateDate[0],savedData.saveAlopItemList[savedData.saveAlopItemList.length-1].updateDate[1]-1,savedData.saveAlopItemList[savedData.saveAlopItemList.length-1].updateDate[2]).toISOString();
+        }else if(this.itemInfoData.tableData[i].deleted){
+            savedData.deleteAlopItemList.push(this.itemInfoData.tableData[i]);
+            savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].createDate = new Date(savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].createDate[0],savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].createDate[1]-1,savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].createDate[2]).toISOString();
+            savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].updateDate = new Date(savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].updateDate[0],savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].updateDate[1]-1,savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].updateDate[2]).toISOString();
+        }
       }
       console.log(savedData);
       this.quotationService.saveQuoteAlopItem(savedData).subscribe((data: any) => {});
@@ -163,4 +172,50 @@ export class QuoAlopComponent implements OnInit {
     this.passLOV.selector = selector;
     $('#lov #modalBtn').trigger('click');
   }
+
+  updateItemInfoData(data){
+    let delCount : number = 0;
+    let delFlag:boolean ;
+    do {
+      delFlag = false;
+      for (var i = 0; i < data.length-delCount; ++i) {
+        console.log(data[i]);
+        
+        if(data[i].deleted){
+          delCount ++;
+          this.adjustItemNo(data,i);
+          delFlag = true;
+          data[i].checked = false;
+        }
+      }
+    } while (delFlag);
+    
+
+    for (var i = data.length - 1; i >= data.length -delCount; i--) {
+      data[i].deleted = true;
+      data[i].edited = true;
+    }
+
+
+
+    this.itemInfoData.tableData=data;
+    this.itemInfoData.nData.itemNo = this.itemInfoData.tableData.length + 1; 
+    this.table.refreshTable();
+    console.log(this.itemInfoData.nData.itemNo);
+  }
+
+  adjustItemNo(data,index){
+    let keys:string[] = Object.keys(data[index]);
+    for(var i = index ; i < data.length-1; i++ ){
+      for (var key in keys) {
+        if(keys[key] == 'itemNo'){
+          continue;
+        }
+        data[i][keys[key]] = data[i+1][keys[key]]
+      }
+      data[i].edited = true;
+    }
+    console.log(data);
+  }
+
 }
