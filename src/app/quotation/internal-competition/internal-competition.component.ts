@@ -33,6 +33,7 @@ export class InternalCompetitionComponent implements OnInit, OnDestroy {
         checkFlag: true,
         pageLength: 10,
         widths: [1,'auto','auto',1,'auto', 'auto', 1, 1, 1, 1],
+        uneditable: [true,true,false,true,false,false,true,true,true,true],
         //keys: ['advNo', 'company', 'attention', 'position', 'advOpt', 'advWord', 'createdBy', 'dateCreated', 'lastUpdateBy', 'lastUpdate'],
         keys: ['adviceNo', 'cedingName', 'cedingRepName', 'position', 'option', 'wordings', 'createUser', 'createDate', 'updateUser', 'updateDate'],
 
@@ -73,6 +74,8 @@ export class InternalCompetitionComponent implements OnInit, OnDestroy {
          } 
         });
         this.params.quotationNo = quoteNo;
+        console.log("params");
+        console.log(this.params);
         this.quotationService.getIntCompAdvInfo(this.params).subscribe((data: any) => {
             for(var j = 0; j < data.quotation.length; j++){
               this.data = data.quotation[j].competitionsList;
