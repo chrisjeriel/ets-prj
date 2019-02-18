@@ -380,22 +380,34 @@ setCedingcompany(data){
 
 //neco was here
     toInternalCompetition(){
-        /*let data : any = {
-            adviceNo: 0,
-            cedingId: 6, //hardcoded
-            cedingRepId: 'cedingrepid6',
-            createDate: new Date(),
-            createUser: 'Trinidad',
-            option: 'option1',
-            quoteId: 6,
-            updateDate: new Date(),
-            updateUser: 'Trinidad',
-            wordings: ''
+            var qLine = this.line.toUpperCase();
 
+            if (qLine === 'CAR' ||
+                qLine === 'EAR' ||
+                qLine === 'EEI' ||
+                qLine === 'CEC' ||
+                qLine === 'MBI' ||
+                qLine === 'BPV' ||
+                qLine === 'MLP' ||
+                qLine === 'DOS') {
+                this.modalService.dismissAll();
+
+            this.quotationService.rowData = [];
+            this.quotationService.toGenInfo = [];
+            this.quotationService.toGenInfo.push("add", qLine);
+            /*this.router.navigate(['/quotation']);*/
+
+            var addParams = {
+                cessionId: this.typeOfCessionId,
+                cessionDesc: this.typeOfCession,
+                riskId: this.riskCd,
+                intComp: true,
+            }
+
+            setTimeout(() => {
+                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), from: 'quo-processing' }], { skipLocationChange: true });
+            },100); 
         }
-        this.quotationService.saveQuoteCompetition(data).subscribe((data: any) => {
-            console.log(data);
-        });*/
     }
 //neco ends here
 
