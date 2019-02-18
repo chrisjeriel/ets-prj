@@ -5,8 +5,7 @@ import { OpenCoverProcessing } from '../../_models';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
-import { formatDate } from '@angular/common';
-import { NumberValueAccessor } from '@angular/forms/src/directives';
+
 @Component({
   selector: 'app-open-cover-processing',
   templateUrl: './open-cover-processing.component.html',
@@ -46,7 +45,7 @@ export class OpenCoverProcessingComponent implements OnInit {
     dataTypes: ["text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "date", "date", "text", "text", "text"],
     resizable: [false, true, true, true, true, true, true, true, true, true, false, false, true, true, true, true],
     pageLength: 10,
-    expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: true, printBtn: false, pagination: true, pageStatus: true,
+    expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, pagination: true, pageStatus: true,
     filters: [
         {
             key: 'quotationNo',
@@ -226,7 +225,7 @@ export class OpenCoverProcessingComponent implements OnInit {
 
   editBtnEvent() {
     setTimeout(() => {
-      this.router.navigate(['/open-cover', { line: this.ocLine, ocQuoteNo: this.ocQuoteNo.trim() }], { skipLocationChange: true });
+      this.router.navigate(['/open-cover', { line: this.ocLine, from: "oc-processing", typeOfCession: this.mtnCessionDesc,ocQuoteNo: this.ocQuoteNo.trim() }], { skipLocationChange: true });
     }, 100);
   }
 
@@ -245,7 +244,7 @@ export class OpenCoverProcessingComponent implements OnInit {
 
       this.quotationService.rowData = [];
       setTimeout(() => {
-        this.router.navigate(['/open-cover', { line: ocLine, from: 'oc-processing', typeOfCession: this.mtnCessionDesc, riskId: this.riskId }], { skipLocationChange: true });
+        this.router.navigate(['/open-cover', { line: ocLine, from: "oc-processing", typeOfCession: this.mtnCessionDesc, riskId: this.riskId }], { skipLocationChange: true });
       }, 100);
     }
 
@@ -266,9 +265,9 @@ export class OpenCoverProcessingComponent implements OnInit {
     }
     this.ocLine = this.quotationService.rowData[0].split("-")[1];
     this.ocQuoteNo  = this.quotationService.rowData[0];
-    
+    this.mtnCessionDesc =  this.quotationService.rowData[1];
     setTimeout(() => {
-      this.router.navigate(['/open-cover', { line: this.ocLine, ocQuoteNo: this.ocQuoteNo }], { skipLocationChange: true });
+      this.router.navigate(['/open-cover', { line: this.ocLine, from: "oc-processing", typeOfCession: this.mtnCessionDesc, ocQuoteNo: this.ocQuoteNo }], { skipLocationChange: true });
     }, 100);
   }
 
@@ -294,6 +293,8 @@ export class OpenCoverProcessingComponent implements OnInit {
     }
     this.ocLine = this.quotationService.rowData[0].split("-")[1];
     this.ocQuoteNo  = this.quotationService.rowData[0];
+ 
+    this.mtnCessionDesc =  this.quotationService.rowData[1];
   }
 
   getRiskLov(){

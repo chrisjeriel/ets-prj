@@ -271,14 +271,19 @@ export class QuoteEndorsementComponent implements OnInit {
     onClickSave(event){
          for(var i=0;i<this.endorsementData.tableData.length;i++){
             this.endorsementReq = {
-                "createDate": this.saveEndt.createDate,
-                "createUser":  this.saveEndt.createUser,
+                // "createDate": this.saveEndt.createDate,
+                "createDate": new Date().toISOString(),
+                // "createUser":  this.saveEndt.createUser,
+                "createUser":  "user",
                 "endtCd":       this.endorsementData.tableData[i].endtCode,
-                "optionId":    this.saveEndt.optionId,
-                "quoteId":      this.saveEndt.quoteId,
+                // "optionId":    this.saveEndt.optionId,
+                "optionId":    23,
+                // "quoteId":      this.saveEndt.quoteId,
+                "quoteId":      12,
                 "remarks":    this.endorsementData.tableData[i].endtWording,
                 "updateDate":  new Date().toISOString(),
-                "updateUser":  this.saveEndt.updateUser
+                // "updateUser":  this.saveEndt.updateUser
+                "updateUser":  "use"
             }
             console.log(this.endorsementReq);
         }

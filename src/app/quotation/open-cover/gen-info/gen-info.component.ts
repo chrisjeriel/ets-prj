@@ -4,6 +4,7 @@ import { OcGenInfoInfo } from '@app/_models/QuotationOcGenInfo';
 import { QuotationService, MaintenanceService } from '@app/_services';
 import { HttpClient } from '@angular/common/http';
 import { formatDate } from '@angular/common';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-gen-info',
@@ -50,8 +51,10 @@ export class GenInfoComponent implements OnInit {
   mtnIntmId:number;
   mtnIntmName:string;
 
+  insured:string;
 
-  constructor(private route: ActivatedRoute, private quotationService: QuotationService, private http: HttpClient, private mtnService: MaintenanceService) {
+
+  constructor(private route: ActivatedRoute, private quotationService: QuotationService, private http: HttpClient, private mtnService: MaintenanceService, private titleService:Title) {
    }
 
    sampleId:string ="";
@@ -62,6 +65,7 @@ export class GenInfoComponent implements OnInit {
   indCheckbox: boolean;
   
   ngOnInit() {
+    this.titleService.setTitle("Quo | General Info")
     this.sub = this.route.params.subscribe(params => {
       this.line = params['line'];
       this.from = params['from'];
@@ -84,7 +88,10 @@ export class GenInfoComponent implements OnInit {
                           this.lat  = val['risk'].latitude;
                           this.long = val['risk'].longitude;
                         });
+        
       }
+     
+
     });
     this.checkTypeOfCession();
 
@@ -103,6 +110,7 @@ export class GenInfoComponent implements OnInit {
                   this.ocQuoteGenInfo.cedingId        = i.cedingId;
                   this.ocQuoteGenInfo.cedingName      = i.cedingName;
                   this.ocQuoteGenInfo.reinsurerId     = i.reinsurerId;
+                  this.ocQuoteGenInfo.reinsurerName   = i.reinsurerName;
                   this.ocQuoteGenInfo.intmId          = i.intmId;
                   this.ocQuoteGenInfo.intmName        = i.intmName;
                   this.ocQuoteGenInfo.issueDate       = this.formatDate(i.issueDate);
@@ -140,7 +148,30 @@ export class GenInfoComponent implements OnInit {
                   this.ocQuoteGenInfo.updateUser      = i.updateUser;
                   this.ocQuoteGenInfo.updateDate      = this.formatDate(i.updateDate);
                   this.ocQuoteGenInfo.riskId          = i.projectOc.riskId;
+                  this.ocQuoteGenInfo.cessionId       = i.cessionId;
+                  this.ocQuoteGenInfo.lineClassCd     = i.lineClassCd;
+                  this.ocQuoteGenInfo.lineCd          = i.lineCd;
+                  this.ocQuoteGenInfo.lineClassDesc   = i.lineClassDesc;
                 }
+
+                this.lineClassDescr  = this.ocQuoteGenInfo.lineClassDesc;
+                this.cedingCoId   = Number(this.ocQuoteGenInfo.cedingId);
+                this.cedingCoName = this.ocQuoteGenInfo.cedingName;
+                this.currencyAbbr = this.ocQuoteGenInfo.currencyCd;
+                this.currencyRt   = Number(this.ocQuoteGenInfo.currencyRt);
+                this.mtnIntmId    = Number(this.ocQuoteGenInfo.intmId);
+                this.mtnIntmName  = this.ocQuoteGenInfo.intmName;
+                this.prinId       = Number(this.ocQuoteGenInfo.prinId);
+                this.prinName     = this.ocQuoteGenInfo.principalName;
+                this.conId        = Number(this.ocQuoteGenInfo.contractorId);
+                this.conName      = this.ocQuoteGenInfo.contractorName;
+                this.objId        = Number(this.ocQuoteGenInfo.objectId);
+                //this.line         = this.ocQuoteGenInfo.lineCd;
+                this.openingWording = this.ocQuoteGenInfo.openingParag;
+                this.closingWording = this.ocQuoteGenInfo.closingParag;
+
+                
+
                 this.mtnService.getMtnRisk(this.ocQuoteGenInfo.riskId)
                         .subscribe(val => {
                           this.riskName = val['risk'].riskName;
@@ -152,10 +183,27 @@ export class GenInfoComponent implements OnInit {
                           this.lat  = val['risk'].latitude;
                           this.long = val['risk'].longitude;
                         });
+               
+                this.mtnService.getMtnTypeOfCession(this.ocQuoteGenInfo.cessionId)
+                        .subscribe(val => {
+                          this.typeOfCession = val['cession'][0].description;
+                        });
+
+                this.mtnService.getMtnObject(this.line,this.objId)
+                        .subscribe(val => {
+                          this.objName  = val['object'][0].description;
+                        });
+                this.insuredContent();
+
             }
       );
     
+  }
 
+  insuredContent(){
+    if(this.prinName != "" && this.conName != ""){
+      this.insured = this.prinName.trim() +" / "+this.conName.trim();
+    }
   }
 
   formatDate(date){
@@ -189,6 +237,7 @@ export class GenInfoComponent implements OnInit {
   setPrin(data){
    this.prinId  = data.insuredId;
    this.prinName  = data.insuredName;
+   this.insuredContent();
   }
   getConLov(){
     $('#conIdLov  #modalBtn').trigger('click');
@@ -196,6 +245,7 @@ export class GenInfoComponent implements OnInit {
   setCon(data){
     this.conId  = data.insuredId;
     this.conName  = data.insuredName;
+    this.insuredContent();
   }
   getObjLov(){
     $('#objIdLov #modalBtn').trigger('click');
