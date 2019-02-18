@@ -594,7 +594,6 @@ export class QuotationService {
         const params = new HttpParams()
              .set('quotationNo', (quotationNo === null || quotationNo === undefined ? '' : quotationNo) )
              .set('quoteId',(quoteId === null || quoteId === undefined ? '' : quoteId) )
-        console.log(params);
         return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteAlopItem',{params});
     }
 
@@ -698,19 +697,14 @@ export class QuotationService {
     }
 
       
-    saveQuoteCoverageOc(quoteId:number,projId: number ,coverageOcData:any[]){
-        let params:any  = {
-            quoteId: quoteId,
-            projId: projId,
-            coverageOcData:coverageOcData
-        };
+    saveQuoteCoverageOc(quoteId:number,projId: number ,coverageOcData:any){
         let header : any = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json'
             })
         };
 
-        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteCoverageOc', JSON.stringify(params), header);
+        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteCoverageOc', JSON.stringify(coverageOcData), header);
     }
     
 
@@ -789,6 +783,14 @@ export class QuotationService {
         };
         return this.http.post('http://localhost:8888/api/quote-service/saveQuoteEndorsements',params,header);
 
+    }
+
+    getCoverageOc(quoteId:string,quotationNo?:string){
+        const params = new HttpParams()
+             .set('quotationNo', (quotationNo === null || quotationNo === undefined ? '' : quotationNo) )
+             .set('quoteId',(quoteId === null || quoteId === undefined ? '' : quoteId) )
+
+        return this.http.post('http://localhost:8888/api/quote-service/retrieveQuoteCoverageOc',{params});
     }
 
 }
