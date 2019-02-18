@@ -679,14 +679,15 @@ export class QuotationService {
     }
 
 
-    saveQuoteAttachmentOc(quoteIdOc:number ,attachmentListOc:any[]){
+    saveQuoteAttachmentOc(quoteIdOc:number ,saveAttachmentsOcList: any[], deleteAttachmentsOcList: any[]){
         /*const params = new HttpParams()
              .set('quoteId',quoteId.toString())
              .set('attachmentsList',JSON.stringify(attachmentList))*/
              
         let params:any  = {
             quoteIdOc: quoteIdOc,
-            attachmentsOcList: attachmentListOc
+            saveAttachmentsOcList: saveAttachmentsOcList,
+            deleteAttachmentsOcList: deleteAttachmentsOcList
         }
         let header : any = {
             headers: new HttpHeaders({
@@ -724,7 +725,7 @@ export class QuotationService {
         //console.log(saveQuoteCompetitionParams.join(","));
         //console.log(params.substring(1,params.length-1));
         console.log(params);
-        //return this.http.post('http://localhost:8888/api/quote-service/saveQuoteCompetition', params.substring(1,params.length-1), header);
+        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteCompetition', params.substring(1,params.length-1), header);
     }
 
 
