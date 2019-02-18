@@ -1,0 +1,79 @@
+<div class="cust-tabs-container">
+	<h4>Policy / Maintenance</h4>
+	<ngb-tabset>
+		<ngb-tab class="ngb-tab" title="Line">
+			<ng-template ngbTabContent>
+				<div class="row">
+					<div class="col-sm-1"></div>
+					<div class="col-sm">
+						<app-cust-non-datatable [passData]="passData"></app-cust-non-datatable>
+					</div>
+					<div class="col-sm-1"></div>
+				</div>
+				<div class="row" style="margin-top: -18px;">
+					<div class="col-sm-1"></div>
+					<div class="col-sm-10">
+						<fieldset class="scheduler-border" style="padding-top: 10px !important; padding-bottom: 10px !important;">
+							<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+							<div class="row">
+								<div class="col-sm-1"></div>
+								<div class="col-sm-10">
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2">Line Code</label>
+										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="lineCode">
+										<div class="cust-div col-sm-5" style="margin-left: 15px;"><input type="checkbox" [(ngModel)]="activeCb">&nbsp;<span class="cust-span">Active Tag</span>
+											<input style="margin-left: 64px;" type="checkbox" [(ngModel)]="withCatCb">&nbsp;<span class="cust-span">With CAT</span>
+											<input style="margin-left: 58px;" type="checkbox" [(ngModel)]="renewalCb">&nbsp;<span class="cust-span">Renewal</span></div>
+										</div>
+										<div class="input-group cust-ig">
+											<label class="form-control-sm col-sm-2">Description</label>
+											<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="description">
+										</div>
+										<div class="input-group cust-ig">
+											<label class="form-control-sm col-sm-2">Reference No</label>
+											<input type="text" class="form-control form-control-sm col-sm-4" [(ngModel)]="referenceNo">
+
+											<label class="form-control-sm col-sm-2">Sort Sequence</label>
+											<input type="text" class="form-control form-control-sm col-sm-4" [(ngModel)]="sortSeq">
+										</div>
+										<div class="input-group cust-ig">
+											<label class="form-control-sm col-sm-2">Remarks</label>
+											<input type="text" class="form-control form-control-sm col-sm">
+										</div>
+										<div class="input-group cust-ig">
+											<label class="form-control-sm col-sm-2">Created By</label>
+											<input type="text" class="form-control form-control-sm col-sm-4">
+
+											<label class="form-control-sm col-sm-2">Date Created</label>
+											<input type="text" class="form-control form-control-sm col-sm-4">
+										</div>
+										<div class="input-group">
+											<label class="form-control-sm col-sm-2">Last Updated By</label>
+											<input type="text" class="form-control form-control-sm col-sm-4">
+
+											<label class="form-control-sm col-sm-2">Last Update</label>
+											<input type="text" class="form-control form-control-sm col-sm-4">
+										</div>
+									</div>
+									<div class="col-sm-1"></div>
+								</div>
+								<div class="row">
+									<div class="col-sm d-flex justify-content-center">
+										<button class="cust-btn" (click)="tempAddToTable();">Add</button>
+										<button class="cust-btn">Delete</button>
+									</div>
+								</div>
+							</fieldset>
+						</div>
+						<div class="col-sm-1"></div>
+					</div>
+					<div class="row" style="padding-top: 10px !important;">
+						<div class="col-sm d-flex justify-content-center">
+							<button class="cust-btn">Cancel</button>
+							<button class="cust-btn">Save</button>
+						</div>
+					</div>
+				</ng-template>
+			</ngb-tab>
+		</ngb-tabset>
+	</div>

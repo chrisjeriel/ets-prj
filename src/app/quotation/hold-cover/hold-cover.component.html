@@ -1,0 +1,239 @@
+<div class="cust-tabs-container">
+    <h4>Quotation</h4>
+    <ngb-tabset>
+        <ngb-tab title="Quotation to Hold Cover">
+            <ng-template ngbTabContent>
+                 <div class="row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-8">
+                        <fieldset class="scheduler-border">
+                            <legend class="scheduler-border">Quotation Info</legend>
+                            <div class="col-sm-1"></div>
+                            <div class="col-sm">
+                                <div class="row" style="margin-right: 0px; margin-bottom: 11px;">
+                                    <div class="input-group" style="margin-top: -10px;">
+                                        &nbsp;
+                                    </div>
+                                    <div class="input-group">
+                                        <div class="input-group" style="margin-bottom: -14px !important;">
+                                            <label class="form-control-sm col-sm-2">Quotation No</label>
+                                            <input type="text" class="form-control form-control-sm cap-input col-sm-1" ngbTooltip="Line" [(ngModel)]="qLine">
+                                            <input type="text" class="form-control form-control-sm cap-input col-sm-1" ngbTooltip="Year" style="margin-left: 2px;" [(ngModel)]="qYear">
+                                            <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Sequence No" style="margin-left: 2px;" [(ngModel)]="qSeqNo">
+                                            <input type="text" class="form-control form-control-sm cap-input col-sm-1" ngbTooltip="Revision No" style="margin-left: 2px;" [(ngModel)]="qRevNo">
+                                            <input type="text" class="form-control form-control-sm cap-input col-sm-1" ngbTooltip="Company No" style="margin-left: 2px;" [(ngModel)]="qCedingId">
+                                            <span>&nbsp;</span>
+                                            <div class="text-search-ico"><a (click)="search()"><i class="fa fa-search"></i></a></div>
+                                        </div>
+                                        <div class="input-group" style="margin-bottom: -14px !important;">
+                                            <label class="form-control-sm col-sm-2">Ceding Company</label>
+                                            <input type="text" class="form-control form-control-sm"  [(ngModel)]="cedCo" readonly>
+                                        </div>
+                                        <div class="input-group" style="margin-bottom: -14px !important;">
+                                            <label class="form-control-sm col-sm-2">Insured</label>
+                                            <input type="text" class="form-control form-control-sm" [(ngModel)]="insured" readonly>
+                                        </div>
+                                        <div class="input-group" style="margin-bottom: -9px !important;">
+                                            <label class="form-control-sm col-sm-2">Risk</label>
+                                            <input type="text" class="form-control form-control-sm" [(ngModel)]="risk" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-8">
+                        <fieldset class="scheduler-border" style="margin-top: -25px !important;">
+                            <legend class="scheduler-border">Hold Cover Details</legend>
+                            <!-- <div class="col-sm-3"></div> -->
+                            <div class="col-sm">
+                                <div class="row" style="margin-right: 0px; margin-bottom: 11px;">
+                                    <div class="input-group" style="margin-top: -10px;">
+                                        &nbsp;
+                                    </div>
+                                    <div class="input-group">
+                                        <div class="input-group" style="margin-bottom: -14px !important;">
+                                            <label class="form-control-sm col-sm-2">Hold Cover No</label>
+                                            <input type="text" class="form-control form-control-sm col-sm cap-input col-sm-1" ngbTooltip="HC Prefix" value="HC">
+                                            <input type="text" class="form-control form-control-sm col-sm cap-input col-sm-1" ngbTooltip="Line" style="margin-left: 2px;"[(ngModel)]="hcLine" >
+                                            <input type="text" class="form-control form-control-sm col-sm cap-input col-sm-1" ngbTooltip="Year" style="margin-left: 2px;" [(ngModel)]="hcYear">
+                                            <input type="text" class="form-control form-control-sm col-sm col-sm-2" style="margin-left: 2px;" ngbTooltip="Sequence No" [(ngModel)]="hcSeqNo">
+                                            <input type="text" class="form-control form-control-sm col-sm col-sm-1" style="margin-left: 2px;"ngbTooltip="Revision No" [(ngModel)]="hcRevNo">
+
+                                        </div>
+                                         <div class="input-group" style="margin-bottom: -14px !important;">
+                                            <label class="form-control-sm col-sm-2">Period From</label>
+                                            <input type="date" class="form-control form-control-sm cust-sm" [(ngModel)]="holdCover.periodFrom.split('T')[0]">
+                                            <label class="form-control-sm col-sm-2">Requested By</label>
+                                            <input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="holdCover.reqBy">
+                                        </div>
+                                        <div class="input-group" style="margin-bottom: -14px !important;">
+                                            <label class="form-control-sm col-sm-2">Period To</label>
+                                            <input type="date" class="form-control form-control-sm cust-sm" [(ngModel)]="holdCover.periodTo.split('T')[0]">
+                                            <label class="form-control-sm col-sm-2">Request Date</label>
+                                            <input type="date" class="form-control form-control-sm cust-sm col-sm-7" [(ngModel)]="holdCover.reqDate.split('T')[0]">
+                                        </div>
+                                        <div class="input-group" style="margin-bottom: -14px !important;">
+                                            <label class="form-control-sm col-sm-3" style="margin-left: -62px !important;  margin-right: 1px !important;">Co. Ref. Hold Cover No</label>
+                                            <input type="text" class="form-control form-control-sm" [(ngModel)]="holdCover.compRefHoldCovNo">
+                                            <label class="form-control-sm col-sm-2">Prepared By</label>
+                                            <input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="holdCover.preparedBy">
+                                        </div>
+                                        <div class="input-group" style="margin-bottom: -9px !important;">
+                                            <label class="form-control-sm col-sm-2">Status</label>
+                                            <input type="text" class="form-control form-control-sm" [(ngModel)]="holdCover.status">
+                                            <label class="form-control-sm col-sm-2">Approved By</label>
+                                            <input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="holdCover.approvedBy">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-sm">
+                        <div class="col-md-12 text-center">
+                            <div class="cust-btn-container" style="margin-top: 10px !important;">
+                                 <app-modal [btnTitle]="'Approval'">
+                                    <div header>Approval</div>
+                                    <div body>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <fieldset class="scheduler-border" style="padding-bottom: 42px !important;padding-left: 28px !important; padding-right: 36px !important;">
+                                                    <div class="row" style="    margin-top: 39px;">
+                                                    <label class="form-control-sm" style="margin-left: -1px !important;">Status</label>
+                                                    <input type="text" class="form-control form-control-sm col-sm" style=" margin-right: 85px !important;">
+                                                    </div>
+                                                    <div class="row" style="margin-top: -14px !important;">
+                                                        <select  class="form-control form-control-sm col-sm cust-sm" style="    margin-left: 6px;"></select>
+                                                        <button class="cust" style="margin-right: 0px; margin-left: 3px !important;">For Approval</button>
+                                                    </div>
+                                                </fieldset>
+                                                
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <fieldset class="scheduler-border" style="    margin-left: -20px !important;">
+                                                    <div class="row" style="    margin-top: 16px !important;">
+                                                        <label class="form-control-sm col-sm-4" style="margin-left: 15px;">Report</label>
+                                                        <select  class="form-control form-control-sm col-sm cust-sm" style="margin-right: 25px !important;" disabled="disabled"></select>
+                                                    </div>
+                                                    <div class="row" style="margin-top: -14px !important;">
+                                                        <label class="form-control-sm col-sm-4" style="margin-left: 15px;">No Of Copies</label>
+                                                        <input type="text" class="form-control form-control-sm col-sm" style="margin-right: 25px !important;" disabled="disabled">
+                                                    </div>
+                                                    <div class="row" style="margin-top: -14px !important;">
+                                                        <label class="form-control-sm col-sm-4" style="margin-left: 15px;">Destination</label>
+                                                        <select  class="form-control form-control-sm col-sm cust-sm" style="margin-right: 25px !important;" disabled="disabled"></select>
+                                                    </div>
+                                                    <div class="row" style="margin-top: -14px !important;">
+                                                        <label class="form-control-sm col-sm-4" style="margin-left: 15px;">Printer Name</label>
+                                                        <select  class="form-control form-control-sm col-sm cust-sm" style="margin-right: 25px !important;" disabled="disabled"></select>
+                                                    </div>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div footer class="text-center w-100">
+                                        <div class="col-sm-12 text-center">
+                                        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+                                        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Print</a></button>
+                                        </div>
+                                    </div>
+                                    </app-modal>
+                                <button type="button" class="cust-btn"><a>Cancel</a></button>
+                                <button type="button" class="cust-btn" (click)="onSaveClick()"><a>Save</a></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-sm">
+                        <div class="col-md-12 text-center">
+                            <div class="cust-btn-container" style="margin-top: 10px !important;">
+                                <app-modal hidden [btnTitle]="'List Of Values'" id="lovMdl">
+                                    <div header>List Of Values</div>
+                                    <div body>
+                                       <app-cust-non-datatable [passData]="passDataQuoteLOV" (rowClick)="onRowClick($event)"></app-cust-non-datatable>
+                                    </div>
+                                    <div footer class="text-center w-100">
+                                        <div class="col-sm-12 text-center">
+                                        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+                                        <button class="cust-btn" type="button" (click)="onSaveClickLOV()"><a>Save</a></button>
+                                        </div>
+                                    </div>
+                                </app-modal>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <app-modal id="lovMdl">
+                <div header>List of Values</div>
+                <div body style="min-width: 700px !important;">
+                    <app-cust-non-datatable [passData]="passDataQuoteLOV"></app-cust-non-datatable>
+                </div>
+                <div footer class="text-center w-100">
+                    <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Save</a></button>
+                    <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+                </div>
+                </app-modal> -->
+
+               
+
+               <!--  <app-modal >
+                <div header>Approval</div>
+                <div body>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <fieldset class="scheduler-border" style="padding-bottom: 35px !important;padding-left: 28px !important; padding-right: 36px !important;">
+                                <div class="row" style="    margin-top: 42px;">
+                                <label class="form-control-sm" style="margin-left: -1px !important;">Status</label>
+                                <input type="text" class="form-control form-control-sm col-sm" style=" margin-right: 60px !important;">
+                                </div>
+                                <div class="row" style="margin-top: -14px !important;">
+                                    <select  class="form-control form-control-sm col-sm cust-sm" style="    margin-left: 6px;"></select>
+                                    <button class="cust" style="margin-right: 0px; margin-left: 3px !important;">Approve</button>
+                                </div>
+                            </fieldset>
+                            
+                        </div>
+                        <div class="col-sm-6">
+                            <fieldset class="scheduler-border" style="    margin-left: -20px !important;">
+                                <div class="row" style="    margin-top: 16px !important;">
+                                    <label class="form-control-sm col-sm-4" style="margin-left: 15px;">Report</label>
+                                    <select  class="form-control form-control-sm col-sm cust-sm" style="margin-right: 25px !important;"></select>
+                                </div>
+                                <div class="row" style="margin-top: -14px !important;">
+                                    <label class="form-control-sm col-sm-4" style="margin-left: 15px;">No Of Copies</label>
+                                    <input type="text" class="form-control form-control-sm col-sm" style="margin-right: 25px !important;">
+                                </div>
+                                <div class="row" style="margin-top: -14px !important;">
+                                    <label class="form-control-sm col-sm-4" style="margin-left: 15px;">Destination</label>
+                                    <select  class="form-control form-control-sm col-sm cust-sm" style="margin-right: 25px !important;"></select>
+                                </div>
+                                <div class="row" style="margin-top: -14px !important;">
+                                    <label class="form-control-sm col-sm-4" style="margin-left: 15px;">Printer Name</label>
+                                    <select  class="form-control form-control-sm col-sm cust-sm" style="margin-right: 25px !important;"></select>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+                <div footer style=" margin-right: 200px !important;">
+                    <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+                    <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Print</a></button>
+                </div>
+                </app-modal> -->
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
+
+</div>

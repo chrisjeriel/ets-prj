@@ -1,0 +1,173 @@
+<div class="row">
+    <div class="col-sm-12">
+        <fieldset class="scheduler-border">
+            <legend class="scheduler-border">JV Info</legend>
+               <div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;margin-right: 5px !important;">
+                <div class="input-group" style="margin-top: 14px !important;margin-bottom: -20px !important;">
+                    <label class="form-control-sm col-sm-1" style="height: auto;">JV No</label>
+                    <div class="col-sm-4">
+                        <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-3" style="margin-right: 2px !important" placeholder="2018" style="text-align: right;">
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-3" placeholder="00000001" style="text-align: right; margin-left:2px">
+                            <label class="form-control-sm col-sm">Date</label>
+                             <input type="date" class="form-control form-control-sm cust-sm col-sm-4" style="margin-right: 2px !important;text-align: right;" value="2018-10-01">
+                        </div>
+                    </div>
+                    <input type="text" class="form-control form-control-sm cust-sm col-sm-1" style="margin-left: -10px !important;" placeholder="10:45 AM">
+                    <label class="form-control-sm col-sm-1"></label>
+                    <label class="form-control-sm col-sm-2"style="text-align: right;"></label>
+                    <label class="form-control-sm col-sm-1">Status</label>
+                    <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="New">
+                </div>
+                <div class="input-group" style="margin-bottom: -13px !important">
+                    <label class="form-control-sm col-sm-1" style="height: auto;">JV Type</label>
+                    <div class="col-sm-5">
+                        <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
+                        <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 1px !important;" style="Error Correction"> -->
+
+                      <!--   <select class="form-control form-control-sm cust-sm col-sm">
+                            <option>Error Correction</option>
+                            <option>Reversal</option>
+                        </select> -->
+         <!--                    <select class="form-control form-control-sm cust-sm col-sm">
+                                <option>Error Correction</option>
+                                <option>Reversal</option>
+                            </select> -->
+                        <!-- <div style="margin-left: -19px !important;margin-right: 0px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div> -->
+                           <select class="form-control form-control-sm cust-sm col-sm" (change)="tabController($event);" [(ngModel)]="record.jvType">
+                                <option value="INWARD POLICY BALANCES">Inward Policy Balances</option>
+                                <option value="QSOA">QSOA Balances</option>
+                                <option value="PAYMENT REQUEST LIST">Payment Request List</option>
+                                <option value="LOSS RESERVE DEPOSIT">Loss Reserve Deposit</option>
+                                <option value="ERROR CORRECTION">Error Correction</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- <div class="col-sm-1"  style="margin-left: -10px !important;"></div> -->
+                    <label class="form-control-sm col-sm-1" style="    margin-left: -10px;">Ref No</label>
+                    <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="2017-00023974">
+                    <div style="margin-left: -19px !important;margin-right: 3px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div> -->
+                    <select class="form-control form-control-sm cust-sm col-sm-2">
+                        <option>2017-00023974</option>
+                        <option>2017-00023463</option>
+                        <option>2017-00023432</option>
+                    </select>
+                    <label class="form-control-sm col-sm-1" >Ref No Date</label>    
+                    <input type="datetime-local" class="form-control form-control-sm cust-sm col-sm-2" placeholder="000372921" style="    margin-right: 10px;">
+                </div>
+                <div class="input-group" style="margin-bottom: -15px !important;">
+                    <label class="form-control-sm col-sm-1" style="height: auto;">Particulars</label>
+                    <div class="col-sm">
+                        <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
+                            <textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 55px; margin-bottom: 11px;" placeholder="To correct entries in JV No.____________________________"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group" style="margin-bottom: -17px !important;">
+                    <label class="form-control-sm col-sm-1" style="height: auto;">Amount</label>
+                    <div class="col-sm-4">
+                        <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
+                            <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="PHP" style="margin-right: -1px !important;"> -->
+                            <select class="form-control form-control-sm cust-sm col-sm-2" style="margin-right: -1px !important;">
+                                <option>PHP</option>
+                                <option>USD</option>
+                                <option>EUR</option>
+                            </select>
+                            <!-- <div style="margin-left: -19px !important;margin-right: 6px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div> -->
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px !important;" style="text-align: right;    margin-left: 3px;" placeholder="27,513.20">
+                            <label class="form-control-sm col-sm-3" style="height: auto;">Currency Rate</label>
+                        </div>
+                    </div>
+                    <input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="1.000000" style="margin-right: 2px !important; text-align: right;">
+                    <label class="form-control-sm col-sm-1" style="height: auto;">Local Amount</label>
+                    <div class="col-sm-4">
+                        <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
+                            <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="PHP" style="margin-right: 2px !important;"> -->
+                            <select class="form-control form-control-sm cust-sm col-sm-2" style="margin-right: 2px !important;">
+                                <option>PHP</option>
+                                <option>USD</option>
+                                <option>EUR</option>
+                            </select>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm" style="text-align: right;">
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group" style="margin-top: 20px !important;">
+                    <label class="form-control-sm col-sm-1" style="height: auto;">Prepared By</label>
+                    <div class="col-sm-4">
+                        <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-9" style="margin-right: 2px !important" placeholder="Ma. Cecilia Dela Paz -Castro">
+                            <div style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2"></div>
+                    <label class="form-control-sm col-sm-1" style="height: auto;">Approved By</label>
+                    <div class="col-sm-4">
+                        <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
+                             <input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="Jose Reyes">
+                            <div style="margin-left: -19px !important;margin-right: 6px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group" style="margin-bottom: -20px !important;">
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-4"> 
+                        <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-9" style="margin-right: 2px !important" placeholder="Accountant I">
+                        </div>
+                    </div>
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-4">
+                        <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
+                             <input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="Comptroller">
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group" style="margin-top: 20px !important;">
+                    <label class="form-control-sm col-sm-1" style="height: auto;">Date Prepared</label>
+                    <div class="col-sm-4">
+                        <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
+                            <input type="datetime-local" class="form-control form-control-sm cust-sm col-sm-9" style="margin-right: 2px !important">
+                        </div>
+                    </div>
+                    <div class="col-sm-2"></div>
+                    <label class="form-control-sm col-sm-1" style="height: auto;">Date Approved</label>
+                    <div class="col-sm-4">
+                        <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
+                             <input type="datetime-local" class="form-control form-control-sm cust-sm col-sm">
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <div class="form-row">
+                <div class="form-group col-sm">
+                    <div class="col-md-12 text-center">
+                        <div class="cust-btn-container" style="margin-top: 10px;">
+                            <button type="button" class="cust-btn" style="margin-right: 10px !important;"><a>New JV</a></button>
+                            <button type="button" class="cust-btn" style="margin-right: 10px !important;"><a>Save</a></button>
+                            <button type="button" class="cust-btn" style="margin-right: 10px !important;"><a>Cancel JV</a></button>
+                            <button type="button" class="cust-btn" style="margin-right: 10px !important;"><a>Print JV</a></button>
+                            <button type="button" class="cust-btn"><a>Upload</a></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <div class="col-sm-12">
+            <fieldset class="scheduler-border" style="margin: 0px !important; margin-top: 12px !important;">
+                <div class="form-row custom-row-inline-inset" style="margin-left: -27px;">
+                    <div class="input-group" style="margin-bottom: -15px !important;">
+                        <label class="form-control-sm col-sm-1 text-right labels">Created By</label>
+                        <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma">
+                        <label class="form-control-sm col-sm-1 text-right labels">Date Created</label>
+                        <input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM">
+                        <label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
+                        <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma">
+                        <label class="form-control-sm col-sm-1 text-right labels">Last Update</label>
+                        <input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM">
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+</div>

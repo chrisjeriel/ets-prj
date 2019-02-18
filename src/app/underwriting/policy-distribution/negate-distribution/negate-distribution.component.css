@@ -1,0 +1,16 @@
+.input-group{
+	margin-bottom: -14px !important;
+}
+
+label{
+	line-height: 0.9;
+}
+
+.field1{
+	padding-top: 11px !important;
+    padding-bottom: 11px !important;
+}
+
+.text-center{
+	text-align: center !important;
+}

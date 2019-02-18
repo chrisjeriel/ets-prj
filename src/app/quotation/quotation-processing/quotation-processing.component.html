@@ -1,0 +1,152 @@
+<div class="cust-tabs-container">
+    <h4>Quotation</h4>
+    <ngb-tabset>
+        <ngb-tab class="ngb-tab" title="Quotation Processing">
+            <ng-template ngbTabContent style="padding-top: 10px !important;">
+                <div>
+                    <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)"
+                        (add)="onClickAdd($event)" (edit)="onClickEdit($event)" (copy)="onClickCopy($event)"></app-cust-non-datatable>
+                </div>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab class="ngb-tab" title="Ready for Printing">
+            <ng-template ngbTabContent>
+                <app-ready-for-printing></app-ready-for-printing>
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
+</div>
+
+
+<!-- Hidden Modal -->
+
+<!-- Copy Modal -->
+<app-modal class="hidden" id="copyModal" [mdlConfig]="mdlConfig">
+    <!-- <div header>Quotation No.</div>
+    <div body>
+        <fieldset class="scheduler-border">
+            <div class="custom-row-inline-inset" style="text-align: center">
+                <p>This Quotation No.</p>
+                <p style="color:#557a95"><strong>CAR-2018-00001-00-99</strong></p>
+                <p>has been copied to Quotation No.</p>
+                <p style="color:red"><strong>CAR-2018-00002-00-00</strong></p>
+            </div>
+        </fieldset>
+    </div>
+    <div footer>
+        <div class="d-flex justify-content-center">
+            <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+            <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+        </div>
+    </div> -->
+    <div header>Copy Quotation</div>
+    <div body>
+        <fieldset class="scheduler-border">
+                <div class="custom-row-inline-inset" style="text-align: center">
+                    <div class="input-group">
+                        <label class="form-control-sm col-sm-3">Ceding Company</label>
+                        <input type="text"class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" [ngModel]="cedingCode">
+                        <div class="text-search-ico" (click)="showCedingCompanyLOV()"><a><i class="fa fa-search"></i></a></div>
+                        &nbsp;&nbsp;
+                        <input type="text" class="form-control form-control-sm" [ngModel]="cedingName">
+                    </div>
+                    <div class="input-group">
+                        <label class="form-control-sm col-sm-3">Risk</label>
+                        <input type="text"class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important">
+                        <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+                        &nbsp;&nbsp;
+                        <input type="text" class="form-control form-control-sm">
+                    </div>
+                </div>
+        </fieldset>
+    </div>
+    <div footer>
+        <div class="d-flex justify-content-center">
+            <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+            <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+        </div>
+    </div>
+</app-modal>
+<!-- End Copy Modal -->
+
+<!-- Add -->
+<app-modal class="hidden" id="addModal">
+    <div header>Enter General Info</div>
+    <div body>
+        <fieldset class="scheduler-border">
+            <div class="custom-row-inline-inset">
+                <div class="input-group">
+                    <label class="form-control-sm col-sm-3">Line</label>
+                    <input type="text" [(ngModel)]="line" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" readonly>
+                    <div class="text-search-ico" (click)="modalService.dismissAll();showLineLOV()"><a><i class="fa fa-search"></i></a></div>
+                    &nbsp;&nbsp;
+                    <input type="text" class="form-control form-control-sm" [(ngModel)]="description" readonly>
+                </div>
+                <div class="input-group" style="margin-top: -12px">
+                    <label class="form-control-sm col-sm-3" for="xx">Type of Cession</label>
+                    <input type="text" class="form-control form-control-sm col-sm-2" style="margin-right: -1px !important" [(ngModel)]="typeOfCessionId">
+                    <div class="text-search-ico" (click)="modalService.dismissAll(); showTypeOfCessionLOV()"><a><i class="fa fa-search"></i></a></div>
+                    &nbsp;&nbsp;
+                    <input type="text" class="form-control form-control-sm" [(ngModel)]="typeOfCession">
+                </div>
+                <div class="input-group" style="margin-top: -12px; margin-bottom: -10px ! important">
+                    <label class="form-control-sm col-sm-3" for="xx" style="margin: 0;">Risk</label>
+                    <input type="text" class="form-control form-control-sm col-sm-2" style="margin-right: -1px !important"
+                      [(ngModel)] = "riskCd" >
+                    <div class="text-search-ico" (click)="showRiskLOV()"><a><i class="fa fa-search"></i></a></div>
+                    &nbsp;&nbsp;
+                    <input type="text" class="form-control form-control-sm"  [(ngModel)]="riskName">
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <div footer class="text-center w-100">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>Cancel</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); nextBtnEvent();"><a>Next</a></button>
+    </div>
+</app-modal>
+
+<!-- End Add Modal -->
+
+<!-- Risk LOV Modal -->
+<app-modal class="hidden" id="riskModal">
+    <div header>List of Values</div>
+    <div body>
+        <fieldset class="scheduler-border">
+            <!-- ERROR RangeError: Maximum call stack size exceeded -->
+            <!--<app-cust-non-datatable [passData]="riskData"></app-cust-non-datatable>-->
+            <app-cust-non-datatable [passData]="riskData" (rowClick)="getRisk($event)"></app-cust-non-datatable>
+        </fieldset>
+    </div>
+    <div footer>
+        <div class="d-flex justify-content-center">
+            <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+            <button class="cust-btn" type="button" (click)="modalService.dismissAll(); onClickAdd($event);"><a>Ok</a></button>
+        </div>
+    </div>
+</app-modal>
+<!-- End Risk LOV Modal -->
+
+<!-- Modification or Internal Competition Modal -->
+<app-modal class="hidden" id="modIntModal">
+    <div header>&nbsp;</div>
+    <div body>
+        <fieldset class="scheduler-border">
+            <div class="custom-row-inline-inset" style="text-align: center">
+                <p>Selected Line and Risk has an existing Quotation No</p>
+                <p style="color:#557a95"><strong>{{existingQuotationNo}}</strong></p>
+                <p>Please select an option:</p>
+            </div>
+        </fieldset>
+    </div>
+    <div footer class="text-center w-100">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Modification</a></button>
+        <button class="cust-btn cust-btn-extend" type="button" (click)="modalService.dismissAll(); toInternalCompetition();"><a>Internal Competition</a></button>
+    </div>
+</app-modal>
+<!-- End Modification or Internal Competition Modal -->
+
+<app-mtn-risk id="riskLOV" (selectedData)="setRisks($event)"></app-mtn-risk>
+<app-ceding-company id="cedingCompanyLOV" (selectedData)="setCedingcompany($event)"></app-ceding-company>
+<app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
+<app-mtn-type-of-cession id="typeOfCessionLOV" (selectedData)="setTypeOfCession($event)"></app-mtn-type-of-cession>

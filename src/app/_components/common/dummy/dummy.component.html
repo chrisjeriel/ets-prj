@@ -1,0 +1,57 @@
+<!-- <div class="cust-tabs-container">
+    <h4>Available Components: </h4>
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">Table Sample</legend>
+        <app-cust-table [filters]="filters" [tableData]="tableData" [tHeader] = "tHeader" [dataTypes] = "dataTypes" [filterDataTypes] = "filterDataTypes"></app-cust-table>
+        <app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData2" [tHeader]="tHeader"></app-cust-editable-table>
+    </fieldset>
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">Modal Sample</legend>
+        <br/>
+        <app-modal>
+        <div header>TESTING</div>
+        <div body>
+            <app-cust-table [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes"></app-cust-table>
+        </div>
+        <div footer>
+            <app-modal [btnTitle]="'Yes'">
+                <div header>Success</div>
+                <div body>
+                   Success
+                </div>
+                <div footer>
+                    <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Test</a></button>
+                </div>
+            </app-modal>
+        </div>
+    </app-modal>
+    <button type="button" class="cust-btn" (click)="open()">Open Modal from Parent </button>
+    </fieldset>
+    <br/>
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">Table Samples (Non DataTables)</legend>
+        <app-cust-non-datatable [passData] = "passData" [filterDataTypes] = "filterDataTypes2"></app-cust-non-datatable>
+        <br/>
+        <br/>
+        <br/>
+        <app-cust-editable-non-datatable [passData]="passDataEditable"></app-cust-editable-non-datatable>
+    </fieldset>
+</div> -->
+
+
+<div class="cust-tabs-container">
+
+
+    <!-- appcust-nondata -->
+    <div style="height: 600px; width: 600px; border: 1px solid black; position: relative;" >
+        <div class="controlContainer" style="position: absolute; margin-top: -30px;">
+            <button>Sample 1</button>
+            <button>Sample 2</button>
+            <button>Sample 3</button>
+        </div>
+        <div class="tableContriner" style="height: 600px; width: auto; border: 1px solid green;">
+            
+        </div>
+    </div>
+<!-- </div> -->
+</div>

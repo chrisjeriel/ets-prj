@@ -1,0 +1,137 @@
+<div *ngIf="!addEdit; else addEditCedingCo" class="cust-tabs-container">
+	<h4>Maintenance</h4>
+	<ngb-tabset>
+		<ngb-tab class="ngb-tab" title="Ceding Companies List">
+			<ng-template ngbTabContent>
+				<div class="row" style="margin-top: 10px;">
+					<div class="col-sm">
+						<app-cust-non-datatable [passData]="passData" (add)="toAddEdit();" (rowDblClick)="toGenerateCedingEdit($event);"></app-cust-non-datatable>
+					</div>
+				</div>
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>
+
+<ng-template #addEditCedingCo>
+	<div class="cust-tabs-container">
+		<h4> Maintenance / Ceding Companies List</h4>
+		<ngb-tabset>
+			<ngb-tab class="ngb-tab" title="Ceding Company">
+				<ng-template ngbTabContent>
+					<div class="row" style="margin-top: 10px;">
+						<div class="col-sm-2"></div>
+						<div class="col-sm">
+							<fieldset class="scheduler-border" style="padding-top: 11px !important; padding-bottom: 10px !important;">
+								<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+								<div style="margin-right: 50px;">
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2">Company No</label>
+										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="companyNo">
+										<div class="cust-div col-sm-5" style="margin-left: 15px;"><input type="checkbox">&nbsp;<span class="cust-span">Active Tag</span>
+											<input style="margin-left: 64px;" type="checkbox">&nbsp;<span class="cust-span">Government</span>
+										</div>
+									</div>
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2">Name</label>
+										<input type="text" class="form-control form-control-sm col-sm">
+									</div>
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2">Abbreviation</label>
+										<input type="text" class="form-control form-control-sm col-sm">
+										<label class="form-control-sm col-sm-2">Old Company No</label>
+										<input type="text" class="form-control form-control-sm col-sm">
+									</div>
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2">Address</label>
+										<input type="text" class="form-control form-control-sm col-sm">
+									</div>
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2"></label>
+										<input type="text" class="form-control form-control-sm col-sm">
+									</div>
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2"></label>
+										<input type="text" class="form-control form-control-sm col-sm-7">
+										<label class="form-control-sm col-sm-1" style="margin-left: 12px !important;">Zip Code</label>
+										<input type="text" class="form-control form-control-sm col-sm-2">
+									</div>
+								</div>
+							</fieldset>
+						</div>
+						<div class="col-sm-2"></div>
+					</div>
+					<div class="row">
+						<div class="col-sm-2"></div>
+						<div class="col-sm-8">
+							<fieldset class="scheduler-border" style="padding-top: 11px !important; padding-bottom: 10px !important;">
+								<legend class="scheduler-border">Other Info</legend>
+								<div style="margin-right: 50px;">
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2">Start Date</label>
+										<input type="date" class="form-control form-control-sm col-sm-4">
+										<div class="col-sm-2"></div>
+										<div class="cust-div col-sm"><input type="checkbox">&nbsp;<span class="cust-span">Member</span>
+										</div>
+									</div>
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2">Termination Date</label>
+										<input type="date" class="form-control form-control-sm col-sm">
+										<label class="form-control-sm col-sm-2">Inactive Date</label>
+										<input type="date" class="form-control form-control-sm col-sm">
+									</div>
+								</div>
+							</fieldset>
+						</div>
+						<div class="col-sm-2"></div>
+					</div>
+					<div class="row">
+						<div class="col-sm-2"></div>
+						<div class="col-sm-8">
+							<fieldset class="scheduler-border" style="padding-top: 11px !important; padding-bottom: 10px !important;">
+								<legend class="scheduler-border">Membership</legend>
+								<div class="contain">
+									<app-cust-editable-non-datatable [passData]="passDataAddEdit"></app-cust-editable-non-datatable>
+								</div>
+							</fieldset>
+						</div>
+						<div class="col-sm-2"></div>
+					</div>
+					<div class="row">
+						<div class="col-sm-2"></div>
+						<div class="col-sm-8">
+							<fieldset class="scheduler-border" style="padding-top: 11px !important; padding-bottom: 10px !important;">
+								<legend class="scheduler-border">Other Info</legend>
+								<div style="margin-right: 50px;">
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2">Remarks</label>
+										<input type="text" class="form-control form-control-sm col-sm">
+									</div>
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2">Created By</label>
+										<input type="text" class="form-control form-control-sm col-sm" value="CUARESMA">
+										<label class="form-control-sm col-sm-2">Date Created</label>
+										<input type="datetime-local" class="form-control form-control-sm col-sm">
+									</div>
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2">Last Update By</label>
+										<input type="text" class="form-control form-control-sm col-sm" value="QUECOH">
+										<label class="form-control-sm col-sm-2">Last Update</label>
+										<input type="datetime-local" class="form-control form-control-sm col-sm">
+									</div>
+								</div>
+							</fieldset>
+						</div>
+						<div class="col-sm-2"></div>
+					</div>
+					<div class="row" style="margin-top: 10px !important; margin-bottom: 10px !important;">
+						<div class="col-sm text-center">
+							<button class="cust-btn" (click)="addEdit = false;">Cancel</button>
+							<button class="cust-btn">Save</button>
+						</div>
+					</div>
+				</ng-template>
+			</ngb-tab>
+		</ngb-tabset>
+	</div>
+</ng-template>

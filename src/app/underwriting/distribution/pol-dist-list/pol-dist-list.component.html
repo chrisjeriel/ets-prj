@@ -1,0 +1,13 @@
+<div class="cust-tabs-container">
+    <h4>Policy / Distribution</h4>
+    <ngb-tabset>
+        <ngb-tab title="Policy Distribution List">
+            <ng-template ngbTabContent>
+                <div>
+                    <!--<button type="button" [routerLink]="['/pol-dist']" style="z-index: 1000; position: relative; top: -13px !important;" class="cust-btn" (click)="add()">Add</button>-->
+                    <app-cust-non-datatable [passData]="passData" (add)="onClickAdd($event)"></app-cust-non-datatable>
+                </div>
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
+</div>

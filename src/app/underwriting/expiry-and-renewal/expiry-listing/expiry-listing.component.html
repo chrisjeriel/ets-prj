@@ -1,0 +1,163 @@
+<div class="cust-tabs-container">
+	<h4>Policy/ Expiry & Renewal/ Expiry List</h4>
+	<ngb-tabset>
+		<ngb-tab class="ngb-tab" title="Renewable Policies">
+			<ng-template ngbTabContent>
+				<div class="row">
+					<div class="col-sm-12" >
+		
+						<app-cust-editable-non-datatable [passData]="passDataAnnualPolicies"></app-cust-editable-non-datatable>
+						
+					</div>
+					<div class="col-sm-12" style="margin-bottom: 10px;">
+						<fieldset class="scheduler-border">
+							<div class="row">
+								<div class="col-sm-3"></div>
+								<div class="col-sm-6">
+									<div class="row">
+										<div class="col-sm">
+											<div class="row" style="margin-top: 0px;margin-right: -4px;">
+												<button class="cust col-sm">Delete</button>
+												<button class="cust col-sm">Edit</button>
+												<button class="cust col-sm">Purge</button>
+												<button class="cust col-sm">Save</button>
+											</div>
+											<div class="row" style="margin-right: -4px;">
+												<button class="cust col-sm">Print</button>
+												<button class="cust col-sm">Search</button>
+												<button class="cust col-sm">Update</button>
+												<button class="cust col-sm">Process</button>
+											</div>
+											<div class="row" style="margin-right: -5px !important;margin-top: 15px !important;">
+												<label class="form-control-sm col-sm-4 text-right">Changes</label>
+												<textarea class="form-control form-control-sm col-sm-8"></textarea>
+											</div>
+											<div class="row" style="margin-right: -5px !important;margin-top: 5px !important;">
+												<label class="form-control-sm col-sm-4 text-right">Reason For Non-renewal</label>
+												<input type="text" class="form-control form-control-sm col-sm-3">
+												<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+												<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 8px !important;">
+											</div>
+											<div class="row" style="margin-top: -18px;margin-right: -5px !important;">
+												<label class="form-control-sm col-sm-4 text-right">Remarks</label>
+												<input type="text" class="form-control form-control-sm col-sm-8">
+											</div>
+											<div class="row">
+											<div class="col-sm-12"  style="padding: 0px !important;margin-bottom: 7px;">
+												<fieldset class="scheduler-border" style="margin-right: 8px !important;    margin-top: -5px !important;">
+													<div class="row" style="margin-top: 10px;margin-bottom: 0px;margin-right: -20px;">
+														<div class="col-sm-3">
+															<div class="input-group" style="    margin-left: 100px !important;">
+															<label class="form-control-sm col-sm-2" >Process:</label>
+															</div>
+														</div>
+														<div class="col-sm-3">
+															<div class="input-group" style="    margin-left: 29px !important;">
+															<input type="radio" name="Process" class="form-control-sm" id="test" style="margin-top: 1px !important;">
+															<label class="form-control-sm col-sm" for="test" style="margin-left: 3px !important;">Tag All</label>
+															</div>
+														</div>
+														<div class="col-sm-3">
+															<div class="input-group" style="    margin-left: -41px !important;">
+															<input type="radio" name="Process" class="form-control-sm" id="test" style="margin-top: 1px !important;">
+															<label class="form-control-sm col-sm" for="test" style="margin-left: 3px !important;">Untag All</label>
+															</div>
+														</div>
+														<div class="col-sm-3">
+															<div class="input-group" style="margin-left: -102px !important;">
+															<input type="radio" name="Process" class="form-control-sm" id="test" style="margin-top: 1px !important;">
+															<label class="form-control-sm col-sm" for="test" style="margin-left: 3px !important;">Selected Policies</label>
+															</div>
+														</div>
+													</div>
+												</fieldset>
+											</div>
+										</div>
+									</div>
+									</div>
+								</div>
+								<div class="col-sm-3"></div>
+							</div>
+						</fieldset>
+					</div>
+				</div>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab class="ngb-tab" title="Non-Renewable Policies ">
+			<ng-template ngbTabContent>
+				<div class="row">
+					<div class="col-sm-12">
+					<app-cust-editable-non-datatable [passData]="passDataExtensionPolicies"></app-cust-editable-non-datatable>
+					</div>
+					<div class="col-sm-12" style="margin-bottom: 10px;">
+						<fieldset class="scheduler-border">
+							<div class="row">
+								<div class="col-sm-3"></div>
+								<div class="col-sm-6">
+									<div class="row">
+										<div class="col-sm">
+											<div class="row" style="margin-top: 0px;margin-right: -4px;">
+												<button class="cust col-sm">Delete</button>
+												<button class="cust col-sm">Edit</button>
+												<button class="cust col-sm">Purge</button>
+												<button class="cust col-sm">Save</button>
+											</div>
+											<div class="row" style="margin-right: -4px;">
+												<button class="cust col-sm">Print</button>
+												<button class="cust col-sm">Search</button>
+												<button class="cust col-sm">Update</button>
+												<button class="cust col-sm">Process</button>
+											</div>
+											<div class="row" style="margin-right: -5px !important;margin-top: 15px !important;">
+												<label class="form-control-sm col-sm-4 text-right">Reason For Non-renewal</label>
+												<input type="text" class="form-control form-control-sm col-sm-3">
+												<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+												<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 8px !important;">
+											</div>
+											<div class="row" style="margin-top: -18px;margin-right: -5px !important;">
+												<label class="form-control-sm col-sm-4 text-right">Remarks</label>
+												<input type="text" class="form-control form-control-sm col-sm-8">
+											</div>
+											<div class="row">
+											<div class="col-sm-12"  style="padding: 0px !important;margin-bottom: 7px;">
+												<fieldset class="scheduler-border" style="margin-right: 8px !important;    margin-top: -5px !important;">
+													<div class="row" style="margin-top: 10px;margin-bottom: 0px;margin-right: -20px;">
+														<div class="col-sm-3">
+															<div class="input-group" style="    margin-left: 100px !important;">
+															<label class="form-control-sm col-sm-2" >Process:</label>
+															</div>
+														</div>
+														<div class="col-sm-3">
+															<div class="input-group" style="    margin-left: 29px !important;">
+															<input type="radio" name="Process" class="form-control-sm" id="test" style="margin-top: 1px !important;">
+															<label class="form-control-sm col-sm" for="test" style="margin-left: 3px !important;">Tag All</label>
+															</div>
+														</div>
+														<div class="col-sm-3">
+															<div class="input-group" style="    margin-left: -41px !important;">
+															<input type="radio" name="Process" class="form-control-sm" id="test" style="margin-top: 1px !important;">
+															<label class="form-control-sm col-sm" for="test" style="margin-left: 3px !important;">Untag All</label>
+															</div>
+														</div>
+														<div class="col-sm-3">
+															<div class="input-group" style="margin-left: -102px !important;">
+															<input type="radio" name="Process" class="form-control-sm" id="test" style="margin-top: 1px !important;">
+															<label class="form-control-sm col-sm" for="test" style="margin-left: 3px !important;">Selected Policies</label>
+															</div>
+														</div>
+													</div>
+												</fieldset>
+											</div>
+										</div>
+									</div>
+									</div>
+								</div>
+								<div class="col-sm-3"></div>
+							</div>
+						</fieldset>
+					</div>
+				</div>
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>

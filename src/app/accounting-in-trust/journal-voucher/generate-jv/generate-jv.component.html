@@ -1,0 +1,59 @@
+<div class="cust-tabs-container">
+	<h4>Accounting In-Trust / Journal Voucher / Generate JV</h4>
+	<!-- <ngb-tabset (tabChange)="beforeChange($event)"> -->
+		<ngb-tabset (tabChange)="onTabChange($event)">
+			<ngb-tab class="ngb-tab" title="JV Entry">
+				<ng-template ngbTabContent>
+					<app-jv-entry [record]="record" (onChange)="checkTabs($event);"></app-jv-entry>	
+				</ng-template>
+			</ngb-tab>
+			<ngb-tab class="ngb-tab" title="JV Details">
+				<ng-template ngbTabContent>
+					<app-jv-details [jvType]="jvType"></app-jv-details>
+				</ng-template>
+			</ngb-tab>
+			<ngb-tab class="ngb-tab" title="Accounting Entries">
+				<ng-template ngbTabContent>
+					<app-jv-accounting-entries></app-jv-accounting-entries>
+				</ng-template>
+			</ngb-tab>
+	<!-- 		<ngb-tab>
+				<ng-template ngbTabTitle>
+					<div>Inward Policy Balances</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+					<app-jv-inward-pol-balance></app-jv-inward-pol-balance>
+				</ng-template>
+			</ngb-tab>
+			<ngb-tab>
+				<ng-template ngbTabTitle>
+					<div>QSOA Balances</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+					<app-jv-qsoa></app-jv-qsoa>
+				</ng-template>
+			</ngb-tab>
+			<ngb-tab>
+				<ng-template ngbTabTitle>
+					<div>Payment Requests List</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+					<app-jv-payment-request-list></app-jv-payment-request-list>
+				</ng-template>
+			</ngb-tab> -->
+			<ngb-tab>
+				<ng-template ngbTabTitle>
+					<div>Attachments</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+					<app-jv-attachments></app-jv-attachments>
+				</ng-template>
+			</ngb-tab>
+			<ngb-tab id="Exit">
+				<ng-template ngbTabTitle>
+					<div>Exit</div>
+				</ng-template>
+    			<ng-template ngbTabContent></ng-template>
+  			</ngb-tab>
+	</ngb-tabset>
+</div>

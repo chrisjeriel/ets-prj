@@ -1,0 +1,57 @@
+<fieldset class="scheduler-border" style="margin-bottom: 15px !important;">
+    <legend class="scheduler-border">Request Info</legend>
+    <div class="form-row custom-row-inline-inset">
+        <div class="col-sm-8">
+            <div class="input-group">
+                <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Request No</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-3"
+                placeholder="CSR-2018-09-0001">
+                <label class="form-control-sm col-sm-1">Date</label>
+                <input type="datetime-local"  class="form-control form-control-sm cust-sm col-sm-3" [value]="dateCreated">
+                <label class="form-control-sm col-sm-1">Status</label>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-3" placeholder="New">
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-1">Payee</label>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm" placeholder="New">
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="input-group">
+                <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Amount</label>
+                <input type="text" value="PHP" class="form-control form-control-sm cust-sm col-sm-2" placeholder="">
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"placeholder="10,000,000.00">
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Local Amount</label>
+                <input type="text" value="PHP" class="form-control form-control-sm cust-sm col-sm-2" placeholder="">
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" placeholder="10,000,000.00">
+            </div>
+        </div>
+    </div>
+</fieldset>
+<fieldset class="scheduler-border" style="margin-bottom: 15px !important;">
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="input-group" style="margin-top: 15px !important;">
+			<app-cust-editable-non-datatable [passData]="PremiumReturn" style="width: 100% !important"></app-cust-editable-non-datatable>
+			</div>
+		</div>
+	</div>
+</fieldset>
+<div class="col-sm-12" style="padding: 0px !important">
+    <fieldset class="scheduler-border">
+        <div class="form-row custom-row-inline-inset">
+            <div class="input-group" style="margin-bottom: -7px !important;">
+                <label class="form-control-sm col-sm-1 text-right labels">Created By</label>
+                <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma">
+                <label class="form-control-sm col-sm-1 text-right labels">Date Created</label>
+                <input type="datetime-local" class="form-control form-control-sm col-sm-2" [value]="dateCreated">
+                <label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
+                <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma">
+                <label class="form-control-sm col-sm-1 text-right labels">Last Update</label>
+                <input type="datetime-local" class="form-control form-control-sm col-sm-2" [value]="lastUpdate" style="    margin-right: 8px !important;">
+            </div>
+        </div>
+    </fieldset>
+</div>

@@ -1,0 +1,100 @@
+<!-- <fieldset class="scheduler-border">
+	<legend class="scheduler-border">Extraction Info</legend>
+	<div class="form-row custom-row-inline-inset">
+		<div class="col-sm-5">
+			<div class="input-group">
+				<label class="form-control-sm col-sm-1">Period:</label>
+				<label class="form-control-sm col-sm-2">From</label>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-4">
+				<label class="form-control-sm col-sm-1">To</label>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-4">
+			</div>
+		</div>
+		<div class="col-sm-7">
+			<div class="input-group">
+				<label class="form-control-sm col-sm-2">Extracted By</label>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-4">
+				<label class="form-control-sm col-sm-2">Date Extracted</label>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-4">
+			</div>
+		</div>
+	</div>
+</fieldset> -->
+<fieldset class="scheduler-border">
+	<legend class="scheduler-border">Extraction Info</legend>
+	<div class="form-row custom-row-inline-inset">
+		<div class="col-sm-12" style="padding-right: 0px">
+			 <div class="input-group">
+				 <div class="col-sm-12" style="padding: 0px">
+					<div class="input-group">
+						<div class="col-sm-1"></div>
+						<label class="form-control-sm">Period:</label>
+						<label class="form-control-sm" style="margin-left:4px !important;">From</label>
+						 <input type="text" class="form-control form-control-sm cust-sm col-sm-2"
+						  placeholder="12/01/2018" readonly>
+						  <label class="form-control-sm" style="margin-left:5px !important;">To</label>
+						  <input type="text" class="form-control form-control-sm cust-sm col-sm-2"
+						  placeholder="12/31/2018"readonly>
+						  <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Extracted By</label>
+						 <input type="text" class="form-control form-control-sm cust-sm col-sm"
+						  placeholder="cuaresma" readonly>
+						  <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Date Extracted</label>
+						 <input type="text" class="form-control form-control-sm cust-sm col-sm"
+						  placeholder="cuaresma" readonly>
+						  <div class="col-sm-1"></div>
+					</div>
+				 </div>
+			 </div>
+		</div>
+	</div>
+</fieldset>
+
+<fieldset class="scheduler-border">
+	<legend class="scheduler-border">{{ taxType }} Details</legend>
+		<div class="row" [ngSwitch]="taxType">
+			<div class="col-sm-12" *ngSwitchCase ="'Creditable Withholding Tax'">
+				<div class="row">
+					<div class="col-sm-12" style="margin-top: 15px !important;">
+						<div style="position: relative;">
+							<input type="checkbox" class="checkbox text-right" style="position:absolute; left: 15px; top:5px;" checked>
+							<label class="form-control-sm col-sm-3" style="position:absolute; left: 25px;">Show records where Acct Entry <> VAT details total</label>
+						</div>
+							<app-cust-editable-non-datatable [passData]="CreditableTaxData"></app-cust-editable-non-datatable>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12" *ngSwitchCase ="'Input VAT'">
+				<div class="row">
+					<div class="col-sm-12" style="margin-top: 15px !important;">
+						<div style="position: relative;">
+							<input type="checkbox" class="checkbox text-right" style="position:absolute; left: 15px; top:5px;" checked>
+							<label class="form-control-sm col-sm-3" style="position:absolute; left: 25px;">Show records where Acct Entry <> VAT details total</label>
+						</div>
+							<app-cust-editable-non-datatable [passData]="InputVatDetailsData"></app-cust-editable-non-datatable>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12" *ngSwitchCase ="'Output VAT'">
+				<div class="row">
+					<div class="col-sm-12" style="margin-top: 15px !important;">
+						<div style="position: relative;">
+							<input type="checkbox" class="checkbox text-right" style="position:absolute; left: 15px; top:5px;" checked>
+							<label class="form-control-sm col-sm-3" style="position:absolute; left: 25px;">Show records where Acct Entry <> VAT details total</label>
+						</div>
+							<app-cust-editable-non-datatable [passData]="OutputVatDetailsData"></app-cust-editable-non-datatable>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12" *ngSwitchCase ="'Withholding Tax'">
+				<div class="row">
+					<div class="col-sm-12" style="margin-top: 15px !important;">
+						<div style="position: relative;">
+							<input type="checkbox" class="checkbox text-right" style="position:absolute; left: 15px; top:5px;" checked>
+							<label class="form-control-sm col-sm-3" style="position:absolute; left: 25px;">Show records where Acct Entry <> VAT details total</label>
+						</div>
+							<app-cust-editable-non-datatable [passData]="WithholdingVatDetailsData"></app-cust-editable-non-datatable>
+					</div>
+				</div>
+			</div>
+		</div>
+</fieldset>

@@ -1,0 +1,18 @@
+<div class="cust-tabs-container">
+  <h4>Accounting In-Trust / Month End / Funds Held</h4>
+  <ngb-tabset (tabChange)="onTabChange($event)">
+    <ngb-tab class="ngb-tab" title="Extract Record">
+      <ng-template ngbTabContent>
+        <app-extract-record></app-extract-record>
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab class="ngb-tab" title="Unearned Premiums">
+      <ng-template ngbTabContent>
+        <app-unearned-premium></app-unearned-premium>
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab class="ngb-tab" title="Exit" id="Exit">
+      <ng-template ngbTabContent></ng-template>
+    </ngb-tab>
+  </ngb-tabset>
+</div>

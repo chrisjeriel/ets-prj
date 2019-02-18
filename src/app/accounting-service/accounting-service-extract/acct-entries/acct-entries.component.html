@@ -1,0 +1,112 @@
+<!-- <fieldset class="scheduler-border">
+	<legend class="scheduler-border">Extraction Info</legend>
+	<div class="form-row custom-row-inline-inset">
+		<div class="col-sm-5">
+			<div class="input-group">
+				<label class="form-control-sm col-sm-1">Period:</label>
+				<label class="form-control-sm col-sm-2">From</label>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-4">
+				<label class="form-control-sm col-sm-1">To</label>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-4">
+			</div>
+		</div>
+		<div class="col-sm-7">
+			<div class="input-group">
+				<label class="form-control-sm col-sm-2">Extracted By</label>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-4">
+				<label class="form-control-sm col-sm-2">Date Extracted</label>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-4">
+			</div>
+		</div>
+	</div>
+</fieldset> -->
+<fieldset class="scheduler-border">
+	<legend class="scheduler-border">Extraction Info</legend>
+	<div class="form-row custom-row-inline-inset">
+		<div class="col-sm-12" style="padding-right: 0px">
+			 <div class="input-group">
+				 <div class="col-sm-12" style="padding: 0px">
+					<div class="input-group">
+						<div class="col-sm-1"></div>
+						<label class="form-control-sm">Period:</label>
+						<label class="form-control-sm" style="margin-left:4px !important;">From</label>
+						 <input type="text" class="form-control form-control-sm cust-sm col-sm-2"
+						  placeholder="12/01/2018" readonly>
+						  <label class="form-control-sm" style="margin-left:5px !important;">To</label>
+						  <input type="text" class="form-control form-control-sm cust-sm col-sm-2"
+						  placeholder="12/31/2018"readonly>
+						  <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Extracted By</label>
+						 <input type="text" class="form-control form-control-sm cust-sm col-sm"
+						  placeholder="cuaresma" readonly>
+						  <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Date Extracted</label>
+						 <input type="text" class="form-control form-control-sm cust-sm col-sm"
+						  placeholder="cuaresma" readonly>
+						  <div class="col-sm-1"></div>
+					</div>
+				 </div>
+			 </div>
+		</div>
+	</div>
+</fieldset>
+<fieldset class="scheduler-border">
+	<legend class="scheduler-border">Extraction Info</legend>
+		<div class="row">
+			<div class="col-sm-12" style="margin-top: 15px !important;">
+				<app-cust-editable-non-datatable [passData]="AccountingEntryData"></app-cust-editable-non-datatable>
+			</div>
+		</div>
+</fieldset> -->
+
+<fieldset class="scheduler-border" style="padding-top: 4px !important; ">
+    <legend class="scheduler-border" style="margin-bottom: -9px !important;">Extraction Info</legend>
+    <div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;">
+    	<div class="input-group" style="margin-top: 3px !important">
+    		<div class="col-sm-1" style="padding: 0">
+    			<label class="form-control-sm col-sm-6 text-left">Period:</label>
+    			<label class="form-control-sm col-sm-6">From</label>
+    		</div>
+    		<input class="form-control-sm form-control col-sm-2" type="date" [value]="'2018-12-01'">
+            <label class="form-control-sm col-sm-1">To</label>
+            <input class="form-control-sm form-control col-sm-2" type="date" [value]="'2018-12-31'">  
+            <label class="form-control-sm col-sm-1">Tran Type:</label>
+    		<div class="col-sm-2 check-row" style="padding: 0" style="display: flex;">
+    			<div class="col-sm">
+					<input type="checkbox" class="form-control-sm " name="" id="ar" checked="checked">
+				</div>
+				<label for="ar" class="form-control-sm text-left col-sm">AR</label>
+				<div class="col-sm">
+					<input type="checkbox" class="form-control-sm " name="" id="cv" checked="checked">
+				</div>
+				<label for="cv" class="form-control-sm text-left col-sm">CV</label>
+				<div class="col-sm">
+					<input type="checkbox" class="form-control-sm " name="" id="jv" checked="checked">
+				</div>
+				<label for="jv" class="form-control-sm text-left col-sm">JV</label>
+    		</div>
+    		<div class="col-sm text-left d-flex check-row">
+    			<div class="col-sm-3">
+					<input type="checkbox" class="form-control-sm" name="" id="ar" checked="checked">
+				</div>
+				<label for="ar" class="form-control-sm text-left col-sm">Include Closed Transactions Only</label>
+    		</div>
+    	</div>
+    	<div class="input-group">
+            <label class="form-control-sm col-sm-1">Account Code</label>
+            <input class="form-control-sm form-control col-sm-3" type="text" style="margin-right: 3px">
+            <input class="form-control-sm form-control col-sm-4" type="text" value="ALL ACCOUNTS">
+        </div>
+        <div class="input-group">
+            <label class="form-control-sm col-sm-1">SL Type</label>
+            <input class="form-control-sm form-control col-sm-2" type="text" style="margin-right: 3px">
+            <input class="form-control-sm form-control col-sm-3" type="text" value="ALL SL TYPES">
+            <label class="form-control-sm col-sm-1">Extracted By</label>
+            <input class="form-control-sm form-control col-sm-2" type="text" value="cuaresma">
+            <label class="form-control-sm col-sm-1">Date Extracted</label>
+            <input class="form-control-sm form-control col-sm-2" type="datetime-local" [value]="dateExtracted">
+        </div>
+    </div>
+</fieldset>
+<fieldset class="scheduler-border">
+	<legend class="scheduler-border">Extracted Data</legend>
+	<app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
+</fieldset>

@@ -1,0 +1,31 @@
+<div class="cust-tabs-container">
+	<h4>Accounting In-Trust / Acknowledgement Receipt / Generate AR</h4>
+	<ngb-tabset (tabChange)="onTabChange($event)">
+		<ngb-tab class="ngb-tab" title="AR Entry">
+			<ng-template ngbTabContent>
+				<app-acct-ar-entry [record]="record" (onChange)="checkTabs($event);"></app-acct-ar-entry>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab class="ngb-tab" title="AR Details">
+			<ng-template ngbTabContent>
+				<app-ar-details [paymentType]="paymentType"></app-ar-details>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab class="ngb-tab" title="AR Preview">
+			<ng-template ngbTabContent>
+				<app-ar-preview></app-ar-preview>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab class="ngb-tab" title="Attachments">
+			<ng-template ngbTabContent>
+				<app-acc-attachments></app-acc-attachments>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab id="Exit" >
+			<ng-template ngbTabTitle>
+				<div>Exit</div>
+			</ng-template>
+			<ng-template ngbTabContent></ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>

@@ -1,0 +1,138 @@
+<fieldset class="scheduler-border">
+    <legend class="scheduler-border">Request Info</legend>
+    <div class="form-row custom-row-inline-inset">
+        <div class="col-sm-8">
+            <div class="input-group">
+                <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Request No</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-3"
+                placeholder="CSR-2018-09-0001">
+                <label class="form-control-sm col-sm-1">Date</label>
+                <input type="datetime-local"  class="form-control form-control-sm cust-sm col-sm-3" [value]="dateCreated">
+                <label class="form-control-sm col-sm-1">Status</label>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-3" placeholder="New">
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-1">Payee</label>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm" placeholder="New">
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="input-group">
+                <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Amount</label>
+                <select class="form-control form-control-sm cust-sm col-sm-2">
+                        <option value="PHP">PHP</option>
+                        <option value="EUR">EUR</option>
+                        <option value="USD">USD</option>
+                </select>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"placeholder="10,000,000.00">
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Local Amount</label>
+                <select class="form-control form-control-sm cust-sm col-sm-2">
+                        <option value="PHP">PHP</option>
+                        <option value="EUR">EUR</option>
+                        <option value="USD">USD</option>
+                </select>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" placeholder="10,000,000.00">
+            </div>
+        </div>
+    </div>
+</fieldset>
+<fieldset class="scheduler-border" style="margin-bottom: 15px !important;">
+    <legend class="scheduler-border">Claims History Info</legend>
+    <div class="form-row custom-row-inline-inset">
+        <div class="col-sm-8">
+            <div class="input-group">
+                <label class="form-control-sm col-sm-1">Claim No</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-2"
+                placeholder="CAR-2018-00014">
+                <label class="form-control-sm col-sm-1">Loss Date</label>
+                <input type="datetime-local" class="form-control form-control-sm cust-sm col-sm-3"
+                placeholder="CAR-2018-00014" [value]="dateCreated">
+                <label class="form-control-sm col-sm-1">Policy No</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm"
+                placeholder="CAR-2018-00001-99-9991-000">
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-1">Hist No</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-1 text-right"
+                placeholder="91">
+                <label class="form-control-sm col-sm-1">Hist Type</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-2"
+                placeholder="Loss">
+                <label class="form-control-sm col-sm-1">Type</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm"
+                placeholder="Partial Payment">
+                <label class="form-control-sm col-sm-1">Status</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-2"
+                placeholder="Insured">
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-1">Insured</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm"
+                placeholder="San Miguel Corporation">
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-1">Risk</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm"
+                placeholder="San Miguel Corporation">
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-1">Remarks</label>
+                <textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 47px; margin-bottom: 5px;" placeholder="Representing check payment for San Miguel Corporation"></textarea>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="input-group">
+                <label class="form-control-sm col-sm-3">Processed By</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px !important;" placeholder="cuaresma">
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-3">Processed Date</label>
+                <input type="datetime-local" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px !important;" [value]="dateCreated">
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-3">Last Update By</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px !important;" placeholder="cuaresma">
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-3">Last Update</label>
+                <input type="datetime-local" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px !important;" [value]="dateCreated">
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-3">Reserve Amount</label>
+                <select class="form-control form-control-sm cust-sm col-sm-2">
+                        <option value="PHP">PHP</option>
+                        <option value="EUR">EUR</option>
+                        <option value="USD">USD</option>
+                </select>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;">
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-3" style="padding-left: 0px;">Payment Amount</label>
+                <select class="form-control form-control-sm cust-sm col-sm-2">
+                        <option value="PHP">PHP</option>
+                        <option value="EUR">EUR</option>
+                        <option value="USD">USD</option>
+                </select>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;">
+            </div>
+        </div>
+    </div>
+</fieldset>
+<div class="col-sm-12" style="padding: 0px !important">
+    <fieldset class="scheduler-border">
+        <div class="form-row custom-row-inline-inset">
+            <div class="input-group" style="margin-bottom: -7px !important;">
+                <label class="form-control-sm col-sm-1 text-right labels">Created By</label>
+                <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma">
+                <label class="form-control-sm col-sm-1 text-right labels">Date Created</label>
+                <input type="datetime-local" class="form-control form-control-sm col-sm-2" [value]="dateCreated">
+                <label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
+                <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma">
+                <label class="form-control-sm col-sm-1 text-right labels">Last Update</label>
+                <input type="datetime-local" class="form-control form-control-sm col-sm-2" [value]="lastUpdate" style="    margin-right: 8px !important;">
+            </div>
+        </div>
+    </fieldset>
+</div>

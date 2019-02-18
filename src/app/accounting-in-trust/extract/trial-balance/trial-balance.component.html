@@ -1,0 +1,21 @@
+<div class="cust-tabs-container">
+	<h4>Accounting In-Trust / Extract / Trial Balance</h4>
+	<ngb-tabset (tabChange)="onTabChange($event)">
+		<ngb-tab class="ngb-tab" title="Extract">
+			<ng-template ngbTabContent>
+				<app-trial-balance-extract (accCodeChange)="accCodeChange($event)"></app-trial-balance-extract>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab class="ngb-tab" title="Trial Balance">
+			<ng-template ngbTabContent>
+				<app-trial-balance-tb [accountCode]="accountCode"></app-trial-balance-tb>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab id="Exit">
+			<ng-template ngbTabTitle>
+				<div>Exit</div>
+			</ng-template>
+			<ng-template ngbTabContent></ng-template>
+  		</ngb-tab>
+	</ngb-tabset>
+</div>

@@ -1,0 +1,50 @@
+ <div>
+ 	 <fieldset class="scheduler-border">
+ 	 	<legend class="scheduler-border">Extraction Info</legend>
+ 	 	<div class="form-row custom-row-inline-inset">
+ 	 		<div class="col-sm-7" style="padding-right: 0px">
+ 	 			 <div class="input-group">
+ 	 			 	<div class="col-sm-6" style="padding: 0px">
+	                		 <div class="input-group">
+	                		 	<label class="form-control-sm" for="xx" style="padding-left:0px !important;">Period:</label>
+	                		 	<label class="form-control-sm" for="xx" style="margin-left:4px !important;">From</label>
+	 	 			 			<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-4"
+	                       		placeholder="12/01/2018" readonly>
+	                       		<label class="form-control-sm" for="xx" style="margin-left:5px !important;">To</label>
+	                       		<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-4"
+	                       		placeholder="12/31/2018"readonly>
+		                     </div>
+	                		 <div class="input-group" style="margin-bottom: 0px ! important">
+	                			<label class="form-control-sm col-sm-3" for="xx" style="padding-left:0px !important;">Extracted By</label>
+ 	 			 				<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm"
+                       			placeholder="cuaresma" readonly>
+	                		</div>
+ 	 			 	</div>
+ 	 			 	<div class="col-sm-6" style="padding: 0px">
+ 	 			 			 <div class="input-group">
+ 	 			 			 	<label class="form-control-sm col-sm-5" for="xx" >Account Code</label>
+ 	 			 			 	<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm"
+	                       		placeholder="Total Debits and Credits" [(ngModel)]="accountCode" readonly>
+ 	 			 			 </div>
+ 	 			 			 <div class="input-group">
+ 	 			 			 	<label class="form-control-sm col-sm-5" for="xx">Date Extracted</label>
+ 	 			 			 	<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm"
+	                       		placeholder="01/17/2018 10:38 AM" readonly>
+ 	 			 			 </div>
+ 	 			 	</div>
+ 	 			 </div>
+ 	 		</div>
+ 	 	</div>
+ 	 </fieldset>
+ 	 <fieldset class="scheduler-border" style="padding: 0px"> 
+ 	 	 <legend class="scheduler-border">Extracted Data</legend>  
+ 	 	 	<div class="row">
+        	 	 	 <div *ngIf="accountCode == 'Total Debits & Credits'" [hidden]="accountcode == 'Net'"class="col-sm-12" style="margin-top: 0px" >
+        	 	 	 	 <app-cust-non-datatable [passData]="passDataTotal"></app-cust-non-datatable>
+        	 	 	 </div>
+        	 	 	  <div *ngIf="accountCode == 'Net'" [hidden]="accountcode == 'Total Debits & Credits'" class="col-sm-12" style="margin-top: 0px" >
+        	 	 	 	 <app-cust-non-datatable [passData]="passDataNet"></app-cust-non-datatable>
+        	 	 	 </div>
+        	 	</div>	
+ 	 </fieldset>
+</div>

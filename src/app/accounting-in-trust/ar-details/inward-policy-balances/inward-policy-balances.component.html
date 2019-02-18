@@ -1,0 +1,21 @@
+<div class="form-row custom-row-inline-inset">
+    <div class="input-group" style="margin-bottom: 0px !important;">
+      <div class="col-sm-1"></div>
+      <label class="form-control-sm col-sm" style="padding-left:0px !important;">Payment Amount</label>
+      <input type="text" value="1,642,857.14" class="form-control form-control-sm cust-sm col-sm text-right"
+        numbers-only placeholder="">
+      <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Total Balance for Selected Policy
+        Transactions</label>
+      <input type="text" value="1,642,857.14" class="form-control form-control-sm cust-sm col-sm text-right"
+        numbers-only placeholder="">
+      <label class="form-control-sm col-sm" style="padding-left:0px !important;">Variance</label>
+      <input type="text" value="0.00" class="form-control form-control-sm cust-sm col-sm text-right" numbers-only
+        placeholder="">
+      <div class="col-sm-1"></div>
+    </div>
+    <div class="input-group">
+      <div class="col-sm-12">
+        <app-cust-editable-non-datatable [passData]="passDataBalanceDetails"></app-cust-editable-non-datatable>
+      </div>
+    </div>
+</div>

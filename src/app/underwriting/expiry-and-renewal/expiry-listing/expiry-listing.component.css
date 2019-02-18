@@ -1,0 +1,138 @@
+/*input[type=radio]{
+	vertical-align: top;
+}*/
+
+
+.row{
+	margin-bottom: 5px;
+}
+
+.row:first-of-type{
+	margin-top: 10px;
+}
+
+.drp-dwn-cstmz {
+    height: calc(1.6rem + 1px);
+    padding: 0px;
+    border-radius: 0.2rem !important;
+}
+
+.text-search-ico {
+	margin-left: -18px;
+	z-index: 99;
+	font-size: 14px;
+}
+
+.input-group label {
+	padding-left: 0px;
+}
+.input-group{
+	vertical-align: middle;
+}
+
+input[type=radio] + label {
+  text-align: left !important;
+}
+
+select + input, input + div + input{
+	margin-left: 6px !important;
+}
+
+.left{
+	margin-top: -12px !important;
+	min-height: 133px;
+}
+
+.middle{
+	margin-top: 5px !important;
+	/*min-height: 153px;*/
+	padding-top: 10px !important;
+}
+
+.right{
+	margin-top: 5px !important;
+}
+
+.fa-question-circle{
+	font-size: 60px;
+	color: #557a95;
+	/*margin-left: 15px;*/
+}
+
+
+.my-modal-icon{
+	margin-left: 10px;
+}
+
+.my-modal-text{
+	padding-right: 0px;
+	margin:auto;
+	margin-right: 0px;
+	margin-left: 15px;
+}
+
+.my-modal-text span{
+	font-size: 12px;
+}
+
+div h4{
+	font-size: 15px;
+	margin: auto;
+}
+
+.my-modal-footer{
+	padding: 0px !important;
+}
+
+.left-input{
+	margin-right: 5px!important;
+}
+
+.right-input{
+	margin-left: 5px!important;
+}
+
+#byDate, #byMonthYear{
+	margin-bottom: 0px !important;
+} 
+
+.left .input-group, .right .input-group{
+    margin-bottom: -16px !important;
+}
+
+.left-div{
+    margin-top: 4px !important;
+    margin-bottom: 5px !important;
+}
+
+.middle-div{
+    margin-top: 0px !important;
+    margin-bottom: 5px !important;
+}
+
+.right-div{
+	margin-top: 4px !important;
+    margin-bottom: 5px !important;	
+}
+
+.cust {
+	width: 100% !important;
+	font-size: 11px;
+    font-weight: bold;
+    color: white !important;
+    text-align: center;
+    text-decoration: none !important;
+    outline: none !important;
+    border-style: none;
+    border: 1px solid gray;
+    z-index: 99 !important;
+    border-radius: 2px;
+    background: linear-gradient(to bottom, #4080bf 0%, #2d5986 100%);
+    padding-top: 5px;
+    padding-bottom: 2px;
+    margin-left: 3px !important;
+}
+
+.list{
+	margin-bottom: -16px;
+}

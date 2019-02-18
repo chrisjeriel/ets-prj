@@ -1,0 +1,38 @@
+<div class="cust-tabs-container">
+	<h4>Accounting Service / Journal Voucher / Generate JV</h4>
+		<ngb-tabset (tabChange)="onTabChange($event)">
+			<ngb-tab>
+				<ng-template ngbTabTitle>
+					<div>JV Entry</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+					<app-jv-entry-service></app-jv-entry-service>
+				</ng-template>
+			</ngb-tab>
+
+			<ngb-tab>
+				<ng-template ngbTabTitle>
+					<div>JV Preview</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+					<app-jv-preview-service></app-jv-preview-service>
+				</ng-template>
+			</ngb-tab>
+			
+			<ngb-tab>
+				<ng-template ngbTabTitle>
+					<div>Attachments</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+					<app-jv-attachments-service></app-jv-attachments-service>
+				</ng-template>
+			</ngb-tab>
+
+			<ngb-tab id="Exit">
+				<ng-template ngbTabTitle>
+					<div>Exit</div>
+				</ng-template>
+    			<ng-template ngbTabContent></ng-template>
+  			</ngb-tab>
+	</ngb-tabset>
+</div>

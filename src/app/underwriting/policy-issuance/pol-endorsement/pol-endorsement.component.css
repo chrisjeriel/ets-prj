@@ -1,0 +1,18 @@
+fieldset.scheduler-border-endorsements{
+	position: relative
+}
+
+.copyEndt {
+	position: absolute;
+    top: 188px;
+    left: 226px;
+ 	z-index: 1000 ! important;
+}
+
+fieldset {
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+}
+.cust-btn-container{
+	margin-top: 10px !important;
+}

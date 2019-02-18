@@ -1,0 +1,139 @@
+<div class="row">
+	<div class="col-sm-2"></div>
+	<div class="col-sm-8">
+		<fieldset class="scheduler-border" style="padding-top: 5px !important; padding-bottom: 20px !important;">
+			<legend class="scheduler-border">Printing Parameters</legend>
+			<div class="row">
+				<div class="col-sm-1"></div>
+				<div class="col-sm-10">
+					<fieldset class="scheduler-border" style="padding-top: 10px !important; padding-bottom: 10px !important;">
+						<legend class="scheduler-border">Period</legend>
+						<div class="row">
+							<div class="col-sm-3"></div>
+							<div class="col-sm-4">
+								<input type="checkbox" style="vertical-align: middle;" class="rdo" [(ngModel)]="tDate" (click)="tickBox($event);"><label class="form-control-sm" style="margin-bottom: 0px !important;" checked>Transaction Date</label>
+							</div>
+							<div class="col-sm-4">
+								<input type="checkbox" style="vertical-align: middle;" class="rdo" [(ngModel)]="pDate" (click)="tickBox($event);"><label class="form-control-sm" style="margin-bottom: 0px !important;">Posting Date</label>
+							</div>
+							<div class="col-sm-1"></div>
+						</div>
+						<div class="row">
+							<div class="col-sm-2"></div>
+							<div class="col-sm-3">
+								<input type="radio" style="vertical-align: middle;" name="dateRadio" [disabled]="pDate"><label class="form-control-sm" style="margin-bottom: 0px !important;">CV Date</label>
+							</div>
+							<div class="col-sm-3">
+								<input type="radio" style="vertical-align: middle;" name="dateRadio" [disabled]="pDate"><label class="form-control-sm" style="margin-bottom: 0px !important;">Check Date</label>
+							</div>
+							<div class="col-sm-3">
+								<input type="radio" style="vertical-align: middle;" name="dateRadio" [disabled]="pDate" checked><label class="form-control-sm" style="margin-bottom: 0px !important;">Check Print Date</label>
+							</div>
+							<div class="col-sm-1"></div>
+						</div>
+						<div class="input-group" style="margin-left: 16px !important; margin-top: 3px !important;">
+							<div class="col-sm-1"></div>
+							<label class="form-control-sm col-sm-1">From</label>
+							<input type="date" class="form-control form-control-sm col-sm-3" value="2018-12-01">
+							<div class="col-sm-1"></div>
+							<label class="form-control-sm col-sm-1">To</label>
+							<input type="date" class="form-control form-control-sm col-sm-3" value="2018-12-31">
+							<div class="col-sm-1"></div>
+						</div>
+					</fieldset>
+				</div>
+				<div class="col-sm-1"></div>
+			</div>
+			<div class="row">
+				<div class="col-sm-1"></div>
+				<div class="col-sm-10">
+					<fieldset class="scheduler-border" style="margin-top: 12px !important; padding-top: 10px !important;">
+						<div class="input-group cust-ig">
+							<label class="form-control-sm col-sm-2">Bank</label>
+							<input type="text" class="form-control form-control-sm col-sm-2">
+							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+							<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 2px !important;" value="ALL BANKS">
+						</div>
+						<div class="input-group cust-ig">
+							<label class="form-control-sm col-sm-2">Bank Account</label>
+							<input type="text" class="form-control form-control-sm col-sm-2">
+							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+							<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 2px !important;" value="ALL BANK ACCOUNTS">
+						</div>
+						<div class="input-group cust-ig">
+							<div class="form-control-sm col-sm-2 text-right"><input type="checkbox" style="vertical-align: baseline;" checked [disabled]="pDate"></div>
+							<label class="form-control-sm" style="margin-bottom: 0px !important; text-align: left !important; padding-left: 0px; margin-top: 1px;">Include Closed Transactions</label>
+						</div>
+						<div class="input-group">
+							<div class="form-control-sm col-sm-2 text-right"><input type="checkbox" style="vertical-align: baseline;" checked></div>
+							<label class="form-control-sm" style="margin-bottom: 0px !important; text-align: left !important; padding-left: 0px; margin-top: 1px;">Include Cancelled Transactions</label>
+						</div>
+					</fieldset>
+				</div>
+				<div class="col-sm-1"></div>
+			</div>
+			<div class="row">
+				<div class="col-sm-1"></div>
+				<div class="col-sm-5">
+					<fieldset class="scheduler-border" style="margin-right: -8px !important; padding-top: 21px !important; padding-bottom: 21px !important;">
+						<legend class="scheduler-border">Sort By</legend>
+						<div style="padding-left: 18px">
+							<div class="row">
+								<div class="col-sm" style="margin-bottom: -8px !important;">
+									<input type="radio" style="vertical-align: middle;" name="sortRadio" checked><label class="form-control-sm" style="margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;">Date</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm" style="margin-top: -8px !important; margin-bottom: -8px !important;">
+									<input type="radio" style="vertical-align: middle;" name="sortRadio"><label class="form-control-sm" style="margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;">Check No.</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm" style="margin-top: -8px !important;">
+									<input type="radio" style="vertical-align: middle;" name="sortRadio"><label class="form-control-sm" style="margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;">CV No.</label>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+				</div>
+				<div class="col-sm-5">
+					<fieldset class="scheduler-border" style="margin-left: -8px !important; padding-top: 11px !important;">
+						<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+						<div class="input-group cust-ig">
+							<label class="form-control-sm col-sm-4">Destination</label>
+							<select class="form-control form-control-sm cust-sm" >
+								<option selected>Printer</option>
+								<option>Option 2</option>
+								<option>Option 3</option>
+							</select>
+						</div>
+						<div class="input-group cust-ig" style="padding-top: 8px !important; margin-bottom: -16px !important;">
+							<label class="form-control-sm col-sm-5"></label>
+							<input type="radio" style="vertical-align: middle;" name="outputRadio" checked><label class="form-control-sm" style="margin-bottom: 0px !important; margin-top: -5px;">PDF</label>
+							<input type="radio" style="vertical-align: middle; margin-left: 18px;" name="outputRadio" ><label class="form-control-sm" style="margin-bottom: 0px !important; margin-top: -5px;">Excel</label>
+						</div>
+						<div class="input-group cust-ig">
+							<label class="form-control-sm col-sm-4">Printer Name</label>
+							<select class="form-control form-control-sm cust-sm" >
+								<option selected>EPSON 3600i</option>
+								<option>Option 2</option>
+								<option>Option 3</option>
+							</select>
+						</div>
+						<div class="input-group">
+							<label class="form-control-sm col-sm-4">No. Of Copies</label>
+							<input type="text" class="form-control form-control-sm col-sm text-right" value="1" >
+						</div>
+					</fieldset>
+				</div>
+				<div class="col-sm-1"></div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12 text-center" style="margin-top: 18px !important;">
+					<button class="cust-btn">Print</button>
+				</div>
+			</div>
+		</fieldset>
+	</div>
+	<div class="col-sm-2"></div>
+</div>
