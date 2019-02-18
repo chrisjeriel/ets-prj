@@ -785,11 +785,11 @@ export class QuotationService {
 
     }
 
-    getCoverageOc(quoteId:string,quotationNo?:string){
+    getCoverageOc(quoteIdOc:string,openQuotationNo:string){
         const params = new HttpParams()
-             .set('quotationNo', (quotationNo === null || quotationNo === undefined ? '' : quotationNo) )
-             .set('quoteId',(quoteId === null || quoteId === undefined ? '' : quoteId) )
-
+             .set('openQuotationNo', '2' )
+             .set('quoteIdOc','OC-EAR-2018-1001-2-2323' );
+             console.log(params);
         return this.http.post('http://localhost:8888/api/quote-service/retrieveQuoteCoverageOc',{params});
     }
 

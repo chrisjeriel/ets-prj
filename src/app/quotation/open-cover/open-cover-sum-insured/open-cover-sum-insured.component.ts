@@ -26,16 +26,24 @@ export class OpenCoverSumInsuredComponent implements OnInit {
   constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute) { }
 
   ngOnInit() {
-  	this.sub = this.route.params.subscribe(params => {
+	  	/*this.sub = this.route.params.subscribe(params => {
 
-      this.quotationNo = params["quotationNo"];
-      this.quoteNo = this.quotationNo.split(/[-]/g)[0]
-      for (var i = 1; i < this.quotationNo.split(/[-]/g).length; i++) {
-       this.quoteNo += '-' + parseInt(this.quotationNo.split(/[-]/g)[i]);
-     } 
-    });
-
-    
+	      this.quotationNo = params["quotationNo"];
+	      this.quoteNo = this.quotationNo.split(/[-]/g)[0]
+	      for (var i = 1; i < this.quotationNo.split(/[-]/g).length; i++) {
+	       this.quoteNo += '-' + parseInt(this.quotationNo.split(/[-]/g)[i]);
+	     } 
+	    });*/
+	  	this.quotationService.getCoverageOc('2', 'OC-EAR-2018-1001-2-2323').subscribe((data: any) => {
+	  	    /*this.data = data.quotationOc[0].attachmentOc;
+	  	    // this.passData.tableData = data.quotation.project.coverage.sectionCovers;
+	  	    for (var i = 0; i < this.data.length; i++) {
+	  	      this.passData.tableData.push(this.data[i]);
+	  	    }
+	  	    this.custEditableNonDatatableComponent.refreshTable();*/
+	  	    console.log("sum insured data");
+	  	    console.log(data);
+	  	});
 
   }
 
