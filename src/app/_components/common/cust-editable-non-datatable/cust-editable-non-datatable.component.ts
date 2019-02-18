@@ -105,8 +105,8 @@ export class CustEditableNonDatatableComponent implements OnInit {
         }
         
         for(var i = 0 ;i<this.passData.tableData.length;i++){
-            this.passData.tableData[i].edited = false;
-            this.passData.tableData[i].checked = false;
+            this.passData.tableData[i].edited = this.passData.tableData[i].edited ? true : false;
+            this.passData.tableData[i].checked = this.passData.tableData[i].checked ? true : false;
             if(!this.passData.tableData[i].deleted){
                 this.displayData.push(this.passData.tableData[i]);
             }else{
