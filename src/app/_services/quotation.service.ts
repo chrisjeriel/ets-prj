@@ -379,19 +379,11 @@ export class QuotationService {
 
 
 
-    getIntCompAdvInfo() {
-
-        /*intCompAdvInfo Data Array*/
-        this.intCompAdvInfo = [
-            new IntCompAdvInfo(1, 'CPI', '  Qwerty 123', '  Developer', 'N', 'good', '  etc', new Date(), 'etc', new Date()),
-            new IntCompAdvInfo(2, 'CPI', '  ABCDE 246', '  SA', 'Y', 'very good', '  etc', new Date(), 'etc', new Date())
-        ];
-
-        /*return this.http.get<User[]>(`${environment.apiUrl}/quotation`);*/
-        //return this.intCompAdvInfo;
+    getIntCompAdvInfo(intCompParams: any) {
         const params = new HttpParams()
-                .set('quoteId','14')
-                .set('quotationNo','CAR-2019-2-0-4');
+                .set('quoteId', intCompParams.quoteId)
+                .set('quotationNo', intCompParams.quotationNo);
+         console.log(params);
         return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteCompetition", {params});
     }
 
