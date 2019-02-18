@@ -193,7 +193,7 @@ export class CoverageComponent implements OnInit {
     }
 
     this.coverageData.createDate     = new Date(this.coverageData.createDate[0],this.coverageData.createDate[1]-1,this.coverageData.createDate[2]).toISOString();
-    this.coverageData.sectionCovers  = this.editedData;
+    this.coverageData.saveSectionCovers  = this.editedData;
     this.coverageData.quoteId        = this.quoteId;
     this.coverageData.projId         = 1;
     this.coverageData.riskId         = this.riskId;
@@ -202,7 +202,6 @@ export class CoverageComponent implements OnInit {
   }
 
   cancel(){
-    console.log(this.coverageData.totalSi);
   }
 
 }
