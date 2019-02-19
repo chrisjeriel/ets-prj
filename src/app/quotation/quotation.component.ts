@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
+import { GeneralInfoComponent } from '@app/quotation/general-info/general-info.component';
 
 
 
@@ -15,12 +16,21 @@ export class QuotationComponent implements OnInit {
 	docTitle: string = "";
 	sub: any;
 	line: string;
+	quoteId: string = "";
 
 	ngOnInit() {
 		this.sub = this.route.params.subscribe(params => {
             this.line = params['line'];
-        });
+        });        
 	}
+
+	/*ngAfterViewInit(){
+		console.log('TEST >>> ' + this.viewChild.genInfoData.quoteId);
+	}
+
+	ngAfterViewChecked() {
+		this.quoteId = this.viewChild.genInfoData.quoteId;
+	}*/
 
 	public beforeChange($event: NgbTabChangeEvent) {
 		if ($event.nextId === 'approval-tab') {
@@ -37,6 +47,10 @@ export class QuotationComponent implements OnInit {
     		this.router.navigateByUrl('');
   		} 
   
+  	}
+
+  	checkQuoteId(event){  		
+  		this.quoteId = event;
   	}
 
 	// setDocumentTitle(event) {

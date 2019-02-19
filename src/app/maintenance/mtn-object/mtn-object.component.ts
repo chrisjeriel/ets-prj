@@ -23,7 +23,7 @@ export class MtnObjectComponent implements OnInit {
         pageStatus: true,
         pagination: true,
         fixedCol: false,
-        pageID: 2,
+        pageID: 'object',
         keys:['lineCd', 'lineDesc','objectId','description','activeTag','remarks'],
         filters:[
           {
