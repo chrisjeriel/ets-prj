@@ -1,5 +1,6 @@
 export class AROthers {
 	item: string;
+	refNo: string;
 	desc: string;
 	type: string;
 	curr: string;
@@ -8,6 +9,7 @@ export class AROthers {
 	amountPHP: number;
 
 	constructor(item: string, 
+		 refNo: string,
 		 desc: string,
 		 type: string, 
 		 curr: string,
@@ -16,6 +18,7 @@ export class AROthers {
 		 amountPHP: number) {
 
 		this.item = item;
+		this.refNo = refNo;
 		this.desc = desc;
 		this.type = type;
 		this.curr = curr;

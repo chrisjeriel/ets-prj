@@ -25,7 +25,8 @@ export class ClaimRecoveryComponent implements OnInit {
     total: [null,null, null, null, null, null, null, null, 'Total','amount', 'amountPHP'],
     pageLength: 10,
     magnifyingGlass: ['claimNo','recoveryNo'],
-    opts: [{selector: 'paymentType', vals: ['Recovery','Overpayment']}]
+    opts: [{selector: 'paymentType', vals: ['Recovery','Overpayment']}],
+    
   };
 
   passDataDistributionTreaty: any = {
