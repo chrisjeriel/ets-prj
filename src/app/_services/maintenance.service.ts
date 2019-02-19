@@ -32,8 +32,10 @@ export class MaintenanceService{
 		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnCrestaZone");
 	}
 
-	getMtnCurrency(){
-		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnCurrency");
+	getMtnCurrency(currencyCd: string){
+		const params = new HttpParams()
+		     .set('currencyCd', currencyCd);
+		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnCurrency", {params});
 	}
 
 	getMtnBlock(){
@@ -43,8 +45,8 @@ export class MaintenanceService{
 
 	getMtnObject(lineCd,objectId){
 		const params = new HttpParams()
+		 	.set('lineCd',lineCd)
 			.set('objectId',objectId)
-			.set('lineCd',lineCd)
 		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnObject",{params});
 	}
 	getMtnQuotationWordings(lineCd,type){

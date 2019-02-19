@@ -4,10 +4,10 @@
 		<ngb-tabset  (tabChange)="onTabChange($event)">
 		<ngb-tab class="ngb-tab" title="General Info">
 			<ng-template ngbTabContent>
-				<app-general-info></app-general-info>
+				<app-general-info (checkQuoteId)="checkQuoteId($event)"></app-general-info>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab id="idko">
+		<ngb-tab id="idko" [disabled]="quoteId == ''">
 			<ng-template ngbTabTitle>
 				<div>Coverage</div>
 			</ng-template>
@@ -15,7 +15,7 @@
 				<app-coverage></app-coverage>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab>
+		<ngb-tab [disabled]="quoteId == ''">
 			<ng-template ngbTabTitle>
 				<div>Quote Option</div>
 			</ng-template>
@@ -24,7 +24,7 @@
 			</ng-template>
 		</ngb-tab>
 
-		<ngb-tab>
+		<ngb-tab [disabled]="quoteId == ''">
 			<ng-template ngbTabTitle>
 				<div>Endorsement</div>
 			</ng-template>
@@ -32,7 +32,7 @@
 				<app-quote-endorsement [endorsementType]="'General'"></app-quote-endorsement>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab *ngIf="line=='CAR' || line=='EAR'">
+		<ngb-tab *ngIf="line=='CAR' || line=='EAR'" [disabled]="quoteId == ''">
 	<!-- 	<ngb-tab> -->
 			<ng-template ngbTabTitle>
 				<div>ALOP</div>
@@ -41,7 +41,7 @@
 				<app-quo-alop></app-quo-alop>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab>
+		<ngb-tab [disabled]="quoteId == ''">
 			<ng-template ngbTabTitle>
 				<div>Internal Competition</div>
 			</ng-template>
@@ -49,7 +49,7 @@
 				<app-internal-competition></app-internal-competition>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab>
+		<ngb-tab [disabled]="quoteId == ''">
 			<ng-template ngbTabTitle>
 				<div>Attachment</div>
 			</ng-template>
