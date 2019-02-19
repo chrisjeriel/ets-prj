@@ -27,14 +27,14 @@ export class QuoAlopComponent implements OnInit {
     quoteId: string;
     quoteNo:string = '';
 
-    alopData: any={address: "Quezon City Philippines",
-                  alopId: null,
+    alopData: any={address: null,
+                  alopId: '1',
                   alopItem: null,
                   alopItemList: null,
                   annSi: null,
                   annSiD: null,
-                  createDate:  null,
-                  createUser: null,
+                  createDate:  [0,0,0],
+                  createUser: 'Paul',
                   expiryDate:  null,
                   indemFromDate: null,
                   insuredBusiness: null,
@@ -48,8 +48,8 @@ export class QuoAlopComponent implements OnInit {
                   maxIndemPdSiD: null,
                   repInterval: null,
                   timeExc: null,
-                  updateDate: null,
-                  updateUser: null
+                  updateDate: [0,0,0],
+                  updateUser: 'Paul'
                 };
 
     itemInfoData: any = {
@@ -61,7 +61,7 @@ export class QuoAlopComponent implements OnInit {
           createDate: [0,0,0],
           createUser: "Paul",
           description: null,
-          importance: 'N',
+          importance: null,
           itemNo: null,
           lossMin: null,
           quantity: null,
@@ -104,7 +104,7 @@ export class QuoAlopComponent implements OnInit {
 
        this.quotationService.getALop(null,this.quoteNo).subscribe((data: any) => {
              this.quoteId = data.quotation.quoteId;
-              this.alopData = data.quotation.alop;
+              this.alopData = data.quotation.alop===null ? this.alopData : data.quotation.alop;
               this.alopData.issueDate = this.alopData.issueDate[0]+'-'+("0" + this.alopData.issueDate[1]).slice(-2)+'-'+  ("0" + this.alopData.issueDate[2]).slice(-2);
               this.alopData.expiryDate = this.alopData.expiryDate[0]+'-'+("0" + this.alopData.expiryDate[1]).slice(-2)+'-'+ ("0" + this.alopData.expiryDate[2]).slice(-2);
               this.alopData.indemFromDate = this.alopData.indemFromDate[0]+'-'+("0" + this.alopData.indemFromDate[1]).slice(-2)+'-'+("0" + this.alopData.indemFromDate[2]).slice(-2);
@@ -115,18 +115,19 @@ export class QuoAlopComponent implements OnInit {
 
     save() {
       this.alopData.quoteId = this.quoteId;
-      this.quotationService.saveQuoteAlop(this.alopData).subscribe();
+      this.quotationService.saveQuoteAlop(this.alopData).subscribe((data: any) => {});
       this.ngOnInit();
     }
 
     openAlopItem(){
       this.quotationService.getALOPItemInfos(this.quoteNo,this.quoteId).subscribe((data: any) => {
+            this.itemInfoData.nData.itemNo = data.quotation[0] === undefined ? 1:data.quotation[0].alop.alopItemList.length + 1; 
             for (var i=0; i < data.quotation[0].alop.alopItemList.length; i++) {
               this.itemInfoData.tableData.push(data.quotation[0].alop.alopItemList[i]);
             }
             this.itemInfoData.tableData = this.itemInfoData.tableData.sort(function(a,b){return a.itemNo - b.itemNo})
             this.table.refreshTable();
-            this.itemInfoData.nData.itemNo = data.quotation[0].alop.alopItemList.length + 1; 
+            
         });
       while(this.itemInfoData.tableData.length>0){
         this.itemInfoData.tableData.pop();

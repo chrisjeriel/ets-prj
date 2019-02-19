@@ -673,6 +673,7 @@ export class QuotationService {
         // alopData.indemFromDate = new Date(alopData.indemFromDate[0],alopData.indemFromDate[1]-1,alopData.indemFromDate[2]).toISOString();
         alopData.createDate = new Date(alopData.createDate[0],alopData.createDate[1]-1,alopData.createDate[2]).toISOString();
         alopData.updateDate = new Date(alopData.updateDate[0],alopData.updateDate[1]-1,alopData.updateDate[2]).toISOString();
+        console.log(alopData);
         return this.http.post('http://localhost:8888/api/quote-service/saveQuoteAlop', JSON.stringify(alopData), header);
     }
 
