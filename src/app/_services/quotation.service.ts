@@ -200,17 +200,17 @@ export class QuotationService {
          const params = new HttpParams()
                 .set('quoteId','')
                 .set('quotationNo',quotationNo);
-          return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteEndorsementsOc', {params});
+          return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteEndorsementsOc?quotationNo=' + quotationNo);
           } else if (quotationNo == '' || quotationNo == null ) {
           const params = new HttpParams()
                 .set('quoteId',quoteIdOc)
                 .set('quotationNo','');
-          return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteEndorsementsOc', {params});
+          return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteEndorsementsOc?quoteId=' + quoteIdOc);
          } else {
            const params = new HttpParams()
                 .set('quoteId',quoteIdOc)
                 .set('quotationNo',quotationNo);
-          return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteEndorsementsOc', {params});   
+          return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteEndorsementsOc?quoteId=' + quoteIdOc + '&quotationNo=' + quotationNo  );   
          }
 
     }
@@ -338,6 +338,26 @@ export class QuotationService {
        
     }
 
+    getSelectedQuote(quoteNo:string){
+        const params = new HttpParams()
+            .set('quotationNo',quoteNo)
+            .set('cessionDesc', '')
+            .set('lineClassCdDesc', '')
+            .set('status','')
+            .set('cedingName','')
+            .set('principalName','')
+            .set('contractorName','')
+            .set('insuredDesc','')
+            .set('riskName','')
+            .set('objectDesc','')
+            .set('site','')
+            .set('currencyCd','')
+            .set('issueDate','')
+            .set('expiryDate','')
+            .set('reqBy','')
+            .set('createUser','');
+        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteListing', {params});
+    }
 
     getQuoteOptions() {
         /*this.quotationOption = [
