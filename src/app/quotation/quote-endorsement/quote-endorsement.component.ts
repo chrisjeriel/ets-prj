@@ -5,6 +5,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
+import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 
 
 
@@ -17,13 +18,14 @@ export class QuoteEndorsementComponent implements OnInit {
 
     @Input() endorsementType: string = "";
     @ViewChildren(CustEditableNonDatatableComponent) table: QueryList<CustEditableNonDatatableComponent>;
+    @ViewChild(CustNonDatatableComponent) tableNonEditable: CustNonDatatableComponent;
 /*    @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;*/
     OpenCover: boolean;
     private sub: any;
     from: string;
     quotationNum: string;
     quoteNoData: any;
-    quoteIdOc: any;
+    quoteNoOc: any;
     insured: any;
     projectData: any;
     riskName: any;
@@ -127,22 +129,21 @@ export class QuoteEndorsementComponent implements OnInit {
 /*        this.tableData = this.quotationService.getEndorsements(1);*/
           if (this.endorsementType == "OC") {
               this.OpenCover= true;
+              console.log(">>>>>>>>>>>OC<<<<<<<<<<<<<")
           
               this.sub = this.route.params.subscribe(params => {
                 this.from = params['from'];
-                    if (this.from == "open-cover-processing") {
-                        this.quoteIdOc = params['quoteIdOc'];
-                    }
+                this.quoteNoOc = params['ocQuoteNo'];
+                this.quoteNoData =  this.quoteNoOc;
+                   /* if (this.from == "oc-processing") {
+                        this.quoteNoOc = params['ocQuoteNo'];
+                    }*/
                });
-
-/*                var quoteNum= this.quotationNum.split("-",5);
-                this.quotationNum = quoteNum[0] + '-' + quoteNum[1] + '-' + Number(quoteNum[2]).toString() + '-' + Number(quoteNum[3]).toString() + '-' + Number(quoteNum[4]).toString()
-*/
-
-                this.quoteIdOc = '1';
-
-                this.quotationService.getEndorsementsOc(this.quoteIdOc,null).subscribe((data: any) => {
-                    this.quoteNoData = data.endorsementsOc[0].quotationNo;
+           /*     var quoteId = '1';*/
+                var quoteNumOc = this.plainQuotationNoOc(this.quoteNoOc)
+                this.quotationService.getEndorsementsOc(null,quoteNumOc).subscribe((data: any) => {
+                    console.log(data.endorsementsOc)
+                   /* this.quoteNoData = data.endorsementsOc[0].quotationNo;*/
                         for(var lineCount = 0; lineCount < data.endorsementsOc.length; lineCount++){
                               this.endorsementOCData.tableData.push(new QuoteEndorsementOC(
                                                                            data.endorsementsOc[lineCount].endtCd, 
@@ -180,11 +181,15 @@ export class QuoteEndorsementComponent implements OnInit {
                     this.quotationService.getQuoteOptions().subscribe((data: any) => {
                         // this.optionRecords = data.QuotationOption.optionsList;
                         for(var i = data.quotation.optionsList.length - 1; i >= 0; i--){
-                           this.optionRecords.push(data.quotation.optionsList[i]);
+                           this.quoteOptionsData.tableData.push(new QuotationOption (
+                                                        data.quotation.optionsList[i].optionId,
+                                                        data.quotation.optionsList[i].optionRt,
+                                                        data.quotation.optionsList[i].condition,
+                                                        data.quotation.optionsList[i].commRtQuota,
+                                                        data.quotation.optionsList[i].commRtSurplus,
+                                                        data.quotation.optionsList[i].commRtFac));
                         }
-                       /* this.table.refreshTable();*/
-                        console.log(this.optionRecords);
-                       
+                         this.tableNonEditable.refreshTable();
                     });
                   
                     
@@ -215,7 +220,7 @@ export class QuoteEndorsementComponent implements OnInit {
 
     clickRow(event) {
 /*           this.quotationService.getEndorsements(null,this.quotationNum,event.optionNo).subscribe((data: any) => {*/
-           this.quotationService.getEndorsements('1','',event.optionNo).subscribe((data: any) => {
+           this.quotationService.getEndorsements(null,this.plainQuotationNo(this.quotationNum),event.optionId).subscribe((data: any) => {
                  while(this.endorsementData.tableData.length > 0) {
                   this.endorsementData.tableData.pop();
               }    
@@ -266,8 +271,10 @@ export class QuoteEndorsementComponent implements OnInit {
         return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]);
     }
 
+
     // arn //
     endorsementReq:any;
+
     onClickSave(event){
          for(var i=0;i<this.endorsementData.tableData.length;i++){
             this.endorsementReq = {
@@ -295,4 +302,10 @@ export class QuoteEndorsementComponent implements OnInit {
         return new Date(date[0] + "/" + date[1] + "/" + date[2]).toISOString();
     }
     // end-arn //
+
+    plainQuotationNoOc(data: string){
+        var arr = data.split('-');
+        return arr[1] + '-' + arr[2] + '-' + arr[3] + '-' + arr[4] + '-' + arr[5] ;
+    }
+
 }

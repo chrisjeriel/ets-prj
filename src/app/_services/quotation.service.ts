@@ -200,17 +200,17 @@ export class QuotationService {
          const params = new HttpParams()
                 .set('quoteId','')
                 .set('quotationNo',quotationNo);
-          return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteEndorsementsOc', {params});
+          return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteEndorsementsOc?quotationNo=' + quotationNo);
           } else if (quotationNo == '' || quotationNo == null ) {
           const params = new HttpParams()
                 .set('quoteId',quoteIdOc)
                 .set('quotationNo','');
-          return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteEndorsementsOc', {params});
+          return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteEndorsementsOc?quoteId=' + quoteIdOc);
          } else {
            const params = new HttpParams()
                 .set('quoteId',quoteIdOc)
                 .set('quotationNo',quotationNo);
-          return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteEndorsementsOc', {params});   
+          return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteEndorsementsOc?quoteId=' + quoteIdOc + '&quotationNo=' + quotationNo  );   
          }
 
     }
