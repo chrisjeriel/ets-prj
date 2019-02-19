@@ -57,9 +57,14 @@ export class OpenCoverSumInsuredComponent implements OnInit {
 	  	    // this.passData.tableData = data.quotation.project.coverage.sectionCovers;
 	  	    for (var i = 0; i < this.data.len
 	  	    this.custEditableNonDatatableComponent.refreshTable();*/
+/*
 	  		console.log()
 	  	    this.quoteIdOc = data.quotationOc[0].quoteIdOc;
 	  	    this.riskId = data.quotationOc[0].projectOc.riskId;
+*/
+	  	    this.quoteIdOc = data.quotationOc.quoteIdOc;
+	  	    this.riskId = data.quotationOc.projectOc.riskId;
+
 	  	});
   }
 
