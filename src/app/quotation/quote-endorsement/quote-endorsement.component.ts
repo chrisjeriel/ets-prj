@@ -55,6 +55,7 @@ export class QuoteEndorsementComponent implements OnInit {
         updateUser: ''
     }
 
+    quoteId:string;
 
     quoteOptionsData: any = {
         tableData: [],
@@ -176,6 +177,7 @@ export class QuoteEndorsementComponent implements OnInit {
                         } else {
                             this.riskName = data.project.riskName; 
                         }
+                        this.quoteId = data.quotationGeneralInfo.quoteId.toString();
                     });
                     this.quotationService.getQuoteOptions().subscribe((data: any) => {
                         // this.optionRecords = data.QuotationOption.optionsList;
@@ -188,7 +190,7 @@ export class QuoteEndorsementComponent implements OnInit {
                     });
                   
                     
-                    this.quotationService.getEndorsements(null,this.plainQuotationNo(this.quotationNum),'1').subscribe((data: any) => {
+                    this.quotationService.getEndorsements(this.quoteId,this.plainQuotationNo(this.quotationNum),'1').subscribe((data: any) => {
                         for(var lineCount = 0; lineCount < data.endorsements.length; lineCount++){
                               this.endorsementData.tableData.push(new QuoteEndorsement(
                                                                            data.endorsements[lineCount].endtCd, 
