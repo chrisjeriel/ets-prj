@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { QuotationService } from '@app/_services';
+import { MaintenanceService } from '@app/_services';
+
 @Component({
   selector: 'app-open-cover-sum-insured',
   templateUrl: './open-cover-sum-insured.component.html',
@@ -13,17 +15,21 @@ export class OpenCoverSumInsuredComponent implements OnInit {
   risk: string;
   sub: any;
   quoteNo:string = '';
+  quoteIdOc: any;
+  riskId: any;
 
-  data: any = {
+  coverageOcData: any = {
   	currencyCd: null,
   	currencyRt: null,
   	maxSi: null,
   	pctShare: null,
   	pctPml: null,
   	totalValue: null
+
   }
 
-  constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute) { }
+  constructor(private quotationService: QuotationService, private titleService: Title, private maintenanceService: MaintenanceService, 
+  	private route: ActivatedRoute) { }
 
   ngOnInit() {
 	  	/*this.sub = this.route.params.subscribe(params => {
@@ -35,17 +41,45 @@ export class OpenCoverSumInsuredComponent implements OnInit {
 	     } 
 	    });*/
 	  	this.quotationService.getCoverageOc('2', 'OC-EAR-2018-1001-2-2323').subscribe((data: any) => {
-	  	    this.data.currencyCd = data.quotationOc.projectOc.coverageOc.currencyCd;
-	  	    this.data.currencyRt = data.quotationOc.projectOc.coverageOc.currencyRt;
-	  	    this.data.maxSi = data.quotationOc.projectOc.coverageOc.maxSi;
-	  	    this.data.pctShare = data.quotationOc.projectOc.coverageOc.pctShare;
-	  	    this.data.pctPml = data.quotationOc.projectOc.coverageOc.pctPml;
-	  	    this.data.totalValue = data.quotationOc.projectOc.coverageOc.totalValue;
+	  		this.maintenanceService.getMtnCurrency(data.quotationOc.projectOc.coverageOc.currencyCd.toString()).subscribe((data2: any) =>{
+	  			this.coverageOcData.currencyCd = data2.currency[0].currencyAbbr;
+	  		});
+	  	    //this.coverageOcData.currencyCd = data.quotationOc.projectOc.coverageOc.currencyCd;
+	  	    this.coverageOcData.currencyRt = data.quotationOc.projectOc.coverageOc.currencyRt;
+	  	    this.coverageOcData.maxSi = data.quotationOc.projectOc.coverageOc.maxSi;
+	  	    this.coverageOcData.pctShare = data.quotationOc.projectOc.coverageOc.pctShare;
+	  	    this.coverageOcData.pctPml = data.quotationOc.projectOc.coverageOc.pctPml;
+	  	    this.coverageOcData.totalValue = data.quotationOc.projectOc.coverageOc.totalValue;
+	  	    /*this.data = data.quotationOc[0].attachmentOc;
+	  	    // this.passData.tableData = data.quotation.project.coverage.sectionCovers;
+	  	    for (var i = 0; i < this.data.len
+	  	    this.custEditableNonDatatableComponent.refreshTable();*/
+	  	    console.log(data);
+	  	    this.quoteIdOc = data.quotationOc.quoteIdOc;
+	  	    this.riskId = data.quotationOc.projectOc.riskId;
 	  	});
 
   }
 
   saveData(){
+  	this.coverageOcData.quoteIdOc = this.quoteIdOc;
+  	this.coverageOcData.projId = 1;
+  	this.coverageOcData.riskId = this.riskId;
+  	this.coverageOcData.createUser = 'ETC';
+  	this.coverageOcData.createDate = new Date().toISOString();
+  	this.coverageOcData.updateUser = 'MBM';
+  	this.coverageOcData.updateDate = new Date().toISOString();
+    this.quotationService.saveQuoteCoverageOc(7,1,this.coverageOcData).subscribe();
+    this.ngOnInit();
+  }
+
+  showCurrencyModal(){
+  	$('#currencyModal #modalBtn').trigger('click');
+  }
+
+  setCurrency(data){
+  	this.coverageOcData.currencyCd = data.currencyAbbr;
+  	this.coverageOcData.currencyRt = data.currencyRt;
   }
 
 }

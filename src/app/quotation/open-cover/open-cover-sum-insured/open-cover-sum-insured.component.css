@@ -14,3 +14,9 @@ fieldset{
 .input-group{
 	margin-bottom: -13px !important;
 }
+
+.text-search-ico {
+	margin-left: -18px;
+	z-index: 200;
+	font-size: 14px;
+}
