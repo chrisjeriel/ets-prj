@@ -339,6 +339,26 @@ export class QuotationService {
        
     }
 
+    getSelectedQuote(quoteNo:string){
+        const params = new HttpParams()
+            .set('quotationNo',quoteNo)
+            .set('cessionDesc', '')
+            .set('lineClassCdDesc', '')
+            .set('status','')
+            .set('cedingName','')
+            .set('principalName','')
+            .set('contractorName','')
+            .set('insuredDesc','')
+            .set('riskName','')
+            .set('objectDesc','')
+            .set('site','')
+            .set('currencyCd','')
+            .set('issueDate','')
+            .set('expiryDate','')
+            .set('reqBy','')
+            .set('createUser','');
+        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteListing', {params});
+    }
 
     getQuoteOptions() {
         /*this.quotationOption = [
