@@ -82,9 +82,9 @@
 									<div class="input-group">
 										<label class="form-control-sm col-sm-4">Request Mode</label>
 										<select class="form-control form-control-sm cust-sm" [(ngModel)]="ocQuoteGenInfo.reqMode">
-											<option value=""></option>
-											<option value="USD">Value 1</option>
-											<option value="PHP">Value 2</option>
+											<option value="e">Email</option>
+											<option value="f">Fax</option>
+											<option value="p">Phone</option>
 										</select>
 									</div>
 								</div>
@@ -112,7 +112,7 @@
 						<div class="form-group col-sm-6 offsetFormGroup">
 							<div class="input-group">
 								<label class="form-control-sm col-sm-4">Exch. Rt.</label>
-								<input type="text" class="form-control form-control-sm" [(ngModel)]="currencyRt" readonly>
+								<input type="text" class="form-control form-control-sm text-right" [(ngModel)]="currencyRt" readonly>
 								<span>&nbsp;</span>
 							</div>
 						</div>
@@ -396,17 +396,17 @@
 					<div class="form-row" style="margin-bottom: -3px;">
 						<div class="form-group col-sm">
 							<label class="form-control-sm top-label">Total Sl</label>
-							<input type="text" class="form-control form-control-sm" [(ngModel)]="ocQuoteGenInfo.maxSi" readonly>
+							<input type="text" class="form-control form-control-sm text-right" [(ngModel)]="ocQuoteGenInfo.maxSi" readonly>
 						</div>
 					</div>
 					<div class="form-row" style="margin-bottom: -16px; margin-top: -10px !important;">
 						<div class="form-group col-sm-3">
 							<label class="form-control-sm top-label">% Share</label>
-							<input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="ocQuoteGenInfo.pctShare" readonly>
+							<input type="text" class="form-control form-control-sm cust-sm text-right" [(ngModel)]="ocQuoteGenInfo.pctShare" readonly>
 						</div>
 						<div class="form-group col-sm">
 							<label class="form-control-sm top-label">Part of (100%)</label>
-							<input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="ocQuoteGenInfo.totalValue" readonly>
+							<input type="text" class="form-control form-control-sm cust-sm text-right" [(ngModel)]="ocQuoteGenInfo.totalValue" readonly>
 						</div>
 					</div>
 				</div>

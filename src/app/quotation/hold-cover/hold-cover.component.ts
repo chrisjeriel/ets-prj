@@ -108,39 +108,25 @@ export class HoldCoverComponent implements OnInit {
     //this.tableData = this.quotationService.getListOfValuesHoldCover();
     this.holdCoverInfo = new HoldCoverInfo();
 
-    this.quotationService.getHoldCoverInfo()
-        .subscribe(val => 
-            {
-              var rec = val['quotation'];
-              console.log(rec);   
-              this.quoteId  = rec.quoteId;  
-              this.holdCover                    =  rec.holdCover;
-              this.holdCover.periodFrom         =  this.formatDate(this.holdCover.periodFrom);
-              this.holdCover.periodTo           =  this.formatDate(this.holdCover.periodTo);
-              this.holdCover.reqDate            =  this.formatDate(this.holdCover.reqDate);
-              this.holdCover.createDate         =  this.formatDate(this.holdCover.createDate);
-              this.holdCover.updateDate         =  this.formatDate(this.holdCover.updateDate);
-              //this.sliceQuoteNo(this.holdCoverInfo.quotationNo);
-              this.sliceHcNo(this.holdCover.holdCoverNo);
+    // this.quotationService.getHoldCoverInfo()
+    //     .subscribe(val => 
+    //         {
+    //           var rec = val['quotation'];
+    //           console.log(rec);   
+    //           this.quoteId  = rec.quoteId;  
+    //           this.holdCover                    =  rec.holdCover;
+    //           this.holdCover.periodFrom         =  this.formatDate(this.holdCover.periodFrom);
+    //           this.holdCover.periodTo           =  this.formatDate(this.holdCover.periodTo);
+    //           this.holdCover.reqDate            =  this.formatDate(this.holdCover.reqDate);
+    //           this.holdCover.createDate         =  this.formatDate(this.holdCover.createDate);
+    //           this.holdCover.updateDate         =  this.formatDate(this.holdCover.updateDate);
+    //           //this.sliceQuoteNo(this.holdCoverInfo.quotationNo);
+    //           this.splitHcNo(this.holdCover.holdCoverNo);
               
-            }
-      );
+    //         }
+    //   );
 
-      this.quotationService.getQuoProcessingData()
-            .subscribe(val => {
-              var records = val['quotationList'];
-              for(let rec of records){
-                this.passDataQuoteLOV.tableData.push({
-                  quotationNo: rec.quotationNo,
-                  cedingName:  rec.cedingName,
-                  insuredDesc: rec.insuredDesc,
-                  riskName: (rec.project == null) ? '' : rec.project.riskName
-                }                                  
-                  
-                );
-              }
-              this.table.refreshTable();
-            });
+     
    
   }
 
@@ -160,7 +146,7 @@ export class HoldCoverComponent implements OnInit {
   }
 
 
-  sliceHcNo(hcNo: string){
+  splitHcNo(hcNo: string){
     var hcArr = hcNo.split("-");
     for(var i=0;i<hcArr.length;i++){
       this.hcLine = hcArr[0];
@@ -171,6 +157,20 @@ export class HoldCoverComponent implements OnInit {
   }
 
   search() {
+    this.quotationService.getQuoProcessingData()
+    .subscribe(val => {
+      var records = val['quotationList'];
+      for(let rec of records){
+        this.passDataQuoteLOV.tableData.push({
+          quotationNo: rec.quotationNo,
+          cedingName:  rec.cedingName,
+          insuredDesc: rec.insuredDesc,
+          riskName: (rec.project == null) ? '' : rec.project.riskName
+        });
+      }
+      this.table.refreshTable();
+    });
+
     var qLine = this.quoteLine.toUpperCase();
 
     if (qLine === '' ||
@@ -198,6 +198,12 @@ export class HoldCoverComponent implements OnInit {
     this.cedCo = this.rowRec.cedingName;
     this.risk = this.rowRec.riskName;
     this.modalService.dismissAll();
+
+    this.quotationService.getSelectedQuote(this.plainQuotationNo(this.quoteNo))
+      .subscribe(val => {
+        this.holdCover.reqBy  = val['quotationList'][0].reqBy;
+      });
+    this.holdCover.reqDate  = new Date().toISOString();
   }
   
   holdCoverReq:any
@@ -225,6 +231,16 @@ export class HoldCoverComponent implements OnInit {
         this.quotationService.saveQuoteHoldCover(
           JSON.stringify(this.holdCoverReq)
         ).subscribe(data => console.log(data));
+  }
+
+  plainQuotationNo(data: string){
+    var arr = data.split('-');
+    return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]);
+  }
+
+  setPeriodTo(periodTo:Date){
+    var d = new Date(periodTo).getDate() + 30;
+    console.log(d + ">>>>>DATE !!!")
   }
 
 }
