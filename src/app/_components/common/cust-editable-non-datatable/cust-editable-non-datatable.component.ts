@@ -130,15 +130,25 @@ export class CustEditableNonDatatableComponent implements OnInit {
             this.dataKeys = this.passData.keys;
         }
 
-        if(this.dataKeys.indexOf('edited') != -1){
-          this.dataKeys.pop();
-        }
-        if(this.dataKeys.indexOf('checked') != -1){
-          this.dataKeys.pop();
-        }
-        if(this.dataKeys.indexOf('deleted') != -1){
-          this.dataKeys.pop();
-        }
+        // if(this.dataKeys.indexOf('edited') != -1){
+        //   this.dataKeys.pop();
+        // }
+        // if(this.dataKeys.indexOf('checked') != -1){
+        //   this.dataKeys.pop();
+        // }
+        // if(this.dataKeys.indexOf('deleted') != -1){
+        //   this.dataKeys.pop();
+        // }
+
+       if(this.dataKeys.indexOf('edited') != -1){
+         this.dataKeys.splice(this.dataKeys.indexOf('edited'),1);
+       }
+       if(this.dataKeys.indexOf('checked') != -1){
+         this.dataKeys.splice(this.dataKeys.indexOf('checked'),1);
+       }
+       if(this.dataKeys.indexOf('deleted') != -1){
+         this.dataKeys.splice(this.dataKeys.indexOf('deleted'),1);
+       }
 
         this.refreshTable();
         // this.autoFill = Array(this.passData.pageLength).fill(this.newData);
