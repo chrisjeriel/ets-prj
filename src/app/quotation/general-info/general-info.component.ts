@@ -360,9 +360,9 @@ export class GeneralInfoComponent implements OnInit {
 				updateUser: 'NDC', //should not be hardcoded
 				wordings: ''
 			}
-			this.quotationService.saveQuoteCompetition(intCompParams).subscribe((data: any) =>{
+			/*this.quotationService.saveQuoteCompetition(intCompParams).subscribe((data: any) =>{
 				console.log(data);
-			});
+			});*/
 		}
 		//neco end
 	}

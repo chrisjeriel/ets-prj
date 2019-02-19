@@ -41,15 +41,11 @@ export class OpenCoverSumInsuredComponent implements OnInit {
 	  	    this.data.pctShare = data.quotationOc.projectOc.coverageOc.pctShare;
 	  	    this.data.pctPml = data.quotationOc.projectOc.coverageOc.pctPml;
 	  	    this.data.totalValue = data.quotationOc.projectOc.coverageOc.totalValue;
-	  	    console.log("sum insured data");
-	  	    console.log(data);
 	  	});
-	  	console.log(this.data);
 
   }
 
   saveData(){
-   console.log(this.data);
   }
 
 }
