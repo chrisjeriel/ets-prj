@@ -32,8 +32,10 @@ export class MaintenanceService{
 		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnCrestaZone");
 	}
 
-	getMtnCurrency(){
-		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnCurrency");
+	getMtnCurrency(currencyCd: string){
+		const params = new HttpParams()
+		     .set('currencyCd', currencyCd);
+		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnCurrency", {params});
 	}
 
 	getMtnBlock(){

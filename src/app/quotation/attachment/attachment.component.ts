@@ -3,7 +3,8 @@ import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { QuotationService } from '../../_services';
 import { AttachmentInfo } from '../../_models/Attachment';
 import { Title } from '@angular/platform-browser';
-import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -70,9 +71,13 @@ export class AttachmentComponent implements OnInit {
     keys:['fileName','description']
   };
   savedData: any[];
-  
+  deletedData: any[];
+  sub:any;
+  quotationNo: string;
+  quoteId: string;
+
   constructor(config: NgbDropdownConfig,
-    private quotationService: QuotationService, private titleService: Title) {
+    private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute) {
     config.placement = 'bottom-right';
     config.autoClose = false;
   }
@@ -106,8 +111,17 @@ export class AttachmentComponent implements OnInit {
      });
     this.passData.tableData = arrayData;
 */
+  let quoteNo:string = "";
+  this.sub = this.route.params.subscribe(params => {
+    this.quotationNo = params["quotationNo"];
+    quoteNo = this.quotationNo.split(/[-]/g)[0]
+    for (var i = 1; i < this.quotationNo.split(/[-]/g).length; i++) {
+     quoteNo += '-' + parseInt(this.quotationNo.split(/[-]/g)[i]);
+   } 
+  });
     
-    this.quotationService.getAttachment('1').subscribe((data: any) => {
+    this.quotationService.getAttachment(null,quoteNo).subscribe((data: any) => {
+      this.quoteId = data.quotation[0].quoteId;
         this.attachmentData = data.quotation[0].attachmentsList;
         // this.passData.tableData = data.quotation.project.coverage.sectionCovers;
         for (var i = 0; i < this.attachmentData.length; i++) {
@@ -119,16 +133,21 @@ export class AttachmentComponent implements OnInit {
 
   saveData(){
     this.savedData = [];
+    this.deletedData = [];
     
     for (var i = 0 ; this.passData.tableData.length > i; i++) {
-      if(this.passData.tableData[i].edited){
+      if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
           this.savedData.push(this.passData.tableData[i]);
           this.savedData[this.savedData.length-1].createDate = new Date(this.savedData[this.savedData.length-1].createDate[0],this.savedData[this.savedData.length-1].createDate[1]-1,this.savedData[this.savedData.length-1].createDate[2]).toISOString();
           this.savedData[this.savedData.length-1].updateDate = new Date(this.savedData[this.savedData.length-1].updateDate[0],this.savedData[this.savedData.length-1].updateDate[1]-1,this.savedData[this.savedData.length-1].updateDate[2]).toISOString();
-        }
+      }else if(this.passData.tableData[i].edited && this.passData.tableData[i].deleted){
+        this.deletedData.push(this.passData.tableData[i]);
+        this.deletedData[this.deletedData.length-1].createDate = new Date(this.deletedData[this.deletedData.length-1].createDate[0],this.deletedData[this.deletedData.length-1].createDate[1]-1,this.deletedData[this.deletedData.length-1].createDate[2]).toISOString();
+        this.deletedData[this.deletedData.length-1].updateDate = new Date(this.deletedData[this.deletedData.length-1].updateDate[0],this.deletedData[this.deletedData.length-1].updateDate[1]-1,this.deletedData[this.deletedData.length-1].updateDate[2]).toISOString();
+      }
       // delete this.savedData[i].tableIndex;
     }
-    this.quotationService.saveQuoteAttachment(1,this.savedData).subscribe((data: any) => {});
+    this.quotationService.saveQuoteAttachment(this.quoteId,this.savedData,this.deletedData).subscribe((data: any) => {});
   }
 
   cancel(){

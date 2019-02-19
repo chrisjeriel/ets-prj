@@ -215,7 +215,7 @@ export class QuotationService {
 
     }
 
-    getAttachment(quoteId:string) {
+    getAttachment(quoteId:string,quotationNo?:string) {
         // this.attachmentInfoData = [
         //     new AttachmentInfo("NSO_Birth_Certificate_001", "Policyholder’s details such as name, date of birth, address, gender, occupation"),
         //     new AttachmentInfo("Registration_Number_001", "Vehicle registration number and registration certificate (RC) number"),
@@ -225,7 +225,8 @@ export class QuotationService {
         // ];
 
         const params = new HttpParams()
-             .set('quoteId',quoteId)
+             .set('quotationNo', (quotationNo === null || quotationNo === undefined ? '' : quotationNo) )
+             .set('quoteId',(quoteId === null || quoteId === undefined ? '' : quoteId) )
 
         return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteAttachment',{params});
         // return this.attachmentInfoData;
@@ -398,19 +399,11 @@ export class QuotationService {
 
 
 
-    getIntCompAdvInfo() {
-
-        /*intCompAdvInfo Data Array*/
-        this.intCompAdvInfo = [
-            new IntCompAdvInfo(1, 'CPI', '  Qwerty 123', '  Developer', 'N', 'good', '  etc', new Date(), 'etc', new Date()),
-            new IntCompAdvInfo(2, 'CPI', '  ABCDE 246', '  SA', 'Y', 'very good', '  etc', new Date(), 'etc', new Date())
-        ];
-
-        /*return this.http.get<User[]>(`${environment.apiUrl}/quotation`);*/
-        //return this.intCompAdvInfo;
+    getIntCompAdvInfo(intCompParams: any) {
         const params = new HttpParams()
-                .set('quoteId','14')
-                .set('quotationNo','CAR-2019-2-0-4');
+                .set('quoteId', intCompParams.quoteId)
+                .set('quotationNo', intCompParams.quotationNo);
+         console.log(params);
         return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteCompetition", {params});
     }
 
@@ -614,20 +607,24 @@ export class QuotationService {
     }
 
 
-    getALOPItemInfos(car: string, quoteId: any, quotationNo?: any) {
+    getALOPItemInfos(car: string, quoteId: string, quotationNo?: any) {
         if (car == "CAR") {
             this.aLOPItemInfos.forEach(function (itm) { delete itm.relativeImportance; });
         }
         const params = new HttpParams()
-             .set('quoteId',quoteId)
+             .set('quotationNo', (quotationNo === null || quotationNo === undefined ? '' : quotationNo) )
+             .set('quoteId',(quoteId === null || quoteId === undefined ? '' : quoteId) )
         return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteAlopItem',{params});
     }
 
-    getALop(quoteId:number,quotationNo?:string){
-        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteAlop'
-            +('?quoteId=' + quoteId)
+    getALop(quoteId:string,quotationNo?:string){
+          const params = new HttpParams()
+             .set('quotationNo', (quotationNo === null || quotationNo === undefined ? '' : quotationNo) )
+             .set('quoteId',(quoteId === null || quoteId === undefined ? '' : quoteId) )
+
+            return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteAlop',{params});
             //+('&quotationNo='+ quotationNo)
-        );
+        
     }
 
     getOcGenInfoData(ocQuoteId: string, ocQuoteNo:string){
@@ -647,10 +644,11 @@ export class QuotationService {
             return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteHoldCover',{params});
     }
 
-    saveQuoteAttachment(quoteId:number ,attachmentList:any[]){
+    saveQuoteAttachment(quoteId:string ,saveAttachmentsList:any[], deleteAttachmentsList:any[]){
         let params:any  = {
             quoteId: quoteId,
-            attachmentsList: attachmentList
+            saveAttachmentsList: saveAttachmentsList,
+            deleteAttachmentsList: deleteAttachmentsList
         };
         let header : any = {
             headers: new HttpHeaders({
@@ -700,14 +698,15 @@ export class QuotationService {
     }
 
 
-    saveQuoteAttachmentOc(quoteIdOc:number ,attachmentListOc:any[]){
+    saveQuoteAttachmentOc(quoteIdOc:number ,saveAttachmentsOcList: any[], deleteAttachmentsOcList: any[]){
         /*const params = new HttpParams()
              .set('quoteId',quoteId.toString())
              .set('attachmentsList',JSON.stringify(attachmentList))*/
              
         let params:any  = {
             quoteIdOc: quoteIdOc,
-            attachmentsOcList: attachmentListOc
+            saveAttachmentsOcList: saveAttachmentsOcList,
+            deleteAttachmentsOcList: deleteAttachmentsOcList
         }
         let header : any = {
             headers: new HttpHeaders({
@@ -718,19 +717,14 @@ export class QuotationService {
     }
 
       
-    saveQuoteCoverageOc(quoteId:number,projId: number ,coverageOcData:any[]){
-        let params:any  = {
-            quoteId: quoteId,
-            projId: projId,
-            coverageOcData:coverageOcData
-        };
+    saveQuoteCoverageOc(quoteId:number,projId: number ,coverageOcData:any){
         let header : any = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json'
             })
         };
 
-        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteCoverageOc', JSON.stringify(params), header);
+        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteCoverageOc', JSON.stringify(coverageOcData), header);
     }
     
 
@@ -744,7 +738,7 @@ export class QuotationService {
         }
         //console.log(saveQuoteCompetitionParams.join(","));
         //console.log(params.substring(1,params.length-1));
-        console.log(saveQuoteCompetitionParams);
+        console.log(params);
         return this.http.post('http://localhost:8888/api/quote-service/saveQuoteCompetition', params.substring(1,params.length-1), header);
     }
 
@@ -779,6 +773,13 @@ export class QuotationService {
         };
         return this.http.post('http://localhost:8888/api/quote-service/saveQuoteEndorsements',params,header);
 
+    }
+
+    getCoverageOc(quoteIdOc:string,openQuotationNo:string){
+        const params = new HttpParams()
+             .set('quoteIdOc', quoteIdOc)
+             .set('openQuotationNo', openQuotationNo);
+        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteCoverageOc',{params});
     }
 
 }
