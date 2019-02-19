@@ -175,8 +175,6 @@ export class CustNonDatatableComponent implements OnInit {
         for(var i = 0 ;i<this.passData.tableData.length;i++){
             this.displayData[i] = this.passData.tableData[i];
         }
-        
-        console.log(this.passData.tableData);
         //this.displayData = JSON.parse(JSON.stringify( this.passData.tableData));
         this.displayLength = this.displayData.length;
         this.unliTableLength();
@@ -238,15 +236,10 @@ export class CustNonDatatableComponent implements OnInit {
         }
         return data[key];
     }
-    consoled(){
-        console.log(this.displayData);
-    }
 
     unliTableLength(){
         if(this.unliFlag){
-            console.log(this.passData.pageLength <= 10);
             this.passData.pageLength = this.passData.tableData.length <= 10 ? 10 :this.passData.tableData.length;
-            console.log(this.passData.tableData.length);
         }
         
     }
@@ -292,12 +285,10 @@ export class CustNonDatatableComponent implements OnInit {
     
     highlight(data){
         this.selected.push(data);
-        console.log('data pushed'); 
     }
     removeSelected(event, data){
         if(!event.target.checked){
             this.selected.splice(this.selected.indexOf(data), 1);
-            console.log('wow');
         }else{
             this.selected.push(data);
         }
@@ -411,7 +402,6 @@ export class CustNonDatatableComponent implements OnInit {
         this.pinKeys.splice(index,1);
         this.pinDataHeader.splice(index,1);
         this.pinDatatypes.splice(index,1);
-        console.log(this.pinKeys);
         let minusWidth = $(event.path[1]).outerWidth();
         let startWidth = $('#pinTable'+this.passData.pageID).outerWidth();
         if(this.pinKeys.length == 0)

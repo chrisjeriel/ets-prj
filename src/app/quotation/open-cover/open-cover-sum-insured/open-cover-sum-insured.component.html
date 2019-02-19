@@ -26,15 +26,16 @@
 				<legend class="scheduler-border"  style="visibility: hidden;color: rgb(56, 142, 60);  padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 				<div class="custom-row-inline-inset">
 					<div class="input-group">
-						<label class="form-control-sm col-sm-4" for="inputRisk" >Currency</label>
-            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm">
-            			<label class="form-control-sm col-sm" for="inputRisk" >Exch. Rt.</label>
-            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" >
+						<label class="form-control-sm col-sm-4">Currency</label>
+            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.currencyAbbr">
+            			<div class="text-search-ico"><a><i class="fa fa-search" (click)="showCurrencyModal()"></i></a></div>
+            			<label class="form-control-sm col-sm" >Exch. Rt.</label>
+            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.currencyRt">
             			<label class="col-sm-2"></label>
 					</div>
 					<div class="input-group">
-						<label class="form-control-sm col-sm-4" for="inputRisk" style="padding-left: 0px;">Max Sum Insured</label>
-            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm">
+						<label class="form-control-sm col-sm-4" style="padding-left: 0px;">Max Sum Insured</label>
+            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.maxSi">
             			<label class="col-sm-2"></label>
 					</div>
 				</div>
@@ -45,15 +46,15 @@
 				<legend class="scheduler-border"  style="visibility: hidden;color: rgb(56, 142, 60);  padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 				<div class="custom-row-inline-inset">
 					<div class="input-group">
-						<label class="form-control-sm col-sm-4" for="inputRisk" >Share (%)</label>
-            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm">
-            			<label class="form-control-sm col-sm" for="inputRisk" >PML (%)</label>
-            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" >
+						<label class="form-control-sm col-sm-4" >Share (%)</label>
+            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.pctShare">
+            			<label class="form-control-sm col-sm" >PML (%)</label>
+            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.pctPml">
             			<label class="col-sm-2"></label>
 					</div>
 					<div class="input-group">
-						<label class="form-control-sm col-sm-4" for="inputRisk" style="padding-left: 0px;">100% Value</label>
-            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm">
+						<label class="form-control-sm col-sm-4" style="padding-left: 0px;">100% Value</label>
+            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.totalValue">
             			<label class="col-sm-2"></label>
 					</div>
 				</div>
@@ -67,8 +68,10 @@
 		<div class="col-md-13 text-center" style="margin-top: 3px;">
 			<div class="cust-btn-container">
 				<button type="button" class="cust-btn" 	(click)="pol($event)"><a>Cancel</a></button>
-				<button type="button" class="cust-btn"><a>Save</a></button>
+				<button type="button" class="cust-btn" (click)="saveData()"><a>Save</a></button>
 			</div>
 		</div>
 	</div>
 </div>
+
+<app-mtn-currency id="currencyModal" (selectedData)="setCurrency($event)"></app-mtn-currency>

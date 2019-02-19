@@ -4,7 +4,7 @@
 		<div class="form-row custom-row-inline-inset">
             <div class="input-group" >
                 <label class="form-control-sm col-sm-2" for="inputQuonum">Quotation No </label>
-                <input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-2" placeholder="CAR-2018-5081-077-0177" disabled="disabled" [(ngModel)]="this.policyRecordInfo.policyNo">
+                <input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-2" disabled="disabled" [ngModel]="quotationNo">
                 <label class="form-control-sm col-sm-1" for="inputInname" >Insured</label>
                 <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-6" placeholder="Insured Name" disabled="disabled">
             </div>
@@ -22,7 +22,8 @@
 					<div class="input-group">
 						<label class="form-control-sm col-sm-2 text-right" for="xx">Insured</label>
 						<input class="form-control form-control-sm  col-sm-2" type="text" name="" appRequired [(ngModel)]="alopData.insuredId">
-						<div class="text-search-ico"><a (click)="showInsuredLOV()"><i class="fa fa-search"></i></a></div>&nbsp;
+						<!-- <div class="text-search-ico"><a (click)="showInsuredLOV()"><i class="fa fa-search"></i></a></div>&nbsp; -->
+						<div class="text-search-ico"><a (click)="openGenericLOV('insured')"><i class="fa fa-search"></i></a></div>&nbsp;
 						<input class="form-control form-control-sm  col-sm" type="text" name="" [(ngModel)]="alopData.insuredName" style="margin-left: -7px;" appRequired>
 					</div>
 
@@ -129,8 +130,9 @@
 	</div>
 	<div footer class="text-center">
 			<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
-			<button type="button" class="cust-btn" (click)="saveAlopItem();modalService.dismissAll()"><a>Save</a></button>
+			<button type="button" class="cust-btn" (click)="saveAlopItem(	);modalService.dismissAll()"><a>Save</a></button>
 	</div>
 </app-modal>
 
 <app-mtn-insured id="insuredLOV" (selectedData)="setInsured($event)"></app-mtn-insured>
+<app-lov id="lov" [passData]="passLOV" (selectedData)="setInsured($event)"></app-lov>

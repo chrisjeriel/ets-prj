@@ -31,6 +31,7 @@ export class GeneralInfoComponent implements OnInit {
 	lineClassCode: string;
 	lineClassDesc: string;
 	ocChecked: boolean = false;
+	internalCompFlag: boolean = false;
 
 	project: any = {
 		blockCd: '',
@@ -145,6 +146,7 @@ export class GeneralInfoComponent implements OnInit {
 		this.tableData = this.quotationService.getItemInfoData();
 
 		this.sub = this.route.params.subscribe(params => {
+			this.internalCompFlag = JSON.parse(params['addParams']).intComp == undefined ? false : JSON.parse(params['addParams']).intComp; //neco
 			this.from = params['from'];
 			if (this.from == "quo-processing") {
 				this.line = params['line'];
@@ -348,8 +350,30 @@ export class GeneralInfoComponent implements OnInit {
 		return new Date(arr[0] + '-' + pad(arr[1]) + '-' + pad(arr[2])).toISOString();   
 	}
 
-	saveQuoteGenInfo() {		
+	saveQuoteGenInfo() {
 		console.log('PREPARING DATA >>> ' + this.prepareParam());
+
+
+		this.quotationService.saveQuoteGeneralInfo(this.prepareParam()).subscribe(data => console.log(data));
+		//neco
+		if(this.internalCompFlag){
+			var intCompParams: any = {
+				adviceNo: 0,
+				cedingId: 0, //should not be hardcoded
+				cedingRepId: 0, //should not be hardcoded
+				createDate: new Date().toISOString(),
+				createUser: 'NDC', //should not be hardcoded
+				option: '',
+				quoteId: 1, //should not be hardcoded
+				updateDate: new Date().toISOString(),
+				updateUser: 'NDC', //should not be hardcoded
+				wordings: ''
+			}
+			/*this.quotationService.saveQuoteCompetition(intCompParams).subscribe((data: any) =>{
+				console.log(data);
+			});*/
+		}
+		//neco end
 
 		this.quotationService.saveQuoteGeneralInfo(this.prepareParam()).subscribe(data => {
 			this.genInfoData.quoteId = data['quoteId'];
@@ -361,6 +385,7 @@ export class GeneralInfoComponent implements OnInit {
 		});
 
 		$('#successMdl > #modalBtn').trigger('click');
+		
 	}
 
 	prepareParam() {

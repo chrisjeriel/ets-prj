@@ -36,7 +36,7 @@ export class MtnCurrencyComponent implements OnInit {
   constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal) { }
 
   ngOnInit() {
-  	this.maintenanceService.getMtnCurrency().subscribe((data: any) =>{
+  	/*this.maintenanceService.getMtnCurrency().subscribe((data: any) =>{
   		for(var currencyCount = 0; currencyCount < data.currency.length; currencyCount++){
   			this.currencyListing.tableData.push(
   				new Row(data.currency[currencyCount].currencyCd, 
@@ -47,7 +47,7 @@ export class MtnCurrencyComponent implements OnInit {
   			);  		
   		}
   		this.table.refreshTable();
-  	});
+  	});*/
   }
 
   onRowClick(data){
@@ -57,6 +57,34 @@ export class MtnCurrencyComponent implements OnInit {
 
   confirm(){
   	this.selectedData.emit(this.selected);
+    this.currencyListing.tableData = [];
+    this.table.refreshTable();
+  }
+
+  cancel(){
+    this.currencyListing.tableData = [];
+    this.table.refreshTable();
+  }
+
+  openModal(){
+      /*for(var j = 0; j < this.passDataAttention.tableData.length; j++){
+        this.passDataAttention.tableData.pop();
+      }*/
+      setTimeout(()=>{    //<<<---    using ()=> syntax
+           this.maintenanceService.getMtnCurrency('').subscribe((data: any) =>{
+                 for(var currencyCount = 0; currencyCount < data.currency.length; currencyCount++){
+                   this.currencyListing.tableData.push(
+                     new Row(data.currency[currencyCount].currencyCd, 
+                         data.currency[currencyCount].currencyAbbr,
+                         data.currency[currencyCount].currencyWord,
+                         data.currency[currencyCount].currencyRt,
+                         data.currency[currencyCount].currencyDesc)
+                   );      
+                 }
+                 this.table.refreshTable();
+               });
+       }, 100);
+      
   }
 
 }

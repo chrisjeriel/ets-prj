@@ -105,8 +105,13 @@ export class CustEditableNonDatatableComponent implements OnInit {
         }
         
         for(var i = 0 ;i<this.passData.tableData.length;i++){
-            this.passData.tableData[i].edited = false;
-            this.displayData[i] = this.passData.tableData[i];
+            this.passData.tableData[i].edited = this.passData.tableData[i].edited ? true : false;
+            this.passData.tableData[i].checked = this.passData.tableData[i].checked ? true : false;
+            if(!this.passData.tableData[i].deleted){
+                this.displayData.push(this.passData.tableData[i]);
+            }else{
+                console.log(this.displayData[i]);
+            }
         }
         //this.displayData = JSON.parse(JSON.stringify( this.passData.tableData));
         //this.displayLength = this.displayData.length;
@@ -128,6 +133,12 @@ export class CustEditableNonDatatableComponent implements OnInit {
         }
 
         if(this.dataKeys.indexOf('edited') != -1){
+          this.dataKeys.pop();
+        }
+        if(this.dataKeys.indexOf('checked') != -1){
+          this.dataKeys.pop();
+        }
+        if(this.dataKeys.indexOf('deleted') != -1){
           this.dataKeys.pop();
         }
 
@@ -165,9 +176,15 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     onClickDelete() {
-        this.passData.tableData.pop();
-        this.unliTableLength();
+        for (var i = 0; i < this.passData.tableData.length; ++i) {
+            if(this.passData.tableData[i].checked){
+                this.passData.tableData[i].deleted = true;
+                this.passData.tableData[i].edited = true;
+            }
+        }
+        this.refreshTable();
         this.search(this.searchString);
+        console.log(this.passData.tableData);
     }
     private onMouseDown(event){
         this.start = event.target;
@@ -226,7 +243,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     search(event){
-        this.displayData = this.passData.tableData.filter((item) => this.dataKeys.some(key => item.hasOwnProperty(key) && new RegExp(event, 'gi').test(item[key])));
+        this.displayData = this.passData.tableData.filter((item) => this.dataKeys.some(key => !item.deleted && item.hasOwnProperty(key) && new RegExp(event, 'gi').test(item[key])));
         // this.autoFill = Array(this.passData.pageLength).fill(this.newData);
         // if(this.displayData.length%this.passData.pageLength != 0){
         //     this.autoFill = Array(this.passData.pageLength -  this.displayData.length%this.passData.pageLength).fill(this.newData);
@@ -340,6 +357,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     removeSelected(event, data){
+        data.checked = event.target.checked;
         if(!event.target.checked){
             this.selected.splice(this.selected.indexOf(data), 1);
             console.log('wow');

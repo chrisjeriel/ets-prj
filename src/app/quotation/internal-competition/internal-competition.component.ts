@@ -1,8 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { QuotationService, MaintenanceService } from '../../_services';
 import { IntCompAdvInfo } from '@app/_models';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
 
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 
@@ -12,7 +13,7 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
     templateUrl: './internal-competition.component.html',
     styleUrls: ['./internal-competition.component.css']
 })
-export class InternalCompetitionComponent implements OnInit {
+export class InternalCompetitionComponent implements OnInit, OnDestroy {
     Description: string = "";
     adviceLOVRow : number;
     attentionLOVRow: number;
@@ -32,6 +33,7 @@ export class InternalCompetitionComponent implements OnInit {
         checkFlag: true,
         pageLength: 10,
         widths: [1,'auto','auto',1,'auto', 'auto', 1, 1, 1, 1],
+        uneditable: [true,true,false,true,false,false,true,true,true,true],
         //keys: ['advNo', 'company', 'attention', 'position', 'advOpt', 'advWord', 'createdBy', 'dateCreated', 'lastUpdateBy', 'lastUpdate'],
         keys: ['adviceNo', 'cedingName', 'cedingRepName', 'position', 'option', 'wordings', 'createUser', 'createDate', 'updateUser', 'updateDate'],
 
@@ -39,15 +41,22 @@ export class InternalCompetitionComponent implements OnInit {
 
     data: any;
     quoteIds: any[] = [];
+    quotationNo: any;
     cedingIds: any[] = [];
     cedingRepIds: any[] = [];
     savedData: any[] = [];
 
     currentCedingId: string = "";
 
+    sub: any;
+    params: any = {
+        quoteId: '',
+        quotationNo: ''
+    }
+
     @ViewChild(CustEditableNonDatatableComponent) custEditableNonDatatableComponent : CustEditableNonDatatableComponent;
     
-    constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private maintenanceService: MaintenanceService) { }
+    constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private maintenanceService: MaintenanceService, private route: ActivatedRoute) { }
 
     ngOnInit() {
         //var dateConvert: Date;
@@ -56,7 +65,16 @@ export class InternalCompetitionComponent implements OnInit {
 
         //this.opts.push({ selector: "advOpt", vals: ["Pending", "On Going", "Done"] });
 
-        this.quotationService.getIntCompAdvInfo().subscribe((data: any) => {
+        let quoteNo:string = "";
+        this.sub = this.route.params.subscribe(params => {
+          this.quotationNo = params["quotationNo"];
+          quoteNo = this.quotationNo.split(/[-]/g)[0]
+          for (var i = 1; i < this.quotationNo.split(/[-]/g).length; i++) {
+           quoteNo += '-' + parseInt(this.quotationNo.split(/[-]/g)[i]);
+         } 
+        });
+        this.params.quotationNo = quoteNo;
+        this.quotationService.getIntCompAdvInfo(this.params).subscribe((data: any) => {
             for(var j = 0; j < data.quotation.length; j++){
               this.data = data.quotation[j].competitionsList;
               this.quoteIds.push(data.quotation[j].quoteId);
@@ -86,6 +104,11 @@ export class InternalCompetitionComponent implements OnInit {
       });
 
     }
+
+    ngOnDestroy(){
+        this.sub.unsubscribe();
+    }
+
     onClickPrint() {
 
     }
@@ -151,13 +174,11 @@ export class InternalCompetitionComponent implements OnInit {
     }
 
     selectedAdviceLOV(data){
-      console.log(data)
         this.intCompData.tableData[this.adviceLOVRow].wordings = data.description;
         this.intCompData.tableData[this.adviceLOVRow].edited = true;
     }
 
     selectedAttentionLOV(data){
-      //console.log(data)
          this.intCompData.tableData[this.attentionLOVRow].cedingRepName = data.firstName +' '+ data.middleInitial + ' '+ data.lastName; 
          this.intCompData.tableData[this.attentionLOVRow].position = data.position; 
          this.intCompData.tableData[this.attentionLOVRow].cedingRepId = data.cedingRepId.toString();

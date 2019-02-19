@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter,Input } from '@angular/core';
 import { MaintenanceService } from '@app/_services';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
@@ -11,6 +11,7 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 export class MtnQuotationWordingsComponent implements OnInit {
 
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
+  @Input() line:string = "";
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
   passData: any = {
         tableData: [],
@@ -54,7 +55,7 @@ export class MtnQuotationWordingsComponent implements OnInit {
   constructor(private modalService: NgbModal, private mtnService : MaintenanceService) { }
 
   ngOnInit() { 
-        this.mtnService.getMtnQuotationWordings('','').subscribe((data: any) =>{
+        this.mtnService.getMtnQuotationWordings(this.line,'').subscribe((data: any) =>{
           for (var a = data['quoteWordings'].length - 1; a >= 0; a--) {
                this.passData.tableData.push(data['quoteWordings'][a]);
           }

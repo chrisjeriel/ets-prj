@@ -41,7 +41,9 @@ export class MtnDistrictComponent implements OnInit {
   }
 
   openModal(){
-      
+      while(this.passData.tableData.length>0){
+        this.passData.tableData.pop();
+      }
       this.mtnService.getMtnDistrict().subscribe((data: any) => {
         console.log(data);
         for (var a = data.region.length - 1; a >= 0; a--) {
