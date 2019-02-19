@@ -279,9 +279,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
 
     unliTableLength(){
         if(this.unliFlag){
-            console.log(this.passData.pageLength <= 10);
             this.passData.pageLength = this.passData.tableData.length <= 10 ? 10 :this.passData.tableData.length;
-            console.log(this.passData.tableData.length);
         }
         
     }
