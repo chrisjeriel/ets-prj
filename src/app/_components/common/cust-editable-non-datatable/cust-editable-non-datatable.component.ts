@@ -131,13 +131,13 @@ export class CustEditableNonDatatableComponent implements OnInit {
         }
 
         if(this.dataKeys.indexOf('edited') != -1){
-          this.dataKeys.pop();
+          this.dataKeys.splice(this.dataKeys.indexOf('edited'),1);
         }
         if(this.dataKeys.indexOf('checked') != -1){
-          this.dataKeys.pop();
+          this.dataKeys.splice(this.dataKeys.indexOf('checked'),1);
         }
         if(this.dataKeys.indexOf('deleted') != -1){
-          this.dataKeys.pop();
+          this.dataKeys.splice(this.dataKeys.indexOf('deleted'),1);
         }
 
         this.refreshTable();
