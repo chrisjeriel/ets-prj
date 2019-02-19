@@ -278,10 +278,6 @@ export class QuoteEndorsementComponent implements OnInit {
         return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]);
     }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 3ffaa4d7be96cceff072a26b589955a00f22c53b
     // arn //
     endorsementReq:any;
 
@@ -309,16 +305,9 @@ export class QuoteEndorsementComponent implements OnInit {
         return new Date(date[0] + "/" + date[1] + "/" + date[2]).toISOString();
     }
     // end-arn //
-<<<<<<< HEAD
     plainQuotationNoOc(data: string){
         var arr = data.split('-');
         return arr[0]+ '-' +arr[1] + '-' + arr[2] + '-' + arr[3] + '-' + arr[4] + '-' + arr[5] ;
-=======
-
-    plainQuotationNoOc(data: string){
-        var arr = data.split('-');
-        return arr[1] + '-' + arr[2] + '-' + arr[3] + '-' + arr[4] + '-' + arr[5] ;
->>>>>>> 3ffaa4d7be96cceff072a26b589955a00f22c53b
     }
 
 }
