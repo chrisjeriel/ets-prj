@@ -85,12 +85,13 @@
           </fieldset>
         <fieldset class="scheduler-border" style="padding:0"> 
             <legend class="scheduler-border">Payment Requests</legend>  
-            <div class="row">
-                <div class="col-sm-12" style="margin-top: 10px" >
-                   <!--  <button type="button" class="cust-btn" style="position: absolute;top: 0px;left: 141px;z-index: 100;"><a>Save</a></button> -->
+                <!-- <div class="col-sm-12" style="margin-top: 10px" >
+                    <button type="button" class="cust-btn" style="position: absolute;top: 0px;left: 141px;z-index: 100;"><a>Save</a></button>
                     <app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
-                </div>
-            </div>
+                </div> -->
+                  <div class="form-row custom-row-inline-inset">
+                    <app-cust-editable-non-datatable [passData]="passData" style="width: 100%"></app-cust-editable-non-datatable>
+                  </div>
         </fieldset>
         <fieldset class="scheduler-border" style="margin-top: 10px ! important"> 
             <div class="row">

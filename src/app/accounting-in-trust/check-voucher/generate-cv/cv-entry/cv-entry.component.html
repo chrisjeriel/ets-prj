@@ -10,7 +10,7 @@
                     <input type="text" class="form-control form-control-sm cust-sm col-sm-2"
                            placeholder="00000001" style="text-align: right;">
                     <label class="form-control-sm col-sm-1">Date</label>
-                    <input type="datetime-local" class="form-control form-control-sm cust-sm col-sm" placeholder="" style="margin-right: 4px !important;">
+                    <input type="datetime-local" class="form-control form-control-sm cust-sm col-sm" value="2018-10-01T08:45" style="margin-right: 4px !important;">
                     <!-- <label class="form-control-sm col-sm-1">Tran ID</label>
                     <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="000372921" style="text-align: right;"> -->
                     <label class="form-control-sm col-sm-2">Status</label>
@@ -35,11 +35,57 @@
     <div class="col-sm-2" style="padding-left: 10px !important;">
         <fieldset class="scheduler-border" style="padding: 8px 0px !important;">
             <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
-            <div class="cust-btn-container" style="margin-left: 10px !important;margin-right: 10px !important;"> 
-                <button class="cust-btn cust-btn-extend" style="width: 100%;margin-bottom: 5px !important;">New CV</button>
-                <button class="cust-btn cust-btn-extend" style="width: 100%;margin-bottom: 5px !important;">Save</button>
-                <button class="cust-btn cust-btn-extend" style="width: 100%;margin-bottom: 5px !important;">Cancel CV</button>
-                <button class="cust-btn cust-btn-extend" style="width: 100%">Print</button>
+            <!-- <div class="cust-btn-container" style="margin-left: 10px !important;margin-right: 10px !important;">  -->
+                <div class="cust-btn-container" style="text-align: center;"> 
+                <button class="cust-btn " style="width: 100%;margin-bottom: 5px !important;">New CV</button>
+                <button class="cust-btn " style="width: 100%;margin-bottom: 5px !important;">Save</button>
+                <button class="cust-btn " style="width: 100%;margin-bottom: 5px !important;">Cancel CV</button>
+                <button class="cust-btn " style="width: 100%" (click)="showPrintModal();">Print</button>
+                <app-modal id="printModal" [btnTitle]="'Print'" class="d-none">
+                    <div header>Print Check/DV</div>
+                    <div body>
+                        <div class="container-fluid">
+                            <div class="custom-row-inline-inset">
+                                <div class="input-group">
+                                    <div class="col-sm-6"></div>
+                                    <div class="input-group col-sm-3 labels" style="padding: 0px;">
+                                        <input type="checkbox" style="margin-top: 6px;" checked>
+                                        <label class="form-control-sm" for="xx">DV</label>
+                                    </div>
+                                    <div class="input-group col-sm-3 labels" style="padding: 0px;">
+                                        <input type="checkbox" style="margin-top: 6px;" checked>
+                                        <label class="form-control-sm" for="xx">Check</label>
+                                    </div>
+                                    <!-- <input type="checkbox"> 
+                                    <label class="form-control-sm labels">DV</label>
+                                     <input type="checkbox">
+                                    <label class="form-control-sm labels">Check</label> -->
+                                </div>
+                                <div class="input-group">
+                                    <label class="form-control-sm col-sm-4 labels">Destination</label>
+                                    <select class="form-control form-control-sm cust-sm col-sm-8">
+                                        <option>Printer</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label class="form-control-sm col-sm-4 labels">Printer Name</label>
+                                    <select class="form-control form-control-sm cust-sm col-sm-8">
+                                        <option>EPSON 3600i</option>
+                                        <option>BROTHER J100</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label class="form-control-sm col-sm-4 labels">No. of Copies</label>
+                                    <input type="number" class="form-control form-control-sm cust-sm col-sm-8 text-right">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div footer class="text-center w-100">
+                        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); cancel();"><a>Cancel</a></button>
+                        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); confirm();"><a>Print</a></button>
+                    </div>
+                </app-modal>
             </div>
         </fieldset>
     </div>
@@ -129,13 +175,13 @@
         <fieldset class="scheduler-border" style="margin: 0px !important; margin-top: 12px !important;">
             <div class="form-row custom-row-inline-inset" style="margin-left: -27px;">
                 <div class="input-group" style="margin-bottom: -15px !important;">
-                    <label class="form-control-sm col-sm-1 text-right labels">Created By</label>
+                    <label class="form-control-sm col-sm-1 text-right ">Created By</label>
                     <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma">
-                    <label class="form-control-sm col-sm-1 text-right labels">Date Created</label>
+                    <label class="form-control-sm col-sm-1 text-right ">Date Created</label>
                     <input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM">
-                    <label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
+                    <label class="form-control-sm col-sm-1 text-right ">Last Update By</label>
                     <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma">
-                    <label class="form-control-sm col-sm-1 text-right labels">Last Update</label>
+                    <label class="form-control-sm col-sm-1 text-right ">Last Update</label>
                     <input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM">
                 </div>
             </div>

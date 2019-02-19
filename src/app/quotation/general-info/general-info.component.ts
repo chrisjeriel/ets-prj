@@ -143,7 +143,9 @@ export class GeneralInfoComponent implements OnInit {
 		this.tableData = this.quotationService.getItemInfoData();
 
 		this.sub = this.route.params.subscribe(params => {
-			this.internalCompFlag = JSON.parse(params['addParams']).intComp == undefined ? false : JSON.parse(params['addParams']).intComp; //neco
+			if(params['addParams'] != undefined){
+				this.internalCompFlag = JSON.parse(params['addParams']).intComp == undefined ? false : JSON.parse(params['addParams']).intComp; //neco
+			}
 			this.from = params['from'];
 			if (this.from == "quo-processing") {
 				this.line = params['line'];

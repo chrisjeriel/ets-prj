@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountingService } from '../../../../_services';
 import { CVListing } from '@app/_models'
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 
 @Component({
@@ -24,7 +25,7 @@ export class CvEntryComponent implements OnInit {
         paginateFlag: true,
     };
 
-  constructor(private accountingService: AccountingService,private titleService: Title) { }
+  constructor(private accountingService: AccountingService,private titleService: Title, private modalService: NgbModal) { }
 
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | CV Entry");
@@ -42,6 +43,18 @@ export class CvEntryComponent implements OnInit {
     }
     this.passDataCheckDetails.tableData = data;
     
+  }
+
+  showPrintModal(){
+    $('#printModal > #modalBtn').trigger('click');
+  }
+
+  cancel(){
+    //do something
+  }
+
+  print(){
+    //print something
   }
 
 }
