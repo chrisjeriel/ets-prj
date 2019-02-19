@@ -26,9 +26,9 @@ export class OpenCoverSumInsuredComponent implements OnInit {
   	pctPml: null,
   	totalValue: null,
   	createUser: 'ETC',
-  	createDate:  new Date().toISOString(),
+  	createDate:  new Date(),
   	updateUser:  'MBM',
-  	updateDate:  new Date().toISOString()
+  	updateDate:  new Date()
   }
 
   constructor(private quotationService: QuotationService, private titleService: Title, private maintenanceService: MaintenanceService, 
@@ -68,7 +68,6 @@ export class OpenCoverSumInsuredComponent implements OnInit {
   	this.coverageOcData.projId = 1;
   	this.coverageOcData.riskId = this.riskId;
     this.quotationService.saveQuoteCoverageOc(7,1,this.coverageOcData).subscribe();
-    this.ngOnInit();
   }
 
   showCurrencyModal(){
