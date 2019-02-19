@@ -347,7 +347,6 @@ export class GeneralInfoComponent implements OnInit {
 		this.quotationService.saveQuoteGeneralInfo(this.prepareParam()).subscribe(data => console.log(data));
 		//neco
 		if(this.internalCompFlag){
-			console.log("insert now neco");
 			var intCompParams: any = {
 				adviceNo: 0,
 				cedingId: 0, //should not be hardcoded

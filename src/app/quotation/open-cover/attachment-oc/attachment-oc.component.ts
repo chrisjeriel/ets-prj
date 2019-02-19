@@ -107,7 +107,6 @@ export class AttachmentOcComponent implements OnInit {
   }
 
   cancel(){
-    console.log(this.passData.tableData);
   }
 
 }

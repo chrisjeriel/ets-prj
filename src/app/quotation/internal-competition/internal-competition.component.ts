@@ -74,8 +74,6 @@ export class InternalCompetitionComponent implements OnInit, OnDestroy {
          } 
         });
         this.params.quotationNo = quoteNo;
-        console.log("params");
-        console.log(this.params);
         this.quotationService.getIntCompAdvInfo(this.params).subscribe((data: any) => {
             for(var j = 0; j < data.quotation.length; j++){
               this.data = data.quotation[j].competitionsList;
@@ -176,13 +174,11 @@ export class InternalCompetitionComponent implements OnInit, OnDestroy {
     }
 
     selectedAdviceLOV(data){
-      console.log(data)
         this.intCompData.tableData[this.adviceLOVRow].wordings = data.description;
         this.intCompData.tableData[this.adviceLOVRow].edited = true;
     }
 
     selectedAttentionLOV(data){
-      //console.log(data)
          this.intCompData.tableData[this.attentionLOVRow].cedingRepName = data.firstName +' '+ data.middleInitial + ' '+ data.lastName; 
          this.intCompData.tableData[this.attentionLOVRow].position = data.position; 
          this.intCompData.tableData[this.attentionLOVRow].cedingRepId = data.cedingRepId.toString();
