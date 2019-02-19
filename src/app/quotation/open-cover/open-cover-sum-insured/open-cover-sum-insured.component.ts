@@ -22,8 +22,11 @@ export class OpenCoverSumInsuredComponent implements OnInit {
   	maxSi: null,
   	pctShare: null,
   	pctPml: null,
-  	totalValue: null
-
+  	totalValue: null,
+  	createUser: 'ETC',
+  	createDate:  new Date().toISOString(),
+  	updateUser:  'MBM',
+  	updateDate:  new Date().toISOString()
   }
 
   constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute) { }
@@ -44,21 +47,15 @@ export class OpenCoverSumInsuredComponent implements OnInit {
 	  	      this.passData.tableData.push(this.data[i]);
 	  	    }
 	  	    this.custEditableNonDatatableComponent.refreshTable();*/
-	  	    console.log(data);
 	  	    this.quoteIdOc = data.quotationOc[0].quoteIdOc;
-	  	    this.riskId = data.quotationOc[0].projectOc.riskId;
+	  	    this.riskId = data.quotationOc[0].projectOc.coverageOc.riskId;
 	  	});
-
   }
 
   saveData(){
   	this.coverageOcData.quoteIdOc = this.quoteIdOc;
   	this.coverageOcData.projId = 1;
   	this.coverageOcData.riskId = this.riskId;
-  	this.coverageOcData.createUser = 'ETC';
-  	this.coverageOcData.createDate = new Date().toISOString();
-  	this.coverageOcData.updateUser = 'MBM';
-  	this.coverageOcData.updateDate = new Date().toISOString();
     this.quotationService.saveQuoteCoverageOc(7,1,this.coverageOcData).subscribe();
     this.ngOnInit();
   }
