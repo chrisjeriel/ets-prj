@@ -30,7 +30,7 @@
 										<label class="form-control-sm col-sm-2">Type of Cession</label>
 										<input type="text" class="form-control form-control-sm" [(ngModel)]="typeOfCession">
 										<label class="form-control-sm col-sm-2">Line Class</label>
-										<input type="text" class="form-control form-control-sm" style="margin-right: 1px;" [(ngModel)]="lineClassCd">
+										<input type="text" class="form-control form-control-sm" style="margin-right: 1px;" [(ngModel)]="lineClassDescr" readonly>
 										<div class="text-search-ico" (click)="getLineClassLov($event)"><a><i class="fa fa-search"></i></a></div>
 										<span>&nbsp;</span>
 									</div>
@@ -42,10 +42,10 @@
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2" style="font-size: 10px !important;">Ceding Company</label>
-										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="cedingCoId">
+										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="cedingCoId" readonly>
 										<div class="text-search-ico" (click)="getCedingCoLov($event)"><a><i class="fa fa-search"></i></a></div>
 										<span>&nbsp;</span>
-										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 4px;" [(ngModel)]="cedingCoName">
+										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 4px;" [(ngModel)]="cedingCoName" readonly>
 									</div>
 									<div *ngIf="checkTypeOfCession()" class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Reinsurance From</label>
@@ -54,10 +54,10 @@
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Intermediary</label>
-										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="mtnIntmId">
+										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="mtnIntmId" readonly>
 										<div class="text-search-ico" (click)="getIntmLov($event)"><a><i class="fa fa-search"></i></a></div>
 										<span>&nbsp;</span>
-										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 4px;" [(ngModel)]="mtnIntmName">
+										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 4px;" [(ngModel)]="mtnIntmName" readonly>
 									</div>
 								</div>
 							</div>
@@ -104,7 +104,7 @@
 						<div class="form-group col-sm-6 offsetFormGroup">
 							<div class="input-group">
 								<label class="form-control-sm col-sm-4">Currency</label>
-								<input type="text" class="form-control form-control-sm" [(ngModel)]="currencyAbbr">
+								<input type="text" class="form-control form-control-sm" [(ngModel)]="currencyAbbr" readonly>
 								<div class="text-search-ico" (click)=getCurrLov($event)><a><i class="fa fa-search"></i></a></div>
 								<span>&nbsp;</span>
 							</div>
@@ -112,7 +112,7 @@
 						<div class="form-group col-sm-6 offsetFormGroup">
 							<div class="input-group">
 								<label class="form-control-sm col-sm-4">Exch. Rt.</label>
-								<input type="text" class="form-control form-control-sm" [(ngModel)]="currencyRt">
+								<input type="text" class="form-control form-control-sm" [(ngModel)]="currencyRt" readonly>
 								<span>&nbsp;</span>
 							</div>
 						</div>
@@ -163,19 +163,19 @@
 					<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 						<div class="input-group" style="margin-top: 10px;">
 							<label class="form-control-sm col-sm-1">Principal</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="prinId">
+							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="prinId" readonly>
 							<div class="text-search-ico" (click)="getPrinLov($event)"><a><i class="fa fa-search"></i></a></div>
 							<span>&nbsp;</span>
-							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="prinName">
+							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="prinName" readonly>
 							<label class="form-control-sm col-sm-1">Contractor</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="conId">
+							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="conId" readonly>
 							<div class="text-search-ico" (click)="getConLov($event)"><a><i class="fa fa-search"></i></a></div>
 							<span>&nbsp;</span>
-							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="conName">
+							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="conName" readonly>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Insured</label>
-							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px;" [(ngModel)]="ocQuoteGenInfo.insuredDesc"></textarea>
+							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px;"  [(ngModel)]="insured"></textarea>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Risk</label>
@@ -184,9 +184,9 @@
 						<div class="input-group" style="margin-bottom: 0px !important;">
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2">Object</label>
-								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="objId">
+								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="objId" readonly>
 								<div class="text-search-ico" (click)="getObjLov($event)"><a><i class="fa fa-search"></i></a></div>
-								<input type="text" class="form-control form-control-sm" style="margin-left: 9px;" [(ngModel)]="objName">
+								<input type="text" class="form-control form-control-sm" style="margin-left: 9px;" [(ngModel)]="objName" readonly>
 							</div>
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2">Region</label>
@@ -255,19 +255,19 @@
 					<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 						<div class="input-group" style="margin-top: 10px;">
 							<label class="form-control-sm col-sm-1">Principal</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="prinId">
+							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="prinId" readonly>
 							<div class="text-search-ico" (click)="getPrinLov($event)"><a><i class="fa fa-search"></i></a></div>
 							<span>&nbsp;</span>
-							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="prinName">
+							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="prinName" readonly>
 							<label class="form-control-sm col-sm-1">Contractor</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="conId">
+							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="conId" readonly>
 							<div class="text-search-ico" (click)="getConLov($event)"><a><i class="fa fa-search"></i></a></div>
 							<span>&nbsp;</span>
-							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="conName">
+							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="conName" readonly>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Insured</label>
-							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px;" [(ngModel)]="ocQuoteGenInfo.insuredDesc"></textarea>
+							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px;" [(ngModel)]="insured"></textarea>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Risk</label>
@@ -396,17 +396,17 @@
 					<div class="form-row" style="margin-bottom: -3px;">
 						<div class="form-group col-sm">
 							<label class="form-control-sm top-label">Total Sl</label>
-							<input type="text" class="form-control form-control-sm" [(ngModel)]="ocQuoteGenInfo.maxSi">
+							<input type="text" class="form-control form-control-sm" [(ngModel)]="ocQuoteGenInfo.maxSi" readonly>
 						</div>
 					</div>
 					<div class="form-row" style="margin-bottom: -16px; margin-top: -10px !important;">
 						<div class="form-group col-sm-3">
 							<label class="form-control-sm top-label">% Share</label>
-							<input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="ocQuoteGenInfo.pctShare">
+							<input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="ocQuoteGenInfo.pctShare" readonly>
 						</div>
 						<div class="form-group col-sm">
 							<label class="form-control-sm top-label">Part of (100%)</label>
-							<input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="ocQuoteGenInfo.totalValue">
+							<input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="ocQuoteGenInfo.totalValue" readonly>
 						</div>
 					</div>
 				</div>
@@ -477,9 +477,9 @@
 <app-mtn-currency id="currIdLov" (selectedData)="setCurr($event)"></app-mtn-currency>
 <app-mtn-insured id="prinIdLov" (selectedData)="setPrin($event)"></app-mtn-insured>
 <app-mtn-insured id="conIdLov" (selectedData)="setCon($event)"></app-mtn-insured>
-<app-mtn-object id="objIdLov" (selectedData)="setObj($event)"></app-mtn-object>
-<app-mtn-quotation-wordings  id="wordingOpeningIdLov" (selectedData)="setOpeningWording($event)"></app-mtn-quotation-wordings>
-<app-mtn-quotation-wordings  id="wordingClosingIdLov" (selectedData)="setClosingWording($event)"></app-mtn-quotation-wordings>
+<app-mtn-object id="objIdLov" (selectedData)="setObj($event)" [line]="line"></app-mtn-object>
+<app-mtn-quotation-wordings  id="wordingOpeningIdLov" (selectedData)="setOpeningWording($event)" [line]="line"></app-mtn-quotation-wordings>
+<app-mtn-quotation-wordings  id="wordingClosingIdLov" (selectedData)="setClosingWording($event)" [line]="line"></app-mtn-quotation-wordings>
 <app-ceding-company id="cedingCoIdLov" (selectedData)="setCedingCo($event)"></app-ceding-company>
 <app-mtn-line-class id="lineClassIdLov" (selectedData)="setLineClass($event)" [line]="line"></app-mtn-line-class>
 <app-mtn-intermediary id="intmIdLov" (selectedData)="setIntm($event)"></app-mtn-intermediary>

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter,Input } from '@angular/core';
 import { MaintenanceService } from '@app/_services';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
@@ -11,6 +11,7 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 export class MtnObjectComponent implements OnInit {
 
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
+  @Input() line: string = "";
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
   passData: any = {
         tableData: [],
@@ -22,7 +23,7 @@ export class MtnObjectComponent implements OnInit {
         pageStatus: true,
         pagination: true,
         fixedCol: false,
-        pageID: 2,
+        pageID: 'object',
         keys:['lineCd', 'lineDesc','objectId','description','activeTag','remarks'],
         filters:[
           {
@@ -64,12 +65,28 @@ export class MtnObjectComponent implements OnInit {
   constructor(private modalService: NgbModal, private mtnService : MaintenanceService) { }
 
   ngOnInit() {
-  	  	this.mtnService.getMtnObject('','').subscribe((data: any )=> {
-  	  		for (var a = data['object'].length - 1; a >= 0; a--) {
-            this.passData.tableData.push(data['object'][a]);
+  	  	// this.mtnService.getMtnObject(this.line,'').subscribe((data: any )=> {
+  	  	// 	for (var a = data['object'].length - 1; a >= 0; a--) {
+        //     this.passData.tableData.push(data['object'][a]);
+        //   }
+  	  	// 	this.table.refreshTable();
+        // });
+        
+        this.mtnService.getMtnObject(this.line,'').subscribe((data: any )=> {
+          for(var lineCount = 0; lineCount < data['object'].length; lineCount++){
+            this.passData.tableData.push(
+              new Row(
+                  data['object'][lineCount].lineCd, 
+                  data['object'][lineCount].lineDesc,
+                  data['object'][lineCount].objectId,
+                  data['object'][lineCount].description,
+                  data['object'][lineCount].activeTag,
+                  data['object'][lineCount].remarks
+                  )
+            );  		
           }
-  	  		this.table.refreshTable();
-  	  	});
+          this.table.refreshTable();
+        });
 
   }
 
@@ -81,4 +98,23 @@ export class MtnObjectComponent implements OnInit {
   	this.selectedData.emit(this.selected);
   }
 
+}
+
+class Row {
+  lineCd : string;
+  lineDesc: string;
+  objectId: number ;
+  description :string; 
+  activeTag :string;
+  remarks: string;
+
+	constructor(lineCd : string,lineDesc: string,objectId: number ,description :string,activeTag :string,remarks: string) {
+    this.lineCd  = lineCd;
+    this.lineDesc = lineDesc;
+    this.objectId = objectId;
+    this.description  = description;
+    this.activeTag  = activeTag;
+    this.remarks = remarks;
+	
+	}
 }
