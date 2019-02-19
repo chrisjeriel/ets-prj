@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { QuotationGenInfo } from '../../_models';
 import { callLifecycleHooksChildrenFirst } from '@angular/core/src/view/provider';
 import { QuotationService, MaintenanceService } from '../../_services';
@@ -131,6 +131,8 @@ export class GeneralInfoComponent implements OnInit {
 	intId: number;
 	intName: string = "";
 
+	@Output() checkQuoteId = new EventEmitter<any>();
+
 	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute, private maintenanceService: MaintenanceService) { }
 	ngOnInit() {
 		this.titleService.setTitle("Quo | General Info");
@@ -140,7 +142,6 @@ export class GeneralInfoComponent implements OnInit {
 		this.tableData = this.quotationService.getItemInfoData();
 
 		this.sub = this.route.params.subscribe(params => {
-			console.log('ADD PARAMS >>>>> ' + params['addParams']);
 			this.from = params['from'];
 			if (this.from == "quo-processing") {
 				this.line = params['line'];
@@ -165,11 +166,13 @@ export class GeneralInfoComponent implements OnInit {
 					this.genInfoData = data['quotationGeneralInfo'];						
 					this.genInfoData.createDate = this.dateParser(this.genInfoData.createDate);
 					this.genInfoData.expiryDate = this.dateParser(this.genInfoData.expiryDate);
-					this.genInfoData.issueDate = this.dateParser(this.genInfoData.issueDate);
-					this.genInfoData.printDate = (this.genInfoData.printDate == null) ? '' : this.dateParser(this.genInfoData.issueDate);
-					this.genInfoData.reqDate = this.dateParser(this.genInfoData.reqDate);
+					this.genInfoData.issueDate 	= this.dateParser(this.genInfoData.issueDate);
+					this.genInfoData.printDate 	= (this.genInfoData.printDate == null) ? '' : this.dateParser(this.genInfoData.printDate);
+					this.genInfoData.reqDate 	= this.dateParser(this.genInfoData.reqDate);
 					this.genInfoData.updateDate = this.dateParser(this.genInfoData.updateDate);
 				}
+
+				this.checkQuoteIdF(this.genInfoData.quoteId);
 
 				if(data['project'] != null) {
 					this.project = data['project'];
@@ -188,6 +191,7 @@ export class GeneralInfoComponent implements OnInit {
 				this.genInfoData.quoteRevNo 	= '0';
 				this.genInfoData.status 		= '2';
 				this.genInfoData.statusDesc 	= 'In Progress';
+				this.genInfoData.issueDate		= new Date().toISOString();
 				this.project.projId 			= '1';
 
 				this.maintenanceService.getMtnRisk(JSON.parse(params['addParams']).riskId).subscribe(data => {
@@ -265,6 +269,8 @@ export class GeneralInfoComponent implements OnInit {
 	setPrincipal(data){
 		this.genInfoData.principalName = data.insuredName;
 		this.genInfoData.principalId = data.insuredId;
+
+		this.updateInsuredDesc();
 	}
 
 	showContractorLOV(){
@@ -284,6 +290,8 @@ export class GeneralInfoComponent implements OnInit {
 	setContractor(data){
 		this.genInfoData.contractorName = data.insuredName;
 		this.genInfoData.contractorId = data.insuredId;
+
+		this.updateInsuredDesc();
 	}
 
 	showCurrencyModal(){
@@ -343,7 +351,16 @@ export class GeneralInfoComponent implements OnInit {
 	saveQuoteGenInfo() {		
 		console.log('PREPARING DATA >>> ' + this.prepareParam());
 
-		this.quotationService.saveQuoteGeneralInfo(this.prepareParam()).subscribe(data => console.log(data));
+		this.quotationService.saveQuoteGeneralInfo(this.prepareParam()).subscribe(data => {
+			this.genInfoData.quoteId = data['quoteId'];
+			this.genInfoData.quotationNo = data['quotationNo'];
+			this.genInfoData.quoteSeqNo = parseInt(data['quotationNo'].split('-')[2]);
+			this.genInfoData.quoteRevNo = parseInt(data['quotationNo'].split('-')[3]);
+
+			this.checkQuoteIdF(this.genInfoData.quoteId);
+		});
+
+		$('#successMdl > #modalBtn').trigger('click');
 	}
 
 	prepareParam() {
@@ -363,7 +380,7 @@ export class GeneralInfoComponent implements OnInit {
 			"govtTag"		: this.genInfoData.govtTag,
 			"indicativeTag"	: this.genInfoData.indicativeTag,
 			"insuredDesc"	: this.genInfoData.insuredDesc,
-			"intmId"		: (this.genInfoData.intmId === '') ? '1' : this.genInfoData.intmId,
+			"intmId"		: this.genInfoData.intmId,
 			"ipl"			: this.project.ipl,
 			"issueDate"		: this.genInfoData.issueDate,
 			"lineCd"		: this.genInfoData.lineCd,
@@ -387,7 +404,7 @@ export class GeneralInfoComponent implements OnInit {
 			"projId"		: this.project.projId,
 			"quoteId"		: this.genInfoData.quoteId,
 			"quoteRevNo"	: this.genInfoData.quoteRevNo,
-			"quoteSeqNo"	: (this.genInfoData.quoteId === '') ? '1' : this.genInfoData.quoteSeqNo,
+			"quoteSeqNo"	: this.genInfoData.quoteSeqNo,
 			"quoteYear"		: this.genInfoData.quoteYear,
 			"reinsurerId"	: this.genInfoData.reinsurerId,
 			"reqBy"			: this.genInfoData.reqBy,
@@ -410,6 +427,45 @@ export class GeneralInfoComponent implements OnInit {
 	toDateTime(val) {
 		return new Date(val).toISOString();
 	}
+
+	showObjectLOV() {
+		$('#objIdLov #modalBtn').trigger('click');
+	}
+
+	setObj(data){
+    	this.project.objectId = data.objectId;
+    	this.project.objectDesc = data.description;
+  	}
+
+  	showOpeningWordingLov(){
+  		$('#wordingOpeningIdLov #modalBtn').trigger('click');
+  	}
+
+  	setOpeningWording(data) {
+  		this.genInfoData.openingParag = data.wording;
+  	}
+
+  	showClosingWordingLov(){
+  		$('#wordingClosingIdLov #modalBtn').trigger('click');
+  	}
+
+  	setClosingWording(data) {
+  		this.genInfoData.closingParag = data.wording;
+  	}
+
+  	updateInsuredDesc() {
+  		if(this.line == 'CAR' || this.line == 'EAR'){
+  			if(this.genInfoData.principalName != '' && this.genInfoData.contractorName != ''){
+  				this.genInfoData.insuredDesc = this.genInfoData.principalName.trim() + ' / ' + this.genInfoData.contractorName.trim();
+  			}
+  		} else {
+  			this.genInfoData.insuredDesc = this.genInfoData.principalName.trim();
+  		}
+  	}
+  		
+  	checkQuoteIdF(event){
+  		this.checkQuoteId.emit(event);		
+  	}
 }
 export interface SelectRequestMode {
 	name: string;

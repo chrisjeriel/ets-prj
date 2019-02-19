@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AttachmentInfo } from '@app/_models';
 import { QuotationService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
@@ -47,7 +48,7 @@ export class AttachmentOcComponent implements OnInit {
   data: any;
   savedData: any[];
 
-  constructor(private titleService: Title, private quotationService: QuotationService) { }
+  constructor(private titleService: Title, private quotationService: QuotationService, private modalService: NgbModal) { }
 
   ngOnInit() {
   	this.titleService.setTitle("Quo-OC | Attachment");

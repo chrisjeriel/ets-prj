@@ -20,7 +20,7 @@ export class MtnTypeOfCessionComponent implements OnInit {
     pageStatus: true,
     pagination: true,
     fixedCol: false,
-    pageID: 1,
+    pageID: 14,
     keys:[
     	'cessionId',
     	'cessionAbbr',
@@ -35,7 +35,7 @@ export class MtnTypeOfCessionComponent implements OnInit {
   constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal) { }
 
   ngOnInit() {
-  	this.maintenanceService.getMtnTypeOfCession('').subscribe(data =>{
+  	/*this.maintenanceService.getMtnTypeOfCession('').subscribe(data =>{
   		var records = data['cession'];
 
             for(let rec of records){
@@ -48,7 +48,7 @@ export class MtnTypeOfCessionComponent implements OnInit {
             }
 
   		this.table.refreshTable();
-  	});
+  	});*/
   }
 
   onRowClick(data){
@@ -58,6 +58,23 @@ export class MtnTypeOfCessionComponent implements OnInit {
 
   confirm(){
   	this.selectedData.emit(this.selected);
+  }
+
+  openModal(){
+     this.maintenanceService.getMtnTypeOfCession('').subscribe(data =>{
+       var records = data['cession'];
+
+             for(let rec of records){
+               this.cessionListing.tableData.push({
+                     cessionId: rec.cessionId,
+                     cessionAbbr: rec.cessionAbbr,
+                     description: rec.description,
+                     remarks: rec.remarks                    
+                 });
+             }
+
+       this.table.refreshTable();
+     });
   }
 
 }
