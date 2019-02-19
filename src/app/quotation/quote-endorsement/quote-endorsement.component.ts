@@ -47,6 +47,15 @@ export class QuoteEndorsementComponent implements OnInit {
     optionNos: number[] = [];
     optionRecords: any[] = [];
 
+    saveEndt: any = {
+        quoteId: '',
+        optionId: '',
+        createDate: '',
+        createUser: '',
+        updateUser: ''
+    }
+
+
     quoteOptionsData: any = {
         tableData: [],
         tHeader: ['Option No', 'Rate(%)', 'Conditions', 'Comm Rate Quota(%)', 'Comm Rate Surplus(%)', 'Comm Rate Fac(%)'],
@@ -92,8 +101,16 @@ export class QuoteEndorsementComponent implements OnInit {
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title,  private route: ActivatedRoute) { }
 
     ngOnInit() {  
+        this.titleService.setTitle("Quo | Endorsements");
+        this.sub = this.route.params.subscribe(params => {
+            this.from = params['from'];
+      
+            if (this.from === "oc-processing") {
+              console.log("OPEN COVER !!!");
+            }
+          });
 
-        this.titleService.setTitle("Quo | Endorsementss");
+
         this.dtOptions = {
             ordering: false,
             pagingType: 'simple_numbers',
@@ -135,7 +152,7 @@ export class QuoteEndorsementComponent implements OnInit {
                                                                    );          
                           }
                         this.table.forEach(table => { table.refreshTable() });
-      /*                    this.table.refreshTable();*/
+      /*                    this.table.refreshTable();*/ 
                     });
 
 
@@ -170,17 +187,23 @@ export class QuoteEndorsementComponent implements OnInit {
                        
                     });
                   
-
+                    
                     this.quotationService.getEndorsements(null,this.plainQuotationNo(this.quotationNum),'1').subscribe((data: any) => {
                         for(var lineCount = 0; lineCount < data.endorsements.length; lineCount++){
                               this.endorsementData.tableData.push(new QuoteEndorsement(
                                                                            data.endorsements[lineCount].endtCd, 
                                                                            data.endorsements[lineCount].endtTitle,
                                                                            data.endorsements[lineCount].description,
-                                                                           null)
-                                                                   );          
+                                                                           data.endorsements[lineCount].remarks)
+                                                                   );
+                                                                  this.saveEndt.quoteId = data.endorsements[lineCount].quoteId;
+                                                                  this.saveEndt.optionId = data.endorsements[lineCount].optionId; 
+                                                                  this.saveEndt.createDate = this.formatDate(data.endorsements[lineCount].createDate);
+                                                                  this.saveEndt.createUser = data.endorsements[lineCount].createUser;
+                                                                  this.saveEndt.updateUser = data.endorsements[lineCount].updateUser;
                           }
                         this.table.forEach(table => { table.refreshTable() });
+                          
                     }); 
                 }  
 
@@ -188,10 +211,6 @@ export class QuoteEndorsementComponent implements OnInit {
 
             }
 
-
-        
-
-        
     }
 
     clickRow(event) {
@@ -247,4 +266,33 @@ export class QuoteEndorsementComponent implements OnInit {
         return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]);
     }
 
+    // arn //
+    endorsementReq:any;
+    onClickSave(event){
+         for(var i=0;i<this.endorsementData.tableData.length;i++){
+            this.endorsementReq = {
+                // "createDate": this.saveEndt.createDate,
+                "createDate": new Date().toISOString(),
+                // "createUser":  this.saveEndt.createUser,
+                "createUser":  "user",
+                "endtCd":       this.endorsementData.tableData[i].endtCode,
+                // "optionId":    this.saveEndt.optionId,
+                "optionId":    23,
+                // "quoteId":      this.saveEndt.quoteId,
+                "quoteId":      12,
+                "remarks":    this.endorsementData.tableData[i].endtWording,
+                "updateDate":  new Date().toISOString(),
+                // "updateUser":  this.saveEndt.updateUser
+                "updateUser":  "use"
+            }
+            console.log(this.endorsementReq);
+        }
+
+        this.quotationService.saveQuoteEndorsements(JSON.stringify(this.endorsementReq))
+            .subscribe(data => console.log(data));
+    }
+    formatDate(date){
+        return new Date(date[0] + "/" + date[1] + "/" + date[2]).toISOString();
+    }
+    // end-arn //
 }
