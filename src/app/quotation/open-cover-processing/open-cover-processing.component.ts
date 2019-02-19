@@ -244,7 +244,7 @@ export class OpenCoverProcessingComponent implements OnInit {
 
       this.quotationService.rowData = [];
       setTimeout(() => {
-        this.router.navigate(['/open-cover', { line: ocLine, from: "oc-processing", typeOfCession: this.mtnCessionDesc, riskId: this.riskId }], { skipLocationChange: true });
+        this.router.navigate(['/open-cover', { line: ocLine, from: "oc-processing", typeOfCession: this.mtnCessionDesc, riskId: this.riskId, ocQuoteNo: this.ocQuoteNo.trim() }], { skipLocationChange: true });
       }, 100);
     }
 

@@ -297,6 +297,7 @@ import { FundsHeldComponent } from './accounting-in-trust/month-end/funds-held/f
 import { ExtractRecordComponent } from './accounting-in-trust/month-end/funds-held/extract-record/extract-record.component';
 import { UnearnedPremiumComponent } from './accounting-in-trust/month-end/funds-held/unearned-premium/unearned-premium.component';
 import { LovComponent } from './_components/common/lov/lov.component';
+import { SucessDialogComponent } from './_components/common/sucess-dialog/sucess-dialog.component';
 
 
 @NgModule({
@@ -601,6 +602,7 @@ import { LovComponent } from './_components/common/lov/lov.component';
         ExtractRecordComponent,
         UnearnedPremiumComponent,
         LovComponent,
+        SucessDialogComponent,
     ],
 
     providers: [

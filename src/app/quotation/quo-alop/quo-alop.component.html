@@ -125,7 +125,7 @@
 	<div header>Item Information</div>	
 	<div body>
 		 <div style="margin-bottom: -90px !important">
-                <app-cust-editable-non-datatable [passData]="itemInfoData" (onDataChange)="itemInfoData.tableData=$event"></app-cust-editable-non-datatable>
+                <app-cust-editable-non-datatable [passData]="itemInfoData" (tableDataChange)="updateItemInfoData($event)"></app-cust-editable-non-datatable>
          </div>  
 	</div>
 	<div footer class="text-center">
@@ -136,3 +136,5 @@
 
 <app-mtn-insured id="insuredLOV" (selectedData)="setInsured($event)"></app-mtn-insured>
 <app-lov id="lov" [passData]="passLOV" (selectedData)="setInsured($event)"></app-lov>
+
+<app-sucess-dialog></app-sucess-dialog>
