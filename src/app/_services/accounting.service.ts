@@ -693,7 +693,11 @@ export class AccountingService {
 
 	getAROthers(){
 		this.arOthers = [
+/*<<<<<<< HEAD
 			new AROthers("Utilities",null,"Payment For","Refund","PHP",1.0,-50000,-50000),
+=======*/
+			new AROthers("Utilities","","Payment For","Refund","PHP",1.0,-50000,-50000),
+/*>>>>>>> 175e99f85deab8a5e9768e8a21f93aff2ffc85be*/
 		];
 		return this.arOthers;
 	}
