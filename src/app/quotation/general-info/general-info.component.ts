@@ -6,7 +6,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 
-
 @Component({
 	selector: 'app-general-info',
 	templateUrl: './general-info.component.html',
@@ -132,9 +131,13 @@ export class GeneralInfoComponent implements OnInit {
 	intName: string = "";
 
 	@Output() checkQuoteId = new EventEmitter<any>();
-
+/*testClick(){
+	$('.t').focus();
+	$('.t').blur();
+}*/
 	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute, private maintenanceService: MaintenanceService) { }
 	ngOnInit() {
+
 		this.titleService.setTitle("Quo | General Info");
 		this.tHeader.push("Item No", "Description of Items");
 		this.dataTypes.push("text", "text");
@@ -194,8 +197,7 @@ export class GeneralInfoComponent implements OnInit {
 				this.genInfoData.issueDate		= new Date().toISOString();
 				this.project.projId 			= '1';
 
-				this.maintenanceService.getMtnRisk(JSON.parse(params['addParams']).riskId).subscribe(data => {
-					console.log('RISK  >>>  ' + JSON.stringify(data));
+				this.maintenanceService.getMtnRisk(JSON.parse(params['addParams']).riskId).subscribe(data => {					
 					var risk = data['risk'];
 
 					this.project.blockCd 		= risk.blockCd;
@@ -249,8 +251,6 @@ export class GeneralInfoComponent implements OnInit {
 	func(a: string, b: Date) {
 		this.quotationGenInfo.createdBy = a;
 		this.quotationGenInfo.lastUpdate = b;
-		console.log(this.quotationGenInfo.createdBy);
-		console.log(this.quotationGenInfo.lastUpdate);
 	}
 
 	defaultValues(year: Date) {
