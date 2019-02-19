@@ -15,33 +15,13 @@ export class CoverageComponent implements OnInit {
   private quotationCoverageInfo: QuotationCoverageInfo;
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   //tableDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
-  tHeader: any[] = [];
-  magnifyingGlass: any[] = ['coverCode'];
-  options: any[] = [];
-  dataTypes: any[] = [];
-  opts: any[] = [];
-  checkFlag;
-  selectFlag;
-  addFlag;
-  editFlag;
-  deleteFlag;
-  paginateFlag;
-  infoFlag;
-  searchFlag;
 
-  checkboxFlag;
-  columnId;
-  pageLength = 10;
 
   editedData: any[] = [];
+  deletedData: any[] = [];
   // editedDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
   // rowClick: EventEmitter<any> = new EventEmitter();
   // rowDblClick: EventEmitter<any> = new EventEmitter();
-
-  optionsData: any[] = [];
-  optionsData2: any[] = [];
-  selOptions: any[] = [];
-
   
 
   coverageData: any = {
@@ -58,10 +38,8 @@ export class CoverageComponent implements OnInit {
   passData: any = {
     tHeader: ['Cover Code','Section','Bullet No','Sum Insured','Add Sl'],
     tableData:[],
-    magnifyingGlass: [],
-    options: [],
-    dataTypes: [],
-    opts: [],
+    dataTypes: ['text','select','select','currency','checkbox'],
+    opts: [{ selector: "section", vals: ["I", "II", "III"] }, { selector: "bulletNo", vals: ["1", "1.2", "1.3"] }],
     nData: {
       createDate: [0,0,0],
       createUser: "PCPR",
@@ -74,16 +52,12 @@ export class CoverageComponent implements OnInit {
       updateUser: "PCPR"
     },
     checkFlag: true,
-    selectFlag: false,
     addFlag: true,
-    editFlag: false,
     deleteFlag: true,
-    paginateFlag: false,  
-    infoFlag: false,
     searchFlag: true,
     checkboxFlag: true,
     pageLength: 'unli',
-    widths: [],
+    widths:[228,1,1,200,1,1],
     keys:['coverCd','section','bulletNo','sumInsured','addSi']
   };
 
@@ -92,85 +66,49 @@ export class CoverageComponent implements OnInit {
   multiSelectHeaderTxt: string = "";
   multiSelectData: any[] = [];
   dataLoaded:boolean = false;
-
   nData: QuotationCoverageInfo = new QuotationCoverageInfo(null, null, null, null, null);
-
   quotationNo: string;
   insuredName: string;
   risk: string;
-
-  constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute) {
-
-
-   }
-
+  quoteId: number;
+  projId: number;
+  riskId: number;
   temp: number = 0;
   sub: any;
+  quoteNo:string = '';
+  lineCd: string = '';
 
-  printSelectedValue(event) {
-  }
-
-  getMS(event) {
-    console.log('VALUE : ' + event.returnValue + ' ' + 'ID : ' + event.returnId);
-  }
+  constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute) {}
 
   ngOnInit() {
-    let quoteNo:string = "";
     this.sub = this.route.params.subscribe(params => {
+
       this.quotationNo = params["quotationNo"];
-      quoteNo = this.quotationNo.split(/[-]/g)[0]
+      this.quoteNo = this.quotationNo.split(/[-]/g)[0]
       for (var i = 1; i < this.quotationNo.split(/[-]/g).length; i++) {
-       quoteNo += '-' + parseInt(this.quotationNo.split(/[-]/g)[i]);
+       this.quoteNo += '-' + parseInt(this.quotationNo.split(/[-]/g)[i]);
      } 
     });
     
-    this.quotationService.getCoverageInfo(quoteNo,null).subscribe((data: any) => {
-      this.risk = data.quotation.project.riskName;
-        this.coverageData = data.quotation.project.coverage;
+    this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
+      
+      this.quoteId      = data.quotation.quoteId;
+      this.riskId       = data.quotation.project.riskId;
+      this.risk         = data.quotation.project.riskName;
+      this.coverageData = data.quotation.project.coverage;
         // this.passData.tableData = data.quotation.project.coverage.sectionCovers;
         for (var i = data.quotation.project.coverage.sectionCovers.length - 1; i >= 0; i--) {
           this.passData.tableData.push(data.quotation.project.coverage.sectionCovers[i]);
         }
         this.table.refreshTable();
+
     });
 
     this.titleService.setTitle("Quo | Coverage");
-    this.optionsData.push("USD", "PHP", "EUR");
-    this.optionsData2.push("a", "b", "c");
+    
 
     this.multiSelectHeaderTxt = "COVERAGE";
     this.multiSelectData.push("zero", "one", "two", "three", "four");
-
-    this.tHeader.push("Cover Code");
-    this.tHeader.push("Section");
-    this.tHeader.push("Bullet No");
-    this.tHeader.push("Sum Insured");
-    this.tHeader.push("Add Sl");
-
-    this.dataTypes.push("text");
-    this.dataTypes.push("select");
-    this.dataTypes.push("select");
-    this.dataTypes.push("currency");
-    this.dataTypes.push("checkbox");
-
-    this.selOptions.push({ selector: "section", vals: ["I", "II", "III"] });
-    this.selOptions.push({ selector: "bulletNo", vals: ["1", "1.2", "1.3"] });
-    this.selOptions.push({ selector: "sortSe", vals: ["10", "20", "30"] });
-
-    this.passData.dataTypes.push("text");
-    this.passData.dataTypes.push("select");
-    this.passData.dataTypes.push("select");
-    this.passData.dataTypes.push("currency");
-    this.passData.dataTypes.push("checkbox");
-
-    this.passData.opts.push({ selector: "section", vals: ["I", "II", "III"] });
-    this.passData.opts.push({ selector: "bulletNo", vals: ["1", "1.2", "1.3"] });
-    this.passData.opts.push({ selector: "sortSe", vals: ["10", "20", "30"] });
-
-    this.passData.widths.push("1", "auto", "auto", "auto", "1", "1");
-    this.passData.magnifyingGlass.push("coverCode");
-
-
 
     // this.quotationCoverageInfo = new QuotationCoverageInfo(null, null, null, null, null, null, null, null);
     // this.quotationCoverageInfo.quotationNo = "MOCK DATA";
@@ -184,36 +122,35 @@ export class CoverageComponent implements OnInit {
   }
 
   saveData(){
-    console.log(this.passData.tableData);
+   this.lineCd     = this.quoteNo.split('-')[0];
    this.editedData = [];
+   this.deletedData = [];
+
    for (var i = 0 ; this.passData.tableData.length > i; i++) {
-      /*if(this.passData.tableData[i].edited){
+      if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted ){
           this.editedData.push(this.passData.tableData[i]);
           this.editedData[this.editedData.length-1].createDate = new Date(this.editedData[this.editedData.length-1].createDate[0],this.editedData[this.editedData.length-1].createDate[1]-1,this.editedData[this.editedData.length-1].createDate[2]).toISOString();
           this.editedData[this.editedData.length-1].updateDate = new Date(this.editedData[this.editedData.length-1].updateDate[0],this.editedData[this.editedData.length-1].updateDate[1]-1,this.editedData[this.editedData.length-1].updateDate[2]).toISOString();
-          this.editedData[this.editedData.length-1].lineCd = 'CAR';
-        }*/
-     
-          this.editedData.push(this.passData.tableData[i]);
-          this.editedData[this.editedData.length-1].createDate = new Date(this.editedData[this.editedData.length-1].createDate[0],this.editedData[this.editedData.length-1].createDate[1]-1,this.editedData[this.editedData.length-1].createDate[2]).toISOString();
-          this.editedData[this.editedData.length-1].updateDate = new Date(this.editedData[this.editedData.length-1].updateDate[0],this.editedData[this.editedData.length-1].updateDate[1]-1,this.editedData[this.editedData.length-1].updateDate[2]).toISOString();
-          this.editedData[this.editedData.length-1].lineCd = 'CAR';
-        
+          this.editedData[this.editedData.length-1].lineCd     = this.lineCd;
+      }else if(this.passData.tableData[i].edited && this.passData.tableData[i].deleted){
+        this.deletedData.push(this.passData.tableData[i]);
+        this.deletedData[this.deletedData.length-1].createDate = new Date(this.deletedData[this.deletedData.length-1].createDate[0],this.deletedData[this.deletedData.length-1].createDate[1]-1,this.deletedData[this.deletedData.length-1].createDate[2]).toISOString();
+        this.deletedData[this.deletedData.length-1].updateDate = new Date(this.deletedData[this.deletedData.length-1].updateDate[0],this.deletedData[this.deletedData.length-1].updateDate[1]-1,this.deletedData[this.deletedData.length-1].updateDate[2]).toISOString();
+        this.deletedData[this.deletedData.length-1].lineCd = this.lineCd;
+      }
     }
 
-    this.coverageData.createDate = new Date(this.coverageData.createDate[0],this.coverageData.createDate[1]-1,this.coverageData.createDate[2]).toISOString();
-    
-   
-    this.coverageData.sectionCovers =this.editedData;
-    this.coverageData.quoteId=1;
-    this.coverageData.projId=1;
-    this.coverageData.riskId=1;
-    this.quotationService.saveQuoteCoverage(10,10,this.coverageData).subscribe((data: any) => {});
+    this.coverageData.createDate     = new Date(this.coverageData.createDate[0],this.coverageData.createDate[1]-1,this.coverageData.createDate[2]).toISOString();
+    this.coverageData.saveSectionCovers  = this.editedData;
+    this.coverageData.deleteSectionCovers = this.deletedData;
+    this.coverageData.quoteId        = this.quoteId;
+    this.coverageData.projId         = 1;
+    this.coverageData.riskId         = this.riskId;
+    this.quotationService.saveQuoteCoverage(this.coverageData.quoteId,this.coverageData.projId,this.coverageData).subscribe((data: any) => {});
     
   }
 
   cancel(){
-    console.log(this.coverageData.totalSi);
   }
 
 }

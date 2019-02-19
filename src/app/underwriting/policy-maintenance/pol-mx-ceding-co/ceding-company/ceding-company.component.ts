@@ -60,19 +60,19 @@ export class CedingCompanyComponent implements OnInit {
                 dataType: 'date'
             }
         ],
-        pageID: 6,
+        pageID: 12,
         keys:['coNo','name','abbreviation','address','membershipDate','terminationDate','inactiveDate']
     };
     
   constructor(private underwritingService: UnderwritingService, private modalService: NgbModal ) { }
 
   ngOnInit() {
-  	this.underwritingService.getCedingCompanyList().subscribe((data: any) => {
+  	/*this.underwritingService.getCedingCompanyList().subscribe((data: any) => {
                 for(var i=0;i< data.cedingcompany.length;i++){
                     this.passDataCedingCompany.tableData.push(new CedingCompanyListing(data.cedingcompany[i].cedingId,data.cedingcompany[i].cedingName,data.cedingcompany[i].cedingAbbr,data.cedingcompany[i].address,(data.cedingcompany[i].membershipDate == null ? null : new Date(data.cedingcompany[i].membershipDate[i],data.cedingcompany[i].membershipDate[1]-1,data.cedingcompany[i].membershipDate[2])),(data.cedingcompany[i].terminationDate == null ? null : new Date(data.cedingcompany[i].terminationDate[i],data.cedingcompany[i].terminationDate[1]-1,data.cedingcompany[i].terminationDate[2])),(data.cedingcompany[i].inactiveDate == null ? null : new Date(data.cedingcompany[i].inactiveDate[i],data.cedingcompany[i].inactiveDate[1]-1,data.cedingcompany[i].inactiveDate[2]))));
                 }
 				this.table.refreshTable();          
-    });
+    });*/
   }
 
   onRowClick(data){
@@ -82,6 +82,15 @@ export class CedingCompanyComponent implements OnInit {
 
   okBtnClick(){
   	this.selectedData.emit(this.selected);
+  }
+
+  openModal(){
+     this.underwritingService.getCedingCompanyList().subscribe((data: any) => {
+         for(var i=0;i< data.cedingcompany.length;i++){
+             this.passDataCedingCompany.tableData.push(new CedingCompanyListing(data.cedingcompany[i].cedingId,data.cedingcompany[i].cedingName,data.cedingcompany[i].cedingAbbr,data.cedingcompany[i].address,(data.cedingcompany[i].membershipDate == null ? null : new Date(data.cedingcompany[i].membershipDate[i],data.cedingcompany[i].membershipDate[1]-1,data.cedingcompany[i].membershipDate[2])),(data.cedingcompany[i].terminationDate == null ? null : new Date(data.cedingcompany[i].terminationDate[i],data.cedingcompany[i].terminationDate[1]-1,data.cedingcompany[i].terminationDate[2])),(data.cedingcompany[i].inactiveDate == null ? null : new Date(data.cedingcompany[i].inactiveDate[i],data.cedingcompany[i].inactiveDate[1]-1,data.cedingcompany[i].inactiveDate[2]))));
+         }
+         this.table.refreshTable();          
+     });
   }
 
 

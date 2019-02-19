@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AttachmentInfo } from '@app/_models';
 import { QuotationService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
@@ -46,8 +47,9 @@ export class AttachmentOcComponent implements OnInit {
 
   data: any;
   savedData: any[];
+  deletedData: any[];
 
-  constructor(private titleService: Title, private quotationService: QuotationService) { }
+  constructor(private titleService: Title, private quotationService: QuotationService, private modalService: NgbModal) { }
 
   ngOnInit() {
   	this.titleService.setTitle("Quo-OC | Attachment");
@@ -73,7 +75,7 @@ export class AttachmentOcComponent implements OnInit {
 
   saveData(){
     this.savedData = [];
-    
+    this.deletedData = [];
     /*for (var i = 0 ; this.passData.tableData.length > i; i++) {
       if(this.passData.tableData[i].edited){
           this.savedData.push(this.passData.tableData[i]);
@@ -85,21 +87,26 @@ export class AttachmentOcComponent implements OnInit {
         }
     }*/
     for (var i = 0 ; this.passData.tableData.length > i; i++) {
-      if(this.passData.tableData[i].edited){
+      if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
           this.savedData.push(this.passData.tableData[i]);
           //this.savedData[this.savedData.length-1].createDate = new Date(this.savedData[this.savedData.length-1].createDate[0],this.savedData[this.savedData.length-1].createDate[1]-1,this.savedData[this.savedData.length-1].createDate[2]).toISOString();
           //this.savedData[this.savedData.length-1].updateDate = new Date(this.savedData[this.savedData.length-1].updateDate[0],this.savedData[this.savedData.length-1].updateDate[1]-1,this.savedData[this.savedData.length-1].updateDate[2]).toISOString();
           //this.savedData[this.savedData.length-1].fileNo = 0;
           this.savedData[this.savedData.length-1].createDate = new Date().toISOString();
           this.savedData[this.savedData.length-1].updateDate = new Date().toISOString();
-        }
+      }
+      else if(this.passData.tableData[i].edited && this.passData.tableData[i].deleted){
+         this.deletedData.push(this.passData.tableData[i]);
+         this.deletedData[this.deletedData.length-1].createDate = new Date().toISOString();
+         this.deletedData[this.deletedData.length-1].updateDate = new Date().toISOString();
+      }
+
     }
     //console.log(this.savedData);
-    this.quotationService.saveQuoteAttachmentOc(1,this.savedData).subscribe((data: any) => {});
+    this.quotationService.saveQuoteAttachmentOc(1,this.savedData,this.deletedData).subscribe((data: any) => {});
   }
 
   cancel(){
-    console.log(this.passData.tableData);
   }
 
 }

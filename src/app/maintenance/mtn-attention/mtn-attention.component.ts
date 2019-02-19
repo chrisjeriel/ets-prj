@@ -27,19 +27,19 @@ export class MtnAttentionComponent implements OnInit {
 		infoFlag: true,
 		pageLength: 5,
 		widths: ['1','1','1','1','auto','auto','auto','1'],
-		pageID: 2,
-        keys:['designation' ,'firstName' ,'mI' ,'lastName' ,'position' ,'department' ,'contactNo' ,'eSignature' ]
+		pageID: 16,
+        keys:['designation' ,'firstName' ,'middleInitial' ,'lastName' ,'position' ,'department' ,'contactNo' ,'eSignature' ]
 	}
     selected: any;
 
   ngOnInit() {
-  	this.underwritingService.getCedingCompanyLOV(this.cedingId).subscribe((data:any) => {
+  	/*this.underwritingService.getCedingCompanyLOV(this.cedingId).subscribe((data:any) => {
             for (var i = 0; i < data.cedingCompany.length; i++) {
                 this.passDataAttention.tableData.push(new CedingCompany( data.cedingCompany[i].cedingRepresentative.defaultTag,  data.cedingCompany[i].cedingRepresentative.designation, data.cedingCompany[i].cedingRepresentative.firstName, data.cedingCompany[i].cedingRepresentative.middleInitial, data.cedingCompany[i].cedingRepresentative.lastName, data.cedingCompany[i].cedingRepresentative.position, data.cedingCompany[i].cedingRepresentative.department, data.cedingCompany[i].cedingRepresentative.contactNo, data.cedingCompany[i].cedingRepresentative.eSignature));
 
             }
             this.table.refreshTable();
-        });
+        });*/
   }
 
   select(data){
@@ -48,5 +48,29 @@ export class MtnAttentionComponent implements OnInit {
 
   okBtnClick(){
   	this.selectedData.emit(this.selected);
+    this.passDataAttention.tableData = [];
+    this.table.refreshTable();
+  }
+
+  cancel(){
+      this.passDataAttention.tableData = [];
+      this.table.refreshTable();
+     //console.log('popped');
+  }
+  openModal(){
+      /*for(var j = 0; j < this.passDataAttention.tableData.length; j++){
+        this.passDataAttention.tableData.pop();
+      }*/
+      setTimeout(()=>{    //<<<---    using ()=> syntax
+           this.underwritingService.getCedingCompanyLOV(this.cedingId).subscribe((data:any) => {
+                       for (var i = 0; i < data.cedingCompany.length; i++) {
+                           //this.passDataAttention.tableData.push(new CedingCompany( data.cedingCompany[i].cedingRepresentative.defaultTag,  data.cedingCompany[i].cedingRepresentative.designation, data.cedingCompany[i].cedingRepresentative.firstName, data.cedingCompany[i].cedingRepresentative.middleInitial, data.cedingCompany[i].cedingRepresentative.lastName, data.cedingCompany[i].cedingRepresentative.position, data.cedingCompany[i].cedingRepresentative.department, data.cedingCompany[i].cedingRepresentative.contactNo, data.cedingCompany[i].cedingRepresentative.eSignature));
+                           this.passDataAttention.tableData.push(data.cedingCompany[i].cedingRepresentative);
+
+                       }
+                       this.table.refreshTable();
+                   });
+       }, 100);
+      
   }
 }
