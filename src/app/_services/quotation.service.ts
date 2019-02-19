@@ -787,9 +787,8 @@ export class QuotationService {
 
     getCoverageOc(quoteIdOc:string,openQuotationNo:string){
         const params = new HttpParams()
-             .set('quoteIdOc','2')
-             .set('openQuotationNo', 'OC-EAR-2018-1001-2-2323' );
-             console.log(params);
+             .set('quoteIdOc', quoteIdOc)
+             .set('openQuotationNo', openQuotationNo);
         return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteCoverageOc',{params});
     }
 

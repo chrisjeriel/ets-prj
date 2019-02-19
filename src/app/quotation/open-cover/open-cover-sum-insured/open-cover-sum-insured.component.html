@@ -27,14 +27,14 @@
 				<div class="custom-row-inline-inset">
 					<div class="input-group">
 						<label class="form-control-sm col-sm-4" for="inputRisk" >Currency</label>
-            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm">
+            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)] = "data.currencyCd">
             			<label class="form-control-sm col-sm" for="inputRisk" >Exch. Rt.</label>
-            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" >
+            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)] = "data.currencyRt">
             			<label class="col-sm-2"></label>
 					</div>
 					<div class="input-group">
 						<label class="form-control-sm col-sm-4" for="inputRisk" style="padding-left: 0px;">Max Sum Insured</label>
-            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm">
+            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)] = "data.maxSi">
             			<label class="col-sm-2"></label>
 					</div>
 				</div>
@@ -46,14 +46,14 @@
 				<div class="custom-row-inline-inset">
 					<div class="input-group">
 						<label class="form-control-sm col-sm-4" for="inputRisk" >Share (%)</label>
-            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm">
+            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)] = "data.pctShare">
             			<label class="form-control-sm col-sm" for="inputRisk" >PML (%)</label>
-            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" >
+            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)] = "data.pctPml">
             			<label class="col-sm-2"></label>
 					</div>
 					<div class="input-group">
 						<label class="form-control-sm col-sm-4" for="inputRisk" style="padding-left: 0px;">100% Value</label>
-            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm">
+            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)] = "data.totalValue">
             			<label class="col-sm-2"></label>
 					</div>
 				</div>

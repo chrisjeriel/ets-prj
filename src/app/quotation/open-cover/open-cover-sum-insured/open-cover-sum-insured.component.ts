@@ -14,7 +14,7 @@ export class OpenCoverSumInsuredComponent implements OnInit {
   sub: any;
   quoteNo:string = '';
 
-  coverageOc: any = {
+  data: any = {
   	currencyCd: null,
   	currencyRt: null,
   	maxSi: null,
@@ -35,20 +35,21 @@ export class OpenCoverSumInsuredComponent implements OnInit {
 	     } 
 	    });*/
 	  	this.quotationService.getCoverageOc('2', 'OC-EAR-2018-1001-2-2323').subscribe((data: any) => {
-	  	    /*this.data = data.quotationOc[0].attachmentOc;
-	  	    // this.passData.tableData = data.quotation.project.coverage.sectionCovers;
-	  	    for (var i = 0; i < this.data.length; i++) {
-	  	      this.passData.tableData.push(this.data[i]);
-	  	    }
-	  	    this.custEditableNonDatatableComponent.refreshTable();*/
+	  	    this.data.currencyCd = data.quotationOc.projectOc.coverageOc.currencyCd;
+	  	    this.data.currencyRt = data.quotationOc.projectOc.coverageOc.currencyRt;
+	  	    this.data.maxSi = data.quotationOc.projectOc.coverageOc.maxSi;
+	  	    this.data.pctShare = data.quotationOc.projectOc.coverageOc.pctShare;
+	  	    this.data.pctPml = data.quotationOc.projectOc.coverageOc.pctPml;
+	  	    this.data.totalValue = data.quotationOc.projectOc.coverageOc.totalValue;
 	  	    console.log("sum insured data");
 	  	    console.log(data);
 	  	});
+	  	console.log(this.data);
 
   }
 
   saveData(){
-   
+   console.log(this.data);
   }
 
 }
