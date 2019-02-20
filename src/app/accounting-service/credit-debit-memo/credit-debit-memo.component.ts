@@ -31,4 +31,8 @@ export class CreditDebitMemoComponent implements OnInit {
     this.router.navigate(['/accounting-service-credit-debit-memo'], { skipLocationChange: true }); 
   }
 
+  toGenerateCMDM(event) {
+    this.router.navigate(['/accounting-service-credit-debit-memo'], { skipLocationChange: true });
+  }
+
 }

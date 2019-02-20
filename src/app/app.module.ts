@@ -615,7 +615,7 @@ import { SucessDialogComponent } from './_components/common/sucess-dialog/sucess
         JvOffsettingAgainstLossesComponent,
         JvOffsettingAgainstNegativeTreatyComponent,
         JvOverdueAccountsAgainstTreatyComponent,
-        SucessDialogComponent,
+        SucessDialogComponent
     ],
 
     providers: [
