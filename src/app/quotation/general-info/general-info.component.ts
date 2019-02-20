@@ -367,6 +367,22 @@ export class GeneralInfoComponent implements OnInit {
 			});
 
 			$('#successMdl > #modalBtn').trigger('click');
+			//for internal comp
+			if(this.internalCompFlag){
+				var internalCompParams: any = {
+				  adviceNo: 0,
+				  cedingId: 0,
+				  cedingRepId: '',
+				  createDate: '',
+				  createUser: '',
+				  option: '',
+				  quoteId: 0,
+				  updateDate: '',
+				  updateUser: '',
+				  wordings: ''
+				}
+			}
+			//end internal comp
 		} else {
 			//$('#errorMdl > #modalBtn').trigger('click');
 			console.log('ERROR MODAL PO');
