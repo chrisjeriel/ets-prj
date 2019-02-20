@@ -210,15 +210,15 @@ export class AccountingService {
 
 	getPaytRequestsList() {
 		this.paytRequestListData = [
-			new AccountingRequestsListRP('CSR-2015-01-0001', 'SM Prime Holdings, Inc.', 'Claim Payment', 'Paid', new Date(), 'Payment for Claim No.', 'PHP', 1642857.14, 'Edward M. Salunson'),
-			new AccountingRequestsListRP('CSR-2017-12-0001', 'Rustan, Inc.', 'Claim Payment', 'Paid', new Date(), 'Payment for Claim No.', 'PHP', 200000, 'Christian M. Lumen'),
-			new AccountingRequestsListRP('PRR-2017-12-0002', 'San Miguel Corporation', 'Premium Returns', 'Paid', new Date(), 'Return of Premium for Policy No.', 'PHP', 100000, 'Chie Reyes'),
-			new AccountingRequestsListRP('PRR-2017-12-0003', 'DMCI', 'Premium Returns', 'Cancelled', new Date(), 'Return of Premium for Policy No.', 'USD', 1000000, 'Chie Reyes'),
-			new AccountingRequestsListRP('PRR-2018-01-0001', 'ABS-CBN', 'Premium Returns', 'Paid', new Date(), 'Return of Premium for Policy No.', 'PHP', 710716.12, 'Juan de la Cruz'),
-			new AccountingRequestsListRP('QBR-2018-02-0001', 'SMDC', 'QSOA Balances', 'Paid', new Date(), 'Treaty Balance due for 1st Qtr for company', 'SGD', 756929, 'Juan de la Cruz'),
-			new AccountingRequestsListRP('PRR-2018-02-0002', 'Universal Robina, Inc.', 'Premium Returns', 'Open', new Date(), 'Return of Premium for Policy No.', 'EUR', 300000, 'Juan de la Cruz'),
-			new AccountingRequestsListRP('QBR-2018-03-0001', 'SGV & Co.', 'QSOA Balances', 'Open', new Date(), 'Treaty Balance due for 1st Qtr for company', 'HKD', 1000000, 'Christian M. Lumen'),
-			new AccountingRequestsListRP('CSR-2018-09-0001', 'Accenture', 'Claim Payment', 'Open', new Date(), 'Payment for Claim No.', 'PHP', 230000, 'Chie Reyes'),
+			new AccountingRequestsListRP('CSR-2015-01-0001', 'SM Prime Holdings, Inc.', 'Claim Expense Payment to Ceding Company', 'Paid', new Date(), 'Payment for Claim No.', 'PHP', 1642857.14, 'Edward M. Salunson'),
+			new AccountingRequestsListRP('CSR-2017-12-0001', 'Rustan, Inc.', 'Claim Expense Payment to Other Parties', 'Paid', new Date(), 'Payment for Claim No.', 'PHP', 200000, 'Christian M. Lumen'),
+			new AccountingRequestsListRP('PRR-2017-12-0002', 'San Miguel Corporation', 'Claim Payment to Ceding Company', 'Paid', new Date(), 'Return of Premium for Policy No.', 'PHP', 100000, 'Chie Reyes'),
+			new AccountingRequestsListRP('PRR-2017-12-0003', 'DMCI', 'Inward Policy Balances - Returns', 'Cancelled', new Date(), 'Return of Premium for Policy No.', 'USD', 1000000, 'Chie Reyes'),
+			new AccountingRequestsListRP('PRR-2018-01-0001', 'ABS-CBN', 'Payment of Service Fee by In-Trust to Service Accounting', 'Paid', new Date(), 'Return of Premium for Policy No.', 'PHP', 710716.12, 'Juan de la Cruz'),
+			new AccountingRequestsListRP('QBR-2018-02-0001', 'SMDC', 'Treaty Balance Due Participant', 'Paid', new Date(), 'Treaty Balance due for 1st Qtr for company', 'SGD', 756929, 'Juan de la Cruz'),
+			new AccountingRequestsListRP('PRR-2018-02-0002', 'Universal Robina, Inc.', 'QSOA Balances', 'Open', new Date(), 'Return of Premium for Policy No.', 'EUR', 300000, 'Juan de la Cruz'),
+			new AccountingRequestsListRP('QBR-2018-03-0001', 'SGV & Co.', 'Investment (Placement)', 'Open', new Date(), 'Treaty Balance due for 1st Qtr for company', 'HKD', 1000000, 'Christian M. Lumen'),
+			new AccountingRequestsListRP('CSR-2018-09-0001', 'Accenture', 'Payment of Service Fee by In-Trust to Service Accounting', 'Open', new Date(), 'Payment for Claim No.', 'PHP', 230000, 'Chie Reyes'),
 			new AccountingRequestsListRP('OTR-2018-11-0001', 'NSO', 'Others', 'Open', new Date(), 'Miscellaneous payment for', 'RMB', 1500000, 'Chie Reyes'),
 			new AccountingRequestsListRP('OTR-2019-04-0095', 'DFA', 'Others', 'Open', new Date(), 'Miscellaneous payment for', 'PHP', 1642857.14, 'Chie Reyes'),
 			new AccountingRequestsListRP('QBR-2019-05-0032', 'Robinsons', 'Others', 'Open', new Date(), 'Miscellaneous payment for', 'USD', 1342752.24, 'Chie Reyes'),
@@ -693,7 +693,11 @@ export class AccountingService {
 
 	getAROthers(){
 		this.arOthers = [
-			new AROthers("Utilities","Payment For","Refund","PHP",1.0,-50000,-50000),
+/*<<<<<<< HEAD
+			new AROthers("Utilities",null,"Payment For","Refund","PHP",1.0,-50000,-50000),
+=======*/
+			new AROthers("Utilities","","Payment For","Refund","PHP",1.0,-50000,-50000),
+/*>>>>>>> 175e99f85deab8a5e9768e8a21f93aff2ffc85be*/
 		];
 		return this.arOthers;
 	}

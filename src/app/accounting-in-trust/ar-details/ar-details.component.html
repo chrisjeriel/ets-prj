@@ -54,8 +54,8 @@
 				<ng-container [ngSwitch]="paymentType.toUpperCase()">
 					<div *ngSwitchCase="'INWARD POLICY BALANCES'">Inward Policy Balances</div>
 					<div *ngSwitchCase="'CLAIM RECOVERY / OVERPAYMENT'">Claim Recovery / Overpayment</div>
-					<div *ngSwitchCase="'QSOA'">Negative Treaty Balance</div>
-					<div *ngSwitchCase="'CLAIM CASH CALL'">Payment of Claim Cash Call by Company</div>
+					<div *ngSwitchCase="'NEGATIVE TREATY BALANCE'">Negative Treaty Balance</div>
+					<div *ngSwitchCase="'PAYMENT OF CLAIM CASH CALL BY COMPANY'">Payment of Claim Cash Call by Company</div>
 					<div *ngSwitchCase="'INVESTMENT'">Investment Pull-Out</div>
 					<div *ngSwitchCase="'LOSS RESERVE DEPOSIT'">Loss Reserve Deposit</div>
 					<div *ngSwitchCase="'CLAIM OVER PAYMENT'">Claim Over Payment</div>
@@ -72,10 +72,10 @@
 							<ng-container *ngSwitchCase="'CLAIM RECOVERY / OVERPAYMENT'">
 								<app-claim-recovery></app-claim-recovery>
 							</ng-container>
-							<ng-container *ngSwitchCase="'QSOA'">
+							<ng-container *ngSwitchCase="'NEGATIVE TREATY BALANCE'">
 								<app-ar-details-qsoa></app-ar-details-qsoa>
 							</ng-container>
-							<ng-container *ngSwitchCase="'CLAIM CASH CALL'">
+							<ng-container *ngSwitchCase="'PAYMENT OF CLAIM CASH CALL BY COMPANY'">
 								<app-ar-claim-cash-call></app-ar-claim-cash-call>
 							</ng-container>
 							<ng-container *ngSwitchCase="'INVESTMENT'">
