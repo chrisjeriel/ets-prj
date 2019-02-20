@@ -36,7 +36,6 @@ export class OpenCoverSumInsuredComponent implements OnInit {
 
   ngOnInit() {
 	  	/*this.sub = this.route.params.subscribe(params => {
-
 	      this.quotationNo = params["quotationNo"];
 	      this.quoteNo = this.quotationNo.split(/[-]/g)[0]
 	      for (var i = 1; i < this.quotationNo.split(/[-]/g).length; i++) {
@@ -57,6 +56,7 @@ export class OpenCoverSumInsuredComponent implements OnInit {
 	  	    // this.passData.tableData = data.quotation.project.coverage.sectionCovers;
 	  	    for (var i = 0; i < this.data.len
 	  	    this.custEditableNonDatatableComponent.refreshTable();*/
+
 /*
 	  		console.log()
 	  	    this.quoteIdOc = data.quotationOc[0].quoteIdOc;
@@ -73,6 +73,7 @@ export class OpenCoverSumInsuredComponent implements OnInit {
   	this.coverageOcData.projId = 2;
   	this.coverageOcData.riskId = this.riskId;
     this.quotationService.saveQuoteCoverageOc(2,2,this.coverageOcData).subscribe();
+
   }
 
   showCurrencyModal(){

@@ -10,7 +10,7 @@ export class ExtractBirTaxesComponent implements OnInit {
 
 
   @Output() onChange: EventEmitter<any> = new EventEmitter();
-  taxType: any;
+  taxType: any = 'Creditable Withholding Tax';
   defaultTab: false;
 
   constructor() { }

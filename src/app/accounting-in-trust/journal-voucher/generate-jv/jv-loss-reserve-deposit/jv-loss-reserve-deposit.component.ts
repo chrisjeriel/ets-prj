@@ -13,11 +13,11 @@ export class JvLossReserveDepositComponent implements OnInit {
 
   passData: any = {
     tableData: [],
-    tHeader: ['Ceding Company','Deposit Type','Membership Date','Curr', 'Curr Rate', 'Amount','Amount(PHP)'],
-    resizable: [true, true, true, true, true, true, true],
-    dataTypes: ['text','select','date','text','percent','currency','currency'],
-    nData: new AccJvLossResDep(null,null,new Date(),null,null,null,null),
-    total:[null,null,null,null,'Total','amount','amountPHP'],
+    tHeader: ['Ceding Company','Deposit Type','Deposit Date','Membership Date','Curr', 'Curr Rate', 'Amount','Amount(PHP)'],
+    resizable: [true, true, true, true, true,true, true, true],
+    dataTypes: ['text','select','date','date','text','percent','currency','currency'],
+    nData: new AccJvLossResDep(null,null,new Date(),new Date(),null,null,null,null),
+    total:[null,null,null,null,null,'Total','amount','amountPHP'],
     checkFlag: true,
     addFlag: true,
     deleteFlag: true,
@@ -32,7 +32,7 @@ export class JvLossReserveDepositComponent implements OnInit {
     pageLength: 10,
     genericBtn: 'Save',
     opts: [],
-    widths: ['auto',100,100,50,130,130,130],
+    widths: ['auto',100,100,100,50,130,130,130],
 
   };
 

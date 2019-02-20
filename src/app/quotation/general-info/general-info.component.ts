@@ -315,7 +315,11 @@ export class GeneralInfoComponent implements OnInit {
 	}
 
 	showCedingCompanyLOV() {
-		$('#cedingCompanyLOV #modalBtn').trigger('click');
+		$('#cedingCompany #modalBtn').trigger('click');
+	}
+
+	showCedingCompanyNotMemberLOV() {
+		$('#cedingCompanyNotMember #modalBtn').trigger('click');
 	}
 
 	setCedingcompany(event){

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AccServiceAttachment, PaymentForAdvances, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, ARUnappliedCollection, AROthers, AccountingSOthersOr, AccORSerFeeLoc, OfficialReceipt, ORPrevAmountDetails, ORPrevAccEntries, ORPreVATDetails , ORPreCreditableWTaxDetails, PaymentOfSeviceFee, TreatyBalance, ByMonth, ExtractFromLastYear, AccountingEntriesExtract, CredibleWithholdingTaxDetails, InputVatDetails, OutputVatDetails, WithholdingVATDetails, CredibleWithholdingTaxUpload, InputVatUpload, OutputVatUpload, WithholdingTaxUpload, AccountingSFixedAssets, AccountingSMonthlyDepreciationDetails, AccountingSPaytReqCheckVoucher, AccountingSPaytReqPettyCashVoucher, AccountingSPaytReqPRMFE, AccountingSPaytReqOthers,AcctSrvcCWhtaxMonthlyTaxDetails,AcctSrvcCWhtaxConsolidateData, TaxDetails, WTaxDetails, ExpenseBudget, ExpenseBudgetByMonth, AccSChangeTranStatOR, AccSChangeTranStatCV, AccSChangeTranStatJV, CMDM, AccountingEntryCMDM, AccJvLossResDep, AccSrvInquiry, AccountingSrvcCancelledTransactions, QSOABalances } from '@app/_models';
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AccServiceAttachment, PaymentForAdvances, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, ARUnappliedCollection, AROthers, AccountingSOthersOr, AccORSerFeeLoc, OfficialReceipt, ORPrevAmountDetails, ORPrevAccEntries, ORPreVATDetails , ORPreCreditableWTaxDetails, PaymentOfSeviceFee, TreatyBalance, ByMonth, ExtractFromLastYear, AccountingEntriesExtract, CredibleWithholdingTaxDetails, InputVatDetails, OutputVatDetails, WithholdingVATDetails, CredibleWithholdingTaxUpload, InputVatUpload, OutputVatUpload, WithholdingTaxUpload, AccountingSFixedAssets, AccountingSMonthlyDepreciationDetails, AccountingSPaytReqCheckVoucher, AccountingSPaytReqPettyCashVoucher, AccountingSPaytReqPRMFE, AccountingSPaytReqOthers,AcctSrvcCWhtaxMonthlyTaxDetails,AcctSrvcCWhtaxConsolidateData, TaxDetails, WTaxDetails, ExpenseBudget, ExpenseBudgetByMonth, AccSChangeTranStatOR, AccSChangeTranStatCV, AccSChangeTranStatJV, CMDM, AccountingEntryCMDM, AccJvLossResDep, AccSrvInquiry, AccountingSrvcCancelledTransactions, QSOABalances, AccJvInterestOverdue, AccJvInPolBalAgainstLoss, AgainstLoss, AgainstNegativeTreaty } from '@app/_models';
 
 
 @Injectable({
@@ -101,6 +101,10 @@ export class AccountingService {
 	accSrvInquiry: AccSrvInquiry[] = [];
 	accountingSrvcCancelledTransactions: AccountingSrvcCancelledTransactions[] = [];
 	qsoaBalances: QSOABalances[] = [];
+	accountInterestOverdue: AccJvInterestOverdue[] = [];
+	accJVAgainstLoss: AccJvInPolBalAgainstLoss[] = [];
+	againstLoss: AgainstLoss[] = [];
+	againstNegativeTreaty: AgainstNegativeTreaty[] = [];
 
 	constructor(private http: HttpClient) { }
 
@@ -693,11 +697,7 @@ export class AccountingService {
 
 	getAROthers(){
 		this.arOthers = [
-/*<<<<<<< HEAD
-			new AROthers("Utilities",null,"Payment For","Refund","PHP",1.0,-50000,-50000),
-=======*/
 			new AROthers("Utilities","","Payment For","Refund","PHP",1.0,-50000,-50000),
-/*>>>>>>> 175e99f85deab8a5e9768e8a21f93aff2ffc85be*/
 		];
 		return this.arOthers;
 	}
@@ -1164,9 +1164,9 @@ export class AccountingService {
 
 	getLossRepDep(){
 		this.accJvLossResDep = [
-			new AccJvLossResDep("BPI/IMS INSURANCE CORPORATION","Initial", new Date("01/25/2019"), "PHP",1.0,500000,500000),
-			new AccJvLossResDep("BPI/IMS INSURANCE CORPORATION","Additional", new Date("01/25/2019"), "PHP",1.0,20000,20000),
-			new AccJvLossResDep("BPI/IMS INSURANCE CORPORATION","CUMI", new Date("01/25/2019"), "PHP",1.0,500000,500000)
+			new AccJvLossResDep("BPI/IMS INSURANCE CORPORATION","Initial", new Date("01/25/2019"), new Date("01/25/2019"), "PHP",1.0,500000,500000),
+			new AccJvLossResDep("BPI/IMS INSURANCE CORPORATION","Additional", new Date("01/25/2019"), new Date("01/25/2019"), "PHP",1.0,20000,20000),
+			new AccJvLossResDep("BPI/IMS INSURANCE CORPORATION","CUMI", new Date("01/25/2019"), new Date("01/25/2019"), "PHP",1.0,500000,500000)
 			
 		];
 		return this.accJvLossResDep;
@@ -1206,6 +1206,37 @@ export class AccountingService {
 			new QSOABalances(new Date(2018, 5, 30), 'PHP', 1, -500000, -500000),
 		];
 		return this.qsoaBalances;
+	}
+
+	getAccJVInterestOverdue() {
+		this.accountInterestOverdue = [
+			new AccJvInterestOverdue('CAR-2018-00001-99-0001-000','CAR-2018-00001-99-0001-000','EN-CAR-2018-00001-99-0001-000', 1, new Date(2018,10,25), new Date(2018,10,25), 153,'PHP', 1, 3000000, 34392.93),
+		];
+
+		return this.accountInterestOverdue;
+	}
+
+	getAccJVInPolBalAgainstLoss() {
+		this.accJVAgainstLoss = [
+			new AccJvInPolBalAgainstLoss('CAR-2018-00001-99-0001-000','CAR-2018-00001-99-0001-000','EN-CAR-2018-00001-99-0001-000', 1, new Date("09/25/2018"), new Date("09/25/2018"), 'PHP', 1.0, 3000000, 0.00, 0.00, 1642857.14, 1357142.86, 1642857.14, 0.00),
+		];
+
+		return this.accJVAgainstLoss;
+	}
+
+	getClaimLosses() {
+		this.againstLoss = [
+			new AgainstLoss("CAR-2018-000048","AArena Adjusters and Surveyors","2nd inn. inc", 4, "Adjuster's Expense","",-351000,"Php",1,350842.89,350842.89)
+		];
+		return this.againstLoss;
+		
+	}
+
+	getAgainstNegativeTreaty(){
+		this.againstNegativeTreaty = [
+			new AgainstNegativeTreaty(new Date(2018,4,31),"Php",1,-400000,-400000)
+		];
+		return this.againstNegativeTreaty;
 	}
 
 }
