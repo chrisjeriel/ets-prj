@@ -63,11 +63,11 @@ export class AccSRequestForPaymentComponent implements OnInit {
     //     reqBy: selectedRow[8].innerText
     //   }
     //   this.router.navigate(['/generate-payt-req', { slctd: JSON.stringify(this.record) }], { skipLocationChange: true });
-
-    this.router.navigate(['generate-payt-req',
+    var type = this.routeData.paymentType;
+        this.router.navigate(['acc-s-generate-request',
          {reqNo: "",
           payee: "",
-          paymentType: "",
+          paymentType: type,
           status: "",
           amount: "",
           currency: "",
@@ -91,6 +91,7 @@ export class AccSRequestForPaymentComponent implements OnInit {
                this.router.navigate(['/generate-payt-req']);
         },100); */
         // this.onClickEdit(event);
+
         var type = event.target.closest('tr').children[2].innerText.trim();
         
         this.router.navigate(['acc-s-generate-request',

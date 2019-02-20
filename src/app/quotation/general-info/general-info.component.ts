@@ -31,8 +31,8 @@ export class GeneralInfoComponent implements OnInit {
 	lineClassCode: string;
 	lineClassDesc: string;
 	ocChecked: boolean = false;
-	internalCompFlag:boolean = false;
-	
+	internalCompFlag: boolean = false;
+
 	project: any = {
 		blockCd: '',
 		blockDesc: '',
