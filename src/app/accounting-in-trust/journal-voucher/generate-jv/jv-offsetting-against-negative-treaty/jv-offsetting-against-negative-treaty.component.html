@@ -1,0 +1,21 @@
+<div class="row">
+    <div class="col-sm-12" style="margin-top: 3px" >
+         <div style="position: relative;">
+         	<button class="cust-btn" style="position:absolute; right: 0px; max-width: 200px !important;" (click)="ShowModal()">View Claims Details</button>
+         	<app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
+         </div>
+    </div>
+</div>	
+
+<app-modal class="d-none" id="ViewClaims">
+	<div header>List of Claims for Offset</div>	
+	<div body>
+		 <div style="margin-bottom: -90px !important">
+                <app-cust-editable-non-datatable [passData]="ClaimsOffset"></app-cust-editable-non-datatable>
+         </div>  
+	</div>
+	<div footer class="text-center w-100">
+		<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Return</a></button>
+	</div>
+</app-modal>
+

@@ -66,3 +66,144 @@ export class AmountDetailsJV{
 	}
 }
 
+export class AccJvInterestOverdue {
+	soaNo: string;
+	polNo: string;
+	colRefNo: string;
+	instNo: number;
+	effDate: Date;
+	dueDate: Date;
+	noOfDaysOverdue: number
+	curr: string;
+	currRate: number;
+	premium: number;
+	overdueInt: number;
+
+	constructor( soaNo: string,
+		polNo: string,
+		colRefNo: string,
+		instNo: number,
+		effDate: Date,
+		dueDate: Date,
+		noOfDaysOverdue: number,
+		curr: string,
+		currRate: number,
+		premium: number,
+		overdueInt: number){
+
+		this.soaNo = soaNo;
+		this.polNo = polNo;
+		this.colRefNo = colRefNo;
+		this.instNo = instNo;
+		this.effDate = effDate;
+		this.dueDate = dueDate;
+		this.noOfDaysOverdue = noOfDaysOverdue;
+		this.curr = curr;
+		this.currRate = currRate;
+		this.premium = premium;
+		this.overdueInt = overdueInt;
+		
+	}
+}
+
+export class AccJvInPolBalAgainstLoss {
+	soaNo: string;
+	polNo: string;
+	colRefNo: string;
+	instNo: number;
+	effDate: Date;
+	dueDate: Date;
+	curr: string;
+	currRate: number;
+	premium: number;
+	riComm: number;
+	charges: number;
+	netDue: number;
+	payments: number;
+	bal: number;
+	overdueInt: number;
+
+	constructor( soaNo: string,
+		polNo: string,
+		colRefNo: string,
+		instNo: number,
+		effDate: Date,
+		dueDate: Date,
+		curr: string,
+		currRate: number,
+		premium: number,
+		riComm: number,
+		charges: number,
+		netDue: number,
+		payments: number,
+		bal: number,
+		overdueInt: number){
+
+		this.soaNo = soaNo;
+		this.polNo = polNo;
+		this.colRefNo = colRefNo;
+		this.instNo = instNo;
+		this.effDate = effDate;
+		this.dueDate = dueDate;
+		this.curr = curr;
+		this.currRate = currRate;
+		this.premium = premium;
+		this.riComm = riComm;
+		this.charges = charges;
+		this.netDue = netDue;
+		this.payments = payments;
+		this.bal= bal;
+		this.overdueInt = overdueInt;
+		
+	}
+}
+
+export class AgainstLoss {
+	claimNo: string
+	adjusters: string
+	insured: string
+	histNo: number
+	histType: string
+	exGratia: string
+	reserveAmount: number
+	curr: string
+	currRate: number
+	amount: number
+	amountPhp: number
+
+	constructor(claimNo: string,adjusters: string,insured: string,histNo: number,histType: string,exGratia: string,reserveAmount: number,curr: string,currRate: number,amount: number,amountPhp: number){
+		this.claimNo = claimNo;
+		this.adjusters = adjusters;
+		this.insured = insured;
+		this.histNo = histNo;
+		this.histType = histType;
+		this.exGratia = exGratia;
+		this.curr = curr;
+		this.currRate = currRate;
+		this.reserveAmount = reserveAmount;
+		this.amount = amount;
+		this.amountPhp = amountPhp;
+
+	}
+}
+
+export class AgainstNegativeTreaty {
+	quarterEnding: Date
+	currency: string
+	currencyRate: number
+	amount: number
+	amountPhp: number
+
+	constructor(quarterEnding: Date,
+	currency: string,
+	currencyRate: number,
+	amount: number,
+	amountPhp: number){
+		
+		this.quarterEnding = quarterEnding;
+		this.currency = currency;
+		this.currencyRate = currencyRate;
+		this.amount = amount;
+		this.amountPhp = amountPhp;
+	}
+}
