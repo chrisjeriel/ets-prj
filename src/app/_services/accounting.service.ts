@@ -267,17 +267,17 @@ export class AccountingService {
 	}
 	getJVListing() {
 		this.jvListing = [
-			new JVListing("2015-00000001", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2014-00004342", "Ronwaldo Roque", "Printed", 1642857.14),
-			new JVListing("2017-00000001", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2016-00001644", "Chie Reyes", "Printed", 200000),
-			new JVListing("2017-00000002", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2016-00001645", "Lourdes Gualvez", "Printed", 100000),
-			new JVListing("2017-00000003", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2016-00001646", "Chie Reyes", "Printed", 1000000),
-			new JVListing("2018-00000001", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2017-00000324", "Chie Reyes", "Printed", 710716.12),
-			new JVListing("2018-00000010", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2018-00000009", "Lourdes Gualvez", "Open", 756929),
-			new JVListing("2018-00000016", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2018-00000012", "Lourdes Gualvez", "Cancelled", 300000),
-			new JVListing("2018-00000045", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2018-00000041", "Ronwaldo Roque", "Cancelled", 1000000),
-			new JVListing("2018-00000099", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2018-00000098", "Ronwaldo Roque", "Open", 230000),
-			new JVListing("2018-00000123", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2018-00000122", "Ronwaldo Roque", "Open", 1500000),
-		]
+			new JVListing("2017-00000002", new Date(2015, 10, 1), "To correct entries in", "Service Fee Receivable for the Quarter", "2016-00001645", "Lourdes Gualvez", "Printed", 100000),
+            new JVListing("2017-00000003", new Date(2015, 10, 1), "To correct entries in", "Collected Certificate of Withholding Tax", "2016-00001646", "Chie Reyes", "Printed", 1000000),
+            new JVListing("2018-00000001", new Date(2015, 10, 1), "To correct entries in", "Uncollected Certificate of Withholding Tax", "2017-00000324", "Chie Reyes", "Printed", 710716.12),
+            new JVListing("2018-00000010", new Date(2015, 10, 1), "To correct entries in", "Payment of Service to In-Trust", "2018-00000009", "Lourdes Gualvez", "Open", 756929),
+            new JVListing("2018-00000016", new Date(2015, 10, 1), "To correct entries in", "Regular Payroll", "2018-00000012", "Lourdes Gualvez", "Cancelled", 300000),
+            new JVListing("2018-00000045", new Date(2015, 10, 1), "To correct entries in", "Mid-Year Bonus and Other Bonuses", "2018-00000041", "Ronwaldo Roque", "Cancelled", 1000000),
+            new JVListing("2018-00000099", new Date(2015, 10, 1), "To correct entries in", "13th Month Pay", "2018-00000098", "Ronwaldo Roque", "Open", 230000),
+            new JVListing("2018-00000123", new Date(2015, 10, 1), "To correct entries in", "Profit Sharing", "2018-00000122", "Ronwaldo Roque", "Open", 1500000),
+            new JVListing("2018-00000123", new Date(2015, 10, 1), "To correct entries in", "Monthly Depreciation Expense", "2018-00000122", "Ronwaldo Roque", "Open", 1500000),
+            new JVListing("2018-00000123", new Date(2015, 10, 1), "To correct entries in", "Miscellaneous / Others", "2018-00000122", "Ronwaldo Roque", "Open", 1500000),
+    		]
 		return this.jvListing;
 	}
 
