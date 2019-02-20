@@ -14,16 +14,8 @@
                 <app-cust-editable-non-datatable [passData]="ClaimsOffset"></app-cust-editable-non-datatable>
          </div>  
 	</div>
-	<div footer class="text-center">
-		<div class="form-row bottom-button-container">
-			<div class="form-group col-sm">
-				<div class="col-md-13 text-center">
-					<div class="cust-btn-container" style="margin-top: 10px;">
-						<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Return</a></button>
-					</div>
-				</div>
-			</div>
-		</div>
+	<div footer class="text-center w-100">
+		<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Return</a></button>
 	</div>
 </app-modal>
 
