@@ -31,6 +31,7 @@ export class GeneralInfoComponent implements OnInit {
 	lineClassCode: string;
 	lineClassDesc: string;
 	ocChecked: boolean = false;
+	internalCompFlag: boolean = false;
 
 	project: any = {
 		blockCd: '',
@@ -129,6 +130,7 @@ export class GeneralInfoComponent implements OnInit {
 	currencyRt: number = 0;
 	intId: number;
 	intName: string = "";
+	internalCompFlag: any;
 
 	@Output() checkQuoteId = new EventEmitter<any>();
 /*testClick(){

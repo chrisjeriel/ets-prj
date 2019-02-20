@@ -48,7 +48,6 @@ export class AccSGenerateRequestComponent implements OnInit {
   }
 
   tabController(paymentType){
-    console.log(this.paymentType);
     this.paymentType = paymentType;
   }
 

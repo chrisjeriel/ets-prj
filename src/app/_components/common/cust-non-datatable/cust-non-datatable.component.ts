@@ -4,6 +4,7 @@ import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { QuotationService } from '../../../_services';
 import { DummyInfo } from '../../../_models';
 import { IntCompAdvInfo, QuotationList } from '../../../_models';
+import { AppComponent } from '@app/app.component';
 
 @Component({
     selector: 'app-cust-non-datatable',
@@ -162,7 +163,7 @@ export class CustNonDatatableComponent implements OnInit {
     pinDataHeader:any[] = [];
     pinKeys:any[] = [];
     pinDatatypes:any[] = [];
-    constructor(config: NgbDropdownConfig, public renderer: Renderer, private quotationService: QuotationService,) {
+    constructor(config: NgbDropdownConfig, public renderer: Renderer, private quotationService: QuotationService, private appComponent: AppComponent) {
         config.placement = 'bottom-right';
         config.autoClose = false;
         
@@ -179,6 +180,7 @@ export class CustNonDatatableComponent implements OnInit {
         this.displayLength = this.displayData.length;
         this.unliTableLength();
         this.addFiller();
+        this.appComponent.ngOnInit();
     }
 
     ngOnInit(): void {

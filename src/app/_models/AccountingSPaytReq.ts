@@ -67,18 +67,20 @@ export class AccountingSPaytReqPRMFE{
 
 export class AccountingSPaytReqOthers{
 	item: string;
+	referenceNo: string;
 	description: string;
 	currency: string;
 	currRate: number;
 	amount: number;
 	amountPhp: number;
 
-	constructor(item: string, description: string, currency: string, currRate: number, amount: number, amountPhp: number){
-		this.item = item
-		this.description = description
-		this.currency = currency
-		this.currRate = currRate
-		this.amount = amount
-		this.amountPhp = amountPhp
+	constructor(item: string, referenceNo: string, description: string, currency: string, currRate: number, amount: number, amountPhp: number){
+		this.item = item;
+		this.referenceNo = referenceNo;
+		this.description = description;
+		this.currency = currency;
+		this.currRate = currRate;
+		this.amount = amount;
+		this.amountPhp = amountPhp;
 	}
 }

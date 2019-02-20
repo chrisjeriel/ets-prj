@@ -697,11 +697,7 @@ export class AccountingService {
 
 	getAROthers(){
 		this.arOthers = [
-/*<<<<<<< HEAD
-			new AROthers("Utilities",null,"Payment For","Refund","PHP",1.0,-50000,-50000),
-=======*/
 			new AROthers("Utilities","","Payment For","Refund","PHP",1.0,-50000,-50000),
-/*>>>>>>> 175e99f85deab8a5e9768e8a21f93aff2ffc85be*/
 		];
 		return this.arOthers;
 	}
@@ -741,7 +737,7 @@ export class AccountingService {
 
 	getAcctServices(){
 		this.arOthers = [
-			new AROthers(null,"Utilities","Service fee for the period of","Payment","PHP",1.0,-50000,-50000),
+			new AROthers("Utilities","","Service fee for the period of","Payment","PHP",1.0,-50000,-50000),
 		];
 		return this.arOthers;
 	}
@@ -934,7 +930,7 @@ export class AccountingService {
 
 	getAccountingSPaytReqOthers(){
 		this.accountingSPaytReqOthers = [
-			new AccountingSPaytReqOthers('Utilities', 'Payment For', 'PHP', 1, 100000000000, 100000000000),
+			new AccountingSPaytReqOthers('Utilities', '', 'Payment For', 'PHP', 1, 100000000000, 100000000000),
 		];
 
 		return this.accountingSPaytReqOthers;
