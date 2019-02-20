@@ -64,18 +64,18 @@ export class AccSRequestDetailsComponent implements OnInit {
 
   othersData: any = {
     tableData: this.accountingService.getAccountingSPaytReqOthers(),
-    tHeader: ['Item', 'Description', 'Curr', 'Curr Rate', 'Amount', 'Amount (PHP)'],
-    dataTypes: ['text', 'text', 'text', 'percent', 'currency', 'currency'],
-    nData: new AccountingSPaytReqOthers(null,null,null,null,null,null),
+    tHeader: ['Item', 'Reference No.', 'Description', 'Curr', 'Curr Rate', 'Amount', 'Amount (PHP)'],
+    dataTypes: ['text', 'text', 'text', 'text', 'percent', 'currency', 'currency'],
+    nData: new AccountingSPaytReqOthers(null,null,null,null,null,null,null),
     paginateFlag: true,
     infoFlag: true,
     pageID: 2,
     checkFlag: true,
     addFlag: true,
     deleteFlag: true,
-    total: [null, null, null, 'Total', 'amount', 'amountPhp'],
+    total: [null, null, null, null, 'Total', 'amount', 'amountPhp'],
     genericBtn: 'Save',
-    widths: ['auto','auto',1,90,125,125]
+    widths: ['auto','auto', 'auto',1,90,125,125]
   }
 
   constructor(private accountingService: AccountingService) {
@@ -85,6 +85,9 @@ export class AccSRequestDetailsComponent implements OnInit {
   ngOnInit() {
     if(this.paymentType === null){
       this.paymentType = "";
+    }else{
+      console.log("paymentType");
+      console.log(this.paymentType);
     }
   }
 

@@ -105,7 +105,7 @@
 
 <div class="cust-tabs-container" style="margin-top:10px !important">
     <ngb-tabset>
-      <ngb-tab>
+      <ngb-tab *ngIf="paymentType != 'Others'">
         <ng-template ngbTabTitle>
           <ng-container [ngSwitch]="paymentType.toUpperCase()">
            <div *ngSwitchCase ="'CHECK VOUCHER'">Check Voucher</div>
