@@ -110,8 +110,8 @@
           <ng-container [ngSwitch]="paymentType.toUpperCase()">
            <div *ngSwitchCase ="'CHECK VOUCHER'">Check Voucher</div>
               <div *ngSwitchCase ="'PETTY CASH VOUCHER'">Petty Cash Voucher</div>
-              <div *ngSwitchCase ="'PAYMENT OF RISK MANAGEMENT FEE TO EMPLOYEES'">Payment of Risk Management Fee to Employees</div>
-              <div *ngSwitchCase ="'INWARD POLICY BALANCES - RETURNS'">Inward Policy Balances - Returns</div>
+              <!-- <div *ngSwitchCase ="'PAYMENT OF RISK MANAGEMENT FEE TO EMPLOYEES'">Payment of Risk Management Fee to Employees</div> -->
+              <!-- <div *ngSwitchCase ="'INWARD POLICY BALANCES - RETURNS'">Inward Policy Balances - Returns</div> -->
           </ng-container>
         </ng-template>
         <ng-template ngbTabContent>
@@ -140,7 +140,7 @@
                     </div>
                     <app-cust-editable-non-datatable [passData]="pettyCashVoucherData"></app-cust-editable-non-datatable>
                 </ng-container>
-                <ng-container *ngSwitchCase ="'PAYMENT OF RISK MANAGEMENT FEE TO EMPLOYEES'">
+                <!-- <ng-container *ngSwitchCase ="'PAYMENT OF RISK MANAGEMENT FEE TO EMPLOYEES'">
                   <div class="row">
                     <div class="col-sm-1"></div>
                     <div class="col-sm-10 disabled">
@@ -148,7 +148,7 @@
                     </div>
                     <div class="col-sm-1"></div>
                   </div>
-                </ng-container>
+                </ng-container> -->
               </ng-container>
             </div>
           </div>

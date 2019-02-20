@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, Renderer } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
+import { AppComponent } from '@app/app.component';
 
 import { DummyInfo } from '../../../_models';
 
@@ -93,7 +94,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     @Input() widths: string[] = [];
     unliFlag:boolean = false;
     @Output() clickLOV: EventEmitter<any> = new EventEmitter();
-    constructor(config: NgbDropdownConfig, public renderer: Renderer) { 
+    constructor(config: NgbDropdownConfig, public renderer: Renderer, private appComponent: AppComponent) { 
         config.placement = 'bottom-right';
         config.autoClose = false;
     }
@@ -115,6 +116,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         //this.displayLength = this.displayData.length;
         this.unliTableLength();
         this.addFiller();
+        this.appComponent.ngOnInit();
     }
 
     ngOnInit() {

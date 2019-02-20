@@ -11,7 +11,7 @@
 					<app-acc-s-request-entry [data]="paymentData" (onChange)="tabController($event)"></app-acc-s-request-entry>
 				</ng-template>
 			</ngb-tab>
-			<ngb-tab [disabled]="paymentData.paymentType == ''">
+			<ngb-tab [disabled]="paymentData.paymentType == '' || paymentData.paymentType == 'Payment of Risk Management Fee to Employees' || paymentData.paymentType == 'Payment of Service to In-Trust'">
 				<ng-template ngbTabTitle>
 					<div>Request Details</div>
 				</ng-template>
