@@ -105,6 +105,7 @@ import { MonEndDataChkComponent } from './accounting-in-trust/month-end/mon-end-
 import { MonEndBatchComponent } from './accounting-in-trust/month-end/mon-end-batch/mon-end-batch.component';
 import { MonEndTrialBalComponent } from './accounting-in-trust/month-end/mon-end-trial-bal/mon-end-trial-bal.component';
 import { FundsHeldComponent } from './accounting-in-trust/month-end/funds-held/funds-held.component';
+import { BordereauxComponent } from './accounting-in-trust/reports/bordereaux/bordereaux.component';
 
 
 const appRoutes: Routes = [
@@ -220,7 +221,7 @@ const appRoutes: Routes = [
     { path: 'mon-end-batch-in-trust', component: MonEndBatchComponent},
     { path: 'mon-end-trial-bal-in-trust', component: MonEndTrialBalComponent},
     { path: 'funds-held', component: FundsHeldComponent},
-
+    { path: 'bordereaux', component: BordereauxComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
