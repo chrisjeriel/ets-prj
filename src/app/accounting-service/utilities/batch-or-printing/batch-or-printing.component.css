@@ -1,7 +1,5 @@
-.labels{
-    margin-bottom: 7px !important;
-    padding-bottom: 0px !important;
-    max-height: 2.3em
+.cust-ig {
+	margin-bottom: -14px !important;
 }
 
 .cust {
@@ -20,5 +18,13 @@
     padding-top: 5px;
     padding-bottom: 2px;
     margin-left: 3px !important;
-    margin-top: -4px !important;
+    height: 24px !important
+}
+
+.text{
+	text-align: left !important;
+}
+
+.radio-btn {
+	margin-top: 5px !important;
 }

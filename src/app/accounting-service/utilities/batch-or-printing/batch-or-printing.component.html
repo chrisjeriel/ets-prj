@@ -1,0 +1,131 @@
+<div class="cust-tabs-container">
+	<h4>Accounting Service / Utilities</h4>
+		<ngb-tabset (tabChange)="onTabChange($event)">
+			<ngb-tab>
+				<ng-template ngbTabTitle>
+					<div>Batch OR Printing</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+						<fieldset class="scheduler-border">
+							<legend class="scheduler-border">Filter Options</legend>
+							<div class="form-row custom-row-inline-inset">
+								<div class="col-sm-4">
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-5">Payment Type</label>
+										<select class="form-control form-control-sm cust-sm col-sm">
+										    <option>Credit Memo</option>
+										    <option>Debit Memo</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2">OR Date: </label>
+										<label class="form-control-sm col-sm-1">From </label>
+										<input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="PHP" readonly>
+										<label class="form-control-sm col-sm-1">To </label>
+										<input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="PHP" readonly>
+									</div>
+								</div>
+								<div class="col-sm-1">
+									<div class="input-group cust-ig">
+										<button type="button" class="cust cust-btn"><a>Search</a></button>
+									</div>
+								</div>
+							</div>
+						</fieldset>
+						<fieldset class="scheduler-border" style="margin-top: 10px !important;margin-bottom: 15px !important"> 
+							<div class="form-row custom-row-inline-inset">
+								<div class="col-sm-12" style="margin-top: 15px !important;">
+										<app-cust-editable-non-datatable [passData]="PassData"></app-cust-editable-non-datatable>
+									<div class="input-group cust-ig" style="margin-top: 35px !important;">
+										<label class="form-control-sm col-sm-1">Particulars</label>
+										<input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="Payment For" readonly>
+									</div>
+								</div>
+							</div>
+						</fieldset>
+						<div class="form-row custom-row-inline-inset">
+							<div class="col-sm-5">
+								<fieldset class="scheduler-border">
+									<div class="input-group cust-ig" style="margin-top: 37px !important">
+										<div class="col-sm-1"></div>
+										<label class="form-control-sm col-sm-3">Destination</label>
+										<select class="form-control form-control-sm cust-sm col-sm">
+										    <option>Printer</option>
+										    <option>Mock Data</option>
+										</select>
+										<div class="col-sm-2"></div>
+									</div>
+									<div class="input-group cust-ig" style="margin-bottom: 20px !important">
+										<div class="col-sm-1"></div>
+										<label class="form-control-sm col-sm-3">Printer Name</label>
+										<select class="form-control form-control-sm cust-sm col-sm">
+										    <option></option>
+										    <option>Mock Data</option>
+										</select>
+										<div class="col-sm-2"></div>
+									</div>
+								</fieldset>
+							</div>
+							<div class="col-sm-7">
+								<fieldset class="scheduler-border">
+									<div class="input-group cust-ig" style="margin-top: 10px !important;">
+										<div class="col-sm-4">
+											<div class="row">
+												<input type="radio" name ="Tag" class="radio-btn">
+												<label class="form-control-sm col-sm-4 text">Untag All</label>
+												<input type="radio" name ="Tag"  class="radio-btn">
+												<label class="form-control-sm col-sm-5 text">Tag All</label>
+											</div>
+										</div>
+										<label class="form-control-sm col-sm-2 text">Start With</label>
+										<div class="col-sm-6">
+											<div class="row">
+												<input type="radio" name ="Start"  class="radio-btn">
+												<label class="form-control-sm col-sm-4 text">VAT OR</label>
+												<input type="text" class="form-control form-control-sm cust-sm col-sm">
+											</div>
+										</div>
+									</div>
+									<div class="input-group cust-ig">
+										<div class="col-sm-4">
+										</div>
+										<div class="col-sm-2"></div>
+										<div class="col-sm-6">
+											<div class="row">
+												<input type="radio" name ="Start"  class="radio-btn">
+												<label class="form-control-sm col-sm-4 text">Non VAT OR</label>
+												<input type="text" class="form-control form-control-sm cust-sm col-sm">
+											</div>
+										</div>
+									</div>
+									<div class="input-group cust-ig" style="margin-bottom: 2px !important;">
+										<div class="col-sm-4"></div>
+										<button type="button" class="cust cust-btn"><a>View OR Details</a></button>
+										<button type="button" class="cust cust-btn"><a>Generate OR Number</a></button>
+										<div class="col-sm-4"></div>
+									</div>
+									<div class="input-group cust-ig" style="margin-bottom: 10px !important;">
+										<div class="col-sm-4"></div>
+										<button type="button" class="cust cust-btn"><a>Print OR</a></button>
+										<button type="button" class="cust cust-btn"><a>Stop Printing</a></button>
+										<div class="col-sm-4"></div>
+									</div>
+									<!-- <div class="input-group cust-ig">
+										<button type="button" class="cust cust-btn"><a>Search</a></button>
+										<button type="button" class="cust cust-btn"><a>Search</a></button>
+									</div> -->
+								</fieldset>
+							</div>
+						</div>
+				</ng-template>
+			</ngb-tab>
+		</ngb-tabset>
+</div>
+
+
+
+
+
+

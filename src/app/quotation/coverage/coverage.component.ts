@@ -92,7 +92,6 @@ export class CoverageComponent implements OnInit {
     });
     
     this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
-      console.log()
       this.quoteId      = data.quotation.quoteId;
       this.riskId       = data.quotation.project.riskId;
       this.risk         = data.quotation.project.riskName;

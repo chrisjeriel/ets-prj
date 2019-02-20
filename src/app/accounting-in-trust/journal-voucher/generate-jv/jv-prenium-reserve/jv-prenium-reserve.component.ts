@@ -15,23 +15,6 @@ export class JvPreniumReserveComponent implements OnInit {
 		tHeader:['Quarter Ending','Currency','Currency Rate','Amount','Amount(PHP)'],
 		dataTypes:['date','text','percent','currency','currency'],
 		total:[null,null,'Total','amount','amountPhp'],
-		filters: [
-			{
-				key: 'quarterEnding',
-				title: 'Quarter Ending',
-				dataType: 'date',
-			},
-			{
-				key: 'amount',
-				title: 'Amount',
-				dataType: 'text',
-			},
-			{
-				key: 'amountPhp',
-				title: 'Amount(PHP)',
-				dataType: 'text',
-			}
-		],
 		addFlag:true,
 		deleteFlag:true,
 		genericBtn: "Save",
@@ -39,7 +22,6 @@ export class JvPreniumReserveComponent implements OnInit {
 		paginateFlag:true,	
 		nData: new QSOABalances(null, null, null, null, null),
 		checkFlag: true,
-		searchFlag: true,
 		widths:['auto','auto','auto','auto','auto']
 	}
 
