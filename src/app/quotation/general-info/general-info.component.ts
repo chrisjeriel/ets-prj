@@ -371,16 +371,19 @@ export class GeneralInfoComponent implements OnInit {
 			if(this.internalCompFlag){
 				var internalCompParams: any = {
 				  adviceNo: 0,
-				  cedingId: 0,
-				  cedingRepId: '',
-				  createDate: '',
-				  createUser: '',
+				  cedingId: this.genInfoData.cedingId,
+				  cedingRepId: this.genInfoData.cedingId,
+				  createDate: new Date().toISOString(),
+				  createUser: 'ndc',
 				  option: '',
-				  quoteId: 0,
-				  updateDate: '',
-				  updateUser: '',
+				  quoteId: this.genInfoData.quoteId,
+				  updateDate: new Date().toISOString(),
+				  updateUser: 'ndc',
 				  wordings: ''
 				}
+		        this.quotationService.saveQuoteCompetition(internalCompParams).subscribe((result: any) => {
+		          console.log(result);
+		        });
 			}
 			//end internal comp
 		} else {
