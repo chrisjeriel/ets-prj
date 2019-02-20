@@ -311,7 +311,7 @@ tr td span{
 }
 
 .my-pagination /deep/ .ngx-pagination {
-   font-size: 5px;
+   font-size: 11px;
    border-radius: 4px;
 }
 

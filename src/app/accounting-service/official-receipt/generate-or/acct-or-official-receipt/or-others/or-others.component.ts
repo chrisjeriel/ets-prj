@@ -11,9 +11,9 @@ export class OrOthersComponent implements OnInit {
 
   orOthersData: any = {
     tableData: this.accountingService.getAccountingSOthersOr(),
-    tHeader: ['Item', 'Description', 'Curr', 'Curr Rate', 'Amount', 'Amount (PHP)'],
-    dataTypes: ['text', 'text', 'text', 'percent', 'currency', 'currency'],
-    nData: new AccountingSOthersOr(null, null, null, null, null, null),
+    tHeader: ['Item', 'Reference No.', 'Payor','Description', 'Curr', 'Curr Rate', 'Amount', 'Amount (PHP)'],
+    dataTypes: ['text', 'text', 'text', 'text', 'text', 'percent', 'currency', 'currency'],
+    nData: new AccountingSOthersOr(null,null,null, null, null, null, null, null),
     paginateFlag: true,
     infoFlag: true,
     pageID: 1,
@@ -21,13 +21,17 @@ export class OrOthersComponent implements OnInit {
     deleteFlag: true,
     checkFlag: true,
     genericBtn: 'Save',
-    total: [null, null, null, 'Total', 'amount', 'amountPhp'],
-    widths: ['auto',400,1,100,'auto','auto'],
+    total: [null, null,null,null, null, 'Total', 'amount', 'amountPhp'],
+    widths: ['auto',1,'auto','auto',1,100,120,120],
   }
 
   constructor(private accountingService: AccountingService) { }
 
   ngOnInit() {
   }
+
+  openTaxAllocation(){
+   $('#taxAlloc #modalBtn').trigger('click');
+ }
 
 }

@@ -114,7 +114,6 @@ export class QuoAlopComponent implements OnInit {
               this.alopData.issueDate = this.alopData.issueDate[0]+'-'+("0" + this.alopData.issueDate[1]).slice(-2)+'-'+  ("0" + this.alopData.issueDate[2]).slice(-2);
               this.alopData.expiryDate = this.alopData.expiryDate[0]+'-'+("0" + this.alopData.expiryDate[1]).slice(-2)+'-'+ ("0" + this.alopData.expiryDate[2]).slice(-2);
               this.alopData.indemFromDate = this.alopData.indemFromDate[0]+'-'+("0" + this.alopData.indemFromDate[1]).slice(-2)+'-'+("0" + this.alopData.indemFromDate[2]).slice(-2);
-              console.log(data)
        });
     }
 
@@ -122,7 +121,7 @@ export class QuoAlopComponent implements OnInit {
     save() {
       this.alopData.quoteId = this.quoteId;
       this.quotationService.saveQuoteAlop(this.alopData).subscribe((data: any) => {
-        $('#successMdl #modalBtn').trigger('click');
+        $('#successModalBtn').trigger('click');
         this.getAlop();
       });
       this.ngOnInit();
@@ -141,6 +140,7 @@ export class QuoAlopComponent implements OnInit {
       while(this.itemInfoData.tableData.length>0){
         this.itemInfoData.tableData.pop();
       }
+      $('#alopItemModal #modalBtn').trigger('click');
       
     }
 

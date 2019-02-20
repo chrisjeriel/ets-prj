@@ -637,7 +637,7 @@ export class AccountingService {
 	}
 	getOfficialReceipt(){
 		this.officialReceipt = [
-			new OfficialReceipt('Payment for','PHP',1,1642857.14,1642857.14),
+			new OfficialReceipt('Payment for','Payment for','Payment for','PHP',1,1642857.14,1642857.14),
 		];
 		return this.officialReceipt;
 	}
@@ -744,7 +744,7 @@ export class AccountingService {
 
 	getAccountingSOthersOr(){
 		this.accountingSOthersOrData = [
-			new AccountingSOthersOr("Utilities", "Payment For", "PHP", 1, 10000, 10000),
+			new AccountingSOthersOr("Utilities", null,null,"Payment For", "PHP", 1, 10000, 10000),
 		];
 
 		return this.accountingSOthersOrData;
