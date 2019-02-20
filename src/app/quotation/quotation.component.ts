@@ -16,7 +16,13 @@ export class QuotationComponent implements OnInit {
 	docTitle: string = "";
 	sub: any;
 	line: string;
-	quoteId: string = "";
+
+	quoteInfo = {
+		quoteId: '',
+		quotationNo: '',
+		riskName: '',
+		insuredDesc: ''
+	}
 
 	ngOnInit() {
 		this.sub = this.route.params.subscribe(params => {
@@ -39,8 +45,8 @@ export class QuotationComponent implements OnInit {
  
   	}
 
-  	checkQuoteId(event){  		
-  		this.quoteId = event;
+  	checkQuoteInfo(event){  		
+  		this.quoteInfo = event;
   	}
 
 	// setDocumentTitle(event) {
