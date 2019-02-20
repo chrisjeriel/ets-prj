@@ -21,7 +21,7 @@ export class ArOthersComponent implements OnInit {
     deleteFlag: true,
     genericBtn: 'Save',
     pageLength: 10,
-    widths: [220,'auto','auto',12  0,1,50,100,150],
+    widths: [220,'auto','auto',120,1,50,100,150],
     paginateFlag:true,
     infoFlag:true,
     opts:[
