@@ -1,18 +1,19 @@
-<app-modal class="d-none" id="successMdl">
-	<div header>&nbsp;</div>
-	<div body class="pb-0">
-		<div class="container">
-			<div class="row" style="text-align: center;">
-				<div class="col-sm-12">
-					<i class="fa fa-check-circle fa-4x"></i>
-				</div>
-				<div class="col-sm-12">
-					<p>{{message}}</p>
-				</div>
-			</div>
-		</div>		
-	</div>
-	<div footer class="d-flex justify-content-center w-100">                    
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
+<ng-template #content>
+    <div class="modal-header">
+        <span class="modal-title" id="modal-basic-title" style="height: 18px">&nbsp;</span>
     </div>
-</app-modal>
+    <div class="modal-body py-3" style="width: 250px">
+        <div class="container align-middle text-center">
+        	<div class="p-0 m-0">
+        		<i class="fa fa-check-circle fa-2x d-inline-block align-middle"></i>
+        		<p class="d-inline-block align-middle mb-0 ml-1" style="font-size: 12px">{{message}}</p>
+        	</div>
+        </div>		
+    </div>
+    <div class="modal-footer p-2 pb-3">
+    	<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+    </div>
+</ng-template>
+
+<button id="successModalBtn" class="cust-btn d-none" (click)="open(content)"><a>{{ btnTitle }}</a></button>
+

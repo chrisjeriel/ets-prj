@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { AmountDetailsCV, AccountingEntriesCV, VATDetails, CreditableTax, ORPrevAmountDetails, ORPreVATDetails, ORPreCreditableWTaxDetails } from '@app/_models';
 import { AccountingService } from '../../../../_services/accounting.service';
 
@@ -8,6 +8,7 @@ import { AccountingService } from '../../../../_services/accounting.service';
   styleUrls: ['./jv-preview-service.component.css']
 })
 export class JvPreviewServiceComponent implements OnInit {
+@Input() jvType: string = "";
 amountDetailsData: any = {
   	tableData: this.accountingService.getORPrevAmountDetails(),
     tHeader: ["Item No", "Gen Type", "Detail", "Original Amount", "Currency","Currency Rate","Local Amount"],
@@ -27,12 +28,15 @@ amountDetailsData: any = {
 
   accountingEntriesData: any = {
   	tableData: this.accountingService.getAccountingEntriesCV(),
-  	tHeader: ['Code', 'Account', 'SL Type', 'SL Name', 'Debit', 'Credit'],
+  	tHeader: ['Account Code', 'Account Name', 'SL Type', 'SL Name', 'Debit', 'Credit'],
   	dataTypes: ['text', 'text', 'text', 'text', 'currency', 'currency'],
+    magnifyingGlass: ['accCode','slType','slName'],
   	nData: new AccountingEntriesCV(null,null,null,null,null,null),
   	pageID: 2,
   	addFlag: true,
+    checkFlag: true,
   	deleteFlag: true,
+    widths: [150,'auto',100,'auto',160,160],
   	total: [null, null, null, 'Total', null, null],
   	genericBtn: 'Save',
   }
@@ -48,7 +52,7 @@ amountDetailsData: any = {
     total: [null, null, null, 'Total', 'vatAmount'],
     pageLength:5,
     genericBtn: 'Save',
-    widths: [100,200,'auto',200,200,],
+    widths: [100,200,'auto',160,160,],
     paginateFlag:true,
     infoFlag:true
   }
@@ -63,7 +67,7 @@ amountDetailsData: any = {
     deleteFlag: true,
     pageLength:5,
     total: [null, null, null, null,'Total', 'wTaxAmount'],
-    widths: [100,200,150,'auto',150,150,],
+    widths: [100,200,100,'auto',160,160,],
     genericBtn: 'Save',
     paginateFlag:true,
     infoFlag:true
@@ -72,6 +76,10 @@ amountDetailsData: any = {
   constructor(private accountingService: AccountingService) { }
 
   ngOnInit() {
+    if(this.jvType === null){
+      this.jvType = "";
+    }
+    console.log(this.jvType);
   }
 
   plusMinus(data){

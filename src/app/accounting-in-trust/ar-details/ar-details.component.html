@@ -56,10 +56,10 @@
 					<div *ngSwitchCase="'CLAIM RECOVERY / OVERPAYMENT'">Claim Recovery / Overpayment</div>
 					<div *ngSwitchCase="'NEGATIVE TREATY BALANCE'">Negative Treaty Balance</div>
 					<div *ngSwitchCase="'PAYMENT OF CLAIM CASH CALL BY COMPANY'">Payment of Claim Cash Call by Company</div>
-					<div *ngSwitchCase="'INVESTMENT'">Investment Pull-Out</div>
+					<div *ngSwitchCase="'INVESTMENT PULL-OUT'">Investment Pull-Out</div>
 					<div *ngSwitchCase="'LOSS RESERVE DEPOSIT'">Loss Reserve Deposit</div>
 					<div *ngSwitchCase="'CLAIM OVER PAYMENT'">Claim Over Payment</div>
-					<div *ngSwitchCase="'PAYMENT FOR ADVANCES'">Payment For Advances by Service</div>
+					<div *ngSwitchCase="'PAYMENT FOR ADVANCES BY SERVICE'">Payment For Advances by Service</div>
 				</ng-container>
 			</ng-template>
 			<ng-template ngbTabContent>
@@ -78,7 +78,7 @@
 							<ng-container *ngSwitchCase="'PAYMENT OF CLAIM CASH CALL BY COMPANY'">
 								<app-ar-claim-cash-call></app-ar-claim-cash-call>
 							</ng-container>
-							<ng-container *ngSwitchCase="'INVESTMENT'">
+							<ng-container *ngSwitchCase="'INVESTMENT PULL-OUT'">
 								<app-ar-details-investments></app-ar-details-investments>
 							</ng-container>
 							<ng-container *ngSwitchCase="'LOSS RESERVE DEPOSIT'">
@@ -87,10 +87,19 @@
 							<ng-container *ngSwitchCase="'CLAIM OVER PAYMENT'">
 								<app-ar-claim-over-payment></app-ar-claim-over-payment>
 							</ng-container>
-							<ng-container *ngSwitchCase="'PAYMENT FOR ADVANCES'">
+							<ng-container *ngSwitchCase="'PAYMENT FOR ADVANCES BY SERVICE'">
 								<app-ar-paymentfor-advances></app-ar-paymentfor-advances>
 							</ng-container>
 						</ng-container>
+					</div>
+				</div>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab class="ngb-tab" title="Investment Income" *ngIf="paymentType.toUpperCase() === 'INVESTMENT PULL-OUT'">
+			<ng-template ngbTabContent>
+				<div class="input-group cust-border" style="padding-top: 0.6em">
+					<div class="col-sm-12">
+						<app-ar-details-investment-income></app-ar-details-investment-income>
 					</div>
 				</div>
 			</ng-template>

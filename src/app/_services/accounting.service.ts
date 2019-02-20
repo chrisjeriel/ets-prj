@@ -268,17 +268,17 @@ export class AccountingService {
 	}
 	getJVListing() {
 		this.jvListing = [
-			new JVListing("2015-00000001", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2014-00004342", "Ronwaldo Roque", "Printed", 1642857.14),
-			new JVListing("2017-00000001", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2016-00001644", "Chie Reyes", "Printed", 200000),
-			new JVListing("2017-00000002", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2016-00001645", "Lourdes Gualvez", "Printed", 100000),
-			new JVListing("2017-00000003", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2016-00001646", "Chie Reyes", "Printed", 1000000),
-			new JVListing("2018-00000001", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2017-00000324", "Chie Reyes", "Printed", 710716.12),
-			new JVListing("2018-00000010", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2018-00000009", "Lourdes Gualvez", "Open", 756929),
-			new JVListing("2018-00000016", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2018-00000012", "Lourdes Gualvez", "Cancelled", 300000),
-			new JVListing("2018-00000045", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2018-00000041", "Ronwaldo Roque", "Cancelled", 1000000),
-			new JVListing("2018-00000099", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2018-00000098", "Ronwaldo Roque", "Open", 230000),
-			new JVListing("2018-00000123", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2018-00000122", "Ronwaldo Roque", "Open", 1500000),
-		]
+			new JVListing("2017-00000002", new Date(2015, 10, 1), "To correct entries in", "Service Fee Receivable for the Quarter", "2016-00001645", "Lourdes Gualvez", "Printed", 100000),
+            new JVListing("2017-00000003", new Date(2015, 10, 1), "To correct entries in", "Collected Certificate of Withholding Tax", "2016-00001646", "Chie Reyes", "Printed", 1000000),
+            new JVListing("2018-00000001", new Date(2015, 10, 1), "To correct entries in", "Uncollected Certificate of Withholding Tax", "2017-00000324", "Chie Reyes", "Printed", 710716.12),
+            new JVListing("2018-00000010", new Date(2015, 10, 1), "To correct entries in", "Payment of Service to In-Trust", "2018-00000009", "Lourdes Gualvez", "Open", 756929),
+            new JVListing("2018-00000016", new Date(2015, 10, 1), "To correct entries in", "Regular Payroll", "2018-00000012", "Lourdes Gualvez", "Cancelled", 300000),
+            new JVListing("2018-00000045", new Date(2015, 10, 1), "To correct entries in", "Mid-Year Bonus and Other Bonuses", "2018-00000041", "Ronwaldo Roque", "Cancelled", 1000000),
+            new JVListing("2018-00000099", new Date(2015, 10, 1), "To correct entries in", "13th Month Pay", "2018-00000098", "Ronwaldo Roque", "Open", 230000),
+            new JVListing("2018-00000123", new Date(2015, 10, 1), "To correct entries in", "Profit Sharing", "2018-00000122", "Ronwaldo Roque", "Open", 1500000),
+            new JVListing("2018-00000123", new Date(2015, 10, 1), "To correct entries in", "Monthly Depreciation Expense", "2018-00000122", "Ronwaldo Roque", "Open", 1500000),
+            new JVListing("2018-00000123", new Date(2015, 10, 1), "To correct entries in", "Miscellaneous / Others", "2018-00000122", "Ronwaldo Roque", "Open", 1500000),
+    		]
 		return this.jvListing;
 	}
 
@@ -638,7 +638,7 @@ export class AccountingService {
 	}
 	getOfficialReceipt(){
 		this.officialReceipt = [
-			new OfficialReceipt('Payment for','PHP',1,1642857.14,1642857.14),
+			new OfficialReceipt('Payment for','Payment for','Payment for','PHP',1,1642857.14,1642857.14),
 		];
 		return this.officialReceipt;
 	}
@@ -669,8 +669,8 @@ export class AccountingService {
 
 	getAccARInvestments(){
 		this.accARInvestments = [
-			new AccARInvestments('BPI','BPI 1','Time',5,'Years',8.875, new Date(2013,9,20),new Date(2018,9,20),'PHP',1,14000000,4112500,18112.50,82250,18112500),
-			new AccARInvestments('RCBC','RCBC 1','Treasury',35,'Days',1.5, new Date(2018,8,26),new Date(2018,9,31),'PHP',1,10000000,150000,10150,3000,10150000)
+			new AccARInvestments('BPI','BPI 1','Time Deposit',5,'Years',8.875, new Date(2013,9,20),new Date(2018,9,20),'PHP',1,14000000,4112500,18112.50,82250,18112500),
+			new AccARInvestments('RCBC','RCBC 1','Treasury Bonds',35,'Days',1.5, new Date(2018,8,26),new Date(2018,9,31),'PHP',1,10000000,150000,10150,3000,10150000)
 		];
 		return this.accARInvestments;
 	}
@@ -745,7 +745,7 @@ export class AccountingService {
 
 	getAccountingSOthersOr(){
 		this.accountingSOthersOrData = [
-			new AccountingSOthersOr("Utilities", "Payment For", "PHP", 1, 10000, 10000),
+			new AccountingSOthersOr("Utilities", null,null,"Payment For", "PHP", 1, 10000, 10000),
 		];
 
 		return this.accountingSOthersOrData;

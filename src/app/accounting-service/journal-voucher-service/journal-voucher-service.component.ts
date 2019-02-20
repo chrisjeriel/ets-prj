@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 })
 export class JournalVoucherServiceComponent implements OnInit {
 private routeData: any;
+type: string="";
+status: string="";
 
    passDataJVListing: any = {
         tableData: this.accountingService.getJVListing(),
@@ -76,19 +78,31 @@ private routeData: any;
   }
 
   onClickEdit(event){
-    this.router.navigate(['/generate-jv-service'], { skipLocationChange: true });
+    this.router.navigate(['/generate-jv-service',
+      {jvType: this.type} 
+      ], { skipLocationChange: true });
   }
 
   toGenerateAREdit(event) {
-    this.router.navigate(['/generate-jv-service'], { skipLocationChange: true });
+    if(this.status == 'Printed' ||this.status == 'Cancelled'){
+       this.router.navigate(['/journal-voucher-service'], { skipLocationChange: true });
+    }else {
+       this.router.navigate(['/generate-jv-service',
+          {jvType: this.type} 
+          ], { skipLocationChange: true });
+    }
   }
 
   onRowClick(data){
+      this.type = data.jvType;
+      this.status = data.jvStatus;
       this.routeData = data;
       if(data.jvStatus == 'Printed' || data.jvStatus == 'Cancelled'){
         this.passDataJVListing.btnDisabled = true;
       }else{
         this.passDataJVListing.btnDisabled = false;
       }
+
   }
+
 }

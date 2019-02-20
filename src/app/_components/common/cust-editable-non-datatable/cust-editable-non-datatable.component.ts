@@ -131,7 +131,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
         } else {
             this.dataKeys = this.passData.keys;
         }
-
         // if(this.dataKeys.indexOf('edited') != -1){
         //   this.dataKeys.pop();
         // }

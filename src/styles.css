@@ -494,6 +494,16 @@ z-index: 9999 !important;
     /*width: 20% !important;*/
     z-index: 9999 !important;
 }
+
+.modal.sm > .modal-dialog{
+    z-index: 9999 !important;
+}
+
+.success-modal-size > .modal-dialog{
+    min-width: 30%;
+    /*width: 20% !important;*/
+    z-index: 9999 !important;
+}
 .modal-header {
     padding: inherit;
     background-color: #557a95;

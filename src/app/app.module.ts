@@ -306,6 +306,7 @@ import { JvOverdueAccountsAgainstTreatyComponent } from './accounting-in-trust/j
 import { SucessDialogComponent } from './_components/common/sucess-dialog/sucess-dialog.component';
 import { BatchOrPrintingComponent } from './accounting-service/utilities/batch-or-printing/batch-or-printing.component';
 import { BatchInvoiceComponent } from './accounting-service/utilities/batch-invoice/batch-invoice.component';
+import { ArDetailsInvestmentIncomeComponent } from './accounting-in-trust/ar-details/ar-details-investment-income/ar-details-investment-income.component';
 
 
 
@@ -620,6 +621,7 @@ import { BatchInvoiceComponent } from './accounting-service/utilities/batch-invo
         SucessDialogComponent,
         BatchOrPrintingComponent,
         BatchInvoiceComponent
+        ArDetailsInvestmentIncomeComponent,
     ],
 
     providers: [
