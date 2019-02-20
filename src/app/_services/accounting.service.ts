@@ -930,7 +930,7 @@ export class AccountingService {
 
 	getAccountingSPaytReqOthers(){
 		this.accountingSPaytReqOthers = [
-			new AccountingSPaytReqOthers('Utilities', 'Payment For', 'PHP', 1, 100000000000, 100000000000),
+			new AccountingSPaytReqOthers('Utilities', '', 'Payment For', 'PHP', 1, 100000000000, 100000000000),
 		];
 
 		return this.accountingSPaytReqOthers;
