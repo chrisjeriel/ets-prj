@@ -1,7 +1,7 @@
-<app-modal id="cedingCompany" class="d-none" (modalOpened)="openModal()">
+<app-modal id="cedingCompanyNotMemberr" class="d-none" (modalOpened)="openModalNotMember()">
     <div header>List of Values</div>
     <div body>
-        <app-cust-non-datatable [passData]="passDataCedingCompanyMember" (rowClick)="onRowClick($event)"></app-cust-non-datatable>
+        <app-cust-non-datatable [passData]="passDataCedingCompanyNotMember" (rowClick)="onRowClick($event)"></app-cust-non-datatable>
     </div>
     <div footer>
         <div class="d-flex justify-content-center">
@@ -10,5 +10,3 @@
         </div>
     </div>
 </app-modal>
-
-

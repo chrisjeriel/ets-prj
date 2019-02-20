@@ -149,6 +149,7 @@ export class CoverageComponent implements OnInit {
   }
 
   cancel(){
+    console.log(this.deletedData)
   }
 
 }

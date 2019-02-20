@@ -11,7 +11,7 @@ export class JvAccountingEntriesComponent implements OnInit {
     tableData: [
       [null, null, null, null, null, null]
     ],
-    tHeader: ['Code', 'Account', 'SL Type', 'SL Name', 'Debit', 'Credit'],
+    tHeader: ['Account Code', 'Account Name', 'SL Type', 'SL Name', 'Debit', 'Credit'],
     dataTypes: ['text', 'text', 'text', 'text', 'currency', 'currency'],
     nData: [null, null, null, null, null, null],
     paginateFlag: true,

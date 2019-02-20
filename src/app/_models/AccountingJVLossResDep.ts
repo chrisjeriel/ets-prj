@@ -1,6 +1,7 @@
 export class AccJvLossResDep {
 	cedComp: string;
 	depType: string;
+	depositDate: Date;
 	memDate: Date;
 	curr: string;
 	currRate: number;
@@ -9,6 +10,7 @@ export class AccJvLossResDep {
 
 	constructor( cedComp: string,
 		depType: string,
+		depositDate: Date,
 		memDate: Date,
 		curr: string,
 		currRate: number,
@@ -17,6 +19,7 @@ export class AccJvLossResDep {
 
 		this.cedComp = cedComp;
 		this.depType = depType;
+		this.depositDate = depositDate;
 		this.memDate = memDate;
 		this.curr = curr;
 		this.currRate = currRate;
