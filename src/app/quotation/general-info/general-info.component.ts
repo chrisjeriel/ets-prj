@@ -129,6 +129,7 @@ export class GeneralInfoComponent implements OnInit {
 	currencyRt: number = 0;
 	intId: number;
 	intName: string = "";
+	internalCompFlag: any;
 
 	@Output() checkQuoteId = new EventEmitter<any>();
 /*testClick(){
