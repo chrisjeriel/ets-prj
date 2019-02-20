@@ -14,7 +14,7 @@ export class CurrencyDirective {
   	if(target.value !=''){
 	  	let sNum = target.value.split('.');
 	  	sNum[0] = sNum[0].replace(new RegExp(",", "g"),'').replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-	    if(!/^\d{1,3}(,\d{3})*(\.\d+)?$/.test(sNum.join('.'))){
+	    if(!/^(?:[- (])?\d{1,3}(,\d{3})*(\.\d+)?(?:[)])?$/.test(sNum.join('.'))){
 	    	highlight(this.el);
 	    }else{
 	    	unHighlight(this.el);
@@ -36,7 +36,7 @@ export class CurrencyDirective {
   }
 
   @HostListener("keydown", ["$event"]) onChange(event) {
-  	let allowed:string[] = ['.',',','Tab','Backspace','ArrowDown','ArrowUp','ArrowLeft','ArrowRight'];
+  	let allowed:string[] = ['-','.',',','Tab','Backspace','ArrowDown','ArrowUp','ArrowLeft','ArrowRight'];
   	if(/\D/.test(event.key) && allowed.indexOf(event.key) == -1 && !event.ctrlKey){
   		// event.target.value = event.target.value.substring(0,event.target.value.length-1);
   		event.preventDefault();
