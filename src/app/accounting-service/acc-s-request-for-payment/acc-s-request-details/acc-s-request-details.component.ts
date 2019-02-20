@@ -26,13 +26,13 @@ export class AccSRequestDetailsComponent implements OnInit {
   	deleteFlag: true,
   	total: [null, null, null, 'Total', 'amount', 'amountPhp'],
   	genericBtn: 'Save',
-    widths: ['auto','auto',1,125,125,125]
+    widths: ['auto','auto',1,90,125,125]
   }
 
   pettyCashVoucherData: any = {
     tableData: this.accountingService.getAccountingSPaytReqPettyCashVoucher(),
     tHeader: ['PCV Year', 'PCV No.', 'PCV Date', 'Payee', 'Purpose', 'Replenishment', 'Status', 'Curr', 'Curr Rate', 'Amount', 'Amount (PHP)'],
-    dataTypes: ['text', 'number', 'date', 'text', 'text', 'text', 'text', 'text', 'percent', 'currency', 'currency'],
+    dataTypes: ['text', 'number', 'date', 'text', 'text', 'checkbox', 'text', 'text', 'percent', 'currency', 'currency'],
     nData: new AccountingSPaytReqPettyCashVoucher(null,null,null,null,null,null,null,null,null,null,null),
     paginateFlag: true,
     infoFlag: true,
@@ -42,7 +42,7 @@ export class AccSRequestDetailsComponent implements OnInit {
     deleteFlag: true,
     total: [null, null, null, null, null, null, null, null, 'Total', 'amount', 'amountPhp'],
     genericBtn: 'Save',
-    widths: [20, 20, 90,'auto','auto', 1, 1 ,1,125,125,125]
+    widths: [20, 20, 90,'auto','auto', 1, 1 ,1,90,125,125]
   }
 
   PRMFEData: any = {
@@ -75,7 +75,7 @@ export class AccSRequestDetailsComponent implements OnInit {
     deleteFlag: true,
     total: [null, null, null, 'Total', 'amount', 'amountPhp'],
     genericBtn: 'Save',
-    widths: ['auto','auto',1,125,125,125]
+    widths: ['auto','auto',1,90,125,125]
   }
 
   constructor(private accountingService: AccountingService) {
