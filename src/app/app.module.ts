@@ -303,6 +303,8 @@ import { JvInterestOnOverdueAccountsComponent } from './accounting-in-trust/jour
 import { JvOffsettingAgainstLossesComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-offsetting-against-losses/jv-offsetting-against-losses.component';
 import { JvOffsettingAgainstNegativeTreatyComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-offsetting-against-negative-treaty/jv-offsetting-against-negative-treaty.component';
 import { JvOverdueAccountsAgainstTreatyComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-overdue-accounts-against-treaty/jv-overdue-accounts-against-treaty.component';
+import { SucessDialogComponent } from './_components/common/sucess-dialog/sucess-dialog.component';
+
 
 
 @NgModule({
@@ -613,6 +615,7 @@ import { JvOverdueAccountsAgainstTreatyComponent } from './accounting-in-trust/j
         JvOffsettingAgainstLossesComponent,
         JvOffsettingAgainstNegativeTreatyComponent,
         JvOverdueAccountsAgainstTreatyComponent,
+        SucessDialogComponent,
     ],
 
     providers: [

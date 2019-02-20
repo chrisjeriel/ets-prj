@@ -66,6 +66,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   	tHeader: ['Policy No', 'Due Date', 'Ceding Company', 'Curr', 'Curr Rate', 'Premium', 'RI Commision', 'Charges','Net Due'],
   	dataTypes: ['text', 'date', 'text', 'text','percent', 'currency', 'currency', 'currency', 'currency'],
   	nData: new PremiumReturn(null,null,null,null,null,null,null,null,null),
+    magnifyingGlass: ['policyNo'],
   	paginateFlag: true,
   	infoFlag: true,
   	pageID: 1,
@@ -74,7 +75,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   	deleteFlag: true,
   	total: [null, null, null,null, 'Total', 'premium', 'riCommision','charges','netDue'],
   	genericBtn: 'Save',
-    widths: ['auto',1,'auto',1,1,100,100,100,100,100]
+    widths: ['auto',1,200,1,'auto',100,100,100,100,100]
   }
 
   ServiceAccountingData: any = {

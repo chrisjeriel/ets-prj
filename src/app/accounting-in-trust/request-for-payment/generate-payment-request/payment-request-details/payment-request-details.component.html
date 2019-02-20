@@ -5,35 +5,37 @@
             <div class="input-group">
                 <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Request No</label>
                 <input type="text" class="form-control form-control-sm cust-sm col-sm-3"
-                placeholder="CSR-2018-09-0001">
+                placeholder="CSR-2018-09-0001" readonly>
                 <label class="form-control-sm col-sm-2">Request Date</label>
-                <input type="datetime-local"  class="form-control form-control-sm cust-sm col-sm-3" [value]="date">
+                <input type="datetime-local"  class="form-control form-control-sm cust-sm col-sm-3" [value]="date" readonly>
                 <label class="form-control-sm col-sm-1">Status</label>
-                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="New">
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="New" readonly>
             </div>
             <div class="input-group">
                 <label class="form-control-sm col-sm-1">Payee</label>
-                <input type="text"  class="form-control form-control-sm cust-sm col-sm" placeholder="Engineering Builders Inc.">
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm" placeholder="Engineering Builders Inc." readonly>
             </div>
         </div>
         <div class="col-sm-4">
             <div class="input-group">
                 <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Amount</label>
-                <select class="form-control form-control-sm cust-sm col-sm-2">
+                 <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-left: 3px !important;"placeholder="PHP" readonly>
+           <!--      <select class="form-control form-control-sm cust-sm col-sm-2">
                         <option value="PHP">PHP</option>
                         <option value="EUR">EUR</option>
                         <option value="USD">USD</option>
-                </select>
-                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"placeholder="10,000,000.00">
+                </select> -->
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"placeholder="10,000,000.00" readonly>
             </div>
             <div class="input-group">
                 <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Local Amount</label>
-                <select class="form-control form-control-sm cust-sm col-sm-2">
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-left: 3px !important;"placeholder="PHP" readonly>
+                <!-- <select class="form-control form-control-sm cust-sm col-sm-2">
                         <option value="PHP">PHP</option>
                         <option value="EUR">EUR</option>
                         <option value="USD">USD</option>
-                </select>
-                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" placeholder="10,000,000.00">
+                </select> -->
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" placeholder="10,000,000.00" readonly>
             </div>
         </div>
     </div>
@@ -108,7 +110,7 @@
       <ngb-tab>
         <ng-template ngbTabTitle>
           <ng-container [ngSwitch]="paymentType.toUpperCase()">
-           <div *ngSwitchCase ="'CLAIM EXPENSE PAYMENT TO ADJUSTERS'">Claim Expense Payment to Ceding Company</div>
+           <div *ngSwitchCase ="'CLAIM EXPENSE PAYMENT TO CEDING COMPANY'">Claim Expense Payment to Ceding Company</div>
               <div *ngSwitchCase ="'CLAIM EXPENSE PAYMENT TO OTHER PARTIES'">Claim Expense Payment to Other Parties</div>
               <div *ngSwitchCase ="'CLAIM PAYMENT TO CEDING COMPANY'">Claim Payment to Ceding Company</div>
               <div *ngSwitchCase ="'INWARD POLICY BALANCES - RETURNS'">Inward Policy Balances - Returns</div>
@@ -123,7 +125,7 @@
           <div class="input-group cust-border" style="padding-top: 0.6em">
             <div class="col-sm-12">
               <ng-container [ngSwitch]="paymentType.toUpperCase()">
-                <ng-container *ngSwitchCase ="'CLAIM EXPENSE PAYMENT TO ADJUSTERS'">
+                <ng-container *ngSwitchCase ="'CLAIM EXPENSE PAYMENT TO CEDING COMPANY'">
                     <app-cust-editable-non-datatable [passData]="AdjustersData"></app-cust-editable-non-datatable>
                 </ng-container>
                 <ng-container *ngSwitchCase ="'CLAIM EXPENSE PAYMENT TO OTHER PARTIES'">

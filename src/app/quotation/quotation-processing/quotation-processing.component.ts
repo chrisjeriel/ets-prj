@@ -304,6 +304,7 @@ export class QuotationProcessingComponent implements OnInit {
                 cessionId: this.typeOfCessionId,
                 cessionDesc: this.typeOfCession,
                 riskId: this.riskCd,
+                intComp: false,
             }
 
             setTimeout(() => {

@@ -17,8 +17,8 @@ export class QuoAlopComponent implements OnInit {
       @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
     aLOPInfo: QuoteALOPInfo = new QuoteALOPInfo();
     tableData: any[] = [];
-    tHeader: string[] = [];
-    policyRecordInfo: any = {};
+  tHeader: string[] = [];
+  policyRecordInfo: any = {};
     dataTypes: string[] = [];
     nData: QuoteALOPItemInformation = new QuoteALOPItemInformation(null, null, null, null, null);
     
@@ -101,8 +101,14 @@ export class QuoAlopComponent implements OnInit {
             this.itemInfoData.dataTypes = ["number", "number", "text", "text"];
             this.itemInfoData.keys = ['itemNo','quantity','description','lossMin'];
         }
+        this.getAlop();
+       
 
-       this.quotationService.getALop(null,this.quoteNo).subscribe((data: any) => {
+    }
+
+
+    getAlop(){
+      this.quotationService.getALop(null,this.quoteNo).subscribe((data: any) => {
              this.quoteId = data.quotation.quoteId;
               this.alopData = data.quotation.alop===null ? this.alopData : data.quotation.alop;
               this.alopData.issueDate = this.alopData.issueDate[0]+'-'+("0" + this.alopData.issueDate[1]).slice(-2)+'-'+  ("0" + this.alopData.issueDate[2]).slice(-2);
@@ -110,12 +116,15 @@ export class QuoAlopComponent implements OnInit {
               this.alopData.indemFromDate = this.alopData.indemFromDate[0]+'-'+("0" + this.alopData.indemFromDate[1]).slice(-2)+'-'+("0" + this.alopData.indemFromDate[2]).slice(-2);
               console.log(data)
        });
-
     }
+
 
     save() {
       this.alopData.quoteId = this.quoteId;
-      this.quotationService.saveQuoteAlop(this.alopData).subscribe((data: any) => {});
+      this.quotationService.saveQuoteAlop(this.alopData).subscribe((data: any) => {
+        $('#successMdl #modalBtn').trigger('click');
+        this.getAlop();
+      });
       this.ngOnInit();
     }
 
@@ -132,7 +141,7 @@ export class QuoAlopComponent implements OnInit {
       while(this.itemInfoData.tableData.length>0){
         this.itemInfoData.tableData.pop();
       }
-      $('#alopItemModal #modalBtn').trigger('click');
+      
     }
 
     saveAlopItem(){
@@ -155,6 +164,7 @@ export class QuoAlopComponent implements OnInit {
       }
       console.log(savedData);
       this.quotationService.saveQuoteAlopItem(savedData).subscribe((data: any) => {});
+      $('app-sucess-dialog #modalBtn').trigger('click');
   }
 
   showInsuredLOV(){

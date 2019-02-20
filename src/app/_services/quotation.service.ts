@@ -200,6 +200,7 @@ export class QuotationService {
          const params = new HttpParams()
                 .set('quoteId','')
                 .set('quotationNo',quotationNo);
+          console.log(params);
           return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteEndorsementsOc?quotationNo=' + quotationNo);
           } else if (quotationNo == '' || quotationNo == null ) {
           const params = new HttpParams()
