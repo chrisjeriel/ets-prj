@@ -107,6 +107,7 @@ import { MonEndTrialBalComponent } from './accounting-in-trust/month-end/mon-end
 import { FundsHeldComponent } from './accounting-in-trust/month-end/funds-held/funds-held.component';
 import { GenerateCMDMComponent } from './accounting-in-trust/in-trust-credit-debit/generate-cmdm/generate-cmdm.component';
 import { QuarterlyStmntOfAcctComponent } from './accounting-in-trust/quarterly-stmnt-of-acct/quarterly-stmnt-of-acct.component';
+import { ProfitCommissionComponent } from './accounting-in-trust/profit-commission/profit-commission.component';
 
 const appRoutes: Routes = [
 
@@ -223,6 +224,7 @@ const appRoutes: Routes = [
     { path: 'funds-held', component: FundsHeldComponent},
     { path: 'acct-it-generate-cmdm', component: GenerateCMDMComponent },
     { path: 'quarterly-stmt-of-acct', component: QuarterlyStmntOfAcctComponent },
+    { path: 'profit-commission', component: ProfitCommissionComponent },
 
     // otherwise redirect to home
     { path: '**', redirectTo: '' }

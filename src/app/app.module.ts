@@ -298,6 +298,8 @@ import { ExtractRecordComponent } from './accounting-in-trust/month-end/funds-he
 import { UnearnedPremiumComponent } from './accounting-in-trust/month-end/funds-held/unearned-premium/unearned-premium.component';
 import { LovComponent } from './_components/common/lov/lov.component';
 import { QuarterlyStmntOfAcctComponent } from './accounting-in-trust/quarterly-stmnt-of-acct/quarterly-stmnt-of-acct.component';
+import { SucessDialogComponent } from './_components/common/sucess-dialog/sucess-dialog.component';
+import { ProfitCommissionComponent } from './accounting-in-trust/profit-commission/profit-commission.component';
 
 
 @NgModule({
@@ -603,6 +605,8 @@ import { QuarterlyStmntOfAcctComponent } from './accounting-in-trust/quarterly-s
         UnearnedPremiumComponent,
         LovComponent,
         QuarterlyStmntOfAcctComponent,
+        SucessDialogComponent,
+        ProfitCommissionComponent,
     ],
 
     providers: [

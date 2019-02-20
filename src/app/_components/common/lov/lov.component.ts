@@ -54,7 +54,7 @@ export class LovComponent implements OnInit {
       this.passTable.tHeader =  ['Insured Id', 'Insured Name' ];
       this.passTable.dataTypes =  ['text', 'text', 'text', 'text', 'text', 'text', 'text'];
 	    this.mtnService.getMtnInsured().subscribe((data: any) => {
-	          for (var a = data.insured.length - 1; a >= 0; a--) {
+	          for (var a =0 ; data.insured.length > a; a++) {
 	            this.passTable.tableData.push(data.insured[a]);
 	          }
 	          this.table.refreshTable();

@@ -166,8 +166,10 @@ span.ui-column-resizer {
                     </thead>
 
                     <tbody>
-                        <tr *ngFor="let data of displayData | paginate: { id: 'editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p2 };let ti = index" [class.selected]="data === indvSelect || selected.includes(data)" (click)="onRowClick($event,data)" (dblclick)="onRowDblClick($event)">
-                            <td *ngIf="passData.checkFlag" class="checkbox align-middle"><input *ngIf="addCheckFlag(data)" type="checkbox" name="checkbox" [checked]="checked" (change)="removeSelected($event, data)" ></td>
+                        <tr *ngFor="let data of displayData | paginate: { id: 'editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p2 };let ti = index" [class.selected]="data === indvSelect || data.checked" (click)="onRowClick($event,data)" (dblclick)="onRowDblClick($event)">
+                            <td *ngIf="passData.checkFlag" class="checkbox align-middle">
+                                <input *ngIf="addCheckFlag(data)" type="checkbox" name="checkbox" [ngModel]="checked || data.checked" (change)="removeSelected($event, data)" >
+                            </td>
                             <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]" class="align-middle">
                                 <div *ngIf="addCheckFlag(data) && ( passData.uneditable === undefined || !passData.uneditable[i] )" class="align-middle" style="position: relative;">
                                     <input *ngSwitchCase="'percent'" class="editable-text text-right number form-control-sm"

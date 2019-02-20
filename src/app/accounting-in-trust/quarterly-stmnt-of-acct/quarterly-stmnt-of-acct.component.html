@@ -1,6 +1,6 @@
 <div class="cust-tabs-container">
 	<h4>Accounting In-Trust / Quarterly Statement of Account</h4>
-	<ngb-tabset>
+	<ngb-tabset (tabChange)="onTabChange($event)">
 		<ngb-tab class="ngb-tab" title="QSOA Inquiry">
 			<ng-template ngbTabContent>	
 				<fieldset class="scheduler-border">
@@ -21,7 +21,7 @@
 							<select class="form-control form-control-sm cust-sm col-sm-1" style="margin-left: 3px !important">
 								<option value="2018">2018</option>
 							</select>
-							<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">To</label>
+							<label class="form-control-sm">To</label>
 							<select class="form-control form-control-sm cust-sm col-sm-2">
 								<option value="1st Quarter">1st Quarter</option>
 								<option value="2nd Quarter">2nd Quarter</option>
@@ -31,7 +31,7 @@
 							<select class="form-control form-control-sm cust-sm col-sm-1" style="margin-left: 3px !important">
 								<option value="2018">2018</option>
 							</select>
-							<div class="cust-btn-container" style="z-index: 3 !important;">
+							<div class="cust-btn-container col-sm-1" style="z-index: 3 !important;margin-left: 3px !important;">
 								<button type="button" class="cust-btn"><a>Search</a></button>
 							</div>
 						</div>
@@ -48,7 +48,7 @@
 			</ng-template>
 		</ngb-tab>
 
-		<ngb-tab class="ngb-tab" title="Exit">
+		<ngb-tab class="ngb-tab" title="Exit" id="Exit">
 			<ng-template ngbTabContent>
 
 			</ng-template>
@@ -60,10 +60,12 @@
 <!-- MODAL -->
 <ng-template #content>
 	<div class="modal-header" style="min-width: 1090px !important;">
-		<span class="modal-title" id="modal-basic-title">Combined Statement of In-Trust Account</span>
+		<span *ngIf="comStmt" class="modal-title" id="modal-basic-title">Combined Statement of In-Trust Account</span>
+		<span *ngIf="receivables" class="modal-title" id="modal-basic-title">Accounts Receivable</span>
+		<span *ngIf="summary" class="modal-title" id="modal-basic-title">Summary per Line</span>
 	</div>
 	<div class="modal-body" style="max-width: 1090px !important;">
-		<div class="custom-row-inline-inset">
+		<div *ngIf="!summary" class="custom-row-inline-inset">
 			<div class="input-group">
 				<div class="col-sm-2"></div>
 				<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Company</label>
@@ -74,14 +76,79 @@
 				value="2018-03-31">
 				<div class="col-sm-2"></div>
 			</div>
-			<app-cust-editable-non-datatable [passData]="passDataCombinedStatementOfItAcct"></app-cust-editable-non-datatable>
 		</div>
+
+		<div *ngIf="summary">
+			<app-cust-editable-non-datatable [passData]="passDataSummary"></app-cust-editable-non-datatable>
+		</div>
+		<div *ngIf="receivables">
+			<app-cust-editable-non-datatable [passData]="passDataViewAccountsReceivable"></app-cust-editable-non-datatable>
+		</div>
+		<div *ngIf="comStmt">
+			<app-cust-editable-non-datatable [passData]="passDataCombinedStatementOfItAcct"></app-cust-editable-non-datatable>
+			<div class="form-row custom-row-inline-inset" style="margin-top: 15px !important;">
+				<fieldset class="scheduler-border col-sm-6">
+					<div class="input-group">
+						<label class="form-control-sm col-sm-12">
+							NOTE: Remittances made after this quarter are not included in this statement.
+						</label>
+					</div> 
+					<div class="input-group">
+						<div class="col-sm-1"></div>
+						<label class="form-control-sm col-sm-5" style="text-align: left !important;">Company Share on Outstanding Claims</label>
+						<input type="text" class="form-control form-control-sm cust-sm col-sm-5 text-right"
+						value="4,703,270.49" numbers-only>
+						<div class="col-sm-1"></div>
+					</div>
+					<div class="input-group">
+						<div class="col-sm-1"></div>
+						<label class="form-control-sm col-sm-5" style="text-align: left !important;">Loss Reserve Deposit</label>
+						<input type="text" class="form-control form-control-sm cust-sm col-sm-5 text-right"
+						value="581,859.90" numbers-only>
+						<div class="col-sm-1"></div>
+					</div>
+				</fieldset>
+				<div class="col-sm-6">
+					<div class="input-group">
+						<div class="col-sm-1"></div>
+						<label class="form-control-sm col-sm-5" style="text-align: left !important;">BALANCE IN YOUR FAVOR</label>
+						<input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right"
+						value="800,071.34" numbers-only>
+						<input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right"
+						style="margin-left: 3px !important;" numbers-only>
+					</div>
+					<div class="input-group" style="margin-bottom: -25px !important;margin-top: -20px !important;">
+						<div class="col-sm-6"></div>
+						<div class="col-sm">----------------------------------------------------</div>
+					</div>
+					<div class="input-group">
+						<div class="col-sm-1"></div>
+						<label class="form-control-sm col-sm-5" style="text-align: left !important;">TOTAL DEBITS AND CREDITS</label>
+						<input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right"
+						value="1,510,787.46" numbers-only>
+						<input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right"
+						style="margin-left: 3px !important;" value="1,510,787.46" numbers-only>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+
 	</div>
 	<div class="modal-footer" style="max-width: 1090px !important;">
-		<div class="cust-btn-container col-sm-12 text-center" style="z-index: 3 !important;">
+		<div *ngIf="comStmt" class="cust-btn-container col-sm-12 text-center" style="z-index: 3 !important;">
 			<button type="button" class="cust-btn"><a>Update</a></button>
-			<button type="button" class="cust-btn" style="min-width: 160px !important;"><a>View Accounts Receivables</a></button>
+			<button type="button" class="cust-btn" style="min-width: 160px !important;" (click)="viewReceivables()"><a>View Accounts Receivables</a></button>
 			<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Return</a></button>
+		</div>
+
+		<div *ngIf="receivables" class="cust-btn-container col-sm-12 text-center" style="z-index: 3 !important;">
+			<button type="button" class="cust-btn" style="min-width: 160px !important;" (click)="viewSummary()"><a>View Summary</a></button>
+			<button type="button" class="cust-btn" (click)="viewComStmt()"><a>Return</a></button>
+		</div>
+
+		<div *ngIf="summary" class="cust-btn-container col-sm-12 text-center" style="z-index: 3 !important;">
+			<button type="button" class="cust-btn" (click)="viewReceivables()"><a>Return</a></button>
 		</div>
 	</div>
 </ng-template>
