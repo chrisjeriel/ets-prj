@@ -105,6 +105,7 @@ import { MonEndDataChkComponent } from './accounting-in-trust/month-end/mon-end-
 import { MonEndBatchComponent } from './accounting-in-trust/month-end/mon-end-batch/mon-end-batch.component';
 import { MonEndTrialBalComponent } from './accounting-in-trust/month-end/mon-end-trial-bal/mon-end-trial-bal.component';
 import { FundsHeldComponent } from './accounting-in-trust/month-end/funds-held/funds-held.component';
+import { BatchOsTakeupComponent } from './accounting-in-trust/month-end/batch-os-takeup/batch-os-takeup.component';
 
 
 const appRoutes: Routes = [
@@ -220,7 +221,7 @@ const appRoutes: Routes = [
     { path: 'mon-end-batch-in-trust', component: MonEndBatchComponent},
     { path: 'mon-end-trial-bal-in-trust', component: MonEndTrialBalComponent},
     { path: 'funds-held', component: FundsHeldComponent},
-
+    { path: 'batch-os-takeup', component: BatchOsTakeupComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

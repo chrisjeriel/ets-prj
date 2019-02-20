@@ -305,6 +305,7 @@ import { JvOffsettingAgainstNegativeTreatyComponent } from './accounting-in-trus
 import { JvOverdueAccountsAgainstTreatyComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-overdue-accounts-against-treaty/jv-overdue-accounts-against-treaty.component';
 import { SucessDialogComponent } from './_components/common/sucess-dialog/sucess-dialog.component';
 import { ArDetailsInvestmentIncomeComponent } from './accounting-in-trust/ar-details/ar-details-investment-income/ar-details-investment-income.component';
+import { BatchOsTakeupComponent } from './accounting-in-trust/month-end/batch-os-takeup/batch-os-takeup.component';
 
 
 @NgModule({
@@ -617,6 +618,7 @@ import { ArDetailsInvestmentIncomeComponent } from './accounting-in-trust/ar-det
         JvOverdueAccountsAgainstTreatyComponent,
         SucessDialogComponent,
         ArDetailsInvestmentIncomeComponent,
+        BatchOsTakeupComponent,
     ],
 
     providers: [
