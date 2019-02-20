@@ -14,11 +14,13 @@ export class GenerateJvServiceComponent implements OnInit {
   exitLink: string;
   exitTab: string;
   sub: any;
+  jvType: any;
 
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
       this.exitLink = params['link'] !== undefined ? params['link'] : 'journal-voucher-service';
       this.exitTab = params['tab'] !== undefined ? params['tab'] : '';
+      this.jvType = params['jvType'];
     });
   }
 
@@ -26,5 +28,10 @@ export class GenerateJvServiceComponent implements OnInit {
     if ($event.nextId === 'Exit') {
       this.router.navigate([this.exitLink,{tabID:this.exitTab}],{ skipLocationChange: true });
     }
+  }
+
+  tabController(jvType){
+    console.log(this.jvType);
+    this.jvType = jvType;
   }
 }
