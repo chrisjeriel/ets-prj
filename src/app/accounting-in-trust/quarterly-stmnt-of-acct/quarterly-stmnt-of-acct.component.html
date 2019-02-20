@@ -1,0 +1,87 @@
+<div class="cust-tabs-container">
+	<h4>Accounting In-Trust / Quarterly Statement of Account</h4>
+	<ngb-tabset>
+		<ngb-tab class="ngb-tab" title="QSOA Inquiry">
+			<ng-template ngbTabContent>	
+				<fieldset class="scheduler-border">
+					<legend class="scheduler-border">Filter Options</legend>
+					<div class="form-row custom-row-inline-inset">		
+						<div class="input-group">
+							<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Company</label>
+							<input type="text" class="form-control form-control-sm cust-sm col-sm-3"
+							placeholder="ALL">
+							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+							<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Period: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;From</label>
+							<select class="form-control form-control-sm cust-sm col-sm-2">
+								<option value="1st Quarter">1st Quarter</option>
+								<option value="2nd Quarter">2nd Quarter</option>
+								<option value="3rd Quarter">3rd Quarter</option>
+								<option value="4th Quarter">4th Quarter</option>
+							</select>
+							<select class="form-control form-control-sm cust-sm col-sm-1" style="margin-left: 3px !important">
+								<option value="2018">2018</option>
+							</select>
+							<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">To</label>
+							<select class="form-control form-control-sm cust-sm col-sm-2">
+								<option value="1st Quarter">1st Quarter</option>
+								<option value="2nd Quarter">2nd Quarter</option>
+								<option value="3rd Quarter">3rd Quarter</option>
+								<option value="4th Quarter">4th Quarter</option>
+							</select>
+							<select class="form-control form-control-sm cust-sm col-sm-1" style="margin-left: 3px !important">
+								<option value="2018">2018</option>
+							</select>
+							<div class="cust-btn-container" style="z-index: 3 !important;">
+								<button type="button" class="cust-btn"><a>Search</a></button>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+
+				<fieldset class="scheduler-border">
+					<legend class="scheduler-border">List of QSOA per Company</legend>
+					<div class="custom-row-inline-inset">
+						<app-cust-editable-non-datatable [passData]="passDataListOfQsoaAperCompany" (genericBtn)="showModal(content)">
+						</app-cust-editable-non-datatable>
+					</div>
+				</fieldset>
+			</ng-template>
+		</ngb-tab>
+
+		<ngb-tab class="ngb-tab" title="Exit">
+			<ng-template ngbTabContent>
+
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>
+
+
+<!-- MODAL -->
+<ng-template #content>
+	<div class="modal-header" style="min-width: 1090px !important;">
+		<span class="modal-title" id="modal-basic-title">Combined Statement of In-Trust Account</span>
+	</div>
+	<div class="modal-body" style="max-width: 1090px !important;">
+		<div class="custom-row-inline-inset">
+			<div class="input-group">
+				<div class="col-sm-2"></div>
+				<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Company</label>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-4"
+				placeholder="Charter Ping An">
+				<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Quarter Ending</label>
+				<input type="date" class="form-control form-control-sm cust-sm col-sm-2"
+				value="2018-03-31">
+				<div class="col-sm-2"></div>
+			</div>
+			<app-cust-editable-non-datatable [passData]="passDataCombinedStatementOfItAcct"></app-cust-editable-non-datatable>
+		</div>
+	</div>
+	<div class="modal-footer" style="max-width: 1090px !important;">
+		<div class="cust-btn-container col-sm-12 text-center" style="z-index: 3 !important;">
+			<button type="button" class="cust-btn"><a>Update</a></button>
+			<button type="button" class="cust-btn" style="min-width: 160px !important;"><a>View Accounts Receivables</a></button>
+			<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Return</a></button>
+		</div>
+	</div>
+</ng-template>

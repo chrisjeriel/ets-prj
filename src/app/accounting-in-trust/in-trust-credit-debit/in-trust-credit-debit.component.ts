@@ -28,6 +28,6 @@ export class InTrustCreditDebitComponent implements OnInit {
   }
 
   onClickAdd(event){
-    this.router.navigate(['/accounting-service-credit-debit-memo'], { skipLocationChange: true }); 
+    this.router.navigate(['/acct-it-generate-cmdm'], { skipLocationChange: true }); 
   }
 }

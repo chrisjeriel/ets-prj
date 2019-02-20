@@ -105,7 +105,8 @@ import { MonEndDataChkComponent } from './accounting-in-trust/month-end/mon-end-
 import { MonEndBatchComponent } from './accounting-in-trust/month-end/mon-end-batch/mon-end-batch.component';
 import { MonEndTrialBalComponent } from './accounting-in-trust/month-end/mon-end-trial-bal/mon-end-trial-bal.component';
 import { FundsHeldComponent } from './accounting-in-trust/month-end/funds-held/funds-held.component';
-
+import { GenerateCMDMComponent } from './accounting-in-trust/in-trust-credit-debit/generate-cmdm/generate-cmdm.component';
+import { QuarterlyStmntOfAcctComponent } from './accounting-in-trust/quarterly-stmnt-of-acct/quarterly-stmnt-of-acct.component';
 
 const appRoutes: Routes = [
 
@@ -220,6 +221,8 @@ const appRoutes: Routes = [
     { path: 'mon-end-batch-in-trust', component: MonEndBatchComponent},
     { path: 'mon-end-trial-bal-in-trust', component: MonEndTrialBalComponent},
     { path: 'funds-held', component: FundsHeldComponent},
+    { path: 'acct-it-generate-cmdm', component: GenerateCMDMComponent },
+    { path: 'quarterly-stmt-of-acct', component: QuarterlyStmntOfAcctComponent },
 
     // otherwise redirect to home
     { path: '**', redirectTo: '' }

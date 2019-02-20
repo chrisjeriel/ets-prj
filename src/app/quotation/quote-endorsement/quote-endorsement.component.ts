@@ -146,10 +146,11 @@ export class QuoteEndorsementComponent implements OnInit {
                this.quotationService.getOcGenInfoData('',this.quoteNoOc)
                     .subscribe(val => {
                      this.quoteIdOc = val['quotationOc'][0].quoteIdOc;
+
                     });
 
-                var quoteNumOc = this.plainQuotationNoOc(this.quoteNoOc)
-                this.quotationService.getEndorsementsOc(this.quoteIdOc,quoteNumOc).subscribe((data: any) => {
+                     var quoteNumOc = this.plainQuotationNoOc(this.quoteNoOc)
+                        this.quotationService.getEndorsementsOc(this.quoteIdOc,quoteNumOc).subscribe((data: any) => {
                    /* this.quoteNoData = data.endorsementsOc[0].quotationNo;*/
                         for(var lineCount = 0; lineCount < data.endorsementsOc.length; lineCount++){
                               this.endorsementOCData.tableData.push(new QuoteEndorsementOC(
@@ -157,11 +158,20 @@ export class QuoteEndorsementComponent implements OnInit {
                                                                            data.endorsementsOc[lineCount].endtTitle,
                                                                            data.endorsementsOc[lineCount].projDesc,
                                                                            data.endorsementsOc[lineCount].remarks)
-                                                                   );          
+                                                                   );
+                                                                  this.saveEndt.quoteId    = data.endorsementsOc[lineCount].quoteId;
+                                                                  console.log(this.saveEndt.quoteId + " >>>>>> this.saveEndt.quoteId")
+                                                                  this.saveEndt.createDate = this.formatDate(data.endorsementsOc[lineCount].createDate);
+                                                                  console.log(this.saveEndt.createDate + " >>>>>> this.saveEndt.createDate")
+                                                                  this.saveEndt.createUser = data.endorsementsOc[lineCount].createUser;
+                                                                  console.log(this.saveEndt.createUser + " >>>>>> this.saveEndt.createUser")
+                                                                  this.saveEndt.updateUser = data.endorsementsOc[lineCount].updateUser;          
+                                                                  console.log(this.saveEndt.updateUser + " >>>>>> this.saveEndt.updateUser")
                           }
                         this.table.forEach(table => { table.refreshTable() });
       /*                    this.table.refreshTable();*/ 
                     });
+                
 
 
             } else {
@@ -295,7 +305,7 @@ export class QuoteEndorsementComponent implements OnInit {
                     "updateUser":  this.saveEndt.updateUser
                 }
                 this.quotationService.saveQuoteEndorsements(JSON.stringify(this.endorsementReq))
-                .subscribe(data => data);
+                .subscribe(data => console.log(data));
             }
         }else{
             

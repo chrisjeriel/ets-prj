@@ -1,4 +1,4 @@
-<fieldset class="scheduler-border">
+<!-- <fieldset class="scheduler-border">
     <legend class="scheduler-border">CM/DM Info</legend>
     <div class="form-row custom-row-inline-inset">
         <div class="col-sm-9">
@@ -44,17 +44,61 @@
             </div>
         </div>
     </div>
+</fieldset> -->
+<fieldset class="scheduler-border" style="margin-bottom: 15px !important;">
+    <legend class="scheduler-border">CM/DM Info</legend>
+    <div class="form-row custom-row-inline-inset">
+        <div class="col-sm-7">
+            <div class="input-group">
+                <label class="form-control-sm col-sm-2" style="padding-left:0px !important;">Memo No</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-3"
+                placeholder="CSR-2018-09-0001">
+                <label class="form-control-sm col-sm-2">Memo Date</label>
+                <input type="datetime-local"  class="form-control form-control-sm cust-sm col-sm-3" [value]="date">
+                <label class="form-control-sm col-sm-1">Status</label>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="New">
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-2">Tran Type</label>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm" placeholder="Engineering Builders Inc.">
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="input-group">
+                <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Ref. No.</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px !important;"placeholder="2017-0023974">
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Ref. Date</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px !important;" value="12/31/2017 09:00AM" >
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="input-group">
+                <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Amount</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-left: 3px !important;" value="PHP" >
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"placeholder="10,000,000.00">
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Local Amount</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-left: 3px !important;" value="PHP" >
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" placeholder="10,000,000.00">
+            </div>
+        </div>
+    </div>
 </fieldset>
 <fieldset class="scheduler-border">
 	<legend class="scheduler-border">CM/DM Accounting Entries</legend>
-		<div class="row">
-			<div class="col-sm-12 table-cust">
-				<div style="position: relative;">
-					<button class="cust-btn" style="position:absolute; right: 0px;top: -4px; max-width: 200px !important;">Print AE</button>
-			 		<app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
-			 	</div>
-			</div>
-		</div>
+    <div class="custom-row-inline-inset">
+        <div class="row">
+            <div class="col-sm-12 table-cust">
+                <div style="position: relative;">
+                    <button class="cust-btn" style="position:absolute; right: 0px;top: -4px; max-width: 200px !important;">Print AE</button>
+                    <app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
+                </div>
+            </div>
+        </div>
+    </div>
 </fieldset>
 
 <fieldset class="scheduler-border" style="margin: 0px !important; margin-top: 15px !important; ">
