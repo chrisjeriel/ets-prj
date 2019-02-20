@@ -105,3 +105,4 @@ export * from './AccountingJVLossResDep';
 export * from './AccountingServiceInquiry';
 export * from './AccountingSrvcCancelledTransactions';
 export * from './AdviceWordings';
+export * from './AccountingBatchOR';
