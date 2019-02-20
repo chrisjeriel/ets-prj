@@ -1,7 +1,7 @@
 <div class="cust-tabs-container">
-  <h4>Accounting In-Trust / Month End / Batch Processing</h4>
+  <h4>Accounting In-Trust / Month End</h4>
   <ngb-tabset (tabChange)="onTabChange($event)">
-    <ngb-tab class="ngb-tab" title="Process Month End">
+    <ngb-tab class="ngb-tab" title="Batch O/S Takeup">
       <ng-template ngbTabContent>
         <div class="d-flex">
         	<div class="col-sm-1"></div>
@@ -15,25 +15,25 @@
         				<div class="col-sm-12"> <label class="form-control-sm cust-sm col-sm-3"></label> </div>
         			</div>
         			<div class="row">
-        				<div class="col-sm-4"></div>
-        				<div class="col-sm-4">
+        				<div class="col-sm-3"></div>
+        				<div class="col-sm-6">
         					<fieldset class="scheduler-border">
         						<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
         						<div class="custom-row-inline-inset">
         							<div class="input-group">
-        								<label class="form-control-sm cust-sm col-sm-3">As of</label>
-        								<input type="date" class="form-control form-control-sm cust-sm col-sm-7">
+        								<label class="form-control-sm cust-sm col-sm-4">As of</label>
+        								<input type="date" class="form-control form-control-sm cust-sm col-sm-5">
         							</div>
         						</div>
     							<div class="form-group col-sm text-center" style="margin-bottom: 8px;">
 	    						      <div class="cust-btn-container">
-		    						        <button type="button" class="cust cust-btn"><a>Book O/S</a></button>
-		    						        <button type="button" class="cust cust-btn" disabled><a>Print</a></button>
+		    						        <button type="button" class="cust cust-btn" style="width: 100%"><a>Book O/S</a></button>
+		    						        <button type="button" class="cust cust-btn" style="width: 100%" disabled><a>Print</a></button>
 	    						      </div>
     						    </div>
         					</fieldset>
         				</div>
-        				<div class="col-sm-4"></div>
+        				<div class="col-sm-3"></div>
         			</div>
         			<div class="row">
         				<div class="col-sm-12"> <label class="form-control-sm cust-sm col-sm-3"></label> </div>
