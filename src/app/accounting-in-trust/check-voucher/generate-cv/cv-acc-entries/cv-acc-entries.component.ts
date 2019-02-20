@@ -11,15 +11,19 @@ export class CvAccEntriesComponent implements OnInit {
 
   accountingEntriesData: any = {
   	tableData: this.accountingService.getAccountingEntriesCV(),
-  	tHeader: ['Code', 'Account', 'SL Type', 'SL Name', 'Debit', 'Credit'],
+  	tHeader: ['Account Code', 'Account Name', 'SL Type', 'SL Name', 'Debit', 'Credit'],
   	widths:['auto','auto',80,'auto',120,120],
   	dataTypes: ['text', 'text', 'text', 'text', 'currency', 'currency'],
   	nData: new AccountingEntriesCV(null,null,null,null,null,null),
   	pageID: 2,
   	addFlag: true,
   	deleteFlag: true,
+    checkFlag: true,
   	total: [null, null, null, 'Total', null, null],
-  	genericBtn: 'Save'
+  	genericBtn: 'Save',
+    paginateFlag: true,
+    infoFlag: true,
+    magnifyingGlass: ['code', 'slType', 'slName']
   }
 
   constructor(private accountingService : AccountingService) { }

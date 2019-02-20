@@ -6,7 +6,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 
-
 @Component({
 	selector: 'app-general-info',
 	templateUrl: './general-info.component.html',
@@ -32,8 +31,8 @@ export class GeneralInfoComponent implements OnInit {
 	lineClassCode: string;
 	lineClassDesc: string;
 	ocChecked: boolean = false;
-	internalCompFlag: boolean = false;
-
+	internalCompFlag:boolean = false;
+	
 	project: any = {
 		blockCd: '',
 		blockDesc: '',
@@ -133,9 +132,13 @@ export class GeneralInfoComponent implements OnInit {
 	intName: string = "";
 
 	@Output() checkQuoteId = new EventEmitter<any>();
-
+/*testClick(){
+	$('.t').focus();
+	$('.t').blur();
+}*/
 	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute, private maintenanceService: MaintenanceService) { }
 	ngOnInit() {
+
 		this.titleService.setTitle("Quo | General Info");
 		this.tHeader.push("Item No", "Description of Items");
 		this.dataTypes.push("text", "text");
@@ -143,7 +146,9 @@ export class GeneralInfoComponent implements OnInit {
 		this.tableData = this.quotationService.getItemInfoData();
 
 		this.sub = this.route.params.subscribe(params => {
-			this.internalCompFlag = JSON.parse(params['addParams']).intComp == undefined ? false : JSON.parse(params['addParams']).intComp; //neco
+			if(params['addParams'] != undefined){
+				this.internalCompFlag = JSON.parse(params['addParams']).intComp == undefined ? false : JSON.parse(params['addParams']).intComp; //neco
+			}
 			this.from = params['from'];
 			if (this.from == "quo-processing") {
 				this.line = params['line'];
@@ -196,8 +201,7 @@ export class GeneralInfoComponent implements OnInit {
 				this.genInfoData.issueDate		= new Date().toISOString();
 				this.project.projId 			= '1';
 
-				this.maintenanceService.getMtnRisk(JSON.parse(params['addParams']).riskId).subscribe(data => {
-					console.log('RISK  >>>  ' + JSON.stringify(data));
+				this.maintenanceService.getMtnRisk(JSON.parse(params['addParams']).riskId).subscribe(data => {					
 					var risk = data['risk'];
 
 					this.project.blockCd 		= risk.blockCd;
@@ -251,8 +255,6 @@ export class GeneralInfoComponent implements OnInit {
 	func(a: string, b: Date) {
 		this.quotationGenInfo.createdBy = a;
 		this.quotationGenInfo.lastUpdate = b;
-		console.log(this.quotationGenInfo.createdBy);
-		console.log(this.quotationGenInfo.lastUpdate);
 	}
 
 	defaultValues(year: Date) {
@@ -350,42 +352,26 @@ export class GeneralInfoComponent implements OnInit {
 		return new Date(arr[0] + '-' + pad(arr[1]) + '-' + pad(arr[2])).toISOString();   
 	}
 
-	saveQuoteGenInfo() {
-		console.log('PREPARING DATA >>> ' + this.prepareParam());
-
-
-		this.quotationService.saveQuoteGeneralInfo(this.prepareParam()).subscribe(data => console.log(data));
-		//neco
-		if(this.internalCompFlag){
-			var intCompParams: any = {
-				adviceNo: 0,
-				cedingId: 0, //should not be hardcoded
-				cedingRepId: 0, //should not be hardcoded
-				createDate: new Date().toISOString(),
-				createUser: 'NDC', //should not be hardcoded
-				option: '',
-				quoteId: 1, //should not be hardcoded
-				updateDate: new Date().toISOString(),
-				updateUser: 'NDC', //should not be hardcoded
-				wordings: ''
-			}
-			/*this.quotationService.saveQuoteCompetition(intCompParams).subscribe((data: any) =>{
-				console.log(data);
-			});*/
-		}
-		//neco end
-
-		this.quotationService.saveQuoteGeneralInfo(this.prepareParam()).subscribe(data => {
+	saveQuoteGenInfo() {		
+		if(this.validate(this.prepareParam())){
+			this.quotationService.saveQuoteGeneralInfo(JSON.stringify(this.prepareParam())).subscribe(data => {
 			this.genInfoData.quoteId = data['quoteId'];
 			this.genInfoData.quotationNo = data['quotationNo'];
 			this.genInfoData.quoteSeqNo = parseInt(data['quotationNo'].split('-')[2]);
 			this.genInfoData.quoteRevNo = parseInt(data['quotationNo'].split('-')[3]);
 
 			this.checkQuoteIdF(this.genInfoData.quoteId);
-		});
+			});
 
-		$('#successMdl > #modalBtn').trigger('click');
-		
+			$('#successMdl > #modalBtn').trigger('click');
+		} else {
+			//$('#errorMdl > #modalBtn').trigger('click');
+			console.log('ERROR MODAL PO');
+
+			$('.vld').focus();
+			$('.vld').blur();
+		}
+
 	}
 
 	prepareParam() {
@@ -446,7 +432,7 @@ export class GeneralInfoComponent implements OnInit {
 			"updateUser"	: this.genInfoData.updateUser
 		}
 
-		return JSON.stringify(saveQuoteGeneralInfoParam);
+		return saveQuoteGeneralInfoParam;
 	}
 
 	toDateTime(val) {
@@ -490,6 +476,48 @@ export class GeneralInfoComponent implements OnInit {
   		
   	checkQuoteIdF(event){
   		this.checkQuoteId.emit(event);		
+  	}
+
+  	validate(obj){
+  		var req = ['cedingId','lineClassCd','prinId','insuredDesc','status','intmId',
+  				   'issueDate','expiryDate','currencyCd','currencyRt','openingParag',
+  				   'closingParag','createUser','createDate','updateUser','updateDate',
+  				   'projDesc','objectId','site','prjCreateUser','prjCreateDate',
+  				   'prjUpdateUser','prjUpdateDate'];
+
+  		if(obj.lineCd === 'CAR' || obj.lineCd === 'EAR') {
+  			req.push('contractorId', 'duration');
+  		}
+
+  		if(obj.lineCd === 'EAR') {
+  			req.push('testing');
+  		}
+
+  		if(obj.lineCd === 'MLP') {
+  			req.push('ipl', 'timeExc');
+  		}
+
+  		if(obj.lineCd === 'DOS') {
+  			req.push('noClaimPd');
+  		}
+
+  		if(obj.cessionId == 2) {
+  			req.push('reinsurerId');
+  		}
+
+  		if(obj.lineCd === 'MLP' || obj.lineCd === 'DOS') {
+  			req.push('mbiRefNo');
+  		}  		
+
+  		var entries = Object.entries(obj);
+
+		for(var [key, val] of entries) {
+			if((val === '' || val == null) && req.includes(key)){
+				return false;
+			}
+		}
+
+		return true;
   	}
 }
 export interface SelectRequestMode {

@@ -39,7 +39,11 @@
                               </div>
    		                    <label class="form-control-sm col-sm-1" for="xx">Payment Type</label>
       	                    	<div class="input-group col-sm-3" style="padding: 0px;">
-      		                    	<select class="form-control form-control-sm cust-sm col-sm-12" [(ngModel)]="data.paymentType" (change)="tabController($event);">
+                                <input type="text" class="form-control form-control-sm cust-sm col-sm-12" [(ngModel)]="data.paymentType" (change)="tabController($event);"
+                                   placeholder="" readonly>
+                                <div style="margin-left: -19px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+
+      		                    	<!-- <select class="form-control form-control-sm cust-sm col-sm-12" [(ngModel)]="data.paymentType" (change)="tabController($event);">
                                     <option value="Claim Expense Payment to Adjusters" [selected]="data.paymentType == 'Claim Expense Payment to Adjusters'">Claim Expense Payment to Adjusters</option>
                                     <option value="Claim Expense Payment to Other Parties" [selected]="data.paymentType == 'Claim Expense Payment to Other Parties'">Claim Expense Payment to Other Parties</option>
                                     <option value="Claim Payment to Ceding Company" [selected]="data.paymentType == 'Claim Payment to Ceding Company'">Claim Payment to Ceding Company</option>
@@ -47,9 +51,9 @@
                                     <option value="Payment of Service Fee by In-Trust to Service Accounting" [selected]="data.paymentType == 'Payment of Service Fee by In-Trust to Service Accounting'">Payment of Service Fee by In-Trust to Service Accounting</option>
                                     <option value="Treaty Balance Due Participant" [selected]="data.paymentType == 'Treaty Balance Due Participant'">Treaty Balance Due Participant</option>
                                      <option value="Investment (Placement)" [selected]="data.paymentType == 'Investment (Placement)'">Investment (Placement)</option>
-                                    <option value="QSOA Balances" [selected]="data.paymentType == 'QSOA Balances'">QSOA Balances</option>
+                                    <option value="QSOA Balances" [selected]="data.paymentType == 'QSOA Balances'">QSOA Balances</option> -->
                                     <!-- <option value="Others - Visible on any Payment Type" [selected]="data.paymentType == 'Others - Visible on any Payment Type'">Others - Visible on any Payment Type</option> -->
-                                 </select>
+                              <!--    </select> -->
       		                    </div>
    		                    
    		                </div>
@@ -57,13 +61,16 @@
    		                <div class="input-group">
    		                    <label class="form-control-sm col-sm-1" for="xx">Amount</label>
                              <div class="input-group col-sm-3" style="padding: 0px;">
-                              <select class="form-control form-control-sm cust-sm col-sm-4">
+                              <input type="text" class="form-control form-control-sm cust-sm col-sm-3"
+                                   placeholder="PHP">
+                              <div style="margin-left: -19px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+                             <!--  <select class="form-control form-control-sm cust-sm col-sm-4">
                                       <option value="PHP">PHP</option>
                                       <option value="EUR">EUR</option>
                                       <option value="USD">USD</option>
-                              </select>
+                              </select> -->
                               <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-4" [value]="data.currency == undefined ? '' : data.currency" placeholder="PHP" style="margin-right: 4px !important;"> -->
-                                <input type="text" class="form-control form-control-sm cust-sm col-sm-8" style="text-align: right;margin-left: 2px;"
+                                <input type="text" class="form-control form-control-sm cust-sm col-sm-9" style="text-align: right;margin-left: 8px ! important;"
                                        placeholder="350,842.89">
                              </div>
                              <label class="form-control-sm col-sm-1" for="xx">Currency Rate</label>

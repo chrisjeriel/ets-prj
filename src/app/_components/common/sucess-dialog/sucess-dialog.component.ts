@@ -9,7 +9,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class SucessDialogComponent implements OnInit {
 
 
-  @Input() message: string = "Successful Saved!"
+  @Input() message: string = "Successfully Saved!"
 
   constructor(private modalService: NgbModal) { }
 

@@ -24,20 +24,6 @@ export class QuotationComponent implements OnInit {
         });        
 	}
 
-	/*ngAfterViewInit(){
-		console.log('TEST >>> ' + this.viewChild.genInfoData.quoteId);
-	}
-
-	ngAfterViewChecked() {
-		this.quoteId = this.viewChild.genInfoData.quoteId;
-	}*/
-
-	public beforeChange($event: NgbTabChangeEvent) {
-		if ($event.nextId === 'approval-tab') {
-			$event.preventDefault();
-		}
-	}
-
 	showApprovalModal(content) {
 		this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
 	}
@@ -46,7 +32,11 @@ export class QuotationComponent implements OnInit {
   		if ($event.nextId === 'Exit') {
     		this.router.navigateByUrl('');
   		} 
-  
+
+  		if ($event.nextId === 'approval-tab') {
+			$event.preventDefault();
+		}
+ 
   	}
 
   	checkQuoteId(event){  		

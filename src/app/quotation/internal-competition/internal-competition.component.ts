@@ -74,31 +74,30 @@ export class InternalCompetitionComponent implements OnInit, OnDestroy {
          } 
         });
         this.params.quotationNo = quoteNo;
-        this.quotationService.getIntCompAdvInfo(this.params).subscribe((data: any) => {
-            for(var j = 0; j < data.quotation.length; j++){
-              this.data = data.quotation[j].competitionsList;
-              this.quoteIds.push(data.quotation[j].quoteId);
-              this.cedingIds.push(data.quotation[j].competitionsList[0].cedingId.toString());
-              for(var i = 0; i < this.data.length; i++){
-                this.data[i].createDate = new Date(
-                    this.data[i].createDate[0],
-                    this.data[i].createDate[1] - 1,
-                    this.data[i].createDate[2]
-                );
-                this.data[i].updateDate = new Date(
-                    this.data[i].updateDate[0],
-                    this.data[i].updateDate[1] - 1,
-                    this.data[i].updateDate[2]
-                );
-                this.intCompData.tableData.push(this.data[i]);
-              }
-            }
-            //console.log(this.intCompData.tableData);
-            this.custEditableNonDatatableComponent.refreshTable();
-      });
-
-
-
+        if(this.params.quotationNo != ''){
+            this.quotationService.getIntCompAdvInfo(this.params).subscribe((data: any) => {
+                for(var j = 0; j < data.quotation.length; j++){
+                  this.data = data.quotation[j].competitionsList;
+                  this.quoteIds.push(data.quotation[j].quoteId);
+                  this.cedingIds.push(data.quotation[j].competitionsList[0].cedingId.toString());
+                  for(var i = 0; i < this.data.length; i++){
+                    this.data[i].createDate = new Date(
+                        this.data[i].createDate[0],
+                        this.data[i].createDate[1] - 1,
+                        this.data[i].createDate[2]
+                    );
+                    this.data[i].updateDate = new Date(
+                        this.data[i].updateDate[0],
+                        this.data[i].updateDate[1] - 1,
+                        this.data[i].updateDate[2]
+                    );
+                    this.intCompData.tableData.push(this.data[i]);
+                  }
+                }
+                //console.log(this.intCompData.tableData);
+                this.custEditableNonDatatableComponent.refreshTable();
+          });
+        }
       this.maintenanceService.getAdviceWordings().subscribe((data: any) => {
         //console.log(data);
       });
