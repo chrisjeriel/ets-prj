@@ -363,8 +363,8 @@ export class GeneralInfoComponent implements OnInit {
 			//$('#errorMdl > #modalBtn').trigger('click');
 			console.log('ERROR MODAL PO');
 
-			$('.vld').focus();
-			$('.vld').blur();
+			$('.req').focus();
+			$('.req').blur();
 		}
 
 	}
