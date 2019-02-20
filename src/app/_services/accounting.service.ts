@@ -664,8 +664,8 @@ export class AccountingService {
 
 	getAccARInvestments(){
 		this.accARInvestments = [
-			new AccARInvestments('BPI','BPI 1','Time',5,'Years',8.875, new Date(2013,9,20),new Date(2018,9,20),'PHP',1,14000000,4112500,18112.50,82250,18112500),
-			new AccARInvestments('RCBC','RCBC 1','Treasury',35,'Days',1.5, new Date(2018,8,26),new Date(2018,9,31),'PHP',1,10000000,150000,10150,3000,10150000)
+			new AccARInvestments('BPI','BPI 1','Time Deposit',5,'Years',8.875, new Date(2013,9,20),new Date(2018,9,20),'PHP',1,14000000,4112500,18112.50,82250,18112500),
+			new AccARInvestments('RCBC','RCBC 1','Treasury Bonds',35,'Days',1.5, new Date(2018,8,26),new Date(2018,9,31),'PHP',1,10000000,150000,10150,3000,10150000)
 		];
 		return this.accARInvestments;
 	}
@@ -733,7 +733,7 @@ export class AccountingService {
 
 	getAcctServices(){
 		this.arOthers = [
-			new AROthers("Utilities","Service fee for the period of","Payment","PHP",1.0,-50000,-50000),
+			new AROthers("Utilities","","Service fee for the period of","Payment","PHP",1.0,-50000,-50000),
 		];
 		return this.arOthers;
 	}
