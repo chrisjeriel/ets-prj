@@ -376,7 +376,7 @@ export class GeneralInfoComponent implements OnInit {
 				  createDate: new Date().toISOString(),
 				  createUser: 'ndc',
 				  option: '',
-				  quoteId: this.genInfoData.quoteId,
+				  quoteId: parseInt(this.genInfoData.quoteId),
 				  updateDate: new Date().toISOString(),
 				  updateUser: 'ndc',
 				  wordings: ''
