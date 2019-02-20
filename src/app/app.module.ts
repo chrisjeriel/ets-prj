@@ -620,7 +620,7 @@ import { ArDetailsInvestmentIncomeComponent } from './accounting-in-trust/ar-det
         JvOverdueAccountsAgainstTreatyComponent,
         SucessDialogComponent,
         BatchOrPrintingComponent,
-        BatchInvoiceComponent
+        BatchInvoiceComponent,
         ArDetailsInvestmentIncomeComponent,
     ],
 
