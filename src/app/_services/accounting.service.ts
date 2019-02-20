@@ -737,7 +737,7 @@ export class AccountingService {
 
 	getAcctServices(){
 		this.arOthers = [
-			new AROthers("Utilities","Service fee for the period of","Payment","PHP",1.0,-50000,-50000),
+			new AROthers("Utilities","","Service fee for the period of","Payment","PHP",1.0,-50000,-50000),
 		];
 		return this.arOthers;
 	}
