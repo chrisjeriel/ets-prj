@@ -32,13 +32,7 @@ export class MtnEndtCodeComponent implements OnInit {
     selected: any;
 
   ngOnInit() {
-  	this.mtnService.getEndtCode("CAR").subscribe((data: any) => {
-  		console.log(data.endtCode);
-  		for (var i = data.endtCode.length - 1; i >= 0; i--) {
-  			this.passData.tableData.push(data.endtCode[i]);
-  		}
-  		this.table.refreshTable();
-  	});
+  	
   }
 
   select(data){
@@ -47,6 +41,15 @@ export class MtnEndtCodeComponent implements OnInit {
 
   okBtnClick(){
   	this.selectedData.emit(this.selected);
+  }
+
+  openModal(){
+    this.mtnService.getEndtCode("CAR").subscribe((data: any) => {
+      for (var i = data.endtCode.length - 1; i >= 0; i--) {
+        this.passData.tableData.push(data.endtCode[i]);
+      }
+      this.table.refreshTable();
+    });
   }
 
 }
