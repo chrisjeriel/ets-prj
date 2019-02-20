@@ -80,11 +80,25 @@ export class ArPreviewComponent implements OnInit {
 
   accEntriesData: any = {
     tableData: [
-      [null, null, null, null, null, null]
+      {
+        accountCode: null,
+        accountName: null,
+        slType: null,
+        slName: null,
+        debit: null,
+        credit: null
+      }
     ],
-    tHeader: ['Code', 'Account', 'SL Type', 'SL Name', 'Debit', 'Credit'],
+    tHeader: ['Account Code', 'Account Name', 'SL Type', 'SL Name', 'Debit', 'Credit'],
     dataTypes: ['text', 'text', 'text', 'text', 'currency', 'currency'],
-    nData: [null, null, null, null, null, null],
+    nData: {
+        accountCode: null,
+        accountName: null,
+        slType: null,
+        slName: null,
+        debit: null,
+        credit: null
+      },
     paginateFlag: true,
     infoFlag: true,
     checkFlag: true,
@@ -92,7 +106,8 @@ export class ArPreviewComponent implements OnInit {
     addFlag: true,
     deleteFlag: true,
     total: [null, null, null, 'Total', null, null],
-    genericBtn: 'Save'
+    genericBtn: 'Save',
+    magnifyingGlass: ['accountCode','slType','slName']
   }
 
   constructor() { }

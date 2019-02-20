@@ -177,9 +177,7 @@ export class GeneralInfoComponent implements OnInit {
 					this.genInfoData.printDate 	= (this.genInfoData.printDate == null) ? '' : this.dateParser(this.genInfoData.printDate);
 					this.genInfoData.reqDate 	= this.dateParser(this.genInfoData.reqDate);
 					this.genInfoData.updateDate = this.dateParser(this.genInfoData.updateDate);
-				}
-
-				this.checkQuoteIdF(this.genInfoData.quoteId);
+				}				
 
 				if(data['project'] != null) {
 					this.project = data['project'];
@@ -187,6 +185,7 @@ export class GeneralInfoComponent implements OnInit {
 					this.project.updateDate = this.dateParser(this.project.updateDate);
 				}
 
+				this.checkQuoteIdF(this.genInfoData.quoteId);
 			});
 
 		} else {
@@ -372,8 +371,8 @@ export class GeneralInfoComponent implements OnInit {
 			//$('#errorMdl > #modalBtn').trigger('click');
 			console.log('ERROR MODAL PO');
 
-			$('.vld').focus();
-			$('.vld').blur();
+			$('.req').focus();
+			$('.req').blur();
 		}
 
 	}
@@ -479,7 +478,12 @@ export class GeneralInfoComponent implements OnInit {
   	}
   		
   	checkQuoteIdF(event){
-  		this.checkQuoteId.emit(event);		
+  		this.checkQuoteId.emit({
+  			quoteId: event,
+  			quotationNo: this.genInfoData.quotationNo,
+  			riskName: this.project.riskName,
+  			insuredDesc: this.genInfoData.insuredDesc
+  		});		
   	}
 
   	validate(obj){
