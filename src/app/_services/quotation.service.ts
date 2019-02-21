@@ -672,12 +672,18 @@ export class QuotationService {
     }
 
     saveQuoteOtherRates(quoteId:number,otherRatesData:any){
-        let header : any = {
+        let passData : any = {
+            quoteId: quoteId,
+            otherRates: otherRatesData
+        }
+        let 
+            header : any = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json'
             })
         };
-        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteOtherRates', JSON.stringify(otherRatesData), header);
+        console.log()
+        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteOtherRates', JSON.stringify(passData), header);
     }
 
     saveQuoteAlop(alopData:any){
