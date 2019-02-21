@@ -148,8 +148,9 @@ export class CoverageComponent implements OnInit {
     this.coverageData.quoteId             = this.quotationInfo.quoteId;
     this.coverageData.projId              = 1;
     this.coverageData.riskId              = this.riskId;
-    this.quotationService.saveQuoteCoverage(this.coverageData.quoteId,this.coverageData.projId,this.coverageData).subscribe((data: any) => {});
-    $(' #successModalBtn').trigger('click');
+    this.quotationService.saveQuoteCoverage(this.coverageData.quoteId,this.coverageData.projId,this.coverageData).subscribe((data: any) => {
+      $('#successModalBtn').trigger('click');
+    });
   }
 
   cancel(){
