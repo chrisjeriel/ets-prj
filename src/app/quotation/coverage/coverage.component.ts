@@ -90,6 +90,7 @@ export class CoverageComponent implements OnInit {
     for (var i = 1; i < this.quotationInfo.quotationNo.split(/[-]/g).length; i++) {
       this.quoteNo += '-' + parseInt(this.quotationInfo.quotationNo.split(/[-]/g)[i]);
     } 
+    console.log(this.quotationInfo)
 
     this.riskId = this.quotationInfo.riskId;
     this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {

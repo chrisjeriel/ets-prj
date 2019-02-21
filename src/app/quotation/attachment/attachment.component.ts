@@ -75,7 +75,8 @@ export class AttachmentComponent implements OnInit {
   sub:any;
   quotationNo: string;
   quoteId: string;
-
+  @Input() quotationInfo: any = {};
+  
   constructor(config: NgbDropdownConfig,
     private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute) {
     config.placement = 'bottom-right';

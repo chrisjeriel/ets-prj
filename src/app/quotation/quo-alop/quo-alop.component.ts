@@ -20,9 +20,9 @@ export class QuoAlopComponent implements OnInit {
   tableData: any[] = [];
   tHeader: string[] = [];
   policyRecordInfo: any = {};
-    dataTypes: string[] = [];
-    nData: QuoteALOPItemInformation = new QuoteALOPItemInformation(null, null, null, null, null);
-    
+  dataTypes: string[] = [];
+  nData: QuoteALOPItemInformation = new QuoteALOPItemInformation(null, null, null, null, null);
+   
     sub:any;
     quotationNo: string;
     quoteId: string;
@@ -104,6 +104,7 @@ export class QuoAlopComponent implements OnInit {
         }
         this.getAlop();
        
+       console.log(this.quotationInfo)
 
     }
 
