@@ -307,7 +307,10 @@ import { SucessDialogComponent } from './_components/common/sucess-dialog/sucess
 import { BatchOrPrintingComponent } from './accounting-service/utilities/batch-or-printing/batch-or-printing.component';
 import { BatchInvoiceComponent } from './accounting-service/utilities/batch-invoice/batch-invoice.component';
 import { ArDetailsInvestmentIncomeComponent } from './accounting-in-trust/ar-details/ar-details-investment-income/ar-details-investment-income.component';
-
+import { BordereauxComponent } from './accounting-in-trust/reports/bordereaux/bordereaux.component';
+import { QuarterlyStmntOfAcctComponent } from './accounting-in-trust/quarterly-stmnt-of-acct/quarterly-stmnt-of-acct.component';
+import { ProfitCommissionComponent } from './accounting-in-trust/profit-commission/profit-commission.component';
+import { BatchOsTakeupComponent } from './accounting-in-trust/month-end/batch-os-takeup/batch-os-takeup.component';
 
 
 @NgModule({
@@ -621,7 +624,11 @@ import { ArDetailsInvestmentIncomeComponent } from './accounting-in-trust/ar-det
         SucessDialogComponent,
         BatchOrPrintingComponent,
         BatchInvoiceComponent,
-        ArDetailsInvestmentIncomeComponent
+        ArDetailsInvestmentIncomeComponent,
+        BordereauxComponent,
+        QuarterlyStmntOfAcctComponent,
+        ProfitCommissionComponent,
+        BatchOsTakeupComponent,
     ],
 
     providers: [

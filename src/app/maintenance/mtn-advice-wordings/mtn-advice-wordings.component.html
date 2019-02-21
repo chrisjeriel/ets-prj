@@ -1,4 +1,4 @@
-<app-modal class="d-none">
+<app-modal class="d-none" (modalOpened)="openModal()">
 	<div header>List of Values</div>
 	<div body>
 		<app-cust-non-datatable [passData]="passDataAdvice" (rowClick)="select($event)"></app-cust-non-datatable>

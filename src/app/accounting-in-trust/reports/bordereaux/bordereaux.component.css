@@ -1,0 +1,23 @@
+.text-left{
+	text-align: left !important;  
+}
+
+.input-group {
+    margin-bottom: -13px !important;
+}
+
+.text-search-ico {
+	margin-left: -18px;
+	z-index: 99999;
+	font-size: 14px;
+	position: relative;
+	padding-right: 5px !important;
+}
+
+.pl-8{
+	padding-left: 4rem;
+}
+
+.report .input-group {
+    margin-bottom: -20px !important;
+}

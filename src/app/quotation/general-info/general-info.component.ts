@@ -367,6 +367,25 @@ export class GeneralInfoComponent implements OnInit {
 			});
 
 			$('#successMdl > #modalBtn').trigger('click');
+			//for internal comp
+			if(this.internalCompFlag){
+				var internalCompParams: any = {
+				  adviceNo: 0,
+				  cedingId: this.genInfoData.cedingId,
+				  cedingRepId: this.genInfoData.cedingId,
+				  createDate: new Date().toISOString(),
+				  createUser: 'ndc',
+				  option: '',
+				  quoteId: parseInt(this.genInfoData.quoteId),
+				  updateDate: new Date().toISOString(),
+				  updateUser: 'ndc',
+				  wordings: ''
+				}
+		        this.quotationService.saveQuoteCompetition(internalCompParams).subscribe((result: any) => {
+		          console.log(result);
+		        });
+			}
+			//end internal comp
 		} else {
 			//$('#errorMdl > #modalBtn').trigger('click');
 			console.log('ERROR MODAL PO');
@@ -482,7 +501,8 @@ export class GeneralInfoComponent implements OnInit {
   			quoteId: event,
   			quotationNo: this.genInfoData.quotationNo,
   			riskName: this.project.riskName,
-  			insuredDesc: this.genInfoData.insuredDesc
+  			insuredDesc: this.genInfoData.insuredDesc,
+  			riskId: this.project.riskId //added by paul
   		});		
   	}
 
