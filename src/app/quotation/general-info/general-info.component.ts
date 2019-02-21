@@ -130,6 +130,7 @@ export class GeneralInfoComponent implements OnInit {
 	currencyRt: number = 0;
 	intId: number;
 	intName: string = "";
+	errorMdlMessage: string = "";
 
 	@Output() checkQuoteId = new EventEmitter<any>();
 
@@ -305,13 +306,20 @@ export class GeneralInfoComponent implements OnInit {
 		$('#cedingCompany #modalBtn').trigger('click');
 	}
 
-	showCedingCompanyNotMemberLOV() {
-		$('#cedingCompanyNotMember #modalBtn').trigger('click');
-	}
 
 	setCedingcompany(event){
 		this.genInfoData.cedingId = event.coNo;
 		this.genInfoData.cedingName = event.name;
+	}
+
+	showCedingCompanyNotMemberLOV() {
+		$('#cedingCompanyNotMember #modalBtn').trigger('click');
+	}
+
+	setReinsurer(event) {
+		console.log(event);
+		this.genInfoData.reinsurerId = event.coNo;
+		this.genInfoData.reinsurerName = event.name;
 	}
 /*
 	showInsuredLOV(){
@@ -345,15 +353,22 @@ export class GeneralInfoComponent implements OnInit {
 	saveQuoteGenInfo() {		
 		if(this.validate(this.prepareParam())){
 			this.quotationService.saveQuoteGeneralInfo(JSON.stringify(this.prepareParam())).subscribe(data => {
-			this.genInfoData.quoteId = data['quoteId'];
-			this.genInfoData.quotationNo = data['quotationNo'];
-			this.genInfoData.quoteSeqNo = parseInt(data['quotationNo'].split('-')[2]);
-			this.genInfoData.quoteRevNo = parseInt(data['quotationNo'].split('-')[3]);
+				console.log(data);
 
-			this.checkQuoteIdF(this.genInfoData.quoteId);
+				if(data['returnCode'] == 0) {
+					this.errorMdlMessage = data['errorList'][0].errorMessage;
+					$('#errorMdl > #modalBtn').trigger('click');
+				} else {
+					this.genInfoData.quoteId = data['quoteId'];
+					this.genInfoData.quotationNo = data['quotationNo'];
+					this.genInfoData.quoteSeqNo = parseInt(data['quotationNo'].split('-')[2]);
+					this.genInfoData.quoteRevNo = parseInt(data['quotationNo'].split('-')[3]);
+
+					this.checkQuoteIdF(this.genInfoData.quoteId);
+					$('#successMdl > #modalBtn').trigger('click');
+				}
 			});
 
-			$('#successMdl > #modalBtn').trigger('click');
 			//for internal comp
 			if(this.internalCompFlag){
 				var internalCompParams: any = {
@@ -374,6 +389,7 @@ export class GeneralInfoComponent implements OnInit {
 			}
 			//end internal comp
 		} else {
+			this.errorMdlMessage = "Please complete all the required fields.";
 			$('#errorMdl > #modalBtn').trigger('click');
 
 			$('.req').focus();
