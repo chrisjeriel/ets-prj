@@ -494,7 +494,7 @@
 				<!-- FIELDSET FOR TYPE [MBI & BPV] -->
 
 				<ng-container *ngSwitchCase="line === 'MBI' || line === 'BPV'">
-					<fieldset class="scheduler-border" style="padding-top: 12px !important; padding-bottom: 19px !important;">
+					<fieldset class="scheduler-border" style="padding-top: 13px !important; padding-bottom: 23px !important;">
 						<legend class="scheduler-border">Insured Details</legend>
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-12" style="margin-top: 10px;">
@@ -567,7 +567,7 @@
 
 				<!-- FIELDSET FOR TYPE [MLP] -->
 
-				<ng-container *ngSwitchCase="quotationService.toGenInfo[1] === 'MLP'">
+				<ng-container *ngSwitchCase="line === 'MLP'">
 					<fieldset class="scheduler-border" style="padding-top: 12px !important; padding-bottom: 19px !important;">
 						<legend class="scheduler-border">Insured Details</legend>
 						<div class="form-row" style="margin-right: 0px;">
@@ -647,7 +647,7 @@
 
 				<!-- FIELDSET FOR TYPE [DOS] -->
 
-				<ng-container *ngSwitchCase="quotationService.toGenInfo[1] === 'DOS'">
+				<ng-container *ngSwitchCase="line === 'DOS'">
 					<fieldset class="scheduler-border" style="padding-top: 12px !important; padding-bottom: 19px !important;">
 						<legend class="scheduler-border">Insured Details</legend>
 						<div class="form-row" style="margin-right: 0px;">
@@ -889,30 +889,32 @@
 
 <app-mtn-insured id="principalLOV" (selectedData)="setPrincipal($event)"></app-mtn-insured>
 <app-mtn-insured id="contractorLOV" (selectedData)="setContractor($event)"></app-mtn-insured> 
-<app-mtn-insured id="insuredLOV" (selectedData)="setInsured($event)"></app-mtn-insured>
 <app-mtn-currency id="currencyModal" (selectedData)="setCurrency($event)"></app-mtn-currency>
 <app-ceding-company id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-ceding-company>
-<app-mtn-ceding-company id="cedingCompanyNotMember" (selectedData)="setCedingcompany($event)"></app-mtn-ceding-company>
+<app-mtn-ceding-company id="cedingCompanyNotMember" (selectedData)="setReinsurer($event)"></app-mtn-ceding-company>
 <app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
 <app-mtn-intermediary id="intLOV" (selectedData)="setInt($event)"></app-mtn-intermediary>
 <app-mtn-line-class id="lineClassLOV" (selectedData)="setLineClass($event)" [line]="line"></app-mtn-line-class>
 <app-mtn-object id="objIdLov" (selectedData)="setObj($event)" [line]="line"></app-mtn-object>
-<app-mtn-quotation-wordings id="wordingOpeningIdLov" (selectedData)="setOpeningWording($event)"></app-mtn-quotation-wordings>
-<app-mtn-quotation-wordings id="wordingClosingIdLov" (selectedData)="setClosingWording($event)"></app-mtn-quotation-wordings> 
+<app-mtn-quotation-wordings id="wordingOpeningIdLov" (selectedData)="setOpeningWording($event)" [line]="line"></app-mtn-quotation-wordings>
+<app-mtn-quotation-wordings id="wordingClosingIdLov" (selectedData)="setClosingWording($event)" [line]="line"></app-mtn-quotation-wordings> 
 
 <app-modal class="d-none" id="successMdl">
 	<div header>Success</div>
-	<div body>
-		<div class="container">
-			<div class="row" style="text-align: center;">
-				<div class="col-sm-12">
-					<i class="fa fa-check-circle fa-4x"></i>
-				</div>
-				<div class="col-sm-12">
-					<p>Great!</p>
-				</div>
-			</div>
-		</div>		
+	<div body class="container-flex text-center">
+		<span class="fa fa-check-circle fa-3x" style="vertical-align: middle;"></span>
+		<span style="vertical-align: middle; margin-left: 15px;">Saved successfully!</span>
+	</div>
+	<div footer class="d-flex justify-content-center w-100">                    
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" id="errorMdl">
+	<div header>Error</div>
+	<div body class="container-flex text-center">
+		<span class="fa fa-times-circle fa-3x" style="vertical-align: middle;"></span>
+		<span style="vertical-align: middle; margin-left: 15px;">{{ errorMdlMessage }}</span>		
 	</div>
 	<div footer class="d-flex justify-content-center w-100">                    
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
