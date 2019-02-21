@@ -67,34 +67,29 @@ export class CoverageComponent implements OnInit {
   multiSelectData: any[] = [];
   dataLoaded:boolean = false;
   nData: QuotationCoverageInfo = new QuotationCoverageInfo(null, null, null, null, null);
-  quotationNo: string;
-  insuredName: string;
-  risk: string;
-  quoteId: number;
   projId: number;
   riskId: number;
   temp: number = 0;
   sub: any;
   quoteNo:string = '';
   lineCd: string = '';
+  quoteId: any;
+  @Input() quotationInfo: any = {};
 
   constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.titleService.setTitle("Quo | Coverage");
 
-    this.sub = this.route.params.subscribe(params => {
-      this.quotationNo = params["quotationNo"];
-      this.quoteNo = this.quotationNo.split(/[-]/g)[0]
-      for (var i = 1; i < this.quotationNo.split(/[-]/g).length; i++) {
-       this.quoteNo += '-' + parseInt(this.quotationNo.split(/[-]/g)[i]);
-     } 
-    });
+    this.quoteNo = this.quotationInfo.quotationNo.split(/[-]/g)[0]
+    for (var i = 1; i < this.quotationInfo.quotationNo.split(/[-]/g).length; i++) {
+      this.quoteNo += '-' + parseInt(this.quotationInfo.quotationNo.split(/[-]/g)[i]);
+    } 
+
     
     this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
       this.quoteId      = data.quotation.quoteId;
       this.riskId       = data.quotation.project.riskId;
-      this.risk         = data.quotation.project.riskName;
       this.coverageData = data.quotation.project.coverage;
         // this.passData.tableData = data.quotation.project.coverage.sectionCovers;
         for (var i = data.quotation.project.coverage.sectionCovers.length - 1; i >= 0; i--) {
@@ -140,7 +135,7 @@ export class CoverageComponent implements OnInit {
     this.coverageData.createDate          = new Date(this.coverageData.createDate[0],this.coverageData.createDate[1]-1,this.coverageData.createDate[2]).toISOString();
     this.coverageData.saveSectionCovers   = this.editedData;
     this.coverageData.deleteSectionCovers = this.deletedData;
-    this.coverageData.quoteId             = this.quoteId;
+    this.coverageData.quoteId             = this.quotationInfo.quoteId;
     this.coverageData.projId              = 1;
     this.coverageData.riskId              = this.riskId;
     this.quotationService.saveQuoteCoverage(this.coverageData.quoteId,this.coverageData.projId,this.coverageData).subscribe((data: any) => {});
