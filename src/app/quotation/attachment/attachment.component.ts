@@ -75,7 +75,9 @@ export class AttachmentComponent implements OnInit {
   sub:any;
   quotationNo: string;
   quoteId: string;
-
+  @Input() quotationInfo: any = {};
+  quoteNo: string = '';
+  
   constructor(config: NgbDropdownConfig,
     private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute) {
     config.placement = 'bottom-right';
@@ -111,22 +113,21 @@ export class AttachmentComponent implements OnInit {
      });
     this.passData.tableData = arrayData;
 */
-  let quoteNo:string = "";
-  this.sub = this.route.params.subscribe(params => {
-    this.quotationNo = params["quotationNo"];
-    quoteNo = this.quotationNo.split(/[-]/g)[0]
-    for (var i = 1; i < this.quotationNo.split(/[-]/g).length; i++) {
-     quoteNo += '-' + parseInt(this.quotationNo.split(/[-]/g)[i]);
+  this.quotationNo = this.quotationInfo.quotationNo;
+  this.quoteNo = this.quotationNo.split(/[-]/g)[0]
+  for (var i = 1; i < this.quotationNo.split(/[-]/g).length; i++) {
+     this.quoteNo += '-' + parseInt(this.quotationNo.split(/[-]/g)[i]);
    } 
-  });
     
-    this.quotationService.getAttachment(null,quoteNo).subscribe((data: any) => {
+    this.getAttachment();
+  }
+
+  getAttachment(){
+    this.quotationService.getAttachment(null,this.quoteNo).subscribe((data: any) => {
       this.quoteId = data.quotation[0].quoteId;
         this.attachmentData = data.quotation[0].attachmentsList;
         // this.passData.tableData = data.quotation.project.coverage.sectionCovers;
-        for (var i = 0; i < this.attachmentData.length; i++) {
-          this.passData.tableData.push(this.attachmentData[i]);
-        }
+        this.passData.tableData = this.attachmentData;
         this.table.refreshTable();
     });
   }
@@ -147,7 +148,10 @@ export class AttachmentComponent implements OnInit {
       }
       // delete this.savedData[i].tableIndex;
     }
-    this.quotationService.saveQuoteAttachment(this.quoteId,this.savedData,this.deletedData).subscribe((data: any) => {});
+    this.quotationService.saveQuoteAttachment(this.quoteId,this.savedData,this.deletedData).subscribe((data: any) => {
+      $('#successModalBtn').trigger('click');
+      this.getAttachment();
+    });
   }
 
   cancel(){

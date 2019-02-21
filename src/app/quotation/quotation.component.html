@@ -38,7 +38,7 @@
 				<div>ALOP</div>
 			</ng-template>
 			<ng-template ngbTabContent>
-				<app-quo-alop></app-quo-alop>
+				<app-quo-alop [quotationInfo]="quoteInfo"></app-quo-alop>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab [disabled]="quoteInfo.quoteId == ''">
@@ -54,7 +54,7 @@
 				<div>Attachment</div>
 			</ng-template>
 			<ng-template ngbTabContent>
-				<app-attachment></app-attachment>
+				<app-attachment [quotationInfo]="quoteInfo"></app-attachment>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab id="approval-tab">

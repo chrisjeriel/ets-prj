@@ -15,8 +15,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
   AdjustersData: any = {
   	tableData: this.accountingService.getPaymentToAdjuster(),
-  	tHeader: ['Claim Request No', 'Claim No', 'Payment For/To', 'Insured', 'Hist No', 'Hist Type', 'Ex-Gratia', 'Curr','Curr Rate', 'Reserve Amount','Amount','Amount (Php)'],
-  	dataTypes: ['text', 'text', 'text', 'text', 'number', 'text', 'checkbox', 'text', 'percent', 'currency', 'currency', 'currency'],
+  	tHeader: ['Claim Request No', 'Claim No', 'Payment For/To', 'Insured', 'Hist No', 'Hist Type', 'Ex-Gratia','Reserve Amount', 'Curr','Curr Rate','Amount','Amount (Php)'],
+  	dataTypes: ['text', 'text', 'text', 'text', 'number', 'text', 'checkbox', 'currency', 'text','percent', 'currency', 'currency'],
   	nData: new PaymentToAdjusters(null,null,null,null,null,null,null,null,null,null,null,null),
   	paginateFlag: true,
   	infoFlag: true,
@@ -24,15 +24,16 @@ export class PaymentRequestDetailsComponent implements OnInit {
   	checkFlag: true,
   	addFlag: true,
   	deleteFlag: true,
-  	total: [null, null, null,null, null, null,null, null, null, 'Total', 'amount', 'amountPhp'],
+  	total: [null, null, null,null, null, null,null, null, 'Total', null, 'amount', 'amountPhp'],
   	genericBtn: 'Save',
-    widths: ['auto','auto','auto','auto',1,'auto',1,1,2,100,100,100]
+    widths: ['auto','auto','auto','auto',1,'auto',1,1,2,70,100,100],
+    magnifyingGlass: ['claimRequestNo']
   }
 
   OtherPartyData: any = {
   	tableData: this.accountingService.getPaymentToOtherParty(),
-  	tHeader: ['Claim Request No', 'Claim No', 'Payment For/To', 'Insured', 'Hist No', 'Hist Type', 'Ex-Gratia', 'Curr','Curr Rate', 'Reserve Amount','Amount','Amount (PHP)'],
-  	dataTypes: ['text', 'text', 'text', 'text', 'number', 'text', 'checkbox', 'text', 'percent', 'currency', 'currency', 'currency'],
+  	tHeader: ['Claim Request No', 'Claim No', 'Payment For/To', 'Insured', 'Hist No', 'Hist Type', 'Ex-Gratia','Reserve Amount', 'Curr','Curr Rate','Amount','Amount (PHP)'],
+  	dataTypes: ['text', 'text', 'text', 'text', 'number', 'text', 'checkbox','currency','text','percent', 'currency', 'currency'],
   	nData: new PaymentToOtherParty(null,null,null,null,null,null,null,null,null,null,null,null),
   	paginateFlag: true,
   	infoFlag: true,
@@ -40,15 +41,16 @@ export class PaymentRequestDetailsComponent implements OnInit {
   	checkFlag: true,
   	addFlag: true,
   	deleteFlag: true,
-  	total: [null, null, null,null, null, null,null, null, null, 'Total', 'amount', 'amountPhp'],
+  	total: [null, null, null,null, null, null,null, null, 'Total', null, 'amount', 'amountPhp'],
   	genericBtn: 'Save',
-    widths: ['auto','auto','auto','auto',1,'auto',1,1,2,100,100,100]
+    widths: ['auto','auto','auto','auto',1,'auto',1,1,2,70,100,100],
+    magnifyingGlass: ['claimRequestNo']
   }
 
   CedingCompanyData: any = {
   	tableData: this.accountingService.getPaymentToCedingCompany(),
-  	tHeader: ['Claim Request No', 'Claim No', 'Payment For/To', 'Insured', 'Hist No', 'Hist Type', 'Ex-Gratia', 'Curr','Curr Rate', 'Reserve Amount','Amount','Amount (Php)'],
-  	dataTypes: ['text', 'text', 'text', 'text', 'number', 'text', 'checkbox', 'text', 'percent',  'currency','currency', 'currency'],
+  	tHeader: ['Claim Request No', 'Claim No', 'Payment For/To', 'Insured', 'Hist No', 'Hist Type', 'Ex-Gratia','Reserve Amount', 'Curr','Curr Rate','Amount','Amount (PHP)'],
+    dataTypes: ['text', 'text', 'text', 'text', 'number', 'text', 'checkbox','currency','text','percent', 'currency', 'currency'],
   	nData: new PaymentToCedingCompany(null,null,null,null,null,null,null,null,null,null,null,null),
   	paginateFlag: true,
   	infoFlag: true,
@@ -56,9 +58,10 @@ export class PaymentRequestDetailsComponent implements OnInit {
   	checkFlag: true,
   	addFlag: true,
   	deleteFlag: true,
-  	total: [null, null, null,null, null, null,null, null, null, 'Total', 'amount', 'amountPhp'],
+  	total: [null, null, null,null, null, null,null, null, 'Total', null, 'amount', 'amountPhp'],
   	genericBtn: 'Save',
-    widths: ['auto','auto','auto','auto',1,'auto',1,1,2,100,100,100]
+    widths: ['auto','auto','auto','auto',1,'auto',1,1,2,70,100,100],
+    magnifyingGlass: ['claimRequestNo']
   }
 
   PremiumReturnData: any = {
@@ -96,8 +99,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   MainCompanyServiceAccountingData:any = {
-    tHeader: ['Main Company Distribution','Precent Share(%)','Curr','Curr Rate','Amount','Amount (PHP)'],
-    widths:['auto',1,1,1,100,100],
+    tHeader: ['Main Company Distribution','Percent Share(%)','Curr','Curr Rate','Amount','Amount (PHP)'],
+    widths:['auto',1,1,1,200,200],
     dataTypes:['text','percent','text','percent','currency','currency'],
     uneditable:[true,true,true,true,true,true],
     total: [null,null,null,'Total','4','5'],
@@ -106,14 +109,15 @@ export class PaymentRequestDetailsComponent implements OnInit {
     pageLength: 3,
     searchFlag:true,
     tableData:[
-      ['Nat Re',4,'PHP',1,40000,40000]
+      ['Nat Re',4,'PHP',1,40000,40000],
+      ['Pool & Munich Re',96,'PHP',1,960000,960000]
     ],
     pageID:2
   }
 
   SubServiceAccountingData: any= {
-    tHeader: ['Sub-Distribution','Precent Share(%)','Curr','Curr Rate','Amount','Amount (PHP)'],
-    widths:['auto',1,1,1,100,100],
+    tHeader: ['Sub-Distribution of Pool & Munich Re','Precent Share(%)','Curr','Curr Rate','Amount','Amount (PHP)'],
+    widths:['auto',1,1,1,200,200],
     dataTypes:['text','percent','text','percent','currency','currency'],
     uneditable:[true,true,true,true,true,true],
     total: [null,null,null,'Total','4','5'],

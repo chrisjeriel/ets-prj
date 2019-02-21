@@ -2,7 +2,6 @@ export class AROthers {
 	item: string;
 	refNo: string;
 	desc: string;
-	type: string;
 	curr: string;
 	curRate: number;
 	amount: number;
@@ -11,7 +10,6 @@ export class AROthers {
 	constructor(item: string, 
 	     refNo: string,
 		 desc: string,
-		 type: string, 
 		 curr: string,
 		 curRate: number, 
 		 amount: number,
@@ -20,7 +18,6 @@ export class AROthers {
 		this.item = item;
 		this.refNo = refNo;
 		this.desc = desc;
-		this.type = type;
 		this.curr = curr;
 		this.curRate = curRate;
 		this.amount = amount;

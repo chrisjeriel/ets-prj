@@ -21,9 +21,9 @@ export class PaymentToAdjusters {
 		this.histNo = histNo;
 		this.histType = histType;
 		this.exGratia = exGratia;
+		this.reserveAmount = reserveAmount;
 		this.curr = curr;
 		this.currRate = currRate;
-		this.reserveAmount = reserveAmount;
 		this.amount = amount;
 		this.amountPhp = amountPhp;
 
@@ -53,9 +53,9 @@ export class PaymentToOtherParty {
 		this.histNo = histNo;
 		this.histType = histType;
 		this.exGratia = exGratia;
+		this.reserveAmount = reserveAmount;
 		this.curr = curr;
 		this.currRate = currRate;
-		this.reserveAmount = reserveAmount;
 		this.amount = amount;
 		this.amountPhp = amountPhp;
 
@@ -87,9 +87,9 @@ export class PaymentToCedingCompany {
 		this.histNo = histNo;
 		this.histType = histType;
 		this.exGratia = exGratia;
+		this.reserveAmount = reserveAmount;
 		this.curr = curr;
 		this.currRate = currRate;
-		this.reserveAmount = reserveAmount;
 		this.amount = amount;
 		this.amountPhp = amountPhp;
 
