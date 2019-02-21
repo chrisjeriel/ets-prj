@@ -255,7 +255,7 @@ export class QuoteOptionComponent implements OnInit {
     }
 
     console.log(this.editedData);
-
+    console.log(this.quoteId);
 /*    this.coverageData.createDate          = new Date(this.coverageData.createDate[0],this.coverageData.createDate[1]-1,this.coverageData.createDate[2]).toISOString();
     //this.coverageData.updateDate          = new Date(this.coverageData.updateDate[0],this.coverageData.updateDate[1]-1,this.coverageData.updateDate[2]).toISOString();
     this.coverageData.saveSectionCovers   = this.editedData;
@@ -263,7 +263,8 @@ export class QuoteOptionComponent implements OnInit {
     this.coverageData.quoteId             = this.quotationInfo.quoteId;
     this.coverageData.projId              = 1;
     this.coverageData.riskId              = this.riskId;*/
-    this.quotationService.saveQuoteOtherRates(this.quoteId,this.editedData).subscribe((data: any) => {});
+    
+/*    this.quotationService.saveQuoteOtherRates(this.quoteId,this.editedData).subscribe((data: any) => {});*/
     
   }
 
