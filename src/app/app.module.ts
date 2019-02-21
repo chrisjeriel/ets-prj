@@ -310,6 +310,7 @@ import { ArDetailsInvestmentIncomeComponent } from './accounting-in-trust/ar-det
 import { BatchOsTakeupComponent } from './accounting-in-trust/month-end/batch-os-takeup/batch-os-takeup.component';
 import { QuarterlyStmntOfAcctComponent } from './accounting-in-trust/quarterly-stmnt-of-acct/quarterly-stmnt-of-acct.component';
 import { ProfitCommissionComponent } from './accounting-in-trust/profit-commission/profit-commission.component';
+import { BordereauxComponent } from './accounting-in-trust/reports/bordereaux/bordereaux.component';
 
 
 @NgModule({
@@ -627,6 +628,7 @@ import { ProfitCommissionComponent } from './accounting-in-trust/profit-commissi
         BatchOsTakeupComponent,
         QuarterlyStmntOfAcctComponent,
         ProfitCommissionComponent,
+        BordereauxComponent,
     ],
 
     providers: [
