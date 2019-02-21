@@ -234,7 +234,7 @@ export class QuotationProcessingComponent implements OnInit {
         this.quotationService.toGenInfo.push("edit", this.line);
 
         setTimeout(() => {
-            this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.typeOfCession,  quotationNo : this.quotationNo, from: 'quo-processing' }], { skipLocationChange: true });
+            this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.typeOfCession,  quotationNo : this.quotationNo, from: 'quo-processing', savingType: 'normal' }], { skipLocationChange: true });
         },100);
     }
 
@@ -306,7 +306,7 @@ export class QuotationProcessingComponent implements OnInit {
             }
 
             setTimeout(() => {
-                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), from: 'quo-processing' }], { skipLocationChange: true });
+                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), from: 'quo-processing', savingType: 'normal'}], { skipLocationChange: true });
             },100); 
         }
         //neco's influence ends here
@@ -363,7 +363,7 @@ onRowDblClick(event) {
     this.quotationService.toGenInfo.push("edit", this.line);
     /*  this.router.navigate(['/quotation']);*/
     setTimeout(() => {
-        this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.typeOfCession,  quotationNo : this.quotationNo, from: 'quo-processing' }], { skipLocationChange: true });
+        this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.typeOfCession,  quotationNo : this.quotationNo, from: 'quo-processing', savingType: 'normal' }], { skipLocationChange: true });
     },100); 
 
 }
@@ -390,6 +390,7 @@ setCedingcompany(data){
 
 //neco was here
     toInternalCompetition(){
+        console.log(this.existingQuotationNo);
             var qLine = this.line.toUpperCase();
 
             if (qLine === 'CAR' ||
@@ -404,7 +405,7 @@ setCedingcompany(data){
 
             this.quotationService.rowData = [];
             this.quotationService.toGenInfo = [];
-            this.quotationService.toGenInfo.push("add", qLine);
+            this.quotationService.toGenInfo.push("edit", qLine);
             /*this.router.navigate(['/quotation']);*/
 
             var addParams = {
@@ -415,7 +416,7 @@ setCedingcompany(data){
             }
 
             setTimeout(() => {
-                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), from: 'quo-processing' }], { skipLocationChange: true });
+                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), quotationNo: this.existingQuotationNo, from: 'quo-processing', savingType: 'internalComp' }], { skipLocationChange: true });
             },100); 
         }
     }

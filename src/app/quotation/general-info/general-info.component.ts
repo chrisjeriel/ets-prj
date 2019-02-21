@@ -174,7 +174,14 @@ export class GeneralInfoComponent implements OnInit {
 					this.genInfoData.printDate 	= (this.genInfoData.printDate == null) ? '' : this.dateParser(this.genInfoData.printDate);
 					this.genInfoData.reqDate 	= this.dateParser(this.genInfoData.reqDate);
 					this.genInfoData.updateDate = this.dateParser(this.genInfoData.updateDate);
-				}				
+
+					if(this.internalCompFlag) {
+						this.genInfoData.quoteId = '';
+						this.genInfoData.quotationNo = '';
+						this.genInfoData.cedingId = '';
+						this.genInfoData.cedingName = '';
+					}
+				}
 
 				if(data['project'] != null) {
 					this.project = data['project'];
