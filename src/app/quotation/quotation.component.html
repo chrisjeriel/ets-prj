@@ -46,7 +46,7 @@
 				<div>Internal Competition</div>
 			</ng-template>
 			<ng-template ngbTabContent>
-				<app-internal-competition></app-internal-competition>
+				<app-internal-competition [quotationInfo]="quoteInfo"></app-internal-competition>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab [disabled]="quoteInfo.quoteId == ''">

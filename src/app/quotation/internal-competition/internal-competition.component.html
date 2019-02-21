@@ -4,13 +4,13 @@
 			<div class="form-row custom-row-inline-inset">
 				<div class="input-group" >
 					<label class="form-control-sm col-sm-2" for="inputQuonum">Quotation No </label>
-				    <input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-2" placeholder="CAR-2018-5081-077-0177" disabled="disabled">
+				    <input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-2" placeholder="CAR-2018-5081-077-0177" disabled="disabled" [(ngModel)]="quotationInfo.quotationNo">
 				    <label class="form-control-sm col-sm-1" for="inputInname" >Insured</label>
-				    <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-6" placeholder="Insured Name" disabled="disabled">
+				    <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-6" placeholder="Insured Name" disabled="disabled" [(ngModel)]="quotationInfo.insuredDesc">
 				</div>
 				<div class="input-group">
 					<label class="form-control-sm col-sm-2" for="inputRisk" >Risk</label>
-				    <input type="text" id="inputRisk" class="form-control form-control-sm cust-sm col-sm-9" placeholder="Risk" disabled="disabled">
+				    <input type="text" id="inputRisk" class="form-control form-control-sm cust-sm col-sm-9" placeholder="Risk" disabled="disabled" [(ngModel)]="quotationInfo.riskName">
 				</div>
 			</div>
 	</fieldset>
