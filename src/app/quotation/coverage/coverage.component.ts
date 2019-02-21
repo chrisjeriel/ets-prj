@@ -94,13 +94,17 @@ export class CoverageComponent implements OnInit {
 
     this.riskId = this.quotationInfo.riskId;
     this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
-    if(data.quotation.project !== null )
-      {this.coverageData = data.quotation.project.coverage;
+    if(data.quotation.project !== null ){
+      this.coverageData = data.quotation.project.coverage;
               // this.passData.tableData = data.quotation.project.coverage.sectionCovers;
-              for (var i = data.quotation.project.coverage.sectionCovers.length - 1; i >= 0; i--) {
-                this.passData.tableData.push(data.quotation.project.coverage.sectionCovers[i]);
-              }
-              this.table.refreshTable();}
+      for (var i = data.quotation.project.coverage.sectionCovers.length - 1; i >= 0; i--) {
+        this.passData.tableData.push(data.quotation.project.coverage.sectionCovers[i]);
+      }
+      this.table.refreshTable();}
+      setTimeout(() => {
+        $('input[appCurrency]').focus();
+        $('input[appCurrency]').blur();
+      }, 0)
 
     });
 

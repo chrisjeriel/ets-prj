@@ -227,7 +227,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
             this.indvSelect = data;
         }
         this.newClick.emit(data);
-        this.rowClick.next(event);
+        //this.rowClick.next(event);
         
     }
 
@@ -297,13 +297,13 @@ export class CustEditableNonDatatableComponent implements OnInit {
         
     }
 
-   format(event,key, index){
+   format(event,data, key){
        let temp:string = event.target.value;
        if(event.target.value.indexOf('(')!= -1){
            temp = '-'+temp.substring(1,event.target.value.length-1);
        }
-       if(this.displayData[index][key] != parseFloat(temp.split(',').join(''))){
-           this.displayData[index][key] = parseFloat(temp.split(',').join('')) ;
+       if(data[key] != parseFloat(temp.split(',').join(''))){
+           data[key] = parseFloat(temp.split(',').join('')) ;
        }
    }
 
