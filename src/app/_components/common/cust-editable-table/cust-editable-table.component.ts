@@ -93,7 +93,6 @@ export class CustEditableTableComponent implements OnInit {
     // if(!this.exists){
     //   this.editedData.push(row);
     // }
-    console.log("test");
   }
 
   private onMouseDown(event){
