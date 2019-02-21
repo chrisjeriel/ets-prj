@@ -116,7 +116,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         //this.displayLength = this.displayData.length;
         this.unliTableLength();
         this.addFiller();
-        this.appComponent.ngOnInit();
+        //this.appComponent.ngOnInit();
     }
 
     ngOnInit() {
