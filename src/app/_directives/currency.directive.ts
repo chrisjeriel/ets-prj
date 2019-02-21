@@ -1,16 +1,18 @@
-import { Directive, ElementRef, HostListener } from '@angular/core';
+import { Directive, ElementRef, HostListener, HostBinding } from '@angular/core';
 import { unHighlight, highlight, hideTooltip, showTooltip} from './highlight';
 
 
 @Directive({
   selector: '[appCurrency]'
 })
-export class CurrencyDirective {
+export class CurrencyDirective{
   constructor(private el: ElementRef) {
 
   }
 
+
   @HostListener("blur", ["$event.target"]) onBlur(target) {
+    console.log(target.value);
   	if(target.value !=''){
 	  	let sNum = target.value.split('.');
 	  	sNum[0] = sNum[0].replace(new RegExp(",", "g"),'').replace(/\B(?=(\d{3})+(?!\d))/g, ",");

@@ -210,7 +210,7 @@ export class QuoteEndorsementComponent implements OnInit {
                     });
                   
                     
-                    this.quotationService.getEndorsements(this.quoteId,this.plainQuotationNo(this.quotationNum),'1').subscribe((data: any) => {
+                    this.quotationService.getEndorsements(this.quoteId,this.plainQuotationNo(this.quotationNum),'').subscribe((data: any) => {
                         for(var lineCount = 0; lineCount < data.endorsements.length; lineCount++){
                               this.endorsementData.tableData.push(new QuoteEndorsement(
                                                                            data.endorsements[lineCount].endtCd, 

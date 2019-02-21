@@ -501,7 +501,8 @@ export class GeneralInfoComponent implements OnInit {
   			quoteId: event,
   			quotationNo: this.genInfoData.quotationNo,
   			riskName: this.project.riskName,
-  			insuredDesc: this.genInfoData.insuredDesc
+  			insuredDesc: this.genInfoData.insuredDesc,
+  			riskId: this.project.riskId //added by paul
   		});		
   	}
 

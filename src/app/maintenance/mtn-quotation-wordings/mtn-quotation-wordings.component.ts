@@ -55,12 +55,6 @@ export class MtnQuotationWordingsComponent implements OnInit {
   constructor(private modalService: NgbModal, private mtnService : MaintenanceService) { }
 
   ngOnInit() { 
-        this.mtnService.getMtnQuotationWordings(this.line,'').subscribe((data: any) =>{
-          for (var a = data['quoteWordings'].length - 1; a >= 0; a--) {
-               this.passData.tableData.push(data['quoteWordings'][a]);
-          }
-          this.table.refreshTable();
-        });
   }
 
   select(data){
@@ -69,6 +63,15 @@ export class MtnQuotationWordingsComponent implements OnInit {
 
   okBtnClick(){
   	this.selectedData.emit(this.selected);
+  }
+
+  openModal(){
+     this.mtnService.getMtnQuotationWordings(this.line,'').subscribe((data: any) =>{
+          for (var a = data['quoteWordings'].length - 1; a >= 0; a--) {
+               this.passData.tableData.push(data['quoteWordings'][a]);
+          }
+          this.table.refreshTable();
+        });
   }
 
 

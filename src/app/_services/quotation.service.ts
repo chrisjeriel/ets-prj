@@ -372,7 +372,7 @@ export class QuotationService {
         const params = new HttpParams()
                 .set('quoteId',(quoteId === null || quoteId === undefined ? '' : quoteId))
                 .set('quotationNo',(quotationNo === null || quotationNo === undefined ? '' : quotationNo));
-
+                console.log(params)
         return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteOption', {params});
     }
 
@@ -669,6 +669,15 @@ export class QuotationService {
             })
         };
         return this.http.post('http://localhost:8888/api/quote-service/saveQuoteCoverage', JSON.stringify(coverageData), header);
+    }
+
+    saveQuoteOtherRates(quoteId:number,otherRatesData:any){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteOtherRates', JSON.stringify(otherRatesData), header);
     }
 
     saveQuoteAlop(alopData:any){
