@@ -1,4 +1,4 @@
-export class AccountingEntryCMDM {
+export class JVAccountingEntries{
 	accountCode: string
 	accountName: string
 	slType: string
@@ -7,13 +7,12 @@ export class AccountingEntryCMDM {
 	credit: number
 
 	constructor(accountCode: string,accountName: string,slType: string,slName: string,debit: number,credit: number){
-		this.accountCode = accountCode;
-		this.accountName = accountName;
-		this.slType = slType;
-		this.slName = slName;
-		this.debit = debit;
-		this.credit = credit;
-
+		this.accountCode = accountCode
+		this.accountName = accountName
+		this.slType = slType
+		this.slName = slName
+		this.debit = debit
+		this.credit = credit
 	}
 }
 

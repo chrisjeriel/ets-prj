@@ -238,9 +238,10 @@ export class HoldCoverComponent implements OnInit {
     return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]);
   }
 
-  setPeriodTo(periodTo:Date){
-    var d = new Date(periodTo).getDate() + 30;
-    console.log(d + ">>>>>DATE !!!")
+  setPeriodTo(periodFrom:Date){
+    var d = new Date(periodFrom);
+    d.setDate(d.getDate()+30);
+    this.holdCover.periodTo = d.toISOString();
   }
 
 }

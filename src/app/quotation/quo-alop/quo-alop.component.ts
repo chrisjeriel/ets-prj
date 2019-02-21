@@ -14,9 +14,10 @@ import { ActivatedRoute } from '@angular/router';
     styleUrls: ['./quo-alop.component.css']
 })
 export class QuoAlopComponent implements OnInit {
-      @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
-    aLOPInfo: QuoteALOPInfo = new QuoteALOPInfo();
-    tableData: any[] = [];
+  @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
+  aLOPInfo: QuoteALOPInfo = new QuoteALOPInfo();
+  @Input() quotationInfo:any = {};
+  tableData: any[] = [];
   tHeader: string[] = [];
   policyRecordInfo: any = {};
     dataTypes: string[] = [];
@@ -114,6 +115,9 @@ export class QuoAlopComponent implements OnInit {
               this.alopData.issueDate = this.alopData.issueDate[0]+'-'+("0" + this.alopData.issueDate[1]).slice(-2)+'-'+  ("0" + this.alopData.issueDate[2]).slice(-2);
               this.alopData.expiryDate = this.alopData.expiryDate[0]+'-'+("0" + this.alopData.expiryDate[1]).slice(-2)+'-'+ ("0" + this.alopData.expiryDate[2]).slice(-2);
               this.alopData.indemFromDate = this.alopData.indemFromDate[0]+'-'+("0" + this.alopData.indemFromDate[1]).slice(-2)+'-'+("0" + this.alopData.indemFromDate[2]).slice(-2);
+              setTimeout(() => {
+                this.triggerCurrencyDirective();
+              }, 0)
        });
     }
 
@@ -124,7 +128,7 @@ export class QuoAlopComponent implements OnInit {
         $('#successModalBtn').trigger('click');
         this.getAlop();
       });
-      this.ngOnInit();
+      // this.ngOnInit();
     }
 
     openAlopItem(){
@@ -227,6 +231,15 @@ export class QuoAlopComponent implements OnInit {
       data[i].edited = true;
     }
     console.log(data);
+  }
+
+  triggerCurrencyDirective(){
+    $('input[appCurrency]').focus();
+    $('input[appCurrency]').blur();
+  }
+
+  testOnly(){
+    this.triggerCurrencyDirective();
   }
 
 }

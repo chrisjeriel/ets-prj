@@ -25,14 +25,19 @@ export class CoverageComponent implements OnInit {
   
 
   coverageData: any = {
-    currency: null,
+    currencyCd: null,
     exchRt: null,
     totalSi: null,
-    sectionI: null,
-    sectionII: null,
-    sectionIII: null,
+    sectionISi: null,
+    sectionIISi: null,
+    sectionIIISi: null,
     remarks: null,
-    sectionCovers:[]
+    sectionCovers:[],
+    createDate:[0,0,0],
+    createUser:'Earl',
+    currencyRt: 0,
+    //updateDate:[0,0,0],
+    updateUser: 'Earl'
   }
 
   passData: any = {
@@ -85,16 +90,16 @@ export class CoverageComponent implements OnInit {
       this.quoteNo += '-' + parseInt(this.quotationInfo.quotationNo.split(/[-]/g)[i]);
     } 
 
-    
+    this.riskId = this.quotationInfo.riskId;
     this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
-      console.log()
-      this.riskId       = data.quotation.project.riskId;
-      this.coverageData = data.quotation.project.coverage;
-        // this.passData.tableData = data.quotation.project.coverage.sectionCovers;
-        for (var i = data.quotation.project.coverage.sectionCovers.length - 1; i >= 0; i--) {
-          this.passData.tableData.push(data.quotation.project.coverage.sectionCovers[i]);
-        }
-        this.table.refreshTable();
+      
+    if(data.quotation.project !== null )
+      {this.coverageData = data.quotation.project.coverage;
+              // this.passData.tableData = data.quotation.project.coverage.sectionCovers;
+              for (var i = data.quotation.project.coverage.sectionCovers.length - 1; i >= 0; i--) {
+                this.passData.tableData.push(data.quotation.project.coverage.sectionCovers[i]);
+              }
+              this.table.refreshTable();}
 
     });
 
@@ -132,6 +137,7 @@ export class CoverageComponent implements OnInit {
     }
 
     this.coverageData.createDate          = new Date(this.coverageData.createDate[0],this.coverageData.createDate[1]-1,this.coverageData.createDate[2]).toISOString();
+    //this.coverageData.updateDate          = new Date(this.coverageData.updateDate[0],this.coverageData.updateDate[1]-1,this.coverageData.updateDate[2]).toISOString();
     this.coverageData.saveSectionCovers   = this.editedData;
     this.coverageData.deleteSectionCovers = this.deletedData;
     this.coverageData.quoteId             = this.quotationInfo.quoteId;

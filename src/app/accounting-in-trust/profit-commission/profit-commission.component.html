@@ -1,0 +1,125 @@
+<div class="cust-tabs-container">
+	<h4>Accounting In-Trust / Profit Commission</h4>
+	<ngb-tabset (tabChange)="onTabChange($event)">
+		<ngb-tab class="ngb-tab" title="Profit Commission Statement">
+			<ng-template ngbTabContent>	
+				<fieldset class="scheduler-border">
+					<legend class="scheduler-border">Parameters</legend>
+					<div class="custom-row-inline-inset">
+						<div class="input-group">
+							<div class="col-sm-1"></div>
+							<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Company</label>
+							<input type="text" class="form-control form-control-sm cust-sm col-sm"
+							placeholder="National Reinsurance Corporation of the Philippines">
+							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+							<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Month</label>
+							<select class="form-control form-control-sm cust-sm col-sm-1">
+								<option value="January">January</option>
+								<option value="February">February</option>
+								<option value="March">March</option>
+								<option value="April">April</option>
+								<option value="May">May</option>
+								<option value="June">June</option>
+								<option value="July">July</option>
+								<option value="August">August</option>
+								<option value="September">September</option>
+								<option value="October">October</option>
+								<option value="November">November</option>
+								<option value="December">December</option>
+							</select>
+							<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Year</label>
+							<select class="form-control form-control-sm cust-sm col-sm-1">
+								<option value="2018">2018</option>
+							</select>
+							<div class="cust-btn-container col-sm-1" style="z-index: 3 !important;margin-left: 3px !important;">
+								<button type="button" class="cust-btn"><a>Compute</a></button>
+							</div>
+							<div class="col-sm-1"></div>
+						</div>
+					</div>
+				</fieldset>
+
+				<fieldset class="scheduler-border" style="margin-top: 5px !important;">
+					<div class="custom-row-inline-inset">
+						<app-cust-editable-non-datatable [passData]="passDataProfitCommissionStatement"></app-cust-editable-non-datatable>
+						<div class="input-group" style="margin-bottom: -25px !important;">
+							<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">PROFIT / (LOSS)</label>
+							<input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" numbers-only>
+							<input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" numbers-only style="margin-left: 5px !important;" value="404,777.58">
+						</div>
+						<div class="input-group" style="margin-bottom: -3px !important;">
+							<div class="col-sm-8"></div>
+							<div class="col-sm" style="padding-left: 0px !important;padding-right: 0px !important">-----------------------------------------------------------</div>
+						</div>
+						<div class="input-group" style="margin-bottom: -25px !important;">
+							<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;"></label>
+							<input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" numbers-only value="9,481,348.73">
+							<input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" numbers-only style="margin-left: 5px !important;" value="9,481,348.73">
+						</div>
+						<div class="input-group" style="margin-bottom: -3px !important;">
+							<div class="col-sm-8"></div>
+							<div class="col-sm" style="padding-left: 0px !important;padding-right: 0px !important">===================================</div>
+						</div>
+
+						
+						<fieldset class="scheduler-border col-sm-6">
+							<legend class="scheduler-border">Summary</legend>
+							<div class="custom-row-inline-inset">
+								<div class="input-group" style="margin-bottom: -25px !important;">
+									<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">PROFIT-Year 2018</label>
+									<label class="form-control-sm col-sm-3">404,777.58</label>
+								</div>
+								<div class="input-group" style="margin-bottom: -25px !important;">
+									<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">LESS: LOSS CARRIED FORWARD - Year 2016(3rd Year)</label>
+									<label class="form-control-sm col-sm-3">(393,269.40)</label>
+								</div>
+								<div class="input-group" style="margin-bottom: -30px !important;">
+									<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LOSS CARRIED FORWARD - Year 2017(1st Year)</label>
+									<label class="form-control-sm col-sm-3">(223,604.64)</label>
+								</div>
+								<div class="input-group" style="margin-bottom: -25px !important;">
+									<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;"></label>
+									<label class="form-control-sm col-sm-3">--------------------------</label>
+								</div>
+								<div class="input-group" style="margin-bottom: -30px !important;">
+									<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">NET LOSS CARRIED FORWARD - Year 2018</label>
+									<label class="form-control-sm col-sm-3">(212,096.46)</label>
+								</div>
+								<div class="input-group" style="margin-bottom: -25px !important;">
+									<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;"></label>
+									<label class="form-control-sm col-sm-3">--------------------------</label>
+								</div>
+							</div>
+						</fieldset>
+
+						<fieldset class="scheduler-border col-sm-6">
+							<legend class="scheduler-border">Note</legend>
+							<div class="custom-row-inline-inset">
+								<div class="input-group" style="margin-bottom: -25px !important;">
+									<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">***Net of 40% for Nat Cat</label>
+								</div>
+								<div class="input-group" style="margin-bottom: -25px !important;">
+									<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">Management Expenses = 15%</label>
+								</div>
+								<div class="input-group" style="margin-bottom: -25px !important;">
+									<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">Profit Commission = 20%</label>
+								</div>
+								<div class="input-group" style="margin-bottom: -25px !important;">
+									<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">Loss, if any, to be carried forward for 5 years </label>
+								</div>
+							</div>
+						</fieldset>
+						
+					</div>
+				</fieldset>
+
+				
+			</ng-template>
+		</ngb-tab>
+
+		<ngb-tab class="ngb-tab" title="Exit" id="Exit">
+			<ng-template ngbTabContent>	
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>
