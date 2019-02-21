@@ -73,6 +73,7 @@ export class CoverageComponent implements OnInit {
   sub: any;
   quoteNo:string = '';
   lineCd: string = '';
+  quoteId: any;
   @Input() quotationInfo: any = {};
 
   constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute) {}
