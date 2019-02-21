@@ -90,16 +90,21 @@ export class CoverageComponent implements OnInit {
     for (var i = 1; i < this.quotationInfo.quotationNo.split(/[-]/g).length; i++) {
       this.quoteNo += '-' + parseInt(this.quotationInfo.quotationNo.split(/[-]/g)[i]);
     } 
+    console.log(this.quotationInfo)
 
     this.riskId = this.quotationInfo.riskId;
     this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
-    if(data.quotation.project !== null )
-      {this.coverageData = data.quotation.project.coverage;
+    if(data.quotation.project !== null ){
+      this.coverageData = data.quotation.project.coverage;
               // this.passData.tableData = data.quotation.project.coverage.sectionCovers;
-              for (var i = data.quotation.project.coverage.sectionCovers.length - 1; i >= 0; i--) {
-                this.passData.tableData.push(data.quotation.project.coverage.sectionCovers[i]);
-              }
-              this.table.refreshTable();}
+      for (var i = data.quotation.project.coverage.sectionCovers.length - 1; i >= 0; i--) {
+        this.passData.tableData.push(data.quotation.project.coverage.sectionCovers[i]);
+      }
+      this.table.refreshTable();}
+      setTimeout(() => {
+        $('input[appCurrency]').focus();
+        $('input[appCurrency]').blur();
+      }, 0)
 
     });
 
@@ -143,8 +148,9 @@ export class CoverageComponent implements OnInit {
     this.coverageData.quoteId             = this.quotationInfo.quoteId;
     this.coverageData.projId              = 1;
     this.coverageData.riskId              = this.riskId;
-    this.quotationService.saveQuoteCoverage(this.coverageData.quoteId,this.coverageData.projId,this.coverageData).subscribe((data: any) => {});
-    
+    this.quotationService.saveQuoteCoverage(this.coverageData.quoteId,this.coverageData.projId,this.coverageData).subscribe((data: any) => {
+      $('#successModalBtn').trigger('click');
+    });
   }
 
   cancel(){

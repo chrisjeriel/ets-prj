@@ -1243,7 +1243,13 @@ export class AccountingService {
 	getBatchOR(){
 		this.batchOR = [
 			new BatchOR('N','N',new Date(2018,11,1),null,null,'BPI/MS',1000000),
-			new BatchOR('N','N',new Date(2018,11,2),null,null,'UCPBGEN',546043)
+			new BatchOR('N','N',new Date(2018,11,2),null,null,'UCPBGEN',546043),
+			new BatchOR('N','N',new Date(2018,11,2),null,null,'UCPBGEN',546043),
+			new BatchOR('N','N',new Date(2018,11,2),null,null,'STI',546043),
+			new BatchOR('N','N',new Date(2018,11,2),null,null,'UCPBGEN',546043),
+			new BatchOR('N','N',new Date(2018,11,2),null,null,'UCPBGEN',546043),
+			new BatchOR('N','N',new Date(2018,11,2),null,null,'PNBGEN',546043),
+			new BatchOR('N','N',new Date(2018,11,2),null,null,'Mrs Santos',546043),
 		]
 		return this.batchOR;
 	}

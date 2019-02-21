@@ -656,8 +656,6 @@ export class QuotationService {
                 'Content-Type': 'application/json'
             })
         };
-        console.log(JSON.stringify(params));
-
         return this.http.post('http://localhost:8888/api/quote-service/saveQuoteAttachment', JSON.stringify(params), header);
     }
 

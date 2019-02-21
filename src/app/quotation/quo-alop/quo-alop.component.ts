@@ -20,9 +20,9 @@ export class QuoAlopComponent implements OnInit {
   tableData: any[] = [];
   tHeader: string[] = [];
   policyRecordInfo: any = {};
-    dataTypes: string[] = [];
-    nData: QuoteALOPItemInformation = new QuoteALOPItemInformation(null, null, null, null, null);
-    
+  dataTypes: string[] = [];
+  nData: QuoteALOPItemInformation = new QuoteALOPItemInformation(null, null, null, null, null);
+   
     sub:any;
     quotationNo: string;
     quoteId: string;
@@ -85,25 +85,19 @@ export class QuoAlopComponent implements OnInit {
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute) { }
 
     ngOnInit() {
-      this.sub = this.route.params.subscribe(params => {
-        this.quotationNo = params["quotationNo"];
-        this.quoteNo = this.quotationNo.split(/[-]/g)[0]
-        for (var i = 1; i < this.quotationNo.split(/[-]/g).length; i++) {
+      this.quotationNo = this.quotationInfo.quotationNo;
+      this.quoteNo = this.quotationNo.split(/[-]/g)[0]
+      for (var i = 1; i < this.quotationNo.split(/[-]/g).length; i++) {
          this.quoteNo += '-' + parseInt(this.quotationNo.split(/[-]/g)[i]);
        } 
-      });
 
         this.titleService.setTitle("Quo | ALOP");
-        this.policyRecordInfo.policyNo = "EAR-2018-5081-077-0177";
-        this.tHeader = ["Item No", "Quantity", "Description", "Relative Importance", "Possible Loss Min"];
-        this.dataTypes = ["number", "number", "text", "text", "text"];
-        if (this.policyRecordInfo.policyNo.substr(0, 3) == "CAR") {
+        if (this.quoteNo.substr(0, 3) == "CAR") {
             this.itemInfoData.tHeader = ["Item No", "Quantity", "Description", "Possible Loss Min"];
             this.itemInfoData.dataTypes = ["number", "number", "text", "text"];
             this.itemInfoData.keys = ['itemNo','quantity','description','lossMin'];
         }
         this.getAlop();
-       
 
     }
 
@@ -116,7 +110,8 @@ export class QuoAlopComponent implements OnInit {
               this.alopData.expiryDate = this.alopData.expiryDate[0]+'-'+("0" + this.alopData.expiryDate[1]).slice(-2)+'-'+ ("0" + this.alopData.expiryDate[2]).slice(-2);
               this.alopData.indemFromDate = this.alopData.indemFromDate[0]+'-'+("0" + this.alopData.indemFromDate[1]).slice(-2)+'-'+("0" + this.alopData.indemFromDate[2]).slice(-2);
               setTimeout(() => {
-                this.triggerCurrencyDirective();
+                $('input[appCurrency]').focus();
+                $('input[appCurrency]').blur();
               }, 0)
        });
     }
@@ -234,8 +229,7 @@ export class QuoAlopComponent implements OnInit {
   }
 
   triggerCurrencyDirective(){
-    $('input[appCurrency]').focus();
-    $('input[appCurrency]').blur();
+    
   }
 
   testOnly(){

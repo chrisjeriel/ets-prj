@@ -345,7 +345,7 @@ onRowDblClick(event) {
     for (var i = 0; i < event.target.closest("tr").children.length; i++) {
         this.quotationService.rowData[i] = event.target.closest("tr").children[i].innerText;
     }
-    console.log(this.quotationService)
+    console.log(event.target.closest("tr").children)
     this.line = this.quotationService.rowData[0].split("-")[0];
     this.quotationNo = this.quotationService.rowData[0];
     this.typeOfCession = event.target.closest('tr').children[1].innerText;

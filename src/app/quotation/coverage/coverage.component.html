@@ -78,17 +78,17 @@
                             <div class="input-group">
                                 <label class="form-control-sm col-sm-3">Section I</label>
                                 <input type="text" class="form-control form-control-sm txt-content-rght"  placeholder="0.00"
-                                       onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [ngModel]="coverageData!== undefined ? coverageData.sectionISi : ''" appCurrency>
+                                       onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="coverageData.sectionISi" appCurrency>
                             </div>
                             <div class="input-group">
                                 <label class="form-control-sm col-sm-3">Section II</label>
                                 <input type="text" class="form-control form-control-sm txt-content-rght"  placeholder="0.00"
-                                       onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [ngModel]="coverageData!== undefined ? coverageData.sectionIISi : ''" appCurrency>
+                                       onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="coverageData.sectionIISi" appCurrency>
                             </div>
                             <div class="input-group">
                                 <label class="form-control-sm col-sm-3">Section III</label>
                                 <input type="text" class="form-control form-control-sm txt-content-rght"  placeholder="0.00"
-                                       onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [ngModel]="coverageData!== undefined ? coverageData.sectionIIISi : ''" appCurrency>
+                                       onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="coverageData.sectionIIISi" appCurrency>
                             </div>
                         </div>
                         <div class="col-sm-1"> &nbsp;</div>
@@ -117,6 +117,8 @@
         </div>
     </div>
 </div>
+
+<app-sucess-dialog></app-sucess-dialog>
 
 <!-- <app-multiple-select [multiSelectHeaderTxt]="multiSelectHeaderTxt" [multiSelectData]="multiSelectData"
 (multiSelectDataSelected)="getMS($event)"></app-multiple-select> -->
