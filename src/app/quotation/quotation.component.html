@@ -12,7 +12,7 @@
 				<div>Coverage</div>
 			</ng-template>
 			<ng-template ngbTabContent>
-				<app-coverage></app-coverage>
+				<app-coverage [quotationInfo]="quoteInfo"></app-coverage>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab [disabled]="quoteInfo.quoteId == ''">

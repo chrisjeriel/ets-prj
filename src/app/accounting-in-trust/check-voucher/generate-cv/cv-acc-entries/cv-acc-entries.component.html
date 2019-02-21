@@ -48,7 +48,7 @@
 
 <fieldset class="scheduler-border">
 	<legend class="scheduler-border">CV Accounting Entries</legend>
-	<div class="form-row custom-row-inline-inset">
+	<div class="form-row custom-row-inline-inset" style="margin-top: 15px !important; margin-bottom: -3px !important;">
 		<app-cust-editable-non-datatable [passData]="accountingEntriesData" style="width: 100%">
 	       <ng-container controls-r>
                 <button class="cust-btn" style="margin-right: 0px !important;">Print AE</button>
@@ -57,17 +57,37 @@
 	</div>
 </fieldset>
 
-<fieldset class="scheduler-border" style="margin: 0px !important; margin-top: 6px !important; ">
-	<div class="form-row custom-row-inline-inset" style="margin-left: -27px; margin-bottom: 15px !important;">
-        <div class="input-group">
-            <label class="form-control-sm col-sm-1 text-right labels">Created By</label>
-            <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma">
-            <label class="form-control-sm col-sm-1 text-right labels">Date Created</label>
-            <input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM">
-            <label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
-            <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma">
-            <label class="form-control-sm col-sm-1 text-right labels">Last Update</label>
-            <input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM">
+<fieldset class="scheduler-border" style="margin-top: 10px ! important"> 
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="col-sm" style="padding: 0; margin-top: 10px; margin-bottom: 22px">
+                <div class="input-group">
+                    <div class="col-sm-3" style="padding: 0">
+                        <div class="input-group">
+                            <label class="form-control-sm">Created By</label>
+                            <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma" readonly>
+                        </div>
+                    </div>
+                    <div class="col-sm-3" style="padding: 0">
+                        <div class="input-group">
+                            <label class="form-control-sm">Date Created</label>
+                            <input type="text" class="form-control form-control-sm col-sm" placeholder="10/01/2018 11:49 AM" readonly>
+                        </div>
+                    </div>
+                    <div class="col-sm-3" style="padding: 0">
+                        <div class="input-group">
+                            <label class="form-control-sm">Last Update By</label>
+                            <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma" readonly>
+                        </div>
+                    </div>
+                    <div class="col-sm-3" style="padding: 0">
+                        <div class="input-group">
+                            <label class="form-control-sm">Last Update</label>
+                            <input type="text" class="form-control form-control-sm col-sm" placeholder="10/01/2018 11:49 AM" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </fieldset>

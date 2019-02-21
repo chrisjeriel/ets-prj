@@ -14,7 +14,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
   
   passData: any = {
     tableData: this.accountingService.getAgainstNegativeTreaty(),
-    tHeader: ['Quarter Ending','Curr', 'Curr Rate', 'Amount','Amount(PHP)'],
+    tHeader: ['Quarter Ending','Currency', 'Currency Rate', 'Amount','Amount(PHP)'],
     resizable: [true, true, true, true, true,true, true, true],
     dataTypes: ['date','text','percent','currency','currency'],
     nData: new AgainstNegativeTreaty(new Date(),null,null,null,null),

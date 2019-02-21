@@ -1,18 +1,19 @@
 export class AccountingEntryCMDM {
-	code: string
-	account: string
+	accountCode: string
+	accountName: string
 	slType: string
 	slName: string
 	debit: number
 	credit: number
 
-	constructor(credit: number,code: string,account: string,slType: string,slName: string,debit: number){
-		this.credit = credit;
-		this.code = code;
-		this.account = account;
+	constructor(accountCode: string,accountName: string,slType: string,slName: string,debit: number,credit: number){
+		this.accountCode = accountCode;
+		this.accountName = accountName;
 		this.slType = slType;
 		this.slName = slName;
 		this.debit = debit;
+		this.credit = credit;
+
 	}
 }
 

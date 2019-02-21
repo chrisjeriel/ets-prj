@@ -1,0 +1,154 @@
+<div class="cust-tabs-container">
+	<h4>Accounting In-Trust / Reports / Bordereaux and Claims Register</h4>
+	<ngb-tabset (tabChange)="onTabChange($event)">
+		<ngb-tab class="ngb-tab" title="Bordereaux and Claims Register">
+			<ng-template ngbTabContent>
+				<div class="p-0 d-flex">
+					<div class="col-sm-6 pl-0 pr-1">
+						<fieldset class="scheduler-border report">
+							<legend class="scheduler-border">Report Details</legend>
+							<div class="form-row custom-row-inline-inset pt-1" style="margin-top: -2px !important;">
+								<div class="input-group pl-4 ">
+									<div class="col-sm-4 d-flex">
+										<div class="col-sm-1">
+											<input type="radio" name="reportDetail" value="outstanding" [(ngModel)]="detail">
+										</div>
+										<label class="form-control-sm col-sm text-left" for="xx">Outstanding</label>
+									</div>
+								</div>
+								<div class="input-group pl-8">
+									<div class="col-sm-6 d-flex">
+										<div class="col-sm-1">
+											<input type="radio" name="Outstanding" [disabled]="detail!='outstanding'">
+										</div>
+										<label class="form-control-sm col-sm text-left" for="xx">Loss Date</label>
+									</div>
+								</div>
+								<div class="input-group pl-8">
+									<div class="col-sm-6 d-flex">
+										<div class="col-sm-1">
+											<input type="radio" name="Outstanding" [disabled]="detail!='outstanding'">
+										</div>
+										<label class="form-control-sm col-sm text-left" for="xx">Claim Fire Date</label>
+									</div>
+								</div>
+								<div class="input-group pl-8">
+									<div class="col-sm-6 d-flex">
+										<div class="col-sm-1">
+											<input type="radio" name="Outstanding" [disabled]="detail!='outstanding'">
+										</div>
+										<label class="form-control-sm col-sm text-left" for="xx">Booking Month</label>
+									</div>
+								</div>
+								<div class="input-group pl-4 mt-2">
+									<div class="col-sm-4 d-flex">
+										<div class="col-sm-1">
+											<input type="radio" name="reportDetail" value="lossesPaid" [(ngModel)]="detail">
+										</div>
+										<label class="form-control-sm col-sm text-left" for="xx">Losses Paid</label>
+									</div>
+								</div>
+								<div class="input-group pl-8">
+									<div class="col-sm-6 d-flex">
+										<div class="col-sm-1">
+											<input type="radio" name="lossPaid" [disabled]="detail!='lossesPaid'">
+										</div>
+										<label class="form-control-sm col-sm text-left" for="xx">Tran Date</label>
+									</div>
+								</div>
+								<div class="input-group pl-8">
+									<div class="col-sm-6 d-flex">
+										<div class="col-sm-1">
+											<input type="radio" name="lossPaid" [disabled]="detail!='lossesPaid'">
+										</div>
+										<label class="form-control-sm col-sm text-left" for="xx">Posting Date</label>
+									</div>
+								</div>
+								<div class="input-group pl-4 mt">
+									<div class="col-sm d-flex">
+										<div class="col-sm-1">
+											<input type="radio" name="last">
+										</div>
+										<label class="form-control-sm col-sm text-left pl-0" for="xx">Loss</label>
+										<div class="col-sm-1">
+											<input type="radio" name="last">
+										</div>
+										<label class="form-control-sm col-sm text-left pl-0" for="xx">Expense</label>
+										<div class="col-sm-1">
+											<input type="radio" name="last">
+										</div>
+										<label class="form-control-sm col-sm text-left pl-0" for="xx">Loss + Expense</label>
+									</div>
+								</div>
+								<div class="input-group pl-4 mt-3">
+									<div class="col-sm-4 d-flex">
+										<div class="col-sm-1">
+											<input type="checkbox" name="">
+										</div>
+										<label class="form-control-sm col-sm text-left" for="xx">Per Line</label>
+									</div>
+								</div>
+								<div class="input-group pl-4 ">
+									<div class="col-sm-8 d-flex">
+										<div class="col-sm-1">
+											<input type="checkbox" name="">
+										</div>
+										<label class="form-control-sm col-sm text-left" for="xx">Per Type of Cession</label>
+									</div>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+					<div class="col-sm-6 pr-0 pl-1">
+						<fieldset class="scheduler-border">
+							<legend class="scheduler-border">Parameters</legend>
+							<div class="form-row custom-row-inline-inset pt-3" style="margin-top: -2px !important;">
+								<div class="input-group">
+									<div class="col-sm-4 d-flex">
+										<div class="col-sm-1">
+											<input type="radio" name="parameter" value="period" [(ngModel)]="parameter">
+										</div>
+										<label class="form-control-sm col-sm text-left" for="xx">By Period</label>
+									</div>
+								</div>
+								<div class="input-group">
+									<label class="form-control-sm col-sm-2" for="xx">From</label>
+									<input type="date" class="form-control form-control-sm col-sm-3" value="2018-12-01" [disabled]="parameter != 'period'">
+									<label class="form-control-sm col-sm-1" for="xx">To</label>
+									<input type="date" class="form-control form-control-sm col-sm-3" value="2018-12-01" [disabled]="parameter != 'period'">
+								</div>
+								<div class="input-group mt-3">
+									<div class="col-sm-2 d-flex pr-0">
+										<div class="col-sm-1">
+											<input type="radio" name="parameter" value="asOf" [(ngModel)]="parameter">
+										</div>
+										<label class="form-control-sm col-sm text-left" for="xx" >As of</label>
+									</div>
+									<input type="date" class="form-control form-control-sm col-sm-3" value="2018-12-01" [disabled]="parameter != 'asOf'">
+								</div>
+								<div class="input-group mt-4">
+									<label class="form-control-sm col-sm-3">Line</label>
+									<input type="text" class="form-control form-control-sm col-sm-2">
+									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+									<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 2px !important;" value="ALL LINES">
+								</div>
+								<div class="input-group cust-ig">
+									<label class="form-control-sm col-sm-3">Type of Cessions</label>
+									<input type="text" class="form-control form-control-sm col-sm-2">
+									<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+									<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 2px !important;" value="ALL TYPES OF CESSION">
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12 text-center cust-btn-container" style="margin-bottom: 7px !important;">
+									<button class="cust-btn">Extract</button>
+									<button class="cust-btn">Print</button>
+								</div>
+							</div>
+						</fieldset>
+					</div>	
+				</div>	
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>
