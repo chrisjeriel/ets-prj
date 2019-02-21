@@ -364,28 +364,30 @@ export class GeneralInfoComponent implements OnInit {
 			this.genInfoData.quoteRevNo = parseInt(data['quotationNo'].split('-')[3]);
 
 			this.checkQuoteIdF(this.genInfoData.quoteId);
+				//for internal comp
+				if(this.internalCompFlag){
+					
+					var internalCompParams: any[] = [{
+					  adviceNo: 0,
+					  cedingId: this.genInfoData.cedingId,
+					  cedingRepId: this.genInfoData.cedingId,
+					  createDate: new Date().toISOString(),
+					  createUser: 'ndc',
+					  option: '',
+					  quoteId: this.genInfoData.quoteId,
+					  updateDate: new Date().toISOString(),
+					  updateUser: 'ndc',
+					  wordings: ''
+					}];
+			        this.quotationService.saveQuoteCompetition(internalCompParams).subscribe((result: any) => {
+			          console.log(result);
+			        });
+				}
+				//end internal comp
 			});
 
 			$('#successMdl > #modalBtn').trigger('click');
-			//for internal comp
-			if(this.internalCompFlag){
-				var internalCompParams: any = {
-				  adviceNo: 0,
-				  cedingId: this.genInfoData.cedingId,
-				  cedingRepId: this.genInfoData.cedingId,
-				  createDate: new Date().toISOString(),
-				  createUser: 'ndc',
-				  option: '',
-				  quoteId: parseInt(this.genInfoData.quoteId),
-				  updateDate: new Date().toISOString(),
-				  updateUser: 'ndc',
-				  wordings: ''
-				}
-		        this.quotationService.saveQuoteCompetition(internalCompParams).subscribe((result: any) => {
-		          console.log(result);
-		        });
-			}
-			//end internal comp
+
 		} else {
 			//$('#errorMdl > #modalBtn').trigger('click');
 			console.log('ERROR MODAL PO');
