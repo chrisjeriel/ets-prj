@@ -361,7 +361,7 @@ export class QuotationService {
         return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteListing', {params});
     }
 
-    getQuoteOptions() {
+    getQuoteOptions(quoteId?:string,quotationNo?:string) {
         /*this.quotationOption = [
             new QuotationOption(1, 5.05, "Condition", 6, 8, 5),
             new QuotationOption(2, 8, "Stable", 7, 4, 3),
@@ -370,8 +370,8 @@ export class QuotationService {
         return this.quotationOption;*/
 
         const params = new HttpParams()
-                .set('quoteId','')
-                .set('quotationNo','');
+                .set('quoteId',(quoteId === null || quoteId === undefined ? '' : quoteId))
+                .set('quotationNo',(quotationNo === null || quotationNo === undefined ? '' : quotationNo));
 
         return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteOption', {params});
     }

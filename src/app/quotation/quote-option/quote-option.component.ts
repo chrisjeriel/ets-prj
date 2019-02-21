@@ -120,10 +120,7 @@ export class QuoteOptionComponent implements OnInit {
                         console.log(this.quoteId);
             });
 
-
-
-
-            this.quotationService.getQuoteOptions().subscribe(data => {  
+            this.quotationService.getQuoteOptions(this.quoteId,this.plainQuotationNo(this.quotationNum)).subscribe(data => {  
             var optionRecords = data['quotation'].optionsList;
 
                     for(let rec of optionRecords){
@@ -137,9 +134,9 @@ export class QuoteOptionComponent implements OnInit {
                         ));                
                     }
 
-
                     for(let rec of optionRecords){
-                        for(let r of rec.deductiblesList){                  
+                       if (rec.optionId == 1 ) {
+                          for(let r of rec.deductiblesList){                  
                             this.deductiblesData.tableData.push(new QuotationDeductibles(
                                 r.deductibleCd,
                                 r.deductibleTitle,
@@ -147,13 +144,14 @@ export class QuoteOptionComponent implements OnInit {
                                 r.deductibleAmt,
                                 r.deductibleTxt
                             ));
-                        }               
+                        }     
+                       }           
                     }
 
             var otherRatesRecords = data['quotation'].otherRatesList;
 
                 for(let rec of otherRatesRecords){
-                    this.otherRatesData.tableData.push(new QuotationOtherRates(
+                  this.otherRatesData.tableData.push(new QuotationOtherRates(
                         rec.coverCd, 
                         rec.coverCdDesc, 
                         rec.rate, 
@@ -177,7 +175,7 @@ export class QuoteOptionComponent implements OnInit {
     }
 
     clickRow(event) {
-        //console.log(event);
+        console.log(event);
         //this.otherRatesTableData = this.quotationService.getQuotataionOtherRates(event.target.closest("tr").children[1].children[0].children[1].value);
     }
 
