@@ -227,7 +227,7 @@
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-6" style="margin-top: 10px;">
 								<label class="form-control-sm col-sm-2">Principal</label>
-								<input  type="text" class="form-control form-control-sm col-sm-2 req" [ngModel]="genInfoData.principalId" appRequired>
+								<input  type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="genInfoData.principalId" appRequired>
 								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 								<span>&nbsp;</span>
 								<input  type="text" [(ngModel)]="genInfoData.principalName" class="form-control form-control-sm col-sm-8 ig-mrgn"
@@ -235,7 +235,7 @@
 							</div>
 							<div class="input-group ig-cust col-sm-6" style="margin-top: 10px;">
 								<label class="form-control-sm col-sm-2">Contractor</label>
-								<input  type="text" class="form-control form-control-sm col-sm-2 req" [ngModel]="genInfoData.contractorId" appRequired>
+								<input  type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="genInfoData.contractorId" appRequired>
 								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showContractorLOV()"></i></a></div>
 								<span>&nbsp;</span>
 								<input  type="text" [(ngModel)]="genInfoData.contractorName" class="form-control form-control-sm col-sm-8 ig-mrgn"
