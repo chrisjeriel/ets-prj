@@ -889,7 +889,6 @@
 
 <app-mtn-insured id="principalLOV" (selectedData)="setPrincipal($event)"></app-mtn-insured>
 <app-mtn-insured id="contractorLOV" (selectedData)="setContractor($event)"></app-mtn-insured> 
-<app-mtn-insured id="insuredLOV" (selectedData)="setInsured($event)"></app-mtn-insured>
 <app-mtn-currency id="currencyModal" (selectedData)="setCurrency($event)"></app-mtn-currency>
 <app-ceding-company id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-ceding-company>
 <app-mtn-ceding-company id="cedingCompanyNotMember" (selectedData)="setCedingcompany($event)"></app-mtn-ceding-company>
@@ -903,17 +902,19 @@
 <app-modal class="d-none" id="successMdl">
 	<div header>Success</div>
 	<div body class="container-flex text-center">
-		
-			
-				<!-- <div class="col-sm">
-					<i class="fa fa-check-circle fa-3x"></i><span class="d-block">Saved successfully!</span>
-				</div> -->
-				
-					<span class="fa fa-check-circle fa-3x" style="vertical-align: middle;"></span>
-				
-				<span style="vertical-align: middle; margin-left: 15px;">Saved successfully!</span>
-			
-			
+		<span class="fa fa-check-circle fa-3x" style="vertical-align: middle;"></span>
+		<span style="vertical-align: middle; margin-left: 15px;">Saved successfully!</span>
+	</div>
+	<div footer class="d-flex justify-content-center w-100">                    
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" id="errorMdl">
+	<div header>Error</div>
+	<div body class="container-flex text-center">
+		<span class="fa fa-times-circle fa-3x" style="vertical-align: middle;"></span>
+		<span style="vertical-align: middle; margin-left: 15px;">Please complete all the required fields.</span>
 	</div>
 	<div footer class="d-flex justify-content-center w-100">                    
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>

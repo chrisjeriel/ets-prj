@@ -132,10 +132,7 @@ export class GeneralInfoComponent implements OnInit {
 	intName: string = "";
 
 	@Output() checkQuoteId = new EventEmitter<any>();
-/*testClick(){
-	$('.t').focus();
-	$('.t').blur();
-}*/
+
 	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute, private maintenanceService: MaintenanceService) { }
 	ngOnInit() {
 
@@ -221,14 +218,6 @@ export class GeneralInfoComponent implements OnInit {
 			});
 
 		}
-
-		/*this.sub = this.route.params.subscribe(params => {
-			this.from = params['from'];
-			if (this.from == "quo-processing") {
-				this.typeOfCession = params['cessionDesc'];
-			}
-		});*/
-		/*this.checkTypeOfCession();*/
 	}
 
 
@@ -324,7 +313,7 @@ export class GeneralInfoComponent implements OnInit {
 		this.genInfoData.cedingId = event.coNo;
 		this.genInfoData.cedingName = event.name;
 	}
-
+/*
 	showInsuredLOV(){
 		$('#insuredLOV #modalBtn').trigger('click');
 	}
@@ -332,13 +321,12 @@ export class GeneralInfoComponent implements OnInit {
 	setInsured(data){
 		//this.genInfoData.principal = data.insuredId;
 		this.genInfoData.insuredDesc = data.insuredName;
-	}
+	}*/
 
 
 	setLineClass(data){
 		this.genInfoData.lineClassCd = data.lineClassCd;
         this.genInfoData.lineClassDesc = data.lineClassCdDesc;
-        //this.lineClass = this.lineClassCode + ' - ' + this.lineClassDesc;
     }
 
     setInt(event){
@@ -367,8 +355,7 @@ export class GeneralInfoComponent implements OnInit {
 
 			$('#successMdl > #modalBtn').trigger('click');
 		} else {
-			//$('#errorMdl > #modalBtn').trigger('click');
-			console.log('ERROR MODAL PO');
+			$('#errorMdl > #modalBtn').trigger('click');
 
 			$('.req').focus();
 			$('.req').blur();
