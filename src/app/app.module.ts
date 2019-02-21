@@ -304,8 +304,12 @@ import { JvOffsettingAgainstLossesComponent } from './accounting-in-trust/journa
 import { JvOffsettingAgainstNegativeTreatyComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-offsetting-against-negative-treaty/jv-offsetting-against-negative-treaty.component';
 import { JvOverdueAccountsAgainstTreatyComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-overdue-accounts-against-treaty/jv-overdue-accounts-against-treaty.component';
 import { SucessDialogComponent } from './_components/common/sucess-dialog/sucess-dialog.component';
+import { BatchOrPrintingComponent } from './accounting-service/utilities/batch-or-printing/batch-or-printing.component';
+import { BatchInvoiceComponent } from './accounting-service/utilities/batch-invoice/batch-invoice.component';
 import { ArDetailsInvestmentIncomeComponent } from './accounting-in-trust/ar-details/ar-details-investment-income/ar-details-investment-income.component';
 import { BatchOsTakeupComponent } from './accounting-in-trust/month-end/batch-os-takeup/batch-os-takeup.component';
+import { QuarterlyStmntOfAcctComponent } from './accounting-in-trust/quarterly-stmnt-of-acct/quarterly-stmnt-of-acct.component';
+import { ProfitCommissionComponent } from './accounting-in-trust/profit-commission/profit-commission.component';
 
 
 @NgModule({
@@ -617,8 +621,12 @@ import { BatchOsTakeupComponent } from './accounting-in-trust/month-end/batch-os
         JvOffsettingAgainstNegativeTreatyComponent,
         JvOverdueAccountsAgainstTreatyComponent,
         SucessDialogComponent,
+        BatchOrPrintingComponent,
+        BatchInvoiceComponent,
         ArDetailsInvestmentIncomeComponent,
         BatchOsTakeupComponent,
+        QuarterlyStmntOfAcctComponent,
+        ProfitCommissionComponent,
     ],
 
     providers: [

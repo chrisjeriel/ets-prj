@@ -22,8 +22,19 @@
                     <label class="form-control-sm col-sm-1" style="height: auto;">JV Type</label>
                     <div class="col-sm-5">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 1px !important;" placeholder="" readonly  [(ngModel)]="data" (change)="tabController($event);">               
-                        <div style="margin-left: -19px !important;margin-right: 0px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+                        <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 1px !important;" placeholder=""   [(ngModel)]="data" (change)="tabController($event);">               
+                        <div style="margin-left: -19px !important;margin-right: 0px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div> -->
+                                <select class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="data" (change)="tabController($event);">
+                                    <option value="Collected Certificate of Withholding Tax" [selected]="data == 'Collected Certificate of Withholding Tax'">Collected Certificate of Withholding Tax</option>
+                                    <option value="Uncollected Certificate of Withholding Tax" [selected]="data == 'Uncollected Certificate of Withholding Tax'">Uncollected Certificate of Withholding Tax</option>
+                                    <option value="Payment of Service to In-Trust" [selected]="data == 'Payment of Service to In-Trust'">Payment of Service to In-Trust</option>
+                                    <option value="Regular Payroll" [selected]="data == 'Regular Payroll'">Regular Payroll</option>
+                                    <option value="Mid-Year Bonus and Other Bonuses" [selected]="data == 'Mid-Year Bonus and Other Bonuses'">Mid-Year Bonus and Other Bonuses</option>
+                                    <option value="13th Month Pay" [selected]="data == '13th Month Pay'">13th Month Pay</option>
+                                    <option value="Profit Sharing" [selected]="data == 'Profit Sharing'">Profit Sharing</option>
+                                    <option value="Monthly Depreciation Expense" [selected]="data == 'Monthly Depreciation Expense'">Monthly Depreciation Expense</option>
+                                    <option value="Miscellaneous / Others" [selected]="data == 'Miscellaneous / Others'">Miscellaneous / Others</option>
+                                </select>
                         </div>
                     </div>
                     <label class="form-control-sm col-sm-1">Ref No</label>

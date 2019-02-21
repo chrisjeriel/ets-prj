@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { AttachmentInfo} from '@app/_models';
 import { AccountingService } from '@app/_services';
 
@@ -8,6 +8,8 @@ import { AccountingService } from '@app/_services';
   styleUrls: ['./jv-attachments-service.component.css']
 })
 export class JvAttachmentsServiceComponent implements OnInit {
+  
+  @Input() jvType: string = "";
   
   passData:any = {
   	tableData:[],

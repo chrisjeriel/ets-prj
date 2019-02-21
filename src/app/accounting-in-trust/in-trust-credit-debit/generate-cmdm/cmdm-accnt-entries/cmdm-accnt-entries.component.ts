@@ -11,7 +11,7 @@ export class CmdmAccntEntriesComponent implements OnInit {
   
   passData: any = {
     tableData: this.accountingService.getAccountingEntryCMDM(),
-    tHeader: ['Code','Account','SL Type','SL Name','Debit','Credit'],
+    tHeader: ['Account Code','Account Name','SL Type','SL Name','Debit','Credit'],
     resizable: [true, true, true, true, true, true],
     dataTypes: ['text','text','text','text','currency','currency'],
     nData: new AccountingEntryCMDM(null,null,null,null,null,null),
@@ -21,7 +21,9 @@ export class CmdmAccntEntriesComponent implements OnInit {
     editFlag: false,
     pageLength: 10,
     widths: [205,305,163,176,122,154],
-    genericBtn: 'Save'
+    genericBtn: 'Save',
+    checkFlag:true,
+    magnifyingGlass: ['accountCode','slType','slName']
   };
 
   constructor(private accountingService: AccountingService) { }

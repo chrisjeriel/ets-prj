@@ -23,6 +23,7 @@ export class InvestmentsComponent implements OnInit {
           bank: 'BPI',
           certificateNo: 'BPI 1',
           investmentType: 'Time Deposit',
+          status: 'Matured',
           maturityPeriod: 5,
           durUnit: 'Years',
           interestRate: 8.875,
@@ -30,16 +31,17 @@ export class InvestmentsComponent implements OnInit {
           maturityDate: new Date('2018-10-20'),
           curr: 'PHP',
           currRate: 1,
-          bankCharges: 18112.50,
-          withholdingTax: 82250,
           investment: 14000000,
           investmentIncome: 4112500,
+          bankCharges: 18112.50,
+          withholdingTax: 82250,
           maturityValue: 18112500
         },
         {
           bank: 'RCBC',
           certificateNo: 'RCBC 1',
           investmentType: 'Treatsury',
+          status: 'Outstanding',
           maturityPeriod: 35,
           durUnit: 'Days',
           interestRate: 1.5,
@@ -47,34 +49,35 @@ export class InvestmentsComponent implements OnInit {
           maturityDate: new Date('2018-10-31'),
           curr: 'PHP',
           currRate: 1,
-          bankCharges: 10150,
-          withholdingTax: 3000,
           investment: 10000000,
           investmentIncome: 150000,
+          bankCharges: 10150,
+          withholdingTax: 3000,
           maturityValue: 10150000
         }
       ],
-   	 tHeader: ["Bank","Certificate No.","Investment Type","Maturity Period","Duration Unit","Interest Rate","Date Purchased","Maturity Date","Curr","Curr Rate","Bank Charges","Withholding Tax","Investment","Investment Income","Maturity Value"],
-   	 resizable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
-   	 dataTypes: ['select','text','text','number','select','percent','date','date','text','percent','currency','currency','currency','currency','currency'],
+   	 tHeader: ["Bank","Certificate No.","Investment Type","Status","Maturity Period","Duration Unit","Interest Rate","Date Purchased","Maturity Date","Curr","Curr Rate","Investment","Investment Income","Bank Charges","Withholding Tax","Maturity Value"],
+   	 resizable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
+   	 dataTypes: ['select','text','text','text','number','select','percent','date','date','text','percent','currency','currency','currency','currency','currency'],
    	 nData: {
           bank: null,
           certificateNo: null,
           investmentType: null,
           maturityPeriod: null,
+          status:null,
           durUnit: null,
           interestRate: null,
           datePurchased: null,
           maturityDate: null,
           curr: null,
           currRate: null,
-          bankCharges: null,
-          withholdingTax: null,
           investment: null,
           investmentIncome: null,
+          bankCharges: null,
+          withholdingTax: null,
           maturityValue: null
         },
-   	 total:[null,null,null,null,null,null,null,null,null,'Total','bankCharges','withholdingTax','investment','investmentIncome','maturityValue'],
+   	 total:[null,null,null,null,null,null,null,null,null,null,'Total','investment','investmentIncome','bankCharges','withholdingTax','maturityValue'],
      opts: [],
    	 addFlag: true,
    	 deleteFlag: true,
@@ -85,13 +88,12 @@ export class InvestmentsComponent implements OnInit {
      pagination: true,
      genericBtn: 'Save',
      pageLength: 15,
-
    };
 
   constructor(private accountingService: AccountingService,private titleService: Title,private router: Router) { }
 
   ngOnInit() {
-  	this.titleService.setTitle("Acc | Investments");
+  	this.titleService.setTitle("Acct-IT | Investments");
   	//this.passData.tableData = this.accountingService.getAccInvestments();
     this.passData.opts.push({ selector: "bank", vals: ["BPI", "RCBC", "BDO"] });
     this.passData.opts.push({ selector: "durUnit", vals: ["Years","Months","Weeks","Days"] });
