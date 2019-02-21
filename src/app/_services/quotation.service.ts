@@ -743,7 +743,7 @@ export class QuotationService {
         }
         //console.log(saveQuoteCompetitionParams.join(","));
         //console.log(params.substring(1,params.length-1));
-        console.log(JSON.stringify(params));
+        //console.log(JSON.stringify(params));
         //return this.http.post('http://localhost:8888/api/quote-service/saveQuoteCompetition', params.substring(1,params.length-1), header);
         return this.http.post('http://localhost:8888/api/quote-service/saveQuoteCompetition', JSON.stringify(params), header);
     }
