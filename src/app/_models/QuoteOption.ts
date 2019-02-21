@@ -10,13 +10,15 @@ export class QuotationOption{
 	commRtQuota:number;
 	commRtSurplus:number;
 	commRtFac:number;
-	constructor(optionId: number,optionRt: number,condition:string,commRtQuota:number,commRtSurplus:number,commRtFac:number){
+	deductiblesList: any[];
+	constructor(optionId: number,optionRt: number,condition:string,commRtQuota:number,commRtSurplus:number,commRtFac:number,deductiblesList?: any[]){
 		this.optionId=optionId;
 		this.optionRt=optionRt;
 		this.condition=condition;
 		this.commRtQuota=commRtQuota;
 		this.commRtSurplus=commRtSurplus;
 		this.commRtFac=commRtFac;
+		this.deductiblesList = deductiblesList;
 	}
 }
 

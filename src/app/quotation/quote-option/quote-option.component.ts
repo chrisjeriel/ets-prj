@@ -91,9 +91,13 @@ export class QuoteOptionComponent implements OnInit {
         this.quotationInfo.insuredName = "Insured Name";
 
 
+        this.getQuoteOptions();
+    }
+
+    getQuoteOptions(){
         this.quotationService.getQuoteOptions().subscribe(data => {  
             var optionRecords = data['quotation'].optionsList;
-
+            console.log(data);
             for(let rec of optionRecords){
                 this.optionsData.tableData.push(new QuotationOption(
                     rec.optionId, 
@@ -101,21 +105,9 @@ export class QuoteOptionComponent implements OnInit {
                     rec.condition, 
                     rec.commRtQuota, 
                     rec.commRtSurplus, 
-                    rec.commRtFac
+                    rec.commRtFac,
+                    rec.deductiblesList
                 ));                
-            }
-
-
-            for(let rec of optionRecords){
-                for(let r of rec.deductiblesList){                  
-                    this.deductiblesData.tableData.push(new QuotationDeductibles(
-                        r.deductibleCd,
-                        r.deductibleTitle,
-                        r.deductibleRt,
-                        r.deductibleAmt,
-                        r.deductibleTxt
-                    ));
-                }               
             }
 
             var otherRatesRecords = data['quotation'].otherRatesList;
@@ -142,5 +134,9 @@ export class QuoteOptionComponent implements OnInit {
         //this.otherRatesTableData = this.quotationService.getQuotataionOtherRates(event.target.closest("tr").children[1].children[0].children[1].value);
     }
 
+    updateDeductibles(data){
+        this.deductiblesData.tableData = data.deductiblesList;
+        this.table.forEach(table => { table.refreshTable() });
+    }
 
 }
