@@ -106,6 +106,7 @@ import { MonEndBatchComponent } from './accounting-in-trust/month-end/mon-end-ba
 import { MonEndTrialBalComponent } from './accounting-in-trust/month-end/mon-end-trial-bal/mon-end-trial-bal.component';
 import { FundsHeldComponent } from './accounting-in-trust/month-end/funds-held/funds-held.component';
 import { BordereauxComponent } from './accounting-in-trust/reports/bordereaux/bordereaux.component';
+import { BatchOsTakeupComponent } from './accounting-in-trust/month-end/batch-os-takeup/batch-os-takeup.component';
 import { BatchOrPrintingComponent } from './accounting-service/utilities/batch-or-printing/batch-or-printing.component';
 import { BatchInvoiceComponent } from './accounting-service/utilities/batch-invoice/batch-invoice.component';
 import { GenerateCMDMComponent } from './accounting-in-trust/in-trust-credit-debit/generate-cmdm/generate-cmdm.component';
@@ -226,6 +227,7 @@ const appRoutes: Routes = [
     { path: 'mon-end-trial-bal-in-trust', component: MonEndTrialBalComponent},
     { path: 'funds-held', component: FundsHeldComponent},
     { path: 'bordereaux', component: BordereauxComponent},
+    { path: 'batch-os-takeup', component: BatchOsTakeupComponent},
     { path: 'batch-or-printing', component: BatchOrPrintingComponent},
     { path: 'batch-invoice-printing', component: BatchInvoiceComponent},
     { path: 'acct-it-generate-cmdm', component: GenerateCMDMComponent },

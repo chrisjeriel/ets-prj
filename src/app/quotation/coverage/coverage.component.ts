@@ -78,6 +78,7 @@ export class CoverageComponent implements OnInit {
   sub: any;
   quoteNo:string = '';
   lineCd: string = '';
+  quoteId: any;
   @Input() quotationInfo: any = {};
 
   constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute) {}
@@ -92,7 +93,6 @@ export class CoverageComponent implements OnInit {
 
     this.riskId = this.quotationInfo.riskId;
     this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
-      
     if(data.quotation.project !== null )
       {this.coverageData = data.quotation.project.coverage;
               // this.passData.tableData = data.quotation.project.coverage.sectionCovers;

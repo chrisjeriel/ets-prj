@@ -23,7 +23,7 @@ export class MtnQuotationWordingsComponent implements OnInit {
         pageStatus: true,
         pagination: true,
         fixedCol: false,
-        pageID: 'quotation-wordings',
+        pageID: 'quotation-wordings'+(Math.floor(Math.random() * (999999 - 100000)) + 100000).toString(),
         keys:['lineCd', 'lineDesc','wordingId','wording'],
         filters:[
           {
