@@ -9,7 +9,7 @@ export class AROthers {
 	amountPHP: number;
 
 	constructor(item: string, 
-		 refNo: string,
+	     refNo: string,
 		 desc: string,
 		 type: string, 
 		 curr: string,

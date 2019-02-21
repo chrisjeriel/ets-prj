@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AccServiceAttachment, PaymentForAdvances, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, ARUnappliedCollection, AROthers, AccountingSOthersOr, AccORSerFeeLoc, OfficialReceipt, ORPrevAmountDetails, ORPrevAccEntries, ORPreVATDetails , ORPreCreditableWTaxDetails, PaymentOfSeviceFee, TreatyBalance, ByMonth, ExtractFromLastYear, AccountingEntriesExtract, CredibleWithholdingTaxDetails, InputVatDetails, OutputVatDetails, WithholdingVATDetails, CredibleWithholdingTaxUpload, InputVatUpload, OutputVatUpload, WithholdingTaxUpload, AccountingSFixedAssets, AccountingSMonthlyDepreciationDetails, AccountingSPaytReqCheckVoucher, AccountingSPaytReqPettyCashVoucher, AccountingSPaytReqPRMFE, AccountingSPaytReqOthers,AcctSrvcCWhtaxMonthlyTaxDetails,AcctSrvcCWhtaxConsolidateData, TaxDetails, WTaxDetails, ExpenseBudget, ExpenseBudgetByMonth, AccSChangeTranStatOR, AccSChangeTranStatCV, AccSChangeTranStatJV, CMDM, AccountingEntryCMDM, AccJvLossResDep, AccSrvInquiry, AccountingSrvcCancelledTransactions, QSOABalances } from '@app/_models';
+import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEntriesCV, QSOA, AttachmentInfo, CheckDetails, VATDetails, CreditableTax, AccountingRequestsListRP, AccountingITCancelledTransactions, JVListing, ARTaxDetailsVAT, ARTaxDetailsWTAX, ARInwdPolBalDetails, ARClaimsRecovery, AccCvAttachment, AccCVPayReqList, AcknowledgementReceipt, CheckVoucher, JournalVoucher, CancelTransactionAR, CancelTransactionCV, CancelTransactionJV, AccInvestments, AccItEditedTransactions, AccItEditedOldAcctEntries, AccItEditedLatestAcctEntries, AmountDetailsJV, AccountingEntriesJV, VATDetailsJV, CreditableTaxJV, PremiumReturnList, AccJvInPolBal, AccJVPayReqList, AccTBTotDebCred, AccTBNet, PaymentToAdjusters, PaymentToOtherParty, PaymentToCedingCompany, PremiumReturn, AccServiceAttachment, PaymentForAdvances, AccountingItClaimCashCallAr, AccountingItLossReserveDepositAr, AccountingItClaimOverPaymentAr, AccARInvestments, ARUnappliedCollection, AROthers, AccountingSOthersOr, AccORSerFeeLoc, OfficialReceipt, ORPrevAmountDetails, ORPrevAccEntries, ORPreVATDetails , ORPreCreditableWTaxDetails, PaymentOfSeviceFee, TreatyBalance, ByMonth, ExtractFromLastYear, AccountingEntriesExtract, CredibleWithholdingTaxDetails, InputVatDetails, OutputVatDetails, WithholdingVATDetails, CredibleWithholdingTaxUpload, InputVatUpload, OutputVatUpload, WithholdingTaxUpload, AccountingSFixedAssets, AccountingSMonthlyDepreciationDetails, AccountingSPaytReqCheckVoucher, AccountingSPaytReqPettyCashVoucher, AccountingSPaytReqPRMFE, AccountingSPaytReqOthers,AcctSrvcCWhtaxMonthlyTaxDetails,AcctSrvcCWhtaxConsolidateData, TaxDetails, WTaxDetails, ExpenseBudget, ExpenseBudgetByMonth, AccSChangeTranStatOR, AccSChangeTranStatCV, AccSChangeTranStatJV, CMDM, AccountingEntryCMDM, AccJvLossResDep, AccSrvInquiry, AccountingSrvcCancelledTransactions, QSOABalances, AccJvInterestOverdue, AccJvInPolBalAgainstLoss, AgainstLoss, AgainstNegativeTreaty, BatchOR, JVAccountingEntries } from '@app/_models';
 
 
 @Injectable({
@@ -101,7 +101,12 @@ export class AccountingService {
 	accSrvInquiry: AccSrvInquiry[] = [];
 	accountingSrvcCancelledTransactions: AccountingSrvcCancelledTransactions[] = [];
 	qsoaBalances: QSOABalances[] = [];
-
+	accountInterestOverdue: AccJvInterestOverdue[] = [];
+	accJVAgainstLoss: AccJvInPolBalAgainstLoss[] = [];
+	againstLoss: AgainstLoss[] = [];
+	againstNegativeTreaty: AgainstNegativeTreaty[] = [];
+	batchOR: BatchOR[] = [];
+	jvAccountingEntry: JVAccountingEntries[] = [];
 	constructor(private http: HttpClient) { }
 
 	getAmountDetails() {
@@ -210,15 +215,15 @@ export class AccountingService {
 
 	getPaytRequestsList() {
 		this.paytRequestListData = [
-			new AccountingRequestsListRP('CSR-2015-01-0001', 'SM Prime Holdings, Inc.', 'Claim Payment', 'Paid', new Date(), 'Payment for Claim No.', 'PHP', 1642857.14, 'Edward M. Salunson'),
-			new AccountingRequestsListRP('CSR-2017-12-0001', 'Rustan, Inc.', 'Claim Payment', 'Paid', new Date(), 'Payment for Claim No.', 'PHP', 200000, 'Christian M. Lumen'),
-			new AccountingRequestsListRP('PRR-2017-12-0002', 'San Miguel Corporation', 'Premium Returns', 'Paid', new Date(), 'Return of Premium for Policy No.', 'PHP', 100000, 'Chie Reyes'),
-			new AccountingRequestsListRP('PRR-2017-12-0003', 'DMCI', 'Premium Returns', 'Cancelled', new Date(), 'Return of Premium for Policy No.', 'USD', 1000000, 'Chie Reyes'),
-			new AccountingRequestsListRP('PRR-2018-01-0001', 'ABS-CBN', 'Premium Returns', 'Paid', new Date(), 'Return of Premium for Policy No.', 'PHP', 710716.12, 'Juan de la Cruz'),
-			new AccountingRequestsListRP('QBR-2018-02-0001', 'SMDC', 'QSOA Balances', 'Paid', new Date(), 'Treaty Balance due for 1st Qtr for company', 'SGD', 756929, 'Juan de la Cruz'),
-			new AccountingRequestsListRP('PRR-2018-02-0002', 'Universal Robina, Inc.', 'Premium Returns', 'Open', new Date(), 'Return of Premium for Policy No.', 'EUR', 300000, 'Juan de la Cruz'),
-			new AccountingRequestsListRP('QBR-2018-03-0001', 'SGV & Co.', 'QSOA Balances', 'Open', new Date(), 'Treaty Balance due for 1st Qtr for company', 'HKD', 1000000, 'Christian M. Lumen'),
-			new AccountingRequestsListRP('CSR-2018-09-0001', 'Accenture', 'Claim Payment', 'Open', new Date(), 'Payment for Claim No.', 'PHP', 230000, 'Chie Reyes'),
+			new AccountingRequestsListRP('CSR-2015-01-0001', 'SM Prime Holdings, Inc.', 'Claim Expense Payment to Ceding Company', 'Paid', new Date(), 'Payment for Claim No.', 'PHP', 1642857.14, 'Edward M. Salunson'),
+			new AccountingRequestsListRP('CSR-2017-12-0001', 'Rustan, Inc.', 'Claim Expense Payment to Other Parties', 'Paid', new Date(), 'Payment for Claim No.', 'PHP', 200000, 'Christian M. Lumen'),
+			new AccountingRequestsListRP('PRR-2017-12-0002', 'San Miguel Corporation', 'Claim Payment to Ceding Company', 'Paid', new Date(), 'Return of Premium for Policy No.', 'PHP', 100000, 'Chie Reyes'),
+			new AccountingRequestsListRP('PRR-2017-12-0003', 'DMCI', 'Inward Policy Balances - Returns', 'Cancelled', new Date(), 'Return of Premium for Policy No.', 'USD', 1000000, 'Chie Reyes'),
+			new AccountingRequestsListRP('PRR-2018-01-0001', 'ABS-CBN', 'Payment of Service Fee by In-Trust to Service Accounting', 'Paid', new Date(), 'Return of Premium for Policy No.', 'PHP', 710716.12, 'Juan de la Cruz'),
+			new AccountingRequestsListRP('QBR-2018-02-0001', 'SMDC', 'Treaty Balance Due Participant', 'Paid', new Date(), 'Treaty Balance due for 1st Qtr for company', 'SGD', 756929, 'Juan de la Cruz'),
+			new AccountingRequestsListRP('PRR-2018-02-0002', 'Universal Robina, Inc.', 'QSOA Balances', 'Open', new Date(), 'Return of Premium for Policy No.', 'EUR', 300000, 'Juan de la Cruz'),
+			new AccountingRequestsListRP('QBR-2018-03-0001', 'SGV & Co.', 'Investment (Placement)', 'Open', new Date(), 'Treaty Balance due for 1st Qtr for company', 'HKD', 1000000, 'Christian M. Lumen'),
+			new AccountingRequestsListRP('CSR-2018-09-0001', 'Accenture', 'Payment of Service Fee by In-Trust to Service Accounting', 'Open', new Date(), 'Payment for Claim No.', 'PHP', 230000, 'Chie Reyes'),
 			new AccountingRequestsListRP('OTR-2018-11-0001', 'NSO', 'Others', 'Open', new Date(), 'Miscellaneous payment for', 'RMB', 1500000, 'Chie Reyes'),
 			new AccountingRequestsListRP('OTR-2019-04-0095', 'DFA', 'Others', 'Open', new Date(), 'Miscellaneous payment for', 'PHP', 1642857.14, 'Chie Reyes'),
 			new AccountingRequestsListRP('QBR-2019-05-0032', 'Robinsons', 'Others', 'Open', new Date(), 'Miscellaneous payment for', 'USD', 1342752.24, 'Chie Reyes'),
@@ -263,17 +268,17 @@ export class AccountingService {
 	}
 	getJVListing() {
 		this.jvListing = [
-			new JVListing("2015-00000001", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2014-00004342", "Ronwaldo Roque", "Printed", 1642857.14),
-			new JVListing("2017-00000001", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2016-00001644", "Chie Reyes", "Printed", 200000),
-			new JVListing("2017-00000002", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2016-00001645", "Lourdes Gualvez", "Printed", 100000),
-			new JVListing("2017-00000003", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2016-00001646", "Chie Reyes", "Printed", 1000000),
-			new JVListing("2018-00000001", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2017-00000324", "Chie Reyes", "Printed", 710716.12),
-			new JVListing("2018-00000010", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2018-00000009", "Lourdes Gualvez", "Open", 756929),
-			new JVListing("2018-00000016", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2018-00000012", "Lourdes Gualvez", "Cancelled", 300000),
-			new JVListing("2018-00000045", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2018-00000041", "Ronwaldo Roque", "Cancelled", 1000000),
-			new JVListing("2018-00000099", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2018-00000098", "Ronwaldo Roque", "Open", 230000),
-			new JVListing("2018-00000123", new Date(2015, 10, 1), "To correct entries in", "Error Connection", "2018-00000122", "Ronwaldo Roque", "Open", 1500000),
-		]
+			new JVListing("2017-00000002", new Date(2015, 10, 1), "To correct entries in", "Service Fee Receivable for the Quarter", "2016-00001645", "Lourdes Gualvez", "Printed", 100000),
+            new JVListing("2017-00000003", new Date(2015, 10, 1), "To correct entries in", "Collected Certificate of Withholding Tax", "2016-00001646", "Chie Reyes", "Printed", 1000000),
+            new JVListing("2018-00000001", new Date(2015, 10, 1), "To correct entries in", "Uncollected Certificate of Withholding Tax", "2017-00000324", "Chie Reyes", "Printed", 710716.12),
+            new JVListing("2018-00000010", new Date(2015, 10, 1), "To correct entries in", "Payment of Service to In-Trust", "2018-00000009", "Lourdes Gualvez", "Open", 756929),
+            new JVListing("2018-00000016", new Date(2015, 10, 1), "To correct entries in", "Regular Payroll", "2018-00000012", "Lourdes Gualvez", "Cancelled", 300000),
+            new JVListing("2018-00000045", new Date(2015, 10, 1), "To correct entries in", "Mid-Year Bonus and Other Bonuses", "2018-00000041", "Ronwaldo Roque", "Cancelled", 1000000),
+            new JVListing("2018-00000099", new Date(2015, 10, 1), "To correct entries in", "13th Month Pay", "2018-00000098", "Ronwaldo Roque", "Open", 230000),
+            new JVListing("2018-00000123", new Date(2015, 10, 1), "To correct entries in", "Profit Sharing", "2018-00000122", "Ronwaldo Roque", "Open", 1500000),
+            new JVListing("2018-00000123", new Date(2015, 10, 1), "To correct entries in", "Monthly Depreciation Expense", "2018-00000122", "Ronwaldo Roque", "Open", 1500000),
+            new JVListing("2018-00000123", new Date(2015, 10, 1), "To correct entries in", "Miscellaneous / Others", "2018-00000122", "Ronwaldo Roque", "Open", 1500000),
+    		]
 		return this.jvListing;
 	}
 
@@ -633,7 +638,7 @@ export class AccountingService {
 	}
 	getOfficialReceipt(){
 		this.officialReceipt = [
-			new OfficialReceipt('Payment for','PHP',1,1642857.14,1642857.14),
+			new OfficialReceipt('Payment for','Payment for','Payment for','PHP',1,1642857.14,1642857.14),
 		];
 		return this.officialReceipt;
 	}
@@ -740,7 +745,7 @@ export class AccountingService {
 
 	getAccountingSOthersOr(){
 		this.accountingSOthersOrData = [
-			new AccountingSOthersOr("Utilities", "Payment For", "PHP", 1, 10000, 10000),
+			new AccountingSOthersOr("Utilities", null,null,"Payment For", "PHP", 1, 10000, 10000),
 		];
 
 		return this.accountingSOthersOrData;
@@ -926,7 +931,7 @@ export class AccountingService {
 
 	getAccountingSPaytReqOthers(){
 		this.accountingSPaytReqOthers = [
-			new AccountingSPaytReqOthers('Utilities', 'Payment For', 'PHP', 1, 100000000000, 100000000000),
+			new AccountingSPaytReqOthers('Utilities', '', 'Payment For', 'PHP', 1, 100000000000, 100000000000),
 		];
 
 		return this.accountingSPaytReqOthers;
@@ -1160,9 +1165,9 @@ export class AccountingService {
 
 	getLossRepDep(){
 		this.accJvLossResDep = [
-			new AccJvLossResDep("BPI/IMS INSURANCE CORPORATION","Initial", new Date("01/25/2019"), "PHP",1.0,500000,500000),
-			new AccJvLossResDep("BPI/IMS INSURANCE CORPORATION","Additional", new Date("01/25/2019"), "PHP",1.0,20000,20000),
-			new AccJvLossResDep("BPI/IMS INSURANCE CORPORATION","CUMI", new Date("01/25/2019"), "PHP",1.0,500000,500000)
+			new AccJvLossResDep("BPI/IMS INSURANCE CORPORATION","Initial", new Date("01/25/2019"), new Date("01/25/2019"), "PHP",1.0,500000,500000),
+			new AccJvLossResDep("BPI/IMS INSURANCE CORPORATION","Additional", new Date("01/25/2019"), new Date("01/25/2019"), "PHP",1.0,20000,20000),
+			new AccJvLossResDep("BPI/IMS INSURANCE CORPORATION","CUMI", new Date("01/25/2019"), new Date("01/25/2019"), "PHP",1.0,500000,500000)
 			
 		];
 		return this.accJvLossResDep;
@@ -1204,4 +1209,49 @@ export class AccountingService {
 		return this.qsoaBalances;
 	}
 
+	getAccJVInterestOverdue() {
+		this.accountInterestOverdue = [
+			new AccJvInterestOverdue('CAR-2018-00001-99-0001-000','CAR-2018-00001-99-0001-000','EN-CAR-2018-00001-99-0001-000', 1, new Date(2018,10,25), new Date(2018,10,25), 153,'PHP', 1, 3000000, 34392.93),
+		];
+
+		return this.accountInterestOverdue;
+	}
+
+	getAccJVInPolBalAgainstLoss() {
+		this.accJVAgainstLoss = [
+			new AccJvInPolBalAgainstLoss('CAR-2018-00001-99-0001-000','CAR-2018-00001-99-0001-000','EN-CAR-2018-00001-99-0001-000', 1, new Date("09/25/2018"), new Date("09/25/2018"), 'PHP', 1.0, 3000000, 0.00, 0.00, 1642857.14, 1357142.86, 1642857.14, 0.00),
+		];
+
+		return this.accJVAgainstLoss;
+	}
+
+	getClaimLosses() {
+		this.againstLoss = [
+			new AgainstLoss("CAR-2018-000048","AArena Adjusters and Surveyors","2nd inn. inc", 4, "Adjuster's Expense","",-351000,"Php",1,350842.89,350842.89)
+		];
+		return this.againstLoss;
+		
+	}
+
+	getAgainstNegativeTreaty(){
+		this.againstNegativeTreaty = [
+			new AgainstNegativeTreaty(new Date(2018,4,31),"Php",1,-400000,-400000)
+		];
+		return this.againstNegativeTreaty;
+	}
+
+	getBatchOR(){
+		this.batchOR = [
+			new BatchOR('N','N',new Date(2018,11,1),null,null,'BPI/MS',1000000),
+			new BatchOR('N','N',new Date(2018,11,2),null,null,'UCPBGEN',546043)
+		]
+		return this.batchOR;
+	}
+
+	getJVAccountingEntry(){
+		this.jvAccountingEntry = [
+			new JVAccountingEntries(null,null,null,null,null,null)
+		]
+		return this.jvAccountingEntry
+	}
 }

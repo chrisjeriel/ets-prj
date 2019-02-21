@@ -31,6 +31,7 @@ export class GeneralInfoComponent implements OnInit {
 	lineClassCode: string;
 	lineClassDesc: string;
 	ocChecked: boolean = false;
+	internalCompFlag: boolean = false;
 
 	project: any = {
 		blockCd: '',
@@ -145,6 +146,9 @@ export class GeneralInfoComponent implements OnInit {
 		this.tableData = this.quotationService.getItemInfoData();
 
 		this.sub = this.route.params.subscribe(params => {
+			if(params['addParams'] != undefined){
+				this.internalCompFlag = JSON.parse(params['addParams']).intComp == undefined ? false : JSON.parse(params['addParams']).intComp; //neco
+			}
 			this.from = params['from'];
 			if (this.from == "quo-processing") {
 				this.line = params['line'];
@@ -309,7 +313,11 @@ export class GeneralInfoComponent implements OnInit {
 	}
 
 	showCedingCompanyLOV() {
-		$('#cedingCompanyLOV #modalBtn').trigger('click');
+		$('#cedingCompany #modalBtn').trigger('click');
+	}
+
+	showCedingCompanyNotMemberLOV() {
+		$('#cedingCompanyNotMember #modalBtn').trigger('click');
 	}
 
 	setCedingcompany(event){

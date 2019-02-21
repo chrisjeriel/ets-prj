@@ -28,21 +28,12 @@
         <div class="col-sm-3">
             <div class="input-group">
                 <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Amount</label>
-                 <select class="form-control form-control-sm cust-sm col-sm-2" readonly>
-                           <option value="PHP">PHP</option>
-                           <option value="EUR">EUR</option>
-                           <option value="USD">USD</option>
-                </select>
-                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 2px !important;"
-                placeholder="27,153.30" readonly>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" readonly placeholder="PHP">
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 2px !important;" placeholder="27,153.30" readonly>
             </div>
             <div class="input-group">
                 <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Local Amount</label>
-                 <select class="form-control form-control-sm cust-sm col-sm-2" readonly>
-                           <option value="PHP">PHP</option>
-                           <option value="EUR">EUR</option>
-                           <option value="USD">USD</option>
-                   </select>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" readonly placeholder="PHP">
                 <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 2px !important;"
                 placeholder="27,153.30" readonly>
             </div>
@@ -121,27 +112,39 @@
         <ngb-tab>
             <ng-template ngbTabTitle>
                <ng-container [ngSwitch]="jvType.toUpperCase()">
-                    <div *ngSwitchCase="'INWARD POLICY BALANCES'">Inward Policy Balances</div>
-                    <div *ngSwitchCase="'QSOA'">QSOA Balances</div>
-                    <div *ngSwitchCase="'PAYMENT REQUEST LIST'">Payment Request List</div>
+                    <div *ngSwitchCase="'ADJUSTMENTS OF INWARD POLICY BALANCES'">Inward Policy Balances</div>
+                    <div *ngSwitchCase="'PREMIUM RESERVE RELEASED'">Premium Reserve Released (Funds Held Released)</div>
+                    <div *ngSwitchCase="'INTEREST ON OVERDUE ACCOUNTS - MONTHLY SETUP'">Interest on Overdue Accounts - Monthly Setup</div>
                     <div *ngSwitchCase="'LOSS RESERVE DEPOSIT'">Loss Reserve Deposit</div>
+                    <div *ngSwitchCase="'OFFSETTING OF RECEIVABLES IN-TRUST AGAINST LOSSES'">Offsetting of Receivables In-Trust Against Losses</div>
+                    <div *ngSwitchCase="'OFFSETTING OF CLAIMS AGAINST NEGATIVE TREATY BALANCE'">Offsetting of Claims Against Negative Treaty Balance</div>
+                    <div *ngSwitchCase="'OFFSETTING OF OVERDUE ACCOUNTS AGAINST TREATY BALANCE'">Offsetting of Overdue Accounts Against Treaty Balance</div>
                 </ng-container>
             </ng-template>
             <ng-template ngbTabContent>
                 <div class="input-group cust-border" style="padding-top: 0.6em">
                     <div class="col-sm-12">
                         <ng-container [ngSwitch]="jvType.toUpperCase()">
-                            <ng-container *ngSwitchCase="'INWARD POLICY BALANCES'">
+                            <ng-container *ngSwitchCase="'ADJUSTMENTS OF INWARD POLICY BALANCES'">
                                 <app-jv-inward-pol-balance></app-jv-inward-pol-balance>
                             </ng-container>
-                            <ng-container *ngSwitchCase="'QSOA'">
-                                <app-jv-qsoa></app-jv-qsoa>
+                            <ng-container *ngSwitchCase="'PREMIUM RESERVE RELEASED'">
+                                <app-jv-prenium-reserve></app-jv-prenium-reserve>
                             </ng-container>
-                            <ng-container *ngSwitchCase="'PAYMENT REQUEST LIST'">
-                                <app-jv-payment-request-list></app-jv-payment-request-list>
+                            <ng-container *ngSwitchCase="'INTEREST ON OVERDUE ACCOUNTS - MONTHLY SETUP'">
+                                <app-jv-interest-on-overdue-accounts></app-jv-interest-on-overdue-accounts>
                             </ng-container>
                             <ng-container *ngSwitchCase="'LOSS RESERVE DEPOSIT'">
                                 <app-jv-loss-reserve-deposit></app-jv-loss-reserve-deposit>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'OFFSETTING OF RECEIVABLES IN-TRUST AGAINST LOSSES'">
+                                <app-jv-offsetting-against-losses></app-jv-offsetting-against-losses>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'OFFSETTING OF CLAIMS AGAINST NEGATIVE TREATY BALANCE'">
+                                <app-jv-offsetting-against-negative-treaty></app-jv-offsetting-against-negative-treaty>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'OFFSETTING OF OVERDUE ACCOUNTS AGAINST TREATY BALANCE'">
+                                <app-jv-overdue-accounts-against-treaty></app-jv-overdue-accounts-against-treaty>
                             </ng-container>
                         </ng-container>
                     </div>

@@ -97,11 +97,11 @@
                 <ng-container [ngSwitch]="paymentType.toUpperCase()">
                   <ng-container *ngSwitchCase="'OFFICIAL RECEIPT'">
                     <div class="input-group">
-                      <div class="col-sm-2"></div>
-                      <div class="col-sm-8">
-                          <app-cust-editable-non-datatable [passData]="passDataOfficialReceipt"></app-cust-editable-non-datatable>
+                      <div class="col-sm">
+                          <app-cust-editable-non-datatable [passData]="passDataOfficialReceipt">
+                            <button controls-r class="cust-btn" (click)="openTaxAllocation()">Tax Allocation</button>
+                          </app-cust-editable-non-datatable>
                       </div>
-                      <div class="col-sm-2"></div>
                     </div>
                   </ng-container>
                   <ng-container *ngSwitchCase="'OFFICIAL RECEIPT SERVICE FEE LOCAL'">
@@ -131,7 +131,11 @@
           <ng-template ngbTabContent>
             <div class="input-group cust-border" style="padding-top: 0.6em">
               <div class="col-sm-12">
-                <app-or-others></app-or-others>
+                <div class="input-group">
+                      <div class="col-sm">
+                        <app-or-others></app-or-others>
+                      </div>
+                    </div>
               </div>
             </div>
           </ng-template>
@@ -158,3 +162,26 @@
    </div>
  </fieldset>
 </div>
+
+<app-modal id="taxAlloc" class="d-none" [modalSize]="'sm'">
+  <div header>Tax Allocation</div>
+  <div body>
+    <fieldset class="scheduler-border" style="padding-top: 6px !important;"> 
+      <legend class="scheduler-border">O.R. Info</legend>
+      <app-cust-editable-non-datatable [passData]="passDataGenTax" ></app-cust-editable-non-datatable>
+    </fieldset>
+
+    <fieldset class="scheduler-border" style="padding-top: 6px !important;"> 
+      <legend class="scheduler-border">Withholding</legend>
+      <app-cust-editable-non-datatable [passData]="passDataWithholding" ></app-cust-editable-non-datatable>
+    </fieldset>
+  </div>
+  <div footer class="w-100">
+    <div class="col-md-13 text-center">
+        <div class="cust-btn-container" >
+            <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
+            <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Save</a></button>
+        </div>
+    </div>
+  </div>
+</app-modal>  

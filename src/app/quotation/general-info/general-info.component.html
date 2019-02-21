@@ -58,8 +58,8 @@
 									</div>
 									<div *ngIf="checkTypeOfCession() ||  genInfoData.cessionDesc.toUpperCase() == 'RETROCESSION'" class="input-group ig-cust">
 										<label class="form-control-sm col-sm-2">Reinsurance From</label>
-										<input type="text" class="form-control form-control-sm col-sm-2 req"  [(ngModel)]="genInfoData.reinsurerId" appRequired>
-										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+										<input type="text" class="form-control form-control-sm col-sm-2" appRequired [(ngModel)]="genInfoData.reinsurerId">
+										<div class="text-search-ico"><a><i class="fa fa-search" (click)="showCedingCompanyNotMemberLOV()"></i></a></div>
 										<span>&nbsp;</span>
 										<input type="text" [(ngModel)]="genInfoData.reinsurerName" class="form-control form-control-sm col-sm ig-mrgn"
 										 style="margin-left: 5px;" >
@@ -891,7 +891,8 @@
 <app-mtn-insured id="contractorLOV" (selectedData)="setContractor($event)"></app-mtn-insured> 
 <app-mtn-insured id="insuredLOV" (selectedData)="setInsured($event)"></app-mtn-insured>
 <app-mtn-currency id="currencyModal" (selectedData)="setCurrency($event)"></app-mtn-currency>
-<app-ceding-company id="cedingCompanyLOV" (selectedData)="setCedingcompany($event)"></app-ceding-company>
+<app-ceding-company id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-ceding-company>
+<app-mtn-ceding-company id="cedingCompanyNotMember" (selectedData)="setCedingcompany($event)"></app-mtn-ceding-company>
 <app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
 <app-mtn-intermediary id="intLOV" (selectedData)="setInt($event)"></app-mtn-intermediary>
 <app-mtn-line-class id="lineClassLOV" (selectedData)="setLineClass($event)" [line]="line"></app-mtn-line-class>

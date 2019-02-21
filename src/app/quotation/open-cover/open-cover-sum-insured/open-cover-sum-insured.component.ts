@@ -36,7 +36,6 @@ export class OpenCoverSumInsuredComponent implements OnInit {
 
   ngOnInit() {
 	  	/*this.sub = this.route.params.subscribe(params => {
-
 	      this.quotationNo = params["quotationNo"];
 	      this.quoteNo = this.quotationNo.split(/[-]/g)[0]
 	      for (var i = 1; i < this.quotationNo.split(/[-]/g).length; i++) {
@@ -44,19 +43,20 @@ export class OpenCoverSumInsuredComponent implements OnInit {
 	     } 
 	    });*/
 	  	this.quotationService.getCoverageOc('2', 'OC-EAR-2018-1001-2-2323').subscribe((data: any) => {
-	  		this.maintenanceService.getMtnCurrency(data.quotationOc[0].projectOc.coverageOc.currencyCd.toString()).subscribe((data2: any) =>{
-	  			this.coverageOcData.currencyCd = data2.currency[0].currencyAbbr;
+	  		this.maintenanceService.getMtnCurrency(data.quotationOc.projectOc.coverageOc.currencyCd.toString()).subscribe((data2: any) =>{
+	  			this.coverageOcData.currencyAbbr = data2.currency[0].currencyAbbr;
 	  		});
-	  	    //this.coverageOcData.currencyCd = data.quotationOc[0].projectOc.coverageOc.currencyCd;
-	  	    this.coverageOcData.currencyRt = data.quotationOc[0].projectOc.coverageOc.currencyRt;
-	  	    this.coverageOcData.maxSi = data.quotationOc[0].projectOc.coverageOc.maxSi;
-	  	    this.coverageOcData.pctShare = data.quotationOc[0].projectOc.coverageOc.pctShare;
-	  	    this.coverageOcData.pctPml = data.quotationOc[0].projectOc.coverageOc.pctPml;
-	  	    this.coverageOcData.totalValue = data.quotationOc[0].projectOc.coverageOc.totalValue;
+	  	    this.coverageOcData.currencyCd = data.quotationOc.projectOc.coverageOc.currencyCd;
+	  	    this.coverageOcData.currencyRt = data.quotationOc.projectOc.coverageOc.currencyRt;
+	  	    this.coverageOcData.maxSi = data.quotationOc.projectOc.coverageOc.maxSi;
+	  	    this.coverageOcData.pctShare = data.quotationOc.projectOc.coverageOc.pctShare;
+	  	    this.coverageOcData.pctPml = data.quotationOc.projectOc.coverageOc.pctPml;
+	  	    this.coverageOcData.totalValue = data.quotationOc.projectOc.coverageOc.totalValue;
 	  	    /*this.data = data.quotationOc[0].attachmentOc;
 	  	    // this.passData.tableData = data.quotation.project.coverage.sectionCovers;
 	  	    for (var i = 0; i < this.data.len
 	  	    this.custEditableNonDatatableComponent.refreshTable();*/
+
 /*
 	  		console.log()
 	  	    this.quoteIdOc = data.quotationOc[0].quoteIdOc;
@@ -70,9 +70,10 @@ export class OpenCoverSumInsuredComponent implements OnInit {
 
   saveData(){
   	this.coverageOcData.quoteIdOc = this.quoteIdOc;
-  	this.coverageOcData.projId = 1;
+  	this.coverageOcData.projId = 2;
   	this.coverageOcData.riskId = this.riskId;
-    this.quotationService.saveQuoteCoverageOc(7,1,this.coverageOcData).subscribe();
+    this.quotationService.saveQuoteCoverageOc(2,2,this.coverageOcData).subscribe();
+
   }
 
   showCurrencyModal(){

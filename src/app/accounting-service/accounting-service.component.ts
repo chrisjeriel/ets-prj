@@ -28,7 +28,7 @@ export class AccountingServiceComponent implements OnInit {
   exitTab: string;
   ngOnInit() {
   	this.sub = this.route.params.subscribe(params => {
-      this.exitLink = params['link'] !== undefined ? params['link'] : 'acct-ar-listings';
+      this.exitLink = params['link'] !== undefined ? params['link'] : 'acct-or-listings';
       this.exitTab = params['tab'] !== undefined ? params['tab'] : '';
   		this.action = params['action'];
 

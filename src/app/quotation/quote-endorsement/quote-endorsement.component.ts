@@ -57,6 +57,8 @@ export class QuoteEndorsementComponent implements OnInit {
         updateUser: ''
     }
 
+    quoteId:string;
+    quoteIdOc:string;
 
     quoteOptionsData: any = {
         tableData: [],
@@ -108,7 +110,7 @@ export class QuoteEndorsementComponent implements OnInit {
             this.from = params['from'];
       
             if (this.from === "oc-processing") {
-              console.log("OPEN COVER !!!");
+              
             }
           });
 
@@ -129,7 +131,6 @@ export class QuoteEndorsementComponent implements OnInit {
 /*        this.tableData = this.quotationService.getEndorsements(1);*/
           if (this.endorsementType == "OC") {
               this.OpenCover= true;
-              console.log(">>>>>>>>>>>OC<<<<<<<<<<<<<")
           
               this.sub = this.route.params.subscribe(params => {
                 this.from = params['from'];
@@ -140,9 +141,16 @@ export class QuoteEndorsementComponent implements OnInit {
                     }*/
                });
            /*     var quoteId = '1';*/
-                var quoteNumOc = this.plainQuotationNoOc(this.quoteNoOc)
-                this.quotationService.getEndorsementsOc(null,quoteNumOc).subscribe((data: any) => {
-                    console.log(data.endorsementsOc)
+
+            //    arn
+               this.quotationService.getOcGenInfoData('',this.quoteNoOc)
+                    .subscribe(val => {
+                     this.quoteIdOc = val['quotationOc'][0].quoteIdOc;
+
+                    });
+
+                     var quoteNumOc = this.plainQuotationNoOc(this.quoteNoOc)
+                        this.quotationService.getEndorsementsOc(this.quoteIdOc,quoteNumOc).subscribe((data: any) => {
                    /* this.quoteNoData = data.endorsementsOc[0].quotationNo;*/
                         for(var lineCount = 0; lineCount < data.endorsementsOc.length; lineCount++){
                               this.endorsementOCData.tableData.push(new QuoteEndorsementOC(
@@ -150,11 +158,20 @@ export class QuoteEndorsementComponent implements OnInit {
                                                                            data.endorsementsOc[lineCount].endtTitle,
                                                                            data.endorsementsOc[lineCount].projDesc,
                                                                            data.endorsementsOc[lineCount].remarks)
-                                                                   );          
+                                                                   );
+                                                                  this.saveEndt.quoteId    = data.endorsementsOc[lineCount].quoteId;
+                                                                  console.log(this.saveEndt.quoteId + " >>>>>> this.saveEndt.quoteId")
+                                                                  this.saveEndt.createDate = this.formatDate(data.endorsementsOc[lineCount].createDate);
+                                                                  console.log(this.saveEndt.createDate + " >>>>>> this.saveEndt.createDate")
+                                                                  this.saveEndt.createUser = data.endorsementsOc[lineCount].createUser;
+                                                                  console.log(this.saveEndt.createUser + " >>>>>> this.saveEndt.createUser")
+                                                                  this.saveEndt.updateUser = data.endorsementsOc[lineCount].updateUser;          
+                                                                  console.log(this.saveEndt.updateUser + " >>>>>> this.saveEndt.updateUser")
                           }
                         this.table.forEach(table => { table.refreshTable() });
       /*                    this.table.refreshTable();*/ 
                     });
+                
 
 
             } else {
@@ -168,7 +185,6 @@ export class QuoteEndorsementComponent implements OnInit {
                });
 
                 if (this.quotationService.toGenInfo[0] == "edit") {  
-                    console.log("<<<<<<<<<<<<<<<<Edit- Quotation>>>>>>>>>>>>>>>>>");
                     this.quotationService.getQuoteGenInfo(null,this.plainQuotationNo(this.quotationNum)).subscribe((data: any) => {
                         this.insured = data.quotationGeneralInfo.insuredDesc; 
                         this.quoteNoData = data.quotationGeneralInfo.quotationNo;
@@ -177,6 +193,7 @@ export class QuoteEndorsementComponent implements OnInit {
                         } else {
                             this.riskName = data.project.riskName; 
                         }
+                        this.quoteId = data.quotationGeneralInfo.quoteId.toString();
                     });
                     this.quotationService.getQuoteOptions().subscribe((data: any) => {
                         // this.optionRecords = data.QuotationOption.optionsList;
@@ -193,7 +210,7 @@ export class QuoteEndorsementComponent implements OnInit {
                     });
                   
                     
-                    this.quotationService.getEndorsements(null,this.plainQuotationNo(this.quotationNum),'1').subscribe((data: any) => {
+                    this.quotationService.getEndorsements(this.quoteId,this.plainQuotationNo(this.quotationNum),'1').subscribe((data: any) => {
                         for(var lineCount = 0; lineCount < data.endorsements.length; lineCount++){
                               this.endorsementData.tableData.push(new QuoteEndorsement(
                                                                            data.endorsements[lineCount].endtCd, 
@@ -271,41 +288,36 @@ export class QuoteEndorsementComponent implements OnInit {
         return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]);
     }
 
-
     // arn //
     endorsementReq:any;
 
     onClickSave(event){
-         for(var i=0;i<this.endorsementData.tableData.length;i++){
-            this.endorsementReq = {
-                // "createDate": this.saveEndt.createDate,
-                "createDate": new Date().toISOString(),
-                // "createUser":  this.saveEndt.createUser,
-                "createUser":  "user",
-                "endtCd":       this.endorsementData.tableData[i].endtCode,
-                // "optionId":    this.saveEndt.optionId,
-                "optionId":    23,
-                // "quoteId":      this.saveEndt.quoteId,
-                "quoteId":      12,
-                "remarks":    this.endorsementData.tableData[i].endtWording,
-                "updateDate":  new Date().toISOString(),
-                // "updateUser":  this.saveEndt.updateUser
-                "updateUser":  "use"
+        if(this.from === "quo-processing"){
+            for(var i=0;i<this.endorsementData.tableData.length;i++){
+                this.endorsementReq = {
+                    "createDate": this.saveEndt.createDate,
+                    "createUser":  this.saveEndt.createUser,
+                    "endtCd":       this.endorsementData.tableData[i].endtCode,
+                    "optionId":    this.saveEndt.optionId,
+                    "quoteId":      this.saveEndt.quoteId,
+                    "remarks":    this.endorsementData.tableData[i].endtWording,
+                    "updateDate":  new Date().toISOString(),
+                    "updateUser":  this.saveEndt.updateUser
+                }
+                this.quotationService.saveQuoteEndorsements(JSON.stringify(this.endorsementReq))
+                .subscribe(data => console.log(data));
             }
-            console.log(this.endorsementReq);
+        }else{
+            
         }
-
-        this.quotationService.saveQuoteEndorsements(JSON.stringify(this.endorsementReq))
-            .subscribe(data => console.log(data));
     }
     formatDate(date){
         return new Date(date[0] + "/" + date[1] + "/" + date[2]).toISOString();
     }
     // end-arn //
-
     plainQuotationNoOc(data: string){
         var arr = data.split('-');
-        return arr[1] + '-' + arr[2] + '-' + arr[3] + '-' + arr[4] + '-' + arr[5] ;
+        return arr[0]+ '-' +arr[1] + '-' + arr[2] + '-' + arr[3] + '-' + arr[4] + '-' + arr[5] ;
     }
 
 }

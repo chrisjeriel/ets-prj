@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, Renderer } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
+import { AppComponent } from '@app/app.component';
 
 import { DummyInfo } from '../../../_models';
 
@@ -93,7 +94,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     @Input() widths: string[] = [];
     unliFlag:boolean = false;
     @Output() clickLOV: EventEmitter<any> = new EventEmitter();
-    constructor(config: NgbDropdownConfig, public renderer: Renderer) { 
+    constructor(config: NgbDropdownConfig, public renderer: Renderer, private appComponent: AppComponent) { 
         config.placement = 'bottom-right';
         config.autoClose = false;
     }
@@ -109,14 +110,13 @@ export class CustEditableNonDatatableComponent implements OnInit {
             this.passData.tableData[i].checked = this.passData.tableData[i].checked ? true : false;
             if(!this.passData.tableData[i].deleted){
                 this.displayData.push(this.passData.tableData[i]);
-            }else{
-                console.log(this.displayData[i]);
             }
         }
         //this.displayData = JSON.parse(JSON.stringify( this.passData.tableData));
         //this.displayLength = this.displayData.length;
         this.unliTableLength();
         this.addFiller();
+        this.appComponent.ngOnInit();
     }
 
     ngOnInit() {
@@ -131,16 +131,25 @@ export class CustEditableNonDatatableComponent implements OnInit {
         } else {
             this.dataKeys = this.passData.keys;
         }
+        // if(this.dataKeys.indexOf('edited') != -1){
+        //   this.dataKeys.pop();
+        // }
+        // if(this.dataKeys.indexOf('checked') != -1){
+        //   this.dataKeys.pop();
+        // }
+        // if(this.dataKeys.indexOf('deleted') != -1){
+        //   this.dataKeys.pop();
+        // }
 
-        if(this.dataKeys.indexOf('edited') != -1){
-          this.dataKeys.pop();
-        }
-        if(this.dataKeys.indexOf('checked') != -1){
-          this.dataKeys.pop();
-        }
-        if(this.dataKeys.indexOf('deleted') != -1){
-          this.dataKeys.pop();
-        }
+       if(this.dataKeys.indexOf('edited') != -1){
+         this.dataKeys.splice(this.dataKeys.indexOf('edited'),1);
+       }
+       if(this.dataKeys.indexOf('checked') != -1){
+         this.dataKeys.splice(this.dataKeys.indexOf('checked'),1);
+       }
+       if(this.dataKeys.indexOf('deleted') != -1){
+         this.dataKeys.splice(this.dataKeys.indexOf('deleted'),1);
+       }
 
         this.refreshTable();
         // this.autoFill = Array(this.passData.pageLength).fill(this.newData);
@@ -173,18 +182,20 @@ export class CustEditableNonDatatableComponent implements OnInit {
         this.passData.tableData[this.passData.tableData.length-1].edited = true;
         this.unliTableLength();    
         this.search(this.searchString);
+        this.tableDataChange.emit(this.passData.tableData);
     }
 
     onClickDelete() {
         for (var i = 0; i < this.passData.tableData.length; ++i) {
             if(this.passData.tableData[i].checked){
+                this.passData.tableData[i].checked = false;
                 this.passData.tableData[i].deleted = true;
                 this.passData.tableData[i].edited = true;
             }
         }
         this.refreshTable();
         this.search(this.searchString);
-        console.log(this.passData.tableData);
+        this.tableDataChange.emit(this.passData.tableData);
     }
     private onMouseDown(event){
         this.start = event.target;
@@ -279,9 +290,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
 
     unliTableLength(){
         if(this.unliFlag){
-            console.log(this.passData.pageLength <= 10);
             this.passData.pageLength = this.passData.tableData.length <= 10 ? 10 :this.passData.tableData.length;
-            console.log(this.passData.tableData.length);
         }
         
     }
@@ -360,7 +369,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
         data.checked = event.target.checked;
         if(!event.target.checked){
             this.selected.splice(this.selected.indexOf(data), 1);
-            console.log('wow');
         }else{
             this.selected.push(data);
         }

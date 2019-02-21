@@ -11,9 +11,15 @@ export class ArOthersComponent implements OnInit {
 
   passDataArOthers: any = {
   	tableData: [],
+/*<<<<<<< HEAD
+    tHeader: ["Item","Reference No.","Description", "Type", "Curr", "Curr Rate","Amount","Amount(PHP)"],
+    dataTypes: ["text", "text","text", "select","text", "percent","currency","currency"],
+    resizable: [true, true,true, true, true, true, true, true],
+=======*/
     tHeader: ["Item", "Reference No.", "Description", "Type", "Curr", "Curr Rate","Amount","Amount(PHP)"],
     dataTypes: ["text", "text", "text", "select","text", "percent","currency","currency"],
     resizable: [true, true, true, true, true, true, true, true],
+/*>>>>>>> 175e99f85deab8a5e9768e8a21f93aff2ffc85be*/
     nData: new AROthers(null,null,null,null,null,null,null,null),
     total:[null,null,null,null,null,'Total','amount','amountPHP'],
     checkFlag: true,
@@ -21,7 +27,7 @@ export class ArOthersComponent implements OnInit {
     deleteFlag: true,
     genericBtn: 'Save',
     pageLength: 10,
-    widths: [220,'auto','auto','auto',1,50,100,150],
+    widths: [220,'auto','auto',120,1,50,100,150],
     paginateFlag:true,
     infoFlag:true,
     opts:[

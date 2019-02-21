@@ -101,13 +101,13 @@ export class AcctOrListingsComponent implements OnInit {
     var selectedRow = event.target.closest('tr').children;
 
     this.record = {
-      arNo: selectedRow[0].innerText,
-      payor: selectedRow[1].innerText,
-      arDate: selectedRow[2].innerText,
-      paymentType: selectedRow[3].innerText.trim(),
-      status: selectedRow[4].innerText,
-      particulars: selectedRow[5].innerText,
-      amount: selectedRow[6].innerText
+      arNo: selectedRow[1].innerText,
+      payor: selectedRow[2].innerText,
+      arDate: selectedRow[3].innerText,
+      paymentType: selectedRow[4].innerText.trim(),
+      status: selectedRow[5].innerText,
+      particulars: selectedRow[6].innerText,
+      amount: selectedRow[7].innerText
     }
 
     this.router.navigate(['/accounting-service', { slctd: JSON.stringify(this.record), action: 'edit' }], { skipLocationChange: true });

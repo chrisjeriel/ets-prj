@@ -228,6 +228,10 @@
                                 <br />
                                 <button [routerLink]="['acc-s-credit-debit-memo']" class="button btn btn-link">Credit/Debit Memo</button>
                                 <br />
+                                <button [routerLink]="['quarterly-stmt-of-acct']" class="button btn btn-link">Quarterly Statement of Account </button>
+                                <br />
+                                <button [routerLink]="['profit-commission']" class="button btn btn-link">Profit Commission</button>
+                                <br />
                                 <ngb-accordion #acc="ngbAccordion">
                                     <ngb-panel>
                                         <ng-template ngbPanelTitle>
@@ -254,8 +258,6 @@
                                             <br />
                                             <button [routerLink]="['trial-balance']" class="button btn btn-link">Trial
                                                 Balance</button>
-                                            <br />
-                                            <button [routerLink]="['extract-bir-taxes']" class="button btn btn-link">BIR Taxes</button>
                                         </ng-template>
                                     </ngb-panel>
                                 </ngb-accordion>
@@ -389,6 +391,10 @@
                                             <button [routerLink]="['acc-s-change-tran-stat-new']" class="button btn btn-link">Change Transaction Status to New</button>
                                             <br />
                                             <button [routerLink]="['cancel-transaction-service']" class="button btn btn-link">Cancel Transactions</button>
+                                            <br />
+                                            <button [routerLink]="['batch-or-printing']" class="button btn btn-link">Batch OR Printing</button>
+                                            <br />
+                                            <button [routerLink]="['batch-invoice-printing']" class="button btn btn-link">Batch Invoice Printing</button>
                                         </ng-template>
                                     </ngb-panel>
                                 </ngb-accordion>

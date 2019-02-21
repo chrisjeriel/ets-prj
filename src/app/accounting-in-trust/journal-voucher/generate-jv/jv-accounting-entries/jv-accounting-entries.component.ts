@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { JVAccountingEntries } from '@app/_models'
+import { AccountingService } from '@app/_services'
 
 @Component({
   selector: 'app-jv-accounting-entries',
@@ -8,12 +10,11 @@ import { Component, OnInit } from '@angular/core';
 export class JvAccountingEntriesComponent implements OnInit {
 
    accEntriesData: any = {
-    tableData: [
-      [null, null, null, null, null, null]
-    ],
-    tHeader: ['Code', 'Account', 'SL Type', 'SL Name', 'Debit', 'Credit'],
+    tableData: this.accountingService.getJVAccountingEntry(),
+    tHeader: ['Account Code', 'Account Name', 'SL Type', 'SL Name', 'Debit', 'Credit'],
     dataTypes: ['text', 'text', 'text', 'text', 'currency', 'currency'],
-    nData: [null, null, null, null, null, null],
+    magnifyingGlass: ['accountCode','slType','slName'],
+    nData: new JVAccountingEntries(null, null, null, null, null, null),
     paginateFlag: true,
     infoFlag: true,
     checkFlag: true,
@@ -24,7 +25,7 @@ export class JvAccountingEntriesComponent implements OnInit {
     genericBtn: 'Save'
   }
   
-  constructor() { }
+  constructor(private accountingService: AccountingService) { }
 
   ngOnInit() {
   }

@@ -37,7 +37,9 @@
    		                    	<select class="form-control form-control-sm cust-sm col-sm-12" [(ngModel)]="data.paymentType" (change)="tabController($event);">
                                  <option value="Check Voucher" [selected]="data.paymentType == 'Check Voucher'">Check Voucher</option>
                                  <option value="Petty Cash Voucher" [selected]="data.paymentType == 'Petty Cash Voucher'">Petty Cash Voucher</option>
+                                 <option value="Payment of Service to In-Trust" [selected]="data.paymentType == 'Payment of Service to In-Trust'">Payment of Service to In-Trust</option>
                                  <option value="Payment of Risk Management Fee to Employees" [selected]="data.paymentType == 'Payment of Risk Management Fee to Employees'">Payment of Risk Management Fee to Employees</option>
+                                 <option value="Others" [selected]="data.paymentType == 'Others'">Others</option>
                               </select>
    		                    </div>
    		                    <label class="form-control-sm col-sm-1" for="xx">Amount</label>

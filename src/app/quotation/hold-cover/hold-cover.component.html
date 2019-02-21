@@ -17,11 +17,11 @@
                                     <div class="input-group">
                                         <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Quotation No</label>
-                                            <input type="text" class="form-control form-control-sm cap-input col-sm-1" ngbTooltip="Line" [(ngModel)]="qLine">
-                                            <input type="text" class="form-control form-control-sm cap-input col-sm-1" ngbTooltip="Year" style="margin-left: 2px;" [(ngModel)]="qYear">
-                                            <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Sequence No" style="margin-left: 2px;" [(ngModel)]="qSeqNo">
-                                            <input type="text" class="form-control form-control-sm cap-input col-sm-1" ngbTooltip="Revision No" style="margin-left: 2px;" [(ngModel)]="qRevNo">
-                                            <input type="text" class="form-control form-control-sm cap-input col-sm-1" ngbTooltip="Company No" style="margin-left: 2px;" [(ngModel)]="qCedingId">
+                                            <input type="text" class="form-control form-control-sm cap-input col-sm-1" ngbTooltip="Line" [(ngModel)]="qLine" readonly>
+                                            <input type="text" class="form-control form-control-sm cap-input col-sm-1" ngbTooltip="Year" style="margin-left: 2px;" [(ngModel)]="qYear" readonly>
+                                            <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Sequence No" style="margin-left: 2px;" [(ngModel)]="qSeqNo" readonly>
+                                            <input type="text" class="form-control form-control-sm cap-input col-sm-1" ngbTooltip="Revision No" style="margin-left: 2px;" [(ngModel)]="qRevNo" readonly>
+                                            <input type="text" class="form-control form-control-sm cap-input col-sm-1" ngbTooltip="Company No" style="margin-left: 2px;" [(ngModel)]="qCedingId" readonly>
                                             <span>&nbsp;</span>
                                             <div class="text-search-ico"><a (click)="search()"><i class="fa fa-search"></i></a></div>
                                         </div>
@@ -68,13 +68,13 @@
                                         </div>
                                          <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Period From</label>
-                                            <input type="date" class="form-control form-control-sm cust-sm" [(ngModel)]="holdCover.periodFrom.split('T')[0]">
+                                            <input type="date" class="form-control form-control-sm cust-sm" #periodFrom (blur)="setPeriodTo(periodFrom.value)" [(ngModel)]="holdCover.periodFrom.split('T')[0]">
                                             <label class="form-control-sm col-sm-2">Requested By</label>
                                             <input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="holdCover.reqBy">
                                         </div>
                                         <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Period To</label>
-                                            <input type="date" class="form-control form-control-sm cust-sm" [(ngModel)]="holdCover.periodTo.split('T')[0]">
+                                            <input type="date" class="form-control form-control-sm cust-sm"  [(ngModel)]="holdCover.periodTo.split('T')[0]">
                                             <label class="form-control-sm col-sm-2">Request Date</label>
                                             <input type="date" class="form-control form-control-sm cust-sm col-sm-7" [(ngModel)]="holdCover.reqDate.split('T')[0]">
                                         </div>

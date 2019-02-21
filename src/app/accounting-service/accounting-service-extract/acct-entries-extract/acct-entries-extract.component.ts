@@ -11,6 +11,8 @@ export class AcctEntriesExtractComponent implements OnInit {
   taxType: any;
   defaultTab: false;
 
+  postingDateFlag: string = '1';
+
   constructor() { }
 
   ngOnInit() {
