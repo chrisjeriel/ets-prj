@@ -148,7 +148,6 @@ export class GeneralInfoComponent implements OnInit {
 			this.from = params['from'];
 			if (this.from == "quo-processing") {
 				this.line = params['line'];
-				//this.typeOfCession = params['typeOfCession'];				
 			}
 		});
 
