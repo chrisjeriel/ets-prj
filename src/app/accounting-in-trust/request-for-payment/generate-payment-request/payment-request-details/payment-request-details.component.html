@@ -115,7 +115,7 @@
               <div *ngSwitchCase ="'CLAIM PAYMENT TO CEDING COMPANY'">Claim Payment to Ceding Company</div>
               <div *ngSwitchCase ="'INWARD POLICY BALANCES - RETURNS'">Inward Policy Balances - Returns</div>
               <div *ngSwitchCase ="'PAYMENT OF SERVICE FEE BY IN-TRUST TO SERVICE ACCOUNTING'">Payment of Service Fee</div>
-              <div *ngSwitchCase ="'TREATY BALANCE DUE PARTICIPANT'">Treaty Balance Due Participants</div>
+              <div *ngSwitchCase ="'TREATY BALANCE DUE PARTICIPANTS'">Treaty Balance Due Participants</div>
               <div *ngSwitchCase ="'INVESTMENT (PLACEMENT)'">Investment (Placement)</div>
               <div *ngSwitchCase ="'QSOA BALANCES'">QSOA Balances</div>
               <div *ngSwitchCase ="'OTHERS - VISIBLE ON ANY PAYMENT TYPE'">Others - Visible on any Payment Type</div>
@@ -141,25 +141,25 @@
 
                     <!-- <app-cust-editable-non-datatable [passData]="ServiceAccountingData"></app-cust-editable-non-datatable> -->
                     <div class="row pt-1" >
-
-                      <app-cust-editable-non-datatable [passData]="MainCompanyServiceAccountingData" class="w-100 px-5">
-                        <div controls-l class="d-flex">
+                        <div controls-l class="input-group" style="margin-left: 30px">
                           <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Service Fee</label>
-                          <input type="text" class="form-control form-control-sm cust-sm col-sm-2">
+                          <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="z-index: 99">
                           <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Period As Of</label>
-                          <input type="date" class="form-control form-control-sm cust-sm col-sm-2">
+                          <input type="date" class="form-control form-control-sm cust-sm col-sm-2" style="z-index: 99">
                           <div class="col-sm-1">
-                            <button class="cust-btn">Distribute</button>
+                            <button class="cust-btn" style="z-index: 99">Distribute</button>
                           </div>
                         </div>
-                      </app-cust-editable-non-datatable>
+                      <app-cust-non-datatable [passData]="MainCompanyServiceAccountingData" class="w-100 px-5" style="margin-top: -36px ! important">
+                      </app-cust-non-datatable>
+                      
                     </div>
-                    <div class="row">
+                    <div class="row" style="margin-top: 10px">
                       <app-cust-editable-non-datatable [passData]="SubServiceAccountingData" class="w-100 px-5"></app-cust-editable-non-datatable>
                     </div>
 
                 </ng-container>
-                <ng-container *ngSwitchCase ="'TREATY BALANCE DUE PARTICIPANT'">
+                <ng-container *ngSwitchCase ="'TREATY BALANCE DUE PARTICIPANTS'">
                     <div class="d-flex p-0">
                       <div class="col-sm-2"></div>
                       <div class="col-sm">
