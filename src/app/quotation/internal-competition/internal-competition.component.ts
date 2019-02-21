@@ -173,7 +173,7 @@ export class InternalCompetitionComponent implements OnInit, OnDestroy {
     }
 
     selectedAdviceLOV(data){
-        this.intCompData.tableData[this.adviceLOVRow].wordings = data.description;
+        this.intCompData.tableData[this.adviceLOVRow].wordings = data.adviceText01;
         this.intCompData.tableData[this.adviceLOVRow].edited = true;
     }
 
