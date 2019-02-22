@@ -17,17 +17,17 @@
                                     <div class="input-group">
                                         <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Quotation No</label>
-                                            <input type="text" class="form-control form-control-sm cap-input col-sm-1" ngbTooltip="Line" [(ngModel)]="qLine" readonly>
-                                            <input type="text" class="form-control form-control-sm cap-input col-sm-1" ngbTooltip="Year" style="margin-left: 2px;" [(ngModel)]="qYear" readonly>
-                                            <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Sequence No" style="margin-left: 2px;" [(ngModel)]="qSeqNo" readonly>
-                                            <input type="text" class="form-control form-control-sm cap-input col-sm-1" ngbTooltip="Revision No" style="margin-left: 2px;" [(ngModel)]="qRevNo" readonly>
-                                            <input type="text" class="form-control form-control-sm cap-input col-sm-1" ngbTooltip="Company No" style="margin-left: 2px;" [(ngModel)]="qCedingId" readonly>
+                                            <input type="text" class="form-control form-control-sm cap-input col-sm-1 warn" appRequired ngbTooltip="Line" #qline [(ngModel)]="qLine" readonly>
+                                            <input type="text" class="form-control form-control-sm cap-input col-sm-1 warn" appRequired ngbTooltip="Year" #qyear style="margin-left: 2px;" [(ngModel)]="qYear" readonly>
+                                            <input type="text" class="form-control form-control-sm cap-input col-sm-2 warn" appRequired ngbTooltip="Sequence No" #qseqNo style="margin-left: 2px;" [(ngModel)]="qSeqNo" readonly>
+                                            <input type="text" class="form-control form-control-sm cap-input col-sm-1 warn" appRequired ngbTooltip="Revision No" #qrevNo style="margin-left: 2px;" [(ngModel)]="qRevNo" readonly>
+                                            <input type="text" class="form-control form-control-sm cap-input col-sm-1 warn" appRequired ngbTooltip="Company No" #qcomNo style="margin-left: 2px;" [(ngModel)]="qCedingId" readonly>
                                             <span>&nbsp;</span>
                                             <div class="text-search-ico"><a (click)="search()"><i class="fa fa-search"></i></a></div>
                                         </div>
                                         <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Ceding Company</label>
-                                            <input type="text" class="form-control form-control-sm"  [(ngModel)]="cedCo" readonly>
+                                            <input type="text" class="form-control form-control-sm"  [(ngModel)]="cedCo"  readonly>
                                         </div>
                                         <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Insured</label>
@@ -60,21 +60,21 @@
                                         <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Hold Cover No</label>
                                             <input type="text" class="form-control form-control-sm col-sm cap-input col-sm-1" ngbTooltip="HC Prefix" value="HC" readonly>
-                                            <input type="text" class="form-control form-control-sm col-sm cap-input col-sm-1" ngbTooltip="Line" style="margin-left: 2px;" maxlength="3"  [(ngModel)]="hcLine" >
-                                            <input type="text" class="form-control form-control-sm col-sm cap-input col-sm-1" ngbTooltip="Year" style="margin-left: 2px;" maxlength="4" numbers-only [(ngModel)]="hcYear">
-                                            <input type="text" class="form-control form-control-sm col-sm col-sm-2" style="margin-left: 2px;" ngbTooltip="Sequence No" maxlength="5" numbers-only [(ngModel)]="hcSeqNo">
-                                            <input type="text" class="form-control form-control-sm col-sm col-sm-1" style="margin-left: 2px;"ngbTooltip="Revision No" maxlength="2"  numbers-only [(ngModel)]="hcRevNo">
+                                            <input type="text" class="form-control form-control-sm col-sm cap-input col-sm-1 warn" ngbTooltip="Line" style="margin-left: 2px;" maxlength="3" appRequired  #hcline [(ngModel)]="hcLine" >
+                                            <input type="text" class="form-control form-control-sm col-sm cap-input col-sm-1 warn" ngbTooltip="Year" style="margin-left: 2px;" maxlength="4" appRequired #hcyear numbers-only [(ngModel)]="hcYear">
+                                            <input type="text" class="form-control form-control-sm col-sm col-sm-2 warn" style="margin-left: 2px;" ngbTooltip="Sequence No" maxlength="5" appRequired  #hcseqNo numbers-only [(ngModel)]="hcSeqNo">
+                                            <input type="text" class="form-control form-control-sm col-sm col-sm-1 warn" style="margin-left: 2px;"ngbTooltip="Revision No" maxlength="2"  appRequired #hcrevNo numbers-only [(ngModel)]="hcRevNo">    
 
                                         </div>
                                          <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Period From</label>
-                                            <input type="date" class="form-control form-control-sm cust-sm" #periodFrom (blur)="setPeriodTo(periodFrom.value)" [(ngModel)]="holdCover.periodFrom.split('T')[0]">
+                                            <input type="date" class="form-control form-control-sm cust-sm warn" appRequired #periodFrom (blur)="setPeriodTo(periodFrom.value)" [(ngModel)]="holdCover.periodFrom.split('T')[0]">
                                             <label class="form-control-sm col-sm-2">Requested By</label>
-                                            <input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="holdCover.reqBy">
+                                            <input type="text" class="form-control form-control-sm col-sm-7" #reqBy [(ngModel)]="holdCover.reqBy">
                                         </div>
                                         <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Period To</label>
-                                            <input type="date" class="form-control form-control-sm cust-sm"  [(ngModel)]="holdCover.periodTo.split('T')[0]">
+                                            <input type="date" class="form-control form-control-sm cust-sm warn" appRequired #periodTo  [(ngModel)]="holdCover.periodTo.split('T')[0]">
                                             <label class="form-control-sm col-sm-2">Request Date</label>
                                             <input type="date" class="form-control form-control-sm cust-sm col-sm-7" #reqDate [(ngModel)]="holdCover.reqDate.split('T')[0]">
                                         </div>
@@ -86,7 +86,7 @@
                                         </div>
                                         <div class="input-group" style="margin-bottom: -9px !important;">
                                             <label class="form-control-sm col-sm-2">Status</label>
-                                            <input type="text" class="form-control form-control-sm" #status [(ngModel)]="holdCover.status">
+                                            <input type="text" class="form-control form-control-sm warn" #status appRequired [(ngModel)]="holdCover.status">
                                             <label class="form-control-sm col-sm-2">Approved By</label>
                                             <input type="text" class="form-control form-control-sm col-sm-7" #appBy [(ngModel)]="holdCover.approvedBy">
                                         </div>
@@ -148,7 +148,7 @@
                                     </div>
                                     </app-modal>
                                 <button type="button" class="cust-btn"><a>Cancel</a></button>
-                                <button type="button" class="cust-btn" (click)="onSaveClick(periodFrom.value,coRef.value,status.value,reqDate.value,prepBy.value,appBy.value)"><a>Save</a></button>
+                                <button type="button" class="cust-btn" (click)="onSaveClick(qline.value,qyear.value,qseqNo.value,qrevNo.value,qcomNo.value,periodTo.value,periodFrom.value,coRef.value,status.value,reqDate.value,prepBy.value,appBy.value,hcline.value,hcyear.value,hcseqNo.value,hcrevNo.value,reqBy.value)"><a>Save</a></button>
                             </div>
                         </div>
                     </div>
@@ -185,6 +185,17 @@
     <div body class="container-flex text-center">
         <span class="fa fa-check-circle fa-3x" style="vertical-align: middle;"></span>
         <span style="vertical-align: middle; margin-left: 15px;">Saved successfully!</span>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">                    
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" id="warningMdl">
+    <div header>Warning</div>
+    <div body class="container-flex text-center">
+        <span class="fa fa-info-circle fa-3x" style="vertical-align: middle;"></span>
+        <span style="vertical-align: middle; margin-left: 15px;">{{ warningMsg }}</span>
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>

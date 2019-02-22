@@ -52,6 +52,7 @@ export class HoldCoverComponent implements OnInit {
   hcRevNo              : string;
 
   quoteId: number;
+  warningMsg: string;
 
   holdCover: any = {
     approvedBy:     "",
@@ -213,42 +214,62 @@ export class HoldCoverComponent implements OnInit {
   }
   
   holdCoverReq:any
-  onSaveClick(periodFrom,coRef,status,reqDate,prepBy,appBy){
-    this.quotationService.getQuoteGenInfo('',this.plainQuotationNo(this.quoteNo))
-      .subscribe(val => {
-      this.quoteId = val['quotationGeneralInfo'].quoteId;
-      this.holdCover.createDate = this.formatDate(val['quotationGeneralInfo'].createDate);
-      this.holdCover.createUser = val['quotationGeneralInfo'].createUser;
+  onSaveClick(qline,qyear,qseqNo,qrevNo,qcomNo,periodTo,periodFrom,coRef,status,reqDate,prepBy,appBy,hcline,hcyear,hcseqNo,hcrevNo,reqBy){
 
-         this.holdCoverReq = {
-              "approvedBy": appBy,
-              "compRefHoldCovNo": coRef,
-              "createDate": this.holdCover.createDate,
-              "createUser": this.holdCover.createUser,
-              "holdCoverId": this.quoteId,
-              "holdCoverRevNo": this.hcRevNo,
-              "holdCoverSeqNo": this.hcSeqNo,
-              "holdCoverYear": this.hcYear,
-              "lineCd": this.hcLine,
-              "periodFrom": periodFrom,
-              "periodTo": this.holdCover.periodTo,
-              "preparedBy": prepBy,
-              "quoteId": this.quoteId,
-              "reqBy": this.holdCover.reqBy,
-              "reqDate": reqDate,
-              "status": status,
-              "updateDate": new Date().toISOString(),
-              "updateUser": 'Luffy' /*username of the login acc*/
-            }
-                this.quotationService.saveQuoteHoldCover(
-                  JSON.stringify(this.holdCoverReq)
-                ).subscribe(data => {
-                  $('#successMdl > #modalBtn').trigger('click');
-                });
+   // if(qline === "" || qyear === "" || qseqNo === "" || qrevNo === "" || qcomNo === "" || periodTo === "" || periodFrom === "" || status === "" || hcline === "" || hcyear === "" || hcseqNo === "" || hcrevNo === ""){
 
-              });
+    if(qline === "" || qyear === "" || qseqNo === "" || qrevNo === "" || qcomNo === "" || periodTo === "" || periodFrom === "" || status === "" || hcline === "" || hcyear === "" || hcseqNo === "" || hcrevNo === ""){
+      $('#warningMdl > #modalBtn').trigger('click');
+      $('.warn').focus();
+      $('.warn').blur();
+      this.warningMsg = "Please complete all required fields!";
+      $('.warn').focus();
+      $('.warn').blur();
+    }else {
+        this.quotationService.getQuoteGenInfo('',this.plainQuotationNo(this.quoteNo))
+          .subscribe(val => {
+          this.quoteId = val['quotationGeneralInfo'].quoteId;
+          this.holdCover.createDate = this.formatDate(val['quotationGeneralInfo'].createDate);
+          this.holdCover.createUser = val['quotationGeneralInfo'].createUser;
 
-   
+             this.holdCoverReq = {
+                  "approvedBy": appBy,
+                  "compRefHoldCovNo": coRef,
+                  "createDate": this.holdCover.createDate,
+                  "createUser": this.holdCover.createUser,
+                  "holdCoverId": this.quoteId,
+                  "holdCoverRevNo": hcrevNo,
+                  "holdCoverSeqNo": hcseqNo,
+                  "holdCoverYear": hcyear,
+                  "lineCd": hcline,
+                  "periodFrom": periodFrom,
+                  "periodTo": periodTo,
+                  "preparedBy": prepBy,
+                  "quoteId": this.quoteId,
+                  "reqBy": reqBy,
+                  "reqDate": reqDate,
+                  "status": status,
+                  "updateDate": new Date().toISOString(),
+                  "updateUser": 'Luffy' /*username of the login acc*/
+                }
+                    this.quotationService.saveQuoteHoldCover(
+                      JSON.stringify(this.holdCoverReq)
+                    ).subscribe(data => {
+                      console.log(data);
+
+                      var returnCode = data['returnCode'];
+                      if(returnCode === 0){
+                         $('#warningMdl > #modalBtn').trigger('click');
+                         $('.warn').focus();
+                         $('.warn').blur();
+                         this.warningMsg = data['errorList'][0].errorMessage;
+                      }else{
+                         $('#successMdl > #modalBtn').trigger('click');
+                      }
+                    });
+
+                  });
+   }
   }
 
   plainQuotationNo(data: string){
@@ -256,13 +277,10 @@ export class HoldCoverComponent implements OnInit {
     return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]);
   }
 
-  setPeriodTo(periodFrom:Date){
-    var d = new Date(periodFrom);
-    d.setDate(d.getDate()+30);
-    this.holdCover.periodTo = d.toISOString();
+  setPeriodTo(periodFrom){
+      var d = new Date(periodFrom);
+      d.setDate(d.getDate()+30);
+      this.holdCover.periodTo = d.toISOString(); 
   }
 
-  test(event){
-    console.log(this.holdCover.reqDate);
-  }
 }

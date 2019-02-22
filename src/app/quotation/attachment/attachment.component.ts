@@ -77,7 +77,8 @@ export class AttachmentComponent implements OnInit {
   quoteId: string;
   @Input() quotationInfo: any = {};
   quoteNo: string = '';
-  
+  errorMdlMessage: string = "";
+
   constructor(config: NgbDropdownConfig,
     private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute) {
     config.placement = 'bottom-right';
@@ -149,8 +150,15 @@ export class AttachmentComponent implements OnInit {
       // delete this.savedData[i].tableIndex;
     }
     this.quotationService.saveQuoteAttachment(this.quoteId,this.savedData,this.deletedData).subscribe((data: any) => {
-      $('#successModalBtn').trigger('click');
-      this.getAttachment();
+      console.log(data)
+     /* if(data['returnCode'] == 0) {
+          this.errorMdlMessage = data['errorList'][0].errorMessage;
+          $('#errorMdl > #modalBtn').trigger('click');
+        } else{
+          $('#successModalBtn').trigger('click');
+          this.getAttachment();
+        }*/
+      
     });
   }
 
