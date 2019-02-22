@@ -256,7 +256,7 @@ export class QuoteOptionComponent implements OnInit {
 
     } 
 
-    getOtherRates(){
+  /*  getOtherRates(){
          this.quotationService.getQuoteOptions(this.quoteId,this.plainQuotationNo(this.quotationNum)).subscribe(data => {  
               if (data['quotation'] == null || data['quotation'] == undefined ){
                 var otherRatesRecords = data['quotation'].otherRatesList;
@@ -272,7 +272,7 @@ export class QuoteOptionComponent implements OnInit {
               }
          });
     }
-
+*/
 
 
     save() {
@@ -314,9 +314,9 @@ saveData(){
       }
    }
     this.quotationService.saveQuoteOtherRates(this.quoteId,this.editedOtherRatesData).subscribe((data: any) => {});
-    this.getOtherRates();
     this.saveQuoteOption();
     $('#successModalBtn').trigger('click');
+    this.getQuoteOptions();
  }
 
   saveQuoteOption(){
