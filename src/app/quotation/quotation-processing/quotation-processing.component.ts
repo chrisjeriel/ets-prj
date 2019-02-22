@@ -189,8 +189,6 @@ export class QuotationProcessingComponent implements OnInit {
         this.quotationService.getQuoProcessingData().subscribe(data => {
             var records = data['quotationList'];
             this.fetchedData = records;
-            console.log("fetched");
-            console.log(this.fetchedData);
             for(let rec of records){
                 //neco was here
                 this.splittedLine.push(rec.quotationNo.split("-", 1));
@@ -228,16 +226,16 @@ export class QuotationProcessingComponent implements OnInit {
     }
     
     onClickEdit(event) {
+        this.line = this.selectedQuotation.quotationNo.split('-')[0];
         this.quotationNo = this.selectedQuotation.quotationNo;
-        this.typeOfCession = this.selectedQuotation.cessionDesc;
+        this.typeOfCession = this.selectedQuotation.cessionDesc;        
+
         this.quotationService.toGenInfo = [];
         this.quotationService.toGenInfo.push("edit", this.line);
-        // this.router.navigate(['/quotation']);
-        // this.router.navigate(['/quotation', { typeOfCession: this.quoTypeOfCession, from: 'quo-processing' }]);
-        /*this.router.navigate(['/quotation']);*/
+
         setTimeout(() => {
-            this.router.navigate(['/quotation', { quotationNo: this.quotationNo, typeOfCession: this.typeOfCession, from: 'quo-processing' }], { skipLocationChange: true });
-        },100); 
+            this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.typeOfCession,  quotationNo : this.quotationNo, from: 'quo-processing', savingType: 'normal' }], { skipLocationChange: true });
+        },100);
     }
 
     onClickCopy(event) {
@@ -308,7 +306,7 @@ export class QuotationProcessingComponent implements OnInit {
             }
 
             setTimeout(() => {
-                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), from: 'quo-processing' }], { skipLocationChange: true });
+                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), from: 'quo-processing', savingType: 'normal'}], { skipLocationChange: true });
             },100); 
         }
         //neco's influence ends here
@@ -345,16 +343,16 @@ onRowDblClick(event) {
     for (var i = 0; i < event.target.closest("tr").children.length; i++) {
         this.quotationService.rowData[i] = event.target.closest("tr").children[i].innerText;
     }
-    console.log(event.target.closest("tr").children)
+
     this.line = this.quotationService.rowData[0].split("-")[0];
     this.quotationNo = this.quotationService.rowData[0];
     this.typeOfCession = event.target.closest('tr').children[1].innerText;
 
     this.quotationService.toGenInfo = [];
     this.quotationService.toGenInfo.push("edit", this.line);
-    /*  this.router.navigate(['/quotation']);*/
+
     setTimeout(() => {
-        this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.typeOfCession,  quotationNo : this.quotationNo, from: 'quo-processing' }], { skipLocationChange: true });
+        this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.typeOfCession,  quotationNo : this.quotationNo, from: 'quo-processing', savingType: 'normal' }], { skipLocationChange: true });
     },100); 
 
 }
@@ -395,8 +393,7 @@ setCedingcompany(data){
 
             this.quotationService.rowData = [];
             this.quotationService.toGenInfo = [];
-            this.quotationService.toGenInfo.push("add", qLine);
-            /*this.router.navigate(['/quotation']);*/
+            this.quotationService.toGenInfo.push("edit", qLine);
 
             var addParams = {
                 cessionId: this.typeOfCessionId,
@@ -406,7 +403,7 @@ setCedingcompany(data){
             }
 
             setTimeout(() => {
-                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), from: 'quo-processing' }], { skipLocationChange: true });
+                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), quotationNo: this.existingQuotationNo, from: 'quo-processing', savingType: 'internalComp' }], { skipLocationChange: true });
             },100); 
         }
     }
@@ -426,5 +423,35 @@ setCedingcompany(data){
         this.typeOfCessionId = data.cessionId;
         this.typeOfCession = data.description;
         this.onClickAdd(1);
+    }
+
+    toGeneralInfo(savingType){
+        var qLine = this.line.toUpperCase();
+
+        if (qLine === 'CAR' ||
+            qLine === 'EAR' ||
+            qLine === 'EEI' ||
+            qLine === 'CEC' ||
+            qLine === 'MBI' ||
+            qLine === 'BPV' ||
+            qLine === 'MLP' ||
+            qLine === 'DOS') {
+            this.modalService.dismissAll();
+
+            this.quotationService.rowData = [];
+            this.quotationService.toGenInfo = [];
+            this.quotationService.toGenInfo.push("edit", qLine);
+
+            var addParams = {
+                cessionId: this.typeOfCessionId,
+                cessionDesc: this.typeOfCession,
+                riskId: this.riskCd,
+                intComp: savingType === 'internalComp',
+            }
+
+            setTimeout(() => {
+                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), quotationNo: this.existingQuotationNo, from: 'quo-processing', savingType: savingType }], { skipLocationChange: true });
+            },100);
+        }
     }
 }

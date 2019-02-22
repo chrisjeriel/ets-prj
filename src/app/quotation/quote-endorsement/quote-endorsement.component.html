@@ -107,3 +107,15 @@
 </app-modal>
 
 <app-mtn-endt-code id="edntCodeLOV" (selectedData)="selectedEndtLOV($event)"></app-mtn-endt-code>
+
+
+<app-modal class="d-none" id="successMdl">
+    <div header>Success</div>
+    <div body class="container-flex text-center">
+        <span class="fa fa-check-circle fa-3x" style="vertical-align: middle;"></span>
+        <span style="vertical-align: middle; margin-left: 15px;">Saved successfully!</span>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">                    
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
+    </div>
+</app-modal>
