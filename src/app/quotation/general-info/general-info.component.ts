@@ -155,6 +155,7 @@ export class GeneralInfoComponent implements OnInit {
 
 		if (this.quotationService.toGenInfo[0] == "edit") {
 			this.sub = this.route.params.subscribe(params => {
+				console.log(params['savingType']);
 				this.from = params['from'];
 				if (this.from == "quo-processing") {
 					this.line = params['quotationNo'].split('-')[0];
