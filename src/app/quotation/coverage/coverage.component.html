@@ -54,13 +54,13 @@
                                 <label class="form-control-sm">Exch. Rt.</label>
                                 <input type="text" class="form-control form-control-sm cust-sm txt-content-rght" required
                                        placeholder="0.00" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
-                                        [(ngModel)]="coverageData.currencyRt">
+                                        [(ngModel)]="coverageData.currencyRt" appCurrency>
                             </div>
                             <div class="input-group">&nbsp;
                                 <label class="form-control-sm">Total SI</label>
                                 <input type="text" class="form-control form-control-sm cust-sm txt-content-rght" required
                                        placeholder="0.00" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
-                                        [(ngModel)]="coverageData.totalSi">
+                                        [(ngModel)]="coverageData.totalSi" appCurrency>
                             </div>
                         </div>
                         <div class="col-sm-1"></div>
@@ -110,7 +110,7 @@
         <div class="form-group col-sm">
             <div class="col-md-13 text-center">
                 <div class="cust-btn-container" style="margin-top: 10px;">
-                    <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+                    <button type="button" class="cust-btn" (click)="cancel()" disabled="disabled"><a>Cancel</a></button>
                     <button type="button" class="cust-btn" (click)="saveData()"><a>Save</a></button>
                 </div>
             </div>

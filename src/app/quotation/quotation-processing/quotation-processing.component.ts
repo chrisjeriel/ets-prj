@@ -337,31 +337,20 @@ onRowClick(event) {
     this.selectedQuotation = event;
     this.disabledEditBtn = false;
     this.disabledCopyBtn = false;
-
-   /* for (var i = 0; i < event.target.closest("tr").children.length; i++) {
-        this.quotationService.rowData[i] = event.target.closest("tr").children[i].innerText;
-    }
-
-    this.line = this.quotationService.rowData[0].split("-")[0];
-    this.quotationNo = this.quotationService.rowData[0];
-    this.typeOfCession = event.target.closest('tr').children[1].innerText;
-
-    this.quotationService.toGenInfo = [];
-    this.quotationService.toGenInfo.push("edit", this.line);*/
 }
 
 onRowDblClick(event) {
     for (var i = 0; i < event.target.closest("tr").children.length; i++) {
         this.quotationService.rowData[i] = event.target.closest("tr").children[i].innerText;
     }
-    console.log(event.target.closest("tr").children)
+
     this.line = this.quotationService.rowData[0].split("-")[0];
     this.quotationNo = this.quotationService.rowData[0];
     this.typeOfCession = event.target.closest('tr').children[1].innerText;
 
     this.quotationService.toGenInfo = [];
     this.quotationService.toGenInfo.push("edit", this.line);
-    /*  this.router.navigate(['/quotation']);*/
+
     setTimeout(() => {
         this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.typeOfCession,  quotationNo : this.quotationNo, from: 'quo-processing', savingType: 'normal' }], { skipLocationChange: true });
     },100); 
@@ -390,7 +379,6 @@ setCedingcompany(data){
 
 //neco was here
     toInternalCompetition(){
-        console.log(this.existingQuotationNo);
             var qLine = this.line.toUpperCase();
 
             if (qLine === 'CAR' ||
@@ -406,7 +394,6 @@ setCedingcompany(data){
             this.quotationService.rowData = [];
             this.quotationService.toGenInfo = [];
             this.quotationService.toGenInfo.push("edit", qLine);
-            /*this.router.navigate(['/quotation']);*/
 
             var addParams = {
                 cessionId: this.typeOfCessionId,
@@ -436,5 +423,35 @@ setCedingcompany(data){
         this.typeOfCessionId = data.cessionId;
         this.typeOfCession = data.description;
         this.onClickAdd(1);
+    }
+
+    toGeneralInfo(savingType){
+        var qLine = this.line.toUpperCase();
+
+        if (qLine === 'CAR' ||
+            qLine === 'EAR' ||
+            qLine === 'EEI' ||
+            qLine === 'CEC' ||
+            qLine === 'MBI' ||
+            qLine === 'BPV' ||
+            qLine === 'MLP' ||
+            qLine === 'DOS') {
+            this.modalService.dismissAll();
+
+            this.quotationService.rowData = [];
+            this.quotationService.toGenInfo = [];
+            this.quotationService.toGenInfo.push("edit", qLine);
+
+            var addParams = {
+                cessionId: this.typeOfCessionId,
+                cessionDesc: this.typeOfCession,
+                riskId: this.riskCd,
+                intComp: savingType === 'internalComp',
+            }
+
+            setTimeout(() => {
+                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), quotationNo: this.existingQuotationNo, from: 'quo-processing', savingType: savingType }], { skipLocationChange: true });
+            },100);
+        }
     }
 }
