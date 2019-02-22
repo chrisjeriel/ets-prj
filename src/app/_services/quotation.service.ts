@@ -801,13 +801,13 @@ export class QuotationService {
         return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteCoverageOc',{params});
     }
 
-    saveQuoteOption(){
+    saveQuoteOption(params){
         let header : any = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json'
             })
         };
-        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteOption',header);
+        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteOption',params,header);
     }
 
 }
