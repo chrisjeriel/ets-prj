@@ -132,7 +132,7 @@ export class QuoteOptionComponent implements OnInit {
         pageID: 3,
         keys: ['coverCd','coverCdDesc','rate','amount'],
         widths: [40,'auto',120,120],
-        uneditable: [false,true,false,false]
+        uneditable: [true,true,false,false]
     }
 
     record: any[];
