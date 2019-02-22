@@ -36,13 +36,18 @@ export class MtnAdviceWordingsComponent implements OnInit {
     selected: any;
 
   ngOnInit() {
-  	
+  	this.mtnService.getAdviceWordings().subscribe((data: any) => {
+      for (var i = 0; i < data.adviceWordings.length; i++) {
+        this.passDataAdvice.tableData.push(data.adviceWordings[i]);
+      }
+      this.table.refreshTable();
+    });
+    
   }
 
 
 
   select(data){
-      console.log(data)
   	  this.selected = data;
   }
 
@@ -50,12 +55,6 @@ export class MtnAdviceWordingsComponent implements OnInit {
   	this.selectedData.emit(this.selected);
   }
 
-  openModal(){
-    this.mtnService.getAdviceWordings().subscribe((data: any) => {
-      for (var i = 0; i < data.adviceWordings.length; i++) {
-        this.passDataAdvice.tableData.push(data.adviceWordings[i]);
-      }
-      this.table.refreshTable();
-    });
-  }
+ 
+
 }
