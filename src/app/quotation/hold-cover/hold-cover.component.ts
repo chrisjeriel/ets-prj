@@ -107,7 +107,7 @@ export class HoldCoverComponent implements OnInit {
     this.titleService.setTitle("Quo | Quotation to Hold Cover");
     //this.tableData = this.quotationService.getListOfValuesHoldCover();
     this.holdCoverInfo = new HoldCoverInfo();
-
+    this.holdCover.status = "In Progress";
     // this.quotationService.getHoldCoverInfo()
     //     .subscribe(val => 
     //         {
@@ -127,7 +127,11 @@ export class HoldCoverComponent implements OnInit {
     //   );
 
      
-   
+              // this.holdCover.periodFrom         =  this.formatDate(this.holdCover.periodFrom);
+              // this.holdCover.periodTo           =  this.formatDate(this.holdCover.periodTo);
+              // this.holdCover.reqDate            =  this.formatDate(this.holdCover.reqDate);
+              // this.holdCover.createDate         =  this.formatDate(this.holdCover.createDate);
+              // this.holdCover.updateDate         =  this.formatDate(this.holdCover.updateDate);
   }
 
   formatDate(date){
@@ -197,6 +201,8 @@ export class HoldCoverComponent implements OnInit {
     this.insured = this.rowRec.insuredDesc;
     this.cedCo = this.rowRec.cedingName;
     this.risk = this.rowRec.riskName;
+    this.hcLine  = this.qLine;
+    this.hcYear  =  String(new Date().getFullYear());
     this.modalService.dismissAll();
 
     this.quotationService.getSelectedQuote(this.plainQuotationNo(this.quoteNo))
@@ -207,30 +213,42 @@ export class HoldCoverComponent implements OnInit {
   }
   
   holdCoverReq:any
-  onSaveClick(){
-    this.holdCoverReq = {
-      "approvedBy": this.holdCover.approvedBy,
-      "compRefHoldCovNo": this.holdCover.compRefHoldCovNo,
-      "createDate": this.holdCover.createDate,
-      "createUser": this.holdCover.createUser,
-      "holdCoverId": this.holdCover.holdCoverId,
-      "holdCoverRevNo": this.hcRevNo,
-      "holdCoverSeqNo": this.hcSeqNo,
-      "holdCoverYear": this.hcYear,
-      "lineCd": this.hcLine,
-      "periodFrom": this.holdCover.periodFrom,
-      "periodTo": this.holdCover.periodTo,
-      "preparedBy": this.holdCover.preparedBy,
-      "quoteId": this.quoteId,
-      "reqBy": this.holdCover.reqBy,
-      "reqDate": this.holdCover.reqDate,
-      "status": this.holdCover.status,
-      "updateDate": this.holdCover.updateDate,
-      "updateUser": this.holdCover.updateUser
-    }
-        this.quotationService.saveQuoteHoldCover(
-          JSON.stringify(this.holdCoverReq)
-        ).subscribe(data => console.log(data));
+  onSaveClick(periodFrom,coRef,status,reqDate,prepBy,appBy){
+    this.quotationService.getQuoteGenInfo('',this.plainQuotationNo(this.quoteNo))
+      .subscribe(val => {
+      this.quoteId = val['quotationGeneralInfo'].quoteId;
+      this.holdCover.createDate = this.formatDate(val['quotationGeneralInfo'].createDate);
+      this.holdCover.createUser = val['quotationGeneralInfo'].createUser;
+
+         this.holdCoverReq = {
+              "approvedBy": appBy,
+              "compRefHoldCovNo": coRef,
+              "createDate": this.holdCover.createDate,
+              "createUser": this.holdCover.createUser,
+              "holdCoverId": this.quoteId,
+              "holdCoverRevNo": this.hcRevNo,
+              "holdCoverSeqNo": this.hcSeqNo,
+              "holdCoverYear": this.hcYear,
+              "lineCd": this.hcLine,
+              "periodFrom": periodFrom,
+              "periodTo": this.holdCover.periodTo,
+              "preparedBy": prepBy,
+              "quoteId": this.quoteId,
+              "reqBy": this.holdCover.reqBy,
+              "reqDate": reqDate,
+              "status": status,
+              "updateDate": new Date().toISOString(),
+              "updateUser": 'Luffy' /*username of the login acc*/
+            }
+                this.quotationService.saveQuoteHoldCover(
+                  JSON.stringify(this.holdCoverReq)
+                ).subscribe(data => {
+                  $('#successMdl > #modalBtn').trigger('click');
+                });
+
+              });
+
+   
   }
 
   plainQuotationNo(data: string){
@@ -244,4 +262,7 @@ export class HoldCoverComponent implements OnInit {
     this.holdCover.periodTo = d.toISOString();
   }
 
+  test(event){
+    console.log(this.holdCover.reqDate);
+  }
 }
