@@ -216,6 +216,8 @@ export class HoldCoverComponent implements OnInit {
   holdCoverReq:any
   onSaveClick(qline,qyear,qseqNo,qrevNo,qcomNo,periodTo,periodFrom,coRef,status,reqDate,prepBy,appBy,hcline,hcyear,hcseqNo,hcrevNo,reqBy){
 
+   // if(qline === "" || qyear === "" || qseqNo === "" || qrevNo === "" || qcomNo === "" || periodTo === "" || periodFrom === "" || status === "" || hcline === "" || hcyear === "" || hcseqNo === "" || hcrevNo === ""){
+
     if(qline === "" || qyear === "" || qseqNo === "" || qrevNo === "" || qcomNo === "" || periodTo === "" || periodFrom === "" || status === "" || hcline === "" || hcyear === "" || hcseqNo === "" || hcrevNo === ""){
       $('#warningMdl > #modalBtn').trigger('click');
       $('.warn').focus();
@@ -253,11 +255,21 @@ export class HoldCoverComponent implements OnInit {
                     this.quotationService.saveQuoteHoldCover(
                       JSON.stringify(this.holdCoverReq)
                     ).subscribe(data => {
-                      $('#successMdl > #modalBtn').trigger('click');
+                      console.log(data);
+
+                      var returnCode = data['returnCode'];
+                      if(returnCode === 0){
+                         $('#warningMdl > #modalBtn').trigger('click');
+                         $('.warn').focus();
+                         $('.warn').blur();
+                         this.warningMsg = data['errorList'][0].errorMessage;
+                      }else{
+                         $('#successMdl > #modalBtn').trigger('click');
+                      }
                     });
 
                   });
-    }
+   }
   }
 
   plainQuotationNo(data: string){
