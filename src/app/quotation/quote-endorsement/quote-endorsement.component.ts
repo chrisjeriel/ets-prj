@@ -212,23 +212,22 @@ export class QuoteEndorsementComponent implements OnInit {
 
                     });
                   
-                    
-                    this.quotationService.getEndorsements(this.quoteId,this.plainQuotationNo(this.quotationNum),'1').subscribe((data: any) => {
-                        for(var lineCount = 0; lineCount < data.endorsements.length; lineCount++){
-                              this.endorsementData.tableData.push(new QuoteEndorsement(
-                                                                           data.endorsements[lineCount].endtCd, 
-                                                                           data.endorsements[lineCount].endtTitle,
-                                                                           data.endorsements[lineCount].description,
-                                                                           data.endorsements[lineCount].remarks)
-                                                                   );
-                                                                  this.saveEndt.quoteId = data.endorsements[lineCount].quoteId;
-                                                                  this.saveEndt.optionId = data.endorsements[lineCount].optionId;
-                                                                  this.saveEndt.createDate = this.formatDate(data.endorsements[lineCount].createDate);
-                                                                  this.saveEndt.createUser = data.endorsements[lineCount].createUser;
-                                                                  this.saveEndt.updateUser = data.endorsements[lineCount].updateUser;
-                          }
-                        this.table.forEach(table => { table.refreshTable() });
-                    }); 
+                    // this.quotationService.getEndorsements(this.quoteId,this.plainQuotationNo(this.quotationNum),'1').subscribe((data: any) => {
+                    //     for(var lineCount = 0; lineCount < data.endorsements.length; lineCount++){
+                    //           this.endorsementData.tableData.push(new QuoteEndorsement(
+                    //                                                        data.endorsements[lineCount].endtCd, 
+                    //                                                        data.endorsements[lineCount].endtTitle,
+                    //                                                        data.endorsements[lineCount].description,
+                    //                                                        data.endorsements[lineCount].remarks)
+                    //                                                );
+                    //                                               this.saveEndt.quoteId = data.endorsements[lineCount].quoteId;
+                    //                                               this.saveEndt.optionId = data.endorsements[lineCount].optionId;
+                    //                                               this.saveEndt.createDate = this.formatDate(data.endorsements[lineCount].createDate);
+                    //                                               this.saveEndt.createUser = data.endorsements[lineCount].createUser;
+                    //                                               this.saveEndt.updateUser = data.endorsements[lineCount].updateUser;
+                    //       }
+                    //     this.table.forEach(table => { table.refreshTable() });
+                    // }); 
                 }  
 
                 
@@ -239,7 +238,7 @@ export class QuoteEndorsementComponent implements OnInit {
 
     clickRow(event) {
 /*           this.quotationService.getEndorsements(null,this.quotationNum,event.optionNo).subscribe((data: any) => {*/
-           this.quotationService.getEndorsements(null,this.plainQuotationNo(this.quotationNum),event.optionId).subscribe((data: any) => {
+           this.quotationService.getEndorsements(this.quoteId,this.plainQuotationNo(this.quotationNum),event.optionId).subscribe((data: any) => {
                  while(this.endorsementData.tableData.length > 0) {
                   this.endorsementData.tableData.pop();
               }    
@@ -249,7 +248,12 @@ export class QuoteEndorsementComponent implements OnInit {
                                                                            data.endorsements[lineCount].endtTitle,
                                                                            data.endorsements[lineCount].description,
                                                                            data.endorsements[lineCount].remarks)
-                                                                   );          
+                                                                   );
+                                                                  this.saveEndt.quoteId = data.endorsements[lineCount].quoteId;
+                                                                  this.saveEndt.optionId = data.endorsements[lineCount].optionId;
+                                                                  this.saveEndt.createDate = this.formatDate(data.endorsements[lineCount].createDate);
+                                                                  this.saveEndt.createUser = data.endorsements[lineCount].createUser;
+                                                                  this.saveEndt.updateUser = data.endorsements[lineCount].updateUser;          
                 }
                /* this.table.refreshTable();*/
                 this.table.forEach(table => { table.refreshTable() });
@@ -257,9 +261,25 @@ export class QuoteEndorsementComponent implements OnInit {
 
       /*  this.tableData = this.quotationService.getEndorsements(event.target.closest("tr").children[1].innerText);*/
 
-      this.saveEndt.optionId = event.optionId;
+      
+                    // this.saveEndt.optionId = event.optionId;
+                    // this.quotationService.getEndorsements(this.quoteId,this.plainQuotationNo(this.quotationNum),this.saveEndt.optionId).subscribe((data: any) => {
+                    //     for(var lineCount = 0; lineCount < data.endorsements.length; lineCount++){
+                    //           this.endorsementData.tableData.push(new QuoteEndorsement(
+                    //                                                        data.endorsements[lineCount].endtCd, 
+                    //                                                        data.endorsements[lineCount].endtTitle,
+                    //                                                        data.endorsements[lineCount].description,
+                    //                                                        data.endorsements[lineCount].remarks)
+                    //                                                );
+                    //                                               this.saveEndt.quoteId = data.endorsements[lineCount].quoteId;
+                    //                                               this.saveEndt.optionId = data.endorsements[lineCount].optionId;
+                    //                                               this.saveEndt.createDate = this.formatDate(data.endorsements[lineCount].createDate);
+                    //                                               this.saveEndt.createUser = data.endorsements[lineCount].createUser;
+                    //                                               this.saveEndt.updateUser = data.endorsements[lineCount].updateUser;
+                    //       }
+                    //     this.table.forEach(table => { table.refreshTable() });
+                    // }); 
 
-console.log(this.saveEndt.optionId + ">>> this.saveEndt.optionId");
     }
 
     save() {
