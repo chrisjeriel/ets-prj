@@ -130,12 +130,10 @@ export class GeneralInfoComponent implements OnInit {
 	currencyRt: number = 0;
 	intId: number;
 	intName: string = "";
+	errorMdlMessage: string = "";
 
 	@Output() checkQuoteId = new EventEmitter<any>();
-/*testClick(){
-	$('.t').focus();
-	$('.t').blur();
-}*/
+
 	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute, private maintenanceService: MaintenanceService) { }
 	ngOnInit() {
 
@@ -152,7 +150,6 @@ export class GeneralInfoComponent implements OnInit {
 			this.from = params['from'];
 			if (this.from == "quo-processing") {
 				this.line = params['line'];
-				//this.typeOfCession = params['typeOfCession'];				
 			}
 		});
 
@@ -177,7 +174,14 @@ export class GeneralInfoComponent implements OnInit {
 					this.genInfoData.printDate 	= (this.genInfoData.printDate == null) ? '' : this.dateParser(this.genInfoData.printDate);
 					this.genInfoData.reqDate 	= this.dateParser(this.genInfoData.reqDate);
 					this.genInfoData.updateDate = this.dateParser(this.genInfoData.updateDate);
-				}				
+
+					if(this.internalCompFlag) {
+						this.genInfoData.quoteId = '';
+						this.genInfoData.quotationNo = '';
+						this.genInfoData.cedingId = '';
+						this.genInfoData.cedingName = '';
+					}
+				}
 
 				if(data['project'] != null) {
 					this.project = data['project'];
@@ -222,14 +226,6 @@ export class GeneralInfoComponent implements OnInit {
 			});
 
 		}
-
-		/*this.sub = this.route.params.subscribe(params => {
-			this.from = params['from'];
-			if (this.from == "quo-processing") {
-				this.typeOfCession = params['cessionDesc'];
-			}
-		});*/
-		/*this.checkTypeOfCession();*/
 	}
 
 
@@ -317,15 +313,22 @@ export class GeneralInfoComponent implements OnInit {
 		$('#cedingCompany #modalBtn').trigger('click');
 	}
 
-	showCedingCompanyNotMemberLOV() {
-		$('#cedingCompanyNotMember #modalBtn').trigger('click');
-	}
 
 	setCedingcompany(event){
 		this.genInfoData.cedingId = event.coNo;
 		this.genInfoData.cedingName = event.name;
 	}
 
+	showCedingCompanyNotMemberLOV() {
+		$('#cedingCompanyNotMember #modalBtn').trigger('click');
+	}
+
+	setReinsurer(event) {
+		console.log(event);
+		this.genInfoData.reinsurerId = event.coNo;
+		this.genInfoData.reinsurerName = event.name;
+	}
+/*
 	showInsuredLOV(){
 		$('#insuredLOV #modalBtn').trigger('click');
 	}
@@ -333,13 +336,12 @@ export class GeneralInfoComponent implements OnInit {
 	setInsured(data){
 		//this.genInfoData.principal = data.insuredId;
 		this.genInfoData.insuredDesc = data.insuredName;
-	}
+	}*/
 
 
 	setLineClass(data){
 		this.genInfoData.lineClassCd = data.lineClassCd;
         this.genInfoData.lineClassDesc = data.lineClassCdDesc;
-        //this.lineClass = this.lineClassCode + ' - ' + this.lineClassDesc;
     }
 
     setInt(event){
@@ -358,37 +360,43 @@ export class GeneralInfoComponent implements OnInit {
 	saveQuoteGenInfo() {		
 		if(this.validate(this.prepareParam())){
 			this.quotationService.saveQuoteGeneralInfo(JSON.stringify(this.prepareParam())).subscribe(data => {
-			this.genInfoData.quoteId = data['quoteId'];
-			this.genInfoData.quotationNo = data['quotationNo'];
-			this.genInfoData.quoteSeqNo = parseInt(data['quotationNo'].split('-')[2]);
-			this.genInfoData.quoteRevNo = parseInt(data['quotationNo'].split('-')[3]);
+				console.log(data);
+				if(data['returnCode'] == 0) {
+					this.errorMdlMessage = data['errorList'][0].errorMessage;
+					$('#errorMdl > #modalBtn').trigger('click');
+				} else {
+					this.genInfoData.quoteId = data['quoteId'];
+					this.genInfoData.quotationNo = data['quotationNo'];
+					this.genInfoData.quoteSeqNo = parseInt(data['quotationNo'].split('-')[2]);
+					this.genInfoData.quoteRevNo = parseInt(data['quotationNo'].split('-')[3]);
 
-			this.checkQuoteIdF(this.genInfoData.quoteId);
-			});
-
-			$('#successMdl > #modalBtn').trigger('click');
-			//for internal comp
-			if(this.internalCompFlag){
-				var internalCompParams: any = {
-				  adviceNo: 0,
-				  cedingId: this.genInfoData.cedingId,
-				  cedingRepId: this.genInfoData.cedingId,
-				  createDate: new Date().toISOString(),
-				  createUser: 'ndc',
-				  option: '',
-				  quoteId: parseInt(this.genInfoData.quoteId),
-				  updateDate: new Date().toISOString(),
-				  updateUser: 'ndc',
-				  wordings: ''
+					this.checkQuoteIdF(this.genInfoData.quoteId);
+					$('#successMdl > #modalBtn').trigger('click');
+						//for internal comp
+						if(this.internalCompFlag){
+							
+							var internalCompParams: any[] = [{
+							  adviceNo: 0,
+							  cedingId: this.genInfoData.cedingId,
+							  cedingRepId: this.genInfoData.cedingId,
+							  createDate: new Date().toISOString(),
+							  createUser: 'ndc',
+							  option: '',
+							  quoteId: this.genInfoData.quoteId,
+							  updateDate: new Date().toISOString(),
+							  updateUser: 'ndc',
+							  wordings: ''
+							}];
+					        this.quotationService.saveQuoteCompetition(internalCompParams).subscribe((result: any) => {
+					          console.log(result);
+					        });
+						}
+						//end internal comp
 				}
-		        this.quotationService.saveQuoteCompetition(internalCompParams).subscribe((result: any) => {
-		          console.log(result);
-		        });
-			}
-			//end internal comp
+			});
 		} else {
-			//$('#errorMdl > #modalBtn').trigger('click');
-			console.log('ERROR MODAL PO');
+			this.errorMdlMessage = "Please complete all the required fields.";
+			$('#errorMdl > #modalBtn').trigger('click');
 
 			$('.req').focus();
 			$('.req').blur();

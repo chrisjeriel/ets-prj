@@ -185,7 +185,8 @@ summary:boolean = false;
 		infoFlag: true,
 		paginateFlag: true,
 		pageLength: 10,
-		pageID: 4
+		pageID: 4,
+		uneditable:[true,true,true,true,true]
 	}
 
 

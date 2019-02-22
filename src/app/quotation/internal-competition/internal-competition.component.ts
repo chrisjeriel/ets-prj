@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, Input } from '@angular/core';
 import { QuotationService, MaintenanceService } from '../../_services';
 import { IntCompAdvInfo } from '@app/_models';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -14,6 +14,12 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
     styleUrls: ['./internal-competition.component.css']
 })
 export class InternalCompetitionComponent implements OnInit, OnDestroy {
+    @Input() quotationInfo: {
+        quoteId: '',
+        quotationNo: '',
+        riskName: '',
+        insuredDesc: ''
+    }
     Description: string = "";
     adviceLOVRow : number;
     attentionLOVRow: number;
@@ -130,7 +136,7 @@ export class InternalCompetitionComponent implements OnInit, OnDestroy {
         // delete this.savedData[i].tableIndex;
       }
        this.quotationService.saveQuoteCompetition(this.savedData).subscribe((data: any) => {
-            console.log(data);
+            $('#successModalBtn').trigger('click');
        });
       /*let data : any = {
             adviceNo: 0,
