@@ -48,7 +48,21 @@ export class QuoteOptionComponent implements OnInit {
         tHeader: ['Option No', 'Rate(%)', 'Conditions', 'Comm Rate Quota(%)', 'Comm Rate Surplus(%)', 'Comm Rate Fac(%)'],
         dataTypes: ['number', 'percent', 'text', 'percent', 'percent', 'percent'],
         magnifyingGlass: ['conditions'],
-        nData: new QuotationOption(null, null, null, null, null, null),
+        nData: {
+            commRtFac: 0,
+            commRtQuota: 0,
+            commRtSurplus: 0,
+            condition: null,
+            createDate: [2019, 2, 21, 0, 0, 0, 0],
+            createUser: "ETC",
+            deductibles: null,
+            deductiblesList: [],
+            endorsments: null,
+            optionId: null,
+            optionRt: 0,
+            updateDate: [2019, 2, 22, 0, 0, 0, 0],
+            updateUser: "ETC",
+        },
         pageLength: 3,
         addFlag: true,
         deleteFlag: true,
@@ -65,8 +79,18 @@ export class QuoteOptionComponent implements OnInit {
         tableData: [],
         tHeader: ['Deductible Code','Deductible Title', 'Rate(%)', 'Amount', 'Deductible Text'],
         dataTypes: ['text','text', 'percent', 'currency', 'text'],
-        nData: new QuotationDeductibles(null,null, null, null, null),
-        magnifyingGlass: ['deductibleCd'],
+        nData:{
+            createDate: [2019, 2, 21, 0, 0, 0, 0],
+            createUser: "ETC",
+            deductibleAmt: null,
+            deductibleCd: null,
+            deductibleRt: null,
+            deductibleTitle: null,
+            deductibleTxt: null,
+            optionId: null,
+            updateDate: [2019, 2, 21, 0, 0, 0, 0],
+            updateUser: "ETC",
+        },
         pageLength: 5,
         addFlag: true,
         deleteFlag: true,
@@ -186,21 +210,13 @@ export class QuoteOptionComponent implements OnInit {
 
     }
     getQuoteOptions(){
-        this.quotationService.getQuoteOptions(this.quoteId,this.plainQuotationNo(this.quotationNum)).subscribe(data => {  
+        this.quotationService.getQuoteOptions(this.quoteId,this.plainQuotationNo(this.quotationNum)).subscribe(data => {
            if (data['quotation'] == null || data['quotation'] == undefined ){ 
            } else {
                var optionRecords = data['quotation'].optionsList;
 
                 for(let rec of optionRecords){
-                    this.optionsData.tableData.push(new QuotationOption(
-                        rec.optionId, 
-                        rec.optionRt, 
-                        rec.condition, 
-                        rec.commRtQuota, 
-                        rec.commRtSurplus, 
-                        rec.commRtFac,
-                        rec.deductiblesList
-                    ));                
+                    this.optionsData.tableData.push(rec);                
                 }
 
 /*              for(let rec of optionRecords){
@@ -217,11 +233,21 @@ export class QuoteOptionComponent implements OnInit {
                         }           
                 }*/
 
+                for(let rec of optionRecords){
+                    for(let r of rec.deductiblesList){
+                        r.optionId = rec.optionId;
+                        if (rec.optionId == 1 ) {          
+                            this.deductiblesData.tableData.push(r);
+                        }
+                    }     
+                }
+
+
                 var otherRatesRecords = data['quotation'].otherRatesList;
 
                 for(let rec of otherRatesRecords){
-                  this.otherRatesData.tableData.push(rec);                
-              
+                  this.otherRatesData.tableData.push(rec
+                    );                
                 }
                 
                 this.table.forEach(table => { table.refreshTable() });
@@ -264,14 +290,16 @@ export class QuoteOptionComponent implements OnInit {
     }
 
     updateDeductibles(data) {
+        console.log(data)
         if (data.deductiblesList != null || data.deductiblesList != undefined ){
           this.deductiblesData.tableData = data.deductiblesList;
           this.table.forEach(table => { table.refreshTable() });
         } 
+        this.deductiblesData.nData.optionId = data.optionId;
 
     }
 
-   saveData(){
+saveData(){
 
    for (var i = 0 ; this.otherRatesData.tableData.length > i; i++) {
 
@@ -284,15 +312,50 @@ export class QuoteOptionComponent implements OnInit {
           this.deletedOtherRatesData[this.deletedOtherRatesData.length-1].createDate = new Date(this.deletedOtherRatesData[this.deletedOtherRatesData.length-1].createDate[0],this.deletedOtherRatesData[this.deletedOtherRatesData.length-1].createDate[1]-1,this.deletedOtherRatesData[this.deletedOtherRatesData.length-1].createDate[2]).toISOString();
           this.deletedOtherRatesData[this.deletedOtherRatesData.length-1].updateDate = new Date(this.deletedOtherRatesData[this.deletedOtherRatesData.length-1].updateDate[0],this.deletedOtherRatesData[this.deletedOtherRatesData.length-1].updateDate[1]-1,this.deletedOtherRatesData[this.deletedOtherRatesData.length-1].updateDate[2]).toISOString();
       }
-
-    console.log(this.editedOtherRatesData);
-    console.log(this.quoteId);
-
+   }
     this.quotationService.saveQuoteOtherRates(this.quoteId,this.editedOtherRatesData).subscribe((data: any) => {});
-    $('#successModalBtn').trigger('click');
     this.getOtherRates();
-  }
-
+    this.saveQuoteOption();
+    $('#successModalBtn').trigger('click');
  }
+
+  saveQuoteOption(){
+   let params: any = {
+       quoteId:this.quoteId,
+       saveQuoteOptionsList:[],
+       deleteQuoteOptionsList:[],
+       saveDeductibleList:[],
+       deleteDeductibleList:[],
+   }
+
+   for (var i = 0 ; this.optionsData.tableData.length > i; i++) {
+      if(this.optionsData.tableData[i].edited && !this.optionsData.tableData[i].deleted ) {
+          params.saveQuoteOptionsList.push(this.optionsData.tableData[i]);
+          params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].createDate = new Date(params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].createDate[0],params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].createDate[1]-1,params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].createDate[2]).toISOString();
+          params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].updateDate = new Date(params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].updateDate[0],params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].updateDate[1]-1,params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].updateDate[2]).toISOString();
+      } else if(this.optionsData.tableData[i].edited && this.optionsData.tableData[i].deleted){
+        params.deleteQuoteOptionsList.push(this.optionsData.tableData[i]);
+        params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].createDate = new Date(params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].createDate[0],params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].createDate[1]-1,params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].createDate[2]).toISOString();
+        params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].updateDate = new Date(params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].updateDate[0],params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].updateDate[1]-1,params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].updateDate[2]).toISOString();
+      }
+    }
+
+
+    for (var i = 0 ; this.deductiblesData.tableData.length > i; i++) {
+      if(this.deductiblesData.tableData[i].edited && !this.deductiblesData.tableData[i].deleted ) {
+          console.log(this.deductiblesData.tableData[i]);
+          params.saveDeductibleList.push(this.deductiblesData.tableData[i]);
+          params.saveDeductibleList[params.saveDeductibleList.length-1].createDate = new Date(params.saveDeductibleList[params.saveDeductibleList.length-1].createDate[0],params.saveDeductibleList[params.saveDeductibleList.length-1].createDate[1]-1,params.saveDeductibleList[params.saveDeductibleList.length-1].createDate[2]).toISOString();
+          params.saveDeductibleList[params.saveDeductibleList.length-1].updateDate = new Date(params.saveDeductibleList[params.saveDeductibleList.length-1].updateDate[0],params.saveDeductibleList[params.saveDeductibleList.length-1].updateDate[1]-1,params.saveDeductibleList[params.saveDeductibleList.length-1].updateDate[2]).toISOString();
+      } else if(this.deductiblesData.tableData[i].edited && this.deductiblesData.tableData[i].deleted){
+        params.deleteDeductibleList.push(this.deductiblesData.tableData[i]);
+        params.deleteDeductibleList[params.deleteDeductibleList.length-1].createDate = new Date(params.deleteDeductibleList[params.deleteDeductibleList.length-1].createDate[0],params.deleteDeductibleList[params.deleteDeductibleList.length-1].createDate[1]-1,params.deleteDeductibleList[params.deleteDeductibleList.length-1].createDate[2]).toISOString();
+        params.deleteDeductibleList[params.deleteDeductibleList.length-1].updateDate = new Date(params.deleteDeductibleList[params.deleteDeductibleList.length-1].updateDate[0],params.deleteDeductibleList[params.deleteDeductibleList.length-1].updateDate[1]-1,params.deleteDeductibleList[params.deleteDeductibleList.length-1].updateDate[2]).toISOString();
+      }
+    }
+    console.log(params);
+    console.log(this.deductiblesData.tableData);
+    this.quotationService.saveQuoteOption(JSON.stringify(params)).subscribe((data: any) => {});
+  }
 
 }
