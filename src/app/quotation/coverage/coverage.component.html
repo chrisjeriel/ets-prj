@@ -4,15 +4,15 @@
         <div class="form-row custom-row-inline-inset">
             <div class="input-group">
                 <label class="form-control-sm col-sm-2" for="inputQuonum">Quotation No </label>
-                <input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-2" [ngModel]="quotationNo"
+                <input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-2" [ngModel]="quotationInfo.quotationNo"
                        disabled="disabled">
                 <label class="form-control-sm col-sm-1" for="inputInname">Insured</label>
-                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-6" [ngModel]="insuredName"
+                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-6" [ngModel]="quotationInfo.insuredDesc"
                        disabled="disabled">
             </div>
             <div class="input-group">
                 <label class="form-control-sm col-sm-2" for="inputRisk">Risk</label>
-                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-9" [ngModel]="risk"
+                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-9" [ngModel]="quotationInfo.riskName"
                        disabled="disabled">
             </div>
         </div>
@@ -78,17 +78,17 @@
                             <div class="input-group">
                                 <label class="form-control-sm col-sm-3">Section I</label>
                                 <input type="text" class="form-control form-control-sm txt-content-rght"  placeholder="0.00"
-                                       onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [ngModel]="coverageData!== undefined ? coverageData.sectionISi : ''">
+                                       onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="coverageData.sectionISi" appCurrency>
                             </div>
                             <div class="input-group">
                                 <label class="form-control-sm col-sm-3">Section II</label>
                                 <input type="text" class="form-control form-control-sm txt-content-rght"  placeholder="0.00"
-                                       onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [ngModel]="coverageData!== undefined ? coverageData.sectionIISi : ''">
+                                       onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="coverageData.sectionIISi" appCurrency>
                             </div>
                             <div class="input-group">
                                 <label class="form-control-sm col-sm-3">Section III</label>
                                 <input type="text" class="form-control form-control-sm txt-content-rght"  placeholder="0.00"
-                                       onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [ngModel]="coverageData!== undefined ? coverageData.sectionIIISi : ''">
+                                       onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="coverageData.sectionIIISi" appCurrency>
                             </div>
                         </div>
                         <div class="col-sm-1"> &nbsp;</div>
@@ -117,6 +117,8 @@
         </div>
     </div>
 </div>
+
+<app-sucess-dialog></app-sucess-dialog>
 
 <!-- <app-multiple-select [multiSelectHeaderTxt]="multiSelectHeaderTxt" [multiSelectData]="multiSelectData"
 (multiSelectDataSelected)="getMS($event)"></app-multiple-select> -->

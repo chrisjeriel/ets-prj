@@ -1,14 +1,15 @@
-import { Directive, ElementRef, HostListener } from '@angular/core';
+import { Directive, ElementRef, HostListener, HostBinding } from '@angular/core';
 import { unHighlight, highlight, hideTooltip, showTooltip} from './highlight';
 
 
 @Directive({
   selector: '[appCurrency]'
 })
-export class CurrencyDirective {
+export class CurrencyDirective{
   constructor(private el: ElementRef) {
 
   }
+
 
   @HostListener("blur", ["$event.target"]) onBlur(target) {
   	if(target.value !=''){

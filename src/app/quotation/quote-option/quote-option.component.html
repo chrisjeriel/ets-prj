@@ -4,16 +4,16 @@
 		<div class="form-row custom-row-inline-inset">
 			<div class="input-group">
 				<label class="form-control-sm col-sm-2" for="inputQuonum">Quotation No </label>
-				<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-2" placeholder="CAR-2018-5081-077-0177"
-				 disabled="disabled">
+				<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-2" placeholder=""
+				 disabled="disabled" [(ngModel)]="quoteNoData">
 				<label class="form-control-sm col-sm-1" for="inputInname">Insured</label>
-				<input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-6" placeholder="Insured Name"
-				 disabled="disabled">
+				<input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-6" placeholder=""
+				 disabled="disabled"  [ngModel]="insured">
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-2" for="inputRisk">Risk</label>
-				<input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-9" placeholder="Risk"
-				 disabled="disabled">
+				<input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-9" placeholder=""
+				 disabled="disabled" [(ngModel)]="riskName">
 			</div>
 		</div>
 	</fieldset>
@@ -26,7 +26,7 @@
         <div class="row">
             <div class="col-sm-1"></div>
 	            <div class="col-sm-10" style="margin-top: 0.5em; margin-bottom: -0.21em;">
-	                <app-cust-editable-non-datatable [passData]="optionsData"></app-cust-editable-non-datatable>
+	                <app-cust-editable-non-datatable [passData]="optionsData" (newClick)="updateDeductibles($event)"></app-cust-editable-non-datatable>
 	            </div> 
             <div class="col-sm-1"></div>
         </div>
@@ -51,7 +51,7 @@
          <div class="row">
             <div class="col-sm-3"></div>
             <div class="col-sm-6" style="margin-top: 0.5em; margin-bottom: -0.21em;">
-                <app-cust-editable-non-datatable [passData]="otherRatesData"></app-cust-editable-non-datatable>
+                <app-cust-editable-non-datatable [passData]="otherRatesData" (onDataChange)="otherRatesData.tableData=$event"></app-cust-editable-non-datatable>
             </div>
             <div class="col-sm-3"></div>
         </div>
@@ -62,7 +62,7 @@
 			<div class="col-md-13 text-center">
 				<div class="cust-btn-container" style="margin-top: 10px;">
 					<button type="button" class="cust-btn"><a>Cancel</a></button>
-					<button type="button" class="cust-btn"><a>Save</a></button>
+					<button type="button" class="cust-btn" (click)="saveData()"><a>Save</a></button>
 				</div>
 			</div>
 		</div>

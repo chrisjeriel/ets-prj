@@ -361,7 +361,7 @@ export class QuotationService {
         return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteListing', {params});
     }
 
-    getQuoteOptions() {
+    getQuoteOptions(quoteId?:string,quotationNo?:string) {
         /*this.quotationOption = [
             new QuotationOption(1, 5.05, "Condition", 6, 8, 5),
             new QuotationOption(2, 8, "Stable", 7, 4, 3),
@@ -370,9 +370,9 @@ export class QuotationService {
         return this.quotationOption;*/
 
         const params = new HttpParams()
-                .set('quoteId','')
-                .set('quotationNo','');
-
+                .set('quoteId',(quoteId === null || quoteId === undefined ? '' : quoteId))
+                .set('quotationNo',(quotationNo === null || quotationNo === undefined ? '' : quotationNo));
+                console.log(params)
         return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteOption', {params});
     }
 
@@ -656,8 +656,6 @@ export class QuotationService {
                 'Content-Type': 'application/json'
             })
         };
-        console.log(JSON.stringify(params));
-
         return this.http.post('http://localhost:8888/api/quote-service/saveQuoteAttachment', JSON.stringify(params), header);
     }
 
@@ -669,6 +667,21 @@ export class QuotationService {
             })
         };
         return this.http.post('http://localhost:8888/api/quote-service/saveQuoteCoverage', JSON.stringify(coverageData), header);
+    }
+
+    saveQuoteOtherRates(quoteId:number,otherRatesData:any){
+        let passData : any = {
+            quoteId: quoteId,
+            otherRates: otherRatesData
+        }
+        let 
+            header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        console.log()
+        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteOtherRates', JSON.stringify(passData), header);
     }
 
     saveQuoteAlop(alopData:any){
@@ -731,8 +744,11 @@ export class QuotationService {
     
 
      
-    saveQuoteCompetition(saveQuoteCompetitionParams: any){
-        let params: any = JSON.stringify(saveQuoteCompetitionParams);
+    saveQuoteCompetition(saveQuoteCompetitionParams: any[]){
+        //let params: any = JSON.stringify(saveQuoteCompetitionParams);
+        let params: any = {
+            competitionsList: saveQuoteCompetitionParams
+        }
         let header: any = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json'
@@ -740,8 +756,9 @@ export class QuotationService {
         }
         //console.log(saveQuoteCompetitionParams.join(","));
         //console.log(params.substring(1,params.length-1));
-        console.log(params);
-        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteCompetition', params.substring(1,params.length-1), header);
+        //console.log(JSON.stringify(params));
+        //return this.http.post('http://localhost:8888/api/quote-service/saveQuoteCompetition', params.substring(1,params.length-1), header);
+        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteCompetition', JSON.stringify(params), header);
     }
 
 

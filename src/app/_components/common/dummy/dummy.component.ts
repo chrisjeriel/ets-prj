@@ -269,4 +269,23 @@ export class DummyComponent implements OnInit {
     //     var randomWords = require('random-words');
     //     console.log(randomWords());
     // }
+
+    testingInternalComp(){
+        var internalCompParams: any[] = [{
+          adviceNo: 0,
+          cedingId: 3,
+          cedingRepId: 3,
+          createDate: new Date().toISOString(),
+          createUser: 'ndc',
+          option: '',
+          quoteId: 210,
+          updateDate: new Date().toISOString(),
+          updateUser: 'ndc',
+          wordings: ''
+        }];
+        console.log(internalCompParams);
+        this.quotationService.saveQuoteCompetition(internalCompParams).subscribe((result: any) => {
+          console.log(result);
+        });
+    }
 }

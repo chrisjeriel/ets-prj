@@ -25,14 +25,19 @@ export class CoverageComponent implements OnInit {
   
 
   coverageData: any = {
-    currency: null,
+    currencyCd: null,
     exchRt: null,
     totalSi: null,
-    sectionI: null,
-    sectionII: null,
-    sectionIII: null,
+    sectionISi: null,
+    sectionIISi: null,
+    sectionIIISi: null,
     remarks: null,
-    sectionCovers:[]
+    sectionCovers:[],
+    createDate:[0,0,0],
+    createUser:'Earl',
+    currencyRt: 0,
+    //updateDate:[0,0,0],
+    updateUser: 'Earl'
   }
 
   passData: any = {
@@ -67,40 +72,39 @@ export class CoverageComponent implements OnInit {
   multiSelectData: any[] = [];
   dataLoaded:boolean = false;
   nData: QuotationCoverageInfo = new QuotationCoverageInfo(null, null, null, null, null);
-  quotationNo: string;
-  insuredName: string;
-  risk: string;
-  quoteId: number;
   projId: number;
   riskId: number;
   temp: number = 0;
   sub: any;
   quoteNo:string = '';
   lineCd: string = '';
+  quoteId: any;
+  @Input() quotationInfo: any = {};
 
   constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.titleService.setTitle("Quo | Coverage");
 
-    this.sub = this.route.params.subscribe(params => {
-      this.quotationNo = params["quotationNo"];
-      this.quoteNo = this.quotationNo.split(/[-]/g)[0]
-      for (var i = 1; i < this.quotationNo.split(/[-]/g).length; i++) {
-       this.quoteNo += '-' + parseInt(this.quotationNo.split(/[-]/g)[i]);
-     } 
-    });
-    
+    this.quoteNo = this.quotationInfo.quotationNo.split(/[-]/g)[0]
+    for (var i = 1; i < this.quotationInfo.quotationNo.split(/[-]/g).length; i++) {
+      this.quoteNo += '-' + parseInt(this.quotationInfo.quotationNo.split(/[-]/g)[i]);
+    } 
+    console.log(this.quotationInfo)
+
+    this.riskId = this.quotationInfo.riskId;
     this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
-      this.quoteId      = data.quotation.quoteId;
-      this.riskId       = data.quotation.project.riskId;
-      this.risk         = data.quotation.project.riskName;
+    if(data.quotation.project !== null ){
       this.coverageData = data.quotation.project.coverage;
-        // this.passData.tableData = data.quotation.project.coverage.sectionCovers;
-        for (var i = data.quotation.project.coverage.sectionCovers.length - 1; i >= 0; i--) {
-          this.passData.tableData.push(data.quotation.project.coverage.sectionCovers[i]);
-        }
-        this.table.refreshTable();
+              // this.passData.tableData = data.quotation.project.coverage.sectionCovers;
+      for (var i = data.quotation.project.coverage.sectionCovers.length - 1; i >= 0; i--) {
+        this.passData.tableData.push(data.quotation.project.coverage.sectionCovers[i]);
+      }
+      this.table.refreshTable();}
+      setTimeout(() => {
+        $('input[appCurrency]').focus();
+        $('input[appCurrency]').blur();
+      }, 0)
 
     });
 
@@ -138,13 +142,15 @@ export class CoverageComponent implements OnInit {
     }
 
     this.coverageData.createDate          = new Date(this.coverageData.createDate[0],this.coverageData.createDate[1]-1,this.coverageData.createDate[2]).toISOString();
+    //this.coverageData.updateDate          = new Date(this.coverageData.updateDate[0],this.coverageData.updateDate[1]-1,this.coverageData.updateDate[2]).toISOString();
     this.coverageData.saveSectionCovers   = this.editedData;
     this.coverageData.deleteSectionCovers = this.deletedData;
-    this.coverageData.quoteId             = this.quoteId;
+    this.coverageData.quoteId             = this.quotationInfo.quoteId;
     this.coverageData.projId              = 1;
     this.coverageData.riskId              = this.riskId;
-    this.quotationService.saveQuoteCoverage(this.coverageData.quoteId,this.coverageData.projId,this.coverageData).subscribe((data: any) => {});
-    
+    this.quotationService.saveQuoteCoverage(this.coverageData.quoteId,this.coverageData.projId,this.coverageData).subscribe((data: any) => {
+      $('#successModalBtn').trigger('click');
+    });
   }
 
   cancel(){

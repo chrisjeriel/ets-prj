@@ -28,15 +28,15 @@
         <div class="form-row custom-row-inline-inset">
             <div class="input-group">
                 <label class="form-control-sm col-sm-2">Quotation No </label>
-                <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [ngModel]="quotationNo"
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [ngModel]="quotationInfo.quotationNo"
                     disabled="disabled">
                 <label class="form-control-sm col-sm-1">Insured</label>
                 <input type="text" class="form-control form-control-sm cust-sm col-sm-6" placeholder="Insured Name"
-                    disabled="disabled">
+                    [ngModel]="quotationInfo.insuredDesc" disabled="disabled">
             </div>
             <div class="input-group">
                 <label class="form-control-sm col-sm-2">Risk</label>
-                <input type="text" class="form-control form-control-sm cust-sm col-sm-9" placeholder="Risk" disabled="disabled">
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-9" placeholder="Risk" [ngModel]="quotationInfo.riskName" disabled="disabled">
             </div>
         </div>
     </fieldset>
@@ -68,3 +68,5 @@
         </div>
     </div>
 </div>
+
+<app-sucess-dialog></app-sucess-dialog>
