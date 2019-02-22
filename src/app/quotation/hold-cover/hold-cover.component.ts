@@ -127,7 +127,11 @@ export class HoldCoverComponent implements OnInit {
     //   );
 
      
-   
+              // this.holdCover.periodFrom         =  this.formatDate(this.holdCover.periodFrom);
+              // this.holdCover.periodTo           =  this.formatDate(this.holdCover.periodTo);
+              // this.holdCover.reqDate            =  this.formatDate(this.holdCover.reqDate);
+              // this.holdCover.createDate         =  this.formatDate(this.holdCover.createDate);
+              // this.holdCover.updateDate         =  this.formatDate(this.holdCover.updateDate);
   }
 
   formatDate(date){
@@ -207,14 +211,16 @@ export class HoldCoverComponent implements OnInit {
   }
   
   holdCoverReq:any
-  onSaveClick(){
+  onSaveClick(periodFrom,coRef,status,reqDate,prepBy,appBy){
     this.quotationService.getQuoteGenInfo('',this.plainQuotationNo(this.quoteNo))
       .subscribe(val => {
       this.quoteId = val['quotationGeneralInfo'].quoteId;
+      this.holdCover.createDate = this.formatDate(val['quotationGeneralInfo'].createDate);
+      this.holdCover.createUser = val['quotationGeneralInfo'].createUser;
 
          this.holdCoverReq = {
-              "approvedBy": this.holdCover.approvedBy,
-              "compRefHoldCovNo": this.holdCover.compRefHoldCovNo,
+              "approvedBy": appBy,
+              "compRefHoldCovNo": coRef,
               "createDate": this.holdCover.createDate,
               "createUser": this.holdCover.createUser,
               "holdCoverId": this.quoteId,
@@ -222,15 +228,15 @@ export class HoldCoverComponent implements OnInit {
               "holdCoverSeqNo": this.hcSeqNo,
               "holdCoverYear": this.hcYear,
               "lineCd": this.hcLine,
-              "periodFrom": this.holdCover.periodFrom,
+              "periodFrom": periodFrom,
               "periodTo": this.holdCover.periodTo,
-              "preparedBy": this.holdCover.preparedBy,
+              "preparedBy": prepBy,
               "quoteId": this.quoteId,
               "reqBy": this.holdCover.reqBy,
-              "reqDate": this.holdCover.reqDate,
-              "status": this.holdCover.status,
-              "updateDate": this.holdCover.updateDate,
-              "updateUser": this.holdCover.updateUser
+              "reqDate": reqDate,
+              "status": status,
+              "updateDate": new Date().toISOString(),
+              "updateUser": 'Luffy' /*username of the login acc*/
             }
                 this.quotationService.saveQuoteHoldCover(
                   JSON.stringify(this.holdCoverReq)
