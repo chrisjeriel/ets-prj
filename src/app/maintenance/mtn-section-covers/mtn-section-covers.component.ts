@@ -43,6 +43,11 @@ export class MtnSectionCoversComponent implements OnInit {
 
   okBtnClick(){
   	this.selectedData.emit(this.selected);
+    this.riskListing.tableData = [];
+  }
+
+  cancel(){
+    this.riskListing.tableData = [];
   }
 
   openModal(){ 

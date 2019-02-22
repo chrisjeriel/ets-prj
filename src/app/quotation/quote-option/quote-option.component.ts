@@ -208,7 +208,7 @@ export class QuoteOptionComponent implements OnInit {
         this.quotationService.getQuoteOptions(this.quoteId,this.plainQuotationNo(this.quotationNum)).subscribe(data => {
            if (data['quotation'] == null || data['quotation'] == undefined ){ 
            } else {
-               var optionRecords = data['quotation'].optionsList;
+               var optionRecords = data['quotation'].optionsList; 
 
                 for(let rec of optionRecords){
                     this.optionsData.tableData.push(rec);                
@@ -226,7 +226,7 @@ export class QuoteOptionComponent implements OnInit {
                                 ));
                             }     
                         }           
-                }*/
+                }*/ 
 
                 for(let rec of optionRecords){
                     for(let r of rec.deductiblesList){
@@ -250,8 +250,8 @@ export class QuoteOptionComponent implements OnInit {
         });
 
     } 
-
-  /*  getOtherRates(){
+/*
+    getOtherRates(){
          this.quotationService.getQuoteOptions(this.quoteId,this.plainQuotationNo(this.quotationNum)).subscribe(data => {  
               if (data['quotation'] == null || data['quotation'] == undefined ){
                 var otherRatesRecords = data['quotation'].otherRatesList;
@@ -266,17 +266,17 @@ export class QuoteOptionComponent implements OnInit {
                 this.table.forEach(table => { table.refreshTable() });
               }
          });
-    }
-*/
+    }*/
+
     clickCoverCodeLOV(data){
         $('#coverCodeLOV #modalBtn').trigger('click');
-      /*  data.tableData = this.otherRatesData.tableData;
-        this.coverCodeLOVRow = data.index;*/
+        data.tableData = this.otherRatesData.tableData;
+        this.coverCodeLOVRow = data.index;
     }
 
     selectedCoverCodeLOV(data){
-        this.otherRatesData.tableData[this.coverCodeLOVRow].coverCd = data.coverCd; 
-        this.otherRatesData.tableData[this.coverCodeLOVRow].coverCdDesc = data.coverCdDesc; 
+        this.otherRatesData.tableData[this.coverCodeLOVRow].coverCd = data.coverCode; 
+        this.otherRatesData.tableData[this.coverCodeLOVRow].coverCdDesc = data.description; 
     }
 
 
@@ -309,6 +309,7 @@ saveData(){
    for (var i = 0 ; this.otherRatesData.tableData.length > i; i++) {
 
       if(this.otherRatesData.tableData[i].edited && !this.otherRatesData.tableData[i].deleted ) {
+           console.log(this.otherRatesData.tableData[i]);
           this.editedOtherRatesData.push(this.otherRatesData.tableData[i]);
           this.editedOtherRatesData[this.editedOtherRatesData.length-1].createDate = new Date(this.editedOtherRatesData[this.editedOtherRatesData.length-1].createDate[0],this.editedOtherRatesData[this.editedOtherRatesData.length-1].createDate[1]-1,this.editedOtherRatesData[this.editedOtherRatesData.length-1].createDate[2]).toISOString();
           this.editedOtherRatesData[this.editedOtherRatesData.length-1].updateDate = new Date(this.editedOtherRatesData[this.editedOtherRatesData.length-1].updateDate[0],this.editedOtherRatesData[this.editedOtherRatesData.length-1].updateDate[1]-1,this.editedOtherRatesData[this.editedOtherRatesData.length-1].updateDate[2]).toISOString();
@@ -321,7 +322,6 @@ saveData(){
     this.quotationService.saveQuoteOtherRates(this.quoteId,this.editedOtherRatesData).subscribe((data: any) => {});
     this.saveQuoteOption();
     $('#successModalBtn').trigger('click');
-    this.getQuoteOptions();
  }
 
   saveQuoteOption(){
