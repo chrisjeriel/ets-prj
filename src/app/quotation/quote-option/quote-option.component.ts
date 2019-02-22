@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList, Input} from '@angular/core';
 import { QuotationInfo, QuotationOption, QuotationOtherRates, QuotationDeductibles } from '../../_models';
 import { QuotationService } from '../../_services';
 import { Title } from '@angular/platform-browser';
@@ -13,13 +13,14 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class QuoteOptionComponent implements OnInit {
     @ViewChildren(CustEditableNonDatatableComponent) table: QueryList<CustEditableNonDatatableComponent>;
-    private quotationInfo: QuotationInfo;
+/*    private quotationInfo: QuotationInfo;*/
     private quotationOption: QuotationOption;
     private quotationOtherRates: QuotationOtherRates;
     private sub: any;
+   @Input() quotationInfo: any = {};
 
-    editedData: any[] = [];
-    deletedData: any[] = [];
+    editedOtherRatesData: any[] = [];
+    deletedOtherRatesData: any[] = [];
 
     quoteOptionTableData: any[] = [];
     quoteOptionTHeader: any[] = ['Option No', 'Rate(%)', 'Conditions', 'Comm Rate Quota(%)', 'Comm Rate Surplus(%)', 'Comm Rate Fac(%)'];
@@ -33,7 +34,7 @@ export class QuoteOptionComponent implements OnInit {
     otherRatesTHeader: any[] = ['Others', 'Amounts', 'Deductible'];
     otherRatesDataType: any[] = ['text', 'currency', 'text'];
     otherRatesMagnify: any[] = ['others', 'deductible'];
-    otherRatesNData: QuotationOtherRates = new QuotationOtherRates(null, null, null, null);
+    otherRatesNData: QuotationOtherRates = new QuotationOtherRates(null, null, null, null, null,null,null,null,null,null);
     
     quoteNoData: string;
     quotationNum: string;
@@ -56,7 +57,8 @@ export class QuoteOptionComponent implements OnInit {
         infoFlag: true,
         searchFlag: true,
         pageID: 1,
-        keys: ['optionId','optionRt','condition','commRtQuota','commRtSurplus','commRtFac']
+        keys: ['optionId','optionRt','condition','commRtQuota','commRtSurplus','commRtFac'],
+        uneditable: [true,false,false,false,false,false]
     }
 
     deductiblesData: any = {
@@ -64,6 +66,7 @@ export class QuoteOptionComponent implements OnInit {
         tHeader: ['Deductible Code','Deductible Title', 'Rate(%)', 'Amount', 'Deductible Text'],
         dataTypes: ['text','text', 'percent', 'currency', 'text'],
         nData: new QuotationDeductibles(null,null, null, null, null),
+        magnifyingGlass: ['deductibleCd'],
         pageLength: 5,
         addFlag: true,
         deleteFlag: true,
@@ -72,15 +75,28 @@ export class QuoteOptionComponent implements OnInit {
         infoFlag: true,
         searchFlag: true,
         pageID: 2,
-        keys: ['deductibleCd','deductibleTitle','deductibleRt','deductibleAmt','deductibleTxt']
+        keys: ['deductibleCd','deductibleTitle','deductibleRt','deductibleAmt','deductibleTxt'],
+        widths: [60,'auto',100,120,'auto'],
+        uneditable: [true,true,false,false]
     }
 
     otherRatesData: any = {
         tableData: [],
         tHeader: ['Cover Code','', 'Rate(%)', 'Amount'],
         dataTypes: ['number', 'text', 'percent', 'currency'],
-        nData: new QuotationOtherRates(null, null, null, null),
-        magnifyingGlass: ['coverCd'],
+        nData: {
+          amount: null,
+          amountI: null,
+          coverCd: null,
+          coverCdDesc: null,
+          createDate: [0,0,0],
+          createUser: "ETC",
+          rate: null,
+          rateI: null,
+          updateDate: [0,0,0],
+          updateUser: "ETC"
+        },
+/*        magnifyingGlass: ['coverCd'],*/
         pageLength: 5,
         addFlag: true,
         deleteFlag: true,
@@ -90,8 +106,8 @@ export class QuoteOptionComponent implements OnInit {
         searchFlag: true,
         pageID: 3,
         keys: ['coverCd','coverCdDesc','rate','amount'],
-        widths: [50,'auto',120,120],
-        uneditable: [true,true,false,false]
+        widths: [40,'auto',120,120],
+        uneditable: [false,true,false,false]
     }
 
     otherRatesDataArray: any = {
@@ -106,9 +122,9 @@ export class QuoteOptionComponent implements OnInit {
     ngOnInit() {
 
         this.titleService.setTitle("Quo | Quote Option");
-        this.quotationInfo = new QuotationInfo();
+     /*   this.quotationInfo = new QuotationInfo();
         this.quotationInfo.quotationNo = "SMP-0000-0000-00";
-        this.quotationInfo.insuredName = "Insured Name";
+        this.quotationInfo.insuredName = "Insured Name";*/
 
         if (this.quotationService.toGenInfo[0] == "edit") {
 
@@ -161,6 +177,9 @@ export class QuoteOptionComponent implements OnInit {
 */
   
     } else {
+         this.quotationNum = this.quotationInfo.quotationNo.split(/[-]/g)[0];
+         console.log(this.quotationNum);
+
 
     }
         
@@ -184,7 +203,7 @@ export class QuoteOptionComponent implements OnInit {
                     ));                
                 }
 
-                for(let rec of optionRecords){
+/*                for(let rec of optionRecords){
                         if (rec.optionId == 1 ) {
                             for(let r of rec.deductiblesList){                  
                                     this.deductiblesData.tableData.push(new QuotationDeductibles(
@@ -196,14 +215,13 @@ export class QuoteOptionComponent implements OnInit {
                                 ));
                             }     
                         }           
-                }
+                }*/
 
                 var otherRatesRecords = data['quotation'].otherRatesList;
 
                 for(let rec of otherRatesRecords){
-                  this.otherRatesData.tableData.push(rec
-                    );                
-                  console.log(rec);
+                  this.otherRatesData.tableData.push(rec);                
+              
                 }
                 
                 this.table.forEach(table => { table.refreshTable() });
@@ -235,37 +253,29 @@ export class QuoteOptionComponent implements OnInit {
 
     }
 
-    saveData(){
-
-   this.editedData  = [];
-   this.deletedData = [];
+   saveData(){
 
    for (var i = 0 ; this.otherRatesData.tableData.length > i; i++) {
+
       if(this.otherRatesData.tableData[i].edited && !this.otherRatesData.tableData[i].deleted ) {
-          console.log(this.otherRatesData.tableData[i]);
-          this.editedData.push(this.otherRatesData.tableData[i]);
-          this.editedData[this.editedData.length-1].createDate = new Date(this.editedData[this.editedData.length-1].createDate[0],this.editedData[this.editedData.length-1].createDate[1]-1,this.editedData[this.editedData.length-1].createDate[2]).toISOString();
-          this.editedData[this.editedData.length-1].updateDate = new Date(this.editedData[this.editedData.length-1].updateDate[0],this.editedData[this.editedData.length-1].updateDate[1]-1,this.editedData[this.editedData.length-1].updateDate[2]).toISOString();
+          this.editedOtherRatesData.push(this.otherRatesData.tableData[i]);
+          this.editedOtherRatesData[this.editedOtherRatesData.length-1].createDate = new Date(this.editedOtherRatesData[this.editedOtherRatesData.length-1].createDate[0],this.editedOtherRatesData[this.editedOtherRatesData.length-1].createDate[1]-1,this.editedOtherRatesData[this.editedOtherRatesData.length-1].createDate[2]).toISOString();
+          this.editedOtherRatesData[this.editedOtherRatesData.length-1].updateDate = new Date(this.editedOtherRatesData[this.editedOtherRatesData.length-1].updateDate[0],this.editedOtherRatesData[this.editedOtherRatesData.length-1].updateDate[1]-1,this.editedOtherRatesData[this.editedOtherRatesData.length-1].updateDate[2]).toISOString();
       } else if(this.otherRatesData.tableData[i].edited && this.otherRatesData.tableData[i].deleted){
-        this.deletedData.push(this.otherRatesData.tableData[i]);
-        this.deletedData[this.deletedData.length-1].createDate = new Date(this.deletedData[this.deletedData.length-1].createDate[0],this.deletedData[this.deletedData.length-1].createDate[1]-1,this.deletedData[this.deletedData.length-1].createDate[2]).toISOString();
-        this.deletedData[this.deletedData.length-1].updateDate = new Date(this.deletedData[this.deletedData.length-1].updateDate[0],this.deletedData[this.deletedData.length-1].updateDate[1]-1,this.deletedData[this.deletedData.length-1].updateDate[2]).toISOString();
+          this.deletedOtherRatesData.push(this.otherRatesData.tableData[i]);
+          this.deletedOtherRatesData[this.deletedOtherRatesData.length-1].createDate = new Date(this.deletedOtherRatesData[this.deletedOtherRatesData.length-1].createDate[0],this.deletedOtherRatesData[this.deletedOtherRatesData.length-1].createDate[1]-1,this.deletedOtherRatesData[this.deletedOtherRatesData.length-1].createDate[2]).toISOString();
+          this.deletedOtherRatesData[this.deletedOtherRatesData.length-1].updateDate = new Date(this.deletedOtherRatesData[this.deletedOtherRatesData.length-1].updateDate[0],this.deletedOtherRatesData[this.deletedOtherRatesData.length-1].updateDate[1]-1,this.deletedOtherRatesData[this.deletedOtherRatesData.length-1].updateDate[2]).toISOString();
       }
-    }
 
-    console.log(this.editedData);
+    console.log(this.editedOtherRatesData);
     console.log(this.quoteId);
-/*    this.coverageData.createDate          = new Date(this.coverageData.createDate[0],this.coverageData.createDate[1]-1,this.coverageData.createDate[2]).toISOString();
-    //this.coverageData.updateDate          = new Date(this.coverageData.updateDate[0],this.coverageData.updateDate[1]-1,this.coverageData.updateDate[2]).toISOString();
-    this.coverageData.saveSectionCovers   = this.editedData;
-    this.coverageData.deleteSectionCovers = this.deletedData;
-    this.coverageData.quoteId             = this.quotationInfo.quoteId;
-    this.coverageData.projId              = 1;
-    this.coverageData.riskId              = this.riskId;*/
 
-    this.quotationService.saveQuoteOtherRates(this.quoteId,this.editedData).subscribe((data: any) => {});
-    
+    this.quotationService.saveQuoteOtherRates(this.quoteId,this.editedOtherRatesData).subscribe((data: any) => {});
+    $('#successModalBtn').trigger('click');
+    this.getQuoteOptions();
+    this.table.forEach(table => { table.refreshTable() });
   }
 
-
  }
+
+}
