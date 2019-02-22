@@ -4,6 +4,7 @@ import { QuotationService, NotesService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
 import { ActivatedRoute } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-coverage',
@@ -63,6 +64,7 @@ export class CoverageComponent implements OnInit {
     checkboxFlag: true,
     pageLength: 'unli',
     widths:[228,1,1,200,1,1],
+    magnifyingGlass: ['coverCd'],
     keys:['coverCd','section','bulletNo','sumInsured','addSi']
   };
 
@@ -80,8 +82,9 @@ export class CoverageComponent implements OnInit {
   lineCd: string = '';
   quoteId: any;
   @Input() quotationInfo: any = {};
+  errorMdlMessage: string = "";
 
-  constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute) {}
+  constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,private modalService: NgbModal) {}
 
   ngOnInit() {
     this.titleService.setTitle("Quo | Coverage");
@@ -93,6 +96,7 @@ export class CoverageComponent implements OnInit {
     console.log(this.quotationInfo)
 
     this.riskId = this.quotationInfo.riskId;
+
     this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
     if(data.quotation.project !== null ){
       this.coverageData = data.quotation.project.coverage;
@@ -149,12 +153,24 @@ export class CoverageComponent implements OnInit {
     this.coverageData.projId              = 1;
     this.coverageData.riskId              = this.riskId;
     this.quotationService.saveQuoteCoverage(this.coverageData.quoteId,this.coverageData.projId,this.coverageData).subscribe((data: any) => {
-      $('#successModalBtn').trigger('click');
+      if(data['returnCode'] == 0) {
+          this.errorMdlMessage = data['errorList'][0].errorMessage;
+          $('#errorMdl > #modalBtn').trigger('click');
+        } else{
+          $('#successModalBtn').trigger('click');
+         }
     });
   }
 
   cancel(){
     console.log(this.deletedData)
   }
+
+  sectionCoversLOV(data){
+        $('#sectionCoversLOV #modalBtn').trigger('click');
+        /*data.tableData = this.endorsementData.tableData;
+        this.endtCodeLOVRow = data.index;*/
+    }
+
 
 }

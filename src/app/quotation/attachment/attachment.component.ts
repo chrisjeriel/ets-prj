@@ -5,6 +5,7 @@ import { AttachmentInfo } from '../../_models/Attachment';
 import { Title } from '@angular/platform-browser';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { ActivatedRoute } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -80,7 +81,7 @@ export class AttachmentComponent implements OnInit {
   errorMdlMessage: string = "";
 
   constructor(config: NgbDropdownConfig,
-    private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute) {
+    private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,private modalService: NgbModal) {
     config.placement = 'bottom-right';
     config.autoClose = false;
   }
@@ -149,15 +150,27 @@ export class AttachmentComponent implements OnInit {
       }
       // delete this.savedData[i].tableIndex;
     }
-    this.quotationService.saveQuoteAttachment(this.quoteId,this.savedData,this.deletedData).subscribe((data: any) => {
+    /*this.quotationService.saveQuoteAttachment(this.quoteId,this.savedData,this.deletedData).subscribe((data: any) => {
       console.log(data)
-     /* if(data['returnCode'] == 0) {
+      if(data['returnCode'] == 0) {
           this.errorMdlMessage = data['errorList'][0].errorMessage;
           $('#errorMdl > #modalBtn').trigger('click');
         } else{
           $('#successModalBtn').trigger('click');
           this.getAttachment();
-        }*/
+        }
+      
+    });*/
+
+    this.quotationService.saveQuoteAttachment(this.quoteId,this.savedData,this.deletedData).subscribe(data => {
+      console.log(data)
+      if(data['returnCode'] == 0) {
+          this.errorMdlMessage = data['errorList'][0].errorMessage;
+          $('#errorMdl > #modalBtn').trigger('click');
+        } else{
+          $('#successModalBtn').trigger('click');
+          this.getAttachment();
+        }
       
     });
   }

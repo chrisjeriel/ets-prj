@@ -107,3 +107,4 @@ export * from './AccountingSrvcCancelledTransactions';
 export * from './AdviceWordings';
 export * from './AccountingBatchOR';
 export * from './AccountingJVAccntEntries';
+export * from './MtnSectionCovers';
