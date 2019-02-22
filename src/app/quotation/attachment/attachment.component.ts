@@ -39,7 +39,7 @@ export class AttachmentComponent implements OnInit {
   test: boolean = false;
   attachmentInfoData: AttachmentInfo[] = [];
   private attachmentInfo: AttachmentInfo;
-
+  successMessage:string;
 
   attachmentData: any;
   passData: any = {
@@ -173,6 +173,22 @@ export class AttachmentComponent implements OnInit {
         }
       
     });
+    if(this.savedData.length != 0 && this.deletedData.length!=0){
+      this.quotationService.saveQuoteAttachment(this.quoteId,this.savedData,this.deletedData).subscribe((data: any) => {
+        console.log(data)
+        if(data['returnCode'] == 0) {
+            this.errorMdlMessage = data['errorList'][0].errorMessage;
+            $('#errorMdl > #modalBtn').trigger('click');
+          } else{
+              $('#successModalBtn').trigger('click');
+            this.getAttachment();
+          }
+        
+        });
+    }else{
+      this.successMessage = "Nothing to save.";
+      $('#successModalBtn').trigger('click');
+    }
   }
 
   cancel(){

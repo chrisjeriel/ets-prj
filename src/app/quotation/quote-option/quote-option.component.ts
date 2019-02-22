@@ -305,36 +305,25 @@ export class QuoteOptionComponent implements OnInit {
     }
 
 saveData(){
-
-   for (var i = 0 ; this.otherRatesData.tableData.length > i; i++) {
-
-      if(this.otherRatesData.tableData[i].edited && !this.otherRatesData.tableData[i].deleted ) {
-           console.log(this.otherRatesData.tableData[i]);
-          this.editedOtherRatesData.push(this.otherRatesData.tableData[i]);
-          this.editedOtherRatesData[this.editedOtherRatesData.length-1].createDate = new Date(this.editedOtherRatesData[this.editedOtherRatesData.length-1].createDate[0],this.editedOtherRatesData[this.editedOtherRatesData.length-1].createDate[1]-1,this.editedOtherRatesData[this.editedOtherRatesData.length-1].createDate[2]).toISOString();
-          this.editedOtherRatesData[this.editedOtherRatesData.length-1].updateDate = new Date(this.editedOtherRatesData[this.editedOtherRatesData.length-1].updateDate[0],this.editedOtherRatesData[this.editedOtherRatesData.length-1].updateDate[1]-1,this.editedOtherRatesData[this.editedOtherRatesData.length-1].updateDate[2]).toISOString();
-      } else if(this.otherRatesData.tableData[i].edited && this.otherRatesData.tableData[i].deleted){
-          this.deletedOtherRatesData.push(this.otherRatesData.tableData[i]);
-          this.deletedOtherRatesData[this.deletedOtherRatesData.length-1].createDate = new Date(this.deletedOtherRatesData[this.deletedOtherRatesData.length-1].createDate[0],this.deletedOtherRatesData[this.deletedOtherRatesData.length-1].createDate[1]-1,this.deletedOtherRatesData[this.deletedOtherRatesData.length-1].createDate[2]).toISOString();
-          this.deletedOtherRatesData[this.deletedOtherRatesData.length-1].updateDate = new Date(this.deletedOtherRatesData[this.deletedOtherRatesData.length-1].updateDate[0],this.deletedOtherRatesData[this.deletedOtherRatesData.length-1].updateDate[1]-1,this.deletedOtherRatesData[this.deletedOtherRatesData.length-1].updateDate[2]).toISOString();
-      }
-   }
-    this.quotationService.saveQuoteOtherRates(this.quoteId,this.editedOtherRatesData).subscribe((data: any) => {});
     this.saveQuoteOption();
+    this.saveOtherRates();
     $('#successModalBtn').trigger('click');
  }
 
   saveQuoteOption(){
+
    let params: any = {
        quoteId:this.quoteId,
        saveQuoteOptionsList:[],
        deleteQuoteOptionsList:[],
        saveDeductibleList:[],
-       deleteDeductibleList:[],
+       deleteDeductibleList:[]
+       
    }
 
    for (var i = 0 ; this.optionsData.tableData.length > i; i++) {
       if(this.optionsData.tableData[i].edited && !this.optionsData.tableData[i].deleted ) {
+          console.log(this.optionsData.tableData[i]);
           params.saveQuoteOptionsList.push(this.optionsData.tableData[i]);
           params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].createDate = new Date(params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].createDate[0],params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].createDate[1]-1,params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].createDate[2]).toISOString();
           params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].updateDate = new Date(params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].updateDate[0],params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].updateDate[1]-1,params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].updateDate[2]).toISOString();
@@ -358,9 +347,29 @@ saveData(){
         params.deleteDeductibleList[params.deleteDeductibleList.length-1].updateDate = new Date(params.deleteDeductibleList[params.deleteDeductibleList.length-1].updateDate[0],params.deleteDeductibleList[params.deleteDeductibleList.length-1].updateDate[1]-1,params.deleteDeductibleList[params.deleteDeductibleList.length-1].updateDate[2]).toISOString();
       }
     }
-    console.log(params);
-    console.log(this.deductiblesData.tableData);
     this.quotationService.saveQuoteOption(JSON.stringify(params)).subscribe((data: any) => {});
-  }
+}
+
+saveOtherRates(){
+      let params: any = {
+       quoteId:this.quoteId,
+       otherRates:[]
+      }
+
+    for (var i = 0 ; this.otherRatesData.tableData.length > i; i++) {
+      if(this.otherRatesData.tableData[i].edited && !this.otherRatesData.tableData[i].deleted ) {
+          console.log(this.otherRatesData.tableData[i]);
+          params.otherRates.push(this.otherRatesData.tableData[i]);
+          params.otherRates[params.otherRates.length-1].createDate = new Date(params.otherRates[params.otherRates.length-1].createDate[0],params.otherRates[params.otherRates.length-1].createDate[1]-1,params.otherRates[params.otherRates.length-1].createDate[2]).toISOString();
+          params.otherRates[params.otherRates.length-1].updateDate = new Date(params.otherRates[params.otherRates.length-1].updateDate[0],params.otherRates[params.otherRates.length-1].updateDate[1]-1,params.otherRates[params.otherRates.length-1].updateDate[2]).toISOString();
+      } else if(this.otherRatesData.tableData[i].edited && this.otherRatesData.tableData[i].deleted){
+          params.deleteOtherRatesList.push(this.otherRatesData.tableData[i]);
+          params.deletedOtherRatesData[params.deletedOtherRatesData.length-1].createDate = new Date(params.deletedOtherRatesData[params.deletedOtherRatesData.length-1].createDate[0],params.deletedOtherRatesData[params.deletedOtherRatesData.length-1].createDate[1]-1,params.deletedOtherRatesData[params.deletedOtherRatesData.length-1].createDate[2]).toISOString();
+          params.deletedOtherRatesData[params.deletedOtherRatesData.length-1].updateDate = new Date(params.deletedOtherRatesData[params.deletedOtherRatesData.length-1].updateDate[0],params.deletedOtherRatesData[params.deletedOtherRatesData.length-1].updateDate[1]-1,params.deletedOtherRatesData[params.deletedOtherRatesData.length-1].updateDate[2]).toISOString();
+      }
+   }
+    this.quotationService.saveQuoteOtherRates(JSON.stringify(params)).subscribe((data: any) => {});
+
+}
 
 }
