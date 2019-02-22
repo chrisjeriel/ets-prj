@@ -60,7 +60,7 @@
                                 <label class="form-control-sm">Total SI</label>
                                 <input type="text" class="form-control form-control-sm cust-sm txt-content-rght" required
                                        placeholder="0.00" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
-                                        [(ngModel)]="coverageData.totalSi">
+                                        [(ngModel)]="coverageData.totalSi" appCurrency>
                             </div>
                         </div>
                         <div class="col-sm-1"></div>
