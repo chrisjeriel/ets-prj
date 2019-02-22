@@ -18,6 +18,7 @@ export class QuoteOptionComponent implements OnInit {
     private quotationOtherRates: QuotationOtherRates;
     private sub: any;
    @Input() quotationInfo: any = {};
+    coverCodeLOVRow : number;
 
     editedOtherRatesData: any[] = [];
     deletedOtherRatesData: any[] = [];
@@ -28,12 +29,12 @@ export class QuoteOptionComponent implements OnInit {
     quoteOptionNData: QuotationOption = new QuotationOption(null, null, null, null, null, null);
     magnifyingGlass: any[] = ['conditions'];
     quoteOptionEdited: QuotationOption[] = [];
-
+/*
 
     otherRatesTableData: any[] = [];
     otherRatesTHeader: any[] = ['Others', 'Amounts', 'Deductible'];
     otherRatesDataType: any[] = ['text', 'currency', 'text'];
-    otherRatesMagnify: any[] = ['others', 'deductible'];
+    otherRatesMagnify: any[] = ['others', 'deductible'];*/
     otherRatesNData: QuotationOtherRates = new QuotationOtherRates(null, null, null, null, null,null,null,null,null,null);
     
     quoteNoData: string;
@@ -120,7 +121,7 @@ export class QuoteOptionComponent implements OnInit {
           updateDate: [0,0,0],
           updateUser: "ETC"
         },
-/*        magnifyingGlass: ['coverCd'],*/
+        magnifyingGlass: ['coverCd'],
         pageLength: 5,
         addFlag: true,
         deleteFlag: true,
@@ -132,12 +133,6 @@ export class QuoteOptionComponent implements OnInit {
         keys: ['coverCd','coverCdDesc','rate','amount'],
         widths: [40,'auto',120,120],
         uneditable: [false,true,false,false]
-    }
-
-    otherRatesDataArray: any = {
-        coverCd: null,
-        rate: null,
-        amount: null,
     }
 
     record: any[];
@@ -273,6 +268,16 @@ export class QuoteOptionComponent implements OnInit {
          });
     }
 */
+    clickCoverCodeLOV(data){
+        $('#coverCodeLOV #modalBtn').trigger('click');
+      /*  data.tableData = this.otherRatesData.tableData;
+        this.coverCodeLOVRow = data.index;*/
+    }
+
+    selectedCoverCodeLOV(data){
+        this.otherRatesData.tableData[this.coverCodeLOVRow].coverCd = data.coverCd; 
+        this.otherRatesData.tableData[this.coverCodeLOVRow].coverCdDesc = data.coverCdDesc; 
+    }
 
 
     save() {
