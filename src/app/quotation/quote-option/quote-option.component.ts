@@ -173,15 +173,7 @@ export class QuoteOptionComponent implements OnInit {
                var optionRecords = data['quotation'].optionsList;
 
                 for(let rec of optionRecords){
-                    this.optionsData.tableData.push(new QuotationOption(
-                        rec.optionId, 
-                        rec.optionRt, 
-                        rec.condition, 
-                        rec.commRtQuota, 
-                        rec.commRtSurplus, 
-                        rec.commRtFac,
-                        rec.deductiblesList
-                    ));                
+                    this.optionsData.tableData.push(rec);                
                 }
 
                 for(let rec of optionRecords){
@@ -236,7 +228,7 @@ export class QuoteOptionComponent implements OnInit {
 
     }
 
-    saveData(){
+   saveData(){
 
    this.editedData  = [];
    this.deletedData = [];
@@ -266,7 +258,25 @@ export class QuoteOptionComponent implements OnInit {
 
     this.quotationService.saveQuoteOtherRates(this.quoteId,this.editedData).subscribe((data: any) => {});
     
+
   }
 
+  saveQuoteOption(){
+   this.editedData  = [];
+   this.deletedData = [];
+
+   for (var i = 0 ; this.optionsData.tableData.length > i; i++) {
+      if(this.optionsData.tableData[i].edited && !this.optionsData.tableData[i].deleted ) {
+          console.log(this.optionsData.tableData[i]);
+          this.editedData.push(this.optionsData.tableData[i]);
+          this.editedData[this.editedData.length-1].createDate = new Date(this.editedData[this.editedData.length-1].createDate[0],this.editedData[this.editedData.length-1].createDate[1]-1,this.editedData[this.editedData.length-1].createDate[2]).toISOString();
+          this.editedData[this.editedData.length-1].updateDate = new Date(this.editedData[this.editedData.length-1].updateDate[0],this.editedData[this.editedData.length-1].updateDate[1]-1,this.editedData[this.editedData.length-1].updateDate[2]).toISOString();
+      } else if(this.optionsData.tableData[i].edited && this.optionsData.tableData[i].deleted){
+        this.deletedData.push(this.optionsData.tableData[i]);
+        this.deletedData[this.deletedData.length-1].createDate = new Date(this.deletedData[this.deletedData.length-1].createDate[0],this.deletedData[this.deletedData.length-1].createDate[1]-1,this.deletedData[this.deletedData.length-1].createDate[2]).toISOString();
+        this.deletedData[this.deletedData.length-1].updateDate = new Date(this.deletedData[this.deletedData.length-1].updateDate[0],this.deletedData[this.deletedData.length-1].updateDate[1]-1,this.deletedData[this.deletedData.length-1].updateDate[2]).toISOString();
+      }
+    }
+  }
 
  }
