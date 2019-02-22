@@ -60,6 +60,8 @@ export class QuoteEndorsementComponent implements OnInit {
     quoteId:string;
     quoteIdOc:string;
 
+    opId:string;
+
     quoteOptionsData: any = {
         tableData: [],
         tHeader: ['Option No', 'Rate(%)', 'Conditions', 'Comm Rate Quota(%)', 'Comm Rate Surplus(%)', 'Comm Rate Fac(%)'],
@@ -207,6 +209,7 @@ export class QuoteEndorsementComponent implements OnInit {
                                                         data.quotation.optionsList[i].commRtFac));
                         }
                          this.tableNonEditable.refreshTable();
+
                     });
                   
                     
@@ -219,13 +222,12 @@ export class QuoteEndorsementComponent implements OnInit {
                                                                            data.endorsements[lineCount].remarks)
                                                                    );
                                                                   this.saveEndt.quoteId = data.endorsements[lineCount].quoteId;
-                                                                  this.saveEndt.optionId = data.endorsements[lineCount].optionId; 
+                                                                  this.saveEndt.optionId = data.endorsements[lineCount].optionId;
                                                                   this.saveEndt.createDate = this.formatDate(data.endorsements[lineCount].createDate);
                                                                   this.saveEndt.createUser = data.endorsements[lineCount].createUser;
                                                                   this.saveEndt.updateUser = data.endorsements[lineCount].updateUser;
                           }
                         this.table.forEach(table => { table.refreshTable() });
-                          
                     }); 
                 }  
 
@@ -254,6 +256,10 @@ export class QuoteEndorsementComponent implements OnInit {
            });
 
       /*  this.tableData = this.quotationService.getEndorsements(event.target.closest("tr").children[1].innerText);*/
+
+      this.saveEndt.optionId = event.optionId;
+
+console.log(this.saveEndt.optionId + ">>> this.saveEndt.optionId");
     }
 
     save() {
@@ -360,7 +366,10 @@ export class QuoteEndorsementComponent implements OnInit {
                       ]
                   }
                   this.quotationService.saveQuoteEndorsements(JSON.stringify(this.endorsementReq))
-                      .subscribe(data => console.log(data));
+                      .subscribe(data => { 
+                        console.log(data);
+                        $('#successMdl > #modalBtn').trigger('click');
+                      });
               }else if(this.endorsementData.tableData[i].edited && this.endorsementData.tableData[i].deleted){
                   this.endorsementReq = {
                      "deleteEndorsements": [

@@ -89,7 +89,9 @@ export class QuoteOptionComponent implements OnInit {
         infoFlag: true,
         searchFlag: true,
         pageID: 3,
-        keys: ['coverCd','coverCdDesc','rate','amount']
+        keys: ['coverCd','coverCdDesc','rate','amount'],
+        widths: [50,'auto',120,120],
+        uneditable: [true,true,false,false]
     }
 
     otherRatesDataArray: any = {
@@ -199,12 +201,9 @@ export class QuoteOptionComponent implements OnInit {
                 var otherRatesRecords = data['quotation'].otherRatesList;
 
                 for(let rec of otherRatesRecords){
-                  this.otherRatesData.tableData.push(new QuotationOtherRates(
-                        rec.coverCd, 
-                        rec.coverCdDesc, 
-                        rec.rate, 
-                        rec.amount                    
-                    ));                
+                  this.otherRatesData.tableData.push(rec
+                    );                
+                  console.log(rec);
                 }
                 
                 this.table.forEach(table => { table.refreshTable() });
@@ -237,21 +236,21 @@ export class QuoteOptionComponent implements OnInit {
     }
 
     saveData(){
+
    this.editedData  = [];
    this.deletedData = [];
 
    for (var i = 0 ; this.otherRatesData.tableData.length > i; i++) {
-       this.editedData.push(this.otherRatesData.tableData[i]);
-
-      // if(this.otherRatesData.tableData[i].edited && !this.otherRatesData.tableData[i].deleted ){
-          
-      //     this.editedData[this.editedData.length-1].createDate = new Date(this.editedData[this.editedData.length-1].createDate[0],this.editedData[this.editedData.length-1].createDate[1]-1,this.editedData[this.editedData.length-1].createDate[2]).toISOString();
-      //     this.editedData[this.editedData.length-1].updateDate = new Date(this.editedData[this.editedData.length-1].updateDate[0],this.editedData[this.editedData.length-1].updateDate[1]-1,this.editedData[this.editedData.length-1].updateDate[2]).toISOString();
-      // }else if(this.otherRatesData.tableData[i].edited && this.otherRatesData.tableData[i].deleted){
-      //   this.deletedData.push(this.otherRatesData.tableData[i]);
-      //   this.deletedData[this.deletedData.length-1].c;eateDate = new Date(this.deletedData[this.deletedData.length-1].createDate[0],this.deletedData[this.deletedData.length-1].createDate[1]-1,this.deletedData[this.deletedData.length-1].createDate[2]).toISOString();
-      //   this.deletedData[this.deletedData.length-1].updateDate = new Date(this.deletedData[this.deletedData.length-1].updateDate[0],this.deletedData[this.deletedData.length-1].updateDate[1]-1,this.deletedData[this.deletedData.length-1].updateDate[2]).toISOString();
-      // }
+      if(this.otherRatesData.tableData[i].edited && !this.otherRatesData.tableData[i].deleted ) {
+          console.log(this.otherRatesData.tableData[i]);
+          this.editedData.push(this.otherRatesData.tableData[i]);
+          this.editedData[this.editedData.length-1].createDate = new Date(this.editedData[this.editedData.length-1].createDate[0],this.editedData[this.editedData.length-1].createDate[1]-1,this.editedData[this.editedData.length-1].createDate[2]).toISOString();
+          this.editedData[this.editedData.length-1].updateDate = new Date(this.editedData[this.editedData.length-1].updateDate[0],this.editedData[this.editedData.length-1].updateDate[1]-1,this.editedData[this.editedData.length-1].updateDate[2]).toISOString();
+      } else if(this.otherRatesData.tableData[i].edited && this.otherRatesData.tableData[i].deleted){
+        this.deletedData.push(this.otherRatesData.tableData[i]);
+        this.deletedData[this.deletedData.length-1].createDate = new Date(this.deletedData[this.deletedData.length-1].createDate[0],this.deletedData[this.deletedData.length-1].createDate[1]-1,this.deletedData[this.deletedData.length-1].createDate[2]).toISOString();
+        this.deletedData[this.deletedData.length-1].updateDate = new Date(this.deletedData[this.deletedData.length-1].updateDate[0],this.deletedData[this.deletedData.length-1].updateDate[1]-1,this.deletedData[this.deletedData.length-1].updateDate[2]).toISOString();
+      }
     }
 
     console.log(this.editedData);
@@ -263,8 +262,8 @@ export class QuoteOptionComponent implements OnInit {
     this.coverageData.quoteId             = this.quotationInfo.quoteId;
     this.coverageData.projId              = 1;
     this.coverageData.riskId              = this.riskId;*/
-    
-/*    this.quotationService.saveQuoteOtherRates(this.quoteId,this.editedData).subscribe((data: any) => {});*/
+
+    this.quotationService.saveQuoteOtherRates(this.quoteId,this.editedData).subscribe((data: any) => {});
     
   }
 
