@@ -203,7 +203,7 @@ export class QuoteOptionComponent implements OnInit {
                     ));                
                 }
 
-/*                for(let rec of optionRecords){
+/*              for(let rec of optionRecords){
                         if (rec.optionId == 1 ) {
                             for(let r of rec.deductiblesList){                  
                                     this.deductiblesData.tableData.push(new QuotationDeductibles(
@@ -229,6 +229,24 @@ export class QuoteOptionComponent implements OnInit {
         });
 
     } 
+
+    getOtherRates(){
+         this.quotationService.getQuoteOptions(this.quoteId,this.plainQuotationNo(this.quotationNum)).subscribe(data => {  
+              if (data['quotation'] == null || data['quotation'] == undefined ){
+                var otherRatesRecords = data['quotation'].otherRatesList;
+
+                while(this.otherRatesData.tableData.length > 0) {
+                  this.otherRatesData.tableData.pop();
+                }    
+                for(let rec of otherRatesRecords){
+                  this.otherRatesData.tableData.push(rec);                
+                }
+                
+                this.table.forEach(table => { table.refreshTable() });
+              }
+         });
+    }
+
 
 
     save() {
@@ -272,8 +290,7 @@ export class QuoteOptionComponent implements OnInit {
 
     this.quotationService.saveQuoteOtherRates(this.quoteId,this.editedOtherRatesData).subscribe((data: any) => {});
     $('#successModalBtn').trigger('click');
-    this.getQuoteOptions();
-    this.table.forEach(table => { table.refreshTable() });
+    this.getOtherRates();
   }
 
  }
