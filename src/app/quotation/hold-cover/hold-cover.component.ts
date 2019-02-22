@@ -107,7 +107,7 @@ export class HoldCoverComponent implements OnInit {
     this.titleService.setTitle("Quo | Quotation to Hold Cover");
     //this.tableData = this.quotationService.getListOfValuesHoldCover();
     this.holdCoverInfo = new HoldCoverInfo();
-
+    this.holdCover.status = "In Progress";
     // this.quotationService.getHoldCoverInfo()
     //     .subscribe(val => 
     //         {
@@ -201,6 +201,8 @@ export class HoldCoverComponent implements OnInit {
     this.insured = this.rowRec.insuredDesc;
     this.cedCo = this.rowRec.cedingName;
     this.risk = this.rowRec.riskName;
+    this.hcLine  = this.qLine;
+    this.hcYear  =  String(new Date().getFullYear());
     this.modalService.dismissAll();
 
     this.quotationService.getSelectedQuote(this.plainQuotationNo(this.quoteNo))
@@ -240,7 +242,9 @@ export class HoldCoverComponent implements OnInit {
             }
                 this.quotationService.saveQuoteHoldCover(
                   JSON.stringify(this.holdCoverReq)
-                ).subscribe(data => console.log(data));
+                ).subscribe(data => {
+                  $('#successMdl > #modalBtn').trigger('click');
+                });
 
               });
 
@@ -258,4 +262,7 @@ export class HoldCoverComponent implements OnInit {
     this.holdCover.periodTo = d.toISOString();
   }
 
+  test(event){
+    console.log(this.holdCover.reqDate);
+  }
 }

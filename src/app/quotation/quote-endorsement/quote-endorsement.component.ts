@@ -366,7 +366,10 @@ console.log(this.saveEndt.optionId + ">>> this.saveEndt.optionId");
                       ]
                   }
                   this.quotationService.saveQuoteEndorsements(JSON.stringify(this.endorsementReq))
-                      .subscribe(data => console.log(data));
+                      .subscribe(data => { 
+                        console.log(data);
+                        $('#successMdl > #modalBtn').trigger('click');
+                      });
               }else if(this.endorsementData.tableData[i].edited && this.endorsementData.tableData[i].deleted){
                   this.endorsementReq = {
                      "deleteEndorsements": [
