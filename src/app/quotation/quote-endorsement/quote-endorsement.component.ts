@@ -211,8 +211,7 @@ export class QuoteEndorsementComponent implements OnInit {
                          this.tableNonEditable.refreshTable();
 
                     });
-                  
-                    // this.quotationService.getEndorsements(this.quoteId,this.plainQuotationNo(this.quotationNum),'1').subscribe((data: any) => {
+                    // this.quotationService.getEndorsements(this.quoteId,this.plainQuotationNo(this.quotationNum),this.opId).subscribe((data: any) => {
                     //     for(var lineCount = 0; lineCount < data.endorsements.length; lineCount++){
                     //           this.endorsementData.tableData.push(new QuoteEndorsement(
                     //                                                        data.endorsements[lineCount].endtCd, 
@@ -238,6 +237,7 @@ export class QuoteEndorsementComponent implements OnInit {
 
     clickRow(event) {
 /*           this.quotationService.getEndorsements(null,this.quotationNum,event.optionNo).subscribe((data: any) => {*/
+      this.opId = event.optionId;
            this.quotationService.getEndorsements(this.quoteId,this.plainQuotationNo(this.quotationNum),event.optionId).subscribe((data: any) => {
                  while(this.endorsementData.tableData.length > 0) {
                   this.endorsementData.tableData.pop();
@@ -319,69 +319,22 @@ export class QuoteEndorsementComponent implements OnInit {
 
     onClickSave(event){
         if(this.from === "quo-processing"){
-            // for(var i=0;i<this.endorsementData.tableData.length;i++){
-            //     this.endorsementReq = {
-            //         "createDate": this.saveEndt.createDate,
-            //         "createUser":  this.saveEndt.createUser,
-            //         "endtCd":       this.endorsementData.tableData[i].endtCode,
-            //         "optionId":    this.saveEndt.optionId,
-            //         "quoteId":      this.saveEndt.quoteId,
-            //         "remarks":    this.endorsementData.tableData[i].endtWording,
-            //         "updateDate":  new Date().toISOString(),
-            //         "updateUser":  this.saveEndt.updateUser
-            //     }
-            //     this.quotationService.saveQuoteEndorsements(JSON.stringify(this.endorsementReq))
-            //     .subscribe(data => console.log(data));
-            // }
 
-            // for(var i=0;i<this.endorsementData.tableData.length;i++){
-            //       this.endorsementReq = {
-            //          "deleteEndorsements": [],
-            //           "optionId": this.saveEndt.optionId,
-            //           "quoteId": this.saveEndt.quoteId,
-            //           "saveEndorsements": [
-            //             {
-            //               "createDate": this.saveEndt.createDate,
-            //               "createUser": this.saveEndt.createUser,
-            //               "endtCd": this.endorsementData.tableData[i].endtCode,
-            //               "remarks":  this.endorsementData.tableData[i].endtWording,
-            //               "updateDate": new Date().toISOString(),
-            //               "updateUser": this.saveEndt.updateUser
-            //             }
-            //           ]
-            //       }
-            //     this.quotationService.saveQuoteEndorsements(JSON.stringify(this.endorsementReq))
-            //     .subscribe(data => console.log(data));
-            // }
-
-            // this.saveRecEndt = [];
-            // this.deleteRecEndt = [];
-            // for (var i = 0 ; this.endorsementData.tableData.length > i; i++) {
-            //   if(this.endorsementData.tableData[i].edited && !this.endorsementData.tableData[i].deleted){
-            //       this.saveRecEndt.push(this.endorsementData.tableData[i]);
-            //       this.saveRecEndt[this.saveRecEndt.length-1].createDate = new Date(this.saveRecEndt[this.saveRecEndt.length-1].createDate[0],this.saveRecEndt[this.saveRecEndt.length-1].createDate[1]-1,this.saveRecEndt[this.saveRecEndt.length-1].createDate[2]).toISOString();
-            //       this.saveRecEndt[this.saveRecEndt.length-1].updateDate = new Date(this.saveRecEndt[this.saveRecEndt.length-1].updateDate[0],this.saveRecEndt[this.saveRecEndt.length-1].updateDate[1]-1,this.saveRecEndt[this.saveRecEndt.length-1].updateDate[2]).toISOString();
-            //   }else if(this.endorsementData.tableData[i].edited && this.endorsementData.tableData[i].deleted){
-            //     this.deleteRecEndt.push(this.endorsementData.tableData[i]);
-            //     this.deleteRecEndt[this.deleteRecEndt.length-1].createDate = new Date(this.deleteRecEndt[this.deleteRecEndt.length-1].createDate[0],this.deleteRecEndt[this.deleteRecEndt.length-1].createDate[1]-1,this.deleteRecEndt[this.deleteRecEndt.length-1].createDate[2]).toISOString();
-            //     this.deleteRecEndt[this.deleteRecEndt.length-1].updateDate = new Date(this.deleteRecEndt[this.deleteRecEndt.length-1].updateDate[0],this.deleteRecEndt[this.deleteRecEndt.length-1].updateDate[1]-1,this.deleteRecEndt[this.deleteRecEndt.length-1].updateDate[2]).toISOString();
-            //   }
-            // }
-
+          console.log(this.opId + "<<<<<<<<<<<<<<<<< op ID");
             for (var i = 0 ; this.endorsementData.tableData.length > i; i++) {
               if(this.endorsementData.tableData[i].edited && !this.endorsementData.tableData[i].deleted){
                   this.endorsementReq = {
                      "deleteEndorsements": [],
-                      "optionId": this.saveEndt.optionId,
-                      "quoteId": this.saveEndt.quoteId,
+                      "optionId": this.opId,
+                      "quoteId": this.quoteId,
                       "saveEndorsements": [
                         {
-                          "createDate": this.saveEndt.createDate,
-                          "createUser": this.saveEndt.createUser,
+                          "createDate": new Date().toISOString(),
+                          "createUser": "Luffy",
                           "endtCd": this.endorsementData.tableData[i].endtCode,
                           "remarks":  this.endorsementData.tableData[i].endtWording,
                           "updateDate": new Date().toISOString(),
-                          "updateUser": this.saveEndt.updateUser
+                          "updateUser": "Luffy"
                         }
                       ]
                   }
