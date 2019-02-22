@@ -562,13 +562,11 @@ export class GeneralInfoComponent implements OnInit {
 		return true;
   	}
 
-<<<<<<< HEAD
   	focusBlur() {
   		$('.req').focus();
 		$('.req').blur();
   	}
-=======
->>>>>>> 388af79d5a289029bc60dc0088bf91f71ee5d4f2
+
 }
 export interface SelectRequestMode {
 	name: string;
