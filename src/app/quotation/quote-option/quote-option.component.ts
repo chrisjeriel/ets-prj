@@ -167,7 +167,7 @@ export class QuoteOptionComponent implements OnInit {
 
     }
     getQuoteOptions(){
-        this.quotationService.getQuoteOptions(this.quoteId,this.plainQuotationNo(this.quotationNum)).subscribe(data => {  
+        this.quotationService.getQuoteOptions(this.quoteId,this.plainQuotationNo(this.quotationNum)).subscribe(data => {
            if (data['quotation'] == null || data['quotation'] == undefined ){ 
            } else {
                var optionRecords = data['quotation'].optionsList;
@@ -228,6 +228,7 @@ export class QuoteOptionComponent implements OnInit {
     }
 
     updateDeductibles(data) {
+        console.log(data)
         if (data.deductiblesList != null || data.deductiblesList != undefined ){
           this.deductiblesData.tableData = data.deductiblesList;
           this.table.forEach(table => { table.refreshTable() });
