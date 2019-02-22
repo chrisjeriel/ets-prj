@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { QuotationGenInfo } from '../../_models';
 import { callLifecycleHooksChildrenFirst } from '@angular/core/src/view/provider';
 import { QuotationService, MaintenanceService } from '../../_services';
@@ -131,12 +131,19 @@ export class GeneralInfoComponent implements OnInit {
 	intId: number;
 	intName: string = "";
 	errorMdlMessage: string = "";
+	savingType: string = "";
 
 	@Output() checkQuoteId = new EventEmitter<any>();
+	@Input() quoteInfo = {
+		quoteId: '',
+		quotationNo: '',
+		riskName: '',
+		insuredDesc: ''
+	}
+
 
 	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute, private maintenanceService: MaintenanceService) { }
 	ngOnInit() {
-
 		this.titleService.setTitle("Quo | General Info");
 		this.tHeader.push("Item No", "Description of Items");
 		this.dataTypes.push("text", "text");
@@ -146,6 +153,7 @@ export class GeneralInfoComponent implements OnInit {
 		this.sub = this.route.params.subscribe(params => {
 			if(params['addParams'] != undefined){
 				this.internalCompFlag = JSON.parse(params['addParams']).intComp == undefined ? false : JSON.parse(params['addParams']).intComp; //neco
+				this.savingType = this.quotationService.savingType;
 			}
 			this.from = params['from'];
 			if (this.from == "quo-processing") {
@@ -154,33 +162,33 @@ export class GeneralInfoComponent implements OnInit {
 		});
 
 		if (this.quotationService.toGenInfo[0] == "edit") {
-			this.sub = this.route.params.subscribe(params => {
-				console.log(params['savingType']);
-				this.from = params['from'];
-				if (this.from == "quo-processing") {
-					this.line = params['quotationNo'].split('-')[0];
-					this.typeOfCession = params['typeOfCession'];
-					this.quotationNo = params['quotationNo'];
-					this.typeOfCession = this.typeOfCession;
-				}
-			});
+				this.sub = this.route.params.subscribe(params => {
+					this.from = params['from'];
+					if (this.from == "quo-processing") {
+						//this.line = params['quotationNo'].split('-')[0];
+						this.typeOfCession = params['typeOfCession'];
+						this.quotationNo = (this.quoteInfo.quotationNo === '') ? params['quotationNo'] : this.quoteInfo.quotationNo;
+					}
+				});
 
 			this.quotationService.getQuoteGenInfo('', this.plainQuotationNo(this.quotationNo)).subscribe(data => {
 				
 				if(data['quotationGeneralInfo'] != null) {
 					this.genInfoData = data['quotationGeneralInfo'];						
-					this.genInfoData.createDate = this.dateParser(this.genInfoData.createDate);
-					this.genInfoData.expiryDate = this.dateParser(this.genInfoData.expiryDate);
-					this.genInfoData.issueDate 	= this.dateParser(this.genInfoData.issueDate);
+					this.genInfoData.createDate = (this.genInfoData.createDate == null) ? '' : this.dateParser(this.genInfoData.createDate);
+					this.genInfoData.expiryDate = (this.genInfoData.expiryDate == null) ? '' : this.dateParser(this.genInfoData.expiryDate);
+					this.genInfoData.issueDate 	= (this.genInfoData.issueDate == null) ? '' : this.dateParser(this.genInfoData.issueDate);
 					this.genInfoData.printDate 	= (this.genInfoData.printDate == null) ? '' : this.dateParser(this.genInfoData.printDate);
-					this.genInfoData.reqDate 	= this.dateParser(this.genInfoData.reqDate);
-					this.genInfoData.updateDate = this.dateParser(this.genInfoData.updateDate);
+					this.genInfoData.reqDate 	= (this.genInfoData.reqDate == null) ? '' : this.dateParser(this.genInfoData.reqDate);
+					this.genInfoData.updateDate = (this.genInfoData.updateDate == null) ? '' : this.dateParser(this.genInfoData.updateDate);
 
-					if(this.internalCompFlag) {
+					if(this.savingType === 'internalComp') {
 						this.genInfoData.quoteId = '';
 						this.genInfoData.quotationNo = '';
 						this.genInfoData.cedingId = '';
 						this.genInfoData.cedingName = '';
+					} else if (this.savingType === 'modification') {
+
 					}
 				}
 
@@ -238,15 +246,6 @@ export class GeneralInfoComponent implements OnInit {
 		return (this.genInfoData.cessionDesc.toUpperCase() === 'RETROCESSION') ? true : false;
 	}
 
-	reqMode: SelectRequestMode[] = [
-	{ name: '', value: '' },
-	{ name: 'Web Portal', value: 'Web Portal' },
-	{ name: 'Fax', value: 'Fax' },
-	{ name: 'Email', value: 'Email' },
-	{ name: 'Phone', value: 'Phone' },
-	{ name: 'etc', value: 'etc' },
-	];
-
 	//getting value
 	func(a: string, b: Date) {
 		this.quotationGenInfo.createdBy = a;
@@ -292,6 +291,7 @@ export class GeneralInfoComponent implements OnInit {
 		this.genInfoData.contractorId = data.insuredId;
 
 		this.updateInsuredDesc();
+		
 	}
 
 	showCurrencyModal(){
@@ -325,7 +325,6 @@ export class GeneralInfoComponent implements OnInit {
 	}
 
 	setReinsurer(event) {
-		console.log(event);
 		this.genInfoData.reinsurerId = event.coNo;
 		this.genInfoData.reinsurerName = event.name;
 	}
@@ -348,6 +347,7 @@ export class GeneralInfoComponent implements OnInit {
     setInt(event){
         this.genInfoData.intmId = event.intmId;
         this.genInfoData.intmName = event.intmName;
+
     }
 
 	dateParser(arr) {
@@ -360,8 +360,9 @@ export class GeneralInfoComponent implements OnInit {
 
 	saveQuoteGenInfo() {		
 		if(this.validate(this.prepareParam())){
+			this.focusBlur();
+
 			this.quotationService.saveQuoteGeneralInfo(JSON.stringify(this.prepareParam())).subscribe(data => {
-				console.log(data);
 				if(data['returnCode'] == 0) {
 					this.errorMdlMessage = data['errorList'][0].errorMessage;
 					$('#errorMdl > #modalBtn').trigger('click');
@@ -372,9 +373,13 @@ export class GeneralInfoComponent implements OnInit {
 					this.genInfoData.quoteRevNo = parseInt(data['quotationNo'].split('-')[3]);
 
 					this.checkQuoteIdF(this.genInfoData.quoteId);
+
+					this.quotationService.toGenInfo[0] = 'edit';
+					this.quotationService.savingType = 'normal';
+
 					$('#successMdl > #modalBtn').trigger('click');
 						//for internal comp
-						if(this.internalCompFlag){
+						if(this.savingType === 'internalComp'){
 							
 							var internalCompParams: any[] = [{
 							  adviceNo: 0,
@@ -399,14 +404,14 @@ export class GeneralInfoComponent implements OnInit {
 			this.errorMdlMessage = "Please complete all the required fields.";
 			$('#errorMdl > #modalBtn').trigger('click');
 
-			$('.req').focus();
-			$('.req').blur();
+			this.focusBlur();
 		}
 
 	}
 
 	prepareParam() {
 		var saveQuoteGeneralInfoParam = {
+			"savingType"    : this.savingType,
 			"approvedBy"	: this.genInfoData.approvedBy,
 			"cedingId"		: this.genInfoData.cedingId,
 			"cessionId"		: this.genInfoData.cessionId,
@@ -491,7 +496,7 @@ export class GeneralInfoComponent implements OnInit {
   		$('#wordingClosingIdLov #modalBtn').trigger('click');
   	}
 
-  	setClosingWording(data) {
+  	setClosingWording(data) {  		
   		this.genInfoData.closingParag = data.wording;
   	}
 
@@ -555,6 +560,11 @@ export class GeneralInfoComponent implements OnInit {
 		}
 
 		return true;
+  	}
+
+  	focusBlur() {
+  		$('.req').focus();
+		$('.req').blur();
   	}
 }
 export interface SelectRequestMode {
