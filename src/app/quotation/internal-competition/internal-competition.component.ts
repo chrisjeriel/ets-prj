@@ -136,7 +136,13 @@ export class InternalCompetitionComponent implements OnInit, OnDestroy {
         // delete this.savedData[i].tableIndex;
       }
        this.quotationService.saveQuoteCompetition(this.savedData).subscribe((data: any) => {
-            $('#successModalBtn').trigger('click');
+           if(data.returnCode === 0){
+             console.log("ERROR!");
+             console.log(data);
+           }
+           else{
+              $('#successModalBtn').trigger('click');
+           }
        });
       /*let data : any = {
             adviceNo: 0,
