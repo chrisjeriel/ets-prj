@@ -22,7 +22,7 @@ export class QuoAlopComponent implements OnInit {
   policyRecordInfo: any = {};
   dataTypes: string[] = [];
   nData: QuoteALOPItemInformation = new QuoteALOPItemInformation(null, null, null, null, null);
-   
+  errorMdlMessage: string = "";
     sub:any;
     quotationNo: string;
     quoteId: string;
@@ -120,8 +120,13 @@ export class QuoAlopComponent implements OnInit {
     save() {
       this.alopData.quoteId = this.quoteId;
       this.quotationService.saveQuoteAlop(this.alopData).subscribe((data: any) => {
-        $('#successModalBtn').trigger('click');
-        this.getAlop();
+        if(data['returnCode'] == 0) {
+          this.errorMdlMessage = data['errorList'][0].errorMessage;
+          $('#errorMdl > #modalBtn').trigger('click');
+        } else{
+          $('#successModalBtn').trigger('click');
+          this.getAlop();
+        }
       });
       // this.ngOnInit();
     }
@@ -149,7 +154,6 @@ export class QuoAlopComponent implements OnInit {
       savedData.alopId = this.alopData.alopId;
       savedData.saveAlopItemList=[];
       savedData.deleteAlopItemList=[];
-      console.log(this.itemInfoData.tableData);
       for (var i = 0 ; this.itemInfoData.tableData.length > i; i++) {
         if(this.itemInfoData.tableData[i].edited && !this.itemInfoData.tableData[i].deleted){
             savedData.saveAlopItemList.push(this.itemInfoData.tableData[i]);
@@ -162,8 +166,15 @@ export class QuoAlopComponent implements OnInit {
         }
       }
       console.log(savedData);
-      this.quotationService.saveQuoteAlopItem(savedData).subscribe((data: any) => {});
-      $('app-sucess-dialog #modalBtn').trigger('click');
+      this.quotationService.saveQuoteAlopItem(savedData).subscribe((data: any) => {
+        if(data['returnCode'] == 0) {
+          this.errorMdlMessage = data['errorList'][0].errorMessage;
+          $('#errorMdl > #modalBtn').trigger('click');
+        } else{
+          $('app-sucess-dialog #modalBtn').trigger('click');
+        }
+      });
+      
   }
 
   showInsuredLOV(){

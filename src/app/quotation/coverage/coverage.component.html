@@ -29,7 +29,7 @@
             <div class="col-sm-2">
             </div>
             <div class="col-sm-8" style="padding-top: 8px; padding-bottom: 15px;">
-                 <app-cust-editable-non-datatable  [passData]="passData" (onDataChange)="passData.tableData=$event">
+                 <app-cust-editable-non-datatable  [passData]="passData" (onDataChange)="passData.tableData=$event" (clickLOV)="sectionCoversLOV($event)">
                 </app-cust-editable-non-datatable>
             </div>
             <div class="col-sm-2"></div>
@@ -110,7 +110,7 @@
         <div class="form-group col-sm">
             <div class="col-md-13 text-center">
                 <div class="cust-btn-container" style="margin-top: 10px;">
-                    <button type="button" class="cust-btn" (click)="cancel()" disabled="disabled"><a>Cancel</a></button>
+                    <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
                     <button type="button" class="cust-btn" (click)="saveData()"><a>Save</a></button>
                 </div>
             </div>
@@ -119,16 +119,14 @@
 </div>
 
 <app-sucess-dialog></app-sucess-dialog>
-
-<!-- <app-multiple-select [multiSelectHeaderTxt]="multiSelectHeaderTxt" [multiSelectData]="multiSelectData"
-(multiSelectDataSelected)="getMS($event)"></app-multiple-select> -->
-
-
-
-<!-- <input type="text" value="name" class="form-control form-control-sm cust-sm txt-content-rght"> 
-<select class="form-control form-control-sm cust-sm">
-<option>first option</option>
-<option>second option</option>
-</select>
-
-<br><br><br> -->
+<app-mtn-section-covers id="sectionCoversLOV" (selectedData)="selectedEndtLOV($event)"></app-mtn-section-covers>
+<app-modal class="d-none" id="errorMdl">
+    <div header>Error</div>
+    <div body class="container-flex text-center">
+        <span class="fa fa-times-circle fa-3x" style="vertical-align: middle;"></span>
+        <span style="vertical-align: middle; margin-left: 15px;">{{ errorMdlMessage }}</span>       
+    </div>
+    <div footer class="d-flex justify-content-center w-100">                    
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
+    </div>
+</app-modal>
