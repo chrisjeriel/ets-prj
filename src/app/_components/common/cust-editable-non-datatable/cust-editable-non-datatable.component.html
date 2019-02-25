@@ -173,10 +173,10 @@ span.ui-column-resizer {
                             <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]" class="align-middle">
                                 <div *ngIf="addCheckFlag(data) && ( passData.uneditable === undefined || !passData.uneditable[i] )" class="align-middle" style="position: relative;">
                                     <input *ngSwitchCase="'percent'" class="editable-text text-right number form-control-sm"
-                                    type="text" [ngModel]="processData(key, data) | number:'1.7-7'" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (ngModel)="onDataChange(data)">
+                                    type="text" [ngModel]="processData(key, data) | number:'1.7-7'" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange(data)">
                                     <input *ngSwitchCase="'number'" class="editable-text text-right number form-control-sm" (blur)="format($event , data, key)"
                                     type="text" [ngModel]="data[key]" [ngModelOptions]="{updateOn:'change'}" 
-                                    [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (ngModel)="onDataChange(data)">
+                                    [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange(data)">
 
                                     <input appCurrency *ngSwitchCase="'currency'" class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key] | number:'1.2-2' | negativeAmount" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange(data)" 
                                         [ngClass]="{'negativeNumber': data[key]<0}">
@@ -201,7 +201,7 @@ span.ui-column-resizer {
                                 </div>
 
                                 <div *ngIf="addCheckFlag(data) && ( passData.uneditable!== undefined && passData.uneditable[i] )" class="align-middle" style="position: relative;">
-                                    <a   *ngIf="passData.magnifyingGlass.indexOf(key)!=-1"><i class="fa fa-search align-middle"></i></a> 
+                                    <a  *ngIf="passData.magnifyingGlass.indexOf(key)!=-1"><i (click)="onClickLOV(data,key)" class="fa fa-search align-middle"></i></a> 
                                     <div *ngSwitchCase="'percent'" style="text-align: right">
                                         <span class="unclickable">{{ processData(key, data) | number: '1.7-7'}}</span>
                                     </div>

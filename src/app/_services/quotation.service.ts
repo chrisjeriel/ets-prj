@@ -36,6 +36,15 @@ export class QuotationService {
 
     rowData: any[] = [];
     toGenInfo: any[] = [];
+    /*newRec = {
+        new: false,
+        line: '',
+        quotationNo: '',
+        typeOfCession: '',
+        savingType: 'normal'
+    }*/
+
+    savingType: string = 'normal';
 
     constructor(private http: HttpClient) {
 

@@ -311,6 +311,7 @@ import { BordereauxComponent } from './accounting-in-trust/reports/bordereaux/bo
 import { QuarterlyStmntOfAcctComponent } from './accounting-in-trust/quarterly-stmnt-of-acct/quarterly-stmnt-of-acct.component';
 import { ProfitCommissionComponent } from './accounting-in-trust/profit-commission/profit-commission.component';
 import { BatchOsTakeupComponent } from './accounting-in-trust/month-end/batch-os-takeup/batch-os-takeup.component';
+import { MtnSectionCoversComponent } from './maintenance/mtn-section-covers/mtn-section-covers.component';
 
 
 @NgModule({
@@ -629,6 +630,7 @@ import { BatchOsTakeupComponent } from './accounting-in-trust/month-end/batch-os
         QuarterlyStmntOfAcctComponent,
         ProfitCommissionComponent,
         BatchOsTakeupComponent,
+        MtnSectionCoversComponent,
     ],
 
     providers: [
