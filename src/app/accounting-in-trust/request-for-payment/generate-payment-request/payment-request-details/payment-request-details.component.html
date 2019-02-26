@@ -107,7 +107,7 @@
 
 <div class="cust-tabs-container" style="margin-top:10px !important">
     <ngb-tabset>
-      <ngb-tab>
+      <ngb-tab *ngIf="paymentType != 'Others - Visible on any Payment Type'">
         <ng-template ngbTabTitle>
           <ng-container [ngSwitch]="paymentType.toUpperCase()">
            <div *ngSwitchCase ="'CLAIM EXPENSE PAYMENT TO CEDING COMPANY'">Claim Expense Payment to Ceding Company</div>

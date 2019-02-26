@@ -15,8 +15,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
   AdjustersData: any = {
   	tableData: this.accountingService.getPaymentToAdjuster(),
-  	tHeader: ['Claim Request No', 'Claim No', 'Payment For/To', 'Insured', 'Hist No', 'Hist Type', 'Ex-Gratia','Reserve Amount', 'Curr','Curr Rate','Amount','Amount (Php)'],
-  	dataTypes: ['text', 'text', 'text', 'text', 'number', 'text', 'checkbox', 'currency', 'text','percent', 'currency', 'currency'],
+  	tHeader: ['Claim Request No', 'Claim No', 'Payment For/To', 'Insured', 'Hist No', 'Hist Type', 'Ex-Gratia', 'Curr','Curr Rate','Reserve Amount','Amount','Amount (Php)'],
+  	dataTypes: ['text', 'text', 'text', 'text', 'number', 'text', 'checkbox', 'text', 'percent','currency', 'currency', 'currency'],
   	nData: new PaymentToAdjusters(null,null,null,null,null,null,null,null,null,null,null,null),
   	paginateFlag: true,
   	infoFlag: true,
@@ -32,8 +32,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
   OtherPartyData: any = {
   	tableData: this.accountingService.getPaymentToOtherParty(),
-  	tHeader: ['Claim Request No', 'Claim No', 'Payment For/To', 'Insured', 'Hist No', 'Hist Type', 'Ex-Gratia','Reserve Amount', 'Curr','Curr Rate','Amount','Amount (PHP)'],
-  	dataTypes: ['text', 'text', 'text', 'text', 'number', 'text', 'checkbox','currency','text','percent', 'currency', 'currency'],
+  	tHeader: ['Claim Request No', 'Claim No', 'Payment For/To', 'Insured', 'Hist No', 'Hist Type', 'Ex-Gratia', 'Curr','Curr Rate','Reserve Amount','Amount','Amount (PHP)'],
+  	dataTypes: ['text', 'text', 'text', 'text', 'number', 'text', 'checkbox','text', 'percent','currency', 'currency', 'currency'],
   	nData: new PaymentToOtherParty(null,null,null,null,null,null,null,null,null,null,null,null),
   	paginateFlag: true,
   	infoFlag: true,
@@ -49,8 +49,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
   CedingCompanyData: any = {
   	tableData: this.accountingService.getPaymentToCedingCompany(),
-  	tHeader: ['Claim Request No', 'Claim No', 'Payment For/To', 'Insured', 'Hist No', 'Hist Type', 'Ex-Gratia','Reserve Amount', 'Curr','Curr Rate','Amount','Amount (PHP)'],
-    dataTypes: ['text', 'text', 'text', 'text', 'number', 'text', 'checkbox','currency','text','percent', 'currency', 'currency'],
+  	tHeader: ['Claim Request No', 'Claim No', 'Payment For/To', 'Insured', 'Hist No', 'Hist Type', 'Ex-Gratia','Curr','Curr Rate','Reserve Amount','Amount','Amount (PHP)'],
+    dataTypes: ['text', 'text', 'text', 'text', 'number', 'text', 'checkbox','text', 'percent','currency', 'currency', 'currency'],
   	nData: new PaymentToCedingCompany(null,null,null,null,null,null,null,null,null,null,null,null),
   	paginateFlag: true,
   	infoFlag: true,
@@ -165,7 +165,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     if(this.paymentType === null){
       this.paymentType = "";
     }
-
+    console.log(this.accountingService.getPaymentToAdjuster());
     
   }
 
