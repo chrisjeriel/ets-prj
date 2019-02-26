@@ -113,16 +113,6 @@ export class CoverageComponent implements OnInit {
         $('input[appCurrency]').blur();
       }, 0)
 
-
-
-
-
-
-
-
-
-
-
       if(data.quotation.project.coverage.sectionCovers !== null){
         for(var i = 0; i < data.quotation.project.coverage.sectionCovers.length; i++){
             if(data.quotation.project.coverage.sectionCovers[i].section == 'I' && data.quotation.project.coverage.sectionCovers[i].addSi == 'Y'){
@@ -204,7 +194,6 @@ export class CoverageComponent implements OnInit {
         this.deletedData[this.deletedData.length-1].lineCd = this.lineCd;
       }
     }
-    console.log(this.editedData)
   }
 
   sectionCoversLOV(data){
@@ -214,38 +203,30 @@ export class CoverageComponent implements OnInit {
   }
 
   selectedSectionCoversLOV(data){
-    console.log(data)
     this.passData.tableData[this.sectionCoverLOVRow].coverCd = data.coverCode; 
+    this.passData.tableData[this.sectionCoverLOVRow].edited = true;
   }
 
-  update(data){
-     if(this.passData.tableData.edited){
-       if(data.addSi == 'Y' && data.section == 'I'){
-           this.coverageData.sectionISi =  this.coverageData.sectionISi + data.sumInsured;
-          
-        }
-        if(data.addSi == 'N' && data.section == 'I'){
-           this.coverageData.sectionISi =  this.coverageData.sectionISi - data.sumInsured;
-          
-        }
-        if(data.addSi == 'Y' && data.section == 'II'){
-           this.coverageData.sectionIISi =  this.coverageData.sectionIISi + data.sumInsured;
-          
-        }
-        if(data.addSi == 'N' && data.section == 'II'){
-           this.coverageData.sectionIISi =  this.coverageData.sectionIISi - data.sumInsured;
-          
-        }
-        if(data.addSi == 'Y' && data.section == 'III'){
-           this.coverageData.sectionIIISi =  this.coverageData.sectionIIISi + data.sumInsured;
-          
-        }
-        if(data.addSi == 'N' && data.section == 'III'){
-           this.coverageData.sectionIIISi =  this.coverageData.sectionIIISi - data.sumInsured;
-          
-        }
-       }
+  update(){
+    console.log('an')
+        this.coverageData.sectionISi =0;
+        this.coverageData.sectionIISi =0;
+        this.coverageData.sectionIIISi =0;
+       for(var i= 0; i< this.passData.tableData.length; i++){
+         if(this.passData.tableData[i].addSi == 'Y' && !this.passData.tableData[i].deleted){
 
+
+           if(this.passData.tableData[i].section == 'I'){
+             this.coverageData.sectionISi += this.passData.tableData[i].sumInsured;
+           }
+           if(this.passData.tableData[i].section == 'II'){
+             this.coverageData.sectionIISi += this.passData.tableData[i].sumInsured;
+           }
+           if(this.passData.tableData[i].section == 'III'){
+             this.coverageData.sectionIIISi += this.passData.tableData[i].sumInsured;
+           }
+         }
+       }
   }
 
 }
