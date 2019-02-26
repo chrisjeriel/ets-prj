@@ -146,7 +146,9 @@ export class QuoteOptionComponent implements OnInit {
     constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute) { }
 
     ngOnInit() {
-
+      setTimeout(() => {
+        $('#deductibleTable button').attr("disabled","disabled");
+              }, 0)
         this.titleService.setTitle("Quo | Quote Option");
      /*   this.quotationInfo = new QuotationInfo();
         this.quotationInfo.quotationNo = "SMP-0000-0000-00";
@@ -290,6 +292,7 @@ export class QuoteOptionComponent implements OnInit {
     }
 
     updateDeductibles(data) {
+         $('#deductibleTable button').removeAttr("disabled")
         if (data.deductiblesList != null || data.deductiblesList != undefined ){
           this.deductiblesData.tableData = data.deductiblesList;
           this.table.forEach(table => { table.refreshTable() });
@@ -299,9 +302,9 @@ export class QuoteOptionComponent implements OnInit {
     }
 
 saveData(){
-    //this.saveQuoteOption();
+    this.saveQuoteOption();
     this.saveQuoteDeductibles();
-    //this.saveOtherRates();
+    this.saveOtherRates();
     $('#successModalBtn').trigger('click');
  }
 
@@ -326,8 +329,6 @@ saveData(){
       }
     }
 
-
-    
     this.quotationService.saveQuoteOption(JSON.stringify(params)).subscribe((data: any) => {});
 }
 
@@ -352,8 +353,7 @@ saveQuoteDeductibles(){
       }
     }
      this.quotationService.saveQuoteDeductibles(JSON.stringify(params)).subscribe((data: any) => {
-       
-     });}
+       console.log(data)     });}
 
 saveOtherRates(){
       let params: any = {
