@@ -261,7 +261,6 @@ export class QuoteEndorsementComponent implements OnInit {
                                                                   this.saveEndt.optionId = data.endorsements[lineCount].optionId;
                                                                   this.saveEndt.createDate = this.formatDate(data.endorsements[lineCount].createDate);
                                                                   this.saveEndt.createUser = data.endorsements[lineCount].createUser;
-                                                                  console.log(this.saveEndt.createUser + "<<<<<<<<<< HETO HINAHANAP");
                                                                   this.saveEndt.updateUser = data.endorsements[lineCount].updateUser;          
                 }
                /* this.table.refreshTable();*/
@@ -289,6 +288,8 @@ export class QuoteEndorsementComponent implements OnInit {
                     //     this.table.forEach(table => { table.refreshTable() });
                     // }); 
 
+     
+
     }
 
     save() {
@@ -313,7 +314,6 @@ export class QuoteEndorsementComponent implements OnInit {
         this.endorsementData.tableData[this.endtCodeLOVRow].endtDescription = data.description; 
         this.endorsementData.tableData[this.endtCodeLOVRow].endtWording  = data.remarks; 
       }else{ 
-        //keys: ['endtCode','endtTitle','description','remarks']
         this.endorsementOCData.tableData[this.endtCodeLOVRow].endtCode = data.endtCd; 
         this.endorsementOCData.tableData[this.endtCodeLOVRow].endtTitle = data.endtTitle; 
         this.endorsementOCData.tableData[this.endtCodeLOVRow].description = data.description; 
@@ -339,15 +339,17 @@ export class QuoteEndorsementComponent implements OnInit {
     onClickSave(event){
         if(this.from === "quo-processing"){
             for (var i = 0 ; this.endorsementData.tableData.length > i; i++) {
+                (this.saveEndt.createDate === null) ? new Date().toISOString() : this.saveEndt.createDate;
+              (this.saveEndt.createUser == null) ? "Login User" : this.saveEndt.createUser;
               if(this.endorsementData.tableData[i].edited && !this.endorsementData.tableData[i].deleted){
                   this.endorsementReq = {
                      "deleteEndorsements": [],
                       "optionId": this.opId,
-                      "quoteId": this.quoteId,
+                      "quoteId": this.quoteId,  
                       "saveEndorsements": [
                         {
-                          "createDate": this.saveEndt.createDate,
-                          "createUser": this.saveEndt.createUser,
+                          "createDate": (this.saveEndt.createDate === null || this.saveEndt.createDate === "") ? new Date().toISOString() : this.saveEndt.createDate,
+                          "createUser": (this.saveEndt.createUser === null || this.saveEndt.createUser === "") ? 'user_login' : this.saveEndt.createUser,
                           "endtCd": this.endorsementData.tableData[i].endtCode,
                           "remarks":  this.endorsementData.tableData[i].endtWording,
                           "updateDate": new Date().toISOString(),
@@ -377,7 +379,10 @@ export class QuoteEndorsementComponent implements OnInit {
                       "saveEndorsements": []
                   }
                   this.quotationService.saveQuoteEndorsements(JSON.stringify(this.endorsementReq))
-                      .subscribe(data => console.log(data));
+                      .subscribe(data => {
+                        console.log(data);
+                        $('#successMdl > #modalBtn').trigger('click');
+                      });
               }
             }
         }else{
@@ -388,8 +393,8 @@ export class QuoteEndorsementComponent implements OnInit {
                     "quoteIdOc": this.quoteIdOc,
                     "saveEndorsementsOc": [
                       {
-                        "createDate": this.saveEndt.createDate,
-                        "createUser": this.saveEndt.createUser,
+                        "createDate": (this.saveEndt.createDate === null || this.saveEndt.createDate === "") ? new Date().toISOString() : this.saveEndt.createDate,
+                        "createUser": (this.saveEndt.createUser === null || this.saveEndt.createUser === "") ? 'user_login' : this.saveEndt.createUser,
                         "endtCd": this.endorsementOCData.tableData[i].endtCode,
                         "remarks": this.endorsementOCData.tableData[i].remarks,
                         "updateDate": new Date().toISOString(),
@@ -418,7 +423,10 @@ export class QuoteEndorsementComponent implements OnInit {
                     "saveEndorsementsOc": []
                  }
                  this.quotationService.saveQuoteEndorsementsOc(JSON.stringify(this.endorsementReqOc))
-                  .subscribe(data => console.log(data));
+                  .subscribe(data => {
+                    console.log(data);
+                    $('#successMdl > #modalBtn').trigger('click');
+                  });
               }
             }
         }
