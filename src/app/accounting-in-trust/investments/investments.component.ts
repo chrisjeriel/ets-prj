@@ -130,7 +130,7 @@ export class InvestmentsComponent implements OnInit {
      pagination: true,
      genericBtn: 'Save',
      pageLength: 15,
-     widths: ['auto','auto',150,150,1,1,50,1,1,1,90,175,175,175,175,175],
+     widths: [190,190,120,120,80,85,1,1,1,85,90,120,120,120,120,120],
    };
 
   constructor(private accountingService: AccountingService,private titleService: Title,private router: Router) { }

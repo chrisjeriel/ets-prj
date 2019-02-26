@@ -33,6 +33,7 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
     editFlag: false,
     pageLength: 10,
     genericBtn: 'Save'
+    widths: [180,180,120,1,1,1,1,1,85,120,120]
   };
 
   constructor(private accountingService: AccountingService,private titleService: Title) { }
