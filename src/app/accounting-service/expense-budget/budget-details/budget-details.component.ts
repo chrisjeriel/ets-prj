@@ -79,7 +79,7 @@ export class BudgetDetailsComponent implements OnInit {
                 dataType: 'text'
             },
         ],
-    total: [null,null,null,'Total','amount'],
+    total: [null,null,null,'TOTAL','amount'],
     magnifyingGlass: ['accountCd', 'slType', 'slName'],
   };
 

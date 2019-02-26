@@ -50,7 +50,7 @@ export class ByMonthComponent implements OnInit {
             "currency","currency","currency","currency","currency","currency",
             "currency","currency","currency"
     ],
-    total:[null,"Total",null,null,'total','jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'],
+    total:[null,"TOTAL",null,null,'total','jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'],
     magnifyingGlass: [],
     options: [],
     opts: [],
