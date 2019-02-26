@@ -299,9 +299,9 @@ export class QuoteOptionComponent implements OnInit {
     }
 
 saveData(){
-    //this.saveQuoteOption();
+    this.saveQuoteOption();
     this.saveQuoteDeductibles();
-    //this.saveOtherRates();
+    this.saveOtherRates();
     $('#successModalBtn').trigger('click');
  }
 
