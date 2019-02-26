@@ -381,3 +381,7 @@ tbody th div .negativeNumber{
     padding-right: 0.5px !important;
     color: red;
 }
+
+.uneditable span{
+        width: 90%;
+}
