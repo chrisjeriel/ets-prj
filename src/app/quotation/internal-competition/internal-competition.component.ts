@@ -132,41 +132,22 @@ export class InternalCompetitionComponent implements OnInit, OnDestroy {
             this.savedData[this.savedData.length-1].createDate = new Date().toISOString();
             this.savedData[this.savedData.length-1].updateDate = new Date().toISOString();
           }
-
-        // delete this.savedData[i].tableIndex;
       }
-       this.quotationService.saveQuoteCompetition(this.savedData).subscribe((data: any) => {
-           if(data.returnCode === 0){
-             console.log("ERROR!");
-             console.log(data);
-           }
-           else{
-              $('#successModalBtn').trigger('click');
-           }
-       });
-      /*let data : any = {
-            adviceNo: 0,
-            cedingId: 6, //hardcoded
-            cedingRepId: 'cedingrepid6',
-            createDate: new Date(),
-            createUser: 'Trinidad',
-            option: 'option1',
-            quoteId: 6,
-            updateDate: new Date(),
-            updateUser: 'Trinidad',
-            wordings: ''
-
-        }
-        this.quotationService.saveQuoteCompetition(data).subscribe((data: any) => {
-            console.log(data);
-        });*/
-    }
-
-    clickRow(event) {
-        // var result = event.target.closest('tr').children[1].innerText;
-        //  console.log(result);
-        // for(var i = 0; i < event.target.closest("tr").children.length; i++) {
-        //   console.log(event.target.closest("tr").children[i].ng-reflect-model.text);
+      if(this.savedData.length < 1){
+        //modal about no changes were made
+      }
+      else{
+        this.quotationService.saveQuoteCompetition(this.savedData).subscribe((data: any) => {
+            if(data.returnCode === 0){
+              console.log("ERROR!");
+              console.log(data);
+            }
+            else{
+               $('#successModalBtn').trigger('click');
+            }
+        });
+      }
+       
     }
 
     clickAdviceLOV(data){
