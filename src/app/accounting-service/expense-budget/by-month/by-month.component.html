@@ -1,3 +1,5 @@
+<!-- NOTE: THIS IS BUDGET BY MONTH -->
+
 <fieldset class="scheduler-border">
 <!-- <<<<<<< HEAD
 	<legend class="scheduler-border">Budget Accounts Spread Across the Months of the Year</legend>
@@ -20,13 +22,20 @@
 	</div>
 </fieldset>
 ======= -->
-	 <legend class="scheduler-border">Budget Accounts Spread Across the Months of the Year</legend>
+	 <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 	 	<div class="container-fluid">
-	 		<div class="row">
+	 		<div class="row" style="padding-top: 5px;">
 			    <div class="col-sm-12" style="padding: 0">
-			    		<div class="input-group" style="margin-top: 10px">
+			    		<div class="input-group" style="margin-top: 10px; margin-bottom: 14px !important;">
 			    			<label class="form-control-sm">Year</label>
-			    			<input type="text" class="form-control-sm yearIn" placeholder="2019" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' >
+			    			<select class="form-control form-control-sm cust-sm col-sm-1" id="selectYear" style="z-index: 50 !important;">
+								<option value="2019">2019</option>
+								<option value="2018">2018</option>
+								<option value="2017">2017</option>
+								<option value="2016">2016</option>
+								<option value="2015">2015</option>
+								<option value="2014">2014</option>
+							</select>
 			    			  <button type="button" class="cust" style="margin-left: 10px !important; width: 60px;"><a>Print</a></button>
 			    		</div>
 			    	   	<div style="margin-top: -55px ! important">
