@@ -42,10 +42,24 @@ export class QuotationOtherRates{
 	coverCdDesc:string;
     rate: number;
 	amount:number;
-	constructor(coverCd:number,coverCdDesc:string,rate: number, amount:number){
+	amountI: number;
+	rateI: number;
+	createDate: Date;
+	createUser: string;
+	updateDate: Date;
+	updateUser: string;
+
+	constructor(coverCd:number,coverCdDesc:string,rate: number, amount:number, amountI: number, rateI: number, createDate: Date,
+	  			createUser: string, updateDate: Date, updateUser: string ){
 		this.coverCd = coverCd;
 		this.coverCdDesc=coverCdDesc;
         this.rate = rate;
 		this.amount=amount;
+	    this.amountI=amountI;
+	    this.rateI=rateI;
+	    this.createDate=createDate;
+	    this.createUser=createUser;
+	    this.updateDate=updateDate;
+	    this.updateUser=updateUser;
 	}
 }

@@ -4,7 +4,7 @@
 		<ngb-tabset  (tabChange)="onTabChange($event)">
 		<ngb-tab class="ngb-tab" title="General Info">
 			<ng-template ngbTabContent>
-				<app-general-info (checkQuoteId)="checkQuoteInfo($event)"></app-general-info>
+				<app-general-info (checkQuoteId)="checkQuoteInfo($event)" [quoteInfo]="quoteInfo"></app-general-info>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab id="idko" [disabled]="quoteInfo.quoteId == ''">
@@ -20,7 +20,7 @@
 				<div>Quote Option</div>
 			</ng-template>
 			<ng-template ngbTabContent>
-				<app-quote-option></app-quote-option>
+				<app-quote-option [quotationInfo]="quoteInfo" ></app-quote-option>
 			</ng-template>
 		</ngb-tab>
 

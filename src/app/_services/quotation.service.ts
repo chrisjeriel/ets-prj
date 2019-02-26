@@ -36,6 +36,15 @@ export class QuotationService {
 
     rowData: any[] = [];
     toGenInfo: any[] = [];
+    /*newRec = {
+        new: false,
+        line: '',
+        quotationNo: '',
+        typeOfCession: '',
+        savingType: 'normal'
+    }*/
+
+    savingType: string = 'normal';
 
     constructor(private http: HttpClient) {
 
@@ -799,6 +808,15 @@ export class QuotationService {
              .set('quoteIdOc', quoteIdOc)
              .set('openQuotationNo', openQuotationNo);
         return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteCoverageOc',{params});
+    }
+
+    saveQuoteOption(params){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteOption',params,header);
     }
 
 }

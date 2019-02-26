@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { QuotationService, UnderwritingService } from '@app/_services';
 import { QuotationProcessing, Risks, CedingCompanyList } from '../../_models';
@@ -15,6 +15,7 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 })
 export class QuotationProcessingComponent implements OnInit {
     @ViewChildren(CustNonDatatableComponent) table: QueryList<CustNonDatatableComponent>;
+    @Output() savingType: EventEmitter<any> = new EventEmitter<any>();
     tableData: any[] = [];
     tHeader: any[] = [];
     dataTypes: any[] = [];
@@ -305,6 +306,8 @@ export class QuotationProcessingComponent implements OnInit {
                 intComp: false,
             }
 
+            this.savingType.emit('normal');
+
             setTimeout(() => {
                 this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), from: 'quo-processing', savingType: 'normal'}], { skipLocationChange: true });
             },100); 
@@ -399,7 +402,7 @@ setCedingcompany(data){
                 cessionId: this.typeOfCessionId,
                 cessionDesc: this.typeOfCession,
                 riskId: this.riskCd,
-                intComp: true,
+                // intComp: true,
             }
 
             setTimeout(() => {
@@ -446,8 +449,10 @@ setCedingcompany(data){
                 cessionId: this.typeOfCessionId,
                 cessionDesc: this.typeOfCession,
                 riskId: this.riskCd,
-                intComp: savingType === 'internalComp',
+                //intComp: savingType === 'internalComp',
             }
+
+            this.quotationService.savingType = savingType;
 
             setTimeout(() => {
                 this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), quotationNo: this.existingQuotationNo, from: 'quo-processing', savingType: savingType }], { skipLocationChange: true });

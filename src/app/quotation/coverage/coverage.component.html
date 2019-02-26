@@ -29,7 +29,7 @@
             <div class="col-sm-2">
             </div>
             <div class="col-sm-8" style="padding-top: 8px; padding-bottom: 15px;">
-                 <app-cust-editable-non-datatable  [passData]="passData" (onDataChange)="passData.tableData=$event">
+                 <app-cust-editable-non-datatable  [passData]="passData" (onDataChange)="passData.tableData=$event" (clickLOV)="sectionCoversLOV($event)">
                 </app-cust-editable-non-datatable>
             </div>
             <div class="col-sm-2"></div>
@@ -54,13 +54,13 @@
                                 <label class="form-control-sm">Exch. Rt.</label>
                                 <input type="text" class="form-control form-control-sm cust-sm txt-content-rght" required
                                        placeholder="0.00" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
-                                        [(ngModel)]="coverageData.currencyRt">
+                                        [(ngModel)]="coverageData.currencyRt" appCurrency>
                             </div>
                             <div class="input-group">&nbsp;
                                 <label class="form-control-sm">Total SI</label>
                                 <input type="text" class="form-control form-control-sm cust-sm txt-content-rght" required
                                        placeholder="0.00" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
-                                        [(ngModel)]="coverageData.totalSi">
+                                        [(ngModel)]="coverageData.totalSi" appCurrency>
                             </div>
                         </div>
                         <div class="col-sm-1"></div>
@@ -119,16 +119,14 @@
 </div>
 
 <app-sucess-dialog></app-sucess-dialog>
-
-<!-- <app-multiple-select [multiSelectHeaderTxt]="multiSelectHeaderTxt" [multiSelectData]="multiSelectData"
-(multiSelectDataSelected)="getMS($event)"></app-multiple-select> -->
-
-
-
-<!-- <input type="text" value="name" class="form-control form-control-sm cust-sm txt-content-rght"> 
-<select class="form-control form-control-sm cust-sm">
-<option>first option</option>
-<option>second option</option>
-</select>
-
-<br><br><br> -->
+<app-mtn-section-covers id="sectionCoversLOV" (selectedData)="selectedEndtLOV($event)"></app-mtn-section-covers>
+<app-modal class="d-none" id="errorMdl">
+    <div header>Error</div>
+    <div body class="container-flex text-center">
+        <span class="fa fa-times-circle fa-3x" style="vertical-align: middle;"></span>
+        <span style="vertical-align: middle; margin-left: 15px;">{{ errorMdlMessage }}</span>       
+    </div>
+    <div footer class="d-flex justify-content-center w-100">                    
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
+    </div>
+</app-modal>

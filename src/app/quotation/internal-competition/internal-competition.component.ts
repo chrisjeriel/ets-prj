@@ -79,8 +79,9 @@ export class InternalCompetitionComponent implements OnInit, OnDestroy {
            quoteNo += '-' + parseInt(this.quotationNo.split(/[-]/g)[i]);
          } 
         });
-        this.params.quotationNo = quoteNo;
-        if(this.params.quotationNo != ''){
+        this.params.quoteId = this.quotationInfo.quoteId;
+        this.params.quotationNo = this.quotationInfo.quotationNo;
+        if(this.params.quoteId != ''){
             this.quotationService.getIntCompAdvInfo(this.params).subscribe((data: any) => {
                 for(var j = 0; j < data.quotation.length; j++){
                   this.data = data.quotation[j].competitionsList;
