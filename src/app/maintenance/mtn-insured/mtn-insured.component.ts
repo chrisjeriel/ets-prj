@@ -51,6 +51,7 @@ export class MtnInsuredComponent implements OnInit {
           this.passData.tableData = data.insured;
           this.table.refreshTable();
         });
+
   }
 
 }
