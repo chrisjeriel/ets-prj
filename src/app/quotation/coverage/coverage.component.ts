@@ -83,6 +83,11 @@ export class CoverageComponent implements OnInit {
   quoteId: any;
   @Input() quotationInfo: any = {};
   errorMdlMessage: string = "";
+  sectionCoverLOVRow: number;
+  sectionI: number = 0;
+  sectionII: number = 0;
+  sectionIII: number = 0;
+  totalSi: number = 0;
 
   constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,private modalService: NgbModal) {}
 
@@ -93,15 +98,13 @@ export class CoverageComponent implements OnInit {
     for (var i = 1; i < this.quotationInfo.quotationNo.split(/[-]/g).length; i++) {
       this.quoteNo += '-' + parseInt(this.quotationInfo.quotationNo.split(/[-]/g)[i]);
     } 
-    console.log(this.quotationInfo)
 
     this.riskId = this.quotationInfo.riskId;
 
     this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
     if(data.quotation.project !== null ){
       this.coverageData = data.quotation.project.coverage;
-              // this.passData.tableData = data.quotation.project.coverage.sectionCovers;
-      for (var i = data.quotation.project.coverage.sectionCovers.length - 1; i >= 0; i--) {
+      for (var i = 0; i < data.quotation.project.coverage.sectionCovers.length; i++) {
         this.passData.tableData.push(data.quotation.project.coverage.sectionCovers[i]);
       }
       this.table.refreshTable();}
@@ -110,8 +113,34 @@ export class CoverageComponent implements OnInit {
         $('input[appCurrency]').blur();
       }, 0)
 
-    });
 
+
+
+
+
+
+
+
+
+
+      if(data.quotation.project.coverage.sectionCovers !== null){
+        for(var i = 0; i < data.quotation.project.coverage.sectionCovers.length; i++){
+            if(data.quotation.project.coverage.sectionCovers[i].section == 'I' && data.quotation.project.coverage.sectionCovers[i].addSi == 'Y'){
+              this.sectionI = this.sectionI + data.quotation.project.coverage.sectionCovers[i].sumInsured;
+            }
+            if(data.quotation.project.coverage.sectionCovers[i].section == 'II' && data.quotation.project.coverage.sectionCovers[i].addSi == 'Y'){
+              this.sectionII = this.sectionII + data.quotation.project.coverage.sectionCovers[i].sumInsured;
+            }
+            if(data.quotation.project.coverage.sectionCovers[i].section == 'III' && data.quotation.project.coverage.sectionCovers[i].addSi == 'Y'){
+              this.sectionIII = this.sectionIII + data.quotation.project.coverage.sectionCovers[i].sumInsured;
+            }
+        }
+        this.coverageData.sectionISi = this.sectionI;
+        this.coverageData.sectionIISi = this.sectionII;
+        this.coverageData.sectionIIISi = this.sectionIII;
+        this.coverageData.totalSi = this.sectionI + this.sectionII + this.sectionIII;
+      }
+    });
     this.multiSelectHeaderTxt = "COVERAGE";
     this.multiSelectData.push("zero", "one", "two", "three", "four");
 
@@ -144,7 +173,6 @@ export class CoverageComponent implements OnInit {
         this.deletedData[this.deletedData.length-1].lineCd = this.lineCd;
       }
     }
-
     this.coverageData.createDate          = new Date(this.coverageData.createDate[0],this.coverageData.createDate[1]-1,this.coverageData.createDate[2]).toISOString();
     //this.coverageData.updateDate          = new Date(this.coverageData.updateDate[0],this.coverageData.updateDate[1]-1,this.coverageData.updateDate[2]).toISOString();
     this.coverageData.saveSectionCovers   = this.editedData;
@@ -163,14 +191,61 @@ export class CoverageComponent implements OnInit {
   }
 
   cancel(){
-    console.log(this.deletedData)
+    for (var i = 0 ; this.passData.tableData.length > i; i++) {
+      if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted ){
+          this.editedData.push(this.passData.tableData[i]);
+          this.editedData[this.editedData.length-1].createDate = new Date(this.editedData[this.editedData.length-1].createDate[0],this.editedData[this.editedData.length-1].createDate[1]-1,this.editedData[this.editedData.length-1].createDate[2]).toISOString();
+          this.editedData[this.editedData.length-1].updateDate = new Date(this.editedData[this.editedData.length-1].updateDate[0],this.editedData[this.editedData.length-1].updateDate[1]-1,this.editedData[this.editedData.length-1].updateDate[2]).toISOString();
+          this.editedData[this.editedData.length-1].lineCd     = this.lineCd;
+      }else if(this.passData.tableData[i].edited && this.passData.tableData[i].deleted){
+        this.deletedData.push(this.passData.tableData[i]);
+        this.deletedData[this.deletedData.length-1].createDate = new Date(this.deletedData[this.deletedData.length-1].createDate[0],this.deletedData[this.deletedData.length-1].createDate[1]-1,this.deletedData[this.deletedData.length-1].createDate[2]).toISOString();
+        this.deletedData[this.deletedData.length-1].updateDate = new Date(this.deletedData[this.deletedData.length-1].updateDate[0],this.deletedData[this.deletedData.length-1].updateDate[1]-1,this.deletedData[this.deletedData.length-1].updateDate[2]).toISOString();
+        this.deletedData[this.deletedData.length-1].lineCd = this.lineCd;
+      }
+    }
+    console.log(this.editedData)
   }
 
   sectionCoversLOV(data){
         $('#sectionCoversLOV #modalBtn').trigger('click');
-        /*data.tableData = this.endorsementData.tableData;
-        this.endtCodeLOVRow = data.index;*/
-    }
+        //data.tableData = this.passData.tableData;
+        this.sectionCoverLOVRow = data.index;
+  }
 
+  selectedSectionCoversLOV(data){
+    console.log(data)
+    this.passData.tableData[this.sectionCoverLOVRow].coverCd = data.coverCode; 
+  }
+
+  update(data){
+     if(this.passData.tableData.edited){
+       if(data.addSi == 'Y' && data.section == 'I'){
+           this.coverageData.sectionISi =  this.coverageData.sectionISi + data.sumInsured;
+          
+        }
+        if(data.addSi == 'N' && data.section == 'I'){
+           this.coverageData.sectionISi =  this.coverageData.sectionISi - data.sumInsured;
+          
+        }
+        if(data.addSi == 'Y' && data.section == 'II'){
+           this.coverageData.sectionIISi =  this.coverageData.sectionIISi + data.sumInsured;
+          
+        }
+        if(data.addSi == 'N' && data.section == 'II'){
+           this.coverageData.sectionIISi =  this.coverageData.sectionIISi - data.sumInsured;
+          
+        }
+        if(data.addSi == 'Y' && data.section == 'III'){
+           this.coverageData.sectionIIISi =  this.coverageData.sectionIIISi + data.sumInsured;
+          
+        }
+        if(data.addSi == 'N' && data.section == 'III'){
+           this.coverageData.sectionIIISi =  this.coverageData.sectionIIISi - data.sumInsured;
+          
+        }
+       }
+
+  }
 
 }
