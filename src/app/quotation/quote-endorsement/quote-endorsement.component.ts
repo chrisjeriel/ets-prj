@@ -261,6 +261,7 @@ export class QuoteEndorsementComponent implements OnInit {
                                                                   this.saveEndt.optionId = data.endorsements[lineCount].optionId;
                                                                   this.saveEndt.createDate = this.formatDate(data.endorsements[lineCount].createDate);
                                                                   this.saveEndt.createUser = data.endorsements[lineCount].createUser;
+                                                                  console.log(this.saveEndt.createUser + "<<<<<<<<<< HETO HINAHANAP");
                                                                   this.saveEndt.updateUser = data.endorsements[lineCount].updateUser;          
                 }
                /* this.table.refreshTable();*/
