@@ -151,7 +151,8 @@ export class AttachmentComponent implements OnInit {
       // delete this.savedData[i].tableIndex;
     }
 
-    if (this.savedData.length != 0 || this.deletedData.length!=0) {
+    if (this.savedData.length != 0 || this.deletedData.length!=0 ) {
+      this.successMessage = "Successfully Saved!";
       this.quotationService.saveQuoteAttachment(this.quoteId,this.savedData,this.deletedData).subscribe((data: any) => {
         console.log(data)
         if(data['returnCode'] == 0) {
@@ -161,9 +162,8 @@ export class AttachmentComponent implements OnInit {
               $('#successModalBtn').trigger('click');
             this.getAttachment();
           }
-        
         });
-    } else {
+    }else{
       this.successMessage = "Nothing to save.";
       $('#successModalBtn').trigger('click');
     }

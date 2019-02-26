@@ -47,10 +47,8 @@ export class MtnInsuredComponent implements OnInit {
     while(this.passData.tableData.length>0){
       this.passData.tableData.pop();
     }
-    this.mtnService.getMtnInsured().subscribe((data: any) => {
-          for (var a = data.insured.length - 1; a >= 0; a--) {
-            this.passData.tableData.push(data.insured[a]);
-          }
+    this.mtnService.getMtnInsured().sub scribe((data: any) => {
+          this.passData.tableData = data.insured;
           this.table.refreshTable();
         });
   }
