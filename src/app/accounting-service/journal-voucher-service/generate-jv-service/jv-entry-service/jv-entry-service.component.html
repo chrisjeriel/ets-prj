@@ -25,6 +25,7 @@
                         <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 1px !important;" placeholder=""   [(ngModel)]="data" (change)="tabController($event);">               
                         <div style="margin-left: -19px !important;margin-right: 0px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div> -->
                                 <select class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="data" (change)="tabController($event);">
+                                    <option value="Service Fee Receivable for the Quarter" [selected]="data == 'Service Fee Receivable for the Quarter'">Service Fee Receivable for the Quarter</option>
                                     <option value="Collected Certificate of Withholding Tax" [selected]="data == 'Collected Certificate of Withholding Tax'">Collected Certificate of Withholding Tax</option>
                                     <option value="Uncollected Certificate of Withholding Tax" [selected]="data == 'Uncollected Certificate of Withholding Tax'">Uncollected Certificate of Withholding Tax</option>
                                     <option value="Payment of Service to In-Trust" [selected]="data == 'Payment of Service to In-Trust'">Payment of Service to In-Trust</option>
