@@ -30,37 +30,29 @@ export class BudgetDetailsComponent implements OnInit {
 =======*/
 
    passData: any = {
+    tableData: [],
     tHeader: [
-        "Budget Month","Account Code", "Account Name","SL Type", "SL Name", "Amount"
+        "Account Code", "Account Name","SL Type", "SL Name", "Amount"
     ],
     resizable: [
-            true,true, true, true, true, true
+            true, true, true, true, true
     ],
     dataTypes: [
-            "date","text", "text", "text","text","currency"
+            "text", "text", "text","text","currency"
     ],
-    magnifyingGlass: [],
     options: [],
     opts: [],
-    nData: {},
-    checkFlag: false,
+    nData: new BudgetForTheYear(null,null,null,null,null),
     selectFlag: false,
     addFlag: true,
-    editFlag: true,
     deleteFlag: true,
-    infoFlag: true,
+    checkFlag: true,
     searchFlag: true,
-    pageLength: 10,
-    widths: [],
-    pagination: true,
-    pageStatus: true,
+    pageLength: 20,
+    widths: [50, 'auto', 'auto', 'auto', 125],
+    paginateFlag: true,
     printBtn: false,
     filters: [
-             {
-                key: 'budMonth',
-                title: 'Budget Month',
-                dataType: 'date'
-            },
             {
                 key: 'accCode',
                 title: 'Account Code',
@@ -87,14 +79,60 @@ export class BudgetDetailsComponent implements OnInit {
                 dataType: 'text'
             },
         ],
+    total: [null,null,null,'TOTAL','amount'],
+    magnifyingGlass: ['accountCd', 'slType', 'slName'],
   };
 
   constructor (private accountingService: AccountingService) { }
 
   ngOnInit() {
-  		this.passData.tableData = this.accountingService.getListBudAcc();
+  		this.passData.tableData = [
+          new BudgetForTheYear("5-01-01","Salaries, Bonuses, and Allowances", null, null, 18112500),
+          new BudgetForTheYear("5-01-17","Official Rental, Light and Water", null, null, 10150000),
+          new BudgetForTheYear("5-01-15","Transportation and Travel", null, null, 1682450),
+          new BudgetForTheYear("5-01-14","Stationary Supplies and Printing", null, null, 1444000),
+          new BudgetForTheYear("5-01-11","Representation and Entertainment", null, null, 363500),
+          new BudgetForTheYear("5-01-13","Postages, Telephone, and Cables", null, null, 425000),
+          new BudgetForTheYear("5-01-18","Bank Charges", null, null, 360000),
+          new BudgetForTheYear("5-01-06-01","SSS Contribution", null, null, 300000),
+          new BudgetForTheYear("5-01-06-02","Pag-Ibig Contribution", null, null, 260000),
+          new BudgetForTheYear("5-01-06-03","Philhealth Contribution", null, null, 21600),
+          new BudgetForTheYear("5-01-05","Insurance Expenses", null, null, 103000),
+          new BudgetForTheYear("5-01-09","Repairs and Maintenance", null, null, 1176000),
+          new BudgetForTheYear("5-01-04","Membership Dues", null, null, 210000),
+          new BudgetForTheYear("5-01-21","Taxes and Licenses", null, null, 81700),
+          new BudgetForTheYear("5-01-20","Directors' Fees", null, null, 289700),
+          new BudgetForTheYear("5-01-19-01","Depreciation of Electronic Equipment", 'Electronic Equipment', 'Copier', 1120000),
+          new BudgetForTheYear("5-01-19-01","Depreciation of Electronic Equipment", 'Electronic Equipment', 'Computer', 151850),
+          new BudgetForTheYear("5-01-01-02","Depreciation of Transportation Equipment", 'Car', 'Fortuner', 6850),
+          new BudgetForTheYear("5-01-01-02","Depreciation of Transportation Equipment", 'Car', 'Toyota Altis', 215000),
+          new BudgetForTheYear("5-01-01-02","Depreciation of Transportation Equipment", 'Car', 'Innova', 0),
+      ];
   }
 /*>>>>>>> 978e0a86388844d0fc07436f2327abfe7de2467c*/
+  }
+
+  class BudgetForTheYear{
+    accountCd: string;
+    accountName: string;
+    slType: string;
+    slName: string;
+    amount: number;
+
+    constructor(
+      accountCd: string,
+      accountName: string,
+      slType: string,
+      slName: string,
+      amount: number
+      )
+    {
+        this.accountCd = accountCd;
+        this.accountName = accountName;
+        this.slType = slType;
+        this.slName = slName;
+        this.amount = amount;
+    }
   }
 
 

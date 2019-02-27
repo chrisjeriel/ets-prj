@@ -13,7 +13,7 @@ export class MtnSectionCoversComponent implements OnInit {
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
   selected: any;
-  riskListing: any = {
+  sectionCover: any = {
     tableData: [],
     tHeader: ['Cover Code','Short Name','Cover Description'],
     dataTypes: ['number', 'text','text'],
@@ -32,26 +32,20 @@ export class MtnSectionCoversComponent implements OnInit {
   constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal) { }
 
   ngOnInit() {
-  	
+  	this.maintenanceService.getMtnSectionCovers().subscribe((data: any) =>{
+      for(var i=0; i< data.sectionCovers.length;i++){
+             this.sectionCover.tableData.push(new MtnSectionCovers(data.sectionCovers[i].coverCd,data.sectionCovers[i].coverCdAbbr,data.sectionCovers[i].description));
+         }
+       this.table.refreshTable();
+    });
 
   }
 
-  onRowClick(data){
-  	//console.log(data);
-  	this.selected = data;
+  select(data){
+      this.selected = data;
   }
 
   okBtnClick(){
-  	this.selectedData.emit(this.selected);
-  }
-
-  openModal(){ 
-  	this.maintenanceService.getMtnSectionCovers().subscribe((data: any) =>{
-  		console.log(data)
-  		for(var i=0; i< data.sectionCovers.length;i++){
-             this.riskListing.tableData.push(new MtnSectionCovers(data.sectionCovers[i].coverCd,data.sectionCovers[i].coverCdAbbr,data.sectionCovers[i].description));
-         }
-  		 this.table.refreshTable();
-  	});
+    this.selectedData.emit(this.selected);
   }
 }

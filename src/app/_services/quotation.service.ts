@@ -675,22 +675,18 @@ export class QuotationService {
                 'Content-Type': 'application/json'
             })
         };
+
         return this.http.post('http://localhost:8888/api/quote-service/saveQuoteCoverage', JSON.stringify(coverageData), header);
     }
 
-    saveQuoteOtherRates(quoteId:number,otherRatesData:any){
-        let passData : any = {
-            quoteId: quoteId,
-            otherRates: otherRatesData
-        }
-        let 
-            header : any = {
+    saveQuoteOtherRates(params){
+        let header : any = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json'
             })
         };
-        console.log()
-        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteOtherRates', JSON.stringify(passData), header);
+        console.log(params);
+        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteOtherRates',params,header);
     }
 
     saveQuoteAlop(alopData:any){
@@ -816,7 +812,29 @@ export class QuotationService {
                 'Content-Type': 'application/json'
             })
         };
+         console.log(params);
         return this.http.post('http://localhost:8888/api/quote-service/saveQuoteOption',params,header);
+    }
+
+
+    saveQuoteDeductibles(params){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        console.log(params);
+        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteDeductibles',params,header);
+    }
+
+
+    saveQuoteEndorsementsOc(params){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteEndorsementsOc',params,header);
     }
 
 }
