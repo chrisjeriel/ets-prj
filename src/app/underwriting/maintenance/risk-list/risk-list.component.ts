@@ -16,7 +16,7 @@ export class RiskListComponent implements OnInit {
     maintenanceRiskListData: any = {
         tableData: [],
         tHeader: ['Active', 'Risk No.', 'Description', 'Abbreviation', 'Region', 'Province', 'City/Town', 'District', 'Block', 'Lat', 'Long'],
-        dataTypes: ['checkbox', 'number', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text'],
+        dataTypes: ['checkbox', 'sequence-5', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text'],
         resizable: [false, false, true, false, true, true, true, true, true, true, true],
         tableOnly: false,
         addFlag: true,

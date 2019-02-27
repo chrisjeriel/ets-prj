@@ -29,7 +29,7 @@ export class RiskFormComponent implements OnInit, OnDestroy {
             blockDesc : null,
             cityCd : null,
             cityDesc : null,
-            createDate : null,
+            createDate : new Date().toISOString().split('T')[0],
             createUser : null,
             districtCd : null,
             districtDesc : null,
@@ -43,13 +43,14 @@ export class RiskFormComponent implements OnInit, OnDestroy {
             riskAbbr : null,
             riskId : null,
             riskName : null,
-            updateDate : null,
+            updateDate : new Date().toISOString().split('T')[0],
             updateUser : null,
             zoneCd : null,
             zoneDesc : null,
         }
+    errorMdlMessage:any;
 
-    constructor(private route: ActivatedRoute, private titleService: Title, private router: Router,private mtnService: MaintenanceService ) { }
+    constructor(private route: ActivatedRoute, private titleService: Title, private router: Router,private mtnService: MaintenanceService,private modalService: NgbModal ) { }
 
     ngOnInit() {
         this.titleService.setTitle("Pol | Risk");
@@ -133,6 +134,18 @@ export class RiskFormComponent implements OnInit, OnDestroy {
     openGenericLOV(selector){
         if(selector == 'province'){
             this.passLOV.regionCd = this.riskData.regionCd;
+        }else if(selector == "city"){
+            this.passLOV.regionCd = this.riskData.regionCd;
+            this.passLOV.provinceCd = this.riskData.provinceCd;
+        }else if(selector == 'district'){
+            this.passLOV.regionCd = this.riskData.regionCd;
+            this.passLOV.provinceCd = this.riskData.provinceCd;
+            this.passLOV.cityCd = this.riskData.cityCd;
+        }else if(selector == 'block'){
+            this.passLOV.regionCd = this.riskData.regionCd;
+            this.passLOV.provinceCd = this.riskData.provinceCd;
+            this.passLOV.cityCd = this.riskData.cityCd;
+            this.passLOV.districtCd = this.riskData.districtCd;
         }
         this.passLOV.selector = selector;
         $('#lov #modalBtn').trigger('click');
@@ -147,6 +160,8 @@ export class RiskFormComponent implements OnInit, OnDestroy {
             this.setRegion(data.data);
         }else if(data.selector == 'province'){
             this.setProvince(data.data);
+        }else if(data.selector == 'block'){
+            this.setBlock(data.data);
         }
     }
 
@@ -156,7 +171,14 @@ export class RiskFormComponent implements OnInit, OnDestroy {
 
     save(){
         console.log(JSON.stringify(this.riskData));
-        this.mtnService.saveMtnRisk(this.riskData).subscribe();
+        this.mtnService.saveMtnRisk(this.riskData).subscribe((data:any)=>{
+            if(data['returnCode'] == 0) {
+              this.errorMdlMessage = data['errorList'][0].errorMessage;
+              $('#errorMdl > #modalBtn').trigger('click');
+            } else{
+              $('#successModalBtn').trigger('click');
+             }
+        });
     }
 
 

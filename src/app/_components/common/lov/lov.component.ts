@@ -46,9 +46,7 @@ export class LovComponent implements OnInit {
   }
 
   openModal(){
-    while(this.passTable.tableData.length>0){
-      this.passTable.tableData.pop();
-    }
+    this.passTable.tableData = [];
   	if(this.passData.selector == 'insured'){
   		this.passTable.keys = ['insuredId', 'insuredName' ];
       this.passTable.tHeader =  ['Insured Id', 'Insured Name' ];
@@ -73,7 +71,7 @@ export class LovComponent implements OnInit {
             'remarks',
             'zoneCd',
             'zoneDesc'];
-      this.mtnService.getMtnCity().subscribe((data: any) =>{
+      this.mtnService.getMtnCity(this.passData.regionCd,this.passData.provinceCd).subscribe((data: any) =>{
         //console.log(data);
         for(var regionCount = 0; regionCount < data.region.length; regionCount++){
           for(var provinceCount = 0; provinceCount < data.region[regionCount].provinceList.length; provinceCount++){
@@ -108,7 +106,7 @@ export class LovComponent implements OnInit {
                 'cityDesc',
                 'districtCd',
                 'districtDesc'];
-      this.mtnService.getMtnDistrict().subscribe((data: any) => {
+      this.mtnService.getMtnDistrict(this.passData.regionCd,this.passData.provinceCd,this.passData.cityCd).subscribe((data: any) => {
         console.log(data);
         for (var a = 0; a < data.region.length; a++) {
           for (var b = 0; b < data.region[a].provinceList.length; b++) {
@@ -123,7 +121,7 @@ export class LovComponent implements OnInit {
                 row.cityDesc = data.region[a].provinceList[b].cityList[c].cityDesc;
                 row.districtCd = data.region[a].provinceList[b].cityList[c].districtList[d].districtCd;
                 row.districtDesc = data.region[a].provinceList[b].cityList[c].districtList[d].districtDesc;
-                this.passData.tableData.push(row);
+                this.passTable.tableData.push(row);
               }
             }
           }
@@ -166,6 +164,62 @@ export class LovComponent implements OnInit {
           }
           this.table.refreshTable();
       });
+    }else if(this.passData.selector == 'block'){
+        this.passTable.tHeader = ['Region Code', 'Region Description', 'Province Code', 'Province Description', 'City Code', 'City Description', 'District Code', 'District Description', 'Block Code', 'Block Description' ];
+        this.passTable.dataTypes = ['text', 'text', 'text', 'text', 'text', 'text', 'text','text','text','text'];
+        this.passTable.keys = [
+          'regionCd',
+          'regionDesc',
+          'provinceCd',
+          'provinceDesc',
+          'cityCd',
+          'cityDesc',
+          'districtCd',
+          'districtDesc',
+          'blockCd',
+          'blockDesc'];
+          this.mtnService.getMtnBlock(this.passData.regionCd,this.passData.provinceCd,this.passData.cityCd,this.passData.districtCd).subscribe((data: any) => {
+            console.log(data);
+          //   for (var a = 0; a < data.region.length; a++) {
+          //     this.passDataBlock.tableData.push(
+            //   new MtnBlock(data.region[a].regionCd,
+            //          data.region[a].regionDesc, 
+            //          data.region[a].province.provinceCd, 
+            //          data.region[a].province.provinceDesc,
+            //          data.region[a].province.city.cityCd,
+            //          data.region[a].province.city.cityDesc,
+            //          data.region[a].province.city.district.districtCd,
+            //          data.region[a].province.city.district.districtDesc,
+            //          data.region[a].province.city.district.block.blockCd,
+            //          data.region[a].province.city.district.block.blockDesc )
+            // );
+
+
+              for (var a = 0; a < data.region.length; a++) {
+                for (var b = 0; b < data.region[a].provinceList.length; b++) {
+                  for (var c = 0; c < data.region[a].provinceList[b].cityList.length; c++) {
+                    for (var d= 0; d < data.region[a].provinceList[b].cityList[c].districtList.length; d++) {
+                      for (var e= 0; e < data.region[a].provinceList[b].cityList[c].districtList[d].blockList.length; e++) {
+                        let row:any = new Object();
+                                 row.regionCd = data.region[a].regionCd;
+                                 row.regionDesc = data.region[a].regionDesc;
+                                 row.provinceCd = data.region[a].provinceList[b].provinceCd;
+                                 row.provinceDesc = data.region[a].provinceList[b].provinceDesc;
+                                 row.cityCd = data.region[a].provinceList[b].cityList[c].cityCd;
+                                 row.cityDesc = data.region[a].provinceList[b].cityList[c].cityDesc;
+                                 row.districtCd = data.region[a].provinceList[b].cityList[c].districtList[d].districtCd;
+                                 row.districtDesc = data.region[a].provinceList[b].cityList[c].districtList[d].districtDesc;
+                                 row.blockCd = data.region[a].provinceList[b].cityList[c].districtList[d].blockList[e].blockCd;
+                                 row.blockDesc = data.region[a].provinceList[b].cityList[c].districtList[d].blockList[e].blockDesc;
+                        this.passTable.tableData.push(row);
+                    }
+                  }
+                }
+              }
+          }
+                
+            this.table.refreshTable();
+          });
     }
 
     this.modalOpen = true;
