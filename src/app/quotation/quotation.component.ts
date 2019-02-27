@@ -49,6 +49,10 @@ export class QuotationComponent implements OnInit {
   		this.quoteInfo = event;
   	}
 
+  	showPrintPreview() {
+  		window.open('http://localhost:8888/api/util-service/generateReport/' + this.quoteInfo.quoteId, '_blank');
+  	}
+
 	// setDocumentTitle(event) {
 	// 	console.log(event.target.closest('div').innerText);
 	// 	this.docTitle = event.target.innerText;
