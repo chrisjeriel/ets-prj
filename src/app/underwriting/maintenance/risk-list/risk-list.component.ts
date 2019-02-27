@@ -34,21 +34,23 @@ export class RiskListComponent implements OnInit {
 
         this.maintenanceService.getMtnRiskListing('','','','','','','','','','','').subscribe(data => {
             var records = data['risk'];
-
             for(let rec of records){
-                this.maintenanceRiskListData.tableData.push({
-                    activeTag: (rec.activeTag.toUpperCase() === 'Y'),
-                    riskId: rec.riskId,
-                    riskName: rec.riskName,
-                    riskAbbr: rec.riskAbbr,
-                    regionDesc: rec.regionDesc,
-                    provinceDesc: rec.provinceDesc,
-                    cityDesc: rec.cityDesc,
-                    districtDesc: rec.districtDesc,
-                    blockDesc: rec.blockDesc,
-                    latitude: rec.latitude,
-                    longitude: rec.longitude
-                });
+                this.maintenanceRiskListData.tableData.push(
+                    rec
+                // {
+                //     activeTag: (rec.activeTag.toUpperCase() === 'Y'),
+                //     riskId: rec.riskId,
+                //     riskName: rec.riskName,
+                //     riskAbbr: rec.riskAbbr,
+                //     regionDesc: rec.regionDesc,
+                //     provinceDesc: rec.provinceDesc,
+                //     cityDesc: rec.cityDesc,
+                //     districtDesc: rec.districtDesc,
+                //     blockDesc: rec.blockDesc,
+                //     latitude: rec.latitude,
+                //     longitude: rec.longitude
+                // }
+                );
             }
 
             this.table.refreshTable();
@@ -60,7 +62,7 @@ export class RiskListComponent implements OnInit {
     }
     
     onClickEdit(event){
-        this.router.navigate(['/maintenance-risk']);
+        this.router.navigate(['/maintenance-risk',this.selected], {skipLocationChange: true});
     }
 
 }

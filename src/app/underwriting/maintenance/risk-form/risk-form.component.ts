@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { MaintenanceService } from '@app/_services';
 
 @Component({
     selector: 'app-risk-form',
@@ -21,14 +22,54 @@ export class RiskFormComponent implements OnInit, OnDestroy {
     zoneCd: string = "";
     zoneDesc: string = "";
     passLOV:any = {};
+    riskData:any = 
+        {
+            activeTag : null,
+            blockCd : null,
+            blockDesc : null,
+            cityCd : null,
+            cityDesc : null,
+            createDate : null,
+            createUser : null,
+            districtCd : null,
+            districtDesc : null,
+            latitude : null,
+            longitude : null,
+            provinceCd : null,
+            provinceDesc : null,
+            regionCd : null,
+            regionDesc : null,
+            remarks : null,
+            riskAbbr : null,
+            riskId : null,
+            riskName : null,
+            updateDate : null,
+            updateUser : null,
+            zoneCd : null,
+            zoneDesc : null,
+        }
 
-    constructor(private route: ActivatedRoute, private titleService: Title) { }
+    constructor(private route: ActivatedRoute, private titleService: Title, private router: Router,private mtnService: MaintenanceService ) { }
 
     ngOnInit() {
         this.titleService.setTitle("Pol | Risk");
 
         this.sub = this.route.params.subscribe(params => {
-            this.info = params['info'];
+            if(params.info == undefined){
+                this.riskData = JSON.parse(JSON.stringify(params));
+                console.log(this.riskData.updateDate);
+                this.riskData.updateDate = 
+                    this.riskData.updateDate.split(/[,]/g)[0]+'-'+
+                    ("0"+this.riskData.updateDate.split(/[,]/g)[1]).slice(-2)+'-'+
+                    ("0"+this.riskData.updateDate.split(/[,]/g)[2]).slice(-2);
+                this.riskData.createDate = 
+                    this.riskData.createDate.split(/[,]/g)[0]+'-'+
+                    ("0"+this.riskData.createDate.split(/[,]/g)[1]).slice(-2)+'-'+
+                    ("0"+this.riskData.createDate.split(/[,]/g)[2]).slice(-2);
+                console.log(this.riskData);
+            }
+            else
+                this.info = params['info'];
         });
         if(this.info == 'new'){
             this.newForm = true;
@@ -89,4 +130,12 @@ export class RiskFormComponent implements OnInit, OnDestroy {
         }
     }
 
+    onClickCancel(){
+        this.router.navigate(['/maintenance-risk-list'], {skipLocationChange: true});
+    }
+
+    save(){
+        console.log(JSON.stringify(this.riskData));
+        this.mtnService.saveMtnRisk(this.riskData).subscribe();
+    }
 }
