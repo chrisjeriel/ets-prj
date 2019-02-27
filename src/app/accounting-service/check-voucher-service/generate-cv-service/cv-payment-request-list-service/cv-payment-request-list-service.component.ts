@@ -34,7 +34,9 @@ export class CvPaymentRequestListServiceComponent implements OnInit {
     editFlag: false,
     pageLength: 10,
     widths: [100,200,'auto',70,50,200,150,42,'auto'],
-    genericBtn: 'Save'
+    genericBtn: 'Save',
+    filters: [
+    ]
   };
 
 

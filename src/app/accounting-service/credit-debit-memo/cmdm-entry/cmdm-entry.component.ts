@@ -19,6 +19,7 @@ export class CmdmEntryComponent implements OnInit {
     nData: new AccountingEntryCMDM(null,null,null,null,null,null),
     total:[null,null,null,'Total','debit','credit'],
     addFlag: true,
+    checkFlag: true,
     deleteFlag: true,
     editFlag: false,
     pageLength: 10,

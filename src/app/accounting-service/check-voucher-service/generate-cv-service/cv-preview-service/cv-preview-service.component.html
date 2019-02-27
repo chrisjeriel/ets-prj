@@ -46,10 +46,6 @@
 				<div class="input-group cust-border" style="padding-top: 0.6em">
 					<div class="col-sm-12">
 						<app-cust-editable-non-datatable [passData]="amountDetailsData" (tableDataChange)="plusMinus($event)">
-							<ng-container controls-r>
-								<label class="form-control-sm" style="text-align: left !important">Auto Compute</label>
-								<input type="checkbox" class="checkbox text-right" style="vertical-align: middle;" checked>
-							</ng-container>
 						</app-cust-editable-non-datatable>
 					</div>
 				</div>
@@ -106,13 +102,13 @@
 	<div class="form-row custom-row-inline-inset" style="margin-left: -27px;">
 		<div class="input-group" style="margin-bottom: -15px !important;">
 			<label class="form-control-sm col-sm-1 text-right labels">Created By</label>
-			<input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma">
+			<input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma" disabled>
 			<label class="form-control-sm col-sm-1 text-right labels">Date Created</label>
-			<input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM">
+			<input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM" disabled>
 			<label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
-			<input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma">
+			<input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma" disabled>
 			<label class="form-control-sm col-sm-1 text-right labels">Last Update</label>
-			<input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM">
+			<input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM" disabled>
 		</div>
 	</div>
 </fieldset>
