@@ -1,18 +1,18 @@
 export class PaymentToAdjusters {
-	claimRequestNo: string
-	claimNo: string
-	adjusters: string
-	insured: string
-	histNo: number
-	histType: string
-	exGratia: string
-	reserveAmount: number
-	curr: string
-	currRate: number
-	amount: number
-	amountPhp: number
+	claimRequestNo: string;
+	claimNo: string;
+	adjusters: string;
+	insured: string;
+	histNo: number;
+	histType: string;
+	exGratia: string;
+	curr: string;
+	currRate: number;
+	reserveAmount: number;
+	amount: number;
+	amountPhp: number;
 
-	constructor(claimRequestNo: string,claimNo: string,adjusters: string,insured: string,histNo: number,histType: string,exGratia: string,reserveAmount: number,curr: string,currRate: number,amount: number,amountPhp: number){
+	constructor(claimRequestNo: string,claimNo: string,adjusters: string,insured: string,histNo: number,histType: string,exGratia: string,curr: string,currRate: number,reserveAmount: number,amount: number,amountPhp: number){
 
 		this.claimRequestNo = claimRequestNo;
 		this.claimNo = claimNo;
@@ -21,9 +21,9 @@ export class PaymentToAdjusters {
 		this.histNo = histNo;
 		this.histType = histType;
 		this.exGratia = exGratia;
-		this.reserveAmount = reserveAmount;
 		this.curr = curr;
 		this.currRate = currRate;
+		this.reserveAmount = reserveAmount;
 		this.amount = amount;
 		this.amountPhp = amountPhp;
 
@@ -31,20 +31,20 @@ export class PaymentToAdjusters {
 }
 
 export class PaymentToOtherParty {
-	claimRequestNo: string
-	claimNo: string
-	cedingCompany: string
-	insured: string
-	histNo: number
-	histType: string
-	exGratia: string
-	curr: string
-	currRate: number
-	reserveAmount: number
-	amount: number
-	amountPhp: number
+	claimRequestNo: string;
+	claimNo: string;
+	cedingCompany: string;
+	insured: string;
+	histNo: number;
+	histType: string;
+	exGratia: string;
+	curr: string;
+	currRate: number;
+	reserveAmount: number;
+	amount: number;
+	amountPhp: number;
 
-	constructor(claimRequestNo: string,claimNo: string,cedingCompany: string,insured: string,histNo: number,histType: string,exGratia: string,reserveAmount: number,curr: string,currRate: number,amount: number,amountPhp: number){
+	constructor(claimRequestNo: string,claimNo: string,cedingCompany: string,insured: string,histNo: number,histType: string,exGratia: string,curr: string,currRate: number,reserveAmount: number,amount: number,amountPhp: number){
 
 		this.claimRequestNo = claimRequestNo;
 		this.claimNo = claimNo;
@@ -53,9 +53,9 @@ export class PaymentToOtherParty {
 		this.histNo = histNo;
 		this.histType = histType;
 		this.exGratia = exGratia;
-		this.reserveAmount = reserveAmount;
 		this.curr = curr;
 		this.currRate = currRate;
+		this.reserveAmount = reserveAmount;
 		this.amount = amount;
 		this.amountPhp = amountPhp;
 
@@ -65,20 +65,20 @@ export class PaymentToOtherParty {
 
 
 export class PaymentToCedingCompany {
-	claimRequestNo: string
-	claimNo: string
-	cedingCompany: string
-	insured: string
-	histNo: number
-	histType: string
-	exGratia: string
-	curr: string
-	currRate: number
-	reserveAmount: number
-	amount: number
-	amountPhp: number
+	claimRequestNo: string;
+	claimNo: string;
+	cedingCompany: string;
+	insured: string;
+	histNo: number;
+	histType: string;
+	exGratia: string;
+	curr: string;
+	currRate: number;
+	reserveAmount: number;
+	amount: number;
+	amountPhp: number;
 
-	constructor(claimRequestNo: string,claimNo: string,cedingCompany: string,insured: string,histNo: number,histType: string,exGratia: string,reserveAmount: number,curr: string,currRate: number,amount: number,amountPhp: number){
+	constructor(claimRequestNo: string,claimNo: string,cedingCompany: string,insured: string,histNo: number,histType: string,exGratia: string,curr: string,currRate: number,reserveAmount: number,amount: number,amountPhp: number){
 
 		this.claimRequestNo = claimRequestNo;
 		this.claimNo = claimNo;
@@ -87,9 +87,9 @@ export class PaymentToCedingCompany {
 		this.histNo = histNo;
 		this.histType = histType;
 		this.exGratia = exGratia;
-		this.reserveAmount = reserveAmount;
 		this.curr = curr;
 		this.currRate = currRate;
+		this.reserveAmount = reserveAmount;
 		this.amount = amount;
 		this.amountPhp = amountPhp;
 

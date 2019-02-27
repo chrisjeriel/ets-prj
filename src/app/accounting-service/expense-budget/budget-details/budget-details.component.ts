@@ -48,7 +48,7 @@ export class BudgetDetailsComponent implements OnInit {
     deleteFlag: true,
     checkFlag: true,
     searchFlag: true,
-    pageLength: 20,
+    pageLength: 15,
     widths: [50, 'auto', 'auto', 'auto', 125],
     paginateFlag: true,
     printBtn: false,

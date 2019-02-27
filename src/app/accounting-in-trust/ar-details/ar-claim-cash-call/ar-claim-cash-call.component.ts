@@ -23,7 +23,7 @@ export class ArClaimCashCallComponent implements OnInit {
     checkFlag: true,
     genericBtn: 'Save',
     total: [null, null, null, null, null,null, null,null,null,null, 'Total', 'amount', 'amountPhp'],
-    widths: [130,180,'auto',1,'auto',1,'auto','auto',100,1,2,100,100],
+    widths: [180,180,250,1,200,1,1,120,120,1,85,120,120],
   }
 
   constructor(private accountingService: AccountingService) { }

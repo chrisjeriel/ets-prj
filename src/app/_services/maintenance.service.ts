@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { environment } from '@environments/environment';
 
 @Injectable({ providedIn: 'root' })
@@ -9,8 +9,12 @@ export class MaintenanceService{
 	constructor(private http: HttpClient) {
 
     }
-	getMtnDistrict(){
-		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnDistrict");
+	getMtnDistrict(regionCd?,provinceCd?,cityCd?){
+		const params = new HttpParams()
+			.set('provinceCd',provinceCd ===undefined || provinceCd===null ? '' : provinceCd)
+			.set('regionCd',regionCd ===undefined || regionCd===null ? '' : regionCd)
+			.set('cityCd',cityCd ===undefined || cityCd===null ? '' : cityCd)
+		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnDistrict",{params});
 	}
 
 	getMtnInsured(){
@@ -24,8 +28,11 @@ export class MaintenanceService{
 			);
 	}
 
-	getMtnCity(){
-		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnCity");
+	getMtnCity(regionCd?,provinceCd?){
+		const params = new HttpParams()
+			.set('provinceCd',provinceCd ===undefined || provinceCd===null ? '' : provinceCd)
+			.set('regionCd',regionCd ===undefined || regionCd===null ? '' : regionCd)
+		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnCity",{params});
 	}
 
 	getMtnCrestaZone(){
@@ -38,8 +45,13 @@ export class MaintenanceService{
 		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnCurrency", {params});
 	}
 
-	getMtnBlock(){
-		return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMaintenanceBlock');
+	getMtnBlock(regionCd?,provinceCd?,cityCd?,districtCd?){
+		const params = new HttpParams()
+			.set('provinceCd',provinceCd ===undefined || provinceCd===null ? '' : provinceCd)
+			.set('regionCd',regionCd ===undefined || regionCd===null ? '' : regionCd)
+			.set('cityCd',cityCd ===undefined || cityCd===null ? '' : cityCd)
+			.set('districtCd',districtCd ===undefined || districtCd===null ? '' : districtCd)
+		return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMaintenanceBlock',{params});
 	}
 
 
@@ -121,21 +133,30 @@ export class MaintenanceService{
    	   return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMntLineClass',{params});
 	}
 
-	getMtnRegion(regionCd){
+	getMtnRegion(regionCd?){
 		const params = new HttpParams()
-			.set('regionCd',regionCd)
+			.set('regionCd',regionCd===undefined || regionCd===null ? '' : regionCd)
 		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnRegion",{params});
 	}
 
-	getMtnProvince(provinceCd,regionCd){
+	getMtnProvince(provinceCd?,regionCd?){
 		const params = new HttpParams()
-			.set('provinceCd',provinceCd)
-			.set('regionCd',regionCd)
+			.set('provinceCd',provinceCd ===undefined || provinceCd===null ? '' : provinceCd)
+			.set('regionCd',regionCd ===undefined || regionCd===null ? '' : regionCd)
 		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnProvince",{params});
 	}
 
 	getAdviceWordings(){
 		return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMaintenanceAdviceWordings');
+	}
+
+	saveMtnRisk(params){
+		let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post('http://localhost:8888/api/maintenance-service/saveMtnRisk',JSON.stringify(params),header);
 	}
 
 }

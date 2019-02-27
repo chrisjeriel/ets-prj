@@ -585,7 +585,7 @@ export class AccountingService {
 
 	getPaymentToAdjuster() {
 		this.paymentToAdjuster = [
-			new PaymentToAdjusters("CSR-2018-10-00022","CAR-2018-000048","AArena Adjusters and Surveyors","2nd inn. inc", 4, "Adjuster's Expense","",-351000,"Php",1,350842.89,350842.89)
+			new PaymentToAdjusters("CSR-2018-10-00022","CAR-2018-000048","AArena Adjusters and Surveyors","2nd inn. inc", 4, "Adjuster's Expense","Y","PHP",1,-351000,350842.89,350842.89)
 		];
 		return this.paymentToAdjuster;
 		
@@ -593,7 +593,7 @@ export class AccountingService {
 
 	getPaymentToOtherParty() {
 		this.paymentToOtherParty = [
-			new PaymentToOtherParty("CSR-2018-10-00022","CAR-2018-000048","Asia United Insurance Inc","2nd inn. inc", 5, "Other Expenses","",-351000,"Php",1,350842.89,350842.89)
+			new PaymentToOtherParty("CSR-2018-10-00022","CAR-2018-000048","Asia United Insurance Inc","2nd inn. inc", 5, "Other Expenses","Y","PHP",1,-351000,350842.89,350842.89)
 		];
 		return this.paymentToOtherParty;
 	}
@@ -601,7 +601,7 @@ export class AccountingService {
 
 	getPaymentToCedingCompany() {
 		this.paymentToCedingCompany = [ 
-			new PaymentToCedingCompany("CSR-2018-10-00022","CAR-2018-000048","Asia United Insurance Inc","2nd inn. inc", 3, "Loss","",-351000,"Php",1,350842.89,350842.89)
+			new PaymentToCedingCompany("CSR-2018-10-00022","CAR-2018-000048","Asia United Insurance Inc","2nd inn. inc", 3, "Loss","Y","PHP",1,-351000,350842.89,350842.89)
 		];
 		return this.paymentToCedingCompany;
 	}
@@ -1242,14 +1242,14 @@ export class AccountingService {
 
 	getBatchOR(){
 		this.batchOR = [
-			new BatchOR('N','N',new Date(2018,11,1),null,null,'BPI/MS',1000000),
-			new BatchOR('N','N',new Date(2018,11,2),null,null,'UCPBGEN',546043),
-			new BatchOR('N','N',new Date(2018,11,2),null,null,'UCPBGEN',546043),
-			new BatchOR('N','N',new Date(2018,11,2),null,null,'STI',546043),
-			new BatchOR('N','N',new Date(2018,11,2),null,null,'UCPBGEN',546043),
-			new BatchOR('N','N',new Date(2018,11,2),null,null,'UCPBGEN',546043),
-			new BatchOR('N','N',new Date(2018,11,2),null,null,'PNBGEN',546043),
-			new BatchOR('N','N',new Date(2018,11,2),null,null,'Mrs Santos',546043),
+			new BatchOR('Y','N',new Date(2018,11,1),null,'2015-00000441',new Date(2015,10,1),'BPI/MS',1000000),
+			new BatchOR('Y','N',new Date(2018,11,2),null,'2015-00000421',new Date(2017,10,1),'UCPBGEN',546043),
+			new BatchOR('Y','N',new Date(2018,11,2),null,'2018-00000441',new Date(2018,10,1),'UCPBGEN',546043),
+			new BatchOR('N','N',new Date(2018,11,2),null,'2017-00000431',new Date(2017,10,4),'STI',546043),
+			new BatchOR('N','N',new Date(2018,11,2),null,'2018-00004301',new Date(2018,10,5),'UCPBGEN',546043),
+			new BatchOR('N','N',new Date(2018,11,2),null,'2019-00004001',new Date(2018,10,7),'UCPBGEN',546043),
+			new BatchOR('N','N',new Date(2018,11,2),null,'2018-00000431',new Date(2018,10,7),'PNBGEN',546043),
+			new BatchOR('N','N',new Date(2018,11,2),null,'2018-00000212',new Date(2018,10,7),'Mrs Santos',546043),
 		]
 		return this.batchOR;
 	}

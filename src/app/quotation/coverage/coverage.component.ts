@@ -103,28 +103,26 @@ export class CoverageComponent implements OnInit {
     this.riskId = this.quotationInfo.riskId;
 
     this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
-     if(data.quotation.project !== null){
-       for(var i = 0; i < data.quotation.project.coverage.sectionCovers.length; i++){
-           if(data.quotation.project.coverage.sectionCovers[i].section == 'I' && data.quotation.project.coverage.sectionCovers[i].addSi == 'Y'){
-             this.sectionI = this.sectionI + data.quotation.project.coverage.sectionCovers[i].sumInsured;
-           }
-           if(data.quotation.project.coverage.sectionCovers[i].section == 'II' && data.quotation.project.coverage.sectionCovers[i].addSi == 'Y'){
-             this.sectionII = this.sectionII + data.quotation.project.coverage.sectionCovers[i].sumInsured;
-           }
-           if(data.quotation.project.coverage.sectionCovers[i].section == 'III' && data.quotation.project.coverage.sectionCovers[i].addSi == 'Y'){
-             this.sectionIII = this.sectionIII + data.quotation.project.coverage.sectionCovers[i].sumInsured;
-           }
-       }
-       this.coverageData.sectionISi = this.sectionI;
-       this.coverageData.sectionIISi = this.sectionII;
-       this.coverageData.sectionIIISi = this.sectionIII;
-       this.coverageData.totalSi = this.sectionI + this.sectionII + this.sectionIII;
-     }
-
-
+    if(data.quotation.project !== null){
+      this.coverageData = data.quotation.project.coverage;
+      for(var i = 0; i < data.quotation.project.coverage.sectionCovers.length; i++){
+          if(data.quotation.project.coverage.sectionCovers[i].section == 'I' && data.quotation.project.coverage.sectionCovers[i].addSi == 'Y'){
+            this.sectionI = this.sectionI + data.quotation.project.coverage.sectionCovers[i].sumInsured;
+          }
+          if(data.quotation.project.coverage.sectionCovers[i].section == 'II' && data.quotation.project.coverage.sectionCovers[i].addSi == 'Y'){
+            this.sectionII = this.sectionII + data.quotation.project.coverage.sectionCovers[i].sumInsured;
+          }
+          if(data.quotation.project.coverage.sectionCovers[i].section == 'III' && data.quotation.project.coverage.sectionCovers[i].addSi == 'Y'){
+            this.sectionIII = this.sectionIII + data.quotation.project.coverage.sectionCovers[i].sumInsured;
+          }
+      }
+      this.coverageData.sectionISi = this.sectionI;
+      this.coverageData.sectionIISi = this.sectionII;
+      this.coverageData.sectionIIISi = this.sectionIII;
+      this.coverageData.totalSi = this.sectionI + this.sectionII + this.sectionIII;
+    }
 
     if(data.quotation.project !== null ){
-      this.coverageData = data.quotation.project.coverage;
       for (var i = 0; i < data.quotation.project.coverage.sectionCovers.length; i++) {
         this.passData.tableData.push(data.quotation.project.coverage.sectionCovers[i]);
       }
@@ -134,8 +132,12 @@ export class CoverageComponent implements OnInit {
         $('input[appCurrency]').blur();
       }, 0)
 
+
+
+
      /* */
     });
+
     this.multiSelectHeaderTxt = "COVERAGE";
     this.multiSelectData.push("zero", "one", "two", "three", "four");
 
@@ -186,19 +188,6 @@ export class CoverageComponent implements OnInit {
   }
 
   cancel(){
-    for (var i = 0 ; this.passData.tableData.length > i; i++) {
-      if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted ){
-          this.editedData.push(this.passData.tableData[i]);
-          this.editedData[this.editedData.length-1].createDate = new Date(this.editedData[this.editedData.length-1].createDate[0],this.editedData[this.editedData.length-1].createDate[1]-1,this.editedData[this.editedData.length-1].createDate[2]).toISOString();
-          this.editedData[this.editedData.length-1].updateDate = new Date(this.editedData[this.editedData.length-1].updateDate[0],this.editedData[this.editedData.length-1].updateDate[1]-1,this.editedData[this.editedData.length-1].updateDate[2]).toISOString();
-          this.editedData[this.editedData.length-1].lineCd     = this.lineCd;
-      }else if(this.passData.tableData[i].edited && this.passData.tableData[i].deleted){
-        this.deletedData.push(this.passData.tableData[i]);
-        this.deletedData[this.deletedData.length-1].createDate = new Date(this.deletedData[this.deletedData.length-1].createDate[0],this.deletedData[this.deletedData.length-1].createDate[1]-1,this.deletedData[this.deletedData.length-1].createDate[2]).toISOString();
-        this.deletedData[this.deletedData.length-1].updateDate = new Date(this.deletedData[this.deletedData.length-1].updateDate[0],this.deletedData[this.deletedData.length-1].updateDate[1]-1,this.deletedData[this.deletedData.length-1].updateDate[2]).toISOString();
-        this.deletedData[this.deletedData.length-1].lineCd = this.lineCd;
-      }
-    }
   }
 
   sectionCoversLOV(data){
@@ -212,17 +201,15 @@ export class CoverageComponent implements OnInit {
     this.passData.tableData[this.sectionCoverLOVRow].edited = true;
   }
 
-  update(){
-    console.log('an')
+  update(event){
         this.coverageData.sectionISi =0;
         this.coverageData.sectionIISi =0;
         this.coverageData.sectionIIISi =0;
        for(var i= 0; i< this.passData.tableData.length; i++){
          if(this.passData.tableData[i].addSi == 'Y' && !this.passData.tableData[i].deleted){
-
-
            if(this.passData.tableData[i].section == 'I'){
              this.coverageData.sectionISi += this.passData.tableData[i].sumInsured;
+             
            }
            if(this.passData.tableData[i].section == 'II'){
              this.coverageData.sectionIISi += this.passData.tableData[i].sumInsured;
@@ -230,6 +217,7 @@ export class CoverageComponent implements OnInit {
            if(this.passData.tableData[i].section == 'III'){
              this.coverageData.sectionIIISi += this.passData.tableData[i].sumInsured;
            }
+
          }
        }
        this.coverageData.totalSi = this.coverageData.sectionISi + this.coverageData.sectionIISi + this.coverageData.sectionIIISi

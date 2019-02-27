@@ -19,10 +19,12 @@ export class CmdmEntryComponent implements OnInit {
     nData: new AccountingEntryCMDM(null,null,null,null,null,null),
     total:[null,null,null,'Total','debit','credit'],
     addFlag: true,
+    checkFlag: true,
     deleteFlag: true,
     editFlag: false,
     pageLength: 10,
     widths: [205,305,163,176,122,154],
+    magnifyingGlass: ['accountCode','slType','slName'],
     genericBtn: 'Save'
   };
 

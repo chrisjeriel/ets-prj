@@ -165,7 +165,7 @@ export class QuoAlopComponent implements OnInit {
             savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].updateDate = new Date(savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].updateDate[0],savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].updateDate[1]-1,savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].updateDate[2]).toISOString();
         }
       }
-      console.log(savedData);
+      console.log(JSON.stringify(savedData));
       this.quotationService.saveQuoteAlopItem(savedData).subscribe((data: any) => {
         if(data['returnCode'] == 0) {
           this.errorMdlMessage = data['errorList'][0].errorMessage;

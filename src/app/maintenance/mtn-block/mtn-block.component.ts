@@ -44,19 +44,44 @@ export class MtnBlockComponent implements OnInit {
 
   ngOnInit() {
   	this.maintenanceService.getMtnBlock().subscribe((data: any) => {
-  		for (var a = 0; a < data.region.length; a++) {
-  			this.passDataBlock.tableData.push(
-				new MtnBlock(data.region[a].regionCd,
-							 data.region[a].regionDesc, 
-							 data.region[a].province.provinceCd, 
-							 data.region[a].province.provinceDesc,
-							 data.region[a].province.city.cityCd,
-							 data.region[a].province.city.cityDesc,
-							 data.region[a].province.city.district.districtCd,
-							 data.region[a].province.city.district.districtDesc,
-							 data.region[a].province.city.district.block.blockCd,
-							 data.region[a].province.city.district.block.blockDesc )
-			);
+      console.log(data);
+  	// 	for (var a = 0; a < data.region.length; a++) {
+  	// 		this.passDataBlock.tableData.push(
+			// 	new MtnBlock(data.region[a].regionCd,
+			// 				 data.region[a].regionDesc, 
+			// 				 data.region[a].province.provinceCd, 
+			// 				 data.region[a].province.provinceDesc,
+			// 				 data.region[a].province.city.cityCd,
+			// 				 data.region[a].province.city.cityDesc,
+			// 				 data.region[a].province.city.district.districtCd,
+			// 				 data.region[a].province.city.district.districtDesc,
+			// 				 data.region[a].province.city.district.block.blockCd,
+			// 				 data.region[a].province.city.district.block.blockDesc )
+			// );
+
+
+        for (var a = 0; a < data.region.length; a++) {
+          for (var b = 0; b < data.region[a].provinceList.length; b++) {
+            for (var c = 0; c < data.region[a].provinceList[b].cityList.length; c++) {
+              for (var d= 0; d < data.region[a].provinceList[b].cityList[c].districtList.length; d++) {
+                for (var e= 0; e < data.region[a].provinceList[b].cityList[c].districtList[d].blockList.length; e++) {
+                  this.passDataBlock.tableData.push(
+                    new MtnBlock(
+                           data.region[a].regionCd,
+                           data.region[a].regionDesc,
+                           data.region[a].provinceList[b].provinceCd,
+                           data.region[a].provinceList[b].provinceDesc,
+                           data.region[a].provinceList[b].cityList[c].cityCd,
+                           data.region[a].provinceList[b].cityList[c].cityDesc,
+                           data.region[a].provinceList[b].cityList[c].districtList[d].districtCd,
+                           data.region[a].provinceList[b].cityList[c].districtList[d].districtDesc,
+                           data.region[a].provinceList[b].cityList[c].districtList[d].blockList[e].blockCd,
+                           data.region[a].provinceList[b].cityList[c].districtList[d].blockList[e].blockDesc )
+                    );
+              }
+            }
+          }
+        }
 		}
   				
   		this.table.refreshTable();
