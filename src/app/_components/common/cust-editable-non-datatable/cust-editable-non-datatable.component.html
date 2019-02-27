@@ -150,7 +150,7 @@ span.ui-column-resizer {
                             <tr style="min-width: 96px">
                                 <th *ngIf="passData.checkFlag" class="checkbox"><input type="checkbox" name="checkbox" [(ngModel)]="checked"></th>
                                 <th container="body"  *ngFor="let tHeader of passData.tHeader; let i = index" (click)="sort(dataKeys[i],sortBy);sortIndex=i;"
-                                [style.width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [ngbTooltip]="passData.tooltip !== undefined ? passData.tooltip[i] :null">
+                                [style.min-width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [ngbTooltip]="passData.tooltip !== undefined ? passData.tooltip[i] :null">
                                 <!-- <span class="ui-column-resizer"  (mousedown)="onMouseDown($event)" *ngIf="passData.resizable === undefined ||  passData.resizable[i]"></span> -->
                                 <span class="ui-column-resizer"  (mousedown)="onMouseDown($event)"></span>
                                 <span *ngIf="isNumber(i)" class="gridHeader number text-right" >{{tHeader}}

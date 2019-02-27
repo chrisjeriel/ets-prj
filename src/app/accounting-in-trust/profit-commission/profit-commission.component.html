@@ -44,8 +44,10 @@
 						<app-cust-editable-non-datatable [passData]="passDataProfitCommissionStatement"></app-cust-editable-non-datatable>
 						<div class="input-group" style="margin-bottom: -25px !important;">
 							<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">PROFIT / (LOSS)</label>
-							<input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" numbers-only>
-							<input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" numbers-only style="margin-left: 5px !important;" value="404,777.58">
+							<div class="input-group col-sm-4" style="padding: 0px">
+								<input type="text" class="form-control form-control-sm cust-sm col-sm-6 text-right" numbers-only style="min-width: 194px;" [ngModel]="income1 | number: '1.2-2'" (onModelChange)="income1=$event">
+								<input type="text" class="form-control form-control-sm cust-sm col-sm-6 text-right" numbers-only style="margin-left: 5px !important; margin-right: 5px !important" [ngModel]="outgo1 | number: '1.2-2'" (onModelChange)="outgo1=$event">
+							</div>
 						</div>
 						<div class="input-group" style="margin-bottom: -3px !important;">
 							<div class="col-sm-8"></div>
@@ -53,64 +55,70 @@
 						</div>
 						<div class="input-group" style="margin-bottom: -25px !important;">
 							<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;"></label>
-							<input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" numbers-only value="9,481,348.73">
-							<input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" numbers-only style="margin-left: 5px !important;" value="9,481,348.73">
+							<div class="input-group col-sm-4" style="padding: 0px">
+								<input type="text" class="form-control form-control-sm cust-sm col-sm-6 text-right" numbers-only [ngModel]="income2 | number: '1.2-2'" (onModelChange)="income2=$event"style="min-width: 194px;">
+								<input type="text" class="form-control form-control-sm cust-sm col-sm-6 text-right" numbers-only style="margin-left: 5px !important; margin-right: 5px !important" [ngModel]="outgo2 | number: '1.2-2'" (onModelChange)="outgo2=$event">
+							</div>
 						</div>
 						<div class="input-group" style="margin-bottom: -3px !important;">
 							<div class="col-sm-8"></div>
 							<div class="col-sm" style="padding-left: 0px !important;padding-right: 0px !important">===================================</div>
 						</div>
-
-						
-						<fieldset class="scheduler-border col-sm-6">
-							<legend class="scheduler-border">Summary</legend>
-							<div class="custom-row-inline-inset">
-								<div class="input-group" style="margin-bottom: -25px !important;">
-									<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">PROFIT-Year 2018</label>
-									<label class="form-control-sm col-sm-3">404,777.58</label>
-								</div>
-								<div class="input-group" style="margin-bottom: -25px !important;">
-									<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">LESS: LOSS CARRIED FORWARD - Year 2016(3rd Year)</label>
-									<label class="form-control-sm col-sm-3">(393,269.40)</label>
-								</div>
-								<div class="input-group" style="margin-bottom: -30px !important;">
-									<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LOSS CARRIED FORWARD - Year 2017(1st Year)</label>
-									<label class="form-control-sm col-sm-3">(223,604.64)</label>
-								</div>
-								<div class="input-group" style="margin-bottom: -25px !important;">
-									<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;"></label>
-									<label class="form-control-sm col-sm-3">--------------------------</label>
-								</div>
-								<div class="input-group" style="margin-bottom: -30px !important;">
-									<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">NET LOSS CARRIED FORWARD - Year 2018</label>
-									<label class="form-control-sm col-sm-3">(212,096.46)</label>
-								</div>
-								<div class="input-group" style="margin-bottom: -25px !important;">
-									<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;"></label>
-									<label class="form-control-sm col-sm-3">--------------------------</label>
-								</div>
-							</div>
-						</fieldset>
-
-						<fieldset class="scheduler-border col-sm-6">
-							<legend class="scheduler-border">Note</legend>
-							<div class="custom-row-inline-inset">
-								<div class="input-group" style="margin-bottom: -25px !important;">
-									<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">***Net of 40% for Nat Cat</label>
-								</div>
-								<div class="input-group" style="margin-bottom: -25px !important;">
-									<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">Management Expenses = 15%</label>
-								</div>
-								<div class="input-group" style="margin-bottom: -25px !important;">
-									<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">Profit Commission = 20%</label>
-								</div>
-								<div class="input-group" style="margin-bottom: -25px !important;">
-									<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">Loss, if any, to be carried forward for 5 years </label>
-								</div>
-							</div>
-						</fieldset>
-						
 					</div>
+					<!-- <div class="container-fluid"> -->
+						<div class="row">
+							<div class="col-sm-6" style="padding-bottom: 9px;">
+								<fieldset class="scheduler-border">
+									<legend class="scheduler-border">Summary</legend>
+									<div class="custom-row-inline-inset">
+										<div class="input-group" style="margin-bottom: -25px !important;">
+											<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">PROFIT-Year 2018</label>
+											<label class="form-control-sm col-sm-3">404,777.58</label>
+										</div>
+										<div class="input-group" style="margin-bottom: -25px !important;">
+											<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">LESS: LOSS CARRIED FORWARD - Year 2016(3rd Year)</label>
+											<label class="form-control-sm col-sm-3">(393,269.40)</label>
+										</div>
+										<div class="input-group" style="margin-bottom: -30px !important;">
+											<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LOSS CARRIED FORWARD - Year 2017(1st Year)</label>
+											<label class="form-control-sm col-sm-3">(223,604.64)</label>
+										</div>
+										<div class="input-group" style="margin-bottom: -25px !important;">
+											<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;"></label>
+											<label class="form-control-sm col-sm-3">--------------------------</label>
+										</div>
+										<div class="input-group" style="margin-bottom: -30px !important;">
+											<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">NET LOSS CARRIED FORWARD - Year 2018</label>
+											<label class="form-control-sm col-sm-3">(212,096.46)</label>
+										</div>
+										<div class="input-group" style="margin-bottom: -25px !important;">
+											<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;"></label>
+											<label class="form-control-sm col-sm-3">--------------------------</label>
+										</div>
+									</div>
+								</fieldset>
+							</div>
+							<div class="col-sm-6">
+								<fieldset class="scheduler-border">
+									<legend class="scheduler-border">Note</legend>
+									<div class="custom-row-inline-inset" style="margin-bottom: 26px !important;">
+										<div class="input-group" style="margin-bottom: -25px !important;">
+											<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">***Net of 40% for Nat Cat</label>
+										</div>
+										<div class="input-group" style="margin-bottom: -25px !important;">
+											<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">Management Expenses = 15%</label>
+										</div>
+										<div class="input-group" style="margin-bottom: -25px !important;">
+											<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">Profit Commission = 20%</label>
+										</div>
+										<div class="input-group" style="margin-bottom: -25px !important;">
+											<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">Loss, if any, to be carried forward for 5 years </label>
+										</div>
+									</div>
+								</fieldset>
+							</div>
+						</div>
+					<!-- </div> -->
 				</fieldset>
 
 				
