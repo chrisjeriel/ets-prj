@@ -19,7 +19,7 @@ export class BatchOrPrintingComponent implements OnInit {
   	tableData: this.accountingService.getBatchOR(),
   	tHeader: ['G', 'P', 'OR Date', 'OR', 'Number', 'Payor','Amount'],
   	dataTypes: ['checkbox', 'checkbox', 'date', 'number', 'text','text', 'currency'],
-  	nData: new BatchOR(null,null,null,null,null,null,null),
+  	nData: new BatchOR(null,null,null,null,null,null,null,null),
   	searchFlag: true,
   	pageLength: 10,
     infoFlag: true,
