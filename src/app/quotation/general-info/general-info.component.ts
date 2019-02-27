@@ -213,7 +213,7 @@ export class GeneralInfoComponent implements OnInit {
 				this.genInfoData.issueDate		= new Date().toISOString();
 				this.project.projId 			= '1';
 
-				this.maintenanceService.getMtnRisk(JSON.parse(params['addParams']).riskId).subscribe(data => {					
+				this.maintenanceService.getMtnRisk(JSON.parse(params['addParams']).riskId).subscribe(data => {				
 					var risk = data['risk'];
 
 					this.project.blockCd 		= risk.blockCd;
