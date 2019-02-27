@@ -1,6 +1,6 @@
 <div class="cust-tabs-container">
 	<h4>Accounting In-Trust / Credit/Debit Memo /Generate CM/DM</h4>
-		<ngb-tabset>
+		<ngb-tabset  (tabChange)="onTabChange($event)">
 			<ngb-tab class="ngb-tab" title="CM/DM Entry">
 				<ng-template ngbTabContent>
 					<app-acct-cmdm-entry></app-acct-cmdm-entry>
@@ -11,5 +11,11 @@
 					<app-cmdm-accnt-entries></app-cmdm-accnt-entries>
 				</ng-template>
 			</ngb-tab>
+			<ngb-tab id="Exit">
+				<ng-template ngbTabTitle>
+					<div>Exit</div>
+				</ng-template>
+    			<ng-template ngbTabContent></ng-template>
+  		</ngb-tab>
 		</ngb-tabset>
 </div>

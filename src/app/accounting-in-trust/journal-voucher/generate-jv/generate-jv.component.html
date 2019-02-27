@@ -7,7 +7,15 @@
 					<app-jv-entry [record]="record" (onChange)="checkTabs($event);"></app-jv-entry>	
 				</ng-template>
 			</ngb-tab>
-			<ngb-tab class="ngb-tab" title="JV Details">
+			<!-- <ngb-tab class="ngb-tab" title="JV Details" [disabled]="jvTypeFlag">
+				<ng-template ngbTabContent>
+					<app-jv-details [jvType]="jvType"></app-jv-details>
+				</ng-template>
+			</ngb-tab> -->
+			<ngb-tab [disabled]="jvTypeFlag">
+				<ng-template ngbTabTitle>
+					<div>JV Details</div>
+				</ng-template>
 				<ng-template ngbTabContent>
 					<app-jv-details [jvType]="jvType"></app-jv-details>
 				</ng-template>

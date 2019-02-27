@@ -347,7 +347,7 @@ export class QuoteEndorsementComponent implements OnInit {
                       "saveEndorsements": [
                         {
                           "createDate": (this.saveEndt.createDate === null || this.saveEndt.createDate === "") ? new Date().toISOString() : this.saveEndt.createDate,
-                          "createUser": (this.saveEndt.createUser === null || this.saveEndt.createUser === "") ? 'user_login' : this.saveEndt.createUser,
+                          "createUser": (this.saveEndt.createUser === null || this.saveEndt.createUser === "") ? 'CPI' : this.saveEndt.createUser,
                           "endtCd": this.endorsementData.tableData[i].endtCode,
                           "remarks":  this.endorsementData.tableData[i].endtWording,
                           "updateDate": new Date().toISOString(),
@@ -364,8 +364,8 @@ export class QuoteEndorsementComponent implements OnInit {
                   this.endorsementReq = {
                      "deleteEndorsements": [
                         {
-                          "createDate": this.saveEndt.createDate,
-                          "createUser": this.saveEndt.createUser,
+                          "createDate": new Date().toISOString(),
+                          "createUser": 'CPI',
                           "endtCd": this.endorsementData.tableData[i].endtCode,
                           "remarks":  this.endorsementData.tableData[i].endtWording,
                           "updateDate": new Date().toISOString(),
@@ -392,7 +392,7 @@ export class QuoteEndorsementComponent implements OnInit {
                     "saveEndorsementsOc": [
                       {
                         "createDate": (this.saveEndt.createDate === null || this.saveEndt.createDate === "") ? new Date().toISOString() : this.saveEndt.createDate,
-                        "createUser": (this.saveEndt.createUser === null || this.saveEndt.createUser === "") ? 'user_login' : this.saveEndt.createUser,
+                        "createUser": (this.saveEndt.createUser === null || this.saveEndt.createUser === "") ? 'CPI' : this.saveEndt.createUser,
                         "endtCd": this.endorsementOCData.tableData[i].endtCode,
                         "remarks": this.endorsementOCData.tableData[i].remarks,
                         "updateDate": new Date().toISOString(),
@@ -409,7 +409,7 @@ export class QuoteEndorsementComponent implements OnInit {
                  this.endorsementReqOc = {
                    "deleteEndorsementsOc": [
                     {
-                      "createDate": this.saveEndt.createDate,
+                      "createDate": new Date().toISOString(),
                       "createUser": this.saveEndt.createUser,
                       "endtCd": this.endorsementOCData.tableData[i].endtCode,
                       "remarks": this.endorsementOCData.tableData[i].remarks,

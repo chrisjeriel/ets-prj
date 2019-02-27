@@ -46,7 +46,7 @@ export class PaytReqInvestmentComponent implements OnInit {
     addFlag: true,
     deleteFlag: true,
     total: [null, null, null,null,null,null,null,null,null, 'Total','investment'],
-    widths:['auto',1,1,1,1,1,1,1,1,'auto','auto'],
+    widths:[200,120,1,1,1,85,1,1,1,85,120],
     genericBtn: 'Save',
   }
 

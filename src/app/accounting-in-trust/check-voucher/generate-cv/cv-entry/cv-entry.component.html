@@ -2,33 +2,36 @@
     <div class="col-sm-10" style="padding-right: 0px !important;">
         <fieldset class="scheduler-border">
             <legend class="scheduler-border">CV Info</legend>
-               <div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;">
-                <div class="input-group" style="margin-bottom: -13px !important; margin-top: 10px !important">
+            <div class="container-fluid">
+               <div class="form-row" style="margin-top: 13.5px !important;margin-bottom: 13.5px !important;">
+                <div class="input-group">
                     <label class="form-control-sm col-sm-1">CV. No</label>
-                    <input type="text"   class="form-control form-control-sm cust-sm col-sm-1"
-                           placeholder="2018" style="margin-right: 4px !important;" style="text-align: right;margin-right: 4px !important;">
-                    <input type="text" class="form-control form-control-sm cust-sm col-sm-2"
-                           placeholder="00000001" style="text-align: right;">
+                    <div class="input-group col-sm-3 no-padding">
+                        <input type="text"   class="form-control form-control-sm cust-sm col-sm-4"
+                               placeholder="2018">
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-8"
+                               placeholder="00000001" style="text-align: right;    margin-left: 2px;">
+                    </div>
                     <label class="form-control-sm col-sm-1">Date</label>
-                    <input type="datetime-local" class="form-control form-control-sm cust-sm col-sm" value="2018-10-01T08:45" style="margin-right: 4px !important;">
+                    <input type="datetime-local" class="form-control form-control-sm cust-sm col-sm" value="2018-10-01T08:45" >
                     <!-- <label class="form-control-sm col-sm-1">Tran ID</label>
                     <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="000372921" style="text-align: right;"> -->
                     <label class="form-control-sm col-sm-2">Status</label>
-                    <input type="text" class="form-control form-control-sm cust-sm col-sm-3" placeholder="New" style="margin-right: 2px !important">
+                    <input type="text" class="form-control form-control-sm cust-sm col-sm-3" placeholder="New" >
                 </div>
                 <div class="input-group">
-                    <label class="form-control-sm col-sm-1" style="height: auto;">Payee</label>
-                    <select class="form-control form-control-sm cust-sm col-sm-11" style="margin-right: 4px !important;">
+                    <label class="form-control-sm col-sm-1">Payee</label>
+                    <select class="form-control form-control-sm cust-sm col-sm-11">
                         <option value="San Miguel Corporation">San Miguel Corporation</option>
                         <option value="SM Prime Holdings, Inc">SM Prime Holdings, Inc</option>
                         <option value="Rustans, Inc">Rustans, Inc</option>
                     </select>
                 </div>
-                <div class="input-group" style="margin-bottom: -1px !important;">
-                    <label class="form-control-sm col-sm-1" style="height: auto;">Particulars</label>
-                    <textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 69px; margin-bottom: 5px;margin-right: 5px !important;" placeholder="Representing check payment for San Miguel Corporation"></textarea>
+                <div class="input-group">
+                    <label class="form-control-sm col-sm-1">Particlars</label>
+                    <textarea class="form-control form-control-sm cust-sm col-sm text-area-font" placeholder="Representing check payment for San Miguel Corporation"></textarea>
                 </div>
-                
+            </div>
             </div>
         </fieldset>
     </div>
@@ -36,7 +39,7 @@
         <fieldset class="scheduler-border" style="padding: 8px 0px !important;">
             <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
             <!-- <div class="cust-btn-container" style="margin-left: 10px !important;margin-right: 10px !important;">  -->
-                <div class="cust-btn-container" style="text-align: center; margin-top: 5px; margin-bottom: 5px;"> 
+                <div class="cust-btn-container" style="text-align: center; margin-top: 1px; margin-bottom: 3px;"> 
                 <button class="cust-btn " style="width: 100%;margin-bottom: 5px !important;">New CV</button>
                 <button class="cust-btn " style="width: 100%;margin-bottom: 5px !important;">Save</button>
                 <button class="cust-btn " style="width: 100%;margin-bottom: 5px !important;">Cancel CV</button>
@@ -97,22 +100,22 @@
                 <div class="col-sm-1"></div>
                 <div class="col-sm-5">
                     <div class="input-group">
-                        <label class="form-control-sm col-sm-3">Bank</label>
+                        <label class="form-control-sm col-sm-3 labels">Bank</label>
                         <input type="text" class="form-control form-control-sm cust-sm col-sm-10" placeholder="San Miguel Corporation">
                         <div style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
                     </div>
                     <div class="input-group">
-                        <label class="form-control-sm col-sm-3">Check Amount</label>
+                        <label class="form-control-sm col-sm-3 labels">Check Amount</label>
                         <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="PHP">
                         <div style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
                         <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" placeholder="27,513.20" style="margin-left: 3px;">
                     </div>
                     <div class="input-group">
-                        <label class="form-control-sm col-sm-3">Currency Rate</label>
+                        <label class="form-control-sm col-sm-3 labels">Currency Rate</label>
                         <input type="text" class="form-control form-control-sm cust-sm col-sm-10 text-right" placeholder="1.000000">
                     </div>
                     <div class="input-group">
-                        <label class="form-control-sm col-sm-3">Local Amount</label>
+                        <label class="form-control-sm col-sm-3 labels">Local Amount</label>
                         <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="PHP">
                         <!-- <div style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div> -->
                         <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" placeholder="27,513.20" style="margin-left: 3px;">
@@ -120,19 +123,19 @@
                 </div>
                 <div class="col-sm-5">
                     <div class="input-group">
-                        <label class="form-control-sm col-sm-3">Bank Account No.</label>
+                        <label class="form-control-sm col-sm-3 labels">Bank Account No.</label>
                         <input type="text" class="form-control form-control-sm cust-sm col-sm-10" placeholder="PCPA-9091-7001-7389">
                     </div>
                     <div class="input-group">
-                        <label class="form-control-sm col-sm-3">Check No.</label>
+                        <label class="form-control-sm col-sm-3 labels">Check No.</label>
                         <input type="text" class="form-control form-control-sm cust-sm col-sm-10 text-right" placeholder="1324454234">
                     </div>
                     <div class="input-group">
-                        <label class="form-control-sm col-sm-3">Check Date</label>
+                        <label class="form-control-sm col-sm-3 labels">Check Date</label>
                         <input type="date" class="form-control form-control-sm cust-sm col-sm-10" value="2018-10-01">
                     </div>
                     <div class="input-group">
-                        <label class="form-control-sm col-sm-3">Check Class</label>
+                        <label class="form-control-sm col-sm-3 labels">Check Class</label>
                         <input type="text" class="form-control form-control-sm cust-sm col-sm-10" placeholder="Local Clearing">
                         <div style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
                     </div>

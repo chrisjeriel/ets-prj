@@ -45,8 +45,8 @@
 					                		<div class="col-sm-4">
 					                			<div class="row">
 						                			<label class="form-control-sm col-sm-3">Memo No</label>
-						                			<input type="text" class="form-control form-control-sm cust-sm col-sm-2 spacing">
-						                			<input type="text" class="form-control form-control-sm cust-sm col-sm spacing" placeholder="N..">
+						                			<input type="text" class="form-control form-control-sm cust-sm col-sm-2 spacing" placeholder="DM">
+						                			<input type="text" class="form-control form-control-sm cust-sm col-sm spacing" placeholder="NPC">
 						                			<input type="text" class="form-control form-control-sm cust-sm col-sm spacing" placeholder="2019" >
 						                			<input type="text" class="form-control form-control-sm cust-sm col-sm-1 spacing" placeholder="02">
 						                			<input type="text" class="form-control form-control-sm cust-sm col-sm-3" placeholder="000001">
@@ -108,6 +108,7 @@
 					                				<input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="1.0000000">
 					                				<label class="form-control-sm col-sm-3">Local Amount</label>
 					                				<input type="text" class="form-control form-control-sm cust-sm col-sm-1 spacing" placeholder="PHP">
+					                				<div style="margin-left: -19px !important;margin-right: 7px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
 					                				<input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="27513.20">
 					                			</div>
 					                		</div>
@@ -173,21 +174,17 @@
 					        <div class="col-sm-3">
 					            <div class="input-group" style="margin-bottom: -12px !important;">
 					                <label class="form-control-sm col-sm-4">Amount</label>
-					                 <select class="form-control form-control-sm cust-sm col-sm-2" readonly>
-					                           <option value="PHP">PHP</option>
-					                           <option value="EUR">EUR</option>
-					                           <option value="USD">USD</option>
-					                </select>
+					                <input type="text" class="form-control form-control-sm cust-sm col-sm-3"
+					                placeholder="PHP" readonly>
+					                <div style="margin-left: -19px !important;margin-right: 7px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
 					                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right"
 					                placeholder="27,153.30" readonly>
 					            </div>
 					            <div class="input-group" style="margin-bottom: -11px !important;">
 					                <label class="form-control-sm col-sm-4">Local Amount</label>
-					                 <select class="form-control form-control-sm cust-sm col-sm-2" readonly>
-					                           <option value="PHP">PHP</option>
-					                           <option value="EUR">EUR</option>
-					                           <option value="USD">USD</option>
-					                   </select>
+					                <input type="text" class="form-control form-control-sm cust-sm col-sm-3"
+					                placeholder="PHP" readonly>
+					                <div style="margin-left: -19px !important;margin-right: 7px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
 					                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" 
 					                placeholder="27,153.30" readonly>
 					            </div>
@@ -210,13 +207,13 @@
 						<div class="form-row custom-row-inline-inset" style="margin-left: -27px; margin-bottom: 15px !important;">
 					        <div class="input-group" style="    margin-bottom: -17px !important;margin-top: 7px !important;">
 					            <label class="form-control-sm col-sm-1 text-right labels">Created By</label>
-					            <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma">
+					            <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma" disabled>
 					            <label class="form-control-sm col-sm-1 text-right labels">Date Created</label>
-					            <input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM">
+					            <input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM" disabled>
 					            <label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
-					            <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma">
+					            <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma" disabled>
 					            <label class="form-control-sm col-sm-1 text-right labels">Last Update</label>
-					            <input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM">
+					            <input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM" disabled>
 					        </div>
 					    </div>
 					</fieldset>

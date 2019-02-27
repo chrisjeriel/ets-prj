@@ -65,6 +65,7 @@ export class CoverageComponent implements OnInit {
     pageLength: 'unli',
     widths:[228,1,1,200,1,1],
     magnifyingGlass: ['coverCd'],
+    uneditable: [true,false,false,false,false],
     keys:['coverCd','section','bulletNo','sumInsured','addSi']
   };
 
@@ -83,6 +84,11 @@ export class CoverageComponent implements OnInit {
   quoteId: any;
   @Input() quotationInfo: any = {};
   errorMdlMessage: string = "";
+  sectionCoverLOVRow: number;
+  sectionI: number = 0;
+  sectionII: number = 0;
+  sectionIII: number = 0;
+  totalSi: number = 0;
 
   constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,private modalService: NgbModal) {}
 
@@ -93,15 +99,31 @@ export class CoverageComponent implements OnInit {
     for (var i = 1; i < this.quotationInfo.quotationNo.split(/[-]/g).length; i++) {
       this.quoteNo += '-' + parseInt(this.quotationInfo.quotationNo.split(/[-]/g)[i]);
     } 
-    console.log(this.quotationInfo)
 
     this.riskId = this.quotationInfo.riskId;
 
     this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
-    if(data.quotation.project !== null ){
+    if(data.quotation.project !== null){
       this.coverageData = data.quotation.project.coverage;
-              // this.passData.tableData = data.quotation.project.coverage.sectionCovers;
-      for (var i = data.quotation.project.coverage.sectionCovers.length - 1; i >= 0; i--) {
+      for(var i = 0; i < data.quotation.project.coverage.sectionCovers.length; i++){
+          if(data.quotation.project.coverage.sectionCovers[i].section == 'I' && data.quotation.project.coverage.sectionCovers[i].addSi == 'Y'){
+            this.sectionI = this.sectionI + data.quotation.project.coverage.sectionCovers[i].sumInsured;
+          }
+          if(data.quotation.project.coverage.sectionCovers[i].section == 'II' && data.quotation.project.coverage.sectionCovers[i].addSi == 'Y'){
+            this.sectionII = this.sectionII + data.quotation.project.coverage.sectionCovers[i].sumInsured;
+          }
+          if(data.quotation.project.coverage.sectionCovers[i].section == 'III' && data.quotation.project.coverage.sectionCovers[i].addSi == 'Y'){
+            this.sectionIII = this.sectionIII + data.quotation.project.coverage.sectionCovers[i].sumInsured;
+          }
+      }
+      this.coverageData.sectionISi = this.sectionI;
+      this.coverageData.sectionIISi = this.sectionII;
+      this.coverageData.sectionIIISi = this.sectionIII;
+      this.coverageData.totalSi = this.sectionI + this.sectionII + this.sectionIII;
+    }
+
+    if(data.quotation.project !== null ){
+      for (var i = 0; i < data.quotation.project.coverage.sectionCovers.length; i++) {
         this.passData.tableData.push(data.quotation.project.coverage.sectionCovers[i]);
       }
       this.table.refreshTable();}
@@ -110,6 +132,10 @@ export class CoverageComponent implements OnInit {
         $('input[appCurrency]').blur();
       }, 0)
 
+
+
+
+     /* */
     });
 
     this.multiSelectHeaderTxt = "COVERAGE";
@@ -144,7 +170,6 @@ export class CoverageComponent implements OnInit {
         this.deletedData[this.deletedData.length-1].lineCd = this.lineCd;
       }
     }
-
     this.coverageData.createDate          = new Date(this.coverageData.createDate[0],this.coverageData.createDate[1]-1,this.coverageData.createDate[2]).toISOString();
     //this.coverageData.updateDate          = new Date(this.coverageData.updateDate[0],this.coverageData.updateDate[1]-1,this.coverageData.updateDate[2]).toISOString();
     this.coverageData.saveSectionCovers   = this.editedData;
@@ -163,14 +188,39 @@ export class CoverageComponent implements OnInit {
   }
 
   cancel(){
-    console.log(this.deletedData)
   }
 
   sectionCoversLOV(data){
         $('#sectionCoversLOV #modalBtn').trigger('click');
-        /*data.tableData = this.endorsementData.tableData;
-        this.endtCodeLOVRow = data.index;*/
-    }
+        //data.tableData = this.passData.tableData;
+        this.sectionCoverLOVRow = data.index;
+  }
 
+  selectedSectionCoversLOV(data){
+    this.passData.tableData[this.sectionCoverLOVRow].coverCd = data.coverCode; 
+    this.passData.tableData[this.sectionCoverLOVRow].edited = true;
+  }
+
+  update(event){
+        this.coverageData.sectionISi =0;
+        this.coverageData.sectionIISi =0;
+        this.coverageData.sectionIIISi =0;
+       for(var i= 0; i< this.passData.tableData.length; i++){
+         if(this.passData.tableData[i].addSi == 'Y' && !this.passData.tableData[i].deleted){
+           if(this.passData.tableData[i].section == 'I'){
+             this.coverageData.sectionISi += this.passData.tableData[i].sumInsured;
+             
+           }
+           if(this.passData.tableData[i].section == 'II'){
+             this.coverageData.sectionIISi += this.passData.tableData[i].sumInsured;
+           }
+           if(this.passData.tableData[i].section == 'III'){
+             this.coverageData.sectionIIISi += this.passData.tableData[i].sumInsured;
+           }
+
+         }
+       }
+       this.coverageData.totalSi = this.coverageData.sectionISi + this.coverageData.sectionIISi + this.coverageData.sectionIIISi
+  }
 
 }

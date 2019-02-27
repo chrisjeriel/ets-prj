@@ -816,6 +816,7 @@ export class QuotationService {
         return this.http.post('http://localhost:8888/api/quote-service/saveQuoteOption',params,header);
     }
 
+
     saveQuoteEndorsementsOc(params){
           let header : any = {
             headers: new HttpHeaders({
@@ -831,8 +832,7 @@ export class QuotationService {
                 'Content-Type': 'application/json'
             })
         };
-
-         console.log(params);
+        console.log(params);
         return this.http.post('http://localhost:8888/api/quote-service/saveQuoteDeductibles',params,header);
     }
 
