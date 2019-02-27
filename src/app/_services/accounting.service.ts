@@ -1242,14 +1242,14 @@ export class AccountingService {
 
 	getBatchOR(){
 		this.batchOR = [
-			new BatchOR('N','N',new Date(2018,11,1),null,null,'BPI/MS',1000000),
-			new BatchOR('N','N',new Date(2018,11,2),null,null,'UCPBGEN',546043),
-			new BatchOR('N','N',new Date(2018,11,2),null,null,'UCPBGEN',546043),
-			new BatchOR('N','N',new Date(2018,11,2),null,null,'STI',546043),
-			new BatchOR('N','N',new Date(2018,11,2),null,null,'UCPBGEN',546043),
-			new BatchOR('N','N',new Date(2018,11,2),null,null,'UCPBGEN',546043),
-			new BatchOR('N','N',new Date(2018,11,2),null,null,'PNBGEN',546043),
-			new BatchOR('N','N',new Date(2018,11,2),null,null,'Mrs Santos',546043),
+			new BatchOR('Y','N',new Date(2018,11,1),null,'2015-00000441',new Date(2015,10,1),'BPI/MS',1000000),
+			new BatchOR('Y','N',new Date(2018,11,2),null,'2015-00000421',new Date(2017,10,1),'UCPBGEN',546043),
+			new BatchOR('Y','N',new Date(2018,11,2),null,'2018-00000441',new Date(2018,10,1),'UCPBGEN',546043),
+			new BatchOR('N','N',new Date(2018,11,2),null,'2017-00000431',new Date(2017,10,4),'STI',546043),
+			new BatchOR('N','N',new Date(2018,11,2),null,'2018-00004301',new Date(2018,10,5),'UCPBGEN',546043),
+			new BatchOR('N','N',new Date(2018,11,2),null,'2019-00004001',new Date(2018,10,7),'UCPBGEN',546043),
+			new BatchOR('N','N',new Date(2018,11,2),null,'2018-00000431',new Date(2018,10,7),'PNBGEN',546043),
+			new BatchOR('N','N',new Date(2018,11,2),null,'2018-00000212',new Date(2018,10,7),'Mrs Santos',546043),
 		]
 		return this.batchOR;
 	}

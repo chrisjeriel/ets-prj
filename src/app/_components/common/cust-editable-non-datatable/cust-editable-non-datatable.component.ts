@@ -177,14 +177,18 @@ export class CustEditableNonDatatableComponent implements OnInit {
         return data[key];
     }
 
-    onClickAdd() {
+    onClickAdd(event) {
 
         this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
         this.passData.tableData[this.passData.tableData.length-1].edited = true;
         this.unliTableLength();    
         this.search(this.searchString);
         this.tableDataChange.emit(this.passData.tableData);
+        this.add.next(event);
     }
+
+    
+
 
     onClickDelete() {
         for (var i = 0; i < this.passData.tableData.length; ++i) {

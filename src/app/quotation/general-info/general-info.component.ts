@@ -141,7 +141,6 @@ export class GeneralInfoComponent implements OnInit {
 		insuredDesc: ''
 	}
 
-
 	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute, private maintenanceService: MaintenanceService) { }
 	ngOnInit() {
 		this.titleService.setTitle("Quo | General Info");
@@ -150,10 +149,11 @@ export class GeneralInfoComponent implements OnInit {
 		this.filters.push("Item No", "Desc. of Items");
 		this.tableData = this.quotationService.getItemInfoData();
 
+		this.savingType = this.quotationService.savingType;
+
 		this.sub = this.route.params.subscribe(params => {
 			if(params['addParams'] != undefined){
-				this.internalCompFlag = JSON.parse(params['addParams']).intComp == undefined ? false : JSON.parse(params['addParams']).intComp; //neco
-				this.savingType = this.quotationService.savingType;
+				this.internalCompFlag = JSON.parse(params['addParams']).intComp == undefined ? false : JSON.parse(params['addParams']).intComp; //neco				
 			}
 			this.from = params['from'];
 			if (this.from == "quo-processing") {
@@ -188,8 +188,11 @@ export class GeneralInfoComponent implements OnInit {
 						this.genInfoData.cedingId = '';
 						this.genInfoData.cedingName = '';
 					} else if (this.savingType === 'modification') {
-
+						this.genInfoData.quoteId = '';
+						this.genInfoData.quotationNo = '';
+						this.genInfoData.quoteRevNo = '';
 					}
+
 				}
 
 				if(data['project'] != null) {
@@ -208,9 +211,13 @@ export class GeneralInfoComponent implements OnInit {
 				this.genInfoData.cessionDesc 	= JSON.parse(params['addParams']).cessionDesc;
 				this.genInfoData.quoteYear 		= new Date().getFullYear().toString();
 				this.genInfoData.quoteRevNo 	= '0';
-				this.genInfoData.status 		= '2';
-				this.genInfoData.statusDesc 	= 'In Progress';
+				this.genInfoData.status 		= '1';
+				this.genInfoData.statusDesc 	= 'Requested';
 				this.genInfoData.issueDate		= new Date().toISOString();
+				this.genInfoData.createUser		= 'USER'; //JSON.parse(window.localStorage.currentUser).username;
+				this.genInfoData.createDate		= new Date().toISOString();
+				this.genInfoData.updateUser		= 'USER'; //JSON.parse(window.localStorage.currentUser).username;
+				this.genInfoData.updateDate		= new Date().toISOString();
 				this.project.projId 			= '1';
 
 				this.maintenanceService.getMtnRisk(JSON.parse(params['addParams']).riskId).subscribe(data => {				
@@ -371,6 +378,8 @@ export class GeneralInfoComponent implements OnInit {
 					this.genInfoData.quotationNo = data['quotationNo'];
 					this.genInfoData.quoteSeqNo = parseInt(data['quotationNo'].split('-')[2]);
 					this.genInfoData.quoteRevNo = parseInt(data['quotationNo'].split('-')[3]);
+					this.genInfoData.updateUser = 'USER'; //JSON.parse(window.localStorage.currentUser).username;
+					this.genInfoData.updateDate		= new Date().toISOString();
 
 					this.checkQuoteIdF(this.genInfoData.quoteId);
 
@@ -468,6 +477,13 @@ export class GeneralInfoComponent implements OnInit {
 			"updateUser"	: this.genInfoData.updateUser
 		}
 
+		if(this.quotationService.toGenInfo[0] === 'edit' && this.savingType === 'normal') {
+			saveQuoteGeneralInfoParam.updateUser = 'USER'; //JSON.parse(window.localStorage.currentUser).username;
+			saveQuoteGeneralInfoParam.updateDate = new Date().toISOString();
+			saveQuoteGeneralInfoParam.prjUpdateUser = 'USER'; //JSON.parse(window.localStorage.currentUser).username;
+			saveQuoteGeneralInfoParam.prjUpdateDate = new Date().toISOString();
+		}
+
 		return saveQuoteGeneralInfoParam;
 	}
 
@@ -523,9 +539,7 @@ export class GeneralInfoComponent implements OnInit {
   	validate(obj){
   		var req = ['cedingId','lineClassCd','prinId','insuredDesc','status','intmId',
   				   'issueDate','expiryDate','currencyCd','currencyRt','openingParag',
-  				   'closingParag','createUser','createDate','updateUser','updateDate',
-  				   'projDesc','objectId','site','prjCreateUser','prjCreateDate',
-  				   'prjUpdateUser','prjUpdateDate'];
+  				   'closingParag','projDesc','objectId','site'];
 
   		if(obj.lineCd === 'CAR' || obj.lineCd === 'EAR') {
   			req.push('contractorId', 'duration');

@@ -61,6 +61,7 @@ export class MtnTypeOfCessionComponent implements OnInit {
   }
 
   openModal(){
+    this.cessionListing.tableData = [];
      this.maintenanceService.getMtnTypeOfCession('').subscribe(data =>{
        var records = data['cession'];
 

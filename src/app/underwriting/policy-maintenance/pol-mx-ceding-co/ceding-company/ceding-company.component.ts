@@ -87,6 +87,8 @@ export class CedingCompanyComponent implements OnInit {
   }
 
   openModal(){
+     this.passDataCedingCompanyMember.tableData = [];
+
      this.underwritingService.getCedingCompanyList().subscribe((data: any) => {
        console.log(data)
          for(var i=0;i< data.cedingcompany.length;i++){

@@ -80,6 +80,8 @@ export class MtnCedingCompanyComponent implements OnInit {
   }
 
   openModalNotMember(){
+    this.passDataCedingCompanyNotMember = [];
+
     this.underwritingService.getCedingCompanyList().subscribe((data: any) => {
          for(var i=0;i< data.cedingcompany.length;i++){
             if(data.cedingcompany[i].membershipTag == 'N'){
