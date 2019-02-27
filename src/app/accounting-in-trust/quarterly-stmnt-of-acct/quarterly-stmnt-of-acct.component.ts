@@ -15,6 +15,11 @@ comStmt:boolean = false;
 receivables:boolean = false;
 summary:boolean = false;
 
+balanceDebit: any = 800071.34;
+balanceCredit: any = 0;
+totalDebit: any = 1510787.46;
+totalCredit: any = 1510787.46;
+
 	passDataListOfQsoaAperCompany: any ={
 		tableData:[
 			{
@@ -138,7 +143,7 @@ summary:boolean = false;
 		uneditable: [true,true,true,true,true],
 		total: [null,'TOTAL',null,'debit','credit'],
 		pageLength: 20,
-		widths: ['auto',80,120,120,120],
+		colSize: ['300px','120px','120px','120px','120px'],
 		pageID:2
 	}
 

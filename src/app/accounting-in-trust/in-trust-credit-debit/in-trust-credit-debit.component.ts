@@ -20,6 +20,7 @@ export class InTrustCreditDebitComponent implements OnInit {
         pageLength: 10,
         pageStatus: true,
         pagination: true,
+        colSize: ['50px', '90px', '80px', '', '', '', '', '125px'],
     };
     
   constructor(private accountingService: AccountingService, private router: Router, private titleService: Title) { }
@@ -29,5 +30,17 @@ export class InTrustCreditDebitComponent implements OnInit {
 
   onClickAdd(event){
     this.router.navigate(['/acct-it-generate-cmdm'], { skipLocationChange: true }); 
+  }
+
+  onClickEdit(){
+    this.router.navigate(['/acct-it-generate-cmdm'], { skipLocationChange: true }); 
+  }
+
+  onRowClick(data){
+
+  }
+
+  onRowDblClick(data){
+     this.router.navigate(['/acct-it-generate-cmdm'], { skipLocationChange: true }); 
   }
 }

@@ -79,13 +79,13 @@
 		</div>
 
 		<div *ngIf="summary">
-			<app-cust-editable-non-datatable [passData]="passDataSummary"></app-cust-editable-non-datatable>
+			<app-cust-non-datatable [passData]="passDataSummary"></app-cust-non-datatable>
 		</div>
 		<div *ngIf="receivables">
-			<app-cust-editable-non-datatable [passData]="passDataViewAccountsReceivable"></app-cust-editable-non-datatable>
+			<app-cust-non-datatable [passData]="passDataViewAccountsReceivable"></app-cust-non-datatable>
 		</div>
 		<div *ngIf="comStmt">
-			<app-cust-editable-non-datatable [passData]="passDataCombinedStatementOfItAcct"></app-cust-editable-non-datatable>
+			<app-cust-non-datatable [passData]="passDataCombinedStatementOfItAcct"></app-cust-non-datatable>
 			<div class="form-row custom-row-inline-inset" style="margin-top: 15px !important;">
 				<fieldset class="scheduler-border col-sm-6">
 					<div class="input-group">
@@ -111,11 +111,11 @@
 				<div class="col-sm-6">
 					<div class="input-group">
 						<div class="col-sm-1"></div>
-						<label class="form-control-sm col-sm-5" style="text-align: left !important;">BALANCE IN YOUR FAVOR</label>
+						<label class="form-control-sm col-sm-4" style="text-align: left !important;">BALANCE IN YOUR FAVOR</label>
 						<input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right"
-						value="800,071.34" numbers-only>
+						[ngModel]="balanceDebit | number: '1.2-2'" (ngModelChange)="balanceDebit=$event" numbers-only style="max-width: 139px;margin-left: 14px;">
 						<input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right"
-						style="margin-left: 3px !important;" numbers-only>
+						style="margin-left: 3px !important;" numbers-only style="margin-left: 3px !important;min-width: 142px;" [ngModel]="balanceCredit | number: '1.2-2'" (ngModelChange)="balanceCredit=$event">
 					</div>
 					<div class="input-group" style="margin-bottom: -25px !important;margin-top: -20px !important;">
 						<div class="col-sm-6"></div>
@@ -123,11 +123,11 @@
 					</div>
 					<div class="input-group">
 						<div class="col-sm-1"></div>
-						<label class="form-control-sm col-sm-5" style="text-align: left !important;">TOTAL DEBITS AND CREDITS</label>
+						<label class="form-control-sm col-sm-4" style="text-align: left !important;">TOTAL DEBITS AND CREDITS</label>
 						<input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right"
-						value="1,510,787.46" numbers-only>
+						[ngModel]="totalDebit | number: '1.2-2'" (ngModelChange)="totalDebit=$event" numbers-only style="max-width: 139px;margin-left: 14px;">
 						<input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right"
-						style="margin-left: 3px !important;" value="1,510,787.46" numbers-only>
+						style="margin-left: 3px !important;" value="1,510,787.46" numbers-only style="margin-left: 3px !important;min-width: 142px;" [ngModel]="totalCredit | number: '1.2-2'" (ngModelChange)="totalCredit=$event">
 					</div>
 				</div>
 			</div>

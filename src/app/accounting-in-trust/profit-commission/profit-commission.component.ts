@@ -10,6 +10,11 @@ import { Title } from '@angular/platform-browser';
 })
 export class ProfitCommissionComponent implements OnInit {
 
+	income1: any = 0;
+	income2: any = 9481348.73;
+	outgo1: any = 404777.58;
+	outgo2: any = 9481348.73;
+
 	passDataProfitCommissionStatement:any = {
 		tableData: [
 			{particulars:'NET PREMIUM WRITTEN-QUOTA***',actual:6956320.12,natCat:2676548.84,income:4279771.28,outGo:null},
@@ -30,7 +35,7 @@ export class ProfitCommissionComponent implements OnInit {
 		total: [null,null,null,'income','outGo'],
 		pageLength: 12,
 		uneditable: [true,true,true,true,true],
-		widths:['auto',200,200,200,200]
+		widths:[270,120,120,120,120]
 	}
 
   constructor(private route: Router, private titleService: Title) { }
