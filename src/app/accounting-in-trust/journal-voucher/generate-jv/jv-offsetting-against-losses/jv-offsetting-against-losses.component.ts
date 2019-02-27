@@ -29,9 +29,10 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
     pageStatus: true,
     selectFlag: false,
     editFlag: false,
-    pageLength: 10,
+    pageLength: 5,
     genericBtn: 'Save',
-    widths: [185,'auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto']
+    widths: [180,180,120,50,90,1,1,1,85,120,85,85,120,120,120,120,85],
+    pageID: 2,
   };
 
   AgainstLossData: any = {
@@ -47,7 +48,8 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   	deleteFlag: true,
   	total: [null, null,null, null, null,null, null, null, 'Total', 'amount', 'amountPhp'],
   	genericBtn: 'Save',
-    widths: ['auto','auto','auto',1,'auto',1,1,2,100,100,100]
+    widths: [150,200,200,1,150,1,1,85,120,120,120],
+    pageLength: 5,
   }
 
   constructor(private accountingService: AccountingService,private titleService: Title) { }

@@ -15,8 +15,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
   AdjustersData: any = {
   	tableData: this.accountingService.getPaymentToAdjuster(),
-  	tHeader: ['Claim Request No', 'Claim No', 'Payment For/To', 'Insured', 'Hist No', 'Hist Type', 'Ex-Gratia','Reserve Amount', 'Curr','Curr Rate','Amount','Amount (Php)'],
-  	dataTypes: ['text', 'text', 'text', 'text', 'number', 'text', 'checkbox', 'currency', 'text','percent', 'currency', 'currency'],
+  	tHeader: ['Claim Request No', 'Claim No', 'Payment For/To', 'Insured', 'Hist No', 'Hist Type', 'Ex-Gratia', 'Curr','Curr Rate','Reserve Amount','Amount','Amount (Php)'],
+  	dataTypes: ['text', 'text', 'text', 'text', 'number', 'text', 'checkbox', 'text', 'percent','currency', 'currency', 'currency'],
   	nData: new PaymentToAdjusters(null,null,null,null,null,null,null,null,null,null,null,null),
   	paginateFlag: true,
   	infoFlag: true,
@@ -26,14 +26,14 @@ export class PaymentRequestDetailsComponent implements OnInit {
   	deleteFlag: true,
   	total: [null, null, null,null, null, null,null, null, 'Total', null, 'amount', 'amountPhp'],
   	genericBtn: 'Save',
-    widths: ['auto','auto','auto','auto',1,'auto',1,1,2,70,100,100],
+    widths: [150,150,200,200,1,150,1,1,85,120,120,120],
     magnifyingGlass: ['claimRequestNo']
   }
 
   OtherPartyData: any = {
   	tableData: this.accountingService.getPaymentToOtherParty(),
-  	tHeader: ['Claim Request No', 'Claim No', 'Payment For/To', 'Insured', 'Hist No', 'Hist Type', 'Ex-Gratia','Reserve Amount', 'Curr','Curr Rate','Amount','Amount (PHP)'],
-  	dataTypes: ['text', 'text', 'text', 'text', 'number', 'text', 'checkbox','currency','text','percent', 'currency', 'currency'],
+  	tHeader: ['Claim Request No', 'Claim No', 'Payment For/To', 'Insured', 'Hist No', 'Hist Type', 'Ex-Gratia', 'Curr','Curr Rate','Reserve Amount','Amount','Amount (PHP)'],
+  	dataTypes: ['text', 'text', 'text', 'text', 'number', 'text', 'checkbox','text', 'percent','currency', 'currency', 'currency'],
   	nData: new PaymentToOtherParty(null,null,null,null,null,null,null,null,null,null,null,null),
   	paginateFlag: true,
   	infoFlag: true,
@@ -43,14 +43,14 @@ export class PaymentRequestDetailsComponent implements OnInit {
   	deleteFlag: true,
   	total: [null, null, null,null, null, null,null, null, 'Total', null, 'amount', 'amountPhp'],
   	genericBtn: 'Save',
-    widths: ['auto','auto','auto','auto',1,'auto',1,1,2,70,100,100],
+    widths: [150,150,200,200,1,150,1,1,85,120,120,120],
     magnifyingGlass: ['claimRequestNo']
   }
 
   CedingCompanyData: any = {
   	tableData: this.accountingService.getPaymentToCedingCompany(),
-  	tHeader: ['Claim Request No', 'Claim No', 'Payment For/To', 'Insured', 'Hist No', 'Hist Type', 'Ex-Gratia','Reserve Amount', 'Curr','Curr Rate','Amount','Amount (PHP)'],
-    dataTypes: ['text', 'text', 'text', 'text', 'number', 'text', 'checkbox','currency','text','percent', 'currency', 'currency'],
+  	tHeader: ['Claim Request No', 'Claim No', 'Payment For/To', 'Insured', 'Hist No', 'Hist Type', 'Ex-Gratia','Curr','Curr Rate','Reserve Amount','Amount','Amount (PHP)'],
+    dataTypes: ['text', 'text', 'text', 'text', 'number', 'text', 'checkbox','text', 'percent','currency', 'currency', 'currency'],
   	nData: new PaymentToCedingCompany(null,null,null,null,null,null,null,null,null,null,null,null),
   	paginateFlag: true,
   	infoFlag: true,
@@ -60,7 +60,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   	deleteFlag: true,
   	total: [null, null, null,null, null, null,null, null, 'Total', null, 'amount', 'amountPhp'],
   	genericBtn: 'Save',
-    widths: ['auto','auto','auto','auto',1,'auto',1,1,2,70,100,100],
+   widths: [150,150,200,200,1,150,1,1,85,120,120,120],
     magnifyingGlass: ['claimRequestNo']
   }
 
@@ -78,7 +78,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   	deleteFlag: true,
   	total: [null, null, null,null, 'Total', 'premium', 'riCommision','charges','netDue'],
   	genericBtn: 'Save',
-    widths: ['auto',1,200,1,'auto',100,100,100,100,100]
+    widths: [180,1,250,1,85,120,120,120,120]
   }
 
   ServiceAccountingData: any = {
@@ -100,7 +100,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
   MainCompanyServiceAccountingData:any = {
     tHeader: ['Main Company Distribution','Percent Share(%)','Curr','Curr Rate','Amount','Amount (PHP)'],
-    widths:['auto',1,1,1,200,200],
+    widths:[300,85,1,85,120,120],
     dataTypes:['text','percent','text','percent','currency','currency'],
     uneditable:[true,true,true,true,true,true],
     total: [null,null,null,'Total','4','5'],
@@ -117,7 +117,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
   SubServiceAccountingData: any= {
     tHeader: ['Sub-Distribution of Pool & Munich Re','Precent Share(%)','Curr','Curr Rate','Amount','Amount (PHP)'],
-    widths:['auto',1,1,1,200,200],
+    widths:[209,141,56,91,120,120],
     dataTypes:['text','percent','text','percent','currency','currency'],
     uneditable:[true,true,true,true,true,true],
     total: [null,null,null,'Total','4','5'],
@@ -165,7 +165,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     if(this.paymentType === null){
       this.paymentType = "";
     }
-
+    console.log(this.accountingService.getPaymentToAdjuster());
     
   }
 

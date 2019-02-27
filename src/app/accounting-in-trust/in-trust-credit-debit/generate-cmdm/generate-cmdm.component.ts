@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+import { ActivatedRoute,Router } from '@angular/router';
 
 
 @Component({
@@ -8,9 +10,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GenerateCMDMComponent implements OnInit {
 
-  constructor() { }
+  constructor(private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
+  }
+
+  onTabChange($event: NgbTabChangeEvent) {
+	if ($event.nextId === 'Exit') {
+	  this.router.navigateByUrl('');
+	}
   }
 
 }
