@@ -35,13 +35,6 @@ export class MtnEndtCodeComponent implements OnInit {
     selected: any;
 
   ngOnInit() {
-    console.log(this.line);
-    this.mtnService.getEndtCode(this.line,'').subscribe((data: any) => {
-      for (var i = data.endtCode.length - 1; i >= 0; i--) {
-        this.passData.tableData.push(data.endtCode[i]);
-      }
-      this.table.refreshTable();
-    });
   }
 
   select(data){
@@ -53,13 +46,13 @@ export class MtnEndtCodeComponent implements OnInit {
   }
 
   openModal(){
-    // console.log(this.eline + ">>> modal galing endt");
-    // this.mtnService.getEndtCode('CAR','').subscribe((data: any) => {
-    //   for (var i = data.endtCode.length - 1; i >= 0; i--) {
-    //     this.passData.tableData.push(data.endtCode[i]);
-    //   }
-    //   this.table.refreshTable();
-    // });
+    this.passData.tableData = [];
+    this.mtnService.getEndtCode(this.line,'').subscribe((data: any) => {
+      for (var i = 0; i< data.endtCode.length ; i++) {
+        this.passData.tableData.push(data.endtCode[i]);
+      }
+      this.table.refreshTable();
+    });
   }
 
 }

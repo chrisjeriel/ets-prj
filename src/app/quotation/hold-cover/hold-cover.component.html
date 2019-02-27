@@ -17,11 +17,12 @@
                                     <div class="input-group">
                                         <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Quotation No</label>
-                                            <input type="text" class="form-control form-control-sm cap-input col-sm-1 warn" appRequired ngbTooltip="Line" #qline [(ngModel)]="qLine" readonly>
-                                            <input type="text" class="form-control form-control-sm cap-input col-sm-1 warn" appRequired ngbTooltip="Year" #qyear style="margin-left: 2px;" [(ngModel)]="qYear" readonly>
-                                            <input type="text" class="form-control form-control-sm cap-input col-sm-2 warn" appRequired ngbTooltip="Sequence No" #qseqNo style="margin-left: 2px;" [(ngModel)]="qSeqNo" readonly>
-                                            <input type="text" class="form-control form-control-sm cap-input col-sm-1 warn" appRequired ngbTooltip="Revision No" #qrevNo style="margin-left: 2px;" [(ngModel)]="qRevNo" readonly>
-                                            <input type="text" class="form-control form-control-sm cap-input col-sm-1 warn" appRequired ngbTooltip="Company No" #qcomNo style="margin-left: 2px;" [(ngModel)]="qCedingId" readonly>
+                                            <input type="text" class="form-control form-control-sm cap-input col-sm-1 warn" maxlength="3" appRequired ngbTooltip="Line" #qline [(ngModel)]="qLine" (change)="searchQuoteInfo(qline.value,qyear.value,qseqNo.value,qrevNo.value,qcomNo.value)">
+                                            <input type="text" class="form-control form-control-sm cap-input col-sm-1 warn" maxlength="4" appRequired ngbTooltip="Year" #qyear style="margin-left: 2px;" [(ngModel)]="qYear" (change)="searchQuoteInfo(qline.value,qyear.value,qseqNo.value,qrevNo.value,qcomNo.value)">
+                                            <input type="text" class="form-control form-control-sm cap-input col-sm-2 warn" maxlength="5" appRequired ngbTooltip="Sequence No" #qseqNo style="margin-left: 2px;" [(ngModel)]="qSeqNo" (change)="searchQuoteInfo(qline.value,qyear.value,qseqNo.value,qrevNo.value,qcomNo.value)">
+                                            <input type="text" class="form-control form-control-sm cap-input col-sm-1 warn" maxlength="2" appRequired ngbTooltip="Revision No" #qrevNo style="margin-left: 2px;" [(ngModel)]="qRevNo" (change)="searchQuoteInfo(qline.value,qyear.value,qseqNo.value,qrevNo.value,qcomNo.value)">
+                                            <input type="text" class="form-control form-control-sm cap-input col-sm-1 warn" maxlength="2" appRequired ngbTooltip="Company No" #qcomNo style="margin-left: 2px;" [(ngModel)]="qCedingId" 
+                                            (change)="searchQuoteInfo(qline.value,qyear.value,qseqNo.value,qrevNo.value,qcomNo.value)">
                                             <span>&nbsp;</span>
                                             <div class="text-search-ico"><a (click)="search()"><i class="fa fa-search"></i></a></div>
                                         </div>
@@ -60,8 +61,8 @@
                                         <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Hold Cover No</label>
                                             <input type="text" class="form-control form-control-sm col-sm cap-input col-sm-1" ngbTooltip="HC Prefix" value="HC" readonly>
-                                            <input type="text" class="form-control form-control-sm col-sm cap-input col-sm-1 warn" ngbTooltip="Line" style="margin-left: 2px;" maxlength="3" appRequired  #hcline [(ngModel)]="hcLine" >
-                                            <input type="text" class="form-control form-control-sm col-sm cap-input col-sm-1 warn" ngbTooltip="Year" style="margin-left: 2px;" maxlength="4" appRequired #hcyear numbers-only [(ngModel)]="hcYear">
+                                            <input type="text" class="form-control form-control-sm col-sm cap-input col-sm-1 warn" ngbTooltip="Line" style="margin-left: 2px;" maxlength="3" appRequired  #hcline [(ngModel)]="hcLine" readonly>
+                                            <input type="text" class="form-control form-control-sm col-sm cap-input col-sm-1 warn" ngbTooltip="Year" style="margin-left: 2px;" maxlength="4" appRequired #hcyear numbers-only  readonly [(ngModel)]="hcYear">
                                             <input type="text" class="form-control form-control-sm col-sm col-sm-2 warn" style="margin-left: 2px;" ngbTooltip="Sequence No" maxlength="5" appRequired  #hcseqNo numbers-only [(ngModel)]="hcSeqNo">
                                             <input type="text" class="form-control form-control-sm col-sm col-sm-1 warn" style="margin-left: 2px;"ngbTooltip="Revision No" maxlength="2"  appRequired #hcrevNo numbers-only [(ngModel)]="hcRevNo">    
 
@@ -82,13 +83,13 @@
                                             <label class="form-control-sm col-sm-3" style="margin-left: -62px !important;  margin-right: 1px !important;">Co. Ref. Hold Cover No</label>
                                             <input type="text" class="form-control form-control-sm" #coRef [(ngModel)]="holdCover.compRefHoldCovNo">
                                             <label class="form-control-sm col-sm-2">Prepared By</label>
-                                            <input type="text" class="form-control form-control-sm col-sm-7" #prepBy [(ngModel)]="holdCover.preparedBy">
+                                            <input type="text" class="form-control form-control-sm col-sm-7" #prepBy [(ngModel)]="holdCover.preparedBy" readonly>
                                         </div>
                                         <div class="input-group" style="margin-bottom: -9px !important;">
                                             <label class="form-control-sm col-sm-2">Status</label>
-                                            <input type="text" class="form-control form-control-sm warn" #status appRequired [(ngModel)]="holdCover.status">
+                                            <input type="text" class="form-control form-control-sm warn" #status appRequired [(ngModel)]="holdCover.status" readonly>
                                             <label class="form-control-sm col-sm-2">Approved By</label>
-                                            <input type="text" class="form-control form-control-sm col-sm-7" #appBy [(ngModel)]="holdCover.approvedBy">
+                                            <input type="text" class="form-control form-control-sm col-sm-7" #appBy [(ngModel)]="holdCover.approvedBy" readonly>
                                         </div>
                                     </div>
                                 </div>

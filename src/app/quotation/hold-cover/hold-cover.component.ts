@@ -101,38 +101,11 @@ export class HoldCoverComponent implements OnInit {
     updateDate: "",
     updateUser: "",
   }
-
-  
-  
+ 
   ngOnInit() {
     this.titleService.setTitle("Quo | Quotation to Hold Cover");
-    //this.tableData = this.quotationService.getListOfValuesHoldCover();
     this.holdCoverInfo = new HoldCoverInfo();
     this.holdCover.status = "In Progress";
-    // this.quotationService.getHoldCoverInfo()
-    //     .subscribe(val => 
-    //         {
-    //           var rec = val['quotation'];
-    //           console.log(rec);   
-    //           this.quoteId  = rec.quoteId;  
-    //           this.holdCover                    =  rec.holdCover;
-    //           this.holdCover.periodFrom         =  this.formatDate(this.holdCover.periodFrom);
-    //           this.holdCover.periodTo           =  this.formatDate(this.holdCover.periodTo);
-    //           this.holdCover.reqDate            =  this.formatDate(this.holdCover.reqDate);
-    //           this.holdCover.createDate         =  this.formatDate(this.holdCover.createDate);
-    //           this.holdCover.updateDate         =  this.formatDate(this.holdCover.updateDate);
-    //           //this.sliceQuoteNo(this.holdCoverInfo.quotationNo);
-    //           this.splitHcNo(this.holdCover.holdCoverNo);
-              
-    //         }
-    //   );
-
-     
-              // this.holdCover.periodFrom         =  this.formatDate(this.holdCover.periodFrom);
-              // this.holdCover.periodTo           =  this.formatDate(this.holdCover.periodTo);
-              // this.holdCover.reqDate            =  this.formatDate(this.holdCover.reqDate);
-              // this.holdCover.createDate         =  this.formatDate(this.holdCover.createDate);
-              // this.holdCover.updateDate         =  this.formatDate(this.holdCover.updateDate);
   }
 
   formatDate(date){
@@ -215,9 +188,6 @@ export class HoldCoverComponent implements OnInit {
   
   holdCoverReq:any
   onSaveClick(qline,qyear,qseqNo,qrevNo,qcomNo,periodTo,periodFrom,coRef,status,reqDate,prepBy,appBy,hcline,hcyear,hcseqNo,hcrevNo,reqBy){
-
-   // if(qline === "" || qyear === "" || qseqNo === "" || qrevNo === "" || qcomNo === "" || periodTo === "" || periodFrom === "" || status === "" || hcline === "" || hcyear === "" || hcseqNo === "" || hcrevNo === ""){
-
     if(qline === "" || qyear === "" || qseqNo === "" || qrevNo === "" || qcomNo === "" || periodTo === "" || periodFrom === "" || status === "" || hcline === "" || hcyear === "" || hcseqNo === "" || hcrevNo === ""){
       $('#warningMdl > #modalBtn').trigger('click');
       $('.warn').focus();
@@ -244,13 +214,13 @@ export class HoldCoverComponent implements OnInit {
                   "lineCd": hcline,
                   "periodFrom": periodFrom,
                   "periodTo": periodTo,
-                  "preparedBy": prepBy,
+                  "preparedBy": 'user_login',
                   "quoteId": this.quoteId,
                   "reqBy": reqBy,
                   "reqDate": reqDate,
                   "status": status,
                   "updateDate": new Date().toISOString(),
-                  "updateUser": 'Luffy' /*username of the login acc*/
+                  "updateUser": 'user_login' /*username of the login acc*/
                 }
                     this.quotationService.saveQuoteHoldCover(
                       JSON.stringify(this.holdCoverReq)
@@ -280,7 +250,29 @@ export class HoldCoverComponent implements OnInit {
   setPeriodTo(periodFrom){
       var d = new Date(periodFrom);
       d.setDate(d.getDate()+30);
-      this.holdCover.periodTo = d.toISOString(); 
+      this.holdCover.periodTo = d.toISOString();
   }
 
+  searchQuoteInfo(line,year,seq,rev,ced){
+    var qNo = line.toUpperCase() +"-"+year+"-"+seq+"-"+rev+"-"+ced;
+    this.quotationService.getSelectedQuote(this.plainQuotationNo(qNo))
+      .subscribe(val => {
+        var data = val['quotationList'][0];
+        if(data === undefined || data === null){
+          this.quoteNo = '';
+          this.insured = '';
+          this.cedCo = '';
+          this.risk = '';
+          this.hcLine  = '';
+          this.hcYear  =  '';
+        }else{
+          this.quoteNo = (data.quotationNo === null || data.quotationNo === undefined) ? '' : data.quotationNo;
+          this.insured = (data.insuredDesc  === null || data.insuredDesc === undefined) ? '' : data.insuredDesc;
+          this.cedCo = (data.cedingName  === null || data.cedingName === undefined) ? '' : data.cedingName;
+          this.risk = (data.project  === null || data.project === undefined) ? '' : data.project.riskName;
+          this.hcLine  = line;
+          this.hcYear  =  year;
+        }
+      });
+  }
 }

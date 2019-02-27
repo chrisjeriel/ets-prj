@@ -93,6 +93,7 @@ export class GenInfoComponent implements OnInit {
                               this.lat  = val['risk'].latitude;
                               this.long = val['risk'].longitude;
                             });
+                this.ocQuoteGenInfo.openQuotationNo = this.line +'-'+ new Date().getFullYear();
             }else{
                 this.quotationService.getOcGenInfoData(this.sampleId,this.ocQuoteNo)
                     .subscribe(val => 
@@ -193,7 +194,6 @@ export class GenInfoComponent implements OnInit {
                             this.mtnService.getMtnObject(this.line,this.objId)
                                     .subscribe(val => {
                                      this.objName  = (val['object'][0] === null || val['object'][0] === undefined) ? '' : val['object'][0].description;
-                                     console.log(JSON.stringify(val['object'][0]) + ">>> OBJECT HERE");
                                     });
 
                             this.insuredContent();
