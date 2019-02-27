@@ -554,3 +554,13 @@ select.editable-select {
     padding: 0px !important;
     margin-bottom: 17px !important;
 }
+
+input:-moz-read-only { /* For Firefox */
+    background-color: #f5f5f5 !important;
+    cursor: not-allowed;
+}
+
+input:read-only {
+    background-color: #f5f5f5 !important;
+    cursor: not-allowed;
+}

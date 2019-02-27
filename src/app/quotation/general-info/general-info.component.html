@@ -53,23 +53,21 @@
 										<input type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="genInfoData.cedingId" appRequired>
 										<div class="text-search-ico"><a><i class="fa fa-search" (click)="showCedingCompanyLOV()"></i></a></div>
 										<span>&nbsp;</span>
-										<input type="text" class="form-control form-control-sm col-sm ig-mrgn" [(ngModel)]="genInfoData.cedingName"
-										 style="margin-left: 5px;" >
+										<input type="text" class="form-control form-control-sm col-sm ig-mrgn" [(ngModel)]="genInfoData.cedingName" style="margin-left: 5px;" readonly>
 									</div>
 									<div *ngIf="checkTypeOfCession() ||  genInfoData.cessionDesc.toUpperCase() == 'RETROCESSION'" class="input-group ig-cust">
 										<label class="form-control-sm col-sm-2">Reinsurance From</label>
 										<input type="text" class="form-control form-control-sm col-sm-2" appRequired [(ngModel)]="genInfoData.reinsurerId">
 										<div class="text-search-ico"><a><i class="fa fa-search" (click)="showCedingCompanyNotMemberLOV()"></i></a></div>
 										<span>&nbsp;</span>
-										<input type="text" [(ngModel)]="genInfoData.reinsurerName" class="form-control form-control-sm col-sm ig-mrgn"
-										 style="margin-left: 5px;" >
+										<input type="text" [(ngModel)]="genInfoData.reinsurerName" class="form-control form-control-sm col-sm ig-mrgn" style="margin-left: 5px;" readonly>
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Intermediary</label>
 										<input type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="genInfoData.intmId" appRequired>
 										<div class="text-search-ico"><a><i class="fa fa-search" (click)="showIntLOV()" ></i></a></div>
 										<span>&nbsp;</span>
-										<input type="text" class="form-control form-control-sm col-sm ig-mrgn" [(ngModel)]="genInfoData.intmName" style="margin-left: 5px;" >
+										<input type="text" class="form-control form-control-sm col-sm ig-mrgn" [(ngModel)]="genInfoData.intmName" style="margin-left: 5px;" readonly>
 									</div>
 								</div>
 							</div>
@@ -144,7 +142,7 @@
 						<div class="form-group col-sm-6 offsetFormGroup">
 							<div class="input-group">
 								<label class="form-control-sm col-sm-4">Currency</label>
-								<input  type="text" class="form-control form-control-sm req" placeholder="PHP" [(ngModel)]="genInfoData.currencyCd" appRequired>
+								<input  type="text" class="form-control form-control-sm req" [(ngModel)]="genInfoData.currencyCd" appRequired>
 								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showCurrencyModal()"></i></a></div>
 								<span>&nbsp;</span>
 							</div>
@@ -152,7 +150,7 @@
 						<div class="form-group col-sm-6 offsetFormGroup">
 							<div class="input-group">
 								<label class="form-control-sm col-sm-4 ">Exch. Rt.</label>
-								<input  type="text" class="form-control form-control-sm text-right req" placeholder="0" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="genInfoData.currencyRt" appRequired>
+								<input  type="text" class="form-control form-control-sm text-right req" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="genInfoData.currencyRt" appRequired>
 								<span>&nbsp;</span>
 							</div>
 						</div>
@@ -230,16 +228,14 @@
 								<input  type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="genInfoData.principalId" appRequired>
 								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 								<span>&nbsp;</span>
-								<input  type="text" [(ngModel)]="genInfoData.principalName" class="form-control form-control-sm col-sm-8 ig-mrgn"
-								 style="margin-left: 3px !important;">
+								<input  type="text" [(ngModel)]="genInfoData.principalName" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;" readonly>
 							</div>
 							<div class="input-group ig-cust col-sm-6" style="margin-top: 10px;">
 								<label class="form-control-sm col-sm-2">Contractor</label>
 								<input  type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="genInfoData.contractorId" appRequired>
 								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showContractorLOV()"></i></a></div>
 								<span>&nbsp;</span>
-								<input  type="text" [(ngModel)]="genInfoData.contractorName" class="form-control form-control-sm col-sm-8 ig-mrgn"
-								 style="margin-left: 2px !important;">
+								<input  type="text" [(ngModel)]="genInfoData.contractorName" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 2px !important;" readonly>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
@@ -251,7 +247,7 @@
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-12">
 								<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Risk</label>
-								<input  type="text" class="form-control form-control-sm" [(ngModel)]="project.riskName">
+								<input  type="text" class="form-control form-control-sm" [(ngModel)]="project.riskName" readonly>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
@@ -260,12 +256,11 @@
 								<input  type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="project.objectId" appRequired>
 								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div>
 								<span>&nbsp;</span>
-								<input  type="text" [(ngModel)]="project.objectDesc" class="form-control form-control-sm col-sm-8 ig-mrgn"
-								 style="margin-left: 3px !important;">
+								<input  type="text" [(ngModel)]="project.objectDesc" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;" readonly>
 							</div>
 							<div class="input-group ig-cust col-sm-6">
 								<label class="form-control-sm col-sm-2">Region</label>
-								<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="project.regionDesc">
+								<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="project.regionDesc" readonly>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
@@ -276,11 +271,11 @@
 							<div class="input-group col-sm-6">
 								<div class="input-group ig-cust">
 									<label class="form-control-sm col-sm-2">Province</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.provinceDesc">
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.provinceDesc" readonly>
 								</div>
 								<div class="input-group">
 									<label class="form-control-sm col-sm-2">City/Town</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.cityDesc">
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.cityDesc" readonly>
 								</div>
 							</div>
 						</div>
@@ -292,15 +287,15 @@
 							<div class="input-group col-sm-6">
 								<div class="input-group ig-cust">
 									<label class="form-control-sm col-sm-2">District</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.districtDesc">
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.districtDesc" readonly>
 									<label class="form-control-sm col-sm-2">Block</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.blockDesc">
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.blockDesc" readonly>
 								</div>
 								<div class="input-group">
 									<label class="form-control-sm col-sm-2">Lat</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.latitude">
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.latitude" readonly>
 									<label class="form-control-sm col-sm-2">Long</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.longitude">
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.longitude" readonly>
 								</div>
 							</div>
 						</div>
@@ -324,16 +319,14 @@
 								<input  type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="genInfoData.principalId" appRequired>
 								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 								<span>&nbsp;</span>
-								<input  type="text" [(ngModel)]="genInfoData.principalName" class="form-control form-control-sm col-sm-8 ig-mrgn"
-								 style="margin-left: 3px !important;">
+								<input  type="text" [(ngModel)]="genInfoData.principalName" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;" readonly>
 							</div>
 							<div class="input-group ig-cust col-sm-6" style="margin-top: 10px;">
 								<label class="form-control-sm col-sm-2">Contractor</label>
 								<input  type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="genInfoData.contractorId" appRequired>
 								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showContractorLOV()"></i></a></div>
 								<span>&nbsp;</span>
-								<input  type="text" [(ngModel)]="genInfoData.contractorName" class="form-control form-control-sm col-sm-8 ig-mrgn"
-								 style="margin-left: 2px !important;">
+								<input  type="text" [(ngModel)]="genInfoData.contractorName" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 2px !important;" readonly>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
@@ -345,7 +338,7 @@
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-12">
 								<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Risk</label>
-								<input  type="text" class="form-control form-control-sm" [(ngModel)]="project.riskName">
+								<input  type="text" class="form-control form-control-sm" [(ngModel)]="project.riskName" readonly>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
@@ -354,12 +347,11 @@
 								<input  type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="project.objectId" appRequired>
 								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div>
 								<span>&nbsp;</span>
-								<input  type="text" [(ngModel)]="project.objectDesc" class="form-control form-control-sm col-sm-8 ig-mrgn"
-								 style="margin-left: 3px !important;">
+								<input  type="text" [(ngModel)]="project.objectDesc" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;" readonly>
 							</div>
 							<div class="input-group ig-cust col-sm-6">
 								<label class="form-control-sm col-sm-2">Region</label>
-								<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="project.regionDesc">
+								<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="project.regionDesc" readonly>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
@@ -370,11 +362,11 @@
 							<div class="input-group col-sm-6">
 								<div class="input-group ig-cust">
 									<label class="form-control-sm col-sm-2">Province</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.provinceDesc">
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.provinceDesc" readonly>
 								</div>
 								<div class="input-group">
 									<label class="form-control-sm col-sm-2">City/Town</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.cityDesc">
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.cityDesc" readonly>
 								</div>
 							</div>
 						</div>
@@ -386,15 +378,15 @@
 							<div class="input-group col-sm-6">
 								<div class="input-group ig-cust">
 									<label class="form-control-sm col-sm-2">District</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.districtDesc">
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.districtDesc" readonly>
 									<label class="form-control-sm col-sm-2">Block</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.blockDesc">
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.blockDesc" readonly>
 								</div>
 								<div class="input-group">
 									<label class="form-control-sm col-sm-2">Lat</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.latitude">
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.latitude" readonly>
 									<label class="form-control-sm col-sm-2">Long</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.longitude">
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.longitude" readonly>
 								</div>
 							</div>
 						</div>
@@ -422,8 +414,7 @@
 								<input  type="text" class="form-control form-control-sm col-sm-1 req" [(ngModel)]="genInfoData.principalId" appRequired>
 								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 								<span>&nbsp;</span>
-								<input  type="text" [(ngModel)]="genInfoData.principalName" class="form-control form-control-sm col-sm-10 ig-mrgn"
-								 style="margin-left: 3px !important;">
+								<input  type="text" [(ngModel)]="genInfoData.principalName" class="form-control form-control-sm col-sm-10 ig-mrgn" style="margin-left: 3px !important;" readonly>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
@@ -435,7 +426,7 @@
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-12">
 								<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Risk</label>
-								<input  type="text" class="form-control form-control-sm" [(ngModel)]="project.riskName">
+								<input  type="text" class="form-control form-control-sm" [(ngModel)]="project.riskName" readonly>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
@@ -444,12 +435,11 @@
 								<input  type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="project.objectId" appRequired>
 								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div>
 								<span>&nbsp;</span>
-								<input  type="text" [(ngModel)]="project.objectDesc" class="form-control form-control-sm col-sm-8 ig-mrgn"
-								 style="margin-left: 3px !important;">
+								<input  type="text" [(ngModel)]="project.objectDesc" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;" readonly>
 							</div>
 							<div class="input-group ig-cust col-sm-6">
 								<label class="form-control-sm col-sm-2">Region</label>
-								<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="project.regionDesc">
+								<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="project.regionDesc" readonly>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
@@ -460,11 +450,11 @@
 							<div class="input-group col-sm-6">
 								<div class="input-group ig-cust">
 									<label class="form-control-sm col-sm-2">Province</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.provinceDesc">
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.provinceDesc" readonly>
 								</div>
 								<div class="input-group">
 									<label class="form-control-sm col-sm-2">City/Town</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.cityDesc">
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.cityDesc" readonly>
 								</div>
 							</div>
 						</div>
@@ -476,15 +466,15 @@
 							<div class="input-group col-sm-6">
 								<div class="input-group ig-cust">
 									<label class="form-control-sm col-sm-2">District</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.districtDesc">
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.districtDesc" readonly>
 									<label class="form-control-sm col-sm-2">Block</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.blockDesc">
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.blockDesc" readonly>
 								</div>
 								<div class="input-group">
 									<label class="form-control-sm col-sm-2">Lat</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.latitude">
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.latitude" readonly>
 									<label class="form-control-sm col-sm-2">Long</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.longitude">
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.longitude" readonly>
 								</div>
 							</div>
 						</div>
@@ -502,8 +492,7 @@
 								<input  type="text" class="form-control form-control-sm col-sm-1 req" [(ngModel)]="genInfoData.principalId" appRequired>
 								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 								<span>&nbsp;</span>
-								<input  type="text" [(ngModel)]="genInfoData.principalName" class="form-control form-control-sm col-sm-10 ig-mrgn"
-								 style="margin-left: 3px !important;">
+								<input  type="text" [(ngModel)]="genInfoData.principalName" class="form-control form-control-sm col-sm-10 ig-mrgn" style="margin-left: 3px !important;" readonly>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
@@ -515,7 +504,7 @@
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-12">
 								<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Risk</label>
-								<input  type="text" class="form-control form-control-sm" [(ngModel)]="project.riskName">
+								<input  type="text" class="form-control form-control-sm" [(ngModel)]="project.riskName" readonly>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
@@ -524,12 +513,11 @@
 								<input  type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="project.objectId" appRequired>
 								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div>
 								<span>&nbsp;</span>
-								<input  type="text" [(ngModel)]="project.objectDesc" class="form-control form-control-sm col-sm-8 ig-mrgn"
-								 style="margin-left: 3px !important;">
+								<input  type="text" [(ngModel)]="project.objectDesc" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;" readonly>
 							</div>
 							<div class="input-group ig-cust col-sm-6">
 								<label class="form-control-sm col-sm-2">Region</label>
-								<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="project.regionDesc">
+								<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="project.regionDesc" readonly>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
@@ -540,11 +528,11 @@
 							<div class="input-group col-sm-6">
 								<div class="input-group ig-cust">
 									<label class="form-control-sm col-sm-2">Province</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.provinceDesc">
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.provinceDesc" readonly>
 								</div>
 								<div class="input-group">
 									<label class="form-control-sm col-sm-2">City/Town</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.cityDesc">
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.cityDesc" readonly>
 								</div>
 							</div>
 						</div>
@@ -556,9 +544,9 @@
 							<div class="input-group col-sm-6">
 								<div class="input-group ig-cust">
 									<label class="form-control-sm col-sm-2">District</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.districtDesc">
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.districtDesc" readonly>
 									<label class="form-control-sm col-sm-2">Block</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.blockDesc">
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.blockDesc" readonly>
 								</div>
 							</div>
 						</div>
@@ -576,8 +564,7 @@
 								<input  type="text" class="form-control form-control-sm col-sm-1 req" [(ngModel)]="genInfoData.principalId" appRequired>
 								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 								<span>&nbsp;</span>
-								<input  type="text" [(ngModel)]="genInfoData.principalName" class="form-control form-control-sm col-sm-10 ig-mrgn"
-								 style="margin-left: 3px !important;">
+								<input  type="text" [(ngModel)]="genInfoData.principalName" class="form-control form-control-sm col-sm-10 ig-mrgn" style="margin-left: 3px !important;" readonly>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
@@ -589,7 +576,7 @@
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-12">
 								<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Risk</label>
-								<input  type="text" class="form-control form-control-sm" [(ngModel)]="project.riskName">
+								<input  type="text" class="form-control form-control-sm" [(ngModel)]="project.riskName" readonly>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
@@ -598,12 +585,11 @@
 								<input  type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="project.objectId" appRequired>
 								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div>
 								<span>&nbsp;</span>
-								<input  type="text" [(ngModel)]="project.objectDesc" class="form-control form-control-sm col-sm-8 ig-mrgn"
-								 style="margin-left: 3px !important;">
+								<input  type="text" [(ngModel)]="project.objectDesc" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;" readonly>
 							</div>
 							<div class="input-group ig-cust col-sm-6">
 								<label class="form-control-sm col-sm-2">Region</label>
-								<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="project.regionDesc">
+								<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="project.regionDesc" readonly>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
@@ -614,11 +600,11 @@
 							<div class="input-group col-sm-6">
 								<div class="input-group ig-cust">
 									<label class="form-control-sm col-sm-2">Province</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.provinceDesc">
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.provinceDesc" readonly>
 								</div>
 								<div class="input-group">
 									<label class="form-control-sm col-sm-2">City/Town</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.cityDesc">
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.cityDesc" readonly>
 								</div>
 							</div>
 						</div>
@@ -630,9 +616,9 @@
 							<div class="input-group col-sm-6">
 								<div class="input-group ig-cust">
 									<label class="form-control-sm col-sm-2">District</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.districtDesc">
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.districtDesc" readonly>
 									<label class="form-control-sm col-sm-2">Block</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.blockDesc">
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.blockDesc" readonly>
 								</div>
 								<div class="input-group">
 									<label class="form-control-sm col-sm-2">IPL</label>
@@ -656,8 +642,7 @@
 								<input  type="text" class="form-control form-control-sm col-sm-1 req" [(ngModel)]="genInfoData.principalId" appRequired>
 								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 								<span>&nbsp;</span>
-								<input  type="text" [(ngModel)]="genInfoData.principalName" class="form-control form-control-sm col-sm-10 ig-mrgn"
-								 style="margin-left: 3px !important;">
+								<input  type="text" [(ngModel)]="genInfoData.principalName" class="form-control form-control-sm col-sm-10 ig-mrgn" style="margin-left: 3px !important;" readonly>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
@@ -669,7 +654,7 @@
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-12">
 								<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Risk</label>
-								<input  type="text" class="form-control form-control-sm" [(ngModel)]="project.riskName">
+								<input  type="text" class="form-control form-control-sm" [(ngModel)]="project.riskName" readonly>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
@@ -678,12 +663,11 @@
 								<input  type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="project.objectId" appRequired>
 								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div>
 								<span>&nbsp;</span>
-								<input  type="text" [(ngModel)]="project.objectDesc" class="form-control form-control-sm col-sm-8 ig-mrgn"
-								 style="margin-left: 3px !important;" >
+								<input  type="text" [(ngModel)]="project.objectDesc" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;" readonly>
 							</div>
 							<div class="input-group ig-cust col-sm-6">
 								<label class="form-control-sm col-sm-2">Region</label>
-								<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="project.regionDesc">
+								<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="project.regionDesc" readonly>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
@@ -694,11 +678,11 @@
 							<div class="input-group col-sm-6">
 								<div class="input-group ig-cust">
 									<label class="form-control-sm col-sm-2">Province</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.provinceDesc">
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.provinceDesc" readonly>
 								</div>
 								<div class="input-group">
 									<label class="form-control-sm col-sm-2">City/Town</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.cityDesc">
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.cityDesc" readonly>
 								</div>
 							</div>
 						</div>
@@ -710,9 +694,9 @@
 							<div class="input-group col-sm-6">
 								<div class="input-group ig-cust">
 									<label class="form-control-sm col-sm-2">District</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.districtDesc">
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.districtDesc" readonly>
 									<label class="form-control-sm col-sm-2">Block</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.blockDesc">
+									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.blockDesc" readonly>
 								</div>
 								<div class="input-group">
 									<label class="form-control-sm col-sm-2">No Claim Pd</label>
@@ -801,19 +785,19 @@
 				<div class="custom-row-inline-inset" style="margin-left: -22px !important;">
 					<div class="input-group ig-cust">
 						<label class="form-control-sm col-sm-4">Prepared By</label>
-						<input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="genInfoData.preparedBy">
+						<input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="genInfoData.preparedBy" readonly>
 					</div>
 					<div class="input-group ig-cust">
 						<label class="form-control-sm col-sm-4">Approved By</label>
-						<input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="genInfoData.approvedBy">
+						<input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="genInfoData.approvedBy" readonly>
 					</div>
 					<div class="input-group ig-cust">
 						<label class="form-control-sm col-sm-4">Printed By</label>
-						<input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="genInfoData.printedBy">
+						<input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="genInfoData.printedBy" readonly>
 					</div>
 					<div class="input-group ig-cust">
 						<label class="form-control-sm col-sm-4">Print Date</label>
-						<input type="date" class="form-control form-control-sm col-sm-7" [ngModel]="genInfoData.printDate.split('T')[0]" (ngModelChange)="genInfoData.printDate = toDateTime($event)">
+						<input type="date" class="form-control form-control-sm col-sm-7" [ngModel]="genInfoData.printDate.split('T')[0]" (ngModelChange)="genInfoData.printDate = toDateTime($event)" readonly>
 					</div>
 				</div>
 			</fieldset>
@@ -823,21 +807,21 @@
 					<div class="form-row">
 						<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -10px; margin-left: 3px;">
 							<label class="form-control-sm top-label">Created By</label>
-							<input  type="text" class="form-control form-control-sm cust-sm req" [(ngModel)]="genInfoData.createUser" appRequired>
+							<input  type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="genInfoData.createUser" readonly>
 						</div>
 						<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -10px; margin-left: -5px;">
 							<label class="form-control-sm top-label">Last Update By</label>
-							<input  type="text" class="form-control form-control-sm cust-sm req" [(ngModel)]="genInfoData.updateUser" appRequired>
+							<input  type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="genInfoData.updateUser" readonly>
 						</div>
 					</div>
 					<div class="form-row">
 						<div class="form-group col-sm-6" style="margin-bottom: 8px; margin-left: 3px;">
 							<label class="form-control-sm top-label">Date Created</label>
-							<input  type="date" class="form-control form-control-sm cust-sm req" [ngModel]="genInfoData.createDate.split('T')[0]" (ngModelChange)="genInfoData.createDate = toDateTime($event)" appRequired>
+							<input  type="date" class="form-control form-control-sm cust-sm" [ngModel]="genInfoData.createDate.split('T')[0]" (ngModelChange)="genInfoData.createDate = toDateTime($event)" readonly>
 						</div>
 						<div class="form-group col-sm-6" style="margin-bottom: 8px; margin-left: -5px;">
 							<label class="form-control-sm top-label">Last Update</label>
-							<input  type="date" class="form-control form-control-sm cust-sm req" [ngModel]="genInfoData.updateDate.split('T')[0]" (ngModelChange)="genInfoData.updateDate = toDateTime($event)" appRequired>
+							<input  type="date" class="form-control form-control-sm cust-sm" [ngModel]="genInfoData.updateDate.split('T')[0]" (ngModelChange)="genInfoData.updateDate = toDateTime($event)" readonly>
 						</div>
 					</div>
 				</div>
