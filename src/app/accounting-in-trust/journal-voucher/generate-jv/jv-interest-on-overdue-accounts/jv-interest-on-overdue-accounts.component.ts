@@ -32,7 +32,7 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
     selectFlag: false,
     editFlag: false,
     pageLength: 10,
-    genericBtn: 'Save'
+    genericBtn: 'Save',
     widths: [180,180,120,1,1,1,1,1,85,120,120]
   };
 

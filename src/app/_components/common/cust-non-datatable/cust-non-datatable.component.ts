@@ -229,7 +229,6 @@ export class CustNonDatatableComponent implements OnInit {
                 this.passData.dataTypes.push('text');
             }
         }
-        console.log(this.passData);
     }
 
     processData(key: any, data: any) {

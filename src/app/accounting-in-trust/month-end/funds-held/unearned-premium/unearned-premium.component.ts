@@ -23,6 +23,7 @@ export class UnearnedPremiumComponent implements OnInit {
   	dataTypes: ['text','currency','currency','currency','currency'],
   	pageStatus: true,
     pagination: true,
+    colSize: []
   }
 
   detailsPerPolicy: any = {
@@ -77,7 +78,8 @@ export class UnearnedPremiumComponent implements OnInit {
   	dataTypes: ['text','date','date','number','number','currency','currency'],
   	pageStatus: true,
     pagination: true,
-    total: [null,null,null,null,'Total','premium','defPremium']
+    total: [null,null,null,null,'Total','premium','defPremium'],
+    colSize: ['', '', '', '90px', '90px', '150px', '150px'],
   }
 
   accountingEntries: any = {

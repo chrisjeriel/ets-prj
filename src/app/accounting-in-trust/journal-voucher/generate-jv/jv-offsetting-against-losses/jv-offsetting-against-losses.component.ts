@@ -48,7 +48,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   	deleteFlag: true,
   	total: [null, null,null, null, null,null, null, null, 'Total', 'amount', 'amountPhp'],
   	genericBtn: 'Save',
-    widths: ['auto','auto','auto',1,'auto',1,1,2,100,100,100],
+    widths: [150,200,200,1,150,1,1,85,120,120,120],
     pageLength: 5,
   }
 
