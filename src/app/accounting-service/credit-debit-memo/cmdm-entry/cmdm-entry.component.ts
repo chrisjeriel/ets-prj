@@ -23,6 +23,7 @@ export class CmdmEntryComponent implements OnInit {
     editFlag: false,
     pageLength: 10,
     widths: [205,305,163,176,122,154],
+    magnifyingGlass: ['accountCode','slType','slName'],
     genericBtn: 'Save'
   };
 
