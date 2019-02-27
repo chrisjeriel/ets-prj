@@ -67,7 +67,7 @@ export class MtnQuotationWordingsComponent implements OnInit {
 
   openModal(){
      this.mtnService.getMtnQuotationWordings(this.line,'').subscribe((data: any) =>{
-          for (var a = data['quoteWordings'].length - 1; a >= 0; a--) {
+          for (var a = 0; a < data['quoteWordings'].length ; a++) {
                this.passData.tableData.push(data['quoteWordings'][a]);
           }
           this.table.refreshTable();

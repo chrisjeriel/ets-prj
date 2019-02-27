@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter, Input} from '@angular/core';
 import { MaintenanceService } from '@app/_services';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component'
@@ -10,6 +10,9 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 })
 export class MtnEndtCodeComponent implements OnInit {
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
+
+  @Input() line : string = "";
+
   constructor(private modalService: NgbModal, private mtnService : MaintenanceService) { }
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
   passData: any = {
@@ -32,7 +35,13 @@ export class MtnEndtCodeComponent implements OnInit {
     selected: any;
 
   ngOnInit() {
-  	
+    console.log(this.line);
+    this.mtnService.getEndtCode(this.line,'').subscribe((data: any) => {
+      for (var i = data.endtCode.length - 1; i >= 0; i--) {
+        this.passData.tableData.push(data.endtCode[i]);
+      }
+      this.table.refreshTable();
+    });
   }
 
   select(data){
@@ -44,12 +53,13 @@ export class MtnEndtCodeComponent implements OnInit {
   }
 
   openModal(){
-    this.mtnService.getEndtCode("CAR").subscribe((data: any) => {
-      for (var i = data.endtCode.length - 1; i >= 0; i--) {
-        this.passData.tableData.push(data.endtCode[i]);
-      }
-      this.table.refreshTable();
-    });
+    // console.log(this.eline + ">>> modal galing endt");
+    // this.mtnService.getEndtCode('CAR','').subscribe((data: any) => {
+    //   for (var i = data.endtCode.length - 1; i >= 0; i--) {
+    //     this.passData.tableData.push(data.endtCode[i]);
+    //   }
+    //   this.table.refreshTable();
+    // });
   }
 
 }

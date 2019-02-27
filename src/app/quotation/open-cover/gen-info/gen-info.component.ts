@@ -63,146 +63,152 @@ export class GenInfoComponent implements OnInit {
   infos:any = [];
   govCheckbox: boolean;
   indCheckbox: boolean;
-  
+  fromBtn:string;
+
   ngOnInit() {
-    this.titleService.setTitle("Quo | General Info")
+    this.titleService.setTitle("Quo | General Info");
+    this.ocQuoteGenInfo = new OcGenInfoInfo();
+
     this.sub = this.route.params.subscribe(params => {
-      this.line = params['line'];
-      this.from = params['from'];
-      this.ocQuoteNo = (params['ocQuoteNo']);
+          this.line = params['line'];
+          this.from = params['from'];
+          this.ocQuoteNo = (params['ocQuoteNo']);
+          this.fromBtn  = params['fromBtn'];
 
-      if (this.from === "oc-inquiry") {
-        this.typeOfCession = params['typeOfCession'];
-      }else if(this.from === "oc-processing"){
-        this.typeOfCession = params['typeOfCession'];
-        this.riskId = params['riskId'];
+          if (this.from === "oc-inquiry") {
+            this.typeOfCession = params['typeOfCession'];
+          }else if(this.from === "oc-processing"){
+            this.typeOfCession = params['typeOfCession'];
+            
+            if(this.fromBtn === 'add'){
+               this.riskId = params['riskId'];
+               this.mtnService.getMtnRisk(this.riskId)
+                            .subscribe(val => {
+                              this.riskName = val['risk'].riskName;
+                              this.regionDesc = val['risk'].regionDesc;
+                              this.provinceDesc = val['risk'].provinceDesc;
+                              this.cityDesc = val['risk'].cityDesc;
+                              this.districtDesc = val['risk'].districtDesc;
+                              this.blockDesc  = val['risk'].blockDesc;
+                              this.lat  = val['risk'].latitude;
+                              this.long = val['risk'].longitude;
+                            });
+            }else{
+                this.quotationService.getOcGenInfoData(this.sampleId,this.ocQuoteNo)
+                    .subscribe(val => 
+                        {
+                          //this.ocQuoteGenInfo = new OcGenInfoInfo(i.openQuotationNo);
+                          for(let i of val['quotationOc']) {
+                            console.log(i.projectOc);
+                              this.ocQuoteGenInfo.openQuotationNo = i.openQuotationNo;
+                              this.ocQuoteGenInfo.refPolNo        = i.refPolNo;
+                              this.ocQuoteGenInfo.openPolicyNo    = i.openPolicyNo;
+                              this.ocQuoteGenInfo.lineClassDesc   = i.lineCdDesc;
+                              this.ocQuoteGenInfo.status          = i.status;
+                              this.ocQuoteGenInfo.cedingId        = i.cedingId;
+                              this.ocQuoteGenInfo.cedingName      = i.cedingName;
+                              this.ocQuoteGenInfo.reinsurerId     = i.reinsurerId;
+                              this.ocQuoteGenInfo.reinsurerName   = i.reinsurerName;
+                              this.ocQuoteGenInfo.intmId          = i.intmId;
+                              this.ocQuoteGenInfo.intmName        = i.intmName;
+                              this.ocQuoteGenInfo.issueDate       = this.formatDate(i.issueDate);
+                              this.ocQuoteGenInfo.expiryDate      = this.formatDate(i.expiryDate);
+                              this.ocQuoteGenInfo.reqBy           = i.reqBy;
+                              this.ocQuoteGenInfo.reqDate         = this.formatDate(i.reqDate);
+                              this.ocQuoteGenInfo.reqMode         = i.reqMode;
+                              this.ocQuoteGenInfo.currencyCd      = i.currencyCd;
+                              this.ocQuoteGenInfo.currencyRt      = i.currencyRt;
+                              this.ocQuoteGenInfo.govtTag         = i.govtTag;
+                              this.govCheckbox = ((this.ocQuoteGenInfo.govtTag === 'y' || this.ocQuoteGenInfo.govtTag ==='Y') ? true: false);
+                              this.ocQuoteGenInfo.indicativeTag   = i.indicativeTag;
+                              this.indCheckbox = ((this.ocQuoteGenInfo.indicativeTag === 'a' || this.ocQuoteGenInfo.indicativeTag === 'A') ? true : false);
+                              this.ocQuoteGenInfo.prinId          = i.prinId;
+                              this.ocQuoteGenInfo.principalName   = i.principalName;
+                              this.ocQuoteGenInfo.contractorId    = i.contractorId;
+                              this.ocQuoteGenInfo.contractorName  = i.contractorName;
+                              this.ocQuoteGenInfo.insuredDesc     = i.insuredDesc;
+                              this.ocQuoteGenInfo.projDesc        = i.projectOc.projDesc;
+                              this.ocQuoteGenInfo.objectId        = i.projectOc.objectId;
+                              this.ocQuoteGenInfo.site            = i.projectOc.site;
+                              this.ocQuoteGenInfo.duration        = i.projectOc.duration;
+                              this.ocQuoteGenInfo.testing         = i.projectOc.testing;
+                              this.ocQuoteGenInfo.openingParag    = i.openingParag;
+                              this.ocQuoteGenInfo.closingParag    = i.closingParag;
+                              this.ocQuoteGenInfo.maxSi           = i.projectOc.maxSi;
+                              this.ocQuoteGenInfo.pctShare        = i.projectOc.pctShare;
+                              this.ocQuoteGenInfo.totalValue      = i.projectOc.totalValue;
+                              this.ocQuoteGenInfo.preparedBy      = i.preparedBy;
+                              this.ocQuoteGenInfo.approvedBy      = i.approvedBy;
+                              this.ocQuoteGenInfo.printDate       = this.formatDate(i.printDate);
+                              this.ocQuoteGenInfo.printedBy       = i.printedBy;
+                              this.ocQuoteGenInfo.createUser      = i.createUser;
+                              this.ocQuoteGenInfo.createDate      = this.formatDate(i.createDate);
+                              this.ocQuoteGenInfo.updateUser      = i.updateUser;
+                              this.ocQuoteGenInfo.updateDate      = this.formatDate(i.updateDate);
+                              this.ocQuoteGenInfo.riskId          = i.projectOc.riskId;
+                              this.ocQuoteGenInfo.cessionId       = i.cessionId;
+                              this.ocQuoteGenInfo.lineClassCd     = i.lineClassCd;
+                              this.ocQuoteGenInfo.lineCd          = i.lineCd;
+                              this.ocQuoteGenInfo.lineClassDesc   = i.lineClassDesc;
+                            }
 
-        this.mtnService.getMtnRisk(this.riskId)
-                        .subscribe(val => {
-                          this.riskName = val['risk'].riskName;
-                          this.regionDesc = val['risk'].regionDesc;
-                          this.provinceDesc = val['risk'].provinceDesc;
-                          this.cityDesc = val['risk'].cityDesc;
-                          this.districtDesc = val['risk'].districtDesc;
-                          this.blockDesc  = val['risk'].blockDesc;
-                          this.lat  = val['risk'].latitude;
-                          this.long = val['risk'].longitude;
-                        });
-        
-      }
-     
+                            this.lineClassDescr  = this.ocQuoteGenInfo.lineClassDesc;
+                            this.cedingCoId   = Number(this.ocQuoteGenInfo.cedingId);
+                            this.cedingCoName = this.ocQuoteGenInfo.cedingName;
+                            this.currencyAbbr = this.ocQuoteGenInfo.currencyCd;
+                            this.currencyRt   = Number(this.ocQuoteGenInfo.currencyRt);
+                            this.mtnIntmId    = Number(this.ocQuoteGenInfo.intmId);
+                            this.mtnIntmName  = this.ocQuoteGenInfo.intmName;
+                            this.prinId       = Number(this.ocQuoteGenInfo.prinId);
+                            this.prinName     = this.ocQuoteGenInfo.principalName;
+                            this.conId        = Number(this.ocQuoteGenInfo.contractorId);
+                            this.conName      = this.ocQuoteGenInfo.contractorName;
+                            this.objId        = Number(this.ocQuoteGenInfo.objectId);
+                            //this.line         = this.ocQuoteGenInfo.lineCd;
+                            this.openingWording = this.ocQuoteGenInfo.openingParag;
+                            this.closingWording = this.ocQuoteGenInfo.closingParag;
 
+                            
+
+                            this.mtnService.getMtnRisk(this.ocQuoteGenInfo.riskId)
+                                    .subscribe(val => {
+                                      this.riskName = val['risk'].riskName;
+                                      this.regionDesc = val['risk'].regionDesc;  
+                                      this.provinceDesc = val['risk'].provinceDesc;
+                                      this.cityDesc = val['risk'].cityDesc;
+                                      this.districtDesc = val['risk'].districtDesc;
+                                      this.blockDesc  = val['risk'].blockDesc;
+                                      this.lat  = val['risk'].latitude;
+                                      this.long = val['risk'].longitude;
+                                    });
+                           
+                            //  console.log(this.ocQuoteGenInfo.cessionId + ">>>> labas ");
+                            // this.mtnService.getMtnTypeOfCession(this.ocQuoteGenInfo.cessionId)
+                            //         .subscribe(val => {
+                            //           //this.typeOfCession = val['cession'][0];
+                            //           console.log(JSON.stringify(val) + ">>>> HERE !");
+                            //                            //console.log(this.typeOfCession + ">>>> LOOB ");
+
+                            //         });
+                            this.mtnService.getMtnObject(this.line,this.objId)
+                                    .subscribe(val => {
+                                     this.objName  = (val['object'][0] === null || val['object'][0] === undefined) ? '' : val['object'][0].description;
+                                     console.log(JSON.stringify(val['object'][0]) + ">>> OBJECT HERE");
+                                    });
+
+                            this.insuredContent();
+                        }
+                  );
+            }
+          }
     });
     this.checkTypeOfCession();
-
-    this.ocQuoteGenInfo = new OcGenInfoInfo();
-    this.quotationService.getOcGenInfoData(this.sampleId,this.ocQuoteNo)
-        .subscribe(val => 
-            {
-              //this.ocQuoteGenInfo = new OcGenInfoInfo(i.openQuotationNo);
-              for(let i of val['quotationOc']) {
-                console.log(i.projectOc);
-                  this.ocQuoteGenInfo.openQuotationNo = i.openQuotationNo;
-                  this.ocQuoteGenInfo.refPolNo        = i.refPolNo;
-                  this.ocQuoteGenInfo.openPolicyNo    = i.openPolicyNo;
-                  this.ocQuoteGenInfo.lineClassDesc   = i.lineCdDesc;
-                  this.ocQuoteGenInfo.status          = i.status;
-                  this.ocQuoteGenInfo.cedingId        = i.cedingId;
-                  this.ocQuoteGenInfo.cedingName      = i.cedingName;
-                  this.ocQuoteGenInfo.reinsurerId     = i.reinsurerId;
-                  this.ocQuoteGenInfo.reinsurerName   = i.reinsurerName;
-                  this.ocQuoteGenInfo.intmId          = i.intmId;
-                  this.ocQuoteGenInfo.intmName        = i.intmName;
-                  this.ocQuoteGenInfo.issueDate       = this.formatDate(i.issueDate);
-                  this.ocQuoteGenInfo.expiryDate      = this.formatDate(i.expiryDate);
-                  this.ocQuoteGenInfo.reqBy           = i.reqBy;
-                  this.ocQuoteGenInfo.reqDate         = this.formatDate(i.reqDate);
-                  this.ocQuoteGenInfo.reqMode         = i.reqMode;
-                  this.ocQuoteGenInfo.currencyCd      = i.currencyCd;
-                  this.ocQuoteGenInfo.currencyRt      = i.currencyRt;
-                  this.ocQuoteGenInfo.govtTag         = i.govtTag;
-                  this.govCheckbox = ((this.ocQuoteGenInfo.govtTag === 'y' || this.ocQuoteGenInfo.govtTag ==='Y') ? true: false);
-                  this.ocQuoteGenInfo.indicativeTag   = i.indicativeTag;
-                  this.indCheckbox = ((this.ocQuoteGenInfo.indicativeTag === 'a' || this.ocQuoteGenInfo.indicativeTag === 'A') ? true : false);
-                  this.ocQuoteGenInfo.prinId          = i.prinId;
-                  this.ocQuoteGenInfo.principalName   = i.principalName;
-                  this.ocQuoteGenInfo.contractorId    = i.contractorId;
-                  this.ocQuoteGenInfo.contractorName  = i.contractorName;
-                  this.ocQuoteGenInfo.insuredDesc     = i.insuredDesc;
-                  this.ocQuoteGenInfo.projDesc        = i.projectOc.projDesc;
-                  this.ocQuoteGenInfo.objectId        = i.projectOc.objectId;
-                  this.ocQuoteGenInfo.site            = i.projectOc.site;
-                  this.ocQuoteGenInfo.duration        = i.projectOc.duration;
-                  this.ocQuoteGenInfo.testing         = i.projectOc.testing;
-                  this.ocQuoteGenInfo.openingParag    = i.openingParag;
-                  this.ocQuoteGenInfo.closingParag    = i.closingParag;
-                  this.ocQuoteGenInfo.maxSi           = i.projectOc.maxSi;
-                  this.ocQuoteGenInfo.pctShare        = i.projectOc.pctShare;
-                  this.ocQuoteGenInfo.totalValue      = i.projectOc.totalValue;
-                  this.ocQuoteGenInfo.preparedBy      = i.preparedBy;
-                  this.ocQuoteGenInfo.approvedBy      = i.approvedBy;
-                  this.ocQuoteGenInfo.printDate       = this.formatDate(i.printDate);
-                  this.ocQuoteGenInfo.printedBy       = i.printedBy;
-                  this.ocQuoteGenInfo.createUser      = i.createUser;
-                  this.ocQuoteGenInfo.createDate      = this.formatDate(i.createDate);
-                  this.ocQuoteGenInfo.updateUser      = i.updateUser;
-                  this.ocQuoteGenInfo.updateDate      = this.formatDate(i.updateDate);
-                  this.ocQuoteGenInfo.riskId          = i.projectOc.riskId;
-                  this.ocQuoteGenInfo.cessionId       = i.cessionId;
-                  this.ocQuoteGenInfo.lineClassCd     = i.lineClassCd;
-                  this.ocQuoteGenInfo.lineCd          = i.lineCd;
-                  this.ocQuoteGenInfo.lineClassDesc   = i.lineClassDesc;
-                }
-
-                this.lineClassDescr  = this.ocQuoteGenInfo.lineClassDesc;
-                this.cedingCoId   = Number(this.ocQuoteGenInfo.cedingId);
-                this.cedingCoName = this.ocQuoteGenInfo.cedingName;
-                this.currencyAbbr = this.ocQuoteGenInfo.currencyCd;
-                this.currencyRt   = Number(this.ocQuoteGenInfo.currencyRt);
-                this.mtnIntmId    = Number(this.ocQuoteGenInfo.intmId);
-                this.mtnIntmName  = this.ocQuoteGenInfo.intmName;
-                this.prinId       = Number(this.ocQuoteGenInfo.prinId);
-                this.prinName     = this.ocQuoteGenInfo.principalName;
-                this.conId        = Number(this.ocQuoteGenInfo.contractorId);
-                this.conName      = this.ocQuoteGenInfo.contractorName;
-                this.objId        = Number(this.ocQuoteGenInfo.objectId);
-                //this.line         = this.ocQuoteGenInfo.lineCd;
-                this.openingWording = this.ocQuoteGenInfo.openingParag;
-                this.closingWording = this.ocQuoteGenInfo.closingParag;
-
-                
-
-                this.mtnService.getMtnRisk(this.ocQuoteGenInfo.riskId)
-                        .subscribe(val => {
-                          this.riskName = val['risk'].riskName;
-                          this.regionDesc = val['risk'].regionDesc;
-                          this.provinceDesc = val['risk'].provinceDesc;
-                          this.cityDesc = val['risk'].cityDesc;
-                          this.districtDesc = val['risk'].districtDesc;
-                          this.blockDesc  = val['risk'].blockDesc;
-                          this.lat  = val['risk'].latitude;
-                          this.long = val['risk'].longitude;
-                        });
-               
-                this.mtnService.getMtnTypeOfCession(this.ocQuoteGenInfo.cessionId)
-                        .subscribe(val => {
-                          this.typeOfCession = val['cession'][0].description;
-                        });
-
-                this.mtnService.getMtnObject(this.line,this.objId)
-                        .subscribe(val => {
-                          this.objName  = val['object'][0].description;
-                        });
-                this.insuredContent();
-
-            }
-      );
-    
+   
   }
 
   insuredContent(){
     if(this.prinName != "" && this.conName != ""){
-      this.insured = this.prinName.trim() +" / "+this.conName.trim();
+      this.insured = ((this.prinName === null) ? '' : this.prinName.trim()) +" / "+((this.conName === null) ? '': this.conName.trim());
     }
   }
 
