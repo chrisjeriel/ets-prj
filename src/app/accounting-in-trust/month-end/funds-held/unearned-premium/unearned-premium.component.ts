@@ -119,7 +119,8 @@ export class UnearnedPremiumComponent implements OnInit {
   	dataTypes: ['text','text','text','text','currency','currency'],
   	pageStatus: true,
     pagination: true,
-    total: [null,null,null,'Total','debit','credit']
+    total: [null,null,null,'Total','debit','credit'],
+    colSize: ['100px', '150px', '250px', '250px', '120px', '120px'],
   }
 
   constructor(private modalService: NgbModal) { }

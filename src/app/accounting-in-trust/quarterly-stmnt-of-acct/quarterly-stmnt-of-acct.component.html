@@ -113,9 +113,9 @@
 						<div class="col-sm-1"></div>
 						<label class="form-control-sm col-sm-4" style="text-align: left !important;">BALANCE IN YOUR FAVOR</label>
 						<input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right"
-						[ngModel]="balanceDebit | number: '1.2-2'" (ngModelChange)="balanceDebit=$event" numbers-only style="max-width: 139px;margin-left: 14px;">
+						[ngModel]="balanceDebit | number: '1.2-2'" (ngModelChange)="balanceDebit=$event" numbers-only style="max-width: 139px;margin-left: 14px; font-weight: bold;">
 						<input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right"
-						style="margin-left: 3px !important;" numbers-only style="margin-left: 3px !important;min-width: 142px;" [ngModel]="balanceCredit | number: '1.2-2'" (ngModelChange)="balanceCredit=$event">
+						style="margin-left: 3px !important;" numbers-only style="margin-left: 3px !important;min-width: 142px; font-weight: bold;" [ngModel]="balanceCredit | number: '1.2-2'" (ngModelChange)="balanceCredit=$event">
 					</div>
 					<div class="input-group" style="margin-bottom: -25px !important;margin-top: -20px !important;">
 						<div class="col-sm-6"></div>
@@ -125,9 +125,9 @@
 						<div class="col-sm-1"></div>
 						<label class="form-control-sm col-sm-4" style="text-align: left !important;">TOTAL DEBITS AND CREDITS</label>
 						<input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right"
-						[ngModel]="totalDebit | number: '1.2-2'" (ngModelChange)="totalDebit=$event" numbers-only style="max-width: 139px;margin-left: 14px;">
+						[ngModel]="totalDebit | number: '1.2-2'" (ngModelChange)="totalDebit=$event" numbers-only style="max-width: 139px;margin-left: 14px; font-weight: bold;">
 						<input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right"
-						style="margin-left: 3px !important;" value="1,510,787.46" numbers-only style="margin-left: 3px !important;min-width: 142px;" [ngModel]="totalCredit | number: '1.2-2'" (ngModelChange)="totalCredit=$event">
+						style="margin-left: 3px !important;" value="1,510,787.46" numbers-only style="margin-left: 3px !important;min-width: 142px; font-weight: bold;" [ngModel]="totalCredit | number: '1.2-2'" (ngModelChange)="totalCredit=$event">
 					</div>
 				</div>
 			</div>
