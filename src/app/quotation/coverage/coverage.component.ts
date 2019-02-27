@@ -216,8 +216,7 @@ export class CoverageComponent implements OnInit {
         this.coverageData.sectionISi =0;
         this.coverageData.sectionIISi =0;
         this.coverageData.sectionIIISi =0;
-       for(var i= 0; i< this.passData.tableData.length; i++){
-         console.log(this.passData.tableData[0].sumInsured)
+       /*for(var i= 0; i< this.passData.tableData.length; i++){
          if(this.passData.tableData[i].addSi == 'Y' && !this.passData.tableData[i].deleted){
            if(this.passData.tableData[i].section == 'I'){
              this.coverageData.sectionISi += this.passData.tableData[i].sumInsured;
@@ -230,7 +229,12 @@ export class CoverageComponent implements OnInit {
            }
 
          }
+       }*/
+       for(var j= 0; j < this.passData.tableData.length; j++){
+         console.log('test')
        }
+
+       console.log('test')
        this.coverageData.totalSi = this.coverageData.sectionISi + this.coverageData.sectionIISi + this.coverageData.sectionIIISi
   }
 

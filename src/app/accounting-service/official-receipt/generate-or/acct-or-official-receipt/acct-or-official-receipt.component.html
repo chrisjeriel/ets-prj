@@ -99,7 +99,7 @@
                     <div class="input-group">
                       <div class="col-sm">
                           <app-cust-editable-non-datatable [passData]="passDataOfficialReceipt">
-                            <button controls-r class="cust-btn" (click)="openTaxAllocation()">Tax Allocation</button>
+                            <button controls-r class="cust-btn" (click)="openTaxAllocation()" class="cust cust-btn">Tax Allocation</button>
                           </app-cust-editable-non-datatable>
                       </div>
                     </div>
@@ -179,8 +179,8 @@
   <div footer class="w-100">
     <div class="col-md-13 text-center">
         <div class="cust-btn-container" >
-            <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
             <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Save</a></button>
+            <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Return</a></button>
         </div>
     </div>
   </div>

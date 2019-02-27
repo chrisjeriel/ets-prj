@@ -58,7 +58,7 @@ export class ExtractFromLastYearComponent implements OnInit {
     infoFlag: true,
     searchFlag: true,
     pageLength: 15,
-    widths: [],
+    colsize: ['150px','290px','','','200px'],
     pagination: true,
     pageStatus: true,
     printBtn: false,

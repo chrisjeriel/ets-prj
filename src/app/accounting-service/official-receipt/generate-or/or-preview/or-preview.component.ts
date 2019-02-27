@@ -56,7 +56,7 @@ export class OrPreviewComponent implements OnInit {
     total: [null, null, null, 'Total', 'vatAmount'],
     pageLength:5,
     genericBtn: 'Save',
-    widths: [100,200,'auto',200,200,],
+    widths: [100,200,'auto',150,150],
     paginateFlag:true,
     infoFlag:true
   }
@@ -77,7 +77,7 @@ export class OrPreviewComponent implements OnInit {
     deleteFlag: true,
     pageLength:5,
     total: [null, null, null, null,'Total', 'wTaxAmount'],
-    widths: [100,200,150,'auto',150,150,],
+    widths: [150,250,130,'auto',150,150,],
     genericBtn: 'Save',
     paginateFlag:true,
     infoFlag:true
