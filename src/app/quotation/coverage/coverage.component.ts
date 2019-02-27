@@ -233,8 +233,7 @@ export class CoverageComponent implements OnInit {
        for(var j= 0; j < this.passData.tableData.length; j++){
          console.log('test')
        }
-
-       console.log('test')
+       console.log('testing')
        this.coverageData.totalSi = this.coverageData.sectionISi + this.coverageData.sectionIISi + this.coverageData.sectionIIISi
   }
 

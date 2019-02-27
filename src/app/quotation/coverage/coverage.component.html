@@ -29,10 +29,10 @@
             <div class="col-sm-2">
             </div>
             <div class="col-sm-8" style="padding-top: 8px; padding-bottom: 15px;">
-                 <!-- <app-cust-editable-non-datatable  [passData]="passData" (tableDataChange)="passData.tableData=$event;update()" (clickLOV)="sectionCoversLOV($event)">
-                </app-cust-editable-non-datatable> -->
-                <app-cust-editable-non-datatable  [passData]="passData" (onDataChange)="passData.tableData=$event;" (newClick)="passData.tableData=$event;update($event);" (clickLOV)="sectionCoversLOV($event)">
+                 <app-cust-editable-non-datatable  [passData]="passData" (tableDataChange)="passData.tableData=$event;update()" (clickLOV)="sectionCoversLOV($event)">
                 </app-cust-editable-non-datatable>
+                <!-- <app-cust-editable-non-datatable  [passData]="passData" (onDataChange)="passData.tableData=$event;" (newClick)="update($event);" (clickLOV)="sectionCoversLOV($event)">
+                </app-cust-editable-non-datatable> -->
             </div>
             <div class="col-sm-2"></div>
         </div>
