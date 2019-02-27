@@ -26,6 +26,7 @@ export class RiskListComponent implements OnInit {
         pageLength: 10,
         keys: ['activeTag','riskId','riskName','riskAbbr','regionDesc','provinceDesc','cityDesc','districtDesc','blockDesc','latitude','longitude']
     }
+    selected:any;
     
     constructor(private titleService: Title, private underwritingService: UnderwritingService, private maintenanceService: MaintenanceService, private router: Router) { }
 

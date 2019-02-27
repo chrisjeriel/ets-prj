@@ -121,16 +121,16 @@ export class MaintenanceService{
    	   return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMntLineClass',{params});
 	}
 
-	getMtnRegion(regionCd){
+	getMtnRegion(regionCd?){
 		const params = new HttpParams()
-			.set('regionCd',regionCd)
+			.set('regionCd',regionCd===undefined ? '' : regionCd)
 		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnRegion",{params});
 	}
 
-	getMtnProvince(provinceCd,regionCd){
+	getMtnProvince(provinceCd?,regionCd?){
 		const params = new HttpParams()
-			.set('provinceCd',provinceCd)
-			.set('regionCd',regionCd)
+			.set('provinceCd',provinceCd ===undefined ? '' : provinceCd)
+			.set('regionCd',regionCd ===undefined ? '' : regionCd)
 		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnProvince",{params});
 	}
 

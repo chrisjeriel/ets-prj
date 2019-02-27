@@ -24,7 +24,7 @@ export class RiskFormComponent implements OnInit, OnDestroy {
     passLOV:any = {};
     riskData:any = 
         {
-            activeTag : null,
+            activeTag : 'N',
             blockCd : null,
             blockDesc : null,
             cityCd : null,
@@ -55,6 +55,7 @@ export class RiskFormComponent implements OnInit, OnDestroy {
         this.titleService.setTitle("Pol | Risk");
 
         this.sub = this.route.params.subscribe(params => {
+            console.log(params)
             if(params.info == undefined){
                 this.riskData = JSON.parse(JSON.stringify(params));
                 console.log(this.riskData.updateDate);
@@ -66,7 +67,9 @@ export class RiskFormComponent implements OnInit, OnDestroy {
                     this.riskData.createDate.split(/[,]/g)[0]+'-'+
                     ("0"+this.riskData.createDate.split(/[,]/g)[1]).slice(-2)+'-'+
                     ("0"+this.riskData.createDate.split(/[,]/g)[2]).slice(-2);
-                console.log(this.riskData);
+                for(let key in this.riskData){
+                    this.riskData[key] = this.riskData[key]=="null" ? '' : this.riskData[key];
+                }
             }
             else
                 this.info = params['info'];
@@ -95,8 +98,8 @@ export class RiskFormComponent implements OnInit, OnDestroy {
     }
 
     setDistricts(data){
-        this.districtCd = data.districtCd;
-        this.districtName = data.districtDesc;
+        this.riskData.districtCd = data.districtCd;
+        this.riskData.districtDesc = data.districtDesc;
     }
 
     showBlockModal() {
@@ -104,20 +107,33 @@ export class RiskFormComponent implements OnInit, OnDestroy {
     }
 
     setCity(data){
-        this.cityCd = data.cityCd;
-        this.cityDesc = data.cityDesc;
+        this.riskData.cityCd = data.cityCd;
+        this.riskData.cityDesc = data.cityDesc;
     }
     setBlock(data){
-        this.blockCd = data.blockCd;
-        this.blockDesc = data.blockDesc;
+        this.riskData.blockCd = data.blockCd;
+        this.riskData.blockDesc = data.blockDesc;
     }
 
     setCrestaZone(data){
-        this.zoneCd = data.zoneCd;
-        this.zoneDesc = data.zoneDesc;
+        this.riskData.zoneCd = data.zoneCd;
+        this.riskData.zoneDesc = data.zoneDesc;
+    }
+
+    setRegion(data){
+        this.riskData.regionCd = data.regionCd;
+        this.riskData.regionDesc = data.regionDesc;
+    }
+
+    setProvince(data){
+        this.riskData.provinceCd = data.provinceCd;
+        this.riskData.provinceDesc = data.provinceDesc;
     }
 
     openGenericLOV(selector){
+        if(selector == 'province'){
+            this.passLOV.regionCd = this.riskData.regionCd;
+        }
         this.passLOV.selector = selector;
         $('#lov #modalBtn').trigger('click');
     }
@@ -127,6 +143,10 @@ export class RiskFormComponent implements OnInit, OnDestroy {
             this.setCity(data.data);
         }else if(data.selector == 'district'){
             this.setDistricts(data.data);
+        }else if(data.selector == 'region'){
+            this.setRegion(data.data);
+        }else if(data.selector == 'province'){
+            this.setProvince(data.data);
         }
     }
 
@@ -137,5 +157,10 @@ export class RiskFormComponent implements OnInit, OnDestroy {
     save(){
         console.log(JSON.stringify(this.riskData));
         this.mtnService.saveMtnRisk(this.riskData).subscribe();
+    }
+
+
+    test(event){
+        console.log(event)
     }
 }

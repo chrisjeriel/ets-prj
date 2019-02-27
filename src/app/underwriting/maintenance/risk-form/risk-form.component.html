@@ -10,8 +10,9 @@
                             <div class="form-row custom-row-inline-inset">
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-2 text-right labels">Risk No.</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-2 text-left" [(ngModel)]="riskData.riskId">
-                                    <input type="checkbox" class="checkbox text-right" [(ngModel)]="riskData.activeTag">
+                                    <input type="text" class="form-control form-control-sm col-sm-2 text-left" disabled="disabled" [(ngModel)]="riskData.riskId">
+                                    <input type="checkbox" class="checkbox text-right" [ngModel]="riskData.activeTag=='Y'" 
+                                    (change)="riskData.activeTag = $event.target.checked?'Y':'N'">
                                     <label class="form-control-sm labels" style="text-align: left !important">Active Tag</label>
                                 </div>
                             </div>
@@ -40,11 +41,11 @@
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-1 text-right labels">Region</label>
                                     <input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="riskData.regionCd">
-                                    <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+                                    <div class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('region')"></i></a></div>
                                     <input type="text" class="form-control form-control-sm col-sm-4" [(ngModel)]="riskData.regionDesc" style="margin-left: 6px !important">
                                     <label class="form-control-sm col-sm-1 text-right labels">Province</label>
                                     <input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="riskData.provinceCd">
-                                    <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+                                    <div class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('province')"></i></a></div>
                                     <input type="text" class="form-control form-control-sm col-sm-4" [(ngModel)]="riskData.provinceDesc" style="margin-left: 6px !important">
                                 </div>
                             </div>
@@ -68,9 +69,9 @@
                                     <div class="text-search-ico"><a><i class="fa fa-search" (click)="showBlockModal()"></i></a></div>
                                     <input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 6px !important" [(ngModel)]="riskData.blockDesc">
                                     <label class="form-control-sm col-sm-1 text-right labels">Lat</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="riskData.latitude === 'null' ? '' : riskData.latitude">
+                                    <input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="riskData.latitude">
                                     <label class="form-control-sm col-sm-1 text-right labels">Long</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="riskData.longitude === 'null' ? '' : riskData.longitude">
+                                    <input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="riskData.longitude">
                                 </div>
                             </div>
                             <div class="form-row custom-row-inline-inset" style="margin-bottom: 16px !important;">
