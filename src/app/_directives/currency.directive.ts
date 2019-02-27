@@ -11,7 +11,7 @@ export class CurrencyDirective{
   }
 
 
-  @HostListener("blur", ["$event.target"]) onBlur(target) {
+  @HostListener("blur", ["$event.target"]) onChange(target) {
   	if(target.value !=''){
 	  	let sNum = target.value.split('.');
 	  	sNum[0] = sNum[0].replace(new RegExp(",", "g"),'').replace(/\B(?=(\d{3})+(?!\d))/g, ",");

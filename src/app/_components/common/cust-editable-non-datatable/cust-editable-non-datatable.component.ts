@@ -347,8 +347,10 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     onDataChange(data){
+
         data.edited = true;
-        this.tableDataChange.emit(this.passData.tableData);
+        setTimeout(() => this.tableDataChange.emit(this.passData.tableData),0)
+        //this.tableDataChange.emit(this.passData.tableData);
     }
 
 
