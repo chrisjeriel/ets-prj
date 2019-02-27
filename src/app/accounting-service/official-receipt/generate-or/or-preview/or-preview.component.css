@@ -7,3 +7,10 @@
 	border-left: 1px solid rgb(224,227,231);
 	border-right: 1px solid rgb(224,227,231);
 }
+
+.cust-button{
+	position:absolute; 
+	right: 0px; 
+	max-width: 200px !important;
+	margin-top: -3px !important
+}

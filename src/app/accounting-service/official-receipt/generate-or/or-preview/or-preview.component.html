@@ -93,7 +93,10 @@
             <ng-template ngbTabContent>
               <div class="input-group cust-border" style="padding-top: 0.6em">
                 <div class="col-sm-12">
-                    <app-cust-editable-non-datatable (tableDataChange)="accountingEntries($event)" [passData]="passDataAccountingEntries"></app-cust-editable-non-datatable>
+                <div style="position: relative;">
+                  <button class="cust-btn cust-button" (click)="viewTranDetails()">Print AE</button>
+                   <app-cust-editable-non-datatable (tableDataChange)="accountingEntries($event)" [passData]="passDataAccountingEntries"></app-cust-editable-non-datatable>
+                </div>
                 </div>
               </div>
             </ng-template>

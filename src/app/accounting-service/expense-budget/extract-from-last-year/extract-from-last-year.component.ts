@@ -57,7 +57,7 @@ export class ExtractFromLastYearComponent implements OnInit {
     deleteFlag: false,
     infoFlag: true,
     searchFlag: true,
-    pageLength: 20,
+    pageLength: 15,
     widths: [],
     pagination: true,
     pageStatus: true,
