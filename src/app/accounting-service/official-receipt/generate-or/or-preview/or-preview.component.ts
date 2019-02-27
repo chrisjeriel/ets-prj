@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { AccountingService } from '@app/_services';
 import { ORPrevAmountDetails , ORPrevAccEntries , ORPreVATDetails , ORPreCreditableWTaxDetails } from '@app/_models';
 
@@ -83,10 +83,15 @@ export class OrPreviewComponent implements OnInit {
     infoFlag:true
   }
 
+  @Input() paymentType: string = "type";
 
   constructor(private accountingService: AccountingService) { }
 
   ngOnInit() {
+    if(this.paymentType == null){
+          this.paymentType = "";
+    }
+
   	this.passDataAmountDetails.tableData = this.accountingService.getORPrevAmountDetails();
   	this.passDataAccountingEntries.tableData = this.accountingService.getORPrevAccEntries();
   	this.passDataAccountingVATTaxDetails.tableData = this.accountingService.getORPrevTaxDetails();

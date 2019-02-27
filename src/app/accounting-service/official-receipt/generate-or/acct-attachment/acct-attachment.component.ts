@@ -26,6 +26,9 @@ export class AcctAttachmentComponent implements OnInit {
   constructor( private accountingService: AccountingService) { }
 
   ngOnInit() {
+      if(this.paymentType == null){
+        this.paymentType = "";
+      }
   }
 
 }

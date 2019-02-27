@@ -96,11 +96,6 @@ export class CedingCompanyComponent implements OnInit {
          }
          this.table.refreshTable();          
      });
-
-     
   }
-
-  
-
 
 }
