@@ -5,7 +5,6 @@
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">A.R. No.</label>
 				<input type="text" placeholder="000001" class="form-control form-control-sm cust-sm text-right col-sm-2" [(ngModel)]="record.arNo">
-				<div class="col-sm-1" style="margin-left: -80px;"></div>
 				<label class="form-control-sm col-sm-1" style="margin-left: -2px;">A.R. Date</label>
 				<input type="date" class="form-control form-control-sm cust-sm col-sm-2" value="2019-10-01">
 				<input type="text" placeholder="10:45 AM" class="form-control form-control-sm cust-sm text-center cust-mrgn col-sm-1">
@@ -17,7 +16,7 @@
 					<option value="QSOA">QSOA</option>
 				</select> -->
 				<!-- <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div> -->
-				<label class="form-control-sm col-sm-1">Status</label>
+				<label class="form-control-sm col-sm-2">Status</label>
 				<input type="text" placeholder="New" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="record.status">
 				<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 			</div>
@@ -30,14 +29,13 @@
 						<input type="text" placeholder="55" class="form-control form-control-sm text-right cust-sm cust-mrgn col-sm-4">
 					</div>
 				</div>
-				<div class="col-sm-1" style="margin-left: -80px;"></div>
 				<div class="col-sm-4" style="padding: 0px !important;">
 					<div class="input-group">
 						<label class="form-control-sm col-sm-3" style="margin-right: -2px !important;padding-left: 0px !important;">Reference No.</label>
 						<input type="text" class="form-control form-control-sm cust-sm col-sm" value="INV-000001">
 					</div>
 				</div>
-				<label class="form-control-sm col-sm-1">Payment Type</label>
+				<label class="form-control-sm col-sm-2">Payment Type</label>
 				<select class="form-control form-control-sm cust-sm col-sm cust-sm" (change)="tabController($event);" [(ngModel)]="record.paymentType">
 					<option value="Inward Policy Balances">Inward Policy Balances</option>
 					<option value="Claim Recovery / Overpayment">Claim Recovery / Overpayment</option>
@@ -60,11 +58,10 @@
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">P.R. No.</label>
 				<input type="text" placeholder="435674" class="form-control form-control-sm cust-sm text-right col-sm-2">
-				<div class="col-sm-1" style="margin-left: -80px;"></div>
 				<label class="form-control-sm col-sm-1" style="margin-left: -2px;">P.R. Date</label>
 				<input type="date" class="form-control form-control-sm cust-sm col-sm-2" value="2019-10-01">
 				<input type="text" placeholder="10:45 AM" class="form-control form-control-sm cust-sm text-center cust-mrgn col-sm-1">
-				<label class="form-control-sm col-sm-1">P.R. Prepared By</label>
+				<label class="form-control-sm col-sm-2">P.R. Prepared By</label>
 				<input type="text" placeholder="Ma. Cecilia Dela Paz - Castro" class="form-control form-control-sm cust-sm col-sm">
 			</div>
 			<div class="input-group cust-ig">
