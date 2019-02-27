@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter, Input} from '@angular/core';
-import { MaintenanceService } from '@app/_services';
+import { MaintenanceService, UnderwritingService } from '@app/_services';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component'
 
@@ -31,7 +31,7 @@ export class LovComponent implements OnInit {
   modalOpen: boolean = false;
 
 
-  constructor(private modalService: NgbModal, private mtnService : MaintenanceService) { }
+  constructor(private modalService: NgbModal, private mtnService : MaintenanceService, private underwritingService: UnderwritingService) { }
 
   ngOnInit() {
   	  	
@@ -129,6 +129,14 @@ export class LovComponent implements OnInit {
           }
         }
         this.table.refreshTable();
+      });
+    }else if(this.passData.selector == 'deductibles'){
+      this.passTable.tHeader = [ 'Deductible', 'Title', 'Deductible Type', 'Rate', 'Deductible Amount'];
+      this.passTable.dataTypes = [ 'text', 'text', 'text', 'percent', 'currency'];
+      this.passTable.keys = ['deductibleCd','deductibleTitle','deductibleType','deductibleRate','deductibleAmt'];
+      this.underwritingService.getMaintenanceDeductibles(this.passData.lineCd).subscribe((data: any) => {
+          this.passTable.tableData = data.deductibles;
+          this.table.refreshTable();
       });
     }
 

@@ -28,7 +28,7 @@ export class OrPreviewComponent implements OnInit {
 
    passDataAccountingEntries: any = {
   	tableData: [],
-    tHeader: ["Code", "Account", "SL Type", "SL Name", "Debit","Credit"],
+    tHeader: ["Account Code", "Account Name", "SL Type", "SL Name", "Debit","Credit"],
     dataTypes: ["text", "text", "text", "text", "currency","currency"],
     resizable: [true, true, true, true, true, true],
     nData: new ORPrevAccEntries(null,null,null,null,null,null),
@@ -39,6 +39,7 @@ export class OrPreviewComponent implements OnInit {
     genericBtn: 'Save',
     pageLength: 10,
     widths: [150,'auto',100,200,150,150],
+    magnifyingGlass: ['code','slType','slName'],
     paginateFlag:true,
     infoFlag:true
   }

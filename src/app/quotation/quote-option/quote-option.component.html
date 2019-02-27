@@ -38,7 +38,7 @@
          <div class="row">
             <div class="col-sm-2"></div>
             <div class="col-sm-8" style="margin-top: 0.5em; margin-bottom: -0.21em;">
-                <app-cust-editable-non-datatable [passData]="deductiblesData"></app-cust-editable-non-datatable>
+                <app-cust-editable-non-datatable id="deductibleTable" [passData]="deductiblesData" (clickLOV)="clickDeductiblesLOV($event)"></app-cust-editable-non-datatable>
             </div>
             <div class="col-sm-2"></div>
         </div>
@@ -71,3 +71,4 @@
 </div>
 <app-sucess-dialog></app-sucess-dialog>
 <app-mtn-section-covers id="coverCodeLOV" (selectedData)="selectedCoverCodeLOV($event)"></app-mtn-section-covers>
+<app-lov id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)"></app-lov>

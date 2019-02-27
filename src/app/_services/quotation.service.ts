@@ -816,4 +816,34 @@ export class QuotationService {
         return this.http.post('http://localhost:8888/api/quote-service/saveQuoteOption',params,header);
     }
 
+
+    saveQuoteEndorsementsOc(params){
+          let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteEndorsementsOc',params,header);
+    }
+
+    saveQuoteDeductibles(params){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        console.log(params);
+        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteDeductibles',params,header);
+    }
+
+    saveQuoteEndorsementsOc(params){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        console.log(params);
+        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteEndorsementsOc',params,header);
+    }
+
 }

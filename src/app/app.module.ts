@@ -312,6 +312,8 @@ import { QuarterlyStmntOfAcctComponent } from './accounting-in-trust/quarterly-s
 import { ProfitCommissionComponent } from './accounting-in-trust/profit-commission/profit-commission.component';
 import { BatchOsTakeupComponent } from './accounting-in-trust/month-end/batch-os-takeup/batch-os-takeup.component';
 import { MtnSectionCoversComponent } from './maintenance/mtn-section-covers/mtn-section-covers.component';
+import { JvPreviewAmountDetailsComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-preview-amount-details/jv-preview-amount-details.component';
+import { JvPreviewTaxDetailsComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-preview-tax-details/jv-preview-tax-details.component';
 
 
 @NgModule({
@@ -631,6 +633,8 @@ import { MtnSectionCoversComponent } from './maintenance/mtn-section-covers/mtn-
         ProfitCommissionComponent,
         BatchOsTakeupComponent,
         MtnSectionCoversComponent,
+        JvPreviewAmountDetailsComponent,
+        JvPreviewTaxDetailsComponent,
     ],
 
     providers: [

@@ -19,7 +19,6 @@ export class BatchInvoiceComponent implements OnInit {
     addFlag: true,
     genericBtn: 'Cancel',
   	searchFlag: true,
-
   	pageLength: 10,
     infoFlag: true,
     paginateFlag: true,

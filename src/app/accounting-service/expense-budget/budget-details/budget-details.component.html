@@ -1,3 +1,5 @@
+<!-- NOTE: THIS IS BUDGET FOR THE YEAR -->
+
 <!-- <<<<<<< HEAD
 <fieldset class="scheduler-border">
 	<legend class="scheduler-border">Filter Options</legend>
@@ -54,7 +56,7 @@
 	</div>
 </fieldset>
 ======= -->
-					<div class="input-group">
+					<!-- <div class="input-group">
 	 		  			<div class="col-sm" style="padding: 0px">
 	 		  				 <fieldset class="scheduler-border">
 	 		  				 	<legend class="scheduler-border">Filter Options</legend>
@@ -72,14 +74,42 @@
 				 		  			</div>
 	 		  				 </fieldset>
 	 		  			</div>
-					</div>
+					</div> -->
 	 		  		<fieldset class="scheduler-border">
-	 		  			<legend class="scheduler-border">List of Budget Accounts</legend>
-	 		  				<div class="container-fluid">
+	 		  			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+	 		  				<div class="container-fluid" style="padding-top: 7px;">
+	 		  					<div class="row">
+	 		  						<div class="col-sm-4"></div>
+	 		  						<div class="col-sm-4">
+	 		  							<div class="input-group">
+	 		  								<label class="form-control-sm cust-sm col-sm-5">Year</label>
+	 		  								<select class="form-control form-control-sm cust-sm col-sm-4" id="selectYear">
+	 		  									<option value="2019">2019</option>
+	 		  									<option value="2018">2018</option>
+	 		  									<option value="2017">2017</option>
+	 		  									<option value="2016">2016</option>
+	 		  									<option value="2015">2015</option>
+	 		  									<option value="2014">2014</option>
+	 		  								</select>
+	 		  							</div>
+	 		  						</div>
+	 		  						<div class="col-sm-4"></div>
+	 		  					</div>
 	 		  					<div class="row">
 			                        <div class="col-sm-12" style="padding: 0">
-			                            <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)"></app-cust-non-datatable>
+			                            <app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
 			                        </div>
+	                    		</div>
+	                    		<div class="row" style="margin-top: -16px;">
+	                    			<div class="form-group col-sm" style="margin-bottom: 8px;">
+	                    				<div class="col-md-13 text-center">
+	                    					<div class="cust-btn-container">
+	                    						<button type="button" class="cust-btn"><a>Cancel</a></button>
+	                    						<button type="button" class="cust-btn"><a>Save</a></button>
+	                    						<button type="button" class="cust-btn"><a>Print</a></button>
+	                    					</div>
+	                    				</div>
+	                    			</div>
 	                    		</div>
 	 		  				</div>	
 	 		  		</fieldset> 

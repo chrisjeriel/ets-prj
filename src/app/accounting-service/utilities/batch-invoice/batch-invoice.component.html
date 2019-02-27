@@ -1,5 +1,5 @@
 <div class="cust-tabs-container">
-	<h4>Accounting Service / Utilities</h4>
+	<h4>Accounting Service / Utilities / Batch Invoice Printing</h4>
 		<ngb-tabset (tabChange)="onTabChange($event)">
 			<ngb-tab>
 				<ng-template ngbTabTitle>
@@ -40,7 +40,7 @@
 						<fieldset class="scheduler-border" style="margin-top: 10px !important;margin-bottom: 15px !important"> 
 							<div class="form-row custom-row-inline-inset">
 								<div class="col-sm-12" style="margin-top: 3px !important;">
-										<app-cust-editable-non-datatable [passData]="PassData" (add)="add();"></app-cust-editable-non-datatable>
+										<app-cust-editable-non-datatable [passData]="PassData" (add)="add()"></app-cust-editable-non-datatable>
 									<div class="input-group cust-ig" style="margin-top: 35px !important;">
 										<label class="form-control-sm col-sm-1">Particulars</label>
 										<input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="Payment For" readonly>

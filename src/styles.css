@@ -501,6 +501,7 @@ z-index: 9999 !important;
 
 .success-modal-size > .modal-dialog{
     min-width: 30%;
+    max-width: 80%;
     /*width: 20% !important;*/
     z-index: 9999 !important;
 }

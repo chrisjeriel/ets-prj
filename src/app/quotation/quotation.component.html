@@ -108,7 +108,7 @@
 									<div class="input-group" style="margin-bottom : -14px ! important; margin-top : 18px ! important">
 										<label class="form-control-sm" for="xx">Report</label>
 										<select class="form-control form-control-sm cust-sm" style="margin-left: 30px" appRequired>
-
+											<option>QUOTER009A</option>
 										</select>
 									</div>
 									<div class="input-group" style="margin-bottom : -14px ! important">
@@ -127,9 +127,7 @@
 									<div class="input-group">
 										<label class="form-control-sm" for="xx">Printer Name</label>
 										<select class="form-control form-control-sm cust-sm" style="margin-left: 2px">
-											<option>Printer A</option>
-											<option>Printer B</option>
-											<option>Printer C</option>
+											<option>No printer available.</option>
 										</select>
 									</div>
 								</div>
@@ -141,7 +139,7 @@
 				<div class="modal-footer" style="justify-content: center;">
 					<div >
 						<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-						<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Print</a></button>
+						<button class="cust-btn" type="button" (click)="showPrintPreview();"><a>Print</a></button>
 					</div>
 				</div>
 			</ng-template>
