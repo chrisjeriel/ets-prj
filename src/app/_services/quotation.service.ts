@@ -817,6 +817,15 @@ export class QuotationService {
     }
 
 
+    saveQuoteEndorsementsOc(params){
+          let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteEndorsementsOc',params,header);
+    }
+
     saveQuoteDeductibles(params){
         let header : any = {
             headers: new HttpHeaders({
@@ -825,16 +834,6 @@ export class QuotationService {
         };
         console.log(params);
         return this.http.post('http://localhost:8888/api/quote-service/saveQuoteDeductibles',params,header);
-    }
-
-
-    saveQuoteEndorsementsOc(params){
-        let header : any = {
-            headers: new HttpHeaders({
-                'Content-Type': 'application/json'
-            })
-        };
-        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteEndorsementsOc',params,header);
     }
 
 }

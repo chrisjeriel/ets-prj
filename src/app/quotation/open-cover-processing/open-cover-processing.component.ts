@@ -42,7 +42,7 @@ export class OpenCoverProcessingComponent implements OnInit {
     tableData: [],
     tHeader: ['Open Cover Quotation No.', 'Type of Cession', 'Line Class', 'Status', 'Ceding Company', 'Principal', 'Contractor', 'Insured', 'Risk', 'Object', 'Site', 'Currency', 'Quote Date', 'Valid Until', 'Request By', 'Created By'],
     //dataTypes: ['text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', "text", 'date', 'date', 'text', 'text'],
-    dataTypes: ["text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "date", "date", "text", "text", "text"],
+    dataTypes: ["text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text","text", "date", "date", "text", "text"],
     resizable: [false, true, true, true, true, true, true, true, true, true, false, false, true, true, true, true],
     pageLength: 10,
     expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, pagination: true, pageStatus: true,
@@ -207,8 +207,8 @@ export class OpenCoverProcessingComponent implements OnInit {
             (rec.project == null) ? '' : rec.project.objectDesc,
             (rec.project == null) ? '' : rec.project.site,
             rec.currencyCd,
-            this.dateParser(rec.issueDate),
-            this.dateParser(rec.expiryDate),
+           this.dateParser(rec.issueDate),
+           this.dateParser(rec.expiryDate),
             rec.reqBy,
             rec.createUser
           ));
@@ -323,4 +323,5 @@ export class OpenCoverProcessingComponent implements OnInit {
     this.mtnCessionDesc  = data.description;
     this.onClickAdd("");
   }
+
 }

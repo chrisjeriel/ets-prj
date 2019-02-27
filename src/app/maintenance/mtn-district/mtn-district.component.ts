@@ -46,20 +46,20 @@ export class MtnDistrictComponent implements OnInit {
       }
       this.mtnService.getMtnDistrict().subscribe((data: any) => {
         console.log(data);
-        for (var a = data.region.length - 1; a >= 0; a--) {
-          for (var b = data.region[a].provinceList.length - 1; b >= 0; b--) {
-            for (var c = data.region[a].provinceList[b].cityList.length - 1; c >= 0; c--) {
-              for (var d= data.region[a].provinceList[b].cityList[c].districtList.length - 1; d >= 0; d--) {
-                this.passData.tableData.push(
-                    new Row(data.region[a].regionCd,
-                        data.region[a].regionDesc, 
-                        data.region[a].provinceList[b].provinceCd, 
-                        data.region[a].provinceList[b].provinceDesc,
-                        data.region[a].provinceList[b].cityList[c].cityCd,
-                        data.region[a].provinceList[b].cityList[c].cityDesc,
-                        data.region[a].provinceList[b].cityList[c].districtList[d].districtCd,
-                        data.region[a].provinceList[b].cityList[c].districtList[d].districtDesc )
-                  );
+        for (var a = 0; a < data.region.length; a++) {
+          for (var b = 0; b < data.region[a].provinceList.length; b++) {
+            for (var c = 0; c < data.region[a].provinceList[b].cityList.length; c++) {
+              for (var d= 0; d < data.region[a].provinceList[b].cityList[c].districtList.length; d++) {
+                let row : any = new Object();
+                row.regionCd = data.region[a].regionCd;
+                row.regionDesc = data.region[a].regionDesc;
+                row.provinceCd = data.region[a].provinceList[b].provinceCd;
+                row.provinceDesc = data.region[a].provinceList[b].provinceDesc;
+                row.cityCd = data.region[a].provinceList[b].cityList[c].cityCd;
+                row.cityDesc = data.region[a].provinceList[b].cityList[c].cityDesc;
+                row.districtCd = data.region[a].provinceList[b].cityList[c].districtList[d].districtCd;
+                row.districtDesc = data.region[a].provinceList[b].cityList[c].districtList[d].districtDesc;
+                this.passData.tableData.push(row);
               }
             }
           }
