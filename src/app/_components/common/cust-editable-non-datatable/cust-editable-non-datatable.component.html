@@ -227,6 +227,7 @@ span.ui-column-resizer {
                                         <span class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ processData(key, data) | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence}}</span>
                                     </div>
                                     <span *ngSwitchDefault class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ processData(key, data) }}</span>
+
                                 </div>
 
                                 <div *ngIf="!addCheckFlag(data)" class="filler">
@@ -243,11 +244,11 @@ span.ui-column-resizer {
                             </td>
                             <td *ngIf="passData.tHeader.indexOf('Actions')!=-1 || passData.tHeader.indexOf('Action')!=-1" class="icon" style="padding-right: 0px !important">
                                 <button class="fa fa-paperclip btn-file" title="Attach File" *ngIf="addCheckFlag(data)">
-                                    <input type="file" value="tets">
+                                    <input type="file" *ngIf="addCheckFlag(data)" (change)="data.fileName=$event.target.files[0].name;data.edited=true;">
                                 </button>
-                                <!-- <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="addCheckFlag(data)">
-                                    <input type="file" >
-                                </button> -->
+                                <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="addCheckFlag(data)">
+                                    <input type="file" *ngIf="addCheckFlag(data)" (change)="data.fileName=$event.target.files[0].name;data.edited=true;">
+                                </button>
                             </td>
                         </tr>
 

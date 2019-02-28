@@ -81,6 +81,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     startWidth: any;
     autoFill: number[];
     selected: any[] = [];
+    fileName: string ='';
 
     displayData:any[] = [];
     newData: any = new DummyInfo(null,null,null,null,null,null,null);
@@ -351,7 +352,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     onDataChange(data){
-
         data.edited = true;
         setTimeout(() => this.tableDataChange.emit(this.passData.tableData),0)
         //this.tableDataChange.emit(this.passData.tableData);
