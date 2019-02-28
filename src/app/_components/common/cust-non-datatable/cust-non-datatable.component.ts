@@ -24,6 +24,7 @@ export class CustNonDatatableComponent implements OnInit {
     @Input() filterDataTypes: any[] = [];
     
     btnDisabled: boolean = true;
+    unselect: boolean = false;
     
     
     @Input() filterObj:any[] = [
@@ -280,7 +281,12 @@ export class CustNonDatatableComponent implements OnInit {
     onRowClick(event, data) {
         if(data[this.nullKey] !== null){
             this.btnDisabled = false;
-            this.indvSelect = data;
+            if(this.indvSelect == data){
+                this.unselect = true;
+                this.indvSelect = null;
+            }else{
+                this.indvSelect = data;
+            }
         }
         /*for(var i = 0; i < event.target.parentElement.children.length; i++) {
             event.target.parentElement.children[i].style.backgroundColor = "";
