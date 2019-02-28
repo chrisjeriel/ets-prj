@@ -65,29 +65,6 @@ export class MtnObjectComponent implements OnInit {
   constructor(private modalService: NgbModal, private mtnService : MaintenanceService) { }
 
   ngOnInit() {
-  	  	// this.mtnService.getMtnObject(this.line,'').subscribe((data: any )=> {
-  	  	// 	for (var a = data['object'].length - 1; a >= 0; a--) {
-        //     this.passData.tableData.push(data['object'][a]);
-        //   }
-  	  	// 	this.table.refreshTable();
-        // });
-        
-        this.mtnService.getMtnObject(this.line,'').subscribe((data: any )=> {
-          for(var lineCount = 0; lineCount < data['object'].length; lineCount++){
-            this.passData.tableData.push(
-              new Row(
-                  data['object'][lineCount].lineCd, 
-                  data['object'][lineCount].lineDesc,
-                  data['object'][lineCount].objectId,
-                  data['object'][lineCount].description,
-                  data['object'][lineCount].activeTag,
-                  data['object'][lineCount].remarks
-                  )
-            );  		
-          }
-          this.table.refreshTable();
-        });
-
   }
 
   select(data){
@@ -98,7 +75,27 @@ export class MtnObjectComponent implements OnInit {
   	this.selectedData.emit(this.selected);
   }
 
+  openModal(){
+    this.passData.tableData = [];
+    this.mtnService.getMtnObject(this.line,'').subscribe((data: any )=> {
+          for(var lineCount = 0; lineCount < data['object'].length; lineCount++){
+            this.passData.tableData.push(
+              new Row(
+                  data['object'][lineCount].lineCd, 
+                  data['object'][lineCount].lineDesc,
+                  data['object'][lineCount].objectId,
+                  data['object'][lineCount].description,
+                  data['object'][lineCount].activeTag,
+                  data['object'][lineCount].remarks
+                  )
+            );      
+          }
+          this.table.refreshTable();
+        });
+  }
+
 }
+
 
 class Row {
   lineCd : string;

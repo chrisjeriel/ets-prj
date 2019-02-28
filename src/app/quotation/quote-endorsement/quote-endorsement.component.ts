@@ -15,7 +15,6 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
     styleUrls: ['./quote-endorsement.component.css']
 })
 export class QuoteEndorsementComponent implements OnInit {
-
     @Input() endorsementType: string = "";
     @ViewChildren(CustEditableNonDatatableComponent) table: QueryList<CustEditableNonDatatableComponent>;
     @ViewChild(CustNonDatatableComponent) tableNonEditable: CustNonDatatableComponent;
@@ -61,6 +60,7 @@ export class QuoteEndorsementComponent implements OnInit {
     quoteIdOc:string;
 
     opId:string;
+    line:string;
 
     quoteOptionsData: any = {
         tableData: [],
@@ -145,6 +145,7 @@ export class QuoteEndorsementComponent implements OnInit {
            /*     var quoteId = '1';*/
 
             //    arn
+               this.line = (this.quoteNoOc.split("-")[1]).trim();
                this.quotationService.getOcGenInfoData('',this.quoteNoOc)
                     .subscribe(val => {
                      this.quoteIdOc = val['quotationOc'][0].quoteIdOc;
@@ -163,13 +164,9 @@ export class QuoteEndorsementComponent implements OnInit {
                                                                            data.endorsementsOc[lineCount].remarks)
                                                                    );
                                                                   this.saveEndt.quoteId    = data.endorsementsOc[lineCount].quoteId;
-                                                                  console.log(this.saveEndt.quoteId + " >>>>>> this.saveEndt.quoteId")
                                                                   this.saveEndt.createDate = this.formatDate(data.endorsementsOc[lineCount].createDate);
-                                                                  console.log(this.saveEndt.createDate + " >>>>>> this.saveEndt.createDate")
                                                                   this.saveEndt.createUser = data.endorsementsOc[lineCount].createUser;
-                                                                  console.log(this.saveEndt.createUser + " >>>>>> this.saveEndt.createUser")
                                                                   this.saveEndt.updateUser = data.endorsementsOc[lineCount].updateUser;          
-                                                                  console.log(this.saveEndt.updateUser + " >>>>>> this.saveEndt.updateUser")
                           }
                         this.table.forEach(table => { table.refreshTable() });
       /*                    this.table.refreshTable();*/ 
@@ -199,6 +196,7 @@ export class QuoteEndorsementComponent implements OnInit {
                         this.quoteId = data.quotationGeneralInfo.quoteId.toString();
                     });
 
+                    this.line = (this.quotationNum.split("-")[0]).trim();
                     this.quotationService.getQuoteOptions(this.quoteId,this.plainQuotationNo(this.quotationNum)).subscribe((data: any) => {
                         // this.optionRecords = data.QuotationOption.optionsList;
                          if (data['quotation'] == null || data['quotation'] == undefined ){
@@ -214,6 +212,7 @@ export class QuoteEndorsementComponent implements OnInit {
                                                             data.quotation.optionsList[i].commRtFac));
                             }
                             this.tableNonEditable.refreshTable();
+                            this.table.forEach(table => { table.refreshTable() });
                          }
                        
                     });

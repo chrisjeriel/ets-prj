@@ -120,7 +120,7 @@ export class UnearnedPremiumComponent implements OnInit {
   	pageStatus: true,
     pagination: true,
     total: [null,null,null,'Total','debit','credit'],
-    colSize: ['100px', '150px', '250px', '250px', '120px', '120px'],
+    colSize: ['100px', '200px', '150px', '250px', '120px', '120px'],
   }
 
   constructor(private modalService: NgbModal) { }

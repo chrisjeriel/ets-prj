@@ -1,46 +1,9 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12" style="padding: 0">
-            <!--<app-cust-table [tableData]="tableData" [tHeader] = "tHeader" [dataTypes] = "dataTypes" [filters]="filters" [pageLength]="pageLength" [printBtn]="true" (rowClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)" [resizable]="resizables"></app-cust-table>-->
             <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)"></app-cust-non-datatable>
          </div>
     </div>
-    <!-- <div class="row">
-<div class="cust-sm col-sm-6">
-<fieldset class="scheduler-border">
-<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
-<div class="cust-sm">
-<div class="cust-sm col-sm-1"></div>
-<div class="row" style="margin-right: 0px; margin-bottom: 114x;">
-<div class="input-group" style="margin-top: -10px;">
-&nbsp;
-</div>
-<div class="input-group">
-<label class="form-control-sm col-sm-3">Currency</label>
-<input type="text" class="form-control form-control-sm">
-<label class="form-control-sm col-sm-2">Exch. Rt.</label>
-<input type="text" class="form-control form-control-sm">
-<span class="col-sm-1"></span>
-</div>
-<div class="input-group">
-<label class="form-control-sm col-sm-3">Total Prenium</label>
-<input type="text" class="form-control form-control-sm">
-<span class="col-sm-1"></span>
-</div>
-<div class="input-group">
-<label class="form-control-sm col-sm-3">Total Sum Insured</label>
-<input type="text" class="form-control form-control-sm">
-<span class="col-sm-1"></span>
-</div>
-</div>
-</div>
-</fieldset>
-
-</div>
-<div class="cust-sm col-sm-6"></div>
-</div>
-
--->
 
     <div class="row">
         <div class="col-sm-6" style="padding-left: 0px">
@@ -49,48 +12,48 @@
                 <div class="form-row custom-row-inline-inset">
                     <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
                         <label class="form-control-sm col-sm-2 text-right">Quotation No</label>
-                        <input type="text" class="form-control form-control-sm col-sm-4" [value]="quoteList.quotationNo"eadonly>
+                        <input type="text" class="form-control form-control-sm col-sm-4" [value]="quoteList.quotationNo === undefined ? '' : quoteList.quotationNo" readonly>
                         <label class="form-control-sm col-sm-2 text-right">Policy No</label>
-                        <input type="text" name="" class="form-control form-control-sm col-sm-4" [value]="quoteList.policyNo" readonly> 
+                        <input type="text" name="" class="form-control form-control-sm col-sm-4" [value]="quoteList.policyNo === undefined ? '' : quoteList.policyNo" readonly> 
                     </div>
                 </div>
                 <div class="form-row custom-row-inline-inset">
                     <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
                         <label class="form-control-sm col-sm-2 text-right">Type of Cession</label>
-                        <input type="text" class="form-control form-control-sm col-sm-4" [value]="quoteList.cessionType" readonly>
+                        <input type="text" class="form-control form-control-sm col-sm-4" [value]="quoteList.cessionDesc === undefined ? '' : quoteList.cessionDesc" readonly>
                         <label class="form-control-sm col-sm-2 text-right">Line Class</label>
-                        <input type="text" name="" class="form-control form-control-sm col-sm-4" [value]="quoteList.lineClass" readonly> 
+                        <input type="text" name="" class="form-control form-control-sm col-sm-4" [value]="quoteList.lineClassCdDesc === undefined ? '' : quoteList.lineClassCdDesc" readonly> 
                     </div>
                 </div>
                 <div class="form-row custom-row-inline-inset">
                     <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
                         <label class="form-control-sm col-sm-2 text-right">Ceding Company</label>
-                        <input type="text" class="form-control form-control-sm col-sm-2">
-                        <input type="text" class="form-control form-control-sm col-sm-8" [value]="quoteList.cedingCompany" readonly style="margin-left: 2px !important;">
+                        <input type="text" class="form-control form-control-sm col-sm-2" readonly>
+                        <input type="text" class="form-control form-control-sm col-sm-8" [value]="quoteList.cedingName === undefined ? '' : quoteList.cedingName" readonly style="margin-left: 2px !important;">
                     </div>
                 </div>
                 <div class="form-row custom-row-inline-inset">
                     <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
                         <label class="form-control-sm col-sm-2 text-right">Quote Date</label>
-                        <input type="text" class="form-control form-control-sm col-sm-4" [value]="quoteList.quoteDate | date: 'MM/dd/yyyy'" readonly>
+                        <input type="text" class="form-control form-control-sm col-sm-4" [value]="quoteList.issueDate | date: 'MM/dd/yyyy'" readonly>
                         <label class="form-control-sm col-sm-2 text-right">Valid Until</label>
-                        <input type="text" name="" class="form-control form-control-sm col-sm-4" [value]="quoteList.validityDate | date: 'MM/dd/yyyy'" readonly> 
+                        <input type="text" name="" class="form-control form-control-sm col-sm-4" [value]="quoteList.expiryDate | date: 'MM/dd/yyyy'" readonly> 
                     </div>
                 </div>
                 <div class="form-row custom-row-inline-inset">
                     <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
                         <label class="form-control-sm col-sm-2 text-right">Requested By</label>
-                        <input type="text" class="form-control form-control-sm col-sm-4" [value]="quoteList.requestedBy" readonly>
+                        <input type="text" class="form-control form-control-sm col-sm-4" [value]="quoteList.reqBy === undefined ? '' : quoteList.reqBy" readonly>
                         <label class="form-control-sm col-sm-2 text-right">Status</label>
-                        <input type="text" name="" class="form-control form-control-sm col-sm-4" [value]="quoteList.quoteStatus" readonly> 
+                        <input type="text" name="" class="form-control form-control-sm col-sm-4" [value]="quoteList.status === undefined ? '' : quoteList.status" readonly> 
                     </div>
                 </div>
                 <div class="form-row custom-row-inline-inset">
                     <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -10px !important;">
                         <label class="form-control-sm col-sm-2 text-right">Prepared By</label>
-                        <input type="text" class="form-control form-control-sm col-sm-4" [value]="quoteList.createdBy" readonly>
+                        <input type="text" class="form-control form-control-sm col-sm-4" [value]="quoteList.createdBy === undefined ? '' : quoteList.createdBy" readonly>
                         <label class="form-control-sm col-sm-2 text-right">Approved By</label>
-                        <input type="text" name="" class="form-control form-control-sm col-sm-4" [value]="quoteList.approvedBy" readonly> 
+                        <input type="text" name="" class="form-control form-control-sm col-sm-4" [value]="quoteList.approvedBy === undefined ? '' : quoteList.approvedBy" readonly> 
                     </div>
                 </div>
             </fieldset>
@@ -102,8 +65,8 @@
                     <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
                         <div class="col-sm-1"></div>
                         <label class="form-control-sm col-sm-2 text-right">Principal</label>
-                        <input type="text" class="form-control form-control-sm col-sm-2">
-                        <input type="text" class="form-control form-control-sm col-sm-6" [value]="quoteList.principal" readonly style="margin-left: 2px !important;">
+                        <input type="text" class="form-control form-control-sm col-sm-2" readonly>
+                        <input type="text" class="form-control form-control-sm col-sm-6" [value]="quoteList.principalName === undefined ? '' : quoteList.principalName" readonly style="margin-left: 2px !important;">
                         <div class="col-sm-1"></div>
                     </div>
                 </div>
@@ -111,8 +74,8 @@
                     <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
                         <div class="col-sm-1"></div>
                         <label class="form-control-sm col-sm-2 text-right">Contractor</label>
-                        <input type="text" class="form-control form-control-sm col-sm-2">
-                        <input type="text" class="form-control form-control-sm col-sm-6" [value]="quoteList.contractor" readonly style="margin-left: 2px !important;">
+                        <input type="text" class="form-control form-control-sm col-sm-2" readonly>
+                        <input type="text" class="form-control form-control-sm col-sm-6" [value]="quoteList.contractorName === undefined ? '' : quoteList.contractorName" readonly style="margin-left: 2px !important;">
                         <div class="col-sm-1"></div>
                     </div>
                 </div>
@@ -120,7 +83,7 @@
                     <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
                         <div class="col-sm-1"></div>
                         <label class="form-control-sm col-sm-2 text-right">Insured</label>
-                        <input type="text" class="form-control form-control-sm col-sm-8" [value]="quoteList.insured" readonly>
+                        <input type="text" class="form-control form-control-sm col-sm-8" [value]="quoteList.insuredDesc === undefined ? '' : quoteList.insuredDesc" readonly>
                         <div class="col-sm-1"></div>
                     </div>
                 </div>
@@ -128,7 +91,7 @@
                     <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
                         <div class="col-sm-1"></div>
                         <label class="form-control-sm col-sm-2 text-right">Risk</label>
-                        <input type="text" class="form-control form-control-sm col-sm-8" [value]="quoteList.risk" readonly>
+                        <input type="text" class="form-control form-control-sm col-sm-8" [value]="quoteList.riskName === undefined ? '' : quoteList.riskName" readonly>
                         <div class="col-sm-1"></div>
                     </div>
                 </div>
@@ -136,7 +99,7 @@
                     <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
                         <div class="col-sm-1"></div>
                         <label class="form-control-sm col-sm-2 text-right">Site</label>
-                        <input type="text" class="form-control form-control-sm col-sm-8" [value]="quoteList.location" readonly>
+                        <input type="text" class="form-control form-control-sm col-sm-8" [value]="quoteList.site === undefined ? '' : quoteList.site" readonly>
                         <div class="col-sm-1"></div>
                     </div>
                 </div>
@@ -144,9 +107,9 @@
                     <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -10px !important;">
                         <div class="col-sm-1"></div>
                         <label class="form-control-sm col-sm-2 text-right">Object</label>
-                        <input type="text" class="form-control form-control-sm col-sm-3" [value]="quoteList.object" readonly>
+                        <input type="text" class="form-control form-control-sm col-sm-3" [value]="quoteList.objectDesc === undefined ? '' : quoteList.objectDesc" readonly>
                         <label class="form-control-sm col-sm-2 text-right">Currency</label>
-                        <input type="text" name="" class="form-control form-control-sm col-sm-3" [value]="quoteList.currency" readonly> 
+                        <input type="text" name="" class="form-control form-control-sm col-sm-3" [value]="quoteList.currencyCd === undefined ? '' : quoteList.currencyCd" readonly> 
                         <div class="col-sm-1"></div>
                     </div>
                 </div>
