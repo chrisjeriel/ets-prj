@@ -28,8 +28,8 @@
 		<div class="col-md-13 text-center">
 			<div class="cust-btn-container" style="margin-top: 10px;">
 			<button type="button" class="cust-btn"><a>Print</a></button>
-			<button type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
-            <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+			<button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
+            <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
             <!-- <app-modal [btnTitle]="'Save'" (click)="onClickSave()">
             	<div header>
             		Prompt

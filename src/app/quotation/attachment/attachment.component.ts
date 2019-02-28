@@ -79,6 +79,7 @@ export class AttachmentComponent implements OnInit {
   @Input() quotationInfo: any = {};
   quoteNo: string = '';
   errorMdlMessage: string = "";
+  @Input() inquiryFlag: boolean = false;
 
   constructor(config: NgbDropdownConfig,
     private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,private modalService: NgbModal) {
@@ -106,6 +107,20 @@ export class AttachmentComponent implements OnInit {
     this.passData.tHeader.push("File Name");
     this.passData.tHeader.push("Description");
     this.passData.tHeader.push("Actions");
+
+    //neco
+        if(this.inquiryFlag){
+          this.passData.tHeader.pop();
+          this.passData.opts = [];
+          this.passData.uneditable = [];
+          this.passData.magnifyingGlass = [];
+          this.passData.addFlag = false;
+          this.passData.deleteFlag = false;
+          for(var count = 0; count < this.passData.tHeader.length; count++){
+            this.passData.uneditable.push(true);
+          }
+        }
+        //neco end
 
     /*let arrayData = [];
     this.quotationService.getAttachment().subscribe((data: any) => {
