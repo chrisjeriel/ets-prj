@@ -235,7 +235,16 @@ export class CoverageComponent implements OnInit {
 
          }
        }
-       this.coverageData.totalSi = this.coverageData.sectionISi + this.coverageData.sectionIISi + this.coverageData.sectionIIISi
+       this.coverageData.totalSi = this.coverageData.sectionISi + this.coverageData.sectionIISi + this.coverageData.sectionIIISi;
+   this.focusBlur();
+   console.log('last')
+  }
+
+  focusBlur() {
+    setTimeout(() => {$('.req').focus();$('.req').blur()},0)
+    
+    /*$('.req').blur();*/
+    console.log('pasok');
   }
 
 }

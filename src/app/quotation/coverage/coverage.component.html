@@ -29,7 +29,7 @@
             <div class="col-sm-2">
             </div>
             <div class="col-sm-8" style="padding-top: 8px; padding-bottom: 15px;">
-                 <app-cust-editable-non-datatable  [passData]="passData" (tableDataChange)="update($event)" (clickLOV)="sectionCoversLOV($event)">
+                 <app-cust-editable-non-datatable  [passData]="passData" (tableDataChange)="update($event);" (clickLOV)="sectionCoversLOV($event)">
                 </app-cust-editable-non-datatable>
                 <!-- <app-cust-editable-non-datatable  [passData]="passData" (onDataChange)="passData.tableData=$event;" (newClick)="update($event);" (clickLOV)="sectionCoversLOV($event)">
                 </app-cust-editable-non-datatable> -->
@@ -61,7 +61,7 @@
                             </div>
                             <div class="input-group">&nbsp;
                                 <label class="form-control-sm">Total SI</label>
-                                <input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm cust-sm txt-content-rght" required
+                                <input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm cust-sm txt-content-rght req" required
                                        placeholder="0.00" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
                                         [(ngModel)]="coverageData.totalSi" appCurrency >
                             </div>
@@ -80,17 +80,17 @@
                         <div class="col-sm-10">
                             <div class="input-group">
                                 <label class="form-control-sm col-sm-3">Section I</label>
-                                <input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm txt-content-rght"  placeholder="0.00"
+                                <input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm txt-content-rght req"  placeholder="0.00"
                                        onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="coverageData.sectionISi" appCurrency >
                             </div>
                             <div class="input-group">
                                 <label class="form-control-sm col-sm-3">Section II</label>
-                                <input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm txt-content-rght"  placeholder="0.00"
+                                <input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm txt-content-rght req"  placeholder="0.00"
                                        onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="coverageData.sectionIISi" appCurrency >
                             </div>
                             <div class="input-group">
                                 <label class="form-control-sm col-sm-3">Section III</label>
-                                <input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm txt-content-rght"  placeholder="0.00"
+                                <input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm txt-content-rght req"  placeholder="0.00"
                                        onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="coverageData.sectionIIISi" appCurrency >
                             </div>
                         </div>
