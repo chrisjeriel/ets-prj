@@ -117,6 +117,7 @@ export class CoverageComponent implements OnInit {
     this.riskId = this.quotationInfo.riskId;
 
     this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
+      this.table.refreshTable();
       console.log(data.quotation.project.coverage)
     if(data.quotation.project !== null){
       this.coverageData = data.quotation.project.coverage;
@@ -149,7 +150,7 @@ export class CoverageComponent implements OnInit {
 
 
 
-      this.table.refreshTable();
+      
      /* */
     });
 
