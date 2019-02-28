@@ -224,9 +224,10 @@ export class QuoteEndorsementComponent implements OnInit {
                                                             data.quotation.optionsList[i].commRtSurplus,
                                                             data.quotation.optionsList[i].commRtFac));
                             }
-                            this.tableNonEditable.refreshTable();
+                            
                          }
-                       
+                       this.tableNonEditable.refreshTable();
+                            this.table.forEach(table => { table.refreshTable() });
                     });
 
 

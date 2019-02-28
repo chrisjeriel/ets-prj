@@ -15,8 +15,10 @@
     }
 </style>
 
-
-<div id="cust-table-container" >
+<div class="row"  *ngIf="loadingFlag">
+    <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="m-auto" style="margin-bottom: 9px!important">
+</div>
+<div id="cust-table-container" [style.display]="!loadingFlag? 'block':'none'">
     <div class="cust-btn-container" *ngIf="passData.addFlag || passData.editFlag || passData.deleteFlag || passData.copyFlag || passData.printBtn">
         <button *ngIf="passData.addFlag" class="cust-btn" (click)="onClickAdd(event)"><a>Add</a></button>
         <button *ngIf="passData.editFlag" class="cust-btn" [class.btnDisabled]="btnDisabled || passData.btnDisabled"[disabled]="btnDisabled || passData.btnDisabled" (click)="onClickEdit($event)"><a class="paginate_button previous">Edit</a></button>
