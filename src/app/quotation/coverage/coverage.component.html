@@ -48,19 +48,16 @@
                             <br>
                             <div class="input-group">
                                 <label class="form-control-sm">Currency</label>
-                                <select class="form-control form-control-sm cust-sm"  appRequired [(ngModel)]="coverageData.currencyCd">
-                                    <option value="PHP">PHP</option>
-                                    <option value="USD">USD</option>
-                                    <option value="EUR">EUR</option>
-                                </select>
+                                <input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageData.currencyCd">
+                                <div class="text-search-ico" style="z-index: 50;margin-left: -18px !important;"><a (click)="showCurrencyModal()"><i class="fa fa-search"></i></a></div>
                                 <label class="form-control-sm">Exch. Rt.</label>
-                                <input type="text" class="form-control form-control-sm cust-sm txt-content-rght" required
+                                <input type="text" class="form-control form-control-sm cust-sm txt-content-rght req" required
                                        placeholder="0.00" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
                                         [(ngModel)]="coverageData.currencyRt" appCurrency>
                             </div>
                             <div class="input-group">&nbsp;
                                 <label class="form-control-sm">Total SI</label>
-                                <input type="text" class="form-control form-control-sm cust-sm txt-content-rght testing" required
+                                <input type="text" class="form-control form-control-sm cust-sm txt-content-rght req" required
                                        placeholder="0.00" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
                                         [(ngModel)]="coverageData.totalSi" appCurrency >
                             </div>
@@ -132,3 +129,4 @@
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
     </div>
 </app-modal>
+<app-mtn-currency id="currencyModal" (selectedData)="setCurrency($event)"></app-mtn-currency>

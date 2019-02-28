@@ -27,7 +27,7 @@ export class CoverageComponent implements OnInit {
 
   coverageData: any = {
     currencyCd: null,
-    exchRt: null,
+    currencyRt: null,
     totalSi: null,
     sectionISi: null,
     sectionIISi: null,
@@ -36,7 +36,6 @@ export class CoverageComponent implements OnInit {
     sectionCovers:[],
     createDate:[0,0,0],
     createUser:'Earl',
-    currencyRt: 0,
     //updateDate:[0,0,0],
     updateUser: 'Earl'
   }
@@ -103,6 +102,7 @@ export class CoverageComponent implements OnInit {
     this.riskId = this.quotationInfo.riskId;
 
     this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
+      console.log(data.quotation.project.coverage)
     if(data.quotation.project !== null){
       this.coverageData = data.quotation.project.coverage;
       for(var i = 0; i < data.quotation.project.coverage.sectionCovers.length; i++){
@@ -222,14 +222,19 @@ export class CoverageComponent implements OnInit {
        }
        this.coverageData.totalSi = this.coverageData.sectionISi + this.coverageData.sectionIISi + this.coverageData.sectionIIISi;
    this.focusBlur();
-   console.log('last')
   }
 
   focusBlur() {
     setTimeout(() => {$('.req').focus();$('.req').blur()},0)
-    
-    /*$('.req').blur();*/
-    console.log('pasok');
   }
 
+  showCurrencyModal(){
+    $('#currencyModal #modalBtn').trigger('click');
+  }
+
+  setCurrency(data){
+    this.coverageData.currencyCd = data.currencyAbbr;
+    this.coverageData.currencyRt = data.currencyRt;
+    this.focusBlur();
+  }
 }
