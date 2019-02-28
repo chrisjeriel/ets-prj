@@ -133,7 +133,7 @@ export class OpenCoverProcessingComponent implements OnInit {
             dataType: 'text'
         },
     ],
-    keys: ['quotationNo','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','insuredDesc','riskName','objectDesc','site','currencyCd','issueDate','expiryDate','reqBy','createUser'],
+    keys: ['openQuotationNo','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','insuredDesc','riskName','objectDesc','site','currencyCd','issueDate','expiryDate','reqBy','createUser'],
   }
 
   // passDataRiskLOV:any = {
@@ -195,7 +195,7 @@ export class OpenCoverProcessingComponent implements OnInit {
 
       for(let rec of records){
         this.passData.tableData.push(new OpenCoverProcessing(
-            rec.quotationNo,
+            rec.openQuotationNo,
             rec.cessionDesc,
             rec.lineClassCdDesc,
             rec.status,
@@ -203,9 +203,9 @@ export class OpenCoverProcessingComponent implements OnInit {
             rec.principalName,
             rec.contractorName,
             rec.insuredDesc,
-            (rec.project == null) ? '' : rec.project.riskName,
-            (rec.project == null) ? '' : rec.project.objectDesc,
-            (rec.project == null) ? '' : rec.project.site,
+            (rec.projectOc == null) ? '' : rec.projectOc.riskName,
+            (rec.projectOc == null) ? '' : rec.projectOc.objectDesc,
+            (rec.projectOc == null) ? '' : rec.projectOc.site,
             rec.currencyCd,
            this.dateParser(rec.issueDate),
            this.dateParser(rec.expiryDate),
