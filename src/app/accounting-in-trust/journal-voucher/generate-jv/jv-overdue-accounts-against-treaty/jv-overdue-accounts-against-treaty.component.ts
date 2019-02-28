@@ -57,7 +57,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
     editFlag: false,
     pageLength: 10,
     genericBtn: 'Save',
-    widths: [185,'auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto','auto']
+    widths: [185, 185, 185,1,85,1,1,1,85,120,85,85,120,120,120,120]
   };
   constructor(private accountingService: AccountingService,private titleService: Title, private modalService: NgbModal) { }
 

@@ -18,6 +18,7 @@ export class QuoteOptionComponent implements OnInit {
     private quotationOtherRates: QuotationOtherRates;
     private sub: any;
    @Input() quotationInfo: any = {};
+   @Input() inquiryFlag: boolean = false;
     coverCodeLOVRow : number;
 
     editedOtherRatesData: any[] = [];
@@ -146,6 +147,41 @@ export class QuoteOptionComponent implements OnInit {
     constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute) { }
 
     ngOnInit() {
+      //neco
+         if(this.inquiryFlag){
+           this.optionsData.opts = [];
+           this.optionsData.uneditable = [];
+           this.optionsData.magnifyingGlass = [];
+           this.optionsData.addFlag = false;
+           this.optionsData.deleteFlag = false;
+
+           this.deductiblesData.opts = [];
+           this.deductiblesData.uneditable = [];
+           this.deductiblesData.magnifyingGlass = [];
+           this.deductiblesData.addFlag = false;
+           this.deductiblesData.deleteFlag = false;
+
+           this.otherRatesData.opts = [];
+           this.otherRatesData.uneditable = [];
+           this.otherRatesData.magnifyingGlass = [];
+           this.otherRatesData.addFlag = false;
+           this.otherRatesData.deleteFlag = false;
+
+           for(var count = 0; count < this.optionsData.tHeader.length; count++){
+             this.optionsData.uneditable.push(true);
+           }
+
+           for(var count = 0; count < this.deductiblesData.tHeader.length; count++){
+             this.deductiblesData.uneditable.push(true);
+           }
+
+           for(var count = 0; count < this.otherRatesData.tHeader.length; count++){
+             this.otherRatesData.uneditable.push(true);
+           }
+
+         }
+         //neco end
+
       setTimeout(() => {
         $('#deductibleTable button').attr("disabled","disabled");
               }, 0)
@@ -242,8 +278,9 @@ export class QuoteOptionComponent implements OnInit {
                     );                
                 }
                 
-                this.table.forEach(table => { table.refreshTable() });
+                
            }
+           this.table.forEach(table => { table.refreshTable() });
         });
 
     } 

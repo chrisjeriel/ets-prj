@@ -23,7 +23,7 @@ export class ArDetailsInvestmentsComponent implements OnInit {
     uneditable: [false, false, false, false, false,false, true, true, false, false, false, false, false, false, false ],
     checkFlag: true,
     pageID: 6,
-    widths:[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 100, 100, 100, 100, 100]
+    widths:[220, 150, 1, 1, 1, 85, 1, 1, 1, 85, 120, 120, 120, 120, 120, 120]
   }
 
   constructor(private accountingService: AccountingService) { }

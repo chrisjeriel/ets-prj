@@ -16,6 +16,7 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 })
 export class QuoteEndorsementComponent implements OnInit {
     @Input() endorsementType: string = "";
+    @Input() inquiryFlag: boolean = false;
     @ViewChildren(CustEditableNonDatatableComponent) table: QueryList<CustEditableNonDatatableComponent>;
     @ViewChild(CustNonDatatableComponent) tableNonEditable: CustNonDatatableComponent;
 /*    @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;*/
@@ -108,6 +109,18 @@ export class QuoteEndorsementComponent implements OnInit {
 
     ngOnInit() {  
         this.titleService.setTitle("Quo | Endorsements");
+        //neco
+        if(this.inquiryFlag){
+          this.endorsementData.opts = [];
+          this.endorsementData.uneditable = [];
+          this.endorsementData.magnifyingGlass = [];
+          this.endorsementData.addFlag = false;
+          this.endorsementData.deleteFlag = false;
+          for(var count = 0; count < this.endorsementData.tHeader.length; count++){
+            this.endorsementData.uneditable.push(true);
+          }
+        }
+        //neco end
         this.sub = this.route.params.subscribe(params => {
             this.from = params['from'];
       
@@ -211,9 +224,10 @@ export class QuoteEndorsementComponent implements OnInit {
                                                             data.quotation.optionsList[i].commRtSurplus,
                                                             data.quotation.optionsList[i].commRtFac));
                             }
-                            this.tableNonEditable.refreshTable();
+                            
                          }
-                       
+                       this.tableNonEditable.refreshTable();
+                            this.table.forEach(table => { table.refreshTable() });
                     });
 
 

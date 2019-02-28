@@ -16,9 +16,14 @@ span.ui-column-resizer {
 
 </style>
 
-<br id="test" *ngIf="passData.addFlag || passData.editFlag || passData.deleteFlag || passData.searchFlag || (passData.genericBtn !== undefined) || ctrlL.innerHTML.trim() || ctrlR.innerHTML.trim()" />
+<br id="test" *ngIf="(passData.addFlag || passData.editFlag || passData.deleteFlag || passData.searchFlag || (passData.genericBtn !== undefined) || ctrlL.innerHTML.trim() || ctrlR.innerHTML.trim()) && !loadingFlag" />
 
-<div id="cust-table-container" style="position: relative;">
+<div class="row"  *ngIf="loadingFlag">       
+    <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="m-auto" style="margin-bottom: 8px !important">
+</div>
+
+
+<div id="cust-table-container" [style.display]="!loadingFlag? 'block':'none'" style="position: relative;">
     <div class="new-btn-container" style="position: absolute; margin-top:-28px;" [style.width]="(passData.searchFlag || ctrlR.innerHTML.trim()) ? '100%' : 'auto'" >
 
         <button *ngIf="passData.addFlag" class="cust-btn" (click)="passData.nData == null ? addClicked(event) : onClickAdd()"><a>Add</a></button>
@@ -150,7 +155,7 @@ span.ui-column-resizer {
                             <tr style="min-width: 96px">
                                 <th *ngIf="passData.checkFlag" class="checkbox"><input type="checkbox" name="checkbox" [(ngModel)]="checked"></th>
                                 <th container="body"  *ngFor="let tHeader of passData.tHeader; let i = index" (click)="sort(dataKeys[i],sortBy);sortIndex=i;"
-                                [style.min-width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [ngbTooltip]="passData.tooltip !== undefined ? passData.tooltip[i] :null">
+                                [style.min-width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [style.width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [ngbTooltip]="passData.tooltip !== undefined ? passData.tooltip[i] :null">
                                 <!-- <span class="ui-column-resizer"  (mousedown)="onMouseDown($event)" *ngIf="passData.resizable === undefined ||  passData.resizable[i]"></span> -->
                                 <span class="ui-column-resizer"  (mousedown)="onMouseDown($event)"></span>
                                 <span *ngIf="isNumber(i)" class="gridHeader number text-right" >{{tHeader}}
@@ -203,7 +208,7 @@ span.ui-column-resizer {
                                 <div *ngIf="addCheckFlag(data) && ( passData.uneditable!== undefined && passData.uneditable[i] )" class="align-middle uneditable" style="position: relative;">
                                     <a  *ngIf="passData.magnifyingGlass.indexOf(key)!=-1"><i (click)="onClickLOV(data,key)" class="fa fa-search align-middle"></i></a> 
                                     <div *ngSwitchCase="'percent'" style="text-align: right">
-                                        <span class="unclickable">{{ processData(key, data) | number: '1.7-7'}}</span>
+                                        <span class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ processData(key, data) | number: '1.7-7'}}</span>
                                     </div>
                                     <!-- <div *ngSwitchCase="'currency'" style="text-align: right">
                                         <span class="unclickable">{{ processData(key, data) | number: '1.2-2'}}</span>
@@ -212,21 +217,22 @@ span.ui-column-resizer {
                                         <span class="unclickable">{{ processData(key, data) | number: '1.0-0'}}</span>
                                     </div> -->
                                     <div *ngSwitchCase="'currency'" style="text-align: right" >
-                                        <span [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" class="unclickable">{{ processData(key, data) | number: '1.2-2' | negativeAmount}}</span>
+                                        <span [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ processData(key, data) | number: '1.2-2' | negativeAmount}}</span>
                                     </div>
                                     <div  *ngSwitchCase="'number'" style="text-align: right">
-                                        <span [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" class="unclickable">{{ processData(key, data) | number: '1.0-0'}}</span>
+                                        <span [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ processData(key, data) | number: '1.0-0'}}</span>
                                     </div>
-                                    <span *ngSwitchCase="'date'" class="unclickable">{{ processData(key, data) | date: 'MM/dd/yyyy'}}</span>
-                                    <span *ngSwitchCase="'time'" class="unclickable">{{ processData(key, data) | date: 'HH:mm'}}</span>
-                                    <span *ngSwitchCase="'datetime'" class="unclickable">{{ processData(key, data) | date: 'yyyy-MM-ddTHH:mm'}}</span>
+                                    <span *ngSwitchCase="'date'" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ processData(key, data) | date: 'MM/dd/yyyy'}}</span>
+                                    <span *ngSwitchCase="'time'" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ processData(key, data) | date: 'HH:mm'}}</span>
+                                    <span *ngSwitchCase="'datetime'" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ processData(key, data) | date: 'yyyy-MM-ddTHH:mm'}}</span>
                                     <div *ngSwitchCase="'checkbox'" style="text-align: center;">
                                         <input  type="checkbox" [checked]="data[key]">
                                     </div>
                                     <div  *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'sequence' ? passData.dataTypes[i] : ''" style="text-align: right">
-                                        <span class="unclickable">{{ processData(key, data) | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence}}</span>
+                                        <span class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ processData(key, data) | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence}}</span>
                                     </div>
-                                    <span *ngSwitchDefault class="unclickable">{{ processData(key, data) }}</span>
+                                    <span *ngSwitchDefault class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ processData(key, data) }}</span>
+
                                 </div>
 
                                 <div *ngIf="!addCheckFlag(data)" class="filler">
@@ -242,8 +248,17 @@ span.ui-column-resizer {
                                 </select>
                             </td>
                             <td *ngIf="passData.tHeader.indexOf('Actions')!=-1 || passData.tHeader.indexOf('Action')!=-1" class="icon" style="padding-right: 0px !important">
+<!-- <<<<<<< HEAD
                                 <button class="fa fa-paperclip" title="Attach File" *ngIf="addCheckFlag(data)"></button>
                                 <button class="fa fa-folder-open" title="Open File" *ngIf="addCheckFlag(data)"></button>
+                                
+======= -->
+                                <button class="fa fa-paperclip btn-file" title="Attach File" *ngIf="addCheckFlag(data)">
+                                    <input type="file" *ngIf="addCheckFlag(data)" (change)="data.fileName=$event.target.files[0].name;data.edited=true;">
+                                </button>
+                                <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="addCheckFlag(data)">
+                                    <input type="file" *ngIf="addCheckFlag(data)" (change)="data.fileName=$event.target.files[0].name;data.edited=true;">
+                                </button>
                             </td>
                         </tr>
 
