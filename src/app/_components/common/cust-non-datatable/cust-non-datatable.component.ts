@@ -163,13 +163,17 @@ export class CustNonDatatableComponent implements OnInit {
     pinDataHeader:any[] = [];
     pinKeys:any[] = [];
     pinDatatypes:any[] = [];
+    loadingFlag:boolean = true;
     constructor(config: NgbDropdownConfig, public renderer: Renderer, private quotationService: QuotationService, private appComponent: AppComponent) {
         config.placement = 'bottom-right';
         config.autoClose = false;
         
     }
 
-    refreshTable(){
+    refreshTable(initLoad?){
+        if(initLoad === undefined){
+            this.loadingFlag = false;
+        }
         while(this.displayData.length>0){
             this.displayData.pop();
         }
@@ -198,11 +202,12 @@ export class CustNonDatatableComponent implements OnInit {
         } else {
             this.dataKeys = this.passData.keys;
         }
-
+        if(this.passData.tableData.length != 0)
+            this.loadingFlag = false;
         // this.displayData = JSON.parse(JSON.stringify( this.passData.tableData));
         // this.displayLength = this.displayData.length;
         // this.addFiller();
-        this.refreshTable();
+        this.refreshTable("first");
         
         for (var i = this.dataKeys.length - 1; i >= 0; i--) {
            this.fillData[this.dataKeys[i]] = null;
