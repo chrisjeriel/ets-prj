@@ -390,7 +390,8 @@ tbody th div .negativeNumber{
     position: relative;
     overflow: hidden;
 }
-.btn-file input[type=file] {
+
+/*.btn-file input[type=file] {
     position: absolute;
     top: 0;
     right: 0;
@@ -404,4 +405,4 @@ tbody th div .negativeNumber{
     background: white;
     cursor: inherit;
     display: block;
-}
+}*/

@@ -69,6 +69,7 @@ export class AttachmentComponent implements OnInit {
     checkboxFlag: true,
     pageLength: 10,
     widths: [],
+    uneditable: [true,false,false],
     keys:['fileName','description']
   };
   savedData: any[];
