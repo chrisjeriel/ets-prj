@@ -242,8 +242,9 @@ export class QuoteOptionComponent implements OnInit {
                     );                
                 }
                 
-                this.table.forEach(table => { table.refreshTable() });
+                
            }
+           this.table.forEach(table => { table.refreshTable() });
         });
 
     } 

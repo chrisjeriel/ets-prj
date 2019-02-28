@@ -126,7 +126,7 @@ export class CoverageComponent implements OnInit {
       for (var i = 0; i < data.quotation.project.coverage.sectionCovers.length; i++) {
         this.passData.tableData.push(data.quotation.project.coverage.sectionCovers[i]);
       }
-      this.table.refreshTable();}
+      }
       setTimeout(() => {
         $('input[appCurrency]').focus();
         $('input[appCurrency]').blur();
@@ -134,7 +134,7 @@ export class CoverageComponent implements OnInit {
 
 
 
-
+      this.table.refreshTable();
      /* */
     });
 
