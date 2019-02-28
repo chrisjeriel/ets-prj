@@ -33,7 +33,7 @@
 									<div class="input-group ig-cust">
 										<label class="form-control-sm col-sm-2">Type of Cession</label>
 										
-										<input  type="text" class="form-control form-control-sm t" [(ngModel)]="genInfoData.cessionDesc">
+										<input  type="text" class="form-control form-control-sm t" [(ngModel)]="genInfoData.cessionDesc" readonly>
 
 										<label class="form-control-sm col-sm-2">Line Class</label>
 										<input type="text" [(ngModel)]="genInfoData.lineClassDesc" class="form-control form-control-sm req" style="margin-right: 1px;"
@@ -707,7 +707,7 @@
 					</fieldset>
 				</ng-container>
 			</ng-container>
-			<fieldset class="scheduler-border cust-fs-padlr-offset">
+			<fieldset class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 7px !important;">
 				<legend class="scheduler-border">Quotation Wordings</legend>
 				<div class="col-sm-1">
 				</div>
@@ -720,37 +720,32 @@
 								Paragraph</label>
 						</div>
 						<div class="input-group" style="margin-top: 2px;">
-							<textarea  style="font-size: 12px; margin-bottom: 38px;" class="form-control form-control-sm col-sm-6 req" [(ngModel)]="genInfoData.openingParag" appRequired></textarea>
+							<!-- <textarea  style="font-size: 12px; margin-bottom: 38px;" class="form-control form-control-sm col-sm-6 req" [(ngModel)]="genInfoData.openingParag" appRequired></textarea>
 							<div class="text-search-ico"><a style="position: absolute;" (click)="showOpeningWordingLov()"><i class="fa fa-search"></i></a>
 							<a><i class="fa fa-file-text" style="margin-top: 22px !important;"></i></a></div>
-							<span>&nbsp;</span>
-							<!-- <div class="text-search-ico"><a><i class="fa fa-file-text" style="margin-top: 22px !important;"></i></a></div> -->
+							<span>&nbsp;</span>							
 
 							<textarea  style="font-size: 12px; margin-bottom: 38px; margin-left: 10px !important;" class="form-control form-control-sm col-sm-6 req" [(ngModel)]="genInfoData.closingParag" appRequired></textarea>
 							<div class="text-search-ico"><a style="position: absolute;" (click)="showClosingWordingLov()"><i class="fa fa-search"></i></a><a><i class="fa fa-file-text" style="margin-top: 22px !important;"></i></a></div>
-							<span>&nbsp;</span>
+							<span>&nbsp;</span> -->
+
+							<div class="form-control-sm col-sm-6 edtr-cont" style="height: 60px; padding-right: 6px !important;">
+             					<text-editor [editorContent]="genInfoData.openingParag" (fetchContent)="genInfoData.openingParag = $event" [edtrOpnrPos]="2">
+             						<ng-container icon-1>
+             							<a (click)="showOpeningWordingLov()"><i class="fa fa-search"></i></a>
+             						</ng-container>
+             					</text-editor>
+          					</div>
+
+          					<div class="form-control-sm col-sm-6 edtr-cont" style="height: 60px; padding-left: 6px !important;">
+             					<text-editor [editorContent]="genInfoData.closingParag" (fetchContent)="genInfoData.closingParag = $event" [edtrOpnrPos]="2">
+             						<ng-container icon-1>
+             							<a (click)="showClosingWordingLov()"><i class="fa fa-search"></i></a>
+             						</ng-container>
+             					</text-editor>
+          					</div>
 						</div>						
 					</div>
-					<!-- <div class="form-row">
-						<div class="input-group">
-							<label class="form-control-sm top-label col-sm-6" style="text-align: left !important;">Opening
-								Paragraph</label>
-							<label class="form-control-sm top-label col-sm-6" style="text-align: left !important; padding-left: 7px !important;">Closing
-								Paragraph</label>
-						</div>
-						<div class="input-group" style="margin-top: 14px !important;margin-bottom: 11px !important;">
-							<textarea  style="font-size: 12px; margin-bottom: 38px;" class="form-control form-control-sm col-sm-6" [(ngModel)]="genInfoData.openingParag"></textarea>
-							<div class="text-search-ico" (click)="showOpeningWordingLov()"><a><i class="fa fa-search"></i></a></div>
-							<span>&nbsp;</span>
-							<textarea  style="font-size: 12px; margin-bottom: 38px; margin-left: 10px !important;" class="form-control form-control-sm col-sm-6" [(ngModel)]="genInfoData.closingParag"></textarea>
-							<div class="text-search-ico" (click)="showClosingWordingLov()"><a><i class="fa fa-search"></i></a></div>
-							<span>&nbsp;</span>
-						</div>
-						<div class="input-group">
-							<div class="text-search-ico" style="margin-top: -76px !important;margin-left: 343px !important;"><a><i class="fa fa-file-text"></i></a></div>
-							<div class="text-search-ico" style="margin-top: -77px !important;margin-left: 357px !important;"><a><i class="fa fa-file-text"></i></a></div>
-						</div>
-					</div> -->
 				</div>
 				<div class="col-sm-1">
 				</div>

@@ -581,6 +581,11 @@ export class GeneralInfoComponent implements OnInit {
 		$('.req').blur();
   	}
 
+  	test() {
+  		console.log('OP  >>>  ' + this.genInfoData.openingParag);
+  		console.log('CP  >>>  ' + this.genInfoData.closingParag);
+  	}
+
 }
 export interface SelectRequestMode {
 	name: string;

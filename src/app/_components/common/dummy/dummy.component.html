@@ -39,10 +39,9 @@
 </div> -->
 
 
-<div class="cust-tabs-container">
+<!-- <div class="cust-tabs-container">
 
 
-    <!-- appcust-nondata -->
     <div style="height: 600px; width: 600px; border: 1px solid black; position: relative;" >
         <div class="controlContainer" style="position: absolute; margin-top: -30px;">
             <button>Sample 1</button>
@@ -53,7 +52,37 @@
             
         </div>
     </div>
-<!-- </div> -->
 </div>
 
-<button type="button" (click)="testingInternalComp()">Testingo</button>
+<button type="button" (click)="testingInternalComp()">Testingo</button> -->
+
+
+<div class="row">
+    <div class="col-sm-6" style="height: 70px;">
+        <text-editor [editorPlaceholder]="'Type kayo dito...'" [edtrOpnrPos]="2">
+            <ng-container icon-1>
+                <a><i class="fa fa-search" (click)="test()"></i></a>
+            </ng-container>
+        </text-editor>
+    </div>
+    <div class="col-sm-6" style="height: 70px;">
+        <text-editor [editorPlaceholder]="'Type kayo dito...'" [edtrOpnrPos]="1" [editorContent]="testCont" (fetchContent)="testCont = $event">
+            <ng-container icon-3>
+                <a><i class="fa fa-search" (click)="test()"></i></a>
+            </ng-container>
+            <ng-container icon-2>
+                <a><i class="fa fa-search" (click)="test()"></i></a>
+            </ng-container>             
+        </text-editor>
+    </div>
+</div>
+<br/>
+<div class="row">
+    <div class="form-control-sm col-sm-6 edtr-cont req" style="height: 60px; padding-left: 6px !important;">
+        <text-editor [editorContent]="testCont" (fetchContent)="testCont = $event" [edtrOpnrPos]="2">
+            <ng-container icon-1>
+                <a (click)="test()"><i class="fa fa-search"></i></a>
+            </ng-container>
+        </text-editor>
+    </div>
+</div>

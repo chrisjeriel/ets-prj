@@ -10,5 +10,6 @@
     float: right;
     position: relative;
     z-index: 1;
-    margin-right: 3px;
+    margin-right: 5px;
+    font-size: 14px;
 }
