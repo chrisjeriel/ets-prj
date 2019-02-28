@@ -601,12 +601,6 @@ export class GeneralInfoComponent implements OnInit {
   			},0)  
   		}
   	}
-
-  	test() {
-  		console.log('OP  >>>  ' + this.genInfoData.openingParag);
-  		console.log('CP  >>>  ' + this.genInfoData.closingParag);
-  	}
-
 }
 export interface SelectRequestMode {
 	name: string;
