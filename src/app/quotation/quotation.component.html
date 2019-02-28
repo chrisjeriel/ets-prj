@@ -1,10 +1,11 @@
 <div class="cust-tabs-container">
-	<h4>Quotation / Quotation Processing</h4>
+	<h4 *ngIf="!inquiryFlag">Quotation / Quotation Processing</h4>
+	<h4 *ngIf="inquiryFlag">Quotation / Quotation Inquiry</h4>
 	<!-- <ngb-tabset (tabChange)="beforeChange($event)"> -->
 		<ngb-tabset  (tabChange)="onTabChange($event)">
 		<ngb-tab class="ngb-tab" title="General Info">
 			<ng-template ngbTabContent>
-				<app-general-info (checkQuoteId)="checkQuoteInfo($event)" [quoteInfo]="quoteInfo"></app-general-info>
+				<app-general-info (checkQuoteId)="checkQuoteInfo($event)" [quoteInfo]="quoteInfo" [inquiryFlag]="inquiryFlag"></app-general-info>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab id="idko" [disabled]="quoteInfo.quoteId == ''">
@@ -12,7 +13,7 @@
 				<div>Coverage</div>
 			</ng-template>
 			<ng-template ngbTabContent>
-				<app-coverage [quotationInfo]="quoteInfo"></app-coverage>
+				<app-coverage [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag"></app-coverage>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab [disabled]="quoteInfo.quoteId == ''">
@@ -20,7 +21,7 @@
 				<div>Quote Option</div>
 			</ng-template>
 			<ng-template ngbTabContent>
-				<app-quote-option [quotationInfo]="quoteInfo" ></app-quote-option>
+				<app-quote-option [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag"></app-quote-option>
 			</ng-template>
 		</ngb-tab>
 
@@ -29,7 +30,7 @@
 				<div>Endorsement</div>
 			</ng-template>
 			<ng-template ngbTabContent>
-				<app-quote-endorsement [endorsementType]="'General'"></app-quote-endorsement>
+				<app-quote-endorsement [endorsementType]="'General'" [inquiryFlag]="inquiryFlag"></app-quote-endorsement>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab *ngIf="line=='CAR' || line=='EAR'" [disabled]="quoteInfo.quoteId == ''">
@@ -38,7 +39,7 @@
 				<div>ALOP</div>
 			</ng-template>
 			<ng-template ngbTabContent>
-				<app-quo-alop [quotationInfo]="quoteInfo"></app-quo-alop>
+				<app-quo-alop [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag"></app-quo-alop>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab [disabled]="quoteInfo.quoteId == ''">
@@ -46,7 +47,7 @@
 				<div>Internal Competition</div>
 			</ng-template>
 			<ng-template ngbTabContent>
-				<app-internal-competition [quotationInfo]="quoteInfo"></app-internal-competition>
+				<app-internal-competition [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag"></app-internal-competition>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab [disabled]="quoteInfo.quoteId == ''">
@@ -54,10 +55,10 @@
 				<div>Attachment</div>
 			</ng-template>
 			<ng-template ngbTabContent>
-				<app-attachment [quotationInfo]="quoteInfo"></app-attachment>
+				<app-attachment [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag"></app-attachment>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab id="approval-tab">
+		<ngb-tab id="approval-tab" [disabled]="inquiryFlag">
 
 			<ng-template #content>
 				<div class="modal-header">
@@ -141,7 +142,8 @@
 			</ng-template>
 
 			<ng-template ngbTabTitle>
-				<div (click)="showApprovalModal(content)">Approval</div>
+				<div *ngIf="!inquiryFlag" (click)="showApprovalModal(content)">Approval</div>
+				<div *ngIf="inquiryFlag">Approval</div>
 			</ng-template>
 
 		</ngb-tab>

@@ -32,6 +32,7 @@ export class GeneralInfoComponent implements OnInit {
 	lineClassDesc: string;
 	ocChecked: boolean = false;
 	internalCompFlag: boolean = false;
+	@Input() inquiryFlag: boolean = false;
 
 	project: any = {
 		blockCd: '',

@@ -29,7 +29,7 @@
             <div class="col-sm-2">
             </div>
             <div class="col-sm-8" style="padding-top: 8px; padding-bottom: 15px;">
-                 <app-cust-editable-non-datatable  [passData]="passData" (tableDataChange)="update($event)" (clickLOV)="sectionCoversLOV($event)">
+                 <app-cust-editable-non-datatable  [passData]="passData" (tableDataChange)="update($event);" (clickLOV)="sectionCoversLOV($event)">
                 </app-cust-editable-non-datatable>
                 <!-- <app-cust-editable-non-datatable  [passData]="passData" (onDataChange)="passData.tableData=$event;" (newClick)="update($event);" (clickLOV)="sectionCoversLOV($event)">
                 </app-cust-editable-non-datatable> -->
@@ -48,19 +48,16 @@
                             <br>
                             <div class="input-group">
                                 <label class="form-control-sm">Currency</label>
-                                <select class="form-control form-control-sm cust-sm"  appRequired [(ngModel)]="coverageData.currencyCd">
-                                    <option value="PHP">PHP</option>
-                                    <option value="USD">USD</option>
-                                    <option value="EUR">EUR</option>
-                                </select>
+                                <input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageData.currencyCd">
+                                <div class="text-search-ico" style="z-index: 50;margin-left: -18px !important;"><a (click)="showCurrencyModal()"><i class="fa fa-search"></i></a></div>
                                 <label class="form-control-sm">Exch. Rt.</label>
-                                <input type="text" class="form-control form-control-sm cust-sm txt-content-rght" required
+                                <input type="text" class="form-control form-control-sm cust-sm txt-content-rght req" required
                                        placeholder="0.00" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
                                         [(ngModel)]="coverageData.currencyRt" appCurrency>
                             </div>
                             <div class="input-group">&nbsp;
                                 <label class="form-control-sm">Total SI</label>
-                                <input type="text" class="form-control form-control-sm cust-sm txt-content-rght" required
+                                <input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm cust-sm txt-content-rght req" required
                                        placeholder="0.00" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
                                         [(ngModel)]="coverageData.totalSi" appCurrency >
                             </div>
@@ -79,17 +76,17 @@
                         <div class="col-sm-10">
                             <div class="input-group">
                                 <label class="form-control-sm col-sm-3">Section I</label>
-                                <input type="text" class="form-control form-control-sm txt-content-rght"  placeholder="0.00"
+                                <input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm txt-content-rght req"  placeholder="0.00"
                                        onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="coverageData.sectionISi" appCurrency >
                             </div>
                             <div class="input-group">
                                 <label class="form-control-sm col-sm-3">Section II</label>
-                                <input type="text" class="form-control form-control-sm txt-content-rght"  placeholder="0.00"
+                                <input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm txt-content-rght req"  placeholder="0.00"
                                        onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="coverageData.sectionIISi" appCurrency >
                             </div>
                             <div class="input-group">
                                 <label class="form-control-sm col-sm-3">Section III</label>
-                                <input type="text" class="form-control form-control-sm txt-content-rght"  placeholder="0.00"
+                                <input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm txt-content-rght req"  placeholder="0.00"
                                        onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="coverageData.sectionIIISi" appCurrency >
                             </div>
                         </div>
@@ -102,7 +99,7 @@
             <fieldset class="scheduler-border fieldset-height">
                 <div class="form-row custom-row-inline-inset">
                     <label for="inputEmail4" class="form-control-sm top-label">Remarks</label>
-                    <textarea class="form-control form-control-sm"  [(ngModel)]="coverageData.remarks"></textarea>
+                    <textarea [readonly]="inquiryFlag" class="form-control form-control-sm"  [(ngModel)]="coverageData.remarks"></textarea>
                 </div>
             </fieldset>
         </div>
@@ -112,8 +109,8 @@
         <div class="form-group col-sm">
             <div class="col-md-13 text-center">
                 <div class="cust-btn-container" style="margin-top: 10px;">
-                    <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
-                    <button type="button" class="cust-btn" (click)="saveData()"><a>Save</a></button>
+                    <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+                    <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="saveData()"><a>Save</a></button>
                 </div>
             </div>
         </div>
@@ -132,3 +129,4 @@
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
     </div>
 </app-modal>
+<app-mtn-currency id="currencyModal" (selectedData)="setCurrency($event)"></app-mtn-currency>
