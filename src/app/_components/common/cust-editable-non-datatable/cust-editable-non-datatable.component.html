@@ -16,9 +16,14 @@ span.ui-column-resizer {
 
 </style>
 
-<br id="test" *ngIf="passData.addFlag || passData.editFlag || passData.deleteFlag || passData.searchFlag || (passData.genericBtn !== undefined) || ctrlL.innerHTML.trim() || ctrlR.innerHTML.trim()" />
+<br id="test" *ngIf="(passData.addFlag || passData.editFlag || passData.deleteFlag || passData.searchFlag || (passData.genericBtn !== undefined) || ctrlL.innerHTML.trim() || ctrlR.innerHTML.trim()) && !loadingFlag" />
 
-<div id="cust-table-container" style="position: relative;">
+<div class="row"  *ngIf="loadingFlag">       
+    <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="m-auto" style="margin-bottom: 8px !important">
+</div>
+
+
+<div id="cust-table-container" [style.display]="!loadingFlag? 'block':'none'" style="position: relative;">
     <div class="new-btn-container" style="position: absolute; margin-top:-28px;" [style.width]="(passData.searchFlag || ctrlR.innerHTML.trim()) ? '100%' : 'auto'" >
 
         <button *ngIf="passData.addFlag" class="cust-btn" (click)="passData.nData == null ? addClicked(event) : onClickAdd()"><a>Add</a></button>
@@ -243,6 +248,11 @@ span.ui-column-resizer {
                                 </select>
                             </td>
                             <td *ngIf="passData.tHeader.indexOf('Actions')!=-1 || passData.tHeader.indexOf('Action')!=-1" class="icon" style="padding-right: 0px !important">
+<!-- <<<<<<< HEAD
+                                <button class="fa fa-paperclip" title="Attach File" *ngIf="addCheckFlag(data)"></button>
+                                <button class="fa fa-folder-open" title="Open File" *ngIf="addCheckFlag(data)"></button>
+                                
+======= -->
                                 <button class="fa fa-paperclip btn-file" title="Attach File" *ngIf="addCheckFlag(data)">
                                     <input type="file" *ngIf="addCheckFlag(data)" (change)="data.fileName=$event.target.files[0].name;data.edited=true;">
                                 </button>

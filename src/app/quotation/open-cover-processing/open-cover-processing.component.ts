@@ -232,6 +232,7 @@ export class OpenCoverProcessingComponent implements OnInit {
 
   nextBtnEvent() {
     var ocLine = this.mtnLineCd.toUpperCase();
+
     if (ocLine === 'CAR' ||
       ocLine === 'EAR' ||
       ocLine === 'EEI' ||
@@ -244,7 +245,7 @@ export class OpenCoverProcessingComponent implements OnInit {
 
       this.quotationService.rowData = [];
       setTimeout(() => {
-        this.router.navigate(['/open-cover', { line: ocLine, from: "oc-processing", typeOfCession: this.mtnCessionDesc, riskId: this.riskId, ocQuoteNo: this.ocQuoteNo.trim() }], { skipLocationChange: true });
+        this.router.navigate(['/open-cover', { line: ocLine, from: "oc-processing", typeOfCession: this.mtnCessionDesc, riskId: this.riskId, fromBtn: 'add' }], { skipLocationChange: true });
       }, 100);
     }
 

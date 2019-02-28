@@ -23,6 +23,8 @@ export class CoverageComponent implements OnInit {
   // editedDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
   // rowClick: EventEmitter<any> = new EventEmitter();
   // rowDblClick: EventEmitter<any> = new EventEmitter();
+
+  @Input() inquiryFlag: boolean = false;
   
 
   coverageData: any = {
@@ -94,6 +96,19 @@ export class CoverageComponent implements OnInit {
   ngOnInit() {
     this.titleService.setTitle("Quo | Coverage");
 
+    //neco
+    if(this.inquiryFlag){
+      this.passData.opts = [];
+      this.passData.uneditable = [];
+      this.passData.magnifyingGlass = [];
+      this.passData.addFlag = false;
+      this.passData.deleteFlag = false;
+      for(var count = 0; count < this.passData.tHeader.length; count++){
+        this.passData.uneditable.push(true);
+      }
+    }
+    //neco end
+
     this.quoteNo = this.quotationInfo.quotationNo.split(/[-]/g)[0]
     for (var i = 1; i < this.quotationInfo.quotationNo.split(/[-]/g).length; i++) {
       this.quoteNo += '-' + parseInt(this.quotationInfo.quotationNo.split(/[-]/g)[i]);
@@ -126,7 +141,7 @@ export class CoverageComponent implements OnInit {
       for (var i = 0; i < data.quotation.project.coverage.sectionCovers.length; i++) {
         this.passData.tableData.push(data.quotation.project.coverage.sectionCovers[i]);
       }
-      this.table.refreshTable();}
+      }
       setTimeout(() => {
         $('input[appCurrency]').focus();
         $('input[appCurrency]').blur();
@@ -134,7 +149,7 @@ export class CoverageComponent implements OnInit {
 
 
 
-
+      this.table.refreshTable();
      /* */
     });
 

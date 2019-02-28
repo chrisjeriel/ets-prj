@@ -100,9 +100,12 @@ export class CustEditableNonDatatableComponent implements OnInit {
         config.placement = 'bottom-right';
         config.autoClose = false;
     }
+    loadingFlag: boolean = true;
 
-    refreshTable(){
-
+    refreshTable(initLoad?){
+        if(initLoad === undefined){
+            this.loadingFlag = false;
+        }
         while(this.displayData.length>0){
             this.displayData.pop();
         }
@@ -133,6 +136,9 @@ export class CustEditableNonDatatableComponent implements OnInit {
         } else {
             this.dataKeys = this.passData.keys;
         }
+        if(this.passData.tableData.length != 0)
+            this.loadingFlag = false;
+
         // if(this.dataKeys.indexOf('edited') != -1){
         //   this.dataKeys.pop();
         // }
@@ -153,7 +159,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
          this.dataKeys.splice(this.dataKeys.indexOf('deleted'),1);
        }
 
-        this.refreshTable();
+        this.refreshTable('first');
         // this.autoFill = Array(this.passData.pageLength).fill(this.newData);
         // if(this.displayData.length%this.passData.pageLength != 0){
         //     this.autoFill = Array(this.passData.pageLength - this.displayData.length%this.passData.pageLength).fill(this.newData);

@@ -20,6 +20,7 @@ export class InternalCompetitionComponent implements OnInit, OnDestroy {
         riskName: '',
         insuredDesc: ''
     }
+    @Input() inquiryFlag: boolean = false;
     resultMessage: string = "";
     Description: string = "";
     adviceLOVRow : number;
@@ -66,11 +67,20 @@ export class InternalCompetitionComponent implements OnInit, OnDestroy {
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private maintenanceService: MaintenanceService, private route: ActivatedRoute) { }
 
     ngOnInit() {
-        //var dateConvert: Date;
         this.titleService.setTitle("Quo | Internal Competition");
-        //this.tableData = this.quotationService.getIntCompAdvInfo();
 
-        //this.opts.push({ selector: "advOpt", vals: ["Pending", "On Going", "Done"] });
+        //neco
+        if(this.inquiryFlag){
+          this.intCompData.opts = [];
+          this.intCompData.uneditable = [];
+          this.intCompData.magnifyingGlass = [];
+          this.intCompData.addFlag = false;
+          this.intCompData.deleteFlag = false;
+          for(var count = 0; count < this.intCompData.tHeader.length; count++){
+            this.intCompData.uneditable.push(true);
+          }
+        }
+        //neco end
 
         let quoteNo:string = "";
         this.sub = this.route.params.subscribe(params => {
