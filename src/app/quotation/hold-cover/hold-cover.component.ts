@@ -106,6 +106,7 @@ export class HoldCoverComponent implements OnInit {
     this.titleService.setTitle("Quo | Quotation to Hold Cover");
     this.holdCoverInfo = new HoldCoverInfo();
     this.holdCover.status = "In Progress";
+    this.holdCover.preparedBy = JSON.parse(window.localStorage.currentUser).username;
   }
 
   formatDate(date){
@@ -135,6 +136,7 @@ export class HoldCoverComponent implements OnInit {
   }
 
   search() {
+    this.passDataQuoteLOV.tableData = [];
     this.quotationService.getQuoProcessingData()
     .subscribe(val => {
       var records = val['quotationList'];
@@ -214,13 +216,13 @@ export class HoldCoverComponent implements OnInit {
                   "lineCd": hcline,
                   "periodFrom": periodFrom,
                   "periodTo": periodTo,
-                  "preparedBy": 'user_login',
+                  "preparedBy": prepBy,
                   "quoteId": this.quoteId,
                   "reqBy": reqBy,
                   "reqDate": reqDate,
                   "status": status,
                   "updateDate": new Date().toISOString(),
-                  "updateUser": 'user_login' /*username of the login acc*/
+                  "updateUser": prepBy
                 }
                     this.quotationService.saveQuoteHoldCover(
                       JSON.stringify(this.holdCoverReq)

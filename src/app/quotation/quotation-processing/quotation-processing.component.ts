@@ -15,7 +15,6 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 })
 export class QuotationProcessingComponent implements OnInit {
     @ViewChildren(CustNonDatatableComponent) table: QueryList<CustNonDatatableComponent>;
-    @Output() savingType: EventEmitter<any> = new EventEmitter<any>();
     tableData: any[] = [];
     tHeader: any[] = [];
     dataTypes: any[] = [];
@@ -306,10 +305,10 @@ export class QuotationProcessingComponent implements OnInit {
                 intComp: false,
             }
 
-            this.savingType.emit('normal');
+            this.quotationService.savingType = 'normal';
 
             setTimeout(() => {
-                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), from: 'quo-processing', savingType: 'normal'}], { skipLocationChange: true });
+                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), from: 'quo-processing' }], { skipLocationChange: true });
             },100); 
         }
         //neco's influence ends here
@@ -353,9 +352,11 @@ onRowDblClick(event) {
 
     this.quotationService.toGenInfo = [];
     this.quotationService.toGenInfo.push("edit", this.line);
+    
+    this.quotationService.savingType = 'normal';
 
     setTimeout(() => {
-        this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.typeOfCession,  quotationNo : this.quotationNo, from: 'quo-processing', savingType: 'normal' }], { skipLocationChange: true });
+        this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.typeOfCession,  quotationNo : this.quotationNo, from: 'quo-processing' }], { skipLocationChange: true });
     },100); 
 
 }
@@ -406,7 +407,7 @@ setCedingcompany(data){
             }
 
             setTimeout(() => {
-                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), quotationNo: this.existingQuotationNo, from: 'quo-processing', savingType: 'internalComp' }], { skipLocationChange: true });
+                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), quotationNo: this.existingQuotationNo, from: 'quo-processing' }], { skipLocationChange: true });
             },100); 
         }
     }
@@ -455,8 +456,16 @@ setCedingcompany(data){
             this.quotationService.savingType = savingType;
 
             setTimeout(() => {
-                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), quotationNo: this.existingQuotationNo, from: 'quo-processing', savingType: savingType }], { skipLocationChange: true });
+                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), quotationNo: this.existingQuotationNo, from: 'quo-processing' }], { skipLocationChange: true });
             },100);
         }
+    }
+
+    checkFields(){
+        if(this.line === '' || this.typeOfCessionId === '' || this.riskCd === ''){
+            return true;
+        }
+
+        return false;
     }
 }
