@@ -17,6 +17,7 @@ export class QuoAlopComponent implements OnInit {
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   aLOPInfo: QuoteALOPInfo = new QuoteALOPInfo();
   @Input() quotationInfo:any = {};
+  @Input() inquiryFlag: boolean = false;
   tableData: any[] = [];
   tHeader: string[] = [];
   policyRecordInfo: any = {};
@@ -82,9 +83,22 @@ export class QuoAlopComponent implements OnInit {
       selector: 'insured',
     }
     
+    loading:boolean = true;
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute) { }
 
     ngOnInit() {
+      //neco
+      if(this.inquiryFlag){
+        this.itemInfoData.opts = [];
+        this.itemInfoData.uneditable = [];
+        this.itemInfoData.magnifyingGlass = [];
+        this.itemInfoData.addFlag = false;
+        this.itemInfoData.deleteFlag = false;
+        for(var count = 0; count < this.itemInfoData.tHeader.length; count++){
+          this.itemInfoData.uneditable.push(true);
+        }
+      }
+      //neco end
       this.quotationNo = this.quotationInfo.quotationNo;
       this.quoteNo = this.quotationNo.split(/[-]/g)[0]
       for (var i = 1; i < this.quotationNo.split(/[-]/g).length; i++) {
@@ -104,6 +118,8 @@ export class QuoAlopComponent implements OnInit {
 
     getAlop(){
       this.quotationService.getALop(null,this.quoteNo).subscribe((data: any) => {
+             this.loading = false;
+             
              this.quoteId = data.quotation.quoteId;
               this.alopData = data.quotation.alop===null ? this.alopData : data.quotation.alop;
               this.alopData.issueDate = this.alopData.issueDate[0]+'-'+("0" + this.alopData.issueDate[1]).slice(-2)+'-'+  ("0" + this.alopData.issueDate[2]).slice(-2);
@@ -133,12 +149,13 @@ export class QuoAlopComponent implements OnInit {
 
     openAlopItem(){
       this.quotationService.getALOPItemInfos(this.quoteNo,this.quoteId).subscribe((data: any) => {
+        this.table.refreshTable();
             this.itemInfoData.nData.itemNo = data.quotation[0] === undefined ? 1:data.quotation[0].alop.alopItemList.length + 1; 
             for (var i=0; i < data.quotation[0].alop.alopItemList.length; i++) {
               this.itemInfoData.tableData.push(data.quotation[0].alop.alopItemList[i]);
             }
             this.itemInfoData.tableData = this.itemInfoData.tableData.sort(function(a,b){return a.itemNo - b.itemNo})
-            this.table.refreshTable();
+            
             
         });
       while(this.itemInfoData.tableData.length>0){

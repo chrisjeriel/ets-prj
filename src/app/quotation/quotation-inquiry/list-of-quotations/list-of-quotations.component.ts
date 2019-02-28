@@ -245,7 +245,7 @@ export class ListOfQuotationsComponent implements OnInit {
         this.quotationService.savingType = 'normal';
 
         setTimeout(() => {
-            this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.typeOfCession,  quotationNo : this.quotationNo, from: 'quo-processing' }], { skipLocationChange: true });
+            this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.typeOfCession,  quotationNo : this.quotationNo, from: 'quo-processing', inquiry: true}], { skipLocationChange: true });
         },100); 
     }
 

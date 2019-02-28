@@ -4,10 +4,21 @@
 			<legend class="scheduler-border">A.R. Info</legend>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">A.R. No.</label>
-				<input type="text" placeholder="000001" class="form-control form-control-sm cust-sm text-right col-sm-2" [(ngModel)]="record.arNo">
-				<label class="form-control-sm col-sm-1" style="margin-left: -2px;">A.R. Date</label>
-				<input type="date" class="form-control form-control-sm cust-sm col-sm-2" value="2019-10-01">
-				<input type="text" placeholder="10:45 AM" class="form-control form-control-sm cust-sm text-center cust-mrgn col-sm-1">
+				<input type="text" placeholder="000001" class="form-control form-control-sm cust-sm text-right col-sm-3" [(ngModel)]="record.arNo">
+				<div class="col-sm-4" style="padding: 0;">
+					<div class="input-group">
+						<label class="form-control-sm col-sm-4">A.R. Date</label>
+						<input type="date" class="form-control form-control-sm cust-sm col-sm-6" value="2019-10-01">
+						<input type="text" placeholder="10:45 AM" class="form-control form-control-sm cust-sm text-center cust-mrgn col-sm-3">
+					</div>
+				</div>
+				<div class="col-sm" style="padding: 0;">
+					<div class="input-group">
+						<label class="form-control-sm col-sm-4">Status</label>
+						<input type="text" placeholder="New" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="record.status">
+						<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+					</div>
+				</div>
 				<!-- <label class="form-control-sm col-sm-1" style="padding-left: 0px !important; margin-left: 20px !important">Payment Type</label> -->
 				<!-- <input type="text" placeholder="Inward Policy Balances" class="form-control form-control-sm cust-sm col-sm-3" (change)="tabController($event);" [(ngModel)]="record.paymentType"> -->
 				<!-- <select class="form-control form-control-sm cust-sm col-sm-3 cust-sm" (change)="tabController($event);" [(ngModel)]="record.paymentType">
@@ -16,13 +27,11 @@
 					<option value="QSOA">QSOA</option>
 				</select> -->
 				<!-- <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div> -->
-				<label class="form-control-sm col-sm-2">Status</label>
-				<input type="text" placeholder="New" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="record.status">
-				<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+				
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">DCB No.</label>
-				<div class="form-control-sm cust-sm col-sm-2" style="padding: 0;">
+				<div class="form-control-sm cust-sm col-sm-3" style="padding: 0;">
 					<div class="input-group">
 						<input type="text" placeholder="2018" class="form-control form-control-sm text-right cust-sm col-sm-4">
 						<input type="text" placeholder="001" class="form-control form-control-sm text-right cust-sm cust-mrgn col-sm-4">
@@ -31,22 +40,26 @@
 				</div>
 				<div class="col-sm-4" style="padding: 0px !important;">
 					<div class="input-group">
-						<label class="form-control-sm col-sm-3" style="margin-right: -2px !important;padding-left: 0px !important;">Reference No.</label>
+						<label class="form-control-sm col-sm-4">Reference No.</label>
 						<input type="text" class="form-control form-control-sm cust-sm col-sm" value="INV-000001">
 					</div>
 				</div>
-				<label class="form-control-sm col-sm-2">Payment Type</label>
-				<select class="form-control form-control-sm cust-sm col-sm cust-sm" (change)="tabController($event);" [(ngModel)]="record.paymentType">
-					<option value="Inward Policy Balances">Inward Policy Balances</option>
-					<option value="Claim Recovery / Overpayment">Claim Recovery / Overpayment</option>
-					<option value="Negative Treaty Balance">Negative Treaty Balance</option>
-					<option value="Payment of Claim Cash Call by Company">Payment of Claim Cash Call by Company</option>
-					<option value="Investment Pull-Out">Investment Pull-Out</option>
-					<option value="Loss Reserve Deposit">Loss Reserve Deposit</option>
-					<!-- <option value="Claim Over Payment">Claim Over Payment</option> -->
-					<option value="Payment for Advances by Service">Payment for Advances by Service</option>
-					<option value="Others">Others</option>
-				</select>
+				<div class="col-sm" style="padding: 0px !important;">
+					<div class="input-group">
+						<label class="form-control-sm col-sm-4">Payment Type</label>
+						<select class="form-control form-control-sm cust-sm col-sm cust-sm" (change)="tabController($event);" [(ngModel)]="record.paymentType">
+							<option value="Inward Policy Balances">Inward Policy Balances</option>
+							<option value="Claim Recovery / Overpayment">Claim Recovery / Overpayment</option>
+							<option value="Negative Treaty Balance">Negative Treaty Balance</option>
+							<option value="Payment of Claim Cash Call by Company">Payment of Claim Cash Call by Company</option>
+							<option value="Investment Pull-Out">Investment Pull-Out</option>
+							<option value="Loss Reserve Deposit">Loss Reserve Deposit</option>
+							<!-- <option value="Claim Over Payment">Claim Over Payment</option> -->
+							<option value="Payment for Advances by Service">Payment for Advances by Service</option>
+							<option value="Others">Others</option>
+						</select>
+					</div>
+				</div>
 			</div>
 			<!-- <div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">DCB Bank</label>
@@ -57,12 +70,20 @@
 			</div> -->
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">P.R. No.</label>
-				<input type="text" placeholder="435674" class="form-control form-control-sm cust-sm text-right col-sm-2">
-				<label class="form-control-sm col-sm-1" style="margin-left: -2px;">P.R. Date</label>
-				<input type="date" class="form-control form-control-sm cust-sm col-sm-2" value="2019-10-01">
-				<input type="text" placeholder="10:45 AM" class="form-control form-control-sm cust-sm text-center cust-mrgn col-sm-1">
-				<label class="form-control-sm col-sm-2">P.R. Prepared By</label>
-				<input type="text" placeholder="Ma. Cecilia Dela Paz - Castro" class="form-control form-control-sm cust-sm col-sm">
+				<input type="text" placeholder="435674" class="form-control form-control-sm cust-sm text-right col-sm-3">
+				<div class="col-sm-4" style="padding: 0px !important;">
+					<div class="input-group">
+						<label class="form-control-sm col-sm-4" style="margin-left: -2px;">P.R. Date</label>
+						<input type="date" class="form-control form-control-sm cust-sm col-sm-6" value="2019-10-01">
+						<input type="text" placeholder="10:45 AM" class="form-control form-control-sm cust-sm text-center cust-mrgn col-sm-3">
+					</div>
+				</div>
+				<div class="col-sm" style="padding: 0px !important;">
+					<div class="input-group">
+						<label class="form-control-sm col-sm-4">P.R. Prepared By</label>
+						<input type="text" placeholder="Ma. Cecilia Dela Paz - Castro" class="form-control form-control-sm cust-sm col-sm">
+					</div>
+				</div>
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Payor</label>

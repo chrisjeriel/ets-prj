@@ -32,10 +32,13 @@ export class QuotationComponent implements OnInit {
 		insuredDesc: ''
 	}
 
+	inquiryFlag: boolean = false;
+
 	ngOnInit() {
 		this.sub = this.route.params.subscribe(params => {
             this.line = params['line'];
-        });        
+            this.inquiryFlag = params['inquiry'];
+        });
 	}
 
 	showApprovalModal(content) {

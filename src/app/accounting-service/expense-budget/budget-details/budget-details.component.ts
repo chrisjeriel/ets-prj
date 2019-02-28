@@ -49,7 +49,7 @@ export class BudgetDetailsComponent implements OnInit {
     checkFlag: true,
     searchFlag: true,
     pageLength: 15,
-    widths: [50, 'auto', 'auto', 'auto', 125],
+    widths: [117, 'auto', 'auto', 'auto', 125],
     paginateFlag: true,
     printBtn: false,
     filters: [

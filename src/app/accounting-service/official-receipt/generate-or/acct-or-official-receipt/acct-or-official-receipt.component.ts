@@ -96,10 +96,8 @@ export class AcctOrOfficialReceiptComponent implements OnInit {
   	if(this.paymentType == null){
       this.paymentType = "";
     }
+  }
   
-    console.log(this.paymentType);
- }
-
  openTaxAllocation(){
    $('#taxAlloc #modalBtn').trigger('click');
  }
