@@ -58,7 +58,7 @@ export class InvestmentsComponent implements OnInit {
       ],
    	 tHeader: ["Bank","Certificate No.","Investment Type","Status","Maturity Period","Duration Unit","Interest Rate","Date Purchased","Maturity Date","Curr","Curr Rate","Investment","Investment Income","Bank Charges","Withholding Tax","Maturity Value"],
    	 resizable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
-   	 dataTypes: ['select','text','text','text','number','select','percent','date','date','text','percent','currency','currency','currency','currency','currency'],
+   	 dataTypes: ['text','text','select','select','number','select','percent','date','date','select','percent','currency','currency','currency','currency','currency'],
    	 nData: {
           bank: null,
           certificateNo: null,
@@ -78,7 +78,49 @@ export class InvestmentsComponent implements OnInit {
           maturityValue: null
         },
    	 total:[null,null,null,null,null,null,null,null,null,null,'Total','investment','investmentIncome','bankCharges','withholdingTax','maturityValue'],
-     opts: [],
+     opts: [
+       { selector: "durUnit", vals: ["Years","Months","Weeks","Days"] },
+       { selector: "investmentType", vals: ["Time Deposit","Treatsury"] },
+       { selector: "status", vals: ["Matured","Outstanding"] },
+       { selector: "curr", vals: ["PHP","USD","EUR","YEN"] }
+     ],
+     filters: [
+       {
+            key: 'bank',
+            title:'Bank',
+            dataType: 'text'
+       },
+       {
+            key: 'investmentType',
+            title:'Inv. Type',
+            dataType: 'text'
+       },
+       {
+            key: 'status',
+            title:'Status',
+            dataType: 'text'
+       },
+       {
+            key: 'maturityPeriod',
+            title:'MaturityPeriod',
+            dataType: 'text'
+       },
+       {
+            key: 'durUnit',
+            title:'Duration Unit',
+            dataType: 'text'
+       },
+       {
+            key: 'datePurchased',
+            title:'Date Purchased',
+            dataType: 'date'
+       },
+       {
+            key: 'curr',
+            title:'Currency',
+            dataType: 'text'
+       },
+     ],
    	 addFlag: true,
    	 deleteFlag: true,
      searchFlag: true,
@@ -88,6 +130,7 @@ export class InvestmentsComponent implements OnInit {
      pagination: true,
      genericBtn: 'Save',
      pageLength: 15,
+     widths: [190,190,120,120,80,85,1,1,1,85,90,120,120,120,120,120],
    };
 
   constructor(private accountingService: AccountingService,private titleService: Title,private router: Router) { }
@@ -95,8 +138,8 @@ export class InvestmentsComponent implements OnInit {
   ngOnInit() {
   	this.titleService.setTitle("Acct-IT | Investments");
   	//this.passData.tableData = this.accountingService.getAccInvestments();
-    this.passData.opts.push({ selector: "bank", vals: ["BPI", "RCBC", "BDO"] });
-    this.passData.opts.push({ selector: "durUnit", vals: ["Years","Months","Weeks","Days"] });
+    //this.passData.opts.push({ selector: "bank", vals: ["BPI", "RCBC", "BDO"] });
+    //this.passData.opts.push({ selector: "durUnit", vals: ["Years","Months","Weeks","Days"] });
 
   }
 

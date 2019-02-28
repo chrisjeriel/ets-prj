@@ -107,7 +107,7 @@
 
 <div class="cust-tabs-container" style="margin-top:10px !important">
     <ngb-tabset>
-      <ngb-tab>
+      <ngb-tab *ngIf="paymentType != 'Others - Visible on any Payment Type'">
         <ng-template ngbTabTitle>
           <ng-container [ngSwitch]="paymentType.toUpperCase()">
            <div *ngSwitchCase ="'CLAIM EXPENSE PAYMENT TO CEDING COMPANY'">Claim Expense Payment to Ceding Company</div>
@@ -207,13 +207,13 @@
       <div class="form-row" style="margin-bottom: -10px;">
         <div class="input-group">
           <label class="form-control-sm col-sm-1">Created By</label>
-          <input type="text" appCurrency class="form-control form-control-sm col-sm" placeholder="cuaresma">
+          <input type="text" appCurrency class="form-control form-control-sm col-sm" placeholder="cuaresma" disabled>
           <label class="form-control-sm col-sm-1">Date Created</label>
-          <input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-01T10:45">
+          <input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-01T10:45" disabled>
           <label class="form-control-sm col-sm-1">Last Update By</label>
-          <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma">
+          <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma" disabled>
           <label class="form-control-sm col-sm-1">Last Update</label>
-          <input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-02T10:00">
+          <input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-02T10:00" disabled>
         </div>
       </div>
     </div>

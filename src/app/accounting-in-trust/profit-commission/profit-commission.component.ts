@@ -10,6 +10,11 @@ import { Title } from '@angular/platform-browser';
 })
 export class ProfitCommissionComponent implements OnInit {
 
+	income1: any = 0;
+	income2: any = 9481348.73;
+	outgo1: any = 404777.58;
+	outgo2: any = 9481348.73;
+
 	passDataProfitCommissionStatement:any = {
 		tableData: [
 			{particulars:'NET PREMIUM WRITTEN-QUOTA***',actual:6956320.12,natCat:2676548.84,income:4279771.28,outGo:null},
@@ -19,18 +24,18 @@ export class ProfitCommissionComponent implements OnInit {
 			{particulars:'LOSSES PAID-NRE-12.31.2018',actual:1294962.30,natCat:916852.41,income:null,outGo:378109.89},
 			{particulars:'OUSTANDING CLAIMS-NRE-12.31.2018',actual:10300005.51,natCat:6054630.86,income:null,outGo:4245374.65},
 			{particulars:'ORIGINAL EXPENSES:',actual:null,natCat:null,income:null,outGo:null},
-			{particulars:'    POOL EXPENSES-QUOTA(W/ RMC)',actual:null,natCat:null,income:null,outGo:779640.71},
-			{particulars:'	  AGENCY & GENERAL EXPENSES-QUOTA***',actual:1912105.52,natCat:733617.15,income:null,outGo:1178488.37},
-			{particulars:'	  VAT ON COMMISSION***',actual:228893.76,natCat:87810.50,income:null,outGo:141083.26},
+			{particulars:'POOL EXPENSES-QUOTA(W/ RMC)',actual:null,natCat:null,income:null,outGo:779640.71},
+			{particulars:'AGENCY & GENERAL EXPENSES-QUOTA***',actual:1912105.52,natCat:733617.15,income:null,outGo:1178488.37},
+			{particulars:'VAT ON COMMISSION***',actual:228893.76,natCat:87810.50,income:null,outGo:141083.26},
 			{particulars:'MANAGEMENT EXPENSES:',actual:null,natCat:null,income:null,outGo:null},
-			{particulars:'	  15% OF 4,279,771.28',actual:null,natCat:null,income:null,outGo:641965.69},
+			{particulars:'15% OF 4,279,771.28',actual:null,natCat:null,income:null,outGo:641965.69},
 		],
 		tHeader: ["Particulars","Actual","Nat Cat","INCOME","OUTGO"],
 		dataTypes:["text","currency","currency","currency","currency"],
 		total: [null,null,null,'income','outGo'],
 		pageLength: 12,
 		uneditable: [true,true,true,true,true],
-		widths:['auto',200,200,200,200]
+		widths:[270,120,120,120,120]
 	}
 
   constructor(private route: Router, private titleService: Title) { }

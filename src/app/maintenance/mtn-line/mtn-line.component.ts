@@ -57,6 +57,8 @@ lineListing: any = {
     this.selectedData.emit(this.selected);
   }
   openModal(){
+     this.lineListing.tableData = [];
+
      this.maintenanceService.getLineLOV().subscribe((data: any) =>{
            for(var lineCount = 0; lineCount < data.line.length; lineCount++){
              this.lineListing.tableData.push(

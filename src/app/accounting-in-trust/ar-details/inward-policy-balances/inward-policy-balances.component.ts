@@ -21,11 +21,11 @@ export class InwardPolicyBalancesComponent implements OnInit {
     checkFlag: true,
     magnifyingGlass: ['soaNo','instNo'],
     pageLength: 10,
-    widths: ["auto", "auto","auto","auto","auto", "auto","auto", "1", "auto", "auto", "auto", "auto", "auto", "auto", "auto","auto"],
     nData: new ARInwdPolBalDetails(null, null, null, null, null, null, null, null, null, null, null,null,null,null,null,null,),
     total: [null,null,null,null,null,null, null, null, 'Total', 'premium', 'riComm', 'charges', 'netDue', 'payments', 'balance', 'overdueInterest'],
     genericBtn: 'Save',
-    opts: [{ selector: 'type', vals: ["Payment", "Refund"] }]
+    opts: [{ selector: 'type', vals: ["Payment", "Refund"] }],
+    widths: [180, 180, 120, 50, 100, 120, 120, 30, 85, 120, 120,120,120,120,120,120]
   };
 
   constructor(private titleService: Title, private accountingService: AccountingService) { }

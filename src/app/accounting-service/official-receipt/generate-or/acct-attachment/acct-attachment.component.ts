@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { AccServiceAttachment } from '@app/_models';
 import { AccountingService } from '../../../../_services/accounting.service';
 @Component({
@@ -21,9 +21,14 @@ export class AcctAttachmentComponent implements OnInit {
     widths:['auto','auto',80]
   }
 
+  @Input() paymentType: string = "type";
+
   constructor( private accountingService: AccountingService) { }
 
   ngOnInit() {
+      if(this.paymentType == null){
+        this.paymentType = "";
+      }
   }
 
 }

@@ -85,12 +85,8 @@
 										<div class="col-sm" style="padding-left : 0px ! important; padding-right : 0px ! important">
 											<div class="input-group">
 												<select class="form-control form-control-sm cust-sm col-sm-8">
-													<option>user1</option>
-													<option>user2</option>
-													<option>user3</option>
-													<option>user1</option>
-													<option>user2</option>
-													<option>user3</option>
+													<option>CPI</option>
+													<option>PMMSC-Admin</option>
 												</select>
 												<button class="cust">Approve</button>
 											</div>
@@ -107,8 +103,8 @@
 								<div class="custom-row-inline-inset">
 									<div class="input-group" style="margin-bottom : -14px ! important; margin-top : 18px ! important">
 										<label class="form-control-sm" for="xx">Report</label>
-										<select class="form-control form-control-sm cust-sm" style="margin-left: 30px" appRequired>
-											<option>QUOTER009A</option>
+										<select [(ngModel)]="selectedReport" class="form-control form-control-sm cust-sm" style="margin-left: 30px" appRequired>
+											<option *ngFor="let report of reportsList" [value]="report.val">{{report.desc}}</option>
 										</select>
 									</div>
 									<div class="input-group" style="margin-bottom : -14px ! important">

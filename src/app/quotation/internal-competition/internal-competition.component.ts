@@ -20,6 +20,7 @@ export class InternalCompetitionComponent implements OnInit, OnDestroy {
         riskName: '',
         insuredDesc: ''
     }
+    resultMessage: string = "";
     Description: string = "";
     adviceLOVRow : number;
     attentionLOVRow: number;
@@ -136,6 +137,8 @@ export class InternalCompetitionComponent implements OnInit, OnDestroy {
       }
       if(this.savedData.length < 1){
         //modal about no changes were made
+        this.resultMessage = "No changes were made.";
+        $('#successModalBtn').trigger('click');
       }
       else{
         this.quotationService.saveQuoteCompetition(this.savedData).subscribe((data: any) => {
@@ -144,6 +147,7 @@ export class InternalCompetitionComponent implements OnInit, OnDestroy {
               console.log(data);
             }
             else{
+              this.resultMessage = "Successfully saved!";
                $('#successModalBtn').trigger('click');
             }
         });

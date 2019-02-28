@@ -20,22 +20,8 @@ p{
 }
 
 .cust-btn-disabled {
-    font-size: 11px;
-    font-weight: bold;
-    color: white !important;
-    text-align: center;
-    text-decoration: none !important;
-    outline: none !important;
-    border-style: none;
-    border: 1px solid gray;
-    z-index: 9999 !important;
-    border-radius: 2px;
-    background: linear-gradient(to bottom, #d3d3d3 0%, #999999 100%);
-    min-width: 60px;
-    max-width: 120px;
-    padding-top: 5px;
-    padding-bottom: 2px;
-    margin-right: 3px;
+    background: gray !important;
+    cursor: context-menu;
 }
 
 .cust-btn {

@@ -16,6 +16,14 @@ export class QuotationComponent implements OnInit {
 	docTitle: string = "";
 	sub: any;
 	line: string;
+	selectedReport: string;
+	reportsList: any[] = [
+								{val:"QUOTER009A", desc:"Quotation Letter" },
+								{val:"QUOTER009B", desc:"RI Preparedness to Support Letter and RI Confirmation of Acceptance Letter" },
+								{val:"QUOTER009C", desc:"Risk Not Commensurate" },
+								{val:"QUOTER009D", desc:"Treaty Exclusion Letter" },
+								{val:"QUOTER007", desc:"Advice on Internal Competition" },
+					     ]
 
 	quoteInfo = {
 		quoteId: '',
@@ -50,7 +58,8 @@ export class QuotationComponent implements OnInit {
   	}
 
   	showPrintPreview() {
-  		window.open('http://localhost:8888/api/util-service/generateReport/' + this.quoteInfo.quoteId, '_blank');
+
+  		window.open('http://localhost:8888/api/util-service/generateReport?reportName=' + this.selectedReport + '&quoteId=' + this.quoteInfo.quoteId, '_blank');
   	}
 
 	// setDocumentTitle(event) {
