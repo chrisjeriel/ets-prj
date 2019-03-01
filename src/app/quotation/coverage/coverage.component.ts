@@ -116,8 +116,11 @@ export class CoverageComponent implements OnInit {
     } 
 
     this.riskId = this.quotationInfo.riskId;
+    this.coverageData.currencyCd = this.quotationInfo.currencyCd;
+    this.coverageData.currencyRt = this.quotationInfo.currencyRt;
 
     this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
+      console.log(data)
       this.table.refreshTable();
         if(data.quotation.project !== null){
           this.coverageData = data.quotation.project.coverage;
@@ -147,7 +150,7 @@ export class CoverageComponent implements OnInit {
             $('input[appCurrency]').focus();
             $('input[appCurrency]').blur();
           }, 0)
-          
+
       this.table.refreshTable();
     });
 
