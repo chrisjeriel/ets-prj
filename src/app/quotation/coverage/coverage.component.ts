@@ -110,14 +110,16 @@ export class CoverageComponent implements OnInit {
     }
     //neco end
 
+    
+
     this.quoteNo = this.quotationInfo.quotationNo.split(/[-]/g)[0]
     for (var i = 1; i < this.quotationInfo.quotationNo.split(/[-]/g).length; i++) {
       this.quoteNo += '-' + parseInt(this.quotationInfo.quotationNo.split(/[-]/g)[i]);
     } 
 
+
     this.riskId = this.quotationInfo.riskId;
-    this.coverageData.currencyCd = this.quotationInfo.currencyCd;
-    this.coverageData.currencyRt = this.quotationInfo.currencyRt;
+
 
     this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
       console.log(data)
@@ -154,8 +156,10 @@ export class CoverageComponent implements OnInit {
       this.table.refreshTable();
     });
 
-    this.multiSelectHeaderTxt = "COVERAGE";
-    this.multiSelectData.push("zero", "one", "two", "three", "four");
+      this.coverageData.currencyCd = this.quotationInfo.currencyCd;
+      this.coverageData.currencyRt = this.quotationInfo.currencyRt;
+    console.log(this.coverageData.currencyCd)
+    
 
     // this.quotationCoverageInfo = new QuotationCoverageInfo(null, null, null, null, null, null, null, null);
     // this.quotationCoverageInfo.quotationNo = "MOCK DATA";
