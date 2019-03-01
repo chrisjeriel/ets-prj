@@ -63,8 +63,8 @@
                                             <input type="text" class="form-control form-control-sm col-sm cap-input col-sm-1" ngbTooltip="HC Prefix" value="HC" readonly tabindex="-1">
                                             <input type="text" class="form-control form-control-sm col-sm cap-input col-sm-1 warn" ngbTooltip="Line" style="margin-left: 2px;" maxlength="3" appRequired  #hcline [(ngModel)]="hcLine" readonly tabindex="-1">
                                             <input type="text" class="form-control form-control-sm col-sm cap-input col-sm-1 warn" ngbTooltip="Year" style="margin-left: 2px;" maxlength="4" appRequired #hcyear numbers-only  readonly tabindex="-1" [(ngModel)]="hcYear">
-                                            <input type="text" class="form-control form-control-sm col-sm col-sm-2 warn text-right" style="margin-left: 2px;" ngbTooltip="Sequence No" maxlength="5" appRequired  #hcseqNo numbers-only [(ngModel)]="hcSeqNo" numbers-only>
-                                            <input type="text" class="form-control form-control-sm col-sm col-sm-1 warn text-right" style="margin-left: 2px;"ngbTooltip="Revision No" maxlength="2"  appRequired #hcrevNo numbers-only [(ngModel)]="hcRevNo" numbers-only>    
+                                            <input type="text" class="form-control form-control-sm col-sm col-sm-2  text-right" style="margin-left: 2px;" ngbTooltip="Sequence No" maxlength="5"   #hcseqNo numbers-only [(ngModel)]="hcSeqNo" numbers-only readonly>
+                                            <input type="text" class="form-control form-control-sm col-sm col-sm-1  text-right" style="margin-left: 2px;"ngbTooltip="Revision No" maxlength="2"   #hcrevNo numbers-only [(ngModel)]="hcRevNo" numbers-only readonly>    
 
                                         </div>
                                          <div class="input-group" style="margin-bottom: -14px !important;">
@@ -80,7 +80,7 @@
                                             <input type="date" class="form-control form-control-sm cust-sm col-sm-7" #reqDate [(ngModel)]="holdCover.reqDate.split('T')[0]">
                                         </div>
                                         <div class="input-group" style="margin-bottom: -14px !important;">
-                                            <label class="form-control-sm col-sm-3" style="margin-left: -62px !important;  margin-right: 1px !important;">Co. Ref. Hold Cover No</label>
+                                            <label class="form-control-sm col-sm-2" style="padding-left: 0px !important;" >Co. Ref. Hold Cover No</label>
                                             <input type="text" class="form-control form-control-sm" #coRef [(ngModel)]="holdCover.compRefHoldCovNo">
                                             <label class="form-control-sm col-sm-2">Prepared By</label>
                                             <input type="text" class="form-control form-control-sm col-sm-7" #prepBy [(ngModel)]="holdCover.preparedBy" readonly tabindex="-1">

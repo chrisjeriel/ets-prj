@@ -141,7 +141,9 @@ export class GeneralInfoComponent implements OnInit {
 		quoteId: '',
 		quotationNo: '',
 		riskName: '',
-		insuredDesc: ''
+		insuredDesc: '',
+		currencyCd: '',
+		currencyRt:''
 	}
 	loading:boolean = true;
 
@@ -176,6 +178,7 @@ export class GeneralInfoComponent implements OnInit {
 				});
 
 			this.quotationService.getQuoteGenInfo('', this.plainQuotationNo(this.quotationNo)).subscribe(data => {
+				console.log(data)
 				this.loading = false;
 				if(data['quotationGeneralInfo'] != null) {
 					this.genInfoData = data['quotationGeneralInfo'];						
@@ -316,6 +319,7 @@ export class GeneralInfoComponent implements OnInit {
 		this.genInfoData.currencyCd = data.currencyAbbr;
 		this.genInfoData.currencyRt = data.currencyRt;
 		this.focusBlur();
+
 	}
 
 
@@ -549,7 +553,9 @@ export class GeneralInfoComponent implements OnInit {
   			quotationNo: this.genInfoData.quotationNo,
   			riskName: this.project.riskName,
   			insuredDesc: this.genInfoData.insuredDesc,
-  			riskId: this.project.riskId //added by paul
+  			riskId: this.project.riskId, //added by paul
+  			currencyCd: this.genInfoData.currencyCd,
+  			currencyRt: this.genInfoData.currencyRt,
   		});		
   	}
 

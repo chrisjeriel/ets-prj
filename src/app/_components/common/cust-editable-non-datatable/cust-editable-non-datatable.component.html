@@ -22,8 +22,16 @@ span.ui-column-resizer {
     <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="m-auto" style="margin-bottom: 8px !important">
 </div>
 
+<div class="row  text-center" *ngIf="failed" style=" display: flow-root">
+    <img src="app/resources/images/network-fail.png" alt="loading.gif" id="loading" class="" style="height: 50px">
+    Network Error!
+    <div class="cust-btn-container">
+        <button (click)="retrieveFromSub()" class="cust-btn">Retry</button>
+    </div>
+</div>
 
-<div id="cust-table-container" [style.display]="!loadingFlag? 'block':'none'" style="position: relative;">
+
+<div id="cust-table-container" [style.display]="!loadingFlag && !failed ? 'block':'none'" style="position: relative;">
     <div class="new-btn-container" style="position: absolute; margin-top:-28px;" [style.width]="(passData.searchFlag || ctrlR.innerHTML.trim()) ? '100%' : 'auto'" >
 
         <button *ngIf="passData.addFlag" class="cust-btn" (click)="passData.nData == null ? addClicked(event) : onClickAdd()"><a>Add</a></button>
