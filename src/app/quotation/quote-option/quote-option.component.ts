@@ -254,10 +254,10 @@ export class QuoteOptionComponent implements OnInit {
            if (data['quotation'] == null || data['quotation'] == undefined ){ 
            } else {
                var optionRecords = data['quotation'].optionsList; 
-
-                for(let rec of optionRecords){
+                this.optionsData.tableData = optionRecords;
+                /*for(let rec of optionRecords){
                     this.optionsData.tableData.push(rec);                
-                }
+                }*/
 
                 this.optionsData.tableData = data['quotation'].optionsList.sort(function(a,b){return a.optionId-b.optionId})
 
@@ -272,11 +272,11 @@ export class QuoteOptionComponent implements OnInit {
 
 
                 var otherRatesRecords = data['quotation'].otherRatesList;
-
-                for(let rec of otherRatesRecords){
+                this.otherRatesData.tableData = otherRatesRecords;
+                /*for(let rec of otherRatesRecords){
                   this.otherRatesData.tableData.push(rec
                     );                
-                }
+                }*/
                 
                 
            }
@@ -366,7 +366,9 @@ saveData(){
       }
     }
 
-    this.quotationService.saveQuoteOption(JSON.stringify(params)).subscribe((data: any) => {});
+    this.quotationService.saveQuoteOption(JSON.stringify(params)).subscribe((data: any) => {
+      this.getQuoteOptions();
+    });
 }
 
 saveQuoteDeductibles(){
