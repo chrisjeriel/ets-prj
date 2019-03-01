@@ -32,6 +32,8 @@ export class GeneralInfoComponent implements OnInit {
 	lineClassDesc: string;
 	ocChecked: boolean = false;
 	internalCompFlag: boolean = false;
+	saveBtnClicked: boolean = false;
+
 	@Input() inquiryFlag: boolean = false;
 
 	project: any = {
@@ -380,7 +382,8 @@ export class GeneralInfoComponent implements OnInit {
 		return new Date(arr[0] + '-' + pad(arr[1]) + '-' + pad(arr[2])).toISOString();   
 	}
 
-	saveQuoteGenInfo() {		
+	saveQuoteGenInfo() {
+		this.saveBtnClicked = true;
 		if(this.validate(this.prepareParam())){
 			this.focusBlur();
 
@@ -597,13 +600,13 @@ export class GeneralInfoComponent implements OnInit {
   	}
 
   	focusBlur() {
-  		setTimeout(()=>{
-  			$('.req').focus();
-			$('.req').blur();
-  		},0)
-  		
+  		if(this.saveBtnClicked){
+  			setTimeout(()=>{
+  				$('.req').focus();
+				$('.req').blur();
+  			},0)  
+  		}
   	}
-
 }
 export interface SelectRequestMode {
 	name: string;
