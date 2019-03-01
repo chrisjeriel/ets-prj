@@ -73,7 +73,7 @@
 						<div class="col-sm-6" style="padding-right : 10px ! important;">
 							<fieldset class="scheduler-border" style="padding-left : 20px ! important; padding-right : 10px ! important">
 								<div class="custom-row-inline-inset">
-									<div class="input-group" style="margin-top : 45px ! important">
+									<div class="input-group" style="margin-top : 65px ! important">
 										<div class="col-sm-8" style="padding-left : 0px ! important; padding-right : 0px ! important;">
 											<div class="input-group" style="margin-bottom : -8px ! important">
 												<label class="form-control-sm" for="xx" style="padding-left: 0px">Status</label>
@@ -104,29 +104,41 @@
 								<div class="custom-row-inline-inset">
 									<div class="input-group" style="margin-bottom : -14px ! important; margin-top : 18px ! important">
 										<label class="form-control-sm" for="xx">Report</label>
-										<select [(ngModel)]="selectedReport" class="form-control form-control-sm cust-sm" style="margin-left: 30px" appRequired>
+										<select [(ngModel)]="selectedReport" class="form-control form-control-sm cust-sm" style="margin-left: 33px" appRequired>
 											<option *ngFor="let report of reportsList" [value]="report.val">{{report.desc}}</option>
 										</select>
 									</div>
 									<div class="input-group" style="margin-bottom : -14px ! important">
-										<label class="form-control-sm" for="xx">No. of Copies</label>
-										<input type="text" id="xx" class="form-control form-control-sm" appRequired>
-									</div>
-									<div class="input-group" style="margin-bottom : -14px ! important">
 										<label class="form-control-sm" for="xx">Destination</label>
-										<select class="form-control form-control-sm cust-sm" style="margin-left: 10px">
+										<select class="form-control form-control-sm cust-sm" style="margin-left: 11px">
 											<option>Screen</option>
 											<option>PDF</option>
 											<option>Printer</option>
 											<option>Google Docs</option>
 										</select>
 									</div>
-									<div class="input-group">
+									<div class="input-group" style="margin-bottom : -14px ! important">
 										<label class="form-control-sm" for="xx">Printer Name</label>
 										<select class="form-control form-control-sm cust-sm" style="margin-left: 2px">
 											<option>No printer available.</option>
 										</select>
 									</div>
+									<div class="input-group" style="margin-bottom : -14px ! important">
+										<label class="form-control-sm" for="xx">No. of Copies</label>
+										<input type="text" id="xx" class="form-control form-control-sm" appRequired style="margin-left: 2px !important;">
+									</div>
+									<div class="input-group" style="margin-bottom : -14px ! important">
+										<label class="form-control-sm" for="xx">Option No</label>
+										<input type="text" id="xx" class="form-control form-control-sm cust-sm" appRequired style="    margin-left: 16px;">
+										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+									</div>
+									<div class="input-group" style="margin-bottom : -14px ! important">
+										<label class="form-control-sm" for="xx">Wordings</label>
+										<input type="text" id="xx" class="form-control form-control-sm" appRequired style="    margin-left: 19px;">
+										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+									</div>
+									
+									
 								</div>
 							</fieldset>
 						</div>

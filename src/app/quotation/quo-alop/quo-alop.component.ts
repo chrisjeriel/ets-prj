@@ -149,20 +149,20 @@ export class QuoAlopComponent implements OnInit {
 
     openAlopItem(){
       this.quotationService.getALOPItemInfos(this.quoteNo,this.quoteId).subscribe((data: any) => {
-        this.table.refreshTable();
+        
             this.itemInfoData.nData.itemNo = data.quotation[0] === undefined ? 1:data.quotation[0].alop.alopItemList.length + 1; 
             for (var i=0; i < data.quotation[0].alop.alopItemList.length; i++) {
               this.itemInfoData.tableData.push(data.quotation[0].alop.alopItemList[i]);
             }
             this.itemInfoData.tableData = this.itemInfoData.tableData.sort(function(a,b){return a.itemNo - b.itemNo})
             
-            
+            this.table.refreshTable();
         });
       while(this.itemInfoData.tableData.length>0){
         this.itemInfoData.tableData.pop();
       }
       $('#alopItemModal #modalBtn').trigger('click');
-      
+       
     }
 
     saveAlopItem(){
