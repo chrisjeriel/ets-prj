@@ -33,7 +33,7 @@ export class InternalCompetitionComponent implements OnInit, OnDestroy {
         nData: new IntCompAdvInfo(null, null, null, null, null, null, null, new Date(), null, new Date()),
         opts: [{
             selector: 'option',
-            vals: ['option1', 'option2', 'option3', 'option4', 'option5'],
+            vals: ['Email', 'Phone', 'Fax'],
         }],
         searchFlag: true,
         paginateFlag: true,
