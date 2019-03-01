@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter, Renderer } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from '@app/app.component';
+import { retry, catchError } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
 
 import { DummyInfo } from '../../../_models';
 
@@ -101,6 +103,8 @@ export class CustEditableNonDatatableComponent implements OnInit {
         config.autoClose = false;
     }
     loadingFlag: boolean = true;
+    @Output() retrieveData: EventEmitter<any> = new EventEmitter();
+    failed: boolean = false;
 
     refreshTable(initLoad?){
         if(initLoad === undefined){
@@ -176,7 +180,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
             this.passData.filterObj[filt].search='';
             this.passData.filterObj[filt].enabled=false;
         }
-
+        this.retrieveFromSub();
         // this.addFiller();
     }
 
@@ -395,6 +399,16 @@ export class CustEditableNonDatatableComponent implements OnInit {
             data[key] = event.target.checked;
         else
             data[key] = event.target.checked ? 'Y' : 'N';
+    }
+
+    retrieveFromSub(){
+        this.loadingFlag =true;
+        this.failed = false;
+        if(this.passData.observable !== undefined){
+            this.passData.observable.subscribe(
+                (data:any)=>{this.retrieveData.emit(data);this.failed=false;this.loadingFlag=false},
+                (err) => {console.log(err);this.failed=true;this.loadingFlag=false});
+        }
     }
  
 }

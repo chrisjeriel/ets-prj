@@ -64,7 +64,7 @@ export class QuoAlopComponent implements OnInit {
           createUser: "Paul",
           description: null,
           importance: null,
-          itemNo: null,
+          itemNo: 1,
           lossMin: null,
           quantity: null,
           updateDate: [0,0,0],
@@ -149,14 +149,15 @@ export class QuoAlopComponent implements OnInit {
 
     openAlopItem(){
       this.quotationService.getALOPItemInfos(this.quoteNo,this.quoteId).subscribe((data: any) => {
-        
-            this.itemInfoData.nData.itemNo = data.quotation[0] === undefined ? 1:data.quotation[0].alop.alopItemList.length + 1; 
-            for (var i=0; i < data.quotation[0].alop.alopItemList.length; i++) {
-              this.itemInfoData.tableData.push(data.quotation[0].alop.alopItemList[i]);
+            if(data.quotation[0] !==undefined){
+              this.itemInfoData.nData.itemNo = data.quotation[0] === undefined ? 1:data.quotation[0].alop.alopItemList.length + 1; 
+              for (var i=0; i < data.quotation[0].alop.alopItemList.length; i++) {
+                this.itemInfoData.tableData.push(data.quotation[0].alop.alopItemList[i]);
+              }
+              this.itemInfoData.tableData = this.itemInfoData.tableData.sort(function(a,b){return a.itemNo - b.itemNo})
             }
-            this.itemInfoData.tableData = this.itemInfoData.tableData.sort(function(a,b){return a.itemNo - b.itemNo})
-            
             this.table.refreshTable();
+            
         });
       while(this.itemInfoData.tableData.length>0){
         this.itemInfoData.tableData.pop();
@@ -237,7 +238,7 @@ export class QuoAlopComponent implements OnInit {
 
 
     this.itemInfoData.tableData=data;
-    this.itemInfoData.nData.itemNo = this.itemInfoData.tableData.length + 1; 
+    this.itemInfoData.nData.itemNo =  this.itemInfoData.tableData.length + 1 ; 
     this.table.refreshTable();
     console.log(this.itemInfoData.nData.itemNo);
   }

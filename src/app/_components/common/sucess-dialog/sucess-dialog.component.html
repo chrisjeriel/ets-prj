@@ -1,19 +1,30 @@
-<ng-template #content>
+<!-- <ng-template #content>
     <div class="modal-header">
-        <span class="modal-title" id="modal-basic-title" style="height: 18px">&nbsp;</span>
+        <span class="modal-title" id="modal-basic-title" style="height: 18px">Success</span>
     </div>
     <div class="modal-body py-3" style="width: 250px">
-        <div class="container align-middle text-center">
-        	<div class="p-0 m-0">
-        		<i class="fa fa-check-circle fa-2x d-inline-block align-middle"></i>
-        		<p class="d-inline-block align-middle mb-0 ml-1" style="font-size: 12px">{{message}}</p>
-        	</div>
-        </div>		
+        <div class="container-flex text-center">
+        	<span class="fa fa-check-circle fa-3x" style="vertical-align: middle;"></span>
+            <span style="vertical-align: middle; margin-left: 15px;">{{message}}</span>
+        </div>
     </div>
-    <div class="modal-footer p-2 pb-3">
-    	<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+    <div class="modal-footer">
+    	<div footer class="d-flex justify-content-center w-100">                    
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
+    </div>
     </div>
 </ng-template>
-
+ -->
 <button id="successModalBtn" class="cust-btn d-none" (click)="open(content)"><a>{{ btnTitle }}</a></button>
 
+
+<app-modal class="d-none" id="successMdl">
+    <div header>Success</div>
+    <div body class="container-flex text-center">
+        <span class="fa fa-check-circle fa-3x" style="vertical-align: middle;"></span>
+        <span style="vertical-align: middle; margin-left: 15px;">{{message}}</span>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">                    
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
+    </div>
+</app-modal>
