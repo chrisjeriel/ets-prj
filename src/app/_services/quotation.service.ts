@@ -350,24 +350,52 @@ export class QuotationService {
     }
 
     getSelectedQuote(quoteNo:string){
-        const params = new HttpParams()
-            .set('quotationNo',quoteNo)
-            .set('cessionDesc', '')
-            .set('lineClassCdDesc', '')
-            .set('status','')
-            .set('cedingName','')
-            .set('principalName','')
-            .set('contractorName','')
-            .set('insuredDesc','')
-            .set('riskName','')
-            .set('objectDesc','')
-            .set('site','')
-            .set('currencyCd','')
-            .set('issueDate','')
-            .set('expiryDate','')
-            .set('reqBy','')
-            .set('createUser','');
-        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteListing', {params});
+        // const params = new HttpParams()
+        //     .set('quotationNo',quoteNo)
+        //     .set('cessionDesc', '')
+        //     .set('lineClassCdDesc', '')
+        //     .set('status','')
+        //     .set('cedingName','')
+        //     .set('principalName','')
+        //     .set('contractorName','')
+        //     .set('insuredDesc','')
+        //     .set('riskName','')
+        //     .set('objectDesc','')
+        //     .set('site','')
+        //     .set('currencyCd','')
+        //     .set('issueDate','')
+        //     .set('expiryDate','')
+        //     .set('reqBy','')
+        //     .set('createUser','');
+
+            let header : any = {
+                headers: new HttpHeaders({
+                    'Content-Type': 'application/json',
+                    'Cache-Control': 'no-cache, no-store, must-revalidate',
+                    'Pragma': 'no-cache',
+                    'Expires': '0'
+                }),
+                params : new HttpParams()
+                    .set('quotationNo',quoteNo)
+                    .set('cessionDesc', '')
+                    .set('lineClassCdDesc', '')
+                    .set('status','')
+                    .set('cedingName','')
+                    .set('principalName','')
+                    .set('contractorName','')
+                    .set('insuredDesc','')
+                    .set('riskName','')
+                    .set('objectDesc','')
+                    .set('site','')
+                    .set('currencyCd','')
+                    .set('issueDate','')
+                    .set('expiryDate','')
+                    .set('reqBy','')
+                    .set('createUser','')
+            };
+
+        // return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteListing', {params});
+        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteListing', header);
     }
 
     getQuoteOptions(quoteId?:string,quotationNo?:string) {

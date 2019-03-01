@@ -1,5 +1,5 @@
 export class OpenCoverProcessing {
-	quotationNo: string;
+	openQuotationNo: string;
 	cessionDesc: string;
 	lineClassCdDesc: string;
 	status: string;
@@ -17,8 +17,8 @@ export class OpenCoverProcessing {
 	reqBy: string;
 	createUser: string;
 
-	constructor(quotationNo: string,cessionDesc: string,lineClassCdDesc: string,status: string,cedingName: string,principalName: string,contractorName: string,insuredDesc: string,riskName: string,objectDesc: string,site: string,currencyCd: string,issueDate: Date,expiryDate: Date,reqBy: string,createUser: string) {
-		this.quotationNo = quotationNo;
+	constructor(openQuotationNo: string,cessionDesc: string,lineClassCdDesc: string,status: string,cedingName: string,principalName: string,contractorName: string,insuredDesc: string,riskName: string,objectDesc: string,site: string,currencyCd: string,issueDate: Date,expiryDate: Date,reqBy: string,createUser: string) {
+		this.openQuotationNo = openQuotationNo;
 		this.cessionDesc = cessionDesc;
 		this.lineClassCdDesc = lineClassCdDesc;
 		this.status = status;

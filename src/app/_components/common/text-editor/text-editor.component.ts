@@ -10,6 +10,7 @@ export class TextEditorComponent implements OnInit {
 
   @Input() editorContent: any = null;
   @Input() editorPlaceholder: any = null;
+  @Input() edtrOpnrPos: number = 1;
   @Output() fetchContent: EventEmitter<any> = new EventEmitter();
 
   constructor(private modalService: NgbModal) { }
@@ -25,4 +26,5 @@ export class TextEditorComponent implements OnInit {
   	this.fetchContent.next(this.editorContent);
   	this.modalService.dismissAll();
   }
+
 }

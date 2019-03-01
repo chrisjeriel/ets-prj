@@ -32,6 +32,8 @@ export class GeneralInfoComponent implements OnInit {
 	lineClassDesc: string;
 	ocChecked: boolean = false;
 	internalCompFlag: boolean = false;
+	saveBtnClicked: boolean = false;
+
 	@Input() inquiryFlag: boolean = false;
 
 	project: any = {
@@ -139,7 +141,9 @@ export class GeneralInfoComponent implements OnInit {
 		quoteId: '',
 		quotationNo: '',
 		riskName: '',
-		insuredDesc: ''
+		insuredDesc: '',
+		currencyCd: '',
+		currencyRt:''
 	}
 	loading:boolean = true;
 
@@ -174,6 +178,7 @@ export class GeneralInfoComponent implements OnInit {
 				});
 
 			this.quotationService.getQuoteGenInfo('', this.plainQuotationNo(this.quotationNo)).subscribe(data => {
+				console.log(data)
 				this.loading = false;
 				if(data['quotationGeneralInfo'] != null) {
 					this.genInfoData = data['quotationGeneralInfo'];						
@@ -314,6 +319,7 @@ export class GeneralInfoComponent implements OnInit {
 		this.genInfoData.currencyCd = data.currencyAbbr;
 		this.genInfoData.currencyRt = data.currencyRt;
 		this.focusBlur();
+
 	}
 
 
@@ -376,7 +382,8 @@ export class GeneralInfoComponent implements OnInit {
 		return new Date(arr[0] + '-' + pad(arr[1]) + '-' + pad(arr[2])).toISOString();   
 	}
 
-	saveQuoteGenInfo() {		
+	saveQuoteGenInfo() {
+		this.saveBtnClicked = true;
 		if(this.validate(this.prepareParam())){
 			this.focusBlur();
 
@@ -546,7 +553,9 @@ export class GeneralInfoComponent implements OnInit {
   			quotationNo: this.genInfoData.quotationNo,
   			riskName: this.project.riskName,
   			insuredDesc: this.genInfoData.insuredDesc,
-  			riskId: this.project.riskId //added by paul
+  			riskId: this.project.riskId, //added by paul
+  			currencyCd: this.genInfoData.currencyCd,
+  			currencyRt: this.genInfoData.currencyRt,
   		});		
   	}
 
@@ -591,13 +600,13 @@ export class GeneralInfoComponent implements OnInit {
   	}
 
   	focusBlur() {
-  		setTimeout(()=>{
-  			$('.req').focus();
-			$('.req').blur();
-  		},0)
-  		
+  		if(this.saveBtnClicked){
+  			setTimeout(()=>{
+  				$('.req').focus();
+				$('.req').blur();
+  			},0)  
+  		}
   	}
-
 }
 export interface SelectRequestMode {
 	name: string;

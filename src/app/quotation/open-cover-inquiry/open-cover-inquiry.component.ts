@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { QuotationService } from '../../_services';
-import { OpenCoverList } from '@app/_models';
+import { OpenCoverList, OpenCoverProcessing } from '@app/_models';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-
+import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 
 @Component({
   selector: 'app-open-cover-inquiry',
@@ -12,19 +12,16 @@ import { Router } from '@angular/router';
 })
 export class OpenCoverInquiryComponent implements OnInit {
 
+  @ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
+
   line: string = "";
   selectedArr: any = [];
   ocLine: string = "";
   ocTypeOfCession = "";
 
   passDataOpenCoverInquiry: any = {
-    tableData: [
-      ["OC-CAR-2018-00088-0099", "Direct", "CAR Wet Risks", "Concluded", "Malayan", "5K Builders", "ABE International Corp", "5K Builders and ABE International Corp", "Direct", "CAR Wet Risks", "Region IV, Laguna, Calamba", "CAR-2018-00001-099-0001-000", "PHP"],
-      ["OC-CAR-2018-00089-0078", "Retrocession", "CAR Wet Risks", "Concluded", "FLT Prime", "5K Builders", "ABE International Corp", "5K Builders and ABE International Corp", "Retrocession", "CAR Wet Risks", "Region IV, Laguna, Calamba", "CAR-2018-00001-099-0001-000", "PHP"],
-      ["OC-EAR-2018-00089-0078", "Retrocession", "CAR Wet Risks", "Concluded", "FLT Prime", "5K Builders", "ABE International Corp", "5K Builders and ABE International Corp", "Retrocession", "CAR Wet Risks", "Region IV, Laguna, Calamba", "CAR-2018-00001-099-0001-000", "PHP"],
-      ["OC-EAR-2018-00089-0078", "Retrocession", "CAR Wet Risks", "Concluded", "FLT Prime", "5K Builders", "ABE International Corp", "5K Builders and ABE International Corp", "Retrocession", "CAR Wet Risks", "Region IV, Laguna, Calamba", "CAR-2018-00001-099-0001-000", "PHP"],
-    ],
-    tHeader: ["Open Cover Quoation No", "Type of Cession", "Line Class", "Status", "Ceding Company", "Principal", "Contractor", "Insured", "Risk", "Object", "Site", "Policy No", "Currency"],
+    tableData: [],
+    tHeader: ["Open Cover Quotation No", "Type of Cession", "Line Class", "Status", "Ceding Company", "Principal", "Contractor", "Insured", "Risk", "Object", "Site", "Policy No", "Currency"],
     dataTypes: ["text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text"],
     colSize: ['100%', '100%', '100%', '100%', '100%', '100%', '100%', '100%', '100%', '100%', '100%', '100%', '100%'],
     pageLength: 10,
@@ -35,17 +32,17 @@ export class OpenCoverInquiryComponent implements OnInit {
     pageID: 1,
     filters: [
       {
-        key: 'ocQuotationNo',
+        key: 'quotationNo',
         title: 'OC Quo No',
         dataType: 'text'
       },
       {
-        key: 'typeOfCession',
+        key: 'cessionDesc',
         title: 'Type Of Cession',
         dataType: 'text'
       },
       {
-        key: 'lineClass',
+        key: 'lineClassCdDesc',
         title: 'Line Class',
         dataType: 'text'
       },
@@ -55,32 +52,32 @@ export class OpenCoverInquiryComponent implements OnInit {
         dataType: 'text'
       },
       {
-        key: 'cedingCompany',
+        key: 'cedingName',
         title: 'Ceding Co.',
         dataType: 'text'
       },
       {
-        key: 'principal',
+        key: 'principalName',
         title: 'Principal',
         dataType: 'text'
       },
       {
-        key: 'contractor',
+        key: 'contractorName',
         title: 'Contractor',
         dataType: 'text'
       },
       {
-        key: 'insured',
+        key: 'insuredDesc',
         title: 'Insured',
         dataType: 'text'
       },
       {
-        key: 'risk',
+        key: 'riskName',
         title: 'Risk',
         dataType: 'text'
       },
       {
-        key: 'object',
+        key: 'objectDesc',
         title: 'Object',
         dataType: 'text'
       },
@@ -95,17 +92,48 @@ export class OpenCoverInquiryComponent implements OnInit {
         dataType: 'text'
       },
       {
-        key: 'currency',
+        key: 'currencyCd',
         title: 'Currency',
         dataType: 'text'
       },
-    ]
+    ],
+    keys: ['openQuotationNo','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','insuredDesc','riskName','objectDesc','site','openPolicyNo','currencyCd'],
   };
 
-  constructor(private titleService: Title, private router: Router) { }
+  records: any[] = null;
+  selected: any = null;
+
+  constructor(private titleService: Title, private router: Router, private quotationService: QuotationService) { }
 
   ngOnInit() {
     this.titleService.setTitle("Quo | Open Cover Inquiry");
+
+    this.quotationService.getOpenCoverProcessingData().subscribe(data => {
+      this.records = data['quotationOcList'];
+
+      for(let rec of this.records){
+        this.passDataOpenCoverInquiry.tableData.push(
+          {
+            openQuotationNo: rec.openQuotationNo,
+            cessionDesc: rec.cessionDesc,
+            lineClassCdDesc: rec.lineClassCdDesc,
+            status: rec.status,
+            cedingName: rec.cedingName,
+            principalName: rec.principalName,
+            contractorName: rec.contractorName,
+            insuredDesc: rec.insuredDesc,
+            riskName: (rec.projectOc == null) ? '' : rec.projectOc.riskName,
+            objectDesc: (rec.projectOc == null) ? '' : rec.projectOc.objectDesc,
+            site: (rec.projectOc == null) ? '' : rec.projectOc.site,
+            openPolicyNo: rec.openPolicyNo,
+            currencyCd: rec.currencyCd,
+          }
+        );
+
+      }
+
+      this.table.refreshTable();
+    });
   }
 
   onRowDblClick(event) {
@@ -124,10 +152,31 @@ export class OpenCoverInquiryComponent implements OnInit {
 
   }
 
+  onRowClick(event) {
+    var sel = event.openQuotationNo;
+
+    for(let rec of this.records){
+      if(rec.openQuotationNo === sel){
+        this.selected = rec;
+        this.selected.issueDate = (this.selected.issueDate == null) ? '' : this.dateParser(this.selected.issueDate);
+        this.selected.expiryDate = (this.selected.expiryDate == null) ? '' : this.dateParser(this.selected.expiryDate);
+        break;
+      }
+    }
+  }
+
   checkLine(cline: string) {
     if (cline === 'CAR' ||
       cline === 'EAR') {
       this.router.navigate(['/open-cover', { line: cline, typeOfCession: this.ocTypeOfCession, from: "oc-inquiry" }], { skipLocationChange: true });
     }
+  }
+
+  dateParser(arr){
+    if(Array.isArray(arr)){
+      return new Date(arr[0] + '-' + arr[1] + '-' + arr[2]);  
+    } else {
+      return arr;
+    }    
   }
 }

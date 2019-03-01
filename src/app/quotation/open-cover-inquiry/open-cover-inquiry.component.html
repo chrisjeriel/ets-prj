@@ -3,7 +3,7 @@
   <ngb-tabset>
     <ngb-tab class="ngb-tab" title="Open Cover Inquiry">
       <ng-template ngbTabContent>
-        <app-cust-non-datatable [passData]="passDataOpenCoverInquiry" (rowDblClick)="onRowDblClick($event)"></app-cust-non-datatable>
+        <app-cust-non-datatable [passData]="passDataOpenCoverInquiry" (rowDblClick)="onRowDblClick($event)" (rowClick)="onRowClick($event)"></app-cust-non-datatable>
 
         <br><br>
         <div class="row">
@@ -13,38 +13,38 @@
               <div class="form-row custom-row-inline-inset" style="padding-right: 25px !important; margin-left: -30px !important;">
                 <div class="input-group">
                   <label class="form-control-sm col-sm-3">OC Quotation No</label>
-                  <input type="text" class="form-control form-control-sm cust-sm col-sm">
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.openQuotationNo" readonly>
                   <label class="form-control-sm col-sm-2">Policy No</label>
-                  <input type="text" class="form-control form-control-sm cust-sm col-sm">
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.openPolicyNo" readonly>
                 </div>
                 <div class="input-group">
                   <label class="form-control-sm col-sm-3">Type of Cession</label>
-                  <input type="text" class="form-control form-control-sm cust-sm col-sm">
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.cessionDesc" readonly>
                   <label class="form-control-sm col-sm-2">Line Class</label>
-                  <input type="text" class="form-control form-control-sm cust-sm col-sm">
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.lineClassCdDesc" readonly>
                 </div>
                 <div class="input-group">
                   <label class="form-control-sm col-sm-3">Ceding Company</label>
-                  <input type="text" class="form-control form-control-sm cust-sm col-sm-2">
-                  <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px !important;">
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [ngModel]="selected?.cedingId" readonly>
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px !important;" [ngModel]="selected?.cedingName" readonly>
                 </div>
                 <div class="input-group">
                   <label class="form-control-sm col-sm-3">Quote Date</label>
-                  <input type="text" class="form-control form-control-sm cust-sm col-sm">
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="(selected?.issueDate == '') ? '' : selected?.issueDate | date: 'longDate'" readonly>
                   <label class="form-control-sm col-sm-2">Valid Until</label>
-                  <input type="text" class="form-control form-control-sm cust-sm col-sm">
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="(selected?.expiryDate == '') ? '' :  selected?.expiryDate | date: 'longDate'" readonly>
                 </div>
                 <div class="input-group">
                   <label class="form-control-sm col-sm-3">Requested By</label>
-                  <input type="text" class="form-control form-control-sm cust-sm col-sm">
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.reqBy" readonly>
                   <label class="form-control-sm col-sm-2">Status</label>
-                  <input type="text" class="form-control form-control-sm cust-sm col-sm">
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.status" readonly>
                 </div>
                 <div class="input-group">
                   <label class="form-control-sm col-sm-3">Prepared By</label>
-                  <input type="text" class="form-control form-control-sm cust-sm col-sm">
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.preparedBy" readonly>
                   <label class="form-control-sm col-sm-2">Approved By</label>
-                  <input type="text" class="form-control form-control-sm cust-sm col-sm">
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.approvedBy" readonly>
                 </div>
               </div>
             </fieldset>
@@ -56,31 +56,31 @@
               <div class="form-row custom-row-inline-inset" style="padding-right: 25px !important; margin-left: -70px !important;">
                 <div class="input-group">
                   <label class="form-control-sm col-sm-3">Principal</label>
-                  <input type="text" class="form-control form-control-sm cust-sm col-sm-2">
-                  <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px !important;">
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [ngModel]="selected?.prinId" readonly>
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px !important;" [ngModel]="selected?.principalName" readonly>
                 </div>
                 <div class="input-group">
                   <label class="form-control-sm col-sm-3">Contractor</label>
-                  <input type="text" class="form-control form-control-sm cust-sm col-sm-2">
-                  <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px !important;">
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [ngModel]="selected?.contractorId" readonly>
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px !important;" [ngModel]="selected?.contractorName" readonly>
                 </div>
                 <div class="input-group">
                   <label class="form-control-sm col-sm-3">Insured</label>
-                  <input type="text" class="form-control form-control-sm cust-sm col-sm">
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.insuredDesc" readonly>
                 </div>
                 <div class="input-group">
                   <label class="form-control-sm col-sm-3">Risk</label>
-                  <input type="text" class="form-control form-control-sm cust-sm col-sm">
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.projectOc?.riskName" readonly>
                 </div>
                 <div class="input-group">
                   <label class="form-control-sm col-sm-3">Site</label>
-                  <input type="text" class="form-control form-control-sm cust-sm col-sm">
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.projectOc?.site" readonly>
                 </div>
                 <div class="input-group">
                   <label class="form-control-sm col-sm-3">Object</label>
-                  <input type="text" class="form-control form-control-sm cust-sm col-sm">
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.projectOc?.objectDesc" readonly>
                   <label class="form-control-sm col-sm-2">Currency</label>
-                  <input type="text" class="form-control form-control-sm cust-sm col-sm">
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.currencyCd" readonly>
                 </div>
               </div>
             </fieldset>
