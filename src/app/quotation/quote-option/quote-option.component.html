@@ -69,6 +69,6 @@
 	</div>
 
 </div>
-<app-sucess-dialog></app-sucess-dialog>
+<app-sucess-dialog [message]="dialogMessage"></app-sucess-dialog>
 <app-mtn-section-covers id="coverCodeLOV" (selectedData)="selectedCoverCodeLOV($event)"></app-mtn-section-covers>
 <app-lov id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)"></app-lov>

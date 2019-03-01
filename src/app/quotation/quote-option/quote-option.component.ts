@@ -144,6 +144,9 @@ export class QuoteOptionComponent implements OnInit {
     deductiblesLOVRow : number;
 
     record: any[];
+    dialogMessage: string = "Successfuly saved changes to ";
+    successes: string[] = [];
+
     constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute) { }
 
     ngOnInit() {
@@ -339,10 +342,21 @@ export class QuoteOptionComponent implements OnInit {
     }
 
 saveData(){
+    this.successes = [];
     this.saveQuoteOption();
     this.saveQuoteDeductibles();
     this.saveOtherRates();
-    $('#successModalBtn').trigger('click');
+    setTimeout(()=>{
+      if(this.successes.length!=0){
+        for(let s of this.successes){
+          this.dialogMessage += s+', '
+        }
+        this.dialogMessage = this.dialogMessage.slice(0,-2)
+        this.dialogMessage+='.';
+        $('#successModalBtn').trigger('click');
+      }
+    },1000)
+    
  }
 
   saveQuoteOption(){
@@ -365,8 +379,10 @@ saveData(){
         params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].updateDate = new Date(params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].updateDate[0],params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].updateDate[1]-1,params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].updateDate[2]).toISOString();
       }
     }
-
-    this.quotationService.saveQuoteOption(JSON.stringify(params)).subscribe((data: any) => {});
+    if(params.saveQuoteOptionsList.length != 0 || params.deleteQuoteOptionsList.length != 0)
+    this.quotationService.saveQuoteOption(JSON.stringify(params)).subscribe((data: any) => {
+      this.successes.push('Quote Options');
+    });
 }
 
 saveQuoteDeductibles(){
@@ -389,8 +405,11 @@ saveQuoteDeductibles(){
         }
       }
     }
+    if(params.saveDeductibleList.length != 0 || params.deleteDeductibleList.length != 0)
      this.quotationService.saveQuoteDeductibles(JSON.stringify(params)).subscribe((data: any) => {
-       console.log(data)     });}
+       this.successes.push('Quote Deductibles');
+     });
+   }
 
 saveOtherRates(){
       let params: any = {
@@ -411,7 +430,10 @@ saveOtherRates(){
           params.deleteOtherRates[params.deleteOtherRates.length-1].updateDate = new Date(params.deleteOtherRates[params.deleteOtherRates.length-1].updateDate[0],params.deleteOtherRates[params.deleteOtherRates.length-1].updateDate[1]-1,params.deleteOtherRates[params.deleteOtherRates.length-1].updateDate[2]).toISOString();
       }
    }
-    this.quotationService.saveQuoteOtherRates(JSON.stringify(params)).subscribe((data: any) => {});
+   if(params.otherRates.length != 0 || params.deleteOtherRates.length != 0)
+    this.quotationService.saveQuoteOtherRates(JSON.stringify(params)).subscribe((data: any) => {
+      this.successes.push('Other Rates');
+    });
 
 }
 
