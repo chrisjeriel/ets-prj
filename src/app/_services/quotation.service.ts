@@ -132,14 +132,26 @@ export class QuotationService {
     }
 
     getQuotationHoldCoverInfo() {
-        this.holdCoverMonitoringListData = [
-            new HoldCoverMonitoringList("HC-CAR-2018-00001-00", "Open", "Phil. Guaranty", "CAR-2018-00066-00-31", "Malayan", "5K Builders", new Date('2018-12-01'), new Date('2018-12-31'), "P8M001KJ", "Juan Cruz", new Date('2018-12-01')),
-            new HoldCoverMonitoringList("HC-EEI-2018-00001-01", "Expired", "Tan-Gatue Adjustment", "EEI-2018-00088-00-67", "FLT Prime", "5K Builders", new Date('2018-11-01'), new Date('2018-11-31'), "MC-MPC-HO-0001", "Rose Lim", new Date('2019-09-09')),
-        ];
-        //return this.holdCoverMonitoringListData;
-        
         const params = new HttpParams()
              .set('quotationNo','')
+             .set('status','')
+             .set('cedingName','')
+             .set('holdCoverNo','')
+             .set('riskName','')
+             .set('insuredDesc','')
+             .set('periodFrom','')
+             .set('periodTo','')
+             .set('compRefHoldCovNo','')
+             .set('reqBy','')
+             .set('reqDate','')
+             .set('expiringInDays','')
+             
+            return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteHoldCoverListing',{params});
+    }
+
+    getSelectedQuotationHoldCoverInfo(quotationNo) {
+        const params = new HttpParams()
+             .set('quotationNo',quotationNo)
              .set('status','')
              .set('cedingName','')
              .set('holdCoverNo','')
@@ -673,11 +685,11 @@ export class QuotationService {
             return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteGeneralInfoOc',{params});
     }
 
-    getHoldCoverInfo(){
+    getHoldCoverInfo(holdCoverId,holdCoverNo){
         this.holdCoverInfo = [];
         const params = new HttpParams()
-             .set('holdCoverId','75')
-             .set('holdCoverNo','CAR-2019-1-1')
+             .set('holdCoverId',holdCoverId)
+             .set('holdCoverNo',holdCoverNo)
              
             return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteHoldCover',{params});
     }

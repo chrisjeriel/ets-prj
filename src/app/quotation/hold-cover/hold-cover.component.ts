@@ -231,7 +231,7 @@ export class HoldCoverComponent implements OnInit {
                   "compRefHoldCovNo": coRef,
                   "createDate": this.holdCover.createDate,
                   "createUser": this.holdCover.createUser,
-                  "holdCoverId": this.quoteId,
+                  "holdCoverId": null,
                   "holdCoverRevNo": null,
                   "holdCoverSeqNo": null,
                   "holdCoverYear": hcyear,
@@ -246,6 +246,7 @@ export class HoldCoverComponent implements OnInit {
                   "updateDate": new Date().toISOString(),
                   "updateUser": prepBy
                 }
+                 console.log(JSON.stringify(this.holdCoverReq));
                     this.quotationService.saveQuoteHoldCover(
                       JSON.stringify(this.holdCoverReq)
                     ).subscribe(data => {
@@ -255,10 +256,23 @@ export class HoldCoverComponent implements OnInit {
                          $('.warn').focus();
                          $('.warn').blur();
                          this.warningMsg = data['errorList'][0].errorMessage;
+                         // this.quotationService.getHoldCoverInfo(this.quoteId,'')
+                         //    .subscribe(data => {
+                         //      console.log(JSON.stringify(data) + " >>>> RetrieveHoldCover");
+                         //    });
+
+                         this.quotationService.getSelectedQuotationHoldCoverInfo(this.plainQuotationNo(this.quoteNo))
+                           .subscribe(data => {
+                             console.log(data + ">>> hc list ");
+                             console.log(data['quotationList'][0].holdCover.holdCoverNo);
+                           });
+
                       }else{
                          $('#successMdl > #modalBtn').trigger('click');
                       }
                     });
+
+                     
 
                   });
    }
@@ -301,5 +315,6 @@ export class HoldCoverComponent implements OnInit {
         }
       });
   }
+
 
 }

@@ -113,7 +113,7 @@
     <div header>Success</div>
     <div body class="container-flex text-center">
         <span class="fa fa-check-circle fa-3x" style="vertical-align: middle;"></span>
-        <span style="vertical-align: middle; margin-left: 15px;">Saved successfully!</span>
+        <span style="vertical-align: middle; margin-left: 15px;">{{ successMessage }}</span>
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
@@ -124,7 +124,7 @@
     <div header>Warning</div>
     <div body class="container-flex text-center">
         <span class="fa fa-info-circle fa-3x" style="vertical-align: middle;"></span>
-        <span style="vertical-align: middle; margin-left: 15px;">Please complete all the required fields.</span>
+        <span style="vertical-align: middle; margin-left: 15px;">{{ warnMessage }}</span>
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
