@@ -118,7 +118,6 @@ export class CoverageComponent implements OnInit {
     this.riskId = this.quotationInfo.riskId;
 
     this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
-      console.log(data.quotation.project.coverage)
     if(data.quotation.project !== null){
       this.coverageData = data.quotation.project.coverage;
       for(var i = 0; i < data.quotation.project.coverage.sectionCovers.length; i++){
@@ -147,11 +146,8 @@ export class CoverageComponent implements OnInit {
         $('input[appCurrency]').focus();
         $('input[appCurrency]').blur();
       }, 0)
-
-
-
+      
       this.table.refreshTable();
-     /* */
     });
 
     this.multiSelectHeaderTxt = "COVERAGE";
