@@ -59,14 +59,14 @@
 
 <div class="row">
     <div class="col-sm-6" style="height: 70px;">
-        <text-editor [editorPlaceholder]="'Type kayo dito...'" [edtrOpnrPos]="2">
+        <text-editor [editorPlaceholder]="'Type kayo dito...'" [edtrOpnrPos]="2" [required]="true">
             <ng-container icon-1>
                 <a><i class="fa fa-search" (click)="test()"></i></a>
             </ng-container>
         </text-editor>
     </div>
     <div class="col-sm-6" style="height: 70px;">
-        <text-editor [editorPlaceholder]="'Type kayo dito...'" [edtrOpnrPos]="1" [editorContent]="testCont" (fetchContent)="testCont = $event">
+        <text-editor [editorPlaceholder]="'Type kayo dito...'" [edtrOpnrPos]="1" [editorContent]="testCont" (fetchContent)="testCont = $event" [required]="true">
             <ng-container icon-3>
                 <a><i class="fa fa-search" (click)="test()"></i></a>
             </ng-container>
@@ -79,7 +79,7 @@
 <br/>
 <div class="row">
     <div class="form-control-sm col-sm-6 edtr-cont req" style="height: 60px; padding-left: 6px !important;">
-        <text-editor [editorContent]="testCont" (fetchContent)="testCont = $event" [edtrOpnrPos]="2">
+        <text-editor [editorContent]="testCont" (fetchContent)="testCont = $event" [edtrOpnrPos]="2" [readonly]="true">
             <ng-container icon-1>
                 <a (click)="test()"><i class="fa fa-search"></i></a>
             </ng-container>
