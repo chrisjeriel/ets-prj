@@ -128,30 +128,20 @@ export class HoldCoverMonitoringListComponent implements OnInit {
             .subscribe(val =>
                 {
                     console.log(val);
-                    for(let i of val['quotationList']){
-                            // this.holdCoverMonitoringList.holdCoverNo        = i.holdCover.holdCoverNo;
-                            // this.holdCoverMonitoringList.status             = i.holdCover.status;
-                            // this.holdCoverMonitoringList.cedingCompany      = i.cedingName;
-                            // this.holdCoverMonitoringList.quotationNo        = i.quotationNo;
-                            // this.holdCoverMonitoringList.risk               = i.project.riskName;
-                            // this.holdCoverMonitoringList.insured            = i.insuredDesc;
-                            // this.holdCoverMonitoringList.periodFrom         = i.holdCover.periodFrom;
-                            // this.holdCoverMonitoringList.periodTo           = i.holdCover.periodTo;
-                            // this.holdCoverMonitoringList.compRefHoldCoverNo = i.holdCover.compRefHoldCovNo;
-                            // this.holdCoverMonitoringList.requestedBy        = i.holdCover.reqBy;
-                            // this.holdCoverMonitoringList.requestDate        = i.holdCover.reqDate;
+                    for(var i = val['quotationList'].length -1 ; i >= 0 ; i--){
+                         var list = val['quotationList'][i]
                          this.passData.tableData.push(new HoldCoverMonitoringList(
-                            i.holdCover.holdCoverNo,
-                            i.holdCover.status,
-                            i.cedingName,
-                            i.quotationNo,
-                            (i.project == null) ? '' : i.project.riskName,
-                            i.insuredDesc,
-                            new Date(this.formatDate(i.holdCover.periodFrom)),
-                            new Date(this.formatDate(i.holdCover.periodTo)),
-                            i.holdCover.compRefHoldCovNo,
-                            i.holdCover.reqBy,
-                            new Date(this.formatDate(i.holdCover.reqDate))
+                            list.holdCover.holdCoverNo,
+                            list.holdCover.status,
+                            list.cedingName,
+                            list.quotationNo,
+                            (list.project == null) ? '' : list.project.riskName,
+                            list.insuredDesc,
+                            new Date(this.formatDate(list.holdCover.periodFrom)),
+                            new Date(this.formatDate(list.holdCover.periodTo)),
+                            list.holdCover.compRefHoldCovNo,
+                            list.holdCover.reqBy,
+                            new Date(this.formatDate(list.holdCover.reqDate))
                          ));
                     }
                     this.table.refreshTable();
@@ -177,10 +167,6 @@ export class HoldCoverMonitoringListComponent implements OnInit {
     }
 
     formatDate(date){
-        // if(date[1] < 9){
-        //   return date[0] + "-" + '0'+ date[1] + "-" + date[2];
-        // }else{
-          return date[0] + "-" +date[1] + "-" + date[2];
-        //}
-      }
+        return date[0] + "-" +date[1] + "-" + date[2];
+    }
 }
