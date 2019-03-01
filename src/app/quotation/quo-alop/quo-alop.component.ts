@@ -149,7 +149,6 @@ export class QuoAlopComponent implements OnInit {
 
     openAlopItem(){
       this.quotationService.getALOPItemInfos(this.quoteNo,this.quoteId).subscribe((data: any) => {
-          
             if(data.quotation[0] !==undefined){
               this.itemInfoData.nData.itemNo = data.quotation[0] === undefined ? 1:data.quotation[0].alop.alopItemList.length + 1; 
               for (var i=0; i < data.quotation[0].alop.alopItemList.length; i++) {
@@ -164,7 +163,7 @@ export class QuoAlopComponent implements OnInit {
         this.itemInfoData.tableData.pop();
       }
       $('#alopItemModal #modalBtn').trigger('click');
-      
+       
     }
 
     saveAlopItem(){
