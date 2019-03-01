@@ -36,7 +36,7 @@
 									</div>
 									<div class="input-group ig-cust">
 										<label class="form-control-sm col-sm-2">Type of Cession</label>			
-										<input  type="text" class="form-control form-control-sm t" [(ngModel)]="genInfoData.cessionDesc" [readonly]="inquiryFlag">
+										<input  type="text" class="form-control form-control-sm t" [(ngModel)]="genInfoData.cessionDesc" readonly>
 										<label class="form-control-sm col-sm-2">Line Class</label>
 										<input type="text" [(ngModel)]="genInfoData.lineClassDesc" class="form-control form-control-sm req" [style.margin-right.px]="inquiryFlag ? '0' : '1'"
 										 appRequired [readonly]="inquiryFlag">
@@ -47,8 +47,8 @@
 										<label class="form-control-sm col-sm-2">Policy Number</label>
 										<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm" [(ngModel)]="genInfoData.policyNo">
 										<label class="form-control-sm col-sm-2">Status</label>
-										<input [readonly]="inquiryFlag" type="text"  class="form-control form-control-sm req"
-										  [(ngModel)]="genInfoData.statusDesc" appRequired>
+										<input type="text"  class="form-control form-control-sm"
+										  [(ngModel)]="genInfoData.statusDesc" readonly>
 									</div>
 									<div class="input-group ig-cust">
 										<label class="form-control-sm col-sm-2">Ceding Company</label>

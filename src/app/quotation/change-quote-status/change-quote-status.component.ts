@@ -16,6 +16,9 @@ export class ChangeQuoteStatusComponent implements OnInit {
     tableData: any[] = [];
 
     resizable: boolean[] = [false, false, true, true, true];
+
+    records: any[] = [];
+    selected: any = null;
     
     passData: any = {
         tableData: [], 
@@ -37,9 +40,9 @@ export class ChangeQuoteStatusComponent implements OnInit {
         setTimeout(function () { $('#modalBtn').trigger('click'); }, 100);        
 
         this.quotationService.getQuoProcessingData().subscribe(data => {
-            var records = data['quotationList'];
-            console.log(records);
-            for(let rec of records){
+            this.records = data['quotationList'];
+
+            for(let rec of this.records){
                 this.passData.tableData.push(
                     {
                         quotationNo: rec.quotationNo,
@@ -50,7 +53,6 @@ export class ChangeQuoteStatusComponent implements OnInit {
                     }
                 );
             }
-
 
             this.table.refreshTable();
         });
@@ -63,6 +65,14 @@ export class ChangeQuoteStatusComponent implements OnInit {
     }
     query() {
         $('#modalBtn').trigger('click');
+    }
+
+    onRowClick(event) {
+        for(let rec of this.records){
+            if(rec.quotationNo === event.quotationNo) {
+                this.selected = rec;
+            }
+        }
     }
 
 }
