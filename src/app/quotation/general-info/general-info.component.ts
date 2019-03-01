@@ -141,6 +141,7 @@ export class GeneralInfoComponent implements OnInit {
 		riskName: '',
 		insuredDesc: ''
 	}
+	loading:boolean = true;
 
 	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute, private maintenanceService: MaintenanceService) { }
 	ngOnInit() {
@@ -173,7 +174,7 @@ export class GeneralInfoComponent implements OnInit {
 				});
 
 			this.quotationService.getQuoteGenInfo('', this.plainQuotationNo(this.quotationNo)).subscribe(data => {
-				
+				this.loading = false;
 				if(data['quotationGeneralInfo'] != null) {
 					this.genInfoData = data['quotationGeneralInfo'];						
 					this.genInfoData.createDate = (this.genInfoData.createDate == null) ? '' : this.dateParser(this.genInfoData.createDate);
@@ -206,6 +207,7 @@ export class GeneralInfoComponent implements OnInit {
 			});
 
 		} else {
+			this.loading = false;
 			this.route.params.subscribe(params => {	
 				this.genInfoData.lineCd 		= this.line;			
 				this.genInfoData.cessionId 		= JSON.parse(params['addParams']).cessionId;
@@ -278,6 +280,7 @@ export class GeneralInfoComponent implements OnInit {
 		this.genInfoData.principalId = data.insuredId;
 
 		this.updateInsuredDesc();
+		this.focusBlur();
 	}
 
 	showContractorLOV(){
@@ -299,6 +302,7 @@ export class GeneralInfoComponent implements OnInit {
 		this.genInfoData.contractorId = data.insuredId;
 
 		this.updateInsuredDesc();
+		this.focusBlur();
 		
 	}
 
@@ -309,6 +313,7 @@ export class GeneralInfoComponent implements OnInit {
 	setCurrency(data){
 		this.genInfoData.currencyCd = data.currencyAbbr;
 		this.genInfoData.currencyRt = data.currencyRt;
+		this.focusBlur();
 	}
 
 
@@ -326,15 +331,18 @@ export class GeneralInfoComponent implements OnInit {
 	setCedingcompany(event){
 		this.genInfoData.cedingId = event.coNo;
 		this.genInfoData.cedingName = event.name;
+		this.focusBlur();
 	}
 
 	showCedingCompanyNotMemberLOV() {
 		$('#cedingCompanyNotMember #modalBtn').trigger('click');
+
 	}
 
 	setReinsurer(event) {
 		this.genInfoData.reinsurerId = event.coNo;
 		this.genInfoData.reinsurerName = event.name;
+		this.focusBlur();
 	}
 /*
 	showInsuredLOV(){
@@ -350,11 +358,13 @@ export class GeneralInfoComponent implements OnInit {
 	setLineClass(data){
 		this.genInfoData.lineClassCd = data.lineClassCd;
         this.genInfoData.lineClassDesc = data.lineClassCdDesc;
+        this.focusBlur();
     }
 
     setInt(event){
         this.genInfoData.intmId = event.intmId;
         this.genInfoData.intmName = event.intmName;
+        this.focusBlur();
 
     }
 
@@ -499,6 +509,7 @@ export class GeneralInfoComponent implements OnInit {
 	setObj(data){
     	this.project.objectId = data.objectId;
     	this.project.objectDesc = data.description;
+    	this.focusBlur();
   	}
 
   	showOpeningWordingLov(){
@@ -507,6 +518,7 @@ export class GeneralInfoComponent implements OnInit {
 
   	setOpeningWording(data) {
   		this.genInfoData.openingParag = data.wording;
+  		this.focusBlur();
   	}
 
   	showClosingWordingLov(){
@@ -515,6 +527,7 @@ export class GeneralInfoComponent implements OnInit {
 
   	setClosingWording(data) {  		
   		this.genInfoData.closingParag = data.wording;
+  		this.focusBlur();
   	}
 
   	updateInsuredDesc() {
@@ -578,8 +591,11 @@ export class GeneralInfoComponent implements OnInit {
   	}
 
   	focusBlur() {
-  		$('.req').focus();
-		$('.req').blur();
+  		setTimeout(()=>{
+  			$('.req').focus();
+			$('.req').blur();
+  		},0)
+  		
   	}
 
 }

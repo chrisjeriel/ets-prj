@@ -118,35 +118,36 @@ export class CoverageComponent implements OnInit {
     this.riskId = this.quotationInfo.riskId;
 
     this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
-    if(data.quotation.project !== null){
-      this.coverageData = data.quotation.project.coverage;
-      for(var i = 0; i < data.quotation.project.coverage.sectionCovers.length; i++){
-          if(data.quotation.project.coverage.sectionCovers[i].section == 'I' && data.quotation.project.coverage.sectionCovers[i].addSi == 'Y'){
-            this.sectionI = this.sectionI + data.quotation.project.coverage.sectionCovers[i].sumInsured;
+      this.table.refreshTable();
+        if(data.quotation.project !== null){
+          this.coverageData = data.quotation.project.coverage;
+          for(var i = 0; i < data.quotation.project.coverage.sectionCovers.length; i++){
+              if(data.quotation.project.coverage.sectionCovers[i].section == 'I' && data.quotation.project.coverage.sectionCovers[i].addSi == 'Y'){
+                this.sectionI = this.sectionI + data.quotation.project.coverage.sectionCovers[i].sumInsured;
+              }
+              if(data.quotation.project.coverage.sectionCovers[i].section == 'II' && data.quotation.project.coverage.sectionCovers[i].addSi == 'Y'){
+                this.sectionII = this.sectionII + data.quotation.project.coverage.sectionCovers[i].sumInsured;
+              }
+              if(data.quotation.project.coverage.sectionCovers[i].section == 'III' && data.quotation.project.coverage.sectionCovers[i].addSi == 'Y'){
+                this.sectionIII = this.sectionIII + data.quotation.project.coverage.sectionCovers[i].sumInsured;
+              }
           }
-          if(data.quotation.project.coverage.sectionCovers[i].section == 'II' && data.quotation.project.coverage.sectionCovers[i].addSi == 'Y'){
-            this.sectionII = this.sectionII + data.quotation.project.coverage.sectionCovers[i].sumInsured;
-          }
-          if(data.quotation.project.coverage.sectionCovers[i].section == 'III' && data.quotation.project.coverage.sectionCovers[i].addSi == 'Y'){
-            this.sectionIII = this.sectionIII + data.quotation.project.coverage.sectionCovers[i].sumInsured;
-          }
-      }
-      this.coverageData.sectionISi = this.sectionI;
-      this.coverageData.sectionIISi = this.sectionII;
-      this.coverageData.sectionIIISi = this.sectionIII;
-      this.coverageData.totalSi = this.sectionI + this.sectionII + this.sectionIII;
-    }
+          this.coverageData.sectionISi = this.sectionI;
+          this.coverageData.sectionIISi = this.sectionII;
+          this.coverageData.sectionIIISi = this.sectionIII;
+          this.coverageData.totalSi = this.sectionI + this.sectionII + this.sectionIII;
+        }
 
-    if(data.quotation.project !== null ){
-      for (var i = 0; i < data.quotation.project.coverage.sectionCovers.length; i++) {
-        this.passData.tableData.push(data.quotation.project.coverage.sectionCovers[i]);
-      }
-      }
-      setTimeout(() => {
-        $('input[appCurrency]').focus();
-        $('input[appCurrency]').blur();
-      }, 0)
-      
+        if(data.quotation.project !== null ){
+          for (var i = 0; i < data.quotation.project.coverage.sectionCovers.length; i++) {
+            this.passData.tableData.push(data.quotation.project.coverage.sectionCovers[i]);
+          }
+          }
+          setTimeout(() => {
+            $('input[appCurrency]').focus();
+            $('input[appCurrency]').blur();
+          }, 0)
+          
       this.table.refreshTable();
     });
 
