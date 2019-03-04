@@ -202,3 +202,19 @@
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
     </div>
 </app-modal>
+
+<app-modal class="d-none" id="modifMdl">
+    <div header style="width: 550px !important;">Information Message</div>
+    <div body class="container-flex text-center">
+        <fieldset class="scheduler-border"> 
+            <p class="form-control-sm" style=" margin: 0px !important; padding: 0px !important;">Selected Quotation No. has an approved Hold Cover</p>
+            <p class="form-control-sm" style=" margin: 0px !important; padding: 0px !important;">Hold Cover No : <b>{{ holdCover.holdCoverNo }}</b></p>
+            <p class="form-control-sm" style=" margin: 0px !important; padding: 0px !important;">Please select an option</p>
+        </fieldset>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">                    
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>View</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Modification</a></button>
+    </div>
+</app-modal>
