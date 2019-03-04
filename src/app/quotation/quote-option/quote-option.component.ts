@@ -4,6 +4,7 @@ import { QuotationService } from '../../_services';
 import { Title } from '@angular/platform-browser';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { ActivatedRoute } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -146,8 +147,10 @@ export class QuoteOptionComponent implements OnInit {
     record: any[];
     dialogMessage: string = "Successfuly saved changes to ";
     successes: string[] = [];
+    errorMdlMessage: string = "Please check the field values in ";
+    failures: string[] = [];
 
-    constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute) { }
+    constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,private modalService: NgbModal) { }
 
     ngOnInit() {
       //neco
@@ -257,10 +260,10 @@ export class QuoteOptionComponent implements OnInit {
            if (data['quotation'] == null || data['quotation'] == undefined ){ 
            } else {
                var optionRecords = data['quotation'].optionsList; 
-
-                for(let rec of optionRecords){
+                this.optionsData.tableData = optionRecords;
+                /*for(let rec of optionRecords){
                     this.optionsData.tableData.push(rec);                
-                }
+                }*/
 
                 this.optionsData.tableData = data['quotation'].optionsList.sort(function(a,b){return a.optionId-b.optionId})
 
@@ -275,11 +278,11 @@ export class QuoteOptionComponent implements OnInit {
 
 
                 var otherRatesRecords = data['quotation'].otherRatesList;
-
-                for(let rec of otherRatesRecords){
+                this.otherRatesData.tableData = otherRatesRecords;
+                /*for(let rec of otherRatesRecords){
                   this.otherRatesData.tableData.push(rec
                     );                
-                }
+                }*/
                 
                 
            }
@@ -343,6 +346,9 @@ export class QuoteOptionComponent implements OnInit {
 
 saveData(){
     this.successes = [];
+    this.dialogMessage = "Successfuly saved changes to ";
+    this.errorMdlMessage = "Please check the field values in ";
+    this.failures = [];
     this.saveQuoteOption();
     this.saveQuoteDeductibles();
     this.saveOtherRates();
@@ -354,6 +360,15 @@ saveData(){
         this.dialogMessage = this.dialogMessage.slice(0,-2)
         this.dialogMessage+='.';
         $('#successModalBtn').trigger('click');
+        this.getQuoteOptions();
+      }
+      if(this.failures.length!=0){
+        for(let f of this.failures){
+          this.errorMdlMessage += f+', '
+        }
+        this.errorMdlMessage = this.errorMdlMessage.slice(0,-2)
+        this.errorMdlMessage+='.';
+        $('#errorMdl > #modalBtn').trigger('click');
       }
     },1000)
     
@@ -379,10 +394,16 @@ saveData(){
         params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].updateDate = new Date(params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].updateDate[0],params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].updateDate[1]-1,params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].updateDate[2]).toISOString();
       }
     }
+
     if(params.saveQuoteOptionsList.length != 0 || params.deleteQuoteOptionsList.length != 0)
-    this.quotationService.saveQuoteOption(JSON.stringify(params)).subscribe((data: any) => {
-      this.successes.push('Quote Options');
-    });
+    this.quotationService.saveQuoteOption(JSON.stringify(params)).subscribe(
+      (data: any) => {
+        if(data['returnCode'] == 0) {  
+          this.failures.push('Quote Options');
+        }else if(data['returnCode'] == -1){
+          this.successes.push('Quote Options');
+        }
+        });
 }
 
 saveQuoteDeductibles(){
@@ -407,7 +428,11 @@ saveQuoteDeductibles(){
     }
     if(params.saveDeductibleList.length != 0 || params.deleteDeductibleList.length != 0)
      this.quotationService.saveQuoteDeductibles(JSON.stringify(params)).subscribe((data: any) => {
-       this.successes.push('Quote Deductibles');
+        if(data['returnCode'] == 0) {  
+          this.failures.push('Quote Deductibles');
+        }else if(data['returnCode'] == -1){
+         this.successes.push('Quote Deductibles');
+       }
      });
    }
 
@@ -432,7 +457,11 @@ saveOtherRates(){
    }
    if(params.otherRates.length != 0 || params.deleteOtherRates.length != 0)
     this.quotationService.saveQuoteOtherRates(JSON.stringify(params)).subscribe((data: any) => {
-      this.successes.push('Other Rates');
+        if(data['returnCode'] == 0) {  
+          this.failures.push('Quote Deductibles');
+        }else if(data['returnCode'] == -1){
+          this.successes.push('Other Rates');
+        }
     });
 
 }
@@ -446,8 +475,6 @@ clickDeductiblesLOV(data){
 }
 
 setSelected(data){
-  console.log(data);
-  console.log(data.deductibleCd);
   this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleCd = data.data.deductibleCd;
   this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleTitle = data.data.deductibleTitle;
   this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleRt = data.data.deductibleRate;
