@@ -83,8 +83,11 @@ export class MaintenanceService{
     }
 
 
-	getLineLOV() {
-       	return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMntLine');
+	getLineLOV(lineCd) {
+		const params = new HttpParams()
+			.set('lineCd', lineCd);
+
+       	return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMntLine', {params});
     }
 
     getIntLOV() {

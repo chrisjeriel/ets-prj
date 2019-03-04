@@ -1,10 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { QuotationGenInfo } from '../../_models';
 import { callLifecycleHooksChildrenFirst } from '@angular/core/src/view/provider';
 import { QuotationService, MaintenanceService } from '../../_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+import { MtnObjectComponent } from '@app/maintenance/mtn-object/mtn-object.component';
 
 @Component({
 	selector: 'app-general-info',
@@ -12,6 +13,8 @@ import { ActivatedRoute } from '@angular/router';
 	styleUrls: ['./general-info.component.css']
 })
 export class GeneralInfoComponent implements OnInit {
+	@ViewChild(MtnObjectComponent) objectLov: MtnObjectComponent;
+
 	private quotationGenInfo: QuotationGenInfo;
 	rowData: any[] = this.quotationService.rowData;
 	quotationNo: string;
@@ -168,17 +171,15 @@ export class GeneralInfoComponent implements OnInit {
 		});
 
 		if (this.quotationService.toGenInfo[0] == "edit") {
-				this.sub = this.route.params.subscribe(params => {
-					this.from = params['from'];
-					if (this.from == "quo-processing") {
-						//this.line = params['quotationNo'].split('-')[0];
-						this.typeOfCession = params['typeOfCession'];
-						this.quotationNo = (this.quoteInfo.quotationNo === '') ? params['quotationNo'] : this.quoteInfo.quotationNo;
-					}
-				});
+			this.sub = this.route.params.subscribe(params => {
+				this.from = params['from'];
+				if (this.from == "quo-processing") {
+					this.typeOfCession = params['typeOfCession'];
+					this.quotationNo = (this.quoteInfo.quotationNo === '') ? params['quotationNo'] : this.quoteInfo.quotationNo;
+				}
+			});
 
 			this.quotationService.getQuoteGenInfo('', this.plainQuotationNo(this.quotationNo)).subscribe(data => {
-				console.log(data)
 				this.loading = false;
 				if(data['quotationGeneralInfo'] != null) {
 					this.genInfoData = data['quotationGeneralInfo'];						
@@ -384,10 +385,12 @@ export class GeneralInfoComponent implements OnInit {
 
 	saveQuoteGenInfo() {
 		this.saveBtnClicked = true;
+		this.loading = true;
 		if(this.validate(this.prepareParam())){
 			this.focusBlur();
 
 			this.quotationService.saveQuoteGeneralInfo(JSON.stringify(this.prepareParam())).subscribe(data => {
+				this.loading = false;
 				if(data['returnCode'] == 0) {
 					this.errorMdlMessage = data['errorList'][0].errorMessage;
 					$('#errorMdl > #modalBtn').trigger('click');
@@ -428,6 +431,7 @@ export class GeneralInfoComponent implements OnInit {
 				}
 			});
 		} else {
+			this.loading = false;
 			this.errorMdlMessage = "Please complete all the required fields.";
 			$('#errorMdl > #modalBtn').trigger('click');
 
@@ -605,6 +609,12 @@ export class GeneralInfoComponent implements OnInit {
   				$('.req').focus();
 				$('.req').blur();
   			},0)  
+  		}
+  	}
+
+  	checkCode(field) {
+  		if(field === 'object') {
+  			this.objectLov.checkCode(this.line, this.project.objectId);
   		}
   	}
 }
