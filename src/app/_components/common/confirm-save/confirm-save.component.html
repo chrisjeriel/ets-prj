@@ -1,0 +1,8 @@
+<app-modal class="d-none" [id]="'confirm-save'" #saveModal>
+    <div header>Save</div>
+    <div body>Are you sure you want to save changes?</div>
+    <div footer class="cust-btn-container">
+        <button class="cust-btn" (click)="onYes.emit();saveModal.closeModal()">Yes</button>
+        <button class="cust-btn" (click)="saveModal.closeModal()">No</button>
+    </div>
+</app-modal>
