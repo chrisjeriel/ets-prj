@@ -85,7 +85,7 @@
                             <div class="input-group">
                                 <label class="form-control-sm col-sm-3">Section III</label>
                                 <input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm txt-content-rght req"  placeholder="0.00"
-                                       onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="coverageData.sectionIIISi" appCurrency >
+                                       onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="coverageData.sectionIIISi" appCurrency readonly>
                             </div>
                         </div>
                         <div class="col-sm-1"> &nbsp;</div>
