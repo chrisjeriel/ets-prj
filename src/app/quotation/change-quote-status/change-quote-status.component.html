@@ -4,9 +4,8 @@
         <ngb-tab title="Change Quote Status">
             <ng-template ngbTabContent>
                 <div class="row">
-                    <div class="col-sm-9">
-                        <!--<app-cust-table [tableOnly]="true" [tHeader]="tHeader" [tableData]="tableData" [checkFlag]="true" [resizable] = "resizable"></app-cust-table>-->
-                        <app-cust-non-datatable [passData]="passData"></app-cust-non-datatable>
+                    <div class="col-sm-9">                        
+                        <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)"></app-cust-non-datatable>
                     </div>
                     <div class="col-sm-3" style="margin-top: 2px;">
                         <fieldset class="scheduler-border">
@@ -45,23 +44,23 @@
                             <div class="form-row custom-row-inline-inset">
                                 <div class="input-group alignment" style="margin-right: 10%; margin-bottom: -14px !important;">
                                     <label class="form-control-sm col-sm-2 text-right">Quotation No</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-4">
+                                    <input type="text" class="form-control form-control-sm col-sm-4" [ngModel]="selected?.quotationNo">
                                     <label class="form-control-sm col-sm-2 text-right">Status</label>
-                                    <input type="text" name="" class="form-control form-control-sm col-sm-4">
+                                    <input type="text" name="" class="form-control form-control-sm col-sm-4" [ngModel]="selected?.status">
                                 </div>
                             </div>
                             <div class="form-row custom-row-inline-inset">
                                 <div class="input-group alignment" style="margin-right: 10%; margin-bottom: -14px !important;">
                                     <label class="form-control-sm col-sm-2 text-right">Ceding Co</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-4">
+                                    <input type="text" class="form-control form-control-sm col-sm-4" [ngModel]="selected?.cedingName">
                                     <label class="form-control-sm col-sm-2 text-right">Insured</label>
-                                    <input type="text" name="" class="form-control form-control-sm col-sm-4">
+                                    <input type="text" name="" class="form-control form-control-sm col-sm-4" [ngModel]="selected?.insuredDesc">
                                 </div>
                             </div>
                             <div class="form-row custom-row-inline-inset">
                                 <div class="input-group alignment" style="margin-right: 10%; margin-bottom: -14px !important;">
                                     <label class="form-control-sm col-sm-2 text-right">Risk</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-4">
+                                    <input type="text" class="form-control form-control-sm col-sm-4" [ngModel]="selected?.project?.riskName">
                                     <label class="form-control-sm col-sm-2 text-right">Processor</label>
                                     <input type="text" name="" class="form-control form-control-sm col-sm-4">
                                 </div>
