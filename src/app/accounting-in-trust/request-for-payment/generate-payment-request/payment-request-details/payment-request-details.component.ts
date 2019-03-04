@@ -15,18 +15,18 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
   AdjustersData: any = {
   	tableData: this.accountingService.getPaymentToAdjuster(),
-  	tHeader: ['Claim Request No', 'Claim No', 'Payment For/To', 'Insured', 'Hist No', 'Hist Type', 'Ex-Gratia', 'Curr','Curr Rate','Reserve Amount','Amount','Amount (Php)'],
-  	dataTypes: ['text', 'text', 'text', 'text', 'number', 'text', 'checkbox', 'text', 'percent','currency', 'currency', 'currency'],
-  	nData: new PaymentToAdjusters(null,null,null,null,null,null,null,null,null,null,null,null),
+  	tHeader: ['Claim Request No', 'Claim No', 'Policy No.','Payment For/To', 'Insured', 'Hist No', 'Hist Type', 'Ex-Gratia', 'Curr','Curr Rate','Reserve Amount','Amount','Amount (Php)'],
+  	dataTypes: ['text', 'text', 'text','text', 'text', 'number', 'text', 'checkbox', 'text', 'percent','currency', 'currency', 'currency'],
+  	nData: new PaymentToAdjusters(null,null,null,null,null,null,null,null,null,null,null,null,null),
   	paginateFlag: true,
   	infoFlag: true,
   	pageID: 1,
   	checkFlag: true,
   	addFlag: true,
   	deleteFlag: true,
-  	total: [null, null, null,null, null, null,null, null, 'Total', null, 'amount', 'amountPhp'],
+  	total: [null, null, null, null,null, null, null,null, null, 'Total', null, 'amount', 'amountPhp'],
   	genericBtn: 'Save',
-    widths: [150,150,200,200,1,150,1,1,85,120,120,120],
+    widths: [150,150,150,200,200,1,150,1,1,85,120,120,120],
     magnifyingGlass: ['claimRequestNo']
   }
 

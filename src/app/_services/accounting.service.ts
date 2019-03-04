@@ -586,7 +586,7 @@ export class AccountingService {
 
 	getPaymentToAdjuster() {
 		this.paymentToAdjuster = [
-			new PaymentToAdjusters("CSR-2018-10-00022","CAR-2018-000048","AArena Adjusters and Surveyors","2nd inn. inc", 4, "Adjuster's Expense","Y","PHP",1,-351000,350842.89,350842.89)
+			new PaymentToAdjusters("CSR-2018-10-00022","CAR-2018-000048","CAR-2018-00004","AArena Adjusters and Surveyors","2nd inn. inc", 4, "Adjuster's Expense","Y","PHP",1,-351000,350842.89,350842.89)
 		];
 		return this.paymentToAdjuster;
 		
