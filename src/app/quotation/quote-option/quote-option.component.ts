@@ -150,6 +150,7 @@ export class QuoteOptionComponent implements OnInit {
     successes: string[] = [];
     errorMdlMessage: string = "Please check the field values in ";
     failures: string[] = [];
+    updateCount:number;
 
     constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,private modalService: NgbModal) { }
 
@@ -261,12 +262,14 @@ export class QuoteOptionComponent implements OnInit {
            if (data['quotation'] == null || data['quotation'] == undefined ){ 
            } else {
                var optionRecords = data['quotation'].optionsList; 
-                this.optionsData.tableData = optionRecords;
+                //this.optionsData.tableData = optionRecords;
                 /*for(let rec of optionRecords){
                     this.optionsData.tableData.push(rec);                
                 }*/
 
                 this.optionsData.tableData = data['quotation'].optionsList.sort(function(a,b){return a.optionId-b.optionId})
+
+
 
                 for(let rec of optionRecords){
                     for(let r of rec.deductiblesList){
@@ -279,7 +282,7 @@ export class QuoteOptionComponent implements OnInit {
 
 
                 var otherRatesRecords = data['quotation'].otherRatesList;
-                this.otherRatesData.tableData = otherRatesRecords;
+                this.otherRatesData.tableData = data['quotation'].otherRatesList;
                 /*for(let rec of otherRatesRecords){
                   this.otherRatesData.tableData.push(rec
                     );                
@@ -346,6 +349,7 @@ export class QuoteOptionComponent implements OnInit {
     }
 
 saveData(){
+    this.updateCount = 0;
     this.successes = [];
     this.dialogMessage = "Successfuly saved changes to ";
     this.errorMdlMessage = "Please check the field values in ";
@@ -374,6 +378,28 @@ saveData(){
     },1000)
     
  }
+
+   showDialog(){
+     if(this.updateCount==3){
+       if(this.successes.length!=0){
+        for(let s of this.successes){
+          this.dialogMessage += s+', '
+        }
+        this.dialogMessage = this.dialogMessage.slice(0,-2)
+        this.dialogMessage+='.';
+        $('#successModalBtn').trigger('click');
+        this.getQuoteOptions();
+      }
+      if(this.failures.length!=0){
+        for(let f of this.failures){
+          this.errorMdlMessage += f+', '
+        }
+        this.errorMdlMessage = this.errorMdlMessage.slice(0,-2)
+        this.errorMdlMessage+='.';
+        $('#errorMdl > #modalBtn').trigger('click');
+      }
+     }
+   }
 
   saveQuoteOption(){
 
@@ -404,6 +430,8 @@ saveData(){
         }else if(data['returnCode'] == -1){
           this.successes.push('Quote Options');
         }
+        this.updateCount ++;
+        this.showDialog();
         });
 }
 
@@ -434,6 +462,8 @@ saveQuoteDeductibles(){
         }else if(data['returnCode'] == -1){
          this.successes.push('Quote Deductibles');
        }
+        this.updateCount ++;
+        this.showDialog();
      });
    }
 
@@ -463,6 +493,8 @@ saveOtherRates(){
         }else if(data['returnCode'] == -1){
           this.successes.push('Other Rates');
         }
+        this.updateCount ++;
+        this.showDialog();
     });
 
 }

@@ -10,6 +10,7 @@ export class SucessDialogComponent implements OnInit {
 
 
   @Input() message: string = "Successfully Saved!"
+  @Input() icon: string = "success";
 
   constructor(private modalService: NgbModal) { }
 

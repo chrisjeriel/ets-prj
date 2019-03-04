@@ -26,7 +26,7 @@
         <div class="row">
             <div class="col-sm-1"></div>
 	            <div class="col-sm-10" style="margin-top: 0.5em; margin-bottom: -0.21em;">
-	                <app-cust-editable-non-datatable [passData]="optionsData" (newClick)="updateDeductibles($event)"></app-cust-editable-non-datatable>
+	                <app-cust-editable-non-datatable [passData]="optionsData" (onDataChange)="optionsData.tableData=$event" (newClick)="updateDeductibles($event)"></app-cust-editable-non-datatable>
 	            </div> 
             <div class="col-sm-1"></div>
         </div>
@@ -38,7 +38,7 @@
          <div class="row">
             <div class="col-sm-2"></div>
             <div class="col-sm-8" style="margin-top: 0.5em; margin-bottom: -0.21em;">
-                <app-cust-editable-non-datatable #deductibleTable id="deductibleTable" [passData]="deductiblesData" (clickLOV)="clickDeductiblesLOV($event)"></app-cust-editable-non-datatable>
+                <app-cust-editable-non-datatable #deductibleTable id="deductibleTable" (onDataChange)="deductibleTable.tableData=$event" [passData]="deductiblesData" (clickLOV)="clickDeductiblesLOV($event)"></app-cust-editable-non-datatable>
             </div>
             <div class="col-sm-2"></div>
         </div>

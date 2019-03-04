@@ -160,7 +160,7 @@ span.ui-column-resizer {
                                 </ng-container>
                             </tr>
                             <tr style="min-width: 96px">
-                                <th *ngIf="passData.checkFlag" class="checkbox"><input type="checkbox" name="checkbox" (click)="selectAll()"></th>
+                                <th *ngIf="passData.checkFlag" class="checkbox"><input type="checkbox" name="checkbox" (change)="selectAll($event.target.checked)"></th>
                                 <th container="body"  *ngFor="let tHeader of passData.tHeader; let i = index" (click)="sort(dataKeys[i],sortBy);sortIndex=i;"
                                 [style.min-width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [style.width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [ngbTooltip]="passData.tooltip !== undefined ? passData.tooltip[i] :null">
                                 <!-- <span class="ui-column-resizer"  (mousedown)="onMouseDown($event)" *ngIf="passData.resizable === undefined ||  passData.resizable[i]"></span> -->
@@ -303,13 +303,12 @@ span.ui-column-resizer {
 <label *ngIf="api.isLastPage()">Showing {{ (api.getCurrent() - 1) * passData.pageLength + 1 }} - {{displayData.length}} of {{displayData.length}} entries</label>
 </pagination-template>-->
 <pagination-template #api="paginationApi"  [id]="'editable'+passData.pageID" (pageChange)="p2 = $event">
-            <!--  <label *ngIf="!api.isLastPage() && displayLength > 0">Showing {{ (api.getCurrent() - 1) * passData.pageLength + 1 }} - {{ api.getCurrent() * passData.pageLength }} of {{displayLength}} entries {{api.getCurrent()}}</label>
+            <!--  <label *ngIf="!api.isLastPage() && ndisplayLength > 0">Showing {{ (api.getCurrent() - 1) * passData.pageLength + 1 }} - {{ api.getCurrent() * passData.pageLength }} of {{displayLength}} entries {{api.getCurrent()}}</label>
 <label *ngIf="api.isLastPage() && displayLength > 0">Showing {{ (api.getCurrent() - 1) * passData.pageLength + 1 }} - {{displayLength}} of {{displayLength}} entries</label>
 <label *ngIf="displayLength < 1">Showing 0 - 0 of 0 entries</label>-->
 <label *ngIf="!api.isLastPage() && displayLength > 0">Showing {{ (api.getCurrent() - 1) *
 passData.pageLength + 1 }} - {{ api.getCurrent() * passData.pageLength }} of {{displayLength}} entries</label>
-<label *ngIf="api.isLastPage() && displayLength > 0">Showing {{ (api.getCurrent() - 1) * pageLength + 1 }}
-- {{displayLength}} of {{displayLength}} entries</label>
+<label *ngIf="api.isLastPage() && displayLength > 0">Showing {{ (api.getCurrent() - 1) * passData.pageLength + 1 }} - {{displayLength}} of {{displayLength}} entries</label>
 <label *ngIf="displayLength < 1">Showing 0 - 0 of 0 entries</label>
 </pagination-template>
 </div>
@@ -325,11 +324,11 @@ passData.pageLength + 1 }} - {{ api.getCurrent() * passData.pageLength }} of {{d
     </div>
 </div>
 
-<app-modal class="d-none" id="confirm-delete">
+<app-modal class="d-none" [id]="'confirm-delete'+passData.pageID" #deleteModal>
     <div header>Delete</div>
-    <div body>Are you sure you want to delete these items?</div>
+    <div body>Are you sure you want to delete these item(s)?</div>
     <div footer class="cust-btn-container">
-        <button class="cust-btn" (click)="modalService.dismissAll();onClickDelete()">Yes</button>
-        <button class="cust-btn" (click)="modalService.dismissAll()">No</button>
+        <button class="cust-btn" (click)="onClickDelete();deleteModal.closeModal()">Yes</button>
+        <button class="cust-btn" (click)="deleteModal.closeModal()">No</button>
     </div>
 </app-modal>

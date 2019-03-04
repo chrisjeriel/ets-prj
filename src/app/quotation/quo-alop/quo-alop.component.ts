@@ -5,6 +5,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
 import { ActivatedRoute } from '@angular/router';
+import { highlight,unHighlight } from '@app/_directives/highlight';
 
 
 
@@ -15,6 +16,8 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class QuoAlopComponent implements OnInit {
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
+  @ViewChild("from") from:any;
+  @ViewChild("to") to:any;
   aLOPInfo: QuoteALOPInfo = new QuoteALOPInfo();
   @Input() quotationInfo:any = {};
   @Input() inquiryFlag: boolean = false;
@@ -84,6 +87,8 @@ export class QuoAlopComponent implements OnInit {
     }
     
     loading:boolean = true;
+    dialogMessage:string = "";
+    dialogIcon: string = "";
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute) { }
 
     ngOnInit() {
@@ -137,8 +142,9 @@ export class QuoAlopComponent implements OnInit {
       this.alopData.quoteId = this.quoteId;
       this.quotationService.saveQuoteAlop(this.alopData).subscribe((data: any) => {
         if(data['returnCode'] == 0) {
-          this.errorMdlMessage = data['errorList'][0].errorMessage;
-          $('#errorMdl > #modalBtn').trigger('click');
+          this.dialogMessage = data['errorList'][0].errorMessage;
+          this.dialogIcon = "error";
+          $('#successModalBtn').trigger('click');
         } else{
           $('#successModalBtn').trigger('click');
           this.getAlop();
@@ -258,11 +264,21 @@ export class QuoAlopComponent implements OnInit {
   }
 
   triggerCurrencyDirective(){
-    
+
   }
 
   testOnly(){
-    this.triggerCurrencyDirective();
+    console.log(this.from);
+    console.log(this.to);
+  }
+
+  checkDates(){
+    console.log(this.alopData.issueDate);
+    console.log(this.alopData.expiryDate);
+    if(new Date(this.alopData.issueDate)>= new Date(this.alopData.expiryDate)){
+     highlight(this.to);
+     highlight(this.from);
+    }
   }
 
 }

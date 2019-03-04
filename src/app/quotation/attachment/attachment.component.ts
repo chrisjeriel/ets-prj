@@ -81,6 +81,8 @@ export class AttachmentComponent implements OnInit {
   quoteNo: string = '';
   errorMdlMessage: string = "";
   @Input() inquiryFlag: boolean = false;
+  dialogMessage:string = "";
+  dialogIcon: string = "";
 
   constructor(config: NgbDropdownConfig,
     private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,private modalService: NgbModal) {
@@ -168,19 +170,22 @@ export class AttachmentComponent implements OnInit {
     }
 
     if (this.savedData.length != 0 || this.deletedData.length!=0 ) {
-      this.successMessage = "Successfully Saved!";
       this.quotationService.saveQuoteAttachment(this.quoteId,this.savedData,this.deletedData).subscribe((data: any) => {
         console.log(data)
         if(data['returnCode'] == 0) {
-            this.errorMdlMessage = data['errorList'][0].errorMessage;
-            $('#errorMdl > #modalBtn').trigger('click');
+            this.dialogMessage = data['errorList'][0].errorMessage;
+            this.dialogIcon = "error";
+            $('#successModalBtn').trigger('click');
           } else{
-              $('#successModalBtn').trigger('click');
+            this.dialogMessage="";
+            this.dialogIcon = "";
+            $('#successModalBtn').trigger('click');
             this.getAttachment();
           }
         });
     }else{
-      this.successMessage = "Nothing to save.";
+      this.dialogMessage = "Nothing to save.";
+      this.dialogIcon = "info"
       $('#successModalBtn').trigger('click');
     }
   }

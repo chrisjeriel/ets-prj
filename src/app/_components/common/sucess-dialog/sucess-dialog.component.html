@@ -18,13 +18,17 @@
 <button id="successModalBtn" class="cust-btn d-none" (click)="open(content)"><a>{{ btnTitle }}</a></button>
 
 
-<app-modal class="d-none" id="successMdl">
-    <div header>Success</div>
-    <div body class="container-flex text-center">
-        <span class="fa fa-check-circle fa-3x" style="vertical-align: middle;"></span>
-        <span style="vertical-align: middle; margin-left: 15px;">{{message}}</span>
+<app-modal class="d-none" id="successMdl" [modalSize]="'success-modal-size'">
+    <div header><!-- Success -->&nbsp;</div>
+    <div body class="container-flex text-center" >
+        <ng-container [ngSwitch]="icon">
+            <span *ngSwitchCase="'error'" class="fa fa-times-circle fa-2x" style="vertical-align: middle;"></span>
+            <span *ngSwitchCase="'info'" class="fa fa-info-circle fa-2x" style="vertical-align: middle;"></span>
+            <span *ngSwitchDefault class="fa fa-check-circle fa-2x" style="vertical-align: middle;"></span>
+        </ng-container>
+        <span style="vertical-align: middle; margin-left: 5px;font-size: 1em;">{{message==''?'Successfully Saved' : message}}</span>
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
     </div>
 </app-modal>
