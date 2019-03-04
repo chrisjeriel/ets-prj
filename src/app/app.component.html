@@ -434,7 +434,6 @@
                                 <button [routerLink]="['/maintenance-risk-list']" class="button btn btn-link">Risk</button>
                                 <br />
                                 <ngb-accordion #acc="ngbAccordion">
-
                                     <ngb-panel>
                                         <ng-template ngbPanelTitle>
                                             Accounting In-Trust
@@ -453,6 +452,21 @@
                         <ngb-panel>
                             <ng-template ngbPanelTitle>
                                 <fa name="user-secret"></fa>&nbsp;Security
+                            </ng-template>
+                            <ng-template ngbPanelContent>
+                                <ngb-accordion #acc="ngbAccordion">
+                                    <ngb-panel>
+                                        <ng-template ngbPanelTitle>
+                                            Users Maintenance
+                                        </ng-template>
+                                        <ng-template ngbPanelContent>
+                                            <button [routerLink]="['users']" class="button btn btn-link">Users</button>
+                                            <br />
+                                            <button [routerLink]="['user-group-maintenance']" class="button btn btn-link">Users Groups Maintenance</button>
+                                            <br />
+                                        </ng-template>
+                                    </ngb-panel>
+                                </ngb-accordion>
                             </ng-template>
                         </ngb-panel>
                     </ngb-accordion>

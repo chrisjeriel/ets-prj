@@ -179,9 +179,10 @@ export class GeneralInfoComponent implements OnInit {
 				});
 
 			this.quotationService.getQuoteGenInfo('', this.plainQuotationNo(this.quotationNo)).subscribe(data => {
-				console.log(data)
+				
 				this.loading = false;
 				if(data['quotationGeneralInfo'] != null) {
+					console.log(data['quotationGeneralInfo'])
 					this.genInfoData = data['quotationGeneralInfo'];						
 					this.genInfoData.createDate = (this.genInfoData.createDate == null) ? '' : this.dateParser(this.genInfoData.createDate);
 					this.genInfoData.expiryDate = (this.genInfoData.expiryDate == null) ? '' : this.dateParser(this.genInfoData.expiryDate);
@@ -201,6 +202,10 @@ export class GeneralInfoComponent implements OnInit {
 						this.genInfoData.quoteRevNo = '';
 					}
 
+					setTimeout(() => {
+						$('.req').focus();
+						$('.req').blur();
+					},0) 
 				}
 
 				if(data['project'] != null) {

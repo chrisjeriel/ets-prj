@@ -46,8 +46,8 @@ export class CoverageComponent implements OnInit {
   passData: any = {
     tHeader: ['Cover Code','Cover Name','Section','Bullet No','Sum Insured','Add Sl'],
     tableData:[],
-    dataTypes: ['text','text','select','select','currency','checkbox'],
-    opts: [{ selector: "section", vals: ["I", "II", "III"] }, { selector: "bulletNo", vals: ["1.0", "1.2", "1.3"] }],
+    dataTypes: ['text','text','select','text','currency','checkbox'],
+    opts: [{ selector: "section", vals: ["I", "II", "III"] }],
     nData: {
       createDate: [0,0,0],
       createUser: "PCPR",
@@ -68,7 +68,7 @@ export class CoverageComponent implements OnInit {
     widths:[90,'auto',1,1,200,1,1],
     magnifyingGlass: ['coverCd'],
     uneditable: [false,true,false,false,false,false],
-    keys:['coverCd','shortName','section','bulletNo','sumInsured','addSi']
+    keys:['coverCd','coverCdAbbr','section','bulletNo','sumInsured','addSi']
   };
 
   @Input() pageData:any;
@@ -76,13 +76,14 @@ export class CoverageComponent implements OnInit {
   multiSelectHeaderTxt: string = "";
   multiSelectData: any[] = [];
   dataLoaded:boolean = false;
-  nData: QuotationCoverageInfo = new QuotationCoverageInfo(null, null, null, null, null);
+  nData: QuotationCoverageInfo = new QuotationCoverageInfo(null, null, null, null, null,null);
   projId: number;
   riskId: number;
   temp: number = 0;
   sub: any;
   quoteNo:string = '';
   lineCd: string = '';
+  coverCd: string = '';
   quoteId: any;
   @Input() quotationInfo: any = {};
   errorMdlMessage: string = "";
@@ -118,11 +119,22 @@ export class CoverageComponent implements OnInit {
     } 
 
     this.riskId = this.quotationInfo.riskId;
-
+    this.lineCd = this.quoteNo.split('-')[0];
 
     this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
       this.table.refreshTable();
-        console.log(data)
+        if(data.quotation.project == null){
+          this.maintenanceService.getMtnSectionCovers(this.lineCd,this.coverCd).subscribe((data: any) =>{
+            console.log(data)
+              for(var i=0; i< data.sectionCovers.length;i++){
+                if(data.sectionCovers[i].defaultTag == 'Y' ){
+                   this.passData.tableData.push(data.sectionCovers[i]);
+                }
+              }
+              this.table.refreshTable();
+          });
+        }
+
         if(data.quotation.project !== null){
           this.coverageData = data.quotation.project.coverage;
           for(var i = 0; i < data.quotation.project.coverage.sectionCovers.length; i++){
@@ -160,7 +172,7 @@ export class CoverageComponent implements OnInit {
 
       this.coverageData.currencyCd = this.quotationInfo.currencyCd;
       this.coverageData.currencyRt = this.quotationInfo.currencyRt;
-      this.lineCd      = this.quoteNo.split('-')[0];
+      
       
   }
 
@@ -169,7 +181,6 @@ export class CoverageComponent implements OnInit {
     this.lineCd      = this.quoteNo.split('-')[0];
     this.editedData  = [];
     this.deletedData = [];
-
     for (var i = 0 ; this.passData.tableData.length > i; i++) {
        if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted ){
            this.editedData.push(this.passData.tableData[i]);
@@ -243,10 +254,10 @@ export class CoverageComponent implements OnInit {
   }
 
   selectedSectionCoversLOV(data){
-    this.passData.tableData[this.sectionCoverLOVRow].coverCd = data.coverCode; 
-    this.passData.tableData[this.sectionCoverLOVRow].shortName = data.shortName;
-    this.passData.tableData[this.sectionCoverLOVRow].section = 'I';
-    this.passData.tableData[this.sectionCoverLOVRow].bulletNo = '1.0';
+    this.passData.tableData[this.sectionCoverLOVRow].coverCd = data.coverCd; 
+    this.passData.tableData[this.sectionCoverLOVRow].coverCdAbbr = data.coverCdAbbr;
+    this.passData.tableData[this.sectionCoverLOVRow].section = data.section;
+    this.passData.tableData[this.sectionCoverLOVRow].bulletNo = data.bulletNo;
     this.passData.tableData[this.sectionCoverLOVRow].edited = true;
   }
 

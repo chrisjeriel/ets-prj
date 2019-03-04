@@ -26,8 +26,8 @@ export class MtnSectionCoversComponent implements OnInit {
     fixedCol: false,
     pageID: 1,
     keys:[
-    	'coverCode',
-    	'shortName',
+    	'coverCd',
+    	'coverCdAbbr',
     	'description'
     	]
   };
@@ -52,7 +52,7 @@ export class MtnSectionCoversComponent implements OnInit {
           console.log(data)
           for(var i=0; i< data.sectionCovers.length;i++){
               if(data.sectionCovers[i].lineCd == this.lineCd ){
-                 this.sectionCover.tableData.push(new MtnSectionCovers(data.sectionCovers[i].coverCd,data.sectionCovers[i].coverCdAbbr,data.sectionCovers[i].description));
+                 this.sectionCover.tableData.push(data.sectionCovers[i]);
                } 
           }
            this.table.refreshTable();
