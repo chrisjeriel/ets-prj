@@ -36,7 +36,7 @@ span.ui-column-resizer {
 
         <button *ngIf="passData.addFlag" class="cust-btn" (click)="passData.nData == null ? addClicked(event) : onClickAdd()"><a>Add</a></button>
         <button *ngIf="passData.editFlag" class="cust-btn" (click)="onClickEdit()"><a class="paginate_button previous">Edit</a></button>
-        <button *ngIf="passData.deleteFlag" class="cust-btn" (click)="onClickDelete()"><a class="paginate_button previous">Delete</a></button>
+        <button *ngIf="passData.deleteFlag" class="cust-btn" (click)="confirmDelete()"><a class="paginate_button previous">Delete</a></button>
         <button *ngIf="passData.genericBtn !== undefined" class="cust-btn genericBtn" (click)="onClickGeneric()"><a class="paginate_button previous">{{passData.genericBtn}}</a></button>
         <div class="search-filter" *ngIf="passData.searchFlag">
             <label [class.searchWithFilter]="passData.filters !== undefined">Search: &nbsp;
@@ -82,7 +82,6 @@ span.ui-column-resizer {
             <button *ngIf="passData.editFlag" class="cust-btn" (click)="onClickEdit()"><a class="paginate_button previous">Edit</a></button>
             <button *ngIf="passData.deleteFlag" class="cust-btn" (click)="onClickDelete()"><a class="paginate_button previous">Delete</a></button>
             <button *ngIf="passData.genericBtn !== undefined" class="cust-btn" (click)="onClickGeneric()"><a class="paginate_button previous">{{passData.genericBtn}}</a></button> -->
-
             <!-- <div class="search-filter" *ngIf="passData.searchFlag"> -->
                 <!--<div class="search-filter" *ngIf="passData.hasSearch">-->
                     <!-- <label>Search: &nbsp;
@@ -161,7 +160,7 @@ span.ui-column-resizer {
                                 </ng-container>
                             </tr>
                             <tr style="min-width: 96px">
-                                <th *ngIf="passData.checkFlag" class="checkbox"><input type="checkbox" name="checkbox" [(ngModel)]="checked"></th>
+                                <th *ngIf="passData.checkFlag" class="checkbox"><input type="checkbox" name="checkbox" (click)="selectAll()"></th>
                                 <th container="body"  *ngFor="let tHeader of passData.tHeader; let i = index" (click)="sort(dataKeys[i],sortBy);sortIndex=i;"
                                 [style.min-width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [style.width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [ngbTooltip]="passData.tooltip !== undefined ? passData.tooltip[i] :null">
                                 <!-- <span class="ui-column-resizer"  (mousedown)="onMouseDown($event)" *ngIf="passData.resizable === undefined ||  passData.resizable[i]"></span> -->
@@ -181,7 +180,7 @@ span.ui-column-resizer {
                     <tbody>
                         <tr *ngFor="let data of displayData | paginate: { id: 'editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p2 };let ti = index" [class.selected]="data === indvSelect || data.checked" (click)="onRowClick($event,data)" (dblclick)="onRowDblClick($event)">
                             <td *ngIf="passData.checkFlag" class="checkbox align-middle">
-                                <input *ngIf="addCheckFlag(data)" type="checkbox" name="checkbox" [ngModel]="checked || data.checked" (change)="removeSelected($event, data)" >
+                                <input *ngIf="addCheckFlag(data)" type="checkbox" name="checkbox" [ngModel]="data.checked" (change)="removeSelected($event, data)" >
                             </td>
                             <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]" class="align-middle">
                                 <div *ngIf="addCheckFlag(data) && ( passData.uneditable === undefined || !passData.uneditable[i] )" class="align-middle" style="position: relative;">
@@ -325,3 +324,12 @@ passData.pageLength + 1 }} - {{ api.getCurrent() * passData.pageLength }} of {{d
         <label></label>
     </div>
 </div>
+
+<app-modal class="d-none" id="confirm-delete">
+    <div header>Delete</div>
+    <div body>Are you sure you want to delete these items?</div>
+    <div footer class="cust-btn-container">
+        <button class="cust-btn" (click)="modalService.dismissAll();onClickDelete()">Yes</button>
+        <button class="cust-btn" (click)="modalService.dismissAll()">No</button>
+    </div>
+</app-modal>

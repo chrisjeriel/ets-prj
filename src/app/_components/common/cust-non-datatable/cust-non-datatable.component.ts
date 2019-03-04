@@ -235,6 +235,8 @@ export class CustNonDatatableComponent implements OnInit {
                 this.passData.dataTypes.push('text');
             }
         }
+        //temporary fix delete this later
+        setTimeout(()=>{this.refreshTable()},2000)
     }
 
     processData(key: any, data: any) {
