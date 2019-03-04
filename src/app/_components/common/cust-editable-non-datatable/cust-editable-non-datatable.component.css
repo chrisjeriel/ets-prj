@@ -406,3 +406,7 @@ tbody th div .negativeNumber{
     cursor: inherit;
     display: block;
 }
+
+span:empty:before {
+  content: "\200b";
+}

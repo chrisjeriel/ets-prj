@@ -12,6 +12,7 @@ export class MtnQuotationWordingsComponent implements OnInit {
 
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
   @Input() line:string = "";
+  @Input() type:string = "";
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
   passData: any = {
         tableData: [],
@@ -69,7 +70,9 @@ export class MtnQuotationWordingsComponent implements OnInit {
      this.passData.tableData = [];
      this.mtnService.getMtnQuotationWordings(this.line,'').subscribe((data: any) =>{
           for (var a = 0; a < data['quoteWordings'].length ; a++) {
-               this.passData.tableData.push(data['quoteWordings'][a]);
+            if(data['quoteWordings'][a].type === this.type){
+              this.passData.tableData.push(data['quoteWordings'][a]);
+            }               
           }
           this.table.refreshTable();
         });

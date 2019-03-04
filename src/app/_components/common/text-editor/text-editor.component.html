@@ -1,17 +1,28 @@
-<div class="edtr-opnr"><a><i class="fa fa-pencil" (click)="showTextEditorModal(content);"></i></a></div>
+<div *ngIf="!readonly" style="float: right;">	
+	<div class="edtr-opnr">
+		<div>
+			<ng-container *ngIf="edtrOpnrPos == 1"><a><i class="fa fa-file-text" (click)="showTextEditorModal(content);"></i></a></ng-container>
+			<ng-content select="[icon-1]"></ng-content>			
+		</div>			
+		<div>
+			<ng-container *ngIf="edtrOpnrPos == 2"><a><i class="fa fa-file-text" (click)="showTextEditorModal(content);"></i></a></ng-container>
+			<ng-content select="[icon-2]"></ng-content>			
+		</div>
+		<div>
+			<ng-container *ngIf="edtrOpnrPos == 3"><a><i class="fa fa-file-text" (click)="showTextEditorModal(content);"></i></a></ng-container>
+			<ng-content select="[icon-3]"></ng-content>
+		</div>
+	</div>	
+</div>
 
-<quill-editor style="position: relative; padding-top: 0px !important;" class="txt-edtr" [ngModel]="editorContent" (ngModelChange)="editorContent = $event" [style]="{height: '100%', width: '100%', font: '11px arial'}" [modules]="{toolbar: false}" [readOnly]="true" [sanitize]="false" [placeholder]="(editorPlaceholder == null) ? '' : editorPlaceholder"></quill-editor>
-
-<!-- <div style="margin-top: -52px;" class="text-search-ico"><a><i class="fa fa-search"></i></a></div> -->
-<!-- <div style="margin-top: -52px;"class="text-search-ico"><a><i class="fa fa-pencil" (click)="showTextEditorModal(content);"></i></a></div> -->
-<!-- <div style="float: right; position: absolute;" class="text-search-ico"><a><i class="fa fa-pencil" (click)="showTextEditorModal(content);"></i></a></div> -->
+<quill-editor style="position: relative; padding-top: 0px !important;" class="txt-edtr" [ngModel]="editorContent" (ngModelChange)="editorContent = $event" [style]="style" (styleChange)="test()" [modules]="{toolbar: false}" [readOnly]="true" [placeholder]="(editorPlaceholder == null) ? '' : editorPlaceholder" [format]="'text'"></quill-editor>
 
 <ng-template #content>
 	<div class="modal-header">
 		<span class="modal-title" id="modal-basic-title">Text Editor</span>
 	</div>
 	<div class="modal-body">
-		<quill-editor class="txt-edtr" [ngModel]="editorContent" (ngModelChange)="editorContent = $event" [style]="{height: '300px', width: '900px', font: '11px arial'}" [modules]="{toolbar: false}" [sanitize]="false"></quill-editor> 
+		<quill-editor class="txt-edtr" [ngModel]="editorContent" (ngModelChange)="editorContent = $event" [style]="{height: '300px', width: '900px', font: '11px arial', padding: '5px 10px'}" [modules]="{toolbar: false}" [placeholder]="(editorPlaceholder == null) ? '' : editorPlaceholder" [format]="'text'"></quill-editor>
 	</div>
 	<div class="modal-footer d-flex justify-content-center w-100">
 		<button class="cust-btn" type="button" (click)="closeTextEditorModal($event)"><a>Done</a></button>

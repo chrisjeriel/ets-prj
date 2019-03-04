@@ -25,10 +25,32 @@ export class HoldCoverComponent implements OnInit {
       dataTypes: ["text","text","text","text"],
       pageLength: 10,
       resizable: [false,false,false,false],
-      tableOnly: true,
+      tableOnly: false,
       keys: ['quotationNo','cedingName','insuredDesc','riskName'],
       pageStatus: true,
       pagination: true,
+      filters: [
+        {
+          key: 'quotationNo',
+          title : 'Quotation No.',
+          dataType: 'text'
+        },
+        {
+          key: 'cedingName',
+          title : 'Ceding Company',
+          dataType: 'text'
+        },
+        {
+          key: 'insuredDesc',
+          title : 'Insured',
+          dataType: 'text'
+        },
+        {
+          key: 'riskName',
+          title : 'Risk',
+          dataType: 'text'
+        }
+      ]
     };
 
   constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title) { }
@@ -181,16 +203,16 @@ export class HoldCoverComponent implements OnInit {
     this.hcYear  =  String(new Date().getFullYear());
     this.modalService.dismissAll();
 
-    this.quotationService.getSelectedQuote(this.plainQuotationNo(this.quoteNo))
-      .subscribe(val => {
-        this.holdCover.reqBy  = val['quotationList'][0].reqBy;
-      });
+    // this.quotationService.getSelectedQuote(this.plainQuotationNo(this.quoteNo))
+    //   .subscribe(val => {
+    //     this.holdCover.reqBy  = val['quotationList'][0].reqBy;
+    //   });
     this.holdCover.reqDate  = new Date().toISOString();
   }
   
   holdCoverReq:any
   onSaveClick(qline,qyear,qseqNo,qrevNo,qcomNo,periodTo,periodFrom,coRef,status,reqDate,prepBy,appBy,hcline,hcyear,hcseqNo,hcrevNo,reqBy){
-    if(qline === "" || qyear === "" || qseqNo === "" || qrevNo === "" || qcomNo === "" || periodTo === "" || periodFrom === "" || status === "" || hcline === "" || hcyear === "" || hcseqNo === "" || hcrevNo === ""){
+    if(qline === "" || qyear === "" || qseqNo === "" || qrevNo === "" || qcomNo === "" || periodTo === "" || periodFrom === "" || status === "" || hcline === "" || hcyear === ""){
       $('#warningMdl > #modalBtn').trigger('click');
       $('.warn').focus();
       $('.warn').blur();
@@ -210,8 +232,8 @@ export class HoldCoverComponent implements OnInit {
                   "createDate": this.holdCover.createDate,
                   "createUser": this.holdCover.createUser,
                   "holdCoverId": this.quoteId,
-                  "holdCoverRevNo": hcrevNo,
-                  "holdCoverSeqNo": hcseqNo,
+                  "holdCoverRevNo": null,
+                  "holdCoverSeqNo": null,
                   "holdCoverYear": hcyear,
                   "lineCd": hcline,
                   "periodFrom": periodFrom,
@@ -227,8 +249,6 @@ export class HoldCoverComponent implements OnInit {
                     this.quotationService.saveQuoteHoldCover(
                       JSON.stringify(this.holdCoverReq)
                     ).subscribe(data => {
-                      console.log(data);
-
                       var returnCode = data['returnCode'];
                       if(returnCode === 0){
                          $('#warningMdl > #modalBtn').trigger('click');
@@ -256,9 +276,13 @@ export class HoldCoverComponent implements OnInit {
   }
 
   searchQuoteInfo(line,year,seq,rev,ced){
+    // onkeyup(this: ){
+    // }
+    this.holdCover.reqDate  = new Date().toISOString();
     var qNo = line.toUpperCase() +"-"+year+"-"+seq+"-"+rev+"-"+ced;
     this.quotationService.getSelectedQuote(this.plainQuotationNo(qNo))
       .subscribe(val => {
+
         var data = val['quotationList'][0];
         if(data === undefined || data === null){
           this.quoteNo = '';
@@ -277,4 +301,5 @@ export class HoldCoverComponent implements OnInit {
         }
       });
   }
+
 }
