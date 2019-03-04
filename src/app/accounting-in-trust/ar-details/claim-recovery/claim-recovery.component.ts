@@ -13,7 +13,7 @@ export class ClaimRecoveryComponent implements OnInit {
 
   passDataClaimsForRecovery: any = {
     tableData: this.accountingService.getARClaimsRecovery(),
-    tHeader: ["Payment Type","Claim No.", "Recovery No.", "Hist No.", "Amount Type", "History Type", "Remarks", "Curr", "Curr Rate", "Amount", "Amount(PHP)"],
+    tHeader: ["Payment Type","Claim No.", "Co. Claim No.", "Hist No.", "Amount Type", "History Type", "Remarks", "Curr", "Curr Rate", "Amount", "Amount(PHP)"],
     dataTypes: ["select","text","text", "number", "text", "text", "text", "text", "percent", "currency", "currency"],
     addFlag: true,
     deleteFlag: true,
@@ -24,7 +24,7 @@ export class ClaimRecoveryComponent implements OnInit {
     nData: new ARClaimsRecovery(null,null,null, null, null, null, null, null, null, null, null),
     total: [null,null, null, null, null, null, null, null, 'Total','amount', 'amountPHP'],
     pageLength: 10,
-    magnifyingGlass: ['claimNo','recoveryNo'],
+    magnifyingGlass: ['claimNo'],
     opts: [{selector: 'paymentType', vals: ['Recovery','Overpayment']}],
     
   };
