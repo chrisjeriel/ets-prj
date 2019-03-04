@@ -1,4 +1,4 @@
-<app-modal class="d-none" [id]="'confirm-save'" #saveModal>
+<app-modal class="d-none" [id]="'confirm-modal'" #saveModal>
     <div header>Save</div>
     <div body>Are you sure you want to save changes?</div>
     <div footer class="cust-btn-container">
@@ -6,3 +6,10 @@
         <button class="cust-btn" (click)="saveModal.closeModal()">No</button>
     </div>
 </app-modal>
+
+<div id="confirm-save">
+	<button id="modalBtn2" (click)="confirmModal();"></button>
+</div>
+
+
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" #success></app-sucess-dialog>

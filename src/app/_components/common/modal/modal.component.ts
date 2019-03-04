@@ -49,8 +49,8 @@ export class ModalComponent implements OnInit/*, AfterViewInit*/ {
         this.modalOpened.emit();
     }
 
-    openNoClose(content){
-        this.modalRef = this.modalService.open(this.test, { centered: true, backdrop: 'static', windowClass : this.modalSize });
+    openNoClose(content?){        
+        this.modalRef = this.modalService.open(this.test, { centered: true,  windowClass : this.modalSize });
         this.modalOpened.emit();
     }
 

@@ -18,7 +18,7 @@
 <button id="successModalBtn" class="cust-btn d-none" (click)="open(content)"><a>{{ btnTitle }}</a></button>
 
 
-<app-modal class="d-none" id="successMdl" [modalSize]="'success-modal-size'">
+<app-modal class="d-none" id="successMdl" [modalSize]="'success-modal-size'" #modal>
     <div header><!-- Success -->&nbsp;</div>
     <div body class="container-flex text-center" >
         <ng-container [ngSwitch]="icon">

@@ -133,7 +133,7 @@
 	</div>
 	<div footer class="text-center">
 			<button *ngIf="!inquiryFlag" type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
-			<button *ngIf="!inquiryFlag" type="button" class="cust-btn" (click)="saveAlopItem(	);modalService.dismissAll()"><a>Save</a></button>
+			<button *ngIf="!inquiryFlag" type="button" class="cust-btn" (click)="onClickSaveAlopItem()"><a>Save</a></button>
 			<button *ngIf="inquiryFlag" type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Close</a></button>
 	</div>
 </app-modal>
@@ -155,3 +155,5 @@
 </app-modal>
 
 <app-confirm-save (onYes)="save()"></app-confirm-save>
+
+<app-confirm-save id="alopItem" (onYes)="saveAlopItem()"></app-confirm-save>
