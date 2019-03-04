@@ -209,7 +209,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
 
 
     onClickDelete() {
-        console.log(this.selected)
         // for (var i = 0; i < this.passData.tableData.length; ++i) {
         //     if(this.passData.tableData[i].checked){
         //         this.passData.tableData[i].checked = false;
@@ -398,8 +397,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     removeSelected(event, data){
-        console.log(event)
-        console.log(data)
         data.checked = event.target.checked;
         if(!event.target.checked){
             this.selected.splice(this.selected.indexOf(data), 1);
@@ -410,7 +407,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     assignChckbox(event,data,key){
-        console.log(event.target.checked);
         if(typeof data[key] == 'boolean')
             data[key] = event.target.checked;
         else

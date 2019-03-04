@@ -194,4 +194,8 @@ export class AttachmentComponent implements OnInit {
     console.log(this.passData.tableData);
   }
 
+  onClickSave(){
+    $('#confirm-save #modalBtn2').trigger('click');
+  }
+
 }

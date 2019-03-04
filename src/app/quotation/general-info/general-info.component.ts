@@ -607,6 +607,10 @@ export class GeneralInfoComponent implements OnInit {
   			},0)  
   		}
   	}
+
+  	onClickSave(){
+  $('#confirm-save #modalBtn2').trigger('click');
+}
 }
 export interface SelectRequestMode {
 	name: string;

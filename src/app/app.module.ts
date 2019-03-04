@@ -314,6 +314,7 @@ import { BatchOsTakeupComponent } from './accounting-in-trust/month-end/batch-os
 import { MtnSectionCoversComponent } from './maintenance/mtn-section-covers/mtn-section-covers.component';
 import { JvPreviewAmountDetailsComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-preview-amount-details/jv-preview-amount-details.component';
 import { JvPreviewTaxDetailsComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-preview-tax-details/jv-preview-tax-details.component';
+import { ConfirmSaveComponent } from './_components/common/confirm-save/confirm-save.component';
 
 
 @NgModule({
@@ -635,6 +636,7 @@ import { JvPreviewTaxDetailsComponent } from './accounting-service/journal-vouch
         MtnSectionCoversComponent,
         JvPreviewAmountDetailsComponent,
         JvPreviewTaxDetailsComponent,
+        ConfirmSaveComponent,
     ],
 
     providers: [

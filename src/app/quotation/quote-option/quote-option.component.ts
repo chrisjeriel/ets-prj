@@ -516,4 +516,8 @@ setSelected(data){
   
 }
 
+onClickSave(){
+  $('#confirm-save #modalBtn2').trigger('click');
+}
+
 }

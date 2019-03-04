@@ -47,3 +47,5 @@
 <app-mtn-advice-wordings id="adviceWordingsLOV" (selectedData)="selectedAdviceLOV($event)"></app-mtn-advice-wordings>
 <app-mtn-attention id="attentionLOV" (selectedData)="selectedAttentionLOV($event)" [cedingId]="currentCedingId"></app-mtn-attention>
 <app-sucess-dialog [message]="resultMessage"></app-sucess-dialog>
+
+<app-confirm-save (onYes)="saveData()"></app-confirm-save>

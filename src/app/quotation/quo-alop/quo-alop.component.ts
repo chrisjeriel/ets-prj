@@ -281,4 +281,8 @@ export class QuoAlopComponent implements OnInit {
     }
   }
 
+  onClickSave(){
+  $('#confirm-save #modalBtn2').trigger('click');
+}
+
 }

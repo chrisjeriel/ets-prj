@@ -348,7 +348,7 @@ export class QuoteEndorsementComponent implements OnInit {
     endorsementReq:any;
     endorsementReqOc:any;
 
-    onClickSave(event){
+    saveData(){
         if(this.from === "quo-processing"){
             for (var i = 0 ; this.endorsementData.tableData.length > i; i++) {
               (this.saveEndt.createDate === null) ? new Date().toISOString() : this.saveEndt.createDate;
@@ -462,6 +462,10 @@ export class QuoteEndorsementComponent implements OnInit {
     plainQuotationNoOc(data: string){
         var arr = data.split('-');
         return arr[0]+ '-' +arr[1] + '-' + arr[2] + '-' + arr[3] + '-' + arr[4] + '-' + arr[5] ;
+    }
+
+    onClickSave(){
+      $('#confirm-save #modalBtn2').trigger('click');
     }
 
 }

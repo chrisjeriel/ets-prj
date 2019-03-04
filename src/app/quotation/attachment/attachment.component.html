@@ -63,7 +63,7 @@
         <div class="col-md-13 text-center">
             <div class="cust-btn-container" style="margin-top: 10px">
                 <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
-                <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="saveData()"><a>Save</a></button>
+                <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
             </div>
         </div>
     </div>
@@ -81,3 +81,6 @@
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
     </div>
 </app-modal>
+
+
+<app-confirm-save (onYes)="saveData()"></app-confirm-save>

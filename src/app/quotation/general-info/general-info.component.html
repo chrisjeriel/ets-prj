@@ -849,7 +849,7 @@
 		<div class="col-md-13 text-center">
 			<div class="cust-btn-container" style="margin-top: 10px !important;">
 				<button [class.d-none]="inquiryFlag" type="button" class="cust-btn"><a>Cancel</a></button>
-				<button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="saveQuoteGenInfo();"><a>Save</a></button>
+				<button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="onClickSave();"><a>Save</a></button>
 			</div>
 		</div>
 	</div>
@@ -919,3 +919,6 @@
     </div>
 </app-modal>
 
+
+
+<app-confirm-save (onYes)="saveQuoteGenInfo();"></app-confirm-save>
