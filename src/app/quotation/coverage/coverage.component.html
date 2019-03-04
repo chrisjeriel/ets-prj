@@ -97,7 +97,7 @@
             <fieldset class="scheduler-border fieldset-height">
                 <div class="form-row custom-row-inline-inset">
                     <label for="inputEmail4" class="form-control-sm top-label">Remarks</label>
-                    <textarea [readonly]="inquiryFlag" class="form-control form-control-sm"  [(ngModel)]="coverageData.remarks"></textarea>
+                    <textarea [readonly]="inquiryFlag" class="form-control form-control-sm" style="font-size: 11px;" [(ngModel)]="coverageData.remarks"></textarea>
                 </div>
             </fieldset>
         </div>
@@ -116,7 +116,7 @@
 </div>
 
 <app-sucess-dialog></app-sucess-dialog>
-<app-mtn-section-covers id="sectionCoversLOV" (selectedData)="selectedSectionCoversLOV($event)"></app-mtn-section-covers>
+<app-mtn-section-covers id="sectionCoversLOV" (selectedData)="selectedSectionCoversLOV($event)" [lineCd]="lineCd"></app-mtn-section-covers>
 <app-modal class="d-none" id="errorMdl">
     <div header>Error</div>
     <div body class="container-flex text-center">

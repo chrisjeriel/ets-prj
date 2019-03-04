@@ -1,6 +1,6 @@
-import { Component, OnInit, Input,  ViewChild } from '@angular/core';
-import { QuotationCoverageInfo, NotesReminders } from '../../_models';
-import { QuotationService, NotesService } from '@app/_services';
+import { Component, OnInit, Input,  ViewChild, Output } from '@angular/core';
+import { QuotationCoverageInfo, NotesReminders, MtnSectionCovers } from '../../_models';
+import { QuotationService, NotesService, MaintenanceService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
 import { ActivatedRoute } from '@angular/router';
@@ -44,10 +44,10 @@ export class CoverageComponent implements OnInit {
   }
 
   passData: any = {
-    tHeader: ['Cover Code','Section','Bullet No','Sum Insured','Add Sl'],
+    tHeader: ['Cover Code','Cover Name','Section','Bullet No','Sum Insured','Add Sl'],
     tableData:[],
-    dataTypes: ['text','select','select','currency','checkbox'],
-    opts: [{ selector: "section", vals: ["I", "II", "III"] }, { selector: "bulletNo", vals: ["1", "1.2", "1.3"] }],
+    dataTypes: ['text','text','select','select','currency','checkbox'],
+    opts: [{ selector: "section", vals: ["I", "II", "III"] }, { selector: "bulletNo", vals: ["1.0", "1.2", "1.3"] }],
     nData: {
       createDate: [0,0,0],
       createUser: "PCPR",
@@ -65,10 +65,10 @@ export class CoverageComponent implements OnInit {
     searchFlag: true,
     checkboxFlag: true,
     pageLength: 'unli',
-    widths:[228,1,1,200,1,1],
+    widths:[90,'auto',1,1,200,1,1],
     magnifyingGlass: ['coverCd'],
-    uneditable: [true,false,false,false,false],
-    keys:['coverCd','section','bulletNo','sumInsured','addSi']
+    uneditable: [true,true,false,false,false,false],
+    keys:['coverCd','shortName','section','bulletNo','sumInsured','addSi']
   };
 
   @Input() pageData:any;
@@ -92,7 +92,7 @@ export class CoverageComponent implements OnInit {
   sectionIII: number = 0;
   totalSi: number = 0;
 
-  constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,private modalService: NgbModal) {}
+  constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,private modalService: NgbModal, private maintenanceService: MaintenanceService) {}
 
   ngOnInit() {
     this.titleService.setTitle("Quo | Coverage");
@@ -122,7 +122,6 @@ export class CoverageComponent implements OnInit {
 
 
     this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
-      console.log(data)
       this.table.refreshTable();
         if(data.quotation.project !== null){
           this.coverageData = data.quotation.project.coverage;
@@ -145,6 +144,7 @@ export class CoverageComponent implements OnInit {
 
         if(data.quotation.project !== null ){
           for (var i = 0; i < data.quotation.project.coverage.sectionCovers.length; i++) {
+            console.log(data.quotation.project.coverage.sectionCovers[i])
             this.passData.tableData.push(data.quotation.project.coverage.sectionCovers[i]);
           }
           }
@@ -158,6 +158,8 @@ export class CoverageComponent implements OnInit {
 
       this.coverageData.currencyCd = this.quotationInfo.currencyCd;
       this.coverageData.currencyRt = this.quotationInfo.currencyRt;
+      this.lineCd      = this.quoteNo.split('-')[0];
+
     console.log(this.coverageData.currencyCd)
     
 
@@ -201,7 +203,7 @@ export class CoverageComponent implements OnInit {
 
 
 
-    if(this.editedData.length < 1){
+    if(this.editedData.length < 1 && this.deletedData.length < 1){
         this.errorMdlMessage = "No changes were made!"
          $('#errorMdl > #modalBtn').trigger('click');
     }else{
@@ -239,12 +241,17 @@ export class CoverageComponent implements OnInit {
 
   sectionCoversLOV(data){
         $('#sectionCoversLOV #modalBtn').trigger('click');
+
         //data.tableData = this.passData.tableData;
         this.sectionCoverLOVRow = data.index;
   }
 
   selectedSectionCoversLOV(data){
+    console.log(data)
     this.passData.tableData[this.sectionCoverLOVRow].coverCd = data.coverCode; 
+    this.passData.tableData[this.sectionCoverLOVRow].shortName = data.shortName;
+    this.passData.tableData[this.sectionCoverLOVRow].section = 'I';
+    this.passData.tableData[this.sectionCoverLOVRow].bulletNo = '1.0';
     this.passData.tableData[this.sectionCoverLOVRow].edited = true;
   }
 
@@ -252,7 +259,8 @@ export class CoverageComponent implements OnInit {
         this.coverageData.sectionISi =0;
         this.coverageData.sectionIISi =0;
         this.coverageData.sectionIIISi =0;
-       for(var i= 0; i< this.passData.tableData.length; i++){
+      
+      for(var i= 0; i< this.passData.tableData.length; i++){
          if(this.passData.tableData[i].addSi == 'Y' && !this.passData.tableData[i].deleted){
            if(this.passData.tableData[i].section == 'I'){
              this.coverageData.sectionISi += this.passData.tableData[i].sumInsured;
@@ -266,9 +274,9 @@ export class CoverageComponent implements OnInit {
            }
 
          }
-       }
+      }
        this.coverageData.totalSi = this.coverageData.sectionISi + this.coverageData.sectionIISi + this.coverageData.sectionIIISi;
-   this.focusBlur();
+     this.focusBlur();
   }
 
   focusBlur() {
