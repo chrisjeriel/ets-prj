@@ -134,6 +134,8 @@ export class DummyComponent implements OnInit {
     constructor(private quotationService: QuotationService, private modalService: NgbModal) { 
     }
 
+    testCont: any = 'TEST';
+
     ngOnInit() {
         this.tHeader.push("ID");
         this.tHeader.push("First Name");
@@ -287,5 +289,9 @@ export class DummyComponent implements OnInit {
         this.quotationService.saveQuoteCompetition(internalCompParams).subscribe((result: any) => {
           console.log(result);
         });
+    }
+
+    test() {
+        alert('NICE');
     }
 }

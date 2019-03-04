@@ -35,10 +35,8 @@
 										<input  type="text" class="form-control form-control-sm t" [(ngModel)]="genInfoData.quotationNo" readonly>
 									</div>
 									<div class="input-group ig-cust">
-										<label class="form-control-sm col-sm-2">Type of Cession</label>
-										
-										<input  type="text" class="form-control form-control-sm t" [(ngModel)]="genInfoData.cessionDesc" [readonly]="inquiryFlag">
-
+										<label class="form-control-sm col-sm-2">Type of Cession</label>			
+										<input  type="text" class="form-control form-control-sm t" [(ngModel)]="genInfoData.cessionDesc" readonly>
 										<label class="form-control-sm col-sm-2">Line Class</label>
 										<input type="text" [(ngModel)]="genInfoData.lineClassDesc" class="form-control form-control-sm req" [style.margin-right.px]="inquiryFlag ? '0' : '1'"
 										 appRequired [readonly]="inquiryFlag">
@@ -49,8 +47,8 @@
 										<label class="form-control-sm col-sm-2">Policy Number</label>
 										<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm" [(ngModel)]="genInfoData.policyNo">
 										<label class="form-control-sm col-sm-2">Status</label>
-										<input [readonly]="inquiryFlag" type="text"  class="form-control form-control-sm req"
-										  [(ngModel)]="genInfoData.statusDesc" appRequired>
+										<input type="text"  class="form-control form-control-sm"
+										  [(ngModel)]="genInfoData.statusDesc" readonly>
 									</div>
 									<div class="input-group ig-cust">
 										<label class="form-control-sm col-sm-2">Ceding Company</label>
@@ -101,7 +99,15 @@
 											<option value="F">Fax</option>
 											<option value="P">Phone</option>
 										</select>
-										<input type="text" *ngIf="inquiryFlag" class="form-control form-control-sm cust-sm req" [(ngModel)]="genInfoData.reqMode" readonly>
+
+										<ng-container *ngIf="inquiryFlag">
+											<ng-container [ngSwitch]="genInfoData.reqMode">
+												<input *ngSwitchCase="'E'" type="text" class="form-control form-control-sm cust-sm" [ngModel]="'Email'" readonly>
+												<input *ngSwitchCase="'F'" type="text" class="form-control form-control-sm cust-sm" [ngModel]="'Fax'" readonly>
+												<input *ngSwitchCase="'P'" type="text" class="form-control form-control-sm cust-sm" [ngModel]="'Phone'" readonly>
+											</ng-container>
+										</ng-container>
+										
 									</div>
 									<div *ngIf="line === 'MLP' || line === 'DOS'" class="input-group ig-cust">
 										<label class="form-control-sm col-sm-4">MBI Ref No</label>
@@ -712,7 +718,7 @@
 					</fieldset>
 				</ng-container>
 			</ng-container>
-			<fieldset class="scheduler-border cust-fs-padlr-offset">
+			<fieldset class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 7px !important;">
 				<legend class="scheduler-border">Quotation Wordings</legend>
 				<div class="col-sm-1">
 				</div>
@@ -725,37 +731,40 @@
 								Paragraph</label>
 						</div>
 						<div class="input-group" style="margin-top: 2px;">
-							<textarea [readonly]="inquiryFlag" style="font-size: 12px; margin-bottom: 38px;" class="form-control form-control-sm col-sm-6 req" [(ngModel)]="genInfoData.openingParag" appRequired></textarea>
+							<!-- <textarea  style="font-size: 12px; margin-bottom: 38px;" class="form-control form-control-sm col-sm-6 req" [(ngModel)]="genInfoData.openingParag" appRequired></textarea>
+							<div class="text-search-ico"><a style="position: absolute;" (click)="showOpeningWordingLov()"><i class="fa fa-search"></i></a>
+							<a><i class="fa fa-file-text" style="margin-top: 22px !important;"></i></a></div>
+							<span>&nbsp;</span>							
+
+							<textarea  style="font-size: 12px; margin-bottom: 38px; margin-left: 10px !important;" class="form-control form-control-sm col-sm-6 req" [(ngModel)]="genInfoData.closingParag" appRequired></textarea>
+							<div class="text-search-ico"><a style="position: absolute;" (click)="showClosingWordingLov()"><i class="fa fa-search"></i></a><a><i class="fa fa-file-text" style="margin-top: 22px !important;"></i></a></div>
+							<span>&nbsp;</span> -->
+
+							<div class="form-control-sm col-sm-6 edtr-cont" style="height: 60px; padding-right: 6px !important;">
+             					<text-editor [editorContent]="genInfoData.openingParag" (fetchContent)="genInfoData.openingParag = $event" [edtrOpnrPos]="2" [readonly]="inquiryFlag">
+             						<ng-container icon-1>
+             							<a (click)="showOpeningWordingLov()"><i class="fa fa-search"></i></a>
+             						</ng-container>
+             					</text-editor>
+          					</div>
+
+          					<div class="form-control-sm col-sm-6 edtr-cont" style="height: 60px; padding-left: 6px !important;">
+             					<text-editor [editorContent]="genInfoData.closingParag" (fetchContent)="genInfoData.closingParag = $event" [edtrOpnrPos]="2" [readonly]="inquiryFlag">
+             						<ng-container icon-1>
+             							<a (click)="showClosingWordingLov()"><i class="fa fa-search"></i></a>
+             						</ng-container>
+             					</text-editor>
+          					</div>
+							<!-- <textarea [readonly]="inquiryFlag" style="font-size: 12px; margin-bottom: 38px;" class="form-control form-control-sm col-sm-6 req" [(ngModel)]="genInfoData.openingParag" appRequired></textarea>
 							<div class="text-search-ico" [class.d-none]="inquiryFlag"><a style="position: absolute;" (click)="showOpeningWordingLov()"><i class="fa fa-search"></i></a>
 							<a><i class="fa fa-file-text" style="margin-top: 22px !important;"></i></a></div>
-							<span [class.d-none]="inquiryFlag">&nbsp;</span>
-							<!-- <div class="text-search-ico"><a><i class="fa fa-file-text" style="margin-top: 22px !important;"></i></a></div> -->
+							<span [class.d-none]="inquiryFlag">&nbsp;</span>							
 
 							<textarea [readonly]="inquiryFlag" style="font-size: 12px; margin-bottom: 38px; margin-left: 10px !important;" class="form-control form-control-sm col-sm-6 req" [(ngModel)]="genInfoData.closingParag" appRequired></textarea>
 							<div class="text-search-ico" [class.d-none]="inquiryFlag"><a style="position: absolute;" (click)="showClosingWordingLov()"><i class="fa fa-search"></i></a><a><i class="fa fa-file-text" style="margin-top: 22px !important;"></i></a></div>
-							<span [class.d-none]="inquiryFlag">&nbsp;</span>
+							<span [class.d-none]="inquiryFlag">&nbsp;</span> -->
 						</div>						
 					</div>
-					<!-- <div class="form-row">
-						<div class="input-group">
-							<label class="form-control-sm top-label col-sm-6" style="text-align: left !important;">Opening
-								Paragraph</label>
-							<label class="form-control-sm top-label col-sm-6" style="text-align: left !important; padding-left: 7px !important;">Closing
-								Paragraph</label>
-						</div>
-						<div class="input-group" style="margin-top: 14px !important;margin-bottom: 11px !important;">
-							<textarea  style="font-size: 12px; margin-bottom: 38px;" class="form-control form-control-sm col-sm-6" [(ngModel)]="genInfoData.openingParag"></textarea>
-							<div class="text-search-ico" (click)="showOpeningWordingLov()"><a><i class="fa fa-search"></i></a></div>
-							<span>&nbsp;</span>
-							<textarea  style="font-size: 12px; margin-bottom: 38px; margin-left: 10px !important;" class="form-control form-control-sm col-sm-6" [(ngModel)]="genInfoData.closingParag"></textarea>
-							<div class="text-search-ico" (click)="showClosingWordingLov()"><a><i class="fa fa-search"></i></a></div>
-							<span>&nbsp;</span>
-						</div>
-						<div class="input-group">
-							<div class="text-search-ico" style="margin-top: -76px !important;margin-left: 343px !important;"><a><i class="fa fa-file-text"></i></a></div>
-							<div class="text-search-ico" style="margin-top: -77px !important;margin-left: 357px !important;"><a><i class="fa fa-file-text"></i></a></div>
-						</div>
-					</div> -->
 				</div>
 				<div class="col-sm-1">
 				</div>
@@ -885,8 +894,8 @@
 <app-mtn-intermediary id="intLOV" (selectedData)="setInt($event)"></app-mtn-intermediary>
 <app-mtn-line-class id="lineClassLOV" (selectedData)="setLineClass($event)" [line]="line"></app-mtn-line-class>
 <app-mtn-object id="objIdLov" (selectedData)="setObj($event)" [line]="line"></app-mtn-object>
-<app-mtn-quotation-wordings id="wordingOpeningIdLov" (selectedData)="setOpeningWording($event)" [line]="line"></app-mtn-quotation-wordings>
-<app-mtn-quotation-wordings id="wordingClosingIdLov" (selectedData)="setClosingWording($event)" [line]="line"></app-mtn-quotation-wordings> 
+<app-mtn-quotation-wordings id="wordingOpeningIdLov" (selectedData)="setOpeningWording($event)" [line]="line" [type]="'O'"></app-mtn-quotation-wordings>
+<app-mtn-quotation-wordings id="wordingClosingIdLov" (selectedData)="setClosingWording($event)" [line]="line" [type]="'C'"></app-mtn-quotation-wordings> 
 
 <app-modal class="d-none" id="successMdl">
 	<div header>Success</div>
