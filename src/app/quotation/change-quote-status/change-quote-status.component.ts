@@ -39,7 +39,7 @@ export class ChangeQuoteStatusComponent implements OnInit {
         this.titleService.setTitle("Quo | Change Quote Status");
         setTimeout(function () { $('#modalBtn').trigger('click'); }, 100);        
 
-        this.quotationService.getQuoProcessingData().subscribe(data => {
+        this.quotationService.getQuoProcessingData([]).subscribe(data => {
             this.records = data['quotationList'];
 
             for(let rec of this.records){

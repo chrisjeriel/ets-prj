@@ -27,64 +27,7 @@ export class CustNonDatatableComponent implements OnInit {
     unselect: boolean = false;
     
     
-    @Input() filterObj:any[] = [
-        {
-            key: 'quotationNo',
-            title:'Quotation No.',
-            dataType: 'text'
-        },
-        {
-            key: 'cessionType',
-            title:'Type of Cession',
-            dataType: 'text'
-        },
-        {
-            key: 'lineClass',
-            title:'Line Class',
-            dataType: 'text'
-        },
-        {
-            key: 'quoteStatus',
-            title:'Quote Status',
-            dataType: 'text'
-        },
-        {
-            key: 'cedingCompany',
-            title:'Ceding Company',
-            dataType: 'text'
-        },
-        {
-            key: 'principal',
-            title:'Principal',
-            dataType: 'text'
-        },
-        {
-            key: 'insured',
-            title:'Insured',
-            dataType: 'text'
-        },
-        {
-            key: 'risk',
-            title:'Risk',
-            dataType: 'text'
-        },
-        {
-            key: 'object',
-            title:'Object',
-            dataType: 'text'
-        },
-        {
-            key: 'location',
-            title:'Insured',
-            dataType: 'text'
-        },
-        {
-            key: 'quoteDate',
-            title:'Period From',
-            dataType: 'date'
-        },
-
-    ];
+    @Input() filterObj:any[] = [];
 
     @Output() rowClick: EventEmitter<any> = new EventEmitter();
     @Output() rowDblClick: EventEmitter<any> = new EventEmitter();
@@ -94,6 +37,10 @@ export class CustNonDatatableComponent implements OnInit {
     @Output() copy: EventEmitter<any> = new EventEmitter();
     @Output() save: EventEmitter<any> = new EventEmitter();
     @Output() print: EventEmitter<any> = new EventEmitter();
+
+    //DB Search Query
+    searchQuery: any[] = [];
+    @Output() searchToDb: EventEmitter<any> = new EventEmitter();
 
     @Input() printBtn: boolean = false;
     //@Input() fixedCol: boolean = false;
@@ -329,21 +276,33 @@ export class CustNonDatatableComponent implements OnInit {
         return sortBy && i==this.sortIndex;
     }
 
+    
     filterDisplay(filterObj,searchString){
+        //OLD VERSION
         this.displayData = this.passData.tableData.filter((item) => this.dataKeys.some(key => item.hasOwnProperty(key) && new RegExp(searchString, 'gi').test(item[key])));
         for (var filt in filterObj) {    
             if (!filterObj[filt]["enabled"]) {continue;}
             this.displayData = this.displayData.filter(function(itm){
                 return itm[filterObj[filt].key].toString().toLowerCase( ).includes(filterObj[filt].search.toLowerCase( ));
-
-/*=======
-                     if(filterObj[filt]["dataType"]=="date")
-                    return itm[filterObj[filt].key].toString().includes(new Date(filterObj[filt].search).toString());
-                return itm[filterObj[filt].key].includes(filterObj[filt].search);
->>>>>>> b1c3410835a529fe6647f1324d64311af1ffe184*/
             })
         }
         this.addFiller();
+    }
+
+    dbQuery(filterObj){
+        this.searchQuery = [];
+        for(var e of filterObj){
+            /*if(e.enabled !== undefined && e.enabled){*/
+                this.searchQuery.push(
+                    {
+                        key: e.key,
+                        search: (e.search === undefined || !e.enabled) ? '' : e.search,
+                    }
+                );
+            /*}*/
+        }
+        this.searchToDb.emit(this.searchQuery);
+        this.loadingFlag = true;
     }
 
     addFiller(){

@@ -119,7 +119,7 @@ export class ReadyForPrintingComponent implements OnInit {
   ngOnInit() {
     this.btnDisabled = true;
 
-    this.quotationService.getQuoProcessingData().subscribe(data => {
+    this.quotationService.getQuoProcessingData([]).subscribe(data => {
             this.records = data['quotationList'];
 
             for(let rec of this.records){
