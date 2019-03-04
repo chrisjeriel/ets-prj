@@ -67,7 +67,7 @@ export class CoverageComponent implements OnInit {
     pageLength: 'unli',
     widths:[90,'auto',1,1,200,1,1],
     magnifyingGlass: ['coverCd'],
-    uneditable: [true,true,false,false,false,false],
+    uneditable: [false,true,false,false,false,false],
     keys:['coverCd','shortName','section','bulletNo','sumInsured','addSi']
   };
 
@@ -122,6 +122,7 @@ export class CoverageComponent implements OnInit {
 
     this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
       this.table.refreshTable();
+        console.log(data)
         if(data.quotation.project !== null){
           this.coverageData = data.quotation.project.coverage;
           for(var i = 0; i < data.quotation.project.coverage.sectionCovers.length; i++){
@@ -139,17 +140,19 @@ export class CoverageComponent implements OnInit {
           this.coverageData.sectionIISi = this.sectionII;
           this.coverageData.sectionIIISi = this.sectionIII;
           this.coverageData.totalSi = this.sectionI + this.sectionII + this.sectionIII;
+
+          setTimeout(() => {
+            this.focusBlur();
+          }, 0)
         }
 
         if(data.quotation.project !== null ){
           for (var i = 0; i < data.quotation.project.coverage.sectionCovers.length; i++) {
-            console.log(data.quotation.project.coverage.sectionCovers[i])
             this.passData.tableData.push(data.quotation.project.coverage.sectionCovers[i]);
           }
           }
           setTimeout(() => {
-            $('input[appCurrency]').focus();
-            $('input[appCurrency]').blur();
+            this.focusBlur();
           }, 0)
 
       this.table.refreshTable();
@@ -157,17 +160,8 @@ export class CoverageComponent implements OnInit {
 
       this.coverageData.currencyCd = this.quotationInfo.currencyCd;
       this.coverageData.currencyRt = this.quotationInfo.currencyRt;
-    
-
-    // this.quotationCoverageInfo = new QuotationCoverageInfo(null, null, null, null, null, null, null, null);
-    // this.quotationCoverageInfo.quotationNo = "MOCK DATA";
-    // this.quotationCoverageInfo.insured = "MOCK DATA";
-    // this.quotationCoverageInfo.currency = "MOCK DATA";
-    // this.quotationCoverageInfo.sectionOne = "MOCK DATA";
-    // this.quotationCoverageInfo.sectionTwo = "MOCK DATA";
-    // this.quotationCoverageInfo.sectionThree = "MOCK DATA";
-    // this.quotationCoverageInfo.deductibles = "MOCK DATA";
-    // this.quotationCoverageInfo.remarks = "MOCK DATA";
+      this.lineCd      = this.quoteNo.split('-')[0];
+      
   }
 
 
@@ -200,12 +194,12 @@ export class CoverageComponent implements OnInit {
 
   }
 
-
+ 
   saveData(){
     
     this.prepareSaveData();
 
-    if(this.editedData.length < 1 && this.deletedData.length < 1){
+    if(this.editedData.length < 1 && this.deletedData.length < 1 && this.coverageData.remarks == null){
         this.errorMdlMessage = "No changes were made!"
          $('#errorMdl > #modalBtn').trigger('click');
     }else{
@@ -249,7 +243,6 @@ export class CoverageComponent implements OnInit {
   }
 
   selectedSectionCoversLOV(data){
-    console.log(data)
     this.passData.tableData[this.sectionCoverLOVRow].coverCd = data.coverCode; 
     this.passData.tableData[this.sectionCoverLOVRow].shortName = data.shortName;
     this.passData.tableData[this.sectionCoverLOVRow].section = 'I';
@@ -259,9 +252,9 @@ export class CoverageComponent implements OnInit {
 
   update(event){
       this.lineCd = this.quoteNo.split('-')[0];
-        this.coverageData.sectionISi =0;
-        this.coverageData.sectionIISi =0;
-        this.coverageData.sectionIIISi =0;
+      this.coverageData.sectionISi =0;
+      this.coverageData.sectionIISi =0;
+      this.coverageData.sectionIIISi =0;
       
       for(var i= 0; i< this.passData.tableData.length; i++){
          if(this.passData.tableData[i].addSi == 'Y' && !this.passData.tableData[i].deleted){

@@ -49,7 +49,7 @@ export class MtnSectionCoversComponent implements OnInit {
   openModal(){
         this.sectionCover.tableData = [];
         this.maintenanceService.getMtnSectionCovers(this.lineCd,this.coverCd).subscribe((data: any) =>{
-          
+          console.log(data)
           for(var i=0; i< data.sectionCovers.length;i++){
               if(data.sectionCovers[i].lineCd == this.lineCd ){
                  this.sectionCover.tableData.push(new MtnSectionCovers(data.sectionCovers[i].coverCd,data.sectionCovers[i].coverCdAbbr,data.sectionCovers[i].description));

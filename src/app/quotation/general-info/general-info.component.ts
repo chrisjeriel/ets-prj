@@ -557,7 +557,9 @@ export class GeneralInfoComponent implements OnInit {
   			riskId: this.project.riskId, //added by paul
   			currencyCd: this.genInfoData.currencyCd,
   			currencyRt: this.genInfoData.currencyRt,
-  			typeOfCession: this.genInfoData.cessionDesc
+  			typeOfCession: this.genInfoData.cessionDesc,
+  			status: this.genInfoData.status,
+  			reasonCd: this.genInfoData.reasonCd
   		});		
   	}
 
