@@ -3,6 +3,7 @@ import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from '@app/app.component';
 import { retry, catchError } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { DummyInfo } from '../../../_models';
 
@@ -92,13 +93,14 @@ export class CustEditableNonDatatableComponent implements OnInit {
     searchString: string;
     displayLength: number;
     p:number = 1;
+    p2:number = 1;
     fillData:any = {};
     checked: boolean;
     @Input() totalFlag = false;
     @Input() widths: string[] = [];
     unliFlag:boolean = false;
     @Output() clickLOV: EventEmitter<any> = new EventEmitter();
-    constructor(config: NgbDropdownConfig, public renderer: Renderer, private appComponent: AppComponent) { 
+    constructor(config: NgbDropdownConfig, public renderer: Renderer, private appComponent: AppComponent,private modalService: NgbModal) { 
         config.placement = 'bottom-right';
         config.autoClose = false;
     }
@@ -182,6 +184,10 @@ export class CustEditableNonDatatableComponent implements OnInit {
         }
         this.retrieveFromSub();
         // this.addFiller();
+
+
+        //temporary fix delete this later
+        setTimeout(()=>{this.refreshTable()},2000)
     }
 
     processData(key: any, data: any) {
@@ -202,6 +208,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
 
 
     onClickDelete() {
+        console.log(this.passData.tableData);
         for (var i = 0; i < this.passData.tableData.length; ++i) {
             if(this.passData.tableData[i].checked){
                 this.passData.tableData[i].checked = false;
@@ -384,6 +391,8 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     removeSelected(event, data){
+        console.log(event)
+        console.log(data)
         data.checked = event.target.checked;
         if(!event.target.checked){
             this.selected.splice(this.selected.indexOf(data), 1);
@@ -409,6 +418,19 @@ export class CustEditableNonDatatableComponent implements OnInit {
                 (data:any)=>{this.retrieveData.emit(data);this.failed=false;this.loadingFlag=false},
                 (err) => {console.log(err);this.failed=true;this.loadingFlag=false});
         }
+    }
+
+    selectAll(){
+        for (var i = (this.p2*this.passData.pageLength) - this.passData.pageLength; i < this.p2*this.passData.pageLength; i++) {
+            console.log('count: '+ i)
+            if(this.displayData[i] != this.fillData)
+                this.displayData[i].checked = true;
+        }
+        this.refreshTable();
+    }
+
+    confirmDelete(){
+        $('#confirm-delete #modalBtn').trigger('click');
     }
  
 }

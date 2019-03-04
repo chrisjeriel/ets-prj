@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChildren, QueryList, Input} from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList, Input, ViewChild} from '@angular/core';
 import { QuotationInfo, QuotationOption, QuotationOtherRates, QuotationDeductibles } from '../../_models';
 import { QuotationService } from '../../_services';
 import { Title } from '@angular/platform-browser';
@@ -14,6 +14,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class QuoteOptionComponent implements OnInit {
     @ViewChildren(CustEditableNonDatatableComponent) table: QueryList<CustEditableNonDatatableComponent>;
+    @ViewChild("deductibleTable") deductibleTable: CustEditableNonDatatableComponent;
 /*    private quotationInfo: QuotationInfo;*/
     private quotationOption: QuotationOption;
     private quotationOtherRates: QuotationOtherRates;
@@ -338,7 +339,7 @@ export class QuoteOptionComponent implements OnInit {
          $('#deductibleTable button').removeAttr("disabled")
         if (data.deductiblesList != null || data.deductiblesList != undefined ){
           this.deductiblesData.tableData = data.deductiblesList;
-          this.table.forEach(table => { table.refreshTable() });
+          this.deductibleTable.refreshTable();
         } 
         this.deductiblesData.nData.optionId = data.optionId;
 
