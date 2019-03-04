@@ -230,6 +230,7 @@ export class CustNonDatatableComponent implements OnInit {
             this.btnDisabled = false;
             if(this.indvSelect == data){
                 this.unselect = true;
+                this.btnDisabled = true;
                 this.indvSelect = null;
             }else{
                 this.indvSelect = data;
@@ -293,12 +294,22 @@ export class CustNonDatatableComponent implements OnInit {
         this.searchQuery = [];
         for(var e of filterObj){
             /*if(e.enabled !== undefined && e.enabled){*/
-                this.searchQuery.push(
-                    {
-                        key: e.key,
-                        search: (e.search === undefined || !e.enabled) ? '' : e.search,
-                    }
-                );
+                /*if(e.dataType === 'date'){
+                    //e.search = (e.search === undefined || !e.enabled) ? '' : new Date(e.search).toISOString();
+                    this.searchQuery.push(
+                        {
+                            key: e.key,
+                            search: (e.search === undefined || !e.enabled) ? '' : e.search,
+                        }
+                    );
+                }else{*/
+                    this.searchQuery.push(
+                        {
+                            key: e.key,
+                            search: (e.search === undefined || !e.enabled) ? '' : e.search,
+                        }
+                    );
+                //}
             /*}*/
         }
         this.searchToDb.emit(this.searchQuery);
