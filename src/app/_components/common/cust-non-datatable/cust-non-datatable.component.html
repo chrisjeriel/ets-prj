@@ -54,7 +54,7 @@
                     <input [disabled]="!filt.enabled" *ngSwitchCase="'datespan'" type="date" class="form-control cust-sm" [(ngModel)]="filt.search2" (ngModelChange)="filterDisplay(passData.filters,searchString)">
                 </div>
                 <div class="input-group">
-                    <button class="cust-filter cust-tbl-submit" (click)="filterDisplay(filterObj,searchString)"><a>Ok</a></button>
+                    <button class="cust-filter cust-tbl-submit" (click)="filterDisplay(filterObj,searchString) ; onClickOk($event)"><a>Ok</a></button>
                 </div>
             </div>
         </div>

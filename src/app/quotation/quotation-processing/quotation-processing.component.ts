@@ -218,7 +218,6 @@ export class QuotationProcessingComponent implements OnInit {
 
                this.table.forEach(table => { table.refreshTable() });
         });
-
     }
 
     onClickAdd(event) {
@@ -236,6 +235,10 @@ export class QuotationProcessingComponent implements OnInit {
         setTimeout(() => {
             this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.typeOfCession,  quotationNo : this.quotationNo, from: 'quo-processing', savingType: 'normal' }], { skipLocationChange: true });
         },100);
+    }
+
+    onClickOk(event) {
+        console.log(event);
     }
 
     onClickCopy(event) {

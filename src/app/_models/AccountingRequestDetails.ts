@@ -35,6 +35,7 @@ export class PaymentToAdjusters {
 export class PaymentToOtherParty {
 	claimRequestNo: string;
 	claimNo: string;
+	policyNo: string;
 	cedingCompany: string;
 	insured: string;
 	histNo: number;
@@ -46,10 +47,11 @@ export class PaymentToOtherParty {
 	amount: number;
 	amountPhp: number;
 
-	constructor(claimRequestNo: string,claimNo: string,cedingCompany: string,insured: string,histNo: number,histType: string,exGratia: string,curr: string,currRate: number,reserveAmount: number,amount: number,amountPhp: number){
+	constructor(claimRequestNo: string,claimNo: string,policyNo: string,cedingCompany: string,insured: string,histNo: number,histType: string,exGratia: string,curr: string,currRate: number,reserveAmount: number,amount: number,amountPhp: number){
 
 		this.claimRequestNo = claimRequestNo;
 		this.claimNo = claimNo;
+		this.policyNo = policyNo;
 		this.cedingCompany = cedingCompany;
 		this.insured = insured;
 		this.histNo = histNo;
@@ -69,6 +71,7 @@ export class PaymentToOtherParty {
 export class PaymentToCedingCompany {
 	claimRequestNo: string;
 	claimNo: string;
+	policyNo: string;
 	cedingCompany: string;
 	insured: string;
 	histNo: number;
@@ -80,10 +83,11 @@ export class PaymentToCedingCompany {
 	amount: number;
 	amountPhp: number;
 
-	constructor(claimRequestNo: string,claimNo: string,cedingCompany: string,insured: string,histNo: number,histType: string,exGratia: string,curr: string,currRate: number,reserveAmount: number,amount: number,amountPhp: number){
+	constructor(claimRequestNo: string,claimNo: string, policyNo: string,cedingCompany: string,insured: string,histNo: number,histType: string,exGratia: string,curr: string,currRate: number,reserveAmount: number,amount: number,amountPhp: number){
 
 		this.claimRequestNo = claimRequestNo;
 		this.claimNo = claimNo;
+		this.policyNo = policyNo;
 		this.cedingCompany = cedingCompany;
 		this.insured = insured;
 		this.histNo = histNo;

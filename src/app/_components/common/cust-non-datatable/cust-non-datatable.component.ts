@@ -94,6 +94,7 @@ export class CustNonDatatableComponent implements OnInit {
     @Output() copy: EventEmitter<any> = new EventEmitter();
     @Output() save: EventEmitter<any> = new EventEmitter();
     @Output() print: EventEmitter<any> = new EventEmitter();
+    @Output() ok: EventEmitter<any> = new EventEmitter();
 
     @Input() printBtn: boolean = false;
     //@Input() fixedCol: boolean = false;
@@ -346,6 +347,10 @@ export class CustNonDatatableComponent implements OnInit {
             })
         }
         this.addFiller();
+    }
+
+    onClickOk(event){
+        this.ok.next(event);
     }
 
     addFiller(){

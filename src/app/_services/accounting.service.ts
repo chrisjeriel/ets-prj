@@ -594,7 +594,7 @@ export class AccountingService {
 
 	getPaymentToOtherParty() {
 		this.paymentToOtherParty = [
-			new PaymentToOtherParty("CSR-2018-10-00022","CAR-2018-000048","Asia United Insurance Inc","2nd inn. inc", 5, "Other Expenses","Y","PHP",1,-351000,350842.89,350842.89)
+			new PaymentToOtherParty("CSR-2018-10-00022","CAR-2018-000048","CAR-2018-00004","Asia United Insurance Inc","2nd inn. inc", 5, "Other Expenses","Y","PHP",1,-351000,350842.89,350842.89)
 		];
 		return this.paymentToOtherParty;
 	}
@@ -602,7 +602,7 @@ export class AccountingService {
 
 	getPaymentToCedingCompany() {
 		this.paymentToCedingCompany = [ 
-			new PaymentToCedingCompany("CSR-2018-10-00022","CAR-2018-000048","Asia United Insurance Inc","2nd inn. inc", 3, "Loss","Y","PHP",1,-351000,350842.89,350842.89)
+			new PaymentToCedingCompany("CSR-2018-10-00022","CAR-2018-000048","CAR-2018-00004","Asia United Insurance Inc","2nd inn. inc", 3, "Loss","Y","PHP",1,-351000,350842.89,350842.89)
 		];
 		return this.paymentToCedingCompany;
 	}

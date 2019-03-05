@@ -26,41 +26,41 @@ export class PaymentRequestDetailsComponent implements OnInit {
   	deleteFlag: true,
   	total: [null, null, null, null,null, null, null,null, null, 'Total', null, 'amount', 'amountPhp'],
   	genericBtn: 'Save',
-    widths: [150,150,150,200,200,1,150,1,1,85,120,120,120],
+    widths: [130,120,120,200,200,1,150,1,1,85,120,120,120],
     magnifyingGlass: ['claimRequestNo']
   }
 
   OtherPartyData: any = {
   	tableData: this.accountingService.getPaymentToOtherParty(),
-  	tHeader: ['Claim Request No', 'Claim No', 'Payment For/To', 'Insured', 'Hist No', 'Hist Type', 'Ex-Gratia', 'Curr','Curr Rate','Reserve Amount','Amount','Amount (PHP)'],
-  	dataTypes: ['text', 'text', 'text', 'text', 'number', 'text', 'checkbox','text', 'percent','currency', 'currency', 'currency'],
-  	nData: new PaymentToOtherParty(null,null,null,null,null,null,null,null,null,null,null,null),
+  	tHeader: ['Claim Request No', 'Claim No', 'Policy No.', 'Payment For/To', 'Insured', 'Hist No', 'Hist Type', 'Ex-Gratia', 'Curr','Curr Rate','Reserve Amount','Amount','Amount (PHP)'],
+  	dataTypes: ['text', 'text', 'text', 'text', 'text', 'number', 'text', 'checkbox','text', 'percent','currency', 'currency', 'currency'],
+  	nData: new PaymentToOtherParty(null,null,null,null,null,null,null,null,null,null,null,null,null),
   	paginateFlag: true,
   	infoFlag: true,
   	pageID: 1,
   	checkFlag: true,
   	addFlag: true,
   	deleteFlag: true,
-  	total: [null, null, null,null, null, null,null, null, 'Total', null, 'amount', 'amountPhp'],
+  	total: [null, null, null, null,null, null, null,null, null, 'Total', null, 'amount', 'amountPhp'],
   	genericBtn: 'Save',
-    widths: [150,150,200,200,1,150,1,1,85,120,120,120],
+    widths: [130,120, 120,200,200,1,150,1,1,85,120,120,120],
     magnifyingGlass: ['claimRequestNo']
   }
 
   CedingCompanyData: any = {
   	tableData: this.accountingService.getPaymentToCedingCompany(),
-  	tHeader: ['Claim Request No', 'Claim No', 'Payment For/To', 'Insured', 'Hist No', 'Hist Type', 'Ex-Gratia','Curr','Curr Rate','Reserve Amount','Amount','Amount (PHP)'],
-    dataTypes: ['text', 'text', 'text', 'text', 'number', 'text', 'checkbox','text', 'percent','currency', 'currency', 'currency'],
-  	nData: new PaymentToCedingCompany(null,null,null,null,null,null,null,null,null,null,null,null),
+  	tHeader: ['Claim Request No', 'Claim No','Policy No.', 'Payment For/To', 'Insured', 'Hist No', 'Hist Type', 'Ex-Gratia','Curr','Curr Rate','Reserve Amount','Amount','Amount (PHP)'],
+    dataTypes: ['text', 'text', 'text', 'text', 'text', 'number', 'text', 'checkbox','text', 'percent','currency', 'currency', 'currency'],
+  	nData: new PaymentToCedingCompany(null,null,null,null,null,null,null,null,null,null,null,null,null),
   	paginateFlag: true,
   	infoFlag: true,
   	pageID: 1,
   	checkFlag: true,
   	addFlag: true,
   	deleteFlag: true,
-  	total: [null, null, null,null, null, null,null, null, 'Total', null, 'amount', 'amountPhp'],
+  	total: [null, null, null, null,null, null, null,null, null, 'Total', null, 'amount', 'amountPhp'],
   	genericBtn: 'Save',
-   widths: [150,150,200,200,1,150,1,1,85,120,120,120],
+   widths: [130,120, 120,200,200,1,150,1,1,85,120,120,120],
     magnifyingGlass: ['claimRequestNo']
   }
 
