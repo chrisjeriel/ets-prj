@@ -89,6 +89,7 @@ export class QuoAlopComponent implements OnInit {
     loading:boolean = true;
     dialogMessage:string = "";
     dialogIcon: string = "";
+    showAlopItem:boolean = false;
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute) { }
 
     ngOnInit() {
@@ -158,7 +159,10 @@ export class QuoAlopComponent implements OnInit {
     }
 
     openAlopItem(){
+      this.showAlopItem = true;
       this.itemInfoData.tableData = [];
+      console.log(this.itemInfoData.tableData)
+      this.itemInfoData.nData.itemNo =  this.itemInfoData.tableData.filter((data)=>{return !data.deleted}).length + 1 ;
       this.quotationService.getALOPItemInfos(this.quoteNo,this.quoteId).subscribe((data: any) => {
             if(data.quotation[0] !==undefined){
               this.itemInfoData.nData.itemNo = data.quotation[0] === undefined ? 1:data.quotation[0].alop.alopItemList.length + 1; 
@@ -173,7 +177,10 @@ export class QuoAlopComponent implements OnInit {
       while(this.itemInfoData.tableData.length>0){
         this.itemInfoData.tableData.pop();
       }
-      $('#alopItemModal #modalBtn').trigger('click');
+      setTimeout(()=>{
+        $('#alopItemModal #modalBtn').trigger('click');
+      },0)
+      
        
     }
 
@@ -197,10 +204,12 @@ export class QuoAlopComponent implements OnInit {
       console.log(JSON.stringify(savedData));
       this.quotationService.saveQuoteAlopItem(savedData).subscribe((data: any) => {
         if(data['returnCode'] == 0) {
-          this.errorMdlMessage = data['errorList'][0].errorMessage;
-          $('#errorMdl > #modalBtn').trigger('click');
+          this.dialogMessage = data['errorList'][0].errorMessage;
+          this.dialogIcon = "error";
+          $('#successModalBtn').trigger('click');
         } else{
-          $('app-sucess-dialog #modalBtn').trigger('click');
+          $('#successModalBtn').trigger('click');
+          $('.ng-dirty').removeClass('ng-dirty')
         }
       });
       
@@ -229,7 +238,6 @@ export class QuoAlopComponent implements OnInit {
     do {
       delFlag = false;
       for (var i = 0; i < data.length-delCount; ++i) {
-        console.log(data[i]);
         
         if(data[i].deleted){
           delCount ++;
@@ -249,9 +257,8 @@ export class QuoAlopComponent implements OnInit {
 
 
     this.itemInfoData.tableData=data;
-    this.itemInfoData.nData.itemNo =  this.itemInfoData.tableData.length + 1 ; 
+    this.itemInfoData.nData.itemNo =  this.itemInfoData.tableData.filter((data)=>{return !data.deleted}).length + 1 ; 
     this.table.refreshTable();
-    console.log(this.itemInfoData.nData.itemNo);
   }
 
   adjustItemNo(data,index){
