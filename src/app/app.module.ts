@@ -319,6 +319,7 @@ import { OtherRatesDirective } from './_directives/other-rates.directive';
 import { UsersMaintenanceComponent } from './security/users-maintenance/users-maintenance.component';
 import { UserGroupsMaintenanceComponent } from './security/users-maintenance/user-groups-maintenance/user-groups-maintenance.component';
 import { UsersComponent } from './security/users-maintenance/users/users.component';
+import { ConfirmSaveComponent } from './_components/common/confirm-save/confirm-save.component';
 
 
 @NgModule({
@@ -645,6 +646,7 @@ import { UsersComponent } from './security/users-maintenance/users/users.compone
         UsersMaintenanceComponent,
         UserGroupsMaintenanceComponent,
         UsersComponent,
+        ConfirmSaveComponent,
     ],
 
     providers: [

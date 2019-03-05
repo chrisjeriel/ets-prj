@@ -307,4 +307,8 @@ export class CoverageComponent implements OnInit {
     this.coverageData.currencyRt = data.currencyRt;
     this.focusBlur();
   }
+
+  onClickSave(){
+  $('#confirm-save #modalBtn2').trigger('click');
+}
 }

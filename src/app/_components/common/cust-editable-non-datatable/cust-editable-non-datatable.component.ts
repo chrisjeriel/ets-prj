@@ -1,8 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter, Renderer } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, Renderer, ViewChild } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from '@app/app.component';
 import { retry, catchError } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 import { DummyInfo } from '../../../_models';
 
@@ -13,7 +15,7 @@ import { DummyInfo } from '../../../_models';
     providers: [NgbDropdownConfig]
 })
 export class CustEditableNonDatatableComponent implements OnInit {
-
+    @ViewChild("deleteModal") deleteModal:ModalComponent;
     @Input() tableData: any[] = [];
     @Output() tableDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
     @Input() tHeader: any[] = [];
@@ -92,13 +94,14 @@ export class CustEditableNonDatatableComponent implements OnInit {
     searchString: string;
     displayLength: number;
     p:number = 1;
+    p2:number = 1;
     fillData:any = {};
     checked: boolean;
     @Input() totalFlag = false;
     @Input() widths: string[] = [];
     unliFlag:boolean = false;
     @Output() clickLOV: EventEmitter<any> = new EventEmitter();
-    constructor(config: NgbDropdownConfig, public renderer: Renderer, private appComponent: AppComponent) { 
+    constructor(config: NgbDropdownConfig, public renderer: Renderer, private appComponent: AppComponent,private modalService: NgbModal) { 
         config.placement = 'bottom-right';
         config.autoClose = false;
     }
@@ -182,6 +185,10 @@ export class CustEditableNonDatatableComponent implements OnInit {
         }
         this.retrieveFromSub();
         // this.addFiller();
+
+
+        //temporary fix delete this later
+        setTimeout(()=>{this.refreshTable()},2000)
     }
 
     processData(key: any, data: any) {
@@ -202,13 +209,19 @@ export class CustEditableNonDatatableComponent implements OnInit {
 
 
     onClickDelete() {
-        for (var i = 0; i < this.passData.tableData.length; ++i) {
-            if(this.passData.tableData[i].checked){
-                this.passData.tableData[i].checked = false;
-                this.passData.tableData[i].deleted = true;
-                this.passData.tableData[i].edited = true;
-            }
+        // for (var i = 0; i < this.passData.tableData.length; ++i) {
+        //     if(this.passData.tableData[i].checked){
+        //         this.passData.tableData[i].checked = false;
+        //         this.passData.tableData[i].deleted = true;
+        //         this.passData.tableData[i].edited = true;
+        //     }
+        // }
+        for(let i = 0; i<this.selected.length;i++){
+            this.selected[i].checked = false;
+            this.selected[i].deleted = true;
+            this.selected[i].edited = true;
         }
+        this.selected = [];
         this.refreshTable();
         this.search(this.searchString);
         this.tableDataChange.emit(this.passData.tableData);
@@ -394,7 +407,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     assignChckbox(event,data,key){
-        console.log(event.target.checked);
         if(typeof data[key] == 'boolean')
             data[key] = event.target.checked;
         else
@@ -409,6 +421,28 @@ export class CustEditableNonDatatableComponent implements OnInit {
                 (data:any)=>{this.retrieveData.emit(data);this.failed=false;this.loadingFlag=false},
                 (err) => {console.log(err);this.failed=true;this.loadingFlag=false});
         }
+    }
+
+    selectAll(value){
+        for (let data of this.displayData) {
+            if(data != this.fillData){
+                data.checked = value;
+                this.selected.push(data);
+            }
+        }
+        this.refreshTable();
+    }
+
+    confirmDelete(){
+        if(this.selected.length != 0 ){
+            $('#confirm-delete'+this.passData.pageID+' #modalBtn2').trigger('click');
+        }else{
+            alert("Nothing Selected");
+        }
+    }
+
+    closeModal(){
+        this.deleteModal.closeModal()
     }
  
 }

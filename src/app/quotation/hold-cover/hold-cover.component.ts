@@ -302,4 +302,8 @@ export class HoldCoverComponent implements OnInit {
       });
   }
 
+  onClickSave(){
+  $('#confirm-save #modalBtn2').trigger('click');
+}
+
 }

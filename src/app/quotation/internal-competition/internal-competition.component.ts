@@ -134,7 +134,7 @@ export class InternalCompetitionComponent implements OnInit, OnDestroy {
       console.log(this.quoteIds);
     }
 
-    onClickSave() {
+    saveData() {
       //console.log(this.data);
       this.savedData = [];
       for (var i = 0 ; this.intCompData.tableData.length > i; i++) {
@@ -190,6 +190,10 @@ export class InternalCompetitionComponent implements OnInit, OnDestroy {
          this.intCompData.tableData[this.attentionLOVRow].position = data.position; 
          this.intCompData.tableData[this.attentionLOVRow].cedingRepId = data.cedingRepId.toString();
          this.intCompData.tableData[this.attentionLOVRow].edited = true;
+    }
+
+    onClickSave(){
+      $('#confirm-save #modalBtn2').trigger('click');
     }
 }
 

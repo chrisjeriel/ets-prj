@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChildren, QueryList, Input} from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList, Input, ViewChild} from '@angular/core';
 import { QuotationInfo, QuotationOption, QuotationOtherRates, QuotationDeductibles } from '../../_models';
 import { QuotationService } from '../../_services';
 import { Title } from '@angular/platform-browser';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { ActivatedRoute } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -13,6 +14,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class QuoteOptionComponent implements OnInit {
     @ViewChildren(CustEditableNonDatatableComponent) table: QueryList<CustEditableNonDatatableComponent>;
+    @ViewChild("deductibleTable") deductibleTable: CustEditableNonDatatableComponent;
 /*    private quotationInfo: QuotationInfo;*/
     private quotationOption: QuotationOption;
     private quotationOtherRates: QuotationOtherRates;
@@ -144,7 +146,13 @@ export class QuoteOptionComponent implements OnInit {
     deductiblesLOVRow : number;
 
     record: any[];
-    constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute) { }
+    dialogMessage: string = "Successfuly saved changes to ";
+    successes: string[] = [];
+    errorMdlMessage: string = "Please check the field values in ";
+    failures: string[] = [];
+    updateCount:number;
+
+    constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,private modalService: NgbModal) { }
 
     ngOnInit() {
       //neco
@@ -254,12 +262,14 @@ export class QuoteOptionComponent implements OnInit {
            if (data['quotation'] == null || data['quotation'] == undefined ){ 
            } else {
                var optionRecords = data['quotation'].optionsList; 
-
-                for(let rec of optionRecords){
+                //this.optionsData.tableData = optionRecords;
+                /*for(let rec of optionRecords){
                     this.optionsData.tableData.push(rec);                
-                }
+                }*/
 
                 this.optionsData.tableData = data['quotation'].optionsList.sort(function(a,b){return a.optionId-b.optionId})
+
+
 
                 for(let rec of optionRecords){
                     for(let r of rec.deductiblesList){
@@ -272,11 +282,11 @@ export class QuoteOptionComponent implements OnInit {
 
 
                 var otherRatesRecords = data['quotation'].otherRatesList;
-
-                for(let rec of otherRatesRecords){
+                this.otherRatesData.tableData = data['quotation'].otherRatesList;
+                /*for(let rec of otherRatesRecords){
                   this.otherRatesData.tableData.push(rec
                     );                
-                }
+                }*/
                 
                 
            }
@@ -332,18 +342,64 @@ export class QuoteOptionComponent implements OnInit {
          $('#deductibleTable button').removeAttr("disabled")
         if (data.deductiblesList != null || data.deductiblesList != undefined ){
           this.deductiblesData.tableData = data.deductiblesList;
-          this.table.forEach(table => { table.refreshTable() });
+          this.deductibleTable.refreshTable();
         } 
         this.deductiblesData.nData.optionId = data.optionId;
 
     }
 
 saveData(){
+    this.updateCount = 0;
+    this.successes = [];
+    this.dialogMessage = "Successfuly saved changes to ";
+    this.errorMdlMessage = "Please check the field values in ";
+    this.failures = [];
     this.saveQuoteOption();
     this.saveQuoteDeductibles();
     this.saveOtherRates();
-    $('#successModalBtn').trigger('click');
+    setTimeout(()=>{
+      if(this.successes.length!=0){
+        for(let s of this.successes){
+          this.dialogMessage += s+', '
+        }
+        this.dialogMessage = this.dialogMessage.slice(0,-2)
+        this.dialogMessage+='.';
+        $('#successModalBtn').trigger('click');
+        this.getQuoteOptions();
+      }
+      if(this.failures.length!=0){
+        for(let f of this.failures){
+          this.errorMdlMessage += f+', '
+        }
+        this.errorMdlMessage = this.errorMdlMessage.slice(0,-2)
+        this.errorMdlMessage+='.';
+        $('#errorMdl > #modalBtn').trigger('click');
+      }
+    },1000)
+    
  }
+
+   showDialog(){
+     if(this.updateCount==3){
+       if(this.successes.length!=0){
+        for(let s of this.successes){
+          this.dialogMessage += s+', '
+        }
+        this.dialogMessage = this.dialogMessage.slice(0,-2)
+        this.dialogMessage+='.';
+        $('#successModalBtn').trigger('click');
+        this.getQuoteOptions();
+      }
+      if(this.failures.length!=0){
+        for(let f of this.failures){
+          this.errorMdlMessage += f+', '
+        }
+        this.errorMdlMessage = this.errorMdlMessage.slice(0,-2)
+        this.errorMdlMessage+='.';
+        $('#errorMdl > #modalBtn').trigger('click');
+      }
+     }
+   }
 
   saveQuoteOption(){
 
@@ -366,7 +422,17 @@ saveData(){
       }
     }
 
-    this.quotationService.saveQuoteOption(JSON.stringify(params)).subscribe((data: any) => {});
+    if(params.saveQuoteOptionsList.length != 0 || params.deleteQuoteOptionsList.length != 0)
+    this.quotationService.saveQuoteOption(JSON.stringify(params)).subscribe(
+      (data: any) => {
+        if(data['returnCode'] == 0) {  
+          this.failures.push('Quote Options');
+        }else if(data['returnCode'] == -1){
+          this.successes.push('Quote Options');
+        }
+        this.updateCount ++;
+        this.showDialog();
+        });
 }
 
 saveQuoteDeductibles(){
@@ -389,8 +455,17 @@ saveQuoteDeductibles(){
         }
       }
     }
+    if(params.saveDeductibleList.length != 0 || params.deleteDeductibleList.length != 0)
      this.quotationService.saveQuoteDeductibles(JSON.stringify(params)).subscribe((data: any) => {
-       console.log(data)     });}
+        if(data['returnCode'] == 0) {  
+          this.failures.push('Quote Deductibles');
+        }else if(data['returnCode'] == -1){
+         this.successes.push('Quote Deductibles');
+       }
+        this.updateCount ++;
+        this.showDialog();
+     });
+   }
 
 saveOtherRates(){
       let params: any = {
@@ -411,7 +486,16 @@ saveOtherRates(){
           params.deleteOtherRates[params.deleteOtherRates.length-1].updateDate = new Date(params.deleteOtherRates[params.deleteOtherRates.length-1].updateDate[0],params.deleteOtherRates[params.deleteOtherRates.length-1].updateDate[1]-1,params.deleteOtherRates[params.deleteOtherRates.length-1].updateDate[2]).toISOString();
       }
    }
-    this.quotationService.saveQuoteOtherRates(JSON.stringify(params)).subscribe((data: any) => {});
+   if(params.otherRates.length != 0 || params.deleteOtherRates.length != 0)
+    this.quotationService.saveQuoteOtherRates(JSON.stringify(params)).subscribe((data: any) => {
+        if(data['returnCode'] == 0) {  
+          this.failures.push('Quote Deductibles');
+        }else if(data['returnCode'] == -1){
+          this.successes.push('Other Rates');
+        }
+        this.updateCount ++;
+        this.showDialog();
+    });
 
 }
 
@@ -424,14 +508,16 @@ clickDeductiblesLOV(data){
 }
 
 setSelected(data){
-  console.log(data);
-  console.log(data.deductibleCd);
   this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleCd = data.data.deductibleCd;
   this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleTitle = data.data.deductibleTitle;
   this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleRt = data.data.deductibleRate;
   this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleAmt = data.data.deductibleAmt;
   this.deductiblesData.tableData[this.deductiblesLOVRow].edited = true;
   
+}
+
+onClickSave(){
+  $('#confirm-save #modalBtn2').trigger('click');
 }
 
 }
