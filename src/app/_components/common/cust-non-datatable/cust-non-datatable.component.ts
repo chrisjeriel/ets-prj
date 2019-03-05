@@ -25,7 +25,8 @@ export class CustNonDatatableComponent implements OnInit {
     
     btnDisabled: boolean = true;
     unselect: boolean = false;
-    
+    expireCounter: number = 0;
+    expireValue: any;
     
     @Input() filterObj:any[] = [];
 
@@ -184,6 +185,18 @@ export class CustNonDatatableComponent implements OnInit {
                 this.passData.dataTypes.push('text');
             }
         }
+
+        if(this.passData.filters !== undefined && this.passData.filters.length > 0){
+            for(var expireCheck of this.passData.filters){
+                if(expireCheck.dataType === 'expire'){
+                    break;
+                }
+                else{
+                    this.expireCounter++;
+                }
+            }
+        }
+        
     }
 
     processData(key: any, data: any) {
@@ -302,7 +315,14 @@ export class CustNonDatatableComponent implements OnInit {
         this.addFiller();
     }
 
+    pressEnterFilter(){
+        $('#okFilter').trigger('click');
+    }
+
     dbQuery(filterObj){
+        console.log(filterObj);
+        var dateSpanCounter: number = 0;
+        var generalCounter: number =0;
         this.searchQuery = [];
         for(var e of filterObj){
             if(e.enabled){
@@ -314,13 +334,27 @@ export class CustNonDatatableComponent implements OnInit {
                            seqNo += '-' + parseInt(e.search.split(/[-]/g)[i]);
                          }
                          e.search = seqNo;
+                         this.searchQuery.push(
+                                 {
+                                     key: e.key,
+                                     search: e.search,
+                                 }
+                             );
                     }
-                    this.searchQuery.push(
+                    /*else if(e.dataType === 'datespan' ){
+                        if(dateSpanCounter == 0){
+                            this.passData.filters[generalCounter+1].search = e.search2;
+                        }
+                    }*/
+                    else{
+                        this.searchQuery.push(
                             {
                                 key: e.key,
-                                search: e.search,
+                                search: (e.search === undefined || !e.enabled) ? '' : e.search,
                             }
                         );
+                    }
+                    
                 }
                 else{
                     this.searchQuery.push(
@@ -332,13 +366,27 @@ export class CustNonDatatableComponent implements OnInit {
                 }
             }
             else{
-                this.searchQuery.push(
-                    {
-                        key: e.key,
-                        search: (e.search === undefined || !e.enabled) ? '' : e.search,
-                    }
-                );
+                if(e.dataType === 'expire'){
+                    e.search = (this.expireValue === undefined || 
+                                this.expireValue === null || 
+                                this.expireValue === '') ? '' : this.expireValue;
+                    this.searchQuery.push(
+                        {
+                            key: e.key,
+                            search: e.search.toString(),
+                        }
+                    );
+                }
+                else{
+                    this.searchQuery.push(
+                        {
+                            key: e.key,
+                            search: (e.search === undefined || !e.enabled) ? '' : e.search,
+                        }
+                    );
+                }
             }
+            generalCounter++;
         }
         this.searchToDb.emit(this.searchQuery);
         this.loadingFlag = true;
