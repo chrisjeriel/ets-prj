@@ -127,7 +127,7 @@ export class HoldCoverComponent implements OnInit {
   ngOnInit() {
     this.titleService.setTitle("Quo | Quotation to Hold Cover");
     this.holdCoverInfo = new HoldCoverInfo();
-    this.holdCover.status = "";
+    this.holdCover.status = "I";
     this.holdCover.preparedBy = JSON.parse(window.localStorage.currentUser).username;
   }
 
@@ -210,7 +210,7 @@ export class HoldCoverComponent implements OnInit {
 
    this.quotationService.getSelectedQuotationHoldCoverInfo(this.plainQuotationNo(this.quoteNo))
                            .subscribe(data => {
-                             var rec = data['quotationList'][0].holdCover;
+                             var rec = (data['quotationList'][0] === null || data['quotationList'][0] === undefined) ? '' : data['quotationList'][0].holdCover;
                                   this.insured = this.rowRec.insuredDesc;
                                   this.cedCo = this.rowRec.cedingName;
                                   this.risk = this.rowRec.riskName;
@@ -229,6 +229,8 @@ export class HoldCoverComponent implements OnInit {
                                   this.holdCover.reqBy  = rec.reqBy;
                                   this.holdCover.reqDate  = this.formatDate(rec.reqDate);
                                   this.holdCover.status  = rec.status;
+                                  this.holdCover.approvedBy =  rec.approvedBy;
+                                  this.holdCover.holdCoverId = rec.holdCoverId;
                                }
                              }
                              
@@ -256,9 +258,9 @@ export class HoldCoverComponent implements OnInit {
                   "compRefHoldCovNo": coRef,
                   "createDate": this.holdCover.createDate,
                   "createUser": this.holdCover.createUser,
-                  "holdCoverId": null,
-                  "holdCoverRevNo": null,
-                  "holdCoverSeqNo": null,
+                  "holdCoverId": (this.holdCover.holdCoverId === null || this.holdCover.holdCoverId === '') ? 1 : hcrevNo,
+                  "holdCoverRevNo": (hcrevNo === null || hcrevNo === '') ? 1 : hcrevNo,
+                  "holdCoverSeqNo": (hcseqNo === null || hcseqNo === '') ? 1 : hcseqNo,
                   "holdCoverYear": hcyear,
                   "lineCd": hcline,
                   "periodFrom": periodFrom,
