@@ -149,7 +149,7 @@
                                     </div>
                                     </app-modal>
                                 <button type="button" class="cust-btn"><a>Cancel</a></button>
-                                <button type="button" class="cust-btn" (click)="onSaveClick(qline.value,qyear.value,qseqNo.value,qrevNo.value,qcomNo.value,periodTo.value,periodFrom.value,coRef.value,status.value,reqDate.value,prepBy.value,appBy.value,hcline.value,hcyear.value,hcseqNo.value,hcrevNo.value,reqBy.value)"><a>Save</a></button>
+                                <button type="button" class="cust-btn" (click)="onClickSave()" ><a>Save</a></button>
                             </div>
                         </div>
                     </div>
@@ -218,3 +218,7 @@
         <button class="cust-btn" type="button" (click)="onClickModif();"><a>Modification</a></button>
     </div>
 </app-modal>
+<!-- onSaveClick(qline.value,qyear.value,qseqNo.value,qrevNo.value,qcomNo.value,periodTo.value,periodFrom.value,coRef.value,status.value,reqDate.value,prepBy.value,appBy.value,hcline.value,hcyear.value,hcseqNo.value,hcrevNo.value,reqBy.value) -->
+<app-confirm-save (onYes)="onSaveClick()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+

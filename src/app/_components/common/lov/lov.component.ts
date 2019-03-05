@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter, Input} from '@angular/core';
-import { MaintenanceService, UnderwritingService } from '@app/_services';
+import { MaintenanceService, UnderwritingService, QuotationService } from '@app/_services';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component'
 
@@ -31,7 +31,7 @@ export class LovComponent implements OnInit {
   modalOpen: boolean = false;
 
 
-  constructor(private modalService: NgbModal, private mtnService : MaintenanceService, private underwritingService: UnderwritingService) { }
+  constructor(private modalService: NgbModal, private mtnService : MaintenanceService, private underwritingService: UnderwritingService, private quotationService: QuotationService) { }
 
   ngOnInit() {
   	  	
@@ -220,6 +220,16 @@ export class LovComponent implements OnInit {
                 
             this.table.refreshTable();
           });
+    }else if(this.passData.selector == 'otherRates'){
+      this.passTable.tHeader = [ 'Cover Code','Cover Name','Section','Bullet No','Sum Insured'];
+      this.passTable.dataTypes = [ 'number','text','select','text','currency'];
+      this.passTable.keys = ['coverCd','coverCdAbbr','section','bulletNo','sumInsured']
+      this.quotationService.getCoverageInfo(this.passData.quoteNo,null).subscribe((data: any) => {
+        if(data.quotation.project !== null ){
+          this.passTable.tableData = data.quotation.project.coverage.sectionCovers;
+        }
+        this.table.refreshTable();
+      })
     }
 
     this.modalOpen = true;

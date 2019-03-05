@@ -24,7 +24,7 @@ export class RiskFormComponent implements OnInit, OnDestroy {
     passLOV:any = {};
     riskData:any = 
         {
-            activeTag : 'N',
+            activeTag : 'Y',
             blockCd : null,
             blockDesc : null,
             cityCd : null,
@@ -177,6 +177,7 @@ export class RiskFormComponent implements OnInit, OnDestroy {
               $('#errorMdl > #modalBtn').trigger('click');
             } else{
               $('#successModalBtn').trigger('click');
+              this.riskData.riskId = data.riskId;
              }
         });
     }

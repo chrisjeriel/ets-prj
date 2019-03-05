@@ -39,12 +39,12 @@
         <div class="row">
             <div class="col-sm-1"></div>
             <div class="col-sm-10" style="margin-top: 0.7em; margin-bottom: -0.4%;">
-                <app-cust-editable-non-datatable [passData]="endorsementData" (clickLOV)="clickEndtLOV($event)" *ngIf="!OpenCover">
+                <app-cust-editable-non-datatable id="endorsmentTable" [passData]="endorsementData" (clickLOV)="clickEndtLOV($event)" *ngIf="!OpenCover">
                     <ng-container controls-l>
                         <button [class.d-none]="inquiryFlag" class="cust-btn" (click)="clickModal($event)"  style="margin-right: 0px !important;">Copy Endt</button>
                     </ng-container>
                 </app-cust-editable-non-datatable>
-                <app-cust-editable-non-datatable [passData]="endorsementOCData" (clickLOV)="clickEndtLOV($event)" *ngIf="OpenCover">
+                <app-cust-editable-non-datatable id="endorsmentOCTable" [passData]="endorsementOCData" (clickLOV)="clickEndtLOV($event)" *ngIf="OpenCover">
                     <ng-container controls-l>
                         <button [class.d-none]="inquiryFlag" class="cust-btn" (click)="clickModal($event)"  style="margin-right: 0px !important;">Copy
                             Endt</button>
@@ -60,7 +60,7 @@
             <div class="col-md-13 text-center">
                 <div class="cust-btn-container" style="padding-top: 13px">
                     <button [class.d-none]="inquiryFlag" type="button" class="cust-btn"><a>Cancel</a></button>
-                    <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="onClickSave($event)"><a>Save</a></button>
+                    <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
                 </div>
             </div>
         </div>
@@ -130,3 +130,6 @@
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
     </div>
 </app-modal>
+
+<app-confirm-save (onYes)="saveData()"></app-confirm-save>
+<app-sucess-dialog id="quote-endorsment" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
