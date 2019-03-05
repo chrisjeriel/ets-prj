@@ -357,7 +357,8 @@ export class QuoteEndorsementComponent implements OnInit {
     endorsementReq:any;
     endorsementReqOc:any;
 
-    saveData(){
+    saveData(cancelFlag?){
+        this.cancelFlag = cancelFlag !== undefined;
         if(this.from === "quo-processing"){
             for (var i = 0 ; this.endorsementData.tableData.length > i; i++) {
                 (this.saveEndt.createDate === null) ? new Date().toISOString() : this.saveEndt.createDate;
@@ -463,6 +464,10 @@ export class QuoteEndorsementComponent implements OnInit {
 
     onClickSave(){
       $('#confirm-save #modalBtn2').trigger('click');
+    }
+
+    cancel(){
+      this.cancelBtn.clickCancel();
     }
 
 }
