@@ -127,9 +127,11 @@ export class QuoAlopComponent implements OnInit {
              
              this.quoteId = data.quotation.quoteId;
               this.alopData = data.quotation.alop===null ? this.alopData : data.quotation.alop;
-              this.alopData.issueDate = this.alopData.issueDate[0]+'-'+("0" + this.alopData.issueDate[1]).slice(-2)+'-'+  ("0" + this.alopData.issueDate[2]).slice(-2);
-              this.alopData.expiryDate = this.alopData.expiryDate[0]+'-'+("0" + this.alopData.expiryDate[1]).slice(-2)+'-'+ ("0" + this.alopData.expiryDate[2]).slice(-2);
-              this.alopData.indemFromDate = this.alopData.indemFromDate[0]+'-'+("0" + this.alopData.indemFromDate[1]).slice(-2)+'-'+("0" + this.alopData.indemFromDate[2]).slice(-2);
+              if(this.alopData.issueDate !== null){
+                this.alopData.issueDate = this.alopData.issueDate[0]+'-'+("0" + this.alopData.issueDate[1]).slice(-2)+'-'+  ("0" + this.alopData.issueDate[2]).slice(-2);
+                this.alopData.expiryDate = this.alopData.expiryDate[0]+'-'+("0" + this.alopData.expiryDate[1]).slice(-2)+'-'+ ("0" + this.alopData.expiryDate[2]).slice(-2);
+                this.alopData.indemFromDate = this.alopData.indemFromDate[0]+'-'+("0" + this.alopData.indemFromDate[1]).slice(-2)+'-'+("0" + this.alopData.indemFromDate[2]).slice(-2);
+              }
               setTimeout(() => {
                 $('input[appCurrency]').focus();
                 $('input[appCurrency]').blur();
@@ -156,6 +158,7 @@ export class QuoAlopComponent implements OnInit {
     }
 
     openAlopItem(){
+      this.itemInfoData.tableData = [];
       this.quotationService.getALOPItemInfos(this.quoteNo,this.quoteId).subscribe((data: any) => {
             if(data.quotation[0] !==undefined){
               this.itemInfoData.nData.itemNo = data.quotation[0] === undefined ? 1:data.quotation[0].alop.alopItemList.length + 1; 

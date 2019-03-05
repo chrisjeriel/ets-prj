@@ -124,19 +124,21 @@
 
 </div>			
 
-<app-modal class="d-none" id="alopItemModal">
-	<div header>Item Information</div>	
-	<div body>
-		 <div>
-                <app-cust-editable-non-datatable [passData]="itemInfoData" (tableDataChange)="updateItemInfoData($event)"></app-cust-editable-non-datatable>
-         </div>  
-	</div>
-	<div footer class="text-center">
-			<button *ngIf="!inquiryFlag" type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
-			<button *ngIf="!inquiryFlag" type="button" class="cust-btn" (click)="onClickSaveAlopItem()"><a>Save</a></button>
-			<button *ngIf="inquiryFlag" type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Close</a></button>
-	</div>
-</app-modal>
+<ng-container *ngIf="showAlopItem">
+	<app-modal class="d-none" id="alopItemModal">
+		<div header>Item Information</div>	
+		<div body>
+			 <div>
+	                <app-cust-editable-non-datatable [passData]="itemInfoData" (tableDataChange)="updateItemInfoData($event)"></app-cust-editable-non-datatable>
+	         </div>  
+		</div>
+		<div footer class="text-center">
+				<button *ngIf="!inquiryFlag" type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
+				<button *ngIf="!inquiryFlag" type="button" class="cust-btn" (click)="onClickSaveAlopItem()"><a>Save</a></button>
+				<button *ngIf="inquiryFlag" type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Close</a></button>
+		</div>
+	</app-modal>
+</ng-container>
 
 <app-mtn-insured id="insuredLOV" (selectedData)="setInsured($event)"></app-mtn-insured>
 <app-lov id="lov" [passData]="passLOV" (selectedData)="setInsured($event)"></app-lov>

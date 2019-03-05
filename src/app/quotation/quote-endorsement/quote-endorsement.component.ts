@@ -6,6 +6,7 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 
 
@@ -19,6 +20,7 @@ export class QuoteEndorsementComponent implements OnInit {
     @Input() inquiryFlag: boolean = false;
     @ViewChildren(CustEditableNonDatatableComponent) table: QueryList<CustEditableNonDatatableComponent>;
     @ViewChild(CustNonDatatableComponent) tableNonEditable: CustNonDatatableComponent;
+    @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 /*    @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;*/
     OpenCover: boolean;
     private sub: any;
@@ -48,6 +50,7 @@ export class QuoteEndorsementComponent implements OnInit {
 
     optionNos: number[] = [];
     optionRecords: any[] = [];
+    cancelFlag: boolean;
 
     saveEndt: any = {
         quoteId: '',
@@ -108,6 +111,10 @@ export class QuoteEndorsementComponent implements OnInit {
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title,  private route: ActivatedRoute) { }
 
     ngOnInit() {  
+        setTimeout(()=>{
+          $('#endorsmentTable button').attr("disabled","disabled");
+          $('#endorsmentOCTable button').attr("disabled","disabled");
+        },0)
         this.titleService.setTitle("Quo | Endorsements");
         //neco
         if(this.inquiryFlag){
@@ -257,6 +264,8 @@ export class QuoteEndorsementComponent implements OnInit {
 
     clickRow(event) {
 /*           this.quotationService.getEndorsements(null,this.quotationNum,event.optionNo).subscribe((data: any) => {*/
+      $('#endorsmentTable button').removeAttr("disabled");
+      $('#endorsmentOCTable button').removeAttr("disabled");
       this.opId = event.optionId;
            this.quotationService.getEndorsements(this.quoteId,this.plainQuotationNo(this.quotationNum),event.optionId).subscribe((data: any) => {
                  while(this.endorsementData.tableData.length > 0) {

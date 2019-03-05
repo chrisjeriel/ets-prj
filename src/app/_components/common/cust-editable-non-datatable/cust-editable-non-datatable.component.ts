@@ -204,7 +204,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         this.search(this.searchString);
         this.tableDataChange.emit(this.passData.tableData);
         this.add.next(event);
-        this.isDirty = true;
+        $('#cust-table-container').addClass('ng-dirty');
     }
 
     
@@ -222,8 +222,8 @@ export class CustEditableNonDatatableComponent implements OnInit {
             this.selected[i].checked = false;
             this.selected[i].deleted = true;
             this.selected[i].edited = true;
-            this.isDirty = true;
         }
+        $('#cust-table-container').addClass('ng-dirty');
         this.selected = [];
         this.refreshTable();
         this.search(this.searchString);
@@ -439,8 +439,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
     confirmDelete(){
         if(this.selected.length != 0 ){
             $('#confirm-delete'+this.passData.pageID+' #modalBtn2').trigger('click');
-        }else{
-            alert("Nothing Selected");
         }
     }
 
