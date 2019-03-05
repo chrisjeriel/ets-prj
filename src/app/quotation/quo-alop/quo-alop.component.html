@@ -68,12 +68,12 @@
 			<div class="input-group">
 				<label class="col-sm-4"></label>
 				<label class=" form-control-sm col-sm-2" for="annSumInsured">Annual Sum Insured</label>
-				<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-4" type="text" id="annSumInsured" [(ngModel)]="alopData.annSi" appRequired appCurrency>
+				<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-4 text-right" type="text" id="annSumInsured" [(ngModel)]="alopData.annSi" appRequired appCurrency>
 			</div>
 			<div class="input-group" style="padding-bottom: 0.9%;">
 				<label class="col-sm-4"></label>
 				<label class="form-control-sm col-sm-2 text-left" for="sumInsForMaxIndem">Sum Insured for Maximum Indemnity Period</label>
-				<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-4" type="text" id="sumInsForMaxIndem" [(ngModel)]="alopData.maxIndemPdSi"  appRequired appCurrency>
+				<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-4 text-right" type="text" id="sumInsForMaxIndem" [(ngModel)]="alopData.maxIndemPdSi"  appRequired appCurrency>
 			</div>
 		</div>
 	</fieldset>
@@ -83,15 +83,15 @@
 		<div class="form-row custom-row-inline-inset" style="margin-top: 12px !important;">
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" for="periodFrom">Period of Insurance from</label>
-				<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-2" type="date" id="periodFrom" [(ngModel)]="alopData.issueDate" appRequired>
-				<label class="form-control-sm col-sm-1" style="margin-left: -5.19%;" for="periodTo" >to</label>
-				<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-2" type="date" id="periodTo" [(ngModel)]="alopData.expiryDate" appRequired>
+				<input #from [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-2" type="date" id="periodFrom" [(ngModel)]="alopData.issueDate" appRequired (change)="checkDates()">
+				<label class="form-control-sm col-sm-1" style="margin-left: -5.19%; z-index: -1;" for="periodTo" >to</label>
+				<input #to [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-2" type="date" id="periodTo" [(ngModel)]="alopData.expiryDate" appRequired (change)="checkDates()">
 				<label class="form-control-sm col-sm-2 text-left" >(Scheduled Date of Completion)</label>
 
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" for="maxIndemPeriod">Maximum Indemnity Period</label>
-				<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-1" type="number" id="maxIndemPeriod" [(ngModel)]="alopData. maxIndemPd" appMonth>
+				<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-1 text-right" type="text" id="maxIndemPeriod" [(ngModel)]="alopData. maxIndemPd" numbers-only appRequired>
 				<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">months</label>
 			</div>
 			<div class="input-group">
@@ -100,11 +100,11 @@
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" for="timeExcess">Time Excess</label>
-				<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-6" type="text" id="fromIndem" [(ngModel)]="alopData. timeExc" appRequired>
+				<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-6 text-right" type="text" id="fromIndem" [(ngModel)]="alopData. timeExc" appRequired numbers-only>
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" for="interval">Progress reports to be presented at intervals of</label>
-				<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-1" type="number" id="interval" [(ngModel)]="alopData. repInterval" appMonth>
+				<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-1 text-right" type="text" id="interval" [(ngModel)]="alopData. repInterval" numbers-only appRequired>
 				<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">months</label>
 			</div>
 		</div>
@@ -115,8 +115,8 @@
 			<div class="col-md-13 text-center">
 				<div class="cust-btn-container" style="margin-top: 10px;">
 				<button type="button" class="cust-btn" (click)="openAlopItem()"><a>Item Information</a></button>
-				<button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="testOnly()"><a>Cancel</a></button>
-				<button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="save()"><a>Save</a></button>
+				<button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+				<button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
 			</div>
 			</div>
 		</div>
@@ -124,24 +124,26 @@
 
 </div>			
 
-<app-modal class="d-none" id="alopItemModal">
-	<div header>Item Information</div>	
-	<div body>
-		 <div>
-                <app-cust-editable-non-datatable [passData]="itemInfoData" (tableDataChange)="updateItemInfoData($event)"></app-cust-editable-non-datatable>
-         </div>  
-	</div>
-	<div footer class="text-center">
-			<button *ngIf="!inquiryFlag" type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
-			<button *ngIf="!inquiryFlag" type="button" class="cust-btn" (click)="saveAlopItem(	);modalService.dismissAll()"><a>Save</a></button>
-			<button *ngIf="inquiryFlag" type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Close</a></button>
-	</div>
-</app-modal>
+<ng-container *ngIf="showAlopItem">
+	<app-modal class="d-none" id="alopItemModal">
+		<div header>Item Information</div>	
+		<div body>
+			 <div>
+	                <app-cust-editable-non-datatable [passData]="itemInfoData" (tableDataChange)="updateItemInfoData($event)"></app-cust-editable-non-datatable>
+	         </div>  
+		</div>
+		<div footer class="text-center">
+				<button *ngIf="!inquiryFlag" type="button" class="cust-btn" (click)="modalService.dismissAll();showAlopItem=false"><a>Cancel</a></button>
+				<button *ngIf="!inquiryFlag" type="button" class="cust-btn" (click)="onClickSaveAlopItem()"><a>Save</a></button>
+				<button *ngIf="inquiryFlag" type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Close</a></button>
+		</div>
+	</app-modal>
+</ng-container>
 
 <app-mtn-insured id="insuredLOV" (selectedData)="setInsured($event)"></app-mtn-insured>
 <app-lov id="lov" [passData]="passLOV" (selectedData)="setInsured($event)"></app-lov>
 
-<app-sucess-dialog></app-sucess-dialog>
+
 
 <app-modal class="d-none" id="errorMdl">
     <div header>Error</div>
@@ -153,3 +155,13 @@
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
     </div>
 </app-modal>
+
+
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-confirm-save id="alop" (onYes)="save()"></app-confirm-save>
+<app-cancel-button (onYes)="save('cancel')" [url]="'/quotation-processing'" ></app-cancel-button>
+
+
+
+
+<app-confirm-save id="alopItem" (onYes)="saveAlopItem()"></app-confirm-save>

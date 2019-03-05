@@ -185,7 +185,6 @@ export class CustNonDatatableComponent implements OnInit {
                 this.passData.dataTypes.push('text');
             }
         }
-
         if(this.passData.filters !== undefined && this.passData.filters.length > 0){
             for(var expireCheck of this.passData.filters){
                 if(expireCheck.dataType === 'expire'){
@@ -196,7 +195,8 @@ export class CustNonDatatableComponent implements OnInit {
                 }
             }
         }
-        
+        //temporary fix delete this later
+        setTimeout(()=>{this.refreshTable()},2000)
     }
 
     processData(key: any, data: any) {

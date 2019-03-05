@@ -1,18 +1,28 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { QuotationGenInfo } from '../../_models';
 import { callLifecycleHooksChildrenFirst } from '@angular/core/src/view/provider';
 import { QuotationService, MaintenanceService } from '../../_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
+import { MtnCedingCompanyComponent } from '@app/maintenance/mtn-ceding-company/mtn-ceding-company.component';
+import { MtnIntermediaryComponent } from '@app/maintenance/mtn-intermediary/mtn-intermediary.component';
+import { MtnInsuredComponent } from '@app/maintenance/mtn-insured/mtn-insured.component';
 import { MtnObjectComponent } from '@app/maintenance/mtn-object/mtn-object.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
 	selector: 'app-general-info',
 	templateUrl: './general-info.component.html',
 	styleUrls: ['./general-info.component.css']
 })
-export class GeneralInfoComponent implements OnInit {
+export class GeneralInfoComponent implements OnInit {  
+	@ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+	@ViewChild(CedingCompanyComponent) cedingCoLov: CedingCompanyComponent;
+	@ViewChild(MtnCedingCompanyComponent) cedingCoNotMemberLov: CedingCompanyComponent;
+	@ViewChild(MtnIntermediaryComponent) intermediaryLov: MtnIntermediaryComponent;
+	@ViewChildren(MtnInsuredComponent) insuredLovs: QueryList<MtnInsuredComponent>;
 	@ViewChild(MtnObjectComponent) objectLov: MtnObjectComponent;
 
 	private quotationGenInfo: QuotationGenInfo;
@@ -36,6 +46,9 @@ export class GeneralInfoComponent implements OnInit {
 	ocChecked: boolean = false;
 	internalCompFlag: boolean = false;
 	saveBtnClicked: boolean = false;
+	cancelFlag: boolean;
+	dialogIcon:string;
+	dialogMessage:string;
 
 	@Input() inquiryFlag: boolean = false;
 
@@ -183,7 +196,6 @@ export class GeneralInfoComponent implements OnInit {
 			this.quotationService.getQuoteGenInfo('', this.plainQuotationNo(this.quotationNo)).subscribe(data => {
 				this.loading = false;
 				if(data['quotationGeneralInfo'] != null) {
-					console.log(data['quotationGeneralInfo'])
 					this.genInfoData = data['quotationGeneralInfo'];						
 					this.genInfoData.createDate = (this.genInfoData.createDate == null) ? '' : this.dateParser(this.genInfoData.createDate);
 					this.genInfoData.expiryDate = (this.genInfoData.expiryDate == null) ? '' : this.dateParser(this.genInfoData.expiryDate);
@@ -204,8 +216,8 @@ export class GeneralInfoComponent implements OnInit {
 					}
 
 					setTimeout(() => {
-						$('.req').focus();
-						$('.req').blur();
+						$('input[appCurrencyRate]').focus();
+						$('input[appCurrencyRate]').blur();
 					},0) 
 				}
 
@@ -301,6 +313,7 @@ export class GeneralInfoComponent implements OnInit {
 
 
 	showLineClassLOV(){
+		console.log(this.insuredLovs);
 		$('#lineClassLOV #modalBtn').trigger('click');
 	}
 
@@ -344,6 +357,7 @@ export class GeneralInfoComponent implements OnInit {
 	setCedingcompany(event){
 		this.genInfoData.cedingId = event.coNo;
 		this.genInfoData.cedingName = event.name;
+		this.loading = false;
 		this.focusBlur();
 	}
 
@@ -389,7 +403,8 @@ export class GeneralInfoComponent implements OnInit {
 		return new Date(arr[0] + '-' + pad(arr[1]) + '-' + pad(arr[2])).toISOString();   
 	}
 
-	saveQuoteGenInfo() {
+	saveQuoteGenInfo(cancelFlag?) {
+		this.cancelFlag = cancelFlag !== undefined;
 		this.saveBtnClicked = true;
 		this.loading = true;
 		if(this.validate(this.prepareParam())){
@@ -398,22 +413,25 @@ export class GeneralInfoComponent implements OnInit {
 			this.quotationService.saveQuoteGeneralInfo(JSON.stringify(this.prepareParam())).subscribe(data => {
 				this.loading = false;
 				if(data['returnCode'] == 0) {
-					this.errorMdlMessage = data['errorList'][0].errorMessage;
-					$('#errorMdl > #modalBtn').trigger('click');
+					this.dialogMessage = data['errorList'][0].errorMessage;
+					$('#genInfo #successModalBtn').trigger('click');
 				} else {
 					this.genInfoData.quoteId = data['quoteId'];
 					this.genInfoData.quotationNo = data['quotationNo'];
 					this.genInfoData.quoteSeqNo = parseInt(data['quotationNo'].split('-')[2]);
 					this.genInfoData.quoteRevNo = parseInt(data['quotationNo'].split('-')[3]);
 					this.genInfoData.updateUser = 'USER'; //JSON.parse(window.localStorage.currentUser).username;
-					this.genInfoData.updateDate		= new Date().toISOString();
+					this.genInfoData.updateDate	= new Date().toISOString();
 
 					this.checkQuoteIdF(this.genInfoData.quoteId);
 
 					this.quotationService.toGenInfo[0] = 'edit';
 					this.quotationService.savingType = 'normal';
 
-					$('#successMdl > #modalBtn').trigger('click');
+		            this.dialogMessage="";
+		            this.dialogIcon = "";
+		            $('.ng-dirty').removeClass('ng-dirty');
+					$('#genInfo #successModalBtn').trigger('click');
 						//for internal comp
 						if(this.savingType === 'internalComp'){
 							
@@ -438,8 +456,9 @@ export class GeneralInfoComponent implements OnInit {
 			});
 		} else {
 			this.loading = false;
-			this.errorMdlMessage = "Please complete all the required fields.";
-			$('#errorMdl > #modalBtn').trigger('click');
+			this.dialogIcon = "error";
+			this.dialogMessage = "Please complete all the required fields.";
+			$('#genInfo #successModalBtn').trigger('click');
 
 			this.focusBlur();
 		}
@@ -621,11 +640,32 @@ export class GeneralInfoComponent implements OnInit {
   		}
   	}
 
+
   	checkCode(field) {
-  		if(field === 'object') {
+  		if(field === 'cedingCo') {
+  			this.loading = true;
+  			this.cedingCoLov.checkCode(this.genInfoData.cedingId);
+  		} else if(field === 'cedingCoNotMember') { 
+  			this.cedingCoNotMemberLov.checkCode(this.genInfoData.reinsurerId);
+  		} else if(field === 'intermediary') {
+  			this.intermediaryLov.checkCode(this.genInfoData.intmId);
+  		} else if(field === 'principal') {
+  			this.insuredLovs['first'].checkCode(this.genInfoData.principalId, '#principalLOV');
+  		} else if(field === 'contractor') {
+  			this.insuredLovs['last'].checkCode(this.genInfoData.contractorId, '#contractorLOV');
+  		} else if(field === 'object') {
   			this.objectLov.checkCode(this.line, this.project.objectId);
   		}
   	}
+
+  	onClickSave(){
+  		$('#confirm-save #modalBtn2').trigger('click');
+	}
+
+	cancel(){
+		this.cancelBtn.clickCancel();
+	}
+
 }
 export interface SelectRequestMode {
 	name: string;

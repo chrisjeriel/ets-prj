@@ -17,8 +17,11 @@ export class MaintenanceService{
 		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnDistrict",{params});
 	}
 
-	getMtnInsured(){
-		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnInsured");
+	getMtnInsured(insuredId){
+		const params = new HttpParams()
+		     .set('insuredId', insuredId);
+
+		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnInsured", {params});
 	}
 
 	// getEndtCode(lineCd?:string,endtCd?:number){
@@ -90,8 +93,11 @@ export class MaintenanceService{
        	return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMntLine', {params});
     }
 
-    getIntLOV() {
-       	return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMntIntermediary');
+    getIntLOV(intmId) {
+    	const params = new HttpParams()
+			.set('intmId', intmId);
+
+       	return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMntIntermediary', {params});
     }
 
 	getMtnRiskListing(riskId,riskAbbr,riskName,regionDesc,provinceDesc,cityDesc,districtDesc,blockDesc,latitude,longitude,activeTag) {

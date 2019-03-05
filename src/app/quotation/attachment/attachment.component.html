@@ -63,21 +63,12 @@
         <div class="col-md-13 text-center">
             <div class="cust-btn-container" style="margin-top: 10px">
                 <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
-                <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="saveData()"><a>Save</a></button>
+                <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
             </div>
         </div>
     </div>
 </div>
 
-<app-sucess-dialog [message]="successMessage"></app-sucess-dialog>
-
-<app-modal class="d-none" id="errorMdl">
-    <div header>Error</div>
-    <div body class="container-flex text-center">
-        <span class="fa fa-times-circle fa-3x" style="vertical-align: middle;"></span>
-        <span style="vertical-align: middle; margin-left: 15px;">{{ errorMdlMessage }}</span>       
-    </div>
-    <div footer class="d-flex justify-content-center w-100">                    
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
-    </div>
-</app-modal>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-confirm-save (onYes)="saveData()"></app-confirm-save>
+<app-cancel-button (onYes)="saveData('cancel')" [url]="'/quotation-processing'" ></app-cancel-button>

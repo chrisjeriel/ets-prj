@@ -6,7 +6,7 @@ import { Title } from '@angular/platform-browser';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
   selector: 'app-attachment',
@@ -17,6 +17,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 export class AttachmentComponent implements OnInit {
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
+  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   /* dtOptions: DataTables.Settings = {};*/
   tableData: any[] = [];
   tHeader: any[] = [];
@@ -78,9 +79,11 @@ export class AttachmentComponent implements OnInit {
   quotationNo: string;
   quoteId: string;
   @Input() quotationInfo: any = {};
-  quoteNo: string = '';
-  errorMdlMessage: string = "";
+  quoteNo: string = '';  
   @Input() inquiryFlag: boolean = false;
+  dialogMessage:string = "";
+  dialogIcon: string = "";
+  cancelFlag:boolean;
 
   constructor(config: NgbDropdownConfig,
     private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,private modalService: NgbModal) {
@@ -150,10 +153,10 @@ export class AttachmentComponent implements OnInit {
     });
   }
 
-  saveData(){
+  saveData(cancelFlag?){
     this.savedData = [];
     this.deletedData = [];
-    
+    this.cancelFlag = cancelFlag !== undefined;
     for (var i = 0 ; this.passData.tableData.length > i; i++) {
       if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
           this.savedData.push(this.passData.tableData[i]);
@@ -168,25 +171,34 @@ export class AttachmentComponent implements OnInit {
     }
 
     if (this.savedData.length != 0 || this.deletedData.length!=0 ) {
-      this.successMessage = "Successfully Saved!";
       this.quotationService.saveQuoteAttachment(this.quoteId,this.savedData,this.deletedData).subscribe((data: any) => {
         console.log(data)
         if(data['returnCode'] == 0) {
-            this.errorMdlMessage = data['errorList'][0].errorMessage;
-            $('#errorMdl > #modalBtn').trigger('click');
+            this.dialogMessage = data['errorList'][0].errorMessage;
+            this.dialogIcon = "error";
+            $('#successModalBtn').trigger('click');
           } else{
-              $('#successModalBtn').trigger('click');
+            this.dialogMessage="";
+            this.dialogIcon = "";
+            $('#successModalBtn').trigger('click');
             this.getAttachment();
+            $('.ng-dirty').removeClass('ng-dirty');
           }
         });
     }else{
-      this.successMessage = "Nothing to save.";
+      this.dialogMessage = "Nothing to save.";
+      this.dialogIcon = "info"
       $('#successModalBtn').trigger('click');
     }
   }
 
   cancel(){
-    console.log(this.passData.tableData);
+    this.cancelBtn.clickCancel();
+
+  }
+
+  onClickSave(){
+    $('#confirm-save #modalBtn2').trigger('click');
   }
 
 }

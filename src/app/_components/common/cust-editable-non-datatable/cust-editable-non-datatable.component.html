@@ -36,7 +36,7 @@ span.ui-column-resizer {
 
         <button *ngIf="passData.addFlag" class="cust-btn" (click)="passData.nData == null ? addClicked(event) : onClickAdd()"><a>Add</a></button>
         <button *ngIf="passData.editFlag" class="cust-btn" (click)="onClickEdit()"><a class="paginate_button previous">Edit</a></button>
-        <button *ngIf="passData.deleteFlag" class="cust-btn" (click)="onClickDelete()"><a class="paginate_button previous">Delete</a></button>
+        <button *ngIf="passData.deleteFlag" class="cust-btn" (click)="confirmDelete()"><a class="paginate_button previous">Delete</a></button>
         <button *ngIf="passData.genericBtn !== undefined" class="cust-btn genericBtn" (click)="onClickGeneric()"><a class="paginate_button previous">{{passData.genericBtn}}</a></button>
         <div class="search-filter" *ngIf="passData.searchFlag">
             <label [class.searchWithFilter]="passData.filters !== undefined">Search: &nbsp;
@@ -82,7 +82,6 @@ span.ui-column-resizer {
             <button *ngIf="passData.editFlag" class="cust-btn" (click)="onClickEdit()"><a class="paginate_button previous">Edit</a></button>
             <button *ngIf="passData.deleteFlag" class="cust-btn" (click)="onClickDelete()"><a class="paginate_button previous">Delete</a></button>
             <button *ngIf="passData.genericBtn !== undefined" class="cust-btn" (click)="onClickGeneric()"><a class="paginate_button previous">{{passData.genericBtn}}</a></button> -->
-
             <!-- <div class="search-filter" *ngIf="passData.searchFlag"> -->
                 <!--<div class="search-filter" *ngIf="passData.hasSearch">-->
                     <!-- <label>Search: &nbsp;
@@ -150,8 +149,8 @@ span.ui-column-resizer {
                         </div>
                     </div>
                 </div> -->
-                <div class="table-scroll" id="cust-scroll">
-                    <table id="non-datatable">
+                <div class="table-scroll" id="cust-scroll" [ngClass]="{'ng-dirty': isDirty}">
+                    <table id="non-datatable" >
                         <thead>
                             <tr *ngIf="passData.tHeaderWithColspan != null">
                                 <ng-container *ngFor="let header of passData.tHeaderWithColspan">
@@ -161,7 +160,7 @@ span.ui-column-resizer {
                                 </ng-container>
                             </tr>
                             <tr style="min-width: 96px">
-                                <th *ngIf="passData.checkFlag" class="checkbox"><input type="checkbox" name="checkbox" [(ngModel)]="checked"></th>
+                                <th *ngIf="passData.checkFlag" class="checkbox not-form"><input type="checkbox" name="checkbox" (change)="selectAll($event.target.checked)"></th>
                                 <th container="body"  *ngFor="let tHeader of passData.tHeader; let i = index" (click)="sort(dataKeys[i],sortBy);sortIndex=i;"
                                 [style.min-width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [style.width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [ngbTooltip]="passData.tooltip !== undefined ? passData.tooltip[i] :null">
                                 <!-- <span class="ui-column-resizer"  (mousedown)="onMouseDown($event)" *ngIf="passData.resizable === undefined ||  passData.resizable[i]"></span> -->
@@ -181,23 +180,25 @@ span.ui-column-resizer {
                     <tbody>
                         <tr *ngFor="let data of displayData | paginate: { id: 'editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p2 };let ti = index" [class.selected]="data === indvSelect || data.checked" (click)="onRowClick($event,data)" (dblclick)="onRowDblClick($event)">
                             <td *ngIf="passData.checkFlag" class="checkbox align-middle">
-                                <input *ngIf="addCheckFlag(data)" type="checkbox" name="checkbox" [ngModel]="checked || data.checked" (change)="removeSelected($event, data)" >
+                                <input *ngIf="addCheckFlag(data)" type="checkbox" name="checkbox" [ngModel]="data.checked" (change)="removeSelected($event, data)" class="not-form">
                             </td>
                             <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]" class="align-middle">
                                 <div *ngIf="addCheckFlag(data) && ( passData.uneditable === undefined || !passData.uneditable[i] )" class="align-middle" style="position: relative;">
                                     <input *ngSwitchCase="'percent'" class="editable-text text-right number form-control-sm"
-                                    type="text" [ngModel]="processData(key, data) | number:'1.7-7'" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange(data)">
+                                    type="text" [ngModel]="processData(key, data) | number:'1.10-10'" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1  && data[key]==null" (change)="onDataChange(data)">
+                                    <input *ngSwitchCase="'currencyRate'" class="editable-text text-right number form-control-sm"
+                                    type="text" [ngModel]="processData(key, data) | number:'1.6-6'" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1  && data[key]==null" (change)="onDataChange(data)">
                                     <input *ngSwitchCase="'number'" class="editable-text text-right number form-control-sm" (blur)="format($event , data, key)"
                                     type="text" [ngModel]="data[key]" [ngModelOptions]="{updateOn:'change'}" 
-                                    [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange(data)">
+                                    [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1  && data[key]==null" (change)="onDataChange(data)">
 
-                                    <input appCurrency *ngSwitchCase="'currency'" class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key] | number:'1.2-2' | negativeAmount" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange(data)" 
+                                    <input appCurrency *ngSwitchCase="'currency'" class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key] | number:'1.2-2' | negativeAmount" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1  && data[key]==null" (change)="onDataChange(data)" 
                                         [ngClass]="{'negativeNumber': data[key]<0}">
                                     <div *ngSwitchCase="'checkbox'" style="text-align: center;">
-                                        <input [checked]="data[key] && data[key]!= 'N'" type="checkbox" (click)="assignChckbox($event,data,key);onDataChange(data)">
+                                        <input [ngModel]="data[key] && data[key]!= 'N'" type="checkbox" (click)="assignChckbox($event,data,key);onDataChange(data)" ngModel>
                                     </div>
                                     <input *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'sequence' ? passData.dataTypes[i] : ''" class="editable-text text-right number form-control-sm"
-                                    type="text" [ngModel]="data[key] | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1">
+                                    type="text" [ngModel]="data[key] | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1  && data[key]==null">
                                     <select *ngSwitchCase="'select'" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onDataChange(data)">
                                         <ng-container *ngFor="let data of passData.opts">
                                             <ng-container *ngIf="key == data.selector">
@@ -210,25 +211,27 @@ span.ui-column-resizer {
                                     <input *ngSwitchCase="'datetime'" class="editable-date form-control-sm" type="datetime-local"
                                     [ngModel]="processData(key, data) | date:'yyyy-MM-ddTHH:mm'">
                                     <input *ngSwitchDefault class="editable-text form-control-sm" type="text" [(ngModel)]="data[key]" (change)="onDataChange(data)">
-                                    <a  *ngIf="passData.magnifyingGlass.indexOf(key)!=-1"><i (click)="onClickLOV(data,key)" class="fa fa-search align-middle"></i></a> 
+                                    <a  *ngIf="passData.magnifyingGlass.indexOf(key)!=-1 && data[key]==null"><i (click)="onClickLOV(data,key)" class="fa fa-search align-middle"></i></a> 
                                 </div>
 
                                 <div *ngIf="addCheckFlag(data) && ( passData.uneditable!== undefined && passData.uneditable[i] )" class="align-middle uneditable" style="position: relative;">
-                                    <a  *ngIf="passData.magnifyingGlass.indexOf(key)!=-1"><i (click)="onClickLOV(data,key)" class="fa fa-search align-middle"></i></a> 
+                                    <a  *ngIf="passData.magnifyingGlass.indexOf(key)!=-1  && data[key]==null"><i (click)="onClickLOV(data,key)" class="fa fa-search align-middle"></i></a> 
                                     <div *ngSwitchCase="'percent'" style="text-align: right">
-                                        <span class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ processData(key, data) | number: '1.7-7'}}</span>
+                                        <span class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ processData(key, data) | number: '1.10-10'}}</span>
                                     </div>
-                                    <!-- <div *ngSwitchCase="'currency'" style="text-align: right">
+                                    <div *ngSwitchCase="'currencyRate'" style="text-align: right">
+                                        <span class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ processData(key, data) | number: '1.6-6'}}</span>
+                                    </div>                                    <!-- <div *ngSwitchCase="'currency'" style="text-align: right">
                                         <span class="unclickable">{{ processData(key, data) | number: '1.2-2'}}</span>
                                     </div>
                                     <div  *ngSwitchCase="'number'" style="text-align: right">
                                         <span class="unclickable">{{ processData(key, data) | number: '1.0-0'}}</span>
                                     </div> -->
                                     <div *ngSwitchCase="'currency'" style="text-align: right" >
-                                        <span [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ processData(key, data) | number: '1.2-2' | negativeAmount}}</span>
+                                        <span [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1  && data[key]==null" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ processData(key, data) | number: '1.2-2' | negativeAmount}}</span>
                                     </div>
                                     <div  *ngSwitchCase="'number'" style="text-align: right">
-                                        <span [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ processData(key, data) | number: '1.0-0'}}</span>
+                                        <span [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1  && data[key]==null" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ processData(key, data) | number: '1.0-0'}}</span>
                                     </div>
                                     <span *ngSwitchCase="'date'" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ processData(key, data) | date: 'MM/dd/yyyy'}}</span>
                                     <span *ngSwitchCase="'time'" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ processData(key, data) | date: 'HH:mm'}}</span>
@@ -262,7 +265,7 @@ span.ui-column-resizer {
                                 
 ======= -->
                                 <button class="fa fa-paperclip btn-file" title="Attach File" *ngIf="addCheckFlag(data)">
-                                    <input type="file" *ngIf="addCheckFlag(data)" (change)="data.fileName=$event.target.files[0].name;data.edited=true;">
+                                    <input type="file" *ngIf="addCheckFlag(data)" (change)="upload(data,$event)">
                                 </button>
                                 <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="addCheckFlag(data)">
                                     <input type="file" *ngIf="addCheckFlag(data)" (change)="data.fileName=$event.target.files[0].name;data.edited=true;">
@@ -304,13 +307,12 @@ span.ui-column-resizer {
 <label *ngIf="api.isLastPage()">Showing {{ (api.getCurrent() - 1) * passData.pageLength + 1 }} - {{displayData.length}} of {{displayData.length}} entries</label>
 </pagination-template>-->
 <pagination-template #api="paginationApi"  [id]="'editable'+passData.pageID" (pageChange)="p2 = $event">
-            <!--  <label *ngIf="!api.isLastPage() && displayLength > 0">Showing {{ (api.getCurrent() - 1) * passData.pageLength + 1 }} - {{ api.getCurrent() * passData.pageLength }} of {{displayLength}} entries {{api.getCurrent()}}</label>
+            <!--  <label *ngIf="!api.isLastPage() && ndisplayLength > 0">Showing {{ (api.getCurrent() - 1) * passData.pageLength + 1 }} - {{ api.getCurrent() * passData.pageLength }} of {{displayLength}} entries {{api.getCurrent()}}</label>
 <label *ngIf="api.isLastPage() && displayLength > 0">Showing {{ (api.getCurrent() - 1) * passData.pageLength + 1 }} - {{displayLength}} of {{displayLength}} entries</label>
 <label *ngIf="displayLength < 1">Showing 0 - 0 of 0 entries</label>-->
 <label *ngIf="!api.isLastPage() && displayLength > 0">Showing {{ (api.getCurrent() - 1) *
 passData.pageLength + 1 }} - {{ api.getCurrent() * passData.pageLength }} of {{displayLength}} entries</label>
-<label *ngIf="api.isLastPage() && displayLength > 0">Showing {{ (api.getCurrent() - 1) * pageLength + 1 }}
-- {{displayLength}} of {{displayLength}} entries</label>
+<label *ngIf="api.isLastPage() && displayLength > 0">Showing {{ (api.getCurrent() - 1) * passData.pageLength + 1 }} - {{displayLength}} of {{displayLength}} entries</label>
 <label *ngIf="displayLength < 1">Showing 0 - 0 of 0 entries</label>
 </pagination-template>
 </div>
@@ -325,3 +327,12 @@ passData.pageLength + 1 }} - {{ api.getCurrent() * passData.pageLength }} of {{d
         <label></label>
     </div>
 </div>
+
+<app-modal class="d-none" [id]="'confirm-delete'+passData.pageID" #deleteModal>
+    <div header>Delete</div>
+    <div body>Are you sure you want to delete these item(s)?</div>
+    <div footer class="cust-btn-container">
+        <button class="cust-btn" (click)="onClickDelete();deleteModal.closeModal()">Yes</button>
+        <button class="cust-btn" (click)="deleteModal.closeModal()">No</button>
+    </div>
+</app-modal>
