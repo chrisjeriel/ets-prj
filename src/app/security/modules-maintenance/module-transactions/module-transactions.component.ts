@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SecurityService } from '@app/_services';
 import { ModuleTransaction } from '@app/_models';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-module-transactions',
@@ -22,9 +23,41 @@ export class ModuleTransactionsComponent implements OnInit {
     widths: [],
   }
 
-  constructor(private securityServices: SecurityService) { }
+  PassDataModules: any = {
+    tableData: [['QUOTE001','Quotation Processing'],['QUOTE002','General Info (Quotation)'],['QUOTE003','Coverage (Quotation)'],['QUOTE004','Quote Option (Quotation)'],['QUOTE005','Endorsement (Quotation)']],
+    tHeader: ['Module Id', 'Description'],
+    dataTypes: ['text', 'text'],
+    pageID: 1,
+    pageLength:5,
+    searchFlag: true,
+    paginateFlag: true,
+    infoFlag: true,
+    widths: [110,225],
+  }
+
+  PassDatAUserListing: any = {
+  tableData: [['LCUARESMA','Lope Cuaresma','Y']],
+  tHeader: ['User Id', 'User Name', 'Active'],
+  dataTypes: ['text', 'text','checkbox'],
+  pageID: 7,
+  pageLength:5,
+  searchFlag: true,
+  paginateFlag: true,
+  infoFlag: true,
+  widths: [110,225,30],
+  }
+
+  constructor(private securityServices: SecurityService,private modalService: NgbModal) { }
 
   ngOnInit() {
   }
+
+  modules(){
+    $('#modules #modalBtn').trigger('click');
+  }
+
+  user(){
+      $('#users #modalBtn').trigger('click');
+    }
 
 }

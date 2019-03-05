@@ -128,8 +128,8 @@ export class CoverageComponent implements OnInit {
 
     
     this.getCoverageInfo();
-      this.coverageData.currencyCd = this.quotationInfo.currencyCd;
-      this.coverageData.currencyRt = this.quotationInfo.currencyRt;
+    this.coverageData.currencyCd = this.quotationInfo.currencyCd;
+    this.coverageData.currencyRt = this.quotationInfo.currencyRt;
       
       
   }
@@ -140,12 +140,11 @@ export class CoverageComponent implements OnInit {
       this.table.refreshTable();
         if(data.quotation.project == null){
           this.maintenanceService.getMtnSectionCovers(this.lineCd,this.coverCd).subscribe((data: any) =>{
-            console.log(data)
-              // for(var i=0; i< data.sectionCovers.length;i++){
-              //   if(data.sectionCovers[i].defaultTag == 'Y' ){
-              //      this.passData.tableData.push(data.sectionCovers[i]);
-              //   }
-              // }
+               for(var i=0; i< data.sectionCovers.length;i++){
+                 if(data.sectionCovers[i].defaultTag == 'Y' ){
+                    this.passData.tableData.push(data.sectionCovers[i]);
+                }
+              }
               this.passData.tableData = data.sectionCovers;
               this.table.refreshTable();
           });

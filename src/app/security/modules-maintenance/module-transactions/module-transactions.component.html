@@ -9,8 +9,8 @@
 		<div class="form-group col-sm" style="margin-bottom: 8px;">
 			<div class="col-md-13 text-center">
 				<div class="cust-btn-container">
-					<button type="button" class="cust-btn btn"><a>Modules</a></button>
-					<button type="button" class="cust-btn btn"><a>Users w/ Access</a></button>
+					<button type="button" class="cust-btn btn" (click)="modules()"><a>Modules</a></button>
+					<button type="button" class="cust-btn btn" (click)="user()"><a>Users w/ Access</a></button>
 					<button type="button" class="cust-btn btn"><a>User Group w/ Access</a></button>
 				</div>
 			</div>
@@ -47,3 +47,53 @@
 	</div>
 </div>
 </div>
+
+<app-modal class="d-none" id="modules">
+    <div header>Modules</div>
+    <div body class="container-flex text-center">
+        <div class="form-row custom-row-inline-inset">
+			<div class="col-sm-12">
+				<div class="input-group">
+					<label class="form-control-sm col-sm-4">Tran Code</label>
+		        	<input type="text" class="form-control form-control-sm col-sm-6">
+				</div>
+	        	<fieldset class="scheduler-border">
+	        		<legend class="scheduler-border">Module</legend>
+	        			<div class="row model-align">
+	        				<div class="col-sm-12">
+	        					<app-cust-editable-non-datatable [passData]="PassDataModules"> </app-cust-editable-non-datatable>
+	        				</div>
+	        			</div>
+	        	</fieldset>
+        	</div>
+        </div> 
+    </div>
+  	<div footer class="d-flex justify-content-center w-100">                    
+        <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Return</a></button>
+    </div>
+</app-modal> 
+
+<app-modal class="d-none" id="users">
+    <div header>Users with Access</div>
+    <div body class="container-flex text-center">
+        <div class="form-row custom-row-inline-inset">
+			<div class="col-sm-12">
+				<div class="input-group">
+					<label class="form-control-sm col-sm-4">Tran Code</label>
+		        	<input type="text" class="form-control form-control-sm col-sm-6">
+				</div>
+	        	<fieldset class="scheduler-border">
+	        		<legend class="scheduler-border">Users</legend>
+	        			<div class="row model-align">
+	        				<div class="col-sm-12">
+	        					<app-cust-editable-non-datatable [passData]="PassDatAUserListing"> </app-cust-editable-non-datatable>
+	        				</div>
+	        			</div>
+	        	</fieldset>
+        	</div>
+        </div> 
+    </div>
+  	<div footer class="d-flex justify-content-center w-100">                    
+        <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Return</a></button>
+    </div> 
+</app-modal> 
