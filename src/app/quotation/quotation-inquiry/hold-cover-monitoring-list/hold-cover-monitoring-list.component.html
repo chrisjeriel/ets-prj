@@ -3,7 +3,7 @@
     <ngb-tabset>
         <ngb-tab title="Hold Cover Monitoring">
             <ng-template ngbTabContent>
-                <app-cust-non-datatable [passData]="passData"></app-cust-non-datatable>
+                <app-cust-non-datatable [passData]="passData" (searchToDb)="searchQuery($event)"></app-cust-non-datatable>
             </ng-template>
         </ngb-tab>
     </ngb-tabset>

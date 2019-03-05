@@ -40,115 +40,48 @@
         <button class="cust-filter" ngbDropdownToggle><a><fa name="filter"></fa></a></button>
         <div ngbDropdownMenu aria-labelledby="dropdownConfig">
             <div class="dropdown-item">
-                <span class="cust-tbl-label">Filter by:</span>
-                <div class="input-group" *ngFor="let filt of passData.filters;let i= index" [ngSwitch]="passData.filters[i].dataType">
-                    <div class="input-group-prepend" style="margin-right: 2px !important">
-                        <div class="input-group-text">
-                            <input type="checkbox" [(ngModel)]="filt.enabled"><span>&nbsp;{{filt.title}}</span>
+                <div class="container" style="padding-left: 5px; padding-right: 5px;">
+                    <div class="row">
+                        <div class="col-sm-12">
+                             <span class="cust-tbl-label">Filter by:</span>
                         </div>
                     </div>
-                    <input [disabled]="!filt.enabled" *ngSwitchCase="'text'"  type="text" class="form-control cust-sm" [(ngModel)]="filt.search" (ngModelChange)="filterDisplay(passData.filters,searchString)">
-                    <input [disabled]="!filt.enabled" *ngSwitchCase="'date'"  type="date" class="form-control cust-sm" [(ngModel)]="filt.search" (ngModelChange)="filterDisplay(passData.filters,searchString)">
-                    <input [disabled]="!filt.enabled"  *ngSwitchCase="'datespan'" type="date" class="form-control cust-sm" [(ngModel)]="filt.search" (ngModelChange)="filterDisplay(passData.filters,searchString)">
-                    <span class="cust-sm" *ngSwitchCase="'datespan'">-</span>
-                    <input [disabled]="!filt.enabled" *ngSwitchCase="'datespan'" type="date" class="form-control cust-sm" [(ngModel)]="filt.search2" (ngModelChange)="filterDisplay(passData.filters,searchString)">
-                </div>
-                <div class="input-group">
-                    <button class="cust-filter cust-tbl-submit" (click)="filterDisplay(filterObj,searchString)"><a>Ok</a></button>
-                </div>
-            </div>
-        </div>
-    </div>
+                    <div class="row" style="overflow: auto; height: 140px">
+                        <div class="col-sm-12" >
+                            <div class="input-group" *ngFor="let filt of passData.filters;let i= index" [ngSwitch]="passData.filters[i].dataType">
+                                <div class="input-group-prepend" style="margin-right: 2px !important">
+                                    <div class="input-group-text">
+                                        <input type="checkbox" [(ngModel)]="filt.enabled"><span>&nbsp;{{filt.title}}</span>
+                                    </div>
+                                </div>
+                                <!-- OLD VERSION -->
+                                <!-- <input [disabled]="!filt.enabled" *ngSwitchCase="'text'"  type="text" class="form-control cust-sm" [(ngModel)]="filt.search" (ngModelChange)="filterDisplay(passData.filters,searchString)">
+                                <input [disabled]="!filt.enabled" *ngSwitchCase="'date'"  type="date" class="form-control cust-sm" [(ngModel)]="filt.search" (ngModelChange)="filterDisplay(passData.filters,searchString)">
+                                <input [disabled]="!filt.enabled"  *ngSwitchCase="'datespan'" type="date" class="form-control cust-sm" [(ngModel)]="filt.search" (ngModelChange)="filterDisplay(passData.filters,searchString)">
+                                <span class="cust-sm" *ngSwitchCase="'datespan'">-</span>
+                                <input [disabled]="!filt.enabled" *ngSwitchCase="'datespan'" type="date" class="form-control cust-sm" [(ngModel)]="filt.search2" (ngModelChange)="filterDisplay(passData.filters,searchString)"> -->
 
-    <!-- Fixed Column Version -->
-    <div  *ngIf="passData.fixedCol" class="row">
-        <div class="col-sm-2" style="padding-right: 0px; flex: 0 0 13.666667%;
-                                     max-width: 13.666667%;">
-            <table id="non-datatable" [class.margin-table]="passData.addFlag || passData.editFlag || passData.deleteFlag || passData.copyFlag || passData.printBtn || passData.expireFilter || !passData.tableOnly">
-                <thead>
-                    <tr>
-                        <th *ngIf="passData.checkFlag" style="text-align: center"><input type="checkbox" name=""></th>
-                        <th [ngbTooltip]="passData.tooltip !== undefined ? passData.tooltip[i] :null">
-                            <span class="gridHeader" (click)="sort(dataKeys[i],sortBy);sortIndex=i;">{{passData.tHeader[0]}}</span>
-                            <i *ngIf="showSort(sortBy,i)" class="fa fa-caret-down"></i>
-                            <i *ngIf="showSort(!sortBy,i)" class="fa fa-caret-up"></i>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let data of displayData | paginate: { id:'non-editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event, data);" (dblclick)="onRowDblClick($event)" [class.selected]="data === indvSelect">
-                        <td *ngIf="passData.checkFlag" style="text-align: center"><input type="checkbox" name="" *ngIf="addCheckFlag(data)"></td>
-                        <td style="margin-top:1px">
-                            <div *ngIf="addCheckFlag(data)">
-                                <span class="unclickable">{{data[dataKeys[0]]}}</span>
+                                <!-- DATABASE VERSION -->
+                                <input [disabled]="!filt.enabled" [ngModel]="filt.search" (ngModelChange)="filt.search=$event.toUpperCase()"*ngSwitchCase="'text'"  type="text" class="form-control cust-sm">
+                                <input [disabled]="!filt.enabled" #input (input)="input.value=$event.target.value.toUpperCase()" [(ngModel)]="filt.search" *ngSwitchCase="'date'"  type="date" class="form-control cust-sm">
+                                <input [disabled]="!filt.enabled" #input (input)="input.value=$event.target.value.toUpperCase()" [(ngModel)]="filt.search"  *ngSwitchCase="'datespan'" type="date" class="form-control cust-sm">
+                                <span class="cust-sm" *ngSwitchCase="'datespan'">-</span>
+                                <input [disabled]="!filt.enabled" *ngSwitchCase="'datespan'" type="date" class="form-control cust-sm">
                             </div>
-                            <div *ngIf="!addCheckFlag(data)" class="filler">
-                                <span></span>
-                            </div>  
-                        </td>
-                    </tr>
-                    <tr *ngIf="passData.totalRow!==undefined">
-                        <td></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="col-sm-10" style="padding-left: 0px;    max-width: 86.3333%;
-                                      flex: 0 0 86.3333%;">
-        
-            <div class="col-sm-10 table-scroll" id="cust-scroll" style="padding-left: 0px">
-                <table class="content-container" id="non-datatable" [class.margin-table]="passData.addFlag || passData.editFlag || passData.deleteFlag || passData.copyFlag || passData.printBtn || passData.expireFilter || !passData.tableOnly" style="border-left: 0px;">
-                    <thead>
-                        <tr>
-                            <th *ngFor="let tHeader of passData.tHeader | slice: 1; let i = index" [ngSwitch]="passData.dataTypes[i]" [ngStyle]="{'min-width': (passData.colSize[i] == '' || passData.colSize.length == 0) ? '100%' : passData.colSize[i]}" [ngbTooltip]="passData.tooltip !== undefined ? passData.tooltip[i] :null">
-                                <span 
-                                      class="ui-column-resizer" (mousedown) = "onMouseDown($event)"></span>
-                                <div *ngSwitchCase="'currency'" style="text-align: right">
-                                    <span class="gridHeader" (click)="sort(dataKeys[i],sortBy);sortIndex=i;">{{tHeader}}</span>
-                                </div>
-                                <div *ngSwitchCase="'percent'" style="text-align: right">
-                                    <span class="gridHeader" (click)="sort(dataKeys[i],sortBy);sortIndex=i;">{{tHeader}}</span>
-                                </div>
-                                <div *ngSwitchCase="'number'" style="text-align: right">
-                                    <span class="gridHeader" (click)="sort(dataKeys[i],sortBy);sortIndex=i;">{{tHeader}}</span>
-                                </div>
-                                <span *ngSwitchDefault class="gridHeader" (click)="sort(dataKeys[i],sortBy);sortIndex=i;">{{tHeader}}</span>
-                                <i *ngIf="showSort(sortBy,i)" class="fa fa-caret-down"></i>
-                                <i *ngIf="showSort(!sortBy,i)" class="fa fa-caret-up"></i>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let data of displayData | paginate: { id:'non-editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event, data);" (dblclick)="onRowDblClick($event)" [class.selected]="data === indvSelect">
-                            <td *ngIf="passData.checkFlag"> <input type="checkbox" name=""></td>
-                            <td *ngFor="let key of dataKeys | slice: 1; let i = index" [ngSwitch]="passData.dataTypes[i]" [ngStyle]="{'min-width': (passData.colSize[i] == '' || passData.colSize.length == 0) ? '100%' : passData.colSize[i]}">
-                                <div *ngIf="addCheckFlag(data)" [ngStyle]="{'width': (passData.colSize[i] == '' || passData.colSize.length == 0) ? 'inherit' : passData.colSize[i]}">
-                                    <div *ngSwitchCase="'percent'" style="text-align: right">
-                                        <span class="unclickable">{{ processData(key, data) | number: '1.7-7'}}</span>
-                                    </div>
-                                    <div *ngSwitchCase="'currency'" style="text-align: right">
-                                        <span class="unclickable" [ngClass]="{'negativeNumber': data[key]<0}">{{ processData(key, data) | number: '1.2-2' | negativeAmount}}</span>
-                                    </div>
-                                    <div  *ngSwitchCase="'number'" style="text-align: right">
-                                        <span class="unclickable">{{ processData(key, data) | number: '1.0-0'}}</span>
-                                    </div>
-                                    <span *ngSwitchCase="'date'" class="unclickable">{{ processData(key, data) | date: 'MM/dd/yyyy'}}</span>
-                                    <span *ngSwitchCase="'time'" class="unclickable">{{ processData(key, data) | date: 'HH:mm'}}</span>
-                                    <span *ngSwitchCase="'datetime'" class="unclickable">{{ processData(key, data) | date: 'yyyy-MM-ddTHH:mm'}}</span>
-                                    <span *ngSwitchDefault class="unclickable">{{ processData(key, data) }}</span>
-                                </div>
-                                <div *ngIf="!addCheckFlag(data)" class="filler">
-                                    <span></span>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="input-group">
+                                <button class="cust-filter cust-tbl-submit" (click)="dbQuery(passData.filters)"><a>Ok</a></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <!-- End Fixed Column version -->
+
     <div style="position: absolute;left: 0px;top:0px" [id]="'pinTable'+passData.pageID">
         <table id="non-datatable" [class.margin-table]="passData.addFlag || passData.editFlag || passData.deleteFlag || passData.copyFlag || passData.printBtn || passData.expireFilter || !passData.tableOnly">
                 <thead>

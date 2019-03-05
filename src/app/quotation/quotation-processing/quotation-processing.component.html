@@ -7,8 +7,12 @@
         <ngb-tab class="ngb-tab" title="Quotation Processing">
             <ng-template ngbTabContent style="padding-top: 10px !important;">
                 <div>
+                    <!-- 
+                        USE (searchToDb) event emitter to get the search values of your filter. Then use the values
+                        as params for your http get method.
+                    -->
                     <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)"
-                        (add)="onClickAdd($event)" (edit)="onClickEdit($event)" (copy)="onClickCopy($event)"></app-cust-non-datatable>
+                        (add)="onClickAdd($event)" (edit)="onClickEdit($event)" (copy)="onClickCopy($event)" (searchToDb)="searchQuery($event)"></app-cust-non-datatable>
                 </div>
             </ng-template>
         </ngb-tab>

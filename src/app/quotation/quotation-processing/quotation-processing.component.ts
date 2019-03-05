@@ -59,6 +59,8 @@ export class QuotationProcessingComponent implements OnInit {
     cedingCode: any
     cedingName: any
 
+    searchParams: any[] = [];
+
     passData: any = {
         tableData: [],
         tHeader: ['Quotation No.', 'Type of Cession', 'Line Class', 'Status', 'Ceding Company', 'Principal', 'Contractor', 'Insured', 'Risk', 'Object', 'Site', 'Policy No', 'Currency', 'Quote Date', 'Valid Until', 'Requested By', 'Created By'],
@@ -189,13 +191,18 @@ export class QuotationProcessingComponent implements OnInit {
         , public activeModal: NgbActiveModal, private titleService: Title
         ) { }
 
-
+    
     ngOnInit() {
         this.titleService.setTitle("Quo | List Of Quotations");
         this.rowData = this.quotationService.getRowData();
         this.riskData.tableData = this.quotationService.getRisksLOV();
 
-        this.quotationService.getQuoProcessingData().subscribe(data => {
+        this.retrieveQuoteListingMethod();
+
+    }
+
+    retrieveQuoteListingMethod(){
+        this.quotationService.getQuoProcessingData(this.searchParams).subscribe(data => {
             var records = data['quotationList'];
             this.fetchedData = records;
             for(let rec of records){
@@ -227,7 +234,6 @@ export class QuotationProcessingComponent implements OnInit {
 
                this.table.forEach(table => { table.refreshTable() });
         });
-
     }
 
     onClickAdd(event) {        
@@ -262,6 +268,13 @@ export class QuotationProcessingComponent implements OnInit {
 
     showLineLOV(){
         $('#lineLOV #modalBtn').trigger('click');
+    }
+
+    //Method for DB query
+    searchQuery(searchParams){
+        this.searchParams = searchParams;
+        this.passData.tableData = [];
+        this.retrieveQuoteListingMethod();
     }
 
     setLine(data){
