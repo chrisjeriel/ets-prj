@@ -11,7 +11,7 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 })
 export class MtnLineComponent implements OnInit {
 
-selected: any ;
+selected: any = null;
 lineListing: any = {
     tableData: [],
     tHeader: ['Line Code', 'Description', 'Remarks'],
@@ -47,10 +47,12 @@ lineListing: any = {
 
   }
 
-  onRowClick(data){
-  	//console.log(data);
-  	this.selected = data;
-     
+  onRowClick(data){  	
+    if(Object.is(this.selected, data)){
+      this.selected = null
+    } else {
+      this.selected = data;
+    }
   }
 
   confirm(){
@@ -59,7 +61,7 @@ lineListing: any = {
   openModal(){
      this.lineListing.tableData = [];
 
-     this.maintenanceService.getLineLOV().subscribe((data: any) =>{
+     this.maintenanceService.getLineLOV('').subscribe((data: any) =>{
            for(var lineCount = 0; lineCount < data.line.length; lineCount++){
              this.lineListing.tableData.push(
                new Row(data.line[lineCount].lineCd, 
@@ -69,6 +71,22 @@ lineListing: any = {
            }
            this.table.refreshTable();
          });
+  }
+
+  checkCode(code) {
+    this.maintenanceService.getLineLOV(code).subscribe(data => {
+      if(data['line'].length > 0) {
+        this.selectedData.emit(data['line'][0]);
+      } else {
+        this.selectedData.emit({
+          lineCd: '',
+          description: ''
+        });
+          
+        $('#lineMdl > #modalBtn').trigger('click');
+      }
+      
+    });
   }
 
 

@@ -9,7 +9,7 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
   styleUrls: ['./mtn-type-of-cession.component.css']
 })
 export class MtnTypeOfCessionComponent implements OnInit {
-	selected: any;
+	selected: any = null;
 
   cessionListing: any = {
     tableData: [],
@@ -52,8 +52,11 @@ export class MtnTypeOfCessionComponent implements OnInit {
   }
 
   onRowClick(data){
-  	//console.log(data);
-  	this.selected = data;
+    if(Object.is(this.selected, data)){
+      this.selected = null
+    } else {
+      this.selected = data;
+    }
   }
 
   confirm(){
@@ -62,7 +65,8 @@ export class MtnTypeOfCessionComponent implements OnInit {
 
   openModal(){
     this.cessionListing.tableData = [];
-     this.maintenanceService.getMtnTypeOfCession('').subscribe(data =>{
+    
+     this.maintenanceService.getMtnTypeOfCession('').subscribe(data => {
        var records = data['cession'];
 
              for(let rec of records){
@@ -76,6 +80,22 @@ export class MtnTypeOfCessionComponent implements OnInit {
 
        this.table.refreshTable();
      });
+  }
+
+  checkCode(code) {
+    this.maintenanceService.getMtnTypeOfCession(code).subscribe(data => {
+      if(data['cession'].length > 0) {
+        this.selectedData.emit(data['cession'][0]);
+      } else {
+        this.selectedData.emit({
+          cessionId: '',
+          description: ''
+        });
+
+        $('#typeOfCessionMdl > #modalBtn').trigger('click');
+      }
+      
+    });
   }
 
 }
