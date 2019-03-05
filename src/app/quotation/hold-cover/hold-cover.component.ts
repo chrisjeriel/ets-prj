@@ -29,7 +29,7 @@ export class HoldCoverComponent implements OnInit {
       keys: ['quotationNo','cedingName','insuredDesc','riskName'],
       pageStatus: true,
       pagination: true,
-      filters: [
+      /*filters: [
         {
           key: 'quotationNo',
           title : 'Quotation No.',
@@ -50,8 +50,99 @@ export class HoldCoverComponent implements OnInit {
           title : 'Risk',
           dataType: 'text'
         }
-      ]
+      ]*/
+      filters: [
+        {
+            key: 'quotationNo',
+            title: 'Quotation No.',
+            dataType: 'seq'
+        },
+        {
+            key: 'cessionDesc',
+            title: 'Type of Cession',
+            dataType: 'text'
+        },
+        {
+            key: 'lineClassCdDesc',
+            title: 'Line Class',
+            dataType: 'text'
+        },
+        {
+            key: 'status',
+            title: 'Status',
+            dataType: 'text'
+        },
+        {
+            key: 'cedingName',
+            title: 'Ceding Co.',
+            dataType: 'text'
+        },
+        {
+            key: 'principalName',
+            title: 'Principal',
+            dataType: 'text'
+        },
+        {
+            key: 'contractorName',
+            title: 'Contractor',
+            dataType: 'text'
+        },
+        {
+            key: 'insuredDesc',
+            title: 'Insured',
+            dataType: 'text'
+        },
+        {
+            key: 'riskName',
+            title: 'Risk',
+            dataType: 'text'
+        },
+        {
+            key: 'objectDesc',
+            title: 'Object',
+            dataType: 'text'
+        },
+        {
+            key: 'site',
+            title: 'Site',
+            dataType: 'text'
+        },
+        {
+            key: 'policyNo',
+            title: 'Policy No.',
+            dataType: 'seq'
+        },
+        {
+            key: 'currencyCd',
+            title: 'Currency',
+            dataType: 'text'
+        },
+        {
+            key: 'issueDate',
+            title: 'Quote Date',
+            dataType: 'date'
+        },
+        {
+            key: 'expiryDate',
+            title: 'Valid Until',
+            dataType: 'date'
+        },
+        {
+            key: 'reqBy',
+            title: 'Requested By',
+            dataType: 'text'
+        },
+        {
+            key: 'createUser',
+            title: 'Created By',
+            dataType: 'text'
+        },
+        ],
+
+        colSize: ['', '250px', '250px', '250px'],
     };
+
+    searchParams: any[] = [];
 
   constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title) { }
 
@@ -157,9 +248,8 @@ export class HoldCoverComponent implements OnInit {
     }
   }
 
-  search() {
-    this.passDataQuoteLOV.tableData = [];
-    this.quotationService.getQuoProcessingData()
+  retrieveQuoteListingMethod(){
+    this.quotationService.getQuoProcessingData(this.searchParams)
     .subscribe(val => {
       var records = val['quotationList'];
       for(let rec of records){
@@ -172,6 +262,11 @@ export class HoldCoverComponent implements OnInit {
       }
       this.table.refreshTable();
     });
+  }
+
+  search() {
+    this.passDataQuoteLOV.tableData = [];
+    this.retrieveQuoteListingMethod();
 
     var qLine = this.quoteLine.toUpperCase();
 
@@ -188,6 +283,13 @@ export class HoldCoverComponent implements OnInit {
     }
 
   }
+
+  //Method for DB query
+    searchQuery(searchParams){
+        this.searchParams = searchParams;
+        this.passDataQuoteLOV.tableData = [];
+        this.retrieveQuoteListingMethod();
+    }
 
   onRowClick(event){
     this.rowRec = event;

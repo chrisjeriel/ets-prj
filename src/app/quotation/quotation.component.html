@@ -58,7 +58,7 @@
 				<app-attachment [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag"></app-attachment>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab id="approval-tab" [disabled]="inquiryFlag">
+		<ngb-tab id="approval-tab" *ngIf="!inquiryFlag">
 
 			<ng-template #content>
 				<div class="modal-header">

@@ -409,12 +409,24 @@ export class UnderwritingService {
         return this.rowData;
     }
 
-    getCedingCompanyList(){
+    getCedingCompanyList(cedingId,cedingName,cedingAbbr,address,membershipDate,terminationDate,inactiveDate,activeTag,govtTag,membershipTag){
         /*this.cedingCompanyList = [
             new CedingCompanyList('y','y','',1,'AFP GENERAL INSURANCE CORP.','AFP', 'Col. Boni Serrano Road E. Delos Santos Ave.', new Date(2015,2,9),null,null),
         ]
-        return this.cedingCompanyList; */  
-        return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMaintenanceCedingCompanyListing');
+        return this.cedingCompanyList; */
+        const params = new HttpParams()
+            .set('cedingId',cedingId)
+            .set('cedingName',cedingName)
+            .set('cedingAbbr',cedingAbbr)
+            .set('address',address)
+            .set('membershipDate',membershipDate)
+            .set('terminationDate',terminationDate)
+            .set('inactiveDate',inactiveDate)
+            .set('activeTag',activeTag)
+            .set('govtTag',govtTag)
+            .set('membershipTag',membershipTag);
+
+        return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMaintenanceCedingCompanyListing', {params});
     }
 
     getCedingCompany(){

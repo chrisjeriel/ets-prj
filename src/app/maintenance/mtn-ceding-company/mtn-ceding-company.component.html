@@ -1,4 +1,4 @@
-<app-modal id="cedingCompanyNotMember" class="d-none" (modalOpened)="openModalNotMember()">
+<app-modal id="cedingCompanyNotMemberr" class="d-none" (modalOpened)="openModalNotMember()" id="cedingCompanyNotMemberMdl">
     <div header>List of Values</div>
     <div body>
         <app-cust-non-datatable [passData]="passDataCedingCompanyNotMember" (rowClick)="onRowClick($event)"></app-cust-non-datatable>
@@ -6,7 +6,8 @@
     <div footer>
         <div class="d-flex justify-content-center">
             <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-            <button class="cust-btn" type="button" (click)="modalService.dismissAll(); okBtnClick($event);"><a>Ok</a></button>
+            <button *ngIf="selected != null" class="cust-btn" type="button" (click)="modalService.dismissAll(); okBtnClick($event);"><a>Ok</a></button>
+            <button *ngIf="selected == null" class="cust-btn cust-btn-disabled" type="button"><a>Ok</a></button>
         </div>
     </div>
 </app-modal>
