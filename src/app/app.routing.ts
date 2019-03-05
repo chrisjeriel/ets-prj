@@ -114,6 +114,7 @@ import { QuarterlyStmntOfAcctComponent } from './accounting-in-trust/quarterly-s
 import { ProfitCommissionComponent } from './accounting-in-trust/profit-commission/profit-commission.component';
 import { UserGroupsMaintenanceComponent } from './security/users-maintenance/user-groups-maintenance/user-groups-maintenance.component';
 import { UsersComponent } from './security/users-maintenance/users/users.component';
+import { UsersMaintenanceComponent } from './security/users-maintenance/users-maintenance.component';
 
 const appRoutes: Routes = [
 
@@ -237,6 +238,7 @@ const appRoutes: Routes = [
     { path: 'profit-commission', component: ProfitCommissionComponent },
     { path: 'user-group-maintenance', component: UserGroupsMaintenanceComponent },
     { path: 'users', component: UsersComponent },
+    { path: 'UsersMaintenanceComponent', component: UsersMaintenanceComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

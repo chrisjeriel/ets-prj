@@ -203,8 +203,8 @@ export class GeneralInfoComponent implements OnInit {
 					}
 
 					setTimeout(() => {
-						$('.req').focus();
-						$('.req').blur();
+						$('input[appOtherRates]').focus();
+						$('input[appOtherRates]').blur();
 					},0) 
 				}
 

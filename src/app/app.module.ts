@@ -320,6 +320,9 @@ import { UsersMaintenanceComponent } from './security/users-maintenance/users-ma
 import { UserGroupsMaintenanceComponent } from './security/users-maintenance/user-groups-maintenance/user-groups-maintenance.component';
 import { UsersComponent } from './security/users-maintenance/users/users.component';
 import { ConfirmSaveComponent } from './_components/common/confirm-save/confirm-save.component';
+import { ModulesMaintenanceComponent } from './security/modules-maintenance/modules-maintenance.component';
+import { SecurityModulesComponent } from './security/modules-maintenance/security-modules/security-modules.component';
+import { ModuleTransactionsComponent } from './security/modules-maintenance/module-transactions/module-transactions.component';
 
 
 @NgModule({
@@ -647,6 +650,9 @@ import { ConfirmSaveComponent } from './_components/common/confirm-save/confirm-
         UserGroupsMaintenanceComponent,
         UsersComponent,
         ConfirmSaveComponent,
+        ModulesMaintenanceComponent,
+        SecurityModulesComponent,
+        ModuleTransactionsComponent,
     ],
 
     providers: [

@@ -1,4 +1,4 @@
-﻿<style>
+<style>
     .btn-link:hover {
     color: #0056b3;
     text-decoration: none;
@@ -454,7 +454,11 @@
                                 <fa name="user-secret"></fa>&nbsp;Security
                             </ng-template>
                             <ng-template ngbPanelContent>
-                                <ngb-accordion #acc="ngbAccordion">
+                                <button [routerLink]="['users-maintenance']" class="button btn btn-link">Users Maintenance</button>
+                                <br />
+                                <button [routerLink]="['modules-maintenance']" class="button btn btn-link">Modules Maintenance</button>
+                                <br />
+                                <!-- <ngb-accordion #acc="ngbAccordion">
                                     <ngb-panel>
                                         <ng-template ngbPanelTitle>
                                             Users Maintenance
@@ -462,11 +466,11 @@
                                         <ng-template ngbPanelContent>
                                             <button [routerLink]="['users']" class="button btn btn-link">Users</button>
                                             <br />
-                                            <button [routerLink]="['user-group-maintenance']" class="button btn btn-link">Users Groups Maintenance</button>
+                                            <button [routerLink]="['user-group-maintenance']" class="button btn btn-link">User Groups Maintenance</button>
                                             <br />
                                         </ng-template>
                                     </ngb-panel>
-                                </ngb-accordion>
+                                </ngb-accordion> -->
                             </ng-template>
                         </ngb-panel>
                     </ngb-accordion>

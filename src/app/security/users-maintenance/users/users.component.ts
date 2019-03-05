@@ -20,10 +20,9 @@ export class UsersComponent implements OnInit {
     pageLength:10,
     magnifyingGlass:['userGroup'],
     searchFlag: true,
-    filters:[],
     widths: [],
-    genericBtn: 'Save',
   }
+
   constructor(private securityServices: SecurityService) { }
 
   ngOnInit() {
