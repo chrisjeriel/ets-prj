@@ -5,6 +5,9 @@ import { QuotationService, MaintenanceService } from '../../_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
+import { MtnCedingCompanyComponent } from '@app/maintenance/mtn-ceding-company/mtn-ceding-company.component';
+import { MtnIntermediaryComponent } from '@app/maintenance/mtn-intermediary/mtn-intermediary.component';
 import { MtnObjectComponent } from '@app/maintenance/mtn-object/mtn-object.component';
 
 @Component({
@@ -13,6 +16,9 @@ import { MtnObjectComponent } from '@app/maintenance/mtn-object/mtn-object.compo
 	styleUrls: ['./general-info.component.css']
 })
 export class GeneralInfoComponent implements OnInit {
+	@ViewChild(CedingCompanyComponent) cedingCoLov: CedingCompanyComponent;
+	@ViewChild(MtnCedingCompanyComponent) cedingCoNotMemberLov: CedingCompanyComponent;
+	@ViewChild(MtnIntermediaryComponent) intermediaryLov: MtnIntermediaryComponent;
 	@ViewChild(MtnObjectComponent) objectLov: MtnObjectComponent;
 
 	private quotationGenInfo: QuotationGenInfo;
@@ -623,7 +629,13 @@ export class GeneralInfoComponent implements OnInit {
 
 
   	checkCode(field) {
-  		if(field === 'object') {
+  		if(field === 'cedingCo') {
+  			this.cedingCoLov.checkCode(this.genInfoData.cedingId);
+  		} else if(field === 'cedingCoNotMember') { 
+  			this.cedingCoNotMemberLov.checkCode(this.genInfoData.reinsurerId);
+  		} else if(field === 'intermediary') {
+  			this.intermediaryLov.checkCode(this.genInfoData.intmId);
+  		} else if(field === 'object') {
   			this.objectLov.checkCode(this.line, this.project.objectId);
   		}
   	}
