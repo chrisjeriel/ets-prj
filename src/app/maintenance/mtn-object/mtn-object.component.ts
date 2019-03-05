@@ -68,7 +68,23 @@ export class MtnObjectComponent implements OnInit {
   }
 
   select(data){
-  	if(Object.is(this.selected, data)){
+    console.log(data);
+    console.log(data === null);
+
+    function allNull() {
+      for(var prop in data) {
+        if(data[prop] != null) {
+          console.log('merong hindi null');
+          return false;
+        }
+      }
+      console.log('null lahat');
+      return true;
+    }
+
+    allNull();
+
+  	if(Object.is(this.selected, data) || allNull()){
       this.selected = null
     } else {
       this.selected = data;
