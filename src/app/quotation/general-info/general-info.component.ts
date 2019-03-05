@@ -621,11 +621,17 @@ export class GeneralInfoComponent implements OnInit {
   		}
   	}
 
+
   	checkCode(field) {
   		if(field === 'object') {
   			this.objectLov.checkCode(this.line, this.project.objectId);
   		}
   	}
+
+  	onClickSave(){
+  		$('#confirm-save #modalBtn2').trigger('click');
+	}
+
 }
 export interface SelectRequestMode {
 	name: string;

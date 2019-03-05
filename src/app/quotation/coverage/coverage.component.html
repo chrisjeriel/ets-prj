@@ -110,14 +110,14 @@
             <div class="col-md-13 text-center">
                 <div class="cust-btn-container" style="margin-top: 10px;">
                     <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
-                    <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="saveData()"><a>Save</a></button>
+                    <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<app-sucess-dialog></app-sucess-dialog>
+
 <app-mtn-section-covers id="sectionCoversLOV" (selectedData)="selectedSectionCoversLOV($event)" [lineCd]="lineCd"></app-mtn-section-covers>
 <app-modal class="d-none" id="errorMdl">
     <div header>Error</div>
@@ -130,3 +130,8 @@
     </div>
 </app-modal>
 <app-mtn-currency id="currencyModal" (selectedData)="setCurrency($event)"></app-mtn-currency>
+
+
+<app-sucess-dialog id="coverage" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-confirm-save (onYes)="saveData()"></app-confirm-save>
+<app-cancel-button (onYes)="saveData('cancel')" [url]="'/quotation-processing'" ></app-cancel-button>

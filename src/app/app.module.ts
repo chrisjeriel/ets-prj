@@ -319,6 +319,8 @@ import { OtherRatesDirective } from './_directives/other-rates.directive';
 import { UsersMaintenanceComponent } from './security/users-maintenance/users-maintenance.component';
 import { UserGroupsMaintenanceComponent } from './security/users-maintenance/user-groups-maintenance/user-groups-maintenance.component';
 import { UsersComponent } from './security/users-maintenance/users/users.component';
+import { ConfirmSaveComponent } from './_components/common/confirm-save/confirm-save.component';
+import { CancelButtonComponent } from './_components/common/cancel-button/cancel-button.component';
 
 
 @NgModule({
@@ -640,6 +642,8 @@ import { UsersComponent } from './security/users-maintenance/users/users.compone
         MtnSectionCoversComponent,
         JvPreviewAmountDetailsComponent,
         JvPreviewTaxDetailsComponent,
+        ConfirmSaveComponent,
+        CancelButtonComponent,
         CurrencyRateDirective,
         OtherRatesDirective,
         UsersMaintenanceComponent,
