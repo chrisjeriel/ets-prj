@@ -133,7 +133,7 @@
 	         </div>  
 		</div>
 		<div footer class="text-center">
-				<button *ngIf="!inquiryFlag" type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
+				<button *ngIf="!inquiryFlag" type="button" class="cust-btn" (click)="modalService.dismissAll();showAlopItem=false"><a>Cancel</a></button>
 				<button *ngIf="!inquiryFlag" type="button" class="cust-btn" (click)="onClickSaveAlopItem()"><a>Save</a></button>
 				<button *ngIf="inquiryFlag" type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Close</a></button>
 		</div>

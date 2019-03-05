@@ -59,7 +59,7 @@
         <div class="form-group col-sm">
             <div class="col-md-13 text-center">
                 <div class="cust-btn-container" style="padding-top: 13px">
-                    <button [class.d-none]="inquiryFlag" type="button" class="cust-btn"><a>Cancel</a></button>
+                    <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
                     <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
                 </div>
             </div>
@@ -133,3 +133,4 @@
 
 <app-confirm-save (onYes)="saveData()"></app-confirm-save>
 <app-sucess-dialog id="quote-endorsment" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-cancel-button (onYes)="saveData('cancel')" [url]="'/quotation-processing'" ></app-cancel-button>
