@@ -14,28 +14,28 @@ export class RequiredDirective implements OnInit{
       this.er.nativeElement.style.backgroundColor = "#ffff4370";
     }
 
-    @HostListener('blur', ['$event.target.value']) onBlur(value){
-        if(value === null || typeof value === 'undefined' || value == ''){
-            highlight(this.er);
-        }else{
-            unHighlight(this.er);
-        }
-    }
+  //   @HostListener('blur', ['$event.target.value']) onBlur(value){
+  //       if(value === null || typeof value === 'undefined' || value == ''){
+  //           highlight(this.er);
+  //       }else{
+  //           unHighlight(this.er);
+  //       }
+  //   }
     
-    @HostListener('ngModelChange', ['$event']) onNgModelChange(value){
-        if(value === null || typeof value === 'undefined' || value == ''){
-            highlight(this.er);
-        }else{
-            unHighlight(this.er);
-        }
-    }
+  //   @HostListener('ngModelChange', ['$event']) onNgModelChange(value){
+  //       if(value === null || typeof value === 'undefined' || value == ''){
+  //           highlight(this.er);
+  //       }else{
+  //           unHighlight(this.er);
+  //       }
+  //   }
 
-    @HostListener("mouseenter") mouseEnter(){
-      showTooltip(this.er,'required');
-  }
+  //   @HostListener("mouseenter") mouseEnter(){
+  //     showTooltip(this.er,'required');
+  // }
 
-  @HostListener("mouseleave") mouseLeave(){
-      hideTooltip();
-  }
+  // @HostListener("mouseleave") mouseLeave(){
+  //     hideTooltip();
+  // }
 
 }

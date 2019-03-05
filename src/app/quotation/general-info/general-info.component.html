@@ -848,7 +848,7 @@
 	<div class="form-group col-sm">
 		<div class="col-md-13 text-center">
 			<div class="cust-btn-container" style="margin-top: 10px !important;">
-				<button [class.d-none]="inquiryFlag" type="button" class="cust-btn"><a>Cancel</a></button>
+				<button [class.d-none]="inquiryFlag" type="button" (click)="cancel();" class="cust-btn"><a>Cancel</a></button>
 				<button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="onClickSave();"><a>Save</a></button>
 			</div>
 		</div>
@@ -897,7 +897,7 @@
 <app-mtn-quotation-wordings id="wordingOpeningIdLov" (selectedData)="setOpeningWording($event)" [line]="line" [type]="'O'"></app-mtn-quotation-wordings>
 <app-mtn-quotation-wordings id="wordingClosingIdLov" (selectedData)="setClosingWording($event)" [line]="line" [type]="'C'"></app-mtn-quotation-wordings> 
 
-<app-modal class="d-none" id="successMdl">
+<!-- <app-modal class="d-none" id="successMdl">
 	<div header>Success</div>
 	<div body class="container-flex text-center">
 		<span class="fa fa-check-circle fa-3x" style="vertical-align: middle;"></span>
@@ -917,8 +917,11 @@
 	<div footer class="d-flex justify-content-center w-100">                    
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
     </div>
-</app-modal>
+</app-modal> -->
 
 
 
 <app-confirm-save (onYes)="saveQuoteGenInfo();"></app-confirm-save>
+
+<app-sucess-dialog id="genInfo" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-cancel-button (onYes)="saveQuoteGenInfo('cancel')" [url]="'/quotation-processing'" ></app-cancel-button>

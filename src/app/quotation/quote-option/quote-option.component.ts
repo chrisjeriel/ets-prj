@@ -316,17 +316,7 @@ export class QuoteOptionComponent implements OnInit {
               }
          });
     }*/
-
-    clickCoverCodeLOV(data){
-        $('#coverCodeLOV #modalBtn').trigger('click');
-        data.tableData = this.otherRatesData.tableData;
-        this.coverCodeLOVRow = data.index;
-    }
-
-    selectedCoverCodeLOV(data){
-        this.otherRatesData.tableData[this.coverCodeLOVRow].coverCd = data.coverCode; 
-        this.otherRatesData.tableData[this.coverCodeLOVRow].coverCdDesc = data.description; 
-    }
+    
 
 
     save() {
@@ -516,6 +506,14 @@ saveOtherRates(){
 
 }
 
+clickCoverCodeLOV(data){
+    this.passLOVData.selector = 'otherRates';
+    this.passLOVData.quoteNo = this.plainQuotationNo(this.quotationNum);
+    $('#lov #modalBtn').trigger('click');
+    this.coverCodeLOVRow = data.index;
+}
+
+
 clickDeductiblesLOV(data){
     this.passLOVData.selector = 'deductibles';
     this.passLOVData.lineCd = this.quotationNum.substring(0,3);
@@ -525,12 +523,26 @@ clickDeductiblesLOV(data){
 }
 
 setSelected(data){
-  this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleCd = data.data.deductibleCd;
-  this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleTitle = data.data.deductibleTitle;
-  this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleRt = data.data.deductibleRate;
-  this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleAmt = data.data.deductibleAmt;
-  this.deductiblesData.tableData[this.deductiblesLOVRow].edited = true;
+  if(data.selector == "deductibles"){
+        this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleCd = data.data.deductibleCd;
+        this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleTitle = data.data.deductibleTitle;
+        this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleRt = data.data.deductibleRate;
+        this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleAmt = data.data.deductibleAmt;
+        this.deductiblesData.tableData[this.deductiblesLOVRow].edited = true;
+  }else if(data.selector == "otherRates"){
+    ['coverCd','coverCdAbbr','section','bulletNo','sumInsured']
+    console.log(data);
+    this.otherRatesData.tableData[this.coverCodeLOVRow].coverCd = data.data.coverCd; 
+    this.otherRatesData.tableData[this.coverCodeLOVRow].coverCdDesc = data.data.coverCdAbbr;
+    this.otherRatesData.tableData[this.coverCodeLOVRow].rate = "";
+    this.otherRatesData.tableData[this.coverCodeLOVRow].amount = data.data.sumInsured;
+  }
   
+}
+
+selectedCoverCodeLOV(data){
+    this.otherRatesData.tableData[this.coverCodeLOVRow].coverCd = data.coverCode; 
+    this.otherRatesData.tableData[this.coverCodeLOVRow].coverCdDesc = data.description; 
 }
 
 onClickSave(){
