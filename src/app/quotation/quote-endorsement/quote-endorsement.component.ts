@@ -406,6 +406,7 @@ export class QuoteEndorsementComponent implements OnInit {
               $('#warningMdl > #modalBtn').trigger('click');
           }
 
+
         }else{
             for(var i = 0; i < this.endorsementOCData.tableData.length; i ++ ){
               var vEndtCd = this.endorsementOCData.tableData[i].endtCode;
@@ -417,16 +418,17 @@ export class QuoteEndorsementComponent implements OnInit {
                     "saveEndorsementsOc": [
                       {
                         "createDate": (this.saveEndt.createDate === null || this.saveEndt.createDate === "") ? new Date().toISOString() : this.saveEndt.createDate,
-                        "createUser": (this.saveEndt.createUser === null || this.saveEndt.createUser === "") ? JSON.parse(window.localStorage.currentUser).username : this.saveEndt.createUser,
+                        "createUser": (this.saveEndt.createUser === null || this.saveEndt.createUser === "") ? 'CPI' : this.saveEndt.createUser,
                         "endtCd": this.endorsementOCData.tableData[i].endtCode,
                         "remarks": this.endorsementOCData.tableData[i].remarks,
                         "updateDate": new Date().toISOString(),
-                        "updateUser": JSON.parse(window.localStorage.currentUser).username
+                        "updateUser": "Login User"
                       }
                     ]
                 }
                 this.endorsementOCData.tableData[i].endtCode === null || this.endorsementOCData.tableData[i].endtCode === undefined ? '' : this.quotationService.saveQuoteEndorsementsOc(JSON.stringify(this.endorsementReqOc)).subscribe(data => {console.log(data);});
                   
+
               }else if(this.endorsementOCData.tableData[i].edited && this.endorsementOCData.tableData[i].deleted){
                  this.endorsementReqOc = {
                    "deleteEndorsementsOc": [

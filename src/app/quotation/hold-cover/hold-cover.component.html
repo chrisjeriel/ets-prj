@@ -61,8 +61,8 @@
                                         <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Hold Cover No</label>
                                             <input type="text" class="form-control form-control-sm col-sm cap-input col-sm-1" ngbTooltip="HC Prefix" value="HC" readonly tabindex="-1">
-                                            <input type="text" class="form-control form-control-sm col-sm cap-input col-sm-1 warn" ngbTooltip="Line" style="margin-left: 2px;" maxlength="3" appRequired  #hcline [(ngModel)]="hcLine" readonly tabindex="-1">
-                                            <input type="text" class="form-control form-control-sm col-sm cap-input col-sm-1 warn" ngbTooltip="Year" style="margin-left: 2px;" maxlength="4" appRequired #hcyear numbers-only  readonly tabindex="-1" [(ngModel)]="hcYear">
+                                            <input type="text" class="form-control form-control-sm col-sm cap-input col-sm-1 warn" ngbTooltip="Line" style="margin-left: 2px;" maxlength="3"  #hcline [(ngModel)]="hcLine" readonly tabindex="-1">
+                                            <input type="text" class="form-control form-control-sm col-sm cap-input col-sm-1 warn" ngbTooltip="Year" style="margin-left: 2px;" maxlength="4"  #hcyear numbers-only  readonly tabindex="-1" [(ngModel)]="hcYear">
                                             <input type="text" class="form-control form-control-sm col-sm col-sm-2  text-right" style="margin-left: 2px;" ngbTooltip="Sequence No" maxlength="5"   #hcseqNo numbers-only [(ngModel)]="hcSeqNo" numbers-only readonly>
                                             <input type="text" class="form-control form-control-sm col-sm col-sm-1  text-right" style="margin-left: 2px;"ngbTooltip="Revision No" maxlength="2"   #hcrevNo numbers-only [(ngModel)]="hcRevNo" numbers-only readonly>    
 
@@ -87,7 +87,7 @@
                                         </div>
                                         <div class="input-group" style="margin-bottom: -9px !important;">
                                             <label class="form-control-sm col-sm-2">Status</label>
-                                            <input type="text" class="form-control form-control-sm warn" #status appRequired [(ngModel)]="holdCover.status" readonly tabindex="-1">
+                                            <input type="text" class="form-control form-control-sm warn" #status  [(ngModel)]="holdCover.status" readonly tabindex="-1">
                                             <label class="form-control-sm col-sm-2">Approved By</label>
                                             <input type="text" class="form-control form-control-sm col-sm-7" #appBy [(ngModel)]="holdCover.approvedBy" readonly tabindex="-1">
                                         </div>
@@ -98,7 +98,7 @@
                     </div>
                     <div class="col-sm-2"></div>
                 </div>
-                <div class="form-row">
+                <div class="form-row" *ngIf="!clickView">
                     <div class="form-group col-sm">
                         <div class="col-md-12 text-center">
                             <div class="cust-btn-container" style="margin-top: 10px !important;">
@@ -162,11 +162,11 @@
                                 <app-modal hidden [btnTitle]="'List Of Values'" id="lovMdl">
                                     <div header>List Of Values</div>
                                     <div body>
-                                       <app-cust-non-datatable [passData]="passDataQuoteLOV" (rowClick)="onRowClick($event)"></app-cust-non-datatable>
+                                       <app-cust-non-datatable [passData]="passDataQuoteLOV" (rowClick)="onRowClick($event)" (searchToDb)="searchQuery($event)"></app-cust-non-datatable>
                                     </div>
                                     <div footer class="text-center w-100">
                                         <div class="col-sm-12 text-center">
-                                        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+                                        <button class="cust-btn" type="button" (click)="onClickCancelQuoteLOV()"><a>Cancel</a></button>
                                         <button class="cust-btn" type="button" (click)="onSaveClickLOV()"><a>Save</a></button>
                                         </div>
                                     </div>
@@ -213,8 +213,8 @@
         </fieldset>
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>View</a></button>
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Modification</a></button>
+        <button class="cust-btn" type="button" (click)="onClickCancelModifMdl()"><a>Cancel</a></button>
+        <button class="cust-btn" type="button" (click)="onClickView()"><a>View</a></button>
+        <button class="cust-btn" type="button" (click)="onClickModif();"><a>Modification</a></button>
     </div>
 </app-modal>
