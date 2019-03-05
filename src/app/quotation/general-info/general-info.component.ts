@@ -350,6 +350,7 @@ export class GeneralInfoComponent implements OnInit {
 	setCedingcompany(event){
 		this.genInfoData.cedingId = event.coNo;
 		this.genInfoData.cedingName = event.name;
+		this.loading = false;
 		this.focusBlur();
 	}
 
@@ -630,6 +631,7 @@ export class GeneralInfoComponent implements OnInit {
 
   	checkCode(field) {
   		if(field === 'cedingCo') {
+  			this.loading = true;
   			this.cedingCoLov.checkCode(this.genInfoData.cedingId);
   		} else if(field === 'cedingCoNotMember') { 
   			this.cedingCoNotMemberLov.checkCode(this.genInfoData.reinsurerId);
