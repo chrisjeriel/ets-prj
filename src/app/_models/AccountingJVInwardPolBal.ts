@@ -3,9 +3,9 @@ export class AccJvInPolBal {
 	polNo: string;
 	colRefNo: string;
 	instNo: number;
-	type: string;
 	effDate: Date;
 	dueDate: Date;
+	noOfDaysOverDue: number;
 	curr: string;
 	currRate: number;
 	premium: number;
@@ -20,9 +20,9 @@ export class AccJvInPolBal {
 		polNo: string,
 		colRefNo: string,
 		instNo: number,
-		type: string,
 		effDate: Date,
 		dueDate: Date,
+		noOfDaysOverDue: number,
 		curr: string,
 		currRate: number,
 		premium: number,
@@ -37,9 +37,9 @@ export class AccJvInPolBal {
 		this.polNo = polNo;
 		this.colRefNo = colRefNo;
 		this.instNo = instNo;
-		this.type = type;
 		this.effDate = effDate;
 		this.dueDate = dueDate;
+		this.noOfDaysOverDue = noOfDaysOverDue;
 		this.curr = curr;
 		this.currRate = currRate;
 		this.premium = premium;

@@ -237,10 +237,6 @@ export class QuotationProcessingComponent implements OnInit {
         },100);
     }
 
-    onClickOk(event) {
-        console.log(event);
-    }
-
     onClickCopy(event) {
         $('#copyModal > #modalBtn').trigger('click');
     }

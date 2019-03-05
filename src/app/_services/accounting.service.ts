@@ -552,7 +552,7 @@ export class AccountingService {
 
 	getAccJVInPolBal() {
 		this.accJvInPolBal = [
-			new AccJvInPolBal('CAR-2018-00001-99-0001-000','CAR-2018-00001-99-0001-000','EN-CAR-2018-00001-99-0001-000', 1, 'Payment', new Date("09/25/2018"), new Date("09/25/2018"), 'PHP', 1.0, 3000000, 0.00, 0.00, 1642857.14, 1357142.86, 1642857.14, 0.00),
+			new AccJvInPolBal('CAR-2018-00001-99-0001-000','CAR-2018-00001-99-0001-000','EN-CAR-2018-00001-99-0001-000', 1, new Date("09/25/2018"), new Date("09/25/2018"), 30, 'PHP', 1.0, 3000000, 0.00, 0.00, 1642857.14, 1357142.86, 1642857.14, 0.00),
 		];
 
 		return this.accJvInPolBal;
@@ -1204,8 +1204,7 @@ export class AccountingService {
 
 	getQSOABalancesData() {
 		this.qsoaBalances = [
-			new QSOABalances(new Date(2018, 2, 31), 'PHP', 1, 100000, 100000),
-			new QSOABalances(new Date(2018, 5, 30), 'PHP', 1, -500000, -500000),
+			new QSOABalances(new Date(2018, 2, 31), 'PHP', 1, 20000, 10000, 100000),
 		];
 		return this.qsoaBalances;
 	}
