@@ -43,7 +43,7 @@ export class HoldCoverMonitoringListComponent implements OnInit {
                 dataType: 'text'
             },
             {
-                key: 'cedingCompany',
+                key: 'cedingName',
                 title: 'Ceding Company',
                 dataType: 'text'
             },
@@ -53,24 +53,24 @@ export class HoldCoverMonitoringListComponent implements OnInit {
                 dataType: 'text'
             },
             {
-                key: 'risk',
+                key: 'riskName',
                 title: 'Risk',
                 dataType: 'text'
             },
             {
-                key: 'insured',
+                key: 'insuredDesc',
                 title: 'Insured',
                 dataType: 'text'
             },
             {
                 key: 'periodFrom',
                 title: 'Period From',
-                dataType: 'date'
+                dataType: 'datespan'
             },
             {
                 key: 'periodTo',
                 title: 'Period To',
-                dataType: 'date'
+                dataType: 'datespan'
             },
             {
                 key: 'compRefHoldCoverNo',
@@ -78,14 +78,19 @@ export class HoldCoverMonitoringListComponent implements OnInit {
                 dataType: 'text'
             },
             {
-                key: 'requestedBy',
+                key: 'reqBy',
                 title: 'Requested By',
                 dataType: 'text'
             },
             {
-                key: 'requestDate',
+                key: 'reqDate',
                 title: 'Request Date',
                 dataType: 'date'
+            },
+            {
+                key: 'expiringInDays',
+                title: 'Expires in (Days)',
+                dataType: 'text'
             },
 
         ],
