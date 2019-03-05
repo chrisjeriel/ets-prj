@@ -131,14 +131,17 @@ export class QuotationService {
         return this.quotationListData;
     }
 
-    getQuotationHoldCoverInfo() {
+    getQuotationHoldCoverInfo(searchParams: any[]) {
         this.holdCoverMonitoringListData = [
             new HoldCoverMonitoringList("HC-CAR-2018-00001-00", "Open", "Phil. Guaranty", "CAR-2018-00066-00-31", "Malayan", "5K Builders", new Date('2018-12-01'), new Date('2018-12-31'), "P8M001KJ", "Juan Cruz", new Date('2018-12-01')),
             new HoldCoverMonitoringList("HC-EEI-2018-00001-01", "Expired", "Tan-Gatue Adjustment", "EEI-2018-00088-00-67", "FLT Prime", "5K Builders", new Date('2018-11-01'), new Date('2018-11-31'), "MC-MPC-HO-0001", "Rose Lim", new Date('2019-09-09')),
         ];
         //return this.holdCoverMonitoringListData;
         
-        const params = new HttpParams()
+        var params;
+
+        if(searchParams.length < 1){
+            params = new HttpParams()
              .set('quotationNo','')
              .set('status','')
              .set('cedingName','')
@@ -151,7 +154,13 @@ export class QuotationService {
              .set('reqBy','')
              .set('reqDate','')
              .set('expiringInDays','')
-             
+        }
+         else{
+             params = new HttpParams();
+            for(var i of searchParams){
+                params = params.append(i.key, i.search);
+            }
+        }
             return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteHoldCoverListing',{params});
     }
 

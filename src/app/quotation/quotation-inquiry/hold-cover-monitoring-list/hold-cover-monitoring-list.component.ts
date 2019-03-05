@@ -95,6 +95,8 @@ export class HoldCoverMonitoringListComponent implements OnInit {
             'insuredDesc','periodFrom','periodTo','compRefHoldCovNo','reqBy','reqDate']
     }
 
+    searchParams: any[] = [];
+
     ngOnInit() {
         this.titleService.setTitle("Quo | Hold Cover Monitoring");
         this.tHeader.push("Hold Cover No.");
@@ -124,7 +126,12 @@ export class HoldCoverMonitoringListComponent implements OnInit {
         //this.passData.tableData = this.quotationService.getQuotationHoldCoverInfo();
     
         //this.holdCoverMonitoringList = new HoldCoverMonitoringList(null,null,null,null,null,null,null,null,null,null,null);
-        this.quotationService.getQuotationHoldCoverInfo()
+       
+       this.retrieveQuoteHoldCoverListingMethod();
+    }
+
+    retrieveQuoteHoldCoverListingMethod(){
+         this.quotationService.getQuotationHoldCoverInfo(this.searchParams)
             .subscribe(val =>
                 {
                     console.log(val);
@@ -148,6 +155,14 @@ export class HoldCoverMonitoringListComponent implements OnInit {
                 }
             );
     }
+
+     //Method for DB query
+    searchQuery(searchParams){
+        this.searchParams = searchParams;
+        this.passData.tableData = [];
+        this.retrieveQuoteHoldCoverListingMethod();
+    }
+
     onRowClick(event) {
         for (var i = 0; i < event.target.parentElement.children.length; i++) {
             this.quotationService.rowData[i] = event.target.parentElement.children[i].innerText;
