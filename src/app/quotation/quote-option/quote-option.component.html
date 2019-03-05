@@ -26,7 +26,7 @@
         <div class="row">
             <div class="col-sm-1"></div>
 	            <div class="col-sm-10" style="margin-top: 0.5em; margin-bottom: -0.21em;">
-	                <app-cust-editable-non-datatable [passData]="optionsData" (newClick)="updateDeductibles($event)"></app-cust-editable-non-datatable>
+	                <app-cust-editable-non-datatable [passData]="optionsData" (onDataChange)="optionsData.tableData=$event" (newClick)="updateDeductibles($event)"></app-cust-editable-non-datatable>
 	            </div> 
             <div class="col-sm-1"></div>
         </div>
@@ -38,7 +38,7 @@
          <div class="row">
             <div class="col-sm-2"></div>
             <div class="col-sm-8" style="margin-top: 0.5em; margin-bottom: -0.21em;">
-                <app-cust-editable-non-datatable #deductibleTable id="deductibleTable" [passData]="deductiblesData" (clickLOV)="clickDeductiblesLOV($event)"></app-cust-editable-non-datatable>
+                <app-cust-editable-non-datatable #deductibleTable id="deductibleTable" (onDataChange)="deductibleTable.tableData=$event" [passData]="deductiblesData" (clickLOV)="clickDeductiblesLOV($event)"></app-cust-editable-non-datatable>
             </div>
             <div class="col-sm-2"></div>
         </div>
@@ -61,25 +61,20 @@
 		<div class="form-group col-sm">
 			<div class="col-md-13 text-center">
 				<div class="cust-btn-container" style="margin-top: 10px;">
-					<button [class.d-none]="inquiryFlag" type="button" class="cust-btn"><a>Cancel</a></button>
-					<button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="saveData()"><a>Save</a></button>
+					<button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+					<button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
 				</div>
 			</div>
 		</div>
 	</div>
 
 </div>
-<app-sucess-dialog [message]="dialogMessage"></app-sucess-dialog>
+
 <app-mtn-section-covers id="coverCodeLOV" (selectedData)="selectedCoverCodeLOV($event)"></app-mtn-section-covers>
 <app-lov id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)"></app-lov>
 
-<app-modal class="d-none" id="errorMdl">
-	<div header>Error</div>
-	<div body class="container-flex text-center">
-		<span class="fa fa-times-circle fa-3x" style="vertical-align: middle;"></span>
-		<span style="vertical-align: middle; margin-left: 15px;">{{ errorMdlMessage }}</span>		
-	</div>
-	<div footer class="d-flex justify-content-center w-100">                    
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
-    </div>
-</app-modal>
+
+
+<app-confirm-save (onYes)="saveData()"></app-confirm-save>
+<app-sucess-dialog id="quote-option" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-cancel-button (onYes)="saveData('cancel')" [url]="'/quotation-processing'" ></app-cancel-button>

@@ -177,6 +177,7 @@ export class RiskFormComponent implements OnInit, OnDestroy {
               $('#errorMdl > #modalBtn').trigger('click');
             } else{
               $('#successModalBtn').trigger('click');
+              this.riskData.riskId = data.riskId;
              }
         });
     }

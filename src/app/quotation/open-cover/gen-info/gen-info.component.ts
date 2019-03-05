@@ -301,4 +301,9 @@ export class GenInfoComponent implements OnInit {
     this.mtnIntmId  = data.intmId;
     this.mtnIntmName  = data.intmName;
   }
+
+
+  onClickSave(){
+    $('#confirm-save #modalBtn2').trigger('click');
+  }
 }

@@ -1,10 +1,13 @@
-import { Component, OnInit, ViewChildren, QueryList, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewChildren, QueryList, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { QuotationService, UnderwritingService } from '@app/_services';
 import { QuotationProcessing, Risks, CedingCompanyList } from '../../_models';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import { MtnLineComponent } from '@app/maintenance/mtn-line/mtn-line.component';
+import { MtnTypeOfCessionComponent } from '@app/maintenance/mtn-type-of-cession/mtn-type-of-cession.component';
+import { MtnRiskComponent } from '@app/maintenance/mtn-risk/mtn-risk.component';
 
 
 @Component({
@@ -15,6 +18,10 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 })
 export class QuotationProcessingComponent implements OnInit {
     @ViewChildren(CustNonDatatableComponent) table: QueryList<CustNonDatatableComponent>;
+    @ViewChild(MtnLineComponent) lineLov: MtnLineComponent;
+    @ViewChild(MtnTypeOfCessionComponent) typeOfCessionLov: MtnTypeOfCessionComponent;
+    @ViewChild(MtnRiskComponent) riskLov: MtnTypeOfCessionComponent;
+
     tableData: any[] = [];
     tHeader: any[] = [];
     dataTypes: any[] = [];
@@ -52,6 +59,8 @@ export class QuotationProcessingComponent implements OnInit {
     cedingCode: any
     cedingName: any
 
+    searchParams: any[] = [];
+
     passData: any = {
         tableData: [],
         tHeader: ['Quotation No.', 'Type of Cession', 'Line Class', 'Status', 'Ceding Company', 'Principal', 'Contractor', 'Insured', 'Risk', 'Object', 'Site', 'Policy No', 'Currency', 'Quote Date', 'Valid Until', 'Requested By', 'Created By'],
@@ -61,7 +70,7 @@ export class QuotationProcessingComponent implements OnInit {
         {
             key: 'quotationNo',
             title: 'Quotation No.',
-            dataType: 'text'
+            dataType: 'seq'
         },
         {
             key: 'cessionDesc',
@@ -116,7 +125,7 @@ export class QuotationProcessingComponent implements OnInit {
         {
             key: 'policyNo',
             title: 'Policy No.',
-            dataType: 'text'
+            dataType: 'seq'
         },
         {
             key: 'currencyCd',
@@ -176,17 +185,24 @@ export class QuotationProcessingComponent implements OnInit {
         keys:["lineCd","description","remarks"]
     }
 
+    loading: boolean = false;
+
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private router: Router
         , public activeModal: NgbActiveModal, private titleService: Title
         ) { }
 
-
+    
     ngOnInit() {
         this.titleService.setTitle("Quo | List Of Quotations");
         this.rowData = this.quotationService.getRowData();
         this.riskData.tableData = this.quotationService.getRisksLOV();
 
-        this.quotationService.getQuoProcessingData().subscribe(data => {
+        this.retrieveQuoteListingMethod();
+
+    }
+
+    retrieveQuoteListingMethod(){
+        this.quotationService.getQuoProcessingData(this.searchParams).subscribe(data => {
             var records = data['quotationList'];
             this.fetchedData = records;
             for(let rec of records){
@@ -220,8 +236,9 @@ export class QuotationProcessingComponent implements OnInit {
         });
     }
 
-    onClickAdd(event) {
+    onClickAdd(event) {        
         $('#addModal > #modalBtn').trigger('click');
+        setTimeout(function() { $(event).focus(); }, 0);        
     }
     
     onClickEdit(event) {
@@ -253,9 +270,17 @@ export class QuotationProcessingComponent implements OnInit {
         $('#lineLOV #modalBtn').trigger('click');
     }
 
+    //Method for DB query
+    searchQuery(searchParams){
+        this.searchParams = searchParams;
+        this.passData.tableData = [];
+        this.retrieveQuoteListingMethod();
+    }
+
     setLine(data){
         this.line = data.lineCd;
         this.description = data.description;
+        this.loading = false;
         $('#addModal > #modalBtn').trigger('click');
     }
 
@@ -415,17 +440,19 @@ setCedingcompany(data){
     setRisks(data){
         this.riskCd = data.riskId;
         this.riskName = data.riskName;
-        this.onClickAdd(1);
+        this.loading = false;        
+        this.onClickAdd('#riskCd');
     }
 
     showTypeOfCessionLOV(){
         $('#typeOfCessionLOV #modalBtn').trigger('click');
     }
 
-    setTypeOfCession(data) {
+    setTypeOfCession(data) {        
         this.typeOfCessionId = data.cessionId;
         this.typeOfCession = data.description;
-        this.onClickAdd(1);
+        this.loading = false;
+        this.onClickAdd('#typeOfCessionId');
     }
 
     toGeneralInfo(savingType){
@@ -466,5 +493,16 @@ setCedingcompany(data){
         }
 
         return false;
+    }
+
+    checkCode(field){
+        this.loading = true;
+        if(field === 'line') {
+            this.lineLov.checkCode(this.line.toUpperCase());
+        } else if(field === 'typeOfCession'){
+            this.typeOfCessionLov.checkCode(this.typeOfCessionId);    
+        } else if(field === 'risk') {
+            this.riskLov.checkCode(this.riskCd);
+        }              
     }
 }

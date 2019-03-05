@@ -28,6 +28,8 @@ export class ListOfQuotationsComponent implements OnInit {
     quotationNo: string = "";
     typeOfCession: string = "";
 
+    searchParams: any[] = [];
+
     /*passData: any = {
         tableData: [], 
         tHeader: ['Quotation No.','Type of Cession','Line Class','Status','Ceding Company','Principal','Contractor','Insured','Risk','Object','Site','Policy No','Currency'],
@@ -101,7 +103,7 @@ export class ListOfQuotationsComponent implements OnInit {
         {
             key: 'quotationNo',
             title: 'Quotation No.',
-            dataType: 'text'
+            dataType: 'seq'
         },
         {
             key: 'cessionDesc',
@@ -156,11 +158,31 @@ export class ListOfQuotationsComponent implements OnInit {
         {
             key: 'policyNo',
             title: 'Policy No.',
-            dataType: 'text'
+            dataType: 'seq'
         },
         {
             key: 'currencyCd',
             title: 'Currency',
+            dataType: 'text'
+        },
+         {
+            key: 'issueDate',
+            title: 'Quote Date',
+            dataType: 'date'
+        },
+        {
+            key: 'expiryDate',
+            title: 'Valid Until',
+            dataType: 'date'
+        },
+        {
+            key: 'reqBy',
+            title: 'Requested By',
+            dataType: 'text'
+        },
+        {
+            key: 'createUser',
+            title: 'Created By',
             dataType: 'text'
         },
         ],
@@ -173,7 +195,20 @@ export class ListOfQuotationsComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.quotationService.getQuoProcessingData().subscribe(data => {
+        this.retrieveQuoteListingMethod();
+        /*this.passData.tableData = this.quotationService.getQuotationListInfo();
+        this.passData.tableData.forEach(function(e){
+            delete e.quoteDate;
+            delete e.validityDate;
+            delete e.createdBy;
+            delete e.requestedBy;
+            delete e.approvedBy;
+        });
+        this.allData = this.quotationService.getQuotationListInfo();*/
+    }
+
+    retrieveQuoteListingMethod(){
+        this.quotationService.getQuoProcessingData(this.searchParams).subscribe(data => {
             var records = data['quotationList'];
             //this.fetchedData = records;
             for(let rec of records){
@@ -201,19 +236,17 @@ export class ListOfQuotationsComponent implements OnInit {
 
                this.table.forEach(table => { table.refreshTable() });
         });
-
-        /*this.passData.tableData = this.quotationService.getQuotationListInfo();
-        this.passData.tableData.forEach(function(e){
-            delete e.quoteDate;
-            delete e.validityDate;
-            delete e.createdBy;
-            delete e.requestedBy;
-            delete e.approvedBy;
-        });
-        this.allData = this.quotationService.getQuotationListInfo();*/
     }
+
+    //Method for DB query
+    searchQuery(searchParams){
+        this.searchParams = searchParams;
+        this.passData.tableData = [];
+        this.retrieveQuoteListingMethod();
+    }
+
     onRowClick(event) {
-        if(this.quoteList == event){
+        if(this.quoteList == event || event === null){
             this.quoteList = {};
         }else{
            this.quoteList = event;

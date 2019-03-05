@@ -1,17 +1,19 @@
 export class QuotationCoverageInfo {
-    coverCode: string;
+    coverCd: string;
+    shortName: string;
     section: string;
     bulletNo: string;
     sumInsured: string;
-    addSl: string;
+    addSi: string;
 
 
-    constructor(coverCode: string, section: string, bulletNo: string, sumInsured: string, addSl: string) {
-        this.coverCode = coverCode;
+    constructor(coverCd: string, shortName:string, section: string, bulletNo: string, sumInsured: string, addSi: string) {
+        this.coverCd = coverCd;
+        this.shortName = shortName;
         this.section = section;
         this.bulletNo = bulletNo;
         this.sumInsured = sumInsured;
-        this.addSl = addSl;
+        this.addSi = addSi;
     }
 
 }

@@ -58,7 +58,7 @@
 				<app-attachment [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag"></app-attachment>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab id="approval-tab" [disabled]="inquiryFlag">
+		<ngb-tab id="approval-tab" *ngIf="!inquiryFlag">
 
 			<ng-template #content>
 				<div class="modal-header">
@@ -125,11 +125,11 @@
 									</div>
 									<div class="input-group" style="margin-bottom : -14px ! important">
 										<label class="form-control-sm" for="xx">No. of Copies</label>
-										<input type="text" id="xx" class="form-control form-control-sm" appRequired style="margin-left: 2px !important;">
+										<input type="number" id="xx" class="form-control form-control-sm" appRequired style="margin-left: 2px !important;">
 									</div>
-									<div class="input-group" style="margin-bottom : -14px ! important">
+									<div class="input-group" style="margin-bottom : -14px ! important" *ngIf="quoteInfo.typeOfCession == 'Retrocession'">
 										<label class="form-control-sm" for="xx">Option No</label>
-										<input type="text" id="xx" class="form-control form-control-sm cust-sm" appRequired style="    margin-left: 16px;">
+										<input type="text" id="xx" class="form-control form-control-sm cust-sm" style="    margin-left: 16px;">
 										<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 									</div>
 									<div class="input-group" style="margin-bottom : -14px ! important">

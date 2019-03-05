@@ -501,7 +501,7 @@ z-index: 9999 !important;
 
 .success-modal-size > .modal-dialog{
     min-width: 30%;
-    max-width: 80%;
+    max-width: 60%;
     /*width: 20% !important;*/
     z-index: 9999 !important;
 }
@@ -563,4 +563,18 @@ input:-moz-read-only { /* For Firefox */
 input:read-only {
     background-color: #f5f5f5 !important;
     cursor: not-allowed;
+}
+
+textarea:read-only {
+    background-color: #f5f5f5 !important;
+    cursor: not-allowed;
+}
+
+.cust-btn-disabled {
+    background: gray !important;
+    cursor: context-menu;
+}
+
+.ql-editor {
+    padding: 0 !important;
 }

@@ -149,7 +149,7 @@
                                     </div>
                                     </app-modal>
                                 <button type="button" class="cust-btn"><a>Cancel</a></button>
-                                <button type="button" class="cust-btn" (click)="onSaveClick(qline.value,qyear.value,qseqNo.value,qrevNo.value,qcomNo.value,periodTo.value,periodFrom.value,coRef.value,status.value,reqDate.value,prepBy.value,appBy.value,hcline.value,hcyear.value,hcseqNo.value,hcrevNo.value,reqBy.value)"><a>Save</a></button>
+                                <button type="button" class="cust-btn" (click)="onSaveClick(qline.value,qyear.value,qseqNo.value,qrevNo.value,qcomNo.value,periodTo.value,periodFrom.value,coRef.value,status.value,reqDate.value,prepBy.value,appBy.value,hcline.value,hcyear.value,hcseqNo.value,hcrevNo.value,reqBy.value)" ><a>Save</a></button>
                             </div>
                         </div>
                     </div>
@@ -162,7 +162,7 @@
                                 <app-modal hidden [btnTitle]="'List Of Values'" id="lovMdl">
                                     <div header>List Of Values</div>
                                     <div body>
-                                       <app-cust-non-datatable [passData]="passDataQuoteLOV" (rowClick)="onRowClick($event)"></app-cust-non-datatable>
+                                       <app-cust-non-datatable [passData]="passDataQuoteLOV" (rowClick)="onRowClick($event)" (searchToDb)="searchQuery($event)"></app-cust-non-datatable>
                                     </div>
                                     <div footer class="text-center w-100">
                                         <div class="col-sm-12 text-center">
@@ -202,3 +202,6 @@
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
     </div>
 </app-modal>
+
+
+<app-confirm-save (onYes)="saveData()"></app-confirm-save>

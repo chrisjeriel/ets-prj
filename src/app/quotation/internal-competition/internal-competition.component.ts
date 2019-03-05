@@ -6,6 +6,7 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 
 @Component({
@@ -33,7 +34,7 @@ export class InternalCompetitionComponent implements OnInit, OnDestroy {
         nData: new IntCompAdvInfo(null, null, null, null, null, null, null, new Date(), null, new Date()),
         opts: [{
             selector: 'option',
-            vals: ['option1', 'option2', 'option3', 'option4', 'option5'],
+            vals: ['Email', 'Phone', 'Fax'],
         }],
         searchFlag: true,
         paginateFlag: true,
@@ -63,6 +64,7 @@ export class InternalCompetitionComponent implements OnInit, OnDestroy {
     }
 
     @ViewChild(CustEditableNonDatatableComponent) custEditableNonDatatableComponent : CustEditableNonDatatableComponent;
+  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
     
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private maintenanceService: MaintenanceService, private route: ActivatedRoute) { }
 
@@ -88,8 +90,9 @@ export class InternalCompetitionComponent implements OnInit, OnDestroy {
           quoteNo = this.quotationNo.split(/[-]/g)[0]
           for (var i = 1; i < this.quotationNo.split(/[-]/g).length; i++) {
            quoteNo += '-' + parseInt(this.quotationNo.split(/[-]/g)[i]);
-         } 
+         }
         });
+        console.log(quoteNo);
         this.params.quoteId = this.quotationInfo.quoteId;
         this.params.quotationNo = this.quotationInfo.quotationNo;
         if(this.params.quoteId != ''){
@@ -131,10 +134,12 @@ export class InternalCompetitionComponent implements OnInit, OnDestroy {
     }
 
     onClickCancel() {
-      console.log(this.quoteIds);
+      this.cancelBtn.clickCancel();
     }
 
-    onClickSave() {
+    cancelFlag:boolean = false;
+    saveData(cancelFlag?) {
+      this.cancelFlag = cancelFlag !== undefined;
       //console.log(this.data);
       this.savedData = [];
       for (var i = 0 ; this.intCompData.tableData.length > i; i++) {
@@ -159,6 +164,7 @@ export class InternalCompetitionComponent implements OnInit, OnDestroy {
             else{
               this.resultMessage = "Successfully saved!";
                $('#successModalBtn').trigger('click');
+               $('.ng-dirty').removeClass('ng-dirty');
             }
         });
       }
@@ -190,6 +196,10 @@ export class InternalCompetitionComponent implements OnInit, OnDestroy {
          this.intCompData.tableData[this.attentionLOVRow].position = data.position; 
          this.intCompData.tableData[this.attentionLOVRow].cedingRepId = data.cedingRepId.toString();
          this.intCompData.tableData[this.attentionLOVRow].edited = true;
+    }
+
+    onClickSave(){
+      $('#confirm-save #modalBtn2').trigger('click');
     }
 }
 
