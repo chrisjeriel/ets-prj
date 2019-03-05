@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { SecurityService } from '@app/_services';
+import { ModuleInfo } from '@app/_models';
 
 @Component({
   selector: 'app-security-modules',
@@ -7,9 +9,27 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SecurityModulesComponent implements OnInit {
 
-  constructor() { }
+  PassData: any = {
+      tableData: this.securityServices.getModuleInfo(),
+      tHeader: ['Module ID', 'Description', 'Module Group','Remarks'],
+      dataTypes: ['text', 'text', 'select','text'],
+      nData: new ModuleInfo(null,null,null,null),
+      pageID: 4,
+      addFlag: true,
+      deleteFlag: true,
+      pageLength:10,
+      magnifyingGlass:['userGroup'],
+      searchFlag: true,
+      opts: [{
+          selector: 'moduleGroup',
+          vals: ['Quotation', 'Testing'],
+      }],
+      widths: [],
+    }
 
-  ngOnInit() {
-  }
+    constructor(private securityServices: SecurityService) { }
+
+    ngOnInit() {
+    }
 
 }

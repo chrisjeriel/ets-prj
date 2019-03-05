@@ -9,10 +9,10 @@
 		<div class="form-group col-sm" style="margin-bottom: 8px;">
 			<div class="col-md-13 text-center">
 				<div class="cust-btn-container">
-					<button type="button" class="cust-btn btn"><a>Change Password</a></button>
-					<button type="button" class="cust-btn btn"><a>Reset Password</a></button>
-					<button type="button" class="cust-btn btn"><a>User Access</a></button>
-					<button type="button" class="cust-btn btn"><a>User Group Access</a></button>
+					<button type="button" class="cust-btn btn" (click)="changePassword()"><a>Change Password</a></button>
+					<button type="button" class="cust-btn btn" (click)="resetPassword()"><a>Reset Password</a></button>
+					<button type="button" class="cust-btn btn" (click)="userAccess()"><a>User Access</a></button>
+					<button type="button" class="cust-btn btn" (click)="userGroupAccess()"><a>User Group Access</a></button>
 				</div>
 			</div>
 		</div>
@@ -48,3 +48,127 @@
 	</div>
 </div>
 </div>
+
+<app-modal class="d-none" id="resetPassword">
+    <div header>Success</div>
+    <div body class="container-flex text-center">
+        <div class="form-row custom-row-inline-inset">
+			<div class="col-sm-12">
+	        	<fieldset class="scheduler-border">
+	        		<div class="align">
+		        		<div class="input-group">
+		        			<label class="form-control-sm col-sm" style="text-align: left !important">Password Reset Successful</label>
+		        		</div>
+		        		<div class="input-group" style="margin-left: 30px !important;margin-top: 10px !important;">
+		        			<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+		        		</div>
+	        		</div>
+	        	</fieldset>
+        	</div>
+        </div> 
+    </div>
+   <!--  <div footer class="d-flex justify-content-center w-100">                    
+        
+    </div> -->
+</app-modal>
+
+<app-modal class="d-none" id="changePassword">
+    <div header>Change Password</div>
+    <div body class="container-flex text-center">
+        <div class="form-row custom-row-inline-inset">
+			<div class="col-sm-12">
+	        	<fieldset class="scheduler-border">
+	        		<div class="">
+	        			<div class="input-group">
+		        			<label class="form-control-sm col-sm" style="text-align: left !important">Set your password here.</label>
+		        		</div>
+		        		<div class="input-group">
+		        			<label class="form-control-sm col-sm-5">Old Password</label>
+		        			<input type="text" class="form-control form-control-sm col-sm">
+		        		</div>
+		        		<div class="input-group">
+		        			<label class="form-control-sm col-sm-5">New Password</label>
+		        			<input type="text" class="form-control form-control-sm col-sm">
+		        		</div>
+		        		<div class="input-group">
+		        			<label class="form-control-sm col-sm-5">Repeat Password</label>
+		        			<input type="text" class="form-control form-control-sm col-sm">
+		        		</div>
+	        		</div>
+	        	</fieldset>
+        	</div>
+        </div> 
+    </div>
+  	<div footer class="d-flex justify-content-center w-100">                    
+        <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
+        <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Save</a></button>
+    </div> 
+</app-modal>
+
+<app-modal class="d-none" id="userAccess">
+    <div header>User Access</div>
+    <div body class="container-flex text-center">
+        <div class="form-row custom-row-inline-inset">
+			<div class="col-sm-12">
+				<div class="input-group">
+					<label class="form-control-sm col-sm-4">User Id</label>
+		        	<input type="text" class="form-control form-control-sm col-sm-6">
+				</div>
+	        	<fieldset class="scheduler-border">
+	        		<legend class="scheduler-border">Module Transaction</legend>
+	        			<div class="row model-align">
+	        				<div class="col-sm-12">
+	        					<app-cust-editable-non-datatable [passData]="PassDataModuleTrans"> </app-cust-editable-non-datatable>
+	        				</div>
+	        			</div>
+	        	</fieldset>
+	        	<fieldset class="scheduler-border">
+	        		<legend class="scheduler-border">Module</legend>
+	        			<div class="row model-align">
+	        				<div class="col-sm-12">
+	        					<app-cust-editable-non-datatable [passData]="PassDataModule"> </app-cust-editable-non-datatable>
+	        				</div>
+	        			</div>
+	        	</fieldset>
+        	</div>
+        </div> 
+    </div>
+  	<div footer class="d-flex justify-content-center w-100">                    
+        <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
+        <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Save</a></button>
+    </div> 
+</app-modal>
+
+<app-modal class="d-none" id="userGroupAccess">
+    <div header>User Group Access</div>
+    <div body class="container-flex text-center">
+        <div class="form-row custom-row-inline-inset">
+			<div class="col-sm-12">
+				<div class="input-group">
+					<label class="form-control-sm col-sm-4">User Group</label>
+		        	<input type="text" class="form-control form-control-sm col-sm-6">
+				</div>
+	        	<fieldset class="scheduler-border">
+	        		<legend class="scheduler-border">Module Transaction</legend>
+	        			<div class="row model-align">
+	        				<div class="col-sm-12">
+	        					<app-cust-editable-non-datatable [passData]="PassDataModuleTransUser"> </app-cust-editable-non-datatable>
+	        				</div>
+	        			</div>
+	        	</fieldset>
+	        	<fieldset class="scheduler-border">
+	        		<legend class="scheduler-border">Module</legend>
+	        			<div class="row model-align">
+	        				<div class="col-sm-12">
+	        					<app-cust-editable-non-datatable [passData]="PassDataModuleUser"> </app-cust-editable-non-datatable>
+	        				</div>
+	        			</div>
+	        	</fieldset>
+        	</div>
+        </div> 
+    </div>
+  	<div footer class="d-flex justify-content-center w-100">                    
+        <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
+        <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Save</a></button>
+    </div> 
+</app-modal>

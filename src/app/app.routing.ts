@@ -115,6 +115,7 @@ import { ProfitCommissionComponent } from './accounting-in-trust/profit-commissi
 import { UserGroupsMaintenanceComponent } from './security/users-maintenance/user-groups-maintenance/user-groups-maintenance.component';
 import { UsersComponent } from './security/users-maintenance/users/users.component';
 import { UsersMaintenanceComponent } from './security/users-maintenance/users-maintenance.component';
+import { ModulesMaintenanceComponent } from './security/modules-maintenance/modules-maintenance.component';
 
 const appRoutes: Routes = [
 
@@ -238,7 +239,8 @@ const appRoutes: Routes = [
     { path: 'profit-commission', component: ProfitCommissionComponent },
     { path: 'user-group-maintenance', component: UserGroupsMaintenanceComponent },
     { path: 'users', component: UsersComponent },
-    { path: 'UsersMaintenanceComponent', component: UsersMaintenanceComponent },
+    { path: 'users-maintenance', component: UsersMaintenanceComponent },
+    { path: 'modules-maintenance', component: ModulesMaintenanceComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

@@ -80,7 +80,7 @@ export class MtnCedingCompanyComponent implements OnInit {
   }
 
   openModalNotMember(){
-    this.passDataCedingCompanyNotMember = [];
+    this.passDataCedingCompanyNotMember.tableData = [];
 
     this.underwritingService.getCedingCompanyList().subscribe((data: any) => {
          for(var i=0;i< data.cedingcompany.length;i++){
