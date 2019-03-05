@@ -48,16 +48,18 @@
                             <br>
                             <div class="input-group">
                                 <label class="form-control-sm">Currency</label>
-                                <input type="text"  [readonly]="inquiryFlag" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageData.currencyCd">
-                                <div class="text-search-ico" [class.d-none]="inquiryFlag" style="z-index: 50;margin-left: -18px !important;"><a (click)="showCurrencyModal()"><i class="fa fa-search"></i></a></div>
+                                <input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageData.currencyCd" readonly>
+                                <div class="text-search-ico" [class.d-none]="inquiryFlag" style="z-index: 50;margin-left: -18px !important;"><i class="fa fa-search"></i></div>
                                 <label class="form-control-sm">Exch. Rt.</label>
                                 <input type="text" class="form-control form-control-sm cust-sm txt-content-rght req" required
                                        placeholder="0.00" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
-                                        [(ngModel)]="coverageData.currencyRt" appCurrency>
+                                        [(ngModel)]="coverageData.currencyRt" appOtherRates readonly>
+
+
                             </div>
                             <div class="input-group">&nbsp;
                                 <label class="form-control-sm">Total SI</label>
-                                <input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm cust-sm txt-content-rght req" required placeholder="0.00" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="coverageData.totalSi" appCurrency >
+                                <input type="text" class="form-control form-control-sm cust-sm txt-content-rght req" required placeholder="0.00" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="coverageData.totalSi" appCurrency readonly>
                             </div>
                         </div>
                         <div class="col-sm-1"></div>
@@ -74,18 +76,18 @@
                         <div class="col-sm-10">
                             <div class="input-group">
                                 <label class="form-control-sm col-sm-3">Section I</label>
-                                <input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm txt-content-rght req"  placeholder="0.00"
-                                       onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="coverageData.sectionISi" appCurrency >
+                                <input type="text" class="form-control form-control-sm txt-content-rght req"  placeholder="0.00"
+                                       onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="coverageData.sectionISi" appCurrency readonly>
                             </div>
                             <div class="input-group">
                                 <label class="form-control-sm col-sm-3">Section II</label>
-                                <input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm txt-content-rght req"  placeholder="0.00"
-                                       onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="coverageData.sectionIISi" appCurrency >
+                                <input type="text" class="form-control form-control-sm txt-content-rght req"  placeholder="0.00"
+                                       onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="coverageData.sectionIISi" appCurrency readonly>
                             </div>
                             <div class="input-group">
                                 <label class="form-control-sm col-sm-3">Section III</label>
-                                <input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm txt-content-rght req"  placeholder="0.00"
-                                       onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="coverageData.sectionIIISi" appCurrency >
+                                <input type="text" class="form-control form-control-sm txt-content-rght req"  placeholder="0.00"
+                                       onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="coverageData.sectionIIISi" appCurrency readonly>
                             </div>
                         </div>
                         <div class="col-sm-1"> &nbsp;</div>
@@ -97,7 +99,7 @@
             <fieldset class="scheduler-border fieldset-height">
                 <div class="form-row custom-row-inline-inset">
                     <label for="inputEmail4" class="form-control-sm top-label">Remarks</label>
-                    <textarea [readonly]="inquiryFlag" class="form-control form-control-sm"  [(ngModel)]="coverageData.remarks"></textarea>
+                    <textarea [readonly]="inquiryFlag" class="form-control form-control-sm" style="font-size: 11px;" [(ngModel)]="coverageData.remarks"></textarea>
                 </div>
             </fieldset>
         </div>
@@ -115,7 +117,8 @@
     </div>
 </div>
 
-<app-mtn-section-covers id="sectionCoversLOV" (selectedData)="selectedSectionCoversLOV($event)"></app-mtn-section-covers>
+
+<app-mtn-section-covers id="sectionCoversLOV" (selectedData)="selectedSectionCoversLOV($event)" [lineCd]="lineCd"></app-mtn-section-covers>
 <app-modal class="d-none" id="errorMdl">
     <div header>Error</div>
     <div body class="container-flex text-center">

@@ -203,12 +203,14 @@ export class QuoteOptionComponent implements OnInit {
 
         if (this.quotationService.toGenInfo[0] == "edit") {
 
-            this.sub = this.route.params.subscribe(params => {
+            /*this.sub = this.route.params.subscribe(params => {
                 this.from = params['from'];
                     if (this.from == "quo-processing") {
                         this.quotationNum = params['quotationNo'];
                     }
-            });
+            });*/
+
+            this.quotationNum = this.quotationInfo.quotationNo;
 
              this.quotationService.getQuoteGenInfo(null,this.plainQuotationNo(this.quotationNum)).subscribe((data: any) => {
                         this.insured = data.quotationGeneralInfo.insuredDesc; 

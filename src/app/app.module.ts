@@ -314,6 +314,11 @@ import { BatchOsTakeupComponent } from './accounting-in-trust/month-end/batch-os
 import { MtnSectionCoversComponent } from './maintenance/mtn-section-covers/mtn-section-covers.component';
 import { JvPreviewAmountDetailsComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-preview-amount-details/jv-preview-amount-details.component';
 import { JvPreviewTaxDetailsComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-preview-tax-details/jv-preview-tax-details.component';
+import { CurrencyRateDirective } from './_directives/currency-rate.directive';
+import { OtherRatesDirective } from './_directives/other-rates.directive';
+import { UsersMaintenanceComponent } from './security/users-maintenance/users-maintenance.component';
+import { UserGroupsMaintenanceComponent } from './security/users-maintenance/user-groups-maintenance/user-groups-maintenance.component';
+import { UsersComponent } from './security/users-maintenance/users/users.component';
 import { ConfirmSaveComponent } from './_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from './_components/common/cancel-button/cancel-button.component';
 
@@ -639,6 +644,11 @@ import { CancelButtonComponent } from './_components/common/cancel-button/cancel
         JvPreviewTaxDetailsComponent,
         ConfirmSaveComponent,
         CancelButtonComponent,
+        CurrencyRateDirective,
+        OtherRatesDirective,
+        UsersMaintenanceComponent,
+        UserGroupsMaintenanceComponent,
+        UsersComponent,
     ],
 
     providers: [

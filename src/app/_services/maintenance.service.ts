@@ -116,12 +116,12 @@ export class MaintenanceService{
 
         return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMtnSectionCovers', {params});     
 	}*/
-	getMtnSectionCovers() {
-		/*const params = new HttpParams()
+	getMtnSectionCovers(lineCd,coverCd) {
+		const params = new HttpParams()
                 .set('lineCd',lineCd)
-                .set('coverCd',coverCd);*/
+                .set('coverCd',coverCd);
 
-        return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMtnSectionCovers');     
+        return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMtnSectionCovers', {params});     
 	}
 
 	getMtnTypeOfCession(cessionId) {
