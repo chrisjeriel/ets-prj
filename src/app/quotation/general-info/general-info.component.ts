@@ -145,6 +145,7 @@ export class GeneralInfoComponent implements OnInit {
 		currencyCd: '',
 		currencyRt:''
 	}
+
 	loading:boolean = true;
 
 	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute, private maintenanceService: MaintenanceService) { }
@@ -178,9 +179,10 @@ export class GeneralInfoComponent implements OnInit {
 				});
 
 			this.quotationService.getQuoteGenInfo('', this.plainQuotationNo(this.quotationNo)).subscribe(data => {
-				console.log(data)
+				
 				this.loading = false;
 				if(data['quotationGeneralInfo'] != null) {
+					console.log(data['quotationGeneralInfo'])
 					this.genInfoData = data['quotationGeneralInfo'];						
 					this.genInfoData.createDate = (this.genInfoData.createDate == null) ? '' : this.dateParser(this.genInfoData.createDate);
 					this.genInfoData.expiryDate = (this.genInfoData.expiryDate == null) ? '' : this.dateParser(this.genInfoData.expiryDate);
@@ -200,6 +202,10 @@ export class GeneralInfoComponent implements OnInit {
 						this.genInfoData.quoteRevNo = '';
 					}
 
+					setTimeout(() => {
+						$('.req').focus();
+						$('.req').blur();
+					},0) 
 				}
 
 				if(data['project'] != null) {
@@ -556,6 +562,9 @@ export class GeneralInfoComponent implements OnInit {
   			riskId: this.project.riskId, //added by paul
   			currencyCd: this.genInfoData.currencyCd,
   			currencyRt: this.genInfoData.currencyRt,
+  			typeOfCession: this.genInfoData.cessionDesc,
+  			status: this.genInfoData.status,
+  			reasonCd: this.genInfoData.reasonCd
   		});		
   	}
 

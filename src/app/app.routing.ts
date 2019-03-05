@@ -112,6 +112,8 @@ import { BatchInvoiceComponent } from './accounting-service/utilities/batch-invo
 import { GenerateCMDMComponent } from './accounting-in-trust/in-trust-credit-debit/generate-cmdm/generate-cmdm.component';
 import { QuarterlyStmntOfAcctComponent } from './accounting-in-trust/quarterly-stmnt-of-acct/quarterly-stmnt-of-acct.component';
 import { ProfitCommissionComponent } from './accounting-in-trust/profit-commission/profit-commission.component';
+import { UserGroupsMaintenanceComponent } from './security/users-maintenance/user-groups-maintenance/user-groups-maintenance.component';
+import { UsersComponent } from './security/users-maintenance/users/users.component';
 
 const appRoutes: Routes = [
 
@@ -233,6 +235,8 @@ const appRoutes: Routes = [
     { path: 'acct-it-generate-cmdm', component: GenerateCMDMComponent },
     { path: 'quarterly-stmt-of-acct', component: QuarterlyStmntOfAcctComponent },
     { path: 'profit-commission', component: ProfitCommissionComponent },
+    { path: 'user-group-maintenance', component: UserGroupsMaintenanceComponent },
+    { path: 'users', component: UsersComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
