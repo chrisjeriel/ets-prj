@@ -51,7 +51,7 @@ export class LovComponent implements OnInit {
   		this.passTable.keys = ['insuredId', 'insuredName' ];
       this.passTable.tHeader =  ['Insured Id', 'Insured Name' ];
       this.passTable.dataTypes =  ['text', 'text', 'text', 'text', 'text', 'text', 'text'];
-	    this.mtnService.getMtnInsured().subscribe((data: any) => {
+	    this.mtnService.getMtnInsured('').subscribe((data: any) => {
 	          for (var a =0 ; data.insured.length > a; a++) {
 	            this.passTable.tableData.push(data.insured[a]);
 	          }
