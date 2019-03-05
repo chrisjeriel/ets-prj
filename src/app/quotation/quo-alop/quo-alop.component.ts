@@ -90,6 +90,7 @@ export class QuoAlopComponent implements OnInit {
     dialogMessage:string = "";
     dialogIcon: string = "";
     showAlopItem:boolean = false;
+    dateErFlag:boolean = false;
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute) { }
 
     ngOnInit() {
@@ -150,6 +151,8 @@ export class QuoAlopComponent implements OnInit {
           this.dialogIcon = "error";
           $('#successModalBtn').trigger('click');
         } else{
+          this.dialogMessage = "";
+          this.dialogIcon = "success";
           $('#successModalBtn').trigger('click');
           $('.ng-dirty').removeClass('ng-dirty')
           this.getAlop();
@@ -284,16 +287,25 @@ export class QuoAlopComponent implements OnInit {
   }
 
   checkDates(){
-    console.log(this.alopData.issueDate);
-    console.log(this.alopData.expiryDate);
     if(new Date(this.alopData.issueDate)>= new Date(this.alopData.expiryDate)){
      highlight(this.to);
      highlight(this.from);
+     this.dateErFlag = true;
+    }else{
+     unHighlight(this.to);
+     unHighlight(this.from);
+     this.dateErFlag = false;
     }
   }
 
   onClickSave(){
-    $('#alop #confirm-save #modalBtn2').trigger('click');
+    if(!this.dateErFlag)
+      $('#alop #confirm-save #modalBtn2').trigger('click');
+    else{
+      this.dialogMessage = "Please check date fields";
+      this.dialogIcon = "error";
+      $('#successModalBtn').trigger('click');
+    }
   }
 
   onClickSaveAlopItem(){
