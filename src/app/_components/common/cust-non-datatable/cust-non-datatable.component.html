@@ -62,7 +62,7 @@
                                 <input [disabled]="!filt.enabled" *ngSwitchCase="'datespan'" type="date" class="form-control cust-sm" [(ngModel)]="filt.search2" (ngModelChange)="filterDisplay(passData.filters,searchString)"> -->
 
                                 <!-- DATABASE VERSION -->
-                                <input [disabled]="!filt.enabled" #input (input)="input.value=$event.target.value.toUpperCase()" [(ngModel)]="filt.search" *ngSwitchCase="'text'"  type="text" class="form-control cust-sm">
+                                <input [disabled]="!filt.enabled" [ngModel]="filt.search" (ngModelChange)="filt.search=$event.toUpperCase()"*ngSwitchCase="'text'"  type="text" class="form-control cust-sm">
                                 <input [disabled]="!filt.enabled" #input (input)="input.value=$event.target.value.toUpperCase()" [(ngModel)]="filt.search" *ngSwitchCase="'date'"  type="date" class="form-control cust-sm">
                                 <input [disabled]="!filt.enabled" #input (input)="input.value=$event.target.value.toUpperCase()" [(ngModel)]="filt.search"  *ngSwitchCase="'datespan'" type="date" class="form-control cust-sm">
                                 <span class="cust-sm" *ngSwitchCase="'datespan'">-</span>

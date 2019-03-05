@@ -157,9 +157,11 @@ export class CustNonDatatableComponent implements OnInit {
         // this.addFiller();
         this.refreshTable("first");
         
-        for (var i = this.dataKeys.length - 1; i >= 0; i--) {
+        //Bring this back in case of emergency
+        /*for (var i = this.dataKeys.length - 1; i >= 0; i--) {
            this.fillData[this.dataKeys[i]] = null;
-        }
+        }*/
+        this.fillData = null;  //delete this if something bad happens
 
         for(var filt in this.filterObj){
             this.filterObj[filt].search='';
@@ -226,21 +228,27 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     onRowClick(event, data) {
-        if(data[this.nullKey] !== null){
-            this.btnDisabled = false;
-            if(this.indvSelect == data){
-                this.unselect = true;
-                this.btnDisabled = true;
-                this.indvSelect = null;
-            }else{
-                this.indvSelect = data;
+        if(data !== null){
+            if(data[this.nullKey] !== null){
+                this.btnDisabled = false;
+                if(this.indvSelect == data){
+                    this.unselect = true;
+                    this.btnDisabled = true;
+                    this.indvSelect = "";
+                }else{
+                    this.indvSelect = data;
+                }
             }
+            /*for(var i = 0; i < event.target.parentElement.children.length; i++) {
+                event.target.parentElement.children[i].style.backgroundColor = "";
+            }
+            event.target.parentElement.parentElement.style.backgroundColor = "#67b4fc";
+            console.log(event.target.parentElement.parentElement);*/
+            
         }
-        /*for(var i = 0; i < event.target.parentElement.children.length; i++) {
-            event.target.parentElement.children[i].style.backgroundColor = "";
+        else{
+             this.indvSelect = "";
         }
-        event.target.parentElement.parentElement.style.backgroundColor = "#67b4fc";
-        console.log(event.target.parentElement.parentElement);*/
         this.rowClick.emit(data);
     }
     
