@@ -73,10 +73,6 @@ export class QuotationService {
     }
 
     getCoverageInfo(quotationNo?:any , quotationId?: string) {
-        this.coverageInfoData = [
-            new QuotationCoverageInfo("1", "I", "3", "69000", ""),
-            new QuotationCoverageInfo("2", 'II', "2", "123000", "")
-        ];
         const params = new HttpParams()
              .set('quotationNo', (quotationNo === null || quotationNo === undefined ? '' : quotationNo) )
              .set('quoteId',(quotationId === null || quotationId === undefined ? '' : quotationId) )

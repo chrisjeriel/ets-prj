@@ -19,17 +19,22 @@ export class QuotationComponent implements OnInit {
 	selectedReport: string;
 	reportsList: any[] = [
 								{val:"QUOTER009A", desc:"Quotation Letter" },
-								{val:"QUOTER009B", desc:"RI Preparedness to Support Letter and RI Confirmation of Acceptance Letter" },
-								{val:"QUOTER009C", desc:"Risk Not Commensurate" },
-								{val:"QUOTER009D", desc:"Treaty Exclusion Letter" },
-								{val:"QUOTER007", desc:"Advice on Internal Competition" },
+								//{val:"QUOTER009C", desc:"Risk Not Commensurate" },
+								//{val:"QUOTER009D", desc:"Treaty Exclusion Letter" },
+								//{val:"QUOTER007", desc:"Advice on Internal Competition" },
 					     ]
 
 	quoteInfo = {
 		quoteId: '',
 		quotationNo: '',
 		riskName: '',
-		insuredDesc: ''
+		insuredDesc: '',
+		riskId: '',
+		currencyCd: '',
+		currencyRt: '',
+		typeOfCession: '',
+		status:'',
+		reasonCd:'',
 	}
 
 	inquiryFlag: boolean = false;
@@ -58,6 +63,16 @@ export class QuotationComponent implements OnInit {
 
   	checkQuoteInfo(event){  		
   		this.quoteInfo = event;
+  		
+  		if(this.quoteInfo.typeOfCession == 'Retrocession'){
+  			this.reportsList.push({val:"QUOTER009B", desc:"RI Preparedness to Support Letter and RI Confirmation of Acceptance Letter" })
+  		}
+		if(this.quoteInfo.status == '10'){
+			this.reportsList.push({val:"QUOTER009C", desc:"Risk Not Commensurate" });
+		}
+		if(this.quoteInfo.status == '9' && this.quoteInfo.reasonCd == 'NT'){
+			this.reportsList.push({val:"QUOTER009D", desc:"Treaty Exclusion Letter"});
+		}
   	}
 
   	showPrintPreview() {

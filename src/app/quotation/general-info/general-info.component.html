@@ -161,7 +161,7 @@
 						<div class="form-group col-sm-6 offsetFormGroup">
 							<div class="input-group">
 								<label class="form-control-sm col-sm-4 ">Exch. Rt.</label>
-								<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm text-right req" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [ngModel]="genInfoData.currencyRt | number:'1.6-6'" (ngModelChange)="genInfoData.currencyRt = $event" appRequired>
+								<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm text-right req" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="genInfoData.currencyRt" required appOtherRates>
 								<span>&nbsp;</span>
 							</div>
 						</div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
 import { MaintenanceService } from '@app/_services';
 import { MtnSectionCovers } from '@app/_models';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -12,6 +12,8 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 export class MtnSectionCoversComponent implements OnInit {
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
+  @Input() lineCd: string = "";
+  @Input() coverCd: string = "";
   selected: any;
   sectionCover: any = {
     tableData: [],
@@ -24,20 +26,15 @@ export class MtnSectionCoversComponent implements OnInit {
     fixedCol: false,
     pageID: 1,
     keys:[
-    	'coverCode',
-    	'shortName',
+    	'coverCd',
+    	'coverCdAbbr',
     	'description'
     	]
   };
   constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal) { }
 
   ngOnInit() {
-  	this.maintenanceService.getMtnSectionCovers().subscribe((data: any) =>{
-      for(var i=0; i< data.sectionCovers.length;i++){
-             this.sectionCover.tableData.push(new MtnSectionCovers(data.sectionCovers[i].coverCd,data.sectionCovers[i].coverCdAbbr,data.sectionCovers[i].description));
-         }
-       this.table.refreshTable();
-    });
+  	
 
   }
 
@@ -47,5 +44,19 @@ export class MtnSectionCoversComponent implements OnInit {
 
   okBtnClick(){
     this.selectedData.emit(this.selected);
+  }
+
+  openModal(){
+        this.sectionCover.tableData = [];
+        this.maintenanceService.getMtnSectionCovers(this.lineCd,this.coverCd).subscribe((data: any) =>{
+          console.log(data)
+          for(var i=0; i< data.sectionCovers.length;i++){
+              if(data.sectionCovers[i].lineCd == this.lineCd ){
+                 this.sectionCover.tableData.push(data.sectionCovers[i]);
+               } 
+          }
+           this.table.refreshTable();
+        });
+
   }
 }
