@@ -320,13 +320,11 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     dbQuery(filterObj){
-        console.log(filterObj);
-        var dateSpanCounter: number = 0;
-        var generalCounter: number =0;
+        //console.log(filterObj);
         this.searchQuery = [];
         for(var e of filterObj){
             if(e.enabled){
-                if(e.search !== undefined){
+                //if(e.search !== undefined){
                     if(e.dataType === 'seq'){
                         let seqNo:string = "";
                           seqNo = e.search.split(/[-]/g)[0]
@@ -341,11 +339,18 @@ export class CustNonDatatableComponent implements OnInit {
                                  }
                              );
                     }
-                    /*else if(e.dataType === 'datespan' ){
-                        if(dateSpanCounter == 0){
-                            this.passData.filters[generalCounter+1].search = e.search2;
-                        }
-                    }*/
+                    else if(e.dataType === 'datespan' ){
+                        this.searchQuery.push(
+                            {
+                                key: e.keys.from,
+                                search: (e.keys.search === undefined || !e.enabled) ? '' : e.keys.search,
+                            },
+                             {
+                                key: e.keys.to,
+                                search: (e.keys.search2 === undefined || !e.enabled) ? '' : e.keys.search2,
+                            }
+                        );
+                    }
                     else{
                         this.searchQuery.push(
                             {
@@ -355,15 +360,27 @@ export class CustNonDatatableComponent implements OnInit {
                         );
                     }
                     
-                }
-                else{
+                //}
+                /*else{
                     this.searchQuery.push(
                         {
                             key: e.key,
                             search: (e.search === undefined || !e.enabled) ? '' : e.search,
                         }
                     );
-                }
+                }*/
+            }
+            else if(!e.enabled && e.dataType === 'datespan'){
+                   this.searchQuery.push(
+                       {
+                           key: e.keys.from,
+                           search: '',
+                       },
+                        {
+                           key: e.keys.to,
+                           search: '',
+                       }
+                   );
             }
             else{
                 if(e.dataType === 'expire'){
@@ -386,8 +403,9 @@ export class CustNonDatatableComponent implements OnInit {
                     );
                 }
             }
-            generalCounter++;
         }
+        console.log(filterObj);
+        console.log(this.searchQuery)
         this.searchToDb.emit(this.searchQuery);
         this.loadingFlag = true;
     }

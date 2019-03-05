@@ -63,15 +63,18 @@ export class HoldCoverMonitoringListComponent implements OnInit {
                 dataType: 'text'
             },
             {
-                key: 'periodFrom',
+                keys: {
+                    from: 'periodFrom',
+                    to: 'periodTo'
+                },
                 title: 'Period',
                 dataType: 'datespan'
             },
-            {
+           /* {
                 key: 'periodTo',
                 title: 'Period To',
                 dataType: 'datespan'
-            },
+            },*/
             {
                 key: 'compRefHoldCovNo',
                 title: 'CR Hold Cov No.',
@@ -85,7 +88,7 @@ export class HoldCoverMonitoringListComponent implements OnInit {
             {
                 key: 'reqDate',
                 title: 'Request Date',
-                dataType: 'datespan'
+                dataType: 'date'
             },
             {
                 key: 'expiringInDays',

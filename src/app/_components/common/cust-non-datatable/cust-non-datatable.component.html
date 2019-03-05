@@ -66,9 +66,13 @@
                                  <input [disabled]="!filt.enabled" [ngModel]="filt.search" (ngModelChange)="filt.search=$event.toUpperCase()" *ngSwitchCase="'expire'"  type="hidden" class="form-control cust-sm" (keyup.enter)="pressEnterFilter();">
                                 <input [disabled]="!filt.enabled" [ngModel]="filt.search" (ngModelChange)="filt.search=$event.toUpperCase()" *ngSwitchCase="'seq'"  type="text" class="form-control cust-sm" (keyup.enter)="pressEnterFilter();">
                                 <input [disabled]="!filt.enabled" [ngModel]="filt.search" (ngModelChange)="filt.search=$event.toUpperCase()" *ngSwitchCase="'date'"  type="date" class="form-control cust-sm" (keyup.enter)="pressEnterFilter();">
-                                <input [disabled]="!filt.enabled" [ngModel]="filt.search" (ngModelChange)="filt.search=$event.toUpperCase()"  *ngSwitchCase="'datespan'" type="date" class="form-control cust-sm" (keyup.enter)="pressEnterFilter();">
-                                <span class="cust-sm" *ngSwitchCase="'datespan'">-</span>
-                                <input [disabled]="!filt.enabled" [ngModel]="filt.search2" (ngModelChange)="filt.search2=$event.toUpperCase()" *ngSwitchCase="'datespan'" type="date" class="form-control cust-sm" (keyup.enter)="pressEnterFilter();">
+                                <ng-container *ngSwitchCase="'datespan'">
+                                    <input [disabled]="!filt.enabled" [ngModel]="filt.keys?.search" (ngModelChange)="filt.keys.search=$event.toUpperCase()"  type="date" class="form-control cust-sm" (keyup.enter)="pressEnterFilter();">
+                                    <span class="cust-sm">-</span>
+                                    <input [disabled]="!filt.enabled" [ngModel]="filt.keys?.search2" (ngModelChange)="filt.keys.search2=$event.toUpperCase()" type="date" class="form-control cust-sm" (keyup.enter)="pressEnterFilter();">
+                                    <!-- <span>{{filt.keys?.from}}</span>
+                                    <span>{{filt.keys?.to}}</span> -->
+                                </ng-container>
                             </div>
                         </div>
                     </div>
