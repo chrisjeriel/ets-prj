@@ -574,3 +574,7 @@ textarea:read-only {
     background: gray !important;
     cursor: context-menu;
 }
+
+.ql-editor {
+    padding: 0 !important;
+}
