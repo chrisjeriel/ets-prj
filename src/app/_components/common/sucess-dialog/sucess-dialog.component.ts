@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
@@ -12,6 +12,7 @@ export class SucessDialogComponent implements OnInit {
   @ViewChild(ModalComponent) modal: ModalComponent;
   @Input() message: string = "Successfully Saved!"
   @Input() icon: string = "success";
+  @Output() onOk: EventEmitter<any[]> = new EventEmitter<any[]>();
 
   constructor(private modalService: NgbModal) { }
 

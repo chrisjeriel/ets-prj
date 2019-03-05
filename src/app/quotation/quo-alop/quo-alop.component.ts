@@ -6,8 +6,7 @@ import { Title } from '@angular/platform-browser';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
 import { ActivatedRoute } from '@angular/router';
 import { highlight,unHighlight } from '@app/_directives/highlight';
-
-
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
     selector: 'app-quo-alop',
@@ -16,6 +15,7 @@ import { highlight,unHighlight } from '@app/_directives/highlight';
 })
 export class QuoAlopComponent implements OnInit {
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
+  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @ViewChild("from") from:any;
   @ViewChild("to") to:any;
   aLOPInfo: QuoteALOPInfo = new QuoteALOPInfo();
@@ -137,8 +137,9 @@ export class QuoAlopComponent implements OnInit {
        });
     }
 
-
-    save() {
+    cancelFlag:boolean;
+    save(cancelFlag?) {
+      this.cancelFlag = cancelFlag !== undefined;
       this.alopData.quoteId = this.quoteId;
       this.quotationService.saveQuoteAlop(this.alopData).subscribe((data: any) => {
         if(data['returnCode'] == 0) {
@@ -147,6 +148,7 @@ export class QuoAlopComponent implements OnInit {
           $('#successModalBtn').trigger('click');
         } else{
           $('#successModalBtn').trigger('click');
+          $('.ng-dirty').removeClass('ng-dirty')
           this.getAlop();
         }
       });
@@ -267,9 +269,8 @@ export class QuoAlopComponent implements OnInit {
 
   }
 
-  testOnly(){
-    console.log(this.from);
-    console.log(this.to);
+  cancel(){
+    this.cancelBtn.clickCancel();
   }
 
   checkDates(){
@@ -282,7 +283,7 @@ export class QuoAlopComponent implements OnInit {
   }
 
   onClickSave(){
-    $('#confirm-save #modalBtn2').trigger('click');
+    $('#alop #confirm-save #modalBtn2').trigger('click');
   }
 
   onClickSaveAlopItem(){

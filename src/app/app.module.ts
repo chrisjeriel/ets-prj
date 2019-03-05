@@ -315,6 +315,7 @@ import { MtnSectionCoversComponent } from './maintenance/mtn-section-covers/mtn-
 import { JvPreviewAmountDetailsComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-preview-amount-details/jv-preview-amount-details.component';
 import { JvPreviewTaxDetailsComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-preview-tax-details/jv-preview-tax-details.component';
 import { ConfirmSaveComponent } from './_components/common/confirm-save/confirm-save.component';
+import { CancelButtonComponent } from './_components/common/cancel-button/cancel-button.component';
 
 
 @NgModule({
@@ -637,6 +638,7 @@ import { ConfirmSaveComponent } from './_components/common/confirm-save/confirm-
         JvPreviewAmountDetailsComponent,
         JvPreviewTaxDetailsComponent,
         ConfirmSaveComponent,
+        CancelButtonComponent,
     ],
 
     providers: [

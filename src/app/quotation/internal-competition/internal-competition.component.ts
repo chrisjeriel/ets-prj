@@ -6,6 +6,7 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 
 @Component({
@@ -63,6 +64,7 @@ export class InternalCompetitionComponent implements OnInit, OnDestroy {
     }
 
     @ViewChild(CustEditableNonDatatableComponent) custEditableNonDatatableComponent : CustEditableNonDatatableComponent;
+  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
     
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private maintenanceService: MaintenanceService, private route: ActivatedRoute) { }
 
@@ -131,10 +133,12 @@ export class InternalCompetitionComponent implements OnInit, OnDestroy {
     }
 
     onClickCancel() {
-      console.log(this.quoteIds);
+      this.cancelBtn.clickCancel();
     }
 
-    saveData() {
+    cancelFlag:boolean = false;
+    saveData(cancelFlag?) {
+      this.cancelFlag = cancelFlag !== undefined;
       //console.log(this.data);
       this.savedData = [];
       for (var i = 0 ; this.intCompData.tableData.length > i; i++) {
@@ -159,6 +163,7 @@ export class InternalCompetitionComponent implements OnInit, OnDestroy {
             else{
               this.resultMessage = "Successfully saved!";
                $('#successModalBtn').trigger('click');
+               $('.ng-dirty').removeClass('ng-dirty');
             }
         });
       }
