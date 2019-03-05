@@ -90,7 +90,7 @@ export class HoldCoverMonitoringListComponent implements OnInit {
             {
                 key: 'expiringInDays',
                 title: 'Expires in (Days)',
-                dataType: 'text'
+                dataType: 'expire'
             },
 
         ],
