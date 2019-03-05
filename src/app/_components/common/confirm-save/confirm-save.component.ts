@@ -22,7 +22,7 @@ export class ConfirmSaveComponent implements OnInit {
   }
 
   confirmModal(){
-  	if($('.ng-dirty:not([type="search"])').length != 0){
+  	if($('.ng-dirty:not([type="search"]):not(.not-form)').length != 0){
   		this.saveModal.openNoClose();
   	}else{
   	  this.dialogMessage = "Nothing to save.";

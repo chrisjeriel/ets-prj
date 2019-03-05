@@ -323,6 +323,7 @@ import { ConfirmSaveComponent } from './_components/common/confirm-save/confirm-
 import { ModulesMaintenanceComponent } from './security/modules-maintenance/modules-maintenance.component';
 import { SecurityModulesComponent } from './security/modules-maintenance/security-modules/security-modules.component';
 import { ModuleTransactionsComponent } from './security/modules-maintenance/module-transactions/module-transactions.component';
+import { CancelButtonComponent } from './_components/common/cancel-button/cancel-button.component';
 
 
 @NgModule({
@@ -644,6 +645,8 @@ import { ModuleTransactionsComponent } from './security/modules-maintenance/modu
         MtnSectionCoversComponent,
         JvPreviewAmountDetailsComponent,
         JvPreviewTaxDetailsComponent,
+        ConfirmSaveComponent,
+        CancelButtonComponent,
         CurrencyRateDirective,
         OtherRatesDirective,
         UsersMaintenanceComponent,

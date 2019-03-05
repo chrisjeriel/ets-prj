@@ -40,25 +40,25 @@
                                 <fa name="file"></fa>&nbsp;Quotation
                             </ng-template>
                             <ng-template ngbPanelContent>
-                                <button [routerLink]="['/quotation-processing']" class="button btn btn-link">Quotation
+                                <button id="QUOTE001" *ngIf="accessibleModules.indexOf('QUOTE001') > -1" [routerLink]="['/quotation-processing']" class="button btn btn-link">Quotation
                                     Processing</button>
                                 <br />
-                                <button [routerLink]="['/quotation-inquiry']" class="button btn btn-link">Quotation
+                                <button id="QUOTE011" [routerLink]="['/quotation-inquiry']" class="button btn btn-link">Quotation
                                     Inquiry</button>
                                 <br>
-                                <button [routerLink]="['/quotation-holdcover']" class="button btn btn-link">Quotation
+                                <button id="QUOTE012" [routerLink]="['/quotation-holdcover']" class="button btn btn-link">Quotation
                                     to Hold Cover</button>
                                 <br />
-                                <button [routerLink]="['/hold-cover-monitoring']" class="button btn btn-link">Hold
+                                <button id="QUOTE013" [routerLink]="['/hold-cover-monitoring']" class="button btn btn-link">Hold
                                     Cover Monitoring</button>
                                 <br />
-                                <button [routerLink]="['/change-quote-status']" class="button btn btn-link">Change
+                                <button id="QUOTE018" [routerLink]="['/change-quote-status']" class="button btn btn-link">Change
                                     Quote Status</button>
                                 <br />
-                                <button [routerLink]="['/open-cover-processing']" class="button btn btn-link"> Open
+                                <button id="QUOTE014" [routerLink]="['/open-cover-processing']" class="button btn btn-link"> Open
                                     Cover Processing</button>
                                 <br />
-                                <button [routerLink]="['/open-cover-inquiry']" class="button btn btn-link"> Open
+                                <button id="QUOTE017" [routerLink]="['/open-cover-inquiry']" class="button btn btn-link"> Open
                                     Cover Inquiry</button>
                             </ng-template>
                         </ngb-panel>

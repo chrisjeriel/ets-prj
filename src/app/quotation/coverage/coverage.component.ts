@@ -5,6 +5,7 @@ import { Title } from '@angular/platform-browser';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
   selector: 'app-coverage',
@@ -16,7 +17,7 @@ export class CoverageComponent implements OnInit {
   private quotationCoverageInfo: QuotationCoverageInfo;
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   //tableDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
-
+  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 
   editedData: any[] = [];
   deletedData: any[] = [];
@@ -86,12 +87,16 @@ export class CoverageComponent implements OnInit {
   coverCd: string = '';
   quoteId: any;
   @Input() quotationInfo: any = {};
-  errorMdlMessage: string = "";
   sectionCoverLOVRow: number;
   sectionI: number = 0;
   sectionII: number = 0;
   sectionIII: number = 0;
   totalSi: number = 0;
+
+  dialogMessage:string;
+  dialogIcon:string;
+  cancelFlag:boolean;
+
 
   constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,private modalService: NgbModal, private maintenanceService: MaintenanceService) {}
 
@@ -176,6 +181,35 @@ export class CoverageComponent implements OnInit {
       
   }
 
+// <<<<<<< HEAD
+//   saveData(cancelFlag?){
+//     this.cancelFlag = cancelFlag !== undefined;
+//    this.lineCd      = this.quoteNo.split('-')[0];
+//    this.editedData  = [];
+//    this.deletedData = [];
+
+//    for (var i = 0 ; this.passData.tableData.length > i; i++) {
+//       if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted ){
+//           this.editedData.push(this.passData.tableData[i]);
+//           this.editedData[this.editedData.length-1].createDate = new Date(this.editedData[this.editedData.length-1].createDate[0],this.editedData[this.editedData.length-1].createDate[1]-1,this.editedData[this.editedData.length-1].createDate[2]).toISOString();
+//           this.editedData[this.editedData.length-1].updateDate = new Date(this.editedData[this.editedData.length-1].updateDate[0],this.editedData[this.editedData.length-1].updateDate[1]-1,this.editedData[this.editedData.length-1].updateDate[2]).toISOString();
+//           this.editedData[this.editedData.length-1].lineCd     = this.lineCd;
+//       }else if(this.passData.tableData[i].edited && this.passData.tableData[i].deleted){
+//         this.deletedData.push(this.passData.tableData[i]);
+//         this.deletedData[this.deletedData.length-1].createDate = new Date(this.deletedData[this.deletedData.length-1].createDate[0],this.deletedData[this.deletedData.length-1].createDate[1]-1,this.deletedData[this.deletedData.length-1].createDate[2]).toISOString();
+//         this.deletedData[this.deletedData.length-1].updateDate = new Date(this.deletedData[this.deletedData.length-1].updateDate[0],this.deletedData[this.deletedData.length-1].updateDate[1]-1,this.deletedData[this.deletedData.length-1].updateDate[2]).toISOString();
+//         this.deletedData[this.deletedData.length-1].lineCd = this.lineCd;
+//       }
+//     }
+//     this.coverageData.createDate          = new Date(this.coverageData.createDate[0],this.coverageData.createDate[1]-1,this.coverageData.createDate[2]).toISOString();
+//     //this.coverageData.updateDate          = new Date(this.coverageData.updateDate[0],this.coverageData.updateDate[1]-1,this.coverageData.updateDate[2]).toISOString();
+//     this.coverageData.saveSectionCovers   = this.editedData;
+//     this.coverageData.deleteSectionCovers = this.deletedData;
+//     this.coverageData.quoteId             = this.quotationInfo.quoteId;
+//     this.coverageData.projId              = 1;
+//     this.coverageData.riskId              = this.riskId;
+// =======
+// >>>>>>> 5ce730fd79ec9bb8f32258adf36083fbeefa358a
 
   prepareSaveData(){
     this.lineCd      = this.quoteNo.split('-')[0];
@@ -205,46 +239,29 @@ export class CoverageComponent implements OnInit {
 
   }
 
- 
-  saveData(){
-    
+  saveData(cancelFlag?){
+    this.cancelFlag = cancelFlag !== undefined;
     this.prepareSaveData();
 
     if(this.editedData.length < 1 && this.deletedData.length < 1 && this.coverageData.remarks == null){
-        this.errorMdlMessage = "No changes were made!"
-         $('#errorMdl > #modalBtn').trigger('click');
     }else{
       this.quotationService.saveQuoteCoverage(this.coverageData.quoteId,this.coverageData.projId,this.coverageData).subscribe((data: any) => {
         if(data['returnCode'] == 0) {
-            this.errorMdlMessage = data['errorList'][0].errorMessage;
-            $('#errorMdl > #modalBtn').trigger('click');
+            this.dialogMessage = data['errorList'][0].errorMessage;
+            this.dialogIcon = "error";
+            $('#coverage #successModalBtn').trigger('click');
           } else{
-            $('#successModalBtn').trigger('click');
+            this.dialogMessage = "";
+            this.dialogIcon = "success";
+              $('#coverage #successModalBtn').trigger('click');
            }
       });
     }
   }
 
   cancel(){
-    /*this.editedData  = [];
-    this.deletedData = [];
-    this.deletedEditedData =[];
-
-      for (var i = 0 ; this.passData.tableData.length > i; i++) {
-         if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted ){
-             this.editedData.push(this.passData.tableData[i]);
-         }else if(this.passData.tableData[i].edited && this.passData.tableData[i].deleted){
-             this.deletedData.push(this.passData.tableData[i]);
-         }else if(this.passData.tableData[i].deleted){
-           this.deletedEditedData.push(this.passData.tableData[i]);
-         }
-      }
-
-      console.log(this.editedData)
-      console.log(this.deletedData)
-      console.log(this.deletedEditedData)
-
-*/}
+    this.cancelBtn.clickCancel();
+  }
 
   sectionCoversLOV(data){
         $('#sectionCoversLOV #modalBtn').trigger('click');

@@ -149,8 +149,8 @@ span.ui-column-resizer {
                         </div>
                     </div>
                 </div> -->
-                <div class="table-scroll" id="cust-scroll">
-                    <table id="non-datatable">
+                <div class="table-scroll" id="cust-scroll" [class.ng-dirty]="isDirty">
+                    <table id="non-datatable" >
                         <thead>
                             <tr *ngIf="passData.tHeaderWithColspan != null">
                                 <ng-container *ngFor="let header of passData.tHeaderWithColspan">
@@ -160,7 +160,7 @@ span.ui-column-resizer {
                                 </ng-container>
                             </tr>
                             <tr style="min-width: 96px">
-                                <th *ngIf="passData.checkFlag" class="checkbox"><input type="checkbox" name="checkbox" (change)="selectAll($event.target.checked)"></th>
+                                <th *ngIf="passData.checkFlag" class="checkbox not-form"><input type="checkbox" name="checkbox" (change)="selectAll($event.target.checked)"></th>
                                 <th container="body"  *ngFor="let tHeader of passData.tHeader; let i = index" (click)="sort(dataKeys[i],sortBy);sortIndex=i;"
                                 [style.min-width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [style.width.px]="passData.widths === undefined ? 'auto' : passData.widths[i]" [ngbTooltip]="passData.tooltip !== undefined ? passData.tooltip[i] :null">
                                 <!-- <span class="ui-column-resizer"  (mousedown)="onMouseDown($event)" *ngIf="passData.resizable === undefined ||  passData.resizable[i]"></span> -->
@@ -180,7 +180,7 @@ span.ui-column-resizer {
                     <tbody>
                         <tr *ngFor="let data of displayData | paginate: { id: 'editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p2 };let ti = index" [class.selected]="data === indvSelect || data.checked" (click)="onRowClick($event,data)" (dblclick)="onRowDblClick($event)">
                             <td *ngIf="passData.checkFlag" class="checkbox align-middle">
-                                <input *ngIf="addCheckFlag(data)" type="checkbox" name="checkbox" [ngModel]="data.checked" (change)="removeSelected($event, data)" >
+                                <input *ngIf="addCheckFlag(data)" type="checkbox" name="checkbox" [ngModel]="data.checked" (change)="removeSelected($event, data)" class="not-form">
                             </td>
                             <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]" class="align-middle">
                                 <div *ngIf="addCheckFlag(data) && ( passData.uneditable === undefined || !passData.uneditable[i] )" class="align-middle" style="position: relative;">
@@ -261,7 +261,7 @@ span.ui-column-resizer {
                                 
 ======= -->
                                 <button class="fa fa-paperclip btn-file" title="Attach File" *ngIf="addCheckFlag(data)">
-                                    <input type="file" *ngIf="addCheckFlag(data)" (change)="data.fileName=$event.target.files[0].name;data.edited=true;">
+                                    <input type="file" *ngIf="addCheckFlag(data)" (change)="upload(data,$event)">
                                 </button>
                                 <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="addCheckFlag(data)">
                                     <input type="file" *ngIf="addCheckFlag(data)" (change)="data.fileName=$event.target.files[0].name;data.edited=true;">

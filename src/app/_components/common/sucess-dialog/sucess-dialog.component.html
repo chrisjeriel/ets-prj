@@ -29,6 +29,6 @@
         <span style="vertical-align: middle; margin-left: 5px;font-size: 1em;">{{message==''?'Successfully Saved' : message}}</span>
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+        <button class="cust-btn" type="button" (click)="this.onOk.emit();modalService.dismissAll();"><a>Ok</a></button>
     </div>
 </app-modal>

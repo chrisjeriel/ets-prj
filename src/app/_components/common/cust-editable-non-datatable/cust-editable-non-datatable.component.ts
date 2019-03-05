@@ -108,6 +108,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     loadingFlag: boolean = true;
     @Output() retrieveData: EventEmitter<any> = new EventEmitter();
     failed: boolean = false;
+    isDirty: boolean = false;
 
     refreshTable(initLoad?){
         if(initLoad === undefined){
@@ -203,6 +204,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         this.search(this.searchString);
         this.tableDataChange.emit(this.passData.tableData);
         this.add.next(event);
+        this.isDirty = true;
     }
 
     
@@ -220,6 +222,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
             this.selected[i].checked = false;
             this.selected[i].deleted = true;
             this.selected[i].edited = true;
+            this.isDirty = true;
         }
         this.selected = [];
         this.refreshTable();
@@ -443,6 +446,13 @@ export class CustEditableNonDatatableComponent implements OnInit {
 
     closeModal(){
         this.deleteModal.closeModal()
+    }
+
+    upload(data,event){
+        console.log(event.target);
+        data.fileName=event.target.files[0].name;
+        data.edited=true;
+        event.target.className += "ng-dirty"
     }
  
 }

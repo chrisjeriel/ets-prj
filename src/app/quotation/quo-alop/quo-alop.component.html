@@ -91,7 +91,7 @@
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" for="maxIndemPeriod">Maximum Indemnity Period</label>
-				<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-1 text-right" type="text" id="maxIndemPeriod" [(ngModel)]="alopData. maxIndemPd" numbers-only>
+				<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-1 text-right" type="text" id="maxIndemPeriod" [(ngModel)]="alopData. maxIndemPd" numbers-only appRequired>
 				<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">months</label>
 			</div>
 			<div class="input-group">
@@ -104,7 +104,7 @@
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" for="interval">Progress reports to be presented at intervals of</label>
-				<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-1 text-right" type="text" id="interval" [(ngModel)]="alopData. repInterval" numbers-only>
+				<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-1 text-right" type="text" id="interval" [(ngModel)]="alopData. repInterval" numbers-only appRequired>
 				<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">months</label>
 			</div>
 		</div>
@@ -115,7 +115,7 @@
 			<div class="col-md-13 text-center">
 				<div class="cust-btn-container" style="margin-top: 10px;">
 				<button type="button" class="cust-btn" (click)="openAlopItem()"><a>Item Information</a></button>
-				<button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="testOnly()"><a>Cancel</a></button>
+				<button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
 				<button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
 			</div>
 			</div>
@@ -141,7 +141,7 @@
 <app-mtn-insured id="insuredLOV" (selectedData)="setInsured($event)"></app-mtn-insured>
 <app-lov id="lov" [passData]="passLOV" (selectedData)="setInsured($event)"></app-lov>
 
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
+
 
 <app-modal class="d-none" id="errorMdl">
     <div header>Error</div>
@@ -154,6 +154,12 @@
     </div>
 </app-modal>
 
-<app-confirm-save (onYes)="save()"></app-confirm-save>
+
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-confirm-save id="alop" (onYes)="save()"></app-confirm-save>
+<app-cancel-button (onYes)="save('cancel')" [url]="'/quotation-processing'" ></app-cancel-button>
+
+
+
 
 <app-confirm-save id="alopItem" (onYes)="saveAlopItem()"></app-confirm-save>
