@@ -185,7 +185,9 @@ span.ui-column-resizer {
                             <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]" class="align-middle">
                                 <div *ngIf="addCheckFlag(data) && ( passData.uneditable === undefined || !passData.uneditable[i] )" class="align-middle" style="position: relative;">
                                     <input *ngSwitchCase="'percent'" class="editable-text text-right number form-control-sm"
-                                    type="text" [ngModel]="processData(key, data) | number:'1.7-7'" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange(data)">
+                                    type="text" [ngModel]="processData(key, data) | number:'1.10-10'" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange(data)">
+                                    <input *ngSwitchCase="'currencyRate'" class="editable-text text-right number form-control-sm"
+                                    type="text" [ngModel]="processData(key, data) | number:'1.6-6'" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange(data)">
                                     <input *ngSwitchCase="'number'" class="editable-text text-right number form-control-sm" (blur)="format($event , data, key)"
                                     type="text" [ngModel]="data[key]" [ngModelOptions]="{updateOn:'change'}" 
                                     [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange(data)">
@@ -193,7 +195,7 @@ span.ui-column-resizer {
                                     <input appCurrency *ngSwitchCase="'currency'" class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key] | number:'1.2-2' | negativeAmount" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange(data)" 
                                         [ngClass]="{'negativeNumber': data[key]<0}">
                                     <div *ngSwitchCase="'checkbox'" style="text-align: center;">
-                                        <input [checked]="data[key] && data[key]!= 'N'" type="checkbox" (click)="assignChckbox($event,data,key);onDataChange(data)">
+                                        <input [ngModel]="data[key] && data[key]!= 'N'" type="checkbox" (click)="assignChckbox($event,data,key);onDataChange(data)" ngModel>
                                     </div>
                                     <input *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'sequence' ? passData.dataTypes[i] : ''" class="editable-text text-right number form-control-sm"
                                     type="text" [ngModel]="data[key] | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1">

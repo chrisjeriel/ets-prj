@@ -52,21 +52,21 @@
 									</div>
 									<div class="input-group ig-cust">
 										<label class="form-control-sm col-sm-2">Ceding Company</label>
-										<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="genInfoData.cedingId" appRequired>
+										<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="genInfoData.cedingId" (change)="checkCode('cedingCo')" appRequired>
 										<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showCedingCompanyLOV()"></i></a></div>
 										<span [class.d-none]="inquiryFlag">&nbsp;</span>
 										<input type="text" class="form-control form-control-sm col-sm ig-mrgn" [(ngModel)]="genInfoData.cedingName" style="margin-left: 5px;" readonly>
 									</div>
 									<div *ngIf="checkTypeOfCession() ||  genInfoData.cessionDesc.toUpperCase() == 'RETROCESSION'" class="input-group ig-cust">
 										<label class="form-control-sm col-sm-2">Reinsurance From</label>
-										<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2" appRequired [(ngModel)]="genInfoData.reinsurerId">
+										<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="genInfoData.reinsurerId" (change)="checkCode('cedingCoNotMember')" appRequired>
 										<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showCedingCompanyNotMemberLOV()"></i></a></div>
 										<span [class.d-none]="inquiryFlag">&nbsp;</span>
 										<input type="text" [(ngModel)]="genInfoData.reinsurerName" class="form-control form-control-sm col-sm ig-mrgn" style="margin-left: 5px;" readonly>
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Intermediary</label>
-										<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="genInfoData.intmId" appRequired>
+										<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="genInfoData.intmId" (change)="checkCode('intermediary')" appRequired>
 										<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showIntLOV()" ></i></a></div>
 										<span [class.d-none]="inquiryFlag">&nbsp;</span>
 										<input type="text" class="form-control form-control-sm col-sm ig-mrgn" [(ngModel)]="genInfoData.intmName" style="margin-left: 5px;" readonly>
