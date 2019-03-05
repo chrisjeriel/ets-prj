@@ -229,22 +229,26 @@ export class CustNonDatatableComponent implements OnInit {
 
     onRowClick(event, data) {
         if(data !== null){
-            if(data[this.nullKey] !== null){
-                this.btnDisabled = false;
-                if(this.indvSelect == data){
-                    this.unselect = true;
-                    this.btnDisabled = true;
-                    this.indvSelect = "";
-                }else{
-                    this.indvSelect = data;
+            if( Object.entries(data).length !== 0){
+                if(data[this.nullKey] !== null){
+                    this.btnDisabled = false;
+                    if(this.indvSelect == data){
+                        this.unselect = true;
+                        this.btnDisabled = true;
+                        this.indvSelect = "";
+                    }else{
+                        this.indvSelect = data;
+                    }
                 }
             }
+            else{
+                 this.indvSelect = "";
+             }
             /*for(var i = 0; i < event.target.parentElement.children.length; i++) {
                 event.target.parentElement.children[i].style.backgroundColor = "";
             }
             event.target.parentElement.parentElement.style.backgroundColor = "#67b4fc";
             console.log(event.target.parentElement.parentElement);*/
-            
         }
         else{
              this.indvSelect = "";
@@ -301,24 +305,40 @@ export class CustNonDatatableComponent implements OnInit {
     dbQuery(filterObj){
         this.searchQuery = [];
         for(var e of filterObj){
-            /*if(e.enabled !== undefined && e.enabled){*/
-                /*if(e.dataType === 'date'){
-                    //e.search = (e.search === undefined || !e.enabled) ? '' : new Date(e.search).toISOString();
+            if(e.enabled){
+                if(e.search !== undefined){
+                    if(e.dataType === 'seq'){
+                        let seqNo:string = "";
+                          seqNo = e.search.split(/[-]/g)[0]
+                          for (var i = 1; i < e.search.split(/[-]/g).length; i++) {
+                           seqNo += '-' + parseInt(e.search.split(/[-]/g)[i]);
+                         }
+                         e.search = seqNo;
+                    }
+                    this.searchQuery.push(
+                            {
+                                key: e.key,
+                                search: e.search,
+                            }
+                        );
+                }
+                else{
                     this.searchQuery.push(
                         {
                             key: e.key,
                             search: (e.search === undefined || !e.enabled) ? '' : e.search,
                         }
                     );
-                }else{*/
-                    this.searchQuery.push(
-                        {
-                            key: e.key,
-                            search: (e.search === undefined || !e.enabled) ? '' : e.search,
-                        }
-                    );
-                //}
-            /*}*/
+                }
+            }
+            else{
+                this.searchQuery.push(
+                    {
+                        key: e.key,
+                        search: (e.search === undefined || !e.enabled) ? '' : e.search,
+                    }
+                );
+            }
         }
         this.searchToDb.emit(this.searchQuery);
         this.loadingFlag = true;

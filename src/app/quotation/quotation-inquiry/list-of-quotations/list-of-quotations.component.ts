@@ -103,7 +103,7 @@ export class ListOfQuotationsComponent implements OnInit {
         {
             key: 'quotationNo',
             title: 'Quotation No.',
-            dataType: 'text'
+            dataType: 'seq'
         },
         {
             key: 'cessionDesc',
@@ -158,7 +158,7 @@ export class ListOfQuotationsComponent implements OnInit {
         {
             key: 'policyNo',
             title: 'Policy No.',
-            dataType: 'text'
+            dataType: 'seq'
         },
         {
             key: 'currencyCd',
@@ -246,7 +246,7 @@ export class ListOfQuotationsComponent implements OnInit {
     }
 
     onRowClick(event) {
-        if(this.quoteList == event){
+        if(this.quoteList == event || event === null){
             this.quoteList = {};
         }else{
            this.quoteList = event;

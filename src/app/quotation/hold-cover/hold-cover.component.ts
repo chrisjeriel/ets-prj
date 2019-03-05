@@ -55,7 +55,7 @@ export class HoldCoverComponent implements OnInit {
         {
             key: 'quotationNo',
             title: 'Quotation No.',
-            dataType: 'text'
+            dataType: 'seq'
         },
         {
             key: 'cessionDesc',
@@ -110,7 +110,7 @@ export class HoldCoverComponent implements OnInit {
         {
             key: 'policyNo',
             title: 'Policy No.',
-            dataType: 'text'
+            dataType: 'seq'
         },
         {
             key: 'currencyCd',
