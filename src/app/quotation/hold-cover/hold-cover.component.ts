@@ -143,6 +143,10 @@ export class HoldCoverComponent implements OnInit {
     };
 
     searchParams: any[] = [];
+    dialogMessage:string = "";
+    dialogIcon: string = "";
+    cancelFlag:boolean;
+
 
   constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title) { }
 
@@ -315,10 +319,12 @@ export class HoldCoverComponent implements OnInit {
   holdCoverReq:any
   onSaveClick(qline,qyear,qseqNo,qrevNo,qcomNo,periodTo,periodFrom,coRef,status,reqDate,prepBy,appBy,hcline,hcyear,hcseqNo,hcrevNo,reqBy){
     if(qline === "" || qyear === "" || qseqNo === "" || qrevNo === "" || qcomNo === "" || periodTo === "" || periodFrom === "" || status === "" || hcline === "" || hcyear === ""){
-      $('#warningMdl > #modalBtn').trigger('click');
+      //$('#warningMdl > #modalBtn').trigger('click');
       $('.warn').focus();
       $('.warn').blur();
-      this.warningMsg = "Please complete all required fields!";
+      this.dialogIcon = "error"
+      this.dialogMessage = "Please complete all required fields!";
+      $('#hold-cover #successModalBtn').trigger('click');
       $('.warn').focus();
       $('.warn').blur();
     }else {
@@ -353,12 +359,17 @@ export class HoldCoverComponent implements OnInit {
                     ).subscribe(data => {
                       var returnCode = data['returnCode'];
                       if(returnCode === 0){
-                         $('#warningMdl > #modalBtn').trigger('click');
+                         //$('#warningMdl > #modalBtn').trigger('click');
                          $('.warn').focus();
                          $('.warn').blur();
-                         this.warningMsg = data['errorList'][0].errorMessage;
+                         //this.warningMsg = data['errorList'][0].errorMessage;
+                         this.dialogIcon = "error"
+                          this.dialogMessage = data['errorList'][0].errorMessage;
+                          $('#hold-cover #successModalBtn').trigger('click');
                       }else{
-                         $('#successMdl > #modalBtn').trigger('click');
+                         this.dialogIcon = ""
+                          this.dialogMessage = "";
+                          $('#hold-cover #successModalBtn').trigger('click');
                       }
                     });
 
