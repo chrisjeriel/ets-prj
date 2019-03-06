@@ -32,7 +32,7 @@ export class AppComponent  {
     datetime: number;
     currentUser: User;
     public style: object = {};
-    accessibleModules: string[] = ["QUOTE001", "QUOTE002"];
+    accessibleModules: string[] = ["MTN001", "QUOTE001", "QUOTE002", "QUOTE003", "QUOTE004", "QUOTE005", "QUOTE006", "QUOTE007", "QUOTE008", "QUOTE009", "QUOTE010", "QUOTE012", "QUOTE013", "QUOTE014", "QUOTE015", "QUOTE016", "QUOTE018", "QUOTE011", "QUOTE017", "QUOTE001", "QUOTE002", "QUOTE003", "QUOTE004", "QUOTE005", "QUOTE006", "QUOTE007", "QUOTE008", "QUOTE009", "QUOTE010", "QUOTE012", "QUOTE013", "QUOTE014", "QUOTE015", "QUOTE016", "QUOTE018", "QUOTE011", "QUOTE017"];
 
     private _opened: boolean = true; /*must be added*/
     private _closeOnClickOutside: boolean = true; /*must be added*/
@@ -68,11 +68,11 @@ export class AppComponent  {
 
 
         if (this.currentUser != null) {
-          this.userService.userLogin(this.currentUser.username, this.currentUser.password).subscribe(data => {        
+          /*this.userService.userLogin(this.currentUser.username, this.currentUser.password).subscribe(data => {        
           
             this.accessibleModules = data['modulesList'];
             console.log("accessibleModules : " + this.accessibleModules);
-          });
+          });*/
         }        
 
     }

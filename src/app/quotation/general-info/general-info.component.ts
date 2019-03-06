@@ -11,6 +11,7 @@ import { MtnIntermediaryComponent } from '@app/maintenance/mtn-intermediary/mtn-
 import { MtnInsuredComponent } from '@app/maintenance/mtn-insured/mtn-insured.component';
 import { MtnObjectComponent } from '@app/maintenance/mtn-object/mtn-object.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency.component';
 
 @Component({
 	selector: 'app-general-info',
@@ -24,6 +25,7 @@ export class GeneralInfoComponent implements OnInit {
 	@ViewChild(MtnIntermediaryComponent) intermediaryLov: MtnIntermediaryComponent;
 	@ViewChildren(MtnInsuredComponent) insuredLovs: QueryList<MtnInsuredComponent>;
 	@ViewChild(MtnObjectComponent) objectLov: MtnObjectComponent;
+	@ViewChild(MtnCurrencyComponent) currencyLov: MtnCurrencyComponent;
 
 	private quotationGenInfo: QuotationGenInfo;
 	rowData: any[] = this.quotationService.rowData;
@@ -336,7 +338,7 @@ export class GeneralInfoComponent implements OnInit {
 	}
 
 	setCurrency(data){
-		this.genInfoData.currencyCd = data.currencyAbbr;
+		this.genInfoData.currencyCd = data.currencyCd;
 		this.genInfoData.currencyRt = data.currencyRt;
 		this.focusBlur();
 
@@ -656,6 +658,8 @@ export class GeneralInfoComponent implements OnInit {
   			this.insuredLovs['last'].checkCode(this.genInfoData.contractorId, '#contractorLOV');
   		} else if(field === 'object') {
   			this.objectLov.checkCode(this.line, this.project.objectId);
+  		} else if(field === 'currency') {
+  			this.currencyLov.checkCode(this.genInfoData.currencyCd);
   		}
   	}
 

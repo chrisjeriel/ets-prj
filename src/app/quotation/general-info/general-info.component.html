@@ -57,7 +57,7 @@
 										<span [class.d-none]="inquiryFlag">&nbsp;</span>
 										<input type="text" class="form-control form-control-sm col-sm ig-mrgn" [(ngModel)]="genInfoData.cedingName" style="margin-left: 5px;" readonly>
 									</div>
-									<div *ngIf="checkTypeOfCession() ||  genInfoData.cessionDesc.toUpperCase() == 'RETROCESSION'" class="input-group ig-cust">
+									<div *ngIf="genInfoData.cessionDesc.toUpperCase() === 'RETROCESSION'" class="input-group ig-cust">
 										<label class="form-control-sm col-sm-2">Reinsurance From</label>
 										<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="genInfoData.reinsurerId" (change)="checkCode('cedingCoNotMember')" appRequired>
 										<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showCedingCompanyNotMemberLOV()"></i></a></div>
@@ -153,7 +153,7 @@
 						<div class="form-group col-sm-6 offsetFormGroup">
 							<div class="input-group">
 								<label class="form-control-sm col-sm-4">Currency</label>
-								<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm req" [(ngModel)]="genInfoData.currencyCd" appRequired>
+								<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm req" [ngModel]="genInfoData.currencyCd" (ngModelChange)="genInfoData.currencyCd = $event.toUpperCase()" (change)="checkCode('currency')" appRequired>
 								<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showCurrencyModal()"></i></a></div>
 								<span [class.d-none]="inquiryFlag">&nbsp;</span>
 							</div>
@@ -741,7 +741,7 @@
 							<span>&nbsp;</span> -->
 
 							<div class="form-control-sm col-sm-6 edtr-cont" style="height: 60px; padding-right: 6px !important;">
-             					<text-editor [editorContent]="genInfoData.openingParag" (fetchContent)="genInfoData.openingParag = $event" [edtrOpnrPos]="2" [readonly]="inquiryFlag">
+             					<text-editor [editorContent]="genInfoData.openingParag" (fetchContent)="genInfoData.openingParag = $event" [edtrOpnrPos]="2" [readonly]="inquiryFlag" [required]="!inquiryFlag">
              						<ng-container icon-1>
              							<a (click)="showOpeningWordingLov()"><i class="fa fa-search"></i></a>
              						</ng-container>
@@ -749,7 +749,7 @@
           					</div>
 
           					<div class="form-control-sm col-sm-6 edtr-cont" style="height: 60px; padding-left: 6px !important;">
-             					<text-editor [editorContent]="genInfoData.closingParag" (fetchContent)="genInfoData.closingParag = $event" [edtrOpnrPos]="2" [readonly]="inquiryFlag">
+             					<text-editor [editorContent]="genInfoData.closingParag" (fetchContent)="genInfoData.closingParag = $event" [edtrOpnrPos]="2" [readonly]="inquiryFlag" [required]="!inquiryFlag">
              						<ng-container icon-1>
              							<a (click)="showClosingWordingLov()"><i class="fa fa-search"></i></a>
              						</ng-container>

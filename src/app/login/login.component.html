@@ -1,14 +1,14 @@
-﻿<div class="row" style="border: 1px solid black;">
+﻿<div class="row">
     <div class="col-sm-4">
         
     </div>
 
     <div class="col-sm-4">
         <div class="row">
-            <div class="col-sm-6">
-                <img src="app/resources/images/ets-temp-logo.png" alt="logo.png" style="height: 220px;" id="templogo">
+            <div class="col-sm-5">
+                <img src="app/resources/images/ets-temp-logo.png" alt="logo.png" style="height: 160px; margin-right: 20px;" id="templogo">
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm" style="margin-left: 2rem !important;">
                 <h3>Login</h3>
                 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
                     <div class="form-group">
@@ -18,7 +18,7 @@
                             <div *ngIf="f.username.errors.required">Username is required</div>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="margin-top: -20px;">
                         <label for="password">Password</label>
                         <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
                         <div *ngIf="submitted && f.password.errors" class="invalid-feedback">

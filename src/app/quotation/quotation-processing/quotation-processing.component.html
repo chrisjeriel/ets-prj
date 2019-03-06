@@ -141,8 +141,12 @@
     <div body>
         <fieldset class="scheduler-border">
             <div class="custom-row-inline-inset" style="text-align: center">
-                <p>Selected Line and Risk has an existing Quotation No</p>
-                <p style="color:#557a95"><strong>{{existingQuotationNo}}</strong></p>
+                <p>Selected Line and Risk has existing Quotation No/s</p>
+                <div *ngFor="let ex of existingQuotationNo; let i = index;">
+                    <p><strong style="color:#557a95" *ngIf="i < 5">{{ex}}</strong></p>
+                    <label class="form-control-sm" *ngIf="(i+1) == existingQuotationNo.length && existingQuotationNo.length > 5" style="margin-bottom: -12px">and {{(i+1)-5}} others.</label>
+                </div>
+               
                 <p>Please select an option:</p>
             </div>
         </fieldset>
@@ -150,6 +154,7 @@
     <div footer class="text-center w-100">
         <button class="cust-btn" type="button" (click)="modalService.dismissAll(); toGeneralInfo('modification');"><a>Modification</a></button>
         <button class="cust-btn cust-btn-extend" type="button" (click)="modalService.dismissAll(); toGeneralInfo('internalComp');"><a>Internal Competition</a></button>
+        <button class="cust-btn cust-btn-extend" type="button" (click)="modalService.dismissAll(); clearAddFields();"><a>Cancel</a></button>
     </div>
 </app-modal>
 <!-- End Modification or Internal Competition Modal -->
