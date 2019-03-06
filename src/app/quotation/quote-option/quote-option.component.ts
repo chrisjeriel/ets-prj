@@ -509,6 +509,7 @@ saveOtherRates(){
 clickCoverCodeLOV(data){
     this.passLOVData.selector = 'otherRates';
     this.passLOVData.quoteNo = this.plainQuotationNo(this.quotationNum);
+    this.passLOVData.hide = this.otherRatesData.tableData.filter((a)=>{return a.coverCd!==null && !a.deleted}).map(a=>a.coverCd);
     $('#lov #modalBtn').trigger('click');
     this.coverCodeLOVRow = data.index;
 }
@@ -517,6 +518,7 @@ clickCoverCodeLOV(data){
 clickDeductiblesLOV(data){
     this.passLOVData.selector = 'deductibles';
     this.passLOVData.lineCd = this.quotationNum.substring(0,3);
+    this.passLOVData.hide = this.deductiblesData.tableData.filter((a)=>{return !a.deleted}).map(a=>a.deductibleCd);
     console.log(data);
     $('#lov #modalBtn').trigger('click');
     this.deductiblesLOVRow = data.index;

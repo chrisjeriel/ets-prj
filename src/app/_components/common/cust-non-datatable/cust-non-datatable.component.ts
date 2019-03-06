@@ -121,6 +121,8 @@ export class CustNonDatatableComponent implements OnInit {
     refreshTable(initLoad?){
         if(initLoad === undefined){
             this.loadingFlag = false;
+        }else{
+            this.loadingFlag = true;
         }
         while(this.displayData.length>0){
             this.displayData.pop();

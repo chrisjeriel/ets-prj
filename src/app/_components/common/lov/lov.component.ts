@@ -133,7 +133,7 @@ export class LovComponent implements OnInit {
       this.passTable.dataTypes = [ 'text', 'text', 'text', 'percent', 'currency'];
       this.passTable.keys = ['deductibleCd','deductibleTitle','deductibleType','deductibleRate','deductibleAmt'];
       this.underwritingService.getMaintenanceDeductibles(this.passData.lineCd).subscribe((data: any) => {
-          this.passTable.tableData = data.deductibles;
+          this.passTable.tableData = data.deductibles.filter((data)=>{return  this.passData.hide.indexOf(data.deductibleCd)==-1});
           this.table.refreshTable();
       });
     }else if(this.passData.selector == 'region'){
@@ -226,7 +226,7 @@ export class LovComponent implements OnInit {
       this.passTable.keys = ['coverCd','coverCdAbbr','section','bulletNo','sumInsured']
       this.quotationService.getCoverageInfo(this.passData.quoteNo,null).subscribe((data: any) => {
         if(data.quotation.project !== null ){
-          this.passTable.tableData = data.quotation.project.coverage.sectionCovers;
+          this.passTable.tableData = data.quotation.project.coverage.sectionCovers.filter((data)=>{return this.passData.hide.indexOf(data.coverCd)==-1});
         }
         this.table.refreshTable();
       })

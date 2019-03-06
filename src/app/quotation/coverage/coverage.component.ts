@@ -27,6 +27,7 @@ export class CoverageComponent implements OnInit {
   // rowDblClick: EventEmitter<any> = new EventEmitter();
 
   @Input() inquiryFlag: boolean = false;
+  hideSectionCoverArray: any[] = [];
   
 
   coverageData: any = {
@@ -272,8 +273,8 @@ export class CoverageComponent implements OnInit {
   }
 
   sectionCoversLOV(data){
+        this.hideSectionCoverArray = this.passData.tableData.filter((a)=>{return a.coverCd!== undefined && !a.deleted}).map((a)=>{return a.coverCd.toString()});
         $('#sectionCoversLOV #modalBtn').trigger('click');
-
         //data.tableData = this.passData.tableData;
         this.sectionCoverLOVRow = data.index;
   }

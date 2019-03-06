@@ -109,10 +109,13 @@ export class CustEditableNonDatatableComponent implements OnInit {
     @Output() retrieveData: EventEmitter<any> = new EventEmitter();
     failed: boolean = false;
     isDirty: boolean = false;
+    selectAllFlag:boolean = false;
 
     refreshTable(initLoad?){
         if(initLoad === undefined){
             this.loadingFlag = false;
+        }else{
+            this.loadingFlag = true;
         }
         while(this.displayData.length>0){
             this.displayData.pop();
@@ -223,6 +226,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
             this.selected[i].deleted = true;
             this.selected[i].edited = true;
         }
+        this.selectAllFlag = false;
         $('#cust-table-container').addClass('ng-dirty');
         this.selected = [];
         this.refreshTable();
@@ -343,6 +347,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
    }
 
    getSum(data){
+       console.log("test")
         let sum = 0;
         if(this.dataKeys.indexOf(data)==-1){
             return data;
