@@ -80,6 +80,8 @@ export class RiskFormComponent implements OnInit, OnDestroy {
         }else{
             this.newForm = false;
         }
+
+        console.log(this.riskData.activeTag)
     }
 
     ngOnDestroy(){

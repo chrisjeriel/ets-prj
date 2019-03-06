@@ -1,7 +1,10 @@
 <app-modal class="d-none" (modalOpened)="openModal()" id="riskMdl">
 	<div header>List of Values</div>
 	<div body>
-		<app-cust-non-datatable [passData]="riskListing" (rowClick)="onRowClick($event)" ></app-cust-non-datatable>
+        <div style="position: relative;">
+            <button class="cust-btn" style="position:absolute; left: 0px; max-width: 200px !important;" (click)="maintainRisk()">Maintain Risk</button>
+            <app-cust-non-datatable [passData]="riskListing" (rowClick)="onRowClick($event)" ></app-cust-non-datatable>
+        </div>
 	</div>
 	<div footer>
         <div class="d-flex justify-content-center">

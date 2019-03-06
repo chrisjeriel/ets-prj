@@ -27,6 +27,7 @@ export class CoverageComponent implements OnInit {
   // rowDblClick: EventEmitter<any> = new EventEmitter();
 
   @Input() inquiryFlag: boolean = false;
+  hideSectionCoverArray: any[] = [];
   
 
   coverageData: any = {
@@ -128,8 +129,8 @@ export class CoverageComponent implements OnInit {
 
     
     this.getCoverageInfo();
-      this.coverageData.currencyCd = this.quotationInfo.currencyCd;
-      this.coverageData.currencyRt = this.quotationInfo.currencyRt;
+    this.coverageData.currencyCd = this.quotationInfo.currencyCd;
+    this.coverageData.currencyRt = this.quotationInfo.currencyRt;
       
       
   }
@@ -140,13 +141,12 @@ export class CoverageComponent implements OnInit {
       this.table.refreshTable();
         if(data.quotation.project == null){
           this.maintenanceService.getMtnSectionCovers(this.lineCd,this.coverCd).subscribe((data: any) =>{
-            console.log(data)
-              // for(var i=0; i< data.sectionCovers.length;i++){
-              //   if(data.sectionCovers[i].defaultTag == 'Y' ){
-              //      this.passData.tableData.push(data.sectionCovers[i]);
-              //   }
-              // }
-              this.passData.tableData = data.sectionCovers;
+              for(var i=0; i< data.sectionCovers.length;i++){
+                if(data.sectionCovers[i].defaultTag == 'Y' ){
+                   data.sectionCovers[i].sumInsured = 0;
+                   this.passData.tableData.push(data.sectionCovers[i]);
+                }
+              }
               this.table.refreshTable();
           });
         }
@@ -258,6 +258,7 @@ export class CoverageComponent implements OnInit {
             this.dialogIcon = "error";
             $('#coverage #successModalBtn').trigger('click');
           } else{
+            $('.ng-dirty').removeClass('ng-dirty');
             this.dialogMessage = "";
             this.dialogIcon = "success";
             $('#coverage #successModalBtn').trigger('click');
@@ -272,13 +273,14 @@ export class CoverageComponent implements OnInit {
   }
 
   sectionCoversLOV(data){
+        this.hideSectionCoverArray = this.passData.tableData.filter((a)=>{return a.coverCd!== undefined && !a.deleted}).map((a)=>{return a.coverCd.toString()});
         $('#sectionCoversLOV #modalBtn').trigger('click');
-
         //data.tableData = this.passData.tableData;
         this.sectionCoverLOVRow = data.index;
   }
 
   selectedSectionCoversLOV(data){
+    $('#cust-table-container').addClass('ng-dirty');
     this.passData.tableData[this.sectionCoverLOVRow].coverCd = data.coverCd; 
     this.passData.tableData[this.sectionCoverLOVRow].coverCdAbbr = data.coverCdAbbr;
     this.passData.tableData[this.sectionCoverLOVRow].section = data.section;

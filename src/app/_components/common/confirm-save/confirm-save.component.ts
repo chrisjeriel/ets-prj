@@ -31,5 +31,11 @@ export class ConfirmSaveComponent implements OnInit {
   	}
   }
 
+  onClickYes(){
+    this.onYes.emit();
+    this.saveModal.closeModal()
+    $('.globalLoading').css('display','block');
+  }
+
   // 
 }

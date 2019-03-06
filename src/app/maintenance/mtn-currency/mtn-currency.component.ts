@@ -10,7 +10,7 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 })
 export class MtnCurrencyComponent implements OnInit {
 
-  selected: any;
+  selected: any = null;
 
   currencyListing: any = {
     tableData: [],
@@ -50,8 +50,11 @@ export class MtnCurrencyComponent implements OnInit {
   }
 
   onRowClick(data){
-  	//console.log(data);
-  	this.selected = data;
+    if(Object.is(this.selected, data)){
+      this.selected = null
+    } else {
+      this.selected = data;
+    }
   }
 
   confirm(){
@@ -70,7 +73,7 @@ export class MtnCurrencyComponent implements OnInit {
         this.passDataAttention.tableData.pop();
       }*/
       setTimeout(()=>{    //<<<---    using ()=> syntax
-           this.maintenanceService.getMtnCurrency('').subscribe((data: any) =>{
+           this.maintenanceService.getMtnCurrency('','Y').subscribe((data: any) =>{
                  for(var currencyCount = 0; currencyCount < data.currency.length; currencyCount++){
                    this.currencyListing.tableData.push(
                      new Row(data.currency[currencyCount].currencyCd, 
@@ -84,6 +87,22 @@ export class MtnCurrencyComponent implements OnInit {
                });
        }, 100);
       
+  }
+
+  checkCode(code) {
+    this.maintenanceService.getMtnCurrency(code,'Y').subscribe(data => {
+      if(data['currency'].length > 0) {
+        this.selectedData.emit(data['currency'][0]);
+      } else {
+        this.selectedData.emit({
+          currencyCd: '',
+          currencyRt: ''
+        });
+
+        $('#currencyMdl > #modalBtn').trigger('click');
+      }
+      
+    });
   }
 
 }

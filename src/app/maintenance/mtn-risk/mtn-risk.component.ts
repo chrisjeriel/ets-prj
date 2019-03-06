@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/cor
 import { MaintenanceService } from '@app/_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-mtn-risk',
@@ -35,7 +36,7 @@ export class MtnRiskComponent implements OnInit {
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
 
-  constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal) { }
+  constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal, private router: Router) { }
 
   ngOnInit() {
   	/*this.maintenanceService.getMtnRiskListing('','','','','','','','','','','').subscribe(data =>{
@@ -109,6 +110,11 @@ export class MtnRiskComponent implements OnInit {
       }
       
     });
+  }
+
+  maintainRisk(){
+    this.router.navigate(['/maintenance-risk', { info: 'new'}], {skipLocationChange: false});
+    this.modalService.dismissAll();
   }
 
 }
