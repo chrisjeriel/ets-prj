@@ -603,7 +603,7 @@ export class GeneralInfoComponent implements OnInit {
   			typeOfCession: this.genInfoData.cessionDesc,
   			status: this.genInfoData.status,
   			reasonCd: this.genInfoData.reasonCd,
-  			cedingId: this.genInfoData.cedingId
+  			principalId: this.genInfoData.principalId
   		});		
   	}
 

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input,  ViewChild } from '@angular/core';
-import { QuotationService, UnderwritingService } from '../../_services';
+import { QuotationService, MaintenanceService } from '../../_services';
 import { QuoteALOPItemInformation, QuoteALOPInfo } from '../../_models';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
@@ -91,7 +91,7 @@ export class QuoAlopComponent implements OnInit {
     dialogIcon: string = "";
     showAlopItem:boolean = false;
     dateErFlag:boolean = false;
-    constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute, private underwritingService: UnderwritingService) { }
+    constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute, private mtnService: MaintenanceService) { }
 
     ngOnInit() {
       //neco
@@ -134,12 +134,13 @@ export class QuoAlopComponent implements OnInit {
                 this.alopData.expiryDate = this.alopData.expiryDate[0]+'-'+("0" + this.alopData.expiryDate[1]).slice(-2)+'-'+ ("0" + this.alopData.expiryDate[2]).slice(-2);
                 this.alopData.indemFromDate = this.alopData.indemFromDate[0]+'-'+("0" + this.alopData.indemFromDate[1]).slice(-2)+'-'+("0" + this.alopData.indemFromDate[2]).slice(-2);
               }else{
-                this.underwritingService.getCedingCompanyList(this.quotationInfo.cedingId,'','','','','','','','','').subscribe((data: any) => {
+                this.mtnService.getMtnInsured(this.quotationInfo.principalId).subscribe((data: any) => {
+                  console.log(data)
                   this.loading = false;
-                  this.alopData.insuredId = data.cedingcompany[0].cedingId;
-                  this.alopData.insuredName = data.cedingcompany[0].cedingName;
-                  this.alopData.insuredDesc = data.cedingcompany[0].cedingName;
-                  this.alopData.address = data.cedingcompany[0].address;
+                  this.alopData.insuredId = data.insured[0].insuredId;
+                  this.alopData.insuredName = data.insured[0].insuredAbbr;
+                  this.alopData.insuredDesc = data.insured[0].insuredName;
+                  this.alopData.address = data.insured[0].address;
                 })
               }
               setTimeout(() => {
