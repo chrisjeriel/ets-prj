@@ -142,7 +142,8 @@ export class CoverageComponent implements OnInit {
           this.maintenanceService.getMtnSectionCovers(this.lineCd,this.coverCd).subscribe((data: any) =>{
                for(var i=0; i< data.sectionCovers.length;i++){
                  if(data.sectionCovers[i].defaultTag == 'Y' ){
-                    this.passData.tableData.push(data.sectionCovers[i]);
+                   data.sectionCovers[i].sumInsured = 0;
+                   this.passData.tableData.push(data.sectionCovers[i]);
                 }
               }
               this.passData.tableData = data.sectionCovers;
