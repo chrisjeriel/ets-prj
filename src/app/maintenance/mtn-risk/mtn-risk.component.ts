@@ -113,7 +113,7 @@ export class MtnRiskComponent implements OnInit {
   }
 
   maintainRisk(){
-    this.router.navigateByUrl('/maintenance-risk');
+    this.router.navigate(['/maintenance-risk', { info: 'new'}], {skipLocationChange: false});
     this.modalService.dismissAll();
   }
 

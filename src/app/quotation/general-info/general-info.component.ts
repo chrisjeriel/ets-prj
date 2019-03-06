@@ -587,7 +587,8 @@ export class GeneralInfoComponent implements OnInit {
   			currencyRt: this.genInfoData.currencyRt,
   			typeOfCession: this.genInfoData.cessionDesc,
   			status: this.genInfoData.status,
-  			reasonCd: this.genInfoData.reasonCd
+  			reasonCd: this.genInfoData.reasonCd,
+  			cedingId: this.genInfoData.cedingId
   		});		
   	}
 

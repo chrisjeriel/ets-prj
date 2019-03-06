@@ -399,6 +399,12 @@ saveData(cancelFlag?){
         this.dialogIconFail = "error";
         $('#fail-quote-option #successModalBtn').trigger('click');
       }
+      if(this.failures.length == 0 && this.successes.length == 0){
+        this.dialogMessage ='Nothing to save.';
+        this.dialogIcon = "info";
+        setTimeout(()=>$('#quote-option #successModalBtn').trigger('click'););
+        
+      }
      }
    }
 
@@ -416,7 +422,7 @@ saveData(cancelFlag?){
           params.saveQuoteOptionsList.push(this.optionsData.tableData[i]);
           params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].createDate = new Date(params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].createDate[0],params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].createDate[1]-1,params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].createDate[2]).toISOString();
           params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].updateDate = new Date(params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].updateDate[0],params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].updateDate[1]-1,params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].updateDate[2]).toISOString();
-      } else if(this.optionsData.tableData[i].edited && this.optionsData.tableData[i].deleted){
+      } else if(this.optionsData.tableData[i].edited && this.optionsData.tableData[i].deleted && this.optionsData.tableData[i].optionId !== null){
         params.deleteQuoteOptionsList.push(this.optionsData.tableData[i]);
         params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].createDate = new Date(params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].createDate[0],params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].createDate[1]-1,params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].createDate[2]).toISOString();
         params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].updateDate = new Date(params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].updateDate[0],params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].updateDate[1]-1,params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].updateDate[2]).toISOString();
