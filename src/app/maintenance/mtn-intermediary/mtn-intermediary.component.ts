@@ -72,19 +72,26 @@ intermediaryListing: any = {
   }
 
   checkCode(code) {
-    this.maintenanceService.getIntLOV(code).subscribe(data => {
-      if(data['intermediary'].length > 0) {
-        this.selectedData.emit(data['intermediary'][0]);
-      } else {
-        this.selectedData.emit({
-          intmId: '',
-          intmName: ''
-        });
+    if(code.trim() === ''){
+      this.selectedData.emit({
+        intmId: '',
+        intmName: ''
+      });
+    } else {
+      this.maintenanceService.getIntLOV(code).subscribe(data => {
+        if(data['intermediary'].length > 0) {
+          this.selectedData.emit(data['intermediary'][0]);
+        } else {
+          this.selectedData.emit({
+            intmId: '',
+            intmName: ''
+          });
 
-        $('#intermediaryMdl > #modalBtn').trigger('click');
-      }
-      
-    });
+          $('#intermediaryMdl > #modalBtn').trigger('click');
+        }
+        
+      });
+    }
   }
 
 }

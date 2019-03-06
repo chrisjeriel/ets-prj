@@ -90,19 +90,26 @@ export class MtnCurrencyComponent implements OnInit {
   }
 
   checkCode(code) {
-    this.maintenanceService.getMtnCurrency(code,'Y').subscribe(data => {
-      if(data['currency'].length > 0) {
-        this.selectedData.emit(data['currency'][0]);
-      } else {
-        this.selectedData.emit({
-          currencyCd: '',
-          currencyRt: ''
-        });
+    if(code.trim() === ''){
+      this.selectedData.emit({
+        currencyCd: '',
+        currencyRt: ''
+      });
+    } else {
+      this.maintenanceService.getMtnCurrency(code,'Y').subscribe(data => {
+        if(data['currency'].length > 0) {
+          this.selectedData.emit(data['currency'][0]);
+        } else {
+          this.selectedData.emit({
+            currencyCd: '',
+            currencyRt: ''
+          });
 
-        $('#currencyMdl > #modalBtn').trigger('click');
-      }
-      
-    });
+          $('#currencyMdl > #modalBtn').trigger('click');
+        }
+        
+      });
+   }
   }
 
 }

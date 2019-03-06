@@ -57,6 +57,7 @@ lineListing: any = {
 
   confirm(){
     this.selectedData.emit(this.selected);
+    this.selected = null;
   }
   openModal(){
      this.lineListing.tableData = [];
@@ -74,21 +75,27 @@ lineListing: any = {
   }
 
   checkCode(code) {
-    this.maintenanceService.getLineLOV(code).subscribe(data => {
-      if(data['line'].length > 0) {
-        this.selectedData.emit(data['line'][0]);
-      } else {
-        this.selectedData.emit({
-          lineCd: '',
-          description: ''
-        });
-          
-        $('#lineMdl > #modalBtn').trigger('click');
-      }
-      
-    });
+    if(code === ''){
+      this.selectedData.emit({
+        lineCd: '',
+        description: ''
+      });
+    } else {
+      this.maintenanceService.getLineLOV(code).subscribe(data => {
+        if(data['line'].length > 0) {
+          this.selectedData.emit(data['line'][0]);
+        } else {
+          this.selectedData.emit({
+            lineCd: '',
+            description: ''
+          });
+            
+          $('#lineMdl > #modalBtn').trigger('click');
+        }
+        
+      });  
+    }
   }
-
 
 }
 

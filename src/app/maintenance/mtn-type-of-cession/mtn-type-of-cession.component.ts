@@ -61,6 +61,7 @@ export class MtnTypeOfCessionComponent implements OnInit {
 
   confirm(){
   	this.selectedData.emit(this.selected);
+    this.selected = null;
   }
 
   openModal(){
@@ -83,19 +84,26 @@ export class MtnTypeOfCessionComponent implements OnInit {
   }
 
   checkCode(code) {
-    this.maintenanceService.getMtnTypeOfCession(code).subscribe(data => {
-      if(data['cession'].length > 0) {
-        this.selectedData.emit(data['cession'][0]);
-      } else {
-        this.selectedData.emit({
-          cessionId: '',
-          description: ''
-        });
+    if(code === ''){
+      this.selectedData.emit({
+        cessionId: '',
+        description: ''
+      });
+    } else {
+      this.maintenanceService.getMtnTypeOfCession(code).subscribe(data => {
+        if(data['cession'].length > 0) {
+          this.selectedData.emit(data['cession'][0]);
+        } else {
+          this.selectedData.emit({
+            cessionId: '',
+            description: ''
+          });
 
-        $('#typeOfCessionMdl > #modalBtn').trigger('click');
-      }
-      
-    });
+          $('#typeOfCessionMdl > #modalBtn').trigger('click');
+        }
+        
+      });
+  }
   }
 
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { QuotationGenInfo } from '../../_models';
 import { callLifecycleHooksChildrenFirst } from '@angular/core/src/view/provider';
-import { QuotationService, MaintenanceService } from '../../_services';
+import { QuotationService, MaintenanceService, NotesService } from '../../_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
@@ -166,7 +166,8 @@ export class GeneralInfoComponent implements OnInit {
 
 	loading:boolean = true;
 
-	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute, private maintenanceService: MaintenanceService) { }
+	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title,
+			    private route: ActivatedRoute, private maintenanceService: MaintenanceService, private ns: NotesService) { }
 	ngOnInit() {
 		this.titleService.setTitle("Quo | General Info");
 		this.tHeader.push("Item No", "Description of Items");
@@ -199,12 +200,12 @@ export class GeneralInfoComponent implements OnInit {
 				this.loading = false;
 				if(data['quotationGeneralInfo'] != null) {
 					this.genInfoData = data['quotationGeneralInfo'];						
-					this.genInfoData.createDate = (this.genInfoData.createDate == null) ? '' : this.dateParser(this.genInfoData.createDate);
-					this.genInfoData.expiryDate = (this.genInfoData.expiryDate == null) ? '' : this.dateParser(this.genInfoData.expiryDate);
-					this.genInfoData.issueDate 	= (this.genInfoData.issueDate == null) ? '' : this.dateParser(this.genInfoData.issueDate);
-					this.genInfoData.printDate 	= (this.genInfoData.printDate == null) ? '' : this.dateParser(this.genInfoData.printDate);
-					this.genInfoData.reqDate 	= (this.genInfoData.reqDate == null) ? '' : this.dateParser(this.genInfoData.reqDate);
-					this.genInfoData.updateDate = (this.genInfoData.updateDate == null) ? '' : this.dateParser(this.genInfoData.updateDate);
+					this.genInfoData.createDate = (this.genInfoData.createDate == null) ? '' : this.ns.toDateTimeString(this.genInfoData.createDate);
+					this.genInfoData.expiryDate = (this.genInfoData.expiryDate == null) ? '' : this.ns.toDateTimeString(this.genInfoData.expiryDate);
+					this.genInfoData.issueDate 	= (this.genInfoData.issueDate == null) ? '' : this.ns.toDateTimeString(this.genInfoData.issueDate);
+					this.genInfoData.printDate 	= (this.genInfoData.printDate == null) ? '' : this.ns.toDateTimeString(this.genInfoData.printDate);
+					this.genInfoData.reqDate 	= (this.genInfoData.reqDate == null) ? '' : this.ns.toDateTimeString(this.genInfoData.reqDate);
+					this.genInfoData.updateDate = (this.genInfoData.updateDate == null) ? '' : this.ns.toDateTimeString(this.genInfoData.updateDate);
 
 					if(this.savingType === 'internalComp') {
 						this.genInfoData.quoteId = '';
@@ -242,11 +243,11 @@ export class GeneralInfoComponent implements OnInit {
 				this.genInfoData.quoteRevNo 	= '0';
 				this.genInfoData.status 		= '1';
 				this.genInfoData.statusDesc 	= 'Requested';
-				this.genInfoData.issueDate		= new Date().toISOString();
-				this.genInfoData.createUser		= 'USER'; //JSON.parse(window.localStorage.currentUser).username;
-				this.genInfoData.createDate		= new Date().toISOString();
-				this.genInfoData.updateUser		= 'USER'; //JSON.parse(window.localStorage.currentUser).username;
-				this.genInfoData.updateDate		= new Date().toISOString();
+				this.genInfoData.issueDate		= this.ns.toDateTimeString(0); //new Date().toISOString();
+				// this.genInfoData.createUser		= 'USER'; //JSON.parse(window.localStorage.currentUser).username;
+				// this.genInfoData.createDate		= new Date().toISOString();
+				// this.genInfoData.updateUser		= 'USER'; //JSON.parse(window.localStorage.currentUser).username;
+				// this.genInfoData.updateDate		= new Date().toISOString();
 				this.project.projId 			= '1';
 
 				this.maintenanceService.getMtnRisk(JSON.parse(params['addParams']).riskId).subscribe(data => {				
@@ -422,8 +423,12 @@ export class GeneralInfoComponent implements OnInit {
 					this.genInfoData.quotationNo = data['quotationNo'];
 					this.genInfoData.quoteSeqNo = parseInt(data['quotationNo'].split('-')[2]);
 					this.genInfoData.quoteRevNo = parseInt(data['quotationNo'].split('-')[3]);
+					if(this.quotationService.toGenInfo[0] === 'add') {
+						this.genInfoData.createUser = 'USER'; //JSON.parse(window.localStorage.currentUser).username;
+						this.genInfoData.createDate = this.ns.toDateTimeString(0);
+					}
 					this.genInfoData.updateUser = 'USER'; //JSON.parse(window.localStorage.currentUser).username;
-					this.genInfoData.updateDate	= new Date().toISOString();
+					this.genInfoData.updateDate	= this.ns.toDateTimeString(0);
 
 					this.checkQuoteIdF(this.genInfoData.quoteId);
 
@@ -473,7 +478,7 @@ export class GeneralInfoComponent implements OnInit {
 			"approvedBy"	: this.genInfoData.approvedBy,
 			"cedingId"		: this.genInfoData.cedingId,
 			"cessionId"		: this.genInfoData.cessionId,
-			"closingParag"	: this.genInfoData.closingParag,
+			"closingParag"	: this.genInfoData.closingParag.trim(),
 			"contractorId"	: this.genInfoData.contractorId,
 			"createDate"	: this.genInfoData.createDate,
 			"createUser"	: this.genInfoData.createUser,
@@ -494,7 +499,7 @@ export class GeneralInfoComponent implements OnInit {
 			"noClaimPd"		: this.project.noClaimPd,
 			"objectId"		: this.project.objectId,
 			"openCoverTag"	: this.genInfoData.openCoverTag,
-			"openingParag"	: this.genInfoData.openingParag,
+			"openingParag"	: this.genInfoData.openingParag.trim(),
 			"pctShare"		: this.project.pctShare,
 			"policyId"		: this.genInfoData.policyId,
 			"preparedBy"	: this.genInfoData.preparedBy,
@@ -528,9 +533,18 @@ export class GeneralInfoComponent implements OnInit {
 
 		if(this.quotationService.toGenInfo[0] === 'edit' && this.savingType === 'normal') {
 			saveQuoteGeneralInfoParam.updateUser = 'USER'; //JSON.parse(window.localStorage.currentUser).username;
-			saveQuoteGeneralInfoParam.updateDate = new Date().toISOString();
+			saveQuoteGeneralInfoParam.updateDate = this.ns.toDateTimeString(0);
 			saveQuoteGeneralInfoParam.prjUpdateUser = 'USER'; //JSON.parse(window.localStorage.currentUser).username;
-			saveQuoteGeneralInfoParam.prjUpdateDate = new Date().toISOString();
+			saveQuoteGeneralInfoParam.prjUpdateDate = this.ns.toDateTimeString(0);
+		} else if (this.quotationService.toGenInfo[0] === 'add') {
+			saveQuoteGeneralInfoParam.createUser = 'USER'; //JSON.parse(window.localStorage.currentUser).username;
+			saveQuoteGeneralInfoParam.createDate = this.ns.toDateTimeString(0);
+			saveQuoteGeneralInfoParam.updateUser = 'USER'; //JSON.parse(window.localStorage.currentUser).username;
+			saveQuoteGeneralInfoParam.updateDate = this.ns.toDateTimeString(0);
+			saveQuoteGeneralInfoParam.prjCreateUser = 'USER'; //JSON.parse(window.localStorage.currentUser).username;
+			saveQuoteGeneralInfoParam.prjCreateDate = this.ns.toDateTimeString(0);
+			saveQuoteGeneralInfoParam.prjUpdateUser = 'USER'; //JSON.parse(window.localStorage.currentUser).username;
+			saveQuoteGeneralInfoParam.prjUpdateDate = this.ns.toDateTimeString(0);
 		}
 
 		return saveQuoteGeneralInfoParam;

@@ -30,7 +30,7 @@ export class TextEditorComponent implements OnInit {
     if(this.readonly && !this.required) {
       this.style['background'] = '#f5f5f5';
     } else if(this.required && !this.readonly) {
-      this.style['background'] = '#ffff4370';
+      this.style['background'] = '#fffacd85';
     }
 
   }
