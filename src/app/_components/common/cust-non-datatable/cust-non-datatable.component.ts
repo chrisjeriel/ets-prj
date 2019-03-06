@@ -249,6 +249,7 @@ export class CustNonDatatableComponent implements OnInit {
                         this.unselect = true;
                         this.btnDisabled = true;
                         this.indvSelect = "";
+                        data = {};
                     }else{
                         this.indvSelect = data;
                     }

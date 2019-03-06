@@ -144,7 +144,7 @@
                 <p>Selected Line and Risk has existing Quotation No/s</p>
                 <div *ngFor="let ex of existingQuotationNo; let i = index;">
                     <p><strong style="color:#557a95" *ngIf="i < 5">{{ex}}</strong></p>
-                    <label class="form-control-sm" *ngIf="(i+1) == existingQuotationNo.length" style="margin-bottom: -12px">and {{(i+1)-5}} others.</label>
+                    <label class="form-control-sm" *ngIf="(i+1) == existingQuotationNo.length && existingQuotationNo.length > 5" style="margin-bottom: -12px">and {{(i+1)-5}} others.</label>
                 </div>
                
                 <p>Please select an option:</p>
