@@ -102,7 +102,7 @@
                     <div class="form-group col-sm">
                         <div class="col-md-12 text-center">
                             <div class="cust-btn-container" style="margin-top: 10px !important;">
-                                 <app-modal [btnTitle]="'Approval'">
+                                 <app-modal [btnTitle]="'Approval'" id="approvalBtnMdl" hidden>
                                     <div header>Approval</div>
                                     <div body>
                                         <div class="row">
@@ -148,7 +148,9 @@
                                         </div>
                                     </div>
                                     </app-modal>
-                                <button type="button" class="cust-btn"><a>Cancel</a></button>
+                                <button *ngIf="btnApprovalEnabled" class="cust-btn" type="button" (click)="onClickApprovalBtnMdl()">Approval</button>
+                                <button *ngIf="!btnApprovalEnabled" class="cust-btn dsbld" type="button">Approval</button>
+                                <button type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
                                 <button type="button" class="cust-btn" (click)="onClickSave()" ><a>Save</a></button>
                             </div>
                         </div>
@@ -222,3 +224,5 @@
 <app-confirm-save (onYes)="onSaveClick()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 
+<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
+<div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading">
