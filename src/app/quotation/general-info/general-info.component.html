@@ -153,7 +153,7 @@
 						<div class="form-group col-sm-6 offsetFormGroup">
 							<div class="input-group">
 								<label class="form-control-sm col-sm-4">Currency</label>
-								<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm req" [(ngModel)]="genInfoData.currencyCd" appRequired>
+								<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm req" [ngModel]="genInfoData.currencyCd" (ngModelChange)="genInfoData.currencyCd = $event.toUpperCase()" (change)="checkCode('currency')" appRequired>
 								<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showCurrencyModal()"></i></a></div>
 								<span [class.d-none]="inquiryFlag">&nbsp;</span>
 							</div>
