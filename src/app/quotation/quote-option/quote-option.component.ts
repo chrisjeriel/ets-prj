@@ -154,6 +154,8 @@ export class QuoteOptionComponent implements OnInit {
     updateCount:number;
     dialogIcon:string;
     cancelFlag:boolean;
+    dialogIconFail:string;
+    dialogMessageFail:string;
 
     constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,private modalService: NgbModal) { }
 
@@ -336,7 +338,7 @@ export class QuoteOptionComponent implements OnInit {
     updateDeductibles(data) {
         $('#deductibleTable button').removeAttr("disabled")
         if (data.deductiblesList != null || data.deductiblesList != undefined ){
-          this.deductiblesData.tableData = data.deductiblesList;
+          this.deductiblesData.tableData = data.deleted? []:data.deductiblesList;
           this.deductibleTable.refreshTable();
         } 
         this.deductiblesData.nData.optionId = data.optionId;
@@ -383,8 +385,8 @@ saveData(cancelFlag?){
         }
         this.dialogMessage = this.dialogMessage.slice(0,-2)
         this.dialogMessage+='.';
+        this.dialogIcon = "success"
         $('#quote-option #successModalBtn').trigger('click');
-        console.log(this.dialogMessage);
         this.getQuoteOptions();
       }
       if(this.failures.length!=0){
@@ -393,8 +395,9 @@ saveData(cancelFlag?){
         }
         this.errorMdlMessage = this.errorMdlMessage.slice(0,-2)
         this.errorMdlMessage+='.';
-        this.dialogMessage = this.errorMdlMessage;
-        $('#quote-option #successModalBtn').trigger('click');
+        this.dialogMessageFail = this.errorMdlMessage;
+        this.dialogIconFail = "error";
+        $('#fail-quote-option #successModalBtn').trigger('click');
       }
      }
    }
@@ -509,6 +512,7 @@ saveOtherRates(){
 clickCoverCodeLOV(data){
     this.passLOVData.selector = 'otherRates';
     this.passLOVData.quoteNo = this.plainQuotationNo(this.quotationNum);
+    this.passLOVData.hide = this.otherRatesData.tableData.filter((a)=>{return a.coverCd!==null && !a.deleted}).map(a=>a.coverCd);
     $('#lov #modalBtn').trigger('click');
     this.coverCodeLOVRow = data.index;
 }
@@ -517,6 +521,7 @@ clickCoverCodeLOV(data){
 clickDeductiblesLOV(data){
     this.passLOVData.selector = 'deductibles';
     this.passLOVData.lineCd = this.quotationNum.substring(0,3);
+    this.passLOVData.hide = this.deductiblesData.tableData.filter((a)=>{return !a.deleted}).map(a=>a.deductibleCd);
     console.log(data);
     $('#lov #modalBtn').trigger('click');
     this.deductiblesLOVRow = data.index;

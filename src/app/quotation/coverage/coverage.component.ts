@@ -27,6 +27,7 @@ export class CoverageComponent implements OnInit {
   // rowDblClick: EventEmitter<any> = new EventEmitter();
 
   @Input() inquiryFlag: boolean = false;
+  hideSectionCoverArray: any[] = [];
   
 
   coverageData: any = {
@@ -140,13 +141,12 @@ export class CoverageComponent implements OnInit {
       this.table.refreshTable();
         if(data.quotation.project == null){
           this.maintenanceService.getMtnSectionCovers(this.lineCd,this.coverCd).subscribe((data: any) =>{
-               for(var i=0; i< data.sectionCovers.length;i++){
-                 if(data.sectionCovers[i].defaultTag == 'Y' ){
+              for(var i=0; i< data.sectionCovers.length;i++){
+                if(data.sectionCovers[i].defaultTag == 'Y' ){
                    data.sectionCovers[i].sumInsured = 0;
                    this.passData.tableData.push(data.sectionCovers[i]);
                 }
               }
-              this.passData.tableData = data.sectionCovers;
               this.table.refreshTable();
           });
         }
@@ -272,8 +272,8 @@ export class CoverageComponent implements OnInit {
   }
 
   sectionCoversLOV(data){
+        this.hideSectionCoverArray = this.passData.tableData.filter((a)=>{return a.coverCd!== undefined && !a.deleted}).map((a)=>{return a.coverCd.toString()});
         $('#sectionCoversLOV #modalBtn').trigger('click');
-
         //data.tableData = this.passData.tableData;
         this.sectionCoverLOVRow = data.index;
   }
