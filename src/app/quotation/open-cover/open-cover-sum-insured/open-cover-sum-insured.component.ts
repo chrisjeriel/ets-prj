@@ -43,7 +43,7 @@ export class OpenCoverSumInsuredComponent implements OnInit {
 	     } 
 	    });*/
 	  	this.quotationService.getCoverageOc('2', 'OC-EAR-2018-1001-2-2323').subscribe((data: any) => {
-	  		this.maintenanceService.getMtnCurrency(data.quotationOc.projectOc.coverageOc.currencyCd.toString()).subscribe((data2: any) =>{
+	  		this.maintenanceService.getMtnCurrency(data.quotationOc.projectOc.coverageOc.currencyCd.toString(),'Y').subscribe((data2: any) =>{
 	  			this.coverageOcData.currencyAbbr = data2.currency[0].currencyAbbr;
 	  		});
 	  	    this.coverageOcData.currencyCd = data.quotationOc.projectOc.coverageOc.currencyCd;
