@@ -505,4 +505,13 @@ setCedingcompany(data){
             this.riskLov.checkCode(this.riskCd);
         }              
     }
+
+    clearAddFields(){
+        this.line = '';
+        this.description = '';
+        this.typeOfCessionId = '';
+        this.typeOfCession = '';
+        this.riskCd = '';
+        this.riskName = '';
+    }
 }

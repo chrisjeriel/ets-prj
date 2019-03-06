@@ -150,6 +150,7 @@
     <div footer class="text-center w-100">
         <button class="cust-btn" type="button" (click)="modalService.dismissAll(); toGeneralInfo('modification');"><a>Modification</a></button>
         <button class="cust-btn cust-btn-extend" type="button" (click)="modalService.dismissAll(); toGeneralInfo('internalComp');"><a>Internal Competition</a></button>
+        <button class="cust-btn cust-btn-extend" type="button" (click)="modalService.dismissAll(); clearAddFields();"><a>Cancel</a></button>
     </div>
 </app-modal>
 <!-- End Modification or Internal Competition Modal -->
