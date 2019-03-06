@@ -15,7 +15,7 @@ export class MtnCurrencyComponent implements OnInit {
   currencyListing: any = {
     tableData: [],
     tHeader: ['Currency Code', 'Currency Word', 'Currency Rate', 'Currency Description',],
-    dataTypes: ['text', 'text', 'text', 'currencyRate', 'text',],
+    dataTypes: ['text', 'text', 'currencyRate', 'text',],
     pageLength: 10,
     searchFlag: true,
     pageStatus: true,
@@ -24,7 +24,6 @@ export class MtnCurrencyComponent implements OnInit {
     pageID: 5,
     keys:[
     	'currencyCd',
-    	'currencyAbbr',
     	'currencyWord',
     	'currencyRt',
     	'currencyDesc',]
