@@ -299,6 +299,7 @@ export class GeneralInfoComponent implements OnInit {
 
 	showPrincipalLOV(){
 		$('#principalLOV #modalBtn').trigger('click');
+		$('#principalLOV #modalBtn').addClass('ng-dirty');
 	}
 
 	setPrincipal(data){
@@ -311,16 +312,19 @@ export class GeneralInfoComponent implements OnInit {
 
 	showContractorLOV(){
 		$('#contractorLOV #modalBtn').trigger('click');
+		$('#contractorLOV #modalBtn').addClass('ng-dirty');
 	}
 
 
 	showLineClassLOV(){
 		console.log(this.insuredLovs);
 		$('#lineClassLOV #modalBtn').trigger('click');
+		$('#lineClassLOV #modalBtn').addClass('ng-dirty')
 	}
 
 	showIntLOV(){
 		$('#intLOV #modalBtn').trigger('click');
+		$('#intLOV #modalBtn').addClass('ng-dirty')
 	}
 
 
@@ -335,6 +339,7 @@ export class GeneralInfoComponent implements OnInit {
 
 	showCurrencyModal(){
 		$('#currencyModal #modalBtn').trigger('click');
+		$('#currencyModal #modalBtn').addClass('ng-dirty')
 	}
 
 	setCurrency(data){
@@ -353,6 +358,7 @@ export class GeneralInfoComponent implements OnInit {
 
 	showCedingCompanyLOV() {
 		$('#cedingCompany #modalBtn').trigger('click');
+		$('#cedingCompany #modalBtn').addClass('ng-dirty')
 	}
 
 
@@ -365,6 +371,7 @@ export class GeneralInfoComponent implements OnInit {
 
 	showCedingCompanyNotMemberLOV() {
 		$('#cedingCompanyNotMember #modalBtn').trigger('click');
+		$('#cedingCompanyNotMember #modalBtn').addClass('ng-dirty')
 
 	}
 
@@ -456,13 +463,16 @@ export class GeneralInfoComponent implements OnInit {
 						//end internal comp
 				}
 			});
+			console.log('got here');
 		} else {
 			this.loading = false;
 			this.dialogIcon = "error";
 			this.dialogMessage = "Please complete all the required fields.";
 			$('#genInfo #successModalBtn').trigger('click');
+			setTimeout(()=>{$('.globalLoading').css('display','none');},0);
+       		
 
-			this.focusBlur();
+			//this.focusBlur();
 		}
 
 	}
@@ -542,6 +552,7 @@ export class GeneralInfoComponent implements OnInit {
 
 	showObjectLOV() {
 		$('#objIdLov #modalBtn').trigger('click');
+		$('#objIdLov #modalBtn').addClass('ng-dirty');
 	}
 
 	setObj(data){
@@ -552,6 +563,7 @@ export class GeneralInfoComponent implements OnInit {
 
   	showOpeningWordingLov(){
   		$('#wordingOpeningIdLov #modalBtn').trigger('click');
+  		$('#wordingOpeningIdLov #modalBtn').addClass('ng-dirty');
   	}
 
   	setOpeningWording(data) {
@@ -561,6 +573,7 @@ export class GeneralInfoComponent implements OnInit {
 
   	showClosingWordingLov(){
   		$('#wordingClosingIdLov #modalBtn').trigger('click');
+  		$('#wordingClosingIdLov #modalBtn').addClass('ng-dirty');
   	}
 
   	setClosingWording(data) {  		

@@ -258,6 +258,7 @@ export class CoverageComponent implements OnInit {
             this.dialogIcon = "error";
             $('#coverage #successModalBtn').trigger('click');
           } else{
+            $('.ng-dirty').removeClass('ng-dirty');
             this.dialogMessage = "";
             this.dialogIcon = "success";
             $('#coverage #successModalBtn').trigger('click');
@@ -279,6 +280,7 @@ export class CoverageComponent implements OnInit {
   }
 
   selectedSectionCoversLOV(data){
+    $('#cust-table-container').addClass('ng-dirty');
     this.passData.tableData[this.sectionCoverLOVRow].coverCd = data.coverCd; 
     this.passData.tableData[this.sectionCoverLOVRow].coverCdAbbr = data.coverCdAbbr;
     this.passData.tableData[this.sectionCoverLOVRow].section = data.section;
