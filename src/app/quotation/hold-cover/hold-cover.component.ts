@@ -327,9 +327,9 @@ onSaveClickLOV(){
       this.hcYear  =  String(new Date().getFullYear());
 
       if(data['quotationList'][0] === null || data['quotationList'][0] === undefined || data['quotationList'][0] === ''){ 
-        this.holdCover.holdCoverId = 1;
-        this.hcRevNo = '01';
-        this.hcSeqNo = '00001';
+        // this.holdCover.holdCoverId = 1;
+        // this.hcRevNo = '01';
+        // this.hcSeqNo = '00001';
       }else{
         var rec = data['quotationList'][0].holdCover;
         this.holdCover.holdCoverNo = rec.holdCoverNo;
