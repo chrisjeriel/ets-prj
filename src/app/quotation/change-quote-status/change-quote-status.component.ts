@@ -20,6 +20,8 @@ export class ChangeQuoteStatusComponent implements OnInit {
     records: any[] = [];
     selected: any = null;
     
+    batchOption: any = 0;
+
     passData: any = {
         tableData: [], 
         tHeader: ['Quotation No.','Type of Cession','Ceding Company','Insured','Risk'],
@@ -37,11 +39,11 @@ export class ChangeQuoteStatusComponent implements OnInit {
 
     ngOnInit() {
         this.titleService.setTitle("Quo | Change Quote Status");
-        setTimeout(function () { $('#modalBtn').trigger('click'); }, 100);        
+        //setTimeout(function () { $('#modalBtn').trigger('click'); }, 100);        
 
         this.quotationService.getQuoProcessingData([]).subscribe(data => {
             this.records = data['quotationList'];
-
+            console.log(this.records)
             for(let rec of this.records){
                 this.passData.tableData.push(
                     {
@@ -62,15 +64,25 @@ export class ChangeQuoteStatusComponent implements OnInit {
 
     save() {
         //do something
+       this.selected
+       this.quotationService.saveChangeQuoteStatus(this.selected).subscribe(data => {
+            if(data['returnCode'] == 0) {
+                console.log('error')
+            }else{
+                console.log('success')
+            }
+       });
     }
     query() {
         $('#modalBtn').trigger('click');
     }
 
     onRowClick(event) {
+
         for(let rec of this.records){
             if(rec.quotationNo === event.quotationNo) {
                 this.selected = rec;
+                console.log(this.selected)
             }
         }
     }

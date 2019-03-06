@@ -345,7 +345,10 @@ export class GeneralInfoComponent implements OnInit {
 	setCurrency(data){
 		this.genInfoData.currencyCd = data.currencyCd;
 		this.genInfoData.currencyRt = data.currencyRt;
-		this.focusBlur();
+		setTimeout(() => {
+			$('input[appCurrencyRate]').focus();
+			$('input[appCurrencyRate]').blur();
+		},0) 
 
 	}
 

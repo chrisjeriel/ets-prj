@@ -131,7 +131,7 @@ export class CoverageComponent implements OnInit {
     this.getCoverageInfo();
     this.coverageData.currencyCd = this.quotationInfo.currencyCd;
     this.coverageData.currencyRt = this.quotationInfo.currencyRt;
-      
+    setTimeout(() => console.log(this.coverageData.currencyCd),0)  
       
   }
 
@@ -169,6 +169,7 @@ export class CoverageComponent implements OnInit {
           this.coverageData.sectionIIISi = this.sectionIII;
           this.coverageData.totalSi = this.sectionI + this.sectionII + this.sectionIII;
 
+          console.log(this.coverageData.currencyCd);  
           setTimeout(() => {
             this.focusBlur();
           }, 0)
