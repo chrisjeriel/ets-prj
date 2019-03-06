@@ -364,7 +364,7 @@ export class HoldCoverComponent implements OnInit {
                          $('.warn').blur();
                          //this.warningMsg = data['errorList'][0].errorMessage;
                          this.dialogIcon = "error"
-                          this.dialogMessage = data['errorList'][0].errorMessage;
+                          this.dialogMessage = "Please check the field values";
                           $('#hold-cover #successModalBtn').trigger('click');
                       }else{
                          this.dialogIcon = ""
