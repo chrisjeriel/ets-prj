@@ -42,7 +42,7 @@ export class OpenCoverProcessingComponent implements OnInit {
   riskName:string;
   mtnLineCd: string;
   mtnLineDesc: string;
-  mtnCessionId: number;
+  mtnCessionId: string;
   mtnCessionDesc: string;
 
   objId:number;
