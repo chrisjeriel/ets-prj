@@ -1,5 +1,5 @@
 import { Component, OnInit, Input,  ViewChild } from '@angular/core';
-import { QuotationService } from '../../_services';
+import { QuotationService, UnderwritingService } from '../../_services';
 import { QuoteALOPItemInformation, QuoteALOPInfo } from '../../_models';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
@@ -89,7 +89,9 @@ export class QuoAlopComponent implements OnInit {
     loading:boolean = true;
     dialogMessage:string = "";
     dialogIcon: string = "";
-    constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute) { }
+    showAlopItem:boolean = false;
+    dateErFlag:boolean = false;
+    constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute, private underwritingService: UnderwritingService) { }
 
     ngOnInit() {
       //neco
@@ -104,6 +106,7 @@ export class QuoAlopComponent implements OnInit {
         }
       }
       //neco end
+      console.log(this.quotationInfo)
       this.quotationNo = this.quotationInfo.quotationNo;
       this.quoteNo = this.quotationNo.split(/[-]/g)[0]
       for (var i = 1; i < this.quotationNo.split(/[-]/g).length; i++) {
@@ -123,14 +126,21 @@ export class QuoAlopComponent implements OnInit {
 
     getAlop(){
       this.quotationService.getALop(null,this.quoteNo).subscribe((data: any) => {
-             this.loading = false;
-             
              this.quoteId = data.quotation.quoteId;
               this.alopData = data.quotation.alop===null ? this.alopData : data.quotation.alop;
               if(this.alopData.issueDate !== null){
+                this.loading = false;
                 this.alopData.issueDate = this.alopData.issueDate[0]+'-'+("0" + this.alopData.issueDate[1]).slice(-2)+'-'+  ("0" + this.alopData.issueDate[2]).slice(-2);
                 this.alopData.expiryDate = this.alopData.expiryDate[0]+'-'+("0" + this.alopData.expiryDate[1]).slice(-2)+'-'+ ("0" + this.alopData.expiryDate[2]).slice(-2);
                 this.alopData.indemFromDate = this.alopData.indemFromDate[0]+'-'+("0" + this.alopData.indemFromDate[1]).slice(-2)+'-'+("0" + this.alopData.indemFromDate[2]).slice(-2);
+              }else{
+                this.underwritingService.getCedingCompanyList(this.quotationInfo.cedingId,'','','','','','','','','').subscribe((data: any) => {
+                  this.loading = false;
+                  this.alopData.insuredId = data.cedingcompany[0].cedingId;
+                  this.alopData.insuredName = data.cedingcompany[0].cedingName;
+                  this.alopData.insuredDesc = data.cedingcompany[0].cedingName;
+                  this.alopData.address = data.cedingcompany[0].address;
+                })
               }
               setTimeout(() => {
                 $('input[appCurrency]').focus();
@@ -144,11 +154,16 @@ export class QuoAlopComponent implements OnInit {
       this.cancelFlag = cancelFlag !== undefined;
       this.alopData.quoteId = this.quoteId;
       this.quotationService.saveQuoteAlop(this.alopData).subscribe((data: any) => {
+        this.alopData.issueDate = this.alopData.issueDate.split('T')[0];
+        this.alopData.expiryDate = this.alopData.expiryDate.split('T')[0];
+        this.alopData.indemFromDate = this.alopData.indemFromDate.split('T')[0];
         if(data['returnCode'] == 0) {
           this.dialogMessage = data['errorList'][0].errorMessage;
           this.dialogIcon = "error";
           $('#successModalBtn').trigger('click');
         } else{
+          this.dialogMessage = "";
+          this.dialogIcon = "success";
           $('#successModalBtn').trigger('click');
           $('.ng-dirty').removeClass('ng-dirty')
           this.getAlop();
@@ -158,7 +173,10 @@ export class QuoAlopComponent implements OnInit {
     }
 
     openAlopItem(){
+      this.showAlopItem = true;
       this.itemInfoData.tableData = [];
+      console.log(this.itemInfoData.tableData)
+      this.itemInfoData.nData.itemNo =  this.itemInfoData.tableData.filter((data)=>{return !data.deleted}).length + 1 ;
       this.quotationService.getALOPItemInfos(this.quoteNo,this.quoteId).subscribe((data: any) => {
             if(data.quotation[0] !==undefined){
               this.itemInfoData.nData.itemNo = data.quotation[0] === undefined ? 1:data.quotation[0].alop.alopItemList.length + 1; 
@@ -173,7 +191,10 @@ export class QuoAlopComponent implements OnInit {
       while(this.itemInfoData.tableData.length>0){
         this.itemInfoData.tableData.pop();
       }
-      $('#alopItemModal #modalBtn').trigger('click');
+      setTimeout(()=>{
+        $('#alopItemModal #modalBtn').trigger('click');
+      },0)
+      
        
     }
 
@@ -197,10 +218,12 @@ export class QuoAlopComponent implements OnInit {
       console.log(JSON.stringify(savedData));
       this.quotationService.saveQuoteAlopItem(savedData).subscribe((data: any) => {
         if(data['returnCode'] == 0) {
-          this.errorMdlMessage = data['errorList'][0].errorMessage;
-          $('#errorMdl > #modalBtn').trigger('click');
+          this.dialogMessage = data['errorList'][0].errorMessage;
+          this.dialogIcon = "error";
+          $('#successModalBtn').trigger('click');
         } else{
-          $('app-sucess-dialog #modalBtn').trigger('click');
+          $('#successModalBtn').trigger('click');
+          $('.ng-dirty').removeClass('ng-dirty')
         }
       });
       
@@ -229,7 +252,6 @@ export class QuoAlopComponent implements OnInit {
     do {
       delFlag = false;
       for (var i = 0; i < data.length-delCount; ++i) {
-        console.log(data[i]);
         
         if(data[i].deleted){
           delCount ++;
@@ -249,9 +271,8 @@ export class QuoAlopComponent implements OnInit {
 
 
     this.itemInfoData.tableData=data;
-    this.itemInfoData.nData.itemNo =  this.itemInfoData.tableData.length + 1 ; 
+    this.itemInfoData.nData.itemNo =  this.itemInfoData.tableData.filter((data)=>{return !data.deleted}).length + 1 ; 
     this.table.refreshTable();
-    console.log(this.itemInfoData.nData.itemNo);
   }
 
   adjustItemNo(data,index){
@@ -277,16 +298,25 @@ export class QuoAlopComponent implements OnInit {
   }
 
   checkDates(){
-    console.log(this.alopData.issueDate);
-    console.log(this.alopData.expiryDate);
     if(new Date(this.alopData.issueDate)>= new Date(this.alopData.expiryDate)){
      highlight(this.to);
      highlight(this.from);
+     this.dateErFlag = true;
+    }else{
+     unHighlight(this.to);
+     unHighlight(this.from);
+     this.dateErFlag = false;
     }
   }
 
   onClickSave(){
-    $('#alop #confirm-save #modalBtn2').trigger('click');
+    if(!this.dateErFlag)
+      $('#alop #confirm-save #modalBtn2').trigger('click');
+    else{
+      this.dialogMessage = "Please check date fields";
+      this.dialogIcon = "error";
+      $('#successModalBtn').trigger('click');
+    }
   }
 
   onClickSaveAlopItem(){

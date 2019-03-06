@@ -71,6 +71,7 @@ label.text-left{
 .textarea textarea{
 	height: 85% !important;
 	border-radius: 0.2rem !important;
+	font-size: 0.7rem !important;
 }
 
 .right .textarea{

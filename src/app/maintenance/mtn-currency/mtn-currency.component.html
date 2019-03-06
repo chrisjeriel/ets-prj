@@ -1,4 +1,4 @@
-<app-modal class="d-none" (modalOpened)="openModal()">
+<app-modal class="d-none" (modalOpened)="openModal()" id="currencyMdl">
 	<div header>List of Values</div>
 	<div body>
 		<app-cust-non-datatable [passData]="currencyListing" (rowClick)="onRowClick($event)" ></app-cust-non-datatable>

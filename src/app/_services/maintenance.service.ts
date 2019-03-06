@@ -17,8 +17,11 @@ export class MaintenanceService{
 		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnDistrict",{params});
 	}
 
-	getMtnInsured(){
-		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnInsured");
+	getMtnInsured(insuredId){
+		const params = new HttpParams()
+		     .set('insuredId', insuredId);
+
+		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnInsured", {params});
 	}
 
 	// getEndtCode(lineCd?:string,endtCd?:number){
@@ -46,9 +49,11 @@ export class MaintenanceService{
 		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnCrestaZone");
 	}
 
-	getMtnCurrency(currencyCd: string){
+	getMtnCurrency(currencyCd: string, activeTag: string){
 		const params = new HttpParams()
-		     .set('currencyCd', currencyCd);
+		     .set('currencyCd', currencyCd)
+		     .set('activeTag', activeTag);
+
 		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnCurrency", {params});
 	}
 

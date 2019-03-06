@@ -392,7 +392,7 @@ onSaveClickLOV(){
                 "quoteId": this.quoteId,
                 "reqBy": this.holdCover.reqBy,
                 "reqDate": this.holdCover.reqDate,
-                "status": (this.holdCover.status === null || this.holdCover.status === '') ? 'I' : this.holdCover.status,
+                "status": (this.holdCover.status === null || this.holdCover.status === '') ? 'I' : this.holdCover.status.substring(0,1),
                 "updateDate": new Date().toISOString(),
                 "updateUser": (this.holdCover.preparedBy === null || this.holdCover.preparedBy === '') ? JSON.parse(window.localStorage.currentUser).username : this.holdCover.preparedBy
               }
@@ -477,6 +477,12 @@ onSaveClickLOV(){
         }
       }
     });
+
+
+    ///////
+
+   
+
   }
 
 

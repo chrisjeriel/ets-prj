@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { QuotationService } from '@app/_services';
 import { MaintenanceService } from '@app/_services';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
   selector: 'app-open-cover-sum-insured',
@@ -31,6 +32,11 @@ export class OpenCoverSumInsuredComponent implements OnInit {
   	updateDate:  new Date()
   }
 
+  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+  dialogMessage:string ;
+  dialogIcon: string;
+  cancelFlag:boolean;
+
   constructor(private quotationService: QuotationService, private titleService: Title, private maintenanceService: MaintenanceService, 
   	private route: ActivatedRoute) { }
 
@@ -42,37 +48,42 @@ export class OpenCoverSumInsuredComponent implements OnInit {
 	       this.quoteNo += '-' + parseInt(this.quotationNo.split(/[-]/g)[i]);
 	     } 
 	    });*/
-	  	this.quotationService.getCoverageOc('2', 'OC-EAR-2018-1001-2-2323').subscribe((data: any) => {
-	  		this.maintenanceService.getMtnCurrency(data.quotationOc.projectOc.coverageOc.currencyCd.toString()).subscribe((data2: any) =>{
-	  			this.coverageOcData.currencyAbbr = data2.currency[0].currencyAbbr;
-	  		});
-	  	    this.coverageOcData.currencyCd = data.quotationOc.projectOc.coverageOc.currencyCd;
-	  	    this.coverageOcData.currencyRt = data.quotationOc.projectOc.coverageOc.currencyRt;
-	  	    this.coverageOcData.maxSi = data.quotationOc.projectOc.coverageOc.maxSi;
-	  	    this.coverageOcData.pctShare = data.quotationOc.projectOc.coverageOc.pctShare;
-	  	    this.coverageOcData.pctPml = data.quotationOc.projectOc.coverageOc.pctPml;
-	  	    this.coverageOcData.totalValue = data.quotationOc.projectOc.coverageOc.totalValue;
-	  	    /*this.data = data.quotationOc[0].attachmentOc;
-	  	    // this.passData.tableData = data.quotation.project.coverage.sectionCovers;
-	  	    for (var i = 0; i < this.data.len
-	  	    this.custEditableNonDatatableComponent.refreshTable();*/
-
-/*
-	  		console.log()
-	  	    this.quoteIdOc = data.quotationOc[0].quoteIdOc;
-	  	    this.riskId = data.quotationOc[0].projectOc.riskId;
-*/
-	  	    this.quoteIdOc = data.quotationOc.quoteIdOc;
-	  	    this.riskId = data.quotationOc.projectOc.riskId;
-
-	  	});
+	  	this.getCoverageOc();
   }
 
-  saveData(){
+  getCoverageOc(){
+    this.quotationService.getCoverageOc('2', 'OC-EAR-2018-1001-2-2323').subscribe((data: any) => {
+          this.coverageOcData.currencyCd = data.quotationOc.projectOc.coverageOc.currencyCd;
+          this.coverageOcData.currencyRt = data.quotationOc.projectOc.coverageOc.currencyRt;
+          this.coverageOcData.maxSi = data.quotationOc.projectOc.coverageOc.maxSi;
+          this.coverageOcData.pctShare = data.quotationOc.projectOc.coverageOc.pctShare;
+          this.coverageOcData.pctPml = data.quotationOc.projectOc.coverageOc.pctPml;
+          this.coverageOcData.totalValue = data.quotationOc.projectOc.coverageOc.totalValue;
+          this.quoteIdOc = data.quotationOc.quoteIdOc;
+          this.riskId = data.quotationOc.projectOc.riskId;
+
+      });
+  }
+
+  saveData(cancelFlag?){
+    this.cancelFlag = cancelFlag !== undefined;
   	this.coverageOcData.quoteIdOc = this.quoteIdOc;
   	this.coverageOcData.projId = 2;
   	this.coverageOcData.riskId = this.riskId;
-    this.quotationService.saveQuoteCoverageOc(2,2,this.coverageOcData).subscribe();
+    this.quotationService.saveQuoteCoverageOc(2,2,this.coverageOcData).subscribe((data)=>{
+      console.log(data)
+      if(data['returnCode'] == 0) {
+            this.dialogMessage = data['errorList'][0].errorMessage;
+            this.dialogIcon = "error";
+            $('#sum-insured #successModalBtn').trigger('click');
+          } else{
+            this.dialogMessage="";
+            this.dialogIcon = "";
+            this.getCoverageOc();
+            $('#sum-insured #successModalBtn').trigger('click');
+            $('.ng-dirty').removeClass('ng-dirty');
+          }
+    });
 
   }
 

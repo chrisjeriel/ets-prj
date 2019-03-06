@@ -20,15 +20,19 @@ export class TextEditorComponent implements OnInit {
     height: '100%',
     width: '100%',
     font: '11px arial',
-    padding: '5px 10px'
+    padding: '5px 10px',
+    color: '#495057'
   };
 
   constructor(private modalService: NgbModal) { }
 
   ngOnInit() {
-    if(this.readonly){
+    if(this.readonly && !this.required) {
       this.style['background'] = '#f5f5f5';
+    } else if(this.required && !this.readonly) {
+      this.style['background'] = '#ffff4370';
     }
+
   }
 
   showTextEditorModal(content) {
@@ -36,8 +40,6 @@ export class TextEditorComponent implements OnInit {
   }
 
   closeTextEditorModal(event) {
-    this.checkStyle();    
-    console.log(this.style);
   	this.fetchContent.next(this.editorContent);
   	this.modalService.dismissAll();
   }
@@ -50,9 +52,5 @@ export class TextEditorComponent implements OnInit {
     }
 
     return this.style;
-  }
-
-  test() {
-    alert('nice');
   }
 }

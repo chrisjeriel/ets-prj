@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { QuotationGenInfo } from '../../_models';
 import { callLifecycleHooksChildrenFirst } from '@angular/core/src/view/provider';
 import { QuotationService, MaintenanceService } from '../../_services';
@@ -8,8 +8,10 @@ import { ActivatedRoute } from '@angular/router';
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
 import { MtnCedingCompanyComponent } from '@app/maintenance/mtn-ceding-company/mtn-ceding-company.component';
 import { MtnIntermediaryComponent } from '@app/maintenance/mtn-intermediary/mtn-intermediary.component';
+import { MtnInsuredComponent } from '@app/maintenance/mtn-insured/mtn-insured.component';
 import { MtnObjectComponent } from '@app/maintenance/mtn-object/mtn-object.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency.component';
 
 @Component({
 	selector: 'app-general-info',
@@ -21,7 +23,9 @@ export class GeneralInfoComponent implements OnInit {
 	@ViewChild(CedingCompanyComponent) cedingCoLov: CedingCompanyComponent;
 	@ViewChild(MtnCedingCompanyComponent) cedingCoNotMemberLov: CedingCompanyComponent;
 	@ViewChild(MtnIntermediaryComponent) intermediaryLov: MtnIntermediaryComponent;
+	@ViewChildren(MtnInsuredComponent) insuredLovs: QueryList<MtnInsuredComponent>;
 	@ViewChild(MtnObjectComponent) objectLov: MtnObjectComponent;
+	@ViewChild(MtnCurrencyComponent) currencyLov: MtnCurrencyComponent;
 
 	private quotationGenInfo: QuotationGenInfo;
 	rowData: any[] = this.quotationService.rowData;
@@ -194,7 +198,6 @@ export class GeneralInfoComponent implements OnInit {
 			this.quotationService.getQuoteGenInfo('', this.plainQuotationNo(this.quotationNo)).subscribe(data => {
 				this.loading = false;
 				if(data['quotationGeneralInfo'] != null) {
-					console.log(data['quotationGeneralInfo'])
 					this.genInfoData = data['quotationGeneralInfo'];						
 					this.genInfoData.createDate = (this.genInfoData.createDate == null) ? '' : this.dateParser(this.genInfoData.createDate);
 					this.genInfoData.expiryDate = (this.genInfoData.expiryDate == null) ? '' : this.dateParser(this.genInfoData.expiryDate);
@@ -296,6 +299,7 @@ export class GeneralInfoComponent implements OnInit {
 
 	showPrincipalLOV(){
 		$('#principalLOV #modalBtn').trigger('click');
+		$('#principalLOV #modalBtn').addClass('ng-dirty');
 	}
 
 	setPrincipal(data){
@@ -308,15 +312,19 @@ export class GeneralInfoComponent implements OnInit {
 
 	showContractorLOV(){
 		$('#contractorLOV #modalBtn').trigger('click');
+		$('#contractorLOV #modalBtn').addClass('ng-dirty');
 	}
 
 
 	showLineClassLOV(){
+		console.log(this.insuredLovs);
 		$('#lineClassLOV #modalBtn').trigger('click');
+		$('#lineClassLOV #modalBtn').addClass('ng-dirty')
 	}
 
 	showIntLOV(){
 		$('#intLOV #modalBtn').trigger('click');
+		$('#intLOV #modalBtn').addClass('ng-dirty')
 	}
 
 
@@ -331,10 +339,11 @@ export class GeneralInfoComponent implements OnInit {
 
 	showCurrencyModal(){
 		$('#currencyModal #modalBtn').trigger('click');
+		$('#currencyModal #modalBtn').addClass('ng-dirty')
 	}
 
 	setCurrency(data){
-		this.genInfoData.currencyCd = data.currencyAbbr;
+		this.genInfoData.currencyCd = data.currencyCd;
 		this.genInfoData.currencyRt = data.currencyRt;
 		this.focusBlur();
 
@@ -349,17 +358,20 @@ export class GeneralInfoComponent implements OnInit {
 
 	showCedingCompanyLOV() {
 		$('#cedingCompany #modalBtn').trigger('click');
+		$('#cedingCompany #modalBtn').addClass('ng-dirty')
 	}
 
 
 	setCedingcompany(event){
 		this.genInfoData.cedingId = event.coNo;
 		this.genInfoData.cedingName = event.name;
+		this.loading = false;
 		this.focusBlur();
 	}
 
 	showCedingCompanyNotMemberLOV() {
 		$('#cedingCompanyNotMember #modalBtn').trigger('click');
+		$('#cedingCompanyNotMember #modalBtn').addClass('ng-dirty')
 
 	}
 
@@ -418,7 +430,7 @@ export class GeneralInfoComponent implements OnInit {
 					this.genInfoData.quoteSeqNo = parseInt(data['quotationNo'].split('-')[2]);
 					this.genInfoData.quoteRevNo = parseInt(data['quotationNo'].split('-')[3]);
 					this.genInfoData.updateUser = 'USER'; //JSON.parse(window.localStorage.currentUser).username;
-					this.genInfoData.updateDate		= new Date().toISOString();
+					this.genInfoData.updateDate	= new Date().toISOString();
 
 					this.checkQuoteIdF(this.genInfoData.quoteId);
 
@@ -451,13 +463,16 @@ export class GeneralInfoComponent implements OnInit {
 						//end internal comp
 				}
 			});
+			console.log('got here');
 		} else {
 			this.loading = false;
 			this.dialogIcon = "error";
 			this.dialogMessage = "Please complete all the required fields.";
 			$('#genInfo #successModalBtn').trigger('click');
+			setTimeout(()=>{$('.globalLoading').css('display','none');},0);
+       		
 
-			this.focusBlur();
+			//this.focusBlur();
 		}
 
 	}
@@ -537,6 +552,7 @@ export class GeneralInfoComponent implements OnInit {
 
 	showObjectLOV() {
 		$('#objIdLov #modalBtn').trigger('click');
+		$('#objIdLov #modalBtn').addClass('ng-dirty');
 	}
 
 	setObj(data){
@@ -547,6 +563,7 @@ export class GeneralInfoComponent implements OnInit {
 
   	showOpeningWordingLov(){
   		$('#wordingOpeningIdLov #modalBtn').trigger('click');
+  		$('#wordingOpeningIdLov #modalBtn').addClass('ng-dirty');
   	}
 
   	setOpeningWording(data) {
@@ -556,6 +573,7 @@ export class GeneralInfoComponent implements OnInit {
 
   	showClosingWordingLov(){
   		$('#wordingClosingIdLov #modalBtn').trigger('click');
+  		$('#wordingClosingIdLov #modalBtn').addClass('ng-dirty');
   	}
 
   	setClosingWording(data) {  		
@@ -584,7 +602,8 @@ export class GeneralInfoComponent implements OnInit {
   			currencyRt: this.genInfoData.currencyRt,
   			typeOfCession: this.genInfoData.cessionDesc,
   			status: this.genInfoData.status,
-  			reasonCd: this.genInfoData.reasonCd
+  			reasonCd: this.genInfoData.reasonCd,
+  			cedingId: this.genInfoData.cedingId
   		});		
   	}
 
@@ -640,13 +659,20 @@ export class GeneralInfoComponent implements OnInit {
 
   	checkCode(field) {
   		if(field === 'cedingCo') {
+  			this.loading = true;
   			this.cedingCoLov.checkCode(this.genInfoData.cedingId);
   		} else if(field === 'cedingCoNotMember') { 
   			this.cedingCoNotMemberLov.checkCode(this.genInfoData.reinsurerId);
   		} else if(field === 'intermediary') {
   			this.intermediaryLov.checkCode(this.genInfoData.intmId);
+  		} else if(field === 'principal') {
+  			this.insuredLovs['first'].checkCode(this.genInfoData.principalId, '#principalLOV');
+  		} else if(field === 'contractor') {
+  			this.insuredLovs['last'].checkCode(this.genInfoData.contractorId, '#contractorLOV');
   		} else if(field === 'object') {
   			this.objectLov.checkCode(this.line, this.project.objectId);
+  		} else if(field === 'currency') {
+  			this.currencyLov.checkCode(this.genInfoData.currencyCd);
   		}
   	}
 

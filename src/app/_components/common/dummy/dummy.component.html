@@ -66,7 +66,7 @@
         </text-editor>
     </div>
     <div class="col-sm-6" style="height: 70px;">
-        <text-editor [editorPlaceholder]="'Type kayo dito...'" [edtrOpnrPos]="1" [editorContent]="testCont" (fetchContent)="testCont = $event" [required]="true">
+        <text-editor [editorPlaceholder]="'Type kayo dito...'" [edtrOpnrPos]="1" [editorContent]="testCont" (fetchContent)="testCont = $event" [required]="false">
             <ng-container icon-3>
                 <a><i class="fa fa-search" (click)="test()"></i></a>
             </ng-container>

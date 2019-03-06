@@ -154,6 +154,8 @@ export class QuoteOptionComponent implements OnInit {
     updateCount:number;
     dialogIcon:string;
     cancelFlag:boolean;
+    dialogIconFail:string;
+    dialogMessageFail:string;
 
     constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,private modalService: NgbModal) { }
 
@@ -336,9 +338,12 @@ export class QuoteOptionComponent implements OnInit {
     updateDeductibles(data) {
         $('#deductibleTable button').removeAttr("disabled")
         if (data.deductiblesList != null || data.deductiblesList != undefined ){
-          this.deductiblesData.tableData = data.deductiblesList;
+          this.deductiblesData.tableData = data.deleted? []:data.deductiblesList;
           this.deductibleTable.refreshTable();
         } 
+        if($('.ng-dirty').length != 0){
+          $('#cust-table-container').addClass('ng-dirty');
+        }
         this.deductiblesData.nData.optionId = data.optionId;
 
     }
@@ -376,15 +381,16 @@ saveData(cancelFlag?){
  }
 
    showDialog(){
-     if(this.updateCount==3){
+     if(this.updateCount==3){ 
+       $('.ng-dirty').removeClass('ng-dirty');
        if(this.successes.length!=0){
         for(let s of this.successes){
           this.dialogMessage += s+', '
         }
         this.dialogMessage = this.dialogMessage.slice(0,-2)
         this.dialogMessage+='.';
+        this.dialogIcon = "success"
         $('#quote-option #successModalBtn').trigger('click');
-        console.log(this.dialogMessage);
         this.getQuoteOptions();
       }
       if(this.failures.length!=0){
@@ -393,8 +399,15 @@ saveData(cancelFlag?){
         }
         this.errorMdlMessage = this.errorMdlMessage.slice(0,-2)
         this.errorMdlMessage+='.';
-        this.dialogMessage = this.errorMdlMessage;
-        $('#quote-option #successModalBtn').trigger('click');
+        this.dialogMessageFail = this.errorMdlMessage;
+        this.dialogIconFail = "error";
+        $('#fail-quote-option #successModalBtn').trigger('click');
+      }
+      if(this.failures.length == 0 && this.successes.length == 0){
+        this.dialogMessage ='Nothing to save.';
+        this.dialogIcon = "info";
+        setTimeout(()=>$('#quote-option #successModalBtn').trigger('click'));
+        
       }
      }
    }
@@ -413,7 +426,7 @@ saveData(cancelFlag?){
           params.saveQuoteOptionsList.push(this.optionsData.tableData[i]);
           params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].createDate = new Date(params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].createDate[0],params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].createDate[1]-1,params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].createDate[2]).toISOString();
           params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].updateDate = new Date(params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].updateDate[0],params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].updateDate[1]-1,params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].updateDate[2]).toISOString();
-      } else if(this.optionsData.tableData[i].edited && this.optionsData.tableData[i].deleted){
+      } else if(this.optionsData.tableData[i].edited && this.optionsData.tableData[i].deleted && this.optionsData.tableData[i].optionId !== null){
         params.deleteQuoteOptionsList.push(this.optionsData.tableData[i]);
         params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].createDate = new Date(params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].createDate[0],params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].createDate[1]-1,params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].createDate[2]).toISOString();
         params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].updateDate = new Date(params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].updateDate[0],params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].updateDate[1]-1,params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].updateDate[2]).toISOString();
@@ -509,6 +522,7 @@ saveOtherRates(){
 clickCoverCodeLOV(data){
     this.passLOVData.selector = 'otherRates';
     this.passLOVData.quoteNo = this.plainQuotationNo(this.quotationNum);
+    this.passLOVData.hide = this.otherRatesData.tableData.filter((a)=>{return a.coverCd!==null && !a.deleted}).map(a=>a.coverCd);
     $('#lov #modalBtn').trigger('click');
     this.coverCodeLOVRow = data.index;
 }
@@ -517,12 +531,14 @@ clickCoverCodeLOV(data){
 clickDeductiblesLOV(data){
     this.passLOVData.selector = 'deductibles';
     this.passLOVData.lineCd = this.quotationNum.substring(0,3);
+    this.passLOVData.hide = this.deductiblesData.tableData.filter((a)=>{return !a.deleted}).map(a=>a.deductibleCd);
     console.log(data);
     $('#lov #modalBtn').trigger('click');
     this.deductiblesLOVRow = data.index;
 }
 
 setSelected(data){
+  $('#cust-table-container').addClass('ng-dirty');
   if(data.selector == "deductibles"){
         this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleCd = data.data.deductibleCd;
         this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleTitle = data.data.deductibleTitle;

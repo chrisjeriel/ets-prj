@@ -25,7 +25,8 @@ export class CustNonDatatableComponent implements OnInit {
     
     btnDisabled: boolean = true;
     unselect: boolean = false;
-    
+    expireCounter: number = 0;
+    expireValue: any;
     
     @Input() filterObj:any[] = [];
 
@@ -121,6 +122,8 @@ export class CustNonDatatableComponent implements OnInit {
     refreshTable(initLoad?){
         if(initLoad === undefined){
             this.loadingFlag = false;
+        }else{
+            this.loadingFlag = true;
         }
         while(this.displayData.length>0){
             this.displayData.pop();
@@ -182,6 +185,16 @@ export class CustNonDatatableComponent implements OnInit {
             this.passData.dataTypes = [];
             for(let i = 0; i < this.passData.tHeader.length; i++){
                 this.passData.dataTypes.push('text');
+            }
+        }
+        if(this.passData.filters !== undefined && this.passData.filters.length > 0){
+            for(var expireCheck of this.passData.filters){
+                if(expireCheck.dataType === 'expire'){
+                    break;
+                }
+                else{
+                    this.expireCounter++;
+                }
             }
         }
         //temporary fix delete this later
@@ -304,11 +317,16 @@ export class CustNonDatatableComponent implements OnInit {
         this.addFiller();
     }
 
+    pressEnterFilter(){
+        $('#okFilter').trigger('click');
+    }
+
     dbQuery(filterObj){
+        //console.log(filterObj);
         this.searchQuery = [];
         for(var e of filterObj){
             if(e.enabled){
-                if(e.search !== undefined){
+                //if(e.search !== undefined){
                     if(e.dataType === 'seq'){
                         let seqNo:string = "";
                           seqNo = e.search.split(/[-]/g)[0]
@@ -316,13 +334,67 @@ export class CustNonDatatableComponent implements OnInit {
                            seqNo += '-' + parseInt(e.search.split(/[-]/g)[i]);
                          }
                          e.search = seqNo;
+                         this.searchQuery.push(
+                                 {
+                                     key: e.key,
+                                     search: e.search,
+                                 }
+                             );
                     }
-                    this.searchQuery.push(
+                    else if(e.dataType === 'datespan' ){
+                        this.searchQuery.push(
                             {
-                                key: e.key,
-                                search: e.search,
+                                key: e.keys.from,
+                                search: (e.keys.search === undefined || !e.enabled) ? '' : e.keys.search,
+                            },
+                             {
+                                key: e.keys.to,
+                                search: (e.keys.search2 === undefined || !e.enabled) ? '' : e.keys.search2,
                             }
                         );
+                    }
+                    else{
+                        this.searchQuery.push(
+                            {
+                                key: e.key,
+                                search: (e.search === undefined || !e.enabled) ? '' : e.search,
+                            }
+                        );
+                    }
+                    
+                //}
+                /*else{
+                    this.searchQuery.push(
+                        {
+                            key: e.key,
+                            search: (e.search === undefined || !e.enabled) ? '' : e.search,
+                        }
+                    );
+                }*/
+            }
+            else if(!e.enabled && e.dataType === 'datespan'){
+                   this.searchQuery.push(
+                       {
+                           key: e.keys.from,
+                           search: '',
+                       },
+                        {
+                           key: e.keys.to,
+                           search: '',
+                       }
+                   );
+            }
+            else{
+                if(e.dataType === 'expire'){
+                    e.search = (this.expireValue === undefined || 
+                                this.expireValue === null || 
+                                this.expireValue === '') ? '' : this.expireValue;
+                    this.searchQuery.push(
+                        {
+                            key: e.key,
+                            search: e.search.toString(),
+                        }
+                    );
                 }
                 else{
                     this.searchQuery.push(
@@ -333,15 +405,9 @@ export class CustNonDatatableComponent implements OnInit {
                     );
                 }
             }
-            else{
-                this.searchQuery.push(
-                    {
-                        key: e.key,
-                        search: (e.search === undefined || !e.enabled) ? '' : e.search,
-                    }
-                );
-            }
         }
+        console.log(filterObj);
+        console.log(this.searchQuery)
         this.searchToDb.emit(this.searchQuery);
         this.loadingFlag = true;
     }

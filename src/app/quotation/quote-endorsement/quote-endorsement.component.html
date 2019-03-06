@@ -59,7 +59,7 @@
         <div class="form-group col-sm">
             <div class="col-md-13 text-center">
                 <div class="cust-btn-container" style="padding-top: 13px">
-                    <button [class.d-none]="inquiryFlag" type="button" class="cust-btn"><a>Cancel</a></button>
+                    <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
                     <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
                 </div>
             </div>
@@ -109,7 +109,7 @@
 <app-mtn-endt-code id="edntCodeLOV" (selectedData)="selectedEndtLOV($event)" [line]="line"></app-mtn-endt-code>
 
 
-<app-modal class="d-none" id="successMdl">
+<<!-- app-modal class="d-none" id="successMdl">
     <div header>Success</div>
     <div body class="container-flex text-center">
         <span class="fa fa-check-circle fa-3x" style="vertical-align: middle;"></span>
@@ -129,10 +129,12 @@
     <div footer class="d-flex justify-content-center w-100">                    
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
     </div>
-</app-modal>
+</app-modal> -->
 
 <app-confirm-save (onYes)="saveData()"></app-confirm-save>
-<app-sucess-dialog id="quote-endorsment" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
-
-<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
-<div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading">
+<!-- <app-sucess-dialog id="quote-endorsment" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+ --><app-sucess-dialog [icon]="dialogIcon" [message]="" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<!-- <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
+<div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading"> -->
+<!-- <app-cancel-button (onYes)="saveData('cancel')" [url]="'/quotation-processing'" ></app-cancel-button>
+ -->

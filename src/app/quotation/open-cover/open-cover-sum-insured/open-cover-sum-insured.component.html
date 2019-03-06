@@ -27,7 +27,7 @@
 				<div class="custom-row-inline-inset">
 					<div class="input-group">
 						<label class="form-control-sm col-sm-4">Currency</label>
-            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.currencyAbbr">
+            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.currencyCd">
             			<div class="text-search-ico"><a><i class="fa fa-search" (click)="showCurrencyModal()"></i></a></div>
             			<label class="form-control-sm col-sm" >Exch. Rt.</label>
             			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.currencyRt">
@@ -67,7 +67,7 @@
 	<div class="form-group col-sm">
 		<div class="col-md-13 text-center" style="margin-top: 3px;">
 			<div class="cust-btn-container">
-				<button type="button" class="cust-btn" 	(click)="pol($event)"><a>Cancel</a></button>
+				<button type="button" class="cust-btn" 	(click)="cancel()"><a>Cancel</a></button>
 				<button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
 			</div>
 		</div>
@@ -77,3 +77,5 @@
 <app-mtn-currency id="currencyModal" (selectedData)="setCurrency($event)"></app-mtn-currency>
 
 <app-confirm-save (onYes)="saveData()"></app-confirm-save>
+<app-sucess-dialog id="sum-insured" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-cancel-button (onYes)="saveData('cancel')" [url]="'/quotation-processing'" ></app-cancel-button>

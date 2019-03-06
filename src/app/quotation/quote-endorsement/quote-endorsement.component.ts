@@ -353,23 +353,20 @@ export class QuoteEndorsementComponent implements OnInit {
               return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]);
             }
 
-            // arn //
-            endorsementReq:any;
-            endorsementReqOc:any;
-            countSave:number = 0;
-            countUnSave:number = 0;
-            successMessage:string = '';
-            warnMessage:string ='';
 
+    // arn //
+    endorsementReq:any;
+    endorsementReqOc:any;
 
-            saveData(){
-              if(this.from === "quo-processing"){
-                for (var i = 0 ; this.endorsementData.tableData.length > i; i++) {
-                  var vEndtCd = this.endorsementData.tableData[i].endtCode;
-                  (vEndtCd === null || vEndtCd === '' || vEndtCd === undefined) ? this.countSave-- : this.countSave++;
-                  if(this.endorsementData.tableData[i].edited && !this.endorsementData.tableData[i].deleted){
-                    this.endorsementReq = {
-                      "deleteEndorsements": [],
+    saveData(){
+        //this.cancelFlag = cancelFlag !== undefined;
+        if(this.from === "quo-processing"){
+            for (var i = 0 ; this.endorsementData.tableData.length > i; i++) {
+                (this.saveEndt.createDate === null) ? new Date().toISOString() : this.saveEndt.createDate;
+              (this.saveEndt.createUser == null) ? JSON.parse(window.localStorage.currentUser).username : this.saveEndt.createUser;
+              if(this.endorsementData.tableData[i].edited && !this.endorsementData.tableData[i].deleted){
+                  this.endorsementReq = {
+                     "deleteEndorsements": [],
                       "optionId": this.opId,
                       "quoteId": this.quoteId,  
                       "saveEndorsements": [
@@ -382,7 +379,9 @@ export class QuoteEndorsementComponent implements OnInit {
                         "updateUser": JSON.parse(window.localStorage.currentUser).username
                       }
                       ]
-                    } 
+                    }
+                     $('app-sucess-dialog #modalBtn').trigger('click');
+ 
                     this.endorsementData.tableData[i].endtCode === null || this.endorsementData.tableData[i].endtCode === undefined ? '' : this.quotationService.saveQuoteEndorsements(JSON.stringify(this.endorsementReq)).subscribe(data => {console.log(data);});
                   }else if(this.endorsementData.tableData[i].edited && this.endorsementData.tableData[i].deleted){
                     this.endorsementReq = {
@@ -400,25 +399,27 @@ export class QuoteEndorsementComponent implements OnInit {
                       "quoteId": this.saveEndt.quoteId,
                       "saveEndorsements": []
                     }
+                   $('app-sucess-dialog #modalBtn').trigger('click');
+
                     this.endorsementData.tableData[i].endtCode === null || this.endorsementData.tableData[i].endtCode === undefined ? '' : this.quotationService.saveQuoteEndorsements(JSON.stringify(this.endorsementReq)).subscribe(data => {console.log(data);});
                   }           
                 }
                 this.table.forEach(table => { table.refreshTable() });
-                console.log(this.countSave+">> count save");
-                console.log(this.endorsementData.tableData.length + ">>> length") ;
-                if(this.endorsementData.tableData.length === this.countSave){
-                  this.successMessage = 'Saved Successfully!';
-                  $('#successMdl > #modalBtn').trigger('click');
-                }else{
-                  this.warnMessage ='Please complete the required details!';
-                  $('#warningMdl > #modalBtn').trigger('click');
-                }
+                // console.log(this.countSave+">> count save");
+                // console.log(this.endorsementData.tableData.length + ">>> length") ;
+                // if(this.endorsementData.tableData.length === this.countSave){
+                //   this.successMessage = 'Saved Successfully!';
+                //   $('#successMdl > #modalBtn').trigger('click');
+                // }else{
+                //   this.warnMessage ='Please complete the required details!';
+                //   $('#warningMdl > #modalBtn').trigger('click');
+                // }
 
 
               }else{
                 for(var i = 0; i < this.endorsementOCData.tableData.length; i ++ ){
                   var vEndtCd = this.endorsementOCData.tableData[i].endtCode;
-                  (vEndtCd === null || vEndtCd === '' || vEndtCd === undefined) ? this.countUnSave++ : this.countSave++;
+                  //(vEndtCd === null || vEndtCd === '' || vEndtCd === undefined) ? this.countUnSave++ : this.countSave++;
                   if(this.endorsementOCData.tableData[i].edited && !this.endorsementOCData.tableData[i].deleted){
                     this.endorsementReqOc = {
                       "deleteEndorsementsOc": [],
@@ -435,7 +436,6 @@ export class QuoteEndorsementComponent implements OnInit {
                       ]
                     }
                     this.endorsementOCData.tableData[i].endtCode === null || this.endorsementOCData.tableData[i].endtCode === undefined ? '' : this.quotationService.saveQuoteEndorsementsOc(JSON.stringify(this.endorsementReqOc)).subscribe(data => {console.log(data);});
-                    
 
                   }else if(this.endorsementOCData.tableData[i].edited && this.endorsementOCData.tableData[i].deleted){
                     this.endorsementReqOc = {
@@ -456,13 +456,13 @@ export class QuoteEndorsementComponent implements OnInit {
                   }
                 }
 
-                if(this.endorsementOCData.tableData.length === this.countSave){
-                  this.successMessage = 'All Data Saved Successfully!';
-                  $('#successMdl > #modalBtn').trigger('click');
-                }else{
-                  this.warnMessage = this.countUnSave + ' Data not successfully save.';
-                  $('#warningMdl > #modalBtn').trigger('click');
-                }
+                // if(this.endorsementOCData.tableData.length === this.countSave){
+                //   this.successMessage = 'All Data Saved Successfully!';
+                //   $('#successMdl > #modalBtn').trigger('click');
+                // }else{
+                //   this.warnMessage = this.countUnSave + ' Data not successfully save.';
+                //   $('#warningMdl > #modalBtn').trigger('click');
+                // }
               }
             }
             formatDate(date){
@@ -478,4 +478,9 @@ export class QuoteEndorsementComponent implements OnInit {
               $('#confirm-save #modalBtn2').trigger('click');
             }
 
-          }
+          
+    cancel(){
+      this.cancelBtn.clickCancel();
+    }
+
+}
