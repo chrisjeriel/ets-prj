@@ -142,12 +142,13 @@ export class CoverageComponent implements OnInit {
         if(data.quotation.project == null){
           this.maintenanceService.getMtnSectionCovers(this.lineCd,this.coverCd).subscribe((data: any) =>{
             console.log(data)
-              // for(var i=0; i< data.sectionCovers.length;i++){
-              //   if(data.sectionCovers[i].defaultTag == 'Y' ){
-              //      this.passData.tableData.push(data.sectionCovers[i]);
-              //   }
-              // }
-              this.passData.tableData = data.sectionCovers;
+              for(var i=0; i< data.sectionCovers.length;i++){
+                if(data.sectionCovers[i].defaultTag == 'Y' ){
+                   data.sectionCovers[i].sumInsured = 0;
+                   this.passData.tableData.push(data.sectionCovers[i]);
+                }
+              }
+              // this.passData.tableData = data.sectionCovers;
               this.table.refreshTable();
           });
         }

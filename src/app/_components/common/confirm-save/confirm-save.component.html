@@ -2,7 +2,7 @@
     <div header>Save</div>
     <div body>Are you sure you want to save changes?</div>
     <div footer class="cust-btn-container">
-        <button class="cust-btn" (click)="onYes.emit();saveModal.closeModal()">Yes</button>
+        <button class="cust-btn" (click)="onClickYes()">Yes</button>
         <button class="cust-btn" (click)="saveModal.closeModal()">No</button>
     </div>
 </app-modal>
@@ -13,3 +13,7 @@
 
 
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" #success></app-sucess-dialog>
+
+<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" class="globalLoading" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999;display: none">
+<div class="globalLoading" style="position: absolute;top:0;left:0;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);display: none">
+</div>
