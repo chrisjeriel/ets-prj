@@ -297,6 +297,8 @@ export class HoldCoverComponent implements OnInit {
 
   onRowClick(event){
     this.rowRec = event;
+    console.log(this.rowRec);
+    console.log("asdasd");
   }
 
   onSaveClickLOV(){
