@@ -102,18 +102,24 @@ export class CedingCompanyComponent implements OnInit {
   }
 
   checkCode(code) {
-    this.underwritingService.getCedingCompanyList(code,'','','','','','','','','Y').subscribe(data => {     
-      if(data['cedingcompany'].length > 0) {
-        this.selectedData.emit(new CedingCompanyListing(data['cedingcompany'][0].cedingId,data['cedingcompany'][0].cedingName,data['cedingcompany'][0].cedingAbbr,data['cedingcompany'][0].address,(data['cedingcompany'][0].membershipDate == null ? null : new Date(data['cedingcompany'][0].membershipDate[0],data['cedingcompany'][0].membershipDate[1]-1,data['cedingcompany'][0].membershipDate[2])),(data['cedingcompany'][0].terminationDate == null ? null : new Date(data['cedingcompany'][0].terminationDate[0],data['cedingcompany'][0].terminationDate[1]-1,data['cedingcompany'][0].terminationDate[2])),(data['cedingcompany'][0].inactiveDate == null ? null : new Date(data['cedingcompany'][0].inactiveDate[0],data['cedingcompany'][0].inactiveDate[1]-1,data['cedingcompany'][0].inactiveDate[2]))));
-      } else {
-        this.selectedData.emit({
-          coNo: '',
-          name: ''
-        });
+    if(code.trim() === ''){
+      this.selectedData.emit({
+        coNo: '',
+        name: ''
+      });
+    } else {
+      this.underwritingService.getCedingCompanyList(code,'','','','','','','','','Y').subscribe(data => {     
+        if(data['cedingcompany'].length > 0) {
+          this.selectedData.emit(new CedingCompanyListing(data['cedingcompany'][0].cedingId,data['cedingcompany'][0].cedingName,data['cedingcompany'][0].cedingAbbr,data['cedingcompany'][0].address,(data['cedingcompany'][0].membershipDate == null ? null : new Date(data['cedingcompany'][0].membershipDate[0],data['cedingcompany'][0].membershipDate[1]-1,data['cedingcompany'][0].membershipDate[2])),(data['cedingcompany'][0].terminationDate == null ? null : new Date(data['cedingcompany'][0].terminationDate[0],data['cedingcompany'][0].terminationDate[1]-1,data['cedingcompany'][0].terminationDate[2])),(data['cedingcompany'][0].inactiveDate == null ? null : new Date(data['cedingcompany'][0].inactiveDate[0],data['cedingcompany'][0].inactiveDate[1]-1,data['cedingcompany'][0].inactiveDate[2]))));
+        } else {
+          this.selectedData.emit({
+            coNo: '',
+            name: ''
+          });
 
-        $('#cedingCompanyMdl > #modalBtn').trigger('click');
-      }      
-    });
+          $('#cedingCompanyMdl > #modalBtn').trigger('click');
+        }      
+      });
+    }
   }
-
 }

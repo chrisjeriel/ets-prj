@@ -18,6 +18,12 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 export class QuoteEndorsementComponent implements OnInit {
     @Input() endorsementType: string = "";
     @Input() inquiryFlag: boolean = false;
+    @Input() quotationInfo: {
+        quoteId: '',
+        quotationNo: '',
+        riskName: '',
+        insuredDesc: ''
+    }
     @ViewChildren(CustEditableNonDatatableComponent) table: QueryList<CustEditableNonDatatableComponent>;
     @ViewChild(CustNonDatatableComponent) tableNonEditable: CustNonDatatableComponent;
     @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
@@ -32,7 +38,7 @@ export class QuoteEndorsementComponent implements OnInit {
     projectData: any;
     riskName: any;
     endorsementsData: any[] = [];
-    private quotationInfo: QuotationInfo;
+    // private quotationInfo: QuotationInfo;
     private quoteEndorsement: QuoteEndorsement;
     dtOptions: DataTables.Settings = {};
 
@@ -153,9 +159,9 @@ export class QuoteEndorsementComponent implements OnInit {
             info: false,
         };
         this.optionNos = this.quotationService.getQuoteOptionNos();
-        this.quotationInfo = new QuotationInfo();
-        this.quotationInfo.quotationNo = "SMP-0000-0000-00";
-        this.quotationInfo.insuredName = "Insured Name";
+        // this.quotationInfo = new QuotationInfo();
+        // this.quotationInfo.quotationNo = "SMP-0000-0000-00";
+        // this.quotationInfo.insuredName = "Insured Name";
         //this.quoteOptionTableData = this.quotationService.getQuoteOptions();
 
 /*        this.tableData = this.quotationService.getEndorsements(1);*/
@@ -214,8 +220,8 @@ export class QuoteEndorsementComponent implements OnInit {
 
                });
 
-                if (this.quotationService.toGenInfo[0] == "edit") {  
-                    this.quotationService.getQuoteGenInfo(null,this.plainQuotationNo(this.quotationNum)).subscribe((data: any) => {
+                if (this.quotationService.toGenInfo[0] == "edit") {                  
+                    this.quotationService.getQuoteGenInfo(null,this.plainQuotationNo(this.quotationInfo.quotationNo)).subscribe((data: any) => {
                         this.insured = data.quotationGeneralInfo.insuredDesc; 
                         this.quoteNoData = data.quotationGeneralInfo.quotationNo;
                         if(data.project == null){
@@ -226,9 +232,10 @@ export class QuoteEndorsementComponent implements OnInit {
                         this.quoteId = data.quotationGeneralInfo.quoteId.toString();
                     });
 
-                    this.line = (this.quotationNum.split("-")[0]).trim();
-                    this.quotationService.getQuoteOptions(this.quoteId,this.plainQuotationNo(this.quotationNum)).subscribe((data: any) => {
-                        // this.optionRecords = data.QuotationOption.optionsList;
+                    this.line = (this.quotationInfo.quotationNo.split("-")[0]).trim();
+                    var id = this.quotationInfo.quoteId == '' ? '' : this.quotationInfo.quoteId;
+                    this.quotationService.getQuoteOptions(id, '').subscribe((data: any) => {
+                        // this.optionRecords = data.QuotationOption.optionsList; this.plainQuotationNo(this.quotationNum)
                          if (data['quotation'] == null || data['quotation'] == undefined ){
                          }else{
                             // for(var i = data.quotation.optionsList.length - 1; i >= 0; i--){
@@ -277,7 +284,7 @@ export class QuoteEndorsementComponent implements OnInit {
       $('#endorsmentTable button').removeAttr("disabled");
       $('#endorsmentOCTable button').removeAttr("disabled");
       this.opId = event.optionId;
-           this.quotationService.getEndorsements(this.quoteId,this.plainQuotationNo(this.quotationNum),event.optionId).subscribe((data: any) => {
+           this.quotationService.getEndorsements(this.quotationInfo.quoteId,this.plainQuotationNo(this.quotationInfo.quotationNo),event.optionId).subscribe((data: any) => {
                  while(this.endorsementData.tableData.length > 0) {
                   this.endorsementData.tableData.pop();
               }    

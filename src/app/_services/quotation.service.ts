@@ -883,8 +883,20 @@ export class QuotationService {
                 'Content-Type': 'application/json'
             })
         };
-         console.log(params);
+
+        console.log(params);
         return this.http.post('http://localhost:8888/api/quote-service/saveQuoteOptionAll',params,header);
+    }
+
+     saveChangeQuoteStatus(changeQuoteData:any){
+
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+
+        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteChangeQuoteStatus',JSON.stringify(changeQuoteData),header);
 
     }
 
