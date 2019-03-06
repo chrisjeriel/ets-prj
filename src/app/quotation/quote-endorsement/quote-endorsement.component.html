@@ -133,4 +133,4 @@
 
 <app-confirm-save (onYes)="saveData()"></app-confirm-save>
 <app-sucess-dialog id="quote-endorsment" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-cancel-button (onYes)="saveData('cancel')" [url]="'/quotation-processing'" ></app-cancel-button>
+<app-cancel-button (onYes)="saveData('cancel')" [url]="cancelLink" ></app-cancel-button>

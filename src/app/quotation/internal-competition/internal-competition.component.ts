@@ -4,6 +4,7 @@ import { IntCompAdvInfo } from '@app/_models';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+import { environment } from '@environments/environment';
 
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
@@ -54,6 +55,9 @@ export class InternalCompetitionComponent implements OnInit, OnDestroy {
     cedingIds: any[] = [];
     cedingRepIds: any[] = [];
     savedData: any[] = [];
+    printClickable: boolean = false;
+
+    selectedPrintData: any;
 
     currentCedingId: string = "";
 
@@ -129,8 +133,24 @@ export class InternalCompetitionComponent implements OnInit, OnDestroy {
         this.sub.unsubscribe();
     }
 
-    onClickPrint() {
+    onRowClick(data){
+      console.log(data);
+      this.selectedPrintData = data;
 
+      if (data.quoteId == null) {
+        this.printClickable = false;
+      } else {
+        this.printClickable = true;
+      }
+
+      console.log (data.quoteId + " - " + "Print = " + this.printClickable);
+    }
+
+    onClickPrint() {
+      console.log("onClickPrint");
+      if (this.printClickable) {
+        window.open('http://localhost:8888/api/util-service/generateReport?reportName=QUOTER007' + '&quoteId=' + this.selectedPrintData.quoteId + '&adviceNo=' + this.selectedPrintData.adviceNo, '_blank');
+      }
     }
 
     onClickCancel() {
@@ -172,6 +192,7 @@ export class InternalCompetitionComponent implements OnInit, OnDestroy {
     }
 
     clickAdviceLOV(data){
+      console.log("Totz;");
       this.currentCedingId = this.cedingIds[data.index];
       //console.log(this.currentCedingId);
       if(data.key=='wordings'){

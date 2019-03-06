@@ -129,11 +129,11 @@ export class LovComponent implements OnInit {
         this.table.refreshTable();
       });
     }else if(this.passData.selector == 'deductibles'){
-      this.passTable.tHeader = [ 'Deductible', 'Title', 'Deductible Type', 'Rate', 'Deductible Amount'];
+      this.passTable.tHeader = [ 'Deductible', 'Title', 'Deductible Type', 'Rate', 'Deductible Amount','Deductible Text'];
       this.passTable.dataTypes = [ 'text', 'text', 'text', 'percent', 'currency'];
-      this.passTable.keys = ['deductibleCd','deductibleTitle','deductibleType','deductibleRate','deductibleAmt'];
+      this.passTable.keys = ['deductibleCd','deductibleTitle','deductibleType','deductibleRate','deductibleAmt','deductibleText'];
       this.underwritingService.getMaintenanceDeductibles(this.passData.lineCd).subscribe((data: any) => {
-          this.passTable.tableData = data.deductibles;
+          this.passTable.tableData = data.deductibles.filter((data)=>{return  this.passData.hide.indexOf(data.deductibleCd)==-1});
           this.table.refreshTable();
       });
     }else if(this.passData.selector == 'region'){
@@ -222,11 +222,11 @@ export class LovComponent implements OnInit {
           });
     }else if(this.passData.selector == 'otherRates'){
       this.passTable.tHeader = [ 'Cover Code','Cover Name','Section','Bullet No','Sum Insured'];
-      this.passTable.dataTypes = [ 'number','text','select','text','currency'];
+      this.passTable.dataTypes = [ 'number','text','select','text','currency','text'];
       this.passTable.keys = ['coverCd','coverCdAbbr','section','bulletNo','sumInsured']
       this.quotationService.getCoverageInfo(this.passData.quoteNo,null).subscribe((data: any) => {
         if(data.quotation.project !== null ){
-          this.passTable.tableData = data.quotation.project.coverage.sectionCovers;
+          this.passTable.tableData = data.quotation.project.coverage.sectionCovers.filter((data)=>{return this.passData.hide.indexOf(data.coverCd)==-1});
         }
         this.table.refreshTable();
       })

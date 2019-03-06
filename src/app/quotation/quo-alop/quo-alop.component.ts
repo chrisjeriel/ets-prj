@@ -1,5 +1,5 @@
 import { Component, OnInit, Input,  ViewChild } from '@angular/core';
-import { QuotationService } from '../../_services';
+import { QuotationService, MaintenanceService } from '../../_services';
 import { QuoteALOPItemInformation, QuoteALOPInfo } from '../../_models';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
@@ -91,7 +91,7 @@ export class QuoAlopComponent implements OnInit {
     dialogIcon: string = "";
     showAlopItem:boolean = false;
     dateErFlag:boolean = false;
-    constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute) { }
+    constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute, private mtnService: MaintenanceService) { }
 
     ngOnInit() {
       //neco
@@ -106,6 +106,7 @@ export class QuoAlopComponent implements OnInit {
         }
       }
       //neco end
+      console.log(this.quotationInfo)
       this.quotationNo = this.quotationInfo.quotationNo;
       this.quoteNo = this.quotationNo.split(/[-]/g)[0]
       for (var i = 1; i < this.quotationNo.split(/[-]/g).length; i++) {
@@ -125,14 +126,22 @@ export class QuoAlopComponent implements OnInit {
 
     getAlop(){
       this.quotationService.getALop(null,this.quoteNo).subscribe((data: any) => {
-             this.loading = false;
-             
              this.quoteId = data.quotation.quoteId;
               this.alopData = data.quotation.alop===null ? this.alopData : data.quotation.alop;
               if(this.alopData.issueDate !== null){
+                this.loading = false;
                 this.alopData.issueDate = this.alopData.issueDate[0]+'-'+("0" + this.alopData.issueDate[1]).slice(-2)+'-'+  ("0" + this.alopData.issueDate[2]).slice(-2);
                 this.alopData.expiryDate = this.alopData.expiryDate[0]+'-'+("0" + this.alopData.expiryDate[1]).slice(-2)+'-'+ ("0" + this.alopData.expiryDate[2]).slice(-2);
                 this.alopData.indemFromDate = this.alopData.indemFromDate[0]+'-'+("0" + this.alopData.indemFromDate[1]).slice(-2)+'-'+("0" + this.alopData.indemFromDate[2]).slice(-2);
+              }else{
+                this.mtnService.getMtnInsured(this.quotationInfo.principalId).subscribe((data: any) => {
+                  console.log(data)
+                  this.loading = false;
+                  this.alopData.insuredId = data.insured[0].insuredId;
+                  this.alopData.insuredName = data.insured[0].insuredAbbr;
+                  this.alopData.insuredDesc = data.insured[0].insuredName;
+                  this.alopData.address = data.insured[0].address;
+                })
               }
               setTimeout(() => {
                 $('input[appCurrency]').focus();
@@ -146,6 +155,9 @@ export class QuoAlopComponent implements OnInit {
       this.cancelFlag = cancelFlag !== undefined;
       this.alopData.quoteId = this.quoteId;
       this.quotationService.saveQuoteAlop(this.alopData).subscribe((data: any) => {
+        this.alopData.issueDate = this.alopData.issueDate.split('T')[0];
+        this.alopData.expiryDate = this.alopData.expiryDate.split('T')[0];
+        this.alopData.indemFromDate = this.alopData.indemFromDate.split('T')[0];
         if(data['returnCode'] == 0) {
           this.dialogMessage = data['errorList'][0].errorMessage;
           this.dialogIcon = "error";

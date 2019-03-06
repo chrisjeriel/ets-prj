@@ -43,13 +43,14 @@ export class ModalComponent implements OnInit/*, AfterViewInit*/ {
 
 
     open(content) {
-        
+        $('.globalLoading').css('display','none');
         this.modalService.dismissAll();
-        this.modalService.open(this.test, { centered: true, backdrop: 'static', windowClass : this.modalSize });
+        this.modalRef = this.modalService.open(this.test, { centered: true, backdrop: 'static', windowClass : this.modalSize });
         this.modalOpened.emit();
     }
 
-    openNoClose(content?){        
+    openNoClose(content?){
+        $('.globalLoading').css('display','none');
         this.modalRef = this.modalService.open(this.test, { centered: true,  windowClass : this.modalSize });
         this.modalOpened.emit();
     }

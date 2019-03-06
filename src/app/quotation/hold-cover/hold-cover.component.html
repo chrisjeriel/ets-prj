@@ -205,3 +205,5 @@
 
 
 <app-confirm-save (onYes)="saveData()"></app-confirm-save>
+
+<app-sucess-dialog id="hold-cover" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>

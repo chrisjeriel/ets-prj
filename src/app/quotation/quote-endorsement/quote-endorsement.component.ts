@@ -113,14 +113,22 @@ export class QuoteEndorsementComponent implements OnInit {
     }
 
     endtCodeLOVRow : number;
+    cancelLink:string;
 
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title,  private route: ActivatedRoute) { }
 
     ngOnInit() {  
+        if(this.OpenCover){
+          this.cancelLink = '/quotation-processing';
+          
+        }else{
+          this.cancelLink = '/open-cover-processing';
+        }
+        
         setTimeout(()=>{
-          $('#endorsmentTable button').attr("disabled","disabled");
-          $('#endorsmentOCTable button').attr("disabled","disabled");
-        },0)
+            $('#endorsmentTable button').attr("disabled","disabled");
+          },0)
+
         this.titleService.setTitle("Quo | Endorsements");
         //neco
         if(this.inquiryFlag){
@@ -208,6 +216,8 @@ export class QuoteEndorsementComponent implements OnInit {
                     if (this.from == "quo-processing") {
                         this.quotationNum = params['quotationNo'];
                     }
+
+
                });
 
                 if (this.quotationService.toGenInfo[0] == "edit") {                  
@@ -474,6 +484,7 @@ export class QuoteEndorsementComponent implements OnInit {
     }
 
     cancel(){
+
       this.cancelBtn.clickCancel();
     }
 
