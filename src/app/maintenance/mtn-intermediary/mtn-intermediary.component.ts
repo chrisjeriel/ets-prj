@@ -31,6 +31,8 @@ intermediaryListing: any = {
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
 
+  modalOpen: boolean = false;
+
   constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal) { }
 
   ngOnInit() {
@@ -69,6 +71,7 @@ intermediaryListing: any = {
       }
       this.table.refreshTable();
     });
+    this.modalOpen = true;
   }
 
   checkCode(code) {
