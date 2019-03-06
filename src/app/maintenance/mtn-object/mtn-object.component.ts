@@ -60,6 +60,7 @@ export class MtnObjectComponent implements OnInit {
     }
 
   selected: any = null;
+  modalOpen: boolean = false;
 
 
   constructor(private modalService: NgbModal, private mtnService : MaintenanceService) { }
@@ -96,6 +97,7 @@ export class MtnObjectComponent implements OnInit {
           }
           this.table.refreshTable();
         });
+        this.modalOpen = true;
   }
 
   checkCode(line, code) {

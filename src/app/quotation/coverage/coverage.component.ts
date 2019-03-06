@@ -227,8 +227,6 @@ export class CoverageComponent implements OnInit {
     this.deletedData = [];
 
     if(this.initialData.length > 0){
-      console.log('initialData may laman' )
-      console.log(this.initialData)
       for (var i = 0 ; this.passData.tableData.length > i; i++) {
           if( !this.passData.tableData[i].deleted ){
               this.editedData.push(this.passData.tableData[i]);
@@ -250,9 +248,9 @@ export class CoverageComponent implements OnInit {
        this.coverageData.projId              = 1;
        this.coverageData.riskId              = this.riskId;
     }else {
-        console.log('initial data wala')
         for (var i = 0 ; this.passData.tableData.length > i; i++) {
            if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted ){
+             console.log(this.passData.tableData[i].section)
                this.editedData.push(this.passData.tableData[i]);
                this.editedData[this.editedData.length-1].createDate = new Date(this.editedData[this.editedData.length-1].createDate[0],this.editedData[this.editedData.length-1].createDate[1]-1,this.editedData[this.editedData.length-1].createDate[2]).toISOString();
                this.editedData[this.editedData.length-1].updateDate = new Date(this.editedData[this.editedData.length-1].updateDate[0],this.editedData[this.editedData.length-1].updateDate[1]-1,this.editedData[this.editedData.length-1].updateDate[2]).toISOString();
@@ -369,5 +367,6 @@ export class CoverageComponent implements OnInit {
 
   onClickSave(){
   $('#confirm-save #modalBtn2').trigger('click');
-}
+  }
+
 }

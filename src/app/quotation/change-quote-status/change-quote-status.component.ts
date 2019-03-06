@@ -22,6 +22,13 @@ export class ChangeQuoteStatusComponent implements OnInit {
     
     batchOption: any = 0;
 
+    mockTesting : any ={
+        quoteId: null,
+        cedingId: null,
+        cessionId: null,
+        status: null
+
+    }
     passData: any = {
         tableData: [], 
         tHeader: ['Quotation No.','Type of Cession','Ceding Company','Insured','Risk'],

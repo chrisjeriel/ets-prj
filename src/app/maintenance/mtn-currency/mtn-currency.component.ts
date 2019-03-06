@@ -31,7 +31,8 @@ export class MtnCurrencyComponent implements OnInit {
 
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
-
+  modalOpen: boolean = false;
+  
   constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal) { }
 
   ngOnInit() {
@@ -85,6 +86,7 @@ export class MtnCurrencyComponent implements OnInit {
                  }
                  this.table.refreshTable();
                });
+                 this.modalOpen = true;
        }, 100);
       
   }
