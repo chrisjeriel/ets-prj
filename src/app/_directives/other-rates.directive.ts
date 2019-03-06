@@ -1,12 +1,16 @@
-import { Directive, ElementRef, HostListener, HostBinding } from '@angular/core';
+import { Directive, ElementRef, HostListener, HostBinding, OnInit } from '@angular/core';
 import { unHighlight, highlight, hideTooltip, showTooltip} from './highlight';
 
 @Directive({
   selector: '[appOtherRates]'
 })
-export class OtherRatesDirective {
+export class OtherRatesDirective implements OnInit {
 
   constructor(private el: ElementRef) { }
+
+    ngOnInit(){
+      this.el.nativeElement.style.textAlign = "right"
+    }
 
     @HostListener("blur", ["$event.target"]) onBlur(target) {
     	if(target.value !=''){
