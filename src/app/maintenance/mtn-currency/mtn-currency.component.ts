@@ -14,7 +14,7 @@ export class MtnCurrencyComponent implements OnInit {
 
   currencyListing: any = {
     tableData: [],
-    tHeader: ['Currency Code', 'Currency Abbreviation', 'Currency Word', 'Currency Rate', 'Currency Description',],
+    tHeader: ['Currency Code', 'Currency Word', 'Currency Rate', 'Currency Description',],
     dataTypes: ['text', 'text', 'text', 'currencyRate', 'text',],
     pageLength: 10,
     searchFlag: true,
@@ -75,7 +75,7 @@ export class MtnCurrencyComponent implements OnInit {
                  for(var currencyCount = 0; currencyCount < data.currency.length; currencyCount++){
                    this.currencyListing.tableData.push(
                      new Row(data.currency[currencyCount].currencyCd, 
-                         data.currency[currencyCount].currencyAbbr,
+                         //data.currency[currencyCount].currencyAbbr,
                          data.currency[currencyCount].currencyWord,
                          data.currency[currencyCount].currencyRt,
                          data.currency[currencyCount].currencyDesc)
@@ -91,18 +91,18 @@ export class MtnCurrencyComponent implements OnInit {
 
 class Row{
 	currencyCd: string;
-	currencyAbbr: string;
+	//currencyAbbr: string;
 	currencyWord: string;
 	currencyRt: number;
 	currencyDesc: string;
 
 	constructor(currencyCd: string, 
-				currencyAbbr: string,
+				//currencyAbbr: string,
 				currencyWord: string,
 				currencyRt: number,
 				currencyDesc: string){
 		this.currencyCd = currencyCd;
-		this.currencyAbbr = currencyAbbr;
+		//this.currencyAbbr = currencyAbbr;
 		this.currencyWord = currencyWord;
 		this.currencyRt = currencyRt;
 		this.currencyDesc = currencyDesc;
