@@ -406,7 +406,7 @@ saveData(cancelFlag?){
       if(this.failures.length == 0 && this.successes.length == 0){
         this.dialogMessage ='Nothing to save.';
         this.dialogIcon = "info";
-        setTimeout(()=>$('#quote-option #successModalBtn').trigger('click'););
+        setTimeout(()=>$('#quote-option #successModalBtn').trigger('click'));
         
       }
      }
