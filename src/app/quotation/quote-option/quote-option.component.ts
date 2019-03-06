@@ -203,7 +203,7 @@ export class QuoteOptionComponent implements OnInit {
         this.quotationInfo.quotationNo = "SMP-0000-0000-00";
         this.quotationInfo.insuredName = "Insured Name";*/
 
-        if (this.quotationService.toGenInfo[0] == "edit") {
+        // if (this.quotationService.toGenInfo[0] == "edit") {
 
             /*this.sub = this.route.params.subscribe(params => {
                 this.from = params['from'];
@@ -213,18 +213,23 @@ export class QuoteOptionComponent implements OnInit {
             });*/
 
             this.quotationNum = this.quotationInfo.quotationNo;
+             this.riskName = this.quotationInfo.riskName;
+             this.insured = this.quotationInfo.insuredDesc;
+             this.quoteId = this.quotationInfo.quoteId;
+             this.quoteNoData = this.quotationInfo.quotationNo;
+             this.getQuoteOptions();
 
-             this.quotationService.getQuoteGenInfo(null,this.plainQuotationNo(this.quotationNum)).subscribe((data: any) => {
-                        this.insured = data.quotationGeneralInfo.insuredDesc; 
-                        this.quoteNoData = data.quotationGeneralInfo.quotationNo;
-                        if(data.project == null){
-                             this.riskName = null;
-                        } else {
-                            this.riskName = data.project.riskName; 
-                        }
-                        this.quoteId = data.quotationGeneralInfo.quoteId.toString();
-                        this.getQuoteOptions();
-            });
+            //  this.quotationService.getQuoteGenInfo(null,this.plainQuotationNo(this.quotationNum)).subscribe((data: any) => {
+            //             this.insured = data.quotationGeneralInfo.insuredDesc; 
+            //             this.quoteNoData = data.quotationGeneralInfo.quotationNo;
+            //             if(data.project == null){
+            //                  this.riskName = null;
+            //             } else {
+            //                 this.riskName = data.project.riskName; 
+            //             }
+            //             this.quoteId = data.quotationGeneralInfo.quoteId.toString();
+            //             this.getQuoteOptions();
+            // });
 
 /*          this.quotationService.getQuoteOptions(this.quoteId,this.plainQuotationNo(this.quotationNum)).subscribe(data => {  
             var optionRecords = data['quotation'].optionsList;
@@ -254,13 +259,13 @@ export class QuoteOptionComponent implements OnInit {
                        }           
                     }
 */
-  
-    } else {
-         this.quotationNum = this.quotationInfo.quotationNo.split(/[-]/g)[0];
-         console.log(this.quotationNum);
+      
+    // } else {
+    //      this.quotationNum = this.quotationInfo.quotationNo.split(/[-]/g)[0];
+    //      console.log(this.quotationNum);
 
 
-    }
+    // }
         
 
     }
@@ -337,6 +342,9 @@ export class QuoteOptionComponent implements OnInit {
 
     updateDeductibles(data) {
         $('#deductibleTable button').removeAttr("disabled")
+        if(data.optionId==null){
+          $('#deductibleTable button').attr("disabled","disabled")
+        }
         if (data.deductiblesList != null || data.deductiblesList != undefined ){
           this.deductiblesData.tableData = data.deleted? []:data.deductiblesList;
           this.deductibleTable.refreshTable();
@@ -544,9 +552,10 @@ setSelected(data){
         this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleTitle = data.data.deductibleTitle;
         this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleRt = data.data.deductibleRate;
         this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleAmt = data.data.deductibleAmt;
+        this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleTxt = data.data.deductibleText;
+        console.log(data.data);
         this.deductiblesData.tableData[this.deductiblesLOVRow].edited = true;
   }else if(data.selector == "otherRates"){
-    ['coverCd','coverCdAbbr','section','bulletNo','sumInsured']
     console.log(data);
     this.otherRatesData.tableData[this.coverCodeLOVRow].coverCd = data.data.coverCd; 
     this.otherRatesData.tableData[this.coverCodeLOVRow].coverCdDesc = data.data.coverCdAbbr;
