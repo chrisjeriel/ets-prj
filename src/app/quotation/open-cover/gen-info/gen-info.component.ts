@@ -1,10 +1,16 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { OcGenInfoInfo } from '@app/_models/QuotationOcGenInfo';
 import { QuotationService, MaintenanceService } from '@app/_services';
 import { HttpClient } from '@angular/common/http';
 import { formatDate } from '@angular/common';
 import { Title } from '@angular/platform-browser';
+
+import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
+import { MtnCedingCompanyComponent } from '@app/maintenance/mtn-ceding-company/mtn-ceding-company.component';
+import { MtnIntermediaryComponent } from '@app/maintenance/mtn-intermediary/mtn-intermediary.component';
+import { MtnInsuredComponent } from '@app/maintenance/mtn-insured/mtn-insured.component';
+import { MtnObjectComponent } from '@app/maintenance/mtn-object/mtn-object.component';
 
 @Component({
   selector: 'app-gen-info',
@@ -53,6 +59,14 @@ export class GenInfoComponent implements OnInit {
 
   insured:string;
 
+  loading:boolean = true;
+
+  @ViewChild(CedingCompanyComponent) cedingCoLov: CedingCompanyComponent;
+  @ViewChild(MtnCedingCompanyComponent) cedingCoNotMemberLov: CedingCompanyComponent;
+  @ViewChild(MtnIntermediaryComponent) intermediaryLov: MtnIntermediaryComponent;
+  @ViewChildren(MtnInsuredComponent) insuredLovs: QueryList<MtnInsuredComponent>;
+  @ViewChild(MtnObjectComponent) objectLov: MtnObjectComponent;
+
 
   constructor(private route: ActivatedRoute, private quotationService: QuotationService, private http: HttpClient, private mtnService: MaintenanceService, private titleService:Title) {
    }
@@ -99,6 +113,7 @@ export class GenInfoComponent implements OnInit {
                     .subscribe(val => 
                         {
                           //this.ocQuoteGenInfo = new OcGenInfoInfo(i.openQuotationNo);
+                          this.loading = false;
                           for(let i of val['quotationOc']) {
                             console.log(i.projectOc);
                               this.ocQuoteGenInfo.openQuotationNo = i.openQuotationNo;
@@ -236,6 +251,7 @@ export class GenInfoComponent implements OnInit {
   setCurr(data){
     this.currencyAbbr = data.currencyAbbr;
     this.currencyRt = data.currencyRt;
+    this.loading = false;
   }
   getPrinLov(){
     $('#prinIdLov  #modalBtn').trigger('click');
@@ -244,6 +260,7 @@ export class GenInfoComponent implements OnInit {
    this.prinId  = data.insuredId;
    this.prinName  = data.insuredName;
    this.insuredContent();
+   this.loading = false;
   }
   getConLov(){
     $('#conIdLov  #modalBtn').trigger('click');
@@ -252,6 +269,7 @@ export class GenInfoComponent implements OnInit {
     this.conId  = data.insuredId;
     this.conName  = data.insuredName;
     this.insuredContent();
+    this.loading = false;
   }
   getObjLov(){
     $('#objIdLov #modalBtn').trigger('click');
@@ -260,6 +278,7 @@ export class GenInfoComponent implements OnInit {
     this.line = data.lineCd;
     this.objId  = data.objectId;
     this.objName  = data.description;
+    this.loading = false;
   }
 
   getOpeningWordingLov(){
@@ -283,6 +302,7 @@ export class GenInfoComponent implements OnInit {
   setCedingCo(data){
     this.cedingCoId  = data.coNo;
     this.cedingCoName  = data.name;
+    this.loading = false;
   }
 
   getLineClassLov(){
@@ -292,6 +312,7 @@ export class GenInfoComponent implements OnInit {
     this.line = data.lineCd;
     this.lineClassCd  = data.lineClassCd;
     this.lineClassDescr  = data.lineClassCdDesc;
+    this.loading = false;
   }
 
   getIntmLov(){
@@ -300,10 +321,28 @@ export class GenInfoComponent implements OnInit {
   setIntm(data){
     this.mtnIntmId  = data.intmId;
     this.mtnIntmName  = data.intmName;
+    this.loading = false;
   }
 
 
   onClickSave(){
     $('#confirm-save #modalBtn2').trigger('click');
   }
+
+  checkCode(field) {
+      if(field === 'cedingCo') {
+        this.loading = true;
+        this.cedingCoLov.checkCode(this.cedingCoId);
+      } else if(field === 'cedingCoNotMember') { 
+        this.cedingCoNotMemberLov.checkCode(this.ocQuoteGenInfo.reinsurerId);
+      } else if(field === 'intermediary') {
+        this.intermediaryLov.checkCode(this.mtnIntmId);
+      } else if(field === 'principal') {
+        this.insuredLovs['first'].checkCode(this.prinId, '#principalLOV');
+      } else if(field === 'contractor') {
+        this.insuredLovs['last'].checkCode(this.conId, '#contractorLOV');
+      } else if(field === 'object') {
+        this.objectLov.checkCode(this.line, this.objId);
+      }
+    }
 }
