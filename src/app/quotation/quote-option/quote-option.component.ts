@@ -341,6 +341,9 @@ export class QuoteOptionComponent implements OnInit {
           this.deductiblesData.tableData = data.deleted? []:data.deductiblesList;
           this.deductibleTable.refreshTable();
         } 
+        if($('.ng-dirty').length != 0){
+          $('#cust-table-container').addClass('ng-dirty');
+        }
         this.deductiblesData.nData.optionId = data.optionId;
 
     }
@@ -378,7 +381,8 @@ saveData(cancelFlag?){
  }
 
    showDialog(){
-     if(this.updateCount==3){
+     if(this.updateCount==3){ 
+       $('.ng-dirty').removeClass('ng-dirty');
        if(this.successes.length!=0){
         for(let s of this.successes){
           this.dialogMessage += s+', '
@@ -534,6 +538,7 @@ clickDeductiblesLOV(data){
 }
 
 setSelected(data){
+  $('#cust-table-container').addClass('ng-dirty');
   if(data.selector == "deductibles"){
         this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleCd = data.data.deductibleCd;
         this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleTitle = data.data.deductibleTitle;
