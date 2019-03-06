@@ -126,8 +126,14 @@ export class InternalCompetitionComponent implements OnInit, OnDestroy {
 
     }
 
+    sampData: any;
+
     ngOnDestroy(){
         this.sub.unsubscribe();
+    }
+
+    onRowClick(data){
+      console.log(data);
     }
 
     onClickPrint() {

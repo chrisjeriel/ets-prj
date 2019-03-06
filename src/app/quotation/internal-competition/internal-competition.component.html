@@ -19,7 +19,7 @@
 	<fieldset class="scheduler-border">
 		<legend class="scheduler-border">Advice Details	</legend>
 		<div style="padding-top: 8px;">
-        	<app-cust-editable-non-datatable [passData]="intCompData" (clickLOV)="clickAdviceLOV($event);"></app-cust-editable-non-datatable>
+        	<app-cust-editable-non-datatable [passData]="intCompData" (clickLOV)="clickAdviceLOV($event);" (newClick)="onRowClick($event)"></app-cust-editable-non-datatable>
 		</div>
 	</fieldset>
 </div>
