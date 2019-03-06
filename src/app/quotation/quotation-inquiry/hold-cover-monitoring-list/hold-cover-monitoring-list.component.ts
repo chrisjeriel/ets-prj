@@ -63,15 +63,22 @@ export class HoldCoverMonitoringListComponent implements OnInit {
                 dataType: 'text'
             },
             {
-                key: 'periodFrom',
-                title: 'Period From',
-                dataType: 'date'
+                keys: {
+                    from: 'periodFrom',
+                    to: 'periodTo'
+                },
+                title: 'Period',
+                dataType: 'datespan'
             },
-            {
+           /* {
                 key: 'periodTo',
                 title: 'Period To',
+<<<<<<< HEAD
                 dataType: 'date'
             },
+=======
+                dataType: 'datespan'
+            },*/
             {
                 key: 'compRefHoldCoverNo',
                 title: 'Comp. Ref. Hold Cover No.',

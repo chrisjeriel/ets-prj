@@ -78,7 +78,7 @@ export class UnearnedPremiumComponent implements OnInit {
   	dataTypes: ['text','date','date','number','number','currency','currency'],
   	pageStatus: true,
     pagination: true,
-    total: [null,null,null,null,'Total','premium','defPremium'],
+    total: [null,null,null,null,'Total',null,null],
     colSize: ['', '', '', '90px', '90px', '150px', '150px'],
   }
 

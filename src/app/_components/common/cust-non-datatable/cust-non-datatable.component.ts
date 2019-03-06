@@ -25,66 +25,10 @@ export class CustNonDatatableComponent implements OnInit {
     
     btnDisabled: boolean = true;
     unselect: boolean = false;
+    expireCounter: number = 0;
+    expireValue: any;
     
-    
-    @Input() filterObj:any[] = [
-        {
-            key: 'quotationNo',
-            title:'Quotation No.',
-            dataType: 'text'
-        },
-        {
-            key: 'cessionType',
-            title:'Type of Cession',
-            dataType: 'text'
-        },
-        {
-            key: 'lineClass',
-            title:'Line Class',
-            dataType: 'text'
-        },
-        {
-            key: 'quoteStatus',
-            title:'Quote Status',
-            dataType: 'text'
-        },
-        {
-            key: 'cedingCompany',
-            title:'Ceding Company',
-            dataType: 'text'
-        },
-        {
-            key: 'principal',
-            title:'Principal',
-            dataType: 'text'
-        },
-        {
-            key: 'insured',
-            title:'Insured',
-            dataType: 'text'
-        },
-        {
-            key: 'risk',
-            title:'Risk',
-            dataType: 'text'
-        },
-        {
-            key: 'object',
-            title:'Object',
-            dataType: 'text'
-        },
-        {
-            key: 'location',
-            title:'Insured',
-            dataType: 'text'
-        },
-        {
-            key: 'quoteDate',
-            title:'Period From',
-            dataType: 'date'
-        },
-
-    ];
+    @Input() filterObj:any[] = [];
 
     @Output() rowClick: EventEmitter<any> = new EventEmitter();
     @Output() rowDblClick: EventEmitter<any> = new EventEmitter();
@@ -94,6 +38,10 @@ export class CustNonDatatableComponent implements OnInit {
     @Output() copy: EventEmitter<any> = new EventEmitter();
     @Output() save: EventEmitter<any> = new EventEmitter();
     @Output() print: EventEmitter<any> = new EventEmitter();
+
+    //DB Search Query
+    searchQuery: any[] = [];
+    @Output() searchToDb: EventEmitter<any> = new EventEmitter();
 
     @Input() printBtn: boolean = false;
     //@Input() fixedCol: boolean = false;
@@ -210,9 +158,11 @@ export class CustNonDatatableComponent implements OnInit {
         // this.addFiller();
         this.refreshTable("first");
         
-        for (var i = this.dataKeys.length - 1; i >= 0; i--) {
+        //Bring this back in case of emergency
+        /*for (var i = this.dataKeys.length - 1; i >= 0; i--) {
            this.fillData[this.dataKeys[i]] = null;
-        }
+        }*/
+        this.fillData = null;  //delete this if something bad happens
 
         for(var filt in this.filterObj){
             this.filterObj[filt].search='';
@@ -233,6 +183,16 @@ export class CustNonDatatableComponent implements OnInit {
             this.passData.dataTypes = [];
             for(let i = 0; i < this.passData.tHeader.length; i++){
                 this.passData.dataTypes.push('text');
+            }
+        }
+        if(this.passData.filters !== undefined && this.passData.filters.length > 0){
+            for(var expireCheck of this.passData.filters){
+                if(expireCheck.dataType === 'expire'){
+                    break;
+                }
+                else{
+                    this.expireCounter++;
+                }
             }
         }
         //temporary fix delete this later
@@ -281,20 +241,31 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     onRowClick(event, data) {
-        if(data[this.nullKey] !== null){
-            this.btnDisabled = false;
-            if(this.indvSelect == data){
-                this.unselect = true;
-                this.indvSelect = null;
-            }else{
-                this.indvSelect = data;
+        if(data !== null){
+            if( Object.entries(data).length !== 0){
+                if(data[this.nullKey] !== null){
+                    this.btnDisabled = false;
+                    if(this.indvSelect == data){
+                        this.unselect = true;
+                        this.btnDisabled = true;
+                        this.indvSelect = "";
+                    }else{
+                        this.indvSelect = data;
+                    }
+                }
             }
+            else{
+                 this.indvSelect = "";
+             }
+            /*for(var i = 0; i < event.target.parentElement.children.length; i++) {
+                event.target.parentElement.children[i].style.backgroundColor = "";
+            }
+            event.target.parentElement.parentElement.style.backgroundColor = "#67b4fc";
+            console.log(event.target.parentElement.parentElement);*/
         }
-        /*for(var i = 0; i < event.target.parentElement.children.length; i++) {
-            event.target.parentElement.children[i].style.backgroundColor = "";
+        else{
+             this.indvSelect = "";
         }
-        event.target.parentElement.parentElement.style.backgroundColor = "#67b4fc";
-        console.log(event.target.parentElement.parentElement);*/
         this.rowClick.emit(data);
     }
     
@@ -331,23 +302,113 @@ export class CustNonDatatableComponent implements OnInit {
         return sortBy && i==this.sortIndex;
     }
 
+    
     filterDisplay(filterObj,searchString){
+        //OLD VERSION
         this.displayData = this.passData.tableData.filter((item) => this.dataKeys.some(key => item.hasOwnProperty(key) && new RegExp(searchString, 'gi').test(item[key])));
         for (var filt in filterObj) {    
             if (!filterObj[filt]["enabled"]) {continue;}
             this.displayData = this.displayData.filter(function(itm){
                 return itm[filterObj[filt].key].toString().toLowerCase( ).includes(filterObj[filt].search.toLowerCase( ));
-
-/*=======
-                     if(filterObj[filt]["dataType"]=="date")
-                    return itm[filterObj[filt].key].toString().includes(new Date(filterObj[filt].search).toString());
-                return itm[filterObj[filt].key].includes(filterObj[filt].search);
->>>>>>> b1c3410835a529fe6647f1324d64311af1ffe184*/
             })
         }
         this.addFiller();
     }
 
+    pressEnterFilter(){
+        $('#okFilter').trigger('click');
+    }
+
+    dbQuery(filterObj){
+        //console.log(filterObj);
+        this.searchQuery = [];
+        for(var e of filterObj){
+            if(e.enabled){
+                //if(e.search !== undefined){
+                    if(e.dataType === 'seq'){
+                        let seqNo:string = "";
+                          seqNo = e.search.split(/[-]/g)[0]
+                          for (var i = 1; i < e.search.split(/[-]/g).length; i++) {
+                           seqNo += '-' + parseInt(e.search.split(/[-]/g)[i]);
+                         }
+                         e.search = seqNo;
+                         this.searchQuery.push(
+                                 {
+                                     key: e.key,
+                                     search: e.search,
+                                 }
+                             );
+                    }
+                    else if(e.dataType === 'datespan' ){
+                        this.searchQuery.push(
+                            {
+                                key: e.keys.from,
+                                search: (e.keys.search === undefined || !e.enabled) ? '' : e.keys.search,
+                            },
+                             {
+                                key: e.keys.to,
+                                search: (e.keys.search2 === undefined || !e.enabled) ? '' : e.keys.search2,
+                            }
+                        );
+                    }
+                    else{
+                        this.searchQuery.push(
+                            {
+                                key: e.key,
+                                search: (e.search === undefined || !e.enabled) ? '' : e.search,
+                            }
+                        );
+                    }
+                    
+                //}
+                /*else{
+                    this.searchQuery.push(
+                        {
+                            key: e.key,
+                            search: (e.search === undefined || !e.enabled) ? '' : e.search,
+                        }
+                    );
+                }*/
+            }
+            else if(!e.enabled && e.dataType === 'datespan'){
+                   this.searchQuery.push(
+                       {
+                           key: e.keys.from,
+                           search: '',
+                       },
+                        {
+                           key: e.keys.to,
+                           search: '',
+                       }
+                   );
+            }
+            else{
+                if(e.dataType === 'expire'){
+                    e.search = (this.expireValue === undefined || 
+                                this.expireValue === null || 
+                                this.expireValue === '') ? '' : this.expireValue;
+                    this.searchQuery.push(
+                        {
+                            key: e.key,
+                            search: e.search.toString(),
+                        }
+                    );
+                }
+                else{
+                    this.searchQuery.push(
+                        {
+                            key: e.key,
+                            search: (e.search === undefined || !e.enabled) ? '' : e.search,
+                        }
+                    );
+                }
+            }
+        }
+        console.log(filterObj);
+        console.log(this.searchQuery)
+        this.searchToDb.emit(this.searchQuery);
+        this.loadingFlag = true;
+    }
 
     addFiller(){
         this.autoFill = Array(this.passData.pageLength).fill(this.fillData);

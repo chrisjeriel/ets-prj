@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AccountingService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { AgainstNegativeTreaty, AccJvInPolBalAgainstLoss } from '@app/_models';
+import { AgainstNegativeTreaty, AccJvInPolBalAgainstLoss, AccJvOutAccOffset} from '@app/_models';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -38,13 +38,13 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
   };
 
   passDataOffsetting: any = {
-    tableData: this.accountingService.getAccJVInPolBal(),
+    tableData: this.accountingService.getAccJvOutAccOffset(),
     tHeader: ['SOA No','Policy No.','Co. Ref No.','Inst No.','Eff Date','Due Date','No. of Days Overdue','Curr','Curr Rate','Premium','RI Comm','Charges','Net Due','Payments','Balance',"Overdue Interest"],
     resizable: [true, true, true, true, true, true, true, true, true,true,true,true,true,true,true,true],
     dataTypes: ['text','text','text','number','date','date','number','text','percent','currency','percent','percent','currency','currency','currency','percent'],
-    nData: new AccJvInPolBalAgainstLoss(null,null,null,null,new Date(),new Date(),null,null,null,null,null,null,null,null,null),
+    nData: new AccJvOutAccOffset(null,null,null,null,new Date(),new Date(),null,null,null,null,null,null,null,null,null,null),
     total:[null,null,null,null,null,null,null,null,'Total','premium','riComm','charges','netDue','payments','bal','overdueInt'],
-    magnifyingGlass: ['soaNo','instNo'],
+/*    magnifyingGlass: ['soaNo','instNo'],*/
     checkFlag: true,
     addFlag: true,
     deleteFlag: true,

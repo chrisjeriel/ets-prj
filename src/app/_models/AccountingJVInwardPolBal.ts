@@ -5,7 +5,6 @@ export class AccJvInPolBal {
 	instNo: number;
 	effDate: Date;
 	dueDate: Date;
-	noOfDaysOverDue: number;
 	curr: string;
 	currRate: number;
 	premium: number;
@@ -22,7 +21,6 @@ export class AccJvInPolBal {
 		instNo: number,
 		effDate: Date,
 		dueDate: Date,
-		noOfDaysOverDue: number,
 		curr: string,
 		currRate: number,
 		premium: number,
@@ -39,7 +37,6 @@ export class AccJvInPolBal {
 		this.instNo = instNo;
 		this.effDate = effDate;
 		this.dueDate = dueDate;
-		this.noOfDaysOverDue = noOfDaysOverDue;
 		this.curr = curr;
 		this.currRate = currRate;
 		this.premium = premium;
