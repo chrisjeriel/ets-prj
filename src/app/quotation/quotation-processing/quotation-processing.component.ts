@@ -41,7 +41,7 @@ export class QuotationProcessingComponent implements OnInit {
     riskName: string = "";
     riskNameList: string[] = [];
     //existingQuoteNoIndex: number = 0;
-    existingQuotationNo: string = "";
+    existingQuotationNo: string[] = [];
 
     selectedQuotation: any = null;
 
@@ -292,16 +292,16 @@ export class QuotationProcessingComponent implements OnInit {
 
     nextBtnEvent() {
         //neco was here
-        this.existingQuotationNo = "";
+        this.existingQuotationNo = [];
         for(var i = 0; i < this.splittedLine.length; i++){
             if(this.line == this.splittedLine[i][0] && this.riskName == this.riskNameList[i] && this.riskNameList[i] != ""){
                 //this.existingQuoteNoIndex = i;
-                this.existingQuotationNo = this.passData.tableData[i].quotationNo;
-                break;
+                this.existingQuotationNo.push(this.passData.tableData[i].quotationNo);
+                //break;
             }
         }
 
-        if(this.existingQuotationNo != ""){
+        if(this.existingQuotationNo.length > 0){
             $('#modIntModal > #modalBtn').trigger('click');
 
         }else{
