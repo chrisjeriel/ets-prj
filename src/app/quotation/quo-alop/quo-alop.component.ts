@@ -143,10 +143,10 @@ export class QuoAlopComponent implements OnInit {
                   this.alopData.address = data.insured[0].address;
                 })
               }
-              setTimeout(() => {
+              /*setTimeout(() => {
                 $('input[appCurrency]').focus();
                 $('input[appCurrency]').blur();
-              }, 0)
+              }, 0)*/
        });
     }
 

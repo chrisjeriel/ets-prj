@@ -27,6 +27,7 @@ export class MtnInsuredComponent implements OnInit {
     }
 
   selected: any = null;
+  modalOpen: boolean = false;
 
 
   constructor(private modalService: NgbModal, private mtnService : MaintenanceService) { }
@@ -54,7 +55,9 @@ export class MtnInsuredComponent implements OnInit {
     this.mtnService.getMtnInsured('').subscribe((data: any) => {
           this.passData.tableData = data.insured;
           this.table.refreshTable();
+          this.modalOpen = true;
         });
+    this.modalOpen = true;
 
   }
 

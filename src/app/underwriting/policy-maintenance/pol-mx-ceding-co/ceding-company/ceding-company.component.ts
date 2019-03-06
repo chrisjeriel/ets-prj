@@ -63,7 +63,8 @@ export class CedingCompanyComponent implements OnInit {
         pageID: 'direct',
         keys:['coNo','name','abbreviation','address','membershipDate','terminationDate','inactiveDate']
     };
-    
+
+    modalOpen:boolean = false;
 
     
   constructor(private underwritingService: UnderwritingService, private modalService: NgbModal ) { }
@@ -99,6 +100,7 @@ export class CedingCompanyComponent implements OnInit {
          }
          this.table.refreshTable();          
      });
+     this.modalOpen = true;
   }
 
   checkCode(code) {

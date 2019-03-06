@@ -297,8 +297,6 @@ export class HoldCoverComponent implements OnInit {
 
   onRowClick(event){
     this.rowRec = event;
-    console.log(this.rowRec);
-    console.log("asdasd");
   }
 
   onSaveClickLOV(){
@@ -333,7 +331,7 @@ export class HoldCoverComponent implements OnInit {
         this.quotationService.getQuoteGenInfo('',this.plainQuotationNo(this.quoteNo))
           .subscribe(val => {
           this.quoteId = val['quotationGeneralInfo'].quoteId;
-          this.holdCover.createDate = this.formatDate(val['quotationGeneralInfo'].createDate);
+          this.holdCover.createDate = new Date().toISOString();
           this.holdCover.createUser = val['quotationGeneralInfo'].createUser;
 
              this.holdCoverReq = {
@@ -366,7 +364,7 @@ export class HoldCoverComponent implements OnInit {
                          $('.warn').blur();
                          //this.warningMsg = data['errorList'][0].errorMessage;
                          this.dialogIcon = "error"
-                          this.dialogMessage = data['errorList'][0].errorMessage;
+                          this.dialogMessage = "Please check the field values";
                           $('#hold-cover #successModalBtn').trigger('click');
                       }else{
                          this.dialogIcon = ""

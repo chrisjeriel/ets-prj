@@ -119,10 +119,9 @@ export class QuoteEndorsementComponent implements OnInit {
 
     ngOnInit() {  
         if(this.OpenCover){
-          this.cancelLink = '/quotation-processing';
-          
-        }else{
           this.cancelLink = '/open-cover-processing';
+        }else{
+          this.cancelLink = '/quotation-processing';
         }
         
         setTimeout(()=>{

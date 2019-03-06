@@ -15,7 +15,7 @@ export class MtnAttentionComponent implements OnInit {
   constructor(private modalService: NgbModal, private underwritingService : UnderwritingService) { }
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
   @Input() cedingId: string = "";
-   
+  modalOpen: boolean = false;
 	passDataAttention: any = {
 		tableData:[/*
 			[true,'Mr.','Henry','I','Tiu','Engg Head','Engineering Insurance','09178348984',null],
@@ -70,6 +70,7 @@ export class MtnAttentionComponent implements OnInit {
                        }
                        this.table.refreshTable();
                    });
+                     this.modalOpen = true;
        }, 100);
       
   }
