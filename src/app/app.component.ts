@@ -16,7 +16,6 @@ export class AppComponent  {
     datetime: number;
     currentUser: User;
     public style: object = {};
-    accessibleModules: string[] = ["QUOTE001", "QUOTE002"];
 
     private _opened: boolean = true; /*must be added*/
     private _closeOnClickOutside: boolean = true; /*must be added*/

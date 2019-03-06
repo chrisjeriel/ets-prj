@@ -103,17 +103,10 @@ export class AttachmentOcComponent implements OnInit {
 
     }
     //console.log(this.savedData);
-    this.quotationService.saveQuoteAttachmentOc(1,this.savedData,this.deletedData).subscribe((data: any) => {
-
-      $('#successModalBtn').trigger('click');
-    });
+    this.quotationService.saveQuoteAttachmentOc(1,this.savedData,this.deletedData).subscribe((data: any) => {});
   }
 
   cancel(){
   }
-
-  onClickSave(){
-  $('#confirm-save #modalBtn2').trigger('click');
-}
 
 }

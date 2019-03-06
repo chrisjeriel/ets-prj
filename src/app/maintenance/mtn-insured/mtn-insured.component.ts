@@ -26,7 +26,7 @@ export class MtnInsuredComponent implements OnInit {
 
     }
 
-  selected: any = null;
+  selected: any;
 
 
   constructor(private modalService: NgbModal, private mtnService : MaintenanceService) { }
@@ -36,11 +36,7 @@ export class MtnInsuredComponent implements OnInit {
   }
 
   select(data){
-  	if(Object.is(this.selected, data)){
-      this.selected = null
-    } else {
-      this.selected = data;
-    }
+  	  this.selected = data;
   }
 
   okBtnClick(){
@@ -51,26 +47,11 @@ export class MtnInsuredComponent implements OnInit {
     while(this.passData.tableData.length>0){
       this.passData.tableData.pop();
     }
-    this.mtnService.getMtnInsured('').subscribe((data: any) => {
+    this.mtnService.getMtnInsured().subscribe((data: any) => {
           this.passData.tableData = data.insured;
           this.table.refreshTable();
         });
 
-  }
-
-  checkCode(code, type) {
-    this.mtnService.getMtnInsured(code).subscribe(data => {
-      if(data['insured'].length > 0) {
-        this.selectedData.emit(data['insured'][0]);
-      } else {
-        this.selectedData.emit({
-          insuredId: '',
-          insuredName: ''
-        });        
-
-        $(type + ' #modalBtn').trigger('click');
-      }      
-    });
   }
 
 }

@@ -73,6 +73,10 @@ export class QuotationService {
     }
 
     getCoverageInfo(quotationNo?:any , quotationId?: string) {
+        this.coverageInfoData = [
+            new QuotationCoverageInfo("1", "I", "3", "69000", ""),
+            new QuotationCoverageInfo("2", 'II', "2", "123000", "")
+        ];
         const params = new HttpParams()
              .set('quotationNo', (quotationNo === null || quotationNo === undefined ? '' : quotationNo) )
              .set('quoteId',(quotationId === null || quotationId === undefined ? '' : quotationId) )
@@ -127,17 +131,14 @@ export class QuotationService {
         return this.quotationListData;
     }
 
-    getQuotationHoldCoverInfo(searchParams: any[]) {
+    getQuotationHoldCoverInfo() {
         this.holdCoverMonitoringListData = [
             new HoldCoverMonitoringList("HC-CAR-2018-00001-00", "Open", "Phil. Guaranty", "CAR-2018-00066-00-31", "Malayan", "5K Builders", new Date('2018-12-01'), new Date('2018-12-31'), "P8M001KJ", "Juan Cruz", new Date('2018-12-01')),
             new HoldCoverMonitoringList("HC-EEI-2018-00001-01", "Expired", "Tan-Gatue Adjustment", "EEI-2018-00088-00-67", "FLT Prime", "5K Builders", new Date('2018-11-01'), new Date('2018-11-31'), "MC-MPC-HO-0001", "Rose Lim", new Date('2019-09-09')),
         ];
         //return this.holdCoverMonitoringListData;
         
-        var params;
-
-        if(searchParams.length < 1){
-            params = new HttpParams()
+        const params = new HttpParams()
              .set('quotationNo','')
              .set('status','')
              .set('cedingName','')
@@ -150,13 +151,7 @@ export class QuotationService {
              .set('reqBy','')
              .set('reqDate','')
              .set('expiringInDays','')
-        }
-         else{
-             params = new HttpParams();
-            for(var i of searchParams){
-                params = params.append(i.key, i.search);
-            }
-        }
+             
             return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteHoldCoverListing',{params});
     }
 
@@ -287,7 +282,7 @@ export class QuotationService {
 
     }
 
-    getQuoProcessingData(searchParams: any[]) {
+    getQuoProcessingData() {
         /*this.quoProcessingData = [
             new QuotationProcessing('CAR-2015-00088-00-99', 'Direct', 'CAR Wet Risks', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'CAR-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
                 new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
@@ -326,36 +321,29 @@ export class QuotationService {
             new QuotationProcessing('DOS-2015-00088-00-75', 'Direct', 'DOS', 'In Progress', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'DOS-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
                 new Date('2015-03-09'), 'Rose Lim', 'QUECOH')
         ];*/
-        var params;
-        if(searchParams.length < 1){
-             params = new HttpParams()
-                    .set('quotationNo','')
-                    .set('cessionDesc', '')
-                    .set('lineClassCdDesc', '')
-                    .set('status','')
-                    .set('cedingName','')
-                    .set('principalName','')
-                    .set('contractorName','')
-                    .set('insuredDesc','')
-                    .set('riskName','')
-                    .set('objectDesc','')
-                    .set('site','')
-                    .set('currencyCd','')
-                    .set('issueDate','')
-                    .set('expiryDate','')
-                    .set('reqBy','')
-                    .set('createUser','');
-                    // .set('paginationRequest.position',null)
-                    // .set('paginationRequest.count',null)
-                    // .set('sortRequest.sortKey',null)
-                    // .set('sortRequest.order',null);
-        }
-        else{
-             params = new HttpParams();
-            for(var i of searchParams){
-                params = params.append(i.key, i.search);
-            }
-        }
+
+        const params = new HttpParams()
+                .set('quotationNo','')
+                .set('cessionDesc', '')
+                .set('lineClassCdDesc', '')
+                .set('status','')
+                .set('cedingName','')
+                .set('principalName','')
+                .set('contractorName','')
+                .set('insuredDesc','')
+                .set('riskName','')
+                .set('objectDesc','')
+                .set('site','')
+                .set('currencyCd','')
+                .set('issueDate','')
+                .set('expiryDate','')
+                .set('reqBy','')
+                .set('createUser','');
+                // .set('paginationRequest.position',null)
+                // .set('paginationRequest.count',null)
+                // .set('sortRequest.sortKey',null)
+                // .set('sortRequest.order',null);
+
         
         return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteListing', {params});
        

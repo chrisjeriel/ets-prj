@@ -1,10 +1,9 @@
-import { Component, OnInit, Input, Output, EventEmitter, Renderer, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, Renderer } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from '@app/app.component';
 import { retry, catchError } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 import { DummyInfo } from '../../../_models';
 
@@ -15,7 +14,7 @@ import { DummyInfo } from '../../../_models';
     providers: [NgbDropdownConfig]
 })
 export class CustEditableNonDatatableComponent implements OnInit {
-    @ViewChild("deleteModal") deleteModal:ModalComponent;
+
     @Input() tableData: any[] = [];
     @Output() tableDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
     @Input() tHeader: any[] = [];
@@ -108,7 +107,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
     loadingFlag: boolean = true;
     @Output() retrieveData: EventEmitter<any> = new EventEmitter();
     failed: boolean = false;
-    isDirty: boolean = false;
 
     refreshTable(initLoad?){
         if(initLoad === undefined){
@@ -204,27 +202,20 @@ export class CustEditableNonDatatableComponent implements OnInit {
         this.search(this.searchString);
         this.tableDataChange.emit(this.passData.tableData);
         this.add.next(event);
-        $('#cust-table-container').addClass('ng-dirty');
     }
 
     
 
 
     onClickDelete() {
-        // for (var i = 0; i < this.passData.tableData.length; ++i) {
-        //     if(this.passData.tableData[i].checked){
-        //         this.passData.tableData[i].checked = false;
-        //         this.passData.tableData[i].deleted = true;
-        //         this.passData.tableData[i].edited = true;
-        //     }
-        // }
-        for(let i = 0; i<this.selected.length;i++){
-            this.selected[i].checked = false;
-            this.selected[i].deleted = true;
-            this.selected[i].edited = true;
+        console.log(this.passData.tableData);
+        for (var i = 0; i < this.passData.tableData.length; ++i) {
+            if(this.passData.tableData[i].checked){
+                this.passData.tableData[i].checked = false;
+                this.passData.tableData[i].deleted = true;
+                this.passData.tableData[i].edited = true;
+            }
         }
-        $('#cust-table-container').addClass('ng-dirty');
-        this.selected = [];
         this.refreshTable();
         this.search(this.searchString);
         this.tableDataChange.emit(this.passData.tableData);
@@ -400,6 +391,8 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     removeSelected(event, data){
+        console.log(event)
+        console.log(data)
         data.checked = event.target.checked;
         if(!event.target.checked){
             this.selected.splice(this.selected.indexOf(data), 1);
@@ -410,6 +403,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     assignChckbox(event,data,key){
+        console.log(event.target.checked);
         if(typeof data[key] == 'boolean')
             data[key] = event.target.checked;
         else
@@ -426,31 +420,17 @@ export class CustEditableNonDatatableComponent implements OnInit {
         }
     }
 
-    selectAll(value){
-        for (let data of this.displayData) {
-            if(data != this.fillData){
-                data.checked = value;
-                this.selected.push(data);
-            }
+    selectAll(){
+        for (var i = (this.p2*this.passData.pageLength) - this.passData.pageLength; i < this.p2*this.passData.pageLength; i++) {
+            console.log('count: '+ i)
+            if(this.displayData[i] != this.fillData)
+                this.displayData[i].checked = true;
         }
         this.refreshTable();
     }
 
     confirmDelete(){
-        if(this.selected.length != 0 ){
-            $('#confirm-delete'+this.passData.pageID+' #modalBtn2').trigger('click');
-        }
-    }
-
-    closeModal(){
-        this.deleteModal.closeModal()
-    }
-
-    upload(data,event){
-        console.log(event.target);
-        data.fileName=event.target.files[0].name;
-        data.edited=true;
-        event.target.className += "ng-dirty"
+        $('#confirm-delete #modalBtn').trigger('click');
     }
  
 }

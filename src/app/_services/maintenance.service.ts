@@ -17,11 +17,8 @@ export class MaintenanceService{
 		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnDistrict",{params});
 	}
 
-	getMtnInsured(insuredId){
-		const params = new HttpParams()
-		     .set('insuredId', insuredId);
-
-		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnInsured", {params});
+	getMtnInsured(){
+		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnInsured");
 	}
 
 	// getEndtCode(lineCd?:string,endtCd?:number){
@@ -86,18 +83,12 @@ export class MaintenanceService{
     }
 
 
-	getLineLOV(lineCd) {
-		const params = new HttpParams()
-			.set('lineCd', lineCd);
-
-       	return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMntLine', {params});
+	getLineLOV() {
+       	return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMntLine');
     }
 
-    getIntLOV(intmId) {
-    	const params = new HttpParams()
-			.set('intmId', intmId);
-
-       	return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMntIntermediary', {params});
+    getIntLOV() {
+       	return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMntIntermediary');
     }
 
 	getMtnRiskListing(riskId,riskAbbr,riskName,regionDesc,provinceDesc,cityDesc,districtDesc,blockDesc,latitude,longitude,activeTag) {
@@ -125,12 +116,12 @@ export class MaintenanceService{
 
         return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMtnSectionCovers', {params});     
 	}*/
-	getMtnSectionCovers(lineCd,coverCd) {
-		const params = new HttpParams()
+	getMtnSectionCovers() {
+		/*const params = new HttpParams()
                 .set('lineCd',lineCd)
-                .set('coverCd',coverCd);
+                .set('coverCd',coverCd);*/
 
-        return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMtnSectionCovers', {params});     
+        return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMtnSectionCovers');     
 	}
 
 	getMtnTypeOfCession(cessionId) {

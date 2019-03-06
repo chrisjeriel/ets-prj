@@ -108,7 +108,6 @@ export class AccountingService {
 	batchOR: BatchOR[] = [];
 	jvAccountingEntry: JVAccountingEntries[] = [];
 	batchOR2: BatchOR2[] = [];
-	
 	constructor(private http: HttpClient) { }
 
 	getAmountDetails() {

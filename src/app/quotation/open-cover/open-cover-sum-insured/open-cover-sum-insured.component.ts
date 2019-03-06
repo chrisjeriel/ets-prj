@@ -86,8 +86,4 @@ export class OpenCoverSumInsuredComponent implements OnInit {
   	this.coverageOcData.currencyCd = data.currencyCd;
   }
 
-  onClickSave(){
-    $('#confirm-save #modalBtn2').trigger('click');
-  }
-
 }

@@ -59,7 +59,7 @@ export class MtnObjectComponent implements OnInit {
         ]
     }
 
-  selected: any = null;
+  selected: any;
 
 
   constructor(private modalService: NgbModal, private mtnService : MaintenanceService) { }
@@ -68,11 +68,7 @@ export class MtnObjectComponent implements OnInit {
   }
 
   select(data){
-  	if(Object.is(this.selected, data)){
-      this.selected = null
-    } else {
-      this.selected = data;
-    }
+  	  this.selected = data;
   }
 
   okBtnClick(){
@@ -96,22 +92,6 @@ export class MtnObjectComponent implements OnInit {
           }
           this.table.refreshTable();
         });
-  }
-
-  checkCode(line, code) {
-    this.mtnService.getMtnObject(line, code).subscribe(data => {      
-      if(data['object'].length > 0) {
-        this.selectedData.emit(data['object'][0]);
-      } else {
-        this.selectedData.emit({
-          objectId: '',
-          objectDesc: ''
-        });
-          
-        $('#objectMdl > #modalBtn').trigger('click');
-      }
-      
-    });
   }
 
 }

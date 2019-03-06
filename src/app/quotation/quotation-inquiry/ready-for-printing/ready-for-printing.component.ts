@@ -25,92 +25,87 @@ export class ReadyForPrintingComponent implements OnInit {
       "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "date", "date", "text"
     ],
     filters: [
-        {
-            key: 'quotationNo',
-            title: 'Quotation No.',
-            dataType: 'text'
-        },
-        {
-            key: 'cessionDesc',
-            title: 'Type of Cession',
-            dataType: 'text'
-        },
-        {
-            key: 'lineClassCdDesc',
-            title: 'Line Class',
-            dataType: 'text'
-        },
-        {
-            key: 'status',
-            title: 'Status',
-            dataType: 'text'
-        },
-        {
-            key: 'cedingName',
-            title: 'Ceding Co.',
-            dataType: 'text'
-        },
-        {
-            key: 'principalName',
-            title: 'Principal',
-            dataType: 'text'
-        },
-        {
-            key: 'contractorName',
-            title: 'Contractor',
-            dataType: 'text'
-        },
-        {
-            key: 'insuredDesc',
-            title: 'Insured',
-            dataType: 'text'
-        },
-        {
-            key: 'riskName',
-            title: 'Risk',
-            dataType: 'text'
-        },
-        {
-            key: 'objectDesc',
-            title: 'Object',
-            dataType: 'text'
-        },
-        {
-            key: 'site',
-            title: 'Site',
-            dataType: 'text'
-        },
-        {
-            key: 'policyNo',
-            title: 'Policy No.',
-            dataType: 'text'
-        },
-        {
-            key: 'currencyCd',
-            title: 'Currency',
-            dataType: 'text'
-        },
-        {
-            key: 'issueDate',
-            title: 'Quote Date',
-            dataType: 'date'
-        },
-        {
-            key: 'expiryDate',
-            title: 'Valid Until',
-            dataType: 'date'
-        },
-        {
-            key: 'reqBy',
-            title: 'Requested By',
-            dataType: 'text'
-        },
-        {
-            key: 'createUser',
-            title: 'Created By',
-            dataType: 'text'
-        },
-        ],
+      {
+        key: 'quotationNo',
+        title: 'Quotation No',
+        dataType: 'text'
+      },
+      {
+        key: 'approvedBy',
+        title: 'Approved By',
+        dataType: 'text'
+      },
+      {
+        key: 'typeOfCession',
+        title: 'Type of Cession',
+        dataType: 'text'
+      },
+      {
+        key: 'lineClass',
+        title: 'Line Class',
+        dataType: 'text'
+      },
+      {
+        key: 'status',
+        title: 'Status',
+        dataType: 'text'
+      },
+      {
+        key: 'cedingCompany',
+        title: 'Ceding Co',
+        dataType: 'text'
+      },
+      {
+        key: 'principal',
+        title: 'Principal',
+        dataType: 'text'
+      },
+      {
+        key: 'contractor',
+        title: 'Contractor',
+        dataType: 'text'
+      },
+      {
+        key: 'insured',
+        title: 'Insured',
+        dataType: 'text'
+      },
+      {
+        key: 'risk',
+        title: 'Risk',
+        dataType: 'text'
+      },
+      {
+        key: 'object',
+        title: 'Object',
+        dataType: 'text'
+      },
+      {
+        key: 'site',
+        title: 'Site',
+        dataType: 'text'
+      },
+      {
+        key: 'currency',
+        title: 'Currency',
+        dataType: 'text'
+      },
+      {
+        key: 'quoteDate',
+        title: 'Quote Date',
+        dataType: 'date'
+      },
+      {
+        key: 'validUntil',
+        title: 'Valid Until',
+        dataType: 'date'
+      },
+      {
+        key: 'requestedBy',
+        title: 'Requested By',
+        dataType: 'text'
+      },
+    ],
 
     tableData: [],
     pageLength: 10,
@@ -121,15 +116,10 @@ export class ReadyForPrintingComponent implements OnInit {
 
   }
 
-  searchParams: any[] = [];
-
   ngOnInit() {
     this.btnDisabled = true;
-    this.retrieveQuoteListingMethod();
-  }
 
-  retrieveQuoteListingMethod(){
-    this.quotationService.getQuoProcessingData(this.searchParams).subscribe(data => {
+    this.quotationService.getQuoProcessingData().subscribe(data => {
             this.records = data['quotationList'];
 
             for(let rec of this.records){
@@ -161,13 +151,6 @@ export class ReadyForPrintingComponent implements OnInit {
         });
 
   }
-
-  //Method for DB query
-    searchQuery(searchParams){
-        this.searchParams = searchParams;
-        this.passData.tableData = [];
-        this.retrieveQuoteListingMethod();
-    }
 
   dateParser(arr){
     return new Date(arr[0] + '-' + arr[1] + '-' + arr[2]);   

@@ -9,7 +9,7 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
   styleUrls: ['./mtn-risk.component.css']
 })
 export class MtnRiskComponent implements OnInit {
-	selected: any = null;
+	selected: any;
 
   riskListing: any = {
     tableData: [],
@@ -60,11 +60,8 @@ export class MtnRiskComponent implements OnInit {
   }
 
   onRowClick(data){
-  	if(Object.is(this.selected, data)){
-      this.selected = null
-    } else {
-      this.selected = data;
-    }
+  	//console.log(data);
+  	this.selected = data;
   }
 
   confirm(){
@@ -93,22 +90,6 @@ export class MtnRiskComponent implements OnInit {
 
         this.table.refreshTable();
       });
-  }
-
-  checkCode(code) {
-    this.maintenanceService.getMtnRisk(code).subscribe(data => {
-      if(data['risk'] != null) {
-        this.selectedData.emit(data['risk']);
-      } else {
-        this.selectedData.emit({
-          riskId: '',
-          riskName: ''
-        });
-
-        $('#riskMdl > #modalBtn').trigger('click');
-      }
-      
-    });
   }
 
 }

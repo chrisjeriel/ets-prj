@@ -35,7 +35,7 @@ export class HoldCoverMonitoringListComponent implements OnInit {
             {
                 key: 'holdCoverNo',
                 title: 'Hold Cover No.',
-                dataType: 'seq'
+                dataType: 'text'
             },
             {
                 key: 'status',
@@ -43,54 +43,49 @@ export class HoldCoverMonitoringListComponent implements OnInit {
                 dataType: 'text'
             },
             {
-                key: 'cedingName',
-                title: 'Ceding Co',
+                key: 'cedingCompany',
+                title: 'Ceding Company',
                 dataType: 'text'
             },
             {
                 key: 'quotationNo',
                 title: 'Quotation No',
-                dataType: 'seq'
+                dataType: 'text'
             },
             {
-                key: 'riskName',
+                key: 'risk',
                 title: 'Risk',
                 dataType: 'text'
             },
             {
-                key: 'insuredDesc',
+                key: 'insured',
                 title: 'Insured',
                 dataType: 'text'
             },
             {
                 key: 'periodFrom',
                 title: 'Period From',
-                dataType: 'datespan'
+                dataType: 'date'
             },
             {
                 key: 'periodTo',
                 title: 'Period To',
-                dataType: 'datespan'
+                dataType: 'date'
             },
             {
-                key: 'compRefHoldCovNo',
-                title: 'CR Hold Cov No.',
-                dataType: 'seq'
+                key: 'compRefHoldCoverNo',
+                title: 'Comp. Ref. Hold Cover No.',
+                dataType: 'text'
             },
             {
-                key: 'reqBy',
+                key: 'requestedBy',
                 title: 'Requested By',
                 dataType: 'text'
             },
             {
-                key: 'reqDate',
+                key: 'requestDate',
                 title: 'Request Date',
                 dataType: 'date'
-            },
-            {
-                key: 'expiringInDays',
-                title: 'Expires in (Days)',
-                dataType: 'expire'
             },
 
         ],
@@ -99,8 +94,6 @@ export class HoldCoverMonitoringListComponent implements OnInit {
         keys: ['holdCoverNo','status','cedingName','quotationNo','riskName',
             'insuredDesc','periodFrom','periodTo','compRefHoldCovNo','reqBy','reqDate']
     }
-
-    searchParams: any[] = [];
 
     ngOnInit() {
         this.titleService.setTitle("Quo | Hold Cover Monitoring");
@@ -131,12 +124,7 @@ export class HoldCoverMonitoringListComponent implements OnInit {
         //this.passData.tableData = this.quotationService.getQuotationHoldCoverInfo();
     
         //this.holdCoverMonitoringList = new HoldCoverMonitoringList(null,null,null,null,null,null,null,null,null,null,null);
-       
-       this.retrieveQuoteHoldCoverListingMethod();
-    }
-
-    retrieveQuoteHoldCoverListingMethod(){
-         this.quotationService.getQuotationHoldCoverInfo(this.searchParams)
+        this.quotationService.getQuotationHoldCoverInfo()
             .subscribe(val =>
                 {
                     console.log(val);
@@ -160,14 +148,6 @@ export class HoldCoverMonitoringListComponent implements OnInit {
                 }
             );
     }
-
-     //Method for DB query
-    searchQuery(searchParams){
-        this.searchParams = searchParams;
-        this.passData.tableData = [];
-        this.retrieveQuoteHoldCoverListingMethod();
-    }
-
     onRowClick(event) {
         for (var i = 0; i < event.target.parentElement.children.length; i++) {
             this.quotationService.rowData[i] = event.target.parentElement.children[i].innerText;
