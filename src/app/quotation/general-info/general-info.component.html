@@ -741,7 +741,7 @@
 							<span>&nbsp;</span> -->
 
 							<div class="form-control-sm col-sm-6 edtr-cont" style="height: 60px; padding-right: 6px !important;">
-             					<text-editor [editorContent]="genInfoData.openingParag" (fetchContent)="genInfoData.openingParag = $event" [edtrOpnrPos]="2" [readonly]="inquiryFlag">
+             					<text-editor [editorContent]="genInfoData.openingParag" (fetchContent)="genInfoData.openingParag = $event" [edtrOpnrPos]="2" [readonly]="inquiryFlag" [required]="!inquiryFlag">
              						<ng-container icon-1>
              							<a (click)="showOpeningWordingLov()"><i class="fa fa-search"></i></a>
              						</ng-container>
@@ -749,7 +749,7 @@
           					</div>
 
           					<div class="form-control-sm col-sm-6 edtr-cont" style="height: 60px; padding-left: 6px !important;">
-             					<text-editor [editorContent]="genInfoData.closingParag" (fetchContent)="genInfoData.closingParag = $event" [edtrOpnrPos]="2" [readonly]="inquiryFlag">
+             					<text-editor [editorContent]="genInfoData.closingParag" (fetchContent)="genInfoData.closingParag = $event" [edtrOpnrPos]="2" [readonly]="inquiryFlag" [required]="!inquiryFlag">
              						<ng-container icon-1>
              							<a (click)="showClosingWordingLov()"><i class="fa fa-search"></i></a>
              						</ng-container>
