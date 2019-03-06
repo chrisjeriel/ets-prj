@@ -126,16 +126,27 @@ export class CoverageComponent implements OnInit {
     this.riskId = this.quotationInfo.riskId;
     this.lineCd = this.quoteNo.split('-')[0];
 
+    
+    this.getCoverageInfo();
+      this.coverageData.currencyCd = this.quotationInfo.currencyCd;
+      this.coverageData.currencyRt = this.quotationInfo.currencyRt;
+      
+      
+  }
+
+
+  getCoverageInfo(){
     this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
       this.table.refreshTable();
         if(data.quotation.project == null){
           this.maintenanceService.getMtnSectionCovers(this.lineCd,this.coverCd).subscribe((data: any) =>{
             console.log(data)
-              for(var i=0; i< data.sectionCovers.length;i++){
-                if(data.sectionCovers[i].defaultTag == 'Y' ){
-                   this.passData.tableData.push(data.sectionCovers[i]);
-                }
-              }
+              // for(var i=0; i< data.sectionCovers.length;i++){
+              //   if(data.sectionCovers[i].defaultTag == 'Y' ){
+              //      this.passData.tableData.push(data.sectionCovers[i]);
+              //   }
+              // }
+              this.passData.tableData = data.sectionCovers;
               this.table.refreshTable();
           });
         }
@@ -167,6 +178,7 @@ export class CoverageComponent implements OnInit {
           for (var i = 0; i < data.quotation.project.coverage.sectionCovers.length; i++) {
             this.passData.tableData.push(data.quotation.project.coverage.sectionCovers[i]);
           }
+          this.passData.tableData = data.quotation.project.coverage.sectionCovers;
           }
           setTimeout(() => {
             this.focusBlur();
@@ -174,11 +186,6 @@ export class CoverageComponent implements OnInit {
 
       this.table.refreshTable();
     });
-
-      this.coverageData.currencyCd = this.quotationInfo.currencyCd;
-      this.coverageData.currencyRt = this.quotationInfo.currencyRt;
-      
-      
   }
 
 // <<<<<<< HEAD
@@ -253,7 +260,8 @@ export class CoverageComponent implements OnInit {
           } else{
             this.dialogMessage = "";
             this.dialogIcon = "success";
-              $('#coverage #successModalBtn').trigger('click');
+            $('#coverage #successModalBtn').trigger('click');
+            this.getCoverageInfo();
            }
       });
     }

@@ -29,7 +29,7 @@
     </div>
     <div class="expire" *ngIf="passData.expireFilter" align="right" style="margin-top: 1px !important;">
         <label>Expires in (Days): &nbsp; </label>
-        <input type="number" class="form-control-sm expireIn" placeholder="" >
+        <input type="number" class="form-control-sm expireIn" placeholder="" [(ngModel)]="expireValue" (keyup.enter)="pressEnterFilter();">
     </div>
     <div class="search-filter" *ngIf="!passData.tableOnly">
         <label>Search: &nbsp;
@@ -62,20 +62,24 @@
                                 <input [disabled]="!filt.enabled" *ngSwitchCase="'datespan'" type="date" class="form-control cust-sm" [(ngModel)]="filt.search2" (ngModelChange)="filterDisplay(passData.filters,searchString)"> -->
                                 
                                 <!-- DATABASE VERSION -->
-                                <input [disabled]="!filt.enabled" [ngModel]="filt.search" (ngModelChange)="filt.search=$event.toUpperCase()" *ngSwitchCase="'text'"  type="text" class="form-control cust-sm">
-                                 <input [disabled]="!filt.enabled" [ngModel]="filt.search" (ngModelChange)="filt.search=$event.toUpperCase()" *ngSwitchCase="'expire'"  type="hidden" class="form-control cust-sm">
-                                <input [disabled]="!filt.enabled" [ngModel]="filt.search" (ngModelChange)="filt.search=$event.toUpperCase()" *ngSwitchCase="'seq'"  type="text" class="form-control cust-sm">
-                                <input [disabled]="!filt.enabled" [ngModel]="filt.search" (ngModelChange)="filt.search=$event.toUpperCase()" *ngSwitchCase="'date'"  type="date" class="form-control cust-sm">
-                                <input [disabled]="!filt.enabled" [ngModel]="filt.search" (ngModelChange)="filt.search=$event.toUpperCase()"  *ngSwitchCase="'datespan'" type="date" class="form-control cust-sm">
-                                <span class="cust-sm" *ngSwitchCase="'datespan'">-</span>
-                                <input [disabled]="!filt.enabled" [ngModel]="filt.search" (ngModelChange)="filt.search=$event.toUpperCase()" *ngSwitchCase="'datespan'" type="date" class="form-control cust-sm">
+                                <input [disabled]="!filt.enabled" [ngModel]="filt.search" (ngModelChange)="filt.search=$event.toUpperCase()" *ngSwitchCase="'text'"  type="text" class="form-control cust-sm" (keyup.enter)="pressEnterFilter();">
+                                 <input [disabled]="!filt.enabled" [ngModel]="filt.search" (ngModelChange)="filt.search=$event.toUpperCase()" *ngSwitchCase="'expire'"  type="hidden" class="form-control cust-sm" (keyup.enter)="pressEnterFilter();">
+                                <input [disabled]="!filt.enabled" [ngModel]="filt.search" (ngModelChange)="filt.search=$event.toUpperCase()" *ngSwitchCase="'seq'"  type="text" class="form-control cust-sm" (keyup.enter)="pressEnterFilter();">
+                                <input [disabled]="!filt.enabled" [ngModel]="filt.search" (ngModelChange)="filt.search=$event.toUpperCase()" *ngSwitchCase="'date'"  type="date" class="form-control cust-sm" (keyup.enter)="pressEnterFilter();">
+                                <ng-container *ngSwitchCase="'datespan'">
+                                    <input [disabled]="!filt.enabled" [ngModel]="filt.keys?.search" (ngModelChange)="filt.keys.search=$event.toUpperCase()"  type="date" class="form-control cust-sm" (keyup.enter)="pressEnterFilter();">
+                                    <span class="cust-sm">-</span>
+                                    <input [disabled]="!filt.enabled" [ngModel]="filt.keys?.search2" (ngModelChange)="filt.keys.search2=$event.toUpperCase()" type="date" class="form-control cust-sm" (keyup.enter)="pressEnterFilter();">
+                                    <!-- <span>{{filt.keys?.from}}</span>
+                                    <span>{{filt.keys?.to}}</span> -->
+                                </ng-container>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="input-group">
-                                <button class="cust-filter cust-tbl-submit" (click)="dbQuery(passData.filters)"><a>Ok</a></button>
+                                <button id="okFilter" class="cust-filter cust-tbl-submit" (click)="dbQuery(passData.filters)"><a>Ok</a></button>
                             </div>
                         </div>
                     </div>
@@ -167,7 +171,10 @@
                         <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]" [class.d-none]="pinKeys.indexOf(key) != -1" >
                             <div *ngIf="addCheckFlag(data)">
                                 <div *ngSwitchCase="'percent'" style="text-align: right">
-                                    <span class="unclickable">{{ processData(key, data) | number: '1.7-7'}}</span>
+                                    <span class="unclickable">{{ processData(key, data) | number: '1.10-10'}}</span>
+                                </div>
+                                <div *ngSwitchCase="'currencyRate'" style="text-align: right">
+                                    <span class="unclickable">{{ processData(key, data) | number: '1.6-6'}}</span>
                                 </div>
                                 <div *ngSwitchCase="'currency'" style="text-align: right">
                                     <span class="unclickable" [ngClass]="{'negativeNumber': data[key]<0}">{{ processData(key, data) | number: '1.2-2' | negativeAmount}}</span>
