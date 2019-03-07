@@ -37,7 +37,7 @@ export class JvQsoaComponent implements OnInit {
   	genericBtn: "Save",
   	infoFlag:true,
   	paginateFlag:true,	
-  	nData: new QSOABalances(null, null, null, null, null),
+  	nData: new QSOABalances(null, null, null, null, null,null),
   	checkFlag: true,
   	searchFlag: true,
   	widths:['auto','auto','auto','auto','auto']

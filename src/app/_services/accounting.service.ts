@@ -1238,7 +1238,7 @@ export class AccountingService {
 
 	getAccJVInPolBalAgainstLoss() {
 		this.accJVAgainstLoss = [
-			new AccJvInPolBalAgainstLoss('CAR-2018-00001-99-0001-000','CAR-2018-00001-99-0001-000','EN-CAR-2018-00001-99-0001-000', 1, new Date("09/25/2018"), new Date("09/25/2018"), 'PHP', 1.0, 3000000, 0.00, 0.00, 1642857.14, 1357142.86, 1642857.14, 0.00),
+			new AccJvInPolBalAgainstLoss('CAR-2018-00001-99-0001-000','CAR-2018-00001-99-0001-000','EN-CAR-2018-00001-99-0001-000', 1, new Date("09/25/2018"), new Date("09/25/2018"), 'PHP', 1.0, 3000000, 0.00, 0.00, 1642857.14, 1357142.86, 1642857.14, 0.00, 3000000),
 		];
 
 		return this.accJVAgainstLoss;

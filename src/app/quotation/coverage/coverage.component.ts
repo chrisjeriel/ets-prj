@@ -284,4 +284,5 @@ export class CoverageComponent implements OnInit {
     this.coverageData.currencyRt = data.currencyRt;
     this.focusBlur();
   }
+
 }

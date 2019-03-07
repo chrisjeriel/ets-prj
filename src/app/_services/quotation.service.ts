@@ -494,12 +494,12 @@ export class QuotationService {
          const params = new HttpParams()
                 .set('quoteId','')
                 .set('quotationNo',quotationNo);
-          return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteGeneralInfo', {params});
+          return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteGeneralInfo', {params}).pipe(map(res => res));
       } else {
           const params = new HttpParams()
                 .set('quoteId',quoteId)
                 .set('quotationNo',quotationNo);
-          return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteGeneralInfo', {params});
+          return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteGeneralInfo', {params}).pipe(map(res => res));
      }
      
     }
