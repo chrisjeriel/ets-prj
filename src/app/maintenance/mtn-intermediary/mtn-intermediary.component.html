@@ -1,6 +1,6 @@
 <app-modal class="d-none" (modalOpened)="openModal()" id="intermediaryMdl">
 	<div header>List of Values</div>
-	<div body>
+	<div body *ngIf="modalOpen">
 		<app-cust-non-datatable [passData]="intermediaryListing" (rowClick)="onRowClick($event)" ></app-cust-non-datatable>
 	</div>
 	<div footer>

@@ -249,6 +249,8 @@ export class QuotationProcessingComponent implements OnInit {
         this.quotationService.toGenInfo = [];
         this.quotationService.toGenInfo.push("edit", this.line);
 
+        this.quotationService.savingType = 'normal';
+
         setTimeout(() => {
             this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.typeOfCession,  quotationNo : this.quotationNo, from: 'quo-processing', savingType: 'normal' }], { skipLocationChange: true });
         },100);

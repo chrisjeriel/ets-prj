@@ -61,7 +61,15 @@ export class OpenCoverSumInsuredComponent implements OnInit {
           this.coverageOcData.totalValue = data.quotationOc.projectOc.coverageOc.totalValue;
           this.quoteIdOc = data.quotationOc.quoteIdOc;
           this.riskId = data.quotationOc.projectOc.riskId;
-
+          setTimeout(()=>{
+            $('[appcurrencyrate]').focus();
+            $('[appcurrencyrate]').blur();
+            $('[appOtherRates]').focus();
+            $('[appOtherRates]').blur();
+            $('[appCurrency]').focus();
+            $('[appCurrency]').blur();
+            
+          },0);
       });
   }
 
@@ -99,6 +107,10 @@ export class OpenCoverSumInsuredComponent implements OnInit {
 
   onClickSave(){
     $('#confirm-save #modalBtn2').trigger('click');
+  }
+
+  cancel(){
+    this.cancelBtn.clickCancel();
   }
 
 }

@@ -29,7 +29,7 @@ export class SecurityModulesComponent implements OnInit {
     }
 
     PassDataModuleTrans: any = {
-      tableData: [['001','Secutiry'],['002','Quotation Processing'],['003','Quotation Inquiry']],
+      tableData: [['001','Security'],['002','Quotation Processing'],['003','Quotation Inquiry']],
       tHeader: ['Tran Code', 'Description'],
       dataTypes: ['text', 'text'],
       pageID: 3,

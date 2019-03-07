@@ -394,7 +394,7 @@ onSaveClickLOV(){
                 // "holdCoverId": (this.holdCover.holdCoverId === null || this.holdCover.holdCoverId === '') ? 0 : Number(this.hcRevNo),
                 // "holdCoverRevNo": (this.hcRevNo === null || this.hcRevNo === '') ? 0 : Number(this.hcRevNo),
                 // "holdCoverSeqNo": (this.hcSeqNo === null || this.hcSeqNo === '') ? 0 : Number(this.hcSeqNo),
-                "holdCoverId": this.hcRevNo,
+                "holdCoverId": this.holdCover.holdCoverId,
                 "holdCoverRevNo": this.hcRevNo,
                 "holdCoverSeqNo": this.hcSeqNo,
                 "holdCoverYear": (this.hcYear === null || this.hcYear === '' || this.hcYear === undefined) ? String(new Date().getFullYear()) : this.hcYear,
@@ -430,6 +430,7 @@ onSaveClickLOV(){
                       var rec = data['quotationList'][0].holdCover;
                       this.splitHcNo(rec.holdCoverNo);
                       this.holdCover.status = rec.status;
+                      this.holdCover.holdCoverId = rec.holdCoverId;
 
                       if(this.btnCancelMainEnabled === true){
                         this.location.back();

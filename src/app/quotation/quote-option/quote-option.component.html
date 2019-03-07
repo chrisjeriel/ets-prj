@@ -75,7 +75,7 @@
 
 
 
-<app-confirm-save (onYes)="saveData()"></app-confirm-save>
+<app-confirm-save (onYes)="saveQuoteOptionAll()"></app-confirm-save>
 <app-sucess-dialog id="quote-option" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 <app-sucess-dialog id="fail-quote-option" [icon]="dialogIconFail" [message]="dialogMessageFail" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-cancel-button (onYes)="saveData('cancel')" [url]="'/quotation-processing'" ></app-cancel-button>
+<app-cancel-button (onYes)="saveQuoteOptionAll('cancel')" [url]="'/quotation-processing'" ></app-cancel-button>

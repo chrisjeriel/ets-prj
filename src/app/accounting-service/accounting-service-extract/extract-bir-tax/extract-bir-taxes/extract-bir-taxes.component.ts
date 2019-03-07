@@ -23,4 +23,8 @@ export class ExtractBirTaxesComponent implements OnInit {
   	this.onChange.emit(this.taxType);
   }
 
+  extract(){
+    console.log(this.taxType);
+  }
+
 }

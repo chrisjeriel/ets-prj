@@ -97,19 +97,26 @@ export class MtnRiskComponent implements OnInit {
   }
 
   checkCode(code) {
-    this.maintenanceService.getMtnRisk(code).subscribe(data => {
-      if(data['risk'] != null) {
-        this.selectedData.emit(data['risk']);
-      } else {
-        this.selectedData.emit({
-          riskId: '',
-          riskName: ''
-        });
+    if(code.trim() === ''){
+      this.selectedData.emit({
+        riskId: '',
+        riskName: ''
+      });
+    } else {
+      this.maintenanceService.getMtnRisk(code).subscribe(data => {
+        if(data['risk'] != null) {
+          this.selectedData.emit(data['risk']);
+        } else {
+          this.selectedData.emit({
+            riskId: '',
+            riskName: ''
+          });
 
-        $('#riskMdl > #modalBtn').trigger('click');
-      }
-      
-    });
+          $('#riskMdl > #modalBtn').trigger('click');
+        }
+        
+      });
+   }
   }
 
   maintainRisk(){

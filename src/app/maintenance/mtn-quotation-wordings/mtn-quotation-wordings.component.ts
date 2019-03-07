@@ -51,6 +51,7 @@ export class MtnQuotationWordingsComponent implements OnInit {
     }
 
   selected: any;
+  modalOpen:boolean = false;
 
 
   constructor(private modalService: NgbModal, private mtnService : MaintenanceService) { }
@@ -76,6 +77,7 @@ export class MtnQuotationWordingsComponent implements OnInit {
           }
           this.table.refreshTable();
         });
+     this.modalOpen = true;
   }
 
 

@@ -4,15 +4,15 @@
         <div class="form-row custom-row-inline-inset">
             <div class="input-group">
                 <label class="form-control-sm col-sm-2" for="inputQuonum">Quotation No </label>
-                <input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="quoteNoData"
+                <input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="quotationInfo.quotationNo"
                     disabled="disabled">
                 <label class="form-control-sm col-sm-1" for="inputInname">Insured</label>
-                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-6" [ngModel]="insured"
+                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-6" [ngModel]="quotationInfo.quotationNo"
                     disabled="disabled">
             </div>
             <div class="input-group">
                 <label class="form-control-sm col-sm-2" for="inputRisk">Risk</label>
-                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-9" [(ngModel)]="riskName"
+                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-9" [(ngModel)]="quotationInfo.riskName"
                     disabled="disabled">
             </div>
         </div>
@@ -35,7 +35,7 @@
         <!-- <button type="button" class="cust-btn copy-endt"><a>Copy Endt</a></button> -->
 
         <!--<app-cust-editable-table [checkFlag]="true" [addFlag]="true" [deleteFlag]="true" [nData]="nData" [tableData]="tableData" [editFlag]="false" 
-		 [tHeader]="tHeader" [magnifyingGlass]="magnifyingGlass"></app-cust-editable-table>-->
+         [tHeader]="tHeader" [magnifyingGlass]="magnifyingGlass"></app-cust-editable-table>-->
         <div class="row">
             <div class="col-sm-1"></div>
             <div class="col-sm-10" style="margin-top: 0.7em; margin-bottom: -0.4%;">
@@ -109,11 +109,11 @@
 <app-mtn-endt-code id="edntCodeLOV" (selectedData)="selectedEndtLOV($event)" [line]="line"></app-mtn-endt-code>
 
 
-<<!-- app-modal class="d-none" id="successMdl">
+<app-modal class="d-none" id="successMdl">
     <div header>Success</div>
     <div body class="container-flex text-center">
         <span class="fa fa-check-circle fa-3x" style="vertical-align: middle;"></span>
-        <span style="vertical-align: middle; margin-left: 15px;">{{ successMessage }}</span>
+        <span style="vertical-align: middle; margin-left: 15px;">Saved successfully!</span>
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
@@ -124,17 +124,13 @@
     <div header>Warning</div>
     <div body class="container-flex text-center">
         <span class="fa fa-info-circle fa-3x" style="vertical-align: middle;"></span>
-        <span style="vertical-align: middle; margin-left: 15px;">{{ warnMessage }}</span>
+        <span style="vertical-align: middle; margin-left: 15px;">Please complete all the required fields.</span>
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
     </div>
-</app-modal> -->
+</app-modal>
 
 <app-confirm-save (onYes)="saveData()"></app-confirm-save>
-<!-- <app-sucess-dialog id="quote-endorsment" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
- --><app-sucess-dialog [icon]="dialogIcon" [message]="" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
-<!-- <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
-<div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading"> -->
-<!-- <app-cancel-button (onYes)="saveData('cancel')" [url]="'/quotation-processing'" ></app-cancel-button>
- -->
+<app-sucess-dialog id="quote-endorsment" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-cancel-button (onYes)="saveData('cancel')" [url]="cancelLink" ></app-cancel-button>
