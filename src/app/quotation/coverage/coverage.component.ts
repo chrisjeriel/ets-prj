@@ -78,7 +78,7 @@ export class CoverageComponent implements OnInit {
   multiSelectHeaderTxt: string = "";
   multiSelectData: any[] = [];
   dataLoaded:boolean = false;
-  nData: QuotationCoverageInfo = new QuotationCoverageInfo(null, null, null, null, null,null);
+  nData: QuotationCoverageInfo = new QuotationCoverageInfo(null, null, null, null, null);
   projId: number;
   riskId: number;
   temp: number = 0;

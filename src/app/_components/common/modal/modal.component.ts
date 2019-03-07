@@ -37,17 +37,13 @@ export class ModalComponent implements OnInit/*, AfterViewInit*/ {
     ngOnInit() {
 
     }
+
     ngAfterViewInit(){
         
     }
 
 
     open(content) {
-
-
-
-
-
         $('.globalLoading').css('display','none');
         this.modalService.dismissAll();
         this.modalRef = this.modalService.open(this.test, { centered: true, backdrop: 'static', windowClass : this.modalSize });
@@ -64,4 +60,5 @@ export class ModalComponent implements OnInit/*, AfterViewInit*/ {
         this.modalRef.dismiss();
     }
 
+}
 

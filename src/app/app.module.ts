@@ -16,6 +16,7 @@ import { fakeBackendProvider } from './_helpers';
 
 import { AppComponent } from './app.component';
 import { routing } from './app.routing';
+import { UnsavedChangesGuard } from './_guards';
 
 import { AlertComponent } from './_components/common/alert';
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
@@ -314,6 +315,17 @@ import { BatchOsTakeupComponent } from './accounting-in-trust/month-end/batch-os
 import { MtnSectionCoversComponent } from './maintenance/mtn-section-covers/mtn-section-covers.component';
 import { JvPreviewAmountDetailsComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-preview-amount-details/jv-preview-amount-details.component';
 import { JvPreviewTaxDetailsComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-preview-tax-details/jv-preview-tax-details.component';
+import { CurrencyRateDirective } from './_directives/currency-rate.directive';
+import { OtherRatesDirective } from './_directives/other-rates.directive';
+import { UsersMaintenanceComponent } from './security/users-maintenance/users-maintenance.component';
+import { UserGroupsMaintenanceComponent } from './security/users-maintenance/user-groups-maintenance/user-groups-maintenance.component';
+import { UsersComponent } from './security/users-maintenance/users/users.component';
+import { ConfirmSaveComponent } from './_components/common/confirm-save/confirm-save.component';
+import { ModulesMaintenanceComponent } from './security/modules-maintenance/modules-maintenance.component';
+import { SecurityModulesComponent } from './security/modules-maintenance/security-modules/security-modules.component';
+import { ModuleTransactionsComponent } from './security/modules-maintenance/module-transactions/module-transactions.component';
+import { CancelButtonComponent } from './_components/common/cancel-button/cancel-button.component';
+
 
 
 @NgModule({
@@ -635,12 +647,22 @@ import { JvPreviewTaxDetailsComponent } from './accounting-service/journal-vouch
         MtnSectionCoversComponent,
         JvPreviewAmountDetailsComponent,
         JvPreviewTaxDetailsComponent,
+        ConfirmSaveComponent,
+        CancelButtonComponent,
+        CurrencyRateDirective,
+        OtherRatesDirective,
+        UsersMaintenanceComponent,
+        UserGroupsMaintenanceComponent,
+        UsersComponent,
+        ModulesMaintenanceComponent,
+        SecurityModulesComponent,
+        ModuleTransactionsComponent,
     ],
 
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-
+        UnsavedChangesGuard,
         // provider used to create fake backend
         fakeBackendProvider
     ],

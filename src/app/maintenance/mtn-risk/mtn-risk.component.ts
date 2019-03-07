@@ -124,3 +124,5 @@ export class MtnRiskComponent implements OnInit {
     this.modalService.dismissAll();
   }
 
+}
+

@@ -10,7 +10,7 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
   styleUrls: ['./mtn-intermediary.component.css']
 })
 export class MtnIntermediaryComponent implements OnInit {
-  selected: any ;
+  selected: any = null;
 
 intermediaryListing: any = {
     tableData: [],
@@ -23,8 +23,8 @@ intermediaryListing: any = {
     fixedCol: false,
     pageID: 5,
     keys:[
-    	'intmId',
-    	'intmName'],
+      'intmId',
+      'intmName'],
     width:[40,250]
   };
 
@@ -37,21 +37,21 @@ intermediaryListing: any = {
 
   ngOnInit() {
 
-    this.maintenanceService.getIntLOV().subscribe((data: any) =>{
-  		for(var lineCount = 0; lineCount < data.intermediary.length; lineCount++){
-  			this.intermediaryListing.tableData.push(
-  				new Row(data.intermediary[lineCount].intmId, 
-  						data.intermediary[lineCount].intmName)
-  			);  		
-  		}
-  		this.table.refreshTable();
-  	});
+   //  this.maintenanceService.getIntLOV().subscribe((data: any) =>{
+    //   for(var lineCount = 0; lineCount < data.intermediary.length; lineCount++){
+    //     this.intermediaryListing.tableData.push(
+    //       new Row(data.intermediary[lineCount].intmId, 
+    //           data.intermediary[lineCount].intmName)
+    //     );      
+    //   }
+    //   this.table.refreshTable();
+    // });
 
   }
 
   onRowClick(data){
-  	//console.log(data);
-  	this.selected = data;
+    //console.log(data);
+    this.selected = data;
      
   }
 
@@ -101,13 +101,13 @@ intermediaryListing: any = {
 
 class Row {
 
-	intmId: number;
-	intmName: string;
+  intmId: number;
+  intmName: string;
 
-	constructor(intmId: number,
-		intmName: string) {
+  constructor(intmId: number,
+    intmName: string) {
 
-	this.intmId = intmId;
-	this.intmName = intmName;
-	}
+  this.intmId = intmId;
+  this.intmName = intmName;
+  }
 }
