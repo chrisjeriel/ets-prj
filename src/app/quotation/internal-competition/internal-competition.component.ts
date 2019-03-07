@@ -99,33 +99,13 @@ export class InternalCompetitionComponent implements OnInit, OnDestroy {
         console.log(quoteNo);
         this.params.quoteId = this.quotationInfo.quoteId;
         this.params.quotationNo = this.quotationInfo.quotationNo;
-        if(this.params.quoteId != ''){
-            this.quotationService.getIntCompAdvInfo(this.params).subscribe((data: any) => {
-                for(var j = 0; j < data.quotation.length; j++){
-                  this.data = data.quotation[j].competitionsList;
-                  this.quoteIds.push(data.quotation[j].quoteId);
-                  this.cedingIds.push(data.quotation[j].competitionsList[0].cedingId.toString());
-                  for(var i = 0; i < this.data.length; i++){
-                    this.data[i].createDate = new Date(
-                        this.data[i].createDate[0],
-                        this.data[i].createDate[1] - 1,
-                        this.data[i].createDate[2]
-                    );
-                    this.data[i].updateDate = new Date(
-                        this.data[i].updateDate[0],
-                        this.data[i].updateDate[1] - 1,
-                        this.data[i].updateDate[2]
-                    );
-                    this.intCompData.tableData.push(this.data[i]);
-                  }
-                }
-                //console.log(this.intCompData.tableData);
-                this.custEditableNonDatatableComponent.refreshTable();
-          });
-        }
-      this.maintenanceService.getAdviceWordings().subscribe((data: any) => {
+
+        this.retrieveInternalCompetition();
+        
+      /*this.maintenanceService.getAdviceWordings().subscribe((data: any) => {
         //console.log(data);
-      });
+      });*/
+      console.log(this.currentCedingId);
 
     }
 
@@ -133,8 +113,35 @@ export class InternalCompetitionComponent implements OnInit, OnDestroy {
         this.sub.unsubscribe();
     }
 
+    retrieveInternalCompetition(){
+      this.intCompData.tableData = [];
+      if(this.params.quoteId != ''){
+          this.quotationService.getIntCompAdvInfo(this.params).subscribe((data: any) => {
+              for(var j = 0; j < data.quotation.length; j++){
+                this.data = data.quotation[j].competitionsList;
+                this.quoteIds.push(data.quotation[j].quoteId);
+                this.cedingIds.push(data.quotation[j].competitionsList[0].cedingId.toString());
+                for(var i = 0; i < this.data.length; i++){
+                  this.data[i].createDate = new Date(
+                      this.data[i].createDate[0],
+                      this.data[i].createDate[1] - 1,
+                      this.data[i].createDate[2]
+                  );
+                  this.data[i].updateDate = new Date(
+                      this.data[i].updateDate[0],
+                      this.data[i].updateDate[1] - 1,
+                      this.data[i].updateDate[2]
+                  );
+                  this.intCompData.tableData.push(this.data[i]);
+                }
+              }
+              //console.log(this.intCompData.tableData);
+              this.custEditableNonDatatableComponent.refreshTable();
+        });
+      }
+    }
+
     onRowClick(data){
-      console.log(data);
       this.selectedPrintData = data;
 
       if (data.quoteId == null) {
@@ -180,10 +187,13 @@ export class InternalCompetitionComponent implements OnInit, OnDestroy {
             if(data.returnCode === 0){
               console.log("ERROR!");
               console.log(data);
+              console.log(this.savedData);
+              console.log(this.intCompData.tableData);
             }
             else{
               this.resultMessage = "Successfully saved!";
                $('#successModalBtn').trigger('click');
+               this.retrieveInternalCompetition();
                $('.ng-dirty').removeClass('ng-dirty');
             }
         });

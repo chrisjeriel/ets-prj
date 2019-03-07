@@ -23,8 +23,8 @@ export class MtnAttentionComponent implements OnInit {
 		],
 		tHeader: ['Designation','First Name','M.I.','Last Name','Position','Department','Contact No','E-Signature'],
 		dataTypes:['text','text','text','text','text','text','text','text'],
-		paginateFlag: true,
-		infoFlag: true,
+		pagination: true,
+		pageStatus: true,
 		pageLength: 5,
 		widths: ['1','1','1','1','auto','auto','auto','1'],
 		pageID: 16,
@@ -63,13 +63,16 @@ export class MtnAttentionComponent implements OnInit {
       }*/
       setTimeout(()=>{    //<<<---    using ()=> syntax
            this.underwritingService.getCedingCompanyLOV(this.cedingId).subscribe((data:any) => {
-                       for (var i = 0; i < data.cedingCompany.length; i++) {
+                       for (var i = 0; i < data.cedingCompany[0].cedingRepresentative.length; i++) {
                            //this.passDataAttention.tableData.push(new CedingCompany( data.cedingCompany[i].cedingRepresentative.defaultTag,  data.cedingCompany[i].cedingRepresentative.designation, data.cedingCompany[i].cedingRepresentative.firstName, data.cedingCompany[i].cedingRepresentative.middleInitial, data.cedingCompany[i].cedingRepresentative.lastName, data.cedingCompany[i].cedingRepresentative.position, data.cedingCompany[i].cedingRepresentative.department, data.cedingCompany[i].cedingRepresentative.contactNo, data.cedingCompany[i].cedingRepresentative.eSignature));
-                           this.passDataAttention.tableData.push(data.cedingCompany[i].cedingRepresentative);
+                           this.passDataAttention.tableData.push(data.cedingCompany[0].cedingRepresentative[i]);
 
                        }
                        this.table.refreshTable();
+                       console.log("attention");
+           console.log(this.passDataAttention);
                    });
+           
                      this.modalOpen = true;
        }, 100);
       
