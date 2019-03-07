@@ -49,6 +49,8 @@ export class RiskFormComponent implements OnInit, OnDestroy {
             zoneDesc : null,
         }
     errorMdlMessage:any;
+    dialogIcon:string;
+    dialogMessage:string;
 
     constructor(private route: ActivatedRoute, private titleService: Title, private router: Router,private mtnService: MaintenanceService,private modalService: NgbModal ) { }
 
@@ -103,6 +105,12 @@ export class RiskFormComponent implements OnInit, OnDestroy {
     setDistricts(data){
         this.riskData.districtCd = data.districtCd;
         this.riskData.districtDesc = data.districtDesc;
+        this.riskData.cityCd = data.cityCd;
+        this.riskData.cityDesc = data.cityDesc;
+        this.riskData.provinceCd = data.provinceCd;
+        this.riskData.provinceDesc = data.provinceDesc;
+        this.riskData.regionCd = data.regionCd;
+        this.riskData.regionDesc = data.regionDesc;
     }
 
     showBlockModal() {
@@ -112,10 +120,22 @@ export class RiskFormComponent implements OnInit, OnDestroy {
     setCity(data){
         this.riskData.cityCd = data.cityCd;
         this.riskData.cityDesc = data.cityDesc;
+        this.riskData.provinceCd = data.provinceCd;
+        this.riskData.provinceDesc = data.provinceDesc;
+        this.riskData.regionCd = data.regionCd;
+        this.riskData.regionDesc = data.regionDesc;
     }
     setBlock(data){
         this.riskData.blockCd = data.blockCd;
         this.riskData.blockDesc = data.blockDesc;
+        this.riskData.districtCd = data.districtCd;
+        this.riskData.districtDesc = data.districtDesc;
+        this.riskData.cityCd = data.cityCd;
+        this.riskData.cityDesc = data.cityDesc;
+        this.riskData.provinceCd = data.provinceCd;
+        this.riskData.provinceDesc = data.provinceDesc;
+        this.riskData.regionCd = data.regionCd;
+        this.riskData.regionDesc = data.regionDesc;
     }
 
     setCrestaZone(data){
@@ -131,6 +151,8 @@ export class RiskFormComponent implements OnInit, OnDestroy {
     setProvince(data){
         this.riskData.provinceCd = data.provinceCd;
         this.riskData.provinceDesc = data.provinceDesc;
+        this.riskData.regionCd = data.regionCd;
+        this.riskData.regionDesc = data.regionDesc;
     }
 
     openGenericLOV(selector){
@@ -176,8 +198,10 @@ export class RiskFormComponent implements OnInit, OnDestroy {
         this.mtnService.saveMtnRisk(this.riskData).subscribe((data:any)=>{
             if(data['returnCode'] == 0) {
               this.errorMdlMessage = data['errorList'][0].errorMessage;
-              $('#errorMdl > #modalBtn').trigger('click');
-            } else{
+              this.dialogIcon = 'error';
+              $('#successModalBtn').trigger('click');
+            } else{ 
+              this.dialogIcon = '';
               $('#successModalBtn').trigger('click');
               this.riskData.riskId = data.riskId;
              }

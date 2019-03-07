@@ -201,7 +201,7 @@ export class OpenCoverProcessingComponent implements OnInit {
     
     this.quotationService.getOpenCoverProcessingData().subscribe(data => {
       var records = data['quotationOcList'];
-
+      console.log(records);
       for(let rec of records){
         this.passData.tableData.push(new OpenCoverProcessing(
             rec.openQuotationNo,

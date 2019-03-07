@@ -138,14 +138,4 @@
 <app-mtn-city id="cityModal" (selectedData)="setCity($event)"></app-mtn-city>
 <app-mtn-cresta-zone id="crestaZoneModal" (selectedData)="setCrestaZone($event)"></app-mtn-cresta-zone>
 <app-lov [passData]="passLOV" id="lov" (selectedData)="setLOVField($event)"></app-lov>
-<app-sucess-dialog></app-sucess-dialog>
-<app-modal class="d-none" id="errorMdl">
-    <div header>Error</div>
-    <div body class="container-flex text-center">
-        <span class="fa fa-times-circle fa-3x" style="vertical-align: middle;"></span>
-        <span style="vertical-align: middle; margin-left: 15px;">{{ errorMdlMessage }}</span>       
-    </div>
-    <div footer class="d-flex justify-content-center w-100">                    
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
-    </div>
-</app-modal>
+<app-sucess-dialog  [icon]="dialogIcon"></app-sucess-dialog>

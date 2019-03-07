@@ -34,6 +34,7 @@ export class CustNonDatatableComponent implements OnInit {
 
     @Output() rowClick: EventEmitter<any> = new EventEmitter();
     @Output() rowDblClick: EventEmitter<any> = new EventEmitter();
+    @Output() newRowDblClick: EventEmitter<any> = new EventEmitter();
     @Output() add: EventEmitter<any> = new EventEmitter();
     @Output() edit: EventEmitter<any> = new EventEmitter();
     @Output() delete: EventEmitter<any> = new EventEmitter();
@@ -286,9 +287,10 @@ export class CustNonDatatableComponent implements OnInit {
         }
         
     }
-    onRowDblClick(event) {
+    onRowDblClick(event,data) {
         if(!this.nullRow){
             this.rowDblClick.next(event);
+            this.newRowDblClick.emit(data);
         }
     }
 

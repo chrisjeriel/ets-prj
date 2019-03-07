@@ -63,6 +63,7 @@ export class RiskListComponent implements OnInit {
     }
     
     onClickEdit(event){
+        this.selected = event;
         this.router.navigate(['/maintenance-risk',this.selected], {skipLocationChange: true});
     }
 

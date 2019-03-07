@@ -26,7 +26,11 @@
             <span *ngSwitchCase="'info'" class="fa fa-info-circle fa-2x" style="vertical-align: middle;"></span>
             <span *ngSwitchDefault class="fa fa-check-circle fa-2x" style="vertical-align: middle;"></span>
         </ng-container>
-        <span style="vertical-align: middle; margin-left: 5px;font-size: 1em;">{{message==''?'Successfully Saved' : message}}</span>
+        <ng-container [ngSwitch]="icon">
+            <span *ngSwitchCase="'info'"  style="vertical-align: middle; margin-left: 5px;font-size: 1em;">{{message}}</span>
+            <span *ngSwitchCase="'error'" style="vertical-align: middle; margin-left: 5px;font-size: 1em;">{{'Please check field values.'}}</span>
+            <span *ngSwitchDefault        style="vertical-align: middle; margin-left: 5px;font-size: 1em;">{{'Successfully Saved'}}</span>
+        </ng-container>
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
         <button class="cust-btn" type="button" (click)="this.onOk.emit();modal.closeModal();"><a>Ok</a></button>
