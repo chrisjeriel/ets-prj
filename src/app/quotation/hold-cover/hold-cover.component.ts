@@ -330,6 +330,18 @@ onSaveClickLOV(){
         // this.holdCover.holdCoverId = 1;
         // this.hcRevNo = '01';
         // this.hcSeqNo = '00001';
+        this.hcLine  = '';
+        this.hcYear  =  '';
+        this.hcSeqNo = '';
+        this.hcRevNo ='';
+        this.holdCover.periodFrom = '';
+        this.holdCover.periodTo = '';
+        this.holdCover.compRefHoldCovNo = '';
+        this.holdCover.status = '';
+        this.holdCover.reqBy = '';
+        this.holdCover.reqDate = '';
+        this.holdCover.preparedBy = '';
+        this.holdCover.approvedBy = '';
       }else{
         var rec = data['quotationList'][0].holdCover;
         this.holdCover.holdCoverNo = rec.holdCoverNo;
@@ -364,8 +376,6 @@ onSaveClickLOV(){
   onSaveClick(){
       this.loading = true;
       if(this.quoteNo === '' || this.quoteNo === null || this.quoteNo === undefined ||
-         this.hcLine === '' || this.hcLine === null || this.hcLine === undefined ||
-         this.hcYear === '' || this.hcYear === null || this.hcYear === undefined ||
          this.holdCover.periodFrom === '' || this.holdCover.periodFrom === null || this.holdCover.periodFrom === undefined ||
          this.holdCover.periodTo === '' || this.holdCover.periodTo === null || this.holdCover.periodTo === undefined){
          this.loading = false;
@@ -381,17 +391,20 @@ onSaveClickLOV(){
                 "compRefHoldCovNo": this.holdCover.compRefHoldCovNo,
                 "createDate": (this.holdCover.createDate === null || this.holdCover.createDate === '' || this.holdCover.createDate === undefined) ? new Date().toISOString() : this.holdCover.createDate,
                 "createUser": (this.holdCover.createUser === null || this.holdCover.createUser === '' || this.holdCover.createUser === undefined) ? JSON.parse(window.localStorage.currentUser).username : this.holdCover.createUser,
-                "holdCoverId": (this.holdCover.holdCoverId === null || this.holdCover.holdCoverId === '') ? 1 : Number(this.hcRevNo),
-                "holdCoverRevNo": (this.hcRevNo === null || this.hcRevNo === '') ? 1 : this.hcRevNo,
-                "holdCoverSeqNo": (this.hcSeqNo === null || this.hcSeqNo === '') ? 1 : this.hcSeqNo,
-                "holdCoverYear": this.hcYear,
-                "lineCd": this.hcLine,
+                // "holdCoverId": (this.holdCover.holdCoverId === null || this.holdCover.holdCoverId === '') ? 0 : Number(this.hcRevNo),
+                // "holdCoverRevNo": (this.hcRevNo === null || this.hcRevNo === '') ? 0 : Number(this.hcRevNo),
+                // "holdCoverSeqNo": (this.hcSeqNo === null || this.hcSeqNo === '') ? 0 : Number(this.hcSeqNo),
+                "holdCoverId": this.hcRevNo,
+                "holdCoverRevNo": this.hcRevNo,
+                "holdCoverSeqNo": this.hcSeqNo,
+                "holdCoverYear": (this.hcYear === null || this.hcYear === '' || this.hcYear === undefined) ? String(new Date().getFullYear()) : this.hcYear,
+                "lineCd": (this.hcLine === null || this.hcLine === '' || this.hcLine === undefined) ? this.qLine : this.hcLine,
                 "periodFrom": this.holdCover.periodFrom,
                 "periodTo": this.holdCover.periodTo,
                 "preparedBy": this.holdCover.preparedBy,
                 "quoteId": this.quoteId,
                 "reqBy": this.holdCover.reqBy,
-                "reqDate": this.holdCover.reqDate,
+                "reqDate": (this.holdCover.reqDate === null || this.holdCover.reqDate === '' || this.holdCover.reqDate === undefined) ? new Date().toISOString() :this.holdCover.reqDate,
                 "status": (this.holdCover.status === null || this.holdCover.status === '') ? 'I' : this.holdCover.status.substring(0,1),
                 "updateDate": new Date().toISOString(),
                 "updateUser": (this.holdCover.preparedBy === null || this.holdCover.preparedBy === '') ? JSON.parse(window.localStorage.currentUser).username : this.holdCover.preparedBy
@@ -406,7 +419,7 @@ onSaveClickLOV(){
                     $('#warningMdl > #modalBtn').trigger('click');
                     $('.warn').focus();
                     $('.warn').blur();
-                    this.warningMsg = data['errorList'][0].errorMessage;
+                    //this.warningMsg = data['errorList'][0].errorMessage;
                     this.loading = false;
                   }else{
                     this.loading = false;
