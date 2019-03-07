@@ -12,26 +12,26 @@
                             <legend class="scheduler-border">Batch Option</legend>
                             <div class="form-group" style="margin-bottom: 13px;margin-left: 35px !important;">
                                 <div class="input-group">
-                                    <input class="form-control-sm" type="radio" name="batchOption" value="Did Not Materialized"
-                                        style="    margin-top: 2px !important;" ([ngModel])="batchOption == 1">
+                                    <input class="form-control-sm" type="radio" name="batchOption" [value]="9"
+                                        style="    margin-top: 2px !important;" [(ngModel)]="statusCode">
                                     <label class="form-control-sm col-sm-10" style="text-align: left !important;">Did
                                         Not Materialize</label>
                                 </div>
                                 <div class="input-group">
-                                    <input class="form-control-sm" type="radio" name="batchOption" value="Risk Not Commensurate"
-                                        style="    margin-top: 2px !important;">
+                                    <input class="form-control-sm" type="radio" name="batchOption" value="10"
+                                        style="    margin-top: 2px !important;" [(ngModel)]="statusCode">
                                     <label class="form-control-sm col-sm-10" style="text-align: left !important;">Risk
                                         Not Commensurate</label>
                                 </div>
                                 <div class="input-group">
-                                    <input class="form-control-sm" type="radio" name="batchOption" value="Spoiled"
-                                        style="    margin-top: 2px !important;">
+                                    <input class="form-control-sm" type="radio" name="batchOption" value="99"
+                                        style="    margin-top: 2px !important;" [(ngModel)]="statusCode">
                                     <label class="form-control-sm col-sm-10" style="text-align: left !important;">Spoiled</label>
                                 </div>
                             </div>
                         </fieldset>
                         <div class="buttons">
-                            <button class="cust-btn cust-btn-extend" type="button"><a>Process</a></button>
+                            <button class="cust-btn cust-btn-extend" type="button" (click)="process()"><a>Process</a></button>
                             <br />
                             <button class="cust-btn cust-btn-extend" type="button" (click)="query()"><a>Search</a></button>
                         </div>
@@ -88,7 +88,7 @@
                         <div class="col-md-13 text-center">
                             <div class="cust-btn-container" style="margin-right: 255px !important;margin-top: 10px !important;">
                                 <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
-                                <button type="button" class="cust-btn" (click)="save()"><a>Save</a></button>
+                                <button type="button" class="cust-btn" ><a>Save</a></button>
                             </div>
                         </div>
                     </div>

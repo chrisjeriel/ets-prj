@@ -266,11 +266,10 @@ export class CustEditableNonDatatableComponent implements OnInit {
         
     }
 
-
-
     onRowDblClick(event) {
         this.rowDblClick.next(event);
     }
+
     sort(str,sortBy){
         this.passData.tableData = this.passData.tableData.sort(function(a, b) {
             if(sortBy){

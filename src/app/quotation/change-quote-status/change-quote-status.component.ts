@@ -14,22 +14,23 @@ export class ChangeQuoteStatusComponent implements OnInit {
 
     tHeader: any[] = [];
     tableData: any[] = [];
-    saveData: any[] = [];
+    saveData: any = {
+        changeQuoteStatus: [],
+    };
 
     resizable: boolean[] = [false, false, true, true, true];
 
     records: any[] = [];
     selected: any = null;
     
-    batchOption: any = 0;
+    statusCode: any = 0;
 
     mockTesting : any ={
         quoteId: null,
-        cedingId: null,
-        cessionId: null,
+        reasonCd: null,
         status: null
-
     }
+
     passData: any = {
         tableData: [], 
         tHeader: ['Quotation No.','Type of Cession','Ceding Company','Insured','Risk'],
@@ -65,14 +66,14 @@ export class ChangeQuoteStatusComponent implements OnInit {
             }
 
             this.table.refreshTable();
-            this.saveData = [];
         });
         
         
     }
 
-    save() {
-        //do something
+    process() {
+        this.saveData.statusCd = this.statusCode;
+        console.log(JSON.stringify(this.saveData))
        this.quotationService.saveChangeQuoteStatus(this.saveData).subscribe(data => {
             if(data['returnCode'] == 0) {
                 console.log('error')
@@ -85,15 +86,32 @@ export class ChangeQuoteStatusComponent implements OnInit {
         $('#modalBtn').trigger('click');
     }
 
+    /*onRowClick(target) {
+
+        for(let rec of this.records){
+            if(rec.quotationNo === event.quotationNo) {
+                this.saveData.changeQuoteStatus.push({
+                    quoteId: rec.quoteId,
+                    reasonCd: 'LC'
+                })
+            }
+        }
+        console.log(event)
+    }*/
     onRowClick(event) {
 
         for(let rec of this.records){
             if(rec.quotationNo === event.quotationNo) {
-                rec.status = 9;
-                this.saveData.push(rec)
-
+                this.saveData.changeQuoteStatus.push({
+                    quoteId: rec.quoteId,
+                    reasonCd: 'LC'
+                })
             }
         }
+    }
+
+    testing(data){
+        console.log(data)
     }
 
     cancel(){
