@@ -33,7 +33,7 @@
 				<app-quote-endorsement [quotationInfo]="quoteInfo" [endorsementType]="'General'" [inquiryFlag]="inquiryFlag"></app-quote-endorsement>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab *ngIf="(line=='CAR' || line=='EAR') && showAlop" [disabled]="quoteInfo.quoteId == ''">
+		<ngb-tab *ngIf="(line=='CAR' || line=='EAR') && quoteInfo.showAlop" [disabled]="quoteInfo.quoteId == ''">
 	<!-- 	<ngb-tab> -->
 			<ng-template ngbTabTitle>
 				<div>ALOP</div>
