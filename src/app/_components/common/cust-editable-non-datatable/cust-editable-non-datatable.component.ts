@@ -281,6 +281,9 @@ export class CustEditableNonDatatableComponent implements OnInit {
                 if(a[str] > b[str]) { return -1; }
             }
         });
+        if($('.ng-dirty').length != 0){
+            $('#cust-table-container').addClass('ng-dirty');
+        }
         this.sortBy = !this.sortBy;
         this.search(this.searchString);
    
@@ -400,7 +403,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
                 break;
             }
         }
-        
+        $('#cust-table-container').addClass('ng-dirty');
         this.clickLOV.emit(retData);
     }
 

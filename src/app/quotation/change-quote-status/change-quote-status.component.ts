@@ -14,6 +14,7 @@ export class ChangeQuoteStatusComponent implements OnInit {
 
     tHeader: any[] = [];
     tableData: any[] = [];
+    saveData: any[] = [];
 
     resizable: boolean[] = [false, false, true, true, true];
 
@@ -50,7 +51,7 @@ export class ChangeQuoteStatusComponent implements OnInit {
 
         this.quotationService.getQuoProcessingData([]).subscribe(data => {
             this.records = data['quotationList'];
-            console.log(this.records)
+            
             for(let rec of this.records){
                 this.passData.tableData.push(
                     {
@@ -64,6 +65,7 @@ export class ChangeQuoteStatusComponent implements OnInit {
             }
 
             this.table.refreshTable();
+            this.saveData = [];
         });
         
         
@@ -71,8 +73,7 @@ export class ChangeQuoteStatusComponent implements OnInit {
 
     save() {
         //do something
-       this.selected
-       this.quotationService.saveChangeQuoteStatus(this.selected).subscribe(data => {
+       this.quotationService.saveChangeQuoteStatus(this.saveData).subscribe(data => {
             if(data['returnCode'] == 0) {
                 console.log('error')
             }else{
@@ -88,10 +89,15 @@ export class ChangeQuoteStatusComponent implements OnInit {
 
         for(let rec of this.records){
             if(rec.quotationNo === event.quotationNo) {
-                this.selected = rec;
-                console.log(this.selected)
+                rec.status = 9;
+                this.saveData.push(rec)
+
             }
         }
+    }
+
+    cancel(){
+        console.log(this.saveData)
     }
 
 }

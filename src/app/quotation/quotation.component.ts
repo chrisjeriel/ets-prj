@@ -35,9 +35,11 @@ export class QuotationComponent implements OnInit {
 		typeOfCession: '',
 		status:'',
 		reasonCd:'',
+		showAlop:false
 	}
 
 	inquiryFlag: boolean = false;
+	showAlop:boolean = false;
 
 	ngOnInit() {
 		this.sub = this.route.params.subscribe(params => {

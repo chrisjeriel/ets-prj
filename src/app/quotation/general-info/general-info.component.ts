@@ -161,7 +161,8 @@ export class GeneralInfoComponent implements OnInit {
 		riskName: '',
 		insuredDesc: '',
 		currencyCd: '',
-		currencyRt:''
+		currencyRt:'',
+		showAlop: false
 	}
 
 	loading:boolean = true;
@@ -230,8 +231,19 @@ export class GeneralInfoComponent implements OnInit {
 					this.project.updateDate = this.dateParser(this.project.updateDate);
 				}
 
+
 				this.checkQuoteIdF(this.genInfoData.quoteId);
 			});
+
+			this.quotationService.getCoverageInfo(this.plainQuotationNo(this.quotationNo),null).subscribe((data: any) =>{
+		     this.quoteInfo.showAlop = data.quotation.project.coverage.sectionCovers.filter(a=>{
+		       return a.section == 'III'
+		     }).length >0;
+		     console.log(data.quotation.project.coverage.sectionCovers.filter(a=>{
+		       return a.section == 'III'
+		     }).length >0)
+
+		   });
 
 		} else {
 			this.loading = false;
@@ -620,7 +632,8 @@ export class GeneralInfoComponent implements OnInit {
   			typeOfCession: this.genInfoData.cessionDesc,
   			status: this.genInfoData.status,
   			reasonCd: this.genInfoData.reasonCd,
-  			principalId: this.genInfoData.principalId
+  			principalId: this.genInfoData.principalId,
+  			showAlop: this.quoteInfo.showAlop
   		});		
   	}
 
