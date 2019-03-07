@@ -1,4 +1,4 @@
-import { Component, OnInit, Input,  ViewChild, Output } from '@angular/core';
+import { Component, OnInit, Input,  ViewChild, Output, EventEmitter } from '@angular/core';
 import { QuotationCoverageInfo, NotesReminders, MtnSectionCovers } from '../../_models';
 import { QuotationService, NotesService, MaintenanceService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
@@ -99,7 +99,7 @@ export class CoverageComponent implements OnInit {
   cancelFlag:boolean;
 
   refresh:boolean = true;
-
+  @Output() showAlop= new EventEmitter<any>();
 
   constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,private modalService: NgbModal, private maintenanceService: MaintenanceService) {}
 
@@ -142,6 +142,9 @@ export class CoverageComponent implements OnInit {
     this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
       this.table.refreshTable();
         if(data.quotation.project == null){
+          this.showAlop.emit(data.quotation.project.coverage.sectionCovers.filter(a=>{
+           return a.section == 'III'
+         }).length >0);
           this.maintenanceService.getMtnSectionCovers(this.lineCd,this.coverCd).subscribe((data: any) =>{
               for(var i=0; i< data.sectionCovers.length;i++){
                 if(data.sectionCovers[i].defaultTag == 'Y' ){
@@ -174,7 +177,6 @@ export class CoverageComponent implements OnInit {
           this.coverageData.sectionIISi = this.sectionII;
           this.coverageData.sectionIIISi = this.sectionIII;
           this.coverageData.totalSi = this.sectionI + this.sectionII + this.sectionIII;
- 
           setTimeout(() => {
             this.focusBlur();
           }, 0)
@@ -214,11 +216,15 @@ export class CoverageComponent implements OnInit {
       }
 
         if(data.quotation.project !== null){
+
           this.coverageData = data.quotation.project.coverage;
           this.coverageData.remarks = this.coverageData.remarks == null ? '':this.coverageData.remarks;
         }
 
         if(data.quotation.project !== null ){
+          this.showAlop.emit(data.quotation.project.coverage.sectionCovers.filter(a=>{
+             return a.section == 'III'
+           }).length >0);
           for (var i = 0; i < data.quotation.project.coverage.sectionCovers.length; i++) {
             this.passData.tableData.push(data.quotation.project.coverage.sectionCovers[i]);
           }
