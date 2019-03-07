@@ -26,32 +26,64 @@ export class MtnInsuredComponent implements OnInit {
 
     }
 
-  selected: any;
+
+
+
+  selected: any = null;
+  modalOpen: boolean = false;
 
 
   constructor(private modalService: NgbModal, private mtnService : MaintenanceService) { }
 
   ngOnInit() {
-  	  	
+        
   }
 
   select(data){
-  	  this.selected = data;
+    if(Object.is(this.selected, data)){
+      this.selected = null
+    } else {
+      this.selected = data;
+    }
   }
 
   okBtnClick(){
-  	this.selectedData.emit(this.selected);
+    this.selectedData.emit(this.selected);
   }
 
   openModal(){
     while(this.passData.tableData.length>0){
       this.passData.tableData.pop();
     }
-    this.mtnService.getMtnInsured().subscribe((data: any) => {
+    this.mtnService.getMtnInsured('').subscribe((data: any) => {
           this.passData.tableData = data.insured;
           this.table.refreshTable();
+          this.modalOpen = true;
         });
+    this.modalOpen = true;
 
+  }
+
+  checkCode(code, type) {
+    if(code.trim() === ''){
+      this.selectedData.emit({
+        insuredId: '',
+        insuredName: ''
+      });
+    } else {
+      this.mtnService.getMtnInsured(code).subscribe(data => {
+        if(data['insured'].length > 0) {
+          this.selectedData.emit(data['insured'][0]);
+        } else {
+          this.selectedData.emit({
+            insuredId: '',
+            insuredName: ''
+          });        
+
+          $(type + ' #modalBtn').trigger('click');
+        }      
+      });
+    }
   }
 
 }

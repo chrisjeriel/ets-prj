@@ -115,8 +115,13 @@
     </div>
 </div>
 
+
+
 <app-sucess-dialog></app-sucess-dialog>
-<app-mtn-section-covers id="sectionCoversLOV" (selectedData)="selectedSectionCoversLOV($event)"></app-mtn-section-covers>
+<!-- <app-mtn-section-covers id="sectionCoversLOV" (selectedData)="selectedSectionCoversLOV($event)"></app-mtn-section-covers>
+ -->
+<app-mtn-section-covers id="sectionCoversLOV" (selectedData)="selectedSectionCoversLOV($event)" [lineCd]="lineCd" [hideSectionCoverArray]="hideSectionCoverArray"></app-mtn-section-covers>
+
 <app-modal class="d-none" id="errorMdl">
     <div header>Error</div>
     <div body class="container-flex text-center">

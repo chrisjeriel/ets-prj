@@ -156,9 +156,11 @@ export class HoldCoverMonitoringListComponent implements OnInit {
             );
     }
     onRowClick(event) {
-        for (var i = 0; i < event.target.parentElement.children.length; i++) {
+        /*for (var i = 0; i < event.target.parentElement.children.length; i++) {
             this.quotationService.rowData[i] = event.target.parentElement.children[i].innerText;
-        }
+        }*/
+
+        console.log(event);
     }
 
     onRowDblClick(event) {

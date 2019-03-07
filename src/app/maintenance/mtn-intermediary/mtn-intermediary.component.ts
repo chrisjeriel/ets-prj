@@ -31,6 +31,8 @@ intermediaryListing: any = {
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
 
+  modalOpen: boolean = false;
+
   constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal) { }
 
   ngOnInit() {
@@ -57,6 +59,43 @@ intermediaryListing: any = {
     this.selectedData.emit(this.selected);
   }
 
+  openModal(){
+    this.intermediaryListing.tableData = [];
+
+    this.maintenanceService.getIntLOV('').subscribe((data: any) =>{
+      for(var lineCount = 0; lineCount < data.intermediary.length; lineCount++){
+        this.intermediaryListing.tableData.push(
+          new Row(data.intermediary[lineCount].intmId, 
+              data.intermediary[lineCount].intmName)
+        );      
+      }
+      this.table.refreshTable();
+    });
+    this.modalOpen = true;
+  }
+
+  checkCode(code) {
+    if(code.trim() === ''){
+      this.selectedData.emit({
+        intmId: '',
+        intmName: ''
+      });
+    } else {
+      this.maintenanceService.getIntLOV(code).subscribe(data => {
+        if(data['intermediary'].length > 0) {
+          this.selectedData.emit(data['intermediary'][0]);
+        } else {
+          this.selectedData.emit({
+            intmId: '',
+            intmName: ''
+          });
+
+          $('#intermediaryMdl > #modalBtn').trigger('click');
+        }
+        
+      });
+    }
+  }
 
 }
 

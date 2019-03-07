@@ -36,21 +36,13 @@ lineClassListing: any = {
   @Input() line: string = "";
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
 
+  modalOpen:boolean = false;
+
   constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal) { }
 
   ngOnInit() {
 
-  	this.maintenanceService.getLineClassLOV(this.line).subscribe((data: any) =>{
-  		for(var lineCount = 0; lineCount < data.lineClass.length; lineCount++){
-  			this.lineClassListing.tableData.push(
-  				new Row(data.lineClass[lineCount].lineCd, 
-  						data.lineClass[lineCount].lineClassCd,
-  						data.lineClass[lineCount].lineClassCdDesc)
-  			);  		
-  		}
-  		this.table.refreshTable();
-  	});
-
+  	
   }
 
   onRowClick(data){
@@ -61,6 +53,22 @@ lineClassListing: any = {
 
   confirm(){
     this.selectedData.emit(this.selected);
+  }
+
+  openModal(){
+    this.lineClassListing.tableData = [];
+    this.maintenanceService.getLineClassLOV(this.line).subscribe((data: any) =>{
+      for(var lineCount = 0; lineCount < data.lineClass.length; lineCount++){
+        this.lineClassListing.tableData.push(
+          new Row(data.lineClass[lineCount].lineCd, 
+              data.lineClass[lineCount].lineClassCd,
+              data.lineClass[lineCount].lineClassCdDesc)
+        );      
+      }
+      this.table.refreshTable();
+    });
+    this.modalOpen = true;
+
   }
 
 

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter, Input} from '@angular/core';
-import { MaintenanceService, UnderwritingService } from '@app/_services';
+import { MaintenanceService, UnderwritingService, QuotationService } from '@app/_services';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component'
 
@@ -24,40 +24,40 @@ export class LovComponent implements OnInit {
 
   @Input()
   passData: any = {
-  	selector:'',
-  	data:{}
+    selector:'',
+    data:{}
   }
 
   modalOpen: boolean = false;
 
 
-  constructor(private modalService: NgbModal, private mtnService : MaintenanceService, private underwritingService: UnderwritingService) { }
+  constructor(private modalService: NgbModal, private mtnService : MaintenanceService, private underwritingService: UnderwritingService, private quotationService: QuotationService) { }
 
   ngOnInit() {
-  	  	
+        
   }
 
   select(data){
-  	  this.passData.data = data;
+      this.passData.data = data;
   }
 
   okBtnClick(){
-  	this.selectedData.emit(this.passData);
+    this.selectedData.emit(this.passData);
   }
 
   openModal(){
     this.passTable.tableData = [];
-  	if(this.passData.selector == 'insured'){
-  		this.passTable.keys = ['insuredId', 'insuredName' ];
+    if(this.passData.selector == 'insured'){
+      this.passTable.keys = ['insuredId', 'insuredName' ];
       this.passTable.tHeader =  ['Insured Id', 'Insured Name' ];
       this.passTable.dataTypes =  ['text', 'text', 'text', 'text', 'text', 'text', 'text'];
-	    this.mtnService.getMtnInsured().subscribe((data: any) => {
-	          for (var a =0 ; data.insured.length > a; a++) {
-	            this.passTable.tableData.push(data.insured[a]);
-	          }
-	          this.table.refreshTable();
-	        });
-	  }else if(this.passData.selector == 'city'){
+      this.mtnService.getMtnInsured('').subscribe((data: any) => {
+            for (var a =0 ; data.insured.length > a; a++) {
+              this.passTable.tableData.push(data.insured[a]);
+            }
+            this.table.refreshTable();
+          });
+    }else if(this.passData.selector == 'city'){
       this.passTable.tHeader =  ['Region Code', 'Region Description', 'Province Code', 'Province Description', 
                 'City Code', 'City Description', 'Remarks', 'Zone Code', 'Zone Description' ];
       this.passTable.dataTypes =  ['text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text'];
@@ -129,11 +129,11 @@ export class LovComponent implements OnInit {
         this.table.refreshTable();
       });
     }else if(this.passData.selector == 'deductibles'){
-      this.passTable.tHeader = [ 'Deductible', 'Title', 'Deductible Type', 'Rate', 'Deductible Amount'];
+      this.passTable.tHeader = [ 'Deductible', 'Title', 'Deductible Type', 'Rate', 'Deductible Amount','Deductible Text'];
       this.passTable.dataTypes = [ 'text', 'text', 'text', 'percent', 'currency'];
-      this.passTable.keys = ['deductibleCd','deductibleTitle','deductibleType','deductibleRate','deductibleAmt'];
+      this.passTable.keys = ['deductibleCd','deductibleTitle','deductibleType','deductibleRate','deductibleAmt','deductibleText'];
       this.underwritingService.getMaintenanceDeductibles(this.passData.lineCd).subscribe((data: any) => {
-          this.passTable.tableData = data.deductibles;
+          this.passTable.tableData = data.deductibles.filter((data)=>{return  this.passData.hide.indexOf(data.deductibleCd)==-1});
           this.table.refreshTable();
       });
     }else if(this.passData.selector == 'region'){
@@ -220,9 +220,19 @@ export class LovComponent implements OnInit {
                 
             this.table.refreshTable();
           });
+    }else if(this.passData.selector == 'otherRates'){
+      this.passTable.tHeader = [ 'Cover Code','Cover Name','Section','Bullet No','Sum Insured'];
+      this.passTable.dataTypes = [ 'number','text','select','text','currency','text'];
+      this.passTable.keys = ['coverCd','coverCdAbbr','section','bulletNo','sumInsured']
+      this.quotationService.getCoverageInfo(this.passData.quoteNo,null).subscribe((data: any) => {
+        if(data.quotation.project !== null ){
+          this.passTable.tableData = data.quotation.project.coverage.sectionCovers.filter((data)=>{return this.passData.hide.indexOf(data.coverCd)==-1});
+        }
+        this.table.refreshTable();
+      })
     }
 
     this.modalOpen = true;
-	}
+  }
 
 }

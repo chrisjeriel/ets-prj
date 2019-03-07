@@ -27,6 +27,8 @@ export class CustNonDatatableComponent implements OnInit {
     unselect: boolean = false;
     expireCounter: number = 0;
     expireValue: any;
+
+    nullRow: boolean = false;
     
     @Input() filterObj:any[] = [];
 
@@ -122,6 +124,8 @@ export class CustNonDatatableComponent implements OnInit {
     refreshTable(initLoad?){
         if(initLoad === undefined){
             this.loadingFlag = false;
+        }else{
+            this.loadingFlag = true;
         }
         while(this.displayData.length>0){
             this.displayData.pop();
@@ -239,9 +243,9 @@ export class CustNonDatatableComponent implements OnInit {
             }
         });
     }
-
     onRowClick(event, data) {
         if(data !== null){
+            this.nullRow = false;
             if( Object.entries(data).length !== 0){
                 if(data[this.nullKey] !== null){
                     this.btnDisabled = false;
@@ -249,6 +253,7 @@ export class CustNonDatatableComponent implements OnInit {
                         this.unselect = true;
                         this.btnDisabled = true;
                         this.indvSelect = "";
+                        data = {};
                     }else{
                         this.indvSelect = data;
                     }
@@ -265,6 +270,7 @@ export class CustNonDatatableComponent implements OnInit {
         }
         else{
              this.indvSelect = "";
+             this.nullRow = true;
         }
         this.rowClick.emit(data);
     }
@@ -281,7 +287,9 @@ export class CustNonDatatableComponent implements OnInit {
         
     }
     onRowDblClick(event) {
-        this.rowDblClick.next(event);
+        if(!this.nullRow){
+            this.rowDblClick.next(event);
+        }
     }
 
     sort(str,sortBy){

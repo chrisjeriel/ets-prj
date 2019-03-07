@@ -22,4 +22,16 @@ export class NotesService {
 
   	return this.notesRemindersData;
   }
+
+  toDateTimeString(millis: number) {
+    var d = (millis == 0) ? new Date() : new Date(millis);
+
+    function pad(num) {
+      return (num < 10) ? '0' + num : num;
+    }
+
+    return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()) + 'T' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+  }
+
+  
 }

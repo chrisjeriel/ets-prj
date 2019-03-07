@@ -59,7 +59,11 @@ export class MtnObjectComponent implements OnInit {
         ]
     }
 
-  selected: any;
+
+
+
+  selected: any = null;
+  modalOpen: boolean = false;
 
 
   constructor(private modalService: NgbModal, private mtnService : MaintenanceService) { }
@@ -68,11 +72,15 @@ export class MtnObjectComponent implements OnInit {
   }
 
   select(data){
-  	  this.selected = data;
+    if(Object.is(this.selected, data)){
+      this.selected = null
+    } else {
+      this.selected = data;
+    }
   }
 
   okBtnClick(){
-  	this.selectedData.emit(this.selected);
+    this.selectedData.emit(this.selected);
   }
 
   openModal(){
@@ -92,6 +100,30 @@ export class MtnObjectComponent implements OnInit {
           }
           this.table.refreshTable();
         });
+        this.modalOpen = true;
+  }
+
+  checkCode(line, code) {
+    if(code.trim() === ''){
+      this.selectedData.emit({
+        objectId: '',
+        objectDesc: ''
+      });
+    } else {
+      this.mtnService.getMtnObject(line, code).subscribe(data => {      
+        if(data['object'].length > 0) {
+          this.selectedData.emit(data['object'][0]);
+        } else {
+          this.selectedData.emit({
+            objectId: '',
+            objectDesc: ''
+          });
+            
+          $('#objectMdl > #modalBtn').trigger('click');
+        }
+        
+      });
+    }
   }
 
 }
@@ -105,13 +137,13 @@ class Row {
   activeTag :string;
   remarks: string;
 
-	constructor(lineCd : string,lineDesc: string,objectId: number ,description :string,activeTag :string,remarks: string) {
+  constructor(lineCd : string,lineDesc: string,objectId: number ,description :string,activeTag :string,remarks: string) {
     this.lineCd  = lineCd;
     this.lineDesc = lineDesc;
     this.objectId = objectId;
     this.description  = description;
     this.activeTag  = activeTag;
     this.remarks = remarks;
-	
-	}
+  
+  }
 }

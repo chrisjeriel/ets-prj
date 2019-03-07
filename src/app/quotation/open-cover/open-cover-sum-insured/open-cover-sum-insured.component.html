@@ -27,15 +27,15 @@
 				<div class="custom-row-inline-inset">
 					<div class="input-group">
 						<label class="form-control-sm col-sm-4">Currency</label>
-            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.currencyAbbr">
+            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.currencyCd">
             			<div class="text-search-ico"><a><i class="fa fa-search" (click)="showCurrencyModal()"></i></a></div>
             			<label class="form-control-sm col-sm" >Exch. Rt.</label>
-            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.currencyRt">
+            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.currencyRt" appCurrencyRate>
             			<label class="col-sm-2"></label>
 					</div>
 					<div class="input-group">
 						<label class="form-control-sm col-sm-4" style="padding-left: 0px;">Max Sum Insured</label>
-            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.maxSi">
+            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.maxSi" appCurrency>
             			<label class="col-sm-2"></label>
 					</div>
 				</div>
@@ -47,14 +47,14 @@
 				<div class="custom-row-inline-inset">
 					<div class="input-group">
 						<label class="form-control-sm col-sm-4" >Share (%)</label>
-            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.pctShare">
+            			<input appOtherRates type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.pctShare">
             			<label class="form-control-sm col-sm" >PML (%)</label>
-            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.pctPml">
+            			<input appOtherRates type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.pctPml">
             			<label class="col-sm-2"></label>
 					</div>
 					<div class="input-group">
 						<label class="form-control-sm col-sm-4" style="padding-left: 0px;">100% Value</label>
-            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.totalValue">
+            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.totalValue" appCurrency>
             			<label class="col-sm-2"></label>
 					</div>
 				</div>
@@ -67,11 +67,24 @@
 	<div class="form-group col-sm">
 		<div class="col-md-13 text-center" style="margin-top: 3px;">
 			<div class="cust-btn-container">
-				<button type="button" class="cust-btn" 	(click)="pol($event)"><a>Cancel</a></button>
-				<button type="button" class="cust-btn" (click)="saveData()"><a>Save</a></button>
+
+
+
+
+				<button type="button" class="cust-btn" 	(click)="cancel()"><a>Cancel</a></button>
+				<button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
 			</div>
 		</div>
 	</div>
 </div>
 
+
+
+
+
 <app-mtn-currency id="currencyModal" (selectedData)="setCurrency($event)"></app-mtn-currency>
+
+<app-confirm-save (onYes)="saveData()"></app-confirm-save>
+<app-sucess-dialog id="sum-insured" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-cancel-button (onYes)="saveData('cancel')" [url]="'/open-cover-processing'" ></app-cancel-button>
+

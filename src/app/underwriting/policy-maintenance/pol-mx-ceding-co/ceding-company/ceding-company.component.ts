@@ -12,7 +12,7 @@ import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 export class CedingCompanyComponent implements OnInit {
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
-  selected: any;
+  selected: any = null;
 
   passDataCedingCompanyMember: any = {
         tableData : [],
@@ -63,41 +63,70 @@ export class CedingCompanyComponent implements OnInit {
         pageID: 'direct',
         keys:['coNo','name','abbreviation','address','membershipDate','terminationDate','inactiveDate']
     };
-    
+
+    modalOpen:boolean = false;
 
     
   constructor(private underwritingService: UnderwritingService, private modalService: NgbModal ) { }
 
   ngOnInit() {
-  	/*this.underwritingService.getCedingCompanyList().subscribe((data: any) => {
+    /*this.underwritingService.getCedingCompanyList().subscribe((data: any) => {
                 for(var i=0;i< data.cedingcompany.length;i++){
                     this.passDataCedingCompany.tableData.push(new CedingCompanyListing(data.cedingcompany[i].cedingId,data.cedingcompany[i].cedingName,data.cedingcompany[i].cedingAbbr,data.cedingcompany[i].address,(data.cedingcompany[i].membershipDate == null ? null : new Date(data.cedingcompany[i].membershipDate[i],data.cedingcompany[i].membershipDate[1]-1,data.cedingcompany[i].membershipDate[2])),(data.cedingcompany[i].terminationDate == null ? null : new Date(data.cedingcompany[i].terminationDate[i],data.cedingcompany[i].terminationDate[1]-1,data.cedingcompany[i].terminationDate[2])),(data.cedingcompany[i].inactiveDate == null ? null : new Date(data.cedingcompany[i].inactiveDate[i],data.cedingcompany[i].inactiveDate[1]-1,data.cedingcompany[i].inactiveDate[2]))));
                 }
-				this.table.refreshTable();          
+        this.table.refreshTable();          
     });*/
   }
 
   onRowClick(data){
-  	//console.log(data);
-  	this.selected = data;
+    if(Object.is(this.selected, data)){
+      this.selected = null
+    } else {
+      this.selected = data;
+    }
   }
 
   okBtnClick(){
-  	this.selectedData.emit(this.selected);
+    this.selectedData.emit(this.selected);
   }
 
   openModal(){
      this.passDataCedingCompanyMember.tableData = [];
 
-     this.underwritingService.getCedingCompanyList().subscribe((data: any) => {
+     this.underwritingService.getCedingCompanyList('','','','','','','','','','Y').subscribe((data: any) => {
        console.log(data)
          for(var i=0;i< data.cedingcompany.length;i++){
-           if(data.cedingcompany[i].membershipTag == 'Y'){
-             this.passDataCedingCompanyMember.tableData.push(new CedingCompanyListing(data.cedingcompany[i].cedingId,data.cedingcompany[i].cedingName,data.cedingcompany[i].cedingAbbr,data.cedingcompany[i].address,(data.cedingcompany[i].membershipDate == null ? null : new Date(data.cedingcompany[i].membershipDate[0],data.cedingcompany[i].membershipDate[1]-1,data.cedingcompany[i].membershipDate[2])),(data.cedingcompany[i].terminationDate == null ? null : new Date(data.cedingcompany[i].terminationDate[0],data.cedingcompany[i].terminationDate[1]-1,data.cedingcompany[i].terminationDate[2])),(data.cedingcompany[i].inactiveDate == null ? null : new Date(data.cedingcompany[i].inactiveDate[0],data.cedingcompany[i].inactiveDate[1]-1,data.cedingcompany[i].inactiveDate[2]))));
-           }
+
+            this.passDataCedingCompanyMember.tableData.push(new CedingCompanyListing(data.cedingcompany[i].cedingId,data.cedingcompany[i].cedingName,data.cedingcompany[i].cedingAbbr,data.cedingcompany[i].address,(data.cedingcompany[i].membershipDate == null ? null : new Date(data.cedingcompany[i].membershipDate[0],data.cedingcompany[i].membershipDate[1]-1,data.cedingcompany[i].membershipDate[2])),(data.cedingcompany[i].terminationDate == null ? null : new Date(data.cedingcompany[i].terminationDate[0],data.cedingcompany[i].terminationDate[1]-1,data.cedingcompany[i].terminationDate[2])),(data.cedingcompany[i].inactiveDate == null ? null : new Date(data.cedingcompany[i].inactiveDate[0],data.cedingcompany[i].inactiveDate[1]-1,data.cedingcompany[i].inactiveDate[2]))));
+
          }
          this.table.refreshTable();          
      });
+     this.modalOpen = true;
+  }
+
+
+
+  checkCode(code) {
+    if(code.trim() === ''){
+      this.selectedData.emit({
+        coNo: '',
+        name: ''
+      });
+    } else {
+      this.underwritingService.getCedingCompanyList(code,'','','','','','','','','Y').subscribe(data => {     
+        if(data['cedingcompany'].length > 0) {
+          this.selectedData.emit(new CedingCompanyListing(data['cedingcompany'][0].cedingId,data['cedingcompany'][0].cedingName,data['cedingcompany'][0].cedingAbbr,data['cedingcompany'][0].address,(data['cedingcompany'][0].membershipDate == null ? null : new Date(data['cedingcompany'][0].membershipDate[0],data['cedingcompany'][0].membershipDate[1]-1,data['cedingcompany'][0].membershipDate[2])),(data['cedingcompany'][0].terminationDate == null ? null : new Date(data['cedingcompany'][0].terminationDate[0],data['cedingcompany'][0].terminationDate[1]-1,data['cedingcompany'][0].terminationDate[2])),(data['cedingcompany'][0].inactiveDate == null ? null : new Date(data['cedingcompany'][0].inactiveDate[0],data['cedingcompany'][0].inactiveDate[1]-1,data['cedingcompany'][0].inactiveDate[2]))));
+        } else {
+          this.selectedData.emit({
+            coNo: '',
+            name: ''
+          });
+
+          $('#cedingCompanyMdl > #modalBtn').trigger('click');
+        }      
+      });
+    }
   }
 
 }

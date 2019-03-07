@@ -1,0 +1,107 @@
+<div>
+<fieldset class="scheduler-border" style="margin-top: 10px !important;">
+	<div class="row">
+		<div class="col-sm-12 cust-margin">
+			<app-cust-editable-non-datatable [passData]="PassData"> </app-cust-editable-non-datatable>
+		</div>
+	</div>
+	<div class="form-row">
+		<div class="form-group col-sm" style="margin-bottom: 8px;">
+			<div class="col-md-13 text-center">
+				<div class="cust-btn-container">
+					<button type="button" class="cust-btn btn" (click)="userAccess()"><a>User Group Access</a></button>
+					<button type="button" class="cust-btn btn" (click)="userGroupAccess()"><a>Users Listing</a></button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="form-row">
+	    <div class="form-group col-sm">
+	        <div class="col-md-13 text-center">
+	            <div class="cust-btn-container" style="margin-top: 10px">
+	                <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+	                <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+</fieldset>
+<div class="row">
+	<div class="col-sm-12">
+	    <fieldset class="scheduler-border" style="margin: 0px !important; margin-top: 12px !important;">
+	        <div class="form-row custom-row-inline-inset" style="margin-left: -27px;">
+	            <div class="input-group" style="margin-bottom: -15px !important;">
+	                <label class="form-control-sm col-sm-1 text-right labels">Created By</label>
+	                <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma" disabled>
+	                <label class="form-control-sm col-sm-1 text-right labels">Date Created</label>
+	                <input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM" disabled>
+	                <label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
+	                <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma" disabled>
+	                <label class="form-control-sm col-sm-1 text-right labels">Last Update</label>
+	                <input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM" disabled>
+	            </div>
+	        </div>
+	    </fieldset>
+	</div>
+</div>
+</div>
+
+<app-modal class="d-none" id="userAccess">
+    <div header>User Group Access</div>
+    <div body class="container-flex text-center">
+        <div class="form-row custom-row-inline-inset">
+			<div class="col-sm-12">
+				<div class="input-group">
+					<label class="form-control-sm col-sm-4">User Id</label>
+		        	<input type="text" class="form-control form-control-sm col-sm-6">
+				</div>
+	        	<fieldset class="scheduler-border">
+	        		<legend class="scheduler-border">Module Transaction</legend>
+	        			<div class="row model-align">
+	        				<div class="col-sm-12">
+	        					<app-cust-editable-non-datatable [passData]="PassDataModuleTrans"> </app-cust-editable-non-datatable>
+	        				</div>
+	        			</div>
+	        	</fieldset>
+	        	<fieldset class="scheduler-border">
+	        		<legend class="scheduler-border">Module</legend>
+	        			<div class="row model-align">
+	        				<div class="col-sm-12">
+	        					<app-cust-editable-non-datatable [passData]="PassDataModuleUser"> </app-cust-editable-non-datatable>
+	        				</div>
+	        			</div>
+	        	</fieldset>
+        	</div>
+        </div> 
+    </div>
+  	<div footer class="d-flex justify-content-center w-100">                    
+        <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
+        <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Save</a></button>
+    </div> 
+</app-modal> 
+
+<app-modal class="d-none" id="userGroupAccess">
+    <div header>Users Listing</div>
+    <div body class="container-flex text-center">
+        <div class="form-row custom-row-inline-inset">
+			<div class="col-sm-12">
+				<div class="input-group">
+					<label class="form-control-sm col-sm-4">User Group</label>
+		        	<input type="text" class="form-control form-control-sm col-sm-6">
+				</div>
+	        	<fieldset class="scheduler-border">
+	        		<legend class="scheduler-border">Module Transaction</legend>
+	        			<div class="row model-align">
+	        				<div class="col-sm-12">
+	        					<app-cust-editable-non-datatable [passData]="PassDatAUserListing"> </app-cust-editable-non-datatable>
+	        				</div>
+	        			</div>
+	        	</fieldset>
+        	</div>
+        </div> 
+    </div>
+  	<div footer class="d-flex justify-content-center w-100">                    
+        <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Return</a></button>
+    </div> 
+</app-modal> 

@@ -29,7 +29,7 @@ export class HoldCoverComponent implements OnInit {
       keys: ['quotationNo','cedingName','insuredDesc','riskName'],
       pageStatus: true,
       pagination: true,
-      filters: [
+      /*filters: [
         {
           key: 'quotationNo',
           title : 'Quotation No.',
@@ -50,8 +50,106 @@ export class HoldCoverComponent implements OnInit {
           title : 'Risk',
           dataType: 'text'
         }
-      ]
+      ]*/
+      filters: [
+        {
+            key: 'quotationNo',
+            title: 'Quotation No.',
+            dataType: 'seq'
+        },
+        {
+            key: 'cessionDesc',
+            title: 'Type of Cession',
+            dataType: 'text'
+        },
+        {
+            key: 'lineClassCdDesc',
+            title: 'Line Class',
+            dataType: 'text'
+        },
+        {
+            key: 'status',
+            title: 'Status',
+            dataType: 'text'
+        },
+        {
+            key: 'cedingName',
+            title: 'Ceding Co.',
+            dataType: 'text'
+        },
+        {
+            key: 'principalName',
+            title: 'Principal',
+            dataType: 'text'
+        },
+        {
+            key: 'contractorName',
+            title: 'Contractor',
+            dataType: 'text'
+        },
+        {
+            key: 'insuredDesc',
+            title: 'Insured',
+            dataType: 'text'
+        },
+        {
+            key: 'riskName',
+            title: 'Risk',
+            dataType: 'text'
+        },
+        {
+            key: 'objectDesc',
+            title: 'Object',
+            dataType: 'text'
+        },
+        {
+            key: 'site',
+            title: 'Site',
+            dataType: 'text'
+        },
+        {
+            key: 'policyNo',
+            title: 'Policy No.',
+            dataType: 'seq'
+        },
+        {
+            key: 'currencyCd',
+            title: 'Currency',
+            dataType: 'text'
+        },
+        {
+            key: 'issueDate',
+            title: 'Quote Date',
+            dataType: 'date'
+        },
+        {
+            key: 'expiryDate',
+            title: 'Valid Until',
+            dataType: 'date'
+        },
+        {
+            key: 'reqBy',
+            title: 'Requested By',
+            dataType: 'text'
+        },
+        {
+            key: 'createUser',
+            title: 'Created By',
+            dataType: 'text'
+        },
+        ],
+
+        colSize: ['', '250px', '250px', '250px'],
     };
+
+
+
+    searchParams: any[] = [];
+    dialogMessage:string = "";
+    dialogIcon: string = "";
+    cancelFlag:boolean;
+
+
 
   constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title) { }
 
@@ -157,9 +255,9 @@ export class HoldCoverComponent implements OnInit {
     }
   }
 
-  search() {
-    this.passDataQuoteLOV.tableData = [];
-    this.quotationService.getQuoProcessingData()
+  retrieveQuoteListingMethod(){
+    this.quotationService.getQuoProcessingData(this.searchParams)
+
     .subscribe(val => {
       var records = val['quotationList'];
       for(let rec of records){
@@ -172,6 +270,11 @@ export class HoldCoverComponent implements OnInit {
       }
       this.table.refreshTable();
     });
+  }
+
+  search() {
+    this.passDataQuoteLOV.tableData = [];
+    this.retrieveQuoteListingMethod();
 
     var qLine = this.quoteLine.toUpperCase();
 
@@ -188,6 +291,13 @@ export class HoldCoverComponent implements OnInit {
     }
 
   }
+
+  //Method for DB query
+    searchQuery(searchParams){
+        this.searchParams = searchParams;
+        this.passDataQuoteLOV.tableData = [];
+        this.retrieveQuoteListingMethod();
+    }
 
   onRowClick(event){
     this.rowRec = event;
@@ -213,17 +323,19 @@ export class HoldCoverComponent implements OnInit {
   holdCoverReq:any
   onSaveClick(qline,qyear,qseqNo,qrevNo,qcomNo,periodTo,periodFrom,coRef,status,reqDate,prepBy,appBy,hcline,hcyear,hcseqNo,hcrevNo,reqBy){
     if(qline === "" || qyear === "" || qseqNo === "" || qrevNo === "" || qcomNo === "" || periodTo === "" || periodFrom === "" || status === "" || hcline === "" || hcyear === ""){
-      $('#warningMdl > #modalBtn').trigger('click');
+      //$('#warningMdl > #modalBtn').trigger('click');
       $('.warn').focus();
       $('.warn').blur();
-      this.warningMsg = "Please complete all required fields!";
+      this.dialogIcon = "error"
+      this.dialogMessage = "Please complete all required fields!";
+      $('#hold-cover #successModalBtn').trigger('click');
       $('.warn').focus();
       $('.warn').blur();
     }else {
         this.quotationService.getQuoteGenInfo('',this.plainQuotationNo(this.quoteNo))
           .subscribe(val => {
           this.quoteId = val['quotationGeneralInfo'].quoteId;
-          this.holdCover.createDate = this.formatDate(val['quotationGeneralInfo'].createDate);
+          this.holdCover.createDate = new Date().toISOString();
           this.holdCover.createUser = val['quotationGeneralInfo'].createUser;
 
              this.holdCoverReq = {
@@ -251,12 +363,17 @@ export class HoldCoverComponent implements OnInit {
                     ).subscribe(data => {
                       var returnCode = data['returnCode'];
                       if(returnCode === 0){
-                         $('#warningMdl > #modalBtn').trigger('click');
+                         //$('#warningMdl > #modalBtn').trigger('click');
                          $('.warn').focus();
                          $('.warn').blur();
-                         this.warningMsg = data['errorList'][0].errorMessage;
+                         //this.warningMsg = data['errorList'][0].errorMessage;
+                         this.dialogIcon = "error"
+                          this.dialogMessage = "Please check the field values";
+                          $('#hold-cover #successModalBtn').trigger('click');
                       }else{
-                         $('#successMdl > #modalBtn').trigger('click');
+                         this.dialogIcon = ""
+                          this.dialogMessage = "";
+                          $('#hold-cover #successModalBtn').trigger('click');
                       }
                     });
 
@@ -301,5 +418,9 @@ export class HoldCoverComponent implements OnInit {
         }
       });
   }
+
+  onClickSave(){
+  $('#confirm-save #modalBtn2').trigger('click');
+}
 
 }

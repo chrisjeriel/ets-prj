@@ -6,6 +6,8 @@ import { Title } from '@angular/platform-browser';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { environment } from '@environments/environment';
 
 
 @Component({
@@ -39,7 +41,7 @@ export class AttachmentComponent implements OnInit {
   test: boolean = false;
   attachmentInfoData: AttachmentInfo[] = [];
   private attachmentInfo: AttachmentInfo;
-  successMessage:string = "Successfully Saved!";
+  successMessage:string = environment.successMessage;
 
   attachmentData: any;
   passData: any = {

@@ -11,7 +11,7 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 })
 export class MtnLineComponent implements OnInit {
 
-selected: any ;
+selected: any = null;
 lineListing: any = {
     tableData: [],
     tHeader: ['Line Code', 'Description', 'Remarks'],
@@ -23,9 +23,9 @@ lineListing: any = {
     fixedCol: false,
     pageID: 11,
     keys:[
-    	'lineCd',
-    	'description',
-    	'remarks']
+      'lineCd',
+      'description',
+      'remarks']
   };
 
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
@@ -34,32 +34,35 @@ lineListing: any = {
   constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal) { }
 
   ngOnInit() {
-  	/*this.maintenanceService.getLineLOV().subscribe((data: any) =>{
-  		for(var lineCount = 0; lineCount < data.line.length; lineCount++){
-  			this.lineListing.tableData.push(
-  				new Row(data.line[lineCount].lineCd, 
-  						data.line[lineCount].description,
-  						data.line[lineCount].remarks)
-  			);  		
-  		}
-  		this.table.refreshTable();
-  	});*/
+    /*this.maintenanceService.getLineLOV().subscribe((data: any) =>{
+      for(var lineCount = 0; lineCount < data.line.length; lineCount++){
+        this.lineListing.tableData.push(
+          new Row(data.line[lineCount].lineCd, 
+              data.line[lineCount].description,
+              data.line[lineCount].remarks)
+        );      
+      }
+      this.table.refreshTable();
+    });*/
 
   }
 
-  onRowClick(data){
-  	//console.log(data);
-  	this.selected = data;
-     
+  onRowClick(data){    
+    if(Object.is(this.selected, data)){
+      this.selected = null
+    } else {
+      this.selected = data;
+    }
   }
 
   confirm(){
     this.selectedData.emit(this.selected);
+    this.selected = null;
   }
   openModal(){
      this.lineListing.tableData = [];
 
-     this.maintenanceService.getLineLOV().subscribe((data: any) =>{
+     this.maintenanceService.getLineLOV('').subscribe((data: any) =>{
            for(var lineCount = 0; lineCount < data.line.length; lineCount++){
              this.lineListing.tableData.push(
                new Row(data.line[lineCount].lineCd, 
@@ -71,20 +74,42 @@ lineListing: any = {
          });
   }
 
+  checkCode(code) {
+    if(code === ''){
+      this.selectedData.emit({
+        lineCd: '',
+        description: ''
+      });
+    } else {
+      this.maintenanceService.getLineLOV(code).subscribe(data => {
+        if(data['line'].length > 0) {
+          this.selectedData.emit(data['line'][0]);
+        } else {
+          this.selectedData.emit({
+            lineCd: '',
+            description: ''
+          });
+            
+          $('#lineMdl > #modalBtn').trigger('click');
+        }
+        
+      });  
+    }
+  }
 
 }
 
 class Row {
-	lineCd: string;
-	description: string;
-	remarks: string;
+  lineCd: string;
+  description: string;
+  remarks: string;
 
-	constructor(lineCd: string,
-		description: string,
-		remarks: string) {
+  constructor(lineCd: string,
+    description: string,
+    remarks: string) {
 
-	this.lineCd = lineCd;
-	this.description = description;
-	this.remarks = remarks;
-	}
+  this.lineCd = lineCd;
+  this.description = description;
+  this.remarks = remarks;
+  }
 }

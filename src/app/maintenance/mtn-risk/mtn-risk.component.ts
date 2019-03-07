@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/cor
 import { MaintenanceService } from '@app/_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-mtn-risk',
@@ -9,7 +10,7 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
   styleUrls: ['./mtn-risk.component.css']
 })
 export class MtnRiskComponent implements OnInit {
-	selected: any;
+  selected: any = null;
 
   riskListing: any = {
     tableData: [],
@@ -22,27 +23,27 @@ export class MtnRiskComponent implements OnInit {
     fixedCol: false,
     pageID: 10,
     keys:[
-    	'riskId',
-    	'riskName',
-    	'regionDesc',
-    	'provinceDesc',
-    	'cityDesc',
-    	'districtDesc',
-    	'blockDesc',
-    	]
+      'riskId',
+      'riskName',
+      'regionDesc',
+      'provinceDesc',
+      'cityDesc',
+      'districtDesc',
+      'blockDesc',
+      ]
   };
 
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
 
-  constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal) { }
+  constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal, private router: Router) { }
 
   ngOnInit() {
-  	/*this.maintenanceService.getMtnRiskListing('','','','','','','','','','','').subscribe(data =>{
-  		var records = data['risk'];
+    /*this.maintenanceService.getMtnRiskListing('','','','','','','','','','','').subscribe(data =>{
+      var records = data['risk'];
 
             for(let rec of records){
-            	this.riskListing.tableData.push({
+              this.riskListing.tableData.push({
                     riskId: rec.riskId,
                     riskName: rec.riskName,
                     regionDesc: rec.regionDesc,
@@ -55,17 +56,20 @@ export class MtnRiskComponent implements OnInit {
                 });
             }
 
-  		this.table.refreshTable();
-  	});*/
+      this.table.refreshTable();
+    });*/
   }
 
   onRowClick(data){
-  	//console.log(data);
-  	this.selected = data;
+    if(Object.is(this.selected, data)){
+      this.selected = null
+    } else {
+      this.selected = data;
+    }
   }
 
   confirm(){
-  	this.selectedData.emit(this.selected);
+    this.selectedData.emit(this.selected);
   }
 
   openModal(){
@@ -92,4 +96,31 @@ export class MtnRiskComponent implements OnInit {
       });
   }
 
-}
+  checkCode(code) {
+    if(code.trim() === ''){
+      this.selectedData.emit({
+        riskId: '',
+        riskName: ''
+      });
+    } else {
+      this.maintenanceService.getMtnRisk(code).subscribe(data => {
+        if(data['risk'] != null) {
+          this.selectedData.emit(data['risk']);
+        } else {
+          this.selectedData.emit({
+            riskId: '',
+            riskName: ''
+          });
+
+          $('#riskMdl > #modalBtn').trigger('click');
+        }
+        
+      });
+   }
+  }
+
+  maintainRisk(){
+    this.router.navigate(['/maintenance-risk', { info: 'new'}], {skipLocationChange: false});
+    this.modalService.dismissAll();
+  }
+
