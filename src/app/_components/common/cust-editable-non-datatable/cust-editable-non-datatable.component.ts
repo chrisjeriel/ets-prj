@@ -5,8 +5,9 @@ import { retry, catchError } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
-
 import { DummyInfo } from '../../../_models';
+import { FormsModule }   from '@angular/forms';
+
 
 @Component({
     selector: 'app-cust-editable-non-datatable',
@@ -16,6 +17,7 @@ import { DummyInfo } from '../../../_models';
 })
 export class CustEditableNonDatatableComponent implements OnInit {
     @ViewChild("deleteModal") deleteModal:ModalComponent;
+    @ViewChild('myForm') form:any;
     @Input() tableData: any[] = [];
     @Output() tableDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
     @Input() tHeader: any[] = [];
@@ -207,7 +209,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         this.search(this.searchString);
         this.tableDataChange.emit(this.passData.tableData);
         this.add.next(event);
-        $('#cust-table-container').addClass('ng-dirty');
+        this.form.control.markAsDirty();
     }
 
     
@@ -227,7 +229,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
             this.selected[i].edited = true;
         }
         this.selectAllFlag = false;
-        $('#cust-table-container').addClass('ng-dirty');
+        this.form.control.markAsDirty();
         this.selected = [];
         this.refreshTable();
         this.search(this.searchString);
@@ -281,9 +283,9 @@ export class CustEditableNonDatatableComponent implements OnInit {
                 if(a[str] > b[str]) { return -1; }
             }
         });
-        if($('.ng-dirty').length != 0){
-            $('#cust-table-container').addClass('ng-dirty');
-        }
+        // if($('.ng-dirty').length != 0){
+        //     $('#cust-table-container').addClass('ng-dirty');
+        // }
         this.sortBy = !this.sortBy;
         this.search(this.searchString);
    
@@ -403,7 +405,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
                 break;
             }
         }
-        $('#cust-table-container').addClass('ng-dirty');
+        this.form.control.markAsDirty();
         this.clickLOV.emit(retData);
     }
 
@@ -458,7 +460,12 @@ export class CustEditableNonDatatableComponent implements OnInit {
         console.log(event.target);
         data.fileName=event.target.files[0].name;
         data.edited=true;
-        event.target.className += "ng-dirty"
+        this.form.control.markAsDirty();
     }
+
+    markAsPristine(){
+        this.form.control.markAsPristine();
+    }
+
  
 }

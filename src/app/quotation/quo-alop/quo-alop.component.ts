@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { highlight,unHighlight } from '@app/_directives/highlight';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { RequiredDirective } from '@app/_directives/required.directive';
+import { FormsModule }   from '@angular/forms';
  
 @Component({
     selector: 'app-quo-alop',
@@ -20,6 +21,7 @@ export class QuoAlopComponent implements OnInit {
   @ViewChild("from") from:any;
   @ViewChild("to") to:any;
   @ViewChildren(RequiredDirective) inputs: QueryList<RequiredDirective>;
+  @ViewChild('myForm') form:any;
   aLOPInfo: QuoteALOPInfo = new QuoteALOPInfo();
   @Input() quotationInfo:any = {};
   @Input() inquiryFlag: boolean = false;
@@ -173,10 +175,11 @@ export class QuoAlopComponent implements OnInit {
           this.dialogMessage = "";
           this.dialogIcon = "success";
           $('#successModalBtn').trigger('click');
-          this.refresh = false;
-          setTimeout(()=>{
-            this.refresh = true;
-          },0)
+          // this.refresh = false;
+          // setTimeout(()=>{
+          //   this.refresh = true;
+          // },0)
+          this.form.control.markAsPristine()
 
           this.getAlop();
         }
@@ -260,6 +263,7 @@ export class QuoAlopComponent implements OnInit {
 
     this.alopData.insuredName = data.data.insuredName;
     this.alopData.insuredId = data.data.insuredId;
+    this.form.control.markAsDirty();
   }
 
   openGenericLOV(selector){
