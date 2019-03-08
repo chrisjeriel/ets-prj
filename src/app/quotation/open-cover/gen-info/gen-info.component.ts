@@ -214,6 +214,10 @@ export class GenInfoComponent implements OnInit {
                             this.insuredContent();
                         }
                   );
+                setTimeout(() => {
+                $('input[appCurrencyRate]').focus();
+                $('input[appCurrencyRate]').blur();
+              },0) 
             }
           }
     });
@@ -228,6 +232,7 @@ export class GenInfoComponent implements OnInit {
   }
 
   formatDate(date){
+    console.log(date);
     if(date[1] < 9){
       return date[0] + "-" + '0'+ date[1] + "-" + date[2];
     }else{

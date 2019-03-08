@@ -113,7 +113,7 @@
 						<div class="form-group col-sm-6 offsetFormGroup">
 							<div class="input-group">
 								<label class="form-control-sm col-sm-4">Exch. Rt.</label>
-								<input type="text" class="form-control form-control-sm text-right" [(ngModel)]="currencyRt" readonly>
+								<input id="exRt" type="text" class="form-control form-control-sm text-right req" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="currencyRt" required appCurrencyRate readonly>
 								<span>&nbsp;</span>
 							</div>
 						</div>
@@ -451,11 +451,11 @@
 					<div class="form-row">
 						<div class="form-group col-sm-6" style="margin-bottom: 8px;">
 							<label class="form-control-sm top-label">Date Created</label>
-							<input type="date" class="form-control form-control-sm cust-sm" [(ngModel)]="ocQuoteGenInfo.createDate" readonly >
+							<input type="datetime-local" class="form-control form-control-sm cust-sm" [(ngModel)]="ocQuoteGenInfo.createDate" readonly >
 						</div>
 						<div class="form-group col-sm-6" style="margin-bottom: 8px;">
 							<label class="form-control-sm top-label">Last Update</label>
-							<input type="date" class="form-control form-control-sm cust-sm" [(ngModel)]="ocQuoteGenInfo.updateDate" readonly>
+							<input type="datetime-local" class="form-control form-control-sm cust-sm" [(ngModel)]="ocQuoteGenInfo.updateDate" readonly>
 						</div>
 					</div>
 				</div>

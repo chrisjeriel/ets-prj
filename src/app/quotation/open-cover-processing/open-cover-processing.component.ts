@@ -54,12 +54,12 @@ export class OpenCoverProcessingComponent implements OnInit {
     dataTypes: ["text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text","text", "date", "date", "text", "text"],
     resizable: [false, true, true, true, true, true, true, true, true, true, false, false, true, true, true, true],
     pageLength: 10,
-    expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, pagination: true, pageStatus: true,
-    filters: [
+    expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, pagination: true, pageStatus: true, addFlag: true, editFlag: true,
+     filters: [
         {
             key: 'quotationNo',
             title: 'Quotation No.',
-            dataType: 'text'
+            dataType: 'seq'
         },
         {
             key: 'cessionDesc',
@@ -114,7 +114,7 @@ export class OpenCoverProcessingComponent implements OnInit {
         {
             key: 'policyNo',
             title: 'Policy No.',
-            dataType: 'text'
+            dataType: 'seq'
         },
         {
             key: 'currencyCd',
@@ -145,51 +145,7 @@ export class OpenCoverProcessingComponent implements OnInit {
     keys: ['openQuotationNo','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','insuredDesc','riskName','objectDesc','site','currencyCd','issueDate','expiryDate','reqBy','createUser'],
   }
 
-  // passDataRiskLOV:any = {
-  //   tableData: this.quotationService.getRisksLOV(),
-  //   tHeader: ["Risk Code", "Risk", "Region", "Province", "Town/City", "District", "Block"],
-  //   dataTypes: ["text","text","text","text","text","text","text"],
-  //   pagination: true,
-  //   pageLength:10,
-  //   pageStatus: true,
-  //   filters:[
-  //     {
-  //       key: 'riskCode',
-  //       title: 'Risk Code',
-  //       dataType: 'text'
-  //     },
-  //     {
-  //       key: 'risk',
-  //       title: 'Risk',
-  //       dataType: 'text'
-  //     },
-  //     {
-  //       key: 'region',
-  //       title: 'Region',
-  //       dataType: 'text'
-  //     },
-  //     {
-  //       key: 'province',
-  //       title: 'Province',
-  //       dataType: 'text'
-  //     },
-  //     {
-  //       key: 'townCity',
-  //       title: 'Town/City',
-  //       dataType: 'text'
-  //     },
-  //     {
-  //       key: 'district',
-  //       title: 'District',
-  //       dataType: 'text'
-  //     },
-  //     {
-  //       key: 'block',
-  //       title: 'Block',
-  //       dataType: 'text'
-  //     }
-  //   ]
-  // }
+  searchParams: any[] = [];
 
   constructor(private quotationService: QuotationService, private modalService: NgbModal, private router: Router
     , public activeModal: NgbActiveModal, private titleService: Title
@@ -198,8 +154,12 @@ export class OpenCoverProcessingComponent implements OnInit {
   ngOnInit() {
     this.titleService.setTitle("Quo | Open Cover Processing");
     this.rowData = this.quotationService.getRowData();
+    this.retrieveQuoteOcListingMethod();
     
-    this.quotationService.getOpenCoverProcessingData().subscribe(data => {
+  }
+
+  retrieveQuoteOcListingMethod(){
+     this.quotationService.getOpenCoverProcessingData(this.searchParams).subscribe((data:any) => {
       var records = data['quotationOcList'];
 
       for(let rec of records){
@@ -223,14 +183,9 @@ export class OpenCoverProcessingComponent implements OnInit {
           ));
 
       }
-
       this.table.refreshTable();
     });
-    
   }
-
-  
-
 
   editBtnEvent() {
     setTimeout(() => {
@@ -262,7 +217,18 @@ export class OpenCoverProcessingComponent implements OnInit {
 
   onClickAdd(event) {
     $('#addModal > #modalBtn').trigger('click');
-    setTimeout(function() { $(event).focus(); }, 0)
+    //setTimeout(function() { $(event).focus(); }, 0)
+  }
+
+  onClickEdit(event){
+
+  }
+
+  //Method for DB query
+  searchQuery(searchParams){
+      this.searchParams = searchParams;
+      this.passData.tableData = [];
+      this.retrieveQuoteOcListingMethod();
   }
 
   onRowClick(event) {
@@ -298,7 +264,7 @@ export class OpenCoverProcessingComponent implements OnInit {
     $('#riskLovId > #modalBtn').trigger('click');
   }
 
-  clickRow(event){
+/*  clickRow(event){
     for (var i = 0; i < event.target.closest("tr").children.length; i++) {
       this.quotationService.rowData[i] = event.target.closest("tr").children[i].innerText;
     }
@@ -306,7 +272,7 @@ export class OpenCoverProcessingComponent implements OnInit {
     this.ocQuoteNo  = this.quotationService.rowData[0];
  
     this.mtnCessionDesc =  this.quotationService.rowData[1];
-  }
+  }*/
 
   getRiskLov(){
     $('#riskIdLov #modalBtn').trigger('click');
