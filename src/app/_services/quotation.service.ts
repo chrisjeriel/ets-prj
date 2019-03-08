@@ -8,7 +8,6 @@ import { isNullOrUndefined } from 'util';
 import { NullTemplateVisitor } from '@angular/compiler';
 
 
-
 @Injectable({ providedIn: 'root' })
 export class QuotationService {
     quotationOption: QuotationOption[] = [];

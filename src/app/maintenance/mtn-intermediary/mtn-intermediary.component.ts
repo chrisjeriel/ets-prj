@@ -37,15 +37,15 @@ intermediaryListing: any = {
 
   ngOnInit() {
 
-   //  this.maintenanceService.getIntLOV().subscribe((data: any) =>{
-    //   for(var lineCount = 0; lineCount < data.intermediary.length; lineCount++){
-    //     this.intermediaryListing.tableData.push(
-    //       new Row(data.intermediary[lineCount].intmId, 
-    //           data.intermediary[lineCount].intmName)
-    //     );      
-    //   }
-    //   this.table.refreshTable();
-    // });
+/*    this.maintenanceService.getIntLOV('').subscribe((data: any) =>{
+      for(var lineCount = 0; lineCount < data.intermediary.length; lineCount++){
+        this.intermediaryListing.tableData.push(
+          new Row(data.intermediary[lineCount].intmId, 
+              data.intermediary[lineCount].intmName)
+        );      
+      }
+      this.table.refreshTable();
+    });*/
 
   }
 

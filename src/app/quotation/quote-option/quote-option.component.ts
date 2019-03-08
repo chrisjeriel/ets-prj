@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
+
 @Component({
     selector: 'app-quote-option',
     templateUrl: './quote-option.component.html',
@@ -289,37 +290,22 @@ export class QuoteOptionComponent implements OnInit {
 
     }
     getQuoteOptions(){
-        this.quotationService.getQuoteOptions(this.quoteId,this.plainQuotationNo(this.quotationNum)).subscribe(data => {
+       this.quotationService.getQuoteOptions(this.quoteId,this.plainQuotationNo(this.quotationNum)).subscribe(data => {
            if (data['quotation'] == null || data['quotation'] == undefined ){ 
            } else {
                var optionRecords = data['quotation'].optionsList; 
-                //this.optionsData.tableData = optionRecords;
-                /*for(let rec of optionRecords){
-                    this.optionsData.tableData.push(rec);                
-                }*/
-
+         
                 this.optionsData.tableData = data['quotation'].optionsList.sort(function(a,b){return a.optionId-b.optionId})
-
-
-
+                
                 for(let rec of optionRecords){
                     for(let r of rec.deductiblesList){
                         r.optionId = rec.optionId;
-                        // if (rec.optionId == 1 ) {          
-                        //     this.deductiblesData.tableData.push(r);
-                        // }
                     }     
                 }
 
-
                 var otherRatesRecords = data['quotation'].otherRatesList;
                 this.otherRatesData.tableData = data['quotation'].otherRatesList;
-                /*for(let rec of otherRatesRecords){
-                  this.otherRatesData.tableData.push(rec
-                    );                
-                }*/
-                
-                
+  
            }
            this.table.forEach(table => { table.refreshTable() });
         });
