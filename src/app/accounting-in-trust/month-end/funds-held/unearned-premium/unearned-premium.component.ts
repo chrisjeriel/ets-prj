@@ -23,6 +23,7 @@ export class UnearnedPremiumComponent implements OnInit {
   	dataTypes: ['text','currency','currency','currency','currency'],
   	pageStatus: true,
     pagination: true,
+    pageLength: 10,
     colSize: []
   }
 
