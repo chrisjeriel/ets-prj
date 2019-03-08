@@ -46,10 +46,9 @@ export class CoverageComponent implements OnInit {
   }
 
   passData: any = {
-    tHeader: ['Cover Code','Cover Name','Section','Bullet No','Sum Insured','Add Sl'],
+    tHeader: ['Section','Bullet No','Cover Name','Sum Insured','Add Sl'],
     tableData:[],
-    dataTypes: ['text','text','select','text','currency','checkbox'],
-    opts: [{ selector: "section", vals: ["I", "II", "III"] }],
+    dataTypes: ['text','text','text','currency','checkbox'],
     nData: {
       createDate: [0,0,0],
       createUser: "PCPR",
@@ -67,10 +66,10 @@ export class CoverageComponent implements OnInit {
     searchFlag: true,
     checkboxFlag: true,
     pageLength: 'unli',
-    widths:[90,'auto',1,1,200,1,1],
-    magnifyingGlass: ['coverCd'],
-    uneditable: [false,true,false,false,false,false],
-    keys:['coverCd','coverCdAbbr','section','bulletNo','sumInsured','addSi']
+    widths:[60,90,225,110,1],
+    magnifyingGlass: ['coverCdAbbr'],
+    uneditable: [true,false,false,false,false],
+    keys:['section','bulletNo','coverCdAbbr','sumInsured','addSi']
   };
 
   @Input() pageData:any;
@@ -78,7 +77,7 @@ export class CoverageComponent implements OnInit {
   multiSelectHeaderTxt: string = "";
   multiSelectData: any[] = [];
   dataLoaded:boolean = false;
-  nData: QuotationCoverageInfo = new QuotationCoverageInfo(null, null, null, null, null,null);
+  nData: QuotationCoverageInfo = new QuotationCoverageInfo( null, null, null, null,null);
   projId: number;
   riskId: number;
   temp: number = 0;
@@ -132,8 +131,7 @@ export class CoverageComponent implements OnInit {
     this.initialData = [];
     this.getCoverageInfo();
     this.coverageData.currencyCd = this.quotationInfo.currencyCd;
-    this.coverageData.currencyRt = this.quotationInfo.currencyRt;
-    setTimeout(() => console.log(this.coverageData.currencyCd),0)  
+    this.coverageData.currencyRt = this.quotationInfo.currencyRt;  
       
   }
 
@@ -151,7 +149,6 @@ export class CoverageComponent implements OnInit {
               }
               this.table.refreshTable();
               this.initialData = this.passData.tableData;
-              console.log(this.initialData)
           });
 
         }
@@ -289,11 +286,8 @@ export class CoverageComponent implements OnInit {
        this.coverageData.projId              = 1;
        this.coverageData.riskId              = this.riskId;
     }else {
-      console.log(this.passData.tableData)
-      console.log(this.initialData)
         for (var i = 0 ; this.passData.tableData.length > i; i++) {
            if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted ){
-             console.log(this.passData.tableData[i].sumInsured)
                this.editedData.push(this.passData.tableData[i]);
                this.editedData[this.editedData.length-1].createDate = new Date(this.editedData[this.editedData.length-1].createDate[0],this.editedData[this.editedData.length-1].createDate[1]-1,this.editedData[this.editedData.length-1].createDate[2]).toISOString();
                this.editedData[this.editedData.length-1].updateDate = new Date(this.editedData[this.editedData.length-1].updateDate[0],this.editedData[this.editedData.length-1].updateDate[1]-1,this.editedData[this.editedData.length-1].updateDate[2]).toISOString();
@@ -345,7 +339,15 @@ export class CoverageComponent implements OnInit {
   }
 
   cancel(){
-    this.cancelBtn.clickCancel();
+    //this.cancelBtn.clickCancel();
+
+    for (var i = 0 ; this.passData.tableData.length > i; i++) {
+      if(this.passData.tableData[i].edited){
+        this.editedData.push(this.passData.tableData[i])
+      }
+    }
+    console.log(this.editedData)
+    this.editedData =[];
   }
 
   sectionCoversLOV(data){
@@ -361,11 +363,12 @@ export class CoverageComponent implements OnInit {
     this.passData.tableData[this.sectionCoverLOVRow].coverCdAbbr = data.coverCdAbbr;
     this.passData.tableData[this.sectionCoverLOVRow].section = data.section;
     this.passData.tableData[this.sectionCoverLOVRow].bulletNo = data.bulletNo;
+    this.passData.tableData[this.sectionCoverLOVRow].sumInsured = 0;
     this.passData.tableData[this.sectionCoverLOVRow].edited = true;
   }
 
-  update(event){
-    console.log(event)
+  update(data){
+    console.log(data)
       this.lineCd = this.quoteNo.split('-')[0];
       this.coverageData.sectionISi =0;
       this.coverageData.sectionIISi =0;

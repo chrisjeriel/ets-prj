@@ -51,13 +51,9 @@ export class MtnSectionCoversComponent implements OnInit {
         this.table.refreshTable("try");
         this.sectionCover.tableData = [];
         this.maintenanceService.getMtnSectionCovers(this.lineCd,this.coverCd).subscribe((data: any) =>{
-          console.log(data.sectionCovers.filter((a)=>{return this.hideSectionCoverArray.indexOf(parseInt(a.coverCd))==-1}));
-          console.log(this.hideSectionCoverArray)
-          // for(var i=0; i< data.sectionCovers.length;i++){
-          //     if(data.sectionCovers[i].lineCd == this.lineCd ){
-          //        this.sectionCover.tableData.push(data.sectionCovers[i]);
-          //      } 
-          // }
+          /*console.log(data.sectionCovers.filter((a)=>{return this.hideSectionCoverArray.indexOf(parseInt(a.coverCd))==-1}));
+          console.log(this.hideSectionCoverArray)*/
+          
           this.sectionCover.tableData = data.sectionCovers.filter((a)=>{return this.hideSectionCoverArray.indexOf(a.coverCd)==-1})
            this.table.refreshTable();
         });

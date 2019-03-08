@@ -3,6 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { QuotationService } from '@app/_services';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
     selector: 'app-change-quote-status',
@@ -11,7 +12,7 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 })
 export class ChangeQuoteStatusComponent implements OnInit {
     @ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
-
+    @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
     tHeader: any[] = [];
     tableData: any[] = [];
     saveData: any = {
@@ -24,6 +25,9 @@ export class ChangeQuoteStatusComponent implements OnInit {
     selected: any = null;
     
     statusCode: any = 0;
+    dialogMessage:string = "";
+    dialogIcon: string = "";
+    cancelFlag:boolean;
 
     mockTesting : any ={
         quoteId: null,
@@ -31,16 +35,16 @@ export class ChangeQuoteStatusComponent implements OnInit {
         status: null
     }
 
+
     passData: any = {
-        tableData: [], 
-        tHeader: ['Quotation No.','Type of Cession','Ceding Company','Insured','Risk'],
-        dataTypes: [],
-        resizable: [false, false, true, true, true],
-        filters: [],
-        pageLength: 10,
-        expireFilter: false, checkFlag: true, tableOnly: true, fixedCol: false, printBtn: false, pageStatus: true, pagination: true,
-        keys: ['quotationNo','cessionDesc','cedingName','insuredDesc','riskName']
-    }
+      tHeader: ['Quotation No.','Type of Cession','Ceding Company','Insured','Risk'],
+      tableData:[],
+      dataTypes: ['text','text','text','text','text'],
+      checkFlag: true,
+      pageLength: 10,
+      uneditable: [true,true,true,true,true],
+      keys: ['quotationNo','cessionDesc','cedingName','insuredDesc','riskName']
+    };
 
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title) {
 
@@ -52,16 +56,17 @@ export class ChangeQuoteStatusComponent implements OnInit {
 
         this.quotationService.getQuoProcessingData([]).subscribe(data => {
             this.records = data['quotationList'];
-            
+            console.log(this.records)
             for(let rec of this.records){
                 this.passData.tableData.push(
-                    {
+                    /*{
                         quotationNo: rec.quotationNo,
                         cessionDesc: rec.cessionDesc,
                         cedingName: rec.cedingName,
                         insuredDesc: rec.insuredDesc,
                         riskName: (rec.project == null) ? '' : rec.project.riskName
-                    }
+                    }*/
+                    rec
                 );
             }
 
@@ -86,19 +91,20 @@ export class ChangeQuoteStatusComponent implements OnInit {
         $('#modalBtn').trigger('click');
     }
 
-    /*onRowClick(target) {
+    onRowClick(target) {
 
-        for(let rec of this.records){
+        /*for(let rec of this.records){
             if(rec.quotationNo === event.quotationNo) {
                 this.saveData.changeQuoteStatus.push({
                     quoteId: rec.quoteId,
                     reasonCd: 'LC'
                 })
             }
-        }
+        }*/
+        /*console.log(target)*/
         console.log(event)
-    }*/
-    onRowClick(event) {
+    }
+    /*onRowClick(event) {
 
         for(let rec of this.records){
             if(rec.quotationNo === event.quotationNo) {
@@ -108,14 +114,18 @@ export class ChangeQuoteStatusComponent implements OnInit {
                 })
             }
         }
-    }
+    }*/
 
     testing(data){
         console.log(data)
     }
 
     cancel(){
-        console.log(this.saveData)
+        console.log(this.passData.tableData)    
+    }
+
+    save(cancelFlag?){
+
     }
 
 }

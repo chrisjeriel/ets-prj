@@ -4,8 +4,8 @@
         <ngb-tab title="Change Quote Status">
             <ng-template ngbTabContent>
                 <div class="row">
-                    <div class="col-sm-9">                        
-                        <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)"></app-cust-non-datatable>
+                    <div class="col-sm-9">   
+                        <app-cust-editable-non-datatable  [passData]="passData" (rowClick)="onRowClick($event)" ></app-cust-editable-non-datatable>                     
                     </div>
                     <div class="col-sm-3" style="margin-top: 2px;">
                         <fieldset class="scheduler-border">
@@ -149,4 +149,6 @@
         </ngb-tab>
     </ngb-tabset>
 </div>
-<br />
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-confirm-save (onYes)="saveData()"></app-confirm-save>
+<app-cancel-button (onYes)="saveData('cancel')" [url]="'/quotation-processing'" ></app-cancel-button>
