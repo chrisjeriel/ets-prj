@@ -467,7 +467,7 @@ export class GeneralInfoComponent implements OnInit {
 							var internalCompParams: any[] = [{
 							  adviceNo: 0,
 							  cedingId: this.genInfoData.cedingId,
-							  cedingRepId: this.genInfoData.cedingId,
+							  cedingRepId: '',
 							  createDate: new Date().toISOString(),
 							  createUser: 'ndc',
 							  option: '',
