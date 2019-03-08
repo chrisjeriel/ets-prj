@@ -236,12 +236,9 @@ export class GeneralInfoComponent implements OnInit {
 			});
 
 			this.quotationService.getCoverageInfo(this.plainQuotationNo(this.quotationNo),null).subscribe((data: any) =>{
-		     this.quoteInfo.showAlop = data.quotation.project.coverage.sectionCovers.filter(a=>{
+		     this.quoteInfo.showAlop =data.quotation.project!=null && data.quotation.project.coverage.sectionCovers.filter(a=>{
 		       return a.section == 'III'
 		     }).length >0;
-		     console.log(data.quotation.project.coverage.sectionCovers.filter(a=>{
-		       return a.section == 'III'
-		     }).length >0)
 
 		   });
 

@@ -142,7 +142,7 @@ export class CoverageComponent implements OnInit {
     this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
       this.table.refreshTable();
         if(data.quotation.project == null){
-          this.showAlop.emit(data.quotation.project.coverage.sectionCovers.filter(a=>{
+          this.showAlop.emit(data.quotation.project!=null &&  data.quotation.project.coverage.sectionCovers.filter(a=>{
            return a.section == 'III'
          }).length >0);
           this.maintenanceService.getMtnSectionCovers(this.lineCd,this.coverCd).subscribe((data: any) =>{
