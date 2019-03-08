@@ -396,18 +396,18 @@
 				<div class="custom-row-inline-inset">
 					<div class="form-row" style="margin-bottom: -3px;">
 						<div class="form-group col-sm">
-							<label class="form-control-sm top-label">Total Sl</label>
-							<input type="text" class="form-control form-control-sm text-right" [(ngModel)]="ocQuoteGenInfo.maxSi" readonly>
+							<label class="form-control-sm top-label">Total SI</label>
+							<input type="text" class="form-control form-control-sm text-right" [ngModel]="ocQuoteGenInfo.maxSi | number: '1.2-2'" readonly>
 						</div>
 					</div>
 					<div class="form-row" style="margin-bottom: -16px; margin-top: -10px !important;">
 						<div class="form-group col-sm-3">
 							<label class="form-control-sm top-label">% Share</label>
-							<input type="text" class="form-control form-control-sm cust-sm text-right" [(ngModel)]="ocQuoteGenInfo.pctShare" readonly>
+							<input type="text" class="form-control form-control-sm cust-sm text-right" [ngModel]="ocQuoteGenInfo.pctShare | number: '1.6-6'" readonly>
 						</div>
 						<div class="form-group col-sm">
 							<label class="form-control-sm top-label">Part of (100%)</label>
-							<input type="text" class="form-control form-control-sm cust-sm text-right" [(ngModel)]="ocQuoteGenInfo.totalValue" readonly>
+							<input type="text" class="form-control form-control-sm cust-sm text-right" [ngModel]="ocQuoteGenInfo.totalValue | number: '1.2-2'" readonly>
 						</div>
 					</div>
 				</div>

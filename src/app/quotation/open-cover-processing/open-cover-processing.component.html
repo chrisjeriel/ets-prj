@@ -37,7 +37,8 @@
 							</div>
 							<div footer class="text-center w-100">
 								<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-								<button *ngIf="checkFields()" class="cust-btn" type="button" (click)="nextBtnEvent();"><a>Next</a></button>
+								<button *ngIf="!checkFields()" class="cust-btn" type="button" (click)="nextBtnEvent();"><a>Next</a></button>
+								<button *ngIf="checkFields()" class="cust-btn cust-btn-disabled" type="button"><a>Next</a></button>
 							</div>
 						</app-modal>
 					</div>

@@ -107,16 +107,18 @@ export class GenInfoComponent implements OnInit {
                               this.lat  = val['risk'].latitude;
                               this.long = val['risk'].longitude;
                             });
-                this.ocQuoteGenInfo.openQuotationNo = this.line +'-'+ new Date().getFullYear();
+                this.ocQuoteGenInfo.openQuotationNo = 'OC-' + this.line +'-'+ new Date().getFullYear();
+                 this.loading = false;
             }else{
-                this.quotationService.getOcGenInfoData(this.sampleId,this.ocQuoteNo)
+                this.quotationService.getOcGenInfoData(this.sampleId,this.plainOpenQuotationNo(this.ocQuoteNo))
                     .subscribe(val => 
                         {
                           //this.ocQuoteGenInfo = new OcGenInfoInfo(i.openQuotationNo);
                           this.loading = false;
                           for(let i of val['quotationOc']) {
-                            console.log(i.projectOc);
-                              this.ocQuoteGenInfo.openQuotationNo = i.openQuotationNo;
+                            //console.log(i.projectOc);
+                              //this.ocQuoteGenInfo.openQuotationNo = i.openQuotationNo;
+                              this.ocQuoteGenInfo.openQuotationNo = this.ocQuoteNo;
                               this.ocQuoteGenInfo.refPolNo        = i.refPolNo;
                               this.ocQuoteGenInfo.openPolicyNo    = i.openPolicyNo;
                               this.ocQuoteGenInfo.lineClassDesc   = i.lineCdDesc;
@@ -350,4 +352,10 @@ export class GenInfoComponent implements OnInit {
         this.objectLov.checkCode(this.line, this.objId);
       }
     }
+
+  plainOpenQuotationNo(data: string){
+    var arr = data.split('-');
+
+    return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]) + '-' + parseInt(arr[5]);
+  }
 }

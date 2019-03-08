@@ -29,8 +29,6 @@ export class OpenCoverProcessingComponent implements OnInit {
   dataTypes: any[] = [];
   filters: any[] = [];
   rowData: any[] = [];
-  disabledEditBtn: boolean = true;
-  disabledCopyBtn: boolean = true;
 
   line: string = "";
   ocLine: string = '';
@@ -147,6 +145,8 @@ export class OpenCoverProcessingComponent implements OnInit {
 
   searchParams: any[] = [];
 
+  selectedOpenQuotationNo: any = {};
+
   constructor(private quotationService: QuotationService, private modalService: NgbModal, private router: Router
     , public activeModal: NgbActiveModal, private titleService: Title
   ) { }
@@ -187,13 +187,6 @@ export class OpenCoverProcessingComponent implements OnInit {
     });
   }
 
-  editBtnEvent() {
-    setTimeout(() => {
-      this.router.navigate(['/open-cover', { line: this.ocLine, from: "oc-processing", typeOfCession: this.mtnCessionDesc,ocQuoteNo: this.ocQuoteNo.trim() }], { skipLocationChange: true });
-    }, 100);
-  }
-
-
   nextBtnEvent() {
     var ocLine = this.mtnLineCd.toUpperCase();
 
@@ -208,6 +201,7 @@ export class OpenCoverProcessingComponent implements OnInit {
       this.modalService.dismissAll();
 
       this.quotationService.rowData = [];
+
       setTimeout(() => {
         this.router.navigate(['/open-cover', { line: ocLine, from: "oc-processing", typeOfCession: this.mtnCessionDesc, riskId: this.riskId, fromBtn: 'add' }], { skipLocationChange: true });
       }, 100);
@@ -217,10 +211,17 @@ export class OpenCoverProcessingComponent implements OnInit {
 
   onClickAdd(event) {
     $('#addModal > #modalBtn').trigger('click');
-    //setTimeout(function() { $(event).focus(); }, 0)
+    setTimeout(function() { $(event).focus(); }, 0)
   }
 
   onClickEdit(event){
+    this.ocLine = this.selectedOpenQuotationNo.openQuotationNo.split('-')[1];
+    this.ocQuoteNo = this.selectedOpenQuotationNo.openQuotationNo;
+    this.mtnCessionDesc = this.selectedOpenQuotationNo.cessionDesc;
+
+    setTimeout(() => {
+      this.router.navigate(['/open-cover', { line: this.ocLine, from: "oc-processing", typeOfCession: this.mtnCessionDesc, ocQuoteNo: this.ocQuoteNo }], { skipLocationChange: true });
+    }, 100);
 
   }
 
@@ -231,18 +232,23 @@ export class OpenCoverProcessingComponent implements OnInit {
       this.retrieveQuoteOcListingMethod();
   }
 
-  onRowClick(event) {
-    this.disabledEditBtn = false;
-    this.disabledCopyBtn = false;
+  onRowClick(data) {
+    this.selectedOpenQuotationNo = data;
   }
 
   onRowDblClick(event) {
     for (var i = 0; i < event.target.closest("tr").children.length; i++) {
       this.quotationService.rowData[i] = event.target.closest("tr").children[i].innerText;
     }
+
     this.ocLine = this.quotationService.rowData[0].split("-")[1];
     this.ocQuoteNo  = this.quotationService.rowData[0];
     this.mtnCessionDesc =  this.quotationService.rowData[1];
+
+    /*this.ocLine = this.selectedOpenQuotationNo.openQuotationNo.split('-')[1];
+    this.ocQuoteNo = this.selectedOpenQuotationNo.openQuotationNo;
+    this.mtnCessionDesc = this.selectedOpenQuotationNo.cessionDesc;*/
+
     setTimeout(() => {
       this.router.navigate(['/open-cover', { line: this.ocLine, from: "oc-processing", typeOfCession: this.mtnCessionDesc, ocQuoteNo: this.ocQuoteNo }], { skipLocationChange: true });
     }, 100);
@@ -290,7 +296,7 @@ export class OpenCoverProcessingComponent implements OnInit {
   setLine(data){
     this.mtnLineCd  = data.lineCd;
     this.mtnLineDesc  = data.description;
-    this.onClickAdd("");
+    this.onClickAdd("#mtnCessionId");
     this.loading = false;
   }
 
@@ -300,7 +306,7 @@ export class OpenCoverProcessingComponent implements OnInit {
   setCession(data){
     this.mtnCessionId = data.cessionId;
     this.mtnCessionDesc  = data.description;
-    this.onClickAdd("#mtnCessionId");
+    this.onClickAdd("#riskId");
     this.loading = false;
   }
   checkCode(field){
@@ -315,7 +321,9 @@ export class OpenCoverProcessingComponent implements OnInit {
     }
 
     checkFields(){
-        if(this.line === '' || this.mtnCessionId === '' || this.riskId === ''){
+        if(this.mtnLineDesc === undefined || this.mtnCessionDesc === undefined || this.riskName === undefined ||
+           this.mtnLineDesc === null || this.mtnCessionDesc === null || this.riskName === null ||
+           this.mtnLineDesc === '' || this.mtnCessionDesc === '' || this.riskName === ''){
             return true;
         }
 
