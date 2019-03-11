@@ -33,5 +33,18 @@ export class NotesService {
     return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()) + 'T' + pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
   }
 
+  lovLoader(ev, num){
+    if(ev != null) {
+      var ic = $(ev.target).next().find('i');
+
+      if(num == 0) {
+        ic.removeClass('fa-spinner fa-spin')
+        ic.closest('div').css('pointer-events', 'initial');
+      } else if(num == 1) {
+        ic.addClass('fa-spinner fa-spin');
+        ic.closest('div').css('pointer-events', 'none');
+      }  
+    }       
+  }
   
 }

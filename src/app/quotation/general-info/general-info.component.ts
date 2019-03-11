@@ -161,7 +161,7 @@ export class GeneralInfoComponent implements OnInit {
 		riskName: '',
 		insuredDesc: '',
 		currencyCd: '',
-		currencyRt:''
+		currencyRt:'',
 	}
 
 	loading:boolean = true;
@@ -183,7 +183,7 @@ export class GeneralInfoComponent implements OnInit {
 			}
 			this.from = params['from'];
 			if (this.from == "quo-processing") {
-				this.line = params['line'];
+				this.line = params['line'];				
 			}
 		});
 
@@ -243,12 +243,47 @@ export class GeneralInfoComponent implements OnInit {
 				this.genInfoData.quoteRevNo 	= '0';
 				this.genInfoData.status 		= '1';
 				this.genInfoData.statusDesc 	= 'Requested';
-				this.genInfoData.issueDate		= this.ns.toDateTimeString(0); //new Date().toISOString();
-				// this.genInfoData.createUser		= 'USER'; //JSON.parse(window.localStorage.currentUser).username;
-				// this.genInfoData.createDate		= new Date().toISOString();
-				// this.genInfoData.updateUser		= 'USER'; //JSON.parse(window.localStorage.currentUser).username;
-				// this.genInfoData.updateDate		= new Date().toISOString();
+				this.genInfoData.issueDate		= this.ns.toDateTimeString(0);
+				this.genInfoData.reqDate		= this.ns.toDateTimeString(0);
+				this.genInfoData.preparedBy		= 'USER'; //JSON.parse(window.localStorage.currentUser).username;
+				
+				var date = new Date();
+				var mills = date.setDate(date.getDate() + 30);
+
+				this.genInfoData.expiryDate		= this.ns.toDateTimeString(mills);				
 				this.project.projId 			= '1';
+
+				this.maintenanceService.getMtnCurrency('PHP','Y').subscribe(data => {
+					var curr = data['currency'][0];
+
+					this.genInfoData.currencyCd = curr.currencyCd;
+					this.genInfoData.currencyRt = curr.currencyRt;
+				});
+
+				this.maintenanceService.getLineClassLOV(this.line).subscribe(data => {					
+					if(data['lineClass'].length == 1) {
+						var lc = data['lineClass'][0];
+
+						this.genInfoData.lineClassCd = lc.lineClassCd;
+						this.genInfoData.lineClassDesc = lc.lineClassCdDesc;
+					} 
+				});
+
+				this.maintenanceService.getMtnQuotationWordings(this.line,'O').subscribe(data => {
+					for(let word of data['quoteWordings']) {
+						if(word.defaultTag === 'Y') {
+							this.genInfoData.openingParag = word.wording;
+						}
+					}
+				});
+
+				this.maintenanceService.getMtnQuotationWordings(this.line,'C').subscribe(data => {
+					for(let word of data['quoteWordings']) {
+						if(word.defaultTag === 'Y') {
+							this.genInfoData.closingParag = word.wording;
+						}
+					}
+				});
 
 				this.maintenanceService.getMtnRisk(JSON.parse(params['addParams']).riskId).subscribe(data => {				
 					var risk = data['risk'];
@@ -269,6 +304,8 @@ export class GeneralInfoComponent implements OnInit {
 					this.project.longitude 		= risk.longitude;
 
 				});
+
+				this.checkQuoteIdF(this.genInfoData.quoteId);
 			});
 
 		}
@@ -318,7 +355,6 @@ export class GeneralInfoComponent implements OnInit {
 
 
 	showLineClassLOV(){
-		console.log(this.insuredLovs);
 		$('#lineClassLOV #modalBtn').trigger('click');
 		$('#lineClassLOV #modalBtn').addClass('ng-dirty')
 	}
@@ -427,6 +463,7 @@ export class GeneralInfoComponent implements OnInit {
 				this.loading = false;
 				if(data['returnCode'] == 0) {
 					this.dialogMessage = data['errorList'][0].errorMessage;
+					this.dialogIcon = "error";
 					$('#genInfo #successModalBtn').trigger('click');
 				} else {
 					this.genInfoData.quoteId = data['quoteId'];
@@ -471,7 +508,6 @@ export class GeneralInfoComponent implements OnInit {
 						//end internal comp
 				}
 			});
-			console.log('got here');
 		} else {
 			this.loading = false;
 			this.dialogIcon = "error";
@@ -620,14 +656,15 @@ export class GeneralInfoComponent implements OnInit {
   			typeOfCession: this.genInfoData.cessionDesc,
   			status: this.genInfoData.status,
   			reasonCd: this.genInfoData.reasonCd,
-  			principalId: this.genInfoData.principalId
+  			principalId: this.genInfoData.principalId,
+  			lineCd: this.line
   		});		
   	}
 
   	validate(obj){
-  		var req = ['cedingId','lineClassCd','prinId','insuredDesc','status','intmId',
-  				   'issueDate','expiryDate','currencyCd','currencyRt','openingParag',
-  				   'closingParag','projDesc','objectId','site'];
+  		var req = ['cedingId','lineClassCd','prinId','insuredDesc','status','issueDate',
+  				   'expiryDate','currencyCd','currencyRt','openingParag','closingParag',
+  				   'projDesc','objectId','site'];
 
   		if(obj.lineCd === 'CAR' || obj.lineCd === 'EAR') {
   			req.push('contractorId', 'duration');
@@ -699,6 +736,11 @@ export class GeneralInfoComponent implements OnInit {
 
 	cancel(){
 		this.cancelBtn.clickCancel();
+	}
+
+	pad(val) {
+		console.log('cont');
+		return val.toString().padStart(3, '0');
 	}
 
 }

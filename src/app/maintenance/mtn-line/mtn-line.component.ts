@@ -56,6 +56,7 @@ lineListing: any = {
   }
 
   confirm(){
+    this.selected['fromLOV'] = true;
     this.selectedData.emit(this.selected);
     this.selected = null;
   }
@@ -74,20 +75,23 @@ lineListing: any = {
          });
   }
 
-  checkCode(code) {
+  checkCode(code, ev) {
     if(code === ''){
       this.selectedData.emit({
         lineCd: '',
-        description: ''
+        description: '',
+        ev: ev
       });
     } else {
       this.maintenanceService.getLineLOV(code).subscribe(data => {
         if(data['line'].length > 0) {
+          data['line'][0]['ev'] = ev;
           this.selectedData.emit(data['line'][0]);
         } else {
           this.selectedData.emit({
             lineCd: '',
-            description: ''
+            description: '',
+            ev: ev
           });
             
           $('#lineMdl > #modalBtn').trigger('click');

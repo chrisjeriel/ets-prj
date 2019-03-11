@@ -1,5 +1,5 @@
 <div class="cust-tabs-container">
-	<h4 *ngIf="!inquiryFlag">Quotation / Quotation Processing</h4>
+	<h4 *ngIf="!inquiryFlag">Quotation / Quotation Processing {{ header }}</h4>
 	<h4 *ngIf="inquiryFlag">Quotation / Quotation Inquiry</h4>
 	<!-- <ngb-tabset (tabChange)="beforeChange($event)"> -->
 		<ngb-tabset  (tabChange)="onTabChange($event)">
