@@ -55,7 +55,7 @@
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Intermediary</label>
-										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="mtnIntmId" (change)="checkCode('intermediary')" appRequired>
+										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="mtnIntmId" (change)="checkCode('intermediary')">
 										<div class="text-search-ico" (click)="getIntmLov($event)"><a><i class="fa fa-search"></i></a></div>
 										<span>&nbsp;</span>
 										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 4px;" [(ngModel)]="mtnIntmName" readonly>
@@ -82,7 +82,7 @@
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-4">Request Mode</label>
-										<select class="form-control form-control-sm cust-sm" [(ngModel)]="ocQuoteGenInfo.reqMode" appRequired>
+										<select class="form-control form-control-sm cust-sm" [(ngModel)]="ocQuoteGenInfo.reqMode">
 											<option value="e">Email</option>
 											<option value="f">Fax</option>
 											<option value="p">Phone</option>
@@ -420,6 +420,8 @@
 					<div class="input-group">
 						<label class="form-control-sm col-sm-4">Prepared By</label>
 						<input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="ocQuoteGenInfo.preparedBy" readonly>
+						<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+										<span>&nbsp;</span>
 					</div>
 					<div class="input-group">
 						<label class="form-control-sm col-sm-4">Approved By</label>

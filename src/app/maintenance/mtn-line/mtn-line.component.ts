@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
 import { MaintenanceService } from '@app/_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
@@ -30,6 +30,7 @@ lineListing: any = {
 
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
+  @Input() openCoverTag: boolean = false;
 
   constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal) { }
 
@@ -63,12 +64,23 @@ lineListing: any = {
      this.lineListing.tableData = [];
 
      this.maintenanceService.getLineLOV('').subscribe((data: any) =>{
+       console.log(data);
            for(var lineCount = 0; lineCount < data.line.length; lineCount++){
-             this.lineListing.tableData.push(
-               new Row(data.line[lineCount].lineCd, 
-                   data.line[lineCount].description,
-                   data.line[lineCount].remarks)
-             );      
+             if(this.openCoverTag){
+               if(data.line[lineCount].openCoverTag === 'Y'){
+                 this.lineListing.tableData.push(
+                 new Row(data.line[lineCount].lineCd, 
+                     data.line[lineCount].description,
+                     data.line[lineCount].remarks)
+                     ); 
+               }
+             }else{
+               this.lineListing.tableData.push(
+                 new Row(data.line[lineCount].lineCd, 
+                     data.line[lineCount].description,
+                     data.line[lineCount].remarks)
+               ); 
+             }   
            }
            this.table.refreshTable();
          });
