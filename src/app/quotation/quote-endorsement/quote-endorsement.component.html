@@ -4,15 +4,15 @@
         <div class="form-row custom-row-inline-inset">
             <div class="input-group">
                 <label class="form-control-sm col-sm-2" for="inputQuonum">Quotation No </label>
-                <input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="quotationInfo.quotationNo"
+                <input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-2" [ngModel]="(OpenCover) ? ocQuoteData.openQuotationNo : quotationInfo.quotationNo"
                     disabled="disabled">
                 <label class="form-control-sm col-sm-1" for="inputInname">Insured</label>
-                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-6" [ngModel]="quotationInfo.quotationNo"
+                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-6" [ngModel]="(OpenCover) ? ocQuoteData.insured : quotationInfo.insuredDesc"
                     disabled="disabled">
             </div>
             <div class="input-group">
                 <label class="form-control-sm col-sm-2" for="inputRisk">Risk</label>
-                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-9" [(ngModel)]="quotationInfo.riskName"
+                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-9" [ngModel]="(OpenCover) ? ocQuoteData.riskName : quotationInfo.riskName"
                     disabled="disabled">
             </div>
         </div>

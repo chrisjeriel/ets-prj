@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
 })
 export class OpenCoverComponent implements OnInit {
 
+  quoteData: any = {};
+
   constructor(private router: Router) { }
 
   ngOnInit() {
@@ -25,5 +27,9 @@ export class OpenCoverComponent implements OnInit {
         this.router.navigateByUrl('');
       } 
   
+  }
+
+  quoteDataF(data){
+    this.quoteData = data;
   }
 }

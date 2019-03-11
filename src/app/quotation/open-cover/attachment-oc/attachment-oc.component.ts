@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AttachmentInfo } from '@app/_models';
 import { QuotationService } from '@app/_services';
@@ -49,6 +49,8 @@ export class AttachmentOcComponent implements OnInit {
   savedData: any[];
   deletedData: any[];
 
+  @Input() quoteData: any = {};
+
   constructor(private titleService: Title, private quotationService: QuotationService, private modalService: NgbModal) { }
 
   ngOnInit() {
@@ -63,7 +65,10 @@ export class AttachmentOcComponent implements OnInit {
         this.custEditableNonDatatableComponent.refreshTable();
       }
     );*/
-    this.quotationService.getAttachmentOc().subscribe((data: any) => {
+    let params = {
+
+    }
+    this.quotationService.getAttachmentOc(this.quoteData.quoteIdOc, '').subscribe((data: any) => {
         this.data = data.quotationOc[0].attachmentOc;
         // this.passData.tableData = data.quotation.project.coverage.sectionCovers;
         for (var i = 0; i < this.data.length; i++) {
@@ -103,9 +108,10 @@ export class AttachmentOcComponent implements OnInit {
 
     }
     //console.log(this.savedData);
-    this.quotationService.saveQuoteAttachmentOc(1,this.savedData,this.deletedData).subscribe((data: any) => {
+    this.quotationService.saveQuoteAttachmentOc(this.quoteData.quoteIdOc,this.savedData,this.deletedData).subscribe((data: any) => {
 
       $('#successModalBtn').trigger('click');
+      this.custEditableNonDatatableComponent.refreshTable();
     });
   }
 

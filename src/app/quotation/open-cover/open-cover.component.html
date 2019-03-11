@@ -3,22 +3,22 @@
 	<ngb-tabset (tabChange)="beforeChange($event);onTabChange($event)">
 		<ngb-tab class="ngb-tab" title="General Info">
 			<ng-template ngbTabContent>
-				<app-gen-info></app-gen-info>
+				<app-gen-info (quoteData)="quoteDataF($event)" ></app-gen-info>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab class="ngb-tab" title="Sum Insured">
 			<ng-template ngbTabContent>
-				<app-open-cover-sum-insured></app-open-cover-sum-insured>
+				<app-open-cover-sum-insured [quoteData]="quoteData"></app-open-cover-sum-insured>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab class="ngb-tab" title="Endorsement">
 			<ng-template ngbTabContent>
-				<app-quote-endorsement [endorsementType]="'OC'"></app-quote-endorsement>
+				<app-quote-endorsement [endorsementType]="'OC'" [ocQuoteData]="quoteData"></app-quote-endorsement>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab class="ngb-tab" title="Attachment">
 			<ng-template ngbTabContent>
-				<app-attachment-oc></app-attachment-oc>
+				<app-attachment-oc [quoteData]="quoteData"></app-attachment-oc>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab class="ngb-tab" title="Print">

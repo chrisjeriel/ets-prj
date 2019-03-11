@@ -247,8 +247,10 @@ export class QuotationService {
         // return this.attachmentInfoData;
     }
 
-    getAttachmentOc(){
-        const params = new HttpParams().set('quoteIdOc', '');
+    getAttachmentOc(quoteIdOc: string, openQuotationNo: string){
+        const params = new HttpParams()
+                        .set('quoteIdOc', quoteIdOc)
+                        .set('openQuotationNo', openQuotationNo);
         return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteAttachmentOc", {params});
     }
 
@@ -761,7 +763,7 @@ export class QuotationService {
     }
 
       
-    saveQuoteCoverageOc(quoteId:number,projId: number ,coverageOcData:any){
+    saveQuoteCoverageOc(coverageOcData:any){
         let header : any = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json'

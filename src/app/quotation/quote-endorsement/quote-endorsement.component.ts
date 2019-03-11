@@ -24,6 +24,7 @@ export class QuoteEndorsementComponent implements OnInit {
         riskName: '',
         insuredDesc: ''
     }
+    @Input() ocQuoteData: any = {};
     @ViewChildren(CustEditableNonDatatableComponent) table: QueryList<CustEditableNonDatatableComponent>;
     @ViewChild(CustNonDatatableComponent) tableNonEditable: CustNonDatatableComponent;
     @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
@@ -179,7 +180,7 @@ export class QuoteEndorsementComponent implements OnInit {
 
             //    arn
                this.line = (this.quoteNoOc.split("-")[1]).trim();
-               this.quotationService.getOcGenInfoData('',this.quoteNoOc)
+               this.quotationService.getOcGenInfoData(this.ocQuoteData.quoteIdOc,'')
                     .subscribe(val => {
                      this.quoteIdOc = val['quotationOc'][0].quoteIdOc;
                      this.insured  = val['quotationOc'][0].insuredDesc;
@@ -440,6 +441,8 @@ export class QuoteEndorsementComponent implements OnInit {
                       }
                     ]
                 }
+                console.log(this.endorsementOCData.tableData);
+                console.log(this.saveEndt);
                 this.quotationService.saveQuoteEndorsementsOc(JSON.stringify(this.endorsementReqOc))
                   .subscribe(data => {
                     console.log(data) 
@@ -460,11 +463,11 @@ export class QuoteEndorsementComponent implements OnInit {
                     "quoteIdOc": this.quoteIdOc,
                     "saveEndorsementsOc": []
                  }
-                 this.quotationService.saveQuoteEndorsementsOc(JSON.stringify(this.endorsementReqOc))
+                 /*this.quotationService.saveQuoteEndorsementsOc(JSON.stringify(this.endorsementReqOc))
                   .subscribe(data => {
                     console.log(data);
                     $('#successMdl > #modalBtn').trigger('click');
-                  });
+                  });*/
               }
             }
         }
@@ -475,7 +478,7 @@ export class QuoteEndorsementComponent implements OnInit {
     // end-arn //
     plainQuotationNoOc(data: string){
         var arr = data.split('-');
-        return arr[0]+ '-' +arr[1] + '-' + arr[2] + '-' + arr[3] + '-' + arr[4] + '-' + arr[5] ;
+        return arr[0]+ '-' +arr[1] + '-' + arr[2] + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]) + '-' + parseInt(arr[5]) ;
     }
 
     onClickSave(){

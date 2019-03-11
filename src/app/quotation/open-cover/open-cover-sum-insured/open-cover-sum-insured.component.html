@@ -5,16 +5,16 @@
 	        <div class="input-group" style="margin-bottom: -13px !important; margin-top: 3px !important">
 	            <label class="col-sm-1"></label>
 	            <label class="form-control-sm col-sm-1" for="xx">Quotation No</label>
-	            <input type="text" id="xx" value="CAR-2018-5081-077-0177" class="form-control form-control-sm cust-sm col-sm-2"
+	            <input type="text" id="xx" [ngModel]="quoteData.openQuotationNo" class="form-control form-control-sm cust-sm col-sm-2"
 	                   placeholder="" readonly>
 	            <label class="form-control-sm col-sm-1" for="xx">Insured</label>
-	            <input type="text" id="xx" value="Insurer" class="form-control form-control-sm cust-sm col-sm-5" placeholder=""
+	            <input type="text" id="xx" [ngModel]="quoteData.insured" class="form-control form-control-sm cust-sm col-sm-5" placeholder=""
 	                   readonly>
 	        </div>
 	        <div class="input-group" style="margin-bottom: -13px !important;">
 	            <label class="col-sm-1"></label>
 	            <label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Risk</label>
-	            <input type="text" id="xx" value="Risk Name" class="form-control form-control-sm cust-sm col-sm-8" placeholder=""
+	            <input type="text" id="xx" [ngModel]="quoteData.riskName" class="form-control form-control-sm cust-sm col-sm-8" placeholder=""
 	                   readonly>
 	        </div>
 	    </div>

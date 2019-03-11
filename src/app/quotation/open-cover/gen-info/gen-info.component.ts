@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy, ViewChild, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ViewChildren, QueryList, EventEmitter, Output, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { OcGenInfoInfo } from '@app/_models/QuotationOcGenInfo';
-import { QuotationService, MaintenanceService } from '@app/_services';
+import { QuotationService, MaintenanceService, NotesService } from '@app/_services';
 import { HttpClient } from '@angular/common/http';
 import { formatDate } from '@angular/common';
 import { Title } from '@angular/platform-browser';
@@ -68,7 +68,9 @@ export class GenInfoComponent implements OnInit {
   @ViewChild(MtnObjectComponent) objectLov: MtnObjectComponent;
 
 
-  constructor(private route: ActivatedRoute, private quotationService: QuotationService, private http: HttpClient, private mtnService: MaintenanceService, private titleService:Title) {
+  constructor(private route: ActivatedRoute, private quotationService: QuotationService, 
+              private http: HttpClient, private mtnService: MaintenanceService, 
+              private titleService:Title, private notes: NotesService) {
    }
 
    sampleId:string ="";
@@ -78,6 +80,9 @@ export class GenInfoComponent implements OnInit {
   govCheckbox: boolean;
   indCheckbox: boolean;
   fromBtn:string;
+
+  @Output() quoteData = new EventEmitter<any>();
+  @Input() quoteInfo = {};
 
   ngOnInit() {
     this.titleService.setTitle("Quo | General Info");
@@ -115,9 +120,11 @@ export class GenInfoComponent implements OnInit {
                         {
                           //this.ocQuoteGenInfo = new OcGenInfoInfo(i.openQuotationNo);
                           this.loading = false;
+                          console.log(val);
                           for(let i of val['quotationOc']) {
                             //console.log(i.projectOc);
                               //this.ocQuoteGenInfo.openQuotationNo = i.openQuotationNo;
+                              this.ocQuoteGenInfo.quoteIdOc       = i.quoteIdOc;
                               this.ocQuoteGenInfo.openQuotationNo = this.ocQuoteNo;
                               this.ocQuoteGenInfo.refPolNo        = i.refPolNo;
                               this.ocQuoteGenInfo.openPolicyNo    = i.openPolicyNo;
@@ -129,10 +136,10 @@ export class GenInfoComponent implements OnInit {
                               this.ocQuoteGenInfo.reinsurerName   = i.reinsurerName;
                               this.ocQuoteGenInfo.intmId          = i.intmId;
                               this.ocQuoteGenInfo.intmName        = i.intmName;
-                              this.ocQuoteGenInfo.issueDate       = this.formatDate(i.issueDate);
-                              this.ocQuoteGenInfo.expiryDate      = this.formatDate(i.expiryDate);
+                              this.ocQuoteGenInfo.issueDate       = this.formatDateTime(i.issueDate);
+                              this.ocQuoteGenInfo.expiryDate      = this.formatDateTime(i.expiryDate);
                               this.ocQuoteGenInfo.reqBy           = i.reqBy;
-                              this.ocQuoteGenInfo.reqDate         = this.formatDate(i.reqDate);
+                              this.ocQuoteGenInfo.reqDate         = this.formatDateTime(i.reqDate);
                               this.ocQuoteGenInfo.reqMode         = i.reqMode;
                               this.ocQuoteGenInfo.currencyCd      = i.currencyCd;
                               this.ocQuoteGenInfo.currencyRt      = i.currencyRt;
@@ -157,12 +164,12 @@ export class GenInfoComponent implements OnInit {
                               this.ocQuoteGenInfo.totalValue      = i.projectOc.totalValue;
                               this.ocQuoteGenInfo.preparedBy      = i.preparedBy;
                               this.ocQuoteGenInfo.approvedBy      = i.approvedBy;
-                              this.ocQuoteGenInfo.printDate       = this.formatDate(i.printDate);
+                              this.ocQuoteGenInfo.printDate       = this.formatDateTime(i.printDate);
                               this.ocQuoteGenInfo.printedBy       = i.printedBy;
                               this.ocQuoteGenInfo.createUser      = i.createUser;
-                              this.ocQuoteGenInfo.createDate      = this.formatDate(i.createDate);
+                              this.ocQuoteGenInfo.createDate      = this.formatDateTime(i.createDate);
                               this.ocQuoteGenInfo.updateUser      = i.updateUser;
-                              this.ocQuoteGenInfo.updateDate      = this.formatDate(i.updateDate);
+                              this.ocQuoteGenInfo.updateDate      = this.formatDateTime(i.updateDate);
                               this.ocQuoteGenInfo.riskId          = i.projectOc.riskId;
                               this.ocQuoteGenInfo.cessionId       = i.cessionId;
                               this.ocQuoteGenInfo.lineClassCd     = i.lineClassCd;
@@ -190,6 +197,7 @@ export class GenInfoComponent implements OnInit {
 
                             this.mtnService.getMtnRisk(this.ocQuoteGenInfo.riskId)
                                     .subscribe(val => {
+                                      console.log()
                                       this.riskName = val['risk'].riskName;
                                       this.regionDesc = val['risk'].regionDesc;  
                                       this.provinceDesc = val['risk'].provinceDesc;
@@ -198,6 +206,7 @@ export class GenInfoComponent implements OnInit {
                                       this.blockDesc  = val['risk'].blockDesc;
                                       this.lat  = val['risk'].latitude;
                                       this.long = val['risk'].longitude;
+                                      this.quoteDataF();
                                     });
                            
                             //  console.log(this.ocQuoteGenInfo.cessionId + ">>>> labas ");
@@ -214,13 +223,17 @@ export class GenInfoComponent implements OnInit {
                                     });
 
                             this.insuredContent();
+                            
                         }
                   );
                 setTimeout(() => {
                 $('input[appCurrencyRate]').focus();
                 $('input[appCurrencyRate]').blur();
+
               },0) 
             }
+
+
           }
     });
     this.checkTypeOfCession();
@@ -233,7 +246,18 @@ export class GenInfoComponent implements OnInit {
     }
   }
 
-  formatDate(date){
+  quoteDataF(){
+    this.quoteData.emit({
+       quoteIdOc: this.ocQuoteGenInfo.quoteIdOc,
+       openQuotationNo: this.ocQuoteGenInfo.openQuotationNo,
+       insured: this.insured,
+       riskName: this.riskName,
+       riskId: this.ocQuoteGenInfo.riskId
+    });
+  }
+
+
+/*  formatDate(date){
     console.log(date);
     if(date[1] < 9){
       return date[0] + "-" + '0'+ date[1] + "-" + date[2];
@@ -241,6 +265,10 @@ export class GenInfoComponent implements OnInit {
       return date[0] + "-" +date[1] + "-" + date[2];
     }
     
+  }*/
+
+  formatDateTime(date){
+    return this.notes.toDateTimeString(date);
   }
 
   ngOnDestroy() {
@@ -360,7 +388,7 @@ export class GenInfoComponent implements OnInit {
   }
 
   setUser(data){
-    console.log(data);
+    this.ocQuoteGenInfo.preparedBy = data.userName;
   }
 
    getUsersLov(){

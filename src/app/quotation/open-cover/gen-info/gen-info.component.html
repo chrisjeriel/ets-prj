@@ -66,11 +66,11 @@
 								<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 									<div class="input-group" style="margin-top: 10px;">
 										<label class="form-control-sm col-sm-4">Quote Date</label>
-										<input type="date" class="form-control form-control-sm"  [(ngModel)]="ocQuoteGenInfo.issueDate" appRequired>
+										<input type="date" class="form-control form-control-sm"  [ngModel]="ocQuoteGenInfo.issueDate?.split('T')[0]" (ngModelChange)=" ocQuoteGenInfo.issueDate = $event" appRequired>
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-4">Valid Until</label>
-										<input type="date" class="form-control form-control-sm"  [(ngModel)]="ocQuoteGenInfo.expiryDate" appRequired>
+										<input type="date" class="form-control form-control-sm"  [ngModel]="ocQuoteGenInfo.expiryDate?.split('T')[0]" (ngModelChange)=" ocQuoteGenInfo.expiryDate = $event" appRequired>
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-4">Requested By</label>
@@ -78,7 +78,7 @@
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-4">Request Date</label>
-										<input type="date" class="form-control form-control-sm" [(ngModel)]="ocQuoteGenInfo.reqDate">
+										<input type="date" class="form-control form-control-sm" [ngModel]="ocQuoteGenInfo.reqDate?.split('T')[0]" (ngModelChange)=" ocQuoteGenInfo.reqDate = $event">
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-4">Request Mode</label>
@@ -113,7 +113,7 @@
 						<div class="form-group col-sm-6 offsetFormGroup">
 							<div class="input-group">
 								<label class="form-control-sm col-sm-4">Exch. Rt.</label>
-								<input id="exRt" type="text" class="form-control form-control-sm text-right req" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="currencyRt" required appCurrencyRate readonly>
+								<input id="exRt" type="text" class="form-control form-control-sm text-right req" [ngModel]="currencyRt | number: '1.6-6'" required appCurrencyRate readonly>
 								<span>&nbsp;</span>
 							</div>
 						</div>
@@ -180,7 +180,7 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Risk</label>
-							<input type="text" class="form-control form-control-sm" [(ngModel)]="riskName">
+							<input type="text" class="form-control form-control-sm" [(ngModel)]="riskName" readonly>
 						</div>
 						<div class="input-group" style="margin-bottom: 0px !important;">
 							<div class="col-sm-6 input-group" style="padding: 0px;">
@@ -272,7 +272,7 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Risk</label>
-							<input type="text" class="form-control form-control-sm" [(ngModel)]="riskName">
+							<input type="text" class="form-control form-control-sm" [(ngModel)]="riskName" readonly>
 						</div>
 						<div class="input-group" style="margin-bottom: 0px !important;">
 							<div class="col-sm-6 input-group" style="padding: 0px;">
@@ -433,7 +433,7 @@
 					</div>
 					<div class="input-group">
 						<label class="form-control-sm col-sm-4">Print Date</label>
-						<input type="date" class="form-control form-control-sm col-sm-7" [(ngModel)]="ocQuoteGenInfo.printDate" readonly>
+						<input type="date" class="form-control form-control-sm col-sm-7" [ngModel]="ocQuoteGenInfo.printDate?.split('T')[0]" (ngModelChange)="ocQuoteGenInfo.printDate = $event" readonly>
 					</div>
 				</div>
 			</fieldset>
