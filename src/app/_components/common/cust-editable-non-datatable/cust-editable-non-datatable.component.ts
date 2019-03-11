@@ -261,7 +261,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
          if(data != this.fillData){
             this.indvSelect = data;
         }
-        this.newClick.emit(data);
+        setTimeout(() => this.newClick.emit(data),0) ;
         //this.rowClick.next(event);
         
     }

@@ -5,7 +5,7 @@
             <ng-template ngbTabContent>
                 <div class="row">
                     <div class="col-sm-9">   
-                        <app-cust-editable-non-datatable  [passData]="passData" (rowClick)="onRowClick($event)" ></app-cust-editable-non-datatable>                     
+                        <app-cust-editable-non-datatable  [passData]="passData"  (newClick)="onRowClick($event)" ></app-cust-editable-non-datatable>                     
                     </div>
                     <div class="col-sm-3" style="margin-top: 2px;">
                         <fieldset class="scheduler-border">
@@ -13,19 +13,19 @@
                             <div class="form-group" style="margin-bottom: 13px;margin-left: 35px !important;">
                                 <div class="input-group">
                                     <input class="form-control-sm" type="radio" name="batchOption" [value]="9"
-                                        style="    margin-top: 2px !important;" [(ngModel)]="statusCode">
+                                        style="    margin-top: 2px !important;" [(ngModel)]="statusCode" (click)="reasonRequired()">
                                     <label class="form-control-sm col-sm-10" style="text-align: left !important;">Did
                                         Not Materialize</label>
                                 </div>
                                 <div class="input-group">
                                     <input class="form-control-sm" type="radio" name="batchOption" value="10"
-                                        style="    margin-top: 2px !important;" [(ngModel)]="statusCode">
+                                        style="    margin-top: 2px !important;" [(ngModel)]="statusCode" (click)="reasonNotRequired()">
                                     <label class="form-control-sm col-sm-10" style="text-align: left !important;">Risk
                                         Not Commensurate</label>
                                 </div>
                                 <div class="input-group">
                                     <input class="form-control-sm" type="radio" name="batchOption" value="99"
-                                        style="    margin-top: 2px !important;" [(ngModel)]="statusCode">
+                                        style="    margin-top: 2px !important;" [(ngModel)]="statusCode" (click)="reasonNotRequired()">
                                     <label class="form-control-sm col-sm-10" style="text-align: left !important;">Spoiled</label>
                                 </div>
                             </div>
@@ -44,38 +44,38 @@
                             <div class="form-row custom-row-inline-inset">
                                 <div class="input-group alignment" style="margin-right: 10%; margin-bottom: -14px !important;">
                                     <label class="form-control-sm col-sm-2 text-right">Quotation No</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-4" [ngModel]="selected?.quotationNo">
+                                    <input type="text" class="form-control form-control-sm col-sm-4" [(ngModel)]="selectedData.description" readonly="">
                                     <label class="form-control-sm col-sm-2 text-right">Status</label>
-                                    <input type="text" name="" class="form-control form-control-sm col-sm-4" [ngModel]="selected?.status">
+                                    <input type="text" name="" class="form-control form-control-sm col-sm-4" [(ngModel)]="selectedData.description" readonly="">
                                 </div>
                             </div>
                             <div class="form-row custom-row-inline-inset">
                                 <div class="input-group alignment" style="margin-right: 10%; margin-bottom: -14px !important;">
                                     <label class="form-control-sm col-sm-2 text-right">Ceding Co</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-4" [ngModel]="selected?.cedingName">
+                                    <input type="text" class="form-control form-control-sm col-sm-4" [(ngModel)]="selectedData.description" readonly="">
                                     <label class="form-control-sm col-sm-2 text-right">Insured</label>
-                                    <input type="text" name="" class="form-control form-control-sm col-sm-4" [ngModel]="selected?.insuredDesc">
+                                    <input type="text" name="" class="form-control form-control-sm col-sm-4" [(ngModel)]="selectedData.description" readonly="">
                                 </div>
                             </div>
                             <div class="form-row custom-row-inline-inset">
                                 <div class="input-group alignment" style="margin-right: 10%; margin-bottom: -14px !important;">
                                     <label class="form-control-sm col-sm-2 text-right">Risk</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-4" [ngModel]="selected?.project?.riskName">
+                                    <input type="text" class="form-control form-control-sm col-sm-4" [(ngModel)]="selectedData.description" readonly="">
                                     <label class="form-control-sm col-sm-2 text-right">Processor</label>
-                                    <input type="text" name="" class="form-control form-control-sm col-sm-4">
+                                    <input type="text" name="" class="form-control form-control-sm col-sm-4" [(ngModel)]="selectedData.description" readonly="">
                                 </div>
                             </div>
                             <div class="form-row custom-row-inline-inset" style="margin-bottom: 11px !important;">
                                 <div class="input-group alignment" style="margin-right: 10%; margin-bottom: -10px !important;">
                                     <label class="form-control-sm col-sm-2 text-right">Reason</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-1" style="margin-right: 1px !important;">
-                                    <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+                                    <input type="text" class="form-control form-control-sm col-sm-1" style="margin-right: 1px !important;" [(ngModel)]="selectedData.reasonCd" [disabled]="required"> 
+                                    <div class="text-search-ico"><a (click)="openReasonLOV()"><i class="fa fa-search"></i></a></div>
                                     <div class="col-sm-3" style="padding-left: 2px; padding-right: 0px;">
-                                        <input type="text" class="form-control form-control-sm">
+                                        <input type="text" class="form-control form-control-sm" [(ngModel)]="selectedData.description" [disabled]="required">
                                     </div>
                                     <label class="form-control-sm col-sm-2 text-right">Remarks</label>
                                     <div class="col-sm-4" style="padding-left: 0px; padding-right: 0px">
-                                        <input type="text" name="" class="form-control form-control-sm" style="padding-left: 1px">
+                                        <input type="text" name="" class="form-control form-control-sm" style="padding-left: 1px" [(ngModel)]="selectedData.description" readonly="">
                                     </div>
                                 </div>
                             </div>
@@ -149,6 +149,8 @@
         </ngb-tab>
     </ngb-tabset>
 </div>
+<app-mtn-reason id="reasonLOV" (selectedData)="setReason($event)"></app-mtn-reason>
+
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-confirm-save (onYes)="saveData()"></app-confirm-save>
-<app-cancel-button (onYes)="saveData('cancel')" [url]="'/quotation-processing'" ></app-cancel-button>
+<app-confirm-save (onYes)="process()"></app-confirm-save>
+<app-cancel-button (onYes)="process('cancel')" [url]="'/quotation-processing'" ></app-cancel-button>

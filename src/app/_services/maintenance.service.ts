@@ -177,4 +177,8 @@ export class MaintenanceService{
         return this.http.post('http://localhost:8888/api/maintenance-service/saveMtnRisk',JSON.stringify(params),header);
 	}
 
+	getMtnReason(){
+		return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMtnReason');
+	}
+
 }
