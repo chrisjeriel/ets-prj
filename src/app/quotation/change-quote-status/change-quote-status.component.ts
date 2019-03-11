@@ -29,15 +29,14 @@ export class ChangeQuoteStatusComponent implements OnInit {
     dialogIcon: string = "";
     cancelFlag:boolean;
     required: boolean = true;
-    statusCode: any = 0;
 
     selectedData : any ={
         quotationNo: null,
         status: null,
-        statusCode: null,
-        cedingCompany: null,
-        insured: null,
-        risk: null,
+        statusCd: 0,
+        cedingName: null,
+        insuredDesc: null,
+        riskName: null,
         processor: null,
         reasonCd: null,
         description: null,
@@ -99,30 +98,31 @@ export class ChangeQuoteStatusComponent implements OnInit {
     }
 
     process(cancelFlag?) {
-       this.saveData.statusCd = this.selectedData.statusCode;
+       this.saveData.statusCd = this.selectedData.statusCd;
+       
        this.cancelFlag = cancelFlag !== undefined;
-       //if (this.saveData.changeQuoteStatus.length != 0 && this.saveData.statusCd != null) {
-           this.quotationService.saveChangeQuoteStatus(this.saveData).subscribe(data => {
-                if(data['returnCode'] == 0) {
-                    this.dialogMessage = data['errorList'][0].errorMessage;
-                    this.dialogIcon = "error";
-                    console.log('return code 0')
-                    $('#successModalBtn').trigger('click');
-                } else{
-                    this.dialogMessage="";
-                    this.dialogIcon = "";
-                    console.log('return code not 0')
-                    $('#successModalBtn').trigger('click');
-                    $('.ng-dirty').removeClass('ng-dirty');
-                    this.getChangeQuote();
-                }
-           });
-        /*}else{
-          this.dialogMessage = "Nothing to save.";
-          this.dialogIcon = "info"
-          console.log('outside nothing to save')
-          $('#successModalBtn').trigger('click');
-        }*/
+           
+       if(this.selectedData.statusCd == 9){
+           this.saveData.reasonCd = this.selectedData.reasonCd;
+       }else{
+           this.saveData.reasonCd = "";
+       }
+       
+       this.quotationService.saveChangeQuoteStatus(this.saveData).subscribe(data => {
+            if(data['returnCode'] == 0) {
+                this.dialogMessage = data['errorList'][0].errorMessage;
+                this.dialogIcon = "error";
+                $('#successModalBtn').trigger('click');
+                this.saveData.reasonCd = null;
+            } else{
+                this.dialogMessage="";
+                this.dialogIcon = "";
+                $('#successModalBtn').trigger('click');
+                $('.ng-dirty').removeClass('ng-dirty');
+                this.saveData.reasonCd = null;
+                this.getChangeQuote();
+            }
+       });
     }
 
     query() {
@@ -130,12 +130,12 @@ export class ChangeQuoteStatusComponent implements OnInit {
     }
 
     onRowClick(data) {
+        this.selectedData = data;
         for(let rec of this.records){
             if(rec.quotationNo === data.quotationNo) {
                 if(data.checked){
                     this.saveData.changeQuoteStatus.push({
-                        quoteId: rec.quoteId,
-                        reasonCd: 'LC'
+                        quoteId: rec.quoteId
                     })
                 }else {
                     for(var j=0;j<this.saveData.changeQuoteStatus.length;j++){
@@ -149,7 +149,8 @@ export class ChangeQuoteStatusComponent implements OnInit {
     }
 
     cancel(){
-        console.log(this.saveData)    
+       console.log(this.selectedData.statusCd)
+       console.log(this.saveData)    
     }
 
     save(cancelFlag?){
