@@ -139,8 +139,8 @@ export class CustEditableNonDatatableComponent implements OnInit {
 
     ngOnInit() {
         this.passData.magnifyingGlass = typeof this.passData.magnifyingGlass == 'undefined'? [] : this.passData.magnifyingGlass;
-        this.unliFlag = this.passData.pageLength == 'unli';
-        this.passData.pageLength = typeof this.passData.pageLength != 'number' ? 10 : this.passData.pageLength;
+        this.unliFlag = typeof this.passData.pageLength == "string" && this.passData.pageLength.split("-")[0] == 'unli';
+        this.passData.pageLength = typeof this.passData.pageLength == 'number' ? this.passData.pageLength : (this.passData.pageLength.split("-")[1]===undefined? 10 : parseInt(this.passData.pageLength.split("-")[1]));
         this.unliTableLength();
         this.passData.dataTypes = typeof this.passData.dataTypes == 'undefined' ? [] : this.passData.dataTypes;
 
@@ -260,10 +260,13 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     onRowClick(event,data) {
-         if(data != this.fillData){
+        if(data != this.fillData && data != this.indvSelect){
             this.indvSelect = data;
+        }else if(data != this.fillData && data == this.indvSelect){
+            this.indvSelect = null;
         }
-        this.newClick.emit(data);
+        if(data != this.fillData)
+            this.newClick.emit(this.indvSelect);
         //this.rowClick.next(event);
         
     }
@@ -332,7 +335,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
 
     unliTableLength(){
         if(this.unliFlag){
-            this.passData.pageLength = this.passData.tableData.length <= 10 ? 10 :this.passData.tableData.length;
+            this.passData.pageLength = this.passData.tableData.length <= this.passData.pageLength ? this.passData.pageLength :this.passData.tableData.length;
         }
         
     }
@@ -352,7 +355,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
    }
 
    getSum(data){
-       console.log("test")
         let sum = 0;
         if(this.dataKeys.indexOf(data)==-1){
             return data;
@@ -432,7 +434,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         if(this.passData.observable !== undefined){
             this.passData.observable.subscribe(
                 (data:any)=>{this.retrieveData.emit(data);this.failed=false;this.loadingFlag=false},
-                (err) => {console.log(err);this.failed=true;this.loadingFlag=false});
+                (err) => {this.failed=true;this.loadingFlag=false});
         }
     }
 
@@ -457,7 +459,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     upload(data,event){
-        console.log(event.target);
         data.fileName=event.target.files[0].name;
         data.edited=true;
         this.form.control.markAsDirty();
@@ -465,6 +466,10 @@ export class CustEditableNonDatatableComponent implements OnInit {
 
     markAsPristine(){
         this.form.control.markAsPristine();
+    }
+
+    markAsDirty(){
+        this.form.control.markAsDirty();
     }
 
  

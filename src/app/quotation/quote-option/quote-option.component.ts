@@ -6,6 +6,7 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
     selector: 'app-quote-option',
@@ -15,7 +16,9 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 export class QuoteOptionComponent implements OnInit {
     @ViewChildren(CustEditableNonDatatableComponent) table: QueryList<CustEditableNonDatatableComponent>;
     @ViewChild("deductibleTable") deductibleTable: CustEditableNonDatatableComponent;
+    @ViewChild("otherRatesTable") otherRatesTable: CustEditableNonDatatableComponent;
     @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+    @ViewChild(ModalComponent) deductiblesModal : ModalComponent;
 /*    private quotationInfo: QuotationInfo;*/
     private quotationOption: QuotationOption;
     private quotationOtherRates: QuotationOtherRates;
@@ -23,24 +26,6 @@ export class QuoteOptionComponent implements OnInit {
    @Input() quotationInfo: any = {};
    @Input() inquiryFlag: boolean = false;
     coverCodeLOVRow : number;
-
-    editedOtherRatesData: any[] = [];
-    deleteOtherRates: any[] = [];
-
-    quoteOptionTableData: any[] = [];
-    quoteOptionTHeader: any[] = ['Option No', 'Rate(%)', 'Conditions', 'Comm Rate Quota(%)', 'Comm Rate Surplus(%)', 'Comm Rate Fac(%)'];
-    quoteOptionDataType: any[] = ['text', 'percent', 'text', 'percent', 'percent', 'percent'];
-    quoteOptionNData: QuotationOption = new QuotationOption(null, null, null, null, null, null);
-    magnifyingGlass: any[] = ['conditions'];
-    quoteOptionEdited: QuotationOption[] = [];
-/*
-
-    otherRatesTableData: any[] = [];
-    otherRatesTHeader: any[] = ['Others', 'Amounts', 'Deductible'];
-    otherRatesDataType: any[] = ['text', 'currency', 'text'];
-    otherRatesMagnify: any[] = ['others', 'deductible'];*/
-    otherRatesNData: QuotationOtherRates = new QuotationOtherRates(null, null, null, null, null,null,null,null,null,null);
-    
     quoteNoData: string;
     quotationNum: string;
     insured: any;
@@ -81,12 +66,13 @@ export class QuoteOptionComponent implements OnInit {
         searchFlag: true,
         pageID: 1,
         keys: ['optionId','optionRt','condition','commRtQuota','commRtSurplus','commRtFac'],
-        uneditable: [true,false,false,false,false,false]
+        uneditable: [true,false,false,false,false,false],
+        genericBtn: 'Deductibles'
     }
 
     deductiblesData: any = {
         tableData: [],
-        tHeader: ['Deductible Code','Deductible Title', 'Rate(%)', 'Amount', 'Deductible Text'],
+        tHeader: ['Deductible Code','Deductible Title', 'Deductible Text', 'Deductible Rate(%)', 'Deductible Amount', 'Sum Insured'],
         dataTypes: ['text','text', 'percent', 'currency', 'text'],
         nData:{
             createDate: [2019, 2, 21, 0, 0, 0, 0],
@@ -116,8 +102,8 @@ export class QuoteOptionComponent implements OnInit {
 
     otherRatesData: any = {
         tableData: [],
-        tHeader: ['Cover Code','', 'Rate(%)', 'Amount'],
-        dataTypes: ['number', 'text', 'percent', 'currency'],
+        tHeader: ['Cover Code','', 'Rate(%)', 'Amount','Checktag'],
+        dataTypes: ['number', 'text', 'percent', 'currency','checkbox'],
         nData: {
           amount: null,
           amountI: null,
@@ -130,32 +116,23 @@ export class QuoteOptionComponent implements OnInit {
           updateDate: [0,0,0],
           updateUser: "ETC"
         },
-        magnifyingGlass: ['coverCd'],
-        pageLength: 5,
-        addFlag: true,
-        deleteFlag: true,
-        checkFlag: true,
-        paginateFlag: true,
-        infoFlag: true,
-        searchFlag: true,
+        searchFlag:true,
+        genericBtn: 'Deductibles',
+        pageLength: 'unli-1',
         pageID: 3,
-        keys: ['coverCd','coverCdDesc','rate','amount'],
+        keys: ['coverCd','coverCdDesc','rate','amount','checkTag'],
         widths: [40,'auto',120,120],
-        uneditable: [true,true,false,false]
+        uneditable: [true,true,true,true]
     }
 
     deductiblesLOVRow : number;
 
     record: any[];
     dialogMessage: string = "Successfuly saved changes to ";
-    successes: string[] = [];
-    errorMdlMessage: string = "Please check the field values in ";
-    failures: string[] = [];
-    updateCount:number;
     dialogIcon:string;
     cancelFlag:boolean;
-    dialogIconFail:string;
-    dialogMessageFail:string;
+    showModal: boolean = false;
+
 
     constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,private modalService: NgbModal) { }
 
@@ -197,144 +174,42 @@ export class QuoteOptionComponent implements OnInit {
 
       setTimeout(() => {
         $('#deductibleTable button').attr("disabled","disabled");
-              }, 0)
+              }, 0);
         this.titleService.setTitle("Quo | Quote Option");
-     /*   this.quotationInfo = new QuotationInfo();
-        this.quotationInfo.quotationNo = "SMP-0000-0000-00";
-        this.quotationInfo.insuredName = "Insured Name";*/
-
-        // if (this.quotationService.toGenInfo[0] == "edit") {
-
-            /*this.sub = this.route.params.subscribe(params => {
-                this.from = params['from'];
-                    if (this.from == "quo-processing") {
-                        this.quotationNum = params['quotationNo'];
-                    }
-            });*/
-
-            this.quotationNum = this.quotationInfo.quotationNo;
-             this.riskName = this.quotationInfo.riskName;
-             this.insured = this.quotationInfo.insuredDesc;
-             this.quoteId = this.quotationInfo.quoteId;
-             this.quoteNoData = this.quotationInfo.quotationNo;
-             this.getQuoteOptions();
-
-            //  this.quotationService.getQuoteGenInfo(null,this.plainQuotationNo(this.quotationNum)).subscribe((data: any) => {
-            //             this.insured = data.quotationGeneralInfo.insuredDesc; 
-            //             this.quoteNoData = data.quotationGeneralInfo.quotationNo;
-            //             if(data.project == null){
-            //                  this.riskName = null;
-            //             } else {
-            //                 this.riskName = data.project.riskName; 
-            //             }
-            //             this.quoteId = data.quotationGeneralInfo.quoteId.toString();
-            //             this.getQuoteOptions();
-            // });
-
-/*          this.quotationService.getQuoteOptions(this.quoteId,this.plainQuotationNo(this.quotationNum)).subscribe(data => {  
-            var optionRecords = data['quotation'].optionsList;
-
-                    for(let rec of optionRecords){
-                        this.optionsData.tableData.push(new QuotationOption(
-                            rec.optionId, 
-                            rec.optionRt, 
-                            rec.condition, 
-                            rec.commRtQuota, 
-                            rec.commRtSurplus, 
-                            rec.commRtFac
-                        ));                
-                    }
-
-                    for(let rec of optionRecords){
-                       if (rec.optionId == 1 ) {
-                          for(let r of rec.deductiblesList){                  
-                            this.deductiblesData.tableData.push(new QuotationDeductibles(
-                                r.deductibleCd,
-                                r.deductibleTitle,
-                                r.deductibleRt,
-                                r.deductibleAmt,
-                                r.deductibleTxt
-                            ));
-                        }     
-                       }           
-                    }
-*/
-      
-    // } else {
-    //      this.quotationNum = this.quotationInfo.quotationNo.split(/[-]/g)[0];
-    //      console.log(this.quotationNum);
-
-
-    // }
-        
-
+        this.quotationNum = this.quotationInfo.quotationNo;
+        this.riskName = this.quotationInfo.riskName;
+        this.insured = this.quotationInfo.insuredDesc;
+        this.quoteId = this.quotationInfo.quoteId;
+        this.quoteNoData = this.quotationInfo.quotationNo;
+        this.getQuoteOptions();
     }
     getQuoteOptions(){
         this.quotationService.getQuoteOptions(this.quoteId,this.plainQuotationNo(this.quotationNum)).subscribe(data => {
            if (data['quotation'] == null || data['quotation'] == undefined ){ 
            } else {
-               var optionRecords = data['quotation'].optionsList; 
-                //this.optionsData.tableData = optionRecords;
-                /*for(let rec of optionRecords){
-                    this.optionsData.tableData.push(rec);                
-                }*/
-
+               var optionRecords = data['quotation'].optionsList;
                 this.optionsData.tableData = data['quotation'].optionsList.sort(function(a,b){return a.optionId-b.optionId})
-
-
+                this.deductiblesData.tableData = [];
 
                 for(let rec of optionRecords){
                     for(let r of rec.deductiblesList){
                         r.optionId = rec.optionId;
-                        // if (rec.optionId == 1 ) {          
-                        //     this.deductiblesData.tableData.push(r);
-                        // }
                     }     
                 }
 
-
-                var otherRatesRecords = data['quotation'].otherRatesList;
+                var otherRatesRecords = data['quotation'].otherRatesList.filter(a=>{
+                  a.uneditable = [];
+                  a.checkTag = 'N';
+                  return true;
+                });
                 this.otherRatesData.tableData = data['quotation'].otherRatesList;
-                /*for(let rec of otherRatesRecords){
-                  this.otherRatesData.tableData.push(rec
-                    );                
-                }*/
-                
                 
            }
            this.table.forEach(table => { table.refreshTable() });
         });
 
     } 
-/*
-    getOtherRates(){
-         this.quotationService.getQuoteOptions(this.quoteId,this.plainQuotationNo(this.quotationNum)).subscribe(data => {  
-              if (data['quotation'] == null || data['quotation'] == undefined ){
-                var otherRatesRecords = data['quotation'].otherRatesList;
 
-                while(this.otherRatesData.tableData.length > 0) {
-                  this.otherRatesData.tableData.pop();
-                }    
-                for(let rec of otherRatesRecords){
-                  this.otherRatesData.tableData.push(rec);                
-                }
-                
-                this.table.forEach(table => { table.refreshTable() });
-              }
-         });
-    }*/
-    
-
-
-    save() {
-        console.log(this.quoteOptionEdited);
-    }
-
-/*    clickRow(event) {
-        console.log(event);
-        //this.otherRatesTableData = this.quotationService.getQuotataionOtherRates(event.target.closest("tr").children[1].children[0].children[1].value);
-    }
-*/
     plainQuotationNo(data: string) {
         var arr = data.split('-');
         return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]);
@@ -342,18 +217,15 @@ export class QuoteOptionComponent implements OnInit {
 
     updateDeductibles(data) {
         $('#deductibleTable button').removeAttr("disabled")
-        if(data.optionId==null){
-          $('#deductibleTable button').attr("disabled","disabled")
-        }
-        if (data.deductiblesList != null || data.deductiblesList != undefined ){
+        if(data==null || data.optionId==null){
+          $('#deductibleTable button').attr("disabled","disabled");
+          this.deductiblesData.tableData = [];
+          this.deductibleTable.refreshTable();
+        }else if (data.deductiblesList != null || data.deductiblesList != undefined ){
+          this.deductiblesData.nData.optionId = data.optionId;
           this.deductiblesData.tableData = data.deleted? []:data.deductiblesList;
           this.deductibleTable.refreshTable();
-        } 
-        if($('.ng-dirty').length != 0){
-          $('#cust-table-container').addClass('ng-dirty');
         }
-        this.deductiblesData.nData.optionId = data.optionId;
-
     }
 
 // saveData(cancelFlag?){
@@ -529,14 +401,13 @@ clickDeductiblesLOV(data){
 }
 
 setSelected(data){
-  $('#cust-table-container').addClass('ng-dirty');
+  this.deductibleTable.markAsDirty();
   if(data.selector == "deductibles"){
         this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleCd = data.data.deductibleCd;
         this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleTitle = data.data.deductibleTitle;
         this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleRt = data.data.deductibleRate;
         this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleAmt = data.data.deductibleAmt;
         this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleTxt = data.data.deductibleText;
-        console.log(data.data);
         this.deductiblesData.tableData[this.deductiblesLOVRow].edited = true;
   }else if(data.selector == "otherRates"){
     console.log(data);
@@ -559,8 +430,7 @@ onClickSave(){
 
 cancel(){
     this.cancelBtn.clickCancel();
-
-  }
+}
 
   saveQuoteOptionAll(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
@@ -622,10 +492,25 @@ cancel(){
             this.dialogIcon = "";
             $('#quote-option #successModalBtn').trigger('click');
             this.getQuoteOptions();
-            $('.ng-dirty').removeClass('ng-dirty');
+            this.table.forEach(table => { table.markAsPristine() });
           }
    })
 
+  }
+
+  updateCovers(){
+    for(let data of this.otherRatesData.tableData){
+      if(data.checkTag == 'Y'){
+        data.uneditable.push('rate');
+      }else if(data.uneditable.length != 0){
+        data.uneditable.pop();
+      }
+    }
+  }
+
+  showDeductiblesOptions(){
+    this.showModal = true;
+    this.deductiblesModal.openNoClose();
   }
 
 }
