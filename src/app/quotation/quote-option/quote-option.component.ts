@@ -17,6 +17,7 @@ export class QuoteOptionComponent implements OnInit {
     @ViewChildren(CustEditableNonDatatableComponent) table: QueryList<CustEditableNonDatatableComponent>;
     @ViewChild("deductibleTable") deductibleTable: CustEditableNonDatatableComponent;
     @ViewChild("otherRatesTable") otherRatesTable: CustEditableNonDatatableComponent;
+    @ViewChild("optionsTable") optionsTable: CustEditableNonDatatableComponent;
     @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
     @ViewChild(ModalComponent) deductiblesModal : ModalComponent;
 /*    private quotationInfo: QuotationInfo;*/
@@ -120,7 +121,7 @@ export class QuoteOptionComponent implements OnInit {
     cancelFlag:boolean;
     showModal: boolean = false;
     defaultSectionCvrs:any[] = [];
-    defaultRate : number = 0;
+    selectedOption : any = {};
 
     constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,private modalService: NgbModal) { }
 
@@ -171,7 +172,6 @@ export class QuoteOptionComponent implements OnInit {
         this.quoteNoData = this.quotationInfo.quotationNo;
         this.getQuoteOptions();
         this.quotationService.getCoverageInfo(this.plainQuotationNo(this.quotationNum),this.quoteId).subscribe((data: any) => {
-          console.log(data.quotation.project.coverage.sectionCovers);
           this.defaultSectionCvrs = data.quotation.project.coverage.sectionCovers;
         })
 
@@ -181,11 +181,11 @@ export class QuoteOptionComponent implements OnInit {
         this.quotationService.getQuoteOptions(this.quoteId,this.plainQuotationNo(this.quotationNum)).subscribe(data => {
            if (data['quotation'] == null || data['quotation'] == undefined ){ 
            } else {
-               console.log(data);
                var optionRecords = data['quotation'].optionsList;
                 this.optionsData.tableData = data['quotation'].optionsList.sort(function(a,b){return a.optionId-b.optionId})
                 this.deductiblesData.tableData = [];
-
+                // this.optionsTable.indvSelect = this.optionsData.tableData[0];
+                this.optionsTable.onRowClick(null,this.optionsData.tableData[0]);
                 for(let rec of optionRecords){
                     for(let r of rec.deductiblesList){
                         r.optionId = rec.optionId;
@@ -210,9 +210,7 @@ export class QuoteOptionComponent implements OnInit {
     }
 
     updateDeductibles(data) {
-        $('#deductibleTable button').removeAttr("disabled")
         if(data==null || data.optionId==null){
-          $('#deductibleTable button').attr("disabled","disabled");
           this.deductiblesData.tableData = [];
           this.deductibleTable.refreshTable();
         }else if (data.deductiblesList != null || data.deductiblesList != undefined ){
@@ -389,7 +387,6 @@ clickDeductiblesLOV(data){
     this.passLOVData.selector = 'deductibles';
     this.passLOVData.lineCd = this.quotationNum.substring(0,3);
     this.passLOVData.hide = this.deductiblesData.tableData.filter((a)=>{return !a.deleted}).map(a=>a.deductibleCd);
-    console.log(data);
     $('#lov #modalBtn2').trigger('click');
     this.deductiblesLOVRow = data.index;
 }
@@ -440,6 +437,7 @@ cancel(){
         params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].updateDate = new Date(params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].updateDate[0],params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].updateDate[1]-1,params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].updateDate[2]).toISOString();
       } else if(this.optionsData.tableData[i].edited && this.optionsData.tableData[i].deleted && this.optionsData.tableData[i].optionId !== null){
         params.deleteQuoteOptionsList.push(this.optionsData.tableData[i]);
+        params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].otherRatesList = [];
         params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].createDate = new Date(params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].createDate[0],params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].createDate[1]-1,params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].createDate[2]).toISOString();
         params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].updateDate = new Date(params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].updateDate[0],params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].updateDate[1]-1,params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].updateDate[2]).toISOString();
       }else if(this.optionsData.tableData[i].edited && !this.optionsData.tableData[i].deleted && this.optionsData.tableData[i].optionId == null){
@@ -497,7 +495,7 @@ cancel(){
         this.otherRatesTable.refreshTable();
       }else if(data.otherRatesList==null || data.otherRatesList===undefined || data.otherRatesList.length == 0){
         data.otherRatesList = JSON.parse(JSON.stringify(this.defaultSectionCvrs));
-        this.defaultRate = data.optionRt;
+        this.selectedOption = data;
         this.otherRatesData.tableData = data.otherRatesList.filter((a)=>{
           a.amount = a.sumInsured;
           a.coverCdDesc = a.coverCdAbbr;
@@ -511,7 +509,7 @@ cancel(){
         this.updateCovers();
         this.otherRatesTable.refreshTable();
       }else if (data.otherRatesList != null || data.otherRatesList != undefined ){
-        this.defaultRate = data.optionRt;
+        this.selectedOption = data;
         this.otherRatesData.tableData = data.deleted? []:data.otherRatesList;
         this.updateCovers();
         this.otherRatesTable.refreshTable();
@@ -531,9 +529,10 @@ cancel(){
       }
       if(data.changeTag == 'Y'){
         data.uneditable.pop();
-      }else if(data.uneditable.length ==0 ) {
-        data.rate = this.defaultRate;
-        data.uneditable.push('rate');
+      }else if(data.changeTag == 'N' ) {
+        data.rate = this.selectedOption.optionRt;
+        if(data.uneditable.length ==0)
+          data.uneditable.push('rate');
       }
     }
   }
