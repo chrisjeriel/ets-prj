@@ -34,6 +34,7 @@ export class ChangeQuoteStatusComponent implements OnInit {
     selectedData : any ={
         quotationNo: null,
         status: null,
+        statusCode: null,
         cedingCompany: null,
         insured: null,
         risk: null,
@@ -98,7 +99,7 @@ export class ChangeQuoteStatusComponent implements OnInit {
     }
 
     process(cancelFlag?) {
-       this.saveData.statusCd = this.statusCode;
+       this.saveData.statusCd = this.selectedData.statusCode;
        this.cancelFlag = cancelFlag !== undefined;
        //if (this.saveData.changeQuoteStatus.length != 0 && this.saveData.statusCd != null) {
            this.quotationService.saveChangeQuoteStatus(this.saveData).subscribe(data => {
