@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter, Input} from '@angular/core';
 import { MaintenanceService, UnderwritingService, QuotationService } from '@app/_services';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component'
+import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-lov',
@@ -12,6 +13,7 @@ export class LovComponent implements OnInit {
 
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
+  @ViewChild(ModalComponent) modal : ModalComponent;
   passTable: any = {
         tableData: [],
         pageLength: 10,

@@ -140,7 +140,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     ngOnInit() {
         this.passData.magnifyingGlass = typeof this.passData.magnifyingGlass == 'undefined'? [] : this.passData.magnifyingGlass;
         this.unliFlag = typeof this.passData.pageLength == "string" && this.passData.pageLength.split("-")[0] == 'unli';
-        this.passData.pageLength = typeof this.passData.pageLength == 'number' ? this.passData.pageLength : (this.passData.pageLength.split("-")[1]===undefined? 10 : parseInt(this.passData.pageLength.split("-")[1]));
+        this.passData.pageLength = typeof this.passData.pageLength == 'number' ? this.passData.pageLength : (this.passData.pageLength===undefined || this.passData.pageLength.split("-")[1]===undefined? 10 : parseInt(this.passData.pageLength.split("-")[1]));
         this.unliTableLength();
         this.passData.dataTypes = typeof this.passData.dataTypes == 'undefined' ? [] : this.passData.dataTypes;
 

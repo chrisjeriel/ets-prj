@@ -23,7 +23,7 @@
         <div class="row">
             <div class="col-sm-1"></div>
 	            <div class="col-sm-10" style="margin-top: 0.5em; margin-bottom: -0.21em;">
-	                <app-cust-editable-non-datatable [passData]="optionsData" (onDataChange)="optionsData.tableData=$event" (newClick)="updateDeductibles($event)" (genericBtn)="showDeductiblesOptions()"></app-cust-editable-non-datatable>
+	                <app-cust-editable-non-datatable [passData]="optionsData" (onDataChange)="optionsData.tableData=$event" (newClick)="updateSectionCvrs($event)" (genericBtn)="showDeductiblesOptions()"></app-cust-editable-non-datatable>
 	            </div> 
             <div class="col-sm-1"></div>
         </div>
@@ -32,11 +32,11 @@
 	<fieldset class="scheduler-border">
 		<legend class="scheduler-border">Section Covers</legend>
          <div class="row">
-            <div class="col-sm-3"></div>
-            <div class="col-sm-6" style="margin-top: 0.5em;">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-10" style="margin-top: 0.5em;">
                 <app-cust-editable-non-datatable #otherRatesTable [passData]="otherRatesData" (tableDataChange)="otherRatesData.tableData=$event; updateCovers()" (clickLOV)="clickCoverCodeLOV($event)"></app-cust-editable-non-datatable>
             </div>
-            <div class="col-sm-3"></div>
+            <div class="col-sm-1"></div>
         </div>
 	</fieldset>
 
@@ -53,7 +53,7 @@
 
 </div>
 
-<app-lov id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)"></app-lov>
+
 
 <app-modal class="d-none">
 	<div header>Deductibles Per Section Cover</div>
@@ -63,16 +63,16 @@
 			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-1">
 		</div>
 		<fieldset class="scheduler-border" style="padding:0.5em !important">
-			<app-cust-editable-non-datatable #deductibleTable *ngIf="showModal" id="deductibleTable" (onDataChange)="deductibleTable.tableData=$event" [passData]="deductiblesData" (clickLOV)="clickDeductiblesLOV($event)"></app-cust-editable-non-datatable>
+			<app-cust-editable-non-datatable #deductibleTable  id="deductibleTable" (onDataChange)="deductibleTable.tableData=$event" [passData]="deductiblesData" (clickLOV)="clickDeductiblesLOV($event)"></app-cust-editable-non-datatable>
 		</fieldset>
 	</div>
 	<div footer>
-		<button class="cust-btn" (click)="deductiblesModal.closeModal()">Cancel</button>
+		<button class="cust-btn" (click)="showModal=false;deductiblesModal.closeModal()">Cancel</button>
 		<button class="cust-btn">Save</button>
 	</div>
 </app-modal>
+<app-lov id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)"></app-lov>
 
 <app-confirm-save (onYes)="saveQuoteOptionAll()"></app-confirm-save>
 <app-sucess-dialog id="quote-option" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-sucess-dialog id="fail-quote-option" [icon]="dialogIconFail" [message]="dialogMessageFail" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 <app-cancel-button (onYes)="saveQuoteOptionAll('cancel')" [url]="'/quotation-processing'" ></app-cancel-button>
