@@ -61,7 +61,7 @@ export class QuoteOptionComponent implements OnInit {
             commRtFac: 0,
             commRtQuota: 0,
             commRtSurplus: 0,
-            condition: null,
+            condition: '',
             createDate: [2019, 2, 21, 0, 0, 0, 0],
             createUser: "ETC",
             deductibles: null,

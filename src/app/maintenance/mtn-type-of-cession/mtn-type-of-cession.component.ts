@@ -13,8 +13,8 @@ export class MtnTypeOfCessionComponent implements OnInit {
 
   cessionListing: any = {
     tableData: [],
-    tHeader: ['Cession ID', 'Cession Abbr', 'Description', 'Remarks'],
-    dataTypes: ['sequence-3', 'text', 'text','text'],
+    tHeader: ['Cession ID','Description'],
+    dataTypes: ['sequence-3', 'text',],
     pageLength: 10,
     searchFlag: true,
     pageStatus: true,
@@ -23,9 +23,7 @@ export class MtnTypeOfCessionComponent implements OnInit {
     pageID: 14,
     keys:[
     	'cessionId',
-    	'cessionAbbr',
-    	'description',
-    	'remarks'
+    	'description'
     	]
   };
 
@@ -52,8 +50,9 @@ export class MtnTypeOfCessionComponent implements OnInit {
   }
 
   onRowClick(data){
-    if(Object.is(this.selected, data)){
-      this.selected = null
+    // if(Object.is(this.selected, data)){
+    if(Object.entries(data).length === 0 && data.constructor === Object){
+      this.selected = null;
     } else {
       this.selected = data;
     }
@@ -91,6 +90,14 @@ export class MtnTypeOfCessionComponent implements OnInit {
         description: '',
         ev: ev
       });
+    }  else if(isNaN(code/1)) {
+      this.selectedData.emit({
+        cessionId: '',
+        description: '',
+        ev: ev
+      });
+
+      $('#typeOfCessionMdl > #modalBtn').trigger('click');
     } else {
       this.maintenanceService.getMtnTypeOfCession(code).subscribe(data => {
         if(data['cession'].length > 0) {

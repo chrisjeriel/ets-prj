@@ -84,7 +84,7 @@
             <div class="custom-row-inline-inset">
                 <div class="input-group">
                     <label class="form-control-sm col-sm-3">Line</label>
-                    <input type="text" [(ngModel)]="line" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCode($event, 'line')">
+                    <input type="text" [ngModel]="line" (ngModelChange)="line = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCode($event, 'line')">
                     <div class="text-search-ico" (click)="modalService.dismissAll();showLineLOV()"><a><i class="fa fa-search"></i></a></div>
                     &nbsp;&nbsp;
                     <input type="text" class="form-control form-control-sm" [(ngModel)]="description" readonly tabindex="-1">

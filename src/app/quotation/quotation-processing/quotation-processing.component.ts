@@ -502,7 +502,7 @@ setCedingcompany(data){
         this.ns.lovLoader(ev, 1);
 
         if(field === 'line') {            
-            this.lineLov.checkCode(this.line.toUpperCase(), ev);
+            this.lineLov.checkCode(this.line, ev);
         } else if(field === 'typeOfCession'){
             this.typeOfCessionLov.checkCode(this.typeOfCessionId, ev);
         } else if(field === 'risk') {

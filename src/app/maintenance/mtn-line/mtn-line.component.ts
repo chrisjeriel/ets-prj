@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
 import { MaintenanceService } from '@app/_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
@@ -14,8 +14,8 @@ export class MtnLineComponent implements OnInit {
 selected: any = null;
 lineListing: any = {
     tableData: [],
-    tHeader: ['Line Code', 'Description', 'Remarks'],
-    dataTypes: ['text', 'text', 'text'],
+    tHeader: ['Line Code', 'Description'],
+    dataTypes: ['text', 'text'],
     pageLength: 10,
     searchFlag: true,
     pageStatus: true,
@@ -24,12 +24,12 @@ lineListing: any = {
     pageID: 11,
     keys:[
     	'lineCd',
-    	'description',
-    	'remarks']
+    	'description']
   };
 
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
+  @Input() openCoverTag: boolean = false;
 
   constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal) { }
 
@@ -48,8 +48,9 @@ lineListing: any = {
   }
 
   onRowClick(data){  	
-    if(Object.is(this.selected, data)){
-      this.selected = null
+    // if(Object.is(this.selected, data)){
+    if(Object.entries(data).length === 0 && data.constructor === Object){
+      this.selected = null;
     } else {
       this.selected = data;
     }
@@ -65,11 +66,21 @@ lineListing: any = {
 
      this.maintenanceService.getLineLOV('').subscribe((data: any) =>{
            for(var lineCount = 0; lineCount < data.line.length; lineCount++){
-             this.lineListing.tableData.push(
-               new Row(data.line[lineCount].lineCd, 
-                   data.line[lineCount].description,
-                   data.line[lineCount].remarks)
-             );      
+             if(this.openCoverTag){
+               if(data.line[lineCount].openCoverTag === 'Y'){
+                 this.lineListing.tableData.push(
+                 new Row(data.line[lineCount].lineCd, 
+                     data.line[lineCount].description,
+                     data.line[lineCount].remarks)
+                     ); 
+               }
+             }else{
+               this.lineListing.tableData.push(
+                 new Row(data.line[lineCount].lineCd, 
+                     data.line[lineCount].description,
+                     data.line[lineCount].remarks)
+               ); 
+             }   
            }
            this.table.refreshTable();
          });

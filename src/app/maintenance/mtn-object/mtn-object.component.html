@@ -1,6 +1,6 @@
 <app-modal class="d-none" (modalOpened)="openModal()" id="objectMdl">
 	<div header>List of Values</div>
-	<div body *ngIf="modalOpen">
+	<div body *ngIf="modalOpen" style="min-width: 450px !important;">
 		<app-cust-non-datatable [passData]="passData" (rowClick)="select($event)"></app-cust-non-datatable>
 	</div>
 	<div footer>
