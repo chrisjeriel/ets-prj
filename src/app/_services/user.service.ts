@@ -35,4 +35,11 @@ export class UserService {
 
         return this.http.get('http://localhost:8888/api/user-service/userLogin', {params});
     }
+
+    retMtnUsers(userId: string){
+         const params = new HttpParams()
+                .set('userId', userId);
+
+        return this.http.get('http://localhost:8888/api/user-service/retMtnUsers', {params});
+    }
 }

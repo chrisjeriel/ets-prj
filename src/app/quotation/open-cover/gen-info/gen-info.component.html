@@ -420,7 +420,7 @@
 					<div class="input-group">
 						<label class="form-control-sm col-sm-4">Prepared By</label>
 						<input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="ocQuoteGenInfo.preparedBy" readonly>
-						<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+						<div class="text-search-ico" (click)="getUsersLov()"><a><i class="fa fa-search"></i></a></div>
 										<span>&nbsp;</span>
 					</div>
 					<div class="input-group">
@@ -486,3 +486,4 @@
 <app-ceding-company id="cedingCoIdLov" (selectedData)="setCedingCo($event)"></app-ceding-company>
 <app-mtn-line-class id="lineClassIdLov" (selectedData)="setLineClass($event)" [line]="line"></app-mtn-line-class>
 <app-mtn-intermediary id="intmIdLov" (selectedData)="setIntm($event)"></app-mtn-intermediary>
+<app-mtn-users id="usersLov" (selectedData)="setUser($event)"></app-mtn-users>

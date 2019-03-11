@@ -324,6 +324,7 @@ import { ModulesMaintenanceComponent } from './security/modules-maintenance/modu
 import { SecurityModulesComponent } from './security/modules-maintenance/security-modules/security-modules.component';
 import { ModuleTransactionsComponent } from './security/modules-maintenance/module-transactions/module-transactions.component';
 import { CancelButtonComponent } from './_components/common/cancel-button/cancel-button.component';
+import { MtnUsersComponent } from './maintenance/mtn-users/mtn-users.component';
 
 
 @NgModule({
@@ -656,6 +657,7 @@ import { CancelButtonComponent } from './_components/common/cancel-button/cancel
         ModulesMaintenanceComponent,
         SecurityModulesComponent,
         ModuleTransactionsComponent,
+        MtnUsersComponent,
     ],
 
     providers: [

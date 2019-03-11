@@ -358,4 +358,12 @@ export class GenInfoComponent implements OnInit {
 
     return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]) + '-' + parseInt(arr[5]);
   }
+
+  setUser(data){
+    console.log(data);
+  }
+
+   getUsersLov(){
+    $('#usersLov #modalBtn').trigger('click');
+  }
 }
