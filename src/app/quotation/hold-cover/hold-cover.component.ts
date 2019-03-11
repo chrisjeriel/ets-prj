@@ -5,13 +5,15 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { Location } from '@angular/common'
+import { DecimalPipe } from '@angular/common';
 
 
 
 @Component({
   selector: 'app-hold-cover',
   templateUrl: './hold-cover.component.html',
-  styleUrls: ['./hold-cover.component.css']
+  styleUrls: ['./hold-cover.component.css'],
+  providers: [DecimalPipe]
 })
 export class HoldCoverComponent implements OnInit {
   @ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
@@ -145,7 +147,7 @@ export class HoldCoverComponent implements OnInit {
 
       searchParams: any[] = [];
 
-      constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private location: Location) { 
+      constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private location: Location, private decPipe: DecimalPipe) { 
       }
 
       qLine: string;
@@ -227,13 +229,12 @@ export class HoldCoverComponent implements OnInit {
       ngOnInit() {
         this.titleService.setTitle("Quo | Quotation to Hold Cover");
         this.holdCoverInfo = new HoldCoverInfo();
-        //this.holdCover.status = "I";
         this.holdCover.preparedBy = JSON.parse(window.localStorage.currentUser).username;
         this.btnApprovalEnabled = false;
       }
 
       formatDate(date){
-        return new Date(date[0] + "/" + date[1] + "/" + date[2]).toISOString();
+        return new Date(date[0] + "-" + date[1] + "-" + date[2]).toISOString();
       }
 
       sliceQuoteNo(qNo: string){
@@ -333,7 +334,6 @@ export class HoldCoverComponent implements OnInit {
           var rec = data['quotationList'][0].holdCover;
           this.holdCover.holdCoverNo = rec.holdCoverNo;
           this.splitHcNo(rec.holdCoverNo);
-          console.log(" else laman ng servce " + rec.holdCoverNo)
           this.holdCover.periodFrom = this.formatDate(rec.periodFrom);
           this.holdCover.periodTo = this.formatDate(rec.periodTo);
           this.holdCover.compRefHoldCovNo = rec.compRefHoldCovNo;
@@ -373,7 +373,6 @@ export class HoldCoverComponent implements OnInit {
       $('.warn').blur();
     }else{
       //this.loading = true;
-      console.log( 'before service hc req   ' + this.hcRevNo);
       this.quotationService.getQuoteGenInfo('',this.plainQuotationNo(this.quoteNo))
       .subscribe(val => {
         this.quoteId = val['quotationGeneralInfo'].quoteId;
@@ -387,7 +386,7 @@ export class HoldCoverComponent implements OnInit {
           "holdCoverRevNo": this.hcRevNo,
           "holdCoverSeqNo": this.hcSeqNo,
           "holdCoverYear": (this.hcYear === null || this.hcYear === '' || this.hcYear === undefined) ? String(new Date().getFullYear()) : this.hcYear,
-          "lineCd": (this.hcLine === null || this.hcLine === '' || this.hcLine === undefined) ? this.qLine : this.hcLine,
+          "lineCd": (this.hcLine === null || this.hcLine === '' || this.hcLine === undefined) ? this.qLine.toUpperCase() : this.hcLine.toUpperCase() ,
           "periodFrom": this.holdCover.periodFrom,
           "periodTo": this.holdCover.periodTo,
           "preparedBy": this.holdCover.preparedBy,
@@ -398,13 +397,18 @@ export class HoldCoverComponent implements OnInit {
           "updateDate": new Date().toISOString(),
           "updateUser": (this.holdCover.preparedBy === null || this.holdCover.preparedBy === '') ? JSON.parse(window.localStorage.currentUser).username : this.holdCover.preparedBy
         }
-        console.log( 'after hc req   ' + this.hcRevNo);
 
         console.log(JSON.stringify(this.holdCoverReq));
         this.quotationService.saveQuoteHoldCover(
           JSON.stringify(this.holdCoverReq)
           ).subscribe(data => {
             var returnCode = data['returnCode'];
+            var hcNo = data['holdCoverNo'].split('-');
+            this.hcLine = hcNo[1];
+            this.hcYear = hcNo[2];
+            this.hcSeqNo = hcNo[3];
+            this.hcRevNo = hcNo[4];
+
             if(returnCode === 0){
               this.dialogIcon = 'error';
               this.dialogMessage = 'Data insertion error.';
@@ -413,202 +417,222 @@ export class HoldCoverComponent implements OnInit {
               $('.warn').focus();
               $('.warn').blur();
             }else{
-              //this.loading = false;
               this.dialogIcon = '';
               this.dialogMessage = '';
               $('app-sucess-dialog #modalBtn').trigger('click');
               this.btnApprovalEnabled = true;
-              this.quotationService.getSelectedQuotationHoldCoverInfo(this.plainQuotationNo(this.quoteNo))
-              .subscribe(data => {
-                var rec = data['quotationList'][0].holdCover;
-                console.log("qwerty   " + rec.holdCoverNo);
-                this.splitHcNo(rec.holdCoverNo);
-                this.holdCover.status = rec.status;
-                this.holdCover.holdCoverId = rec.holdCoverId;
+              // this.quotationService.getSelectedQuotationHoldCoverInfo(this.plainQuotationNo(this.quoteNo))
+              // .subscribe(data => {
+                //   var rec = data['quotationList'][0].holdCover;
+                //   //this.splitHcNo(rec.holdCoverNo);
+                //   this.holdCover.status = rec.status;
+                //   this.holdCover.holdCoverId = rec.holdCoverId;
 
-                if(this.btnCancelMainEnabled === true){
-                  this.location.back();
-                }  
-
-                //changing status of prev hold cover to replaced
-                // if(this.clickModif === true){
-
-                  // }
-                });
-            }
-          });
-
-        });
-      // }
-    }
-
-  }
-
-  plainQuotationNo(data: string){
-    var arr = data.split('-');
-    return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]);
-  }
-
-  setPeriodTo(periodFrom){
-    try{
-      var d = new Date(periodFrom);
-      d.setDate(d.getDate()+30);
-      this.holdCover.periodTo = d.toISOString();
-      this.holdCover.periodFrom = periodFrom;
-    }catch(Exception){
-    }
-  }
-
-  searchQuoteInfo(line,year,seq,rev,ced){
-    this.holdCover.reqDate  = new Date().toISOString();
-    var qNo = line.toUpperCase() +"-"+year+"-"+seq+"-"+rev+"-"+ced;
-    // this.quotationService.getSelectedQuote(this.plainQuotationNo(qNo))
-    // .subscribe(val => {
-
-      //   var data = val['quotationList'][0];
-      //   if(data === undefined || data === null){
-        //     this.quoteNo = '';
-        //     this.insured = '';
-        //     this.cedCo = '';
-        //     this.risk = '';
-        //     this.hcLine  = '';
-        //     this.hcYear  =  '';
-        //   }else{
-          //     if(data.status === 'Issued' || data.status === 'issued'){
-            //       this.quoteNo = (data.quotationNo === null || data.quotationNo === undefined) ? '' : data.quotationNo;
-            //       this.insured = (data.insuredDesc  === null || data.insuredDesc === undefined) ? '' : data.insuredDesc;
-            //       this.cedCo = (data.cedingName  === null || data.cedingName === undefined) ? '' : data.cedingName;
-            //       this.risk = (data.project  === null || data.project === undefined) ? '' : data.project.riskName;
-            //       this.hcLine  = line;
-            //       this.hcYear  =  year;
-            //     }
-            //   }
-            // });
+                //   if(this.btnCancelMainEnabled === true){
+                  //     this.location.back();  
+                  //   }  
 
 
-            ///////
+                  //   });
 
-
-
-            try{
-              this.btnApprovalEnabled = false;
-              this.quotationService.getSelectedQuotationHoldCoverInfo(this.plainQuotationNo(qNo))
-              .subscribe(data => {
-
-                if(data['quotationList'][0] === null || data['quotationList'][0] === undefined || data['quotationList'][0] === ''){
-                  this.holdCover.holdCoverId = '';
-                  this.hcLine  = '';
-                  this.hcYear  =  '';
-                  this.hcSeqNo = '';
-                  this.hcRevNo = '';
-                  this.holdCover.periodFrom = '';
-                  this.holdCover.periodTo = '';
-                  this.holdCover.compRefHoldCovNo = '';
-                  this.holdCover.status = '';
-                  this.holdCover.reqBy = '';
-                  this.holdCover.reqDate = '';
-                  this.holdCover.preparedBy = '';
-                  this.holdCover.approvedBy = '';
-
-                }else{
-                  var rec = data['quotationList'][0].holdCover;
-                  this.quoteNo = (data['quotationList'][0].quotationNo === null || data['quotationList'][0].quotationNo === undefined) ? '' : data['quotationList'][0].quotationNo;
-                  this.sliceQuoteNo(this.quoteNo);
-                  this.insured = (data['quotationList'][0].insuredDesc  === null || data['quotationList'][0].insuredDesc === undefined) ? '' : data['quotationList'][0].insuredDesc;
-                  this.cedCo = (data['quotationList'][0].cedingName  === null || data['quotationList'][0].cedingName === undefined) ? '' : data['quotationList'][0].cedingName;
-                  this.risk = (data['quotationList'][0].project  === null || data['quotationList'][0].project === undefined) ? '' : data['quotationList'][0].project.riskName;
-                  this.holdCover.holdCoverNo = rec.holdCoverNo;
-                  this.splitHcNo(rec.holdCoverNo);
-                  console.log(" else laman ng servce " + rec.holdCoverNo)
-                  this.holdCover.periodFrom = this.formatDate(rec.periodFrom);
-                  this.holdCover.periodTo = this.formatDate(rec.periodTo);
-                  this.holdCover.compRefHoldCovNo = rec.compRefHoldCovNo;
-                  this.holdCover.reqBy  = rec.reqBy;
-                  this.holdCover.reqDate  = this.formatDate(rec.reqDate);
-                  this.holdCover.status  = rec.status;
-                  this.holdCover.approvedBy =  rec.approvedBy;
-                  this.holdCover.holdCoverId = rec.holdCoverId;
-                  this.holdCover.updateUser = JSON.parse(window.localStorage.currentUser).username;
-                  this.holdCover.preparedBy = JSON.parse(window.localStorage.currentUser).username;
-                  this.holdCover.createDate = this.formatDate(rec.createDate);
-                  this.holdCover.createUser = rec.createUser;
-
-                  if(rec.approvedBy === '' || rec.approvedBy === null ||  rec.approvedBy === undefined){
-                    this.clickView = false;
-
-                  }else{
-                    $('#modifMdl > #modalBtn').trigger('click');
-
-                  }
+                  this.quotationService.getHoldCoverInfo('',this.plainHc(data['holdCoverNo']))
+                  .subscribe(data => {
+                    var rec = data['quotation'].holdCover;
+                    this.holdCover.holdCoverId = rec.holdCoverId;
+                    this.holdCover.periodFrom = this.formatDate(rec.periodFrom);
+                    this.holdCover.periodTo = this.formatDate(rec.periodTo);
+                    this.holdCover.compRefHoldCovNo  = rec.compRefHoldCovNo;
+                    this.holdCover.status = rec.status;
+                    this.holdCover.reqBy =  rec.reqBy;
+                    this.holdCover.reqDate = this.formatDate(rec.reqDate);
+                    this.holdCover.preparedBy = rec.preparedBy;
+                    this.holdCover.approvedBy = rec.approvedBy;
+                  });
                 }
               });
-            }catch(Exception){
-            }
+
+        });
+// }
+}
+
+}
+
+plainHc(data:string){
+  var arr = data.split('-');
+  return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]);
+}
+
+plainQuotationNo(data: string){
+  var arr = data.split('-');
+  return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]);
+}
+
+setPeriodTo(periodFrom){
+  try{
+    var d = new Date(periodFrom);
+    d.setDate(d.getDate()+30);
+    this.holdCover.periodTo = d.toISOString();
+    this.holdCover.periodFrom = periodFrom;
+  }catch(Exception){
+  }
+}
+
+searchQuoteInfo(line,year,seq,rev,ced){
+  this.holdCover.reqDate  = new Date().toISOString();
+  var qNo = line.toUpperCase() +"-"+year+"-"+seq+"-"+rev+"-"+ced;
+  this.quotationService.getSelectedQuote(this.plainQuotationNo(qNo))
+  .subscribe(val => {
+
+    var data = val['quotationList'][0];
+    if(data === undefined || data === null){
+      this.quoteNo = '';
+      this.insured = '';
+      this.cedCo = '';
+      this.risk = '';
+      this.hcLine  = '';
+      this.hcYear  =  '';
+    }else{
+      if(data.status === 'Issued' || data.status === 'issued'){
+        this.quoteNo = (data.quotationNo === null || data.quotationNo === undefined) ? '' : data.quotationNo;
+        this.sliceQuoteNo(qNo);
+        this.insured = (data.insuredDesc  === null || data.insuredDesc === undefined) ? '' : data.insuredDesc;
+        this.cedCo = (data.cedingName  === null || data.cedingName === undefined) ? '' : data.cedingName;
+        this.risk = (data.project  === null || data.project === undefined) ? '' : data.project.riskName;
+        this.hcLine  = line;
+        this.hcYear  =  year;
+      }
+    }
+  });
+
+
+  try{
+    this.btnApprovalEnabled = false;
+    this.quotationService.getSelectedQuotationHoldCoverInfo(this.plainQuotationNo(qNo))
+    .subscribe(data => {
+      if(data['quotationList'][0] === null || data['quotationList'][0] === undefined || data['quotationList'][0] === ''){
+        this.insured = '';
+        this.cedCo = ''
+        this.risk = '';
+        this.holdCover.holdCoverId = '';
+        this.hcLine  = '';
+        this.hcYear  =  '';
+        this.hcSeqNo = '';
+        this.hcRevNo = '';
+        this.holdCover.periodFrom = '';
+        this.holdCover.periodTo = '';
+        this.holdCover.compRefHoldCovNo = '';
+        this.holdCover.status = '';
+        this.holdCover.reqBy = '';
+        this.holdCover.reqDate = '';
+        this.holdCover.preparedBy = '';
+        this.holdCover.approvedBy = '';
+      }else{
+
+        var rec = data['quotationList'][0].holdCover;
+
+        this.holdCover.holdCoverNo = rec.holdCoverNo;
+        this.splitHcNo(rec.holdCoverNo);
+        this.holdCover.periodFrom = this.formatDate(rec.periodFrom);
+        this.holdCover.periodTo = this.formatDate(rec.periodTo);
+        this.holdCover.compRefHoldCovNo = rec.compRefHoldCovNo;
+        this.holdCover.reqBy  = rec.reqBy;
+        this.holdCover.reqDate  = this.formatDate(rec.reqDate);
+        this.holdCover.status  = rec.status;
+        this.holdCover.approvedBy =  rec.approvedBy;
+        this.holdCover.holdCoverId = rec.holdCoverId;
+        this.holdCover.updateUser = JSON.parse(window.localStorage.currentUser).username;
+        this.holdCover.preparedBy = JSON.parse(window.localStorage.currentUser).username;
+        this.holdCover.createDate = this.formatDate(rec.createDate);
+        this.holdCover.createUser = rec.createUser;
+
+        console.log(data['quotationList'][0].insuredDesc + " >>> insured here");
+
+        if(rec.approvedBy === '' || rec.approvedBy === null ||  rec.approvedBy === undefined){
+          this.clickView = false;
+
+        }else{
+          $('#modifMdl > #modalBtn').trigger('click');
+
+        }
+
+      }
+    });
+  }catch(Exception){
+  }
 
 
 
-          }
+}
 
 
-          onClickView(){
-            this.modalService.dismissAll();
-            this.clickView = true;
-          }
+onClickView(){
+  this.modalService.dismissAll();
+  this.clickView = true;
+}
 
-          onClickModif(){
-            this.modalService.dismissAll();
-            this.clickView = false;
-            this.clickModif = true;
-          }
+onClickModif(){
+  this.modalService.dismissAll();
+  this.clickView = false;
+  this.clickModif = true;
+}
 
-          onClickCancelModifMdl(){
-            this.modalService.dismissAll();
-            this.clearAll();
-          }
+onClickCancelModifMdl(){
+  this.modalService.dismissAll();
+  this.clearAll();
+}
 
-          onClickCancelQuoteLOV(){
-            this.modalService.dismissAll();
-            //this.loading = false;
-          }
+onClickCancelQuoteLOV(){
+  this.modalService.dismissAll();
+  //this.loading = false;
+}
 
-          onClickCancel(){
-            this.btnCancelMainEnabled = true;
-            $('#confirm-save #modalBtn2').trigger('click');
-          }
+onClickCancel(){
+  this.btnCancelMainEnabled = true;
+  $('#confirm-save #modalBtn2').trigger('click');
+}
 
-          clearAll(){
-            this.quoteNo = '';
-            this.qLine = '';
-            this.qYear = '';
-            this.qSeqNo = '';
-            this.qRevNo = '';
-            this.qCedingId ='';
-            this.insured = '';
-            this.cedCo = '';
-            this.risk = '';
-            this.hcLine  = '';
-            this.hcYear  =  '';
-            this.hcSeqNo = '';
-            this.hcRevNo ='';
-            this.holdCover.periodFrom = '';
-            this.holdCover.periodTo = '';
-            this.holdCover.compRefHoldCovNo = '';
-            this.holdCover.status = '';
-            this.holdCover.reqBy = '';
-            this.holdCover.reqDate = '';
-            this.holdCover.preparedBy = '';
-            this.holdCover.approvedBy = '';
-          }
+clearAll(){
+  this.quoteNo = '';
+  this.qLine = '';
+  this.qYear = '';
+  this.qSeqNo = '';
+  this.qRevNo = '';
+  this.qCedingId ='';
+  this.insured = '';
+  this.cedCo = '';
+  this.risk = '';
+  this.hcLine  = '';
+  this.hcYear  =  '';
+  this.hcSeqNo = '';
+  this.hcRevNo ='';
+  this.holdCover.periodFrom = '';
+  this.holdCover.periodTo = '';
+  this.holdCover.compRefHoldCovNo = '';
+  this.holdCover.status = '';
+  this.holdCover.reqBy = '';
+  this.holdCover.reqDate = '';
+  this.holdCover.preparedBy = '';
+  this.holdCover.approvedBy = '';
+}
 
-          // updatePrevStats(rec){
-            //   this.quotationService.saveQuoteHoldCover(JSON.stringify(this.holdCoverReq)).subscribe(data => {console.log(data);});
-            // }
-            onClickSave(){
-              $('#confirm-save #modalBtn2').trigger('click');
-            }
+onClickSave(){
+  $('#confirm-save #modalBtn2').trigger('click');
+}
 
-            onClickApprovalBtnMdl(){
-              $('#approvalBtnMdl #modalBtn').trigger('click');
-            }
+onClickApprovalBtnMdl(){
+  $('#approvalBtnMdl #modalBtn').trigger('click');
+}
 
-          }
+fmtSq(sq){
+  this.qSeqNo = (this.decPipe.transform(sq,'5.0-0') === null) ? '' : this.decPipe.transform(sq,'5.0-0').replace(',','');
+}
+
+fmtRn(rn){
+  this.qRevNo = (this.decPipe.transform(rn,'2.0-0') === null) ? '' : this.decPipe.transform(rn,'2.0-0').replace(',','');
+}
+
+fmtCn(cn){
+  this.qCedingId = (this.decPipe.transform(cn,'2.0-0') === null) ? '' : this.decPipe.transform(cn,'2.0-0').replace(',','');
+}
+
+}

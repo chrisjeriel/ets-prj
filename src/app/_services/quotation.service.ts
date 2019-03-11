@@ -707,7 +707,7 @@ export class QuotationService {
     getHoldCoverInfo(holdCoverId,holdCoverNo){
         this.holdCoverInfo = [];
         const params = new HttpParams()
-             .set('holdCoverId',holdCoverId)
+             .set('holdCoverId','')
              .set('holdCoverNo',holdCoverNo)
              
             return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteHoldCover',{params});
