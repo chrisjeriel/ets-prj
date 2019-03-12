@@ -104,7 +104,6 @@ export class ChangeQuoteStatusComponent implements OnInit {
                 this.dialogMessage = data['errorList'][0].errorMessage;
                 this.dialogIcon = "error";
                 $('#successModalBtn').trigger('click');
-                this.emptyVariables();
             } else{
                 this.dialogMessage="";
                 this.dialogIcon = "";
@@ -119,16 +118,8 @@ export class ChangeQuoteStatusComponent implements OnInit {
     emptyVariables(){
         this.saveData.reasonCd = ""
         this.selectedData  = {
-            quotationNo: null,
-            status: null,
-            statusCd: 0,
-            cedingName: null,
-            insuredDesc: null,
-            riskName: null,
-            processor: null,
             reasonCd: null,
-            description: null,
-            remarks: null
+            description: null
         }
     }
 
@@ -150,10 +141,10 @@ export class ChangeQuoteStatusComponent implements OnInit {
     }
 
     onRowClick(data) {
-        this.selectedData = data;
         for(let rec of this.records){
             if(rec.quotationNo === data.quotationNo) {
                 if(data.checked){
+                    this.selectedData = data;
                     this.saveData.changeQuoteStatus.push({
                         quoteId: rec.quoteId
                     })
