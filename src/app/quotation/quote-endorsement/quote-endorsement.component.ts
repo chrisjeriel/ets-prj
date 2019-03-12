@@ -437,9 +437,9 @@ export class QuoteEndorsementComponent implements OnInit {
             for(var i = 0; i < this.endorsementOCData.tableData.length; i ++ ){
               if(this.endorsementOCData.tableData[i].edited && !this.endorsementOCData.tableData[i].deleted){
                 this.endorsementReqOc = {
-                  "deleteEndorsementsOcList": [],
+                  "deleteEndorsementsOc": [],
                     "quoteIdOc": this.ocQuoteData.quoteIdOc,
-                    "saveEndorsementsOcList": [
+                    "saveEndorsementsOc": [
                       {
                         "createDate": (this.saveEndt.createDate === null || this.saveEndt.createDate === "") ? new Date().toISOString() : this.saveEndt.createDate,
                         "createUser": (this.saveEndt.createUser === null || this.saveEndt.createUser === "") ? 'CPI' : this.saveEndt.createUser,
@@ -457,7 +457,7 @@ export class QuoteEndorsementComponent implements OnInit {
                   });
               }else if(this.endorsementOCData.tableData[i].edited && this.endorsementOCData.tableData[i].deleted){
                  this.endorsementReqOc = {
-                   "deleteEndorsementsOcList": [
+                   "deleteEndorsementsOc": [
                     {
                       "createDate": new Date().toISOString(),
                       "createUser": this.saveEndt.createUser,
@@ -468,7 +468,7 @@ export class QuoteEndorsementComponent implements OnInit {
                     }
                     ],
                     "quoteIdOc": this.ocQuoteData.quoteIdOc,
-                    "saveEndorsementsOcList": []
+                    "saveEndorsementsOc": []
                  }
                  this.quotationService.saveQuoteEndorsementsOc(JSON.stringify(this.endorsementReqOc))
                   .subscribe(data => {

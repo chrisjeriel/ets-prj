@@ -45,10 +45,6 @@
                     </ng-container>
                 </app-cust-editable-non-datatable>
                 <app-cust-editable-non-datatable id="endorsmentOCTable" [passData]="endorsementOCData" (clickLOV)="clickEndtLOV($event)" *ngIf="OpenCover">
-                    <ng-container controls-l>
-                        <button [class.d-none]="inquiryFlag" class="cust-btn" (click)="clickModal($event)"  style="margin-right: 0px !important;">Copy
-                            Endt</button>
-                    </ng-container>
                 </app-cust-editable-non-datatable>
             </div>
             <div class="col-sm-1"></div>
