@@ -220,7 +220,7 @@ export class OpenCoverProcessingComponent implements OnInit {
     this.mtnCessionDesc = this.selectedOpenQuotationNo.cessionDesc;
 
     setTimeout(() => {
-      this.router.navigate(['/open-cover', { line: this.ocLine, from: "oc-processing", typeOfCession: this.mtnCessionDesc, ocQuoteNo: this.ocQuoteNo, inquiryFlag: false }], { skipLocationChange: true });
+      this.router.navigate(['/open-cover', { line: this.ocLine, from: "oc-processing", typeOfCession: this.mtnCessionDesc, fromBtn: 'edit', ocQuoteNo: this.ocQuoteNo, inquiryFlag: false }], { skipLocationChange: true });
     }, 100);
 
   }
@@ -234,6 +234,7 @@ export class OpenCoverProcessingComponent implements OnInit {
 
   onRowClick(data) {
     this.selectedOpenQuotationNo = data;
+    console.log(data);
   }
 
   onRowDblClick(event) {
@@ -250,7 +251,7 @@ export class OpenCoverProcessingComponent implements OnInit {
     this.mtnCessionDesc = this.selectedOpenQuotationNo.cessionDesc;*/
 
     setTimeout(() => {
-      this.router.navigate(['/open-cover', { line: this.ocLine, from: "oc-processing", typeOfCession: this.mtnCessionDesc, ocQuoteNo: this.ocQuoteNo, inquiryFlag: false }], { skipLocationChange: true });
+      this.router.navigate(['/open-cover', { line: this.ocLine, from: "oc-processing", fromBtn: 'edit', typeOfCession: this.mtnCessionDesc, ocQuoteNo: this.ocQuoteNo, inquiryFlag: false }], { skipLocationChange: true });
     }, 100);
   }
 

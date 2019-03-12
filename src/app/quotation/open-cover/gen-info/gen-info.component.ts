@@ -17,49 +17,90 @@ import { MtnObjectComponent } from '@app/maintenance/mtn-object/mtn-object.compo
   templateUrl: './gen-info.component.html',
   styleUrls: ['./gen-info.component.css']
 })
-export class GenInfoComponent implements OnInit {
-  private ocQuoteGenInfo: OcGenInfoInfo;
+export class GenInfoComponent implements OnInit, OnDestroy {
 
-  typeOfCession: string = "";
-  line: string;
   private sub: any;
-  from: string;
-  ocQuoteNo: string;
 
-  currencyAbbr: string = "";
-  currencyRt: number = 0;
-  prinId: number;
-  prinName: string;
-  conId:number;
-  conName:string;
-  objId:number;
-  objName:string;
-  openingWording:string;
-  closingWording:string;
+   regionDesc: any;
+  provinceDesc: any;
+  cityDesc: any;
+  districtDesc: any;
+  blockDesc: any;
+  lat: any;
+  long: any;
 
-  riskId:string;
-  riskName:string;
-  regionDesc:string;
-  provinceDesc:string;
-  cityDesc:string;
-  districtDesc:string;
-  blockDesc:string;
-  lat:string;
-  long:string;
+  projectOc: any = {
+     quoteIdOc: '',
+     projId: 1,
+     projDesc: '',
+     riskId: '',
+     riskName: '',
+     maxSi: '',
+     pctShare: '',
+     totalValue: '',
+     objectId: '',
+     objectDesc: '',
+     site: '',
+     duration: '',
+     testing: '',
+     createUser: '',
+     createDate: '',
+     updateUser: '',
+     updateDate: ''
+  }
 
-  cedingCoId:number;
-  cedingCoName:string;
+  genInfoOcData: any = {
+     quoteIdOc: '',
+     cessionDesc: '',
+     lineClassCdDesc: '',
+     openQuotationNo: '',
+     lineCd: '',
+     lineCdDesc: '',
+     year: '',
+     seqNo: '',
+     revNo: '',
+     cedingId: '',
+     cessionId: '',
+     cedingName: '',
+     lineClassCd: '',
+     lineClassDesc: '',
+     refPolNo: '',
+     policyIdOc: '',
+     openPolicyNo: '',
+     prinId: '',
+     principalName: '',
+     contractorId: '',
+     contractorName: '',
+     insuredDesc: '',
+     status: '',
+     reinsurerId: '',
+     reinsurerName: '',
+     intmId: '',
+     intmName: '',
+     issueDate: '',
+     expiryDate: '',
+     reqBy: '',
+     reqDate: '',
+     reqMode: '',
+     currencyCd: '',
+     currencyRt: '',
+     govtTag: '',
+     indicativeTag: '',
+     preparedBy: '',
+     approvedBy: '',
+     printedBy: '',
+     printDate: '',
+     openingParag: '',
+     closingParag: '',
+     reasonCd: '',
+     reasonDesc: '',
+     createUser: '',
+     createDate: '',
+     updateUser: '',
+     updateDate: ''
+  };
 
-  linee:string;
-  lineClassCd:string;
-  lineClassDescr:string;
-
-  mtnIntmId:number;
-  mtnIntmName:string;
-
-  insured:string;
-
-  loading:boolean = true;
+  routerParams: any;
 
   @ViewChild(CedingCompanyComponent) cedingCoLov: CedingCompanyComponent;
   @ViewChild(MtnCedingCompanyComponent) cedingCoNotMemberLov: CedingCompanyComponent;
@@ -73,229 +114,238 @@ export class GenInfoComponent implements OnInit {
               private titleService:Title, private notes: NotesService) {
    }
 
-   sampleId:string ="";
-   sampleNo:string ="OC-DOS-2018-1001-2-2323";
-  b;
-  infos:any = [];
-  govCheckbox: boolean;
-  indCheckbox: boolean;
-  fromBtn:string;
-
   @Output() quoteData = new EventEmitter<any>();
   @Input() quoteInfo = {};
 
   @Input() inquiryFlag: boolean = false;
+  loading: boolean = false;
 
   ngOnInit() {
     this.titleService.setTitle("Quo | General Info");
-    this.ocQuoteGenInfo = new OcGenInfoInfo();
-
+    //get params from open cover processing or inquiry
     this.sub = this.route.params.subscribe(params => {
-          this.line = params['line'];
-          this.from = params['from'];
-          this.ocQuoteNo = (params['ocQuoteNo']);
-          this.fromBtn  = params['fromBtn'];
-
-          if (this.from === "oc-inquiry") {
-            this.typeOfCession = params['typeOfCession'];
-          }else if(this.from === "oc-processing"){
-            this.typeOfCession = params['typeOfCession'];
-            
-            if(this.fromBtn === 'add'){
-               this.riskId = params['riskId'];
-               this.mtnService.getMtnRisk(this.riskId)
-                            .subscribe(val => {
-                              this.riskName = val['risk'].riskName;
-                              this.regionDesc = val['risk'].regionDesc;
-                              this.provinceDesc = val['risk'].provinceDesc;
-                              this.cityDesc = val['risk'].cityDesc;
-                              this.districtDesc = val['risk'].districtDesc;
-                              this.blockDesc  = val['risk'].blockDesc;
-                              this.lat  = val['risk'].latitude;
-                              this.long = val['risk'].longitude;
-                            });
-                this.ocQuoteGenInfo.openQuotationNo = 'OC-' + this.line +'-'+ new Date().getFullYear();
-                 this.loading = false;
-            }else{
-                this.quotationService.getOcGenInfoData(this.sampleId,this.plainOpenQuotationNo(this.ocQuoteNo))
-                    .subscribe(val => 
-                        {
-                          //this.ocQuoteGenInfo = new OcGenInfoInfo(i.openQuotationNo);
-                          this.loading = false;
-                          console.log(val);
-                          for(let i of val['quotationOc']) {
-                            //console.log(i.projectOc);
-                              //this.ocQuoteGenInfo.openQuotationNo = i.openQuotationNo;
-                              this.ocQuoteGenInfo.quoteIdOc       = i.quoteIdOc;
-                              this.ocQuoteGenInfo.openQuotationNo = this.ocQuoteNo;
-                              this.ocQuoteGenInfo.refPolNo        = i.refPolNo;
-                              this.ocQuoteGenInfo.openPolicyNo    = i.openPolicyNo;
-                              this.ocQuoteGenInfo.lineClassDesc   = i.lineCdDesc;
-                              this.ocQuoteGenInfo.status          = i.status;
-                              this.ocQuoteGenInfo.cedingId        = i.cedingId;
-                              this.ocQuoteGenInfo.cedingName      = i.cedingName;
-                              this.ocQuoteGenInfo.reinsurerId     = i.reinsurerId;
-                              this.ocQuoteGenInfo.reinsurerName   = i.reinsurerName;
-                              this.ocQuoteGenInfo.intmId          = i.intmId;
-                              this.ocQuoteGenInfo.intmName        = i.intmName;
-                              this.ocQuoteGenInfo.issueDate       = this.formatDateTime(i.issueDate);
-                              this.ocQuoteGenInfo.expiryDate      = this.formatDateTime(i.expiryDate);
-                              this.ocQuoteGenInfo.reqBy           = i.reqBy;
-                              this.ocQuoteGenInfo.reqDate         = this.formatDateTime(i.reqDate);
-                              this.ocQuoteGenInfo.reqMode         = i.reqMode;
-                              this.ocQuoteGenInfo.currencyCd      = i.currencyCd;
-                              this.ocQuoteGenInfo.currencyRt      = i.currencyRt;
-                              this.ocQuoteGenInfo.govtTag         = i.govtTag;
-                              this.govCheckbox = ((this.ocQuoteGenInfo.govtTag === 'y' || this.ocQuoteGenInfo.govtTag ==='Y') ? true: false);
-                              this.ocQuoteGenInfo.indicativeTag   = i.indicativeTag;
-                              this.indCheckbox = ((this.ocQuoteGenInfo.indicativeTag === 'a' || this.ocQuoteGenInfo.indicativeTag === 'A') ? true : false);
-                              this.ocQuoteGenInfo.prinId          = i.prinId;
-                              this.ocQuoteGenInfo.principalName   = i.principalName;
-                              this.ocQuoteGenInfo.contractorId    = i.contractorId;
-                              this.ocQuoteGenInfo.contractorName  = i.contractorName;
-                              this.ocQuoteGenInfo.insuredDesc     = i.insuredDesc;
-                              this.ocQuoteGenInfo.projDesc        = i.projectOc.projDesc;
-                              this.ocQuoteGenInfo.objectId        = i.projectOc.objectId;
-                              this.ocQuoteGenInfo.site            = i.projectOc.site;
-                              this.ocQuoteGenInfo.duration        = i.projectOc.duration;
-                              this.ocQuoteGenInfo.testing         = i.projectOc.testing;
-                              this.ocQuoteGenInfo.openingParag    = i.openingParag;
-                              this.ocQuoteGenInfo.closingParag    = i.closingParag;
-                              this.ocQuoteGenInfo.maxSi           = i.projectOc.maxSi;
-                              this.ocQuoteGenInfo.pctShare        = i.projectOc.pctShare;
-                              this.ocQuoteGenInfo.totalValue      = i.projectOc.totalValue;
-                              this.ocQuoteGenInfo.preparedBy      = i.preparedBy;
-                              this.ocQuoteGenInfo.approvedBy      = i.approvedBy;
-                              this.ocQuoteGenInfo.printDate       = this.formatDateTime(i.printDate);
-                              this.ocQuoteGenInfo.printedBy       = i.printedBy;
-                              this.ocQuoteGenInfo.createUser      = i.createUser;
-                              this.ocQuoteGenInfo.createDate      = this.formatDateTime(i.createDate);
-                              this.ocQuoteGenInfo.updateUser      = i.updateUser;
-                              this.ocQuoteGenInfo.updateDate      = this.formatDateTime(i.updateDate);
-                              this.ocQuoteGenInfo.riskId          = i.projectOc.riskId;
-                              this.ocQuoteGenInfo.cessionId       = i.cessionId;
-                              this.ocQuoteGenInfo.lineClassCd     = i.lineClassCd;
-                              this.ocQuoteGenInfo.lineCd          = i.lineCd;
-                              this.ocQuoteGenInfo.lineClassDesc   = i.lineClassDesc;
-                            }
-
-                            this.lineClassDescr  = this.ocQuoteGenInfo.lineClassDesc;
-                            this.cedingCoId   = Number(this.ocQuoteGenInfo.cedingId);
-                            this.cedingCoName = this.ocQuoteGenInfo.cedingName;
-                            this.currencyAbbr = this.ocQuoteGenInfo.currencyCd;
-                            this.currencyRt   = Number(this.ocQuoteGenInfo.currencyRt);
-                            this.mtnIntmId    = Number(this.ocQuoteGenInfo.intmId);
-                            this.mtnIntmName  = this.ocQuoteGenInfo.intmName;
-                            this.prinId       = Number(this.ocQuoteGenInfo.prinId);
-                            this.prinName     = this.ocQuoteGenInfo.principalName;
-                            this.conId        = Number(this.ocQuoteGenInfo.contractorId);
-                            this.conName      = this.ocQuoteGenInfo.contractorName;
-                            this.objId        = Number(this.ocQuoteGenInfo.objectId);
-                            //this.line         = this.ocQuoteGenInfo.lineCd;
-                            this.openingWording = this.ocQuoteGenInfo.openingParag;
-                            this.closingWording = this.ocQuoteGenInfo.closingParag;
-
-                            
-
-                            this.mtnService.getMtnRisk(this.ocQuoteGenInfo.riskId)
-                                    .subscribe(val => {
-                                      console.log()
-                                      this.riskName = val['risk'].riskName;
-                                      this.regionDesc = val['risk'].regionDesc;  
-                                      this.provinceDesc = val['risk'].provinceDesc;
-                                      this.cityDesc = val['risk'].cityDesc;
-                                      this.districtDesc = val['risk'].districtDesc;
-                                      this.blockDesc  = val['risk'].blockDesc;
-                                      this.lat  = val['risk'].latitude;
-                                      this.long = val['risk'].longitude;
-                                      this.quoteDataF();
-                                    });
-                           
-                            //  console.log(this.ocQuoteGenInfo.cessionId + ">>>> labas ");
-                            // this.mtnService.getMtnTypeOfCession(this.ocQuoteGenInfo.cessionId)
-                            //         .subscribe(val => {
-                            //           //this.typeOfCession = val['cession'][0];
-                            //           console.log(JSON.stringify(val) + ">>>> HERE !");
-                            //                            //console.log(this.typeOfCession + ">>>> LOOB ");
-
-                            //         });
-                            this.mtnService.getMtnObject(this.line,this.objId)
-                                    .subscribe(val => {
-                                     this.objName  = (val['object'][0] === null || val['object'][0] === undefined) ? '' : val['object'][0].description;
-                                    });
-
-                            this.insuredContent();
-                            
-                        }
-                  );
-                setTimeout(() => {
-                $('input[appCurrencyRate]').focus();
-                $('input[appCurrencyRate]').blur();
-
-              },0) 
-            }
-
-
-          }
+      this.routerParams = params;
     });
-    this.checkTypeOfCession();
-   
+    this.checkTransaction();
+    console.log(this.routerParams);
   }
 
-  insuredContent(){
-    if(this.prinName != "" && this.conName != ""){
-      this.insured = ((this.prinName === null) ? '' : this.prinName.trim()) +" / "+((this.conName === null) ? '': this.conName.trim());
-    }
-  }
-
-  quoteDataF(){
-    this.quoteData.emit({
-       quoteIdOc: this.ocQuoteGenInfo.quoteIdOc,
-       openQuotationNo: this.ocQuoteGenInfo.openQuotationNo,
-       insured: this.insured,
-       riskName: this.riskName,
-       riskId: this.ocQuoteGenInfo.riskId
-    });
-  }
-
-
-/*  formatDate(date){
-    console.log(date);
-    if(date[1] < 9){
-      return date[0] + "-" + '0'+ date[1] + "-" + date[2];
-    }else{
-      return date[0] + "-" +date[1] + "-" + date[2];
-    }
-    
-  }*/
-
-  formatDateTime(date){
-    return this.notes.toDateTimeString(date);
-  }
-
-  ngOnDestroy() {
+  ngOnDestroy(){
     this.sub.unsubscribe();
   }
 
-  checkTypeOfCession() {
-    return (this.typeOfCession.trim().toUpperCase() === 'RETROCESSION') ? true : false;
+  //check if user is adding, editing or viewing general info
+  checkTransaction(){
+    if(this.routerParams.fromBtn === 'add'){
+      console.log('add');
+      this.genInfoOcData.issueDate = this.formatDateTime(new Date());
+      this.genInfoOcData.expiryDate = this.formatDateTime(new Date().setMonth(new Date().getMonth() + 1));
+      this.genInfoOcData.reqDate = this.formatDateTime(new Date());
+      this.genInfoOcData.status = 'Requested';
+      this.genInfoOcData.lineClassDesc = this.routerParams.typeOfCession;
+      this.projectOc.riskId = this.routerParams.riskId;
+      this.getRiskMethod(this.routerParams.riskId);
+    }else if(this.routerParams.fromBtn === 'edit' || this.routerParams.fromBtn === 'view'){
+      this.getGeneralInfoData();
+    }
   }
 
+  //get Risk details
+  getRiskMethod(risk: any){
+      this.mtnService.getMtnRisk(risk)
+      .subscribe(val => {
+        this.projectOc.riskName = val['risk'].riskName;
+        this.regionDesc = val['risk'].regionDesc;  
+        this.provinceDesc = val['risk'].provinceDesc;
+        this.cityDesc = val['risk'].cityDesc;
+        this.districtDesc = val['risk'].districtDesc;
+        this.blockDesc  = val['risk'].blockDesc;
+        this.lat  = val['risk'].latitude;
+        this.long = val['risk'].longitude;
+        if(this.routerParams.fromBtn === 'edit' || this.routerParams.fromBtn === 'view')
+          this.quoteDataF();
+      });
+  }
+
+  getGeneralInfoData(){
+    this.quotationService.getOcGenInfoData('',this.plainOpenQuotationNo(this.routerParams.ocQuoteNo)).subscribe((data: any) =>{
+          console.log(data.quotationOc);
+         this.genInfoOcData.quoteIdOc           = data.quotationOc.quoteIdOc;
+         this.projectOc.quoteIdOc           = data.quotationOc.quoteIdOc;
+         this.genInfoOcData.cessionDesc         = data.quotationOc.cessionDesc;
+         this.genInfoOcData.lineClassCdDesc     = data.quotationOc.lineClassCdDesc;
+         this.genInfoOcData.openQuotationNo     = this.routerParams.ocQuoteNo;
+         this.genInfoOcData.lineCd              = data.quotationOc.lineCd;
+         this.genInfoOcData.lineCdDesc          = data.quotationOc.lineCdDesc;
+         this.genInfoOcData.year                = data.quotationOc.year;
+         this.genInfoOcData.seqNo               = data.quotationOc.seqNo;
+         this.genInfoOcData.revNo               = data.quotationOc.revNo;
+         this.genInfoOcData.cedingId            = data.quotationOc.cedingId;
+         this.genInfoOcData.cessionId           = data.quotationOc.cessionId;
+         this.genInfoOcData.cedingName          = data.quotationOc.cedingName;
+         this.genInfoOcData.lineClassCd         = data.quotationOc.lineClassCd;
+         this.genInfoOcData.lineClassDesc       = data.quotationOc.lineClassDesc;
+         this.genInfoOcData.refPolNo            = data.quotationOc.refPolNo;
+         this.genInfoOcData.policyIdOc          = data.quotationOc.policyIdOc;
+         this.genInfoOcData.openPolicyNo        = data.quotationOc.openPolicyNo;
+         this.genInfoOcData.prinId              = data.quotationOc.prinId;
+         this.genInfoOcData.principalName       = data.quotationOc.principalName;
+         this.genInfoOcData.contractorId        = data.quotationOc.contractorId;
+         this.genInfoOcData.contractorName      = data.quotationOc.contractorName;
+         this.genInfoOcData.insuredDesc         = data.quotationOc.insuredDesc;
+         this.genInfoOcData.status              = data.quotationOc.status;
+         this.genInfoOcData.reinsurerId         = data.quotationOc.reinsurerId;
+         this.genInfoOcData.reinsurerName       = data.quotationOc.reinsurerName;
+         this.genInfoOcData.intmId              = data.quotationOc.intmId;
+         this.genInfoOcData.intmName            = data.quotationOc.intmName;
+         this.genInfoOcData.issueDate           = this.formatDateTime(data.quotationOc.issueDate);
+         this.genInfoOcData.expiryDate          = this.formatDateTime(data.quotationOc.expiryDate);
+         this.genInfoOcData.reqBy               = data.quotationOc.reqBy;
+         this.genInfoOcData.reqDate             = this.formatDateTime(data.quotationOc.reqDate);
+         this.genInfoOcData.reqMode             = data.quotationOc.reqMode;
+         this.genInfoOcData.currencyCd          = data.quotationOc.currencyCd;
+         this.genInfoOcData.currencyRt          = data.quotationOc.currencyRt;
+         this.genInfoOcData.govtTag             = data.quotationOc.govtTag;
+         this.genInfoOcData.indicativeTag       = data.quotationOc.indicativeTag;
+         this.genInfoOcData.preparedBy          = data.quotationOc.preparedBy;
+         this.genInfoOcData.approvedBy          = data.quotationOc.approvedBy;
+         this.genInfoOcData.printedBy           = data.quotationOc.printedBy;
+         this.genInfoOcData.printDate           = this.formatDateTime(data.quotationOc.printDate);
+         this.genInfoOcData.openingParag        = data.quotationOc.openingParag;
+         this.genInfoOcData.closingParag        = data.quotationOc.closingParag;
+         this.genInfoOcData.reasonCd            = data.quotationOc.reasonCd;
+         this.genInfoOcData.reasonDesc          = data.quotationOc.reasonDesc;
+         this.genInfoOcData.createUser          = data.quotationOc.createUser;
+         this.genInfoOcData.createDate          = this.formatDateTime(data.quotationOc.createDate);
+         this.genInfoOcData.updateUser          = data.quotationOc.updateUser;
+         this.genInfoOcData.updateDate          = this.formatDateTime(data.quotationOc.updateDate);
+         this.projectOc.projId                  = data.quotationOc.projectOc.projId;
+         this.projectOc.projDesc                = data.quotationOc.projectOc.projDesc;
+         this.projectOc.riskId                  = data.quotationOc.projectOc.riskId;
+         this.projectOc.riskName                = data.quotationOc.projectOc.riskName;
+         this.projectOc.maxSi                   = data.quotationOc.projectOc.maxSi;
+         this.projectOc.pctShare                = data.quotationOc.projectOc.pctShare;
+         this.projectOc.totalValue              = data.quotationOc.projectOc.totalValue;
+         this.projectOc.objectId                = data.quotationOc.projectOc.objectId;
+         this.projectOc.objectDesc              = data.quotationOc.projectOc.objectDesc;
+         this.projectOc.site                    = data.quotationOc.projectOc.site;
+         this.projectOc.duration                = data.quotationOc.projectOc.duration;
+         this.projectOc.testing                 = data.quotationOc.projectOc.testing;
+         this.projectOc.createUser              = data.quotationOc.projectOc.createUser;
+         this.projectOc.createDate              = this.formatDateTime(data.quotationOc.projectOc.createDate);
+         this.projectOc.updateUser              = data.quotationOc.projectOc.updateUser;
+         this.projectOc.updateDate              = this.formatDateTime(data.quotationOc.projectOc.updateDate);
+         this.getRiskMethod(this.projectOc.riskId);
+    });
+    
+  }
+
+  //emit necessary data for other tabs
+  quoteDataF(){
+    this.quoteData.emit({
+       quoteIdOc: this.genInfoOcData.quoteIdOc,
+       openQuotationNo: this.genInfoOcData.openQuotationNo,
+       insured: this.genInfoOcData.insuredDesc,
+       riskName: this.projectOc.riskName,
+       riskId: this.projectOc.riskId
+    });
+    console.log(this.genInfoOcData.quoteIdOc);
+  }
+
+  //Prepared by Lov
+  setUser(data){
+    this.genInfoOcData.preparedBy = data.userName;
+  }
+
+   getUsersLov(){
+    $('#usersLov #modalBtn').trigger('click');
+  }
+  //end Prepared by Lov
+
+  //line class lov
+  getLineClassLov(){
+    $('#lineClassIdLov #modalBtn').trigger('click');
+  }
+  setLineClass(data){
+    this.genInfoOcData.lineCd = data.lineCd;
+    this.genInfoOcData.lineClassCd  = data.lineClassCd;
+    this.genInfoOcData.lineClassDesc  = data.lineClassCdDesc;
+    this.loading = false;
+  }
+  //end line class Lov
+
+  //ceding company lov
+  getCedingCoLov(){
+    $('#cedingCoIdLov #modalBtn').trigger('click');
+  }
+  setCedingCo(data){
+    this.genInfoOcData.cedingId  = data.coNo;
+    this.genInfoOcData.cedingName  = data.name;
+    this.loading = false;
+  }
+  //end ceding company lov
+
+  //reinsurance from lov
+  getReinsurerLov(){
+    $('#reinsurerCoIdLov #modalBtn').trigger('click');
+  }
+  setReinsurer(data){
+    this.genInfoOcData.reinsurerId  = data.coNo;
+    this.genInfoOcData.reinsurerName  = data.name;
+    this.loading = false;
+  }
+  //end reinsurance from lov
+
+  //intermediary lov
+  getIntmLov(){
+    $('#intmIdLov #modalBtn').trigger('click');
+  }
+  setIntm(data){
+    this.genInfoOcData.intmId  = data.intmId;
+    this.genInfoOcData.intmName  = data.intmName;
+    this.loading = false;
+  }
+  //end intermediary lov
+
+  //currency lov
   getCurrLov(){
     $('#currIdLov #modalBtn').trigger('click');
   }
 
   setCurr(data){
-    this.currencyAbbr = data.currencyAbbr;
-    this.currencyRt = data.currencyRt;
+    this.genInfoOcData.currencyCd = data.currencyCd;
+    this.genInfoOcData.currencyRt = data.currencyRt;
     this.loading = false;
   }
+  //end currency lov
+
+  //govtTag checker
+  govtTagMethod(event){
+    if(this.genInfoOcData.govtTag === 'Y'){
+      this.genInfoOcData.govtTag = 'N';
+    }else{
+      this.genInfoOcData.govtTag = 'Y';
+    }
+  }
+  //end govtTag checker
+
+  //indicativeTag checker
+  indTagMethod(event){
+    if(this.genInfoOcData.indicativeTag === 'Y'){
+      this.genInfoOcData.indicativeTag = 'N';
+    }else{
+      this.genInfoOcData.indicativeTag = 'Y';
+    }
+  }
+  //end indicativeTag checker
+
+  //principal and contractor lov
   getPrinLov(){
     $('#prinIdLov  #modalBtn').trigger('click');
   }
   setPrin(data){
-   this.prinId  = data.insuredId;
-   this.prinName  = data.insuredName;
+   this.genInfoOcData.prinId  = data.insuredId;
+   this.genInfoOcData.principalName  = data.insuredName;
    this.insuredContent();
    this.loading = false;
   }
@@ -303,97 +353,85 @@ export class GenInfoComponent implements OnInit {
     $('#conIdLov  #modalBtn').trigger('click');
   }
   setCon(data){
-    this.conId  = data.insuredId;
-    this.conName  = data.insuredName;
+    this.genInfoOcData.contractorId  = data.insuredId;
+    this.genInfoOcData.contractorName  = data.insuredName;
     this.insuredContent();
     this.loading = false;
   }
+  insuredContent(){
+    if(this.genInfoOcData.principalName != "" && this.genInfoOcData.contractorName != ""){
+      this.genInfoOcData.insuredDesc = ((this.genInfoOcData.principalName === null) ? '' : this.genInfoOcData.principalName.trim()) +" / "+((this.genInfoOcData.contractorName === null) ? '': this.genInfoOcData.contractorName.trim());
+    }
+  }
+  //end principal and contractor lov
+
+  //object lov
   getObjLov(){
     $('#objIdLov #modalBtn').trigger('click');
   }
   setObj(data){
-    this.line = data.lineCd;
-    this.objId  = data.objectId;
-    this.objName  = data.description;
+    //this.line = data.lineCd;
+    this.projectOc.objectId  = data.objectId;
+    this.projectOc.objectDesc  = data.description;
     this.loading = false;
   }
+  //end object lov
 
-  getOpeningWordingLov(){
-    $('#wordingOpeningIdLov #modalBtn').trigger('click');
-  }
-  getClosingWordingLov(){
-    $('#wordingClosingIdLov #modalBtn').trigger('click');
-  }
-  setOpeningWording(data){
-    this.line = data.lineCd;
-    this.openingWording  = data.wording;
-  }
-  setClosingWording(data){
-    this.line = data.lineCd;
-    this.closingWording  = data.wording;
-  }
+  //quotation wordings lov
+  showOpeningWordingLov(){
+      $('#wordingOpeningIdLov #modalBtn').trigger('click');
+      $('#wordingOpeningIdLov #modalBtn').addClass('ng-dirty');
+    }
 
-  getCedingCoLov(){
-    $('#cedingCoIdLov #modalBtn').trigger('click');
-  }
-  setCedingCo(data){
-    this.cedingCoId  = data.coNo;
-    this.cedingCoName  = data.name;
-    this.loading = false;
-  }
+    setOpeningWording(data) {
+      this.genInfoOcData.openingParag = data.wording;
+    }
 
-  getLineClassLov(){
-    $('#lineClassIdLov #modalBtn').trigger('click');
-  }
-  setLineClass(data){
-    this.line = data.lineCd;
-    this.lineClassCd  = data.lineClassCd;
-    this.lineClassDescr  = data.lineClassCdDesc;
-    this.loading = false;
-  }
+    showClosingWordingLov(){
+      $('#wordingClosingIdLov #modalBtn').trigger('click');
+      $('#wordingClosingIdLov #modalBtn').addClass('ng-dirty');
+    }
 
-  getIntmLov(){
-    $('#intmIdLov #modalBtn').trigger('click');
-  }
-  setIntm(data){
-    this.mtnIntmId  = data.intmId;
-    this.mtnIntmName  = data.intmName;
-    this.loading = false;
-  }
+    setClosingWording(data) {      
+      this.genInfoOcData.closingParag = data.wording;
+    }
+  //end quotation wordings lov
 
 
-  onClickSave(){
-    $('#confirm-save #modalBtn2').trigger('click');
-  }
-
+  //check code for fetching data when you input
   checkCode(field) {
       if(field === 'cedingCo') {
         this.loading = true;
-        this.cedingCoLov.checkCode(this.cedingCoId);
+        this.cedingCoLov.checkCode(this.genInfoOcData.cedingId);
       } else if(field === 'cedingCoNotMember') { 
-        this.cedingCoNotMemberLov.checkCode(this.ocQuoteGenInfo.reinsurerId);
+        this.cedingCoNotMemberLov.checkCode(this.genInfoOcData.reinsurerId);
       } else if(field === 'intermediary') {
-        this.intermediaryLov.checkCode(this.mtnIntmId);
+        this.intermediaryLov.checkCode(this.genInfoOcData.intmId);
       } else if(field === 'principal') {
-        this.insuredLovs['first'].checkCode(this.prinId, '#principalLOV');
+        this.insuredLovs['first'].checkCode(this.genInfoOcData.prinId, '#principalLOV');
       } else if(field === 'contractor') {
-        this.insuredLovs['last'].checkCode(this.conId, '#contractorLOV');
+        this.insuredLovs['last'].checkCode(this.genInfoOcData.contractorId, '#contractorLOV');
       } else if(field === 'object') {
-        this.objectLov.checkCode(this.line, this.objId);
+        this.objectLov.checkCode(this.routerParams.line, this.projectOc.objectId);
       }
     }
 
+  //format Date to DateTime
+  formatDateTime(date){
+      return this.notes.toDateTimeString(date);
+  }
+
+  //parse open quotation no
   plainOpenQuotationNo(data: string){
     var arr = data.split('-');
 
     return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]) + '-' + parseInt(arr[5]);
   }
 
-  setUser(data){
-    this.ocQuoteGenInfo.preparedBy = data.userName;
-  }
-
-   getUsersLov(){
-    $('#usersLov #modalBtn').trigger('click');
+  saveOpenQuotation(){
+    console.log('ProjectOc');
+    console.log(this.projectOc);
+    console.log('Quotation');
+    console.log(this.genInfoOcData);
   }
 }

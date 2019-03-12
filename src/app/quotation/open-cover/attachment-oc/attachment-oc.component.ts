@@ -57,16 +57,6 @@ export class AttachmentOcComponent implements OnInit {
 
   ngOnInit() {
   	this.titleService.setTitle("Quo-OC | Attachment");
-  	/*this.quotationService.getAttachmentOc().subscribe((data: any) => {
-        this.data = data;
-        for(var i = 0; i < this.data.quotationOc.length; i++){
-          this.passData.tableData.push(
-            new AttachmentInfo(this.data.quotationOc[i].attachmentOc[0].fileName, this.data.quotationOc[i].attachmentOc[0].description)
-          );
-        }
-        this.custEditableNonDatatableComponent.refreshTable();
-      }
-    );*/
      if(this.inquiryFlag){
           this.passData.tHeader.pop();
           this.passData.opts = [];
@@ -94,22 +84,9 @@ export class AttachmentOcComponent implements OnInit {
   saveData(){
     this.savedData = [];
     this.deletedData = [];
-    /*for (var i = 0 ; this.passData.tableData.length > i; i++) {
-      if(this.passData.tableData[i].edited){
-          this.savedData.push(this.passData.tableData[i]);
-          this.savedData[this.savedData.length-1].createDate = new Date().toISOString();
-          this.savedData[this.savedData.length-1].updateDate = new Date().toISOString();
-          this.savedData[this.savedData.length-1].createUser = "NDC";
-          this.savedData[this.savedData.length-1].updateUser = "NDC";
-          console.log(this.data);
-        }
-    }*/
     for (var i = 0 ; this.passData.tableData.length > i; i++) {
       if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
           this.savedData.push(this.passData.tableData[i]);
-          //this.savedData[this.savedData.length-1].createDate = new Date(this.savedData[this.savedData.length-1].createDate[0],this.savedData[this.savedData.length-1].createDate[1]-1,this.savedData[this.savedData.length-1].createDate[2]).toISOString();
-          //this.savedData[this.savedData.length-1].updateDate = new Date(this.savedData[this.savedData.length-1].updateDate[0],this.savedData[this.savedData.length-1].updateDate[1]-1,this.savedData[this.savedData.length-1].updateDate[2]).toISOString();
-          //this.savedData[this.savedData.length-1].fileNo = 0;
           this.savedData[this.savedData.length-1].createDate = new Date().toISOString();
           this.savedData[this.savedData.length-1].updateDate = new Date().toISOString();
       }
@@ -120,7 +97,6 @@ export class AttachmentOcComponent implements OnInit {
       }
 
     }
-    //console.log(this.savedData);
     this.quotationService.saveQuoteAttachmentOc(this.quoteData.quoteIdOc,this.savedData,this.deletedData).subscribe((data: any) => {
 
       $('#successModalBtn').trigger('click');

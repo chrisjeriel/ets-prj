@@ -437,9 +437,9 @@ export class QuoteEndorsementComponent implements OnInit {
             for(var i = 0; i < this.endorsementOCData.tableData.length; i ++ ){
               if(this.endorsementOCData.tableData[i].edited && !this.endorsementOCData.tableData[i].deleted){
                 this.endorsementReqOc = {
-                  "deleteEndorsementsOc": [],
+                  "deleteEndorsementsOcList": [],
                     "quoteIdOc": this.quoteIdOc,
-                    "saveEndorsementsOc": [
+                    "saveEndorsementsOcList": [
                       {
                         "createDate": (this.saveEndt.createDate === null || this.saveEndt.createDate === "") ? new Date().toISOString() : this.saveEndt.createDate,
                         "createUser": (this.saveEndt.createUser === null || this.saveEndt.createUser === "") ? 'CPI' : this.saveEndt.createUser,
@@ -450,8 +450,6 @@ export class QuoteEndorsementComponent implements OnInit {
                       }
                     ]
                 }
-                console.log(this.endorsementOCData.tableData);
-                console.log(this.saveEndt);
                 this.quotationService.saveQuoteEndorsementsOc(JSON.stringify(this.endorsementReqOc))
                   .subscribe(data => {
                     console.log(data) 
@@ -459,7 +457,7 @@ export class QuoteEndorsementComponent implements OnInit {
                   });
               }else if(this.endorsementOCData.tableData[i].edited && this.endorsementOCData.tableData[i].deleted){
                  this.endorsementReqOc = {
-                   "deleteEndorsementsOc": [
+                   "deleteEndorsementsOcList": [
                     {
                       "createDate": new Date().toISOString(),
                       "createUser": this.saveEndt.createUser,
@@ -470,13 +468,13 @@ export class QuoteEndorsementComponent implements OnInit {
                     }
                     ],
                     "quoteIdOc": this.quoteIdOc,
-                    "saveEndorsementsOc": []
+                    "saveEndorsementsOcList": []
                  }
-                 /*this.quotationService.saveQuoteEndorsementsOc(JSON.stringify(this.endorsementReqOc))
+                 this.quotationService.saveQuoteEndorsementsOc(JSON.stringify(this.endorsementReqOc))
                   .subscribe(data => {
                     console.log(data);
                     $('#successMdl > #modalBtn').trigger('click');
-                  });*/
+                  });
               }
             }
         }

@@ -165,7 +165,7 @@ export class OpenCoverInquiryComponent implements OnInit {
     this.mtnCessionDesc = this.selectedOpenQuotationNo.cessionDesc;*/
 
     setTimeout(() => {
-      this.router.navigate(['/open-cover', { line: this.ocLine, from: "oc-processing", typeOfCession: this.mtnCessionDesc, ocQuoteNo: this.ocQuoteNo, inquiryFlag: true }], { skipLocationChange: true });
+      this.router.navigate(['/open-cover', { line: this.ocLine, from: "oc-processing", typeOfCession: this.mtnCessionDesc, fromBtn: 'view', ocQuoteNo: this.ocQuoteNo, inquiryFlag: true }], { skipLocationChange: true });
     }, 100);
   }
 
