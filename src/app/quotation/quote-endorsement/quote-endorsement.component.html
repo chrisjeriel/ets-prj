@@ -66,8 +66,8 @@
 <app-modal hidden [btnTitle]="'Copy Endt'" class="copy-endt" id="idMdl">
     <div header>Copy Endorsment</div>
     <div body>
-        <div style="margin-top: -2em;">
-            <table id="non-datatable">
+        <div>
+            <!-- <table id="non-datatable">
                 <thead>
                     <tr>
                         <th class="noborder"><span class="gridHeader">Copy From</span></th>
@@ -93,7 +93,15 @@
                         <td></td>
                     </tr>
                 </tbody>
-            </table>
+            </table> -->
+            <div class="custom-row-inline-inset">
+                <div class="input-group">
+                    <label class="form-control-sm col-sm-7">Copy from Option No</label>
+                    <input type="text" class="form-control form-control-sm col-sm-3" [ngModel]="currentSelectedOption" readonly>
+                    <label class="form-control-sm col-sm"></label>
+                </div>
+            </div>
+            <app-cust-non-datatable [passData]="copyEndtTable"></app-cust-non-datatable>
         </div>
     </div>
     <div footer style="margin: auto;">

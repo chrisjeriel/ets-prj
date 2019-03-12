@@ -26,7 +26,7 @@ export class QuoteEndorsementComponent implements OnInit {
     }
     @Input() ocQuoteData: any = {};
     @ViewChildren(CustEditableNonDatatableComponent) table: QueryList<CustEditableNonDatatableComponent>;
-    @ViewChild(CustNonDatatableComponent) tableNonEditable: CustNonDatatableComponent;
+    @ViewChildren(CustNonDatatableComponent) tableNonEditable: QueryList<CustNonDatatableComponent>;
     @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 /*    @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;*/
     OpenCover: boolean;
@@ -112,6 +112,22 @@ export class QuoteEndorsementComponent implements OnInit {
         searchFlag: true,
         keys: ['endtCode','endtTitle','description','remarks']
     }
+
+    
+    copyEndtTable: any = {
+        tableData: [],
+        tHeader: ['Copy to Option No'],
+        dataTypes: ['text'],
+        pagination: true,
+        pageStatus: true,
+        tableOnly: true,
+        checkFlag: true,
+        pageLength: 5,
+        pageID: 'copyEndtTable',
+        keys: ['optionNo'],
+    } 
+
+    currentSelectedOption: number;
 
     endtCodeLOVRow : number;
     cancelLink:string;
@@ -259,7 +275,8 @@ export class QuoteEndorsementComponent implements OnInit {
                             }
                             
                          }
-                       this.tableNonEditable.refreshTable();
+                         console.log(this.quoteOptionsData.tableData);
+                       this.tableNonEditable.forEach(table => {table.refreshTable()});
                             this.table.forEach(table => { table.refreshTable() });
                     });
 
@@ -288,8 +305,25 @@ export class QuoteEndorsementComponent implements OnInit {
 
     }
 
+
+    copyEndtMethod(optionId: number){
+      this.currentSelectedOption = optionId;
+      this.copyEndtTable.tableData = [];
+        for(var i of this.quoteOptionsData.tableData){
+            if(optionId !== i.optionId){
+              this.copyEndtTable.tableData.push({optionNo: i.optionId})
+            }
+        }
+        this.tableNonEditable.forEach(table => {table.refreshTable()});
+        console.log(this.copyEndtTable.tableData);
+    }
+
+
     clickRow(event) {
 /*           this.quotationService.getEndorsements(null,this.quotationNum,event.optionNo).subscribe((data: any) => {*/
+     //neco
+       this.copyEndtMethod(event.optionId);
+     //end neco
       $('#endorsmentTable button').removeAttr("disabled");
       $('#endorsmentOCTable button').removeAttr("disabled");
       this.opId = event.optionId;
