@@ -190,14 +190,17 @@ export class CoverageComponent implements OnInit {
           }, 0)
 
       this.table.refreshTable();
+
+      
     });
+    this.testingArr = this.passData.tableData
 
   }
 
   getCoverage(){
       this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
       this.table.refreshTable();
-
+      console.log(data)
         if(data.quotation.project !== null){
           this.coverageData = data.quotation.project.coverage;
           this.coverageData.remarks = this.coverageData.remarks == null ? '':this.coverageData.remarks;
@@ -216,21 +219,41 @@ export class CoverageComponent implements OnInit {
           }, 0)
 
           this.table.refreshTable();
+          this.testingArr = this.passData.tableData;
         });
   }
 
   validateSectionCover(){
-    this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
-      console.log(data)
-    })
+    var matches = false;
+
+      this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
+        var tableData = this.passData.tableData;
+        var retrievedData = data.quotation.project.coverage.sectionCovers;
+
+        for(var i=0;i<retrievedData.length;i++){
+          for(var j=0;j<tableData.length;j++){
+             if(retrievedData[i].coverCd == tableData[j].coverCd){
+               matches = true;
+               break;
+            }
+          }
+          if(!matches){
+            this.deletedData.push(retrievedData[i])
+            this.deletedData[this.deletedData.length-1].createDate = new Date(this.deletedData[this.deletedData.length-1].createDate[0],this.deletedData[this.deletedData.length-1].createDate[1]-1,this.deletedData[this.deletedData.length-1].createDate[2]).toISOString();
+            this.deletedData[this.deletedData.length-1].updateDate = new Date(this.deletedData[this.deletedData.length-1].updateDate[0],this.deletedData[this.deletedData.length-1].updateDate[1]-1,this.deletedData[this.deletedData.length-1].updateDate[2]).toISOString();
+            this.deletedData[this.deletedData.length-1].lineCd = this.lineCd;
+          }
+          matches = false;
+        }
+      });
   }
 
 
   prepareSaveData(){
     this.lineCd      = this.quoteNo.split('-')[0];
     this.editedData  = [];
-    this.deletedData = [];
-
+    //this.deletedData = [];
+    console.log(this.deletedData)
     if(this.initialData.length > 0){
       for (var i = 0 ; this.passData.tableData.length > i; i++) {
           if( !this.passData.tableData[i].deleted ){
@@ -260,6 +283,7 @@ export class CoverageComponent implements OnInit {
                this.editedData[this.editedData.length-1].updateDate = new Date(this.editedData[this.editedData.length-1].updateDate[0],this.editedData[this.editedData.length-1].updateDate[1]-1,this.editedData[this.editedData.length-1].updateDate[2]).toISOString();
                this.editedData[this.editedData.length-1].lineCd     = this.lineCd;
            }else if(this.passData.tableData[i].edited && this.passData.tableData[i].deleted){
+             console.log(this.passData.tableData[i])
              this.deletedData.push(this.passData.tableData[i]);
              this.deletedData[this.deletedData.length-1].createDate = new Date(this.deletedData[this.deletedData.length-1].createDate[0],this.deletedData[this.deletedData.length-1].createDate[1]-1,this.deletedData[this.deletedData.length-1].createDate[2]).toISOString();
              this.deletedData[this.deletedData.length-1].updateDate = new Date(this.deletedData[this.deletedData.length-1].updateDate[0],this.deletedData[this.deletedData.length-1].updateDate[1]-1,this.deletedData[this.deletedData.length-1].updateDate[2]).toISOString();
@@ -273,18 +297,14 @@ export class CoverageComponent implements OnInit {
          this.coverageData.quoteId             = this.quotationInfo.quoteId;
          this.coverageData.projId              = 1;
          this.coverageData.riskId              = this.riskId;
-
     }
     
-
   }
 
   saveData(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
     this.prepareSaveData();
 
-    if(this.editedData.length < 1 && this.deletedData.length < 1 && this.coverageData.remarks == null){
-    }else{
       this.quotationService.saveQuoteCoverage(this.coverageData.quoteId,this.coverageData.projId,this.coverageData).subscribe((data: any) => {
         if(data['returnCode'] == 0) {
             this.dialogMessage = data['errorList'][0].errorMessage;
@@ -299,51 +319,41 @@ export class CoverageComponent implements OnInit {
             $('#coverage #successModalBtn').trigger('click');
             this.getCoverage();
             this.initialData = [];
+            this.deletedData = []
             //this.getCoverageInfo();
            }
       });
-    }
   }
 
   cancel(){
     //this.cancelBtn.clickCancel();
+    var matches = false;
 
-    /*for (var i = 0 ; this.passData.tableData.length > i; i++) {
-      if(this.passData.tableData[i].edited){
-        this.editedData.push(this.passData.tableData[i])
-      }
-    }
-    console.log(this.editedData)
-    this.editedData =[];*/
-    console.log(this.testingArr)
-    console.log(this.passData.tableData)
+      this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
+        var arr1 = this.passData.tableData;
+        var arr2 = data.quotation.project.coverage.sectionCovers;
 
-
-
-
-    /*
-
-    this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
-      for(var i=0;i<this.passData.tableData.length;i++){
-        if(this.passData.tableData[i].edited){
-          this.editedData.push(this.passData.tableData[i]);
-        }
-
-        for(var j=0;j<data.quotation.project.coverage.sectionCovers.length;i++){
-          if(this.passData.tableData[i] === data.quotation.project.coverage.sectionCovers[j]){
-            matches = true;
+        for(var i=0;i<arr2.length;i++){
+          for(var j=0;j<arr1.length;j++){
+             if(arr2[i].coverCd == arr1[j].coverCd){
+               matches = true;
+               break;
+            }
           }
+          if(!matches){
+            this.deletedData.push(arr2[i])
+            this.deletedData[this.deletedData.length-1].createDate = new Date(this.deletedData[this.deletedData.length-1].createDate[0],this.deletedData[this.deletedData.length-1].createDate[1]-1,this.deletedData[this.deletedData.length-1].createDate[2]).toISOString();
+            this.deletedData[this.deletedData.length-1].updateDate = new Date(this.deletedData[this.deletedData.length-1].updateDate[0],this.deletedData[this.deletedData.length-1].updateDate[1]-1,this.deletedData[this.deletedData.length-1].updateDate[2]).toISOString();
+            this.deletedData[this.deletedData.length-1].lineCd = this.lineCd;
+          }
+          matches = false;
         }
+        console.log(this.deletedData)
+      });
 
-        if(!matches){
-          this.deletedData.push(data.quotation.project.coverage.sectionCovers[j])
-        }
-        
-      }
-    });*/
     
   }
-
+  
   sectionCoversLOV(data){
         this.hideSectionCoverArray = this.passData.tableData.filter((a)=>{return a.coverCd!== undefined && !a.deleted}).map((a)=>{return a.coverCd.toString()});
         $('#sectionCoversLOV #modalBtn').trigger('click');
@@ -359,6 +369,8 @@ export class CoverageComponent implements OnInit {
     this.passData.tableData[this.sectionCoverLOVRow].bulletNo = data.bulletNo;
     this.passData.tableData[this.sectionCoverLOVRow].sumInsured = 0;
     this.passData.tableData[this.sectionCoverLOVRow].edited = true;
+    this.validateSectionCover();
+    
   }
 
   update(data){
@@ -392,6 +404,7 @@ export class CoverageComponent implements OnInit {
      }
      
      this.focusBlur();
+     this.validateSectionCover();
      //this.cancel();  
   }
 
