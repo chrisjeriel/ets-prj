@@ -5,6 +5,8 @@ import { QuotationList } from '@app/_models';
 import { QuotationService } from '../../../_services';
 import { QuotationProcessing } from '@app/_models';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 
 @Component({
     selector: 'app-list-of-quotations',
@@ -29,9 +31,22 @@ export class ListOfQuotationsComponent implements OnInit {
     typeOfCession: string = "";
 
     searchParams: any[] = [];
+    records: any[] = [];
+    disabledPrintBtn: boolean = true;
+    btnDisabled: boolean;
+    printType: any = "SCREEN";
+    selectPrinterDisabled: boolean = true;
+    selectCopiesDisabled: boolean = true;
+    selectedReport: string ="QUOTER009A";
+    quoteNoCmp: any;
+    printName: any = null;
+    printCopies: any = null;
+    dialogIcon:string;
+    dialogMessage:string;
+    printQuoteParams: any = {};
 
     /*passData: any = {
-        tableData: [], 
+        tablData: [], 
         tHeader: ['Quotation No.','Type of Cession','Line Class','Status','Ceding Company','Principal','Contractor','Insured','Risk','Object','Site','Policy No','Currency'],
         dataTypes: [],
         resizable: [false, false, true, true, true, true, true, true, true, true, false, false],
@@ -191,7 +206,7 @@ export class ListOfQuotationsComponent implements OnInit {
         keys: ['quotationNo','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','insuredDesc','riskName','objectDesc','site','policyNo','currencyCd'],
     }
 
-    constructor(private quotationService: QuotationService, private router: Router) { 
+    constructor(private quotationService: QuotationService, private router: Router, private modalService: NgbModal) { 
     }
 
     ngOnInit() {
@@ -209,10 +224,10 @@ export class ListOfQuotationsComponent implements OnInit {
 
     retrieveQuoteListingMethod(){
         this.quotationService.getQuoProcessingData(this.searchParams).subscribe(data => {
-            var records = data['quotationList'];
-            console.log(records);
+            this.records = data['quotationList'];
+            console.log(this.records);
             //this.fetchedData = records;
-            for(let rec of records){
+            for(let rec of this.records){
                 this.passData.tableData.push(new QuotationProcessing(
                                                 rec.quotationNo,
                                                 rec.cessionDesc,
@@ -252,7 +267,14 @@ export class ListOfQuotationsComponent implements OnInit {
             this.quoteList = {};
         }else{
            this.quoteList = event;
+           this.quoteNoCmp = event.quotationNo;
+           for(let rec of this.records){
+              if(rec.quotationNo === event.quotationNo) {
+                this.quoteId = rec.quoteId;
+              }
+           }
         }
+        console.log(this.quoteId);
     }
     onRowDblClick(event) {
         /*for(var i = 0; i < event.target.parentElement.children.length; i++) {
@@ -288,5 +310,124 @@ export class ListOfQuotationsComponent implements OnInit {
         return new Date(arr[0] + '-' + arr[1] + '-' + arr[2]);   
     }
 
+    print(){
+        //do something
+        $('#showPrintMenu > #modalBtn').trigger('click');
+    }
+
+    tabController(event) {
+        if (this.printType == 'SCREEN'){
+          this.refreshPrintModal(true);
+        } else if (this.printType == 'PRINTER'){
+          this.refreshPrintModal(false);
+        } else if (this.printType == 'PDF'){
+          this.refreshPrintModal(true);
+        }
+    }
+
+    cancelModal(){
+        this.btnDisabled = false;
+    }
+
+    refreshPrintModal(condition : boolean){
+         if (condition){
+            this.selectPrinterDisabled = true;
+            this.selectCopiesDisabled = true;
+            this.btnDisabled = false;
+            $("#noOfCopies").val("");
+            $("#noOfCopies").css({"box-shadow": ""});
+            $("#printerName").css({"box-shadow":""});
+            $("#printerName").val("");
+            this.printName = null;
+            this.printCopies = null;
+         } else {
+            this.selectPrinterDisabled = false;
+            this.selectCopiesDisabled = false;
+            this.btnDisabled = false;
+            $("#noOfCopies").val("");
+            $("#noOfCopies").css({"box-shadow": ""});
+            $("#printerName").css({"box-shadow":""});
+            $("#printerName").val("");
+            this.printName = null;
+            this.printCopies = null;
+
+         }
+        
+    }
+
+    showPrintPreview() {
+         if (this.printType == 'SCREEN'){
+           window.open('http://localhost:8888/api/util-service/generateReport?reportName=' + this.selectedReport + '&quoteId=' + this.quoteId, '_blank');
+           this.printParams();
+         }else if (this.printType == 'PRINTER'){
+           if(this.validate(this.prepareParam())){
+                console.log("printer");
+                this.printPDF(this.selectedReport,this.quoteId);
+                this.printParams();
+           } else {
+                this.dialogIcon = "error";
+                this.dialogMessage = "Please complete all the required fields.";
+                $('#listQuoation #successModalBtn').trigger('click');
+                setTimeout(()=>{$('.globalLoading').css('display','none');},0);
+           }
+         }else if (this.printType == 'PDF'){
+           this.downloadPDF(this.selectedReport,this.quoteId);
+           this.printParams();
+         }   
+    }
+
+    downloadPDF(reportName : string, quoteId : string){
+       var fileName = this.quoteNoCmp;
+       this.quotationService.downloadPDF(reportName,quoteId).subscribe( data => {
+              var newBlob = new Blob([data], { type: "application/pdf" });
+              var downloadURL = window.URL.createObjectURL(data);
+              var link = document.createElement('a');
+              link.href = downloadURL;
+              link.download = fileName;
+              link.click();
+       });
+    }
+
+    printPDF(reportName : string, quoteId : string){
+       var fileName = this.quoteNoCmp;
+       this.quotationService.downloadPDF(reportName,quoteId).subscribe( data => {
+              var newBlob = new Blob([data], { type: "application/pdf" });
+              var downloadURL = window.URL.createObjectURL(data);
+              const iframe = document.createElement('iframe');
+              iframe.style.display = 'none';
+              iframe.src = downloadURL;
+              document.body.appendChild(iframe);
+              iframe.contentWindow.print();
+       });
+    }
+
+
+    validate(obj){
+          var req = ['printerName','noOfcopies'];
+          var entries = Object.entries(obj);
+            for(var [key, val] of entries) {
+                if((val === '' || val == null) && req.includes(key)){
+                    return false;
+                }
+            }
+        return true;
+    }
+
+    prepareParam() {
+        var printQuoteParam = {
+            "printerName"    : this.printName,
+            "noOfcopies"    : this.printCopies
+        }
+
+        return printQuoteParam;
+    }
+
+    printParams(){
+         this.printType = "SCREEN";
+         this.printName = null;
+         this.printCopies = null;
+         this.selectPrinterDisabled = true;
+         this.selectCopiesDisabled = true;
+    }
 
 }

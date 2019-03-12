@@ -916,6 +916,6 @@ export class QuotationService {
             })
         };
         console.log(params);
-        return this.http.get('http://localhost:8888/api/quote-service/saveQuoteChangeQuoteStatus',JSON.stringify(quoteStatusData), header)
+        return this.http.get('http://localhost:8888/api/quote-service/saveQuoteChangeQuoteStatus',JSON.stringify(quoteStatusData), header);
     }
    

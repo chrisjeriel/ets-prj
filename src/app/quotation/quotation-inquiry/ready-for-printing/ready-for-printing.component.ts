@@ -19,11 +19,15 @@ export class ReadyForPrintingComponent implements OnInit {
   selectPrinterDisabled: boolean = true;
   selectCopiesDisabled: boolean = true;
   selectedReport: string ="QUOTER009A";
-  quoteNo: any;
+/*  quoteNo: any;*/
   quoteNoCmp: any;
   quoteId: any;
-  printType: any;
+  printType: any = "SCREEN";
   selectedData:any;
+  printName: any = null;
+  printCopies: any = null;
+  dialogIcon:string;
+  dialogMessage:string;
 
   saveData: any = {
         changeQuoteStatus: [],
@@ -188,21 +192,27 @@ export class ReadyForPrintingComponent implements OnInit {
     return new Date(arr[0] + '-' + arr[1] + '-' + arr[2]);   
   }
 
-/*
+
   onRowClick(event){
     if (this.isEmptyObject(event)){
       this.btnDisabled = true;
     } else {
       this.btnDisabled = false;
       this.quoteNoCmp = event.quotationNo;
-      this.quoteNo =  this.plainQuotationNo(event.quotationNo);
-    }    
-  }*/
+     /* this.quoteNo =  this.plainQuotationNo(event.quotationNo);*/
+       for(let rec of this.records){
+          if(rec.quotationNo === event.quotationNo) {
+            this.quoteId = rec.quoteId;
+          }
+       }
+    }
+    console.log(this.quoteId);    
+  }
 
-   onRowClick(data) {
+   /*onRowClick(data) {
        this.selectedData = data;
        console.log(data.quotationNo);
-       console.log(data);
+       console.log(data.checked);
        for(let rec of this.records){
            if(rec.quotationNo === data.quotationNo) {
                if(data.checked){
@@ -220,7 +230,7 @@ export class ReadyForPrintingComponent implements OnInit {
            }
        }
    }
-
+*/
   isEmptyObject(obj) {
     for(var prop in obj) {
        if (obj.hasOwnProperty(prop)) {
@@ -241,62 +251,68 @@ export class ReadyForPrintingComponent implements OnInit {
   }
 
   showPrintPreview() {
-     if (this.printType == 'SCREEN'){
-       window.open('http://localhost:8888/api/util-service/generateReport?reportName=' + this.selectedReport + '&quoteId=' + this.quoteId, '_blank');
-       this.quotationService.changeQuoteStatusListing(this.quoteId).subscribe(data => {
-          console.log(data);
-       });
-     }else if (this.printType == 'PRINTER'){
-       console.log("printer");
-     }else if (this.printType == 'PDF'){
-       this.downloadPDF(this.selectedReport,this.quoteId);
-     }
+         if (this.printType == 'SCREEN'){
+           window.open('http://localhost:8888/api/util-service/generateReport?reportName=' + this.selectedReport + '&quoteId=' + this.quoteId, '_blank');
+           this.printParams();
+         }else if (this.printType == 'PRINTER'){
+           if(this.validate(this.prepareParam())){
+                console.log("printer");
+                this.printPDF(this.selectedReport,this.quoteId);
+                this.printParams();
+           } else {
+                this.dialogIcon = "error";
+                this.dialogMessage = "Please complete all the required fields.";
+                $('#readyPrinting #successModalBtn').trigger('click');
+                setTimeout(()=>{$('.globalLoading').css('display','none');},0);
+           }
+         }else if (this.printType == 'PDF'){
+           this.downloadPDF(this.selectedReport,this.quoteId);
+           this.printParams();
+         }   
   }
 
   showPrintModal(){
-    this.printType=null;
-    this.btnDisabled = true;
-
-    this.quotationService.getQuoteGenInfo('', this.plainQuotationNo(this.quoteNo)).subscribe(data => {
-      if(data['quotationGeneralInfo'] != null) {
-         this.quoteId = data['quotationGeneralInfo'].quoteId;      
-      }
-    }); 
-
     $('#showPrintMenu > #modalBtn').trigger('click');
   }
 
-  tabController(event) {
-    if (this.printType == 'SCREEN'){
-      this.selectPrinterDisabled = true;
-      this.selectCopiesDisabled = true;
-      this.btnDisabled = false;
-      this.refreshPrintModal();
-    } else if (this.printType == 'PRINTER'){
-      this.selectPrinterDisabled = false;
-      this.selectCopiesDisabled = false;
-      this.btnDisabled = false;
-      this.refreshPrintModal();
-    } else if (this.printType == 'PDF'){
-      this.selectPrinterDisabled = true;
-      this.selectCopiesDisabled = true;
-      this.btnDisabled = false;
-      this.refreshPrintModal();
-    }
-
+   tabController(event) {
+        if (this.printType == 'SCREEN'){
+          this.refreshPrintModal(true);
+        } else if (this.printType == 'PRINTER'){
+          this.refreshPrintModal(false);
+        } else if (this.printType == 'PDF'){
+          this.refreshPrintModal(true);
+        }
   }
 
   cancelModal(){
     this.btnDisabled = false;
-    $("#noOfCopies").css({"box-shadow": ""});
-    $("#printerName").css({"box-shadow":""});
   }
 
-  refreshPrintModal(){
-    $("#noOfCopies").val("");
-    $("#noOfCopies").css({"box-shadow": ""});
-    $("#printerName").css({"box-shadow":""});
-    $("#printerName").val("");
+  refreshPrintModal(condition : boolean){
+         if (condition){
+            this.selectPrinterDisabled = true;
+            this.selectCopiesDisabled = true;
+            this.btnDisabled = false;
+            $("#noOfCopies").val("");
+            $("#noOfCopies").css({"box-shadow": ""});
+            $("#printerName").css({"box-shadow":""});
+            $("#printerName").val("");
+            this.printName = null;
+            this.printCopies = null;
+         } else {
+            this.selectPrinterDisabled = false;
+            this.selectCopiesDisabled = false;
+            this.btnDisabled = false;
+            $("#noOfCopies").val("");
+            $("#noOfCopies").css({"box-shadow": ""});
+            $("#printerName").css({"box-shadow":""});
+            $("#printerName").val("");
+            this.printName = null;
+            this.printCopies = null;
+
+         }
+        
  }
 
  downloadPDF(reportName : string, quoteId : string){
@@ -310,5 +326,45 @@ export class ReadyForPrintingComponent implements OnInit {
           link.click();
    });
  }
+
+ printPDF(reportName : string, quoteId : string){
+       var fileName = this.quoteNoCmp;
+       this.quotationService.downloadPDF(reportName,quoteId).subscribe( data => {
+              var newBlob = new Blob([data], { type: "application/pdf" });
+              var downloadURL = window.URL.createObjectURL(data);
+              const iframe = document.createElement('iframe');
+              iframe.style.display = 'none';
+              iframe.src = downloadURL;
+              document.body.appendChild(iframe);
+              iframe.contentWindow.print();
+       });
+ }
+
+ validate(obj){
+          var req = ['printerName','noOfcopies'];
+          var entries = Object.entries(obj);
+            for(var [key, val] of entries) {
+                if((val === '' || val == null) && req.includes(key)){
+                    return false;
+                }
+            }
+        return true;
+}
+
+prepareParam() {
+        var printQuoteParam = {
+            "printerName"    : this.printName,
+            "noOfcopies"    : this.printCopies
+        }
+
+        return printQuoteParam;
+}
+
+printParams(){
+         this.printType = "SCREEN";
+         this.printName = null;
+         this.printCopies = null;
+         this.selectPrinterDisabled = true;
+}
 
 }
