@@ -325,6 +325,8 @@ import { SecurityModulesComponent } from './security/modules-maintenance/securit
 import { ModuleTransactionsComponent } from './security/modules-maintenance/module-transactions/module-transactions.component';
 import { CancelButtonComponent } from './_components/common/cancel-button/cancel-button.component';
 import { MtnUsersComponent } from './maintenance/mtn-users/mtn-users.component';
+import { NgxMaskModule } from 'ngx-mask';
+import { MtnReasonComponent } from './maintenance/mtn-reason/mtn-reason.component';
 
 
 @NgModule({
@@ -341,7 +343,8 @@ import { MtnUsersComponent } from './maintenance/mtn-users/mtn-users.component';
         DataTablesModule,
         NgxPaginationModule,
         AngularEditorModule,
-        QuillModule
+        QuillModule,
+        NgxMaskModule.forRoot()
     ],
     declarations: [
         AppComponent,
@@ -658,6 +661,7 @@ import { MtnUsersComponent } from './maintenance/mtn-users/mtn-users.component';
         SecurityModulesComponent,
         ModuleTransactionsComponent,
         MtnUsersComponent,
+        MtnReasonComponent,
     ],
 
     providers: [

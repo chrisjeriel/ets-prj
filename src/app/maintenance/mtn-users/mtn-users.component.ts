@@ -61,7 +61,8 @@ selected: any = null;
   }
 
   onRowClick(data){
-    if(Object.is(this.selected, data)){
+    // if(Object.is(this.selected, data)){
+    if(Object.entries(data).length === 0 && data.constructor === Object){
       this.selected = null
     } else {
       this.selected = data;
@@ -72,6 +73,7 @@ selected: any = null;
   	this.selectedData.emit(this.selected);
     this.usersListing.tableData = [];
     this.table.refreshTable();
+    this.selected = null;
   }
 
   cancel(){
@@ -95,20 +97,21 @@ selected: any = null;
       
   }
 
-  checkCode(code) {
+  checkCode(code, ev) {
     if(code.trim() === ''){
       this.selectedData.emit({
-        currencyCd: '',
-        currencyRt: ''
+        userId: '',
+        ev: '',
       });
     } else {
-      this.userService.retMtnUsers('').subscribe(data => {
-        if(data['currency'].length > 0) {
-          this.selectedData.emit(data['currency'][0]);
+      this.userService.retMtnUsers(code).subscribe(data => {
+        if(data['usersList'].length > 0) {
+          data['usersList'][0]['ev'] = ev;
+          this.selectedData.emit(data['usersList'][0]);
         } else {
           this.selectedData.emit({
-            currencyCd: '',
-            currencyRt: ''
+            userId: '',
+            ev: ev
           });
 
           $('#usersMdl > #modalBtn').trigger('click');

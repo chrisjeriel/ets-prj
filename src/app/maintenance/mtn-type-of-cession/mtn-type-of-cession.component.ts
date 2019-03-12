@@ -13,8 +13,8 @@ export class MtnTypeOfCessionComponent implements OnInit {
 
   cessionListing: any = {
     tableData: [],
-    tHeader: ['Cession ID', 'Cession Abbr', 'Description', 'Remarks'],
-    dataTypes: ['number', 'text', 'text','text'],
+    tHeader: ['Cession ID','Description'],
+    dataTypes: ['sequence-3', 'text',],
     pageLength: 10,
     searchFlag: true,
     pageStatus: true,
@@ -23,9 +23,7 @@ export class MtnTypeOfCessionComponent implements OnInit {
     pageID: 14,
     keys:[
     	'cessionId',
-    	'cessionAbbr',
-    	'description',
-    	'remarks'
+    	'description'
     	]
   };
 
@@ -52,14 +50,16 @@ export class MtnTypeOfCessionComponent implements OnInit {
   }
 
   onRowClick(data){
-    if(Object.is(this.selected, data)){
-      this.selected = null
+    // if(Object.is(this.selected, data)){
+    if(Object.entries(data).length === 0 && data.constructor === Object){
+      this.selected = null;
     } else {
       this.selected = data;
     }
   }
 
   confirm(){
+    this.selected['fromLOV'] = true;
   	this.selectedData.emit(this.selected);
     this.selected = null;
   }
@@ -83,20 +83,31 @@ export class MtnTypeOfCessionComponent implements OnInit {
      });
   }
 
-  checkCode(code) {
-    if(code === ''){
+  checkCode(code, ev) {
+    if(code.trim() === ''){
       this.selectedData.emit({
         cessionId: '',
-        description: ''
+        description: '',
+        ev: ev
       });
+    }  else if(isNaN(code/1)) {
+      this.selectedData.emit({
+        cessionId: '',
+        description: '',
+        ev: ev
+      });
+
+      $('#typeOfCessionMdl > #modalBtn').trigger('click');
     } else {
       this.maintenanceService.getMtnTypeOfCession(code).subscribe(data => {
         if(data['cession'].length > 0) {
+          data['cession'][0]['ev'] = ev;
           this.selectedData.emit(data['cession'][0]);
         } else {
           this.selectedData.emit({
             cessionId: '',
-            description: ''
+            description: '',
+            ev: ev
           });
 
           $('#typeOfCessionMdl > #modalBtn').trigger('click');

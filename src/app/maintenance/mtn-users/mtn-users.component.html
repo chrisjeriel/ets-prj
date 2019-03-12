@@ -5,8 +5,9 @@
 	</div>
 	<div footer>
         <div class="d-flex justify-content-center">
-            <button class="cust-btn" type="button" (click)="modalService.dismissAll();modalOpen = false; cancel();"><a>Cancel</a></button>
-            <button class="cust-btn" type="button" (click)="modalService.dismissAll();modalOpen = false; confirm();"><a>Ok</a></button>
+            <button class="cust-btn" type="button" (click)="modalService.dismissAll();modalOpen = false; cancel();"><a>Cancel</a></button>            
+            <button *ngIf="selected != null" class="cust-btn" type="button" (click)="modalService.dismissAll(); confirm();"><a>Ok</a></button>
+            <button *ngIf="selected == null" class="cust-btn cust-btn-disabled" type="button"><a>Ok</a></button>
         </div>
     </div>
 </app-modal>

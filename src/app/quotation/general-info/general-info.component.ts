@@ -12,6 +12,7 @@ import { MtnInsuredComponent } from '@app/maintenance/mtn-insured/mtn-insured.co
 import { MtnObjectComponent } from '@app/maintenance/mtn-object/mtn-object.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency.component';
+import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.component';
 
 @Component({
 	selector: 'app-general-info',
@@ -26,6 +27,7 @@ export class GeneralInfoComponent implements OnInit {
 	@ViewChildren(MtnInsuredComponent) insuredLovs: QueryList<MtnInsuredComponent>;
 	@ViewChild(MtnObjectComponent) objectLov: MtnObjectComponent;
 	@ViewChild(MtnCurrencyComponent) currencyLov: MtnCurrencyComponent;
+	@ViewChild(MtnUsersComponent) usersLov: MtnUsersComponent;
 
 	private quotationGenInfo: QuotationGenInfo;
 	rowData: any[] = this.quotationService.rowData;
@@ -184,7 +186,7 @@ export class GeneralInfoComponent implements OnInit {
 			}
 			this.from = params['from'];
 			if (this.from == "quo-processing") {
-				this.line = params['line'];
+				this.line = params['line'];				
 			}
 		});
 
@@ -235,15 +237,14 @@ export class GeneralInfoComponent implements OnInit {
 				this.checkQuoteIdF(this.genInfoData.quoteId);
 			});
 
-			this.quotationService.getCoverageInfo(this.plainQuotationNo(this.quotationNo),null).subscribe((data: any) =>{
-		     this.quoteInfo.showAlop = data.quotation.project.coverage.sectionCovers.filter(a=>{
-		       return a.section == 'III'
-		     }).length >0;
-		     console.log(data.quotation.project.coverage.sectionCovers.filter(a=>{
-		       return a.section == 'III'
-		     }).length >0)
-
-		   });
+			if(this.line === 'CAR' || this.line === 'EAR'){
+				this.quotationService.getCoverageInfo(this.plainQuotationNo(this.quotationNo),null).subscribe((data: any) =>{
+			     this.quoteInfo.showAlop = data.quotation.project.coverage.sectionCovers.filter(a=>{
+			       return a.section == 'III'
+			     }).length >0;		     
+		   		});
+			}
+			
 
 		} else {
 			this.loading = false;
@@ -255,12 +256,47 @@ export class GeneralInfoComponent implements OnInit {
 				this.genInfoData.quoteRevNo 	= '0';
 				this.genInfoData.status 		= '1';
 				this.genInfoData.statusDesc 	= 'Requested';
-				this.genInfoData.issueDate		= this.ns.toDateTimeString(0); //new Date().toISOString();
-				// this.genInfoData.createUser		= 'USER'; //JSON.parse(window.localStorage.currentUser).username;
-				// this.genInfoData.createDate		= new Date().toISOString();
-				// this.genInfoData.updateUser		= 'USER'; //JSON.parse(window.localStorage.currentUser).username;
-				// this.genInfoData.updateDate		= new Date().toISOString();
+				this.genInfoData.issueDate		= this.ns.toDateTimeString(0);
+				this.genInfoData.reqDate		= this.ns.toDateTimeString(0);
+				this.genInfoData.preparedBy		= 'USER'; //JSON.parse(window.localStorage.currentUser).username;
+				
+				var date = new Date();
+				var mills = date.setDate(date.getDate() + 30);
+
+				this.genInfoData.expiryDate		= this.ns.toDateTimeString(mills);				
 				this.project.projId 			= '1';
+
+				this.maintenanceService.getMtnCurrency('PHP','Y').subscribe(data => {
+					var curr = data['currency'][0];
+
+					this.genInfoData.currencyCd = curr.currencyCd;
+					this.genInfoData.currencyRt = curr.currencyRt;
+				});
+
+				this.maintenanceService.getLineClassLOV(this.line).subscribe(data => {					
+					if(data['lineClass'].length == 1) {
+						var lc = data['lineClass'][0];
+
+						this.genInfoData.lineClassCd = lc.lineClassCd;
+						this.genInfoData.lineClassDesc = lc.lineClassCdDesc;
+					} 
+				});
+
+				this.maintenanceService.getMtnQuotationWordings(this.line,'O').subscribe(data => {
+					for(let word of data['quoteWordings']) {
+						if(word.defaultTag === 'Y') {
+							this.genInfoData.openingParag = word.wording;
+						}
+					}
+				});
+
+				this.maintenanceService.getMtnQuotationWordings(this.line,'C').subscribe(data => {
+					for(let word of data['quoteWordings']) {
+						if(word.defaultTag === 'Y') {
+							this.genInfoData.closingParag = word.wording;
+						}
+					}
+				});
 
 				this.maintenanceService.getMtnRisk(JSON.parse(params['addParams']).riskId).subscribe(data => {				
 					var risk = data['risk'];
@@ -281,6 +317,8 @@ export class GeneralInfoComponent implements OnInit {
 					this.project.longitude 		= risk.longitude;
 
 				});
+
+				this.checkQuoteIdF(this.genInfoData.quoteId);
 			});
 
 		}
@@ -318,6 +356,7 @@ export class GeneralInfoComponent implements OnInit {
 	setPrincipal(data){
 		this.genInfoData.principalName = data.insuredName;
 		this.genInfoData.principalId = data.insuredId;
+		this.ns.lovLoader(data.ev, 0);
 
 		this.updateInsuredDesc();
 		this.focusBlur();
@@ -330,7 +369,6 @@ export class GeneralInfoComponent implements OnInit {
 
 
 	showLineClassLOV(){
-		console.log(this.insuredLovs);
 		$('#lineClassLOV #modalBtn').trigger('click');
 		$('#lineClassLOV #modalBtn').addClass('ng-dirty')
 	}
@@ -344,6 +382,7 @@ export class GeneralInfoComponent implements OnInit {
 	setContractor(data){
 		this.genInfoData.contractorName = data.insuredName;
 		this.genInfoData.contractorId = data.insuredId;
+		this.ns.lovLoader(data.ev, 0);
 
 		this.updateInsuredDesc();
 		this.focusBlur();
@@ -358,6 +397,8 @@ export class GeneralInfoComponent implements OnInit {
 	setCurrency(data){
 		this.genInfoData.currencyCd = data.currencyCd;
 		this.genInfoData.currencyRt = data.currencyRt;
+		this.ns.lovLoader(data.ev, 0);
+
 		setTimeout(() => {
 			$('input[appCurrencyRate]').focus();
 			$('input[appCurrencyRate]').blur();
@@ -379,9 +420,9 @@ export class GeneralInfoComponent implements OnInit {
 
 
 	setCedingcompany(event){
-		this.genInfoData.cedingId = event.coNo;
-		this.genInfoData.cedingName = event.name;
-		this.loading = false;
+		this.genInfoData.cedingId = event.cedingId;
+		this.genInfoData.cedingName = event.cedingName;
+		this.ns.lovLoader(event.ev, 0);
 		this.focusBlur();
 	}
 
@@ -392,8 +433,9 @@ export class GeneralInfoComponent implements OnInit {
 	}
 
 	setReinsurer(event) {
-		this.genInfoData.reinsurerId = event.coNo;
-		this.genInfoData.reinsurerName = event.name;
+		this.genInfoData.reinsurerId = event.cedingId;
+		this.genInfoData.reinsurerName = event.cedingName;
+		this.ns.lovLoader(event.ev, 0);
 		this.focusBlur();
 	}
 /*
@@ -416,6 +458,7 @@ export class GeneralInfoComponent implements OnInit {
     setInt(event){
         this.genInfoData.intmId = event.intmId;
         this.genInfoData.intmName = event.intmName;
+        this.ns.lovLoader(event.ev, 0);
         this.focusBlur();
 
     }
@@ -439,6 +482,7 @@ export class GeneralInfoComponent implements OnInit {
 				this.loading = false;
 				if(data['returnCode'] == 0) {
 					this.dialogMessage = data['errorList'][0].errorMessage;
+					this.dialogIcon = "error";
 					$('#genInfo #successModalBtn').trigger('click');
 				} else {
 					this.genInfoData.quoteId = data['quoteId'];
@@ -483,7 +527,6 @@ export class GeneralInfoComponent implements OnInit {
 						//end internal comp
 				}
 			});
-			console.log('got here');
 		} else {
 			this.loading = false;
 			this.dialogIcon = "error";
@@ -587,6 +630,8 @@ export class GeneralInfoComponent implements OnInit {
 	setObj(data){
     	this.project.objectId = data.objectId;
     	this.project.objectDesc = data.description;
+    	this.ns.lovLoader(data.ev, 0);
+
     	this.focusBlur();
   	}
 
@@ -633,14 +678,15 @@ export class GeneralInfoComponent implements OnInit {
   			status: this.genInfoData.status,
   			reasonCd: this.genInfoData.reasonCd,
   			principalId: this.genInfoData.principalId,
+  			lineCd: this.line,
   			showAlop: this.quoteInfo.showAlop
   		});		
   	}
 
   	validate(obj){
-  		var req = ['cedingId','lineClassCd','prinId','insuredDesc','status','intmId',
-  				   'issueDate','expiryDate','currencyCd','currencyRt','openingParag',
-  				   'closingParag','projDesc','objectId','site'];
+  		var req = ['cedingId','lineClassCd','prinId','insuredDesc','status','issueDate',
+  				   'expiryDate','currencyCd','currencyRt','openingParag','closingParag',
+  				   'projDesc','objectId','site'];
 
   		if(obj.lineCd === 'CAR' || obj.lineCd === 'EAR') {
   			req.push('contractorId', 'duration');
@@ -687,22 +733,26 @@ export class GeneralInfoComponent implements OnInit {
   	}
 
 
-  	checkCode(field) {
+  	checkCode(ev, field) {
+  		this.ns.lovLoader(ev, 1);
+
   		if(field === 'cedingCo') {
-  			this.loading = true;
-  			this.cedingCoLov.checkCode(this.genInfoData.cedingId);
+  			this.cedingCoLov.checkCode(this.genInfoData.cedingId, ev);
   		} else if(field === 'cedingCoNotMember') { 
-  			this.cedingCoNotMemberLov.checkCode(this.genInfoData.reinsurerId);
+  			this.cedingCoNotMemberLov.checkCode(this.genInfoData.reinsurerId, ev);
   		} else if(field === 'intermediary') {
-  			this.intermediaryLov.checkCode(this.genInfoData.intmId);
+  			console.log(this.genInfoData.intmId);
+  			this.intermediaryLov.checkCode(this.genInfoData.intmId, ev);
   		} else if(field === 'principal') {
-  			this.insuredLovs['first'].checkCode(this.genInfoData.principalId, '#principalLOV');
+  			this.insuredLovs['first'].checkCode(this.genInfoData.principalId, '#principalLOV', ev);
   		} else if(field === 'contractor') {
-  			this.insuredLovs['last'].checkCode(this.genInfoData.contractorId, '#contractorLOV');
+  			this.insuredLovs['last'].checkCode(this.genInfoData.contractorId, '#contractorLOV', ev);
   		} else if(field === 'object') {
-  			this.objectLov.checkCode(this.line, this.project.objectId);
+  			this.objectLov.checkCode(this.line, this.project.objectId, ev);
   		} else if(field === 'currency') {
-  			this.currencyLov.checkCode(this.genInfoData.currencyCd);
+  			this.currencyLov.checkCode(this.genInfoData.currencyCd, ev);
+  		} else if(field === 'preparedBy') {
+  			this.usersLov.checkCode(this.genInfoData.preparedBy, ev);
   		}
   	}
 
@@ -712,6 +762,21 @@ export class GeneralInfoComponent implements OnInit {
 
 	cancel(){
 		this.cancelBtn.clickCancel();
+	}
+
+	test() {
+		console.log('cont');
+		this.genInfoData.intmId = this.genInfoData.intmId.toString().padStart(3, '0');
+	}
+
+	showUsersLOV() {
+		$('#usersLOV #modalBtn').trigger('click');
+		$('#usersLOV #modalBtn').addClass('ng-dirty');
+	}
+
+	setPreparedBy(data) {
+		this.genInfoData.preparedBy = data.userId;
+		this.ns.lovLoader(data.ev, 0);
 	}
 
 }

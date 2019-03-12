@@ -313,11 +313,11 @@ export class OpenCoverProcessingComponent implements OnInit {
   checkCode(field){
         this.loading = true;
         if(field === 'line') {
-            this.lineLov.checkCode(this.mtnLineCd.toUpperCase());
+            this.lineLov.checkCode(this.mtnLineCd.toUpperCase(), 'a');
         } else if(field === 'typeOfCession'){
-            this.typeOfCessionLov.checkCode(this.mtnCessionId);    
+            this.typeOfCessionLov.checkCode(this.mtnCessionId, 'a');    
         } else if(field === 'risk') {
-            this.riskLov.checkCode(this.riskId);
+            this.riskLov.checkCode(this.riskId, 'a');
         }             
     }
 

@@ -1,8 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { MaintenanceService } from '@app/_services';
+import { MaintenanceService, NotesService, AuthenticationService } from '@app/_services';
+import { MtnDistrictComponent } from '@app//maintenance/mtn-district/mtn-district.component';
+import { User } from '@app/_models';
 
 @Component({
     selector: 'app-risk-form',
@@ -10,6 +12,9 @@ import { MaintenanceService } from '@app/_services';
     styleUrls: ['./risk-form.component.css']
 })
 export class RiskFormComponent implements OnInit, OnDestroy {
+
+    @ViewChild(MtnDistrictComponent) districtLov: MtnDistrictComponent;
+
     private sub: any;
     info: string;
     newForm: boolean;
@@ -49,10 +54,18 @@ export class RiskFormComponent implements OnInit, OnDestroy {
             zoneDesc : null,
         }
     errorMdlMessage:any;
+    currentUser: User;
 
-    constructor(private route: ActivatedRoute, private titleService: Title, private router: Router,private mtnService: MaintenanceService,private modalService: NgbModal ) { }
+    constructor(private authenticationService: AuthenticationService, private route: ActivatedRoute, private titleService: Title, private router: Router,private mtnService: MaintenanceService,private modalService: NgbModal, private ns: NotesService ) { }
 
     ngOnInit() {
+
+        this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+
+
+        this.riskData.createUser = this.currentUser.username;
+        this.riskData.updateUser = this.currentUser.username;
+
         this.titleService.setTitle("Pol | Risk");
 
         this.sub = this.route.params.subscribe(params => {
@@ -81,7 +94,13 @@ export class RiskFormComponent implements OnInit, OnDestroy {
             this.newForm = false;
         }
 
-        console.log(this.riskData.activeTag)
+        console.log(this.riskData.activeTag);
+
+        
+
+        setTimeout(() => {
+            $('input[riskdesc]').focus();
+        },0) 
     }
 
     ngOnDestroy(){
@@ -101,8 +120,38 @@ export class RiskFormComponent implements OnInit, OnDestroy {
     }
 
     setDistricts(data){
-        this.riskData.districtCd = data.districtCd;
-        this.riskData.districtDesc = data.districtDesc;
+        this.ns.lovLoader(data.ev, 0);
+
+        if (data.districtCd != null) {
+            this.setRegion(data);
+            this.setProvince(data);
+            this.setCity(data);
+            this.setCrestaZone(data);
+            this.riskData.districtCd = data.districtCd;
+            this.riskData.districtDesc = data.districtDesc;
+        } else {
+            /*if (this.riskData.regionCd == null) {
+                this.setRegion(data);
+            }
+
+            if (this.riskData.provinceCd == null) {
+                this.setProvince(data.provinceList[0]);
+            }
+
+            if (this.riskData.cityCd == null) {
+                this.setCity(data.provinceList[0].cityList[0]);
+            }*/
+
+            this.setRegion(data);
+            this.setProvince(data.provinceList[0]);
+            this.setCity(data.provinceList[0].cityList[0]);
+            this.setCrestaZone(data.provinceList[0].cityList[0]);
+
+            this.riskData.districtCd = data.provinceList[0].cityList[0].districtList[0].districtCd;
+            this.riskData.districtDesc = data.provinceList[0].cityList[0].districtList[0].districtDesc;
+        }
+
+        
     }
 
     showBlockModal() {
@@ -187,5 +236,28 @@ export class RiskFormComponent implements OnInit, OnDestroy {
 
     test(event){
         console.log(event)
+    }
+
+    checkCode(ev, field){
+        if(field === 'region'){
+            if (this.riskData.regionCd == null || this.riskData.regionCd == '') {
+                this.riskData.regionCd = '';
+                this.riskData.regionDesc = '';
+            } else {
+                this.ns.lovLoader(ev, 1);
+                //this.regionLov.checkCode(this.riskData.regionCd, ev);
+            }
+        } else if(field === 'district') {
+
+            if (this.riskData.districtCd == null || this.riskData.districtCd == '') {
+                this.riskData.districtCd = '';
+                this.riskData.districtDesc = '';
+            } else {
+                this.ns.lovLoader(ev, 1);
+                this.districtLov.checkCode(this.riskData.regionCd, this.riskData.provinceCd, this.riskData.cityCd, this.riskData.districtCd, ev);
+            }
+        } /*else if(field === 'risk') {
+            this.riskLov.checkCode(this.riskCd, ev);
+        }      */        
     }
 }

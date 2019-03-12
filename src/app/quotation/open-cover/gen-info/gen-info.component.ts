@@ -402,17 +402,31 @@ export class GenInfoComponent implements OnInit, OnDestroy {
   checkCode(field) {
       if(field === 'cedingCo') {
         this.loading = true;
-        this.cedingCoLov.checkCode(this.genInfoOcData.cedingId);
+/*<<<<<<< HEAD*/
+        this.cedingCoLov.checkCode(this.genInfoOcData.cedingId, 'a');
       } else if(field === 'cedingCoNotMember') { 
-        this.cedingCoNotMemberLov.checkCode(this.genInfoOcData.reinsurerId);
+        this.cedingCoNotMemberLov.checkCode(this.genInfoOcData.reinsurerId, 'a');
       } else if(field === 'intermediary') {
-        this.intermediaryLov.checkCode(this.genInfoOcData.intmId);
+        this.intermediaryLov.checkCode(this.genInfoOcData.intmId, 'a');
       } else if(field === 'principal') {
-        this.insuredLovs['first'].checkCode(this.genInfoOcData.prinId, '#principalLOV');
+        this.insuredLovs['first'].checkCode(this.genInfoOcData.prinId, '#principalLOV', 'a');
       } else if(field === 'contractor') {
-        this.insuredLovs['last'].checkCode(this.genInfoOcData.contractorId, '#contractorLOV');
+        this.insuredLovs['last'].checkCode(this.genInfoOcData.contractorId, '#contractorLOV', 'a');
       } else if(field === 'object') {
-        this.objectLov.checkCode(this.routerParams.line, this.projectOc.objectId);
+        this.objectLov.checkCode(this.routerParams.line, this.projectOc.objectId, 'a');
+/*=======
+        this.cedingCoLov.checkCode(this.cedingCoId, 'a');
+      } else if(field === 'cedingCoNotMember') { 
+        this.cedingCoNotMemberLov.checkCode(this.ocQuoteGenInfo.reinsurerId, 'a');
+      } else if(field === 'intermediary') {
+        this.intermediaryLov.checkCode(this.mtnIntmId, 'a');
+      } else if(field === 'principal') {
+        this.insuredLovs['first'].checkCode(this.prinId, '#principalLOV', 'a');
+      } else if(field === 'contractor') {
+        this.insuredLovs['last'].checkCode(this.conId, '#contractorLOV', 'a');
+      } else if(field === 'object') {
+        this.objectLov.checkCode(this.line, this.objId, 'a');
+>>>>>>> 07dae9c6aa43f898fc3d6fcaad6c941a617680f5*/
       }
     }
 

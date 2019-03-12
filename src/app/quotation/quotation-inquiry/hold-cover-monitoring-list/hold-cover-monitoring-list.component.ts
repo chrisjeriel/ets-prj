@@ -192,6 +192,7 @@ export class HoldCoverMonitoringListComponent implements OnInit {
     }
 
     formatDate(date){
-        return date[0] + "-" +date[1] + "-" + date[2];
+       var dt = new Date(date);
+       return (dt.getMonth()+1) + '-' + dt.getDate() + '-' + dt.getFullYear(); 
     }
 }
