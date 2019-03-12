@@ -140,7 +140,7 @@ export class QuotationService {
         if(searchParams.length < 1){
             params = new HttpParams()
              .set('quotationNo','')
-             .set('status','')
+             .set('status','I')
              .set('cedingName','')
              .set('holdCoverNo','')
              .set('riskName','')
