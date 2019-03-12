@@ -102,17 +102,17 @@
                             <div class="form-row custom-row-inline-inset">
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-2 text-right labels">Created By</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-4" [(ngModel)]="riskData.createUser">
+                                    <input type="text" class="form-control form-control-sm col-sm-4" readonly [(ngModel)]="riskData.createUser">
                                     <label class="form-control-sm col-sm-2 text-right labels">Date Created</label>
-                                    <input type="date" class="form-control form-control-sm col-sm-3" [(ngModel)]="riskData.createDate">
+                                    <input type="date" class="form-control form-control-sm col-sm-3" readonly [(ngModel)]="riskData.createDate">
                                 </div>
                             </div>
                             <div class="form-row custom-row-inline-inset" style="margin-bottom: 16px !important;">
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-2 text-right labels">Last Updated By</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-4" [(ngModel)]="riskData.updateUser">
+                                    <input type="text" class="form-control form-control-sm col-sm-4" readonly [(ngModel)]="riskData.updateUser">
                                     <label class="form-control-sm col-sm-2 text-right labels">Last Update</label>
-                                    <input type="date" class="form-control form-control-sm col-sm-3" [(ngModel)]="riskData.updateDate">
+                                    <input type="date" class="form-control form-control-sm col-sm-3" readonly [(ngModel)]="riskData.updateDate">
                                 </div>
                             </div>
                         </fieldset>
