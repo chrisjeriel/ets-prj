@@ -19,7 +19,7 @@
                             <div class="form-row custom-row-inline-inset">
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-2 text-right labels">Description</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-9" [(ngModel)]="riskData.riskName">
+                                    <input type="text" class="form-control form-control-sm col-sm-9" riskdesc [(ngModel)]="riskData.riskName">
                                 </div>
                             </div>
                             <div class="form-row custom-row-inline-inset" style="margin-bottom: 14px !important;">
@@ -40,11 +40,11 @@
                             <div class="form-row custom-row-inline-inset">
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-1 text-right labels">Region</label>
-                                    <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="riskData.regionCd">
+                                    <input  type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="riskData.regionCd">
                                     <div class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('region')"></i></a></div>
                                     <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm-4" [(ngModel)]="riskData.regionDesc" style="margin-left: 6px !important">
                                     <label class="form-control-sm col-sm-1 text-right labels">Province</label>
-                                    <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="riskData.provinceCd">
+                                    <input  type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="riskData.provinceCd">
                                     <div class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('province')"></i></a></div>
                                     <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm-4" [(ngModel)]="riskData.provinceDesc" style="margin-left: 6px !important">
                                 </div>
@@ -52,12 +52,12 @@
                             <div class="form-row custom-row-inline-inset">
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-1 text-right labels">City/Town</label>
-                                    <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="riskData.cityCd">
+                                    <input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="riskData.cityCd">
                                     <!-- <div class="text-search-ico"><a><i class="fa fa-search" (click)="showCityModal()" ></i></a></div> -->
                                     <div class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('city')" ></i></a></div>
                                     <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 6px !important" [(ngModel)]="riskData.cityDesc">
                                     <label class="form-control-sm col-sm-1 text-right labels">District</label>
-                                    <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm-1" [placeholder]="newForm ? '' : 'LGSR'" [(ngModel)]="riskData.districtCd">
+                                    <input type="text" class="form-control form-control-sm col-sm-1" [placeholder]="newForm ? '' : 'LGSR'" [(ngModel)]="riskData.districtCd">
                                     <div class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('district')"></i></a></div>
                                     <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 6px !important"  [(ngModel)]="riskData.districtDesc">
                                 </div>
@@ -65,7 +65,7 @@
                             <div class="form-row custom-row-inline-inset">
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-1 text-right labels">Block</label>
-                                    <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="riskData.blockCd"> 
+                                    <input  type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="riskData.blockCd"> 
                                     <div class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('block')"></i></a></div>
                                     <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 6px !important" [(ngModel)]="riskData.blockDesc">
                                     <label class="form-control-sm col-sm-1 text-right labels">Lat</label>
@@ -77,7 +77,7 @@
                             <div class="form-row custom-row-inline-inset" style="margin-bottom: 16px !important;">
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-1 text-right labels" style="padding: 0; padding-right: 0.96px;">CRESTA Zone</label>
-                                    <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="riskData.zoneCd">
+                                    <input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="riskData.zoneCd">
                                     <div class="text-search-ico"><a><i class="fa fa-search" (click)="showCrestaZoneModal()"></i></a></div>
                                     <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm-10" [(ngModel)]="riskData.zoneDesc"style="margin-left: 6px !important">
                                 </div>
@@ -126,6 +126,13 @@
                             </div>
                         </div>
                     </div>
+                    <div class="input-group">
+                        <label class="form-control-sm col-sm-3">Line</label>
+                        <input type="text" [ngModel]="riskData.districtCd" (ngModelChange)="riskData.districtCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCode($event, 'district')">
+                        <div class="text-search-ico" (click)="modalService.dismissAll();showLineLOV()"><a><i class="fa fa-search"></i></a></div>
+                        &nbsp;&nbsp;
+                        <input type="text" class="form-control form-control-sm" [(ngModel)]="description" readonly tabindex="-1">
+                    </div>
                 </div>
             </ng-template>
         </ngb-tab>
@@ -134,7 +141,7 @@
 
 <app-mtn-district id="districtModal" (selectedData)="setDistricts($event)"></app-mtn-district>
 <!-- <app-mtn-city></app-mtn-city> -->
-<app-mtn-block id="blockModal" (selectedData)="setBlock($event)"></app-mtn-block>
+<!-- <app-mtn-block id="blockModal" (selectedData)="setBlock($event)"></app-mtn-block> -->
 <app-mtn-city id="cityModal" (selectedData)="setCity($event)"></app-mtn-city>
 <app-mtn-cresta-zone id="crestaZoneModal" (selectedData)="setCrestaZone($event)"></app-mtn-cresta-zone>
 <app-lov [passData]="passLOV" id="lov" (selectedData)="setLOVField($event)"></app-lov>
