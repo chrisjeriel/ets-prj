@@ -238,7 +238,23 @@ export class HoldCoverComponent implements OnInit {
         //this.holdCover.preparedBy = JSON.parse(window.localStorage.currentUser).username;
         this.btnApprovalEnabled = false;
 
-        
+        this.passDataQuoteLOV.tableData = [];
+        this.quotationService.getQuoProcessingData([])
+        .subscribe(val => {
+          var records = val['quotationList'];
+          for(let rec of records){
+            if(rec.status === 'Issued' || rec.status === 'ISSUED' || rec.status === 'issued'){
+              this.passDataQuoteLOV.tableData.push({
+                quotationNo: rec.quotationNo,
+                cedingName:  rec.cedingName,
+                insuredDesc: rec.insuredDesc,
+                riskName: (rec.project == null) ? '' : rec.project.riskName
+              });
+            }
+
+          }
+          this.table.refreshTable();
+        });
       }
 
       formatDate(date){
