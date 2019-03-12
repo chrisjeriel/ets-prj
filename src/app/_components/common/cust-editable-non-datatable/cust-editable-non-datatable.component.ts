@@ -144,7 +144,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         this.unliTableLength();
         this.passData.dataTypes = typeof this.passData.dataTypes == 'undefined' ? [] : this.passData.dataTypes;
 
-        if (this.passData.tableData.length > 0 && this.dataKeys.length == 0 ) {
+        if (this.passData.tableData.length > 0 && this.dataKeys.length == 0 && this.passData.keys === undefined) {
             this.dataKeys = Object.keys(this.passData.tableData[0]);
         } else {
             this.dataKeys = this.passData.keys;
@@ -370,7 +370,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     onClickGeneric(){
-        this.genericBtn.next();
+        this.genericBtn.emit(this.indvSelect);
     }
 
     typeOf(data){

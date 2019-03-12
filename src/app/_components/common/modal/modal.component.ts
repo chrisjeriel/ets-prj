@@ -32,9 +32,16 @@ export class ModalComponent implements OnInit/*, AfterViewInit*/ {
     content: EventEmitter<Object> = new EventEmitter<Object>();
     @Output() modalOpened: EventEmitter<Object> = new EventEmitter<Object>();
     modalRef: NgbModalRef;
+    mdlOptions:any;
+
     constructor(private modalService: NgbModal) { }
 
     ngOnInit() {
+        this.mdlOptions = {
+            centered: true, 
+            backdrop: 'static', 
+            windowClass : this.modalSize
+        }
 
     }
     ngAfterViewInit(){
@@ -45,13 +52,16 @@ export class ModalComponent implements OnInit/*, AfterViewInit*/ {
     open(content) {
         $('.globalLoading').css('display','none');
         this.modalService.dismissAll();
-        this.modalRef = this.modalService.open(this.test, { centered: true, backdrop: 'static', windowClass : this.modalSize,  });
+        this.modalRef = this.modalService.open(this.test, this.mdlOptions);
         this.modalOpened.emit();
     }
 
     openNoClose(content?){
         $('.globalLoading').css('display','none');
-        this.modalRef = this.modalService.open(this.test, { centered: true, backdrop: 'static',  windowClass : this.modalSize });
+        this.modalRef = this.modalService.open(this.test, this.mdlOptions);
+        if($('.modal').length>1){
+            $('.modal-backdrop')[$('.modal-backdrop').length-1].style.zIndex = 1051+$('.modal').length+'';
+        }    
         this.modalOpened.emit();
     }
 

@@ -601,11 +601,11 @@ export class QuotationService {
         return this.risksData;
     }
 
-    getDeductibles() {
-        this.quoteDeductiblesData = [
-            new QuotationDeductibles('Deductible Code', 'Deductible Title', 12, 23000, 'Deductible Text'),
-        ];
-        return this.quoteDeductiblesData;
+    getDeductibles(params:any) {
+        // this.quoteDeductiblesData = [
+        //     new QuotationDeductibles('Deductible Code', 'Deductible Title', 12, 23000, 'Deductible Text'),
+        // ];
+        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteDeductibles', {params});
     }
 
     getOpenCoverListInfo() {
