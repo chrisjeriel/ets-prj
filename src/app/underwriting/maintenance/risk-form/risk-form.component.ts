@@ -2,8 +2,9 @@ import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/co
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { MaintenanceService, NotesService } from '@app/_services';
+import { MaintenanceService, NotesService, AuthenticationService } from '@app/_services';
 import { MtnDistrictComponent } from '@app//maintenance/mtn-district/mtn-district.component';
+import { User } from '@app/_models';
 
 @Component({
     selector: 'app-risk-form',
@@ -53,13 +54,21 @@ export class RiskFormComponent implements OnInit, OnDestroy {
             zoneDesc : null,
         }
     errorMdlMessage:any;
+    currentUser: User;
 
-    constructor(private route: ActivatedRoute, private titleService: Title, private router: Router,private mtnService: MaintenanceService,private modalService: NgbModal, private ns: NotesService ) { }
+    constructor(private authenticationService: AuthenticationService, private route: ActivatedRoute, private titleService: Title, private router: Router,private mtnService: MaintenanceService,private modalService: NgbModal, private ns: NotesService ) { }
 
     ngOnInit() {
+
+        this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+
+
+        this.riskData.createUser = this.currentUser.username;
+        this.riskData.updateUser = this.currentUser.username;
+
         this.titleService.setTitle("Pol | Risk");
 
-        /*this.sub = this.route.params.subscribe(params => {
+        this.sub = this.route.params.subscribe(params => {
             console.log(params)
             if(params.info == undefined){
                 this.riskData = JSON.parse(JSON.stringify(params));
@@ -85,7 +94,7 @@ export class RiskFormComponent implements OnInit, OnDestroy {
             this.newForm = false;
         }
 
-        console.log(this.riskData.activeTag);*/
+        console.log(this.riskData.activeTag);
 
         
 
@@ -117,6 +126,7 @@ export class RiskFormComponent implements OnInit, OnDestroy {
             this.setRegion(data);
             this.setProvince(data);
             this.setCity(data);
+            this.setCrestaZone(data);
             this.riskData.districtCd = data.districtCd;
             this.riskData.districtDesc = data.districtDesc;
         } else {
@@ -135,6 +145,7 @@ export class RiskFormComponent implements OnInit, OnDestroy {
             this.setRegion(data);
             this.setProvince(data.provinceList[0]);
             this.setCity(data.provinceList[0].cityList[0]);
+            this.setCrestaZone(data.provinceList[0].cityList[0]);
 
             this.riskData.districtCd = data.provinceList[0].cityList[0].districtList[0].districtCd;
             this.riskData.districtDesc = data.provinceList[0].cityList[0].districtList[0].districtDesc;
