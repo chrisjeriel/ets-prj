@@ -101,12 +101,12 @@
                     <label class="form-control-sm col-sm"></label>
                 </div>
             </div>
-            <app-cust-non-datatable [passData]="copyEndtTable"></app-cust-non-datatable>
+            <app-cust-editable-non-datatable [passData]="copyEndtTable"></app-cust-editable-non-datatable>
         </div>
     </div>
     <div footer style="margin: auto;">
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); beginCopyEndt();"><a>Ok</a></button>
     </div>
 </app-modal>
 

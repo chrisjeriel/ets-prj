@@ -120,14 +120,18 @@ export class QuoteEndorsementComponent implements OnInit {
         dataTypes: ['text'],
         pagination: true,
         pageStatus: true,
+        paginateFlag: true,
+        infoFlag: true,
         tableOnly: true,
         checkFlag: true,
         pageLength: 5,
         pageID: 'copyEndtTable',
         keys: ['optionNo'],
+        uneditable: [true],
     } 
 
     currentSelectedOption: number;
+    copyEndtParams: any[] = [];
 
     endtCodeLOVRow : number;
     cancelLink:string;
@@ -275,7 +279,6 @@ export class QuoteEndorsementComponent implements OnInit {
                             }
                             
                          }
-                         console.log(this.quoteOptionsData.tableData);
                        this.tableNonEditable.forEach(table => {table.refreshTable()});
                             this.table.forEach(table => { table.refreshTable() });
                     });
@@ -305,7 +308,7 @@ export class QuoteEndorsementComponent implements OnInit {
 
     }
 
-
+    //neco
     copyEndtMethod(optionId: number){
       this.currentSelectedOption = optionId;
       this.copyEndtTable.tableData = [];
@@ -315,8 +318,27 @@ export class QuoteEndorsementComponent implements OnInit {
             }
         }
         this.tableNonEditable.forEach(table => {table.refreshTable()});
-        console.log(this.copyEndtTable.tableData);
     }
+
+
+    beginCopyEndt(){
+      this.copyEndtParams = [];
+      for(var j of this.copyEndtTable.tableData){
+        if(j.checked){
+          this.copyEndtParams.push({optionNo: j.optionNo});
+        }
+      }
+      let params: any = {
+        quoteId: this.quotationInfo.quoteId,
+        type: 'copyEndt',
+        fromOptionNo: this.currentSelectedOption,
+        toOptionNo: this.copyEndtParams
+      }
+
+      console.log(JSON.stringify(params));
+
+    }
+    //end neco
 
 
     clickRow(event) {
