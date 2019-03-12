@@ -210,6 +210,7 @@ export class ListOfQuotationsComponent implements OnInit {
     retrieveQuoteListingMethod(){
         this.quotationService.getQuoProcessingData(this.searchParams).subscribe(data => {
             var records = data['quotationList'];
+            console.log(records);
             //this.fetchedData = records;
             for(let rec of records){
                 this.passData.tableData.push(new QuotationProcessing(
@@ -243,8 +244,6 @@ export class ListOfQuotationsComponent implements OnInit {
         this.searchParams = searchParams;
         this.passData.tableData = [];
         this.retrieveQuoteListingMethod();
-
-
 
     }
 

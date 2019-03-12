@@ -900,4 +900,22 @@ export class QuotationService {
 
         return this.http.post('http://localhost:8888/api/quote-service/saveQuoteChangeQuoteStatus',JSON.stringify(changeQuoteData),header);
     }
-}
+
+
+    downloadPDF(reportName : string, quoteId : string): Observable<Blob>  {
+         const params = new HttpParams()
+             .set('reportName', reportName)
+             .set('quoteId', quoteId);
+        return this.http.get('http://localhost:8888/api/util-service/generateReport',{ params,'responseType': 'blob'});
+    }
+
+    changeQuoteStatusListing(quoteStatusData : any){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        console.log(params);
+        return this.http.get('http://localhost:8888/api/quote-service/saveQuoteChangeQuoteStatus',JSON.stringify(quoteStatusData), header)
+    }
+   

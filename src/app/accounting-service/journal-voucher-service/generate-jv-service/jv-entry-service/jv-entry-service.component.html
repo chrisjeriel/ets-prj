@@ -22,9 +22,9 @@
                     <label class="form-control-sm col-sm-1" style="height: auto;">JV Type</label>
                     <div class="col-sm-5">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                        <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 1px !important;" placeholder=""   [(ngModel)]="data" (change)="tabController($event);">               
-                        <div style="margin-left: -19px !important;margin-right: 0px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div> -->
-                                <select class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="data" (change)="tabController($event);">
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 1px !important;" placeholder=""   [(ngModel)]="data" (change)="tabController($event);">               
+                        <div style="margin-left: -19px !important;margin-right: 0px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+                                <!-- <select class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="data" (change)="tabController($event);">
                                     <option value="Service Fee Receivable for the Quarter" [selected]="data == 'Service Fee Receivable for the Quarter'">Service Fee Receivable for the Quarter</option>
                                     <option value="Collected Certificate of Withholding Tax" [selected]="data == 'Collected Certificate of Withholding Tax'">Collected Certificate of Withholding Tax</option>
                                     <option value="Uncollected Certificate of Withholding Tax" [selected]="data == 'Uncollected Certificate of Withholding Tax'">Uncollected Certificate of Withholding Tax</option>
@@ -35,17 +35,17 @@
                                     <option value="Profit Sharing" [selected]="data == 'Profit Sharing'">Profit Sharing</option>
                                     <option value="Monthly Depreciation Expense" [selected]="data == 'Monthly Depreciation Expense'">Monthly Depreciation Expense</option>
                                     <option value="Miscellaneous / Others" [selected]="data == 'Miscellaneous / Others'">Miscellaneous / Others</option>
-                                </select>
+                                </select> -->
                         </div>
                     </div>
                     <label class="form-control-sm col-sm-1">Ref No</label>
-                    <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="2017-00023974">
-                    <div style="margin-left: -19px !important;margin-right: 3px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div> -->
-                    <select class="form-control form-control-sm cust-sm col-sm-2">
+                    <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="2017-00023974">
+                    <div style="margin-left: -19px !important;margin-right: 3px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+                   <!--  <select class="form-control form-control-sm cust-sm col-sm-2">
                         <option>2017-00023974</option>
                         <option>2017-00023463</option>
                         <option>2017-00023432</option>
-                    </select>
+                    </select> -->
                     <label class="form-control-sm col-sm-1" style="margin-left: -10px;">Ref No Date</label>    
                     <input type="datetime-local" class="form-control form-control-sm cust-sm col-sm-2" value="2017-12-31T09:00" >
                 </div>
@@ -141,11 +141,18 @@
                 <div class="form-group col-sm">
                     <div class="col-md-12 text-center">
                         <div class="cust-btn-container" style="margin-top: 10px;">
-                            <button type="button" class="cust-btn" style="margin-right: 10px !important;"><a>New JV</a></button>
+                           <!--  <button type="button" class="cust-btn" style="margin-right: 10px !important;"><a>New JV</a></button>
                             <button type="button" class="cust-btn" style="margin-right: 10px !important;"><a>Save</a></button>
                             <button type="button" class="cust-btn" style="margin-right: 10px !important;"><a>Cancel JV</a></button>
                             <button type="button" class="cust-btn" style="margin-right: 10px !important;"><a>Print JV</a></button>
-                            <button type="button" class="cust-btn" style="margin-right: 10px !important;"><a>Upload</a></button>
+                            <button type="button" class="cust-btn" style="margin-right: 10px !important;"><a>Upload</a></button> -->
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%"><a>New JV</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%"><a>Save</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%"><a>Cancel JV</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%"><a>Print JV</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%"><a>Upload Acct. Ent</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%"><a>DebitCredit Memo</a></button>
+
                         </div>
                     </div>
                 </div>
