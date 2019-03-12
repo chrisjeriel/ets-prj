@@ -84,6 +84,8 @@ export class GenInfoComponent implements OnInit {
   @Output() quoteData = new EventEmitter<any>();
   @Input() quoteInfo = {};
 
+  @Input() inquiryFlag: boolean = false;
+
   ngOnInit() {
     this.titleService.setTitle("Quo | General Info");
     this.ocQuoteGenInfo = new OcGenInfoInfo();

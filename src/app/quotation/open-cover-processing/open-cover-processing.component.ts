@@ -203,7 +203,7 @@ export class OpenCoverProcessingComponent implements OnInit {
       this.quotationService.rowData = [];
 
       setTimeout(() => {
-        this.router.navigate(['/open-cover', { line: ocLine, from: "oc-processing", typeOfCession: this.mtnCessionDesc, riskId: this.riskId, fromBtn: 'add' }], { skipLocationChange: true });
+        this.router.navigate(['/open-cover', { line: ocLine, from: "oc-processing", typeOfCession: this.mtnCessionDesc, riskId: this.riskId, fromBtn: 'add', inquiryFlag: false }], { skipLocationChange: true });
       }, 100);
     }
 
@@ -220,7 +220,7 @@ export class OpenCoverProcessingComponent implements OnInit {
     this.mtnCessionDesc = this.selectedOpenQuotationNo.cessionDesc;
 
     setTimeout(() => {
-      this.router.navigate(['/open-cover', { line: this.ocLine, from: "oc-processing", typeOfCession: this.mtnCessionDesc, ocQuoteNo: this.ocQuoteNo }], { skipLocationChange: true });
+      this.router.navigate(['/open-cover', { line: this.ocLine, from: "oc-processing", typeOfCession: this.mtnCessionDesc, ocQuoteNo: this.ocQuoteNo, inquiryFlag: false }], { skipLocationChange: true });
     }, 100);
 
   }
@@ -250,7 +250,7 @@ export class OpenCoverProcessingComponent implements OnInit {
     this.mtnCessionDesc = this.selectedOpenQuotationNo.cessionDesc;*/
 
     setTimeout(() => {
-      this.router.navigate(['/open-cover', { line: this.ocLine, from: "oc-processing", typeOfCession: this.mtnCessionDesc, ocQuoteNo: this.ocQuoteNo }], { skipLocationChange: true });
+      this.router.navigate(['/open-cover', { line: this.ocLine, from: "oc-processing", typeOfCession: this.mtnCessionDesc, ocQuoteNo: this.ocQuoteNo, inquiryFlag: false }], { skipLocationChange: true });
     }, 100);
   }
 

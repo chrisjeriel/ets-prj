@@ -20,6 +20,7 @@ export class OpenCoverSumInsuredComponent implements OnInit {
   riskId: any;
 
   @Input() quoteData: any = {};
+  @Input() inquiryFlag: boolean = false;
 
   coverageOcData: any = {
   	currencyCd: null,

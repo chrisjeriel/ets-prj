@@ -177,3 +177,4 @@ class Row{
 			this.userId = userId;
 			this.userName = userName;
 	}
+}

@@ -49,6 +49,8 @@ export class AttachmentOcComponent implements OnInit {
   savedData: any[];
   deletedData: any[];
 
+  @Input() inquiryFlag: boolean = false;
+
   @Input() quoteData: any = {};
 
   constructor(private titleService: Title, private quotationService: QuotationService, private modalService: NgbModal) { }
@@ -65,6 +67,17 @@ export class AttachmentOcComponent implements OnInit {
         this.custEditableNonDatatableComponent.refreshTable();
       }
     );*/
+     if(this.inquiryFlag){
+          this.passData.tHeader.pop();
+          this.passData.opts = [];
+          this.passData.uneditable = [];
+          this.passData.magnifyingGlass = [];
+          this.passData.addFlag = false;
+          this.passData.deleteFlag = false;
+          for(var count = 0; count < this.passData.tHeader.length; count++){
+            this.passData.uneditable.push(true);
+          }
+        }
     let params = {
 
     }

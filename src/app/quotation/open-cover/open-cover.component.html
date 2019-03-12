@@ -1,24 +1,25 @@
 <div class="cust-tabs-container">
-	<h4>Quotation / Open Cover Processing</h4>
+	<h4 *ngIf="!inquiryFlag">Quotation / Open Cover Processing</h4>
+	<h4 *ngIf="inquiryFlag">Quotation / Open Cover Inquiry</h4>
 	<ngb-tabset (tabChange)="beforeChange($event);onTabChange($event)">
 		<ngb-tab class="ngb-tab" title="General Info">
 			<ng-template ngbTabContent>
-				<app-gen-info (quoteData)="quoteDataF($event)" ></app-gen-info>
+				<app-gen-info (quoteData)="quoteDataF($event)" [inquiryFlag]="inquiryFlag" ></app-gen-info>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab class="ngb-tab" title="Sum Insured">
 			<ng-template ngbTabContent>
-				<app-open-cover-sum-insured [quoteData]="quoteData"></app-open-cover-sum-insured>
+				<app-open-cover-sum-insured [quoteData]="quoteData" [inquiryFlag]="inquiryFlag"></app-open-cover-sum-insured>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab class="ngb-tab" title="Endorsement">
 			<ng-template ngbTabContent>
-				<app-quote-endorsement [endorsementType]="'OC'" [ocQuoteData]="quoteData"></app-quote-endorsement>
+				<app-quote-endorsement [endorsementType]="'OC'" [ocQuoteData]="quoteData" [inquiryFlag]="inquiryFlag"></app-quote-endorsement>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab class="ngb-tab" title="Attachment">
 			<ng-template ngbTabContent>
-				<app-attachment-oc [quoteData]="quoteData"></app-attachment-oc>
+				<app-attachment-oc [quoteData]="quoteData" [inquiryFlag]="inquiryFlag"></app-attachment-oc>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab class="ngb-tab" title="Print">

@@ -131,7 +131,7 @@ export class QuoteEndorsementComponent implements OnInit {
 
         this.titleService.setTitle("Quo | Endorsements");
         //neco
-        if(this.inquiryFlag){
+        if(this.inquiryFlag && this.endorsementType !== 'OC'){
           this.endorsementData.opts = [];
           this.endorsementData.uneditable = [];
           this.endorsementData.magnifyingGlass = [];
@@ -139,6 +139,15 @@ export class QuoteEndorsementComponent implements OnInit {
           this.endorsementData.deleteFlag = false;
           for(var count = 0; count < this.endorsementData.tHeader.length; count++){
             this.endorsementData.uneditable.push(true);
+          }
+        }else if(this.inquiryFlag && this.endorsementType === 'OC'){
+          this.endorsementOCData.opts = [];
+          this.endorsementOCData.uneditable = [];
+          this.endorsementOCData.magnifyingGlass = [];
+          this.endorsementOCData.addFlag = false;
+          this.endorsementOCData.deleteFlag = false;
+          for(var count = 0; count < this.endorsementOCData.tHeader.length; count++){
+            this.endorsementOCData.uneditable.push(true);
           }
         }
         //neco end
