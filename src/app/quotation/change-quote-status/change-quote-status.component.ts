@@ -80,6 +80,7 @@ export class ChangeQuoteStatusComponent implements OnInit {
     getChangeQuote(){
         this.quotationService.getQuoProcessingData([]).subscribe((data:any) => {
             this.records = data.quotationList;
+            console.log(this.records)
             for(let rec of this.records){
                 this.passData.tableData.push(
                     {
@@ -97,9 +98,42 @@ export class ChangeQuoteStatusComponent implements OnInit {
         });
     }
 
+    savetest(){
+        this.quotationService.saveChangeQuoteStatus(this.saveData).subscribe(data => {
+            if(data['returnCode'] == 0) {
+                this.dialogMessage = data['errorList'][0].errorMessage;
+                this.dialogIcon = "error";
+                $('#successModalBtn').trigger('click');
+                this.emptyVariables();
+            } else{
+                this.dialogMessage="";
+                this.dialogIcon = "";
+                $('#successModalBtn').trigger('click');
+                $('.ng-dirty').removeClass('ng-dirty');
+                this.emptyVariables();
+                this.getChangeQuote();
+            }
+       });
+    }
+
+    emptyVariables(){
+        this.saveData.reasonCd = ""
+        this.selectedData  = {
+            quotationNo: null,
+            status: null,
+            statusCd: 0,
+            cedingName: null,
+            insuredDesc: null,
+            riskName: null,
+            processor: null,
+            reasonCd: null,
+            description: null,
+            remarks: null
+        }
+    }
+
     process(cancelFlag?) {
        this.saveData.statusCd = this.selectedData.statusCd;
-       
        this.cancelFlag = cancelFlag !== undefined;
            
        if(this.selectedData.statusCd == 9){
@@ -108,21 +142,7 @@ export class ChangeQuoteStatusComponent implements OnInit {
            this.saveData.reasonCd = "";
        }
        
-       this.quotationService.saveChangeQuoteStatus(this.saveData).subscribe(data => {
-            if(data['returnCode'] == 0) {
-                this.dialogMessage = data['errorList'][0].errorMessage;
-                this.dialogIcon = "error";
-                $('#successModalBtn').trigger('click');
-                this.saveData.reasonCd = null;
-            } else{
-                this.dialogMessage="";
-                this.dialogIcon = "";
-                $('#successModalBtn').trigger('click');
-                $('.ng-dirty').removeClass('ng-dirty');
-                this.saveData.reasonCd = null;
-                this.getChangeQuote();
-            }
-       });
+       this.savetest();
     }
 
     query() {
