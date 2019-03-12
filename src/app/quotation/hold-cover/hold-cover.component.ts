@@ -485,10 +485,14 @@ searchQuoteInfo(line,year,seq,rev,ced){
       this.hcLine  = '';
       this.hcYear  =  '';
       
+      if(line === '' || year === '' || seq === '' || rev === '' || ced === ''){
+      }else{
+        $('#lovMdl > #modalBtn').trigger('click');
+      }
 
     }else{
       if(data.status === 'Issued' || data.status === 'issued'){
-        
+        this.newHc(false);
         this.quoteNo = (data.quotationNo === null || data.quotationNo === undefined) ? '' : data.quotationNo;
         this.sliceQuoteNo(qNo);
         this.insured = (data.insuredDesc  === null || data.insuredDesc === undefined) ? '' : data.insuredDesc;
