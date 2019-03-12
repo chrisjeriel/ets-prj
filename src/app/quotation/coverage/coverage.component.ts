@@ -21,7 +21,6 @@ export class CoverageComponent implements OnInit {
 
   editedData: any[] = [];
   deletedData: any[] = [];
-  testingArr: any[] = [];
   //deletedEditedData: any[] = [];
   // editedDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
   // rowClick: EventEmitter<any> = new EventEmitter();
@@ -141,9 +140,6 @@ export class CoverageComponent implements OnInit {
     this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
       this.table.refreshTable();
         if(data.quotation.project == null){
-          this.showAlop.emit(data.quotation.project.coverage.sectionCovers.filter(a=>{
-           return a.section == 'III'
-         }).length >0);
           this.maintenanceService.getMtnSectionCovers(this.lineCd,this.coverCd).subscribe((data: any) =>{
               for(var i=0; i< data.sectionCovers.length;i++){
                 if(data.sectionCovers[i].defaultTag == 'Y' ){
@@ -158,6 +154,9 @@ export class CoverageComponent implements OnInit {
         }
 
         if(data.quotation.project !== null){
+          this.showAlop.emit(data.quotation.project.coverage.sectionCovers.filter(a=>{
+           return a.section == 'III'
+         }).length >0);
           this.coverageData = data.quotation.project.coverage;
           this.coverageData.remarks = this.coverageData.remarks == null ? '':this.coverageData.remarks;
           for(var i = 0; i < data.quotation.project.coverage.sectionCovers.length; i++){
@@ -195,14 +194,12 @@ export class CoverageComponent implements OnInit {
 
       
     });
-    this.testingArr = this.passData.tableData
 
   }
 
   getCoverage(){
       this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
       this.table.refreshTable();
-      console.log(data)
         if(data.quotation.project !== null){
 
           this.coverageData = data.quotation.project.coverage;
@@ -225,7 +222,6 @@ export class CoverageComponent implements OnInit {
           }, 0)
 
           this.table.refreshTable();
-          this.testingArr = this.passData.tableData;
         });
   }
 
@@ -259,7 +255,7 @@ export class CoverageComponent implements OnInit {
     this.lineCd      = this.quoteNo.split('-')[0];
     this.editedData  = [];
     //this.deletedData = [];
-    console.log(this.deletedData)
+    
     if(this.initialData.length > 0){
       for (var i = 0 ; this.passData.tableData.length > i; i++) {
           if( !this.passData.tableData[i].deleted ){
@@ -303,6 +299,7 @@ export class CoverageComponent implements OnInit {
          this.coverageData.quoteId             = this.quotationInfo.quoteId;
          this.coverageData.projId              = 1;
          this.coverageData.riskId              = this.riskId;
+         console.log(this.deletedData)
     }
     
   }
@@ -332,32 +329,7 @@ export class CoverageComponent implements OnInit {
   }
 
   cancel(){
-    //this.cancelBtn.clickCancel();
-    var matches = false;
-
-      this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
-        var arr1 = this.passData.tableData;
-        var arr2 = data.quotation.project.coverage.sectionCovers;
-
-        for(var i=0;i<arr2.length;i++){
-          for(var j=0;j<arr1.length;j++){
-             if(arr2[i].coverCd == arr1[j].coverCd){
-               matches = true;
-               break;
-            }
-          }
-          if(!matches){
-            this.deletedData.push(arr2[i])
-            this.deletedData[this.deletedData.length-1].createDate = new Date(this.deletedData[this.deletedData.length-1].createDate[0],this.deletedData[this.deletedData.length-1].createDate[1]-1,this.deletedData[this.deletedData.length-1].createDate[2]).toISOString();
-            this.deletedData[this.deletedData.length-1].updateDate = new Date(this.deletedData[this.deletedData.length-1].updateDate[0],this.deletedData[this.deletedData.length-1].updateDate[1]-1,this.deletedData[this.deletedData.length-1].updateDate[2]).toISOString();
-            this.deletedData[this.deletedData.length-1].lineCd = this.lineCd;
-          }
-          matches = false;
-        }
-        console.log(this.deletedData)
-      });
-
-    
+    this.cancelBtn.clickCancel();
   }
   
   sectionCoversLOV(data){
@@ -402,7 +374,7 @@ export class CoverageComponent implements OnInit {
       }
 
      if(this.lineCd == 'CAR' || this.lineCd == 'EAR'){
-        this.coverageData.totalSi = this.coverageData.sectionISi + this.coverageData.sectionIISi;
+        this.coverageData.totalSi = this.coverageData.sectionISi + this.coverageData.sectionIIISi;
      } else if (this.lineCd == 'EEI'){
        this.coverageData.totalSi = this.coverageData.sectionISi + this.coverageData.sectionIISi + this.coverageData.sectionIIISi;
      } else{
@@ -410,7 +382,6 @@ export class CoverageComponent implements OnInit {
      }
      
      this.focusBlur();
-     this.validateSectionCover();
      //this.cancel();  
   }
 
