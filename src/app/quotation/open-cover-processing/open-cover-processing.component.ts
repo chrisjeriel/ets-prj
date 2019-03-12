@@ -29,8 +29,6 @@ export class OpenCoverProcessingComponent implements OnInit {
   dataTypes: any[] = [];
   filters: any[] = [];
   rowData: any[] = [];
-  disabledEditBtn: boolean = true;
-  disabledCopyBtn: boolean = true;
 
   line: string = "";
   ocLine: string = '';
@@ -54,12 +52,12 @@ export class OpenCoverProcessingComponent implements OnInit {
     dataTypes: ["text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text","text", "date", "date", "text", "text"],
     resizable: [false, true, true, true, true, true, true, true, true, true, false, false, true, true, true, true],
     pageLength: 10,
-    expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, pagination: true, pageStatus: true,
-    filters: [
+    expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, pagination: true, pageStatus: true, addFlag: true, editFlag: true,
+     filters: [
         {
             key: 'quotationNo',
             title: 'Quotation No.',
-            dataType: 'text'
+            dataType: 'seq'
         },
         {
             key: 'cessionDesc',
@@ -114,7 +112,7 @@ export class OpenCoverProcessingComponent implements OnInit {
         {
             key: 'policyNo',
             title: 'Policy No.',
-            dataType: 'text'
+            dataType: 'seq'
         },
         {
             key: 'currencyCd',
@@ -145,51 +143,9 @@ export class OpenCoverProcessingComponent implements OnInit {
     keys: ['openQuotationNo','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','insuredDesc','riskName','objectDesc','site','currencyCd','issueDate','expiryDate','reqBy','createUser'],
   }
 
-  // passDataRiskLOV:any = {
-  //   tableData: this.quotationService.getRisksLOV(),
-  //   tHeader: ["Risk Code", "Risk", "Region", "Province", "Town/City", "District", "Block"],
-  //   dataTypes: ["text","text","text","text","text","text","text"],
-  //   pagination: true,
-  //   pageLength:10,
-  //   pageStatus: true,
-  //   filters:[
-  //     {
-  //       key: 'riskCode',
-  //       title: 'Risk Code',
-  //       dataType: 'text'
-  //     },
-  //     {
-  //       key: 'risk',
-  //       title: 'Risk',
-  //       dataType: 'text'
-  //     },
-  //     {
-  //       key: 'region',
-  //       title: 'Region',
-  //       dataType: 'text'
-  //     },
-  //     {
-  //       key: 'province',
-  //       title: 'Province',
-  //       dataType: 'text'
-  //     },
-  //     {
-  //       key: 'townCity',
-  //       title: 'Town/City',
-  //       dataType: 'text'
-  //     },
-  //     {
-  //       key: 'district',
-  //       title: 'District',
-  //       dataType: 'text'
-  //     },
-  //     {
-  //       key: 'block',
-  //       title: 'Block',
-  //       dataType: 'text'
-  //     }
-  //   ]
-  // }
+  searchParams: any[] = [];
+
+  selectedOpenQuotationNo: any = {};
 
   constructor(private quotationService: QuotationService, private modalService: NgbModal, private router: Router
     , public activeModal: NgbActiveModal, private titleService: Title
@@ -198,8 +154,12 @@ export class OpenCoverProcessingComponent implements OnInit {
   ngOnInit() {
     this.titleService.setTitle("Quo | Open Cover Processing");
     this.rowData = this.quotationService.getRowData();
+    this.retrieveQuoteOcListingMethod();
     
-    this.quotationService.getOpenCoverProcessingData().subscribe(data => {
+  }
+
+  retrieveQuoteOcListingMethod(){
+     this.quotationService.getOpenCoverProcessingData(this.searchParams).subscribe((data:any) => {
       var records = data['quotationOcList'];
 
       for(let rec of records){
@@ -223,21 +183,9 @@ export class OpenCoverProcessingComponent implements OnInit {
           ));
 
       }
-
       this.table.refreshTable();
     });
-    
   }
-
-  
-
-
-  editBtnEvent() {
-    setTimeout(() => {
-      this.router.navigate(['/open-cover', { line: this.ocLine, from: "oc-processing", typeOfCession: this.mtnCessionDesc,ocQuoteNo: this.ocQuoteNo.trim() }], { skipLocationChange: true });
-    }, 100);
-  }
-
 
   nextBtnEvent() {
     var ocLine = this.mtnLineCd.toUpperCase();
@@ -253,6 +201,7 @@ export class OpenCoverProcessingComponent implements OnInit {
       this.modalService.dismissAll();
 
       this.quotationService.rowData = [];
+
       setTimeout(() => {
         this.router.navigate(['/open-cover', { line: ocLine, from: "oc-processing", typeOfCession: this.mtnCessionDesc, riskId: this.riskId, fromBtn: 'add' }], { skipLocationChange: true });
       }, 100);
@@ -265,18 +214,41 @@ export class OpenCoverProcessingComponent implements OnInit {
     setTimeout(function() { $(event).focus(); }, 0)
   }
 
-  onRowClick(event) {
-    this.disabledEditBtn = false;
-    this.disabledCopyBtn = false;
+  onClickEdit(event){
+    this.ocLine = this.selectedOpenQuotationNo.openQuotationNo.split('-')[1];
+    this.ocQuoteNo = this.selectedOpenQuotationNo.openQuotationNo;
+    this.mtnCessionDesc = this.selectedOpenQuotationNo.cessionDesc;
+
+    setTimeout(() => {
+      this.router.navigate(['/open-cover', { line: this.ocLine, from: "oc-processing", typeOfCession: this.mtnCessionDesc, ocQuoteNo: this.ocQuoteNo }], { skipLocationChange: true });
+    }, 100);
+
+  }
+
+  //Method for DB query
+  searchQuery(searchParams){
+      this.searchParams = searchParams;
+      this.passData.tableData = [];
+      this.retrieveQuoteOcListingMethod();
+  }
+
+  onRowClick(data) {
+    this.selectedOpenQuotationNo = data;
   }
 
   onRowDblClick(event) {
     for (var i = 0; i < event.target.closest("tr").children.length; i++) {
       this.quotationService.rowData[i] = event.target.closest("tr").children[i].innerText;
     }
+
     this.ocLine = this.quotationService.rowData[0].split("-")[1];
     this.ocQuoteNo  = this.quotationService.rowData[0];
     this.mtnCessionDesc =  this.quotationService.rowData[1];
+
+    /*this.ocLine = this.selectedOpenQuotationNo.openQuotationNo.split('-')[1];
+    this.ocQuoteNo = this.selectedOpenQuotationNo.openQuotationNo;
+    this.mtnCessionDesc = this.selectedOpenQuotationNo.cessionDesc;*/
+
     setTimeout(() => {
       this.router.navigate(['/open-cover', { line: this.ocLine, from: "oc-processing", typeOfCession: this.mtnCessionDesc, ocQuoteNo: this.ocQuoteNo }], { skipLocationChange: true });
     }, 100);
@@ -298,7 +270,7 @@ export class OpenCoverProcessingComponent implements OnInit {
     $('#riskLovId > #modalBtn').trigger('click');
   }
 
-  clickRow(event){
+/*  clickRow(event){
     for (var i = 0; i < event.target.closest("tr").children.length; i++) {
       this.quotationService.rowData[i] = event.target.closest("tr").children[i].innerText;
     }
@@ -306,7 +278,7 @@ export class OpenCoverProcessingComponent implements OnInit {
     this.ocQuoteNo  = this.quotationService.rowData[0];
  
     this.mtnCessionDesc =  this.quotationService.rowData[1];
-  }
+  }*/
 
   getRiskLov(){
     $('#riskIdLov #modalBtn').trigger('click');
@@ -324,7 +296,7 @@ export class OpenCoverProcessingComponent implements OnInit {
   setLine(data){
     this.mtnLineCd  = data.lineCd;
     this.mtnLineDesc  = data.description;
-    this.onClickAdd("");
+    this.onClickAdd("#mtnCessionId");
     this.loading = false;
   }
 
@@ -334,22 +306,24 @@ export class OpenCoverProcessingComponent implements OnInit {
   setCession(data){
     this.mtnCessionId = data.cessionId;
     this.mtnCessionDesc  = data.description;
-    this.onClickAdd("#mtnCessionId");
+    this.onClickAdd("#riskId");
     this.loading = false;
   }
   checkCode(field){
         this.loading = true;
         if(field === 'line') {
-            this.lineLov.checkCode(this.mtnLineCd.toUpperCase());
+            this.lineLov.checkCode(this.mtnLineCd.toUpperCase(), 'a');
         } else if(field === 'typeOfCession'){
-            this.typeOfCessionLov.checkCode(this.mtnCessionId);    
+            this.typeOfCessionLov.checkCode(this.mtnCessionId, 'a');    
         } else if(field === 'risk') {
-            this.riskLov.checkCode(this.riskId);
+            this.riskLov.checkCode(this.riskId, 'a');
         }             
     }
 
     checkFields(){
-        if(this.line === '' || this.mtnCessionId === '' || this.riskId === ''){
+        if(this.mtnLineDesc === undefined || this.mtnCessionDesc === undefined || this.riskName === undefined ||
+           this.mtnLineDesc === null || this.mtnCessionDesc === null || this.riskName === null ||
+           this.mtnLineDesc === '' || this.mtnCessionDesc === '' || this.riskName === ''){
             return true;
         }
 

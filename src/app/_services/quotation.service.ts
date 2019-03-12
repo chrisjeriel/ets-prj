@@ -526,29 +526,11 @@ export class QuotationService {
         return this.readyForPrinting;
     }
 
-    getOpenCoverProcessingData() {
-        /*this.openCoverProcessing = [
-            new OpenCoverProcessing('OC-CAR-2015-00088-00-99', 'Direct', 'CAR Wet Risks', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Requestor', 'Creator'),
-            new OpenCoverProcessing('OC-CAR-2015-00088-00-78', 'Retrocession', 'CAR Wet Risks', 'Concluded', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Requestor', 'Creator'),
-            new OpenCoverProcessing('OC-EAR-2015-00088-00-55', 'Direct', 'EAR', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Requestor', 'Creator'),
-            new OpenCoverProcessing('OC-CAR-2015-00088-00-28', 'Direct', 'CAR Wet Risks', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Requestor', 'Creator'),
-            new OpenCoverProcessing('OC-CAR-2015-00088-00-99', 'Direct', 'CAR Wet Risks', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Requestor', 'Creator'),
-            new OpenCoverProcessing('OC-CAR-2015-00088-00-78', 'Retrocession', 'CAR Wet Risks', 'Concluded', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Requestor', 'Creator'),
-            new OpenCoverProcessing('OC-EAR-2015-00088-00-55', 'Direct', 'EAR', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Requestor', 'Creator'),
-            new OpenCoverProcessing('OC-CAR-2015-00088-00-28', 'Direct', 'CAR Wet Risks', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Requestor', 'Creator'),
-        ];
+    getOpenCoverProcessingData(searchParams: any[]) {
+        var params;
 
-        return this.openCoverProcessing;*/
-
-        const params = new HttpParams()
+        if(searchParams.length < 1){
+            params = new HttpParams()
                 .set('quotationNo','')
                 .set('cessionDesc','')
                 .set('lineClassCdDesc','')
@@ -565,11 +547,13 @@ export class QuotationService {
                 .set('expiryDate','')
                 .set('reqBy','')
                 .set('createUser','');
-                // .set('paginationRequest.position',null)
-                // .set('paginationRequest.count',null)
-                // .set('sortRequest.sortKey',null)
-                // .set('sortRequest.order',null);
-
+        }
+         else{
+             params = new HttpParams();
+            for(var i of searchParams){
+                params = params.append(i.key, i.search);
+            }
+        }
         return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteListingOc', {params});
     }
 

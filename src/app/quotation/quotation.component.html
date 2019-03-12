@@ -1,5 +1,5 @@
 <div class="cust-tabs-container">
-	<h4 *ngIf="!inquiryFlag">Quotation / Quotation Processing</h4>
+	<h4 *ngIf="!inquiryFlag">Quotation / Quotation Processing {{ header }}</h4>
 	<h4 *ngIf="inquiryFlag">Quotation / Quotation Inquiry</h4>
 	<!-- <ngb-tabset (tabChange)="beforeChange($event)"> -->
 		<ngb-tabset  (tabChange)="onTabChange($event)">
@@ -13,7 +13,7 @@
 				<div>Coverage</div>
 			</ng-template>
 			<ng-template ngbTabContent>
-				<app-coverage [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag"></app-coverage>
+				<app-coverage [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag" (showAlop)="quoteInfo.showAlop = $event"></app-coverage>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab [disabled]="quoteInfo.quoteId == ''">
@@ -33,7 +33,7 @@
 				<app-quote-endorsement [quotationInfo]="quoteInfo" [endorsementType]="'General'" [inquiryFlag]="inquiryFlag"></app-quote-endorsement>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab *ngIf="line=='CAR' || line=='EAR'" [disabled]="quoteInfo.quoteId == ''">
+		<ngb-tab *ngIf="(line=='CAR' || line=='EAR') && quoteInfo.showAlop" [disabled]="quoteInfo.quoteId == ''">
 	<!-- 	<ngb-tab> -->
 			<ng-template ngbTabTitle>
 				<div>ALOP</div>

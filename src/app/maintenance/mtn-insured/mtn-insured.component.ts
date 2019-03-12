@@ -13,8 +13,8 @@ export class MtnInsuredComponent implements OnInit {
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
   passData: any = {
         tableData: [],
-        tHeader: ['Insured Id', 'Insured Name' ],
-        dataTypes: ['text', 'text', 'text', 'text', 'text', 'text', 'text'],
+        tHeader: ['Insured Id', 'Insured Name','Address'],
+        dataTypes: ['sequence-3', 'text', 'text'],
         resizable: [false, true, false, true, true, false, false],
         pageLength: 10,
         searchFlag: true,
@@ -22,7 +22,7 @@ export class MtnInsuredComponent implements OnInit {
         pagination: true,
         fixedCol: false,
         pageID: 'Insured',
-        keys:['insuredId', 'insuredName' ]
+        keys:['insuredId', 'insuredName','address']
 
     }
 
@@ -37,7 +37,8 @@ export class MtnInsuredComponent implements OnInit {
   }
 
   select(data){
-  	if(Object.is(this.selected, data)){
+  	// if(Object.is(this.selected, data)){
+    if(Object.entries(data).length === 0 && data.constructor === Object){
       this.selected = null
     } else {
       this.selected = data;
@@ -52,7 +53,7 @@ export class MtnInsuredComponent implements OnInit {
     while(this.passData.tableData.length>0){
       this.passData.tableData.pop();
     }
-    this.mtnService.getMtnInsured('').subscribe((data: any) => {
+    this.mtnService.getMtnInsured('').subscribe((data: any) => {      
           this.passData.tableData = data.insured;
           this.table.refreshTable();
           this.modalOpen = true;
@@ -61,20 +62,23 @@ export class MtnInsuredComponent implements OnInit {
 
   }
 
-  checkCode(code, type) {
+  checkCode(code, type, ev) {
     if(code.trim() === ''){
       this.selectedData.emit({
         insuredId: '',
-        insuredName: ''
+        insuredName: '',
+        ev: ev
       });
     } else {
       this.mtnService.getMtnInsured(code).subscribe(data => {
         if(data['insured'].length > 0) {
+          data['insured'][0]['ev'] = ev;
           this.selectedData.emit(data['insured'][0]);
         } else {
           this.selectedData.emit({
             insuredId: '',
-            insuredName: ''
+            insuredName: '',
+            ev: ev
           });        
 
           $(type + ' #modalBtn').trigger('click');

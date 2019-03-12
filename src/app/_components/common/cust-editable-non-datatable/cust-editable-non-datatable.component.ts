@@ -402,7 +402,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
                 break;
             }
         }
-        
+        //$('#cust-table-container').addClass('ng-dirty');
         this.clickLOV.emit(retData);
     }
 

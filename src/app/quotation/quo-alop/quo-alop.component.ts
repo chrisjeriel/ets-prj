@@ -1,4 +1,4 @@
-import { Component, OnInit, Input,  ViewChild, ViewChildren } from '@angular/core';
+import { Component, OnInit, Input,  ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { QuotationService, MaintenanceService } from '../../_services';
 import { QuoteALOPItemInformation, QuoteALOPInfo } from '../../_models';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -19,7 +19,7 @@ export class QuoAlopComponent implements OnInit {
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @ViewChild("from") from:any;
   @ViewChild("to") to:any;
-  @ViewChildren(RequiredDirective) inputs: any;
+  @ViewChildren(RequiredDirective) inputs: QueryList<RequiredDirective>;
   aLOPInfo: QuoteALOPInfo = new QuoteALOPInfo();
   @Input() quotationInfo:any = {};
   @Input() inquiryFlag: boolean = false;
@@ -93,10 +93,13 @@ export class QuoAlopComponent implements OnInit {
     dialogIcon: string = "";
     showAlopItem:boolean = false;
     dateErFlag:boolean = false;
+    refresh:boolean = true;
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute, private mtnService: MaintenanceService) { }
 
     ngOnInit() {
-      console.log(this.inputs);
+      setTimeout(()=>{
+        
+      },0);
       //neco
       if(this.inquiryFlag){
         this.itemInfoData.opts = [];
@@ -170,7 +173,11 @@ export class QuoAlopComponent implements OnInit {
           this.dialogMessage = "";
           this.dialogIcon = "success";
           $('#successModalBtn').trigger('click');
-          $('.ng-dirty').removeClass('ng-dirty')
+          this.refresh = false;
+          setTimeout(()=>{
+            this.refresh = true;
+          },0)
+
           this.getAlop();
         }
       });
@@ -228,7 +235,16 @@ export class QuoAlopComponent implements OnInit {
           $('#successModalBtn').trigger('click');
         } else{
           $('#successModalBtn').trigger('click');
-          $('.ng-dirty').removeClass('ng-dirty')
+          this.refresh = false;
+          setTimeout(()=>{
+            this.refresh = true;
+          },0)
+          // $('.ng-dirty').removeClass('ng-dirty')
+        //   this.inputs.forEach(itm=>{
+        //   console.log(itm)
+        //   itm['nativeElement'].classList.add('ng-pristine');
+        //   itm['nativeElement'].classList.remove('ng-dirty');
+        // })
         }
       });
       

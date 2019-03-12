@@ -14,12 +14,12 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 })
 export class MtnLineClassComponent implements OnInit {
 
-selected: any ;
+selected: any = null;
 
 lineClassListing: any = {
     tableData: [],
-    tHeader: ['Line Code', 'Line Class Code', 'Description'],
-    dataTypes: ['text', 'text', 'text'],
+    tHeader: ['Line Class Code', 'Description'],
+    dataTypes: ['text', 'text'],
     pageLength: 10,
     searchFlag: true,
     pageStatus: true,
@@ -27,7 +27,6 @@ lineClassListing: any = {
     fixedCol: false,
     pageID: 5,
     keys:[
-    	'lineCd',
     	'lineClassCd',
     	'lineClassCdDesc']
   };
@@ -46,13 +45,16 @@ lineClassListing: any = {
   }
 
   onRowClick(data){
-  	//console.log(data);
-  	this.selected = data;
-     
+    if(Object.is(this.selected, data)){
+      this.selected = null
+    } else {
+      this.selected = data;
+    }
   }
 
   confirm(){
     this.selectedData.emit(this.selected);
+    this.selected = null;
   }
 
   openModal(){

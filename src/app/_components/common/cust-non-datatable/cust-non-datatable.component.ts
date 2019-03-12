@@ -115,6 +115,7 @@ export class CustNonDatatableComponent implements OnInit {
     pinKeys:any[] = [];
     pinDatatypes:any[] = [];
     loadingFlag:boolean = true;
+    loadingTableFlag: boolean = false;
     constructor(config: NgbDropdownConfig, public renderer: Renderer, private quotationService: QuotationService, private appComponent: AppComponent) {
         config.placement = 'bottom-right';
         config.autoClose = false;
@@ -138,6 +139,7 @@ export class CustNonDatatableComponent implements OnInit {
         this.unliTableLength();
         this.addFiller();
         //this.appComponent.ngOnInit();
+        this.loadingTableFlag = false;
     }
 
     ngOnInit(): void {
@@ -412,10 +414,8 @@ export class CustNonDatatableComponent implements OnInit {
                 }
             }
         }
-        console.log(filterObj);
-        console.log(this.searchQuery)
         this.searchToDb.emit(this.searchQuery);
-        this.loadingFlag = true;
+        this.loadingTableFlag = true;
     }
 
     addFiller(){

@@ -84,33 +84,33 @@
             <div class="custom-row-inline-inset">
                 <div class="input-group">
                     <label class="form-control-sm col-sm-3">Line</label>
-                    <input type="text" [(ngModel)]="line" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCode('line')">
+                    <input type="text" [ngModel]="line" (ngModelChange)="line = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCode($event, 'line')">
                     <div class="text-search-ico" (click)="modalService.dismissAll();showLineLOV()"><a><i class="fa fa-search"></i></a></div>
                     &nbsp;&nbsp;
-                    <input type="text" class="form-control form-control-sm" [(ngModel)]="description" readonly>
+                    <input type="text" class="form-control form-control-sm" [(ngModel)]="description" readonly tabindex="-1">
                 </div>
                 <div class="input-group" style="margin-top: -12px">
-                    <label class="form-control-sm col-sm-3" for="xx">Type of Cession</label>
-                    <input type="text" id="typeOfCessionId" class="form-control form-control-sm col-sm-2" style="margin-right: -1px !important" [(ngModel)]="typeOfCessionId" (change)="checkCode('typeOfCession')" maxlength="4" numbers-only>
+                    <label class="form-control-sm col-sm-3">Type of Cession</label>
+                    <input type="text" id="typeOfCessionId" class="form-control form-control-sm col-sm-2" style="margin-right: -1px !important" [(ngModel)]="typeOfCessionId" (change)="checkCode($event, 'typeOfCession')" maxlength="4" numbers-only>
                     <div class="text-search-ico" (click)="modalService.dismissAll(); showTypeOfCessionLOV()"><a><i class="fa fa-search"></i></a></div>
                     &nbsp;&nbsp;
-                    <input type="text" class="form-control form-control-sm" [(ngModel)]="typeOfCession" readonly>
+                    <input type="text" class="form-control form-control-sm" [(ngModel)]="typeOfCession" readonly tabindex="-1">
                 </div>
                 <div class="input-group" style="margin-top: -12px; margin-bottom: -10px ! important">
-                    <label class="form-control-sm col-sm-3" for="xx" style="margin: 0;">Risk</label>
+                    <label class="form-control-sm col-sm-3" style="margin: 0;">Risk</label>
                     <input type="text" id="riskCd" class="form-control form-control-sm col-sm-2" style="margin-right: -1px !important"
-                      [(ngModel)]="riskCd" (change)="checkCode('risk')">
+                      [(ngModel)]="riskCd" (change)="checkCode($event, 'risk')">
                     <div class="text-search-ico" (click)="showRiskLOV()"><a><i class="fa fa-search"></i></a></div>
                     &nbsp;&nbsp;
-                    <input type="text" class="form-control form-control-sm" [(ngModel)]="riskName" readonly>
+                    <input type="text" class="form-control form-control-sm" [(ngModel)]="riskName" readonly tabindex="-1">
                 </div>
             </div>
         </fieldset>
     </div>
     <div footer class="text-center w-100">
         <button class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>Cancel</a></button>
-        <button *ngIf="!checkFields()" class="cust-btn" type="button" (click)="modalService.dismissAll(); nextBtnEvent();"><a>Next</a></button>
-        <button *ngIf="checkFields()" class="cust-btn cust-btn-disabled" type="button" [disabled]="true"><a>Next</a></button>
+        <button *ngIf="description != '' && typeOfCession != '' && riskName != ''" class="cust-btn" type="button" (click)="modalService.dismissAll(); nextBtnEvent();"><a>Next</a></button>
+        <button *ngIf="description == '' || typeOfCession == '' || riskName == ''" class="cust-btn cust-btn-disabled" type="button" [disabled]="true"><a>Next</a></button>
     </div>
 </app-modal>
 

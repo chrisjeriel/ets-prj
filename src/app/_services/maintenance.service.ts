@@ -9,11 +9,12 @@ export class MaintenanceService{
 	constructor(private http: HttpClient) {
 
     }
-	getMtnDistrict(regionCd?,provinceCd?,cityCd?){
+	getMtnDistrict(regionCd?,provinceCd?,cityCd?,districtCd?){
 		const params = new HttpParams()
 			.set('provinceCd',provinceCd ===undefined || provinceCd===null ? '' : provinceCd)
 			.set('regionCd',regionCd ===undefined || regionCd===null ? '' : regionCd)
 			.set('cityCd',cityCd ===undefined || cityCd===null ? '' : cityCd)
+			.set('districtCd',districtCd ===undefined || districtCd===null ? '' : districtCd)
 		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnDistrict",{params});
 	}
 

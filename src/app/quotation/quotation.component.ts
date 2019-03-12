@@ -35,9 +35,13 @@ export class QuotationComponent implements OnInit {
 		typeOfCession: '',
 		status:'',
 		reasonCd:'',
+		lineCd: '',
+		showAlop:false
 	}
 
 	inquiryFlag: boolean = false;
+	header: string;
+	showAlop:boolean = false;
 
 	ngOnInit() {
 		this.sub = this.route.params.subscribe(params => {
@@ -63,7 +67,8 @@ export class QuotationComponent implements OnInit {
 
   	checkQuoteInfo(event){  		
   		this.quoteInfo = event;
-  		
+  		setTimeout(() => { this.header = "/ " + (this.quoteInfo.quotationNo == '' ? this.quoteInfo.lineCd : this.quoteInfo.quotationNo) }, 0);
+
   		if(this.quoteInfo.typeOfCession == 'Retrocession'){
   			this.reportsList.push({val:"QUOTER009B", desc:"RI Preparedness to Support Letter and RI Confirmation of Acceptance Letter" })
   		}
