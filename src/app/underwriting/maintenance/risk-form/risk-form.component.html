@@ -40,7 +40,8 @@
                             <div class="form-row custom-row-inline-inset">
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-1 text-right labels">Region</label>
-                                    <input  type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="riskData.regionCd">
+                                    <!-- <input  type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="riskData.regionCd"> -->
+                                    <input type="text" [ngModel]="riskData.regionCd" (ngModelChange)="riskData.regionCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-1 cap-input" style="margin-right: -1px !important" (change)="checkCode($event, 'region')">
                                     <div class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('region')"></i></a></div>
                                     <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm-4" [(ngModel)]="riskData.regionDesc" style="margin-left: 6px !important">
                                     <label class="form-control-sm col-sm-1 text-right labels">Province</label>
@@ -57,7 +58,8 @@
                                     <div class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('city')" ></i></a></div>
                                     <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 6px !important" [(ngModel)]="riskData.cityDesc">
                                     <label class="form-control-sm col-sm-1 text-right labels">District</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-1" [placeholder]="newForm ? '' : 'LGSR'" [(ngModel)]="riskData.districtCd">
+                                    <!-- <input type="text" class="form-control form-control-sm col-sm-1" [placeholder]="newForm ? '' : 'LGSR'" [(ngModel)]="riskData.districtCd"> -->
+                                    <input type="text" [ngModel]="riskData.districtCd" (ngModelChange)="riskData.districtCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-1 cap-input" style="margin-right: -1px !important" (change)="checkCode($event, 'district')">
                                     <div class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('district')"></i></a></div>
                                     <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 6px !important"  [(ngModel)]="riskData.districtDesc">
                                 </div>
@@ -78,7 +80,7 @@
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-1 text-right labels" style="padding: 0; padding-right: 0.96px;">CRESTA Zone</label>
                                     <input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="riskData.zoneCd">
-                                    <div class="text-search-ico"><a><i class="fa fa-search" (click)="showCrestaZoneModal()"></i></a></div>
+                                    <div class="text-search-ico" style="visibility: hidden;"><a><i class="fa fa-search" (click)="showCrestaZoneModal()"></i></a></div>
                                     <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm-10" [(ngModel)]="riskData.zoneDesc"style="margin-left: 6px !important">
                                 </div>
                             </div>

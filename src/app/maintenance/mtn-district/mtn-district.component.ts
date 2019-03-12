@@ -69,6 +69,7 @@ export class MtnDistrictComponent implements OnInit {
       });
     }
   select(data){
+      console.log("SELECT triggered");
   	  this.selected = data;
   }
 
@@ -76,6 +77,8 @@ export class MtnDistrictComponent implements OnInit {
     while(this.passData.tableData.length>0){
       this.passData.tableData.pop();
     }
+    console.log("SELECTED : " + JSON.stringify(this.selected));
+
   	this.selectedData.emit(this.selected);
   }
 

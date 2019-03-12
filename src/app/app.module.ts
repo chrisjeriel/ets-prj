@@ -326,6 +326,7 @@ import { ModuleTransactionsComponent } from './security/modules-maintenance/modu
 import { CancelButtonComponent } from './_components/common/cancel-button/cancel-button.component';
 import { MtnUsersComponent } from './maintenance/mtn-users/mtn-users.component';
 import { NgxMaskModule } from 'ngx-mask';
+import { MtnReasonComponent } from './maintenance/mtn-reason/mtn-reason.component';
 
 
 @NgModule({
@@ -660,6 +661,7 @@ import { NgxMaskModule } from 'ngx-mask';
         SecurityModulesComponent,
         ModuleTransactionsComponent,
         MtnUsersComponent,
+        MtnReasonComponent,
     ],
 
     providers: [

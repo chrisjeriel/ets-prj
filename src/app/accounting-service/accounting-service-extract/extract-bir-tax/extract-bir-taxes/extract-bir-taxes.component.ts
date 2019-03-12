@@ -21,10 +21,11 @@ export class ExtractBirTaxesComponent implements OnInit {
    tabController(event) {
    	this.taxType = event.target.value;
   	this.onChange.emit(this.taxType);
+    console.log(this.taxType);
   }
 
   extract(){
-    console.log(this.taxType);
+    
   }
 
 }

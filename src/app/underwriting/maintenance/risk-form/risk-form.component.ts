@@ -114,6 +114,9 @@ export class RiskFormComponent implements OnInit, OnDestroy {
         this.ns.lovLoader(data.ev, 0);
 
         if (data.districtCd != null) {
+            this.setRegion(data);
+            this.setProvince(data);
+            this.setCity(data);
             this.riskData.districtCd = data.districtCd;
             this.riskData.districtDesc = data.districtDesc;
         } else {
@@ -225,14 +228,24 @@ export class RiskFormComponent implements OnInit, OnDestroy {
     }
 
     checkCode(ev, field){
-        this.ns.lovLoader(ev, 1);
+        if(field === 'region'){
+            if (this.riskData.regionCd == null || this.riskData.regionCd == '') {
+                this.riskData.regionCd = '';
+                this.riskData.regionDesc = '';
+            } else {
+                this.ns.lovLoader(ev, 1);
+                //this.regionLov.checkCode(this.riskData.regionCd, ev);
+            }
+        } else if(field === 'district') {
 
-        if(field === 'district') {            
-            this.districtLov.checkCode(this.riskData.regionCd, this.riskData.provinceCd, this.riskData.cityCd, this.riskData.districtCd, ev);
-
-        } /*else if(field === 'typeOfCession'){
-            this.typeOfCessionLov.checkCode(this.typeOfCessionId, ev);
-        } else if(field === 'risk') {
+            if (this.riskData.districtCd == null || this.riskData.districtCd == '') {
+                this.riskData.districtCd = '';
+                this.riskData.districtDesc = '';
+            } else {
+                this.ns.lovLoader(ev, 1);
+                this.districtLov.checkCode(this.riskData.regionCd, this.riskData.provinceCd, this.riskData.cityCd, this.riskData.districtCd, ev);
+            }
+        } /*else if(field === 'risk') {
             this.riskLov.checkCode(this.riskCd, ev);
         }      */        
     }
