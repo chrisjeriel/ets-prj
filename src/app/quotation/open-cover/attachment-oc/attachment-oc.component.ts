@@ -72,6 +72,7 @@ export class AttachmentOcComponent implements OnInit {
 
     }
     this.quotationService.getAttachmentOc(this.quoteData.quoteIdOc, '').subscribe((data: any) => {
+        console.log(data);
         this.data = data.quotationOc[0].attachmentOc;
         // this.passData.tableData = data.quotation.project.coverage.sectionCovers;
         for (var i = 0; i < this.data.length; i++) {

@@ -189,12 +189,12 @@ export class QuoteEndorsementComponent implements OnInit {
 
             //    arn
                this.line = (this.quoteNoOc.split("-")[1]).trim();
-               this.quotationService.getOcGenInfoData(this.ocQuoteData.quoteIdOc,'')
+               /*this.quotationService.getOcGenInfoData(this.ocQuoteData.quoteIdOc,'')
                     .subscribe(val => {
                      this.quoteIdOc = val['quotationOc'][0].quoteIdOc;
                      this.insured  = val['quotationOc'][0].insuredDesc;
                      //this.riskName  = val['quotationOc'][0].
-                    });
+                    });*/
 
                      var quoteNumOc = this.plainQuotationNoOc(this.quoteNoOc)
                         this.quotationService.getEndorsementsOc(this.quoteIdOc,quoteNumOc).subscribe((data: any) => {
@@ -438,7 +438,7 @@ export class QuoteEndorsementComponent implements OnInit {
               if(this.endorsementOCData.tableData[i].edited && !this.endorsementOCData.tableData[i].deleted){
                 this.endorsementReqOc = {
                   "deleteEndorsementsOcList": [],
-                    "quoteIdOc": this.quoteIdOc,
+                    "quoteIdOc": this.ocQuoteData.quoteIdOc,
                     "saveEndorsementsOcList": [
                       {
                         "createDate": (this.saveEndt.createDate === null || this.saveEndt.createDate === "") ? new Date().toISOString() : this.saveEndt.createDate,
@@ -467,7 +467,7 @@ export class QuoteEndorsementComponent implements OnInit {
                       "updateUser": this.saveEndt.updateUser
                     }
                     ],
-                    "quoteIdOc": this.quoteIdOc,
+                    "quoteIdOc": this.ocQuoteData.quoteIdOc,
                     "saveEndorsementsOcList": []
                  }
                  this.quotationService.saveQuoteEndorsementsOc(JSON.stringify(this.endorsementReqOc))
