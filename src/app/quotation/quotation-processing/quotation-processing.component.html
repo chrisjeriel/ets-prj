@@ -52,15 +52,15 @@
                 <div class="custom-row-inline-inset" style="text-align: center">
                     <div class="input-group" style="margin-bottom: -14px !important;">
                         <label class="form-control-sm col-sm-3" style="padding-left: 0;">Ceding Company</label>
-                        <input type="text"class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" [(ngModel)]="copyCedingId">
+                        <input type="text"class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" [(ngModel)]="copyCedingId" (change)="checkCode($event, 'cedingCo')">
                         <div class="text-search-ico" (click)="showCedingCompanyLOV()"><a><i class="fa fa-search"></i></a></div>
                         &nbsp;&nbsp;
                         <input type="text" class="form-control form-control-sm" [(ngModel)]="copyCedingName" readonly>
                     </div>
                     <div class="input-group" style="margin-bottom: -14px !important;">
                         <label class="form-control-sm col-sm-3">Risk</label>
-                        <input type="text"class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" [(ngModel)]="copyRiskId">
-                        <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+                        <input type="text"class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" [(ngModel)]="copyRiskId" (change)="checkCode($event, 'copyRisk')">
+                        <div class="text-search-ico" (click)="showCopyRiskLOV()"><a><i class="fa fa-search"></i></a></div>
                         &nbsp;&nbsp;
                         <input type="text" class="form-control form-control-sm" [(ngModel)]="copyRiskName" readonly>
                     </div>
@@ -169,6 +169,7 @@
 <!-- End Modification or Internal Competition Modal -->
 
 <app-mtn-risk id="riskLOV" (selectedData)="setRisks($event)"></app-mtn-risk>
+<app-mtn-risk id="copyRiskLOV" (selectedData)="setCopyRisks($event)"></app-mtn-risk>
 <app-ceding-company id="cedingCompanyLOV" (selectedData)="setCedingcompany($event)"></app-ceding-company>
 <app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
 <app-mtn-type-of-cession id="typeOfCessionLOV" (selectedData)="setTypeOfCession($event)"></app-mtn-type-of-cession>
