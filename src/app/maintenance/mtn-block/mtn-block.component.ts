@@ -40,24 +40,37 @@ export class MtnBlockComponent implements OnInit {
     }
 
     selected: any;
+    modalOpen: boolean = false;
 
 
   ngOnInit() {
-  	this.maintenanceService.getMtnBlock().subscribe((data: any) => {
+  	
+  }
+
+  select(data){
+  	  this.selected = data;
+  }
+
+  okBtnClick(){
+  	this.selectedData.emit(this.selected);
+  }
+
+  openModal(){
+    this.maintenanceService.getMtnBlock().subscribe((data: any) => {
       console.log(data);
-  	// 	for (var a = 0; a < data.region.length; a++) {
-  	// 		this.passDataBlock.tableData.push(
-			// 	new MtnBlock(data.region[a].regionCd,
-			// 				 data.region[a].regionDesc, 
-			// 				 data.region[a].province.provinceCd, 
-			// 				 data.region[a].province.provinceDesc,
-			// 				 data.region[a].province.city.cityCd,
-			// 				 data.region[a].province.city.cityDesc,
-			// 				 data.region[a].province.city.district.districtCd,
-			// 				 data.region[a].province.city.district.districtDesc,
-			// 				 data.region[a].province.city.district.block.blockCd,
-			// 				 data.region[a].province.city.district.block.blockDesc )
-			// );
+    //   for (var a = 0; a < data.region.length; a++) {
+    //     this.passDataBlock.tableData.push(
+      //   new MtnBlock(data.region[a].regionCd,
+      //          data.region[a].regionDesc, 
+      //          data.region[a].province.provinceCd, 
+      //          data.region[a].province.provinceDesc,
+      //          data.region[a].province.city.cityCd,
+      //          data.region[a].province.city.cityDesc,
+      //          data.region[a].province.city.district.districtCd,
+      //          data.region[a].province.city.district.districtDesc,
+      //          data.region[a].province.city.district.block.blockCd,
+      //          data.region[a].province.city.district.block.blockDesc )
+      // );
 
 
         for (var a = 0; a < data.region.length; a++) {
@@ -82,19 +95,11 @@ export class MtnBlockComponent implements OnInit {
             }
           }
         }
-		}
-  				
-  		this.table.refreshTable();
-  		console.log(this.passDataBlock.tableData);
-  	});
-  }
-
-  select(data){
-  	  this.selected = data;
-  }
-
-  okBtnClick(){
-  	this.selectedData.emit(this.selected);
+    }
+          
+      this.table.refreshTable();
+    });
+    this.modalOpen = true;
   }
 
 }

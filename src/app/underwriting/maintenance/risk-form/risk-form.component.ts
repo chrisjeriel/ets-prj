@@ -177,7 +177,6 @@ export class RiskFormComponent implements OnInit, OnDestroy {
     }
 
     setLOVField(data){
-        console.log("setLOVField : "  + JSON.stringify(data));
         this.ns.lovLoader(data.ev, 0);
         var resetSucceedingFields = false;
 

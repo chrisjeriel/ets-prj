@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter, Input} from '@angular/core';
 import { MaintenanceService, UnderwritingService, QuotationService } from '@app/_services';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component'
+import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-lov',
@@ -12,6 +13,7 @@ export class LovComponent implements OnInit {
 
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
+  @ViewChild(ModalComponent) modal : ModalComponent;
   passTable: any = {
         tableData: [],
         pageLength: 10,
@@ -57,7 +59,6 @@ export class LovComponent implements OnInit {
         });
       } else {
         this.mtnService.getMtnRegion(regionCd).subscribe((data: any) => {
-            console.log("Data from LOV: " + JSON.stringify(data));
             if(data.region.length > 0) {
               data.region[0]['ev'] = ev;
               data.region[0]['selector'] = selector;
@@ -81,7 +82,6 @@ export class LovComponent implements OnInit {
         });
       } else {
         this.mtnService.getMtnProvince(regionCd, provinceCd).subscribe((data: any) => {
-            console.log("Data from LOV: " + JSON.stringify(data));
             if(data.region.length > 0) {
               data.region[0]['ev'] = ev;
               data.region[0]['selector'] = selector;
@@ -106,7 +106,6 @@ export class LovComponent implements OnInit {
         });
       } else {
         this.mtnService.getMtnCity(regionCd, provinceCd, cityCd).subscribe((data: any) => {
-            console.log("Data from LOV: " + JSON.stringify(data));
             if(data.region.length > 0) {
               data.region[0]['ev'] = ev;
               data.region[0]['selector'] = selector;
@@ -132,7 +131,6 @@ export class LovComponent implements OnInit {
         });
       } else {
         this.mtnService.getMtnDistrict(regionCd, provinceCd, cityCd, districtCd).subscribe((data: any) => {
-            console.log("Data from LOV: " + JSON.stringify(data));
             if(data.region.length > 0) {
               data.region[0]['ev'] = ev;
               data.region[0]['selector'] = selector;
@@ -159,7 +157,6 @@ export class LovComponent implements OnInit {
         });
       } else {
         this.mtnService.getMtnBlock(regionCd, provinceCd, cityCd, districtCd, blockCd).subscribe((data: any) => {
-            console.log("Data from LOV: " + JSON.stringify(data));
             if(data.region.length > 0) {
               data.region[0]['ev'] = ev;
               data.region[0]['selector'] = selector;
@@ -296,7 +293,10 @@ export class LovComponent implements OnInit {
       this.passTable.tHeader = [ 'Deductible', 'Title', 'Deductible Type', 'Rate', 'Deductible Amount','Deductible Text'];
       this.passTable.dataTypes = [ 'text', 'text', 'text', 'percent', 'currency'];
       this.passTable.keys = ['deductibleCd','deductibleTitle','deductibleType','deductibleRate','deductibleAmt','deductibleText'];
-      this.underwritingService.getMaintenanceDeductibles(this.passData.lineCd).subscribe((data: any) => {
+      this.underwritingService.getMaintenanceDeductibles(this.passData.lineCd,
+        this.passData.params.deductibleCd,this.passData.params.coverCd,this.passData.params.endtCd,this.passData.params.activeTag,
+        this.passData.params.defaultTag
+        ).subscribe((data: any) => {
           this.passTable.tableData = data.deductibles.filter((data)=>{return  this.passData.hide.indexOf(data.deductibleCd)==-1});
           this.table.refreshTable();
       });

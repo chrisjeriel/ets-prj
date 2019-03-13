@@ -238,13 +238,24 @@ export class GeneralInfoComponent implements OnInit {
 			});
 
 			if(this.line === 'CAR' || this.line === 'EAR'){
-				this.quotationService.getCoverageInfo(this.plainQuotationNo(this.quotationNo),null).subscribe((data: any) =>{
-			     this.quoteInfo.showAlop = data.quotation.project.coverage.sectionCovers.filter(a=>{
-			       return a.section == 'III'
-			     }).length >0;		     
-		   		});
+			 // 	this.quotationService.getCoverageInfo(this.plainQuotationNo(this.quotationNo),null).subscribe((data: any) =>{
+			 //     this.quoteInfo.showAlop = data.quotation.project.coverage.sectionCovers.filter(a=>{
+			 //       return a.section == 'III'
+			 //     }).length >0;		     
+		  	 // 	});
+		  	 //changed to check quote option
+		  		this.quotationService.getQuoteOptions(null,this.plainQuotationNo(this.quotationNo)).subscribe(data => {
+		  			if(data['quotation'] !== null)
+			           first:for(let option of data['quotation'].optionsList){
+			             for(let otherRate of option.otherRatesList){
+			               if(otherRate.section == 'III'){
+			                 this.quoteInfo.showAlop = true;
+			                 break first;
+			               }
+			             }
+			           }
+			    });
 			}
-			
 
 		} else {
 			this.loading = false;
@@ -684,7 +695,8 @@ export class GeneralInfoComponent implements OnInit {
   			reasonCd: this.genInfoData.reasonCd,
   			principalId: this.genInfoData.principalId,
   			lineCd: this.line,
-  			showAlop: this.quoteInfo.showAlop
+  			showAlop: this.quoteInfo.showAlop,
+  			cessionId: this.genInfoData.cessionId
   		});		
   	}
 

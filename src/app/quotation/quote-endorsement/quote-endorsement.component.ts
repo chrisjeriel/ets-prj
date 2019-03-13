@@ -1,6 +1,6 @@
 import { Component, OnInit , ViewChild, Input, ViewChildren, QueryList} from '@angular/core';
 import { QuotationInfo, QuotationOption, QuoteEndorsement , QuoteEndorsementOC} from '../../_models';
-import { QuotationService } from '../../_services';
+import { QuotationService, UnderwritingService } from '../../_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
@@ -25,9 +25,10 @@ export class QuoteEndorsementComponent implements OnInit {
         insuredDesc: ''
     }
     @Input() ocQuoteData: any = {};
-    @ViewChildren(CustEditableNonDatatableComponent) table: QueryList<CustEditableNonDatatableComponent>;
+    @ViewChildren('endorsment') table: CustEditableNonDatatableComponent;
     @ViewChildren(CustNonDatatableComponent) tableNonEditable: QueryList<CustNonDatatableComponent>;
     @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+    @ViewChild("deductibleTable") deductibleTable: CustEditableNonDatatableComponent;
 /*    @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;*/
     OpenCover: boolean;
     private sub: any;
@@ -138,7 +139,41 @@ export class QuoteEndorsementComponent implements OnInit {
     endtCodeLOVRow : number;
     cancelLink:string;
 
-    constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title,  private route: ActivatedRoute) { }
+    deductiblesData: any = {
+        tableData: [],
+        tHeader: ['Deductible Code','Deductible Title', 'Deductible Text', 'Deductible Rate(%)', 'Deductible Amount', 'Sum Insured'],
+        dataTypes: ['text','text', 'text', 'percent', 'currency','currency'],
+        nData:{
+            createDate: [2019, 2, 21, 0, 0, 0, 0],
+            createUser: "ETC",
+            deductibleAmt: null,
+            deductibleCd: null,
+            deductibleRt: null,
+            deductibleTitle: null,
+            deductibleTxt: null,
+            optionId: null,
+            updateDate: [2019, 2, 21, 0, 0, 0, 0],
+            updateUser: "ETC",
+            sumInsured: 0,
+            endtCd: 0
+        },
+        pageLength: 5,
+        addFlag: true,
+        deleteFlag: true,
+        checkFlag: true,
+        paginateFlag: true,
+        infoFlag: true,
+        searchFlag: true,
+        pageID: 2,
+        keys: ['deductibleCd','deductibleTitle','deductibleTxt','deductibleRt','deductibleAmt','sumInsured'],
+        widths: [60,'auto',100,120,'auto'],
+        uneditable: [true,true,true,true],
+        magnifyingGlass: ['deductibleCd']
+    }
+    showModal:boolean = false;
+
+    constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, 
+     private route: ActivatedRoute, private uwService: UnderwritingService) { }
 
     ngOnInit() {  
         if(this.OpenCover){
@@ -266,7 +301,7 @@ export class QuoteEndorsementComponent implements OnInit {
                             
                          }
                        this.tableNonEditable.forEach(table => {table.refreshTable()});
-                            this.table.forEach(table => { table.refreshTable() });
+                            this.table.refreshTable();
                     });
 
 
@@ -312,7 +347,7 @@ export class QuoteEndorsementComponent implements OnInit {
                                                     this.saveEndt.createUser = data.endorsementsOc[lineCount].createUser;
                                                     this.saveEndt.updateUser = data.endorsementsOc[lineCount].updateUser;          
             }
-          this.table.forEach(table => { table.refreshTable() });
+          this.table.refreshTable();
 /*                    this.table.refreshTable();*/ 
       });
     }
@@ -386,7 +421,7 @@ export class QuoteEndorsementComponent implements OnInit {
                                                                   this.saveEndt.updateUser = data.endorsements[lineCount].updateUser;          
                 }
                /* this.table.refreshTable();*/
-                this.table.forEach(table => { table.refreshTable() });
+                this.table.refreshTable();
            });
 
       /*  this.tableData = this.quotationService.getEndorsements(event.target.closest("tr").children[1].innerText);*/
@@ -572,5 +607,72 @@ export class QuoteEndorsementComponent implements OnInit {
 
       this.cancelBtn.clickCancel();
     }
+
+  //   showDeductiblesOptions(data){
+  //   if(this.deductibleTable!==undefined){
+  //     this.deductibleTable.loadingFlag = true;
+  //     let params:any ={
+  //         quoteId:this.quoteId,
+  //         optionId:this.table.indvSelect.optionId,
+  //         coverCd: data.coverCd === undefined ? 0 : data.coverCd,
+  //         quotationNo: ''
+  //       };
+  //     this.quotationService.getDeductibles(params).subscribe((data)=>{
+  //         if(data['quotation'].optionsList != null){
+  //           this.deductiblesData.tableData = data['quotation'].optionsList[0].deductiblesList;
+  //           this.deductibleTable.refreshTable();
+  //         }
+  //         else
+  //           this.getDefaultDeductibles();
+  //       });
+  //   }else{
+  //     if(true){
+  //       this.showModal = true;
+  //       setTimeout(()=>{
+  //         this.deductiblesModal.openNoClose();
+  //       },0)
+
+  //       // if(!this.fromCovers){
+  //       //   this.deductiblesData.nData.coverCd = 0;
+  //       // }else{
+  //       //   this.deductiblesData.nData.coverCd = data.coverCd;
+  //       // }
+  //       let params:any ={
+  //         quoteId:this.quoteId,
+  //         optionId:this.selectedOption.optionId,
+  //         coverCd: data.coverCd === undefined ? 0 : data.coverCd,
+  //         quotationNo: ''
+  //       };
+  //       this.quotationService.getDeductibles(params).subscribe((data)=>{
+  //         if(data['quotation'].optionsList != null){
+  //           this.deductiblesData.tableData = data['quotation'].optionsList[0].deductiblesList;
+  //           this.deductibleTable.refreshTable();
+  //         }
+  //         else
+  //           this.getDefaultDeductibles();
+  //       });
+  //   }
+  //   }
+    
+  // }
+
+
+  getDefaultDeductibles(){
+    this.uwService.getMaintenanceDeductibles(this.quotationNum.substring(0,3),'',
+        '0','0','Y','Y').subscribe((data)=>{
+          this.deductiblesData.tableData = data['deductibles'].filter((a)=>{
+            a.sumInsured = 0;
+            a.coverCd = this.deductiblesData.nData.coverCd;
+            a.deductibleTxt = a.deductibleText;
+            a.deductibleRt = a.deductibleRate;
+            a.endtCd = 0;
+            a.edited = true;
+            return true;
+          })
+          this.deductibleTable.refreshTable();
+          this.deductibleTable.markAsDirty();
+        })
+  }
+
 
 }

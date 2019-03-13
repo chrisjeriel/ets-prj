@@ -130,7 +130,7 @@ export class ChangeQuoteStatusComponent implements OnInit {
        if(this.selectedData.statusCd == 9){
            this.saveData.reasonCd = this.selectedData.reasonCd;
        }else{
-           this.saveData.reasonCd = "";
+           this.saveData.reasonCd == null ? "":this.selectedData.reasonCd;
        }
        
        this.savetest();

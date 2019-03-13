@@ -82,7 +82,7 @@
                             <div class="form-row custom-row-inline-inset" style="margin-bottom: 16px !important;">
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-1 text-right labels" style="padding: 0; padding-right: 0.96px;">CRESTA Zone</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="riskData.zoneCd">
+                                    <input type="text" readonly class="form-control form-control-sm col-sm-1" [(ngModel)]="riskData.zoneCd">
                                     <div class="text-search-ico" style="visibility: hidden;"><a><i class="fa fa-search" (click)="showCrestaZoneModal()"></i></a></div>
                                     <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm-10" [(ngModel)]="riskData.zoneDesc"style="margin-left: 6px !important">
                                 </div>
@@ -126,7 +126,7 @@
                     <div class="form-group col-sm">
                         <div class="col-md-13 text-center">
                             <div class="cust-btn-container" style="margin-top: 10px;">
-                                <button type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
+                                <button type="button" class="cust-btn" (click)="onClickCancel()"><a>Return</a></button>
                                 <button type="button" class="cust-btn" (click)="save()"><a>Save</a></button>
                             </div>
                         </div>
@@ -143,14 +143,4 @@
 <app-mtn-city id="cityModal" (selectedData)="setCity($event)"></app-mtn-city>
 <app-mtn-cresta-zone id="crestaZoneModal" (selectedData)="setCrestaZone($event)"></app-mtn-cresta-zone>
 <app-lov [passData]="passLOV" id="lov" (selectedData)="setLOVField($event)"></app-lov>
-<app-sucess-dialog></app-sucess-dialog>
-<app-modal class="d-none" id="errorMdl">
-    <div header>Error</div>
-    <div body class="container-flex text-center">
-        <span class="fa fa-times-circle fa-3x" style="vertical-align: middle;"></span>
-        <span style="vertical-align: middle; margin-left: 15px;">{{ errorMdlMessage }}</span>       
-    </div>
-    <div footer class="d-flex justify-content-center w-100">                    
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
-    </div>
-</app-modal>
+<app-sucess-dialog  [icon]="dialogIcon"></app-sucess-dialog>
