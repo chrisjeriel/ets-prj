@@ -44,6 +44,8 @@ export class ListOfQuotationsComponent implements OnInit {
     dialogIcon:string;
     dialogMessage:string;
     printQuoteParams: any = {};
+    quoteId: any;
+
 
     /*passData: any = {
         tablData: [], 
@@ -225,7 +227,6 @@ export class ListOfQuotationsComponent implements OnInit {
     retrieveQuoteListingMethod(){
         this.quotationService.getQuoProcessingData(this.searchParams).subscribe(data => {
             this.records = data['quotationList'];
-            console.log(this.records);
             //this.fetchedData = records;
             for(let rec of this.records){
                 this.passData.tableData.push(new QuotationProcessing(
@@ -274,7 +275,6 @@ export class ListOfQuotationsComponent implements OnInit {
               }
            }
         }
-        console.log(this.quoteId);
     }
     onRowDblClick(event) {
         /*for(var i = 0; i < event.target.parentElement.children.length; i++) {
@@ -361,7 +361,6 @@ export class ListOfQuotationsComponent implements OnInit {
            this.printParams();
          }else if (this.printType == 'PRINTER'){
            if(this.validate(this.prepareParam())){
-                console.log("printer");
                 this.printPDF(this.selectedReport,this.quoteId);
                 this.printParams();
            } else {

@@ -1,10 +1,10 @@
 import { Component, OnInit , ViewChild} from '@angular/core';
 import { Router } from '@angular/router';
-
 import { QuotationService } from '../../../_services';
 import { Title } from '@angular/platform-browser';
 import { HoldCoverMonitoringList } from '@app/_models/quotation-list';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-hold-cover-monitoring-list',
@@ -22,7 +22,23 @@ export class HoldCoverMonitoringListComponent implements OnInit {
     pageLength: number;
     line: string = "";
     filterDataTypes: any[] = [];
-    constructor(private quotationService: QuotationService, private router: Router, private titleService: Title) {
+    btnDisabled: boolean;
+    printType: any = "SCREEN";
+    selectPrinterDisabled: boolean = true;
+    selectCopiesDisabled: boolean = true;
+    selectedReport: string ="QUOTER012";
+    holdNoCmp: any;
+    printName: any = null;
+    printCopies: any = null;
+    dialogIcon:string;
+    dialogMessage:string;
+    printQuoteParams: any = {};
+    quoteId: any;
+    holdCoverId: any;
+    holdCoverList: any = {};
+    records: any[] = [];
+
+    constructor(private quotationService: QuotationService, private router: Router, private titleService: Title, private modalService: NgbModal) {
         this.pageLength = 10;
     }
 
@@ -146,7 +162,8 @@ export class HoldCoverMonitoringListComponent implements OnInit {
          this.quotationService.getQuotationHoldCoverInfo(this.searchParams)
             .subscribe(val =>
                 {
-                    console.log(val);
+                    this.records = val['quotationList'];
+                    console.log(this.records);
                     for(var i = val['quotationList'].length -1 ; i >= 0 ; i--){
                          var list = val['quotationList'][i]
                          this.passData.tableData.push(new HoldCoverMonitoringList(
@@ -179,8 +196,18 @@ export class HoldCoverMonitoringListComponent implements OnInit {
         /*for (var i = 0; i < event.target.parentElement.children.length; i++) {
             this.quotationService.rowData[i] = event.target.parentElement.children[i].innerText;
         }*/
-
-        console.log(event);
+        if(this.holdCoverList == event || event === null){
+            this.holdCoverList = {};
+        }else{
+           this.holdCoverList = event;
+           this.holdNoCmp = event.holdCoverNo;
+           for(let rec of this.records){
+              if(rec.holdCover.holdCoverNo === event.holdCoverNo) {
+                this.quoteId = rec.quoteId;
+                this.holdCoverId = rec.holdCover.holdCoverId;
+              }
+           }
+        }
     }
 
     onRowDblClick(event) {
@@ -198,4 +225,125 @@ export class HoldCoverMonitoringListComponent implements OnInit {
     formatDate(date){
         return date[0] + "-" +date[1] + "-" + date[2];
     }
+
+    print(){
+        //do something
+        $('#showPrintMenu > #modalBtn').trigger('click');
+    }
+
+    tabController(event) {
+        if (this.printType == 'SCREEN'){
+          this.refreshPrintModal(true);
+        } else if (this.printType == 'PRINTER'){
+          this.refreshPrintModal(false);
+        } else if (this.printType == 'PDF'){
+          this.refreshPrintModal(true);
+        }
+    }
+
+    cancelModal(){
+        this.btnDisabled = false;
+    }
+
+    refreshPrintModal(condition : boolean){
+         if (condition){
+            this.selectPrinterDisabled = true;
+            this.selectCopiesDisabled = true;
+            this.btnDisabled = false;
+            $("#noOfCopies").val("");
+            $("#noOfCopies").css({"box-shadow": ""});
+            $("#printerName").css({"box-shadow":""});
+            $("#printerName").val("");
+            this.printName = null;
+            this.printCopies = null;
+         } else {
+            this.selectPrinterDisabled = false;
+            this.selectCopiesDisabled = false;
+            this.btnDisabled = false;
+            $("#noOfCopies").val("");
+            $("#noOfCopies").css({"box-shadow": ""});
+            $("#printerName").css({"box-shadow":""});
+            $("#printerName").val("");
+            this.printName = null;
+            this.printCopies = null;
+
+         }
+        
+    }
+
+    showPrintPreview() {
+         if (this.printType == 'SCREEN'){
+           window.open('http://localhost:8888/api/util-service/generateReport?reportName=' + this.selectedReport + '&quoteId=' + this.quoteId + '&holdCovId=' + this.holdCoverId, '_blank');
+           this.printParams();
+         }else if (this.printType == 'PRINTER'){
+           if(this.validate(this.prepareParam())){
+                this.printPDF(this.selectedReport,this.quoteId);
+                this.printParams();
+           } else {
+                this.dialogIcon = "error";
+                this.dialogMessage = "Please complete all the required fields.";
+                $('#listHoldCover #successModalBtn').trigger('click');
+                setTimeout(()=>{$('.globalLoading').css('display','none');},0);
+           }
+         }else if (this.printType == 'PDF'){
+           this.downloadPDF(this.selectedReport,this.quoteId);
+           this.printParams();
+         }   
+    }
+
+    downloadPDF(reportName : string, quoteId : string){
+       var fileName = this.quoteNoCmp;
+       this.quotationService.downloadPDF(reportName,quoteId).subscribe( data => {
+              var newBlob = new Blob([data], { type: "application/pdf" });
+              var downloadURL = window.URL.createObjectURL(data);
+              var link = document.createElement('a');
+              link.href = downloadURL;
+              link.download = fileName;
+              link.click();
+       });
+    }
+
+    printPDF(reportName : string, quoteId : string){
+       var fileName = this.quoteNoCmp;
+       this.quotationService.downloadPDF(reportName,quoteId).subscribe( data => {
+              var newBlob = new Blob([data], { type: "application/pdf" });
+              var downloadURL = window.URL.createObjectURL(data);
+              const iframe = document.createElement('iframe');
+              iframe.style.display = 'none';
+              iframe.src = downloadURL;
+              document.body.appendChild(iframe);
+              iframe.contentWindow.print();
+       });
+    }
+
+
+    validate(obj){
+          var req = ['printerName','noOfcopies'];
+          var entries = Object.entries(obj);
+            for(var [key, val] of entries) {
+                if((val === '' || val == null) && req.includes(key)){
+                    return false;
+                }
+            }
+        return true;
+    }
+
+    prepareParam() {
+        var printQuoteParam = {
+            "printerName"    : this.printName,
+            "noOfcopies"    : this.printCopies
+        }
+
+        return printQuoteParam;
+    }
+
+    printParams(){
+         this.printType = "SCREEN";
+         this.printName = null;
+         this.printCopies = null;
+         this.selectPrinterDisabled = true;
+         this.selectCopiesDisabled = true;
+    }
+
+
 }

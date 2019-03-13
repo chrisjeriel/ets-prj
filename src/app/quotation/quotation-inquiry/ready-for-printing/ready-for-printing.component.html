@@ -43,7 +43,6 @@
                                     </div>
                                 </div>
                             </fieldset>
-    
                         </div>
                     </div>
                     <div footer class="text-center w-100">
@@ -52,3 +51,4 @@
                     </div>
 </app-modal>
 <app-sucess-dialog id="readyPrinting" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="showPrintModal();"></app-sucess-dialog>
+<app-sucess-dialog id="successModalBtn" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="modalService.dismissAll();"></app-sucess-dialog>
