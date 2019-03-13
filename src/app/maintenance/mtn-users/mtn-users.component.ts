@@ -101,7 +101,7 @@ selected: any = null;
     if(code.trim() === ''){
       this.selectedData.emit({
         userId: '',
-        ev: '',
+        ev: ev,
       });
     } else {
       this.userService.retMtnUsers(code).subscribe(data => {

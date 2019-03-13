@@ -56,8 +56,8 @@ export class QuotationProcessingComponent implements OnInit {
     }
 
     riskList: Risks = new Risks(null, null, null, null, null, null, null);
-    cedingCode: any
-    cedingName: any
+    cedingCode: any;
+    cedingName: any;
 
     searchParams: any[] = [];
 
@@ -186,6 +186,7 @@ export class QuotationProcessingComponent implements OnInit {
     }
 
     loading: boolean = false;
+    copyStatus = 0;
 
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private router: Router
         , public activeModal: NgbActiveModal, private titleService: Title, private ns: NotesService

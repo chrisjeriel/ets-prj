@@ -882,4 +882,14 @@ export class QuotationService {
         return this.http.post('http://localhost:8888/api/quote-service/saveQuoteChangeQuoteStatus',JSON.stringify(changeQuoteData),header);
     }
 
+    saveQuotationCopy(saveQuotationCopyParam) {
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+
+        return this.http.post('http://localhost:8888/api/quote-service/saveQuotationCopy', saveQuotationCopyParam, header);
+    }
+
 }
