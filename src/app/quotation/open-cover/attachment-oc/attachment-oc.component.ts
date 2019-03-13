@@ -68,15 +68,18 @@ export class AttachmentOcComponent implements OnInit {
             this.passData.uneditable.push(true);
           }
         }
-    let params = {
+    this.retrieveQuoteAttachmentOcMethod();
+  }
 
-    }
+  retrieveQuoteAttachmentOcMethod(){
+    this.passData.tableData = [];
     this.quotationService.getAttachmentOc(this.quoteData.quoteIdOc, '').subscribe((data: any) => {
-        console.log(data);
-        this.data = data.quotationOc[0].attachmentOc;
-        // this.passData.tableData = data.quotation.project.coverage.sectionCovers;
-        for (var i = 0; i < this.data.length; i++) {
-          this.passData.tableData.push(this.data[i]);
+        if(data.quotationOc.length !== 0){
+          this.data = data.quotationOc[0].attachmentOc;
+          for (var i = 0; i < this.data.length; i++) {
+            this.passData.tableData.push(this.data[i]);
+          }
+          
         }
         this.custEditableNonDatatableComponent.refreshTable();
     });

@@ -67,33 +67,6 @@
     <div header>Copy Endorsment</div>
     <div body>
         <div>
-            <!-- <table id="non-datatable">
-                <thead>
-                    <tr>
-                        <th class="noborder"><span class="gridHeader">Copy From</span></th>
-                        <th class="noborder"></th>
-                        <th><span class="gridHeader">Copy To</span></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let data of optionNos; let i = index">
-                        <td *ngIf="i%10==0">Option 1</td>
-                        <td *ngIf="i%10!=0"></td>
-                        <td style="text-align: center !important"><input type="checkbox" class="copyCheckBox" name=""></td>
-                        <td>Option No {{data}} </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </tbody>
-            </table> -->
             <div class="custom-row-inline-inset">
                 <div class="input-group">
                     <label class="form-control-sm col-sm-7">Copy from Option No</label>
@@ -101,12 +74,13 @@
                     <label class="form-control-sm col-sm"></label>
                 </div>
             </div>
-            <app-cust-editable-non-datatable [passData]="copyEndtTable"></app-cust-editable-non-datatable>
+            <app-cust-editable-non-datatable [passData]="copyEndtTable" (newClick)="copyEndtRowClick($event)"></app-cust-editable-non-datatable>
         </div>
     </div>
     <div footer style="margin: auto;">
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); beginCopyEndt();"><a>Ok</a></button>
+        <button *ngIf="copyEndtOkBtn" class="cust-btn" type="button" (click)="modalService.dismissAll(); beginCopyEndt();"><a>Ok</a></button>
+        <button *ngIf="!copyEndtOkBtn" class="cust-btn cust-btn-disabled" type="button"><a>Ok</a></button>
     </div>
 </app-modal>
 

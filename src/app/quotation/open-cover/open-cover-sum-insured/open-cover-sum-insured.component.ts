@@ -60,14 +60,16 @@ export class OpenCoverSumInsuredComponent implements OnInit {
   getCoverageOc(){
     this.quotationService.getCoverageOc(this.quoteData.quoteIdOc, '').subscribe((data: any) => {
           console.log(data);
-          this.coverageOcData.currencyCd = data.quotationOc.projectOc.coverageOc.currencyCd;
-          this.coverageOcData.currencyRt = data.quotationOc.projectOc.coverageOc.currencyRt;
-          this.coverageOcData.maxSi = data.quotationOc.projectOc.coverageOc.maxSi;
-          this.coverageOcData.pctShare = data.quotationOc.projectOc.coverageOc.pctShare;
-          this.coverageOcData.pctPml = data.quotationOc.projectOc.coverageOc.pctPml;
-          this.coverageOcData.totalValue = data.quotationOc.projectOc.coverageOc.totalValue;
-          this.quoteIdOc = data.quotationOc.quoteIdOc;
-          this.riskId = data.quotationOc.projectOc.riskId;
+         if(data.quotationOc !== null){
+           this.coverageOcData.currencyCd = data.quotationOc.projectOc.coverageOc.currencyCd;
+           this.coverageOcData.currencyRt = data.quotationOc.projectOc.coverageOc.currencyRt;
+           this.coverageOcData.maxSi = data.quotationOc.projectOc.coverageOc.maxSi;
+           this.coverageOcData.pctShare = data.quotationOc.projectOc.coverageOc.pctShare;
+           this.coverageOcData.pctPml = data.quotationOc.projectOc.coverageOc.pctPml;
+           this.coverageOcData.totalValue = data.quotationOc.projectOc.coverageOc.totalValue;
+           this.quoteIdOc = data.quotationOc.quoteIdOc;
+           this.riskId = data.quotationOc.projectOc.riskId;
+         }
           setTimeout(()=>{
             $('[appcurrencyrate]').focus();
             $('[appcurrencyrate]').blur();
