@@ -182,4 +182,8 @@ export class MaintenanceService{
 		return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMtnReason');
 	}
 
+	getMtnTreaty(){
+		return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMtnTreaty');
+	}
+
 }

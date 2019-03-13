@@ -134,7 +134,10 @@ export class LovComponent implements OnInit {
       this.passTable.tHeader = [ 'Deductible', 'Title', 'Deductible Type', 'Rate', 'Deductible Amount','Deductible Text'];
       this.passTable.dataTypes = [ 'text', 'text', 'text', 'percent', 'currency'];
       this.passTable.keys = ['deductibleCd','deductibleTitle','deductibleType','deductibleRate','deductibleAmt','deductibleText'];
-      this.underwritingService.getMaintenanceDeductibles(this.passData.lineCd).subscribe((data: any) => {
+      this.underwritingService.getMaintenanceDeductibles(this.passData.lineCd,
+        this.passData.params.deductibleCd,this.passData.params.coverCd,this.passData.params.endtCd,this.passData.params.activeTag,
+        this.passData.params.defaultTag
+        ).subscribe((data: any) => {
           this.passTable.tableData = data.deductibles.filter((data)=>{return  this.passData.hide.indexOf(data.deductibleCd)==-1});
           this.table.refreshTable();
       });

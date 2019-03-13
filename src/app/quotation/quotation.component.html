@@ -13,7 +13,7 @@
 				<div>Coverage</div>
 			</ng-template>
 			<ng-template ngbTabContent>
-				<app-coverage [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag" (showAlop)="quoteInfo.showAlop = $event"></app-coverage>
+				<app-coverage [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag"></app-coverage>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab [disabled]="quoteInfo.quoteId == ''">
@@ -21,7 +21,7 @@
 				<div>Quote Option</div>
 			</ng-template>
 			<ng-template ngbTabContent>
-				<app-quote-option [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag"></app-quote-option>
+				<app-quote-option [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag" (showAlop)="quoteInfo.showAlop = $event"></app-quote-option>
 			</ng-template>
 		</ngb-tab>
 

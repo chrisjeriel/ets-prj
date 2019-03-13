@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChildren, QueryList, Input, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList, Input, ViewChild, Output, EventEmitter} from '@angular/core';
 import { QuotationInfo, QuotationOption, QuotationOtherRates, QuotationDeductibles } from '../../_models';
-import { QuotationService } from '../../_services';
+import { QuotationService, UnderwritingService, MaintenanceService } from '../../_services';
 import { Title } from '@angular/platform-browser';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { ActivatedRoute } from '@angular/router';
@@ -26,6 +26,7 @@ export class QuoteOptionComponent implements OnInit {
     private sub: any;
    @Input() quotationInfo: any = {};
    @Input() inquiryFlag: boolean = false;
+   @Output() showAlop = new EventEmitter<any>();
     coverCodeLOVRow : number;
     quoteNoData: string;
     quotationNum: string;
@@ -127,7 +128,8 @@ export class QuoteOptionComponent implements OnInit {
     selectedCover : any ={};
     fromCovers: boolean = false;
 
-    constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,private modalService: NgbModal) { }
+    constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,
+                private modalService: NgbModal, private uwService: UnderwritingService, private mtnService: MaintenanceService) { }
 
     ngOnInit() {
       //neco
@@ -176,9 +178,22 @@ export class QuoteOptionComponent implements OnInit {
         this.quoteNoData = this.quotationInfo.quotationNo;
         this.getQuoteOptions();
         this.quotationService.getCoverageInfo(this.plainQuotationNo(this.quotationNum),this.quoteId).subscribe((data: any) => {
-          if(data.quotation.project!==null)
-            this.defaultSectionCvrs = data.quotation.project.coverage.sectionCovers;
+          if(data.quotation.project!==null){
+            this.defaultSectionCvrs = data.quotation.project.coverage.sectionCovers.filter((a)=>{
+              a.amount = a.sumInsured;
+              a.coverCdDesc = a.coverCdAbbr;
+              a.changeTag = 'N';
+              a.rate = data.optionRt;
+              a.edited = true;
+              a.createDate = new Date().toISOString();
+              a.updateDate = new Date().toISOString();
+              a.rate = 0;
+              return true;
+            });;
+            this.optionsData.nData.otherRatesList = data.quotation.project.coverage.sectionCovers;
+          }
         })
+        this.getRates();
 
     }
 
@@ -199,6 +214,17 @@ export class QuoteOptionComponent implements OnInit {
                 this.updateCovers();
            }
            this.table.forEach(table => { table.refreshTable() });
+           let alopFlag = false;
+           if(data['quotation'] !== null)
+           first:for(let option of data['quotation'].optionsList){
+             for(let otherRate of option.otherRatesList){
+               if(otherRate.section == 'III'){
+                 alopFlag = true;
+                 break first;
+               }
+             }
+           }
+           this.showAlop.emit(alopFlag);
         });
     } 
 
@@ -250,7 +276,6 @@ saveQuoteDeductibles(){
             this.showDeductiblesOptions(this.fromCovers ? this.selectedCover :this.selectedOption);
        }
      });
-     console.log(params);
    }
 
 
@@ -258,6 +283,11 @@ clickDeductiblesLOV(data){
     this.passLOVData.selector = 'deductibles';
     this.passLOVData.lineCd = this.quotationNum.substring(0,3);
     this.passLOVData.hide = this.deductiblesData.tableData.filter((a)=>{return !a.deleted}).map(a=>a.deductibleCd);
+    this.passLOVData.params = {
+      coverCd : this.deductiblesData.nData.coverCd,
+      endtCd: '0',
+      activeTag:'Y'
+    }
     $('#lov #modalBtn2').trigger('click');
     this.deductiblesLOVRow = data.index;
 }
@@ -265,12 +295,15 @@ clickDeductiblesLOV(data){
 setSelected(data){
   this.deductibleTable.markAsDirty();
   if(data.selector == "deductibles"){
-        this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleCd = data.data.deductibleCd;
         this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleTitle = data.data.deductibleTitle;
         this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleRt = data.data.deductibleRate;
         this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleAmt = data.data.deductibleAmt;
         this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleTxt = data.data.deductibleText;
         this.deductiblesData.tableData[this.deductiblesLOVRow].edited = true;
+        this.deductiblesData.tableData.push(JSON.parse(JSON.stringify(this.deductiblesData.tableData[this.deductiblesLOVRow])));
+        this.deductiblesData.tableData[this.deductiblesData.tableData.length - 1].deductibleCd = data.data.deductibleCd;
+        this.deductiblesData.tableData[this.deductiblesLOVRow].deleted = true;
+        this.deductibleTable.refreshTable();
   }
   
 }
@@ -329,7 +362,6 @@ cancel(){
         }
        }
    }
-   console.log(params)
    this.quotationService.saveQuoteOptionAll(params).subscribe((data)=>{
      if(data['returnCode'] == 0) {
             this.dialogMessage = data['errorList'][0].errorMessage;
@@ -347,12 +379,12 @@ cancel(){
   }
 
   updateSectionCvrs(data){
+      this.selectedOption = data;
       if(data == null){
         this.otherRatesData.tableData = [];
         this.otherRatesTable.refreshTable();
       }else if(data.otherRatesList==null || data.otherRatesList===undefined || data.otherRatesList.length == 0){
         data.otherRatesList = JSON.parse(JSON.stringify(this.defaultSectionCvrs));
-        this.selectedOption = data;
         this.otherRatesData.tableData = data.otherRatesList.filter((a)=>{
           a.amount = a.sumInsured;
           a.coverCdDesc = a.coverCdAbbr;
@@ -374,6 +406,10 @@ cancel(){
   }
 
   updateCovers(){
+    if(this.quotationInfo.cessionId == 2 && this.optionsData.tableData.length > 1){
+      this.optionsData.tableData.pop();
+      this.optionsTable.refreshTable();
+    }
     for(let data of this.otherRatesData.tableData){
       if(data.uneditable === undefined){
         data.uneditable = [];
@@ -388,40 +424,77 @@ cancel(){
     }
   }
 
-  showDeductiblesOptions(data){
+  showDeductiblesOptions(data,fromCovers?){
+    
+    
+    this.fromCovers = fromCovers !== undefined;
+    
     if(this.deductibleTable!==undefined){
       this.deductibleTable.loadingFlag = true;
     }else{
+      if((this.fromCovers && this.selectedCover!==null) || (!this.fromCovers && this.selectedOption!==null)){
+      this.showModal = true;
       setTimeout(()=>{
         this.deductiblesModal.openNoClose();
       },0)
+
+      if(!this.fromCovers){
+        this.deductiblesData.nData.coverCd = 0;
+      }else{
+        this.deductiblesData.nData.coverCd = data.coverCd;
+      }
+      let params:any ={
+        quoteId:this.quoteId,
+        optionId:this.selectedOption.optionId,
+        coverCd: data.coverCd === undefined ? 0 : data.coverCd,
+        quotationNo: ''
+      };
+      this.quotationService.getDeductibles(params).subscribe((data)=>{
+        if(data['quotation'].optionsList != null){
+          this.deductiblesData.tableData = data['quotation'].optionsList[0].deductiblesList;
+          this.deductibleTable.refreshTable();
+        }
+        else
+          this.getDefaultDeductibles();
+      });
     }
-    this.showModal = true;
-    this.fromCovers = data.coverCd !== undefined;
-    if(!this.fromCovers){
-      this.deductiblesData.nData.coverCd = 0;
-    }else{
-      this.deductiblesData.nData.coverCd = data.coverCd;
     }
-    let params:any ={
-      quoteId:this.quoteId,
-      optionId:this.selectedOption.optionId,
-      coverCd: data.coverCd === undefined ? 0 : data.coverCd,
-      quotationNo: ''
-    };
-    this.quotationService.getDeductibles(params).subscribe((data)=>{
-      console.log(data);
-      if(data['quotation'].optionsList != null)
-        this.deductiblesData.tableData = data['quotation'].optionsList[0].deductiblesList;
-      else
-        this.deductiblesData.tableData = [];
-      this.deductibleTable.refreshTable();
-    });
     
   }
 
   onClickSaveDeductibles(){
     $('#deductibles #confirm-save #modalBtn2').trigger('click');
-}
+  }
+
+  getDefaultDeductibles(){
+    this.uwService.getMaintenanceDeductibles(this.quotationNum.substring(0,3),'',
+        this.deductiblesData.nData.coverCd,'0','Y','Y').subscribe((data)=>{
+          this.deductiblesData.tableData = data['deductibles'].filter((a)=>{
+            a.sumInsured = 0;
+            a.coverCd = this.deductiblesData.nData.coverCd;
+            a.deductibleTxt = a.deductibleText;
+            a.deductibleRt = a.deductibleRate;
+            a.endtCd = 0;
+            a.edited = true;
+            return true;
+          })
+          this.deductibleTable.refreshTable();
+          this.deductibleTable.markAsDirty();
+        })
+  }
+
+  getRates(){
+    this.mtnService.getMtnTreaty().subscribe((data)=>{
+      this.optionsData.nData.commRtQuota = data['treatyList'].filter(a=>a.treatyType=='Q')[0].comRate;
+      this.optionsData.nData.commRtFac = data['treatyList'].filter(a=>a.treatyType=='F')[0].comRate;
+      this.optionsData.nData.commRtSurplus = 0;
+      for(let treaty of data['treatyList'].filter(a=>a.treatyType=='S')){
+        this.optionsData.nData.commRtSurplus+=parseFloat(treaty.comRate)
+      }
+      this.optionsData.nData.commRtSurplus =this.optionsData.nData.commRtSurplus/ data['treatyList'].filter(a=>a.treatyType=='S').length
+    })
+  }
+
+
 
 }
