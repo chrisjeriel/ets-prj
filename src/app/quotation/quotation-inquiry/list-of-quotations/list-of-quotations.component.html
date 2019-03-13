@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12" style="padding: 0">
-            <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)" (print)="print()"></app-cust-non-datatable>
+            <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)" (print)="print()" (searchToDb)="searchQuery($event)"></app-cust-non-datatable>
          </div>
     </div>
 
