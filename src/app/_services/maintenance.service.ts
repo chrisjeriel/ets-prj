@@ -39,10 +39,11 @@ export class MaintenanceService{
 			);
 	}
 
-	getMtnCity(regionCd?,provinceCd?){
+	getMtnCity(regionCd?,provinceCd?,cityCd?){
 		const params = new HttpParams()
-			.set('provinceCd',provinceCd ===undefined || provinceCd===null ? '' : provinceCd)
 			.set('regionCd',regionCd ===undefined || regionCd===null ? '' : regionCd)
+			.set('provinceCd',provinceCd ===undefined || provinceCd===null ? '' : provinceCd)
+			.set('cityCd',cityCd ===undefined || cityCd===null ? '' : cityCd)
 		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnCity",{params});
 	}
 
@@ -58,12 +59,13 @@ export class MaintenanceService{
 		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnCurrency", {params});
 	}
 
-	getMtnBlock(regionCd?,provinceCd?,cityCd?,districtCd?){
+	getMtnBlock(regionCd?,provinceCd?,cityCd?,districtCd?,blockCd?){
 		const params = new HttpParams()
 			.set('provinceCd',provinceCd ===undefined || provinceCd===null ? '' : provinceCd)
 			.set('regionCd',regionCd ===undefined || regionCd===null ? '' : regionCd)
 			.set('cityCd',cityCd ===undefined || cityCd===null ? '' : cityCd)
 			.set('districtCd',districtCd ===undefined || districtCd===null ? '' : districtCd)
+			.set('blockCd',blockCd ===undefined || blockCd===null ? '' : blockCd)
 		return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMaintenanceBlock',{params});
 	}
 
@@ -158,7 +160,7 @@ export class MaintenanceService{
 		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnRegion",{params});
 	}
 
-	getMtnProvince(provinceCd?,regionCd?){
+	getMtnProvince(regionCd?, provinceCd?){
 		const params = new HttpParams()
 			.set('provinceCd',provinceCd ===undefined || provinceCd===null ? '' : provinceCd)
 			.set('regionCd',regionCd ===undefined || regionCd===null ? '' : regionCd)
