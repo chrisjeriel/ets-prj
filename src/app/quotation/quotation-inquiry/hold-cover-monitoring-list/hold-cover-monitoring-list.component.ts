@@ -152,12 +152,13 @@ export class HoldCoverMonitoringListComponent implements OnInit {
                             list.quotationNo,
                             (list.project == null) ? '' : list.project.riskName,
                             list.insuredDesc,
-                            new Date(this.formatDate(list.holdCover.periodFrom)),
-                            new Date(this.formatDate(list.holdCover.periodTo)),
+                            new Date(list.holdCover.periodFrom[0],list.holdCover.periodFrom[1]-1,list.holdCover.periodFrom[2]),
+                            new Date(list.holdCover.periodTo[0],list.holdCover.periodTo[1]-1,list.holdCover.periodTo[2]),
                             list.holdCover.compRefHoldCovNo,
                             list.holdCover.reqBy,
-                            new Date(this.formatDate(list.holdCover.reqDate))
+                            new Date(list.holdCover.reqDate[0],list.holdCover.reqDate[1]-1,list.holdCover.reqDate[2])
                          ));
+                         console.log(list.holdCover.periodFrom[1]-1)
                     }
                     this.table.refreshTable();
                 }
