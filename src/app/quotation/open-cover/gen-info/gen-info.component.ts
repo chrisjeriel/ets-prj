@@ -107,16 +107,18 @@ export class GenInfoComponent implements OnInit {
                               this.lat  = val['risk'].latitude;
                               this.long = val['risk'].longitude;
                             });
-                this.ocQuoteGenInfo.openQuotationNo = this.line +'-'+ new Date().getFullYear();
+                this.ocQuoteGenInfo.openQuotationNo = 'OC-' + this.line +'-'+ new Date().getFullYear();
+                 this.loading = false;
             }else{
-                this.quotationService.getOcGenInfoData(this.sampleId,this.ocQuoteNo)
+                this.quotationService.getOcGenInfoData(this.sampleId,this.plainOpenQuotationNo(this.ocQuoteNo))
                     .subscribe(val => 
                         {
                           //this.ocQuoteGenInfo = new OcGenInfoInfo(i.openQuotationNo);
                           this.loading = false;
                           for(let i of val['quotationOc']) {
-                            console.log(i.projectOc);
-                              this.ocQuoteGenInfo.openQuotationNo = i.openQuotationNo;
+                            //console.log(i.projectOc);
+                              //this.ocQuoteGenInfo.openQuotationNo = i.openQuotationNo;
+                              this.ocQuoteGenInfo.openQuotationNo = this.ocQuoteNo;
                               this.ocQuoteGenInfo.refPolNo        = i.refPolNo;
                               this.ocQuoteGenInfo.openPolicyNo    = i.openPolicyNo;
                               this.ocQuoteGenInfo.lineClassDesc   = i.lineCdDesc;
@@ -214,6 +216,10 @@ export class GenInfoComponent implements OnInit {
                             this.insuredContent();
                         }
                   );
+                setTimeout(() => {
+                $('input[appCurrencyRate]').focus();
+                $('input[appCurrencyRate]').blur();
+              },0) 
             }
           }
     });
@@ -228,6 +234,7 @@ export class GenInfoComponent implements OnInit {
   }
 
   formatDate(date){
+    console.log(date);
     if(date[1] < 9){
       return date[0] + "-" + '0'+ date[1] + "-" + date[2];
     }else{
@@ -332,17 +339,31 @@ export class GenInfoComponent implements OnInit {
   checkCode(field) {
       if(field === 'cedingCo') {
         this.loading = true;
-        this.cedingCoLov.checkCode(this.cedingCoId);
+        this.cedingCoLov.checkCode(this.cedingCoId, 'a');
       } else if(field === 'cedingCoNotMember') { 
-        this.cedingCoNotMemberLov.checkCode(this.ocQuoteGenInfo.reinsurerId);
+        this.cedingCoNotMemberLov.checkCode(this.ocQuoteGenInfo.reinsurerId, 'a');
       } else if(field === 'intermediary') {
-        this.intermediaryLov.checkCode(this.mtnIntmId);
+        this.intermediaryLov.checkCode(this.mtnIntmId, 'a');
       } else if(field === 'principal') {
-        this.insuredLovs['first'].checkCode(this.prinId, '#principalLOV');
+        this.insuredLovs['first'].checkCode(this.prinId, '#principalLOV', 'a');
       } else if(field === 'contractor') {
-        this.insuredLovs['last'].checkCode(this.conId, '#contractorLOV');
+        this.insuredLovs['last'].checkCode(this.conId, '#contractorLOV', 'a');
       } else if(field === 'object') {
-        this.objectLov.checkCode(this.line, this.objId);
+        this.objectLov.checkCode(this.line, this.objId, 'a');
       }
     }
+
+  plainOpenQuotationNo(data: string){
+    var arr = data.split('-');
+
+    return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]) + '-' + parseInt(arr[5]);
+  }
+
+  setUser(data){
+    console.log(data);
+  }
+
+   getUsersLov(){
+    $('#usersLov #modalBtn').trigger('click');
+  }
 }

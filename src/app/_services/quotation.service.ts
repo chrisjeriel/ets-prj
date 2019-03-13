@@ -127,6 +127,7 @@ export class QuotationService {
         return this.quotationListData;
     }
 
+
     getQuotationHoldCoverInfo(searchParams: any[]) {
         this.holdCoverMonitoringListData = [
             new HoldCoverMonitoringList("HC-CAR-2018-00001-00", "Open", "Phil. Guaranty", "CAR-2018-00066-00-31", "Malayan", "5K Builders", new Date('2018-12-01'), new Date('2018-12-31'), "P8M001KJ", "Juan Cruz", new Date('2018-12-01')),
@@ -157,6 +158,24 @@ export class QuotationService {
                 params = params.append(i.key, i.search);
             }
         }
+            return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteHoldCoverListing',{params});
+    }
+
+    getSelectedQuotationHoldCoverInfo(quotationNo) {
+        const params = new HttpParams()
+             .set('quotationNo',quotationNo)
+             .set('status','I')
+             .set('cedingName','')
+             .set('holdCoverNo','')
+             .set('riskName','')
+             .set('insuredDesc','')
+             .set('periodFrom','')
+             .set('periodTo','')
+             .set('compRefHoldCovNo','')
+             .set('reqBy','')
+             .set('reqDate','')
+             .set('expiringInDays','')
+             
             return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteHoldCoverListing',{params});
     }
 
@@ -526,29 +545,11 @@ export class QuotationService {
         return this.readyForPrinting;
     }
 
-    getOpenCoverProcessingData() {
-        /*this.openCoverProcessing = [
-            new OpenCoverProcessing('OC-CAR-2015-00088-00-99', 'Direct', 'CAR Wet Risks', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Requestor', 'Creator'),
-            new OpenCoverProcessing('OC-CAR-2015-00088-00-78', 'Retrocession', 'CAR Wet Risks', 'Concluded', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Requestor', 'Creator'),
-            new OpenCoverProcessing('OC-EAR-2015-00088-00-55', 'Direct', 'EAR', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Requestor', 'Creator'),
-            new OpenCoverProcessing('OC-CAR-2015-00088-00-28', 'Direct', 'CAR Wet Risks', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Requestor', 'Creator'),
-            new OpenCoverProcessing('OC-CAR-2015-00088-00-99', 'Direct', 'CAR Wet Risks', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Requestor', 'Creator'),
-            new OpenCoverProcessing('OC-CAR-2015-00088-00-78', 'Retrocession', 'CAR Wet Risks', 'Concluded', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Requestor', 'Creator'),
-            new OpenCoverProcessing('OC-EAR-2015-00088-00-55', 'Direct', 'EAR', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Requestor', 'Creator'),
-            new OpenCoverProcessing('OC-CAR-2015-00088-00-28', 'Direct', 'CAR Wet Risks', 'Concluded', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Requestor', 'Creator'),
-        ];
+    getOpenCoverProcessingData(searchParams: any[]) {
+        var params;
 
-        return this.openCoverProcessing;*/
-
-        const params = new HttpParams()
+        if(searchParams.length < 1){
+            params = new HttpParams()
                 .set('quotationNo','')
                 .set('cessionDesc','')
                 .set('lineClassCdDesc','')
@@ -565,11 +566,13 @@ export class QuotationService {
                 .set('expiryDate','')
                 .set('reqBy','')
                 .set('createUser','');
-                // .set('paginationRequest.position',null)
-                // .set('paginationRequest.count',null)
-                // .set('sortRequest.sortKey',null)
-                // .set('sortRequest.order',null);
-
+        }
+         else{
+             params = new HttpParams();
+            for(var i of searchParams){
+                params = params.append(i.key, i.search);
+            }
+        }
         return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteListingOc', {params});
     }
 
@@ -685,11 +688,11 @@ export class QuotationService {
             return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteGeneralInfoOc',{params});
     }
 
-    getHoldCoverInfo(){
+    getHoldCoverInfo(holdCoverId,holdCoverNo){
         this.holdCoverInfo = [];
         const params = new HttpParams()
-             .set('holdCoverId','75')
-             .set('holdCoverNo','CAR-2019-1-1')
+             .set('holdCoverId','')
+             .set('holdCoverNo',holdCoverNo)
              
             return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteHoldCover',{params});
     }

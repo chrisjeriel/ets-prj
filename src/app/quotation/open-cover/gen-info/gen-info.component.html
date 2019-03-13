@@ -55,7 +55,7 @@
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Intermediary</label>
-										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="mtnIntmId" (change)="checkCode('intermediary')" appRequired>
+										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="mtnIntmId" (change)="checkCode('intermediary')">
 										<div class="text-search-ico" (click)="getIntmLov($event)"><a><i class="fa fa-search"></i></a></div>
 										<span>&nbsp;</span>
 										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 4px;" [(ngModel)]="mtnIntmName" readonly>
@@ -82,7 +82,7 @@
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-4">Request Mode</label>
-										<select class="form-control form-control-sm cust-sm" [(ngModel)]="ocQuoteGenInfo.reqMode" appRequired>
+										<select class="form-control form-control-sm cust-sm" [(ngModel)]="ocQuoteGenInfo.reqMode">
 											<option value="e">Email</option>
 											<option value="f">Fax</option>
 											<option value="p">Phone</option>
@@ -113,7 +113,7 @@
 						<div class="form-group col-sm-6 offsetFormGroup">
 							<div class="input-group">
 								<label class="form-control-sm col-sm-4">Exch. Rt.</label>
-								<input type="text" class="form-control form-control-sm text-right" [(ngModel)]="currencyRt" readonly>
+								<input id="exRt" type="text" class="form-control form-control-sm text-right req" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="currencyRt" required appCurrencyRate readonly>
 								<span>&nbsp;</span>
 							</div>
 						</div>
@@ -396,18 +396,18 @@
 				<div class="custom-row-inline-inset">
 					<div class="form-row" style="margin-bottom: -3px;">
 						<div class="form-group col-sm">
-							<label class="form-control-sm top-label">Total Sl</label>
-							<input type="text" class="form-control form-control-sm text-right" [(ngModel)]="ocQuoteGenInfo.maxSi" readonly>
+							<label class="form-control-sm top-label">Total SI</label>
+							<input type="text" class="form-control form-control-sm text-right" [ngModel]="ocQuoteGenInfo.maxSi | number: '1.2-2'" readonly>
 						</div>
 					</div>
 					<div class="form-row" style="margin-bottom: -16px; margin-top: -10px !important;">
 						<div class="form-group col-sm-3">
 							<label class="form-control-sm top-label">% Share</label>
-							<input type="text" class="form-control form-control-sm cust-sm text-right" [(ngModel)]="ocQuoteGenInfo.pctShare" readonly>
+							<input type="text" class="form-control form-control-sm cust-sm text-right" [ngModel]="ocQuoteGenInfo.pctShare | number: '1.6-6'" readonly>
 						</div>
 						<div class="form-group col-sm">
 							<label class="form-control-sm top-label">Part of (100%)</label>
-							<input type="text" class="form-control form-control-sm cust-sm text-right" [(ngModel)]="ocQuoteGenInfo.totalValue" readonly>
+							<input type="text" class="form-control form-control-sm cust-sm text-right" [ngModel]="ocQuoteGenInfo.totalValue | number: '1.2-2'" readonly>
 						</div>
 					</div>
 				</div>
@@ -420,6 +420,8 @@
 					<div class="input-group">
 						<label class="form-control-sm col-sm-4">Prepared By</label>
 						<input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="ocQuoteGenInfo.preparedBy" readonly>
+						<div class="text-search-ico" (click)="getUsersLov()"><a><i class="fa fa-search"></i></a></div>
+										<span>&nbsp;</span>
 					</div>
 					<div class="input-group">
 						<label class="form-control-sm col-sm-4">Approved By</label>
@@ -451,11 +453,11 @@
 					<div class="form-row">
 						<div class="form-group col-sm-6" style="margin-bottom: 8px;">
 							<label class="form-control-sm top-label">Date Created</label>
-							<input type="date" class="form-control form-control-sm cust-sm" [(ngModel)]="ocQuoteGenInfo.createDate" readonly >
+							<input type="datetime-local" class="form-control form-control-sm cust-sm" [(ngModel)]="ocQuoteGenInfo.createDate" readonly >
 						</div>
 						<div class="form-group col-sm-6" style="margin-bottom: 8px;">
 							<label class="form-control-sm top-label">Last Update</label>
-							<input type="date" class="form-control form-control-sm cust-sm" [(ngModel)]="ocQuoteGenInfo.updateDate" readonly>
+							<input type="datetime-local" class="form-control form-control-sm cust-sm" [(ngModel)]="ocQuoteGenInfo.updateDate" readonly>
 						</div>
 					</div>
 				</div>
@@ -484,3 +486,4 @@
 <app-ceding-company id="cedingCoIdLov" (selectedData)="setCedingCo($event)"></app-ceding-company>
 <app-mtn-line-class id="lineClassIdLov" (selectedData)="setLineClass($event)" [line]="line"></app-mtn-line-class>
 <app-mtn-intermediary id="intmIdLov" (selectedData)="setIntm($event)"></app-mtn-intermediary>
+<app-mtn-users id="usersLov" (selectedData)="setUser($event)"></app-mtn-users>

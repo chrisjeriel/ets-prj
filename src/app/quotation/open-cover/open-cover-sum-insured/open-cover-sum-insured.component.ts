@@ -52,7 +52,7 @@ export class OpenCoverSumInsuredComponent implements OnInit {
   }
 
   getCoverageOc(){
-    this.quotationService.getCoverageOc('2', 'OC-EAR-2018-1001-2-2323').subscribe((data: any) => {
+    this.quotationService.getCoverageOc('2', 'OC-CAR-2019-1-0-43').subscribe((data: any) => {
           this.coverageOcData.currencyCd = data.quotationOc.projectOc.coverageOc.currencyCd;
           this.coverageOcData.currencyRt = data.quotationOc.projectOc.coverageOc.currencyRt;
           this.coverageOcData.maxSi = data.quotationOc.projectOc.coverageOc.maxSi;

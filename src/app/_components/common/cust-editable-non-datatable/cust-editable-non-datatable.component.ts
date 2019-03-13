@@ -266,16 +266,15 @@ export class CustEditableNonDatatableComponent implements OnInit {
             this.indvSelect = null;
         }
         if(data != this.fillData)
-            this.newClick.emit(this.indvSelect);
+            setTimeout(() => this.newClick.emit(data),0) ;
         //this.rowClick.next(event);
         
     }
 
-
-
     onRowDblClick(event) {
         this.rowDblClick.next(event);
     }
+
     sort(str,sortBy){
         this.passData.tableData = this.passData.tableData.sort(function(a, b) {
             if(sortBy){

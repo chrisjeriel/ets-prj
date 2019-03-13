@@ -582,3 +582,11 @@ textarea:read-only {
 .tab-content{
     position: relative;
 }
+
+input {
+    color: black !important;
+}
+
+textarea {
+    color: black !important;
+}

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ViewChildren, QueryList, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
-import { QuotationService, UnderwritingService } from '@app/_services';
+import { QuotationService, UnderwritingService, NotesService } from '@app/_services';
 import { QuotationProcessing, Risks, CedingCompanyList } from '../../_models';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
@@ -188,7 +188,7 @@ export class QuotationProcessingComponent implements OnInit {
     loading: boolean = false;
 
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private router: Router
-        , public activeModal: NgbActiveModal, private titleService: Title
+        , public activeModal: NgbActiveModal, private titleService: Title, private ns: NotesService
         ) { }
 
     
@@ -282,8 +282,11 @@ export class QuotationProcessingComponent implements OnInit {
     setLine(data){
         this.line = data.lineCd;
         this.description = data.description;
-        this.loading = false;
-        $('#addModal > #modalBtn').trigger('click');
+        this.ns.lovLoader(data.ev, 0);
+
+        if(data.hasOwnProperty('fromLOV')){
+            $('#addModal > #modalBtn').trigger('click');    
+        }
     }
 
     getRisk(event) {
@@ -442,8 +445,11 @@ setCedingcompany(data){
     setRisks(data){
         this.riskCd = data.riskId;
         this.riskName = data.riskName;
-        this.loading = false;        
-        this.onClickAdd('#riskCd');
+        this.ns.lovLoader(data.ev, 0);
+        
+        if(data.hasOwnProperty('fromLOV')){
+            this.onClickAdd('#riskCd');   
+        }
     }
 
     showTypeOfCessionLOV(){
@@ -453,8 +459,11 @@ setCedingcompany(data){
     setTypeOfCession(data) {        
         this.typeOfCessionId = data.cessionId;
         this.typeOfCession = data.description;
-        this.loading = false;
-        this.onClickAdd('#typeOfCessionId');
+        this.ns.lovLoader(data.ev, 0);
+        
+        if(data.hasOwnProperty('fromLOV')){
+            this.onClickAdd('#typeOfCessionId');    
+        } 
     }
 
     toGeneralInfo(savingType){
@@ -489,22 +498,15 @@ setCedingcompany(data){
         }
     }
 
-    checkFields(){
-        if(this.line === '' || this.typeOfCessionId === '' || this.riskCd === ''){
-            return true;
-        }
+    checkCode(ev, field){
+        this.ns.lovLoader(ev, 1);
 
-        return false;
-    }
-
-    checkCode(field){
-        this.loading = true;
-        if(field === 'line') {
-            this.lineLov.checkCode(this.line.toUpperCase());
+        if(field === 'line') {            
+            this.lineLov.checkCode(this.line, ev);
         } else if(field === 'typeOfCession'){
-            this.typeOfCessionLov.checkCode(this.typeOfCessionId);    
+            this.typeOfCessionLov.checkCode(this.typeOfCessionId, ev);
         } else if(field === 'risk') {
-            this.riskLov.checkCode(this.riskCd);
+            this.riskLov.checkCode(this.riskCd, ev);
         }              
     }
 

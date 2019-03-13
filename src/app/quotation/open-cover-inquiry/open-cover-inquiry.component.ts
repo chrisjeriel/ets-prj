@@ -108,7 +108,7 @@ export class OpenCoverInquiryComponent implements OnInit {
   ngOnInit() {
     this.titleService.setTitle("Quo | Open Cover Inquiry");
 
-    this.quotationService.getOpenCoverProcessingData().subscribe(data => {
+    this.quotationService.getOpenCoverProcessingData([]).subscribe(data => {
       this.records = data['quotationOcList'];
 
       for(let rec of this.records){
