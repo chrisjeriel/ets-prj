@@ -23,7 +23,7 @@ export class RiskListComponent implements OnInit {
         editFlag: true,
         pageStatus: true,
         pagination: true,
-        pageLength: 10,
+        pageLength: 20,
         keys: ['activeTag','riskId','riskName','riskAbbr','regionDesc','provinceDesc','cityDesc','districtDesc','blockDesc','latitude','longitude']
     }
     selected:any;
