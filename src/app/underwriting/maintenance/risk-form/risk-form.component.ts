@@ -322,7 +322,9 @@ export class RiskFormComponent implements OnInit, OnDestroy {
     save(){
         console.log(JSON.stringify(this.riskData));
         this.mtnService.saveMtnRisk(this.riskData).subscribe((data:any)=>{
+            console.log(JSON.stringify(data));
             if(data['returnCode'] == 0) {
+              console.log("Went here");
               this.errorMdlMessage = data['errorList'][0].errorMessage;
               $('#errorMdl > #modalBtn').trigger('click');
             } else{
