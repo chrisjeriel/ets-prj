@@ -53,7 +53,7 @@ export class RiskListComponent implements OnInit {
                 // }
                 );
             }
- 
+  
             this.table.refreshTable();
         });
     }
