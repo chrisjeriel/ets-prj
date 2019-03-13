@@ -351,7 +351,9 @@ export class QuoteEndorsementComponent implements OnInit {
         updateDate: new Date().toISOString(),
       }
 
-      console.log(JSON.stringify(params));
+      this.quotationService.copyEndorsement(JSON.stringify(params)).subscribe((data: any) =>{
+          console.log(data);
+      });
 
     }
     //end neco
