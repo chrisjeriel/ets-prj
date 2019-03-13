@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { highlight,unHighlight } from '@app/_directives/highlight';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { RequiredDirective } from '@app/_directives/required.directive';
+import { FormsModule }   from '@angular/forms';
  
 @Component({
     selector: 'app-quo-alop',
@@ -20,6 +21,7 @@ export class QuoAlopComponent implements OnInit {
   @ViewChild("from") from:any;
   @ViewChild("to") to:any;
   @ViewChildren(RequiredDirective) inputs: QueryList<RequiredDirective>;
+  @ViewChild('myForm') form:any;
   aLOPInfo: QuoteALOPInfo = new QuoteALOPInfo();
   @Input() quotationInfo:any = {};
   @Input() inquiryFlag: boolean = false;
@@ -112,7 +114,6 @@ export class QuoAlopComponent implements OnInit {
         }
       }
       //neco end
-      console.log(this.quotationInfo)
       this.quotationNo = this.quotationInfo.quotationNo;
       this.quoteNo = this.quotationNo.split(/[-]/g)[0]
       for (var i = 1; i < this.quotationNo.split(/[-]/g).length; i++) {
@@ -145,7 +146,6 @@ export class QuoAlopComponent implements OnInit {
                 this.alopData.indemFromDate = this.alopData.indemFromDate[0]+'-'+("0" + this.alopData.indemFromDate[1]).slice(-2)+'-'+("0" + this.alopData.indemFromDate[2]).slice(-2);
               }else{
                 this.mtnService.getMtnInsured(this.quotationInfo.principalId).subscribe((data: any) => {
-                  console.log(data)
                   this.loading = false;
                   this.alopData.insuredId = data.insured[0].insuredId;
                   this.alopData.insuredName = data.insured[0].insuredAbbr;
@@ -173,10 +173,11 @@ export class QuoAlopComponent implements OnInit {
           this.dialogMessage = "";
           this.dialogIcon = "success";
           $('#successModalBtn').trigger('click');
-          this.refresh = false;
-          setTimeout(()=>{
-            this.refresh = true;
-          },0)
+          // this.refresh = false;
+          // setTimeout(()=>{
+          //   this.refresh = true;
+          // },0)
+          this.form.control.markAsPristine()
 
           this.getAlop();
         }
@@ -187,7 +188,6 @@ export class QuoAlopComponent implements OnInit {
     openAlopItem(){
       this.showAlopItem = true;
       this.itemInfoData.tableData = [];
-      console.log(this.itemInfoData.tableData)
       this.itemInfoData.nData.itemNo =  this.itemInfoData.tableData.filter((data)=>{return !data.deleted}).length + 1 ;
       this.quotationService.getALOPItemInfos(this.quoteNo,this.quoteId).subscribe((data: any) => {
             if(data.quotation[0] !==undefined){
@@ -227,24 +227,15 @@ export class QuoAlopComponent implements OnInit {
             savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].updateDate = new Date(savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].updateDate[0],savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].updateDate[1]-1,savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].updateDate[2]).toISOString();
         }
       }
-      console.log(JSON.stringify(savedData));
       this.quotationService.saveQuoteAlopItem(savedData).subscribe((data: any) => {
         if(data['returnCode'] == 0) {
           this.dialogMessage = data['errorList'][0].errorMessage;
           this.dialogIcon = "error";
           $('#successModalBtn').trigger('click');
         } else{
+          this.dialogIcon = "succuess";
           $('#successModalBtn').trigger('click');
-          this.refresh = false;
-          setTimeout(()=>{
-            this.refresh = true;
-          },0)
-          // $('.ng-dirty').removeClass('ng-dirty')
-        //   this.inputs.forEach(itm=>{
-        //   console.log(itm)
-        //   itm['nativeElement'].classList.add('ng-pristine');
-        //   itm['nativeElement'].classList.remove('ng-dirty');
-        // })
+          this.table.markAsPristine();
         }
       });
       
@@ -260,6 +251,7 @@ export class QuoAlopComponent implements OnInit {
 
     this.alopData.insuredName = data.data.insuredName;
     this.alopData.insuredId = data.data.insuredId;
+    this.form.control.markAsDirty();
   }
 
   openGenericLOV(selector){
@@ -307,7 +299,6 @@ export class QuoAlopComponent implements OnInit {
       }
       data[i].edited = true;
     }
-    console.log(data);
   }
 
   triggerCurrencyDirective(){

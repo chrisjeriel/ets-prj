@@ -183,7 +183,7 @@ export class AttachmentComponent implements OnInit {
             this.dialogIcon = "";
             $('#successModalBtn').trigger('click');
             this.getAttachment();
-            $('.ng-dirty').removeClass('ng-dirty');
+            this.table.markAsPristine();
           }
         });
     }else{
