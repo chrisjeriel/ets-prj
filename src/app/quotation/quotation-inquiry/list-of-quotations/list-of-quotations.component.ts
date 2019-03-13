@@ -186,7 +186,7 @@ export class ListOfQuotationsComponent implements OnInit {
             dataType: 'text'
         },
         ],
-        pageLength: 10,
+        pageLength: 15,
         expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: true, pageStatus: true, pagination: true, pageID: 1,
         keys: ['quotationNo','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','insuredDesc','riskName','objectDesc','site','policyNo','currencyCd'],
     }
