@@ -1,8 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { MaintenanceService } from '@app/_services';
+import { MaintenanceService, NotesService, AuthenticationService } from '@app/_services';
+import { MtnDistrictComponent } from '@app/maintenance/mtn-district/mtn-district.component';
+import { LovComponent } from '@app/_components/common/lov/lov.component';
+import { User } from '@app/_models';
 
 @Component({
     selector: 'app-risk-form',
@@ -10,6 +13,11 @@ import { MaintenanceService } from '@app/_services';
     styleUrls: ['./risk-form.component.css']
 })
 export class RiskFormComponent implements OnInit, OnDestroy {
+
+
+    @ViewChild(LovComponent) lovMdl: LovComponent;
+    @ViewChild(MtnDistrictComponent) districtLov: MtnDistrictComponent;
+
     private sub: any;
     info: string;
     newForm: boolean;
@@ -22,6 +30,7 @@ export class RiskFormComponent implements OnInit, OnDestroy {
     zoneCd: string = "";
     zoneDesc: string = "";
     passLOV:any = {};
+    oldValue: any= "";
     riskData:any = 
         {
             activeTag : 'Y',
@@ -49,10 +58,18 @@ export class RiskFormComponent implements OnInit, OnDestroy {
             zoneDesc : null,
         }
     errorMdlMessage:any;
+    currentUser: User;
 
-    constructor(private route: ActivatedRoute, private titleService: Title, private router: Router,private mtnService: MaintenanceService,private modalService: NgbModal ) { }
+    constructor(private authenticationService: AuthenticationService, private route: ActivatedRoute, private titleService: Title, private router: Router,private mtnService: MaintenanceService,private modalService: NgbModal, private ns: NotesService ) { }
 
     ngOnInit() {
+
+        this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
+
+
+        this.riskData.createUser = this.currentUser.username;
+        this.riskData.updateUser = this.currentUser.username;
+
         this.titleService.setTitle("Pol | Risk");
 
         this.sub = this.route.params.subscribe(params => {
@@ -81,7 +98,13 @@ export class RiskFormComponent implements OnInit, OnDestroy {
             this.newForm = false;
         }
 
-        console.log(this.riskData.activeTag)
+        console.log(this.riskData.activeTag);
+
+        
+
+        setTimeout(() => {
+            $('input[riskdesc]').focus();
+        },0) 
     }
 
     ngOnDestroy(){
@@ -100,7 +123,7 @@ export class RiskFormComponent implements OnInit, OnDestroy {
         $('#crestaZoneModal #modalBtn').trigger('click');
     }
 
-    setDistricts(data){
+    setDistrict(data){
         this.riskData.districtCd = data.districtCd;
         this.riskData.districtDesc = data.districtDesc;
     }
@@ -154,17 +177,143 @@ export class RiskFormComponent implements OnInit, OnDestroy {
     }
 
     setLOVField(data){
-        if(data.selector == 'city'){
-            this.setCity(data.data);
-        }else if(data.selector == 'district'){
-            this.setDistricts(data.data);
-        }else if(data.selector == 'region'){
-            this.setRegion(data.data);
-        }else if(data.selector == 'province'){
-            this.setProvince(data.data);
-        }else if(data.selector == 'block'){
-            this.setBlock(data.data);
+        console.log("setLOVField : "  + JSON.stringify(data));
+        this.ns.lovLoader(data.ev, 0);
+        var resetSucceedingFields = false;
+
+        if(data.selector == 'region'){
+            if (data.data == null) {
+                this.setRegion(data);
+                if (this.oldValue = data.regionCd) {
+                    resetSucceedingFields = true;
+                }
+            } else {
+                this.setRegion(data.data);
+                if (this.oldValue = data.data.regionCd) {
+                    resetSucceedingFields = true;
+                }
+            }
+
+            if (resetSucceedingFields) {
+                this.riskData.provinceCd = '';
+                this.riskData.provinceDesc = '';
+                this.riskData.cityCd = '';
+                this.riskData.cityDesc = '';
+                this.riskData.districtCd = '';
+                this.riskData.districtDesc = '';
+                this.riskData.blockCd = '';
+                this.riskData.blockDesc = '';
+                this.riskData.zoneCd = '';
+                this.riskData.zoneDesc = '';
+            }
+
+        } else if(data.selector == 'province'){
+            if (data.data == null) {
+                this.setRegion(data);
+                this.setProvince(data.provinceList[0]);
+                if (this.oldValue = data.provinceList[0].provinceCd) {
+                    resetSucceedingFields = true;
+                }
+            } else {
+                this.setRegion(data.data);
+                this.setProvince(data.data);
+                if (this.oldValue = data.data.provinceCd) {
+                    resetSucceedingFields = true;
+                }
+            }
+
+            if (resetSucceedingFields) {
+                this.riskData.cityCd = '';
+                this.riskData.cityDesc = '';
+                this.riskData.districtCd = '';
+                this.riskData.districtDesc = '';
+                this.riskData.blockCd = '';
+                this.riskData.blockDesc = '';
+                this.riskData.zoneCd = '';
+                this.riskData.zoneDesc = '';
+            }
+
+        } else if(data.selector == 'city'){
+            if (data.data == null) {
+                this.setRegion(data);
+                this.setProvince(data.provinceList[0]);
+                this.setCity(data.provinceList[0].cityList[0]);
+                this.setCrestaZone(data.provinceList[0].cityList[0]);
+                if (this.oldValue = data.provinceList[0].cityList[0].cityCd) {
+                    resetSucceedingFields = true;
+                }
+            } else {
+                this.setRegion(data.data);
+                this.setProvince(data.data);
+                this.setCity(data.data);
+                this.setCrestaZone(data.data);
+                if (this.oldValue = data.data.cityCd) {
+                    resetSucceedingFields = true;
+                }
+            }
+
+            if (resetSucceedingFields) {
+                this.riskData.districtCd = '';
+                this.riskData.districtDesc = '';
+                this.riskData.blockCd = '';
+                this.riskData.blockDesc = '';
+            }
+
+        } else if(data.selector == 'district'){
+            if (data.data == null) {
+                this.setRegion(data);
+                this.setProvince(data.provinceList[0]);
+                this.setCity(data.provinceList[0].cityList[0]);
+                this.setCrestaZone(data.provinceList[0].cityList[0]);
+                this.setDistrict(data.provinceList[0].cityList[0].districtList[0]);
+                if (this.oldValue = data.provinceList[0].cityList[0].districtList[0].districtCd) {
+                    resetSucceedingFields = true;
+                }
+            } else {
+                this.setRegion(data.data);
+                this.setProvince(data.data);
+                this.setCity(data.data);
+                this.setCrestaZone(data.data);
+                this.setDistrict(data.data);
+                if (this.oldValue = data.data.cityCd) {
+                    resetSucceedingFields = true;
+                }
+            }
+
+            if (resetSucceedingFields) {
+                this.riskData.blockCd = '';
+                this.riskData.blockDesc = '';
+            }
+
+        } else if(data.selector == 'block'){
+            if (data.data == null) {
+                this.setRegion(data);
+                this.setProvince(data.provinceList[0]);
+                this.setCity(data.provinceList[0].cityList[0]);
+                this.setCrestaZone(data.provinceList[0].cityList[0]);
+                this.setDistrict(data.provinceList[0].cityList[0].districtList[0]);
+                this.setBlock(data.provinceList[0].cityList[0].districtList[0].blockList[0]);
+                if (this.oldValue = data.provinceList[0].cityList[0].districtList[0].blockList[0].blockCd) {
+                    resetSucceedingFields = true;
+                }
+            } else {
+                this.setRegion(data.data);
+                this.setProvince(data.data);
+                this.setCity(data.data);
+                this.setCrestaZone(data.data);
+                this.setDistrict(data.data);
+                this.setBlock(data.data);
+                if (this.oldValue = data.data.blockCd) {
+                    resetSucceedingFields = true;
+                }
+            }
+
+            if (resetSucceedingFields) {
+
+            }
         }
+
+        this.ns.lovLoader(data.ev, 0);
     }
 
     onClickCancel(){
@@ -187,5 +336,82 @@ export class RiskFormComponent implements OnInit, OnDestroy {
 
     test(event){
         console.log(event)
+    }
+
+    checkCode(ev, field){
+        if(field === 'region'){
+            this.oldValue = this.riskData.regionCd;
+            if (this.riskData.regionCd == null || this.riskData.regionCd == '') {
+                this.riskData.regionCd = '';
+                this.riskData.regionDesc = '';
+                this.riskData.provinceCd = '';
+                this.riskData.provinceDesc = '';
+                this.riskData.cityCd = '';
+                this.riskData.cityDesc = '';
+                this.riskData.districtCd = '';
+                this.riskData.districtDesc = '';
+                this.riskData.blockCd = '';
+                this.riskData.blockDesc = '';
+                this.riskData.zoneCd = '';
+                this.riskData.zoneDesc = '';
+            } else {
+                this.ns.lovLoader(ev, 1);
+                this.lovMdl.checkCode('region', this.riskData.regionCd, '', '', '', '', ev);
+            }
+        } else if(field === 'province'){
+            this.oldValue = this.riskData.provinceCd;
+            if (this.riskData.provinceCd == null || this.riskData.provinceCd == '') {
+                this.riskData.provinceCd = '';
+                this.riskData.provinceDesc = '';
+                this.riskData.cityCd = '';
+                this.riskData.cityDesc = '';
+                this.riskData.districtCd = '';
+                this.riskData.districtDesc = '';
+                this.riskData.blockCd = '';
+                this.riskData.blockDesc = '';
+                this.riskData.zoneCd = '';
+                this.riskData.zoneDesc = '';
+            } else {
+                this.ns.lovLoader(ev, 1);
+                this.lovMdl.checkCode('province', this.riskData.regionCd, this.riskData.provinceCd, '', '', '', ev);
+            }
+        } else if(field === 'city'){
+            this.oldValue = this.riskData.cityCd;
+            if (this.riskData.cityCd == null || this.riskData.cityCd == '') {
+                this.riskData.cityCd = '';
+                this.riskData.cityDesc = '';
+                this.riskData.districtCd = '';
+                this.riskData.districtDesc = '';
+                this.riskData.blockCd = '';
+                this.riskData.blockDesc = '';
+                this.riskData.zoneCd = '';
+                this.riskData.zoneDesc = '';
+            } else {
+                this.ns.lovLoader(ev, 1);
+                this.lovMdl.checkCode('city', this.riskData.regionCd, this.riskData.provinceCd, this.riskData.cityCd, '', '', ev);
+            }
+        } else if(field === 'district') {
+            this.oldValue = this.riskData.districtCd;
+            if (this.riskData.districtCd == null || this.riskData.districtCd == '') {
+                this.riskData.districtCd = '';
+                this.riskData.districtDesc = '';
+                this.riskData.blockCd = '';
+                this.riskData.blockDesc = '';
+            } else {
+                this.ns.lovLoader(ev, 1);
+                this.lovMdl.checkCode('district',this.riskData.regionCd, this.riskData.provinceCd, this.riskData.cityCd, this.riskData.districtCd, '', ev);
+            }
+        } else if(field === 'block') {
+            this.oldValue = this.riskData.blockCd;
+            if (this.riskData.blockCd == null || this.riskData.blockCd == '') {
+                this.riskData.blockCd = '';
+                this.riskData.blockDesc = '';
+            } else {
+                this.ns.lovLoader(ev, 1);
+                this.lovMdl.checkCode('block',this.riskData.regionCd, this.riskData.provinceCd, this.riskData.cityCd, this.riskData.districtCd, this.riskData.blockCd, ev);
+            }
+        } /*else if(field === 'risk') {
+            this.riskLov.checkCode(this.riskCd, ev);
+        }      */        
     }
 }

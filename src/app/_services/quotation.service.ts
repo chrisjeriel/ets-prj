@@ -127,6 +127,7 @@ export class QuotationService {
         return this.quotationListData;
     }
 
+
     getQuotationHoldCoverInfo(searchParams: any[]) {
         this.holdCoverMonitoringListData = [
             new HoldCoverMonitoringList("HC-CAR-2018-00001-00", "Open", "Phil. Guaranty", "CAR-2018-00066-00-31", "Malayan", "5K Builders", new Date('2018-12-01'), new Date('2018-12-31'), "P8M001KJ", "Juan Cruz", new Date('2018-12-01')),
@@ -139,7 +140,7 @@ export class QuotationService {
         if(searchParams.length < 1){
             params = new HttpParams()
              .set('quotationNo','')
-             .set('status','')
+             .set('status','I')
              .set('cedingName','')
              .set('holdCoverNo','')
              .set('riskName','')
@@ -157,6 +158,24 @@ export class QuotationService {
                 params = params.append(i.key, i.search);
             }
         }
+            return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteHoldCoverListing',{params});
+    }
+
+    getSelectedQuotationHoldCoverInfo(quotationNo) {
+        const params = new HttpParams()
+             .set('quotationNo',quotationNo)
+             .set('status','I')
+             .set('cedingName','')
+             .set('holdCoverNo','')
+             .set('riskName','')
+             .set('insuredDesc','')
+             .set('periodFrom','')
+             .set('periodTo','')
+             .set('compRefHoldCovNo','')
+             .set('reqBy','')
+             .set('reqDate','')
+             .set('expiringInDays','')
+             
             return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteHoldCoverListing',{params});
     }
 
@@ -669,11 +688,11 @@ export class QuotationService {
             return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteGeneralInfoOc',{params});
     }
 
-    getHoldCoverInfo(){
+    getHoldCoverInfo(holdCoverId,holdCoverNo){
         this.holdCoverInfo = [];
         const params = new HttpParams()
-             .set('holdCoverId','75')
-             .set('holdCoverNo','CAR-2019-1-1')
+             .set('holdCoverId','')
+             .set('holdCoverNo',holdCoverNo)
              
             return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteHoldCover',{params});
     }
