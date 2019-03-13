@@ -900,11 +900,18 @@ export class QuotationService {
         return this.http.post('http://localhost:8888/api/quote-service/saveQuoteChangeQuoteStatus',JSON.stringify(changeQuoteData),header);
     }
 
-
     downloadPDF(reportName : string, quoteId : string){
          const params = new HttpParams()
              .set('reportName', reportName)
              .set('quoteId', quoteId);
+        return this.http.get('http://localhost:8888/api/util-service/generateReport',{ params,'responseType': 'blob'});
+    }
+
+    downloadPDFHC(reportName : string, quoteId : string,  holdCoverId : string){
+         const params = new HttpParams()
+             .set('reportName', reportName)
+             .set('quoteId', quoteId)
+             .set('holdCovId', holdCoverId);
         return this.http.get('http://localhost:8888/api/util-service/generateReport',{ params,'responseType': 'blob'});
     }
 

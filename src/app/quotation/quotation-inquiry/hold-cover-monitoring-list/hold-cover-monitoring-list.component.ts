@@ -277,7 +277,7 @@ export class HoldCoverMonitoringListComponent implements OnInit {
            this.printParams();
          }else if (this.printType == 'PRINTER'){
            if(this.validate(this.prepareParam())){
-                this.printPDF(this.selectedReport,this.quoteId);
+                this.printPDF(this.selectedReport,this.quoteId,this.holdCoverId);
                 this.printParams();
            } else {
                 this.dialogIcon = "error";
@@ -286,14 +286,14 @@ export class HoldCoverMonitoringListComponent implements OnInit {
                 setTimeout(()=>{$('.globalLoading').css('display','none');},0);
            }
          }else if (this.printType == 'PDF'){
-           this.downloadPDF(this.selectedReport,this.quoteId);
+           this.downloadPDFHC(this.selectedReport,this.quoteId,this.holdCoverId);
            this.printParams();
          }   
     }
 
-    downloadPDF(reportName : string, quoteId : string){
-       var fileName = this.quoteNoCmp;
-       this.quotationService.downloadPDF(reportName,quoteId).subscribe( data => {
+    downloadPDFHC(reportName : string, quoteId : string, holdCoverId : string ){
+       var fileName = this.holdNoCmp;
+       this.quotationService.downloadPDFHC(reportName,quoteId,holdCoverId).subscribe( data => {
               var newBlob = new Blob([data], { type: "application/pdf" });
               var downloadURL = window.URL.createObjectURL(data);
               var link = document.createElement('a');
@@ -303,9 +303,8 @@ export class HoldCoverMonitoringListComponent implements OnInit {
        });
     }
 
-    printPDF(reportName : string, quoteId : string){
-       var fileName = this.quoteNoCmp;
-       this.quotationService.downloadPDF(reportName,quoteId).subscribe( data => {
+    printPDF(reportName : string, quoteId : string, holdCoverId : string){
+       this.quotationService.downloadPDFHC(reportName,quoteId,holdCoverId).subscribe( data => {
               var newBlob = new Blob([data], { type: "application/pdf" });
               var downloadURL = window.URL.createObjectURL(data);
               const iframe = document.createElement('iframe');
