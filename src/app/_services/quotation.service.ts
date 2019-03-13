@@ -822,6 +822,16 @@ export class QuotationService {
         return this.http.post('http://localhost:8888/api/quote-service/saveQuoteGeneralInfo', saveQuoteGeneralInfoParam, header);
     }
 
+     saveQuoteGeneralInfoOc(saveQuoteGeneralInfoParam) {
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+
+        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteGeneralInfoOc', saveQuoteGeneralInfoParam, header);
+    }
+
 
  
     saveQuoteHoldCover(params){

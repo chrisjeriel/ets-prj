@@ -304,8 +304,8 @@ export class GenInfoComponent implements OnInit, OnDestroy {
     $('#cedingCoIdLov #modalBtn').trigger('click');
   }
   setCedingCo(data){
-    this.genInfoOcData.cedingId  = data.coNo;
-    this.genInfoOcData.cedingName  = data.name;
+    this.genInfoOcData.cedingId  = data.cedingId;
+    this.genInfoOcData.cedingName  = data.cedingName;
     this.loading = false;
   }
   //end ceding company lov
@@ -463,14 +463,88 @@ export class GenInfoComponent implements OnInit, OnDestroy {
   //parse open quotation no
   plainOpenQuotationNo(data: string){
     var arr = data.split('-');
-
-    return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]) + '-' + parseInt(arr[5]);
+    if(parseInt(arr[5]) > 99){
+      return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]) + '-' + parseInt(arr[5]);
+    }else{
+      return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]) + '-0' + parseInt(arr[5]);
+    }
+    
   }
 
-  saveOpenQuotation(){
-    console.log('ProjectOc');
+  saveOpenQuotation(){  
+      let params:any = {
+        "approvedBy": this.genInfoOcData.approvedBy,
+        "cedingId": this.checkIdFormat(this.genInfoOcData.cedingId),
+        "cessionId": this.genInfoOcData.cessionId,
+        "closingParag": this.genInfoOcData.approvedBy,
+        "contractorId": this.genInfoOcData.contractorId,
+        "createDate": this.genInfoOcData.createDate,
+        "createUser": this.genInfoOcData.createUser,
+        "currencyCd": this.genInfoOcData.currencyCd,
+        "currencyRt": this.genInfoOcData.currencyRt,
+        "duration": this.projectOc.duration,
+        "expiryDate": this.genInfoOcData.expiryDate,
+        "govtTag": this.genInfoOcData.govtTag,
+        "indicativeTag": this.genInfoOcData.indicativeTag,
+        "insuredDesc": this.genInfoOcData.insuredDesc,
+        "intmId": this.genInfoOcData.intmId,
+        "issueDate": this.genInfoOcData.issueDate,
+        "lineCd": this.genInfoOcData.lineCd,
+        "lineClassCd": this.genInfoOcData.lineClassCd,
+        "maxSi": this.projectOc.maxSi,
+        "objectId": this.checkIdFormat(this.projectOc.objectId),
+        "openingParag": this.genInfoOcData.openingParag,
+        "pctShare": this.projectOc.pctShare,
+        "policyIdOc": this.genInfoOcData.policyIdOc,
+        "preparedBy": this.genInfoOcData.preparedBy,
+        "prinId": this.genInfoOcData.prinId,
+        "printDate": this.genInfoOcData.printDate,
+        "printedBy": this.genInfoOcData.printedBy,
+        "prjCreateDate": this.projectOc.createDate,
+        "prjCreateUser": this.projectOc.createUser,
+        "prjUpdateDate": this.projectOc.updateDate,
+        "prjUpdateUser": this.projectOc.updateUser,
+        "projDesc": this.projectOc.projDesc,
+        "projId": this.projectOc.projId,
+        "quoteIdOc": this.genInfoOcData.quoteIdOc,
+        "reasonCd": this.genInfoOcData.reasonCd,
+        "refPolNo": this.genInfoOcData.refPolNo,
+        "reinsurerId": this.genInfoOcData.reinsurerId,
+        "reqBy": this.genInfoOcData.reqBy,
+        "reqDate": this.genInfoOcData.reqDate,
+        "reqMode": this.genInfoOcData.reqMode,
+        "revNo": this.genInfoOcData.revNo,
+        "riskId": this.projectOc.riskId,
+        "seqNo": this.genInfoOcData.seqNo,
+        "site": this.projectOc.site,
+        "status": this.genInfoOcData.status,
+        "testing": this.projectOc.testing,
+        "totalValue": this.projectOc.totalValue,
+        "updateDate": this.genInfoOcData.updateDate,
+        "updateUser": this.genInfoOcData.updateUser,
+        "year": this.genInfoOcData.year
+      }
+    /*console.log('ProjectOc');
     console.log(this.projectOc);
     console.log('Quotation');
-    console.log(this.genInfoOcData);
+    console.log(this.genInfoOcData);*/
+    console.log(params);
+    console.log(JSON.stringify(params));
+    this.quotationService.saveQuoteGeneralInfoOc(JSON.stringify(params)).subscribe((data: any) =>{
+      console.log(data);
+    })
+  }
+
+  checkIdFormat(id: any){
+    if(parseInt(id) > 99){
+      return id;
+    }else{
+      if(parseInt(id) > 9){
+        return '0'+id;
+      }
+      else if(parseInt(id) < 9){
+        return '00'+id;
+      }
+    }
   }
 }
