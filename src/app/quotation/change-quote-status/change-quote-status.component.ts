@@ -98,21 +98,27 @@ export class ChangeQuoteStatusComponent implements OnInit {
         });
     }
 
-    savetest(){
-        this.quotationService.saveChangeQuoteStatus(this.saveData).subscribe(data => {
-            if(data['returnCode'] == 0) {
-                this.dialogMessage = data['errorList'][0].errorMessage;
-                this.dialogIcon = "error";
-                $('#successModalBtn').trigger('click');
-            } else{
-                this.dialogMessage="";
-                this.dialogIcon = "";
-                $('#successModalBtn').trigger('click');
-                $('.ng-dirty').removeClass('ng-dirty');
-                this.emptyVariables();
-                this.getChangeQuote();
-            }
-       });
+    saveProcess(){
+        if(this.saveData.changeQuoteStatus.length != 0){
+            this.quotationService.saveChangeQuoteStatus(this.saveData).subscribe(data => {
+                if(data['returnCode'] == 0) {
+                    this.dialogMessage = data['errorList'][0].errorMessage;
+                    this.dialogIcon = "error";
+                    $('#successModalBtn').trigger('click');
+                } else{
+                    this.dialogMessage="";
+                    this.dialogIcon = "";
+                    $('#successModalBtn').trigger('click');
+                    $('.ng-dirty').removeClass('ng-dirty');
+                    this.emptyVariables();
+                    this.getChangeQuote();
+                }
+           });
+        }else{
+            this.dialogMessage = "Nothing to save.";
+            this.dialogIcon = "info"
+            $('#successModalBtn').trigger('click');
+        }
     }
 
     emptyVariables(){
@@ -133,7 +139,7 @@ export class ChangeQuoteStatusComponent implements OnInit {
            this.saveData.reasonCd = "";
        }
        
-       this.savetest();
+       this.saveProcess();
     }
 
     query() {
@@ -152,6 +158,17 @@ export class ChangeQuoteStatusComponent implements OnInit {
                     for(var j=0;j<this.saveData.changeQuoteStatus.length;j++){
                         if(this.saveData.changeQuoteStatus[j].quoteId == rec.quoteId){
                             this.saveData.changeQuoteStatus.pop(this.saveData.changeQuoteStatus[j])
+                            this.selectedData  = {
+                                quotationNo: null,
+                                status: null,
+                                cedingName: null,
+                                insuredDesc: null,
+                                riskName: null,
+                                processor: null,
+                                reasonCd: null,
+                                description: null,
+                                remarks: null
+                            }
                         }
                     }
                 }
@@ -165,7 +182,17 @@ export class ChangeQuoteStatusComponent implements OnInit {
     }
 
     save(cancelFlag?){
-
+        console.log('pasok')
+        this.saveData.statusCd = this.selectedData.statusCd;
+        this.cancelFlag = cancelFlag !== undefined;
+            
+        if(this.selectedData.statusCd == 9){
+            this.saveData.reasonCd = this.selectedData.reasonCd;
+        }else{
+            this.saveData.reasonCd = "";
+        }
+        
+        this.saveProcess();
     }
 
     openReasonLOV(){

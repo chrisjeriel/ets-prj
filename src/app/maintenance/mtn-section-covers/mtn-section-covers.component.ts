@@ -19,7 +19,7 @@ export class MtnSectionCoversComponent implements OnInit {
   sectionCover: any = {
     tableData: [],
     tHeader: ['Section','Bullet No','Cover Code','Cover Code Name','Add SI'],
-    dataTypes: ['text', 'text','text','text','text','text'],
+    dataTypes: ['text', 'text','sequence-3','text','text'],
     pageLength: 10,
     searchFlag: true,
     pageStatus: true,
@@ -49,10 +49,41 @@ export class MtnSectionCoversComponent implements OnInit {
         this.maintenanceService.getMtnSectionCovers(this.lineCd,this.coverCd).subscribe((data: any) =>{
           /*console.log(data.sectionCovers.filter((a)=>{return this.hideSectionCoverArray.indexOf(parseInt(a.coverCd))==-1}));
           console.log(this.hideSectionCoverArray)*/
-          console.log(data)
           this.sectionCover.tableData = data.sectionCovers.filter((a)=>{return this.hideSectionCoverArray.indexOf(a.coverCd)==-1})
            this.table.refreshTable();
         });
 
   }
+
+  /*checkCode(code, ev) {
+    if(code === ''){
+      this.selectedData.emit({
+        section: '',
+        bulletNo: '',
+        coverCd: '',
+        coverCdAbbr: '',
+        addSi: '',
+        ev: ev
+      });
+    } else {
+      this.maintenanceService.getMtnSectionCovers(this.lineCd,this.coverCd).subscribe((data: any) =>{  
+        if(data['sectionCovers'].length > 0) {
+          data['sectionCovers'][0]['ev'] = ev;
+          this.selectedData.emit(data['sectionCovers'][0]);
+        } else {
+          this.selectedData.emit({
+            section: '',
+            bulletNo: '',
+            coverCd: '',
+            coverCdAbbr: '',
+            addSi: '',
+            ev: ev
+          });
+            
+          $('#sectionCovers > #modalBtn').trigger('click');
+        }
+        
+      });  
+    }
+  }*/
 }
