@@ -124,8 +124,8 @@ export class QuoteOptionComponent implements OnInit {
     cancelFlag:boolean;
     showModal: boolean = false;
     defaultSectionCvrs:any[] = [];
-    selectedOption : any = {};
-    selectedCover : any ={};
+    selectedOption : any = null;
+    selectedCover : any =null;
     fromCovers: boolean = false;
 
     constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,
@@ -431,32 +431,46 @@ cancel(){
     
     if(this.deductibleTable!==undefined){
       this.deductibleTable.loadingFlag = true;
+      let params:any ={
+          quoteId:this.quoteId,
+          optionId:this.selectedOption.optionId,
+          coverCd: data.coverCd === undefined ? 0 : data.coverCd,
+          quotationNo: ''
+        };
+      this.quotationService.getDeductibles(params).subscribe((data)=>{
+          if(data['quotation'].optionsList != null){
+            this.deductiblesData.tableData = data['quotation'].optionsList[0].deductiblesList;
+            this.deductibleTable.refreshTable();
+          }
+          else
+            this.getDefaultDeductibles();
+        });
     }else{
       if((this.fromCovers && this.selectedCover!==null) || (!this.fromCovers && this.selectedOption!==null)){
-      this.showModal = true;
-      setTimeout(()=>{
-        this.deductiblesModal.openNoClose();
-      },0)
+        this.showModal = true;
+        setTimeout(()=>{
+          this.deductiblesModal.openNoClose();
+        },0)
 
-      if(!this.fromCovers){
-        this.deductiblesData.nData.coverCd = 0;
-      }else{
-        this.deductiblesData.nData.coverCd = data.coverCd;
-      }
-      let params:any ={
-        quoteId:this.quoteId,
-        optionId:this.selectedOption.optionId,
-        coverCd: data.coverCd === undefined ? 0 : data.coverCd,
-        quotationNo: ''
-      };
-      this.quotationService.getDeductibles(params).subscribe((data)=>{
-        if(data['quotation'].optionsList != null){
-          this.deductiblesData.tableData = data['quotation'].optionsList[0].deductiblesList;
-          this.deductibleTable.refreshTable();
+        if(!this.fromCovers){
+          this.deductiblesData.nData.coverCd = 0;
+        }else{
+          this.deductiblesData.nData.coverCd = data.coverCd;
         }
-        else
-          this.getDefaultDeductibles();
-      });
+        let params:any ={
+          quoteId:this.quoteId,
+          optionId:this.selectedOption.optionId,
+          coverCd: data.coverCd === undefined ? 0 : data.coverCd,
+          quotationNo: ''
+        };
+        this.quotationService.getDeductibles(params).subscribe((data)=>{
+          if(data['quotation'].optionsList != null){
+            this.deductiblesData.tableData = data['quotation'].optionsList[0].deductiblesList;
+            this.deductibleTable.refreshTable();
+          }
+          else
+            this.getDefaultDeductibles();
+        });
     }
     }
     
