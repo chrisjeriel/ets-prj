@@ -100,7 +100,7 @@ export class QuoteOptionComponent implements OnInit {
         pageID: 2,
         keys: ['deductibleCd','deductibleTitle','deductibleTxt','deductibleRt','deductibleAmt','sumInsured'],
         widths: [60,'auto',100,120,'auto'],
-        uneditable: [true,true,true,true],
+        uneditable: [true,true],
         magnifyingGlass: ['deductibleCd']
     }
 
@@ -484,7 +484,7 @@ cancel(){
     this.uwService.getMaintenanceDeductibles(this.quotationNum.substring(0,3),'',
         this.deductiblesData.nData.coverCd,'0','Y','Y').subscribe((data)=>{
           this.deductiblesData.tableData = data['deductibles'].filter((a)=>{
-            a.sumInsured = 0;
+            a.sumInsured = this.selectedCover.amount;
             a.coverCd = this.deductiblesData.nData.coverCd;
             a.deductibleTxt = a.deductibleText;
             a.deductibleRt = a.deductibleRate;

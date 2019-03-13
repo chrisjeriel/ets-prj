@@ -47,6 +47,168 @@ export class LovComponent implements OnInit {
   	this.selectedData.emit(this.passData);
   }
 
+  checkCode(selector?,regionCd?, provinceCd?, cityCd?, districtCd?, blockCd?, ev?) {
+
+    console.log("checkCode in lov component");
+
+    if (selector == 'region') {
+      if (regionCd === '') {
+        this.selectedData.emit({
+          data: null,
+          ev: ev
+        });
+      } else {
+        this.mtnService.getMtnRegion(regionCd).subscribe((data: any) => {
+            console.log("Data from LOV: " + JSON.stringify(data));
+            if(data.region.length > 0) {
+              data.region[0]['ev'] = ev;
+              data.region[0]['selector'] = selector;
+              this.selectedData.emit(data['region'][0]);
+            } else {
+              this.selectedData.emit({
+                data: null,
+                ev: ev
+              });
+              this.passData.regionCd = '';
+              this.passData.selector = 'region';
+              $('#lovMdl > #modalBtn').trigger('click');
+            }
+        });
+      }
+    } else if (selector == 'province') {
+      if (provinceCd === '') {
+        this.selectedData.emit({
+          data: null,
+          ev: ev
+        });
+      } else {
+        this.mtnService.getMtnProvince(regionCd, provinceCd).subscribe((data: any) => {
+            console.log("Data from LOV: " + JSON.stringify(data));
+            if(data.region.length > 0) {
+              data.region[0]['ev'] = ev;
+              data.region[0]['selector'] = selector;
+              this.selectedData.emit(data['region'][0]);
+            } else {
+              this.selectedData.emit({
+                data: null,
+                ev: ev
+              });
+
+              this.passData.regionCd = regionCd;
+              this.passData.selector = 'province';
+              $('#lovMdl > #modalBtn').trigger('click');
+            }
+        });
+      }
+    } else if (selector == 'city') {
+      if (cityCd === '') {
+        this.selectedData.emit({
+          data: null,
+          ev: ev
+        });
+      } else {
+        this.mtnService.getMtnCity(regionCd, provinceCd, cityCd).subscribe((data: any) => {
+            console.log("Data from LOV: " + JSON.stringify(data));
+            if(data.region.length > 0) {
+              data.region[0]['ev'] = ev;
+              data.region[0]['selector'] = selector;
+              this.selectedData.emit(data['region'][0]);
+            } else {
+              this.selectedData.emit({
+                data: null,
+                ev: ev
+              });
+
+              this.passData.regionCd = regionCd;
+              this.passData.provinceCd = provinceCd;
+              this.passData.selector = 'city';
+              $('#lovMdl > #modalBtn').trigger('click');
+            }
+        });
+      }
+    } else if (selector == 'district') {
+      if (districtCd === '') {
+        this.selectedData.emit({
+          data: null,
+          ev: ev
+        });
+      } else {
+        this.mtnService.getMtnDistrict(regionCd, provinceCd, cityCd, districtCd).subscribe((data: any) => {
+            console.log("Data from LOV: " + JSON.stringify(data));
+            if(data.region.length > 0) {
+              data.region[0]['ev'] = ev;
+              data.region[0]['selector'] = selector;
+              this.selectedData.emit(data['region'][0]);
+            } else {
+              this.selectedData.emit({
+                data: null,
+                ev: ev
+              });
+
+              this.passData.regionCd = regionCd;
+              this.passData.provinceCd = provinceCd;
+              this.passData.cityCd = cityCd;
+              this.passData.selector = 'district';
+              $('#lovMdl > #modalBtn').trigger('click');
+            }
+        });
+      }
+    } else if (selector == 'block') {
+      if (blockCd === '') {
+        this.selectedData.emit({
+          data: null,
+          ev: ev
+        });
+      } else {
+        this.mtnService.getMtnBlock(regionCd, provinceCd, cityCd, districtCd, blockCd).subscribe((data: any) => {
+            console.log("Data from LOV: " + JSON.stringify(data));
+            if(data.region.length > 0) {
+              data.region[0]['ev'] = ev;
+              data.region[0]['selector'] = selector;
+              this.selectedData.emit(data['region'][0]);
+            } else {
+              this.selectedData.emit({
+                data: null,
+                ev: ev
+              });
+
+              this.passData.regionCd = regionCd;
+              this.passData.provinceCd = provinceCd;
+              this.passData.cityCd = cityCd;
+              this.passData.districtCd = districtCd;
+              this.passData.selector = 'block';
+              $('#lovMdl > #modalBtn').trigger('click');
+            }
+        });
+      }
+    }
+
+
+    /*if(districtCd === ''){
+      this.selectedData.emit({
+        data: null,
+        ev: ev
+      });
+    } else {
+      this.mtnService.getMtnDistrict(regionCd, provinceCd, cityCd, districtCd).subscribe(data => {
+        console.log("Data from LOV: " + JSON.stringify(data['region'][0]));
+        if(data['region'].length > 0) {
+          data['region'][0]['ev'] = ev;
+          this.selectedData.emit(data['region'][0]);
+        } else {
+          this.selectedData.emit({
+            districtCd: '',
+            description: '',
+            ev: ev
+          });
+            
+          $('#districtMdl > #modalBtn').trigger('click');
+        }
+        
+      });  
+    }*/
+  }
+
   openModal(){
     this.passTable.tableData = [];
   	if(this.passData.selector == 'insured'){
@@ -87,7 +249,7 @@ export class LovComponent implements OnInit {
               row.cityDesc = data.region[regionCount].provinceList[provinceCount].cityList[cityCount].cityDesc;
               row.remarks = data.region[regionCount].provinceList[provinceCount].cityList[cityCount].remarks;
               row.zoneCd = data.region[regionCount].provinceList[provinceCount].cityList[cityCount].zoneCd;
-              row.zoneCdDesc = data.region[regionCount].provinceList[provinceCount].cityList[cityCount].zoneCdDesc;
+              row.zoneDesc = data.region[regionCount].provinceList[provinceCount].cityList[cityCount].zoneDesc;
               this.passTable.tableData.push(row);
             }
           }
@@ -121,6 +283,8 @@ export class LovComponent implements OnInit {
                 row.provinceDesc = data.region[a].provinceList[b].provinceDesc;
                 row.cityCd = data.region[a].provinceList[b].cityList[c].cityCd;
                 row.cityDesc = data.region[a].provinceList[b].cityList[c].cityDesc;
+                row.zoneCd = data.region[a].provinceList[b].cityList[c].zoneCd;
+                row.zoneDesc = data.region[a].provinceList[b].cityList[c].zoneDesc;
                 row.districtCd = data.region[a].provinceList[b].cityList[c].districtList[d].districtCd;
                 row.districtDesc = data.region[a].provinceList[b].cityList[c].districtList[d].districtDesc;
                 this.passTable.tableData.push(row);
@@ -212,6 +376,8 @@ export class LovComponent implements OnInit {
                                  row.provinceDesc = data.region[a].provinceList[b].provinceDesc;
                                  row.cityCd = data.region[a].provinceList[b].cityList[c].cityCd;
                                  row.cityDesc = data.region[a].provinceList[b].cityList[c].cityDesc;
+                                 row.zoneCd = data.region[a].provinceList[b].cityList[c].zoneCd;
+                                 row.zoneDesc = data.region[a].provinceList[b].cityList[c].zoneDesc;
                                  row.districtCd = data.region[a].provinceList[b].cityList[c].districtList[d].districtCd;
                                  row.districtDesc = data.region[a].provinceList[b].cityList[c].districtList[d].districtDesc;
                                  row.blockCd = data.region[a].provinceList[b].cityList[c].districtList[d].blockList[e].blockCd;

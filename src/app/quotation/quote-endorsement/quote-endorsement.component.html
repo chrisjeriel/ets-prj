@@ -4,15 +4,15 @@
         <div class="form-row custom-row-inline-inset">
             <div class="input-group">
                 <label class="form-control-sm col-sm-2" for="inputQuonum">Quotation No </label>
-                <input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="quotationInfo.quotationNo"
+                <input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-2" [ngModel]="(OpenCover) ? ocQuoteData.openQuotationNo : quotationInfo.quotationNo"
                     disabled="disabled">
                 <label class="form-control-sm col-sm-1" for="inputInname">Insured</label>
-                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-6" [ngModel]="quotationInfo.quotationNo"
+                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-6" [ngModel]="(OpenCover) ? ocQuoteData.insured : quotationInfo.insuredDesc"
                     disabled="disabled">
             </div>
             <div class="input-group">
                 <label class="form-control-sm col-sm-2" for="inputRisk">Risk</label>
-                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-9" [(ngModel)]="quotationInfo.riskName"
+                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-9" [ngModel]="(OpenCover) ? ocQuoteData.riskName : quotationInfo.riskName"
                     disabled="disabled">
             </div>
         </div>
@@ -39,16 +39,13 @@
         <div class="row">
             <div class="col-sm-1"></div>
             <div class="col-sm-10" style="margin-top: 0.7em; margin-bottom: -0.4%;">
-                <app-cust-editable-non-datatable id="endorsmentTable" [passData]="endorsementData" (clickLOV)="clickEndtLOV($event)" *ngIf="!OpenCover">
+                <app-cust-editable-non-datatable #endorsment id="endorsmentTable" [passData]="endorsementData" (clickLOV)="clickEndtLOV($event)" *ngIf="!OpenCover">
                     <ng-container controls-l>
-                        <button [class.d-none]="inquiryFlag" class="cust-btn" (click)="clickModal($event)"  style="margin-right: 0px !important;">Copy Endt</button>
+                        <button [class.d-none]="inquiryFlag" class="cust-btn" (click)="clickModal($event)">Copy Endt</button>
+                        <button [class.d-none]="inquiryFlag" class="cust-btn" (click)="clickModal($event)"  style="margin-right: 0px !important;">Deductibles</button>
                     </ng-container>
                 </app-cust-editable-non-datatable>
                 <app-cust-editable-non-datatable id="endorsmentOCTable" [passData]="endorsementOCData" (clickLOV)="clickEndtLOV($event)" *ngIf="OpenCover">
-                    <ng-container controls-l>
-                        <button [class.d-none]="inquiryFlag" class="cust-btn" (click)="clickModal($event)"  style="margin-right: 0px !important;">Copy
-                            Endt</button>
-                    </ng-container>
                 </app-cust-editable-non-datatable>
             </div>
             <div class="col-sm-1"></div>
@@ -70,39 +67,21 @@
 <app-modal hidden [btnTitle]="'Copy Endt'" class="copy-endt" id="idMdl">
     <div header>Copy Endorsment</div>
     <div body>
-        <div style="margin-top: -2em;">
-            <table id="non-datatable">
-                <thead>
-                    <tr>
-                        <th class="noborder"><span class="gridHeader">Copy From</span></th>
-                        <th class="noborder"></th>
-                        <th><span class="gridHeader">Copy To</span></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let data of optionNos; let i = index">
-                        <td *ngIf="i%10==0">Option 1</td>
-                        <td *ngIf="i%10!=0"></td>
-                        <td style="text-align: center !important"><input type="checkbox" class="copyCheckBox" name=""></td>
-                        <td>Option No {{data}} </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </tbody>
-            </table>
+        <div>
+            <div class="custom-row-inline-inset">
+                <div class="input-group">
+                    <label class="form-control-sm col-sm-7">Copy from Option No</label>
+                    <input type="text" class="form-control form-control-sm col-sm-3" [ngModel]="currentSelectedOption" readonly>
+                    <label class="form-control-sm col-sm"></label>
+                </div>
+            </div>
+            <app-cust-editable-non-datatable [passData]="copyEndtTable" (newClick)="copyEndtRowClick($event)"></app-cust-editable-non-datatable>
         </div>
     </div>
     <div footer style="margin: auto;">
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+        <button *ngIf="copyEndtOkBtn" class="cust-btn" type="button" (click)="modalService.dismissAll(); beginCopyEndt();"><a>Ok</a></button>
+        <button *ngIf="!copyEndtOkBtn" class="cust-btn cust-btn-disabled" type="button"><a>Ok</a></button>
     </div>
 </app-modal>
 
@@ -134,3 +113,26 @@
 <app-confirm-save (onYes)="saveData()"></app-confirm-save>
 <app-sucess-dialog id="quote-endorsment" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 <app-cancel-button (onYes)="saveData('cancel')" [url]="cancelLink" ></app-cancel-button>
+
+
+<ng-container *ngIf="showModal">
+    <app-modal class="d-none" id="deductiblesModal">
+        <div header>Deductibles Per Section Cover</div>
+        <div body>
+            <div class="d-flex">
+                <label class="form-control-sm col-sm-1" for="inputInname">Option No</label>
+                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-1 text-right" readonly="readonly" [(ngModel)]="selectedOption.optionId">
+                <label class="form-control-sm col-sm-2 text-right" for="inputInname" *ngIf="fromCovers">Cover Code Name</label>
+                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-4" readonly="readonly" [(ngModel)]="selectedCover.coverCdDesc" *ngIf="fromCovers ">
+            </div>
+            <fieldset class="scheduler-border" style="padding:0.5em !important" >
+                <app-cust-editable-non-datatable #deductibleTable  id="deductibleTable" (onDataChange)="deductibleTable.tableData=$event" [passData]="deductiblesData" (clickLOV)="clickDeductiblesLOV($event)"></app-cust-editable-non-datatable>
+            </fieldset>
+        </div>
+        <div footer>
+            <button class="cust-btn" (click)="showModal=false;deductiblesModal.closeModal()">Cancel</button>
+            <button class="cust-btn" (click)="onClickSaveDeductibles()">Save</button>
+        </div>
+    </app-modal>
+</ng-container>
+<app-lov id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)"></app-lov>

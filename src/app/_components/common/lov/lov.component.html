@@ -1,4 +1,4 @@
-<app-modal class="d-none" (modalOpened)="openModal()">
+<app-modal class="d-none" (modalOpened)="openModal()" id="lovMdl">
 	<div header>List of Values</div>
 	<div body *ngIf="modalOpen">
 		<app-cust-non-datatable [passData]="passTable" (rowClick)="select($event)"></app-cust-non-datatable>

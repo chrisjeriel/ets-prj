@@ -18,6 +18,8 @@ export class OpenCoverInquiryComponent implements OnInit {
   selectedArr: any = [];
   ocLine: string = "";
   ocTypeOfCession = "";
+  ocQuoteNo: string = "";
+  mtnCessionDesc: string = "";
 
   passDataOpenCoverInquiry: any = {
     tableData: [],
@@ -137,7 +139,7 @@ export class OpenCoverInquiryComponent implements OnInit {
   }
 
   onRowDblClick(event) {
-    //line
+    /*//line
     this.selectedArr = (event.target.closest('tr').children[0].innerText).split("-");
     this.ocLine = this.selectedArr[1];
     //end line
@@ -149,7 +151,22 @@ export class OpenCoverInquiryComponent implements OnInit {
     setTimeout(() => {
       this.checkLine(this.ocLine);
     }, 100);
+*/
+    for (var i = 0; i < event.target.closest("tr").children.length; i++) {
+      this.quotationService.rowData[i] = event.target.closest("tr").children[i].innerText;
+    }
 
+    this.ocLine = this.quotationService.rowData[0].split("-")[1];
+    this.ocQuoteNo  = this.quotationService.rowData[0];
+    this.mtnCessionDesc =  this.quotationService.rowData[1];
+
+    /*this.ocLine = this.selectedOpenQuotationNo.openQuotationNo.split('-')[1];
+    this.ocQuoteNo = this.selectedOpenQuotationNo.openQuotationNo;
+    this.mtnCessionDesc = this.selectedOpenQuotationNo.cessionDesc;*/
+
+    setTimeout(() => {
+      this.router.navigate(['/open-cover', { line: this.ocLine, from: "oc-processing", typeOfCession: this.mtnCessionDesc, fromBtn: 'view', ocQuoteNo: this.ocQuoteNo, inquiryFlag: true }], { skipLocationChange: true });
+    }, 100);
   }
 
   onRowClick(event) {

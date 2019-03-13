@@ -282,6 +282,11 @@ export class GeneralInfoComponent implements OnInit {
 
 					this.genInfoData.currencyCd = curr.currencyCd;
 					this.genInfoData.currencyRt = curr.currencyRt;
+
+					setTimeout(() => {
+						$('input[appCurrencyRate]').focus();
+						$('input[appCurrencyRate]').blur();
+					},0)
 				});
 
 				this.maintenanceService.getLineClassLOV(this.line).subscribe(data => {					
@@ -753,7 +758,7 @@ export class GeneralInfoComponent implements OnInit {
   		} else if(field === 'cedingCoNotMember') { 
   			this.cedingCoNotMemberLov.checkCode(this.genInfoData.reinsurerId, ev);
   		} else if(field === 'intermediary') {
-  			console.log(this.genInfoData.intmId);
+  			console.log('change' + this.genInfoData.intmId);
   			this.intermediaryLov.checkCode(this.genInfoData.intmId, ev);
   		} else if(field === 'principal') {
   			this.insuredLovs['first'].checkCode(this.genInfoData.principalId, '#principalLOV', ev);
@@ -777,8 +782,12 @@ export class GeneralInfoComponent implements OnInit {
 	}
 
 	test() {
-		console.log('cont');
-		this.genInfoData.intmId = this.genInfoData.intmId.toString().padStart(3, '0');
+		console.log('blur' + this.genInfoData.intmId);
+		if(this.genInfoData.intmId != 0){
+			this.genInfoData.intmId = String(this.genInfoData.intmId).padStart(3, '0');	
+		} else {
+			this.genInfoData.intmId = '';
+		}
 	}
 
 	showUsersLOV() {
@@ -790,7 +799,6 @@ export class GeneralInfoComponent implements OnInit {
 		this.genInfoData.preparedBy = data.userId;
 		this.ns.lovLoader(data.ev, 0);
 	}
-
 }
 export interface SelectRequestMode {
 	name: string;
