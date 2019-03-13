@@ -84,7 +84,7 @@ div.filler{
     border: 1px solid #ddd;
 }
 
-/*#non-datatable tr:nth-child(even){background-color: #f2f2f2;}*/
+#non-datatable tr:nth-child(even){background-color: #f2f2f2;}
 
 #non-datatable tr:hover {background-color: #ffffb3;}
 /*#non-datatable tr:active {background-color: #67b4fc;}*/
@@ -97,7 +97,7 @@ div.filler{
     color: black;
 }
 .selected{
-    background-color: #67b4fc !important;
+    background-color: #67b4fc82 !important; /*#67b4fc !important;*/
 }
 
 .headcol {

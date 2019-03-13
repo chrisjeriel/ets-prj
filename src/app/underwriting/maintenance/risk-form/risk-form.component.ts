@@ -58,8 +58,6 @@ export class RiskFormComponent implements OnInit, OnDestroy {
             zoneDesc : null,
         }
     errorMdlMessage:any;
-    dialogIcon:string;
-    dialogMessage:string;
     currentUser: User;
 
     constructor(private authenticationService: AuthenticationService, private route: ActivatedRoute, private titleService: Title, private router: Router,private mtnService: MaintenanceService,private modalService: NgbModal, private ns: NotesService ) { }
@@ -125,55 +123,9 @@ export class RiskFormComponent implements OnInit, OnDestroy {
         $('#crestaZoneModal #modalBtn').trigger('click');
     }
 
-// <<<<<<< HEAD
-//     setDistricts(data){
-// // <<<<<<< HEAD
-// //         this.riskData.districtCd = data.districtCd;
-// //         this.riskData.districtDesc = data.districtDesc;
-// //         this.riskData.cityCd = data.cityCd;
-// //         this.riskData.cityDesc = data.cityDesc;
-// //         this.riskData.provinceCd = data.provinceCd;
-// //         this.riskData.provinceDesc = data.provinceDesc;
-// //         this.riskData.regionCd = data.regionCd;
-// //         this.riskData.regionDesc = data.regionDesc;
-// // =======
-//         this.ns.lovLoader(data.ev, 0);
-
-//         if (data.districtCd != null) {
-//             this.setRegion(data);
-//             this.setProvince(data);
-//             this.setCity(data);
-//             this.setCrestaZone(data);
-//             this.riskData.districtCd = data.districtCd;
-//             this.riskData.districtDesc = data.districtDesc;
-//         } else {
-//             /*if (this.riskData.regionCd == null) {
-//                 this.setRegion(data);
-//             }
-
-//             if (this.riskData.provinceCd == null) {
-//                 this.setProvince(data.provinceList[0]);
-//             }
-
-//             if (this.riskData.cityCd == null) {
-//                 this.setCity(data.provinceList[0].cityList[0]);
-//             }*/
-
-//             this.setRegion(data);
-//             this.setProvince(data.provinceList[0]);
-//             this.setCity(data.provinceList[0].cityList[0]);
-//             this.setCrestaZone(data.provinceList[0].cityList[0]);
-
-//             this.riskData.districtCd = data.provinceList[0].cityList[0].districtList[0].districtCd;
-//             this.riskData.districtDesc = data.provinceList[0].cityList[0].districtList[0].districtDesc;
-//         }
-
-        
-// =======
     setDistrict(data){
         this.riskData.districtCd = data.districtCd;
         this.riskData.districtDesc = data.districtDesc;
-// >>>>>>> 2cdc57c5b56461adc4709dc43514ab243f550aae
     }
 
     showBlockModal() {
@@ -183,22 +135,10 @@ export class RiskFormComponent implements OnInit, OnDestroy {
     setCity(data){
         this.riskData.cityCd = data.cityCd;
         this.riskData.cityDesc = data.cityDesc;
-        this.riskData.provinceCd = data.provinceCd;
-        this.riskData.provinceDesc = data.provinceDesc;
-        this.riskData.regionCd = data.regionCd;
-        this.riskData.regionDesc = data.regionDesc;
     }
     setBlock(data){
         this.riskData.blockCd = data.blockCd;
         this.riskData.blockDesc = data.blockDesc;
-        this.riskData.districtCd = data.districtCd;
-        this.riskData.districtDesc = data.districtDesc;
-        this.riskData.cityCd = data.cityCd;
-        this.riskData.cityDesc = data.cityDesc;
-        this.riskData.provinceCd = data.provinceCd;
-        this.riskData.provinceDesc = data.provinceDesc;
-        this.riskData.regionCd = data.regionCd;
-        this.riskData.regionDesc = data.regionDesc;
     }
 
     setCrestaZone(data){
@@ -214,8 +154,6 @@ export class RiskFormComponent implements OnInit, OnDestroy {
     setProvince(data){
         this.riskData.provinceCd = data.provinceCd;
         this.riskData.provinceDesc = data.provinceDesc;
-        this.riskData.regionCd = data.regionCd;
-        this.riskData.regionDesc = data.regionDesc;
     }
 
     openGenericLOV(selector){
@@ -239,7 +177,6 @@ export class RiskFormComponent implements OnInit, OnDestroy {
     }
 
     setLOVField(data){
-        console.log("setLOVField : "  + JSON.stringify(data));
         this.ns.lovLoader(data.ev, 0);
         var resetSucceedingFields = false;
 
@@ -387,10 +324,8 @@ export class RiskFormComponent implements OnInit, OnDestroy {
         this.mtnService.saveMtnRisk(this.riskData).subscribe((data:any)=>{
             if(data['returnCode'] == 0) {
               this.errorMdlMessage = data['errorList'][0].errorMessage;
-              this.dialogIcon = 'error';
-              $('#successModalBtn').trigger('click');
-            } else{ 
-              this.dialogIcon = '';
+              $('#errorMdl > #modalBtn').trigger('click');
+            } else{
               $('#successModalBtn').trigger('click');
               this.riskData.riskId = data.riskId;
              }

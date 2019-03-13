@@ -608,58 +608,58 @@ export class QuoteEndorsementComponent implements OnInit {
       this.cancelBtn.clickCancel();
     }
 
-    showDeductiblesOptions(data){
-    if(this.deductibleTable!==undefined){
-      this.deductibleTable.loadingFlag = true;
-      let params:any ={
-          quoteId:this.quoteId,
-          optionId:this.selectedOption.optionId,
-          coverCd: data.coverCd === undefined ? 0 : data.coverCd,
-          quotationNo: ''
-        };
-      this.quotationService.getDeductibles(params).subscribe((data)=>{
-          if(data['quotation'].optionsList != null){
-            this.deductiblesData.tableData = data['quotation'].optionsList[0].deductiblesList;
-            this.deductibleTable.refreshTable();
-          }
-          else
-            this.getDefaultDeductibles();
-        });
-    }else{
-      if(true){
-        this.showModal = true;
-        setTimeout(()=>{
-          this.deductiblesModal.openNoClose();
-        },0)
+  //   showDeductiblesOptions(data){
+  //   if(this.deductibleTable!==undefined){
+  //     this.deductibleTable.loadingFlag = true;
+  //     let params:any ={
+  //         quoteId:this.quoteId,
+  //         optionId:this.table.indvSelect.optionId,
+  //         coverCd: data.coverCd === undefined ? 0 : data.coverCd,
+  //         quotationNo: ''
+  //       };
+  //     this.quotationService.getDeductibles(params).subscribe((data)=>{
+  //         if(data['quotation'].optionsList != null){
+  //           this.deductiblesData.tableData = data['quotation'].optionsList[0].deductiblesList;
+  //           this.deductibleTable.refreshTable();
+  //         }
+  //         else
+  //           this.getDefaultDeductibles();
+  //       });
+  //   }else{
+  //     if(true){
+  //       this.showModal = true;
+  //       setTimeout(()=>{
+  //         this.deductiblesModal.openNoClose();
+  //       },0)
 
-        // if(!this.fromCovers){
-        //   this.deductiblesData.nData.coverCd = 0;
-        // }else{
-        //   this.deductiblesData.nData.coverCd = data.coverCd;
-        // }
-        let params:any ={
-          quoteId:this.quoteId,
-          optionId:this.selectedOption.optionId,
-          coverCd: data.coverCd === undefined ? 0 : data.coverCd,
-          quotationNo: ''
-        };
-        this.quotationService.getDeductibles(params).subscribe((data)=>{
-          if(data['quotation'].optionsList != null){
-            this.deductiblesData.tableData = data['quotation'].optionsList[0].deductiblesList;
-            this.deductibleTable.refreshTable();
-          }
-          else
-            this.getDefaultDeductibles();
-        });
-    }
-    }
+  //       // if(!this.fromCovers){
+  //       //   this.deductiblesData.nData.coverCd = 0;
+  //       // }else{
+  //       //   this.deductiblesData.nData.coverCd = data.coverCd;
+  //       // }
+  //       let params:any ={
+  //         quoteId:this.quoteId,
+  //         optionId:this.selectedOption.optionId,
+  //         coverCd: data.coverCd === undefined ? 0 : data.coverCd,
+  //         quotationNo: ''
+  //       };
+  //       this.quotationService.getDeductibles(params).subscribe((data)=>{
+  //         if(data['quotation'].optionsList != null){
+  //           this.deductiblesData.tableData = data['quotation'].optionsList[0].deductiblesList;
+  //           this.deductibleTable.refreshTable();
+  //         }
+  //         else
+  //           this.getDefaultDeductibles();
+  //       });
+  //   }
+  //   }
     
-  }
+  // }
 
 
   getDefaultDeductibles(){
     this.uwService.getMaintenanceDeductibles(this.quotationNum.substring(0,3),'',
-        this.deductiblesData.nData.coverCd,'0','Y','Y').subscribe((data)=>{
+        '0','0','Y','Y').subscribe((data)=>{
           this.deductiblesData.tableData = data['deductibles'].filter((a)=>{
             a.sumInsured = 0;
             a.coverCd = this.deductiblesData.nData.coverCd;
