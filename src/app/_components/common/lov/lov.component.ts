@@ -57,7 +57,6 @@ export class LovComponent implements OnInit {
         });
       } else {
         this.mtnService.getMtnRegion(regionCd).subscribe((data: any) => {
-            console.log("Data from LOV: " + JSON.stringify(data));
             if(data.region.length > 0) {
               data.region[0]['ev'] = ev;
               data.region[0]['selector'] = selector;
@@ -81,7 +80,6 @@ export class LovComponent implements OnInit {
         });
       } else {
         this.mtnService.getMtnProvince(regionCd, provinceCd).subscribe((data: any) => {
-            console.log("Data from LOV: " + JSON.stringify(data));
             if(data.region.length > 0) {
               data.region[0]['ev'] = ev;
               data.region[0]['selector'] = selector;
@@ -106,7 +104,6 @@ export class LovComponent implements OnInit {
         });
       } else {
         this.mtnService.getMtnCity(regionCd, provinceCd, cityCd).subscribe((data: any) => {
-            console.log("Data from LOV: " + JSON.stringify(data));
             if(data.region.length > 0) {
               data.region[0]['ev'] = ev;
               data.region[0]['selector'] = selector;
@@ -132,7 +129,6 @@ export class LovComponent implements OnInit {
         });
       } else {
         this.mtnService.getMtnDistrict(regionCd, provinceCd, cityCd, districtCd).subscribe((data: any) => {
-            console.log("Data from LOV: " + JSON.stringify(data));
             if(data.region.length > 0) {
               data.region[0]['ev'] = ev;
               data.region[0]['selector'] = selector;
@@ -159,7 +155,6 @@ export class LovComponent implements OnInit {
         });
       } else {
         this.mtnService.getMtnBlock(regionCd, provinceCd, cityCd, districtCd, blockCd).subscribe((data: any) => {
-            console.log("Data from LOV: " + JSON.stringify(data));
             if(data.region.length > 0) {
               data.region[0]['ev'] = ev;
               data.region[0]['selector'] = selector;
