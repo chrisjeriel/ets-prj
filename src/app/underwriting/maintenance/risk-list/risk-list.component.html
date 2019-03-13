@@ -3,7 +3,9 @@
     <ngb-tabset>
         <ngb-tab title="Risk List">
             <ng-template ngbTabContent>
-                <app-cust-non-datatable [passData]="maintenanceRiskListData" (add)="onClickAdd($event)" (edit)="onClickEdit($event)" (rowClick)="selected=$event"></app-cust-non-datatable>
+                <!-- <app-cust-non-datatable [passData]="maintenanceRiskListData" (add)="onClickAdd($event)" (edit)="onClickEdit($event)" (rowClick)="selected=$event"></app-cust-non-datatable> -->
+                <app-cust-non-datatable [passData]="maintenanceRiskListData" (add)="onClickAdd($event)" (edit)="onClickEdit($event)" (rowClick)="selected=$event" (newRowDblClick)="onClickEdit($event)"></app-cust-non-datatable>
+
             </ng-template>
         </ngb-tab>
     </ngb-tabset>

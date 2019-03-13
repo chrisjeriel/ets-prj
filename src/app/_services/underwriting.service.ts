@@ -349,13 +349,22 @@ export class UnderwritingService {
     //     // return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnDeductibles");
     //     return this.maintenanceDeductiblesData;
     // }
-    getMaintenanceDeductibles(lineCd?:string){
-        this.maintenanceDeductiblesData = [
-            new MaintenanceDeductibles(true,'AOG30', 'ACTS OF GOD 30', 'L', 0.4, 10000000000),
-            new MaintenanceDeductibles(true,'OC31', 'OTHER CAUSES 31', 'L', 0.5, 10000000),
-            new MaintenanceDeductibles(false,'TPL5', 'THIRD PARTY LIABILITY 30', 'F', 0.4, 20000000000),
-        ];
-        return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnDeductibles" + (lineCd!==undefined ? '?lineCd='+lineCd : '')) ;
+    getMaintenanceDeductibles(lineCd?:string,deductibleCd?:string,
+                              coverCd?:string,endtCd?:string,
+                              activeTag?:string,defaultTag?:string){
+        // this.maintenanceDeductiblesData = [
+        //     new MaintenanceDeductibles(true,'AOG30', 'ACTS OF GOD 30', 'L', 0.4, 10000000000),
+        //     new MaintenanceDeductibles(true,'OC31', 'OTHER CAUSES 31', 'L', 0.5, 10000000),
+        //     new MaintenanceDeductibles(false,'TPL5', 'THIRD PARTY LIABILITY 30', 'F', 0.4, 20000000000),
+        // ];
+        const params = new HttpParams()
+            .set('lineCd', lineCd !== undefined ? lineCd:'')
+            .set('deductibleCd', deductibleCd !== undefined ? deductibleCd:'')
+            .set('coverCd', coverCd !== undefined ? coverCd:'')
+            .set('endtCd', endtCd !== undefined ? endtCd:'')
+            .set('activeTag', activeTag !== undefined ? activeTag:'')
+            .set('defaultTag', defaultTag !== undefined ? defaultTag:'')
+        return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnDeductibles",{params}) ;
     }
     
     getMaintenanceRisksListData(){

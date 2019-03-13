@@ -5,8 +5,9 @@ import { retry, catchError } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
-
 import { DummyInfo } from '../../../_models';
+import { FormsModule }   from '@angular/forms';
+
 
 @Component({
     selector: 'app-cust-editable-non-datatable',
@@ -16,6 +17,7 @@ import { DummyInfo } from '../../../_models';
 })
 export class CustEditableNonDatatableComponent implements OnInit {
     @ViewChild("deleteModal") deleteModal:ModalComponent;
+    @ViewChild('myForm') form:any;
     @Input() tableData: any[] = [];
     @Output() tableDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
     @Input() tHeader: any[] = [];
@@ -137,12 +139,12 @@ export class CustEditableNonDatatableComponent implements OnInit {
 
     ngOnInit() {
         this.passData.magnifyingGlass = typeof this.passData.magnifyingGlass == 'undefined'? [] : this.passData.magnifyingGlass;
-        this.unliFlag = this.passData.pageLength == 'unli';
-        this.passData.pageLength = typeof this.passData.pageLength != 'number' ? 10 : this.passData.pageLength;
+        this.unliFlag = typeof this.passData.pageLength == "string" && this.passData.pageLength.split("-")[0] == 'unli';
+        this.passData.pageLength = typeof this.passData.pageLength == 'number' ? this.passData.pageLength : (this.passData.pageLength===undefined || this.passData.pageLength.split("-")[1]===undefined? 10 : parseInt(this.passData.pageLength.split("-")[1]));
         this.unliTableLength();
         this.passData.dataTypes = typeof this.passData.dataTypes == 'undefined' ? [] : this.passData.dataTypes;
 
-        if (this.passData.tableData.length > 0 && this.dataKeys.length == 0 ) {
+        if (this.passData.tableData.length > 0 && this.dataKeys.length == 0 && this.passData.keys === undefined) {
             this.dataKeys = Object.keys(this.passData.tableData[0]);
         } else {
             this.dataKeys = this.passData.keys;
@@ -207,7 +209,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         this.search(this.searchString);
         this.tableDataChange.emit(this.passData.tableData);
         this.add.next(event);
-        $('#cust-table-container').addClass('ng-dirty');
+        this.form.control.markAsDirty();
     }
 
     
@@ -227,7 +229,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
             this.selected[i].edited = true;
         }
         this.selectAllFlag = false;
-        $('#cust-table-container').addClass('ng-dirty');
+        this.form.control.markAsDirty();
         this.selected = [];
         this.refreshTable();
         this.search(this.searchString);
@@ -258,10 +260,13 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     onRowClick(event,data) {
-         if(data != this.fillData){
+        if(data != this.fillData && data != this.indvSelect){
             this.indvSelect = data;
+        }else if(data != this.fillData && data == this.indvSelect){
+            this.indvSelect = null;
         }
-        setTimeout(() => this.newClick.emit(data),0) ;
+        if(data != this.fillData)
+            setTimeout(() => this.newClick.emit(this.indvSelect),0) ;
         //this.rowClick.next(event);
         
     }
@@ -280,9 +285,9 @@ export class CustEditableNonDatatableComponent implements OnInit {
                 if(a[str] > b[str]) { return -1; }
             }
         });
-        if($('.ng-dirty').length != 0){
-            $('#cust-table-container').addClass('ng-dirty');
-        }
+        // if($('.ng-dirty').length != 0){
+        //     $('#cust-table-container').addClass('ng-dirty');
+        // }
         this.sortBy = !this.sortBy;
         this.search(this.searchString);
    
@@ -329,7 +334,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
 
     unliTableLength(){
         if(this.unliFlag){
-            this.passData.pageLength = this.passData.tableData.length <= 10 ? 10 :this.passData.tableData.length;
+            this.passData.pageLength = this.passData.tableData.length <= this.passData.pageLength ? this.passData.pageLength :this.passData.tableData.length;
         }
         
     }
@@ -349,7 +354,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
    }
 
    getSum(data){
-       console.log("test")
         let sum = 0;
         if(this.dataKeys.indexOf(data)==-1){
             return data;
@@ -365,7 +369,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     onClickGeneric(){
-        this.genericBtn.next();
+        this.genericBtn.emit(this.indvSelect);
     }
 
     typeOf(data){
@@ -402,7 +406,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
                 break;
             }
         }
-        //$('#cust-table-container').addClass('ng-dirty');
+        this.form.control.markAsDirty();
         this.clickLOV.emit(retData);
     }
 
@@ -429,7 +433,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         if(this.passData.observable !== undefined){
             this.passData.observable.subscribe(
                 (data:any)=>{this.retrieveData.emit(data);this.failed=false;this.loadingFlag=false},
-                (err) => {console.log(err);this.failed=true;this.loadingFlag=false});
+                (err) => {this.failed=true;this.loadingFlag=false});
         }
     }
 
@@ -454,10 +458,18 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     upload(data,event){
-        console.log(event.target);
         data.fileName=event.target.files[0].name;
         data.edited=true;
-        event.target.className += "ng-dirty"
+        this.form.control.markAsDirty();
     }
+
+    markAsPristine(){
+        this.form.control.markAsPristine();
+    }
+
+    markAsDirty(){
+        this.form.control.markAsDirty();
+    }
+
  
 }

@@ -2,130 +2,130 @@
 <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
 <div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading">
 </div>
-<div *ngIf="refresh">
-<div>
-	<fieldset class="scheduler-border">
-		<legend class="scheduler-border">Quotation Info</legend>
-		<div class="form-row custom-row-inline-inset">
-            <div class="input-group" >
-                <label class="form-control-sm col-sm-2" for="inputQuonum">Quotation No </label>
-                <input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-2" disabled="disabled" [ngModel]="quotationInfo.quotationNo">
-                <label class="form-control-sm col-sm-1" for="inputInname" >Insured</label>
-                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-6" placeholder="Insured Name" [ngModel]="quotationInfo.insuredDesc" disabled="disabled">
-            </div>
-            <div class="input-group">
-                <label class="form-control-sm col-sm-2" for="inputRisk" >Risk</label>
-                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-9" placeholder="Risk" [ngModel]="quotationInfo.riskName" disabled="disabled">
-            </div>
-        </div>
-	</fieldset>
+<form #myForm="ngForm">
+	<div>
+		<fieldset class="scheduler-border">
+			<legend class="scheduler-border">Quotation Info</legend>
+			<div class="form-row custom-row-inline-inset">
+	            <div class="input-group" >
+	                <label class="form-control-sm col-sm-2" for="inputQuonum">Quotation No </label>
+	                <input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-2" disabled="disabled" [ngModel]="quotationInfo.quotationNo" name="quoteNo">
+	                <label class="form-control-sm col-sm-1" for="inputInname" >Insured</label>
+	                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-6" placeholder="Insured Name" [ngModel]="quotationInfo.insuredDesc" disabled="disabled" name="insured">
+	            </div>
+	            <div class="input-group">
+	                <label class="form-control-sm col-sm-2" for="inputRisk" >Risk</label>
+	                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-9" placeholder="Risk" [ngModel]="quotationInfo.riskName" disabled="disabled" name="risk">
+	            </div>
+	        </div>
+		</fieldset>
 
-	<div class="row top">
-		<div class="col-sm-6 left-div">
-			<fieldset class="scheduler-border col-sm-12 left">
-				<div class="form-row custom-row-inline-inset" style="margin-right: 9px; margin-top: 11px !important;">
-					<div class="input-group">
-						<label class="form-control-sm col-sm-2 text-right" for="xx">Insured</label>
-						<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-2" type="text" name="" appRequired [(ngModel)]="alopData.insuredId">
-						<!-- <div class="text-search-ico"><a (click)="showInsuredLOV()"><i class="fa fa-search"></i></a></div>&nbsp; -->
-						<div [class.d-none]="inquiryFlag" class="text-search-ico"><a (click)="openGenericLOV('insured')"><i class="fa fa-search"></i></a></div>&nbsp;
-						<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm" type="text" name="" [(ngModel)]="alopData.insuredName" [style.margin-left.px]="inquiryFlag ? '-2' : '-7'" appRequired>
-					</div>
+		<div class="row top">
+			<div class="col-sm-6 left-div">
+				<fieldset class="scheduler-border col-sm-12 left">
+					<div class="form-row custom-row-inline-inset" style="margin-right: 9px; margin-top: 11px !important;">
+						<div class="input-group">
+							<label class="form-control-sm col-sm-2 text-right" for="xx">Insured</label>
+							<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-2" type="text" name="insuredId" appRequired [(ngModel)]="alopData.insuredId">
+							<!-- <div class="text-search-ico"><a (click)="showInsuredLOV()"><i class="fa fa-search"></i></a></div>&nbsp; -->
+							<div [class.d-none]="inquiryFlag" class="text-search-ico"><a (click)="openGenericLOV('insured')"><i class="fa fa-search"></i></a></div>&nbsp;
+							<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm" type="text" name="insuredName" [(ngModel)]="alopData.insuredName" [style.margin-left.px]="inquiryFlag ? '-2' : '-7'" appRequired>
+						</div>
 
-					<div class="input-group textarea" style="padding-bottom: 7px;">
-						<label class="form-control-sm col-sm-2"></label>
-						<textarea [readonly]="inquiryFlag" class="form-control form-control-sm col-sm" rows="2" [(ngModel)]="alopData.insuredDesc" appRequired></textarea>
-						<br>
-					</div>
+						<div class="input-group textarea" style="padding-bottom: 7px;">
+							<label class="form-control-sm col-sm-2"></label>
+							<textarea [readonly]="inquiryFlag" class="form-control form-control-sm col-sm" rows="2" [(ngModel)]="alopData.insuredDesc" appRequired name="insuredDesc"></textarea>
+							<br>
+						</div>
 
-					<div class="input-group">
-						<label class="form-control-sm col-sm-2 text-right" for="xx">Address</label>
-						<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm" type="text" name="" [(ngModel)]="alopData.address" appRequired>
+						<div class="input-group">
+							<label class="form-control-sm col-sm-2 text-right" for="xx">Address</label>
+							<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm" type="text" name="address" [(ngModel)]="alopData.address" appRequired>
+						</div>
+						
 					</div>
-					
+				</fieldset>
+			</div>
+			<div class="col-sm-6 right-div">
+				<fieldset class="scheduler-border col-sm-12 right">
+					<div class="form-row custom-row-inline-inset" style="margin-top: 3px !important;">
+						<div class="input-group">
+							<label  class="form-control-sm col-sm-3 text-left" for="xx">The Insured Business</label>
+						</div>
+
+						<div class="input-group textarea">
+							<textarea [readonly]="inquiryFlag" class="form-control form-control-sm col-sm-12" rows="3" style="height: 83% !important;" [(ngModel)]="alopData.insuredBusiness" appRequired name="insuredBusiness"></textarea>
+						</div>
+					</div>
+				</fieldset>
+			</div>	
+		</div>
+
+		<fieldset class="scheduler-border middle">
+			<div class="form-row custom-row-inline-inset">
+				<div class="input-group" style="padding-bottom: 1%;">
+					<label class="col-sm-1 "></label>
+					<label class="col-sm-4">Insured Interest: Gross Profit and Increased Cost of Working</label>
 				</div>
-			</fieldset>
-		</div>
-		<div class="col-sm-6 right-div">
-			<fieldset class="scheduler-border col-sm-12 right">
-				<div class="form-row custom-row-inline-inset" style="margin-top: 3px !important;">
-					<div class="input-group">
-						<label  class="form-control-sm col-sm-3 text-left" for="xx">The Insured Business</label>
-					</div>
-
-					<div class="input-group textarea">
-						<textarea [readonly]="inquiryFlag" class="form-control form-control-sm col-sm-12" rows="3" style="height: 83% !important;" [(ngModel)]="alopData.insuredBusiness" appRequired></textarea>
-					</div>
+				<div class="input-group">
+					<label class="col-sm-4"></label>
+					<label class=" form-control-sm col-sm-2" for="annSumInsured">Annual Sum Insured</label>
+					<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-4 text-right" type="text" id="annSumInsured" [(ngModel)]="alopData.annSi" appRequired appCurrency name="annualSI">
 				</div>
-			</fieldset>
-		</div>	
-	</div>
+				<div class="input-group" style="padding-bottom: 0.9%;">
+					<label class="col-sm-2"></label>
+					<label class="form-control-sm col-sm-4 text-right" for="sumInsForMaxIndem">Sum Insured for Maximum Indemnity Period</label>
+					<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-4 text-right" type="text" id="sumInsForMaxIndem" [(ngModel)]="alopData.maxIndemPdSi"  appRequired appCurrency name="siMaxIndem">
+				</div>
+			</div>
+		</fieldset>
 
-	<fieldset class="scheduler-border middle">
-		<div class="form-row custom-row-inline-inset">
-			<div class="input-group" style="padding-bottom: 1%;">
-				<label class="col-sm-1 "></label>
-				<label class="col-sm-4">Insured Interest: Gross Profit and Increased Cost of Working</label>
+
+		<fieldset class="scheduler-border bottom">
+			<div class="form-row custom-row-inline-inset" style="margin-top: 12px !important;">
+				<div class="input-group">
+					<label class="form-control-sm col-sm-4" for="periodFrom">Period of Insurance from</label>
+					<input #from [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-2" type="date" id="periodFrom" [(ngModel)]="alopData.issueDate" appRequired (change)="checkDates()" name="from">
+					<label class="form-control-sm col-sm-1" style="margin-left: -5.19%; z-index: -1;" for="periodTo" >to</label>
+					<input #to [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-2" type="date" id="periodTo" [(ngModel)]="alopData.expiryDate" appRequired (change)="checkDates()" name="to">
+					<label class="form-control-sm col-sm-2 text-left" >(Scheduled Date of Completion)</label>
+
+				</div>
+				<div class="input-group">
+					<label class="form-control-sm col-sm-4" for="maxIndemPeriod">Maximum Indemnity Period</label>
+					<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-1 text-right" type="text" id="maxIndemPeriod" [(ngModel)]="alopData. maxIndemPd" numbers-only appRequired name="maxIndemPeriod">
+					<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">months</label>
+				</div>
+				<div class="input-group">
+					<label class="form-control-sm col-sm-4" for="fromIndem">from</label>
+					<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-2" type="date" id="fromIndem" [(ngModel)]="alopData.indemFromDate" appRequired name="fromIndem">
+				</div>
+				<div class="input-group">
+					<label class="form-control-sm col-sm-4" for="timeExcess">Time Excess</label>
+					<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-1 text-right" type="text" id="fromIndem" [(ngModel)]="alopData. timeExc" appRequired numbers-only name="timeExcess">
+				</div>
+				<div class="input-group">
+					<label class="form-control-sm col-sm-4" for="interval">Progress reports to be presented at intervals of</label>
+					<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-1 text-right" type="text" id="interval" [(ngModel)]="alopData. repInterval" numbers-only appRequired name="interval">
+					<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">months</label>
+				</div>
 			</div>
-			<div class="input-group">
-				<label class="col-sm-4"></label>
-				<label class=" form-control-sm col-sm-2" for="annSumInsured">Annual Sum Insured</label>
-				<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-4 text-right" type="text" id="annSumInsured" [(ngModel)]="alopData.annSi" appRequired appCurrency>
-			</div>
-			<div class="input-group" style="padding-bottom: 0.9%;">
-				<label class="col-sm-4"></label>
-				<label class="form-control-sm col-sm-2 text-left" for="sumInsForMaxIndem">Sum Insured for Maximum Indemnity Period</label>
-				<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-4 text-right" type="text" id="sumInsForMaxIndem" [(ngModel)]="alopData.maxIndemPdSi"  appRequired appCurrency>
+		</fieldset>
+
+		<div class="form-row bottom-button-container">
+			<div class="form-group col-sm">
+				<div class="col-md-13 text-center">
+					<div class="cust-btn-container" style="margin-top: 10px;">
+					<button type="button" class="cust-btn" (click)="openAlopItem()"><a>Item Information</a></button>
+					<button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+					<button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+				</div>
+				</div>
 			</div>
 		</div>
-	</fieldset>
 
-
-	<fieldset class="scheduler-border bottom">
-		<div class="form-row custom-row-inline-inset" style="margin-top: 12px !important;">
-			<div class="input-group">
-				<label class="form-control-sm col-sm-4" for="periodFrom">Period of Insurance from</label>
-				<input #from [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-2" type="date" id="periodFrom" [(ngModel)]="alopData.issueDate" appRequired (change)="checkDates()">
-				<label class="form-control-sm col-sm-1" style="margin-left: -5.19%; z-index: -1;" for="periodTo" >to</label>
-				<input #to [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-2" type="date" id="periodTo" [(ngModel)]="alopData.expiryDate" appRequired (change)="checkDates()">
-				<label class="form-control-sm col-sm-2 text-left" >(Scheduled Date of Completion)</label>
-
-			</div>
-			<div class="input-group">
-				<label class="form-control-sm col-sm-4" for="maxIndemPeriod">Maximum Indemnity Period</label>
-				<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-1 text-right" type="text" id="maxIndemPeriod" [(ngModel)]="alopData. maxIndemPd" numbers-only appRequired>
-				<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">months</label>
-			</div>
-			<div class="input-group">
-				<label class="form-control-sm col-sm-4" for="fromIndem">from</label>
-				<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-2" type="date" id="fromIndem" [(ngModel)]="alopData.indemFromDate" appRequired>
-			</div>
-			<div class="input-group">
-				<label class="form-control-sm col-sm-4" for="timeExcess">Time Excess</label>
-				<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-1 text-right" type="text" id="fromIndem" [(ngModel)]="alopData. timeExc" appRequired numbers-only>
-			</div>
-			<div class="input-group">
-				<label class="form-control-sm col-sm-4" for="interval">Progress reports to be presented at intervals of</label>
-				<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-1 text-right" type="text" id="interval" [(ngModel)]="alopData. repInterval" numbers-only appRequired>
-				<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">months</label>
-			</div>
-		</div>
-	</fieldset>
-
-	<div class="form-row bottom-button-container">
-		<div class="form-group col-sm">
-			<div class="col-md-13 text-center">
-				<div class="cust-btn-container" style="margin-top: 10px;">
-				<button type="button" class="cust-btn" (click)="openAlopItem()"><a>Item Information</a></button>
-				<button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
-				<button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
-			</div>
-			</div>
-		</div>
-	</div>
-
-</div>			
-</div>
+	</div>			
+</form>
 <ng-container *ngIf="showAlopItem">
 	<app-modal class="d-none" id="alopItemModal">
 		<div header>Item Information</div>	
@@ -147,16 +147,6 @@
 
 
 
-<app-modal class="d-none" id="errorMdl">
-    <div header>Error</div>
-    <div body class="container-flex text-center">
-        <span class="fa fa-times-circle fa-3x" style="vertical-align: middle;"></span>
-        <span style="vertical-align: middle; margin-left: 15px;">{{ errorMdlMessage }}</span>       
-    </div>
-    <div footer class="d-flex justify-content-center w-100">                    
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
-    </div>
-</app-modal>
 
 
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
