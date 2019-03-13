@@ -26,6 +26,9 @@
         <button *ngIf="passData.copyFlag" class="cust-btn" [class.btnDisabled]="btnDisabled || passData.btnDisabled" [disabled]="btnDisabled || passData.btnDisabled" (click)="onClickCopy($event)"><a class="paginate_button previous">Copy</a></button>
          <button *ngIf="passData.saveFlag" class="cust-btn" (click)="onClicSave($event)"><a class="paginate_button previous">Save</a></button>
         <button *ngIf="passData.printBtn" class="cust-btn" type="button" (click)="onClickPrint($event)"><a>Print</a></button>
+
+        <button *ngIf="passData.genericBtn1 !== undefined" class="cust-btn genericBtn" [class.btnDisabled]="btnDisabled" (click)="onClickGeneric1($event)" [disabled]="btnDisabled">{{ passData.genericBtn1 }}</button>
+        <button *ngIf="passData.genericBtn2 !== undefined" class="cust-btn genericBtn" [class.btnDisabled]="btnDisabled" (click)="onClickGeneric2($event)" [disabled]="btnDisabled">{{ passData.genericBtn2 }}</button> 
     </div>
     <div class="expire" *ngIf="passData.expireFilter" align="right" style="margin-top: 1px !important;">
         <label>Expires in (Days): &nbsp; </label>

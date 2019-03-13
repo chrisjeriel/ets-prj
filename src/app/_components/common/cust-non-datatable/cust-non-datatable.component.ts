@@ -40,6 +40,8 @@ export class CustNonDatatableComponent implements OnInit {
     @Output() copy: EventEmitter<any> = new EventEmitter();
     @Output() save: EventEmitter<any> = new EventEmitter();
     @Output() print: EventEmitter<any> = new EventEmitter();
+    @Output() gnrc1: EventEmitter<any> = new EventEmitter();
+    @Output() gnrc2: EventEmitter<any> = new EventEmitter();
 
     //DB Search Query
     searchQuery: any[] = [];
@@ -494,4 +496,11 @@ export class CustNonDatatableComponent implements OnInit {
         $('#notPin'+this.passData.pageID).css('padding-left',startWidth-minusWidth);
     }
 
+    onClickGeneric1(ev){
+        this.gnrc1.emit(ev);
+    }
+
+    onClickGeneric2(ev){
+        this.gnrc2.emit(ev);
+    }
 }

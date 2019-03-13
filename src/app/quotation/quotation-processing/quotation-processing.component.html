@@ -12,7 +12,7 @@
                         as params for your http get method.
                     -->
                     <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)"
-                        (add)="onClickAdd($event)" (edit)="onClickEdit($event)" (copy)="onClickCopy($event)" (searchToDb)="searchQuery($event)"></app-cust-non-datatable>
+                        (add)="onClickAdd($event)" (edit)="onClickEdit($event)" (searchToDb)="searchQuery($event)" (gnrc1)="onClickCopy();" (gnrc2)="onClickInternalComp();"></app-cust-non-datatable>
                 </div>
             </ng-template>
         </ngb-tab>
@@ -52,17 +52,17 @@
                 <div class="custom-row-inline-inset" style="text-align: center">
                     <div class="input-group" style="margin-bottom: -14px !important;">
                         <label class="form-control-sm col-sm-3" style="padding-left: 0;">Ceding Company</label>
-                        <input type="text"class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" [ngModel]="cedingCode">
+                        <input type="text"class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" [(ngModel)]="copyCedingId">
                         <div class="text-search-ico" (click)="showCedingCompanyLOV()"><a><i class="fa fa-search"></i></a></div>
                         &nbsp;&nbsp;
-                        <input type="text" class="form-control form-control-sm" [ngModel]="cedingName">
+                        <input type="text" class="form-control form-control-sm" [(ngModel)]="copyCedingName" readonly>
                     </div>
                     <div class="input-group" style="margin-bottom: -14px !important;">
                         <label class="form-control-sm col-sm-3">Risk</label>
-                        <input type="text"class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important">
+                        <input type="text"class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" [(ngModel)]="copyRiskId">
                         <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
                         &nbsp;&nbsp;
-                        <input type="text" class="form-control form-control-sm">
+                        <input type="text" class="form-control form-control-sm" [(ngModel)]="copyRiskName" readonly>
                     </div>
                 </div>
         </fieldset>
@@ -71,15 +71,16 @@
         <fieldset class="scheduler-border">
             <div class="custom-row-inline-inset" style="text-align: center">
                 <p>This Quotation No.</p>
-                <p style="color:#557a95"><strong>CAR-2018-00001-00-99</strong></p>
+                <p style="color:#557a95"><strong>{{ copyFromQuotationNo }}</strong></p>
                 <p>has been copied to Quotation No.</p>
-                <p style="color:red"><strong>CAR-2018-00002-00-00</strong></p>
+                <p style="color:red"><strong>{{ copyToQuotationNo }}</strong></p>
             </div>
         </fieldset>
     </div>
     <div footer class="text-center w-100">
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+        <button *ngIf="copyStatus == 0" class="cust-btn" type="button" (click)="copyOkBtn();"><a>Ok</a></button>
+        <button *ngIf="copyStatus == 1" class="cust-btn" type="button" (click)="modalService.dismissAll(); copyStatus = 0;"><a>Ok</a></button>
     </div>
 </app-modal>
 <!-- End Copy Modal -->
@@ -92,14 +93,14 @@
             <div class="custom-row-inline-inset">
                 <div class="input-group">
                     <label class="form-control-sm col-sm-3">Line</label>
-                    <input type="text" [ngModel]="line" (ngModelChange)="line = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCode($event, 'line')">
+                    <input type="text" [ngModel]="line" (ngModelChange)="line = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCode($event, 'line')" appRequired>
                     <div class="text-search-ico" (click)="modalService.dismissAll();showLineLOV()"><a><i class="fa fa-search"></i></a></div>
                     &nbsp;&nbsp;
                     <input type="text" class="form-control form-control-sm" [(ngModel)]="description" readonly tabindex="-1">
                 </div>
                 <div class="input-group" style="margin-top: -12px">
                     <label class="form-control-sm col-sm-3">Type of Cession</label>
-                    <input type="text" id="typeOfCessionId" class="form-control form-control-sm col-sm-2" style="margin-right: -1px !important" [(ngModel)]="typeOfCessionId" (change)="checkCode($event, 'typeOfCession')" maxlength="4" numbers-only>
+                    <input type="text" id="typeOfCessionId" class="form-control form-control-sm col-sm-2" style="margin-right: -1px !important" [(ngModel)]="typeOfCessionId" (change)="checkCode($event, 'typeOfCession')" maxlength="4" numbers-only appRequired>
                     <div class="text-search-ico" (click)="modalService.dismissAll(); showTypeOfCessionLOV()"><a><i class="fa fa-search"></i></a></div>
                     &nbsp;&nbsp;
                     <input type="text" class="form-control form-control-sm" [(ngModel)]="typeOfCession" readonly tabindex="-1">
@@ -107,7 +108,7 @@
                 <div class="input-group" style="margin-top: -12px; margin-bottom: -10px ! important">
                     <label class="form-control-sm col-sm-3" style="margin: 0;">Risk</label>
                     <input type="text" id="riskCd" class="form-control form-control-sm col-sm-2" style="margin-right: -1px !important"
-                      [(ngModel)]="riskCd" (change)="checkCode($event, 'risk')">
+                      [(ngModel)]="riskCd" (change)="checkCode($event, 'risk')" appRequired>
                     <div class="text-search-ico" (click)="showRiskLOV()"><a><i class="fa fa-search"></i></a></div>
                     &nbsp;&nbsp;
                     <input type="text" class="form-control form-control-sm" [(ngModel)]="riskName" readonly tabindex="-1">
@@ -116,7 +117,7 @@
         </fieldset>
     </div>
     <div footer class="text-center w-100">
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>Cancel</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); clearAddFields();"><a>Cancel</a></button>
         <button *ngIf="description != '' && typeOfCession != '' && riskName != ''" class="cust-btn" type="button" (click)="modalService.dismissAll(); nextBtnEvent();"><a>Next</a></button>
         <button *ngIf="description == '' || typeOfCession == '' || riskName == ''" class="cust-btn cust-btn-disabled" type="button" [disabled]="true"><a>Next</a></button>
     </div>

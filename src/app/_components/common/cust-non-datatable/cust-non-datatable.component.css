@@ -320,3 +320,9 @@ padding: 0;
 .negativeNumber{
     color: red;
 }
+
+.genericBtn{
+    min-width: 60px;
+    max-width: max-content;
+    width: auto;
+}

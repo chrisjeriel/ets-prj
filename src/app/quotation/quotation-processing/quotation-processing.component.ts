@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ViewChildren, QueryList, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
-import { QuotationService, UnderwritingService, NotesService } from '@app/_services';
+import { QuotationService, UnderwritingService, NotesService, MaintenanceService } from '@app/_services';
 import { QuotationProcessing, Risks, CedingCompanyList } from '../../_models';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
@@ -154,8 +154,10 @@ export class QuotationProcessingComponent implements OnInit {
         },
         ],
         pageLength: 10,
-        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, addFlag: true, editFlag: true, copyFlag: true, pageStatus: true, pagination: true, pageID: 1,
+        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, addFlag: true, editFlag: true, copyFlag: false, pageStatus: true, pagination: true, pageID: 1,
         keys: ['quotationNo','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','insuredDesc','riskName','objectDesc','site','policyNo','currencyCd','issueDate','expiryDate','reqBy','createUser'],
+        genericBtn1: 'Copy Quote Details',
+        genericBtn2: 'Internal Competition'
     }
 
     riskData: any = {
@@ -171,7 +173,7 @@ export class QuotationProcessingComponent implements OnInit {
         pageID: 2
     }
 
-     lineData: any = {
+    lineData: any = {
         tableData: [],
         tHeader: ['Line', 'Description','Remarks'],
         dataTypes: ['text', 'text', 'text'],
@@ -186,14 +188,27 @@ export class QuotationProcessingComponent implements OnInit {
     }
 
     loading: boolean = false;
+    
     copyStatus = 0;
+    copyFromQuotationNo: any = "";
+    copyToQuotationNo: any = "";
+    copyQuoteId: any = "";
+    copyQuoteLineCd: any = "";
+    copyQuoteYear: any = "";
+    copyCedingId: any = "";
+    copyCedingName: any = "";
+    copyRiskId: any = "";
+    copyRiskName: any = "";
+
+    first = false;
 
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private router: Router
-        , public activeModal: NgbActiveModal, private titleService: Title, private ns: NotesService
+        , public activeModal: NgbActiveModal, private titleService: Title, private ns: NotesService, private maintenanceService: MaintenanceService
         ) { }
 
     
     ngOnInit() {
+        this.first = true;
         this.titleService.setTitle("Quo | List Of Quotations");
         this.rowData = this.quotationService.getRowData();
         this.riskData.tableData = this.quotationService.getRisksLOV();
@@ -203,6 +218,7 @@ export class QuotationProcessingComponent implements OnInit {
     }
 
     retrieveQuoteListingMethod(){
+        this.passData.tableData = [];
         this.quotationService.getQuoProcessingData(this.searchParams).subscribe(data => {
             var records = data['quotationList'];
             this.fetchedData = records;
@@ -237,7 +253,17 @@ export class QuotationProcessingComponent implements OnInit {
         });
     }
 
-    onClickAdd(event) {        
+    onClickAdd(event) {
+        if(this.first){
+            this.maintenanceService.getMtnTypeOfCession(1).subscribe(data => {            
+                this.typeOfCessionId = data['cession'][0].cessionId;
+                this.typeOfCession = data['cession'][0].cessionAbbr;
+
+                this.first = false;
+            });
+        }
+        
+
         $('#addModal > #modalBtn').trigger('click');
         setTimeout(function() { $(event).focus(); }, 0);        
     }
@@ -257,7 +283,7 @@ export class QuotationProcessingComponent implements OnInit {
         },100);
     }
 
-    onClickCopy(event) {
+    onClickCopy(event) {        
         $('#copyModal > #modalBtn').trigger('click');
     }
 
@@ -366,6 +392,17 @@ export class QuotationProcessingComponent implements OnInit {
 }
 
 onRowClick(event) {
+    if(event != null){
+        for(let i of this.fetchedData) {
+           if(i.quotationNo == event.quotationNo) {
+               this.copyQuoteId = i.quoteId;
+               this.copyFromQuotationNo = i.quotationNo;
+               this.copyQuoteLineCd = i.quotationNo.split('-')[0];
+               this.copyQuoteYear = i.quotationNo.split('-')[1];
+           }
+        }    
+    }
+
     this.selectedQuotation = event;
     this.disabledEditBtn = false;
     this.disabledCopyBtn = false;
@@ -405,8 +442,8 @@ dateParser(arr){
 
 
 setCedingcompany(data){
-        this.cedingCode = data.coNo;
-        this.cedingName = data.name;
+        this.copyCedingId = data.cedingId;
+        this.copyCedingName = data.cedingName;
         this.onClickCopy(1);
 }
 
@@ -518,5 +555,49 @@ setCedingcompany(data){
         this.typeOfCession = '';
         this.riskCd = '';
         this.riskName = '';
+
+        this.first = true;
+    }
+
+    copyOkBtn() {        
+        this.loading = true;
+        var currentDate = this.ns.toDateTimeString(0);
+
+        //change copyStatus to 1 if successful
+        var params = {
+            "cedingId": this.copyCedingId,
+            "createDate": currentDate,
+            "createUser": 'USER', //JSON.parse(window.localStorage.currentUser).username,
+            "lineCd": this.copyQuoteLineCd,
+            "quoteId": this.copyQuoteId,
+            "quoteYear": new Date().getFullYear().toString(),
+            "riskId": this.copyRiskId,
+            "updateDate": currentDate,
+            "updateUser": 'USER', //JSON.parse(window.localStorage.currentUser).username,
+        }
+
+        this.quotationService.saveQuotationCopy(JSON.stringify(params)).subscribe(data => {
+            this.loading = false;
+            
+            if(data['returnCode'] == -1) {
+                this.retrieveQuoteListingMethod();
+                this.copyToQuotationNo = data['quotationNo'];
+
+                this.copyStatus = 1;
+                this.copyQuoteId = "";
+                this.copyQuoteLineCd = "";
+                this.copyQuoteYear = "";
+                this.copyCedingId = "";
+                this.copyCedingName = "";
+                this.copyRiskId = "";
+                this.copyRiskName = "";                
+            } else if (data['returnCode'] == 0) {
+                //show error modal
+            }
+        });
+    }
+
+    onClickInternalComp() {
+        console.log('nice');
     }
 }
