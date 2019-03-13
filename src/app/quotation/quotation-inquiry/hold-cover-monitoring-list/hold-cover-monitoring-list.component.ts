@@ -140,10 +140,27 @@ export class HoldCoverMonitoringListComponent implements OnInit {
 
     retrieveQuoteHoldCoverListingMethod(){
          this.quotationService.getQuotationHoldCoverInfo(this.searchParams)
-            .subscribe(val =>
+            .subscribe((val:any) =>
                 {
                     console.log(val);
-                    for(var i = val['quotationList'].length -1 ; i >= 0 ; i--){
+                    var list = val.quotationList;
+                    for(var i = 0; i < list.length;i++){
+                        this.passData.tableData.push( new HoldCoverMonitoringList(
+                             list[i].holdCover.holdCoverNo,
+                             list[i].holdCover.status,
+                             list[i].cedingName,
+                             list[i].quotationNo,
+                             (list[i].project == null) ? '' : list[i].project.riskName,
+                             list[i].insuredDesc,
+                             new Date(this.formatDate(list[i].holdCover.periodFrom)),
+                             new Date(this.formatDate(list[i].holdCover.periodTo)),
+                             list[i].holdCover.compRefHoldCovNo,
+                             list[i].holdCover.reqBy,
+                             new Date(this.formatDate(list[i].holdCover.reqDate))
+                            ))
+                    }
+
+                    /*for(var i = val['quotationList'].length -1 ; i >= 0 ; i--){
                          var list = val['quotationList'][i]
                          this.passData.tableData.push(new HoldCoverMonitoringList(
                             list.holdCover.holdCoverNo,
@@ -159,7 +176,7 @@ export class HoldCoverMonitoringListComponent implements OnInit {
                             new Date(list.holdCover.reqDate[0],list.holdCover.reqDate[1]-1,list.holdCover.reqDate[2])
                          ));
                          console.log(list.holdCover.periodFrom[1]-1)
-                    }
+                    }*/
                     this.table.refreshTable();
                 }
             );
