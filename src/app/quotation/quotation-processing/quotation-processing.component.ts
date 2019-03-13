@@ -8,7 +8,7 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 import { MtnLineComponent } from '@app/maintenance/mtn-line/mtn-line.component';
 import { MtnTypeOfCessionComponent } from '@app/maintenance/mtn-type-of-cession/mtn-type-of-cession.component';
 import { MtnRiskComponent } from '@app/maintenance/mtn-risk/mtn-risk.component';
-
+import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
 
 @Component({
     selector: 'app-quotation-processing',
@@ -20,7 +20,8 @@ export class QuotationProcessingComponent implements OnInit {
     @ViewChildren(CustNonDatatableComponent) table: QueryList<CustNonDatatableComponent>;
     @ViewChild(MtnLineComponent) lineLov: MtnLineComponent;
     @ViewChild(MtnTypeOfCessionComponent) typeOfCessionLov: MtnTypeOfCessionComponent;
-    @ViewChild(MtnRiskComponent) riskLov: MtnTypeOfCessionComponent;
+    @ViewChildren(MtnRiskComponent) riskLovs: MtnTypeOfCessionComponent;
+    @ViewChild(CedingCompanyComponent) cedingCoLov: CedingCompanyComponent;
 
     tableData: any[] = [];
     tHeader: any[] = [];
@@ -444,6 +445,7 @@ dateParser(arr){
 setCedingcompany(data){
         this.copyCedingId = data.cedingId;
         this.copyCedingName = data.cedingName;
+        this.ns.lovLoader(data.ev, 0);
         this.onClickCopy(1);
 }
 
@@ -544,8 +546,12 @@ setCedingcompany(data){
         } else if(field === 'typeOfCession'){
             this.typeOfCessionLov.checkCode(this.typeOfCessionId, ev);
         } else if(field === 'risk') {
-            this.riskLov.checkCode(this.riskCd, ev);
-        }              
+            this.riskLovs['first'].checkCode(this.riskCd, ev);
+        } else if(field === 'copyRisk') {
+            this.riskLovs['last'].checkCode(this.copyRiskId, ev);
+        } else if(field === 'cedingCo') {
+            this.cedingCoLov.checkCode(this.copyCedingId, ev);
+        }             
     }
 
     clearAddFields(){
@@ -599,5 +605,15 @@ setCedingcompany(data){
 
     onClickInternalComp() {
         console.log('nice');
+    }
+
+    showCopyRiskLOV() {
+        $('#copyRiskLOV #modalBtn').trigger('click');
+    }
+
+    setCopyRisks(data){
+        this.copyRiskId = data.riskId;
+        this.copyRiskName = data.riskName;
+        this.ns.lovLoader(data.ev, 0);
     }
 }
