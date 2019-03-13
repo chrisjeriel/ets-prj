@@ -341,8 +341,9 @@ export class QuoteEndorsementComponent implements OnInit {
         }
       }
       let params: any = {
+        newQuoteId: this.quotationInfo.quoteId,
         quoteId: this.quotationInfo.quoteId,
-        type: 'copyEndt',
+        copyingType: 'copyEndt',
         fromOptionNo: this.currentSelectedOption,
         toOptionNo: this.copyEndtParams,
         createUser: (this.saveEndt.createUser === null || this.saveEndt.createUser === "") ? 'CPI' : this.saveEndt.createUser,
