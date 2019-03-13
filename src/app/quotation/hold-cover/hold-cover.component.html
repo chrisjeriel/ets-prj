@@ -72,15 +72,16 @@
                                         </div>
                                          <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Period From</label>
-                                            <input type="{{type}}" class="form-control form-control-sm cust-sm warn" readonly appRequired #periodFrom (blur)="setPeriodTo(periodFrom.value)" [(ngModel)]="holdCover.periodFrom.split('T')[0]" id="periodFrom">
+                                            <input type="{{type}}" class="form-control form-control-sm cust-sm warn" readonly appRequired #periodFrom (blur)="setPeriodTo(periodFrom.value)" [ngModel]="holdCover.periodFrom.split('T')[0]" (ngModelChange)="holdCover.periodFrom=$event" id="periodFrom">
                                             <label class="form-control-sm col-sm-2">Requested By</label>
                                             <input type="text" class="form-control form-control-sm col-sm-7" readonly id="reqBy"  maxlength="50" #reqBy [(ngModel)]="holdCover.reqBy" >
                                         </div>
                                         <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Period To</label>
-                                            <input type="{{type}}" class="form-control form-control-sm cust-sm warn" readonly id="periodTo" appRequired #periodTo  [(ngModel)]="holdCover.periodTo.split('T')[0]" >
+                                            <input type="{{type}}" class="form-control form-control-sm cust-sm warn" readonly id="periodTo" appRequired #periodTo 
+                                            [ngModel]="holdCover.periodTo.split('T')[0]" (ngModelChange)="holdCover.periodTo=$event">
                                             <label class="form-control-sm col-sm-2">Request Date</label>
-                                            <input type="{{type}}" class="form-control form-control-sm cust-sm col-sm-7" readonly id="reqDate" #reqDate [(ngModel)]="holdCover.reqDate.split('T')[0]" >
+                                            <input type="{{type}}" class="form-control form-control-sm cust-sm col-sm-7" readonly id="reqDate" #reqDate [ngModel]="holdCover.reqDate.split('T')[0]" (ngModelChange)="holdCover.reqDate=$event">
                                         </div>
                                         <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2" style="padding-left: 0px !important;" >Co. Ref. Hold Cover No</label>
@@ -226,3 +227,4 @@
 
 <app-confirm-save (onYes)="onSaveClick()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>
+<app-cancel-button (onYes)="onSaveClick('cancel')" [url]="'/quotation-processing'" ></app-cancel-button>

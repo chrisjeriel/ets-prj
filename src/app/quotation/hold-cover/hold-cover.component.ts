@@ -1,11 +1,12 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
 import { HoldCoverInfo } from '../../_models/HoldCover';
-import { QuotationService } from '../../_services';
+import { QuotationService,NotesService } from '../../_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { Location } from '@angular/common'
 import { DecimalPipe } from '@angular/common';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 
 
@@ -16,6 +17,7 @@ import { DecimalPipe } from '@angular/common';
   providers: [DecimalPipe]
 })
 export class HoldCoverComponent implements OnInit {
+  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
   tableData: any[] = [];
   tHeader: any[] = [];
@@ -147,7 +149,7 @@ export class HoldCoverComponent implements OnInit {
 
       searchParams: any[] = [];
 
-      constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private location: Location, private decPipe: DecimalPipe) { 
+      constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private location: Location, private decPipe: DecimalPipe, private ns : NotesService) { 
       }
 
       qLine: string;
@@ -169,6 +171,8 @@ export class HoldCoverComponent implements OnInit {
       hcSeqNo              : string;
       hcRevNo              : string;
       type                 : string;
+      cancelFlag: boolean;
+
 
       quoteId: number;
       warningMsg: string;
@@ -336,17 +340,17 @@ export class HoldCoverComponent implements OnInit {
           var rec = data['quotationList'][0].holdCover;
           this.holdCover.holdCoverNo = rec.holdCoverNo;
           this.splitHcNo(rec.holdCoverNo);
-          this.holdCover.periodFrom = this.formatDate(rec.periodFrom);
-          this.holdCover.periodTo = this.formatDate(rec.periodTo);
+          this.holdCover.periodFrom = this.ns.toDateTimeString(rec.periodFrom);
+          this.holdCover.periodTo = this.ns.toDateTimeString(rec.periodTo);
           this.holdCover.compRefHoldCovNo = rec.compRefHoldCovNo;
           this.holdCover.reqBy  = rec.reqBy;
-          this.holdCover.reqDate  = this.formatDate(rec.reqDate);
+          this.holdCover.reqDate  = this.ns.toDateTimeString(rec.reqDate);
           this.holdCover.status  = rec.status;
           this.holdCover.approvedBy =  rec.approvedBy;
           this.holdCover.holdCoverId = rec.holdCoverId;
           this.holdCover.updateUser = JSON.parse(window.localStorage.currentUser).username;
           this.holdCover.preparedBy = JSON.parse(window.localStorage.currentUser).username;
-          this.holdCover.createDate = this.formatDate(rec.createDate);
+          this.holdCover.createDate = this.ns.toDateTimeString(rec.createDate);
           this.holdCover.createUser = rec.createUser;
 
           if(rec.approvedBy === '' || rec.approvedBy === null ||  rec.approvedBy === undefined){
@@ -362,7 +366,8 @@ export class HoldCoverComponent implements OnInit {
     }
 
     holdCoverReq:any
-    onSaveClick(){
+    onSaveClick(cancelFlag?){
+      this.cancelFlag = cancelFlag !== undefined;
       if(this.quoteNo === '' || this.quoteNo === null || this.quoteNo === undefined ||
         this.holdCover.periodFrom === '' || this.holdCover.periodFrom === null || this.holdCover.periodFrom === undefined ||
         this.holdCover.periodTo === '' || this.holdCover.periodTo === null || this.holdCover.periodTo === undefined){
@@ -382,7 +387,7 @@ export class HoldCoverComponent implements OnInit {
         this.holdCoverReq = {
           "approvedBy": this.holdCover.approvedBy,
           "compRefHoldCovNo": this.holdCover.compRefHoldCovNo,
-          "createDate": (this.holdCover.createDate === null || this.holdCover.createDate === '' || this.holdCover.createDate === undefined) ? new Date().toISOString() : this.holdCover.createDate,
+          "createDate": (this.holdCover.createDate === null || this.holdCover.createDate === '' || this.holdCover.createDate === undefined) ? this.ns.toDateTimeString(0) : this.holdCover.createDate,
           "createUser": (this.holdCover.createUser === null || this.holdCover.createUser === '' || this.holdCover.createUser === undefined) ? JSON.parse(window.localStorage.currentUser).username : this.holdCover.createUser,
           "holdCoverId": this.holdCover.holdCoverId,
           "holdCoverRevNo": this.hcRevNo,
@@ -394,9 +399,11 @@ export class HoldCoverComponent implements OnInit {
           "preparedBy": this.holdCover.preparedBy,
           "quoteId": this.quoteId,
           "reqBy": this.holdCover.reqBy,
-          "reqDate": (this.holdCover.reqDate === null  || this.holdCover.reqDate === undefined || this.holdCover.reqDate === '') ?  new Date().toISOString() :this.holdCover.reqDate,
+          // "reqDate": (this.holdCover.reqDate === null  || this.holdCover.reqDate === undefined || this.holdCover.reqDate === '') ?  new Date() :this.holdCover.reqDate,
+          "reqDate": (this.holdCover.reqDate === null  || this.holdCover.reqDate === undefined || this.holdCover.reqDate === '') ?  this.ns.toDateTimeString(0) : this.holdCover.reqDate,
           "status": (this.holdCover.status === null || this.holdCover.status === '') ? 'I' : this.holdCover.status.substring(0,1),
-          "updateDate": new Date().toISOString(),
+          //"updateDate": new Date().toISOString(),
+          "updateDate" : this.ns.toDateTimeString(0),
           "updateUser": (this.holdCover.preparedBy === null || this.holdCover.preparedBy === '') ? JSON.parse(window.localStorage.currentUser).username : this.holdCover.preparedBy
         }
 
@@ -433,12 +440,12 @@ export class HoldCoverComponent implements OnInit {
                   .subscribe(data => {
                     var rec = data['quotation'].holdCover;
                     this.holdCover.holdCoverId = rec.holdCoverId;
-                    this.holdCover.periodFrom = this.formatDate(rec.periodFrom);
-                    this.holdCover.periodTo = this.formatDate(rec.periodTo);
+                    this.holdCover.periodFrom = this.ns.toDateTimeString(rec.periodFrom);
+                    this.holdCover.periodTo = this.ns.toDateTimeString(rec.periodTo);
                     this.holdCover.compRefHoldCovNo  = rec.compRefHoldCovNo;
                     this.holdCover.status = rec.status;
                     this.holdCover.reqBy =  rec.reqBy;
-                    this.holdCover.reqDate = (rec.reqDate === null || rec.reqDate === undefined) ? '' : this.formatDate(rec.reqDate);
+                    this.holdCover.reqDate = (rec.reqDate === null || rec.reqDate === undefined) ? '' : this.ns.toDateTimeString(rec.reqDate);
                     this.holdCover.preparedBy = rec.preparedBy;
                     this.holdCover.approvedBy = rec.approvedBy;
                   });
@@ -464,8 +471,8 @@ plainQuotationNo(data: string){
 setPeriodTo(periodFrom){
   try{
     var d = new Date(periodFrom);
-    d.setDate(d.getDate()+30);
-    this.holdCover.periodTo = d.toISOString();
+    var s = d.setDate(d.getDate()+30);
+    this.holdCover.periodTo = this.ns.toDateTimeString(s);
     this.holdCover.periodFrom = periodFrom;
   }catch(Exception){
   }
@@ -532,17 +539,17 @@ searchQuoteInfo(line,year,seq,rev,ced){
         var rec = data['quotationList'][0].holdCover;
         this.holdCover.holdCoverNo = rec.holdCoverNo;
         this.splitHcNo(rec.holdCoverNo);
-        this.holdCover.periodFrom = this.formatDate(rec.periodFrom);
-        this.holdCover.periodTo = this.formatDate(rec.periodTo);
+        this.holdCover.periodFrom = this.ns.toDateTimeString(rec.periodFrom);
+        this.holdCover.periodTo = this.ns.toDateTimeString(rec.periodTo);
         this.holdCover.compRefHoldCovNo = rec.compRefHoldCovNo;
         this.holdCover.reqBy  = rec.reqBy;
-        this.holdCover.reqDate  = this.formatDate(rec.reqDate);
+        this.holdCover.reqDate  = this.ns.toDateTimeString(rec.reqDate);
         this.holdCover.status  = rec.status;
         this.holdCover.approvedBy =  rec.approvedBy;
         this.holdCover.holdCoverId = rec.holdCoverId;
         this.holdCover.updateUser = JSON.parse(window.localStorage.currentUser).username;
         this.holdCover.preparedBy = JSON.parse(window.localStorage.currentUser).username;
-        this.holdCover.createDate = this.formatDate(rec.createDate);
+        this.holdCover.createDate = this.ns.toDateTimeString(rec.createDate);
         this.holdCover.createUser = rec.createUser;
 
 
@@ -588,8 +595,9 @@ onClickCancelQuoteLOV(){
 }
 
 onClickCancel(){
-   this.btnCancelMainEnabled = true;
-  $('#confirm-save #modalBtn2').trigger('click');
+  //  this.btnCancelMainEnabled = true;
+  // $('#confirm-save #modalBtn2').trigger('click');
+  this.cancelBtn.clickCancel();
 }
 
 newHc(isNew:boolean){
