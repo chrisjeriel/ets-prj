@@ -29,7 +29,7 @@
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Type of Cession</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="typeOfCession" readonly>
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="genInfoOcData.cessionDesc" readonly>
 										<label class="form-control-sm col-sm-2">Line Class</label>
 										<input type="text" class="form-control form-control-sm"[style.margin-right.px]="inquiryFlag ? '0' : '1'" [(ngModel)]="genInfoOcData.lineClassDesc" [readonly]="inquiryFlag" appRequired>
 										<div class="text-search-ico" *ngIf="!inquiryFlag" (click)="getLineClassLov($event)"><a><i class="fa fa-search"></i></a></div>
@@ -199,7 +199,7 @@
 							</div>
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2">Region</label>
-								<input type="text" class="form-control form-control-sm col-sm-10"  [(ngModel)]="regionDesc" readonly>
+								<input type="text" class="form-control form-control-sm col-sm-10"  [(ngModel)]="projectOc.regionDesc" readonly>
 							</div>
 						</div>
 						<div class="input-group">
@@ -210,13 +210,13 @@
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Province</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="provinceDesc" readonly>
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="projectOc.provinceDesc" readonly>
 									</div>
 								</div>
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">City/Town</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="cityDesc" readonly>
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="projectOc.cityDesc" readonly>
 									</div>
 								</div>
 							</div>
@@ -229,17 +229,17 @@
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">District</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="districtDesc" readonly>
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="projectOc.districtDesc" readonly>
 										<label class="form-control-sm col-sm-2">Block</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="blockDesc" readonly>
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="projectOc.blockDesc" readonly>
 									</div>
 								</div>
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Lat</label>
-										<input type="text" class="form-control form-control-sm" readonly>
+										<input type="text" class="form-control form-control-sm" [ngModel]="projectOc.latitude" readonly>
 										<label class="form-control-sm col-sm-2">Long</label>
-										<input type="text" class="form-control form-control-sm" readonly>
+										<input type="text" class="form-control form-control-sm" [ngModel]="projectOc.longitude" readonly>
 									</div>
 								</div>
 							</div>

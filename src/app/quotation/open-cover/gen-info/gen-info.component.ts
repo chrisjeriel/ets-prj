@@ -35,6 +35,18 @@ export class GenInfoComponent implements OnInit, OnDestroy {
      projDesc: '',
      riskId: '',
      riskName: '',
+     regionCd: '',
+     regionDesc: '',
+     provinceCd: '',
+     provinceDesc: '',
+     cityCd: '',
+     cityDesc: '',
+     districtCd: '',
+     districtDesc: '',
+     blockCd: '',
+     blockDesc: '',
+     latitude: '',
+     longitude: '',
      maxSi: '',
      pctShare: '',
      totalValue: '',
@@ -142,7 +154,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
       this.genInfoOcData.expiryDate = this.formatDateTime(new Date().setMonth(new Date().getMonth() + 1));
       this.genInfoOcData.reqDate = this.formatDateTime(new Date());
       this.genInfoOcData.status = 'Requested';
-      this.genInfoOcData.lineClassDesc = this.routerParams.typeOfCession;
+      this.genInfoOcData.cessionDesc = this.routerParams.typeOfCession;
       this.projectOc.riskId = this.routerParams.riskId;
       this.getRiskMethod(this.routerParams.riskId);
     }else if(this.routerParams.fromBtn === 'edit' || this.routerParams.fromBtn === 'view'){
@@ -169,7 +181,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
 
   getGeneralInfoData(){
     this.quotationService.getOcGenInfoData('',this.plainOpenQuotationNo(this.routerParams.ocQuoteNo)).subscribe((data: any) =>{
-          console.log(data.quotationOc);
+          console.log(data);
          this.genInfoOcData.quoteIdOc           = data.quotationOc.quoteIdOc;
          this.projectOc.quoteIdOc           = data.quotationOc.quoteIdOc;
          this.genInfoOcData.cessionDesc         = data.quotationOc.cessionDesc;
@@ -219,23 +231,35 @@ export class GenInfoComponent implements OnInit, OnDestroy {
          this.genInfoOcData.createDate          = this.formatDateTime(data.quotationOc.createDate);
          this.genInfoOcData.updateUser          = data.quotationOc.updateUser;
          this.genInfoOcData.updateDate          = this.formatDateTime(data.quotationOc.updateDate);
-         this.projectOc.projId                  = data.quotationOc.projectOc.projId;
-         this.projectOc.projDesc                = data.quotationOc.projectOc.projDesc;
-         this.projectOc.riskId                  = data.quotationOc.projectOc.riskId;
-         this.projectOc.riskName                = data.quotationOc.projectOc.riskName;
-         this.projectOc.maxSi                   = data.quotationOc.projectOc.maxSi;
-         this.projectOc.pctShare                = data.quotationOc.projectOc.pctShare;
-         this.projectOc.totalValue              = data.quotationOc.projectOc.totalValue;
-         this.projectOc.objectId                = data.quotationOc.projectOc.objectId;
-         this.projectOc.objectDesc              = data.quotationOc.projectOc.objectDesc;
-         this.projectOc.site                    = data.quotationOc.projectOc.site;
-         this.projectOc.duration                = data.quotationOc.projectOc.duration;
-         this.projectOc.testing                 = data.quotationOc.projectOc.testing;
-         this.projectOc.createUser              = data.quotationOc.projectOc.createUser;
-         this.projectOc.createDate              = this.formatDateTime(data.quotationOc.projectOc.createDate);
-         this.projectOc.updateUser              = data.quotationOc.projectOc.updateUser;
-         this.projectOc.updateDate              = this.formatDateTime(data.quotationOc.projectOc.updateDate);
-         this.getRiskMethod(this.projectOc.riskId);
+         this.projectOc.projId                  = data.projectOc.projId;
+         this.projectOc.projDesc                = data.projectOc.projDesc;
+         this.projectOc.riskId                  = data.projectOc.riskId;
+         this.projectOc.riskName                = data.projectOc.riskName;
+         this.projectOc.regionCd                = data.projectOc.regionCd
+         this.projectOc.regionDesc              = data.projectOc.regionDesc
+         this.projectOc.provinceCd              = data.projectOc.provinceCd
+         this.projectOc.provinceDesc            = data.projectOc.provinceDesc
+         this.projectOc.cityCd                  = data.projectOc.cityCd
+         this.projectOc.cityDesc                = data.projectOc.cityDesc
+         this.projectOc.districtCd              = data.projectOc.districtCd
+         this.projectOc.districtDesc            = data.projectOc.districtDesc
+         this.projectOc.blockCd                 = data.projectOc.blockCd
+         this.projectOc.blockDesc               = data.projectOc.blockDesc
+         this.projectOc.latitude                = data.projectOc.latitude
+         this.projectOc.longitude               = data.projectOc.longitude
+         this.projectOc.maxSi                   = data.projectOc.maxSi;
+         this.projectOc.pctShare                = data.projectOc.pctShare;
+         this.projectOc.totalValue              = data.projectOc.totalValue;
+         this.projectOc.objectId                = data.projectOc.objectId;
+         this.projectOc.objectDesc              = data.projectOc.objectDesc;
+         this.projectOc.site                    = data.projectOc.site;
+         this.projectOc.duration                = data.projectOc.duration;
+         this.projectOc.testing                 = data.projectOc.testing;
+         this.projectOc.createUser              = data.projectOc.createUser;
+         this.projectOc.createDate              = this.formatDateTime(data.projectOc.createDate);
+         this.projectOc.updateUser              = data.projectOc.updateUser;
+         this.projectOc.updateDate              = this.formatDateTime(data.projectOc.updateDate);
+         //this.getRiskMethod(this.projectOc.riskId);
     });
     
   }
