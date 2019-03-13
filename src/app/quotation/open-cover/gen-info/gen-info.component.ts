@@ -260,6 +260,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
          this.projectOc.updateUser              = data.projectOc.updateUser;
          this.projectOc.updateDate              = this.formatDateTime(data.projectOc.updateDate);
          //this.getRiskMethod(this.projectOc.riskId);
+         this.quoteDataF();
     });
     
   }
