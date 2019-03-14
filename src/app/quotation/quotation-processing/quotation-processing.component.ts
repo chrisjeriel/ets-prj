@@ -677,11 +677,30 @@ showCedingCompanyIntCompLOV() {
         }
 
         this.quotationService.saveQuotationCopy(JSON.stringify(params)).subscribe(data => {
-            this.loading = false;
-            
+            this.loading = false;            
+
             if(data['returnCode'] == -1) {
                 this.retrieveQuoteListingMethod();
                 this.copyToQuotationNo = data['quotationNo'];
+
+                //insert sa quote_competition
+                var internalCompParams: any[] = [{
+                    adviceNo: 0,
+                    cedingId: this.copyCedingId,
+                    cedingRepId: '',
+                    createDate: currentDate,
+                    createUser: 'USER', //JSON.parse(window.localStorage.currentUser).username,
+                    option: '',
+                    quoteId: data['quoteId'],
+                    updateDate: currentDate,
+                    updateUser: 'USER', //JSON.parse(window.localStorage.currentUser).username,
+                    wordings: ''
+                }];
+
+                this.quotationService.saveQuoteCompetition(internalCompParams).subscribe((result: any) => {
+                    console.log(result);
+                });
+                //end insert
 
                 this.copyStatus = 1;
                 this.copyQuoteId = "";
