@@ -28,6 +28,7 @@ export class QuoteEndorsementComponent implements OnInit {
     @Input() ocQuoteData: any = {};
     @ViewChild('endorsment') table: CustEditableNonDatatableComponent;
     @ViewChildren(CustNonDatatableComponent) tableNonEditable: QueryList<CustNonDatatableComponent>;
+    @ViewChild('copyTable') tableCopy: CustEditableNonDatatableComponent;
     @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
     @ViewChild("deductibleTable") deductibleTable: CustEditableNonDatatableComponent;
     @ViewChild(CustNonDatatableComponent) optionTable: CustNonDatatableComponent;
@@ -359,7 +360,11 @@ export class QuoteEndorsementComponent implements OnInit {
     }
 
     copyEndtRowClick(data){
-      this.copyEndtOkBtn = data.checked;
+      if(data === null){
+          this.copyEndtOkBtn = false;
+      }else{
+          this.copyEndtOkBtn = data.checked;
+      }
     }
 
     copyEndtMethod(optionId: number){
@@ -370,7 +375,7 @@ export class QuoteEndorsementComponent implements OnInit {
               this.copyEndtTable.tableData.push({optionNo: i.optionId})
             }
         }
-        this.tableNonEditable.forEach(table => {table.refreshTable()});
+        this.tableCopy.refreshTable();
     }
 
 

@@ -75,7 +75,7 @@
                     <label class="form-control-sm col-sm"></label>
                 </div>
             </div>
-            <app-cust-editable-non-datatable [passData]="copyEndtTable" (newClick)="copyEndtRowClick($event)"></app-cust-editable-non-datatable>
+            <app-cust-editable-non-datatable #copyTable [passData]="copyEndtTable" (newClick)="copyEndtRowClick($event)"></app-cust-editable-non-datatable>
         </div>
     </div>
     <div footer style="margin: auto;">

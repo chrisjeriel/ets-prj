@@ -544,6 +544,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
         }else{
           this.genInfoOcData.quoteIdOc = data.quoteIdOc;
           this.genInfoOcData.openQuotationNo = data.openQuotationNo;
+          this.quoteDataF();
         }
       });
     }else{
