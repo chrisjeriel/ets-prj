@@ -45,6 +45,7 @@ export class ListOfQuotationsComponent implements OnInit {
     dialogMessage:string;
     printQuoteParams: any = {};
     quoteId: any;
+    errorCode: any;
 
 
     /*passData: any = {
@@ -363,6 +364,13 @@ export class ListOfQuotationsComponent implements OnInit {
            if(this.validate(this.prepareParam())){
                 this.printPDF(this.selectedReport,this.quoteId);
                 this.printParams();
+                if (this.errorCode != 'Unknown Error'){
+                } else {
+                    this.dialogIcon = "error";
+                    this.dialogMessage = "Error Generating PDF file";
+                    $('#listQuoation #successModalBtn').trigger('click');
+                    setTimeout(()=>{$('.globalLoading').css('display','none');},0);
+                }
            } else {
                 this.dialogIcon = "error";
                 this.dialogMessage = "Please complete all the required fields.";
@@ -384,6 +392,9 @@ export class ListOfQuotationsComponent implements OnInit {
               link.href = downloadURL;
               link.download = fileName;
               link.click();
+       },
+       response => {
+          this.errorCode = response;
        });
     }
 
