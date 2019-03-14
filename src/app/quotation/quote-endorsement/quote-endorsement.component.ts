@@ -511,6 +511,7 @@ export class QuoteEndorsementComponent implements OnInit {
                   this.quotationService.saveQuoteEndorsements(JSON.stringify(this.endorsementReq))
                       .subscribe(data => { 
                         console.log(data);
+                        this.table.markAsPristine();
                         $('#successMdl > #modalBtn').trigger('click');
                       });
               }else if(this.endorsementData.tableData[i].edited && this.endorsementData.tableData[i].deleted){
