@@ -306,7 +306,7 @@ export class CoverageComponent implements OnInit {
   saveData(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
     this.prepareSaveData();
-    if (this.editedData.length != 0 || this.deletedData.length!=0 ) {
+    if (this.editedData.length != 0 || this.deletedData.length!=0 || this.initialData.length != 0) {
       this.quotationService.saveQuoteCoverage(this.coverageData.quoteId,this.coverageData.projId,this.coverageData).subscribe((data: any) => {
         if(data['returnCode'] == 0) {
             this.dialogMessage = data['errorList'][0].errorMessage;

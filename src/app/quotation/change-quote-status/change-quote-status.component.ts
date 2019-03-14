@@ -18,17 +18,17 @@ export class ChangeQuoteStatusComponent implements OnInit {
     tableData: any[] = [];
     saveData: any = {
         changeQuoteStatus: [],
+        reasonCd: null
     };
 
     resizable: boolean[] = [false, false, true, true, true];
 
-    records: any[] = [];
+    records: any = [];
     selected: any = null;
     
     dialogMessage:string = "";
     dialogIcon: string = "";
     cancelFlag:boolean;
-    required: boolean = true;
 
     selectedData : any ={
         quotationNo: null,
@@ -69,14 +69,6 @@ export class ChangeQuoteStatusComponent implements OnInit {
         
     }
 
-    reasonRequired(){
-        this.required = false;
-    }
-
-    reasonNotRequired(){
-        this.required = true;
-    }
-
     getChangeQuote(){
         this.quotationService.getQuoProcessingData([]).subscribe((data:any) => {
             this.records = data.quotationList;
@@ -84,6 +76,7 @@ export class ChangeQuoteStatusComponent implements OnInit {
             for(let rec of this.records){
                 this.passData.tableData.push(
                     {
+                        quoteId: rec.quoteId,
                         quotationNo: rec.quotationNo,
                         cessionDesc: rec.cessionDesc,
                         cedingName: rec.cedingName,
@@ -117,9 +110,17 @@ export class ChangeQuoteStatusComponent implements OnInit {
 
     emptyVariables(){
         this.saveData.reasonCd = ""
-        this.selectedData  = {
+        this.selectedData ={
+            quotationNo: null,
+            status: null,
+            statusCd: 0,
+            cedingName: null,
+            insuredDesc: null,
+            riskName: null,
+            processor: null,
             reasonCd: null,
-            description: null
+            description: null,
+            remarks: null
         }
     }
 
@@ -130,18 +131,14 @@ export class ChangeQuoteStatusComponent implements OnInit {
        if(this.selectedData.statusCd == 9){
            this.saveData.reasonCd = this.selectedData.reasonCd;
        }else{
-           this.saveData.reasonCd == null ? "":this.selectedData.reasonCd;
+           this.saveData.reasonCd = this.saveData.reasonCd == null ? "":this.selectedData.reasonCd;
        }
-       
+       console.log(this.saveData.reasonCd)
        this.savetest();
     }
 
-    query() {
-        $('#modalBtn').trigger('click');
-    }
-
-    onRowClick(data) {
-        for(let rec of this.records){
+    prepareData(){
+        /*for(let rec of this.records){
             if(rec.quotationNo === data.quotationNo) {
                 if(data.checked){
                     this.selectedData = data;
@@ -156,12 +153,58 @@ export class ChangeQuoteStatusComponent implements OnInit {
                     }
                 }
             }
+        }*/
+        this.saveData.changeQuoteStatus =[]
+            for(var j=0; j < this.passData.tableData.length;j++){
+                    if(this.passData.tableData[j].checked){
+                        this.selectedData = this.passData.tableData[j];
+                        for(var k=0;k<this.saveData.changeQuoteStatus.length;k++){
+                            if(this.saveData.changeQuoteStatus[k].quoteId == this.records.quoteId){
+                                this.saveData.changeQuoteStatus.pop(this.saveData.changeQuoteStatus[j])
+                                console.log('push')
+                            }else{
+                                this.saveData.changeQuoteStatus.push({
+                                    quoteId: this.passData.tableData[j].quoteId
+                                })
+                                console.log('pop')
+                            }
+                        }
+                        
+                    }
+                
+            
         }
     }
 
+    query() {
+        $('#modalBtn').trigger('click');
+    }
+
+    onRowClick(data) {
+        console.log(data)
+        //console.log(this.passData.tableData)
+        /*for(let rec of this.records){
+            if(rec.quotationNo === data.quotationNo) {
+                if(data.checked){
+                    this.selectedData = data;
+                    this.saveData.changeQuoteStatus.push({
+                        quoteId: rec.quoteId
+                    })
+                }else {
+                    for(var j=0;j<this.saveData.changeQuoteStatus.length;j++){
+                        if(this.saveData.changeQuoteStatus[j].quoteId == rec.quoteId){
+                            this.saveData.changeQuoteStatus.pop(this.saveData.changeQuoteStatus[j])
+                        }
+                    }
+                }
+            }
+        }*/
+    }
+
     cancel(){
-       console.log(this.selectedData.statusCd)
-       console.log(this.saveData)    
+       this.prepareData();
+       console.log(this.saveData)  
+       this.saveData.changeQuoteStatus=[];  
     }
 
     save(cancelFlag?){

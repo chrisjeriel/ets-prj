@@ -13,19 +13,19 @@
                             <div class="form-group" style="margin-bottom: 13px;margin-left: 35px !important;">
                                 <div class="input-group">
                                     <input class="form-control-sm" type="radio" name="batchOption" value="9"
-                                        style="    margin-top: 2px !important;" [(ngModel)]="selectedData.statusCd" (click)="reasonRequired()">
+                                        style="    margin-top: 2px !important;" [(ngModel)]="selectedData.statusCd">
                                     <label class="form-control-sm col-sm-10" style="text-align: left !important;">Did
                                         Not Materialize</label>
                                 </div>
                                 <div class="input-group">
                                     <input class="form-control-sm" type="radio" name="batchOption" value="10"
-                                        style="    margin-top: 2px !important;" [(ngModel)]="selectedData.statusCd" (click)="reasonNotRequired()">
+                                        style="    margin-top: 2px !important;" [(ngModel)]="selectedData.statusCd">
                                     <label class="form-control-sm col-sm-10" style="text-align: left !important;">Risk
                                         Not Commensurate</label>
                                 </div>
                                 <div class="input-group">
                                     <input class="form-control-sm" type="radio" name="batchOption" value="99"
-                                        style="    margin-top: 2px !important;" [(ngModel)]="selectedData.statusCd" (click)="reasonNotRequired()">
+                                        style="    margin-top: 2px !important;" [(ngModel)]="selectedData.statusCd">
                                     <label class="form-control-sm col-sm-10" style="text-align: left !important;">Spoiled</label>
                                 </div>
                             </div>
@@ -68,10 +68,10 @@
                             <div class="form-row custom-row-inline-inset" style="margin-bottom: 11px !important;">
                                 <div class="input-group alignment" style="margin-right: 10%; margin-bottom: -10px !important;">
                                     <label class="form-control-sm col-sm-2 text-right">Reason</label>
-                                    <input type="text" class="form-control form-control-sm col-sm-1" style="margin-right: 1px !important;" [(ngModel)]="selectedData.reasonCd" [disabled]="required"> 
+                                    <input type="text" class="form-control form-control-sm col-sm-1" style="margin-right: 1px !important;" [(ngModel)]="selectedData.reasonCd"> 
                                     <div class="text-search-ico"><a (click)="openReasonLOV()"><i class="fa fa-search"></i></a></div>
                                     <div class="col-sm-3" style="padding-left: 2px; padding-right: 0px;">
-                                        <input type="text" class="form-control form-control-sm" [(ngModel)]="selectedData.description" [disabled]="required">
+                                        <input type="text" class="form-control form-control-sm" [(ngModel)]="selectedData.description">
                                     </div>
                                     <label class="form-control-sm col-sm-2 text-right">Remarks</label>
                                     <div class="col-sm-4" style="padding-left: 0px; padding-right: 0px">

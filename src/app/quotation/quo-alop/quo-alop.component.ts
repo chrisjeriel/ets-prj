@@ -1,6 +1,6 @@
 import { Component, OnInit, Input,  ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { QuotationService, MaintenanceService } from '../../_services';
-import { QuoteALOPItemInformation, QuoteALOPInfo } from '../../_models';
+import { QuoteALOPItemInformation, QuoteALOPInfo, QuotationOption } from '../../_models';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
@@ -9,6 +9,8 @@ import { highlight,unHighlight } from '@app/_directives/highlight';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { RequiredDirective } from '@app/_directives/required.directive';
 import { FormsModule }   from '@angular/forms';
+import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+
  
 @Component({
     selector: 'app-quo-alop',
@@ -18,6 +20,7 @@ import { FormsModule }   from '@angular/forms';
 export class QuoAlopComponent implements OnInit {
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+  @ViewChild(CustNonDatatableComponent) tableNonEditable: CustNonDatatableComponent;
   @ViewChild("from") from:any;
   @ViewChild("to") to:any;
   @ViewChildren(RequiredDirective) inputs: QueryList<RequiredDirective>;
@@ -36,30 +39,43 @@ export class QuoAlopComponent implements OnInit {
     quoteId: string;
     quoteNo:string = '';
 
-    alopData: any={address: null,
-                  alopId: '1',
-                  alopItem: null,
-                  alopItemList: null,
-                  annSi: null,
-                  annSiD: null,
-                  createDate:  [0,0,0],
-                  createUser: 'Paul',
-                  expiryDate:  null,
-                  indemFromDate: null,
-                  insuredBusiness: null,
-                  insuredDesc: null,
-                  insuredId: null,
-                  insuredName: null,
-                  issueDate: null,
-                  maxIndemPd: null,
-                  maxIndemPdD: null,
-                  maxIndemPdSi: null,
-                  maxIndemPdSiD: null,
-                  repInterval: null,
-                  timeExc: null,
-                  updateDate: [0,0,0],
-                  updateUser: 'Paul'
-                };
+   alopData: any={
+                     address: null,
+                     alopId: '1',
+                     alopItem: null,
+                     alopItemList: null,
+                     annSiD: null,
+                     indemFromDate: null,
+                     insuredBusiness: null,
+                     insuredDesc: null,
+                     insuredId: null,
+                     insuredName: null,
+                     maxIndemPd: null,
+                     maxIndemPdD: null,
+                     maxIndemPdSiD: null,
+                     repInterval: null,
+                     timeExc: null,
+                     alopDetails: []
+    };
+
+    alopDetails: any = {
+            optionId: null,
+            annSi: null,
+            maxIndemPdSi: null,
+            issueDate: [0,0,0],
+            expiryDate:[0,0,0],
+            maxIndemPd: null,
+            indemFromDate: [0,0,0],
+            timeExc: null,
+            repInterval: null,
+            updateDate: [0,0,0],
+            updateUser: 'Paul',
+            createDate:  [0,0,0],
+            createUser: 'Paul'
+    }
+
+         
+     
 
     itemInfoData: any = {
         tableData: [],
@@ -85,6 +101,18 @@ export class QuoAlopComponent implements OnInit {
         widths:[1,1,1,1,1,1],
         checkFlag:true
     }
+
+    quoteOptionsData: any = {
+        tableData: [],
+        tHeader: ['Option No', 'Rate(%)', 'Conditions', 'Comm Rate Quota(%)', 'Comm Rate Surplus(%)', 'Comm Rate Fac(%)'],
+        dataTypes: ['text', 'percent', 'text', 'percent', 'percent', 'percent', 'percent'],
+        resizable: [false, false, true, false, false, false],
+        pagination: true,
+        pageStatus: true,
+        tableOnly: true,
+        pageLength: 3,
+        keys: ['optionId','optionRt','condition','commRtQuota','commRtSurplus','commRtFac']
+    } 
 
     passLOV: any = {
       selector: 'insured',
@@ -127,12 +155,29 @@ export class QuoAlopComponent implements OnInit {
             this.itemInfoData.keys = ['itemNo','quantity','description','lossMin'];
         }
         this.getAlop();
-
+        this.getQuoteOption();
     }
 
+    getQuoteOption(){
+      var id = this.quotationInfo.quoteId == '' ? '' : this.quotationInfo.quoteId;
+      this.quotationService.getQuoteOptions(id, '').subscribe((data: any) => {
+        console.log(data)
+          // this.optionRecords = data.QuotationOption.optionsList; this.plainQuotationNo(this.quotationNum)
+           if (data['quotation'] == null || data['quotation'] == undefined ){
+           }else{
+              // for(var i = data.quotation.optionsList.length - 1; i >= 0; i--){
+                for(var i = 0; i < data.quotation.optionsList.length; i++){
+                 this.quoteOptionsData.tableData.push(data.quotation.optionsList[i]);
+              }
+              
+           }
+         this.tableNonEditable.refreshTable();
+      });
+    }
 
     getAlop(){
       this.quotationService.getALop(null,this.quoteNo).subscribe((data: any) => {
+        console.log(data)
              this.quoteId = data.quotation.quoteId;
               this.alopData = data.quotation.alop===null ? this.alopData : data.quotation.alop;
               if(this.alopData.issueDate !== null){
@@ -161,6 +206,8 @@ export class QuoAlopComponent implements OnInit {
     save(cancelFlag?) {
       this.cancelFlag = cancelFlag !== undefined;
       this.alopData.quoteId = this.quoteId;
+      this.alopData.alopDetails = this.alopDetails;
+      console.log(this.alopDetails)
       this.quotationService.saveQuoteAlop(this.alopData).subscribe((data: any) => {
         this.alopData.issueDate = this.alopData.issueDate.split('T')[0];
         this.alopData.expiryDate = this.alopData.expiryDate.split('T')[0];
@@ -335,5 +382,9 @@ export class QuoAlopComponent implements OnInit {
     $('#alopItem #confirm-save #modalBtn2').trigger('click');
   }
 
+  clickRow(data) {
+    console.log(data)
+    this.alopDetails.optionId = data.optionId;
+  }
 
 }
