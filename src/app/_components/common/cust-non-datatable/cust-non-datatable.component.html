@@ -133,7 +133,7 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let data of displayData | paginate: { id:'non-editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event, data);" (dblclick)="onRowDblClick($event)" [class.selected]="data === indvSelect" >
-                            <td *ngIf="passData.checkFlag && pinKeys.length != 0" class="checkbox-container-body"><input type="checkbox" name="" *ngIf="addCheckFlag(data)" class="checkbox" (change)="removeSelected($event, data)" [checked]="checked"></td>
+                            <td *ngIf="passData.checkFlag && pinKeys.length != 0" class="checkbox-container-body"><input type="checkbox" name="" *ngIf="addCheckFlag(data)" class="checkbox" (change)="removeSelected($event, data)" [checked]="data.checked"></td>
                             <td style="margin-top:1px" *ngFor="let key of dataKeys; let i = index" [class.d-none]="pinKeys.indexOf(key) == -1" [ngSwitch]="passData.dataTypes[i]">
                                 <div *ngIf="addCheckFlag(data)">
                                     <div *ngSwitchCase="'percent'" style="text-align: right">
