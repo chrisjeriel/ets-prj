@@ -78,7 +78,7 @@
         </fieldset>
     </div>
     <div footer class="text-center w-100">
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); clearCopyFields();"><a>Cancel</a></button>
+        <button *ngIf="copyStatus == 0" class="cust-btn" type="button" (click)="modalService.dismissAll(); clearCopyFields();"><a>Cancel</a></button>
         <button *ngIf="copyStatus == 0 && copyCedingName != '' && copyRiskName != ''" class="cust-btn" type="button" (click)="copyOkBtn();"><a>Ok</a></button>
         <button *ngIf="copyStatus == 0 && (copyCedingName == '' || copyRiskName == '')" class="cust-btn cust-btn-disabled" type="button" [disabled]="true"><a>Ok</a></button>
         <button *ngIf="copyStatus == 1" class="cust-btn" type="button" (click)="modalService.dismissAll(); copyStatus = 0;"><a>Ok</a></button>
@@ -113,7 +113,7 @@
         </fieldset>
     </div>
     <div footer class="text-center w-100">
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); clearCopyFields();"><a>Cancel</a></button>
+        <button *ngIf="copyStatus == 0" class="cust-btn" type="button" (click)="modalService.dismissAll(); clearCopyFields();"><a>Cancel</a></button>
         <button *ngIf="copyStatus == 0 && copyCedingName != ''" class="cust-btn" type="button" (click)="copyIntCompOkBtn();"><a>Ok</a></button>
         <button *ngIf="copyStatus == 0 && copyCedingName == ''" class="cust-btn cust-btn-disabled" type="button" [disabled]="true"><a>Ok</a></button>
         <button *ngIf="copyStatus == 1" class="cust-btn" type="button" (click)="modalService.dismissAll(); copyStatus = 0;"><a>Ok</a></button>
@@ -189,7 +189,7 @@
                 <p>Selected Line and Risk has existing Quotation No/s</p>
                 <div *ngFor="let ex of existingQuotationNo; let i = index;">
                     <p><strong style="color:#557a95" *ngIf="i < 5">{{ex}}</strong></p>
-                    <label class="form-control-sm" *ngIf="(i+1) == existingQuotationNo.length && existingQuotationNo.length > 5" style="margin-bottom: -12px">and {{(i+1)-5}} others.</label>
+                    <label class="form-control-sm" *ngIf="(i+1) == existingQuotationNo.length && existingQuotationNo.length > 5" style="margin-bottom: -12px">and {{ ((i+1)-5 > 1) ? (i+1)-5 + ' others.' : (i+1)-5 + ' other.' }}</label>
                 </div>
                
                 <p>Please select an option:</p>
@@ -207,7 +207,7 @@
 <app-mtn-risk id="riskLOV" (selectedData)="setRisks($event)"></app-mtn-risk>
 <app-mtn-risk id="copyRiskLOV" (selectedData)="setCopyRisks($event)"></app-mtn-risk>
 <app-ceding-company id="cedingCompanyLOV" (selectedData)="setCedingcompany($event)"></app-ceding-company>
-<app-ceding-company id="cedingCompanyIntCompLOV" (selectedData)="setCedingIntCompCompany($event)"></app-ceding-company>
+<app-ceding-company id="cedingCompanyIntCompLOV" (selectedData)="setCedingIntCompCompany($event)" [exclude]="exclude"></app-ceding-company>
 <app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
 <app-mtn-type-of-cession id="typeOfCessionLOV" (selectedData)="setTypeOfCession($event)"></app-mtn-type-of-cession>
 <app-sucess-dialog id="quoProcessing" [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>

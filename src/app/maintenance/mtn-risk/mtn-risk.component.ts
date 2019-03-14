@@ -21,7 +21,7 @@ export class MtnRiskComponent implements OnInit {
     pageStatus: true,
     pagination: true,
     fixedCol: false,
-    pageID: 'Risk',
+    pageID: 'risk'+(Math.floor(Math.random() * (999999 - 100000)) + 100000).toString(),
     keys:[
     	'riskId',
     	'riskName',

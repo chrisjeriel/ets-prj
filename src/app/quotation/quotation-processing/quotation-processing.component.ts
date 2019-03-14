@@ -205,6 +205,11 @@ export class QuotationProcessingComponent implements OnInit {
     dialogMessage = "";
     dialogIcon = "";
 
+    tempCedingId = "";
+
+    exclude: any[] = [];
+
+
     first = false;
 
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private router: Router
@@ -330,15 +335,19 @@ export class QuotationProcessingComponent implements OnInit {
     nextBtnEvent() {
         //neco was here
         this.existingQuotationNo = [];
+        this.exclude = [];
+
         for(var i = 0; i < this.splittedLine.length; i++){
             if(this.line == this.splittedLine[i][0] && this.riskName == this.riskNameList[i] && this.riskNameList[i] != ""){
                 //this.existingQuoteNoIndex = i;
                 this.existingQuotationNo.push(this.passData.tableData[i].quotationNo);
                 //break;
+
+                this.exclude.push(this.passData.tableData[i].quotationNo.split('-')[4]);
             }
         }
 
-        if(this.existingQuotationNo.length > 0){
+        if(this.existingQuotationNo.length > 0 && Number(this.riskCd) > 0){
             $('#modIntModal > #modalBtn').trigger('click');
 
         }else{
@@ -396,10 +405,12 @@ export class QuotationProcessingComponent implements OnInit {
     }
 }
 
-onRowClick(event) {
+onRowClick(event) {    
     if(event != null){
         for(let i of this.fetchedData) {
            if(i.quotationNo == event.quotationNo) {               
+               this.tempCedingId = i.quotationNo.split('-')[4];
+
                this.copyQuoteId = i.quoteId;
                this.copyFromQuotationNo = i.quotationNo;
                this.copyQuoteLineCd = i.quotationNo.split('-')[0];
@@ -556,14 +567,13 @@ showCedingCompanyIntCompLOV() {
             this.quotationService.savingType = savingType;
 
             setTimeout(() => {
-                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), quotationNo: this.existingQuotationNo, from: 'quo-processing' }], { skipLocationChange: true });
+                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), quotationNo: this.existingQuotationNo, from: 'quo-processing', exclude: this.exclude }], { skipLocationChange: true });
             },100);
         }
     }
 
     checkCode(ev, field){
         this.ns.lovLoader(ev, 1);
-        console.log(this.cedingCoLovs);
 
         if(field === 'line') {            
             this.lineLov.checkCode(this.line, ev);
@@ -647,7 +657,10 @@ showCedingCompanyIntCompLOV() {
         }
     }
 
-    onClickIntCompCopy(event) {        
+    onClickIntCompCopy(event) {
+        this.exclude = [];     
+        this.exclude.push(this.tempCedingId);
+        
         $('#copyIntCompModal > #modalBtn').trigger('click');
     }
 
