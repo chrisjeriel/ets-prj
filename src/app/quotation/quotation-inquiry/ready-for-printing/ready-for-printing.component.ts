@@ -375,9 +375,11 @@ export class ReadyForPrintingComponent implements OnInit {
   changeQuoteStatus() {
     this.quotationService.saveChangeQuoteStatus(this.saveData).subscribe( data => {
         this.changeQuoteError = data['returnCode'];
+        console.log(this.changeQuoteError);
         if(data['returnCode'] == 0) {
-                this.dialogMessage = data['errorList'][0].errorMessage;
+                console.log(data['errorList'][0].errorMessage);
                 this.dialogIcon = "error";
+                this.dialogMessage = "Error Generating Report";
                 $('#successModalBtn').trigger('click');
             } else {
                 if (this.printType == 'SCREEN'){  
@@ -393,8 +395,8 @@ export class ReadyForPrintingComponent implements OnInit {
                      this.printParams();
                      this.searchQuery(this.searchParams);
                 } 
+                 this.table.refreshTable("first");
         }
-        this.table.refreshTable("first");
         this.btnDisabled = true;
     });
   }
