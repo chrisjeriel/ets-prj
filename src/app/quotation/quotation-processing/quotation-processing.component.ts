@@ -201,6 +201,7 @@ export class QuotationProcessingComponent implements OnInit {
     copyRiskId: any = "";
     copyRiskName: any = "";
     copyIntCompRiskId: any = "";
+    copyIntCompRiskName: any = "";
 
     dialogMessage = "";
     dialogIcon = "";
@@ -425,6 +426,7 @@ onRowClick(event) {
                this.copyQuoteYear = i.quotationNo.split('-')[1];
 
                this.copyIntCompRiskId = i.project.riskId;
+               this.copyIntCompRiskName = i.project.riskName;
            }
         }    
     }
@@ -667,8 +669,15 @@ showCedingCompanyIntCompLOV() {
 
     onClickIntCompCopy(event) {
         this.exclude = [];     
-        this.exclude.push(this.tempCedingId);
+        // this.exclude.push(this.tempCedingId);
         
+        for(var i = 0; i < this.splittedLine.length; i++){
+            if(this.copyQuoteLineCd == this.splittedLine[i][0] && this.copyIntCompRiskName == this.riskNameList[i] && this.riskNameList[i] != ""){               
+
+                this.exclude.push(this.passData.tableData[i].quotationNo.split('-')[4]);
+            }
+        }
+
         $('#copyIntCompModal > #modalBtn').trigger('click');
     }
 
