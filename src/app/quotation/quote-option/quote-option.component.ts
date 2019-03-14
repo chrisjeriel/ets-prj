@@ -74,7 +74,7 @@ export class QuoteOptionComponent implements OnInit {
 
     deductiblesData: any = {
         tableData: [],
-        tHeader: ['Deductible Code','Deductible Title', 'Deductible Text', 'Deductible Rate(%)', 'Deductible Amount', 'Sum Insured'],
+        tHeader: ['Deductible Code','Deductible Title', 'Deductible Text', 'Deductible Rate(%)', 'Sum Insured', 'Deductible Amount'],
         dataTypes: ['text','text', 'text', 'percent', 'currency','currency'],
         nData:{
             createDate: [2019, 2, 21, 0, 0, 0, 0],
@@ -98,7 +98,7 @@ export class QuoteOptionComponent implements OnInit {
         infoFlag: true,
         searchFlag: true,
         pageID: 2,
-        keys: ['deductibleCd','deductibleTitle','deductibleTxt','deductibleRt','deductibleAmt','sumInsured'],
+        keys: ['deductibleCd','deductibleTitle','deductibleTxt','deductibleRt','sumInsured','deductibleAmt'],
         widths: [60,'auto',100,120,'auto'],
         uneditable: [true,true],
         magnifyingGlass: ['deductibleCd']
