@@ -160,7 +160,8 @@ export class QuoteEndorsementComponent implements OnInit {
             updateDate: [2019, 2, 21, 0, 0, 0, 0],
             updateUser: "ETC",
             sumInsured: 0,
-            endtCd: 0
+            endtCd: 0,
+            coverCd: 0
         },
         pageLength: 5,
         addFlag: true,
@@ -177,6 +178,7 @@ export class QuoteEndorsementComponent implements OnInit {
     }
     showModal:boolean = false;
     dialogIcon: string;
+    hideEndt: any[];
 
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, 
      private route: ActivatedRoute, private uwService: UnderwritingService) { }
@@ -454,6 +456,7 @@ export class QuoteEndorsementComponent implements OnInit {
 
 
     clickEndtLOV(data){
+        this.hideEndt = this.endorsementData.tableData.filter((a)=>{return !a.deleted}).map(a=>a.endtCode);
         $('#edntCodeLOV #modalBtn').trigger('click');
         data.tableData = this.endorsementData.tableData;
         this.endtCodeLOVRow = data.index;
@@ -461,15 +464,29 @@ export class QuoteEndorsementComponent implements OnInit {
 
     selectedEndtLOV(data){
       if(this.OpenCover === false){
-        this.endorsementData.tableData[this.endtCodeLOVRow].endtCode = data.endtCd; 
+        //this.endorsementData.tableData[this.endtCodeLOVRow].endtCode = data.endtCd; 
         this.endorsementData.tableData[this.endtCodeLOVRow].endtTitle = data.endtTitle; 
         this.endorsementData.tableData[this.endtCodeLOVRow].endtDescription = data.description; 
         this.endorsementData.tableData[this.endtCodeLOVRow].endtWording  = data.remarks; 
-      }else{ 
+
+        this.endorsementData.tableData[this.endtCodeLOVRow].edited  = true; 
+
+        this.endorsementData.tableData.push(JSON.parse(JSON.stringify(this.endorsementData.tableData[this.endtCodeLOVRow])));
+        this.endorsementData.tableData[this.endorsementData.tableData.length-1].endtCode = data.endtCd; 
+        this.endorsementData.tableData[this.endorsementData.tableData.length-1].edited = true;
+        this.endorsementData.tableData[this.endtCodeLOVRow].deleted  = true;
+        this.table.refreshTable();
+      }else{
         this.endorsementOCData.tableData[this.endtCodeLOVRow].endtCode = data.endtCd; 
         this.endorsementOCData.tableData[this.endtCodeLOVRow].endtTitle = data.endtTitle; 
         this.endorsementOCData.tableData[this.endtCodeLOVRow].description = data.description; 
         this.endorsementOCData.tableData[this.endtCodeLOVRow].remarks  = data.remarks; 
+        this.endorsementOCData.tableData[this.endtCodeLOVRow].edited  = true;
+        // this.endorsementOCData.tableData.push(JSON.parse(JSON.stringify(this.endorsementOCData.tableData[this.endtCodeLOVRow])));
+        // this.endorsementOCData.tableData[this.endorsementOCData.tableData.length-1].endtCode = data.endtCd; 
+        // this.endorsementOCData.tableData[this.endorsementOCData.tableData.length-1].edited = true;
+        // this.endorsementOCData.tableData[this.endtCodeLOVRow].deleted  = true;
+
       }
         
     }
@@ -497,7 +514,29 @@ export class QuoteEndorsementComponent implements OnInit {
             for (var i = 0 ; this.endorsementData.tableData.length > i; i++) {
                 (this.saveEndt.createDate === null) ? new Date().toISOString() : this.saveEndt.createDate;
               (this.saveEndt.createUser == null) ? "Login User" : this.saveEndt.createUser;
-              if(this.endorsementData.tableData[i].edited && !this.endorsementData.tableData[i].deleted){
+              if(this.endorsementData.tableData[i].edited && this.endorsementData.tableData[i].deleted){
+                  this.endorsementReq = {
+                     "deleteEndorsements": [
+                        {
+                          "createDate": new Date().toISOString(),
+                          "createUser": 'CPI',
+                          "endtCd": this.endorsementData.tableData[i].endtCode,
+                          "remarks":  this.endorsementData.tableData[i].endtWording,
+                          "updateDate": new Date().toISOString(),
+                          "updateUser": this.saveEndt.updateUser
+                        }
+                     ],
+                      "optionId": this.opId,
+                      "quoteId": this.saveEndt.quoteId,
+                      "saveEndorsements": []
+                  }
+                  this.quotationService.saveQuoteEndorsements(JSON.stringify(this.endorsementReq))
+                      .subscribe(data => {
+                        console.log(data);
+                        $('#successMdl > #modalBtn').trigger('click');
+                      });
+              }
+              else if(this.endorsementData.tableData[i].edited && !this.endorsementData.tableData[i].deleted){
                   this.endorsementReq = {
                      "deleteEndorsements": [],
                       "optionId": this.opId,
@@ -517,27 +556,6 @@ export class QuoteEndorsementComponent implements OnInit {
                       .subscribe(data => { 
                         console.log(data);
                         this.table.markAsPristine();
-                        $('#successMdl > #modalBtn').trigger('click');
-                      });
-              }else if(this.endorsementData.tableData[i].edited && this.endorsementData.tableData[i].deleted){
-                  this.endorsementReq = {
-                     "deleteEndorsements": [
-                        {
-                          "createDate": new Date().toISOString(),
-                          "createUser": 'CPI',
-                          "endtCd": this.endorsementData.tableData[i].endtCode,
-                          "remarks":  this.endorsementData.tableData[i].endtWording,
-                          "updateDate": new Date().toISOString(),
-                          "updateUser": this.saveEndt.updateUser
-                        }
-                     ],
-                      "optionId": this.opId,
-                      "quoteId": this.saveEndt.quoteId,
-                      "saveEndorsements": []
-                  }
-                  this.quotationService.saveQuoteEndorsements(JSON.stringify(this.endorsementReq))
-                      .subscribe(data => {
-                        console.log(data);
                         $('#successMdl > #modalBtn').trigger('click');
                       });
               }
@@ -634,10 +652,10 @@ export class QuoteEndorsementComponent implements OnInit {
         '0',this.table.indvSelect.endtCode,'Y','Y').subscribe((data)=>{
           this.deductiblesData.tableData = data['deductibles'].filter((a)=>{
             a.sumInsured = 0;
-            a.coverCd = this.deductiblesData.nData.coverCd;
+            a.coverCd = 0;
             a.deductibleTxt = a.deductibleText;
             a.deductibleRt = a.deductibleRate;
-            a.endtCd = 0;
+            a.endtCd = this.table.indvSelect.endtCode;
             a.edited = true;
             return true;
           })

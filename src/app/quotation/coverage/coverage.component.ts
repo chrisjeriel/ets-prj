@@ -306,7 +306,7 @@ export class CoverageComponent implements OnInit {
   saveData(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
     this.prepareSaveData();
-    if (this.editedData.length != 0 || this.deletedData.length!=0 ) {
+    /*if (this.editedData.length != 0 || this.deletedData.length!=0 || this.initialData.length != 0) {*/
       this.quotationService.saveQuoteCoverage(this.coverageData.quoteId,this.coverageData.projId,this.coverageData).subscribe((data: any) => {
         if(data['returnCode'] == 0) {
             this.dialogMessage = data['errorList'][0].errorMessage;
@@ -317,18 +317,18 @@ export class CoverageComponent implements OnInit {
             this.dialogIcon = "success";
             $('#successModalBtn').trigger('click');
             this.getCoverage();
-            $('.ng-dirty').removeClass('ng-dirty');
+            this.table.markAsPristine();
             this.initialData = [];
             this.editedData = [];
             this.deletedData =[];
             //this.getCoverageInfo();
            }
       });
-    }else{
+/*    }else{
         this.dialogMessage = "Nothing to save.";
         this.dialogIcon = "info"
         $('#successModalBtn').trigger('click');
-    }
+    }*/
   }
 
   testing(){
