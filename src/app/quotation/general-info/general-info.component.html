@@ -59,7 +59,7 @@
 									</div>
 									<div *ngIf="genInfoData.cessionDesc.toUpperCase() === 'RETROCESSION'" class="input-group ig-cust">
 										<label class="form-control-sm col-sm-2">Reinsurance From</label>
-										<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="genInfoData.reinsurerId" (change)="checkCode($event,'cedingCoNotMember')" appRequired>
+										<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [ngModel]="genInfoData.reinsurerId | number:'3.0'" (ngModelChange)="genInfoData.reinsurerId=$event" (change)="checkCode($event,'cedingCoNotMember')" appRequired>
 										<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showCedingCompanyNotMemberLOV()"></i></a></div>
 										<span [class.d-none]="inquiryFlag">&nbsp;</span>
 										<input type="text" [(ngModel)]="genInfoData.reinsurerName" class="form-control form-control-sm col-sm ig-mrgn" style="margin-left: 5px;" readonly>
@@ -79,7 +79,7 @@
 									<div class="input-group ig-cust" style="margin-top: 10px;">
 										<label class="form-control-sm col-sm-4">Quote Date</label>
 										<!-- <input  type="date" [ngModel]="genInfoData.issueDate.split('T')[0]" (ngModelChange)="genInfoData.issueDate = toDateTime($event)" class="form-control form-control-sm"> -->
-										<input  [readonly]="inquiryFlag" type="date" [ngModel]="genInfoData.issueDate.split('T')[0]" (ngModelChange)="genInfoData.issueDate = $event" class="form-control form-control-sm req" appRequired>
+										<input  [readonly]="inquiryFlag" type="date" [ngModel]="genInfoData.issueDate.split('T')[0]" (ngModelChange)="genInfoData.issueDate = $event; updateExpiryDate($event);" class="form-control form-control-sm req" appRequired>
 									</div>
 									<div class="input-group ig-cust">
 										<label class="form-control-sm col-sm-4">Valid Until</label>
@@ -904,7 +904,7 @@
 <app-mtn-insured id="principalLOV" (selectedData)="setPrincipal($event)"></app-mtn-insured>
 <app-mtn-insured id="contractorLOV" (selectedData)="setContractor($event)"></app-mtn-insured> 
 <app-mtn-currency id="currencyModal" (selectedData)="setCurrency($event)"></app-mtn-currency>
-<app-ceding-company id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-ceding-company>
+<app-ceding-company id="cedingCompany" (selectedData)="setCedingcompany($event)" [exclude]="excludeCedingCo"></app-ceding-company>
 <app-mtn-ceding-company id="cedingCompanyNotMember" (selectedData)="setReinsurer($event)"></app-mtn-ceding-company>
 <app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
 <app-mtn-intermediary id="intLOV" (selectedData)="setInt($event)"></app-mtn-intermediary>

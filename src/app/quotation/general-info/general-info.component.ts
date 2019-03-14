@@ -168,6 +168,8 @@ export class GeneralInfoComponent implements OnInit {
 	}
 
 	loading:boolean = true;
+	excludeCedingCo: any[] = [];
+	tempQuoteIdInternalComp = "";
 
 	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title,
 			    private route: ActivatedRoute, private maintenanceService: MaintenanceService, private ns: NotesService) { }
@@ -181,6 +183,7 @@ export class GeneralInfoComponent implements OnInit {
 		this.savingType = this.quotationService.savingType;
 
 		this.sub = this.route.params.subscribe(params => {
+
 			if(params['addParams'] != undefined){
 				this.internalCompFlag = JSON.parse(params['addParams']).intComp == undefined ? false : JSON.parse(params['addParams']).intComp; //neco				
 			}
@@ -196,6 +199,14 @@ export class GeneralInfoComponent implements OnInit {
 				if (this.from == "quo-processing") {
 					this.typeOfCession = params['typeOfCession'];
 					this.quotationNo = (this.quoteInfo.quotationNo === '') ? params['quotationNo'] : this.quoteInfo.quotationNo;
+
+					if(params['exclude'] != undefined) {
+						this.excludeCedingCo = params['exclude'].split(',');
+					}
+
+					if(params['tempQuoteIdInternalComp'] != undefined) {
+						this.tempQuoteIdInternalComp = params['tempQuoteIdInternalComp'];
+					}
 				}
 			});
 
@@ -272,9 +283,9 @@ export class GeneralInfoComponent implements OnInit {
 				this.genInfoData.preparedBy		= 'USER'; //JSON.parse(window.localStorage.currentUser).username;
 				
 				var date = new Date();
-				var mills = date.setDate(date.getDate() + 30);
+				var millis = date.setDate(date.getDate() + 30);
 
-				this.genInfoData.expiryDate		= this.ns.toDateTimeString(mills);	
+				this.genInfoData.expiryDate		= this.ns.toDateTimeString(millis);	
 				this.project.projId 			= '1';
 
 				this.maintenanceService.getMtnCurrency('PHP','Y').subscribe(data => {
@@ -631,6 +642,10 @@ export class GeneralInfoComponent implements OnInit {
 			saveQuoteGeneralInfoParam.prjUpdateDate = this.ns.toDateTimeString(0);
 		}
 
+		if(this.savingType === 'internalComp') {
+			saveQuoteGeneralInfoParam['tempQuoteIdInternalComp'] = this.tempQuoteIdInternalComp;
+		}
+
 		return saveQuoteGeneralInfoParam;
 	}
 
@@ -782,7 +797,6 @@ export class GeneralInfoComponent implements OnInit {
 	}
 
 	test() {
-		console.log('blur' + this.genInfoData.intmId);
 		if(this.genInfoData.intmId != 0){
 			this.genInfoData.intmId = String(this.genInfoData.intmId).padStart(3, '0');	
 		} else {
@@ -798,6 +812,13 @@ export class GeneralInfoComponent implements OnInit {
 	setPreparedBy(data) {
 		this.genInfoData.preparedBy = data.userId;
 		this.ns.lovLoader(data.ev, 0);
+	}
+
+	updateExpiryDate(ev) {
+		var d = new Date(ev);
+		var millis = d.setDate(d.getDate() + 30);
+
+		this.genInfoData.expiryDate = this.ns.toDateTimeString(millis);
 	}
 }
 export interface SelectRequestMode {

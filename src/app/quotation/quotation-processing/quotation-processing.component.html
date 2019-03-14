@@ -12,7 +12,7 @@
                         as params for your http get method.
                     -->
                     <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)"
-                        (add)="onClickAdd($event)" (edit)="onClickEdit($event)" (searchToDb)="searchQuery($event)" (gnrc1)="onClickCopy();" (gnrc2)="onClickInternalComp();"></app-cust-non-datatable>
+                        (add)="onClickAdd($event)" (edit)="onClickEdit($event)" (searchToDb)="searchQuery($event)" (gnrc1)="onClickCopy();" (gnrc2)="onClickIntCompCopy();"></app-cust-non-datatable>
                 </div>
             </ng-template>
         </ngb-tab>
@@ -52,14 +52,14 @@
                 <div class="custom-row-inline-inset" style="text-align: center">
                     <div class="input-group" style="margin-bottom: -14px !important;">
                         <label class="form-control-sm col-sm-3" style="padding-left: 0;">Ceding Company</label>
-                        <input type="text"class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" [(ngModel)]="copyCedingId" (change)="checkCode($event, 'cedingCo')">
+                        <input type="text"class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" [(ngModel)]="copyCedingId" (change)="checkCode($event, 'cedingCo')" appRequired>
                         <div class="text-search-ico" (click)="showCedingCompanyLOV()"><a><i class="fa fa-search"></i></a></div>
                         &nbsp;&nbsp;
                         <input type="text" class="form-control form-control-sm" [(ngModel)]="copyCedingName" readonly>
                     </div>
                     <div class="input-group" style="margin-bottom: -14px !important;">
                         <label class="form-control-sm col-sm-3">Risk</label>
-                        <input type="text"class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" [(ngModel)]="copyRiskId" (change)="checkCode($event, 'copyRisk')">
+                        <input type="text"class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" [(ngModel)]="copyRiskId" (change)="checkCode($event, 'copyRisk')" appRequired>
                         <div class="text-search-ico" (click)="showCopyRiskLOV()"><a><i class="fa fa-search"></i></a></div>
                         &nbsp;&nbsp;
                         <input type="text" class="form-control form-control-sm" [(ngModel)]="copyRiskName" readonly>
@@ -78,12 +78,48 @@
         </fieldset>
     </div>
     <div footer class="text-center w-100">
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-        <button *ngIf="copyStatus == 0" class="cust-btn" type="button" (click)="copyOkBtn();"><a>Ok</a></button>
+        <button *ngIf="copyStatus == 0" class="cust-btn" type="button" (click)="modalService.dismissAll(); clearCopyFields();"><a>Cancel</a></button>
+        <button *ngIf="copyStatus == 0 && copyCedingName != '' && copyRiskName != ''" class="cust-btn" type="button" (click)="copyOkBtn();"><a>Ok</a></button>
+        <button *ngIf="copyStatus == 0 && (copyCedingName == '' || copyRiskName == '')" class="cust-btn cust-btn-disabled" type="button" [disabled]="true"><a>Ok</a></button>
         <button *ngIf="copyStatus == 1" class="cust-btn" type="button" (click)="modalService.dismissAll(); copyStatus = 0;"><a>Ok</a></button>
     </div>
 </app-modal>
 <!-- End Copy Modal -->
+
+<!-- COPY INTERNAL COMP -->
+<app-modal class="hidden" id="copyIntCompModal">
+    <div header>Internal Competition</div>
+    <div *ngIf="copyStatus == 0" body>
+        <fieldset class="scheduler-border" style="padding-bottom: 24px !important; padding-top: 20px !important; height: 80px !important;">
+                <div class="custom-row-inline-inset" style="text-align: center">
+                    <div class="input-group" style="margin-bottom: -14px !important;">
+                        <label class="form-control-sm col-sm-3" style="padding-left: 0;">Ceding Company</label>
+                        <input type="text"class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" [(ngModel)]="copyCedingId" (change)="checkCode($event, 'cedingCoIntComp')" appRequired>
+                        <div class="text-search-ico" (click)="showCedingCompanyIntCompLOV()"><a><i class="fa fa-search"></i></a></div>
+                        &nbsp;&nbsp;
+                        <input type="text" class="form-control form-control-sm" [(ngModel)]="copyCedingName" readonly>
+                    </div>                   
+                </div>
+        </fieldset>
+    </div>
+    <div *ngIf="copyStatus == 1" body>
+        <fieldset class="scheduler-border">
+            <div class="custom-row-inline-inset" style="text-align: center">
+                <p>This Quotation No.</p>
+                <p style="color:#557a95"><strong>{{ copyFromQuotationNo }}</strong></p>
+                <p>has been copied to Quotation No.</p>
+                <p style="color:red"><strong>{{ copyToQuotationNo }}</strong></p>
+            </div>
+        </fieldset>
+    </div>
+    <div footer class="text-center w-100">
+        <button *ngIf="copyStatus == 0" class="cust-btn" type="button" (click)="modalService.dismissAll(); clearCopyFields();"><a>Cancel</a></button>
+        <button *ngIf="copyStatus == 0 && copyCedingName != ''" class="cust-btn" type="button" (click)="copyIntCompOkBtn();"><a>Ok</a></button>
+        <button *ngIf="copyStatus == 0 && copyCedingName == ''" class="cust-btn cust-btn-disabled" type="button" [disabled]="true"><a>Ok</a></button>
+        <button *ngIf="copyStatus == 1" class="cust-btn" type="button" (click)="modalService.dismissAll(); copyStatus = 0;"><a>Ok</a></button>
+    </div>
+</app-modal>
+<!-- END COPY INTERNAL COMP -->
 
 <!-- Add -->
 <app-modal class="hidden" id="addModal">
@@ -153,7 +189,7 @@
                 <p>Selected Line and Risk has existing Quotation No/s</p>
                 <div *ngFor="let ex of existingQuotationNo; let i = index;">
                     <p><strong style="color:#557a95" *ngIf="i < 5">{{ex}}</strong></p>
-                    <label class="form-control-sm" *ngIf="(i+1) == existingQuotationNo.length && existingQuotationNo.length > 5" style="margin-bottom: -12px">and {{(i+1)-5}} others.</label>
+                    <label class="form-control-sm" *ngIf="(i+1) == existingQuotationNo.length && existingQuotationNo.length > 5" style="margin-bottom: -12px">and {{ ((i+1)-5 > 1) ? (i+1)-5 + ' others.' : (i+1)-5 + ' other.' }}</label>
                 </div>
                
                 <p>Please select an option:</p>
@@ -171,5 +207,7 @@
 <app-mtn-risk id="riskLOV" (selectedData)="setRisks($event)"></app-mtn-risk>
 <app-mtn-risk id="copyRiskLOV" (selectedData)="setCopyRisks($event)"></app-mtn-risk>
 <app-ceding-company id="cedingCompanyLOV" (selectedData)="setCedingcompany($event)"></app-ceding-company>
+<app-ceding-company id="cedingCompanyIntCompLOV" (selectedData)="setCedingIntCompCompany($event)" [exclude]="exclude"></app-ceding-company>
 <app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
 <app-mtn-type-of-cession id="typeOfCessionLOV" (selectedData)="setTypeOfCession($event)"></app-mtn-type-of-cession>
+<app-sucess-dialog id="quoProcessing" [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
