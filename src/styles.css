@@ -79,6 +79,14 @@ textarea {
     margin-right: 3px;
 }
 
+.cust-btn:focus {
+    /*box-shadow: 0 0 12px yellow;*/
+    background-color: #fff;
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
 .cust-btn:hover {
     background: linear-gradient(to bottom, #4080df 0%, #2d5986 100%);
 }

@@ -102,6 +102,7 @@ export class QuoteEndorsementComponent implements OnInit {
         infoFlag: true,
         paginateFlag: true,
         searchFlag: true,
+        uneditable: [true, true, true, false],
         keys: ['endtCode','endtTitle','endtDescription','endtWording']
     }
 
