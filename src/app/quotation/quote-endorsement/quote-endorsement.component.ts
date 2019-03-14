@@ -340,6 +340,7 @@ export class QuoteEndorsementComponent implements OnInit {
     retrieveQuoteEndorsementOc(){
        this.endorsementOCData.tableData = [];
        var quoteNumOc = this.plainQuotationNoOc(this.ocQuoteData.openQuotationNo);
+       console.log(quoteNumOc);
        this.quotationService.getEndorsementsOc(this.ocQuoteData.quoteIdOc,quoteNumOc).subscribe((data: any) => {
      /* this.quoteNoData = data.endorsementsOc[0].quotationNo;*/
           for(var lineCount = 0; lineCount < data.endorsementsOc.length; lineCount++){
@@ -589,10 +590,27 @@ export class QuoteEndorsementComponent implements OnInit {
         return new Date(date[0] + "/" + date[1] + "/" + date[2]).toISOString();
     }
     // end-arn //
+
+    //Neco
     plainQuotationNoOc(data: string){
         var arr = data.split('-');
-        return arr[0]+ '-' +arr[1] + '-' + arr[2] + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]) + '-' + parseInt(arr[5]) ;
+        return arr[0]+ '-' +arr[1] + '-' + arr[2] + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]) + '-' +this.checkIdFormat(arr[5]);
     }
+
+    //temporary fix for leading zeroes
+    checkIdFormat(id: any){
+      if(parseInt(id) > 99){
+        return id;
+      }else{
+        if(parseInt(id) > 9){
+          return '0'+id;
+        }
+        else if(parseInt(id) < 9){
+          return '00'+id;
+        }
+      }
+    }
+    //end neco
 
     onClickSave(){
       $('#endtSave #confirm-save #modalBtn2').trigger('click');
