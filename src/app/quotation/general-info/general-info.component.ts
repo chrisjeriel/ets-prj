@@ -169,6 +169,7 @@ export class GeneralInfoComponent implements OnInit {
 
 	loading:boolean = true;
 	excludeCedingCo: any[] = [];
+	tempQuoteIdInternalComp = "";
 
 	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title,
 			    private route: ActivatedRoute, private maintenanceService: MaintenanceService, private ns: NotesService) { }
@@ -181,7 +182,8 @@ export class GeneralInfoComponent implements OnInit {
 
 		this.savingType = this.quotationService.savingType;
 
-		this.sub = this.route.params.subscribe(params => {						
+		this.sub = this.route.params.subscribe(params => {
+
 			if(params['addParams'] != undefined){
 				this.internalCompFlag = JSON.parse(params['addParams']).intComp == undefined ? false : JSON.parse(params['addParams']).intComp; //neco				
 			}
@@ -200,6 +202,10 @@ export class GeneralInfoComponent implements OnInit {
 
 					if(params['exclude'] != undefined) {
 						this.excludeCedingCo = params['exclude'].split(',');
+					}
+
+					if(params['tempQuoteIdInternalComp'] != undefined) {
+						this.tempQuoteIdInternalComp = params['tempQuoteIdInternalComp'];
 					}
 				}
 			});
@@ -637,6 +643,10 @@ export class GeneralInfoComponent implements OnInit {
 			saveQuoteGeneralInfoParam.prjCreateDate = this.ns.toDateTimeString(0);
 			saveQuoteGeneralInfoParam.prjUpdateUser = 'USER'; //JSON.parse(window.localStorage.currentUser).username;
 			saveQuoteGeneralInfoParam.prjUpdateDate = this.ns.toDateTimeString(0);
+		}
+
+		if(this.savingType === 'internalComp') {
+			saveQuoteGeneralInfoParam['tempQuoteIdInternalComp'] = this.tempQuoteIdInternalComp;
 		}
 
 		return saveQuoteGeneralInfoParam;

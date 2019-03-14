@@ -201,11 +201,13 @@ export class QuotationProcessingComponent implements OnInit {
     copyRiskId: any = "";
     copyRiskName: any = "";
     copyIntCompRiskId: any = "";
+    copyIntCompRiskName: any = "";
 
     dialogMessage = "";
     dialogIcon = "";
 
     tempCedingId = "";
+    tempQuoteId = "";
 
     exclude: any[] = [];
 
@@ -347,6 +349,12 @@ export class QuotationProcessingComponent implements OnInit {
             }
         }
 
+        for(let i of this.fetchedData) {
+            if(i.quotationNo == this.existingQuotationNo[0]) {
+                this.tempQuoteId = i.quoteId;
+            }
+        }
+
         if(this.existingQuotationNo.length > 0 && Number(this.riskCd) > 0){
             $('#modIntModal > #modalBtn').trigger('click');
 
@@ -408,6 +416,7 @@ export class QuotationProcessingComponent implements OnInit {
 onRowClick(event) {    
     if(event != null){
         for(let i of this.fetchedData) {
+
            if(i.quotationNo == event.quotationNo) {               
                this.tempCedingId = i.quotationNo.split('-')[4];
 
@@ -417,6 +426,7 @@ onRowClick(event) {
                this.copyQuoteYear = i.quotationNo.split('-')[1];
 
                this.copyIntCompRiskId = i.project.riskId;
+               this.copyIntCompRiskName = i.project.riskName;
            }
         }    
     }
@@ -567,7 +577,7 @@ showCedingCompanyIntCompLOV() {
             this.quotationService.savingType = savingType;
 
             setTimeout(() => {
-                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), quotationNo: this.existingQuotationNo, from: 'quo-processing', exclude: this.exclude }], { skipLocationChange: true });
+                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), quotationNo: this.existingQuotationNo, from: 'quo-processing', exclude: this.exclude, tempQuoteIdInternalComp: this.tempQuoteId }], { skipLocationChange: true });
             },100);
         }
     }
@@ -659,8 +669,15 @@ showCedingCompanyIntCompLOV() {
 
     onClickIntCompCopy(event) {
         this.exclude = [];     
-        this.exclude.push(this.tempCedingId);
+        // this.exclude.push(this.tempCedingId);
         
+        for(var i = 0; i < this.splittedLine.length; i++){
+            if(this.copyQuoteLineCd == this.splittedLine[i][0] && this.copyIntCompRiskName == this.riskNameList[i] && this.riskNameList[i] != ""){               
+
+                this.exclude.push(this.passData.tableData[i].quotationNo.split('-')[4]);
+            }
+        }
+
         $('#copyIntCompModal > #modalBtn').trigger('click');
     }
 
@@ -678,7 +695,7 @@ showCedingCompanyIntCompLOV() {
         //change copyStatus to 1 if successful
         var params = {
             "cedingId": this.copyCedingId,
-            "copyingType": 'intComp',
+            "copyingType": 'internalComp',
             "createDate": currentDate,
             "createUser": 'USER', //JSON.parse(window.localStorage.currentUser).username,
             "lineCd": this.copyQuoteLineCd,
