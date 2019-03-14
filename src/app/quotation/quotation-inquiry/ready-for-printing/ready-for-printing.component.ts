@@ -193,13 +193,13 @@ export class ReadyForPrintingComponent implements OnInit {
 
 
   onRowClick(event){
+    console.log(event);
      this.saveData.changeQuoteStatus.pop(this.saveData.changeQuoteStatus[0]);
     if (this.isEmptyObject(event)){
       this.btnDisabled = true;
     } else {
       this.btnDisabled = false;
       this.quoteNoCmp = event.quotationNo;
-     /* this.quoteNo =  this.plainQuotationNo(event.quotationNo);*/
        for(let rec of this.records){
           if(rec.quotationNo === event.quotationNo) {
             this.quoteId = rec.quoteId;
