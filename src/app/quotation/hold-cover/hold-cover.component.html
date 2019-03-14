@@ -74,18 +74,18 @@
                                             <label class="form-control-sm col-sm-2">Period From</label>
                                             <input type="{{type}}" class="form-control form-control-sm cust-sm warn" readonly appRequired #periodFrom (blur)="setPeriodTo(periodFrom.value)" [ngModel]="holdCover.periodFrom.split('T')[0]" (ngModelChange)="holdCover.periodFrom=$event" id="periodFrom">
                                             <label class="form-control-sm col-sm-2">Requested By</label>
-                                            <input type="text" class="form-control form-control-sm col-sm-7" readonly id="reqBy"  maxlength="50" #reqBy [(ngModel)]="holdCover.reqBy" >
+                                            <input type="text" class="form-control form-control-sm col-sm-7 warn" appRequired readonly id="reqBy"  maxlength="50" #reqBy [(ngModel)]="holdCover.reqBy" >
                                         </div>
                                         <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Period To</label>
                                             <input type="{{type}}" class="form-control form-control-sm cust-sm warn" readonly id="periodTo" appRequired #periodTo 
                                             [ngModel]="holdCover.periodTo.split('T')[0]" (ngModelChange)="holdCover.periodTo=$event">
                                             <label class="form-control-sm col-sm-2">Request Date</label>
-                                            <input type="{{type}}" class="form-control form-control-sm cust-sm col-sm-7" readonly id="reqDate" #reqDate [ngModel]="holdCover.reqDate.split('T')[0]" (ngModelChange)="holdCover.reqDate=$event">
+                                            <input type="{{type}}" class="form-control form-control-sm cust-sm col-sm-7 warn" appRequired readonly id="reqDate" #reqDate [ngModel]="holdCover.reqDate.split('T')[0]" (ngModelChange)="holdCover.reqDate=$event" min="2019-03-12">
                                         </div>
                                         <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2" style="padding-left: 0px !important;" >Co. Ref. Hold Cover No</label>
-                                            <input type="text" class="form-control form-control-sm" #coRef maxlength="25" id="coRef"  readonly [(ngModel)]="holdCover.compRefHoldCovNo" >
+                                            <input type="text" class="form-control form-control-sm warn" appRequired #coRef maxlength="25" id="coRef"  readonly [(ngModel)]="holdCover.compRefHoldCovNo" >
                                             <label class="form-control-sm col-sm-2">Prepared By</label>
                                             <input type="text" class="form-control form-control-sm col-sm-7" maxlength="50" #prepBy [(ngModel)]="holdCover.preparedBy" readonly tabindex="-1">
                                         </div>
