@@ -60,7 +60,17 @@
 				</fieldset>
 			</div>	
 		</div>
-
+		<fieldset class="scheduler-border" *ngIf="!OpenCover">
+		    <legend class="scheduler-border">Options</legend>
+		    <!--<app-cust-table [checkFlag]="false" [tableData]="quoteOptionTableData" [tHeader]="quoteOptionTHeader" [dataTypes]="quoteOptionDataType" (rowClick)="clickRow($event)"></app-cust-table>-->
+		    <div class="row">
+		        <div class="col-sm-1"></div>
+		        <div class="col-sm-10" style=" margin-bottom: -0.4%;">
+		            <app-cust-non-datatable [passData]="quoteOptionsData" (rowClick)="clickRow($event)"></app-cust-non-datatable>
+		        </div>
+		        <div class="col-sm-1"></div>
+		    </div>
+		</fieldset>
 		<fieldset class="scheduler-border middle">
 			<div class="form-row custom-row-inline-inset">
 				<div class="input-group" style="padding-bottom: 1%;">
