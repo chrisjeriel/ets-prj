@@ -125,6 +125,7 @@ export class ChangeQuoteStatusComponent implements OnInit {
     }
 
     process(cancelFlag?) {
+       this.prepareData();
        this.saveData.statusCd = this.selectedData.statusCd;
        this.cancelFlag = cancelFlag !== undefined;
            
@@ -155,24 +156,30 @@ export class ChangeQuoteStatusComponent implements OnInit {
             }
         }*/
         this.saveData.changeQuoteStatus =[]
-            for(var j=0; j < this.passData.tableData.length;j++){
-                    if(this.passData.tableData[j].checked){
-                        this.selectedData = this.passData.tableData[j];
-                        for(var k=0;k<this.saveData.changeQuoteStatus.length;k++){
-                            if(this.saveData.changeQuoteStatus[k].quoteId == this.records.quoteId){
-                                this.saveData.changeQuoteStatus.pop(this.saveData.changeQuoteStatus[j])
-                                console.log('push')
-                            }else{
-                                this.saveData.changeQuoteStatus.push({
-                                    quoteId: this.passData.tableData[j].quoteId
-                                })
-                                console.log('pop')
-                            }
-                        }
+        //     for(var j=0; j < this.passData.tableData.length;j++){
+        //             if(this.passData.tableData[j].checked){
+        //                 this.selectedData = this.passData.tableData[j];
+        //                 for(var k=0;k<this.saveData.changeQuoteStatus.length;k++){
+        //                     if(this.saveData.changeQuoteStatus[k].quoteId == this.records.quoteId){
+        //                         this.saveData.changeQuoteStatus.pop(this.saveData.changeQuoteStatus[j])
+        //                         console.log('push')
+        //                     }else{
+        //                         this.saveData.changeQuoteStatus.push({
+        //                             quoteId: this.passData.tableData[j].quoteId
+        //                         })
+        //                         console.log('pop')
+        //                     }
+        //                 }
                         
-                    }
-                
-            
+        //             }
+        // }
+        for(let data of this.passData.tableData){
+            if(data.checked){
+                console.log(data);
+                this.saveData.changeQuoteStatus.push({
+                    quoteId: data.quoteId
+                })
+            }
         }
     }
 
@@ -181,7 +188,6 @@ export class ChangeQuoteStatusComponent implements OnInit {
     }
 
     onRowClick(data) {
-        console.log(data)
         //console.log(this.passData.tableData)
         /*for(let rec of this.records){
             if(rec.quotationNo === data.quotationNo) {
@@ -203,8 +209,8 @@ export class ChangeQuoteStatusComponent implements OnInit {
 
     cancel(){
        this.prepareData();
-       console.log(this.saveData)  
-       this.saveData.changeQuoteStatus=[];  
+       console.log(this.saveData)
+       console.log(this.passData.tableData);
     }
 
     save(cancelFlag?){
