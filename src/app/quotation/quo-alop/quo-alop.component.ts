@@ -1,6 +1,6 @@
 import { Component, OnInit, Input,  ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { QuotationService, MaintenanceService } from '../../_services';
-import { QuoteALOPItemInformation, QuoteALOPInfo } from '../../_models';
+import { QuoteALOPItemInformation, QuoteALOPInfo, QuotationOption } from '../../_models';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
@@ -9,6 +9,8 @@ import { highlight,unHighlight } from '@app/_directives/highlight';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { RequiredDirective } from '@app/_directives/required.directive';
 import { FormsModule }   from '@angular/forms';
+import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+
  
 @Component({
     selector: 'app-quo-alop',
@@ -18,6 +20,7 @@ import { FormsModule }   from '@angular/forms';
 export class QuoAlopComponent implements OnInit {
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+  @ViewChild(CustNonDatatableComponent) tableNonEditable: CustNonDatatableComponent;
   @ViewChild("from") from:any;
   @ViewChild("to") to:any;
   @ViewChildren(RequiredDirective) inputs: QueryList<RequiredDirective>;
@@ -86,6 +89,18 @@ export class QuoAlopComponent implements OnInit {
         checkFlag:true
     }
 
+    quoteOptionsData: any = {
+        tableData: [],
+        tHeader: ['Option No', 'Rate(%)', 'Conditions', 'Comm Rate Quota(%)', 'Comm Rate Surplus(%)', 'Comm Rate Fac(%)'],
+        dataTypes: ['text', 'percent', 'text', 'percent', 'percent', 'percent', 'percent'],
+        resizable: [false, false, true, false, false, false],
+        pagination: true,
+        pageStatus: true,
+        tableOnly: true,
+        pageLength: 3,
+        keys: ['optionId','optionRt','condition','commRtQuota','commRtSurplus','commRtFac']
+    } 
+
     passLOV: any = {
       selector: 'insured',
     }
@@ -127,9 +142,30 @@ export class QuoAlopComponent implements OnInit {
             this.itemInfoData.keys = ['itemNo','quantity','description','lossMin'];
         }
         this.getAlop();
-
+        this.getQuoteOption();
     }
 
+    getQuoteOption(){
+      var id = this.quotationInfo.quoteId == '' ? '' : this.quotationInfo.quoteId;
+      this.quotationService.getQuoteOptions(id, '').subscribe((data: any) => {
+          // this.optionRecords = data.QuotationOption.optionsList; this.plainQuotationNo(this.quotationNum)
+           if (data['quotation'] == null || data['quotation'] == undefined ){
+           }else{
+              // for(var i = data.quotation.optionsList.length - 1; i >= 0; i--){
+                for(var i = 0; i < data.quotation.optionsList.length; i++){
+                 this.quoteOptionsData.tableData.push(new QuotationOption (
+                                              data.quotation.optionsList[i].optionId,
+                                              data.quotation.optionsList[i].optionRt,
+                                              data.quotation.optionsList[i].condition,
+                                              data.quotation.optionsList[i].commRtQuota,
+                                              data.quotation.optionsList[i].commRtSurplus,
+                                              data.quotation.optionsList[i].commRtFac));
+              }
+              
+           }
+         this.tableNonEditable.refreshTable();
+      });
+    }
 
     getAlop(){
       this.quotationService.getALop(null,this.quoteNo).subscribe((data: any) => {
