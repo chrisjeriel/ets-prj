@@ -56,7 +56,8 @@
 
 <ng-container *ngIf="showModal">
 	<app-modal class="d-none" id="deductiblesModal">
-		<div header>Deductibles Per Section Cover</div>
+		<div header *ngIf="!fromCovers">Deductibles Per Quote Option</div>
+		<div header *ngIf="fromCovers">Deductibles Per Section Cover</div>
 		<div body>
 			<div class="d-flex">
 				<label class="form-control-sm col-sm-1" for="inputInname">Option No</label>

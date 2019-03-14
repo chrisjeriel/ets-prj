@@ -65,7 +65,7 @@
 </div>
 
 <app-modal hidden [btnTitle]="'Copy Endt'" class="copy-endt" id="idMdl">
-    <div header>Copy Endorsment</div>
+    <div header>Copy Endorsement</div>
     <div body>
         <div>
             <div class="custom-row-inline-inset">
@@ -83,6 +83,18 @@
         <button *ngIf="copyEndtOkBtn" class="cust-btn" type="button" (click)="modalService.dismissAll(); beginCopyEndt();"><a>Ok</a></button>
         <button *ngIf="!copyEndtOkBtn" class="cust-btn cust-btn-disabled" type="button"><a>Ok</a></button>
     </div>
+</app-modal>
+
+<app-modal hidden [btnTitle]="'Copy Endt'" class="copy-endt" id="confirmCopy">
+    <div header>Success</div>
+    <div body>
+        <div>
+            <p><strong style="color:#557a95">Option {{ currentSelectedOption }}</strong> has been copied to <strong style="color:#557a95" *ngFor="let i of copyEndtParams">Option No/s {{ i.optionNo }}</strong> </p>
+        </div>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+     </div>
 </app-modal>
 
 <app-mtn-endt-code id="edntCodeLOV" (selectedData)="selectedEndtLOV($event)" [line]="line"></app-mtn-endt-code>
@@ -117,7 +129,7 @@
 
 <ng-container *ngIf="showModal">
     <app-modal class="d-none" id="deductiblesModal" #deductiblesModal>
-        <div header>Deductibles Per Section Cover</div>
+        <div header>Deductibles Per Endorsement</div>
         <div body>
             <div class="d-flex">
                 <label class="form-control-sm col-sm-1" for="inputInname">Option No</label>

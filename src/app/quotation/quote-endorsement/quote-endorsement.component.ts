@@ -401,6 +401,9 @@ export class QuoteEndorsementComponent implements OnInit {
 
       this.quotationService.copyEndorsement(JSON.stringify(params)).subscribe((data: any) =>{
           console.log(data);
+          if(data.returnCode !== 0){
+              $('#confirmCopy > #modalBtn').trigger('click');
+          }
       });
 
     }
