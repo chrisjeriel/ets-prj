@@ -206,6 +206,7 @@ export class QuotationProcessingComponent implements OnInit {
     dialogIcon = "";
 
     tempCedingId = "";
+    tempQuoteId = "";
 
     exclude: any[] = [];
 
@@ -347,6 +348,12 @@ export class QuotationProcessingComponent implements OnInit {
             }
         }
 
+        for(let i of this.fetchedData) {
+            if(i.quotationNo == this.existingQuotationNo[0]) {
+                this.tempQuoteId = i.quoteId;
+            }
+        }
+
         if(this.existingQuotationNo.length > 0 && Number(this.riskCd) > 0){
             $('#modIntModal > #modalBtn').trigger('click');
 
@@ -408,6 +415,7 @@ export class QuotationProcessingComponent implements OnInit {
 onRowClick(event) {    
     if(event != null){
         for(let i of this.fetchedData) {
+
            if(i.quotationNo == event.quotationNo) {               
                this.tempCedingId = i.quotationNo.split('-')[4];
 
@@ -567,7 +575,7 @@ showCedingCompanyIntCompLOV() {
             this.quotationService.savingType = savingType;
 
             setTimeout(() => {
-                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), quotationNo: this.existingQuotationNo, from: 'quo-processing', exclude: this.exclude }], { skipLocationChange: true });
+                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), quotationNo: this.existingQuotationNo, from: 'quo-processing', exclude: this.exclude, tempQuoteIdInternalComp: this.tempQuoteId }], { skipLocationChange: true });
             },100);
         }
     }
@@ -678,7 +686,7 @@ showCedingCompanyIntCompLOV() {
         //change copyStatus to 1 if successful
         var params = {
             "cedingId": this.copyCedingId,
-            "copyingType": 'intComp',
+            "copyingType": 'internalComp',
             "createDate": currentDate,
             "createUser": 'USER', //JSON.parse(window.localStorage.currentUser).username,
             "lineCd": this.copyQuoteLineCd,
