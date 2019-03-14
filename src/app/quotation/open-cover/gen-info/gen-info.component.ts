@@ -539,6 +539,12 @@ export class GenInfoComponent implements OnInit, OnDestroy {
     if(this.validate()){
       this.quotationService.saveQuoteGeneralInfoOc(JSON.stringify(params)).subscribe((data: any) =>{
         console.log(data);
+        if(data.returnCode === 0){
+
+        }else{
+          this.genInfoOcData.quoteIdOc = data.quoteIdOc;
+          this.genInfoOcData.openQuotationNo = data.openQuotationNo;
+        }
       });
     }else{
       console.log('Please fill all required fields');
@@ -556,20 +562,20 @@ export class GenInfoComponent implements OnInit, OnDestroy {
       ){
       return false;
     }else{
-      return true;
-    }
-
-    //Validate Required fields on a specific line code
-    if(this.genInfoOcData.lineCd === 'CAR'){
-
-    }
-    else if(this.genInfoOcData.lineCd === 'EAR'){
-      if(this.projectOc.testing == ''){
-        return false;
-      }else{
+      //Validate Required fields on a specific line code
+      if(this.genInfoOcData.lineCd === 'CAR'){
         return true;
       }
+      else if(this.genInfoOcData.lineCd === 'EAR'){
+        if(this.projectOc.testing == ''){
+          return false;
+        }else{
+          return true;
+        }
+      }
     }
+
+
   }
 
 
