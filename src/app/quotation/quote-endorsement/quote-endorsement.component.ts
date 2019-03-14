@@ -1,6 +1,6 @@
 import { Component, OnInit , ViewChild, Input, ViewChildren, QueryList} from '@angular/core';
 import { QuotationInfo, QuotationOption, QuoteEndorsement , QuoteEndorsementOC} from '../../_models';
-import { QuotationService, UnderwritingService } from '../../_services';
+import { QuotationService, UnderwritingService, MaintenanceService } from '../../_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
@@ -180,7 +180,7 @@ export class QuoteEndorsementComponent implements OnInit {
     hideEndt: any[];
 
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, 
-     private route: ActivatedRoute, private uwService: UnderwritingService) { }
+     private route: ActivatedRoute, private uwService: UnderwritingService, private mtnService : MaintenanceService) { }
 
     ngOnInit() {  
         if(this.OpenCover){
@@ -335,6 +335,7 @@ export class QuoteEndorsementComponent implements OnInit {
 
             }
 
+        this.getDefaultEndorsements();
     }
 
     //neco
@@ -429,6 +430,10 @@ export class QuoteEndorsementComponent implements OnInit {
                                                               this.saveEndt.createUser = data.endorsements[lineCount].createUser;
                                                               this.saveEndt.updateUser = data.endorsements[lineCount].updateUser;          
             }
+            if(this.endorsementData.tableData.length == 0){
+                this.endorsementData.tableData = this.defaultEndorsements;
+                this.table.markAsDirty();
+            }
            /* this.table.refreshTable();*/
             this.table.refreshTable();
        });
@@ -505,6 +510,7 @@ export class QuoteEndorsementComponent implements OnInit {
 
     saveData(cancelFlag?){
         this.cancelFlag = cancelFlag !== undefined;
+
         if(this.from === "quo-processing"){
             for (var i = 0 ; this.endorsementData.tableData.length > i; i++) {
                 (this.saveEndt.createDate === null) ? new Date().toISOString() : this.saveEndt.createDate;
@@ -731,6 +737,17 @@ export class QuoteEndorsementComponent implements OnInit {
             this.deductiblesData.tableData[this.deductiblesLOVRow].deleted = true;
             this.deductibleTable.refreshTable();
       }
+    }
+    defaultEndorsements: any[];
+    getDefaultEndorsements(){
+        this.defaultEndorsements = [];
+        this.mtnService.getEndtCode(this.line,'').subscribe((data: any) => {
+          console.log(data.endtCode.filter(a=>a.defaultTag=='Y'))
+          for(let d of data.endtCode.filter(a=>a.defaultTag=='Y')){
+              this.defaultEndorsements.push(new QuoteEndorsement(d.endtCd, d.endtTitle, d.description, ''));
+              this.defaultEndorsements[this.defaultEndorsements.length-1].edited = true;
+          }
+        });
     }
 
 
