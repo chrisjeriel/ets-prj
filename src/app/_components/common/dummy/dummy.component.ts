@@ -138,7 +138,7 @@ export class DummyComponent implements OnInit {
         ttt: null
     }
     
-     ttt = 0;
+     ttt: number = 5;
 
     testCont: any = 'TEST';
     teest: any = {
