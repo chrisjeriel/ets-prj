@@ -16,8 +16,8 @@ export class MtnQuotationWordingsComponent implements OnInit {
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
   passData: any = {
         tableData: [],
-        tHeader: ['Line', 'Line Description','Wording Id','Wording'],
-        dataTypes: ['text', 'text', 'text', 'text'],
+        tHeader: ['Wording Id','Wording'],
+        dataTypes: ['sequence-3', 'text'],
         resizable: [false, true, false, true],
         pageLength: 10,
         searchFlag: true,
@@ -25,18 +25,8 @@ export class MtnQuotationWordingsComponent implements OnInit {
         pagination: true,
         fixedCol: false,
         pageID: 'quotation-wordings'+(Math.floor(Math.random() * (999999 - 100000)) + 100000).toString(),
-        keys:['lineCd', 'lineDesc','wordingId','wording'],
+        keys:['wordingId','wording'],
         filters:[
-          {
-              key: 'lineCd',
-              title: 'Line',
-              dataType: 'text'
-          },
-          {
-            key: 'lineDesc',
-            title: 'Line Desc',
-            dataType: 'text'
-          },
           {
             key: 'wordingId',
             title: 'Wording Id',

@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter, Input} from '@angular/core';
 import { MaintenanceService, UnderwritingService, QuotationService } from '@app/_services';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component'
+import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-lov',
@@ -12,6 +13,7 @@ export class LovComponent implements OnInit {
 
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
+  @ViewChild(ModalComponent) modal : ModalComponent;
   passTable: any = {
         tableData: [],
         pageLength: 10,
@@ -24,8 +26,8 @@ export class LovComponent implements OnInit {
 
   @Input()
   passData: any = {
-    selector:'',
-    data:{}
+  	selector:'',
+  	data:{}
   }
 
   modalOpen: boolean = false;
@@ -34,30 +36,187 @@ export class LovComponent implements OnInit {
   constructor(private modalService: NgbModal, private mtnService : MaintenanceService, private underwritingService: UnderwritingService, private quotationService: QuotationService) { }
 
   ngOnInit() {
-        
+  	  	
   }
 
   select(data){
-      this.passData.data = data;
+  	  this.passData.data = data;
   }
 
   okBtnClick(){
-    this.selectedData.emit(this.passData);
+  	this.selectedData.emit(this.passData);
+  }
+
+  checkCode(selector?,regionCd?, provinceCd?, cityCd?, districtCd?, blockCd?, ev?) {
+
+    console.log("checkCode in lov component");
+
+    if (selector == 'region') {
+      if (regionCd === '') {
+        this.selectedData.emit({
+          data: null,
+          ev: ev
+        });
+      } else {
+        this.mtnService.getMtnRegion(regionCd).subscribe((data: any) => {
+            if(data.region.length > 0) {
+              data.region[0]['ev'] = ev;
+              data.region[0]['selector'] = selector;
+              this.selectedData.emit(data['region'][0]);
+            } else {
+              this.selectedData.emit({
+                data: null,
+                ev: ev
+              });
+              this.passData.regionCd = '';
+              this.passData.selector = 'region';
+              $('#lovMdl > #modalBtn').trigger('click');
+            }
+        });
+      }
+    } else if (selector == 'province') {
+      if (provinceCd === '') {
+        this.selectedData.emit({
+          data: null,
+          ev: ev
+        });
+      } else {
+        this.mtnService.getMtnProvince(regionCd, provinceCd).subscribe((data: any) => {
+            if(data.region.length > 0) {
+              data.region[0]['ev'] = ev;
+              data.region[0]['selector'] = selector;
+              this.selectedData.emit(data['region'][0]);
+            } else {
+              this.selectedData.emit({
+                data: null,
+                ev: ev
+              });
+
+              this.passData.regionCd = regionCd;
+              this.passData.selector = 'province';
+              $('#lovMdl > #modalBtn').trigger('click');
+            }
+        });
+      }
+    } else if (selector == 'city') {
+      if (cityCd === '') {
+        this.selectedData.emit({
+          data: null,
+          ev: ev
+        });
+      } else {
+        this.mtnService.getMtnCity(regionCd, provinceCd, cityCd).subscribe((data: any) => {
+            if(data.region.length > 0) {
+              data.region[0]['ev'] = ev;
+              data.region[0]['selector'] = selector;
+              this.selectedData.emit(data['region'][0]);
+            } else {
+              this.selectedData.emit({
+                data: null,
+                ev: ev
+              });
+
+              this.passData.regionCd = regionCd;
+              this.passData.provinceCd = provinceCd;
+              this.passData.selector = 'city';
+              $('#lovMdl > #modalBtn').trigger('click');
+            }
+        });
+      }
+    } else if (selector == 'district') {
+      if (districtCd === '') {
+        this.selectedData.emit({
+          data: null,
+          ev: ev
+        });
+      } else {
+        this.mtnService.getMtnDistrict(regionCd, provinceCd, cityCd, districtCd).subscribe((data: any) => {
+            if(data.region.length > 0) {
+              data.region[0]['ev'] = ev;
+              data.region[0]['selector'] = selector;
+              this.selectedData.emit(data['region'][0]);
+            } else {
+              this.selectedData.emit({
+                data: null,
+                ev: ev
+              });
+
+              this.passData.regionCd = regionCd;
+              this.passData.provinceCd = provinceCd;
+              this.passData.cityCd = cityCd;
+              this.passData.selector = 'district';
+              $('#lovMdl > #modalBtn').trigger('click');
+            }
+        });
+      }
+    } else if (selector == 'block') {
+      if (blockCd === '') {
+        this.selectedData.emit({
+          data: null,
+          ev: ev
+        });
+      } else {
+        this.mtnService.getMtnBlock(regionCd, provinceCd, cityCd, districtCd, blockCd).subscribe((data: any) => {
+            if(data.region.length > 0) {
+              data.region[0]['ev'] = ev;
+              data.region[0]['selector'] = selector;
+              this.selectedData.emit(data['region'][0]);
+            } else {
+              this.selectedData.emit({
+                data: null,
+                ev: ev
+              });
+
+              this.passData.regionCd = regionCd;
+              this.passData.provinceCd = provinceCd;
+              this.passData.cityCd = cityCd;
+              this.passData.districtCd = districtCd;
+              this.passData.selector = 'block';
+              $('#lovMdl > #modalBtn').trigger('click');
+            }
+        });
+      }
+    }
+
+
+    /*if(districtCd === ''){
+      this.selectedData.emit({
+        data: null,
+        ev: ev
+      });
+    } else {
+      this.mtnService.getMtnDistrict(regionCd, provinceCd, cityCd, districtCd).subscribe(data => {
+        console.log("Data from LOV: " + JSON.stringify(data['region'][0]));
+        if(data['region'].length > 0) {
+          data['region'][0]['ev'] = ev;
+          this.selectedData.emit(data['region'][0]);
+        } else {
+          this.selectedData.emit({
+            districtCd: '',
+            description: '',
+            ev: ev
+          });
+            
+          $('#districtMdl > #modalBtn').trigger('click');
+        }
+        
+      });  
+    }*/
   }
 
   openModal(){
     this.passTable.tableData = [];
-    if(this.passData.selector == 'insured'){
-      this.passTable.keys = ['insuredId', 'insuredName' ];
+  	if(this.passData.selector == 'insured'){
+  		this.passTable.keys = ['insuredId', 'insuredName' ];
       this.passTable.tHeader =  ['Insured Id', 'Insured Name' ];
       this.passTable.dataTypes =  ['text', 'text', 'text', 'text', 'text', 'text', 'text'];
-      this.mtnService.getMtnInsured('').subscribe((data: any) => {
-            for (var a =0 ; data.insured.length > a; a++) {
-              this.passTable.tableData.push(data.insured[a]);
-            }
-            this.table.refreshTable();
-          });
-    }else if(this.passData.selector == 'city'){
+	    this.mtnService.getMtnInsured('').subscribe((data: any) => {
+	          for (var a =0 ; data.insured.length > a; a++) {
+	            this.passTable.tableData.push(data.insured[a]);
+	          }
+	          this.table.refreshTable();
+	        });
+	  }else if(this.passData.selector == 'city'){
       this.passTable.tHeader =  ['Region Code', 'Region Description', 'Province Code', 'Province Description', 
                 'City Code', 'City Description', 'Remarks', 'Zone Code', 'Zone Description' ];
       this.passTable.dataTypes =  ['text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text'];
@@ -85,7 +244,7 @@ export class LovComponent implements OnInit {
               row.cityDesc = data.region[regionCount].provinceList[provinceCount].cityList[cityCount].cityDesc;
               row.remarks = data.region[regionCount].provinceList[provinceCount].cityList[cityCount].remarks;
               row.zoneCd = data.region[regionCount].provinceList[provinceCount].cityList[cityCount].zoneCd;
-              row.zoneCdDesc = data.region[regionCount].provinceList[provinceCount].cityList[cityCount].zoneCdDesc;
+              row.zoneDesc = data.region[regionCount].provinceList[provinceCount].cityList[cityCount].zoneDesc;
               this.passTable.tableData.push(row);
             }
           }
@@ -119,6 +278,8 @@ export class LovComponent implements OnInit {
                 row.provinceDesc = data.region[a].provinceList[b].provinceDesc;
                 row.cityCd = data.region[a].provinceList[b].cityList[c].cityCd;
                 row.cityDesc = data.region[a].provinceList[b].cityList[c].cityDesc;
+                row.zoneCd = data.region[a].provinceList[b].cityList[c].zoneCd;
+                row.zoneDesc = data.region[a].provinceList[b].cityList[c].zoneDesc;
                 row.districtCd = data.region[a].provinceList[b].cityList[c].districtList[d].districtCd;
                 row.districtDesc = data.region[a].provinceList[b].cityList[c].districtList[d].districtDesc;
                 this.passTable.tableData.push(row);
@@ -132,7 +293,10 @@ export class LovComponent implements OnInit {
       this.passTable.tHeader = [ 'Deductible', 'Title', 'Deductible Type', 'Rate', 'Deductible Amount','Deductible Text'];
       this.passTable.dataTypes = [ 'text', 'text', 'text', 'percent', 'currency'];
       this.passTable.keys = ['deductibleCd','deductibleTitle','deductibleType','deductibleRate','deductibleAmt','deductibleText'];
-      this.underwritingService.getMaintenanceDeductibles(this.passData.lineCd).subscribe((data: any) => {
+      this.underwritingService.getMaintenanceDeductibles(this.passData.lineCd,
+        this.passData.params.deductibleCd,this.passData.params.coverCd,this.passData.params.endtCd,this.passData.params.activeTag,
+        this.passData.params.defaultTag
+        ).subscribe((data: any) => {
           this.passTable.tableData = data.deductibles.filter((data)=>{return  this.passData.hide.indexOf(data.deductibleCd)==-1});
           this.table.refreshTable();
       });
@@ -207,6 +371,8 @@ export class LovComponent implements OnInit {
                                  row.provinceDesc = data.region[a].provinceList[b].provinceDesc;
                                  row.cityCd = data.region[a].provinceList[b].cityList[c].cityCd;
                                  row.cityDesc = data.region[a].provinceList[b].cityList[c].cityDesc;
+                                 row.zoneCd = data.region[a].provinceList[b].cityList[c].zoneCd;
+                                 row.zoneDesc = data.region[a].provinceList[b].cityList[c].zoneDesc;
                                  row.districtCd = data.region[a].provinceList[b].cityList[c].districtList[d].districtCd;
                                  row.districtDesc = data.region[a].provinceList[b].cityList[c].districtList[d].districtDesc;
                                  row.blockCd = data.region[a].provinceList[b].cityList[c].districtList[d].blockList[e].blockCd;
@@ -233,6 +399,6 @@ export class LovComponent implements OnInit {
     }
 
     this.modalOpen = true;
-  }
+	}
 
 }

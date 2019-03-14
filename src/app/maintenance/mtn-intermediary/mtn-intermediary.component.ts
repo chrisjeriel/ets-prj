@@ -14,8 +14,8 @@ export class MtnIntermediaryComponent implements OnInit {
 
 intermediaryListing: any = {
     tableData: [],
-    tHeader: ['IntId', 'Intermediary Name'],
-    dataTypes: ['text', 'text'],
+    tHeader: ['IntId', 'Intermediary Name', 'Address'],
+    dataTypes: ['sequence-3', 'text', 'text'],
     pageLength: 10,
     searchFlag: true,
     pageStatus: true,
@@ -23,8 +23,9 @@ intermediaryListing: any = {
     fixedCol: false,
     pageID: 5,
     keys:[
-      'intmId',
-      'intmName'],
+    	'intmId',
+    	'intmName',
+      'address'],
     width:[40,250]
   };
 
@@ -37,22 +38,25 @@ intermediaryListing: any = {
 
   ngOnInit() {
 
-/*    this.maintenanceService.getIntLOV('').subscribe((data: any) =>{
-      for(var lineCount = 0; lineCount < data.intermediary.length; lineCount++){
-        this.intermediaryListing.tableData.push(
-          new Row(data.intermediary[lineCount].intmId, 
-              data.intermediary[lineCount].intmName)
-        );      
-      }
-      this.table.refreshTable();
-    });*/
+   //  this.maintenanceService.getIntLOV().subscribe((data: any) =>{
+  	// 	for(var lineCount = 0; lineCount < data.intermediary.length; lineCount++){
+  	// 		this.intermediaryListing.tableData.push(
+  	// 			new Row(data.intermediary[lineCount].intmId, 
+  	// 					data.intermediary[lineCount].intmName)
+  	// 		);  		
+  	// 	}
+  	// 	this.table.refreshTable();
+  	// });
 
   }
 
   onRowClick(data){
-    //console.log(data);
-    this.selected = data;
-     
+  	// if(Object.is(this.selected, data)){
+    if(Object.entries(data).length === 0 && data.constructor === Object){
+      this.selected = null
+    } else {
+      this.selected = data;
+    }
   }
 
   confirm(){
@@ -66,7 +70,8 @@ intermediaryListing: any = {
       for(var lineCount = 0; lineCount < data.intermediary.length; lineCount++){
         this.intermediaryListing.tableData.push(
           new Row(data.intermediary[lineCount].intmId, 
-              data.intermediary[lineCount].intmName)
+              data.intermediary[lineCount].intmName,
+              data.intermediary[lineCount].address)
         );      
       }
       this.table.refreshTable();
@@ -74,20 +79,24 @@ intermediaryListing: any = {
     this.modalOpen = true;
   }
 
-  checkCode(code) {
-    if(code.trim() === ''){
+  checkCode(code, ev) {
+    //TEMPORARY FIX code == 0
+    if(String(code).trim() === ''  || code == 0){
       this.selectedData.emit({
         intmId: '',
-        intmName: ''
+        intmName: '',
+        ev: ev
       });
     } else {
       this.maintenanceService.getIntLOV(code).subscribe(data => {
         if(data['intermediary'].length > 0) {
+          data['intermediary'][0]['ev'] = ev;
           this.selectedData.emit(data['intermediary'][0]);
         } else {
           this.selectedData.emit({
             intmId: '',
-            intmName: ''
+            intmName: '',
+            ev: ev
           });
 
           $('#intermediaryMdl > #modalBtn').trigger('click');
@@ -101,13 +110,15 @@ intermediaryListing: any = {
 
 class Row {
 
-  intmId: number;
-  intmName: string;
+	intmId: number;
+	intmName: string;
+  address: string;
 
-  constructor(intmId: number,
-    intmName: string) {
+	constructor(intmId: number,
+		intmName: string, address: string) {
 
-  this.intmId = intmId;
-  this.intmName = intmName;
-  }
+	this.intmId = intmId;
+	this.intmName = intmName;
+  this.address = address;
+	}
 }

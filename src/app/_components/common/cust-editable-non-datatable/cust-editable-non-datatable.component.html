@@ -149,7 +149,8 @@ span.ui-column-resizer {
                         </div>
                     </div>
                 </div> -->
-                <div class="table-scroll" id="cust-scroll" [ngClass]="{'ng-dirty': isDirty}">
+                <div class="table-scroll" id="cust-scroll">
+                    <form #myForm="ngForm">
                     <table id="non-datatable" >
                         <thead>
                             <tr *ngIf="passData.tHeaderWithColspan != null">
@@ -183,47 +184,38 @@ span.ui-column-resizer {
                                 <input *ngIf="!(data===fillData)" type="checkbox" name="checkbox" [ngModel]="data.checked" (change)="removeSelected($event, data)" class="not-form">
                             </td>
                             <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]" class="align-middle">
-                                <div *ngIf="!(data===fillData) && ( passData.uneditable === undefined || !passData.uneditable[i] )" class="align-middle" style="position: relative;">
-                                    <input *ngSwitchCase="'percent'" class="editable-text text-right number form-control-sm"
+                                <div *ngIf="!(data===fillData) && ( passData.uneditable === undefined || !passData.uneditable[i] ) && (data.uneditable===undefined || data.uneditable.indexOf(key)==-1)" class="align-middle" style="position: relative;">
+                                    <input [name]="key+ti" *ngSwitchCase="'percent'" class="editable-text text-right number form-control-sm"
                                     type="text" [ngModel]="data[key] | number:'1.10-10'" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange(data)">
-                                    <input *ngSwitchCase="'currencyRate'" class="editable-text text-right number form-control-sm"
+                                    <input [name]="key+ti" *ngSwitchCase="'currencyRate'" class="editable-text text-right number form-control-sm"
                                     type="text" [ngModel]="data[key] | number:'1.6-6'" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange(data)">
-                                    <input *ngSwitchCase="'number'" class="editable-text text-right number form-control-sm" (blur)="format($event , data, key)"
+                                    <input [name]="key+ti" *ngSwitchCase="'number'" class="editable-text text-right number form-control-sm" (blur)="format($event , data, key)"
                                     type="text" [ngModel]="data[key]" [ngModelOptions]="{updateOn:'change'}" 
                                     [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange(data)">
 
-                                    <input appCurrency *ngSwitchCase="'currency'" class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key] | number:'1.2-2' | negativeAmount" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange(data)" 
+                                    <input [name]="key+ti" appCurrency *ngSwitchCase="'currency'" class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key] | number:'1.2-2' | negativeAmount" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange(data)" 
                                         [ngClass]="{'negativeNumber': data[key]<0}">
                                     <div *ngSwitchCase="'checkbox'" style="text-align: center;">
-                                        <input [ngModel]="data[key] && data[key]!= 'N'" type="checkbox" (click)="assignChckbox($event,data,key);onDataChange(data)" ngModel>
+                                        <input [name]="key+ti" [ngModel]="data[key] && data[key]!= 'N'" type="checkbox" (click)="assignChckbox($event,data,key);onDataChange(data)" ngModel>
                                     </div>
-                                    <input *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'sequence' ? passData.dataTypes[i] : ''" class="editable-text text-right number form-control-sm"
+                                    <input [name]="key+ti" *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'sequence' ? passData.dataTypes[i] : ''" class="editable-text text-right number form-control-sm"
                                     type="text" [ngModel]="data[key] | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1">
-                                    <select *ngSwitchCase="'select'" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onDataChange(data)">
+                                    <select *ngSwitchCase="'select'" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onDataChange(data)" [name]="key+ti">
                                         <ng-container *ngFor="let data of passData.opts">
                                             <ng-container *ngIf="key == data.selector">
                                                 <option *ngFor="let val of data.vals">{{ val }}</option>
                                             </ng-container>
                                         </ng-container>
                                     </select>
-                                    <input *ngSwitchCase="'date'" class="editable-date form-control-sm" type="date" [ngModel]="data[key] | date:'yyyy-MM-dd'"> 
-                                    <input *ngSwitchCase="'time'" class="editable-date form-control-sm" type="time" [ngModel]="data[key] | date:'HH:mm'">
-                                    <input *ngSwitchCase="'datetime'" class="editable-date form-control-sm" type="datetime-local"
+                                    <input [name]="key+ti" *ngSwitchCase="'date'" class="editable-date form-control-sm" type="date" [ngModel]="data[key] | date:'yyyy-MM-dd'"> 
+                                    <input [name]="key+ti" *ngSwitchCase="'time'" class="editable-date form-control-sm" type="time" [ngModel]="data[key] | date:'HH:mm'">
+                                    <input [name]="key+ti" *ngSwitchCase="'datetime'" class="editable-date form-control-sm" type="datetime-local"
                                     [ngModel]="data[key] | date:'yyyy-MM-ddTHH:mm'">
-                                    <input *ngSwitchDefault class="editable-text form-control-sm" type="text" [(ngModel)]="data[key]" (change)="onDataChange(data)">
+                                    <input [name]="key+ti" *ngSwitchDefault class="editable-text form-control-sm" type="text" [(ngModel)]="data[key]" (change)="onDataChange(data)">
                                     <a  *ngIf="passData.magnifyingGlass.indexOf(key)!=-1"><i (click)="onClickLOV(data,key)" class="fa fa-search align-middle"></i></a> 
                                 </div>
 
-
-
-
-
-
-
-
-
-
-                                <div *ngIf="!(data===fillData) && ( passData.uneditable!== undefined && passData.uneditable[i] )" class="align-middle uneditable" style="position: relative;">
+                                <div *ngIf="!(data===fillData) && ( passData.uneditable!== undefined && passData.uneditable[i] ) || (data.uneditable!==undefined && data.uneditable.indexOf(key)!=-1)" class="align-middle uneditable" style="position: relative;">
                                     <a  *ngIf="passData.magnifyingGlass.indexOf(key)!=-1"><i (click)="onClickLOV(data,key)" class="fa fa-search align-middle"></i></a> 
                                     <div *ngSwitchCase="'percent'" style="text-align: right">
                                         <span class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: '1.10-10'}}</span>
@@ -232,18 +224,11 @@ span.ui-column-resizer {
                                         <span class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: '1.6-6'}}</span>
                                     </div>                                    <!-- <div *ngSwitchCase="'currency'" style="text-align: right">
                                         <span class="unclickable">{{ data[key] | number: '1.2-2'}}</span>
-
                                     </div>
                                     <div  *ngSwitchCase="'number'" style="text-align: right">
                                         <span class="unclickable">{{ data[key] | number: '1.0-0'}}</span>
                                     </div> -->
                                     <div *ngSwitchCase="'currency'" style="text-align: right" >
-
-
-
-
-
-
                                         <span [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: '1.2-2' | negativeAmount}}</span>
                                     </div>
                                     <div  *ngSwitchCase="'number'" style="text-align: right">
@@ -280,10 +265,6 @@ span.ui-column-resizer {
                                 <button class="fa fa-folder-open" title="Open File" *ngIf="!(data===fillData)"></button>
                                 
 ======= -->
-
-
-
-
                                 <button class="fa fa-paperclip btn-file" title="Attach File" *ngIf="!(data===fillData)">
                                     <input type="file" *ngIf="!(data===fillData)" (change)="upload(data,$event)">
                                 </button>
@@ -319,6 +300,7 @@ span.ui-column-resizer {
                         </tr>
                     </tbody>
                 </table>
+            </form>
             </div>
             <div class="pagingStatus" *ngIf="passData.infoFlag">
                 <!--<div class="pagingStatus" *ngIf="passData.hasPageInfo">-->
@@ -333,7 +315,6 @@ span.ui-column-resizer {
 <label *ngIf="!api.isLastPage() && displayLength > 0">Showing {{ (api.getCurrent() - 1) *
 passData.pageLength + 1 }} - {{ api.getCurrent() * passData.pageLength }} of {{displayLength}} entries</label>
 <label *ngIf="api.isLastPage() && displayLength > 0">Showing {{ (api.getCurrent() - 1) * passData.pageLength + 1 }} - {{displayLength}} of {{displayLength}} entries</label>
-
 <label *ngIf="displayLength < 1">Showing 0 - 0 of 0 entries</label>
 </pagination-template>
 </div>

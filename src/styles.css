@@ -462,8 +462,8 @@ select.form-control.form-control-sm.cust-sm {
 }
 
 .modal{
-    position: inherit;
-    z-index: 9999 !important;
+    position: fixed;
+    /*z-index: 1051;*/
 
 }
 .modal-content{
@@ -584,3 +584,12 @@ textarea:read-only {
 .tab-content{
     position: relative;
 }
+
+input {
+    color: black !important;
+}
+
+textarea {
+    color: black !important;
+}
+

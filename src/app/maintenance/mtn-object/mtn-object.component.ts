@@ -15,8 +15,8 @@ export class MtnObjectComponent implements OnInit {
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
   passData: any = {
         tableData: [],
-        tHeader: ['Line', 'Line Description','Object','Object Description','Active Tag','Remarks' ],
-        dataTypes: ['text', 'text', 'text', 'text', 'text', 'text'],
+        tHeader: ['Object','Object Description'],
+        dataTypes: ['sequence-3', 'text'],
         resizable: [false, true, false, true, false, true ],
         pageLength: 10,
         searchFlag: true,
@@ -24,18 +24,8 @@ export class MtnObjectComponent implements OnInit {
         pagination: true,
         fixedCol: false,
         pageID: 'object',
-        keys:['lineCd', 'lineDesc','objectId','description','activeTag','remarks'],
+        keys:['objectId','description'],
         filters:[
-          {
-              key: 'lineCd',
-              title: 'Line',
-              dataType: 'text'
-          },
-          {
-            key: 'lineDesc',
-            title: 'Line Desc',
-            dataType: 'text'
-          },
           {
             key: 'objectId',
             title: 'Object',
@@ -46,21 +36,8 @@ export class MtnObjectComponent implements OnInit {
             title: 'Object Desc',
             dataType: 'text'
           },
-          {
-            key: 'activeTag',
-            title: 'Active Tag',
-            dataType: 'text'
-          },
-          {
-            key: 'remarks',
-            title: 'Remarks',
-            dataType: 'text'
-          },
         ]
     }
-
-
-
 
   selected: any = null;
   modalOpen: boolean = false;
@@ -72,7 +49,8 @@ export class MtnObjectComponent implements OnInit {
   }
 
   select(data){
-    if(Object.is(this.selected, data)){
+  	// if(Object.is(this.selected, data)){
+    if(Object.entries(data).length === 0 && data.constructor === Object){
       this.selected = null
     } else {
       this.selected = data;
@@ -80,7 +58,7 @@ export class MtnObjectComponent implements OnInit {
   }
 
   okBtnClick(){
-    this.selectedData.emit(this.selected);
+  	this.selectedData.emit(this.selected);
   }
 
   openModal(){
@@ -103,20 +81,23 @@ export class MtnObjectComponent implements OnInit {
         this.modalOpen = true;
   }
 
-  checkCode(line, code) {
+  checkCode(line, code, ev) {
     if(code.trim() === ''){
       this.selectedData.emit({
         objectId: '',
-        objectDesc: ''
+        objectDesc: '',
+        ev: ev
       });
     } else {
       this.mtnService.getMtnObject(line, code).subscribe(data => {      
         if(data['object'].length > 0) {
+          data['object'][0]['ev'] = ev;
           this.selectedData.emit(data['object'][0]);
         } else {
           this.selectedData.emit({
             objectId: '',
-            objectDesc: ''
+            objectDesc: '',
+            ev: ev
           });
             
           $('#objectMdl > #modalBtn').trigger('click');
@@ -137,13 +118,13 @@ class Row {
   activeTag :string;
   remarks: string;
 
-  constructor(lineCd : string,lineDesc: string,objectId: number ,description :string,activeTag :string,remarks: string) {
+	constructor(lineCd : string,lineDesc: string,objectId: number ,description :string,activeTag :string,remarks: string) {
     this.lineCd  = lineCd;
     this.lineDesc = lineDesc;
     this.objectId = objectId;
     this.description  = description;
     this.activeTag  = activeTag;
     this.remarks = remarks;
-  
-  }
+	
+	}
 }

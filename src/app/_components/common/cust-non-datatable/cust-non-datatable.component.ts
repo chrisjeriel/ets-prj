@@ -34,12 +34,15 @@ export class CustNonDatatableComponent implements OnInit {
 
     @Output() rowClick: EventEmitter<any> = new EventEmitter();
     @Output() rowDblClick: EventEmitter<any> = new EventEmitter();
+    @Output() newRowDblClick: EventEmitter<any> = new EventEmitter();
     @Output() add: EventEmitter<any> = new EventEmitter();
     @Output() edit: EventEmitter<any> = new EventEmitter();
     @Output() delete: EventEmitter<any> = new EventEmitter();
     @Output() copy: EventEmitter<any> = new EventEmitter();
     @Output() save: EventEmitter<any> = new EventEmitter();
     @Output() print: EventEmitter<any> = new EventEmitter();
+    @Output() gnrc1: EventEmitter<any> = new EventEmitter();
+    @Output() gnrc2: EventEmitter<any> = new EventEmitter();
 
     //DB Search Query
     searchQuery: any[] = [];
@@ -115,6 +118,7 @@ export class CustNonDatatableComponent implements OnInit {
     pinKeys:any[] = [];
     pinDatatypes:any[] = [];
     loadingFlag:boolean = true;
+    loadingTableFlag: boolean = false;
     constructor(config: NgbDropdownConfig, public renderer: Renderer, private quotationService: QuotationService, private appComponent: AppComponent) {
         config.placement = 'bottom-right';
         config.autoClose = false;
@@ -138,6 +142,7 @@ export class CustNonDatatableComponent implements OnInit {
         this.unliTableLength();
         this.addFiller();
         //this.appComponent.ngOnInit();
+        this.loadingTableFlag = false;
     }
 
     ngOnInit(): void {
@@ -286,9 +291,10 @@ export class CustNonDatatableComponent implements OnInit {
         }
         
     }
-    onRowDblClick(event) {
+    onRowDblClick(event,data) {
         if(!this.nullRow){
             this.rowDblClick.next(event);
+            this.newRowDblClick.emit(data);
         }
     }
 
@@ -412,10 +418,8 @@ export class CustNonDatatableComponent implements OnInit {
                 }
             }
         }
-        console.log(filterObj);
-        console.log(this.searchQuery)
         this.searchToDb.emit(this.searchQuery);
-        this.loadingFlag = true;
+        this.loadingTableFlag = true;
     }
 
     addFiller(){
@@ -494,4 +498,11 @@ export class CustNonDatatableComponent implements OnInit {
         $('#notPin'+this.passData.pageID).css('padding-left',startWidth-minusWidth);
     }
 
+    onClickGeneric1(ev){
+        this.gnrc1.emit(ev);
+    }
+
+    onClickGeneric2(ev){
+        this.gnrc2.emit(ev);
+    }
 }

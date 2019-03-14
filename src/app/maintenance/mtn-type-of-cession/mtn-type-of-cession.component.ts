@@ -9,12 +9,12 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
   styleUrls: ['./mtn-type-of-cession.component.css']
 })
 export class MtnTypeOfCessionComponent implements OnInit {
-  selected: any = null;
+	selected: any = null;
 
   cessionListing: any = {
     tableData: [],
-    tHeader: ['Cession ID', 'Cession Abbr', 'Description', 'Remarks'],
-    dataTypes: ['number', 'text', 'text','text'],
+    tHeader: ['Cession ID','Description'],
+    dataTypes: ['sequence-3', 'text',],
     pageLength: 10,
     searchFlag: true,
     pageStatus: true,
@@ -22,11 +22,9 @@ export class MtnTypeOfCessionComponent implements OnInit {
     fixedCol: false,
     pageID: 14,
     keys:[
-      'cessionId',
-      'cessionAbbr',
-      'description',
-      'remarks'
-      ]
+    	'cessionId',
+    	'description'
+    	]
   };
 
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
@@ -35,11 +33,11 @@ export class MtnTypeOfCessionComponent implements OnInit {
   constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal) { }
 
   ngOnInit() {
-    /*this.maintenanceService.getMtnTypeOfCession('').subscribe(data =>{
-      var records = data['cession'];
+  	/*this.maintenanceService.getMtnTypeOfCession('').subscribe(data =>{
+  		var records = data['cession'];
 
             for(let rec of records){
-              this.cessionListing.tableData.push({
+            	this.cessionListing.tableData.push({
                     cessionId: rec.cessionId,
                     cessionAbbr: rec.cessionAbbr,
                     description: rec.description,
@@ -47,20 +45,22 @@ export class MtnTypeOfCessionComponent implements OnInit {
                 });
             }
 
-      this.table.refreshTable();
-    });*/
+  		this.table.refreshTable();
+  	});*/
   }
 
   onRowClick(data){
-    if(Object.is(this.selected, data)){
-      this.selected = null
+    // if(Object.is(this.selected, data)){
+    if(Object.entries(data).length === 0 && data.constructor === Object){
+      this.selected = null;
     } else {
       this.selected = data;
     }
   }
 
   confirm(){
-    this.selectedData.emit(this.selected);
+    this.selected['fromLOV'] = true;
+  	this.selectedData.emit(this.selected);
     this.selected = null;
   }
 
@@ -83,20 +83,31 @@ export class MtnTypeOfCessionComponent implements OnInit {
      });
   }
 
-  checkCode(code) {
-    if(code === ''){
+  checkCode(code, ev) {
+    if(code.trim() === ''){
       this.selectedData.emit({
         cessionId: '',
-        description: ''
+        description: '',
+        ev: ev
       });
+    }  else if(isNaN(code/1)) {
+      this.selectedData.emit({
+        cessionId: '',
+        description: '',
+        ev: ev
+      });
+
+      $('#typeOfCessionMdl > #modalBtn').trigger('click');
     } else {
       this.maintenanceService.getMtnTypeOfCession(code).subscribe(data => {
         if(data['cession'].length > 0) {
+          data['cession'][0]['ev'] = ev;
           this.selectedData.emit(data['cession'][0]);
         } else {
           this.selectedData.emit({
             cessionId: '',
-            description: ''
+            description: '',
+            ev: ev
           });
 
           $('#typeOfCessionMdl > #modalBtn').trigger('click');

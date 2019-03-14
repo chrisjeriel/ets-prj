@@ -69,6 +69,7 @@ export class MtnDistrictComponent implements OnInit {
       });
     }
   select(data){
+      console.log("SELECT triggered");
   	  this.selected = data;
   }
 
@@ -76,7 +77,35 @@ export class MtnDistrictComponent implements OnInit {
     while(this.passData.tableData.length>0){
       this.passData.tableData.pop();
     }
+    console.log("SELECTED : " + JSON.stringify(this.selected));
+
   	this.selectedData.emit(this.selected);
+  }
+
+  checkCode(regionCd?, provinceCd?, cityCd?, districtCd?, ev?) {
+    if(districtCd === ''){
+      this.selectedData.emit({
+        data: null,
+        ev: ev
+      });
+    } else {
+      this.mtnService.getMtnDistrict(regionCd, provinceCd, cityCd, districtCd).subscribe(data => {
+        console.log("Data from LOV: " + JSON.stringify(data['region'][0]));
+        if(data['region'].length > 0) {
+          data['region'][0]['ev'] = ev;
+          this.selectedData.emit(data['region'][0]);
+        } else {
+          this.selectedData.emit({
+            districtCd: '',
+            description: '',
+            ev: ev
+          });
+            
+          $('#districtMdl > #modalBtn').trigger('click');
+        }
+        
+      });  
+    }
   }
 
 }

@@ -55,7 +55,8 @@ export class MtnCurrencyComponent implements OnInit {
   }
 
   onRowClick(data){
-    if(Object.is(this.selected, data)){
+    // if(Object.is(this.selected, data)){
+    if(Object.entries(data).length === 0 && data.constructor === Object){
       this.selected = null
     } else {
       this.selected = data;
@@ -95,20 +96,23 @@ export class MtnCurrencyComponent implements OnInit {
       
   }
 
-  checkCode(code) {
+  checkCode(code, ev) {
     if(code.trim() === ''){
       this.selectedData.emit({
         currencyCd: '',
-        currencyRt: ''
+        currencyRt: '',
+        ev: ev
       });
     } else {
       this.maintenanceService.getMtnCurrency(code,'Y').subscribe(data => {
         if(data['currency'].length > 0) {
+          data['currency'][0]['ev'] = ev;
           this.selectedData.emit(data['currency'][0]);
         } else {
           this.selectedData.emit({
             currencyCd: '',
-            currencyRt: ''
+            currencyRt: '',
+            ev: ev
           });
 
           $('#currencyMdl > #modalBtn').trigger('click');

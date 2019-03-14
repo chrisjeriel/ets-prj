@@ -97,7 +97,7 @@ div.filler{
     color: black;
 }
 .selected{
-    background-color: #67b4fc !important;
+    background-color: #67b4fc82 !important; /*#67b4fc !important;*/
 }
 
 .headcol {
@@ -319,4 +319,10 @@ padding: 0;
 
 .negativeNumber{
     color: red;
+}
+
+.genericBtn{
+    min-width: 60px;
+    max-width: max-content;
+    width: auto;
 }

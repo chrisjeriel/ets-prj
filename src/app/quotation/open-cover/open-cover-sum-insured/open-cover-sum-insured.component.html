@@ -5,16 +5,16 @@
 	        <div class="input-group" style="margin-bottom: -13px !important; margin-top: 3px !important">
 	            <label class="col-sm-1"></label>
 	            <label class="form-control-sm col-sm-1" for="xx">Quotation No</label>
-	            <input type="text" id="xx" value="CAR-2018-5081-077-0177" class="form-control form-control-sm cust-sm col-sm-2"
+	            <input type="text" id="xx" [ngModel]="quoteData.openQuotationNo" class="form-control form-control-sm cust-sm col-sm-2"
 	                   placeholder="" readonly>
 	            <label class="form-control-sm col-sm-1" for="xx">Insured</label>
-	            <input type="text" id="xx" value="Insurer" class="form-control form-control-sm cust-sm col-sm-5" placeholder=""
+	            <input type="text" id="xx" [ngModel]="quoteData.insured" class="form-control form-control-sm cust-sm col-sm-5" placeholder=""
 	                   readonly>
 	        </div>
 	        <div class="input-group" style="margin-bottom: -13px !important;">
 	            <label class="col-sm-1"></label>
 	            <label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Risk</label>
-	            <input type="text" id="xx" value="Risk Name" class="form-control form-control-sm cust-sm col-sm-8" placeholder=""
+	            <input type="text" id="xx" [ngModel]="quoteData.riskName" class="form-control form-control-sm cust-sm col-sm-8" placeholder=""
 	                   readonly>
 	        </div>
 	    </div>
@@ -27,15 +27,15 @@
 				<div class="custom-row-inline-inset">
 					<div class="input-group">
 						<label class="form-control-sm col-sm-4">Currency</label>
-            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.currencyCd">
-            			<div class="text-search-ico"><a><i class="fa fa-search" (click)="showCurrencyModal()"></i></a></div>
+            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.currencyCd" [readonly]="inquiryFlag">
+            			<div *ngIf="!inquiryFlag" class="text-search-ico"><a><i class="fa fa-search" (click)="showCurrencyModal()"></i></a></div>
             			<label class="form-control-sm col-sm" >Exch. Rt.</label>
-            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.currencyRt" appCurrencyRate>
+            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.currencyRt" readonly appCurrencyRate>
             			<label class="col-sm-2"></label>
 					</div>
 					<div class="input-group">
 						<label class="form-control-sm col-sm-4" style="padding-left: 0px;">Max Sum Insured</label>
-            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.maxSi" appCurrency>
+            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.maxSi" [readonly]="inquiryFlag" appCurrency>
             			<label class="col-sm-2"></label>
 					</div>
 				</div>
@@ -47,14 +47,14 @@
 				<div class="custom-row-inline-inset">
 					<div class="input-group">
 						<label class="form-control-sm col-sm-4" >Share (%)</label>
-            			<input appOtherRates type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.pctShare">
+            			<input appOtherRates type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.pctShare" [readonly]="inquiryFlag">
             			<label class="form-control-sm col-sm" >PML (%)</label>
-            			<input appOtherRates type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.pctPml">
+            			<input appOtherRates type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.pctPml" [readonly]="inquiryFlag">
             			<label class="col-sm-2"></label>
 					</div>
 					<div class="input-group">
 						<label class="form-control-sm col-sm-4" style="padding-left: 0px;">100% Value</label>
-            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.totalValue" appCurrency>
+            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.totalValue" [readonly]="inquiryFlag" appCurrency>
             			<label class="col-sm-2"></label>
 					</div>
 				</div>
@@ -63,7 +63,7 @@
 	</div>
 </div>
 
-<div class="form-row">
+<div class="form-row" *ngIf="!inquiryFlag">
 	<div class="form-group col-sm">
 		<div class="col-md-13 text-center" style="margin-top: 3px;">
 			<div class="cust-btn-container">

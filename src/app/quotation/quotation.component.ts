@@ -29,10 +29,20 @@ export class QuotationComponent implements OnInit {
 		quoteId: '',
 		quotationNo: '',
 		riskName: '',
-		insuredDesc: ''
+		insuredDesc: '',
+		riskId: '',
+		currencyCd: '',
+		currencyRt: '',
+		typeOfCession: '',
+		status:'',
+		reasonCd:'',
+		lineCd: '',
+		showAlop:false
 	}
 
 	inquiryFlag: boolean = false;
+	header: string;
+	showAlop:boolean = false;
 
 	ngOnInit() {
 		this.sub = this.route.params.subscribe(params => {
@@ -58,10 +68,20 @@ export class QuotationComponent implements OnInit {
 
   	checkQuoteInfo(event){  		
   		this.quoteInfo = event;
+  		setTimeout(() => { this.header = "/ " + (this.quoteInfo.quotationNo == '' ? this.quoteInfo.lineCd : this.quoteInfo.quotationNo) }, 0);
+
+  		if(this.quoteInfo.typeOfCession == 'Retrocession'){
+  			this.reportsList.push({val:"QUOTER009B", desc:"RI Preparedness to Support Letter and RI Confirmation of Acceptance Letter" })
+  		}
+		if(this.quoteInfo.status == '10'){
+			this.reportsList.push({val:"QUOTER009C", desc:"Risk Not Commensurate" });
+		}
+		if(this.quoteInfo.status == '9' && this.quoteInfo.reasonCd == 'NT'){
+			this.reportsList.push({val:"QUOTER009D", desc:"Treaty Exclusion Letter"});
+		}
   	}
 
   	showPrintPreview() {
-
   		window.open('http://localhost:8888/api/util-service/generateReport?reportName=' + this.selectedReport + '&quoteId=' + this.quoteInfo.quoteId, '_blank');
   	}
 

@@ -10,12 +10,12 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./mtn-risk.component.css']
 })
 export class MtnRiskComponent implements OnInit {
-  selected: any = null;
+	selected: any = null;
 
   riskListing: any = {
     tableData: [],
     tHeader: ['Risk No','Risk','Region','Province','Town/City','District','Block'],
-    dataTypes: ['number', 'text','text','text','text','text','text'],
+    dataTypes: ['sequence-3', 'text','text','text','text','text','text'],
     pageLength: 10,
     searchFlag: true,
     pageStatus: true,
@@ -23,14 +23,14 @@ export class MtnRiskComponent implements OnInit {
     fixedCol: false,
     pageID: 10,
     keys:[
-      'riskId',
-      'riskName',
-      'regionDesc',
-      'provinceDesc',
-      'cityDesc',
-      'districtDesc',
-      'blockDesc',
-      ]
+    	'riskId',
+    	'riskName',
+    	'regionDesc',
+    	'provinceDesc',
+    	'cityDesc',
+    	'districtDesc',
+    	'blockDesc',
+    	]
   };
 
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
@@ -39,11 +39,11 @@ export class MtnRiskComponent implements OnInit {
   constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal, private router: Router) { }
 
   ngOnInit() {
-    /*this.maintenanceService.getMtnRiskListing('','','','','','','','','','','').subscribe(data =>{
-      var records = data['risk'];
+  	/*this.maintenanceService.getMtnRiskListing('','','','','','','','','','','').subscribe(data =>{
+  		var records = data['risk'];
 
             for(let rec of records){
-              this.riskListing.tableData.push({
+            	this.riskListing.tableData.push({
                     riskId: rec.riskId,
                     riskName: rec.riskName,
                     regionDesc: rec.regionDesc,
@@ -56,20 +56,23 @@ export class MtnRiskComponent implements OnInit {
                 });
             }
 
-      this.table.refreshTable();
-    });*/
+  		this.table.refreshTable();
+  	});*/
   }
 
-  onRowClick(data){
-    if(Object.is(this.selected, data)){
-      this.selected = null
+  onRowClick(data){ 
+  	// if(Object.is(this.selected, data)){
+    if(Object.entries(data).length === 0 && data.constructor === Object){  
+      this.selected = null;
     } else {
       this.selected = data;
     }
   }
 
   confirm(){
-    this.selectedData.emit(this.selected);
+    this.selected['fromLOV'] = true;
+  	this.selectedData.emit(this.selected);
+    this.selected = null;
   }
 
   openModal(){
@@ -96,20 +99,31 @@ export class MtnRiskComponent implements OnInit {
       });
   }
 
-  checkCode(code) {
+  checkCode(code, ev) {
     if(code.trim() === ''){
       this.selectedData.emit({
         riskId: '',
-        riskName: ''
+        riskName: '',
+        ev: ev
       });
+    } else if(isNaN(code/1)) {
+      this.selectedData.emit({
+        riskId: '',
+        riskName: '',
+        ev: ev
+      });
+
+      $('#riskMdl > #modalBtn').trigger('click');
     } else {
       this.maintenanceService.getMtnRisk(code).subscribe(data => {
         if(data['risk'] != null) {
+          data['risk']['ev'] = ev;
           this.selectedData.emit(data['risk']);
         } else {
           this.selectedData.emit({
             riskId: '',
-            riskName: ''
+            riskName: '',
+            ev: ev
           });
 
           $('#riskMdl > #modalBtn').trigger('click');
@@ -125,4 +139,3 @@ export class MtnRiskComponent implements OnInit {
   }
 
 }
-

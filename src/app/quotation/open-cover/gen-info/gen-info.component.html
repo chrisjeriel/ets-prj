@@ -11,7 +11,7 @@
 								<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 									<div class="input-group" style="margin-top: 10px;">
 										<label class="form-control-sm col-sm-2">Quotation No</label>
-										<input type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="ocQuoteGenInfo.openQuotationNo" readonly>
+										<input type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="genInfoOcData.openQuotationNo" readonly>
 										<!-- <input type="text" class="form-control form-control-sm col-sm-1 cap-input" >
 										<input type="text" class="form-control form-control-sm col-sm-2 cap-input" style="margin-left: 3px;">
 										<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;">
@@ -24,41 +24,42 @@
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Ref Open Pol No</label>
 										<input type="text" class="form-control form-control-sm" style="margin-right: -4px;"
-										[(ngModel)]="ocQuoteGenInfo.refPolNo">
+										[(ngModel)]="genInfoOcData.refPolNo" [readonly]="inquiryFlag">
 										<span>&nbsp;</span>
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Type of Cession</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="typeOfCession" readonly>
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="genInfoOcData.cessionDesc" readonly>
 										<label class="form-control-sm col-sm-2">Line Class</label>
-										<input type="text" class="form-control form-control-sm" style="margin-right: 1px;" [(ngModel)]="lineClassDescr" appRequired>
-										<div class="text-search-ico" (click)="getLineClassLov($event)"><a><i class="fa fa-search"></i></a></div>
-										<span>&nbsp;</span>
+										<input type="text" class="form-control form-control-sm"[style.margin-right.px]="inquiryFlag ? '0' : '1'" [(ngModel)]="genInfoOcData.lineClassDesc" [readonly]="inquiryFlag" appRequired>
+										<div class="text-search-ico" *ngIf="!inquiryFlag" (click)="getLineClassLov($event)"><a><i class="fa fa-search"></i></a></div>
+										<span *ngIf="!inquiryFlag">&nbsp;</span>
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Open Policy No</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="ocQuoteGenInfo.openPolicyNo" >
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="genInfoOcData.openPolicyNo" [readonly]="inquiryFlag" >
 										<label class="form-control-sm col-sm-2">Status</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="ocQuoteGenInfo.status">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="genInfoOcData.status" readonly>
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2" style="font-size: 10px !important;">Ceding Company</label>
-										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="cedingCoId" (change)="checkCode('cedingCo')" appRequired>
-										<div class="text-search-ico" (click)="getCedingCoLov($event)"><a><i class="fa fa-search"></i></a></div>
+										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="genInfoOcData.cedingId" (change)="checkCode('cedingCo')" [readonly]="inquiryFlag" appRequired>
+										<div class="text-search-ico" *ngIf="!inquiryFlag" (click)="getCedingCoLov($event)"><a><i class="fa fa-search"></i></a></div>
 										<span>&nbsp;</span>
-										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 4px;" [(ngModel)]="cedingCoName" readonly>
+										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 4px;" [(ngModel)]="genInfoOcData.cedingName" readonly>
 									</div>
-									<div *ngIf="checkTypeOfCession()" class="input-group">
+									<div *ngIf="routerParams.typeOfCession === 'Retrocession'" class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Reinsurance From</label>
-										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="ocQuoteGenInfo.reinsurerId" (change)="checkCode('cedingCoNotMember')" appRequired>
-										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 4px;">
+										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="genInfoOcData.reinsurerId" (change)="checkCode('cedingCoNotMember')" appRequired>
+										<div class="text-search-ico" *ngIf="!inquiryFlag" (click)="getReinsurerLov($event)"><a><i class="fa fa-search"></i></a></div>
+										<input type="text" class="form-control form-control-sm col-sm"  [(ngModel)]="genInfoOcData.reinsurerName" style="margin-left: 4px;" readonly>
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Intermediary</label>
-										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="mtnIntmId" (change)="checkCode('intermediary')" appRequired>
-										<div class="text-search-ico" (click)="getIntmLov($event)"><a><i class="fa fa-search"></i></a></div>
+										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="genInfoOcData.intmId" (change)="checkCode('intermediary')" [readonly]="inquiryFlag">
+										<div class="text-search-ico" *ngIf="!inquiryFlag" (click)="getIntmLov($event)"><a><i class="fa fa-search"></i></a></div>
 										<span>&nbsp;</span>
-										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 4px;" [(ngModel)]="mtnIntmName" readonly>
+										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 4px;" [(ngModel)]="genInfoOcData.intmName" readonly>
 									</div>
 								</div>
 							</div>
@@ -66,27 +67,34 @@
 								<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 									<div class="input-group" style="margin-top: 10px;">
 										<label class="form-control-sm col-sm-4">Quote Date</label>
-										<input type="date" class="form-control form-control-sm"  [(ngModel)]="ocQuoteGenInfo.issueDate" appRequired>
+										<input type="date" class="form-control form-control-sm"  [ngModel]="genInfoOcData.issueDate?.split('T')[0]" (ngModelChange)=" genInfoOcData.issueDate = $event" [readonly]="inquiryFlag" appRequired>
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-4">Valid Until</label>
-										<input type="date" class="form-control form-control-sm"  [(ngModel)]="ocQuoteGenInfo.expiryDate" appRequired>
+										<input type="date" class="form-control form-control-sm"  [ngModel]="genInfoOcData.expiryDate?.split('T')[0]" (ngModelChange)=" genInfoOcData.expiryDate = $event" [readonly]="inquiryFlag" appRequired>
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-4">Requested By</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="ocQuoteGenInfo.reqBy">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="genInfoOcData.reqBy" [readonly]="inquiryFlag">
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-4">Request Date</label>
-										<input type="date" class="form-control form-control-sm" [(ngModel)]="ocQuoteGenInfo.reqDate">
+										<input type="date" class="form-control form-control-sm" [ngModel]="genInfoOcData.reqDate?.split('T')[0]" (ngModelChange)="genInfoOcData.reqDate = $event" [readonly]="inquiryFlag">
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-4">Request Mode</label>
-										<select class="form-control form-control-sm cust-sm" [(ngModel)]="ocQuoteGenInfo.reqMode" appRequired>
+										<select *ngIf="!inquiryFlag" class="form-control form-control-sm cust-sm" [(ngModel)]="genInfoOcData.reqMode">
 											<option value="e">Email</option>
 											<option value="f">Fax</option>
 											<option value="p">Phone</option>
 										</select>
+										<ng-container *ngIf="inquiryFlag">
+											<ng-container [ngSwitch]="genInfoOcData.reqMode">
+												<input *ngSwitchCase="'e'" type="text" class="form-control form-control-sm cust-sm" [ngModel]="'Email'" readonly>
+												<input *ngSwitchCase="'f'" type="text" class="form-control form-control-sm cust-sm" [ngModel]="'Fax'" readonly>
+												<input *ngSwitchCase="'p'" type="text" class="form-control form-control-sm cust-sm" [ngModel]="'Phone'" readonly>
+											</ng-container>
+										</ng-container>
 									</div>
 								</div>
 							</div>
@@ -105,15 +113,15 @@
 						<div class="form-group col-sm-6 offsetFormGroup">
 							<div class="input-group">
 								<label class="form-control-sm col-sm-4">Currency</label>
-								<input type="text" class="form-control form-control-sm" [(ngModel)]="currencyAbbr" appRequired>
-								<div class="text-search-ico" (click)=getCurrLov($event)><a><i class="fa fa-search"></i></a></div>
+								<input type="text" class="form-control form-control-sm" [(ngModel)]="genInfoOcData.currencyCd" [readonly]="inquiryFlag" appRequired>
+								<div class="text-search-ico" *ngIf="!inquiryFlag" (click)=getCurrLov($event)><a><i class="fa fa-search"></i></a></div>
 								<span>&nbsp;</span>
 							</div>
 						</div>
 						<div class="form-group col-sm-6 offsetFormGroup">
 							<div class="input-group">
 								<label class="form-control-sm col-sm-4">Exch. Rt.</label>
-								<input type="text" class="form-control form-control-sm text-right" [(ngModel)]="currencyRt" readonly>
+								<input id="exRt" type="text" class="form-control form-control-sm text-right req" [ngModel]="genInfoOcData.currencyRt | number: '1.6-6'" required appCurrencyRate readonly>
 								<span>&nbsp;</span>
 							</div>
 						</div>
@@ -130,7 +138,7 @@
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<div class="input-group-text">
-										<input type="checkbox" [checked]="govCheckbox">
+										<input type="checkbox" [checked]="genInfoOcData.govtTag === 'Y'" (change)="govtTagMethod($event)">
 									</div>
 								</div>
 								<input type="text" style="font-size: 11px !important;" value="Government" disabled class="form-control form-control-sm">
@@ -140,7 +148,7 @@
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<div class="input-group-text">
-										<input type="checkbox" [checked]="indCheckbox">
+										<input type="checkbox" [checked]="genInfoOcData.indicativeTag === 'Y'" (change)="indTagMethod($event)">
 									</div>
 								</div>
 								<input type="text" style="font-size: 11px !important;" value="Indicative" disabled class="form-control form-control-sm">
@@ -156,7 +164,7 @@
 <div>
 	<div class="row">
 		<div class="col-sm-8">
-			<fieldset *ngIf="line === 'CAR'" class="scheduler-border cust-fs-padlr-offset">
+			<fieldset *ngIf="this.routerParams.line === 'CAR'" class="scheduler-border cust-fs-padlr-offset">
 				<legend class="scheduler-border">Insured Details</legend>
 				<div class="col-sm-1">
 				</div>
@@ -164,81 +172,81 @@
 					<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 						<div class="input-group" style="margin-top: 10px;">
 							<label class="form-control-sm col-sm-1">Principal</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="prinId" (change)="checkCode('principal')" id="principalLOV" appRequired>
-							<div class="text-search-ico" (click)="getPrinLov($event)"><a><i class="fa fa-search"></i></a></div>
+							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="genInfoOcData.prinId" (change)="checkCode('principal')" id="principalLOV" [readonly]="inquiryFlag" appRequired>
+							<div class="text-search-ico" *ngIf="!inquiryFlag" (click)="getPrinLov($event)"><a><i class="fa fa-search"></i></a></div>
 							<span>&nbsp;</span>
-							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="prinName" readonly>
+							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="genInfoOcData.principalName" readonly>
 							<label class="form-control-sm col-sm-1">Contractor</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="conId"(change)="checkCode('contractor')" id="#ContractorLOV" appRequired>
-							<div class="text-search-ico" (click)="getConLov($event)" ><a><i class="fa fa-search"></i></a></div>
+							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="genInfoOcData.contractorId" (change)="checkCode('contractor')" id="#ContractorLOV" [readonly]="inquiryFlag" appRequired>
+							<div class="text-search-ico" *ngIf="!inquiryFlag" (click)="getConLov($event)" ><a><i class="fa fa-search"></i></a></div>
 							<span>&nbsp;</span>
-							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="conName" readonly>
+							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="genInfoOcData.contractorName" readonly>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Insured</label>
-							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px;"  [(ngModel)]="insured" appRequired></textarea>
+							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px;"  [(ngModel)]="genInfoOcData.insuredDesc" [readonly]="inquiryFlag" appRequired></textarea>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Risk</label>
-							<input type="text" class="form-control form-control-sm" [(ngModel)]="riskName">
+							<input type="text" class="form-control form-control-sm" [(ngModel)]="projectOc.riskName" readonly>
 						</div>
 						<div class="input-group" style="margin-bottom: 0px !important;">
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2">Object</label>
-								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="objId"(change)="checkCode('object')" appRequired>
-								<div class="text-search-ico" (click)="getObjLov($event)"><a><i class="fa fa-search"></i></a></div>
-								<input type="text" class="form-control form-control-sm" style="margin-left: 9px;" [(ngModel)]="objName" readonly>
+								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="projectOc.objectId" (change)="checkCode('object')" [readonly]="inquiryFlag" appRequired>
+								<div class="text-search-ico" *ngIf="!inquiryFlag" (click)="getObjLov($event)"><a><i class="fa fa-search"></i></a></div>
+								<input type="text" class="form-control form-control-sm" style="margin-left: 9px;" [(ngModel)]="projectOc.objectDesc" readonly>
 							</div>
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2">Region</label>
-								<input type="text" class="form-control form-control-sm col-sm-10"  [(ngModel)]="regionDesc">
+								<input type="text" class="form-control form-control-sm col-sm-10"  [(ngModel)]="projectOc.regionDesc" readonly>
 							</div>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Nature of Work</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px;" [(ngModel)]="ocQuoteGenInfo.projDesc" appRequired></textarea>
+							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px;" [(ngModel)]="projectOc.projDesc" [readonly]="inquiryFlag" appRequired></textarea>
 
 							<div class="col-sm">
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Province</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="provinceDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="projectOc.provinceDesc" readonly>
 									</div>
 								</div>
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">City/Town</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="cityDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="projectOc.cityDesc" readonly>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Site</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px;" [(ngModel)]="ocQuoteGenInfo.site" appRequired></textarea>
+							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px;" [(ngModel)]="projectOc.site" [readonly]="inquiryFlag" appRequired></textarea>
 
 							<div class="col-sm">
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">District</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="districtDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="projectOc.districtDesc" readonly>
 										<label class="form-control-sm col-sm-2">Block</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="blockDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="projectOc.blockDesc" readonly>
 									</div>
 								</div>
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Lat</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" [ngModel]="projectOc.latitude" readonly>
 										<label class="form-control-sm col-sm-2">Long</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" [ngModel]="projectOc.longitude" readonly>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Duration</label>
-							<input type="text" class="form-control form-control-sm col-sm-5" [(ngModel)]="ocQuoteGenInfo.duration" appRequired>
+							<input type="text" class="form-control form-control-sm col-sm-5" [(ngModel)]="projectOc.duration" [readonly]="inquiryFlag" appRequired>
 						</div>
 					</div>
 				</div>
@@ -248,7 +256,7 @@
 
 
 
-			<fieldset *ngIf="line === 'EAR'" class="scheduler-border cust-fs-padlr-offset">
+			<fieldset *ngIf="this.routerParams.line === 'EAR'" class="scheduler-border cust-fs-padlr-offset">
 				<legend class="scheduler-border">Insured Details</legend>
 				<div class="col-sm-1">
 				</div>
@@ -256,83 +264,83 @@
 					<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 						<div class="input-group" style="margin-top: 10px;">
 							<label class="form-control-sm col-sm-1">Principal</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="prinId"(change)="checkCode('principal')" id="principalLOV" appRequired>
-							<div class="text-search-ico" (click)="getPrinLov($event)"><a><i class="fa fa-search"></i></a></div>
+							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="genInfoOcData.prinId" (change)="checkCode('principal')" id="principalLOV" appRequired>
+							<div class="text-search-ico" *ngIf="!inquiryFlag" (click)="getPrinLov($event)"><a><i class="fa fa-search"></i></a></div>
 							<span>&nbsp;</span>
-							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="prinName" readonly>
+							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="genInfoOcData.principalName" readonly>
 							<label class="form-control-sm col-sm-1">Contractor</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="conId"(change)="checkCode('contractor')" id="#ContractorLOV" appRequired>
-							<div class="text-search-ico" (click)="getConLov($event)"><a><i class="fa fa-search"></i></a></div>
+							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="genInfoOcData.contractorId"(change)="checkCode('contractor')" id="#ContractorLOV" appRequired>
+							<div class="text-search-ico" *ngIf="!inquiryFlag" (click)="getConLov($event)"><a><i class="fa fa-search"></i></a></div>
 							<span>&nbsp;</span>
-							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="conName" readonly>
+							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="genInfoOcData.contractorName" readonly>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Insured</label>
-							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px;" [(ngModel)]="insured" appRequired></textarea>
+							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px;" [(ngModel)]="genInfoOcData.insuredDesc" appRequired></textarea>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Risk</label>
-							<input type="text" class="form-control form-control-sm" [(ngModel)]="riskName">
+							<input type="text" class="form-control form-control-sm" [(ngModel)]="projectOc.riskName"readonly>
 						</div>
 						<div class="input-group" style="margin-bottom: 0px !important;">
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2">Object</label>
-								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="objId"(change)="checkCode('object')" appRequired>
-								<div class="text-search-ico" (click)="getObjLov($event)"><a><i class="fa fa-search"></i></a></div>
-								<input type="text" class="form-control form-control-sm" style="margin-left: 9px;" [(ngModel)]="objName" readonly>
+								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="projectOc.objectId"(change)="checkCode('object')" appRequired>
+								<div class="text-search-ico" *ngIf="!inquiryFlag" (click)="getObjLov($event)"><a><i class="fa fa-search"></i></a></div>
+								<input type="text" class="form-control form-control-sm" style="margin-left: 9px;" [(ngModel)]="projectOc.objectDesc" readonly>
 							</div>
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2">Region</label>
-								<input type="text" class="form-control form-control-sm col-sm-10" [(ngModel)]="regionDesc">
+								<input type="text" class="form-control form-control-sm col-sm-10" [(ngModel)]="regionDesc" readonly>
 							</div>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Nature of Work</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px;" [(ngModel)]="ocQuoteGenInfo.projDesc" appRequired></textarea>
+							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px;" [(ngModel)]="projectOc.projDesc" appRequired></textarea>
 
 							<div class="col-sm">
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Province</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="provinceDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="provinceDesc" readonly>
 									</div>
 								</div>
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">City/Town</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="cityDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="cityDesc" readonly>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Site</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px;" [(ngModel)]="ocQuoteGenInfo.site" appRequired></textarea>
+							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px;" [(ngModel)]="projectOc.site" appRequired></textarea>
 
 							<div class="col-sm">
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">District</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="districtDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="districtDesc" readonly>
 										<label class="form-control-sm col-sm-2">Block</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="blockDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="blockDesc" readonly>
 									</div>
 								</div>
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Lat</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" readonly>
 										<label class="form-control-sm col-sm-2">Long</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" readonly>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Duration</label>
-							<input type="text" class="form-control form-control-sm col-sm-5" [(ngModel)]="ocQuoteGenInfo.duration" appRequired>
+							<input type="text" class="form-control form-control-sm col-sm-5" [(ngModel)]="projectOc.duration" appRequired>
 							<label class="form-control-sm col-sm-1">Testing</label>
-							<input type="text" class="form-control form-control-sm col-sm" [(ngModel)] = "ocQuoteGenInfo.testing" appRequired> 
+							<input type="text" class="form-control form-control-sm col-sm" [(ngModel)] = "projectOc.testing" appRequired> 
 						</div>
 					</div>
 				</div>
@@ -347,12 +355,12 @@
 					<div class="form-row">
 						<div class="col-sm">
 							<label class="form-control-sm top-label">Opening Paragraph</label>
-							<textarea style="font-size: 12px; margin-bottom: 38px;" class="form-control form-control-sm" placeholder="Further to our Quotation No.." [(ngModel)]="ocQuoteGenInfo.openingParag"></textarea>
-							<div class="text-search-ico" ><a><i class="fa fa-search"></i></a></div>
+							<textarea style="font-size: 12px; margin-bottom: 38px;" class="form-control form-control-sm" placeholder="Further to our Quotation No.." [(ngModel)]="genInfoOcData.openingParag"></textarea>
+							<div class="text-search-ico" *ngIf="!inquiryFlag" ><a><i class="fa fa-search"></i></a></div>
 						</div>
 						<div class="col-sm">
 							<label class="form-control-sm top-label">Closing Paragraph</label>
-							<textarea style="font-size: 12px; margin-bottom: 38px;" class="form-control form-control-sm" placeholder="This quotation is subject.."[(ngModel)]="ocQuoteGenInfo.closingParag"></textarea>
+							<textarea style="font-size: 12px; margin-bottom: 38px;" class="form-control form-control-sm" placeholder="This quotation is subject.."[(ngModel)]="genInfoOcData.closingParag"></textarea>
 						</div>
 					</div>
 				</div>
@@ -373,17 +381,32 @@
 								Paragraph</label>
 						</div>
 						<div class="input-group" style="margin-top: 14px !important;margin-bottom: 11px !important;">
-							<textarea appRequired style="font-size: 12px; margin-bottom: 38px;" class="form-control form-control-sm col-sm-6" [(ngModel)]="openingWording" appRequired></textarea>
-							<div class="text-search-ico" (click)="getOpeningWordingLov($event)"><a><i class="fa fa-search"></i></a></div>
+							<!-- <textarea appRequired style="font-size: 12px; margin-bottom: 38px;" class="form-control form-control-sm col-sm-6" [(ngModel)]="openingWording" appRequired></textarea>
+							<div class="text-search-ico" *ngIf="!inquiryFlag" (click)="getOpeningWordingLov($event)"><a><i class="fa fa-search"></i></a></div>
 							<span>&nbsp;</span>
 							<textarea appRequired style="font-size: 12px; margin-bottom: 38px; margin-left: 10px !important;" class="form-control form-control-sm col-sm-6" [(ngModel)]="closingWording" appRequired></textarea>
-							<div class="text-search-ico" (click)="getClosingWordingLov($event)" ><a><i class="fa fa-search"></i></a></div>
-							<span>&nbsp;</span>
+							<div class="text-search-ico" *ngIf="!inquiryFlag" (click)="getClosingWordingLov($event)" ><a><i class="fa fa-search"></i></a></div>
+							<span>&nbsp;</span> -->
+							<div class="form-control-sm col-sm-6 edtr-cont" style="height: 60px; padding-right: 6px !important;">
+             					<text-editor [editorContent]="genInfoOcData.openingParag" (fetchContent)="genInfoOcData.openingParag = $event" [edtrOpnrPos]="2" [readonly]="inquiryFlag" [required]="!inquiryFlag">
+             						<ng-container icon-1>
+             							<a (click)="showOpeningWordingLov()"><i class="fa fa-search"></i></a>
+             						</ng-container>
+             					</text-editor>
+          					</div>
+
+          					<div class="form-control-sm col-sm-6 edtr-cont" style="height: 60px; padding-left: 6px !important;">
+             					<text-editor [editorContent]="genInfoOcData.closingParag" (fetchContent)="genInfoOcData.closingParag = $event" [edtrOpnrPos]="2" [readonly]="inquiryFlag" [required]="!inquiryFlag">
+             						<ng-container icon-1>
+             							<a (click)="showClosingWordingLov()"><i class="fa fa-search"></i></a>
+             						</ng-container>
+             					</text-editor>
+          					</div>
 						</div>
-						<div class="input-group">
-							<div class="text-search-ico" style="margin-top: -76px !important;margin-left: 343px !important;"><a><i class="fa fa-file-text"></i></a></div>
-							<div class="text-search-ico" style="margin-top: -77px !important;margin-left: 357px !important;"><a><i class="fa fa-file-text"></i></a></div>
-						</div>
+						<!-- <div class="input-group">
+							<div class="text-search-ico" *ngIf="!inquiryFlag" style="margin-top: -76px !important;margin-left: 343px !important;"><a><i class="fa fa-file-text"></i></a></div>
+							<div class="text-search-ico" *ngIf="!inquiryFlag" style="margin-top: -77px !important;margin-left: 357px !important;"><a><i class="fa fa-file-text"></i></a></div>
+						</div> -->
 					</div>
 				</div>
 				<div class="col-sm-1">
@@ -396,18 +419,18 @@
 				<div class="custom-row-inline-inset">
 					<div class="form-row" style="margin-bottom: -3px;">
 						<div class="form-group col-sm">
-							<label class="form-control-sm top-label">Total Sl</label>
-							<input type="text" class="form-control form-control-sm text-right" [(ngModel)]="ocQuoteGenInfo.maxSi" readonly>
+							<label class="form-control-sm top-label">Total SI</label>
+							<input type="text" class="form-control form-control-sm text-right" [ngModel]="projectOc.maxSi | number: '1.2-2'" readonly>
 						</div>
 					</div>
 					<div class="form-row" style="margin-bottom: -16px; margin-top: -10px !important;">
 						<div class="form-group col-sm-3">
 							<label class="form-control-sm top-label">% Share</label>
-							<input type="text" class="form-control form-control-sm cust-sm text-right" [(ngModel)]="ocQuoteGenInfo.pctShare" readonly>
+							<input type="text" class="form-control form-control-sm cust-sm text-right" [ngModel]="projectOc.pctShare | number: '1.6-6'" readonly>
 						</div>
 						<div class="form-group col-sm">
 							<label class="form-control-sm top-label">Part of (100%)</label>
-							<input type="text" class="form-control form-control-sm cust-sm text-right" [(ngModel)]="ocQuoteGenInfo.totalValue" readonly>
+							<input type="text" class="form-control form-control-sm cust-sm text-right" [ngModel]="projectOc.totalValue | number: '1.2-2'" readonly>
 						</div>
 					</div>
 				</div>
@@ -419,43 +442,45 @@
 					<div class="col-sm-1"></div>
 					<div class="input-group">
 						<label class="form-control-sm col-sm-4">Prepared By</label>
-						<input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="ocQuoteGenInfo.preparedBy" readonly>
+						<input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="genInfoOcData.preparedBy" readonly>
+						<div class="text-search-ico" *ngIf="!inquiryFlag" (click)="getUsersLov()"><a><i class="fa fa-search"></i></a></div>
+										<span>&nbsp;</span>
 					</div>
 					<div class="input-group">
 						<label class="form-control-sm col-sm-4">Approved By</label>
-						<input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="ocQuoteGenInfo.approvedBy" readonly>
+						<input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="genInfoOcData.approvedBy" readonly>
 					</div>
 					<div class="input-group">
 						<label class="form-control-sm col-sm-4">Printed By</label>
-						<input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="ocQuoteGenInfo.printedBy" readonly>
+						<input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="genInfoOcData.printedBy" readonly>
 					</div>
 					<div class="input-group">
 						<label class="form-control-sm col-sm-4">Print Date</label>
-						<input type="date" class="form-control form-control-sm col-sm-7" [(ngModel)]="ocQuoteGenInfo.printDate" readonly>
+						<input type="date" class="form-control form-control-sm col-sm-7" [ngModel]="genInfoOcData.printDate?.split('T')[0]" (ngModelChange)="genInfoOcData.printDate = $event" readonly>
 					</div>
 				</div>
 			</fieldset>
-			<fieldset class="scheduler-border" style="padding-bottom: 8px !important; padding-top: 7px !important; margin-top: -4px !important;">
+			<fieldset class="scheduler-border" style="padding-bottom: 0.6px !important; padding-top: 7px !important; margin-top: -4px !important;">
 				<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 				<div class="custom-row-inline-inset">
 					<div class="form-row">
 						<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -10px;">
 							<label class="form-control-sm top-label">Created By</label>
-							<input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="ocQuoteGenInfo.createUser" readonly>
+							<input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="genInfoOcData.createUser" readonly>
 						</div>
 						<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -10px;">
 							<label class="form-control-sm top-label">Last Update By</label>
-							<input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="ocQuoteGenInfo.updateUser" readonly>
+							<input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="genInfoOcData.updateUser" readonly>
 						</div>
 					</div>
 					<div class="form-row">
 						<div class="form-group col-sm-6" style="margin-bottom: 8px;">
 							<label class="form-control-sm top-label">Date Created</label>
-							<input type="date" class="form-control form-control-sm cust-sm" [(ngModel)]="ocQuoteGenInfo.createDate" readonly >
+							<input type="datetime-local" class="form-control form-control-sm cust-sm" [(ngModel)]="genInfoOcData.createDate" readonly >
 						</div>
 						<div class="form-group col-sm-6" style="margin-bottom: 8px;">
 							<label class="form-control-sm top-label">Last Update</label>
-							<input type="date" class="form-control form-control-sm cust-sm" [(ngModel)]="ocQuoteGenInfo.updateDate" readonly>
+							<input type="datetime-local" class="form-control form-control-sm cust-sm" [(ngModel)]="genInfoOcData.updateDate" readonly>
 						</div>
 					</div>
 				</div>
@@ -464,12 +489,12 @@
 	</div>
 </div>
 
-<div class="form-row">
+<div class="form-row" *ngIf="!inquiryFlag">
 	<div class="form-group col-sm">
 		<div class="col-md-13 text-center" style="margin-top: 3px;">
 			<div class="cust-btn-container">
 				<button type="button" class="cust-btn" (click)="pol($event)"><a>Cancel</a></button>
-				<button type="button" class="cust-btn"><a>Save</a></button>
+				<button type="button" class="cust-btn" (click)="saveOpenQuotation();"><a>Save</a></button>
 			</div>
 		</div>
 	</div>
@@ -478,9 +503,11 @@
 <app-mtn-currency id="currIdLov" (selectedData)="setCurr($event)"></app-mtn-currency>
 <app-mtn-insured id="prinIdLov" (selectedData)="setPrin($event)"></app-mtn-insured>
 <app-mtn-insured id="conIdLov" (selectedData)="setCon($event)"></app-mtn-insured>
-<app-mtn-object id="objIdLov" (selectedData)="setObj($event)" [line]="line"></app-mtn-object>
-<app-mtn-quotation-wordings  id="wordingOpeningIdLov" (selectedData)="setOpeningWording($event)" [line]="line"></app-mtn-quotation-wordings>
-<app-mtn-quotation-wordings  id="wordingClosingIdLov" (selectedData)="setClosingWording($event)" [line]="line"></app-mtn-quotation-wordings>
+<app-mtn-object id="objIdLov" (selectedData)="setObj($event)" [line]="routerParams.line"></app-mtn-object>
+<app-mtn-quotation-wordings  id="wordingOpeningIdLov" (selectedData)="setOpeningWording($event)" [line]="routerParams.line" [type]="'O'"></app-mtn-quotation-wordings>
+<app-mtn-quotation-wordings  id="wordingClosingIdLov" (selectedData)="setClosingWording($event)" [line]="routerParams.line" [type]="'C'"></app-mtn-quotation-wordings>
 <app-ceding-company id="cedingCoIdLov" (selectedData)="setCedingCo($event)"></app-ceding-company>
-<app-mtn-line-class id="lineClassIdLov" (selectedData)="setLineClass($event)" [line]="line"></app-mtn-line-class>
+<app-ceding-company id="reinsurerCoIdLov" (selectedData)="setReinsurer($event)"></app-ceding-company>
+<app-mtn-line-class id="lineClassIdLov" (selectedData)="setLineClass($event)" [line]="routerParams.line"></app-mtn-line-class>
 <app-mtn-intermediary id="intmIdLov" (selectedData)="setIntm($event)"></app-mtn-intermediary>
+<app-mtn-users id="usersLov" (selectedData)="setUser($event)"></app-mtn-users>

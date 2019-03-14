@@ -17,8 +17,8 @@ export class MtnCedingCompanyComponent implements OnInit {
 
   passDataCedingCompanyNotMember: any = {
       tableData : [],
-      tHeader: ['Co No','Name','Abbreviation','Address','Membership Date','Termination Date','Inactive Date'],
-      dataTypes:['text','text','text','text','date','date','date'],
+      tHeader: ['Co No','Name','Address'],
+      dataTypes:['text','text','text'],
       pagination: true,
       pageStatus: true,
       searchFlag: true,
@@ -36,33 +36,13 @@ export class MtnCedingCompanyComponent implements OnInit {
               dataType: 'text'
           },
           {
-              key: 'abbreviation',
-              title:'Abbreviation',
-              dataType: 'text'
-          },
-          {
               key: 'address',
               title:'Address',
               dataType: 'text'
-          },
-          {
-              key: 'membershipDate',
-              title:'Membership Date',
-              dataType: 'date'
-          },
-          {
-              key: 'terminationDate',
-              title:'Termination Date',
-              dataType: 'date'
-          },
-          {
-              key: 'inactiveDate',
-              title:'Inactive Date',
-              dataType: 'date'
-          }
+          },          
       ],
       pageID: '1232141',
-      keys:['coNo','name','abbreviation','address','membershipDate','terminationDate','inactiveDate']
+      keys:['cedingId','cedingName','address']
   };
   
   constructor(private underwritingService: UnderwritingService, private modalService: NgbModal ) { }
@@ -70,16 +50,18 @@ export class MtnCedingCompanyComponent implements OnInit {
   ngOnInit() {
   }
 
-  onRowClick(data){    
-    if(Object.is(this.selected, data)){
-      this.selected = null
+  onRowClick(data){  	
+    // if(Object.is(this.selected, data)){
+   if(Object.entries(data).length === 0 && data.constructor === Object){
+      this.selected = null;
     } else {
       this.selected = data;
     }
   }
 
   okBtnClick(){
-    this.selectedData.emit(this.selected);
+  	this.selectedData.emit(this.selected);
+    this.selected = null;
   }
 
   openModalNotMember(){
@@ -87,28 +69,35 @@ export class MtnCedingCompanyComponent implements OnInit {
 
     this.underwritingService.getCedingCompanyList('','','','','','','','','','N').subscribe((data: any) => {
          for(var i=0;i< data.cedingcompany.length;i++){
-
-            this.passDataCedingCompanyNotMember.tableData.push(new CedingCompanyListing(data.cedingcompany[i].cedingId,data.cedingcompany[i].cedingName,data.cedingcompany[i].cedingAbbr,data.cedingcompany[i].address,(data.cedingcompany[i].membershipDate == null ? null : new Date(data.cedingcompany[i].membershipDate[0],data.cedingcompany[i].membershipDate[1]-1,data.cedingcompany[i].membershipDate[2])),(data.cedingcompany[i].terminationDate == null ? null : new Date(data.cedingcompany[i].terminationDate[0],data.cedingcompany[i].terminationDate[1]-1,data.cedingcompany[i].terminationDate[2])),(data.cedingcompany[i].inactiveDate == null ? null : new Date(data.cedingcompany[i].inactiveDate[0],data.cedingcompany[i].inactiveDate[1]-1,data.cedingcompany[i].inactiveDate[2]))));
-
+            // this.passDataCedingCompanyNotMember.tableData.push(new CedingCompanyListing(data.cedingcompany[i].cedingId,data.cedingcompany[i].cedingName,data.cedingcompany[i].cedingAbbr,data.cedingcompany[i].address,(data.cedingcompany[i].membershipDate == null ? null : new Date(data.cedingcompany[i].membershipDate[0],data.cedingcompany[i].membershipDate[1]-1,data.cedingcompany[i].membershipDate[2])),(data.cedingcompany[i].terminationDate == null ? null : new Date(data.cedingcompany[i].terminationDate[0],data.cedingcompany[i].terminationDate[1]-1,data.cedingcompany[i].terminationDate[2])),(data.cedingcompany[i].inactiveDate == null ? null : new Date(data.cedingcompany[i].inactiveDate[0],data.cedingcompany[i].inactiveDate[1]-1,data.cedingcompany[i].inactiveDate[2]))));
+           this.passDataCedingCompanyNotMember.tableData.push({
+               cedingId: data.cedingcompany[i].cedingId,
+               cedingName: data.cedingcompany[i].cedingName,
+               address: data.cedingcompany[i].address
+           });
          }
          this.table.refreshTable(); 
      });
   }
 
-  checkCode(code) {
+  checkCode(code, ev) {
     if(code.trim() === ''){
       this.selectedData.emit({
-        coNo: '',
-        name: ''
+        cedingId: '',
+        cedingName: '',
+        ev: ev
       });
     } else {
       this.underwritingService.getCedingCompanyList(code,'','','','','','','','','N').subscribe(data => {
         if(data['cedingcompany'].length > 0) {
-          this.selectedData.emit(new CedingCompanyListing(data['cedingcompany'][0].cedingId,data['cedingcompany'][0].cedingName,data['cedingcompany'][0].cedingAbbr,data['cedingcompany'][0].address,(data['cedingcompany'][0].membershipDate == null ? null : new Date(data['cedingcompany'][0].membershipDate[0],data['cedingcompany'][0].membershipDate[1]-1,data['cedingcompany'][0].membershipDate[2])),(data['cedingcompany'][0].terminationDate == null ? null : new Date(data['cedingcompany'][0].terminationDate[0],data['cedingcompany'][0].terminationDate[1]-1,data['cedingcompany'][0].terminationDate[2])),(data['cedingcompany'][0].inactiveDate == null ? null : new Date(data['cedingcompany'][0].inactiveDate[0],data['cedingcompany'][0].inactiveDate[1]-1,data['cedingcompany'][0].inactiveDate[2]))));
+          data['cedingcompany'][0]['ev'] = ev;
+          // this.selectedData.emit(new CedingCompanyListing(data['cedingcompany'][0].cedingId,data['cedingcompany'][0].cedingName,data['cedingcompany'][0].cedingAbbr,data['cedingcompany'][0].address,(data['cedingcompany'][0].membershipDate == null ? null : new Date(data['cedingcompany'][0].membershipDate[0],data['cedingcompany'][0].membershipDate[1]-1,data['cedingcompany'][0].membershipDate[2])),(data['cedingcompany'][0].terminationDate == null ? null : new Date(data['cedingcompany'][0].terminationDate[0],data['cedingcompany'][0].terminationDate[1]-1,data['cedingcompany'][0].terminationDate[2])),(data['cedingcompany'][0].inactiveDate == null ? null : new Date(data['cedingcompany'][0].inactiveDate[0],data['cedingcompany'][0].inactiveDate[1]-1,data['cedingcompany'][0].inactiveDate[2]))));
+          this.selectedData.emit(data['cedingcompany'][0]);
         } else {
           this.selectedData.emit({
-            coNo: '',
-            name: ''
+            cedingId: '',
+            cedingName: '',
+            ev: ev
           });
 
           $('#cedingCompanyNotMemberMdl > #modalBtn').trigger('click');
@@ -116,6 +105,5 @@ export class MtnCedingCompanyComponent implements OnInit {
       });
    }
   }
-
 
 }

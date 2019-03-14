@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AttachmentInfo } from '@app/_models';
 import { QuotationService } from '@app/_services';
@@ -49,25 +49,37 @@ export class AttachmentOcComponent implements OnInit {
   savedData: any[];
   deletedData: any[];
 
+  @Input() inquiryFlag: boolean = false;
+
+  @Input() quoteData: any = {};
+
   constructor(private titleService: Title, private quotationService: QuotationService, private modalService: NgbModal) { }
 
   ngOnInit() {
   	this.titleService.setTitle("Quo-OC | Attachment");
-  	/*this.quotationService.getAttachmentOc().subscribe((data: any) => {
-        this.data = data;
-        for(var i = 0; i < this.data.quotationOc.length; i++){
-          this.passData.tableData.push(
-            new AttachmentInfo(this.data.quotationOc[i].attachmentOc[0].fileName, this.data.quotationOc[i].attachmentOc[0].description)
-          );
+     if(this.inquiryFlag){
+          this.passData.tHeader.pop();
+          this.passData.opts = [];
+          this.passData.uneditable = [];
+          this.passData.magnifyingGlass = [];
+          this.passData.addFlag = false;
+          this.passData.deleteFlag = false;
+          for(var count = 0; count < this.passData.tHeader.length; count++){
+            this.passData.uneditable.push(true);
+          }
         }
-        this.custEditableNonDatatableComponent.refreshTable();
-      }
-    );*/
-    this.quotationService.getAttachmentOc().subscribe((data: any) => {
-        this.data = data.quotationOc[0].attachmentOc;
-        // this.passData.tableData = data.quotation.project.coverage.sectionCovers;
-        for (var i = 0; i < this.data.length; i++) {
-          this.passData.tableData.push(this.data[i]);
+    this.retrieveQuoteAttachmentOcMethod();
+  }
+
+  retrieveQuoteAttachmentOcMethod(){
+    this.passData.tableData = [];
+    this.quotationService.getAttachmentOc(this.quoteData.quoteIdOc, '').subscribe((data: any) => {
+        if(data.quotationOc.length !== 0){
+          this.data = data.quotationOc[0].attachmentOc;
+          for (var i = 0; i < this.data.length; i++) {
+            this.passData.tableData.push(this.data[i]);
+          }
+          
         }
         this.custEditableNonDatatableComponent.refreshTable();
     });
@@ -76,22 +88,9 @@ export class AttachmentOcComponent implements OnInit {
   saveData(){
     this.savedData = [];
     this.deletedData = [];
-    /*for (var i = 0 ; this.passData.tableData.length > i; i++) {
-      if(this.passData.tableData[i].edited){
-          this.savedData.push(this.passData.tableData[i]);
-          this.savedData[this.savedData.length-1].createDate = new Date().toISOString();
-          this.savedData[this.savedData.length-1].updateDate = new Date().toISOString();
-          this.savedData[this.savedData.length-1].createUser = "NDC";
-          this.savedData[this.savedData.length-1].updateUser = "NDC";
-          console.log(this.data);
-        }
-    }*/
     for (var i = 0 ; this.passData.tableData.length > i; i++) {
       if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
           this.savedData.push(this.passData.tableData[i]);
-          //this.savedData[this.savedData.length-1].createDate = new Date(this.savedData[this.savedData.length-1].createDate[0],this.savedData[this.savedData.length-1].createDate[1]-1,this.savedData[this.savedData.length-1].createDate[2]).toISOString();
-          //this.savedData[this.savedData.length-1].updateDate = new Date(this.savedData[this.savedData.length-1].updateDate[0],this.savedData[this.savedData.length-1].updateDate[1]-1,this.savedData[this.savedData.length-1].updateDate[2]).toISOString();
-          //this.savedData[this.savedData.length-1].fileNo = 0;
           this.savedData[this.savedData.length-1].createDate = new Date().toISOString();
           this.savedData[this.savedData.length-1].updateDate = new Date().toISOString();
       }
@@ -102,11 +101,18 @@ export class AttachmentOcComponent implements OnInit {
       }
 
     }
-    //console.log(this.savedData);
-    this.quotationService.saveQuoteAttachmentOc(1,this.savedData,this.deletedData).subscribe((data: any) => {});
+    this.quotationService.saveQuoteAttachmentOc(this.quoteData.quoteIdOc,this.savedData,this.deletedData).subscribe((data: any) => {
+
+      $('#successModalBtn').trigger('click');
+      this.custEditableNonDatatableComponent.refreshTable();
+    });
   }
 
   cancel(){
   }
+
+  onClickSave(){
+  $('#confirm-save #modalBtn2').trigger('click');
+}
 
 }
