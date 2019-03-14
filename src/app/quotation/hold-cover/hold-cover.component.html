@@ -8,8 +8,6 @@
                     <div class="col-sm-8">
                         <fieldset class="scheduler-border">
                             <legend class="scheduler-border">Quotation Info</legend>
-                            <!-- <input type="text" value="{{ num | number: '5.0-0' }}" #aa >
-                            <button type="button" (click)="sample(aa.value)"> Click </button> -->
                             <div class="col-sm-1"></div>
                             <div class="col-sm">
                                 <div class="row" style="margin-right: 0px; margin-bottom: 11px;">
@@ -168,6 +166,8 @@
                                 <app-modal hidden [btnTitle]="'List Of Values'" id="lovMdl">
                                     <div header>List Of Values</div>
                                     <div body>
+<!--                                                                     <button type="button" (click)="sampleOk($event)"> Click </button>
+ -->
                                        <app-cust-non-datatable [passData]="passDataQuoteLOV" (rowClick)="onRowClick($event)" (searchToDb)="searchQuery($event)"></app-cust-non-datatable>
                                     </div>
                                     <div footer class="text-center w-100">
