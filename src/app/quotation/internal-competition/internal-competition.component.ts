@@ -139,15 +139,11 @@ export class InternalCompetitionComponent implements OnInit {
 
     onRowClick(data){
       this.selectedPrintData = data;
-
-      if (data.quoteId == null) {
+      if (data == null) {
         this.printClickable = false;
       } else {
         this.printClickable = true;
       }
-
-      console.log (data.quoteId + " - " + "Print = " + this.printClickable);
-      console.log(this.cedingRepIds)
     }
 
     onClickPrint() {
@@ -175,6 +171,7 @@ export class InternalCompetitionComponent implements OnInit {
             this.savedData[this.savedData.length-1].quoteId = this.quoteIds[i];
             this.savedData[this.savedData.length-1].createDate = new Date().toISOString();
             this.savedData[this.savedData.length-1].updateDate = new Date().toISOString();
+            this.savedData[this.savedData.length-1].updateUser = JSON.parse(window.localStorage.currentUser).username;
           }
       }
       if(this.savedData.length < 1){
