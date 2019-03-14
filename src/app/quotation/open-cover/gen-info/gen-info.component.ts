@@ -206,7 +206,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
     this.quotationService.getOcGenInfoData('',this.retrieveGenInfoParams.openQuotationNo).subscribe((data: any) =>{
           console.log(data);
          this.genInfoOcData.quoteIdOc           = data.quotationOc.quoteIdOc;
-         this.projectOc.quoteIdOc           = data.quotationOc.quoteIdOc;
+         this.projectOc.quoteIdOc               = data.quotationOc.quoteIdOc;
          this.genInfoOcData.cessionDesc         = data.quotationOc.cessionDesc;
          this.genInfoOcData.lineClassCdDesc     = data.quotationOc.lineClassCdDesc;
          this.genInfoOcData.openQuotationNo     = this.backQuoteData === undefined ? this.routerParams.ocQuoteNo : this.backQuoteData.openQuotationNo;
