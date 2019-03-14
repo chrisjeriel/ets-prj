@@ -54,6 +54,7 @@
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Reinsurance From</label>
 										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="genInfoOcData.reinsurerId" (change)="checkCode('cedingCoNotMember')" appRequired>
 										<div class="text-search-ico" *ngIf="!inquiryFlag" (click)="getReinsurerLov($event)"><a><i class="fa fa-search"></i></a></div>
+										<span>&nbsp;</span>
 										<input type="text" class="form-control form-control-sm col-sm"  [(ngModel)]="genInfoOcData.reinsurerName" style="margin-left: 4px;" readonly>
 									</div>
 									<div class="input-group">

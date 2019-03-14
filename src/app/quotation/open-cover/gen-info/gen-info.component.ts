@@ -129,9 +129,14 @@ export class GenInfoComponent implements OnInit, OnDestroy {
 
   @Output() quoteData = new EventEmitter<any>();
   @Input() quoteInfo = {};
+  @Input() backQuoteData: any;
 
   @Input() inquiryFlag: boolean = false;
   loading: boolean = false;
+
+  retrieveGenInfoParams: any = {
+    openQuotationNo: ''
+  };
 
   ngOnInit() {
     this.titleService.setTitle("Quo | General Info");
@@ -139,8 +144,12 @@ export class GenInfoComponent implements OnInit, OnDestroy {
     this.sub = this.route.params.subscribe(params => {
       this.routerParams = params;
     });
-    this.checkTransaction();
-    console.log(this.routerParams);
+    if(this.backQuoteData === undefined){
+      this.checkTransaction();
+    }else{
+      this.getGeneralInfoData();
+    }
+    
   }
 
   ngOnDestroy(){
@@ -183,13 +192,24 @@ export class GenInfoComponent implements OnInit, OnDestroy {
 
   getGeneralInfoData(){
     this.loading = true;
-    this.quotationService.getOcGenInfoData('',this.plainOpenQuotationNo(this.routerParams.ocQuoteNo)).subscribe((data: any) =>{
+    //condition if only going back to gen info after save
+    if(this.backQuoteData !== undefined){
+      console.log('emit')
+      this.retrieveGenInfoParams.openQuotationNo = this.plainOpenQuotationNo(this.backQuoteData.openQuotationNo);
+    }
+    //else use routerParams
+    else{
+      console.log('router');
+      this.retrieveGenInfoParams.openQuotationNo = this.plainOpenQuotationNo(this.routerParams.ocQuoteNo);
+      console.log(this.retrieveGenInfoParams.openQuotationNo);
+    }
+    this.quotationService.getOcGenInfoData('',this.retrieveGenInfoParams.openQuotationNo).subscribe((data: any) =>{
           console.log(data);
          this.genInfoOcData.quoteIdOc           = data.quotationOc.quoteIdOc;
          this.projectOc.quoteIdOc           = data.quotationOc.quoteIdOc;
          this.genInfoOcData.cessionDesc         = data.quotationOc.cessionDesc;
          this.genInfoOcData.lineClassCdDesc     = data.quotationOc.lineClassCdDesc;
-         this.genInfoOcData.openQuotationNo     = this.routerParams.ocQuoteNo;
+         this.genInfoOcData.openQuotationNo     = this.backQuoteData === undefined ? this.routerParams.ocQuoteNo : this.backQuoteData.openQuotationNo;
          this.genInfoOcData.lineCd              = data.quotationOc.lineCd;
          this.genInfoOcData.lineCdDesc          = data.quotationOc.lineCdDesc;
          this.genInfoOcData.year                = data.quotationOc.year;
@@ -278,7 +298,6 @@ export class GenInfoComponent implements OnInit, OnDestroy {
        riskName: this.projectOc.riskName,
        riskId: this.projectOc.riskId
     });
-    console.log(this.genInfoOcData.quoteIdOc);
   }
 
   //Prepared by Lov
@@ -319,8 +338,8 @@ export class GenInfoComponent implements OnInit, OnDestroy {
     $('#reinsurerCoIdLov #modalBtn').trigger('click');
   }
   setReinsurer(data){
-    this.genInfoOcData.reinsurerId  = data.coNo;
-    this.genInfoOcData.reinsurerName  = data.name;
+    this.genInfoOcData.reinsurerId  = data.cedingId;
+    this.genInfoOcData.reinsurerName  = data.cedingName;
     this.loading = false;
   }
   //end reinsurance from lov
@@ -470,9 +489,12 @@ export class GenInfoComponent implements OnInit, OnDestroy {
     if(parseInt(arr[5]) > 99){
       return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]) + '-' + parseInt(arr[5]);
     }else{
-      return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]) + '-0' + parseInt(arr[5]);
+      if(parseInt(arr[5]) > 9){
+        return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]) + '-0' + parseInt(arr[5]);
+      }else if(parseInt(arr[5]) < 10){
+        return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]) + '-00' + parseInt(arr[5]);
+      }
     }
-    
   }
 
   //save General Info
@@ -515,7 +537,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
         "quoteIdOc": this.genInfoOcData.quoteIdOc,
         "reasonCd": /*this.genInfoOcData.reasonCd*/ 'REA',
         "refPolNo": this.genInfoOcData.refPolNo,
-        "reinsurerId": this.genInfoOcData.reinsurerId,
+        "reinsurerId": this.checkIdFormat(this.genInfoOcData.reinsurerId),
         "reqBy": this.genInfoOcData.reqBy,
         "reqDate": this.genInfoOcData.reqDate,
         "reqMode": this.genInfoOcData.reqMode,
@@ -530,12 +552,8 @@ export class GenInfoComponent implements OnInit, OnDestroy {
         "updateUser": JSON.parse(window.localStorage.currentUser).username,
         "year": this.routerParams.fromBtn === 'add' ? new Date().getFullYear() : this.genInfoOcData.year
       }
-    /*console.log('ProjectOc');
-    console.log(this.projectOc);
-    console.log('Quotation');
-    console.log(this.genInfoOcData);*/
-    console.log(params);
-    console.log(JSON.stringify(params));
+    /*console.log(params);
+    console.log(JSON.stringify(params));*/
     if(this.validate()){
       this.quotationService.saveQuoteGeneralInfoOc(JSON.stringify(params)).subscribe((data: any) =>{
         console.log(data);
@@ -588,7 +606,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
       if(parseInt(id) > 9){
         return '0'+id;
       }
-      else if(parseInt(id) < 9){
+      else if(parseInt(id) < 10){
         return '00'+id;
       }
     }

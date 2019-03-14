@@ -608,7 +608,7 @@ export class QuoteEndorsementComponent implements OnInit {
         if(parseInt(id) > 9){
           return '0'+id;
         }
-        else if(parseInt(id) < 9){
+        else if(parseInt(id) < 10){
           return '00'+id;
         }
       }
