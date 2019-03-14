@@ -65,8 +65,8 @@
 										<input type="text" [(ngModel)]="genInfoData.reinsurerName" class="form-control form-control-sm col-sm ig-mrgn" style="margin-left: 5px;" readonly>
 									</div>
 									<div class="input-group">
-										<!-- <label class="form-control-sm col-sm-2">Intermediary</label>
-										<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="genInfoData.intmId" (blur)="test()" (change)="checkCode($event,'intermediary')" mask="999"> -->
+										<label class="form-control-sm col-sm-2">Intermediary</label>
+										<!-- <input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="genInfoData.intmId" (blur)="test()" (change)="checkCode($event,'intermediary')" mask="999"> -->
 										<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2" [ngModel]="genInfoData.intmId | number:'3.0'" (ngModelChange)="genInfoData.intmId=$event" (change)="checkCode($event,'intermediary')">
 										<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showIntLOV()"></i></a></div>
 										<span [class.d-none]="inquiryFlag">&nbsp;</span>
