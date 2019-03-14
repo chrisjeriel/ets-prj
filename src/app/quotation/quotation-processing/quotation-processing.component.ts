@@ -20,8 +20,8 @@ export class QuotationProcessingComponent implements OnInit {
     @ViewChildren(CustNonDatatableComponent) table: QueryList<CustNonDatatableComponent>;
     @ViewChild(MtnLineComponent) lineLov: MtnLineComponent;
     @ViewChild(MtnTypeOfCessionComponent) typeOfCessionLov: MtnTypeOfCessionComponent;
-    @ViewChildren(MtnRiskComponent) riskLovs: MtnTypeOfCessionComponent;
-    @ViewChild(CedingCompanyComponent) cedingCoLov: CedingCompanyComponent;
+    @ViewChildren(MtnRiskComponent) riskLovs: QueryList<MtnTypeOfCessionComponent>;
+    @ViewChildren(CedingCompanyComponent) cedingCoLovs: QueryList<CedingCompanyComponent>;
 
     tableData: any[] = [];
     tHeader: any[] = [];
@@ -200,6 +200,10 @@ export class QuotationProcessingComponent implements OnInit {
     copyCedingName: any = "";
     copyRiskId: any = "";
     copyRiskName: any = "";
+    copyIntCompRiskId: any = "";
+
+    dialogMessage = "";
+    dialogIcon = "";
 
     first = false;
 
@@ -395,11 +399,13 @@ export class QuotationProcessingComponent implements OnInit {
 onRowClick(event) {
     if(event != null){
         for(let i of this.fetchedData) {
-           if(i.quotationNo == event.quotationNo) {
+           if(i.quotationNo == event.quotationNo) {               
                this.copyQuoteId = i.quoteId;
                this.copyFromQuotationNo = i.quotationNo;
                this.copyQuoteLineCd = i.quotationNo.split('-')[0];
                this.copyQuoteYear = i.quotationNo.split('-')[1];
+
+               this.copyIntCompRiskId = i.project.riskId;
            }
         }    
     }
@@ -446,9 +452,26 @@ setCedingcompany(data){
         this.copyCedingId = data.cedingId;
         this.copyCedingName = data.cedingName;
         this.ns.lovLoader(data.ev, 0);
-        this.onClickCopy(1);
+
+        if(data.hasOwnProperty('fromLOV')){
+             this.onClickCopy(1);
+        }        
 }
 
+setCedingIntCompCompany(data) {
+
+        this.copyCedingId = data.cedingId;
+        this.copyCedingName = data.cedingName;
+        this.ns.lovLoader(data.ev, 0);
+
+        if(data.hasOwnProperty('fromLOV')){
+             this.onClickIntCompCopy(1);
+        }  
+}
+
+showCedingCompanyIntCompLOV() {
+        $('#cedingCompanyIntCompLOV #modalBtn').trigger('click');
+    }
 
 //neco was here
     toInternalCompetition(){
@@ -540,6 +563,7 @@ setCedingcompany(data){
 
     checkCode(ev, field){
         this.ns.lovLoader(ev, 1);
+        console.log(this.cedingCoLovs);
 
         if(field === 'line') {            
             this.lineLov.checkCode(this.line, ev);
@@ -550,8 +574,10 @@ setCedingcompany(data){
         } else if(field === 'copyRisk') {
             this.riskLovs['last'].checkCode(this.copyRiskId, ev);
         } else if(field === 'cedingCo') {
-            this.cedingCoLov.checkCode(this.copyCedingId, ev);
-        }             
+            this.cedingCoLovs['first'].checkCode(this.copyCedingId, ev);
+        } else if(field === 'cedingCoIntComp') {
+            this.cedingCoLovs['last'].checkCode(this.copyCedingId, ev);
+        } 
     }
 
     clearAddFields(){
@@ -572,6 +598,7 @@ setCedingcompany(data){
         //change copyStatus to 1 if successful
         var params = {
             "cedingId": this.copyCedingId,
+            "copyingType": 'normal',
             "createDate": currentDate,
             "createUser": 'USER', //JSON.parse(window.localStorage.currentUser).username,
             "lineCd": this.copyQuoteLineCd,
@@ -598,13 +625,12 @@ setCedingcompany(data){
                 this.copyRiskId = "";
                 this.copyRiskName = "";                
             } else if (data['returnCode'] == 0) {
-                //show error modal
+                this.dialogMessage = data['errorList'][0].errorMessage;
+                this.dialogIcon = "error";
+
+                $('#quoProcessing #successModalBtn').trigger('click');
             }
         });
-    }
-
-    onClickInternalComp() {
-        console.log('nice');
     }
 
     showCopyRiskLOV() {
@@ -615,5 +641,63 @@ setCedingcompany(data){
         this.copyRiskId = data.riskId;
         this.copyRiskName = data.riskName;
         this.ns.lovLoader(data.ev, 0);
+
+        if(data.hasOwnProperty('fromLOV')){           
+            this.onClickCopy(1);
+        }
+    }
+
+    onClickIntCompCopy(event) {        
+        $('#copyIntCompModal > #modalBtn').trigger('click');
+    }
+
+    clearCopyFields() {
+        this.copyCedingId = '';
+        this.copyCedingName = '';
+        this.copyRiskId = '';
+        this.copyRiskName = '';
+    }
+
+    copyIntCompOkBtn() {
+        this.loading = true;
+        var currentDate = this.ns.toDateTimeString(0);
+
+        //change copyStatus to 1 if successful
+        var params = {
+            "cedingId": this.copyCedingId,
+            "copyingType": 'intComp',
+            "createDate": currentDate,
+            "createUser": 'USER', //JSON.parse(window.localStorage.currentUser).username,
+            "lineCd": this.copyQuoteLineCd,
+            "quoteId": this.copyQuoteId,
+            "quoteYear": new Date().getFullYear().toString(),
+            "riskId": this.copyIntCompRiskId,
+            "updateDate": currentDate,
+            "updateUser": 'USER', //JSON.parse(window.localStorage.currentUser).username,
+        }
+
+        this.quotationService.saveQuotationCopy(JSON.stringify(params)).subscribe(data => {
+            this.loading = false;
+            
+            if(data['returnCode'] == -1) {
+                this.retrieveQuoteListingMethod();
+                this.copyToQuotationNo = data['quotationNo'];
+
+                this.copyStatus = 1;
+                this.copyQuoteId = "";
+                this.copyQuoteLineCd = "";
+                this.copyQuoteYear = "";
+                this.copyCedingId = "";
+                this.copyCedingName = "";
+                this.copyRiskId = "";
+                this.copyRiskName = "";
+                this.copyIntCompRiskId = "";             
+            } else if (data['returnCode'] == 0) {
+                this.dialogMessage = data['errorList'][0].errorMessage;
+                this.dialogIcon = "error";
+
+                $('#quoProcessing #successModalBtn').trigger('click');
+            }
+        });
     }
 }

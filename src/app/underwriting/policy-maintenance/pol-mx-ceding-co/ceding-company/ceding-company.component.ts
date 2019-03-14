@@ -68,6 +68,7 @@ export class CedingCompanyComponent implements OnInit {
   }
 
   okBtnClick(){
+    this.selected['fromLOV'] = true;
   	this.selectedData.emit(this.selected);
   }
 
