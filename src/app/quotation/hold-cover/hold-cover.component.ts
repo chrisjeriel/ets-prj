@@ -35,26 +35,91 @@ export class HoldCoverComponent implements OnInit {
     pageStatus: true,
     pagination: true,
     filters: [
-    {
-      key: 'quotationNo',
-      title: 'Quotation No.',
-      dataType: 'seq'
-    },
-    {
-      key: 'cedingName',
-      title: 'Ceding Co.',
-      dataType: 'text'
-    },
-    {
-      key: 'insuredDesc',
-      title: 'Insured',
-      dataType: 'text'
-    },
-    {
-      key: 'riskName',
-      title: 'Risk',
-      dataType: 'text'
-    },
+        {
+            key: 'quotationNo',
+            title: 'Quotation No.',
+            dataType: 'seq'
+        },
+        {
+            key: 'cessionDesc',
+            title: 'Type of Cession',
+            dataType: 'text'
+        },
+        {
+            key: 'lineClassCdDesc',
+            title: 'Line Class',
+            dataType: 'text'
+        },
+        {
+            key: 'status',
+            title: 'Status',
+            dataType: 'text'
+        },
+        {
+            key: 'cedingName',
+            title: 'Ceding Co.',
+            dataType: 'text'
+        },
+        {
+            key: 'principalName',
+            title: 'Principal',
+            dataType: 'text'
+        },
+        {
+            key: 'contractorName',
+            title: 'Contractor',
+            dataType: 'text'
+        },
+        {
+            key: 'insuredDesc',
+            title: 'Insured',
+            dataType: 'text'
+        },
+        {
+            key: 'riskName',
+            title: 'Risk',
+            dataType: 'text'
+        },
+        {
+            key: 'objectDesc',
+            title: 'Object',
+            dataType: 'text'
+        },
+        {
+            key: 'site',
+            title: 'Site',
+            dataType: 'text'
+        },
+        {
+            key: 'policyNo',
+            title: 'Policy No.',
+            dataType: 'seq'
+        },
+        {
+            key: 'currencyCd',
+            title: 'Currency',
+            dataType: 'text'
+        },
+        {
+            key: 'issueDate',
+            title: 'Quote Date',
+            dataType: 'date'
+        },
+        {
+            key: 'expiryDate',
+            title: 'Valid Until',
+            dataType: 'date'
+        },
+        {
+            key: 'reqBy',
+            title: 'Requested By',
+            dataType: 'text'
+        },
+        {
+            key: 'createUser',
+            title: 'Created By',
+            dataType: 'text'
+        },
     ],
 
     colSize: ['', '250px', '250px', '250px'],
