@@ -3,8 +3,42 @@
     <ngb-tabset>
         <ngb-tab title="Hold Cover Monitoring">
             <ng-template ngbTabContent>
-                <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($data)" (searchToDb)="searchQuery($event)"></app-cust-non-datatable>
+                <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)" (searchToDb)="searchQuery($event)" (print)="print()"></app-cust-non-datatable>
             </ng-template>
         </ngb-tab>
     </ngb-tabset>
 </div>
+<app-modal id="showPrintMenu" class="d-none">
+                    <div header>Print</div>
+                    <div body>
+               			 <div class="container-fluid">
+                             <fieldset class="scheduler-border" style="padding-left : 20px ! important; padding-right : 20px ! important">
+                                <div class="custom-row-inline-inset">
+                                    <div class="input-group" style="margin-bottom : -14px ! important">
+                                        <label class="form-control-sm" for="xx">Destination</label>
+                                        <select class="form-control form-control-sm cust-sm" style="margin-left: 11px" [(ngModel)]="printType" (change)="tabController($event);" value="SCREEN">
+                                            <option value="SCREEN">Screen</option>
+                                            <option value="PDF">PDF</option>
+                                            <option value="PRINTER">Printer</option>
+                                        </select>
+                                    </div>
+                                    <div class="input-group" style="margin-bottom : -14px ! important">
+                                        <label class="form-control-sm" for="printerName" >Printer Name</label>
+                                        <select class="form-control form-control-sm cust-sm" id="printerName"  style="margin-left: 2px" appRequired [disabled]="selectPrinterDisabled" [(ngModel)]="printName">
+                                            <option value="\\PRINTER-SERVER\HP LaserJet MFP M130 PCLmS">HP LaserJet MFP</option>
+                                        </select>
+                                    </div>
+                                    <div class="input-group" style="margin-bottom : -14px ! important">
+                                        <label class="form-control-sm" for="xx">No. of Copies</label>
+                                        <input type="text" id="noOfCopies" class="form-control form-control-sm text-right" appRequired style="margin-left: 2px !important;" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [disabled]="selectCopiesDisabled" [(ngModel)]="printCopies">
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div footer class="text-center w-100">
+                        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); showPrintPreview();" [class.btnDisabled]="btnDisabled" [disabled]="btnDisabled"><a>Print</a></button>
+                        <button class="cust-btn" type="button" (click)="cancelModal();modalService.dismissAll();"><a>Cancel</a></button>
+                    </div>
+</app-modal>
+<app-sucess-dialog id="listHoldCover" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="print();"></app-sucess-dialog>

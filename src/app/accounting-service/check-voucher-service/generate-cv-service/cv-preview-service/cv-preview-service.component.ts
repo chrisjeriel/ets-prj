@@ -8,7 +8,7 @@ import { AccountingService } from '@app/_services/accounting.service';
   styleUrls: ['./cv-preview-service.component.css']
 })
 export class CvPreviewServiceComponent implements OnInit {
-	amountDetailsData: any = {
+	/*amountDetailsData: any = {
   	tableData: this.accountingService.getORPrevAmountDetails(),
     tHeader: ["Item No", "Gen Type", "Detail", "Original Amount", "Currency","Currency Rate","Local Amount"],
     dataTypes: ["text", "text", "text", "currency", "text","percent","currency"],
@@ -23,7 +23,7 @@ export class CvPreviewServiceComponent implements OnInit {
     widths: [70,70,'auto',160,60,160,160],
     paginateFlag:true,
     infoFlag:true,
-  }
+  }*/
 
   accountingEntriesData: any = {
   	tableData: this.accountingService.getAccountingEntriesCV(),
@@ -33,10 +33,14 @@ export class CvPreviewServiceComponent implements OnInit {
   	pageID: 2,
   	addFlag: true,
   	deleteFlag: true,
+    checkFlag: true,
   	total: [null, null, null, 'Total', null, null],
     widths: [200,250,150,'auto',150,150],
     magnifyingGlass: ['accCode','slType','slName'],
   	genericBtn: 'Save',
+    paginateFlag:true,
+    infoFlag: true
+    
   }
 
   accountingVATTaxDetails: any = {
@@ -84,7 +88,7 @@ export class CvPreviewServiceComponent implements OnInit {
      
   }
 
-  plusMinus(data){
+/*  plusMinus(data){
     console.log(data);
     
     for (var i = data.length - 1; i >= 0; i--) {
@@ -97,7 +101,7 @@ export class CvPreviewServiceComponent implements OnInit {
       }
     }
     this.amountDetailsData.tableData = data;
-  }
+  }*/
 
   computeWTax(data){
     console.log(data);

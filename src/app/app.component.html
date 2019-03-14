@@ -1,4 +1,4 @@
-<style>
+﻿<style>
     .btn-link:hover {
     color: #0056b3;
     text-decoration: none;
@@ -40,6 +40,28 @@
                                 <fa name="file"></fa>&nbsp;Quotation
                             </ng-template>
                             <ng-template ngbPanelContent>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                                 <ng-container *ngIf="accessibleModules.indexOf('QUOTE001') > -1">
                                     <button id="QUOTE001" [routerLink]="['/quotation-processing']" class="button btn btn-link">Quotation
                                         Processing</button>
@@ -448,6 +470,7 @@
                                 <button [routerLink]="['/maintenance-risk-list']" class="button btn btn-link">Risk</button>
                                 <br />
                                 <ngb-accordion #acc="ngbAccordion">
+
                                     <ngb-panel>
                                         <ng-template ngbPanelTitle>
                                             Accounting In-Trust

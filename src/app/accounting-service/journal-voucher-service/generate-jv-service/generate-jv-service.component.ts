@@ -22,6 +22,7 @@ export class GenerateJvServiceComponent implements OnInit {
       this.exitTab = params['tab'] !== undefined ? params['tab'] : '';
       this.jvType = params['jvType'];
     });
+    console.log(this.jvType);
   }
 
   onTabChange($event: NgbTabChangeEvent) {

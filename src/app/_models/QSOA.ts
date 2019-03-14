@@ -21,15 +21,17 @@ export class QSOABalances {
 	quarterEnding:Date;
 	currency: string
 	currencyRate: number
-	amount: number
-	amountPhp: number
+	intPremium: number
+	withHTax: number
+	fundsHRel: number
 
-	constructor(quarterEnding:Date,currency: string,currencyRate: number,amount: number,amountPhp: number){
+	constructor(quarterEnding:Date,currency: string,currencyRate: number,intPremium: number,withHTax: number, fundsHRel: number ){
 		this.quarterEnding = quarterEnding;
 		this.currency = currency;
 		this.currencyRate = currencyRate;
-		this.amount = amount;
-		this.amountPhp = amountPhp;
+		this.intPremium = intPremium;
+		this.withHTax = withHTax;
+		this.fundsHRel = fundsHRel;
 	}
 }
 ;

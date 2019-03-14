@@ -8,7 +8,6 @@ import { isNullOrUndefined } from 'util';
 import { NullTemplateVisitor } from '@angular/compiler';
 
 
-
 @Injectable({ providedIn: 'root' })
 export class QuotationService {
     quotationOption: QuotationOption[] = [];
@@ -73,6 +72,10 @@ export class QuotationService {
     }
 
     getCoverageInfo(quotationNo?:any , quotationId?: string) {
+
+
+
+
         const params = new HttpParams()
              .set('quotationNo', (quotationNo === null || quotationNo === undefined ? '' : quotationNo) )
              .set('quoteId',(quotationId === null || quotationId === undefined ? '' : quotationId) )
@@ -892,14 +895,13 @@ export class QuotationService {
         return this.http.post('http://localhost:8888/api/quote-service/saveQuoteOptionAll',params,header);
     }
 
-     saveChangeQuoteStatus(changeQuoteData:any){
+    saveChangeQuoteStatus(changeQuoteData:any){
 
         let header : any = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json'
             })
         };
-
         return this.http.post('http://localhost:8888/api/quote-service/saveQuoteChangeQuoteStatus',JSON.stringify(changeQuoteData),header);
     }
 
@@ -921,6 +923,21 @@ export class QuotationService {
         }
 
         return this.http.post('http://localhost:8888/api/quote-service/saveQuotationCopy', saveQuotationCopyParam, header);
+    }
+
+    downloadPDF(reportName : string, quoteId : string){
+         const params = new HttpParams()
+             .set('reportName', reportName)
+             .set('quoteId', quoteId);
+        return this.http.get('http://localhost:8888/api/util-service/generateReport',{ params,'responseType': 'blob'});
+    }
+
+    downloadPDFHC(reportName : string, quoteId : string,  holdCoverId : string){
+         const params = new HttpParams()
+             .set('reportName', reportName)
+             .set('quoteId', quoteId)
+             .set('holdCovId', holdCoverId);
+        return this.http.get('http://localhost:8888/api/util-service/generateReport',{ params,'responseType': 'blob'});
     }
 
 }

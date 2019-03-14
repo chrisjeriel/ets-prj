@@ -16,6 +16,7 @@ import { fakeBackendProvider } from './_helpers';
 
 import { AppComponent } from './app.component';
 import { routing } from './app.routing';
+import { UnsavedChangesGuard } from './_guards';
 
 import { AlertComponent } from './_components/common/alert';
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
@@ -327,6 +328,7 @@ import { CancelButtonComponent } from './_components/common/cancel-button/cancel
 import { MtnUsersComponent } from './maintenance/mtn-users/mtn-users.component';
 import { NgxMaskModule } from 'ngx-mask';
 import { MtnReasonComponent } from './maintenance/mtn-reason/mtn-reason.component';
+
 
 
 @NgModule({
@@ -656,7 +658,6 @@ import { MtnReasonComponent } from './maintenance/mtn-reason/mtn-reason.componen
         UsersMaintenanceComponent,
         UserGroupsMaintenanceComponent,
         UsersComponent,
-        ConfirmSaveComponent,
         ModulesMaintenanceComponent,
         SecurityModulesComponent,
         ModuleTransactionsComponent,
@@ -667,7 +668,7 @@ import { MtnReasonComponent } from './maintenance/mtn-reason/mtn-reason.componen
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-
+        UnsavedChangesGuard,
         // provider used to create fake backend
         fakeBackendProvider
     ],

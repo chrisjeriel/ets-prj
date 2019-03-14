@@ -563,6 +563,8 @@ input:-moz-read-only { /* For Firefox */
 input:read-only {
     background-color: #f5f5f5 !important;
     cursor: not-allowed;
+
+
 }
 
 textarea:read-only {
@@ -590,3 +592,4 @@ input {
 textarea {
     color: black !important;
 }
+
