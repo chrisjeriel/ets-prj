@@ -266,12 +266,21 @@ export class HoldCoverComponent implements OnInit {
 
   search() {
     // this.loading = true;
+    this.qLine  = (this.qLine === undefined )? '' : this.qLine.toUpperCase(); 
+    var yr = (this.qYear === undefined || this.qYear === '')? 0 : Number(this.qYear.toString());
+    var sn = (this.qSeqNo === undefined || this.qSeqNo === '' )? 0 : Number(this.qSeqNo.toString());
+    var rn = (this.qRevNo === undefined || this.qRevNo === '' )? 0 : Number(this.qRevNo.toString());
+    var cn = (this.qCedingId === undefined || this.qCedingId === '')? 0 : Number(this.qCedingId.toString());
+
+
+    this.searchParams = [{"key":"quotationNo","search":this.qLine.toUpperCase()+"%"+((yr===0)?'':yr)+"%"+((sn===0)?'':sn)+"%"+((rn===0)?'':rn)+"%"+((cn===0)?'':cn)},{"key":"cessionDesc","search":""},{"key":"lineClassCdDesc","search":""},{"key":"status","search":""},{"key":"cedingName","search":""},{"key":"principalName","search":""},{"key":"contractorName","search":""},{"key":"insuredDesc","search":""},{"key":"riskName","search":""},{"key":"objectDesc","search":""},{"key":"site","search":""},{"key":"policyNo","search":""},{"key":"currencyCd","search":""},{"key":"issueDate","search":""},{"key":"expiryDate","search":""},{"key":"reqBy","search":""},{"key":"createUser","search":""}];
+    console.log(JSON.stringify(this.searchParams) + " >>> this.searchParams");
     this.passDataQuoteLOV.tableData = [];
     this.quotationService.getQuoProcessingData(this.searchParams)
     .subscribe(val => {
       var records = val['quotationList'];
       for(let rec of records){
-        if(rec.status === 'Issued' || rec.status === 'ISSUED' || rec.status === 'issued'){
+        if(rec.status.toUpperCase() === 'ISSUED'){
           this.passDataQuoteLOV.tableData.push({
             quotationNo: rec.quotationNo,
             cedingName:  rec.cedingName,
