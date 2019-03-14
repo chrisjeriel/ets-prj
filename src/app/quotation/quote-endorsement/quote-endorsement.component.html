@@ -45,7 +45,7 @@
                         <button [class.d-none]="inquiryFlag" class="cust-btn" (click)="showDeductiblesOptions()"  style="margin-right: 0px !important;" >Deductibles</button>
                     </ng-container>
                 </app-cust-editable-non-datatable>
-                <app-cust-editable-non-datatable id="endorsmentOCTable" [passData]="endorsementOCData" (clickLOV)="clickEndtLOV($event)" *ngIf="OpenCover">
+                <app-cust-editable-non-datatable #endorsment id="endorsmentOCTable" [passData]="endorsementOCData" (clickLOV)="clickEndtLOV($event)" *ngIf="OpenCover">
                 </app-cust-editable-non-datatable>
             </div>
             <div class="col-sm-1"></div>

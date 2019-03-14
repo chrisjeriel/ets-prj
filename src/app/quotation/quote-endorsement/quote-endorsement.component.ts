@@ -339,8 +339,8 @@ export class QuoteEndorsementComponent implements OnInit {
     //neco
     retrieveQuoteEndorsementOc(){
        this.endorsementOCData.tableData = [];
-       var quoteNumOc = this.plainQuotationNoOc(this.quoteNoOc)
-       this.quotationService.getEndorsementsOc(this.quoteIdOc,quoteNumOc).subscribe((data: any) => {
+       var quoteNumOc = this.plainQuotationNoOc(this.ocQuoteData.openQuotationNo);
+       this.quotationService.getEndorsementsOc(this.ocQuoteData.quoteIdOc,quoteNumOc).subscribe((data: any) => {
      /* this.quoteNoData = data.endorsementsOc[0].quotationNo;*/
           for(var lineCount = 0; lineCount < data.endorsementsOc.length; lineCount++){
                 this.endorsementOCData.tableData.push(new QuoteEndorsementOC(
