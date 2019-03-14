@@ -159,7 +159,8 @@ export class QuoteEndorsementComponent implements OnInit {
             updateDate: [2019, 2, 21, 0, 0, 0, 0],
             updateUser: "ETC",
             sumInsured: 0,
-            endtCd: 0
+            endtCd: 0,
+            coverCd: 0
         },
         pageLength: 5,
         addFlag: true,
@@ -176,6 +177,7 @@ export class QuoteEndorsementComponent implements OnInit {
     }
     showModal:boolean = false;
     dialogIcon: string;
+    hideEndt: any[];
 
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, 
      private route: ActivatedRoute, private uwService: UnderwritingService) { }
@@ -449,6 +451,7 @@ export class QuoteEndorsementComponent implements OnInit {
 
 
     clickEndtLOV(data){
+        this.hideEndt = this.endorsementData.tableData.filter((a)=>{return !a.deleted}).map(a=>a.endtCode);
         $('#edntCodeLOV #modalBtn').trigger('click');
         data.tableData = this.endorsementData.tableData;
         this.endtCodeLOVRow = data.index;
@@ -629,10 +632,10 @@ export class QuoteEndorsementComponent implements OnInit {
         '0',this.table.indvSelect.endtCode,'Y','Y').subscribe((data)=>{
           this.deductiblesData.tableData = data['deductibles'].filter((a)=>{
             a.sumInsured = 0;
-            a.coverCd = this.deductiblesData.nData.coverCd;
+            a.coverCd = 0;
             a.deductibleTxt = a.deductibleText;
             a.deductibleRt = a.deductibleRate;
-            a.endtCd = 0;
+            a.endtCd = this.table.indvSelect.endtCode;
             a.edited = true;
             return true;
           })
