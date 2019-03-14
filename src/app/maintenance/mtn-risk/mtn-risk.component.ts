@@ -21,7 +21,7 @@ export class MtnRiskComponent implements OnInit {
     pageStatus: true,
     pagination: true,
     fixedCol: false,
-    pageID: 10,
+    pageID: 'Risk',
     keys:[
     	'riskId',
     	'riskName',

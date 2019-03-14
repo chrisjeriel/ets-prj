@@ -272,9 +272,9 @@ export class GeneralInfoComponent implements OnInit {
 				this.genInfoData.preparedBy		= 'USER'; //JSON.parse(window.localStorage.currentUser).username;
 				
 				var date = new Date();
-				var mills = date.setDate(date.getDate() + 30);
+				var millis = date.setDate(date.getDate() + 30);
 
-				this.genInfoData.expiryDate		= this.ns.toDateTimeString(mills);	
+				this.genInfoData.expiryDate		= this.ns.toDateTimeString(millis);	
 				this.project.projId 			= '1';
 
 				this.maintenanceService.getMtnCurrency('PHP','Y').subscribe(data => {
@@ -782,7 +782,6 @@ export class GeneralInfoComponent implements OnInit {
 	}
 
 	test() {
-		console.log('blur' + this.genInfoData.intmId);
 		if(this.genInfoData.intmId != 0){
 			this.genInfoData.intmId = String(this.genInfoData.intmId).padStart(3, '0');	
 		} else {
@@ -798,6 +797,13 @@ export class GeneralInfoComponent implements OnInit {
 	setPreparedBy(data) {
 		this.genInfoData.preparedBy = data.userId;
 		this.ns.lovLoader(data.ev, 0);
+	}
+
+	updateExpiryDate(ev) {
+		var d = new Date(ev);
+		var millis = d.setDate(d.getDate() + 30);
+
+		this.genInfoData.expiryDate = this.ns.toDateTimeString(millis);
 	}
 }
 export interface SelectRequestMode {

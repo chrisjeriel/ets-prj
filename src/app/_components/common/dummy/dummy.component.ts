@@ -134,9 +134,19 @@ export class DummyComponent implements OnInit {
     constructor(private quotationService: QuotationService, private modalService: NgbModal) { 
     }
 
+    t: any = {
+        ttt: null
+    }
+    
+     ttt = 0;
+
     testCont: any = 'TEST';
+    teest: any = {
+        testMask: null
+    }
 
     ngOnInit() {
+        this.t.ttt = 5;
         this.tHeader.push("ID");
         this.tHeader.push("First Name");
         this.tHeader.push("Last Name");
@@ -293,5 +303,21 @@ export class DummyComponent implements OnInit {
 
     test() {
         alert('NICE');
+    }
+
+    testVal() {
+        
+        // console.log('change' + this.teest.testMask);
+        // console.log('change' + this.t.ttt);
+        console.log('change' + this.ttt);
+    }
+
+    testblur() {
+        // if(this.teest.testMask != ''){            
+        //     this.teest.testMask = String(this.teest.testMask).padStart(3, '0');    
+        // }
+        // if(this.t.ttt != ''){            
+        //     this.t.ttt = String(this.t.ttt).padStart(3, '0');    
+        // }
     }
 }
