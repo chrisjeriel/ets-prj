@@ -133,7 +133,7 @@ export class CoverageComponent implements OnInit {
     this.getCoverageInfo();
     this.coverageData.currencyCd = this.quotationInfo.currencyCd;
     this.coverageData.currencyRt = this.quotationInfo.currencyRt;  
-      
+      console.log(this.riskId)
   }
 
 
