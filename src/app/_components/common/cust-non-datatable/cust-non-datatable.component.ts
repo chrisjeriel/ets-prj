@@ -204,6 +204,7 @@ export class CustNonDatatableComponent implements OnInit {
                 }
             }
         }
+
         //temporary fix delete this later
         setTimeout(()=>{this.refreshTable()},2000)
     }
