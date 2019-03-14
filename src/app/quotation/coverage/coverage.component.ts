@@ -366,6 +366,7 @@ export class CoverageComponent implements OnInit {
   }
   
   sectionCoversLOV(data){
+        console.log('sectionCoversLOV');
         this.hideSectionCoverArray = this.passData.tableData.filter((a)=>{return a.coverCd!== undefined && !a.deleted}).map((a)=>{return a.coverCd.toString()});
         $('#sectionCoversLOV #modalBtn').trigger('click');
         //data.tableData = this.passData.tableData;
