@@ -354,6 +354,8 @@ export class HoldCoverComponent implements OnInit {
             this.holdCover.reqDate = '';
             this.holdCover.preparedBy = '';
             this.holdCover.approvedBy = '';
+            this.clickView = false;
+
           }else{
             var rec = data['quotationList'][0].holdCover;
             this.holdCover.holdCoverNo = rec.holdCoverNo;
@@ -370,6 +372,7 @@ export class HoldCoverComponent implements OnInit {
             this.holdCover.preparedBy = JSON.parse(window.localStorage.currentUser).username;
             this.holdCover.createDate = this.ns.toDateTimeString(rec.createDate);
             this.holdCover.createUser = rec.createUser;
+
 
             if(rec.approvedBy === '' || rec.approvedBy === null ||  rec.approvedBy === undefined){
               this.clickView = false;
