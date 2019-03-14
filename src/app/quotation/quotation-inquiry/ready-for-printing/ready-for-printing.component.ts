@@ -132,7 +132,7 @@ export class ReadyForPrintingComponent implements OnInit {
 
     tableData: [],
     pageLength: 20,
-    checkFlag: true,
+/*    checkFlag: true,*/
     pagination: true,
     pageStatus: true,
     keys: ['quotationNo','approvedBy','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','insuredDesc','riskName','objectDesc','site','currencyCd','issueDate','expiryDate','reqBy']
@@ -184,6 +184,7 @@ export class ReadyForPrintingComponent implements OnInit {
         this.searchParams = searchParams;
         this.passData.tableData = [];
         this.retrieveQuoteListingMethod();
+        this.btnDisabled = true;
     }
 
   dateParser(arr){
@@ -263,7 +264,7 @@ export class ReadyForPrintingComponent implements OnInit {
              if(this.validate(this.prepareParam())){
                  this.changeQuoteStatus();      
               } else {
-                 this.dialogIcon = "error";
+                 this.dialogIcon = "error-message";
                  this.dialogMessage = "Please complete all the required fields.";
                  $('#readyPrinting #successModalBtn').trigger('click');
                  setTimeout(()=>{$('.globalLoading').css('display','none');},0);
@@ -329,7 +330,16 @@ export class ReadyForPrintingComponent implements OnInit {
             link.href = downloadURL;
             link.download = fileName;
             link.click();
-     });
+     },
+       error => {
+            if (this.isEmptyObject(error)) {
+            } else {
+               this.dialogIcon = "error-message";
+               this.dialogMessage = "Error generating PDF file";
+               $('#successMdl #successModalBtn').trigger('click');
+               setTimeout(()=>{$('.globalLoading').css('display','none');},0);
+            }          
+       });
   }
 
   printPDF(reportName : string, quoteId : string){
@@ -342,6 +352,15 @@ export class ReadyForPrintingComponent implements OnInit {
               iframe.src = downloadURL;
               document.body.appendChild(iframe);
               iframe.contentWindow.print();
+       },
+        error => {
+            if (this.isEmptyObject(error)) {
+            } else {
+               this.dialogIcon = "error-message";
+               this.dialogMessage = "Error printing file";
+               $('#successMdl #successModalBtn').trigger('click');
+               setTimeout(()=>{$('.globalLoading').css('display','none');},0);
+            }          
        });
   }
 
@@ -378,9 +397,9 @@ export class ReadyForPrintingComponent implements OnInit {
         console.log(this.changeQuoteError);
         if(data['returnCode'] == 0) {
                 console.log(data['errorList'][0].errorMessage);
-                this.dialogIcon = "error";
-                this.dialogMessage = "Error Generating Report";
-                $('#successModalBtn').trigger('click');
+                this.dialogIcon = "error-message";
+                this.dialogMessage = "Error on issuing quotation";
+                $('#readyPrinting #successModalBtn').trigger('click');
             } else {
                 if (this.printType == 'SCREEN'){  
                      window.open('http://localhost:8888/api/util-service/generateReport?reportName=' + this.selectedReport + '&quoteId=' + this.quoteId, '_blank');

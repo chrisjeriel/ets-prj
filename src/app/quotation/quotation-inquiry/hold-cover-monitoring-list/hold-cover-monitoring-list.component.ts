@@ -163,6 +163,7 @@ export class HoldCoverMonitoringListComponent implements OnInit {
             .subscribe((val:any) =>
                 {
                     console.log(val);
+                    this.records = val.quotationList;
                     var list = val.quotationList;
                     for(var i = 0; i < list.length;i++){
                         this.passData.tableData.push( new HoldCoverMonitoringList(
@@ -210,6 +211,7 @@ export class HoldCoverMonitoringListComponent implements OnInit {
         this.searchParams = searchParams;
         this.passData.tableData = [];
         this.retrieveQuoteHoldCoverListingMethod();
+        this.passData.btnDisabled = true;
     }
 
     onRowClick(event) {
@@ -218,7 +220,9 @@ export class HoldCoverMonitoringListComponent implements OnInit {
         }*/
         if(this.holdCoverList == event || event === null){
             this.holdCoverList = {};
+            this.passData.btnDisabled = true;
         }else{
+           this.passData.btnDisabled = false;
            this.holdCoverList = event;
            this.holdNoCmp = event.holdCoverNo;
            for(let rec of this.records){
@@ -301,7 +305,7 @@ export class HoldCoverMonitoringListComponent implements OnInit {
                 this.printPDF(this.selectedReport,this.quoteId,this.holdCoverId);
                 this.printParams();
            } else {
-                this.dialogIcon = "error";
+                this.dialogIcon = "error-message";
                 this.dialogMessage = "Please complete all the required fields.";
                 $('#listHoldCover #successModalBtn').trigger('click');
                 setTimeout(()=>{$('.globalLoading').css('display','none');},0);
@@ -321,6 +325,15 @@ export class HoldCoverMonitoringListComponent implements OnInit {
               link.href = downloadURL;
               link.download = fileName;
               link.click();
+       },
+       error => {
+            if (this.isEmptyObject(error)) {
+            } else {
+               this.dialogIcon = "error-message";
+               this.dialogMessage = "Error generating PDF file";
+               $('#listHoldCover #successModalBtn').trigger('click');
+               setTimeout(()=>{$('.globalLoading').css('display','none');},0);
+            }          
        });
     }
 
@@ -333,6 +346,15 @@ export class HoldCoverMonitoringListComponent implements OnInit {
               iframe.src = downloadURL;
               document.body.appendChild(iframe);
               iframe.contentWindow.print();
+       },
+        error => {
+            if (this.isEmptyObject(error)) {
+            } else {
+               this.dialogIcon = "error-message";
+               this.dialogMessage = "Error printing file";
+               $('#listHoldCover #successModalBtn').trigger('click');
+               setTimeout(()=>{$('.globalLoading').css('display','none');},0);
+            }          
        });
     }
 
@@ -365,5 +387,12 @@ export class HoldCoverMonitoringListComponent implements OnInit {
          this.selectCopiesDisabled = true;
     }
 
-
+    isEmptyObject(obj) {
+      for(var prop in obj) {
+         if (obj.hasOwnProperty(prop)) {
+            return false;
+         }
+      }
+      return true;
+    }
 }

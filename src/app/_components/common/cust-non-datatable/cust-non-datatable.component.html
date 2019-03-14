@@ -25,7 +25,7 @@
         <button *ngIf="passData.deleteFlag" class="cust-btn" [class.btnDisabled]="btnDisabled || passData.btnDisabled" [disabled]="btnDisabled || passData.btnDisabled" (click)="onClickDelete()"><a class="paginate_button previous">Delete</a></button>
         <button *ngIf="passData.copyFlag" class="cust-btn" [class.btnDisabled]="btnDisabled || passData.btnDisabled" [disabled]="btnDisabled || passData.btnDisabled" (click)="onClickCopy($event)"><a class="paginate_button previous">Copy</a></button>
          <button *ngIf="passData.saveFlag" class="cust-btn" (click)="onClicSave($event)"><a class="paginate_button previous">Save</a></button>
-        <button *ngIf="passData.printBtn" class="cust-btn" type="button" (click)="onClickPrint($event)"><a>Print</a></button>
+        <button *ngIf="passData.printBtn" class="cust-btn" [class.btnDisabled]="btnDisabled || passData.btnDisabled" [disabled]="btnDisabled || passData.btnDisabled" type="button" (click)="onClickPrint($event)"><a>Print</a></button> <!-- edited by Engel 3/14/2019 -->
 
         <button *ngIf="passData.genericBtn1 !== undefined" class="cust-btn genericBtn" [class.btnDisabled]="btnDisabled" (click)="onClickGeneric1($event)" [disabled]="btnDisabled">{{ passData.genericBtn1 }}</button>
         <button *ngIf="passData.genericBtn2 !== undefined" class="cust-btn genericBtn" [class.btnDisabled]="btnDisabled" (click)="onClickGeneric2($event)" [disabled]="btnDisabled">{{ passData.genericBtn2 }}</button> 

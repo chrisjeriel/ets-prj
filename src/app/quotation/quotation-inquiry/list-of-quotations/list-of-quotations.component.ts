@@ -261,13 +261,16 @@ export class ListOfQuotationsComponent implements OnInit {
         this.searchParams = searchParams;
         this.passData.tableData = [];
         this.retrieveQuoteListingMethod();
-
+        this.quoteList = {};
+        this.passData.btnDisabled = true;
     }
 
     onRowClick(event) {
         if(this.quoteList == event || event === null){
             this.quoteList = {};
+            this.passData.btnDisabled = true;
         }else{
+           this.passData.btnDisabled = false;
            this.quoteList = event;
            this.quoteNoCmp = event.quotationNo;
            for(let rec of this.records){
@@ -364,17 +367,10 @@ export class ListOfQuotationsComponent implements OnInit {
            if(this.validate(this.prepareParam())){
                 this.printPDF(this.selectedReport,this.quoteId);
                 this.printParams();
-                if (this.errorCode != 'Unknown Error'){
-                } else {
-                    this.dialogIcon = "error";
-                    this.dialogMessage = "Error Generating PDF file";
-                    $('#listQuoation #successModalBtn').trigger('click');
-                    setTimeout(()=>{$('.globalLoading').css('display','none');},0);
-                }
            } else {
-                this.dialogIcon = "error";
+                this.dialogIcon = "error-message";
                 this.dialogMessage = "Please complete all the required fields.";
-                $('#listQuoation #successModalBtn').trigger('click');
+                $('#listQuotation #successModalBtn').trigger('click');
                 setTimeout(()=>{$('.globalLoading').css('display','none');},0);
            }
          }else if (this.printType == 'PDF'){
@@ -393,8 +389,14 @@ export class ListOfQuotationsComponent implements OnInit {
               link.download = fileName;
               link.click();
        },
-       response => {
-          this.errorCode = response;
+       error => {
+            if (this.isEmptyObject(error)) {
+            } else {
+               this.dialogIcon = "error-message";
+               this.dialogMessage = "Error generating PDF file";
+               $('#listQuotation #successModalBtn').trigger('click');
+               setTimeout(()=>{$('.globalLoading').css('display','none');},0);
+            }          
        });
     }
 
@@ -408,6 +410,15 @@ export class ListOfQuotationsComponent implements OnInit {
               iframe.src = downloadURL;
               document.body.appendChild(iframe);
               iframe.contentWindow.print();
+       },
+        error => {
+            if (this.isEmptyObject(error)) {
+            } else {
+               this.dialogIcon = "error-message";
+               this.dialogMessage = "Error printing file";
+               $('#listQuotation #successModalBtn').trigger('click');
+               setTimeout(()=>{$('.globalLoading').css('display','none');},0);
+            }          
        });
     }
 
@@ -438,6 +449,15 @@ export class ListOfQuotationsComponent implements OnInit {
          this.printCopies = null;
          this.selectPrinterDisabled = true;
          this.selectCopiesDisabled = true;
+    }
+
+    isEmptyObject(obj) {
+      for(var prop in obj) {
+         if (obj.hasOwnProperty(prop)) {
+            return false;
+         }
+      }
+      return true;
     }
 
 }

@@ -34,7 +34,7 @@
                                     <div class="input-group" style="margin-bottom : -14px ! important">
                                         <label class="form-control-sm" for="printerName" >Printer Name</label>
                                         <select class="form-control form-control-sm cust-sm" id="printerName"  style="margin-left: 2px" appRequired [disabled]="selectPrinterDisabled" [(ngModel)]="printName">
-                                            <option value="\\PRINTER-SERVER\HP LaserJet MFP M130 PCLmS">HP LaserJet MFP</option>
+                                            <option value="Default">Default Printer</option>
                                         </select>
                                     </div>
                                     <div class="input-group" style="margin-bottom : -14px ! important">
@@ -51,4 +51,4 @@
                     </div>
 </app-modal>
 <app-sucess-dialog id="readyPrinting" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="showPrintModal();"></app-sucess-dialog>
-<app-sucess-dialog id="successModalBtn" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="modalService.dismissAll();"></app-sucess-dialog>
+<app-sucess-dialog id="successMdl" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="modalService.dismissAll();"></app-sucess-dialog>
