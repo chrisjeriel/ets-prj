@@ -26,7 +26,7 @@ export class OpenCoverInquiryComponent implements OnInit {
     tHeader: ["Open Cover Quotation No", "Type of Cession", "Line Class", "Status", "Ceding Company", "Principal", "Contractor", "Insured", "Risk", "Object", "Site", "Policy No", "Currency"],
     dataTypes: ["text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text"],
     colSize: ['100%', '100%', '100%', '100%', '100%', '100%', '100%', '100%', '100%', '100%', '100%', '100%', '100%'],
-    pageLength: 10,
+    pageLength: 20,
     pageStatus: true,
     pagination: true,
     printBtn: true,
