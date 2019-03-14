@@ -52,7 +52,7 @@
 									</div>
 									<div class="input-group ig-cust">
 										<label class="form-control-sm col-sm-2">Ceding Company</label>
-										<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [ngModel]="genInfoData.cedingId | number:'3.0'" (ngModelChange)="genInfoData.cedingId=$event" (change)="checkCode($event,'cedingCo')" appRequired>
+										<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [ngModel]="genInfoData.cedingId | number:'3.0' | slice:0:4" (ngModelChange)="genInfoData.cedingId=$event" (change)="checkCode($event,'cedingCo')" appRequired>
 										<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showCedingCompanyLOV()"></i></a></div>
 										<span [class.d-none]="inquiryFlag">&nbsp;</span>
 										<input type="text" class="form-control form-control-sm col-sm ig-mrgn" [(ngModel)]="genInfoData.cedingName" style="margin-left: 5px;" readonly>
@@ -66,8 +66,9 @@
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Intermediary</label>
-										<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="genInfoData.intmId" (blur)="test()" (change)="checkCode($event,'intermediary')" mask="999">
-										<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showIntLOV()" ></i></a></div>
+										<!-- <input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="genInfoData.intmId" (blur)="test()" (change)="checkCode($event,'intermediary')" mask="999"> -->
+										<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2" [ngModel]="genInfoData.intmId | number:'3.0'" (ngModelChange)="genInfoData.intmId=$event" (change)="checkCode($event,'intermediary')">
+										<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showIntLOV()"></i></a></div>
 										<span [class.d-none]="inquiryFlag">&nbsp;</span>
 										<input type="text" class="form-control form-control-sm col-sm ig-mrgn" [(ngModel)]="genInfoData.intmName" style="margin-left: 5px;" readonly>
 									</div>
@@ -264,7 +265,9 @@
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-6">
 								<label class="form-control-sm col-sm-2">Object</label>
-								<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="project.objectId" (change)="checkCode($event,'object')" appRequired>
+								<!-- <input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="project.objectId" (change)="checkCode($event,'object')" appRequired>
+								<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div> -->
+								<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [ngModel]="project.objectId | number:'3.0'" (ngModelChange)="project.objectId=$event" (change)="checkCode($event,'object')" appRequired>
 								<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div>
 								<span [class.d-none]="inquiryFlag">&nbsp;</span>
 								<input  type="text" [(ngModel)]="project.objectDesc" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;" readonly>
@@ -355,7 +358,9 @@
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-6">
 								<label class="form-control-sm col-sm-2">Object</label>
-								<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="project.objectId" (change)="checkCode($event,'object')" appRequired>
+								<!-- <input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="project.objectId" (change)="checkCode($event,'object')" appRequired>
+								<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div> -->
+								<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [ngModel]="project.objectId | number:'3.0'" (ngModelChange)="project.objectId=$event" (change)="checkCode($event,'object')" appRequired>
 								<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div>
 								<span [class.d-none]="inquiryFlag">&nbsp;</span>
 								<input  type="text" [(ngModel)]="project.objectDesc" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;" readonly>
@@ -443,7 +448,9 @@
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-6">
 								<label class="form-control-sm col-sm-2">Object</label>
-								<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="project.objectId" (change)="checkCode($event,'object')" appRequired>
+								<!-- <input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="project.objectId" (change)="checkCode($event,'object')" appRequired>
+								<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div> -->
+								<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [ngModel]="project.objectId | number:'3.0'" (ngModelChange)="project.objectId=$event" (change)="checkCode($event,'object')" appRequired>
 								<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div>
 								<span [class.d-none]="inquiryFlag">&nbsp;</span>
 								<input  type="text" [(ngModel)]="project.objectDesc" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;" readonly>
@@ -521,7 +528,9 @@
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-6">
 								<label class="form-control-sm col-sm-2">Object</label>
-								<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="project.objectId" (change)="checkCode($event,'object')" appRequired>
+								<!-- <input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="project.objectId" (change)="checkCode($event,'object')" appRequired>
+								<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div> -->
+								<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [ngModel]="project.objectId | number:'3.0'" (ngModelChange)="project.objectId=$event" (change)="checkCode($event,'object')" appRequired>
 								<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div>
 								<span [class.d-none]="inquiryFlag">&nbsp;</span>
 								<input  type="text" [(ngModel)]="project.objectDesc" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;" readonly>
@@ -593,7 +602,9 @@
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-6">
 								<label class="form-control-sm col-sm-2">Object</label>
-								<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="project.objectId" (change)="checkCode($event,'object')" appRequired>
+								<!-- <input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="project.objectId" (change)="checkCode($event,'object')" appRequired>
+								<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div> -->
+								<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [ngModel]="project.objectId | number:'3.0'" (ngModelChange)="project.objectId=$event" (change)="checkCode($event,'object')" appRequired>
 								<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div>
 								<span [class.d-none]="inquiryFlag">&nbsp;</span>
 								<input  type="text" [(ngModel)]="project.objectDesc" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;" readonly>
@@ -671,7 +682,9 @@
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-6">
 								<label class="form-control-sm col-sm-2">Object</label>
-								<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="project.objectId" (change)="checkCode($event,'object')" appRequired>
+								<!-- <input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="project.objectId" (change)="checkCode($event,'object')" appRequired>
+								<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div> -->
+								<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [ngModel]="project.objectId | number:'3.0'" (ngModelChange)="project.objectId=$event" (change)="checkCode($event,'object')" appRequired>
 								<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div>
 								<span [class.d-none]="inquiryFlag">&nbsp;</span>
 								<input  type="text" [(ngModel)]="project.objectDesc" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;" readonly>

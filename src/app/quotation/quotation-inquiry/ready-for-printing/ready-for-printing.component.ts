@@ -113,7 +113,7 @@ export class ReadyForPrintingComponent implements OnInit {
         ],
 
     tableData: [],
-    pageLength: 10,
+    pageLength: 20,
     checkFlag: true,
     pagination: true,
     pageStatus: true,

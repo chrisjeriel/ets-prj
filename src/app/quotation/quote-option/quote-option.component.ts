@@ -74,8 +74,10 @@ export class QuoteOptionComponent implements OnInit {
 
     deductiblesData: any = {
         tableData: [],
-        tHeader: ['Deductible Code','Deductible Title', 'Deductible Text', 'Deductible Rate(%)', 'Deductible Amount', 'Sum Insured'],
+        tHeader: ['Deductible Code','Deductible Title', 'Deductible Text', 'Deductible Rate(%)', 'Sum Insured', 'Deductible Amount'],
         dataTypes: ['text','text', 'text', 'percent', 'currency','currency'],
+        keys: ['deductibleCd','deductibleTitle','deductibleTxt','deductibleRt','sumInsured','deductibleAmt'],
+        widths: [60,'auto',100,120,'auto'],
         nData:{
             createDate: [2019, 2, 21, 0, 0, 0, 0],
             createUser: "ETC",
@@ -98,9 +100,7 @@ export class QuoteOptionComponent implements OnInit {
         infoFlag: true,
         searchFlag: true,
         pageID: 2,
-        keys: ['deductibleCd','deductibleTitle','deductibleTxt','deductibleRt','deductibleAmt','sumInsured'],
-        widths: [60,'auto',100,120,'auto'],
-        uneditable: [true,true,true,true],
+        uneditable: [true,true],
         magnifyingGlass: ['deductibleCd']
     }
 
@@ -273,7 +273,7 @@ saveQuoteDeductibles(){
             this.dialogIcon = "";
             $('#quote-option #successModalBtn').trigger('click');
             this.deductibleTable.markAsPristine();
-            this.showDeductiblesOptions(this.fromCovers ? this.selectedCover :this.selectedOption);
+            this.showDeductiblesOptions(this.fromCovers ? this.selectedCover :this.selectedOption, this.fromCovers ? '':undefined);
        }
      });
    }
@@ -428,6 +428,21 @@ cancel(){
     
     
     this.fromCovers = fromCovers !== undefined;
+
+    if(this.fromCovers){
+        this.deductiblesData.tHeader = ['Deductible Code','Deductible Title', 'Sum Insured', 'Deductible Text', 'Deductible Rate(%)', 'Deductible Amount'];
+        this.deductiblesData.dataTypes = ['text','text', 'currency', 'text', 'percent','currency'];
+        this.deductiblesData.keys = ['deductibleCd','deductibleTitle','sumInsured','deductibleTxt','deductibleRt','deductibleAmt'];
+        this.deductiblesData.uneditable = [true,true,true];
+        this.deductiblesData.widths = [60,'auto',120,'auto',120,120];
+    }else{
+        this.deductiblesData.tHeader = ['Deductible Code','Deductible Title', 'Deductible Text', 'Deductible Rate(%)', 'Deductible Amount'];
+        this.deductiblesData.dataTypes = ['text','text', 'text', 'percent','currency'];
+        this.deductiblesData.keys = ['deductibleCd','deductibleTitle','deductibleTxt','deductibleRt','deductibleAmt'];
+        this.deductiblesData.widths = [60,'auto','auto',120,120];
+        this.deductiblesData.uneditable = [true,true,false];
+    }
+    
     
     if(this.deductibleTable!==undefined){
       this.deductibleTable.loadingFlag = true;
@@ -435,11 +450,15 @@ cancel(){
           quoteId:this.quoteId,
           optionId:this.selectedOption.optionId,
           coverCd: data.coverCd === undefined ? 0 : data.coverCd,
-          quotationNo: ''
+          quotationNo: '',
+          endtCd: 0
         };
       this.quotationService.getDeductibles(params).subscribe((data)=>{
           if(data['quotation'].optionsList != null){
-            this.deductiblesData.tableData = data['quotation'].optionsList[0].deductiblesList;
+            this.deductiblesData.tableData = data['quotation'].optionsList[0].deductiblesList.filter((a)=>{
+                a.sumInsured = this.fromCovers ? this.selectedCover.amount : null;
+                return true;
+              });
             this.deductibleTable.refreshTable();
           }
           else
@@ -461,11 +480,15 @@ cancel(){
           quoteId:this.quoteId,
           optionId:this.selectedOption.optionId,
           coverCd: data.coverCd === undefined ? 0 : data.coverCd,
-          quotationNo: ''
+          quotationNo: '',
+          endtCd: 0
         };
         this.quotationService.getDeductibles(params).subscribe((data)=>{
           if(data['quotation'].optionsList != null){
-            this.deductiblesData.tableData = data['quotation'].optionsList[0].deductiblesList;
+            this.deductiblesData.tableData = data['quotation'].optionsList[0].deductiblesList.filter((a)=>{
+                a.sumInsured = this.fromCovers ? this.selectedCover.amount : null;
+                return true;
+              });
             this.deductibleTable.refreshTable();
           }
           else
@@ -484,7 +507,7 @@ cancel(){
     this.uwService.getMaintenanceDeductibles(this.quotationNum.substring(0,3),'',
         this.deductiblesData.nData.coverCd,'0','Y','Y').subscribe((data)=>{
           this.deductiblesData.tableData = data['deductibles'].filter((a)=>{
-            a.sumInsured = 0;
+            a.sumInsured = this.fromCovers ? this.selectedCover.amount : null;
             a.coverCd = this.deductiblesData.nData.coverCd;
             a.deductibleTxt = a.deductibleText;
             a.deductibleRt = a.deductibleRate;

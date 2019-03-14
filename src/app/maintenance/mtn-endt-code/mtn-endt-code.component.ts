@@ -12,6 +12,7 @@ export class MtnEndtCodeComponent implements OnInit {
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
 
   @Input() line: string = "";
+  @Input() hide: any[];
 
   constructor(private modalService: NgbModal, private mtnService : MaintenanceService) { }
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
@@ -53,6 +54,8 @@ export class MtnEndtCodeComponent implements OnInit {
     this.passData.tableData = [];
     this.mtnService.getEndtCode(this.line,'').subscribe((data: any) => {
       for (var i = 0; i< data.endtCode.length ; i++) {
+        if(this.hide!== undefined && this.hide.indexOf(data.endtCode[i].endtCd) != -1)
+          continue;
         this.passData.tableData.push(data.endtCode[i]);
       }
       this.table.refreshTable();

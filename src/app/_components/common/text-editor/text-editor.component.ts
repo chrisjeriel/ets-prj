@@ -21,7 +21,7 @@ export class TextEditorComponent implements OnInit {
     width: '100%',
     font: '11px arial',
     padding: '5px 10px',
-    color: '#495057'
+    color: 'black'
   };
 
   constructor(private modalService: NgbModal) { }

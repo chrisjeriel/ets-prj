@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { QuotationService } from '@app/_services';
@@ -18,6 +18,9 @@ export class OpenCoverSumInsuredComponent implements OnInit {
   quoteNo:string = '';
   quoteIdOc: any;
   riskId: any;
+
+  @Input() quoteData: any = {};
+  @Input() inquiryFlag: boolean = false;
 
   coverageOcData: any = {
   	currencyCd: null,
@@ -48,19 +51,25 @@ export class OpenCoverSumInsuredComponent implements OnInit {
 	       this.quoteNo += '-' + parseInt(this.quotationNo.split(/[-]/g)[i]);
 	     } 
 	    });*/
+
+
 	  	this.getCoverageOc();
+
   }
 
   getCoverageOc(){
-    this.quotationService.getCoverageOc('2', 'OC-CAR-2019-1-0-43').subscribe((data: any) => {
-          this.coverageOcData.currencyCd = data.quotationOc.projectOc.coverageOc.currencyCd;
-          this.coverageOcData.currencyRt = data.quotationOc.projectOc.coverageOc.currencyRt;
-          this.coverageOcData.maxSi = data.quotationOc.projectOc.coverageOc.maxSi;
-          this.coverageOcData.pctShare = data.quotationOc.projectOc.coverageOc.pctShare;
-          this.coverageOcData.pctPml = data.quotationOc.projectOc.coverageOc.pctPml;
-          this.coverageOcData.totalValue = data.quotationOc.projectOc.coverageOc.totalValue;
-          this.quoteIdOc = data.quotationOc.quoteIdOc;
-          this.riskId = data.quotationOc.projectOc.riskId;
+    this.quotationService.getCoverageOc(this.quoteData.quoteIdOc, '').subscribe((data: any) => {
+          console.log(data);
+         if(data.quotationOc !== null){
+           this.coverageOcData.currencyCd = data.quotationOc.projectOc.coverageOc.currencyCd;
+           this.coverageOcData.currencyRt = data.quotationOc.projectOc.coverageOc.currencyRt;
+           this.coverageOcData.maxSi = data.quotationOc.projectOc.coverageOc.maxSi;
+           this.coverageOcData.pctShare = data.quotationOc.projectOc.coverageOc.pctShare;
+           this.coverageOcData.pctPml = data.quotationOc.projectOc.coverageOc.pctPml;
+           this.coverageOcData.totalValue = data.quotationOc.projectOc.coverageOc.totalValue;
+           this.quoteIdOc = data.quotationOc.quoteIdOc;
+           this.riskId = data.quotationOc.projectOc.riskId;
+         }
           setTimeout(()=>{
             $('[appcurrencyrate]').focus();
             $('[appcurrencyrate]').blur();
@@ -75,10 +84,10 @@ export class OpenCoverSumInsuredComponent implements OnInit {
 
   saveData(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
-  	this.coverageOcData.quoteIdOc = this.quoteIdOc;
-  	this.coverageOcData.projId = 2;
-  	this.coverageOcData.riskId = this.riskId;
-    this.quotationService.saveQuoteCoverageOc(2,2,this.coverageOcData).subscribe((data)=>{
+  	this.coverageOcData.quoteIdOc = this.quoteData.quoteIdOc;
+  	this.coverageOcData.projId = 1;
+  	this.coverageOcData.riskId = this.quoteData.riskId;
+    this.quotationService.saveQuoteCoverageOc(this.coverageOcData).subscribe((data)=>{
       console.log(data)
       if(data['returnCode'] == 0) {
             this.dialogMessage = data['errorList'][0].errorMessage;
@@ -100,9 +109,11 @@ export class OpenCoverSumInsuredComponent implements OnInit {
   }
 
   setCurrency(data){
-  	this.coverageOcData.currencyAbbr = data.currencyAbbr;
   	this.coverageOcData.currencyRt = data.currencyRt;
   	this.coverageOcData.currencyCd = data.currencyCd;
+    $('#inputInname').focus();
+    $('#inputInname').blur();
+    $('#inputInname').addClass('ng-dirty');
   }
 
   onClickSave(){

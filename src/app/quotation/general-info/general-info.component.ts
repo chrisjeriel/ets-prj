@@ -274,7 +274,7 @@ export class GeneralInfoComponent implements OnInit {
 				var date = new Date();
 				var mills = date.setDate(date.getDate() + 30);
 
-				this.genInfoData.expiryDate		= this.ns.toDateTimeString(mills);				
+				this.genInfoData.expiryDate		= this.ns.toDateTimeString(mills);	
 				this.project.projId 			= '1';
 
 				this.maintenanceService.getMtnCurrency('PHP','Y').subscribe(data => {
