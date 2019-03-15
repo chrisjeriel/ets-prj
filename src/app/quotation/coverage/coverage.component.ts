@@ -132,8 +132,7 @@ export class CoverageComponent implements OnInit {
     this.initialData = [];
     this.getCoverageInfo();
     this.coverageData.currencyCd = this.quotationInfo.currencyCd;
-    this.coverageData.currencyRt = this.quotationInfo.currencyRt;  
-      console.log(this.riskId)
+    this.coverageData.currencyRt = this.quotationInfo.currencyRt;
   }
 
 

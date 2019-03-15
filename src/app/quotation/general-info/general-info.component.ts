@@ -258,7 +258,6 @@ export class GeneralInfoComponent implements OnInit {
 			           }
 			    });
 			}
-
 		} else {
 			this.loading = false;
 			this.route.params.subscribe(params => {	
