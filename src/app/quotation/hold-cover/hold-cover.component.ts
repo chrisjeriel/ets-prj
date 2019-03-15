@@ -35,93 +35,24 @@ export class HoldCoverComponent implements OnInit {
     pageStatus: true,
     pagination: true,
     filters: [
-    {
-      key: 'quotationNo',
-      title: 'Quotation No.',
-      dataType: 'seq'
-    },
-    {
-      key: 'cessionDesc',
-      title: 'Type of Cession',
-      dataType: 'text'
-    },
-    {
-      key: 'lineClassCdDesc',
-      title: 'Line Class',
-      dataType: 'text'
-    },
-    {
-      key: 'status',
-      title: 'Status',
-      dataType: 'text'
-    },
-    {
-      key: 'cedingName',
-      title: 'Ceding Co.',
-      dataType: 'text'
-    },
-    {
-      key: 'principalName',
-      title: 'Principal',
-      dataType: 'text'
-    },
-    {
-      key: 'contractorName',
-      title: 'Contractor',
-      dataType: 'text'
-    },
-    {
-      key: 'insuredDesc',
-      title: 'Insured',
-      dataType: 'text'
-    },
-    {
-      key: 'riskName',
-      title: 'Risk',
-      dataType: 'text'
-    },
-    {
-      key: 'objectDesc',
-      title: 'Object',
-      dataType: 'text'
-    },
-    {
-      key: 'site',
-      title: 'Site',
-      dataType: 'text'
-    },
-    {
-      key: 'policyNo',
-      title: 'Policy No.',
-      dataType: 'seq'
-    },
-    {
-      key: 'currencyCd',
-      title: 'Currency',
-      dataType: 'text'
-    },
-    {
-      key: 'issueDate',
-      title: 'Quote Date',
-      dataType: 'date'
-    },
-    {
-      key: 'expiryDate',
-      title: 'Valid Until',
-      dataType: 'date'
-    },
-    {
-      key: 'reqBy',
-      title: 'Requested By',
-      dataType: 'text'
-    },
-    {
-      key: 'createUser',
-      title: 'Created By',
-      dataType: 'text'
-    },
+      {key: 'quotationNo', title: 'Quotation No.',dataType: 'seq'},
+      {key: 'cessionDesc',title: 'Type of Cession',dataType: 'text'},
+      {key: 'lineClassCdDesc',title: 'Line Class',dataType: 'text'},
+      {key: 'status',title: 'Status',dataType: 'text'},
+      {key: 'cedingName',title: 'Ceding Co.',dataType: 'text'},
+      {key: 'principalName',title: 'Principal',dataType: 'text'},
+      {key: 'contractorName',title: 'Contractor',dataType: 'text'},
+      {key: 'insuredDesc',title: 'Insured',dataType: 'text'},
+      {key: 'riskName',title: 'Risk',dataType: 'text'},
+      {key: 'objectDesc',title: 'Object',dataType: 'text'},
+      {key: 'site',title: 'Site',dataType: 'text'},
+      {key: 'policyNo',title: 'Policy No.',dataType: 'seq'},
+      {key: 'currencyCd',title: 'Currency',dataType: 'text'},
+      {key: 'issueDate',title: 'Quote Date',dataType: 'date'},
+      {key: 'expiryDate',title: 'Valid Until',dataType: 'date'},
+      {key: 'reqBy',title: 'Requested By',dataType: 'text'},
+      {key: 'createUser',title: 'Created By',dataType: 'text'},
     ],
-
     colSize: ['', '250px', '250px', '250px'],
   };
 
@@ -163,6 +94,9 @@ export class HoldCoverComponent implements OnInit {
   dialogMessage:string = '';
   dialogIcon:string = '';
 
+  cbSearchQn: boolean;
+  inSearcnQn: string;
+  showAll:boolean;
 
   holdCover: any = {
     approvedBy:     "",
@@ -216,7 +150,7 @@ export class HoldCoverComponent implements OnInit {
     this.titleService.setTitle("Quo | Quotation to Hold Cover");
     this.holdCoverInfo = new HoldCoverInfo();
     this.btnApprovalEnabled = false;
-
+    this.passDataQuoteLOV.filters[0].enabled = false;
     this.search();
   }
 
@@ -272,34 +206,50 @@ export class HoldCoverComponent implements OnInit {
         // }
 
         search() {
-          // this.loading = true;
-
           var ql = (this.qLine === undefined )? '' : this.qLine.toUpperCase(); 
           var yr = (this.qYear === undefined || this.qYear === '')? 0 : Number(this.qYear.toString());
           var sn = (this.qSeqNo === undefined || this.qSeqNo === '' )? 0 : Number(this.qSeqNo.toString());
           var rn = (this.qRevNo === undefined || this.qRevNo === '' )? 0 : Number(this.qRevNo.toString());
           var cn = (this.qCedingId === undefined || this.qCedingId === '')? 0 : Number(this.qCedingId.toString());
 
+           this.cbSearchQn = this.passDataQuoteLOV.filters[0].enabled;
+           this.inSearcnQn = this.passDataQuoteLOV.filters[0].search;
+          
+          console.log(this.cbSearchQn);
+          console.log(this.showAll + " >> show All");
+          if(this.cbSearchQn === false){
+            this.searchParams = [{"key":"quotationNo","search":ql.toUpperCase()+"%"+((yr===0)?'':yr)+"%"+((sn===0)?'':sn)+"%"+((rn===0)?'':rn)+"%"+((cn===0)?'':cn)},{"key":"cessionDesc","search":""},{"key":"lineClassCdDesc","search":""},{"key":"status","search":""},{"key":"cedingName","search":""},{"key":"principalName","search":""},{"key":"contractorName","search":""},{"key":"insuredDesc","search":""},{"key":"riskName","search":""},{"key":"objectDesc","search":""},{"key":"site","search":""},{"key":"policyNo","search":""},{"key":"currencyCd","search":""},{"key":"issueDate","search":""},{"key":"expiryDate","search":""},{"key":"reqBy","search":""},{"key":"createUser","search":""}];
+          }else{
+            this.searchParams = [];
+          }
 
-          //this.searchParams = [{"key":"quotationNo","search":ql.toUpperCase()+"%"+((yr===0)?'':yr)+"%"+((sn===0)?'':sn)+"%"+((rn===0)?'':rn)+"%"+((cn===0)?'':cn)},{"key":"cessionDesc","search":""},{"key":"lineClassCdDesc","search":""},{"key":"status","search":""},{"key":"cedingName","search":""},{"key":"principalName","search":""},{"key":"contractorName","search":""},{"key":"insuredDesc","search":""},{"key":"riskName","search":""},{"key":"objectDesc","search":""},{"key":"site","search":""},{"key":"policyNo","search":""},{"key":"currencyCd","search":""},{"key":"issueDate","search":""},{"key":"expiryDate","search":""},{"key":"reqBy","search":""},{"key":"createUser","search":""}];
+          if(this.showAll === false){
+              this.searchParams = [{"key":"quotationNo","search":ql.toUpperCase()+"%"+((yr===0)?'':yr)+"%"+((sn===0)?'':sn)+"%"+((rn===0)?'':rn)+"%"+((cn===0)?'':cn)},{"key":"cessionDesc","search":""},{"key":"lineClassCdDesc","search":""},{"key":"status","search":""},{"key":"cedingName","search":""},{"key":"principalName","search":""},{"key":"contractorName","search":""},{"key":"insuredDesc","search":""},{"key":"riskName","search":""},{"key":"objectDesc","search":""},{"key":"site","search":""},{"key":"policyNo","search":""},{"key":"currencyCd","search":""},{"key":"issueDate","search":""},{"key":"expiryDate","search":""},{"key":"reqBy","search":""},{"key":"createUser","search":""}];
+          }else{
+             this.searchParams = [];
+          }
+          
+          
 
           console.log(JSON.stringify(this.searchParams) + " >>> this.searchParams");
           this.passDataQuoteLOV.tableData = [];
           this.quotationService.getQuoProcessingData(this.searchParams)
           .subscribe(val => {
             var records = val['quotationList'];
-            for(let rec of records){
-              if(rec.status.toUpperCase() === 'ISSUED'){
-                this.passDataQuoteLOV.tableData.push({
-                  quotationNo: rec.quotationNo,
-                  cedingName:  rec.cedingName,
-                  insuredDesc: rec.insuredDesc,
-                  riskName: (rec.project == null) ? '' : rec.project.riskName
-                });
-                // this.loading = false;
-
+            
+            if(records === null  || records === '' || records === undefined){
+              this.showAll = false;
+            }else{
+              for(let rec of records){
+                if(rec.status.toUpperCase() === 'ISSUED'){
+                  this.passDataQuoteLOV.tableData.push({
+                    quotationNo: rec.quotationNo,
+                    cedingName:  rec.cedingName,
+                    insuredDesc: rec.insuredDesc,
+                    riskName: (rec.project == null) ? '' : rec.project.riskName
+                  });
+                }
               }
-
             }
             this.table.refreshTable();
           });
@@ -357,6 +307,7 @@ export class HoldCoverComponent implements OnInit {
             this.clickView = false;
 
           }else{
+            this.showAll = true;
             var rec = data['quotationList'][0].holdCover;
             this.holdCover.holdCoverNo = rec.holdCoverNo;
             this.splitHcNo(rec.holdCoverNo);
