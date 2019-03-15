@@ -1,6 +1,6 @@
 <div class="cust-tabs-container">
     <h4>Quotation</h4>
-    <ngb-tabset>
+    <ngb-tabset (tabChange)="onTabChange($event)">
         <ngb-tab title="Change Quote Status">
             <ng-template ngbTabContent>
                 <div class="row">
@@ -104,25 +104,25 @@
                                 <div class="form-row custom-row-inline-inset">
                                     <div class="input-group alignment" style="margin-bottom: -13px !important;">
                                         <label class="form-control-sm col-sm-3 text-right">Type of Cession</label>
-                                        <input type="text" class="form-control form-control-sm col-sm-2">
-                                        <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-                                        <input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 2px !important;">
+                                        <input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="typeOfCessionId" (change)="checkCode($event, 'typeOfCession')">
+                                        <div class="text-search-ico" (click)="modalService.dismissAll();showTypeOfCessionLOV()"><a><i class="fa fa-search"></i></a></div>
+                                        <input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 2px !important;" [(ngModel)]="typeOfCession">
                                     </div>
                                 </div>
                                 <div class="form-row custom-row-inline-inset">
                                     <div class="input-group alignment" style="margin-bottom: -13px !important;">
                                         <label class="form-control-sm col-sm-3 text-right">Ceding Company</label>
-                                        <input type="text" class="form-control form-control-sm col-sm-2">
-                                        <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-                                        <input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 2px !important;">
+                                        <input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="cedingCode" (change)="checkCode($event, 'ceding')">
+                                        <div class="text-search-ico" (click)="modalService.dismissAll();showCedingLOV()"><a><i class="fa fa-search"></i></a></div>
+                                        <input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 2px !important;" [(ngModel)]="cedingName">
                                     </div>
                                 </div>
                                 <div class="form-row custom-row-inline-inset">
                                     <div class="input-group alignment" style="margin-bottom: -20px !important;">
                                         <label class="form-control-sm col-sm-3 text-right">Risk</label>
-                                        <input type="text" class="form-control form-control-sm col-sm-2">
-                                        <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-                                        <input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 2px !important;">
+                                        <input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="riskCd" (change)="checkCode($event, 'risk')">
+                                        <div class="text-search-ico" (click)="modalService.dismissAll();showRiskLOV()"><a><i class="fa fa-search"></i></a></div>
+                                        <input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 2px !important;" [(ngModel)]="riskName">
                                     </div>
                                 </div>
                                 <br>
@@ -136,6 +136,10 @@
                 </app-modal>
             </ng-template>
         </ngb-tab>
+        <ngb-tab title="Exit" id="Exit">
+            <ng-template ngbTabContent>
+            </ng-template>
+        </ngb-tab>
     </ngb-tabset>
 </div>
 <app-mtn-reason id="reasonLOV" (selectedData)="setReason($event)"></app-mtn-reason>
@@ -143,3 +147,7 @@
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 <app-confirm-save (onYes)="process()"></app-confirm-save>
 <app-cancel-button (onYes)="process('cancel')" [url]="'/quotation-processing'" ></app-cancel-button>
+
+<app-mtn-risk id="riskLOV" (selectedData)="setRisks($event)"></app-mtn-risk>
+<app-ceding-company id="cedingCompanyLOV" (selectedData)="setCedingcompany($event)"></app-ceding-company>
+<app-mtn-type-of-cession id="typeOfCessionLOV" (selectedData)="setTypeOfCession($event)"></app-mtn-type-of-cession>

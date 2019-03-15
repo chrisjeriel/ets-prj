@@ -1,10 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgbModal, NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbDropdownConfig, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
-import { QuotationService } from '@app/_services';
+import { QuotationService, NotesService } from '@app/_services';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { environment } from '@environments/environment';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MtnTypeOfCessionComponent } from '@app/maintenance/mtn-type-of-cession/mtn-type-of-cession.component';
+import { MtnRiskComponent } from '@app/maintenance/mtn-risk/mtn-risk.component';
 
 @Component({
     selector: 'app-change-quote-status',
@@ -14,6 +17,9 @@ import { environment } from '@environments/environment';
 export class ChangeQuoteStatusComponent implements OnInit {
     @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
     @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+    @ViewChild(MtnTypeOfCessionComponent) typeOfCessionLov: MtnTypeOfCessionComponent;
+    @ViewChild(MtnRiskComponent) riskLov: MtnTypeOfCessionComponent;
+
     tHeader: any[] = [];
     tableData: any[] = [];
     saveData: any = {
@@ -29,11 +35,17 @@ export class ChangeQuoteStatusComponent implements OnInit {
     dialogMessage:string = "";
     dialogIcon: string = "";
     cancelFlag:boolean;
+    typeOfCessionId = "";
+    typeOfCession = "";
+    riskCd: string = "";
+    riskName: string = "";
+    cedingCode: string = "";
+    cedingName: string = "";
 
     selectedData : any ={
         quotationNo: null,
         status: null,
-        statusCd: 0,
+        statusCd: null,
         cedingName: null,
         insuredDesc: null,
         riskName: null,
@@ -56,7 +68,7 @@ export class ChangeQuoteStatusComponent implements OnInit {
       keys: ['quotationNo','cessionDesc','cedingName','insuredDesc','riskName']
     };
 
-    constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, config: NgbDropdownConfig,) {
+    constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, config: NgbDropdownConfig,private router: Router, private ns: NotesService) {
         config.placement = 'bottom-right';
         config.autoClose = false;
     }
@@ -91,29 +103,39 @@ export class ChangeQuoteStatusComponent implements OnInit {
         });
     }
 
-    savetest(){
-        this.quotationService.saveChangeQuoteStatus(this.saveData).subscribe(data => {
-            if(data['returnCode'] == 0) {
-                this.dialogMessage = data['errorList'][0].errorMessage;
-                this.dialogIcon = "error";
-                $('#successModalBtn').trigger('click');
-            } else{
-                this.dialogMessage="";
-                this.dialogIcon = "";
-                $('#successModalBtn').trigger('click');
-                $('.ng-dirty').removeClass('ng-dirty');
-                this.emptyVariables();
-                this.getChangeQuote();
-            }
-       });
+    saveProcess(){
+        console.log(this.saveData.changeQuoteStatus)
+        console.log(this.saveData.statusCd)
+        console.log(this.saveData)
+        if(this.saveData.changeQuoteStatus.length != 0 && this.saveData.statusCd != null){
+            this.quotationService.saveChangeQuoteStatus(this.saveData).subscribe(data => {
+                if(data['returnCode'] == 0) {
+                    this.dialogMessage = data['errorList'][0].errorMessage;
+                    this.dialogIcon = "error";
+                    $('#successModalBtn').trigger('click');
+                } else{
+                    this.dialogMessage="";
+                    this.dialogIcon = "";
+                    $('#successModalBtn').trigger('click');
+                    $('.ng-dirty').removeClass('ng-dirty');
+                    this.emptyVariables();
+                    this.getChangeQuote();
+                }
+           });
+        }else{
+            this.dialogMessage = "Nothing to save.";
+            this.dialogIcon = "info"
+            $('#successModalBtn').trigger('click');
+        }
     }
 
     emptyVariables(){
-        this.saveData.reasonCd = ""
+        this.saveData.reasonCd = null
+        this.saveData.statusCd = null
         this.selectedData ={
             quotationNo: null,
             status: null,
-            statusCd: 0,
+            statusCd: null,
             cedingName: null,
             insuredDesc: null,
             riskName: null,
@@ -122,6 +144,13 @@ export class ChangeQuoteStatusComponent implements OnInit {
             description: null,
             remarks: null
         }
+        this.typeOfCession = "";
+        this.typeOfCessionId = "";
+        this.riskCd = "";
+        this.riskName = "";
+        this.cedingCode = "";
+        this.cedingName = "";
+        this.passData.tableData = [];
     }
 
     process(cancelFlag?) {
@@ -134,48 +163,13 @@ export class ChangeQuoteStatusComponent implements OnInit {
        }else{
            this.saveData.reasonCd = this.saveData.reasonCd == null ? "":this.selectedData.reasonCd;
        }
-       console.log(this.saveData.reasonCd)
-       this.savetest();
+       this.saveProcess();
     }
 
     prepareData(){
-        /*for(let rec of this.records){
-            if(rec.quotationNo === data.quotationNo) {
-                if(data.checked){
-                    this.selectedData = data;
-                    this.saveData.changeQuoteStatus.push({
-                        quoteId: rec.quoteId
-                    })
-                }else {
-                    for(var j=0;j<this.saveData.changeQuoteStatus.length;j++){
-                        if(this.saveData.changeQuoteStatus[j].quoteId == rec.quoteId){
-                            this.saveData.changeQuoteStatus.pop(this.saveData.changeQuoteStatus[j])
-                        }
-                    }
-                }
-            }
-        }*/
-        this.saveData.changeQuoteStatus =[]
-        //     for(var j=0; j < this.passData.tableData.length;j++){
-        //             if(this.passData.tableData[j].checked){
-        //                 this.selectedData = this.passData.tableData[j];
-        //                 for(var k=0;k<this.saveData.changeQuoteStatus.length;k++){
-        //                     if(this.saveData.changeQuoteStatus[k].quoteId == this.records.quoteId){
-        //                         this.saveData.changeQuoteStatus.pop(this.saveData.changeQuoteStatus[j])
-        //                         console.log('push')
-        //                     }else{
-        //                         this.saveData.changeQuoteStatus.push({
-        //                             quoteId: this.passData.tableData[j].quoteId
-        //                         })
-        //                         console.log('pop')
-        //                     }
-        //                 }
-                        
-        //             }
-        // }
+        this.saveData.changeQuoteStatus =[];
         for(let data of this.passData.tableData){
             if(data.checked){
-                console.log(data);
                 this.saveData.changeQuoteStatus.push({
                     quoteId: data.quoteId
                 })
@@ -188,23 +182,7 @@ export class ChangeQuoteStatusComponent implements OnInit {
     }
 
     onRowClick(data) {
-        //console.log(this.passData.tableData)
-        /*for(let rec of this.records){
-            if(rec.quotationNo === data.quotationNo) {
-                if(data.checked){
-                    this.selectedData = data;
-                    this.saveData.changeQuoteStatus.push({
-                        quoteId: rec.quoteId
-                    })
-                }else {
-                    for(var j=0;j<this.saveData.changeQuoteStatus.length;j++){
-                        if(this.saveData.changeQuoteStatus[j].quoteId == rec.quoteId){
-                            this.saveData.changeQuoteStatus.pop(this.saveData.changeQuoteStatus[j])
-                        }
-                    }
-                }
-            }
-        }*/
+        console.log(data)
     }
 
     openReasonLOV(){
@@ -214,6 +192,65 @@ export class ChangeQuoteStatusComponent implements OnInit {
     setReason(data){
         this.selectedData.reasonCd = data.reasonCd;
         this.selectedData.description = data.description;
+    }
+
+    onTabChange($event: NgbTabChangeEvent) {
+          if ($event.nextId === 'Exit') {
+            this.router.navigateByUrl('');
+          } 
+ 
+    }
+
+    showRiskLOV(){
+        $('#riskLOV #modalBtn').trigger('click');
+    }
+
+    showCedingLOV(){
+        $('#cedingCompanyLOV #modalBtn').trigger('click');
+    }
+
+    showTypeOfCessionLOV(){
+        $('#typeOfCessionLOV #modalBtn').trigger('click');
+    }
+
+    setRisks(data){
+        this.riskCd = data.riskId;
+        this.riskName = data.riskName;
+        this.ns.lovLoader(data.ev, 0);
+
+        if(data.hasOwnProperty('fromLOV')){
+            $('#search > #modalBtn').trigger('click');    
+        }
+
+    }
+
+    setCedingcompany(data){
+        this.cedingCode = data.cedingId;
+        this.cedingName = data.cedingName;
+
+        $('#search > #modalBtn').trigger('click'); 
+    }
+
+    setTypeOfCession(data){
+        this.typeOfCessionId = data.cessionId;
+        this.typeOfCession = data.description;
+        this.ns.lovLoader(data.ev, 0);
+
+        if(data.hasOwnProperty('fromLOV')){
+            $('#search > #modalBtn').trigger('click');    
+        }
+    }
+
+    checkCode(ev, field){
+        this.ns.lovLoader(ev, 1);
+
+        /*if(field === 'line') {            
+            this.lineLov.checkCode(this.line, ev);
+        } else*/ if(field === 'typeOfCession'){
+            this.typeOfCessionLov.checkCode(this.typeOfCessionId, ev);
+        } else if(field === 'risk') {
+            this.riskLov.checkCode(this.riskCd, ev);
+        }              
     }
 
 }
