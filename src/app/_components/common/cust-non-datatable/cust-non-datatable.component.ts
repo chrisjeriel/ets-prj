@@ -209,6 +209,7 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     processData(key: any, data: any) {
+        console.log("test");
         if(this.keyCounter == 0){
             this.nullKey = key;
             this.keyCounter++;
