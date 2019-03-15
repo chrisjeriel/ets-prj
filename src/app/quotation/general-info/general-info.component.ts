@@ -164,6 +164,8 @@ export class GeneralInfoComponent implements OnInit {
 		insuredDesc: '',
 		currencyCd: '',
 		currencyRt:'',
+		principalId:'',
+		principalName:'',
 		showAlop: false
 	}
 

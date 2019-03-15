@@ -101,7 +101,7 @@ export class CoverageComponent implements OnInit {
   refresh:boolean = true;
 
 
-  constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,private modalService: NgbModal, private maintenanceService: MaintenanceService) {}
+  constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,private modalService: NgbModal, private maintenanceService: MaintenanceService, private ns: NotesService) {}
 
   ngOnInit() {
     this.titleService.setTitle("Quo | Coverage");
