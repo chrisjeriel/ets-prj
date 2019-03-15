@@ -13,31 +13,31 @@
 									<div class="custom-row-inline-inset">
 										<div class="input-group">
 											<label class="form-control-sm col-sm-3">Line</label>
-											<input type="text" [(ngModel)]="mtnLineCd" class="form-control form-control-sm col-sm-2 cap-input" (change)="checkCode('line')">
+											<input type="text" [(ngModel)]="mtnLineCd" class="form-control form-control-sm col-sm-2 cap-input" (change)="checkCode($event, 'line')" id="mtnLineCd" appRequired>
 											<div class="text-search-ico"(click)="getLineLov($event)"><a><i class="fa fa-search"></i></a></div>
 											&nbsp;&nbsp;
-											<input type="text" class="form-control form-control-sm" [(ngModel)]="mtnLineDesc" readonly>
+											<input type="text" class="form-control form-control-sm" [(ngModel)]="mtnLineDesc" readonly tabindex="-1">
 										</div>
 										<div class="input-group">
 											<label class="form-control-sm col-sm-3">Type of Cession</label>
-											<input type="text" class="form-control form-control-sm col-sm-2"[(ngModel)]="mtnCessionId" (change)="checkCode('typeOfCession')" id="mtnCessionId">
+											<input type="text" class="form-control form-control-sm col-sm-2"[(ngModel)]="mtnCessionId" (change)="checkCode($event, 'typeOfCession')" id="mtnCessionId" appRequired>
 											<div class="text-search-ico" (click)="getCessionLov($event)"><a><i class="fa fa-search"></i></a></div>
 											&nbsp;&nbsp;
-											<input type="text" class="form-control form-control-sm" [(ngModel)]="mtnCessionDesc" readonly>
+											<input type="text" class="form-control form-control-sm" [(ngModel)]="mtnCessionDesc" readonly tabindex="-1">
 										</div>
 										<div class="input-group">
 											<label class="form-control-sm col-sm-3">Risk</label>
-											<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="riskDetails.riskId" (change)="checkCode('risk')" id="riskId">
+											<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="riskDetails.riskId" (change)="checkCode($event, 'risk')" id="riskId" appRequired>
 											<div class="text-search-ico" (click)="getRiskLov($event)"><a><i class="fa fa-search"></i></a></div>
 											&nbsp;&nbsp;
-											<input type="text" class="form-control form-control-sm" [(ngModel)]="riskDetails.riskName" readonly>
+											<input type="text" class="form-control form-control-sm" [(ngModel)]="riskDetails.riskName" readonly tabindex="-1">
 										</div>
 									</div>
 								</fieldset>
 							</div>
 							<div footer class="text-center w-100">
-								<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-								<button *ngIf="!checkFields()" class="cust-btn" type="button" (click)="nextBtnEvent();"><a>Next</a></button>
+								<button class="cust-btn" type="button" (click)="modalService.dismissAll(); clearAddFields();" tabindex="2"><a>Cancel</a></button>
+								<button *ngIf="!checkFields()" class="cust-btn" type="button" (click)="nextBtnEvent();" tabindex="1"><a>Next</a></button>
 								<button *ngIf="checkFields()" class="cust-btn cust-btn-disabled" type="button"><a>Next</a></button>
 							</div>
 						</app-modal>

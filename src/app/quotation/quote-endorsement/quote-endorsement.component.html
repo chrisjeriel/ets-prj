@@ -89,7 +89,7 @@
     <div header>Success</div>
     <div body>
         <div>
-            <p><strong style="color:#557a95">Option {{ currentSelectedOption }}</strong> has been copied to <strong style="color:#557a95" *ngFor="let i of copyEndtParams">Option No/s {{ i.optionNo }}</strong> </p>
+            <p><strong style="color:#557a95">Option {{ currentSelectedOption }}</strong> has been copied to <strong style="color:#557a95">Option No/s </strong> <strong style="color:#557a95" *ngFor="let i of copyEndtParams">{{ i.optionNo }}<span *ngIf="copyEndtParams.length > 1">,</span></strong> </p>
         </div>
     </div>
     <div footer class="d-flex justify-content-center w-100">

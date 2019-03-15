@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { QuotationService } from '../../_services';
+import { QuotationService, NotesService, MaintenanceService } from '../../_services';
 import { OpenCoverProcessing } from '../../_models';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
@@ -149,8 +149,10 @@ export class OpenCoverProcessingComponent implements OnInit {
 
   selectedOpenQuotationNo: any = {};
 
+  newEntry: boolean = true;
+
   constructor(private quotationService: QuotationService, private modalService: NgbModal, private router: Router
-    , public activeModal: NgbActiveModal, private titleService: Title
+    , public activeModal: NgbActiveModal, private titleService: Title, private notes: NotesService, private maintenanceService: MaintenanceService
   ) { }
  
   ngOnInit() {
@@ -227,6 +229,14 @@ export class OpenCoverProcessingComponent implements OnInit {
   }
 
   onClickAdd(event) {
+    if(this.newEntry){
+        this.maintenanceService.getMtnTypeOfCession(1).subscribe(data => {            
+            this.mtnCessionId = data['cession'][0].cessionId;
+            this.mtnCessionDesc = data['cession'][0].cessionAbbr;
+
+            this.newEntry = false;
+        });
+    }
     $('#addModal > #modalBtn').trigger('click');
     setTimeout(function() { $(event).focus(); }, 0)
   }
@@ -303,9 +313,11 @@ export class OpenCoverProcessingComponent implements OnInit {
   }
   setRisk(data){
     this.riskDetails = data;
-    console.log(this.riskDetails);
-    this.onClickAdd("#riskId");
-    this.loading = false;
+    this.notes.lovLoader(data.ev, 0);
+        
+        if(data.hasOwnProperty('fromLOV')){
+            this.onClickAdd('#riskId');   
+        }
   }
 
   getLineLov(){
@@ -314,8 +326,11 @@ export class OpenCoverProcessingComponent implements OnInit {
   setLine(data){
     this.mtnLineCd  = data.lineCd;
     this.mtnLineDesc  = data.description;
-    this.onClickAdd("#mtnCessionId");
-    this.loading = false;
+    this.notes.lovLoader(data.ev, 0);
+        
+        if(data.hasOwnProperty('fromLOV')){
+            this.onClickAdd('#mtnLineCd');   
+        }
   }
 
   getCessionLov(){
@@ -324,17 +339,20 @@ export class OpenCoverProcessingComponent implements OnInit {
   setCession(data){
     this.mtnCessionId = data.cessionId;
     this.mtnCessionDesc  = data.description;
-    this.onClickAdd("#riskId");
-    this.loading = false;
+    this.notes.lovLoader(data.ev, 0);
+        
+        if(data.hasOwnProperty('fromLOV')){
+            this.onClickAdd('#mtnCessionId');   
+        }
   }
-  checkCode(field){
-        this.loading = true;
+  checkCode(ev, field){
+        this.notes.lovLoader(ev, 1)
         if(field === 'line') {
-            this.lineLov.checkCode(this.mtnLineCd.toUpperCase(), 'a');
+            this.lineLov.checkCode(this.mtnLineCd.toUpperCase(), ev);
         } else if(field === 'typeOfCession'){
-            this.typeOfCessionLov.checkCode(this.mtnCessionId, 'a');    
+            this.typeOfCessionLov.checkCode(this.mtnCessionId, ev);    
         } else if(field === 'risk') {
-            this.riskLov.checkCode(this.riskDetails.riskId, 'a');
+            this.riskLov.checkCode(this.riskDetails.riskId, ev);
         }             
     }
 
@@ -346,6 +364,18 @@ export class OpenCoverProcessingComponent implements OnInit {
         }
 
         return false;
+    }
+
+    clearAddFields(){
+      this.riskDetails = {
+          riskId: '',
+          riskName: '',
+       };
+       this.mtnCessionId = '';
+       this.mtnCessionDesc = '';
+       this.mtnLineCd = '';
+       this.mtnLineDesc = '';
+       this.newEntry = true;
     }
 
 }
