@@ -178,6 +178,7 @@ export class QuoteEndorsementComponent implements OnInit {
     showModal:boolean = false;
     dialogIcon: string;
     hideEndt: any[];
+    selectedEndt:any = null;
 
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, 
      private route: ActivatedRoute, private uwService: UnderwritingService, private mtnService : MaintenanceService) { }
@@ -410,6 +411,7 @@ export class QuoteEndorsementComponent implements OnInit {
      //neco
        this.copyEndtMethod(event.optionId);
      //end neco
+     this.table.loadingFlag = true;
       $('#endorsmentTable button').removeAttr("disabled");
       $('#endorsmentOCTable button').removeAttr("disabled");
       this.opId = event.optionId;

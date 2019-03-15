@@ -69,7 +69,6 @@ export class QuoteOptionComponent implements OnInit {
         pageID: 1,
         keys: ['optionId','optionRt','condition','commRtQuota','commRtSurplus','commRtFac'],
         uneditable: [true,false,false,false,false,false],
-        genericBtn: 'Deductibles'
     }
 
     deductiblesData: any = {
@@ -108,7 +107,6 @@ export class QuoteOptionComponent implements OnInit {
         tableData: [],
         tHeader: ['Section','Bullet No','Cover Code Name', 'Sum Insured','Change Tag', 'Rate(%)'],
         dataTypes: ['text', 'text', 'text', 'currency','checkbox','percent'],
-        genericBtn: 'Deductibles',
         pageLength: 'unli-1',
         pageID: 3,
         keys: ['section','bulletNo','coverCdDesc','amount','changeTag','rate'],
