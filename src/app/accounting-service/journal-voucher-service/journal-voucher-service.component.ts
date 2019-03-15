@@ -83,16 +83,6 @@ status: string="";
       ], { skipLocationChange: true });
   }
 
-  toGenerateAREdit(event) {
-    if(this.status == 'Printed' ||this.status == 'Cancelled'){
-       this.router.navigate(['/journal-voucher-service'], { skipLocationChange: true });
-    }else {
-       this.router.navigate(['/generate-jv-service',
-          {jvType: this.type} 
-          ], { skipLocationChange: true });
-    }
-  }
-
   onRowClick(data){
       this.type = data.jvType;
       this.status = data.jvStatus;
@@ -100,9 +90,21 @@ status: string="";
       if(data.jvStatus == 'Printed' || data.jvStatus == 'Cancelled'){
         this.passDataJVListing.btnDisabled = true;
       }else{
-        this.passDataJVListing.btnDisabled = false;
+        this.passDataJVListing.btnDisabled = false; 
       }
-
   }
+
+  onRowDblClick(data) {
+    if (this.type == null || this.type == 'undefined'){
+    } else {
+        if(this.status == 'Printed' ||this.status == 'Cancelled'){
+           this.router.navigate(['/journal-voucher-service'], { skipLocationChange: true });
+       } else {
+           this.router.navigate(['/generate-jv-service', {jvType: this.type}], { skipLocationChange: true });
+       }
+    }
+  }
+
+
 
 }

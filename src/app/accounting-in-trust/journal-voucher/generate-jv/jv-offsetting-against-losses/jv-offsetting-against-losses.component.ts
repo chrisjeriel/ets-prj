@@ -11,13 +11,13 @@ import { AccJvInPolBalAgainstLoss, AgainstLoss } from '@app/_models';
 })
 export class JvOffsettingAgainstLossesComponent implements OnInit {
   passData: any = {
-    tableData: this.accountingService.getAccJVInPolBal(),
-    tHeader: ['SOA No','Policy No.','Co. Ref No.','Inst No.', 'Type', 'Eff Date','Due Date','Curr','Curr Rate','Premium','RI Comm','Charges','Net Due','Payments','Balance',"Overdue Interest"],
+    tableData: this.accountingService.getAccJvInPolBalAgainstLoss(),
+    tHeader: ['SOA No','Policy No.','Co. Ref No.','Inst No.','Eff Date','Due Date','Curr','Curr Rate','Premium','RI Comm','Charges','Net Due','Payments','Balance',"Overdue Interest","Actual Payment"],
     resizable: [true, true, true, true, true, true, true, true, true,true,true,true,true,true,true,true],
-    dataTypes: ['text','text','text','number','text','date','date','text','percent','currency','percent','percent','currency','currency','currency','currency'],
-    nData: new AccJvInPolBalAgainstLoss(null,null,null,null,new Date(),new Date(),null,null,null,null,null,null,null,null,null),
-    total:[null,null,null,null,null,null,null,null,'Total','premium','riComm','charges','netDue','payments','bal','overdueInt'],
-    magnifyingGlass: ['soaNo','instNo'],
+    dataTypes: ['text','text','text','number','date','date','text','percent','currency','percent','percent','currency','currency','currency','currency','currency'],
+    nData: new AccJvInPolBalAgainstLoss(null,null,null,null,new Date(),new Date(),null,null,null,null,null,null,null,null,null,null),
+    total:[null,null,null,null,null,null,null,'Total','premium','riComm','charges','netDue','payments','bal','overdueInt','actualPayment'],
+    magnifyingGlass: ['soaNo','polNo','instNo'],
     checkFlag: true,
     addFlag: true,
     deleteFlag: true,
@@ -31,7 +31,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
     editFlag: false,
     pageLength: 5,
     genericBtn: 'Save',
-    widths: [180,180,120,50,90,1,1,1,85,120,85,85,120,120,120,120,85],
+    widths: [180,180,200,1,1,1,1,80,120,80,80,120,120,120,80,120],
     pageID: 2,
   };
 
@@ -40,15 +40,16 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   	tHeader: ['Claim No', 'Payment For/To', 'Insured', 'Hist No', 'Hist Type', 'Ex-Gratia', 'Curr','Curr Rate', 'Reserve Amount','Amount','Amount (Php)'],
   	dataTypes: ['text', 'text', 'text', 'number', 'text', 'checkbox', 'text', 'percent', 'currency', 'currency', 'currency'],
   	nData: new AgainstLoss(null,null,null,null,null,null,null,null,null,null,null),
+    magnifyingGlass: ['claimNo'],
   	paginateFlag: true,
   	infoFlag: true,
   	pageID: 1,
   	checkFlag: true,
   	addFlag: true,
   	deleteFlag: true,
-  	total: [null, null,null, null, null,null, null, null, 'Total', 'amount', 'amountPhp'],
+  	total: [null, null,null, null, null,null, null,'Total',null, 'amount', 'amountPhp'],
   	genericBtn: 'Save',
-    widths: [150,200,200,1,150,1,1,85,120,120,120],
+    widths: [150,200,200,1,1,1,1,85,120,120,120],
     pageLength: 5,
   }
 

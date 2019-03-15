@@ -31,70 +31,70 @@
 							<div class="col-sm-8" style="padding-right: 0px !important;">
 								<div class="form-row" style="margin-right: 0px;">
 									<div class="input-group ig-cust" style="margin-top: 10px;">
-										<label class="form-control-sm col-sm-2">Quotation No</label>
-										<input  type="text" class="form-control form-control-sm t" [(ngModel)]="genInfoData.quotationNo" style="font-weight: bold;" readonly>
+										<label tabindex="-1" class="form-control-sm col-sm-2">Quotation No</label>
+										<input  type="text" class="form-control form-control-sm t" [(ngModel)]="genInfoData.quotationNo" style="font-weight: bold;" tabindex="-1" readonly>
 									</div>
 									<div class="input-group ig-cust">
-										<label class="form-control-sm col-sm-2">Type of Cession</label>			
-										<input  type="text" class="form-control form-control-sm t" [(ngModel)]="genInfoData.cessionDesc" readonly>
-										<label class="form-control-sm col-sm-2">Line Class</label>
-										<input type="text" [(ngModel)]="genInfoData.lineClassDesc" class="form-control form-control-sm req" [style.margin-right.px]="inquiryFlag ? '0' : '1'"
+										<label tabindex="-1" class="form-control-sm col-sm-2">Type of Cession</label>			
+										<input  type="text" class="form-control form-control-sm t" tabindex="-1" [(ngModel)]="genInfoData.cessionDesc" readonly>
+										<label tabindex="-1" class="form-control-sm col-sm-2">Line Class</label>
+										<input id="firstFocus" type="text" [(ngModel)]="genInfoData.lineClassDesc" class="form-control form-control-sm req" [style.margin-right.px]="inquiryFlag ? '0' : '1'"
 										 appRequired [readonly]="inquiryFlag">
 										<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)=showLineClassLOV()></i></a></div>
 										<span [class.d-none]="inquiryFlag">&nbsp;</span>
 									</div>
 									<div class="input-group ig-cust">
-										<label class="form-control-sm col-sm-2">Policy Number</label>
+										<label tabindex="-1" class="form-control-sm col-sm-2">Policy Number</label>
 										<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm" [(ngModel)]="genInfoData.policyNo">
-										<label class="form-control-sm col-sm-2">Status</label>
-										<input type="text"  class="form-control form-control-sm"
+										<label tabindex="-1" class="form-control-sm col-sm-2">Status</label>
+										<input tabindex="-1" type="text"  class="form-control form-control-sm"
 										  [(ngModel)]="genInfoData.statusDesc" readonly>
 									</div>
 									<div class="input-group ig-cust">
-										<label class="form-control-sm col-sm-2">Ceding Company</label>
+										<label tabindex="-1" class="form-control-sm col-sm-2">Ceding Company</label>
 										<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [ngModel]="genInfoData.cedingId | number:'3.0' | slice:0:4" (ngModelChange)="genInfoData.cedingId=$event" (change)="checkCode($event,'cedingCo')" appRequired>
 										<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showCedingCompanyLOV()"></i></a></div>
 										<span [class.d-none]="inquiryFlag">&nbsp;</span>
-										<input type="text" class="form-control form-control-sm col-sm ig-mrgn" [(ngModel)]="genInfoData.cedingName" style="margin-left: 5px;" readonly>
+										<input type="text" class="form-control form-control-sm col-sm ig-mrgn" tabindex="-1" [(ngModel)]="genInfoData.cedingName" style="margin-left: 5px;" readonly>
 									</div>
 									<div *ngIf="genInfoData.cessionDesc.toUpperCase() === 'RETROCESSION'" class="input-group ig-cust">
-										<label class="form-control-sm col-sm-2">Reinsurance From</label>
+										<label tabindex="-1" class="form-control-sm col-sm-2">Reinsurance From</label>
 										<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [ngModel]="genInfoData.reinsurerId | number:'3.0'" (ngModelChange)="genInfoData.reinsurerId=$event" (change)="checkCode($event,'cedingCoNotMember')" appRequired>
 										<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showCedingCompanyNotMemberLOV()"></i></a></div>
 										<span [class.d-none]="inquiryFlag">&nbsp;</span>
 										<input type="text" [(ngModel)]="genInfoData.reinsurerName" class="form-control form-control-sm col-sm ig-mrgn" style="margin-left: 5px;" readonly>
 									</div>
 									<div class="input-group">
-										<label class="form-control-sm col-sm-2">Intermediary</label>
+										<label tabindex="-1" class="form-control-sm col-sm-2">Intermediary</label>
 										<!-- <input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="genInfoData.intmId" (blur)="test()" (change)="checkCode($event,'intermediary')" mask="999"> -->
 										<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2" [ngModel]="genInfoData.intmId | number:'3.0'" (ngModelChange)="genInfoData.intmId=$event" (change)="checkCode($event,'intermediary')">
 										<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showIntLOV()"></i></a></div>
 										<span [class.d-none]="inquiryFlag">&nbsp;</span>
-										<input type="text" class="form-control form-control-sm col-sm ig-mrgn" [(ngModel)]="genInfoData.intmName" style="margin-left: 5px;" readonly>
+										<input type="text" class="form-control form-control-sm col-sm ig-mrgn" tabindex="-1" [(ngModel)]="genInfoData.intmName" style="margin-left: 5px;" readonly>
 									</div>
 								</div>
 							</div>
 							<div class="col-sm-4">
 								<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 									<div class="input-group ig-cust" style="margin-top: 10px;">
-										<label class="form-control-sm col-sm-4">Quote Date</label>
+										<label tabindex="-1" class="form-control-sm col-sm-4">Quote Date</label>
 										<!-- <input  type="date" [ngModel]="genInfoData.issueDate.split('T')[0]" (ngModelChange)="genInfoData.issueDate = toDateTime($event)" class="form-control form-control-sm"> -->
 										<input  [readonly]="inquiryFlag" type="date" [ngModel]="genInfoData.issueDate.split('T')[0]" (ngModelChange)="genInfoData.issueDate = $event; updateExpiryDate($event);" class="form-control form-control-sm req" appRequired>
 									</div>
 									<div class="input-group ig-cust">
-										<label class="form-control-sm col-sm-4">Valid Until</label>
+										<label tabindex="-1" class="form-control-sm col-sm-4">Valid Until</label>
 										<input  [readonly]="inquiryFlag" type="date" [ngModel]="genInfoData.expiryDate.split('T')[0]" (ngModelChange)="genInfoData.expiryDate = $event" class="form-control form-control-sm req" min="{{ genInfoData.issueDate }}" appRequired>
 									</div>
 									<div class="input-group ig-cust">
-										<label class="form-control-sm col-sm-4">Requested By</label>
+										<label tabindex="-1" class="form-control-sm col-sm-4">Requested By</label>
 										<input  [readonly]="inquiryFlag" type="text" class="form-control form-control-sm" [(ngModel)]="genInfoData.reqBy" >
 									</div>
 									<div class="input-group ig-cust">
-										<label class="form-control-sm col-sm-4">Request Date</label>
+										<label tabindex="-1" class="form-control-sm col-sm-4">Request Date</label>
 										<input [readonly]="inquiryFlag" type="date" [ngModel]="genInfoData.reqDate.split('T')[0]" (ngModelChange)="genInfoData.reqDate = $event" class="form-control form-control-sm">
 									</div>
 									<div class="input-group ig-cust">
-										<label class="form-control-sm col-sm-4">Request Mode</label>
+										<label tabindex="-1" class="form-control-sm col-sm-4">Request Mode</label>
 										<select *ngIf="!inquiryFlag" class="form-control form-control-sm cust-sm" [(ngModel)]="genInfoData.reqMode">
 											<option value="E">Email</option>
 											<option value="F">Fax</option>
@@ -111,7 +111,7 @@
 										
 									</div>
 									<div *ngIf="line === 'MLP' || line === 'DOS'" class="input-group ig-cust">
-										<label class="form-control-sm col-sm-4">MBI Ref No</label>
+										<label tabindex="-1" class="form-control-sm col-sm-4">MBI Ref No</label>
 										<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm req" [(ngModel)]="genInfoData.mbiRefNo" appRequired>
 									</div>
 								</div>
@@ -125,7 +125,7 @@
 							<div class="col-sm-1"></div>
 							<div class="col-sm-10">
 								<div class="input-group">
-									<label class="form-control-sm col-sm-3">Open Cover Quotation No</label>
+									<label tabindex="-1" class="form-control-sm col-sm-3">Open Cover Quotation No</label>
 									<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-1" style="margin-left:3px !important;">
 									<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-1" style="margin-left:3px !important;">
 									<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-1" style="margin-left:3px !important;">
@@ -153,16 +153,16 @@
 					<div class="form-row">
 						<div class="form-group col-sm-6 offsetFormGroup">
 							<div class="input-group">
-								<label class="form-control-sm col-sm-4">Currency</label>
-								<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm req" [ngModel]="genInfoData.currencyCd" (ngModelChange)="genInfoData.currencyCd = $event.toUpperCase()" (change)="checkCode($event,'currency')" appRequired>
+								<label tabindex="-1" class="form-control-sm col-sm-4">Currency</label>
+								<input tabindex="-1" [readonly]="inquiryFlag" type="text" class="form-control form-control-sm req" [ngModel]="genInfoData.currencyCd" (ngModelChange)="genInfoData.currencyCd = $event.toUpperCase()" (change)="checkCode($event,'currency')" appRequired>
 								<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showCurrencyModal()"></i></a></div>
 								<span [class.d-none]="inquiryFlag">&nbsp;</span>
 							</div>
 						</div>
 						<div class="form-group col-sm-6 offsetFormGroup">
 							<div class="input-group">
-								<label class="form-control-sm col-sm-4">Exch. Rt.</label>
-								<input type="text" class="form-control form-control-sm req" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="genInfoData.currencyRt" required appCurrencyRate readonly>
+								<label tabindex="-1" class="form-control-sm col-sm-4">Exch. Rt.</label>
+								<input tabindex="-1" type="text" class="form-control form-control-sm req" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="genInfoData.currencyRt" required appCurrencyRate readonly>
 								<span>&nbsp;</span>
 							</div>
 						</div>
@@ -179,20 +179,20 @@
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<div class="input-group-text">
-										<input [disabled]="inquiryFlag" type="checkbox" [checked]="genInfoData.govtTag === 'Y'" (change)="genInfoData.govtTag = (genInfoData.govtTag === 'Y') ? 'N' : 'Y'">
+										<input tabindex="-1" [disabled]="inquiryFlag" type="checkbox" [checked]="genInfoData.govtTag === 'Y'" (change)="genInfoData.govtTag = (genInfoData.govtTag === 'Y') ? 'N' : 'Y'">
 									</div>
 								</div>
-								<input type="text" style="font-size: 11px !important;" value="Government" disabled class="form-control form-control-sm">
+								<input tabindex="-1" type="text" style="font-size: 11px !important;" value="Government" disabled class="form-control form-control-sm">
 							</div>
 						</div>
 						<div class="col-sm-6">
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<div class="input-group-text">										
-										<input [disabled]="inquiryFlag" type="checkbox" [checked]="genInfoData.indicativeTag === 'Y'" (change)="genInfoData.indicativeTag = (genInfoData.indicativeTag === 'Y') ? 'N' : 'Y'">
+										<input tabindex="-1" [disabled]="inquiryFlag" type="checkbox" [checked]="genInfoData.indicativeTag === 'Y'" (change)="genInfoData.indicativeTag = (genInfoData.indicativeTag === 'Y') ? 'N' : 'Y'">
 									</div>
 								</div>
-								<input type="text" style="font-size: 11px !important;" value="Indicative" disabled class="form-control form-control-sm">
+								<input tabindex="-1" type="text" style="font-size: 11px !important;" value="Indicative" disabled class="form-control form-control-sm">
 							</div>
 						</div>
 					</div>
@@ -201,20 +201,20 @@
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<div class="input-group-text">
-										<input [disabled]="inquiryFlag || (line !== 'CAR' && line !== 'EAR')" type="checkbox" [checked]="genInfoData.openCoverTag === 'Y'" (change)="genInfoData.openCoverTag = (genInfoData.openCoverTag === 'Y') ? 'N' : 'Y'">
+										<input tabindex="-1" [disabled]="inquiryFlag || (line !== 'CAR' && line !== 'EAR')" type="checkbox" [checked]="genInfoData.openCoverTag === 'Y'" (change)="genInfoData.openCoverTag = (genInfoData.openCoverTag === 'Y') ? 'N' : 'Y'">
 									</div>
 								</div>
-								<input type="text" style="font-size: 11px !important;" value="Open Cover" disabled class="form-control form-control-sm">
+								<input tabindex="-1" type="text" style="font-size: 11px !important;" value="Open Cover" disabled class="form-control form-control-sm">
 							</div>
 						</div>
 						<div class="col-sm-6">
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<div class="input-group-text">
-										<input [disabled]="inquiryFlag" type="checkbox" [checked]="genInfoData.declarationTag === 'Y'" (change)="genInfoData.declarationTag = (genInfoData.declarationTag === 'Y') ? 'N' : 'Y'">
+										<input tabindex="-1" [disabled]="inquiryFlag" type="checkbox" [checked]="genInfoData.declarationTag === 'Y'" (change)="genInfoData.declarationTag = (genInfoData.declarationTag === 'Y') ? 'N' : 'Y'">
 									</div>
 								</div>
-								<input type="text" style="font-size: 11px !important;" value="Declaration" disabled class="form-control form-control-sm">
+								<input tabindex="-1" type="text" style="font-size: 11px !important;" value="Declaration" disabled class="form-control form-control-sm">
 							</div>
 						</div>
 					</div>
@@ -236,86 +236,86 @@
 						<legend class="scheduler-border">Insured Details</legend>
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-6" style="margin-top: 10px;">
-								<label class="form-control-sm col-sm-2">Principal</label>
+								<label tabindex="-1" class="form-control-sm col-sm-2">Principal</label>
 								<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="genInfoData.principalId" (change)="checkCode($event,'principal')" appRequired>
 								<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 								<span [class.d-none]="inquiryFlag">&nbsp;</span>
-								<input type="text" [(ngModel)]="genInfoData.principalName" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;" readonly>
+								<input tabindex="-1" type="text" [(ngModel)]="genInfoData.principalName" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;" readonly>
 							</div>
 							<div class="input-group ig-cust col-sm-6" style="margin-top: 10px;">
-								<label class="form-control-sm col-sm-2">Contractor</label>
+								<label tabindex="-1" class="form-control-sm col-sm-2">Contractor</label>
 								<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="genInfoData.contractorId" (change)="checkCode($event,'contractor')" appRequired>
 								<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showContractorLOV()"></i></a></div>
 								<span [class.d-none]="inquiryFlag">&nbsp;</span>
-								<input  type="text" [(ngModel)]="genInfoData.contractorName" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 2px !important;" readonly>
+								<input tabindex="-1" type="text" [(ngModel)]="genInfoData.contractorName" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 2px !important;" readonly>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group col-sm-12">
-								<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Insured</label>
+								<label tabindex="-1" class="form-control-sm col-sm-1" style="margin-right: -1px;">Insured</label>
 								<textarea [readonly]="inquiryFlag" class="form-control form-control-sm req" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;" [(ngModel)]="genInfoData.insuredDesc" appRequired></textarea>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-12">
-								<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Risk</label>
-								<input  type="text" class="form-control form-control-sm" [(ngModel)]="project.riskName" readonly>
+								<label tabindex="-1" class="form-control-sm col-sm-1" style="margin-right: -1px;">Risk</label>
+								<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.riskName" readonly>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-6">
-								<label class="form-control-sm col-sm-2">Object</label>
+								<label tabindex="-1" class="form-control-sm col-sm-2">Object</label>
 								<!-- <input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="project.objectId" (change)="checkCode($event,'object')" appRequired>
 								<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div> -->
 								<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [ngModel]="project.objectId | number:'3.0'" (ngModelChange)="project.objectId=$event" (change)="checkCode($event,'object')" appRequired>
 								<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div>
 								<span [class.d-none]="inquiryFlag">&nbsp;</span>
-								<input  type="text" [(ngModel)]="project.objectDesc" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;" readonly>
+								<input tabindex="-1" type="text" [(ngModel)]="project.objectDesc" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;" readonly>
 							</div>
 							<div class="input-group ig-cust col-sm-6">
-								<label class="form-control-sm col-sm-2">Region</label>
-								<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="project.regionDesc" readonly>
+								<label tabindex="-1" class="form-control-sm col-sm-2">Region</label>
+								<input tabindex="-1" type="text" class="form-control form-control-sm col-sm" [(ngModel)]="project.regionDesc" readonly>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group col-sm-6" style="margin-bottom: -8px !important;">
-								<label class="form-control-sm col-sm-2">Nature of Work</label>
+								<label tabindex="-1" class="form-control-sm col-sm-2">Nature of Work</label>
 								<textarea [readonly]="inquiryFlag" class="form-control form-control-sm col-sm req" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;" [(ngModel)]="project.projDesc" appRequired></textarea>
 							</div>
 							<div class="input-group col-sm-6">
 								<div class="input-group ig-cust">
-									<label class="form-control-sm col-sm-2">Province</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.provinceDesc" readonly>
+									<label tabindex="-1" class="form-control-sm col-sm-2">Province</label>
+									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.provinceDesc" readonly>
 								</div>
 								<div class="input-group">
-									<label class="form-control-sm col-sm-2">City/Town</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.cityDesc" readonly>
+									<label tabindex="-1" class="form-control-sm col-sm-2">City/Town</label>
+									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.cityDesc" readonly>
 								</div>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px; margin-top: -2px;">
 							<div class="input-group col-sm-6" style="margin-bottom: -8px !important;">
-								<label class="form-control-sm col-sm-2">Site</label>
+								<label tabindex="-1" class="form-control-sm col-sm-2">Site</label>
 								<textarea [readonly]="inquiryFlag" class="form-control form-control-sm col-sm req" style="font-size: 11px; min-height: 47px; margin-bottom: 8px;" [(ngModel)]="project.site" appRequired></textarea>
 							</div>
 							<div class="input-group col-sm-6">
 								<div class="input-group ig-cust">
-									<label class="form-control-sm col-sm-2">District</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.districtDesc" readonly>
-									<label class="form-control-sm col-sm-2">Block</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.blockDesc" readonly>
+									<label tabindex="-1" class="form-control-sm col-sm-2">District</label>
+									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.districtDesc" readonly>
+									<label tabindex="-1" class="form-control-sm col-sm-2">Block</label>
+									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.blockDesc" readonly>
 								</div>
 								<div class="input-group">
-									<label class="form-control-sm col-sm-2">Lat</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.latitude" readonly>
-									<label class="form-control-sm col-sm-2">Long</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.longitude" readonly>
+									<label tabindex="-1" class="form-control-sm col-sm-2">Lat</label>
+									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.latitude" readonly>
+									<label tabindex="-1" class="form-control-sm col-sm-2">Long</label>
+									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.longitude" readonly>
 								</div>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px; margin-top: -2px;">
 							<div class="input-group col-sm-6">
-								<label class="form-control-sm col-sm-2">Duration</label>
+								<label tabindex="-1" class="form-control-sm col-sm-2">Duration</label>
 								<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm req" [(ngModel)]="project.duration" appRequired>
 							</div>
 						</div>
@@ -329,14 +329,14 @@
 						<legend class="scheduler-border">Insured Details</legend>
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-6" style="margin-top: 10px;">
-								<label class="form-control-sm col-sm-2">Principal</label>
+								<label tabindex="-1" class="form-control-sm col-sm-2">Principal</label>
 								<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="genInfoData.principalId" (change)="checkCode($event,'principal')" appRequired>
 								<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 								<span [class.d-none]="inquiryFlag">&nbsp;</span>
 								<input  type="text" [(ngModel)]="genInfoData.principalName" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;" readonly>
 							</div>
 							<div class="input-group ig-cust col-sm-6" style="margin-top: 10px;">
-								<label class="form-control-sm col-sm-2">Contractor</label>
+								<label tabindex="-1" class="form-control-sm col-sm-2">Contractor</label>
 								<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="genInfoData.contractorId" (change)="checkCode($event,'contractor')" appRequired>
 								<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showContractorLOV()"></i></a></div>
 								<span [class.d-none]="inquiryFlag">&nbsp;</span>
@@ -345,19 +345,19 @@
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group col-sm-12">
-								<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Insured</label>
+								<label tabindex="-1" class="form-control-sm col-sm-1" style="margin-right: -1px;">Insured</label>
 								<textarea [readonly]="inquiryFlag" class="form-control form-control-sm req" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;" [(ngModel)]="genInfoData.insuredDesc" appRequired></textarea>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-12">
-								<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Risk</label>
+								<label tabindex="-1" class="form-control-sm col-sm-1" style="margin-right: -1px;">Risk</label>
 								<input  type="text" class="form-control form-control-sm" [(ngModel)]="project.riskName" readonly>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-6">
-								<label class="form-control-sm col-sm-2">Object</label>
+								<label tabindex="-1" class="form-control-sm col-sm-2">Object</label>
 								<!-- <input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="project.objectId" (change)="checkCode($event,'object')" appRequired>
 								<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div> -->
 								<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [ngModel]="project.objectId | number:'3.0'" (ngModelChange)="project.objectId=$event" (change)="checkCode($event,'object')" appRequired>
@@ -366,53 +366,53 @@
 								<input  type="text" [(ngModel)]="project.objectDesc" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;" readonly>
 							</div>
 							<div class="input-group ig-cust col-sm-6">
-								<label class="form-control-sm col-sm-2">Region</label>
+								<label tabindex="-1" class="form-control-sm col-sm-2">Region</label>
 								<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="project.regionDesc" readonly>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group col-sm-6" style="margin-bottom: -8px !important;">
-								<label class="form-control-sm col-sm-2">Nature of Work</label>
+								<label tabindex="-1" class="form-control-sm col-sm-2">Nature of Work</label>
 								<textarea [readonly]="inquiryFlag" class="form-control form-control-sm col-sm req" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;" [(ngModel)]="project.projDesc" appRequired></textarea>
 							</div>
 							<div class="input-group col-sm-6">
 								<div class="input-group ig-cust">
-									<label class="form-control-sm col-sm-2">Province</label>
+									<label tabindex="-1" class="form-control-sm col-sm-2">Province</label>
 									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.provinceDesc" readonly>
 								</div>
 								<div class="input-group">
-									<label class="form-control-sm col-sm-2">City/Town</label>
+									<label tabindex="-1" class="form-control-sm col-sm-2">City/Town</label>
 									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.cityDesc" readonly>
 								</div>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px; margin-top: -2px;">
 							<div class="input-group col-sm-6" style="margin-bottom: -8px !important;">
-								<label class="form-control-sm col-sm-2">Site</label>
+								<label tabindex="-1" class="form-control-sm col-sm-2">Site</label>
 								<textarea [readonly]="inquiryFlag" class="form-control form-control-sm col-sm req" style="font-size: 11px; min-height: 47px; margin-bottom: 8px;" [(ngModel)]="project.site" appRequired></textarea>
 							</div>
 							<div class="input-group col-sm-6">
 								<div class="input-group ig-cust">
-									<label class="form-control-sm col-sm-2">District</label>
+									<label tabindex="-1" class="form-control-sm col-sm-2">District</label>
 									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.districtDesc" readonly>
-									<label class="form-control-sm col-sm-2">Block</label>
+									<label tabindex="-1" class="form-control-sm col-sm-2">Block</label>
 									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.blockDesc" readonly>
 								</div>
 								<div class="input-group">
-									<label class="form-control-sm col-sm-2">Lat</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.latitude" readonly>
-									<label class="form-control-sm col-sm-2">Long</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.longitude" readonly>
+									<label tabindex="-1" class="form-control-sm col-sm-2">Lat</label>
+									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.latitude" readonly>
+									<label tabindex="-1" class="form-control-sm col-sm-2">Long</label>
+									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.longitude" readonly>
 								</div>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px; margin-top: -2px;">
 							<div class="input-group col-sm-6">
-								<label class="form-control-sm col-sm-2">Duration</label>
+								<label tabindex="-1" class="form-control-sm col-sm-2">Duration</label>
 								<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm req" [(ngModel)]="project.duration" appRequired>
 							</div>
 							<div class="input-group col-sm-6">
-								<label class="form-control-sm col-sm-2">Testing</label>
+								<label tabindex="-1" class="form-control-sm col-sm-2">Testing</label>
 								<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm req" [(ngModel)]="project.testing" appRequired>
 							</div>
 						</div>
@@ -426,7 +426,7 @@
 						<legend class="scheduler-border">Insured Details</legend>
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-12" style="margin-top: 10px;">
-								<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Insured</label>
+								<label tabindex="-1" class="form-control-sm col-sm-1" style="margin-right: -1px;">Insured</label>
 								<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-1 req" [(ngModel)]="genInfoData.principalId" (change)="checkCode($event,'principal')" appRequired>
 								<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 								<span [class.d-none]="inquiryFlag">&nbsp;</span>
@@ -435,19 +435,19 @@
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group col-sm-12">
-								<label class="form-control-sm col-sm-1" style="margin-right: -1px;"></label>
+								<label tabindex="-1" class="form-control-sm col-sm-1" style="margin-right: -1px;"></label>
 								<textarea [readonly]="inquiryFlag" class="form-control form-control-sm req" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;" [(ngModel)]="genInfoData.insuredDesc" appRequired></textarea>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-12">
-								<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Risk</label>
+								<label tabindex="-1" class="form-control-sm col-sm-1" style="margin-right: -1px;">Risk</label>
 								<input  type="text" class="form-control form-control-sm" [(ngModel)]="project.riskName" readonly>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-6">
-								<label class="form-control-sm col-sm-2">Object</label>
+								<label tabindex="-1" class="form-control-sm col-sm-2">Object</label>
 								<!-- <input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="project.objectId" (change)="checkCode($event,'object')" appRequired>
 								<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div> -->
 								<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [ngModel]="project.objectId | number:'3.0'" (ngModelChange)="project.objectId=$event" (change)="checkCode($event,'object')" appRequired>
@@ -456,43 +456,43 @@
 								<input  type="text" [(ngModel)]="project.objectDesc" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;" readonly>
 							</div>
 							<div class="input-group ig-cust col-sm-6">
-								<label class="form-control-sm col-sm-2">Region</label>
+								<label tabindex="-1" class="form-control-sm col-sm-2">Region</label>
 								<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="project.regionDesc" readonly>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group col-sm-6" style="margin-bottom: -8px !important;">
-								<label class="form-control-sm col-sm-2">Items<br />to be Insured</label>
+								<label tabindex="-1" class="form-control-sm col-sm-2">Items<br />to be Insured</label>
 								<textarea [readonly]="inquiryFlag" class="form-control form-control-sm col-sm req" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;" [(ngModel)]="project.projDesc" appRequired></textarea>
 							</div>
 							<div class="input-group col-sm-6">
 								<div class="input-group ig-cust">
-									<label class="form-control-sm col-sm-2">Province</label>
+									<label tabindex="-1" class="form-control-sm col-sm-2">Province</label>
 									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.provinceDesc" readonly>
 								</div>
 								<div class="input-group">
-									<label class="form-control-sm col-sm-2">City/Town</label>
+									<label tabindex="-1" class="form-control-sm col-sm-2">City/Town</label>
 									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.cityDesc" readonly>
 								</div>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px; margin-top: -2px;">
 							<div class="input-group col-sm-6" style="margin-bottom: -8px !important;">
-								<label class="form-control-sm col-sm-2">Site</label>
+								<label tabindex="-1" class="form-control-sm col-sm-2">Site</label>
 								<textarea [readonly]="inquiryFlag" class="form-control form-control-sm col-sm req" style="font-size: 11px; min-height: 47px; margin-bottom: 8px;" [(ngModel)]="project.site" appRequired></textarea>
 							</div>
 							<div class="input-group col-sm-6">
 								<div class="input-group ig-cust">
-									<label class="form-control-sm col-sm-2">District</label>
+									<label tabindex="-1" class="form-control-sm col-sm-2">District</label>
 									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.districtDesc" readonly>
-									<label class="form-control-sm col-sm-2">Block</label>
+									<label tabindex="-1" class="form-control-sm col-sm-2">Block</label>
 									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.blockDesc" readonly>
 								</div>
 								<div class="input-group">
-									<label class="form-control-sm col-sm-2">Lat</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.latitude" readonly>
-									<label class="form-control-sm col-sm-2">Long</label>
-									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.longitude" readonly>
+									<label tabindex="-1" class="form-control-sm col-sm-2">Lat</label>
+									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.latitude" readonly>
+									<label tabindex="-1" class="form-control-sm col-sm-2">Long</label>
+									<input tabindex="-1" type="text" class="form-control form-control-sm" [(ngModel)]="project.longitude" readonly>
 								</div>
 							</div>
 						</div>
@@ -506,7 +506,7 @@
 						<legend class="scheduler-border">Insured Details</legend>
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-12" style="margin-top: 10px;">
-								<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Insured</label>
+								<label tabindex="-1" class="form-control-sm col-sm-1" style="margin-right: -1px;">Insured</label>
 								<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-1 req" [(ngModel)]="genInfoData.principalId" (change)="checkCode($event,'principal')" appRequired>
 								<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 								<span [class.d-none]="inquiryFlag">&nbsp;</span>
@@ -515,19 +515,19 @@
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group col-sm-12">
-								<label class="form-control-sm col-sm-1" style="margin-right: -1px;"></label>
+								<label tabindex="-1" class="form-control-sm col-sm-1" style="margin-right: -1px;"></label>
 								<textarea [readonly]="inquiryFlag" class="form-control form-control-sm req" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;" [(ngModel)]="genInfoData.insuredDesc" appRequired></textarea>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-12">
-								<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Risk</label>
+								<label tabindex="-1" class="form-control-sm col-sm-1" style="margin-right: -1px;">Risk</label>
 								<input  type="text" class="form-control form-control-sm" [(ngModel)]="project.riskName" readonly>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-6">
-								<label class="form-control-sm col-sm-2">Object</label>
+								<label tabindex="-1" class="form-control-sm col-sm-2">Object</label>
 								<!-- <input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="project.objectId" (change)="checkCode($event,'object')" appRequired>
 								<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div> -->
 								<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [ngModel]="project.objectId | number:'3.0'" (ngModelChange)="project.objectId=$event" (change)="checkCode($event,'object')" appRequired>
@@ -536,36 +536,36 @@
 								<input  type="text" [(ngModel)]="project.objectDesc" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;" readonly>
 							</div>
 							<div class="input-group ig-cust col-sm-6">
-								<label class="form-control-sm col-sm-2">Region</label>
+								<label tabindex="-1" class="form-control-sm col-sm-2">Region</label>
 								<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="project.regionDesc" readonly>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group col-sm-6" style="margin-bottom: -8px !important;">
-								<label class="form-control-sm col-sm-2">Items<br />to be Insured</label>
+								<label tabindex="-1" class="form-control-sm col-sm-2">Items<br />to be Insured</label>
 								<textarea [readonly]="inquiryFlag" class="form-control form-control-sm col-sm req" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;" [(ngModel)]="project.projDesc" appRequired></textarea>
 							</div>
 							<div class="input-group col-sm-6">
 								<div class="input-group ig-cust">
-									<label class="form-control-sm col-sm-2">Province</label>
+									<label tabindex="-1" class="form-control-sm col-sm-2">Province</label>
 									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.provinceDesc" readonly>
 								</div>
 								<div class="input-group">
-									<label class="form-control-sm col-sm-2">City/Town</label>
+									<label tabindex="-1" class="form-control-sm col-sm-2">City/Town</label>
 									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.cityDesc" readonly>
 								</div>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px; margin-top: -2px;">
 							<div class="input-group col-sm-6" style="margin-bottom: -8px !important;">
-								<label class="form-control-sm col-sm-2">Site</label>
+								<label tabindex="-1" class="form-control-sm col-sm-2">Site</label>
 								<textarea [readonly]="inquiryFlag" class="form-control form-control-sm col-sm req" style="font-size: 11px; min-height: 47px; margin-bottom: 8px;" [(ngModel)]="project.site" appRequired></textarea>
 							</div>
 							<div class="input-group col-sm-6">
 								<div class="input-group ig-cust">
-									<label class="form-control-sm col-sm-2">District</label>
+									<label tabindex="-1" class="form-control-sm col-sm-2">District</label>
 									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.districtDesc" readonly>
-									<label class="form-control-sm col-sm-2">Block</label>
+									<label tabindex="-1" class="form-control-sm col-sm-2">Block</label>
 									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.blockDesc" readonly>
 								</div>
 							</div>
@@ -580,7 +580,7 @@
 						<legend class="scheduler-border">Insured Details</legend>
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-12" style="margin-top: 10px;">
-								<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Insured</label>
+								<label tabindex="-1" class="form-control-sm col-sm-1" style="margin-right: -1px;">Insured</label>
 								<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-1 req" [(ngModel)]="genInfoData.principalId" (change)="checkCode($event,'principal')" appRequired>
 								<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 								<span [class.d-none]="inquiryFlag">&nbsp;</span>
@@ -589,19 +589,19 @@
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group col-sm-12">
-								<label class="form-control-sm col-sm-1" style="margin-right: -1px;"></label>
+								<label tabindex="-1" class="form-control-sm col-sm-1" style="margin-right: -1px;"></label>
 								<textarea [readonly]="inquiryFlag" class="form-control form-control-sm req" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;" [(ngModel)]="genInfoData.insuredDesc" appRequired></textarea>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-12">
-								<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Risk</label>
+								<label tabindex="-1" class="form-control-sm col-sm-1" style="margin-right: -1px;">Risk</label>
 								<input  type="text" class="form-control form-control-sm" [(ngModel)]="project.riskName" readonly>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-6">
-								<label class="form-control-sm col-sm-2">Object</label>
+								<label tabindex="-1" class="form-control-sm col-sm-2">Object</label>
 								<!-- <input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="project.objectId" (change)="checkCode($event,'object')" appRequired>
 								<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div> -->
 								<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [ngModel]="project.objectId | number:'3.0'" (ngModelChange)="project.objectId=$event" (change)="checkCode($event,'object')" appRequired>
@@ -610,42 +610,42 @@
 								<input  type="text" [(ngModel)]="project.objectDesc" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;" readonly>
 							</div>
 							<div class="input-group ig-cust col-sm-6">
-								<label class="form-control-sm col-sm-2">Region</label>
+								<label tabindex="-1" class="form-control-sm col-sm-2">Region</label>
 								<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="project.regionDesc" readonly>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group col-sm-6" style="margin-bottom: -8px !important;">
-								<label class="form-control-sm col-sm-2">Items<br />to be Insured</label>
+								<label tabindex="-1" class="form-control-sm col-sm-2">Items<br />to be Insured</label>
 								<textarea [readonly]="inquiryFlag" class="form-control form-control-sm col-sm req" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;" [(ngModel)]="project.projDesc" appRequired></textarea>
 							</div>
 							<div class="input-group col-sm-6">
 								<div class="input-group ig-cust">
-									<label class="form-control-sm col-sm-2">Province</label>
+									<label tabindex="-1" class="form-control-sm col-sm-2">Province</label>
 									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.provinceDesc" readonly>
 								</div>
 								<div class="input-group">
-									<label class="form-control-sm col-sm-2">City/Town</label>
+									<label tabindex="-1" class="form-control-sm col-sm-2">City/Town</label>
 									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.cityDesc" readonly>
 								</div>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px; margin-top: -2px;">
 							<div class="input-group col-sm-6" style="margin-bottom: -8px !important;">
-								<label class="form-control-sm col-sm-2">Site</label>
+								<label tabindex="-1" class="form-control-sm col-sm-2">Site</label>
 								<textarea [readonly]="inquiryFlag" class="form-control form-control-sm col-sm req" style="font-size: 11px; min-height: 47px; margin-bottom: 8px;" [(ngModel)]="project.site" appRequired></textarea>
 							</div>
 							<div class="input-group col-sm-6">
 								<div class="input-group ig-cust">
-									<label class="form-control-sm col-sm-2">District</label>
+									<label tabindex="-1" class="form-control-sm col-sm-2">District</label>
 									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.districtDesc" readonly>
-									<label class="form-control-sm col-sm-2">Block</label>
+									<label tabindex="-1" class="form-control-sm col-sm-2">Block</label>
 									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.blockDesc" readonly>
 								</div>
 								<div class="input-group">
-									<label class="form-control-sm col-sm-2">IPL</label>
+									<label tabindex="-1" class="form-control-sm col-sm-2">IPL</label>
 									<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm req" [(ngModel)]="project.ipl" appRequired ngbTooltip="Months">
-									<label class="form-control-sm col-sm-2">Time Excess</label>
+									<label tabindex="-1" class="form-control-sm col-sm-2">Time Excess</label>
 									<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm req" [(ngModel)]="project.timeExc" appRequired ngbTooltip="Days">
 								</div>
 							</div>
@@ -660,7 +660,7 @@
 						<legend class="scheduler-border">Insured Details</legend>
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-12" style="margin-top: 10px;">
-								<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Insured</label>
+								<label tabindex="-1" class="form-control-sm col-sm-1" style="margin-right: -1px;">Insured</label>
 								<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-1 req" [(ngModel)]="genInfoData.principalId" (change)="checkCode($event,'principal')" appRequired>
 								<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 								<span [class.d-none]="inquiryFlag">&nbsp;</span>
@@ -669,19 +669,19 @@
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group col-sm-12">
-								<label class="form-control-sm col-sm-1" style="margin-right: -1px;"></label>
+								<label tabindex="-1" class="form-control-sm col-sm-1" style="margin-right: -1px;"></label>
 								<textarea [readonly]="inquiryFlag" class="form-control form-control-sm req" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;" [(ngModel)]="genInfoData.insuredDesc" appRequired></textarea>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-12">
-								<label class="form-control-sm col-sm-1" style="margin-right: -1px;">Risk</label>
+								<label tabindex="-1" class="form-control-sm col-sm-1" style="margin-right: -1px;">Risk</label>
 								<input  type="text" class="form-control form-control-sm" [(ngModel)]="project.riskName" readonly>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group ig-cust col-sm-6">
-								<label class="form-control-sm col-sm-2">Object</label>
+								<label tabindex="-1" class="form-control-sm col-sm-2">Object</label>
 								<!-- <input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="project.objectId" (change)="checkCode($event,'object')" appRequired>
 								<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showObjectLOV()"></i></a></div> -->
 								<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [ngModel]="project.objectId | number:'3.0'" (ngModelChange)="project.objectId=$event" (change)="checkCode($event,'object')" appRequired>
@@ -690,40 +690,40 @@
 								<input  type="text" [(ngModel)]="project.objectDesc" class="form-control form-control-sm col-sm-8 ig-mrgn" style="margin-left: 3px !important;" readonly>
 							</div>
 							<div class="input-group ig-cust col-sm-6">
-								<label class="form-control-sm col-sm-2">Region</label>
+								<label tabindex="-1" class="form-control-sm col-sm-2">Region</label>
 								<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="project.regionDesc" readonly>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px;">
 							<div class="input-group col-sm-6" style="margin-bottom: -8px !important;">
-								<label class="form-control-sm col-sm-2">Items<br />to be Insured</label>
+								<label tabindex="-1" class="form-control-sm col-sm-2">Items<br />to be Insured</label>
 								<textarea [readonly]="inquiryFlag" class="form-control form-control-sm col-sm req" style="font-size: 11px; min-height: 47px; margin-bottom: 9px;" [(ngModel)]="project.projDesc" appRequired></textarea>
 							</div>
 							<div class="input-group col-sm-6">
 								<div class="input-group ig-cust">
-									<label class="form-control-sm col-sm-2">Province</label>
+									<label tabindex="-1" class="form-control-sm col-sm-2">Province</label>
 									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.provinceDesc" readonly>
 								</div>
 								<div class="input-group">
-									<label class="form-control-sm col-sm-2">City/Town</label>
+									<label tabindex="-1" class="form-control-sm col-sm-2">City/Town</label>
 									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.cityDesc" readonly>
 								</div>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px; margin-top: -2px;">
 							<div class="input-group col-sm-6" style="margin-bottom: -8px !important;">
-								<label class="form-control-sm col-sm-2">Site</label>
+								<label tabindex="-1" class="form-control-sm col-sm-2">Site</label>
 								<textarea [readonly]="inquiryFlag" class="form-control form-control-sm col-sm req" style="font-size: 11px; min-height: 47px; margin-bottom: 8px;" [(ngModel)]="project.site" appRequired></textarea>
 							</div>
 							<div class="input-group col-sm-6">
 								<div class="input-group ig-cust">
-									<label class="form-control-sm col-sm-2">District</label>
+									<label tabindex="-1" class="form-control-sm col-sm-2">District</label>
 									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.districtDesc" readonly>
-									<label class="form-control-sm col-sm-2">Block</label>
+									<label tabindex="-1" class="form-control-sm col-sm-2">Block</label>
 									<input type="text" class="form-control form-control-sm" [(ngModel)]="project.blockDesc" readonly>
 								</div>
 								<div class="input-group">
-									<label class="form-control-sm col-sm-2">No Claim Period</label>
+									<label tabindex="-1" class="form-control-sm col-sm-2">No Claim Period</label>
 									<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm req" [(ngModel)]="project.noClaimPd" appRequired ngbTooltip="Hours">
 								</div>
 							</div>
@@ -738,9 +738,9 @@
 				<div class="col-sm" style="margin-bottom: -8px; margin-top: 7px;">
 					<div class="form-row">
 						<div class="input-group">
-							<label for="inputEmail4" class="form-control-sm top-label col-sm-6" style="text-align: left !important;">Opening
+							<label tabindex="-1" for="inputEmail4" class="form-control-sm top-label col-sm-6" style="text-align: left !important;">Opening
 								Paragraph</label>
-							<label for="inputEmail4" class="form-control-sm top-label col-sm-6" style="text-align: left !important; padding-left: 7px !important;">Closing
+							<label tabindex="-1" for="inputEmail4" class="form-control-sm top-label col-sm-6" style="text-align: left !important; padding-left: 7px !important;">Closing
 								Paragraph</label>
 						</div>
 						<div class="input-group" style="margin-top: 2px;">
@@ -789,19 +789,19 @@
 				<div class="custom-row-inline-inset" style="margin-top: 2px !important;">
 					<div class="form-row ig-cust">
 						<div class="form-group col-sm">
-							<label class="form-control-sm top-label">Total Sl</label>
-							<input type="text" class="form-control form-control-sm text-right"
+							<label tabindex="-1" class="form-control-sm top-label">Total Sl</label>
+							<input tabindex="-1" type="text" class="form-control form-control-sm text-right"
 							readonly [ngModel]="project.totalSi | number:'1.2-2'">
 						</div>
 					</div>
 					<div class="form-row" style="margin-bottom: -16px; margin-top: -10px;">
 						<div class="form-group col-sm-3">
-							<label class="form-control-sm top-label">% Share</label>
-							<input type="text" class="form-control form-control-sm cust-sm text-right" readonly [(ngModel)]="project.pctShare">
+							<label tabindex="-1" class="form-control-sm top-label">% Share</label>
+							<input tabindex="-1" type="text" class="form-control form-control-sm cust-sm text-right" readonly [(ngModel)]="project.pctShare">
 						</div>
 						<div class="form-group col-sm" style="margin-left: -6px !important;">
-							<label class="form-control-sm top-label">100% Value</label>
-							<input type="text" class="form-control form-control-sm cust-sm text-right" readonly [ngModel]="project.totalValue | number:'1.2-2'">
+							<label tabindex="-1" class="form-control-sm top-label">100% Value</label>
+							<input tabindex="-1" type="text" class="form-control form-control-sm cust-sm text-right" readonly [ngModel]="project.totalValue | number:'1.2-2'">
 						</div>
 					</div>
 				</div>
@@ -811,22 +811,22 @@
 				<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 				<div class="custom-row-inline-inset" style="margin-left: -22px !important;">
 					<div class="input-group ig-cust">
-						<label class="form-control-sm col-sm-4">Prepared By</label>
-						<input type="text" class="form-control form-control-sm col-sm-7" [ngModel]="genInfoData.preparedBy" (ngModelChange)="genInfoData.preparedBy = $event.toUpperCase()" (change)="checkCode($event,'preparedBy')">
+						<label tabindex="-1" class="form-control-sm col-sm-4">Prepared By</label>
+						<input tabindex="-1" type="text" class="form-control form-control-sm col-sm-7" [ngModel]="genInfoData.preparedBy" (ngModelChange)="genInfoData.preparedBy = $event.toUpperCase()" (change)="checkCode($event,'preparedBy')">
 						<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showUsersLOV();"></i></a></div>
 						<span [class.d-none]="inquiryFlag">&nbsp;</span>
 					</div>
 					<div class="input-group ig-cust">
-						<label class="form-control-sm col-sm-4">Approved By</label>
-						<input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="genInfoData.approvedBy" readonly>
+						<label tabindex="-1" class="form-control-sm col-sm-4">Approved By</label>
+						<input tabindex="-1" type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="genInfoData.approvedBy" readonly>
 					</div>
 					<div class="input-group ig-cust">
-						<label class="form-control-sm col-sm-4">Printed By</label>
-						<input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="genInfoData.printedBy" readonly>
+						<label tabindex="-1" class="form-control-sm col-sm-4">Printed By</label>
+						<input tabindex="-1" type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="genInfoData.printedBy" readonly>
 					</div>
 					<div class="input-group ig-cust">
-						<label class="form-control-sm col-sm-4">Print Date</label>
-						<input type="date" class="form-control form-control-sm col-sm-7" [(ngModel)]="genInfoData.printDate.split('T')[0]" readonly>
+						<label tabindex="-1" class="form-control-sm col-sm-4">Print Date</label>
+						<input tabindex="-1" type="date" class="form-control form-control-sm col-sm-7" [(ngModel)]="genInfoData.printDate.split('T')[0]" readonly>
 					</div>
 				</div>
 			</fieldset>
@@ -835,22 +835,22 @@
 				<div class="custom-row-inline-inset">
 					<div class="form-row">
 						<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -10px; margin-left: 3px;">
-							<label class="form-control-sm top-label">Created By</label>
-							<input  type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="genInfoData.createUser" readonly>
+							<label tabindex="-1" class="form-control-sm top-label">Created By</label>
+							<input tabindex="-1" type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="genInfoData.createUser" readonly>
 						</div>
 						<div class="form-group col-sm-6" style="margin-bottom: 0px; margin-top: -10px; margin-left: -5px;">
-							<label class="form-control-sm top-label">Last Update By</label>
-							<input  type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="genInfoData.updateUser" readonly>
+							<label tabindex="-1" class="form-control-sm top-label">Last Update By</label>
+							<input tabindex="-1" type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="genInfoData.updateUser" readonly>
 						</div>
 					</div>
 					<div class="form-row">
 						<div class="form-group col-sm-6" style="margin-bottom: 8px; margin-left: 3px;">
-							<label class="form-control-sm top-label">Date Created</label>
-							<input  type="datetime-local" class="form-control form-control-sm cust-sm" [(ngModel)]="genInfoData.createDate" readonly>
+							<label tabindex="-1" class="form-control-sm top-label">Date Created</label>
+							<input tabindex="-1" type="datetime-local" class="form-control form-control-sm cust-sm" [(ngModel)]="genInfoData.createDate" readonly>
 						</div>
 						<div class="form-group col-sm-6" style="margin-bottom: 8px; margin-left: -5px;">
-							<label class="form-control-sm top-label">Last Update</label>
-							<input  type="datetime-local" class="form-control form-control-sm cust-sm" [(ngModel)]="genInfoData.updateDate" readonly>
+							<label tabindex="-1" class="form-control-sm top-label">Last Update</label>
+							<input tabindex="-1" type="datetime-local" class="form-control form-control-sm cust-sm" [(ngModel)]="genInfoData.updateDate" readonly>
 							<!-- <input  type="datetime-local" class="form-control form-control-sm cust-sm" [ngModel]="genInfoData.updateDate.split('.')[0]" (ngModelChange)="genInfoData.updateDate = $event)" readonly> OLD--> 
 						</div>
 					</div>

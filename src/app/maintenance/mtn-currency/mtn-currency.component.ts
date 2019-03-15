@@ -14,6 +14,10 @@ export class MtnCurrencyComponent implements OnInit {
 
   currencyListing: any = {
     tableData: [],
+
+
+
+
     tHeader: ['Currency Code', 'Currency Word', 'Currency Rate', 'Currency Description',],
     dataTypes: ['text', 'text', 'currencyRate', 'text',],
     pageLength: 10,
@@ -23,10 +27,10 @@ export class MtnCurrencyComponent implements OnInit {
     fixedCol: false,
     pageID: 5,
     keys:[
-    	'currencyCd',
-    	'currencyWord',
-    	'currencyRt',
-    	'currencyDesc',]
+      'currencyCd',
+      'currencyWord',
+      'currencyRt',
+      'currencyDesc',]
   };
 
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
@@ -36,18 +40,18 @@ export class MtnCurrencyComponent implements OnInit {
   constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal) { }
 
   ngOnInit() {
-  	/*this.maintenanceService.getMtnCurrency().subscribe((data: any) =>{
-  		for(var currencyCount = 0; currencyCount < data.currency.length; currencyCount++){
-  			this.currencyListing.tableData.push(
-  				new Row(data.currency[currencyCount].currencyCd, 
-  						data.currency[currencyCount].currencyAbbr,
-  						data.currency[currencyCount].currencyWord,
-  						data.currency[currencyCount].currencyRt,
-  						data.currency[currencyCount].currencyDesc)
-  			);  		
-  		}
-  		this.table.refreshTable();
-  	});*/
+    /*this.maintenanceService.getMtnCurrency().subscribe((data: any) =>{
+      for(var currencyCount = 0; currencyCount < data.currency.length; currencyCount++){
+        this.currencyListing.tableData.push(
+          new Row(data.currency[currencyCount].currencyCd, 
+              data.currency[currencyCount].currencyAbbr,
+              data.currency[currencyCount].currencyWord,
+              data.currency[currencyCount].currencyRt,
+              data.currency[currencyCount].currencyDesc)
+        );      
+      }
+      this.table.refreshTable();
+    });*/
   }
 
   onRowClick(data){
@@ -60,7 +64,7 @@ export class MtnCurrencyComponent implements OnInit {
   }
 
   confirm(){
-  	this.selectedData.emit(this.selected);
+    this.selectedData.emit(this.selected);
     this.currencyListing.tableData = [];
     this.table.refreshTable();
   }
@@ -121,21 +125,21 @@ export class MtnCurrencyComponent implements OnInit {
 }
 
 class Row{
-	currencyCd: string;
-	//currencyAbbr: string;
-	currencyWord: string;
-	currencyRt: number;
-	currencyDesc: string;
+  currencyCd: string;
+  //currencyAbbr: string;
+  currencyWord: string;
+  currencyRt: number;
+  currencyDesc: string;
 
-	constructor(currencyCd: string, 
-				//currencyAbbr: string,
-				currencyWord: string,
-				currencyRt: number,
-				currencyDesc: string){
-		this.currencyCd = currencyCd;
-		//this.currencyAbbr = currencyAbbr;
-		this.currencyWord = currencyWord;
-		this.currencyRt = currencyRt;
-		this.currencyDesc = currencyDesc;
-	}
+  constructor(currencyCd: string, 
+        //currencyAbbr: string,
+        currencyWord: string,
+        currencyRt: number,
+        currencyDesc: string){
+    this.currencyCd = currencyCd;
+    //this.currencyAbbr = currencyAbbr;
+    this.currencyWord = currencyWord;
+    this.currencyRt = currencyRt;
+    this.currencyDesc = currencyDesc;
+  }
 }

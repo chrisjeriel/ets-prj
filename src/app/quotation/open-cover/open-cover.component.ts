@@ -10,7 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class OpenCoverComponent implements OnInit, OnDestroy {
 
-  quoteData: any = {};
+  quoteData: any;
   inquiryFlag: boolean = false;
   sub: any;
 
@@ -45,5 +45,6 @@ export class OpenCoverComponent implements OnInit, OnDestroy {
 
   quoteDataF(data){
     this.quoteData = data;
+    console.log(data);
   }
 }

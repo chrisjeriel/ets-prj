@@ -1,14 +1,18 @@
 <div class="row">
     <div class="col-sm-12" style="margin-top: 3px" >
-         <div style="position: relative;">
-         	<button class="cust-btn" style="position:absolute; right: 0px; max-width: 200px !important; margin-top: -4px !important; z-index: 50 !important" (click)="ShowModal()">View Overdue Accounts</button>
-         	<app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
-         </div>
+    	 	<div class="input-group">
+    	 	<div class="col-sm-2"></div>
+         		<div style="position: relative; padding: 0" class="col-sm-8">
+         			<button class="cust-btn" style="position:absolute; right: 0px; max-width: 200px !important; margin-top: -4px !important; z-index: 50 !important" (click)="ShowModal()">View Outstanding Accounts</button>
+         			<app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
+         		</div>
+        	 <div class="col-sm-2"></div>
+    	 </div>
     </div>
 </div>	
 
 <app-modal class="d-none" id="ViewOverdue">
-	<div header>List of Overdue Accounts for Offset</div>	
+	<div header>List of Outstanding Accounts for Offset</div>	
 	<div body>
                 <app-cust-editable-non-datatable [passData]="passDataOffsetting"></app-cust-editable-non-datatable>
          
