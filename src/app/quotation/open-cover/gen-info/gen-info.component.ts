@@ -34,7 +34,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
   long: any;
 
   dialogIcon: string = "";
-  dialogMessagE: string = "";
+  dialogMessage: string = "";
   cancelFlag: boolean;
 
 
