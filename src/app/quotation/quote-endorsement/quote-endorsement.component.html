@@ -42,7 +42,7 @@
                 <app-cust-editable-non-datatable #endorsment id="endorsmentTable" [passData]="endorsementData" (clickLOV)="clickEndtLOV($event)" *ngIf="!OpenCover">
                     <ng-container controls-l>
                         <button [class.d-none]="inquiryFlag" class="cust-btn" (click)="clickModal($event)">Copy Endt</button>
-                        <button [class.d-none]="inquiryFlag" class="cust-btn" (click)="clickModal($event)"  style="margin-right: 0px !important;">Deductibles</button>
+                        <button [class.d-none]="inquiryFlag" class="cust-btn" (click)="showDeductiblesOptions()"  style="margin-right: 0px !important;" >Deductibles</button>
                     </ng-container>
                 </app-cust-editable-non-datatable>
                 <app-cust-editable-non-datatable id="endorsmentOCTable" [passData]="endorsementOCData" (clickLOV)="clickEndtLOV($event)" *ngIf="OpenCover">
@@ -75,7 +75,7 @@
                     <label class="form-control-sm col-sm"></label>
                 </div>
             </div>
-            <app-cust-editable-non-datatable [passData]="copyEndtTable" (newClick)="copyEndtRowClick($event)"></app-cust-editable-non-datatable>
+            <app-cust-editable-non-datatable #copyTable [passData]="copyEndtTable" (newClick)="copyEndtRowClick($event)"></app-cust-editable-non-datatable>
         </div>
     </div>
     <div footer style="margin: auto;">
@@ -85,10 +85,10 @@
     </div>
 </app-modal>
 
-<app-mtn-endt-code id="edntCodeLOV" (selectedData)="selectedEndtLOV($event)" [line]="line"></app-mtn-endt-code>
+<app-mtn-endt-code id="edntCodeLOV" (selectedData)="selectedEndtLOV($event)" [hide]="hideEndt" [line]="line"></app-mtn-endt-code>
 
 
-<app-modal class="d-none" id="successMdl">
+<!-- <app-modal class="d-none" id="successMdl">
     <div header>Success</div>
     <div body class="container-flex text-center">
         <span class="fa fa-check-circle fa-3x" style="vertical-align: middle;"></span>
@@ -108,22 +108,22 @@
     <div footer class="d-flex justify-content-center w-100">                    
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
     </div>
-</app-modal>
+</app-modal> -->
 
-<app-confirm-save (onYes)="saveData()"></app-confirm-save>
+<app-confirm-save id="endtSave" (onYes)="saveData()"></app-confirm-save>
 <app-sucess-dialog id="quote-endorsment" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 <app-cancel-button (onYes)="saveData('cancel')" [url]="cancelLink" ></app-cancel-button>
 
 
 <ng-container *ngIf="showModal">
-    <app-modal class="d-none" id="deductiblesModal">
-        <div header>Deductibles Per Section Cover</div>
+    <app-modal class="d-none" id="deductiblesModal" #deductiblesModal>
+        <div header>Deductibles Per Endorsement</div>
         <div body>
             <div class="d-flex">
                 <label class="form-control-sm col-sm-1" for="inputInname">Option No</label>
-                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-1 text-right" readonly="readonly" [(ngModel)]="selectedOption.optionId">
-                <label class="form-control-sm col-sm-2 text-right" for="inputInname" *ngIf="fromCovers">Cover Code Name</label>
-                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-4" readonly="readonly" [(ngModel)]="selectedCover.coverCdDesc" *ngIf="fromCovers ">
+                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-1 text-right" readonly="readonly" [(ngModel)]="optionTable.indvSelect.optionId">
+                <label class="form-control-sm col-sm-2 text-right" for="inputInname">Endorsement Code</label>
+                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-4" readonly="readonly" [ngModel]="table.indvSelect.endtCode +' - '+table.indvSelect.endtTitle" >
             </div>
             <fieldset class="scheduler-border" style="padding:0.5em !important" >
                 <app-cust-editable-non-datatable #deductibleTable  id="deductibleTable" (onDataChange)="deductibleTable.tableData=$event" [passData]="deductiblesData" (clickLOV)="clickDeductiblesLOV($event)"></app-cust-editable-non-datatable>
@@ -136,3 +136,4 @@
     </app-modal>
 </ng-container>
 <app-lov id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)"></app-lov>
+<app-confirm-save id="deductibles" (onYes)="saveQuoteDeductibles()"></app-confirm-save>

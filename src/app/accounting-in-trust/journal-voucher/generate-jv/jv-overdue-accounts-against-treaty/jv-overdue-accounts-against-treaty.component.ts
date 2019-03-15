@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AccountingService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { AgainstNegativeTreaty, AccJvInPolBalAgainstLoss } from '@app/_models';
+import { AgainstNegativeTreaty, AccJvInPolBalAgainstLoss, AccJvOutAccOffset} from '@app/_models';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -33,18 +33,18 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
     pageLength: 10,
     genericBtn: 'Save',
     opts: [],
-    widths: [203,50,130,130,130],
+    widths: [203,1,1,'auto','auto'],
 
   };
 
   passDataOffsetting: any = {
-    tableData: this.accountingService.getAccJVInPolBal(),
-    tHeader: ['SOA No','Policy No.','Co. Ref No.','Inst No.', 'Type', 'Eff Date','Due Date','Curr','Curr Rate','Premium','RI Comm','Charges','Net Due','Payments','Balance',"Overdue Interest"],
+    tableData: this.accountingService.getAccJvOutAccOffset(),
+    tHeader: ['SOA No','Policy No.','Co. Ref No.','Inst No.','Eff Date','Due Date','No. of Days Overdue','Curr','Curr Rate','Premium','RI Comm','Charges','Net Due','Payments','Balance',"Overdue Interest"],
     resizable: [true, true, true, true, true, true, true, true, true,true,true,true,true,true,true,true],
-    dataTypes: ['text','text','text','number','text','date','date','text','percent','currency','percent','percent','currency','currency','currency','currency'],
-    nData: new AccJvInPolBalAgainstLoss(null,null,null,null,new Date(),new Date(),null,null,null,null,null,null,null,null,null),
+    dataTypes: ['text','text','text','number','date','date','number','text','percent','currency','percent','percent','currency','currency','currency','percent'],
+    nData: new AccJvOutAccOffset(null,null,null,null,new Date(),new Date(),null,null,null,null,null,null,null,null,null,null),
     total:[null,null,null,null,null,null,null,null,'Total','premium','riComm','charges','netDue','payments','bal','overdueInt'],
-    magnifyingGlass: ['soaNo','instNo'],
+/*    magnifyingGlass: ['soaNo','instNo'],*/
     checkFlag: true,
     addFlag: true,
     deleteFlag: true,
@@ -57,7 +57,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
     editFlag: false,
     pageLength: 10,
     genericBtn: 'Save',
-    widths: [185, 185, 185,1,85,1,1,1,85,120,85,85,120,120,120,120]
+    widths: [185,185,185,1,1,1,1,1,85,120,85,85,120,120,120,120]
   };
   constructor(private accountingService: AccountingService,private titleService: Title, private modalService: NgbModal) { }
 

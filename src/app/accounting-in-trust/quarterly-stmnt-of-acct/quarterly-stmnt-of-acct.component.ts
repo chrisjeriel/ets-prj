@@ -14,6 +14,7 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 comStmt:boolean = false;
 receivables:boolean = false;
 summary:boolean = false;
+remittances:boolean = false;
 
 balanceDebit: any = 800071.34;
 balanceCredit: any = 0;
@@ -119,30 +120,33 @@ totalCredit: any = 1510787.46;
 	passDataCombinedStatementOfItAcct: any ={
 		tableData:[
 			{particulars: 'BEGINNING BALANCES DECEMBER 31,2017',referenceNo: '',breakdownAmount: null,debit: 145590.21,credit: 580431.73},
-			{particulars: 'PREMIUMS',referenceNo: '',breakdownAmount: 2204840.49,debit: null,credit: null},
-			{particulars: 'Less: Returns',referenceNo: '',breakdownAmount: 29095.37,debit: null,credit: 2175745.12},
-			{particulars: 'COMMISSIONS',referenceNo: '',breakdownAmount: 583237.96,debit: null,credit: null},
-			{particulars: 'Less: Returns',referenceNo: '',breakdownAmount: 8719.97,debit: null,credit: -574517.99},
-			{particulars: 'OTHER UNDERWRITING CHARGES',referenceNo: '',breakdownAmount: 69574.22,debit: null,credit: null},
-			{particulars: 'Less: Returns',referenceNo: '',breakdownAmount: 1047.37,debit: null,credit: -68499.85},
-			{particulars: 'LOSSES PAID',referenceNo: '',breakdownAmount: null,debit: null,credit: -307936.47},
-			{particulars: 'INTEREST INCOME ON INVESTMENT (Net WHTax)',referenceNo: '',breakdownAmount: null,debit: null,credit: 3536.47},
-			{particulars: 'INTEREST ON SAVINGS (Net WHTax)',referenceNo: '',breakdownAmount: null,debit: null,credit: 174.93},
-			{particulars: 'INTEREST EXPENSES ON PREMIUM RESERVE RELEASED for the 1st Quarter 2018',referenceNo: '',breakdownAmount: null,debit: null,credit: -18315.12},
-			{particulars: 'ACCOUNTS RECEIVABLE',referenceNo: '',breakdownAmount: null,debit: 736563.02,credit: null},
-			{particulars: 'Less: Returns',referenceNo: '',breakdownAmount: null,debit: -24502.60,credit: null},
-			{particulars: 'Service Fee',referenceNo: 'OR-016312',breakdownAmount: -66927.94,debit: null,credit: -66927.94},
-			{particulars: 'Miscellaneous Charges',referenceNo: '',breakdownAmount: null,debit: null,credit: -12298.52},
-			{particulars: 'Excess of Loss 2018 Min. Deposit-1st Installment',referenceNo: '',breakdownAmount: null,debit: null,credit: -212500.63},
-			{particulars: 'Gain on Foreign Exchange',referenceNo: '',breakdownAmount: null,debit: null,credit: 3.78},
-			{particulars: 'Remittances',referenceNo: 'AR-000264',breakdownAmount: -68535.60,debit: null,credit: null},
-			{particulars: '',referenceNo: 'AR-000264',breakdownAmount: -78399.92,debit: -146935.52,credit: null},
+			{particulars: 'PREMIUMS',referenceNo: '',breakdownAmount: 2204840.49,debit:'',credit:''},
+			{particulars: 'Less: Returns',referenceNo: '',breakdownAmount: 29095.37,debit:'',credit: 2175745.12},
+			{particulars: 'COMMISSIONS',referenceNo: '',breakdownAmount: 583237.96,debit:'',credit:''},
+			{particulars: 'Less: Returns',referenceNo: '',breakdownAmount: 8719.97,debit:'',credit: -574517.99},
+			{particulars: 'OTHER UNDERWRITING CHARGES',referenceNo: '',breakdownAmount: 69574.22,debit:'',credit:''},
+			{particulars: 'Less: Returns',referenceNo: '',breakdownAmount: 1047.37,debit:'',credit: -68499.85},
+			{particulars: 'LOSSES PAID',referenceNo: '',breakdownAmount: null,debit: '',credit: -307936.47},
+			{particulars: 'INTEREST INCOME ON INVESTMENT (Net WHTax)',referenceNo:'',breakdownAmount: null,debit:'',credit: 3536.47},
+			{particulars: 'INTEREST ON SAVINGS (Net WHTax)',referenceNo: '',breakdownAmount: null,debit:'',credit: 174.93},
+			{particulars: 'INTEREST EXPENSES ON PREMIUM RESERVE RELEASED for the 1st Quarter 2018',referenceNo: '',breakdownAmount: null,debit: '',credit: -18315.12},
+			{particulars: 'ACCOUNTS RECEIVABLE',referenceNo: '',breakdownAmount: null,debit: 736563.02,credit:''},
+			{particulars: 'Less: Returns',referenceNo: '',breakdownAmount: null,debit: -24502.60,credit:''},
+			{particulars: 'Service Fee',referenceNo: 'OR-016312',breakdownAmount: -66927.94,debit:'',credit: -66927.94},
+			{particulars: 'Miscellaneous Charges',referenceNo: '',breakdownAmount: null,debit:'',credit: -12298.52},
+			{particulars: 'Excess of Loss 2018 Min. Deposit-1st Installment',referenceNo: '',breakdownAmount: null,debit:'',credit: -212500.63},
+			{particulars: 'Gain on Foreign Exchange',referenceNo: '',breakdownAmount: null,debit:'',credit: 3.78},
+			{particulars: 'Remittances',referenceNo: 'AR-000264',breakdownAmount: -68535.60,debit:'',credit:''},
+			{particulars: '',referenceNo: 'AR-000264',breakdownAmount: -78399.92,debit: -146935.52,credit:''},
 		],
 		tHeader:["Particulars","Reference No.","Breakdown Amount","DEBIT","CREDIT"],
 		dataTypes: ["text","text","currency","currency","currency"],
 		uneditable: [true,true,true,true,true],
 		total: [null,'TOTAL',null,'debit','credit'],
+		tableOnly: true,
 		pageLength: 20,
+		pageStatus: true,
+		pagination: true,
 		colSize: ['300px','120px','120px','120px','120px'],
 		pageID:2
 	}
@@ -170,8 +174,9 @@ totalCredit: any = 1510787.46;
 		tHeader:["Policy No.","Memo No.","Incept Date","Expiry Date","Effective Date","Premium","Commission","Premium Tax","Amount Due"],
 		dataTypes: ["text","text","date","date","date","currency","currency","currency","currency"],
 		uneditable: [true,true,true,true,true,true,true,true,true],
-		infoFlag: true,
-		paginateFlag: true,
+		tableOnly: true,
+		pageStatus: true,
+		pagination: true,
 		pageLength: 15,
 		total: [null,null,null,null,'TOTAL','premium','commission','premiumTax','amountDue'],
 		pageID: 3
@@ -187,11 +192,34 @@ totalCredit: any = 1510787.46;
 		tHeader:["Line","Premium","Commission","Premium Tax","Amount Due"],
 		dataTypes: ["text","currency","currency","currency","currency"],
 		total: ['TOTAL','premium','commission','premiumTax','amountDue'],
-		infoFlag: true,
-		paginateFlag: true,
+		tableOnly: true,
+		pageStatus: true,
+		pagination: true,
 		pageLength: 10,
 		pageID: 4,
 		uneditable:[true,true,true,true,true]
+	}
+
+    passDataViewRemittances: any = {
+		tableData: [
+			{tranType:'AR',tranNo:"00372890",tranDate:new Date("12-02-2018"),paymentType:"Inward Policy Balance",payee:"AFPGEN",particulars:"Payment for",amount:100000},
+			{tranType:'AR',tranNo:"00373244",tranDate:new Date("12-03-2018"),paymentType:"Inward Policy Balance",payee:"AUII",particulars:"Payment for",amount:50000},
+			{tranType:'AR',tranNo:"00372890",tranDate:new Date("12-04-2018"),paymentType:"Negative Treaty Balance",payee:"ALLIED",particulars:"Payment for",amount:250000},
+			{tranType:'AR',tranNo:"00372890",tranDate:new Date("12-5-2018"),paymentType:"Negative Treaty Balance",payee:"UCPBGEN",particulars:"Payment for",amount:100000},
+			{tranType:'CV',tranNo:"2018-003892",tranDate:new Date("12-5-2018"),paymentType:"Treaty Balance Due Participant",payee:"UCPBGEN",particulars:"Payment for",amount:100000},
+			{tranType:'CV',tranNo:"2018-003893",tranDate:new Date("12-5-2018"),paymentType:"Treaty Balance Due Participant",payee:"ALLIED",particulars:"Payment for",amount:250000},
+			{tranType:'CV',tranNo:"2018-003894",tranDate:new Date("12-5-2018"),paymentType:"Inward Policy Balances",payee:"AUII",particulars:"Payment for",amount:50000},
+		],
+		tHeader:["Tran Type","Tran No.","Tran Date","Payment Type","Payee/Payor","Particulars","Amount"],
+		dataTypes: ["text","text","date","text","text","text","currency"],
+		total: [null,null,null,null,null,'TOTAL','amount'],
+		tableOnly: true,
+		pageStatus: true,
+		pagination: true,
+		pageLength: 10,
+		pageID: 5,
+		uneditable:[true,true,true,true,true],
+		widths:[1,150,1,'auto','auto',200,200]
 	}
 
 
@@ -206,22 +234,32 @@ totalCredit: any = 1510787.46;
     this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
   }
 
-  viewReceivables(){
+  viewRemittances(){
   	this.comStmt = false;
-  	this.receivables = true;
+  	this.receivables = false;
   	this.summary	= false;
+  	this.remittances = true;
   }
 
   viewComStmt(){
   	this.comStmt = true;
   	this.receivables = false;
   	this.summary	= false;
+  	this.remittances = false;
   }
 
   viewSummary(){
   	this.comStmt = false;
   	this.receivables = false;
   	this.summary	= true;	
+  	this.remittances = false;
+  }
+
+   viewReceivables(){
+  	this.comStmt = false;
+  	this.receivables = true;
+  	this.summary	= false;
+  	this.remittances = false;
   }
 
   onTabChange($event: NgbTabChangeEvent) {

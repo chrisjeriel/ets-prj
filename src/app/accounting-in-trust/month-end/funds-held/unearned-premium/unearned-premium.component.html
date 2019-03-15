@@ -6,16 +6,22 @@
 			<div class="input-group">
 				<span class="form-control-sm col-sm-1"></span>
 				<label class="form-control-sm col-sm-2">Period</label>
-				<input type="text" class="form-control form-control-sm col-sm-2" value="January" style="margin-right: 2px;">
-				<input type="text" class="form-control form-control-sm col-sm-1" value="2019">
+				<input type="text" class="form-control form-control-sm col-sm-2" value="January" style="margin-right: 2px;" readonly>
+				<input type="text" class="form-control form-control-sm col-sm-1" value="2019" readonly>
 				<label class="form-control-sm col-sm-2">Method</label>
-				<input type="text" class="form-control form-control-sm col-sm-3" value="24th Method">				
+				<input type="text" class="form-control form-control-sm col-sm-3" value="24th Method" readonly>				
 				<span class="form-control-sm col-sm-1"></span>
 			</div>
 			<div class="input-group">
 				<span class="form-control-sm col-sm-1"></span>
+				<label class="form-control-sm col-sm-2">Company</label>
+				<input type="text" class="form-control form-control-sm col-sm" value="Munich Re" readonly>				
+				<span class="form-control-sm col-sm-1"></span>
+			</div>					
+			<div class="input-group">
+				<span class="form-control-sm col-sm-1"></span>
 				<label class="form-control-sm col-sm-2">Extracted By</label>
-				<input type="text" class="form-control form-control-sm col-sm-3" value="cuaresma">
+				<input type="text" class="form-control form-control-sm col-sm-3" value="cuaresma" readonly>
 				<label class="form-control-sm col-sm-2">Extracted By</label>
 				<input type="datetime-local" class="form-control form-control-sm col-sm-3" value="2013-10-24T09:00">
 				<span class="form-control-sm col-sm-1"></span>
@@ -48,8 +54,8 @@
 			<div class="input-group">
 				<span class="form-control-sm col-sm-3"></span>
 				<label class="form-control-sm col-sm-1">Line</label>
-				<input type="text" class="form-control form-control-sm col-sm-1" value="CAR" style="margin-right: 2px;">
-				<input type="text" class="form-control form-control-sm col-sm-4" value="Construction All Risk">
+				<input type="text" class="form-control form-control-sm col-sm-1" value="CAR" style="margin-right: 2px;" readonly="">
+				<input type="text" class="form-control form-control-sm col-sm-4" value="Construction All Risk" readonly="">
 				<span class="form-control-sm col-sm-3"></span>
 			</div>
 			<app-cust-non-datatable [passData]="detailsPerPolicy"></app-cust-non-datatable>
@@ -68,8 +74,8 @@
 			<div class="input-group">
 				<span class="form-control-sm col-sm-3"></span>
 				<label class="form-control-sm col-sm-1">Line</label>
-				<input type="text" class="form-control form-control-sm col-sm-1" value="CAR" style="margin-right: 2px;">
-				<input type="text" class="form-control form-control-sm col-sm-4" value="Construction All Risk">
+				<input type="text" class="form-control form-control-sm col-sm-1" value="CAR" style="margin-right: 2px;" readonly="">
+				<input type="text" class="form-control form-control-sm col-sm-4" value="Construction All Risk" readonly="">
 				<span class="form-control-sm col-sm-3"></span>
 			</div>
 			<app-cust-non-datatable [passData]="accountingEntries"></app-cust-non-datatable>

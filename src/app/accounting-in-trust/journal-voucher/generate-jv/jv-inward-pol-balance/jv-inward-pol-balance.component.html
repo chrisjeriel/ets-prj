@@ -63,23 +63,29 @@
 <!--         <fieldset class="scheduler-border" style="padding: 0px"> 
         	 <legend class="scheduler-border">Inward Policy Balances</legend>   -->
         	 	<div class="form-row custom-row-inline-inset">
-        	 		 <div class="col-sm-7" style="padding-left: 0px; margin-top: 3px;padding-right: 16px" >
+        	 		 <div class="col-sm-12 text-align">
         	 		 	<div class="input-group" style="padding-right: 0px">
-        	 		 		<label class="form-control-sm col-sm-2" style="padding-left:0px !important;">Ceding Company</label>
-        	 		 		<input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 2px !important" placeholder="BPI/MS INSURANCE CORPORATION">
-                            <div style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+        	 		 		<div class="col-sm-2"></div>
+        	 		 		<div class="col-sm-8">
+        	 		 			<div class="input-group">
+		        	 		 		<label class="form-control-sm col-sm-2" style="padding-left:0px !important;">Ceding Company</label>
+		        	 		 		<input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 2px !important" placeholder="BPI/MS INSURANCE CORPORATION">
+		                            <div style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+                        		</div>
+                        	</div>
+                        	<div class="col-sm-2"></div>
         	 		 	</div>
         	 		 </div>
-        	 		 <div class="col-sm-5" style="padding-left: 0px; margin-top: 3px;">
+        	 		 <!-- <div class="col-sm-5" style="padding-left: 0px; margin-top: 3px;">
         	 		 	<div class="input-group">
         	 		 		<label class="form-control-sm col-sm-3" style="padding-left:0px !important;">As of</label>
         	 		 		<input type="date" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 2px !important" placeholder="">
         	 		 		 <button type="button" class="cust col-sm-4" style="margin-left: 5px ! important;">Compute Interest</button>
         	 		 	</div>
-        	 		 </div>
+        	 		 </div> -->
         	 	</div>
         	 	<div class="row">
-        	 	 	 <div class="col-sm-12" style="margin-top: 3px" >
+        	 	 	 <div class="col-sm" style="margin-top: 20px" >
         	 	 	 	 <app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
         	 	 	 </div>
         	 	</div>	

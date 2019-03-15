@@ -23,7 +23,8 @@
                     <label class="form-control-sm col-sm-1" style="height: auto;">JV Type</label>
                     <div class="col-sm-5">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                        <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 1px !important;" style="Error Correction"> -->
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 1px !important;" value="" (change)="tabController($event);" [(ngModel)]="record.jvType">
+                         <div style="margin-left: -19px !important;margin-right: 0px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
 
                       <!--   <select class="form-control form-control-sm cust-sm col-sm">
                             <option>Error Correction</option>
@@ -33,8 +34,8 @@
                                 <option>Error Correction</option>
                                 <option>Reversal</option>
                             </select> -->
-                        <!-- <div style="margin-left: -19px !important;margin-right: 0px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div> -->
-                           <select class="form-control form-control-sm cust-sm col-sm" (change)="tabController($event);" [(ngModel)]="record.jvType">
+                       
+                        <!-- <select class="form-control form-control-sm cust-sm col-sm" (change)="tabController($event);" [(ngModel)]="record.jvType">
                                 <option value="ADJUSTMENTS OF INWARD POLICY BALANCES">Adjustments of Inward Policy Balances</option>
                                 <option value="LOSS RESERVE DEPOSIT">Loss Reserve Deposit</option>
                                 <option value="GAIN FOREIGN EXCHANGE">Gain Foreign Exchange</option>
@@ -56,18 +57,24 @@
                                 <option value="INTEREST ON OVERDUE ACCOUNTS - MONTHLY SETUP">Interest on Overdue Accounts - Monthly Setup</option>
                                 <option value="Miscellaneous Income Allocation">Miscellaneous Income Allocation</option>
                                 <option value="Others">Others</option>
-                            </select>
+                            </select> -->
                         </div>
                     </div>
                     <!-- <div class="col-sm-1"  style="margin-left: -10px !important;"></div> -->
-                    <label class="form-control-sm col-sm-1" style="    margin-left: -10px;">Ref No</label>
+                   <!--   -->
                     <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="2017-00023974">
                     <div style="margin-left: -19px !important;margin-right: 3px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div> -->
-                    <select class="form-control form-control-sm cust-sm col-sm-2">
+                  <!--   <select class="form-control form-control-sm cust-sm col-sm-2">
                         <option>2017-00023974</option>
                         <option>2017-00023463</option>
                         <option>2017-00023432</option>
-                    </select>
+                    </select> -->
+                    <label class="form-control-sm col-sm-1" style="    margin-left: -10px;">Ref No</label>
+                    <input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="2017-0002397">
+                    <div style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+
+
+
                     <label class="form-control-sm col-sm-1" >Ref No Date</label>    
                     <input type="datetime-local" class="form-control form-control-sm cust-sm col-sm-2" placeholder="000372921" style="    margin-right: 10px;">
                 </div>
@@ -83,13 +90,13 @@
                     <label class="form-control-sm col-sm-1" style="height: auto;">Amount</label>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="PHP" style="margin-right: -1px !important;"> -->
-                            <select class="form-control form-control-sm cust-sm col-sm-2" style="margin-right: -1px !important;">
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="PHP" style="margin-right: -1px !important;">
+                            <!-- <select class="form-control form-control-sm cust-sm col-sm-2" style="margin-right: -1px !important;">
                                 <option>PHP</option>
                                 <option>USD</option>
                                 <option>EUR</option>
-                            </select>
-                            <!-- <div style="margin-left: -19px !important;margin-right: 6px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div> -->
+                            </select> -->
+                            <div style="margin-left: -19px !important;margin-right: 6px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
                             <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px !important;" style="text-align: right;    margin-left: 3px;" placeholder="27,513.20">
                             <label class="form-control-sm col-sm-3" style="height: auto;">Currency Rate</label>
                         </div>
@@ -98,13 +105,14 @@
                     <label class="form-control-sm col-sm-1" style="height: auto;">Local Amount</label>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="PHP" style="margin-right: 2px !important;"> -->
-                            <select class="form-control form-control-sm cust-sm col-sm-2" style="margin-right: 2px !important;">
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="PHP" style="margin-right: 2px !important;">
+                            <!-- <select class="form-control form-control-sm cust-sm col-sm-2" style="margin-right: 2px !important;">
                                 <option>PHP</option>
                                 <option>USD</option>
                                 <option>EUR</option>
-                            </select>
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm" style="text-align: right;">
+                            </select> -->
+                          <!--   <div style="margin-left: -19px !important;margin-right: 6px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div> -->
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm" style="text-align: right;"  placeholder="27,513.20">
                         </div>
                     </div>
                 </div>
@@ -159,11 +167,13 @@
                 <div class="form-group col-sm">
                     <div class="col-md-12 text-center">
                         <div class="cust-btn-container" style="margin-top: 10px;">
-                            <button type="button" class="cust-btn" style="margin-right: 10px !important;"><a>New JV</a></button>
-                            <button type="button" class="cust-btn" style="margin-right: 10px !important;"><a>Save</a></button>
-                            <button type="button" class="cust-btn" style="margin-right: 10px !important;"><a>Cancel JV</a></button>
-                            <button type="button" class="cust-btn" style="margin-right: 10px !important;"><a>Print JV</a></button>
-                            <button type="button" class="cust-btn"><a>Upload</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%"><a>New JV</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%"><a>Save</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%"><a>Cancel JV</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%"><a>Print JV</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%"><a>Upload Acct. Ent</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%"><a>Alloc. Trans.</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%"><a>DebitCredit Memo</a></button>
                         </div>
                     </div>
                 </div>

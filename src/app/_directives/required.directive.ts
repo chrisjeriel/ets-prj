@@ -10,6 +10,14 @@ export class RequiredDirective implements OnInit{
 
     }
 
+
+
+
+
+
+
+
+
     ngOnInit(){
       this.er.nativeElement.style.backgroundColor = "#fffacd85";
     }
@@ -22,6 +30,7 @@ export class RequiredDirective implements OnInit{
         }
     }
     
+
     @HostListener('ngModelChange', ['$event']) onNgModelChange(value){
         if(value === null || typeof value === 'undefined' || value == ''){
             highlight(this.er);
