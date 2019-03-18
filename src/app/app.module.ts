@@ -25,6 +25,7 @@ import { LoginComponent } from './login';
 import { RegisterComponent } from './register';
 import { QuotationComponent } from './quotation/quotation.component';
 import { GeneralInfoComponent } from './quotation/general-info/general-info.component';
+import { GeneralInfoComponent2 } from './quotation/general-info/V1.0/general-info.component';
 import { CoverageComponent } from './quotation/coverage/coverage.component';
 import { QuoteOptionComponent } from './quotation/quote-option/quote-option.component';
 import { InternalCompetitionComponent } from './quotation/internal-competition/internal-competition.component';
@@ -120,8 +121,11 @@ import { PolMxCedingCoComponent } from './underwriting/policy-maintenance/pol-mx
 import { AccountingComponent } from './accounting/accounting.component';
 import { ArEntryComponent } from './accounting/ar-entry/ar-entry.component';
 import { ArDetailsComponent } from './accounting-in-trust/ar-details/ar-details.component';
+import { ArDetailsComponent2 } from './accounting/ar-details/ar-details.component';
 import { InwardPolicyBalancesComponent } from './accounting-in-trust/ar-details/inward-policy-balances/inward-policy-balances.component';
+import { InwardPolicyBalancesComponent2 } from './accounting/inward-policy-balances/inward-policy-balances.component';
 import { ClaimRecoveryComponent } from './accounting-in-trust/ar-details/claim-recovery/claim-recovery.component';
+import { ClaimRecoveryComponent2 } from './accounting/claim-recovery/claim-recovery.component';
 import { AttachmentsComponent } from './accounting/attachments/attachments.component';
 import { AccountingInTrustComponent } from './accounting-in-trust/accounting-in-trust.component';
 import { AccountingServiceComponent } from './accounting-service/accounting-service.component';
@@ -663,6 +667,12 @@ import { MtnReasonComponent } from './maintenance/mtn-reason/mtn-reason.componen
         ModuleTransactionsComponent,
         MtnUsersComponent,
         MtnReasonComponent,
+        DummyComponent2,
+        AttachmentsComponent,
+        ArDetailsComponent2,
+        ClaimRecoveryComponent2,
+        InwardPolicyBalancesComponent2,
+        GeneralInfoComponent2
     ],
 
     providers: [
