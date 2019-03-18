@@ -404,7 +404,6 @@ export class QuoteEndorsementComponent implements OnInit {
       }
 
       this.quotationService.copyEndorsement(JSON.stringify(params)).subscribe((data: any) =>{
-          console.log(data);
       });
 
     }
@@ -424,7 +423,7 @@ export class QuoteEndorsementComponent implements OnInit {
        this.quotationService.getEndorsements(this.quotationInfo.quoteId,this.plainQuotationNo(this.quotationInfo.quotationNo),event.optionId).subscribe((data: any) => {
              while(this.endorsementData.tableData.length > 0) {
               this.endorsementData.tableData.pop();
-          }    
+            }    
             for(var lineCount = 0; lineCount < data.endorsements.length; lineCount++){
                           this.endorsementData.tableData.push(new QuoteEndorsement(
                                                                        data.endorsements[lineCount].endtCd, 
@@ -438,8 +437,9 @@ export class QuoteEndorsementComponent implements OnInit {
                                                               this.saveEndt.createUser = data.endorsements[lineCount].createUser;
                                                               this.saveEndt.updateUser = data.endorsements[lineCount].updateUser;          
             }
-            if(this.endorsementData.tableData.length == 0){
-                this.endorsementData.tableData = this.defaultEndorsements;
+            if(data.endorsements.length == 0){
+                console.log(data)
+                this.endorsementData.tableData = JSON.parse(JSON.stringify(this.defaultEndorsements));
                 this.table.markAsDirty();
             }
            /* this.table.refreshTable();*/
@@ -447,6 +447,7 @@ export class QuoteEndorsementComponent implements OnInit {
        });
       }
       else{
+          console.log(event)
           this.endorsementData.tableData = [];
           this.table.refreshTable();
           this.opId = null;
@@ -589,7 +590,6 @@ export class QuoteEndorsementComponent implements OnInit {
             }
             this.quotationService.saveQuoteEndorsements(JSON.stringify(saveEndtReq))
               .subscribe(data => { 
-                console.log(data);
                 this.table.markAsPristine();
                 $('#successMdl > #modalBtn').trigger('click');
               });
@@ -631,7 +631,6 @@ export class QuoteEndorsementComponent implements OnInit {
 
             this.quotationService.saveQuoteEndorsementsOc(JSON.stringify(this.endorsementReqOc))
                   .subscribe(data => {
-                    console.log(data);
                     $('#successMdl > #modalBtn').trigger('click');
                     this.retrieveQuoteEndorsementOc();
             });
