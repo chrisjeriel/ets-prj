@@ -340,8 +340,11 @@ export class CustEditableNonDatatableComponent implements OnInit {
         
     }
 
-   format(event,data, key){
+   format(event,data, key,dataType?){
        let temp:string = event.target.value;
+       if(dataType == 'percent' && parseFloat(temp)>100){
+           temp = '100';
+       }
        if(event.target.value.indexOf('(')!= -1){
            temp = '-'+temp.substring(1,event.target.value.length-1);
        }

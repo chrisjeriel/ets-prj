@@ -11,7 +11,9 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 export class MtnEndtCodeComponent implements OnInit {
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
 
+
   @Input() line: string = "";
+  @Input() hide: any[];
 
   constructor(private modalService: NgbModal, private mtnService : MaintenanceService) { }
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
@@ -32,17 +34,13 @@ export class MtnEndtCodeComponent implements OnInit {
         	'remarks']
 
     }
-    selected: any = null;
+    selected: any;
 
   ngOnInit() {
   }
 
   select(data){
-  	if(Object.is(this.selected, data)){
-      this.selected = null
-    } else {
-      this.selected = data;
-    }
+  	  this.selected = data;
   }
 
   okBtnClick(){
@@ -53,28 +51,14 @@ export class MtnEndtCodeComponent implements OnInit {
     this.passData.tableData = [];
     this.mtnService.getEndtCode(this.line,'').subscribe((data: any) => {
       for (var i = 0; i< data.endtCode.length ; i++) {
+        if(this.hide!== undefined && this.hide.indexOf(data.endtCode[i].endtCd) != -1)
+          continue;
         this.passData.tableData.push(data.endtCode[i]);
       }
       this.table.refreshTable();
     });
   }
 
-  checkCode(code) {
-    this.mtnService.getEndtCode(this.line,code).subscribe(data => {
-      console.log(data);
-      // if(data['cession'].length > 0) {
-      //   this.selectedData.emit(data['cession'][0]);
-      // } else {
-      //   this.selectedData.emit({
-      //     cessionId: '',
-      //     description: ''
-      //   });
-
-      //   $('#typeOfCessionMdl > #modalBtn').trigger('click');
-      // }
-      
-    });
-  }
 }
 
 

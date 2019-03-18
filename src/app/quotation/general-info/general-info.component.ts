@@ -349,6 +349,9 @@ export class GeneralInfoComponent implements OnInit {
 			});
 
 		}
+		setTimeout(() => {
+		$("#firstFocus").focus();
+		},1000);
 	}
 
 

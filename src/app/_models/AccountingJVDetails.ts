@@ -122,6 +122,7 @@ export class AccJvInPolBalAgainstLoss {
 	payments: number;
 	bal: number;
 	overdueInt: number;
+	actualPayment: number;
 
 	constructor( soaNo: string,
 		polNo: string,
@@ -137,7 +138,8 @@ export class AccJvInPolBalAgainstLoss {
 		netDue: number,
 		payments: number,
 		bal: number,
-		overdueInt: number){
+		overdueInt: number,
+		actualPayment: number){
 
 		this.soaNo = soaNo;
 		this.polNo = polNo;
@@ -154,6 +156,7 @@ export class AccJvInPolBalAgainstLoss {
 		this.payments = payments;
 		this.bal= bal;
 		this.overdueInt = overdueInt;
+		this.actualPayment = actualPayment;
 		
 	}
 }
@@ -171,7 +174,7 @@ export class AgainstLoss {
 	amount: number
 	amountPhp: number
 
-	constructor(claimNo: string,adjusters: string,insured: string,histNo: number,histType: string,exGratia: string,reserveAmount: number,curr: string,currRate: number,amount: number,amountPhp: number){
+	constructor(claimNo: string,adjusters: string,insured: string,histNo: number,histType: string,exGratia: string,curr: string,currRate: number,reserveAmount: number,amount: number,amountPhp: number){
 		this.claimNo = claimNo;
 		this.adjusters = adjusters;
 		this.insured = insured;
@@ -205,5 +208,60 @@ export class AgainstNegativeTreaty {
 		this.currencyRate = currencyRate;
 		this.amount = amount;
 		this.amountPhp = amountPhp;
+	}
+}
+
+export class AccJvOutAccOffset {
+	soaNo: string;
+	polNo: string;
+	colRefNo: string;
+	instNo: number;
+	effDate: Date;
+	dueDate: Date;
+	noDaysOverdue: number;
+	curr: string;
+	currRate: number;
+	premium: number;
+	riComm: number;
+	charges: number;
+	netDue: number;
+	payments: number;
+	bal: number;
+	overdueInt: number;
+
+	constructor( soaNo: string,
+		polNo: string,
+		colRefNo: string,
+		instNo: number,
+		effDate: Date,
+		dueDate: Date,
+		noDaysOverdue: number,
+		curr: string,
+		currRate: number,
+		premium: number,
+		riComm: number,
+		charges: number,
+		netDue: number,
+		payments: number,
+		bal: number,
+		overdueInt: number){
+
+		this.soaNo = soaNo;
+		this.polNo = polNo;
+		this.colRefNo = colRefNo;
+		this.instNo = instNo;
+		this.effDate = effDate;
+		this.dueDate = dueDate;
+		this.noDaysOverdue = noDaysOverdue;
+		this.curr = curr;
+		this.currRate = currRate;
+		this.premium = premium;
+		this.riComm = riComm;
+		this.charges = charges;
+		this.netDue = netDue;
+		this.payments = payments;
+		this.bal= bal;
+		this.overdueInt = overdueInt;
+		
 	}
 }

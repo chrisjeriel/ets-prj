@@ -3,11 +3,11 @@ import { AccountingService } from '../../_services';
 import { ARDetails } from '@app/_models'
 
 @Component({
-  selector: 'app-ar-details',
+  selector: 'app-ar-details2',
   templateUrl: './ar-details.component.html',
   styleUrls: ['./ar-details.component.css']
 })
-export class ArDetailsComponent implements OnInit {
+export class ArDetailsComponent2 implements OnInit {
    passDataAmountDetails: any = {
         tableData: this.accountingService.getAmountDetails(),
         tHeader: ["Detail", "Amount", "Amount(Php)", "Plus.Minus", "Amount Plus.Minus"],

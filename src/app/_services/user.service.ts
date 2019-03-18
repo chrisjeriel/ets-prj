@@ -33,13 +33,13 @@ export class UserService {
                 .set('userId', userId)
                 .set('password', password);
 
-        return this.http.get('http://localhost:8888/api/user-service/userLogin', {params});
+        return this.http.get(environment.prodApiUrl + '/user-service/userLogin', {params});
     }
 
     retMtnUsers(userId: string){
          const params = new HttpParams()
                 .set('userId', userId);
 
-        return this.http.get('http://localhost:8888/api/user-service/retMtnUsers', {params});
+        return this.http.get(environment.prodApiUrl + '/user-service/retMtnUsers', {params});
     }
 }

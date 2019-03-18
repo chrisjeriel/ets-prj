@@ -85,6 +85,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
      contractorName: '',
      insuredDesc: '',
      status: '',
+     statusDesc: '',
      reinsurerId: '',
      reinsurerName: '',
      intmId: '',
@@ -153,8 +154,12 @@ export class GenInfoComponent implements OnInit, OnDestroy {
       this.genInfoOcData.issueDate = this.formatDateTime(new Date());
       this.genInfoOcData.expiryDate = this.formatDateTime(new Date().setMonth(new Date().getMonth() + 1));
       this.genInfoOcData.reqDate = this.formatDateTime(new Date());
-      this.genInfoOcData.status = 'Requested';
+      this.genInfoOcData.status = '1';
+      this.genInfoOcData.statusDesc = 'Requested';
+      this.genInfoOcData.cessionId = this.routerParams.cessionId;
       this.genInfoOcData.cessionDesc = this.routerParams.typeOfCession;
+      this.genInfoOcData.govtTag = 'N';
+      this.genInfoOcData.indicativeTag = 'N';
       this.projectOc.riskId = this.routerParams.riskId;
       this.getRiskMethod(this.routerParams.riskId);
     }else if(this.routerParams.fromBtn === 'edit' || this.routerParams.fromBtn === 'view'){
@@ -164,22 +169,20 @@ export class GenInfoComponent implements OnInit, OnDestroy {
 
   //get Risk details
   getRiskMethod(risk: any){
-      this.mtnService.getMtnRisk(risk)
-      .subscribe(val => {
-        this.projectOc.riskName = val['risk'].riskName;
-        this.regionDesc = val['risk'].regionDesc;  
-        this.provinceDesc = val['risk'].provinceDesc;
-        this.cityDesc = val['risk'].cityDesc;
-        this.districtDesc = val['risk'].districtDesc;
-        this.blockDesc  = val['risk'].blockDesc;
-        this.lat  = val['risk'].latitude;
-        this.long = val['risk'].longitude;
-        if(this.routerParams.fromBtn === 'edit' || this.routerParams.fromBtn === 'view')
-          this.quoteDataF();
-      });
+      this.projectOc.riskName = this.routerParams.riskName;
+      this.projectOc.regionDesc = this.routerParams.regionDesc;  
+      this.projectOc.provinceDesc = this.routerParams.provinceDesc;
+      this.projectOc.cityDesc = this.routerParams.cityDesc;
+      this.projectOc.districtDesc = this.routerParams.districtDesc;
+      this.projectOc.blockDesc  = this.routerParams.blockDesc;
+      this.projectOc.latitude  = this.routerParams.latitude === 'null' ? '' : this.routerParams.latitude;
+      this.projectOc.longitude = this.routerParams.longitude === 'null' ? '' : this.routerParams.longitude;
+      if(this.routerParams.fromBtn === 'edit' || this.routerParams.fromBtn === 'view')
+        this.quoteDataF();
   }
 
   getGeneralInfoData(){
+    this.loading = true;
     this.quotationService.getOcGenInfoData('',this.plainOpenQuotationNo(this.routerParams.ocQuoteNo)).subscribe((data: any) =>{
           console.log(data);
          this.genInfoOcData.quoteIdOc           = data.quotationOc.quoteIdOc;
@@ -261,6 +264,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
          this.projectOc.updateDate              = this.formatDateTime(data.projectOc.updateDate);
          //this.getRiskMethod(this.projectOc.riskId);
          this.quoteDataF();
+         this.loading = false;
     });
     
   }
@@ -304,8 +308,8 @@ export class GenInfoComponent implements OnInit, OnDestroy {
     $('#cedingCoIdLov #modalBtn').trigger('click');
   }
   setCedingCo(data){
-    this.genInfoOcData.cedingId  = data.coNo;
-    this.genInfoOcData.cedingName  = data.name;
+    this.genInfoOcData.cedingId  = data.cedingId;
+    this.genInfoOcData.cedingName  = data.cedingName;
     this.loading = false;
   }
   //end ceding company lov
@@ -463,14 +467,130 @@ export class GenInfoComponent implements OnInit, OnDestroy {
   //parse open quotation no
   plainOpenQuotationNo(data: string){
     var arr = data.split('-');
-
-    return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]) + '-' + parseInt(arr[5]);
+    if(parseInt(arr[5]) > 99){
+      return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]) + '-' + parseInt(arr[5]);
+    }else{
+      return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]) + '-0' + parseInt(arr[5]);
+    }
+    
   }
 
-  saveOpenQuotation(){
-    console.log('ProjectOc');
+  //save General Info
+  saveOpenQuotation(){  
+      let params:any = {
+        "approvedBy": this.genInfoOcData.approvedBy,
+        "cedingId": this.checkIdFormat(this.genInfoOcData.cedingId),
+        "cessionId": this.genInfoOcData.cessionId,
+        "closingParag": this.genInfoOcData.closingParag,
+        "contractorId": this.genInfoOcData.contractorId,
+        //"createDate": this.routerParams.fromBtn === 'add' ? new Date().toISOString() : this.genInfoOcData.createDate,
+        "createDate": this.routerParams.fromBtn === 'add' ? this.notes.toDateTimeString(0) : this.genInfoOcData.createDate,
+        "createUser": this.routerParams.fromBtn === 'add' ? JSON.parse(window.localStorage.currentUser).username : this.genInfoOcData.createUser,
+        "currencyCd": this.genInfoOcData.currencyCd,
+        "currencyRt": this.genInfoOcData.currencyRt,
+        "duration": this.projectOc.duration,
+        "expiryDate": this.genInfoOcData.expiryDate,
+        "govtTag": this.genInfoOcData.govtTag,
+        "indicativeTag": this.genInfoOcData.indicativeTag,
+        "insuredDesc": this.genInfoOcData.insuredDesc,
+        "intmId": this.genInfoOcData.intmId,
+        "issueDate": this.genInfoOcData.issueDate,
+        "lineCd": this.genInfoOcData.lineCd,
+        "lineClassCd": this.genInfoOcData.lineClassCd,
+        "maxSi": this.projectOc.maxSi,
+        "objectId": this.checkIdFormat(this.projectOc.objectId),
+        "openingParag": this.genInfoOcData.openingParag,
+        "pctShare": this.projectOc.pctShare,
+        "policyIdOc": this.genInfoOcData.policyIdOc,
+        "preparedBy": this.genInfoOcData.preparedBy,
+        "prinId": this.genInfoOcData.prinId,
+        "printDate": this.genInfoOcData.printDate,
+        "printedBy": this.genInfoOcData.printedBy,
+        "prjCreateDate": this.routerParams.fromBtn === 'add' ? this.notes.toDateTimeString(0) : this.projectOc.createDate,
+        "prjCreateUser": this.routerParams.fromBtn === 'add' ? JSON.parse(window.localStorage.currentUser).username : this.projectOc.createUser,
+        "prjUpdateDate": this.notes.toDateTimeString(0),
+        "prjUpdateUser": JSON.parse(window.localStorage.currentUser).username,
+        "projDesc": this.projectOc.projDesc,
+        "projId": this.projectOc.projId,
+        "quoteIdOc": this.genInfoOcData.quoteIdOc,
+        "reasonCd": /*this.genInfoOcData.reasonCd*/ 'REA',
+        "refPolNo": this.genInfoOcData.refPolNo,
+        "reinsurerId": this.genInfoOcData.reinsurerId,
+        "reqBy": this.genInfoOcData.reqBy,
+        "reqDate": this.genInfoOcData.reqDate,
+        "reqMode": this.genInfoOcData.reqMode,
+        "revNo": this.routerParams.fromBtn === 'add' ? '00' : this.genInfoOcData.revNo,
+        "riskId": this.projectOc.riskId,
+        "seqNo": this.routerParams.fromBtn === 'add' ? '00000' : this.genInfoOcData.seqNo,
+        "site": this.projectOc.site,
+        "status": this.genInfoOcData.status,
+        "testing": this.projectOc.testing,
+        "totalValue": this.projectOc.totalValue,
+        "updateDate": this.notes.toDateTimeString(0),
+        "updateUser": JSON.parse(window.localStorage.currentUser).username,
+        "year": this.routerParams.fromBtn === 'add' ? new Date().getFullYear() : this.genInfoOcData.year
+      }
+    /*console.log('ProjectOc');
     console.log(this.projectOc);
     console.log('Quotation');
-    console.log(this.genInfoOcData);
+    console.log(this.genInfoOcData);*/
+    console.log(params);
+    console.log(JSON.stringify(params));
+    if(this.validate()){
+      this.quotationService.saveQuoteGeneralInfoOc(JSON.stringify(params)).subscribe((data: any) =>{
+        console.log(data);
+        if(data.returnCode === 0){
+
+        }else{
+          this.genInfoOcData.quoteIdOc = data.quoteIdOc;
+          this.genInfoOcData.openQuotationNo = data.openQuotationNo;
+          this.quoteDataF();
+        }
+      });
+    }else{
+      console.log('Please fill all required fields');
+    }
+  }
+
+  //validates params before going to web service
+  validate(){
+    //Validate Required fields on every line code
+    if(this.genInfoOcData.issueDate == ''    || this.genInfoOcData.expiryDate == '' || this.genInfoOcData.lineClassCd == ''  ||
+       this.genInfoOcData.cedingId == ''     || this.genInfoOcData.prinId == ''     || this.genInfoOcData.contractorId == '' ||
+       this.genInfoOcData.insuredDesc == ''  || this.projectOc.objectId == ''       || this.projectOc.projectDesc == ''      ||
+       this.projectOc.site == ''             || this.projectOc.duration == ''       || this.genInfoOcData.openingParag == '' ||
+       this.genInfoOcData.closingParag == '' || this.genInfoOcData.currencyCd == '' || this.genInfoOcData.currencyRt == ''
+      ){
+      return false;
+    }else{
+      //Validate Required fields on a specific line code
+      if(this.genInfoOcData.lineCd === 'CAR'){
+        return true;
+      }
+      else if(this.genInfoOcData.lineCd === 'EAR'){
+        if(this.projectOc.testing == ''){
+          return false;
+        }else{
+          return true;
+        }
+      }
+    }
+
+
+  }
+
+
+  //temporary fix for leading zeroes
+  checkIdFormat(id: any){
+    if(parseInt(id) > 99){
+      return id;
+    }else{
+      if(parseInt(id) > 9){
+        return '0'+id;
+      }
+      else if(parseInt(id) < 9){
+        return '00'+id;
+      }
+    }
   }
 }

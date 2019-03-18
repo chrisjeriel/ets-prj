@@ -118,7 +118,7 @@
                     <div *ngSwitchCase="'LOSS RESERVE DEPOSIT'">Loss Reserve Deposit</div>
                     <div *ngSwitchCase="'OFFSETTING OF RECEIVABLES IN-TRUST AGAINST LOSSES'">Offsetting of Receivables In-Trust Against Losses</div>
                     <div *ngSwitchCase="'OFFSETTING OF CLAIMS AGAINST NEGATIVE TREATY BALANCE'">Offsetting of Claims Against Negative Treaty Balance</div>
-                    <div *ngSwitchCase="'OFFSETTING OF OVERDUE ACCOUNTS AGAINST TREATY BALANCE'">Offsetting of Overdue Accounts Against Treaty Balance</div>
+                    <div *ngSwitchCase="'OFFSETTING OF OUTSTANDING ACCOUNTS AGAINST TREATY BALANCE'">Offsetting of Outstanding Accounts Against Treaty Balance</div>
                 </ng-container>
             </ng-template>
             <ng-template ngbTabContent>
@@ -143,7 +143,7 @@
                             <ng-container *ngSwitchCase="'OFFSETTING OF CLAIMS AGAINST NEGATIVE TREATY BALANCE'">
                                 <app-jv-offsetting-against-negative-treaty></app-jv-offsetting-against-negative-treaty>
                             </ng-container>
-                            <ng-container *ngSwitchCase="'OFFSETTING OF OVERDUE ACCOUNTS AGAINST TREATY BALANCE'">
+                            <ng-container *ngSwitchCase="'OFFSETTING OF OUTSTANDING ACCOUNTS AGAINST TREATY BALANCE'">
                                 <app-jv-overdue-accounts-against-treaty></app-jv-overdue-accounts-against-treaty>
                             </ng-container>
                         </ng-container>
