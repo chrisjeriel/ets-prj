@@ -56,8 +56,8 @@ export class QuotationComponent implements OnInit {
 	}
 
 	onTabChange($event: NgbTabChangeEvent) {
-		if($('.ng-dirty:not([type="search"]):not(.not-form)').length != 0  && !confirm('Leave page without saving changes?'))
-			$event.preventDefault();
+		// if($('.ng-dirty:not([type="search"]):not(.not-form)').length != 0  && !confirm('Leave page without saving changes?'))
+		// 	$event.preventDefault();
 
   		if ($event.nextId === 'Exit') {
     		this.router.navigateByUrl('');
