@@ -36,14 +36,14 @@ export class HoldCoverComponent implements OnInit {
     pagination: true,
     filters: [
       {key: 'quotationNo', title: 'Quotation No.',dataType: 'seq'},
+      {key: 'cedingName',title: 'Ceding Co.',dataType: 'text'},
+      {key: 'insuredDesc',title: 'Insured',dataType: 'text'},
+      {key: 'riskName',title: 'Risk',dataType: 'text'},
       {key: 'cessionDesc',title: 'Type of Cession',dataType: 'text'},
       {key: 'lineClassCdDesc',title: 'Line Class',dataType: 'text'},
       {key: 'status',title: 'Status',dataType: 'text'},
-      {key: 'cedingName',title: 'Ceding Co.',dataType: 'text'},
       {key: 'principalName',title: 'Principal',dataType: 'text'},
-      {key: 'contractorName',title: 'Contractor',dataType: 'text'},
-      {key: 'insuredDesc',title: 'Insured',dataType: 'text'},
-      {key: 'riskName',title: 'Risk',dataType: 'text'},
+      {key: 'contractorName',title: 'Contractor',dataType: 'text'},   
       {key: 'objectDesc',title: 'Object',dataType: 'text'},
       {key: 'site',title: 'Site',dataType: 'text'},
       {key: 'policyNo',title: 'Policy No.',dataType: 'seq'},
@@ -151,6 +151,7 @@ export class HoldCoverComponent implements OnInit {
     this.holdCoverInfo = new HoldCoverInfo();
     this.btnApprovalEnabled = false;
     this.passDataQuoteLOV.filters[0].enabled = false;
+    this.showAll = true;
     this.search();
   }
 
@@ -205,33 +206,77 @@ export class HoldCoverComponent implements OnInit {
         //      $('#lovMdl > #modalBtn').trigger('click');
         // }
 
+        searchMatchingQuote(){
+          this.passDataQuoteLOV.tableData = [];
+          this.qLine = (this.qLine === '' || this.qLine === null || this.qLine === undefined)? '' : this.qLine;
+          this.qYear = (this.qYear === '' || this.qYear === null || this.qYear === undefined)? '' : this.qYear;
+          this.qSeqNo = (this.qSeqNo === '' || this.qSeqNo === null || this.qSeqNo === undefined)? '' : this.qSeqNo;
+          this.qRevNo = (this.qRevNo === '' || this.qRevNo === null || this.qRevNo === undefined)? '' : this.qRevNo;
+          this.qCedingId = (this.qCedingId === '' || this.qCedingId === null || this.qCedingId === undefined)? '' : this.qCedingId;
+
+          this.quotationService.getSearchQuoteInfo(this.qLine.toUpperCase(),this.qYear,this.qSeqNo,this.qRevNo,this.qCedingId)
+            .subscribe(data => {
+              var rec = data['quotation'];
+              if(rec !== '' ||  rec !== null || rec !== undefined){
+                for(let i of rec){
+                  this.passDataQuoteLOV.tableData.push({
+                    quotationNo: i.quotationNo,
+                    cedingName:  i.cedingName,
+                    insuredDesc: i.insuredDesc,
+                    riskName: (i.project == null) ? '' : i.project.riskName
+                  });
+                }
+                 this.table.refreshTable();
+                 $('#lovMdl > #modalBtn').trigger('click');
+              }
+            });
+        }
+
         search() {
-          var ql = (this.qLine === undefined )? '' : this.qLine.toUpperCase(); 
-          var yr = (this.qYear === undefined || this.qYear === '')? 0 : Number(this.qYear.toString());
-          var sn = (this.qSeqNo === undefined || this.qSeqNo === '' )? 0 : Number(this.qSeqNo.toString());
-          var rn = (this.qRevNo === undefined || this.qRevNo === '' )? 0 : Number(this.qRevNo.toString());
-          var cn = (this.qCedingId === undefined || this.qCedingId === '')? 0 : Number(this.qCedingId.toString());
+          // var ql = (this.qLine === undefined )? '' : this.qLine.toUpperCase(); 
+          // var yr = (this.qYear === undefined || this.qYear === '')? 0 : Number(this.qYear.toString());
+          // var sn = (this.qSeqNo === undefined || this.qSeqNo === '' )? 0 : Number(this.qSeqNo.toString());
+          // var rn = (this.qRevNo === undefined || this.qRevNo === '' )? 0 : Number(this.qRevNo.toString());
+          // var cn = (this.qCedingId === undefined || this.qCedingId === '')? 0 : Number(this.qCedingId.toString());
 
-           this.cbSearchQn = this.passDataQuoteLOV.filters[0].enabled;
-           this.inSearcnQn = this.passDataQuoteLOV.filters[0].search;
+          //  this.cbSearchQn = this.passDataQuoteLOV.filters[0].enabled;
+          //  this.inSearcnQn = this.passDataQuoteLOV.filters[0].search;
           
-          console.log(this.cbSearchQn);
-          console.log(this.showAll + " >> show All");
-          if(this.cbSearchQn === false){
-            this.searchParams = [{"key":"quotationNo","search":ql.toUpperCase()+"%"+((yr===0)?'':yr)+"%"+((sn===0)?'':sn)+"%"+((rn===0)?'':rn)+"%"+((cn===0)?'':cn)},{"key":"cessionDesc","search":""},{"key":"lineClassCdDesc","search":""},{"key":"status","search":""},{"key":"cedingName","search":""},{"key":"principalName","search":""},{"key":"contractorName","search":""},{"key":"insuredDesc","search":""},{"key":"riskName","search":""},{"key":"objectDesc","search":""},{"key":"site","search":""},{"key":"policyNo","search":""},{"key":"currencyCd","search":""},{"key":"issueDate","search":""},{"key":"expiryDate","search":""},{"key":"reqBy","search":""},{"key":"createUser","search":""}];
-          }else{
-            this.searchParams = [];
-          }
+          // // this.quotationService.getSearchQuoteInfo('DOS','','1','','83')
+          // //   .subscribe(data => {
+          // //     console.log(JSON.stringify(data) + " >>>> WORKING");
+          // //   });
 
-          if(this.showAll === false){
-              this.searchParams = [{"key":"quotationNo","search":ql.toUpperCase()+"%"+((yr===0)?'':yr)+"%"+((sn===0)?'':sn)+"%"+((rn===0)?'':rn)+"%"+((cn===0)?'':cn)},{"key":"cessionDesc","search":""},{"key":"lineClassCdDesc","search":""},{"key":"status","search":""},{"key":"cedingName","search":""},{"key":"principalName","search":""},{"key":"contractorName","search":""},{"key":"insuredDesc","search":""},{"key":"riskName","search":""},{"key":"objectDesc","search":""},{"key":"site","search":""},{"key":"policyNo","search":""},{"key":"currencyCd","search":""},{"key":"issueDate","search":""},{"key":"expiryDate","search":""},{"key":"reqBy","search":""},{"key":"createUser","search":""}];
-          }else{
-             this.searchParams = [];
-          }
-          
-          
 
-          console.log(JSON.stringify(this.searchParams) + " >>> this.searchParams");
+          // if(this.cbSearchQn === false){
+          //   //this.searchParams = [{"key":"quotationNo","search":ql.toUpperCase()+"%"+((yr===0)?'':yr)+"%"+((sn===0)?'':sn)+"%"+((rn===0)?'':rn)+"%"+((cn===0)?'':cn)},{"key":"cessionDesc","search":""},{"key":"lineClassCdDesc","search":""},{"key":"status","search":""},{"key":"cedingName","search":""},{"key":"principalName","search":""},{"key":"contractorName","search":""},{"key":"insuredDesc","search":""},{"key":"riskName","search":""},{"key":"objectDesc","search":""},{"key":"site","search":""},{"key":"policyNo","search":""},{"key":"currencyCd","search":""},{"key":"issueDate","search":""},{"key":"expiryDate","search":""},{"key":"reqBy","search":""},{"key":"createUser","search":""}];
+          // }
+             
+
+          // this.passDataQuoteLOV.tableData = [];
+
+          // this.qLine = (this.qLine === '' || this.qLine === null || this.qLine === undefined)? '' : this.qLine;
+          // this.qYear = (this.qYear === '' || this.qYear === null || this.qYear === undefined)? '' : this.qYear;
+          // this.qSeqNo = (this.qSeqNo === '' || this.qSeqNo === null || this.qSeqNo === undefined)? '' : this.qSeqNo;
+          // this.qRevNo = (this.qRevNo === '' || this.qRevNo === null || this.qRevNo === undefined)? '' : this.qRevNo;
+          // this.qCedingId = (this.qCedingId === '' || this.qCedingId === null || this.qCedingId === undefined)? '' : this.qCedingId;
+
+          // this.quotationService.getSearchQuoteInfo(this.qLine.toUpperCase(),this.qYear,this.qSeqNo,this.qRevNo,this.qCedingId)
+          //   .subscribe(data => {
+          //     var rec = data['quotation'];
+          //     if(rec !== '' ||  rec !== null || rec !== undefined){
+          //       for(let i of rec){
+          //         this.passDataQuoteLOV.tableData.push({
+          //           quotationNo: i.quotationNo,
+          //           cedingName:  i.cedingName,
+          //           insuredDesc: i.insuredDesc,
+          //           riskName: (i.project == null) ? '' : i.project.riskName
+          //         });
+          //       }
+          //        this.table.refreshTable();
+          //     }
+          //   });
+
           this.passDataQuoteLOV.tableData = [];
           this.quotationService.getQuoProcessingData(this.searchParams)
           .subscribe(val => {
@@ -289,7 +334,7 @@ export class HoldCoverComponent implements OnInit {
           this.risk = this.rowRec.riskName;
           this.hcLine  = this.qLine;
           this.hcYear  =  String(new Date().getFullYear());
-
+          this.showAll = true;
           if(data['quotationList'][0] === null || data['quotationList'][0] === undefined || data['quotationList'][0] === ''){ 
             this.holdCover.holdCoverId = '';
             this.hcLine  = '';
@@ -307,7 +352,6 @@ export class HoldCoverComponent implements OnInit {
             this.clickView = false;
 
           }else{
-            this.showAll = true;
             var rec = data['quotationList'][0].holdCover;
             this.holdCover.holdCoverNo = rec.holdCoverNo;
             this.splitHcNo(rec.holdCoverNo);

@@ -943,4 +943,13 @@ export class QuotationService {
         return this.http.get('http://localhost:8888/api/util-service/generateReport',{ params,'responseType': 'blob'});
     }
 
+    getSearchQuoteInfo(lineCd,quoteYear,quoteSeqNo,quoteRevNo,quoteCedingId){
+        const params = new HttpParams()
+             .set('lineCd',lineCd)
+             .set('quoteYear',quoteYear)
+             .set('quoteSeqNo',quoteSeqNo)
+             .set('quoteRevNo',quoteRevNo)
+             .set('quoteCedingId',quoteCedingId)
+        return this.http.get('http://localhost:8888/api/quote-service/searchQuoteInfo',{params});
+    }
 }
