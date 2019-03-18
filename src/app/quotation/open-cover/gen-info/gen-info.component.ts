@@ -184,6 +184,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
       this.genInfoOcData.indicativeTag = 'N';
       this.projectOc.riskId = this.routerParams.riskId;
       this.getRiskMethod(this.routerParams.riskId);
+      this.getDefaultCurrencyCd();
     }else if(this.routerParams.fromBtn === 'edit' || this.routerParams.fromBtn === 'view'){
       this.getGeneralInfoData();
     }
@@ -199,22 +200,25 @@ export class GenInfoComponent implements OnInit, OnDestroy {
       this.projectOc.blockDesc  = this.routerParams.blockDesc;
       this.projectOc.latitude  = this.routerParams.latitude === 'null' ? '' : this.routerParams.latitude;
       this.projectOc.longitude = this.routerParams.longitude === 'null' ? '' : this.routerParams.longitude;
-      if(this.routerParams.fromBtn === 'edit' || this.routerParams.fromBtn === 'view')
-        this.quoteDataF();
+  }
+
+  //get default currency 'PHP' when adding new open quotation
+  getDefaultCurrencyCd(){
+    this.mtnService.getMtnCurrency('PHP', 'Y').subscribe((data: any) =>{
+        this.genInfoOcData.currencyCd = data.currency[0].currencyCd;
+        this.genInfoOcData.currencyRt = data.currency[0].currencyRt;
+    });
   }
 
   getGeneralInfoData(){
     this.loading = true;
     //condition if only going back to gen info after save
     if(this.backQuoteData !== undefined){
-      console.log('emit')
       this.retrieveGenInfoParams.openQuotationNo = this.plainOpenQuotationNo(this.backQuoteData.openQuotationNo);
     }
     //else use routerParams
     else{
-      console.log('router');
       this.retrieveGenInfoParams.openQuotationNo = this.plainOpenQuotationNo(this.routerParams.ocQuoteNo);
-      console.log(this.retrieveGenInfoParams.openQuotationNo);
     }
     this.quotationService.getOcGenInfoData('',this.retrieveGenInfoParams.openQuotationNo).subscribe((data: any) =>{
           console.log(data);
@@ -242,6 +246,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
          this.genInfoOcData.contractorName      = data.quotationOc.contractorName;
          this.genInfoOcData.insuredDesc         = data.quotationOc.insuredDesc;
          this.genInfoOcData.status              = data.quotationOc.status;
+         this.genInfoOcData.statusDesc          = data.quotationOc.statusDesc;
          this.genInfoOcData.reinsurerId         = data.quotationOc.reinsurerId;
          this.genInfoOcData.reinsurerName       = data.quotationOc.reinsurerName;
          this.genInfoOcData.intmId              = data.quotationOc.intmId;
@@ -572,11 +577,10 @@ export class GenInfoComponent implements OnInit, OnDestroy {
         "updateUser": JSON.parse(window.localStorage.currentUser).username,
         "year": this.routerParams.fromBtn === 'add' ? new Date().getFullYear() : this.genInfoOcData.year
       }
-    /*console.log(params);
-    console.log(JSON.stringify(params));*/
+    console.log(params);
+    console.log(JSON.stringify(params));
     if(this.validate()){
       this.quotationService.saveQuoteGeneralInfoOc(JSON.stringify(params)).subscribe((data: any) =>{
-        console.log(data);
         if(data.returnCode === 0){
           this.dialogMessage="The system has encountered an unspecified error.";
           this.dialogIcon = "error";
@@ -639,7 +643,13 @@ export class GenInfoComponent implements OnInit, OnDestroy {
   }
 
   onClickSave(){
-    $('#confirm-save #modalBtn2').trigger('click');
+    if(!this.validate()){
+      this.dialogMessage="Please fill all required fields.";
+      this.dialogIcon = "info";
+      $('#successModalBtn').trigger('click');
+    }else{
+      $('#confirm-save #modalBtn2').trigger('click');
+    }
   }
 
   cancel(){
