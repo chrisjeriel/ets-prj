@@ -154,7 +154,6 @@ export class GenInfoComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.titleService.setTitle("Quo | General Info");
     //get params from open cover processing or inquiry
-    console.log(this.notes.toDateTimeString(0));
     this.sub = this.route.params.subscribe(params => {
       this.routerParams = params;
     });
@@ -585,14 +584,14 @@ export class GenInfoComponent implements OnInit, OnDestroy {
         if(data.returnCode === 0){
           this.dialogMessage="The system has encountered an unspecified error.";
           this.dialogIcon = "error";
-          $('#successModalBtn').trigger('click');
+          $('#genInfo > #successModalBtn').trigger('click');
         }else{
           this.genInfoOcData.quoteIdOc = data.quoteIdOc;
           this.genInfoOcData.openQuotationNo = data.openQuotationNo;
           this.quoteDataF();
           this.dialogMessage="";
           this.dialogIcon = "";
-          $('#successModalBtn').trigger('click');
+          $('#genInfo > #successModalBtn').trigger('click');
           this.form.control.markAsPristine();
         }
       });
@@ -604,6 +603,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
   //validates params before going to web service
   validate(){
     //Validate Required fields on every line code
+    console.log(this.genInfoOcData);
     if(this.genInfoOcData.issueDate == ''    || this.genInfoOcData.expiryDate == '' || this.genInfoOcData.lineClassCd == ''  ||
        this.genInfoOcData.cedingId == ''     || this.genInfoOcData.prinId == ''     || this.genInfoOcData.contractorId == '' ||
        this.genInfoOcData.insuredDesc == ''  || this.projectOc.objectId == ''       || this.projectOc.projectDesc == ''      ||
@@ -647,7 +647,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
     if(!this.validate()){
       this.dialogMessage="Please fill all required fields.";
       this.dialogIcon = "info";
-      $('#successModalBtn').trigger('click');
+      $('#genInfo > #successModalBtn').trigger('click');
     }else{
       $('#confirm-save #modalBtn2').trigger('click');
     }
