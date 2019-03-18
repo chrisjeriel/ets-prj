@@ -181,7 +181,7 @@ span.ui-column-resizer {
                     <tbody>
                         <tr *ngFor="let data of displayData | paginate: { id: 'editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p2 };let ti = index" [class.selected]="data === indvSelect || data.checked" (click)="onRowClick($event,data)" (dblclick)="onRowDblClick($event)">
                             <td *ngIf="passData.checkFlag" class="checkbox align-middle">
-                                <input *ngIf="!(data===fillData)" type="checkbox" name="checkbox" [ngModel]="data.checked" (change)="removeSelected($event, data)" class="not-form">
+                                <input *ngIf="!(data===fillData)" type="checkbox" name="checkbox" [ngModel]="data.checked" (change)="removeSelected($event, data)" class="not-form" [ngModelOptions]="{standalone: true}">
                             </td>
                             <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]" class="align-middle">
                                 <div *ngIf="!(data===fillData) && ( passData.uneditable === undefined || !passData.uneditable[i] ) && (data.uneditable===undefined || data.uneditable.indexOf(key)==-1)" class="align-middle" style="position: relative;">

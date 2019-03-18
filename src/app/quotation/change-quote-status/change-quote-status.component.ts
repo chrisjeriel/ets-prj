@@ -207,16 +207,6 @@ export class ChangeQuoteStatusComponent implements OnInit {
         }*/
     }
 
-    cancel(){
-       this.prepareData();
-       console.log(this.saveData)
-       console.log(this.passData.tableData);
-    }
-
-    save(cancelFlag?){
-
-    }
-
     openReasonLOV(){
         $('#reasonLOV #modalBtn').trigger('click');
     }

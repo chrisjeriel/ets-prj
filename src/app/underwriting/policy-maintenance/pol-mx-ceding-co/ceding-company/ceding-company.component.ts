@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter, Input} from '@angular/core';
 import { UnderwritingService } from '@app/_services';
 import { CedingCompanyListing } from '@app/_models';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component'
@@ -10,6 +10,8 @@ import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./ceding-company.component.css']
 })
 export class CedingCompanyComponent implements OnInit {
+  @Input() exclude: any[] = [];
+
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
   selected: any = null;
@@ -40,7 +42,7 @@ export class CedingCompanyComponent implements OnInit {
                 dataType: 'text'
             }            
         ],
-        pageID: 'direct',
+        pageID: 'ceding-co'+(Math.floor(Math.random() * (999999 - 100000)) + 100000).toString(),
         keys:['cedingId','cedingName','address']
     };
 
@@ -68,20 +70,24 @@ export class CedingCompanyComponent implements OnInit {
   }
 
   okBtnClick(){
+    this.selected['fromLOV'] = true;
   	this.selectedData.emit(this.selected);
   }
 
   openModal(){
      this.passDataCedingCompanyMember.tableData = [];
+     
 
-     this.underwritingService.getCedingCompanyList('','','','','','','','','','Y').subscribe((data: any) => {
+     this.underwritingService.getCedingCompanyList('','','','','','','','','','Y').subscribe((data: any) => {       
          for(var i=0;i< data.cedingcompany.length;i++){
             // this.passDataCedingCompanyMember.tableData.push(new CedingCompanyListing(data.cedingcompany[i].cedingId,data.cedingcompany[i].cedingName,data.cedingcompany[i].cedingAbbr,data.cedingcompany[i].address,(data.cedingcompany[i].membershipDate == null ? null : new Date(data.cedingcompany[i].membershipDate[0],data.cedingcompany[i].membershipDate[1]-1,data.cedingcompany[i].membershipDate[2])),(data.cedingcompany[i].terminationDate == null ? null : new Date(data.cedingcompany[i].terminationDate[0],data.cedingcompany[i].terminationDate[1]-1,data.cedingcompany[i].terminationDate[2])),(data.cedingcompany[i].inactiveDate == null ? null : new Date(data.cedingcompany[i].inactiveDate[0],data.cedingcompany[i].inactiveDate[1]-1,data.cedingcompany[i].inactiveDate[2]))));
-           this.passDataCedingCompanyMember.tableData.push({
-               cedingId: data.cedingcompany[i].cedingId,
-               cedingName: data.cedingcompany[i].cedingName,
-               address: data.cedingcompany[i].address
-           });
+           if(!this.exclude.includes(String(data.cedingcompany[i].cedingId).padStart(2, '0'))) {
+             this.passDataCedingCompanyMember.tableData.push({
+                 cedingId: data.cedingcompany[i].cedingId,
+                 cedingName: data.cedingcompany[i].cedingName,
+                 address: data.cedingcompany[i].address
+             });  
+           }            
          }
          this.table.refreshTable();          
      });
@@ -95,9 +101,17 @@ export class CedingCompanyComponent implements OnInit {
         cedingName: '',
         ev: ev
       });
+    } else if(isNaN(code/1)) {
+      this.selectedData.emit({
+        cedingId: '',
+        cedingName: '',
+        ev: ev
+      });
+
+      $('#cedingCompanyMdl > #modalBtn').trigger('click');
     } else {
       this.underwritingService.getCedingCompanyList(code,'','','','','','','','','Y').subscribe(data => {     
-        if(data['cedingcompany'].length > 0) {
+        if(data['cedingcompany'].length > 0 && !this.exclude.includes(String(data['cedingcompany'][0].cedingId).padStart(2, '0'))) {
           data['cedingcompany'][0]['ev'] = ev;
           // this.selectedData.emit(new CedingCompanyListing(data['cedingcompany'][0].cedingId,data['cedingcompany'][0].cedingName,data['cedingcompany'][0].cedingAbbr,data['cedingcompany'][0].address,(data['cedingcompany'][0].membershipDate == null ? null : new Date(data['cedingcompany'][0].membershipDate[0],data['cedingcompany'][0].membershipDate[1]-1,data['cedingcompany'][0].membershipDate[2])),(data['cedingcompany'][0].terminationDate == null ? null : new Date(data['cedingcompany'][0].terminationDate[0],data['cedingcompany'][0].terminationDate[1]-1,data['cedingcompany'][0].terminationDate[2])),(data['cedingcompany'][0].inactiveDate == null ? null : new Date(data['cedingcompany'][0].inactiveDate[0],data['cedingcompany'][0].inactiveDate[1]-1,data['cedingcompany'][0].inactiveDate[2]))));
           this.selectedData.emit(data['cedingcompany'][0]);

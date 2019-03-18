@@ -21,6 +21,8 @@ export class ArDetailsInvestmentIncomeComponent implements OnInit {
     		curr: 'PHP',
     		currRate: 1,
     		investment: 14000000,
+            bankCharges: 18112.50,
+            withHoldingTax: 82250,
     		investmentIncome: 4112500
     	},
     	{
@@ -35,12 +37,14 @@ export class ArDetailsInvestmentIncomeComponent implements OnInit {
     		curr: 'PHP',
     		currRate: 1,
     		investment: 10000000,
+            bankCharges: 10150,
+            withHoldingTax: 3000,
     		investmentIncome: 150000
     	}
     ],
-    tHeader:['Bank','Certificate No.','Investment Type','Maturity Period','Duration Unit','Interest Rate','Date Purchased','Maturity Date','Curr','Curr Rate','Investment','Investment Income'],
-    dataTypes:['text','text','text','number','text','percent','date','date','text','percent','currency','currency'],
-    total:[null,null,null,null,null,null,null,null,null,'Total','investment','investmentIncome'],
+    tHeader:['Bank','Certificate No.','Investment Type','Maturity Period','Duration Unit','Interest Rate','Date Purchased','Maturity Date','Curr','Curr Rate','Investment','Bank Charges','Withholding Tax','Investment Income'],
+    dataTypes:['text','text','text','number','text','percent','date','date','text','percent','currency','currency','currency','currency'],
+    total:[null,null,null,null,null,null,null,null,null,null,'Total','bankCharges','withHoldingTax','investmentIncome'],
     addFlag:true,
     deleteFlag:true,
     genericBtn: "Save",
@@ -58,9 +62,12 @@ export class ArDetailsInvestmentIncomeComponent implements OnInit {
     		curr: null,
     		currRate: null,
     		investment: null,
+            bankCharges:null,
+            withHoldingTax:null,
     		investmentIncome: null
     	},
     checkFlag: true,
+    widths:[220,150,150,1,1,1,1,1,1,80,150,150,150]
   }
 
   constructor() { }

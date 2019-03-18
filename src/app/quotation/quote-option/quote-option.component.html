@@ -37,7 +37,7 @@
 		<legend class="scheduler-border">Section Covers</legend>
          <div class="row">
             <div class="col-sm-1"></div>
-            <div class="col-sm-10" style="margin-top: 0.5em;">
+            <div class="col-sm-10" style="margin-top: 0.5em; margin-bottom: 0.5em;">
                 <app-cust-editable-non-datatable #otherRatesTable [passData]="otherRatesData" (tableDataChange)="updateCovers()" (clickLOV)="clickCoverCodeLOV($event)" (newClick)="selectedCover=$event">
                 	<ng-container controls-l>
                         <button [class.cust-btn-disabled]="selectedOption==null || selectedCover==null" class="cust-btn" (click)="showDeductiblesOptions($event,true)">Deductibles</button>
@@ -64,7 +64,8 @@
 
 <ng-container *ngIf="showModal">
 	<app-modal class="d-none" id="deductiblesModal">
-		<div header>Deductibles Per Section Cover</div>
+		<div *ngIf="fromCovers" header>Deductibles Per Section Cover</div>
+		<div *ngIf="!fromCovers" header>Deductibles Per Quote Option</div>
 		<div body>
 			<div class="d-flex">
 				<label class="form-control-sm col-sm-1" for="inputInname">Option No</label>
