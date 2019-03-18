@@ -9,7 +9,7 @@ import { AccountingService } from '@app/_services';
 })
 export class ArPaymentforAdvancesComponent implements OnInit {
   
-  PaymentForAdvancesData: any = {
+  /*PaymentForAdvancesData: any = {
     tableData: this.accountingService.getPaymentForAdvances(),
     tHeader: ['Ceding Company', 'Remarks', 'Curr', 'Curr Rate', 'Amount', 'Amount (PHP)'],
     dataTypes: ['text', 'text', 'text', 'percent', 'currency', 'currency'],
@@ -23,7 +23,7 @@ export class ArPaymentforAdvancesComponent implements OnInit {
     genericBtn: 'Save',
     total: [null, null, null, 'Total', 'amount', 'amountPhp'],
     widths: ['auto','auto',1,1,2,100,100],
-  }
+  }*/
 
   constructor(private accountingService: AccountingService) { }
 

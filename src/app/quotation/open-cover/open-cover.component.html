@@ -1,5 +1,5 @@
 <div class="cust-tabs-container">
-	<h4 *ngIf="!inquiryFlag">Quotation / Open Cover Processing</h4>
+	<h4 *ngIf="!inquiryFlag">Quotation / Open Cover Processing <span *ngIf="quoteData !== undefined">/ {{quoteData.openQuotationNo}}</span></h4>
 	<h4 *ngIf="inquiryFlag">Quotation / Open Cover Inquiry</h4>
 	<ngb-tabset (tabChange)="beforeChange($event);onTabChange($event)">
 		<ngb-tab class="ngb-tab" title="General Info">

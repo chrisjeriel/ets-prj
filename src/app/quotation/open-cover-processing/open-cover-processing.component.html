@@ -27,10 +27,10 @@
 										</div>
 										<div class="input-group">
 											<label class="form-control-sm col-sm-3">Risk</label>
-											<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="riskId" (change)="checkCode('risk')" id="riskId">
+											<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="riskDetails.riskId" (change)="checkCode('risk')" id="riskId">
 											<div class="text-search-ico" (click)="getRiskLov($event)"><a><i class="fa fa-search"></i></a></div>
 											&nbsp;&nbsp;
-											<input type="text" class="form-control form-control-sm" [(ngModel)]="riskName" readonly>
+											<input type="text" class="form-control form-control-sm" [(ngModel)]="riskDetails.riskName" readonly>
 										</div>
 									</div>
 								</fieldset>

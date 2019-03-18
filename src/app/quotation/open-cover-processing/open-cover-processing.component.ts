@@ -36,12 +36,14 @@ export class OpenCoverProcessingComponent implements OnInit {
   ocQuoteId: string = "";
   //riskName: string = "";
 
-  riskId:string;
-  riskName:string;
   mtnLineCd: string;
   mtnLineDesc: string;
   mtnCessionId: string;
   mtnCessionDesc: string;
+  riskDetails: any = {
+    riskId: '',
+    riskName: '',
+  };
 
   objId:number;
 
@@ -51,7 +53,7 @@ export class OpenCoverProcessingComponent implements OnInit {
     //dataTypes: ['text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', "text", 'date', 'date', 'text', 'text'],
     dataTypes: ["text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text","text", "date", "date", "text", "text"],
     resizable: [false, true, true, true, true, true, true, true, true, true, false, false, true, true, true, true],
-    pageLength: 10,
+    pageLength: 20,
     expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, pagination: true, pageStatus: true, addFlag: true, editFlag: true,
      filters: [
         {
@@ -203,7 +205,22 @@ export class OpenCoverProcessingComponent implements OnInit {
       this.quotationService.rowData = [];
 
       setTimeout(() => {
-        this.router.navigate(['/open-cover', { line: ocLine, from: "oc-processing", typeOfCession: this.mtnCessionDesc, riskId: this.riskId, fromBtn: 'add', inquiryFlag: false }], { skipLocationChange: true });
+        this.router.navigate(['/open-cover', { line: ocLine, 
+                                               from: "oc-processing", 
+                                               cessionId: this.mtnCessionId,
+                                               typeOfCession: this.mtnCessionDesc, 
+                                               riskId: this.riskDetails.riskId,
+                                               riskName: this.riskDetails.riskName,
+                                               regionDesc: this.riskDetails.regionDesc,
+                                               provinceDesc: this.riskDetails.provinceDesc,
+                                               cityDesc: this.riskDetails.cityDesc,
+                                               districtDesc: this.riskDetails.districtDesc,
+                                               blockDesc: this.riskDetails.blockDesc,
+                                               latitude: this.riskDetails.latitude, 
+                                               longitude: this.riskDetails.longitude,
+                                               fromBtn: 'add', 
+                                               inquiryFlag: false 
+                                             }], { skipLocationChange: true });
       }, 100);
     }
 
@@ -285,8 +302,8 @@ export class OpenCoverProcessingComponent implements OnInit {
     $('#riskIdLov #modalBtn').trigger('click');
   }
   setRisk(data){
-    this.riskId  = data.riskId;
-    this.riskName  = data.riskName;
+    this.riskDetails = data;
+    console.log(this.riskDetails);
     this.onClickAdd("#riskId");
     this.loading = false;
   }
@@ -317,14 +334,14 @@ export class OpenCoverProcessingComponent implements OnInit {
         } else if(field === 'typeOfCession'){
             this.typeOfCessionLov.checkCode(this.mtnCessionId, 'a');    
         } else if(field === 'risk') {
-            this.riskLov.checkCode(this.riskId, 'a');
+            this.riskLov.checkCode(this.riskDetails.riskId, 'a');
         }             
     }
 
     checkFields(){
-        if(this.mtnLineDesc === undefined || this.mtnCessionDesc === undefined || this.riskName === undefined ||
-           this.mtnLineDesc === null || this.mtnCessionDesc === null || this.riskName === null ||
-           this.mtnLineDesc === '' || this.mtnCessionDesc === '' || this.riskName === ''){
+        if(this.mtnLineDesc === undefined || this.mtnCessionDesc === undefined || this.riskDetails.riskName === undefined ||
+           this.mtnLineDesc === null || this.mtnCessionDesc === null || this.riskDetails.riskName === null ||
+           this.mtnLineDesc === '' || this.mtnCessionDesc === '' || this.riskDetails.riskName === ''){
             return true;
         }
 

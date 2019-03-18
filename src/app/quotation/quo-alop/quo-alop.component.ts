@@ -1,5 +1,5 @@
 import { Component, OnInit, Input,  ViewChild, ViewChildren, QueryList } from '@angular/core';
-import { QuotationService, MaintenanceService } from '../../_services';
+import { QuotationService, MaintenanceService, NotesService } from '../../_services';
 import { QuoteALOPItemInformation, QuoteALOPInfo, QuotationOption } from '../../_models';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
@@ -39,45 +39,58 @@ export class QuoAlopComponent implements OnInit {
     quoteId: string;
     quoteNo:string = '';
 
-    alopData: any={address: null,
-                  alopId: '1',
-                  alopItem: null,
-                  alopItemList: null,
-                  annSi: null,
-                  annSiD: null,
-                  createDate:  [0,0,0],
-                  createUser: 'Paul',
-                  expiryDate:  null,
-                  indemFromDate: null,
-                  insuredBusiness: null,
-                  insuredDesc: null,
-                  insuredId: null,
-                  insuredName: null,
-                  issueDate: null,
-                  maxIndemPd: null,
-                  maxIndemPdD: null,
-                  maxIndemPdSi: null,
-                  maxIndemPdSiD: null,
-                  repInterval: null,
-                  timeExc: null,
-                  updateDate: [0,0,0],
-                  updateUser: 'Paul'
-                };
+   alopData: any={
+                     address: null,
+                     alopId: '1',
+                     alopItem: null,
+                     alopItemList: null,
+                     // annSiD: null,
+                     //indemFromDate: null,
+                     insuredBusiness: null,
+                     insuredDesc: null,
+                     insuredId: null,
+                     insuredName: null,
+                     // maxIndemPd: null,
+                     // maxIndemPdD: null,
+                     // maxIndemPdSiD: null,
+                     // repInterval: null,
+                     // timeExc: null,
+                     alopDetails: []
+    };
+
+    alopDetails: any = {
+            optionId: null,
+            annSi: null,
+            maxIndemPdSi: null,
+            issueDate: '',
+            expiryDate:'',
+            maxIndemPd: null,
+            indemFromDate: '',
+            timeExc: null,
+            repInterval: null,
+            updateDate: '',
+            updateUser: 'Paul',
+            createDate:  '',
+            createUser: 'Paul'
+    }
+
+         
+     
 
     itemInfoData: any = {
         tableData: [],
-        tHeader: ["Item No", "Quantity", "Description", "Relative Importance", "Possible Loss Min"],
+        tHeader: ["Item No", "Quantity", "Description", "Relative Importance", "Possible Loss Minimization"],
         dataTypes: ["number", "number", "text", "text", "text"],
         uneditable: [true,false,false,false,false,false],
         nData: {
-          createDate: [0,0,0],
+          createDate: '',
           createUser: "Paul",
           description: null,
           importance: null,
           itemNo: 1,
           lossMin: null,
           quantity: null,
-          updateDate: [0,0,0],
+          updateDate: '',
           updateUser: "Paul",
         },
         addFlag: true,
@@ -111,7 +124,7 @@ export class QuoAlopComponent implements OnInit {
     showAlopItem:boolean = false;
     dateErFlag:boolean = false;
     refresh:boolean = true;
-    constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute, private mtnService: MaintenanceService) { }
+    constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute, private mtnService: MaintenanceService, private ns: NotesService) { }
 
     ngOnInit() {
       setTimeout(()=>{
@@ -137,7 +150,7 @@ export class QuoAlopComponent implements OnInit {
 
         this.titleService.setTitle("Quo | ALOP");
         if (this.quoteNo.substr(0, 3) == "CAR") {
-            this.itemInfoData.tHeader = ["Item No", "Quantity", "Description", "Possible Loss Min"];
+            this.itemInfoData.tHeader = ["Item No", "Quantity", "Description", "Possible Loss Minimization"];
             this.itemInfoData.dataTypes = ["number", "number", "text", "text"];
             this.itemInfoData.keys = ['itemNo','quantity','description','lossMin'];
         }
@@ -148,18 +161,13 @@ export class QuoAlopComponent implements OnInit {
     getQuoteOption(){
       var id = this.quotationInfo.quoteId == '' ? '' : this.quotationInfo.quoteId;
       this.quotationService.getQuoteOptions(id, '').subscribe((data: any) => {
+        console.log(data)
           // this.optionRecords = data.QuotationOption.optionsList; this.plainQuotationNo(this.quotationNum)
            if (data['quotation'] == null || data['quotation'] == undefined ){
            }else{
               // for(var i = data.quotation.optionsList.length - 1; i >= 0; i--){
                 for(var i = 0; i < data.quotation.optionsList.length; i++){
-                 this.quoteOptionsData.tableData.push(new QuotationOption (
-                                              data.quotation.optionsList[i].optionId,
-                                              data.quotation.optionsList[i].optionRt,
-                                              data.quotation.optionsList[i].condition,
-                                              data.quotation.optionsList[i].commRtQuota,
-                                              data.quotation.optionsList[i].commRtSurplus,
-                                              data.quotation.optionsList[i].commRtFac));
+                 this.quoteOptionsData.tableData.push(data.quotation.optionsList[i]);
               }
               
            }
@@ -171,15 +179,18 @@ export class QuoAlopComponent implements OnInit {
       this.quotationService.getALop(null,this.quoteNo).subscribe((data: any) => {
              this.quoteId = data.quotation.quoteId;
               this.alopData = data.quotation.alop===null ? this.alopData : data.quotation.alop;
-              if(this.alopData.issueDate !== null){
-                setTimeout(() => {
-                  $('input[appCurrency]').focus();
-                  $('input[appCurrency]').blur();
-                }, 0)
+              if(this.alopData.alopDetails.length != 0){
                 this.loading = false;
-                this.alopData.issueDate = this.alopData.issueDate[0]+'-'+("0" + this.alopData.issueDate[1]).slice(-2)+'-'+  ("0" + this.alopData.issueDate[2]).slice(-2);
-                this.alopData.expiryDate = this.alopData.expiryDate[0]+'-'+("0" + this.alopData.expiryDate[1]).slice(-2)+'-'+ ("0" + this.alopData.expiryDate[2]).slice(-2);
-                this.alopData.indemFromDate = this.alopData.indemFromDate[0]+'-'+("0" + this.alopData.indemFromDate[1]).slice(-2)+'-'+("0" + this.alopData.indemFromDate[2]).slice(-2);
+                for(var i=0; i < this.alopData.alopDetails.length;i++){
+                  this.alopData.alopDetails[i].indemFromDate = this.ns.toDateTimeString(this.alopData.alopDetails[i].indemFromDate);
+                  this.alopData.alopDetails[i].expiryDate = this.ns.toDateTimeString(this.alopData.alopDetails[i].expiryDate);
+                  this.alopData.alopDetails[i].issueDate = this.ns.toDateTimeString(this.alopData.alopDetails[i].issueDate);
+                  this.alopData.alopDetails[i].createDate = this.ns.toDateTimeString(this.alopData.alopDetails[i].createDate);
+                  this.alopData.alopDetails[i].updateDate = this.ns.toDateTimeString(this.alopData.alopDetails[i].updateDate);
+                }
+                // this.alopData.issueDate = this.alopData.issueDate[0]+'-'+("0" + this.alopData.issueDate[1]).slice(-2)+'-'+  ("0" + this.alopData.issueDate[2]).slice(-2);
+                // this.alopData.expiryDate = this.alopData.expiryDate[0]+'-'+("0" + this.alopData.expiryDate[1]).slice(-2)+'-'+ ("0" + this.alopData.expiryDate[2]).slice(-2);
+                // this.alopData.indemFromDate = this.alopData.indemFromDate[0]+'-'+("0" + this.alopData.indemFromDate[1]).slice(-2)+'-'+("0" + this.alopData.indemFromDate[2]).slice(-2);
               }else{
                 this.mtnService.getMtnInsured(this.quotationInfo.principalId).subscribe((data: any) => {
                   this.loading = false;
@@ -189,18 +200,45 @@ export class QuoAlopComponent implements OnInit {
                   this.alopData.address = data.insured[0].address;
                 })
               }
-              /**/
+              this.emptyVar();
        });
+    }
+
+    emptyVar(){
+        this.alopDetails =  {
+                optionId: null,
+                annSi: null,
+                maxIndemPdSi: null,
+                issueDate: '',
+                expiryDate:'',
+                maxIndemPd: null,
+                indemFromDate: '',
+                timeExc: null,
+                repInterval: null,
+                updateDate: '',
+                updateUser: 'Paul',
+                createDate:  '',
+                createUser: 'Paul'
+        }
     }
 
     cancelFlag:boolean;
     save(cancelFlag?) {
       this.cancelFlag = cancelFlag !== undefined;
       this.alopData.quoteId = this.quoteId;
+      //this.alopData.alopDetails = this.alopDetails;
+      for(var i = 0; i < this.alopData.alopDetails.length;i++){
+        this.alopData.alopDetails[i].createDate = this.alopData.alopDetails[i].createDate
+        this.alopData.alopDetails[i].indemFromDate = this.alopData.alopDetails[i].indemFromDate
+        this.alopData.alopDetails[i].updateDate = this.alopData.alopDetails[i].updateDate
+         this.alopData.alopDetails[i].expiryDate = this.alopData.alopDetails[i].expiryDate
+         this.alopData.alopDetails[i].issueDate = this.alopData.alopDetails[i].issueDate
+     }
+
       this.quotationService.saveQuoteAlop(this.alopData).subscribe((data: any) => {
-        this.alopData.issueDate = this.alopData.issueDate.split('T')[0];
-        this.alopData.expiryDate = this.alopData.expiryDate.split('T')[0];
-        this.alopData.indemFromDate = this.alopData.indemFromDate.split('T')[0];
+        // this.alopData.issueDate = this.alopData.issueDate.split('T')[0];
+        // this.alopData.expiryDate = this.alopData.expiryDate.split('T')[0];
+        // this.alopData.indemFromDate = this.alopData.indemFromDate.split('T')[0];
         if(data['returnCode'] == 0) {
           this.dialogMessage = data['errorList'][0].errorMessage;
           this.dialogIcon = "error";
@@ -346,15 +384,15 @@ export class QuoAlopComponent implements OnInit {
   }
 
   checkDates(){
-    if(new Date(this.alopData.issueDate)>= new Date(this.alopData.expiryDate)){
-     highlight(this.to);
-     highlight(this.from);
-     this.dateErFlag = true;
-    }else{
-     unHighlight(this.to);
-     unHighlight(this.from);
-     this.dateErFlag = false;
-    }
+    // if(new Date(this.alopData.issueDate)>= new Date(this.alopData.expiryDate)){
+    //  highlight(this.to);
+    //  highlight(this.from);
+    //  this.dateErFlag = true;
+    // }else{
+    //  unHighlight(this.to);
+    //  unHighlight(this.from);
+    //  this.dateErFlag = false;
+    // }
   }
 
   onClickSave(){
@@ -371,5 +409,32 @@ export class QuoAlopComponent implements OnInit {
     $('#alopItem #confirm-save #modalBtn2').trigger('click');
   }
 
+  clickRow(data) {
+    console.log(this.alopData)
+    this.alopDetails.optionId = data.optionId;
+    if(this.alopData.alopDetails.length != 0){
+      this.alopDetails = this.alopData.alopDetails.filter(a => a.optionId == this.alopDetails.optionId)[0];
+    }else{
+      //this.alopData.alopDetails = [];
+
+      let alopDetails = new Object();
+      alopDetails['optionId'] = data.optionId;
+      alopDetails['annSi'] = null;
+      alopDetails['maxIndemPdSi'] = null;
+      alopDetails['issueDate'] = '';
+      alopDetails['expiryDate'] = '';
+      alopDetails['maxIndemPd'] = null;
+      alopDetails['indemFromDate'] = '';
+      alopDetails['timeExc'] = null;
+      alopDetails['repInterval'] = null;
+      alopDetails['updateDate'] = '';
+      alopDetails['updateUser'] = 'Paul';
+      alopDetails['createDate'] =  '';
+      alopDetails['createUser'] = 'Paul';
+      this.alopData.alopDetails.push(alopDetails)
+      
+      this.alopDetails = alopDetails
+    }
+  }
 
 }
