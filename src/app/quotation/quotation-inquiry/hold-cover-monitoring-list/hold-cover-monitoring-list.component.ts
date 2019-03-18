@@ -218,7 +218,7 @@ export class HoldCoverMonitoringListComponent implements OnInit {
         /*for (var i = 0; i < event.target.parentElement.children.length; i++) {
             this.quotationService.rowData[i] = event.target.parentElement.children[i].innerText;
         }*/
-        if(this.holdCoverList == event || event === null){
+        /*if(this.holdCoverList == event || event === null){
             this.holdCoverList = {};
             this.passData.btnDisabled = true;
         }else{
@@ -231,7 +231,16 @@ export class HoldCoverMonitoringListComponent implements OnInit {
                 this.holdCoverId = rec.holdCover.holdCoverId;
               }
            }
+        }*/
+        if (event != null) {
+            this.quotationService.getHoldCoverInfo('',event.holdCoverNo).subscribe((data:any) =>
+                {
+                    this.quoteId = data.quotation.quoteId;
+                    this.holdCoverId = data.quotation.holdCover.holdCoverId;
+                }
+            );
         }
+
     }
 
     onRowDblClick(event) {

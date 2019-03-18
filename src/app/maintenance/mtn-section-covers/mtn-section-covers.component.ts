@@ -32,7 +32,7 @@ export class MtnSectionCoversComponent implements OnInit {
 
   ngOnInit() {
   	
-
+    console.log("On Init MTN Section Covers");
   }
 
   select(data){
@@ -44,6 +44,7 @@ export class MtnSectionCoversComponent implements OnInit {
   }
 
   openModal(){
+        console.log("MTN Section Covers");
         this.table.refreshTable("try");
         this.sectionCover.tableData = [];
         this.maintenanceService.getMtnSectionCovers(this.lineCd,this.coverCd).subscribe((data: any) =>{

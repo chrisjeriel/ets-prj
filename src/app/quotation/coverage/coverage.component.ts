@@ -69,7 +69,7 @@ export class CoverageComponent implements OnInit {
     pageLength: 'unli',
     widths:[60,90,225,110,1],
     magnifyingGlass: ['coverCdAbbr'],
-    uneditable: [true,false,false,false,false],
+    uneditable: [true,false,true,false,false],
     keys:['section','bulletNo','coverCdAbbr','sumInsured','addSi']
   };
 
@@ -133,7 +133,7 @@ export class CoverageComponent implements OnInit {
     this.getCoverageInfo();
     this.coverageData.currencyCd = this.quotationInfo.currencyCd;
     this.coverageData.currencyRt = this.quotationInfo.currencyRt;  
-      
+      console.log(this.riskId)
   }
 
 
@@ -306,7 +306,7 @@ export class CoverageComponent implements OnInit {
   saveData(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
     this.prepareSaveData();
-    if (this.editedData.length != 0 || this.deletedData.length!=0 || this.initialData.length != 0) {
+    /*if (this.editedData.length != 0 || this.deletedData.length!=0 || this.initialData.length != 0) {*/
       this.quotationService.saveQuoteCoverage(this.coverageData.quoteId,this.coverageData.projId,this.coverageData).subscribe((data: any) => {
         if(data['returnCode'] == 0) {
             this.dialogMessage = data['errorList'][0].errorMessage;
@@ -317,18 +317,18 @@ export class CoverageComponent implements OnInit {
             this.dialogIcon = "success";
             $('#successModalBtn').trigger('click');
             this.getCoverage();
-            $('.ng-dirty').removeClass('ng-dirty');
+            this.table.markAsPristine();
             this.initialData = [];
             this.editedData = [];
             this.deletedData =[];
             //this.getCoverageInfo();
            }
       });
-    }else{
+/*    }else{
         this.dialogMessage = "Nothing to save.";
         this.dialogIcon = "info"
         $('#successModalBtn').trigger('click');
-    }
+    }*/
   }
 
   testing(){
@@ -366,6 +366,7 @@ export class CoverageComponent implements OnInit {
   }
   
   sectionCoversLOV(data){
+        console.log('sectionCoversLOV');
         this.hideSectionCoverArray = this.passData.tableData.filter((a)=>{return a.coverCd!== undefined && !a.deleted}).map((a)=>{return a.coverCd.toString()});
         $('#sectionCoversLOV #modalBtn').trigger('click');
         //data.tableData = this.passData.tableData;

@@ -435,17 +435,17 @@ export class UnderwritingService {
             .set('govtTag',govtTag)
             .set('membershipTag',membershipTag);
 
-        return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMaintenanceCedingCompanyListing', {params});
+        return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMaintenanceCedingCompanyListing', {params});
     }
 
     getCedingCompany(){
-        return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMaintenanceCedingCompany');
+        return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMaintenanceCedingCompany');
     }
 
     getCedingCompanyLOV(cedingId: string){
          const params = new HttpParams()
             .set('cedingId',cedingId);
-        return this.http.get('http://localhost:8888/api/maintenance-service/retrieveMaintenanceCedingCompany',{params});
+        return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMaintenanceCedingCompany',{params});
     }
 
 }            
