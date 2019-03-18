@@ -12,17 +12,17 @@ export class JvPreniumReserveComponent implements OnInit {
 	
 	passData: any = {
 		tableData:[],
-		tHeader:['Quarter Ending','Currency','Currency Rate','Amount','Amount(PHP)'],
-		dataTypes:['date','text','percent','currency','currency'],
-		total:[null,null,'Total','amount','amountPhp'],
+		tHeader:['Quarter Ending','Currency','Currency Rate','Interest on Premium','Withholding Tax','Funds Held Released'],
+		dataTypes:['date','text','percent','currency','currency','currency'],
+		total:[null,null,'Total','intPremium','withHTax','fundsHRel'],
 		addFlag:true,
 		deleteFlag:true,
 		genericBtn: "Save",
 		infoFlag:true,
 		paginateFlag:true,	
-		nData: new QSOABalances(null, null, null, null, null),
+		nData: new QSOABalances(null, null, null, null, null,null),
 		checkFlag: true,
-		widths:['auto','auto','auto','auto','auto']
+		widths:['auto','auto','auto','auto','auto','auto']
 	}
 
 	constructor(private accService: AccountingService, private titleService: Title) { }

@@ -16,6 +16,7 @@ import { fakeBackendProvider } from './_helpers';
 
 import { AppComponent } from './app.component';
 import { routing } from './app.routing';
+import { UnsavedChangesGuard } from './_guards';
 
 import { AlertComponent } from './_components/common/alert';
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
@@ -24,6 +25,7 @@ import { LoginComponent } from './login';
 import { RegisterComponent } from './register';
 import { QuotationComponent } from './quotation/quotation.component';
 import { GeneralInfoComponent } from './quotation/general-info/general-info.component';
+import { GeneralInfoComponent2 } from './quotation/general-info/V1.0/general-info.component';
 import { CoverageComponent } from './quotation/coverage/coverage.component';
 import { QuoteOptionComponent } from './quotation/quote-option/quote-option.component';
 import { InternalCompetitionComponent } from './quotation/internal-competition/internal-competition.component';
@@ -119,8 +121,11 @@ import { PolMxCedingCoComponent } from './underwriting/policy-maintenance/pol-mx
 import { AccountingComponent } from './accounting/accounting.component';
 import { ArEntryComponent } from './accounting/ar-entry/ar-entry.component';
 import { ArDetailsComponent } from './accounting-in-trust/ar-details/ar-details.component';
+import { ArDetailsComponent2 } from './accounting/ar-details/ar-details.component';
 import { InwardPolicyBalancesComponent } from './accounting-in-trust/ar-details/inward-policy-balances/inward-policy-balances.component';
+import { InwardPolicyBalancesComponent2 } from './accounting/inward-policy-balances/inward-policy-balances.component';
 import { ClaimRecoveryComponent } from './accounting-in-trust/ar-details/claim-recovery/claim-recovery.component';
+import { ClaimRecoveryComponent2 } from './accounting/claim-recovery/claim-recovery.component';
 import { AttachmentsComponent } from './accounting/attachments/attachments.component';
 import { AccountingInTrustComponent } from './accounting-in-trust/accounting-in-trust.component';
 import { AccountingServiceComponent } from './accounting-service/accounting-service.component';
@@ -327,6 +332,7 @@ import { CancelButtonComponent } from './_components/common/cancel-button/cancel
 import { MtnUsersComponent } from './maintenance/mtn-users/mtn-users.component';
 import { NgxMaskModule } from 'ngx-mask';
 import { MtnReasonComponent } from './maintenance/mtn-reason/mtn-reason.component';
+
 
 
 @NgModule({
@@ -656,18 +662,23 @@ import { MtnReasonComponent } from './maintenance/mtn-reason/mtn-reason.componen
         UsersMaintenanceComponent,
         UserGroupsMaintenanceComponent,
         UsersComponent,
-        ConfirmSaveComponent,
         ModulesMaintenanceComponent,
         SecurityModulesComponent,
         ModuleTransactionsComponent,
         MtnUsersComponent,
         MtnReasonComponent,
+        DummyComponent2,
+        AttachmentsComponent,
+        ArDetailsComponent2,
+        ClaimRecoveryComponent2,
+        InwardPolicyBalancesComponent2,
+        GeneralInfoComponent2
     ],
 
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-
+        UnsavedChangesGuard,
         // provider used to create fake backend
         fakeBackendProvider
     ],

@@ -8,7 +8,6 @@ import { isNullOrUndefined } from 'util';
 import { NullTemplateVisitor } from '@angular/compiler';
 
 
-
 @Injectable({ providedIn: 'root' })
 export class QuotationService {
     quotationOption: QuotationOption[] = [];
@@ -73,6 +72,10 @@ export class QuotationService {
     }
 
     getCoverageInfo(quotationNo?:any , quotationId?: string) {
+
+
+
+
         const params = new HttpParams()
              .set('quotationNo', (quotationNo === null || quotationNo === undefined ? '' : quotationNo) )
              .set('quoteId',(quotationId === null || quotationId === undefined ? '' : quotationId) )
@@ -158,7 +161,7 @@ export class QuotationService {
                 params = params.append(i.key, i.search);
             }
         }
-            return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteHoldCoverListing',{params});
+            return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuoteHoldCoverListing',{params});
     }
 
     getSelectedQuotationHoldCoverInfo(quotationNo) {
@@ -176,7 +179,7 @@ export class QuotationService {
              .set('reqDate','')
              .set('expiringInDays','')
              
-            return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteHoldCoverListing',{params});
+            return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuoteHoldCoverListing',{params});
     }
 
 
@@ -187,13 +190,13 @@ export class QuotationService {
                 .set('quoteId','')
                 .set('quotationNo',quotationNo)
                 .set('optionId',optionNo);
-          return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteEndorsements', {params});
+          return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuoteEndorsements', {params});
           } else {
           const params = new HttpParams()
                 .set('quoteId',quoteId)
                 .set('quotationNo',quotationNo)
                 .set('optionId',optionNo);
-          return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteEndorsements', {params});
+          return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuoteEndorsements', {params});
          }
 
 
@@ -234,17 +237,17 @@ export class QuotationService {
                 .set('quoteId','')
                 .set('quotationNo',quotationNo);
           console.log(params);
-          return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteEndorsementsOc?quotationNo=' + quotationNo);
+          return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuoteEndorsementsOc?quotationNo=' + quotationNo);
           } else if (quotationNo == '' || quotationNo == null ) {
           const params = new HttpParams()
                 .set('quoteId',quoteIdOc)
                 .set('quotationNo','');
-          return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteEndorsementsOc?quoteId=' + quoteIdOc);
+          return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuoteEndorsementsOc?quoteId=' + quoteIdOc);
          } else {
            const params = new HttpParams()
                 .set('quoteId',quoteIdOc)
                 .set('quotationNo',quotationNo);
-          return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteEndorsementsOc?quoteId=' + quoteIdOc + '&quotationNo=' + quotationNo  );   
+          return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuoteEndorsementsOc?quoteId=' + quoteIdOc + '&quotationNo=' + quotationNo  );   
          }
 
     }
@@ -262,7 +265,7 @@ export class QuotationService {
              .set('quotationNo', (quotationNo === null || quotationNo === undefined ? '' : quotationNo) )
              .set('quoteId',(quoteId === null || quoteId === undefined ? '' : quoteId) )
 
-        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteAttachment',{params});
+        return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuoteAttachment',{params});
         // return this.attachmentInfoData;
     }
 
@@ -378,7 +381,7 @@ export class QuotationService {
             }
         }
         
-        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteListing', {params});
+        return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuoteListing', {params});
        
     }
 
@@ -427,8 +430,8 @@ export class QuotationService {
                     .set('createUser','')
             };
 
-        // return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteListing', {params});
-        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteListing', header);
+        // return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuoteListing', {params});
+        return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuoteListing', header);
     }
 
     getQuoteOptions(quoteId?:string,quotationNo?:string) {
@@ -443,7 +446,7 @@ export class QuotationService {
                 .set('quoteId',(quoteId === null || quoteId === undefined ? '' : quoteId))
                 .set('quotationNo',(quotationNo === null || quotationNo === undefined ? '' : quotationNo));
                 console.log(params)
-        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteOption', {params});
+        return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuoteOption', {params});
     }
 
     getQuotataionOtherRates(optionNo: number) {
@@ -527,12 +530,12 @@ export class QuotationService {
          const params = new HttpParams()
                 .set('quoteId','')
                 .set('quotationNo',quotationNo);
-          return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteGeneralInfo', {params});
+          return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuoteGeneralInfo', {params});
       } else {
           const params = new HttpParams()
                 .set('quoteId',quoteId)
                 .set('quotationNo',quotationNo);
-          return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteGeneralInfo', {params});
+          return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuoteGeneralInfo', {params});
      }
      
     }
@@ -575,7 +578,7 @@ export class QuotationService {
                 params = params.append(i.key, i.search);
             }
         }
-        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteListingOc', {params});
+        return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuoteListingOc', {params});
     }
 
 
@@ -610,7 +613,7 @@ export class QuotationService {
         // this.quoteDeductiblesData = [
         //     new QuotationDeductibles('Deductible Code', 'Deductible Title', 12, 23000, 'Deductible Text'),
         // ];
-        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteDeductibles', {params});
+        return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuoteDeductibles', {params});
     }
 
     getOpenCoverListInfo() {
@@ -669,7 +672,7 @@ export class QuotationService {
         const params = new HttpParams()
              .set('quotationNo', (quotationNo === null || quotationNo === undefined ? '' : quotationNo) )
              .set('quoteId',(quoteId === null || quoteId === undefined ? '' : quoteId) )
-        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteAlopItem',{params});
+        return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuoteAlopItem',{params});
     }
 
     getALop(quoteId:string,quotationNo?:string){
@@ -677,7 +680,7 @@ export class QuotationService {
              .set('quotationNo', (quotationNo === null || quotationNo === undefined ? '' : quotationNo) )
              .set('quoteId',(quoteId === null || quoteId === undefined ? '' : quoteId) )
 
-            return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteAlop',{params});
+            return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuoteAlop',{params});
             //+('&quotationNo='+ quotationNo)
         
     }
@@ -687,7 +690,7 @@ export class QuotationService {
              .set('quoteIdOc',ocQuoteId)
              .set('openQuotationNo', ocQuoteNo)
              
-            return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteGeneralInfoOc',{params});
+            return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuoteGeneralInfoOc',{params});
     }
 
     getHoldCoverInfo(holdCoverId,holdCoverNo){
@@ -696,7 +699,7 @@ export class QuotationService {
              .set('holdCoverId','')
              .set('holdCoverNo',holdCoverNo)
              
-            return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteHoldCover',{params});
+            return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuoteHoldCover',{params});
     }
 
     saveQuoteAttachment(quoteId:string ,saveAttachmentsList:any[], deleteAttachmentsList:any[]){
@@ -710,7 +713,7 @@ export class QuotationService {
                 'Content-Type': 'application/json'
             })
         };
-        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteAttachment', JSON.stringify(params), header);
+        return this.http.post(environment.prodApiUrl + '/quote-service/saveQuoteAttachment', JSON.stringify(params), header);
     }
 
 
@@ -721,7 +724,7 @@ export class QuotationService {
             })
         };
 
-        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteCoverage', JSON.stringify(coverageData), header);
+        return this.http.post(environment.prodApiUrl + '/quote-service/saveQuoteCoverage', JSON.stringify(coverageData), header);
     }
 
     saveQuoteOtherRates(params){
@@ -731,7 +734,7 @@ export class QuotationService {
             })
         };
         console.log(params);
-        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteOtherRates',params,header);
+        return this.http.post(environment.prodApiUrl + '/quote-service/saveQuoteOtherRates',params,header);
     }
 
     saveQuoteAlop(alopData:any){
@@ -740,16 +743,9 @@ export class QuotationService {
                 'Content-Type': 'application/json'
             })
         };
-        alopData.issueDate = alopData.issueDate + 'T16:00:00.000Z';
-        alopData.expiryDate = alopData.expiryDate + 'T16:00:00.000Z';
-        alopData.indemFromDate = alopData.indemFromDate + 'T16:00:00.000Z';
-        // alopData.issueDate = new Date(alopData.issueDate[0],alopData.issueDate[1]-1,alopData.issueDate[2]).toISOString();
-        // alopData.expiryDate = new Date(alopData.expiryDate[0],alopData.expiryDate[1]-1,alopData.expiryDate[2]).toISOString();
-        // alopData.indemFromDate = new Date(alopData.indemFromDate[0],alopData.indemFromDate[1]-1,alopData.indemFromDate[2]).toISOString();
-        alopData.createDate = new Date(alopData.createDate[0],alopData.createDate[1]-1,alopData.createDate[2]).toISOString();
-        alopData.updateDate = new Date(alopData.updateDate[0],alopData.updateDate[1]-1,alopData.updateDate[2]).toISOString();
+        
         console.log(alopData);
-        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteAlop', JSON.stringify(alopData), header);
+        return this.http.post(environment.prodApiUrl + '/quote-service/saveQuoteAlop', JSON.stringify(alopData), header);
     }
 
     saveQuoteAlopItem(alopItemData:any){
@@ -758,7 +754,7 @@ export class QuotationService {
                 'Content-Type': 'application/json'
             })
         };
-        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteAlopItem', JSON.stringify(alopItemData), header);
+        return this.http.post(environment.prodApiUrl + '/quote-service/saveQuoteAlopItem', JSON.stringify(alopItemData), header);
               
     }
 
@@ -778,7 +774,7 @@ export class QuotationService {
                 'Content-Type': 'application/json'
             })
         };
-        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteAttachmentOc', JSON.stringify(params), header);
+        return this.http.post(environment.prodApiUrl + '/quote-service/saveQuoteAttachmentOc', JSON.stringify(params), header);
     }
 
       
@@ -789,7 +785,7 @@ export class QuotationService {
             })
         };
 
-        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteCoverageOc', JSON.stringify(coverageOcData), header);
+        return this.http.post(environment.prodApiUrl + '/quote-service/saveQuoteCoverageOc', JSON.stringify(coverageOcData), header);
     }
     
 
@@ -807,8 +803,8 @@ export class QuotationService {
         //console.log(saveQuoteCompetitionParams.join(","));
         //console.log(params.substring(1,params.length-1));
         //console.log(JSON.stringify(params));
-        //return this.http.post('http://localhost:8888/api/quote-service/saveQuoteCompetition', params.substring(1,params.length-1), header);
-        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteCompetition', JSON.stringify(params), header);
+        //return this.http.post(environment.prodApiUrl + '/quote-service/saveQuoteCompetition', params.substring(1,params.length-1), header);
+        return this.http.post(environment.prodApiUrl + '/quote-service/saveQuoteCompetition', JSON.stringify(params), header);
     }
 
 
@@ -819,7 +815,7 @@ export class QuotationService {
             })
         }
 
-        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteGeneralInfo', saveQuoteGeneralInfoParam, header);
+        return this.http.post(environment.prodApiUrl + '/quote-service/saveQuoteGeneralInfo', saveQuoteGeneralInfoParam, header);
     }
 
      saveQuoteGeneralInfoOc(saveQuoteGeneralInfoParam) {
@@ -829,7 +825,7 @@ export class QuotationService {
             })
         }
 
-        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteGeneralInfoOc', saveQuoteGeneralInfoParam, header);
+        return this.http.post(environment.prodApiUrl + '/quote-service/saveQuoteGeneralInfoOc', saveQuoteGeneralInfoParam, header);
     }
 
 
@@ -840,7 +836,7 @@ export class QuotationService {
                  'Content-Type': 'application/json'
              })
          };
-         return this.http.post('http://localhost:8888/api/quote-service/saveQuoteHoldCover',params,header);
+         return this.http.post(environment.prodApiUrl + '/quote-service/saveQuoteHoldCover',params,header);
  
     }
 
@@ -850,7 +846,7 @@ export class QuotationService {
                 'Content-Type': 'application/json'
             })
         };
-        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteEndorsements',params,header);
+        return this.http.post(environment.prodApiUrl + '/quote-service/saveQuoteEndorsements',params,header);
 
     }
 
@@ -858,7 +854,7 @@ export class QuotationService {
         const params = new HttpParams()
              .set('quoteIdOc', quoteIdOc)
              .set('openQuotationNo', openQuotationNo);
-        return this.http.get('http://localhost:8888/api/quote-service/retrieveQuoteCoverageOc',{params});
+        return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuoteCoverageOc',{params});
     }
 
     saveQuoteOption(params){
@@ -868,7 +864,7 @@ export class QuotationService {
             })
         };
          console.log(params);
-        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteOption',params,header);
+        return this.http.post(environment.prodApiUrl + '/quote-service/saveQuoteOption',params,header);
     }
 
 
@@ -878,7 +874,7 @@ export class QuotationService {
                 'Content-Type': 'application/json'
             })
         };
-        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteEndorsementsOc',params,header);
+        return this.http.post(environment.prodApiUrl + '/quote-service/saveQuoteEndorsementsOc',params,header);
     }
 
     saveQuoteDeductibles(params){
@@ -888,7 +884,7 @@ export class QuotationService {
             })
         };
         console.log(params);
-        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteDeductibles',params,header);
+        return this.http.post(environment.prodApiUrl + '/quote-service/saveQuoteDeductibles',params,header);
     }
 
 
@@ -899,18 +895,17 @@ export class QuotationService {
             })
         };
         console.log(params);
-        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteOptionAll',params,header);
+        return this.http.post(environment.prodApiUrl + '/quote-service/saveQuoteOptionAll',params,header);
     }
 
-     saveChangeQuoteStatus(changeQuoteData:any){
+    saveChangeQuoteStatus(changeQuoteData:any){
 
         let header : any = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json'
             })
         };
-
-        return this.http.post('http://localhost:8888/api/quote-service/saveQuoteChangeQuoteStatus',JSON.stringify(changeQuoteData),header);
+        return this.http.post(environment.prodApiUrl + '/quote-service/saveQuoteChangeQuoteStatus',JSON.stringify(changeQuoteData),header);
     }
 
 
@@ -920,7 +915,7 @@ export class QuotationService {
                 'Content-Type': 'application/json'
             })
         };
-        return this.http.post('http://localhost:8888/api/quote-service/copyEndorsement', params, header);
+        return this.http.post(environment.prodApiUrl + '/quote-service/copyEndorsement', params, header);
     }
 
     saveQuotationCopy(saveQuotationCopyParam) {
@@ -930,7 +925,22 @@ export class QuotationService {
             })
         }
 
-        return this.http.post('http://localhost:8888/api/quote-service/saveQuotationCopy', saveQuotationCopyParam, header);
+        return this.http.post(environment.prodApiUrl + '/quote-service/saveQuotationCopy', saveQuotationCopyParam, header);
+    }
+
+    downloadPDF(reportName : string, quoteId : string){
+         const params = new HttpParams()
+             .set('reportName', reportName)
+             .set('quoteId', quoteId);
+        return this.http.get(environment.prodApiUrl + '/util-service/generateReport',{ params,'responseType': 'blob'});
+    }
+
+    downloadPDFHC(reportName : string, quoteId : string,  holdCoverId : string){
+         const params = new HttpParams()
+             .set('reportName', reportName)
+             .set('quoteId', quoteId)
+             .set('holdCovId', holdCoverId);
+        return this.http.get(environment.prodApiUrl + '/util-service/generateReport',{ params,'responseType': 'blob'});
     }
 
 }

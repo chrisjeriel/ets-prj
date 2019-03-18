@@ -1,7 +1,7 @@
 <app-modal class="d-none" (modalOpened)="openModal()">
 	<div header>List of Values</div>
 	<div body>
-		<app-cust-non-datatable [passData]="sectionCover" (rowClick)="select($event)" ></app-cust-non-datatable>
+		<app-cust-non-datatable [passData]="sectionCover"  (rowClick)="select($event)" ></app-cust-non-datatable>
 	</div>
 	<div footer>
         <div class="d-flex justify-content-center">

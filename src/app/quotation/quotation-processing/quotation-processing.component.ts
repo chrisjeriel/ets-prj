@@ -20,8 +20,8 @@ export class QuotationProcessingComponent implements OnInit {
     @ViewChildren(CustNonDatatableComponent) table: QueryList<CustNonDatatableComponent>;
     @ViewChild(MtnLineComponent) lineLov: MtnLineComponent;
     @ViewChild(MtnTypeOfCessionComponent) typeOfCessionLov: MtnTypeOfCessionComponent;
-    @ViewChildren(MtnRiskComponent) riskLovs: MtnTypeOfCessionComponent;
-    @ViewChild(CedingCompanyComponent) cedingCoLov: CedingCompanyComponent;
+    @ViewChildren(MtnRiskComponent) riskLovs: QueryList<MtnTypeOfCessionComponent>;
+    @ViewChildren(CedingCompanyComponent) cedingCoLovs: QueryList<CedingCompanyComponent>;
 
     tableData: any[] = [];
     tHeader: any[] = [];
@@ -200,6 +200,17 @@ export class QuotationProcessingComponent implements OnInit {
     copyCedingName: any = "";
     copyRiskId: any = "";
     copyRiskName: any = "";
+    copyIntCompRiskId: any = "";
+    copyIntCompRiskName: any = "";
+
+    dialogMessage = "";
+    dialogIcon = "";
+
+    tempCedingId = "";
+    tempQuoteId = "";
+
+    exclude: any[] = [];
+
 
     first = false;
 
@@ -326,15 +337,25 @@ export class QuotationProcessingComponent implements OnInit {
     nextBtnEvent() {
         //neco was here
         this.existingQuotationNo = [];
+        this.exclude = [];
+
         for(var i = 0; i < this.splittedLine.length; i++){
             if(this.line == this.splittedLine[i][0] && this.riskName == this.riskNameList[i] && this.riskNameList[i] != ""){
                 //this.existingQuoteNoIndex = i;
                 this.existingQuotationNo.push(this.passData.tableData[i].quotationNo);
                 //break;
+
+                this.exclude.push(this.passData.tableData[i].quotationNo.split('-')[4]);
             }
         }
 
-        if(this.existingQuotationNo.length > 0){
+        for(let i of this.fetchedData) {
+            if(i.quotationNo == this.existingQuotationNo[0]) {
+                this.tempQuoteId = i.quoteId;
+            }
+        }
+
+        if(this.existingQuotationNo.length > 0 && Number(this.riskCd) > 0){
             $('#modIntModal > #modalBtn').trigger('click');
 
         }else{
@@ -392,14 +413,20 @@ export class QuotationProcessingComponent implements OnInit {
     }
 }
 
-onRowClick(event) {
+onRowClick(event) {    
     if(event != null){
         for(let i of this.fetchedData) {
-           if(i.quotationNo == event.quotationNo) {
+
+           if(i.quotationNo == event.quotationNo) {               
+               this.tempCedingId = i.quotationNo.split('-')[4];
+
                this.copyQuoteId = i.quoteId;
                this.copyFromQuotationNo = i.quotationNo;
                this.copyQuoteLineCd = i.quotationNo.split('-')[0];
                this.copyQuoteYear = i.quotationNo.split('-')[1];
+
+               this.copyIntCompRiskId = i.project.riskId;
+               this.copyIntCompRiskName = i.project.riskName;
            }
         }    
     }
@@ -446,9 +473,26 @@ setCedingcompany(data){
         this.copyCedingId = data.cedingId;
         this.copyCedingName = data.cedingName;
         this.ns.lovLoader(data.ev, 0);
-        this.onClickCopy(1);
+
+        if(data.hasOwnProperty('fromLOV')){
+             this.onClickCopy(1);
+        }        
 }
 
+setCedingIntCompCompany(data) {
+
+        this.copyCedingId = data.cedingId;
+        this.copyCedingName = data.cedingName;
+        this.ns.lovLoader(data.ev, 0);
+
+        if(data.hasOwnProperty('fromLOV')){
+             this.onClickIntCompCopy(1);
+        }  
+}
+
+showCedingCompanyIntCompLOV() {
+        $('#cedingCompanyIntCompLOV #modalBtn').trigger('click');
+    }
 
 //neco was here
     toInternalCompetition(){
@@ -533,7 +577,7 @@ setCedingcompany(data){
             this.quotationService.savingType = savingType;
 
             setTimeout(() => {
-                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), quotationNo: this.existingQuotationNo, from: 'quo-processing' }], { skipLocationChange: true });
+                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), quotationNo: this.existingQuotationNo, from: 'quo-processing', exclude: this.exclude, tempQuoteIdInternalComp: this.tempQuoteId }], { skipLocationChange: true });
             },100);
         }
     }
@@ -550,8 +594,10 @@ setCedingcompany(data){
         } else if(field === 'copyRisk') {
             this.riskLovs['last'].checkCode(this.copyRiskId, ev);
         } else if(field === 'cedingCo') {
-            this.cedingCoLov.checkCode(this.copyCedingId, ev);
-        }             
+            this.cedingCoLovs['first'].checkCode(this.copyCedingId, ev);
+        } else if(field === 'cedingCoIntComp') {
+            this.cedingCoLovs['last'].checkCode(this.copyCedingId, ev);
+        } 
     }
 
     clearAddFields(){
@@ -572,6 +618,7 @@ setCedingcompany(data){
         //change copyStatus to 1 if successful
         var params = {
             "cedingId": this.copyCedingId,
+            "copyingType": 'normal',
             "createDate": currentDate,
             "createUser": 'USER', //JSON.parse(window.localStorage.currentUser).username,
             "lineCd": this.copyQuoteLineCd,
@@ -598,13 +645,12 @@ setCedingcompany(data){
                 this.copyRiskId = "";
                 this.copyRiskName = "";                
             } else if (data['returnCode'] == 0) {
-                //show error modal
+                this.dialogMessage = data['errorList'][0].errorMessage;
+                this.dialogIcon = "error";
+
+                $('#quoProcessing #successModalBtn').trigger('click');
             }
         });
-    }
-
-    onClickInternalComp() {
-        console.log('nice');
     }
 
     showCopyRiskLOV() {
@@ -615,5 +661,92 @@ setCedingcompany(data){
         this.copyRiskId = data.riskId;
         this.copyRiskName = data.riskName;
         this.ns.lovLoader(data.ev, 0);
+
+        if(data.hasOwnProperty('fromLOV')){           
+            this.onClickCopy(1);
+        }
+    }
+
+    onClickIntCompCopy(event) {
+        this.exclude = [];     
+        // this.exclude.push(this.tempCedingId);
+        
+        for(var i = 0; i < this.splittedLine.length; i++){
+            if(this.copyQuoteLineCd == this.splittedLine[i][0] && this.copyIntCompRiskName == this.riskNameList[i] && this.riskNameList[i] != ""){               
+
+                this.exclude.push(this.passData.tableData[i].quotationNo.split('-')[4]);
+            }
+        }
+
+        $('#copyIntCompModal > #modalBtn').trigger('click');
+    }
+
+    clearCopyFields() {
+        this.copyCedingId = '';
+        this.copyCedingName = '';
+        this.copyRiskId = '';
+        this.copyRiskName = '';
+    }
+
+    copyIntCompOkBtn() {
+        this.loading = true;
+        var currentDate = this.ns.toDateTimeString(0);
+
+        //change copyStatus to 1 if successful
+        var params = {
+            "cedingId": this.copyCedingId,
+            "copyingType": 'internalComp',
+            "createDate": currentDate,
+            "createUser": 'USER', //JSON.parse(window.localStorage.currentUser).username,
+            "lineCd": this.copyQuoteLineCd,
+            "quoteId": this.copyQuoteId,
+            "quoteYear": new Date().getFullYear().toString(),
+            "riskId": this.copyIntCompRiskId,
+            "updateDate": currentDate,
+            "updateUser": 'USER', //JSON.parse(window.localStorage.currentUser).username,
+        }
+
+        this.quotationService.saveQuotationCopy(JSON.stringify(params)).subscribe(data => {
+            this.loading = false;            
+
+            if(data['returnCode'] == -1) {
+                this.retrieveQuoteListingMethod();
+                this.copyToQuotationNo = data['quotationNo'];
+
+                //insert sa quote_competition
+                var internalCompParams: any[] = [{
+                    adviceNo: 0,
+                    cedingId: this.copyCedingId,
+                    cedingRepId: '',
+                    createDate: currentDate,
+                    createUser: 'USER', //JSON.parse(window.localStorage.currentUser).username,
+                    option: '',
+                    quoteId: data['quoteId'],
+                    updateDate: currentDate,
+                    updateUser: 'USER', //JSON.parse(window.localStorage.currentUser).username,
+                    wordings: ''
+                }];
+
+                this.quotationService.saveQuoteCompetition(internalCompParams).subscribe((result: any) => {
+                    console.log(result);
+                });
+                //end insert
+
+                this.copyStatus = 1;
+                this.copyQuoteId = "";
+                this.copyQuoteLineCd = "";
+                this.copyQuoteYear = "";
+                this.copyCedingId = "";
+                this.copyCedingName = "";
+                this.copyRiskId = "";
+                this.copyRiskName = "";
+                this.copyIntCompRiskId = "";             
+            } else if (data['returnCode'] == 0) {
+                this.dialogMessage = data['errorList'][0].errorMessage;
+                this.dialogIcon = "error";
+
+                $('#quoProcessing #successModalBtn').trigger('click');
+            }
+        });
     }
 }

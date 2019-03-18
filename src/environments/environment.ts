@@ -5,7 +5,9 @@
 export const environment = {
   production: false,
   apiUrl: 'http://localhost:4000',
-  successMessage: "Successfully Saved!"
+  successMessage: "Successfully Saved!",
+  /*prodApiUrl: 'http://192.168.99.163:8888/api'*/
+  prodApiUrl: 'http://127.0.0.1:8888/api'
 };
 
 /*

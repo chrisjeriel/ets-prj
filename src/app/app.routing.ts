@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home';
 import { LoginComponent } from './login';
 import { RegisterComponent } from './register';
-import { AuthGuard } from './_guards';
+import { AuthGuard, UnsavedChangesGuard } from './_guards';
 import { QuotationComponent } from './quotation/quotation.component'
 import { QuotationInquiryComponent } from './quotation/quotation-inquiry/quotation-inquiry.component';
 import { HoldCoverMonitoringListComponent } from './quotation/quotation-inquiry/hold-cover-monitoring-list/hold-cover-monitoring-list.component';
@@ -121,7 +121,7 @@ const appRoutes: Routes = [
 
 
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
-    { path: 'quotation', component: QuotationComponent, canActivate: [AuthGuard] },
+    { path: 'quotation', component: QuotationComponent, canActivate: [AuthGuard], canDeactivate: [UnsavedChangesGuard] },
     { path: 'policy-issuance', component: PolicyIssuanceComponent },
     { path: 'policy-issuance-alt', component: PolicyIssuanceAltComponent },
     { path: 'dummy', component: DummyComponent, canActivate: [AuthGuard] },

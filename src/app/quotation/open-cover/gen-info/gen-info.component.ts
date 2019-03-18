@@ -154,6 +154,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.titleService.setTitle("Quo | General Info");
     //get params from open cover processing or inquiry
+    console.log(this.notes.toDateTimeString(0));
     this.sub = this.route.params.subscribe(params => {
       this.routerParams = params;
     });

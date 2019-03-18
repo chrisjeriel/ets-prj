@@ -80,8 +80,7 @@ intermediaryListing: any = {
   }
 
   checkCode(code, ev) {
-    //TEMPORARY FIX code == 0
-    if(String(code).trim() === ''  || code == 0){
+    if(String(code).trim() === ''){
       this.selectedData.emit({
         intmId: '',
         intmName: '',
