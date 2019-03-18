@@ -25,7 +25,6 @@ import { LoginComponent } from './login';
 import { RegisterComponent } from './register';
 import { QuotationComponent } from './quotation/quotation.component';
 import { GeneralInfoComponent } from './quotation/general-info/general-info.component';
-import { GeneralInfoComponent2 } from './quotation/general-info/V1.0/general-info.component';
 import { CoverageComponent } from './quotation/coverage/coverage.component';
 import { QuoteOptionComponent } from './quotation/quote-option/quote-option.component';
 import { InternalCompetitionComponent } from './quotation/internal-competition/internal-competition.component';
@@ -672,7 +671,6 @@ import { MtnReasonComponent } from './maintenance/mtn-reason/mtn-reason.componen
         ArDetailsComponent2,
         ClaimRecoveryComponent2,
         InwardPolicyBalancesComponent2,
-        GeneralInfoComponent2
     ],
 
     providers: [
