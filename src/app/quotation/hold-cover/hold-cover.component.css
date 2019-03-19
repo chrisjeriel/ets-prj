@@ -24,3 +24,10 @@
     background: gray !important;
 }
 
+.text-search-ico {
+    margin-right: 6px !important;
+    margin-left: -19px;
+    z-index: 3;
+    font-size: 14px;
+}
+

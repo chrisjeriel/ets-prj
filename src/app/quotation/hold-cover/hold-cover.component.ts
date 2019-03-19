@@ -1,12 +1,14 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
 import { HoldCoverInfo } from '../../_models/HoldCover';
 import { QuotationService,NotesService } from '../../_services';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { Location } from '@angular/common'
 import { DecimalPipe } from '@angular/common';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { Router } from '@angular/router';
+
 
 
 
@@ -59,7 +61,7 @@ export class HoldCoverComponent implements OnInit {
   searchParams: any[] = [];
   searchParams2: any[] = [];
 
-  constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private location: Location, private decPipe: DecimalPipe, private ns : NotesService) { 
+  constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private location: Location, private decPipe: DecimalPipe, private ns : NotesService, private router: Router) { 
   }
 
   qLine: string;
@@ -286,7 +288,7 @@ export class HoldCoverComponent implements OnInit {
               this.showAll = false;
             }else{
               for(let rec of records){
-                if(rec.status.toUpperCase() === 'ISSUED'){
+                if(rec.status.toUpperCase() === 'RELEASED'){
                   this.passDataQuoteLOV.tableData.push({
                     quotationNo: rec.quotationNo,
                     cedingName:  rec.cedingName,
@@ -520,7 +522,7 @@ searchQuoteInfo(line,year,seq,rev,ced){
       }
 
     }else{
-      if(data.status === 'Issued' || data.status === 'issued'){
+      if(data.status.toUpperCase() === 'RELEASED'){
         this.newHc(false);
         this.quoteNo = (data.quotationNo === null || data.quotationNo === undefined) ? '' : data.quotationNo;
         this.sliceQuoteNo(qNo);
@@ -698,5 +700,11 @@ fmtCn(cn){
 //   this.table.pressEnterFilter();
 //   console.log(this.passDataQuoteLOV.filters[0].search + "  >> FILTERS HERE 3rd ");
 // }
+
+onTabChange($event: NgbTabChangeEvent) {
+    if ($event.nextId === 'Exit') {
+        this.router.navigateByUrl('hold-cover-monitoring');
+    } 
+ }
 
 }
