@@ -132,7 +132,7 @@ export class ReadyForPrintingComponent implements OnInit {
 
     tableData: [],
     pageLength: 20,
-/*    checkFlag: true,*/
+    checkFlag: true,
     pagination: true,
     pageStatus: true,
     keys: ['quotationNo','approvedBy','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','insuredDesc','riskName','objectDesc','site','currencyCd','issueDate','expiryDate','reqBy']
