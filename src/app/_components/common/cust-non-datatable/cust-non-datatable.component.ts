@@ -277,8 +277,9 @@ export class CustNonDatatableComponent implements OnInit {
              this.indvSelect = "";
              this.nullRow = true;
         }
-        console.log(this.displayData);
-        console.log(this.indvSelect);
+        //console.log(this.displayData);
+        console.log(this.passData.tableData);
+        //console.log(this.indvSelect);
         this.rowClick.emit(data);
     }
     
