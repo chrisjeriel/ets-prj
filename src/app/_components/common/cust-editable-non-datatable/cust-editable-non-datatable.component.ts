@@ -7,6 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { DummyInfo } from '../../../_models';
 import { FormsModule }   from '@angular/forms';
+import { NotesService } from '@app/_services';
 
 
 @Component({
@@ -103,7 +104,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     @Input() widths: string[] = [];
     unliFlag:boolean = false;
     @Output() clickLOV: EventEmitter<any> = new EventEmitter();
-    constructor(config: NgbDropdownConfig, public renderer: Renderer, private appComponent: AppComponent,private modalService: NgbModal) { 
+    constructor(config: NgbDropdownConfig, public renderer: Renderer, private appComponent: AppComponent,private modalService: NgbModal,private ns: NotesService) { 
         config.placement = 'bottom-right';
         config.autoClose = false;
     }
@@ -391,7 +392,10 @@ export class CustEditableNonDatatableComponent implements OnInit {
         this.addFiller();
     }
 
-    onDataChange(data){
+    onDataChange(ev,data){
+        // console.log("test sa lov input field");
+        console.log(ev);
+        this.ns.lovLoader(ev, 1);
         data.edited = true;
         setTimeout(() => this.tableDataChange.emit(this.passData.tableData),0)
         //this.tableDataChange.emit(this.passData.tableData);
