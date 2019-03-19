@@ -263,7 +263,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
          this.genInfoOcData.preparedBy          = data.quotationOc.preparedBy;
          this.genInfoOcData.approvedBy          = data.quotationOc.approvedBy;
          this.genInfoOcData.printedBy           = data.quotationOc.printedBy;
-         this.genInfoOcData.printDate           = data.quotationOc.printDate === 1800000 ? '' : this.formatDateTime(data.quotationOc.printDate);
+         this.genInfoOcData.printDate           = data.quotationOc.printDate <= 57599000 ? '' : this.formatDateTime(data.quotationOc.printDate);
          this.genInfoOcData.openingParag        = data.quotationOc.openingParag;
          this.genInfoOcData.closingParag        = data.quotationOc.closingParag;
          this.genInfoOcData.reasonCd            = data.quotationOc.reasonCd;
@@ -314,7 +314,9 @@ export class GenInfoComponent implements OnInit, OnDestroy {
        openQuotationNo: this.genInfoOcData.openQuotationNo,
        insured: this.genInfoOcData.insuredDesc,
        riskName: this.projectOc.riskName,
-       riskId: this.projectOc.riskId
+       riskId: this.projectOc.riskId,
+       currencyCd: this.genInfoOcData.currencyCd,
+       currencyRt: this.genInfoOcData.currencyRt,
     });
   }
 

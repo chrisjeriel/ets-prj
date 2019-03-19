@@ -29,8 +29,7 @@
 				<div class="custom-row-inline-inset">
 					<div class="input-group">
 						<label class="form-control-sm col-sm-4">Currency</label>
-            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.currencyCd" [readonly]="inquiryFlag">
-            			<div *ngIf="!inquiryFlag" class="text-search-ico"><a><i class="fa fa-search" (click)="showCurrencyModal()"></i></a></div>
+            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.currencyCd" readonly>
             			<label class="form-control-sm col-sm" >Exch. Rt.</label>
             			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.currencyRt" readonly appCurrencyRate>
             			<label class="col-sm-2"></label>
