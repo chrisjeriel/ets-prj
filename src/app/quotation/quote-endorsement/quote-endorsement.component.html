@@ -39,10 +39,10 @@
         <div class="row">
             <div class="col-sm-1"></div>
             <div class="col-sm-10" style="margin-top: 0.7em; margin-bottom: -0.4%;">
-                <app-cust-editable-non-datatable #endorsment id="endorsmentTable" [passData]="endorsementData" (clickLOV)="clickEndtLOV($event)" *ngIf="!OpenCover">
+                <app-cust-editable-non-datatable #endorsment id="endorsmentTable" [passData]="endorsementData" (clickLOV)="clickEndtLOV($event)" *ngIf="!OpenCover" (newClick)="selectedEndt=$event">
                     <ng-container controls-l>
-                        <button [class.d-none]="inquiryFlag" class="cust-btn" (click)="clickModal($event)">Copy Endt</button>
-                        <button [class.d-none]="inquiryFlag" class="cust-btn" (click)="showDeductiblesOptions()"  style="margin-right: 0px !important;" >Deductibles</button>
+                        <button [class.d-none]="inquiryFlag" class="cust-btn" [class.cust-btn-disabled]="opId===null" (click)="clickModal($event)">Copy Endt</button>
+                        <button [class.d-none]="inquiryFlag" class="cust-btn" [class.cust-btn-disabled]="opId===null || selectedEndt===null" (click)="showDeductiblesOptions()"  style="margin-right: 0px !important;" >Deductibles</button>
                     </ng-container>
                 </app-cust-editable-non-datatable>
                 <app-cust-editable-non-datatable #endorsment id="endorsmentOCTable" [passData]="endorsementOCData" (clickLOV)="clickEndtLOV($event)" *ngIf="OpenCover">
