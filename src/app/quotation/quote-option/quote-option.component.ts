@@ -59,12 +59,12 @@ export class QuoteOptionComponent implements OnInit {
             updateDate: [2019, 2, 22, 0, 0, 0, 0],
             updateUser: "ETC",
         },
-        pageLength: 3,
+        pageLength: 5,
         addFlag: true,
         deleteFlag: true,
         checkFlag: true,
-        paginateFlag: true,
-        infoFlag: true,
+        // paginateFlag: true,
+        // infoFlag: true,
         searchFlag: true,
         pageID: 1,
         keys: ['optionId','optionRt','condition','commRtQuota','commRtSurplus','commRtFac'],
@@ -73,10 +73,10 @@ export class QuoteOptionComponent implements OnInit {
 
     deductiblesData: any = {
         tableData: [],
-        tHeader: ['Deductible Code','Deductible Title', 'Deductible Text', 'Deductible Rate(%)', 'Sum Insured', 'Deductible Amount'],
-        dataTypes: ['text','text', 'text', 'percent', 'currency','currency'],
-        keys: ['deductibleCd','deductibleTitle','deductibleTxt','deductibleRt','sumInsured','deductibleAmt'],
-        widths: [60,'auto',100,120,'auto'],
+        tHeader: ['Deductible Code','Deductible Title', 'Deductible Text', 'Deductible Rate(%)', 'Deductible Amount'],
+        dataTypes: ['text','text', 'text', 'percent','currency'],
+        keys: ['deductibleCd','deductibleTitle','deductibleTxt','deductibleRt','deductibleAmt'],
+        //widths: [60,'auto',100,'auto'],
         nData:{
             createDate: [2019, 2, 21, 0, 0, 0, 0],
             createUser: "ETC",
@@ -95,8 +95,8 @@ export class QuoteOptionComponent implements OnInit {
         addFlag: true,
         deleteFlag: true,
         checkFlag: true,
-        paginateFlag: true,
-        infoFlag: true,
+        // paginateFlag: true,
+        // infoFlag: true,
         searchFlag: true,
         pageID: 2,
         uneditable: [true,true],
@@ -107,11 +107,12 @@ export class QuoteOptionComponent implements OnInit {
         tableData: [],
         tHeader: ['Section','Bullet No','Cover Code Name', 'Sum Insured','Change Tag', 'Rate(%)'],
         dataTypes: ['text', 'text', 'text', 'currency','checkbox','percent'],
-        pageLength: 'unli-1',
+        pageLength: 5,  
         pageID: 3,
         keys: ['section','bulletNo','coverCdDesc','amount','changeTag','rate'],
-        widths: [1,1,'auto',140,1,140],
-        uneditable: [true,true,true,true]
+        //widths: [1,1,'auto',140,1,140],
+        uneditable: [true,true,true,true],
+        searchFlag: true,
     }
 
     deductiblesLOVRow : number;
@@ -224,6 +225,7 @@ export class QuoteOptionComponent implements OnInit {
            }
            this.showAlop.emit(alopFlag);
         });
+
     } 
 
     plainQuotationNo(data: string) {

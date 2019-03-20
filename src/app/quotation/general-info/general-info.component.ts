@@ -440,7 +440,7 @@ export class GeneralInfoComponent implements OnInit {
 	plainQuotationNo(data: string){
 		var arr = data.split('-');
 
-		return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]);
+		return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + arr[4];
 	}
 
 	showCedingCompanyLOV() {
