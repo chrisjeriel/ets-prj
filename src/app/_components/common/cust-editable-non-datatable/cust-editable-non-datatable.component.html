@@ -203,7 +203,7 @@ span.ui-column-resizer {
                                     <select *ngSwitchCase="'select'" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onDataChange(data)" [name]="key+ti">
                                         <ng-container *ngFor="let data of passData.opts">
                                             <ng-container *ngIf="key == data.selector">
-                                                <option *ngFor="let val of data.vals">{{ val }}</option>
+                                                <option *ngFor="let prev of data.prev; let i = index" [value]="data.vals[i]">{{ prev }}</option>
                                             </ng-container>
                                         </ng-container>
                                     </select>

@@ -35,7 +35,8 @@ export class InternalCompetitionComponent implements OnInit {
         nData: new IntCompAdvInfo(null, null, null, null, null, null, null, new Date(), null, new Date()),
         opts: [{
             selector: 'advOption',
-            vals: ['Email', 'Phone', 'Fax'],
+            prev: ['Email', 'Phone', 'Fax'],
+            vals: ['E', 'P', 'F'],
         }],
         searchFlag: true,
         paginateFlag: true,
@@ -116,6 +117,7 @@ export class InternalCompetitionComponent implements OnInit {
       this.cedingIds = [];
       if(this.params.quoteId != ''){
           this.quotationService.getIntCompAdvInfo(this.params).subscribe((data: any) => {
+            console.log(data);
               for(var j = 0; j < data.quotation.length; j++){
                 this.data = data.quotation[j].competitionsList;
                 this.quoteIds.push(data.quotation[j].quoteId);
