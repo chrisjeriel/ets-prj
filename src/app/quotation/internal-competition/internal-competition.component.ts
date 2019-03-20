@@ -35,8 +35,8 @@ export class InternalCompetitionComponent implements OnInit {
         nData: new IntCompAdvInfo(null, null, null, null, null, null, null, new Date(), null, new Date()),
         opts: [{
             selector: 'advOption',
-            prev: ['Email', 'Phone', 'Fax'],
-            vals: ['E', 'P', 'F'],
+            prev: [],
+            vals: [],
         }],
         searchFlag: true,
         paginateFlag: true,
@@ -131,7 +131,16 @@ export class InternalCompetitionComponent implements OnInit {
               }
               //console.log(this.intCompData.tableData);
               this.custEditableNonDatatableComponent.refreshTable();
-        });
+          });
+          if(this.intCompData.opts[0].vals.length === 0 && this.intCompData.opts[0].prev.length === 0){
+            this.maintenanceService.getRefCode('QUOTE_ADVICE_WORDINGS.ADV_OPTION').subscribe((data: any) =>{
+                for(var ref of data.refCodeList){
+                  this.intCompData.opts[0].vals.push(ref.code);
+                  this.intCompData.opts[0].prev.push(ref.description);
+                }
+                this.custEditableNonDatatableComponent.refreshTable();
+            });
+          }
       }
     }
 
