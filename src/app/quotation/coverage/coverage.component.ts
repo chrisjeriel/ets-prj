@@ -138,7 +138,7 @@ export class CoverageComponent implements OnInit {
 
 
   getCoverageInfo(){
-    this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
+    this.quotationService.getCoverageInfo('',this.quotationInfo.quoteId).subscribe((data: any) => {
       this.table.refreshTable();
         if(data.quotation.project == null){
           console.log(data)
