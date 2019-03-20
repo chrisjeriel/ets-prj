@@ -212,6 +212,7 @@ export class GeneralInfoComponent implements OnInit {
 
 			this.quotationService.getQuoteGenInfo('', this.plainQuotationNo(this.quotationNo)).subscribe(data => {
 				this.loading = false;
+				console.log(data);
 				if(data['quotationGeneralInfo'] != null) {
 					this.genInfoData = data['quotationGeneralInfo'];						
 					this.genInfoData.createDate = (this.genInfoData.createDate == null) ? '' : this.ns.toDateTimeString(this.genInfoData.createDate);
@@ -574,7 +575,7 @@ export class GeneralInfoComponent implements OnInit {
 		var saveQuoteGeneralInfoParam = {
 			"savingType"    : this.savingType,
 			"approvedBy"	: this.genInfoData.approvedBy,
-			"cedingId"		: this.genInfoData.cedingId,
+			"cedingId"		: String(this.genInfoData.cedingId).padStart(3, '0'),
 			"cessionId"		: this.genInfoData.cessionId,
 			"closingParag"	: this.genInfoData.closingParag.trim(),
 			"contractorId"	: this.genInfoData.contractorId,
