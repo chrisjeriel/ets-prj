@@ -69,7 +69,7 @@ export class CoverageComponent implements OnInit {
     pageLength: 'unli',
     widths:[60,90,225,110,1],
     magnifyingGlass: ['coverCdAbbr'],
-    uneditable: [true,false,true,false,false],
+    uneditable: [true,false,false,false,false],
     keys:['section','bulletNo','coverCdAbbr','sumInsured','addSi']
   };
 

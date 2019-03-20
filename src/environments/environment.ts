@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   apiUrl: 'http://localhost:4000',
   successMessage: "Successfully Saved!",
-  prodApiUrl: 'http://127.0.0.1:8888/api'
+  prodApiUrl: 'http://localhost:8888/api'
 };
 
 /*
