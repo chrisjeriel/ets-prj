@@ -56,6 +56,8 @@ export class MtnAdviceWordingsComponent implements OnInit {
     if(!this.lovCheckBox){
       this.selectedData.emit(this.selected);
       this.selected = null;
+      this.passDataAdvice.tableData = [];
+      this.table.refreshTable();
     }
     else{
       for(var i = 0; i < this.passDataAdvice.tableData.length; i++){

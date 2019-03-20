@@ -112,6 +112,8 @@ export class InternalCompetitionComponent implements OnInit {
 
     retrieveInternalCompetition(){
       this.intCompData.tableData = [];
+      this.quoteIds = [];
+      this.cedingIds = [];
       if(this.params.quoteId != ''){
           this.quotationService.getIntCompAdvInfo(this.params).subscribe((data: any) => {
               for(var j = 0; j < data.quotation.length; j++){
@@ -175,6 +177,7 @@ export class InternalCompetitionComponent implements OnInit {
                 createUser: this.intCompData.tableData[i].createUser,
                 quoteId: this.quotationInfo.quoteId,
                 updateDate: this.notes.toDateTimeString(0),
+                updateUser: JSON.parse(window.localStorage.currentUser).username,
                 wordings: this.intCompData.tableData[i].wordings === null ? '' : this.intCompData.tableData[i].wordings 
               }
             );
@@ -188,7 +191,7 @@ export class InternalCompetitionComponent implements OnInit {
         $('#incomp #successModalBtn').trigger('click');
       }
       else{
-        /*this.quotationService.saveQuoteCompetition(this.savedData).subscribe((data: any) => {
+        this.quotationService.saveQuoteAdviceWordings(this.savedData).subscribe((data: any) => {
             if(data.returnCode === 0){
               console.log("ERROR!");
               this.messageIcon = "error";
@@ -200,7 +203,7 @@ export class InternalCompetitionComponent implements OnInit {
                this.retrieveInternalCompetition();
                $('.ng-dirty').removeClass('ng-dirty');
             }
-        });*/
+        });
       }
        
     }
