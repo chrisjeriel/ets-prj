@@ -23,18 +23,26 @@
         <div class="row">
             <div class="col-sm-1"></div>
 	            <div class="col-sm-10" style="margin-top: 0.5em; margin-bottom: -0.21em;">
-	                <app-cust-editable-non-datatable #optionsTable [passData]="optionsData" (tableDataChange)="optionsData.tableData=$event;updateCovers();" (newClick)="updateSectionCvrs($event);" (genericBtn)="showDeductiblesOptions($event)"></app-cust-editable-non-datatable>
+	                <app-cust-editable-non-datatable #optionsTable [passData]="optionsData" (tableDataChange)="optionsData.tableData=$event;updateCovers();" (newClick)="updateSectionCvrs($event);">
+	                <ng-container controls-l>
+                        <button [class.cust-btn-disabled]="selectedOption==null" class="cust-btn" (click)="showDeductiblesOptions($event)">Deductibles</button>
+                    </ng-container>
+	                </app-cust-editable-non-datatable>
 	            </div> 
             <div class="col-sm-1"></div>
         </div>
 	</fieldset>
 
-	<fieldset class="scheduler-border">
+	<fieldset class="scheduler-border" style="padding-bottom: 6px !important;">
 		<legend class="scheduler-border">Section Covers</legend>
          <div class="row">
             <div class="col-sm-1"></div>
             <div class="col-sm-10" style="margin-top: 0.5em; margin-bottom: 0.5em;">
-                <app-cust-editable-non-datatable #otherRatesTable [passData]="otherRatesData" (tableDataChange)="updateCovers()" (clickLOV)="clickCoverCodeLOV($event)" (genericBtn)="showDeductiblesOptions($event,true)" (newClick)="selectedCover=$event"></app-cust-editable-non-datatable>
+                <app-cust-editable-non-datatable #otherRatesTable [passData]="otherRatesData" (tableDataChange)="updateCovers()" (clickLOV)="clickCoverCodeLOV($event)" (newClick)="selectedCover=$event">
+                	<ng-container controls-l>
+                        <button [class.cust-btn-disabled]="selectedOption==null || selectedCover==null" class="cust-btn" (click)="showDeductiblesOptions($event,true)">Deductibles</button>
+                    </ng-container>
+                </app-cust-editable-non-datatable>
             </div>
             <div class="col-sm-1"></div>
         </div>
@@ -58,7 +66,6 @@
 	<app-modal class="d-none" id="deductiblesModal">
 		<div *ngIf="fromCovers" header>Deductibles Per Section Cover</div>
 		<div *ngIf="!fromCovers" header>Deductibles Per Quote Option</div>
-		<<!-- div header>Deductibles Per Section Cover</div> -->
 		<div body>
 			<div class="d-flex">
 				<label class="form-control-sm col-sm-1" for="inputInname">Option No</label>

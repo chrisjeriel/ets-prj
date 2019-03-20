@@ -18,7 +18,7 @@ export class MtnSectionCoversComponent implements OnInit {
   selected: any;
   sectionCover: any = {
     tableData: [],
-    tHeader: ['Section','Bullet No','Cover Code','Cover Code Name','Add SI'],
+    tHeader: ['Section','Bullet No','Cover Code','Cover Code Name'],
     dataTypes: ['text', 'text','sequence-3','text','text'],
     pageLength: 10,
     searchFlag: true,
@@ -26,7 +26,8 @@ export class MtnSectionCoversComponent implements OnInit {
     pagination: true,
     fixedCol: false,
     pageID: 1,
-    keys:['section','bulletNo','coverCd','coverCdAbbr','addSi']
+    colSize:['59px','69px','81px','180px'],
+    keys:['section','bulletNo','coverCd','coverCdAbbr']
   };
   constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal) { }
 
