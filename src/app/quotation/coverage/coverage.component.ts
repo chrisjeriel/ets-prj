@@ -398,9 +398,9 @@ export class CoverageComponent implements OnInit {
       }
 
      if(this.lineCd == 'CAR' || this.lineCd == 'EAR'){
-        this.coverageData.totalSi = this.coverageData.sectionISi + this.coverageData.sectionIISi;
+        this.coverageData.totalSi = this.coverageData.sectionISi + this.coverageData.sectionIIISi;
      } else if (this.lineCd == 'EEI'){
-       this.coverageData.totalSi = this.coverageData.sectionISi + this.coverageData.sectionIISi + this.coverageData.sectionIIISi;
+       this.coverageData.totalSi = this.coverageData.sectionISi + this.coverageData.sectionIISi;
      } else{
        this.coverageData.totalSi = this.coverageData.sectionISi
      }
