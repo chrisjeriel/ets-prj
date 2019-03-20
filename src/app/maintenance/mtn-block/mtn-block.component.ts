@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
 import { MaintenanceService } from '@app/_services';
 import { MtnBlock } from '@app/_models';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -42,9 +42,15 @@ export class MtnBlockComponent implements OnInit {
     selected: any;
     modalOpen: boolean = false;
 
+    @Input() lovCheckBox: boolean = false;
+    selects: any[] = [];
+
+
 
   ngOnInit() {
-  	
+  	if(this.lovCheckBox){
+      this.passDataBlock.checkFlag = true;
+    }
   }
 
   select(data){
@@ -52,7 +58,18 @@ export class MtnBlockComponent implements OnInit {
   }
 
   okBtnClick(){
-  	this.selectedData.emit(this.selected);
+    if(!this.lovCheckBox){
+      this.selectedData.emit(this.selected);
+    }
+    else{
+      for(var i = 0; i < this.passDataBlock.tableData.length; i++){
+        if(this.passDataBlock.tableData[i].checked){
+          this.selects.push(this.passDataBlock.tableData[i]);
+        }
+      }
+      this.selectedData.emit(this.selects);
+      this.selects = [];
+    }
   }
 
   openModal(){

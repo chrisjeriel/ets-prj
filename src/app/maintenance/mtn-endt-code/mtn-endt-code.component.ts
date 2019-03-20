@@ -36,7 +36,13 @@ export class MtnEndtCodeComponent implements OnInit {
     }
     selected: any;
 
+    @Input() lovCheckBox: boolean = false;
+    selects: any[] = [];
+
   ngOnInit() {
+    if(this.lovCheckBox){
+      this.passData.checkFlag = true;
+    }
   }
 
   select(data){
@@ -44,7 +50,18 @@ export class MtnEndtCodeComponent implements OnInit {
   }
 
   okBtnClick(){
-  	this.selectedData.emit(this.selected);
+    if(!this.lovCheckBox){
+      this.selectedData.emit(this.selected);
+    }
+    else{
+      for(var i = 0; i < this.passData.tableData.length; i++){
+        if(this.passData.tableData[i].checked){
+          this.selects.push(this.passData.tableData[i]);
+        }
+      }
+      this.selectedData.emit(this.selects);
+      this.selects = [];
+    }
   }
 
   openModal(){
