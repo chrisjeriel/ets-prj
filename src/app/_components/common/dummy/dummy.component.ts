@@ -312,8 +312,9 @@ export class DummyComponent implements OnInit {
         });
     }
 
-    test() {
-        alert('NICE');
+    test() {        
+        console.log('aw');
+        return 'NICE' + this.ttt;
     }
 
     testVal() {

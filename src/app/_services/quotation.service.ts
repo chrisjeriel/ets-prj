@@ -510,9 +510,8 @@ export class QuotationService {
         ];
 
         return this.quotationToHoldCover;
-
-
     }
+
     getItemInfoData() {
         this.itemInfoData = [
             new ItemInformation(1001, "Description for item number 1"),
