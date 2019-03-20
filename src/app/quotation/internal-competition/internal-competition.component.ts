@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
-import { QuotationService, MaintenanceService } from '../../_services';
+import { QuotationService, MaintenanceService, NotesService } from '../../_services';
 import { IntCompAdvInfo } from '@app/_models';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
@@ -34,7 +34,7 @@ export class InternalCompetitionComponent implements OnInit {
         magnifyingGlass: ["cedingRepName", "wordings"],
         nData: new IntCompAdvInfo(null, null, null, null, null, null, null, new Date(), null, new Date()),
         opts: [{
-            selector: 'option',
+            selector: 'advOption',
             vals: ['Email', 'Phone', 'Fax'],
         }],
         searchFlag: true,
@@ -45,7 +45,7 @@ export class InternalCompetitionComponent implements OnInit {
         widths: [1,'auto','auto',1,'auto', 'auto', 1, 1, 1, 1],
         uneditable: [true,true,false,true,false,false,true,true,true,true],
         //keys: ['advNo', 'company', 'attention', 'position', 'advOpt', 'advWord', 'createdBy', 'dateCreated', 'lastUpdateBy', 'lastUpdate'],
-        keys: ['adviceNo', 'cedingName', 'cedingRepName', 'position', 'option', 'wordings', 'createUser', 'createDate', 'updateUser', 'updateDate'],
+        keys: ['adviceNo', 'cedingName', 'cedingRepName', 'position', 'advOption', 'wordings', 'createUser', 'createDate', 'updateUser', 'updateDate'],
 
     }
 
@@ -70,7 +70,9 @@ export class InternalCompetitionComponent implements OnInit {
     @ViewChild(CustEditableNonDatatableComponent) custEditableNonDatatableComponent : CustEditableNonDatatableComponent;
     @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
     
-    constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private maintenanceService: MaintenanceService, private route: ActivatedRoute) { }
+    constructor(private quotationService: QuotationService, private modalService: NgbModal, 
+                private titleService: Title, private maintenanceService: MaintenanceService, 
+                private route: ActivatedRoute, private notes: NotesService) { }
 
     ngOnInit() {
         this.titleService.setTitle("Quo | Internal Competition");
@@ -118,16 +120,8 @@ export class InternalCompetitionComponent implements OnInit {
                 this.cedingIds.push(data.quotation[j].competitionsList[0].cedingId.toString());
                 //this.cedingRepIds.push(data.quotation[j].competitionsList[0].cedingRepId.toString());
                 for(var i = 0; i < this.data.length; i++){
-                  this.data[i].createDate = new Date(
-                      this.data[i].createDate[0],
-                      this.data[i].createDate[1] - 1,
-                      this.data[i].createDate[2]
-                  );
-                  this.data[i].updateDate = new Date(
-                      this.data[i].updateDate[0],
-                      this.data[i].updateDate[1] - 1,
-                      this.data[i].updateDate[2]
-                  );
+                  this.data[i].createDate = this.notes.toDateTimeString(this.data[i].createDate);
+                  this.data[i].updateDate = this.notes.toDateTimeString(this.data[i].updateDate);
                   this.intCompData.tableData.push(this.data[i]);
                 }
               }
@@ -165,15 +159,28 @@ export class InternalCompetitionComponent implements OnInit {
       this.savedData = [];
       for (var i = 0 ; this.intCompData.tableData.length > i; i++) {
         if(this.intCompData.tableData[i].edited){
-            this.intCompData.tableData[i].option = this.intCompData.tableData[i].option === null ? '' : this.intCompData.tableData[i].option;
+            /*this.intCompData.tableData[i].option = this.intCompData.tableData[i].option === null ? '' : this.intCompData.tableData[i].option;
             this.intCompData.tableData[i].wordings = this.intCompData.tableData[i].wordings === null ? '' : this.intCompData.tableData[i].wordings;
             this.savedData.push(this.intCompData.tableData[i]);
             this.savedData[this.savedData.length-1].quoteId = this.quoteIds[i];
             this.savedData[this.savedData.length-1].createDate = new Date().toISOString();
             this.savedData[this.savedData.length-1].updateDate = new Date().toISOString();
-            this.savedData[this.savedData.length-1].updateUser = JSON.parse(window.localStorage.currentUser).username;
+            this.savedData[this.savedData.length-1].updateUser = JSON.parse(window.localStorage.currentUser).username;*/
+            this.savedData.push(
+              {
+                advOption: this.intCompData.tableData[i].advOption === null ? '' : this.intCompData.tableData[i].advOption,
+                adviceNo: this.intCompData.tableData[i].adviceNo,
+                cedingId: this.intCompData.tableData[i].cedingId,
+                createDate: this.notes.toDateTimeString(0),
+                createUser: this.intCompData.tableData[i].createUser,
+                quoteId: this.quotationInfo.quoteId,
+                updateDate: this.notes.toDateTimeString(0),
+                wordings: this.intCompData.tableData[i].wordings === null ? '' : this.intCompData.tableData[i].wordings 
+              }
+            );
           }
       }
+      console.log(this.savedData);
       if(this.savedData.length < 1){
         //modal about no changes were made
         this.resultMessage = "No changes were made.";
@@ -181,7 +188,7 @@ export class InternalCompetitionComponent implements OnInit {
         $('#incomp #successModalBtn').trigger('click');
       }
       else{
-        this.quotationService.saveQuoteCompetition(this.savedData).subscribe((data: any) => {
+        /*this.quotationService.saveQuoteCompetition(this.savedData).subscribe((data: any) => {
             if(data.returnCode === 0){
               console.log("ERROR!");
               this.messageIcon = "error";
@@ -193,7 +200,7 @@ export class InternalCompetitionComponent implements OnInit {
                this.retrieveInternalCompetition();
                $('.ng-dirty').removeClass('ng-dirty');
             }
-        });
+        });*/
       }
        
     }
