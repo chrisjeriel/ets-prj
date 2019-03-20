@@ -806,6 +806,22 @@ export class QuotationService {
         return this.http.post(environment.prodApiUrl + '/quote-service/saveQuoteCompetition', JSON.stringify(params), header);
     }
 
+    saveQuoteAdviceWordings(saveQuoteAdviceWordingsParams: any[]){
+        let params: any = {
+            saveAdviceWordings: saveQuoteAdviceWordingsParams
+        }
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+        //console.log(saveQuoteCompetitionParams.join(","));
+        //console.log(params.substring(1,params.length-1));
+        //console.log(JSON.stringify(params));
+        //return this.http.post(environment.prodApiUrl + '/quote-service/saveQuoteCompetition', params.substring(1,params.length-1), header);
+        return this.http.post(environment.prodApiUrl + '/quote-service/saveQuoteAdviceWordings', JSON.stringify(params), header);
+    }
+
 
     saveQuoteGeneralInfo(saveQuoteGeneralInfoParam) {
         let header: any = {
