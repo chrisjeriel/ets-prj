@@ -64,8 +64,8 @@ export class QuoteOptionComponent implements OnInit {
         addFlag: true,
         deleteFlag: true,
         checkFlag: true,
-        // paginateFlag: true,
-        // infoFlag: true,
+        paginateFlag: true,
+        infoFlag: true,
         searchFlag: true,
         pageID: 1,
         keys: ['optionId','optionRt','condition','commRtQuota','commRtSurplus','commRtFac'],
@@ -142,7 +142,7 @@ export class QuoteOptionComponent implements OnInit {
         tableData: [],
         tHeader: ['Section','Bullet No','Cover Code Name', 'Sum Insured','Change Tag', 'Rate(%)'],
         dataTypes: ['text', 'text', 'text', 'currency','checkbox','percent'],
-        pageLength: 5,  
+        pageLength: 'unli-5',  
         pageID: 3,
         keys: ['section','bulletNo','coverCdDesc','amount','changeTag','rate'],
         //widths: [1,1,'auto',140,1,140],
@@ -432,14 +432,14 @@ saveQuoteOptionAll(cancelFlag?){
             params.deleteDeductibleList.push(ded);
           }
         }
-      }
+      } 
       for(let ded of rec.deductiblesList){
           ded.createDate = new Date(ded.createDate[0],ded.createDate[1]-1,ded.createDate[2]).toISOString();
           ded.updateDate = new Date(ded.updateDate[0],ded.updateDate[1]-1,ded.updateDate[2]).toISOString();
           ded.optionId = rec.optionId;
-          if(ded.edited && !ded.deleted){
+          if(ded.edited && !ded.deleted && rec.optionId !== null && !rec.deleted){
             params.saveDeductibleList.push(ded);
-          }else if(ded.deleted){
+          }else if(ded.deleted && rec.optionId !== null && !rec.deleted){
             params.deleteDeductibleList.push(ded);
           }
         }
@@ -646,14 +646,9 @@ saveQuoteOptionAll(cancelFlag?){
   }
 
   renumber(){
-    let newTableData = [];
-    // for(let rec of this.optionsData.tableData){
-    //   if(!rec.deleted){
-    //     newTableData.push()
-    //   }
-    //   rec.deleted = true;
-
-    // }
+    this.quotationService.renumber(this.quoteId).subscribe((data)=>{
+      this.getQuoteOptions();
+    })
   }
 
 }

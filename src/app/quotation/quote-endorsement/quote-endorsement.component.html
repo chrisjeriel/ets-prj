@@ -30,12 +30,8 @@
         </div>
     </fieldset>
 
-    <fieldset class="scheduler-border" style="position: relative;">
+    <!-- <fieldset class="scheduler-border" style="position: relative;">
         <legend class="scheduler-border">Endorsements</legend>
-        <!-- <button type="button" class="cust-btn copy-endt"><a>Copy Endt</a></button> -->
-
-        <!--<app-cust-editable-table [checkFlag]="true" [addFlag]="true" [deleteFlag]="true" [nData]="nData" [tableData]="tableData" [editFlag]="false" 
-         [tHeader]="tHeader" [magnifyingGlass]="magnifyingGlass"></app-cust-editable-table>-->
         <div class="row">
             <div class="col-sm-1"></div>
             <div class="col-sm-10" style="margin-top: 0.7em; margin-bottom: -0.4%;">
@@ -49,6 +45,29 @@
                 </app-cust-editable-non-datatable>
             </div>
             <div class="col-sm-1"></div>
+        </div>
+    </fieldset> -->
+
+    <fieldset class="scheduler-border" style="padding-bottom: 5px !important;">
+        <legend class="scheduler-border">Endorsements</legend>
+        <div class="row">
+            <div class="col-sm-6" style="padding-left: 2px; padding-right: 2px;">
+                <fieldset class="scheduler-border" style="padding-right: 5px !important;padding-left: 5px !important;height: 356px">
+                    <legend class="scheduler-border" style="visibility: hidden; padding-top: 25px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+                        <app-cust-editable-non-datatable #endorsment id="endorsmentTable" [passData]="endorsementData" (clickLOV)="clickEndtLOV($event)" *ngIf="!OpenCover" (newClick)="selectedEndt=$event;updateDed($event)" class="d-block py-2">
+                        <ng-container controls-l>
+                            <button [class.d-none]="inquiryFlag" class="cust-btn" [class.cust-btn-disabled]="opId===null" (click)="clickModal($event)">Copy Endt</button>
+                            <!-- <button [class.d-none]="inquiryFlag" class="cust-btn" [class.cust-btn-disabled]="opId===null || selectedEndt===null" (click)="showDeductiblesOptions()"  style="margin-right: 0px !important;" >Deductibles</button> -->
+                        </ng-container>
+                    </app-cust-editable-non-datatable>
+                </fieldset>
+            </div> 
+                <div class="col-sm-6" style="padding-left: 2px; padding-right: 2px;"> 
+                <fieldset class="scheduler-border" style="padding-right: 5px !important;padding-left: 5px !important;height: 356px">
+                    <legend class="scheduler-border">Deductibles</legend>
+                    <app-cust-editable-non-datatable #deductibleTable  id="deductibleTable" (onDataChange)="deductibleTable.tableData=$event" [passData]="deductiblesData" (clickLOV)="clickDeductiblesLOV($event)" class="d-block py-2"></app-cust-editable-non-datatable>
+                </fieldset>
+            </div>
         </div>
     </fieldset>
 
@@ -115,7 +134,7 @@
 <app-cancel-button (onYes)="saveData('cancel')" [url]="cancelLink" ></app-cancel-button>
 
 
-<ng-container *ngIf="showModal">
+<!-- <ng-container *ngIf="showModal">
     <app-modal class="d-none" id="deductiblesModal" #deductiblesModal>
         <div header>Deductibles Per Endorsement</div>
         <div body>
@@ -134,6 +153,6 @@
             <button class="cust-btn" (click)="onClickSaveDeductibles()">Save</button>
         </div>
     </app-modal>
-</ng-container>
+</ng-container> -->
 <app-lov id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)"></app-lov>
 <app-confirm-save id="deductibles" (onYes)="saveQuoteDeductibles()"></app-confirm-save>
