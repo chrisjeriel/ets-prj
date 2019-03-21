@@ -30,7 +30,7 @@ export class InternalCompetitionComponent implements OnInit {
     intCompData: any = {
         tableData: [],
         tHeader: ["Advice No.", "Company", "Attention", "Position", "Advice Option", "Advice Wordings", "Created By", "Date Created", "Last Update By", "Last Update"],
-        dataTypes: ["text", "text", "text", "text", "select", "text", "text", "date", "text", "date"],
+        dataTypes: ["text", "text", "text", "text", "select", "text-editor", "text", "date", "text", "date"],
         magnifyingGlass: ["cedingRepName", "wordings"],
         nData: new IntCompAdvInfo(null, null, null, null, null, null, null, new Date(), null, new Date()),
         opts: [{
@@ -44,7 +44,7 @@ export class InternalCompetitionComponent implements OnInit {
         checkFlag: true,
         pageLength: 10,
         widths: [1,'auto','auto',1,'auto', 'auto', 1, 1, 1, 1],
-        uneditable: [true,true,false,true,false,false,true,true,true,true],
+        uneditable: [true,true,true,true,false,false,true,true,true,true],
         //keys: ['advNo', 'company', 'attention', 'position', 'advOpt', 'advWord', 'createdBy', 'dateCreated', 'lastUpdateBy', 'lastUpdate'],
         keys: ['adviceNo', 'cedingName', 'cedingRepName', 'position', 'advOption', 'wordings', 'createUser', 'createDate', 'updateUser', 'updateDate'],
 
