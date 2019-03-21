@@ -951,4 +951,14 @@ export class QuotationService {
              .set('quoteCedingId',quoteCedingId)
         return this.http.get('http://localhost:8888/api/quote-service/searchQuoteInfo',{params});
     }
+
+    updateHoldCoverStatus(params){
+        let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+        };
+       return this.http.post(environment.prodApiUrl + '/quote-service/updateHoldCoverStatus', params, header);
+    }
+  
 }

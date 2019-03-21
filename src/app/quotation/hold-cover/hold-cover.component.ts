@@ -21,6 +21,8 @@ import { Router } from '@angular/router';
 export class HoldCoverComponent implements OnInit {
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
+  @ViewChild('opt') opt: CustNonDatatableComponent;
+
   tableData: any[] = [];
   tHeader: any[] = [];
   quoteLine: string = "";
@@ -41,21 +43,42 @@ export class HoldCoverComponent implements OnInit {
       {key: 'cedingName',title: 'Ceding Co.',dataType: 'text'},
       {key: 'insuredDesc',title: 'Insured',dataType: 'text'},
       {key: 'riskName',title: 'Risk',dataType: 'text'},
-      {key: 'cessionDesc',title: 'Type of Cession',dataType: 'text'},
-      {key: 'lineClassCdDesc',title: 'Line Class',dataType: 'text'},
-      {key: 'status',title: 'Status',dataType: 'text'},
-      {key: 'principalName',title: 'Principal',dataType: 'text'},
-      {key: 'contractorName',title: 'Contractor',dataType: 'text'},   
-      {key: 'objectDesc',title: 'Object',dataType: 'text'},
-      {key: 'site',title: 'Site',dataType: 'text'},
-      {key: 'policyNo',title: 'Policy No.',dataType: 'seq'},
-      {key: 'currencyCd',title: 'Currency',dataType: 'text'},
-      {key: 'issueDate',title: 'Quote Date',dataType: 'date'},
-      {key: 'expiryDate',title: 'Valid Until',dataType: 'date'},
-      {key: 'reqBy',title: 'Requested By',dataType: 'text'},
-      {key: 'createUser',title: 'Created By',dataType: 'text'},
+      // {key: 'cessionDesc',title: 'Type of Cession',dataType: 'text'},
+      // {key: 'lineClassCdDesc',title: 'Line Class',dataType: 'text'},
+      // {key: 'status',title: 'Status',dataType: 'text'},
+      // {key: 'principalName',title: 'Principal',dataType: 'text'},
+      // {key: 'contractorName',title: 'Contractor',dataType: 'text'},   
+      // {key: 'objectDesc',title: 'Object',dataType: 'text'},
+      // {key: 'site',title: 'Site',dataType: 'text'},
+      // {key: 'policyNo',title: 'Policy No.',dataType: 'seq'},
+      // {key: 'currencyCd',title: 'Currency',dataType: 'text'},
+      // {key: 'issueDate',title: 'Quote Date',dataType: 'date'},
+      // {key: 'expiryDate',title: 'Valid Until',dataType: 'date'},
+      // {key: 'reqBy',title: 'Requested By',dataType: 'text'},
+      // {key: 'createUser',title: 'Created By',dataType: 'text'},
     ],
     colSize: ['', '250px', '250px', '250px'],
+  };
+
+  passDataQuoteOptionsLOV : any = {
+    tableData: [],
+    tHeader: ['Option No','Rate(%)','Conditions','Comm Rate Quota(%)','Comm Rate Surplus(%)', 'Comm Rate Fac(%)'],
+    dataTypes: ['number','percent','text','percent','percent','percent'],
+    pageLength: 10,
+    resizable: [false,false,false,false,false,false],
+    tableOnly: true,
+    keys: ['optionNo','rate','conditions','commRateQuota','commRateSurplus','commRateFac'],
+    pageStatus: true,
+    pagination: true,
+    pageID:10,
+    // filters:[
+    //   {key:'optionNo',title:'Option No',dataType:'text'},
+    //   {key:'rate',title:'Option No',dataType:'text'},
+    //   {key:'conditions',title:'Option No',dataType:'text'},
+    //   {key:'commRateQuota',title:'Option No',dataType:'text'},
+    //   {key:'commRateSurplus',title:'Option No',dataType:'text'},
+    //   {key:'commRateFac',title:'Option No',dataType:'text'},
+    // ]
   };
 
   searchParams: any[] = [];
@@ -83,7 +106,8 @@ export class HoldCoverComponent implements OnInit {
   hcSeqNo              : string;
   hcRevNo              : string;
   type                 : string;
-  cancelFlag: boolean;
+  cancelFlag           : boolean;
+  typeTime             : string;
 
 
   quoteId: number;
@@ -100,6 +124,12 @@ export class HoldCoverComponent implements OnInit {
   inSearcnQn: string;
   showAll:boolean;
 
+  periodFromTime: any;
+  periodToTime:any;
+  ids :any;
+  genMsg : string = '';
+  icon:string='';
+
   holdCover: any = {
     approvedBy:     "",
     compRefHoldCovNo:     "",
@@ -108,6 +138,7 @@ export class HoldCoverComponent implements OnInit {
     holdCoverId:    "",
     holdCoverNo:    "",
     holdCoverRevNo:     "",
+    optionId:        "",
     holdCoverSeqNo:     "",
     holdCoverYear:    "",
     lineCd:     "",
@@ -288,7 +319,7 @@ export class HoldCoverComponent implements OnInit {
               this.showAll = false;
             }else{
               for(let rec of records){
-                if(rec.status.toUpperCase() === 'RELEASED'){
+                if(rec.status.toUpperCase() === 'RELEASED' || rec.status.toUpperCase() === 'ON HOLD COVER'){
                   this.passDataQuoteLOV.tableData.push({
                     quotationNo: rec.quotationNo,
                     cedingName:  rec.cedingName,
@@ -308,7 +339,7 @@ export class HoldCoverComponent implements OnInit {
             qLine === 'EEI' ||
             qLine === 'CEC' ||
             qLine === 'MBI' ||
-            qLine === 'BPV' ||
+            qLine === 'BPV' ||  
             qLine === 'MLP' ||
             qLine === 'DOS') {
 
@@ -337,12 +368,14 @@ export class HoldCoverComponent implements OnInit {
           this.hcLine  = this.qLine;
           this.hcYear  =  String(new Date().getFullYear());
           this.showAll = true;
+
           if(data['quotationList'][0] === null || data['quotationList'][0] === undefined || data['quotationList'][0] === ''){ 
             this.holdCover.holdCoverId = '';
             this.hcLine  = '';
             this.hcYear  =  '';
             this.hcSeqNo = '';
             this.hcRevNo = '';
+            this.holdCover.holdCoverNo = '';
             this.holdCover.periodFrom = '';
             this.holdCover.periodTo = '';
             this.holdCover.compRefHoldCovNo = '';
@@ -351,14 +384,18 @@ export class HoldCoverComponent implements OnInit {
             this.holdCover.reqDate = '';
             this.holdCover.preparedBy = '';
             this.holdCover.approvedBy = '';
+            this.holdCover.optionId = '';
             this.clickView = false;
-
+            this.quoteId = (data['quotationList'][0] === undefined) ? '' : data['quotationList'][0].quoteId;
+            
           }else{
             var rec = data['quotationList'][0].holdCover;
             this.holdCover.holdCoverNo = rec.holdCoverNo;
             this.splitHcNo(rec.holdCoverNo);
             this.holdCover.periodFrom = this.ns.toDateTimeString(rec.periodFrom);
             this.holdCover.periodTo = this.ns.toDateTimeString(rec.periodTo);
+            this.periodFromTime = this.holdCover.periodFrom.split('T')[1];
+            this.periodToTime = this.holdCover.periodTo.split('T')[1];
             this.holdCover.compRefHoldCovNo = rec.compRefHoldCovNo;
             this.holdCover.reqBy  = rec.reqBy;
             this.holdCover.reqDate  = this.ns.toDateTimeString(rec.reqDate);
@@ -369,7 +406,8 @@ export class HoldCoverComponent implements OnInit {
             this.holdCover.preparedBy = JSON.parse(window.localStorage.currentUser).username;
             this.holdCover.createDate = this.ns.toDateTimeString(rec.createDate);
             this.holdCover.createUser = rec.createUser;
-
+            this.holdCover.optionId = rec.optionId;
+            this.quoteId = data['quotationList'][0].quoteId;
 
             if(rec.approvedBy === '' || rec.approvedBy === null ||  rec.approvedBy === undefined){
               this.clickView = false;
@@ -393,7 +431,7 @@ export class HoldCoverComponent implements OnInit {
           this.holdCover.reqBy === '' || this.holdCover.reqBy ===  null || this.holdCover.reqBy === undefined ||
           this.holdCover.reqDate === '' || this.holdCover.reqDate === null || this.holdCover.reqDate === undefined){
 
-          this.dialogIcon = 'error';
+        this.dialogIcon = 'error';
         this.dialogMessage = 'Please complete all the required fields.';
         $('app-sucess-dialog #modalBtn').trigger('click');
         setTimeout(()=>{$('.globalLoading').css('display','none');},0);
@@ -413,11 +451,12 @@ export class HoldCoverComponent implements OnInit {
             "holdCoverId": this.holdCover.holdCoverId,
             "holdCoverRevNo": this.hcRevNo,
             "holdCoverSeqNo": this.hcSeqNo,
+            "optionId": "2",
             "holdCoverYear": (this.hcYear === null || this.hcYear === '' || this.hcYear === undefined) ? String(new Date().getFullYear()) : this.hcYear,
             "lineCd": (this.hcLine === null || this.hcLine === '' || this.hcLine === undefined) ? this.qLine.toUpperCase() : this.hcLine.toUpperCase() ,
-            "periodFrom": this.holdCover.periodFrom,
-            "periodTo": this.holdCover.periodTo,
-            "preparedBy": this.holdCover.preparedBy,
+            "periodFrom": this.holdCover.periodFrom.split('T')[0] + 'T' + (this.periodFromTime === undefined ? this.holdCover.periodFrom.split('T')[1]: this.periodFromTime),
+            "periodTo": this.holdCover.periodTo.split('T')[0] + 'T' + (this.periodToTime === undefined ? this.holdCover.periodTo.split('T')[1]: this.periodToTime),
+            "preparedBy": (this.holdCover.preparedBy === null || this.holdCover.preparedBy === '') ? JSON.parse(window.localStorage.currentUser).username : this.holdCover.preparedBy,
             "quoteId": this.quoteId,
             "reqBy": this.holdCover.reqBy,
             // "reqDate": (this.holdCover.reqDate === null  || this.holdCover.reqDate === undefined || this.holdCover.reqDate === '') ?  new Date() :this.holdCover.reqDate,
@@ -459,6 +498,7 @@ export class HoldCoverComponent implements OnInit {
                 this.quotationService.getHoldCoverInfo('',this.plainHc(data['holdCoverNo']))
                 .subscribe(data => {
                   var rec = data['quotation'].holdCover;
+                  this.holdCover.holdCoverNo = rec.holdCoverNo;
                   this.holdCover.holdCoverId = rec.holdCoverId;
                   this.holdCover.periodFrom = this.ns.toDateTimeString(rec.periodFrom);
                   this.holdCover.periodTo = this.ns.toDateTimeString(rec.periodTo);
@@ -468,6 +508,9 @@ export class HoldCoverComponent implements OnInit {
                   this.holdCover.reqDate = (rec.reqDate === null || rec.reqDate === undefined) ? '' : this.ns.toDateTimeString(rec.reqDate);
                   this.holdCover.preparedBy = rec.preparedBy;
                   this.holdCover.approvedBy = rec.approvedBy;
+                  this.holdCover.optionId = rec.optionId;
+                  this.periodFromTime = this.holdCover.periodFrom.split('T')[1];
+                  this.periodToTime = this.holdCover.periodTo.split('T')[1];
                 });
               }
             });
@@ -485,7 +528,7 @@ plainHc(data:string){
 
 plainQuotationNo(data: string){
   var arr = data.split('-');
-  return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]);
+  return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + arr[4];
 }
 
 setPeriodTo(periodFrom){  
@@ -496,7 +539,7 @@ setPeriodTo(periodFrom){
       var d = new Date(periodFrom);
       var s = d.setDate(d.getDate()+30);
       this.holdCover.periodTo = (s === null  || s === undefined ) ? '' : this.ns.toDateTimeString(s);
-      this.holdCover.periodFrom = periodFrom;
+      this.holdCover.periodFrom = this.ns.toDateTimeString(periodFrom);
     }
   }catch(e){
   }
@@ -628,10 +671,12 @@ newHc(isNew:boolean){
   if(isNew === true){
     this.hcPrefix = '';
     this.type = 'text';
+    this.typeTime = 'text';
     this.disableFieldsHc(true);
   }else{
     this.hcPrefix = 'HC';
     this.type = 'date';
+    this.typeTime = 'time';
     this.disableFieldsHc(false);
   }
 }
@@ -643,12 +688,19 @@ disableFieldsHc(isDisabled:boolean){
     $("#reqBy").prop('readonly', true);
     $("#reqDate").prop('readonly', true);
     $("#coRef").prop('readonly', true);
+    $("#periodFromTime").prop('readonly',true);
+    $("#periodToTime").prop('readonly',true);
+    $("#optionId").prop('readonly',true);
+
   }else{
     $("#periodFrom").prop('readonly', false);
     $("#periodTo").prop('readonly', false);
     $("#reqBy").prop('readonly', false);
     $("#reqDate").prop('readonly', false);
     $("#coRef").prop('readonly', false);
+    $("#periodFromTime").prop('readonly',false);
+    $("#periodToTime").prop('readonly',false);
+    $("#optionId").prop('readonly',false);
   }
 }
 
@@ -666,6 +718,7 @@ clearAll(){
   this.hcYear  =  '';
   this.hcSeqNo = '';
   this.hcRevNo ='';
+  this.holdCover.holdCoverNo ='';
   this.holdCover.periodFrom = '';
   this.holdCover.periodTo = '';
   this.holdCover.compRefHoldCovNo = '';
@@ -674,6 +727,7 @@ clearAll(){
   this.holdCover.reqDate = '';
   this.holdCover.preparedBy = '';
   this.holdCover.approvedBy = '';
+  this.holdCover.optionId = '';
 }
 
 onClickSave(){
@@ -705,6 +759,54 @@ onTabChange($event: NgbTabChangeEvent) {
     if ($event.nextId === 'Exit') {
         this.router.navigateByUrl('hold-cover-monitoring');
     } 
- }
+}
+
+onClickCancelHoldCover(){
+  this.ids = {
+    "quoteId":(this.quoteId === null || this.quoteId === undefined)? '' : this.quoteId,
+    "holdCoverId":this.holdCover.holdCoverId
+  };
+
+  if(this.quoteId === null || this.quoteId === undefined){
+       this.genMsg = 'No existing Hold Cover';
+       this.icon = 'fa fa-times-circle fa-3x';
+       $('#successModal #modalBtn').trigger('click');
+  }else{
+      this.quotationService.updateHoldCoverStatus(JSON.stringify(this.ids))
+      .subscribe(data => {
+        console.log(data);
+        this.genMsg = 'Cancelled successfully' ;
+        this.icon = 'fa fa-check-circle fa-3x';
+         $('#successModal #modalBtn').trigger('click');
+      });  
+  }
+  
+}
+
+onConfirmCancelHc(){
+    this.warningMsg = 'Do you really want to cancel this Hold Cover?'
+    $('#warningMdl #modalBtn').trigger('click');  
+}
+
+onClickOptionLOV(){
+  this.passDataQuoteOptionsLOV.tableData = [];
+  this.quotationService.getQuoteOptions('4','')
+    .subscribe(data => {
+      console.log(data);
+      var rec = data['quotation'].optionsList;
+      for(let i of rec){
+        this.passDataQuoteOptionsLOV.tableData.push({
+          optionNo:         i.optionId,
+          rate:             i.optionRt,
+          conditions:       i.condition,
+          commRateQuota:    i.commRtQuota,
+          commRateSurplus:  i.commRtSurplus,
+          commRateFac:      i.commRtFac
+        });
+      }
+      this.opt.refreshTable();
+      $('#optionMdl #modalBtn2').trigger('click');
+    });
+}
 
 }
