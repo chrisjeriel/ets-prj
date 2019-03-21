@@ -46,7 +46,7 @@ export class InternalCompetitionComponent implements OnInit {
         widths: [1,'auto','auto',1,'auto', 'auto', 1, 1, 1, 1],
         uneditable: [true,true,true,true,false,false,true,true,true,true],
         //keys: ['advNo', 'company', 'attention', 'position', 'advOpt', 'advWord', 'createdBy', 'dateCreated', 'lastUpdateBy', 'lastUpdate'],
-        keys: ['adviceNo', 'cedingName', 'cedingRepName', 'position', 'advOption', 'wordings', 'createUser', 'createDate', 'updateUser', 'updateDate'],
+        keys: ['adviceNo', 'cedingName', 'cedingRepName', 'position', 'advOption', 'wordings', 'advWordCreateUser', 'advWordCreateDate', 'advWordUpdateUser', 'advWordUpdateDate'],
 
     }
 
@@ -124,8 +124,8 @@ export class InternalCompetitionComponent implements OnInit {
                 this.cedingIds.push(data.quotation[j].competitionsList[0].cedingId.toString());
                 //this.cedingRepIds.push(data.quotation[j].competitionsList[0].cedingRepId.toString());
                 for(var i = 0; i < this.data.length; i++){
-                  this.data[i].createDate = this.notes.toDateTimeString(this.data[i].createDate);
-                  this.data[i].updateDate = this.notes.toDateTimeString(this.data[i].updateDate);
+                  this.data[i].advWordCreateDate = this.notes.toDateTimeString(this.data[i].advWordCreateDate);
+                  this.data[i].advWordUpdateDate = this.notes.toDateTimeString(this.data[i].advWordUpdateDate);
                   this.intCompData.tableData.push(this.data[i]);
                 }
               }
