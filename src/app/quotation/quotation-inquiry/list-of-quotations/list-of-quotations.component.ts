@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
 import { Router } from '@angular/router';
 import { QuotationList } from '@app/_models';
-import { QuotationService } from '../../../_services';
+import { QuotationService, NotesService } from '../../../_services';
 import { QuotationProcessing } from '@app/_models';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -206,7 +206,7 @@ export class ListOfQuotationsComponent implements OnInit {
         keys: ['quotationNo','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','insuredDesc','riskName','objectDesc','site','policyNo','currencyCd'],
     }
 
-    constructor(private quotationService: QuotationService, private router: Router, private modalService: NgbModal) { 
+    constructor(private quotationService: QuotationService, private router: Router, private modalService: NgbModal, private notes: NotesService) { 
     }
 
     ngOnInit() {
@@ -260,6 +260,7 @@ export class ListOfQuotationsComponent implements OnInit {
         this.retrieveQuoteListingMethod();
         this.quoteList = {};
         this.passData.btnDisabled = true;
+        console.log(this.searchParams);
     }
 
     //Method for print on/off and getting of quoteId used for Reports generation
@@ -404,14 +405,7 @@ export class ListOfQuotationsComponent implements OnInit {
 
     //Function to print PDF 
     printPDF(reportName : string, quoteId : string){
-         var pdfw;
-         var url = "http://localhost:8888/api/util-service/generateReport?reportName=" + this.selectedReport + "&quoteId=" + this.quoteId
-         pdfw = window.open(url, '_blank', 'fullscreen=1,channelmode=1,status=1,resizable=1');
-         pdfw.focus();
-         pdfw.print();
-         pdfw.close();
-      
-      /* var fileName = this.quoteNoCmp;
+       var fileName = this.quoteNoCmp;
        this.quotationService.downloadPDF(reportName,quoteId).subscribe( data => {
               var newBlob = new Blob([data], { type: "application/pdf" });
               var downloadURL = window.URL.createObjectURL(data);
@@ -429,7 +423,7 @@ export class ListOfQuotationsComponent implements OnInit {
                $('#listQuotation #successModalBtn').trigger('click');
                setTimeout(()=>{$('.globalLoading').css('display','none');},0);
             }          
-       });*/
+       });
     }
 
     //Validation of required fields on printing
