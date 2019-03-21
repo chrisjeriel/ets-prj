@@ -23,7 +23,7 @@ export class MtnReasonComponent implements OnInit {
           fixedCol: false,
           pageID: 'reason',
           keys:[
-          	'reasonCd', 
+          	'code', 
             'description', 
             ]
 
@@ -64,9 +64,18 @@ export class MtnReasonComponent implements OnInit {
     }
 
    openModal(){
-     this.mtnService.getMtnReason().subscribe((data: any) => {
+     /*this.mtnService.getMtnReason().subscribe((data: any) => {
         for (var i = 0; i < data.reason.length; i++) {
           this.passDataReason.tableData.push(data.reason[i]);
+        }
+        this.table.refreshTable();
+      });
+     this.modalOpen = true;*/
+
+     this.mtnService.getRefCode('QUOTE_GEN_INFO.REASON_CD').subscribe((data: any) => {
+       console.log(data)
+        for (var i = 0; i < data.refCodeList.length; i++) {
+          this.passDataReason.tableData.push(data.refCodeList[i]);
         }
         this.table.refreshTable();
       });
