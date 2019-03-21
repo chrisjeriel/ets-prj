@@ -402,9 +402,16 @@ export class ListOfQuotationsComponent implements OnInit {
        });
     }
 
-    //Function to print PDF and call web service for downloading of PDF files
+    //Function to print PDF 
     printPDF(reportName : string, quoteId : string){
-       var fileName = this.quoteNoCmp;
+         var pdfw;
+         var url = "http://localhost:8888/api/util-service/generateReport?reportName=" + this.selectedReport + "&quoteId=" + this.quoteId
+         pdfw = window.open(url, '_blank', 'fullscreen=1,channelmode=1,status=1,resizable=1');
+         pdfw.focus();
+         pdfw.print();
+         pdfw.close();
+      
+      /* var fileName = this.quoteNoCmp;
        this.quotationService.downloadPDF(reportName,quoteId).subscribe( data => {
               var newBlob = new Blob([data], { type: "application/pdf" });
               var downloadURL = window.URL.createObjectURL(data);
@@ -422,7 +429,7 @@ export class ListOfQuotationsComponent implements OnInit {
                $('#listQuotation #successModalBtn').trigger('click');
                setTimeout(()=>{$('.globalLoading').css('display','none');},0);
             }          
-       });
+       });*/
     }
 
     //Validation of required fields on printing
