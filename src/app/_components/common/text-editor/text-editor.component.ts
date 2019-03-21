@@ -13,6 +13,7 @@ export class TextEditorComponent implements OnInit {
   @Input() edtrOpnrPos: number = 1;
   @Input() readonly: boolean = false;
   @Input() required: boolean = false;
+  @Input() table: boolean = false;
  
   @Output() fetchContent: EventEmitter<any> = new EventEmitter<any>();
 
@@ -27,6 +28,11 @@ export class TextEditorComponent implements OnInit {
   constructor(private modalService: NgbModal) { }
 
   ngOnInit() {
+
+    if(this.table){
+      this.style['border'] = '0';
+    }
+
     if(this.readonly && !this.required) {
       this.style['background'] = '#f5f5f5';
     } else if(this.required && !this.readonly) {
