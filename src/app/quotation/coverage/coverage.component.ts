@@ -23,7 +23,6 @@ export class CoverageComponent implements OnInit {
 
   editedData: any[] = [];
   deletedData: any[] = [];
-  testingArr: any[] = [];
   //deletedEditedData: any[] = [];
   // editedDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
   // rowClick: EventEmitter<any> = new EventEmitter();
@@ -42,7 +41,7 @@ export class CoverageComponent implements OnInit {
     sectionIIISi: null,
     remarks: '',
     sectionCovers:[],
-    createDate:[0,0,0],
+    createDate: '',
     createUser:'Earl',
     //updateDate:[0,0,0],
     updateUser: 'Earl'
@@ -53,14 +52,14 @@ export class CoverageComponent implements OnInit {
     tableData:[],
     dataTypes: ['text','text','text','currency','checkbox'],
     nData: {
-      createDate: [0,0,0],
+      createDate: '',
       createUser: "PCPR",
       coverCode:null,
       section:null,
       bulletNo:null,
       sumInsured:null,
       addSi:"N",
-      updateDate: [0,0,0],
+      updateDate: '',
       updateUser: "PCPR"
     },
     checkFlag: true,
@@ -124,7 +123,7 @@ export class CoverageComponent implements OnInit {
     
 
     this.quoteNo = this.quotationInfo.quotationNo.split(/[-]/g)[0]
-    for (var i = 1; i < this.quotationInfo.quotationNo.split(/[-]/g).length; i++) {
+    for (var i = 1; i < this.quotationInfo.quotationNo.split(/[-]/g).length-1; i++) {
       this.quoteNo += '-' + parseInt(this.quotationInfo.quotationNo.split(/[-]/g)[i]);
     } 
 
@@ -134,16 +133,14 @@ export class CoverageComponent implements OnInit {
     this.initialData = [];
     this.getCoverageInfo();
     this.coverageData.currencyCd = this.quotationInfo.currencyCd;
-    this.coverageData.currencyRt = this.quotationInfo.currencyRt;  
-      console.log(this.riskId)
+    this.coverageData.currencyRt = this.quotationInfo.currencyRt;
   }
 
 
   getCoverageInfo(){
-    this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
+    this.quotationService.getCoverageInfo(null,this.quotationInfo.quoteId).subscribe((data: any) => {
       this.table.refreshTable();
         if(data.quotation.project == null){
-          console.log(data)
           this.maintenanceService.getMtnSectionCovers(this.lineCd,this.coverCd).subscribe((data: any) =>{
               for(var i=0; i< data.sectionCovers.length;i++){
                 if(data.sectionCovers[i].defaultTag == 'Y' ){
@@ -196,12 +193,11 @@ export class CoverageComponent implements OnInit {
 
       
     });
-    this.testingArr = this.passData.tableData
 
   }
 
   getCoverage(){
-      this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
+      this.quotationService.getCoverageInfo(null,this.quotationInfo.quoteId).subscribe((data: any) => {
       this.table.refreshTable();
 
         if(data.quotation.project !== null){
@@ -222,11 +218,11 @@ export class CoverageComponent implements OnInit {
           }, 0)
 
           this.table.refreshTable();
-          this.testingArr = this.passData.tableData;
         });
   }
 
   validateSectionCover(){
+/*<<<<<<< HEAD
     var matches = false;
 
       this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
@@ -238,17 +234,29 @@ export class CoverageComponent implements OnInit {
              if(arr2[i].coverCd == arr1[j].coverCd){
                matches = true;
                break;
+=======*/
+      this.quotationService.getCoverageInfo(null,this.quotationInfo.quoteId).subscribe((data: any) => {
+        if(data.quotation.project != null){
+          var matches = false;
+          var UpdatedDatas = this.passData.tableData;
+          var InitialDatas = data.quotation.project.coverage.sectionCovers;
+          for(var i=0;i<InitialDatas.length;i++){
+            for(var j=0;j<UpdatedDatas.length;j++){
+               if(InitialDatas[i].coverCd == UpdatedDatas[j].coverCd){
+                 matches = true;
+                 break;
+              }
+// >>>>>>> 409bcd104319b697dc6e7c9fa7a47ac0bd67880f
             }
+            if(!matches){
+              this.deletedData.push(InitialDatas[i])
+              this.deletedData[this.deletedData.length-1].createDate = this.ns.toDateTimeString(this.deletedData[this.deletedData.length-1].createDate);
+              this.deletedData[this.deletedData.length-1].updateDate = this.ns.toDateTimeString(this.deletedData[this.deletedData.length-1].updateDate);
+              this.deletedData[this.deletedData.length-1].lineCd = this.lineCd;
+            }
+            matches = false;
           }
-          if(!matches){
-            this.deletedData.push(arr2[i])
-            this.deletedData[this.deletedData.length-1].createDate = new Date(this.deletedData[this.deletedData.length-1].createDate[0],this.deletedData[this.deletedData.length-1].createDate[1]-1,this.deletedData[this.deletedData.length-1].createDate[2]).toISOString();
-            this.deletedData[this.deletedData.length-1].updateDate = new Date(this.deletedData[this.deletedData.length-1].updateDate[0],this.deletedData[this.deletedData.length-1].updateDate[1]-1,this.deletedData[this.deletedData.length-1].updateDate[2]).toISOString();
-            this.deletedData[this.deletedData.length-1].lineCd = this.lineCd;
-          }
-          matches = false;
         }
-        console.log(this.deletedData)
       });
   }
 
@@ -257,23 +265,22 @@ export class CoverageComponent implements OnInit {
     this.lineCd      = this.quoteNo.split('-')[0];
     /*this.editedData  = [];
     this.deletedData = [];*/
-    console.log(this.deletedData)
     if(this.initialData.length > 0){
       for (var i = 0 ; this.passData.tableData.length > i; i++) {
           if( !this.passData.tableData[i].deleted ){
               this.editedData.push(this.passData.tableData[i]);
-              this.editedData[this.editedData.length-1].createDate = new Date(this.editedData[this.editedData.length-1].createDate[0],this.editedData[this.editedData.length-1].createDate[1]-1,this.editedData[this.editedData.length-1].createDate[2]).toISOString();
-              this.editedData[this.editedData.length-1].updateDate = new Date(this.editedData[this.editedData.length-1].updateDate[0],this.editedData[this.editedData.length-1].updateDate[1]-1,this.editedData[this.editedData.length-1].updateDate[2]).toISOString();
-              this.editedData[this.editedData.length-1].lineCd     = this.lineCd;
+              this.editedData[this.editedData.length-1].createDate = this.ns.toDateTimeString(this.editedData[this.editedData.length-1].createDate) ;
+               this.editedData[this.editedData.length-1].updateDate = this.ns.toDateTimeString(this.editedData[this.editedData.length-1].updateDate);
+               this.editedData[this.editedData.length-1].lineCd     = this.lineCd;
           }else if(this.passData.tableData[i].deleted){
              this.deletedData.push(this.passData.tableData[i]);
-             this.deletedData[this.deletedData.length-1].createDate = new Date(this.deletedData[this.deletedData.length-1].createDate[0],this.deletedData[this.deletedData.length-1].createDate[1]-1,this.deletedData[this.deletedData.length-1].createDate[2]).toISOString();
-             this.deletedData[this.deletedData.length-1].updateDate = new Date(this.deletedData[this.deletedData.length-1].updateDate[0],this.deletedData[this.deletedData.length-1].updateDate[1]-1,this.deletedData[this.deletedData.length-1].updateDate[2]).toISOString();
+             this.deletedData[this.deletedData.length-1].createDate = this.ns.toDateTimeString(this.deletedData[this.deletedData.length-1].createDate);
+             this.deletedData[this.deletedData.length-1].updateDate = this.ns.toDateTimeString(this.deletedData[this.deletedData.length-1].updateDate);
              this.deletedData[this.deletedData.length-1].lineCd = this.lineCd;
          }
        }
-       this.coverageData.createDate          = new Date(this.coverageData.createDate[0],this.coverageData.createDate[1]-1,this.coverageData.createDate[2]).toISOString();
-       //this.coverageData.updateDate          = new Date(this.coverageData.updateDate[0],this.coverageData.updateDate[1]-1,this.coverageData.updateDate[2]).toISOString();
+       this.coverageData.createDate          = this.ns.toDateTimeString(this.coverageData.createDate);
+       this.coverageData.updateDate          = this.ns.toDateTimeString(this.coverageData.updateDate);
        this.coverageData.saveSectionCovers   = this.editedData;
        this.coverageData.deleteSectionCovers = this.deletedData;
        this.coverageData.quoteId             = this.quotationInfo.quoteId;
@@ -283,19 +290,18 @@ export class CoverageComponent implements OnInit {
         for (var i = 0 ; this.passData.tableData.length > i; i++) {
            if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted ){
                this.editedData.push(this.passData.tableData[i]);
-               this.editedData[this.editedData.length-1].createDate = new Date(this.editedData[this.editedData.length-1].createDate[0],this.editedData[this.editedData.length-1].createDate[1]-1,this.editedData[this.editedData.length-1].createDate[2]).toISOString();
-               this.editedData[this.editedData.length-1].updateDate = new Date(this.editedData[this.editedData.length-1].updateDate[0],this.editedData[this.editedData.length-1].updateDate[1]-1,this.editedData[this.editedData.length-1].updateDate[2]).toISOString();
+               this.editedData[this.editedData.length-1].createDate = this.ns.toDateTimeString(this.editedData[this.editedData.length-1].createDate) ;
+               this.editedData[this.editedData.length-1].updateDate = this.ns.toDateTimeString(this.editedData[this.editedData.length-1].updateDate);
                this.editedData[this.editedData.length-1].lineCd     = this.lineCd;
            }else if(this.passData.tableData[i].edited && this.passData.tableData[i].deleted){
-             console.log(this.passData.tableData[i])
              this.deletedData.push(this.passData.tableData[i]);
-             this.deletedData[this.deletedData.length-1].createDate = new Date(this.deletedData[this.deletedData.length-1].createDate[0],this.deletedData[this.deletedData.length-1].createDate[1]-1,this.deletedData[this.deletedData.length-1].createDate[2]).toISOString();
-             this.deletedData[this.deletedData.length-1].updateDate = new Date(this.deletedData[this.deletedData.length-1].updateDate[0],this.deletedData[this.deletedData.length-1].updateDate[1]-1,this.deletedData[this.deletedData.length-1].updateDate[2]).toISOString();
+             this.deletedData[this.deletedData.length-1].createDate = this.ns.toDateTimeString(this.deletedData[this.deletedData.length-1].createDate);
+             this.deletedData[this.deletedData.length-1].updateDate = this.ns.toDateTimeString(this.deletedData[this.deletedData.length-1].updateDate);
              this.deletedData[this.deletedData.length-1].lineCd = this.lineCd;
            }
          }
-         this.coverageData.createDate          = new Date(this.coverageData.createDate[0],this.coverageData.createDate[1]-1,this.coverageData.createDate[2]).toISOString();
-         //this.coverageData.updateDate          = new Date(this.coverageData.updateDate[0],this.coverageData.updateDate[1]-1,this.coverageData.updateDate[2]).toISOString();
+         this.coverageData.createDate          = this.ns.toDateTimeString(this.coverageData.createDate);
+         this.coverageData.updateDate          = this.ns.toDateTimeString(this.coverageData.updateDate);
          this.coverageData.saveSectionCovers   = this.editedData;
          this.coverageData.deleteSectionCovers = this.deletedData;
          this.coverageData.quoteId             = this.quotationInfo.quoteId;
@@ -361,7 +367,6 @@ export class CoverageComponent implements OnInit {
           }
           matches = false;
         }
-        console.log(this.deletedData)
       });
 
     

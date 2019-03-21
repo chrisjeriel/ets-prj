@@ -122,6 +122,7 @@ export class ChangeQuoteStatusComponent implements OnInit {
             description: null,
             remarks: null
         }
+        this.passData.tableData = [];
     }
 
     process(cancelFlag?) {
@@ -188,6 +189,21 @@ export class ChangeQuoteStatusComponent implements OnInit {
     }
 
     onRowClick(data) {
+        if(data != null){
+            this.selectedData = data;
+        }else{
+            this.selectedData ={
+            quotationNo: null,
+            cedingName: null,
+            insuredDesc: null,
+            riskName: null,
+            processor: null,
+            reasonCd: null,
+            description: null,
+            remarks: null
+            }
+        }
+        console.log(data)
         //console.log(this.passData.tableData)
         /*for(let rec of this.records){
             if(rec.quotationNo === data.quotationNo) {

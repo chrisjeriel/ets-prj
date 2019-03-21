@@ -415,7 +415,8 @@ export class CustEditableNonDatatableComponent implements OnInit {
             delete this.passData.tableData.lovInput;
         }
 
-        data.edited = true;               
+        data.edited = true;
+        // ev.edited = true;            
         setTimeout(() => this.tableDataChange.emit(this.passData.tableData),0)
         //this.tableDataChange.emit(this.passData.tableData);
     }
