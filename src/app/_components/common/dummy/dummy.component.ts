@@ -138,7 +138,8 @@ export class DummyComponent implements OnInit {
         ttt: null
     }
     
-     ttt: number = 5;
+    ttt: any = 'ttt';
+    uuu: any = '';
 
     testCont: any = 'TEST';
     teest: any = {
@@ -314,11 +315,6 @@ export class DummyComponent implements OnInit {
     }
 
     testblur() {
-        // if(this.teest.testMask != ''){            
-        //     this.teest.testMask = String(this.teest.testMask).padStart(3, '0');    
-        // }
-        // if(this.t.ttt != ''){            
-        //     this.t.ttt = String(this.t.ttt).padStart(3, '0');    
-        // }
+        this.uuu = 'u ' + this.ttt;
     }
 }

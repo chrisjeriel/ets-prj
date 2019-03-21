@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, Renderer, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, Renderer, ViewChild, ElementRef, ViewChildren, QueryList } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from '@app/app.component';
 import { retry, catchError } from 'rxjs/operators';
@@ -9,7 +9,6 @@ import { DummyInfo } from '../../../_models';
 import { FormsModule }   from '@angular/forms';
 import { NotesService } from '@app/_services';
 
-
 @Component({
     selector: 'app-cust-editable-non-datatable',
     templateUrl: './cust-editable-non-datatable.component.html',
@@ -19,6 +18,7 @@ import { NotesService } from '@app/_services';
 export class CustEditableNonDatatableComponent implements OnInit {
     @ViewChild("deleteModal") deleteModal:ModalComponent;
     @ViewChild('myForm') form:any;
+    @ViewChildren('test') test: QueryList<ElementRef>;
     @Input() tableData: any[] = [];
     @Output() tableDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
     @Input() tHeader: any[] = [];
@@ -197,6 +197,17 @@ export class CustEditableNonDatatableComponent implements OnInit {
         //temporary fix delete this later
         setTimeout(()=>{this.refreshTable()},2000)
     }
+
+    /*ngDoCheck() {
+        if(this.test) {
+            this.test.forEach(inp => {
+                if(inp && inp.nativeElement.classList.contains('ng-dirty')) {
+                    // inp.nativeElement.classList.add('dirtyBastard');
+                    console.log(inp);
+                }
+            })    
+        }
+    }*/
 
     processData(key: any, data: any) {
         return data[key];
@@ -392,11 +403,19 @@ export class CustEditableNonDatatableComponent implements OnInit {
         this.addFiller();
     }
 
-    onDataChange(ev,data){
-        // console.log("test sa lov input field");
-        console.log(ev);
-        this.ns.lovLoader(ev, 1);
-        data.edited = true;
+    onDataChange(ev,data){        
+        if($(ev.target).next().children().prop("tagName") === 'A') {
+            this.ns.lovLoader(ev, 1);
+            this.passData.tableData['ev'] = ev;
+            this.passData.tableData['index'] = ev.target.closest('tr').id;
+            this.passData.tableData['lovInput'] = true;
+        } else {
+            delete this.passData.tableData.ev;
+            delete this.passData.tableData.index;
+            delete this.passData.tableData.lovInput;
+        }
+
+        data.edited = true;               
         setTimeout(() => this.tableDataChange.emit(this.passData.tableData),0)
         //this.tableDataChange.emit(this.passData.tableData);
     }

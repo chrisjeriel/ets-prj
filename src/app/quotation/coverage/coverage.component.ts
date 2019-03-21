@@ -6,6 +6,7 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { MtnSectionCoversComponent } from '@app/maintenance/mtn-section-covers/mtn-section-covers.component';
 
 @Component({
   selector: 'app-coverage',
@@ -18,6 +19,7 @@ export class CoverageComponent implements OnInit {
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   //tableDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+  @ViewChild(MtnSectionCoversComponent) secCoversLov: MtnSectionCoversComponent;
 
   editedData: any[] = [];
   deletedData: any[] = [];
@@ -101,7 +103,7 @@ export class CoverageComponent implements OnInit {
   refresh:boolean = true;
 
 
-  constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,private modalService: NgbModal, private maintenanceService: MaintenanceService) {}
+  constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,private modalService: NgbModal, private maintenanceService: MaintenanceService, private ns: NotesService) {}
 
   ngOnInit() {
     this.titleService.setTitle("Quo | Coverage");
@@ -229,7 +231,7 @@ export class CoverageComponent implements OnInit {
 
       this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
         var arr1 = this.passData.tableData;
-        var arr2 = data.quotation.project.coverage.sectionCovers;
+        var arr2 = data.quotation.project == null ? [] : data.quotation.project.coverage.sectionCovers;
 
         for(var i=0;i<arr2.length;i++){
           for(var j=0;j<arr1.length;j++){
@@ -366,7 +368,6 @@ export class CoverageComponent implements OnInit {
   }
   
   sectionCoversLOV(data){
-        console.log('sectionCoversLOV');
         this.hideSectionCoverArray = this.passData.tableData.filter((a)=>{return a.coverCd!== undefined && !a.deleted}).map((a)=>{return a.coverCd.toString()});
         $('#sectionCoversLOV #modalBtn').trigger('click');
         //data.tableData = this.passData.tableData;
@@ -374,6 +375,12 @@ export class CoverageComponent implements OnInit {
   }
 
   selectedSectionCoversLOV(data){
+    this.ns.lovLoader(data.ev, 0);
+
+    if(!data.hasOwnProperty('fromLOV')) {
+      this.sectionCoverLOVRow = data.ev.index;
+    }
+
     $('#cust-table-container').addClass('ng-dirty');
     this.passData.tableData[this.sectionCoverLOVRow].coverCd = data.coverCd; 
     this.passData.tableData[this.sectionCoverLOVRow].coverCdAbbr = data.coverCdAbbr;
@@ -383,9 +390,22 @@ export class CoverageComponent implements OnInit {
     this.passData.tableData[this.sectionCoverLOVRow].edited = true;
     this.validateSectionCover();
     
+    /*setTimeout(() => {
+      $('#2').find("input:text").focus();
+      console.log("Focused.");
+    }, 3000);*/
   }
 
   update(data){
+    if(data.hasOwnProperty('lovInput')) {
+      this.hideSectionCoverArray = this.passData.tableData.filter((a)=>{return a.coverCd!== undefined && !a.deleted}).map((a)=>{return a.coverCd.toString()});
+
+      data.ev['index'] = data.index;
+      data.ev['filter'] = this.hideSectionCoverArray;
+
+      this.secCoversLov.checkCode(data.ev.target.value, data.ev);
+    }    
+
       this.lineCd = this.quoteNo.split('-')[0];
       this.coverageData.sectionISi =0;
       this.coverageData.sectionIISi =0;
@@ -417,7 +437,6 @@ export class CoverageComponent implements OnInit {
      
      this.focusBlur();
      this.validateSectionCover();
-     console.log(data)
      //this.cancel();  
   }
 

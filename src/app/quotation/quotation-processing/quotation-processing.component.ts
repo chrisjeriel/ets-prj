@@ -234,32 +234,35 @@ export class QuotationProcessingComponent implements OnInit {
         this.quotationService.getQuoProcessingData(this.searchParams).subscribe(data => {
             var records = data['quotationList'];
             this.fetchedData = records;
+            console.log(records);
             for(let rec of records){
-                //neco was here
-                this.splittedLine.push(rec.quotationNo.split("-", 1));
-                this.riskNameList.push((rec.project == null) ? '' : rec.project.riskName);
-                //neco ends here
-                this.passData.tableData.push(
-                                                {
-                                                    quotationNo: rec.quotationNo,
-                                                    cessionDesc: rec.cessionDesc,
-                                                    lineClassCdDesc: rec.lineClassCdDesc,
-                                                    status: rec.status,
-                                                    cedingName: rec.cedingName,
-                                                    principalName: rec.principalName,
-                                                    contractorName: rec.contractorName,
-                                                    insuredDesc: rec.insuredDesc,
-                                                    riskName: (rec.project == null) ? '' : rec.project.riskName,
-                                                    objectDesc: (rec.project == null) ? '' : rec.project.objectDesc,
-                                                    site: (rec.project == null) ? '' : rec.project.site,
-                                                    policyNo: rec.policyNo,
-                                                    currencyCd: rec.currencyCd,
-                                                    issueDate: this.ns.toDateTimeString(rec.issueDate),
-                                                    expiryDate: this.ns.toDateTimeString(rec.issueDate),
-                                                    reqBy: rec.reqBy,
-                                                    createUser: rec.createUser
-                                                }
-                                            );
+                if(rec.status.toUpperCase() === 'IN PROGRESS' || rec.status.toUpperCase() === 'REQUESTED') {
+                    //neco was here
+                    this.splittedLine.push(rec.quotationNo.split("-", 1));
+                    this.riskNameList.push((rec.project == null) ? '' : rec.project.riskName);
+                    //neco ends here
+                    this.passData.tableData.push(
+                                                    {
+                                                        quotationNo: rec.quotationNo,
+                                                        cessionDesc: rec.cessionDesc,
+                                                        lineClassCdDesc: rec.lineClassCdDesc,
+                                                        status: rec.status,
+                                                        cedingName: rec.cedingName,
+                                                        principalName: rec.principalName,
+                                                        contractorName: rec.contractorName,
+                                                        insuredDesc: rec.insuredDesc,
+                                                        riskName: (rec.project == null) ? '' : rec.project.riskName,
+                                                        objectDesc: (rec.project == null) ? '' : rec.project.objectDesc,
+                                                        site: (rec.project == null) ? '' : rec.project.site,
+                                                        policyNo: rec.policyNo,
+                                                        currencyCd: rec.currencyCd,
+                                                        issueDate: this.ns.toDateTimeString(rec.issueDate),
+                                                        expiryDate: this.ns.toDateTimeString(rec.issueDate),
+                                                        reqBy: rec.reqBy,
+                                                        createUser: rec.createUser
+                                                    }
+                                                );    
+                }                
             }
 
 
