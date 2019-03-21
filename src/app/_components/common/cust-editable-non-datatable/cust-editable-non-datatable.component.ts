@@ -396,7 +396,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         // console.log("test sa lov input field");
         console.log(ev);
         this.ns.lovLoader(ev, 1);
-        data.edited = true;
+        ev.edited = true;
         setTimeout(() => this.tableDataChange.emit(this.passData.tableData),0)
         //this.tableDataChange.emit(this.passData.tableData);
     }
