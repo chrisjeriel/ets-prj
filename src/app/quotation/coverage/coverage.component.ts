@@ -329,31 +329,7 @@ export class CoverageComponent implements OnInit {
     });
   }
   cancel(){
-    //this.cancelBtn.clickCancel();
-    var matches = false;
-
-      this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
-        var tableData = this.passData.tableData;
-        var previousData = data.quotation.project.coverage.sectionCovers;
-
-        for(var i=0;i<previousData.length;i++){
-          for(var j=0;j<tableData.length;j++){
-             if(previousData[i].coverCd == tableData[j].coverCd){
-               matches = true;
-               break;
-            }
-          }
-          if(!matches){
-            this.deletedData.push(previousData[i])
-            this.deletedData[this.deletedData.length-1].createDate = new Date(this.deletedData[this.deletedData.length-1].createDate[0],this.deletedData[this.deletedData.length-1].createDate[1]-1,this.deletedData[this.deletedData.length-1].createDate[2]).toISOString();
-            this.deletedData[this.deletedData.length-1].updateDate = new Date(this.deletedData[this.deletedData.length-1].updateDate[0],this.deletedData[this.deletedData.length-1].updateDate[1]-1,this.deletedData[this.deletedData.length-1].updateDate[2]).toISOString();
-            this.deletedData[this.deletedData.length-1].lineCd = this.lineCd;
-          }
-          matches = false;
-        }
-      });
-
-    
+    this.cancelBtn.clickCancel();
   }
   
   sectionCoversLOV(data){

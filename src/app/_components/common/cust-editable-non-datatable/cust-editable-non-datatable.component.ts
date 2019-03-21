@@ -196,6 +196,8 @@ export class CustEditableNonDatatableComponent implements OnInit {
 
         //temporary fix delete this later
         setTimeout(()=>{this.refreshTable()},2000)
+        if(this.passData.nData != undefined)
+        this.passData.nData.add = true;
     }
 
     processData(key: any, data: any) {
@@ -203,7 +205,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     onClickAdd(event) {
-
         this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
         this.passData.tableData[this.passData.tableData.length-1].edited = true;
         this.unliTableLength();    
@@ -225,9 +226,14 @@ export class CustEditableNonDatatableComponent implements OnInit {
         //     }
         // }
         for(let i = 0; i<this.selected.length;i++){
-            this.selected[i].checked = false;
-            this.selected[i].deleted = true;
-            this.selected[i].edited = true;
+            if(!this.selected[i].add){
+                this.selected[i].checked = false;
+                this.selected[i].deleted = true;
+                this.selected[i].edited = true;
+            }else {
+                this.passData.tableData = this.passData.tableData.filter(a => a!= this.selected[i])
+            }
+            
         }
         this.selectAllFlag = false;
         this.form.control.markAsDirty();
@@ -396,7 +402,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         // console.log("test sa lov input field");
         console.log(ev);
         this.ns.lovLoader(ev, 1);
-        ev.edited = true;
+        data.edited = true;
         setTimeout(() => this.tableDataChange.emit(this.passData.tableData),0)
         //this.tableDataChange.emit(this.passData.tableData);
     }
