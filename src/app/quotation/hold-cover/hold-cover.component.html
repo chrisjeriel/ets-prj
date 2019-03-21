@@ -74,7 +74,7 @@
                                             <input type="text" class="form-control form-control-sm cust-sm warn" readonly appRequired [(ngModel)]="holdCover.holdCoverNo">
                                             <label class="form-control-sm col-sm-2">Option No</label>
                                             <input type="text" class="form-control form-control-sm col-sm-7 warn" id="optionId" readonly [(ngModel)]="holdCover.optionId" appRequired>
-                                            <div class="text-search-ico" (click)="onClickOptionLOV()"><a><i class="fa fa-search"></i></a></div>
+                                            <div *ngIf="optLovEnabled" class="text-search-ico" (click)="onClickOptionLOV()"><a><i class="fa fa-search"></i></a></div>
                                         </div>
                                         <!-- <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Period From</label>
@@ -272,14 +272,18 @@
 <app-modal class="d-none" id="optionMdl">
     <div header>List of Values</div>
     <div body class="container-flex text-center">
-        <app-cust-non-datatable #opt [passData]="passDataQuoteOptionsLOV"></app-cust-non-datatable>
+        <app-cust-non-datatable #opt [passData]="passDataQuoteOptionsLOV" (rowClick)="onClickOptionRow($event)"></app-cust-non-datatable>
     </div>
-    <div footer class="d-flex justify-content-center w-100">                    
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+    <div footer class="d-flex justify-content-center w-100">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>                    
+        <button class="cust-btn" type="button" (click)="onClickOkOption()"><a>Ok</a></button>
     </div>
 </app-modal>
 
 <app-confirm-save (onYes)="onSaveClick()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>
 <app-cancel-button (onYes)="onSaveClick('cancel')" [url]="'/hold-cover-monitoring'" ></app-cancel-button>
+
+
+<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
+<div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading">
