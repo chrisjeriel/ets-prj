@@ -91,7 +91,7 @@
 		</div>
 	</app-modal>
 </ng-container> -->
-<app-lov id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)"></app-lov>
+<app-lov id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)" [lovCheckBox]="true"></app-lov>
 
 <app-confirm-save id="options" (onYes)="saveQuoteOptionAll()"></app-confirm-save>
 <app-sucess-dialog id="quote-option" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
