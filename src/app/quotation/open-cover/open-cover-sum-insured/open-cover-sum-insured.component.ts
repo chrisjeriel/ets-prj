@@ -40,6 +40,8 @@ export class OpenCoverSumInsuredComponent implements OnInit {
   dialogIcon: string;
   cancelFlag:boolean;
 
+  loading: boolean = false;
+
   constructor(private quotationService: QuotationService, private titleService: Title, private maintenanceService: MaintenanceService, 
   	private route: ActivatedRoute) { }
 
@@ -52,7 +54,7 @@ export class OpenCoverSumInsuredComponent implements OnInit {
 	     } 
 	    });*/
 
-
+      this.loading = true;
 	  	this.getCoverageOc();
 
   }
@@ -79,6 +81,7 @@ export class OpenCoverSumInsuredComponent implements OnInit {
             $('[appCurrency]').blur();
             
           },0);
+          this.loading = false;
       });
   }
 

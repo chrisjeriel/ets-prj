@@ -41,7 +41,7 @@
                         <button [class.d-none]="inquiryFlag" class="cust-btn" [class.cust-btn-disabled]="opId===null || selectedEndt===null" (click)="showDeductiblesOptions()"  style="margin-right: 0px !important;" >Deductibles</button>
                     </ng-container>
                 </app-cust-editable-non-datatable>
-                <app-cust-editable-non-datatable id="endorsmentOCTable" [passData]="endorsementOCData" (clickLOV)="clickEndtLOV($event)" *ngIf="OpenCover">
+                <app-cust-editable-non-datatable #endorsment id="endorsmentOCTable" [passData]="endorsementOCData" (clickLOV)="clickEndtLOV($event)" *ngIf="OpenCover">
                 </app-cust-editable-non-datatable>
             </div>
             <div class="col-sm-1"></div>
@@ -84,7 +84,7 @@
 </div>
 
 <app-modal hidden [btnTitle]="'Copy Endt'" class="copy-endt" id="idMdl">
-    <div header>Copy Endorsment</div>
+    <div header>Copy Endorsement</div>
     <div body>
         <div>
             <div class="custom-row-inline-inset">
@@ -104,6 +104,21 @@
     </div>
 </app-modal>
 
+<!-- <<<<<<< HEAD
+<app-modal hidden [btnTitle]="'Copy Endt'" class="copy-endt" id="confirmCopy">
+    <div header>Success</div>
+    <div body>
+        <div>
+            <p><strong style="color:#557a95">Option {{ currentSelectedOption }}</strong> has been copied to <strong style="color:#557a95">Option No/s </strong> <strong style="color:#557a95" *ngFor="let i of copyEndtParams">{{ i.optionNo }}<span *ngIf="copyEndtParams.length > 1">,</span></strong> </p>
+        </div>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+     </div>
+</app-modal>
+
+<app-mtn-endt-code id="edntCodeLOV" (selectedData)="selectedEndtLOV($event)" [line]="line"></app-mtn-endt-code>
+======= -->
 <app-mtn-endt-code id="edntCodeLOV" (selectedData)="selectedEndtLOV($event)" [hide]="hideEndt" [line]="line"></app-mtn-endt-code>
 
 

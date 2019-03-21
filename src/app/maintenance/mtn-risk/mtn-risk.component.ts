@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
 import { MaintenanceService } from '@app/_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
@@ -36,6 +36,9 @@ export class MtnRiskComponent implements OnInit {
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
 
+  @Input() lovCheckBox: boolean = false;
+  selects: any[] = [];
+
   constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal, private router: Router) { }
 
   ngOnInit() {
@@ -58,6 +61,9 @@ export class MtnRiskComponent implements OnInit {
 
   		this.table.refreshTable();
   	});*/
+    if(this.lovCheckBox){
+      this.riskListing.checkFlag = true;
+    }
   }
 
   onRowClick(data){ 
@@ -70,9 +76,20 @@ export class MtnRiskComponent implements OnInit {
   }
 
   confirm(){
-    this.selected['fromLOV'] = true;
-  	this.selectedData.emit(this.selected);
-    this.selected = null;
+    if(!this.lovCheckBox){
+      this.selected['fromLOV'] = true;
+      this.selectedData.emit(this.selected);
+      this.selected = null;
+    }
+    else{
+      for(var i = 0; i < this.riskListing.tableData.length; i++){
+        if(this.riskListing.tableData[i].checked){
+          this.selects.push(this.riskListing.tableData[i]);
+        }
+      }
+      this.selectedData.emit(this.selects);
+      this.selects = [];
+    }
   }
 
   openModal(){

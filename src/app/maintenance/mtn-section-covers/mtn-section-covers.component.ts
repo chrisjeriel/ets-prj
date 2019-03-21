@@ -29,11 +29,18 @@ export class MtnSectionCoversComponent implements OnInit {
     colSize:['59px','69px','81px','180px'],
     keys:['section','bulletNo','coverCd','coverCdAbbr']
   };
+
+  @Input() lovCheckBox: boolean = false;
+  selects: any[] = [];
+
   constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal) { }
 
   ngOnInit() {
   	
     console.log("On Init MTN Section Covers");
+    if(this.lovCheckBox){
+      this.sectionCover.checkFlag = true;
+    }
   }
 
   select(data){
@@ -41,7 +48,18 @@ export class MtnSectionCoversComponent implements OnInit {
   }
 
   okBtnClick(){
-    this.selectedData.emit(this.selected);
+    if(!this.lovCheckBox){
+      this.selectedData.emit(this.selected);
+    }
+    else{
+      for(var i = 0; i < this.sectionCover.tableData.length; i++){
+        if(this.sectionCover.tableData[i].checked){
+          this.selects.push(this.sectionCover.tableData[i]);
+        }
+      }
+      this.selectedData.emit(this.selects);
+      this.selects = [];
+    }
   }
 
   openModal(){

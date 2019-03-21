@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
 import { MaintenanceService } from '@app/_services';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component'
@@ -37,7 +37,13 @@ export class MtnDistrictComponent implements OnInit {
 
     selected: any;
 
+    @Input() lovCheckBox: boolean = false;
+    selects: any[] = [];
+
   ngOnInit() {
+    if(this.lovCheckBox){
+      this.passData.checkFlag = true;
+    }
   }
 
   openModal(){
@@ -74,12 +80,21 @@ export class MtnDistrictComponent implements OnInit {
   }
 
   okBtnClick(){
-    while(this.passData.tableData.length>0){
-      this.passData.tableData.pop();
+    if(!this.lovCheckBox){
+        while(this.passData.tableData.length>0){
+          this.passData.tableData.pop();
+        }
+        this.selectedData.emit(this.selected);
     }
-    console.log("SELECTED : " + JSON.stringify(this.selected));
-
-  	this.selectedData.emit(this.selected);
+    else{
+      for(var i = 0; i < this.passData.tableData.length; i++){
+        if(this.passData.tableData[i].checked){
+          this.selects.push(this.passData.tableData[i]);
+        }
+      }
+      this.selectedData.emit(this.selects);
+      this.selects = [];
+    } 
   }
 
   checkCode(regionCd?, provinceCd?, cityCd?, districtCd?, ev?) {

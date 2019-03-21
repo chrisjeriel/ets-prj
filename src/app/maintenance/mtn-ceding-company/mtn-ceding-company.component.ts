@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
 import { UnderwritingService } from '@app/_services';
 import { CedingCompanyListing } from '@app/_models';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component'
@@ -44,10 +44,16 @@ export class MtnCedingCompanyComponent implements OnInit {
       pageID: '1232141',
       keys:['cedingId','cedingName','address']
   };
+
+  @Input() lovCheckBox: boolean = false;
+  selects: any[] = [];
   
   constructor(private underwritingService: UnderwritingService, private modalService: NgbModal ) { }
 
   ngOnInit() {
+      if(this.lovCheckBox){
+        this.passDataCedingCompanyNotMember.checkFlag = true;
+      }
   }
 
   onRowClick(data){  	
@@ -60,8 +66,19 @@ export class MtnCedingCompanyComponent implements OnInit {
   }
 
   okBtnClick(){
-  	this.selectedData.emit(this.selected);
-    this.selected = null;
+    if(!this.lovCheckBox){
+      this.selectedData.emit(this.selected);
+      this.selected = null;
+    }
+    else{
+      for(var i = 0; i < this.passDataCedingCompanyNotMember.tableData.length; i++){
+        if(this.passDataCedingCompanyNotMember.tableData[i].checked){
+          this.selects.push(this.passDataCedingCompanyNotMember.tableData[i]);
+        }
+      }
+      this.selectedData.emit(this.selects);
+      this.selects = [];
+    }
   }
 
   openModalNotMember(){

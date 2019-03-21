@@ -161,7 +161,7 @@ export class QuoAlopComponent implements OnInit {
     getQuoteOption(){
       var id = this.quotationInfo.quoteId == '' ? '' : this.quotationInfo.quoteId;
       this.quotationService.getQuoteOptions(id, '').subscribe((data: any) => {
-        console.log(data)
+
           // this.optionRecords = data.QuotationOption.optionsList; this.plainQuotationNo(this.quotationNum)
            if (data['quotation'] == null || data['quotation'] == undefined ){
            }else{
@@ -176,7 +176,8 @@ export class QuoAlopComponent implements OnInit {
     }
 
     getAlop(){
-      this.quotationService.getALop(null,this.quoteNo).subscribe((data: any) => {
+      this.quotationService.getALop(this.quotationInfo.quoteId,'').subscribe((data: any) => {
+        console.log(data)
              this.quoteId = data.quotation.quoteId;
               this.alopData = data.quotation.alop===null ? this.alopData : data.quotation.alop;
               if(this.alopData.alopDetails.length != 0){
