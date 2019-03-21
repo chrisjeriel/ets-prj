@@ -617,7 +617,7 @@ export class GeneralInfoComponent implements OnInit {
 			"quoteRevNo"	: this.genInfoData.quoteRevNo,
 			"quoteSeqNo"	: this.genInfoData.quoteSeqNo,
 			"quoteYear"		: this.genInfoData.quoteYear,
-			"reinsurerId"	: this.genInfoData.reinsurerId != null || this.genInfoData.reinsurerId != '' ? String(this.genInfoData.reinsurerId).padStart(3, '0') : '',
+			"reinsurerId"	: this.genInfoData.reinsurerId == null || this.genInfoData.reinsurerId == '' ? '' : String(this.genInfoData.reinsurerId).padStart(3, '0'),
 			"reqBy"			: this.genInfoData.reqBy,
 			"reqDate"		: this.genInfoData.reqDate,
 			"reqMode"		: this.genInfoData.reqMode,
@@ -825,20 +825,6 @@ export class GeneralInfoComponent implements OnInit {
 		var millis = d.setDate(d.getDate() + 30);
 
 		this.genInfoData.expiryDate = this.ns.toDateTimeString(millis);
-	}
-
-	testParags() {
-		// var spl = this.genInfoData.openingParag.split('<Quotation_Header.Requested_By>');
-		// var rb = this.genInfoData.reqBy;
-		
-		// var newParag = 
-		/*ev = ev.replace(/<Quotation_Header.Requested_By>/gi, function(x) {
-			console.log(rb);
-			console.log(x);
-			return rb == '' || rb == null ? x : rb;
-		});*/
-
-		// this.genInfoData.openingParag = this.genInfoData.openingParag + this.genInfoData.reqBy;
 	}
 
 	testFoc() {

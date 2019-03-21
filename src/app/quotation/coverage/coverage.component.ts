@@ -222,19 +222,7 @@ export class CoverageComponent implements OnInit {
   }
 
   validateSectionCover(){
-/*<<<<<<< HEAD
-    var matches = false;
-
-      this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
-        var arr1 = this.passData.tableData;
-        var arr2 = data.quotation.project == null ? [] : data.quotation.project.coverage.sectionCovers;
-
-        for(var i=0;i<arr2.length;i++){
-          for(var j=0;j<arr1.length;j++){
-             if(arr2[i].coverCd == arr1[j].coverCd){
-               matches = true;
-               break;
-=======*/
+// start 409bcd104319b697dc6e7c9fa7a47ac0bd67880f
       this.quotationService.getCoverageInfo(null,this.quotationInfo.quoteId).subscribe((data: any) => {
         if(data.quotation.project != null){
           var matches = false;
@@ -246,7 +234,7 @@ export class CoverageComponent implements OnInit {
                  matches = true;
                  break;
               }
-// >>>>>>> 409bcd104319b697dc6e7c9fa7a47ac0bd67880f
+// END 409bcd104319b697dc6e7c9fa7a47ac0bd67880f
             }
             if(!matches){
               this.deletedData.push(InitialDatas[i])
