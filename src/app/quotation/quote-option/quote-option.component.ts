@@ -70,6 +70,7 @@ export class QuoteOptionComponent implements OnInit {
         pageID: 1,
         keys: ['optionId','optionRt','condition','commRtQuota','commRtSurplus','commRtFac'],
         uneditable: [true,false,false,false,false,false],
+        genericBtn:"Renumber"
     }
 
     optionsDeductiblesData: any = {
@@ -642,6 +643,17 @@ saveQuoteOptionAll(cancelFlag?){
     }else
       this.optionsDeductiblesData.tableData  = data.deductiblesList;
     this.optDeductibleTable.refreshTable();
+  }
+
+  renumber(){
+    let newTableData = [];
+    // for(let rec of this.optionsData.tableData){
+    //   if(!rec.deleted){
+    //     newTableData.push()
+    //   }
+    //   rec.deleted = true;
+
+    // }
   }
 
 }
