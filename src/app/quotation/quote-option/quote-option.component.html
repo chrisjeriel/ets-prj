@@ -18,33 +18,41 @@
 		</div>
 	</fieldset>
 
-	<fieldset class="scheduler-border">
+	<fieldset class="scheduler-border" style="padding-bottom: 5px !important;">
 		<legend class="scheduler-border">Options</legend>
         <div class="row">
-            <div class="col-sm-1"></div>
-	            <div class="col-sm-10" style="margin-top: 0.5em; margin-bottom: -0.21em;">
-	                <app-cust-editable-non-datatable #optionsTable [passData]="optionsData" (tableDataChange)="optionsData.tableData=$event;updateCovers();" (newClick)="updateSectionCvrs($event);">
-	                <ng-container controls-l>
-                        <button [class.cust-btn-disabled]="selectedOption==null" class="cust-btn" (click)="showDeductiblesOptions($event)">Deductibles</button>
-                    </ng-container>
+            <div class="col-sm-6" style="padding-left: 2px; padding-right: 2px;">
+            	<fieldset class="scheduler-border" style="padding-right: 5px !important;padding-left: 5px !important;">
+            		<legend class="scheduler-border" style="visibility: hidden; padding-top: 25px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+	                <app-cust-editable-non-datatable #optionsTable [passData]="optionsData" (tableDataChange)="optionsData.tableData=$event;updateCovers();" (newClick)="updateSectionCvrs($event);updateOptDed($event)" class="d-block py-2">
 	                </app-cust-editable-non-datatable>
-	            </div> 
-            <div class="col-sm-1"></div>
+	            </fieldset>
+            </div> 
+            <div class="col-sm-6" style="padding-left: 2px; padding-right: 2px;"> 
+	            <fieldset class="scheduler-border" style="padding-right: 5px !important;padding-left: 5px !important;">
+					<legend class="scheduler-border">Deductibles</legend>
+					<app-cust-editable-non-datatable #optDeductibleTable  id="deductibleTable" (onDataChange)="optionsDeductiblesData.tableData=$event" [passData]="optionsDeductiblesData" (clickLOV)="clickDeductiblesLOV($event,'option')" class="d-block py-2"></app-cust-editable-non-datatable>
+				</fieldset>
+			</div>
         </div>
 	</fieldset>
 
-	<fieldset class="scheduler-border" style="padding-bottom: 6px !important;">
+	<fieldset class="scheduler-border" style="padding-bottom: 5px !important;">
 		<legend class="scheduler-border">Section Covers</legend>
-         <div class="row">
-            <div class="col-sm-1"></div>
-            <div class="col-sm-10" style="margin-top: 0.5em; margin-bottom: 0.5em;">
-                <app-cust-editable-non-datatable #otherRatesTable [passData]="otherRatesData" (tableDataChange)="updateCovers()" (clickLOV)="clickCoverCodeLOV($event)" (newClick)="selectedCover=$event">
-                	<ng-container controls-l>
-                        <button [class.cust-btn-disabled]="selectedOption==null || selectedCover==null" class="cust-btn" (click)="showDeductiblesOptions($event,true)">Deductibles</button>
-                    </ng-container>
-                </app-cust-editable-non-datatable>
-            </div>
-            <div class="col-sm-1"></div>
+        <div class="row">
+            <div class="col-sm-6" style="padding-left: 2px; padding-right: 2px;">
+            	<fieldset class="scheduler-border" style="padding-right: 5px !important;padding-left: 5px !important;">
+            		<legend class="scheduler-border" style="visibility: hidden; padding-top: 25px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+	                <app-cust-editable-non-datatable #otherRatesTable [passData]="otherRatesData" (tableDataChange)="updateCovers()" (clickLOV)="clickCoverCodeLOV($event)" (newClick)="selectedCover=$event;updateCovDed($event)" class="d-block py-2">
+                	</app-cust-editable-non-datatable>
+	            </fieldset>
+            </div> 
+	            <div class="col-sm-6" style="padding-left: 2px; padding-right: 2px;"> 
+	            <fieldset class="scheduler-border" style="padding-right: 5px !important;padding-left: 5px !important;">
+					<legend class="scheduler-border">Deductibles</legend>
+					<app-cust-editable-non-datatable #covDeductibleTable  id="deductibleTable" (onDataChange)="coversDeductiblesData.tableData=$event" [passData]="coversDeductiblesData" (clickLOV)="clickDeductiblesLOV($event,'cover')" class="d-block py-2"></app-cust-editable-non-datatable>
+				</fieldset>
+			</div>
         </div>
 	</fieldset>
 
@@ -62,7 +70,7 @@
 </div>
 
 
-<ng-container *ngIf="showModal">
+<!-- <ng-container *ngIf="showModal">
 	<app-modal class="d-none" id="deductiblesModal">
 		<div *ngIf="fromCovers" header>Deductibles Per Section Cover</div>
 		<div *ngIf="!fromCovers" header>Deductibles Per Quote Option</div>
@@ -82,7 +90,7 @@
 			<button class="cust-btn" (click)="onClickSaveDeductibles()">Save</button>
 		</div>
 	</app-modal>
-</ng-container>
+</ng-container> -->
 <app-lov id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)"></app-lov>
 
 <app-confirm-save id="options" (onYes)="saveQuoteOptionAll()"></app-confirm-save>
