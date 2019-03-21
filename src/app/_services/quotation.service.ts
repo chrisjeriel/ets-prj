@@ -164,6 +164,37 @@ export class QuotationService {
             return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuoteHoldCoverListing',{params});
     }
 
+
+    getQuotationHoldCoverList(searchParams: any[]) {
+         var params;
+
+          if(searchParams.length < 1){
+            params = new HttpParams()
+             .set('quotationNo','')
+             .set('status','')
+             .set('cedingName','')
+             .set('holdCoverNo','')
+             .set('riskName','')
+             .set('insuredDesc','')
+             .set('periodFrom','')
+             .set('periodTo','')
+             .set('compRefHoldCovNo','')
+             .set('reqBy','')
+             .set('reqDate','')
+             .set('expiringInDays','')
+        }
+         else{
+             params = new HttpParams();
+            for(var i of searchParams){
+                params = params.append(i.key, i.search);
+            }
+        }
+            return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuoteHoldCoverListing',{params});
+    }
+
+
+
+
     getSelectedQuotationHoldCoverInfo(quotationNo) {
         const params = new HttpParams()
              .set('quotationNo',quotationNo)

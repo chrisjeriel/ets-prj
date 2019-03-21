@@ -1,12 +1,10 @@
 import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
 import { Router } from '@angular/router';
-
 import { QuotationList } from '@app/_models';
 import { QuotationService } from '../../../_services';
 import { QuotationProcessing } from '@app/_models';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
 
 @Component({
     selector: 'app-list-of-quotations',
@@ -15,6 +13,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class ListOfQuotationsComponent implements OnInit {
     @ViewChildren(CustNonDatatableComponent) table: QueryList<CustNonDatatableComponent>;
+    //Table Parameters
     tableData: any[] = [];
     allData: any[] = [];
     tHeader: any[] = [];
@@ -22,31 +21,28 @@ export class ListOfQuotationsComponent implements OnInit {
     dataTypes: any[] = [];
     filters: any[] = [];
     pageLength: number;
+
+    //Variable Parameters
     i: number;
     //quoteList: QuotationList = new QuotationList(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
     quoteList: any = {};
-
+    searchParams: any[] = [];
+    records: any[] = [];
     line: string = "";
     quotationNo: string = "";
     typeOfCession: string = "";
-
-    searchParams: any[] = [];
-    records: any[] = [];
-    disabledPrintBtn: boolean = true;
-    btnDisabled: boolean;
-    printType: any = "SCREEN";
+    dialogIcon:string  = "";
+    dialogMessage:string  = "";
     selectPrinterDisabled: boolean = true;
     selectCopiesDisabled: boolean = true;
+    btnDisabled: boolean;
+    printType: string = "SCREEN";
     selectedReport: string ="QUOTER009A";
     quoteNoCmp: any;
-    printName: any = null;
-    printCopies: any = null;
-    dialogIcon:string;
-    dialogMessage:string;
-    printQuoteParams: any = {};
     quoteId: any;
     errorCode: any;
-
+    printName: any = null;
+    printCopies: any = null;
 
     /*passData: any = {
         tablData: [], 
@@ -113,7 +109,8 @@ export class ListOfQuotationsComponent implements OnInit {
         pageLength: 10,
         expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: true, printBtn: true, pagination: true, pageStatus: true,
     }*/
-        passData: any = {
+
+    passData: any = {
         tableData: [],
         tHeader: ['Quotation No.', 'Type of Cession', 'Line Class', 'Status', 'Ceding Company', 'Principal', 'Contractor', 'Insured', 'Risk', 'Object', 'Site', 'Policy No', 'Currency'],
         dataTypes: ['text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text'],
@@ -244,8 +241,8 @@ export class ListOfQuotationsComponent implements OnInit {
                                                 (rec.project == null) ? '' : rec.project.site,
                                                 rec.policyNo,
                                                 rec.currencyCd,
-                                                this.dateParser(rec.issueDate),
-                                                this.dateParser(rec.expiryDate),
+                                                new Date(rec.issueDate),
+                                                new Date(rec.expiryDate),
                                                 rec.reqBy,
                                                 rec.createUser
                                             ));
@@ -265,6 +262,7 @@ export class ListOfQuotationsComponent implements OnInit {
         this.passData.btnDisabled = true;
     }
 
+    //Method for print on/off and getting of quoteId used for Reports generation
     onRowClick(event) {
         if(this.quoteList == event || event === null){
             this.quoteList = {};
@@ -280,6 +278,8 @@ export class ListOfQuotationsComponent implements OnInit {
            }
         }
     }
+
+    //Method to get parameters from quotation lists used for other modules
     onRowDblClick(event) {
         /*for(var i = 0; i < event.target.parentElement.children.length; i++) {
             this.quotationService.rowData[i] = event.target.parentElement.children[i].innerText;
@@ -295,30 +295,28 @@ export class ListOfQuotationsComponent implements OnInit {
         for (var i = 0; i < event.target.closest("tr").children.length; i++) {
             this.quotationService.rowData[i] = event.target.closest("tr").children[i].innerText;
         }
-
         this.line = this.quotationService.rowData[0].split("-")[0];
         this.quotationNo = this.quotationService.rowData[0];
         this.typeOfCession = event.target.closest('tr').children[1].innerText;
-
         this.quotationService.toGenInfo = [];
         this.quotationService.toGenInfo.push("edit", this.line);
-        
         this.quotationService.savingType = 'normal';
-
         setTimeout(() => {
             this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.typeOfCession,  quotationNo : this.quotationNo, from: 'quo-processing', inquiry: true}], { skipLocationChange: true });
         },100); 
     }
 
+
     dateParser(arr){
         return new Date(arr[0] + '-' + arr[1] + '-' + arr[2]);   
     }
 
+    //Method for modal printing openning
     print(){
-        //do something
         $('#showPrintMenu > #modalBtn').trigger('click');
     }
 
+    //Method used to get value of dropsdown button
     tabController(event) {
         if (this.printType == 'SCREEN'){
           this.refreshPrintModal(true);
@@ -329,10 +327,12 @@ export class ListOfQuotationsComponent implements OnInit {
         }
     }
 
+    //Cancel modal click
     cancelModal(){
         this.btnDisabled = false;
     }
 
+    //Function used to manipulate modal buttons and text boxes properties 
     refreshPrintModal(condition : boolean){
          if (condition){
             this.selectPrinterDisabled = true;
@@ -359,6 +359,7 @@ export class ListOfQuotationsComponent implements OnInit {
         
     }
 
+    //Function used for printing of reports
     showPrintPreview() {
          if (this.printType == 'SCREEN'){
            window.open('http://localhost:8888/api/util-service/generateReport?reportName=' + this.selectedReport + '&quoteId=' + this.quoteId, '_blank');
@@ -379,6 +380,7 @@ export class ListOfQuotationsComponent implements OnInit {
          }   
     }
 
+    //Function to download PDF and call web service for downloading of PDF files
     downloadPDF(reportName : string, quoteId : string){
        var fileName = this.quoteNoCmp;
        this.quotationService.downloadPDF(reportName,quoteId).subscribe( data => {
@@ -400,6 +402,7 @@ export class ListOfQuotationsComponent implements OnInit {
        });
     }
 
+    //Function to print PDF and call web service for downloading of PDF files
     printPDF(reportName : string, quoteId : string){
        var fileName = this.quoteNoCmp;
        this.quotationService.downloadPDF(reportName,quoteId).subscribe( data => {
@@ -422,7 +425,7 @@ export class ListOfQuotationsComponent implements OnInit {
        });
     }
 
-
+    //Validation of required fields on printing
     validate(obj){
           var req = ['printerName','noOfcopies'];
           var entries = Object.entries(obj);

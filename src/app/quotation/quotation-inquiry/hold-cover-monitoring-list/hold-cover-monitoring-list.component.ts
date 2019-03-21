@@ -159,11 +159,11 @@ export class HoldCoverMonitoringListComponent implements OnInit {
     }
 
     retrieveQuoteHoldCoverListingMethod(){
-         this.quotationService.getQuotationHoldCoverInfo(this.searchParams)
+         this.quotationService.getQuotationHoldCoverList(this.searchParams)
             .subscribe((val:any) =>
                 {
-                    console.log(val);
                     this.records = val.quotationList;
+                    val(this.records);
                     var list = val.quotationList;
                     for(var i = 0; i < list.length;i++){
                         this.passData.tableData.push( new HoldCoverMonitoringList(
@@ -218,7 +218,7 @@ export class HoldCoverMonitoringListComponent implements OnInit {
         /*for (var i = 0; i < event.target.parentElement.children.length; i++) {
             this.quotationService.rowData[i] = event.target.parentElement.children[i].innerText;
         }*/
-        /*if(this.holdCoverList == event || event === null){
+        if(event === null){
             this.holdCoverList = {};
             this.passData.btnDisabled = true;
         }else{
@@ -231,15 +231,15 @@ export class HoldCoverMonitoringListComponent implements OnInit {
                 this.holdCoverId = rec.holdCover.holdCoverId;
               }
            }
-        }*/
-        if (event != null) {
+        }
+       /* if (event != null) {
             this.quotationService.getHoldCoverInfo('',event.holdCoverNo).subscribe((data:any) =>
                 {
                     this.quoteId = data.quotation.quoteId;
                     this.holdCoverId = data.quotation.holdCover.holdCoverId;
                 }
             );
-        }
+        }*/
 
     }
 
