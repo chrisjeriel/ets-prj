@@ -16,6 +16,7 @@ export class MtnSectionCoversComponent implements OnInit {
   @Input() coverCd: string = "";
   @Input() hideSectionCoverArray: any[] = [];
   selected: any;
+  fromInput: boolean = false;
   sectionCover: any = {
     tableData: [],
     tHeader: ['Section','Bullet No','Cover Code','Cover Code Name','Add SI'],
@@ -32,7 +33,6 @@ export class MtnSectionCoversComponent implements OnInit {
 
   ngOnInit() {
   	
-    console.log("On Init MTN Section Covers");
   }
 
   select(data){
@@ -40,44 +40,67 @@ export class MtnSectionCoversComponent implements OnInit {
   }
 
   okBtnClick(){
+    this.selected['fromLOV'] = true;
     this.selectedData.emit(this.selected);
   }
 
   openModal(){
-        console.log("MTN Section Covers");
-        this.table.refreshTable("try");
-        this.sectionCover.tableData = [];
-        this.maintenanceService.getMtnSectionCovers(this.lineCd,this.coverCd).subscribe((data: any) =>{
-          /*console.log(data.sectionCovers.filter((a)=>{return this.hideSectionCoverArray.indexOf(parseInt(a.coverCd))==-1}));
-          console.log(this.hideSectionCoverArray)*/
-          this.sectionCover.tableData = data.sectionCovers.filter((a)=>{return this.hideSectionCoverArray.indexOf(a.coverCd)==-1})
-           this.table.refreshTable();
-        });
+    if(!this.fromInput) {
+      this.table.refreshTable("try");
+      this.sectionCover.tableData = [];
+      this.maintenanceService.getMtnSectionCovers(this.lineCd,this.coverCd).subscribe((data: any) =>{
+        /*console.log(data.sectionCovers.filter((a)=>{return this.hideSectionCoverArray.indexOf(parseInt(a.coverCd))==-1}));
+        console.log(this.hideSectionCoverArray)*/
+        this.sectionCover.tableData = data.sectionCovers.filter((a)=>{return this.hideSectionCoverArray.indexOf(a.coverCd)==-1})
+         this.table.refreshTable();
+      });
+    } else {
+      this.fromInput = false;
+    }
+        
 
   }
 
-  /*checkCode(code, ev) {
+  checkCode(code, ev) {
     if(code === ''){
       this.selectedData.emit({
         section: '',
         bulletNo: '',
         coverCd: '',
         coverCdAbbr: '',
-        addSi: '',
         ev: ev
       });
     } else {
-      this.maintenanceService.getMtnSectionCovers(this.lineCd,this.coverCd).subscribe((data: any) =>{  
-        if(data['sectionCovers'].length > 0) {
+      this.maintenanceService.getMtnSectionCoversLov(this.lineCd,code).subscribe((data: any) =>{
+        console.log(data);
+        data['sectionCovers'] = data['sectionCovers'].filter((a)=>{return ev.filter.indexOf(a.coverCd)==-1});
+        console.log(data);
+
+        if(data['sectionCovers'].length == 1) {          
           data['sectionCovers'][0]['ev'] = ev;
           this.selectedData.emit(data['sectionCovers'][0]);
+        } else if(data['sectionCovers'].length > 1) {
+          this.fromInput = true;
+          this.selectedData.emit({
+            section: '',
+            bulletNo: '',
+            coverCd: '',
+            coverCdAbbr: '',
+            ev: ev
+          });
+
+          
+          this.sectionCover.tableData = data['sectionCovers'];
+          // this.hideSectionCoverArray = ev.filter;
+          this.table.refreshTable();
+
+          $('#sectionCovers > #modalBtn').trigger('click');
         } else {
           this.selectedData.emit({
             section: '',
             bulletNo: '',
             coverCd: '',
             coverCdAbbr: '',
-            addSi: '',
             ev: ev
           });
             
@@ -86,5 +109,5 @@ export class MtnSectionCoversComponent implements OnInit {
         
       });  
     }
-  }*/
+  }
 }

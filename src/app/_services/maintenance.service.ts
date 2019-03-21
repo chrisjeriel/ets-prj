@@ -122,14 +122,7 @@ export class MaintenanceService{
         return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnRiskListing', {params});
 	}
 
-
-	/*getMtnSectionCovers(lineCd) {
-		const params = new HttpParams()
-                .set('lineCd',lineCd)
-                .set('coverCd',coverCd);
-
-        return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnSectionCovers', {params});     
-	}*/
+	
 	getMtnSectionCovers(lineCd,coverCd) {
 		const params = new HttpParams()
                 .set('lineCd',lineCd)
@@ -188,5 +181,12 @@ export class MaintenanceService{
 		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnTreaty');
 	}
 
+	getMtnSectionCoversLov(lineCd,cover) {
+		const params = new HttpParams()
+                .set('lineCd',lineCd)
+                .set('cover',cover);
+
+        return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnSectionCoversLov', {params});     
+	}
 }
 

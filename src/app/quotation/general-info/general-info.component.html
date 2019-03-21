@@ -87,7 +87,7 @@
 									</div>
 									<div class="input-group ig-cust">
 										<label tabindex="-1" class="form-control-sm col-sm-4">Requested By</label>
-										<input  [readonly]="inquiryFlag" type="text" class="form-control form-control-sm" [(ngModel)]="genInfoData.reqBy" >
+										<input  [readonly]="inquiryFlag" type="text" class="form-control form-control-sm" [ngModel]="genInfoData.reqBy" (ngModelChange)="genInfoData.reqBy=$event; testParags();" (focus)="testFoc()" (blur)="testBlur()">
 									</div>
 									<div class="input-group ig-cust">
 										<label tabindex="-1" class="form-control-sm col-sm-4">Request Date</label>
@@ -910,7 +910,7 @@
 <app-mtn-intermediary id="intLOV" (selectedData)="setInt($event)"></app-mtn-intermediary>
 <app-mtn-line-class id="lineClassLOV" (selectedData)="setLineClass($event)" [line]="line"></app-mtn-line-class>
 <app-mtn-object id="objIdLov" (selectedData)="setObj($event)" [line]="line"></app-mtn-object>
-<app-mtn-quotation-wordings id="wordingOpeningIdLov" (selectedData)="setOpeningWording($event)" [line]="line" [type]="'O'"></app-mtn-quotation-wordings>
+<app-mtn-quotation-wordings id="wordingOpeningIdLov" (selectedData)="setOpeningWording($event);" [line]="line" [type]="'O'"></app-mtn-quotation-wordings>
 <app-mtn-quotation-wordings id="wordingClosingIdLov" (selectedData)="setClosingWording($event)" [line]="line" [type]="'C'"></app-mtn-quotation-wordings> 
 
 
