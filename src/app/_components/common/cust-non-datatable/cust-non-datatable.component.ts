@@ -304,7 +304,12 @@ export class CustNonDatatableComponent implements OnInit {
             this.refreshTable();
         }
         else{
-            this.displayData = this.displayData.filter((a) => { a.checked = false; return true;});
+            this.displayData = this.displayData.filter((a) => {
+                if(a !== null){
+                   a.checked = false; 
+                   return true;
+                } 
+            });
             this.rowClick.emit({});
             this.selected = [];
             this.refreshTable();
