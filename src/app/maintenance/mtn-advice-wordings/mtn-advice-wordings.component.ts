@@ -49,7 +49,11 @@ export class MtnAdviceWordingsComponent implements OnInit {
 
 
   select(data){
-  	  this.selected = data;
+  	  if(Object.entries(data).length !== 0){
+        this.selected = data;
+      }else{
+        this.selected = undefined;
+      }
   }
 
   okBtnClick(){

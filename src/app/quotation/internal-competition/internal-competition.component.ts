@@ -124,8 +124,10 @@ export class InternalCompetitionComponent implements OnInit {
                 this.cedingIds.push(data.quotation[j].competitionsList[0].cedingId.toString());
                 //this.cedingRepIds.push(data.quotation[j].competitionsList[0].cedingRepId.toString());
                 for(var i = 0; i < this.data.length; i++){
-                  this.data[i].advWordCreateDate = this.notes.toDateTimeString(this.data[i].advWordCreateDate);
-                  this.data[i].advWordUpdateDate = this.notes.toDateTimeString(this.data[i].advWordUpdateDate);
+                  this.data[i].advWordCreateUser = this.data[i].advWordCreateUser === null ? this.data[i].createUser : this.data[i].advWordCreateUser;
+                  this.data[i].advWordUpdateUser = this.data[i].advWordUpdateUser === null ? this.data[i].updateUser : this.data[i].advWordUpdateUser;
+                  this.data[i].advWordCreateDate = this.data[i].advWordCreateDate === null ? this.data[i].createDate : this.notes.toDateTimeString(this.data[i].advWordCreateDate);
+                  this.data[i].advWordUpdateDate = this.data[i].advWordUpdateDate === null ? this.data[i].updateDate : this.notes.toDateTimeString(this.data[i].advWordUpdateDate);
                   this.intCompData.tableData.push(this.data[i]);
                 }
               }
@@ -185,7 +187,7 @@ export class InternalCompetitionComponent implements OnInit {
                 adviceNo: this.intCompData.tableData[i].adviceNo,
                 cedingId: this.intCompData.tableData[i].cedingId,
                 createDate: this.notes.toDateTimeString(0),
-                createUser: this.intCompData.tableData[i].createUser,
+                createUser: JSON.parse(window.localStorage.currentUser).username,
                 quoteId: this.quotationInfo.quoteId,
                 updateDate: this.notes.toDateTimeString(0),
                 updateUser: JSON.parse(window.localStorage.currentUser).username,
@@ -240,7 +242,7 @@ export class InternalCompetitionComponent implements OnInit {
     }
 
     selectedAttentionLOV(data){
-         this.intCompData.tableData[this.attentionLOVRow].cedingRepName = data.firstName +' '+ data.middleInitial + ' '+ data.lastName; 
+         this.intCompData.tableData[this.attentionLOVRow].cedingRepName = data.designation +' '+ data.firstName +' '+ data.middleInitial + ' '+ data.lastName; 
          this.intCompData.tableData[this.attentionLOVRow].position = data.position; 
          this.intCompData.tableData[this.attentionLOVRow].cedingRepId = data.cedingRepId.toString();
          this.intCompData.tableData[this.attentionLOVRow].edited = true;
