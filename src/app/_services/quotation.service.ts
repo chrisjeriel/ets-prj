@@ -943,6 +943,14 @@ export class QuotationService {
         return this.http.get(environment.prodApiUrl + '/util-service/generateReport',{ params,'responseType': 'blob'});
     }
 
+    downloadPDFIntComp(adviceNo : string, quoteId : string){
+         const params = new HttpParams()
+             .set('reportName', 'QUOTER007')
+             .set('adviceNo', adviceNo)
+             .set('quoteId', quoteId);
+        return this.http.get(environment.prodApiUrl + '/util-service/generateReport',{ params,'responseType': 'blob'});
+    }
+
     downloadPDFHC(reportName : string, quoteId : string,  holdCoverId : string){
          const params = new HttpParams()
              .set('reportName', reportName)

@@ -48,6 +48,7 @@ export class TextEditorComponent implements OnInit {
   closeTextEditorModal(event) {
   	this.fetchContent.next(this.editorContent);
   	this.modalService.dismissAll();
+    $('#quill-editor').addClass('ng-dirty');
   }
 
   checkStyle() {
