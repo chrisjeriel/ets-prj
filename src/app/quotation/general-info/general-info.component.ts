@@ -53,6 +53,8 @@ export class GeneralInfoComponent implements OnInit {
 	cancelFlag: boolean;
 	dialogIcon:string;
 	dialogMessage:string;
+	a: string = '';
+	b: string = '';
 
 	@Input() inquiryFlag: boolean = false;
 
@@ -545,11 +547,11 @@ export class GeneralInfoComponent implements OnInit {
 							  cedingRepId: '',
 							  createDate: new Date().toISOString(),
 							  createUser: 'ndc',
-							  option: '',
+							  option: '', //remove
 							  quoteId: this.genInfoData.quoteId,
 							  updateDate: new Date().toISOString(),
 							  updateUser: 'ndc',
-							  wordings: ''
+							  wordings: '' //remove
 							}];
 					        this.quotationService.saveQuoteCompetition(internalCompParams).subscribe((result: any) => {
 					          console.log(result);
@@ -615,7 +617,7 @@ export class GeneralInfoComponent implements OnInit {
 			"quoteRevNo"	: this.genInfoData.quoteRevNo,
 			"quoteSeqNo"	: this.genInfoData.quoteSeqNo,
 			"quoteYear"		: this.genInfoData.quoteYear,
-			"reinsurerId"	: this.genInfoData.reinsurerId,
+			"reinsurerId"	: this.genInfoData.reinsurerId == null || this.genInfoData.reinsurerId == '' ? '' : String(this.genInfoData.reinsurerId).padStart(3, '0'),
 			"reqBy"			: this.genInfoData.reqBy,
 			"reqDate"		: this.genInfoData.reqDate,
 			"reqMode"		: this.genInfoData.reqMode,
@@ -824,6 +826,19 @@ export class GeneralInfoComponent implements OnInit {
 
 		this.genInfoData.expiryDate = this.ns.toDateTimeString(millis);
 	}
+
+	testFoc() {
+		this.a = this.genInfoData.reqBy == '' || this.genInfoData.reqBy == null ? '<Quotation_Header.Requested_By>' : this.genInfoData.reqBy; 
+	}
+
+	testBlur() {
+		this.b = this.genInfoData.reqBy == '' || this.genInfoData.reqBy == null ? '<Quotation_Header.Requested_By>' : this.genInfoData.reqBy;
+
+		var reg = new RegExp(this.a, 'gi');
+
+		this.genInfoData.openingParag = this.genInfoData.openingParag.replace(reg, this.b);
+	}
+
 }
 export interface SelectRequestMode {
 	name: string;
