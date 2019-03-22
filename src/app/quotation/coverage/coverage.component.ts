@@ -50,8 +50,9 @@ export class CoverageComponent implements OnInit {
   passData: any = {
     tHeader: ['Section','Bullet No','Cover Name','Sum Insured','Add Sl'],
     tableData:[],
-    dataTypes: ['text','text','text','currency','checkbox'],
+    dataTypes: ['text','text','lovInput','currency','checkbox'],
     nData: {
+      showMG: 1,
       createDate: '',
       createUser: "PCPR",
       coverCode:null,
@@ -357,6 +358,12 @@ export class CoverageComponent implements OnInit {
     this.passData.tableData[this.sectionCoverLOVRow].bulletNo = data[0].bulletNo;
     this.passData.tableData[this.sectionCoverLOVRow].sumInsured = 0;
     this.passData.tableData[this.sectionCoverLOVRow].edited = true;
+
+    if(data[0].coverCd != '' && data[0].coverCd != null && data[0].coverCd != undefined) {
+      //HIDE THE POWERFUL MAGNIFYING GLASS
+      this.passData.tableData[this.sectionCoverLOVRow].showMG = 0;
+    }
+    
     //this.validateSectionCover();
     for(var i = 1; i<data.length;i++){
       this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
@@ -366,6 +373,9 @@ export class CoverageComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].bulletNo = data[i].bulletNo;
       this.passData.tableData[this.passData.tableData.length - 1].sumInsured = 0;
       this.passData.tableData[this.passData.tableData.length - 1].edited = true;
+
+      //HIDE THE POWERFUL MAGNIFYING GLASS
+      this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
       console.log(this.passData.tableData);
     }
     this.table.refreshTable();
@@ -377,6 +387,7 @@ export class CoverageComponent implements OnInit {
   }
 
   update(data){
+    console.log(data);
     if(data.hasOwnProperty('lovInput')) {
       this.hideSectionCoverArray = this.passData.tableData.filter((a)=>{return a.coverCd!== undefined && !a.deleted}).map((a)=>{return a.coverCd.toString()});
 
