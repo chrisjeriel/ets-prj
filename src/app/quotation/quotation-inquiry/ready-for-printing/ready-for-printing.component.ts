@@ -188,6 +188,7 @@ export class ReadyForPrintingComponent implements OnInit {
   searchQuery(searchParams){
         this.searchParams = searchParams;
         this.passData.tableData = [];
+        this.btnDisabled = true;
         this.retrieveQuoteListingMethod();
     }
 
@@ -199,6 +200,7 @@ export class ReadyForPrintingComponent implements OnInit {
 
 
   onRowClick(event){
+    console.log(event);
     if (this.isEmptyObject(event)){
          this.btnDisabled = true;
        } else {
@@ -276,11 +278,9 @@ export class ReadyForPrintingComponent implements OnInit {
   }
 
   showPrintModal(){
-    this.printPDF(this.selectedReport,"4");
     this.prepareData();
     console.log(this.saveData);
-
-   /* if(this.isEmptyObject(this.saveData.changeQuoteStatus)){
+    if(this.isEmptyObject(this.saveData.changeQuoteStatus)){
        this.dialogIcon = "error-message";
        this.dialogMessage = "Please select quotation(s)";
        this.selectedOnOk = true;
@@ -288,7 +288,7 @@ export class ReadyForPrintingComponent implements OnInit {
        setTimeout(()=>{$('.globalLoading').css('display','none');},0);
     } else {
        $('#showPrintMenu > #modalBtn').trigger('click');
-    }*/
+    }
   }
 
    tabController(event) {
@@ -357,20 +357,12 @@ export class ReadyForPrintingComponent implements OnInit {
   }
 
   printPDF(reportName : string, quoteId : string){
-/*       var pdfw;
-       var url = "http://localhost:8888/api/util-service/generateReport?reportName=" + this.selectedReport + "&quoteId=" + this.quoteId
-         pdfw = window.open(url, '_blank', 'fullscreen=1,channelmode=1,status=1,resizable=1');
-         pdfw.focus();
-         pdfw.print();
-         pdfw.close();*/
-         window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + reportName + "&quoteId=" + quoteId, '_blank').print();
-        /* this.quotationService.downloadPDF(reportName,quoteId).subscribe( data => {
+         this.quotationService.downloadPDF(reportName,quoteId).subscribe( data => {
               var newBlob = new Blob([data], { type: "application/pdf" });
               var downloadURL = window.URL.createObjectURL(data);
-              const iframe = document.createElement('iframe');
-              iframe.style.display = 'none';
-              iframe.src = downloadURL;
-              document.body.appendChild(iframe);
+              console.log(downloadURL);
+              window.open(downloadURL, '_blank').print();
+             
        },
         error => {
             if (this.isEmptyObject(error)) {
@@ -381,7 +373,7 @@ export class ReadyForPrintingComponent implements OnInit {
                setTimeout(()=>{$('.globalLoading').css('display','none');},0);
             }          
        });
-*/
+
 
   }
 
