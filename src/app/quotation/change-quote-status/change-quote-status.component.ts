@@ -185,7 +185,7 @@ export class ChangeQuoteStatusComponent implements OnInit {
     }
 
     query() {
-        $('#modalBtn').trigger('click');
+        $('#searchQuote #modalBtn').trigger('click');
     }
 
     onRowClick(data) {

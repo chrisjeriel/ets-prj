@@ -192,13 +192,12 @@ export class CustEditableNonDatatableComponent implements OnInit {
         }
         this.retrieveFromSub();
         // this.addFiller();
-
-        this.passData.nData.add = true;
-
+        if(this.passData.nData != undefined)
+            this.passData.nData.add = true;
+        
         //temporary fix delete this later
         setTimeout(()=>{this.refreshTable()},2000)
-        if(this.passData.nData != undefined)
-        this.passData.nData.add = true;
+        
     }
 
     /*ngDoCheck() {

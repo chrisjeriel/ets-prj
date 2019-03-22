@@ -80,12 +80,12 @@
 				<div class="input-group">
 					<label class="col-sm-4"></label>
 					<label class=" form-control-sm col-sm-2" for="annSumInsured">Annual Sum Insured</label>
-					<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-4 text-right" type="text" id="annSumInsured" [(ngModel)]="alopDetails.annSi" appRequired appCurrency name="annualSI">
+					<input [readonly]="true" class="form-control form-control-sm  col-sm-2 text-right req" type="text" id="annSumInsured" [ngModel]="alopDetails?.annSi" (ngModelChange)="alopDetails.annSi =$event" appRequired appCurrency name="annualSI" style="min-width: 231px !important;">
 				</div>
 				<div class="input-group" style="padding-bottom: 0.9%;">
 					<label class="col-sm-2"></label>
 					<label class="form-control-sm col-sm-4 text-right" for="sumInsForMaxIndem">Sum Insured for Maximum Indemnity Period</label>
-					<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-4 text-right" type="text" id="sumInsForMaxIndem" [(ngModel)]="alopDetails.maxIndemPdSi"  appRequired appCurrency name="siMaxIndem">
+					<input [readonly]="true" class="form-control form-control-sm  col-sm-2 text-right req" type="text" id="sumInsForMaxIndem" [ngModel]="alopDetails?.maxIndemPdSi" (ngModelChange)="alopDetails.maxIndemPdSi = $event"  appRequired appCurrency name="siMaxIndem" style="min-width: 231px !important;">
 				</div>
 			</div>
 		</fieldset>
@@ -95,28 +95,28 @@
 			<div class="form-row custom-row-inline-inset" style="margin-top: 12px !important;">
 				<div class="input-group">
 					<label class="form-control-sm col-sm-4" for="periodFrom">Period of Insurance from</label>
-					<input #from [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-2" type="date" id="periodFrom" [ngModel]="alopDetails?.issueDate?.split('T')[0]" (ngModelChange)="alopDetails.issueDate=$event" appRequired (change)="checkDates()" name="from">
+					<input #from [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-2" type="date" id="periodFrom" [ngModel]="alopDetails?.issueDate?.split('T')[0]" (ngModelChange)="alopDetails.issueDate=$event" appRequired (change)="checkDates()" name="from">
 					<label class="form-control-sm col-sm-1" style="margin-left: -5.19%; z-index: -1;" for="periodTo" >to</label>
-					<input #to [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-2" type="date" id="periodTo" [ngModel]="alopDetails?.expiryDate?.split('T')[0]" (ngModelChange)="alopDetails.expiryDate=$event" appRequired (change)="checkDates()" name="to">
+					<input #to [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-2" type="date" id="periodTo" [ngModel]="alopDetails?.expiryDate?.split('T')[0]" (ngModelChange)="alopDetails.expiryDate=$event" appRequired (change)="checkDates()" name="to">
 					<label class="form-control-sm col-sm-2 text-left" >(Scheduled Date of Completion)</label>
 
 				</div>
 				<div class="input-group">
 					<label class="form-control-sm col-sm-4" for="maxIndemPeriod">Maximum Indemnity Period</label>
-					<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-1 text-right" type="text" id="maxIndemPeriod" [(ngModel)]="alopDetails. maxIndemPd" numbers-only appRequired name="maxIndemPeriod">
+					<input [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-1 text-right" type="text" id="maxIndemPeriod" [ngModel]="alopDetails?.maxIndemPd" (ngModelChange)="alopDetails.maxIndemPd = $event" numbers-only appRequired name="maxIndemPeriod">
 					<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">months</label>
 				</div>
 				<div class="input-group">
 					<label class="form-control-sm col-sm-4" for="fromIndem">from</label>
-					<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-2" type="date" id="fromIndem" [ngModel]="alopDetails?.indemFromDate?.split('T')[0]" (ngModelChange)="alopDetails.indemFromDate=$event" appRequired name="fromIndem">
+					<input [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-2" type="date" id="fromIndem" [ngModel]="alopDetails?.indemFromDate?.split('T')[0]" (ngModelChange)="alopDetails.indemFromDate=$event" appRequired name="fromIndem">
 				</div>
 				<div class="input-group">
 					<label class="form-control-sm col-sm-4" for="timeExcess">Time Excess</label>
-					<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-1 text-right" type="text" id="fromIndem" [(ngModel)]="alopDetails.timeExc" appRequired numbers-only name="timeExcess">
+					<input [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-1 text-right" type="text" id="fromIndem" [ngModel]="alopDetails?.timeExc" (ngModelChange)="alopDetails.timeExc = $event"appRequired numbers-only name="timeExcess">
 				</div>
 				<div class="input-group">
 					<label class="form-control-sm col-sm-4" for="interval">Progress reports to be presented at intervals of</label>
-					<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-1 text-right" type="text" id="interval" [(ngModel)]="alopDetails.repInterval" numbers-only appRequired name="interval">
+					<input [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-1 text-right" type="text" id="interval" [ngModel]="alopDetails?.repInterval" (ngModelChange)="alopDetails.repInterval = $event" numbers-only appRequired name="interval">
 					<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">months</label>
 				</div>
 			</div>
