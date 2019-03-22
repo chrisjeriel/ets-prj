@@ -35,12 +35,18 @@ lineClassListing: any = {
   @Input() line: string = "";
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
 
+  @Input() lovCheckBox: boolean = false;
+  selects: any[] = [];
+
   modalOpen:boolean = false;
 
   constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal) { }
 
   ngOnInit() {
 
+    if(this.lovCheckBox){
+      this.lineClassListing.checkFlag = true;
+    }
   	
   }
 
@@ -53,8 +59,19 @@ lineClassListing: any = {
   }
 
   confirm(){
-    this.selectedData.emit(this.selected);
-    this.selected = null;
+    if(!this.lovCheckBox){
+      this.selectedData.emit(this.selected);
+      this.selected = null;
+    }
+    else{
+      for(var i = 0; i < this.lineClassListing.tableData.length; i++){
+        if(this.lineClassListing.tableData[i].checked){
+          this.selects.push(this.lineClassListing.tableData[i]);
+        }
+      }
+      this.selectedData.emit(this.selects);
+      this.selects = [];
+    }
   }
 
   openModal(){

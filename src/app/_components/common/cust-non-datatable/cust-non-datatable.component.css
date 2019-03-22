@@ -35,7 +35,7 @@ div.filler{
 }
 .table-scroll{
     overflow-x: auto;
-    overflow-y: auto;
+   /* overflow-y: auto; */
     max-width: 100%;
 }
 .table-scroll-unli{
@@ -84,7 +84,7 @@ div.filler{
     border: 1px solid #ddd;
 }
 
-#non-datatable tr:nth-child(even){background-color: #f2f2f2;}
+/*#non-datatable tr:nth-child(even){background-color: #f2f2f2;}*/
 
 #non-datatable tr:hover {background-color: #ffffb3;}
 /*#non-datatable tr:active {background-color: #67b4fc;}*/

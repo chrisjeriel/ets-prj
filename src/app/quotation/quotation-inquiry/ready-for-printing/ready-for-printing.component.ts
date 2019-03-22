@@ -6,7 +6,6 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '@environments/environment';
 
-
 @Component({
   selector: 'app-ready-for-printing',
   templateUrl: './ready-for-printing.component.html',
@@ -428,6 +427,7 @@ export class ReadyForPrintingComponent implements OnInit {
                      for(let i=0;i<this.saveData.changeQuoteStatus.length ;i++){ 
                         window.open('http://localhost:8888/api/util-service/generateReport?reportName=' + this.selectedReport + '&quoteId=' + this.saveData.changeQuoteStatus[i].quoteId, '_blank');
                      }
+
                      this.printParams();
                      this.searchQuery(this.searchParams);
                 }else if (this.printType == 'PRINTER'){

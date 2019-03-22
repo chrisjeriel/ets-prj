@@ -346,7 +346,7 @@ export class UnderwritingService {
     //         new MaintenanceDeductibles(true,'OC31', 'OTHER CAUSES 31', 'L', 0.5, 10000000),
     //         new MaintenanceDeductibles(false,'TPL5', 'THIRD PARTY LIABILITY 30', 'F', 0.4, 20000000000),
     //     ];
-    //     // return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnDeductibles");
+    //     // return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnDeductibles");
     //     return this.maintenanceDeductiblesData;
     // }
     getMaintenanceDeductibles(lineCd?:string,deductibleCd?:string,
@@ -364,7 +364,7 @@ export class UnderwritingService {
             .set('endtCd', endtCd !== undefined ? endtCd:'')
             .set('activeTag', activeTag !== undefined ? activeTag:'')
             .set('defaultTag', defaultTag !== undefined ? defaultTag:'')
-        return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnDeductibles",{params}) ;
+        return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnDeductibles",{params}) ;
     }
     
     getMaintenanceRisksListData(){

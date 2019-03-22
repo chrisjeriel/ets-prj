@@ -112,6 +112,17 @@ export class DummyComponent implements OnInit {
         
     };
 
+    testingData: any = {
+        tHeader: ['test', 'test2'],
+        tableData: [
+            {first: 'test', second: 'test2'}, {first: 'test3', second: 'test4'}
+        ],
+        dataTypes: ['text', 'text'],
+        pageLength: 3,
+        tableOnly: false,
+        checkFlag: true,
+    }
+
     passDataEditable: any = {
         tableData: [],
         tHeader: ["ID", "First Name", "Last Name", "Middle Name", "Gender", "Age", "Birth Date","Actions"],
@@ -138,7 +149,8 @@ export class DummyComponent implements OnInit {
         ttt: null
     }
     
-     ttt: number = 5;
+    ttt: any = 'ttt';
+    uuu: any = '';
 
     testCont: any = 'TEST';
     teest: any = {
@@ -301,8 +313,9 @@ export class DummyComponent implements OnInit {
         });
     }
 
-    test() {
-        alert('NICE');
+    test() {        
+        console.log('aw');
+        return 'NICE' + this.ttt;
     }
 
     testVal() {
@@ -313,11 +326,6 @@ export class DummyComponent implements OnInit {
     }
 
     testblur() {
-        // if(this.teest.testMask != ''){            
-        //     this.teest.testMask = String(this.teest.testMask).padStart(3, '0');    
-        // }
-        // if(this.t.ttt != ''){            
-        //     this.t.ttt = String(this.t.ttt).padStart(3, '0');    
-        // }
+        this.uuu = 'u ' + this.ttt;
     }
 }

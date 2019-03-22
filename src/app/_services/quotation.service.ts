@@ -79,7 +79,7 @@ export class QuotationService {
         const params = new HttpParams()
              .set('quotationNo', (quotationNo === null || quotationNo === undefined ? '' : quotationNo) )
              .set('quoteId',(quotationId === null || quotationId === undefined ? '' : quotationId) )
-        return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteCoverage",{params});
+        return this.http.get(environment.prodApiUrl + "/quote-service/retrieveQuoteCoverage",{params});
     }
 
     getQuotationListInfo() {
@@ -235,11 +235,11 @@ export class QuotationService {
 
 
 /*         if (quoteId == '' || quoteId == null ) {
-               return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteEndorsements?quotationNo="+quotationNo+"&optionId="+optionNo);
+               return this.http.get(environment.prodApiUrl + "/quote-service/retrieveQuoteEndorsements?quotationNo="+quotationNo+"&optionId="+optionNo);
          } else if (quotationNo == '' || quotationNo == null ) {
-               return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteEndorsements?quoteId="+quoteId+"&optionId="+optionNo);
+               return this.http.get(environment.prodApiUrl + "/quote-service/retrieveQuoteEndorsements?quoteId="+quoteId+"&optionId="+optionNo);
          } else {
-               return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteEndorsements?quoteId="+quoteId+"&quotationNo="+quotationNo+"&optionId="+optionNo);
+               return this.http.get(environment.prodApiUrl + "/quote-service/retrieveQuoteEndorsements?quoteId="+quoteId+"&quotationNo="+quotationNo+"&optionId="+optionNo);
          }*/
            
 
@@ -304,7 +304,7 @@ export class QuotationService {
         const params = new HttpParams()
                         .set('quoteIdOc', quoteIdOc)
                         .set('openQuotationNo', openQuotationNo);
-        return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteAttachmentOc", {params});
+        return this.http.get(environment.prodApiUrl + "/quote-service/retrieveQuoteAttachmentOc", {params});
     }
 
     getDummyEditableInfo() {
@@ -342,45 +342,7 @@ export class QuotationService {
 
     }
 
-    getQuoProcessingData(searchParams: any[]) {
-        /*this.quoProcessingData = [
-            new QuotationProcessing('CAR-2015-00088-00-99', 'Direct', 'CAR Wet Risks', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'CAR-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
-            new QuotationProcessing('CAR-2015-00088-00-78', 'Retrocession', 'CAR Wet Risks', 'In Progress', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'CAR-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
-            new QuotationProcessing('EEI-2015-00088-00-77', 'Direct', 'EEI', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'EEI-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
-            new QuotationProcessing('EAR-2015-00088-00-55', 'Direct', 'EAR', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'EAR-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
-            new QuotationProcessing('CEC-2015-00088-00-60', 'Direct', 'CEC', 'In Progress', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'CEC-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
-            new QuotationProcessing('MBI-2015-00088-00-21', 'Direct', 'MBI', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'MBI-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
-            new QuotationProcessing('MLP-2015-00088-00-33', 'Retrocession', 'MLP', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'MLP-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
-            new QuotationProcessing('CAR-2015-00088-00-28', 'Direct', 'CAR Wet Risks', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'CAR-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
-            new QuotationProcessing('DOS-2015-00088-00-75', 'Direct', 'DOS', 'In Progress', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'DOS-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
-            new QuotationProcessing('CAR-2015-00088-00-99', 'Direct', 'CAR Wet Risks', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'CAR-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
-            new QuotationProcessing('CAR-2015-00088-00-78', 'Retrocession', 'CAR Wet Risks', 'In Progress', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'CAR-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
-            new QuotationProcessing('EEI-2015-00088-00-77', 'Direct', 'EEI', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'EEI-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
-            new QuotationProcessing('EAR-2015-00088-00-55', 'Direct', 'EAR', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'EAR-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
-            new QuotationProcessing('CEC-2015-00088-00-60', 'Direct', 'CEC', 'In Progress', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'CEC-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
-            new QuotationProcessing('MBI-2015-00088-00-21', 'Direct', 'MBI', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'MBI-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
-            new QuotationProcessing('MLP-2015-00088-00-33', 'Retrocession', 'MLP', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'MLP-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
-            new QuotationProcessing('CAR-2015-00088-00-28', 'Direct', 'CAR Wet Risks', 'In Progress', 'Malayan', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'CAR-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Rose Lim', 'QUECOH'),
-            new QuotationProcessing('DOS-2015-00088-00-75', 'Direct', 'DOS', 'In Progress', 'FLT Prime', '5K Builders', 'ABE International Corp', '5K Builders & ABE International Corp', 'ABC Building', 'Cooling Towers', 'Region IV, Laguna, Calamba', 'DOS-2018-00001-023-0002-00', 'PHP', new Date('2015-02-09'),
-                new Date('2015-03-09'), 'Rose Lim', 'QUECOH')
-        ];*/
+    getQuoProcessingData(searchParams: any[]) {        
         var params;
         if(searchParams.length < 1){
              params = new HttpParams()
@@ -509,7 +471,7 @@ export class QuotationService {
                 .set('quoteId', intCompParams.quoteId)
                 .set('quotationNo', intCompParams.quotationNo);
          console.log(params);
-        return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteCompetition", {params});
+        return this.http.get(environment.prodApiUrl + "/quote-service/retrieveQuoteCompetition", {params});
     }
 
 
@@ -541,9 +503,8 @@ export class QuotationService {
         ];
 
         return this.quotationToHoldCover;
-
-
     }
+
     getItemInfoData() {
         this.itemInfoData = [
             new ItemInformation(1001, "Description for item number 1"),
@@ -838,6 +799,22 @@ export class QuotationService {
         return this.http.post(environment.prodApiUrl + '/quote-service/saveQuoteCompetition', JSON.stringify(params), header);
     }
 
+    saveQuoteAdviceWordings(saveQuoteAdviceWordingsParams: any[]){
+        let params: any = {
+            saveAdviceWordings: saveQuoteAdviceWordingsParams
+        }
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+        //console.log(saveQuoteCompetitionParams.join(","));
+        //console.log(params.substring(1,params.length-1));
+        //console.log(JSON.stringify(params));
+        //return this.http.post(environment.prodApiUrl + '/quote-service/saveQuoteCompetition', params.substring(1,params.length-1), header);
+        return this.http.post(environment.prodApiUrl + '/quote-service/saveQuoteAdviceWordings', JSON.stringify(params), header);
+    }
+
 
     saveQuoteGeneralInfo(saveQuoteGeneralInfoParam) {
         let header: any = {
@@ -972,6 +949,18 @@ export class QuotationService {
              .set('quoteId', quoteId)
              .set('holdCovId', holdCoverId);
         return this.http.get(environment.prodApiUrl + '/util-service/generateReport',{ params,'responseType': 'blob'});
+    }
+
+    renumber(quoteId:string ){
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+        let params: any = {
+            quoteId: quoteId
+        }
+        return this.http.post(environment.prodApiUrl + '/quote-service/renumberQuoteOptions',JSON.stringify(params),header);
     }
 
 }

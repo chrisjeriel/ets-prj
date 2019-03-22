@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
 import { MaintenanceService } from '@app/_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
@@ -30,6 +30,9 @@ export class MtnTypeOfCessionComponent implements OnInit {
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
 
+  @Input() lovCheckBox: boolean = false;
+  selects: any[] = [];
+
   constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal) { }
 
   ngOnInit() {
@@ -47,6 +50,9 @@ export class MtnTypeOfCessionComponent implements OnInit {
 
   		this.table.refreshTable();
   	});*/
+    if(this.lovCheckBox){
+      this.cessionListing.checkFlag = true;
+    }
   }
 
   onRowClick(data){
@@ -59,9 +65,20 @@ export class MtnTypeOfCessionComponent implements OnInit {
   }
 
   confirm(){
-    this.selected['fromLOV'] = true;
-  	this.selectedData.emit(this.selected);
-    this.selected = null;
+    if(!this.lovCheckBox){
+      this.selected['fromLOV'] = true;
+      this.selectedData.emit(this.selected);
+      this.selected = null;
+    }
+    else{
+      for(var i = 0; i < this.cessionListing.tableData.length; i++){
+        if(this.cessionListing.tableData[i].checked){
+          this.selects.push(this.cessionListing.tableData[i]);
+        }
+      }
+      this.selectedData.emit(this.selects);
+      this.selects = [];
+    }
   }
 
   openModal(){

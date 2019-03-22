@@ -36,7 +36,7 @@ span.ui-column-resizer {
 
         <button *ngIf="passData.addFlag" class="cust-btn" (click)="passData.nData == null ? addClicked(event) : onClickAdd()"><a>Add</a></button>
         <button *ngIf="passData.editFlag" class="cust-btn" (click)="onClickEdit()"><a class="paginate_button previous">Edit</a></button>
-        <button *ngIf="passData.deleteFlag" class="cust-btn" (click)="confirmDelete()"><a class="paginate_button previous">Delete</a></button>
+        <button *ngIf="passData.deleteFlag" class="cust-btn" (click)="confirmDelete()" [class.cust-btn-disabled]="selected.length==0"><a class="paginate_button previous">Delete</a></button>
         <button *ngIf="passData.genericBtn !== undefined" class="cust-btn genericBtn" (click)="onClickGeneric()"><a class="paginate_button previous">{{passData.genericBtn}}</a></button>
         <div class="search-filter" *ngIf="passData.searchFlag">
             <label [class.searchWithFilter]="passData.filters !== undefined">Search: &nbsp;
@@ -179,31 +179,31 @@ span.ui-column-resizer {
                     </thead>
 
                     <tbody>
-                        <tr *ngFor="let data of displayData | paginate: { id: 'editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p2 };let ti = index" [class.selected]="data === indvSelect || data.checked" (click)="onRowClick($event,data)" (dblclick)="onRowDblClick($event)">
+                        <tr *ngFor="let data of displayData | paginate: { id: 'editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p2 };let ti = index" [class.selected]="data === indvSelect || data.checked" (click)="onRowClick($event,data)" (dblclick)="onRowDblClick($event)" id="{{ ti }}">
                             <td *ngIf="passData.checkFlag" class="checkbox align-middle">
-                                <input *ngIf="!(data===fillData)" type="checkbox" name="checkbox" [ngModel]="data.checked" (change)="removeSelected($event, data)" class="not-form">
+                                <input *ngIf="!(data===fillData)" type="checkbox" name="checkbox" [ngModel]="data.checked" (change)="removeSelected($event, data)" class="not-form" [ngModelOptions]="{standalone: true}">
                             </td>
                             <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]" class="align-middle">
                                 <div *ngIf="!(data===fillData) && ( passData.uneditable === undefined || !passData.uneditable[i] ) && (data.uneditable===undefined || data.uneditable.indexOf(key)==-1)" class="align-middle" style="position: relative;">
                                     <input [name]="key+ti" *ngSwitchCase="'percent'" class="editable-text text-right number form-control-sm"
-                                    type="text" [ngModel]="data[key] | number:'1.10-10'" (blur)="format($event , data, key,'percent')" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange(data)">
+                                    type="text" [ngModel]="data[key] | number:'1.10-10'" (blur)="format($event , data, key,'percent')" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data)">
                                     <input [name]="key+ti" *ngSwitchCase="'currencyRate'" class="editable-text text-right number form-control-sm"
-                                    type="text" [ngModel]="data[key] | number:'1.6-6'" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange(data)">
+                                    type="text" [ngModel]="data[key] | number:'1.6-6'" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data)">
                                     <input [name]="key+ti" *ngSwitchCase="'number'" class="editable-text text-right number form-control-sm" (blur)="format($event , data, key)"
                                     type="text" [ngModel]="data[key]" [ngModelOptions]="{updateOn:'change'}" 
-                                    [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange(data)">
+                                    [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data)">
 
-                                    <input [name]="key+ti" appCurrency *ngSwitchCase="'currency'" class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key] | number:'1.2-2' | negativeAmount" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange(data)" 
+                                    <input [name]="key+ti" appCurrency *ngSwitchCase="'currency'" class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key] | number:'1.2-2' | negativeAmount" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data)" 
                                         [ngClass]="{'negativeNumber': data[key]<0}">
                                     <div *ngSwitchCase="'checkbox'" style="text-align: center;">
-                                        <input [name]="key+ti" [ngModel]="data[key] && data[key]!= 'N'" type="checkbox" (click)="assignChckbox($event,data,key);onDataChange(data)" ngModel>
+                                        <input [name]="key+ti" [ngModel]="data[key] && data[key]!= 'N'" type="checkbox" (click)="assignChckbox($event,data,key);onDataChange($event,data)" ngModel>
                                     </div>
                                     <input [name]="key+ti" *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'sequence' ? passData.dataTypes[i] : ''" class="editable-text text-right number form-control-sm"
                                     type="text" [ngModel]="data[key] | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1">
-                                    <select *ngSwitchCase="'select'" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onDataChange(data)" [name]="key+ti">
+                                    <select *ngSwitchCase="'select'" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onDataChange($event,data)" [name]="key+ti">
                                         <ng-container *ngFor="let data of passData.opts">
                                             <ng-container *ngIf="key == data.selector">
-                                                <option *ngFor="let val of data.vals">{{ val }}</option>
+                                                <option *ngFor="let prev of data.prev; let i = index" [value]="data.vals[i]">{{ prev }}</option>
                                             </ng-container>
                                         </ng-container>
                                     </select>
@@ -211,8 +211,17 @@ span.ui-column-resizer {
                                     <input [name]="key+ti" *ngSwitchCase="'time'" class="editable-date form-control-sm" type="time" [ngModel]="data[key] | date:'HH:mm'">
                                     <input [name]="key+ti" *ngSwitchCase="'datetime'" class="editable-date form-control-sm" type="datetime-local"
                                     [ngModel]="data[key] | date:'yyyy-MM-ddTHH:mm'">
-                                    <input [name]="key+ti" *ngSwitchDefault class="editable-text form-control-sm" type="text" [(ngModel)]="data[key]" (change)="onDataChange(data)">
-                                    <a  *ngIf="passData.magnifyingGlass.indexOf(key)!=-1"><i (click)="onClickLOV(data,key)" class="fa fa-search align-middle"></i></a> 
+                                    <ng-container *ngSwitchCase="'text-editor'">
+                                        <div style="max-height: 21px; max-width: 93%">
+                                            <text-editor [table]="true" name="" [editorContent]="data[key]" (fetchContent)="data[key] = $event">
+                                                <!-- <ng-container icon-1> -->
+        <!--                                             <a ><i class="fa fa-search"></i></a> -->
+        <!--                                         </ng-container> -->
+                                            </text-editor>
+                                        </div>
+                                    </ng-container>
+                                    <input #test [name]="key+ti" *ngSwitchDefault class="editable-text form-control-sm" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data)">
+                                    <div><a *ngIf="passData.magnifyingGlass.indexOf(key)!=-1"><i (click)="onClickLOV(data,key)" class="fa fa-search align-middle"></i></a></div>
                                 </div>
 
                                 <div *ngIf="!(data===fillData) && ( passData.uneditable!== undefined && passData.uneditable[i] ) || (data.uneditable!==undefined && data.uneditable.indexOf(key)!=-1)" class="align-middle uneditable" style="position: relative;">
@@ -260,11 +269,6 @@ span.ui-column-resizer {
                                 </select>
                             </td>
                             <td *ngIf="passData.tHeader.indexOf('Actions')!=-1 || passData.tHeader.indexOf('Action')!=-1" class="icon" style="padding-right: 0px !important">
-<!-- <<<<<<< HEAD
-                                <button class="fa fa-paperclip" title="Attach File" *ngIf="!(data===fillData)"></button>
-                                <button class="fa fa-folder-open" title="Open File" *ngIf="!(data===fillData)"></button>
-                                
-======= -->
                                 <button class="fa fa-paperclip btn-file" title="Attach File" *ngIf="!(data===fillData)">
                                     <input type="file" *ngIf="!(data===fillData)" (change)="upload(data,$event)">
                                 </button>

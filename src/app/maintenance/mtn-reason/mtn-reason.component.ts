@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
 import { MaintenanceService } from '@app/_services';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component'
@@ -23,7 +23,7 @@ export class MtnReasonComponent implements OnInit {
           fixedCol: false,
           pageID: 'reason',
           keys:[
-          	'reasonCd', 
+          	'code', 
             'description', 
             ]
 
@@ -31,8 +31,14 @@ export class MtnReasonComponent implements OnInit {
       selected: any;
       modalOpen : boolean = false;
 
+
+  @Input() lovCheckBox: boolean = false;
+  selects: any[] = [];
+
     ngOnInit() {
-    	
+    	if(this.lovCheckBox){
+        this.passDataReason.checkFlag = true;
+      }
       
     }
 
@@ -43,13 +49,33 @@ export class MtnReasonComponent implements OnInit {
     }
 
     okBtnClick(){
-    	this.selectedData.emit(this.selected);
+    	  if(!this.lovCheckBox){
+          this.selectedData.emit(this.selected);
+        }
+        else{
+          for(var i = 0; i < this.passDataReason.tableData.length; i++){
+            if(this.passDataReason.tableData[i].checked){
+              this.selects.push(this.passDataReason.tableData[i]);
+            }
+          }
+          this.selectedData.emit(this.selects);
+          this.selects = [];
+        }
     }
 
    openModal(){
-     this.mtnService.getMtnReason().subscribe((data: any) => {
+     /*this.mtnService.getMtnReason().subscribe((data: any) => {
         for (var i = 0; i < data.reason.length; i++) {
           this.passDataReason.tableData.push(data.reason[i]);
+        }
+        this.table.refreshTable();
+      });
+     this.modalOpen = true;*/
+
+     this.mtnService.getRefCode('QUOTE_GEN_INFO.REASON_CD').subscribe((data: any) => {
+       console.log(data)
+        for (var i = 0; i < data.refCodeList.length; i++) {
+          this.passDataReason.tableData.push(data.refCodeList[i]);
         }
         this.table.refreshTable();
       });

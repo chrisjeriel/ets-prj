@@ -1,6 +1,6 @@
 import { Component, OnInit, Input,  ViewChild } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
-import { QuotationService } from '@app/_services';
+import { QuotationService, NotesService } from '@app/_services';
 import { AttachmentInfo } from '../../_models/Attachment';
 import { Title } from '@angular/platform-browser';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
@@ -52,12 +52,12 @@ export class AttachmentComponent implements OnInit {
     dataTypes: [],
     opts: [],
     nData: {
-      createDate: [0,0,0],
+      createDate: this.notes.toDateTimeString(0),
       createUser: "PCPR",
       description: null,
       fileName: null,
       fileNo: null,
-      updateDate: [0,0,0],
+      updateDate: this.notes.toDateTimeString(0),
       updateUser: "PCPR"
     },
     checkFlag: true,
@@ -87,7 +87,7 @@ export class AttachmentComponent implements OnInit {
   cancelFlag:boolean;
 
   constructor(config: NgbDropdownConfig,
-    private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,private modalService: NgbModal) {
+    private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,private modalService: NgbModal, private notes: NotesService) {
     config.placement = 'bottom-right';
     config.autoClose = false;
   }
@@ -146,6 +146,7 @@ export class AttachmentComponent implements OnInit {
 
   getAttachment(){
     this.quotationService.getAttachment(null,this.quoteNo).subscribe((data: any) => {
+      console.log(data)
       this.quoteId = data.quotation[0].quoteId;
         this.attachmentData = data.quotation[0].attachmentsList;
         // this.passData.tableData = data.quotation.project.coverage.sectionCovers;
@@ -161,12 +162,14 @@ export class AttachmentComponent implements OnInit {
     for (var i = 0 ; this.passData.tableData.length > i; i++) {
       if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
           this.savedData.push(this.passData.tableData[i]);
-          this.savedData[this.savedData.length-1].createDate = new Date(this.savedData[this.savedData.length-1].createDate[0],this.savedData[this.savedData.length-1].createDate[1]-1,this.savedData[this.savedData.length-1].createDate[2]).toISOString();
-          this.savedData[this.savedData.length-1].updateDate = new Date(this.savedData[this.savedData.length-1].updateDate[0],this.savedData[this.savedData.length-1].updateDate[1]-1,this.savedData[this.savedData.length-1].updateDate[2]).toISOString();
+          this.savedData[this.savedData.length-1].createDate = this.notes.toDateTimeString(this.savedData[this.savedData.length-1].createDate)
+          this.savedData[this.savedData.length-1].updateDate = this.notes.toDateTimeString(this.savedData[this.savedData.length-1].updateDate)
+          // this.savedData[this.savedData.length-1].createDate = new Date(this.savedData[this.savedData.length-1].createDate[0],this.savedData[this.savedData.length-1].createDate[1]-1,this.savedData[this.savedData.length-1].createDate[2]).toISOString();
+          // this.savedData[this.savedData.length-1].updateDate = new Date(this.savedData[this.savedData.length-1].updateDate[0],this.savedData[this.savedData.length-1].updateDate[1]-1,this.savedData[this.savedData.length-1].updateDate[2]).toISOString();
       }else if(this.passData.tableData[i].edited && this.passData.tableData[i].deleted){
         this.deletedData.push(this.passData.tableData[i]);
-        this.deletedData[this.deletedData.length-1].createDate = new Date(this.deletedData[this.deletedData.length-1].createDate[0],this.deletedData[this.deletedData.length-1].createDate[1]-1,this.deletedData[this.deletedData.length-1].createDate[2]).toISOString();
-        this.deletedData[this.deletedData.length-1].updateDate = new Date(this.deletedData[this.deletedData.length-1].updateDate[0],this.deletedData[this.deletedData.length-1].updateDate[1]-1,this.deletedData[this.deletedData.length-1].updateDate[2]).toISOString();
+        // this.deletedData[this.deletedData.length-1].createDate = new Date(this.deletedData[this.deletedData.length-1].createDate[0],this.deletedData[this.deletedData.length-1].createDate[1]-1,this.deletedData[this.deletedData.length-1].createDate[2]).toISOString();
+        // this.deletedData[this.deletedData.length-1].updateDate = new Date(this.deletedData[this.deletedData.length-1].updateDate[0],this.deletedData[this.deletedData.length-1].updateDate[1]-1,this.deletedData[this.deletedData.length-1].updateDate[2]).toISOString();
       }
       // delete this.savedData[i].tableIndex;
     }

@@ -55,7 +55,11 @@
 </div>
 
 <button type="button" (click)="testingInternalComp()">Testingo</button> -->
-
+<div class="row">
+    <div class="col-sm-12">
+        <app-cust-non-datatable [passData]="testingData"></app-cust-non-datatable>
+    </div>
+</div>
 
 <div class="row">
     <div class="col-sm-6" style="height: 70px;">
@@ -95,4 +99,10 @@
 </div>
 <br />
 <br />
-<input [readonly]="false" type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="ttt" (blur)="testblur()" (change)="testVal()" mask="999">
+<input [readonly]="false" type="text" class="form-control form-control-sm col-sm-2" [ngModel]="ttt" (ngModelChange)="ttt=$event; testblur()">
+
+
+<br/>
+<br/>
+<input [readonly]="false" type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="uuu">
+

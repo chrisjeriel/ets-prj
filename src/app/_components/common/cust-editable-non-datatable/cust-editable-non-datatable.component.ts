@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, Renderer, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, Renderer, ViewChild, ElementRef, ViewChildren, QueryList } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from '@app/app.component';
 import { retry, catchError } from 'rxjs/operators';
@@ -7,7 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { DummyInfo } from '../../../_models';
 import { FormsModule }   from '@angular/forms';
-
+import { NotesService } from '@app/_services';
 
 @Component({
     selector: 'app-cust-editable-non-datatable',
@@ -18,6 +18,7 @@ import { FormsModule }   from '@angular/forms';
 export class CustEditableNonDatatableComponent implements OnInit {
     @ViewChild("deleteModal") deleteModal:ModalComponent;
     @ViewChild('myForm') form:any;
+    @ViewChildren('test') test: QueryList<ElementRef>;
     @Input() tableData: any[] = [];
     @Output() tableDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
     @Input() tHeader: any[] = [];
@@ -103,7 +104,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     @Input() widths: string[] = [];
     unliFlag:boolean = false;
     @Output() clickLOV: EventEmitter<any> = new EventEmitter();
-    constructor(config: NgbDropdownConfig, public renderer: Renderer, private appComponent: AppComponent,private modalService: NgbModal) { 
+    constructor(config: NgbDropdownConfig, public renderer: Renderer, private appComponent: AppComponent,private modalService: NgbModal,private ns: NotesService) { 
         config.placement = 'bottom-right';
         config.autoClose = false;
     }
@@ -192,10 +193,22 @@ export class CustEditableNonDatatableComponent implements OnInit {
         this.retrieveFromSub();
         // this.addFiller();
 
+        this.passData.nData.add = true;
 
         //temporary fix delete this later
-        setTimeout(()=>{this.refreshTable()},2000)
+        setTimeout(()=>{this.refreshTable()},2000);
     }
+
+    /*ngDoCheck() {
+        if(this.test) {
+            this.test.forEach(inp => {
+                if(inp && inp.nativeElement.classList.contains('ng-dirty')) {
+                    // inp.nativeElement.classList.add('dirtyBastard');
+                    console.log(inp);
+                }
+            })    
+        }
+    }*/
 
     processData(key: any, data: any) {
         return data[key];
@@ -224,9 +237,14 @@ export class CustEditableNonDatatableComponent implements OnInit {
         //     }
         // }
         for(let i = 0; i<this.selected.length;i++){
-            this.selected[i].checked = false;
-            this.selected[i].deleted = true;
-            this.selected[i].edited = true;
+           if(!this.selected[i].add){
+               this.selected[i].checked = false;
+               this.selected[i].deleted = true;
+               this.selected[i].edited = true;
+           }else {
+               this.passData.tableData = this.passData.tableData.filter(a => a!= this.selected[i])
+           }
+           
         }
         this.selectAllFlag = false;
         this.form.control.markAsDirty();
@@ -391,10 +409,28 @@ export class CustEditableNonDatatableComponent implements OnInit {
         this.addFiller();
     }
 
-    onDataChange(data){
+
+    onDataChange(ev,data){        
+        if($(ev.target).next().children().prop("tagName") === 'A') {
+            this.ns.lovLoader(ev, 1);
+            this.passData.tableData['ev'] = ev;
+            this.passData.tableData['index'] = ev.target.closest('tr').id;
+            this.passData.tableData['lovInput'] = true;
+        } else {
+            delete this.passData.tableData.ev;
+            delete this.passData.tableData.index;
+            delete this.passData.tableData.lovInput;
+        }
+
         data.edited = true;
-        setTimeout(() => this.tableDataChange.emit(this.passData.tableData),0)
-        //this.tableDataChange.emit(this.passData.tableData);
+        setTimeout(() => { 
+            this.tableDataChange.emit(this.passData.tableData),0
+            delete this.passData.tableData.ev;
+            delete this.passData.tableData.index;
+            delete this.passData.tableData.lovInput;
+        });
+
+        
     }
 
 

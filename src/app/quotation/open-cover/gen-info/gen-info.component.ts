@@ -5,12 +5,16 @@ import { QuotationService, MaintenanceService, NotesService } from '@app/_servic
 import { HttpClient } from '@angular/common/http';
 import { formatDate } from '@angular/common';
 import { Title } from '@angular/platform-browser';
+import { FormsModule }   from '@angular/forms';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
 import { MtnCedingCompanyComponent } from '@app/maintenance/mtn-ceding-company/mtn-ceding-company.component';
 import { MtnIntermediaryComponent } from '@app/maintenance/mtn-intermediary/mtn-intermediary.component';
 import { MtnInsuredComponent } from '@app/maintenance/mtn-insured/mtn-insured.component';
 import { MtnObjectComponent } from '@app/maintenance/mtn-object/mtn-object.component';
+import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency.component';
+import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.component';
 
 @Component({
   selector: 'app-gen-info',
@@ -21,13 +25,18 @@ export class GenInfoComponent implements OnInit, OnDestroy {
 
   private sub: any;
 
-   regionDesc: any;
+  regionDesc: any;
   provinceDesc: any;
   cityDesc: any;
   districtDesc: any;
   blockDesc: any;
   lat: any;
   long: any;
+
+  dialogIcon: string = "";
+  dialogMessage: string = "";
+  cancelFlag: boolean;
+
 
   projectOc: any = {
      quoteIdOc: '',
@@ -116,10 +125,15 @@ export class GenInfoComponent implements OnInit, OnDestroy {
   routerParams: any;
 
   @ViewChild(CedingCompanyComponent) cedingCoLov: CedingCompanyComponent;
-  @ViewChild(MtnCedingCompanyComponent) cedingCoNotMemberLov: CedingCompanyComponent;
+  @ViewChild(CedingCompanyComponent) cedingCoNotMemberLov: CedingCompanyComponent;
   @ViewChild(MtnIntermediaryComponent) intermediaryLov: MtnIntermediaryComponent;
   @ViewChildren(MtnInsuredComponent) insuredLovs: QueryList<MtnInsuredComponent>;
   @ViewChild(MtnObjectComponent) objectLov: MtnObjectComponent;
+  @ViewChild(MtnCurrencyComponent) currencyLov: MtnCurrencyComponent;
+  @ViewChild(MtnUsersComponent) usersLov: MtnUsersComponent;
+  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+  @ViewChild('myForm') form:any;
+
 
 
   constructor(private route: ActivatedRoute, private quotationService: QuotationService, 
@@ -129,9 +143,13 @@ export class GenInfoComponent implements OnInit, OnDestroy {
 
   @Output() quoteData = new EventEmitter<any>();
   @Input() quoteInfo = {};
-
+  @Input() backQuoteData: any;
   @Input() inquiryFlag: boolean = false;
   loading: boolean = false;
+
+  retrieveGenInfoParams: any = {
+    openQuotationNo: ''
+  };
 
   ngOnInit() {
     this.titleService.setTitle("Quo | General Info");
@@ -139,8 +157,12 @@ export class GenInfoComponent implements OnInit, OnDestroy {
     this.sub = this.route.params.subscribe(params => {
       this.routerParams = params;
     });
-    this.checkTransaction();
-    console.log(this.routerParams);
+    if(this.backQuoteData === undefined){
+      this.checkTransaction();
+    }else{
+      this.getGeneralInfoData();
+    }
+    
   }
 
   ngOnDestroy(){
@@ -162,6 +184,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
       this.genInfoOcData.indicativeTag = 'N';
       this.projectOc.riskId = this.routerParams.riskId;
       this.getRiskMethod(this.routerParams.riskId);
+      this.getDefaultCurrencyCd();
     }else if(this.routerParams.fromBtn === 'edit' || this.routerParams.fromBtn === 'view'){
       this.getGeneralInfoData();
     }
@@ -177,19 +200,33 @@ export class GenInfoComponent implements OnInit, OnDestroy {
       this.projectOc.blockDesc  = this.routerParams.blockDesc;
       this.projectOc.latitude  = this.routerParams.latitude === 'null' ? '' : this.routerParams.latitude;
       this.projectOc.longitude = this.routerParams.longitude === 'null' ? '' : this.routerParams.longitude;
-      if(this.routerParams.fromBtn === 'edit' || this.routerParams.fromBtn === 'view')
-        this.quoteDataF();
+  }
+
+  //get default currency 'PHP' when adding new open quotation
+  getDefaultCurrencyCd(){
+    this.mtnService.getMtnCurrency('PHP', 'Y').subscribe((data: any) =>{
+        this.genInfoOcData.currencyCd = data.currency[0].currencyCd;
+        this.genInfoOcData.currencyRt = data.currency[0].currencyRt;
+    });
   }
 
   getGeneralInfoData(){
     this.loading = true;
-    this.quotationService.getOcGenInfoData('',this.plainOpenQuotationNo(this.routerParams.ocQuoteNo)).subscribe((data: any) =>{
+    //condition if only going back to gen info after save
+    if(this.backQuoteData !== undefined){
+      this.retrieveGenInfoParams.openQuotationNo = this.plainOpenQuotationNo(this.backQuoteData.openQuotationNo);
+    }
+    //else use routerParams
+    else{
+      this.retrieveGenInfoParams.openQuotationNo = this.plainOpenQuotationNo(this.routerParams.ocQuoteNo);
+    }
+    this.quotationService.getOcGenInfoData('',this.retrieveGenInfoParams.openQuotationNo).subscribe((data: any) =>{
           console.log(data);
          this.genInfoOcData.quoteIdOc           = data.quotationOc.quoteIdOc;
-         this.projectOc.quoteIdOc           = data.quotationOc.quoteIdOc;
+         this.projectOc.quoteIdOc               = data.quotationOc.quoteIdOc;
          this.genInfoOcData.cessionDesc         = data.quotationOc.cessionDesc;
          this.genInfoOcData.lineClassCdDesc     = data.quotationOc.lineClassCdDesc;
-         this.genInfoOcData.openQuotationNo     = this.routerParams.ocQuoteNo;
+         this.genInfoOcData.openQuotationNo     = this.backQuoteData === undefined ? this.routerParams.ocQuoteNo : this.backQuoteData.openQuotationNo;
          this.genInfoOcData.lineCd              = data.quotationOc.lineCd;
          this.genInfoOcData.lineCdDesc          = data.quotationOc.lineCdDesc;
          this.genInfoOcData.year                = data.quotationOc.year;
@@ -209,6 +246,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
          this.genInfoOcData.contractorName      = data.quotationOc.contractorName;
          this.genInfoOcData.insuredDesc         = data.quotationOc.insuredDesc;
          this.genInfoOcData.status              = data.quotationOc.status;
+         this.genInfoOcData.statusDesc          = data.quotationOc.statusDesc;
          this.genInfoOcData.reinsurerId         = data.quotationOc.reinsurerId;
          this.genInfoOcData.reinsurerName       = data.quotationOc.reinsurerName;
          this.genInfoOcData.intmId              = data.quotationOc.intmId;
@@ -225,7 +263,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
          this.genInfoOcData.preparedBy          = data.quotationOc.preparedBy;
          this.genInfoOcData.approvedBy          = data.quotationOc.approvedBy;
          this.genInfoOcData.printedBy           = data.quotationOc.printedBy;
-         this.genInfoOcData.printDate           = this.formatDateTime(data.quotationOc.printDate);
+         this.genInfoOcData.printDate           = data.quotationOc.printDate <= 57599000 ? '' : this.formatDateTime(data.quotationOc.printDate);
          this.genInfoOcData.openingParag        = data.quotationOc.openingParag;
          this.genInfoOcData.closingParag        = data.quotationOc.closingParag;
          this.genInfoOcData.reasonCd            = data.quotationOc.reasonCd;
@@ -276,9 +314,10 @@ export class GenInfoComponent implements OnInit, OnDestroy {
        openQuotationNo: this.genInfoOcData.openQuotationNo,
        insured: this.genInfoOcData.insuredDesc,
        riskName: this.projectOc.riskName,
-       riskId: this.projectOc.riskId
+       riskId: this.projectOc.riskId,
+       currencyCd: this.genInfoOcData.currencyCd,
+       currencyRt: this.genInfoOcData.currencyRt,
     });
-    console.log(this.genInfoOcData.quoteIdOc);
   }
 
   //Prepared by Lov
@@ -310,7 +349,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
   setCedingCo(data){
     this.genInfoOcData.cedingId  = data.cedingId;
     this.genInfoOcData.cedingName  = data.cedingName;
-    this.loading = false;
+    this.notes.lovLoader(data.ev, 0);
   }
   //end ceding company lov
 
@@ -319,9 +358,9 @@ export class GenInfoComponent implements OnInit, OnDestroy {
     $('#reinsurerCoIdLov #modalBtn').trigger('click');
   }
   setReinsurer(data){
-    this.genInfoOcData.reinsurerId  = data.coNo;
-    this.genInfoOcData.reinsurerName  = data.name;
-    this.loading = false;
+    this.genInfoOcData.reinsurerId  = data.cedingId;
+    this.genInfoOcData.reinsurerName  = data.cedingName;
+    this.notes.lovLoader(data.ev, 0);
   }
   //end reinsurance from lov
 
@@ -332,7 +371,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
   setIntm(data){
     this.genInfoOcData.intmId  = data.intmId;
     this.genInfoOcData.intmName  = data.intmName;
-    this.loading = false;
+    this.notes.lovLoader(data.ev, 0);
   }
   //end intermediary lov
 
@@ -344,7 +383,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
   setCurr(data){
     this.genInfoOcData.currencyCd = data.currencyCd;
     this.genInfoOcData.currencyRt = data.currencyRt;
-    this.loading = false;
+    this.notes.lovLoader(data.ev, 0);
   }
   //end currency lov
 
@@ -376,7 +415,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
    this.genInfoOcData.prinId  = data.insuredId;
    this.genInfoOcData.principalName  = data.insuredName;
    this.insuredContent();
-   this.loading = false;
+   this.notes.lovLoader(data.ev, 0);
   }
   getConLov(){
     $('#conIdLov  #modalBtn').trigger('click');
@@ -385,7 +424,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
     this.genInfoOcData.contractorId  = data.insuredId;
     this.genInfoOcData.contractorName  = data.insuredName;
     this.insuredContent();
-    this.loading = false;
+    this.notes.lovLoader(data.ev, 0);
   }
   insuredContent(){
     if(this.genInfoOcData.principalName != "" && this.genInfoOcData.contractorName != ""){
@@ -402,7 +441,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
     //this.line = data.lineCd;
     this.projectOc.objectId  = data.objectId;
     this.projectOc.objectDesc  = data.description;
-    this.loading = false;
+    this.notes.lovLoader(data.ev, 0);
   }
   //end object lov
 
@@ -428,21 +467,21 @@ export class GenInfoComponent implements OnInit, OnDestroy {
 
 
   //check code for fetching data when you input
-  checkCode(field) {
+  checkCode(ev, field) {
+      this.notes.lovLoader(ev, 1);
       if(field === 'cedingCo') {
-        this.loading = true;
 /*<<<<<<< HEAD*/
-        this.cedingCoLov.checkCode(this.genInfoOcData.cedingId, 'a');
+        this.cedingCoLov.checkCode(this.genInfoOcData.cedingId, ev);
       } else if(field === 'cedingCoNotMember') { 
-        this.cedingCoNotMemberLov.checkCode(this.genInfoOcData.reinsurerId, 'a');
+        this.cedingCoNotMemberLov.checkCode(this.genInfoOcData.reinsurerId, ev);
       } else if(field === 'intermediary') {
-        this.intermediaryLov.checkCode(this.genInfoOcData.intmId, 'a');
+        this.intermediaryLov.checkCode(this.genInfoOcData.intmId, ev);
       } else if(field === 'principal') {
-        this.insuredLovs['first'].checkCode(this.genInfoOcData.prinId, '#principalLOV', 'a');
+        this.insuredLovs['first'].checkCode(this.genInfoOcData.prinId, '#principalLOV', ev);
       } else if(field === 'contractor') {
-        this.insuredLovs['last'].checkCode(this.genInfoOcData.contractorId, '#contractorLOV', 'a');
+        this.insuredLovs['last'].checkCode(this.genInfoOcData.contractorId, '#contractorLOV', ev);
       } else if(field === 'object') {
-        this.objectLov.checkCode(this.routerParams.line, this.projectOc.objectId, 'a');
+        this.objectLov.checkCode(this.routerParams.line, this.projectOc.objectId, ev);
 /*=======
         this.cedingCoLov.checkCode(this.cedingCoId, 'a');
       } else if(field === 'cedingCoNotMember') { 
@@ -456,6 +495,12 @@ export class GenInfoComponent implements OnInit, OnDestroy {
       } else if(field === 'object') {
         this.objectLov.checkCode(this.line, this.objId, 'a');
 >>>>>>> 07dae9c6aa43f898fc3d6fcaad6c941a617680f5*/
+      } else if(field === 'object') {
+        this.objectLov.checkCode(this.routerParams.line, this.projectOc.objectId, ev);
+      } else if(field === 'currency') {
+        this.currencyLov.checkCode(this.genInfoOcData.currencyCd, ev);
+      } else if(field === 'preparedBy') {
+        this.usersLov.checkCode(this.genInfoOcData.preparedBy, ev);
       }
     }
 
@@ -470,13 +515,17 @@ export class GenInfoComponent implements OnInit, OnDestroy {
     if(parseInt(arr[5]) > 99){
       return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]) + '-' + parseInt(arr[5]);
     }else{
-      return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]) + '-0' + parseInt(arr[5]);
+      if(parseInt(arr[5]) > 9){
+        return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]) + '-0' + parseInt(arr[5]);
+      }else if(parseInt(arr[5]) < 10){
+        return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]) + '-00' + parseInt(arr[5]);
+      }
     }
-    
   }
 
   //save General Info
-  saveOpenQuotation(){  
+  saveOpenQuotation(cancelFlag?){
+      this.cancelFlag = cancelFlag !== undefined;  
       let params:any = {
         "approvedBy": this.genInfoOcData.approvedBy,
         "cedingId": this.checkIdFormat(this.genInfoOcData.cedingId),
@@ -515,7 +564,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
         "quoteIdOc": this.genInfoOcData.quoteIdOc,
         "reasonCd": /*this.genInfoOcData.reasonCd*/ 'REA',
         "refPolNo": this.genInfoOcData.refPolNo,
-        "reinsurerId": this.genInfoOcData.reinsurerId,
+        "reinsurerId": this.checkIdFormat(this.genInfoOcData.reinsurerId),
         "reqBy": this.genInfoOcData.reqBy,
         "reqDate": this.genInfoOcData.reqDate,
         "reqMode": this.genInfoOcData.reqMode,
@@ -530,21 +579,22 @@ export class GenInfoComponent implements OnInit, OnDestroy {
         "updateUser": JSON.parse(window.localStorage.currentUser).username,
         "year": this.routerParams.fromBtn === 'add' ? new Date().getFullYear() : this.genInfoOcData.year
       }
-    /*console.log('ProjectOc');
-    console.log(this.projectOc);
-    console.log('Quotation');
-    console.log(this.genInfoOcData);*/
     console.log(params);
     console.log(JSON.stringify(params));
     if(this.validate()){
       this.quotationService.saveQuoteGeneralInfoOc(JSON.stringify(params)).subscribe((data: any) =>{
-        console.log(data);
         if(data.returnCode === 0){
-
+          this.dialogMessage="The system has encountered an unspecified error.";
+          this.dialogIcon = "error";
+          $('#genInfo > #successModalBtn').trigger('click');
         }else{
           this.genInfoOcData.quoteIdOc = data.quoteIdOc;
           this.genInfoOcData.openQuotationNo = data.openQuotationNo;
           this.quoteDataF();
+          this.dialogMessage="";
+          this.dialogIcon = "";
+          $('#genInfo > #successModalBtn').trigger('click');
+          this.form.control.markAsPristine();
         }
       });
     }else{
@@ -555,6 +605,7 @@ export class GenInfoComponent implements OnInit, OnDestroy {
   //validates params before going to web service
   validate(){
     //Validate Required fields on every line code
+    console.log(this.genInfoOcData);
     if(this.genInfoOcData.issueDate == ''    || this.genInfoOcData.expiryDate == '' || this.genInfoOcData.lineClassCd == ''  ||
        this.genInfoOcData.cedingId == ''     || this.genInfoOcData.prinId == ''     || this.genInfoOcData.contractorId == '' ||
        this.genInfoOcData.insuredDesc == ''  || this.projectOc.objectId == ''       || this.projectOc.projectDesc == ''      ||
@@ -588,9 +639,25 @@ export class GenInfoComponent implements OnInit, OnDestroy {
       if(parseInt(id) > 9){
         return '0'+id;
       }
-      else if(parseInt(id) < 9){
+      else if(parseInt(id) < 10){
         return '00'+id;
       }
     }
   }
+
+  onClickSave(){
+    if(!this.validate()){
+      this.dialogMessage="Please fill all required fields.";
+      this.dialogIcon = "info";
+      $('#genInfo > #successModalBtn').trigger('click');
+    }else{
+      $('#confirm-save #modalBtn2').trigger('click');
+    }
+  }
+
+  cancel(){
+    this.cancelBtn.clickCancel();
+
+  }
+
 }

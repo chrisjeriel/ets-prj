@@ -53,6 +53,8 @@ export class GeneralInfoComponent implements OnInit {
 	cancelFlag: boolean;
 	dialogIcon:string;
 	dialogMessage:string;
+	a: string = '';
+	b: string = '';
 
 	@Input() inquiryFlag: boolean = false;
 
@@ -212,6 +214,7 @@ export class GeneralInfoComponent implements OnInit {
 
 			this.quotationService.getQuoteGenInfo('', this.plainQuotationNo(this.quotationNo)).subscribe(data => {
 				this.loading = false;
+				console.log(data);
 				if(data['quotationGeneralInfo'] != null) {
 					this.genInfoData = data['quotationGeneralInfo'];						
 					this.genInfoData.createDate = (this.genInfoData.createDate == null) ? '' : this.ns.toDateTimeString(this.genInfoData.createDate);
@@ -440,7 +443,7 @@ export class GeneralInfoComponent implements OnInit {
 	plainQuotationNo(data: string){
 		var arr = data.split('-');
 
-		return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + parseInt(arr[4]);
+		return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + arr[4];
 	}
 
 	showCedingCompanyLOV() {
@@ -544,11 +547,11 @@ export class GeneralInfoComponent implements OnInit {
 							  cedingRepId: '',
 							  createDate: new Date().toISOString(),
 							  createUser: 'ndc',
-							  option: '',
+							  option: '', //remove
 							  quoteId: this.genInfoData.quoteId,
 							  updateDate: new Date().toISOString(),
 							  updateUser: 'ndc',
-							  wordings: ''
+							  wordings: '' //remove
 							}];
 					        this.quotationService.saveQuoteCompetition(internalCompParams).subscribe((result: any) => {
 					          console.log(result);
@@ -574,7 +577,7 @@ export class GeneralInfoComponent implements OnInit {
 		var saveQuoteGeneralInfoParam = {
 			"savingType"    : this.savingType,
 			"approvedBy"	: this.genInfoData.approvedBy,
-			"cedingId"		: this.genInfoData.cedingId,
+			"cedingId"		: String(this.genInfoData.cedingId).padStart(3, '0'),
 			"cessionId"		: this.genInfoData.cessionId,
 			"closingParag"	: this.genInfoData.closingParag.trim(),
 			"contractorId"	: this.genInfoData.contractorId,
@@ -614,7 +617,7 @@ export class GeneralInfoComponent implements OnInit {
 			"quoteRevNo"	: this.genInfoData.quoteRevNo,
 			"quoteSeqNo"	: this.genInfoData.quoteSeqNo,
 			"quoteYear"		: this.genInfoData.quoteYear,
-			"reinsurerId"	: this.genInfoData.reinsurerId,
+			"reinsurerId"	: this.genInfoData.reinsurerId == null || this.genInfoData.reinsurerId == '' ? '' : String(this.genInfoData.reinsurerId).padStart(3, '0'),
 			"reqBy"			: this.genInfoData.reqBy,
 			"reqDate"		: this.genInfoData.reqDate,
 			"reqMode"		: this.genInfoData.reqMode,
@@ -823,6 +826,19 @@ export class GeneralInfoComponent implements OnInit {
 
 		this.genInfoData.expiryDate = this.ns.toDateTimeString(millis);
 	}
+
+	testFoc() {
+		this.a = this.genInfoData.reqBy == '' || this.genInfoData.reqBy == null ? '<Quotation_Header.Requested_By>' : this.genInfoData.reqBy; 
+	}
+
+	testBlur() {
+		this.b = this.genInfoData.reqBy == '' || this.genInfoData.reqBy == null ? '<Quotation_Header.Requested_By>' : this.genInfoData.reqBy;
+
+		var reg = new RegExp(this.a, 'gi');
+
+		this.genInfoData.openingParag = this.genInfoData.openingParag.replace(reg, this.b);
+	}
+
 }
 export interface SelectRequestMode {
 	name: string;
