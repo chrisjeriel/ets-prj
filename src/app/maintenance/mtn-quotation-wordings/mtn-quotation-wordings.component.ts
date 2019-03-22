@@ -43,10 +43,15 @@ export class MtnQuotationWordingsComponent implements OnInit {
   selected: any;
   modalOpen:boolean = false;
 
+  @Input() lovCheckBox: boolean = false;
+  selects: any[] = [];
 
   constructor(private modalService: NgbModal, private mtnService : MaintenanceService) { }
 
   ngOnInit() { 
+    if(this.lovCheckBox){
+      this.passData.checkFlag = true;
+    }
   }
 
   select(data){
@@ -54,7 +59,18 @@ export class MtnQuotationWordingsComponent implements OnInit {
   }
 
   okBtnClick(){
-  	this.selectedData.emit(this.selected);
+  	if(!this.lovCheckBox){
+      this.selectedData.emit(this.selected);
+    }
+    else{
+      for(var i = 0; i < this.passData.tableData.length; i++){
+        if(this.passData.tableData[i].checked){
+          this.selects.push(this.passData.tableData[i]);
+        }
+      }
+      this.selectedData.emit(this.selects);
+      this.selects = [];
+    }
   }
 
   openModal(){

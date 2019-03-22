@@ -188,5 +188,13 @@ export class MaintenanceService{
 
         return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnSectionCoversLov', {params});     
 	}
+
+	getRefCode(identifier: string){
+		const params = new HttpParams()
+			.set('identifier', identifier === undefined || identifier === null ? '' : identifier);
+
+		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveRefCode', {params});
+	}
+	
 }
 

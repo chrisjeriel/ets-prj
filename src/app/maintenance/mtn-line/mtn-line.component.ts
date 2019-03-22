@@ -31,6 +31,9 @@ lineListing: any = {
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
   @Input() openCoverTag: boolean = false;
 
+  @Input() lovCheckBox: boolean = false;
+  selects: any[] = [];
+
   constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal) { }
 
   ngOnInit() {
@@ -44,7 +47,9 @@ lineListing: any = {
   		}
   		this.table.refreshTable();
   	});*/
-
+    if(this.lovCheckBox){
+      this.lineListing.checkFlag = true;
+    }
   }
 
   onRowClick(data){  	
@@ -57,9 +62,20 @@ lineListing: any = {
   }
 
   confirm(){
-    this.selected['fromLOV'] = true;
-    this.selectedData.emit(this.selected);
-    this.selected = null;
+    if(!this.lovCheckBox){
+      this.selected['fromLOV'] = true;
+      this.selectedData.emit(this.selected);
+      this.selected = null;
+    }
+    else{
+      for(var i = 0; i < this.lineListing.tableData.length; i++){
+        if(this.lineListing.tableData[i].checked){
+          this.selects.push(this.lineListing.tableData[i]);
+        }
+      }
+      this.selectedData.emit(this.selects);
+      this.selects = [];
+    }
   }
   openModal(){
      this.lineListing.tableData = [];

@@ -370,18 +370,38 @@ export class CoverageComponent implements OnInit {
   selectedSectionCoversLOV(data){
     this.ns.lovLoader(data.ev, 0);
 
+    /*console.log(data.hasOwnProperty('fromLOV'));
     if(!data.hasOwnProperty('fromLOV')) {
+      console.log("hasOwnProperty");
       this.sectionCoverLOVRow = data.ev.index;
+
+    }*/
+    
+    if (data[0].singleSearchLov) {
+      this.sectionCoverLOVRow = data[0].ev.index;
+      this.ns.lovLoader(data[0].ev, 0);
     }
 
+
     $('#cust-table-container').addClass('ng-dirty');
-    this.passData.tableData[this.sectionCoverLOVRow].coverCd = data.coverCd; 
-    this.passData.tableData[this.sectionCoverLOVRow].coverCdAbbr = data.coverCdAbbr;
-    this.passData.tableData[this.sectionCoverLOVRow].section = data.section;
-    this.passData.tableData[this.sectionCoverLOVRow].bulletNo = data.bulletNo;
+    this.passData.tableData[this.sectionCoverLOVRow].coverCd = data[0].coverCd; 
+    this.passData.tableData[this.sectionCoverLOVRow].coverCdAbbr = data[0].coverCdAbbr;
+    this.passData.tableData[this.sectionCoverLOVRow].section = data[0].section;
+    this.passData.tableData[this.sectionCoverLOVRow].bulletNo = data[0].bulletNo;
     this.passData.tableData[this.sectionCoverLOVRow].sumInsured = 0;
     this.passData.tableData[this.sectionCoverLOVRow].edited = true;
-    this.validateSectionCover();
+    //this.validateSectionCover();
+    for(var i = 1; i<data.length;i++){
+      this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
+      this.passData.tableData[this.passData.tableData.length - 1].coverCd = data[i].coverCd; 
+      this.passData.tableData[this.passData.tableData.length - 1].coverCdAbbr = data[i].coverCdAbbr;
+      this.passData.tableData[this.passData.tableData.length - 1].section = data[i].section;
+      this.passData.tableData[this.passData.tableData.length - 1].bulletNo = data[i].bulletNo;
+      this.passData.tableData[this.passData.tableData.length - 1].sumInsured = 0;
+      this.passData.tableData[this.passData.tableData.length - 1].edited = true;
+      console.log(this.passData.tableData);
+    }
+    this.table.refreshTable();
     
     /*setTimeout(() => {
       $('#2').find("input:text").focus();
@@ -421,9 +441,9 @@ export class CoverageComponent implements OnInit {
       }
 
      if(this.lineCd == 'CAR' || this.lineCd == 'EAR'){
-        this.coverageData.totalSi = this.coverageData.sectionISi + this.coverageData.sectionIISi;
+        this.coverageData.totalSi = this.coverageData.sectionISi + this.coverageData.sectionIIISi;
      } else if (this.lineCd == 'EEI'){
-       this.coverageData.totalSi = this.coverageData.sectionISi + this.coverageData.sectionIISi + this.coverageData.sectionIIISi;
+       this.coverageData.totalSi = this.coverageData.sectionISi + this.coverageData.sectionIISi;
      } else{
        this.coverageData.totalSi = this.coverageData.sectionISi
      }

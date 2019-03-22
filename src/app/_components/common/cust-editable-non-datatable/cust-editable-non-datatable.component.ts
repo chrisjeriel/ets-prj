@@ -403,6 +403,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         this.addFiller();
     }
 
+
     onDataChange(ev,data){        
         if($(ev.target).next().children().prop("tagName") === 'A') {
             this.ns.lovLoader(ev, 1);
@@ -416,9 +417,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         }
 
         data.edited = true;
-        // ev.edited = true;            
-        setTimeout(() => this.tableDataChange.emit(this.passData.tableData),0)
-        //this.tableDataChange.emit(this.passData.tableData);
+        setTimeout(() => this.tableDataChange.emit(this.passData.tableData),0);
     }
 
 
