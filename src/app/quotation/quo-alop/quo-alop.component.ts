@@ -506,7 +506,7 @@ export class QuoAlopComponent implements OnInit {
               optionId: data.optionId,
               alopDetails: JSON.parse(JSON.stringify(this.newAlopDetails))
             })
-            this.alopDetails = this.optionsList[this.optionsList.length -1].alopDetails;\
+            this.alopDetails = this.optionsList[this.optionsList.length -1].alopDetails;
             this.alopDetails.annSi = this.alopSI;
             this.alopDetails.maxIndemPdSi = 0;
           }
