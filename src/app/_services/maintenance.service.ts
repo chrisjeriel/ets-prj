@@ -15,25 +15,25 @@ export class MaintenanceService{
 			.set('regionCd',regionCd ===undefined || regionCd===null ? '' : regionCd)
 			.set('cityCd',cityCd ===undefined || cityCd===null ? '' : cityCd)
 			.set('districtCd',districtCd ===undefined || districtCd===null ? '' : districtCd)
-		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnDistrict",{params});
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnDistrict",{params});
 	}
 
 	getMtnInsured(insuredId){
 		const params = new HttpParams()
 		     .set('insuredId', insuredId);
 
-		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnInsured", {params});
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnInsured", {params});
 	}
 
 	// getEndtCode(lineCd?:string,endtCd?:number){
-	// 	return this.http.get("http://localhost:8888/api/maintenance-service/retrieveEndtCode"
+	// 	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveEndtCode"
 	// 		+(lineCd!==undefined ? '?lineCd='+lineCd : '')
 	// 		+(endtCd!==undefined ? (lineCd!==undefined ? '&' : '?')+'endtCd='+endtCd : '')
 	// 		);
 	// }
 
 	getEndtCode(lineCd,endtCd){
-		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveEndtCode"
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveEndtCode"
 			+(lineCd!==undefined ? '?lineCd='+lineCd : '')
 			+(endtCd!==undefined ? (lineCd!==undefined ? '&' : '?')+'endtCd='+endtCd : '')
 			);
@@ -44,11 +44,11 @@ export class MaintenanceService{
 			.set('regionCd',regionCd ===undefined || regionCd===null ? '' : regionCd)
 			.set('provinceCd',provinceCd ===undefined || provinceCd===null ? '' : provinceCd)
 			.set('cityCd',cityCd ===undefined || cityCd===null ? '' : cityCd)
-		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnCity",{params});
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnCity",{params});
 	}
 
 	getMtnCrestaZone(){
-		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnCrestaZone");
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnCrestaZone");
 	}
 
 	getMtnCurrency(currencyCd: string, activeTag: string){
@@ -56,7 +56,7 @@ export class MaintenanceService{
 		     .set('currencyCd', currencyCd)
 		     .set('activeTag', activeTag);
 
-		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnCurrency", {params});
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnCurrency", {params});
 	}
 
 	getMtnBlock(regionCd?,provinceCd?,cityCd?,districtCd?,blockCd?){
@@ -74,13 +74,13 @@ export class MaintenanceService{
 		const params = new HttpParams()
 		 	.set('lineCd',lineCd)
 			.set('objectId',objectId)
-		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnObject",{params});
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnObject",{params});
 	}
 	getMtnQuotationWordings(lineCd,type){
 		const params = new HttpParams()
 			.set('lineCd',lineCd)
 			.set('type',type)
-		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnQuotationWordings",{params});
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnQuotationWordings",{params});
 	}
 
 	getMtnRisk(riskId) {
@@ -150,14 +150,14 @@ export class MaintenanceService{
 	getMtnRegion(regionCd?){
 		const params = new HttpParams()
 			.set('regionCd',regionCd===undefined || regionCd===null ? '' : regionCd)
-		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnRegion",{params});
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnRegion",{params});
 	}
 
 	getMtnProvince(regionCd?, provinceCd?){
 		const params = new HttpParams()
 			.set('provinceCd',provinceCd ===undefined || provinceCd===null ? '' : provinceCd)
 			.set('regionCd',regionCd ===undefined || regionCd===null ? '' : regionCd)
-		return this.http.get("http://localhost:8888/api/maintenance-service/retrieveMtnProvince",{params});
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnProvince",{params});
 	}
 
 	getAdviceWordings(){
