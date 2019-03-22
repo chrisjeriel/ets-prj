@@ -103,7 +103,8 @@ export class QuoteOptionComponent implements OnInit {
         searchFlag: true,
         pageID: 2,
         uneditable: [true,true],
-        magnifyingGlass: ['deductibleCd']
+        magnifyingGlass: ['deductibleCd'],
+        disableAdd : true
     }
 
     coversDeductiblesData: any = {
@@ -135,7 +136,8 @@ export class QuoteOptionComponent implements OnInit {
         uneditable: [true,true],
         magnifyingGlass: ['deductibleCd'],
         addFlag: true,
-        deleteFlag: true
+        deleteFlag: true,
+        disableAdd : true
     }
 
     otherRatesData: any = {
@@ -232,6 +234,7 @@ export class QuoteOptionComponent implements OnInit {
               a.createDate = new Date().toISOString();
               a.updateDate = new Date().toISOString();
               a.rate = 0;
+              a.deductiblesList = [];
               return true;
             });;
             this.optionsData.nData.otherRatesList = data.quotation.project.coverage.sectionCovers;
@@ -487,8 +490,10 @@ saveQuoteOptionAll(cancelFlag?){
       this.selectedOption = data;
       if(data == null){
         this.otherRatesData.tableData = [];
+        this.optionsDeductiblesData.disableAdd = true;
         this.otherRatesTable.refreshTable();
       }else if(data.otherRatesList==null || data.otherRatesList===undefined || data.otherRatesList.length == 0){
+        this.optionsDeductiblesData.disableAdd = false;
         data.otherRatesList = JSON.parse(JSON.stringify(this.defaultSectionCvrs));
         this.otherRatesData.tableData = data.otherRatesList.filter((a)=>{
           a.amount = a.sumInsured;
@@ -503,6 +508,7 @@ saveQuoteOptionAll(cancelFlag?){
         this.updateCovers();
         this.otherRatesTable.refreshTable();
       }else if (data.otherRatesList != null || data.otherRatesList != undefined ){
+        this.optionsDeductiblesData.disableAdd = false;
         this.selectedOption = data;
         this.otherRatesData.tableData = data.deleted? []:data.otherRatesList;
         this.updateCovers();
@@ -651,11 +657,14 @@ saveQuoteOptionAll(cancelFlag?){
   updateCovDed(data){
     if(data != null){
       this.coversDeductiblesData.nData.coverCd = data.coverCd;
+      this.coversDeductiblesData.disableAdd = false
     }
+    else
+      this.coversDeductiblesData.disableAdd = true
 
     if(data == null)
       this.coversDeductiblesData.tableData  = [];
-    else if(data.deductiblesList.length ==0){
+    else if( data.deductiblesList.length ==0){
       this.getDefaultDeductibles(this.coversDeductiblesData,this.covDeductibleTable,data);
     }else
       this.coversDeductiblesData.tableData  = data.deductiblesList;
