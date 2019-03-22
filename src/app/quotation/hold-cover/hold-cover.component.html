@@ -73,7 +73,7 @@
                                             <label class="form-control-sm col-sm-2">Hold Cover No</label>
                                             <input type="text" class="form-control form-control-sm cust-sm warn" readonly appRequired [(ngModel)]="holdCover.holdCoverNo">
                                             <label class="form-control-sm col-sm-2">Option No</label>
-                                            <input type="text" class="form-control form-control-sm col-sm-7 warn" id="optionId" readonly [(ngModel)]="holdCover.optionId" appRequired>
+                                            <input type="text" class="form-control form-control-sm col-sm-7 warn" #optId id="optionId" readonly [(ngModel)]="holdCover.optionId" appRequired (change)="searchOptNo(optId.value)">
                                             <div *ngIf="optLovEnabled" class="text-search-ico" (click)="onClickOptionLOV()"><a><i class="fa fa-search"></i></a></div>
                                         </div>
                                         <!-- <div class="input-group" style="margin-bottom: -14px !important;">
@@ -188,7 +188,8 @@
                                         </div>
                                     </div>
                                     </app-modal>
-                                <button type="button" class="cust-btn" (click)="onConfirmCancelHc()"><a>Cancel Hold Cover</a></button>
+                                <button *ngIf="cancelHcBtnEnabled" type="button" class="cust-btn" (click)="onConfirmCancelHc()"><a>Cancel Hold Cover</a></button>
+                                <button *ngIf="!cancelHcBtnEnabled" type="button" class="cust-btn dsbld" disabled="disabled">Cancel Hold Cover</button>
                                 <button *ngIf="btnApprovalEnabled" class="cust-btn" type="button" (click)="onClickApprovalBtnMdl()">Approval</button>
                                 <button *ngIf="!btnApprovalEnabled" class="cust-btn dsbld" disabled="disabled" type="button">Approval</button>
                                 <!-- <button type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button> -->

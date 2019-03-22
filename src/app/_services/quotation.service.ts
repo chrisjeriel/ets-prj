@@ -663,18 +663,28 @@ export class QuotationService {
             return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuoteHoldCover',{params});
     }
 
-    saveQuoteAttachment(quoteId:string ,saveAttachmentsList:any[], deleteAttachmentsList:any[]){
-        let params:any  = {
-            quoteId: quoteId,
-            saveAttachmentsList: saveAttachmentsList,
-            deleteAttachmentsList: deleteAttachmentsList
-        };
-        let header : any = {
-            headers: new HttpHeaders({
-                'Content-Type': 'application/json'
-            })
-        };
-        return this.http.post(environment.prodApiUrl + '/quote-service/saveQuoteAttachment', JSON.stringify(params), header);
+    // saveQuoteAttachment(quoteId:string ,saveAttachmentsList:any[], deleteAttachmentsList:any[]){
+    //     let params:any  = {
+    //         quoteId: quoteId,
+    //         saveAttachmentsList: saveAttachmentsList,
+    //         deleteAttachmentsList: deleteAttachmentsList
+    //     };
+    //     let header : any = {
+    //         headers: new HttpHeaders({
+    //             'Content-Type': 'application/json'
+    //         })
+    //     };
+    //     return this.http.post(environment.prodApiUrl + '/quote-service/saveQuoteAttachment', JSON.stringify(params), header);
+    // }
+
+    saveQuoteAttachment(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/quote-service/saveQuoteAttachment',params,header);
+ 
     }
 
 
