@@ -193,9 +193,10 @@ export class CustEditableNonDatatableComponent implements OnInit {
         this.retrieveFromSub();
         // this.addFiller();
 
+        this.passData.nData.add = true;
 
         //temporary fix delete this later
-        setTimeout(()=>{this.refreshTable()},2000)
+        setTimeout(()=>{this.refreshTable()},2000);
     }
 
     /*ngDoCheck() {
@@ -236,9 +237,14 @@ export class CustEditableNonDatatableComponent implements OnInit {
         //     }
         // }
         for(let i = 0; i<this.selected.length;i++){
-            this.selected[i].checked = false;
-            this.selected[i].deleted = true;
-            this.selected[i].edited = true;
+           if(!this.selected[i].add){
+               this.selected[i].checked = false;
+               this.selected[i].deleted = true;
+               this.selected[i].edited = true;
+           }else {
+               this.passData.tableData = this.passData.tableData.filter(a => a!= this.selected[i])
+           }
+           
         }
         this.selectAllFlag = false;
         this.form.control.markAsDirty();
