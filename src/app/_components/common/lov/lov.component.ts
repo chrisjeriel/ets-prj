@@ -49,7 +49,6 @@ export class LovComponent implements OnInit {
 
   okBtnClick(){
     let selects:any[] = [];
-  	this.selectedData.emit(this.passData);
     if(!this.lovCheckBox){
       this.selectedData.emit(this.passData);
     }
