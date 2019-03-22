@@ -5,6 +5,7 @@ import { Title } from '@angular/platform-browser';
 import { HoldCoverMonitoringList } from '@app/_models/quotation-list';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { environment } from '@environments/environment';
 
 @Component({
     selector: 'app-hold-cover-monitoring-list',
@@ -303,7 +304,7 @@ export class HoldCoverMonitoringListComponent implements OnInit {
 
     showPrintPreview() {
          if (this.printType == 'SCREEN'){
-           window.open('http://localhost:8888/api/util-service/generateReport?reportName=' + this.selectedReport + '&quoteId=' + this.quoteId + '&holdCovId=' + this.holdCoverId, '_blank');
+           window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + this.selectedReport + '&quoteId=' + this.quoteId + '&holdCovId=' + this.holdCoverId, '_blank');
            this.printParams();
          }else if (this.printType == 'PRINTER'){
            if(this.validate(this.prepareParam())){

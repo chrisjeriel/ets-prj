@@ -32,11 +32,15 @@ export class LovComponent implements OnInit {
 
   modalOpen: boolean = false;
 
+  @Input() lovCheckBox: boolean = false;
+
 
   constructor(private modalService: NgbModal, private mtnService : MaintenanceService, private underwritingService: UnderwritingService, private quotationService: QuotationService) { }
 
   ngOnInit() {
-  	  	
+  	  if(this.lovCheckBox){
+        this.passTable.checkFlag = true;
+      }
   }
 
   select(data){
@@ -44,7 +48,16 @@ export class LovComponent implements OnInit {
   }
 
   okBtnClick(){
+    let selects:any[] = [];
   	this.selectedData.emit(this.passData);
+    if(!this.lovCheckBox){
+      this.selectedData.emit(this.passData);
+    }
+    else{
+      selects = this.table.selected;
+      this.passData.data = selects;
+      this.selectedData.emit(this.passData);
+    }
   }
 
   checkCode(selector?,regionCd?, provinceCd?, cityCd?, districtCd?, blockCd?, ev?) {

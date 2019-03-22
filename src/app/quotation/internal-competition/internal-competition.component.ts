@@ -158,7 +158,7 @@ export class InternalCompetitionComponent implements OnInit {
     onClickPrint() {
       console.log("onClickPrint");
       if (this.printClickable) {
-        window.open('http://localhost:8888/api/util-service/generateReport?reportName=QUOTER007' + '&quoteId=' + this.selectedPrintData.quoteId + '&adviceNo=' + this.selectedPrintData.adviceNo, '_blank');
+        window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=QUOTER007' + '&quoteId=' + this.selectedPrintData.quoteId + '&adviceNo=' + this.selectedPrintData.adviceNo, '_blank');
       }
     }
 

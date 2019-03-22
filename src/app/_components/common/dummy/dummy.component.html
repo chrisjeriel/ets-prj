@@ -99,13 +99,13 @@
 </div>
 <br />
 <br />
-<input [readonly]="false" type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="ttt" (blur)="testblur()" (change)="testVal()" mask="999">
-
+<input [readonly]="false" type="text" class="form-control form-control-sm col-sm-2" [ngModel]="ttt" (ngModelChange)="ttt=$event; testblur()">
 
 
 <br/>
 <br/>
-<span>{{ test() }}</span>
 
 <button class="cust-btn" (click)="clickTesting()">Check</button>
 <app-mtn-insured id="principalLOV" (selectedData)="setPrincipal($event)" [lovCheckBox]="true"></app-mtn-insured>
+<input [readonly]="false" type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="uuu">
+

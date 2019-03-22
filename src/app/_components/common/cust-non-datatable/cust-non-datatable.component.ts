@@ -266,6 +266,10 @@ export class CustNonDatatableComponent implements OnInit {
                         this.indvSelect = "";
                         data = {};
                     }else{
+                       /* if(this.passData.checkFlag !== undefined && this.passData.checkFlag){
+                            console.log('here');
+                            this.removeSelected(event, data);
+                        }*/
                         this.indvSelect = data;
                     }
                 }
