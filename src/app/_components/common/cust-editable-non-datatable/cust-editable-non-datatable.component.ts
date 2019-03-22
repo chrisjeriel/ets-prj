@@ -482,6 +482,9 @@ export class CustEditableNonDatatableComponent implements OnInit {
                 this.selected.push(data);
             }
         }
+        if(!value){
+            this.selected = this.selected.filter(a=>false);
+        }
         this.refreshTable();
     }
 

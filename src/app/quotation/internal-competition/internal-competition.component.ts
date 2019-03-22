@@ -124,6 +124,7 @@ export class InternalCompetitionComponent implements OnInit {
                 this.cedingIds.push(data.quotation[j].competitionsList[0].cedingId.toString());
                 //this.cedingRepIds.push(data.quotation[j].competitionsList[0].cedingRepId.toString());
                 for(var i = 0; i < this.data.length; i++){
+                  this.data[i].showMG = 1;
                   this.data[i].advWordCreateUser = this.data[i].advWordCreateUser === null ? this.data[i].createUser : this.data[i].advWordCreateUser;
                   this.data[i].advWordUpdateUser = this.data[i].advWordUpdateUser === null ? this.data[i].updateUser : this.data[i].advWordUpdateUser;
                   this.data[i].advWordCreateDate = this.data[i].advWordCreateDate === null ? this.data[i].createDate : this.notes.toDateTimeString(this.data[i].advWordCreateDate);
@@ -156,8 +157,9 @@ export class InternalCompetitionComponent implements OnInit {
     }
 
     onClickPrint() {
-      console.log("onClickPrint");
-      if (this.printClickable) {
+      console.log(this.custEditableNonDatatableComponent.selected);
+      /*if (this.printClickable) {*/
+      if (this.custEditableNonDatatableComponent.selected.length !== 0) {
         window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=QUOTER007' + '&quoteId=' + this.selectedPrintData.quoteId + '&adviceNo=' + this.selectedPrintData.adviceNo, '_blank');
       }
     }
