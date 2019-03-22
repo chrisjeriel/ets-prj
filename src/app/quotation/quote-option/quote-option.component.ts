@@ -512,7 +512,7 @@ saveQuoteOptionAll(cancelFlag?){
 
 
   updateCovers(){
-    if(this.quotationInfo.cessionId == 2 && this.optionsData.tableData.length > 1){
+    if(this.quotationInfo.cessionId == 2 && this.optionsData.tableData.filter(a=>!a.deleted).length > 1){
       this.optionsData.tableData.pop();
       this.optionsTable.refreshTable();
     }
@@ -531,6 +531,11 @@ saveQuoteOptionAll(cancelFlag?){
       if(data.amount == 0){
         data.rate = 0;
       }
+    }
+    if(this.quotationInfo.cessionId == 2 && this.optionsData.tableData.filter(a=>!a.deleted).length==1)
+      this.optionsData.disableAdd = true;
+    else{
+      this.optionsData.disableAdd = false;
     }
   }
 
