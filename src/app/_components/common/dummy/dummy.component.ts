@@ -313,8 +313,16 @@ export class DummyComponent implements OnInit {
     }
 
     test() {        
-        console.log('aw');
-        return 'NICE' + this.ttt;
+        /*console.log('aw');
+        return 'NICE' + this.ttt;*/
+    }
+
+    clickTesting(){
+        $('#principalLOV #modalBtn').trigger('click');
+    }
+
+    setPrincipal(data){
+        console.log(data);
     }
 
     testVal() {

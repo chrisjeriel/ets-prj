@@ -144,6 +144,7 @@ export class CustNonDatatableComponent implements OnInit {
         this.addFiller();
         //this.appComponent.ngOnInit();
         this.loadingTableFlag = false;
+        this.selected = [];
     }
 
     ngOnInit(): void {
@@ -286,6 +287,29 @@ export class CustNonDatatableComponent implements OnInit {
         //console.log(this.passData.tableData);
         //console.log(this.indvSelect);
         this.rowClick.emit(data);
+    }
+
+    selectAll(value){
+        if(value){
+            this.selected = [];
+             for (let data of this.displayData) {
+                if(data != this.fillData){
+                    console.log('test');
+                    data.checked = value;
+                    this.selected.push(data);
+                }
+            }
+            console.log(this.selected);
+            this.rowClick.emit(this.selected);
+            this.refreshTable();
+        }
+        else{
+            this.displayData = this.displayData.filter((a) => { a.checked = false; return true;});
+            this.rowClick.emit({});
+            this.selected = [];
+            this.refreshTable();
+        }
+         
     }
     
     highlight(data){
