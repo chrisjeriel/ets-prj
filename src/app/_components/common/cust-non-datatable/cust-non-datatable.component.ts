@@ -136,6 +136,7 @@ export class CustNonDatatableComponent implements OnInit {
         }
         for(var i = 0 ;i<this.passData.tableData.length;i++){
             this.displayData[i] = this.passData.tableData[i];
+             this.passData.tableData[i].checked = this.passData.tableData[i].checked ? true : false;
         }
         //this.displayData = JSON.parse(JSON.stringify( this.passData.tableData));
         this.displayLength = this.displayData.length;
@@ -160,6 +161,10 @@ export class CustNonDatatableComponent implements OnInit {
         } else {
             this.dataKeys = this.passData.keys;
         }
+
+        if(this.dataKeys.indexOf('checked') != -1){
+         this.dataKeys.splice(this.dataKeys.indexOf('checked'),1);
+       }
         if(this.passData.tableData.length != 0)
             this.loadingFlag = false;
         // this.displayData = JSON.parse(JSON.stringify( this.passData.tableData));
@@ -277,6 +282,9 @@ export class CustNonDatatableComponent implements OnInit {
              this.indvSelect = "";
              this.nullRow = true;
         }
+        //console.log(this.displayData);
+        //console.log(this.passData.tableData);
+        //console.log(this.indvSelect);
         this.rowClick.emit(data);
     }
     
@@ -284,6 +292,7 @@ export class CustNonDatatableComponent implements OnInit {
         this.selected.push(data);
     }
     removeSelected(event, data){
+        data.checked = event.target.checked;
         if(!event.target.checked){
             this.selected.splice(this.selected.indexOf(data), 1);
         }else{

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
 import { MaintenanceService } from '@app/_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
@@ -36,6 +36,9 @@ export class MtnCurrencyComponent implements OnInit {
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
   modalOpen: boolean = false;
+
+  @Input() lovCheckBox: boolean = false;
+  selects: any[] = [];
   
   constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal) { }
 
@@ -52,6 +55,9 @@ export class MtnCurrencyComponent implements OnInit {
       }
       this.table.refreshTable();
     });*/
+    if(this.lovCheckBox){
+      this.currencyListing.checkFlag = true;
+    }
   }
 
   onRowClick(data){
@@ -64,9 +70,20 @@ export class MtnCurrencyComponent implements OnInit {
   }
 
   confirm(){
-    this.selectedData.emit(this.selected);
-    this.currencyListing.tableData = [];
-    this.table.refreshTable();
+    if(!this.lovCheckBox){
+     this.selectedData.emit(this.selected);
+     this.currencyListing.tableData = [];
+     this.table.refreshTable();
+    }
+    else{
+      for(var i = 0; i < this.currencyListing.tableData.length; i++){
+        if(this.currencyListing.tableData[i].checked){
+          this.selects.push(this.currencyListing.tableData[i]);
+        }
+      }
+      this.selectedData.emit(this.selects);
+      this.selects = [];
+    }  
   }
 
   cancel(){

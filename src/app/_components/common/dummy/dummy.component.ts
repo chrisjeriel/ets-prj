@@ -112,6 +112,17 @@ export class DummyComponent implements OnInit {
         
     };
 
+    testingData: any = {
+        tHeader: ['test', 'test2'],
+        tableData: [
+            {first: 'test', second: 'test2'}, {first: 'test3', second: 'test4'}
+        ],
+        dataTypes: ['text', 'text'],
+        pageLength: 3,
+        tableOnly: false,
+        checkFlag: true,
+    }
+
     passDataEditable: any = {
         tableData: [],
         tHeader: ["ID", "First Name", "Last Name", "Middle Name", "Gender", "Age", "Birth Date","Actions"],

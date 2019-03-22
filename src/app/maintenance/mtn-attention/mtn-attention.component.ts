@@ -32,6 +32,9 @@ export class MtnAttentionComponent implements OnInit {
 	}
     selected: any;
 
+    @Input() lovCheckBox: boolean = false;
+    selects: any[] = [];
+
   ngOnInit() {
   	/*this.underwritingService.getCedingCompanyLOV(this.cedingId).subscribe((data:any) => {
             for (var i = 0; i < data.cedingCompany.length; i++) {
@@ -40,6 +43,9 @@ export class MtnAttentionComponent implements OnInit {
             }
             this.table.refreshTable();
         });*/
+        if(this.lovCheckBox){
+          this.passDataAttention.checkFlag = true;
+        }
   }
 
   select(data){
@@ -47,9 +53,20 @@ export class MtnAttentionComponent implements OnInit {
   }
 
   okBtnClick(){
-  	this.selectedData.emit(this.selected);
-    this.passDataAttention.tableData = [];
-    this.table.refreshTable();
+    if(!this.lovCheckBox){
+      this.selectedData.emit(this.selected);
+      this.passDataAttention.tableData = [];
+      this.table.refreshTable();
+    }
+    else{
+      for(var i = 0; i < this.passDataAttention.tableData.length; i++){
+        if(this.passDataAttention.tableData[i].checked){
+          this.selects.push(this.passDataAttention.tableData[i]);
+        }
+      }
+      this.selectedData.emit(this.selects);
+      this.selects = [];
+    }
   }
 
   cancel(){
@@ -63,9 +80,10 @@ export class MtnAttentionComponent implements OnInit {
       }*/
       setTimeout(()=>{    //<<<---    using ()=> syntax
            this.underwritingService.getCedingCompanyLOV(this.cedingId).subscribe((data:any) => {
-                       for (var i = 0; i < data.cedingCompany[0].cedingRepresentative.length; i++) {
+             console.log(data);
+                       for (var i = 0; i < data.cedingCompany.length; i++) {
                            //this.passDataAttention.tableData.push(new CedingCompany( data.cedingCompany[i].cedingRepresentative.defaultTag,  data.cedingCompany[i].cedingRepresentative.designation, data.cedingCompany[i].cedingRepresentative.firstName, data.cedingCompany[i].cedingRepresentative.middleInitial, data.cedingCompany[i].cedingRepresentative.lastName, data.cedingCompany[i].cedingRepresentative.position, data.cedingCompany[i].cedingRepresentative.department, data.cedingCompany[i].cedingRepresentative.contactNo, data.cedingCompany[i].cedingRepresentative.eSignature));
-                           this.passDataAttention.tableData.push(data.cedingCompany[0].cedingRepresentative[i]);
+                           this.passDataAttention.tableData.push(data.cedingCompany[i]);
 
                        }
                        this.table.refreshTable();

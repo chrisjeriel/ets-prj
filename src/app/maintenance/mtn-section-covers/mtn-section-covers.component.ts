@@ -19,7 +19,7 @@ export class MtnSectionCoversComponent implements OnInit {
   fromInput: boolean = false;
   sectionCover: any = {
     tableData: [],
-    tHeader: ['Section','Bullet No','Cover Code','Cover Code Name','Add SI'],
+    tHeader: ['Section','Bullet No','Cover Code','Cover Code Name'],
     dataTypes: ['text', 'text','sequence-3','text','text'],
     pageLength: 10,
     searchFlag: true,
@@ -27,12 +27,19 @@ export class MtnSectionCoversComponent implements OnInit {
     pagination: true,
     fixedCol: false,
     pageID: 1,
-    keys:['section','bulletNo','coverCd','coverCdAbbr','addSi']
+    colSize:['59px','69px','81px','180px'],
+    keys:['section','bulletNo','coverCd','coverCdAbbr']
   };
+
+  @Input() lovCheckBox: boolean = false;
+  selects: any[] = [];
+
   constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal) { }
 
   ngOnInit() {
-  	
+    if(this.lovCheckBox){
+      this.sectionCover.checkFlag = true;
+    }
   }
 
   select(data){
@@ -41,7 +48,21 @@ export class MtnSectionCoversComponent implements OnInit {
 
   okBtnClick(){
     this.selected['fromLOV'] = true;
-    this.selectedData.emit(this.selected);
+    
+    if(!this.lovCheckBox){
+      console.log("Selected Data Emit 1");
+      this.selectedData.emit(this.selected);
+    }
+    else{
+      for(var i = 0; i < this.sectionCover.tableData.length; i++){
+        if(this.sectionCover.tableData[i].checked){
+          this.selects.push(this.sectionCover.tableData[i]);
+        }
+      }
+      console.log("Selected Data Emit 2");
+      this.selectedData.emit(this.selects);
+      this.selects = [];
+    }
   }
 
   openModal(){
@@ -63,6 +84,7 @@ export class MtnSectionCoversComponent implements OnInit {
 
   checkCode(code, ev) {
     if(code === ''){
+      console.log("Selected Data Emit 3");
       this.selectedData.emit({
         section: '',
         bulletNo: '',
@@ -78,9 +100,14 @@ export class MtnSectionCoversComponent implements OnInit {
 
         if(data['sectionCovers'].length == 1) {          
           data['sectionCovers'][0]['ev'] = ev;
-          this.selectedData.emit(data['sectionCovers'][0]);
+          data['sectionCovers'][0]['singleSearchLov'] = true;
+          var arr = [];
+          arr.push(data['sectionCovers'][0]);
+          console.log("Selected Data Emit 4");
+          this.selectedData.emit(arr);
         } else if(data['sectionCovers'].length > 1) {
           this.fromInput = true;
+          console.log("Selected Data Emit 5");
           this.selectedData.emit({
             section: '',
             bulletNo: '',
@@ -96,6 +123,7 @@ export class MtnSectionCoversComponent implements OnInit {
 
           $('#sectionCovers > #modalBtn').trigger('click');
         } else {
+          console.log("Selected Data Emit 6");
           this.selectedData.emit({
             section: '',
             bulletNo: '',

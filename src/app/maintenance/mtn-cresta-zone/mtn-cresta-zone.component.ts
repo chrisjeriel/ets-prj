@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
 import { MaintenanceService } from '@app/_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
@@ -30,9 +30,15 @@ export class MtnCrestaZoneComponent implements OnInit {
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
 
+  @Input() lovCheckBox: boolean = false;
+  selects: any[] = [];
+
   constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal) { }
 
   ngOnInit() {
+    if(this.lovCheckBox){
+      this.crestaZoneListing.checkFlag = true;
+    }
   	this.maintenanceService.getMtnCrestaZone().subscribe((data: any) =>{
   		for(var zoneCount = 0; zoneCount < data.crestaZone.length; zoneCount++){
   			this.crestaZoneListing.tableData.push(
@@ -49,7 +55,19 @@ export class MtnCrestaZoneComponent implements OnInit {
   }
 
   confirm(){
-  	this.selectedData.emit(this.selected);
+  	if(!this.lovCheckBox){
+      this.selectedData.emit(this.selected);
+    }
+    else{
+      for(var i = 0; i < this.crestaZoneListing.tableData.length; i++){
+        if(this.crestaZoneListing.tableData[i].checked){
+          this.selects.push(this.crestaZoneListing.tableData[i]);
+        }
+      }
+      this.selectedData.emit(this.selects);
+      this.selects = [];
+    }
+      
   }
 
 }
