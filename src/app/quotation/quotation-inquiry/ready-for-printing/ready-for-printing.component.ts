@@ -4,7 +4,7 @@ import { QuotationService } from '@app/_services'
 import { Router } from '@angular/router';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
+import { environment } from '@environments/environment';
 
 
 @Component({
@@ -16,7 +16,7 @@ export class ReadyForPrintingComponent implements OnInit {
   @ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
   records: any[] = [];
 
-  constructor(private quotationService: QuotationService, private router: Router, private modalService: NgbModal, private er: ElementRef) { }
+  constructor(private quotationService: QuotationService, private router: Router, private modalService: NgbModal, private er: ElementRef, private http: HttpClient) { }
   btnDisabled: boolean;
   selectPrinterDisabled: boolean = true;
   selectCopiesDisabled: boolean = true;
@@ -31,6 +31,7 @@ export class ReadyForPrintingComponent implements OnInit {
   dialogIcon:string;
   dialogMessage:string;
   changeQuoteError: any;
+  checkedData: any[] = [];
   saveData: any = {
         changeQuoteStatus: [],
         statusCd: "3",
@@ -189,7 +190,6 @@ export class ReadyForPrintingComponent implements OnInit {
         this.searchParams = searchParams;
         this.passData.tableData = [];
         this.retrieveQuoteListingMethod();
-        this.btnDisabled = true;
     }
 
   dateParser(arr){
@@ -200,11 +200,12 @@ export class ReadyForPrintingComponent implements OnInit {
 
 
   onRowClick(event){
-    if( event === null) {
-      this.btnDisabled = true;
-    } else {
-       this.btnDisabled = false;
-    }
+    if (this.isEmptyObject(event)){
+         this.btnDisabled = true;
+       } else {
+         this.btnDisabled = false;
+       }
+
     /* this.saveData.changeQuoteStatus.pop(this.saveData.changeQuoteStatus[0]);
     if (this.isEmptyObject(event)){
       this.btnDisabled = true;
@@ -218,7 +219,7 @@ export class ReadyForPrintingComponent implements OnInit {
                         quoteId: rec.quoteId
             })
           }else {
-                   for(var j=0;j<this.saveData.changeQuoteStatus.length;j++){    
+                   for(var j=0;j<this.saveData.cha ngeQuoteStatus.length;j++){    
                        if(this.saveData.changeQuoteStatus[j].quoteId == rec.quoteId){
                            this.saveData.changeQuoteStatus.pop(this.saveData.changeQuoteStatus[j])
                        }
@@ -276,9 +277,11 @@ export class ReadyForPrintingComponent implements OnInit {
   }
 
   showPrintModal(){
+    this.printPDF(this.selectedReport,"4");
     this.prepareData();
     console.log(this.saveData);
-    if(this.isEmptyObject(this.saveData.changeQuoteStatus)){
+
+   /* if(this.isEmptyObject(this.saveData.changeQuoteStatus)){
        this.dialogIcon = "error-message";
        this.dialogMessage = "Please select quotation(s)";
        this.selectedOnOk = true;
@@ -286,7 +289,7 @@ export class ReadyForPrintingComponent implements OnInit {
        setTimeout(()=>{$('.globalLoading').css('display','none');},0);
     } else {
        $('#showPrintMenu > #modalBtn').trigger('click');
-    }
+    }*/
   }
 
    tabController(event) {
@@ -355,12 +358,32 @@ export class ReadyForPrintingComponent implements OnInit {
   }
 
   printPDF(reportName : string, quoteId : string){
-       var pdfw;
+/*       var pdfw;
        var url = "http://localhost:8888/api/util-service/generateReport?reportName=" + this.selectedReport + "&quoteId=" + this.quoteId
          pdfw = window.open(url, '_blank', 'fullscreen=1,channelmode=1,status=1,resizable=1');
          pdfw.focus();
          pdfw.print();
-         pdfw.close();
+         pdfw.close();*/
+         window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + reportName + "&quoteId=" + quoteId, '_blank').print();
+        /* this.quotationService.downloadPDF(reportName,quoteId).subscribe( data => {
+              var newBlob = new Blob([data], { type: "application/pdf" });
+              var downloadURL = window.URL.createObjectURL(data);
+              const iframe = document.createElement('iframe');
+              iframe.style.display = 'none';
+              iframe.src = downloadURL;
+              document.body.appendChild(iframe);
+       },
+        error => {
+            if (this.isEmptyObject(error)) {
+            } else {
+               this.dialogIcon = "error-message";
+               this.dialogMessage = "Error printing file";
+               $('#listQuotation #successModalBtn').trigger('click');
+               setTimeout(()=>{$('.globalLoading').css('display','none');},0);
+            }          
+       });
+*/
+
   }
 
   validate(obj){
