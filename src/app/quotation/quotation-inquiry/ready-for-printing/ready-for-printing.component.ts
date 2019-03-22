@@ -4,6 +4,7 @@ import { QuotationService } from '@app/_services'
 import { Router } from '@angular/router';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-ready-for-printing',
@@ -381,7 +382,7 @@ export class ReadyForPrintingComponent implements OnInit {
                 $('#successModalBtn').trigger('click');
             } else {
                 if (this.printType == 'SCREEN'){  
-                     window.open('http://localhost:8888/api/util-service/generateReport?reportName=' + this.selectedReport + '&quoteId=' + this.quoteId, '_blank');
+                     window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + this.selectedReport + '&quoteId=' + this.quoteId, '_blank');
                      this.printParams();
                      this.searchQuery(this.searchParams);
                 }else if (this.printType == 'PRINTER'){

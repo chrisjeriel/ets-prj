@@ -64,12 +64,13 @@ export class QuoteOptionComponent implements OnInit {
         addFlag: true,
         deleteFlag: true,
         checkFlag: true,
-        // paginateFlag: true,
-        // infoFlag: true,
+        paginateFlag: true,
+        infoFlag: true,
         searchFlag: true,
         pageID: 1,
         keys: ['optionId','optionRt','condition','commRtQuota','commRtSurplus','commRtFac'],
         uneditable: [true,false,false,false,false,false],
+        genericBtn:"Renumber"
     }
 
     optionsDeductiblesData: any = {
@@ -141,7 +142,7 @@ export class QuoteOptionComponent implements OnInit {
         tableData: [],
         tHeader: ['Section','Bullet No','Cover Code Name', 'Sum Insured','Change Tag', 'Rate(%)'],
         dataTypes: ['text', 'text', 'text', 'currency','checkbox','percent'],
-        pageLength: 5,  
+        pageLength: 'unli-5',  
         pageID: 3,
         keys: ['section','bulletNo','coverCdDesc','amount','changeTag','rate'],
         //widths: [1,1,'auto',140,1,140],
@@ -341,28 +342,50 @@ clickDeductiblesLOV(data,from){
 }
 
 setSelected(data){
-
+  console.log(data)
   if(data.from == 'cover'){
-    this.coversDeductiblesData.tableData[this.deductiblesLOVRow].deductibleTitle = data.data.deductibleTitle;
-    this.coversDeductiblesData.tableData[this.deductiblesLOVRow].deductibleRt = data.data.deductibleRate;
-    this.coversDeductiblesData.tableData[this.deductiblesLOVRow].deductibleAmt = data.data.deductibleAmt;
-    this.coversDeductiblesData.tableData[this.deductiblesLOVRow].deductibleTxt = data.data.deductibleText;
+    this.coversDeductiblesData.tableData[this.deductiblesLOVRow].deductibleTitle = data.data[0].deductibleTitle;
+    this.coversDeductiblesData.tableData[this.deductiblesLOVRow].deductibleRt = data.data[0].deductibleRate;
+    this.coversDeductiblesData.tableData[this.deductiblesLOVRow].deductibleAmt = data.data[0].deductibleAmt;
+    this.coversDeductiblesData.tableData[this.deductiblesLOVRow].deductibleTxt = data.data[0].deductibleText;
     this.coversDeductiblesData.tableData[this.deductiblesLOVRow].edited = true;
     this.coversDeductiblesData.tableData.push(JSON.parse(JSON.stringify(this.coversDeductiblesData.tableData[this.deductiblesLOVRow])));
-    this.coversDeductiblesData.tableData[this.coversDeductiblesData.tableData.length - 1].deductibleCd = data.data.deductibleCd;
+    this.coversDeductiblesData.tableData[this.coversDeductiblesData.tableData.length - 1].deductibleCd = data.data[0].deductibleCd;
     this.coversDeductiblesData.tableData[this.deductiblesLOVRow].deleted = true;
+
+    for(var i = 1; i<data.data.length;i++){
+      this.coversDeductiblesData.tableData.push(JSON.parse(JSON.stringify(this.coversDeductiblesData.nData)));
+      this.coversDeductiblesData.tableData[this.coversDeductiblesData.tableData.length -1].deductibleTitle = data.data[i].deductibleTitle;
+      this.coversDeductiblesData.tableData[this.coversDeductiblesData.tableData.length -1].deductibleRt = data.data[i].deductibleRate;
+      this.coversDeductiblesData.tableData[this.coversDeductiblesData.tableData.length -1].deductibleAmt = data.data[i].deductibleAmt;
+      this.coversDeductiblesData.tableData[this.coversDeductiblesData.tableData.length -1].deductibleTxt = data.data[i].deductibleText;
+      this.coversDeductiblesData.tableData[this.coversDeductiblesData.tableData.length -1].edited = true;
+      this.coversDeductiblesData.tableData[this.coversDeductiblesData.tableData.length -1].deductibleCd = data.data[i].deductibleCd;
+    }
+
     this.covDeductibleTable.refreshTable();
     this.covDeductibleTable.markAsDirty();
   }
   else if(data.from == 'option'){
-    this.optionsDeductiblesData.tableData[this.deductiblesLOVRow].deductibleTitle = data.data.deductibleTitle;
-    this.optionsDeductiblesData.tableData[this.deductiblesLOVRow].deductibleRt = data.data.deductibleRate;
-    this.optionsDeductiblesData.tableData[this.deductiblesLOVRow].deductibleAmt = data.data.deductibleAmt;
-    this.optionsDeductiblesData.tableData[this.deductiblesLOVRow].deductibleTxt = data.data.deductibleText;
+    this.optionsDeductiblesData.tableData[this.deductiblesLOVRow].deductibleTitle = data.data[0].deductibleTitle;
+    this.optionsDeductiblesData.tableData[this.deductiblesLOVRow].deductibleRt = data.data[0].deductibleRate;
+    this.optionsDeductiblesData.tableData[this.deductiblesLOVRow].deductibleAmt = data.data[0].deductibleAmt;
+    this.optionsDeductiblesData.tableData[this.deductiblesLOVRow].deductibleTxt = data.data[0].deductibleText;
     this.optionsDeductiblesData.tableData[this.deductiblesLOVRow].edited = true;
     this.optionsDeductiblesData.tableData.push(JSON.parse(JSON.stringify(this.optionsDeductiblesData.tableData[this.deductiblesLOVRow])));
-    this.optionsDeductiblesData.tableData[this.optionsDeductiblesData.tableData.length - 1].deductibleCd = data.data.deductibleCd;
+    this.optionsDeductiblesData.tableData[this.optionsDeductiblesData.tableData.length - 1].deductibleCd = data.data[0].deductibleCd;
     this.optionsDeductiblesData.tableData[this.deductiblesLOVRow].deleted = true;
+
+    for(var i = 1; i<data.data.length;i++){
+      this.optionsDeductiblesData.tableData.push(JSON.parse(JSON.stringify(this.optionsDeductiblesData.nData)));
+      this.optionsDeductiblesData.tableData[this.optionsDeductiblesData.tableData.length -1].deductibleTitle = data.data[i].deductibleTitle;
+      this.optionsDeductiblesData.tableData[this.optionsDeductiblesData.tableData.length -1].deductibleRt = data.data[i].deductibleRate;
+      this.optionsDeductiblesData.tableData[this.optionsDeductiblesData.tableData.length -1].deductibleAmt = data.data[i].deductibleAmt;
+      this.optionsDeductiblesData.tableData[this.optionsDeductiblesData.tableData.length -1].deductibleTxt = data.data[i].deductibleText;
+      this.optionsDeductiblesData.tableData[this.optionsDeductiblesData.tableData.length -1].edited = true;
+      this.optionsDeductiblesData.tableData[this.optionsDeductiblesData.tableData.length -1].deductibleCd = data.data[i].deductibleCd;
+    }
+
     this.optDeductibleTable.refreshTable();
     this.optDeductibleTable.markAsDirty();
   }
@@ -431,14 +454,14 @@ saveQuoteOptionAll(cancelFlag?){
             params.deleteDeductibleList.push(ded);
           }
         }
-      }
+      } 
       for(let ded of rec.deductiblesList){
           ded.createDate = new Date(ded.createDate[0],ded.createDate[1]-1,ded.createDate[2]).toISOString();
           ded.updateDate = new Date(ded.updateDate[0],ded.updateDate[1]-1,ded.updateDate[2]).toISOString();
           ded.optionId = rec.optionId;
-          if(ded.edited && !ded.deleted){
+          if(ded.edited && !ded.deleted && rec.optionId !== null && !rec.deleted){
             params.saveDeductibleList.push(ded);
-          }else if(ded.deleted){
+          }else if(ded.deleted && rec.optionId !== null && !rec.deleted){
             params.deleteDeductibleList.push(ded);
           }
         }
@@ -642,6 +665,12 @@ saveQuoteOptionAll(cancelFlag?){
     }else
       this.optionsDeductiblesData.tableData  = data.deductiblesList;
     this.optDeductibleTable.refreshTable();
+  }
+
+  renumber(){
+    this.quotationService.renumber(this.quoteId).subscribe((data)=>{
+      this.getQuoteOptions();
+    })
   }
 
 }

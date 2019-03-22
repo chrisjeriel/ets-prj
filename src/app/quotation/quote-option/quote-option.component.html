@@ -24,12 +24,12 @@
             <div class="col-sm-6" style="padding-left: 2px; padding-right: 2px;">
             	<fieldset class="scheduler-border" style="padding-right: 5px !important;padding-left: 5px !important;">
             		<legend class="scheduler-border" style="visibility: hidden; padding-top: 25px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
-	                <app-cust-editable-non-datatable #optionsTable [passData]="optionsData" (tableDataChange)="optionsData.tableData=$event;updateCovers();" (newClick)="updateSectionCvrs($event);updateOptDed($event)" class="d-block py-2">
+	                <app-cust-editable-non-datatable #optionsTable [passData]="optionsData" (tableDataChange)="optionsData.tableData=$event;updateCovers();" (newClick)="updateSectionCvrs($event);updateOptDed($event)" class="d-block py-2" (genericBtn)="renumber()">
 	                </app-cust-editable-non-datatable>
 	            </fieldset>
             </div> 
             <div class="col-sm-6" style="padding-left: 2px; padding-right: 2px;"> 
-	            <fieldset class="scheduler-border" style="padding-right: 5px !important;padding-left: 5px !important;">
+	            <fieldset class="scheduler-border" style="padding-right: 5px !important;padding-left: 5px !important;height: 241px">
 					<legend class="scheduler-border">Deductibles</legend>
 					<app-cust-editable-non-datatable #optDeductibleTable  id="deductibleTable" (onDataChange)="optionsDeductiblesData.tableData=$event" [passData]="optionsDeductiblesData" (clickLOV)="clickDeductiblesLOV($event,'option')" class="d-block py-2"></app-cust-editable-non-datatable>
 				</fieldset>
@@ -91,7 +91,7 @@
 		</div>
 	</app-modal>
 </ng-container> -->
-<app-lov id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)"></app-lov>
+<app-lov id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)" [lovCheckBox]="true"></app-lov>
 
 <app-confirm-save id="options" (onYes)="saveQuoteOptionAll()"></app-confirm-save>
 <app-sucess-dialog id="quote-option" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>

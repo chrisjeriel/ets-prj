@@ -16,6 +16,7 @@ export class MtnSectionCoversComponent implements OnInit {
   @Input() coverCd: string = "";
   @Input() hideSectionCoverArray: any[] = [];
   selected: any;
+  fromInput: boolean = false;
   sectionCover: any = {
     tableData: [],
     tHeader: ['Section','Bullet No','Cover Code','Cover Code Name'],
@@ -36,8 +37,6 @@ export class MtnSectionCoversComponent implements OnInit {
   constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal) { }
 
   ngOnInit() {
-  	
-    console.log("On Init MTN Section Covers");
     if(this.lovCheckBox){
       this.sectionCover.checkFlag = true;
     }
@@ -48,6 +47,8 @@ export class MtnSectionCoversComponent implements OnInit {
   }
 
   okBtnClick(){
+    this.selected['fromLOV'] = true;
+    
     if(!this.lovCheckBox){
       this.selectedData.emit(this.selected);
     }
@@ -63,47 +64,71 @@ export class MtnSectionCoversComponent implements OnInit {
   }
 
   openModal(){
-        console.log("MTN Section Covers");
-        this.table.refreshTable("try");
-        this.sectionCover.tableData = [];
-        this.maintenanceService.getMtnSectionCovers(this.lineCd,this.coverCd).subscribe((data: any) =>{
-          /*console.log(data.sectionCovers.filter((a)=>{return this.hideSectionCoverArray.indexOf(parseInt(a.coverCd))==-1}));
-          console.log(this.hideSectionCoverArray)*/
-          this.sectionCover.tableData = data.sectionCovers.filter((a)=>{return this.hideSectionCoverArray.indexOf(a.coverCd)==-1})
-           this.table.refreshTable();
-        });
+    if(!this.fromInput) {
+      this.table.refreshTable("try");
+      this.sectionCover.tableData = [];
+      this.maintenanceService.getMtnSectionCovers(this.lineCd,this.coverCd).subscribe((data: any) =>{
+        /*console.log(data.sectionCovers.filter((a)=>{return this.hideSectionCoverArray.indexOf(parseInt(a.coverCd))==-1}));
+        console.log(this.hideSectionCoverArray)*/
+        this.sectionCover.tableData = data.sectionCovers.filter((a)=>{return this.hideSectionCoverArray.indexOf(a.coverCd)==-1})
+         this.table.refreshTable();
+      });
+    } else {
+      this.fromInput = false;
+    }
+        
 
   }
 
-  /*checkCode(code, ev) {
+  checkCode(code, ev) {
+    var obj =  {
+      section: '',
+      bulletNo: '',
+      coverCd: '',
+      coverCdAbbr: '',
+      ev: ev,
+      singleSearchLov: true
+    }
+
     if(code === ''){
-      this.selectedData.emit({
-        section: '',
-        bulletNo: '',
-        coverCd: '',
-        coverCdAbbr: '',
-        addSi: '',
-        ev: ev
-      });
+      var arr = [];
+      arr.push(obj);
+
+      this.selectedData.emit(arr);
     } else {
-      this.maintenanceService.getMtnSectionCovers(this.lineCd,this.coverCd).subscribe((data: any) =>{  
-        if(data['sectionCovers'].length > 0) {
+      this.maintenanceService.getMtnSectionCoversLov(this.lineCd,code).subscribe((data: any) =>{
+        data['sectionCovers'] = data['sectionCovers'].filter((a)=>{return ev.filter.indexOf(a.coverCd)==-1});
+
+        if(data['sectionCovers'].length == 1) {          
           data['sectionCovers'][0]['ev'] = ev;
-          this.selectedData.emit(data['sectionCovers'][0]);
+          data['sectionCovers'][0]['singleSearchLov'] = true;
+
+          var arr = [];
+          arr.push(data['sectionCovers'][0]);
+
+          this.selectedData.emit(arr);
+        } else if(data['sectionCovers'].length > 1) {
+          this.fromInput = true;
+
+          var arr = [];
+          arr.push(obj);
+
+          this.selectedData.emit(arr);
+          
+          this.sectionCover.tableData = data['sectionCovers'];
+          this.table.refreshTable();
+
+          $('#sectionCovers > #modalBtn').trigger('click');
         } else {
-          this.selectedData.emit({
-            section: '',
-            bulletNo: '',
-            coverCd: '',
-            coverCdAbbr: '',
-            addSi: '',
-            ev: ev
-          });
+          var arr = [];
+          arr.push(obj);
+
+          this.selectedData.emit(arr);
             
           $('#sectionCovers > #modalBtn').trigger('click');
         }
         
       });  
     }
-  }*/
+  }
 }

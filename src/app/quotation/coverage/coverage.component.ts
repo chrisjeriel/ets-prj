@@ -6,6 +6,7 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { MtnSectionCoversComponent } from '@app/maintenance/mtn-section-covers/mtn-section-covers.component';
 
 @Component({
   selector: 'app-coverage',
@@ -18,6 +19,7 @@ export class CoverageComponent implements OnInit {
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   //tableDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+  @ViewChild(MtnSectionCoversComponent) secCoversLov: MtnSectionCoversComponent;
 
   editedData: any[] = [];
   deletedData: any[] = [];
@@ -220,6 +222,7 @@ export class CoverageComponent implements OnInit {
   }
 
   validateSectionCover(){
+// start 409bcd104319b697dc6e7c9fa7a47ac0bd67880f
       this.quotationService.getCoverageInfo(null,this.quotationInfo.quoteId).subscribe((data: any) => {
         if(data.quotation.project != null){
           var matches = false;
@@ -231,6 +234,7 @@ export class CoverageComponent implements OnInit {
                  matches = true;
                  break;
               }
+// END 409bcd104319b697dc6e7c9fa7a47ac0bd67880f
             }
             if(!matches){
               this.deletedData.push(InitialDatas[i])
@@ -340,6 +344,12 @@ export class CoverageComponent implements OnInit {
   }
 
   selectedSectionCoversLOV(data){
+  
+    if(data[0].hasOwnProperty('singleSearchLov') && data[0].singleSearchLov) {
+      this.sectionCoverLOVRow = data[0].ev.index;
+      this.ns.lovLoader(data[0].ev, 0);
+    }
+
     $('#cust-table-container').addClass('ng-dirty');
     this.passData.tableData[this.sectionCoverLOVRow].coverCd = data[0].coverCd; 
     this.passData.tableData[this.sectionCoverLOVRow].coverCdAbbr = data[0].coverCdAbbr;
@@ -360,9 +370,22 @@ export class CoverageComponent implements OnInit {
     }
     this.table.refreshTable();
     
+    /*setTimeout(() => {
+      $('#2').find("input:text").focus();
+      console.log("Focused.");
+    }, 3000);*/
   }
 
   update(data){
+    if(data.hasOwnProperty('lovInput')) {
+      this.hideSectionCoverArray = this.passData.tableData.filter((a)=>{return a.coverCd!== undefined && !a.deleted}).map((a)=>{return a.coverCd.toString()});
+
+      data.ev['index'] = data.index;
+      data.ev['filter'] = this.hideSectionCoverArray;
+
+      this.secCoversLov.checkCode(data.ev.target.value, data.ev);
+    }    
+
       this.lineCd = this.quoteNo.split('-')[0];
       this.coverageData.sectionISi =0;
       this.coverageData.sectionIISi =0;
