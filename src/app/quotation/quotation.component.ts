@@ -3,6 +3,7 @@ import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GeneralInfoComponent } from '@app/quotation/general-info/general-info.component';
+import { environment } from '@environments/environment';
 
 
 
@@ -56,6 +57,9 @@ export class QuotationComponent implements OnInit {
 	}
 
 	onTabChange($event: NgbTabChangeEvent) {
+		// if($('.ng-dirty:not([type="search"]):not(.not-form)').length != 0  && !confirm('Leave page without saving changes?'))
+		// 	$event.preventDefault();
+
   		if ($event.nextId === 'Exit') {
     		this.router.navigateByUrl('');
   		} 
@@ -82,7 +86,7 @@ export class QuotationComponent implements OnInit {
   	}
 
   	showPrintPreview() {
-  		window.open('http://localhost:8888/api/util-service/generateReport?reportName=' + this.selectedReport + '&quoteId=' + this.quoteInfo.quoteId, '_blank');
+  		window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + this.selectedReport + '&quoteId=' + this.quoteInfo.quoteId, '_blank');
   	}
 
 	// setDocumentTitle(event) {

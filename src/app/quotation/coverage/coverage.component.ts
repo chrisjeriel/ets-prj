@@ -50,8 +50,9 @@ export class CoverageComponent implements OnInit {
   passData: any = {
     tHeader: ['Section','Bullet No','Cover Name','Sum Insured','Add Sl'],
     tableData:[],
-    dataTypes: ['text','text','text','currency','checkbox'],
+    dataTypes: ['text','text','lovInput','currency','checkbox'],
     nData: {
+      showMG: 1,
       createDate: '',
       createUser: "PCPR",
       coverCode:null,
@@ -222,19 +223,7 @@ export class CoverageComponent implements OnInit {
   }
 
   validateSectionCover(){
-/*<<<<<<< HEAD
-    var matches = false;
-
-      this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
-        var arr1 = this.passData.tableData;
-        var arr2 = data.quotation.project == null ? [] : data.quotation.project.coverage.sectionCovers;
-
-        for(var i=0;i<arr2.length;i++){
-          for(var j=0;j<arr1.length;j++){
-             if(arr2[i].coverCd == arr1[j].coverCd){
-               matches = true;
-               break;
-=======*/
+// start 409bcd104319b697dc6e7c9fa7a47ac0bd67880f
       this.quotationService.getCoverageInfo(null,this.quotationInfo.quoteId).subscribe((data: any) => {
         if(data.quotation.project != null){
           var matches = false;
@@ -246,7 +235,7 @@ export class CoverageComponent implements OnInit {
                  matches = true;
                  break;
               }
-// >>>>>>> 409bcd104319b697dc6e7c9fa7a47ac0bd67880f
+// END 409bcd104319b697dc6e7c9fa7a47ac0bd67880f
             }
             if(!matches){
               this.deletedData.push(InitialDatas[i])
@@ -380,20 +369,40 @@ export class CoverageComponent implements OnInit {
   }
 
   selectedSectionCoversLOV(data){
-    this.ns.lovLoader(data.ev, 0);
-
-    if(!data.hasOwnProperty('fromLOV')) {
-      this.sectionCoverLOVRow = data.ev.index;
+  
+    if(data[0].hasOwnProperty('singleSearchLov') && data[0].singleSearchLov) {
+      this.sectionCoverLOVRow = data[0].ev.index;
+      this.ns.lovLoader(data[0].ev, 0);
     }
 
     $('#cust-table-container').addClass('ng-dirty');
-    this.passData.tableData[this.sectionCoverLOVRow].coverCd = data.coverCd; 
-    this.passData.tableData[this.sectionCoverLOVRow].coverCdAbbr = data.coverCdAbbr;
-    this.passData.tableData[this.sectionCoverLOVRow].section = data.section;
-    this.passData.tableData[this.sectionCoverLOVRow].bulletNo = data.bulletNo;
+    this.passData.tableData[this.sectionCoverLOVRow].coverCd = data[0].coverCd; 
+    this.passData.tableData[this.sectionCoverLOVRow].coverCdAbbr = data[0].coverCdAbbr;
+    this.passData.tableData[this.sectionCoverLOVRow].section = data[0].section;
+    this.passData.tableData[this.sectionCoverLOVRow].bulletNo = data[0].bulletNo;
     this.passData.tableData[this.sectionCoverLOVRow].sumInsured = 0;
     this.passData.tableData[this.sectionCoverLOVRow].edited = true;
-    this.validateSectionCover();
+
+    if(data[0].coverCd != '' && data[0].coverCd != null && data[0].coverCd != undefined) {
+      //HIDE THE POWERFUL MAGNIFYING GLASS
+      this.passData.tableData[this.sectionCoverLOVRow].showMG = 0;
+    }
+    
+    //this.validateSectionCover();
+    for(var i = 1; i<data.length;i++){
+      this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
+      this.passData.tableData[this.passData.tableData.length - 1].coverCd = data[i].coverCd; 
+      this.passData.tableData[this.passData.tableData.length - 1].coverCdAbbr = data[i].coverCdAbbr;
+      this.passData.tableData[this.passData.tableData.length - 1].section = data[i].section;
+      this.passData.tableData[this.passData.tableData.length - 1].bulletNo = data[i].bulletNo;
+      this.passData.tableData[this.passData.tableData.length - 1].sumInsured = 0;
+      this.passData.tableData[this.passData.tableData.length - 1].edited = true;
+
+      //HIDE THE POWERFUL MAGNIFYING GLASS
+      this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
+      console.log(this.passData.tableData);
+    }
+    this.table.refreshTable();
     
     /*setTimeout(() => {
       $('#2').find("input:text").focus();
@@ -402,6 +411,7 @@ export class CoverageComponent implements OnInit {
   }
 
   update(data){
+    console.log(data);
     if(data.hasOwnProperty('lovInput')) {
       this.hideSectionCoverArray = this.passData.tableData.filter((a)=>{return a.coverCd!== undefined && !a.deleted}).map((a)=>{return a.coverCd.toString()});
 
@@ -433,9 +443,9 @@ export class CoverageComponent implements OnInit {
       }
 
      if(this.lineCd == 'CAR' || this.lineCd == 'EAR'){
-        this.coverageData.totalSi = this.coverageData.sectionISi + this.coverageData.sectionIISi;
+        this.coverageData.totalSi = this.coverageData.sectionISi + this.coverageData.sectionIIISi;
      } else if (this.lineCd == 'EEI'){
-       this.coverageData.totalSi = this.coverageData.sectionISi + this.coverageData.sectionIISi + this.coverageData.sectionIIISi;
+       this.coverageData.totalSi = this.coverageData.sectionISi + this.coverageData.sectionIISi;
      } else{
        this.coverageData.totalSi = this.coverageData.sectionISi
      }

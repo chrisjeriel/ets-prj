@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
 import { UserService } from '@app/_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
@@ -42,6 +42,9 @@ selected: any = null;
   modalOpen: boolean = false;
 
   searchParams: any[] = [];
+
+  @Input() lovCheckBox: boolean = false;
+  selects: any[] = [];
   
   constructor(private userService: UserService, private modalService: NgbModal) { }
 
@@ -58,6 +61,9 @@ selected: any = null;
   		}
   		this.table.refreshTable();
   	});*/
+    if(this.lovCheckBox){
+      this.usersListing.checkFlag = true;
+    }
   }
 
   onRowClick(data){
@@ -70,10 +76,21 @@ selected: any = null;
   }
 
   confirm(){
-  	this.selectedData.emit(this.selected);
-    this.usersListing.tableData = [];
-    this.table.refreshTable();
-    this.selected = null;
+    if(!this.lovCheckBox){
+      this.selectedData.emit(this.selected);
+      this.usersListing.tableData = [];
+      this.table.refreshTable();
+      this.selected = null;
+    }
+    else{
+      for(var i = 0; i < this.usersListing.tableData.length; i++){
+        if(this.usersListing.tableData[i].checked){
+          this.selects.push(this.usersListing.tableData[i]);
+        }
+      }
+      this.selectedData.emit(this.selects);
+      this.selects = [];
+    }
   }
 
   cancel(){

@@ -48,6 +48,9 @@ export class CedingCompanyComponent implements OnInit {
 
     modalOpen:boolean = false;
 
+  @Input() lovCheckBox: boolean = false;
+  selects: any[] = [];
+
     
   constructor(private underwritingService: UnderwritingService, private modalService: NgbModal ) { }
 
@@ -58,6 +61,9 @@ export class CedingCompanyComponent implements OnInit {
                 }
 				this.table.refreshTable();          
     });*/
+    if(this.lovCheckBox){
+      this.passDataCedingCompanyMember.checkFlag = true;
+    }
   }
 
   onRowClick(data){
@@ -70,8 +76,19 @@ export class CedingCompanyComponent implements OnInit {
   }
 
   okBtnClick(){
-    this.selected['fromLOV'] = true;
-  	this.selectedData.emit(this.selected);
+    if(!this.lovCheckBox){
+        this.selected['fromLOV'] = true;
+        this.selectedData.emit(this.selected);
+    }
+    else{
+      for(var i = 0; i < this.passDataCedingCompanyMember.tableData.length; i++){
+        if(this.passDataCedingCompanyMember.tableData[i].checked){
+          this.selects.push(this.passDataCedingCompanyMember.tableData[i]);
+        }
+      }
+      this.selectedData.emit(this.selects);
+      this.selects = [];
+    }
   }
 
   openModal(){

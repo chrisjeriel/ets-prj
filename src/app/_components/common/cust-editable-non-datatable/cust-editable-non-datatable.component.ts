@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, Renderer, ViewChild, ElementRef, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, Renderer, ViewChild } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from '@app/app.component';
 import { retry, catchError } from 'rxjs/operators';
@@ -18,7 +18,6 @@ import { NotesService } from '@app/_services';
 export class CustEditableNonDatatableComponent implements OnInit {
     @ViewChild("deleteModal") deleteModal:ModalComponent;
     @ViewChild('myForm') form:any;
-    @ViewChildren('test') test: QueryList<ElementRef>;
     @Input() tableData: any[] = [];
     @Output() tableDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
     @Input() tHeader: any[] = [];
@@ -193,21 +192,11 @@ export class CustEditableNonDatatableComponent implements OnInit {
         this.retrieveFromSub();
         // this.addFiller();
 
+        this.passData.nData.add = true;
 
         //temporary fix delete this later
-        setTimeout(()=>{this.refreshTable()},2000)
+        setTimeout(()=>{this.refreshTable()},2000);
     }
-
-    /*ngDoCheck() {
-        if(this.test) {
-            this.test.forEach(inp => {
-                if(inp && inp.nativeElement.classList.contains('ng-dirty')) {
-                    // inp.nativeElement.classList.add('dirtyBastard');
-                    console.log(inp);
-                }
-            })    
-        }
-    }*/
 
     processData(key: any, data: any) {
         return data[key];
@@ -236,9 +225,14 @@ export class CustEditableNonDatatableComponent implements OnInit {
         //     }
         // }
         for(let i = 0; i<this.selected.length;i++){
-            this.selected[i].checked = false;
-            this.selected[i].deleted = true;
-            this.selected[i].edited = true;
+           if(!this.selected[i].add){
+               this.selected[i].checked = false;
+               this.selected[i].deleted = true;
+               this.selected[i].edited = true;
+           }else {
+               this.passData.tableData = this.passData.tableData.filter(a => a!= this.selected[i])
+           }
+           
         }
         this.selectAllFlag = false;
         this.form.control.markAsDirty();
@@ -403,11 +397,23 @@ export class CustEditableNonDatatableComponent implements OnInit {
         this.addFiller();
     }
 
-    onDataChange(ev,data){        
-        if($(ev.target).next().children().prop("tagName") === 'A') {
+
+    onDataChange(ev,data,key){
+        // if($(ev.target).next().children().prop("tagName") === 'A') {
+        if($(ev.target).hasClass('lovInput')) {
+            let retData:any = {};
+            retData.key = key;
+            retData.tableData = this.passData.tableData;
+            for (var i = this.passData.tableData.length - 1; i >= 0; i--) {
+                if(data == this.passData.tableData[i]){
+                    retData.index = i;
+                    break;
+                }
+            }
+
             this.ns.lovLoader(ev, 1);
             this.passData.tableData['ev'] = ev;
-            this.passData.tableData['index'] = ev.target.closest('tr').id;
+            this.passData.tableData['index'] = retData.index;
             this.passData.tableData['lovInput'] = true;
         } else {
             delete this.passData.tableData.ev;
@@ -416,9 +422,14 @@ export class CustEditableNonDatatableComponent implements OnInit {
         }
 
         data.edited = true;
-        // ev.edited = true;            
-        setTimeout(() => this.tableDataChange.emit(this.passData.tableData),0)
-        //this.tableDataChange.emit(this.passData.tableData);
+        setTimeout(() => { 
+            this.tableDataChange.emit(this.passData.tableData),0
+            delete this.passData.tableData.ev;
+            delete this.passData.tableData.index;
+            delete this.passData.tableData.lovInput;
+        });
+
+        
     }
 
 

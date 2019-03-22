@@ -79,7 +79,7 @@ export class QuotationService {
         const params = new HttpParams()
              .set('quotationNo', (quotationNo === null || quotationNo === undefined ? '' : quotationNo) )
              .set('quoteId',(quotationId === null || quotationId === undefined ? '' : quotationId) )
-        return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteCoverage",{params});
+        return this.http.get(environment.prodApiUrl + "/quote-service/retrieveQuoteCoverage",{params});
     }
 
     getQuotationListInfo() {
@@ -204,11 +204,11 @@ export class QuotationService {
 
 
 /*         if (quoteId == '' || quoteId == null ) {
-               return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteEndorsements?quotationNo="+quotationNo+"&optionId="+optionNo);
+               return this.http.get(environment.prodApiUrl + "/quote-service/retrieveQuoteEndorsements?quotationNo="+quotationNo+"&optionId="+optionNo);
          } else if (quotationNo == '' || quotationNo == null ) {
-               return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteEndorsements?quoteId="+quoteId+"&optionId="+optionNo);
+               return this.http.get(environment.prodApiUrl + "/quote-service/retrieveQuoteEndorsements?quoteId="+quoteId+"&optionId="+optionNo);
          } else {
-               return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteEndorsements?quoteId="+quoteId+"&quotationNo="+quotationNo+"&optionId="+optionNo);
+               return this.http.get(environment.prodApiUrl + "/quote-service/retrieveQuoteEndorsements?quoteId="+quoteId+"&quotationNo="+quotationNo+"&optionId="+optionNo);
          }*/
            
 
@@ -273,7 +273,7 @@ export class QuotationService {
         const params = new HttpParams()
                         .set('quoteIdOc', quoteIdOc)
                         .set('openQuotationNo', openQuotationNo);
-        return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteAttachmentOc", {params});
+        return this.http.get(environment.prodApiUrl + "/quote-service/retrieveQuoteAttachmentOc", {params});
     }
 
     getDummyEditableInfo() {
@@ -440,7 +440,7 @@ export class QuotationService {
                 .set('quoteId', intCompParams.quoteId)
                 .set('quotationNo', intCompParams.quotationNo);
          console.log(params);
-        return this.http.get("http://localhost:8888/api/quote-service/retrieveQuoteCompetition", {params});
+        return this.http.get(environment.prodApiUrl + "/quote-service/retrieveQuoteCompetition", {params});
     }
 
 
@@ -778,6 +778,22 @@ export class QuotationService {
         return this.http.post(environment.prodApiUrl + '/quote-service/saveQuoteCompetition', JSON.stringify(params), header);
     }
 
+    saveQuoteAdviceWordings(saveQuoteAdviceWordingsParams: any[]){
+        let params: any = {
+            saveAdviceWordings: saveQuoteAdviceWordingsParams
+        }
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+        //console.log(saveQuoteCompetitionParams.join(","));
+        //console.log(params.substring(1,params.length-1));
+        //console.log(JSON.stringify(params));
+        //return this.http.post(environment.prodApiUrl + '/quote-service/saveQuoteCompetition', params.substring(1,params.length-1), header);
+        return this.http.post(environment.prodApiUrl + '/quote-service/saveQuoteAdviceWordings', JSON.stringify(params), header);
+    }
+
 
     saveQuoteGeneralInfo(saveQuoteGeneralInfoParam) {
         let header: any = {
@@ -933,4 +949,16 @@ export class QuotationService {
        return this.http.post(environment.prodApiUrl + '/quote-service/updateHoldCoverStatus', params, header);
     }
   
+    renumber(quoteId:string ){
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+        let params: any = {
+            quoteId: quoteId
+        }
+        return this.http.post(environment.prodApiUrl + '/quote-service/renumberQuoteOptions',JSON.stringify(params),header);
+    }
+
 }

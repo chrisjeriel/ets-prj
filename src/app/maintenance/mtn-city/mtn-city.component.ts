@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
 import { MaintenanceService } from '@app/_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
@@ -37,10 +37,16 @@ export class MtnCityComponent implements OnInit {
 
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
+
+  @Input() lovCheckBox: boolean = false;
+  selects: any[] = [];
   
   constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal) { }
 
   ngOnInit() {
+    if(this.lovCheckBox){
+        this.cityListing.checkFlag = true;
+      }
   	this.maintenanceService.getMtnCity().subscribe((data: any) =>{
   		//console.log(data);
   		for(var regionCount = 0; regionCount < data.region.length; regionCount++){
@@ -72,7 +78,18 @@ export class MtnCityComponent implements OnInit {
   }
 
   confirm(){
-  	this.selectedData.emit(this.selected);
+  	if(!this.lovCheckBox){
+      this.selectedData.emit(this.selected);
+    }
+    else{
+      for(var i = 0; i < this.cityListing.tableData.length; i++){
+        if(this.cityListing.tableData[i].checked){
+          this.selects.push(this.cityListing.tableData[i]);
+        }
+      }
+      this.selectedData.emit(this.selects);
+      this.selects = [];
+    }
   }
 
 }

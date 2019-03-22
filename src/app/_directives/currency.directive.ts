@@ -16,7 +16,7 @@ export class CurrencyDirective implements OnInit{
 
   @HostListener("blur", ["$event.target"]) onBlur(target) {
   	if(target.value !=''){
-	  	let sNum = target.value.split('.');
+	  	let sNum = target.value.split(/[.]/g);
 	  	sNum[0] = sNum[0].replace(new RegExp(",", "g"),'').replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	    if(!/^(?:[- (])?\d{1,3}(,\d{3})*(\.\d+)?(?:[)])?$/.test(sNum.join('.'))){
 	    	highlight(this.el);

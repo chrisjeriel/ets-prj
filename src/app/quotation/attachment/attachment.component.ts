@@ -117,6 +117,7 @@ export class AttachmentComponent implements OnInit {
   constructor(config: NgbDropdownConfig,
     private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,private modalService: NgbModal,private ns : NotesService,
      private location: Location, private router: Router ) {
+
     config.placement = 'bottom-right';
     config.autoClose = false;
   }
@@ -285,7 +286,6 @@ export class AttachmentComponent implements OnInit {
    }
  
  } 
-
 
   cancel(){
     this.cancelBtn.clickCancel();
