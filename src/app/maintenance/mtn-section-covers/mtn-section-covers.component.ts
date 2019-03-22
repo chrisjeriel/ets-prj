@@ -50,7 +50,6 @@ export class MtnSectionCoversComponent implements OnInit {
     this.selected['fromLOV'] = true;
     
     if(!this.lovCheckBox){
-      console.log("Selected Data Emit 1");
       this.selectedData.emit(this.selected);
     }
     else{
@@ -59,7 +58,6 @@ export class MtnSectionCoversComponent implements OnInit {
           this.selects.push(this.sectionCover.tableData[i]);
         }
       }
-      console.log("Selected Data Emit 2");
       this.selectedData.emit(this.selects);
       this.selects = [];
     }
@@ -83,54 +81,49 @@ export class MtnSectionCoversComponent implements OnInit {
   }
 
   checkCode(code, ev) {
+    var obj =  {
+      section: '',
+      bulletNo: '',
+      coverCd: '',
+      coverCdAbbr: '',
+      ev: ev,
+      singleSearchLov: true
+    }
+
     if(code === ''){
-      console.log("Selected Data Emit 3");
-      this.selectedData.emit({
-        section: '',
-        bulletNo: '',
-        coverCd: '',
-        coverCdAbbr: '',
-        ev: ev
-      });
+      var arr = [];
+      arr.push(obj);
+
+      this.selectedData.emit(arr);
     } else {
       this.maintenanceService.getMtnSectionCoversLov(this.lineCd,code).subscribe((data: any) =>{
-        console.log(data);
         data['sectionCovers'] = data['sectionCovers'].filter((a)=>{return ev.filter.indexOf(a.coverCd)==-1});
-        console.log(data);
 
         if(data['sectionCovers'].length == 1) {          
           data['sectionCovers'][0]['ev'] = ev;
           data['sectionCovers'][0]['singleSearchLov'] = true;
+
           var arr = [];
           arr.push(data['sectionCovers'][0]);
-          console.log("Selected Data Emit 4");
+
           this.selectedData.emit(arr);
         } else if(data['sectionCovers'].length > 1) {
           this.fromInput = true;
-          console.log("Selected Data Emit 5");
-          this.selectedData.emit({
-            section: '',
-            bulletNo: '',
-            coverCd: '',
-            coverCdAbbr: '',
-            ev: ev
-          });
 
+          var arr = [];
+          arr.push(obj);
+
+          this.selectedData.emit(arr);
           
           this.sectionCover.tableData = data['sectionCovers'];
-          // this.hideSectionCoverArray = ev.filter;
           this.table.refreshTable();
 
           $('#sectionCovers > #modalBtn').trigger('click');
         } else {
-          console.log("Selected Data Emit 6");
-          this.selectedData.emit({
-            section: '',
-            bulletNo: '',
-            coverCd: '',
-            coverCdAbbr: '',
-            ev: ev
-          });
+          var arr = [];
+          arr.push(obj);
+
+          this.selectedData.emit(arr);
             
           $('#sectionCovers > #modalBtn').trigger('click');
         }

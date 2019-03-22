@@ -368,20 +368,11 @@ export class CoverageComponent implements OnInit {
   }
 
   selectedSectionCoversLOV(data){
-    this.ns.lovLoader(data.ev, 0);
-
-    /*console.log(data.hasOwnProperty('fromLOV'));
-    if(!data.hasOwnProperty('fromLOV')) {
-      console.log("hasOwnProperty");
-      this.sectionCoverLOVRow = data.ev.index;
-
-    }*/
-    
-    if (data[0].singleSearchLov) {
+  
+    if(data[0].hasOwnProperty('singleSearchLov') && data[0].singleSearchLov) {
       this.sectionCoverLOVRow = data[0].ev.index;
       this.ns.lovLoader(data[0].ev, 0);
     }
-
 
     $('#cust-table-container').addClass('ng-dirty');
     this.passData.tableData[this.sectionCoverLOVRow].coverCd = data[0].coverCd; 
