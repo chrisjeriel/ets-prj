@@ -352,20 +352,20 @@ export class CoverageComponent implements OnInit {
     }
 
     $('#cust-table-container').addClass('ng-dirty');
-    this.passData.tableData[this.sectionCoverLOVRow].coverCd = data[0].coverCd; 
-    this.passData.tableData[this.sectionCoverLOVRow].coverCdAbbr = data[0].coverCdAbbr;
-    this.passData.tableData[this.sectionCoverLOVRow].section = data[0].section;
-    this.passData.tableData[this.sectionCoverLOVRow].bulletNo = data[0].bulletNo;
-    this.passData.tableData[this.sectionCoverLOVRow].sumInsured = 0;
-    this.passData.tableData[this.sectionCoverLOVRow].edited = true;
+    // this.passData.tableData[this.sectionCoverLOVRow].coverCd = data[0].coverCd; 
+    // this.passData.tableData[this.sectionCoverLOVRow].coverCdAbbr = data[0].coverCdAbbr;
+    // this.passData.tableData[this.sectionCoverLOVRow].section = data[0].section;
+    // this.passData.tableData[this.sectionCoverLOVRow].bulletNo = data[0].bulletNo;
+    // this.passData.tableData[this.sectionCoverLOVRow].sumInsured = 0;
+    // this.passData.tableData[this.sectionCoverLOVRow].edited = true;
 
     if(data[0].coverCd != '' && data[0].coverCd != null && data[0].coverCd != undefined) {
       //HIDE THE POWERFUL MAGNIFYING GLASS
-      this.passData.tableData[this.sectionCoverLOVRow].showMG = 0;
+      this.passData.tableData[this.sectionCoverLOVRow].showMG = 1;
     }
-    
+    this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
     //this.validateSectionCover();
-    for(var i = 1; i<data.length;i++){
+    for(var i = 0; i<data.length;i++){
       this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
       this.passData.tableData[this.passData.tableData.length - 1].coverCd = data[i].coverCd; 
       this.passData.tableData[this.passData.tableData.length - 1].coverCdAbbr = data[i].coverCdAbbr;

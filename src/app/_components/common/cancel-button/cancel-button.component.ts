@@ -25,6 +25,7 @@ export class CancelButtonComponent implements OnInit {
   }
 
   onNo(){
+    $('.ng-dirty').removeClass('ng-dirty');
   	this.router.navigate([this.url]);
   }
 

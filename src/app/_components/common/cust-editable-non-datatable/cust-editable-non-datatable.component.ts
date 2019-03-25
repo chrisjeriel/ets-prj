@@ -191,9 +191,8 @@ export class CustEditableNonDatatableComponent implements OnInit {
         }
         this.retrieveFromSub();
         // this.addFiller();
-        if(this.passData.nData != undefined)
+        if(this.passData.nData !== undefined)
             this.passData.nData.add = true;
-        
         //temporary fix delete this later
         setTimeout(()=>{this.refreshTable()},2000)
         
@@ -478,6 +477,9 @@ export class CustEditableNonDatatableComponent implements OnInit {
                 data.checked = value;
                 this.selected.push(data);
             }
+        }
+        if(!value){
+            this.selected = this.selected.filter(a=>false);
         }
         this.refreshTable();
     }
