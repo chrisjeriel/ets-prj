@@ -173,6 +173,8 @@ export class GeneralInfoComponent implements OnInit {
 	excludeCedingCo: any[] = [];
 	tempQuoteIdInternalComp = "";
 
+	@Output() enblEndtTab = new EventEmitter<any>(); //Paul
+
 	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title,
 			    private route: ActivatedRoute, private maintenanceService: MaintenanceService, private ns: NotesService) { }
 	ngOnInit() {
@@ -717,6 +719,7 @@ export class GeneralInfoComponent implements OnInit {
   			showAlop: this.quoteInfo.showAlop,
   			cessionId: this.genInfoData.cessionId
   		});		
+  		this.checkQuoteOption(); //PAUL
   	}
 
   	validate(obj){
@@ -835,6 +838,16 @@ export class GeneralInfoComponent implements OnInit {
 		var reg = new RegExp(this.a, 'gi');
 
 		this.genInfoData.openingParag = this.genInfoData.openingParag.replace(reg, this.b);
+	}
+
+	//paul
+	checkQuoteOption(){
+		this.quotationService.getQuoteOptions(this.genInfoData.quoteId).subscribe((data)=>{
+			if(data['quotation'] !== null){
+				this.enblEndtTab.emit(true);
+			}
+			console.log(data);
+		})
 	}
 
 }

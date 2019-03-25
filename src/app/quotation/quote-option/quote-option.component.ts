@@ -40,6 +40,8 @@ export class QuoteOptionComponent implements OnInit {
       data:{}
     }
 
+    @Output() enblEndtTab = new EventEmitter<any>();
+
     optionsData: any = {
         tableData: [],
         tHeader: ['Option No', 'Rate(%)', 'Conditions', 'Comm Rate Quota(%)', 'Comm Rate Surplus(%)', 'Comm Rate Fac(%)'],
@@ -51,14 +53,14 @@ export class QuoteOptionComponent implements OnInit {
             commRtSurplus: 0,
             condition: '',
             createDate: [2019, 2, 21, 0, 0, 0, 0],
-            createUser: "ETC",
+            createUser: JSON.parse(window.localStorage.currentUser).username,
             deductibles: null,
             deductiblesList: [],
             endorsments: null,
             optionId: null,
             optionRt: 0,
             updateDate: [2019, 2, 22, 0, 0, 0, 0],
-            updateUser: "ETC",
+            updateUser: JSON.parse(window.localStorage.currentUser).username,
         },
         pageLength: 5,
         addFlag: true,
@@ -81,7 +83,7 @@ export class QuoteOptionComponent implements OnInit {
         //widths: [60,'auto',100,'auto'],
         nData:{
             createDate: [2019, 2, 21, 0, 0, 0, 0],
-            createUser: "ETC",
+            createUser: JSON.parse(window.localStorage.currentUser).username,
             deductibleAmt: null,
             deductibleCd: null,
             deductibleRt: null,
@@ -89,7 +91,7 @@ export class QuoteOptionComponent implements OnInit {
             deductibleTxt: null,
             optionId: null,
             updateDate: [2019, 2, 21, 0, 0, 0, 0],
-            updateUser: "ETC",
+            updateUser: JSON.parse(window.localStorage.currentUser).username,
             sumInsured: 0,
             endtCd: 0,
             coverCd:0,
@@ -116,7 +118,7 @@ export class QuoteOptionComponent implements OnInit {
         //widths: [60,'auto',100,'auto'],
         nData:{
             createDate: [2019, 2, 21, 0, 0, 0, 0],
-            createUser: "ETC",
+            createUser: JSON.parse(window.localStorage.currentUser).username,
             deductibleAmt: null,
             deductibleCd: null,
             deductibleRt: null,
@@ -124,7 +126,7 @@ export class QuoteOptionComponent implements OnInit {
             deductibleTxt: null,
             optionId: null,
             updateDate: [2019, 2, 21, 0, 0, 0, 0],
-            updateUser: "ETC",
+            updateUser: JSON.parse(window.localStorage.currentUser).username,
             sumInsured: 0,
             endtCd: 0,
             showMG: 1
@@ -238,6 +240,8 @@ export class QuoteOptionComponent implements OnInit {
               a.updateDate = new Date().toISOString();
               a.rate = 0;
               a.deductiblesList = [];
+              a.updateUser = JSON.parse(window.localStorage.currentUser).username;
+              a.createUser = JSON.parse(window.localStorage.currentUser).username;
               return true;
             });;
             this.optionsData.nData.otherRatesList = data.quotation.project.coverage.sectionCovers;
@@ -348,18 +352,7 @@ clickDeductiblesLOV(data,from){
 }
 
 setSelected(data){
-
-  console.log('called')
   if(data.from == 'cover'){
-    // this.coversDeductiblesData.tableData[this.deductiblesLOVRow].deductibleTitle = data.data[0].deductibleTitle;
-    // this.coversDeductiblesData.tableData[this.deductiblesLOVRow].deductibleRt = data.data[0].deductibleRate;
-    // this.coversDeductiblesData.tableData[this.deductiblesLOVRow].deductibleAmt = data.data[0].deductibleAmt;
-    // this.coversDeductiblesData.tableData[this.deductiblesLOVRow].deductibleTxt = data.data[0].deductibleText;
-    // this.coversDeductiblesData.tableData[this.deductiblesLOVRow].edited = true;
-    // this.coversDeductiblesData.tableData.push(JSON.parse(JSON.stringify(this.coversDeductiblesData.tableData[this.deductiblesLOVRow])));
-    // this.coversDeductiblesData.tableData[this.coversDeductiblesData.tableData.length - 1].deductibleCd = data.data[0].deductibleCd;
-    // this.coversDeductiblesData.tableData[this.coversDeductiblesData.tableData.length - 1].showMG = 0;
-    // this.coversDeductiblesData.tableData[this.deductiblesLOVRow].deleted = true;
     this.coversDeductiblesData.tableData = this.coversDeductiblesData.tableData.filter(a=>a.showMG!=1);
     for(var i = 0; i<data.data.length;i++){
       this.coversDeductiblesData.tableData.push(JSON.parse(JSON.stringify(this.coversDeductiblesData.nData)));
@@ -371,20 +364,11 @@ setSelected(data){
       this.coversDeductiblesData.tableData[this.coversDeductiblesData.tableData.length -1].deductibleCd = data.data[i].deductibleCd;
       this.coversDeductiblesData.tableData[this.coversDeductiblesData.tableData.length - 1].showMG = 0;
     }
-
+    this.selectedCover.deductiblesList = this.coversDeductiblesData.tableData;
     this.covDeductibleTable.refreshTable();
     this.covDeductibleTable.markAsDirty();
   }
   else if(data.from == 'option'){
-    // this.optionsDeductiblesData.tableData[this.deductiblesLOVRow].deductibleTitle = data.data[0].deductibleTitle;
-    // this.optionsDeductiblesData.tableData[this.deductiblesLOVRow].deductibleRt = data.data[0].deductibleRate;
-    // this.optionsDeductiblesData.tableData[this.deductiblesLOVRow].deductibleAmt = data.data[0].deductibleAmt;
-    // this.optionsDeductiblesData.tableData[this.deductiblesLOVRow].deductibleTxt = data.data[0].deductibleText;
-    // this.optionsDeductiblesData.tableData[this.deductiblesLOVRow].edited = true;
-    // this.optionsDeductiblesData.tableData.push(JSON.parse(JSON.stringify(this.optionsDeductiblesData.tableData[this.deductiblesLOVRow])));
-    // this.optionsDeductiblesData.tableData[this.optionsDeductiblesData.tableData.length - 1].deductibleCd = data.data[0].deductibleCd;
-    // this.optionsDeductiblesData.tableData[this.optionsDeductiblesData.tableData.length - 1].showMG = 0;
-    // this.optionsDeductiblesData.tableData[this.deductiblesLOVRow].deleted = true;
     this.optionsDeductiblesData.tableData = this.optionsDeductiblesData.tableData.filter(a=>a.showMG!=1);
     for(var i = 0; i<data.data.length;i++){
       this.optionsDeductiblesData.tableData.push(JSON.parse(JSON.stringify(this.optionsDeductiblesData.nData)));
@@ -396,7 +380,7 @@ setSelected(data){
       this.optionsDeductiblesData.tableData[this.optionsDeductiblesData.tableData.length -1].deductibleCd = data.data[i].deductibleCd;
       this.optionsDeductiblesData.tableData[this.optionsDeductiblesData.tableData.length - 1].showMG = 0;
     }
-
+    this.selectedOption.deductiblesList = this.optionsDeductiblesData.tableData;
     this.optDeductibleTable.refreshTable();
     this.optDeductibleTable.markAsDirty();
   }
@@ -432,6 +416,7 @@ saveQuoteOptionAll(cancelFlag?){
    for (var i = 0 ; this.optionsData.tableData.length > i; i++) {
       if(this.optionsData.tableData[i].edited && !this.optionsData.tableData[i].deleted && this.optionsData.tableData[i].optionId !== null) {
         params.saveQuoteOptionsList.push(this.optionsData.tableData[i]);
+        params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].updateUser = JSON.parse(window.localStorage.currentUser).username
         params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].createDate = new Date(params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].createDate[0],params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].createDate[1]-1,params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].createDate[2]).toISOString();
         params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].updateDate = new Date(params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].updateDate[0],params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].updateDate[1]-1,params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].updateDate[2]).toISOString();
       } else if(this.optionsData.tableData[i].edited && this.optionsData.tableData[i].deleted && this.optionsData.tableData[i].optionId !== null){
@@ -449,6 +434,7 @@ saveQuoteOptionAll(cancelFlag?){
    for(let rec of this.optionsData.tableData){
      if(rec.optionId !== null && !rec.deleted)
        for (var i = 0 ; rec.otherRatesList.length > i; i++){
+            rec.otherRatesList[i].updateUser = JSON.parse(window.localStorage.currentUser).username;
             rec.otherRatesList[i].createDate = new Date(rec.otherRatesList[i].createDate[0],rec.otherRatesList[i].createDate[1]-1,rec.otherRatesList[i].createDate[2]).toISOString();
             rec.otherRatesList[i].updateDate = new Date(rec.otherRatesList[i].updateDate[0],rec.otherRatesList[i].updateDate[1]-1,rec.otherRatesList[i].updateDate[2]).toISOString();
          if(rec.otherRatesList[i].edited && !rec.otherRatesList[i].deleted ) {          
@@ -456,6 +442,7 @@ saveQuoteOptionAll(cancelFlag?){
             params.otherRates[params.otherRates.length-1].optionId = rec.optionId;
         }
         for(let ded of rec.otherRatesList[i].deductiblesList){
+          ded.updateUser = JSON.parse(window.localStorage.currentUser).username;
           ded.createDate = new Date(ded.createDate[0],ded.createDate[1]-1,ded.createDate[2]).toISOString();
           ded.updateDate = new Date(ded.updateDate[0],ded.updateDate[1]-1,ded.updateDate[2]).toISOString();
           ded.optionId = rec.optionId;
@@ -467,17 +454,17 @@ saveQuoteOptionAll(cancelFlag?){
         }
       } 
       for(let ded of rec.deductiblesList){
+          ded.updateUser = JSON.parse(window.localStorage.currentUser).username;
           ded.createDate = new Date(ded.createDate[0],ded.createDate[1]-1,ded.createDate[2]).toISOString();
           ded.updateDate = new Date(ded.updateDate[0],ded.updateDate[1]-1,ded.updateDate[2]).toISOString();
           ded.optionId = rec.optionId;
-          if(ded.edited && !ded.deleted && rec.optionId !== null && !rec.deleted){
+          if(ded.edited && !ded.deleted && rec.optionId !== null && !rec.deleted && ded.deductibleCd !== null){
             params.saveDeductibleList.push(ded);
           }else if(ded.deleted && rec.optionId !== null && !rec.deleted){
             params.deleteDeductibleList.push(ded);
           }
         }
    }
-   console.log(this.optionsData.tableData)
    this.quotationService.saveQuoteOptionAll(params).subscribe((data)=>{
      if(data['returnCode'] == 0) {
             this.dialogMessage = data['errorList'][0].errorMessage;
@@ -487,6 +474,7 @@ saveQuoteOptionAll(cancelFlag?){
             this.dialogMessage="";
             this.dialogIcon = "";
             $('#quote-option #successModalBtn').trigger('click');
+            this.enblEndtTab.emit(true);
             this.getQuoteOptions();
             this.table.forEach(table => { table.markAsPristine() });
           }
@@ -642,6 +630,8 @@ saveQuoteOptionAll(cancelFlag?){
             a.deductibleRt = a.deductibleRate;
             a.endtCd = 0;
             a.edited = true;
+            a.createUser = JSON.parse(window.localStorage.currentUser).username;
+            a.updateUser = JSON.parse(window.localStorage.currentUser).username;
             return true;
           })
           tableData.tableData = list.deductiblesList;
@@ -690,6 +680,7 @@ saveQuoteOptionAll(cancelFlag?){
   }
 
   renumber(){
+    this.optionsTable.loadingFlag = true;
     this.quotationService.renumber(this.quoteId).subscribe((data)=>{
       this.getQuoteOptions();
     })

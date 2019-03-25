@@ -801,7 +801,8 @@ export class QuoteEndorsementComponent implements OnInit {
               this.deductiblesData.tableData[this.deductiblesData.tableData.length -1].edited = true;
               this.deductiblesData.tableData[this.deductiblesData.tableData.length -1].deductibleCd = data.data[i].deductibleCd;
               this.deductiblesData.tableData[this.deductiblesData.tableData.length -1].showMG = 0
-    }
+            }
+            this.selectedEndt.deductiblesList = this.deductiblesData.tableData;
       }
 
             this.deductibleTable.refreshTable();
