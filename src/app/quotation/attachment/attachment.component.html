@@ -63,7 +63,7 @@
         <div class="col-md-13 text-center">
             <div class="cust-btn-container" style="margin-top: 10px">
                 <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
-                <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="saveData()"><a>Save</a></button>
+                <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="onSaveAttachment()"><a>Save</a></button>
             </div>
         </div>
     </div>
@@ -81,3 +81,10 @@
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
     </div>
 </app-modal>
+
+<app-confirm-save (onYes)="onSaveAttachment()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-cancel-button (onYes)="onSaveAttachment('cancel')" [url]="'/quotation-processing'" ></app-cancel-button>
+
+<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
+<div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading">

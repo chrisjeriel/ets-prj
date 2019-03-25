@@ -10,8 +10,6 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 })
 export class MtnEndtCodeComponent implements OnInit {
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
-
-
   @Input() line: string = "";
   @Input() hide: any[];
 

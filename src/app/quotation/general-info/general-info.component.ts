@@ -546,14 +546,12 @@ export class GeneralInfoComponent implements OnInit {
 							var internalCompParams: any[] = [{
 							  adviceNo: 0,
 							  cedingId: this.genInfoData.cedingId,
-							  cedingRepId: '',
-							  createDate: new Date().toISOString(),
-							  createUser: 'ndc',
-							  option: '', //remove
+							  cedingRepId: 0,
+							  createDate: this.ns.toDateTimeString(0),
+							  createUser: JSON.parse(window.localStorage.currentUser).username,
 							  quoteId: this.genInfoData.quoteId,
-							  updateDate: new Date().toISOString(),
-							  updateUser: 'ndc',
-							  wordings: '' //remove
+							  updateDate: this.ns.toDateTimeString(0),
+							  updateUser: JSON.parse(window.localStorage.currentUser).username,
 							}];
 					        this.quotationService.saveQuoteCompetition(internalCompParams).subscribe((result: any) => {
 					          console.log(result);

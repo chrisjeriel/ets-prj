@@ -25,7 +25,7 @@
         <button *ngIf="passData.deleteFlag" class="cust-btn" [class.btnDisabled]="btnDisabled || passData.btnDisabled" [disabled]="btnDisabled || passData.btnDisabled" (click)="onClickDelete()"><a class="paginate_button previous">Delete</a></button>
         <button *ngIf="passData.copyFlag" class="cust-btn" [class.btnDisabled]="btnDisabled || passData.btnDisabled" [disabled]="btnDisabled || passData.btnDisabled" (click)="onClickCopy($event)"><a class="paginate_button previous">Copy</a></button>
          <button *ngIf="passData.saveFlag" class="cust-btn" (click)="onClicSave($event)"><a class="paginate_button previous">Save</a></button>
-        <button *ngIf="passData.printBtn" class="cust-btn" type="button" (click)="onClickPrint($event)"><a>Print</a></button>
+        <button *ngIf="passData.printBtn" class="cust-btn" [class.btnDisabled]="btnDisabled || passData.btnDisabled" [disabled]="btnDisabled || passData.btnDisabled" type="button" (click)="onClickPrint($event)"><a>Print</a></button> <!-- edited by Engel 3/14/2019 -->
 
         <button *ngIf="passData.genericBtn1 !== undefined" class="cust-btn genericBtn" [class.btnDisabled]="btnDisabled" (click)="onClickGeneric1($event)" [disabled]="btnDisabled">{{ passData.genericBtn1 }}</button>
         <button *ngIf="passData.genericBtn2 !== undefined" class="cust-btn genericBtn" [class.btnDisabled]="btnDisabled" (click)="onClickGeneric2($event)" [disabled]="btnDisabled">{{ passData.genericBtn2 }}</button> 
@@ -175,7 +175,7 @@
                     <thead >
                         <tr>
                             <th *ngIf="passData.checkFlag && pinKeys.length==0" class="checkbox-container-header isCheckBox">
-                                <input type="checkbox" name="" [(ngModel)]="checked" class="checkbox"  [checked]="checked" [class.sticky]="unliFlag">
+                                <input type="checkbox" name="" (change)="selectAll($event.target.checked)" class="checkbox"  [checked]="checked" [class.sticky]="unliFlag">
                             </th>
                             <th *ngFor="let tHeader of passData.tHeader; let i = index" [ngSwitch]="passData.dataTypes[i]"  [ngClass]="{'sticky': unliFlag, 'isCheckBox': passData.dataTypes[i] == 'checkbox', 'd-none': pinDataHeader.indexOf(tHeader) != -1 }" [ngStyle]="{'min-width': (passData.colSize[i] == '' || passData.colSize.length == 0) ? 'auto' : passData.colSize[i]}" [ngbTooltip]="passData.tooltip !== undefined ? passData.tooltip[i] :null">
                                 <!-- <i class="fa fa-map-pin" (click)="pinColumn($event,i)"></i> -->
@@ -250,8 +250,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let data of displayData | paginate: { id: 'non-editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event, data);" (dblclick)="onRowDblClick($event)" [class.selected]="data === indvSelect || selected.includes(data) || checked">
-                            <td *ngIf="passData.checkFlag && pinKeys.length == 0" class="checkbox-container-body"><input type="checkbox" name="" *ngIf="addCheckFlag(data)" class="checkbox" (change)="removeSelected($event, data)" [checked]="checked"></td>
+                        <tr *ngFor="let data of displayData | paginate: { id: 'non-editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event, data);" (dblclick)="onRowDblClick($event)" [class.selected]="data === indvSelect || selected.includes(data) || data?.checked">
+                            <td *ngIf="passData.checkFlag && pinKeys.length == 0" class="checkbox-container-body"><input type="checkbox" name="" *ngIf="addCheckFlag(data)" class="checkbox" (change)="removeSelected($event, data)" [ngModelOptions]="{standalone: true}" [ngModel]="data.checked"></td>
                             <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]" [class.d-none]="pinKeys.indexOf(key) != -1" >
                                 <div *ngIf="addCheckFlag(data)">
                                     <div *ngSwitchCase="'percent'" style="text-align: right">

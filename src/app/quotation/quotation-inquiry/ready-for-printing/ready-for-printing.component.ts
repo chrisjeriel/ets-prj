@@ -15,12 +15,12 @@ export class ReadyForPrintingComponent implements OnInit {
   @ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
   records: any[] = [];
 
-  constructor(private quotationService: QuotationService, private router: Router, private modalService: NgbModal, private er: ElementRef) { }
+  constructor(private quotationService: QuotationService, private router: Router, private modalService: NgbModal, private er: ElementRef, private http: HttpClient) { }
   btnDisabled: boolean;
   selectPrinterDisabled: boolean = true;
   selectCopiesDisabled: boolean = true;
   selectedReport: string ="QUOTER009A";
-/*  quoteNo: any;*/
+  selectedOnOk: boolean;
   quoteNoCmp: any;
   quoteId: any;
   printType: any = "SCREEN";
@@ -30,8 +30,11 @@ export class ReadyForPrintingComponent implements OnInit {
   dialogIcon:string;
   dialogMessage:string;
   changeQuoteError: any;
+  checkedData: any[] = [];
   saveData: any = {
         changeQuoteStatus: [],
+        statusCd: "3",
+        reasonCd: ""
     };
   passData: any = {
     tHeader: [
@@ -154,6 +157,7 @@ export class ReadyForPrintingComponent implements OnInit {
               if(rec.status === 'In Progress'){
                 this.passData.tableData.push(
                     {
+                      quoteId: rec.quoteId,
                       quotationNo: rec.quotationNo,
                       approvedBy: rec.approvedBy,
                       cessionDesc: rec.cessionDesc,
@@ -167,7 +171,7 @@ export class ReadyForPrintingComponent implements OnInit {
                       objectDesc: (rec.project == null) ? '' : rec.project.objectDesc,
                       site: (rec.project == null) ? '' : rec.project.site,
                       currencyCd: rec.currencyCd,
-                      issueDate: this.dateParser(rec.issueDate),
+                      issueDate:  this.dateParser(rec.issueDate),
                       expiryDate: this.dateParser(rec.expiryDate),
                       reqBy: rec.reqBy
                     }
@@ -184,22 +188,31 @@ export class ReadyForPrintingComponent implements OnInit {
   searchQuery(searchParams){
         this.searchParams = searchParams;
         this.passData.tableData = [];
+        this.btnDisabled = true;
         this.retrieveQuoteListingMethod();
     }
 
   dateParser(arr){
-    return new Date(arr[0] + '-' + arr[1] + '-' + arr[2]);   
+    var dateString = new Date(arr).toLocaleDateString();
+    return dateString ;   
   }
 
 
+
   onRowClick(event){
-     this.saveData.changeQuoteStatus.pop(this.saveData.changeQuoteStatus[0]);
+    console.log(event);
+    if (this.isEmptyObject(event)){
+         this.btnDisabled = true;
+       } else {
+         this.btnDisabled = false;
+       }
+
+    /* this.saveData.changeQuoteStatus.pop(this.saveData.changeQuoteStatus[0]);
     if (this.isEmptyObject(event)){
       this.btnDisabled = true;
     } else {
       this.btnDisabled = false;
       this.quoteNoCmp = event.quotationNo;
-     /* this.quoteNo =  this.plainQuotationNo(event.quotationNo);*/
        for(let rec of this.records){
           if(rec.quotationNo === event.quotationNo) {
             this.quoteId = rec.quoteId;
@@ -207,38 +220,27 @@ export class ReadyForPrintingComponent implements OnInit {
                         quoteId: rec.quoteId
             })
           }else {
-                   for(var j=0;j<this.saveData.changeQuoteStatus.length;j++){    
+                   for(var j=0;j<this.saveData.cha ngeQuoteStatus.length;j++){    
                        if(this.saveData.changeQuoteStatus[j].quoteId == rec.quoteId){
                            this.saveData.changeQuoteStatus.pop(this.saveData.changeQuoteStatus[j])
                        }
                    }
           }
        }
-    }
+    }*/
   }
 
-   /*onRowClick(data) {
-       this.selectedData = data;
-       console.log(data.quotationNo);
-       console.log(data.checked);
-       for(let rec of this.records){
-           if(rec.quotationNo === data.quotationNo) {
-               if(data.checked){
-                   this.saveData.changeQuoteStatus.push({
-                       quoteId: rec.quoteId
-                   })
+  prepareData(){
+     this.saveData.changeQuoteStatus =[];
+     for(let data of this.passData.tableData){
+            if(data.checked){
+                this.saveData.changeQuoteStatus.push({
+                    quoteId: data.quoteId
+                })
+            }
+     }     
+  }
 
-               }else {
-                   for(var j=0;j<this.saveData.changeQuoteStatus.length;j++){
-                       if(this.saveData.changeQuoteStatus[j].quoteId == rec.quoteId){
-                           this.saveData.changeQuoteStatus.pop(this.saveData.changeQuoteStatus[j])
-                       }
-                   }
-               }
-           }
-       }
-   }
-*/
   isEmptyObject(obj) {
     for(var prop in obj) {
        if (obj.hasOwnProperty(prop)) {
@@ -264,8 +266,9 @@ export class ReadyForPrintingComponent implements OnInit {
              if(this.validate(this.prepareParam())){
                  this.changeQuoteStatus();      
               } else {
-                 this.dialogIcon = "error";
+                 this.dialogIcon = "error-message";
                  this.dialogMessage = "Please complete all the required fields.";
+                 this.selectedOnOk = false;
                  $('#readyPrinting #successModalBtn').trigger('click');
                  setTimeout(()=>{$('.globalLoading').css('display','none');},0);
               }
@@ -275,10 +278,17 @@ export class ReadyForPrintingComponent implements OnInit {
   }
 
   showPrintModal(){
-    this.saveData.reasonCd = "";
-    this.saveData.statusCd = 3;
+    this.prepareData();
     console.log(this.saveData);
-    $('#showPrintMenu > #modalBtn').trigger('click');
+    if(this.isEmptyObject(this.saveData.changeQuoteStatus)){
+       this.dialogIcon = "error-message";
+       this.dialogMessage = "Please select quotation(s)";
+       this.selectedOnOk = true;
+       $('#readyPrinting #successModalBtn').trigger('click');
+       setTimeout(()=>{$('.globalLoading').css('display','none');},0);
+    } else {
+       $('#showPrintMenu > #modalBtn').trigger('click');
+    }
   }
 
    tabController(event) {
@@ -323,27 +333,48 @@ export class ReadyForPrintingComponent implements OnInit {
 
   downloadPDF(reportName : string, quoteId : string){
      var fileName = this.quoteNoCmp;
-     this.quotationService.downloadPDF(reportName,quoteId).subscribe( data => {
+     var errorCode;
+     this.quotationService.downloadPDF(reportName,quoteId)
+     .subscribe( data => {
             var newBlob = new Blob([data], { type: "application/pdf" });
             var downloadURL = window.URL.createObjectURL(data);
             var link = document.createElement('a');
             link.href = downloadURL;
             link.download = fileName;
             link.click();
-     });
+     },
+     error => {
+            if (this.isEmptyObject(error)) {
+                     } else {
+                         this.modalService.dismissAll()
+                         this.dialogIcon = "error-message";
+                         this.dialogMessage = "Error generating PDF file(s)";
+                         this.selectedOnOk = true;
+                         $('#readyPrinting #successModalBtn').trigger('click');
+                         setTimeout(()=>{$('.globalLoading').css('display','none');},0);
+        }    
+     });   
   }
 
   printPDF(reportName : string, quoteId : string){
-       var fileName = this.quoteNoCmp;
-       this.quotationService.downloadPDF(reportName,quoteId).subscribe( data => {
+         this.quotationService.downloadPDF(reportName,quoteId).subscribe( data => {
               var newBlob = new Blob([data], { type: "application/pdf" });
               var downloadURL = window.URL.createObjectURL(data);
-              const iframe = document.createElement('iframe');
-              iframe.style.display = 'none';
-              iframe.src = downloadURL;
-              document.body.appendChild(iframe);
-              iframe.contentWindow.print();
+              console.log(downloadURL);
+              window.open(downloadURL, '_blank').print();
+             
+       },
+        error => {
+            if (this.isEmptyObject(error)) {
+            } else {
+               this.dialogIcon = "error-message";
+               this.dialogMessage = "Error printing file";
+               $('#listQuotation #successModalBtn').trigger('click');
+               setTimeout(()=>{$('.globalLoading').css('display','none');},0);
+            }          
        });
+
+
   }
 
   validate(obj){
@@ -376,30 +407,47 @@ export class ReadyForPrintingComponent implements OnInit {
   changeQuoteStatus() {
     this.quotationService.saveChangeQuoteStatus(this.saveData).subscribe( data => {
         this.changeQuoteError = data['returnCode'];
+        console.log(this.changeQuoteError);
         if(data['returnCode'] == 0) {
-                this.dialogMessage = data['errorList'][0].errorMessage;
-                this.dialogIcon = "error";
-                $('#successModalBtn').trigger('click');
+                console.log(data['errorList'][0].errorMessage);
+                this.dialogIcon = "error-message";
+                this.dialogMessage = "Error on issuing selected quotation(s)";
+                this.selectedOnOk = false;
+                $('#readyPrinting #successModalBtn').trigger('click');
             } else {
                 if (this.printType == 'SCREEN'){  
-                     window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + this.selectedReport + '&quoteId=' + this.quoteId, '_blank');
+                     for(let i=0;i<this.saveData.changeQuoteStatus.length ;i++){ 
+                        window.open('http://localhost:8888/api/util-service/generateReport?reportName=' + this.selectedReport + '&quoteId=' + this.saveData.changeQuoteStatus[i].quoteId, '_blank');
+                     }
+
                      this.printParams();
                      this.searchQuery(this.searchParams);
                 }else if (this.printType == 'PRINTER'){
-                     this.printPDF(this.selectedReport,this.quoteId);
+                    for(let i=0;i<this.saveData.changeQuoteStatus.length ;i++){ 
+                      this.printPDF(this.selectedReport,this.saveData.changeQuoteStatus[i].quoteId);
+                    }
                      this.printParams();
                      this.searchQuery(this.searchParams);
                 }else if (this.printType == 'PDF'){
-                     this.downloadPDF(this.selectedReport,this.quoteId);
+                   for(let i=0;i<this.saveData.changeQuoteStatus.length ;i++){ 
+                     this.downloadPDF(this.selectedReport,this.saveData.changeQuoteStatus[i].quoteId);
+                   }
                      this.printParams();
                      this.searchQuery(this.searchParams);
-                } 
+                }
+                 this.table.refreshTable("first");
         }
-        this.table.refreshTable("first");
         this.btnDisabled = true;
     });
   }
 
+  modalOnOk(){
+    if (this.selectedOnOk){
+      this.modalService.dismissAll();
+    } else{
+      this.showPrintModal();
+    }
+  }
 
 
 }
