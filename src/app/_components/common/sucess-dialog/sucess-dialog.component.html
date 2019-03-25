@@ -24,11 +24,15 @@
         <ng-container [ngSwitch]="icon">
             <span *ngSwitchCase="'error'" class="fa fa-times-circle fa-2x" style="vertical-align: middle;"></span>
             <span *ngSwitchCase="'info'" class="fa fa-info-circle fa-2x" style="vertical-align: middle;"></span>
+            <span *ngSwitchCase="'success-message'" class="fa fa-check-circle fa-2x" style="vertical-align: middle;"></span>  <!-- --edited by Engel 3/14/2019 -->
+            <span *ngSwitchCase="'error-message'" class="fa fa-times-circle fa-2x" style="vertical-align: middle;"></span>  <!-- --edited by Engel 3/14/2019 -->
             <span *ngSwitchDefault class="fa fa-check-circle fa-2x" style="vertical-align: middle;"></span>
         </ng-container>
         <ng-container [ngSwitch]="icon">
             <span *ngSwitchCase="'info'"  style="vertical-align: middle; margin-left: 5px;font-size: 1em;">{{message}}</span>
             <span *ngSwitchCase="'error'" style="vertical-align: middle; margin-left: 5px;font-size: 1em;">{{'Please check field values.'}}</span>
+            <span *ngSwitchCase="'success-message'"  style="vertical-align: middle; margin-left: 5px;font-size: 1em;">{{message}}</span> <!-- --edited by Engel 3/14/2019 -->
+            <span *ngSwitchCase="'error-message'"  style="vertical-align: middle; margin-left: 5px;font-size: 1em;">{{message}}</span> <!-- --edited by Engel 3/14/2019 -->
             <span *ngSwitchDefault        style="vertical-align: middle; margin-left: 5px;font-size: 1em;">{{'Successfully Saved'}}</span>
         </ng-container>
     </div>

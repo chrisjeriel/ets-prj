@@ -34,7 +34,7 @@
                 </div>
                 <div class="form-row custom-row-inline-inset">
                     <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
-                        <label class="form-control-sm col-sm-2 text-right">Quote Date</label>
+                        <label class="form-control-sm col-sm-2 text-right" >Quote Date</label>
                         <input type="text" class="form-control form-control-sm col-sm-4" [value]="quoteList.issueDate | date: 'MM/dd/yyyy'" readonly>
                         <label class="form-control-sm col-sm-2 text-right">Valid Until</label>
                         <input type="text" name="" class="form-control form-control-sm col-sm-4" [value]="quoteList.expiryDate | date: 'MM/dd/yyyy'" readonly> 
@@ -134,7 +134,7 @@
                                     <div class="input-group" style="margin-bottom : -5px ! important">
                                         <label class="form-control-sm" for="printerName" >Printer Name</label>
                                         <select class="form-control form-control-sm cust-sm" id="printerName"  style="margin-left: 2px" appRequired [disabled]="selectPrinterDisabled" [(ngModel)]="printName">
-                                            <option value="\\PRINTER-SERVER\HP LaserJet MFP M130 PCLmS">HP LaserJet MFP</option>
+                                            <option value="Default">Default Printer</option>
                                         </select>
                                     </div>
                                     <div class="input-group" style="margin-bottom : -10px ! important">
@@ -151,4 +151,4 @@
                         <button class="cust-btn" type="button" (click)="cancelModal();modalService.dismissAll();"><a>Cancel</a></button>
                     </div>
 </app-modal>
-<app-sucess-dialog id="listQuoation" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="print();"></app-sucess-dialog>
+<app-sucess-dialog id="listQuotation" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="print();"></app-sucess-dialog>
