@@ -785,7 +785,7 @@ export class QuotationService {
     saveQuoteCompetition(saveQuoteCompetitionParams: any[]){
         //let params: any = JSON.stringify(saveQuoteCompetitionParams);
         let params: any = {
-            competitionsList: saveQuoteCompetitionParams
+            saveQuoteCompetition: saveQuoteCompetitionParams
         }
         let header: any = {
             headers: new HttpHeaders({
