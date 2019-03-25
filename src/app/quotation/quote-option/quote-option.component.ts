@@ -40,6 +40,8 @@ export class QuoteOptionComponent implements OnInit {
       data:{}
     }
 
+    @Output() enblEndtTab = new EventEmitter<any>();
+
     optionsData: any = {
         tableData: [],
         tHeader: ['Option No', 'Rate(%)', 'Conditions', 'Comm Rate Quota(%)', 'Comm Rate Surplus(%)', 'Comm Rate Fac(%)'],
@@ -371,7 +373,7 @@ setSelected(data){
       this.coversDeductiblesData.tableData[this.coversDeductiblesData.tableData.length -1].deductibleCd = data.data[i].deductibleCd;
       this.coversDeductiblesData.tableData[this.coversDeductiblesData.tableData.length - 1].showMG = 0;
     }
-
+    this.selectedCover.deductiblesList = this.coversDeductiblesData.tableData;
     this.covDeductibleTable.refreshTable();
     this.covDeductibleTable.markAsDirty();
   }
@@ -387,6 +389,7 @@ setSelected(data){
     // this.optionsDeductiblesData.tableData[this.deductiblesLOVRow].deleted = true;
     this.optionsDeductiblesData.tableData = this.optionsDeductiblesData.tableData.filter(a=>a.showMG!=1);
     for(var i = 0; i<data.data.length;i++){
+      console.log(data.data[i])
       this.optionsDeductiblesData.tableData.push(JSON.parse(JSON.stringify(this.optionsDeductiblesData.nData)));
       this.optionsDeductiblesData.tableData[this.optionsDeductiblesData.tableData.length -1].deductibleTitle = data.data[i].deductibleTitle;
       this.optionsDeductiblesData.tableData[this.optionsDeductiblesData.tableData.length -1].deductibleRt = data.data[i].deductibleRate;
@@ -396,7 +399,7 @@ setSelected(data){
       this.optionsDeductiblesData.tableData[this.optionsDeductiblesData.tableData.length -1].deductibleCd = data.data[i].deductibleCd;
       this.optionsDeductiblesData.tableData[this.optionsDeductiblesData.tableData.length - 1].showMG = 0;
     }
-
+    this.selectedOption.deductiblesList = this.optionsDeductiblesData.tableData;
     this.optDeductibleTable.refreshTable();
     this.optDeductibleTable.markAsDirty();
   }
@@ -470,7 +473,7 @@ saveQuoteOptionAll(cancelFlag?){
           ded.createDate = new Date(ded.createDate[0],ded.createDate[1]-1,ded.createDate[2]).toISOString();
           ded.updateDate = new Date(ded.updateDate[0],ded.updateDate[1]-1,ded.updateDate[2]).toISOString();
           ded.optionId = rec.optionId;
-          if(ded.edited && !ded.deleted && rec.optionId !== null && !rec.deleted){
+          if(ded.edited && !ded.deleted && rec.optionId !== null && !rec.deleted && ded.deductibleCd !== null){
             params.saveDeductibleList.push(ded);
           }else if(ded.deleted && rec.optionId !== null && !rec.deleted){
             params.deleteDeductibleList.push(ded);
@@ -487,6 +490,7 @@ saveQuoteOptionAll(cancelFlag?){
             this.dialogMessage="";
             this.dialogIcon = "";
             $('#quote-option #successModalBtn').trigger('click');
+            this.enblEndtTab.emit(true);
             this.getQuoteOptions();
             this.table.forEach(table => { table.markAsPristine() });
           }
@@ -690,6 +694,7 @@ saveQuoteOptionAll(cancelFlag?){
   }
 
   renumber(){
+    this.optionsTable.loadingFlag = true;
     this.quotationService.renumber(this.quoteId).subscribe((data)=>{
       this.getQuoteOptions();
     })
