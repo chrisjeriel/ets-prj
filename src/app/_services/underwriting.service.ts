@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { environment } from '@environments/environment';
 import { DummyInfo, UnderwritingCoverageInfo, UnderwritingOtherRatesInfo, PolicyCoInsurance, PARListing, AltPARListing, ExpiryListing, CreateParTable, RenewedPolicy, PolAttachmentInfo, PolicyPrinting, PrinterList, ALOPItemInformation, UnderwritingPolicyInquiryInfo, ItemInformation, UnderwritingPolicyDistList, DistributionByRiskInfo, PolicyEndorsement, PolItem_MLP, PolGoods_DOS, PolMachinery_DOS, PolicyInwardPolBalance, PolInwardPolBalanceOtherCharges, PolItem_CEC, TotalPerSection, UnderwritingBatchPosting, UnderwritingBatchDistribution, MaintenanceDeductibles, MaintenanceRisks, CoverageDeductibles, CedingCompanyList, CedingCompany } from '@app/_models';
 
@@ -159,13 +159,12 @@ export class UnderwritingService {
 
     }
 
-    getPolAttachment() {
-        this.polAttachmentInfoData = [
-            new PolAttachmentInfo("Libraries\\Attachments", "NBI Form"),
-            new PolAttachmentInfo("Libraries\\Attachments", "NSO Birth Certificate")
-        ];
+    getPolAttachment(policyId: string, policyNo: string) {
+        const params = new HttpParams()
+             .set('policyId', (policyId === null || policyId === undefined ? '' : policyId) )
+             .set('policyNo',(policyNo === null || policyNo === undefined ? '' : policyNo) )
 
-        return this.polAttachmentInfoData;
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolAttachment',{params});
     }
 
 
