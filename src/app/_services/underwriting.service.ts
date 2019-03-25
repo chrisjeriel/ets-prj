@@ -94,16 +94,17 @@ export class UnderwritingService {
         return this.uwcoverageInfoData;
     }
 
-    getUWCoverageDeductibles() {
-        this. uwCoverageDeductible = [
-            new CoverageDeductibles("AOG30", "ACTS OF GOD 30", 0.50 ,null, "Acts of Nature - Php 1,800,000.00 each and every loss"),
-            new CoverageDeductibles("AOC31", '39,000 - AOC',null,39000, "Any Other Cause = Php 39,000.00 for each and every loss"),
-            new CoverageDeductibles("AOG32", "ACTS OF GOD 30", 0.30 ,null, "Acts of Nature - Php 1,800,000.00 each and every loss"),
-            new CoverageDeductibles("AOC33", '39,000 - AOC',null,390000, "Any Other Cause = Php 390,000.00 for each and every loss"),
-            new CoverageDeductibles("AOG34", "ACTS OF GOD 30", 0.20 ,null, "Acts of Nature - Php 1,800,000.00 each and every loss"),
-            new CoverageDeductibles("AOC35", '39,000 - AOC',null,390000, "Any Other Cause = Php 390,000.00 for each and every loss")
-        ];
-        return this.uwCoverageDeductible ;
+    getUWCoverageDeductibles(params?) {
+        // this. uwCoverageDeductible = [
+        //     new CoverageDeductibles("AOG30", "ACTS OF GOD 30", 0.50 ,null, "Acts of Nature - Php 1,800,000.00 each and every loss"),
+        //     new CoverageDeductibles("AOC31", '39,000 - AOC',null,39000, "Any Other Cause = Php 39,000.00 for each and every loss"),
+        //     new CoverageDeductibles("AOG32", "ACTS OF GOD 30", 0.30 ,null, "Acts of Nature - Php 1,800,000.00 each and every loss"),
+        //     new CoverageDeductibles("AOC33", '39,000 - AOC',null,390000, "Any Other Cause = Php 390,000.00 for each and every loss"),
+        //     new CoverageDeductibles("AOG34", "ACTS OF GOD 30", 0.20 ,null, "Acts of Nature - Php 1,800,000.00 each and every loss"),
+        //     new CoverageDeductibles("AOC35", '39,000 - AOC',null,390000, "Any Other Cause = Php 390,000.00 for each and every loss")
+        // ];
+        // return this.uwCoverageDeductible ;
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolicyDeductibles', {params});
     }
 
 

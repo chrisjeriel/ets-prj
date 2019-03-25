@@ -1,9 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { UnderwritingService } from '@app/_services/underwriting.service';
 import { UnderwritingCoverageInfo, CoverageDeductibles } from '@app/_models';
 import { Title } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute } from '@angular/router';
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-pol-coverage',
@@ -11,7 +13,8 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./pol-coverage.component.css']
 })
 export class PolCoverageComponent implements OnInit {
-
+  @ViewChild('deductiblesTable') deductiblesTable :CustEditableNonDatatableComponent;
+  @ViewChild('deductiblesModal') deductiblesModal :ModalComponent;
   private underwritingCoverageInfo: UnderwritingCoverageInfo;
   tableData: any[] = [];
   tableData2: any[] = [];
@@ -78,6 +81,9 @@ export class PolCoverageComponent implements OnInit {
         widths: [1, 1, 1, 1, 1, 1],
         magnifyingGlass: ['deductibleCode'],
         nData2: {},
+        keys:['deductibleCd','deductibleTitle','deductibleRt','deductibleAmt','deductibleTxt'],
+        tableData:[],
+        pageID:'deductibles'
     };
 
 
@@ -137,7 +143,7 @@ export class PolCoverageComponent implements OnInit {
     this.titleService.setTitle("Pol | Coverage");
     if (!this.alteration) {
       this.passDataSectionCover.tableData = this.underwritingservice.getUWCoverageInfo();
-      this.passDataDeductibles.tableData = this.underwritingservice.getUWCoverageDeductibles();
+      //this.passDataDeductibles.tableData = this.underwritingservice.getUWCoverageDeductibles();
       //this.passDataTotalPerSection.tableData = this.underwritingservice.getTotalPerSection();
 
     } else {
@@ -260,7 +266,10 @@ export class PolCoverageComponent implements OnInit {
   }
 
   showDeductiblesModal(deductibles){
-    this.modalService.open(deductibles, { centered: true, backdrop: 'static', windowClass: "modal-size" });
+    // setTimeout(()=>{this.getDeductibles();},0);
+    // this.modalService.open(deductibles, { centered: true, backdrop: 'static', windowClass: "modal-size" });
+    this.getDeductibles();
+    this.deductiblesModal.openNoClose();
   }
 
   CATPerils() {
@@ -269,7 +278,22 @@ export class PolCoverageComponent implements OnInit {
   }
 
   deductibles() {
-        $('#Deductibles >#modalBtn').trigger('click');
+    $('#Deductibles >#modalBtn').trigger('click');
+  }
+
+  getDeductibles(){
+    this.deductiblesTable.loadingFlag = true;
+    let params : any = {
+      policyId:8,
+      policyNo:'',
+      coverCd:0,
+      endtCd: 0
+    }
+    this.underwritingservice.getUWCoverageDeductibles(params).subscribe(data=>{
+      console.log(data);
+      this.passDataDeductibles.tableData = data['policy']['deductibles'];
+      this.deductiblesTable.refreshTable();
+    });
   }
 
 }
