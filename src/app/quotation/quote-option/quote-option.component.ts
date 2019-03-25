@@ -351,7 +351,7 @@ clickDeductiblesLOV(data,from){
 
 setSelected(data){
 
-  console.log('called')
+  console.log(data)
   if(data.from == 'cover'){
     // this.coversDeductiblesData.tableData[this.deductiblesLOVRow].deductibleTitle = data.data[0].deductibleTitle;
     // this.coversDeductiblesData.tableData[this.deductiblesLOVRow].deductibleRt = data.data[0].deductibleRate;
