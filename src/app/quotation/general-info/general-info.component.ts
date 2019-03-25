@@ -547,11 +547,11 @@ export class GeneralInfoComponent implements OnInit {
 							  cedingRepId: '',
 							  createDate: new Date().toISOString(),
 							  createUser: 'ndc',
-							  option: '', //remove
+							  //option: '',
 							  quoteId: this.genInfoData.quoteId,
 							  updateDate: new Date().toISOString(),
 							  updateUser: 'ndc',
-							  wordings: '' //remove
+							  //wordings: ''
 							}];
 					        this.quotationService.saveQuoteCompetition(internalCompParams).subscribe((result: any) => {
 					          console.log(result);
