@@ -937,7 +937,7 @@ export class QuotationService {
              .set('quoteSeqNo',quoteSeqNo)
              .set('quoteRevNo',quoteRevNo)
              .set('quoteCedingId',quoteCedingId)
-        return this.http.get('http://localhost:8888/api/quote-service/searchQuoteInfo',{params});
+        return this.http.get(environment.prodApiUrl + '/quote-service/searchQuoteInfo',{params});
     }
 
     updateHoldCoverStatus(params){

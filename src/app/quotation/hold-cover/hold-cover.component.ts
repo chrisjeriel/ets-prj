@@ -43,7 +43,7 @@ export class HoldCoverComponent implements OnInit {
 		{key: 'cedingName',title: 'Ceding Co.',dataType: 'text'},
 		{key: 'insuredDesc',title: 'Insured',dataType: 'text'},
 		{key: 'riskName',title: 'Risk',dataType: 'text'},
-		// {key: 'cessionDesc',title: 'Type of Cession',dataType: 'text'},
+		//{key: 'cessionDesc',title: 'Type of Cession',dataType: 'text'},
 		// {key: 'lineClassCdDesc',title: 'Line Class',dataType: 'text'},
 		// {key: 'status',title: 'Status',dataType: 'text'},
 		// {key: 'principalName',title: 'Principal',dataType: 'text'},
@@ -84,7 +84,8 @@ export class HoldCoverComponent implements OnInit {
 	searchParams: any[] = [];
 	searchParams2: any[] = [];
 
-	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private location: Location, private decPipe: DecimalPipe, private ns : NotesService, private router: Router) { 
+	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private location: Location,
+	 private decPipe: DecimalPipe, private ns : NotesService, private router: Router) { 
 	}
 
 	qLine: string;
@@ -132,6 +133,7 @@ export class HoldCoverComponent implements OnInit {
 	selectedOption:any;
 	optLovEnabled: boolean;
 	cancelHcBtnEnabled: boolean;
+	clickQuoteLOV:boolean;
 
 	holdCover: any = {
 		approvedBy:     "",
@@ -189,7 +191,11 @@ export class HoldCoverComponent implements OnInit {
 		this.passDataQuoteLOV.filters[0].enabled = false;
 		this.showAll = true;
 		this.cancelHcBtnEnabled = false;
-		this.search();
+	}
+
+	ngOnDestroy(){
+		console.log('WAHAT');
+		this.onClickCancel();
 	}
 
 	formatDate(date){
@@ -226,8 +232,7 @@ export class HoldCoverComponent implements OnInit {
 		this.qYear = (this.qYear === '' || this.qYear === null || this.qYear === undefined)? '' : this.qYear;
 		this.qSeqNo = (this.qSeqNo === '' || this.qSeqNo === null || this.qSeqNo === undefined)? '' : this.qSeqNo;
 		this.qRevNo = (this.qRevNo === '' || this.qRevNo === null || this.qRevNo === undefined)? '' : this.qRevNo;
-		this.qCedingId = (this.qCedingId === '' || this.qCedingId === null || this.qCedingId === undefined)? '' : this.qCedingId;
-
+		this.qCedingId = (this.qCedingId === '' || this.qCedingId === null || this.qCedingId === undefined)? '' : (this.qCedingId.padStart(3,'0'));
 		this.quotationService.getSearchQuoteInfo(this.qLine.toUpperCase(),this.qYear,this.qSeqNo,this.qRevNo,this.qCedingId)
 		.subscribe(data => {
 			console.log(data);
@@ -248,41 +253,54 @@ export class HoldCoverComponent implements OnInit {
 	}
 
 	search() {
-		this.passDataQuoteLOV.tableData = [];
-		this.quotationService.getQuoProcessingData(this.searchParams)
-		.subscribe(val => {
-			var records = val['quotationList'];
+		console.log(JSON.stringify(this.passDataQuoteLOV.filters[0]) + " >>>> filters");
+		var quoFiltSearch = this.passDataQuoteLOV.filters[0].search;
+		var quoFiltEnabled = this.passDataQuoteLOV.filters[0].enabled;
 
-			if(records === null  || records === '' || records === undefined){
-				this.showAll = false;
-			}else{
-				for(let rec of records){
-					if(rec.status.toUpperCase() === 'RELEASED' || rec.status.toUpperCase() === 'ON HOLD COVER'){
-						this.passDataQuoteLOV.tableData.push({
-							quotationNo: rec.quotationNo,
-							cedingName:  rec.cedingName,
-							insuredDesc: rec.insuredDesc,
-							riskName: (rec.project == null) ? '' : rec.project.riskName
-						});
+		console.log(JSON.stringify(this.passDataQuoteLOV.filters[0]));
+
+		if(quoFiltEnabled === true){
+			this.passDataQuoteLOV.tableData = [];
+			this.quotationService.getQuoProcessingData(this.searchParams)
+				.subscribe(val => {
+					var records = val['quotationList'];
+
+					if(records === null  || records === '' || records === undefined){
+						this.showAll = false;
+					}else{
+						for(let rec of records){
+							if(rec.status.toUpperCase() === 'RELEASED' || rec.status.toUpperCase() === 'ON HOLD COVER'){
+								this.passDataQuoteLOV.tableData.push({
+									quotationNo: rec.quotationNo,
+									cedingName:  rec.cedingName,
+									insuredDesc: rec.insuredDesc,
+									riskName: (rec.project == null) ? '' : rec.project.riskName
+								});
+							}
+						}
 					}
-				}
+					this.table.refreshTable();
+				});
+
+				var qLine = this.quoteLine.toUpperCase();
+
+				if (qLine === '' ||
+					qLine === 'EAR' ||
+					qLine === 'EEI' ||
+					qLine === 'CEC' ||
+					qLine === 'MBI' ||
+					qLine === 'BPV' ||  
+					qLine === 'MLP' ||
+					qLine === 'DOS') {
+
+					$('#lovMdl > #modalBtn').trigger('click');
 			}
-			this.table.refreshTable();
-		});
+		}else{
+				this.searchMatchingQuote();
+				console.log('search matching quote');	
+			
+		}
 
-		var qLine = this.quoteLine.toUpperCase();
-
-		if (qLine === '' ||
-			qLine === 'EAR' ||
-			qLine === 'EEI' ||
-			qLine === 'CEC' ||
-			qLine === 'MBI' ||
-			qLine === 'BPV' ||  
-			qLine === 'MLP' ||
-			qLine === 'DOS') {
-
-			$('#lovMdl > #modalBtn').trigger('click');
-	}
 }
 
 onRowClick(event){
@@ -488,10 +506,9 @@ setPeriodTo(periodFrom){
 }
 
 searchQuoteInfo(line,year,seq,rev,ced){
-	var qNo = line.toUpperCase() +"-"+year+"-"+seq+"-"+rev+"-"+ced;
+	var qNo = line.toUpperCase() +"-"+year+"-"+seq+"-"+rev+"-"+(ced.padStart(3,0));
 	this.quotationService.getSelectedQuote(this.plainQuotationNo(qNo))
 	.subscribe(val => {
-
 		var data = val['quotationList'][0];
 		if(data === undefined || data === null){
 			this.quoteNo = '';
@@ -507,21 +524,19 @@ searchQuoteInfo(line,year,seq,rev,ced){
 			}
 
 		}else{
-			if(data.status.toUpperCase() === 'RELEASED'){
+			if(data.status.toUpperCase() === 'RELEASED' || data.status.toUpperCase() === "ON HOLD COVER"){
+				console.log('triggered here ');
 				this.newHc(false);
 				this.quoteNo = (data.quotationNo === null || data.quotationNo === undefined) ? '' : data.quotationNo;
 				this.sliceQuoteNo(qNo);
 				this.insured = (data.insuredDesc  === null || data.insuredDesc === undefined) ? '' : data.insuredDesc;
 				this.cedCo = (data.cedingName  === null || data.cedingName === undefined) ? '' : data.cedingName;
 				this.risk = (data.project  === null || data.project === undefined) ? '' : data.project.riskName;
-				// this.hcLine  = line;
-				// this.hcYear  =  year;
+				
 			}
 		}
 	});
 
-
-	try{
 		this.btnApprovalEnabled = false;
 		this.quotationService.getSelectedQuotationHoldCoverInfo(this.plainQuotationNo(qNo))
 		.subscribe(data => {
@@ -545,7 +560,7 @@ searchQuoteInfo(line,year,seq,rev,ced){
 				this.cancelHcBtnEnabled = false;
 				
 			}else{
-
+				console.log('2nd ');
 				var rec = data['quotationList'][0].holdCover;
 				this.holdCover.holdCoverNo = rec.holdCoverNo;
 				this.splitHcNo(rec.holdCoverNo);
@@ -563,6 +578,7 @@ searchQuoteInfo(line,year,seq,rev,ced){
 				this.holdCover.createUser = rec.createUser;
 				this.cancelHcBtnEnabled = true;
 				this.btnApprovalEnabled = true;
+				this.newHc(false);
 
 				if(rec.approvedBy === '' || rec.approvedBy === null ||  rec.approvedBy === undefined){
 					this.clickView = false;
@@ -574,8 +590,6 @@ searchQuoteInfo(line,year,seq,rev,ced){
 
 			}
 		});
-	}catch(Exception){
-	}
 
 
 
@@ -693,7 +707,7 @@ fmtRn(rn){
 }
 
 fmtCn(cn){
-	this.qCedingId = (this.decPipe.transform(cn,'2.0-0') === null) ? '' : this.decPipe.transform(cn,'2.0-0').replace(',','');
+	this.qCedingId = (this.decPipe.transform(cn,'3.0-0') === null) ? '' : this.decPipe.transform(cn,'3.0-0').replace(',','');
 }
 
 // sampleOk(){
@@ -703,7 +717,9 @@ fmtCn(cn){
 
 	onTabChange($event: NgbTabChangeEvent) {
 		if ($event.nextId === 'Exit') {
-			this.router.navigateByUrl('hold-cover-monitoring');
+			$event.preventDefault();
+			//this.router.navigateByUrl('hold-cover-monitoring');
+
 		} 
 	}
 
@@ -794,9 +810,10 @@ fmtCn(cn){
 				if(Number(i.optionId) !== Number(optNoInput)){
 					this.holdCover.optionId = '';
 					this.onClickOptionLOV();
-
 				}
 			}
 		});
 	}
+
+
 }

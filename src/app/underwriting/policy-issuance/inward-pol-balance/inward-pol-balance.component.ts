@@ -18,67 +18,75 @@ export class InwardPolBalanceComponent implements OnInit {
   addFlag;
   deleteFlag;
 
-  passData: any = {
+  passDataInstallmentInfo: any = {
     tableData: [],
-    tHeader: [],
-    dataTypes: [],
-    nData: {},
+    tHeader: ["Inst No","Due Date","Booking Date","Premium","Other Charges","Amount Due"],
+    dataTypes: ["text","date","date","currency","currency","currency"],
+    nData:  new PolicyInwardPolBalance(null, null, null, null, null, null),
     addFlag: true,
     deleteFlag: true,
-    widths: [],
-    pageLength: 5
+    widths: ["1", "1", "1", "auto", "auto", "auto"],
+    pageLength: 5,
+    keys: ['instNo','dueDate','bookingDate','premium','otherCharges','amountDue'],
+    total : [null,null,'Total','premium','otherCharges','amountDue']
   };
 
-  passData2: any = {
+  passDataOtherCharges: any = {
     tableData: [],
-    tHeader: [],
-    dataTypes: [],
-    magnifyingGlass: [],
+    tHeader: ["Code","Charge Description","Amount"],
+    dataTypes: ["text","text","currency"],
+    nData: new PolInwardPolBalanceOtherCharges(null,null,null),
+    magnifyingGlass: ["code"],
     addFlag: true,
     deleteFlag: true,
-    widths: [],
-    pageLength: 4
+    widths: ["auto", "auto", "auto"],
+    pageLength: 4,
+    keys: ['code','chargeDesc','amount'],
+    total: [null,'Total','amount']
   };
 
-  nData: PolicyInwardPolBalance = new PolicyInwardPolBalance(null, null, null, null, null, null);
-  //nData2: PolInwardPolBalanceOtherCharges = new PolInwardPolBalanceOtherCharges(null, null, null);
+ constructor(private underwritingservice: UnderwritingService, private titleService: Title) { 
+ }
 
-  constructor(private underwritingservice: UnderwritingService, private titleService: Title
-  ) { }
 
-  ngOnInit() {
+ ngOnInit() {
+   
     this.titleService.setTitle("Pol | Inward Pol Balance");
+    this.getInstallmentInfo();
+    this.getOtherCharges();
+      
+ }
 
-    this.passData.tHeader.push("Inst No");
-    this.passData.tHeader.push("Due Date");
-    this.passData.tHeader.push("Booking Date");
-    this.passData.tHeader.push("Premium");
-    this.passData.tHeader.push("Other Charges");
-    this.passData.tHeader.push("Amount Due");
+ getInstallmentInfo(){
+   this.underwritingservice.getInwardPolBalance()
+      .subscribe(data => {
+        var rec = data['policyList'];
+        for(let i of rec){
+           this.passDataInstallmentInfo.tableData.push({
+             instNo:             i.inwPolBalance.instNo,
+             dueDate:            i.inwPolBalance.dueDate,
+             bookingDate:        i.inwPolBalance.bookingDate,
+             premium:            i.inwPolBalance.premAmt,
+             otherCharges:       i.inwPolBalance.otherChargesInw,
+             amountDue:          i.inwPolBalance.amtDue
+           });
+        }
+      });
+ }
 
-    this.passData.dataTypes.push("text");
-    this.passData.dataTypes.push("date");
-    this.passData.dataTypes.push("date");
-    this.passData.dataTypes.push("currency");
-    this.passData.dataTypes.push("currency");
-    this.passData.dataTypes.push("currency");
-
-    this.passData.widths.push("1", "1", "1", "auto", "auto", "auto");
-
-    this.passData.tableData = this.underwritingservice.getInwardPolBalance();
-
-    this.passData2.tHeader.push("Code");
-    this.passData2.tHeader.push("Charge Description");
-    this.passData2.tHeader.push("Amount");
-
-    this.passData2.dataTypes.push("text");
-    this.passData2.dataTypes.push("text");
-    this.passData2.dataTypes.push("currency");
-
-    this.passData2.widths.push("auto", "auto", "auto");
-    this.passData2.magnifyingGlass.push("code");
-
-    this.passData2.tableData = this.underwritingservice.getInwardPolBalanceOtherCharges();
-  }
+ getOtherCharges(){
+   this.underwritingservice.getInwardPolBalance()
+      .subscribe(data => {
+        var rec = data['policyList'];
+        for(let i of rec){
+           this.passDataOtherCharges.tableData.push({
+              code:             i.inwPolBalance.otherCharges.chargeCd,
+              chargeDesc:       'column under maintenance',
+              amount:           i.inwPolBalance.otherCharges.amount
+           });
+        }
+      });
+ }
 
 }
+
