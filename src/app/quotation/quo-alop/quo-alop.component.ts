@@ -325,7 +325,6 @@ export class QuoAlopComponent implements OnInit {
 
     openAlopItem(){
       this.showAlopItem = true;
-      
       this.alopItem();
       setTimeout(()=>{
         $('#alopItemModal #modalBtn').trigger('click');

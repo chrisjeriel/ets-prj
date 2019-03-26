@@ -212,9 +212,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
         this.form.control.markAsDirty();
     }
 
-    
-
-
     onClickDelete() {
         // for (var i = 0; i < this.passData.tableData.length; ++i) {
         //     if(this.passData.tableData[i].checked){
@@ -440,6 +437,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
                 break;
             }
         }
+        retData.data = data;
         this.form.control.markAsDirty();
         this.clickLOV.emit(retData);
     }
