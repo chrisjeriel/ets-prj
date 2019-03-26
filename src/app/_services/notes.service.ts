@@ -23,7 +23,7 @@ export class NotesService {
   	return this.notesRemindersData;
   }
 
-  toDateTimeString(millis: number) {
+  toDateTimeString(millis: any) {
     var d = (millis == 0) ? new Date() : new Date(millis);
 
     function pad(num) {

@@ -46,7 +46,7 @@ export class InternalCompetitionComponent implements OnInit {
         widths: [1,'auto','auto',1,'auto', 'auto', 1, 1, 1, 1],
         uneditable: [true,true,true,true,false,false,true,true,true,true],
         //keys: ['advNo', 'company', 'attention', 'position', 'advOpt', 'advWord', 'createdBy', 'dateCreated', 'lastUpdateBy', 'lastUpdate'],
-        keys: ['adviceNo', 'cedingName', 'cedingRepName', 'position', 'advOption', 'wordings', 'createUser', 'createDate', 'updateUser', 'updateDate'],
+        keys: ['adviceNo', 'cedingName', 'cedingRepName', 'position', 'advOption', 'wordings', 'advWordCreateUser', 'advWordCreateDate', 'advWordUpdateUser', 'advWordUpdateDate'],
 
     }
 
@@ -124,8 +124,11 @@ export class InternalCompetitionComponent implements OnInit {
                 this.cedingIds.push(data.quotation[j].competitionsList[0].cedingId.toString());
                 //this.cedingRepIds.push(data.quotation[j].competitionsList[0].cedingRepId.toString());
                 for(var i = 0; i < this.data.length; i++){
-                  this.data[i].createDate = this.notes.toDateTimeString(this.data[i].createDate);
-                  this.data[i].updateDate = this.notes.toDateTimeString(this.data[i].updateDate);
+                  this.data[i].showMG = 1;
+                  this.data[i].advWordCreateUser = this.data[i].advWordCreateUser === null ? this.data[i].createUser : this.data[i].advWordCreateUser;
+                  this.data[i].advWordUpdateUser = this.data[i].advWordUpdateUser === null ? this.data[i].updateUser : this.data[i].advWordUpdateUser;
+                  this.data[i].advWordCreateDate = this.data[i].advWordCreateDate === null ? this.data[i].createDate : this.notes.toDateTimeString(this.data[i].advWordCreateDate);
+                  this.data[i].advWordUpdateDate = this.data[i].advWordUpdateDate === null ? this.data[i].updateDate : this.notes.toDateTimeString(this.data[i].advWordUpdateDate);
                   this.intCompData.tableData.push(this.data[i]);
                 }
               }
@@ -153,12 +156,90 @@ export class InternalCompetitionComponent implements OnInit {
       }
     }
 
+    destination: string = '';
+    printerName: string = '';
+    printNoCopies: number = 0;
     onClickPrint() {
-      console.log("onClickPrint");
-      if (this.printClickable) {
+      console.log(this.custEditableNonDatatableComponent.selected);
+      /*if (this.printClickable) {*/
+     /* if (this.custEditableNonDatatableComponent.selected.length !== 0) {
         window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=QUOTER007' + '&quoteId=' + this.selectedPrintData.quoteId + '&adviceNo=' + this.selectedPrintData.adviceNo, '_blank');
-      }
+      }*/
+      $('#showPrintMenu > #modalBtn').trigger('click');
     }
+
+    printMethod(){
+      if(this.destination === 'SCREEN'){
+        for(var i = 0; i < this.custEditableNonDatatableComponent.selected.length; i++){
+          console.log(this.custEditableNonDatatableComponent.selected[i].adviceNo);
+          window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=QUOTER007' + '&quoteId=' + 
+                      this.quotationInfo.quoteId + '&adviceNo=' + this.custEditableNonDatatableComponent.selected[i].adviceNo, '_blank');
+        }
+      }else if(this.destination === 'PDF'){
+        for(var i = 0; i < this.custEditableNonDatatableComponent.selected.length; i++){
+            this.quotationService.downloadPDFIntComp(this.custEditableNonDatatableComponent.selected[i].adviceNo,this.quotationInfo.quoteId).subscribe( data => {
+                 var newBlob = new Blob([data], { type: "application/pdf" });
+                 var downloadURL = window.URL.createObjectURL(data);
+                 var link = document.createElement('a');
+                 link.href = downloadURL;
+                 link.download = this.quotationInfo.quotationNo + '-' + i;
+                 link.click();
+                
+            },
+             error => {
+                 /*if (this.isEmptyObject(error)) {
+                 } else {
+                    this.dialogIcon = "error-message";
+                    this.dialogMessage = "Error printing file";
+                    $('#listQuotation #successModalBtn').trigger('click');
+                    setTimeout(()=>{$('.globalLoading').css('display','none');},0);
+                 }     */     
+            });
+        }
+      }else if(this.destination === 'PRINTER'){
+         if(this.printerName === '' || this.printNoCopies === 0){
+
+         }else{
+           for(var i = 0; i < this.custEditableNonDatatableComponent.selected.length; i++){
+               this.quotationService.downloadPDFIntComp(this.custEditableNonDatatableComponent.selected[i].adviceNo,this.quotationInfo.quoteId).subscribe( data => {
+                    var newBlob = new Blob([data], { type: "application/pdf" });
+                    var downloadURL = window.URL.createObjectURL(data);
+                    console.log(downloadURL);
+                    window.open(downloadURL, '_blank').print();
+                   
+             },
+              error => {
+                  /*if (this.isEmptyObject(error)) {
+                  } else {
+                     this.dialogIcon = "error-message";
+                     this.dialogMessage = "Error printing file";
+                     $('#listQuotation #successModalBtn').trigger('click');
+                     setTimeout(()=>{$('.globalLoading').css('display','none');},0);
+                  }   */       
+             });
+           }
+         }
+      }
+
+      this.custEditableNonDatatableComponent.refreshTable();
+    }
+
+    /*validate(){
+      console.log(this.printerName);
+      if(this.destination === ''){
+        return true;
+      }else{
+        if(this.destination === 'PRINT' && this.printerName !== '' && this.printNoCopies !== 0){
+          console.log(1);
+          return false;
+        }else if(this.destination !== '' && this.destination !== 'PRINT'){
+          console.log(2);
+          return false;
+        }else{
+          return true;
+        }
+      }
+    }*/
 
     onClickCancel() {
       this.cancelBtn.clickCancel();
@@ -172,20 +253,13 @@ export class InternalCompetitionComponent implements OnInit {
       this.savedData = [];
       for (var i = 0 ; this.intCompData.tableData.length > i; i++) {
         if(this.intCompData.tableData[i].edited){
-            /*this.intCompData.tableData[i].option = this.intCompData.tableData[i].option === null ? '' : this.intCompData.tableData[i].option;
-            this.intCompData.tableData[i].wordings = this.intCompData.tableData[i].wordings === null ? '' : this.intCompData.tableData[i].wordings;
-            this.savedData.push(this.intCompData.tableData[i]);
-            this.savedData[this.savedData.length-1].quoteId = this.quoteIds[i];
-            this.savedData[this.savedData.length-1].createDate = new Date().toISOString();
-            this.savedData[this.savedData.length-1].updateDate = new Date().toISOString();
-            this.savedData[this.savedData.length-1].updateUser = JSON.parse(window.localStorage.currentUser).username;*/
             this.savedData.push(
               {
                 advOption: this.intCompData.tableData[i].advOption === null ? '' : this.intCompData.tableData[i].advOption,
                 adviceNo: this.intCompData.tableData[i].adviceNo,
                 cedingId: this.intCompData.tableData[i].cedingId,
                 createDate: this.notes.toDateTimeString(0),
-                createUser: this.intCompData.tableData[i].createUser,
+                createUser: JSON.parse(window.localStorage.currentUser).username,
                 quoteId: this.quotationInfo.quoteId,
                 updateDate: this.notes.toDateTimeString(0),
                 updateUser: JSON.parse(window.localStorage.currentUser).username,
@@ -240,7 +314,7 @@ export class InternalCompetitionComponent implements OnInit {
     }
 
     selectedAttentionLOV(data){
-         this.intCompData.tableData[this.attentionLOVRow].cedingRepName = data.firstName +' '+ data.middleInitial + ' '+ data.lastName; 
+         this.intCompData.tableData[this.attentionLOVRow].cedingRepName = data.designation +' '+ data.firstName +' '+ data.middleInitial + ' '+ data.lastName; 
          this.intCompData.tableData[this.attentionLOVRow].position = data.position; 
          this.intCompData.tableData[this.attentionLOVRow].cedingRepId = data.cedingRepId.toString();
          this.intCompData.tableData[this.attentionLOVRow].edited = true;

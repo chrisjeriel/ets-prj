@@ -164,6 +164,37 @@ export class QuotationService {
             return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuoteHoldCoverListing',{params});
     }
 
+
+    getQuotationHoldCoverList(searchParams: any[]) {
+         var params;
+
+          if(searchParams.length < 1){
+            params = new HttpParams()
+             .set('quotationNo','')
+             .set('status','')
+             .set('cedingName','')
+             .set('holdCoverNo','')
+             .set('riskName','')
+             .set('insuredDesc','')
+             .set('periodFrom','')
+             .set('periodTo','')
+             .set('compRefHoldCovNo','')
+             .set('reqBy','')
+             .set('reqDate','')
+             .set('expiringInDays','')
+        }
+         else{
+             params = new HttpParams();
+            for(var i of searchParams){
+                params = params.append(i.key, i.search);
+            }
+        }
+            return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuoteHoldCoverListing',{params});
+    }
+
+
+
+
     getSelectedQuotationHoldCoverInfo(quotationNo) {
         const params = new HttpParams()
              .set('quotationNo',quotationNo)
@@ -626,13 +657,14 @@ export class QuotationService {
     }
 
 
-    getALOPItemInfos(car: string, quoteId: string, quotationNo?: any) {
+    getALOPItemInfos(car: string, quoteId: string, optionId: any, quotationNo?: any) {
         if (car == "CAR") {
             this.aLOPItemInfos.forEach(function (itm) { delete itm.relativeImportance; });
         }
         const params = new HttpParams()
              .set('quotationNo', (quotationNo === null || quotationNo === undefined ? '' : quotationNo) )
              .set('quoteId',(quoteId === null || quoteId === undefined ? '' : quoteId) )
+             .set('optionId',(optionId === null || optionId === undefined ? '' : optionId) )
         return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuoteAlopItem',{params});
     }
 
@@ -764,7 +796,7 @@ export class QuotationService {
     saveQuoteCompetition(saveQuoteCompetitionParams: any[]){
         //let params: any = JSON.stringify(saveQuoteCompetitionParams);
         let params: any = {
-            competitionsList: saveQuoteCompetitionParams
+            saveQuoteCompetition: saveQuoteCompetitionParams
         }
         let header: any = {
             headers: new HttpHeaders({
@@ -918,6 +950,14 @@ export class QuotationService {
     downloadPDF(reportName : string, quoteId : string){
          const params = new HttpParams()
              .set('reportName', reportName)
+             .set('quoteId', quoteId);
+        return this.http.get(environment.prodApiUrl + '/util-service/generateReport',{ params,'responseType': 'blob'});
+    }
+
+    downloadPDFIntComp(adviceNo : string, quoteId : string){
+         const params = new HttpParams()
+             .set('reportName', 'QUOTER007')
+             .set('adviceNo', adviceNo)
              .set('quoteId', quoteId);
         return this.http.get(environment.prodApiUrl + '/util-service/generateReport',{ params,'responseType': 'blob'});
     }

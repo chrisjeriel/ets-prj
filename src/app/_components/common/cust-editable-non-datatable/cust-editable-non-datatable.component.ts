@@ -191,11 +191,11 @@ export class CustEditableNonDatatableComponent implements OnInit {
         }
         this.retrieveFromSub();
         // this.addFiller();
-
-        this.passData.nData.add = true;
-
+        if(this.passData.nData !== undefined)
+            this.passData.nData.add = true;
         //temporary fix delete this later
-        setTimeout(()=>{this.refreshTable()},2000);
+        setTimeout(()=>{this.refreshTable()},2000)
+        
     }
 
     processData(key: any, data: any) {
@@ -203,7 +203,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     onClickAdd(event) {
-
         this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
         this.passData.tableData[this.passData.tableData.length-1].edited = true;
         this.unliTableLength();    
@@ -212,9 +211,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
         this.add.next(event);
         this.form.control.markAsDirty();
     }
-
-    
-
 
     onClickDelete() {
         // for (var i = 0; i < this.passData.tableData.length; ++i) {
@@ -232,7 +228,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
            }else {
                this.passData.tableData = this.passData.tableData.filter(a => a!= this.selected[i])
            }
-           
         }
         this.selectAllFlag = false;
         this.form.control.markAsDirty();
@@ -428,8 +423,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
             delete this.passData.tableData.index;
             delete this.passData.tableData.lovInput;
         });
-
-        
     }
 
 
@@ -444,6 +437,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
                 break;
             }
         }
+        retData.data = data;
         this.form.control.markAsDirty();
         this.clickLOV.emit(retData);
     }
@@ -481,6 +475,9 @@ export class CustEditableNonDatatableComponent implements OnInit {
                 data.checked = value;
                 this.selected.push(data);
             }
+        }
+        if(!value){
+            this.selected = this.selected.filter(a=>false);
         }
         this.refreshTable();
     }

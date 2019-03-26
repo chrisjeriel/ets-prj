@@ -3,6 +3,7 @@ import { MaintenanceService, UnderwritingService, QuotationService } from '@app/
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-lov',
@@ -33,9 +34,10 @@ export class LovComponent implements OnInit {
   modalOpen: boolean = false;
 
   @Input() lovCheckBox: boolean = false;
+  showButton: boolean = false;
 
-
-  constructor(private modalService: NgbModal, private mtnService : MaintenanceService, private underwritingService: UnderwritingService, private quotationService: QuotationService) { }
+  constructor(private modalService: NgbModal, private mtnService : MaintenanceService, private underwritingService: UnderwritingService, 
+    private quotationService: QuotationService, private router: Router) { }
 
   ngOnInit() {
   	  if(this.lovCheckBox){
@@ -49,12 +51,11 @@ export class LovComponent implements OnInit {
 
   okBtnClick(){
     let selects:any[] = [];
-  	this.selectedData.emit(this.passData);
     if(!this.lovCheckBox){
       this.selectedData.emit(this.passData);
     }
     else{
-      selects = this.table.selected;
+      selects = this.passTable.tableData.filter(a=>a.checked);
       this.passData.data = selects;
       this.selectedData.emit(this.passData);
     }
@@ -218,6 +219,7 @@ export class LovComponent implements OnInit {
   }
 
   openModal(){
+    this.showButton = false;
     this.passTable.tableData = [];
   	if(this.passData.selector == 'insured'){
   		this.passTable.keys = ['insuredId', 'insuredName' ];
@@ -311,6 +313,7 @@ export class LovComponent implements OnInit {
         this.passData.params.defaultTag
         ).subscribe((data: any) => {
           this.passTable.tableData = data.deductibles.filter((data)=>{return  this.passData.hide.indexOf(data.deductibleCd)==-1});
+          this.showButton = true;
           this.table.refreshTable();
       });
     }else if(this.passData.selector == 'region'){
@@ -414,4 +417,13 @@ export class LovComponent implements OnInit {
     this.modalOpen = true;
 	}
 
+
+  maintainDeductibles(){
+    this.router.navigate(['/maintenance-deductible', { info: 'new'}], {skipLocationChange: false});
+    this.modalService.dismissAll();
+  }
+
+  openLOV(){
+    this.modal.openNoClose();
+  }
 }
