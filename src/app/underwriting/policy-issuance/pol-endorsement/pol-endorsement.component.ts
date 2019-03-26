@@ -48,6 +48,7 @@ export class PolEndorsementComponent implements OnInit {
             deductibleAmt: 0
         },
         addFlag: true,
+        disableAdd: true,
         deleteFlag: true,
         paginateFlag: true,
         infoFlag: true,
@@ -72,7 +73,9 @@ export class PolEndorsementComponent implements OnInit {
         if(this.alteration){
             //do something
             this.passData.magnifyingGlass = ['endtCd'];
-            console.log('dumaan dito');
+            this.passData.checkFlag = true;
+            this.deductiblesData.checkFlag = true;
+            this.deductiblesData.magnifyingGlass = ['deductibleCd'];
         }else{
             this.passData.dataTypes[0] = 'text';
             this.passData.uneditable = [true,true,true,true];
@@ -86,17 +89,33 @@ export class PolEndorsementComponent implements OnInit {
         this.retrieveEndt();
     }
 
+    //retrieve Endorsement
     retrieveEndt(){
-        //retrieve Endorsement
         this.underwritingService.getPolicyEndorsement('8', '').subscribe((data: any) =>{
             if(data.endtList !== null){
                 for(var i = 0; i < data.endtList.endorsements.length; i++){
-                    data.endtList.endorsements[i].showMG = 1;
+                    if(this.alteration){
+                        data.endtList.endorsements[i].showMG = 1; 
+                    }
                     this.passData.tableData.push(data.endtList.endorsements[i]);
                 }
                 this.table.forEach(t => {t.refreshTable()});
             }
         });
+    }
+
+    //retrieve deductibles
+    retrieveDeductibles(data){
+        this.deductiblesData.tableData = [];
+        if(data !== null && data.deductibles !== undefined){
+            for(var j = 0; j < data.deductibles.length; j++){
+                if(this.alteration){        
+                    data.deductibles[j].showMG = 1;
+                }
+                this.deductiblesData.tableData.push(data.deductibles[j]);
+            }
+        }
+        this.table.forEach(t => {t.refreshTable()});
     }
 
     onClickCancel() {
@@ -106,15 +125,13 @@ export class PolEndorsementComponent implements OnInit {
     }
 
     rowClick(data){
-        //retrieve Deductibles when selecting an endorsement
-        this.deductiblesData.tableData = [];
-        console.log(data);
-        if(data !== null && data.deductibles !== undefined){
-            for(var j = 0; j < data.deductibles.length; j++){
-                this.deductiblesData.tableData.push(data.deductibles[j]);
-            }
+        if(data === null){
+            this.deductiblesData.disableAdd = true;
+        }else{
+            this.deductiblesData.disableAdd = false;
         }
-        this.table.forEach(t => {t.refreshTable()});
+        //retrieve Deductibles when selecting an endorsement
+       this.retrieveDeductibles(data);
     }
 
 }
