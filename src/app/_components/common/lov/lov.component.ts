@@ -422,4 +422,8 @@ export class LovComponent implements OnInit {
     this.router.navigate(['/maintenance-deductible', { info: 'new'}], {skipLocationChange: false});
     this.modalService.dismissAll();
   }
+
+  openLOV(){
+    this.modal.openNoClose();
+  }
 }
