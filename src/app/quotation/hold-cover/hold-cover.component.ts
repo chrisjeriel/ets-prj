@@ -752,7 +752,7 @@ fmtCn(cn){
 	}
 
 	onConfirmCancelHc(){
-		this.warningMsg = 'Do you really want to cancel this Hold Cover?'
+		this.warningMsg = 'Are you sure you want to cancel Hold Cover?'
 		$('#warningMdl #modalBtn').trigger('click');  
 	}
 

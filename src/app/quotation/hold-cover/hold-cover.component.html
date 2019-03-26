@@ -199,6 +199,15 @@
                         </div>
                     </div>
                 </div>
+                 <div class="form-row" *ngIf="clickView">
+                    <div class="form-group col-sm">
+                        <div class="col-md-12 text-center">
+                            <div class="cust-btn-container" style="margin-top: 10px !important;">
+                                <button *ngIf="cancelHcBtnEnabled" type="button" class="cust-btn" (click)="onConfirmCancelHc()"><a>Cancel Hold Cover</a></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="form-row">
                     <div class="form-group col-sm">
@@ -267,7 +276,7 @@
     <div footer class="d-flex justify-content-center w-100">                    
         <button class="cust-btn" type="button" (click)="onClickCancelModifMdl()"><a>Cancel</a></button>
         <button class="cust-btn" type="button" (click)="onClickView()"><a>View</a></button>
-        <button class="cust-btn" type="button" (click)="onClickModif();"><a>Modification</a></button>
+        <button class="cust-btn" type="button" (click)="onClickModif()"><a>Modification</a></button>
     </div>
 </app-modal>
 
