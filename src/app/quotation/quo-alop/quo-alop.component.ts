@@ -324,6 +324,7 @@ export class QuoAlopComponent implements OnInit {
     }
 
     openAlopItem(){
+      this.itemInfoData.tableData = [];
       this.showAlopItem = true;
       this.alopItem();
       setTimeout(()=>{
@@ -334,7 +335,9 @@ export class QuoAlopComponent implements OnInit {
     }
 
     alopItem(){
-      this.quotationService.getALOPItemInfos(this.quoteNo[0],this.quoteId,this.tableNonEditable.indvSelect.optionId).subscribe((data: any) => {
+      console.log(this.quotationInfo.quoteId)
+      console.log(this.tableNonEditable.indvSelect.optionId)
+      this.quotationService.getALOPItemInfos(this.quoteNo[0],this.quotationInfo.quoteId,this.tableNonEditable.indvSelect.optionId).subscribe((data: any) => {
             console.log(data)
             this.itemInfoData.tableData = [];
             var dataInfos = data.alopItem;
@@ -348,14 +351,14 @@ export class QuoAlopComponent implements OnInit {
 
     saveAlopItem(){
       let savedData: any = {};
-      savedData.quoteId = this.quoteId;
+      savedData.quoteId = this.quotationInfo.quoteId;
       
       savedData.saveAlopItemList=[];
       savedData.deleteAlopItemList=[];
       for (var i = 0 ; this.itemInfoData.tableData.length > i; i++) {
         if(this.itemInfoData.tableData[i].edited && !this.itemInfoData.tableData[i].deleted){
             savedData.saveAlopItemList.push(this.itemInfoData.tableData[i]);
-            savedData.saveAlopItemList[savedData.saveAlopItemList.length-1].optionId = this.alopDetails.optionId
+            savedData.saveAlopItemList[savedData.saveAlopItemList.length-1].optionId = this.tableNonEditable.indvSelect.optionId
             savedData.saveAlopItemList[savedData.saveAlopItemList.length-1].createUserItem = JSON.parse(window.localStorage.currentUser).username,
             savedData.saveAlopItemList[savedData.saveAlopItemList.length-1].createDateItem = this.ns.toDateTimeString(savedData.saveAlopItemList[savedData.saveAlopItemList.length-1].createDate);
             savedData.saveAlopItemList[savedData.saveAlopItemList.length-1].updateUserItem = JSON.parse(window.localStorage.currentUser).username,
@@ -489,10 +492,10 @@ export class QuoAlopComponent implements OnInit {
       this.readonlyFlag = true;
       this.emptyVar();
       }else{
-        console.log(this.optionsList)
+        /*console.log(this.optionsList)
         if(this.optionsList.length > 1){
           this.getAlop();
-        }
+        }*/
         this.getAlopSumInsured();
 
         this.readonlyFlag = false;

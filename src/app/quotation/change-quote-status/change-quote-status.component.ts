@@ -80,6 +80,7 @@ export class ChangeQuoteStatusComponent implements OnInit {
         this.titleService.setTitle("Quo | Change Quote Status");
         //setTimeout(function () { $('#modalBtn').trigger('click'); }, 100);        
         this.first = true;
+        //this.query();
         this.getChangeQuote();
         
     }
