@@ -1,8 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChildren, QueryList } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { PolicyEndorsement } from '../../../_models/PolicyEndorsement'
 import { UnderwritingService } from '../../../_services';
 import { Title } from '@angular/platform-browser';
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 
 @Component({
     selector: 'app-pol-endorsement',
@@ -11,40 +12,54 @@ import { Title } from '@angular/platform-browser';
 })
 export class PolEndorsementComponent implements OnInit {
 
-    dtOptions: DataTables.Settings = {};
-    tableData: any[] = [];
-    options: any[] = [];
-    dataTypes: any[] = [];
-    magnifyingGlass: any[] = ["endtCode"];
-    checkFlag;
-    checkboxFlag;
-    addFlag;
-    deleteFlag;
-    paginateFlag;
-    infoFlag;
-    searchFlag;
+    @ViewChildren(CustEditableNonDatatableComponent) table : QueryList<CustEditableNonDatatableComponent>;
 
     passData: any = {
         tableData: [],
-        tHeader: [],
-        magnifyingGlass: [],
-        dataTypes: [],
-        nData: {},
-        checkFlag: true,
+        tHeader: ['C', 'Endt Code', 'Endt Title', 'Remarks'],
+        magnifyingGlass: ['endtCd'],
+        dataTypes: ['checkbox', 'text', 'text', 'text', 'text'],
+        nData: {
+            changeTag: 'N',
+            endtCd: '',
+            endtTitle: '',
+            remarks: '',
+        },
         addFlag: true,
         deleteFlag: true,
         paginateFlag: true,
         infoFlag: true,
         searchFlag: true,
-        checkboxFlag: true,
         pageLength: 10,
-        widths: []
+        pageID: 'endt',
+        widths: [1, 'auto', 'auto', 'auto'],
+        keys: ['changeTag','endtCd', 'endtTitle', 'remarks']
     };
-    nData: PolicyEndorsement = new PolicyEndorsement(null, null, null, null);
+
+    deductiblesData: any = {
+        tableData: [],
+        tHeader: ['Deductible Code', 'Deductible Title', 'Deductible Text', 'Deductible Rate (%)', 'Deductible Amount'],
+        dataTypes: ['text', 'text', 'text', 'percent', 'currency'],
+        nData: {
+            deductibleCd: '',
+            deductibleTitle: '',
+            deductibleTxt: '',
+            deductibleRt: 0,
+            deductibleAmt: 0
+        },
+        addFlag: true,
+        deleteFlag: true,
+        paginateFlag: true,
+        infoFlag: true,
+        searchFlag: true,
+        pageLength: 10,
+        pageID: 'deductible',
+        widths: [1, 'auto', 'auto', 'auto', 'auto'],
+        keys: ['deductibleCd','deductibleTitle', 'deductibleTxt', 'deductibleRt', 'deductibleAmt']
+    }
 
 
-    @Input() alteration: boolean;
-    holdCover: boolean;
+    @Input() alteration: boolean = false;
 
     constructor(config: NgbDropdownConfig, private underwritingService: UnderwritingService, private titleService: Title
     ) {
@@ -54,19 +69,52 @@ export class PolEndorsementComponent implements OnInit {
 
     ngOnInit() {
         this.titleService.setTitle("Pol | Endorsement");
-        this.passData.tHeader.push("C", "Endt Code", "Endt Title", "Remarks");
-        this.passData.dataTypes.push("text", "text", "text", "text");
-        this.passData.widths.push("1", "auto", "auto", "auto");
-        this.passData.magnifyingGlass.push("endtCode");
-        this.passData.tableData = this.underwritingService.getPolicyEndorsement();
+        if(this.alteration){
+            //do something
+            this.passData.magnifyingGlass = ['endtCd'];
+            console.log('dumaan dito');
+        }else{
+            this.passData.dataTypes[0] = 'text';
+            this.passData.uneditable = [true,true,true,true];
+            this.passData.addFlag = false;
+            this.passData.deleteFlag = false;
+
+            this.deductiblesData.uneditable = [true,true,true,true,true];
+            this.deductiblesData.addFlag = false;
+            this.deductiblesData.deleteFlag = false;
+        }
+        this.retrieveEndt();
+    }
+
+    retrieveEndt(){
+        //retrieve Endorsement
+        this.underwritingService.getPolicyEndorsement('8', '').subscribe((data: any) =>{
+            if(data.endtList !== null){
+                for(var i = 0; i < data.endtList.endorsements.length; i++){
+                    data.endtList.endorsements[i].showMG = 1;
+                    this.passData.tableData.push(data.endtList.endorsements[i]);
+                }
+                this.table.forEach(t => {t.refreshTable()});
+            }
+        });
     }
 
     onClickCancel() {
-        this.holdCover = true;
     }
 
     onClickSave() {
-        this.holdCover = false;
+    }
+
+    rowClick(data){
+        //retrieve Deductibles when selecting an endorsement
+        this.deductiblesData.tableData = [];
+        console.log(data);
+        if(data !== null && data.deductibles !== undefined){
+            for(var j = 0; j < data.deductibles.length; j++){
+                this.deductiblesData.tableData.push(data.deductibles[j]);
+            }
+        }
+        this.table.forEach(t => {t.refreshTable()});
     }
 
 }
