@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input,  ViewChild} from '@angular/core';
 import { UnderwritingService, NotesService } from '@app/_services';
 import { UnderwritingCoverageInfo, CoverageDeductibles } from '@app/_models';
 import { Title } from '@angular/platform-browser';
@@ -8,6 +8,7 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+
 
 @Component({
   selector: 'app-pol-coverage',
@@ -19,6 +20,7 @@ export class PolCoverageComponent implements OnInit {
   @ViewChild('deductiblesModal') deductiblesModal :ModalComponent;
   @ViewChild(LovComponent) lov :LovComponent;
   @ViewChild(SucessDialogComponent) successDlg: SucessDialogComponent;
+  @ViewChild('sectionCover') table: CustEditableNonDatatableComponent;
   private underwritingCoverageInfo: UnderwritingCoverageInfo;
   tableData: any[] = [];
   tableData2: any[] = [];
@@ -37,18 +39,19 @@ export class PolCoverageComponent implements OnInit {
   infoFlag;
 
   passDataSectionCover: any = {
+        tableData: [],
         tHeader: ["Cover Code", "Section", "Bullet No", "Sum Insured", "Rate", "Premium", "Add Sl"],
         dataTypes: [
-                    "text", "select", "select", "currency", "percent", "currency", "checkbox"
+                    "text", "text", "text", "currency", "percent", "currency", "checkbox"
                    ],
-        opts: [{ selector: "section", vals: ["I", "II", "III"] }, { selector: "bulletNo", vals: ["1", "1.2", "1.3"] }],
         checkFlag:true,
         addFlag:true,
         deleteFlag:true,
         pageLength: 10,
         searchFlag:true,
         magnifyingGlass: ['coverCode'],
-        widths:[228,1,1,200,1,1,1]
+        widths:[228,1,1,200,1,1,1],
+        keys:['coverCd','section','bulletNo','sumInsured','premRt','premAmt','addSi']
     };
 
 
@@ -71,8 +74,8 @@ export class PolCoverageComponent implements OnInit {
     };
 
   passDataDeductibles: any = {
-        tHeader: ["Cover Name","Deductible Code","Deductible Title", "Deductible Text", "Rate(%)", "Amount"],
-        dataTypes: ["text","text","text","text", "percent", "currency"],
+        tHeader: ["Deductible Code","Deductible Title", "Deductible Text", "Rate(%)", "Amount"],
+        dataTypes: ["text","text","text", "percent", "currency"],
         pageLength:10,
         addFlag: true,
         deleteFlag: true,
@@ -81,8 +84,8 @@ export class PolCoverageComponent implements OnInit {
         infoFlag: true,
         paginateFlag: true,
         widths: [1, 1, 1, 1, 1, 1],
-        magnifyingGlass: ['coverCdDesc','deductibleCd'],
-        keys:['coverCdDesc','deductibleCd','deductibleTitle','deductibleTxt','deductibleRt','deductibleAmt'],
+        magnifyingGlass: ['deductibleCd'],
+        keys:['deductibleCd','deductibleTitle','deductibleTxt','deductibleRt','deductibleAmt'],
         tableData:[],
         pageID:'deductibles',
         nData: {
@@ -156,15 +159,27 @@ export class PolCoverageComponent implements OnInit {
   lovRowData:any;
   lovCheckBox:boolean = false;
   dialogIcon:string = '';
+  policyId: any = 8;
   constructor(private underwritingservice: UnderwritingService, private titleService: Title, private modalService: NgbModal,
                 private route: ActivatedRoute, private ns: NotesService) { }
 
   ngOnInit() {
     this.titleService.setTitle("Pol | Coverage");
     if (!this.alteration) {
-      this.passDataSectionCover.tableData = this.underwritingservice.getUWCoverageInfo();
-      //this.passDataDeductibles.tableData = this.underwritingservice.getUWCoverageDeductibles();
+      //this.passDataSectionCover.tableData = this.underwritingservice.getUWCoverageInfo();
+      this.passDataDeductibles.tableData = this.underwritingservice.getUWCoverageDeductibles();
       //this.passDataTotalPerSection.tableData = this.underwritingservice.getTotalPerSection();
+      this.underwritingservice.getUWCoverageInfos('','8').subscribe((data:any) => {
+        console.log(data)
+        var infoData = data.policy.project.coverage.sectionCovers;
+
+          for(var i = 0; i < infoData.length;i++){
+            this.passDataSectionCover.tableData.push(infoData[i]);
+          }
+
+          this.table.refreshTable();
+
+      });
 
     } else {
       this.passDataDeductibles.tableData = this.underwritingservice.getUWCoverageDeductibles();
@@ -303,20 +318,25 @@ export class PolCoverageComponent implements OnInit {
 
   getDeductibles(){
     this.deductiblesTable.loadingFlag = true;
+    this.passDataDeductibles.nData.coverCd = this.table.indvSelect.coverCd;
     let params : any = {
-      policyId:8,
+      policyId:this.policyId,
       policyNo:'',
-      coverCd:'',
+      coverCd:this.table.indvSelect.coverCd,
       endtCd: 0
     }
     this.underwritingservice.getUWCoverageDeductibles(params).subscribe(data=>{
       console.log(data);
-      this.passDataDeductibles.tableData = data['policy']['deductibles'].filter(a=>{
-        a.createDate = this.ns.toDateTimeString(a.createDate);
-        a.updateDate = this.ns.toDateTimeString(a.updateDate);
-        a.updateUser = JSON.parse(window.localStorage.currentUser).username;
-        return true;
-      });
+      if(data['policy']!==null){
+        this.passDataDeductibles.tableData = data['policy']['deductibles'].filter(a=>{
+          a.createDate = this.ns.toDateTimeString(a.createDate);
+          a.updateDate = this.ns.toDateTimeString(a.updateDate);
+          a.updateUser = JSON.parse(window.localStorage.currentUser).username;
+          return true;
+        });
+      }
+      else
+        this.passDataDeductibles.tableData = [];
       this.deductiblesTable.refreshTable();
     });
   }
@@ -324,7 +344,7 @@ export class PolCoverageComponent implements OnInit {
   saveDeductibles(){
     this.deductiblesTable.loadingFlag = true;
     let params:any = {
-      policyId:8,
+      policyId:this.policyId,
       saveDeductibleList: [],
       deleteDeductibleList:[]
     };
@@ -345,7 +365,7 @@ export class PolCoverageComponent implements OnInit {
 
   clickDeductiblesLOV(data){
     if(data.key=="deductibleCd"){
-      this.lovCheckBox = false;
+      this.lovCheckBox = true;
       this.passLOVData.selector = 'deductibles';
       this.passLOVData.lineCd = 'CAR'//this.quotationNum.substring(0,3);
       this.passLOVData.params = {
@@ -355,26 +375,35 @@ export class PolCoverageComponent implements OnInit {
       }
       this.passLOVData.hide = this.passDataDeductibles.tableData.filter((a)=>{return !a.deleted}).map(a=>a.deductibleCd);
       this.lovRowData = data.data;
-    }else if(data.key == 'coverCdDesc'){
-      this.passLOVData.selector = 'otherRates';
-      this.lovCheckBox = true;
-
-
     }
     this.lov.openLOV();
   }
 
   setSelected(data){
     if(data.selector == 'deductibles'){
-      this.lovRowData.deductibleTitle = data.data.deductibleTitle;
-      this.lovRowData.deductibleRt = data.data.deductibleRate;
-      this.lovRowData.deductibleAmt = data.data.deductibleAmt;
-      this.lovRowData.deductibleTxt = data.data.deductibleText;
-      this.lovRowData.edited = true;
-      this.lovRowData.deductibleCd = data.data.deductibleCd;
+      // this.lovRowData.deductibleTitle = data.data.deductibleTitle;
+      // this.lovRowData.deductibleRt = data.data.deductibleRate;
+      // this.lovRowData.deductibleAmt = data.data.deductibleAmt;
+      // this.lovRowData.deductibleTxt = data.data.deductibleText;
+      // this.lovRowData.edited = true;
+      // this.lovRowData.deductibleCd = data.data.deductibleCd;
+      this.passDataDeductibles.tableData = this.passDataDeductibles.tableData.filter(a=>a.showMG!=1);
+      for(var i = 0; i<data.data.length;i++){
+        this.passDataDeductibles.tableData.push(JSON.parse(JSON.stringify(this.passDataDeductibles.nData)));
+        this.passDataDeductibles.tableData[this.passDataDeductibles.tableData.length -1].deductibleTitle = data.data[i].deductibleTitle;
+        this.passDataDeductibles.tableData[this.passDataDeductibles.tableData.length -1].deductibleRt = data.data[i].deductibleRate;
+        this.passDataDeductibles.tableData[this.passDataDeductibles.tableData.length -1].deductibleAmt = data.data[i].deductibleAmt;
+        this.passDataDeductibles.tableData[this.passDataDeductibles.tableData.length -1].deductibleTxt = data.data[i].deductibleText;
+        this.passDataDeductibles.tableData[this.passDataDeductibles.tableData.length -1].edited = true;
+        this.passDataDeductibles.tableData[this.passDataDeductibles.tableData.length -1].deductibleCd = data.data[i].deductibleCd;
+        this.passDataDeductibles.tableData[this.passDataDeductibles.tableData.length - 1].showMG = 0;
+      }
     }else if (data.selector == 'otherRates'){
 
     }
+    this.deductiblesTable.refreshTable();
   }
+
+
 
 }

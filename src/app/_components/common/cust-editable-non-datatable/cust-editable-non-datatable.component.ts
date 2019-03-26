@@ -193,9 +193,9 @@ export class CustEditableNonDatatableComponent implements OnInit {
         // this.addFiller();
         if(this.passData.nData !== undefined)
             this.passData.nData.add = true;
-
         //temporary fix delete this later
-        setTimeout(()=>{this.refreshTable()},2000);
+        setTimeout(()=>{this.refreshTable()},2000)
+        
     }
 
     processData(key: any, data: any) {
@@ -203,7 +203,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     onClickAdd(event) {
-
         this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
         this.passData.tableData[this.passData.tableData.length-1].edited = true;
         this.unliTableLength();    
@@ -229,7 +228,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
            }else {
                this.passData.tableData = this.passData.tableData.filter(a => a!= this.selected[i])
            }
-           
         }
         this.selectAllFlag = false;
         this.form.control.markAsDirty();
@@ -425,8 +423,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
             delete this.passData.tableData.index;
             delete this.passData.tableData.lovInput;
         });
-
-        
     }
 
 

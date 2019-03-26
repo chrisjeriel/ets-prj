@@ -24,7 +24,7 @@
 <fieldset class="scheduler-border">
   <legend class="scheduler-border">Section Covers</legend>
   <div class="test" style="margin-top: 0px !important; margin-bottom: 2px;">
-    <app-cust-editable-non-datatable [passData]="passDataSectionCover"></app-cust-editable-non-datatable>
+    <app-cust-editable-non-datatable #sectionCover  [passData]="passDataSectionCover"></app-cust-editable-non-datatable>
   </div>
 </fieldset>
 
@@ -214,7 +214,7 @@
     <div class="row">
       <div class="col-sm-1"></div>
       <div class="col-sm-10" style="margin-bottom: -23px;">
-        <app-cust-editable-non-datatable [passData]="passData2"></app-cust-editable-non-datatable>
+        <app-cust-editable-non-datatable [passData]="passDataTotal"></app-cust-editable-non-datatable>
         <br />   
       </div>
       <div class="col-sm-1"></div>
@@ -351,7 +351,7 @@
     
 </div>
 
-<app-modal class="hidden">
+<app-modal class="hidden" id="CAT">
     <div header>CAT Perils Exposure</div>
     <div body style=" margin-top: -10px !important; width: 400px ! important">
        <app-cust-editable-non-datatable [passData]="passDataCATPerils"></app-cust-editable-non-datatable>
@@ -410,7 +410,7 @@
   </div>
 </app-modal>
 
-<app-lov id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)" [lovCheckBox]="lovCheckBox"></app-lov>
+<app-lov id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)" [lovCheckBox]="true"></app-lov>
 <app-sucess-dialog id="deductibles-success" [icon]="dialogIcon" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 
   <!-- <div contenteditable="true" [innerHTML]="textArea | safeText: 'html'" style="border: 1px solid;">

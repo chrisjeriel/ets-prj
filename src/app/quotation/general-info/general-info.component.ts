@@ -845,6 +845,17 @@ export class GeneralInfoComponent implements OnInit {
 		this.quotationService.getQuoteOptions(this.genInfoData.quoteId).subscribe((data)=>{
 			if(data['quotation'] !== null){
 				this.enblEndtTab.emit(true);
+				let alopFlag = false;
+		           if(data['quotation'] !== null)
+		           first:for(let option of data['quotation'].optionsList){
+		             for(let otherRate of option.otherRatesList){
+		               if(otherRate.section == 'III'){
+		                 alopFlag = true;
+		                 break first;
+		               }
+		             }
+		           }
+		           this.quoteInfo.showAlop = alopFlag;
 			}
 			console.log(data);
 		})
