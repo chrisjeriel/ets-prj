@@ -116,7 +116,7 @@ export class MtnRiskComponent implements OnInit {
       });
   }
 
-  checkCode(code, ev) {
+  checkCode(code, id, ev) {
     if(code.trim() === ''){
       this.selectedData.emit({
         riskId: '',
@@ -130,7 +130,7 @@ export class MtnRiskComponent implements OnInit {
         ev: ev
       });
 
-      $('#riskMdl > #modalBtn').trigger('click');
+      $(id + ' #modalBtn').trigger('click');
     } else {
       this.maintenanceService.getMtnRisk(code).subscribe(data => {
         if(data['risk'] != null) {
@@ -143,7 +143,7 @@ export class MtnRiskComponent implements OnInit {
             ev: ev
           });
 
-          $('#riskMdl > #modalBtn').trigger('click');
+          $(id + ' #modalBtn').trigger('click');
         }
         
       });
