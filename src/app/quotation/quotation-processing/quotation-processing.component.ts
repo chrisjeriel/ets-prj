@@ -724,11 +724,9 @@ showCedingCompanyIntCompLOV() {
                     cedingRepId: '',
                     createDate: currentDate,
                     createUser: 'USER', //JSON.parse(window.localStorage.currentUser).username,
-                    option: '',
                     quoteId: data['quoteId'],
                     updateDate: currentDate,
                     updateUser: 'USER', //JSON.parse(window.localStorage.currentUser).username,
-                    wordings: ''
                 }];
 
                 this.quotationService.saveQuoteCompetition(internalCompParams).subscribe((result: any) => {

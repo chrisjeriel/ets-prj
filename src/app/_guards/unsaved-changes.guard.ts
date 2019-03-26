@@ -8,8 +8,12 @@ export interface CanComponentDeactivate {
 
 export class UnsavedChangesGuard implements CanDeactivate<CanComponentDeactivate> {
   canDeactivate(component: CanComponentDeactivate):Observable<boolean> | Promise<boolean> | boolean {
-  	if($('.ng-dirty').length != 0 && !confirm("Leave without saving changes?")){
-    	return false;
+
+  	if( $('.cancel-mdl-header').length != 1 && $('.ng-dirty').length != 0 ){
+  		if(!confirm("Leave without saving changes?"))
+    		return false;
+    	else
+    		return true;
   	}
     else
     	return true;

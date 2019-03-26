@@ -144,6 +144,7 @@ export class CustNonDatatableComponent implements OnInit {
         this.addFiller();
         //this.appComponent.ngOnInit();
         this.loadingTableFlag = false;
+        this.selected = [];
     }
 
     ngOnInit(): void {
@@ -209,6 +210,7 @@ export class CustNonDatatableComponent implements OnInit {
                 }
             }
         }
+
         //temporary fix delete this later
         setTimeout(()=>{this.refreshTable()},2000)
     }
@@ -254,38 +256,71 @@ export class CustNonDatatableComponent implements OnInit {
         });
     }
     onRowClick(event, data) {
-        if(data !== null){
-            this.nullRow = false;
-            if( Object.entries(data).length !== 0){
-                if(data[this.nullKey] !== null){
-                    this.btnDisabled = false;
-                    if(this.indvSelect == data){
-                        this.unselect = true;
-                        this.btnDisabled = true;
-                        this.indvSelect = "";
-                        data = {};
-                    }else{
-                        this.indvSelect = data;
+        if(this.passData.checkFlag === undefined || !this.passData.checkFlag){
+            if(data !== null){
+                this.nullRow = false;
+                if( Object.entries(data).length !== 0){
+                    if(data[this.nullKey] !== null){
+                        this.btnDisabled = false;
+                        if(this.indvSelect == data){
+                            this.unselect = true;
+                            this.btnDisabled = true;
+                            this.indvSelect = "";
+                            data = {};
+                        }else{
+                           /* if(this.passData.checkFlag !== undefined && this.passData.checkFlag){
+                                console.log('here');
+                                this.removeSelected(event, data);
+                            }*/
+                            this.indvSelect = data;
+                        }
                     }
                 }
+                else{
+                     this.indvSelect = "";
+                 }
+                /*for(var i = 0; i < event.target.parentElement.children.length; i++) {
+                    event.target.parentElement.children[i].style.backgroundColor = "";
+                }
+                event.target.parentElement.parentElement.style.backgroundColor = "#67b4fc";
+                console.log(event.target.parentElement.parentElement);*/
             }
             else{
                  this.indvSelect = "";
-             }
-            /*for(var i = 0; i < event.target.parentElement.children.length; i++) {
-                event.target.parentElement.children[i].style.backgroundColor = "";
+                 this.nullRow = true;
             }
-            event.target.parentElement.parentElement.style.backgroundColor = "#67b4fc";
-            console.log(event.target.parentElement.parentElement);*/
+            //console.log(this.displayData);
+            //console.log(this.passData.tableData);
+            //console.log(this.indvSelect);
+            this.rowClick.emit(data);
+        }
+    }
+
+    selectAll(value){
+        if(value){
+            this.selected = [];
+             for (let data of this.displayData) {
+                if(data != this.fillData){
+                    console.log('test');
+                    data.checked = value;
+                    this.selected.push(data);
+                }
+            }
+            this.rowClick.emit(this.selected);
+            this.refreshTable();
         }
         else{
-             this.indvSelect = "";
-             this.nullRow = true;
+            this.displayData = this.displayData.filter((a) => {
+                if(a !== null){
+                   a.checked = false; 
+                   return true;
+                } 
+            });
+            this.rowClick.emit({});
+            this.selected = [];
+            this.refreshTable();
         }
-        //console.log(this.displayData);
-        //console.log(this.passData.tableData);
-        //console.log(this.indvSelect);
-        this.rowClick.emit(data);
+         
     }
     
     highlight(data){
@@ -298,6 +333,7 @@ export class CustNonDatatableComponent implements OnInit {
         }else{
             this.selected.push(data);
         }
+        this.rowClick.emit(this.selected);
         
     }
     onRowDblClick(event,data) {
