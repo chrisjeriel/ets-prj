@@ -14,10 +14,10 @@
 				<div>Coverage</div>
 			</ng-template>
 			<ng-template ngbTabContent>
-				<app-coverage [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag"></app-coverage>
+				<app-coverage [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag" (enblQuoteOpTab)="enblQuoteOpTab=$event"></app-coverage>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab [disabled]="quoteInfo.quoteId == ''">
+		<ngb-tab [disabled]="quoteInfo.quoteId == ''|| false">
 			<ng-template ngbTabTitle>
 				<div>Quote Option</div>
 			</ng-template>

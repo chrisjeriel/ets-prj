@@ -103,7 +103,6 @@ export class UnderwritingService {
          const params = new HttpParams()
              .set('policyNo', (policyNo === null || policyNo === undefined ? '' : policyNo) )
              .set('policyId',(policyId === null || policyId === undefined ? '' : policyId) )
-        //return   this.http.get("http://localhost:8888/api/undewriting-service/retrievePolCoverage",{params});
         return  this.http.get(environment.prodApiUrl + "/undewriting-service/retrievePolCoverage",{params});
     }
 

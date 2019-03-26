@@ -45,6 +45,7 @@ export class QuotationComponent implements OnInit {
 	header: string;
 	showAlop:boolean = false;
 	enblEndtTab:boolean = false;
+	enblQuoteOpTab:boolean = false;
 
 	ngOnInit() {
 		this.sub = this.route.params.subscribe(params => {

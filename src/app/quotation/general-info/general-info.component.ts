@@ -174,6 +174,7 @@ export class GeneralInfoComponent implements OnInit {
 	tempQuoteIdInternalComp = "";
 
 	@Output() enblEndtTab = new EventEmitter<any>(); //Paul
+	//@Output() enblQuoteOpTab = new EventEmitter<any>(); //EJVA
 
 	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title,
 			    private route: ActivatedRoute, private maintenanceService: MaintenanceService, private ns: NotesService) { }
