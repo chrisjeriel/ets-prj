@@ -657,13 +657,14 @@ export class QuotationService {
     }
 
 
-    getALOPItemInfos(car: string, quoteId: string, quotationNo?: any) {
+    getALOPItemInfos(car: string, quoteId: string, optionId: any, quotationNo?: any) {
         if (car == "CAR") {
             this.aLOPItemInfos.forEach(function (itm) { delete itm.relativeImportance; });
         }
         const params = new HttpParams()
              .set('quotationNo', (quotationNo === null || quotationNo === undefined ? '' : quotationNo) )
              .set('quoteId',(quoteId === null || quoteId === undefined ? '' : quoteId) )
+             .set('optionId',(optionId === null || optionId === undefined ? '' : optionId) )
         return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuoteAlopItem',{params});
     }
 

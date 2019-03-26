@@ -1,9 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input,  ViewChild} from '@angular/core';
 import { UnderwritingService } from '@app/_services/underwriting.service';
 import { UnderwritingCoverageInfo, CoverageDeductibles } from '@app/_models';
 import { Title } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute } from '@angular/router';
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
+
 
 @Component({
   selector: 'app-pol-coverage',
@@ -11,7 +13,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./pol-coverage.component.css']
 })
 export class PolCoverageComponent implements OnInit {
-
+  @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   private underwritingCoverageInfo: UnderwritingCoverageInfo;
   tableData: any[] = [];
   tableData2: any[] = [];
@@ -30,18 +32,19 @@ export class PolCoverageComponent implements OnInit {
   infoFlag;
 
   passDataSectionCover: any = {
+        tableData: [],
         tHeader: ["Cover Code", "Section", "Bullet No", "Sum Insured", "Rate", "Premium", "Add Sl"],
         dataTypes: [
-                    "text", "select", "select", "currency", "percent", "currency", "checkbox"
+                    "text", "text", "text", "currency", "percent", "currency", "checkbox"
                    ],
-        opts: [{ selector: "section", vals: ["I", "II", "III"] }, { selector: "bulletNo", vals: ["1", "1.2", "1.3"] }],
         checkFlag:true,
         addFlag:true,
         deleteFlag:true,
         pageLength: 10,
         searchFlag:true,
         magnifyingGlass: ['coverCode'],
-        widths:[228,1,1,200,1,1,1]
+        widths:[228,1,1,200,1,1,1],
+        keys:['coverCd','section','bulletNo','sumInsured','premRt','premAmt','addSi']
     };
 
 
@@ -136,9 +139,20 @@ export class PolCoverageComponent implements OnInit {
   ngOnInit() {
     this.titleService.setTitle("Pol | Coverage");
     if (!this.alteration) {
-      this.passDataSectionCover.tableData = this.underwritingservice.getUWCoverageInfo();
+      //this.passDataSectionCover.tableData = this.underwritingservice.getUWCoverageInfo();
       this.passDataDeductibles.tableData = this.underwritingservice.getUWCoverageDeductibles();
       //this.passDataTotalPerSection.tableData = this.underwritingservice.getTotalPerSection();
+      this.underwritingservice.getUWCoverageInfos('','8').subscribe((data:any) => {
+        console.log(data)
+        var infoData = data.policy.project.coverage.sectionCovers;
+
+          for(var i = 0; i < infoData.length;i++){
+            this.passDataSectionCover.tableData.push(infoData[i]);
+          }
+
+          this.table.refreshTable();
+
+      });
 
     } else {
       this.passDataDeductibles.tableData = this.underwritingservice.getUWCoverageDeductibles();

@@ -94,6 +94,19 @@ export class UnderwritingService {
         return this.uwcoverageInfoData;
     }
 
+    getUWCoverageInfos(policyNo:any , policyId: string) {
+        /*this.uwcoverageInfoData = [
+            new UnderwritingCoverageInfo("1", "I", "3", "1000000", "12.2", "69000", "70000"),
+            new UnderwritingCoverageInfo("2", 'II', "2", "150000", "15.16", "123000", "456000")
+        ];*/
+
+         const params = new HttpParams()
+             .set('policyNo', (policyNo === null || policyNo === undefined ? '' : policyNo) )
+             .set('policyId',(policyId === null || policyId === undefined ? '' : policyId) )
+        //return   this.http.get("http://localhost:8888/api/undewriting-service/retrievePolCoverage",{params});
+        return  this.http.get(environment.prodApiUrl + "/undewriting-service/retrievePolCoverage",{params});
+    }
+
     getUWCoverageDeductibles() {
         this. uwCoverageDeductible = [
             new CoverageDeductibles("AOG30", "ACTS OF GOD 30", 0.50 ,null, "Acts of Nature - Php 1,800,000.00 each and every loss"),
