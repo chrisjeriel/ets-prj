@@ -245,8 +245,8 @@ export class GeneralInfoComponent implements OnInit {
 
 				if(data['project'] != null) {
 					this.project = data['project'];
-					this.project.createDate = this.dateParser(this.project.createDate);
-					this.project.updateDate = this.dateParser(this.project.updateDate);
+					this.project.createDate = this.ns.toDateTimeString(this.project.createDate);
+					this.project.updateDate = this.ns.toDateTimeString(this.project.updateDate);
 				}
 
 
