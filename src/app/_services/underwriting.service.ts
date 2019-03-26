@@ -447,4 +447,22 @@ export class UnderwritingService {
         return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMaintenanceCedingCompany',{params});
     }
 
+    savePolAttachment(policyId:number ,savePolAttachments: any[], deletePolAttachments: any[]){
+        /*const params = new HttpParams()
+             .set('quoteId',quoteId.toString())
+             .set('attachmentsList',JSON.stringify(attachmentList))*/
+             
+        let params:any  = {
+            policyId: policyId,
+            savePolAttachments: savePolAttachments,
+            deletePolAttachments: deletePolAttachments
+        }
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolAttachment', JSON.stringify(params), header);
+    }
+
 }            
