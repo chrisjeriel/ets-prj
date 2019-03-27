@@ -201,7 +201,7 @@ export class GeneralInfoComponent implements OnInit {
 			this.sub = this.route.params.subscribe(params => {
 				this.from = params['from'];
 				if (this.from == "quo-processing") {
-					this.typeOfCession = params['typeOfCession'];
+					//this.typeOfCession = params['typeOfCession'];
 					this.quotationNo = (this.quoteInfo.quotationNo === '') ? params['quotationNo'] : this.quoteInfo.quotationNo;
 
 					if(params['exclude'] != undefined) {
@@ -245,8 +245,8 @@ export class GeneralInfoComponent implements OnInit {
 
 				if(data['project'] != null) {
 					this.project = data['project'];
-					this.project.createDate = this.dateParser(this.project.createDate);
-					this.project.updateDate = this.dateParser(this.project.updateDate);
+					this.project.createDate = this.ns.toDateTimeString(this.project.createDate);
+					this.project.updateDate = this.ns.toDateTimeString(this.project.updateDate);
 				}
 
 
@@ -632,7 +632,7 @@ export class GeneralInfoComponent implements OnInit {
 			"updateUser"	: this.genInfoData.updateUser
 		}
 
-		if(this.quotationService.toGenInfo[0] === 'edit' && this.savingType === 'normal') {
+		if(this.quotationService.toGenInfo[0] === 'edit') {
 			saveQuoteGeneralInfoParam.updateUser = 'USER'; //JSON.parse(window.localStorage.currentUser).username;
 			saveQuoteGeneralInfoParam.updateDate = this.ns.toDateTimeString(0);
 			saveQuoteGeneralInfoParam.prjUpdateUser = 'USER'; //JSON.parse(window.localStorage.currentUser).username;

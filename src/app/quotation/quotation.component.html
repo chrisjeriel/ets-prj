@@ -59,7 +59,7 @@
 				<app-attachment [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag"></app-attachment>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab id="approval-tab" [disabled]="inquiryFlag">
+		<ngb-tab *ngIf="!inquiryFlag" id="approval-tab" [disabled]="quoteInfo.quoteId == ''">
 
 			<ng-template #content>
 				<div class="modal-header">
@@ -155,8 +155,8 @@
 			</ng-template>
 
 			<ng-template ngbTabTitle>
-				<div *ngIf="!inquiryFlag" (click)="showApprovalModal(content)">Approval</div>
-				<div *ngIf="inquiryFlag">Approval</div>
+				<div *ngIf="!inquiryFlag && quoteInfo.quoteId != ''" (click)="showApprovalModal(content)">Approval</div>
+				<div *ngIf="!inquiryFlag && quoteInfo.quoteId == ''">Approval</div>
 			</ng-template>
 
 		</ngb-tab>

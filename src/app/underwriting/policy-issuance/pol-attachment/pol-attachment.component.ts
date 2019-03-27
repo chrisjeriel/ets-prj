@@ -1,7 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { PolAttachmentInfo } from '@app/_models';
-import { UnderwritingService } from '@app/_services';
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { UnderwritingService, NotesService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 
 @Component({
@@ -13,13 +15,12 @@ import { Title } from '@angular/platform-browser';
 export class PolAttachmentComponent implements OnInit {
 
     @Input() alterationFlag: true;
-    
-    tableData: any[] = [];
-    tHeader: any[] = ["File Path", "Description", "Actions"];
-    nData: PolAttachmentInfo = new PolAttachmentInfo(null, null);
+
+    @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
+    @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
     
     attachmentData: any = {
-        tableData: this.underwritingService.getPolAttachment(),
+        tableData: [],
         tHeader: ['File Name', 'Description', 'Actions'],
         dataTypes: ['string', 'string', 'Actions'],
         nData: new PolAttachmentInfo(null, null),
@@ -29,17 +30,82 @@ export class PolAttachmentComponent implements OnInit {
         searchFlag: true,
         infoFlag: true,
         paginateFlag: true,
-        pageLength: 10
+        pageLength: 10,
+        keys: ['fileName', 'description'],
+        widths: ['auto', 'auto', 1]
     }
 
-    constructor(config: NgbDropdownConfig, private underwritingService: UnderwritingService, private titleService: Title) {
+    savedData: any[];
+    deletedData: any[];
+
+    constructor(config: NgbDropdownConfig, private underwritingService: UnderwritingService, private titleService: Title, private notes: NotesService) {
         config.placement = 'bottom-right';
         config.autoClose = false;
     }
 
     ngOnInit() {
         this.titleService.setTitle("Pol | Attachment");
-        this.tableData = this.underwritingService.getPolAttachment();
+        this.retrievePolAttachment();
+    }
+
+    retrievePolAttachment(){
+        this.underwritingService.getPolAttachment('8','CAR-2019-1-001-1-1').subscribe((data: any) =>{
+            console.log(data);
+            if(data.polAttachmentList !== null){
+                for(var i of data.polAttachmentList.attachments){
+                    this.attachmentData.tableData.push(i);
+                }
+                this.table.refreshTable();
+            }
+        });
+    }
+
+    cancelFlag: boolean;
+    dialogMessage: string = "";
+    dialogIcon: string = "";
+
+    saveData(cancelFlag?){
+
+        this.cancelFlag = cancelFlag !== undefined;  
+
+        this.savedData = [];
+        this.deletedData = [];
+        for (var i = 0 ; this.attachmentData.tableData.length > i; i++) {
+          if(this.attachmentData.tableData[i].edited && !this.attachmentData.tableData[i].deleted){
+              this.savedData.push(this.attachmentData.tableData[i]);
+              this.savedData[this.savedData.length-1].createDate = this.notes.toDateTimeString(0);
+              this.savedData[this.savedData.length-1].createUser = JSON.parse(window.localStorage.currentUser).username;
+              this.savedData[this.savedData.length-1].updateDate = this.notes.toDateTimeString(0);
+              this.savedData[this.savedData.length-1].updateUser = JSON.parse(window.localStorage.currentUser).username;
+          }
+          else if(this.attachmentData.tableData[i].edited && this.attachmentData.tableData[i].deleted){
+             this.deletedData.push(this.attachmentData.tableData[i]);
+             this.deletedData[this.deletedData.length-1].createDate = this.notes.toDateTimeString(0);
+             this.deletedData[this.deletedData.length-1].updateDate = this.notes.toDateTimeString(0);
+          }
+
+        }
+        this.underwritingService.savePolAttachment(8,this.savedData,this.deletedData).subscribe((data: any) => {
+          console.log(data);
+          if(data.returnCode === 0){
+              this.dialogMessage="The system has encountered an unspecified error.";
+              this.dialogIcon = "error";
+              $('#polAttachment > #successModalBtn').trigger('click');
+          }else{
+              this.dialogMessage="";
+              this.dialogIcon = "";
+              $('#genInfo > #successModalBtn').trigger('click');
+              this.table.refreshTable();
+          }
+        });
+    }
+
+    cancel(){
+        this.cancelBtn.clickCancel();
+    }
+
+    onClickSave(){
+       $('#confirm-save #modalBtn2').trigger('click');
     }
 
 }
