@@ -702,16 +702,17 @@ showCedingCompanyIntCompLOV() {
             "cedingId": this.copyCedingId,
             "copyingType": 'internalComp',
             "createDate": currentDate,
-            "createUser": 'USER', //JSON.parse(window.localStorage.currentUser).username,
+            "createUser": JSON.parse(window.localStorage.currentUser).username,
             "lineCd": this.copyQuoteLineCd,
             "quoteId": this.copyQuoteId,
             "quoteYear": new Date().getFullYear().toString(),
             "riskId": this.copyIntCompRiskId,
             "updateDate": currentDate,
-            "updateUser": 'USER', //JSON.parse(window.localStorage.currentUser).username,
+            "updateUser": JSON.parse(window.localStorage.currentUser).username,
         }
 
         this.quotationService.saveQuotationCopy(JSON.stringify(params)).subscribe(data => {
+            console.log(data);
             this.loading = false;            
 
             if(data['returnCode'] == -1) {
@@ -722,13 +723,15 @@ showCedingCompanyIntCompLOV() {
                 var internalCompParams: any[] = [{
                     adviceNo: 0,
                     cedingId: this.copyCedingId,
-                    cedingRepId: '',
+                    cedingRepId: 0,
                     createDate: currentDate,
-                    createUser: 'USER', //JSON.parse(window.localStorage.currentUser).username,
+                    createUser: JSON.parse(window.localStorage.currentUser).username,
                     quoteId: data['quoteId'],
                     updateDate: currentDate,
-                    updateUser: 'USER', //JSON.parse(window.localStorage.currentUser).username,
+                    updateUser: JSON.parse(window.localStorage.currentUser).username,
                 }];
+
+                console.log(JSON.stringify(internalCompParams));
 
                 this.quotationService.saveQuoteCompetition(internalCompParams).subscribe((result: any) => {
                     console.log(result);
