@@ -14,10 +14,10 @@
 				<div>Coverage</div>
 			</ng-template>
 			<ng-template ngbTabContent>
-				<app-coverage [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag"></app-coverage>
+				<app-coverage [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag" (enblQuoteOpTab)="enblQuoteOpTab=$event"></app-coverage>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab [disabled]="quoteInfo.quoteId == ''">
+		<ngb-tab [disabled]="quoteInfo.quoteId == ''|| false">
 			<ng-template ngbTabTitle>
 				<div>Quote Option</div>
 			</ng-template>
@@ -34,7 +34,7 @@
 				<app-quote-endorsement [quotationInfo]="quoteInfo" [endorsementType]="'General'" [inquiryFlag]="inquiryFlag"></app-quote-endorsement>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab *ngIf="(line=='CAR' || line=='EAR') && quoteInfo.showAlop || true" [disabled]="quoteInfo.quoteId == ''">
+		<ngb-tab *ngIf="(line=='CAR' || line=='EAR') && quoteInfo.showAlop" [disabled]="quoteInfo.quoteId == ''">
 	<!-- 	<ngb-tab> -->
 			<ng-template ngbTabTitle>
 				<div>ALOP</div>
@@ -59,7 +59,7 @@
 				<app-attachment [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag"></app-attachment>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab id="approval-tab" [disabled]="inquiryFlag">
+		<ngb-tab *ngIf="!inquiryFlag" id="approval-tab" [disabled]="quoteInfo.quoteId == ''">
 
 			<ng-template #content>
 				<div class="modal-header">
@@ -155,8 +155,8 @@
 			</ng-template>
 
 			<ng-template ngbTabTitle>
-				<div *ngIf="!inquiryFlag" (click)="showApprovalModal(content)">Approval</div>
-				<div *ngIf="inquiryFlag">Approval</div>
+				<div *ngIf="!inquiryFlag && quoteInfo.quoteId != ''" (click)="showApprovalModal(content)">Approval</div>
+				<div *ngIf="!inquiryFlag && quoteInfo.quoteId == ''">Approval</div>
 			</ng-template>
 
 		</ngb-tab>

@@ -81,7 +81,8 @@
         <button *ngIf="copyStatus == 0" class="cust-btn" type="button" (click)="modalService.dismissAll(); clearCopyFields();"><a>Cancel</a></button>
         <button *ngIf="copyStatus == 0 && copyCedingName != '' && copyRiskName != ''" class="cust-btn" type="button" (click)="copyOkBtn();"><a>Ok</a></button>
         <button *ngIf="copyStatus == 0 && (copyCedingName == '' || copyRiskName == '')" class="cust-btn cust-btn-disabled" type="button" [disabled]="true"><a>Ok</a></button>
-        <button *ngIf="copyStatus == 1" class="cust-btn" type="button" (click)="modalService.dismissAll(); copyStatus = 0;"><a>Ok</a></button>
+        <button *ngIf="copyStatus == 1" class="cust-btn" type="button" (click)="modalService.dismissAll(); copyStatus = 0;"><a>Cancel</a></button>
+        <button *ngIf="copyStatus == 1" class="cust-btn" type="button" (click)="modalService.dismissAll(); copyStatus = 0; copyModalToGenInfo(copyToQuotationNo)"><a>Ok</a></button>
     </div>
 </app-modal>
 <!-- End Copy Modal -->
@@ -154,8 +155,9 @@
     </div>
     <div footer class="text-center w-100">
         <button class="cust-btn" type="button" (click)="modalService.dismissAll(); clearAddFields();"><a>Cancel</a></button>
-        <button *ngIf="description != '' && typeOfCession != '' && riskName != ''" class="cust-btn" type="button" (click)="modalService.dismissAll(); nextBtnEvent();"><a>Next</a></button>
-        <button *ngIf="description == '' || typeOfCession == '' || riskName == ''" class="cust-btn cust-btn-disabled" type="button" [disabled]="true"><a>Next</a></button>
+        <!-- <button *ngIf="description != '' && typeOfCession != '' && riskName != ''" class="cust-btn" type="button" (click)="modalService.dismissAll(); nextBtnEvent();"><a>Next</a></button>
+        <button *ngIf="description == '' || typeOfCession == '' || riskName == ''" class="cust-btn cust-btn-disabled" type="button" [disabled]="true"><a>Next</a></button> -->
+        <button [class.cust-btn-disabled]="description == '' || typeOfCession == '' || riskName == ''" class="cust-btn" type="button" (click)="modalService.dismissAll(); nextBtnEvent();"><a>Next</a></button>
     </div>
 </app-modal>
 
@@ -204,8 +206,8 @@
 </app-modal>
 <!-- End Modification or Internal Competition Modal -->
 
-<app-mtn-risk id="riskLOV" (selectedData)="setRisks($event)"></app-mtn-risk>
-<app-mtn-risk id="copyRiskLOV" (selectedData)="setCopyRisks($event)"></app-mtn-risk>
+<app-mtn-risk id="riskLOV" #riskLOV (selectedData)="setRisks($event)"></app-mtn-risk>
+<app-mtn-risk id="copyRiskLOV" #copyRiskLOV (selectedData)="setCopyRisks($event)"></app-mtn-risk>
 <app-ceding-company id="cedingCompanyLOV" (selectedData)="setCedingcompany($event)"></app-ceding-company>
 <app-ceding-company id="cedingCompanyIntCompLOV" (selectedData)="setCedingIntCompCompany($event)" [exclude]="exclude"></app-ceding-company>
 <app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>

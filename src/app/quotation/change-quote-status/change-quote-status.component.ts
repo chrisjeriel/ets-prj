@@ -1,10 +1,14 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { NgbModal, NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
-import { QuotationService } from '@app/_services';
+import { QuotationService, NotesService, MaintenanceService } from '@app/_services';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { environment } from '@environments/environment';
+import { MtnTypeOfCessionComponent } from '@app/maintenance/mtn-type-of-cession/mtn-type-of-cession.component';
+import { MtnRiskComponent } from '@app/maintenance/mtn-risk/mtn-risk.component';
+import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
+
 
 @Component({
     selector: 'app-change-quote-status',
@@ -14,6 +18,10 @@ import { environment } from '@environments/environment';
 export class ChangeQuoteStatusComponent implements OnInit {
     @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
     @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+    @ViewChild(MtnTypeOfCessionComponent) typeOfCessionLov: MtnTypeOfCessionComponent;
+    @ViewChildren(MtnRiskComponent) riskLovs: QueryList<MtnTypeOfCessionComponent>;
+    @ViewChildren(CedingCompanyComponent) cedingCoLovs: QueryList<CedingCompanyComponent>;
+
     tHeader: any[] = [];
     tableData: any[] = [];
     saveData: any = {
@@ -29,6 +37,13 @@ export class ChangeQuoteStatusComponent implements OnInit {
     dialogMessage:string = "";
     dialogIcon: string = "";
     cancelFlag:boolean;
+    typeOfCessionId = "";
+    typeOfCession = "";
+    riskCd: string = "";
+    riskName: string = "";
+    cedingId: any = "";
+    cedingName: any = "";
+    first = false;
 
     selectedData : any ={
         quotationNo: null,
@@ -56,7 +71,7 @@ export class ChangeQuoteStatusComponent implements OnInit {
       keys: ['quotationNo','cessionDesc','cedingName','insuredDesc','riskName']
     };
 
-    constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, config: NgbDropdownConfig,) {
+    constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, config: NgbDropdownConfig, private ns: NotesService, private maintenanceService: MaintenanceService) {
         config.placement = 'bottom-right';
         config.autoClose = false;
     }
@@ -64,7 +79,8 @@ export class ChangeQuoteStatusComponent implements OnInit {
     ngOnInit() {
         this.titleService.setTitle("Quo | Change Quote Status");
         //setTimeout(function () { $('#modalBtn').trigger('click'); }, 100);        
-
+        this.first = true;
+        //this.query();
         this.getChangeQuote();
         
     }
@@ -84,8 +100,6 @@ export class ChangeQuoteStatusComponent implements OnInit {
                         riskName: (rec.project == null) ? '' : rec.project.riskName
                     }
                 );
-
-
             }
             this.table.refreshTable();
         });
@@ -185,7 +199,7 @@ export class ChangeQuoteStatusComponent implements OnInit {
     }
 
     query() {
-        $('#modalBtn').trigger('click');
+        $('#searchQuote > #modalBtn').trigger('click');
     }
 
     onRowClick(data) {
@@ -230,6 +244,75 @@ export class ChangeQuoteStatusComponent implements OnInit {
     setReason(data){
         this.selectedData.reasonCd = data.code;
         this.selectedData.description = data.description;
+    }
+
+    showRiskLOV() {
+        $('#riskLOV #modalBtn').trigger('click');
+    }
+
+    showCedingCompanyLOV() {
+        $('#cedingCompanyLOV #modalBtn').trigger('click');
+    }
+
+    showTypeOfCessionLOV(){
+        $('#typeOfCessionLOV #modalBtn').trigger('click');
+    }
+
+    checkCode(ev, field){
+        this.ns.lovLoader(ev, 1);
+
+        if(field === 'typeOfCession'){
+            this.typeOfCessionLov.checkCode(this.typeOfCessionId, ev);
+        } else if(field === 'risk') {
+            this.riskLovs['first'].checkCode(this.riskCd, ev);
+        } else if(field === 'cedingCo') {
+            this.cedingCoLovs['first'].checkCode(this.cedingId, ev);
+        } 
+    }
+
+     setRisks(data){
+        this.riskCd = data.riskId;
+        this.riskName = data.riskName;
+        this.ns.lovLoader(data.ev, 0);
+        
+        if(data.hasOwnProperty('fromLOV')){
+            this.onClickAdd('#riskCd');   
+        }
+    }
+
+    setTypeOfCession(data) {        
+        this.typeOfCessionId = data.cessionId;
+        this.typeOfCession = data.description;
+        this.ns.lovLoader(data.ev, 0);
+        
+        if(data.hasOwnProperty('fromLOV')){
+            this.onClickAdd('#typeOfCessionId');    
+        } 
+    }
+
+    setCedingcompany(data){
+        this.cedingId = data.cedingId;
+        this.cedingName = data.cedingName;
+        this.ns.lovLoader(data.ev, 0);
+
+        if(data.hasOwnProperty('fromLOV')){
+              this.onClickAdd('#cedingId');
+        }        
+    }
+
+    onClickAdd(event) {
+        if(this.first){
+            this.maintenanceService.getMtnTypeOfCession(1).subscribe(data => {            
+                this.typeOfCessionId = data['cession'][0].cessionId;
+                this.typeOfCession = data['cession'][0].cessionAbbr;
+
+                this.first = false;
+            });
+        }
+        
+
+        $('#searchQuote > #modalBtn').trigger('click');
+        setTimeout(function() { $(event).focus(); }, 0);        
     }
 
 }
