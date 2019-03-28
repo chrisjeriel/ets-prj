@@ -255,11 +255,11 @@ export class UnderwritingService {
     }
 
 
-    getPolicyEndorsement() {
-        this.policyEndorsement = [
-            new PolicyEndorsement("", "code 101", "title", "remarks"),
-        ]
-        return this.policyEndorsement;
+    getPolicyEndorsement(policyId: string, policyNo: string) {
+        const params = new HttpParams()
+             .set('policyId', (policyId === null || policyId === undefined ? '' : policyId) )
+             .set('policyNo',(policyNo === null || policyNo === undefined ? '' : policyNo) )
+        return this.http.get(environment.prodApiUrl + "/underwriting-service/retrievePolEndt",{params}) ;
     }
 
     getPolicyDistListInfo() {

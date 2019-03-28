@@ -94,7 +94,7 @@ export class PolAttachmentComponent implements OnInit {
           }else{
               this.dialogMessage="";
               this.dialogIcon = "";
-              $('#genInfo > #successModalBtn').trigger('click');
+              $('#polAttachment > #successModalBtn').trigger('click');
               this.table.refreshTable();
           }
         });

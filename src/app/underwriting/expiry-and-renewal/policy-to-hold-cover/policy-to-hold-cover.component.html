@@ -140,7 +140,7 @@
                                             padding-left: 0px !important;
                                             padding-right: 3px !important;">
                                             <label class="form-control-sm col-sm-4">Period From</label>
-                                            <input type="date" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px;">
+                                            <input type="date" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px;" [ngModel]="periodFrom" (ngModelChange)="periodFrom = $event; test();">
                                         </div>
                                     </div>
                                     <div class="input-group" style="margin-top: -6px !important;">
