@@ -488,4 +488,11 @@ export class UnderwritingService {
         return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolAttachment', JSON.stringify(params), header);
     }
 
+    getPolicyInformation(policyId,policyNo?){
+        const params = new HttpParams()
+            .set('policyId',policyId===undefined?'':policyId)
+            .set('policyNo',policyNo===undefined?'':policyNo);
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolicyInformation',{params})
+    }
+
 }            
