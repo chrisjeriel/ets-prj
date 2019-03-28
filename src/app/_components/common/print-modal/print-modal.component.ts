@@ -12,10 +12,9 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 })
 export class PrintModalComponent implements OnInit {
   @ViewChild(ModalComponent) modal: ModalComponent;
-   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
-  @Output() onOk: EventEmitter<any[]> = new EventEmitter<any[]>();
-  @Output() onCancel: EventEmitter<any[]> = new EventEmitter<any[]>();
-
+  @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
+  @Output() selectedData: EventEmitter<any> = new EventEmitter();
+  @Input() printDefaultType: boolean;
 
   constructor(private modalService: NgbModal) { }
    reportsList: any[] = [
@@ -24,18 +23,20 @@ export class PrintModalComponent implements OnInit {
 								{val:"QUOTER009C", desc:"Risk Not Commensurate" },
 								{val:"QUOTER009D", desc:"Treaty Exclusion Letter" }
 					     ]
+   selected: any[] = [];
+
 					     
   selectWordingDisabled: boolean = true;
   selectPrinterDisabled: boolean = true;
   selectCopiesDisabled: boolean = true;
-  selectedReport: string = "Quotation Letter" ;
+  selectedReport: any = null;
   printType: string = "SCREEN";
   printName: any = null;
   printCopies: any = null;
   reportId: any = null;
+  wordingText: any = null;
 
   ngOnInit() {
-    
   }
  
 tabController(event) {
@@ -51,12 +52,20 @@ tabController(event) {
 tabSelectedReportController(event){
         if (this.selectedReport == this.reportsList[0].val){
           this.reportId = this.reportsList[0].val
+          $("a").removeClass('').addClass('disabled-a');
+          this.wordingText = null;
         } else if (this.selectedReport == this.reportsList[1].val){
           this.reportId = this.reportsList[1].val
+          $("a").removeClass('').addClass('disabled-a');
+          this.wordingText = null;
         } else if (this.selectedReport == this.reportsList[2].val){
           this.reportId = this.reportsList[2].val
+          $("a").removeClass('').addClass('disabled-a');
+          this.wordingText = null;
         } else if (this.selectedReport == this.reportsList[3].val){
           this.reportId = this.reportsList[3].val
+          $("a").removeClass('disabled-a').addClass('');
+          this.wordingText = null;
         }
 
 }
@@ -85,16 +94,60 @@ tabSelectedReportController(event){
         
     }
 
-   open(content?) {        
+   open(content?) { 
      this.modal.openNoClose();
     }
 
   reportsParamsLOV(){
-    $('#reportsParamLOV #modalBtn').trigger('click');
+    $('#reportsParamLOV #modalBtn').trigger('click') ;
   }
 
-  setReportsParams(){
-
+  setReportsParams(data){
+    if (this.isEmptyObject(data)){
+        this.wordingText = "";
+    } else {
+        this.wordingText = data.text;
+    }
+     $('#showPrintMenu #modalBtn').trigger('click');
   }
 
+  cancel($event){
+     $('#showPrintMenu #modalBtn').trigger('click');
+  }
+
+  isEmptyObject(obj) {
+      for(var prop in obj) {
+         if (obj.hasOwnProperty(prop)) {
+            return false;
+         }
+      }
+      return true;
+    }
+
+ okBtnClick($event){
+   this.selected.push(new SelectedData(this.selectedReport,this.printType, this.printName, this.printCopies, this.wordingText));
+   this.selectedData.emit(this.selected);
+   this.selected = [];
+ }
+
+}
+class SelectedData {
+  reportName: string;
+  printType: string;
+  printerName: string;
+  printCopies: number;
+  wordingTxt: string;
+
+  constructor(reportName: string,
+    printType: string,
+    printerName: string,
+    printCopies: number,
+    wordingTxt: string) {
+
+  this.reportName = reportName;
+  this.printType = printType;
+  this.printerName = printerName;
+  this.printCopies = printCopies;
+  this.wordingTxt = wordingTxt;
+  }
 }

@@ -5,9 +5,11 @@
                         <div class="container-fluid">
                              <fieldset class="scheduler-border" style="padding-left : 10px ! important; padding-right : 10px ! important; padding-bottom: 10px ! important">
                                 <div class="custom-row-inline-inset">
+
+                                 <ng-container >
                                     <div class="input-group" style="margin-bottom : -14px ! important">
                                     	<div class="col-sm-4" style="padding: 0">
-                                    		<div class="input-group" style="margin-bottom : -14px ! important">
+                                    		<div *ngIf="printDefaultType" class="input-group" style="margin-bottom : -14px ! important">
                                     			 <label class="form-control-sm" for="xx">Report</label>
                                     		</div>
                                     		<div class="input-group" style="margin-bottom : -14px ! important">
@@ -19,12 +21,12 @@
                                     		<div class="input-group" style="margin-bottom : -14px ! important">
                                     			<label class="form-control-sm" for="xx">No. of Copies</label>
                                     		</div>
-                                    		<div class="input-group" style="margin-bottom : -14px ! important">
+                                    		<div *ngIf="printDefaultType" class="input-group" style="margin-bottom : -14px ! important">
                                     			<label class="form-control-sm" for="xx">Wordings</label>
                                     		</div>
                                     	</div>
                                     	<div class ="col-sm" style="padding: 0">
-                                    		<div class="input-group" style="margin-bottom : 0px ! important">
+                                    		<div *ngIf="printDefaultType" class="input-group" style="margin-bottom : 0px ! important">
                                     			<select class="form-control form-control-sm cust-sm" [(ngModel)]="selectedReport" (change)="tabSelectedReportController($event);" appRequired>
 		                                           <option *ngFor="let report of reportsList" [value]="report.val">{{report.desc}}</option>
                                         		</select>
@@ -44,39 +46,21 @@
                                     	    <div class="input-group" style="margin-bottom : 0px ! important;  margin-top: 3px">
                                     			 <input type="text" id="noOfCopies" class="form-control form-control-sm text-right" appRequired onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [disabled]="selectCopiesDisabled" [(ngModel)]="printCopies">
                                     		</div>
-                                    		<div class="input-group" style="margin-bottom : 0px ! important;  margin-top: 8px">
-                                    			<input type="text" id="xx" class="form-control form-control-sm" appRequired disabled>
-												<div class="text-search-ico" ><a><i class="fa fa-search" (click)="reportsParamsLOV()"></i></a></div>
+                                    		<div *ngIf="printDefaultType" class="input-group" style="margin-bottom : 0px ! important;  margin-top: 8px">
+                                    			<input type="text" id="xx" class="form-control form-control-sm" appRequired disabled [(ngModel)]="wordingText" >
+												<div class="text-search-ico" ><a class="disabled-a"><i class="fa fa-search" (click)="reportsParamsLOV()"></i></a></div>
                                     		</div>
                                     	</div>	
                                     </div>
-
-<!--                                     <div class="input-group" style="margin-bottom : -14px ! important">
-                                        <label class="form-control-sm" for="xx">Destination</label>
-                                        <select class="form-control form-control-sm cust-sm" style="margin-left: 11px" [(ngModel)]="printType" (change)="tabController($event);" value="SCREEN">
-                                            <option value="SCREEN">Screen</option>
-                                            <option value="PDF">PDF</option>
-                                            <option value="PRINTER">Printer</option>
-                                        </select>
-                                    </div>
-                                    <div class="input-group" style="margin-bottom : -14px ! important">
-                                        <label class="form-control-sm" for="printerName" >Printer Name</label>
-                                        <select class="form-control form-control-sm cust-sm" id="printerName"  style="margin-left: 2px" appRequired [disabled]="selectPrinterDisabled" [(ngModel)]="printName">
-                                            <option value="Default">Default Printer</option>
-                                        </select>
-                                    </div>
-                                    <div class="input-group" style="margin-bottom : -14px ! important">
-                                        <label class="form-control-sm" for="xx">No. of Copies</label>
-                                        <input type="text" id="noOfCopies" class="form-control form-control-sm text-right" appRequired style="margin-left: 2px !important;" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [disabled]="selectCopiesDisabled" [(ngModel)]="printCopies">
-                                    </div> -->
+                                 </ng-container>
                                 </div>
                             </fieldset>
     
                         </div>
         </div>
         <div footer class="text-center w-100">
-                        <button class="cust-btn" type="button" (click)="modalService.dismissAll();this.onOk.emit();" [class.btnDisabled]="btnDisabled" [disabled]="btnDisabled"><a>Print</a></button>
-                        <button class="cust-btn" type="button" (click)="modalService.dismissAll();this.onCancel.emit()"><a>Cancel</a></button>
+                        <button class="cust-btn" type="button" (click)="modalService.dismissAll();okBtnClick($event);" [class.btnDisabled]="btnDisabled" [disabled]="btnDisabled"><a>Print</a></button>
+                        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
         </div>
 </app-modal>
-<app-mtn-reports-params id="reportsParamLOV" (selectedData)="setReportsParams($event)" [reportId]="this.reportId"></app-mtn-reports-params>
+<app-mtn-reports-params id="reportsParamLOV" (selectedData)="setReportsParams($event)" [reportId]="this.reportId" (cancel)="cancel($event)"></app-mtn-reports-params>

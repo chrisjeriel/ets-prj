@@ -16,10 +16,16 @@ export class ReadyForPrintingComponent implements OnInit {
   records: any[] = [];
 
   constructor(private quotationService: QuotationService, private router: Router, private modalService: NgbModal, private er: ElementRef, private http: HttpClient) { }
+  reportsList: any[] = [
+                                {val:"QUOTER009A", desc:"Quotation Letter" },
+                                {val:"QUOTER009B", desc:"RI Preparedness to Support Letter and RI Confirmation of Acceptance Letter" },
+                                {val:"QUOTER009C", desc:"Risk Not Commensurate" },
+                                {val:"QUOTER009D", desc:"Treaty Exclusion Letter" }];
+  defaultType: boolean = false;
   btnDisabled: boolean;
   selectPrinterDisabled: boolean = true;
   selectCopiesDisabled: boolean = true;
-  selectedReport: string ="QUOTER009A";
+  selectedReport: string;
   selectedOnOk: boolean;
   quoteNoCmp: any;
   quoteId: any;
@@ -248,6 +254,7 @@ export class ReadyForPrintingComponent implements OnInit {
   //Method for modal printing openning
   showPrintModal(){
     this.prepareData();
+    console.log(this.saveData);
     if(this.isEmptyObject(this.saveData.changeQuoteStatus)){
        this.dialogIcon = "error-message";
        this.dialogMessage = "Please select quotation(s)";
@@ -255,55 +262,28 @@ export class ReadyForPrintingComponent implements OnInit {
        $('#readyPrinting #successModalBtn').trigger('click');
        setTimeout(()=>{$('.globalLoading').css('display','none');},0);
     } else {
-       $('#showPrintMenu > #modalBtn').trigger('click');
+       $('#readyPrintingList > #printModalBtn').trigger('click');
     }
   }
 
-  //Method used to get value of dropsdown button
-  tabController(event) {
-        if (this.printType == 'SCREEN'){
-          this.refreshPrintModal(true);
-        } else if (this.printType == 'PRINTER'){
-          this.refreshPrintModal(false);
-        } else if (this.printType == 'PDF'){
-          this.refreshPrintModal(true);
-        }
-  }
 
   cancelModal(){
     this.btnDisabled = false;
   }
 
-  refreshPrintModal(condition : boolean){
-         if (condition){
-            this.selectPrinterDisabled = true;
-            this.selectCopiesDisabled = true;
-            this.btnDisabled = false;
-            $("#noOfCopies").val("");
-            $("#noOfCopies").css({"box-shadow": ""});
-            $("#printerName").css({"box-shadow":""});
-            $("#printerName").val("");
-            this.printName = null;
-            this.printCopies = null;
-         } else {
-            this.selectPrinterDisabled = false;
-            this.selectCopiesDisabled = false;
-            this.btnDisabled = false;
-            $("#noOfCopies").val("");
-            $("#noOfCopies").css({"box-shadow": ""});
-            $("#printerName").css({"box-shadow":""});
-            $("#printerName").val("");
-            this.printName = null;
-            this.printCopies = null;
+  showPrintPreview(data){   
+     this.printType = data[0].printType;
+     this.printName =  data[0].printerName;
+     this.printCopies = data[0].printCopies;
+     this.selectedReport = this.reportsList[0].val;
+     this.printDestination(this.printType);
+     
+  }
 
-         }
-        
-   }
-
-  showPrintPreview(){         
-      if (this.printType == 'SCREEN'){
+  printDestination(obj){
+     if (obj == 'SCREEN'){
          this.changeQuoteStatus();           
-      }else if (this.printType == 'PRINTER'){
+      }else if (obj == 'PRINTER'){
              if(this.validate(this.prepareParam())){
                  this.changeQuoteStatus();      
               } else {
@@ -313,11 +293,10 @@ export class ReadyForPrintingComponent implements OnInit {
                  $('#readyPrinting #successModalBtn').trigger('click');
                  setTimeout(()=>{$('.globalLoading').css('display','none');},0);
               }
-      }else if (this.printType == 'PDF'){
+      }else if (obj == 'PDF'){
           this.changeQuoteStatus();        
       }   
   }
-
 
   downloadPDF(reportName : string, quoteId : string, quotationNo: string){
      var fileName = "QUOTATION_LETTER" +'-'+ quotationNo;
@@ -356,7 +335,8 @@ export class ReadyForPrintingComponent implements OnInit {
             } else {
                this.dialogIcon = "error-message";
                this.dialogMessage = "Error printing file";
-               $('#listQuotation #successModalBtn').trigger('click');
+                this.selectedOnOk = true;
+               $('#readyPrinting #successModalBtn').trigger('click');
                setTimeout(()=>{$('.globalLoading').css('display','none');},0);
             }          
        });
@@ -384,13 +364,6 @@ export class ReadyForPrintingComponent implements OnInit {
         return printQuoteParam;
   }  
 
-  printParams(){
-         this.printType = "SCREEN";
-         this.printName = null;
-         this.printCopies = null;
-         this.selectPrinterDisabled = true;
-  }
-
   changeQuoteStatus() {
     this.quotationService.saveChangeQuoteStatus(this.saveData).subscribe( data => {
         this.changeQuoteError = data['returnCode'];
@@ -405,19 +378,16 @@ export class ReadyForPrintingComponent implements OnInit {
                      for(let i=0;i<this.saveData.changeQuoteStatus.length ;i++){ 
                         window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + this.selectedReport + '&quoteId=' + this.saveData.changeQuoteStatus[i].quoteId, '_blank');
                      }
-                     this.printParams();
                      this.searchQuery(this.searchParams);
                 }else if (this.printType == 'PRINTER'){
                     for(let i=0;i<this.saveData.changeQuoteStatus.length ;i++){ 
                       this.printPDF(this.selectedReport,this.saveData.changeQuoteStatus[i].quoteId);
                     }
-                     this.printParams();
                      this.searchQuery(this.searchParams);
                 }else if (this.printType == 'PDF'){
                    for(let i=0;i<this.saveData.changeQuoteStatus.length ;i++){ 
                      this.downloadPDF(this.selectedReport,this.saveData.changeQuoteStatus[i].quoteId,this.quotationData[i].quotationNo);
                    }
-                     this.printParams();
                      this.searchQuery(this.searchParams);
                 }
                  this.table.refreshTable("first");

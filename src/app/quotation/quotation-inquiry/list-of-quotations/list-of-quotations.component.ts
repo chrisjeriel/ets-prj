@@ -24,6 +24,11 @@ export class ListOfQuotationsComponent implements OnInit {
     pageLength: number;
 
     //Variable Parameters
+     reportsList: any[] = [
+                                {val:"QUOTER009A", desc:"Quotation Letter" },
+                                {val:"QUOTER009B", desc:"RI Preparedness to Support Letter and RI Confirmation of Acceptance Letter" },
+                                {val:"QUOTER009C", desc:"Risk Not Commensurate" },
+                                {val:"QUOTER009D", desc:"Treaty Exclusion Letter" }];
     i: number;
     //quoteList: QuotationList = new QuotationList(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
     quoteList: any = {};
@@ -44,6 +49,11 @@ export class ListOfQuotationsComponent implements OnInit {
     errorCode: any;
     printName: any = null;
     printCopies: any = null;
+    wordingTxt: any = null;
+    cessionDesc: any = null;
+    status: any = null;
+    defaultType: boolean = true;
+
 
     /*passData: any = {
         tablData: [], 
@@ -276,6 +286,8 @@ export class ListOfQuotationsComponent implements OnInit {
            for(let rec of this.records){
               if(rec.quotationNo === event.quotationNo) {
                 this.quoteId = rec.quoteId;
+                this.cessionDesc = event.cessionDesc;
+                this.status = event.status;
               }
            }
         }
@@ -283,17 +295,6 @@ export class ListOfQuotationsComponent implements OnInit {
 
     //Method to get parameters from quotation lists used for other modules
     onRowDblClick(event) {
-        /*for(var i = 0; i < event.target.parentElement.children.length; i++) {
-            this.quotationService.rowData[i] = event.target.parentElement.children[i].innerText;
-        }
-
-        this.line = this.quotationService.rowData[0].split("-")[0]; 
-        this.quotationService.toGenInfo = [];
-        this.quotationService.toGenInfo.push("edit", this.line);
-        console.log(this.line);
-        setTimeout(() => {
-               this.router.navigate(['/quotation', { line: this.line }], { skipLocationChange: true });
-        },100); */
         for (var i = 0; i < event.target.closest("tr").children.length; i++) {
             this.quotationService.rowData[i] = event.target.closest("tr").children[i].innerText;
         }
@@ -318,55 +319,72 @@ export class ListOfQuotationsComponent implements OnInit {
         $('#printListQuotation > #printModalBtn').trigger('click');
     }
 
-    //Method used to get value of dropsdown button
-    tabController(event) {
-        if (this.printType == 'SCREEN'){
-          this.refreshPrintModal(true);
-        } else if (this.printType == 'PRINTER'){
-          this.refreshPrintModal(false);
-        } else if (this.printType == 'PDF'){
-          this.refreshPrintModal(true);
-        }
-    }
 
     //Cancel modal click
     cancelModal(){
         this.btnDisabled = false;
     }
 
-    //Function used to manipulate modal buttons and text boxes properties 
-    refreshPrintModal(condition : boolean){
-         if (condition){
-            this.selectPrinterDisabled = true;
-            this.selectCopiesDisabled = true;
-            this.btnDisabled = false;
-            $("#noOfCopies").val("");
-            $("#noOfCopies").css({"box-shadow": ""});
-            $("#printerName").css({"box-shadow":""});
-            $("#printerName").val("");
-            this.printName = null;
-            this.printCopies = null;
+    //Function used for printing of reports
+    showPrintPreview(data) {
+         if (this.isEmptyObject(data[0].reportName)){
+             this.dialogIcon = "error-message";
+             this.dialogMessage = "Please select report type";
+             $('#listQuotation #successModalBtn').trigger('click');
+             setTimeout(()=>{$('.globalLoading').css('display','none');},0);
          } else {
-            this.selectPrinterDisabled = false;
-            this.selectCopiesDisabled = false;
-            this.btnDisabled = false;
-            $("#noOfCopies").val("");
-            $("#noOfCopies").css({"box-shadow": ""});
-            $("#printerName").css({"box-shadow":""});
-            $("#printerName").val("");
-            this.printName = null;
-            this.printCopies = null;
+            this.selectedReport = data[0].reportName;
+            this.printType = data[0].printType;
+            this.printName =  data[0].printerName;
+            this.printCopies = data[0].printCopies;
+            this.wordingTxt =  data[0].wordingTxt;
+            
+                if (this.selectedReport == this.reportsList[0].val){
+                  this.printDestination(this.printType);
+                } else if (this.selectedReport == this.reportsList[1].val){
+                      if (this.cessionDesc == 'Retrocession'){
+                        this.printDestination(this.printType);
+                      }else {
+                        this.dialogIcon = "error-message";
+                        this.dialogMessage = "Error generating report";
+                        $('#listQuotation #successModalBtn').trigger('click');
+                        setTimeout(()=>{$('.globalLoading').css('display','none');},0);
+                      }
+                } else if (this.selectedReport == this.reportsList[2].val){
+                       if (this.status == 'Risk Not Commensurate'){
+                          this.printDestination(this.printType);
+                       }else {
+                        this.dialogIcon = "error-message";
+                        this.dialogMessage = "Error generating report";
+                        $('#listQuotation #successModalBtn').trigger('click');
+                        setTimeout(()=>{$('.globalLoading').css('display','none');},0);
+                       }
+                } else if (this.selectedReport == this.reportsList[3].val){
+                       if (this.status == 'Did Not Materialize'){
+                         if (this.wordingTxt == null){
+                            this.dialogIcon = "error-message";
+                            this.dialogMessage = "Please complete all the required fields.";
+                            $('#listQuotation #successModalBtn').trigger('click');
+                            setTimeout(()=>{$('.globalLoading').css('display','none');},0);
+                          } else {
+                            this.printDestination(this.printType);
+                          }
+                       }else {
+                        this.dialogIcon = "error-message";
+                        this.dialogMessage = "Error generating report";
+                        $('#listQuotation #successModalBtn').trigger('click');
+                        setTimeout(()=>{$('.globalLoading').css('display','none');},0);  
+                       }
 
-         }
-        
+                }
+         }      
     }
 
-    //Function used for printing of reports
-    showPrintPreview() {
-         if (this.printType == 'SCREEN'){
+    printDestination(obj){
+        if (obj == 'SCREEN'){
            window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + this.selectedReport + '&quoteId=' + this.quoteId, '_blank');
            this.printParams();
-         }else if (this.printType == 'PRINTER'){
+         }else if (obj == 'PRINTER'){
            if(this.validate(this.prepareParam())){
                 this.printPDF(this.selectedReport,this.quoteId);
                 this.printParams();
@@ -376,7 +394,7 @@ export class ListOfQuotationsComponent implements OnInit {
                 $('#listQuotation #successModalBtn').trigger('click');
                 setTimeout(()=>{$('.globalLoading').css('display','none');},0);
            }
-         }else if (this.printType == 'PDF'){
+         }else if (obj == 'PDF'){
            this.downloadPDF(this.selectedReport,this.quoteId);
            this.printParams();
          }   
@@ -449,11 +467,9 @@ export class ListOfQuotationsComponent implements OnInit {
     }
 
     printParams(){
-         this.printType = "SCREEN";
+         this.printType = null;
          this.printName = null;
          this.printCopies = null;
-         this.selectPrinterDisabled = true;
-         this.selectCopiesDisabled = true;
     }
 
     isEmptyObject(obj) {

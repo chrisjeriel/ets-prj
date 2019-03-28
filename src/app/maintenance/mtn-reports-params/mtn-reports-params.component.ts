@@ -11,6 +11,7 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 export class MtnReportsParamsComponent implements OnInit {
   @Input()  reportId: string;
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
+  @Output() cancel: EventEmitter<any> = new EventEmitter();
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
 
   constructor(private modalService: NgbModal, private mtnService : MaintenanceService) { }
@@ -59,7 +60,11 @@ export class MtnReportsParamsComponent implements OnInit {
   }
 
   openModal(){
-     this.passDataReportsParam.tableData = [];
+    if (this.isEmptyObject(this.passDataReportsParam.tableData)){
+    } else {
+        this.passDataReportsParam.tableData = [];
+        this.table.refreshTable("first");
+    }
      this.mtnService.getMtnQuotationPrintingWordings(this.reportId).subscribe((data: any) =>{
           for (var a = 0; a < data.reportsParam.length ; a++) {
               this.passDataReportsParam.tableData.push(data.reportsParam[a]);
@@ -68,5 +73,19 @@ export class MtnReportsParamsComponent implements OnInit {
         });
      this.modalOpen = true;
   }
+
+   onClickCancel(event){
+        //do some adding
+         this.cancel.next(event);
+    }
+
+    isEmptyObject(obj) {
+      for(var prop in obj) {
+         if (obj.hasOwnProperty(prop)) {
+            return false;
+         }
+      }
+      return true;
+    }
 
 }
