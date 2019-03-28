@@ -286,7 +286,7 @@ export class GeneralInfoComponent implements OnInit {
 				this.genInfoData.statusDesc 	= 'Requested';
 				this.genInfoData.issueDate		= this.ns.toDateTimeString(0);
 				this.genInfoData.reqDate		= this.ns.toDateTimeString(0);
-				this.genInfoData.preparedBy		= 'USER'; //JSON.parse(window.localStorage.currentUser).username;
+				this.genInfoData.preparedBy		= JSON.parse(window.localStorage.currentUser).username;
 				
 				var date = new Date();
 				var millis = date.setDate(date.getDate() + 30);
@@ -526,10 +526,10 @@ export class GeneralInfoComponent implements OnInit {
 					this.genInfoData.quoteSeqNo = parseInt(data['quotationNo'].split('-')[2]);
 					this.genInfoData.quoteRevNo = parseInt(data['quotationNo'].split('-')[3]);
 					if(this.quotationService.toGenInfo[0] === 'add') {
-						this.genInfoData.createUser = 'USER'; //JSON.parse(window.localStorage.currentUser).username;
+						this.genInfoData.createUser = JSON.parse(window.localStorage.currentUser).username;
 						this.genInfoData.createDate = this.ns.toDateTimeString(0);
 					}
-					this.genInfoData.updateUser = 'USER'; //JSON.parse(window.localStorage.currentUser).username;
+					this.genInfoData.updateUser = JSON.parse(window.localStorage.currentUser).username;
 					this.genInfoData.updateDate	= this.ns.toDateTimeString(0);
 
 					this.checkQuoteIdF(this.genInfoData.quoteId);
@@ -634,18 +634,18 @@ export class GeneralInfoComponent implements OnInit {
 		}
 
 		if(this.quotationService.toGenInfo[0] === 'edit') {
-			saveQuoteGeneralInfoParam.updateUser = 'USER'; //JSON.parse(window.localStorage.currentUser).username;
+			saveQuoteGeneralInfoParam.updateUser = JSON.parse(window.localStorage.currentUser).username;
 			saveQuoteGeneralInfoParam.updateDate = this.ns.toDateTimeString(0);
-			saveQuoteGeneralInfoParam.prjUpdateUser = 'USER'; //JSON.parse(window.localStorage.currentUser).username;
+			saveQuoteGeneralInfoParam.prjUpdateUser = JSON.parse(window.localStorage.currentUser).username;
 			saveQuoteGeneralInfoParam.prjUpdateDate = this.ns.toDateTimeString(0);
 		} else if (this.quotationService.toGenInfo[0] === 'add') {
-			saveQuoteGeneralInfoParam.createUser = 'USER'; //JSON.parse(window.localStorage.currentUser).username;
+			saveQuoteGeneralInfoParam.createUser = JSON.parse(window.localStorage.currentUser).username;
 			saveQuoteGeneralInfoParam.createDate = this.ns.toDateTimeString(0);
-			saveQuoteGeneralInfoParam.updateUser = 'USER'; //JSON.parse(window.localStorage.currentUser).username;
+			saveQuoteGeneralInfoParam.updateUser = JSON.parse(window.localStorage.currentUser).username;
 			saveQuoteGeneralInfoParam.updateDate = this.ns.toDateTimeString(0);
-			saveQuoteGeneralInfoParam.prjCreateUser = 'USER'; //JSON.parse(window.localStorage.currentUser).username;
+			saveQuoteGeneralInfoParam.prjCreateUser = JSON.parse(window.localStorage.currentUser).username;
 			saveQuoteGeneralInfoParam.prjCreateDate = this.ns.toDateTimeString(0);
-			saveQuoteGeneralInfoParam.prjUpdateUser = 'USER'; //JSON.parse(window.localStorage.currentUser).username;
+			saveQuoteGeneralInfoParam.prjUpdateUser = JSON.parse(window.localStorage.currentUser).username;
 			saveQuoteGeneralInfoParam.prjUpdateDate = this.ns.toDateTimeString(0);
 		}
 
