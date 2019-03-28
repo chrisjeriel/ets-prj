@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { MaintenanceService, NotesService } from '@app/_services';
+import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 
 
 @Component({
@@ -9,28 +10,36 @@ import { MaintenanceService, NotesService } from '@app/_services';
 	styleUrls: ['./pol-mx-line.component.css']
 })
 export class PolMxLineComponent implements OnInit {
+	@ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
 
 	passData: any = {
 		tableData:[],
-		tHeader:[],
-		tHeaderWithColspan:[],
-		magnifyingGlass:[],
-		options:[],
-		dataTypes:[],
-		opts:[],
-		nData:{},
-		checkFlag:false,
+		tHeader:["Line Code", "Description", "Cut-off Time","Active", "With CAT","Renewal",  "Open Cover", "ALOP", "Ref", "Sort Seq", "Remarks"],
+		dataTypes:["text", "text", "time", "checkbox", "checkbox", "checkbox", "checkbox", "checkbox", "number", "number", "text"],
+		nData:{
+			lineCd 		: null,
+			description : null,
+			cutOffTime 	: null,
+			activeTag 	: null,
+			catTag 		: null,
+			renewalTag 	: null,
+			openCover 	: null,
+			alop		: null,
+			referenceNo : null,
+			sortSeq 	: null,
+			remarks 	: null,
+		},
+		checkFlag: true,
 		selectFlag:false,
-		addFlag:false,
-		editFlag:false,
-		deleteFlag:false,
-		pagination: false,
-		pageStatus: false,
+		addFlag:true,
+		deleteFlag:true,
+		paginateFlag: true,
+		infoFlag: true,
 		searchFlag: false,
-		checkboxFlag:false,
 		pageLength:10,
-		resizable: [],
+		resizable: [true, true, true, false, true, true, false,true],
 		pageID:1,
+		keys: ['lineCd','description','cutOffTime','activeTag','catTag','renewalTag','openCoverTag','alopTag','referenceNo','sortSeq','remarks'],
 		filters: [
 			{
             	key: 'lineCode',
@@ -55,47 +64,27 @@ export class PolMxLineComponent implements OnInit {
         ]
 	};
 
-	// activeCb: boolean = false;
-	// withCatCb: boolean = false;
-	// renewalCb: boolean = false;
-	// lineCode: string = "";
-	// description: string = "";
-	// referenceNo: string = "";
-	// sortSeq: string = "";
+	
 
 	constructor(private titleService: Title, private mtnService: MaintenanceService, private ns: NotesService) { }
 
-	ngOnInit() {
-		this.titleService.setTitle('Mtn | Line');
-		this.passData.tHeader.push("Active", "With CAT", "Renewal", "Line Code", "Description", "Ref", "Sort Seq");
-		this.passData.tableData.push([true, true, true, "CAR", "Contractor's All Risk", "1810", "1"],
-									 [true, true, true, "EAR", "Erection All Risk", "1810", "2"],
-									 [true, true, true, "EEI", "Electronic Equipment Insurance", "1830", "3"],
-									 [true, false, false, "MBI", "Machinery Insurance", "1800", "4"],
-									 [true, false, false, "BPV", "Boiler and Pressure Vessel", "1840", "5"],
-									 [true, false, false, "MLP", "Machinery Loss of Profits ff. Machinery Breakdown", "1980", "6"],
-									 [true, false, false, "DOS", "Deterioration of Stocks", "1900", "7"],
-									 [true, true, true, "CEC", "Civil Engineering Completed Risk", "9999", "8"]);
-		this.passData.dataTypes.push("checkbox", "checkbox", "checkbox", "text", "text", "number", "number");
-		this.passData.resizable.push(true, true, true, false, true, true, false)
-		this.passData.pagination = true;
-		this.passData.pageStatus = true;
-
+  ngOnInit() {
+	this.titleService.setTitle('Mtn | Line');
   }
 
   mtnLineReq :any;
   saveMtnLine:any = {
-  	  activeTag: "",
-	  alopTag: "",
-	  catTag: "",
+  	  activeTag: false,
+	  alopTag: false,
+	  catTag: false,
 	  createDate: "",
 	  createUser: "",
 	  description: "",
 	  lineCd: "",
-	  openCoverTag: "",
+	  openCoverTag: false,
 	  referenceNo: "",
 	  remarks: "",
-	  renewalTag: "",
+	  renewalTag: false,
 	  sortSeq: "",
 	  updateDate: "",
 	  updateUser: "",
@@ -105,27 +94,74 @@ export class PolMxLineComponent implements OnInit {
 
   onClickSave(){
 
-  	this.mtnLineReq = {
-	  "activeTag": "Y",
-	  "alopTag": "Y",
-	  "catTag": "",
-	  "createDate": "",
-	  "createUser": "string",
-	  "description": "string",
-	  "lineCd": "string",
-	  "openCoverTag": "string",
-	  "referenceNo": "string",
-	  "remarks": "string",
-	  "renewalTag": "string",
-	  "sortSeq": "string",
-	  "updateDate": "string",
-	  "updateUser": "string"
-	}
+  	for(var i=0;i<this.passData.tableData.length;i++){
+  		console.log(this.passData.tableData[i]);
+  		var rec = this.passData.tableData[i];
+  		this.mtnLineReq = {	
+		  "activeTag":		this.cbFunc(rec.activeTag),
+		  "alopTag":		this.cbFunc(rec.alopTag),
+		  "catTag":			this.cbFunc(rec.catTag),
+		  "createDate":		this.ns.toDateTimeString(0),
+		  "createUser":		JSON.parse(window.localStorage.currentUser).username,
+		  "description":	rec.description,
+		  "lineCd":			rec.lineCd,
+		  "openCoverTag":	this.cbFunc(rec.openCoverTag),
+		  "referenceNo":	rec.referenceNo,
+		  "remarks":		rec.remarks,
+		  "renewalTag":		this.cbFunc(rec.renewalTag),
+		  "sortSeq":		rec.sortSeq,
+		  "updateDate":		this.ns.toDateTimeString(0),
+		  "updateUser":		JSON.parse(window.localStorage.currentUser).username
+		}
 
-  	this.mtnService.saveMtnLine(JSON.stringify(this.mtnLineReq))
-  		.subscribe(data => {
-  			console.log(data);
-  		});
+		console.log(JSON.stringify(this.mtnLineReq));
+		this.mtnService.saveMtnLine(JSON.stringify(this.mtnLineReq))
+	  		.subscribe(data => {
+	  			console.log(data);
+	  		});
+  	}
+	
+ //  	this.mtnLineReq = {	
+	//   "activeTag":		this.cbFunc(this.saveMtnLine.activeTag),
+	//   "alopTag":		this.saveMtnLine.alopTag,
+	//   "catTag":			this.cbFunc(this.saveMtnLine.catTag),
+	//   "createDate":		this.ns.toDateTimeString(this.saveMtnLine.createDate),
+	//   "createUser":		this.saveMtnLine.createUser,
+	//   "description":	this.saveMtnLine.description,
+	//   "lineCd":			this.saveMtnLine.lineCd,
+	//   "openCoverTag":	this.saveMtnLine.openCoverTag,
+	//   "referenceNo":	this.saveMtnLine.referenceNo,
+	//   "remarks":		this.saveMtnLine.remarks,
+	//   "renewalTag":		this.cbFunc(this.saveMtnLine.renewalTag),
+	//   "sortSeq":		this.saveMtnLine.sortSeq,
+	//   "updateDate":		this.ns.toDateTimeString(this.saveMtnLine.updateDate),
+	//   "updateUser":		this.saveMtnLine.updateUser
+	// }
+	// console.log(JSON.stringify(this.mtnLineReq));
+
+ //  	this.mtnService.saveMtnLine(JSON.stringify(this.mtnLineReq))
+ //  		.subscribe(data => {
+ //  			console.log(data);
+ //  		});
+  }
+
+  cbFunc(chxbox:boolean){
+  	return (chxbox === null  || false )? 'N' : 'Y';
+  }
+
+  addToTable(){
+  	this.passData.tableData.push({
+  		activeTag : 	this.cbFunc(this.saveMtnLine.activeTag),
+  		catTag : 		this.cbFunc(this.saveMtnLine.catTag),
+  		renewalTag : 	this.cbFunc(this.saveMtnLine.renewalTag),
+  		lineCd : 		this.saveMtnLine.lineCd,
+  		description : 	this.saveMtnLine.description,
+  		referenceNo : 	this.saveMtnLine.referenceNo,
+  		sortSeq : 		this.saveMtnLine.sortSeq,
+  		remarks:		this.saveMtnLine.remarks
+  	});
+  	this.table.refreshTable();
+
   }
 
 }
