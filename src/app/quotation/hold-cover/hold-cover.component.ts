@@ -193,10 +193,6 @@ export class HoldCoverComponent implements OnInit {
 		this.cancelHcBtnEnabled = false;
 	}
 
-	ngOnDestroy(){
-		console.log('WAHAT');
-		this.onClickCancel();
-	}
 
 	formatDate(date){
 		return new Date(date[0] + "-" + date[1] + "-" + date[2]).toISOString();

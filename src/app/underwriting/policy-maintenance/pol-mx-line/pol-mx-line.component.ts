@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { MaintenanceService, NotesService } from '@app/_services';
 
 
 @Component({
@@ -53,17 +55,18 @@ export class PolMxLineComponent implements OnInit {
         ]
 	};
 
-	activeCb: boolean = false;
-	withCatCb: boolean = false;
-	renewalCb: boolean = false;
-	lineCode: string = "";
-	description: string = "";
-	referenceNo: string = "";
-	sortSeq: string = "";
+	// activeCb: boolean = false;
+	// withCatCb: boolean = false;
+	// renewalCb: boolean = false;
+	// lineCode: string = "";
+	// description: string = "";
+	// referenceNo: string = "";
+	// sortSeq: string = "";
 
-	constructor() { }
+	constructor(private titleService: Title, private mtnService: MaintenanceService, private ns: NotesService) { }
 
 	ngOnInit() {
+		this.titleService.setTitle('Mtn | Line');
 		this.passData.tHeader.push("Active", "With CAT", "Renewal", "Line Code", "Description", "Ref", "Sort Seq");
 		this.passData.tableData.push([true, true, true, "CAR", "Contractor's All Risk", "1810", "1"],
 									 [true, true, true, "EAR", "Erection All Risk", "1810", "2"],
@@ -80,7 +83,50 @@ export class PolMxLineComponent implements OnInit {
 
   }
 
+  mtnLineReq :any;
+  saveMtnLine:any = {
+  	  activeTag: "",
+	  alopTag: "",
+	  catTag: "",
+	  createDate: "",
+	  createUser: "",
+	  description: "",
+	  lineCd: "",
+	  openCoverTag: "",
+	  referenceNo: "",
+	  remarks: "",
+	  renewalTag: "",
+	  sortSeq: "",
+	  updateDate: "",
+	  updateUser: "",
+  };
 
+
+
+  onClickSave(){
+
+  	this.mtnLineReq = {
+	  "activeTag": "Y",
+	  "alopTag": "Y",
+	  "catTag": "",
+	  "createDate": "",
+	  "createUser": "string",
+	  "description": "string",
+	  "lineCd": "string",
+	  "openCoverTag": "string",
+	  "referenceNo": "string",
+	  "remarks": "string",
+	  "renewalTag": "string",
+	  "sortSeq": "string",
+	  "updateDate": "string",
+	  "updateUser": "string"
+	}
+
+  	this.mtnService.saveMtnLine(JSON.stringify(this.mtnLineReq))
+  		.subscribe(data => {
+  			console.log(data);
+  		});
+  }
 
 }
 
