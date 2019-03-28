@@ -172,7 +172,13 @@ export class CoverageComponent implements OnInit {
           this.coverageData.sectionISi = this.sectionI;
           this.coverageData.sectionIISi = this.sectionII;
           this.coverageData.sectionIIISi = this.sectionIII;
-          this.coverageData.totalSi = this.sectionI + this.sectionII + this.sectionIII;
+          if(this.lineCd == 'CAR' || this.lineCd == 'EAR'){
+             this.coverageData.totalSi = this.coverageData.sectionISi + this.coverageData.sectionIIISi;
+          } else if (this.lineCd == 'EEI'){
+            this.coverageData.totalSi = this.coverageData.sectionISi + this.coverageData.sectionIISi + this.coverageData.sectionIIISi;
+          } else{
+            this.coverageData.totalSi = this.coverageData.sectionISi
+          }
  
           setTimeout(() => {
             this.focusBlur();
