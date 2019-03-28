@@ -24,6 +24,7 @@ export class PolEndorsementComponent implements OnInit {
             endtCd: '',
             endtTitle: '',
             remarks: '',
+            showMG: 1,
         },
         addFlag: true,
         deleteFlag: true,
@@ -33,7 +34,9 @@ export class PolEndorsementComponent implements OnInit {
         pageLength: 10,
         pageID: 'endt',
         widths: [1, 'auto', 'auto', 'auto'],
-        keys: ['changeTag','endtCd', 'endtTitle', 'remarks']
+        keys: ['changeTag','endtCd', 'endtTitle', 'remarks'],
+        tooltip: ['Change Tag'],
+        uneditable: [false, false, true, false]
     };
 
     deductiblesData: any = {
@@ -45,7 +48,8 @@ export class PolEndorsementComponent implements OnInit {
             deductibleTitle: '',
             deductibleTxt: '',
             deductibleRt: 0,
-            deductibleAmt: 0
+            deductibleAmt: 0,
+            showMG: 1
         },
         addFlag: true,
         disableAdd: true,
@@ -56,11 +60,17 @@ export class PolEndorsementComponent implements OnInit {
         pageLength: 10,
         pageID: 'deductible',
         widths: [1, 'auto', 'auto', 'auto', 'auto'],
-        keys: ['deductibleCd','deductibleTitle', 'deductibleTxt', 'deductibleRt', 'deductibleAmt']
+        keys: ['deductibleCd','deductibleTitle', 'deductibleTxt', 'deductibleRt', 'deductibleAmt'],
+        uneditable: [false,true,true,true,true]
     }
 
+    passLOVData: any = {
+      selector:'',
+      data:{}
+    }
 
     @Input() alteration: boolean = false;
+    currentLine: string = "CAR";
 
     constructor(config: NgbDropdownConfig, private underwritingService: UnderwritingService, private titleService: Title
     ) {
@@ -94,9 +104,6 @@ export class PolEndorsementComponent implements OnInit {
         this.underwritingService.getPolicyEndorsement('8', '').subscribe((data: any) =>{
             if(data.endtList !== null){
                 for(var i = 0; i < data.endtList.endorsements.length; i++){
-                    if(this.alteration){
-                        data.endtList.endorsements[i].showMG = 1; 
-                    }
                     this.passData.tableData.push(data.endtList.endorsements[i]);
                 }
                 this.table.forEach(t => {t.refreshTable()});
@@ -109,9 +116,6 @@ export class PolEndorsementComponent implements OnInit {
         this.deductiblesData.tableData = [];
         if(data !== null && data.deductibles !== undefined){
             for(var j = 0; j < data.deductibles.length; j++){
-                if(this.alteration){        
-                    data.deductibles[j].showMG = 1;
-                }
                 this.deductiblesData.tableData.push(data.deductibles[j]);
             }
         }
@@ -134,4 +138,33 @@ export class PolEndorsementComponent implements OnInit {
        this.retrieveDeductibles(data);
     }
 
+    clickEndtLov(data){
+        console.log(data);
+        $('#endtLov #modalBtn').trigger('click');
+    }
+
+    clickDedLov(data){
+        this.passLOVData.selector = 'deductibles';
+        this.passLOVData.lineCd = 'CAR';
+        $('#lov #modalBtn2').trigger('click');
+    }
+
+    //set endorsement
+    setEndt(data){
+        console.log(data);
+        //delete blank
+        this.passData.tableData = this.passData.tableData.filter((f)=>{return f.showMG !== 1});
+        //add selected
+        for(var k = 0; k < data.length; k++){
+           this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
+           this.passData.tableData[this.passData.tableData.length - 1].endtCd = data[k].endtCd;
+           this.passData.tableData[this.passData.tableData.length - 1].endtTitle = data[k].endtTitle;
+           this.passData.tableData[this.passData.tableData.length - 1].remarks = data[k].remarks === null ? '' : data[k].remarks;
+           this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
+        }
+        this.table.forEach(t => {t.refreshTable()});
+    }
+
+    //set deductibles
+    setSelected
 }

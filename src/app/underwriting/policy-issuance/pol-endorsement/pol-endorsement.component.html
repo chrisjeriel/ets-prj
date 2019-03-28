@@ -24,7 +24,7 @@
 		<div class="col-sm-6" style="padding-right: 2px">
 			<fieldset class="scheduler-border" style="margin: 12px 0px 8px 0px !important;">
 				<div style="padding-top: 9px;">
-					<app-cust-editable-non-datatable [passData]="passData" (newClick)="rowClick($event)"></app-cust-editable-non-datatable>
+					<app-cust-editable-non-datatable [passData]="passData" (newClick)="rowClick($event)" (clickLOV)="clickEndtLov($event)"></app-cust-editable-non-datatable>
 				</div>
 			</fieldset>
 		</div>
@@ -32,7 +32,7 @@
 			<fieldset class="scheduler-border">
 				<legend class="scheduler-border">Deductibles</legend>
 				<div style="padding-top: 5px;">
-					<app-cust-editable-non-datatable [passData]="deductiblesData"></app-cust-editable-non-datatable>
+					<app-cust-editable-non-datatable [passData]="deductiblesData" (clickLOV)="clickDedLov($event)"></app-cust-editable-non-datatable>
 				</div>
 			</fieldset>
 		</div>
@@ -49,3 +49,6 @@
 		</div>
 	</div>
 </div>
+
+<app-mtn-endt-code id="endtLov" [line]="currentLine" (selectedData)="setEndt($event)" [lovCheckBox]="true"></app-mtn-endt-code>
+<app-lov id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)" [lovCheckBox]="true"></app-lov>
