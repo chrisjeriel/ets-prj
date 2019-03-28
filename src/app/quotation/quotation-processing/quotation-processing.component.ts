@@ -232,7 +232,9 @@ export class QuotationProcessingComponent implements OnInit {
 
     retrieveQuoteListingMethod(){
         this.passData.tableData = [];
+        console.log(this.searchParams)
         this.quotationService.getQuoProcessingData(this.searchParams).subscribe(data => {
+            console.log(data)
             var records = data['quotationList'];
             this.fetchedData = records;
             for(let rec of records){
