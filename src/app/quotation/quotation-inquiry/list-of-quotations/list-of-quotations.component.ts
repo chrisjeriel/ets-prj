@@ -315,7 +315,7 @@ export class ListOfQuotationsComponent implements OnInit {
 
     //Method for modal printing openning
     print(){
-        $('#showPrintMenu > #modalBtn').trigger('click');
+        $('#printListQuotation > #printModalBtn').trigger('click');
     }
 
     //Method used to get value of dropsdown button

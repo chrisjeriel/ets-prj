@@ -331,6 +331,8 @@ import { CancelButtonComponent } from './_components/common/cancel-button/cancel
 import { MtnUsersComponent } from './maintenance/mtn-users/mtn-users.component';
 import { NgxMaskModule } from 'ngx-mask';
 import { MtnReasonComponent } from './maintenance/mtn-reason/mtn-reason.component';
+import { PrintModalComponent } from './_components/common/print-modal/print-modal.component';
+import { MtnReportsParamsComponent } from './maintenance/mtn-reports-params/mtn-reports-params.component';
 
 
 
@@ -671,6 +673,8 @@ import { MtnReasonComponent } from './maintenance/mtn-reason/mtn-reason.componen
         ArDetailsComponent2,
         ClaimRecoveryComponent2,
         InwardPolicyBalancesComponent2,
+        PrintModalComponent,
+        MtnReportsParamsComponent,
     ],
 
     providers: [
