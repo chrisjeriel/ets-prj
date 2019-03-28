@@ -657,13 +657,14 @@ export class QuotationService {
     }
 
 
-    getALOPItemInfos(car: string, quoteId: string, quotationNo?: any) {
+    getALOPItemInfos(car: string, quoteId: string, optionId: any, quotationNo?: any) {
         if (car == "CAR") {
             this.aLOPItemInfos.forEach(function (itm) { delete itm.relativeImportance; });
         }
         const params = new HttpParams()
              .set('quotationNo', (quotationNo === null || quotationNo === undefined ? '' : quotationNo) )
              .set('quoteId',(quoteId === null || quoteId === undefined ? '' : quoteId) )
+             .set('optionId',(optionId === null || optionId === undefined ? '' : optionId) )
         return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuoteAlopItem',{params});
     }
 
@@ -694,18 +695,28 @@ export class QuotationService {
             return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuoteHoldCover',{params});
     }
 
-    saveQuoteAttachment(quoteId:string ,saveAttachmentsList:any[], deleteAttachmentsList:any[]){
-        let params:any  = {
-            quoteId: quoteId,
-            saveAttachmentsList: saveAttachmentsList,
-            deleteAttachmentsList: deleteAttachmentsList
-        };
-        let header : any = {
-            headers: new HttpHeaders({
-                'Content-Type': 'application/json'
-            })
-        };
-        return this.http.post(environment.prodApiUrl + '/quote-service/saveQuoteAttachment', JSON.stringify(params), header);
+    // saveQuoteAttachment(quoteId:string ,saveAttachmentsList:any[], deleteAttachmentsList:any[]){
+    //     let params:any  = {
+    //         quoteId: quoteId,
+    //         saveAttachmentsList: saveAttachmentsList,
+    //         deleteAttachmentsList: deleteAttachmentsList
+    //     };
+    //     let header : any = {
+    //         headers: new HttpHeaders({
+    //             'Content-Type': 'application/json'
+    //         })
+    //     };
+    //     return this.http.post(environment.prodApiUrl + '/quote-service/saveQuoteAttachment', JSON.stringify(params), header);
+    // }
+
+    saveQuoteAttachment(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/quote-service/saveQuoteAttachment',params,header);
+ 
     }
 
 
@@ -785,7 +796,7 @@ export class QuotationService {
     saveQuoteCompetition(saveQuoteCompetitionParams: any[]){
         //let params: any = JSON.stringify(saveQuoteCompetitionParams);
         let params: any = {
-            competitionsList: saveQuoteCompetitionParams
+            saveQuoteCompetition: saveQuoteCompetitionParams
         }
         let header: any = {
             headers: new HttpHeaders({
@@ -943,6 +954,14 @@ export class QuotationService {
         return this.http.get(environment.prodApiUrl + '/util-service/generateReport',{ params,'responseType': 'blob'});
     }
 
+    downloadPDFIntComp(adviceNo : string, quoteId : string){
+         const params = new HttpParams()
+             .set('reportName', 'QUOTER007')
+             .set('adviceNo', adviceNo)
+             .set('quoteId', quoteId);
+        return this.http.get(environment.prodApiUrl + '/util-service/generateReport',{ params,'responseType': 'blob'});
+    }
+
     downloadPDFHC(reportName : string, quoteId : string,  holdCoverId : string){
          const params = new HttpParams()
              .set('reportName', reportName)
@@ -951,6 +970,25 @@ export class QuotationService {
         return this.http.get(environment.prodApiUrl + '/util-service/generateReport',{ params,'responseType': 'blob'});
     }
 
+    getSearchQuoteInfo(lineCd,quoteYear,quoteSeqNo,quoteRevNo,quoteCedingId){
+        const params = new HttpParams()
+             .set('lineCd',lineCd)
+             .set('quoteYear',quoteYear)
+             .set('quoteSeqNo',quoteSeqNo)
+             .set('quoteRevNo',quoteRevNo)
+             .set('quoteCedingId',quoteCedingId)
+        return this.http.get('http://localhost:8888/api/quote-service/searchQuoteInfo',{params});
+    }
+
+    updateHoldCoverStatus(params){
+        let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+        };
+       return this.http.post(environment.prodApiUrl + '/quote-service/updateHoldCoverStatus', params, header);
+    }
+  
     renumber(quoteId:string ){
         let header: any = {
             headers: new HttpHeaders({

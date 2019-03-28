@@ -24,7 +24,7 @@
 <fieldset class="scheduler-border">
   <legend class="scheduler-border">Section Covers</legend>
   <div class="test" style="margin-top: 0px !important; margin-bottom: 2px;">
-    <app-cust-editable-non-datatable [passData]="passDataSectionCover"></app-cust-editable-non-datatable>
+    <app-cust-editable-non-datatable #sectionCover  [passData]="passDataSectionCover"></app-cust-editable-non-datatable>
   </div>
 </fieldset>
 
@@ -39,19 +39,19 @@
         </div>
         <div class="input-group" style="margin-bottom: -13px !important">
           <label class="form-control-sm col-sm-3">Currency</label>
-          <input type="text" class="form-control form-control-sm">
+          <input type="text" class="form-control form-control-sm" [(ngModel)]="coverageData.currencyCd" readonly>
           <label class="form-control-sm col-sm-2">Exch. Rt.</label>
-          <input type="text" class="form-control form-control-sm">
+          <input type="text" class="form-control form-control-sm" [(ngModel)]="coverageData.currencyRt" readonly>
           <span class="col-sm-1"></span>
         </div>
         <div class="input-group" style="margin-bottom: -13px !important">
          <label class="form-control-sm col-sm-3">Total Sum Insured</label>
-         <input type="text" class="form-control form-control-sm">
+         <input type="text" class="form-control form-control-sm" [(ngModel)]="coverageData.totalSi" readonly>
          <span class="col-sm-1"></span>
        </div>
        <div class="input-group" style="margin-bottom: 2px !important">
          <label class="form-control-sm col-sm-3">Total Premium</label>
-         <input type="text" class="form-control form-control-sm">
+         <input type="text" class="form-control form-control-sm" [(ngModel)]="coverageData.totalPrem" readonly>
          <span class="col-sm-1"></span>
        </div>
      </div>
@@ -76,14 +76,14 @@
       </div>
       <div class="input-group" style="margin-bottom: -13px !important">
        <label class="form-control-sm col-sm-3">Share(%)</label>
-       <input type="text" class="form-control form-control-sm">
+       <input type="text" class="form-control form-control-sm" [(ngModel)]="coverageData.pctShare">
        <label class="form-control-sm col-sm-2">PML(%)</label>
-       <input type="text" class="form-control form-control-sm">
+       <input type="text" class="form-control form-control-sm" [(ngModel)]="coverageData.pctPml">
        <span class="col-sm-1"></span>
      </div>
      <div class="input-group" style="margin-bottom: -6px !important">
        <label class="form-control-sm col-sm-3">100% Value</label>
-       <input type="text" class="form-control form-control-sm">
+       <input type="text" class="form-control form-control-sm" [(ngModel)]="coverageData.totalValue">
        <span class="col-sm-1"></span>
      </div>
    </div>
@@ -100,7 +100,7 @@
       </div>
       <div class="input-group" style="margin-top: -5px;">
        <label class="form-control-sm col-sm-1">Remarks</label>
-       <textarea class="form-control-sm form-control" style="font-size: 11px; min-height: 61px; margin-bottom: 10px; margin-left: 8px"></textarea> 
+       <textarea class="form-control-sm form-control" [(ngModel)]="coverageData.remarks" style="font-size: 11px; min-height: 61px; margin-bottom: 10px; margin-left: 8px"></textarea> 
      </div>
      <div class="input-group">
       <span class="col-sm-3"></span>
@@ -214,7 +214,7 @@
     <div class="row">
       <div class="col-sm-1"></div>
       <div class="col-sm-10" style="margin-bottom: -23px;">
-        <app-cust-editable-non-datatable [passData]="passData2"></app-cust-editable-non-datatable>
+        <app-cust-editable-non-datatable [passData]="passDataTotal"></app-cust-editable-non-datatable>
         <br />   
       </div>
       <div class="col-sm-1"></div>
@@ -351,7 +351,7 @@
     
 </div>
 
-<app-modal class="hidden">
+<app-modal class="hidden" id="CAT">
     <div header>CAT Perils Exposure</div>
     <div body style=" margin-top: -10px !important; width: 400px ! important">
        <app-cust-editable-non-datatable [passData]="passDataCATPerils"></app-cust-editable-non-datatable>
@@ -381,7 +381,7 @@
 </ng-template> -->
 
 
-<ng-template #deductibles>
+<!-- <ng-template #deductibles>
     <div class="modal-header">
          <span class="modal-title" id="modal-basic-title">Deductibles</span>
          <div class="close" style="padding-bottom: 5px;">
@@ -389,15 +389,29 @@
           </div>
     </div>
     <div class="modal-body">
-          <app-cust-editable-non-datatable [passData]="passDataDeductibles"></app-cust-editable-non-datatable>
+          <app-cust-editable-non-datatable #deductiblesTable [passData]="passDataDeductibles"></app-cust-editable-non-datatable>
     </div>
     <div class="modal-footer" style="justify-content: center; padding-top: 10px;">
       <div class="row">
           <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-          <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Save</a></button>
+          <button class="cust-btn" type="button" (click)=""><a>Save</a></button>
       </div>
     </div>    
-</ng-template>
+</ng-template> -->
+
+<app-modal class="d-none" #deductiblesModal>
+  <div header>Deductibles</div>
+  <div body>
+    <app-cust-editable-non-datatable #deductiblesTable [passData]="passDataDeductibles" (clickLOV)="clickDeductiblesLOV($event)"></app-cust-editable-non-datatable>
+  </div>
+  <div footer>
+    <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+    <button class="cust-btn" type="button" (click)="saveDeductibles();"><a>Save</a></button>
+  </div>
+</app-modal>
+
+<app-lov id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)" [lovCheckBox]="true"></app-lov>
+<app-sucess-dialog id="deductibles-success" [icon]="dialogIcon" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 
   <!-- <div contenteditable="true" [innerHTML]="textArea | safeText: 'html'" style="border: 1px solid;">
    

@@ -124,7 +124,8 @@ export class QuoteEndorsementComponent implements OnInit {
           lineDesc: "",
           remarks: null,
           updateDate: [0, 0, 0, 0, 0, 0, 0],
-          updateUser: "CPI"
+          updateUser: "CPI",
+          showMG : 1
         },
         checkFlag: true,
         addFlag: true,
@@ -192,7 +193,8 @@ export class QuoteEndorsementComponent implements OnInit {
             updateUser: "ETC",
             sumInsured: 0,
             endtCd: 0,
-            coverCd: 0
+            coverCd: 0,
+            showMG: 1
         },
         pageLength: 10,
         addFlag: true,
@@ -203,7 +205,8 @@ export class QuoteEndorsementComponent implements OnInit {
         keys: ['deductibleCd','deductibleTitle','deductibleTxt','deductibleRt','deductibleAmt'],
         widths: [60,'auto',100,120,'auto'],
         uneditable: [true,true],
-        magnifyingGlass: ['deductibleCd']
+        magnifyingGlass: ['deductibleCd'],
+        disableAdd: true
     }
     showModal:boolean = false;
     dialogIcon: string;
@@ -419,6 +422,7 @@ export class QuoteEndorsementComponent implements OnInit {
      //neco
        this.copyEndtMethod(event.optionId);
      //end neco
+     this.endorsementData.disableAdd = false;
      this.table.loadingFlag = true;
       $('#endorsmentTable button').removeAttr("disabled");
       $('#endorsmentOCTable button').removeAttr("disabled");
@@ -454,6 +458,7 @@ export class QuoteEndorsementComponent implements OnInit {
       else{
           console.log(event)
           this.endorsementData.tableData = [];
+          this.endorsementData.disableAdd = true;
           this.table.refreshTable();
           this.opId = null;
       }
@@ -479,24 +484,26 @@ export class QuoteEndorsementComponent implements OnInit {
     selectedEndtLOV(data){
       if(this.OpenCover === false){
         //this.endorsementData.tableData[this.endtCodeLOVRow].endtCode = data.endtCd; 
-        this.endorsementData.tableData[this.endtCodeLOVRow].endtTitle = data[0].endtTitle; 
-        this.endorsementData.tableData[this.endtCodeLOVRow].endtDescription = data[0].description; 
-        this.endorsementData.tableData[this.endtCodeLOVRow].endtWording  = data[0].remarks; 
+        // this.endorsementData.tableData[this.endtCodeLOVRow].endtTitle = data[0].endtTitle; 
+        // this.endorsementData.tableData[this.endtCodeLOVRow].endtDescription = data[0].description; 
+        // this.endorsementData.tableData[this.endtCodeLOVRow].endtWording  = data[0].remarks; 
 
-        this.endorsementData.tableData[this.endtCodeLOVRow].edited  = true; 
+        // this.endorsementData.tableData[this.endtCodeLOVRow].edited  = true; 
 
-        this.endorsementData.tableData.push(JSON.parse(JSON.stringify(this.endorsementData.tableData[this.endtCodeLOVRow])));
-        this.endorsementData.tableData[this.endorsementData.tableData.length-1].endtCd = data[0].endtCd; 
-        this.endorsementData.tableData[this.endorsementData.tableData.length-1].edited = true;
-        this.endorsementData.tableData[this.endtCodeLOVRow].deleted  = true;
+        // this.endorsementData.tableData.push(JSON.parse(JSON.stringify(this.endorsementData.tableData[this.endtCodeLOVRow])));
+        // this.endorsementData.tableData[this.endorsementData.tableData.length-1].endtCd = data[0].endtCd; 
+        // this.endorsementData.tableData[this.endorsementData.tableData.length-1].edited = true;
+        // this.endorsementData.tableData[this.endtCodeLOVRow].deleted  = true;
 
-        for(var i = 1; i<data.length;i++){
+        this.endorsementData.tableData = this.endorsementData.tableData.filter(a=>a.showMG!=1);
+        for(var i = 0; i<data.length;i++){
           this.endorsementData.tableData.push(JSON.parse(JSON.stringify(this.endorsementData.nData)));
           this.endorsementData.tableData[this.endorsementData.tableData.length-1].endtTitle = data[i].endtTitle; 
           this.endorsementData.tableData[this.endorsementData.tableData.length-1].endtDescription = data[i].description; 
           this.endorsementData.tableData[this.endorsementData.tableData.length-1].endtWording  = data[i].remarks; 
           this.endorsementData.tableData[this.endorsementData.tableData.length-1].edited  = true; 
           this.endorsementData.tableData[this.endorsementData.tableData.length-1].endtCd = data[i].endtCd; 
+          this.endorsementData.tableData[this.endorsementData.tableData.length-1].showMG = 0; 
         }
 
         this.table.refreshTable();
@@ -602,9 +609,16 @@ export class QuoteEndorsementComponent implements OnInit {
             console.log(saveEndtReq)
             console.log(this.endorsementData.tableData)
             this.quotationService.saveQuoteEndorsements(JSON.stringify(saveEndtReq))
-              .subscribe(data => { 
-                this.table.markAsPristine();
-                $('#successMdl > #modalBtn').trigger('click');
+              .subscribe((data:any) => { 
+                console.log(data);
+                if(data.returnCode==-1){
+                  this.dialogIcon = 'Success';
+                  this.table.markAsPristine();
+                  $('#quote-endorsment #successMdl > #modalBtn').trigger('click');
+                }else{
+                  this.dialogIcon = 'error';
+                  $('#quote-endorsment #successMdl > #modalBtn').trigger('click');
+                }
               });
         }else{
             this.saveEndorsementsOc = [];
@@ -779,16 +793,16 @@ export class QuoteEndorsementComponent implements OnInit {
             // this.deductiblesData.tableData[this.deductiblesData.tableData.length - 1].deductibleCd = data.data.deductibleCd;
             // this.deductiblesData.tableData[this.deductiblesLOVRow].deleted = true;
 
-            this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleTitle = data.data[0].deductibleTitle;
-            this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleRt = data.data[0].deductibleRate;
-            this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleAmt = data.data[0].deductibleAmt;
-            this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleTxt = data.data[0].deductibleText;
-            this.deductiblesData.tableData[this.deductiblesLOVRow].edited = true;
-            this.deductiblesData.tableData.push(JSON.parse(JSON.stringify(this.deductiblesData.tableData[this.deductiblesLOVRow])));
-            this.deductiblesData.tableData[this.deductiblesData.tableData.length - 1].deductibleCd = data.data[0].deductibleCd;
-            this.deductiblesData.tableData[this.deductiblesLOVRow].deleted = true;
-
-            for(var i = 1; i<data.data.length;i++){
+            // this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleTitle = data.data[0].deductibleTitle;
+            // this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleRt = data.data[0].deductibleRate;
+            // this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleAmt = data.data[0].deductibleAmt;
+            // this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleTxt = data.data[0].deductibleText;
+            // this.deductiblesData.tableData[this.deductiblesLOVRow].edited = true;
+            // this.deductiblesData.tableData.push(JSON.parse(JSON.stringify(this.deductiblesData.tableData[this.deductiblesLOVRow])));
+            // this.deductiblesData.tableData[this.deductiblesData.tableData.length - 1].deductibleCd = data.data[0].deductibleCd;
+            // this.deductiblesData.tableData[this.deductiblesLOVRow].deleted = true;
+            this.deductiblesData.tableData = this.deductiblesData.tableData.filter(a=>a.showMG!=1);
+            for(var i = 0; i<data.data.length;i++){
               this.deductiblesData.tableData.push(JSON.parse(JSON.stringify(this.deductiblesData.nData)));
               this.deductiblesData.tableData[this.deductiblesData.tableData.length -1].deductibleTitle = data.data[i].deductibleTitle;
               this.deductiblesData.tableData[this.deductiblesData.tableData.length -1].deductibleRt = data.data[i].deductibleRate;
@@ -796,7 +810,9 @@ export class QuoteEndorsementComponent implements OnInit {
               this.deductiblesData.tableData[this.deductiblesData.tableData.length -1].deductibleTxt = data.data[i].deductibleText;
               this.deductiblesData.tableData[this.deductiblesData.tableData.length -1].edited = true;
               this.deductiblesData.tableData[this.deductiblesData.tableData.length -1].deductibleCd = data.data[i].deductibleCd;
-    }
+              this.deductiblesData.tableData[this.deductiblesData.tableData.length -1].showMG = 0
+            }
+            this.selectedEndt.deductiblesList = this.deductiblesData.tableData;
       }
 
             this.deductibleTable.refreshTable();
@@ -815,12 +831,18 @@ export class QuoteEndorsementComponent implements OnInit {
 
     updateDed(data){
       console.log(data)
-        if(data==null || data.endtCd ==null)
+        if(data==null || data.endtCd ==null){
+            this.deductiblesData.disableAdd = true;
             this.deductiblesData.tableData = [];
-        else if(data.deductiblesList.length == 0)
+        }
+        else if(data.deductiblesList.length == 0){
             this.getDefaultDeductibles();
-        else
+            this.deductiblesData.disableAdd = false;
+        }
+        else{
             this.deductiblesData.tableData = data.deductiblesList;
+            this.deductiblesData.disableAdd = false;
+        }
         this.deductibleTable.refreshTable();
     }
 

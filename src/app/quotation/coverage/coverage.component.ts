@@ -1,4 +1,4 @@
-import { Component, OnInit, Input,  ViewChild, Output } from '@angular/core';
+import { Component, OnInit, Input,  ViewChild, Output, EventEmitter } from '@angular/core';
 import { QuotationCoverageInfo, NotesReminders, MtnSectionCovers } from '../../_models';
 import { QuotationService, NotesService, MaintenanceService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
@@ -20,7 +20,7 @@ export class CoverageComponent implements OnInit {
   //tableDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @ViewChild(MtnSectionCoversComponent) secCoversLov: MtnSectionCoversComponent;
-
+  @Output() enblQuoteOpTab = new EventEmitter<any>();
   editedData: any[] = [];
   deletedData: any[] = [];
   //deletedEditedData: any[] = [];
@@ -318,6 +318,7 @@ export class CoverageComponent implements OnInit {
             this.initialData = [];
             this.editedData = [];
             this.deletedData =[];
+            this.enblQuoteOpTab.emit(true);
             //this.getCoverageInfo();
            }
       });
@@ -334,31 +335,7 @@ export class CoverageComponent implements OnInit {
     });
   }
   cancel(){
-    //this.cancelBtn.clickCancel();
-    var matches = false;
-
-      this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
-        var tableData = this.passData.tableData;
-        var previousData = data.quotation.project.coverage.sectionCovers;
-
-        for(var i=0;i<previousData.length;i++){
-          for(var j=0;j<tableData.length;j++){
-             if(previousData[i].coverCd == tableData[j].coverCd){
-               matches = true;
-               break;
-            }
-          }
-          if(!matches){
-            this.deletedData.push(previousData[i])
-            this.deletedData[this.deletedData.length-1].createDate = new Date(this.deletedData[this.deletedData.length-1].createDate[0],this.deletedData[this.deletedData.length-1].createDate[1]-1,this.deletedData[this.deletedData.length-1].createDate[2]).toISOString();
-            this.deletedData[this.deletedData.length-1].updateDate = new Date(this.deletedData[this.deletedData.length-1].updateDate[0],this.deletedData[this.deletedData.length-1].updateDate[1]-1,this.deletedData[this.deletedData.length-1].updateDate[2]).toISOString();
-            this.deletedData[this.deletedData.length-1].lineCd = this.lineCd;
-          }
-          matches = false;
-        }
-      });
-
-    
+    this.cancelBtn.clickCancel();
   }
   
   sectionCoversLOV(data){
@@ -376,20 +353,20 @@ export class CoverageComponent implements OnInit {
     }
 
     $('#cust-table-container').addClass('ng-dirty');
-    this.passData.tableData[this.sectionCoverLOVRow].coverCd = data[0].coverCd; 
-    this.passData.tableData[this.sectionCoverLOVRow].coverCdAbbr = data[0].coverCdAbbr;
-    this.passData.tableData[this.sectionCoverLOVRow].section = data[0].section;
-    this.passData.tableData[this.sectionCoverLOVRow].bulletNo = data[0].bulletNo;
-    this.passData.tableData[this.sectionCoverLOVRow].sumInsured = 0;
-    this.passData.tableData[this.sectionCoverLOVRow].edited = true;
+    // this.passData.tableData[this.sectionCoverLOVRow].coverCd = data[0].coverCd; 
+    // this.passData.tableData[this.sectionCoverLOVRow].coverCdAbbr = data[0].coverCdAbbr;
+    // this.passData.tableData[this.sectionCoverLOVRow].section = data[0].section;
+    // this.passData.tableData[this.sectionCoverLOVRow].bulletNo = data[0].bulletNo;
+    // this.passData.tableData[this.sectionCoverLOVRow].sumInsured = 0;
+    // this.passData.tableData[this.sectionCoverLOVRow].edited = true;
 
     if(data[0].coverCd != '' && data[0].coverCd != null && data[0].coverCd != undefined) {
       //HIDE THE POWERFUL MAGNIFYING GLASS
-      this.passData.tableData[this.sectionCoverLOVRow].showMG = 0;
+      this.passData.tableData[this.sectionCoverLOVRow].showMG = 1;
     }
-    
+    this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
     //this.validateSectionCover();
-    for(var i = 1; i<data.length;i++){
+    for(var i = 0; i<data.length;i++){
       this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
       this.passData.tableData[this.passData.tableData.length - 1].coverCd = data[i].coverCd; 
       this.passData.tableData[this.passData.tableData.length - 1].coverCdAbbr = data[i].coverCdAbbr;
@@ -445,7 +422,7 @@ export class CoverageComponent implements OnInit {
      if(this.lineCd == 'CAR' || this.lineCd == 'EAR'){
         this.coverageData.totalSi = this.coverageData.sectionISi + this.coverageData.sectionIIISi;
      } else if (this.lineCd == 'EEI'){
-       this.coverageData.totalSi = this.coverageData.sectionISi + this.coverageData.sectionIISi;
+       this.coverageData.totalSi = this.coverageData.sectionISi + this.coverageData.sectionIISi + this.coverageData.sectionIIISi;
      } else{
        this.coverageData.totalSi = this.coverageData.sectionISi
      }

@@ -15,7 +15,7 @@
 	</div>	
 </div>
 
-<quill-editor class="txt-edtr" [ngModel]="editorContent" (ngModelChange)="editorContent = $event" [style]="style" [modules]="{toolbar: false}" [readOnly]="true" [placeholder]="(editorPlaceholder == null) ? '' : editorPlaceholder" [format]="'text'"></quill-editor>
+<quill-editor id="quill-editor" class="txt-edtr" [ngModel]="editorContent" (ngModelChange)="editorContent = $event" [style]="style" [modules]="{toolbar: false}" [readOnly]="true" [placeholder]="(editorPlaceholder == null) ? '' : editorPlaceholder" [format]="'text'"></quill-editor>
 
 <ng-template #content>
 	<div class="modal-header">

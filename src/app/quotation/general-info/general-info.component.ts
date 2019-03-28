@@ -173,6 +173,9 @@ export class GeneralInfoComponent implements OnInit {
 	excludeCedingCo: any[] = [];
 	tempQuoteIdInternalComp = "";
 
+	@Output() enblEndtTab = new EventEmitter<any>(); //Paul
+	//@Output() enblQuoteOpTab = new EventEmitter<any>(); //EJVA
+
 	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title,
 			    private route: ActivatedRoute, private maintenanceService: MaintenanceService, private ns: NotesService) { }
 	ngOnInit() {
@@ -199,7 +202,7 @@ export class GeneralInfoComponent implements OnInit {
 			this.sub = this.route.params.subscribe(params => {
 				this.from = params['from'];
 				if (this.from == "quo-processing") {
-					this.typeOfCession = params['typeOfCession'];
+					//this.typeOfCession = params['typeOfCession'];
 					this.quotationNo = (this.quoteInfo.quotationNo === '') ? params['quotationNo'] : this.quoteInfo.quotationNo;
 
 					if(params['exclude'] != undefined) {
@@ -243,8 +246,8 @@ export class GeneralInfoComponent implements OnInit {
 
 				if(data['project'] != null) {
 					this.project = data['project'];
-					this.project.createDate = this.dateParser(this.project.createDate);
-					this.project.updateDate = this.dateParser(this.project.updateDate);
+					this.project.createDate = this.ns.toDateTimeString(this.project.createDate);
+					this.project.updateDate = this.ns.toDateTimeString(this.project.updateDate);
 				}
 
 
@@ -544,14 +547,12 @@ export class GeneralInfoComponent implements OnInit {
 							var internalCompParams: any[] = [{
 							  adviceNo: 0,
 							  cedingId: this.genInfoData.cedingId,
-							  cedingRepId: '',
-							  createDate: new Date().toISOString(),
-							  createUser: 'ndc',
-							  option: '', //remove
+							  cedingRepId: 0,
+							  createDate: this.ns.toDateTimeString(0),
+							  createUser: JSON.parse(window.localStorage.currentUser).username,
 							  quoteId: this.genInfoData.quoteId,
-							  updateDate: new Date().toISOString(),
-							  updateUser: 'ndc',
-							  wordings: '' //remove
+							  updateDate: this.ns.toDateTimeString(0),
+							  updateUser: JSON.parse(window.localStorage.currentUser).username,
 							}];
 					        this.quotationService.saveQuoteCompetition(internalCompParams).subscribe((result: any) => {
 					          console.log(result);
@@ -632,7 +633,7 @@ export class GeneralInfoComponent implements OnInit {
 			"updateUser"	: this.genInfoData.updateUser
 		}
 
-		if(this.quotationService.toGenInfo[0] === 'edit' && this.savingType === 'normal') {
+		if(this.quotationService.toGenInfo[0] === 'edit') {
 			saveQuoteGeneralInfoParam.updateUser = 'USER'; //JSON.parse(window.localStorage.currentUser).username;
 			saveQuoteGeneralInfoParam.updateDate = this.ns.toDateTimeString(0);
 			saveQuoteGeneralInfoParam.prjUpdateUser = 'USER'; //JSON.parse(window.localStorage.currentUser).username;
@@ -719,6 +720,7 @@ export class GeneralInfoComponent implements OnInit {
   			showAlop: this.quoteInfo.showAlop,
   			cessionId: this.genInfoData.cessionId
   		});		
+  		this.checkQuoteOption(); //PAUL
   	}
 
   	validate(obj){
@@ -837,6 +839,27 @@ export class GeneralInfoComponent implements OnInit {
 		var reg = new RegExp(this.a, 'gi');
 
 		this.genInfoData.openingParag = this.genInfoData.openingParag.replace(reg, this.b);
+	}
+
+	//paul
+	checkQuoteOption(){
+		this.quotationService.getQuoteOptions(this.genInfoData.quoteId).subscribe((data)=>{
+			if(data['quotation'] !== null){
+				this.enblEndtTab.emit(true);
+				let alopFlag = false;
+		           if(data['quotation'] !== null)
+		           first:for(let option of data['quotation'].optionsList){
+		             for(let otherRate of option.otherRatesList){
+		               if(otherRate.section == 'III'){
+		                 alopFlag = true;
+		                 break first;
+		               }
+		             }
+		           }
+		           this.quoteInfo.showAlop = alopFlag;
+			}
+			console.log(data);
+		})
 	}
 
 }

@@ -20,7 +20,8 @@ export class QuotationProcessingComponent implements OnInit {
     @ViewChildren(CustNonDatatableComponent) table: QueryList<CustNonDatatableComponent>;
     @ViewChild(MtnLineComponent) lineLov: MtnLineComponent;
     @ViewChild(MtnTypeOfCessionComponent) typeOfCessionLov: MtnTypeOfCessionComponent;
-    @ViewChildren(MtnRiskComponent) riskLovs: QueryList<MtnTypeOfCessionComponent>;
+    @ViewChild('riskLOV') riskLOV: MtnRiskComponent;
+    @ViewChild('copyRiskLOV') copyRiskLOV: MtnRiskComponent;
     @ViewChildren(CedingCompanyComponent) cedingCoLovs: QueryList<CedingCompanyComponent>;
 
     tableData: any[] = [];
@@ -231,7 +232,9 @@ export class QuotationProcessingComponent implements OnInit {
 
     retrieveQuoteListingMethod(){
         this.passData.tableData = [];
+        console.log(this.searchParams)
         this.quotationService.getQuoProcessingData(this.searchParams).subscribe(data => {
+            console.log(data)
             var records = data['quotationList'];
             this.fetchedData = records;
             for(let rec of records){
@@ -594,9 +597,9 @@ showCedingCompanyIntCompLOV() {
         } else if(field === 'typeOfCession'){
             this.typeOfCessionLov.checkCode(this.typeOfCessionId, ev);
         } else if(field === 'risk') {
-            this.riskLovs['first'].checkCode(this.riskCd, ev);
+            this.riskLOV.checkCode(this.riskCd, '#riskLOV', ev);
         } else if(field === 'copyRisk') {
-            this.riskLovs['last'].checkCode(this.copyRiskId, ev);
+            this.copyRiskLOV.checkCode(this.copyRiskId, '#copyRiskLOV', ev);
         } else if(field === 'cedingCo') {
             this.cedingCoLovs['first'].checkCode(this.copyCedingId, ev);
         } else if(field === 'cedingCoIntComp') {
@@ -724,11 +727,9 @@ showCedingCompanyIntCompLOV() {
                     cedingRepId: '',
                     createDate: currentDate,
                     createUser: 'USER', //JSON.parse(window.localStorage.currentUser).username,
-                    option: '',
                     quoteId: data['quoteId'],
                     updateDate: currentDate,
                     updateUser: 'USER', //JSON.parse(window.localStorage.currentUser).username,
-                    wordings: ''
                 }];
 
                 this.quotationService.saveQuoteCompetition(internalCompParams).subscribe((result: any) => {
@@ -752,5 +753,21 @@ showCedingCompanyIntCompLOV() {
                 $('#quoProcessing #successModalBtn').trigger('click');
             }
         });
+    }
+
+    copyModalToGenInfo(quotationNo) {
+        console.log(quotationNo);
+
+        this.line = quotationNo.split("-")[0];
+        this.quotationNo = quotationNo;
+
+        this.quotationService.toGenInfo = [];
+        this.quotationService.toGenInfo.push("edit", this.line);
+        
+        this.quotationService.savingType = 'normal';
+
+        setTimeout(() => {
+            this.router.navigate(['/quotation', { line: this.line, quotationNo : this.quotationNo, from: 'quo-processing' }], { skipLocationChange: true });
+        },100); 
     }
 }
