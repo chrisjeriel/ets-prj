@@ -37,6 +37,12 @@ export class PolCoverageComponent implements OnInit {
   deleteFlag;
   paginateFlag;
   infoFlag;
+  sectionISi: 0;
+  sectionIPrem: 0;
+  sectionIISi: 0;
+  sectionIIPrem: 0;
+  sectionIIISi: 0;
+  sectionIIIPrem: 0;
 
   passDataSectionCover: any = {
         tableData: [],
@@ -45,8 +51,6 @@ export class PolCoverageComponent implements OnInit {
                     "text", "text", "text", "currency", "percent", "currency", "checkbox"
                    ],
         checkFlag:true,
-        addFlag:true,
-        deleteFlag:true,
         pageLength: 10,
         searchFlag:true,
         magnifyingGlass: ['coverCode'],
@@ -57,11 +61,10 @@ export class PolCoverageComponent implements OnInit {
 
   passDataTotalPerSection: any = {
         tHeader: ["Section", "Sum Insured", "Premium"],
-        dataTypes: [
-                    "text", "text", "text"
-                   ],
-        tableData: [["SECTION I","",""],["SECTION II","",""],["SECTION III","",""]],
-        pageLength:3,
+        dataTypes: ["text", "text", "text"],
+        tableData: [["SECTION I",null,null],["SECTION II",null,null],["SECTION III",null,null]],
+        keys:['section','sumInsured','premium'],
+        pageLength:3
     };
 
   passDataCATPerils: any = {
@@ -155,6 +158,18 @@ export class PolCoverageComponent implements OnInit {
   nData2: CoverageDeductibles = new CoverageDeductibles(null,null,null,null,null);
   nData: UnderwritingCoverageInfo = new UnderwritingCoverageInfo(null, null, null, null, null, null, null);
 
+
+  coverageData : any = {
+      currencyCd: null,
+      currencyRt: null,
+      totalSi: null,
+      totalPrem: null,
+      pctShare:0,
+      pctPml:0,
+      totalValue: 0,  
+      remarks: null 
+  }
+
   passLOVData: any = {};
   lovRowData:any;
   lovCheckBox:boolean = false;
@@ -162,6 +177,7 @@ export class PolCoverageComponent implements OnInit {
   policyId: any = 8;
   constructor(private underwritingservice: UnderwritingService, private titleService: Title, private modalService: NgbModal,
                 private route: ActivatedRoute, private ns: NotesService) { }
+
 
   ngOnInit() {
     this.titleService.setTitle("Pol | Coverage");
@@ -171,14 +187,23 @@ export class PolCoverageComponent implements OnInit {
       //this.passDataTotalPerSection.tableData = this.underwritingservice.getTotalPerSection();
       this.underwritingservice.getUWCoverageInfos('','8').subscribe((data:any) => {
         console.log(data)
+        this.coverageData = data.policy.project.coverage;
         var infoData = data.policy.project.coverage.sectionCovers;
+          
 
+          
           for(var i = 0; i < infoData.length;i++){
             this.passDataSectionCover.tableData.push(infoData[i]);
+              if(infoData[i].section == 'I'){
+                  this.sectionISi += infoData[i].sumInsured;
+                  this.sectionIPrem += infoData [i].premAmt;
+              }
           }
-
           this.table.refreshTable();
-
+          for( var j=0; j< this.passDataTotalPerSection.tableData.length;j++){
+            this.passDataTotalPerSection.tableData[j].sumInsured = this.sectionISi;
+            this.passDataTotalPerSection.tableData[j].premium = this.sectionIPrem;
+          }
       });
 
     } else {
@@ -403,7 +428,5 @@ export class PolCoverageComponent implements OnInit {
     }
     this.deductiblesTable.refreshTable();
   }
-
-
-
+  
 }

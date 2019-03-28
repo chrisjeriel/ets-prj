@@ -79,7 +79,7 @@ export class MtnInsuredComponent implements OnInit {
 
   }
 
-  checkCode(code, type, ev) {
+  checkCode(code, id, ev) {
     if(code.trim() === ''){
       this.selectedData.emit({
         insuredId: '',
@@ -98,7 +98,7 @@ export class MtnInsuredComponent implements OnInit {
             ev: ev
           });        
 
-          $(type + ' #modalBtn').trigger('click');
+          $(id + ' #modalBtn').trigger('click');
         }      
       });
     }

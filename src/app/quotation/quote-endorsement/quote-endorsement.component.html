@@ -145,7 +145,7 @@
 </app-modal> -->
 
 <app-confirm-save id="endtSave" (onYes)="saveData()"></app-confirm-save>
-<app-sucess-dialog id="quote-endorsment" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-sucess-dialog id="quote-endorsment" (onOk)="cancelFlag ? this.cancelBtn.onNo():null" [icon]="dialogIcon"></app-sucess-dialog>
 <app-cancel-button (onYes)="saveData('cancel')" [url]="cancelLink" ></app-cancel-button>
 
 

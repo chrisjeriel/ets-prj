@@ -30,9 +30,14 @@
 	<div class="form-group col-sm">
 		<div class="col-md-13 text-center" style="margin-top:10px">
 			<div class="cust-btn-container">
-			<button type="button" class="cust-btn"><a>Cancel</a></button>
-			<button type="button" class="cust-btn"><a>Save</a></button>
+			<button type="button" class="cust-btn" (click)="cancel();"><a>Cancel</a></button>
+			<button type="button" class="cust-btn" (click)="onClickSave();"><a>Save</a></button>
 		</div>
 		</div>
 	</div>
 </div>
+
+<app-confirm-save (onYes)="saveData();"></app-confirm-save>
+
+<app-sucess-dialog id="polAttachment" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-cancel-button (onYes)="saveData('cancel')" [url]="'/policy-listing'" ></app-cancel-button>

@@ -172,13 +172,12 @@ export class UnderwritingService {
 
     }
 
-    getPolAttachment() {
-        this.polAttachmentInfoData = [
-            new PolAttachmentInfo("Libraries\\Attachments", "NBI Form"),
-            new PolAttachmentInfo("Libraries\\Attachments", "NSO Birth Certificate")
-        ];
+    getPolAttachment(policyId: string, policyNo: string) {
+        const params = new HttpParams()
+             .set('policyId', (policyId === null || policyId === undefined ? '' : policyId) )
+             .set('policyNo',(policyNo === null || policyNo === undefined ? '' : policyNo) )
 
-        return this.polAttachmentInfoData;
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolAttachment',{params});
     }
 
 
@@ -473,6 +472,24 @@ export class UnderwritingService {
             })
         }
         return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolicyDeductibles',JSON.stringify(params),header);
+    }
+
+    savePolAttachment(policyId:number ,savePolAttachments: any[], deletePolAttachments: any[]){
+        /*const params = new HttpParams()
+             .set('quoteId',quoteId.toString())
+             .set('attachmentsList',JSON.stringify(attachmentList))*/
+             
+        let params:any  = {
+            policyId: policyId,
+            savePolAttachments: savePolAttachments,
+            deletePolAttachments: deletePolAttachments
+        }
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolAttachment', JSON.stringify(params), header);
     }
 
 }            
