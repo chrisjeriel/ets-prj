@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PolicyHoldCoverInfo } from '../../../_models/PolicyToHoldCover';
 import { Title } from '@angular/platform-browser';
+import { NotesService } from '@app/_services';
 
 @Component({
 	selector: 'app-policy-to-hold-cover',
@@ -11,7 +12,9 @@ export class PolicyToHoldCoverComponent implements OnInit {
 
 	private policyHoldCoverInfo: PolicyHoldCoverInfo;
 
-	constructor(private titleService: Title) { }
+	constructor(private titleService: Title, private noteService: NotesService) { }
+
+	periodFrom: any;
 
 	ngOnInit() {
 		this.titleService.setTitle("Pol | Policy to Hold Cover");
@@ -27,6 +30,9 @@ export class PolicyToHoldCoverComponent implements OnInit {
 		this.policyHoldCoverInfo.requestedBy = "MOCK TEST";
 		this.policyHoldCoverInfo.requestDate = new Date();
 
+	}
+	test(){
+		console.log(this.noteService.toDateTimeString(this.periodFrom));
 	}
 
 }

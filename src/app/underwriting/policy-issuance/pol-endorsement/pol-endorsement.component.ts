@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, Input, ViewChildren, QueryList, ViewChild } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { PolicyEndorsement } from '../../../_models/PolicyEndorsement'
 import { UnderwritingService } from '../../../_services';
@@ -69,8 +69,10 @@ export class PolEndorsementComponent implements OnInit {
       data:{}
     }
 
+
     @Input() alteration: boolean = false;
     currentLine: string = "CAR";
+    currentEndtCd: string = "";
 
     constructor(config: NgbDropdownConfig, private underwritingService: UnderwritingService, private titleService: Title
     ) {
@@ -129,6 +131,7 @@ export class PolEndorsementComponent implements OnInit {
     }
 
     rowClick(data){
+        this.currentEndtCd = data.endtCd;
         if(data === null){
             this.deductiblesData.disableAdd = true;
         }else{
@@ -146,12 +149,17 @@ export class PolEndorsementComponent implements OnInit {
     clickDedLov(data){
         this.passLOVData.selector = 'deductibles';
         this.passLOVData.lineCd = 'CAR';
+        this.passLOVData.hide = this.deductiblesData.tableData.filter((a)=>{return !a.deleted}).map(a=>a.deductibleCd);
+        this.passLOVData.params = {
+          coverCd: '0',
+          endtCd: this.currentEndtCd,
+          activeTag:'Y'
+        }
         $('#lov #modalBtn2').trigger('click');
     }
 
     //set endorsement
     setEndt(data){
-        console.log(data);
         //delete blank
         this.passData.tableData = this.passData.tableData.filter((f)=>{return f.showMG !== 1});
         //add selected
@@ -166,5 +174,21 @@ export class PolEndorsementComponent implements OnInit {
     }
 
     //set deductibles
-    setSelected
+    setSelected(data){
+        console.log(data);
+        //delete blank
+        this.deductiblesData.tableData = this.deductiblesData.tableData.filter((f)=>{return f.showMG !== 1});
+        //add selected
+        for(var k = 0; k < data.data.length; k++){
+           this.passData.tableData.push(JSON.parse(JSON.stringify(this.deductiblesData.nData)));
+           this.deductiblesData.tableData[this.deductiblesData.tableData.length - 1].deductibleCd = data.data[k].deductibleCd;
+           this.deductiblesData.tableData[this.deductiblesData.tableData.length - 1].deductibleTitle = data.data[k].deductibleTitle;
+           this.deductiblesData.tableData[this.deductiblesData.tableData.length - 1].deductibleTxt = data.data[k].deductibleTxt;
+           this.deductiblesData.tableData[this.deductiblesData.tableData.length - 1].deductibleRt = data.data[k].deductibleRt;
+           this.deductiblesData.tableData[this.deductiblesData.tableData.length - 1].deductibleAmt = data.data[k].deductibleAmt;
+           this.deductiblesData.tableData[this.deductiblesData.tableData.length - 1].showMG = 0;
+        }
+        console.log(this.deductiblesData.tableData);
+        this.table.forEach(t => {t.refreshTable()});
+    }
 }
