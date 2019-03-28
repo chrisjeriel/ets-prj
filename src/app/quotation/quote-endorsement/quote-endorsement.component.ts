@@ -205,7 +205,8 @@ export class QuoteEndorsementComponent implements OnInit {
         keys: ['deductibleCd','deductibleTitle','deductibleTxt','deductibleRt','deductibleAmt'],
         widths: [60,'auto',100,120,'auto'],
         uneditable: [true,true],
-        magnifyingGlass: ['deductibleCd']
+        magnifyingGlass: ['deductibleCd'],
+        disableAdd: true
     }
     showModal:boolean = false;
     dialogIcon: string;
@@ -421,6 +422,7 @@ export class QuoteEndorsementComponent implements OnInit {
      //neco
        this.copyEndtMethod(event.optionId);
      //end neco
+     this.endorsementData.disableAdd = false;
      this.table.loadingFlag = true;
       $('#endorsmentTable button').removeAttr("disabled");
       $('#endorsmentOCTable button').removeAttr("disabled");
@@ -456,6 +458,7 @@ export class QuoteEndorsementComponent implements OnInit {
       else{
           console.log(event)
           this.endorsementData.tableData = [];
+          this.endorsementData.disableAdd = true;
           this.table.refreshTable();
           this.opId = null;
       }
@@ -606,9 +609,16 @@ export class QuoteEndorsementComponent implements OnInit {
             console.log(saveEndtReq)
             console.log(this.endorsementData.tableData)
             this.quotationService.saveQuoteEndorsements(JSON.stringify(saveEndtReq))
-              .subscribe(data => { 
-                this.table.markAsPristine();
-                $('#successMdl > #modalBtn').trigger('click');
+              .subscribe((data:any) => { 
+                console.log(data);
+                if(data.returnCode==-1){
+                  this.dialogIcon = 'Success';
+                  this.table.markAsPristine();
+                  $('#quote-endorsment #successMdl > #modalBtn').trigger('click');
+                }else{
+                  this.dialogIcon = 'error';
+                  $('#quote-endorsment #successMdl > #modalBtn').trigger('click');
+                }
               });
         }else{
             this.saveEndorsementsOc = [];
@@ -821,12 +831,18 @@ export class QuoteEndorsementComponent implements OnInit {
 
     updateDed(data){
       console.log(data)
-        if(data==null || data.endtCd ==null)
+        if(data==null || data.endtCd ==null){
+            this.deductiblesData.disableAdd = true;
             this.deductiblesData.tableData = [];
-        else if(data.deductiblesList.length == 0)
+        }
+        else if(data.deductiblesList.length == 0){
             this.getDefaultDeductibles();
-        else
+            this.deductiblesData.disableAdd = false;
+        }
+        else{
             this.deductiblesData.tableData = data.deductiblesList;
+            this.deductiblesData.disableAdd = false;
+        }
         this.deductibleTable.refreshTable();
     }
 
