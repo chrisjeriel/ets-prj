@@ -1,6 +1,4 @@
 export class PARListing {
-
-	line : string
 	policyNo : string
 	typeCession : string
 	cedingCompany : string
@@ -19,7 +17,6 @@ export class PARListing {
 
 
 	constructor(
-		line : string,
 		policyNo : string,
 		typeCession : string,
 		cedingCompany : string,
@@ -36,7 +33,6 @@ export class PARListing {
 		accountingDate : Date,
 		status : string) {
 		
-		this.line = line;
 		this.policyNo = policyNo;
 		this.typeCession = typeCession;
 		this.cedingCompany = cedingCompany;
