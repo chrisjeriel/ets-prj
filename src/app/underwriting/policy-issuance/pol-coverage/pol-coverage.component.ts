@@ -349,6 +349,9 @@ export class PolCoverageComponent implements OnInit {
             this.passDataTotalPerSection.tableData[2].sumInsured = this.sectionIIISi;
             this.passDataTotalPerSection.tableData[2].premium = this.sectionIIIPrem;
 
+
+            this.coverageData.totalSi = this.sectionISi + this.sectionIISi + this.sectionIIISi;
+            this.coverageData.totalPrem = this.sectionIPrem + this.sectionIIPrem + this.sectionIIIPrem;
          setTimeout(() => {
            this.focusBlur();
          }, 0)
@@ -522,6 +525,13 @@ export class PolCoverageComponent implements OnInit {
     this.passDataTotalPerSection.tableData[2].section = 'SECTION III'
     this.passDataTotalPerSection.tableData[2].sumInsured = this.sectionIIISi;
     this.passDataTotalPerSection.tableData[2].premium = this.sectionIIIPrem;
+
+    this.coverageData.totalSi = this.sectionISi + this.sectionIISi + this.sectionIIISi;
+    this.coverageData.totalPrem = this.sectionIPrem + this.sectionIIPrem + this.sectionIIIPrem;
+
+    setTimeout(() => {
+      this.focusBlur();
+    }, 0)
   }
 
 
