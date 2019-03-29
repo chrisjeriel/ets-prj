@@ -24,6 +24,7 @@ export class ParListingComponent implements OnInit {
     policyId: any;
     searchParams: any[] = [];
     fetchedData: any;
+    btnDisabled: boolean;
 
     constructor(private uwService: UnderwritingService, private titleService: Title, private router: Router, private ns: NotesService) { }
     passDataListing: any = {
@@ -170,16 +171,27 @@ export class ParListingComponent implements OnInit {
     }
 
     onRowDblClick(event) {
-
         for (var i = 0; i < event.target.closest("tr").children.length; i++) {
         this.uwService.rowData[i] = event.target.closest("tr").children[i].innerText;
         }
 
-        this.line = this.uwService.rowData[0].split("-")[0];
+        for(let rec of this.fetchedData){
+              if(rec.policyNo === this.uwService.rowData[0]) {
+                this.policyId = rec.policyId;
+              }
+        }
+        this.polLine = this.uwService.rowData[0].split("-")[0];
+        this.policyNo = this.uwService.rowData[0];
 
-        setTimeout(() => {
-               this.router.navigate(['/policy-issuance', { line: this.polLine }], { skipLocationChange: true });
-        },100); 
+        if (this.selectedPolicy.status === '1'){
+             this.uwService.toPolInfo = [];
+             this.uwService.toPolInfo.push("edit", this.polLine);
+             setTimeout(() => {
+               this.router.navigate(['/policy-issuance', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId }], { skipLocationChange: true });
+             },100); 
+        } else {
+            console.log("status is in-forced!");
+        }
     }
 
     onClickAdd(event){
@@ -189,13 +201,13 @@ export class ParListingComponent implements OnInit {
     }
 
     onClickEdit(event){
-        this.line = this.selectedPolicy.policyNo.split('-')[0];
+        this.polLine = this.selectedPolicy.policyNo.split('-')[0];
         this.policyNo = this.selectedPolicy.policyNo;
         this.policyId = this.selectedPolicy.policyId;
 
         if (this.selectedPolicy.status === '1'){
              this.uwService.toPolInfo = [];
-             this.uwService.toPolInfo.push("edit", this.line);
+             this.uwService.toPolInfo.push("edit", this.polLine);
              setTimeout(() => {
                this.router.navigate(['/policy-issuance', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId }], { skipLocationChange: true });
              },100); 
@@ -206,8 +218,13 @@ export class ParListingComponent implements OnInit {
     }
 
     onRowClick(event){
-      this.selectedPolicy = event;
-      console.log(this.selectedPolicy);
+      if(this.selectedPolicy === event || event === null){
+            this.selectedPolicy = {};
+            this.passDataListing.btnDisabled = true;
+        }else{
+            this.selectedPolicy = event;
+            this.passDataListing.btnDisabled = false;
+        }
     }
 
 }
