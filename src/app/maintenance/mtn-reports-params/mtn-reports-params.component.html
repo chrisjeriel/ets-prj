@@ -1,0 +1,12 @@
+<app-modal class="d-none" (modalOpened)="openModal()">
+	<div header>List of Values</div>
+	<div body *ngIf="modalOpen">
+		<app-cust-non-datatable [passData]="passDataReportsParam" (rowClick)="select($event)"></app-cust-non-datatable>
+	</div>
+	<div footer>
+        <div class="d-flex justify-content-center">
+            <button class="cust-btn" type="button" (click)="modalService.dismissAll();onClickCancel();"><a>Cancel</a></button>
+            <button class="cust-btn" type="button" (click)="modalService.dismissAll();okBtnClick($event);"><a>Ok</a></button>
+        </div>
+    </div>
+</app-modal>
