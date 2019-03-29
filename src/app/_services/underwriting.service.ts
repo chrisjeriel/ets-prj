@@ -77,15 +77,6 @@ export class UnderwritingService {
         return this.alterationFromQuotation;
     }
 
-    getCoInsurance() {
-        this.coInsuranceData = [
-            new PolicyCoInsurance("CAR-2018-000001-099-0001-000", "EN-CAR-2018-0000001-00", "Malayan", 12.2, 10000, 500000),
-            new PolicyCoInsurance("CAR-2018-000001-099-0001-000", "EN-CAR-2018-0000001-00", "Company 1", 6.23, 20000, 600000),
-            new PolicyCoInsurance("CAR-2018-000001-099-0001-000", "EN-CAR-2018-0000001-00", "Company 2", 15.16, 30000, 700000),
-        ];
-        return this.coInsuranceData;
-    }
-
     getUWCoverageInfo() {
         this.uwcoverageInfoData = [
             new UnderwritingCoverageInfo("1", "I", "3", "1000000", "12.2", "69000", "70000"),
@@ -506,5 +497,12 @@ export class UnderwritingService {
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolAlopItem',{params});
     }
 
+    getPolCoInsurance(policyId: string, policyNo: string) {
+        const params = new HttpParams()
+            .set('policyId', (policyId === null || policyId === undefined ? '' : policyId))
+            .set('policyNo', (policyNo === null || policyNo === undefined ? '' : policyNo))
+
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolCoInsurance',{params});
+    }
 
 }            

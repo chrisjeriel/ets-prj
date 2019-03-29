@@ -13,7 +13,7 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
   styleUrls: ['./pol-alop.component.css']
 })
 export class PolAlopComponent implements OnInit {
-@ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
+  @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   aLOPInfo: ALOPInfo = new ALOPInfo();
   tableData: any[] = [["1", "Description 1", "Information 1"],
   ["2", "Description 2", "Information 2"],
@@ -118,11 +118,6 @@ export class PolAlopComponent implements OnInit {
 
     this.passData2.tableData = this.tableData2;
 
-    /*this.policyInfo.policyId = 2; 
-    this.policyInfo.policyNo = 'EAR-2019-00002-002-0002-002';
-    this.policyInfo.insuredDesc =  'insured5';
-    this.policyInfo.riskName = 'riskName';*/
-
     this.policyNo = this.policyInfo.policyNo.split(/[-]/g)[0]
 
     this.sub = this.route.params.subscribe(params => {
@@ -159,24 +154,27 @@ export class PolAlopComponent implements OnInit {
 
     this.underwritingService.getPolAlopItem(this.policyNo, this.policyInfo.policyId, this.policyInfo.policyNo).subscribe((data: any) => {
 
-    var dataInfos = data.policy.alop[0].alopItem;
-
-    if(this.policyNo === "CAR") {
       this.passData.tableData = [];
-
-      for(var i=0; i< dataInfos.length;i++){
-        this.passData.tableData.push([dataInfos[i].itemNo, dataInfos[i].description, dataInfos[i].lossMin]);
-      }
-    } else {
       this.passData2.tableData = [];
+      
+      if (data.policy != null) {
+        var dataInfos = data.policy.alop[0].alopItem;
 
-      for(var i=0; i< dataInfos.length;i++){
-        this.passData2.tableData.push([dataInfos[i].itemNo, dataInfos[i].quantity, dataInfos[i].description, 
-          dataInfos[i].importance, dataInfos[i].lossMin]);
+        if(this.policyNo === "CAR") {
+
+          for(var i=0; i< dataInfos.length;i++){
+            this.passData.tableData.push([dataInfos[i].itemNo, dataInfos[i].description, dataInfos[i].lossMin]);
+          }
+        } else {
+
+          for(var i=0; i< dataInfos.length;i++){
+            this.passData2.tableData.push([dataInfos[i].itemNo, dataInfos[i].quantity, dataInfos[i].description, 
+              dataInfos[i].importance, dataInfos[i].lossMin]);
+          }
+        }
+        
+        this.table.refreshTable();
       }
-    }
-    
-    this.table.refreshTable();
     });
 
   }
