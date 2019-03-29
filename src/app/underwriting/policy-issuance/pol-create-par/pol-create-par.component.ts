@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { UnderwritingService } from '../../../_services';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { UnderwritingService, QuotationService } from '../../../_services';
 import { CreateParInfo } from '../../../_models/CreatePolicy';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component'
 
 @Component({
   selector: 'app-pol-create-par',
@@ -11,67 +12,54 @@ import { Title } from '@angular/platform-browser';
   styleUrls: ['./pol-create-par.component.css']
 })
 export class PolCreatePARComponent implements OnInit {
+  @ViewChild('polLov') lovTable: CustNonDatatableComponent;
 
   private createParInfo: CreateParInfo
   tableData: any[] = [];
   tHeader: any[] = [];
-  dataTypes: any[] = [];
-  fromQuotation: boolean = true;
+  dataTypes: any[] = [];  
   quoteLine: any;
 
+  qu: boolean = true;
+  hc: boolean = false;
+  oc: boolean = false;
+
+  quotationList: any[] = [];
+
+  passDataLOV: any = {
+    tableData: [],
+    tHeader:["Quotation No.", "Ceding Company", "Insured", "Risk"],  
+    dataTypes: ["text","text","text","text"],
+    pageLength: 10,
+    resizable: [false,false,false,false],
+    tableOnly: false,
+    keys: ['quotationNo','cedingName','insuredDesc','riskName'],
+    pageStatus: true,
+    pagination: true,
+    filters: [
+    /*{key: 'quotationNo', title: 'Quotation No.',dataType: 'seq'},
+    {key: 'cedingName',title: 'Ceding Co.',dataType: 'text'},
+    {key: 'insuredDesc',title: 'Insured',dataType: 'text'},
+    {key: 'riskName',title: 'Risk',dataType: 'text'}*/]
+  }
+
   constructor(private underwritingService: UnderwritingService,
-    private modalService: NgbModal, private router: Router, private titleService: Title) {
+    private modalService: NgbModal, private router: Router, private titleService: Title, private quoteService: QuotationService) {
 
   }
 
-  ngOnInit() {
-    this.titleService.setTitle("Pol | Create Policy");
-    this.tHeader.push("Quotation No");
-    this.tHeader.push("Branch");
-    this.tHeader.push("Line Class");
-    this.tHeader.push("Quote Status");
-    this.tHeader.push("Ceding Company");
-    this.tHeader.push("Principal");
-    this.tHeader.push("Contractor");
-    this.tHeader.push("Insured");
-    this.tHeader.push("Quote Date");
-    this.tHeader.push("Validity Date");
-    this.tHeader.push("Requested By");
-    this.tHeader.push("Created By");
-
-    this.dataTypes.push("text");
-    this.dataTypes.push("text");
-    this.dataTypes.push("text");
-    this.dataTypes.push("text");
-    this.dataTypes.push("text");
-    this.dataTypes.push("text");
-    this.dataTypes.push("text");
-    this.dataTypes.push("text");
-    this.dataTypes.push("date");
-    this.dataTypes.push("date");
-    this.dataTypes.push("text");
-    this.dataTypes.push("text");
-
-    // this.tableData = this.quotationService.getQuotationListInfo();
-    this.tableData = this.underwritingService.getAlterationFromQuotation();
-
-    this.createParInfo = new CreateParInfo();
-    this.createParInfo.line = "test";
-    this.createParInfo.year = new Date(2018);
-    this.createParInfo.seqNo = 0;
-    this.createParInfo.altNo = 0;
-    this.createParInfo.branch = "test";
-    this.createParInfo.lineClass = "test";
-    this.createParInfo.cedingCompany = "test";
-
+  ngOnInit() {    
+    this.getQuoteListing();
   }
 
-  fromHoldCover() {
-    this.fromQuotation = false;
-  }
+  getQuoteListing() {
+    this.quoteService.getQuoProcessingData([]).subscribe(data => {
+      this.quotationList = data['quotationList'];
 
-  fromQuotationList() {
-    this.fromQuotation = true;
+      this.passDataLOV.tableData = this.quotationList.filter(q => q.status.toUpperCase() === 'RELEASED').map(q => { q.riskName = q.project.riskName; return q; });
+
+      this.lovTable.refreshTable();
+    });
   }
 
   navigateToGenInfo() {
@@ -88,5 +76,31 @@ export class PolCreatePARComponent implements OnInit {
       this.router.navigate(['/policy-issuance', { line: qLine }], { skipLocationChange: true });
     }
 
+  }
+
+  toggle(str) {
+    switch (str) {
+      case 'qu':
+        this.qu = true;   
+        this.hc = false;
+        this.oc = false;
+        break;
+
+      case 'hc':
+        this.qu = false;
+        this.hc = true;        
+        this.oc = false;
+        break;
+      
+      case 'oc':        
+        this.qu = false;
+        this.hc = false;
+        this.oc = true;
+        break;
+    }
+  }
+
+  showLOV() {
+    $('#polLovMdl > #modalBtn').trigger('click');
   }
 }

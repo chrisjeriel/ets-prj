@@ -25,7 +25,8 @@
     }
 
     .input-radio {
-        margin-bottom: -10px !important;
+        vertical-align: middle;
+        margin-top: -3px !important;
     }
 
     .input-ig-row {
@@ -50,47 +51,59 @@
     <div class="col-sm-8">
         <fieldset class="scheduler-border" style="padding-top: 6px !important;padding-bottom: 7px !important;">
             <div class="col-sm-1"></div>
-            <div class="col-sm" style="padding: 7px 1em 5px 1em;">
+            <div class="col-sm" style="padding: 7px 4em 5px 3em;">
                 <div class="row">
-<!--                     <div class="input-group" style="margin-top: -10px;">
-                        &nbsp;
-                    </div> -->
                     <div class="input-group">
-                        <div class="input-group ig-row input-radio">
-                                    <label class="form-control-sm col-sm-2"></label>
-                                    <input class="form-control-sm " type="radio" name="optradio" [value]="true" (click)="fromQuotationList()" checked="checked">    
+                        <div class="input-group ig-row">
+                            <div class="col-sm text-center">
+                                    <input class="form-control-sm input-radio" type="radio" name="optradio" [checked]="qu" (click)="toggle('qu')">
                                     <label class="form-control-sm" for="list" style="margin-top: 2px !important; margin-left: 2px !important;">From Quotation</label>
-                                    <input class="form-control-sm " type="radio" name="optradio" [value]="false" (click)="fromHoldCover()" style="margin-left: 14px;">
+                                    <input class="form-control-sm input-radio" type="radio" name="optradio" [checked]="hc" (click)="toggle('hc')" style="margin-left: 14px;">
                                     <label class="form-control-sm" for="list" style="margin-top: 2px !important; margin-left: 2px !important;">From Hold Cover</label>
+                                    <input class="form-control-sm input-radio" type="radio" name="optradio" [checked]="oc" (click)="toggle('oc')" style="margin-left: 14px;">
+                                    <label class="form-control-sm" for="list" style="margin-top: 2px !important; margin-left: 2px !important;">From Open Cover</label>
+                            </div>
                         </div>
-                        <div class="input-group ig-row">
+                        <div class="input-group ig-row" *ngIf="qu">
                             <label class="form-control-sm col-sm-2">Quotation No</label>
-                            <input type="text" [(ngModel)]="quoteLine" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Line" [disabled]="!fromQuotation">
-                            <input type="text" class="form-control form-control-sm input-ig-row cap-input col-sm" ngbTooltip="Year" [disabled]="!fromQuotation">
-                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Sequence No" [disabled]="!fromQuotation">
-                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Revision No" [disabled]="!fromQuotation">
-                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Company No" [disabled]="!fromQuotation">
+                            <input type="text" [(ngModel)]="quoteLine" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Line" appRequired>
+                            <input type="text" class="form-control form-control-sm input-ig-row cap-input col-sm" ngbTooltip="Year" appRequired>
+                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Sequence No" appRequired>
+                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Revision No" appRequired>
+                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Company No" appRequired>
                             <span>&nbsp;</span>
-                            <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+                            <div class="text-search-ico"><a><i class="fa fa-search" (click)="showLOV();"></i></a></div>
                         </div>
-                        <div class="input-group ig-row">
+                        <div class="input-group ig-row" *ngIf="hc">
                             <label class="form-control-sm col-sm-2">Hold Cover No</label>
-                            <!-- <input type="text" class="form-control form-control-sm cap-input col-sm" ngbTooltip="Line" [disabled]="fromQuotation">
-                            <input type="text" class="form-control form-control-sm input-ig-row cap-input col-sm" ngbTooltip="Year" [disabled]="fromQuotation">
-                            <input type="text" class="form-control form-control-sm input-ig-row cap-input col-sm" ngbTooltip="Sequence No" [disabled]="fromQuotation">
+                            <!-- <input type="text" class="form-control form-control-sm cap-input col-sm" ngbTooltip="Line" [disabled]="fromQuotation" appRequired>
+                            <input type="text" class="form-control form-control-sm input-ig-row cap-input col-sm" ngbTooltip="Year"  appRequired[disabled]="fromQuotation">
+                            <input type="text" class="form-control form-control-sm input-ig-row cap-input col-sm" ngbTooltip="Sequence No"  appRequired[disabled]="fromQuotation">
                             <span>&nbsp;</span>
                             <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div> -->
-                            <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Line" [disabled]="fromQuotation">
-                            <input type="text" class="form-control form-control-sm input-ig-row cap-input col-sm" ngbTooltip="Year" [disabled]="fromQuotation">
-                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Sequence No" [disabled]="fromQuotation">
-                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Revision No" [disabled]="fromQuotation">
-                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Company No" [disabled]="fromQuotation">
+                            <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Line" appRequired>
+                            <input type="text" class="form-control form-control-sm input-ig-row cap-input col-sm" ngbTooltip="Year" appRequired>
+                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Sequence No" appRequired>
+                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Revision No" appRequired>
+                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Company No" appRequired>
                             <span>&nbsp;</span>
                             <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
                         </div>
-                        <div class="input-group ig-row" *ngIf="fromQuotation">
+                        <div class="input-group ig-row" *ngIf="oc">
+                            <label class="form-control-sm col-sm-2">Open Cover Policy No</label>
+                            <input type="text" [(ngModel)]="quoteLine" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Line" appRequired>
+                            <input type="text" class="form-control form-control-sm input-ig-row cap-input col-sm" ngbTooltip="Year" appRequired>
+                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Sequence No" appRequired>
+                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Revision No" appRequired>
+                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Company No" appRequired>
+                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Company No" appRequired>
+                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Company No" appRequired>
+                            <span>&nbsp;</span>
+                            <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+                        </div>
+                        <div class="input-group ig-row">
                             <label class="form-control-sm col-sm-2">Option No</label>
-                            <input type="text" class="form-control form-control-sm col-sm-2">
+                            <input type="text" class="form-control form-control-sm col-sm-1" appRequired>
                             <div class="text-search-ico-inner"><a><i class="fa fa-search"></i></a></div>
                             <input type="text" class="form-control form-control-sm" style="margin-left: 7px;">
                         </div>
@@ -105,6 +118,14 @@
                         <div class="input-group ig-row">
                             <label class="form-control-sm col-sm-2">Risk</label>
                             <input type="text" class="form-control form-control-sm">
+                        </div>
+                        <div class="input-group ig-row">
+                            <label class="form-control-sm col-sm-2">Inception Date</label>
+                            <input type="date" class="form-control form-control-sm col-sm-3" appRequired>
+                            <input type="text" class="form-control form-control-sm input-ig-row col-sm-1" appRequired>
+                            <label class="form-control-sm col-sm-2">Expiry Date</label>
+                            <input type="date" class="form-control form-control-sm col-sm-3" appRequired>
+                            <input type="text" class="form-control form-control-sm input-ig-row col-sm-1" appRequired>
                         </div>
                     </div>
                 </div>
@@ -123,3 +144,17 @@
         </div>
     </div>
 </div>
+
+<app-modal hidden [btnTitle]="'List Of Values'" id="polLovMdl">
+    <div header>List Of Values</div>
+    <div body>
+       <!-- <app-cust-non-datatable [passData]="passDataLOV" (rowClick)="onRowClick($event)" (searchToDb)="searchQuery($event)"></app-cust-non-datatable> -->
+       <app-cust-non-datatable [passData]="passDataLOV" #polLov></app-cust-non-datatable>
+    </div>
+    <div footer class="text-center w-100">
+        <div class="col-sm-12 text-center">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+        </div>
+    </div>
+</app-modal>

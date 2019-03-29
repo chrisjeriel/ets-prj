@@ -780,7 +780,6 @@ export class GeneralInfoComponent implements OnInit {
   		} else if(field === 'cedingCoNotMember') { 
   			this.cedingCoNotMemberLov.checkCode(this.genInfoData.reinsurerId, ev);
   		} else if(field === 'intermediary') {
-  			console.log('change' + this.genInfoData.intmId);
   			this.intermediaryLov.checkCode(this.genInfoData.intmId, ev);
   		} else if(field === 'principal') {
   			this.insuredLovs['first'].checkCode(this.genInfoData.principalId, '#principalLOV', ev);
@@ -803,12 +802,12 @@ export class GeneralInfoComponent implements OnInit {
 		this.cancelBtn.clickCancel();
 	}
 
-	test() {
-		if(this.genInfoData.intmId != 0){
-			this.genInfoData.intmId = String(this.genInfoData.intmId).padStart(3, '0');	
-		} else {
-			this.genInfoData.intmId = '';
+	pad(str) {
+		if(str != ''){
+			return String(str).padStart(3, '0');
 		}
+
+		return str;
 	}
 
 	showUsersLOV() {
