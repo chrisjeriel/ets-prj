@@ -256,6 +256,7 @@ export class AttachmentComponent implements OnInit {
        }
        this.quotationService.saveQuoteAttachment(JSON.stringify(this.attachmentReq))
          .subscribe(data => {
+           console.log('console');
            this.getAttachment();
            $('app-sucess-dialog #modalBtn').trigger('click');
            this.loading = false;
