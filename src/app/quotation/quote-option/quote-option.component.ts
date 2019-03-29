@@ -55,7 +55,7 @@ export class QuoteOptionComponent implements OnInit {
             createDate: [2019, 2, 21, 0, 0, 0, 0],
             createUser: JSON.parse(window.localStorage.currentUser).username,
             deductibles: null,
-            deductiblesList: [],
+            // deductiblesList: [],
             endorsments: null,
             optionId: null,
             optionRt: 0,
@@ -239,7 +239,6 @@ export class QuoteOptionComponent implements OnInit {
               a.createDate = new Date().toISOString();
               a.updateDate = new Date().toISOString();
               a.rate = 0;
-              a.deductiblesList = [];
               a.updateUser = JSON.parse(window.localStorage.currentUser).username;
               a.createUser = JSON.parse(window.localStorage.currentUser).username;
               return true;
@@ -632,6 +631,7 @@ saveQuoteOptionAll(cancelFlag?){
             a.edited = true;
             a.createUser = JSON.parse(window.localStorage.currentUser).username;
             a.updateUser = JSON.parse(window.localStorage.currentUser).username;
+            a.add = true;
             return true;
           })
           tableData.tableData = list.deductiblesList;
@@ -662,7 +662,7 @@ saveQuoteOptionAll(cancelFlag?){
 
     if(data == null)
       this.coversDeductiblesData.tableData  = [];
-    else if( data.deductiblesList.length ==0){
+    else if( data.deductiblesList == undefined){
       this.getDefaultDeductibles(this.coversDeductiblesData,this.covDeductibleTable,data);
     }else
       this.coversDeductiblesData.tableData  = data.deductiblesList;
@@ -672,7 +672,7 @@ saveQuoteOptionAll(cancelFlag?){
   updateOptDed(data){
     if(data == null)
       this.optionsDeductiblesData.tableData  = [];
-    else if(data.deductiblesList.length ==0){
+    else if(data.deductiblesList == undefined){
       this.getDefaultDeductibles(this.optionsDeductiblesData,this.optDeductibleTable,data);
     }else
       this.optionsDeductiblesData.tableData  = data.deductiblesList;

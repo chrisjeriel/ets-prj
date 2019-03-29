@@ -674,12 +674,9 @@ import { PolicyInformationComponent } from './underwriting/inquiry/policy-inform
         ArDetailsComponent2,
         ClaimRecoveryComponent2,
         InwardPolicyBalancesComponent2,
-<<<<<<< HEAD
-        PolicyInformationComponent,
-=======
         PrintModalComponent,
         MtnReportsParamsComponent,
->>>>>>> 729a2d7ff8454a521da2c29fc00e27ff8bc4d2e7
+        PolicyInformationComponent,
     ],
 
     providers: [

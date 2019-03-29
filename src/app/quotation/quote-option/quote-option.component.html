@@ -31,7 +31,7 @@
             <div class="col-sm-6" style="padding-left: 2px; padding-right: 2px;"> 
 	            <fieldset class="scheduler-border" style="padding-right: 5px !important;padding-left: 5px !important;height: 241px">
 					<legend class="scheduler-border">Deductibles</legend>
-					<app-cust-editable-non-datatable #optDeductibleTable  id="deductibleTable" (onDataChange)="optionsDeductiblesData.tableData=$event" [passData]="optionsDeductiblesData" (clickLOV)="clickDeductiblesLOV($event,'option')" class="d-block py-2"></app-cust-editable-non-datatable>
+					<app-cust-editable-non-datatable #optDeductibleTable  id="deductibleTable" (tableDataChange)="optionsDeductiblesData.tableData=$event;optionsTable.indvSelect.deductiblesList = $event;test($event)" [passData]="optionsDeductiblesData" (clickLOV)="clickDeductiblesLOV($event,'option')" class="d-block py-2"></app-cust-editable-non-datatable>
 				</fieldset>
 			</div>
         </div>
@@ -50,7 +50,7 @@
 	            <div class="col-sm-6" style="padding-left: 2px; padding-right: 2px;"> 
 	            <fieldset class="scheduler-border" style="padding-right: 5px !important;padding-left: 5px !important;">
 					<legend class="scheduler-border">Deductibles</legend>
-					<app-cust-editable-non-datatable #covDeductibleTable  id="deductibleTable" (onDataChange)="coversDeductiblesData.tableData=$event" [passData]="coversDeductiblesData" (clickLOV)="clickDeductiblesLOV($event,'cover')" class="d-block py-2"></app-cust-editable-non-datatable>
+					<app-cust-editable-non-datatable #covDeductibleTable  id="deductibleTable" (tableDataChange)="coversDeductiblesData.tableData=$event;otherRatesTable.indvSelect.deductiblesList=$event" [passData]="coversDeductiblesData" (clickLOV)="clickDeductiblesLOV($event,'cover')" class="d-block py-2"></app-cust-editable-non-datatable>
 				</fieldset>
 			</div>
         </div>
