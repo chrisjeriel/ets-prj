@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { UnderwritingService } from '../../../_services';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { UnderwritingService, NotesService } from '../../../_services';
 import { ALOPItemInformation, ALOPInfo } from '../../../_models';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
+
 
 @Component({
   selector: 'app-pol-alop',
@@ -11,6 +13,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./pol-alop.component.css']
 })
 export class PolAlopComponent implements OnInit {
+@ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   aLOPInfo: ALOPInfo = new ALOPInfo();
   tableData: any[] = [["1", "Description 1", "Information 1"],
   ["2", "Description 2", "Information 2"],
@@ -67,20 +70,41 @@ export class PolAlopComponent implements OnInit {
   nData: ALOPItemInformation = new ALOPItemInformation(null, null, null, null, null);
   line: string;
   sub: any;
+  policyNo:string = '';
+  policyId: string;
 
-  constructor(private underwritingService: UnderwritingService, private modalService: NgbModal, private route: ActivatedRoute, private titleService: Title) { }
+  @Input() policyInfo:any = {};
+  polAlopData: any={
+                     insId: null,
+                     insuredName: null,
+                     insuredDesc: null,
+                     address: null,
+                     annSi: null,
+                     maxIndemPdSi: null,
+                     issueDate: '',
+                     expiryDate: '',
+                     maxIndemPd: null,
+                     indemFromDate: null,
+                     timeExc: null,
+                     repInterval: null,
+                     createUser: null,
+                     createDate: null,
+                     updateUser: null,
+                     updateDate: null
+    };
+  constructor(private underwritingService: UnderwritingService, private modalService: NgbModal, private route: ActivatedRoute, private titleService: Title, private ns: NotesService) { }
 
   ngOnInit() {
-  	/*this.policyRecordInfo.policyNo = "CAR-2018-5081-077-0177";
-  	this.tHeader = ["Item No","Quantity","Description","Relative Importance","Possible Loss Min"];
+    /*this.policyRecordInfo.policyNo = "CAR-2018-5081-077-0177";
+    this.tHeader = ["Item No","Quantity","Description","Relative Importance","Possible Loss Min"];
     this.dataTypes = ["number","number","text","text","text"];
     
     if(this.policyRecordInfo.policyNo.substr(0,3) =="CAR"){
-  	  this.tHeader = ["Item No","Quantity","Description","Possible Loss Min"];
+      this.tHeader = ["Item No","Quantity","Description","Possible Loss Min"];
       this.dataTypes = ["number","number","text","text"];
     }
 
-  	this.tableData = this.underwritingService.getALOPItemInfos(this.policyRecordInfo.policyNo.substr(0,3));*/
+    this.tableData = this.underwritingService.getALOPItemInfos(this.policyRecordInfo.policyNo.substr(0,3));*/
     this.titleService.setTitle("Pol | ALOP");
 
     this.passData.tHeader.push("Item No", "Description", "Possible Loss Minimization");
@@ -94,16 +118,67 @@ export class PolAlopComponent implements OnInit {
 
     this.passData2.tableData = this.tableData2;
 
+    /*this.policyInfo.policyId = 2; 
+    this.policyInfo.policyNo = 'EAR-2019-00002-002-0002-002';
+    this.policyInfo.insuredDesc =  'insured5';
+    this.policyInfo.riskName = 'riskName';*/
 
-
+    this.policyNo = this.policyInfo.policyNo.split(/[-]/g)[0]
 
     this.sub = this.route.params.subscribe(params => {
       this.line = params['line'];
     });
+
+    this.getPolAlop();
+    this.getPolAlopItem();
+
   }
 
   save() {
     console.log(this.aLOPInfo);
+  }
+
+  getPolAlop() {
+    
+    this.underwritingService.getPolAlop(this.policyInfo.policyId,'').subscribe((data: any) => {
+
+      if (data.policy != null) {
+        this.policyId = data.policy.policyId;
+        this.polAlopData = data.policy[0].alop[0]===null ? this.polAlopData : data.policy[0].alop[0];
+        this.polAlopData.issueDate = this.ns.toDateTimeString(this.polAlopData.issueDate);
+        this.polAlopData.expiryDate = this.ns.toDateTimeString(this.polAlopData.expiryDate);
+        this.polAlopData.indemFromDate = this.ns.toDateTimeString(this.polAlopData.indemFromDate);
+        this.polAlopData.createDate = this.ns.toDateTimeString(this.polAlopData.createDate);
+        this.polAlopData.updateDate = this.ns.toDateTimeString(this.polAlopData.updateDate);
+      }
+
+    });
+  }
+
+  getPolAlopItem() {
+
+    this.underwritingService.getPolAlopItem(this.policyNo, this.policyInfo.policyId, this.policyInfo.policyNo).subscribe((data: any) => {
+
+    var dataInfos = data.policy.alop[0].alopItem;
+
+    if(this.policyNo === "CAR") {
+      this.passData.tableData = [];
+
+      for(var i=0; i< dataInfos.length;i++){
+        this.passData.tableData.push([dataInfos[i].itemNo, dataInfos[i].description, dataInfos[i].lossMin]);
+      }
+    } else {
+      this.passData2.tableData = [];
+
+      for(var i=0; i< dataInfos.length;i++){
+        this.passData2.tableData.push([dataInfos[i].itemNo, dataInfos[i].quantity, dataInfos[i].description, 
+          dataInfos[i].importance, dataInfos[i].lossMin]);
+      }
+    }
+    
+    this.table.refreshTable();
+    });
+
   }
 
 }

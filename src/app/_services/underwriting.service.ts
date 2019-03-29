@@ -488,4 +488,23 @@ export class UnderwritingService {
         return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolAttachment', JSON.stringify(params), header);
     }
 
+    getPolAlop(policyId:string, policyNo?:string) {
+        const params = new HttpParams()
+            .set('policyId', (policyId === null || policyId === undefined ? '' : policyId))
+            .set('policyNo', (policyNo === null || policyNo === undefined ? '' : policyNo))
+
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolAlop', {params});
+    }
+
+    getPolAlopItem(car: string, policyId: string, policyNo: any) {
+        if (car == "CAR") {
+            this.aLOPItemInfos.forEach(function (itm) { delete itm.relativeImportance; });
+        }
+        const params = new HttpParams()
+             .set('policyId', (policyId === null || policyId === undefined ? '' : policyId) )
+             .set('policyNo',(policyNo === null || policyNo === undefined ? '' : policyNo) )
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolAlopItem',{params});
+    }
+
+
 }            

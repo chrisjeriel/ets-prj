@@ -7,15 +7,15 @@
 				<label class="col-sm-1"></label>
 				<label class="form-control-sm col-sm-1" for="xx">Policy No</label>
 				<input type="text" id="xx" value="CAR-2018-5081-077-0177" class="form-control form-control-sm cust-sm col-sm-2"
-				 placeholder="" readonly>
+				 [ngModel]="policyInfo.policyNo" placeholder="" readonly>
 				<label class="form-control-sm col-sm-1" for="xx">Insured</label>
 				<input type="text" id="xx" value="Insurer" class="form-control form-control-sm cust-sm col-sm-5" placeholder=""
-				 readonly>
+				 [ngModel]="policyInfo.insuredDesc" readonly>
 			</div>
 			<div class="input-group" style="margin-bottom: -13px !important;">
 				<label class="col-sm-1"></label>
 				<label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Risk</label>
-				<input type="text" id="xx" value="Risk Name" class="form-control form-control-sm cust-sm col-sm-8" placeholder=""
+				<input type="text" id="xx" value="Risk Name" class="form-control form-control-sm cust-sm col-sm-8" placeholder="" [ngModel]="policyInfo.riskName"
 				 readonly>
 			</div>
 		</div>
@@ -26,21 +26,21 @@
 				<div class="form-row custom-row-inline-inset">
 					<div class="input-group">
 						<label class="form-control-sm col-sm-2 text-right" for="xx">Insured</label>
-						<input class="form-control form-control-sm  col-sm-2" type="text" name="" [(ngModel)]="aLOPInfo.insured1">
+						<input class="form-control form-control-sm  col-sm-2" type="text" name="" [(ngModel)]="polAlopData.insId">
 						<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>&nbsp;
 						<input class="form-control form-control-sm  col-sm" type="text" style="margin-left: -7px !important;" name=""
-						 [(ngModel)]="aLOPInfo.insured2">
+						 [(ngModel)]="polAlopData.insuredName">
 					</div>
 
 					<div class="input-group textarea">
 						<label class="form-control-sm col-sm-2"></label>
-						<textarea class="form-control form-control-sm col-sm" rows="2" [(ngModel)]="aLOPInfo.address1"></textarea>
+						<textarea class="form-control form-control-sm col-sm" rows="2" [(ngModel)]="polAlopData.insuredDesc"></textarea>
 						<br>
 					</div>
 
 					<div class="input-group" style="margin-top:6px !important;">
 						<label class="form-control-sm col-sm-2 text-right" style="padding-top: 4px !important;" for="xx">Address</label>
-						<input class="form-control form-control-sm  col-sm" type="text" name="" [(ngModel)]="aLOPInfo.address2">
+						<input class="form-control form-control-sm  col-sm" type="text" name="" [(ngModel)]="polAlopData.address">
 					</div>
 
 				</div>
@@ -55,7 +55,7 @@
 					</div>
 
 					<div class="input-group textarea">
-						<textarea class="form-control form-control-sm col-sm-12" rows="3" [(ngModel)]="aLOPInfo.business"></textarea>
+						<textarea class="form-control form-control-sm col-sm-12" rows="3" [(ngModel)]="polAlopData.insBusiness"></textarea>
 					</div>
 				</div>
 			</fieldset>
@@ -72,13 +72,13 @@
 			<div class="input-group" style="margin-top: 14px !important;">
 				<label class="col-sm-3"></label>
 				<label class=" form-control-sm col-sm-2" for="annSumInsured">Annual Sum Insured</label>
-				<input class="form-control form-control-sm  col-sm-5 text-right" type="text" id="annSumInsured" [(ngModel)]="aLOPInfo.amountSI"
+				<input class="form-control form-control-sm  col-sm-5 text-right" type="text" id="annSumInsured" [(ngModel)]="polAlopData.annSi"
 				 onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
 			</div>
 			<div class="input-group">
 				<label class="col-sm-3"></label>
 				<label class="form-control-sm col-sm-2 text-left" for="sumInsForMaxIndem">Sum Insured for Maximum Indemnity Period</label>
-				<input class="form-control form-control-sm  col-sm-5 text-right" type="text" id="sumInsForMaxIndem" [(ngModel)]="aLOPInfo.maxSI"
+				<input class="form-control form-control-sm  col-sm-5 text-right" type="text" id="sumInsForMaxIndem" [(ngModel)]="polAlopData.maxIndemPdSi"
 				 onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
 			</div>
 		</div>
@@ -89,29 +89,29 @@
 		<div class="form-row custom-row-inline-inset">
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" for="periodFrom">Period of Insurance from</label>
-				<input class="form-control form-control-sm  col-sm-2" type="date" id="periodFrom" [(ngModel)]="aLOPInfo.fromDate">
+				<input class="form-control form-control-sm  col-sm-2" type="date" id="periodFrom" [(ngModel)]="polAlopData.issueDate?.split('T')[0]">
 				<label class="form-control-sm col-sm-1" for="periodTo">to</label>
-				<input class="form-control form-control-sm  col-sm-2" type="date" id="periodTo" [(ngModel)]="aLOPInfo.toDate">
+				<input class="form-control form-control-sm  col-sm-2" type="date" id="periodTo" [(ngModel)]="polAlopData.expiryDate?.split('T')[0]">
 				<label class="form-control-sm col-sm-2 text-left">(Scheduled Date of Completion)</label>
 
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" for="maxIndemPeriod">Maximum Indemnity Period</label>
-				<input class="form-control form-control-sm  col-sm-1" type="number" id="maxIndemPeriod" [(ngModel)]="aLOPInfo.months">
+				<input class="form-control form-control-sm  col-sm-1" type="number" id="maxIndemPeriod" [(ngModel)]="polAlopData.maxIndemPd">
 				<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">months</label>
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" for="fromIndem">from</label>
-				<input class="form-control form-control-sm  col-sm-2" type="date" id="fromIndem" [(ngModel)]="aLOPInfo.fromDatePeriod">
+				<input class="form-control form-control-sm  col-sm-2" type="date" id="fromIndem" [(ngModel)]="polAlopData.indemFromDate?.split('T')[0]">
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" for="timeExcess">Time Excess</label>
-				<input class="form-control form-control-sm  col-sm-7" type="text" id="fromIndem" [(ngModel)]="aLOPInfo.timeExcess"
+				<input class="form-control form-control-sm  col-sm-7" type="text" id="fromIndem" [(ngModel)]="polAlopData.timeExc"
 				 style="margin-right: 133px !important;">
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" for="interval">Progress reports to be presented at intervals of</label>
-				<input class="form-control form-control-sm  col-sm-1" type="number" id="interval" [(ngModel)]="aLOPInfo.reportInterval">
+				<input class="form-control form-control-sm  col-sm-1" type="number" id="interval" [(ngModel)]="polAlopData.repInterval">
 				<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">months</label>
 			</div>
 		</div>
