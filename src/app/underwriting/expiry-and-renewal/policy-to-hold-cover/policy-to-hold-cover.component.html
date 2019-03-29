@@ -54,173 +54,89 @@
                                     <div class="input-group">
                                         <div class="input-group">
                                             <label class="form-control-sm col-sm-2">Policy No</label>
-                                            <input type="text" [(ngModel)]="policyLine" style="margin-left: 3px;" class="form-control form-control-sm col-sm-2 cap-input" ngbTooltip="Line">
-                                            <input type="text" class="form-control form-control-sm col-sm-2 cap-input" style="margin-left: 3px;" ngbTooltip="Year">
-                                            <input type="text" class="form-control form-control-sm col-sm-4 cap-input" style="margin-left: 3px;" ngbTooltip="Sequence No">
-                                            <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Revision No">
-                                            <input type="text" class="form-control form-control-sm col-sm-4 cap-input" style="margin-left: 3px;" ngbTooltip="Company No">
+                                            <div class="input-group col-sm-8" style="margin-left: -3px !important;">
+                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Line" appRequired>
+                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Year" style="margin-left: 3px;" appRequired>
+                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Sequence No" style="margin-left: 3px;" appRequired>
+                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Ceding ID" style="margin-left: 3px;" appRequired>
+                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Company Series No" style="margin-left: 3px;" appRequired>
+                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Alteration No" style="margin-left: 3px;" appRequired>
+                                            </div>
                                             <span>&nbsp;</span>
-                                            <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+                                            <div class="text-search-ico col-sm-1"><a><i class="fa fa-search"></i></a></div>
                                         </div>
                                         <div class="input-group ig-row" style="margin-top: -6px !important;">
                                             <label class="form-control-sm col-sm-2">Ceding Company</label>
-                                            <input type="text" class="form-control form-control-sm">
+                                            <input type="text" class="form-control form-control-sm" readonly>
                                         </div>
                                         <div class="input-group ig-row">
                                             <label class="form-control-sm col-sm-2">Insured</label>
-                                            <input type="text" class="form-control form-control-sm">
+                                            <input type="text" class="form-control form-control-sm" readonly>
                                         </div>
                                         <div class="input-group ig-row">
                                             <label class="form-control-sm col-sm-2">Risk</label>
-                                            <input type="text" class="form-control form-control-sm">
+                                            <input type="text" class="form-control form-control-sm" readonly>
                                         </div>
                                      </div>
                                 </div>
                             </div>
                         </fieldset>
-                        <!-- <fieldset class="scheduler-border">
-                            <legend class="scheduler-border">Policy Info</legend>
-                            <div class="col-sm-1"></div>
-                            <div class="col-sm">
-                                <div class="row" style="margin-right: 0px; margin-bottom: 11px;">
-                                    <div class="input-group" style="margin-top: -14px;">
-                                        &nbsp;
-                                    </div>
-                                    <div class="input-group">
-                                        <div class="input-group" style="margin-bottom: -13px !important">
-                                            <label class="form-control-sm col-sm-2">Policy No</label>
-                                            <input type="text" class="form-control form-control-sm cap-input" ngbTooltip="Line">
-                                            <input type="text" class="form-control form-control-sm cap-input" ngbTooltip="Year" style="margin-left: 5px;">
-                                            <input type="text" class="form-control form-control-sm cap-input" ngbTooltip="Sequence No" style="margin-left: 5px;">
-                                            <input type="text" class="form-control form-control-sm cap-input" ngbTooltip="Revision No" style="margin-left: 5px;">
-                                            <input type="text" class="form-control form-control-sm cap-input" ngbTooltip="Company No" style="margin-left: 5px;">
-                                            <span>&nbsp;</span>
-                                            <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-                                        </div>
-                                        <div class="input-group" style="margin-bottom: -13px !important">
-                                            <label class="form-control-sm col-sm-2">Ceding Company</label>
-                                            <input type="text" class="form-control form-control-sm">
-                                        </div>
-                                        <div class="input-group" style="margin-bottom: -13px !important">
-                                            <label class="form-control-sm col-sm-2">Insured</label>
-                                            <input type="text" class="form-control form-control-sm">
-                                        </div>
-                                        <div class="input-group" style="margin-bottom: -13px !important">
-                                            <label class="form-control-sm col-sm-2">Risk</label>
-                                            <input type="text" class="form-control form-control-sm">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </fieldset> -->
                     </div>
                     <div class="col-sm-2"></div>
                 </div>
-                 <div class="row" style="margin-top: 10px;">
-                    <div class="col-sm-2"></div>
-                    <div class="col-sm-8">
-                          <fieldset class="scheduler-border">
-                            <legend class="scheduler-border">Hold Cover Details</legend>
-                            <div class="col-sm-1"></div>
-                            <div class="col-sm">
-                                <div class="row" style="margin-right: 0px; margin-bottom: 8px;">
-                                    <div class="input-group" style="margin-top: -12px !important;">
-                                    &nbsp; 
-                                    </div>
-                                    <div class="input-group">
-                                        <div class="col-sm input-group" style="
-                                            padding-left: 0px !important;
-                                            padding-right: 3px !important;">
-                                            <label class="form-control-sm col-sm-4">Hold Cover No</label>
-                                            <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Line" style="margin-left: 3px;">
-                                            <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Year" style="margin-left: 3px;">
-                                            <input type="text" class="form-control form-control-sm cap-input col-sm-4" ngbTooltip="Sequence No" style="margin-left: 3px;">
-                                        </div>
-                                        <div class="col-sm input-group" style="
-                                            padding-left: 0px !important;
-                                            padding-right: 3px !important;">
-                                            <label class="form-control-sm col-sm-4">Period From</label>
-                                            <input type="date" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px;" [ngModel]="periodFrom" (ngModelChange)="periodFrom = $event; test();">
-                                        </div>
-                                    </div>
-                                    <div class="input-group" style="margin-top: -6px !important;">
-                                        <div class="col-sm input-group" style="
-                                            padding-left: 0px !important;
-                                            padding-right: 3px !important;">
-                                            <label class="form-control-sm col-sm-4">Co. Ref. Hold Cover No</label>
-                                            <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;">
-                                        </div>
-                                         <div class="col-sm input-group" style="
-                                            padding-left: 0px !important;
-                                            padding-right: 3px !important;">
-                                            <label class="form-control-sm col-sm-4">Period To</label>
-                                            <input type="date" class="form-control form-control-sm cust-sm col-sm" id="inputQuotation" style="margin-left: 3px;">
-                                        </div>
-                                    </div>
-                                    <div class="input-group" style="margin-top: -6px !important;">
-                                        <div class="col-sm input-group" style="
-                                            padding-left: 0px !important;
-                                            padding-right: 3px !important;">
-                                            <label class="form-control-sm col-sm-4">Requested By</label>
-                                            <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;">
-                                        </div>
-                                         <div class="col-sm input-group" style="
-                                            padding-left: 0px !important;
-                                            padding-right: 3px !important;">
-                                            <label class="form-control-sm col-sm-4">Request Date</label>
-                                            <input type="date" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px;">
-                                        </div>
-                                    </div>
-                                    <div class="input-group" style="margin-top: -6px !important;">
-                                        <div class="col-sm-6 input-group" style="
-                                            padding-left: 0px !important;
-                                            padding-right: 3px !important;">
-                                            <label class="form-control-sm col-sm-4">Status</label>
-                                            <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </fieldset>
-                    </div>
-                    <div class="col-sm-2"></div>
-                </div>
-               <!--  <br>
-                <div class="row">
+                 <div class="row">
                     <div class="col-sm-2"></div>
                     <div class="col-sm-8">
                         <fieldset class="scheduler-border">
                             <legend class="scheduler-border">Hold Cover Details</legend>
-                            <div class="col-sm-3"></div>
                             <div class="col-sm">
-                                <div class="row" style="margin-right: 0px; margin-bottom: 11px;">
-                                    <div class="input-group" style="margin-top: -14px;">
-                                        &nbsp;
-                                    </div>
+                                <div class="custom-row-inline-inset">
                                     <div class="input-group">
-                                        <div class="input-group" style="margin-bottom: -13px !important">
-                                            <label class="form-control-sm col-sm-2">Hold Cover No</label>
-                                            <input type="text" class="form-control form-control-sm cap-input" ngbTooltip="Line">
-                                            <input type="text" class="form-control form-control-sm cap-input" ngbTooltip="Year" style="margin-left: 5px;">
-                                            <input type="text" class="form-control form-control-sm cap-input" ngbTooltip="Sequence No" style="margin-left: 5px;">
-                                            <label class="form-control-sm col-sm-2">Period From</label>
-                                            <input type="date" class="form-control form-control-sm cust-sm col-sm-2" style="width: 18px;">
+                                        <div class="input-group" style="margin-bottom: -14px !important;">
+                                            <label class="form-control-sm col-sm-2 labels" style="margin-bottom: 8px !important;">Hold Cover No</label>
+                                            <input type="text" class="form-control form-control-sm col-sm-4 warn" id="holdCovNo" readonly [ngModel]="holdCoverNo">
                                         </div>
-                                        <div class="input-group" style="margin-bottom: -13px !important">
-                                            <label class="form-control-sm col-sm-2">Co. Ref. Hold Cover No</label>
-                                            <input type="text" class="form-control form-control-sm">
-                                            <label class="form-control-sm col-sm-2">Period To</label>
-                                            <input type="date" class="form-control form-control-sm cust-sm col-sm-2" id="inputQuotation">
+                                        <div class="input-group" style="margin-bottom: -14px !important;">
+                                            <div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
+                                                <div class="input-group" style="margin-bottom: -0px !important;">
+                                                    <label class="form-control-sm col-sm-4 labels" style="margin-bottom: 8px !important;">Period From</label>
+                                                    <input type="date" class="form-control form-control-sm cust-sm warn col-sm" [ngModel]="periodFromDate.date" (ngModelChange)="periodFromDate.date = $event" id="pfdate" appRequired>
+                                                    <input type="time" id="pftime" style="margin-left: 3px !important" appRequired class="form-control form-control-sm cust-sm warn col-sm-3" [ngModel]="periodFromDate.time" (ngModelChange)="periodFromDate.time = $event">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
+                                                <div class="input-group" style="margin-bottom: -0px !important;">
+                                                    <label class="form-control-sm col-sm-4 labels" style="margin-bottom: 8px !important;">Requested By</label>
+                                                     <input type="text" id="reqBy" class="form-control form-control-sm col-sm warn" [ngModel]="polHoldCoverParams.reqBy" (ngModelChange)="polHoldCoverParams.reqBy = $event" appRequired>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="input-group" style="margin-bottom: -13px !important">
-                                            <label class="form-control-sm col-sm-2">Requested By</label>
-                                            <input type="text" class="form-control form-control-sm col-sm-7">
-                                            <label class="form-control-sm col-sm-2">Request Date</label>
-                                            <input type="date" class="form-control form-control-sm cust-sm col-sm-2" id="inputQuotation">
+                                        <div class="input-group" style="margin-bottom: -14px !important;">
+                                           <div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
+                                                <div class="input-group" style="margin-bottom: -0px !important;">
+                                                    <label class="form-control-sm col-sm-4 labels" style="margin-bottom: 8px !important;">Period To</label>
+                                                    <input type="date" id="ptdate" class="form-control form-control-sm cust-sm warn col-sm" appRequired [ngModel]="periodToDate.date" (ngModelChange)="periodToDate.date = $event">
+                                                    <input type="time" id="pttime" style="margin-left: 3px !important" appRequired class="form-control form-control-sm cust-sm warn col-sm-3" [ngModel]="periodToDate.time" (ngModelChange)="periodToDate.time = $event">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
+                                                <div class="input-group" style="margin-bottom: -0px !important;">
+                                                    <label class="form-control-sm col-sm-4 labels" style="margin-bottom: 8px !important;">Request Date</label>
+                                                    <input type="date" id="reqDate" class="form-control form-control-sm cust-sm col-sm warn" appRequired [ngModel]="polHoldCoverParams.reqDate" (ngModelChange)="polHoldCoverParams.reqDate = $event">
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="input-group" style="margin-bottom: -13px !important">
-                                            <label class="form-control-sm col-sm-2">Status</label>
-                                            <input type="text" class="form-control form-control-sm">
+                                        <div class="input-group" style="margin-bottom: -14px !important;">
+                                            <label class="form-control-sm col-sm-2 labels" style="margin-bottom: 8px !important;" style="padding-left: 0px !important;" >Co. Ref. Hold Cover No</label>
+                                            <input id="crhcno" type="text" class="form-control form-control-sm warn" appRequired [ngModel]="polHoldCoverParams.compRefHoldCovNo" (ngModelChange)="polHoldCoverParams.compRefHoldCovNo = $event">
+                                            <label class="form-control-sm col-sm-2 labels" style="margin-bottom: 8px !important;">Prepared By</label>
+                                            <input type="text" id="preparedBy" class="form-control form-control-sm col-sm-7" [ngModel]="polHoldCoverParams.preparedBy" readonly tabindex="-1">
+                                        </div>
+                                        <div class="input-group" style="margin-bottom: -9px !important;">
+                                            <label class="form-control-sm col-sm-2 labels" style="margin-bottom: 8px !important;">Status</label>
+                                            <input type="text" id="status" class="form-control form-control-sm warn" [ngModel]="statusDesc" readonly tabindex="-1">
+                                            <label class="form-control-sm col-sm-2 labels" style="margin-bottom: 8px !important;">Approved By</label>
+                                            <input type="text" id="approvedBy" class="form-control form-control-sm col-sm-7" [ngModel]="polHoldCoverParams.approvedBy" readonly tabindex="-1">
                                         </div>
                                     </div>
                                 </div>
@@ -228,14 +144,14 @@
                         </fieldset>
                     </div>
                     <div class="col-sm-2"></div>
-                </div> -->
+                </div>
                 <div class="form-row">
                     <div class="form-group col-sm">
                         <div class="col-md-13 text-center" style="margin-top:10px">
                             <div class="cust-btn-container">
-                                <button type="button" class="cust-btn"><a>Print</a></button>
-                                <button type="button" class="cust-btn"><a>Cancel</a></button>
-                                <button type="button" class="cust-btn"><a>Save</a></button>
+                                <button type="button" class="cust-btn"><a>Cancel Hold Cover</a></button>
+                                <button type="button" class="cust-btn"><a>Approval</a></button>
+                                <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
                             </div>
                         </div>
                     </div>

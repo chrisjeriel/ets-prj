@@ -488,4 +488,20 @@ export class UnderwritingService {
         return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolAttachment', JSON.stringify(params), header);
     }
 
+    savePolHoldCover(holdCoverParams: any){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolHoldCover', JSON.stringify(holdCoverParams), header);
+    }
+
+    retrievePolHoldCover(policyId: string, policyNo: string){
+        const params = new HttpParams()
+            .set('policyId',policyId === undefined || policyId === null || policyId === '' ? '' : policyId)
+            .set('policyNo',policyNo === undefined || policyNo === null || policyNo === '' ? '' : policyNo);
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolHoldCover',{params});
+    }
+
 }            
