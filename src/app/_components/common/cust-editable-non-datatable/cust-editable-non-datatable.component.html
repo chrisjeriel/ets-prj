@@ -250,7 +250,7 @@ span.ui-column-resizer {
                                     <span *ngSwitchCase="'time'" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | date: 'HH:mm'}}</span>
                                     <span *ngSwitchCase="'datetime'" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | date: 'yyyy-MM-ddTHH:mm'}}</span>
                                     <div *ngSwitchCase="'checkbox'" style="text-align: center;">
-                                        <input  type="checkbox" [checked]="data[key]">
+                                        <input  type="checkbox" [checked]="data[key] && data[key]!= 'N'">
                                     </div>
                                     <div  *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'sequence' ? passData.dataTypes[i] : ''" style="text-align: right">
                                         <span class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence}}</span>

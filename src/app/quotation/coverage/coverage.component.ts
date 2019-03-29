@@ -42,9 +42,9 @@ export class CoverageComponent implements OnInit {
     remarks: '',
     sectionCovers:[],
     createDate: '',
-    createUser:'Earl',
+    createUser:JSON.parse(window.localStorage.currentUser).username,
     //updateDate:[0,0,0],
-    updateUser: 'Earl'
+    updateUser: JSON.parse(window.localStorage.currentUser).username
   }
 
   passData: any = {
@@ -54,14 +54,14 @@ export class CoverageComponent implements OnInit {
     nData: {
       showMG: 1,
       createDate: '',
-      createUser: "PCPR",
+      createUser: JSON.parse(window.localStorage.currentUser).username,
       coverCode:null,
       section:null,
       bulletNo:null,
       sumInsured:null,
       addSi:"N",
       updateDate: '',
-      updateUser: "PCPR"
+      updateUser: JSON.parse(window.localStorage.currentUser).username
     },
     checkFlag: true,
     addFlag: true,
@@ -115,9 +115,10 @@ export class CoverageComponent implements OnInit {
       this.passData.magnifyingGlass = [];
       this.passData.addFlag = false;
       this.passData.deleteFlag = false;
-      for(var count = 0; count < this.passData.tHeader.length; count++){
+      this.passData.uneditable =  [true,true,true,true];
+      /*for(var count = 0; count < this.passData.tHeader.length; count++){
         this.passData.uneditable.push(true);
-      }
+      }*/
     }
     //neco end
 
@@ -394,7 +395,6 @@ export class CoverageComponent implements OnInit {
   }
 
   update(data){
-    console.log(data);
     if(data.hasOwnProperty('lovInput')) {
       this.hideSectionCoverArray = this.passData.tableData.filter((a)=>{return a.coverCd!== undefined && !a.deleted}).map((a)=>{return a.coverCd.toString()});
 
