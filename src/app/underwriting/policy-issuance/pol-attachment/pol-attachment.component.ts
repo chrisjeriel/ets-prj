@@ -54,6 +54,7 @@ export class PolAttachmentComponent implements OnInit {
     retrievePolAttachment(){
         this.underwritingService.getPolAttachment('8','CAR-2019-1-001-1-1').subscribe((data: any) =>{
             console.log(data);
+            this.attachmentData.tableData = [];
             if(data.polAttachmentList !== null){
                 for(var i of data.polAttachmentList.attachments){
                     this.attachmentData.tableData.push(i);
@@ -98,7 +99,7 @@ export class PolAttachmentComponent implements OnInit {
               this.dialogMessage="";
               this.dialogIcon = "";
               $('#polAttachment > #successModalBtn').trigger('click');
-              this.table.refreshTable();
+              this.retrievePolAttachment();
           }
         });
         //upload
