@@ -1,7 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { UnderwritingService } from '@app/_services/underwriting.service';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { UnderwritingService, NotesService } from '@app/_services';
 import { PolicyInwardPolBalance, PolInwardPolBalanceOtherCharges } from '@app/_models';
 import { Title } from '@angular/platform-browser';
+import { LovComponent } from '@app/_components/common/lov/lov.component';
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 
 @Component({
   selector: 'app-inward-pol-balance',
@@ -10,83 +14,199 @@ import { Title } from '@angular/platform-browser';
 })
 export class InwardPolBalanceComponent implements OnInit {
 
+  @ViewChild('instllmentTable')instllmentTable:CustEditableNonDatatableComponent;
+  @ViewChild('otherTable')otherTable:CustEditableNonDatatableComponent;
+  @ViewChild(LovComponent)lov:LovComponent;
+  @ViewChild(ConfirmSaveComponent) confirmSave: ConfirmSaveComponent;
+  @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
 
-  tableData: any[] = [];
-  tHeader: any[] = [];
-  magnifyingGlass: any[] = ['code'];
-  dataTypes: any[] = [];
-  addFlag;
-  deleteFlag;
-
-  passDataInstallmentInfo: any = {
+  passData: any = {
     tableData: [],
-    tHeader: ["Inst No","Due Date","Booking Date","Premium","Other Charges","Amount Due"],
-    dataTypes: ["text","date","date","currency","currency","currency"],
-    nData:  new PolicyInwardPolBalance(null, null, null, null, null, null),
+    tHeader: ['Inst No','Due Date','Booking Date','Premium','Other Charges','Amount Due'],
+    uneditable: [true,false,false,false,true,true],
+    total:[null,null,'Total','premAmt','otherChargesInw','amtDue'],
+    dataTypes: ["number","date","date","currency","currency","currency",],
+    keys:['instNo','dueDate','bookingDate','premAmt','otherChargesInw','amtDue'],
+    nData: {
+      "instNo": null,
+      "bookingDate": this.ns.toDateTimeString(0),
+      "dueDate": this.ns.toDateTimeString(0),
+      "premAmt": 0,
+      "otherChargesInw": 0,
+      "amtDue": 0,
+      "createUser": JSON.parse(window.localStorage.currentUser).username,
+      "createDate": this.ns.toDateTimeString(0),
+      "updateUser": JSON.parse(window.localStorage.currentUser).username,
+      "updateDate": this.ns.toDateTimeString(0),
+      otherCharges:[]
+    },
     addFlag: true,
     deleteFlag: true,
     widths: ["1", "1", "1", "auto", "auto", "auto"],
+    pageID:'installment',
     pageLength: 5,
-    keys: ['instNo','dueDate','bookingDate','premium','otherCharges','amountDue'],
-    total : [null,null,'Total','premium','otherCharges','amountDue']
+    checkFlag: true
   };
 
-  passDataOtherCharges: any = {
+  passData2: any = {
     tableData: [],
     tHeader: ["Code","Charge Description","Amount"],
-    dataTypes: ["text","text","currency"],
-    nData: new PolInwardPolBalanceOtherCharges(null,null,null),
-    magnifyingGlass: ["code"],
+    keys: ['chargeCd','chargeDesc','amount'],
+    dataTypes: ['sequence-3','text','currency'],
+    uneditable:[true,true],
+    magnifyingGlass: ['chargeCd'],
     addFlag: true,
     deleteFlag: true,
-    widths: ["auto", "auto", "auto"],
-    pageLength: 4,
-    keys: ['code','chargeDesc','amount'],
-    total: [null,'Total','amount']
+    widths: [1,'auto','auto'],
+    pageLength: 5,
+    pageID:'otherCharges',
+    nData:{
+      instNo: 0,
+      chargeCd: null,
+      amount: 0,
+      createUser: JSON.parse(window.localStorage.currentUser).username,
+      createDate: this.ns.toDateTimeString(0),
+      updateUser: JSON.parse(window.localStorage.currentUser).username,
+      updateDate: this.ns.toDateTimeString(0),
+      showMG :1
+    },
+    checkFlag: true
   };
 
- constructor(private underwritingservice: UnderwritingService, private titleService: Title) { 
- }
+  passLOVData:any = {
+    selector: 'otherCharges',
 
+  }
+  policyId = 1;
+  dialogIcon:string;
+
+  constructor(private underwritingservice: UnderwritingService, private titleService: Title, private ns : NotesService
+  ) { }
 
  ngOnInit() {
    
     this.titleService.setTitle("Pol | Inward Pol Balance");
-    this.getInstallmentInfo();
-    this.getOtherCharges();
-      
- }
+    this.fetchData();
+  }
 
- getInstallmentInfo(){
-   this.underwritingservice.getInwardPolBalance()
-      .subscribe(data => {
-        var rec = data['policyList'];
-        for(let i of rec){
-           this.passDataInstallmentInfo.tableData.push({
-             instNo:             i.inwPolBalance.instNo,
-             dueDate:            i.inwPolBalance.dueDate,
-             bookingDate:        i.inwPolBalance.bookingDate,
-             premium:            i.inwPolBalance.premAmt,
-             otherCharges:       i.inwPolBalance.otherChargesInw,
-             amountDue:          i.inwPolBalance.amtDue
-           });
-        }
-      });
- }
+  fetchData(){
+    this.underwritingservice.getInwardPolBalance(this.policyId).subscribe((data:any)=>{
+      if(data.policyList.length !=0){
+        this.passData.tableData = data.policyList[0].inwPolBalance.filter(a=>{
+          a.dueDate     = this.ns.toDateTimeString(a.dueDate);
+          a.bookingDate = this.ns.toDateTimeString(a.bookingDate);
+          return true;
+        });
+        this.instllmentTable.onRowClick(null,this.passData.tableData[0]);
+      }
+      this.compute();
+      this.instllmentTable.refreshTable();
+    })
+  }
 
- getOtherCharges(){
-   this.underwritingservice.getInwardPolBalance()
-      .subscribe(data => {
-        var rec = data['policyList'];
-        for(let i of rec){
-           this.passDataOtherCharges.tableData.push({
-              code:             i.inwPolBalance.otherCharges.chargeCd,
-              chargeDesc:       'column under maintenance',
-              amount:           i.inwPolBalance.otherCharges.amount
-           });
+  updateOtherCharges(data){
+    if(data == null){
+        this.passData2.disableAdd = true;
+        this.passData2.tableData = [];
+      }
+    else{
+      this.passData2.nData.instNo = data.instNo;
+      this.passData2.disableAdd = false;
+      this.passData2.tableData = data.otherCharges;
+    }
+    this.otherTable.refreshTable();
+  }
+
+  clickLOV(data){
+    console.log(data);
+    this.passLOVData.hide = this.passData2.tableData.filter((a)=>{return !a.deleted}).map(a=>a.chargeCd);
+    this.lov.openLOV();
+  }
+
+  setSelected(data){
+    this.passData2.tableData = this.passData2.tableData.filter(a=>a.showMG != 1)
+    for(let rec of data.data){
+      this.passData2.tableData.push(JSON.parse(JSON.stringify(this.passData2.nData)));
+      this.passData2.tableData[this.passData2.tableData.length - 1].showMG = 0;
+      this.passData2.tableData[this.passData2.tableData.length - 1].chargeCd = rec.chargeCd;
+      this.passData2.tableData[this.passData2.tableData.length - 1].chargeDesc =  rec.chargeDesc;
+      this.passData2.tableData[this.passData2.tableData.length - 1].amount = rec.defaultAmt
+      this.passData2.tableData[this.passData2.tableData.length - 1].edited = true;
+    }
+    this.compute();
+    this.instllmentTable.indvSelect.otherCharges = this.passData2.tableData
+    this.otherTable.refreshTable();
+  }
+
+  compute(){
+    for(let rec of this.passData.tableData){
+      if(rec.otherCharges.length != 0)
+        rec.otherChargesInw = rec.otherCharges.filter((a)=>{return !a.deleted}).map(a=>a.amount).reduce((sum,curr)=>sum+curr);
+      rec.amtDue = rec.premAmt + rec.otherChargesInw;
+    }
+
+  }
+
+  save(){
+    let params:any = {
+      policyId:this.policyId,
+      savePolInward : [],
+      delPolInward : [],
+      saveOtherCharges : [],
+      delOtherCharges : [],
+      newSavePolInward: []
+    }
+    for(let inst of this.passData.tableData){
+      if(inst.edited && !inst.deleted && inst.instNo!==null){
+        inst.dueDate     = this.ns.toDateTimeString(inst.dueDate);
+        inst.bookingDate = this.ns.toDateTimeString(inst.bookingDate);
+        inst.createDate     = this.ns.toDateTimeString(inst.createDate);
+        inst.updateDate = this.ns.toDateTimeString(inst.updateDate);
+        inst.updateUser = JSON.parse(window.localStorage.currentUser).username;
+        params.savePolInward.push(inst);
+      }else if(inst.deleted){
+        params.delPolInward.push(inst);
+      }
+      if(!inst.deleted && inst.instNo!==null ){
+        for(let chrg of inst.otherCharges){
+          if(chrg.edited && !chrg.deleted ){
+            chrg.createDate     = this.ns.toDateTimeString(chrg.createDate);
+            chrg.updateDate = this.ns.toDateTimeString(chrg.updateDate);
+            chrg.updateUser = JSON.parse(window.localStorage.currentUser).username;
+            params.saveOtherCharges.push(chrg);
+          }else if(chrg.deleted){
+            params.delOtherCharges.push(chrg);
+          }
         }
-      });
- }
+      }
+      if(inst.instNo==null){
+        inst.dueDate     = this.ns.toDateTimeString(inst.dueDate);
+        inst.bookingDate = this.ns.toDateTimeString(inst.bookingDate);
+        for(let chrg of inst.otherCharges){
+          chrg.createDate     = this.ns.toDateTimeString(chrg.createDate);
+          chrg.updateDate = this.ns.toDateTimeString(chrg.updateDate);
+        }
+        params.newSavePolInward.push(inst);
+      }
+    }
+    console.log(params);
+    this.underwritingservice.saveInwardPolBal(params).subscribe((data:any)=>{
+      if(data.returnCode == -1){
+        this.dialogIcon = 'success';
+        this.successDiag.open();
+        this.otherTable.markAsPristine();
+        this.instllmentTable.markAsPristine();
+        this.fetchData();
+      }else{
+        this.dialogIcon = 'error';
+        this.successDiag.open();
+      }
+    });
+  }
+
+  onClickSave(){
+    this.confirmSave.confirmModal();
+  }
 
 }
 

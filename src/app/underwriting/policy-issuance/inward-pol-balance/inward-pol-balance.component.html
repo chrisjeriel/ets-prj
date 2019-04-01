@@ -22,10 +22,10 @@
 		<div class="input-group" style="margin-bottom: -20px !important; margin-top: 3px !important">
 			<label class="col-sm-2"></label>
 			<label class="form-control-sm col-sm-1" for="xx">Currency</label>
-			<input type="text" class="form-control form-control-sm cust-sm col-sm-1" placeholder="">
+			<input type="text" class="form-control form-control-sm cust-sm col-sm-1" placeholder="" readonly>
 			<div class="col-sm-2"></div>
 			<label class="form-control-sm col-sm-1" for="xx">Total Premium</label>
-			<input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" placeholder="" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
+			<input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" placeholder="" readonly>
 			<label class="col-sm-3"></label>
 		</div>
 	</div>
@@ -34,12 +34,12 @@
 <fieldset class="scheduler-border">
 	<legend class="scheduler-border">Installment Info</legend>
 	<div class="row" style="margin-bottom: 5px;">
-		<div class="col-sm-1"></div>
-		<div class="col-sm-10">
-			<app-cust-editable-non-datatable [passData]="passDataInstallmentInfo">
+		<div class="col-sm-2"></div>
+		<div class="col-sm-8">
+			<app-cust-editable-non-datatable #instllmentTable [passData]="passData" (newClick)="updateOtherCharges($event)" (tableDataChange)="compute()">
 			</app-cust-editable-non-datatable>
 		</div>
-		<div class="col-sm-1"></div>
+		<div class="col-sm-2"></div>
 	</div>
 </fieldset>
 
@@ -48,7 +48,7 @@
 	<div class="row" style="margin-bottom: 5px;">
 		<div class="col-sm-3"></div>
 		<div class="col-sm-6">
-			<app-cust-editable-non-datatable [passData]="passDataOtherCharges">
+			<app-cust-editable-non-datatable #otherTable [passData]="passData2" (clickLOV)="clickLOV($event)" (tableDataChange)="compute()">
 			</app-cust-editable-non-datatable>
 		</div>
 		<div class="col-sm-3"></div>
@@ -59,8 +59,12 @@
 		<div class="col-md-13 text-center">
 			<div class="cust-btn-container">
 				<button type="button" class="cust-btn"><a>Cancel</a></button>
-				<button type="button" class="cust-btn"><a>Save</a></button>
+				<button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
 			</div>
 		</div>
 	</div>
 </div>
+
+<app-lov [passData]="passLOVData" (selectedData)="setSelected($event)" [lovCheckBox]="true"></app-lov>
+<app-sucess-dialog id="inward" [icon]="dialogIcon" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-confirm-save id="inwardSave" (onYes)="save()"></app-confirm-save>
