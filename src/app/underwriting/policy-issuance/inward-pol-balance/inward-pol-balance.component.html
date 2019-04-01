@@ -59,7 +59,7 @@
 	<div class="form-group col-sm">
 		<div class="col-md-13 text-center">
 			<div class="cust-btn-container">
-				<button type="button" class="cust-btn"><a>Cancel</a></button>
+				<button type="button" class="cust-btn" (click)="onClickCancel()" ><a>Cancel</a></button>
 				<button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
 			</div>
 		</div>
@@ -67,5 +67,6 @@
 </div>
 
 <app-lov [passData]="passLOVData" (selectedData)="setSelected($event)" [lovCheckBox]="true"></app-lov>
-<app-sucess-dialog id="inward" [icon]="dialogIcon" (onOk)="cancelFlag ? this.cancelBtn.onNo():null" [message]="dialogMsg"></app-sucess-dialog>
+<app-sucess-dialog id="inward" [icon]="dialogIcon" (onOk)="cancelFlag && dialogIcon == 'success'  ? this.cancel.onNo():null" [message]="dialogMsg"></app-sucess-dialog>
 <app-confirm-save id="inwardSave" (onYes)="save()"></app-confirm-save>
+<app-cancel-button (onYes)="save('cancel')" [url]="'/policy-listing'" ></app-cancel-button>
