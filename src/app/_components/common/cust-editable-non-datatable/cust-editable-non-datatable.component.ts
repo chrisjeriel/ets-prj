@@ -18,6 +18,7 @@ import { NotesService } from '@app/_services';
 export class CustEditableNonDatatableComponent implements OnInit {
     @ViewChild("deleteModal") deleteModal:ModalComponent;
     @ViewChild('myForm') form:any;
+    @ViewChild('api') pagination: any;
     @Input() tableData: any[] = [];
     @Output() tableDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
     @Input() tHeader: any[] = [];
@@ -212,6 +213,8 @@ export class CustEditableNonDatatableComponent implements OnInit {
         this.search(this.searchString);
         this.tableDataChange.emit(this.passData.tableData);
         this.add.next(event);
+
+        setTimeout(a=>{this.pagination.setCurrent(this.pagination.getLastPage())},0);
         this.form.control.markAsDirty();
     }
 
