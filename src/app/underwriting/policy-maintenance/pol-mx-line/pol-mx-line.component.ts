@@ -1,8 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { MaintenanceService, NotesService } from '@app/_services';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { environment } from '@environments/environment';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -66,12 +68,30 @@ export class PolMxLineComponent implements OnInit {
 
 	cancelFlag:boolean;
   	loading:boolean;
+  	dialogIcon:string;
+  	dialogMessage:string;
+  	@Input() inquiryFlag: boolean = false;
+  	successMessage:string = environment.successMessage;
 
-	constructor(private titleService: Title, private mtnService: MaintenanceService, private ns: NotesService) { }
+
+
+	constructor(private titleService: Title, private mtnService: MaintenanceService, private ns: NotesService,private modalService: NgbModal) { }
 
 	ngOnInit() {
 		this.titleService.setTitle('Mtn | Line');
 		this.getMtnLine();
+
+		if(this.inquiryFlag){
+          this.passData.tHeader.pop();
+          this.passData.opts = [];
+          this.passData.uneditable = [];
+          this.passData.magnifyingGlass = [];
+          this.passData.addFlag = false;
+          this.passData.deleteFlag = false;
+          for(var count = 0; count < this.passData.tHeader.length; count++){
+            this.passData.uneditable.push(true);
+          }
+        }
 	}
 
 	mtnLineReq :any;
@@ -95,76 +115,86 @@ export class PolMxLineComponent implements OnInit {
 		updateUser: "",
 	};
 
-
-
 	onClickSaveLine(cancelFlag?){
-		this.cancelFlag = cancelFlag !== undefined;
+		this.dialogIcon = '';
+		this.dialogMessage = '';
 		this.loading = true;
+		this.cancelFlag = cancelFlag !== undefined;
 		for(var i = 0; this.passData.tableData.length > i; i++){
 			var rec = this.passData.tableData[i];
-			if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){			
-				this.mtnLineReq = { 
-					"deleteLine": [],
-					"saveLine": [
-					    {
-					      	"activeTag":        this.cbFunc(rec.activeTag),
-							"alopTag":      	this.cbFunc(rec.alopTag),
-							"catTag":           this.cbFunc(rec.catTag),
-							"createDate":       this.ns.toDateTimeString(0),
-							"createUser":       JSON.parse(window.localStorage.currentUser).username,
-							"cutOffTime":   	this.ns.toDateTimeString(0).split('T')[0] + 'T' + rec.cutOffTime,
-							"description":  	rec.description,
-							"lineCd":           rec.lineCd,
-							"openCoverTag": 	this.cbFunc(rec.openCoverTag),
-							"referenceNo":  	rec.referenceNo,
-							"remarks":      	rec.remarks,
-							"renewalTag":       this.cbFunc(rec.renewalTag),
-							"sortSeq":      	rec.sortSeq,
-							"updateDate":       this.ns.toDateTimeString(0),
-							"updateUser":       JSON.parse(window.localStorage.currentUser).username
-					    }
-					]
-				}
-
-				this.mtnService.saveMtnLine(JSON.stringify(this.mtnLineReq))
-				.subscribe(data => {
-					this.getMtnLine();
-					console.log('ilang beses');
+			if(rec.lineCd === '' || rec.lineCd === null || rec.description === '' || rec.description === null){
+					//setTimeout(()=>{$('.globalLoading').css('display','none');});
+					this.dialogIcon = 'error';
+					this.dialogMessage = 'Please complete all the required fields.';
 					$('app-sucess-dialog #modalBtn').trigger('click');
-					this.loading = false;
+					this.loading = false;	
+			}else{
+				if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
+				
+						this.mtnLineReq = { 
+							"deleteLine": [],
+							"saveLine": [
+							    {
+							      	"activeTag":        (rec.activeTag === '' || rec.activeTag === null || rec.activeTag === undefined)?this.cbFunc(rec.activeTag):rec.activeTag,
+									"alopTag":      	(rec.alopTag === '' || rec.alopTag === null || rec.alopTag === undefined)?this.cbFunc(rec.alopTag):rec.alopTag,
+									"catTag":           (rec.catTag === '' || rec.catTag === null || rec.catTag === undefined)?this.cbFunc(rec.catTag):rec.catTag,
+									"createDate":       (rec.createDate === '' || rec.createDate === null || rec.createDate === undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(rec.createDate),
+									"createUser":       (rec.createUser === '' || rec.createUser === null || rec.createUser === undefined)?(JSON.parse(window.localStorage.currentUser).username):rec.createUser,
+									"cutOffTime":   	this.cutOffTimeFunc(rec.cutOffTime),
+									"description":  	rec.description,
+									"lineCd":           rec.lineCd,
+									"openCoverTag": 	(rec.openCoverTag === '' || rec.openCoverTag === null || rec.openCoverTag === undefined)?this.cbFunc(rec.openCoverTag):rec.openCoverTag,
+									"referenceNo":  	rec.referenceNo,
+									"remarks":      	rec.remarks,
+									"renewalTag":       (rec.renewalTag === '' || rec.renewalTag === null || rec.renewalTag === undefined)?this.cbFunc(rec.renewalTag):rec.renewalTag,
+									"sortSeq":      	rec.sortSeq,
+									"updateDate":       this.ns.toDateTimeString(0),
+									"updateUser":       JSON.parse(window.localStorage.currentUser).username
+							    }
+							]
+						}
 
-				});
-			}else if(this.passData.tableData[i].edited && this.passData.tableData[i].deleted){
-				this.mtnLineReq = { 
-					"deleteLine": [
-						 {
-					      	"activeTag":        this.cbFunc(rec.activeTag),
-							"alopTag":      	this.cbFunc(rec.alopTag),
-							"catTag":           this.cbFunc(rec.catTag),
-							"createDate":       this.ns.toDateTimeString(0),
-							"createUser":       JSON.parse(window.localStorage.currentUser).username,
-							"cutOffTime":   	this.ns.toDateTimeString(0).split('T')[0] + 'T' + rec.cutOffTime,
-							"description":  	rec.description,
-							"lineCd":           rec.lineCd,
-							"openCoverTag": 	this.cbFunc(rec.openCoverTag),
-							"referenceNo":  	rec.referenceNo,
-							"remarks":      	rec.remarks,
-							"renewalTag":       this.cbFunc(rec.renewalTag),
-							"sortSeq":      	rec.sortSeq,
-							"updateDate":       this.ns.toDateTimeString(0),
-							"updateUser":       JSON.parse(window.localStorage.currentUser).username
-					    }
-					],
-					"saveLine": []
+						this.mtnService.saveMtnLine(JSON.stringify(this.mtnLineReq))
+						.subscribe(data => {
+							this.getMtnLine();
+							$('app-sucess-dialog #modalBtn').trigger('click');
+							this.loading = false;
+
+						});	
+					
+				}else if(this.passData.tableData[i].edited && this.passData.tableData[i].deleted){
+					this.mtnLineReq = { 
+						"deleteLine": [
+							 {
+						      	"activeTag":        this.cbFunc(rec.activeTag),
+								"alopTag":      	this.cbFunc(rec.alopTag),
+								"catTag":           this.cbFunc(rec.catTag),
+								"createDate":       this.ns.toDateTimeString(0),
+								"createUser":       JSON.parse(window.localStorage.currentUser).username,
+								"cutOffTime":   	this.ns.toDateTimeString(0).split('T')[0] + 'T' + rec.cutOffTime,
+								"description":  	rec.description,
+								"lineCd":           rec.lineCd,
+								"openCoverTag": 	this.cbFunc(rec.openCoverTag),
+								"referenceNo":  	rec.referenceNo,
+								"remarks":      	rec.remarks,
+								"renewalTag":       this.cbFunc(rec.renewalTag),
+								"sortSeq":      	rec.sortSeq,
+								"updateDate":       this.ns.toDateTimeString(0),
+								"updateUser":       JSON.parse(window.localStorage.currentUser).username
+						    }
+						],
+						"saveLine": []
+					}
+
+					this.mtnService.saveMtnLine(JSON.stringify(this.mtnLineReq))
+					.subscribe(data => {
+						this.getMtnLine();
+						$('app-sucess-dialog #modalBtn').trigger('click');
+						this.loading = false;
+					});
 				}
-
-				this.mtnService.saveMtnLine(JSON.stringify(this.mtnLineReq))
-				.subscribe(data => {
-					this.getMtnLine();
-					$('app-sucess-dialog #modalBtn').trigger('click');
-					this.loading = false;
-				});
 			}
+			
 		}
 	}
 
@@ -173,49 +203,35 @@ export class PolMxLineComponent implements OnInit {
 	}
 
 	getMtnLine(){
-		
+		this.passData.tableData = [];
 		this.mtnService.getLineLOV('')
 		.subscribe(data => {
-			this.passData.tableData = [];
+			//this.passData.tableData = [];
 			var rec = data['line'];
-			for(let i of rec){
-				// this.saveMtnLine.lineCd			= i.lineCd,
-				// this.saveMtnLine.description	= i.description,
-				// this.saveMtnLine.cutOffTime		= i.cutOffTime,
-				// this.saveMtnLine.activeTag		= i.activeTag,
-				// this.saveMtnLine.catTag			= i.catTag,
-				// this.saveMtnLine.renewalTag		= i.renewalTag,
-				// this.saveMtnLine.openCoverTag	= i.openCoverTag,
-				// this.saveMtnLine.alopTag		= i.alopTag,
-				// this.saveMtnLine.refereneceNo	= i.refereneceNo,
-				// this.saveMtnLine.sortSeq		= i.sortSeq,
-				// this.saveMtnLine.remarks		= i.remarks,
-
-				this.passData.tableData.push({
-					lineCd          : i.lineCd,
-					description     : i.description,
-					cutOffTime      : i.cutOffTime,
-					activeTag       : i.activeTag,
-					catTag          : i.catTag,
-					renewalTag      : i.renewalTag,
-					openCoverTag    : i.openCoverTag,
-					alopTag         : i.alopTag,
-					referenceNo     : i.refereneceNo,
-					sortSeq         : i.sortSeq,
-					remarks         : i.remarks
-				});
-				
-			}
-		this.table.refreshTable();
+			this.passData.tableData = rec;				
+			this.table.refreshTable();
+			console.log(this.passData.tableData);
 		});
 	}
 
 	cancel(){
-    this.cancelBtn.clickCancel();
+    	this.cancelBtn.clickCancel();
     }
 
     onClickSave(){
     	$('#confirm-save #modalBtn2').trigger('click');
+  	}
+
+  	cutOffTimeFunc(cutOffTime){
+  		if(cutOffTime === null){
+  			return this.ns.toDateTimeString(0).split('T')[0] + 'T' + '00:00:00';
+  		}else {
+  			if((String(cutOffTime)).includes(':')){
+				return this.ns.toDateTimeString(0).split('T')[0] + 'T' + cutOffTime;
+			}else{
+				return this.ns.toDateTimeString(cutOffTime);
+			}
+  		}
   	}
 
 }

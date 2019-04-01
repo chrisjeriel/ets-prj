@@ -249,12 +249,8 @@ export class HoldCoverComponent implements OnInit {
 	}
 
 	search() {
-		console.log(JSON.stringify(this.passDataQuoteLOV.filters[0]) + " >>>> filters");
 		var quoFiltSearch = this.passDataQuoteLOV.filters[0].search;
 		var quoFiltEnabled = this.passDataQuoteLOV.filters[0].enabled;
-
-		console.log(JSON.stringify(this.passDataQuoteLOV.filters[0]));
-
 		if(quoFiltEnabled === true){
 			this.passDataQuoteLOV.tableData = [];
 			this.quotationService.getQuoProcessingData(this.searchParams)
