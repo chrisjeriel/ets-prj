@@ -91,6 +91,23 @@
         </div>
     </div>
 
+    <div ngbDropdown #drop="ngbDropdown" *ngIf="passData.exportFlag">
+       <button class="cust-export" ngbDropdownToggle><a><fa name="ellipsis-v"></fa></a></button>
+        <div ngbDropdownMenu aria-labelledby="dropdownConfig">
+            <div class="dropdown-item-export">
+                <div class="container" style="padding-left: 5px; padding-right: 5px;">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="input-group">
+                                <button id="okFilter" class="cust-btn cust-btn-dlist"><a>Export to Excel</a></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
  <!-- <<<<<<< HEAD
    <div style="position: absolute;left: 0px;top:0px" [id]="'pinTable'+passData.pageID">
         <table id="non-datatable" [class.margin-table]="passData.addFlag || passData.editFlag || passData.deleteFlag || passData.copyFlag || passData.printBtn || passData.expireFilter || !passData.tableOnly">

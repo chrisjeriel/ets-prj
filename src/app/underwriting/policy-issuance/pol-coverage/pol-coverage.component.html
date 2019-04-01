@@ -24,7 +24,7 @@
 <fieldset class="scheduler-border">
   <legend class="scheduler-border">Section Covers</legend>
   <div class="test" style="margin-top: 0px !important; margin-bottom: 2px;">
-    <app-cust-editable-non-datatable #sectionCover  [passData]="passDataSectionCover"></app-cust-editable-non-datatable>
+    <app-cust-editable-non-datatable [passData]="passDataSectionCover" (tableDataChange)="update($event);"></app-cust-editable-non-datatable>
   </div>
 </fieldset>
 
@@ -41,17 +41,17 @@
           <label class="form-control-sm col-sm-3">Currency</label>
           <input type="text" class="form-control form-control-sm" [(ngModel)]="coverageData.currencyCd" readonly>
           <label class="form-control-sm col-sm-2">Exch. Rt.</label>
-          <input type="text" class="form-control form-control-sm" [(ngModel)]="coverageData.currencyRt" readonly>
+          <input type="text" class="form-control form-control-sm req" [(ngModel)]="coverageData.currencyRt" readonly appCurrencyRate>
           <span class="col-sm-1"></span>
         </div>
         <div class="input-group" style="margin-bottom: -13px !important">
          <label class="form-control-sm col-sm-3">Total Sum Insured</label>
-         <input type="text" class="form-control form-control-sm" [(ngModel)]="coverageData.totalSi" readonly>
+         <input type="text" class="form-control form-control-sm req" [(ngModel)]="coverageData.totalSi" readonly appCurrency>
          <span class="col-sm-1"></span>
        </div>
        <div class="input-group" style="margin-bottom: 2px !important">
          <label class="form-control-sm col-sm-3">Total Premium</label>
-         <input type="text" class="form-control form-control-sm" [(ngModel)]="coverageData.totalPrem" readonly>
+         <input type="text" class="form-control form-control-sm req" [(ngModel)]="coverageData.totalPrem" readonly appCurrency>
          <span class="col-sm-1"></span>
        </div>
      </div>
@@ -61,7 +61,7 @@
   <fieldset class="scheduler-border" style="padding-bottom: 7px !important;">
     <legend class="scheduler-border">Total Per Section</legend>
     <div class="cust-sm totalPerSection" >
-     <app-cust-editable-non-datatable [passData]="passDataTotalPerSection"></app-cust-editable-non-datatable>
+     <app-cust-editable-non-datatable #totalPerSection [passData]="passDataTotalPerSection"></app-cust-editable-non-datatable>
    </div>
  </fieldset>
 </div>
@@ -76,14 +76,14 @@
       </div>
       <div class="input-group" style="margin-bottom: -13px !important">
        <label class="form-control-sm col-sm-3">Share(%)</label>
-       <input type="text" class="form-control form-control-sm" [(ngModel)]="coverageData.pctShare">
+       <input type="text" class="form-control form-control-sm req" [(ngModel)]="coverageData.pctShare" appCurrencyRate>
        <label class="form-control-sm col-sm-2">PML(%)</label>
-       <input type="text" class="form-control form-control-sm" [(ngModel)]="coverageData.pctPml">
+       <input type="text" class="form-control form-control-sm req" [(ngModel)]="coverageData.pctPml" appCurrencyRate>
        <span class="col-sm-1"></span>
      </div>
      <div class="input-group" style="margin-bottom: -6px !important">
        <label class="form-control-sm col-sm-3">100% Value</label>
-       <input type="text" class="form-control form-control-sm" [(ngModel)]="coverageData.totalValue">
+       <input type="text" class="form-control form-control-sm req" [(ngModel)]="coverageData.totalValue" appCurrency>
        <span class="col-sm-1"></span>
      </div>
    </div>
@@ -118,25 +118,28 @@
         <div class="cust-btn-container">
           <button type="button" class="cust-btn" (click)="showDeductiblesModal(deductibles)"><a>Deductibles</a></button>
           <button type="button" class="cust-btn" (click)="CATPerils()" *ngIf="line == 'CAR' || line =='EAR' || line =='EEI' || line =='CEC'"><a>CAT Perils</a></button>
-          <button type="button" class="cust-btn" (click)="pol($event)"><a>Cancel</a></button>
-          <button type="button" class="cust-btn"><a>Save</a></button>
+          <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+          <button type="button" class="cust-btn" (click)="saveCoverage()"><a>Save</a></button>
         </div>
       </div>
     </div>
   </div>
 
 
-<app-modal class="hidden">
+<app-modal class="hidden" id="CATPerils">
     <div header>CAT Perils Exposure</div>
     <div body style=" margin-top: -10px !important; width: 400px ! important">
-       <app-cust-editable-non-datatable [passData]="passDataCATPerils"></app-cust-editable-non-datatable>
+       <app-cust-editable-non-datatable #catPerils [passData]="passDataCATPerils"></app-cust-editable-non-datatable>
     </div>                
     <div footer style="margin-right: 145px !important;">
       <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-      <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Save</a></button>
+      <button class="cust-btn" type="button" (click)="saveCatPeril();"><a>Save</a></button>
     </div>
 </app-modal>
 
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-confirm-save (onYes)="saveData()"></app-confirm-save>
+<app-cancel-button (onYes)="saveData('cancel')" [url]="'/quotation-processing'" ></app-cancel-button>
 
 </ng-container>
 

@@ -6,6 +6,7 @@ import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
   selector: 'app-inward-pol-balance',
@@ -19,6 +20,7 @@ export class InwardPolBalanceComponent implements OnInit {
   @ViewChild(LovComponent)lov:LovComponent;
   @ViewChild(ConfirmSaveComponent) confirmSave: ConfirmSaveComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
+  @ViewChild(CancelButtonComponent) cancel : CancelButtonComponent;
 
   passData: any = {
     tableData: [],
@@ -51,6 +53,7 @@ export class InwardPolBalanceComponent implements OnInit {
   passData2: any = {
     tableData: [],
     tHeader: ["Code","Charge Description","Amount"],
+    total:[null,null,'amount'],
     keys: ['chargeCd','chargeDesc','amount'],
     dataTypes: ['sequence-3','text','currency'],
     uneditable:[true,true],
@@ -80,6 +83,11 @@ export class InwardPolBalanceComponent implements OnInit {
   policyId = 1;
   dialogIcon:string;
 
+  totalPrem: string = "";
+  currency: string = "";
+  dialogMsg: string = "";
+  cancelFlag : boolean = false;
+
   constructor(private underwritingservice: UnderwritingService, private titleService: Title, private ns : NotesService
   ) { }
 
@@ -91,14 +99,36 @@ export class InwardPolBalanceComponent implements OnInit {
 
   fetchData(){
     this.underwritingservice.getInwardPolBalance(this.policyId).subscribe((data:any)=>{
-      if(data.policyList.length !=0){
+      this.currency = data.policyList[0].project.coverage.currencyCd;
+      this.totalPrem = data.policyList[0].project.coverage.totalPrem;
+      if(data.policyList[0].inwPolBalance.length !=0){
         this.passData.tableData = data.policyList[0].inwPolBalance.filter(a=>{
           a.dueDate     = this.ns.toDateTimeString(a.dueDate);
           a.bookingDate = this.ns.toDateTimeString(a.bookingDate);
+          a.otherCharges = a.otherCharges.filter(a=>a.chargeCd!=null)
           return true;
         });
-        this.instllmentTable.onRowClick(null,this.passData.tableData[0]);
+        
+      }else{
+        this.passData.tableData.push(
+          {
+            "instNo": 1,
+            "bookingDate": this.ns.toDateTimeString(data.policyList[0].issueDate),
+            "dueDate": this.ns.toDateTimeString(data.policyList[0].inceptDate),
+            "premAmt": this.totalPrem,
+            "otherChargesInw": 0,
+            "amtDue": this.totalPrem,
+            "createUser": JSON.parse(window.localStorage.currentUser).username,
+            "createDate": this.ns.toDateTimeString(0),
+            "updateUser": JSON.parse(window.localStorage.currentUser).username,
+            "updateDate": this.ns.toDateTimeString(0),
+            otherCharges:[],
+            edited: true
+          }
+        );
+        this.instllmentTable.markAsDirty();
       }
+      this.instllmentTable.onRowClick(null,this.passData.tableData[0]);
       this.compute();
       this.instllmentTable.refreshTable();
     })
@@ -118,7 +148,6 @@ export class InwardPolBalanceComponent implements OnInit {
   }
 
   clickLOV(data){
-    console.log(data);
     this.passLOVData.hide = this.passData2.tableData.filter((a)=>{return !a.deleted}).map(a=>a.chargeCd);
     this.lov.openLOV();
   }
@@ -133,8 +162,8 @@ export class InwardPolBalanceComponent implements OnInit {
       this.passData2.tableData[this.passData2.tableData.length - 1].amount = rec.defaultAmt
       this.passData2.tableData[this.passData2.tableData.length - 1].edited = true;
     }
-    this.compute();
     this.instllmentTable.indvSelect.otherCharges = this.passData2.tableData
+    this.compute();
     this.otherTable.refreshTable();
   }
 
@@ -147,7 +176,8 @@ export class InwardPolBalanceComponent implements OnInit {
 
   }
 
-  save(){
+  save(can?){
+    this.cancelFlag = can !== undefined;
     let params:any = {
       policyId:this.policyId,
       savePolInward : [],
@@ -189,7 +219,6 @@ export class InwardPolBalanceComponent implements OnInit {
         params.newSavePolInward.push(inst);
       }
     }
-    console.log(params);
     this.underwritingservice.saveInwardPolBal(params).subscribe((data:any)=>{
       if(data.returnCode == -1){
         this.dialogIcon = 'success';
@@ -205,7 +234,18 @@ export class InwardPolBalanceComponent implements OnInit {
   }
 
   onClickSave(){
-    this.confirmSave.confirmModal();
+    if(this.instllmentTable.getSum('premAmt') === this.totalPrem)
+      this.confirmSave.confirmModal();
+    else{
+      this.dialogIcon = 'error-message';
+      this.dialogMsg = 'Total Premium does not match.';
+      this.successDiag.open();
+    }
   }
+
+  onClickCancel(){
+    this.cancel.clickCancel();
+  }
+
 
 }

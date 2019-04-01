@@ -22,10 +22,11 @@
 		<div class="input-group" style="margin-bottom: -20px !important; margin-top: 3px !important">
 			<label class="col-sm-2"></label>
 			<label class="form-control-sm col-sm-1" for="xx">Currency</label>
-			<input type="text" class="form-control form-control-sm cust-sm col-sm-1" placeholder="" readonly>
+			<input type="text" class="form-control form-control-sm cust-sm col-sm-1" placeholder="" readonly [ngModel]="currency">
 			<div class="col-sm-2"></div>
 			<label class="form-control-sm col-sm-1" for="xx">Total Premium</label>
-			<input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" placeholder="" readonly>
+			<input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" placeholder="" readonly 
+				[ngModel]="totalPrem |  number:'1.2-2'">
 			<label class="col-sm-3"></label>
 		</div>
 	</div>
@@ -58,7 +59,7 @@
 	<div class="form-group col-sm">
 		<div class="col-md-13 text-center">
 			<div class="cust-btn-container">
-				<button type="button" class="cust-btn"><a>Cancel</a></button>
+				<button type="button" class="cust-btn" (click)="onClickCancel()" ><a>Cancel</a></button>
 				<button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
 			</div>
 		</div>
@@ -66,5 +67,6 @@
 </div>
 
 <app-lov [passData]="passLOVData" (selectedData)="setSelected($event)" [lovCheckBox]="true"></app-lov>
-<app-sucess-dialog id="inward" [icon]="dialogIcon" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-sucess-dialog id="inward" [icon]="dialogIcon" (onOk)="cancelFlag && dialogIcon == 'success'  ? this.cancel.onNo():null" [message]="dialogMsg"></app-sucess-dialog>
 <app-confirm-save id="inwardSave" (onYes)="save()"></app-confirm-save>
+<app-cancel-button (onYes)="save('cancel')" [url]="'/policy-listing'" ></app-cancel-button>

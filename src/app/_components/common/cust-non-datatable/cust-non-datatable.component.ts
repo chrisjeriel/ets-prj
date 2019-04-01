@@ -70,6 +70,7 @@ export class CustNonDatatableComponent implements OnInit {
         tableOnly: false,       //disable search and filter
         fixedCol: false,        //fix first column
         printBtn: false,        //print btn
+        exportFlag: false,
         pageStatus: true,       //pagination labels. must always be assigned unless you don't want this
         pagination: true,       //pagination buttons. must always be assigned unless you don't want this
         addFlag: false,         //add btn. 

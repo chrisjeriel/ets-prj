@@ -78,10 +78,10 @@ export class ChangeQuoteStatusComponent implements OnInit {
 
     ngOnInit() {
         this.titleService.setTitle("Quo | Change Quote Status");
-        //setTimeout(function () { $('#modalBtn').trigger('click'); }, 100);        
+        setTimeout(() => {$('#searchQuote > #modalBtn').trigger('click') }, 0);        
         this.first = true;
-        //this.query();
-        this.getChangeQuote();
+        
+        //this.getChangeQuote();
         
     }
 
@@ -280,7 +280,8 @@ export class ChangeQuoteStatusComponent implements OnInit {
         }
     }
 
-    setTypeOfCession(data) {        
+    setTypeOfCession(data) {     
+        console.log(data)   
         this.typeOfCessionId = data.cessionId;
         this.typeOfCession = data.description;
         this.ns.lovLoader(data.ev, 0);
@@ -305,7 +306,6 @@ export class ChangeQuoteStatusComponent implements OnInit {
             this.maintenanceService.getMtnTypeOfCession(1).subscribe(data => {            
                 this.typeOfCessionId = data['cession'][0].cessionId;
                 this.typeOfCession = data['cession'][0].cessionAbbr;
-
                 this.first = false;
             });
         }
@@ -313,6 +313,15 @@ export class ChangeQuoteStatusComponent implements OnInit {
 
         $('#searchQuote > #modalBtn').trigger('click');
         setTimeout(function() { $(event).focus(); }, 0);        
+    }
+
+    emptyVar(){
+        this.riskCd = "";
+        this.riskName = "";
+        this.typeOfCessionId = "";
+        this.typeOfCession = "";
+        this.cedingId = "";
+        this.cedingName = "";
     }
 
 }
