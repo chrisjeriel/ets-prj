@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChildren,QueryList } from '@angular/core';
 import { PARListing } from '@app/_models'
 import { UnderwritingService, NotesService } from '../../../_services';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 
 @Component({
     selector: 'app-par-listing',
@@ -10,7 +11,7 @@ import { Router } from '@angular/router';
     styleUrls: ['./par-listing.component.css']
 })
 export class ParListingComponent implements OnInit {
-
+    @ViewChildren(CustNonDatatableComponent) table: QueryList<CustNonDatatableComponent>;
     tableData: any[] = [];
     tHeader: any[] = [];
     dataTypes: any[] = [];
@@ -87,9 +88,12 @@ export class ParListingComponent implements OnInit {
                 dataType: 'text'
             },
             {
-                key: 'sumInsured',
+               keys: {
+                    from: 'totalSiLess',
+                    to: 'totalSiGrt'
+                },
                 title: 'Sum Insured',
-                dataType: 'text'
+                dataType: 'textspan'
             },
             {
                 key: 'premium',
@@ -97,24 +101,37 @@ export class ParListingComponent implements OnInit {
                 dataType: 'text'
             },
             {
-                key: 'issueDate',
+                 keys: {
+                    from: 'issueDateFrom',
+                    to: 'issueDateTo'
+                },
                 title: 'Issue Date',
-                dataType: 'date'
+                dataType: 'datespan'
             },
             {
-                key: 'inceptionDate',
+
+                 keys: {
+                    from: 'inceptDateFrom',
+                    to: 'inceptDateTo'
+                },
                 title: 'Inception Date',
-                dataType: 'date'
+                dataType: 'datespan'
             },
             {
-                key: 'expiryDate',
+                keys: {
+                    from: 'expiryDateFrom',
+                    to: 'expiryDateTo'
+                },
                 title: 'Expiry Date',
-                dataType: 'date'
+                dataType: 'datespan'
             },
-               {
-                key: 'accountingDate',
+            {
+                keys: {
+                    from: 'acctDateFrom',
+                    to: 'acctDateTo'
+                },
                 title: 'Accounting Date',
-                dataType: 'date'
+                dataType: 'datespan'
             },
             {
                 key: 'status',
@@ -133,11 +150,11 @@ export class ParListingComponent implements OnInit {
 
    retrievePolListing(){
        this.uwService.getParListing(this.searchParams).subscribe(data => {
-          console.log(data)
           var records = data['policyList'];
+          console.log(records);
           this.fetchedData = records;
                for(let rec of records){
-                     if (rec.statusDesc === '1' || rec.statusDesc === '2') {
+                     if (rec.statusDesc === 'In Force' || rec.statusDesc === 'In Progress') {
                          this.passDataListing.tableData.push(
                                                     {
                                                         policyId: rec.policyId,
@@ -160,14 +177,33 @@ export class ParListingComponent implements OnInit {
                                                 );  
                      }
                }
-
+                this.table.forEach(table => { table.refreshTable() });
        });
 
    }
     //Method for DB query
     searchQuery(searchParams){
         this.searchParams = searchParams;
+        this.passDataListing.tableData = [];
+        console.log(this.searchParams);
+        this.selectedPolicy = {};
+
+        if(this.isValidDate(this.searchParams[10].search)){
+            console.log("Valid Date");
+        } else {
+            console.log("Invalid Date");
+        }
+
+    /*    var req = ['issueDateFrom','issueDateTo'];
+         for(var [key, val] of this.searchParams) {
+              console.log(key + val);
+         }
+*/
+
+
+
         this.retrievePolListing();
+
     }
 
     onRowDblClick(event) {
@@ -226,5 +262,21 @@ export class ParListingComponent implements OnInit {
             this.passDataListing.btnDisabled = false;
         }
     }
+
+ isValidDate(obj) {
+    var str = obj;
+    var res = str.split("-");
+    
+    var day = Number(res[0]),
+        month = Number(res[1]),
+        year = Number(res[2]);
+
+    var date = new Date();
+    date.setFullYear(year, month - 1, day);
+  
+    if ( (date.getFullYear() == year) && (date.getMonth() == month + 1) && (date.getDate() == day) )
+       return true;
+  return false;
+}
 
 }
