@@ -31,7 +31,7 @@
             <div class="col-sm-6" style="padding-left: 2px; padding-right: 2px;"> 
 	            <fieldset class="scheduler-border" style="padding-right: 5px !important;padding-left: 5px !important;height: 241px">
 					<legend class="scheduler-border">Deductibles</legend>
-					<app-cust-editable-non-datatable #optDeductibleTable  id="deductibleTable" (tableDataChange)="optionsDeductiblesData.tableData=$event;optionsTable.indvSelect.deductiblesList = $event;test($event)" [passData]="optionsDeductiblesData" (clickLOV)="clickDeductiblesLOV($event,'option')" class="d-block py-2"></app-cust-editable-non-datatable>
+					<app-cust-editable-non-datatable #optDeductibleTable  id="deductibleTable" (tableDataChange)="optionsDeductiblesData.tableData=$event;optionsTable.indvSelect.deductiblesList = $event;" [passData]="optionsDeductiblesData" (clickLOV)="clickDeductiblesLOV($event,'option')" class="d-block py-2"></app-cust-editable-non-datatable>
 				</fieldset>
 			</div>
         </div>
@@ -94,6 +94,6 @@
 <app-lov id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)" [lovCheckBox]="true"></app-lov>
 
 <app-confirm-save id="options" (onYes)="saveQuoteOptionAll()"></app-confirm-save>
-<app-sucess-dialog id="quote-option" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-sucess-dialog id="quote-option" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 <app-cancel-button (onYes)="saveQuoteOptionAll('cancel')" [url]="'/quotation-processing'" ></app-cancel-button>
 <app-confirm-save id="deductibles" (onYes)="saveQuoteDeductibles()"></app-confirm-save>
