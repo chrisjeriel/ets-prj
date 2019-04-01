@@ -8,7 +8,7 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
-
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
   selector: 'app-pol-coverage',
@@ -20,7 +20,9 @@ export class PolCoverageComponent implements OnInit {
   @ViewChild('deductiblesModal') deductiblesModal :ModalComponent;
   @ViewChild(LovComponent) lov :LovComponent;
   @ViewChild(SucessDialogComponent) successDlg: SucessDialogComponent;
-  @ViewChild('sectionCover') table: CustEditableNonDatatableComponent;
+  @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
+  @ViewChild('catPerils') catPerilstable: CustEditableNonDatatableComponent;
+  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   private underwritingCoverageInfo: UnderwritingCoverageInfo;
   tableData: any[] = [];
   tableData2: any[] = [];
@@ -37,13 +39,19 @@ export class PolCoverageComponent implements OnInit {
   deleteFlag;
   paginateFlag;
   infoFlag;
-  sectionISi: 0;
-  sectionIPrem: 0;
-  sectionIISi: 0;
-  sectionIIPrem: 0;
-  sectionIIISi: 0;
-  sectionIIIPrem: 0;
-
+  sectionISi:number = 0;
+  sectionIPrem:number = 0;
+  sectionIISi:number = 0;
+  sectionIIPrem:number = 0;
+  sectionIIISi:number = 0;
+  sectionIIIPrem:number = 0;
+  editedData: any[] = [];
+  deletedData: any[] = [];
+  catPerilData: any = {
+    catPrlId: 0,
+    pctShrPrm: 0,
+    saveCATPerilList:[]
+  };
   passDataSectionCover: any = {
         tableData: [],
         tHeader: ["Cover Code", "Section", "Bullet No", "Sum Insured", "Rate", "Premium", "Add Sl"],
@@ -61,9 +69,10 @@ export class PolCoverageComponent implements OnInit {
 
   passDataTotalPerSection: any = {
         tHeader: ["Section", "Sum Insured", "Premium"],
-        dataTypes: ["text", "text", "text"],
+        dataTypes: ["text", "currency", "currency"],
         tableData: [["SECTION I",null,null],["SECTION II",null,null],["SECTION III",null,null]],
         keys:['section','sumInsured','premium'],
+        uneditable:[true,true,true],
         pageLength:3
     };
 
@@ -72,7 +81,8 @@ export class PolCoverageComponent implements OnInit {
         dataTypes: [
                     "text", "percent"
                    ],
-        tableData: [["Earthquake","15"],["Typhoon","10"],["Flood","10"],["Volcanic Eruption","1"]],
+        tableData: [],
+        keys:['catPerilName','pctShrPrm'],
         pageLength:10,
     };
 
@@ -167,7 +177,7 @@ export class PolCoverageComponent implements OnInit {
       pctShare:0,
       pctPml:0,
       totalValue: 0,  
-      remarks: null 
+      remarks: '' 
   }
 
   passLOVData: any = {};
@@ -175,6 +185,10 @@ export class PolCoverageComponent implements OnInit {
   lovCheckBox:boolean = false;
   dialogIcon:string = '';
   policyId: any = 8;
+  projId: any;
+  riskId:any;
+  dialogMessage:string;
+  cancelFlag:boolean;
   constructor(private underwritingservice: UnderwritingService, private titleService: Title, private modalService: NgbModal,
                 private route: ActivatedRoute, private ns: NotesService) { }
 
@@ -183,29 +197,9 @@ export class PolCoverageComponent implements OnInit {
     this.titleService.setTitle("Pol | Coverage");
     if (!this.alteration) {
       //this.passDataSectionCover.tableData = this.underwritingservice.getUWCoverageInfo();
-      this.passDataDeductibles.tableData = this.underwritingservice.getUWCoverageDeductibles();
       //this.passDataTotalPerSection.tableData = this.underwritingservice.getTotalPerSection();
-      this.underwritingservice.getUWCoverageInfos('','8').subscribe((data:any) => {
-        console.log(data)
-        this.coverageData = data.policy.project.coverage;
-        var infoData = data.policy.project.coverage.sectionCovers;
-          
-
-          
-          for(var i = 0; i < infoData.length;i++){
-            this.passDataSectionCover.tableData.push(infoData[i]);
-              if(infoData[i].section == 'I'){
-                  this.sectionISi += infoData[i].sumInsured;
-                  this.sectionIPrem += infoData [i].premAmt;
-              }
-          }
-          this.table.refreshTable();
-          for( var j=0; j< this.passDataTotalPerSection.tableData.length;j++){
-            this.passDataTotalPerSection.tableData[j].sumInsured = this.sectionISi;
-            this.passDataTotalPerSection.tableData[j].premium = this.sectionIPrem;
-          }
-      });
-
+      
+      this.getPolCoverage();
     } else {
       this.passDataDeductibles.tableData = this.underwritingservice.getUWCoverageDeductibles();
       this.passData.tHeader.push("Cover Code");
@@ -321,6 +315,49 @@ export class PolCoverageComponent implements OnInit {
         });
   }
 
+  getPolCoverage(){
+      this.passDataDeductibles.tableData = this.underwritingservice.getUWCoverageDeductibles();
+      this.underwritingservice.getUWCoverageInfos(null,this.policyId).subscribe((data:any) => {
+        this.passDataSectionCover.tableData = [];
+        this.projId = data.policy.project.projId;
+        this.riskId = data.policy.project.riskId;
+        this.coverageData = data.policy.project.coverage;
+        this.coverageData.remarks = this.coverageData.remarks == null ? '':this.coverageData.remarks;
+        this.coverageData.pctShare = (this.coverageData.totalSi/this.coverageData.totalValue*100)
+        var infoData = data.policy.project.coverage.sectionCovers;
+          for(var i = 0; i < infoData.length;i++){
+            this.passDataSectionCover.tableData.push(infoData[i]);
+              if(infoData[i].addSi == 'Y' && infoData[i].section == 'I'){
+                  this.sectionISi += infoData[i].sumInsured;
+                  this.sectionIPrem += infoData [i].premAmt;
+              }else if(infoData[i].addSi == 'Y' && infoData[i].section == 'II'){
+                  this.sectionIISi += infoData[i].sumInsured;
+                  this.sectionIIPrem += infoData [i].premAmt;
+              }else if(infoData[i].addSi == 'Y' && infoData[i].section == 'III'){
+                  this.sectionIIISi += infoData[i].sumInsured;
+                  this.sectionIIIPrem += infoData [i].premAmt;
+              }
+          }
+          this.table.refreshTable();
+            this.passDataTotalPerSection.tableData[0].section = 'SECTION I'
+            this.passDataTotalPerSection.tableData[0].sumInsured = this.sectionISi;
+            this.passDataTotalPerSection.tableData[0].premium = this.sectionIPrem;
+            this.passDataTotalPerSection.tableData[1].section = 'SECTION II'
+            this.passDataTotalPerSection.tableData[1].sumInsured = this.sectionIISi;
+            this.passDataTotalPerSection.tableData[1].premium = this.sectionIIPrem;
+            this.passDataTotalPerSection.tableData[2].section = 'SECTION III'
+            this.passDataTotalPerSection.tableData[2].sumInsured = this.sectionIIISi;
+            this.passDataTotalPerSection.tableData[2].premium = this.sectionIIIPrem;
+
+
+            this.coverageData.totalSi = this.sectionISi + this.sectionIISi + this.sectionIIISi;
+            this.coverageData.totalPrem = this.sectionIPrem + this.sectionIIPrem + this.sectionIIIPrem;
+         setTimeout(() => {
+           this.focusBlur();
+         }, 0)
+      });
+  }
+
   showTextEditorModal(content) {
     this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
   }
@@ -333,8 +370,22 @@ export class PolCoverageComponent implements OnInit {
   }
 
   CATPerils() {
-        $('#modalBtn').trigger('click');
-        /*$('#CATPerils >#modalBtn').trigger('click');*/
+        //$('#modalBtn').trigger('click');
+        $('#CATPerils > #modalBtn').trigger('click');
+        this.getCATPerils();
+  }
+
+  getCATPerils(){
+    this.underwritingservice.getCATPeril(null,this.policyId).subscribe((data:any) => {
+      
+      var catPerilData = data.policy.catPeril;
+      console.log(catPerilData)
+      this.passDataCATPerils.tableData = [];
+      for(var i = 0; i < catPerilData.length;i++){
+        this.passDataCATPerils.tableData.push(catPerilData[i]);
+      }
+      this.catPerilstable.refreshTable();
+    });
   }
 
   deductibles() {
@@ -428,5 +479,132 @@ export class PolCoverageComponent implements OnInit {
     }
     this.deductiblesTable.refreshTable();
   }
-  
+
+  cancel(){
+    this.cancelBtn.clickCancel();
+  }
+
+  update(data){
+    this.sectionISi = 0;
+    this.sectionIPrem = 0;
+    this.sectionIISi = 0;
+    this.sectionIIPrem = 0;
+    this.sectionIIISi = 0;
+    this.sectionIIIPrem = 0;
+    for(var i=0; i< this.passDataSectionCover.tableData.length;i++){
+       if(this.passDataSectionCover.tableData[i].addSi == 'Y'){
+         if(this.passDataSectionCover.tableData[i].section == 'I'){
+               this.sectionISi += this.passDataSectionCover.tableData[i].sumInsured;
+               this.sectionIPrem += this.passDataSectionCover.tableData [i].premAmt;
+           }else if(this.passDataSectionCover.tableData[i].section == 'II'){
+               this.sectionIISi += this.passDataSectionCover.tableData[i].sumInsured;
+               this.sectionIIPrem += this.passDataSectionCover.tableData [i].premAmt;
+           }else if(this.passDataSectionCover.tableData[i].section == 'III'){
+               this.sectionIIISi += this.passDataSectionCover.tableData[i].sumInsured;
+               this.sectionIIIPrem += this.passDataSectionCover.tableData[i].premAmt;
+           }
+           /*if(this.passDataSectionCover.tableData[i].section == 'I'){
+               this.sectionISi += this.passDataSectionCover.tableData[i].sumInsured;
+               this.sectionIPrem += this.passDataSectionCover.tableData [i].premAmt;
+           }else if(this.passDataSectionCover.tableData[i].section == 'II'){
+               this.sectionIISi += this.passDataSectionCover.tableData[i].sumInsured;
+               this.sectionIIPrem += this.passDataSectionCover.tableData [i].premAmt;
+           }else if(this.passDataSectionCover.tableData[i].section == 'III'){
+               this.sectionIIISi += this.passDataSectionCover.tableData[i].sumInsured;
+               this.sectionIIIPrem += this.passDataSectionCover.tableData[i].premAmt;
+           }*/
+       }
+    }
+
+    this.passDataTotalPerSection.tableData[0].section = 'SECTION I'
+    this.passDataTotalPerSection.tableData[0].sumInsured = this.sectionISi;
+    this.passDataTotalPerSection.tableData[0].premium = this.sectionIPrem;
+    this.passDataTotalPerSection.tableData[1].section = 'SECTION II'
+    this.passDataTotalPerSection.tableData[1].sumInsured = this.sectionIISi;
+    this.passDataTotalPerSection.tableData[1].premium = this.sectionIIPrem;
+    this.passDataTotalPerSection.tableData[2].section = 'SECTION III'
+    this.passDataTotalPerSection.tableData[2].sumInsured = this.sectionIIISi;
+    this.passDataTotalPerSection.tableData[2].premium = this.sectionIIIPrem;
+
+    this.coverageData.totalSi = this.sectionISi + this.sectionIISi + this.sectionIIISi;
+    this.coverageData.totalPrem = this.sectionIPrem + this.sectionIIPrem + this.sectionIIIPrem;
+
+    setTimeout(() => {
+      this.focusBlur();
+    }, 0)
+  }
+
+
+  prepareData(){
+    this.editedData = [];
+    this.coverageData.policyId = this.policyId;
+    this.coverageData.projId = this.projId;
+    this.coverageData.riskId = this.riskId;
+    this.coverageData.createDate = this.ns.toDateTimeString(this.coverageData.createDate);
+    this.coverageData.updateDate = this.ns.toDateTimeString(this.coverageData.updateDate);
+
+    for(var i = 0; i < this.passDataSectionCover.tableData.length;i++){
+      if(this.passDataSectionCover.tableData[i].edited){
+        this.editedData.push(this.passDataSectionCover.tableData[i]);
+        this.editedData[this.editedData.length - 1].createDateSec =  this.ns.toDateTimeString(0)
+        this.editedData[this.editedData.length - 1].updateDateSec = this.ns.toDateTimeString(0); 
+        this.editedData[this.editedData.length - 1].linCd = 'CAR'
+      }
+    }
+    this.coverageData.saveSectionCovers = this.editedData;
+
+  }
+
+  saveCoverage(){
+    this.prepareData();
+    this.underwritingservice.savePolCoverage(this.coverageData).subscribe((data: any) => {
+      if(data['returnCode'] == 0) {
+        console.log('Check error')
+        /*this.dialogMessage = data['errorList'][0].errorMessage;
+        this.dialogIcon = "error";
+        $('#successModalBtn').trigger('click');*/
+      } else{
+        /*this.dialogMessage = "";
+        this.dialogIcon = "success";
+        $('#successModalBtn').trigger('click');*/
+        console.log('Success')
+        this.getPolCoverage();
+        this.table.markAsPristine();
+        this.editedData = [];
+        //this.getCoverageInfo();
+      }
+    });
+  }
+
+  saveCatPeril(){
+    this.catPerilData.policyId = this.policyId;
+    for( var i = 0; i < this.passDataCATPerils.tableData.length; i++){
+      if(this.passDataCATPerils.tableData[i].edited){
+        this.catPerilData.saveCATPerilList.push(this.passDataCATPerils.tableData[i]);
+        this.catPerilData.saveCATPerilList[this.catPerilData.saveCATPerilList.length - 1].createDate = this.ns.toDateTimeString(0);
+        this.catPerilData.saveCATPerilList[this.catPerilData.saveCATPerilList.length - 1].updateDate = this.ns.toDateTimeString(0);
+      }
+    }  
+    this.underwritingservice.saveCatPeril(this.catPerilData).subscribe((data:any) => {
+      if(data['returnCode'] == 0) {
+        console.log('Check error')
+        /*this.dialogMessage = data['errorList'][0].errorMessage;
+        this.dialogIcon = "error";
+        $('#successModalBtn').trigger('click');*/
+      } else{
+        /*this.dialogMessage = "";
+        this.dialogIcon = "success";
+        $('#successModalBtn').trigger('click');*/
+        console.log('Success')
+        this.getPolCoverage();
+        this.table.markAsPristine();
+        this.editedData = [];
+        //this.getCoverageInfo();
+      }
+    });
+  }
+
+  focusBlur(){
+    setTimeout(() => {$('.req').focus();$('.req').blur()},0)
+  }
 }

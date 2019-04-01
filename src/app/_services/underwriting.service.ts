@@ -496,20 +496,45 @@ export class UnderwritingService {
 
     saveInwardPolBal(params){
          let header : any = {
+             headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolInwardBal', JSON.stringify(params), header);
+    }
+
+    getCATPeril(policyNo:any , policyId: string) {
+         const params = new HttpParams()
+             .set('policyNo', (policyNo === null || policyNo === undefined ? '' : policyNo) )
+             .set('policyId',(policyId === null || policyId === undefined ? '' : policyId) )
+        return  this.http.get(environment.prodApiUrl + "/underwriting-service/retrievePolCATPeril",{params});
+    }
+
+    savePolCoverage(coverageData:any){
+        let header : any = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json'
             })
         };
-         return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolInwardBal', JSON.stringify(params), header);
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolCoverage', JSON.stringify(coverageData), header);
     }
 
     savePolEndt(params){
-         let header : any = {
+        let header : any = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json'
             })
         };
         return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolEndorsement', JSON.stringify(params), header);
+    }
+
+    saveCatPeril(catPeriLData:any){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolCATPeril', JSON.stringify(catPeriLData), header);
     }
 
 }            

@@ -19,7 +19,7 @@ export class MtnSectionCoversComponent implements OnInit {
   fromInput: boolean = false;
   sectionCover: any = {
     tableData: [],
-    tHeader: ['Section','Bullet No','Cover Code','Cover Code Name'],
+    tHeader: ['Section','Bullet No','Cover Code','Cover Name'],
     dataTypes: ['text', 'text','sequence-3','text','text'],
     pageLength: 10,
     searchFlag: true,
@@ -28,7 +28,7 @@ export class MtnSectionCoversComponent implements OnInit {
     fixedCol: false,
     pageID: 1,
     colSize:['59px','69px','81px','180px'],
-    keys:['section','bulletNo','coverCd','coverCdAbbr']
+    keys:['section','bulletNo','coverCd','description']
   };
 
   @Input() lovCheckBox: boolean = false;
