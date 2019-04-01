@@ -1,3 +1,4 @@
+<form #myForm="ngForm">
 <div>
 	<fieldset class="scheduler-border" style="padding-top: 4px !important;
     padding-bottom: 4px !important;">
@@ -6,16 +7,16 @@
 			<div class="input-group" style="margin-bottom: -13px !important; margin-top: 3px !important">
 				<label class="col-sm-1"></label>
 				<label class="form-control-sm col-sm-1" for="xx">Policy No</label>
-				<input type="text" id="xx" value="CAR-2018-5081-077-0177" class="form-control form-control-sm cust-sm col-sm-2"
-				 [ngModel]="policyInfo.policyNo" placeholder="" readonly>
+				<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-2"
+				 [ngModel]="policyInfo.policyNo" placeholder="" name="policyNo" readonly>
 				<label class="form-control-sm col-sm-1" for="xx">Insured</label>
-				<input type="text" id="xx" value="Insurer" class="form-control form-control-sm cust-sm col-sm-5" placeholder=""
-				 [ngModel]="policyInfo.insuredDesc" readonly>
+				<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-5" placeholder=""
+				 [ngModel]="insured" name="insured" readonly>
 			</div>
 			<div class="input-group" style="margin-bottom: -13px !important;">
 				<label class="col-sm-1"></label>
 				<label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Risk</label>
-				<input type="text" id="xx" value="Risk Name" class="form-control form-control-sm cust-sm col-sm-8" placeholder="" [ngModel]="policyInfo.riskName"
+				<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-8" placeholder="" [ngModel]="policyInfo.riskName" name="riskName"
 				 readonly>
 			</div>
 		</div>
@@ -26,21 +27,21 @@
 				<div class="form-row custom-row-inline-inset">
 					<div class="input-group">
 						<label class="form-control-sm col-sm-2 text-right" for="xx">Insured</label>
-						<input class="form-control form-control-sm  col-sm-2" type="text" name="" [(ngModel)]="polAlopData.insId">
-						<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>&nbsp;
-						<input class="form-control form-control-sm  col-sm" type="text" style="margin-left: -7px !important;" name=""
+						<input [readonly]="alterFlag" class="form-control form-control-sm  col-sm-2" type="text" name="insId" [(ngModel)]="polAlopData.insId">
+						<div class="text-search-ico"><a (click)="openGenericLOV('insured')"><i class="fa fa-search"></i></a></div>&nbsp;
+						<input [readonly]="alterFlag" class="form-control form-control-sm  col-sm" type="text" style="margin-left: -7px !important;" name="insuredName"
 						 [(ngModel)]="polAlopData.insuredName">
 					</div>
 
 					<div class="input-group textarea">
 						<label class="form-control-sm col-sm-2"></label>
-						<textarea class="form-control form-control-sm col-sm" rows="2" [(ngModel)]="polAlopData.insuredDesc"></textarea>
+						<textarea class="form-control form-control-sm col-sm" rows="2" [(ngModel)]="polAlopData.insuredDesc" name="insuredDesc"></textarea>
 						<br>
 					</div>
 
 					<div class="input-group" style="margin-top:6px !important;">
 						<label class="form-control-sm col-sm-2 text-right" style="padding-top: 4px !important;" for="xx">Address</label>
-						<input class="form-control form-control-sm  col-sm" type="text" name="" [(ngModel)]="polAlopData.address">
+						<input [readonly]="alterFlag" class="form-control form-control-sm  col-sm" type="text" name="address" [(ngModel)]="polAlopData.address">
 					</div>
 
 				</div>
@@ -55,7 +56,7 @@
 					</div>
 
 					<div class="input-group textarea">
-						<textarea class="form-control form-control-sm col-sm-12" rows="3" [(ngModel)]="polAlopData.insBusiness"></textarea>
+						<textarea class="form-control form-control-sm col-sm-12" rows="3" [(ngModel)]="polAlopData.insBusiness" name="insBusiness"></textarea>
 					</div>
 				</div>
 			</fieldset>
@@ -72,13 +73,13 @@
 			<div class="input-group" style="margin-top: 14px !important;">
 				<label class="col-sm-3"></label>
 				<label class=" form-control-sm col-sm-2" for="annSumInsured">Annual Sum Insured</label>
-				<input class="form-control form-control-sm  col-sm-5 text-right" type="text" id="annSumInsured" [(ngModel)]="polAlopData.annSi"
+				<input [readonly]="alterFlag" class="form-control form-control-sm  col-sm-5 text-right" type="text" id="annSumInsured" [(ngModel)]="polAlopData.annSi" name="annSi"
 				 onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
 			</div>
 			<div class="input-group">
 				<label class="col-sm-3"></label>
 				<label class="form-control-sm col-sm-2 text-left" for="sumInsForMaxIndem">Sum Insured for Maximum Indemnity Period</label>
-				<input class="form-control form-control-sm  col-sm-5 text-right" type="text" id="sumInsForMaxIndem" [(ngModel)]="polAlopData.maxIndemPdSi"
+				<input [readonly]="alterFlag" class="form-control form-control-sm  col-sm-5 text-right" type="text" id="sumInsForMaxIndem" [(ngModel)]="polAlopData.maxIndemPdSi" name="maxIndemPdSi"
 				 onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
 			</div>
 		</div>
@@ -89,29 +90,29 @@
 		<div class="form-row custom-row-inline-inset">
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" for="periodFrom">Period of Insurance from</label>
-				<input class="form-control form-control-sm  col-sm-2" type="date" id="periodFrom" [(ngModel)]="polAlopData.issueDate?.split('T')[0]">
+				<input class="form-control form-control-sm  col-sm-2" type="date" id="periodFrom" [(ngModel)]="polAlopData.issueDate?.split('T')[0]" name="issueDate">
 				<label class="form-control-sm col-sm-1" for="periodTo">to</label>
-				<input class="form-control form-control-sm  col-sm-2" type="date" id="periodTo" [(ngModel)]="polAlopData.expiryDate?.split('T')[0]">
+				<input class="form-control form-control-sm  col-sm-2" type="date" id="periodTo" [(ngModel)]="polAlopData.expiryDate?.split('T')[0]" name="expiryDate">
 				<label class="form-control-sm col-sm-2 text-left">(Scheduled Date of Completion)</label>
 
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" for="maxIndemPeriod">Maximum Indemnity Period</label>
-				<input class="form-control form-control-sm  col-sm-1" type="number" id="maxIndemPeriod" [(ngModel)]="polAlopData.maxIndemPd">
+				<input [readonly]="alterFlag" class="form-control form-control-sm  col-sm-1" type="number" id="maxIndemPeriod" [(ngModel)]="polAlopData.maxIndemPd" name="maxIndemPd">
 				<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">months</label>
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" for="fromIndem">from</label>
-				<input class="form-control form-control-sm  col-sm-2" type="date" id="fromIndem" [(ngModel)]="polAlopData.indemFromDate?.split('T')[0]">
+				<input class="form-control form-control-sm  col-sm-2" type="date" id="fromIndem" [(ngModel)]="polAlopData.indemFromDate?.split('T')[0]" name="indemFromDate">
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" for="timeExcess">Time Excess</label>
-				<input class="form-control form-control-sm  col-sm-7" type="text" id="fromIndem" [(ngModel)]="polAlopData.timeExc"
+				<input [readonly]="alterFlag" class="form-control form-control-sm  col-sm-7" type="text" id="fromIndem" [(ngModel)]="polAlopData.timeExc" name="timeExc"
 				 style="margin-right: 133px !important;">
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" for="interval">Progress reports to be presented at intervals of</label>
-				<input class="form-control form-control-sm  col-sm-1" type="number" id="interval" [(ngModel)]="polAlopData.repInterval">
+				<input [readonly]="alterFlag" class="form-control form-control-sm  col-sm-1" type="number" id="interval" [(ngModel)]="polAlopData.repInterval" name="repInterval">
 				<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">months</label>
 			</div>
 		</div>
@@ -126,16 +127,16 @@
 						<app-modal [btnTitle]="'Item Info'" style="margin-bottom: 2px;">
 							<div header>Item Information</div>
 							<div body>
-								<app-cust-editable-non-datatable [passData]="passData">
+								<app-cust-editable-non-datatable [passData]="passDataCar">
 								</app-cust-editable-non-datatable>
 							</div>
 							<div footer class="text-center">
 								<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
-								<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Save</a></button>
+								<button type="button" class="cust-btn" (click)="savePolAlopItem()"><a>Save</a></button>
 							</div>
 						</app-modal>
 						<button type="button" class="cust-btn"><a>Cancel</a></button>
-						<button type="button" class="cust-btn" (click)="save()"><a>Save</a></button>
+						<button type="button" class="cust-btn" (click)="onClickSavePolAlop()"><a>Save</a></button>
 					</div>
 				</div>
 			</div>
@@ -147,12 +148,12 @@
 						<app-modal [btnTitle]="'Item Info'" style="margin-bottom: 2px;">
 							<div header>Item Information</div>
 							<div body>
-								<app-cust-editable-non-datatable [passData]="passData2">
+								<app-cust-editable-non-datatable [passData]="passDataEar">
 								</app-cust-editable-non-datatable>
 							</div>
 							<div footer class="text-center">
 								<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
-								<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Save</a></button>
+								<button type="button" class="cust-btn" (click)="savePolAlopItem()"><a>Save</a></button>
 							</div>
 						</app-modal>
 						<button type="button" class="cust-btn"><a>Cancel</a></button>
@@ -163,3 +164,12 @@
 		</div>
 	</div>
 </div>
+</form>
+
+<app-mtn-insured id="insuredLOV" (selectedData)="setInsured($event)"></app-mtn-insured>
+<app-lov id="lov" [passData]="passLOV" (selectedData)="setInsured($event)"></app-lov>
+
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-confirm-save id="polAlop" (onYes)="save()"></app-confirm-save>
+
+<app-confirm-save id="polAlopItem" (onYes)="savePolAlopItem()"></app-confirm-save>
