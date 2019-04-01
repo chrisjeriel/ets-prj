@@ -119,7 +119,7 @@
           <button type="button" class="cust-btn" (click)="showDeductiblesModal(deductibles)"><a>Deductibles</a></button>
           <button type="button" class="cust-btn" (click)="CATPerils()" *ngIf="line == 'CAR' || line =='EAR' || line =='EEI' || line =='CEC'"><a>CAT Perils</a></button>
           <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
-          <button type="button" class="cust-btn" (click)="saveCoverage()"><a>Save</a></button>
+          <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
         </div>
       </div>
     </div>
@@ -138,8 +138,8 @@
 </app-modal>
 
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-confirm-save (onYes)="saveData()"></app-confirm-save>
-<app-cancel-button (onYes)="saveData('cancel')" [url]="'/quotation-processing'" ></app-cancel-button>
+<app-confirm-save (onYes)="saveCoverage()"></app-confirm-save>
+<app-cancel-button (onYes)="saveCoverage('cancel')" [url]="'/policy-listing'" ></app-cancel-button>
 
 </ng-container>
 
