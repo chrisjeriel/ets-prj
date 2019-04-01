@@ -69,11 +69,11 @@ export class AppComponent  {
 
 
         if (this.currentUser != null) {
-          /*this.userService.userLogin(this.currentUser.username, this.currentUser.password).subscribe(data => {        
+          this.userService.userLogin(this.currentUser.username, this.currentUser.password).subscribe(data => {        
           
             this.accessibleModules = data['modulesList'];
             console.log("accessibleModules : " + this.accessibleModules);
-          });*/
+          });
         }        
 
     }
