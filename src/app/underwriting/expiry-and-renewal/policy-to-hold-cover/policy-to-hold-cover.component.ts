@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PolicyHoldCoverInfo } from '../../../_models/PolicyToHoldCover';
 import { Title } from '@angular/platform-browser';
 import { NotesService, UnderwritingService } from '@app/_services';
+import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 
 @Component({
 	selector: 'app-policy-to-hold-cover',
@@ -12,7 +14,19 @@ export class PolicyToHoldCoverComponent implements OnInit {
 
 	private policyHoldCoverInfo: PolicyHoldCoverInfo;
 
-	constructor(private titleService: Title, private noteService: NotesService, private us: UnderwritingService) { }
+	@ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
+
+	constructor(private titleService: Title, private noteService: NotesService, private us: UnderwritingService, private modalService: NgbModal) { }
+
+	policyListingData: any = {
+		tableData: [],
+		tHeader: ['Policy No.', 'Ceding Company', 'Insured', 'Risk'],
+		dataTypes: ['text', 'text', 'text', 'text'],
+		pageLength: 10,
+		pagination: true,
+		pageStatus: true,
+		keys: ['policyNo','cedingName', 'insuredDesc', 'riskName']
+	}
 
 	polHoldCoverParams: any = {
 		policyId: '8',
@@ -44,8 +58,10 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	}
 	holdCoverNo: string = '';
 	statusDesc: string = '';
+	modalOpen: boolean = false;
 
 	ngOnInit() {
+
 
 	}
 	test(event){
@@ -57,6 +73,29 @@ export class PolicyToHoldCoverComponent implements OnInit {
 			console.log(data);
 			this.statusDesc = data.policy.holdCoverList[0].statusDesc;
 		});
+	}
+
+	retrievePolListing(){
+		console.log("retrievePolListing");
+		this.policyListingData.tableData = [];
+		setTimeout(()=>{
+			this.us.getParListing([{key: 'statusDesc', search: 'Expired'}]).subscribe((data: any) =>{
+				console.log(data);
+				if(data.policyList.length !== 0){
+					for(var rec of data.policyList){
+						this.policyListingData.tableData.push({
+							policyNo: rec.policyNo,
+							cedingName: rec.cedingName,
+							insuredDesc: rec.insuredDesc,
+							riskName: rec.project.riskName
+						});
+					}
+					this.table.refreshTable();
+				}
+				this.modalOpen = true;
+			});
+		}, 100);
+		
 	}
 
 	onClickSave(){
@@ -82,6 +121,16 @@ export class PolicyToHoldCoverComponent implements OnInit {
 		this.polHoldCoverParams.updateUser = JSON.parse(window.localStorage.currentUser).username;
 		this.polHoldCoverParams.createDate = this.noteService.toDateTimeString(0);
 		this.polHoldCoverParams.updateDate = this.noteService.toDateTimeString(0);
+	}
+
+	onRowClick(data){
+		console.log(data);
+	}
+
+	openModal(){
+		$('#lovMdl #modalBtn').trigger('click');
+		console.log("openModal");
+		//this.retrievePolListing();
 	}
 
 }

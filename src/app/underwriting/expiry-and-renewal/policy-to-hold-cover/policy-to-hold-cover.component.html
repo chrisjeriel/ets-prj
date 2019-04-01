@@ -63,7 +63,7 @@
                                                 <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Alteration No" style="margin-left: 3px;" appRequired>
                                             </div>
                                             <span>&nbsp;</span>
-                                            <div class="text-search-ico col-sm-1"><a><i class="fa fa-search"></i></a></div>
+                                            <div class="text-search-ico col-sm-1"><a (click)="openModal();"><i class="fa fa-search"></i></a></div>
                                         </div>
                                         <div class="input-group ig-row" style="margin-top: -6px !important;">
                                             <label class="form-control-sm col-sm-2">Ceding Company</label>
@@ -159,3 +159,16 @@
             </ng-template>
         </ngb-tab>
     </ngb-tabset>
+
+    <app-modal hidden [btnTitle]="'List Of Values'" id="lovMdl" (modalOpened)="retrievePolListing()">
+        <div header>List Of Values</div>
+        <div body>
+           <app-cust-non-datatable [passData]="policyListingData" (rowClick)="onRowClick($event)"></app-cust-non-datatable>
+        </div>
+        <div footer class="text-center w-100">
+            <div class="col-sm-12 text-center">
+            <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+            <button class="cust-btn" type="button" (click)="onSaveClickLOV()"><a>Ok</a></button>
+            </div>
+        </div>
+    </app-modal>
