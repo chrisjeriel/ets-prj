@@ -115,7 +115,7 @@ export class CoverageComponent implements OnInit {
       this.passData.magnifyingGlass = [];
       this.passData.addFlag = false;
       this.passData.deleteFlag = false;
-      this.passData.uneditable =  [true,true,true,true];
+      this.passData.uneditable =  [true,true,true,true,true];
       /*for(var count = 0; count < this.passData.tHeader.length; count++){
         this.passData.uneditable.push(true);
       }*/

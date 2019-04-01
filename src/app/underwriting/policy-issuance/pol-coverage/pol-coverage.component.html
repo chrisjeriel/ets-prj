@@ -76,14 +76,14 @@
       </div>
       <div class="input-group" style="margin-bottom: -13px !important">
        <label class="form-control-sm col-sm-3">Share(%)</label>
-       <input type="text" class="form-control form-control-sm req" [(ngModel)]="coverageData.pctShare" appCurrencyRate>
+       <input type="text" class="form-control form-control-sm req" [(ngModel)]="coverageData.pctShare" appCurrencyRate appRequired>
        <label class="form-control-sm col-sm-2">PML(%)</label>
        <input type="text" class="form-control form-control-sm req" [(ngModel)]="coverageData.pctPml" appCurrencyRate>
        <span class="col-sm-1"></span>
      </div>
      <div class="input-group" style="margin-bottom: -6px !important">
        <label class="form-control-sm col-sm-3">100% Value</label>
-       <input type="text" class="form-control form-control-sm req" [(ngModel)]="coverageData.totalValue" appCurrency>
+       <input type="text" class="form-control form-control-sm req" [(ngModel)]="coverageData.totalValue" appCurrency appRequired>
        <span class="col-sm-1"></span>
      </div>
    </div>
