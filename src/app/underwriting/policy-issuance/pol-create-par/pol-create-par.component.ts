@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { UnderwritingService, QuotationService } from '../../../_services';
+import { UnderwritingService, QuotationService, NotesService } from '../../../_services';
 import { CreateParInfo } from '../../../_models/CreatePolicy';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
@@ -79,7 +79,7 @@ export class PolCreatePARComponent implements OnInit {
   expiryTime: any = "";
 
   constructor(private underwritingService: UnderwritingService,
-    private modalService: NgbModal, private router: Router, private titleService: Title, private quoteService: QuotationService) {
+    private modalService: NgbModal, private router: Router, private titleService: Title, private quoteService: QuotationService, private ns: NotesService) {
 
   }
 
@@ -209,7 +209,11 @@ export class PolCreatePARComponent implements OnInit {
       "inceptDate": this.inceptionDate + 'T' + this.inceptionTime,
       "openPolicyNo": this.ocNo.length == 0 ? '' : this.ocNo.join('-'),
       "optionId": this.optionId,
-      "quotationNo": this.quNo.length == 0 ? '' : this.quNo.join('-')    
+      "quotationNo": this.quNo.length == 0 ? '' : this.quNo.join('-'),
+      "createUser": JSON.parse(window.localStorage.currentUser).username,
+      "createDate": this.ns.toDateTimeString(0),
+      "updateUser": JSON.parse(window.localStorage.currentUser).username,
+      "updateDate": this.ns.toDateTimeString(0)
     }
 
     console.log(savePolicyDetailsParam);

@@ -124,8 +124,8 @@
                             <input type="date" class="form-control form-control-sm col-sm-3" [(ngModel)]="inceptionDate" appRequired>
                             <input type="time" class="form-control form-control-sm input-ig-row col-sm-2" [(ngModel)]="inceptionTime" appRequired>
                             <label class="form-control-sm col-sm-1" style="margin-left: 25px !important;">Expiry Date</label>
-                            <input type="date" class="form-control form-control-sm col-sm-3" [(ngModel)]="expiryDate" appRequired>
-                            <input type="time" class="form-control form-control-sm input-ig-row col-sm-2" [(ngModel)]="expiryTime" appRequired>
+                            <input type="date" class="form-control form-control-sm col-sm-3" [(ngModel)]="expiryDate" min="{{ inceptionDate }}" appRequired>
+                            <input type="time" class="form-control form-control-sm input-ig-row col-sm-2" [(ngModel)]="expiryTime" min="{{ inceptionTime }}" appRequired>
                         </div>
                     </div>
                 </div>
