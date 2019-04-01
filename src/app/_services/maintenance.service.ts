@@ -206,6 +206,10 @@ export class MaintenanceService{
 
 		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveRefCode', {params});
 	}
+
+	getMtnOtherCharges(){
+		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnCharges');
+	}
 	
 }
 

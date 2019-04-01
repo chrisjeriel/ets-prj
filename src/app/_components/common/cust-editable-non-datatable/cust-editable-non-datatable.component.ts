@@ -113,6 +113,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     failed: boolean = false;
     isDirty: boolean = false;
     selectAllFlag:boolean = false;
+    @Input() tabIndex: string[] = []; //0 - Tabbable | -1 - Untabbable
 
     refreshTable(initLoad?){
         if(initLoad === undefined){
@@ -147,8 +148,10 @@ export class CustEditableNonDatatableComponent implements OnInit {
 
         if (this.passData.tableData.length > 0 && this.dataKeys.length == 0 && this.passData.keys === undefined) {
             this.dataKeys = Object.keys(this.passData.tableData[0]);
-        } else {
+        } else if(this.passData.keys !== undefined){
             this.dataKeys = this.passData.keys;
+        }else{
+            this.dataKeys = [];
         }
         if(this.passData.tableData.length != 0)
             this.loadingFlag = false;
@@ -163,13 +166,13 @@ export class CustEditableNonDatatableComponent implements OnInit {
         //   this.dataKeys.pop();
         // }
 
-       if(this.dataKeys.indexOf('edited') != -1){
+       if(this.dataKeys!==undefined && this.dataKeys.indexOf('edited') != -1){
          this.dataKeys.splice(this.dataKeys.indexOf('edited'),1);
        }
-       if(this.dataKeys.indexOf('checked') != -1){
+       if(this.dataKeys!==undefined && this.dataKeys.indexOf('checked') != -1){
          this.dataKeys.splice(this.dataKeys.indexOf('checked'),1);
        }
-       if(this.dataKeys.indexOf('deleted') != -1){
+       if(this.dataKeys!==undefined && this.dataKeys.indexOf('deleted') != -1){
          this.dataKeys.splice(this.dataKeys.indexOf('deleted'),1);
        }
 
