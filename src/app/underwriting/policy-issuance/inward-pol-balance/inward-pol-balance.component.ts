@@ -80,6 +80,10 @@ export class InwardPolBalanceComponent implements OnInit {
   policyId = 1;
   dialogIcon:string;
 
+  totalPrem: string = "";
+  currency: string = "";
+  dialogMsg: string = "";
+
   constructor(private underwritingservice: UnderwritingService, private titleService: Title, private ns : NotesService
   ) { }
 
@@ -91,10 +95,14 @@ export class InwardPolBalanceComponent implements OnInit {
 
   fetchData(){
     this.underwritingservice.getInwardPolBalance(this.policyId).subscribe((data:any)=>{
+      console.log(data)
+      this.currency = data.policyList[0].project.coverage.currencyCd;
+      this.totalPrem = data.policyList[0].project.coverage.totalPrem;
       if(data.policyList.length !=0){
         this.passData.tableData = data.policyList[0].inwPolBalance.filter(a=>{
           a.dueDate     = this.ns.toDateTimeString(a.dueDate);
           a.bookingDate = this.ns.toDateTimeString(a.bookingDate);
+          a.otherCharges = a.otherCharges.filter(a=>a.chargeCd!=null)
           return true;
         });
         this.instllmentTable.onRowClick(null,this.passData.tableData[0]);
@@ -205,7 +213,13 @@ export class InwardPolBalanceComponent implements OnInit {
   }
 
   onClickSave(){
-    this.confirmSave.confirmModal();
+    if(this.instllmentTable.getSum('premAmt') === this.totalPrem)
+      this.confirmSave.confirmModal();
+    else{
+      this.dialogIcon = 'error-message';
+      this.dialogMsg = 'Total Premium does not match.';
+      this.successDiag.open();
+    }
   }
 
 }
