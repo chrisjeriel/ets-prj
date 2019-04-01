@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { PolItem_MLP, PolItem_EEI_MBI_CEC, PolItem_BPV, PolGoods_DOS, PolMachinery_DOS, PolItem_CEC } from '@app/_models';
 import { UnderwritingService, NotesService } from '../../../_services';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
     selector: 'app-pol-item',
@@ -12,6 +13,7 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 })
 export class PolItemComponent implements OnInit {
     @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
+    @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
     dtOptions: DataTables.Settings = {};
     tableData_EEI_MBI_CEC: any[] = [
         new PolItem_EEI_MBI_CEC('10001', 45, 'Item Description 1', '2018', 5, 20000),
@@ -210,6 +212,9 @@ export class PolItemComponent implements OnInit {
     policyId: any = 1;
     editedData:any[] = [];
     deletedData:any[] =[];
+    dialogMessage:string;
+    dialogIcon:string = '';
+    cancelFlag:boolean;
 
     itemDetails: any = {
         policyId: null,
@@ -226,7 +231,7 @@ export class PolItemComponent implements OnInit {
         updateDate:''
     }
 
-    constructor(private route: ActivatedRoute, private underwritingService: UnderwritingService, private titleService: Title, private ns: NotesService) { }
+    constructor(private route: ActivatedRoute, private underwritingService: UnderwritingService, private titleService: Title, private ns: NotesService, private router: Router) { }
 
     ngOnInit() {
         this.titleService.setTitle("Pol | Item");
@@ -247,7 +252,6 @@ export class PolItemComponent implements OnInit {
             console.log(data)
             if(this.line == 'EEI' || this.line == 'MBI'){
                 this.eeiPassData.tableData = [];
-                console.log(this.eeiPassData.tableData)
                 this.itemDetails.policyId = data.policy.policyId;
                 this.itemDetails.projId = data.policy.project.projId;
                 var tableDatas = data.policy.project.items;
@@ -309,7 +313,12 @@ export class PolItemComponent implements OnInit {
         });
     }
 
-    prepareData(){
+    prepareData(cancelFlag?){
+        this.cancelFlag = cancelFlag !== undefined;
+        if(this.cancelFlag === true){
+         this.router.navigateByUrl('quotation-processing');
+        }
+
         if(this.line=='EEI' || this.line=='MBI'){
             for (var i = 0; i < this.eeiPassData.tableData.length; i++) {
                 if(this.eeiPassData.tableData[i].edited && !this.eeiPassData.tableData[i].deleted){
@@ -404,7 +413,7 @@ export class PolItemComponent implements OnInit {
             }
         }
 
-        this.itemDetails.saveItemLists = this.editedData
+        this.itemDetails.saveItemLists = this.editedData;
         this.itemDetails.deleteItemLists = this.deletedData;
         this.saveItem();
 
@@ -414,19 +423,35 @@ export class PolItemComponent implements OnInit {
         this.underwritingService.saveItem(this.itemDetails).subscribe((data:any) => {
             if(data['returnCode'] == 0) {
               console.log('Check error')
-              /*this.dialogMessage = data['errorList'][0].errorMessage;
+              this.dialogMessage = data['errorList'][0].errorMessage;
               this.dialogIcon = "error";
-              $('#successModalBtn').trigger('click');*/
+              $('#successModalBtn').trigger('click');
             } else{
-              /*this.dialogMessage = "";
+              this.dialogMessage = "";
               this.dialogIcon = "success";
-              $('#successModalBtn').trigger('click');*/
+              $('#successModalBtn').trigger('click');
               console.log('Success')
+              this.emptyVar();
               this.getItem();
               this.table.markAsPristine();
               //this.getCoverageInfo();
             }
         })
+    }
+
+    emptyVar(){
+        this.editedData = [];
+        this.deletedData = [];
+        this.itemDetails.saveItemLists = [];
+        this.itemDetails.deleteItemLists = [];
+    }
+
+    onClickSave(){
+      $('#confirm-save #modalBtn2').trigger('click');
+    }
+
+    cancel(){
+      this.cancelBtn.clickCancel();
     }
 
 }

@@ -76,7 +76,11 @@
 
 <div class="col-md-13 text-center">
     <div class="cust-btn-container" style="margin-top: 10px;">
-        <button type="button" class="cust-btn"><a>Cancel</a></button>
-        <button type="button" class="cust-btn" (click)="prepareData()"><a>Save</a></button>
+        <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+        <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
     </div>
 </div>  
+
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-confirm-save (onYes)="prepareData()"></app-confirm-save>
+<app-cancel-button (onYes)="prepareData('cancel')" [url]="'/policy-listing'" ></app-cancel-button>
