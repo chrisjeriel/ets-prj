@@ -296,12 +296,11 @@ export class UnderwritingService {
     }
 
 
-    getInwardPolBalance() {
-        this.policyInwardPolicy = [
-            new PolicyInwardPolBalance("1", "02/01/2019", "01/01/2019", "25000", "25000", "50000"),
-            new PolicyInwardPolBalance("2", "02/25/2019", "01/15/2019", "15000", "15000", "30000"),
-        ];
-        return this.policyInwardPolicy;
+    getInwardPolBalance(policyId?) {
+         let params:any = {
+             policyId : policyId
+         }
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolInwardBal',{params});
     }
 
     getInwardPolBalanceOtherCharges() {
@@ -493,6 +492,15 @@ export class UnderwritingService {
             .set('policyId',policyId===undefined?'':policyId)
             .set('policyNo',policyNo===undefined?'':policyNo);
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolicyInformation',{params})
+    }
+
+    saveInwardPolBal(params){
+         let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+         return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolInwardBal', JSON.stringify(params), header);
     }
 
 }            

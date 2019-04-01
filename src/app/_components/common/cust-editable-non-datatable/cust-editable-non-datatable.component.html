@@ -207,7 +207,8 @@ span.ui-column-resizer {
                                             </ng-container>
                                         </ng-container>
                                     </select>
-                                    <input [name]="key+ti" *ngSwitchCase="'date'" class="editable-date form-control-sm" type="date" [ngModel]="data[key] | date:'yyyy-MM-dd'"> 
+                                    <input [name]="key+ti" *ngSwitchCase="'date'" class="editable-date form-control-sm" type="date" [ngModel]="data[key] | date:'yyyy-MM-dd' " (ngModelChange)="data[key]=$event;data.edited=true"
+                                    > 
                                     <input [name]="key+ti" *ngSwitchCase="'time'" class="editable-date form-control-sm" type="time" [ngModel]="data[key] | date:'HH:mm'">
                                     <input [name]="key+ti" *ngSwitchCase="'datetime'" class="editable-date form-control-sm" type="datetime-local"
                                     [ngModel]="data[key] | date:'yyyy-MM-ddTHH:mm'">
