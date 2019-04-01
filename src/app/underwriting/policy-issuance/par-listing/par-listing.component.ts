@@ -45,7 +45,7 @@ export class ParListingComponent implements OnInit {
         editFlag: true,
         pageStatus: true,
         pagination: true,
-        pageLength: 10,
+        pageLength: 20,
         filters: [
             {
                 key: 'policyNo',
@@ -154,7 +154,6 @@ export class ParListingComponent implements OnInit {
    retrievePolListing(){
        this.uwService.getParListing(this.searchParams).subscribe(data => {
           var records = data['policyList'];
-          console.log(records);
           this.fetchedData = records;
                for(let rec of records){
                      if (rec.statusDesc === 'In Force' || rec.statusDesc === 'In Progress') {
@@ -188,22 +187,8 @@ export class ParListingComponent implements OnInit {
     searchQuery(searchParams){
         this.searchParams = searchParams;
         this.passDataListing.tableData = [];
-        console.log(this.searchParams);
         this.selectedPolicy = {};
-
-        if(this.isValidDate(this.searchParams[10].search)){
-            console.log("Valid Date");
-        } else {
-            console.log("Invalid Date");
-        }
-
-    /*    var req = ['issueDateFrom','issueDateTo'];
-         for(var [key, val] of this.searchParams) {
-              console.log(key + val);
-         }
-*/
-
-
+        this.passDataListing.btnDisabled = true;
 
         this.retrievePolListing();
 
@@ -265,21 +250,5 @@ export class ParListingComponent implements OnInit {
             this.passDataListing.btnDisabled = false;
         }
     }
-
- isValidDate(obj) {
-    var str = obj;
-    var res = str.split("-");
-
-    var day = Number(res[0]),
-        month = Number(res[1]),
-        year = Number(res[2]);
-
-    var date = new Date();
-    date.setFullYear(year, month - 1, day);
-  
-    if ( (date.getFullYear() == year) && (date.getMonth() == month + 1) && (date.getDate() == day) )
-       return true;
-  return false;
-}
 
 }
