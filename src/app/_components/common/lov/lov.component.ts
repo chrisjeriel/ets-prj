@@ -412,6 +412,14 @@ export class LovComponent implements OnInit {
         }
         this.table.refreshTable();
       })
+    }else if(this.passData.selector == 'otherCharges'){
+      this.passTable.tHeader = [ 'Charge Code','Charge Name','Remarks','Amount'];
+      this.passTable.dataTypes = [ 'sequence-3','text','text','currency'];
+      this.passTable.keys = ['chargeCd','chargeDesc','remarks','defaultAmt']
+      this.mtnService.getMtnOtherCharges().subscribe((data:any)=>{
+        this.passTable.tableData = data.mtnChargesList.filter((data)=>{return this.passData.hide.indexOf(data.chargeCd)==-1});
+        this.table.refreshTable();
+      })
     }
 
     this.modalOpen = true;

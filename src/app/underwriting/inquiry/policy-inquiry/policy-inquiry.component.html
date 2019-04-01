@@ -29,7 +29,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-sm" style="padding: 0">
-                            <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)"></app-cust-non-datatable>
+                            <app-cust-non-datatable #listTable [passData]="passData" (rowClick)="onRowClick($event)" (newRowDblClick)="gotoInfo($event)"></app-cust-non-datatable>
                         </div>
                     </div>
                     <div class="row">
@@ -38,30 +38,30 @@
                                  <div class="form-row" style="margin-right: 0px; margin-bottom: 1px;">
                                      <div class="input-group ig-row" style="margin-top: 9px ! important;margin-left: 10px ! important;margin-right: 25px ! important" >
                                         <label class="form-control-sm col-sm-2">Policy No</label>
-                                        <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 8px ! important" readonly [value]="policyList.policyNo">
+                                        <input readonly type="text" class="form-control form-control-sm col-sm" style="margin-left: 8px ! important" [value]="policyInfo?.policyNo">
                                     </div>
                                     <div class="input-group ig-row" style="margin-right: 25px ! important;;       margin-left: 10px ! important" >
                                         <label class="form-control-sm col-sm-2">Type of Cession</label>
-                                        <input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important" readonly [value]="policyList.typeCession">
+                                        <input readonly type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important" [value]="policyInfo?.cessionDesc">
                                         <label class="form-control-sm col-sm-2">Status</label>
-                                        <input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 5px ! important" readonly [value]="policyList.status">
+                                        <input readonly type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 5px ! important" [value]="policyInfo?.statusDesc">
                                     </div>
                                     <div class="input-group ig-row" style="margin-right: 25px ! important;;margin-left: 10px ! important" >
                                         <label class="form-control-sm col-sm-2">Ceding Company</label>
-                                        <input type="text" class="form-control form-control-sm col-sm-2" style="  margin-left: 8px ! important" readonly [value]="cedNum">
-                                        <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px ! important" readonly [value]="policyList.cedComp">
+                                        <input readonly type="text" class="form-control form-control-sm col-sm-2" style="  margin-left: 8px ! important" [value]="policyInfo?.cedingId">
+                                        <input readonly type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px ! important" [value]="policyInfo?.cedingName">
                                     </div>
                                     <div class="input-group ig-row" style="margin-right: 25px ! important;;margin-left: 10px ! important" >
                                         <label class="form-control-sm col-sm-2">Inception Date</label>
-                                        <input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important" readonly [value]="policyList.inceptionDate | date: 'MM-dd-yyyy hh:mm a'">
+                                        <input readonly type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important" [value]="policyInfo?.inceptDate | date: 'MM/dd/yyyy hh:mm a'">
                                         <label class="form-control-sm col-sm-2">Expiry Date</label>
-                                        <input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important" readonly  [value]="policyList.expiryDate  | date: 'MM-dd-yyyy hh:mm a'">
+                                        <input readonly type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important"  [value]="policyInfo?.expiryDate  | date: 'MM/dd/yyyy hh:mm a'">
                                     </div>
                                     <div class="input-group ig-row" style="margin-right: 25px ! important;;margin-left: 10px ! important" >
                                       <label class="form-control-sm col-sm-2">Issue Date</label>
-                                      <input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important" readonly  [value]="policyList.issueDate  | date: 'MM-dd-yyyy hh:mm a'">
+                                      <input readonly type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important"  [value]="policyInfo?.issueDate  | date: 'MM/dd/yyyy hh:mm a'">
                                       <label class="form-control-sm col-sm-2">Acct. Date</label>
-                                      <input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important" readonly  [value]="policyList.accDate  | date: 'MM-dd-yyyy hh:mm a'">
+                                      <input readonly type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important"  [value]="policyInfo?.acctDate  | date: 'MM/dd/yyyy hh:mm a'">
                                   </div>
                                 </div>
                             </fieldset>
@@ -71,27 +71,27 @@
                                <div class="form-row" style="margin-right: 0px; margin-bottom: 1px;">
                                   <div class="input-group ig-row" style="margin-top: 9px ! important;margin-left: 10px ! important;margin-right: 25px ! important" >
                                       <label class="form-control-sm col-sm-2">Insured</label>
-                                      <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 8px ! important" readonly [value]="policyList.insured">
+                                      <input readonly type="text" class="form-control form-control-sm col-sm" style="margin-left: 8px ! important" [value]="policyInfo?.insuredDesc">
                                   </div>
                                   <div class="input-group ig-row" style="margin-right: 25px ! important;;margin-left: 10px ! important" >
                                       <label class="form-control-sm col-sm-2">Risk</label>
-                                      <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 8px ! important" readonly [value]="policyList.risk">
+                                      <input readonly type="text" class="form-control form-control-sm col-sm" style="margin-left: 8px ! important" [value]="policyInfo?.riskName">
                                   </div>
                                   <div class="input-group ig-row" style="margin-right: 25px ! important;;margin-left: 10px ! important" >
                                       <label class="form-control-sm col-sm-2">Site</label>
-                                      <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 8px ! important" readonly [value]="policyList.site">
+                                      <input readonly type="text" class="form-control form-control-sm col-sm" style="margin-left: 8px ! important" [value]="policyInfo?.site">
                                   </div>
                                   <div class="input-group ig-row" style="margin-right: 25px ! important;;margin-left: 10px ! important" >
                                       <label class="form-control-sm col-sm-2">Object</label>
-                                      <input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important" readonly [value]="policyList.object">
+                                      <input readonly type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important" [value]="policyInfo?.objectDesc">
                                       <label class="form-control-sm col-sm-2">Currency</label>
-                                      <input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important" readonly [value]="policyList.curr">
+                                      <input readonly type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important" [value]="policyInfo?.currencyCd">
                                   </div>
                                   <div class="input-group ig-row" style="margin-right: 25px ! important;;margin-left: 10px ! important" >
                                       <label class="form-control-sm col-sm-2">Sum Insured</label>
-                                      <input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important;text-align: right" readonly [value]="policyList.sumInsured | number: '1.2-2'">
+                                      <input readonly type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important;text-align: right" [value]="policyInfo?.totalSi | number: '1.2-2'">
                                       <label class="form-control-sm col-sm-2">Premium</label>
-                                      <input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important;text-align: right" readonly [value]="policyList.premium | number: '1.2-2'">
+                                      <input readonly type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important;text-align: right" [value]="policyInfo?.totalPrem | number: '1.2-2'">
                                   </div>
                                </div>
                               </fieldset>        
