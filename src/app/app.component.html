@@ -84,20 +84,30 @@
                                 <ngb-accordion #acc="ngbAccordion">
                                     <ngb-panel title="Issuance">
                                         <ng-template ngbPanelContent>
+                                            <ng-container *ngIf="accessibleModules.indexOf('QUOTEX99') == -1">
                                             <button [routerLink]="['/create-policy']" class="button btn btn-link">Create
                                                 Policy</button>
                                             <br />
+                                            </ng-container>
+                                            <ng-container *ngIf="accessibleModules.indexOf('QUOTEX99') == -1">
                                             <button [routerLink]="['/policy-listing']" class="button btn btn-link">Policy
                                                 List</button>
                                             <br />
+                                            </ng-container>
+                                            <ng-container *ngIf="accessibleModules.indexOf('QUOTEX99') == -1">
                                             <button [routerLink]="['/create-alteration']" class="button btn btn-link">Create
                                                 Alteration</button>
                                             <br />
+                                            </ng-container>
+                                            <ng-container *ngIf="accessibleModules.indexOf('QUOTEX99') == -1">
                                             <button [routerLink]="['/alt-policy-listing']" class="button btn btn-link">Alteration
                                                 List</button>
                                             <br />
+                                            </ng-container>
+                                            <ng-container *ngIf="accessibleModules.indexOf('QUOTEX99') == -1">
                                             <button [routerLink]="['/create-open-cover']" class="button btn btn-link">Create
                                                 Open Cover</button>
+                                            </ng-container>
                                         </ng-template>
                                     </ngb-panel>
                                     <ngb-panel title="Distribution">

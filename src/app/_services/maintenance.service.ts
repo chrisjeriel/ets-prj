@@ -83,6 +83,17 @@ export class MaintenanceService{
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnQuotationWordings",{params});
 	}
 
+    getMtnQuotationPrintingWordings(reportId){
+		const params = new HttpParams()
+			.set('reportId',reportId)
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnReportsParam",{params});
+	}
+
+
+
+
+
+
 	getMtnRisk(riskId) {
 		const params = new HttpParams()
                 .set('riskId',riskId);
@@ -194,6 +205,10 @@ export class MaintenanceService{
 			.set('identifier', identifier === undefined || identifier === null ? '' : identifier);
 
 		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveRefCode', {params});
+	}
+
+	getMtnOtherCharges(){
+		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnCharges');
 	}
 	
 }
