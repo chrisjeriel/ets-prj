@@ -329,7 +329,7 @@ import { SecurityModulesComponent } from './security/modules-maintenance/securit
 import { ModuleTransactionsComponent } from './security/modules-maintenance/module-transactions/module-transactions.component';
 import { CancelButtonComponent } from './_components/common/cancel-button/cancel-button.component';
 import { MtnUsersComponent } from './maintenance/mtn-users/mtn-users.component';
-import { NgxMaskModule } from 'ngx-mask';
+import { NgxMaskModule } from 'ngx-mask'
 import { MtnReasonComponent } from './maintenance/mtn-reason/mtn-reason.component';
 import { PrintModalComponent } from './_components/common/print-modal/print-modal.component';
 import { MtnReportsParamsComponent } from './maintenance/mtn-reports-params/mtn-reports-params.component';
