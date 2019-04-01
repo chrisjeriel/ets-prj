@@ -116,6 +116,7 @@ import { UserGroupsMaintenanceComponent } from './security/users-maintenance/use
 import { UsersComponent } from './security/users-maintenance/users/users.component';
 import { UsersMaintenanceComponent } from './security/users-maintenance/users-maintenance.component';
 import { ModulesMaintenanceComponent } from './security/modules-maintenance/modules-maintenance.component';
+import { PolicyInformationComponent } from './underwriting/inquiry/policy-information/policy-information.component';
 
 const appRoutes: Routes = [
 
@@ -241,6 +242,7 @@ const appRoutes: Routes = [
     { path: 'users', component: UsersComponent },
     { path: 'users-maintenance', component: UsersMaintenanceComponent },
     { path: 'modules-maintenance', component: ModulesMaintenanceComponent },
+    { path: 'policy-information', component: PolicyInformationComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

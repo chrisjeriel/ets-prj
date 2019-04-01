@@ -333,6 +333,7 @@ import { NgxMaskModule } from 'ngx-mask';
 import { MtnReasonComponent } from './maintenance/mtn-reason/mtn-reason.component';
 import { PrintModalComponent } from './_components/common/print-modal/print-modal.component';
 import { MtnReportsParamsComponent } from './maintenance/mtn-reports-params/mtn-reports-params.component';
+import { PolicyInformationComponent } from './underwriting/inquiry/policy-information/policy-information.component';
 
 
 
@@ -675,6 +676,7 @@ import { MtnReportsParamsComponent } from './maintenance/mtn-reports-params/mtn-
         InwardPolicyBalancesComponent2,
         PrintModalComponent,
         MtnReportsParamsComponent,
+        PolicyInformationComponent,
     ],
 
     providers: [
