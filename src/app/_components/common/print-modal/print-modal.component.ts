@@ -35,6 +35,7 @@ export class PrintModalComponent implements OnInit {
   printCopies: any = null;
   reportId: any = null;
   wordingText: any = null;
+  requiredBool: boolean = false;
 
   ngOnInit() {
   }
@@ -78,6 +79,7 @@ tabSelectedReportController(event){
             $("#noOfCopies").css({"box-shadow": ""});
             $("#printerName").css({"box-shadow":""});
             $("#printerName").val("");
+            this.requiredBool = false;
             this.printName = null;
             this.printCopies = null;
          } else {
@@ -87,6 +89,7 @@ tabSelectedReportController(event){
             $("#noOfCopies").css({"box-shadow": ""});
             $("#printerName").css({"box-shadow":""});
             $("#printerName").val("");
+            this.requiredBool = true;
             this.printName = null;
             this.printCopies = null;
 

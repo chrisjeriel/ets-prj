@@ -1,8 +1,11 @@
 
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { QuotationService } from '../../../_services';
+import { QuotationService, UploadService } from '@app/_services';
 import { DummyInfo } from '../../../_models';
 import { ModalComponent } from '../../../_components/common/modal/modal.component';
+import {HttpClient, HttpParams, HttpRequest, HttpEvent, HttpEventType, HttpResponse} from '@angular/common/http';
+import { RequestOptions, Headers } from '@angular/http';
+import { Observable } from 'rxjs';
 
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 @Component({
@@ -142,7 +145,7 @@ export class DummyComponent implements OnInit {
         widths:[46]
     };
         
-    constructor(private quotationService: QuotationService, private modalService: NgbModal) { 
+    constructor(private quotationService: QuotationService, private modalService: NgbModal, private http: HttpClient, private upload: UploadService) { 
     }
 
     t: any = {
@@ -336,4 +339,35 @@ export class DummyComponent implements OnInit {
     testblur() {
         this.uuu = 'u ' + this.ttt;
     }
+
+    fileTest: any;
+    uploadTest(event){
+        this.uploadFile(event.target.files)
+    }
+
+    uploadFile(files: FileList) {
+        if (files.length == 0) {
+          console.log("No file selected!");
+          return
+
+        }
+        let file: File = files[0];
+
+        this.upload.uploadFile('http://localhost:8888/api/file-upload-service/', file)
+          .subscribe(
+            event => {
+              if (event.type == HttpEventType.UploadProgress) {
+                const percentDone = Math.round(100 * event.loaded / event.total);
+                console.log(`File is ${percentDone}% loaded.`);
+              } else if (event instanceof HttpResponse) {
+                console.log('File is completely loaded!');
+              }
+            },
+            (err) => {
+              console.log("Upload Error:", err);
+            }, () => {
+              console.log("Upload done");
+            }
+          )
+      }
 }

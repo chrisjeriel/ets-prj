@@ -29,7 +29,7 @@ export class ReadyForPrintingComponent implements OnInit {
   selectedOnOk: boolean;
   quoteNoCmp: any;
   quoteId: any;
-  printType: any = "SCREEN";
+  printType: any;
   selectedData:any;
   printName: any = null;
   printCopies: any = null;

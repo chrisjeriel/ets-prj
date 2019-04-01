@@ -22,7 +22,7 @@
 	<fieldset class="scheduler-border">
         <legend class="scheduler-border">Attached Files</legend>
         <div style="margin-top: 3px">
-            <app-cust-editable-non-datatable [passData]="attachmentData"></app-cust-editable-non-datatable>
+            <app-cust-editable-non-datatable [passData]="attachmentData" (uploadedFiles)="uploads($event)"></app-cust-editable-non-datatable>
         </div>
 	</fieldset>
 </div>

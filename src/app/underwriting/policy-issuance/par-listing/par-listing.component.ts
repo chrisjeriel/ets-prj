@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PARListing } from '@app/_models'
-import { UnderwritingService } from '../../../_services';
+import { UnderwritingService, NotesService } from '../../../_services';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
@@ -10,37 +10,41 @@ import { Router } from '@angular/router';
     styleUrls: ['./par-listing.component.css']
 })
 export class ParListingComponent implements OnInit {
+
     tableData: any[] = [];
     tHeader: any[] = [];
     dataTypes: any[] = [];
     filters: any[] = [];
     line: string = "";
-    constructor(private uwService: UnderwritingService, private titleService: Title, private router: Router) { }
-    passData: any = {
-        tHeader: [
-            "Line","Policy No", "Type Cession","Ceding Company", "Insured", "Risk", "Object", "Site", "Currency", "Sum Insured", "Premium" , "Issue Date", "Inception Date", "Expiry Date","Accounting Date","Status"
-        ],
+    slctd: string = "";
+    slctdArr: any[] = [];
+    polLine: string = "";
+    selectedPolicy: any = null;
+    policyNo: string = "";
+    policyId: any;
+    searchParams: any[] = [];
+    fetchedData: any;
 
+    constructor(private uwService: UnderwritingService, private titleService: Title, private router: Router, private ns: NotesService) { }
+    passDataListing: any = {
+        tHeader: [
+           "Policy No", "Type Cession","Ceding Company", "Insured", "Risk", "Object", "Site", "Currency", "Sum Insured", "Premium" , "Issue Date", "Inception Date", "Expiry Date","Accounting Date","Status"
+        ],
         resizable: [
-            false,false, false, true, true, true, true, true, false, true, true, false,
+            false, false, true, true, true, true, true, false, true, true, false,
             false, false, false, false
         ],
         dataTypes: [
-            "text","text", "text", "text", "text", "text", "text", "text",
+            "text", "text", "text", "text", "text", "text", "text",
             "text", "currency", "currency", "date", "date", "date", "date", "text"
         ],
-        tableData: this.uwService.getParListing(),
+        tableData: [],
         addFlag: true,
         editFlag: true,
         pageStatus: true,
         pagination: true,
         pageLength: 10,
         filters: [
-             {
-                key: 'line',
-                title: 'Line',
-                dataType: 'text'
-            },
             {
                 key: 'policyNo',
                 title: 'Policy No.',
@@ -79,7 +83,7 @@ export class ParListingComponent implements OnInit {
             {
                 key: 'currency',
                 title: 'Currency',
-                dataType: 'date'
+                dataType: 'text'
             },
             {
                 key: 'sumInsured',
@@ -117,54 +121,93 @@ export class ParListingComponent implements OnInit {
                 dataType: 'text'
             },
         ],
+        keys: ['policyNo','cessionDesc','cedComp','insured','risk','object','site','currency','sumInsured','premium','issueDate','inceptDate','expiryDate','accDate','status']
 
     }
 
     ngOnInit() {
         this.titleService.setTitle("Pol | Policy List");
-       /* this.tHeader.push("Policy No");
-        this.tHeader.push("Type of Cession");
-        this.tHeader.push("Line Class");
-        this.tHeader.push("Ceding Company");
-        this.tHeader.push("Principal");
-        this.tHeader.push("Contractor");
-        this.tHeader.push("Created By");
-
-        this.filters.push("Policy No");
-        this.filters.push("Status");
-        this.filters.push("Type of Cession");
-        this.filters.push("Line Class");
-        this.filters.push("Ceding Company");
-        this.filters.push("Principal");
-        this.filters.push("Contractor");
-        this.filters.push("Created By");
-
-        this.dataTypes.push("text");
-        this.dataTypes.push("text");
-        this.dataTypes.push("text");
-        this.dataTypes.push("text");
-        this.dataTypes.push("text");
-        this.dataTypes.push("text");
-        this.dataTypes.push("text");
-        this.dataTypes.push("text");
-
-        this.tableData = this.uwService.getParListing();*/
+        this.retrievePolListing();
     }
 
-    slctd: string = "";
-    slctdArr: any[] = [];
-    polLine: string = "";
+   retrievePolListing(){
+       this.uwService.getParListing(this.searchParams).subscribe(data => {
+          console.log(data)
+          var records = data['policyList'];
+          this.fetchedData = records;
+               for(let rec of records){
+                     if (rec.statusDesc === '1' || rec.statusDesc === '2') {
+                         this.passDataListing.tableData.push(
+                                                    {
+                                                        policyId: rec.policyId,
+                                                        policyNo: rec.policyNo,
+                                                        cessionDesc: rec.cessionDesc,
+                                                        cedComp: rec.cedingName, 
+                                                        insured: rec.intmName,
+                                                        risk: (rec.project == null) ? '' : rec.project.riskName,
+                                                        object: (rec.project == null) ? '' : rec.project.objectDesc,
+                                                        site: (rec.project == null) ? '' : rec.project.site,
+                                                        currency: rec.currencyCd,
+                                                        sumInsured: (rec.project.coverage == null) ? '' : rec.project.coverage.totalSi,
+                                                        premium: (rec.project.coverage == null) ? '' : rec.project.coverage.totalPrem,
+                                                        issueDate: this.ns.toDateTimeString(rec.issueDate),
+                                                        inceptDate: this.ns.toDateTimeString(rec.inceptDate),
+                                                        expiryDate: this.ns.toDateTimeString(rec.expiryDate),
+                                                        accDate: this.ns.toDateTimeString(rec.acctDate),
+                                                        status: rec.statusDesc
+                                                    }
+                                                );  
+                     }
+               }
+
+       });
+
+   }
+    //Method for DB query
+    searchQuery(searchParams){
+        this.searchParams = searchParams;
+        this.retrievePolListing();
+    }
 
     onRowDblClick(event) {
-        this.slctd = event.target.closest("tr").children[1].innerText;
-        this.slctdArr = this.slctd.split("-");
-        for (var i = 0; i < this.slctdArr.length; i++) {
-            this.polLine = this.slctdArr[0];
+
+        for (var i = 0; i < event.target.closest("tr").children.length; i++) {
+        this.uwService.rowData[i] = event.target.closest("tr").children[i].innerText;
         }
-/*        console.log(this.polLine);*/
+
+        this.line = this.uwService.rowData[0].split("-")[0];
+
         setTimeout(() => {
                this.router.navigate(['/policy-issuance', { line: this.polLine }], { skipLocationChange: true });
         },100); 
+    }
+
+    onClickAdd(event){
+        setTimeout(() => {
+               this.router.navigate(['/create-policy'],{ skipLocationChange: true });
+        },100); 
+    }
+
+    onClickEdit(event){
+        this.line = this.selectedPolicy.policyNo.split('-')[0];
+        this.policyNo = this.selectedPolicy.policyNo;
+        this.policyId = this.selectedPolicy.policyId;
+
+        if (this.selectedPolicy.status === '1'){
+             this.uwService.toPolInfo = [];
+             this.uwService.toPolInfo.push("edit", this.line);
+             setTimeout(() => {
+               this.router.navigate(['/policy-issuance', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId }], { skipLocationChange: true });
+             },100); 
+        } else {
+            console.log("status is in-forced!");
+        }
+
+    }
+
+    onRowClick(event){
+      this.selectedPolicy = event;
+      console.log(this.selectedPolicy);
     }
 
 }
