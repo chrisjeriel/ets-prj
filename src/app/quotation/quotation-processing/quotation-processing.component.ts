@@ -159,7 +159,8 @@ export class QuotationProcessingComponent implements OnInit {
         expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, addFlag: true, editFlag: true, copyFlag: false, pageStatus: true, pagination: true, pageID: 1,
         keys: ['quotationNo','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','insuredDesc','riskName','objectDesc','site','policyNo','currencyCd','issueDate','expiryDate','reqBy','createUser'],
         genericBtn1: 'Copy Quote Details',
-        genericBtn2: 'Internal Competition'
+        genericBtn2: 'Internal Competition',
+        exportFlag: true,
     }
 
     riskData: any = {
