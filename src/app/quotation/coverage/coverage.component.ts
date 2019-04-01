@@ -1,4 +1,4 @@
-import { Component, OnInit, Input,  ViewChild, Output } from '@angular/core';
+import { Component, OnInit, Input,  ViewChild, Output, EventEmitter } from '@angular/core';
 import { QuotationCoverageInfo, NotesReminders, MtnSectionCovers } from '../../_models';
 import { QuotationService, NotesService, MaintenanceService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
@@ -20,7 +20,7 @@ export class CoverageComponent implements OnInit {
   //tableDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @ViewChild(MtnSectionCoversComponent) secCoversLov: MtnSectionCoversComponent;
-
+  @Output() enblQuoteOpTab = new EventEmitter<any>();
   editedData: any[] = [];
   deletedData: any[] = [];
   //deletedEditedData: any[] = [];
@@ -318,6 +318,7 @@ export class CoverageComponent implements OnInit {
             this.initialData = [];
             this.editedData = [];
             this.deletedData =[];
+            this.enblQuoteOpTab.emit(true);
             //this.getCoverageInfo();
            }
       });
