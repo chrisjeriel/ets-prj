@@ -24,7 +24,7 @@
 		<div class="col-sm-6" style="padding-right: 2px">
 			<fieldset class="scheduler-border" style="margin: 12px 0px 8px 0px !important;">
 				<div style="padding-top: 9px;">
-					<app-cust-editable-non-datatable [passData]="passData" (newClick)="rowClick($event)" (clickLOV)="clickEndtLov($event)"></app-cust-editable-non-datatable>
+					<app-cust-editable-non-datatable #endtTable [passData]="passData" (newClick)="rowClick($event)" (clickLOV)="clickEndtLov($event)"></app-cust-editable-non-datatable>
 				</div>
 			</fieldset>
 		</div>
@@ -32,7 +32,8 @@
 			<fieldset class="scheduler-border">
 				<legend class="scheduler-border">Deductibles</legend>
 				<div style="padding-top: 5px;">
-					<app-cust-editable-non-datatable [passData]="deductiblesData" (clickLOV)="clickDedLov($event)"></app-cust-editable-non-datatable>
+					<app-cust-editable-non-datatable #dedTable [passData]="deductiblesData" (clickLOV)="clickDedLov($event)" 
+					(tableDataChange)="endtTable.indvSelect.deductibles = $event" ></app-cust-editable-non-datatable>
 				</div>
 			</fieldset>
 		</div>
@@ -43,12 +44,16 @@
 	<div class="form-group col-sm">
 		<div class="col-md-13 text-center">
 			<div class="cust-btn-container">
-				<button type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
-				<button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+				<button type="button" *ngIf="alteration" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
+				<button type="button" *ngIf="alteration" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
 			</div>
 		</div>
 	</div>
 </div>
 
-<app-mtn-endt-code id="endtLov" [line]="currentLine" (selectedData)="setEndt($event)" [lovCheckBox]="true"></app-mtn-endt-code>
+<app-mtn-endt-code [hide]="hideEndt" id="endtLov" [line]="currentLine" (selectedData)="setEndt($event)" [lovCheckBox]="true"></app-mtn-endt-code>
 <app-lov id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)" [lovCheckBox]="true"></app-lov>
+
+<app-sucess-dialog [icon]="dialogIcon" (onOk)="cancelFlag && dialogIcon == 'success'  ? this.cancel.onNo():null" [message]="dialogMsg"></app-sucess-dialog>
+<app-confirm-save (onYes)="save()"></app-confirm-save>
+<app-cancel-button (onYes)="save('cancel')" [url]="'/alt-policy-listing'" ></app-cancel-button>
