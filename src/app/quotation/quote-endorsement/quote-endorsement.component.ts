@@ -246,9 +246,17 @@ export class QuoteEndorsementComponent implements OnInit {
           this.endorsementOCData.magnifyingGlass = [];
           this.endorsementOCData.addFlag = false;
           this.endorsementOCData.deleteFlag = false;
+          this.endorsementOCData.checkFlag = false;
+          this.endorsementData.checkFlag = false;
           for(var count = 0; count < this.endorsementOCData.tHeader.length; count++){
             this.endorsementOCData.uneditable.push(true);
           }
+          for(var count = 0; count < this.deductiblesData.tHeader.length; count++){
+            this.deductiblesData.uneditable.push(true);
+          }
+          this.deductiblesData.addFlag = false;
+          this.deductiblesData.checkFlag = false;
+          this.deductiblesData.deleteFlag = false;
         }
         //neco end
         this.sub = this.route.params.subscribe(params => {
@@ -407,8 +415,13 @@ export class QuoteEndorsementComponent implements OnInit {
 
       this.quotationService.copyEndorsement(JSON.stringify(params)).subscribe((data: any) =>{
           console.log(data);
-          if(data.returnCode !== 0){
-              $('#confirmCopy > #modalBtn').trigger('click');
+          if(data.returnCode==-1){
+            this.dialogIcon = 'Success';
+            this.table.markAsPristine();
+            $('#quote-endorsment #successMdl > #modalBtn').trigger('click');
+          }else{
+            this.dialogIcon = 'error';
+            $('#quote-endorsment #successMdl > #modalBtn').trigger('click');
           }
       });
 
@@ -784,23 +797,6 @@ export class QuoteEndorsementComponent implements OnInit {
    setSelected(data){
       this.deductibleTable.markAsDirty();
       if(data.selector == "deductibles"){
-            // this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleTitle = data.data.deductibleTitle;
-            // this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleRt = data.data.deductibleRate;
-            // this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleAmt = data.data.deductibleAmt;
-            // this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleTxt = data.data.deductibleText;
-            // this.deductiblesData.tableData[this.deductiblesLOVRow].edited = true;
-            // this.deductiblesData.tableData.push(JSON.parse(JSON.stringify(this.deductiblesData.tableData[this.deductiblesLOVRow])));
-            // this.deductiblesData.tableData[this.deductiblesData.tableData.length - 1].deductibleCd = data.data.deductibleCd;
-            // this.deductiblesData.tableData[this.deductiblesLOVRow].deleted = true;
-
-            // this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleTitle = data.data[0].deductibleTitle;
-            // this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleRt = data.data[0].deductibleRate;
-            // this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleAmt = data.data[0].deductibleAmt;
-            // this.deductiblesData.tableData[this.deductiblesLOVRow].deductibleTxt = data.data[0].deductibleText;
-            // this.deductiblesData.tableData[this.deductiblesLOVRow].edited = true;
-            // this.deductiblesData.tableData.push(JSON.parse(JSON.stringify(this.deductiblesData.tableData[this.deductiblesLOVRow])));
-            // this.deductiblesData.tableData[this.deductiblesData.tableData.length - 1].deductibleCd = data.data[0].deductibleCd;
-            // this.deductiblesData.tableData[this.deductiblesLOVRow].deleted = true;
             this.deductiblesData.tableData = this.deductiblesData.tableData.filter(a=>a.showMG!=1);
             for(var i = 0; i<data.data.length;i++){
               this.deductiblesData.tableData.push(JSON.parse(JSON.stringify(this.deductiblesData.nData)));
@@ -835,7 +831,7 @@ export class QuoteEndorsementComponent implements OnInit {
             this.deductiblesData.disableAdd = true;
             this.deductiblesData.tableData = [];
         }
-        else if(data.deductiblesList.length == 0){
+        else if(data.deductiblesList.length == 0 && data.add){
             this.getDefaultDeductibles();
             this.deductiblesData.disableAdd = false;
         }
