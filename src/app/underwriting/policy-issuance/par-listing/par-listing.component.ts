@@ -96,9 +96,12 @@ export class ParListingComponent implements OnInit {
                 dataType: 'textspan'
             },
             {
-                key: 'premium',
+                keys: {
+                    from: 'totalPremLess',
+                    to: 'totalPremGrt'
+                },
                 title: 'Premium',
-                dataType: 'text'
+                dataType: 'textspan'
             },
             {
                  keys: {
@@ -266,7 +269,7 @@ export class ParListingComponent implements OnInit {
  isValidDate(obj) {
     var str = obj;
     var res = str.split("-");
-    
+
     var day = Number(res[0]),
         month = Number(res[1]),
         year = Number(res[2]);
