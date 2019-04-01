@@ -112,6 +112,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     failed: boolean = false;
     isDirty: boolean = false;
     selectAllFlag:boolean = false;
+    @Input() tabIndex: string[] = []; //0 - Tabbable | -1 - Untabbable
 
     refreshTable(initLoad?){
         if(initLoad === undefined){
