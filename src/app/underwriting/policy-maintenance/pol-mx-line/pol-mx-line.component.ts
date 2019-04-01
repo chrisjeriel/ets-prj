@@ -123,7 +123,7 @@ export class PolMxLineComponent implements OnInit {
 		for(var i = 0; this.passData.tableData.length > i; i++){
 			var rec = this.passData.tableData[i];
 			if(rec.lineCd === '' || rec.lineCd === null || rec.description === '' || rec.description === null){
-					//setTimeout(()=>{$('.globalLoading').css('display','none');});
+					setTimeout(()=>{$('.globalLoading').css('display','none');});
 					this.dialogIcon = 'error';
 					this.dialogMessage = 'Please complete all the required fields.';
 					$('app-sucess-dialog #modalBtn').trigger('click');
