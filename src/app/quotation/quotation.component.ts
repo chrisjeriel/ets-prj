@@ -213,5 +213,3 @@ export class QuotationComponent implements OnInit {
 
 }
 
-
-}

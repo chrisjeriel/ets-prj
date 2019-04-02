@@ -123,7 +123,8 @@ export class HoldCoverMonitoringListComponent implements OnInit {
         pageLength: 10,
         expireFilter: true, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: true, pagination: true, pageStatus: true,
         keys: ['holdCoverNo','status','cedingName','quotationNo','riskName',
-            'insuredDesc','periodFrom','periodTo','compRefHoldCovNo','reqBy','reqDate']
+            'insuredDesc','periodFrom','periodTo','compRefHoldCovNo','reqBy','reqDate'],
+        exportFlag: true
     }
 
     searchParams: any[] = [];
@@ -264,7 +265,9 @@ export class HoldCoverMonitoringListComponent implements OnInit {
        return (dt.getMonth()+1) + '-' + dt.getDate() + '-' + dt.getFullYear(); 
     }
 
-    print(){
+
+
+   /* print(){
         //do something
         $('#listHoldCoverList > #printModalBtn').trigger('click');
     }
@@ -368,5 +371,5 @@ export class HoldCoverMonitoringListComponent implements OnInit {
          }
       }
       return true;
-    }
+    }*/
 }
