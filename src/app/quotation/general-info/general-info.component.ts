@@ -274,6 +274,8 @@ export class GeneralInfoComponent implements OnInit {
 			    });
 			}
 
+		setTimeout(() => { $('.ng-dirty').removeClass('ng-dirty') },1000);
+
 		} else {
 			this.loading = false;
 			this.route.params.subscribe(params => {	
@@ -286,7 +288,7 @@ export class GeneralInfoComponent implements OnInit {
 				this.genInfoData.statusDesc 	= 'Requested';
 				this.genInfoData.issueDate		= this.ns.toDateTimeString(0);
 				this.genInfoData.reqDate		= this.ns.toDateTimeString(0);
-				this.genInfoData.preparedBy		= 'USER'; //JSON.parse(window.localStorage.currentUser).username;
+				this.genInfoData.preparedBy		= JSON.parse(window.localStorage.currentUser).username;
 				
 				var date = new Date();
 				var millis = date.setDate(date.getDate() + 30);
@@ -357,7 +359,10 @@ export class GeneralInfoComponent implements OnInit {
 		}
 		setTimeout(() => {
 		$("#firstFocus").focus();
+		$('.ng-dirty').removeClass('ng-dirty');
 		},1000);
+
+		
 	}
 
 
@@ -456,7 +461,7 @@ export class GeneralInfoComponent implements OnInit {
 
 
 	setCedingcompany(event){
-		this.genInfoData.cedingId = event.cedingId;
+		this.genInfoData.cedingId = this.pad(event.cedingId);
 		this.genInfoData.cedingName = event.cedingName;
 		this.ns.lovLoader(event.ev, 0);
 		this.focusBlur();
@@ -469,7 +474,7 @@ export class GeneralInfoComponent implements OnInit {
 	}
 
 	setReinsurer(event) {
-		this.genInfoData.reinsurerId = event.cedingId;
+		this.genInfoData.reinsurerId = this.pad(event.cedingId);
 		this.genInfoData.reinsurerName = event.cedingName;
 		this.ns.lovLoader(event.ev, 0);
 		this.focusBlur();
@@ -526,10 +531,10 @@ export class GeneralInfoComponent implements OnInit {
 					this.genInfoData.quoteSeqNo = parseInt(data['quotationNo'].split('-')[2]);
 					this.genInfoData.quoteRevNo = parseInt(data['quotationNo'].split('-')[3]);
 					if(this.quotationService.toGenInfo[0] === 'add') {
-						this.genInfoData.createUser = 'USER'; //JSON.parse(window.localStorage.currentUser).username;
+						this.genInfoData.createUser = JSON.parse(window.localStorage.currentUser).username;
 						this.genInfoData.createDate = this.ns.toDateTimeString(0);
 					}
-					this.genInfoData.updateUser = 'USER'; //JSON.parse(window.localStorage.currentUser).username;
+					this.genInfoData.updateUser = JSON.parse(window.localStorage.currentUser).username;
 					this.genInfoData.updateDate	= this.ns.toDateTimeString(0);
 
 					this.checkQuoteIdF(this.genInfoData.quoteId);
@@ -575,10 +580,11 @@ export class GeneralInfoComponent implements OnInit {
 	}
 
 	prepareParam() {
+		console.log(this.genInfoData.cedingId);
 		var saveQuoteGeneralInfoParam = {
 			"savingType"    : this.savingType,
 			"approvedBy"	: this.genInfoData.approvedBy,
-			"cedingId"		: String(this.genInfoData.cedingId).padStart(3, '0'),
+			"cedingId"		: this.genInfoData.cedingId,
 			"cessionId"		: this.genInfoData.cessionId,
 			"closingParag"	: this.genInfoData.closingParag.trim(),
 			"contractorId"	: this.genInfoData.contractorId,
@@ -618,7 +624,7 @@ export class GeneralInfoComponent implements OnInit {
 			"quoteRevNo"	: this.genInfoData.quoteRevNo,
 			"quoteSeqNo"	: this.genInfoData.quoteSeqNo,
 			"quoteYear"		: this.genInfoData.quoteYear,
-			"reinsurerId"	: this.genInfoData.reinsurerId == null || this.genInfoData.reinsurerId == '' ? '' : String(this.genInfoData.reinsurerId).padStart(3, '0'),
+			"reinsurerId"	: this.genInfoData.reinsurerId,
 			"reqBy"			: this.genInfoData.reqBy,
 			"reqDate"		: this.genInfoData.reqDate,
 			"reqMode"		: this.genInfoData.reqMode,
@@ -634,18 +640,18 @@ export class GeneralInfoComponent implements OnInit {
 		}
 
 		if(this.quotationService.toGenInfo[0] === 'edit') {
-			saveQuoteGeneralInfoParam.updateUser = 'USER'; //JSON.parse(window.localStorage.currentUser).username;
+			saveQuoteGeneralInfoParam.updateUser = JSON.parse(window.localStorage.currentUser).username;
 			saveQuoteGeneralInfoParam.updateDate = this.ns.toDateTimeString(0);
-			saveQuoteGeneralInfoParam.prjUpdateUser = 'USER'; //JSON.parse(window.localStorage.currentUser).username;
+			saveQuoteGeneralInfoParam.prjUpdateUser = JSON.parse(window.localStorage.currentUser).username;
 			saveQuoteGeneralInfoParam.prjUpdateDate = this.ns.toDateTimeString(0);
 		} else if (this.quotationService.toGenInfo[0] === 'add') {
-			saveQuoteGeneralInfoParam.createUser = 'USER'; //JSON.parse(window.localStorage.currentUser).username;
+			saveQuoteGeneralInfoParam.createUser = JSON.parse(window.localStorage.currentUser).username;
 			saveQuoteGeneralInfoParam.createDate = this.ns.toDateTimeString(0);
-			saveQuoteGeneralInfoParam.updateUser = 'USER'; //JSON.parse(window.localStorage.currentUser).username;
+			saveQuoteGeneralInfoParam.updateUser = JSON.parse(window.localStorage.currentUser).username;
 			saveQuoteGeneralInfoParam.updateDate = this.ns.toDateTimeString(0);
-			saveQuoteGeneralInfoParam.prjCreateUser = 'USER'; //JSON.parse(window.localStorage.currentUser).username;
+			saveQuoteGeneralInfoParam.prjCreateUser = JSON.parse(window.localStorage.currentUser).username;
 			saveQuoteGeneralInfoParam.prjCreateDate = this.ns.toDateTimeString(0);
-			saveQuoteGeneralInfoParam.prjUpdateUser = 'USER'; //JSON.parse(window.localStorage.currentUser).username;
+			saveQuoteGeneralInfoParam.prjUpdateUser = JSON.parse(window.localStorage.currentUser).username;
 			saveQuoteGeneralInfoParam.prjUpdateDate = this.ns.toDateTimeString(0);
 		}
 
@@ -755,9 +761,13 @@ export class GeneralInfoComponent implements OnInit {
   		var entries = Object.entries(obj);
 
 		for(var [key, val] of entries) {
+			if(key === 'reinsurerId') {
+				console.log(key);
+				console.log(val);
+			}
 			if((val === '' || val == null) && req.includes(key)){
 				return false;
-			}
+			}			
 		}
 
 		return true;
@@ -775,13 +785,17 @@ export class GeneralInfoComponent implements OnInit {
 
   	checkCode(ev, field) {
   		this.ns.lovLoader(ev, 1);
+  		$(ev.target).addClass('ng-dirty');
 
   		if(field === 'cedingCo') {
+  			this.genInfoData.cedingId = this.pad(this.genInfoData.cedingId);  		  			
+
   			this.cedingCoLov.checkCode(this.genInfoData.cedingId, ev);
-  		} else if(field === 'cedingCoNotMember') { 
+  		} else if(field === 'cedingCoNotMember') {
+  			this.genInfoData.reinsurerId = this.pad(this.genInfoData.reinsurerId);
+
   			this.cedingCoNotMemberLov.checkCode(this.genInfoData.reinsurerId, ev);
   		} else if(field === 'intermediary') {
-  			console.log('change' + this.genInfoData.intmId);
   			this.intermediaryLov.checkCode(this.genInfoData.intmId, ev);
   		} else if(field === 'principal') {
   			this.insuredLovs['first'].checkCode(this.genInfoData.principalId, '#principalLOV', ev);
@@ -804,12 +818,12 @@ export class GeneralInfoComponent implements OnInit {
 		this.cancelBtn.clickCancel();
 	}
 
-	test() {
-		if(this.genInfoData.intmId != 0){
-			this.genInfoData.intmId = String(this.genInfoData.intmId).padStart(3, '0');	
-		} else {
-			this.genInfoData.intmId = '';
+	pad(str) {
+		if(str === '' || str == null){
+			return '';
 		}
+		
+		return String(str).padStart(3, '0');
 	}
 
 	showUsersLOV() {
@@ -860,6 +874,10 @@ export class GeneralInfoComponent implements OnInit {
 			}
 			console.log(data);
 		})
+	}
+
+	cbToggle(ev) {
+		$(ev.target).addClass('ng-dirty');
 	}
 
 }

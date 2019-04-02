@@ -7,7 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { DummyInfo } from '../../../_models';
 import { FormsModule }   from '@angular/forms';
-import { NotesService } from '@app/_services';
+import { NotesService, UploadService } from '@app/_services';
 
 @Component({
     selector: 'app-cust-editable-non-datatable',
@@ -18,6 +18,7 @@ import { NotesService } from '@app/_services';
 export class CustEditableNonDatatableComponent implements OnInit {
     @ViewChild("deleteModal") deleteModal:ModalComponent;
     @ViewChild('myForm') form:any;
+    @ViewChild('api') pagination: any;
     @Input() tableData: any[] = [];
     @Output() tableDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
     @Input() tHeader: any[] = [];
@@ -38,13 +39,13 @@ export class CustEditableNonDatatableComponent implements OnInit {
     @Input() checkboxFlag;
     @Input() columnId;
     @Input() pageLength = 10;
-
     @Output() rowClick: EventEmitter<any> = new EventEmitter();
     @Output() newClick: EventEmitter<any> = new EventEmitter();
     @Output() rowDblClick: EventEmitter<any> = new EventEmitter();
     @Output() add: EventEmitter<any> = new EventEmitter();
     @Output() edit: EventEmitter<any> = new EventEmitter();
     @Output() genericBtn : EventEmitter<any> = new EventEmitter();
+    @Output() uploadedFiles : EventEmitter<any> = new EventEmitter();
 
     @Input() passData: any = {
         tableData:[],
@@ -73,7 +74,8 @@ export class CustEditableNonDatatableComponent implements OnInit {
         widths: [],
         //use if you have different tables in 1 page
         pageID:1,
-        keys:[]
+        keys:[],
+        tabIndexes:[]
     };
     indvSelect: any;
     dataKeys: any[] = [];
@@ -103,7 +105,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     @Input() widths: string[] = [];
     unliFlag:boolean = false;
     @Output() clickLOV: EventEmitter<any> = new EventEmitter();
-    constructor(config: NgbDropdownConfig, public renderer: Renderer, private appComponent: AppComponent,private modalService: NgbModal,private ns: NotesService) { 
+    constructor(config: NgbDropdownConfig, public renderer: Renderer, private appComponent: AppComponent,private modalService: NgbModal,private ns: NotesService, private up: UploadService) { 
         config.placement = 'bottom-right';
         config.autoClose = false;
     }
@@ -112,6 +114,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     failed: boolean = false;
     isDirty: boolean = false;
     selectAllFlag:boolean = false;
+    @Input() tabIndex: string[] = []; //0 - Tabbable | -1 - Untabbable
 
     refreshTable(initLoad?){
         if(initLoad === undefined){
@@ -146,8 +149,10 @@ export class CustEditableNonDatatableComponent implements OnInit {
 
         if (this.passData.tableData.length > 0 && this.dataKeys.length == 0 && this.passData.keys === undefined) {
             this.dataKeys = Object.keys(this.passData.tableData[0]);
-        } else {
+        } else if(this.passData.keys !== undefined){
             this.dataKeys = this.passData.keys;
+        }else{
+            this.dataKeys = [];
         }
         if(this.passData.tableData.length != 0)
             this.loadingFlag = false;
@@ -162,13 +167,13 @@ export class CustEditableNonDatatableComponent implements OnInit {
         //   this.dataKeys.pop();
         // }
 
-       if(this.dataKeys.indexOf('edited') != -1){
+       if(this.dataKeys!==undefined && this.dataKeys.indexOf('edited') != -1){
          this.dataKeys.splice(this.dataKeys.indexOf('edited'),1);
        }
-       if(this.dataKeys.indexOf('checked') != -1){
+       if(this.dataKeys!==undefined && this.dataKeys.indexOf('checked') != -1){
          this.dataKeys.splice(this.dataKeys.indexOf('checked'),1);
        }
-       if(this.dataKeys.indexOf('deleted') != -1){
+       if(this.dataKeys!==undefined && this.dataKeys.indexOf('deleted') != -1){
          this.dataKeys.splice(this.dataKeys.indexOf('deleted'),1);
        }
 
@@ -209,6 +214,8 @@ export class CustEditableNonDatatableComponent implements OnInit {
         this.search(this.searchString);
         this.tableDataChange.emit(this.passData.tableData);
         this.add.next(event);
+
+        setTimeout(a=>{this.pagination.setCurrent(this.pagination.getLastPage())},0);
         this.form.control.markAsDirty();
     }
 
@@ -227,14 +234,21 @@ export class CustEditableNonDatatableComponent implements OnInit {
                this.selected[i].edited = true;
            }else {
                this.passData.tableData = this.passData.tableData.filter(a => a!= this.selected[i])
+               if(this.filesToUpload.length !== 0){
+                   this.filesToUpload = this.filesToUpload.filter(b => b[0].name != this.selected[i].fileName);
+               }
            }
+
         }
+        console.log(this.selected);
+        console.log(this.filesToUpload);
         this.selectAllFlag = false;
         this.form.control.markAsDirty();
         this.selected = [];
         this.refreshTable();
         this.search(this.searchString);
         this.tableDataChange.emit(this.passData.tableData);
+        this.uploadedFiles.emit(this.filesToUpload);
     }
     private onMouseDown(event){
         this.start = event.target;
@@ -492,11 +506,43 @@ export class CustEditableNonDatatableComponent implements OnInit {
         this.deleteModal.closeModal()
     }
 
+    //upload
+    filesToUpload: any[] = [];
     upload(data,event){
         data.fileName=event.target.files[0].name;
         data.edited=true;
         this.form.control.markAsDirty();
+        this.filesToUpload.push(event.target.files);
+        console.log(this.filesToUpload);
+        this.uploadedFiles.emit(this.filesToUpload);
     }
+
+    //download
+    download(file){
+        console.log(file);
+        /*this.up.downloadFile(file).subscribe((data: any)=>{
+           var newBlob = new Blob([data], { type: "application/pdf" });
+           var downloadURL = window.URL.createObjectURL(data);
+           console.log(downloadURL);
+           window.open(downloadURL);
+        },
+        error =>{
+            console.log(error);
+        });*/
+        let url = this.up.downloadFile(file);
+        //window.open(url);
+        var link = document.createElement('a');
+        link.href = url;
+        link.download = file;
+        link.click();
+    }
+
+    /*downloadFile(data) {
+        console.log("here");
+      const blob = new Blob([data], { type: 'application/text' });
+      const url= window.URL.createObjectURL(data);
+      window.open(url);
+    }*/
 
     markAsPristine(){
         this.form.control.markAsPristine();

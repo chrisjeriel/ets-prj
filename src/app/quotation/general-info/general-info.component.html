@@ -52,22 +52,22 @@
 									</div>
 									<div class="input-group ig-cust">
 										<label tabindex="-1" class="form-control-sm col-sm-2">Ceding Company</label>
-										<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [ngModel]="genInfoData.cedingId | number:'3.0' | slice:0:4" (ngModelChange)="genInfoData.cedingId=$event" (change)="checkCode($event,'cedingCo')" appRequired>
+										<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="genInfoData.cedingId" (change)="checkCode($event,'cedingCo')" mask="999" appRequired>
 										<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showCedingCompanyLOV()"></i></a></div>
 										<span [class.d-none]="inquiryFlag">&nbsp;</span>
 										<input type="text" class="form-control form-control-sm col-sm ig-mrgn" tabindex="-1" [(ngModel)]="genInfoData.cedingName" style="margin-left: 5px;" readonly>
 									</div>
 									<div *ngIf="genInfoData.cessionDesc.toUpperCase() === 'RETROCESSION'" class="input-group ig-cust">
 										<label tabindex="-1" class="form-control-sm col-sm-2">Reinsurance From</label>
-										<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [ngModel]="genInfoData.reinsurerId | number:'3.0'" (ngModelChange)="genInfoData.reinsurerId=$event" (change)="checkCode($event,'cedingCoNotMember')" appRequired>
+										<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="genInfoData.reinsurerId" (change)="checkCode($event,'cedingCoNotMember')" mask="999" appRequired>
 										<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showCedingCompanyNotMemberLOV()"></i></a></div>
 										<span [class.d-none]="inquiryFlag">&nbsp;</span>
 										<input type="text" [(ngModel)]="genInfoData.reinsurerName" class="form-control form-control-sm col-sm ig-mrgn" style="margin-left: 5px;" readonly>
 									</div>
 									<div class="input-group">
 										<label tabindex="-1" class="form-control-sm col-sm-2">Intermediary</label>
-										<!-- <input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="genInfoData.intmId" (blur)="test()" (change)="checkCode($event,'intermediary')" mask="999"> -->
-										<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2" [ngModel]="genInfoData.intmId | number:'3.0'" (ngModelChange)="genInfoData.intmId=$event" (change)="checkCode($event,'intermediary')">
+										<input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="genInfoData.intmId" (blur)="genInfoData.intmId=pad(genInfoData.intmId)" (change)="checkCode($event,'intermediary')" mask="999">
+										<!-- <input [readonly]="inquiryFlag" type="text" class="form-control form-control-sm col-sm-2" [ngModel]="genInfoData.intmId | number:'3.0'" (ngModelChange)="genInfoData.intmId=$event" (change)="checkCode($event,'intermediary')"> -->
 										<div class="text-search-ico" [class.d-none]="inquiryFlag"><a><i class="fa fa-search" (click)="showIntLOV()"></i></a></div>
 										<span [class.d-none]="inquiryFlag">&nbsp;</span>
 										<input type="text" class="form-control form-control-sm col-sm ig-mrgn" tabindex="-1" [(ngModel)]="genInfoData.intmName" style="margin-left: 5px;" readonly>
@@ -162,7 +162,7 @@
 						<div class="form-group col-sm-6 offsetFormGroup">
 							<div class="input-group">
 								<label tabindex="-1" class="form-control-sm col-sm-4">Exch. Rt.</label>
-								<input tabindex="-1" type="text" class="form-control form-control-sm req" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="genInfoData.currencyRt" required appCurrencyRate readonly>
+								<input tabindex="-1" type="text" class="form-control form-control-sm req" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="genInfoData.currencyRt" required appCurrencyRate [readonly]="inquiryFlag || genInfoData.currencyCd === 'PHP' || genInfoData.currencyCd === ''">
 								<span>&nbsp;</span>
 							</div>
 						</div>
@@ -178,21 +178,21 @@
 						<div class="form-group col-sm-6">
 							<div class="input-group">
 								<div class="input-group-prepend">
-									<div class="input-group-text">
-										<input tabindex="-1" [disabled]="inquiryFlag" type="checkbox" [checked]="genInfoData.govtTag === 'Y'" (change)="genInfoData.govtTag = (genInfoData.govtTag === 'Y') ? 'N' : 'Y'">
+									<div class="input-group-text white-bg">
+										<input tabindex="-1" [disabled]="inquiryFlag" type="checkbox" [checked]="genInfoData.govtTag === 'Y'" (change)="genInfoData.govtTag = (genInfoData.govtTag === 'Y') ? 'N' : 'Y'; cbToggle($event);">
 									</div>
 								</div>
-								<input tabindex="-1" type="text" style="font-size: 11px !important;" value="Government" disabled class="form-control form-control-sm">
+								<input tabindex="-1" type="text" style="font-size: 11px !important;" value="Government" disabled class="form-control form-control-sm white-bg">
 							</div>
 						</div>
 						<div class="col-sm-6">
 							<div class="input-group">
 								<div class="input-group-prepend">
-									<div class="input-group-text">										
-										<input tabindex="-1" [disabled]="inquiryFlag" type="checkbox" [checked]="genInfoData.indicativeTag === 'Y'" (change)="genInfoData.indicativeTag = (genInfoData.indicativeTag === 'Y') ? 'N' : 'Y'">
+									<div class="input-group-text white-bg">										
+										<input tabindex="-1" [disabled]="inquiryFlag" type="checkbox" [checked]="genInfoData.indicativeTag === 'Y'" (change)="genInfoData.indicativeTag = (genInfoData.indicativeTag === 'Y') ? 'N' : 'Y'; cbToggle($event);">
 									</div>
 								</div>
-								<input tabindex="-1" type="text" style="font-size: 11px !important;" value="Indicative" disabled class="form-control form-control-sm">
+								<input tabindex="-1" type="text" style="font-size: 11px !important;" value="Indicative" disabled class="form-control form-control-sm white-bg">
 							</div>
 						</div>
 					</div>
@@ -200,21 +200,21 @@
 						<div class="form-group col-sm-6">
 							<div class="input-group">
 								<div class="input-group-prepend">
-									<div class="input-group-text">
-										<input tabindex="-1" [disabled]="inquiryFlag || (line !== 'CAR' && line !== 'EAR')" type="checkbox" [checked]="genInfoData.openCoverTag === 'Y'" (change)="genInfoData.openCoverTag = (genInfoData.openCoverTag === 'Y') ? 'N' : 'Y'">
+									<div class="input-group-text white-bg">
+										<input tabindex="-1" [disabled]="inquiryFlag || (line !== 'CAR' && line !== 'EAR')" type="checkbox" [checked]="genInfoData.openCoverTag === 'Y'" (change)="genInfoData.openCoverTag = (genInfoData.openCoverTag === 'Y') ? 'N' : 'Y'; cbToggle($event);">
 									</div>
 								</div>
-								<input tabindex="-1" type="text" style="font-size: 11px !important;" value="Open Cover" disabled class="form-control form-control-sm">
+								<input tabindex="-1" type="text" style="font-size: 11px !important;" value="Open Cover" disabled class="form-control form-control-sm white-bg">
 							</div>
 						</div>
 						<div class="col-sm-6">
 							<div class="input-group">
 								<div class="input-group-prepend">
-									<div class="input-group-text">
-										<input tabindex="-1" [disabled]="inquiryFlag" type="checkbox" [checked]="genInfoData.declarationTag === 'Y'" (change)="genInfoData.declarationTag = (genInfoData.declarationTag === 'Y') ? 'N' : 'Y'">
+									<div class="input-group-text white-bg">
+										<input tabindex="-1" [disabled]="inquiryFlag" type="checkbox" [checked]="genInfoData.declarationTag === 'Y'" (change)="genInfoData.declarationTag = (genInfoData.declarationTag === 'Y') ? 'N' : 'Y'; cbToggle($event);">
 									</div>
 								</div>
-								<input tabindex="-1" type="text" style="font-size: 11px !important;" value="Declaration" disabled class="form-control form-control-sm">
+								<input tabindex="-1" type="text" style="font-size: 11px !important;" value="Declaration" disabled class="form-control form-control-sm white-bg">
 							</div>
 						</div>
 					</div>
@@ -797,11 +797,11 @@
 					<div class="form-row" style="margin-bottom: -16px; margin-top: -10px;">
 						<div class="form-group col-sm-3">
 							<label tabindex="-1" class="form-control-sm top-label">% Share</label>
-							<input tabindex="-1" type="text" class="form-control form-control-sm cust-sm text-right" readonly [(ngModel)]="project.pctShare">
+							<input tabindex="-1" type="text" class="form-control form-control-sm cust-sm text-right" [readonly]="inquiryFlag" [(ngModel)]="project.pctShare">
 						</div>
 						<div class="form-group col-sm" style="margin-left: -6px !important;">
 							<label tabindex="-1" class="form-control-sm top-label">100% Value</label>
-							<input tabindex="-1" type="text" class="form-control form-control-sm cust-sm text-right" readonly [ngModel]="project.totalValue | number:'1.2-2'">
+							<input tabindex="-1" type="text" class="form-control form-control-sm cust-sm text-right" [readonly]="inquiryFlag" [(ngModel)]="project.totalValue" mask="separator">
 						</div>
 					</div>
 				</div>
@@ -865,7 +865,7 @@
 		<div class="col-md-13 text-center">
 			<div class="cust-btn-container" style="margin-top: 10px !important;">
 				<button [class.d-none]="inquiryFlag" type="button" (click)="cancel();" class="cust-btn"><a>Cancel</a></button>
-				<button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="onClickSave();"><a>Save</a></button>
+				<button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="onClickSave();"><a>Save</a></button>				
 			</div>
 		</div>
 	</div>

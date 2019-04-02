@@ -79,12 +79,11 @@ export class UnderwritingService {
     }
 
     getCoInsurance() {
-        this.coInsuranceData = [
-            new PolicyCoInsurance("CAR-2018-000001-099-0001-000", "EN-CAR-2018-0000001-00", "Malayan", 12.2, 10000, 500000),
-            new PolicyCoInsurance("CAR-2018-000001-099-0001-000", "EN-CAR-2018-0000001-00", "Company 1", 6.23, 20000, 600000),
-            new PolicyCoInsurance("CAR-2018-000001-099-0001-000", "EN-CAR-2018-0000001-00", "Company 2", 15.16, 30000, 700000),
-        ];
-        return this.coInsuranceData;
+        const params = new HttpParams()
+             .set('policyId','')
+             .set('policyNo','')
+             
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolCoInsurance',{params});
     }
 
     getUWCoverageInfo() {
@@ -135,7 +134,6 @@ export class UnderwritingService {
         return 100;
     }
 
-
     getParListing(searchParams: any []) {
   /*      this.parListingData = [
             new PARListing("CAR-2018-000002-099-0001-000", "Direct","Malayan", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date("02-09-2018"), new Date("02-09-2018"), new Date("02-28-2018"), new Date(), "In Progress"),
@@ -151,7 +149,6 @@ export class UnderwritingService {
             new PARListing("BVP-2018-000002-093-0001-000", "Direct","Malayan", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date(), new Date(), new Date(), new Date(), "In Progress"),
             new PARListing("MLP-2018-000002-094-0001-000", "Direct","Malayan", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date(), new Date(), new Date(), new Date(), "In Progress"),
             new PARListing("DOS-2018-000002-095-0001-000", "Direct","Malayan", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date(), new Date(), new Date(), new Date(), "In Progress"),
-           
         ];
         return this.parListingData;*/
         var params;
@@ -262,40 +259,43 @@ export class UnderwritingService {
         return this.aLOPItemInfos;
     }
 
-    getPolicyInquiry() {
-        this.policyInquiry = [
-          new UnderwritingPolicyInquiryInfo("CAR", "CAR-2018-000001-099-0001-000", "Direct", "Malayan", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna, Calamba", "PHP", 10000000, 131000,  new Date("02-09-2018"), new Date("02-09-2018"), new Date("02-09-2018"), new Date("02-28-2019"),"In Progress"),
-          new UnderwritingPolicyInquiryInfo("CAR", "CAR-2018-000001-098-0001-000", "Direct", "FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna, Calamba", "PHP", 1080000, 131000,  new Date("03-09-2018"), new Date("03-09-2018"), new Date("03-09-2018"), new Date("03-30-2019"),"Issued"),
-          new UnderwritingPolicyInquiryInfo("EAR", "EAR-2018-000001-097-0001-000", "Direct", "FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna, Calamba", "PHP", 8090000, 131000,  new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-30-2019"),"In-Forced"),
-          new UnderwritingPolicyInquiryInfo("EEI", "EEI-2018-000001-096-0001-000", "Direct", "FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna, Calamba", "PHP", 8090000, 131000,  new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-30-2019"),"In-Forced"),
-          new UnderwritingPolicyInquiryInfo("MBI", "MBI-2018-000001-095-0001-000", "Direct", "FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna, Calamba", "PHP", 8090000, 131000,  new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-30-2019"),"Spolied"),
-          new UnderwritingPolicyInquiryInfo("MLP", "MLP-2018-000001-094-0001-000", "Direct", "FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna, Calamba", "PHP", 8090000, 131000,  new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-30-2019"),"Expired"),
-          new UnderwritingPolicyInquiryInfo("DOS", "DOS-2018-000001-093-0001-000", "Direct", "FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna, Calamba", "PHP", 8090000, 131000,  new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-30-2019"),"Cancelled"),
-          new UnderwritingPolicyInquiryInfo("CAR","CAR-2018-000002-092-0003-000", "Direct","FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",8090000,131000, new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-30-2018"), "In-Force"),
-          new UnderwritingPolicyInquiryInfo("CAR","CAR-2018-000002-091-0004-000", "Direct","FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",9000000,131000, new Date("05-09-2018"), new Date("05-09-2018"), new Date("05-09-2018"), new Date("05-30-2018"), "In-Force"),
-          new UnderwritingPolicyInquiryInfo("CAR","CAR-2018-000002-090-0005-000", "Direct","FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date("06-09-2018"), new Date("06-09-2018"), new Date("06-09-2018"), new Date("06-30-2018"), "Spoiled"),
-          new UnderwritingPolicyInquiryInfo("CAR","CAR-2018-000002-089-0006-000", "Direct","FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date("07-09-2018"), new Date("07-09-2018"), new Date("07-09-2018"), new Date("07-30-2018"), "Cancelled"),
-          new UnderwritingPolicyInquiryInfo("CAR","CAR-2018-000002-088-0007-000", "Direct","FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",1080000,131000, new Date("08-09-2018"), new Date("08-09-2018"), new Date("08-09-2018"), new Date("08-30-2018"), "In-force"),
+    getPolicyInquiry(params?) {
+        // this.policyInquiry = [
+        //   new UnderwritingPolicyInquiryInfo("CAR", "CAR-2018-000001-099-0001-000", "Direct", "Malayan", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna, Calamba", "PHP", 10000000, 131000,  new Date("02-09-2018"), new Date("02-09-2018"), new Date("02-09-2018"), new Date("02-28-2019"),"In Progress"),
+        //   new UnderwritingPolicyInquiryInfo("CAR", "CAR-2018-000001-098-0001-000", "Direct", "FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna, Calamba", "PHP", 1080000, 131000,  new Date("03-09-2018"), new Date("03-09-2018"), new Date("03-09-2018"), new Date("03-30-2019"),"Issued"),
+        //   new UnderwritingPolicyInquiryInfo("EAR", "EAR-2018-000001-097-0001-000", "Direct", "FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna, Calamba", "PHP", 8090000, 131000,  new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-30-2019"),"In-Forced"),
+        //   new UnderwritingPolicyInquiryInfo("EEI", "EEI-2018-000001-096-0001-000", "Direct", "FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna, Calamba", "PHP", 8090000, 131000,  new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-30-2019"),"In-Forced"),
+        //   new UnderwritingPolicyInquiryInfo("MBI", "MBI-2018-000001-095-0001-000", "Direct", "FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna, Calamba", "PHP", 8090000, 131000,  new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-30-2019"),"Spolied"),
+        //   new UnderwritingPolicyInquiryInfo("MLP", "MLP-2018-000001-094-0001-000", "Direct", "FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna, Calamba", "PHP", 8090000, 131000,  new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-30-2019"),"Expired"),
+        //   new UnderwritingPolicyInquiryInfo("DOS", "DOS-2018-000001-093-0001-000", "Direct", "FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna, Calamba", "PHP", 8090000, 131000,  new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-30-2019"),"Cancelled"),
+        //   new UnderwritingPolicyInquiryInfo("CAR","CAR-2018-000002-092-0003-000", "Direct","FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",8090000,131000, new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-30-2018"), "In-Force"),
+        //   new UnderwritingPolicyInquiryInfo("CAR","CAR-2018-000002-091-0004-000", "Direct","FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",9000000,131000, new Date("05-09-2018"), new Date("05-09-2018"), new Date("05-09-2018"), new Date("05-30-2018"), "In-Force"),
+        //   new UnderwritingPolicyInquiryInfo("CAR","CAR-2018-000002-090-0005-000", "Direct","FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date("06-09-2018"), new Date("06-09-2018"), new Date("06-09-2018"), new Date("06-30-2018"), "Spoiled"),
+        //   new UnderwritingPolicyInquiryInfo("CAR","CAR-2018-000002-089-0006-000", "Direct","FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date("07-09-2018"), new Date("07-09-2018"), new Date("07-09-2018"), new Date("07-30-2018"), "Cancelled"),
+        //   new UnderwritingPolicyInquiryInfo("CAR","CAR-2018-000002-088-0007-000", "Direct","FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",1080000,131000, new Date("08-09-2018"), new Date("08-09-2018"), new Date("08-09-2018"), new Date("08-30-2018"), "In-force"),
 
-        ];
-        return this.policyInquiry;
+        // ];
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolicyListing');
     }
 
-    getItemInfoData() {
-        this.itemInfoData = [
+    getItemInfoData(policyNo?, policyId?) {
+        /*this.itemInfoData = [
             new ItemInformation(1001, "Description for item number 1"),
             new ItemInformation(1002, "Description for item number 2"),
             new ItemInformation(1003, "Description for item number 3")
-        ];
-        return this.itemInfoData;
+        ];*/
+         const params = new HttpParams()
+             .set('policyNo', (policyNo === null || policyNo === undefined ? '' : policyNo) )
+             .set('policyId',(policyId === null || policyId === undefined ? '' : policyId) )
+        return this.http.get(environment.prodApiUrl + "/underwriting-service/retrievePolItem",{params});;
     }
 
 
-    getPolicyEndorsement() {
-        this.policyEndorsement = [
-            new PolicyEndorsement("", "code 101", "title", "remarks"),
-        ]
-        return this.policyEndorsement;
+    getPolicyEndorsement(policyId: string, policyNo: string) {
+        const params = new HttpParams()
+             .set('policyId', (policyId === null || policyId === undefined ? '' : policyId) )
+             .set('policyNo',(policyNo === null || policyNo === undefined ? '' : policyNo) )
+        return this.http.get(environment.prodApiUrl + "/underwriting-service/retrievePolEndt",{params}) ;
     }
 
     getPolicyDistListInfo() {
@@ -332,21 +332,21 @@ export class UnderwritingService {
     }
 
 
-    getInwardPolBalance() {
-        this.policyInwardPolicy = [
-            new PolicyInwardPolBalance("1", "02/01/2019", "01/01/2019", "25000", "25000", "50000"),
-            new PolicyInwardPolBalance("2", "02/25/2019", "01/15/2019", "15000", "15000", "30000"),
-        ];
-        return this.policyInwardPolicy;
+
+    getInwardPolBalance(policyId?) {
+         let params:any = {
+             policyId : policyId
+         }
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolInwardBal',{params});
     }
 
-    getInwardPolBalanceOtherCharges() {
-        this.polInwardBalOtherCharges = [
-            new PolInwardPolBalanceOtherCharges("101", "Description 101", "20000"),
-            new PolInwardPolBalanceOtherCharges("102", "Description 102", "800000"),
-        ];
-        return this.polInwardBalOtherCharges;
-    }
+    // getInwardPolBalanceOtherCharges() {
+    //     this.polInwardBalOtherCharges = [
+    //         new PolInwardPolBalanceOtherCharges("101", "Description 101", "20000"),
+    //         new PolInwardPolBalanceOtherCharges("102", "Description 102", "800000"),
+    //     ];
+    //     return this.polInwardBalOtherCharges;
+    // }
 
 
     getPolItemMLPData() {
@@ -522,6 +522,81 @@ export class UnderwritingService {
             })
         };
         return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolAttachment', JSON.stringify(params), header);
+    }
+
+    savePolHoldCover(holdCoverParams: any){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolHoldCover', JSON.stringify(holdCoverParams), header);
+    }
+
+    saveInwardPolBal(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolInwardBal', JSON.stringify(params), header);
+    }
+
+    getCATPeril(policyNo:any , policyId: string) {
+         const params = new HttpParams()
+             .set('policyNo', (policyNo === null || policyNo === undefined ? '' : policyNo) )
+             .set('policyId',(policyId === null || policyId === undefined ? '' : policyId) )
+        return  this.http.get(environment.prodApiUrl + "/underwriting-service/retrievePolCATPeril",{params});
+    }
+
+    savePolCoverage(coverageData:any){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolCoverage', JSON.stringify(coverageData), header);
+    }
+
+    savePolEndt(params){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolEndorsement', JSON.stringify(params), header);
+    }
+
+    saveCatPeril(catPeriLData:any){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolCATPeril', JSON.stringify(catPeriLData), header);
+    }
+
+    getPolicyInformation(policyId,policyNo?){
+        const params = new HttpParams()
+            .set('policyId',policyId===undefined?'':policyId)
+            .set('policyNo',policyNo===undefined?'':policyNo);
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolicyInformation',{params})
+    }
+
+    retrievePolHoldCover(policyId: string, policyNo: string){
+        const params = new HttpParams()
+            .set('policyId',policyId === undefined || policyId === null || policyId === '' ? '' : policyId)
+            .set('policyNo',policyNo === undefined || policyNo === null || policyNo === '' ? '' : policyNo);
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolHoldCover',{params});
+    }
+
+    saveItem(itemData:any){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolItem', JSON.stringify(itemData), header);
     }
 
 }            

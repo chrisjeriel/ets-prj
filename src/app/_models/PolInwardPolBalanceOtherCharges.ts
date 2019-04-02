@@ -1,9 +1,9 @@
 export class PolInwardPolBalanceOtherCharges {
-    code: string;
+    code: number;
     chargeDescription: string;
-    amount: string;
+    amount: number;
 
-    constructor(code: string, chargeDescription: string, amount: string) {
+    constructor(code: number, chargeDescription: string, amount: number) {
         this.code = code;
         this.chargeDescription = chargeDescription;
         this.amount = amount;

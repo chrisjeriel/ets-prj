@@ -62,3 +62,7 @@ h4 {
 .input-group-prepend {
 	height: calc(1.3rem + 1px) !important;
 }
+
+.white-bg {
+	background: white !important;
+}

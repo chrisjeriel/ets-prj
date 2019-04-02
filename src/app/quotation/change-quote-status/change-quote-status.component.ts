@@ -71,6 +71,15 @@ export class ChangeQuoteStatusComponent implements OnInit {
       keys: ['quotationNo','cessionDesc','cedingName','insuredDesc','riskName']
     };
 
+    searchParams: any = {
+        riskName:null,
+        riskCd: null,
+        cedingName: null,
+        cedingId: null,
+        typeOfCession: null,
+        typeOfCessionId: null
+    }
+    
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, config: NgbDropdownConfig, private ns: NotesService, private maintenanceService: MaintenanceService) {
         config.placement = 'bottom-right';
         config.autoClose = false;
@@ -78,15 +87,15 @@ export class ChangeQuoteStatusComponent implements OnInit {
 
     ngOnInit() {
         this.titleService.setTitle("Quo | Change Quote Status");
-        //setTimeout(function () { $('#modalBtn').trigger('click'); }, 100);        
+        setTimeout(() => {$('#searchQuote > #modalBtn').trigger('click') }, 0);        
         this.first = true;
-        //this.query();
-        this.getChangeQuote();
+        
+        //this.getChangeQuote();
         
     }
 
     getChangeQuote(){
-        this.quotationService.getQuoProcessingData([]).subscribe((data:any) => {
+        this.quotationService.getQuoProcessingData(this.searchParams).subscribe((data:any) => {
             this.records = data.quotationList;
             console.log(this.records)
             for(let rec of this.records){
@@ -280,7 +289,8 @@ export class ChangeQuoteStatusComponent implements OnInit {
         }
     }
 
-    setTypeOfCession(data) {        
+    setTypeOfCession(data) {     
+        console.log(data)   
         this.typeOfCessionId = data.cessionId;
         this.typeOfCession = data.description;
         this.ns.lovLoader(data.ev, 0);
@@ -305,7 +315,6 @@ export class ChangeQuoteStatusComponent implements OnInit {
             this.maintenanceService.getMtnTypeOfCession(1).subscribe(data => {            
                 this.typeOfCessionId = data['cession'][0].cessionId;
                 this.typeOfCession = data['cession'][0].cessionAbbr;
-
                 this.first = false;
             });
         }
@@ -313,6 +322,15 @@ export class ChangeQuoteStatusComponent implements OnInit {
 
         $('#searchQuote > #modalBtn').trigger('click');
         setTimeout(function() { $(event).focus(); }, 0);        
+    }
+
+    emptyVar(){
+        this.riskCd = "";
+        this.riskName = "";
+        this.typeOfCessionId = "";
+        this.typeOfCession = "";
+        this.cedingId = "";
+        this.cedingName = "";
     }
 
 }

@@ -45,6 +45,7 @@ export class QuoteOptionComponent implements OnInit {
     optionsData: any = {
         tableData: [],
         tHeader: ['Option No', 'Rate(%)', 'Conditions', 'Comm Rate Quota(%)', 'Comm Rate Surplus(%)', 'Comm Rate Fac(%)'],
+        //tabIndexes: [false,true,false,true,true,true],
         dataTypes: ['number', 'percent', 'text', 'percent', 'percent', 'percent'],
         magnifyingGlass: ['conditions'],
         nData: {
@@ -55,7 +56,7 @@ export class QuoteOptionComponent implements OnInit {
             createDate: [2019, 2, 21, 0, 0, 0, 0],
             createUser: JSON.parse(window.localStorage.currentUser).username,
             deductibles: null,
-            deductiblesList: [],
+            // deductiblesList: [],
             endorsments: null,
             optionId: null,
             optionRt: 0,
@@ -239,9 +240,22 @@ export class QuoteOptionComponent implements OnInit {
               a.createDate = new Date().toISOString();
               a.updateDate = new Date().toISOString();
               a.rate = 0;
-              a.deductiblesList = [];
               a.updateUser = JSON.parse(window.localStorage.currentUser).username;
               a.createUser = JSON.parse(window.localStorage.currentUser).username;
+              this.uwService.getMaintenanceDeductibles(this.quotationNum.substring(0,3),'',
+                a.coverCd ,'0','Y','Y').subscribe((data)=>{
+                  a.deductiblesList = data['deductibles'].filter((b)=>{
+                    b.coverCd = a.coverCd;
+                    b.deductibleTxt = b.deductibleText;
+                    b.deductibleRt = b.deductibleRate;
+                    b.endtCd = 0;
+                    b.edited = true;
+                    b.createUser = JSON.parse(window.localStorage.currentUser).username;
+                    b.updateUser = JSON.parse(window.localStorage.currentUser).username;
+                    b.add = true;
+                    return true;
+                  })
+                })
               return true;
             });;
             this.optionsData.nData.otherRatesList = data.quotation.project.coverage.sectionCovers;
@@ -413,23 +427,7 @@ saveQuoteOptionAll(cancelFlag?){
        newQuoteOptionsList:[]
    }
 
-   for (var i = 0 ; this.optionsData.tableData.length > i; i++) {
-      if(this.optionsData.tableData[i].edited && !this.optionsData.tableData[i].deleted && this.optionsData.tableData[i].optionId !== null) {
-        params.saveQuoteOptionsList.push(this.optionsData.tableData[i]);
-        params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].updateUser = JSON.parse(window.localStorage.currentUser).username
-        params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].createDate = new Date(params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].createDate[0],params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].createDate[1]-1,params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].createDate[2]).toISOString();
-        params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].updateDate = new Date(params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].updateDate[0],params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].updateDate[1]-1,params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].updateDate[2]).toISOString();
-      } else if(this.optionsData.tableData[i].edited && this.optionsData.tableData[i].deleted && this.optionsData.tableData[i].optionId !== null){
-        params.deleteQuoteOptionsList.push(this.optionsData.tableData[i]);
-        params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].otherRatesList = [];
-        params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].createDate = new Date(params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].createDate[0],params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].createDate[1]-1,params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].createDate[2]).toISOString();
-        params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].updateDate = new Date(params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].updateDate[0],params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].updateDate[1]-1,params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].updateDate[2]).toISOString();
-      }else if(this.optionsData.tableData[i].edited && !this.optionsData.tableData[i].deleted && this.optionsData.tableData[i].optionId == null){
-        params.newQuoteOptionsList.push(this.optionsData.tableData[i]);
-        params.newQuoteOptionsList[params.newQuoteOptionsList.length-1].createDate = new Date(params.newQuoteOptionsList[params.newQuoteOptionsList.length-1].createDate[0],params.newQuoteOptionsList[params.newQuoteOptionsList.length-1].createDate[1]-1,params.newQuoteOptionsList[params.newQuoteOptionsList.length-1].createDate[2]).toISOString();
-        params.newQuoteOptionsList[params.newQuoteOptionsList.length-1].updateDate = new Date(params.newQuoteOptionsList[params.newQuoteOptionsList.length-1].updateDate[0],params.newQuoteOptionsList[params.newQuoteOptionsList.length-1].updateDate[1]-1,params.newQuoteOptionsList[params.newQuoteOptionsList.length-1].updateDate[2]).toISOString();
-      }
-    }
+   
 
    for(let rec of this.optionsData.tableData){
      if(rec.optionId !== null && !rec.deleted)
@@ -465,6 +463,34 @@ saveQuoteOptionAll(cancelFlag?){
           }
         }
    }
+
+   for (var i = 0 ; this.optionsData.tableData.length > i; i++) {
+      if(this.optionsData.tableData[i].edited && !this.optionsData.tableData[i].deleted && this.optionsData.tableData[i].optionId !== null) {
+        params.saveQuoteOptionsList.push(this.optionsData.tableData[i]);
+        params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].updateUser = JSON.parse(window.localStorage.currentUser).username
+        params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].createDate = new Date(params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].createDate[0],params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].createDate[1]-1,params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].createDate[2]).toISOString();
+        params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].updateDate = new Date(params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].updateDate[0],params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].updateDate[1]-1,params.saveQuoteOptionsList[params.saveQuoteOptionsList.length-1].updateDate[2]).toISOString();
+      } else if(this.optionsData.tableData[i].edited && this.optionsData.tableData[i].deleted && this.optionsData.tableData[i].optionId !== null){
+        params.deleteQuoteOptionsList.push(this.optionsData.tableData[i]);
+        params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].otherRatesList = [];
+        params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].createDate = new Date(params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].createDate[0],params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].createDate[1]-1,params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].createDate[2]).toISOString();
+        params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].updateDate = new Date(params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].updateDate[0],params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].updateDate[1]-1,params.deleteQuoteOptionsList[params.deleteQuoteOptionsList.length-1].updateDate[2]).toISOString();
+      }else if(this.optionsData.tableData[i].edited && !this.optionsData.tableData[i].deleted && this.optionsData.tableData[i].optionId == null){
+        params.newQuoteOptionsList.push(this.optionsData.tableData[i]);
+        params.newQuoteOptionsList[params.newQuoteOptionsList.length-1].createDate = new Date(params.newQuoteOptionsList[params.newQuoteOptionsList.length-1].createDate[0],params.newQuoteOptionsList[params.newQuoteOptionsList.length-1].createDate[1]-1,params.newQuoteOptionsList[params.newQuoteOptionsList.length-1].createDate[2]).toISOString();
+        params.newQuoteOptionsList[params.newQuoteOptionsList.length-1].updateDate = new Date(params.newQuoteOptionsList[params.newQuoteOptionsList.length-1].updateDate[0],params.newQuoteOptionsList[params.newQuoteOptionsList.length-1].updateDate[1]-1,params.newQuoteOptionsList[params.newQuoteOptionsList.length-1].updateDate[2]).toISOString();
+        for(let oth of  params.newQuoteOptionsList[params.newQuoteOptionsList.length-1].otherRatesList){
+          if(oth.deductiblesList !== undefined){
+            for(let ded of oth.deductiblesList){
+              ded.createDate = new Date(ded.createDate[0],ded.createDate[1]-1,ded.createDate[2]).toISOString();
+              ded.updateDate = new Date(ded.updateDate[0],ded.updateDate[1]-1,ded.updateDate[2]).toISOString();
+            }
+          }else{
+            oth.deductiblesList = [];
+          }
+        }
+      }
+    }
    this.quotationService.saveQuoteOptionAll(params).subscribe((data)=>{
      if(data['returnCode'] == 0) {
             this.dialogMessage = data['errorList'][0].errorMessage;
@@ -632,6 +658,7 @@ saveQuoteOptionAll(cancelFlag?){
             a.edited = true;
             a.createUser = JSON.parse(window.localStorage.currentUser).username;
             a.updateUser = JSON.parse(window.localStorage.currentUser).username;
+            a.add = true;
             return true;
           })
           tableData.tableData = list.deductiblesList;
@@ -662,7 +689,7 @@ saveQuoteOptionAll(cancelFlag?){
 
     if(data == null)
       this.coversDeductiblesData.tableData  = [];
-    else if( data.deductiblesList.length ==0){
+    else if( data.deductiblesList == undefined){
       this.getDefaultDeductibles(this.coversDeductiblesData,this.covDeductibleTable,data);
     }else
       this.coversDeductiblesData.tableData  = data.deductiblesList;
@@ -672,7 +699,7 @@ saveQuoteOptionAll(cancelFlag?){
   updateOptDed(data){
     if(data == null)
       this.optionsDeductiblesData.tableData  = [];
-    else if(data.deductiblesList.length ==0){
+    else if(data.deductiblesList == undefined){
       this.getDefaultDeductibles(this.optionsDeductiblesData,this.optDeductibleTable,data);
     }else
       this.optionsDeductiblesData.tableData  = data.deductiblesList;
