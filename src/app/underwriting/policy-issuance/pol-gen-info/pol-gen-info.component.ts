@@ -10,7 +10,7 @@ import { Title } from '@angular/platform-browser';
   styleUrls: ['./pol-gen-info.component.css']
 })
 export class PolGenInfoComponent implements OnInit, OnDestroy {
-  tableData: any[] = [];
+  tableData: any;
   tHeader: any[] = [];
   dataTypes: any[] = [];
   filters: any[] = [];

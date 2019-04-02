@@ -12,3 +12,7 @@
 .cust-ig {
 	margin-bottom: -14px !important;
 }
+
+.cust-btn {
+	z-index: 3 !important;
+}

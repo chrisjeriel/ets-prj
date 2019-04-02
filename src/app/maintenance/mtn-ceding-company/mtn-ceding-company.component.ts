@@ -97,7 +97,7 @@ export class MtnCedingCompanyComponent implements OnInit {
      });
   }
 
-  checkCode(code, ev) {
+  checkCode(code, ev) {    
     if(code.trim() === ''){
       this.selectedData.emit({
         cedingId: '',

@@ -413,6 +413,18 @@ export class CustNonDatatableComponent implements OnInit {
                             }
                         );
                     }
+                     else if(e.dataType === 'textspan' ){
+                        this.searchQuery.push(
+                            {
+                                key: e.keys.from,
+                                search: (e.keys.search === undefined || !e.enabled) ? '' : e.keys.search,
+                            },
+                             {
+                                key: e.keys.to,
+                                search: (e.keys.search2 === undefined || !e.enabled) ? '' : e.keys.search2,
+                            }
+                        );
+                    }
                     else{
                         this.searchQuery.push(
                             {
@@ -433,6 +445,18 @@ export class CustNonDatatableComponent implements OnInit {
                 }*/
             }
             else if(!e.enabled && e.dataType === 'datespan'){
+                   this.searchQuery.push(
+                       {
+                           key: e.keys.from,
+                           search: '',
+                       },
+                        {
+                           key: e.keys.to,
+                           search: '',
+                       }
+                   );
+            }
+            else if(!e.enabled && e.dataType === 'textspan'){
                    this.searchQuery.push(
                        {
                            key: e.keys.from,

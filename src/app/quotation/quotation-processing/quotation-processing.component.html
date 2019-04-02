@@ -157,7 +157,7 @@
         <button class="cust-btn" type="button" (click)="modalService.dismissAll(); clearAddFields();"><a>Cancel</a></button>
         <!-- <button *ngIf="description != '' && typeOfCession != '' && riskName != ''" class="cust-btn" type="button" (click)="modalService.dismissAll(); nextBtnEvent();"><a>Next</a></button>
         <button *ngIf="description == '' || typeOfCession == '' || riskName == ''" class="cust-btn cust-btn-disabled" type="button" [disabled]="true"><a>Next</a></button> -->
-        <button [class.cust-btn-disabled]="description == '' || typeOfCession == '' || riskName == ''" class="cust-btn" type="button" (click)="modalService.dismissAll(); nextBtnEvent();"><a>Next</a></button>
+        <button [class.cust-btn-disabled]="description == '' || typeOfCession == '' || riskName == ''" class="cust-btn" type="button" (click)="modalService.dismissAll(); nextBtnEvent();" [disabled]="description == '' || typeOfCession == '' || riskName == ''"><a>Next</a></button>
     </div>
 </app-modal>
 

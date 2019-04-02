@@ -213,6 +213,7 @@ export class HoldCoverMonitoringListComponent implements OnInit {
     searchQuery(searchParams){
         this.searchParams = searchParams;
         this.passData.tableData = [];
+        console.log(this.searchParams);
         this.retrieveQuoteHoldCoverListingMethod();
         this.passData.btnDisabled = true;
     }

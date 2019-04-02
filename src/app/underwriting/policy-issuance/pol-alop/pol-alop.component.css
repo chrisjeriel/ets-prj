@@ -54,6 +54,12 @@ label.text-left{
 	border-radius: 0.2rem !important;
 }
 
+.textarea textarea{
+	height: 85% !important;
+	border-radius: 0.2rem !important;
+	font-size: 0.7rem !important;
+}
+
 .right .textarea{
 	height: 108px !important; 
 }

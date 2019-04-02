@@ -190,99 +190,71 @@ export class AttachmentComponent implements OnInit {
       });
   }
 
-  // saveData(cancelFlag?){
-  //   this.savedData = [];
-  //   this.deletedData = [];
-  //   this.cancelFlag = cancelFlag !== undefined;
-  //   for (var i = 0 ; this.passData.tableData.length > i; i++) {
-  //     if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
-  //         this.savedData.push(this.passData.tableData[i]);
-  //         this.savedData[this.savedData.length-1].createDate = new Date(this.savedData[this.savedData.length-1].createDate[0],this.savedData[this.savedData.length-1].createDate[1]-1,this.savedData[this.savedData.length-1].createDate[2]);
-  //         this.savedData[this.savedData.length-1].updateDate = new Date(this.savedData[this.savedData.length-1].updateDate[0],this.savedData[this.savedData.length-1].updateDate[1]-1,this.savedData[this.savedData.length-1].updateDate[2]);
-  //     }else if(this.passData.tableData[i].edited && this.passData.tableData[i].deleted){
-  //       this.deletedData.push(this.passData.tableData[i]);
-  //       this.deletedData[this.deletedData.length-1].createDate = new Date(this.deletedData[this.deletedData.length-1].createDate[0],this.deletedData[this.deletedData.length-1].createDate[1]-1,this.deletedData[this.deletedData.length-1].createDate[2]).toISOString();
-  //       this.deletedData[this.deletedData.length-1].updateDate = new Date(this.deletedData[this.deletedData.length-1].updateDate[0],this.deletedData[this.deletedData.length-1].updateDate[1]-1,this.deletedData[this.deletedData.length-1].updateDate[2]).toISOString();
-  //     }
-  //     // delete this.savedData[i].tableIndex;
-  //   }
-  //   console.log(JSON.stringify(this.savedData) + " >> this.savedData ");
-
-  //   if (this.savedData.length != 0 || this.deletedData.length!=0 ) {
-  //     this.quotationService.saveQuoteAttachment(this.quoteId,this.savedData,this.deletedData).subscribe((data: any) => {
-  //       console.log(data)
-  //       if(data['returnCode'] == 0) {
-  //           this.dialogMessage = data['errorList'][0].errorMessage;
-  //           this.dialogIcon = "error";
-  //           $('#successModalBtn').trigger('click');
-  //         } else{
-  //           this.dialogMessage="";
-  //           this.dialogIcon = "";
-  //           $('#successModalBtn').trigger('click');
-  //           this.getAttachment();
-  //           this.table.markAsPristine();
-  //         }
-  //       });
-  //   }else{
-  //     this.dialogMessage = "Nothing to save.";
-  //     this.dialogIcon = "info"
-  //     $('#successModalBtn').trigger('click');
-  //   }
-  // }
 
  onSaveAttachment(cancelFlag?){
+   this.dialogIcon = '';
+   this.dialogMessage = '';
    this.loading = true;
    this.cancelFlag = cancelFlag !== undefined;
-   console.log(this.cancelFlag + " >> this.cancel");
    if(this.cancelFlag === true){
      this.router.navigateByUrl('quotation-processing');
    }
    for (var i = 0 ; this.passData.tableData.length > i; i++) {
-     if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
-       this.attachmentReq = {
-          "deleteAttachmentsList": [],
-          "quoteId": this.quoteId,
-          "saveAttachmentsList": [
-            {
-              "createDate":    (this.passData.tableData[i].createDate === null || this.passData.tableData[i].createDate === undefined || this.passData.tableData[i].createDate === '')?this.ns.toDateTimeString(0):this.ns.toDateTimeString(this.passData.tableData[i].createDate),
-              "createUser":    (this.passData.tableData[i].createUser === null || this.passData.tableData[i].createUser === undefined || this.passData.tableData[i].createUser === '')?JSON.parse(window.localStorage.currentUser).username:this.passData.tableData[i].createUser,
-              "description":   this.passData.tableData[i].description,
-              "fileName":      this.passData.tableData[i].fileName,
-              "fileNo":        this.passData.tableData[i].fileNo,
-              "updateDate":    this.ns.toDateTimeString(0),
-              "updateUser":    JSON.parse(window.localStorage.currentUser).username
-            }
-          ]
-       }
-       this.quotationService.saveQuoteAttachment(JSON.stringify(this.attachmentReq))
-         .subscribe(data => {
-           this.getAttachment();
-           $('app-sucess-dialog #modalBtn').trigger('click');
-           this.loading = false;
-         });
-     }else if(this.passData.tableData[i].edited && this.passData.tableData[i].deleted){
-       this.attachmentReq = {
-          "deleteAttachmentsList": [
-            {
-              "createDate":    this.passData.tableData[i].createDate,
-              "createUser":    this.passData.tableData[i].createUser ,
-              "description":   this.passData.tableData[i].description,
-              "fileName":      this.passData.tableData[i].fileName,  
-              "fileNo":        this.passData.tableData[i].fileNo,  
-              "updateDate":    this.passData.tableData[i].updateDate,
-              "updateUser":    this.passData.tableData[i].updateUser,
-            }
-          ],
-          "quoteId": this.quoteId,
-          "saveAttachmentsList": []
-       }
-       this.quotationService.saveQuoteAttachment(JSON.stringify(this.attachmentReq))
-         .subscribe(data => {
-           this.getAttachment();
-           $('app-sucess-dialog #modalBtn').trigger('click');
-           this.loading = false;
-         });
+     var rec = this.passData.tableData[i];
+     if(rec.fileName === '' || rec.fileName === null || rec.fileName === undefined){
+       this.dialogIcon = 'error';
+       this.dialogMessage = 'Please complete all the required fields.';
+       $('app-sucess-dialog #modalBtn').trigger('click');
+
+       this.loading = false;
+     }else{
+        if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
+           this.attachmentReq = {
+              "deleteAttachmentsList": [],
+              "quoteId": this.quoteId,
+              "saveAttachmentsList": [
+                {
+                  "createDate":    (this.passData.tableData[i].createDate === null || this.passData.tableData[i].createDate === undefined || this.passData.tableData[i].createDate === '')?this.ns.toDateTimeString(0):this.ns.toDateTimeString(this.passData.tableData[i].createDate),
+                  "createUser":    (this.passData.tableData[i].createUser === null || this.passData.tableData[i].createUser === undefined || this.passData.tableData[i].createUser === '')?JSON.parse(window.localStorage.currentUser).username:this.passData.tableData[i].createUser,
+                  "description":   this.passData.tableData[i].description,
+                  "fileName":      this.passData.tableData[i].fileName,
+                  "fileNo":        this.passData.tableData[i].fileNo,
+                  "updateDate":    this.ns.toDateTimeString(0),
+                  "updateUser":    JSON.parse(window.localStorage.currentUser).username
+                }
+              ]
+           }
+           this.quotationService.saveQuoteAttachment(JSON.stringify(this.attachmentReq))
+             .subscribe(data => {
+               this.getAttachment();
+               $('app-sucess-dialog #modalBtn').trigger('click');
+               this.loading = false;
+             });
+         }else if(this.passData.tableData[i].edited && this.passData.tableData[i].deleted){
+           this.attachmentReq = {
+              "deleteAttachmentsList": [
+                {
+                  "createDate":    this.passData.tableData[i].createDate,
+                  "createUser":    this.passData.tableData[i].createUser ,
+                  "description":   this.passData.tableData[i].description,
+                  "fileName":      this.passData.tableData[i].fileName,  
+                  "fileNo":        this.passData.tableData[i].fileNo,  
+                  "updateDate":    this.passData.tableData[i].updateDate,
+                  "updateUser":    this.passData.tableData[i].updateUser,
+                }
+              ],
+              "quoteId": this.quoteId,
+              "saveAttachmentsList": []
+           }
+           this.quotationService.saveQuoteAttachment(JSON.stringify(this.attachmentReq))
+             .subscribe(data => {
+               this.getAttachment();
+               $('app-sucess-dialog #modalBtn').trigger('click');
+               this.loading = false;
+             });
+         }
      }
+     
    }
  
  } 

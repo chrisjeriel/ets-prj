@@ -10,7 +10,7 @@ import { UnderwritingService } from '../../../_services';
 export class PolGenInfoOpenCoverComponent implements OnInit {
 
   line: string;
-  tableData: any[] = [];
+  tableData: any;
   tHeader: any[] = [];
   dataTypes: any[] = [];
   filters: any[] = [];
@@ -20,8 +20,8 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
   	this.tHeader.push("Item No", "Description of Items");
     this.dataTypes.push("text", "text");
     this.filters.push("Item No", "Desc. of Items");
-    this.tableData = this.underwritingService.getItemInfoData();
-  	 this.line = 'EAR';
+    this.tableData = this.underwritingService.getItemInfoData('','');
+  	this.line = 'EAR';
   }
 
   showItemInfoModal(content) {
