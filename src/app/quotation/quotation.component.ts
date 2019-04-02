@@ -186,6 +186,7 @@ export class QuotationComponent implements OnInit {
     	};
     }
 
+<<<<<<< HEAD
 
 
 
@@ -213,3 +214,6 @@ export class QuotationComponent implements OnInit {
 
 }
 
+=======
+}
+>>>>>>> e24586bdcff59fe37e8e9d16e4fa09d84ba9270c

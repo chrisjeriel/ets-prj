@@ -1,8 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { UnderwritingService } from '../../../_services';
 import { PolicyCoInsurance } from '@app/_models';
 import { Title } from '@angular/platform-browser';
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
 
 
 @Component({
@@ -12,9 +13,25 @@ import { Title } from '@angular/platform-browser';
 })
 
 export class PolCoInsuranceComponent implements OnInit {
+    @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
+
+    @Input() policyInfo:any = {};
+
+    polCoInsurance: any = {
+        coRefNo: null,
+        cedingId : null,
+        cedingName: null,
+        pctShare: null,
+        shareSiAmt: null,
+        sharePremAmt: null,
+        createUser: null,
+        createDate: null,
+        updateUser: null,
+        updateDate: null
+    };
     
     coInsuranceData: any = {
-        tableData: [],
+        tableData: [new PolicyCoInsurance("CAR-2018-000001-099-0001-000", "EN-CAR-2018-0000001-00", "Malayan", 12.2, 10000, 500000)],
         tHeader: ['Policy No', 'Ref Policy No', 'Ceding Company', 'Share Percentage', 'Share Sum Insured', 'Share Premium'],
         addFlag:false,
         editFlag:false,
@@ -39,23 +56,6 @@ export class PolCoInsuranceComponent implements OnInit {
     ngOnInit(): void {
         this.titleService.setTitle("Pol | Co-Insurance");
         this.getPolCoInsurance();
-          
-    }
-
-    getPolCoInsurance(){
-        this.underwritingService.getCoInsurance().subscribe(data => {
-                var rec = data['policyList'];
-                for(let i of rec){
-                    this.coInsuranceData.tableData.push({
-                       policyNo:            i.policyNo,
-                       refPolNo:            (i.coInsurance === null || i.coInsurance === undefined)? '' : i.coInsurance.coRefNo,
-                       cedingCo:            (i.coInsurance === null || i.coInsurance === undefined)? '' : i.coInsurance.cedingName,
-                       sharePercentage:     (i.coInsurance === null || i.coInsurance === undefined)? '' : i.coInsurance.pctShare,
-                       shareSi:             (i.coInsurance === null || i.coInsurance === undefined)? '' : i.coInsurance.shareSiAmt,
-                       sharePremium:        (i.coInsurance === null || i.coInsurance === undefined)? '' : i.coInsurance.sharePremAmt
-                    });
-                }
-            });
     }
 
     onClickCancel() {
@@ -64,6 +64,24 @@ export class PolCoInsuranceComponent implements OnInit {
 
     onClickSave() {
 
+    }
+
+    getPolCoInsurance() {
+        this.underwritingService.getPolCoInsurance(this.policyInfo.policyId, '') .subscribe((data: any) => {
+           this.coInsuranceData.tableData = [];
+           if (data.policy != null) {
+               var dataInfos = data.policy.coInsurance;
+               
+
+               for (var i=0; i<dataInfos.length; i++) {
+                   this.coInsuranceData.tableData.push(new PolicyCoInsurance(data.policy.policyNo, dataInfos[i].coRefNo, dataInfos[i].cedingName,
+                       dataInfos[i].pctShare, dataInfos[i].shareSiAmt, dataInfos[i].sharePremAmt));
+               }
+
+               this.table.refreshTable();
+           }
+           
+        });
     }
 
 }

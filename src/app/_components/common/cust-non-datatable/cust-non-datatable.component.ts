@@ -535,7 +535,7 @@ export class CustNonDatatableComponent implements OnInit {
         this.print.next(event);
     }
     onClickExport(event){
-        //do some printing
+        //do some exporting
         this.export.next(event);
     }
     getSum(data){
