@@ -571,6 +571,42 @@ export class UnderwritingService {
         return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolCATPeril', JSON.stringify(catPeriLData), header);
     }
 
+    getPolAlop(policyId:string, policyNo?:string) {
+        const params = new HttpParams()
+            .set('policyId', (policyId === null || policyId === undefined ? '' : policyId))
+            .set('policyNo', (policyNo === null || policyNo === undefined ? '' : policyNo))
+
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolAlop', {params});
+    }
+
+    getPolAlopItem(car: string, policyId: string, policyNo: any) {
+        if (car == "CAR") {
+            this.aLOPItemInfos.forEach(function (itm) { delete itm.relativeImportance; });
+        }
+        const params = new HttpParams()
+             .set('policyId', (policyId === null || policyId === undefined ? '' : policyId) )
+             .set('policyNo',(policyNo === null || policyNo === undefined ? '' : policyNo) )
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolAlopItem',{params});
+    }
+
+    getPolCoInsurance(policyId: string, policyNo: string) {
+        const params = new HttpParams()
+            .set('policyId', (policyId === null || policyId === undefined ? '' : policyId))
+            .set('policyNo', (policyNo === null || policyNo === undefined ? '' : policyNo))
+
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolCoInsurance',{params});
+    }
+
+    savePolAlop(polAlopData: any) {
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        console.log(polAlopData);
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolAlop', JSON.stringify(polAlopData), header);
+    }
+
     getPolicyInformation(policyId,policyNo?){
         const params = new HttpParams()
             .set('policyId',policyId===undefined?'':policyId)
@@ -586,12 +622,21 @@ export class UnderwritingService {
     }
 
     saveItem(itemData:any){
-        let header : any = {
+        let header: any = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json'
             })
         };
         return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolItem', JSON.stringify(itemData), header);
+    }
+
+    savePolAlopItem(polAlopItemData:any){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolAlopItem', JSON.stringify(polAlopItemData), header);
     }
 
 }            

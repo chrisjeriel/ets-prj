@@ -11,13 +11,25 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class PolicyIssuanceComponent implements OnInit {
   line: string;
   sub: any;
+  policyInfo:any = {};
+  alterFlag: boolean = false;
   
   constructor(private route: ActivatedRoute,private modalService: NgbModal, private router: Router) { }
 
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
             this.line = params['line'];
+            this.alterFlag = params['alter'];
         });
+
+     /* Test Data */
+        this.policyInfo.policyId = 9; 
+        this.policyInfo.policyNo = 'CAR-2019-00001-001-0001-001';
+        this.policyInfo.principalName = 'principal';
+        this.policyInfo.contractorName = 'contractor';
+        this.policyInfo.riskName = 'riskName';
+        
+
   }
 
   public beforeChange($event: NgbTabChangeEvent) {
