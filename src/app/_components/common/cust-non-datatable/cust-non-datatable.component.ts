@@ -261,7 +261,7 @@ export class CustNonDatatableComponent implements OnInit {
             if(data !== null){
                 this.nullRow = false;
                 if( Object.entries(data).length !== 0){
-                    if(data[this.nullKey] !== null){
+                    //if(data[this.nullKey] !== null){
                         this.btnDisabled = false;
                         if(this.indvSelect == data){
                             this.unselect = true;
@@ -275,7 +275,7 @@ export class CustNonDatatableComponent implements OnInit {
                             }*/
                             this.indvSelect = data;
                         }
-                    }
+                   // }
                 }
                 else{
                      this.indvSelect = "";
