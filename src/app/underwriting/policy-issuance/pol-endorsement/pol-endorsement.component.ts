@@ -130,9 +130,7 @@ export class PolEndorsementComponent implements OnInit {
     retrieveEndt(){
         this.underwritingService.getPolicyEndorsement(this.policyId, '').subscribe((data: any) =>{
             if(data.endtList !== null){
-                for(var i = 0; i < data.endtList.endorsements.length; i++){
-                    this.passData.tableData.push(data.endtList.endorsements[i]);
-                }
+                this.passData.tableData = data.endtList.endorsements;
                 this.endtTable.refreshTable();
                 this.endtTable.onRowClick(null,this.passData.tableData[0]);
             }
