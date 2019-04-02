@@ -40,30 +40,30 @@ export class PolMxLineComponent implements OnInit {
 		infoFlag: true,
 		pageLength:10,
 		resizable: [true, true, true, false, true, true, false,true],
-		pageID:125,
+		pageID:'line-mtn-line',
 		keys: ['lineCd','description','cutOffTime','activeTag','catTag','renewalTag','openCoverTag','alopTag','referenceNo','sortSeq','remarks'],
-		filters: [
-			{
-				key: 'lineCd',
-				title:'Line Code',
-				dataType: 'text'
-			},
-			{
-				key: 'description',
-				title:'description',
-				dataType: 'text'
-			},
-			{
-				key: 'referenceNo',
-				title:'Ref',
-				dataType: 'text'
-			},
-			{
-				key: 'sortSeq',
-				title:'Sort Seq',
-				dataType: 'text'
-			}
-		]
+		// filters: [
+		// 	{
+		// 		key: 'lineCd',
+		// 		title:'Line Code',
+		// 		dataType: 'text'
+		// 	},
+		// 	{
+		// 		key: 'description',
+		// 		title:'description',
+		// 		dataType: 'text'
+		// 	},
+		// 	{
+		// 		key: 'referenceNo',
+		// 		title:'Ref',
+		// 		dataType: 'text'
+		// 	},
+		// 	{
+		// 		key: 'sortSeq',
+		// 		title:'Sort Seq',
+		// 		dataType: 'text'
+		// 	}
+		// ]
 	};
 
 	cancelFlag:boolean;
@@ -118,7 +118,7 @@ export class PolMxLineComponent implements OnInit {
 	onClickSaveLine(cancelFlag?){
 		this.dialogIcon = '';
 		this.dialogMessage = '';
-		this.loading = true;
+		//this.loading = true;
 		this.cancelFlag = cancelFlag !== undefined;
 		for(var i = 0; this.passData.tableData.length > i; i++){
 			var rec = this.passData.tableData[i];
@@ -139,7 +139,8 @@ export class PolMxLineComponent implements OnInit {
 									"alopTag":      	(rec.alopTag === '' || rec.alopTag === null || rec.alopTag === undefined)?this.cbFunc(rec.alopTag):rec.alopTag,
 									"catTag":           (rec.catTag === '' || rec.catTag === null || rec.catTag === undefined)?this.cbFunc(rec.catTag):rec.catTag,
 									"createDate":       (rec.createDate === '' || rec.createDate === null || rec.createDate === undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(rec.createDate),
-									"createUser":       (rec.createUser === '' || rec.createUser === null || rec.createUser === undefined)?(JSON.parse(window.localStorage.currentUser).username):rec.createUser,
+									//"createUser":       (rec.createUser === '' || rec.createUser === null || rec.createUser === undefined)?(JSON.parse(window.localStorage.currentUser).username):rec.createUser,
+									"createUser":       (rec.createUser === '' || rec.createUser === null || rec.createUser === undefined)?'arnil':rec.createUser,
 									"cutOffTime":   	this.cutOffTimeFunc(rec.cutOffTime),
 									"description":  	rec.description,
 									"lineCd":           rec.lineCd,
@@ -149,7 +150,8 @@ export class PolMxLineComponent implements OnInit {
 									"renewalTag":       (rec.renewalTag === '' || rec.renewalTag === null || rec.renewalTag === undefined)?this.cbFunc(rec.renewalTag):rec.renewalTag,
 									"sortSeq":      	rec.sortSeq,
 									"updateDate":       this.ns.toDateTimeString(0),
-									"updateUser":       JSON.parse(window.localStorage.currentUser).username
+									//"updateUser":       JSON.parse(window.localStorage.currentUser).username
+									"updateUser":       'arnil'
 							    }
 							]
 						}
@@ -158,9 +160,10 @@ export class PolMxLineComponent implements OnInit {
 						.subscribe(data => {
 							this.getMtnLine();
 							$('app-sucess-dialog #modalBtn').trigger('click');
-							this.loading = false;
-
+						 	this.loading = false;
 						});	
+						console.log(rec.cutOffTime);
+						console.log(JSON.stringify(this.mtnLineReq));
 					
 				}else if(this.passData.tableData[i].edited && this.passData.tableData[i].deleted){
 					this.mtnLineReq = { 
@@ -170,7 +173,7 @@ export class PolMxLineComponent implements OnInit {
 								"alopTag":      	this.cbFunc(rec.alopTag),
 								"catTag":           this.cbFunc(rec.catTag),
 								"createDate":       this.ns.toDateTimeString(0),
-								"createUser":       JSON.parse(window.localStorage.currentUser).username,
+								"createUser":       'arnil',
 								"cutOffTime":   	this.ns.toDateTimeString(0).split('T')[0] + 'T' + rec.cutOffTime,
 								"description":  	rec.description,
 								"lineCd":           rec.lineCd,
@@ -180,7 +183,7 @@ export class PolMxLineComponent implements OnInit {
 								"renewalTag":       this.cbFunc(rec.renewalTag),
 								"sortSeq":      	rec.sortSeq,
 								"updateDate":       this.ns.toDateTimeString(0),
-								"updateUser":       JSON.parse(window.localStorage.currentUser).username
+								"updateUser":       'arnil'
 						    }
 						],
 						"saveLine": []
@@ -208,7 +211,8 @@ export class PolMxLineComponent implements OnInit {
 		.subscribe(data => {
 			//this.passData.tableData = [];
 			var rec = data['line'];
-			this.passData.tableData = rec;				
+			this.passData.tableData = rec;
+			//this.passData.tableData.cutOffTime = rec.cutOffTime
 			this.table.refreshTable();
 			console.log(this.passData.tableData);
 		});
