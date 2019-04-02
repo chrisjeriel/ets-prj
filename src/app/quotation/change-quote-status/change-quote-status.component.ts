@@ -71,6 +71,15 @@ export class ChangeQuoteStatusComponent implements OnInit {
       keys: ['quotationNo','cessionDesc','cedingName','insuredDesc','riskName']
     };
 
+    searchParams: any = {
+        riskName:null,
+        riskCd: null,
+        cedingName: null,
+        cedingId: null,
+        typeOfCession: null,
+        typeOfCessionId: null
+    }
+    
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, config: NgbDropdownConfig, private ns: NotesService, private maintenanceService: MaintenanceService) {
         config.placement = 'bottom-right';
         config.autoClose = false;
@@ -86,7 +95,7 @@ export class ChangeQuoteStatusComponent implements OnInit {
     }
 
     getChangeQuote(){
-        this.quotationService.getQuoProcessingData([]).subscribe((data:any) => {
+        this.quotationService.getQuoProcessingData(this.searchParams).subscribe((data:any) => {
             this.records = data.quotationList;
             console.log(this.records)
             for(let rec of this.records){
