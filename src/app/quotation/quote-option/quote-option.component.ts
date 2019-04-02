@@ -45,6 +45,7 @@ export class QuoteOptionComponent implements OnInit {
     optionsData: any = {
         tableData: [],
         tHeader: ['Option No', 'Rate(%)', 'Conditions', 'Comm Rate Quota(%)', 'Comm Rate Surplus(%)', 'Comm Rate Fac(%)'],
+        //tabIndexes: [false,true,false,true,true,true],
         dataTypes: ['number', 'percent', 'text', 'percent', 'percent', 'percent'],
         magnifyingGlass: ['conditions'],
         nData: {
@@ -241,6 +242,20 @@ export class QuoteOptionComponent implements OnInit {
               a.rate = 0;
               a.updateUser = JSON.parse(window.localStorage.currentUser).username;
               a.createUser = JSON.parse(window.localStorage.currentUser).username;
+              this.uwService.getMaintenanceDeductibles(this.quotationNum.substring(0,3),'',
+                a.coverCd ,'0','Y','Y').subscribe((data)=>{
+                  a.deductiblesList = data['deductibles'].filter((b)=>{
+                    b.coverCd = a.coverCd;
+                    b.deductibleTxt = b.deductibleText;
+                    b.deductibleRt = b.deductibleRate;
+                    b.endtCd = 0;
+                    b.edited = true;
+                    b.createUser = JSON.parse(window.localStorage.currentUser).username;
+                    b.updateUser = JSON.parse(window.localStorage.currentUser).username;
+                    b.add = true;
+                    return true;
+                  })
+                })
               return true;
             });;
             this.optionsData.nData.otherRatesList = data.quotation.project.coverage.sectionCovers;

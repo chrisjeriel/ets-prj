@@ -79,12 +79,11 @@ export class UnderwritingService {
     }
 
     getCoInsurance() {
-        this.coInsuranceData = [
-            new PolicyCoInsurance("CAR-2018-000001-099-0001-000", "EN-CAR-2018-0000001-00", "Malayan", 12.2, 10000, 500000),
-            new PolicyCoInsurance("CAR-2018-000001-099-0001-000", "EN-CAR-2018-0000001-00", "Company 1", 6.23, 20000, 600000),
-            new PolicyCoInsurance("CAR-2018-000001-099-0001-000", "EN-CAR-2018-0000001-00", "Company 2", 15.16, 30000, 700000),
-        ];
-        return this.coInsuranceData;
+        const params = new HttpParams()
+             .set('policyId','')
+             .set('policyNo','')
+             
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolCoInsurance',{params});
     }
 
     getUWCoverageInfo() {
@@ -135,7 +134,6 @@ export class UnderwritingService {
         return 100;
     }
 
-
     getParListing(searchParams: any []) {
   /*      this.parListingData = [
             new PARListing("CAR-2018-000002-099-0001-000", "Direct","Malayan", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date("02-09-2018"), new Date("02-09-2018"), new Date("02-28-2018"), new Date(), "In Progress"),
@@ -151,7 +149,6 @@ export class UnderwritingService {
             new PARListing("BVP-2018-000002-093-0001-000", "Direct","Malayan", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date(), new Date(), new Date(), new Date(), "In Progress"),
             new PARListing("MLP-2018-000002-094-0001-000", "Direct","Malayan", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date(), new Date(), new Date(), new Date(), "In Progress"),
             new PARListing("DOS-2018-000002-095-0001-000", "Direct","Malayan", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date(), new Date(), new Date(), new Date(), "In Progress"),
-           
         ];
         return this.parListingData;*/
         var params;
@@ -166,12 +163,17 @@ export class UnderwritingService {
                     .set('objectDesc','')
                     .set('site','')
                     .set('currencyCd','')
-                    .set('totalSi','')
+                    .set('totalSiLess','')
+                    .set('totalSiGrt','')
                     .set('totalPrem','')
-                    .set('issueDate','')
-                    .set('expiryDate','')
-                    .set('inceptDate','')
-                    .set('acctDate','')
+                    .set('issueDateFrom','')
+                    .set('issueDateTo','')
+                    .set('inceptDateFrom','')
+                    .set('inceptDateTo','')
+                    .set('expiryDateFrom','')
+                    .set('expiryDateTo','')
+                    .set('acctDateFrom','')
+                    .set('acctDateTo','')
                     .set('statusDesc','');
                     // .set('paginationRequest.position',null)
                     // .set('paginationRequest.count',null)
@@ -276,13 +278,16 @@ export class UnderwritingService {
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolicyListing');
     }
 
-    getItemInfoData() {
-        this.itemInfoData = [
+    getItemInfoData(policyNo?, policyId?) {
+        /*this.itemInfoData = [
             new ItemInformation(1001, "Description for item number 1"),
             new ItemInformation(1002, "Description for item number 2"),
             new ItemInformation(1003, "Description for item number 3")
-        ];
-        return this.itemInfoData;
+        ];*/
+         const params = new HttpParams()
+             .set('policyNo', (policyNo === null || policyNo === undefined ? '' : policyNo) )
+             .set('policyId',(policyId === null || policyId === undefined ? '' : policyId) )
+        return this.http.get(environment.prodApiUrl + "/underwriting-service/retrievePolItem",{params});;
     }
 
 
@@ -327,6 +332,7 @@ export class UnderwritingService {
     }
 
 
+
     getInwardPolBalance(policyId?) {
          let params:any = {
              policyId : policyId
@@ -334,13 +340,13 @@ export class UnderwritingService {
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolInwardBal',{params});
     }
 
-    getInwardPolBalanceOtherCharges() {
-        this.polInwardBalOtherCharges = [
-            new PolInwardPolBalanceOtherCharges("101", "Description 101", "20000"),
-            new PolInwardPolBalanceOtherCharges("102", "Description 102", "800000"),
-        ];
-        return this.polInwardBalOtherCharges;
-    }
+    // getInwardPolBalanceOtherCharges() {
+    //     this.polInwardBalOtherCharges = [
+    //         new PolInwardPolBalanceOtherCharges("101", "Description 101", "20000"),
+    //         new PolInwardPolBalanceOtherCharges("102", "Description 102", "800000"),
+    //     ];
+    //     return this.polInwardBalOtherCharges;
+    // }
 
 
     getPolItemMLPData() {
@@ -529,11 +535,81 @@ export class UnderwritingService {
 
     saveInwardPolBal(params){
          let header : any = {
-            headers: new HttpHeaders({
+             headers: new HttpHeaders({
                 'Content-Type': 'application/json'
             })
         };
         return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolInwardBal', JSON.stringify(params), header);
+    }
+
+    getCATPeril(policyNo:any , policyId: string) {
+         const params = new HttpParams()
+             .set('policyNo', (policyNo === null || policyNo === undefined ? '' : policyNo) )
+             .set('policyId',(policyId === null || policyId === undefined ? '' : policyId) )
+        return  this.http.get(environment.prodApiUrl + "/underwriting-service/retrievePolCATPeril",{params});
+    }
+
+    savePolCoverage(coverageData:any){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolCoverage', JSON.stringify(coverageData), header);
+    }
+
+    savePolEndt(params){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolEndorsement', JSON.stringify(params), header);
+    }
+
+    saveCatPeril(catPeriLData:any){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolCATPeril', JSON.stringify(catPeriLData), header);
+    }
+
+    getPolAlop(policyId:string, policyNo?:string) {
+        const params = new HttpParams()
+            .set('policyId', (policyId === null || policyId === undefined ? '' : policyId))
+            .set('policyNo', (policyNo === null || policyNo === undefined ? '' : policyNo))
+
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolAlop', {params});
+    }
+
+    getPolAlopItem(car: string, policyId: string, policyNo: any) {
+        if (car == "CAR") {
+            this.aLOPItemInfos.forEach(function (itm) { delete itm.relativeImportance; });
+        }
+        const params = new HttpParams()
+             .set('policyId', (policyId === null || policyId === undefined ? '' : policyId) )
+             .set('policyNo',(policyNo === null || policyNo === undefined ? '' : policyNo) )
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolAlopItem',{params});
+    }
+
+    getPolCoInsurance(policyId: string, policyNo: string) {
+        const params = new HttpParams()
+            .set('policyId', (policyId === null || policyId === undefined ? '' : policyId))
+            .set('policyNo', (policyNo === null || policyNo === undefined ? '' : policyNo))
+
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolCoInsurance',{params});
+    }
+
+    savePolAlop(polAlopData: any) {
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        console.log(polAlopData);
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolAlop', JSON.stringify(polAlopData), header);
     }
 
     getPolicyInformation(policyId,policyNo?){
@@ -548,6 +624,24 @@ export class UnderwritingService {
             .set('policyId',policyId === undefined || policyId === null || policyId === '' ? '' : policyId)
             .set('policyNo',policyNo === undefined || policyNo === null || policyNo === '' ? '' : policyNo);
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolHoldCover',{params});
+    }
+
+    saveItem(itemData:any){
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolItem', JSON.stringify(itemData), header);
+    }
+
+    savePolAlopItem(polAlopItemData:any){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolAlopItem', JSON.stringify(polAlopItemData), header);
     }
 
 }            

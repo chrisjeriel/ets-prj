@@ -211,5 +211,14 @@ export class MaintenanceService{
 		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnCharges');
 	}
 	
+	saveMtnLine(params){
+		let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnLine',params,header);
+	}
+	
 }
 

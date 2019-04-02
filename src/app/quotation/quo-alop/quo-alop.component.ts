@@ -99,14 +99,14 @@ export class QuoAlopComponent implements OnInit {
         dataTypes: ["number", "number", "text", "text", "text"],
         uneditable: [true,false,false,false,false,false],
         nData: {
-          createDate: '',
+          createDate: new Date(),
           createUser: JSON.parse(window.localStorage.currentUser).username,
           description: null,
           importance: null,
           itemNo: null,
           lossMin: null,
           quantity: null,
-          updateDate: '',
+          updateDate: new Date(),
           updateUser: JSON.parse(window.localStorage.currentUser).username,
         },
         addFlag: true,
@@ -141,12 +141,6 @@ export class QuoAlopComponent implements OnInit {
     dateErFlag:boolean = false;
     refresh:boolean = true;
     optionsList:any = [
-      {
-        optionId: 0,
-        alopDetails: {
-
-        }
-      }
     ];
 
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute, private mtnService: MaintenanceService, private ns: NotesService) { }
@@ -297,6 +291,7 @@ export class QuoAlopComponent implements OnInit {
           option.alopDetails.issueDate = this.ns.toDateTimeString(option.alopDetails.issueDate);
           this.alopData.alopDetails.push(option.alopDetails);
       }
+      console.log(this.alopData)
       this.quotationService.saveQuoteAlop(this.alopData).subscribe((data: any) => {
         // this.alopData.issueDate = this.alopData.issueDate.split('T')[0];
         // this.alopData.expiryDate = this.alopData.expiryDate.split('T')[0];
@@ -335,8 +330,6 @@ export class QuoAlopComponent implements OnInit {
     }
 
     alopItem(){
-      console.log(this.quotationInfo.quoteId)
-      console.log(this.tableNonEditable.indvSelect.optionId)
       this.quotationService.getALOPItemInfos(this.quoteNo[0],this.quotationInfo.quoteId,this.tableNonEditable.indvSelect.optionId).subscribe((data: any) => {
             console.log(data)
             this.itemInfoData.tableData = [];
@@ -365,10 +358,12 @@ export class QuoAlopComponent implements OnInit {
             savedData.saveAlopItemList[savedData.saveAlopItemList.length-1].updateDateItem = this.ns.toDateTimeString(savedData.saveAlopItemList[savedData.saveAlopItemList.length-1].updateDate);
         }else if(this.itemInfoData.tableData[i].deleted){
             savedData.deleteAlopItemList.push(this.itemInfoData.tableData[i]);
-            savedData.saveAlopItemList[savedData.saveAlopItemList.length-1].createUserItem = JSON.parse(window.localStorage.currentUser).username,
-            savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].createDateItem = this.ns.toDateTimeString(savedData.saveAlopItemList[savedData.saveAlopItemList.length-1].createDate);
-            savedData.saveAlopItemList[savedData.saveAlopItemList.length-1].updateUserItem = JSON.parse(window.localStorage.currentUser).username,
-            savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].updateDateItem = this.ns.toDateTimeString(savedData.saveAlopItemList[savedData.saveAlopItemList.length-1].updateDate);
+            console.log(savedData.deleteAlopItemList)
+            savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].optionId = this.tableNonEditable.indvSelect.optionId
+            savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].createUserItem = JSON.parse(window.localStorage.currentUser).username,
+            savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].createDateItem = this.ns.toDateTimeString(savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].createDate);
+            savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].updateUserItem = JSON.parse(window.localStorage.currentUser).username,
+            savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].updateDateItem = this.ns.toDateTimeString(savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].updateDate);
         }
       }
       this.quotationService.saveQuoteAlopItem(savedData).subscribe((data: any) => {
@@ -496,6 +491,7 @@ export class QuoAlopComponent implements OnInit {
         if(this.optionsList.length > 1){
           this.getAlop();
         }*/
+
         this.getAlopSumInsured();
 
         this.readonlyFlag = false;
@@ -508,12 +504,12 @@ export class QuoAlopComponent implements OnInit {
               this.alopDetails.indemFromDate = this.ns.toDateTimeString(this.alopDetails.indemFromDate);
               this.alopDetails.maxIndemPdSi = ((this.alopDetails.maxIndemPd/12)*this.alopDetails.annSi);
           }else{
-            this.optionsList = []
+            //this.optionsList = []
             this.optionsList.push({
               optionId: data.optionId,
               alopDetails: JSON.parse(JSON.stringify(this.newAlopDetails))
             })
-            this.alopDetails = this.optionsList[this.optionsList.length -1].alopDetails;
+            this.alopDetails = this.optionsList[this.optionsList.length-1].alopDetails;
             this.alopDetails.annSi = this.alopSI;
             this.alopDetails.maxIndemPdSi = 0;
           }

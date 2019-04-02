@@ -18,6 +18,7 @@ import { NotesService, UploadService } from '@app/_services';
 export class CustEditableNonDatatableComponent implements OnInit {
     @ViewChild("deleteModal") deleteModal:ModalComponent;
     @ViewChild('myForm') form:any;
+    @ViewChild('api') pagination: any;
     @Input() tableData: any[] = [];
     @Output() tableDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
     @Input() tHeader: any[] = [];
@@ -38,7 +39,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
     @Input() checkboxFlag;
     @Input() columnId;
     @Input() pageLength = 10;
-
     @Output() rowClick: EventEmitter<any> = new EventEmitter();
     @Output() newClick: EventEmitter<any> = new EventEmitter();
     @Output() rowDblClick: EventEmitter<any> = new EventEmitter();
@@ -74,7 +74,8 @@ export class CustEditableNonDatatableComponent implements OnInit {
         widths: [],
         //use if you have different tables in 1 page
         pageID:1,
-        keys:[]
+        keys:[],
+        tabIndexes:[]
     };
     indvSelect: any;
     dataKeys: any[] = [];
@@ -213,6 +214,8 @@ export class CustEditableNonDatatableComponent implements OnInit {
         this.search(this.searchString);
         this.tableDataChange.emit(this.passData.tableData);
         this.add.next(event);
+
+        setTimeout(a=>{this.pagination.setCurrent(this.pagination.getLastPage())},0);
         this.form.control.markAsDirty();
     }
 

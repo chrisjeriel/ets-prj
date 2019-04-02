@@ -70,12 +70,18 @@
                                 <input [disabled]="!filt.enabled" [ngModel]="filt.search" (ngModelChange)="filt.search=$event.toUpperCase()" *ngSwitchCase="'seq'"  type="text" class="form-control cust-sm" (keyup.enter)="pressEnterFilter();">
                                 <input [disabled]="!filt.enabled" [ngModel]="filt.search" (ngModelChange)="filt.search=$event.toUpperCase()" *ngSwitchCase="'date'"  type="date" class="form-control cust-sm" (keyup.enter)="pressEnterFilter();">
                                 <ng-container *ngSwitchCase="'datespan'">
-                                    <input [disabled]="!filt.enabled" [ngModel]="filt.keys?.search" (ngModelChange)="filt.keys.search=$event.toUpperCase()"  type="date" class="form-control cust-sm" (keyup.enter)="pressEnterFilter();">
-                                    <span class="cust-sm">-</span>
-                                    <input [disabled]="!filt.enabled" [ngModel]="filt.keys?.search2" (ngModelChange)="filt.keys.search2=$event.toUpperCase()" type="date" class="form-control cust-sm" (keyup.enter)="pressEnterFilter();">
+                                             <input [disabled]="!filt.enabled" [ngModel]="filt.keys?.search" (ngModelChange)="filt.keys.search=$event.toUpperCase()"  type="date" class="form-control cust-sm" (keyup.enter)="pressEnterFilter();" placement="bottom" ngbTooltip="From">                
+                                        <span class="cust-sm">-</span>
+                                             <input [disabled]="!filt.enabled" [ngModel]="filt.keys?.search2" (ngModelChange)="filt.keys.search2=$event.toUpperCase()" type="date" class="form-control cust-sm" (keyup.enter)="pressEnterFilter();" placement="bottom" ngbTooltip="To">
                                     <!-- <span>{{filt.keys?.from}}</span>
                                     <span>{{filt.keys?.to}}</span> -->
                                 </ng-container>
+                                 <ng-container *ngSwitchCase="'textspan'">
+                                             <input [disabled]="!filt.enabled" [ngModel]="filt.keys?.search" (ngModelChange)="filt.keys.search=$event.toUpperCase()"  type="text" class="form-control cust-sm" (keyup.enter)="pressEnterFilter() ;" placement="bottom" ngbTooltip="Min" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' appCurrency>                
+                                        <span class="cust-sm">-</span>
+                                             <input [disabled]="!filt.enabled" [ngModel]="filt.keys?.search2" (ngModelChange)="filt.keys.search2=$event.toUpperCase()" type="text" class="form-control cust-sm" (keyup.enter)="pressEnterFilter();" placement="bottom" ngbTooltip="Max"  onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' appCurrency>
+                                </ng-container>
+
                             </div>
                         </div>
                     </div>
@@ -83,6 +89,23 @@
                         <div class="col-sm-12">
                             <div class="input-group">
                                 <button id="okFilter" class="cust-filter cust-tbl-submit" (click)="dbQuery(passData.filters); drop.close();"><a>Ok</a></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div ngbDropdown #drop="ngbDropdown" *ngIf="passData.exportFlag">
+       <button class="cust-export" ngbDropdownToggle><a><fa name="ellipsis-v"></fa></a></button>
+        <div ngbDropdownMenu aria-labelledby="dropdownConfig">
+            <div class="dropdown-item-export">
+                <div class="container" style="padding-left: 5px; padding-right: 5px;">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="input-group">
+                                <button class="cust-btn-dlist"><a>Export to Excel</a></button>
                             </div>
                         </div>
                     </div>
@@ -111,7 +134,11 @@
                         <td style="margin-top:1px" *ngFor="let key of dataKeys; let i = index" [class.d-none]="pinKeys.indexOf(key) == -1" [ngSwitch]="passData.dataTypes[i]">
                             <div *ngIf="!(data===fillData)">
                                 <div *ngSwitchCase="'percent'" style="text-align: right">
+<<<<<<< HEAD
                                     <span class="unclickable">{{data[key] | number: '1.7-7'}}</span> 
+=======
+                                    <span class="unclickable">{{ data[key] | number: '1.7-7'}}</span> 
+>>>>>>> e24586bdcff59fe37e8e9d16e4fa09d84ba9270c
 =======-->
     <div class="row"  *ngIf="loadingTableFlag">
         <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="m-auto" style="margin-bottom: 9px!important">
@@ -194,7 +221,11 @@
                                     <span class="gridHeader" (click)="sort(dataKeys[i],sortBy);sortIndex=i;">{{tHeader}}</span>
                                 </div>
 <!-- <<<<<<< HEAD
+<<<<<<< HEAD
                                 <span *ngSwitchDefault class="unclickable">{{data[key] }}</span>
+=======
+                                <span *ngSwitchDefault class="unclickable">{{ data[key] }}</span>
+>>>>>>> e24586bdcff59fe37e8e9d16e4fa09d84ba9270c
                             </div>
                             <div *ngIf="!!(data===fillData)" class="filler">
                                 <span></span>
@@ -241,7 +272,11 @@
                         <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]" [class.d-none]="pinKeys.indexOf(key) != -1" >
                             <div *ngIf="!(data===fillData)">
                                 <div *ngSwitchCase="'percent'" style="text-align: right">
+<<<<<<< HEAD
                                     <span class="unclickable">{{data[key] | number: '1.10-10'}}</span>
+=======
+                                    <span class="unclickable">{{ data[key] | number: '1.10-10'}}</span>
+>>>>>>> e24586bdcff59fe37e8e9d16e4fa09d84ba9270c
 ======= -->
                                 <span *ngSwitchDefault class="gridHeader" (click)="sort(dataKeys[i],sortBy);sortIndex=i;">{{tHeader}}</span>
                                  <i *ngIf="sortBy && i==sortIndex" class="fa fa-caret-down"></i>
@@ -279,7 +314,7 @@
                                     <div *ngSwitchCase="'checkbox'" style="text-align: center;">
                                         <input  type="checkbox" [checked]="data[key] && data[key]!= 'N'">
                                     </div>
-                                    <span *ngSwitchDefault class="unclickable">{{data[key] }}</span>
+                                    <span *ngSwitchDefault class="unclickable">{{ data[key] }}</span>
 <!-- >>>>>>> 52f0de4d81d86a7c64b1a521d9cfffd09d471ab1 -->
                                 </div>
                                 <div *ngIf="data===fillData" class="filler">

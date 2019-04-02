@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChildren,QueryList } from '@angular/core';
 import { PARListing } from '@app/_models'
 import { UnderwritingService, NotesService } from '../../../_services';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 
 @Component({
     selector: 'app-par-listing',
@@ -10,7 +11,7 @@ import { Router } from '@angular/router';
     styleUrls: ['./par-listing.component.css']
 })
 export class ParListingComponent implements OnInit {
-
+    @ViewChildren(CustNonDatatableComponent) table: QueryList<CustNonDatatableComponent>;
     tableData: any[] = [];
     tHeader: any[] = [];
     dataTypes: any[] = [];
@@ -24,6 +25,7 @@ export class ParListingComponent implements OnInit {
     policyId: any;
     searchParams: any[] = [];
     fetchedData: any;
+    btnDisabled: boolean;
 
     constructor(private uwService: UnderwritingService, private titleService: Title, private router: Router, private ns: NotesService) { }
     passDataListing: any = {
@@ -43,7 +45,7 @@ export class ParListingComponent implements OnInit {
         editFlag: true,
         pageStatus: true,
         pagination: true,
-        pageLength: 10,
+        pageLength: 20,
         filters: [
             {
                 key: 'policyNo',
@@ -86,34 +88,53 @@ export class ParListingComponent implements OnInit {
                 dataType: 'text'
             },
             {
-                key: 'sumInsured',
+               keys: {
+                    from: 'totalSiLess',
+                    to: 'totalSiGrt'
+                },
                 title: 'Sum Insured',
-                dataType: 'text'
+                dataType: 'textspan'
             },
             {
-                key: 'premium',
+                keys: {
+                    from: 'totalPremLess',
+                    to: 'totalPremGrt'
+                },
                 title: 'Premium',
-                dataType: 'text'
+                dataType: 'textspan'
             },
             {
-                key: 'issueDate',
+                 keys: {
+                    from: 'issueDateFrom',
+                    to: 'issueDateTo'
+                },
                 title: 'Issue Date',
-                dataType: 'date'
+                dataType: 'datespan'
             },
             {
-                key: 'inceptionDate',
+
+                 keys: {
+                    from: 'inceptDateFrom',
+                    to: 'inceptDateTo'
+                },
                 title: 'Inception Date',
-                dataType: 'date'
+                dataType: 'datespan'
             },
             {
-                key: 'expiryDate',
+                keys: {
+                    from: 'expiryDateFrom',
+                    to: 'expiryDateTo'
+                },
                 title: 'Expiry Date',
-                dataType: 'date'
+                dataType: 'datespan'
             },
-               {
-                key: 'accountingDate',
+            {
+                keys: {
+                    from: 'acctDateFrom',
+                    to: 'acctDateTo'
+                },
                 title: 'Accounting Date',
-                dataType: 'date'
+                dataType: 'datespan'
             },
             {
                 key: 'status',
@@ -132,11 +153,10 @@ export class ParListingComponent implements OnInit {
 
    retrievePolListing(){
        this.uwService.getParListing(this.searchParams).subscribe(data => {
-          console.log(data)
           var records = data['policyList'];
           this.fetchedData = records;
                for(let rec of records){
-                     if (rec.statusDesc === '1' || rec.statusDesc === '2') {
+                     if (rec.statusDesc === 'In Force' || rec.statusDesc === 'In Progress') {
                          this.passDataListing.tableData.push(
                                                     {
                                                         policyId: rec.policyId,
@@ -159,27 +179,43 @@ export class ParListingComponent implements OnInit {
                                                 );  
                      }
                }
-
+                this.table.forEach(table => { table.refreshTable() });
        });
 
    }
     //Method for DB query
     searchQuery(searchParams){
         this.searchParams = searchParams;
+        this.passDataListing.tableData = [];
+        this.selectedPolicy = {};
+        this.passDataListing.btnDisabled = true;
+
         this.retrievePolListing();
+
     }
 
     onRowDblClick(event) {
-
         for (var i = 0; i < event.target.closest("tr").children.length; i++) {
         this.uwService.rowData[i] = event.target.closest("tr").children[i].innerText;
         }
 
-        this.line = this.uwService.rowData[0].split("-")[0];
+        for(let rec of this.fetchedData){
+              if(rec.policyNo === this.uwService.rowData[0]) {
+                this.policyId = rec.policyId;
+              }
+        }
+        this.polLine = this.uwService.rowData[0].split("-")[0];
+        this.policyNo = this.uwService.rowData[0];
 
-        setTimeout(() => {
-               this.router.navigate(['/policy-issuance', { line: this.polLine }], { skipLocationChange: true });
-        },100); 
+        if (this.selectedPolicy.status === '1'){
+             this.uwService.toPolInfo = [];
+             this.uwService.toPolInfo.push("edit", this.polLine);
+             setTimeout(() => {
+               this.router.navigate(['/policy-issuance', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId }], { skipLocationChange: true });
+             },100); 
+        } else {
+            console.log("status is in-forced!");
+        }
     }
 
     onClickAdd(event){
@@ -189,13 +225,13 @@ export class ParListingComponent implements OnInit {
     }
 
     onClickEdit(event){
-        this.line = this.selectedPolicy.policyNo.split('-')[0];
+        this.polLine = this.selectedPolicy.policyNo.split('-')[0];
         this.policyNo = this.selectedPolicy.policyNo;
         this.policyId = this.selectedPolicy.policyId;
 
         if (this.selectedPolicy.status === '1'){
              this.uwService.toPolInfo = [];
-             this.uwService.toPolInfo.push("edit", this.line);
+             this.uwService.toPolInfo.push("edit", this.polLine);
              setTimeout(() => {
                this.router.navigate(['/policy-issuance', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId }], { skipLocationChange: true });
              },100); 
@@ -206,8 +242,13 @@ export class ParListingComponent implements OnInit {
     }
 
     onRowClick(event){
-      this.selectedPolicy = event;
-      console.log(this.selectedPolicy);
+      if(this.selectedPolicy === event || event === null){
+            this.selectedPolicy = {};
+            this.passDataListing.btnDisabled = true;
+        }else{
+            this.selectedPolicy = event;
+            this.passDataListing.btnDisabled = false;
+        }
     }
 
 }
