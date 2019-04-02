@@ -177,9 +177,9 @@
             <div class="input-group">
               <span class="col-sm-4"></span>
               <label class="form-control-sm col-sm-1">Currency</label>
-              <input type="text" class="form-control form-control-sm col-sm-1">
+              <input type="text" class="form-control form-control-sm col-sm-1" readonly>
               <label class="form-control-sm col-sm-1" style="margin-left: -30px !important; z-index: -1;">Exch. Rt.</label>
-              <input type="text" class="form-control form-control-sm col-sm-1">
+              <input type="text" class="form-control form-control-sm col-sm-1" readonly>
               <span class="col-sm-4"></span>
             </div>
             <div class="input-group" style="margin-left: 52px !important; margin-bottom: -10px !important; margin-top: -13px !important;">
@@ -192,17 +192,17 @@
             <div class="input-group" style="margin-left: -55px !important;">
               <span class="col-sm-2"></span>
               <label class="form-control-sm col-sm-2">Total Sum Insured</label>
-              <input type="text" class="form-control form-control-sm col-sm-2" disabled="true">
+              <input type="text" class="form-control form-control-sm col-sm-2" readonly>
               <input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 3px !important;">
-              <input type="text" class="form-control form-control-sm col-sm-2" disabled="true" style="margin-left: 3px !important;">
+              <input type="text" class="form-control form-control-sm col-sm-2" readonly style="margin-left: 3px !important;">
               <span class="col-sm-2"></span>
             </div>
             <div class="input-group" style="margin-left: -55px !important ;margin-top: -8px;">
               <span class="col-sm-2"></span>
               <label class="form-control-sm col-sm-2">Total Premium</label>
-              <input type="text" class="form-control form-control-sm col-sm-2" disabled="true">
+              <input type="text" class="form-control form-control-sm col-sm-2" readonly>
               <input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 3px !important;">
-              <input type="text" class="form-control form-control-sm col-sm-2"  disabled="true" style="margin-left: 3px !important;">
+              <input type="text" class="form-control form-control-sm col-sm-2"  readonly style="margin-left: 3px !important;">
               <span class="col-sm-2"></span>
             </div>
           </div>
@@ -217,7 +217,7 @@
     <div class="row">
       <div class="col-sm-1"></div>
       <div class="col-sm-10" style="margin-bottom: -23px;">
-        <app-cust-editable-non-datatable [passData]="passDataTotal"></app-cust-editable-non-datatable>
+        <app-cust-editable-non-datatable [passData]="passData2"></app-cust-editable-non-datatable>
         <br />   
       </div>
       <div class="col-sm-1"></div>
@@ -281,14 +281,14 @@
       </div>
       <div class="input-group" style="margin-bottom: -13px !important">
        <label class="form-control-sm col-sm-3">Share(%)</label>
-       <input type="text" class="form-control form-control-sm">
+       <input type="text" class="form-control form-control-sm" appCurrencyRate appRequired>
        <label class="form-control-sm col-sm-2">PML(%)</label>
        <input type="text" class="form-control form-control-sm">
        <span class="col-sm-1"></span>
      </div>
      <div class="input-group" style="margin-bottom: -6px !important">
        <label class="form-control-sm col-sm-3">100% Values</label>
-       <input type="text" class="form-control form-control-sm">
+       <input type="text" class="form-control form-control-sm" appCurrencyRate appRequired>
        <span class="col-sm-1"></span>
      </div>
    </div>

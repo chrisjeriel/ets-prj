@@ -7,6 +7,8 @@ import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { MtnSectionCoversComponent } from '@app/maintenance/mtn-section-covers/mtn-section-covers.component';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 
 @Component({
   selector: 'app-coverage',
@@ -20,6 +22,8 @@ export class CoverageComponent implements OnInit {
   //tableDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @ViewChild(MtnSectionCoversComponent) secCoversLov: MtnSectionCoversComponent;
+  @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
+  @ViewChild(ConfirmSaveComponent) confirmSave: ConfirmSaveComponent;
   @Output() enblQuoteOpTab = new EventEmitter<any>();
   editedData: any[] = [];
   deletedData: any[] = [];
@@ -72,7 +76,7 @@ export class CoverageComponent implements OnInit {
     pageLength: 'unli',
     widths:[60,90,225,110,1],
     magnifyingGlass: ['coverCdAbbr'],
-    uneditable: [true,false,false,false,true],
+    uneditable: [true,false,false,false,false],
     keys:['section','bulletNo','coverCdAbbr','sumInsured','addSi']
   };
 
@@ -100,7 +104,7 @@ export class CoverageComponent implements OnInit {
   dialogMessage:string;
   dialogIcon:string;
   cancelFlag:boolean;
-
+  errorFlag:boolean = false;
   refresh:boolean = true;
 
 
@@ -454,7 +458,21 @@ export class CoverageComponent implements OnInit {
   }
 
   onClickSave(){
-  $('#confirm-save #modalBtn2').trigger('click');
+    for (var i =0; i < this.passData.tableData.length;i++){
+      if(this.passData.tableData[i].sumInsured == 0  && this.passData.tableData[i].addSi == 'Y'){
+        this.errorFlag = true;
+      }
+    }
+
+    if(this.errorFlag){
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'Please check Sum Insured.';
+      this.successDiag.open();
+      this.errorFlag = false;
+    }else {
+      $('#confirm-save #modalBtn2').trigger('click');
+    }
+    
   }
 
 }

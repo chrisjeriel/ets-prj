@@ -54,7 +54,7 @@ export class PolCoverageComponent implements OnInit {
   };
   passDataSectionCover: any = {
         tableData: [],
-        tHeader: ["Cover Code", "Section", "Bullet No", "Sum Insured", "Rate", "Premium", "Add Sl"],
+        tHeader: [ "Section","Bullet No","Cover Name",  "Sum Insured", "Rate", "Premium", "Add Sl"],
         dataTypes: [
                     "text", "text", "text", "currency", "percent", "currency", "checkbox"
                    ],
@@ -62,8 +62,8 @@ export class PolCoverageComponent implements OnInit {
         pageLength: 10,
         searchFlag:true,
         magnifyingGlass: ['coverCode'],
-        widths:[228,1,1,200,1,1,1],
-        keys:['coverCd','section','bulletNo','sumInsured','premRt','premAmt','addSi']
+        widths:[1,1,228,200,1,1,1],
+        keys:['section','bulletNo','description','sumInsured','premRt','premAmt','addSi']
     };
 
 
@@ -116,33 +116,6 @@ export class PolCoverageComponent implements OnInit {
         }
     };
 
-
-  passData: any = {
-    tableData:[],
-    tHeader:[],
-    tHeaderWithColspan:[],
-    options:[],
-    dataTypes:[],
-    opts:[],
-    addFlag: true,
-    deleteFlag: true,
-    // paginateFlag: true,
-    searchFlag: true,
-    checkFlag: true,
-    magnifyingGlass: ['coverCode'],
-    pageLength:'unli'
-  };
-
-  passData2: any = {
-    tableData:[],
-    tHeader:[],
-    tHeaderWithColspan:[],
-    options:[],
-    dataTypes:[],
-    pageLength: 3
-  };
-
-
   textArea: any = null;
 
 
@@ -190,12 +163,41 @@ export class PolCoverageComponent implements OnInit {
   dialogMessage:string;
   cancelFlag:boolean;
 
+
+  passData: any = {
+    tableData:[],
+    tHeader:['Section','Bullet No','Cover Name','Sum Insured','Rate','Premium','Sum Insured','Rate','Premium','Sum Insured','Rate','Premium','Add Sl'],
+    tHeaderWithColspan:[],
+    options:[],
+    dataTypes:['text','text','text','currency','percent','currency','currency','percent','currency','currency','percent','currency','checkbox'],
+    opts:[],
+    addFlag: true,
+    deleteFlag: true,
+    // paginateFlag: true,
+    searchFlag: true,
+    checkFlag: true,
+    magnifyingGlass: ['coverCd'],
+    keys:['section','bulletNo','description','sumInsured','premRt','premAmt','altSumInsured','altRate','altPrenium','comSumInsured','comRate','comPrenium','addSi'],
+    uneditable:[false,false,false,true,true,true,false,false,false,false,false,false,false],
+    pageLength:'unli'
+  };
+
+  passData2: any = {
+    tableData:[],
+    tHeader:['Section','Sum Insured','Premium','Sum Insured','Premium','Sum Insured','Premium'],
+    tHeaderWithColspan:[],
+    options:[],
+    dataTypes:['text','currency','currency','currency','currency','currency','currency'],
+    pageLength: 3
+  };
+
   constructor(private underwritingservice: UnderwritingService, private titleService: Title, private modalService: NgbModal,
                 private route: ActivatedRoute, private ns: NotesService,  private router: Router) { }
 
 
   ngOnInit() {
     this.titleService.setTitle("Pol | Coverage");
+    console.log(this.alteration)
     if (!this.alteration) {
       //this.passDataSectionCover.tableData = this.underwritingservice.getUWCoverageInfo();
       //this.passDataTotalPerSection.tableData = this.underwritingservice.getTotalPerSection();
@@ -203,40 +205,6 @@ export class PolCoverageComponent implements OnInit {
       this.getPolCoverage();
     } else {
       this.passDataDeductibles.tableData = this.underwritingservice.getUWCoverageDeductibles();
-      this.passData.tHeader.push("Cover Code");
-      this.passData.tHeader.push("Section");
-      this.passData.tHeader.push("Bullet No");
-      this.passData.tHeader.push("Sum Insured");
-      this.passData.tHeader.push("Rate");
-      this.passData.tHeader.push("Premium");
-      this.passData.tHeader.push("Sum Insured");
-      this.passData.tHeader.push("Rate");
-      this.passData.tHeader.push("Premium");
-      this.passData.tHeader.push("Sum Insured");
-      this.passData.tHeader.push("Rate");
-      this.passData.tHeader.push("Premium");
-      this.passData.tHeader.push("Add Sl");
-
-      this.passData.dataTypes.push("text");
-      this.passData.dataTypes.push("select");
-      this.passData.dataTypes.push("select");
-      this.passData.dataTypes.push("currency");
-      this.passData.dataTypes.push("percent");
-      this.passData.dataTypes.push("currency");
-      this.passData.dataTypes.push("currency");
-      this.passData.dataTypes.push("percent");
-      this.passData.dataTypes.push("currency");
-      this.passData.dataTypes.push("currency");
-      this.passData.dataTypes.push("percent");
-      this.passData.dataTypes.push("currency");
-      this.passData.dataTypes.push("checkbox");
-
-      this.passData.opts.push({ selector: "section", vals: ["I", "II", "III"] });
-      this.passData.opts.push({ selector: "bulletNo", vals: ["1", "1.2", "1.3"] });
-      this.passData.opts.push({ selector: "sortSe", vals: ["10", "20", "30"] });
-
-      this.optionsData.push("USD", "PHP", "EUR");
-
       this.passData.tHeaderWithColspan.push({ header: "", span: 1 }, { header: "", span: 3 },
         { header: "Previous", span: 3 }, { header: "This Alteration", span: 3 },
         { header: "Cumulative", span: 3 }, { header: "", span: 1 });
@@ -258,24 +226,6 @@ export class PolCoverageComponent implements OnInit {
           addSl: ""
         }
       ];
-
-      //
-
-      this.passData2.tHeader.push("Section");
-      this.passData2.tHeader.push("Sum Insured");
-      this.passData2.tHeader.push("Premium");
-      this.passData2.tHeader.push("Sum Insured");
-      this.passData2.tHeader.push("Premium");
-      this.passData2.tHeader.push("Sum Insured");
-      this.passData2.tHeader.push("Premium");
-
-      this.passData2.dataTypes.push("text");
-      this.passData2.dataTypes.push("currency");
-      this.passData2.dataTypes.push("currency");
-      this.passData2.dataTypes.push("currency");
-      this.passData2.dataTypes.push("currency");
-      this.passData2.dataTypes.push("currency");
-      this.passData2.dataTypes.push("currency");
 
       this.passData2.tHeaderWithColspan.push({ header: "", span: 1 }, { header: "Previous", span: 2 }, 
         { header: "This Alteration", span: 2 }, { header: "Cumulative", span: 2 });
@@ -309,6 +259,26 @@ export class PolCoverageComponent implements OnInit {
           cPremium: ''
         }
       ];
+
+
+
+
+
+
+      this.underwritingservice.getUWCoverageInfos(null,this.policyId).subscribe((data:any) => {
+        console.log(data)
+        this.passData.tableData = [];
+        var dataTable = data.policy.project.coverage.sectionCovers
+          for (var i = 0; i< dataTable.length;i++){
+            this.passData.tableData.push(dataTable[i])
+          }
+
+          this.table.refreshTable();
+
+      });
+
+
+
     }
 
     this.sub = this.route.params.subscribe(params => {
