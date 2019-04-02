@@ -205,7 +205,8 @@ export class AttachmentComponent implements OnInit {
        this.dialogIcon = 'error';
        this.dialogMessage = 'Please complete all the required fields.';
        $('app-sucess-dialog #modalBtn').trigger('click');
-
+       setTimeout(()=>{$('.globalLoading').css('display','none');0});
+       console.log('error hereeeeeeeee');
        this.loading = false;
      }else{
         if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
