@@ -23,6 +23,8 @@ export class CurrencyDirective implements OnInit{
 	    }else{
 	    	unHighlight(this.el);
 	    	sNum[1] = sNum[1] !== undefined ? sNum[1] : '00';
+        sNum[1] = (sNum[1] + "00").substring(0,2);
+        console.log(sNum[1])
 	  		target.value = sNum.join('.');
 	    }
    }else {
