@@ -32,89 +32,103 @@ export class PolicyInquiryComponent implements OnInit {
     tableData: [],
     pagination: true,
     pageStatus: true,
-    // printBtn: true,
-    // filters: [
-    //          {
-    //             key: 'line',
-    //             title: 'Line',
-    //             dataType: 'text'
-    //         },
-    //         {
-    //             key: 'policyNo',
-    //             title: 'Policy No.',
-    //             dataType: 'text'
-    //         },
-    //         {
-    //             key: 'typeCession',
-    //             title: 'Type of Cession',
-    //             dataType: 'text'
-    //         },
-    //         {
-    //             key: 'cedingCompany',
-    //             title: 'Ceding Company',
-    //             dataType: 'text'
-    //         },
-    //         {
-    //             key: 'insured',
-    //             title: 'Insured',
-    //             dataType: 'text'
-    //         },
-    //         {
-    //             key: 'risk',
-    //             title: 'Risk',
-    //             dataType: 'text'
-    //         },
-    //         {
-    //             key: 'object',
-    //             title: 'Object',
-    //             dataType: 'text'
-    //         },
-    //         {
-    //             key: 'site',
-    //             title: 'Site',
-    //             dataType: 'text'
-    //         },
-    //         {
-    //             key: 'currency',
-    //             title: 'Currency',
-    //             dataType: 'date'
-    //         },
-    //         {
-    //             key: 'sumInsured',
-    //             title: 'Sum Insured',
-    //             dataType: 'text'
-    //         },
-    //         {
-    //             key: 'premium',
-    //             title: 'Premium',
-    //             dataType: 'text'
-    //         },
-    //         {
-    //             key: 'issueDate',
-    //             title: 'Issue Date',
-    //             dataType: 'date'
-    //         },
-    //         {
-    //             key: 'inceptionDate',
-    //             title: 'Inception Date',
-    //             dataType: 'date'
-    //         },
-    //         {
-    //             key: 'expiryDate',
-    //             title: 'Expiry Date',
-    //             dataType: 'date'
-    //         },
-    //            {
-    //             key: 'accountingDate',
-    //             title: 'Accounting Date',
-    //             dataType: 'date'
-    //         },
-    //         {
-    //             key: 'status',
-    //             title: 'Status',
-    //             dataType: 'text'
-    //         },
-    //     ],
+    printBtn: true,
+    filters: [
+            {
+                key: 'policyNo',
+                title: 'Policy No.',
+                dataType: 'text'
+            },
+            {
+                key: 'typeCession',
+                title: 'Type of Cession',
+                dataType: 'text'
+            },
+            {
+                key: 'cedingCompany',
+                title: 'Ceding Company',
+                dataType: 'text'
+            },
+            {
+                key: 'insured',
+                title: 'Insured',
+                dataType: 'text'
+            },
+            {
+                key: 'risk',
+                title: 'Risk',
+                dataType: 'text'
+            },
+            {
+                key: 'object',
+                title: 'Object',
+                dataType: 'text'
+            },
+            {
+                key: 'site',
+                title: 'Site',
+                dataType: 'text'
+            },
+            {
+                key: 'currency',
+                title: 'Currency',
+                dataType: 'text'
+            },
+            {
+               keys: {
+                    from: 'totalSiLess',
+                    to: 'totalSiGrt'
+                },
+                title: 'Sum Insured',
+                dataType: 'textspan'
+            },
+            {
+                keys: {
+                    from: 'totalPremLess',
+                    to: 'totalPremGrt'
+                },
+                title: 'Premium',
+                dataType: 'textspan'
+            },
+            {
+                 keys: {
+                    from: 'issueDateFrom',
+                    to: 'issueDateTo'
+                },
+                title: 'Issue Date',
+                dataType: 'datespan'
+            },
+            {
+
+                 keys: {
+                    from: 'inceptDateFrom',
+                    to: 'inceptDateTo'
+                },
+                title: 'Inception Date',
+                dataType: 'datespan'
+            },
+            {
+                keys: {
+                    from: 'expiryDateFrom',
+                    to: 'expiryDateTo'
+                },
+                title: 'Expiry Date',
+                dataType: 'datespan'
+            },
+            {
+                keys: {
+                    from: 'acctDateFrom',
+                    to: 'acctDateTo'
+                },
+                title: 'Accounting Date',
+                dataType: 'datespan'
+            },
+            {
+                key: 'status',
+                title: 'Status',
+                dataType: 'text'
+            },
+        ],
   };
 
   policyInfo:any = {
@@ -155,28 +169,17 @@ export class PolicyInquiryComponent implements OnInit {
     totalPrem: null,
   }
 
+  searchParams: any[] = [];
+
   constructor(private underwritingService: UnderwritingService, private titleService: Title, private router : Router) { }
 
   ngOnInit() {
     this.titleService.setTitle("Pol | Policy Inquiry");
     // this.passData.tableData = this.underwritingService.getPolicyInquiry();
-    this.underwritingService.getPolicyInquiry().subscribe((data:any)=>{
-      console.log(data)
-      this.passData.tableData = data.policyList.filter(a=>{
-        a.lineCd = a.policyNo.substring(0,3);
-        a.totalSi = a.project.coverage.totalSi;
-        a.riskName = a.project.riskName;
-        a.objectDesc = a.project.objectDesc;
-        a.site = a.project.site;
-        a.totalPrem = a.project.coverage.totalPrem;
-        return true;
-      });
-      this.listTable.refreshTable();
-    })
+    this.retrievePolListing();
   }
 
   gotoInfo(data) {
-      console.log(data);
        this.router.navigate(['/policy-information', {policyId:data.policyId}], { skipLocationChange: true });
   }
 
@@ -186,5 +189,30 @@ export class PolicyInquiryComponent implements OnInit {
     else
       this.policyInfo = this.defaultPolicyInfo;
   }
+
+  searchQuery(searchParams){
+        this.searchParams = searchParams;
+        this.passData.tableData = [];
+        this.passData.btnDisabled = true;
+
+        this.retrievePolListing();
+
+   }
+
+   retrievePolListing(){
+       this.underwritingService.getParListing(this.searchParams).subscribe((data:any)=>{
+         this.passData.tableData = data.policyList.filter(a=>{
+           a.lineCd = a.policyNo.substring(0,3);
+           a.totalSi = a.project.coverage.totalSi;
+           a.riskName = a.project.riskName;
+           a.objectDesc = a.project.objectDesc;
+           a.site = a.project.site;
+           a.totalPrem = a.project.coverage.totalPrem;
+           return true;
+         });
+         this.listTable.refreshTable();
+       })
+   }
+
 
 }

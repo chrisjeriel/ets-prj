@@ -214,8 +214,9 @@ export class CustEditableNonDatatableComponent implements OnInit {
         this.search(this.searchString);
         this.tableDataChange.emit(this.passData.tableData);
         this.add.next(event);
-
-        setTimeout(a=>{this.pagination.setCurrent(this.pagination.getLastPage())},0);
+        if(this.passData.paginateFlag){
+            setTimeout(a=>{this.pagination.setCurrent(this.pagination.getLastPage())},0);
+        }
         this.form.control.markAsDirty();
     }
 
