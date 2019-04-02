@@ -35,7 +35,7 @@
 
 					<div class="input-group textarea">
 						<label class="form-control-sm col-sm-2"></label>
-						<textarea class="form-control form-control-sm col-sm" rows="2" [(ngModel)]="polAlopData.insuredDesc" name="insuredDesc"></textarea>
+						<textarea class="form-control form-control-sm col-sm" rows="2" [(ngModel)]="polAlopData.insuredDesc" name="insuredDesc" appRequired></textarea>
 						<br>
 					</div>
 
@@ -73,13 +73,13 @@
 			<div class="input-group" style="margin-top: 14px !important;">
 				<label class="col-sm-3"></label>
 				<label class=" form-control-sm col-sm-2" for="annSumInsured">Annual Sum Insured</label>
-				<input [readonly]="alterFlag" class="form-control form-control-sm  col-sm-5 text-right" type="text" id="annSumInsured" [(ngModel)]="polAlopData.annSi" name="annSi"
+				<input [readonly]="true" class="form-control form-control-sm  col-sm-5 text-right" type="text" id="annSumInsured" [(ngModel)]="polAlopData.annSi" name="annSi"
 				 onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
 			</div>
 			<div class="input-group">
 				<label class="col-sm-3"></label>
 				<label class="form-control-sm col-sm-2 text-left" for="sumInsForMaxIndem">Sum Insured for Maximum Indemnity Period</label>
-				<input [readonly]="alterFlag" class="form-control form-control-sm  col-sm-5 text-right" type="text" id="sumInsForMaxIndem" [(ngModel)]="polAlopData.maxIndemPdSi" name="maxIndemPdSi"
+				<input [readonly]="true" class="form-control form-control-sm  col-sm-5 text-right" type="text" id="sumInsForMaxIndem" [(ngModel)]="polAlopData.maxIndemPdSi" name="maxIndemPdSi"
 				 onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
 			</div>
 		</div>
@@ -98,7 +98,7 @@
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" for="maxIndemPeriod">Maximum Indemnity Period</label>
-				<input [readonly]="alterFlag" class="form-control form-control-sm  col-sm-1" type="number" id="maxIndemPeriod" [(ngModel)]="polAlopData.maxIndemPd" name="maxIndemPd">
+				<input [readonly]="alterFlag" class="form-control form-control-sm  col-sm-1" type="number" id="maxIndemPeriod" [(ngModel)]="polAlopData.maxIndemPd" name="maxIndemPd" appRequired>
 				<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">months</label>
 			</div>
 			<div class="input-group">
@@ -108,11 +108,11 @@
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" for="timeExcess">Time Excess</label>
 				<input [readonly]="alterFlag" class="form-control form-control-sm  col-sm-7" type="text" id="fromIndem" [(ngModel)]="polAlopData.timeExc" name="timeExc"
-				 style="margin-right: 133px !important;">
+				 style="margin-right: 133px !important;" appRequired>
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" for="interval">Progress reports to be presented at intervals of</label>
-				<input [readonly]="alterFlag" class="form-control form-control-sm  col-sm-1" type="number" id="interval" [(ngModel)]="polAlopData.repInterval" name="repInterval">
+				<input [readonly]="alterFlag" class="form-control form-control-sm  col-sm-1" type="number" id="interval" [(ngModel)]="polAlopData.repInterval" name="repInterval" appRequired>
 				<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">months</label>
 			</div>
 		</div>
@@ -132,10 +132,10 @@
 							</div>
 							<div footer class="text-center">
 								<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
-								<button type="button" class="cust-btn" (click)="savePolAlopItem()"><a>Save</a></button>
+								<button type="button" class="cust-btn" (click)="onClickSavePolAlopItem()"><a>Save</a></button>
 							</div>
 						</app-modal>
-						<button type="button" class="cust-btn"><a>Cancel</a></button>
+						<button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
 						<button type="button" class="cust-btn" (click)="onClickSavePolAlop()"><a>Save</a></button>
 					</div>
 				</div>
@@ -153,11 +153,11 @@
 							</div>
 							<div footer class="text-center">
 								<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
-								<button type="button" class="cust-btn" (click)="savePolAlopItem()"><a>Save</a></button>
+								<button type="button" class="cust-btn" (click)="onClickSaveAlopItem()"><a>Save</a></button>
 							</div>
 						</app-modal>
-						<button type="button" class="cust-btn"><a>Cancel</a></button>
-						<button type="button" class="cust-btn" (click)="save()"><a>Save</a></button>
+						<button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+						<button type="button" class="cust-btn" (click)="onClickSavePolAlop()"><a>Save</a></button>
 					</div>
 				</div>
 			</div>
@@ -171,5 +171,5 @@
 
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 <app-confirm-save id="polAlop" (onYes)="save()"></app-confirm-save>
-
+<app-cancel-button (onYes)="save('cancel')" [url]="polURL" ></app-cancel-button>
 <app-confirm-save id="polAlopItem" (onYes)="savePolAlopItem()"></app-confirm-save>

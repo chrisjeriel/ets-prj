@@ -4,6 +4,7 @@ import { ALOPItemInformation, ALOPInfo } from '../../../_models';
 import { FormsModule }   from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { ActivatedRoute } from '@angular/router';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
 
@@ -14,6 +15,7 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 })
 export class PolAlopComponent implements OnInit {
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
+  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @ViewChild('myForm') form:any;
   aLOPInfo: ALOPInfo = new ALOPInfo();
   tableData: any[] = [["1", "Description 1", "Information 1"],
@@ -104,11 +106,12 @@ export class PolAlopComponent implements OnInit {
   cancelFlag:boolean;
   dateErFlag:boolean = false;
   dialogMessage:string = "";
+  polURL:string = "";
   dialogIcon: string = "";
   insured:string = '';
 
   @Input() policyInfo:any = {};
-  @Input() alterFlag: boolean = false;
+  @Input() alterFlag: boolean;
   polAlopData: any={
                      insId: null,
                      insuredName: null,
@@ -152,28 +155,10 @@ export class PolAlopComponent implements OnInit {
 
     this.passDataEar.tableData = this.tableData2;
 
-    this.insured = this.policyInfo.principalName + "/" + this.policyInfo.contractorName;
-    this.policyNo = this.policyInfo.policyNo.split(/[-]/g)[0]
+    this.insured = this.policyInfo.principalName + " / " + this.policyInfo.contractorName;
+    this.policyNo = this.policyInfo.policyNo.split(/[-]/g)[0];
 
-    console.log(this.alterFlag);
-
-   /* if(this.alterFlag){
-       this.passDataCar.uneditable = [];
-       this.passDataCar.magnifyingGlass = [];
-       this.passDataCar.addFlag = false;
-       this.passDataCar.deleteFlag = false;
-       for(var count = 0; count < this.passDataCar.tHeader.length; count++){
-         this.passDataCar.uneditable.push(true);
-       }
-
-       this.passDataEar.uneditable = [];
-       this.passDataEar.magnifyingGlass = [];
-       this.passDataEar.addFlag = false;
-       this.passDataEar.deleteFlag = false;
-       for(var count = 0; count < this.passDataEar.tHeader.length; count++){
-         this.passDataEar.uneditable.push(true);
-       }
-    }*/
+    this.polURL = (this.alterFlag == false)? 'alt-policy-listing' : 'policy-listing'; 
 
     this.sub = this.route.params.subscribe(params => {
       this.line = params['line'];
@@ -205,11 +190,11 @@ export class PolAlopComponent implements OnInit {
     });
   }
 
-  savePolAlopItem(){
+  savePolAlopItem(cancelFlag?){
+     this.cancelFlag = cancelFlag != undefined;
      let savedData: any = {};
 
      savedData.policyId = this.policyInfo.policyId;
-
      savedData.savePolAlopItemList=[];
      savedData.deletePolAlopItemList=[];
 
@@ -223,11 +208,13 @@ export class PolAlopComponent implements OnInit {
             savedData.savePolAlopItemList[savedData.savePolAlopItemList.length-1].updateUser = JSON.parse(window.localStorage.currentUser).username,
             savedData.savePolAlopItemList[savedData.savePolAlopItemList.length-1].updateDate = this.ns.toDateTimeString(savedData.savePolAlopItemList[savedData.savePolAlopItemList.length-1].updateDate);
          } else if (this.passDataCar.tableData[i].deleted) {
-             savedData.deletePolAlopItemList.push(this.passDataCar.tableData[i]);
-            savedData.savePolAlopItemList[savedData.savePolAlopItemList.length-1].createUser = JSON.parse(window.localStorage.currentUser).username,
-            savedData.deletePolAlopItemList[savedData.deletePolAlopItemList.length-1].createDate = this.ns.toDateTimeString(savedData.savePolAlopItemList[savedData.savePolAlopItemList.length-1].createDate);
-            savedData.savePolAlopItemList[savedData.savePolAlopItemList.length-1].updateUser = JSON.parse(window.localStorage.currentUser).username,
-            savedData.deletePolAlopItemList[savedData.deletePolAlopItemList.length-1].updateDate = this.ns.toDateTimeString(savedData.savePolAlopItemList[savedData.savePolAlopItemList.length-1].updateDate);
+            savedData.deletePolAlopItemList.push(this.passDataCar.tableData[i]);
+            console.log(savedData.deletePolAlopItemList)
+            savedData.deletePolAlopItemList[savedData.deletePolAlopItemList.length-1].policyId = this.policyInfo.policyId;
+            savedData.deletePolAlopItemList[savedData.deletePolAlopItemList.length-1].createUser = JSON.parse(window.localStorage.currentUser).username,
+            savedData.deletePolAlopItemList[savedData.deletePolAlopItemList.length-1].createDate = this.ns.toDateTimeString(savedData.deletePolAlopItemList[savedData.deletePolAlopItemList.length-1].createDate);
+            savedData.deletePolAlopItemList[savedData.deletePolAlopItemList.length-1].updateUser = JSON.parse(window.localStorage.currentUser).username,
+            savedData.deletePolAlopItemList[savedData.deletePolAlopItemList.length-1].updateDate = this.ns.toDateTimeString(savedData.deletePolAlopItemList[savedData.deletePolAlopItemList.length-1].updateDate);
          }
        }
      }
@@ -251,7 +238,7 @@ export class PolAlopComponent implements OnInit {
        }
      }
 
-     this.underwritingService.savePolAlopItem(savedData).subscribe((data: any) => {
+    this.underwritingService.savePolAlopItem(savedData).subscribe((data: any) => {
         if(data['returnCode'] == 0) {
           this.dialogMessage = data['errorList'][0].errorMessage;
           this.dialogIcon = "error";
@@ -268,7 +255,6 @@ export class PolAlopComponent implements OnInit {
   getPolAlop() {
     
     this.underwritingService.getPolAlop(this.policyInfo.policyId,'').subscribe((data: any) => {
-
       if (data.policy != null) {
         this.policyId = data.policy.policyId;
         this.polAlopData = data.policy[0].alop[0]===null ? this.polAlopData : data.policy[0].alop[0];
@@ -285,7 +271,6 @@ export class PolAlopComponent implements OnInit {
   getPolAlopItem() {
 
     this.underwritingService.getPolAlopItem(this.policyNo, this.policyInfo.policyId, this.policyInfo.policyNo).subscribe((data: any) => {
-      
       if (data.policy != null) {
         var dataInfos = data.policy.alop[0].alopItem;
 
@@ -312,6 +297,11 @@ export class PolAlopComponent implements OnInit {
       }
     });
   }
+
+  cancel() {
+    this.cancelBtn.clickCancel();
+  }
+
 
   openGenericLOV(selector){
     this.passLOV.selector = selector;
