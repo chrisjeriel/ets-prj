@@ -359,3 +359,8 @@ padding: 0;
 .cust-tbl-label:hover {
     background-color: gray !important;
 }
+
+.cust-btn-dlist {
+    font-size: -9px !important;
+    width: 100%;
+}

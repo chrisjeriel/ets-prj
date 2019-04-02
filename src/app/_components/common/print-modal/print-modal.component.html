@@ -7,7 +7,7 @@
                                 <div class="custom-row-inline-inset">
 
                                  <ng-container >
-                                    <div class="input-group" style="margin-bottom : -14px ! important">
+                                    <div class="input-group" style="margin-bottom : -12px ! important">
                                     	<div class="col-sm-4" style="padding: 0">
                                     		<div *ngIf="printDefaultType" class="input-group" style="margin-bottom : -14px ! important">
                                     			 <label class="form-control-sm" for="xx">Report</label>
@@ -39,15 +39,15 @@
                                         		</select>
                                     		</div>
                                     		<div class="input-group" style="margin-bottom : 0px ! important; margin-top: 3px">
-                                    			 <select class="form-control form-control-sm cust-sm" id="printerName" appRequired [disabled]="selectPrinterDisabled" [(ngModel)]="printName">
+                                    			 <select class="form-control form-control-sm cust-sm" id="printerName" [disabled]="selectPrinterDisabled" [(ngModel)]="printName" (appRequired)="false">
                                             		<option value="Default">Default Printer</option>
                                         		 </select>
                                     		</div>
                                     	    <div class="input-group" style="margin-bottom : 0px ! important;  margin-top: 3px">
-                                    			 <input type="text" id="noOfCopies" class="form-control form-control-sm text-right" appRequired onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [disabled]="selectCopiesDisabled" [(ngModel)]="printCopies">
+                                    			 <input type="text" id="noOfCopies" class="form-control form-control-sm text-right" appRequired onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [disabled]="selectCopiesDisabled" [readonly]="selectCopiesDisabled" [(ngModel)]="printCopies">
                                     		</div>
                                     		<div *ngIf="printDefaultType" class="input-group" style="margin-bottom : 0px ! important;  margin-top: 8px">
-                                    			<input type="text" id="xx" class="form-control form-control-sm" appRequired disabled [(ngModel)]="wordingText" >
+                                    			<input type="text" id="xx" class="form-control form-control-sm" appRequired disabled readonly [(ngModel)]="wordingText" >
 												<div class="text-search-ico" ><a class="disabled-a"><i class="fa fa-search" (click)="reportsParamsLOV()"></i></a></div>
                                     		</div>
                                     	</div>	

@@ -278,8 +278,10 @@ span.ui-column-resizer {
                                 <button class="fa fa-paperclip btn-file" title="Attach File" *ngIf="!(data===fillData)">
                                     <input type="file" *ngIf="!(data===fillData)" (change)="upload(data,$event)">
                                 </button>
-                                <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="!(data===fillData)">
+                               <!--  <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="!(data===fillData)">
                                     <input type="file" *ngIf="!(data===fillData)" (change)="data.fileName=$event.target.files[0].name;data.edited=true;">
+                                </button> -->
+                                <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="!(data===fillData)" (click)="download(data.fileName)">
                                 </button>
                             </td>
                         </tr>
