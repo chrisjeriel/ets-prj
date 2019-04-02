@@ -170,10 +170,10 @@ export class QuotationService {
 
           if(searchParams.length < 1){
             params = new HttpParams()
-             .set('quotationNo','')
+             .set('holdCoverNo','')
              .set('status','')
              .set('cedingName','')
-             .set('holdCoverNo','')
+             .set('quotationNo','')
              .set('riskName','')
              .set('insuredDesc','')
              .set('periodFrom','')
@@ -182,6 +182,8 @@ export class QuotationService {
              .set('reqBy','')
              .set('reqDate','')
              .set('expiringInDays','')
+             .set('reqDateFrom','')
+             .set('reqDateTo','')
         }
          else{
              params = new HttpParams();

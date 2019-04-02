@@ -32,7 +32,10 @@
             "scripts": [
               "node_modules/jquery/dist/jquery.js",
               "node_modules/datatables.net/js/jquery.dataTables.js",
-              "node_modules/colresizable/colResizable-1.6.min.js"
+              "node_modules/colresizable/colResizable-1.6.min.js",
+              "node_modules/xlsx/dist/xlsx.core.min.js",
+              "node_modules/xlsx/dist/xlsx.min.js",
+              "/node_modules/alasql/dist/alasql.min.js"
             ]
           },
           "configurations": {

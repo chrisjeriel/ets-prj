@@ -186,11 +186,6 @@ export class QuotationComponent implements OnInit {
     	};
     }
 
-<<<<<<< HEAD
-
-
-
-
 
 	// setDocumentTitle(event) {
 	// 	console.log(event.target.closest('div').innerText);
@@ -213,7 +208,3 @@ export class QuotationComponent implements OnInit {
 	// }
 
 }
-
-=======
-}
->>>>>>> e24586bdcff59fe37e8e9d16e4fa09d84ba9270c
