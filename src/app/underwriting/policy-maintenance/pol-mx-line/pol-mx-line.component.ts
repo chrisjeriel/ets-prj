@@ -115,7 +115,9 @@ export class PolMxLineComponent implements OnInit {
 		updateUser: "",
 	};
 
+	counter:number;
 	onClickSaveLine(cancelFlag?){
+		this.counter = 0;
 		this.dialogIcon = '';
 		this.dialogMessage = '';
 		//this.loading = true;
@@ -130,7 +132,6 @@ export class PolMxLineComponent implements OnInit {
 					this.loading = false;	
 			}else{
 				if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
-				
 						this.mtnLineReq = { 
 							"deleteLine": [],
 							"saveLine": [
@@ -166,6 +167,7 @@ export class PolMxLineComponent implements OnInit {
 						console.log(JSON.stringify(this.mtnLineReq));
 					
 				}else if(this.passData.tableData[i].edited && this.passData.tableData[i].deleted){
+					console.log('delete');
 					this.mtnLineReq = { 
 						"deleteLine": [
 							 {
@@ -195,9 +197,21 @@ export class PolMxLineComponent implements OnInit {
 						$('app-sucess-dialog #modalBtn').trigger('click');
 						this.loading = false;
 					});
+				}else{
+					this.counter++;
+					console.log(this.counter);
+					
 				}
 			}
 			
+		}
+		if(this.passData.tableData.length === this.counter){
+			setTimeout(()=>{
+				$('.globalLoading').css('display','none');
+				this.dialogIcon = 'info';
+				this.dialogMessage = 'Nothing to save.';
+				$('app-sucess-dialog #modalBtn').trigger('click');
+			},500);
 		}
 	}
 
