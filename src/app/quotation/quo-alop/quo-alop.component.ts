@@ -84,10 +84,10 @@ export class QuoAlopComponent implements OnInit {
             optionId: null,
             annSi: null,
             maxIndemPdSi: null,
-            issueDate: '',
-            expiryDate:'',
+            issueDate: null,
+            expiryDate:null,
             maxIndemPd: null,
-            indemFromDate: '',
+            indemFromDate: null,
             timeExc: null,
             repInterval: null,
             updateDateAlop: new Date(),
@@ -263,19 +263,9 @@ export class QuoAlopComponent implements OnInit {
 
     emptyVar(){
         this.alopDetails =  {
-                optionId: null,
-                annSi: null,
-                maxIndemPdSi: null,
-                issueDate: '',
-                expiryDate:'',
-                maxIndemPd: null,
-                indemFromDate: '',
-                timeExc: null,
-                repInterval: null,
-                updateDateAlop: '',
-                updateUserAlop: JSON.parse(window.localStorage.currentUser).username,
-                createDateAlop:  '',
-                createUserAlop: JSON.parse(window.localStorage.currentUser).username
+                issueDate: null,
+                expiryDate:null,
+                indemFromDate: null
         }
     }
 
@@ -297,9 +287,6 @@ export class QuoAlopComponent implements OnInit {
       }
       console.log(this.alopData)
       this.quotationService.saveQuoteAlop(this.alopData).subscribe((data: any) => {
-        // this.alopData.issueDate = this.alopData.issueDate.split('T')[0];
-        // this.alopData.expiryDate = this.alopData.expiryDate.split('T')[0];
-        // this.alopData.indemFromDate = this.alopData.indemFromDate.split('T')[0];
         if(data['returnCode'] == 0) {
           this.dialogMessage = data['errorList'][0].errorMessage;
           this.dialogIcon = "error";
@@ -308,13 +295,9 @@ export class QuoAlopComponent implements OnInit {
           this.dialogMessage = "";
           this.dialogIcon = "success";
           $('#successModalBtn').trigger('click');
-          // this.refresh = false;
-          // setTimeout(()=>{
-          //   this.refresh = true;
-          // },0)
           this.form.control.markAsPristine()
           this.getAlop();
-          //this.emptyVar();
+          this.emptyVar();
           this.alopDetails = this.alopData.alopDetails.filter(a => a.optionId == this.alopDetails.optionId)[0];
           this.optionsList = this.optionsList.filter(a => a.optionId == this.optionsList.optionId)[0];
         }
@@ -356,16 +339,16 @@ export class QuoAlopComponent implements OnInit {
             savedData.saveAlopItemList.push(this.itemInfoData.tableData[i]);
             savedData.saveAlopItemList[savedData.saveAlopItemList.length-1].optionId = this.tableNonEditable.indvSelect.optionId
             savedData.saveAlopItemList[savedData.saveAlopItemList.length-1].createUserItem = JSON.parse(window.localStorage.currentUser).username,
-            savedData.saveAlopItemList[savedData.saveAlopItemList.length-1].createDateItem = this.ns.toDateTimeString(savedData.saveAlopItemList[savedData.saveAlopItemList.length-1].createDate);
+            savedData.saveAlopItemList[savedData.saveAlopItemList.length-1].createDateItem = this.ns.toDateTimeString(0);
             savedData.saveAlopItemList[savedData.saveAlopItemList.length-1].updateUserItem = JSON.parse(window.localStorage.currentUser).username,
-            savedData.saveAlopItemList[savedData.saveAlopItemList.length-1].updateDateItem = this.ns.toDateTimeString(savedData.saveAlopItemList[savedData.saveAlopItemList.length-1].updateDate);
+            savedData.saveAlopItemList[savedData.saveAlopItemList.length-1].updateDateItem = this.ns.toDateTimeString(0);
         }else if(this.itemInfoData.tableData[i].deleted){
             savedData.deleteAlopItemList.push(this.itemInfoData.tableData[i]);
             savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].optionId = this.tableNonEditable.indvSelect.optionId
             savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].createUserItem = JSON.parse(window.localStorage.currentUser).username,
-            savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].createDateItem = this.ns.toDateTimeString(savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].createDate);
+            savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].createDateItem = this.ns.toDateTimeString(0);
             savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].updateUserItem = JSON.parse(window.localStorage.currentUser).username,
-            savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].updateDateItem = this.ns.toDateTimeString(savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].updateDate);
+            savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].updateDateItem = this.ns.toDateTimeString(0);
         }
       }
       this.quotationService.saveQuoteAlopItem(savedData).subscribe((data: any) => {
@@ -400,7 +383,7 @@ export class QuoAlopComponent implements OnInit {
 
   openGenericLOV(selector){
     this.passLOV.selector = selector;
-    $('#lov #modalBtn').trigger('click');
+    $('#insuredLOV #modalBtn').trigger('click');
   }
 
   updateItemInfoData(data){
@@ -540,95 +523,4 @@ export class QuoAlopComponent implements OnInit {
         this.insuredLovs['first'].checkCode(this.alopData.insuredId, '#insuredLOV', ev);
     }
   }
-
-  /*clickRow(data){
-    /*if(Object.keys(data).length == 0){
-      this.readonlyFlag = true;
-    }else{
-      this.readonlyFlag = false;
-      if(this.alopData.alopDetails.length != 1){
-        this.alopDetails.optionId = data.optionId;
-        this.alopDetails = this.alopData.alopDetails.filter(a => a.optionId == this.alopDetails.optionId)[0];
-      }else{
-        
-        //this.alopData.alopDetails = [];
-
-
-        let alopDetails = new Object();
-        alopDetails['optionId'] = data.optionId;
-        alopDetails['annSi'] = '';
-        alopDetails['maxIndemPdSi'] = '';
-        alopDetails['issueDate'] = '';
-        alopDetails['expiryDate'] = '';
-        alopDetails['maxIndemPd'] = '';
-        alopDetails['indemFromDate'] = '';
-        alopDetails['timeExc'] = '';
-        alopDetails['repInterval'] = '';
-        alopDetails['updateDateAlop'] = '';
-        alopDetails['updateUserAlop'] = 'Paul';
-        alopDetails['createDateAlop'] =  '';
-        alopDetails['createUserAlop'] = 'Paul';
-        this.alopData.alopDetails.push(alopDetails)
-        
-        this.alopDetails = alopDetails
-
-
-      }
-      if(Object.keys(data).length == 0){
-      this.readonlyFlag = true;
-      this.emptyVar();
-      
-      }else{
-        this.getAlopSumInsured();
-        this.readonlyFlag = false;
-        this.alopDetails.optionId = data.optionId;
-          if(this.optionsList.filter(a => a.optionId == data.optionId)[0] != undefined){
-              this.alopDetails = this.optionsList.filter(a => a.optionId == data.optionId)[0].alopDetails
-              this.alopDetails.annSi = this.alopSI;
-              this.alopDetails.issueDate = this.ns.toDateTimeString(this.alopDetails.issueDate);
-              this.alopDetails.expiryDate = this.ns.toDateTimeString(this.alopDetails.expiryDate);
-              this.alopDetails.indemFromDate = this.ns.toDateTimeString(this.alopDetails.indemFromDate);
-          }else{
-            this.optionsList = []
-            this.optionsList.push({
-              optionId: data.optionId,
-              alopDetails: JSON.parse(JSON.stringify(this.newAlopDetails))
-            })
-            this.alopDetails = this.optionsList[this.optionsList.length -1].alopDetails;
-          }
-            /*if(this.alopData.alopDetails.length > 1){
-              console.log(this.alopData.alopDetails)
-              this.alopDetails = this.alopData.alopDetails.filter(a => a.optionId == this.alopDetails.optionId)[0];
-            //setTimeout(() => this.)
-            }else{
-              console.log('pasok')
-              let alopDetails = new Object();
-            alopDetails['optionId'] = data.optionId;
-            alopDetails['annSi'] = null;
-            alopDetails['maxIndemPdSi'] = null;
-            alopDetails['issueDate'] = '';
-            alopDetails['expiryDate'] = '';
-            alopDetails['maxIndemPd'] = null;
-            alopDetails['indemFromDate'] = '';
-            alopDetails['timeExc'] = null;
-            alopDetails['repInterval'] = null;
-            alopDetails['updateDate'] = '';
-            alopDetails['updateUser'] = JSON.parse(window.localStorage.currentUser).username;
-            alopDetails['createDate'] =  '';
-            alopDetails['createUser'] = JSON.parse(window.localStorage.currentUser).username;
-            this.alopData.alopDetails.push(alopDetails)
-            
-            /*this.alopDetails.optionId = data.optionId,
-            this.alopDetails.annSi = 0,
-            this.alopDetails.maxIndemPdSi = null,
-            this.alopDetails.issueDate= '',
-            this.alopDetails.expiryDate='',
-            this.alopDetails.maxIndemPd= null,
-            this.alopDetails.indemFromDate= '',
-            this.alopDetails.timeExc= null,
-            this.alopDetails.repInterval= null
-          }
-        }
-  }*/
-
 }
