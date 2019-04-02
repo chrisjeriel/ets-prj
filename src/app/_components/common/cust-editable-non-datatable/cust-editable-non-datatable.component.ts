@@ -264,7 +264,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
                 let width = this.startWidth + (event.x - this.startX);
                 $(this.start).parent().css({'min-width': width, 'max-width': width,'width':width});
                 let index = $(this.start).parent().index() + 1;
-                $('.glowTableBody tr td:nth-child(' + index + ')').css({'min-width': width, 'max-width': width,'width':width});
+                $('#non-datatable tr td:nth-child(' + index + ')').css({'min-width': width, 'max-width': width,'width':width});
             }
         });
         this.renderer.listenGlobal('body', 'mouseup', (event) => {
