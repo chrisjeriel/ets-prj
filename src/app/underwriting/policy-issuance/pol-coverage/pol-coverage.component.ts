@@ -267,7 +267,7 @@ export class PolCoverageComponent implements OnInit {
 
       this.underwritingservice.getUWCoverageInfos(null,this.policyId).subscribe((data:any) => {
         console.log(data)
-        this.passData.tableData = [];
+        this.passData.tableData = [];  
         var dataTable = data.policy.project.coverage.sectionCovers
           for (var i = 0; i< dataTable.length;i++){
             this.passData.tableData.push(dataTable[i])
@@ -535,10 +535,6 @@ export class PolCoverageComponent implements OnInit {
 
   saveCoverage(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
-    if(this.cancelFlag === true){
-     this.router.navigateByUrl('quotation-processing');
-    }
-
     this.prepareData();
     this.underwritingservice.savePolCoverage(this.coverageData).subscribe((data: any) => {
       if(data['returnCode'] == 0) {

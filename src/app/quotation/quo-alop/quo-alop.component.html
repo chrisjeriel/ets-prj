@@ -26,7 +26,7 @@
 					<div class="form-row custom-row-inline-inset" style="margin-right: 9px; margin-top: 11px !important;">
 						<div class="input-group">
 							<label class="form-control-sm col-sm-2 text-right" for="xx">Insured</label>
-							<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-2" type="text" name="insuredId" appRequired [(ngModel)]="alopData.insuredId">
+							<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-2" type="text" name="insuredId" appRequired [(ngModel)]="alopData.insuredId" (change)="checkCode($event,'principal')">
 							<!-- <div class="text-search-ico"><a (click)="showInsuredLOV()"><i class="fa fa-search"></i></a></div>&nbsp; -->
 							<div [class.d-none]="inquiryFlag" class="text-search-ico"><a (click)="openGenericLOV('insured')"><i class="fa fa-search"></i></a></div>&nbsp;
 							<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm" type="text" name="insuredName" [(ngModel)]="alopData.insuredName" [style.margin-left.px]="inquiryFlag ? '-2' : '-7'" appRequired>
@@ -126,7 +126,7 @@
 			<div class="form-group col-sm">
 				<div class="col-md-13 text-center">
 					<div class="cust-btn-container" style="margin-top: 10px;">
-					<button type="button" class="cust-btn" (click)="openAlopItem()"><a>Item Information</a></button>
+					<button type="button" class="cust-btn" (click)="openAlopItem()" [disabled]="disabledFlag" [class.cust-btn-disabled]="disabledFlag"><a>Item Information</a></button>
 					<button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
 					<button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
 				</div>

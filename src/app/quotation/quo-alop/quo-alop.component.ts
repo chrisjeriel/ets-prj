@@ -10,6 +10,7 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 import { RequiredDirective } from '@app/_directives/required.directive';
 import { FormsModule }   from '@angular/forms';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import { MtnInsuredComponent } from '@app/maintenance/mtn-insured/mtn-insured.component';
 
  
 @Component({
@@ -25,6 +26,10 @@ export class QuoAlopComponent implements OnInit {
   @ViewChild("to") to:any;
   @ViewChildren(RequiredDirective) inputs: QueryList<RequiredDirective>;
   @ViewChild('myForm') form:any;
+  @ViewChildren(MtnInsuredComponent) insuredLovs: QueryList<MtnInsuredComponent>;
+
+
+
   aLOPInfo: QuoteALOPInfo = new QuoteALOPInfo();
   @Input() quotationInfo:any = {};
   @Input() inquiryFlag: boolean = false;
@@ -140,8 +145,8 @@ export class QuoAlopComponent implements OnInit {
     showAlopItem:boolean = false;
     dateErFlag:boolean = false;
     refresh:boolean = true;
-    optionsList:any = [
-    ];
+    optionsList:any = [];
+    disabledFlag:boolean = true;
 
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute, private mtnService: MaintenanceService, private ns: NotesService) { }
 
@@ -195,9 +200,7 @@ export class QuoAlopComponent implements OnInit {
     getAlop(){
       this.quotationService.getALop(this.quotationInfo.quoteId,'').subscribe((data: any) => {
              this.loading = false;
-             console.log(data)
              if(data.quotation != null){
-               console.log(data)
               this.quoteId = data.quotation.quoteId;
               this.alopData = data.quotation.alop===null ? this.alopData : data.quotation.alop;
               this.alopData.createDate = this.ns.toDateTimeString(this.alopData.createDate);
@@ -277,8 +280,9 @@ export class QuoAlopComponent implements OnInit {
     }
 
     cancelFlag:boolean;
-    save(cancelFlag?) {
-      this.cancelFlag = cancelFlag !== undefined;
+
+    save(cancel?) {
+      this.cancelFlag = cancel !== undefined;
 
       this.alopData.quoteId = this.quotationInfo.quoteId;
       this.alopData.alopDetails = [];
@@ -331,7 +335,6 @@ export class QuoAlopComponent implements OnInit {
 
     alopItem(){
       this.quotationService.getALOPItemInfos(this.quoteNo[0],this.quotationInfo.quoteId,this.tableNonEditable.indvSelect.optionId).subscribe((data: any) => {
-            console.log(data)
             this.itemInfoData.tableData = [];
             var dataInfos = data.alopItem;
             for(var i=0; i< dataInfos.length;i++){
@@ -358,7 +361,6 @@ export class QuoAlopComponent implements OnInit {
             savedData.saveAlopItemList[savedData.saveAlopItemList.length-1].updateDateItem = this.ns.toDateTimeString(savedData.saveAlopItemList[savedData.saveAlopItemList.length-1].updateDate);
         }else if(this.itemInfoData.tableData[i].deleted){
             savedData.deleteAlopItemList.push(this.itemInfoData.tableData[i]);
-            console.log(savedData.deleteAlopItemList)
             savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].optionId = this.tableNonEditable.indvSelect.optionId
             savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].createUserItem = JSON.parse(window.localStorage.currentUser).username,
             savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].createDateItem = this.ns.toDateTimeString(savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].createDate);
@@ -388,9 +390,11 @@ export class QuoAlopComponent implements OnInit {
   setInsured(data){
     // this.alopData.insuredName = data.insuredName;
     // this.alopData.insuredId = data.insuredId;
-
-    this.alopData.insuredName = data.data.insuredName;
-    this.alopData.insuredId = data.data.insuredId;
+    this.alopData.insuredName = data.insuredAbbr;
+    this.alopData.insuredId = data.insuredId;
+    this.alopData.insuredDesc = data.insuredName;
+    this.alopData.address = data.address;
+    this.ns.lovLoader(data.ev, 0);
     this.form.control.markAsDirty();
   }
 
@@ -445,15 +449,16 @@ export class QuoAlopComponent implements OnInit {
   }
 
   checkDates(){
-    // if(new Date(this.alopData.issueDate)>= new Date(this.alopData.expiryDate)){
-    //  highlight(this.to);
-    //  highlight(this.from);
-    //  this.dateErFlag = true;
-    // }else{
-    //  unHighlight(this.to);
-    //  unHighlight(this.from);
-    //  this.dateErFlag = false;
-    // }
+    console.log(new Date(this.alopDetails.issueDate))
+    if(new Date(this.alopDetails.issueDate) >= new Date(this.alopDetails.expiryDate)){
+     highlight(this.to);
+     highlight(this.from);
+     this.dateErFlag = true;
+    }else{
+     unHighlight(this.to);
+     unHighlight(this.from);
+     this.dateErFlag = false;
+    }
   }
 
   onClickSave(){
@@ -484,8 +489,11 @@ export class QuoAlopComponent implements OnInit {
 
   clickRow(data) {
       if(Object.keys(data).length == 0){
-      this.readonlyFlag = true;
-      this.emptyVar();
+        this.readonlyFlag = true;
+        this.emptyVar();
+        unHighlight(this.to);
+        unHighlight(this.from);
+        this.disabledFlag = true;
       }else{
         /*console.log(this.optionsList)
         if(this.optionsList.length > 1){
@@ -493,7 +501,9 @@ export class QuoAlopComponent implements OnInit {
         }*/
 
         this.getAlopSumInsured();
-
+        unHighlight(this.to);
+        unHighlight(this.from);
+        this.disabledFlag = false;
         this.readonlyFlag = false;
         this.alopDetails.optionId = data.optionId;
           if(this.optionsList.filter(a => a.optionId == data.optionId)[0] != undefined){
@@ -513,12 +523,22 @@ export class QuoAlopComponent implements OnInit {
             this.alopDetails.annSi = this.alopSI;
             this.alopDetails.maxIndemPdSi = 0;
           }
+
         setTimeout(() => this.focusBlur(),0);
       }
   }
 
   focusBlur() {
     setTimeout(() => {$('.req').focus();$('.req').blur()},0)
+  }
+
+  checkCode(ev, field) {
+    this.ns.lovLoader(ev, 1);
+    $(ev.target).addClass('ng-dirty');
+
+    if(field === 'principal') {
+        this.insuredLovs['first'].checkCode(this.alopData.insuredId, '#insuredLOV', ev);
+    }
   }
 
   /*clickRow(data){
