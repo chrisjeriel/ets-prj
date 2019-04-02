@@ -128,7 +128,7 @@
                         <td style="margin-top:1px" *ngFor="let key of dataKeys; let i = index" [class.d-none]="pinKeys.indexOf(key) == -1" [ngSwitch]="passData.dataTypes[i]">
                             <div *ngIf="addCheckFlag(data)">
                                 <div *ngSwitchCase="'percent'" style="text-align: right">
-                                    <span class="unclickable">{{ processData(key, data) | number: '1.7-7'}}</span> 
+                                    <span class="unclickable">{{ data[key] | number: '1.7-7'}}</span> 
 =======-->
     <div class="row"  *ngIf="loadingTableFlag">
         <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="m-auto" style="margin-bottom: 9px!important">
@@ -154,24 +154,24 @@
                             <td style="margin-top:1px" *ngFor="let key of dataKeys; let i = index" [class.d-none]="pinKeys.indexOf(key) == -1" [ngSwitch]="passData.dataTypes[i]">
                                 <div *ngIf="addCheckFlag(data)">
                                     <div *ngSwitchCase="'percent'" style="text-align: right">
-                                        <span class="unclickable">{{ processData(key, data) | number: '1.7-7'}}</span>
+                                        <span class="unclickable">{{ data[key] | number: '1.7-7'}}</span>
                                     </div>
                                     <div *ngSwitchCase="'currency'" style="text-align: right">
-                                        <span class="unclickable" [ngClass]="{'negativeNumber': data[key]<0}">{{ processData(key, data) | number: '1.2-2' | negativeAmount}}</span>
+                                        <span class="unclickable" [ngClass]="{'negativeNumber': data[key]<0}">{{ data[key] | number: '1.2-2' | negativeAmount}}</span>
                                     </div>
                                     <div  *ngSwitchCase="'number'" style="text-align: right">
-                                        <span class="unclickable">{{ processData(key, data) | number: '1.0-0'}}</span>
+                                        <span class="unclickable">{{ data[key] | number: '1.0-0'}}</span>
                                     </div>
                                     <div  *ngSwitchCase="'right'" style="text-align: right">
-                                        <span class="unclickable">{{ processData(key, data) }}</span>
+                                        <span class="unclickable">{{ data[key] }}</span>
                                     </div>
-                                    <span *ngSwitchCase="'date'" class="unclickable">{{ processData(key, data) | date: 'MM/dd/yyyy'}}</span>
-                                    <span *ngSwitchCase="'time'" class="unclickable">{{ processData(key, data) | date: 'HH:mm'}}</span>
-                                    <span *ngSwitchCase="'datetime'" class="unclickable">{{ processData(key, data) | date: 'yyyy-MM-ddTHH:mm'}}</span>
+                                    <span *ngSwitchCase="'date'" class="unclickable">{{ data[key] | date: 'MM/dd/yyyy'}}</span>
+                                    <span *ngSwitchCase="'time'" class="unclickable">{{ data[key] | date: 'HH:mm'}}</span>
+                                    <span *ngSwitchCase="'datetime'" class="unclickable">{{ data[key] | date: 'yyyy-MM-ddTHH:mm'}}</span>
                                     <div *ngSwitchCase="'checkbox'" style="text-align: center;">
                                         <input  type="checkbox" [checked]="data[key]">
                                     </div>
-                                    <span *ngSwitchDefault class="unclickable">{{ processData(key, data) }}</span>
+                                    <span *ngSwitchDefault class="unclickable">{{ data[key] }}</span>
                                 </div>
                                 <div *ngIf="!addCheckFlag(data)" class="filler">
                                     <span></span>
@@ -211,7 +211,7 @@
                                     <span class="gridHeader" (click)="sort(dataKeys[i],sortBy);sortIndex=i;">{{tHeader}}</span>
                                 </div>
 <!-- <<<<<<< HEAD
-                                <span *ngSwitchDefault class="unclickable">{{ processData(key, data) }}</span>
+                                <span *ngSwitchDefault class="unclickable">{{ data[key] }}</span>
                             </div>
                             <div *ngIf="!addCheckFlag(data)" class="filler">
                                 <span></span>
@@ -258,7 +258,7 @@
                         <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]" [class.d-none]="pinKeys.indexOf(key) != -1" >
                             <div *ngIf="addCheckFlag(data)">
                                 <div *ngSwitchCase="'percent'" style="text-align: right">
-                                    <span class="unclickable">{{ processData(key, data) | number: '1.10-10'}}</span>
+                                    <span class="unclickable">{{ data[key] | number: '1.10-10'}}</span>
 ======= -->
                                 <span *ngSwitchDefault class="gridHeader" (click)="sort(dataKeys[i],sortBy);sortIndex=i;">{{tHeader}}</span>
                                 <i *ngIf="showSort(sortBy,i)" class="fa fa-caret-down"></i>
@@ -272,31 +272,31 @@
                             <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]" [class.d-none]="pinKeys.indexOf(key) != -1" [ngStyle]="{'width': (passData.colSize[i] == '' || passData.colSize.length == 0) ? 'auto' : passData.colSize[i], 'max-width': (passData.colSize[i] == '' || passData.colSize.length == 0) ? 'auto' : passData.colSize[i], 'min-width': (passData.colSize[i] == '' || passData.colSize.length == 0) ? 'auto' : passData.colSize[i]}">
                                 <div *ngIf="addCheckFlag(data)">
                                     <div *ngSwitchCase="'percent'" style="text-align: right">
-                                        <span class="unclickable">{{ processData(key, data) | number: '1.10-10'}}</span>
+                                        <span class="unclickable">{{ data[key] | number: '1.10-10'}}</span>
                                     </div>
                                     <div *ngSwitchCase="'currencyRate'" style="text-align: right">
-                                        <span class="unclickable">{{ processData(key, data) | number: '1.6-6'}}</span>
+                                        <span class="unclickable">{{ data[key] | number: '1.6-6'}}</span>
                                     </div>
                                     <div *ngSwitchCase="'currency'" style="text-align: right">
-                                        <span class="unclickable" [ngClass]="{'negativeNumber': data[key]<0}">{{ processData(key, data) | number: '1.2-2' | negativeAmount}}</span>
+                                        <span class="unclickable" [ngClass]="{'negativeNumber': data[key]<0}">{{ data[key] | number: '1.2-2' | negativeAmount}}</span>
                                     </div>
                                     <div  *ngSwitchCase="'number'" style="text-align: right">
-                                        <span class="unclickable">{{ processData(key, data) | number: '1.0-0'}}</span>
+                                        <span class="unclickable">{{ data[key] | number: '1.0-0'}}</span>
                                     </div>
                                     <div  *ngSwitchCase="'right'" style="text-align: right">
-                                        <span class="unclickable">{{ processData(key, data) }}</span>
+                                        <span class="unclickable">{{ data[key] }}</span>
                                     </div>
-                                    <span *ngSwitchCase="'date'" class="unclickable">{{ processData(key, data) | date: 'MM/dd/yyyy'}}</span>
-                                    <span *ngSwitchCase="'time'" class="unclickable">{{ processData(key, data) | date: 'HH:mm'}}</span>
-                                    <span *ngSwitchCase="'datetime'" class="unclickable">{{ processData(key, data) | date: 'yyyy-MM-ddTHH:mm'}}</span>
-                                    <span *ngSwitchCase="'year'" class="unclickable">{{ processData(key, data) | date: 'yyyy'}}</span>
+                                    <span *ngSwitchCase="'date'" class="unclickable">{{ data[key] | date: 'MM/dd/yyyy'}}</span>
+                                    <span *ngSwitchCase="'time'" class="unclickable">{{ data[key] | date: 'HH:mm'}}</span>
+                                    <span *ngSwitchCase="'datetime'" class="unclickable">{{ data[key] | date: 'yyyy-MM-ddTHH:mm'}}</span>
+                                    <span *ngSwitchCase="'year'" class="unclickable">{{ data[key] | date: 'yyyy'}}</span>
                                     <div  *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'sequence' ? passData.dataTypes[i] : ''" style="text-align: right">
-                                    <span class="unclickable">{{ processData(key, data) | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence}}</span>
+                                    <span class="unclickable">{{ data[key] | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence}}</span>
                                     </div>
                                     <div *ngSwitchCase="'checkbox'" style="text-align: center;">
                                         <input  type="checkbox" [checked]="data[key] && data[key]!= 'N'">
                                     </div>
-                                    <span *ngSwitchDefault class="unclickable">{{ processData(key, data) }}</span>
+                                    <span *ngSwitchDefault class="unclickable">{{ data[key] }}</span>
 <!-- >>>>>>> 52f0de4d81d86a7c64b1a521d9cfffd09d471ab1 -->
                                 </div>
                                 <div *ngIf="!addCheckFlag(data)" class="filler">
