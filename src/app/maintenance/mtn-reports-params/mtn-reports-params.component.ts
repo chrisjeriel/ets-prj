@@ -63,7 +63,6 @@ export class MtnReportsParamsComponent implements OnInit {
     if (this.isEmptyObject(this.passDataReportsParam.tableData)){
     } else {
         this.passDataReportsParam.tableData = [];
-        this.table.refreshTable("first");
     }
      this.mtnService.getMtnQuotationPrintingWordings(this.reportId).subscribe((data: any) =>{
           for (var a = 0; a < data.reportsParam.length ; a++) {

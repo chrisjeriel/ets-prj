@@ -158,8 +158,10 @@ export class QuotationProcessingComponent implements OnInit {
         pageLength: 20,
         expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, addFlag: true, editFlag: true, copyFlag: false, pageStatus: true, pagination: true, pageID: 1,
         keys: ['quotationNo','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','insuredDesc','riskName','objectDesc','site','policyNo','currencyCd','issueDate','expiryDate','reqBy','createUser'],
+        colSize: ['', '', '120px', '', '', '120px', '120px', '120px', '', '', '', '', '', '', '', ''],
         genericBtn1: 'Copy Quote Details',
-        genericBtn2: 'Internal Competition'
+        genericBtn2: 'Internal Competition',
+        exportFlag: true,
     }
 
     riskData: any = {
@@ -211,6 +213,7 @@ export class QuotationProcessingComponent implements OnInit {
     tempQuoteId = "";
 
     exclude: any[] = [];
+    testArr: any[] = [];
 
 
     first = false;
@@ -238,11 +241,16 @@ export class QuotationProcessingComponent implements OnInit {
             var records = data['quotationList'];
             this.fetchedData = records;
             for(let rec of records){
-                if(rec.status.toUpperCase() === 'IN PROGRESS' || rec.status.toUpperCase() === 'REQUESTED') {
+                if(rec.status.toUpperCase() === 'IN PROGRESS' || rec.status.toUpperCase() === 'REQUESTED' || rec.status.toUpperCase() === 'RELEASED') {
                     //neco was here
+                    this.testArr.push(rec);
                     this.splittedLine.push(rec.quotationNo.split("-", 1));
                     this.riskNameList.push((rec.project == null) ? '' : rec.project.riskName);
                     //neco ends here
+                }
+                
+                if(rec.status.toUpperCase() === 'IN PROGRESS' || rec.status.toUpperCase() === 'REQUESTED') {
+                    
                     this.passData.tableData.push(
                                                     {
                                                         quotationNo: rec.quotationNo,
@@ -264,7 +272,7 @@ export class QuotationProcessingComponent implements OnInit {
                                                         createUser: rec.createUser
                                                     }
                                                 );    
-                }                
+                }           
             }
 
 
@@ -349,10 +357,12 @@ export class QuotationProcessingComponent implements OnInit {
         for(var i = 0; i < this.splittedLine.length; i++){
             if(this.line == this.splittedLine[i][0] && this.riskName == this.riskNameList[i] && this.riskNameList[i] != ""){
                 //this.existingQuoteNoIndex = i;
-                this.existingQuotationNo.push(this.passData.tableData[i].quotationNo);
+                // this.existingQuotationNo.push(this.passData.tableData[i].quotationNo);
+                this.existingQuotationNo.push(this.testArr[i].quotationNo);
                 //break;
 
-                this.exclude.push(this.passData.tableData[i].quotationNo.split('-')[4]);
+                // this.exclude.push(this.passData.tableData[i].quotationNo.split('-')[4]);
+                this.exclude.push(this.testArr[i].quotationNo.split('-')[4]);
             }
         }
 

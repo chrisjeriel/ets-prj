@@ -42,6 +42,7 @@ export class UnderwritingService {
     cedingComapny: CedingCompany[]=[];
 
     rowData: any[] = [];
+    toPolInfo: any[] = [];
 
     constructor(private http: HttpClient) {
 
@@ -133,26 +134,59 @@ export class UnderwritingService {
         return 100;
     }
 
-
-    getParListing() {
-        this.parListingData = [
-            new PARListing("CAR","CAR-2018-000002-099-0001-000", "Direct","Malayan", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date("02-09-2018"), new Date("02-09-2018"), new Date("02-28-2018"), new Date(), "In Progress"),
-            new PARListing("CAR","CAR-2018-000002-088-0001-000", "Retrocession","FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",1080000,131000, new Date("03-09-2018"), new Date("03-09-2018"), new Date("03-09-2018"), new Date("03-30-2018"), "In Progress"),
-            new PARListing("CAR","CAR-2018-000002-088-0002-000", "Retrocession","FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",8090000,131000, new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-30-2018"), "In Progress"),
-            new PARListing("CAR","CAR-2018-000002-088-0003-000", "Retrocession","FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",9000000,131000, new Date("05-09-2018"), new Date("05-09-2018"), new Date("05-09-2018"), new Date("05-30-2018"), "In Progress"),
-            new PARListing("CAR","CAR-2018-000002-088-0004-000", "Retrocession","FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date("06-09-2018"), new Date("06-09-2018"), new Date("06-09-2018"), new Date("06-30-2018"), "In Progress"),
-            new PARListing("CAR","CAR-2018-000002-088-0005-000", "Retrocession","FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date("07-09-2018"), new Date("07-09-2018"), new Date("07-09-2018"), new Date("07-30-2018"), "In Progress"),
-            new PARListing("CEC","CEC-2018-000002-099-0001-000", "Direct","Malayan", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date(), new Date(), new Date(), new Date(), "In Progress"),
-            new PARListing("EAR","EAR-2018-000002-098-0001-000", "Direct","Malayan", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date(), new Date(), new Date(), new Date(), "In Progress"),
-            new PARListing("EEI", "EEI-2018-000002-091-0001-000", "Direct","Malayan", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date(), new Date(), new Date(), new Date(), "In Progress"),
-            new PARListing("MBI","MBI-2018-000002-092-0001-000", "Direct","Malayan", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date(), new Date(), new Date(), new Date(), "In Progress"),
-            new PARListing("BVP","BVP-2018-000002-093-0001-000", "Direct","Malayan", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date(), new Date(), new Date(), new Date(), "In Progress"),
-            new PARListing("MLP","MLP-2018-000002-094-0001-000", "Direct","Malayan", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date(), new Date(), new Date(), new Date(), "In Progress"),
-            new PARListing("DOS","DOS-2018-000002-095-0001-000", "Direct","Malayan", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date(), new Date(), new Date(), new Date(), "In Progress"),
-           
+    getParListing(searchParams: any []) {
+  /*      this.parListingData = [
+            new PARListing("CAR-2018-000002-099-0001-000", "Direct","Malayan", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date("02-09-2018"), new Date("02-09-2018"), new Date("02-28-2018"), new Date(), "In Progress"),
+            new PARListing("CAR-2018-000002-088-0001-000", "Retrocession","FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",1080000,131000, new Date("03-09-2018"), new Date("03-09-2018"), new Date("03-09-2018"), new Date("03-30-2018"), "In Progress"),
+            new PARListing("CAR-2018-000002-088-0002-000", "Retrocession","FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",8090000,131000, new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-09-2018"), new Date("04-30-2018"), "In Progress"),
+            new PARListing("CAR-2018-000002-088-0003-000", "Retrocession","FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",9000000,131000, new Date("05-09-2018"), new Date("05-09-2018"), new Date("05-09-2018"), new Date("05-30-2018"), "In Progress"),
+            new PARListing("CAR-2018-000002-088-0004-000", "Retrocession","FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date("06-09-2018"), new Date("06-09-2018"), new Date("06-09-2018"), new Date("06-30-2018"), "In Progress"),
+            new PARListing("CAR-2018-000002-088-0005-000", "Retrocession","FLT Prime", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date("07-09-2018"), new Date("07-09-2018"), new Date("07-09-2018"), new Date("07-30-2018"), "In Progress"),
+            new PARListing("CEC-2018-000002-099-0001-000", "Direct","Malayan", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date(), new Date(), new Date(), new Date(), "In Progress"),
+            new PARListing("EAR-2018-000002-098-0001-000", "Direct","Malayan", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date(), new Date(), new Date(), new Date(), "In Progress"),
+            new PARListing("EEI-2018-000002-091-0001-000", "Direct","Malayan", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date(), new Date(), new Date(), new Date(), "In Force"),
+            new PARListing("MBI-2018-000002-092-0001-000", "Direct","Malayan", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date(), new Date(), new Date(), new Date(), "In Force"),
+            new PARListing("BVP-2018-000002-093-0001-000", "Direct","Malayan", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date(), new Date(), new Date(), new Date(), "In Progress"),
+            new PARListing("MLP-2018-000002-094-0001-000", "Direct","Malayan", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date(), new Date(), new Date(), new Date(), "In Progress"),
+            new PARListing("DOS-2018-000002-095-0001-000", "Direct","Malayan", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date(), new Date(), new Date(), new Date(), "In Progress"),
         ];
-
-        return this.parListingData;
+        return this.parListingData;*/
+        var params;
+        if(searchParams.length < 1){
+             params = new HttpParams()
+                    .set('policyNo','')
+                    .set('cessionDesc', '')
+                    .set('cedingName', '')
+                    .set('lineClassDesc','')
+                    .set('insuredDesc','')
+                    .set('riskName','')
+                    .set('objectDesc','')
+                    .set('site','')
+                    .set('currencyCd','')
+                    .set('totalSiLess','')
+                    .set('totalSiGrt','')
+                    .set('totalPrem','')
+                    .set('issueDateFrom','')
+                    .set('issueDateTo','')
+                    .set('inceptDateFrom','')
+                    .set('inceptDateTo','')
+                    .set('expiryDateFrom','')
+                    .set('expiryDateTo','')
+                    .set('acctDateFrom','')
+                    .set('acctDateTo','')
+                    .set('statusDesc','');
+                    // .set('paginationRequest.position',null)
+                    // .set('paginationRequest.count',null)
+                    // .set('sortRequest.sortKey',null)
+                    // .set('sortRequest.order',null);
+        }
+        else{
+             params = new HttpParams();
+            for(var i of searchParams){
+                params = params.append(i.key, i.search);
+            }
+        }
+         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolicyListing',{params});
     }
 
 
@@ -244,13 +278,16 @@ export class UnderwritingService {
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolicyListing');
     }
 
-    getItemInfoData() {
-        this.itemInfoData = [
+    getItemInfoData(policyNo?, policyId?) {
+        /*this.itemInfoData = [
             new ItemInformation(1001, "Description for item number 1"),
             new ItemInformation(1002, "Description for item number 2"),
             new ItemInformation(1003, "Description for item number 3")
-        ];
-        return this.itemInfoData;
+        ];*/
+         const params = new HttpParams()
+             .set('policyNo', (policyNo === null || policyNo === undefined ? '' : policyNo) )
+             .set('policyId',(policyId === null || policyId === undefined ? '' : policyId) )
+        return this.http.get(environment.prodApiUrl + "/underwriting-service/retrievePolItem",{params});;
     }
 
 
@@ -487,6 +524,94 @@ export class UnderwritingService {
         return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolAttachment', JSON.stringify(params), header);
     }
 
+    savePolHoldCover(holdCoverParams: any){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolHoldCover', JSON.stringify(holdCoverParams), header);
+    }
+
+    saveInwardPolBal(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolInwardBal', JSON.stringify(params), header);
+    }
+
+    getCATPeril(policyNo:any , policyId: string) {
+         const params = new HttpParams()
+             .set('policyNo', (policyNo === null || policyNo === undefined ? '' : policyNo) )
+             .set('policyId',(policyId === null || policyId === undefined ? '' : policyId) )
+        return  this.http.get(environment.prodApiUrl + "/underwriting-service/retrievePolCATPeril",{params});
+    }
+
+    savePolCoverage(coverageData:any){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolCoverage', JSON.stringify(coverageData), header);
+    }
+
+    savePolEndt(params){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolEndorsement', JSON.stringify(params), header);
+    }
+
+    saveCatPeril(catPeriLData:any){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolCATPeril', JSON.stringify(catPeriLData), header);
+    }
+
+    getPolAlop(policyId:string, policyNo?:string) {
+        const params = new HttpParams()
+            .set('policyId', (policyId === null || policyId === undefined ? '' : policyId))
+            .set('policyNo', (policyNo === null || policyNo === undefined ? '' : policyNo))
+
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolAlop', {params});
+    }
+
+    getPolAlopItem(car: string, policyId: string, policyNo: any) {
+        if (car == "CAR") {
+            this.aLOPItemInfos.forEach(function (itm) { delete itm.relativeImportance; });
+        }
+        const params = new HttpParams()
+             .set('policyId', (policyId === null || policyId === undefined ? '' : policyId) )
+             .set('policyNo',(policyNo === null || policyNo === undefined ? '' : policyNo) )
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolAlopItem',{params});
+    }
+
+    getPolCoInsurance(policyId: string, policyNo: string) {
+        const params = new HttpParams()
+            .set('policyId', (policyId === null || policyId === undefined ? '' : policyId))
+            .set('policyNo', (policyNo === null || policyNo === undefined ? '' : policyNo))
+
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolCoInsurance',{params});
+    }
+
+    savePolAlop(polAlopData: any) {
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        console.log(polAlopData);
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolAlop', JSON.stringify(polAlopData), header);
+    }
+
     getPolicyInformation(policyId,policyNo?){
         const params = new HttpParams()
             .set('policyId',policyId===undefined?'':policyId)
@@ -494,13 +619,29 @@ export class UnderwritingService {
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolicyInformation',{params})
     }
 
-    saveInwardPolBal(params){
-         let header : any = {
+    retrievePolHoldCover(policyId: string, policyNo: string){
+        const params = new HttpParams()
+            .set('policyId',policyId === undefined || policyId === null || policyId === '' ? '' : policyId)
+            .set('policyNo',policyNo === undefined || policyNo === null || policyNo === '' ? '' : policyNo);
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolHoldCover',{params});
+    }
+
+    saveItem(itemData:any){
+        let header: any = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json'
             })
         };
-         return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolInwardBal', JSON.stringify(params), header);
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolItem', JSON.stringify(itemData), header);
+    }
+
+    savePolAlopItem(polAlopItemData:any){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolAlopItem', JSON.stringify(polAlopItemData), header);
     }
 
 }            

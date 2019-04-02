@@ -3,8 +3,9 @@ import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { PolAttachmentInfo } from '@app/_models';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
-import { UnderwritingService, NotesService } from '@app/_services';
+import { UnderwritingService, NotesService, UploadService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
+import {HttpClient, HttpParams, HttpRequest, HttpEvent, HttpEventType, HttpResponse} from '@angular/common/http';
 
 @Component({
     selector: 'app-pol-attachment',
@@ -38,7 +39,9 @@ export class PolAttachmentComponent implements OnInit {
     savedData: any[];
     deletedData: any[];
 
-    constructor(config: NgbDropdownConfig, private underwritingService: UnderwritingService, private titleService: Title, private notes: NotesService) {
+    filesList: any [] = [];
+
+    constructor(config: NgbDropdownConfig, private underwritingService: UnderwritingService, private titleService: Title, private notes: NotesService, private upload: UploadService) {
         config.placement = 'bottom-right';
         config.autoClose = false;
     }
@@ -51,6 +54,7 @@ export class PolAttachmentComponent implements OnInit {
     retrievePolAttachment(){
         this.underwritingService.getPolAttachment('8','CAR-2019-1-001-1-1').subscribe((data: any) =>{
             console.log(data);
+            this.attachmentData.tableData = [];
             if(data.polAttachmentList !== null){
                 for(var i of data.polAttachmentList.attachments){
                     this.attachmentData.tableData.push(i);
@@ -95,9 +99,38 @@ export class PolAttachmentComponent implements OnInit {
               this.dialogMessage="";
               this.dialogIcon = "";
               $('#polAttachment > #successModalBtn').trigger('click');
-              this.table.refreshTable();
+              this.retrievePolAttachment();
           }
         });
+        //upload
+        for(let files of this.filesList){
+          if (files.length == 0) {
+            console.log("No file selected!");
+            return
+
+          }
+          let file: File = files[0];
+
+          this.upload.uploadFile('http://localhost:8888/api/file-upload-service/', file)
+            .subscribe(
+              event => {
+                if (event.type == HttpEventType.UploadProgress) {
+                  const percentDone = Math.round(100 * event.loaded / event.total);
+                  console.log(`File is ${percentDone}% loaded.`);
+                } else if (event instanceof HttpResponse) {
+                  console.log('File is completely loaded!');
+                }
+              },
+              (err) => {
+                console.log("Upload Error:", err);
+              }, () => {
+                console.log("Upload done");
+              }
+            )
+          }
+          //clear filelist array after upload
+          this.table.filesToUpload = [];
+          this.table.refreshTable();
     }
 
     cancel(){
@@ -106,6 +139,11 @@ export class PolAttachmentComponent implements OnInit {
 
     onClickSave(){
        $('#confirm-save #modalBtn2').trigger('click');
+    }
+
+    //get the emitted files from the table
+    uploads(event){
+      this.filesList = event;
     }
 
 }

@@ -24,7 +24,7 @@ export class HoldCoverMonitoringListComponent implements OnInit {
     line: string = "";
     filterDataTypes: any[] = [];
     btnDisabled: boolean;
-    printType: any = "SCREEN";
+    printType: any;
     selectPrinterDisabled: boolean = true;
     selectCopiesDisabled: boolean = true;
     selectedReport: string ="QUOTER012";
@@ -38,6 +38,8 @@ export class HoldCoverMonitoringListComponent implements OnInit {
     holdCoverId: any;
     holdCoverList: any = {};
     records: any[] = [];
+    defaultType: boolean = false;
+
 
     constructor(private quotationService: QuotationService, private router: Router, private titleService: Title, private modalService: NgbModal) {
         this.pageLength = 10;
@@ -164,7 +166,7 @@ export class HoldCoverMonitoringListComponent implements OnInit {
             .subscribe((val:any) =>
                 {
                     this.records = val.quotationList;
-                    val(this.records);
+                    console.log(this.records);
                     var list = val.quotationList;
                     for(var i = 0; i < list.length;i++){
                         this.passData.tableData.push( new HoldCoverMonitoringList(
@@ -211,6 +213,7 @@ export class HoldCoverMonitoringListComponent implements OnInit {
     searchQuery(searchParams){
         this.searchParams = searchParams;
         this.passData.tableData = [];
+        console.log(this.searchParams);
         this.retrieveQuoteHoldCoverListingMethod();
         this.passData.btnDisabled = true;
     }
@@ -263,66 +266,36 @@ export class HoldCoverMonitoringListComponent implements OnInit {
 
     print(){
         //do something
-        $('#showPrintMenu > #modalBtn').trigger('click');
+        $('#listHoldCoverList > #printModalBtn').trigger('click');
     }
 
-    tabController(event) {
-        if (this.printType == 'SCREEN'){
-          this.refreshPrintModal(true);
-        } else if (this.printType == 'PRINTER'){
-          this.refreshPrintModal(false);
-        } else if (this.printType == 'PDF'){
-          this.refreshPrintModal(true);
-        }
-    }
 
     cancelModal(){
         this.btnDisabled = false;
     }
 
-    refreshPrintModal(condition : boolean){
-         if (condition){
-            this.selectPrinterDisabled = true;
-            this.selectCopiesDisabled = true;
-            this.btnDisabled = false;
-            $("#noOfCopies").val("");
-            $("#noOfCopies").css({"box-shadow": ""});
-            $("#printerName").css({"box-shadow":""});
-            $("#printerName").val("");
-            this.printName = null;
-            this.printCopies = null;
-         } else {
-            this.selectPrinterDisabled = false;
-            this.selectCopiesDisabled = false;
-            this.btnDisabled = false;
-            $("#noOfCopies").val("");
-            $("#noOfCopies").css({"box-shadow": ""});
-            $("#printerName").css({"box-shadow":""});
-            $("#printerName").val("");
-            this.printName = null;
-            this.printCopies = null;
-
-         }
-        
+   
+    showPrintPreview(data) {
+       this.printType = data[0].printType;
+       this.printName =  data[0].printerName;
+       this.printCopies = data[0].printCopies;
+       this.printDestination(this.printType); 
     }
 
-    showPrintPreview() {
-         if (this.printType == 'SCREEN'){
+    printDestination(obj){
+       if (obj == 'SCREEN'){
            window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + this.selectedReport + '&quoteId=' + this.quoteId + '&holdCovId=' + this.holdCoverId, '_blank');
-           this.printParams();
-         }else if (this.printType == 'PRINTER'){
+         }else if (obj == 'PRINTER'){
            if(this.validate(this.prepareParam())){
                 this.printPDF(this.selectedReport,this.quoteId,this.holdCoverId);
-                this.printParams();
            } else {
                 this.dialogIcon = "error-message";
                 this.dialogMessage = "Please complete all the required fields.";
                 $('#listHoldCover #successModalBtn').trigger('click');
                 setTimeout(()=>{$('.globalLoading').css('display','none');},0);
            }
-         }else if (this.printType == 'PDF'){
+         }else if (obj == 'PDF'){
            this.downloadPDFHC(this.selectedReport,this.quoteId,this.holdCoverId);
-           this.printParams();
          }   
     }
 
@@ -368,7 +341,6 @@ export class HoldCoverMonitoringListComponent implements OnInit {
        });
     }
 
-
     validate(obj){
           var req = ['printerName','noOfcopies'];
           var entries = Object.entries(obj);
@@ -387,14 +359,6 @@ export class HoldCoverMonitoringListComponent implements OnInit {
         }
 
         return printQuoteParam;
-    }
-
-    printParams(){
-         this.printType = "SCREEN";
-         this.printName = null;
-         this.printCopies = null;
-         this.selectPrinterDisabled = true;
-         this.selectCopiesDisabled = true;
     }
 
     isEmptyObject(obj) {

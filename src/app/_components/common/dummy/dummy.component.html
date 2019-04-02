@@ -109,3 +109,10 @@
 <app-mtn-insured id="principalLOV" (selectedData)="setPrincipal($event)" [lovCheckBox]="true"></app-mtn-insured>
 <input [readonly]="false" type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="uuu">
 
+<div class="row">
+    <div class="col-sm-12">
+        <input type="file" (change)="uploadTest($event)">
+        <button type="button" (click)="uploadTest($event)">Submit</button>
+    </div>
+</div>
+

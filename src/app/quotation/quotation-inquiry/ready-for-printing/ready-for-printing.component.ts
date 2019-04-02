@@ -29,7 +29,7 @@ export class ReadyForPrintingComponent implements OnInit {
   selectedOnOk: boolean;
   quoteNoCmp: any;
   quoteId: any;
-  printType: any = "SCREEN";
+  printType: any;
   selectedData:any;
   printName: any = null;
   printCopies: any = null;
@@ -327,8 +327,9 @@ export class ReadyForPrintingComponent implements OnInit {
          this.quotationService.downloadPDF(reportName,quoteId).subscribe( data => {
               var newBlob = new Blob([data], { type: "application/pdf" });
               var downloadURL = window.URL.createObjectURL(data);
+              downloadURL = downloadURL + downloadURL;
               window.open(downloadURL, '_blank').print();
-             
+               
        },
         error => {
             if (this.isEmptyObject(error)) {
@@ -365,7 +366,11 @@ export class ReadyForPrintingComponent implements OnInit {
   }  
 
   changeQuoteStatus() {
-    this.quotationService.saveChangeQuoteStatus(this.saveData).subscribe( data => {
+    for(let i=0;i<this.saveData.changeQuoteStatus.length ;i++){ 
+                      this.printPDF(this.selectedReport,this.saveData.changeQuoteStatus[i].quoteId);
+                    }
+
+    /*this.quotationService.saveChangeQuoteStatus(this.saveData).subscribe( data => {
         this.changeQuoteError = data['returnCode'];
         if(data['returnCode'] == 0) {
                 console.log(data['errorList'][0].errorMessage);
@@ -393,7 +398,7 @@ export class ReadyForPrintingComponent implements OnInit {
                  this.table.refreshTable("first");
         }
         this.btnDisabled = true;
-    });
+    });*/
   }
 
   modalOnOk(){
