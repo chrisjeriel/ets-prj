@@ -91,9 +91,9 @@ export class InwardPolBalanceComponent implements OnInit {
   constructor(private underwritingservice: UnderwritingService, private titleService: Title, private ns : NotesService
   ) { }
 
-  ngOnInit() {
+ ngOnInit() {
+   
     this.titleService.setTitle("Pol | Inward Pol Balance");
-
     this.fetchData();
   }
 
@@ -249,3 +249,4 @@ export class InwardPolBalanceComponent implements OnInit {
 
 
 }
+

@@ -51,6 +51,7 @@ export class CoverageComponent implements OnInit {
     tHeader: ['Section','Bullet No','Cover Name','Sum Insured','Add Sl'],
     tableData:[],
     dataTypes: ['text','text','lovInput','currency','checkbox'],
+    tabIndexes: [false,false,false,true,false],
     nData: {
       showMG: 1,
       createDate: '',
@@ -71,7 +72,7 @@ export class CoverageComponent implements OnInit {
     pageLength: 'unli',
     widths:[60,90,225,110,1],
     magnifyingGlass: ['coverCdAbbr'],
-    uneditable: [true,false,false,false,false],
+    uneditable: [true,false,false,false,true],
     keys:['section','bulletNo','coverCdAbbr','sumInsured','addSi']
   };
 
@@ -115,7 +116,7 @@ export class CoverageComponent implements OnInit {
       this.passData.magnifyingGlass = [];
       this.passData.addFlag = false;
       this.passData.deleteFlag = false;
-      this.passData.uneditable =  [true,true,true,true];
+      this.passData.uneditable =  [true,true,true,true,true];
       /*for(var count = 0; count < this.passData.tHeader.length; count++){
         this.passData.uneditable.push(true);
       }*/

@@ -4,16 +4,16 @@
         <div class="input-group">
             <label class="col-sm-1"></label>
             <label class="form-control-sm col-sm-1" for="xx">Policy No</label>
-            <input type="text" id="xx" value="CAR-2018-5081-077-0177" class="form-control form-control-sm cust-sm col-sm-2"
+            <input type="text" class="form-control form-control-sm cust-sm col-sm-2"
                    placeholder="" readonly>
             <label class="form-control-sm col-sm-1" for="xx">Insured</label>
-            <input type="text" id="xx" value="Insurer" class="form-control form-control-sm cust-sm col-sm-5" placeholder=""
+            <input type="text" value="Insurer" class="form-control form-control-sm cust-sm col-sm-5" placeholder=""
                    readonly>
         </div>
         <div class="input-group">
             <label class="col-sm-1"></label>
             <label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Risk</label>
-            <input type="text" id="xx" value="Risk Name" class="form-control form-control-sm cust-sm col-sm-8" placeholder=""
+            <input type="text" value="Risk Name" class="form-control form-control-sm cust-sm col-sm-8" placeholder=""
                    readonly>
         </div>
     </div>
@@ -28,12 +28,6 @@
         </div> -->
         <br/>
     </fieldset>
-    <div class="col-md-13 text-center">
-        <div class="cust-btn-container">
-            <button type="button" class="cust-btn"><a>Cancel</a></button>
-            <button type="button" class="cust-btn"><a>Save</a></button>
-        </div>
-    </div>	
 </div>
 
 <div *ngIf="line=='CEC'">
@@ -44,13 +38,7 @@
             <label>Total Sum Insured: 20,000 &nbsp;&nbsp;&nbsp;&nbsp;</label>
         </div> -->
         <br/>
-    </fieldset>
-    <div class="col-md-13 text-center">
-        <div class="cust-btn-container">
-            <button type="button" class="cust-btn"><a>Cancel</a></button>
-            <button type="button" class="cust-btn"><a>Save</a></button>
-        </div>
-    </div>  
+    </fieldset> 
 </div>
 
 <div *ngIf="line=='BPV'">
@@ -58,13 +46,7 @@
         <legend class="scheduler-border">Item Information</legend>
         <app-cust-editable-non-datatable [passData]="bpvPassData"></app-cust-editable-non-datatable>
         <br/>
-    </fieldset>
-    <div class="col-md-13 text-center">
-        <div class="cust-btn-container">
-            <button type="button" class="cust-btn"><a>Cancel</a></button>
-            <button type="button" class="cust-btn"><a>Save</a></button>
-        </div>
-    </div>	
+    </fieldset>	
 </div>
 
 <div class="MLP" *ngIf="line=='MLP'">
@@ -73,12 +55,6 @@
         <app-cust-editable-non-datatable [passData]="mlpPassData"></app-cust-editable-non-datatable>
         <br/>
     </fieldset>
-    <div class="col-md-13 text-center">
-        <div class="cust-btn-container">
-            <button type="button" class="cust-btn"><a>Cancel</a></button>
-            <button type="button" class="cust-btn"><a>Save</a></button>
-        </div>
-    </div>	
 </div>
 
 <div class="DOS" *ngIf="line=='DOS'">
@@ -96,11 +72,15 @@
             <label>Total Sum Insured: 20,000.00&nbsp;&nbsp;</label>
         </div> -->
     </fieldset>
-    
-    <div class="col-md-13 text-center">
-        <div class="cust-btn-container" style="margin-top: 10px;">
-            <button type="button" class="cust-btn"><a>Cancel</a></button>
-            <button type="button" class="cust-btn"><a>Save</a></button>
-        </div>
-    </div>  
 </div>
+
+<div class="col-md-13 text-center">
+    <div class="cust-btn-container" style="margin-top: 10px;">
+        <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+        <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+    </div>
+</div>  
+
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-confirm-save (onYes)="prepareData()"></app-confirm-save>
+<app-cancel-button (onYes)="prepareData('cancel')" [url]="'/policy-listing'" ></app-cancel-button>

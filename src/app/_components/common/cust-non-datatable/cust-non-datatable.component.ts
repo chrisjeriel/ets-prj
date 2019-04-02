@@ -62,6 +62,7 @@ export class CustNonDatatableComponent implements OnInit {
         resizable: [],          //Set to determine what columns need to be resized. Default is all columns are resizable.
         filters: [],            //Required if tableOnly is false.
         colSize: [],            //REQUIRED. STRING VALUE. DEFAULT VALUE is '100%'. Just add '' as a value
+        tabIndexes: [],         //DEFAULT: false = tabIndex = -1 | true = tabIndex = 0
         pageLength: 10,         //specify max number of rows in the table before it breaks to pagination.
                                 //use 'unli' as pageLength for unlimited rows.
         
@@ -217,6 +218,7 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     processData(key: any, data: any) {
+        console.log("processData");
         if(this.keyCounter == 0){
             this.nullKey = key;
             this.keyCounter++;
@@ -411,6 +413,18 @@ export class CustNonDatatableComponent implements OnInit {
                             }
                         );
                     }
+                     else if(e.dataType === 'textspan' ){
+                        this.searchQuery.push(
+                            {
+                                key: e.keys.from,
+                                search: (e.keys.search === undefined || !e.enabled) ? '' : e.keys.search,
+                            },
+                             {
+                                key: e.keys.to,
+                                search: (e.keys.search2 === undefined || !e.enabled) ? '' : e.keys.search2,
+                            }
+                        );
+                    }
                     else{
                         this.searchQuery.push(
                             {
@@ -431,6 +445,18 @@ export class CustNonDatatableComponent implements OnInit {
                 }*/
             }
             else if(!e.enabled && e.dataType === 'datespan'){
+                   this.searchQuery.push(
+                       {
+                           key: e.keys.from,
+                           search: '',
+                       },
+                        {
+                           key: e.keys.to,
+                           search: '',
+                       }
+                   );
+            }
+            else if(!e.enabled && e.dataType === 'textspan'){
                    this.searchQuery.push(
                        {
                            key: e.keys.from,

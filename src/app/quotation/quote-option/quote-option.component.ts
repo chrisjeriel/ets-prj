@@ -45,6 +45,7 @@ export class QuoteOptionComponent implements OnInit {
     optionsData: any = {
         tableData: [],
         tHeader: ['Option No', 'Rate(%)', 'Conditions', 'Comm Rate Quota(%)', 'Comm Rate Surplus(%)', 'Comm Rate Fac(%)'],
+        //tabIndexes: [false,true,false,true,true,true],
         dataTypes: ['number', 'percent', 'text', 'percent', 'percent', 'percent'],
         magnifyingGlass: ['conditions'],
         nData: {
