@@ -39,7 +39,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     @Input() checkboxFlag;
     @Input() columnId;
     @Input() pageLength = 10;
-
+    @Input() tabIndexes:[];
     @Output() rowClick: EventEmitter<any> = new EventEmitter();
     @Output() newClick: EventEmitter<any> = new EventEmitter();
     @Output() rowDblClick: EventEmitter<any> = new EventEmitter();
