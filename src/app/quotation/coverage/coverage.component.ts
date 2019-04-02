@@ -51,6 +51,7 @@ export class CoverageComponent implements OnInit {
     tHeader: ['Section','Bullet No','Cover Name','Sum Insured','Add Sl'],
     tableData:[],
     dataTypes: ['text','text','lovInput','currency','checkbox'],
+    tabIndexes: [false,false,false,true,false],
     nData: {
       showMG: 1,
       createDate: '',
