@@ -79,12 +79,11 @@ export class UnderwritingService {
     }
 
     getCoInsurance() {
-        this.coInsuranceData = [
-            new PolicyCoInsurance("CAR-2018-000001-099-0001-000", "EN-CAR-2018-0000001-00", "Malayan", 12.2, 10000, 500000),
-            new PolicyCoInsurance("CAR-2018-000001-099-0001-000", "EN-CAR-2018-0000001-00", "Company 1", 6.23, 20000, 600000),
-            new PolicyCoInsurance("CAR-2018-000001-099-0001-000", "EN-CAR-2018-0000001-00", "Company 2", 15.16, 30000, 700000),
-        ];
-        return this.coInsuranceData;
+        const params = new HttpParams()
+             .set('policyId','')
+             .set('policyNo','')
+             
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolCoInsurance',{params});
     }
 
     getUWCoverageInfo() {
@@ -328,6 +327,7 @@ export class UnderwritingService {
     }
 
 
+
     getInwardPolBalance(policyId?) {
          let params:any = {
              policyId : policyId
@@ -335,13 +335,13 @@ export class UnderwritingService {
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolInwardBal',{params});
     }
 
-    getInwardPolBalanceOtherCharges() {
-        this.polInwardBalOtherCharges = [
-            new PolInwardPolBalanceOtherCharges("101", "Description 101", "20000"),
-            new PolInwardPolBalanceOtherCharges("102", "Description 102", "800000"),
-        ];
-        return this.polInwardBalOtherCharges;
-    }
+    // getInwardPolBalanceOtherCharges() {
+    //     this.polInwardBalOtherCharges = [
+    //         new PolInwardPolBalanceOtherCharges("101", "Description 101", "20000"),
+    //         new PolInwardPolBalanceOtherCharges("102", "Description 102", "800000"),
+    //     ];
+    //     return this.polInwardBalOtherCharges;
+    // }
 
 
     getPolItemMLPData() {

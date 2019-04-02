@@ -22,10 +22,11 @@
                                             <input type="text" class="form-control form-control-sm cap-input col-sm-2 warn text-right" maxlength="5" appRequired ngbTooltip="Sequence No" #qseqNo style="margin-left: 3px;" [(ngModel)]="qSeqNo" (blur)="fmtSq(qseqNo.value)"
                                             (change)="searchQuoteInfo(qline.value,qyear.value,qseqNo.value,qrevNo.value,qcomNo.value)" numbers-only (keyup.enter)="searchMatchingQuote($event)">
                                             <input type="text" class="form-control form-control-sm cap-input col-sm-1 warn text-right" maxlength="2" appRequired ngbTooltip="Revision No" #qrevNo (blur)="fmtRn(qrevNo.value)" style="margin-left: 3px;" [(ngModel)]="qRevNo" (change)="searchQuoteInfo(qline.value,qyear.value,qseqNo.value,qrevNo.value,qcomNo.value)" numbers-only (keyup.enter)="searchMatchingQuote($event)">
-                                            <input type="text" class="form-control form-control-sm cap-input col-sm-1 warn text-right" maxlength="2" appRequired ngbTooltip="Company No" #qcomNo (blur)="fmtCn(qcomNo.value)" style="margin-left: 3px;" [(ngModel)]="qCedingId" 
+                                            <input type="text" class="form-control form-control-sm cap-input col-sm-1 warn text-right" maxlength="3" appRequired ngbTooltip="Company No" #qcomNo (blur)="fmtCn(qcomNo.value)" style="margin-left: 3px;" [(ngModel)]="qCedingId" 
                                             (change)="searchQuoteInfo(qline.value,qyear.value,qseqNo.value,qrevNo.value,qcomNo.value)" numbers-only (keyup.enter)="searchMatchingQuote($event)">
                                             <span>&nbsp;</span>
                                             <div><a (click)="search()"><i class="fa fa-search"></i></a></div>
+                                           <!--  <div><a (click)="searchMatchingQuote()"><i class="fa fa-search"></i></a></div> -->
                                         </div>
                                         <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Ceding Company</label>
@@ -115,7 +116,7 @@
                                             <div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
                                                 <div class="input-group" style="margin-bottom: -0px !important;">
                                                     <label class="form-control-sm col-sm-4">Request Date</label>
-                                                    <input type="{{type}}" class="form-control form-control-sm cust-sm col-sm warn" appRequired readonly id="reqDate" #reqDate [ngModel]="holdCover.reqDate.split('T')[0]" (ngModelChange)="holdCover.reqDate=$event" min="2019-03-12">
+                                                    <input type="{{type}}" class="form-control form-control-sm cust-sm col-sm warn" appRequired readonly id="reqDate" #reqDate [ngModel]="holdCover.reqDate.split('T')[0]" (ngModelChange)="holdCover.reqDate=$event">
                                                 </div>
                                             </div>
                                         </div>
@@ -198,6 +199,15 @@
                         </div>
                     </div>
                 </div>
+                 <div class="form-row" *ngIf="clickView">
+                    <div class="form-group col-sm">
+                        <div class="col-md-12 text-center">
+                            <div class="cust-btn-container" style="margin-top: 10px !important;">
+                                <button *ngIf="cancelHcBtnEnabled" type="button" class="cust-btn" (click)="onConfirmCancelHc()"><a>Cancel Hold Cover</a></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="form-row">
                     <div class="form-group col-sm">
@@ -223,7 +233,7 @@
         </ngb-tab>
          <ngb-tab id="Exit">
                 <ng-template ngbTabTitle>
-                    <div>Exit</div>
+                    <div (click) = "onClickCancel()">Exit</div>
                 </ng-template>
                 <ng-template ngbTabContent></ng-template>
         </ngb-tab>
@@ -266,7 +276,7 @@
     <div footer class="d-flex justify-content-center w-100">                    
         <button class="cust-btn" type="button" (click)="onClickCancelModifMdl()"><a>Cancel</a></button>
         <button class="cust-btn" type="button" (click)="onClickView()"><a>View</a></button>
-        <button class="cust-btn" type="button" (click)="onClickModif();"><a>Modification</a></button>
+        <button class="cust-btn" type="button" (click)="onClickModif()"><a>Modification</a></button>
     </div>
 </app-modal>
 
