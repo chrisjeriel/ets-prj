@@ -39,7 +39,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
     @Input() checkboxFlag;
     @Input() columnId;
     @Input() pageLength = 10;
-    @Input() tabIndexes:[];
     @Output() rowClick: EventEmitter<any> = new EventEmitter();
     @Output() newClick: EventEmitter<any> = new EventEmitter();
     @Output() rowDblClick: EventEmitter<any> = new EventEmitter();
@@ -75,7 +74,8 @@ export class CustEditableNonDatatableComponent implements OnInit {
         widths: [],
         //use if you have different tables in 1 page
         pageID:1,
-        keys:[]
+        keys:[],
+        tabIndexes:[]
     };
     indvSelect: any;
     dataKeys: any[] = [];
