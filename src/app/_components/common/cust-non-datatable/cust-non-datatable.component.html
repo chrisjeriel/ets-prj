@@ -107,9 +107,9 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let data of displayData | paginate: { id:'non-editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event, data);" (dblclick)="onRowDblClick($event,data)" [class.selected]="data === indvSelect" >
-                        <td *ngIf="passData.checkFlag && pinKeys.length != 0" class="checkbox-container-body"><input type="checkbox" name="" *ngIf="addCheckFlag(data)" class="checkbox" (change)="removeSelected($event, data)" [checked]="checked"></td>
+                        <td *ngIf="passData.checkFlag && pinKeys.length != 0" class="checkbox-container-body"><input type="checkbox" name="" *ngIf="!(data===fillData)" class="checkbox" (change)="removeSelected($event, data)" [checked]="checked"></td>
                         <td style="margin-top:1px" *ngFor="let key of dataKeys; let i = index" [class.d-none]="pinKeys.indexOf(key) == -1" [ngSwitch]="passData.dataTypes[i]">
-                            <div *ngIf="addCheckFlag(data)">
+                            <div *ngIf="!(data===fillData)">
                                 <div *ngSwitchCase="'percent'" style="text-align: right">
                                     <span class="unclickable">{{data[key] | number: '1.7-7'}}</span> 
 =======-->
@@ -133,7 +133,7 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let data of displayData | paginate: { id:'non-editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event, data);" (dblclick)="onRowDblClick($event,data)" [class.selected]="data === indvSelect" >
-                            <td *ngIf="passData.checkFlag && pinKeys.length != 0" class="checkbox-container-body"><input type="checkbox" name="" *ngIf="addCheckFlag(data)" class="checkbox" (change)="removeSelected($event, data)" [checked]="data.checked"></td>
+                            <td *ngIf="passData.checkFlag && pinKeys.length != 0" class="checkbox-container-body"><input type="checkbox" name="" *ngIf="!(data===fillData)" class="checkbox" (change)="removeSelected($event, data)" [checked]="data.checked"></td>
                             <td style="margin-top:1px" *ngFor="let key of dataKeys; let i = index" [class.d-none]="pinKeys.indexOf(key) == -1" [ngSwitch]="passData.dataTypes[i]">
                                 <div *ngIf="!(data===fillData)">
                                     <div *ngSwitchCase="'percent'" style="text-align: right">
@@ -177,7 +177,7 @@
                             <th *ngIf="passData.checkFlag && pinKeys.length==0" class="checkbox-container-header isCheckBox">
                                 <input type="checkbox" name="" (change)="selectAll($event.target.checked)" class="checkbox"  [checked]="checked" [class.sticky]="unliFlag">
                             </th>
-                            <th *ngFor="let tHeader of passData.tHeader; let i = index" [ngSwitch]="passData.dataTypes[i]"  [ngClass]="{'sticky': unliFlag, 'isCheckBox': passData.dataTypes[i] == 'checkbox', 'd-none': pinDataHeader.indexOf(tHeader) != -1 }" [ngStyle]="{'width': (passData.colSize[i] == '' || passData.colSize.length == 0) ? 'auto' : passData.colSize[i], 'max-width': (passData.colSize[i] == '' || passData.colSize.length == 0) ? 'auto' : passData.colSize[i], 'min-width': (passData.colSize[i] == '' || passData.colSize.length == 0) ? 'auto' : passData.colSize[i]}" [ngbTooltip]="passData.tooltip !== undefined ? passData.tooltip[i] :null">
+                            <th *ngFor="let tHeader of passData.tHeader; let i = index" [ngSwitch]="passData.dataTypes[i]"  [ngClass]="{'sticky': unliFlag, 'isCheckBox': passData.dataTypes[i] == 'checkbox', 'd-none': pinDataHeader.indexOf(tHeader) != -1 }" [ngStyle]="{'max-width': (passData.colSize[i] == '' || passData.colSize.length == 0) ? 'auto' : passData.colSize[i]}" [ngbTooltip]="passData.tooltip !== undefined ? passData.tooltip[i] :null">
                                 <!-- <i class="fa fa-map-pin" (click)="pinColumn($event,i)"></i> -->
                                 <span
                                       class="ui-column-resizer" (mousedown) = "onMouseDown($event)"></span>
@@ -196,7 +196,7 @@
 <!-- <<<<<<< HEAD
                                 <span *ngSwitchDefault class="unclickable">{{data[key] }}</span>
                             </div>
-                            <div *ngIf="!addCheckFlag(data)" class="filler">
+                            <div *ngIf="!!(data===fillData)" class="filler">
                                 <span></span>
                             </div>
                         </td>
@@ -213,7 +213,7 @@
                 <thead >
                     <tr>
                         <th *ngIf="passData.checkFlag && pinKeys.length==0" class="checkbox-container-header isCheckBox"><input type="checkbox" name="" [(ngModel)]="checked" class="checkbox"  [checked]="checked" [class.sticky]="unliFlag"></th>
-                        <th *ngFor="let tHeader of passData.tHeader; let i = index" [ngSwitch]="passData.dataTypes[i]"  [ngClass]="{'sticky': unliFlag, 'isCheckBox': passData.dataTypes[i] == 'checkbox', 'd-none': pinDataHeader.indexOf(tHeader) != -1 }" [ngStyle]="{'min-width': (passData.colSize[i] == '' || passData.colSize.length == 0) ? 'auto' : passData.colSize[i]}" [ngbTooltip]="passData.tooltip !== undefined ? passData.tooltip[i] :null">
+                        <th *ngFor="let tHeader of passData.tHeader; let i = index" [ngSwitch]="passData.dataTypes[i]"  [ngClass]="{'sticky': unliFlag, 'isCheckBox': passData.dataTypes[i] == 'checkbox', 'd-none': pinDataHeader.indexOf(tHeader) != -1 }" [ngStyle]="{'min-max-width': (passData.colSize[i] == '' || passData.colSize.length == 0) ? 'auto' : passData.colSize[i]}" [ngbTooltip]="passData.tooltip !== undefined ? passData.tooltip[i] :null">
                              <i class="fa fa-map-pin" (click)="pinColumn($event,i)"></i> 
                             <span
                                   class="ui-column-resizer" (mousedown) = "onMouseDown($event)"></span>
@@ -237,9 +237,9 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let data of displayData | paginate: { id: 'non-editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event, data);" (dblclick)="onRowDblClick($event,data)" [class.selected]="data === indvSelect || selected.includes(data) || checked">
-                        <td *ngIf="passData.checkFlag && pinKeys.length == 0" class="checkbox-container-body"><input type="checkbox" name="" *ngIf="addCheckFlag(data)" class="checkbox" (change)="removeSelected($event, data)" [checked]="checked"></td>
+                        <td *ngIf="passData.checkFlag && pinKeys.length == 0" class="checkbox-container-body"><input type="checkbox" name="" *ngIf="!(data===fillData)" class="checkbox" (change)="removeSelected($event, data)" [checked]="checked"></td>
                         <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]" [class.d-none]="pinKeys.indexOf(key) != -1" >
-                            <div *ngIf="addCheckFlag(data)">
+                            <div *ngIf="!(data===fillData)">
                                 <div *ngSwitchCase="'percent'" style="text-align: right">
                                     <span class="unclickable">{{data[key] | number: '1.10-10'}}</span>
 ======= -->
@@ -251,8 +251,8 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let data of displayData | paginate: { id: 'non-editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event, data);" (dblclick)="onRowDblClick($event,data)" [class.selected]="data === indvSelect || selected.includes(data) || data?.checked">
-                            <td *ngIf="passData.checkFlag && pinKeys.length == 0" class="checkbox-container-body"><input type="checkbox" name="" *ngIf="addCheckFlag(data)" class="checkbox" (change)="removeSelected($event, data)" [ngModelOptions]="{standalone: true}" [ngModel]="data.checked"></td>
-                            <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]" [class.d-none]="pinKeys.indexOf(key) != -1" [ngStyle]="{'width': (passData.colSize[i] == '' || passData.colSize.length == 0) ? 'auto' : passData.colSize[i], 'max-width': (passData.colSize[i] == '' || passData.colSize.length == 0) ? 'auto' : passData.colSize[i], 'min-width': (passData.colSize[i] == '' || passData.colSize.length == 0) ? 'auto' : passData.colSize[i]}">
+                            <td *ngIf="passData.checkFlag && pinKeys.length == 0" class="checkbox-container-body"><input type="checkbox" name="" *ngIf="!(data===fillData)" class="checkbox" (change)="removeSelected($event, data)" [ngModelOptions]="{standalone: true}" [ngModel]="data.checked"></td>
+                            <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]" [class.d-none]="pinKeys.indexOf(key) != -1" [ngStyle]="{'max-width': (passData.colSize[i] == '' || passData.colSize.length == 0) ? 'auto' : passData.colSize[i]}">
                                 <div *ngIf="!(data===fillData)">
                                     <div *ngSwitchCase="'percent'" style="text-align: right">
                                         <span class="unclickable">{{data[key] | number: '1.10-10'}}</span>
