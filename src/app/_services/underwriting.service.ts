@@ -644,4 +644,19 @@ export class UnderwritingService {
         return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolAlopItem', JSON.stringify(polAlopItemData), header);
     }
 
+    getSumInsOc(policyId){
+        const params = new HttpParams()
+            .set('policyId',policyId === undefined || policyId === null || policyId === '' ? '' : policyId)
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolCoverageOc',{params});
+    }
+
+    saveSumInsOC(params){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/saveSumInsOC', JSON.stringify(params), header);
+    }
+
 }            
