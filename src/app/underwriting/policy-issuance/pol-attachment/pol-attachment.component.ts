@@ -111,7 +111,7 @@ export class PolAttachmentComponent implements OnInit {
           }
           let file: File = files[0];
 
-          this.upload.uploadFile('http://localhost:8888/api/file-upload-service/', file)
+          this.upload.uploadFile(file)
             .subscribe(
               event => {
                 if (event.type == HttpEventType.UploadProgress) {

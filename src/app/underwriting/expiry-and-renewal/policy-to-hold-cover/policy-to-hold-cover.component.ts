@@ -4,6 +4,7 @@ import { PolicyHoldCoverInfo } from '../../../_models/PolicyToHoldCover';
 import { Title } from '@angular/platform-browser';
 import { NotesService, UnderwritingService } from '@app/_services';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
 	selector: 'app-policy-to-hold-cover',
@@ -15,6 +16,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	private policyHoldCoverInfo: PolicyHoldCoverInfo;
 
 	@ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
+	@ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 
 	constructor(private titleService: Title, private noteService: NotesService, private us: UnderwritingService, private modalService: NgbModal) { }
 
@@ -70,6 +72,10 @@ export class PolicyToHoldCoverComponent implements OnInit {
 		insuredDesc: '',
 		riskName: ''
 	}
+
+	dialogIcon: string = '';
+	dialogMessage: string = '';
+	cancelFlag: boolean = false;
 
 	ngOnInit() {
 
@@ -137,7 +143,8 @@ export class PolicyToHoldCoverComponent implements OnInit {
 		
 	}
 
-	onClickSave(){
+	onClickSave(cancelFlag?){
+		this.cancelFlag = cancelFlag !== undefined;
 		this.prepareParams();
 		console.log(this.polHoldCoverParams);
 		this.us.savePolHoldCover(this.polHoldCoverParams).subscribe((data: any)=>{
@@ -149,6 +156,9 @@ export class PolicyToHoldCoverComponent implements OnInit {
 			this.polHoldCoverParams.holdCovSeqNo = parseInt(generatedNum[3]).toString();
 			this.polHoldCoverParams.holdCovRevNo = parseInt(generatedNum[4]).toString();
 			this.retrievePolHoldCov(this.policyInfo.policyId, this.holdCoverNo);
+			this.dialogIcon = '';
+			this.dialogMessage = '';
+			$('app-sucess-dialog #modalBtn').trigger('click');
 		});
 	}
 
@@ -195,6 +205,21 @@ export class PolicyToHoldCoverComponent implements OnInit {
 		}
 	}
 
+	//cancel hold cover
+	cancelHoldCover(){
+		let params = {
+			policyId: this.policyInfo.policyId,
+			holdCovId: this.polHoldCoverParams.holdCovId,
+			updateUser: JSON.parse(window.localStorage.currentUser).username,
+			updateDate: this.noteService.toDateTimeString(0)
+		}
+
+		this.us.updatePolHoldCoverStatus(params).subscribe((data: any)=>{
+			console.log(data);
+		});
+		this.clearHcFields();
+	}
+
 	clearHcFields(){
 		this.periodFromDate = {
 				date: '',
@@ -226,6 +251,14 @@ export class PolicyToHoldCoverComponent implements OnInit {
 										updateUser: '',
 										updateDate: ''
 									}
+	}
+
+	onClickCancel(){
+		this.cancelBtn.clickCancel();
+	}
+
+	onClickSaveBtn(){
+		$('#confirm-save #modalBtn2').trigger('click');
 	}
 
 }

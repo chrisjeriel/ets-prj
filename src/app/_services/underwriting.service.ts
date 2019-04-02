@@ -644,4 +644,13 @@ export class UnderwritingService {
         return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolAlopItem', JSON.stringify(polAlopItemData), header);
     }
 
+    updatePolHoldCoverStatus(params: any){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/updatePolHoldCoverStatus', JSON.stringify(params), header);
+    }
+
 }            
