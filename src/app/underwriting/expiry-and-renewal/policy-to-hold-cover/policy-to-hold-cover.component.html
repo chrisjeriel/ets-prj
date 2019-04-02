@@ -149,8 +149,8 @@
                     <div class="form-group col-sm">
                         <div class="col-md-13 text-center" style="margin-top:10px">
                             <div class="cust-btn-container">
-                                <button type="button" class="cust-btn"><a>Cancel Hold Cover</a></button>
-                                <button type="button" class="cust-btn"><a>Approval</a></button>
+                                <button type="button" class="cust-btn" [disabled]="statusDesc === '' || statusDesc === 'Converted'" [class.cust-btn-disabled]="statusDesc === '' || statusDesc === 'Converted'"><a>Cancel Hold Cover</a></button>
+                                <button type="button" class="cust-btn" [disabled]="statusDesc !== 'In Force'" [class.cust-btn-disabled]="statusDesc !== 'In Force'"><a>Approval</a></button>
                                 <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
                             </div>
                         </div>

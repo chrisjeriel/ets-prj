@@ -191,7 +191,12 @@ export class PolicyToHoldCoverComponent implements OnInit {
 		}
 		//else clear all fields
 		else{
-			this.periodFromDate = {
+			this.clearHcFields();
+		}
+	}
+
+	clearHcFields(){
+		this.periodFromDate = {
 				date: '',
 				time: ''
 			}
@@ -221,7 +226,6 @@ export class PolicyToHoldCoverComponent implements OnInit {
 										updateUser: '',
 										updateDate: ''
 									}
-		}
 	}
 
 }
