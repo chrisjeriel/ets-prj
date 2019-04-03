@@ -40,6 +40,7 @@ export class HoldCoverMonitoringListComponent implements OnInit {
     quotationNo: any;
     records: any[] = [];
     defaultType: boolean = false;
+    status: any;
 
 
     constructor(private quotationService: QuotationService, private router: Router, private titleService: Title, private modalService: NgbModal) {
@@ -271,11 +272,12 @@ export class HoldCoverMonitoringListComponent implements OnInit {
              this.quotationNo = rec.quotationNo;
              this.holdCoverId = rec.holdCover.holdCoverId;
              this.holdCoverNo = rec.holdCover.holdCoverNo;
+             this.status = rec.holdCover.status;
           } 
         }
 
         setTimeout(() => {
-            this.router.navigate(['/quotation-holdcover', { line: this.line, quoteId: this.quoteId,  holdCovId : this.holdCoverId, quotationNo: this.quotationNo, holdCoverNo: this.holdCoverNo , from: 'hold-cover-monitoring', inquiry: true}], { skipLocationChange: true });
+            this.router.navigate(['/quotation-holdcover', { line: this.line, quoteId: this.quoteId,  holdCovId : this.holdCoverId, quotationNo: this.quotationNo, holdCoverNo: this.holdCoverNo , status: this.status, from: 'hold-cover-monitoring', inquiry: true}], { skipLocationChange: true });
         },100); 
     }
 
