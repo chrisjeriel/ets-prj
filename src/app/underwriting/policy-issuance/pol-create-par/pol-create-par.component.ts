@@ -216,5 +216,8 @@ export class PolCreatePARComponent implements OnInit {
     }
 
     console.log(savePolicyDetailsParam);
+    this.underwritingService.savePolicyDetails(savePolicyDetailsParam).subscribe(data => {
+      console.log(data);
+    });
   }
 }
