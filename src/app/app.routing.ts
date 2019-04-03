@@ -117,6 +117,7 @@ import { UsersComponent } from './security/users-maintenance/users/users.compone
 import { UsersMaintenanceComponent } from './security/users-maintenance/users-maintenance.component';
 import { ModulesMaintenanceComponent } from './security/modules-maintenance/modules-maintenance.component';
 import { PolicyInformationComponent } from './underwriting/inquiry/policy-information/policy-information.component';
+import { PolOcInquiryComponent } from './underwriting/inquiry/pol-oc-inquiry/pol-oc-inquiry.component';;
 
 const appRoutes: Routes = [
 
@@ -243,6 +244,7 @@ const appRoutes: Routes = [
     { path: 'users-maintenance', component: UsersMaintenanceComponent },
     { path: 'modules-maintenance', component: ModulesMaintenanceComponent },
     { path: 'policy-information', component: PolicyInformationComponent},
+    { path: 'pol-oc-inquiry', component: PolOcInquiryComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

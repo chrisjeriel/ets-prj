@@ -214,8 +214,9 @@ export class CustEditableNonDatatableComponent implements OnInit {
         this.search(this.searchString);
         this.tableDataChange.emit(this.passData.tableData);
         this.add.next(event);
-
-        setTimeout(a=>{this.pagination.setCurrent(this.pagination.getLastPage())},0);
+        if(this.passData.paginateFlag){
+            setTimeout(a=>{this.pagination.setCurrent(this.pagination.getLastPage())},0);
+        }
         this.form.control.markAsDirty();
     }
 
@@ -264,7 +265,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
                 let width = this.startWidth + (event.x - this.startX);
                 $(this.start).parent().css({'min-width': width, 'max-width': width,'width':width});
                 let index = $(this.start).parent().index() + 1;
-                $('.glowTableBody tr td:nth-child(' + index + ')').css({'min-width': width, 'max-width': width,'width':width});
+                $('#non-datatable tr td:nth-child(' + index + ')').css({'min-width': width, 'max-width': width,'width':width});
             }
         });
         this.renderer.listenGlobal('body', 'mouseup', (event) => {

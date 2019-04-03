@@ -13,6 +13,7 @@ export class PolicyIssuanceComponent implements OnInit {
   sub: any;
   policyInfo:any = {};
   alterFlag: boolean = false;
+  fromInq:boolean = false;
   
   constructor(private route: ActivatedRoute,private modalService: NgbModal, private router: Router) { }
 
@@ -20,6 +21,7 @@ export class PolicyIssuanceComponent implements OnInit {
     this.sub = this.route.params.subscribe(params => {
             this.line = params['line'];
             this.alterFlag = params['alter'];
+            this.fromInq = params['fromInq'];
         });
 
      /* Test Data */
@@ -28,7 +30,6 @@ export class PolicyIssuanceComponent implements OnInit {
         this.policyInfo.principalName = 'principal';
         this.policyInfo.contractorName = 'contractor';
         this.policyInfo.riskName = 'riskName';
-        
 
   }
 
