@@ -220,5 +220,15 @@ export class MaintenanceService{
          return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnLine',params,header);
 	}
 	
+	getMtnDeductibles(lineCd,coverCd,endtCd,deductiblesCd) {
+		const params = new HttpParams()
+			.set('lineCd', lineCd)
+			.set('coverCd', coverCd)
+			.set('endtCd', endtCd)
+			.set('deductiblesCd', deductiblesCd);
+
+       	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnDeductibles', {params});
+    }
+
 }
 

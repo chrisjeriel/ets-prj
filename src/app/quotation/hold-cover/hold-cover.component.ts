@@ -758,12 +758,12 @@ fmtCn(cn){
 
 	onClickOptionLOV(){
 		this.passDataQuoteOptionsLOV.tableData = [];
-		this.loading = true;
+		//this.loading = true;
 		$('#optionMdl #modalBtn2').trigger('click');
 		this.quotationService.getQuoteOptions(this.quoteId.toString(),'')
 		.subscribe(data => {
 			console.log(data);
-			this.loading = false;
+			//this.loading = false;
 			var rec = data['quotation'].optionsList;
 			for(let i of rec){
 				this.passDataQuoteOptionsLOV.tableData.push({

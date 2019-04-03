@@ -133,8 +133,8 @@
                     <div class="form-row custom-row-inline-inset">
                         <div class="input-group">
                             <div class="col-sm-3"></div>
-                            <label class="form-control-sm text-right" for="xx" style="margin-bottom: 0px">Line</label>
-                            <input class="form-control form-control-sm  col-sm-1" type="text" name="" placeholder="CAR">
+                            <label class="form-control-sm text-right"  style="margin-bottom: 0px">Line</label>
+                            <input class="form-control form-control-sm  col-sm-1" type="text" placeholder="CAR">
                             <div class="text-search-ico" style="padding-left: 1px"><a><i class="fa fa-search"></i></a></div>&nbsp;
                             <input class="form-control form-control-sm  col-sm" type="text" name="" style="margin-left: 2px;" placeholder="Contractors All Risks">
                             <div class="cust-btn-container" style="margin-left: 2px;">
@@ -146,7 +146,10 @@
                 </fieldset>
 
                 <fieldset class="scheduler-border">
-                    
+                    <div class="custom-row-inline-inset" style="margin-top: 25px !important;">
+                        <app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
+                        <!-- <app-cust-editable-non-datatable [passData]="passData" (tableDataChange)="passData.tableData=$event"></app-cust-editable-non-datatable> -->
+                    </div>
                 </fieldset>
                 <!-- END  ARNEILLE-->                
             </ng-template>
