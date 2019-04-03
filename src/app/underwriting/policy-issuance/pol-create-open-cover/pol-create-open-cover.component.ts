@@ -71,6 +71,18 @@ export class PolCreateOpenCoverComponent implements OnInit {
         optionId: '',
         condition: ''
     };
+
+    inceptDate: any = {
+        date: '',
+        time: ''
+    }
+
+    expiryDate: any = {
+        date: '',
+        time: ''
+    }
+
+    saveParams: any = {};
     
     constructor(private titleService: Title, private router: Router, private ns: NotesService, 
                 private us: UnderwritingService, private qs: QuotationService, private modalService: NgbModal) { }
@@ -147,5 +159,27 @@ export class PolCreateOpenCoverComponent implements OnInit {
         this.passDataOptionLOV.tableData = data['quotation']['optionsList'];
         this.optListTable.refreshTable();
       });
+    }
+
+    prepareParams(){
+        //check if required fields are filled
+        if(this.splitQuoteNo.length === 5 && this.optionData.optionId !== '' && 
+           this.inceptDate.date !== '' && this.inceptDate.time !== '' &&
+           this.expiryDate.date !== '' && this.expiryDate.time !== ''){
+            this.saveParams = {
+                quotationNo: this.quoteData.quoteNo,
+                optionId: this.optionData.optionId,
+                inceptionDate: this.inceptDate.date + 'T' + this.inceptDate.time,
+                expiryDate: this.expiryDate.date + 'T' + this.expiryDate.time,
+                createUser: JSON.parse(window.localStorage.currentUser).username,
+                createDate: this.ns.toDateTimeString(0),
+                updateUser: JSON.parse(window.localStorage.currentUser).username,
+                updateDate: this.ns.toDateTimeString(0)
+            };
+            console.log(this.saveParams);
+        }else{
+            //please fill required fields
+            console.log('please fill required fields');
+        }
     }
 }

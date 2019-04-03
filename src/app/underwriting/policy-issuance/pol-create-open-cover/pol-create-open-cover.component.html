@@ -41,11 +41,11 @@
                                         </div>
                                         <div class="input-group ig-row">
                                             <label class="form-control-sm col-sm-2">Inception Date</label>
-                                            <input type="date" class="form-control form-control-sm col-sm-3"  appRequired>
-                                            <input type="time" class="form-control form-control-sm input-ig-row col-sm-2"  appRequired>
+                                            <input type="date" class="form-control form-control-sm col-sm-3" [(ngModel)]="inceptDate.date" appRequired>
+                                            <input type="time" class="form-control form-control-sm input-ig-row col-sm-2" [(ngModel)]="inceptDate.time" appRequired>
                                             <label class="form-control-sm col-sm-1" style="margin-left: 25px !important;">Expiry Date</label>
-                                            <input type="date" class="form-control form-control-sm col-sm-3"  appRequired>
-                                            <input type="time" class="form-control form-control-sm input-ig-row col-sm-2"  appRequired>
+                                            <input type="date" class="form-control form-control-sm col-sm-3" [(ngModel)]="expiryDate.date" appRequired>
+                                            <input type="time" class="form-control form-control-sm input-ig-row col-sm-2" [(ngModel)]="expiryDate.time" appRequired>
                                         </div>
                                     </div>
                                 </div>
