@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-
-import { UnderwritingService } from '../../../_services';
+import { UnderwritingService, MaintenanceService } from '../../../_services';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 
 @Component({
@@ -25,24 +24,25 @@ export class DeductibleComponent implements OnInit {
     };
     data: any;
     
-    constructor(private titleService: Title, private underwritingService: UnderwritingService ) { }
+    constructor(private titleService: Title, private underwritingService: UnderwritingService, private mntService: MaintenanceService ) { }
 
     ngOnInit() {
-        this.titleService.setTitle('Pol | Deductible')
+        this.titleService.setTitle('Mtn | Deductibles')
 
-        this.underwritingService.getMaintenanceDeductibles().subscribe((data: any) => {
+        // this.underwritingService.getMaintenanceDeductibles().subscribe((data: any) => {
            
-            this.data = data.deductibles;
-            console.log(this.data);
-            for (var i = data.deductibles.length - 1; i >= 0; i--) {
-                this.maintenanceDeductibleData.tableData.push(data.deductibles[i]);
-                console.log(data.deductibles[i]);
-            }
+        //     this.data = data.deductibles;
+        //     console.log(this.data);
+        //     for (var i = data.deductibles.length - 1; i >= 0; i--) {
+        //         this.maintenanceDeductibleData.tableData.push(data.deductibles[i]);
+        //         console.log(data.deductibles[i]);
+        //     }
 
-            this.table.refreshTable();
+        //     this.table.refreshTable();
 
-        });
-        // this.maintenanceDeductibleData.tableData = this.underwritingService.getMaintenanceDeductibles();
+        // });
+        
+
     }
 
     FixedAmount(){

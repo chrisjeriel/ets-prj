@@ -72,9 +72,9 @@
 
                                         <div class="input-group" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2">Hold Cover No</label>
-                                            <input type="text" class="form-control form-control-sm cust-sm warn" readonly appRequired [(ngModel)]="holdCover.holdCoverNo">
+                                            <input type="text" class="form-control form-control-sm cust-sm" readonly [(ngModel)]="holdCover.holdCoverNo">
                                             <label class="form-control-sm col-sm-2">Option No</label>
-                                            <input type="text" class="form-control form-control-sm col-sm-7 warn" #optId id="optionId" readonly [(ngModel)]="holdCover.optionId" appRequired (change)="searchOptNo(optId.value)">
+                                            <input type="text" class="form-control form-control-sm col-sm-7 warn" #optId id="optionId" readonly [(ngModel)]="holdCover.optionId" appRequired (change)="searchOptNo(optId.value)" numbers-only>
                                             <div *ngIf="optLovEnabled" class="text-search-ico" (click)="onClickOptionLOV()"><a><i class="fa fa-search"></i></a></div>
                                         </div>
                                         <!-- <div class="input-group" style="margin-bottom: -14px !important;">
