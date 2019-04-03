@@ -334,6 +334,11 @@ import { MtnReasonComponent } from './maintenance/mtn-reason/mtn-reason.componen
 import { PrintModalComponent } from './_components/common/print-modal/print-modal.component';
 import { MtnReportsParamsComponent } from './maintenance/mtn-reports-params/mtn-reports-params.component';
 import { PolicyInformationComponent } from './underwriting/inquiry/policy-information/policy-information.component';
+import { ApprovalListComponent } from './home/approval-list/approval-list.component';
+import { WfNotesComponent } from './home/wf-notes/wf-notes.component';
+import { WfRemindersComponent } from './home/wf-reminders/wf-reminders.component';
+import { WfTransactionsComponent } from './home/wf-transactions/wf-transactions.component';
+import { WfActionsComponent } from './home/wf-actions/wf-actions.component';
 
 
 
@@ -677,6 +682,11 @@ import { PolicyInformationComponent } from './underwriting/inquiry/policy-inform
         PrintModalComponent,
         MtnReportsParamsComponent,
         PolicyInformationComponent,
+        ApprovalListComponent,
+        WfNotesComponent,
+        WfRemindersComponent,
+        WfTransactionsComponent,
+        WfActionsComponent,
     ],
 
     providers: [
