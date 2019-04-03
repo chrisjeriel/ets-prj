@@ -166,10 +166,14 @@ export class PolCreateOpenCoverComponent implements OnInit {
         if(this.splitQuoteNo.length === 5 && this.optionData.optionId !== '' && 
            this.inceptDate.date !== '' && this.inceptDate.time !== '' &&
            this.expiryDate.date !== '' && this.expiryDate.time !== ''){
+            /*let parsedQuotationNo: string = this.splitQuoteNo[0] + this.splitQuoteNo[1] +
+                                            parseInt(this.splitQuoteNo[2]).toString() + parseInt(this.splitQuoteNo[3]).toString() +
+                                            this.splitQuoteNo[4];*/
             this.saveParams = {
+                //quotationNo: parsedQuotationNo,
                 quotationNo: this.quoteData.quoteNo,
                 optionId: this.optionData.optionId,
-                inceptionDate: this.inceptDate.date + 'T' + this.inceptDate.time,
+                inceptDate: this.inceptDate.date + 'T' + this.inceptDate.time,
                 expiryDate: this.expiryDate.date + 'T' + this.expiryDate.time,
                 createUser: JSON.parse(window.localStorage.currentUser).username,
                 createDate: this.ns.toDateTimeString(0),
@@ -177,6 +181,10 @@ export class PolCreateOpenCoverComponent implements OnInit {
                 updateDate: this.ns.toDateTimeString(0)
             };
             console.log(this.saveParams);
+            //save to DB
+            this.us.saveOpenPolDetails(this.saveParams).subscribe((data: any)=>{
+                console.log(data);
+            });
         }else{
             //please fill required fields
             console.log('please fill required fields');
