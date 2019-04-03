@@ -190,8 +190,8 @@ export class UnderwritingService {
     }
 
 
-    getAltParListing() {
-        this.altParListingData = [
+    getAltParListing(searchParams: any []) {
+       /* this.altParListingData = [
             new AltPARListing("CAR-2018-000002-021-0192-001", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(), "POLECOH"),
             new AltPARListing("CAR-2018-000002-021-0192-002", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(), "POLECOH"),
             new AltPARListing("CAR-2018-000002-021-0192-003", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(), "POLECOH"),
@@ -202,8 +202,43 @@ export class UnderwritingService {
             new AltPARListing("CAR-2018-000002-021-0192-008", "Direct", "CAR Wet Risks", "In Progress", "Malayan", "5K Builders", "ABE International Corp", "5K Builders & ABE international Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba", "CAR-2018-000001-00-99", "PHP", new Date(), new Date(), new Date(), "POLECOH"),
         ];
 
-        return this.altParListingData;
-
+        return this.altParListingData;*/
+        var params;
+        if(searchParams.length < 1){
+             params = new HttpParams()
+                    .set('policyNo','')
+                    .set('cessionDesc', '')
+                    .set('cedingName', '')
+                    .set('lineClassDesc','')
+                    .set('insuredDesc','')
+                    .set('riskName','')
+                    .set('objectDesc','')
+                    .set('site','')
+                    .set('currencyCd','')
+                    .set('totalSiLess','')
+                    .set('totalSiGrt','')
+                    .set('totalPrem','')
+                    .set('issueDateFrom','')
+                    .set('issueDateTo','')
+                    .set('inceptDateFrom','')
+                    .set('inceptDateTo','')
+                    .set('expiryDateFrom','')
+                    .set('expiryDateTo','')
+                    .set('acctDateFrom','')
+                    .set('acctDateTo','')
+                    .set('statusDesc','');
+                    // .set('paginationRequest.position',null)
+                    // .set('paginationRequest.count',null)
+                    // .set('sortRequest.sortKey',null)
+                    // .set('sortRequest.order',null);
+        }
+        else{
+             params = new HttpParams();
+            for(var i of searchParams){
+                params = params.append(i.key, i.search);
+            }
+        }
+         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolicyListing',{params});
     }
 
     getPolAttachment(policyId: string, policyNo: string) {

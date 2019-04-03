@@ -4,6 +4,7 @@ import { UnderwritingService, NotesService } from '../../../_services';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import * as alasql from 'alasql';
 
 @Component({
     selector: 'app-par-listing',
@@ -53,7 +54,7 @@ export class ParListingComponent implements OnInit {
                 dataType: 'text'
             },
             {
-                key: 'typeCession',
+                key: 'cessionDesc',
                 title: 'Type of Cession',
                 dataType: 'text'
             },
@@ -63,17 +64,17 @@ export class ParListingComponent implements OnInit {
                 dataType: 'text'
             },
             {
-                key: 'insured',
+                key: 'insuredDesc',
                 title: 'Insured',
                 dataType: 'text'
             },
             {
-                key: 'risk',
+                key: 'riskName',
                 title: 'Risk',
                 dataType: 'text'
             },
             {
-                key: 'object',
+                key: 'objectDesc',
                 title: 'Object',
                 dataType: 'text'
             },
@@ -83,7 +84,7 @@ export class ParListingComponent implements OnInit {
                 dataType: 'text'
             },
             {
-                key: 'currency',
+                key: 'currencyCd',
                 title: 'Currency',
                 dataType: 'text'
             },
@@ -137,13 +138,13 @@ export class ParListingComponent implements OnInit {
                 dataType: 'datespan'
             },
             {
-                key: 'status',
+                key: 'statusDesc',
                 title: 'Status',
                 dataType: 'text'
             },
         ],
-        keys: ['policyNo','cessionDesc','cedComp','insured','risk','object','site','currency','sumInsured','premium','issueDate','inceptDate','expiryDate','accDate','status']
-
+        keys: ['policyNo','cessionDesc','cedComp','insured','risk','object','site','currency','sumInsured','premium','issueDate','inceptDate','expiryDate','accDate','status'],
+        exportFlag: true
     }
 
     ngOnInit() {
@@ -156,7 +157,7 @@ export class ParListingComponent implements OnInit {
           var records = data['policyList'];
           this.fetchedData = records;
                for(let rec of records){
-                     if (rec.statusDesc === 'In Force' || rec.statusDesc === 'In Progress') {
+                     if (rec.statusDesc === 'In Force' || rec.statusDesc === 'In Progress' && rec.altNo === 0) {
                          this.passDataListing.tableData.push(
                                                     {
                                                         policyId: rec.policyId,
@@ -187,6 +188,7 @@ export class ParListingComponent implements OnInit {
     searchQuery(searchParams){
         this.searchParams = searchParams;
         this.passDataListing.tableData = [];
+        console.log(this.searchParams);
         this.selectedPolicy = {};
         this.passDataListing.btnDisabled = true;
 
@@ -249,6 +251,34 @@ export class ParListingComponent implements OnInit {
             this.selectedPolicy = event;
             this.passDataListing.btnDisabled = false;
         }
+    }
+
+    export(){
+        //do something
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var currDate = mm + dd+ yyyy;
+    var filename = 'PolicyList_'+currDate+'.xlsx'
+    var mystyle = {
+        headers:true, 
+        column: {style:{Font:{Bold:"1"}}}
+      };
+
+      alasql.fn.datetime = function(dateStr) {
+            var date = new Date(dateStr);
+            return date.toLocaleString();
+      };
+
+       alasql.fn.currency = function(currency) {
+            var parts = parseFloat(currency).toFixed(2).split(".");
+            var num = parts[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + 
+                (parts[1] ? "." + parts[1] : "");
+            return num
+      };
+
+     alasql('SELECT policyNo AS PolicyNo, cessionDesc AS TypeCession, cedComp AS CedingCompany, insured AS Insured, risk AS Risk, object AS Object, site AS Site, currency AS Currency, currency(sumInsured) AS SumInsured,   datetime(periodFrom) AS PeriodFrom,currency(premium) AS Premium, datetime(issueDate) AS IssueDate, datetime(inceptDate) AS InceptDate, datetime(expiryDate) AS ExpiryDate, datetime(accDate) AS AcctingDate, status AS Status  INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passDataListing.tableData]);
     }
 
 }
