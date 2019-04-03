@@ -100,15 +100,15 @@ export class QuoAlopComponent implements OnInit {
 
     itemInfoData: any = {
         tableData: [],
-        tHeader: ["Item No", "Quantity", "Description", "Relative Importance", "Possible Loss Minimization"],
-        dataTypes: ["number", "number", "text", "text", "text"],
-        uneditable: [true,false,false,false,false,false],
+        tHeader: ["Item No", "Quantity", "Description", "Possible Loss Minimization"],
+        dataTypes: ["number", "number", "text", "text"],
+        uneditable: [true,false,false,false,false],
         nData: {
           createDate: new Date(),
           createUser: JSON.parse(window.localStorage.currentUser).username,
           description: null,
-          importance: null,
           itemNo: null,
+          importance: null,
           lossMin: null,
           quantity: null,
           updateDate: new Date(),
@@ -118,8 +118,8 @@ export class QuoAlopComponent implements OnInit {
         deleteFlag: true,
         infoFlag: true,
         paginateFlag: true,
-        keys:['itemNo','quantity','description','importance','lossMin'],
-        widths:[1,1,1,1,1,1],
+        keys:['itemNo','quantity','description','lossMin'],
+        widths:[1,1,1,1,1],
         checkFlag:true
     }
 
@@ -152,11 +152,7 @@ export class QuoAlopComponent implements OnInit {
 
     ngOnInit() {
       this.titleService.setTitle("Quo | ALOP");
-      if (this.quoteNo.substr(0, 3) == "CAR") {
-          this.itemInfoData.tHeader = ["Item No", "Quantity", "Description", "Possible Loss Minimization"];
-          this.itemInfoData.dataTypes = ["number", "number", "text", "text"];
-          this.itemInfoData.keys = ['itemNo','quantity','description','lossMin'];
-      }
+      
       //neco
       if(this.inquiryFlag){
         this.itemInfoData.opts = [];
@@ -175,6 +171,12 @@ export class QuoAlopComponent implements OnInit {
          this.quoteNo += '-' + parseInt(this.quotationNo.split(/[-]/g)[i]);
        } 
 
+       if (this.quoteNo.substr(0, 3) == "EAR") {
+           this.itemInfoData.tHeader = ["Item No", "Quantity", "Description","Relative Importance", "Possible Loss Minimization"];
+           this.itemInfoData.dataTypes = ["number", "number", "text", "text", "text"];
+           this.itemInfoData.keys = ['itemNo','quantity','description','importance','lossMin'];
+           this.itemInfoData.widths = [1,1,1,1,1]
+       }
         this.getAlop();
         this.getQuoteOption();
         this.getAlopSumInsured();
@@ -276,9 +278,11 @@ export class QuoAlopComponent implements OnInit {
 
       this.alopData.quoteId = this.quotationInfo.quoteId;
       this.alopData.alopDetails = [];
+      console.log(this.optionsList)
       for(let option of this.optionsList){
           option.alopDetails.optionId = option.optionId;
           option.alopDetails.createDateAlop = this.ns.toDateTimeString(option.alopDetails.createDateAlop);
+          console.log(option.alopDetails.indemFromDate)
           option.alopDetails.indemFromDate = this.ns.toDateTimeString(option.alopDetails.indemFromDate);
           option.alopDetails.updateDateAlop = this.ns.toDateTimeString(option.alopDetails.updateDateAlop);
           option.alopDetails.expiryDate = this.ns.toDateTimeString(option.alopDetails.expiryDate);
@@ -297,7 +301,7 @@ export class QuoAlopComponent implements OnInit {
           $('#successModalBtn').trigger('click');
           this.form.control.markAsPristine()
           this.getAlop();
-          this.emptyVar();
+          //this.emptyVar();
           this.alopDetails = this.alopData.alopDetails.filter(a => a.optionId == this.alopDetails.optionId)[0];
           this.optionsList = this.optionsList.filter(a => a.optionId == this.optionsList.optionId)[0];
         }
@@ -433,7 +437,8 @@ export class QuoAlopComponent implements OnInit {
 
   checkDates(){
     console.log(new Date(this.alopDetails.issueDate))
-    if(new Date(this.alopDetails.issueDate) >= new Date(this.alopDetails.expiryDate)){
+
+    if((new Date(this.alopDetails.issueDate) >= new Date(this.alopDetails.expiryDate))){
      highlight(this.to);
      highlight(this.from);
      this.dateErFlag = true;
@@ -441,6 +446,12 @@ export class QuoAlopComponent implements OnInit {
      unHighlight(this.to);
      unHighlight(this.from);
      this.dateErFlag = false;
+    }
+
+    if(this.alopDetails.issueDate == ""){
+      this.alopDetails.issueDate = null;
+    }else if(this.alopDetails.expiryDate == ""){
+      this.alopDetails.expiryDate = null
     }
   }
 

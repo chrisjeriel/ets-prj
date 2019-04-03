@@ -459,7 +459,7 @@ export class CoverageComponent implements OnInit {
 
   onClickSave(){
     for (var i =0; i < this.passData.tableData.length;i++){
-      if(this.passData.tableData[i].sumInsured == 0  && this.passData.tableData[i].addSi == 'Y'){
+      if(this.passData.tableData[i].sumInsured == 0  && this.passData.tableData[i].addSi == 'Y' && !this.passData.tableData[i].deleted){
         this.errorFlag = true;
       }
     }

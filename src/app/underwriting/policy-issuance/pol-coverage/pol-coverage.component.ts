@@ -54,16 +54,16 @@ export class PolCoverageComponent implements OnInit {
   };
   passDataSectionCover: any = {
         tableData: [],
-        tHeader: [ "Section","Bullet No","Cover Name",  "Sum Insured", "Rate", "Premium", "Add Sl"],
+        tHeader: [ "Section","Bullet No","Cover Name",  "Sum Insured", "Rate", "Premium", "Discount","Add Sl"],
         dataTypes: [
-                    "text", "text", "text", "currency", "percent", "currency", "checkbox"
+                    "text", "text", "text", "currency", "percent", "currency", "checkbox", "checkbox"
                    ],
         checkFlag:true,
         pageLength: 10,
         searchFlag:true,
         magnifyingGlass: ['coverCode'],
-        widths:[1,1,228,200,1,1,1],
-        keys:['section','bulletNo','description','sumInsured','premRt','premAmt','addSi']
+        widths:[1,1,228,200,1,1,1,1],
+        keys:['section','bulletNo','description','sumInsured','premRt','premAmt','discountTag','addSi']
     };
 
 
@@ -145,6 +145,12 @@ export class PolCoverageComponent implements OnInit {
   coverageData : any = {
       currencyCd: null,
       currencyRt: null,
+      sectionISi:null,
+      sectionIISi: null,
+      sectionIIISi: null,
+      sectionIPrem: null,
+      sectionIIPrem: null,
+      sectionIIIPrem: null,
       totalSi: null,
       totalPrem: null,
       pctShare:0,
@@ -166,10 +172,10 @@ export class PolCoverageComponent implements OnInit {
 
   passData: any = {
     tableData:[],
-    tHeader:['Section','Bullet No','Cover Name','Sum Insured','Rate','Premium','Sum Insured','Rate','Premium','Sum Insured','Rate','Premium','Add Sl'],
+    tHeader:['Section','Bullet No','Cover Name','Sum Insured','Rate','Premium','Sum Insured','Rate','Premium','Discount Tag','Add SI','Sum Insured','Rate','Premium'],
     tHeaderWithColspan:[],
     options:[],
-    dataTypes:['text','text','text','currency','percent','currency','currency','percent','currency','currency','percent','currency','checkbox'],
+    dataTypes:['text','text','text','currency','percent','currency','currency','percent','currency','checkbox','checkbox','currency','percent','currency'],
     opts:[],
     addFlag: true,
     deleteFlag: true,
@@ -177,8 +183,8 @@ export class PolCoverageComponent implements OnInit {
     searchFlag: true,
     checkFlag: true,
     magnifyingGlass: ['coverCd'],
-    keys:['section','bulletNo','description','sumInsured','premRt','premAmt','altSumInsured','altRate','altPrenium','comSumInsured','comRate','comPrenium','addSi'],
-    uneditable:[false,false,false,true,true,true,false,false,false,false,false,false,false],
+    keys:['section','bulletNo','description','sumInsured','premRt','premAmt','altSumInsured','altRate','altPrenium','altDiscountTag','addSi','comSumInsured','comRate','comPrenium'],
+    uneditable:[true,true,true,true,true,true,false,false,true,false,false,false,false,false],
     pageLength:'unli'
   };
 
@@ -188,8 +194,49 @@ export class PolCoverageComponent implements OnInit {
     tHeaderWithColspan:[],
     options:[],
     dataTypes:['text','currency','currency','currency','currency','currency','currency'],
+    keys:['section','prevSi','prevAmt','altSi','altAmt','comSi','comAmt'],
     pageLength: 3
   };
+
+  altCoverageData : any = {
+      currencyCd: null,
+      currencyRt: null,
+      prevtotalSi: 0,
+      prevtotalPrem: 0,
+      alttotalSi: 0,
+      alttotalPrem: 0,
+      comtotalSi: 0,
+      comtotalPrem: 0,
+      pctShare:0,
+      pctPml:0,
+      totalValue: 0,  
+      remarks: '' 
+  }
+
+  prevsectionISi:number = 0;
+  prevsectionIPrem:number = 0;
+  prevsectionIISi:number = 0;
+  prevsectionIIPrem:number = 0;
+  prevsectionIIISi:number = 0;
+  prevsectionIIIPrem:number = 0;
+  altsectionISi:number = 0;
+  altsectionIPrem:number = 0;
+  altsectionIISi:number = 0;
+  altsectionIIPrem:number = 0;
+  altsectionIIISi:number = 0;
+  altsectionIIIPrem:number = 0;
+  comsectionISi:number = 0;
+  comsectionIPrem:number = 0;
+  comsectionIISi:number = 0;
+  comsectionIIPrem:number = 0;
+  comsectionIIISi:number = 0;
+  comsectionIIIPrem:number = 0;
+  prevtotalSi:number = 0;
+  prevtotalPrem:number = 0;
+  alttotalSi:number = 0;
+  alttotalPrem:number = 0;
+  comtotalSi:number = 0;
+  comtotalPrem:number = 0;
 
   constructor(private underwritingservice: UnderwritingService, private titleService: Title, private modalService: NgbModal,
                 private route: ActivatedRoute, private ns: NotesService,  private router: Router) { }
@@ -197,7 +244,6 @@ export class PolCoverageComponent implements OnInit {
 
   ngOnInit() {
     this.titleService.setTitle("Pol | Coverage");
-    console.log(this.alteration)
     if (!this.alteration) {
       //this.passDataSectionCover.tableData = this.underwritingservice.getUWCoverageInfo();
       //this.passDataTotalPerSection.tableData = this.underwritingservice.getTotalPerSection();
@@ -206,27 +252,10 @@ export class PolCoverageComponent implements OnInit {
     } else {
       this.passDataDeductibles.tableData = this.underwritingservice.getUWCoverageDeductibles();
       this.passData.tHeaderWithColspan.push({ header: "", span: 1 }, { header: "", span: 3 },
-        { header: "Previous", span: 3 }, { header: "This Alteration", span: 3 },
-        { header: "Cumulative", span: 3 }, { header: "", span: 1 });
+        { header: "Previous", span: 3 }, { header: "This Alteration", span: 5 },
+        { header: "Cumulative", span: 3 });
 
-      this.passData.tableData = [
-        {
-          coverCode: "ABC",
-          section: "I",
-          bulletNo: 1.2,
-          prevSumInsured: 20,
-          prevRate: 5,
-          prevPremium: 100,
-          thisAltSumInsured: 60,
-          thisAltRate: 5,
-          thisAltPremium: 50,
-          cumuSumInsured: 90,
-          cumuRate: 5,
-          cumuPremium: 800,
-          addSl: ""
-        }
-      ];
-
+      
       this.passData2.tHeaderWithColspan.push({ header: "", span: 1 }, { header: "Previous", span: 2 }, 
         { header: "This Alteration", span: 2 }, { header: "Cumulative", span: 2 });
 
@@ -268,14 +297,66 @@ export class PolCoverageComponent implements OnInit {
       this.underwritingservice.getUWCoverageInfos(null,this.policyId).subscribe((data:any) => {
         console.log(data)
         this.passData.tableData = [];  
+        this.prevtotalSi = 0;
+        this.prevtotalPrem = 0;
+        this.altCoverageData = data.policy.project.coverage;
+
+
         var dataTable = data.policy.project.coverage.sectionCovers
           for (var i = 0; i< dataTable.length;i++){
             this.passData.tableData.push(dataTable[i])
-          }
 
+            if(dataTable[i].addSi == 'Y'){
+              this.prevtotalSi += dataTable[i].sumInsured;
+              this.prevtotalPrem += dataTable[i].premAmt;
+            }
+          }
+            this.altCoverageData.prevtotalSi = this.prevtotalSi;
+            this.altCoverageData.prevtotalPrem = this.prevtotalPrem;
+          for(var j=0;j<this.passData.tableData.length;j++){
+            if(this.passData.tableData[j].section == 'I' && this.passData.tableData[j].addSi == 'Y'){
+              this.prevsectionISi += this.passData.tableData[j].sumInsured;
+              this.prevsectionIPrem += this.passData.tableData[j].premAmt;
+            }
+
+            if(this.passData.tableData[j].section == 'II' && this.passData.tableData[j].addSi == 'Y'){
+              this.prevsectionIISi += this.passData.tableData[j].sumInsured;
+              this.prevsectionIIPrem += this.passData.tableData[j].premAmt;
+            }
+
+            if(this.passData.tableData[j].section == 'III' && this.passData.tableData[j].addSi == 'Y'){
+              this.prevsectionIIISi += this.passData.tableData[j].sumInsured;
+              this.prevsectionIIIPrem += this.passData.tableData[j].premAmt;
+            }
+          }
           this.table.refreshTable();
 
+          this.passData2.tableData[0].section = 'SECTION I';
+          this.passData2.tableData[0].prevSi = this.prevsectionISi;
+          this.passData2.tableData[0].prevAmt = this.prevsectionIPrem;
+          this.passData2.tableData[0].altSi = 0;
+          this.passData2.tableData[0].altAmt = 0;
+          this.passData2.tableData[0].comSi = 0;
+          this.passData2.tableData[0].comAmt = 0;
+          this.passData2.tableData[1].section = 'SECTION II';
+          this.passData2.tableData[1].prevSi = this.prevsectionIISi;
+          this.passData2.tableData[1].prevAmt = this.prevsectionIIPrem;
+          this.passData2.tableData[1].altSi = 0;
+          this.passData2.tableData[1].altAmt = 0;
+          this.passData2.tableData[1].comSi = 0;
+          this.passData2.tableData[1].comAmt = 0;
+          this.passData2.tableData[2].section = 'SECTION III';
+          this.passData2.tableData[2].prevSi =  this.prevsectionIIISi;
+          this.passData2.tableData[2].prevAmt = this.prevsectionIIIPrem;
+          this.passData2.tableData[2].altSi = 0;
+          this.passData2.tableData[2].altAmt = 0;
+          this.passData2.tableData[2].comSi = 0;
+          this.passData2.tableData[2].comAmt = 0;
+
+          this.focusBlur();
       });
+
+
 
 
 
@@ -289,6 +370,7 @@ export class PolCoverageComponent implements OnInit {
   getPolCoverage(){
       this.passDataDeductibles.tableData = this.underwritingservice.getUWCoverageDeductibles();
       this.underwritingservice.getUWCoverageInfos(null,this.policyId).subscribe((data:any) => {
+        console.log(data)
           this.passDataSectionCover.tableData = [];
           this.projId = data.policy.project.projId;
           this.riskId = data.policy.project.riskId;
@@ -330,6 +412,12 @@ export class PolCoverageComponent implements OnInit {
 
               this.coverageData.totalSi = this.sectionISi + this.sectionIISi + this.sectionIIISi;
               this.coverageData.totalPrem = this.sectionIPrem + this.sectionIIPrem + this.sectionIIIPrem;
+              this.coverageData.sectionISi = this.sectionISi;
+              this.coverageData.sectionIISi = this.sectionIISi;
+              this.coverageData.sectionIIISi = this.sectionIIISi;
+              this.coverageData.sectionIPrem = this.sectionIPrem;
+              this.coverageData.sectionIIPrem = this.sectionIIPrem;
+              this.coverageData.sectionIIIPrem = this.sectionIIIPrem;
            setTimeout(() => {
              this.focusBlur();
            }, 0)
@@ -504,8 +592,15 @@ export class PolCoverageComponent implements OnInit {
     this.passDataTotalPerSection.tableData[2].sumInsured = this.sectionIIISi;
     this.passDataTotalPerSection.tableData[2].premium = this.sectionIIIPrem;
 
+    this.coverageData.pctShare = (this.coverageData.totalSi/this.coverageData.totalValue*100);
     this.coverageData.totalSi = this.sectionISi + this.sectionIISi + this.sectionIIISi;
     this.coverageData.totalPrem = this.sectionIPrem + this.sectionIIPrem + this.sectionIIIPrem;
+    this.coverageData.sectionISi = this.sectionISi;
+    this.coverageData.sectionIISi = this.sectionIISi;
+    this.coverageData.sectionIIISi = this.sectionIIISi;
+    this.coverageData.sectionIPrem = this.sectionIPrem;
+    this.coverageData.sectionIIPrem = this.sectionIIPrem;
+    this.coverageData.sectionIIIPrem = this.sectionIIIPrem;
 
     setTimeout(() => {
       this.focusBlur();
@@ -529,6 +624,15 @@ export class PolCoverageComponent implements OnInit {
         this.editedData[this.editedData.length - 1].linCd = 'CAR'
       }
     }
+    this.coverageData.cumSecISi = this.coverageData.sectionISi;
+    this.coverageData.cumSecIISi = this.coverageData.sectionIISi;
+    this.coverageData.cumSecIIISi = this.coverageData.sectionIIISi;
+    this.coverageData.cumSecIIISi = this.coverageData.sectionIIISi;
+    this.coverageData.cumTSi = this.coverageData.totalSi;
+    this.coverageData.cumSecIPrem =  this.coverageData.sectionIPrem;
+    this.coverageData.cumSecIIPrem = this.coverageData.sectionIIPrem;
+    this.coverageData.cumSecIIIPrem = this.coverageData.sectionIIIPrem;
+    this.coverageData.cumTPrem = this.coverageData.totalPrem;
     this.coverageData.saveSectionCovers = this.editedData;
 
   }
@@ -536,6 +640,7 @@ export class PolCoverageComponent implements OnInit {
   saveCoverage(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
     this.prepareData();
+    console.log(this.coverageData)
     this.underwritingservice.savePolCoverage(this.coverageData).subscribe((data: any) => {
       if(data['returnCode'] == 0) {
         console.log('Check error')
@@ -589,5 +694,28 @@ export class PolCoverageComponent implements OnInit {
 
   onClickSave(){
     $('#confirm-save #modalBtn2').trigger('click');
+  }
+
+
+  updateAlteration(data){
+    for(let data of this.passData.tableData){
+      if(data.uneditable === undefined){
+        data.uneditable = [];
+      }
+      if(data.altDiscountTag == 'Y'){
+        data.uneditable.pop();
+        console.log(data)
+      }else if(data.altDiscountTag == 'N' ) {
+        if(data.uneditable.length ==0)
+          data.uneditable.push('altPrenium');
+      }
+
+    }
+    
+    /*for(var i = 0; i< this.passData.tableData.length;i++){
+      if(this.passData.tableData[i].altDiscountTag == 'Y'){
+        this.passData.tableData[i].uneditable.pop();
+      }
+    }*/
   }
 }

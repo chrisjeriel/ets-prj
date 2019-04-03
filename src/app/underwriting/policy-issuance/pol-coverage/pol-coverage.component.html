@@ -76,14 +76,14 @@
       </div>
       <div class="input-group" style="margin-bottom: -13px !important">
        <label class="form-control-sm col-sm-3">Share(%)</label>
-       <input type="text" class="form-control form-control-sm req" [(ngModel)]="coverageData.pctShare" appCurrencyRate appRequired>
+       <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData?.pctShare" (ngModelChange)="coverageData.pctShare = $event" appCurrencyRate appRequired>
        <label class="form-control-sm col-sm-2">PML(%)</label>
        <input type="text" class="form-control form-control-sm req" [(ngModel)]="coverageData.pctPml" appCurrencyRate>
        <span class="col-sm-1"></span>
      </div>
      <div class="input-group" style="margin-bottom: -6px !important">
        <label class="form-control-sm col-sm-3">100% Value</label>
-       <input type="text" class="form-control form-control-sm req" [(ngModel)]="coverageData.totalValue" appCurrency appRequired>
+       <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData?.totalValue"  (ngModelChange)="coverageData.totalValue = $event" (blur)="coverageData.pctShare = (coverageData.totalSi/coverageData.totalValue*100)" appCurrency appRequired>
        <span class="col-sm-1"></span>
      </div>
    </div>
@@ -166,7 +166,7 @@
     </fieldset>
     <fieldset class="scheduler-border" >
       <legend class="scheduler-border">Section Covers</legend>
-      <app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
+      <app-cust-editable-non-datatable [passData]="passData" (tableDataChange)="updateAlteration($event);"></app-cust-editable-non-datatable>
     </fieldset>
     <div class="row">
       <div class="col-sm-12">
@@ -192,17 +192,17 @@
             <div class="input-group" style="margin-left: -55px !important;">
               <span class="col-sm-2"></span>
               <label class="form-control-sm col-sm-2">Total Sum Insured</label>
-              <input type="text" class="form-control form-control-sm col-sm-2" readonly>
-              <input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 3px !important;">
-              <input type="text" class="form-control form-control-sm col-sm-2" readonly style="margin-left: 3px !important;">
+              <input type="text" class="form-control form-control-sm col-sm-2 req" readonly appCurrency [(ngModel)] = "altCoverageData.prevtotalSi">
+              <input type="text" class="form-control form-control-sm col-sm-2 req" readonly appCurrency style="margin-left: 3px !important;">
+              <input type="text" class="form-control form-control-sm col-sm-2 req" readonly appCurrency style="margin-left: 3px !important;">
               <span class="col-sm-2"></span>
             </div>
             <div class="input-group" style="margin-left: -55px !important ;margin-top: -8px;">
               <span class="col-sm-2"></span>
               <label class="form-control-sm col-sm-2">Total Premium</label>
-              <input type="text" class="form-control form-control-sm col-sm-2" readonly>
-              <input type="text" class="form-control form-control-sm col-sm-2" style="margin-left: 3px !important;">
-              <input type="text" class="form-control form-control-sm col-sm-2"  readonly style="margin-left: 3px !important;">
+              <input type="text" class="form-control form-control-sm col-sm-2 req" readonly appCurrency [(ngModel)] = "altCoverageData.prevtotalPrem">
+              <input type="text" class="form-control form-control-sm col-sm-2 req" readonly appCurrency style="margin-left: 3px !important;">
+              <input type="text" class="form-control form-control-sm col-sm-2 req"  readonly appCurrency style="margin-left: 3px !important;">
               <span class="col-sm-2"></span>
             </div>
           </div>
@@ -281,14 +281,14 @@
       </div>
       <div class="input-group" style="margin-bottom: -13px !important">
        <label class="form-control-sm col-sm-3">Share(%)</label>
-       <input type="text" class="form-control form-control-sm" appCurrencyRate appRequired>
+       <input type="text" class="form-control form-control-sm req" appCurrencyRate appRequired [(ngModel)] = "altCoverageData.pctShare">
        <label class="form-control-sm col-sm-2">PML(%)</label>
-       <input type="text" class="form-control form-control-sm">
+       <input type="text" class="form-control form-control-sm req" appCurrencyRate [(ngModel)] = "altCoverageData.pctPml">
        <span class="col-sm-1"></span>
      </div>
      <div class="input-group" style="margin-bottom: -6px !important">
        <label class="form-control-sm col-sm-3">100% Values</label>
-       <input type="text" class="form-control form-control-sm" appCurrencyRate appRequired>
+       <input type="text" class="form-control form-control-sm req" appCurrency appRequired [(ngModel)] = "altCoverageData.totalValue">
        <span class="col-sm-1"></span>
      </div>
    </div>
