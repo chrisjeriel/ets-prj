@@ -85,7 +85,7 @@
 		</div>
 	</fieldset>
 
-
+	
 	<fieldset class="scheduler-border bottom">
 		<div class="form-row custom-row-inline-inset">
 			<div class="input-group">
@@ -118,58 +118,58 @@
 		</div>
 	</fieldset>
 
-
 	<div class="form-row bottom-button-container">
 		<div class="form-group col-sm">
-			<div *ngIf="line=='CAR'">
-				<div class="col-md-13 text-center">
-					<div class="cust-btn-container">
-						<app-modal [btnTitle]="'Item Info'" style="margin-bottom: 2px;">
-							<div header>Item Information</div>
-							<div body>
-								<app-cust-editable-non-datatable [passData]="passDataCar">
-								</app-cust-editable-non-datatable>
-							</div>
-							<div footer class="text-center">
-								<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
-								<button type="button" class="cust-btn" (click)="onClickSavePolAlopItem()"><a>Save</a></button>
-							</div>
-						</app-modal>
-						<button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
-						<button type="button" class="cust-btn" (click)="onClickSavePolAlop()"><a>Save</a></button>
-					</div>
-				</div>
-			</div>
-
-
-			<div *ngIf="line=='EAR'">
-				<div class="col-md-13 text-center">
-					<div class="cust-btn-container">
-						<app-modal [btnTitle]="'Item Info'" style="margin-bottom: 2px;">
-							<div header>Item Information</div>
-							<div body>
-								<app-cust-editable-non-datatable [passData]="passDataEar">
-								</app-cust-editable-non-datatable>
-							</div>
-							<div footer class="text-center">
-								<button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
-								<button type="button" class="cust-btn" (click)="onClickSaveAlopItem()"><a>Save</a></button>
-							</div>
-						</app-modal>
-						<button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
-						<button type="button" class="cust-btn" (click)="onClickSavePolAlop()"><a>Save</a></button>
-					</div>
+			<div class="col-md-13 text-center">
+				<div class="cust-btn-container" style="margin-top: 10px;">
+					<button type="button" class="cust-btn" (click)="openAlopItem()"><a>Item Information</a></button>
+					<button type="button" class="cust-btn" (click)="cancelButton()"><a>Cancel</a></button>
+					<button type="button" class="cust-btn" (click)="onClickSavePolAlop()"><a>Save</a></button>
 				</div>
 			</div>
 		</div>
 	</div>
+
+	<ng-container *ngIf="line=='CAR'">
+		<app-modal class="d-none" id="alopItemModal">
+			<div header>Item Information</div>	
+			<div body>
+				 <div>
+		                <app-cust-editable-non-datatable [passData]="passDataCar">
+		                </app-cust-editable-non-datatable>
+		         </div>  
+			</div>
+			<div footer class="text-center">
+					<button type="button" class="cust-btn" (click)="cancelModal(); showAlopItem=false"><a>Cancel</a></button>
+					<button type="button" class="cust-btn" (click)="onClickSavePolAlopItem()"><a>Save</a></button>
+			</div>
+		</app-modal>
+	</ng-container>
+
+	<ng-container *ngIf="line=='EAR'">
+		<app-modal class="d-none" id="alopItemModal">
+			<div header>Item Information</div>	
+			<div body>
+				 <div>
+		                <app-cust-editable-non-datatable [passData]="passDataEar">
+		                </app-cust-editable-non-datatable>
+		         </div>  
+			</div>
+			<div footer class="text-center">
+					<button type="button" class="cust-btn" (click)="cancelModal(); showAlopItem=false"><a>Cancel</a></button>
+					<button type="button" class="cust-btn" (click)="onClickSavePolAlopItem()"><a>Save</a></button>
+			</div>
+		</app-modal>
+	</ng-container>
 </div>
 </form>
 
 <app-mtn-insured id="insuredLOV" (selectedData)="setInsured($event)"></app-mtn-insured>
 <app-lov id="lov" [passData]="passLOV" (selectedData)="setInsured($event)"></app-lov>
 
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-confirm-save id="polAlop" (onYes)="save()"></app-confirm-save>
-<app-cancel-button (onYes)="save('cancel')" [url]="polURL" ></app-cancel-button>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():modalService.dismissAll()"></app-sucess-dialog>
+<app-confirm-save id="polAlop" (onYes)="savePolAlop()"></app-confirm-save>
+<app-cancel-button (onYes)="savePolAlop('cancel')" [url]="polURL" #cancelButtonComponent></app-cancel-button>
+
 <app-confirm-save id="polAlopItem" (onYes)="savePolAlopItem()"></app-confirm-save>
+<app-cancel-button (onYes)="savePolAlopItem('cancel')" [url]="null" #cancelModalComponent ></app-cancel-button>

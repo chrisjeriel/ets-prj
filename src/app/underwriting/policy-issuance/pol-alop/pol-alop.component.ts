@@ -15,7 +15,8 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 })
 export class PolAlopComponent implements OnInit {
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
-  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+  @ViewChild('cancelButtonComponent') cancelBtn : CancelButtonComponent;
+  @ViewChild('cancelModalComponent') cancelModalBtn : CancelButtonComponent;
   @ViewChild('myForm') form:any;
   aLOPInfo: ALOPInfo = new ALOPInfo();
   tableData: any[] = [["1", "Description 1", "Information 1"],
@@ -109,6 +110,7 @@ export class PolAlopComponent implements OnInit {
   polURL:string = "";
   dialogIcon: string = "";
   insured:string = '';
+  showAlopItem:boolean = false;
 
   @Input() policyInfo:any = {};
   @Input() alterFlag: boolean;
@@ -153,23 +155,19 @@ export class PolAlopComponent implements OnInit {
     this.passDataEar.dataTypes.push("text", "text", "text", "text", "text");
     this.passDataEar.widths.push("1", "1", "auto", "auto", "auto");
 
-    this.passDataEar.tableData = this.tableData2;
+    this.passDataEar.tableData = this.tableData2; 
 
     this.insured = this.policyInfo.principalName + " / " + this.policyInfo.contractorName;
     this.policyNo = this.policyInfo.policyNo.split(/[-]/g)[0];
-
-    this.polURL = (this.alterFlag == false)? 'alt-policy-listing' : 'policy-listing'; 
 
     this.sub = this.route.params.subscribe(params => {
       this.line = params['line'];
     });
 
     this.getPolAlop();
-    this.getPolAlopItem();
-
   }
 
-  save(cancelFlag?) {
+  savePolAlop(cancelFlag?) {
     this.cancelFlag = cancelFlag != undefined;
 
     this.polAlopData.policyId = this.policyInfo.policyId;
@@ -191,7 +189,9 @@ export class PolAlopComponent implements OnInit {
   }
 
   savePolAlopItem(cancelFlag?){
+    console.log("savePolAlopItem() was called...");
      this.cancelFlag = cancelFlag != undefined;
+     this.polURL = null;
      let savedData: any = {};
 
      savedData.policyId = this.policyInfo.policyId;
@@ -209,7 +209,6 @@ export class PolAlopComponent implements OnInit {
             savedData.savePolAlopItemList[savedData.savePolAlopItemList.length-1].updateDate = this.ns.toDateTimeString(savedData.savePolAlopItemList[savedData.savePolAlopItemList.length-1].updateDate);
          } else if (this.passDataCar.tableData[i].deleted) {
             savedData.deletePolAlopItemList.push(this.passDataCar.tableData[i]);
-            console.log(savedData.deletePolAlopItemList)
             savedData.deletePolAlopItemList[savedData.deletePolAlopItemList.length-1].policyId = this.policyInfo.policyId;
             savedData.deletePolAlopItemList[savedData.deletePolAlopItemList.length-1].createUser = JSON.parse(window.localStorage.currentUser).username,
             savedData.deletePolAlopItemList[savedData.deletePolAlopItemList.length-1].createDate = this.ns.toDateTimeString(savedData.deletePolAlopItemList[savedData.deletePolAlopItemList.length-1].createDate);
@@ -229,11 +228,12 @@ export class PolAlopComponent implements OnInit {
             savedData.savePolAlopItemList[savedData.savePolAlopItemList.length-1].updateUser = JSON.parse(window.localStorage.currentUser).username,
             savedData.savePolAlopItemList[savedData.savePolAlopItemList.length-1].updateDate = this.ns.toDateTimeString(savedData.savePolAlopItemList[savedData.savePolAlopItemList.length-1].updateDate);
          } else if (this.passDataEar.tableData[i].deleted) {
-             savedData.deletePolAlopItemList.push(this.passDataEar.tableData[i]);
-            savedData.savePolAlopItemList[savedData.savePolAlopItemList.length-1].createUser = JSON.parse(window.localStorage.currentUser).username,
-            savedData.deletePolAlopItemList[savedData.deletePolAlopItemList.length-1].createDate = this.ns.toDateTimeString(savedData.savePolAlopItemList[savedData.savePolAlopItemList.length-1].createDate);
-            savedData.savePolAlopItemList[savedData.savePolAlopItemList.length-1].updateUser = JSON.parse(window.localStorage.currentUser).username,
-            savedData.deletePolAlopItemList[savedData.deletePolAlopItemList.length-1].updateDate = this.ns.toDateTimeString(savedData.savePolAlopItemList[savedData.savePolAlopItemList.length-1].updateDate);
+            savedData.deletePolAlopItemList.push(this.passDataEar.tableData[i]);  
+            savedData.deletePolAlopItemList[savedData.deletePolAlopItemList.length-1].policyId = this.policyInfo.policyId;
+            savedData.deletePolAlopItemList[savedData.deletePolAlopItemList.length-1].createUser = JSON.parse(window.localStorage.currentUser).username,
+            savedData.deletePolAlopItemList[savedData.deletePolAlopItemList.length-1].createDate = this.ns.toDateTimeString(savedData.deletePolAlopItemList[savedData.deletePolAlopItemList.length-1].createDate);
+            savedData.deletePolAlopItemList[savedData.deletePolAlopItemList.length-1].updateUser = JSON.parse(window.localStorage.currentUser).username,
+            savedData.deletePolAlopItemList[savedData.deletePolAlopItemList.length-1].updateDate = this.ns.toDateTimeString(savedData.deletePolAlopItemList[savedData.deletePolAlopItemList.length-1].updateDate);
          }
        }
      }
@@ -281,7 +281,13 @@ export class PolAlopComponent implements OnInit {
           for(var i=0; i< dataInfos.length; i++){
             this.passDataCar.tableData.push( {"itemNo": dataInfos[i].itemNo, 
                                               "description": dataInfos[i].description, 
-                                              "lossMin": dataInfos[i].lossMin} );
+                                              "lossMin": dataInfos[i].lossMin,
+                                              "quantity": dataInfos[i].quantity,
+                                              "importance": dataInfos[i].importance,
+                                              "createDate": dataInfos[i].createDate,
+                                              "createUser": dataInfos[i].createUser,
+                                              "updateDate": dataInfos[i].updateDate,
+                                              "updateUser": dataInfos[i].updateUser} );
           }
         } else {
           for(var i=0; i< dataInfos.length; i++){
@@ -289,7 +295,11 @@ export class PolAlopComponent implements OnInit {
                                               "quantity": dataInfos[i].quantity, 
                                               "description": dataInfos[i].description, 
                                               "importance": dataInfos[i].importance, 
-                                              "lossMin": dataInfos[i].lossMin} );
+                                              "lossMin": dataInfos[i].lossMin,
+                                              "createDate": dataInfos[i].createDate,
+                                              "createUser": dataInfos[i].createUser,
+                                              "updateDate": dataInfos[i].updateDate,
+                                              "updateUser": dataInfos[i].updateUser } );
           }
         }
         
@@ -298,8 +308,23 @@ export class PolAlopComponent implements OnInit {
     });
   }
 
-  cancel() {
+  openAlopItem(){
+      this.passDataCar.tableData = [];
+      this.passDataEar.tableData = [];
+      this.showAlopItem = true;
+      this.getPolAlopItem();
+      setTimeout(()=>{
+        $('#alopItemModal #modalBtn').trigger('click');
+      },0)
+  }
+
+
+  cancelButton() {
     this.cancelBtn.clickCancel();
+  }
+
+  cancelModal() {
+    this.cancelModalBtn.clickCancel();
   }
 
 
@@ -326,6 +351,10 @@ export class PolAlopComponent implements OnInit {
 
   onClickSavePolAlopItem(){
     $('#polAlopItem #confirm-save #modalBtn2').trigger('click');
+  }
+
+  getPolUrl() {
+    this.polURL =  (this.alterFlag == false)? 'alt-policy-listing' : 'policy-listing'; 
   }
 
 }

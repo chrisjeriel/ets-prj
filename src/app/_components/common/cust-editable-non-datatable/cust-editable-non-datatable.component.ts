@@ -209,7 +209,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
 
     onClickAdd(event) {
         this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
-        this.passData.tableData[this.passData.tableData.length-1].edited = true;
+        /*this.passData.tableData[this.passData.tableData.length-1].edited = true;*/
         this.unliTableLength();    
         this.search(this.searchString);
         this.tableDataChange.emit(this.passData.tableData);
@@ -244,6 +244,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         console.log(this.filesToUpload);
         this.selectAllFlag = false;
         this.form.control.markAsDirty();
+        $('#cust-scroll').addClass('ng-dirty');
         this.selected = [];
         this.refreshTable();
         this.search(this.searchString);
