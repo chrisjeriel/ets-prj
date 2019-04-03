@@ -1,66 +1,78 @@
 import { Component, OnInit } from '@angular/core';
 
-interface Country {
-  name: string;
-  flag: string;
-  area: number;
-  population: number;
+interface Module {
+  module: string;
+  details: string;
+  assignedBy: string;
+  assignedDate: string;
 }
 
-const COUNTRIES: Country[] = [
+const MODULES: Module[] = [
   {
-    name: 'Russia',
-    flag: 'f/f3/Flag_of_Russia.svg',
-    area: 17075200,
-    population: 146989754
+    module: 'Quotation',
+    details: 'CAR-2019-000001-00-099',
+    assignedBy: 'CASARSONAS',
+    assignedDate: '04/22/2019 01:00 PM'
   },
   {
-    name: 'Canada',
-    flag: 'c/cf/Flag_of_Canada.svg',
-    area: 9976140,
-    population: 36624199
+    module: 'Quotation',
+    details: 'EAR-2019-000001-00-099',
+    assignedBy: 'CASARSONAS',
+    assignedDate: '04/22/2019 01:00 PM'
   },
   {
-    name: 'United States',
-    flag: 'a/a4/Flag_of_the_United_States.svg',
-    area: 9629091,
-    population: 324459463
+    module: 'Policy',
+    details: 'DOS-2019-000001-00-099',
+    assignedBy: 'CASARSONAS',
+    assignedDate: '04/22/2019 01:00 PM'
   },
   {
-    name: 'China',
-    flag: 'f/fa/Flag_of_the_People%27s_Republic_of_China.svg',
-    area: 9596960,
-    population: 1409517397
+    module: 'Policy',
+    details: 'CAR-2019-000001-00-099',
+    assignedBy: 'CASARSONAS',
+    assignedDate: '04/22/2019 01:00 PM'
   },
   {
-    name: 'Canada',
-    flag: 'c/cf/Flag_of_Canada.svg',
-    area: 9976140,
-    population: 36624199
+    module: 'Quotation',
+    details: 'EAR-2019-000001-00-099',
+    assignedBy: 'CASARSONAS',
+    assignedDate: '04/22/2019 01:00 PM'
   },
   {
-    name: 'China',
-    flag: 'f/fa/Flag_of_the_People%27s_Republic_of_China.svg',
-    area: 9596960,
-    population: 1409517397
+    module: 'Quotation',
+    details: 'MBI-2019-000001-00-099',
+    assignedBy: 'CASARSONAS',
+    assignedDate: '04/22/2019 01:00 PM'
   },
   {
-    name: 'Russia',
-    flag: 'f/f3/Flag_of_Russia.svg',
-    area: 17075200,
-    population: 146989754
+    module: 'Quotation',
+    details: 'DOS-2019-000001-00-099',
+    assignedBy: 'CASARSONAS',
+    assignedDate: '04/22/2019 01:00 PM'
   },
   {
-    name: 'Canada',
-    flag: 'c/cf/Flag_of_Canada.svg',
-    area: 9976140,
-    population: 36624199
+    module: 'Claim',
+    details: 'CAR-2019-000001-00-099',
+    assignedBy: 'CASARSONAS',
+    assignedDate: '04/22/2019 01:00 PM'
   },
   {
-    name: 'United States',
-    flag: 'a/a4/Flag_of_the_United_States.svg',
-    area: 9629091,
-    population: 324459463
+    module: 'Quotation',
+    details: 'EAR-2019-000001-00-099',
+    assignedBy: 'CASARSONAS',
+    assignedDate: '04/22/2019 01:00 PM'
+  },
+  {
+    module: 'Claim',
+    details: 'MBI-2019-000001-00-099',
+    assignedBy: 'CASARSONAS',
+    assignedDate: '04/22/2019 01:00 PM'
+  },
+  {
+    module: 'Claim',
+    details: 'DOS-2019-000001-00-099',
+    assignedBy: 'CASARSONAS',
+    assignedDate: '04/22/2019 01:00 PM'
   },
 ];
 
@@ -71,7 +83,7 @@ const COUNTRIES: Country[] = [
 })
 export class ApprovalListComponent implements OnInit {
 
-  countries = COUNTRIES;
+  modules = MODULES;
 
   constructor() { }
 
