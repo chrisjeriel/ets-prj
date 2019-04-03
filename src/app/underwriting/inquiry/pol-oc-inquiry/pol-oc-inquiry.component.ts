@@ -5,22 +5,23 @@ import { Title } from '@angular/platform-browser';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { Router } from '@angular/router';
 
+
 @Component({
-  selector: 'app-policy-inquiry',
-  templateUrl: './policy-inquiry.component.html',
-  styleUrls: ['./policy-inquiry.component.css']
+  selector: 'app-pol-oc-inquiry',
+  templateUrl: './pol-oc-inquiry.component.html',
+  styleUrls: ['./pol-oc-inquiry.component.css']
 })
-export class PolicyInquiryComponent implements OnInit {
-  @ViewChild('listTable') listTable: CustNonDatatableComponent;
+export class PolOcInquiryComponent implements OnInit {
+@ViewChild('listTable') listTable: CustNonDatatableComponent;
   passData: any = {
     tHeader: [
-        "Line","Policy No", "Type Cession","Ceding Company", "Insured", "Risk", "Object", "Site", "Currency", "Sum Insured", "Premium" , "Issue Date", "Inception Date", "Expiry Date","Accounting Date","Status"
+        "Open Cover Policy No", "Type Cession","Ceding Company", "Insured", "Risk", "Object", "Site", "Currency", "Max Si", "Issue Date", "Inception Date", "Expiry Date","Accounting Date","Status"
     ],
     dataTypes: [
-            "text","text", "text", "text", "text", "text", "text", "text",
-            "text", "currency", "currency", "date", "date", "date", "date", "text"
+             "text", "text", "text", "text", "text", "text",
+            "text", , "currency", "date", "date", "date", "date", "text"
     ],
-    keys: ['lineCd','policyNo','cessionDesc','cedingName','insuredDesc','riskName','objectDesc','site','currencyCd','totalSi','totalPrem','issueDate','inceptDate','expiryDate','acctDate','statusDesc'],
+    keys: ['openPolicyNo','cessionDesc','cedingName','insuredDesc','riskName','objectDesc','site','currencyCd','totalSi','issueDate','inceptDate','expiryDate','acctDate','statusDesc'],
     // checkFlag: false,
     // selectFlag: false,
     // addFlag: false,
@@ -40,27 +41,27 @@ export class PolicyInquiryComponent implements OnInit {
                 dataType: 'text'
             },
             {
-                key: 'typeCession',
+                key: 'cessionDesc',
                 title: 'Type of Cession',
                 dataType: 'text'
             },
             {
-                key: 'cedingCompany',
+                key: 'cedingName',
                 title: 'Ceding Company',
                 dataType: 'text'
             },
             {
-                key: 'insured',
+                key: 'insuredDesc',
                 title: 'Insured',
                 dataType: 'text'
             },
             {
-                key: 'risk',
+                key: 'riskName',
                 title: 'Risk',
                 dataType: 'text'
             },
             {
-                key: 'object',
+                key: 'objectDesc',
                 title: 'Object',
                 dataType: 'text'
             },
@@ -70,7 +71,7 @@ export class PolicyInquiryComponent implements OnInit {
                 dataType: 'text'
             },
             {
-                key: 'currency',
+                key: 'currencyCd',
                 title: 'Currency',
                 dataType: 'text'
             },
@@ -132,7 +133,7 @@ export class PolicyInquiryComponent implements OnInit {
   };
 
   policyInfo:any = {
-    policyNo: null,
+    openPolicyNo: null,
     cessionDesc: null,
     statusDesc: null,
     cedingId: null,
@@ -151,7 +152,7 @@ export class PolicyInquiryComponent implements OnInit {
   }
 
   defaultPolicyInfo:any = {
-    policyNo: null,
+    openPolicyNo: null,
     cessionDesc: null,
     statusDesc: null,
     cedingId: null,
@@ -180,11 +181,12 @@ export class PolicyInquiryComponent implements OnInit {
   }
 
   gotoInfo(data) {
-       this.router.navigate(['/policy-information', {policyId:data.policyId}], { skipLocationChange: true });
+  	   this.router.navigate(['/create-open-cover-letter', { line: this.policyInfo.openPolicyNo.split(/[-]/g)[1] }], { skipLocationChange: true });
+       //this.router.navigate(['/policy-information', {policyId:data.policyId}], { skipLocationChange: true });
   }
 
   onRowClick(data){
-    if(data!==null && Object.keys(data).length !== 0)
+    if(data!== null && Object.keys(data).length !== 0)
       this.policyInfo = data;
     else
       this.policyInfo = this.defaultPolicyInfo;
@@ -194,20 +196,17 @@ export class PolicyInquiryComponent implements OnInit {
         this.searchParams = searchParams;
         this.passData.tableData = [];
         this.passData.btnDisabled = true;
-
         this.retrievePolListing();
 
    }
 
    retrievePolListing(){
-       this.underwritingService.getParListing(this.searchParams).subscribe((data:any)=>{
+       this.underwritingService.getPolListingOc(this.searchParams).subscribe((data:any)=>{
          this.passData.tableData = data.policyList.filter(a=>{
-           a.lineCd = a.policyNo.substring(0,3);
-           a.totalSi = a.project.coverage.totalSi;
+           a.totalSi = a.project.coverageOc.totalSi;
            a.riskName = a.project.riskName;
            a.objectDesc = a.project.objectDesc;
            a.site = a.project.site;
-           a.totalPrem = a.project.coverage.totalPrem;
            return true;
          });
          this.listTable.refreshTable();

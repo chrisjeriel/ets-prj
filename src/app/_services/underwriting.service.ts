@@ -659,4 +659,44 @@ export class UnderwritingService {
         return this.http.post(environment.prodApiUrl + '/underwriting-service/saveSumInsOC', JSON.stringify(params), header);
     }
 
+
+    getPolListingOc(searchParams: any []) {
+        var params;
+        if(searchParams.length < 1){
+             params = new HttpParams()
+                    .set('policyNo','')
+                    .set('cessionDesc', '')
+                    .set('cedingName', '')
+                    .set('lineClassDesc','')
+                    .set('insuredDesc','')
+                    .set('riskName','')
+                    .set('objectDesc','')
+                    .set('site','')
+                    .set('currencyCd','')
+                    .set('totalSiLess','')
+                    .set('totalSiGrt','')
+                    .set('totalPrem','')
+                    .set('issueDateFrom','')
+                    .set('issueDateTo','')
+                    .set('inceptDateFrom','')
+                    .set('inceptDateTo','')
+                    .set('expiryDateFrom','')
+                    .set('expiryDateTo','')
+                    .set('acctDateFrom','')
+                    .set('acctDateTo','')
+                    .set('statusDesc','');
+                    // .set('paginationRequest.position',null)
+                    // .set('paginationRequest.count',null)
+                    // .set('sortRequest.sortKey',null)
+                    // .set('sortRequest.order',null);
+        }
+        else{
+             params = new HttpParams();
+            for(var i of searchParams){
+                params = params.append(i.key, i.search);
+            }
+        }
+         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolicyOCListing',{params});
+    }
+
 }            

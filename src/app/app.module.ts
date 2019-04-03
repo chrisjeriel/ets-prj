@@ -339,6 +339,7 @@ import { WfNotesComponent } from './home/wf-notes/wf-notes.component';
 import { WfRemindersComponent } from './home/wf-reminders/wf-reminders.component';
 import { WfTransactionsComponent } from './home/wf-transactions/wf-transactions.component';
 import { WfActionsComponent } from './home/wf-actions/wf-actions.component';
+import { PolOcInquiryComponent } from './underwriting/inquiry/pol-oc-inquiry/pol-oc-inquiry.component';
 
 
 
@@ -687,6 +688,7 @@ import { WfActionsComponent } from './home/wf-actions/wf-actions.component';
         WfRemindersComponent,
         WfTransactionsComponent,
         WfActionsComponent,
+        PolOcInquiryComponent,
     ],
 
     providers: [

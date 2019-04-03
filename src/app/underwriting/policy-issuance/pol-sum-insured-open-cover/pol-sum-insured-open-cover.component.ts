@@ -18,12 +18,12 @@ export class PolSumInsuredOpenCoverComponent implements OnInit {
   
   policyId: string = '10';
   coverageInfo:any = {
-  	currencyCd : '',
-  	currencyRt : '',
-  	totalSi : '',
-  	pctShare : '',
-  	pctPml : '',
-  	totalValue : '',
+	currencyCd : '',
+	currencyRt : '',
+	totalSi : '',
+	pctShare : '',
+	pctPml : '',
+	totalValue : '',
 
   };
   dialogIcon: string = "";
@@ -33,56 +33,56 @@ export class PolSumInsuredOpenCoverComponent implements OnInit {
   constructor(private uw: UnderwritingService, private ns: NotesService) { }
 
   ngOnInit() {
-  	this.fetchData();
-  	this.coverageInfo.policyId = this.policyId;
-  	this.coverageInfo.updateUser = JSON.parse(window.localStorage.currentUser).username;
-  	this.coverageInfo.updateDate = this.ns.toDateTimeString(0);
+	this.fetchData();
+	this.coverageInfo.policyId = this.policyId;
+	this.coverageInfo.updateUser = JSON.parse(window.localStorage.currentUser).username;
+	this.coverageInfo.updateDate = this.ns.toDateTimeString(0);
 
   }
 
   fetchData(){
-  	this.uw.getSumInsOc(this.policyId).subscribe(data=>{
-  		this.coverageInfo.currencyCd	= data['policyOc'].projectOc.coverageOc.currencyCd;
-  		this.coverageInfo.currencyRt	= data['policyOc'].projectOc.coverageOc.currencyRt;
-  		this.coverageInfo.totalSi		= data['policyOc'].projectOc.coverageOc.totalSi;
-  		this.coverageInfo.pctShare		= data['policyOc'].projectOc.coverageOc.pctShare;
-  		this.coverageInfo.pctPml		= data['policyOc'].projectOc.coverageOc.pctPml;
-  		this.coverageInfo.totalValue	= data['policyOc'].projectOc.coverageOc.totalValue;
-  		setTimeout(a=>{
-  			$('[appCurrency]').focus()
-  			$('[appCurrency]').blur()
-  			$('[appOtherRates]').focus()
-  			$('[appOtherRates]').blur()
-  			$('[appCurrencyRate]').focus()
-  			$('[appCurrencyRate]').blur()
-  		},0);
-  	});
+	this.uw.getSumInsOc(this.policyId).subscribe(data=>{
+		this.coverageInfo.currencyCd	= data['policyOc'].projectOc.coverageOc.currencyCd;
+		this.coverageInfo.currencyRt	= data['policyOc'].projectOc.coverageOc.currencyRt;
+		this.coverageInfo.totalSi		= data['policyOc'].projectOc.coverageOc.totalSi;
+		this.coverageInfo.pctShare		= data['policyOc'].projectOc.coverageOc.pctShare;
+		this.coverageInfo.pctPml		= data['policyOc'].projectOc.coverageOc.pctPml;
+		this.coverageInfo.totalValue	= data['policyOc'].projectOc.coverageOc.totalValue;
+		setTimeout(a=>{
+			$('[appCurrency]').focus()
+			$('[appCurrency]').blur()
+			$('[appOtherRates]').focus()
+			$('[appOtherRates]').blur()
+			$('[appCurrencyRate]').focus()
+			$('[appCurrencyRate]').blur()
+		},0);
+	});
   }
 
   save(){
-  	this.uw.saveSumInsOC(this.coverageInfo).subscribe((data:any)=>{
-  	if(data.returnCode == -1){
-        this.dialogIcon = 'success';
-        this.successDiag.open();
-        this.myForm.control.markAsPristine();
-        this.fetchData();
-      }else{
-        this.dialogIcon = 'error';
-        this.successDiag.open();
-      }
-  	})
+	this.uw.saveSumInsOC(this.coverageInfo).subscribe((data:any)=>{
+	if(data.returnCode == -1){
+		this.dialogIcon = 'success';
+		this.successDiag.open();
+		this.myForm.control.markAsPristine();
+		this.fetchData();
+	  }else{
+		this.dialogIcon = 'error';
+		this.successDiag.open();
+	  }
+	})
   }
 
   onClickSave(){
-  	this.confirmSave.confirmModal();
+	this.confirmSave.confirmModal();
   }
 
   onClickCancel(){
-    this.cancel.clickCancel();
+	this.cancel.clickCancel();
   }
 
   cmptShrPct(data){
-  	this.coverageInfo.pctShare = parseFloat(this.coverageInfo.totalSi) / parseFloat(data) * 100;
+	this.coverageInfo.pctShare = parseFloat(this.coverageInfo.totalSi) / parseFloat(data) * 100;
   }
 
 }
