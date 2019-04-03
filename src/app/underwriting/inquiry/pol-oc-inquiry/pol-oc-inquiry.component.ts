@@ -181,7 +181,7 @@ export class PolOcInquiryComponent implements OnInit {
   }
 
   gotoInfo(data) {
-  	   this.router.navigate(['/create-open-cover-letter', { line: this.policyInfo.openPolicyNo.split(/[-]/g)[1] }], { skipLocationChange: true });
+  	   this.router.navigate(['/create-open-cover-letter', { line: data.openPolicyNo.split(/[-]/g)[1] }], { skipLocationChange: true });
        //this.router.navigate(['/policy-information', {policyId:data.policyId}], { skipLocationChange: true });
   }
 
