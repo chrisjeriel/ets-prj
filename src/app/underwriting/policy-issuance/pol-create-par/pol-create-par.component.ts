@@ -42,7 +42,7 @@ export class PolCreatePARComponent implements OnInit {
     {key: 'cedingName',title: 'Ceding Co.',dataType: 'text'},
     {key: 'insuredDesc',title: 'Insured',dataType: 'text'},
     {key: 'riskName',title: 'Risk',dataType: 'text'}*/],
-    pageId: 'lov1'
+    pageID: 'createPolLov'
   }
 
   passDataOptionLOV: any = {
@@ -60,7 +60,7 @@ export class PolCreatePARComponent implements OnInit {
     {key: 'cedingName',title: 'Ceding Co.',dataType: 'text'},
     {key: 'insuredDesc',title: 'Insured',dataType: 'text'},
     {key: 'riskName',title: 'Risk',dataType: 'text'}*/],
-    pageId: 'optionLov'+(Math.floor(Math.random() * (999999 - 100000)) + 100000).toString()
+    pageID: 'createPolOptionLov'
   }
 
   selected: any;
@@ -90,17 +90,15 @@ export class PolCreatePARComponent implements OnInit {
   getQuoteListing() {
     this.quoteService.getQuoProcessingData([]).subscribe(data => {
       this.quotationList = data['quotationList'];
-
       this.passDataLOV.tableData = this.quotationList.filter(q => q.status.toUpperCase() === 'RELEASED').map(q => { q.riskName = q.project.riskName; return q; });
 
       this.lovTable.refreshTable();
-    });
+    });    
+
   }
 
   getOptionLOV(quoteId) {
     this.quoteService.getQuoteOptions(quoteId).subscribe(data => {
-      console.log(data['quotation']['optionsList']);
-
       this.passDataOptionLOV.tableData = data['quotation']['optionsList'];
 
       this.lovOptTable.refreshTable();
@@ -146,6 +144,7 @@ export class PolCreatePARComponent implements OnInit {
   }
 
   showLOV() {
+    console.log('1');
     this.getQuoteListing();
     $('#polLovMdl > #modalBtn').trigger('click');
   }
@@ -217,5 +216,8 @@ export class PolCreatePARComponent implements OnInit {
     }
 
     console.log(savePolicyDetailsParam);
+    this.underwritingService.savePolicyDetails(savePolicyDetailsParam).subscribe(data => {
+      console.log(data);
+    });
   }
 }
