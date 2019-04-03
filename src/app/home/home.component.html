@@ -1,4 +1,4 @@
-﻿<h3>Welcome to ETS</h3>
+﻿<!-- <h3>Welcome to ETS</h3>
 <p>This app is still under construction...</p>
 
 
@@ -8,4 +8,39 @@
 
 <h5>Headquarters</h5>
 4th Flr., ODC International Plaza, 219 Salcedo St., Legaspi Village Makati City Makati; 
-<br/>National Capital Region; Postal Code: 1229
+<br/>National Capital Region; Postal Code: 1229 -->
+<style>
+	.wf-holder {
+		padding: 2em 1em;
+	}
+</style>
+
+
+<div class="cust-tabs-container">
+	<div class="row">
+		<div class="col-sm-6 wf-holder">
+			<div>
+				<app-approval-list>
+
+				</app-approval-list>
+			</div>
+			<div>
+				<app-wf-transactions></app-wf-transactions>
+			</div>			
+		</div>
+		<div class="col-sm-6 wf-holder">
+			<div>
+				<app-wf-actions></app-wf-actions>
+			</div>
+			<div>
+				<app-wf-reminders></app-wf-reminders>
+			</div>
+			<div>
+				<app-wf-notes></app-wf-notes>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
