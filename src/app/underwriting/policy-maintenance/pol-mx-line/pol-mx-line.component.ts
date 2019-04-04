@@ -141,7 +141,7 @@ export class PolMxLineComponent implements OnInit {
 									"catTag":           (rec.catTag === '' || rec.catTag === null || rec.catTag === undefined)?this.cbFunc(rec.catTag):rec.catTag,
 									"createDate":       (rec.createDate === '' || rec.createDate === null || rec.createDate === undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(rec.createDate),
 									//"createUser":       (rec.createUser === '' || rec.createUser === null || rec.createUser === undefined)?(JSON.parse(window.localStorage.currentUser).username):rec.createUser,
-									"createUser":       (rec.createUser === '' || rec.createUser === null || rec.createUser === undefined)?'arnil':rec.createUser,
+									"createUser":       (rec.createUser === '' || rec.createUser === null || rec.createUser === undefined)?JSON.parse(window.localStorage.currentUser).username:rec.createUser,
 									"cutOffTime":   	this.cutOffTimeFunc(rec.cutOffTime),
 									"description":  	rec.description,
 									"lineCd":           rec.lineCd,
@@ -152,7 +152,7 @@ export class PolMxLineComponent implements OnInit {
 									"sortSeq":      	rec.sortSeq,
 									"updateDate":       this.ns.toDateTimeString(0),
 									//"updateUser":       JSON.parse(window.localStorage.currentUser).username
-									"updateUser":       'arnil'
+									"updateUser":       JSON.parse(window.localStorage.currentUser).username
 							    }
 							]
 						}
@@ -175,7 +175,7 @@ export class PolMxLineComponent implements OnInit {
 								"alopTag":      	this.cbFunc(rec.alopTag),
 								"catTag":           this.cbFunc(rec.catTag),
 								"createDate":       this.ns.toDateTimeString(0),
-								"createUser":       'arnil',
+								"createUser":       JSON.parse(window.localStorage.currentUser).username,
 								"cutOffTime":   	this.ns.toDateTimeString(0).split('T')[0] + 'T' + rec.cutOffTime,
 								"description":  	rec.description,
 								"lineCd":           rec.lineCd,
@@ -185,7 +185,7 @@ export class PolMxLineComponent implements OnInit {
 								"renewalTag":       this.cbFunc(rec.renewalTag),
 								"sortSeq":      	rec.sortSeq,
 								"updateDate":       this.ns.toDateTimeString(0),
-								"updateUser":       'arnil'
+								"updateUser":       JSON.parse(window.localStorage.currentUser).username
 						    }
 						],
 						"saveLine": []

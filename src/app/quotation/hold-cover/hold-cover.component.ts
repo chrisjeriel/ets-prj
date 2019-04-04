@@ -4,7 +4,6 @@ import { QuotationService,NotesService } from '../../_services';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
-import { Location } from '@angular/common'
 import { DecimalPipe } from '@angular/common';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { Router } from '@angular/router';
@@ -84,7 +83,7 @@ export class HoldCoverComponent implements OnInit {
 	searchParams: any[] = [];
 	searchParams2: any[] = [];
 
-	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private location: Location,
+	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title,
 	 private decPipe: DecimalPipe, private ns : NotesService, private router: Router) { 
 	}
 
@@ -383,7 +382,7 @@ onSaveClick(cancelFlag?){
 		this.holdCover.periodTo === '' || this.holdCover.periodTo === null || this.holdCover.periodTo === undefined ||
 		this.holdCover.compRefHoldCovNo === '' || this.holdCover.compRefHoldCovNo === null || this.holdCover.compRefHoldCovNo === undefined ||
 		this.holdCover.reqBy === '' || this.holdCover.reqBy ===  null || this.holdCover.reqBy === undefined ||
-		this.holdCover.reqDate === '' || this.holdCover.reqDate === null || this.holdCover.reqDate === undefined ||
+		// this.holdCover.reqDate === '' || this.holdCover.reqDate === null || this.holdCover.reqDate === undefined ||
 		this.holdCover.optionId === '' || this.holdCover.optionId === null || this.holdCover.optionId === undefined){
 
 		this.dialogIcon = 'error';
@@ -626,8 +625,6 @@ onClickCancelQuoteLOV(){
 }
 
 onClickCancel(){
-	//  this.btnCancelMainEnabled = true;
-	// $('#confirm-save #modalBtn2').trigger('click');
 	this.cancelBtn.clickCancel();
 }
 
@@ -716,10 +713,6 @@ fmtCn(cn){
 	this.qCedingId = (this.decPipe.transform(cn,'3.0-0') === null) ? '' : this.decPipe.transform(cn,'3.0-0').replace(',','');
 }
 
-// sampleOk(){
-	//   this.table.pressEnterFilter();
-	//   console.log(this.passDataQuoteLOV.filters[0].search + "  >> FILTERS HERE 3rd ");
-	// }
 
 	onTabChange($event: NgbTabChangeEvent) {
 		if ($event.nextId === 'Exit') {
@@ -765,12 +758,12 @@ fmtCn(cn){
 
 	onClickOptionLOV(){
 		this.passDataQuoteOptionsLOV.tableData = [];
-		this.loading = true;
+		//this.loading = true;
 		$('#optionMdl #modalBtn2').trigger('click');
 		this.quotationService.getQuoteOptions(this.quoteId.toString(),'')
 		.subscribe(data => {
 			console.log(data);
-			this.loading = false;
+			//this.loading = false;
 			var rec = data['quotation'].optionsList;
 			for(let i of rec){
 				this.passDataQuoteOptionsLOV.tableData.push({

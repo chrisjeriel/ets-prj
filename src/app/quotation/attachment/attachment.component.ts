@@ -218,12 +218,12 @@ export class AttachmentComponent implements OnInit {
               "saveAttachmentsList": [
                 {
                   "createDate":    (this.passData.tableData[i].createDate === null || this.passData.tableData[i].createDate === undefined || this.passData.tableData[i].createDate === '')?this.ns.toDateTimeString(0):this.ns.toDateTimeString(this.passData.tableData[i].createDate),
-                  "createUser":    (this.passData.tableData[i].createUser === null || this.passData.tableData[i].createUser === undefined || this.passData.tableData[i].createUser === '')?'arnil':this.passData.tableData[i].createUser,
+                  "createUser":    (this.passData.tableData[i].createUser === null || this.passData.tableData[i].createUser === undefined || this.passData.tableData[i].createUser === '')?JSON.parse(window.localStorage.currentUser).username:this.passData.tableData[i].createUser,
                   "description":   this.passData.tableData[i].description,
                   "fileName":      this.passData.tableData[i].fileName,
                   "fileNo":        this.passData.tableData[i].fileNo,
                   "updateDate":    this.ns.toDateTimeString(0),
-                  "updateUser":    'arnil'
+                  "updateUser":    JSON.parse(window.localStorage.currentUser).username
                 }
               ]
            }

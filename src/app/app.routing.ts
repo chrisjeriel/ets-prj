@@ -166,7 +166,7 @@ const appRoutes: Routes = [
     { path: 'negate-distribution', component: NegateDistributionComponent },
     { path: 'maintenance-line', component: PolMxLineComponent },
     { path: 'batch-processing', component: PolBatchProcessingComponent },
-    { path: 'maintenance-deductible', component: DeductibleComponent },
+    { path: 'maintenance-deductible', component:  DeductibleComponent},
     { path: 'maintenance-risk-list', component: RiskListComponent },
     { path: 'maintenance-risk', component: RiskFormComponent },
     { path: 'claims-inquiry', component: ClmClaimsInquiryComponent },
