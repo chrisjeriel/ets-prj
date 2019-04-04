@@ -5,6 +5,7 @@ import { Title } from '@angular/platform-browser';
 import { NotesService, UnderwritingService } from '@app/_services';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { FormsModule }   from '@angular/forms';
 
 @Component({
 	selector: 'app-policy-to-hold-cover',
@@ -17,6 +18,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 
 	@ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
 	@ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+	@ViewChild('myForm') form:any;
 
 	constructor(private titleService: Title, private noteService: NotesService, private us: UnderwritingService, private modalService: NgbModal) { }
 
@@ -159,6 +161,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 			this.dialogIcon = '';
 			this.dialogMessage = '';
 			$('app-sucess-dialog #modalBtn').trigger('click');
+			this.form.control.markAsPristine();
 		});
 	}
 
@@ -205,6 +208,9 @@ export class PolicyToHoldCoverComponent implements OnInit {
 		}
 	}
 
+	onClickCancel(){
+		$('#cancelModal > #modalBtn').trigger('click');
+	}
 	//cancel hold cover
 	cancelHoldCover(){
 		let params = {
@@ -253,9 +259,9 @@ export class PolicyToHoldCoverComponent implements OnInit {
 									}
 	}
 
-	onClickCancel(){
+	/*onClickCancel(){
 		this.cancelBtn.clickCancel();
-	}
+	}*/
 
 	onClickSaveBtn(){
 		$('#confirm-save #modalBtn2').trigger('click');
