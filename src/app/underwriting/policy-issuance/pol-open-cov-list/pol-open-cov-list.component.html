@@ -1,0 +1,38 @@
+<style type="text/css">
+  .input-group {
+        padding: 0px !important;
+        margin: 0px !important;
+    }
+
+    .input-group label {
+        padding: 0px !important;
+        margin: 0px !important;
+    }
+
+  .input-ig-row {
+        margin-left: 2px !important;
+    }
+    .ig-row {
+        margin : -3px !important;
+        /*margin-bottom: -14px ! important;*/
+    }
+    .ig-row label {
+        margin-right: 5px !important;
+    }
+</style>
+<div class="cust-tabs-container">
+    <h4>Policy / Inquiry </h4>
+    <ngb-tabset>
+        <ngb-tab title="Open Cover Inquiry">
+            <ng-template ngbTabContent>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm" style="padding: 0">
+                            <app-cust-non-datatable #listTable [passData]="passData" (rowClick)="onRowClick($event)" (newRowDblClick)="gotoInfo($event)" (searchToDb)="searchQuery($event)"></app-cust-non-datatable>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
+</div>
