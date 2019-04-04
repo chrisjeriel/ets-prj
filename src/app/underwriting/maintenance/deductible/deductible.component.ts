@@ -58,30 +58,33 @@ export class DeductibleComponent implements OnInit {
     ngOnInit() {
         this.titleService.setTitle('Mtn | Deductibles'); 
         this.getMtnDeductibles();
+
     }
 
     getMtnDeductibles(){
-        //  this.mtnService.getRefCode('MTN_DEDUCTIBLES.DEDUCTIBLE_TYPE')
-        //     .subscribe(data =>{
-        //         console.log(data);
-        //         var rec = data['refCodeList'];
-        //         for(let i of rec){
-        //             this.passData.opts.push({selector :'typeDesc', prev:[i.description], vals:[i.code]});    
-        //         }
-        //         this.table.refreshTable();
-        // });
+         this.mtnService.getRefCode('MTN_DEDUCTIBLES.DEDUCTIBLE_TYPE')
+            .subscribe(data =>{
+                console.log(data);
+                var rec = data['refCodeList'];
+                for(let i of rec){
+
+                    // this.passData.opts[0].push({selector :'typeDesc', prev:[i.description], vals:[i.code]});    
+                    this.passData.opts[0].vals.push(i.code);
+                    this.passData.opts[0].prev.push(i.description);
+                }
+                this.table.refreshTable();
+        });
 
         this.passData.tableData = [];
         this.mtnService.getMtnDeductibles('','','','')
             .subscribe(data =>{
-                console.log(data);
                 var rec = data['deductibles'];
                 //this.passData.tableData = rec;
                 for(let i of rec){
                     this.passData.tableData.push({
                         deductibleCd      : i.deductibleCd,
                         deductibleTitle   : i.deductibleTitle,
-                        typeDesc          : i.typeDesc,
+                        typeDesc          : i.deductibleType,                        
                         deductibleAmt     : i.deductibleAmt,
                         deductibleRate    : i.deductibleRate,
                         minAmt            : i.minAmt,
@@ -107,9 +110,6 @@ export class DeductibleComponent implements OnInit {
                 // console.log(this.passData.opts.length + " >>> len after");
                 this.table.refreshTable();
             });
-
-       
-          console.log(this.passData.opts[0].length + " <<< length opts");
 
     }
 
