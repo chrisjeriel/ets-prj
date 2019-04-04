@@ -86,31 +86,37 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	}
 	test(event){
 		console.log(event);
+		$('#printModalBtn').trigger('click');
 	}
 
 	retrievePolHoldCov(policyId: string, policyNo: string){
 		this.us.retrievePolHoldCover(policyId, '').subscribe((data: any)=>{
 			console.log(data);
-			this.polHoldCoverParams.policyId				= data.policy.holdCoverList[0].policyId;
-			this.polHoldCoverParams.holdCovId				= data.policy.holdCoverList[0].holdCovId;
-			this.polHoldCoverParams.lineCd					= data.policy.holdCoverList[0].lineCd;
-			this.polHoldCoverParams.holdCovYear				= data.policy.holdCoverList[0].holdCovYear;
-			this.polHoldCoverParams.holdCovSeqNo			= data.policy.holdCoverList[0].holdCovSeqNo;
-			this.polHoldCoverParams.holdCovRevNo			= data.policy.holdCoverList[0].holdCovRevNo;
-			this.polHoldCoverParams.periodFrom				= this.noteService.toDateTimeString(data.policy.holdCoverList[0].periodFrom);
-			this.polHoldCoverParams.periodTo				= this.noteService.toDateTimeString(data.policy.holdCoverList[0].periodTo);
-			this.polHoldCoverParams.compRefHoldCovNo		= data.policy.holdCoverList[0].compRefHoldCovNo;
-			this.polHoldCoverParams.status					= data.policy.holdCoverList[0].status;
-			this.polHoldCoverParams.reqBy					= data.policy.holdCoverList[0].reqBy;
-			this.polHoldCoverParams.reqDate					= this.noteService.toDateTimeString(data.policy.holdCoverList[0].reqDate);
-			this.polHoldCoverParams.preparedBy				= data.policy.holdCoverList[0].preparedBy;
-			this.polHoldCoverParams.approvedBy				= data.policy.holdCoverList[0].approvedBy;
-			this.polHoldCoverParams.createUser				= data.policy.holdCoverList[0].createUser;
-			this.polHoldCoverParams.createDate				= this.noteService.toDateTimeString(data.policy.holdCoverList[0].createDate);
-			this.polHoldCoverParams.updateUser				= data.policy.holdCoverList[0].updateUser;
-			this.polHoldCoverParams.updateDate				= this.noteService.toDateTimeString(data.policy.holdCoverList[0].updateDate);
-			this.statusDesc 								= data.policy.holdCoverList[0].statusDesc;
-			this.holdCoverNo 								= data.policy.holdCoverList[0].holdCovNo;
+			for(let rec of data.policy.holdCoverList){
+				if(rec.status !== 'X'){
+					this.polHoldCoverParams.policyId				= rec.policyId;
+					this.polHoldCoverParams.holdCovId				= rec.holdCovId;
+					this.polHoldCoverParams.lineCd					= rec.lineCd;
+					this.polHoldCoverParams.holdCovYear				= rec.holdCovYear;
+					this.polHoldCoverParams.holdCovSeqNo			= rec.holdCovSeqNo;
+					this.polHoldCoverParams.holdCovRevNo			= rec.holdCovRevNo;
+					this.polHoldCoverParams.periodFrom				= this.noteService.toDateTimeString(rec.periodFrom);
+					this.polHoldCoverParams.periodTo				= this.noteService.toDateTimeString(rec.periodTo);
+					this.polHoldCoverParams.compRefHoldCovNo		= rec.compRefHoldCovNo;
+					this.polHoldCoverParams.status					= rec.status;
+					this.polHoldCoverParams.reqBy					= rec.reqBy;
+					this.polHoldCoverParams.reqDate					= this.noteService.toDateTimeString(rec.reqDate);
+					this.polHoldCoverParams.preparedBy				= rec.preparedBy;
+					this.polHoldCoverParams.approvedBy				= rec.approvedBy;
+					this.polHoldCoverParams.createUser				= rec.createUser;
+					this.polHoldCoverParams.createDate				= this.noteService.toDateTimeString(rec.createDate);
+					this.polHoldCoverParams.updateUser				= rec.updateUser;
+					this.polHoldCoverParams.updateDate				= this.noteService.toDateTimeString(rec.updateDate);
+					this.statusDesc 								= rec.statusDesc;
+					this.holdCoverNo 								= rec.holdCovNo;
+				}
+			}
+			
 			this.periodFromDate.date 						= this.polHoldCoverParams.periodFrom.split('T')[0];
 			this.periodFromDate.time 						= this.polHoldCoverParams.periodFrom.split('T')[1];
 			this.periodToDate.date 							= this.polHoldCoverParams.periodTo.split('T')[0];
