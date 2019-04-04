@@ -209,13 +209,14 @@ export class CustEditableNonDatatableComponent implements OnInit {
 
     onClickAdd(event) {
         this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
-        this.passData.tableData[this.passData.tableData.length-1].edited = true;
+        /*this.passData.tableData[this.passData.tableData.length-1].edited = true;*/
         this.unliTableLength();    
         this.search(this.searchString);
         this.tableDataChange.emit(this.passData.tableData);
         this.add.next(event);
-
-        setTimeout(a=>{this.pagination.setCurrent(this.pagination.getLastPage())},0);
+        if(this.passData.paginateFlag){
+            setTimeout(a=>{this.pagination.setCurrent(this.pagination.getLastPage())},0);
+        }
         this.form.control.markAsDirty();
     }
 
@@ -244,6 +245,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
         console.log(this.filesToUpload);
         this.selectAllFlag = false;
         this.form.control.markAsDirty();
+        $('#cust-scroll').addClass('ng-dirty');
         this.selected = [];
         this.refreshTable();
         this.search(this.searchString);
@@ -264,7 +266,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
                 let width = this.startWidth + (event.x - this.startX);
                 $(this.start).parent().css({'min-width': width, 'max-width': width,'width':width});
                 let index = $(this.start).parent().index() + 1;
-                $('.glowTableBody tr td:nth-child(' + index + ')').css({'min-width': width, 'max-width': width,'width':width});
+                $('#non-datatable tr td:nth-child(' + index + ')').css({'min-width': width, 'max-width': width,'width':width});
             }
         });
         this.renderer.listenGlobal('body', 'mouseup', (event) => {

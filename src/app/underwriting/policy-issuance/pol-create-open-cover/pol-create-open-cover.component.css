@@ -27,3 +27,9 @@
     .input-ig-row {
         margin-left: 2px !important;
     }
+
+.text-search-ico-inner {
+    margin-left: -18px;
+    z-index: 99;
+    font-size: 14px;
+}

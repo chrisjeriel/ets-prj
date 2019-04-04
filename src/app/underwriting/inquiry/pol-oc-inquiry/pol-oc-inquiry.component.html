@@ -24,7 +24,7 @@
 <div class="cust-tabs-container">
     <h4>Policy / Inquiry </h4>
     <ngb-tabset>
-        <ngb-tab title="Policy Inquiry">
+        <ngb-tab title="Open Cover Inquiry">
             <ng-template ngbTabContent>
                 <div class="container-fluid">
                     <div class="row">
@@ -37,8 +37,8 @@
                             <fieldset class="scheduler-border">
                                  <div class="form-row" style="margin-right: 0px; margin-bottom: 1px;">
                                      <div class="input-group ig-row" style="margin-top: 9px ! important;margin-left: 10px ! important;margin-right: 25px ! important" >
-                                        <label class="form-control-sm col-sm-2">Policy No</label>
-                                        <input readonly type="text" class="form-control form-control-sm col-sm" style="margin-left: 8px ! important" [value]="policyInfo?.policyNo">
+                                        <label class="form-control-sm col-sm-2">Open Cover Policy No</label>
+                                        <input readonly type="text" class="form-control form-control-sm col-sm" style="margin-left: 8px ! important" [value]="policyInfo?.openPolicyNo">
                                     </div>
                                     <div class="input-group ig-row" style="margin-right: 25px ! important;;       margin-left: 10px ! important" >
                                         <label class="form-control-sm col-sm-2">Type of Cession</label>
@@ -83,15 +83,14 @@
                                   </div>
                                   <div class="input-group ig-row" style="margin-right: 25px ! important;;margin-left: 10px ! important" >
                                       <label class="form-control-sm col-sm-2">Object</label>
-                                      <input readonly type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important" [value]="policyInfo?.objectDesc">
-                                      <label class="form-control-sm col-sm-2">Currency</label>
-                                      <input readonly type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important" [value]="policyInfo?.currencyCd">
+                                      <input readonly type="text" class="form-control form-control-sm col-sm" style="margin-left: 8px ! important" [value]="policyInfo?.objectDesc">
+                                      
                                   </div>
                                   <div class="input-group ig-row" style="margin-right: 25px ! important;;margin-left: 10px ! important" >
+                                  	  <label class="form-control-sm col-sm-2">Currency</label>
+                                  	  <input readonly type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important" [value]="policyInfo?.currencyCd">
                                       <label class="form-control-sm col-sm-2">Sum Insured</label>
                                       <input readonly type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important;text-align: right" [value]="policyInfo?.totalSi | number: '1.2-2'">
-                                      <label class="form-control-sm col-sm-2">Premium</label>
-                                      <input readonly type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important;text-align: right" [value]="policyInfo?.totalPrem | number: '1.2-2'">
                                   </div>
                                </div>
                               </fieldset>        

@@ -215,7 +215,7 @@ span.ui-column-resizer {
                                     <input [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 1 : -1" [name]="key+ti" *ngSwitchCase="'datetime'" class="editable-date form-control-sm" type="datetime-local" [ngModel]="data[key] | date:'yyyy-MM-ddTHH:mm'">
                                     <ng-container *ngSwitchCase="'text-editor'">
                                         <div style="max-height: 21px; max-width: 91%">
-                                            <text-editor [table]="true" name="" [editorContent]="data[key]" (fetchContent)="data[key] = $event">
+                                            <text-editor [table]="true" name="" [editorContent]="data[key]" (fetchContent)="data[key] = $event; onDataChange($event,data,key);">
                                                 <!-- <ng-container icon-1> -->
         <!--                                             <a ><i class="fa fa-search"></i></a> -->
         <!--                                         </ng-container> -->

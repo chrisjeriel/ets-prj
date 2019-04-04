@@ -128,7 +128,7 @@ tabSelectedReportController(event){
     }
 
  okBtnClick($event){
-   this.selected.push(new SelectedData(this.selectedReport,this.printType, this.printName, this.printCopies, this.wordingText));
+   this.selected.push(new SelectedData(this.selectedReport,this.printType,this.wordingText));
    this.selectedData.emit(this.selected);
    this.selected = [];
  }
@@ -137,20 +137,14 @@ tabSelectedReportController(event){
 class SelectedData {
   reportName: string;
   printType: string;
-  printerName: string;
-  printCopies: number;
   wordingTxt: string;
 
   constructor(reportName: string,
     printType: string,
-    printerName: string,
-    printCopies: number,
     wordingTxt: string) {
 
   this.reportName = reportName;
   this.printType = printType;
-  this.printerName = printerName;
-  this.printCopies = printCopies;
   this.wordingTxt = wordingTxt;
   }
 }
