@@ -44,6 +44,7 @@ export class PolAlopComponent implements OnInit {
   paginateFlag;
   infoFlag;
   pageLength = 10;
+  alopFlag:string = '';
 
   passDataCar: any = {
     tableData: [],
@@ -160,6 +161,8 @@ export class PolAlopComponent implements OnInit {
     this.insured = this.policyInfo.principalName + " / " + this.policyInfo.contractorName;
     this.policyNo = this.policyInfo.policyNo.split(/[-]/g)[0];
 
+    this.polURL =  (this.alterFlag == false)? 'alt-policy-listing' : 'policy-listing'; 
+
     this.sub = this.route.params.subscribe(params => {
       this.line = params['line'];
     });
@@ -189,9 +192,8 @@ export class PolAlopComponent implements OnInit {
   }
 
   savePolAlopItem(cancelFlag?){
-    console.log("savePolAlopItem() was called...");
      this.cancelFlag = cancelFlag != undefined;
-     this.polURL = null;
+     /*this.polURL = null;*/
      let savedData: any = {};
 
      savedData.policyId = this.policyInfo.policyId;
@@ -320,10 +322,12 @@ export class PolAlopComponent implements OnInit {
 
 
   cancelButton() {
+    this.alopFlag = 'alop';
     this.cancelBtn.clickCancel();
   }
 
   cancelModal() {
+    this.alopFlag = 'alopitem';
     this.cancelModalBtn.clickCancel();
   }
 
@@ -334,8 +338,10 @@ export class PolAlopComponent implements OnInit {
   }
 
   setInsured(data){
-    this.polAlopData.insuredName = data.data.insuredName;
+    this.polAlopData.insuredName = data.data.insuredAbbr;
+    this.polAlopData.insuredDesc = data.data.insuredName;
     this.polAlopData.insId = data.data.insuredId;
+    this.polAlopData.address = data.data.address;
     this.form.control.markAsDirty();
   }
 
@@ -351,10 +357,6 @@ export class PolAlopComponent implements OnInit {
 
   onClickSavePolAlopItem(){
     $('#polAlopItem #confirm-save #modalBtn2').trigger('click');
-  }
-
-  getPolUrl() {
-    this.polURL =  (this.alterFlag == false)? 'alt-policy-listing' : 'policy-listing'; 
   }
 
 }
