@@ -155,7 +155,7 @@ export class PolCreateOpenCoverComponent implements OnInit {
 
     getQuoteListing() {
       this.quListTable.loadingFlag = true;
-      this.qs.getQuoProcessingData([{key: 'status', search: '3'}]).subscribe(data => {
+      this.qs.getQuoProcessingData([{key: 'status', search: 'RELEASED'}]).subscribe(data => {
         this.quotationList = data['quotationList'];
         this.passDataLOV.tableData = this.quotationList.filter(a=>{return a.openCoverTag === 'Y';}).map(q => { q.riskName = q.project.riskName; return q; });
         setTimeout(()=>{

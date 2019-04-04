@@ -1,3 +1,4 @@
+
 import { Component, OnInit, Input, ViewChild, Output, EventEmitter,ViewChildren,QueryList } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
@@ -15,14 +16,22 @@ export class PrintModalComponent implements OnInit {
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
   @Input() printDefaultType: boolean;
+  @Input() passData: any = {
+     cessionDesc: null,
+     status: null,
+     quoteId: null,
+     reasonCd: null
+   }
 
   constructor(private modalService: NgbModal) { }
    reportsList: any[] = [
 								{val:"QUOTER009A", desc:"Quotation Letter" },
-								{val:"QUOTER009B", desc:"RI Preparedness to Support Letter and RI Confirmation of Acceptance Letter" },
+								{val:"QUOTER009B", desc:"RI Preparedness to Support Letter" },
+                {val:"QUOTER009B1", desc:"RI Confirmation of Acceptance Letter" },
 								{val:"QUOTER009C", desc:"Risk Not Commensurate" },
-								{val:"QUOTER009D", desc:"Treaty Exclusion Letter" }
-					     ]
+								{val:"QUOTER009D", desc:"Treaty Exclusion Letter" },
+                {val:"QUOTER012", desc:"Hold Cover Letter (Quotation)"}
+					     ]               
    selected: any[] = [];
 
 					     
@@ -35,71 +44,89 @@ export class PrintModalComponent implements OnInit {
   printCopies: any = null;
   reportId: any = null;
   wordingText: any = null;
+  titleText: any = null;
+  wordings: boolean = true;
+  reports: boolean = false;
   requiredBool: boolean = false;
 
   ngOnInit() {
+
   }
  
-tabController(event) {
-        if (this.printType == 'SCREEN'){
-          this.refreshPrintModal(true);
-        } else if (this.printType == 'PRINTER'){
-          this.refreshPrintModal(false);
-        } else if (this.printType == 'PDF'){
-          this.refreshPrintModal(true);
+tabSelectedReportController(event){
+
+        if (this.selectedReport == "QUOTER009A"){
+          this.refreshModal(true);
+        } else if (this.selectedReport == "QUOTER009B"){
+          this.refreshModal(true);
+        } else if (this.selectedReport == "QUOTER009B1"){
+          this.reportId = "QUOTER009C"
+          this.refreshModal(false);
+        } else if (this.selectedReport == "QUOTER009C"){
+          this.refreshModal(true); 
+        } else if (this.selectedReport == "QUOTER009D"){
+          this.reportId = "QUOTER009D"
+          this.refreshModal(false);
+        } else if (this.selectedReport == "QUOTER012"){
+          this.refreshModal(true);
         }
+
 }
 
-tabSelectedReportController(event){
-        if (this.selectedReport == this.reportsList[0].val){
-          this.reportId = this.reportsList[0].val
+refreshModal(isDisable : boolean){
+  if(isDisable){
           $("a").removeClass('').addClass('disabled-a');
           this.wordingText = null;
-        } else if (this.selectedReport == this.reportsList[1].val){
-          this.reportId = this.reportsList[1].val
-          $("a").removeClass('').addClass('disabled-a');
-          this.wordingText = null;
-        } else if (this.selectedReport == this.reportsList[2].val){
-          this.reportId = this.reportsList[2].val
-          $("a").removeClass('').addClass('disabled-a');
-          this.wordingText = null;
-        } else if (this.selectedReport == this.reportsList[3].val){
-          this.reportId = this.reportsList[3].val
+          this.titleText = null;
+          this.wordings = true;
+          $("#title").css({"box-shadow": ""});
+          $("#word").css({"box-shadow":""});
+  } else {
           $("a").removeClass('disabled-a').addClass('');
           this.wordingText = null;
-        }
-
+          this.titleText = null;
+          this.wordings = false;
+  }
 }
-
- refreshPrintModal(condition : boolean){
-         if (condition){
-            this.selectPrinterDisabled = true;
-            this.selectCopiesDisabled = true;
-            $("#noOfCopies").val("");
-            $("#noOfCopies").css({"box-shadow": ""});
-            $("#printerName").css({"box-shadow":""});
-            $("#printerName").val("");
-            this.requiredBool = false;
-            this.printName = null;
-            this.printCopies = null;
-         } else {
-            this.selectPrinterDisabled = false;
-            this.selectCopiesDisabled = false;
-            $("#noOfCopies").val("");
-            $("#noOfCopies").css({"box-shadow": ""});
-            $("#printerName").css({"box-shadow":""});
-            $("#printerName").val("");
-            this.requiredBool = true;
-            this.printName = null;
-            this.printCopies = null;
-
-         }
-        
-    }
 
    open(content?) { 
      this.modal.openNoClose();
+     if(this.isEmptyObject(this.passData.cessionDesc)){
+     } else {
+        if(this.passData.cessionDesc.toUpperCase() === 'RETROCESSION'){
+          this.reportsList = [];
+          if (this.passData.status === '10'){
+            this.reportsList.push({val:"QUOTER009C", desc:"Risk Not Commensurate" });
+            this.selectedReport = this.reportsList[0].val;
+          } else if (this.passData.status === '9' && this.passData.reasonCd === 'NT'){
+            this.reportsList.push({val:"QUOTER009D", desc:"Treaty Exclusion Letter"});
+            this.selectedReport = this.reportsList[0].val;
+            this.reportId = this.reportsList[0].val;
+            this.refreshModal(false);
+          } else {
+             this.reportsList.push({val:"QUOTER009B", desc:"RI Preparedness to Support Letter" },
+                      {val:"QUOTER009B1", desc:"RI Confirmation of Acceptance Letter" });
+            this.selectedReport = this.reportsList[0].val;
+          }
+       } else if (this.passData.cessionDesc.toUpperCase() === 'DIRECT'){
+          this.reportsList = [];
+          if (this.passData.status === '10'){
+            this.reportsList.push({val:"QUOTER009C", desc:"Risk Not Commensurate" });
+            this.selectedReport = this.reportsList[0].val;
+          } else if (this.passData.status === '9' && this.passData.reasonCd === 'NT'){
+            this.reportsList.push({val:"QUOTER009D", desc:"Treaty Exclusion Letter"});
+            this.selectedReport = this.reportsList[0].val;
+            this.reportId = this.reportsList[0].val;
+            this.refreshModal(false);
+          } else {
+            this.reportsList.push({val:"QUOTER009A", desc:"Quotation Letter" });
+            this.selectedReport = this.reportsList[0].val;
+          }
+       } 
+
     }
+    
+  }
 
   reportsParamsLOV(){
     $('#reportsParamLOV #modalBtn').trigger('click') ;
@@ -107,8 +134,10 @@ tabSelectedReportController(event){
 
   setReportsParams(data){
     if (this.isEmptyObject(data)){
+        this.titleText = "";
         this.wordingText = "";
     } else {
+        this.titleText = data.title;
         this.wordingText = data.text;
     }
      $('#showPrintMenu #modalBtn').trigger('click');
@@ -133,6 +162,8 @@ tabSelectedReportController(event){
    this.selected = [];
  }
 
+
+
 }
 class SelectedData {
   reportName: string;
@@ -148,3 +179,5 @@ class SelectedData {
   this.wordingTxt = wordingTxt;
   }
 }
+
+

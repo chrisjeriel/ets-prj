@@ -1,11 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GeneralInfoComponent } from '@app/quotation/general-info/general-info.component';
 import { environment } from '@environments/environment';
 import { QuotationService } from '@app/_services';
-
 
 
 @Component({
@@ -48,16 +47,24 @@ export class QuotationComponent implements OnInit {
 	showAlop:boolean = false;
 	enblEndtTab:boolean = false;
 	dialogIcon:string  = "";
-    dialogMessage:string  = "";
-    btnDisabled: boolean;
+  dialogMessage:string  = "";
+  btnDisabled: boolean;
+  defaultType:boolean = true;
+  status: any;
+  cessionDesc: any;
+  quoteId: any;
+
+  passData: any = {
+    cessionDesc: null,
+    status: null,
+    quoteId: null
+  }
 
 	ngOnInit() {
 		this.sub = this.route.params.subscribe(params => {
             this.line = params['line'];
             this.inquiryFlag = params['inquiry'];
         });
-
-  
 	}
 
 	showApprovalModal(content) {
@@ -83,14 +90,26 @@ export class QuotationComponent implements OnInit {
   		if ($event.nextId === 'approval-tab') {
 			$event.preventDefault();
 		}
+
+      if ($event.nextId === 'Print') {
+        $event.preventDefault();
+        $('#printListQuotation > #printModalBtn').trigger('click');
+      } 
+
+
  
   	}
 
-  	checkQuoteInfo(event){  		
+  checkQuoteInfo(event){  		
   		this.quoteInfo = event;
+      this.passData.cessionDesc = this.quoteInfo.typeOfCession.toUpperCase()
+      this.passData.status = this.quoteInfo.status;
+      this.passData.quoteId = this.quoteInfo.quoteId;
+      this.passData.reasonCd = this.quoteInfo.reasonCd;
+    
   		setTimeout(() => { this.header = "/ " + (this.quoteInfo.quotationNo == '' ? this.quoteInfo.lineCd : this.quoteInfo.quotationNo) }, 0);
 
-  		if(this.quoteInfo.typeOfCession.toUpperCase() == 'RETROCESSION'){
+  	if(this.quoteInfo.typeOfCession.toUpperCase() == 'RETROCESSION'){
   			/*this.reportsList.push({val:"QUOTER009B", desc:"RI Preparedness to Support Letter and RI Confirmation of Acceptance Letter" })*/
   			this.reportsList.push({val:"QUOTER009B", desc:"RI Preparedness to Support Letter" },
   								  {val:"QUOTER009B", desc:"RI Confirmation of Acceptance Letter" });
@@ -187,6 +206,7 @@ export class QuotationComponent implements OnInit {
     	};
     }
 
+    
 
 	// setDocumentTitle(event) {
 	// 	console.log(event.target.closest('div').innerText);
