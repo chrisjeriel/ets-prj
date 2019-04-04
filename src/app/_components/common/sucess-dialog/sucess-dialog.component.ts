@@ -21,6 +21,12 @@ export class SucessDialogComponent implements OnInit {
 
   }
 
+  onClickOk() {
+    $('.ng-dirty').removeClass('ng-dirty');
+    this.onOk.emit();
+    this.modal.closeModal();
+  }
+
   open(content?) {        
   		// this.modalService.dismissAll();
     //     this.modalService.open(content, { centered: true, backdrop: 'static', windowClass : 'success-modal-size' });

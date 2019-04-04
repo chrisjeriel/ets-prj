@@ -608,7 +608,6 @@ export class UnderwritingService {
                 'Content-Type': 'application/json'
             })
         };
-        console.log(polAlopData);
         return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolAlop', JSON.stringify(polAlopData), header);
     }
 

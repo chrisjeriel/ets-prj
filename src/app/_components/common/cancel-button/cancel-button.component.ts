@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, ViewChild, Input } from '@angular/core';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-cancel-button',
@@ -11,7 +12,7 @@ export class CancelButtonComponent implements OnInit {
   @ViewChild('saveModal') saveModal: ModalComponent;
   @Input() url:any;
   @Output() onYes: EventEmitter<any[]> = new EventEmitter<any[]>();
-  constructor(private router:Router) { }
+  constructor(private router:Router, private modalService: NgbModal) { }
 
   ngOnInit() {
   }
@@ -19,14 +20,22 @@ export class CancelButtonComponent implements OnInit {
   clickCancel(){
   	if($('.ng-dirty:not([type="search"]):not(.not-form)').length != 0){
   		this.saveModal.openNoClose();
-  	}else{
-  	  this.router.navigate([this.url]);
+  	} else {
+      if (this.url != null) { 
+        this.router.navigate([this.url]); 
+      } else {
+        this.modalService.dismissAll();
+      } 
   	}
   }
 
   onNo(){
     $('.ng-dirty').removeClass('ng-dirty');
-  	this.router.navigate([this.url]);
+    if (this.url != null) {
+      this.router.navigate([this.url]);
+    } else {
+      this.modalService.dismissAll();
+    }
   }
 
   onClickYes(){
