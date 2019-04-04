@@ -43,6 +43,7 @@ export class CustNonDatatableComponent implements OnInit {
     @Output() print: EventEmitter<any> = new EventEmitter();
     @Output() gnrc1: EventEmitter<any> = new EventEmitter();
     @Output() gnrc2: EventEmitter<any> = new EventEmitter();
+    @Output() export: EventEmitter<any> = new EventEmitter();
 
     //DB Search Query
     searchQuery: any[] = [];
@@ -553,6 +554,10 @@ export class CustNonDatatableComponent implements OnInit {
 
         //do some printing
         this.print.next(event);
+    }
+    onClickExport(event){
+        //do some exporting
+        this.export.next(event);
     }
     getSum(data){
         

@@ -3,7 +3,7 @@
 	<ngb-tabset>
 		<ngb-tab class="ngb-tab" title="Alteration List">
 			<ng-template ngbTabContent>
-				<app-cust-non-datatable [passData]="altParListData" (rowDblClick)="onRowDblClick($event)"></app-cust-non-datatable>
+				<app-cust-non-datatable [passData]="altParListData" (rowDblClick)="onRowDblClick($event)" (searchToDb)="searchQuery($event)" (add)="onClickAdd($event)" (edit)="onClickEdit($event)"  (rowClick)="onRowClick($event)"  (export)="export()"></app-cust-non-datatable>
 			</ng-template>
 		</ngb-tab>
 	</ngb-tabset>

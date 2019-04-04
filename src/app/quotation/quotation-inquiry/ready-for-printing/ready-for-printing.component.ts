@@ -273,29 +273,13 @@ export class ReadyForPrintingComponent implements OnInit {
 
   showPrintPreview(data){   
      this.printType = data[0].printType;
-     this.printName =  data[0].printerName;
-     this.printCopies = data[0].printCopies;
      this.selectedReport = this.reportsList[0].val;
      this.printDestination(this.printType);
      
   }
 
   printDestination(obj){
-     if (obj == 'SCREEN'){
-         this.changeQuoteStatus();           
-      }else if (obj == 'PRINTER'){
-             if(this.validate(this.prepareParam())){
-                 this.changeQuoteStatus();      
-              } else {
-                 this.dialogIcon = "error-message";
-                 this.dialogMessage = "Please complete all the required fields.";
-                 this.selectedOnOk = false;
-                 $('#readyPrinting #successModalBtn').trigger('click');
-                 setTimeout(()=>{$('.globalLoading').css('display','none');},0);
-              }
-      }else if (obj == 'PDF'){
-          this.changeQuoteStatus();        
-      }   
+     this.changeQuoteStatus();      
   }
 
   downloadPDF(reportName : string, quoteId : string, quotationNo: string){
@@ -328,8 +312,7 @@ export class ReadyForPrintingComponent implements OnInit {
               var newBlob = new Blob([data], { type: "application/pdf" });
               var downloadURL = window.URL.createObjectURL(data);
               downloadURL = downloadURL + downloadURL;
-              window.open(downloadURL, '_blank').print();
-               
+              window.open(downloadURL, '_blank').print();    
        },
         error => {
             if (this.isEmptyObject(error)) {
@@ -366,11 +349,7 @@ export class ReadyForPrintingComponent implements OnInit {
   }  
 
   changeQuoteStatus() {
-    for(let i=0;i<this.saveData.changeQuoteStatus.length ;i++){ 
-                      this.printPDF(this.selectedReport,this.saveData.changeQuoteStatus[i].quoteId);
-                    }
-
-    /*this.quotationService.saveChangeQuoteStatus(this.saveData).subscribe( data => {
+    this.quotationService.saveChangeQuoteStatus(this.saveData).subscribe( data => {
         this.changeQuoteError = data['returnCode'];
         if(data['returnCode'] == 0) {
                 console.log(data['errorList'][0].errorMessage);
@@ -398,7 +377,7 @@ export class ReadyForPrintingComponent implements OnInit {
                  this.table.refreshTable("first");
         }
         this.btnDisabled = true;
-    });*/
+    });
   }
 
   modalOnOk(){

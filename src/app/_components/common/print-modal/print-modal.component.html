@@ -15,12 +15,6 @@
                                     		<div class="input-group" style="margin-bottom : -14px ! important">
                                     			 <label class="form-control-sm" for="xx">Destination</label>
                                     		</div>
-                                    		<div class="input-group" style="margin-bottom : -14px ! important">
-                                    			 <label class="form-control-sm" for="xx">Printer Name</label>
-                                    		</div>
-                                    		<div class="input-group" style="margin-bottom : -14px ! important">
-                                    			<label class="form-control-sm" for="xx">No. of Copies</label>
-                                    		</div>
                                     		<div *ngIf="printDefaultType" class="input-group" style="margin-bottom : -14px ! important">
                                     			<label class="form-control-sm" for="xx">Wordings</label>
                                     		</div>
@@ -37,14 +31,6 @@
 		                                            <option value="PDF">PDF</option>
 		                                            <option value="PRINTER">Printer</option>
                                         		</select>
-                                    		</div>
-                                    		<div class="input-group" style="margin-bottom : 0px ! important; margin-top: 3px">
-                                    			 <select class="form-control form-control-sm cust-sm" id="printerName" [disabled]="selectPrinterDisabled" [(ngModel)]="printName" (appRequired)="false">
-                                            		<option value="Default">Default Printer</option>
-                                        		 </select>
-                                    		</div>
-                                    	    <div class="input-group" style="margin-bottom : 0px ! important;  margin-top: 3px">
-                                    			 <input type="text" id="noOfCopies" class="form-control form-control-sm text-right" appRequired onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [disabled]="selectCopiesDisabled" [readonly]="selectCopiesDisabled" [(ngModel)]="printCopies">
                                     		</div>
                                     		<div *ngIf="printDefaultType" class="input-group" style="margin-bottom : 0px ! important;  margin-top: 8px">
                                     			<input type="text" id="xx" class="form-control form-control-sm" appRequired disabled readonly [(ngModel)]="wordingText" >
