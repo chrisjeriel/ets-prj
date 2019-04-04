@@ -22,6 +22,7 @@ export class SucessDialogComponent implements OnInit {
   }
 
   onClickOk() {
+    if(this.icon!=='error' && this.icon!=='error-message'&& this.icon!=='info')
     $('.ng-dirty').removeClass('ng-dirty');
     this.onOk.emit();
     this.modal.closeModal();
