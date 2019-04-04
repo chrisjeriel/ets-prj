@@ -375,6 +375,8 @@ onSaveClickLOV(){
 
 holdCoverReq:any
 onSaveClick(cancelFlag?){
+	this.dialogIcon = '';
+	this.dialogMessage = '';
 	this.cancelFlag = cancelFlag !== undefined;
 	if(this.quoteNo === '' || this.quoteNo === null || this.quoteNo === undefined ||
 		this.holdCover.periodFrom === '' || this.holdCover.periodFrom === null || this.holdCover.periodFrom === undefined ||
@@ -430,25 +432,33 @@ onSaveClick(cancelFlag?){
 
 				if(returnCode === 0){
 					this.dialogIcon = 'error';
-					this.dialogMessage = 'Data insertion error.';
+					this.dialogMessage = '';
 					$('app-sucess-dialog #modalBtn').trigger('click');
 					setTimeout(()=>{$('.globalLoading').css('display','none');},0);
 					$('.warn').focus();
 					$('.warn').blur();
 				}else{
-					this.dialogIcon = '';
-					this.dialogMessage = '';
-					$('app-sucess-dialog #modalBtn').trigger('click');
-					this.btnApprovalEnabled = true;
-					this.cancelHcBtnEnabled = true;
-					$('.warn').focus();
-					$('.warn').blur();
+					// this.dialogIcon = '';
+					// this.dialogMessage = '';
+					// $('app-sucess-dialog #modalBtn').trigger('click');
+					// this.btnApprovalEnabled = true;
+					// this.cancelHcBtnEnabled = true;
+					// $('.warn').focus();
+					// $('.warn').blur();
 
 					if(this.btnCancelMainEnabled === true){
 						this.modalService.dismissAll();
 					}  
+
 					this.quotationService.getHoldCoverInfo('',this.plainHc(data['holdCoverNo']))
 					.subscribe(data => {
+						this.dialogIcon = '';
+						this.dialogMessage = '';
+						$('app-sucess-dialog #modalBtn').trigger('click');
+						this.btnApprovalEnabled = true;
+						this.cancelHcBtnEnabled = true;
+						// $('.warn').focus();
+						// $('.warn').blur();
 						var rec = data['quotation'].holdCover;
 						this.holdCover.holdCoverNo = rec.holdCoverNo;
 						this.holdCover.holdCoverId = rec.holdCoverId;
@@ -550,6 +560,10 @@ searchQuoteInfo(line,year,seq,rev,ced){
 				this.holdCover.preparedBy = '';
 				this.holdCover.approvedBy = '';
 				this.cancelHcBtnEnabled = false;
+				this.holdCover.holdCoverNo = '';
+				this.holdCover.optionId = '';
+				this.disableFieldsHc(true);
+				this.newHc(true);
 				
 			}else{
 				console.log('2nd ');
@@ -716,6 +730,7 @@ fmtCn(cn){
 	}
 
 	onClickCancelHoldCover(){
+		this.modalService.dismissAll();
 		this.loading = true;
 		this.ids = {
 			"quoteId":(this.quoteId === null || this.quoteId === undefined)? '' : this.quoteId,
@@ -730,7 +745,7 @@ fmtCn(cn){
 		}else{
 			this.quotationService.updateHoldCoverStatus(JSON.stringify(this.ids))
 			.subscribe(data => {
-				console.log(data);
+				console.log(data);	
 				this.loading = false;
 				this.genMsg = 'Cancelled successfully' ;
 				this.icon = 'fa fa-check-circle fa-3x';
@@ -750,10 +765,12 @@ fmtCn(cn){
 
 	onClickOptionLOV(){
 		this.passDataQuoteOptionsLOV.tableData = [];
+		this.loading = true;
 		$('#optionMdl #modalBtn2').trigger('click');
 		this.quotationService.getQuoteOptions(this.quoteId.toString(),'')
 		.subscribe(data => {
 			console.log(data);
+			this.loading = false;
 			var rec = data['quotation'].optionsList;
 			for(let i of rec){
 				this.passDataQuoteOptionsLOV.tableData.push({
@@ -794,15 +811,20 @@ fmtCn(cn){
 		this.holdCover.optionId = '';
 	}
 
+	countMatch:number;
 	searchOptNo(optNoInput){
+		this.countMatch = 0;
 		this.quotationService.getQuoteOptions(this.quoteId.toString(),'')
 		.subscribe(data => {
 			var rec = data['quotation'].optionsList;
 			for(let i of rec){
-				if(Number(i.optionId) !== Number(optNoInput)){
+				if(Number(i.optionId) === Number(optNoInput)){
+					this.countMatch++;
+				}
+			}
+			if(this.countMatch !== 1){
 					this.holdCover.optionId = '';
 					this.onClickOptionLOV();
-				}
 			}
 		});
 	}

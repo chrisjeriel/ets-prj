@@ -154,6 +154,7 @@ export class ParListingComponent implements OnInit {
    retrievePolListing(){
        this.uwService.getParListing(this.searchParams).subscribe(data => {
           var records = data['policyList'];
+          console.log(data)
           this.fetchedData = records;
                for(let rec of records){
                      if (rec.statusDesc === 'In Force' || rec.statusDesc === 'In Progress') {
@@ -215,6 +216,7 @@ export class ParListingComponent implements OnInit {
              },100); 
         } else {
             console.log("status is in-forced!");
+            this.router.navigate(['/policy-issuance', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId }], { skipLocationChange: true });
         }
     }
 
@@ -237,6 +239,7 @@ export class ParListingComponent implements OnInit {
              },100); 
         } else {
             console.log("status is in-forced!");
+            this.router.navigate(['/policy-issuance', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId }], { skipLocationChange: true }); 
         }
 
     }

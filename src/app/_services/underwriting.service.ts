@@ -644,6 +644,15 @@ export class UnderwritingService {
         return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolAlopItem', JSON.stringify(polAlopItemData), header);
     }
 
+    savePolicyDetails(savePolicyDetailsParam: any) {
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolicyDetails', JSON.stringify(savePolicyDetailsParam), header);
+    }
+
     getSumInsOc(policyId){
         const params = new HttpParams()
             .set('policyId',policyId === undefined || policyId === null || policyId === '' ? '' : policyId)
