@@ -140,7 +140,6 @@ export class PolMxLineComponent implements OnInit {
 									"alopTag":      	(rec.alopTag === '' || rec.alopTag === null || rec.alopTag === undefined)?this.cbFunc(rec.alopTag):rec.alopTag,
 									"catTag":           (rec.catTag === '' || rec.catTag === null || rec.catTag === undefined)?this.cbFunc(rec.catTag):rec.catTag,
 									"createDate":       (rec.createDate === '' || rec.createDate === null || rec.createDate === undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(rec.createDate),
-									//"createUser":       (rec.createUser === '' || rec.createUser === null || rec.createUser === undefined)?(JSON.parse(window.localStorage.currentUser).username):rec.createUser,
 									"createUser":       (rec.createUser === '' || rec.createUser === null || rec.createUser === undefined)?JSON.parse(window.localStorage.currentUser).username:rec.createUser,
 									"cutOffTime":   	this.cutOffTimeFunc(rec.cutOffTime),
 									"description":  	rec.description,
@@ -151,7 +150,6 @@ export class PolMxLineComponent implements OnInit {
 									"renewalTag":       (rec.renewalTag === '' || rec.renewalTag === null || rec.renewalTag === undefined)?this.cbFunc(rec.renewalTag):rec.renewalTag,
 									"sortSeq":      	rec.sortSeq,
 									"updateDate":       this.ns.toDateTimeString(0),
-									//"updateUser":       JSON.parse(window.localStorage.currentUser).username
 									"updateUser":       JSON.parse(window.localStorage.currentUser).username
 							    }
 							]

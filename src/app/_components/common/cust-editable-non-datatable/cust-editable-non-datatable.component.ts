@@ -410,9 +410,6 @@ export class CustEditableNonDatatableComponent implements OnInit {
 
 
     onDataChange(ev,data,key){
-        console.log(ev);
-        console.log(data);
-        console.log(key);
         // if($(ev.target).next().children().prop("tagName") === 'A') {
         if($(ev.target).hasClass('lovInput')) {
             let retData:any = {};
