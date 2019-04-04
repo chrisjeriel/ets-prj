@@ -3,7 +3,7 @@
     <ngb-tabset>
         <ngb-tab title="Deductibles">
             <ng-template ngbTabContent>
-                <div class="row">
+               <!--  <div class="row">
                     <div class="col-sm-2"></div>
                     <div class="col-sm-8">
                         <fieldset class="scheduler-border" style="margin-top: 10px !important;">
@@ -11,7 +11,6 @@
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-2 text-right" for="xx" style="margin-bottom: 0px">Line</label>
                                     <input class="form-control form-control-sm  col-sm-1" type="text" name="" placeholder="CAR">
-                                    <!-- <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>&nbsp;-->
                                     <input class="form-control form-control-sm  col-sm-7" type="text" name="" style="margin-left: 2px;" placeholder="Contractors All Risks">
                                     <div class="col-sm-1" style="padding-left: 1px"><a><i class="fa fa-search"></i></a></div>&nbsp;
                                 </div>
@@ -127,7 +126,32 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
+
+                <!-- APRIL 1, 2019  ARNEILLE-->
+                <fieldset class="scheduler-border" style="margin-top: 10px !important;">
+                    <div class="form-row custom-row-inline-inset">
+                        <div class="input-group">
+                            <div class="col-sm-3"></div>
+                            <label class="form-control-sm text-right"  style="margin-bottom: 0px">Line</label>
+                            <input class="form-control form-control-sm  col-sm-1" type="text" placeholder="CAR">
+                            <div class="text-search-ico" style="padding-left: 1px"><a><i class="fa fa-search"></i></a></div>&nbsp;
+                            <input class="form-control form-control-sm  col-sm" type="text" name="" style="margin-left: 2px;" placeholder="Contractors All Risks">
+                            <div class="cust-btn-container" style="margin-left: 2px;">
+                                <button type="button" class="cust-btn"><a>Search</a></button>
+                            </div>
+                            <div class="col-sm-3"></div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset class="scheduler-border">
+                    <div class="custom-row-inline-inset" style="margin-top: 25px !important;">
+                        <app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
+                        <!-- <app-cust-editable-non-datatable [passData]="passData" (tableDataChange)="passData.tableData=$event"></app-cust-editable-non-datatable> -->
+                    </div>
+                </fieldset>
+                <!-- END  ARNEILLE-->                
             </ng-template>
         </ngb-tab>
     </ngb-tabset>

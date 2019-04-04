@@ -43,6 +43,7 @@ export class CustNonDatatableComponent implements OnInit {
     @Output() print: EventEmitter<any> = new EventEmitter();
     @Output() gnrc1: EventEmitter<any> = new EventEmitter();
     @Output() gnrc2: EventEmitter<any> = new EventEmitter();
+    @Output() export: EventEmitter<any> = new EventEmitter();
 
     //DB Search Query
     searchQuery: any[] = [];
@@ -128,6 +129,7 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     refreshTable(initLoad?){
+        
         if(initLoad === undefined){
             this.loadingFlag = false;
         }else{
@@ -150,6 +152,7 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        
         this.passData.btnDisabled = false;
         this.passData.pageID = typeof this.passData.pageID == "undefined" ? 1 : this.passData.pageID;
         this.passData.colSize = typeof this.passData.colSize == "undefined" ? [] : this.passData.colSize;
@@ -218,7 +221,6 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     processData(key: any, data: any) {
-        console.log("processData");
         if(this.keyCounter == 0){
             this.nullKey = key;
             this.keyCounter++;
@@ -227,6 +229,7 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     unliTableLength(){
+        
         if(this.unliFlag){
             this.passData.pageLength = this.passData.tableData.length <= 10 ? 10 :this.passData.tableData.length;
         }
@@ -234,6 +237,7 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     private onMouseDown(event){
+        
         this.start = event.target;
         this.pressed = true;
         this.startX = event.x;
@@ -242,6 +246,7 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     private initResizableColumns() {
+        
         this.renderer.listenGlobal('body', 'mousemove', (event) => {
             if(this.pressed) {
                 let width = this.startWidth + (event.x - this.startX);
@@ -259,11 +264,12 @@ export class CustNonDatatableComponent implements OnInit {
         });
     }
     onRowClick(event, data) {
+        
         if(this.passData.checkFlag === undefined || !this.passData.checkFlag){
             if(data !== null){
                 this.nullRow = false;
                 if( Object.entries(data).length !== 0){
-                    if(data[this.nullKey] !== null){
+                    //if(data[this.nullKey] !== null){
                         this.btnDisabled = false;
                         if(this.indvSelect == data){
                             this.unselect = true;
@@ -277,7 +283,7 @@ export class CustNonDatatableComponent implements OnInit {
                             }*/
                             this.indvSelect = data;
                         }
-                    }
+                   // }
                 }
                 else{
                      this.indvSelect = "";
@@ -300,6 +306,7 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     selectAll(value){
+        
         if(value){
             this.selected = [];
              for (let data of this.displayData) {
@@ -327,9 +334,11 @@ export class CustNonDatatableComponent implements OnInit {
     }
     
     highlight(data){
+        
         this.selected.push(data);
     }
     removeSelected(event, data){
+        
         data.checked = event.target.checked;
         if(!event.target.checked){
             this.selected.splice(this.selected.indexOf(data), 1);
@@ -340,6 +349,7 @@ export class CustNonDatatableComponent implements OnInit {
         
     }
     onRowDblClick(event,data) {
+        
         if(!this.nullRow){
             this.rowDblClick.next(event);
             this.newRowDblClick.emit(data);
@@ -347,6 +357,7 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     sort(str,sortBy){
+        
         this.passData.tableData = this.passData.tableData.sort(function(a, b) {
             if(sortBy){
                 if(a[str] < b[str]) { return -1; }
@@ -361,11 +372,13 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     showSort(sortBy,i){
+        
         return sortBy && i==this.sortIndex;
     }
 
     
     filterDisplay(filterObj,searchString){
+        
         //OLD VERSION
         this.displayData = this.passData.tableData.filter((item) => this.dataKeys.some(key => item.hasOwnProperty(key) && new RegExp(searchString, 'gi').test(item[key])));
         for (var filt in filterObj) {    
@@ -382,6 +395,7 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     dbQuery(filterObj){
+        
         //console.log(filterObj);
         this.searchQuery = [];
         for(var e of filterObj){
@@ -495,6 +509,7 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     addFiller(){
+        
         this.autoFill = Array(this.passData.pageLength).fill(this.fillData);
         if(this.displayData.length%this.passData.pageLength != 0){
             this.autoFill = Array(this.passData.pageLength -  this.displayData.length%this.passData.pageLength).fill(this.fillData);
@@ -505,35 +520,47 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     addCheckFlag(cell){
+        
         return !(cell===this.fillData);
     }
 
     onClickAdd(event){
+
         //do some adding
          this.add.next(event);
     }
     
     onClickEdit(event){
+
         //do some editing
         this.edit.next(event);
     }
     onClickDelete(){
+
         //do some deleting
         this.delete.next(event);
     }
     onClickCopy(event){
+
         //do some copying
         this.copy.next(event);
     }
     onClickSave(event){
+
         //do some saving
         this.save.next(event);
     }
     onClickPrint(event){
+
         //do some printing
         this.print.next(event);
     }
+    onClickExport(event){
+        //do some exporting
+        this.export.next(event);
+    }
     getSum(data){
+        
         let sum = 0;
         if(this.dataKeys.indexOf(data)==-1){
             return data;
@@ -549,6 +576,7 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     pinColumn(event,index:number){
+        
         this.pinKeys.push(this.dataKeys[index]);
         this.pinDataHeader.push(this.passData.tHeader[index]);
         this.pinDatatypes.push(this.passData.dataTypes[index]);
@@ -560,6 +588,7 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     unPinColumn(event,index:number){
+        
         this.pinKeys.splice(index,1);
         this.pinDataHeader.splice(index,1);
         this.pinDatatypes.splice(index,1);
@@ -571,10 +600,12 @@ export class CustNonDatatableComponent implements OnInit {
     }
 
     onClickGeneric1(ev){
+        
         this.gnrc1.emit(ev);
     }
 
     onClickGeneric2(ev){
+        
         this.gnrc2.emit(ev);
     }
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input,  ViewChild } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
-import { QuotationService, NotesService } from '@app/_services';
+import { QuotationService, NotesService, UploadService } from '@app/_services';
 import { AttachmentInfo } from '../../_models/Attachment';
 import { Title } from '@angular/platform-browser';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
@@ -10,7 +10,7 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 import { environment } from '@environments/environment';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
-
+import {HttpClient, HttpParams, HttpRequest, HttpEvent, HttpEventType, HttpResponse} from '@angular/common/http';
 
 
 @Component({
@@ -113,10 +113,13 @@ export class AttachmentComponent implements OnInit {
   dialogMessage:string = "";
   dialogIcon: string = "";
   cancelFlag:boolean;
+  counter:number;
+
+  filesList: any[] = [];
 
   constructor(config: NgbDropdownConfig,
     private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,private modalService: NgbModal,private ns : NotesService,
-     private location: Location, private router: Router ) {
+     private location: Location, private router: Router, private upload: UploadService ) {
 
     config.placement = 'bottom-right';
     config.autoClose = false;
@@ -190,11 +193,10 @@ export class AttachmentComponent implements OnInit {
       });
   }
 
-
  onSaveAttachment(cancelFlag?){
+   this.counter = 0;
    this.dialogIcon = '';
    this.dialogMessage = '';
-   this.loading = true;
    this.cancelFlag = cancelFlag !== undefined;
    if(this.cancelFlag === true){
      this.router.navigateByUrl('quotation-processing');
@@ -203,9 +205,10 @@ export class AttachmentComponent implements OnInit {
      var rec = this.passData.tableData[i];
      if(rec.fileName === '' || rec.fileName === null || rec.fileName === undefined){
        this.dialogIcon = 'error';
-       this.dialogMessage = 'Please complete all the required fields.';
+       this.dialogMessage = '';
        $('app-sucess-dialog #modalBtn').trigger('click');
-
+       setTimeout(()=>{$('.globalLoading').css('display','none');0});
+       console.log('error hereeeeeeeee');
        this.loading = false;
      }else{
         if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
@@ -252,10 +255,54 @@ export class AttachmentComponent implements OnInit {
                $('app-sucess-dialog #modalBtn').trigger('click');
                this.loading = false;
              });
+         }else{
+           console.log("entered here");
+           this.counter++;
          }
      }
      
    }
+/*<<<<<<< HEAD
+
+   if(this.passData.tableData.length === this.counter){
+      setTimeout(()=>{
+         $('.globalLoading').css('display','none');
+           this.dialogIcon = 'info';
+           this.dialogMessage = 'Nothing to save.';
+           $('app-sucess-dialog #modalBtn').trigger('click');
+      },500);
+   }
+=======*/
+   //upload
+   for(let files of this.filesList){
+     if (files.length == 0) {
+       console.log("No file selected!");
+       return
+
+     }
+     let file: File = files[0];
+
+     this.upload.uploadFile(file)
+       .subscribe(
+         event => {
+           if (event.type == HttpEventType.UploadProgress) {
+             const percentDone = Math.round(100 * event.loaded / event.total);
+             console.log(`File is ${percentDone}% loaded.`);
+           } else if (event instanceof HttpResponse) {
+             console.log('File is completely loaded!');
+           }
+         },
+         (err) => {
+           console.log("Upload Error:", err);
+         }, () => {
+           console.log("Upload done");
+         }
+       )
+     }
+     //clear filelist array after upload
+     this.table.filesToUpload = [];
+     this.table.refreshTable();
+/*>>>>>>> 461f752f32c09197d725373c176be5a6d657dcff*/
  
  } 
 
@@ -267,4 +314,9 @@ export class AttachmentComponent implements OnInit {
   onClickSave(){
     $('#confirm-save #modalBtn2').trigger('click');
   }
+
+   //get the emitted files from the table
+    uploads(event){
+      this.filesList = event;
+    }
 }

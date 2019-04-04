@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { UnderwritingService, NotesService } from '@app/_services';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-policy-information',
@@ -51,12 +51,13 @@ export class PolicyInformationComponent implements OnInit {
   	uneditable:[true,true,true,true,true,true,true],
   	keys:['policyNo','effDate','issueDate','quotationNo','sumInsured','premAmt','status']
   }
-
-  constructor(private UwService : UnderwritingService, private ns : NotesService, private route: ActivatedRoute) { }
+  policyId:string;
+  constructor(private UwService : UnderwritingService, private ns : NotesService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
     this.route.params.subscribe(data=>{
       this.fetchInfo(data.policyId);
+      this.policyId = data.policyId;
     })
 
   	
@@ -82,5 +83,10 @@ export class PolicyInformationComponent implements OnInit {
       this.alterationTable.refreshTable();
     })
   }
+
+  goToPolicy(){
+    this.router.navigate(['/policy-issuance', {policyId:this.policyId,fromInq:true}], { skipLocationChange: true });
+  }
+  
 
 }

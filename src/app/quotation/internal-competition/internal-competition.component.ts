@@ -271,9 +271,9 @@ export class InternalCompetitionComponent implements OnInit {
       console.log(this.savedData);
       if(this.savedData.length < 1){
         //modal about no changes were made
-        this.resultMessage = "No changes were made.";
+        /*this.resultMessage = "No changes were made.";
         this.messageIcon = "info";
-        $('#incomp #successModalBtn').trigger('click');
+        $('#incomp #successModalBtn').trigger('click');*/
       }
       else{
         this.quotationService.saveQuoteAdviceWordings(this.savedData).subscribe((data: any) => {

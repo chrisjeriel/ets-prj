@@ -1,6 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { environment } from '@environments/environment';
@@ -55,8 +55,6 @@ export class AuthenticationService {
             .pipe(map(user => {
                 // login successful if there's a jwt token in the response
                 if (user.user != null) {
-                    console.log("LOGGED IN:" + JSON.stringify(user));
-
                     user.username = user.user.userId;
                     user.firstName = user.user.userName;
                     user.lastName = '';
@@ -64,9 +62,15 @@ export class AuthenticationService {
                     localStorage.setItem('currentUser', JSON.stringify(user));
 
                     this.currentUserSubject.next(user);
+                    console.log("USER:::" + JSON.stringify(user));
+                    return user;
+                } else {
+                    // else return 400 bad request
+                    console.log("Incorrect account.");
+                    /*throw nrethrowError({ error: { message: 'Username or password is incorrect' } });*/
                 }
                 /*{"id":2,"username":"TOTZ","firstName":"TOTZ","lastName":"TOTZ","token":"fake-jwt-token"}*/
-                return user;
+                
             }));
     }
 
