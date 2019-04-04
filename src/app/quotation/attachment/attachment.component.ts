@@ -113,6 +113,7 @@ export class AttachmentComponent implements OnInit {
   dialogMessage:string = "";
   dialogIcon: string = "";
   cancelFlag:boolean;
+  counter:number;
 
   filesList: any[] = [];
 
@@ -192,11 +193,10 @@ export class AttachmentComponent implements OnInit {
       });
   }
 
-
  onSaveAttachment(cancelFlag?){
+   this.counter = 0;
    this.dialogIcon = '';
    this.dialogMessage = '';
-   this.loading = true;
    this.cancelFlag = cancelFlag !== undefined;
    if(this.cancelFlag === true){
      this.router.navigateByUrl('quotation-processing');
@@ -205,9 +205,10 @@ export class AttachmentComponent implements OnInit {
      var rec = this.passData.tableData[i];
      if(rec.fileName === '' || rec.fileName === null || rec.fileName === undefined){
        this.dialogIcon = 'error';
-       this.dialogMessage = 'Please complete all the required fields.';
+       this.dialogMessage = '';
        $('app-sucess-dialog #modalBtn').trigger('click');
-
+       setTimeout(()=>{$('.globalLoading').css('display','none');0});
+       console.log('error hereeeeeeeee');
        this.loading = false;
      }else{
         if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
@@ -254,10 +255,24 @@ export class AttachmentComponent implements OnInit {
                $('app-sucess-dialog #modalBtn').trigger('click');
                this.loading = false;
              });
+         }else{
+           console.log("entered here");
+           this.counter++;
          }
      }
      
    }
+/*<<<<<<< HEAD
+
+   if(this.passData.tableData.length === this.counter){
+      setTimeout(()=>{
+         $('.globalLoading').css('display','none');
+           this.dialogIcon = 'info';
+           this.dialogMessage = 'Nothing to save.';
+           $('app-sucess-dialog #modalBtn').trigger('click');
+      },500);
+   }
+=======*/
    //upload
    for(let files of this.filesList){
      if (files.length == 0) {
@@ -287,6 +302,7 @@ export class AttachmentComponent implements OnInit {
      //clear filelist array after upload
      this.table.filesToUpload = [];
      this.table.refreshTable();
+/*>>>>>>> 461f752f32c09197d725373c176be5a6d657dcff*/
  
  } 
 

@@ -5,21 +5,21 @@
 			<ng-template ngbTabContent>
 				<div class="row">
 					<div class="col-sm">
-							<div class="custom-row-inline-inset" style="margin-top: 25px !important;">
-								<app-cust-editable-non-datatable [passData]="passData" (tableDataChange)="passData.tableData=$event"></app-cust-editable-non-datatable>
-							</div>
-					</div>
-				</div>
-					<div class="row" style="padding-top: 10px !important;">
-						<div class="col-sm d-flex justify-content-center">
-							<button class="cust-btn"  [class.d-none]="inquiryFlag" (click)="cancel()">Cancel</button>
-							<button class="cust-btn"  [class.d-none]="inquiryFlag" (click)="onClickSave()">Save</button>
+						<div class="custom-row-inline-inset" style="margin-top: 25px !important;">
+							<app-cust-editable-non-datatable [passData]="passData" (tableDataChange)="passData.tableData=$event"></app-cust-editable-non-datatable>
 						</div>
 					</div>
-				</ng-template>
-			</ngb-tab>
-		</ngb-tabset>
-	</div>
+				</div>
+				<div class="row" style="padding-top: 10px !important;">
+					<div class="col-sm d-flex justify-content-center">
+						<button class="cust-btn"  [class.d-none]="inquiryFlag" (click)="cancel()">Cancel</button>
+						<button class="cust-btn"  [class.d-none]="inquiryFlag" (click)="onClickSave()">Save</button>
+					</div>
+				</div>
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>
 
 
 <app-confirm-save (onYes)="onClickSaveLine()"></app-confirm-save>

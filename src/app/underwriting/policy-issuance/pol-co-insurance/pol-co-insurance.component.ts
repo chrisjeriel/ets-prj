@@ -16,6 +16,7 @@ export class PolCoInsuranceComponent implements OnInit {
     @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
 
     @Input() policyInfo:any = {};
+    insured:string = '';
 
     polCoInsurance: any = {
         coRefNo: null,
@@ -31,7 +32,7 @@ export class PolCoInsuranceComponent implements OnInit {
     };
     
     coInsuranceData: any = {
-        tableData: [new PolicyCoInsurance("CAR-2018-000001-099-0001-000", "EN-CAR-2018-0000001-00", "Malayan", 12.2, 10000, 500000)],
+        tableData: [/*new PolicyCoInsurance("CAR-2018-000001-099-0001-000", "EN-CAR-2018-0000001-00", "Malayan", 12.2, 10000, 500000)*/],
         tHeader: ['Policy No', 'Ref Policy No', 'Ceding Company', 'Share Percentage', 'Share Sum Insured', 'Share Premium'],
         addFlag:false,
         editFlag:false,
@@ -42,7 +43,7 @@ export class PolCoInsuranceComponent implements OnInit {
         infoFlag: true,
         paginateFlag: true,
         widths: [1, 1, 1, 1, 1, 1],
-        keys: ['policyNo','refPolNo','cedingCo','sharePercentage','shareSi','sharePremium'],
+        keys: ['policyNo','coRefNo','cedingName','pctShare','shareSiAmt','sharePremAmt'],
         pageID: 10,
         uneditable: [true,true,true,true,true,true]
     }
@@ -55,6 +56,9 @@ export class PolCoInsuranceComponent implements OnInit {
 
     ngOnInit(): void {
         this.titleService.setTitle("Pol | Co-Insurance");
+
+        this.insured = this.policyInfo.principalName + " / " + this.policyInfo.contractorName;
+
         this.getPolCoInsurance();
     }
 
@@ -71,11 +75,14 @@ export class PolCoInsuranceComponent implements OnInit {
            this.coInsuranceData.tableData = [];
            if (data.policy != null) {
                var dataInfos = data.policy.coInsurance;
-               
 
-               for (var i=0; i<dataInfos.length; i++) {
-                   this.coInsuranceData.tableData.push(new PolicyCoInsurance(data.policy.policyNo, dataInfos[i].coRefNo, dataInfos[i].cedingName,
-                       dataInfos[i].pctShare, dataInfos[i].shareSiAmt, dataInfos[i].sharePremAmt));
+               for (let rec of dataInfos) {
+                   this.coInsuranceData.tableData.push( {policyNo: data.policy.policyNo, 
+                                                         coRefNo: rec.coRefNo, 
+                                                         cedingName: rec.cedingName,
+                                                         pctShare: rec.pctShare, 
+                                                         shareSiAmt: rec.shareSiAmt, 
+                                                         sharePremAmt: rec.sharePremAmt} );
                }
 
                this.table.refreshTable();

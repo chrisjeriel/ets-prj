@@ -22,6 +22,7 @@ export class CurrencyRateDirective implements OnInit{
   	    }else{
   	    	unHighlight(this.el);
   	    	sNum[1] = sNum[1] !== undefined ? sNum[1] : '000000';
+          sNum[1] = (sNum[1] + "000000").substring(0,6);
   	  		target.value = sNum.join('.');
   	    }
      }else {

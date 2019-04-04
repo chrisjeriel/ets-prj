@@ -72,7 +72,7 @@
                             <input type="text" [(ngModel)]="quNo[3]" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Revision No" appRequired>
                             <input type="text" [(ngModel)]="quNo[4]" class="form-control form-control-sm input-ig-row cap-input" ngbTooltip="Company No" appRequired>
                             <span>&nbsp;</span>
-                            <div class="text-search-ico"><a><i class="fa fa-search" (click)="showLOV();"></i></a></div>
+                            <div class="text-search-ico"><a><i class="fa fa-search" (click)="showLOV()"></i></a></div>
                         </div>
                         <div class="input-group ig-row" *ngIf="hc">
                             <label class="form-control-sm col-sm-2">Hold Cover No</label>
@@ -139,7 +139,7 @@
         <div class="col-md-13 text-center">
             <div class="cust-btn-container" style="margin-top:10px">
                 <button type="button" class="cust-btn"><a>Cancel</a></button>
-                <button type="button" (click)="prepareParams()" class="cust-btn"><a>Next</a></button>
+                <button type="button" (click)="prepareParams()" class="cust-btn"><a>Convert</a></button>
             </div>
         </div>
     </div>

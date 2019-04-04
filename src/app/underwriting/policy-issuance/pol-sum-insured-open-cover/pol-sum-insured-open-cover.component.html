@@ -47,17 +47,15 @@
 					<div class="input-group  ig-row" >
 						<div class="col-sm-2"></div>
 						<label class="form-control-sm col-sm-2" for="xx">Currency</label>
-						<input type="text" id="xxx" class="form-control form-control-sm cust-sm txt-content-rght" required onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
-						readonly>
+						<input type="text" id="xxx" class="form-control form-control-sm cust-sm txt-content-rght" [ngModel]="coverageInfo.currencyCd" readonly>
 						<label class="form-control-sm col-sm-1" for="xx">Exch. Rt.</label>
-						<input type="text" id="xxx" class="form-control form-control-sm cust-sm txt-content-rght" required onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' readonly>
+						<input type="text" id="xxx" class="form-control form-control-sm cust-sm txt-content-rght" [ngModel]="coverageInfo.currencyRt" readonly appCurrencyRate>
 						<div class="col-sm-2"></div>
 					</div>
 					<div class="input-group  ig-row">
 						<div class="col-sm-2"></div>
 						<label class="form-control-sm col-sm-2" for="xx">Max Sum Insured</label>
-						<input type="text" id="xxx" class="form-control form-control-sm cust-sm txt-content-rght" required onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
-						readonly>
+						<input type="text" id="xxx" class="form-control form-control-sm cust-sm txt-content-rght" [ngModel]="coverageInfo.totalSi" readonly appCurrency>
 						<div class="col-sm-2"></div>
 					</div>
 				</div>
@@ -66,22 +64,24 @@
 		<div class="col-sm"style="padding-left: 0px;">
 			<fieldset class="scheduler-border">
 				<legend class="scheduler-border">Share Details</legend>
+				<form #myForm="ngForm">
 					<div class="form-row custom-row-inline-inset" style="margin-top: 17px !important; margin-bottom: 9px ! important;">
 						<div class="input-group ig-row" >
 							<div class="col-sm-2"></div>
 							<label class="form-control-sm col-sm-2">Share(%)</label>
-                            <input type="text" class="form-control form-control-sm">
+                            <input type="text" class="form-control form-control-sm" [(ngModel)]="coverageInfo.pctShare" name="pctShare" appOtherRates>
                             <label class="form-control-sm col-sm-1">PML(%)</label>
-                            <input type="text" class="form-control form-control-sm">
-                            <div class="col-sm-2"></div>
+                            <input type="text" class="form-control form-control-sm" [(ngModel)]="coverageInfo.pctPml" name="pctPml" appOtherRates>
+                            <div class="col-sm-2"></div> 
 						</div>
 						<div class="input-group ig-row">
 							<div class="col-sm-2"></div>
-	                        <label class="form-control-sm col-sm-2">Part Of(100%)</label>
-	                        <input type="text" class="form-control form-control-sm">
+	                        <label class="form-control-sm col-sm-2">100% Value</label>
+	                        <input type="text" class="form-control form-control-sm" [(ngModel)]="coverageInfo.totalValue" name="totalValue" appCurrency (ngModelChange)="cmptShrPct($event)">
 	                        <div class="col-sm-2"></div>
                     	</div>
 					</div>
+				</form>
 			</fieldset>
 		</div>
 	</div>
@@ -91,9 +91,13 @@
 			<div class="col-md-13 text-center">
 				<br>
 				<div class="cust-btn-container">
-					<button type="button" class="cust-btn"><a>Cancel</a></button>
-					<button type="button" class="cust-btn"><a>Save</a></button>
+					<button type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
+					<button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
 				</div>
 			</div>
 		</div>
 </div>
+
+<app-sucess-dialog [icon]="dialogIcon" (onOk)="cancelFlag && dialogIcon == 'success'  ? this.cancel.onNo():null"></app-sucess-dialog>
+<app-confirm-save (onYes)="save()"></app-confirm-save>
+<app-cancel-button (onYes)="save('cancel')" [url]="'/policy-listing'" ></app-cancel-button>

@@ -1,0 +1,133 @@
+<style>
+	.table th, .table td {
+    	padding: 5px !important;
+	}
+
+	ul.timeline {
+    list-style-type: none;
+    position: relative;
+	}
+	ul.timeline:before {
+	    content: ' ';
+	    background: #d4d9df;
+	    display: inline-block;
+	    position: absolute;
+	    left: 29px;
+	    width: 2px;
+	    height: 100%;
+	    z-index: 400;
+	}
+	ul.timeline > li {
+	    margin: 20px 0;
+	    padding-left: 20px;
+	}
+	/*ul.timeline > li:before {
+	    content: ' ';
+	    background: white;
+	    display: inline-block;
+	    position: absolute;
+	    border-radius: 50%;
+	    border: 3px solid #22c0e8;
+	    left: 20px;
+	    width: 20px;
+	    height: 20px;
+	    z-index: 400;
+	}*/
+	.btn-action {
+		margin-right: 1px;
+		text-decoration: none;
+		border: none;
+		background-color: white;
+		padding: 0px 2px;
+	}
+
+	.btn-action a {
+		font-size: 14px !important;
+		font-weight: 700;
+	}
+
+	.note-title {
+		font-size: 12px !important;
+		font-weight: 700;
+	}
+
+	.note-date-time {
+		font-size: 12px !important;
+		font-weight: 400;
+	}
+
+	p {
+		font-size: 13px;
+    	font-weight: 400;
+	}
+
+</style>
+
+<div style="border: 1px solid #c5c3c3; padding: 1em">
+	<!-- <table class="table table-striped">
+	  <thead>
+	  <tr>
+	    <th scope="col">#</th>
+	    <th scope="col">Country</th>
+	    <th scope="col">Area</th>
+	    <th scope="col">Population</th>
+	  </tr>
+	  </thead>
+	  <tbody>
+	  <tr *ngFor="let country of countries; index as i">
+	    <th scope="row">{{ i + 1 }}</th>
+	    <td>
+	      <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="mr-2" style="width: 20px">
+	      {{ country.name }}
+	    </td>
+	    <td>{{ country.area | number }}</td>
+	    <td>{{ country.population | number }}</td>
+	  </tr>
+	  </tbody>
+	</table> -->
+	<div>
+		<div class="row">
+			<div class="col-md-12">
+				<h4>Notes</h4>
+				<ul class="timeline">
+					<li>
+						<a class="note-title" href="#">Client Meeting</a>
+						<br/>
+						<a class="note-date-time" href="#">21 April, 2014 1:00 PM</a>
+						<div class="float-right">
+							<button class="btn-action"><a href="#"><fa name="check"></fa></a></button>
+							<button class="btn-action"><a href="#"><fa name="eye"></fa></a></button>
+							<button class="btn-action"><a href="#"><fa name="">&nbsp;</fa></a></button>
+						</div>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque scelerisque diam non nisi semper, et elementum lorem ornare. Maecenas placerat facilisis mollis. Duis sagittis ligula in sodales vehicula....</p>
+					</li>
+					<hr/>
+					<li>
+						<a class="note-title" href="#">Scrum Planning</a>
+						<br/>
+						<a class="note-date-time" href="#">4 April, 2014 1:00 PM</a>
+						<div class="float-right">
+							<button class="btn-action"><a href="#"><fa name="check"></fa></a></button>
+							<button class="btn-action"><a href="#"><fa name="pencil"></fa></a></button>
+							<button class="btn-action"><a href="#"><fa name="trash"></fa></a></button>
+						</div>
+						<p>Curabitur purus sem, malesuada eu luctus eget, suscipit sed turpis. Nam pellentesque felis vitae justo accumsan, sed semper nisi sollicitudin...</p>
+					</li>
+					<hr/>
+					<li>
+						<a class="note-title" href="#">Board Meeting</a>
+						<br/>
+						<a class="note-date-time" href="#">1 March, 2014 12:30 PM</a>
+						<div class="float-right">
+							<button class="btn-action"><a href="#"><fa name="check"></fa></a></button>
+							<button class="btn-action"><a href="#"><fa name="pencil"></fa></a></button>
+							<button class="btn-action"><a href="#"><fa name="trash"></fa></a></button>
+						</div>
+						<p>Fusce ullamcorper ligula sit amet quam accumsan aliquet. Sed nulla odio, tincidunt vitae nunc vitae, mollis pharetra velit. Sed nec tempor nibh...</p>
+					</li>
+					<hr/>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>

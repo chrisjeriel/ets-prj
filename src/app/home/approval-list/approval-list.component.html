@@ -1,0 +1,47 @@
+<style>
+	.table th, .table td {
+    	padding: 5px 10px !important;
+    	font-size: 12px !important;
+	}
+
+	.table th {
+    	font-weight: 700;
+    	color: #007bff;
+	}
+
+	.table td {
+    	font-weight: 400;
+	}
+
+	.table tr:hover {
+	    background-color: rgba(82, 168, 236, 0.23); /*#a6d6e24d;*/
+	    cursor: pointer;
+	}
+</style>
+
+<div style="border: 1px solid #c5c3c3; padding: 1em; margin-bottom: .75em;">
+	<div class="row">
+			<div class="col-md-12">
+				<h4>Approval</h4>
+				<br>
+				<table class="table">
+				  <thead>
+				  <tr>
+				    <th scope="col">Module</th>
+				    <th scope="col">Details</th>
+				    <th scope="col">Assigned By</th>
+				    <th scope="col">Assigned Date</th>
+				  </tr>
+				  </thead>
+				  <tbody>
+				  <tr *ngFor="let mod of modules; index as i">
+				    <td>{{ mod.module }}</td>
+				    <td>{{ mod.details }}</td>
+				    <td>{{ mod.assignedBy }}</td>
+				    <td>{{ mod.assignedDate }}</td>
+				  </tr>
+				  </tbody>
+				</table>
+			</div>
+	</div>
+</div>

@@ -1,0 +1,174 @@
+<style>
+	.table th, .table td {
+    	padding: 5px !important;
+	}
+
+	ul.timeline {
+    list-style-type: none;
+    position: relative;
+	}
+	ul.timeline:before {
+	    content: ' ';
+	    background: #d4d9df;
+	    display: inline-block;
+	    position: absolute;
+	    left: 174px;
+	    width: 2px;
+	    height: 100%;
+	    z-index: 400;
+	}
+	ul.timeline > li {
+	    margin: 5px 0 5px -38px;
+	    padding: 5px 0;
+	    /*padding-left: 20px;*/
+	}
+
+	ul.timeline > li:hover {
+	    background-color: rgba(82, 168, 236, 0.23); /*#a6d6e24d;*/
+	    cursor: pointer;
+	    /*padding-left: 20px;*/
+	}
+
+	ul.timeline > li:before {
+	    content: ' ';
+	    background: white;
+	    display: inline-block;
+	    position: absolute;
+	    border-radius: 50%;
+	    border: 3px solid #22c0e8;
+	    left: 165px;
+	    width: 20px;
+	    height: 20px;
+	    z-index: 400;
+	}
+
+	.btn-action {
+		margin-right: 1px;
+		text-decoration: none;
+		border: none;
+		background-color: white;
+		padding: 0px 2px;
+	}
+
+	.btn-action a {
+		font-size: 14px !important;
+		font-weight: 700;
+	}
+
+	ul a {
+		font-size: 12px !important;
+		font-weight: 700;
+	}
+
+	p {
+		font-size: 13px;
+    	font-weight: 400;
+    	margin: 0 0 0 191px;
+	}
+	.a-date {
+		margin-left: -55px;
+		text-align: right;
+		width: 210px;
+	}
+</style>
+
+<div style="border: 1px solid #c5c3c3; margin-bottom: .75em; padding: 1em">
+	<!-- <table class="table table-striped">
+	  <thead>
+	  <tr>
+	    <th scope="col">#</th>
+	    <th scope="col">Country</th>
+	    <th scope="col">Area</th>
+	    <th scope="col">Population</th>
+	  </tr>
+	  </thead>
+	  <tbody>
+	  <tr *ngFor="let country of countries; index as i">
+	    <th scope="row">{{ i + 1 }}</th>
+	    <td>
+	      <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="mr-2" style="width: 20px">
+	      {{ country.name }}
+	    </td>
+	    <td>{{ country.area | number }}</td>
+	    <td>{{ country.population | number }}</td>
+	  </tr>
+	  </tbody>
+	</table> -->
+	<div>
+		<div class="row">
+			<div class="col-md-12">
+				<h4>Reminders</h4>
+				<ul class="timeline">
+					<li>
+						<div>
+							<div class="float-left a-date">
+								<a href="#">
+									21 April, 2014 12:30 PM<br>
+									<div style="float: right; width: 70px; text-align: center; background-color: #E76B6F;padding: 2px 5px; color: white;"><span>11:30 AM</span></div>
+								</a>
+							</div>
+							<div class="float-right">
+								<button class="btn-action"><a href="#"><fa name="check"></fa></a></button>
+								<button class="btn-action"><a href="#"><fa name="pencil"></fa></a></button>
+								<button class="btn-action"><a href="#"><fa name="trash"></fa></a></button>
+							</div>
+						</div>
+						<a>&nbsp;</a>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque scelerisque diam non nisi semper, et elementum lorem ornare. Maecenas placerat facilisis mollis. Duis sagittis ligula in sodales vehicula....</p>
+					</li>
+					<li>
+						<div>
+							<div class="float-left a-date">
+								<a href="#">
+									4 April, 2014 4:00 PM<br>
+									<div style="float: right; width: 70px; text-align: center; background-color: #E76B6F;padding: 2px 5px; color: white;"><span>3:00 AM</span></div>
+								</a>
+							</div>
+							<div class="float-right">
+								<button class="btn-action"><a href="#"><fa name="check"></fa></a></button>
+								<button class="btn-action"><a href="#"><fa name="pencil"></fa></a></button>
+								<button class="btn-action"><a href="#"><fa name="trash"></fa></a></button>
+							</div>
+						</div>
+						<a>&nbsp;</a>
+						<p>Curabitur purus sem, malesuada eu luctus eget, suscipit sed turpis. Nam pellentesque felis vitae justo accumsan, sed semper nisi sollicitudin...</p>
+					</li>
+					<li>
+						<div>
+							<div class="float-left a-date">
+								<a href="#">
+									21 March, 2014 1:00 PM<br>
+									<div style="float: right; width: 70px; text-align: center; background-color: #E76B6F;padding: 2px 5px; color: white;"><span>12:30 PM</span></div>
+								</a>
+							</div>
+							<div class="float-right">
+								<button class="btn-action"><a href="#"><fa name="check"></fa></a></button>
+								<button class="btn-action"><a href="#"><fa name="pencil"></fa></a></button>
+								<button class="btn-action"><a href="#"><fa name="trash"></fa></a></button>
+							</div>
+						</div>
+						<a>&nbsp;</a>
+						<p>Fusce ullamcorper ligula sit amet quam accumsan aliquet. Sed nulla odio, tincidunt vitae nunc vitae, mollis pharetra velit. Sed nec tempor nibh...</p>
+					</li>
+					<li>
+						<div>
+							<div class="float-left a-date">
+								<a href="#">
+									1 March, 2014 12:30 PM<br>
+									<div style="float: right; width: 70px; text-align: center; background-color: #E76B6F;padding: 2px 5px; color: white;"><span>11:30 AM</span></div>
+								</a>
+							</div>
+							<div class="float-right">
+								<button class="btn-action"><a href="#"><fa name="check"></fa></a></button>
+								<button class="btn-action"><a href="#"><fa name="pencil"></fa></a></button>
+								<button class="btn-action"><a href="#"><fa name="trash"></fa></a></button>
+							</div>
+						</div>
+						<a>&nbsp;</a>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque scelerisque diam non nisi semper, et elementum lorem ornare. Maecenas placerat facilisis mollis. Duis sagittis ligula in sodales vehicula....</p>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>

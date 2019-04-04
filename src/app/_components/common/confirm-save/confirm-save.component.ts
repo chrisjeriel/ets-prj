@@ -15,7 +15,7 @@ export class ConfirmSaveComponent implements OnInit {
   @Output() onYes: EventEmitter<any[]> = new EventEmitter<any[]>();
   dialogMessage:string;
   dialogIcon: string;
-  constructor() { }
+  constructor(private modalService: NgbModal) { }
 
   ngOnInit() {
 
@@ -36,6 +36,12 @@ export class ConfirmSaveComponent implements OnInit {
     this.saveModal.closeModal()
     $('.globalLoading').css('display','block');
   }
+
+  onClickNo(){
+    $('.ng-dirty').removeClass('ng-dirty');
+    this.modalService.dismissAll();
+  }
+
 
   // 
 }
