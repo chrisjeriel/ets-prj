@@ -80,7 +80,7 @@ export class InwardPolBalanceComponent implements OnInit {
     selector: 'otherCharges',
 
   }
-  policyId = 1;
+  policyId = 8;
   dialogIcon:string;
 
   totalPrem: string = "";
