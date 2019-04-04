@@ -26,10 +26,10 @@
 					<div class="form-row custom-row-inline-inset" style="margin-right: 9px; margin-top: 11px !important;">
 						<div class="input-group">
 							<label class="form-control-sm col-sm-2 text-right" for="xx">Insured</label>
-							<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-2" type="text" name="insuredId" appRequired [(ngModel)]="alopData.insuredId">
+							<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-2" type="text" name="insuredId" appRequired [(ngModel)]="alopData.insuredId" (change)="checkCode($event,'principal')">
 							<!-- <div class="text-search-ico"><a (click)="showInsuredLOV()"><i class="fa fa-search"></i></a></div>&nbsp; -->
 							<div [class.d-none]="inquiryFlag" class="text-search-ico"><a (click)="openGenericLOV('insured')"><i class="fa fa-search"></i></a></div>&nbsp;
-							<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm" type="text" name="insuredName" [(ngModel)]="alopData.insuredName" [style.margin-left.px]="inquiryFlag ? '-2' : '-7'" appRequired>
+							<input class="form-control form-control-sm  col-sm" type="text" name="insuredName" [(ngModel)]="alopData.insuredName" [style.margin-left.px]="inquiryFlag ? '-2' : '-7'" readonly>
 						</div>
 
 						<div class="input-group textarea" style="padding-bottom: 7px;">
@@ -40,7 +40,7 @@
 
 						<div class="input-group">
 							<label class="form-control-sm col-sm-2 text-right" for="xx">Address</label>
-							<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm" type="text" name="address" [(ngModel)]="alopData.address" appRequired>
+							<input class="form-control form-control-sm  col-sm" type="text" name="address" [(ngModel)]="alopData.address" readonly>
 						</div>
 						
 					</div>
@@ -95,20 +95,20 @@
 			<div class="form-row custom-row-inline-inset" style="margin-top: 12px !important;">
 				<div class="input-group">
 					<label class="form-control-sm col-sm-4" for="periodFrom">Period of Insurance from</label>
-					<input #from [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-2" type="date" id="periodFrom" [ngModel]="alopDetails?.issueDate?.split('T')[0]" (ngModelChange)="alopDetails.issueDate=$event" appRequired (change)="checkDates()" name="from">
+					<input #from [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-2" type="date" id="periodFrom" [ngModel]="alopDetails?.issueDate?.split('T')[0]" (ngModelChange)="alopDetails.issueDate=$event" (change)="checkDates()" name="from">
 					<label class="form-control-sm col-sm-1" style="margin-left: -5.19%; z-index: -1;" for="periodTo" >to</label>
-					<input #to [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-2" type="date" id="periodTo" [ngModel]="alopDetails?.expiryDate?.split('T')[0]" (ngModelChange)="alopDetails.expiryDate=$event" appRequired (change)="checkDates()" name="to">
+					<input #to [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-2" type="date" id="periodTo" [ngModel]="alopDetails?.expiryDate?.split('T')[0]" (ngModelChange)="alopDetails.expiryDate=$event"  (change)="checkDates()" name="to">
 					<label class="form-control-sm col-sm-2 text-left" >(Scheduled Date of Completion)</label>
 
 				</div>
 				<div class="input-group">
 					<label class="form-control-sm col-sm-4" for="maxIndemPeriod">Maximum Indemnity Period</label>
-					<input [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-1 text-right" type="text" id="maxIndemPeriod" [ngModel]="alopDetails?.maxIndemPd" (ngModelChange)="alopDetails.maxIndemPd = $event; ;" (blur)="alopDetails.maxIndemPdSi = ((alopDetails.maxIndemPd/12)*alopDetails.annSi) ;focusBlur()" numbers-only appRequired name="maxIndemPeriod">
+					<input [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-1 text-right" type="text" id="maxIndemPeriod" [ngModel]="alopDetails?.maxIndemPd" (ngModelChange)="alopDetails.maxIndemPd = $event;" (blur)="alopDetails.maxIndemPdSi = ((alopDetails.maxIndemPd/12)*alopDetails.annSi) ;focusBlur()" numbers-only appRequired name="maxIndemPeriod">
 					<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">months</label>
 				</div>
 				<div class="input-group">
 					<label class="form-control-sm col-sm-4" for="fromIndem">from</label>
-					<input [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-2" type="date" id="fromIndem" [ngModel]="alopDetails?.indemFromDate?.split('T')[0]" (ngModelChange)="alopDetails.indemFromDate=$event" appRequired name="fromIndem">
+					<input [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-2" type="date" id="fromIndem" [ngModel]="alopDetails?.indemFromDate?.split('T')[0]" (ngModelChange)="alopDetails.indemFromDate=$event"  name="fromIndem">
 				</div>
 				<div class="input-group">
 					<label class="form-control-sm col-sm-4" for="timeExcess">Time Excess</label>
@@ -126,7 +126,7 @@
 			<div class="form-group col-sm">
 				<div class="col-md-13 text-center">
 					<div class="cust-btn-container" style="margin-top: 10px;">
-					<button type="button" class="cust-btn" (click)="openAlopItem()"><a>Item Information</a></button>
+					<button type="button" class="cust-btn" (click)="openAlopItem()" [disabled]="disabledFlag" [class.cust-btn-disabled]="disabledFlag"><a>Item Information</a></button>
 					<button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
 					<button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
 				</div>

@@ -18,7 +18,7 @@ export class PolicyIssuanceAltComponent implements OnInit {
 
     ngOnInit() {
          this.sub = this.route.params.subscribe(params => {
-            this.alterFlag = params['alter'];
+            this.alterFlag = params['alteration'];
         });
 
          console.log(this.alterFlag);
