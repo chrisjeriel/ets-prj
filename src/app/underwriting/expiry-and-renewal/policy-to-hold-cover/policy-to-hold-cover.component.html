@@ -37,7 +37,7 @@
 
 <div class="cust-tabs-container">
     <h4>Policy / Expiry & Renewal</h4>
-    <ngb-tabset>
+    <ngb-tabset (tabChange)="onTabChange($event)">
         <ngb-tab title="Policy to Hold Cover">
             <ng-template ngbTabContent>
                 <div class="row" style="margin-top: 10px;">
@@ -167,7 +167,7 @@
         </ngb-tab>
         <ngb-tab id="Exit">
                 <ng-template ngbTabTitle>
-                    <div (click) = "onClickCancel()">Exit</div>
+                    <div>Exit</div>
                 </ng-template>
                 <ng-template ngbTabContent></ng-template>
         </ngb-tab>

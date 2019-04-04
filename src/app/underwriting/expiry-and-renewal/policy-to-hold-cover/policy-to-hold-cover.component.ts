@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { PolicyHoldCoverInfo } from '../../../_models/PolicyToHoldCover';
 import { Title } from '@angular/platform-browser';
 import { NotesService, UnderwritingService } from '@app/_services';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { FormsModule }   from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-policy-to-hold-cover',
@@ -20,7 +21,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	@ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 	@ViewChild('myForm') form:any;
 
-	constructor(private titleService: Title, private noteService: NotesService, private us: UnderwritingService, private modalService: NgbModal) { }
+	constructor(private titleService: Title, private noteService: NotesService, private us: UnderwritingService, private modalService: NgbModal, private router: Router) { }
 
 	policyListingData: any = {
 		tableData: [],
@@ -259,12 +260,15 @@ export class PolicyToHoldCoverComponent implements OnInit {
 									}
 	}
 
-	/*onClickCancel(){
-		this.cancelBtn.clickCancel();
-	}*/
 
 	onClickSaveBtn(){
 		$('#confirm-save #modalBtn2').trigger('click');
 	}
+
+	onTabChange($event: NgbTabChangeEvent) {
+  		if ($event.nextId === 'Exit') {
+    		this.router.navigateByUrl('');
+  		} 
+  	}
 
 }
