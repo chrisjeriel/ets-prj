@@ -177,9 +177,9 @@
             <div class="input-group">
               <span class="col-sm-4"></span>
               <label class="form-control-sm col-sm-1">Currency</label>
-              <input type="text" class="form-control form-control-sm col-sm-1" readonly>
+              <input type="text" class="form-control form-control-sm col-sm-1" readonly [(ngModel)]="altCoverageData.currencyCd">
               <label class="form-control-sm col-sm-1" style="margin-left: -30px !important; z-index: -1;">Exch. Rt.</label>
-              <input type="text" class="form-control form-control-sm col-sm-1" readonly>
+              <input type="text" class="form-control form-control-sm col-sm-1" readonly appCurrencyRate [(ngModel)]="altCoverageData.currencyRt">
               <span class="col-sm-4"></span>
             </div>
             <div class="input-group" style="margin-left: 52px !important; margin-bottom: -10px !important; margin-top: -13px !important;">

@@ -317,6 +317,8 @@ export class PolCoverageComponent implements OnInit {
             if(this.passData.tableData[j].section == 'I' && this.passData.tableData[j].addSi == 'Y'){
               this.prevsectionISi += this.passData.tableData[j].sumInsured;
               this.prevsectionIPrem += this.passData.tableData[j].premAmt;
+              this.altsectionISi += this.passData.tableData[j].altSumInsured;
+              this.altsectionIPrem += this.passData.tableData[j].altPrenium;
             }
 
             if(this.passData.tableData[j].section == 'II' && this.passData.tableData[j].addSi == 'Y'){
@@ -334,8 +336,8 @@ export class PolCoverageComponent implements OnInit {
           this.passData2.tableData[0].section = 'SECTION I';
           this.passData2.tableData[0].prevSi = this.prevsectionISi;
           this.passData2.tableData[0].prevAmt = this.prevsectionIPrem;
-          this.passData2.tableData[0].altSi = 0;
-          this.passData2.tableData[0].altAmt = 0;
+          this.passData2.tableData[0].altSi = this.altsectionISi;
+          this.passData2.tableData[0].altAmt = this.altsectionIPrem;
           this.passData2.tableData[0].comSi = 0;
           this.passData2.tableData[0].comAmt = 0;
           this.passData2.tableData[1].section = 'SECTION II';
@@ -703,8 +705,9 @@ export class PolCoverageComponent implements OnInit {
         data.uneditable = [];
       }
       if(data.altDiscountTag == 'Y'){
-        data.uneditable.pop();
         console.log(data)
+        data.uneditable.pop();
+
       }else if(data.altDiscountTag == 'N' ) {
         if(data.uneditable.length ==0)
           data.uneditable.push('altPrenium');
