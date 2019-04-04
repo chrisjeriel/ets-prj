@@ -644,6 +644,7 @@ export class UnderwritingService {
         return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolAlopItem', JSON.stringify(polAlopItemData), header);
     }
 
+
     savePolicyDetails(savePolicyDetailsParam: any) {
         let header : any = {
             headers: new HttpHeaders({
@@ -651,6 +652,16 @@ export class UnderwritingService {
             })
         };
         return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolicyDetails', JSON.stringify(savePolicyDetailsParam), header);
+    }
+
+
+    updatePolHoldCoverStatus(params: any){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/updatePolHoldCoverStatus', JSON.stringify(params), header);
     }
 
     getSumInsOc(policyId){
@@ -666,6 +677,15 @@ export class UnderwritingService {
             })
         };
         return this.http.post(environment.prodApiUrl + '/underwriting-service/saveSumInsOC', JSON.stringify(params), header);
+    }
+
+    saveOpenPolDetails(params: any){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/saveOpenPolDetails', JSON.stringify(params), header);
     }
 
 
@@ -705,7 +725,7 @@ export class UnderwritingService {
                 params = params.append(i.key, i.search);
             }
         }
-         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolicyOCListing',{params});
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolicyOCListing',{params});
     }
 
 }            
