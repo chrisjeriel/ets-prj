@@ -67,7 +67,7 @@ export class AuthenticationService {
                 } else {
                     // else return 400 bad request
                     console.log("Incorrect account.");
-                    /*throw nrethrowError({ error: { message: 'Username or password is incorrect' } });*/
+                    throw throwError({ error: { message: 'Username or password is incorrect' } });
                 }
                 /*{"id":2,"username":"TOTZ","firstName":"TOTZ","lastName":"TOTZ","token":"fake-jwt-token"}*/
                 
