@@ -510,6 +510,16 @@ saveQuoteOptionAll(cancelFlag?){
         }
       }
     }
+    for(let ded of params.saveDeductibleList){
+      console.log(ded)
+      if((isNaN(ded.deductibleRt) || ded.deductibleRt=="" || ded.deductibleRt==null) && (isNaN(ded.deductibleAmt) || ded.deductibleAmt=="" || ded.deductibleAmt==null)){
+        this.dialogIcon = "error";
+        setTimeout(a=>$('#quote-option #successModalBtn').trigger('click'),0);
+        return null;
+      }
+    }
+    
+
    this.quotationService.saveQuoteOptionAll(params).subscribe((data)=>{
      if(data['returnCode'] == 0) {
             this.dialogMessage = data['errorList'][0].errorMessage;
