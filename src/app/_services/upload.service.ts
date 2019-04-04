@@ -11,7 +11,9 @@ export class UploadService {
  constructor(private http: HttpClient) { }
 
    // file from event.target.files[0]
-   uploadFile(url: string, file: File): Observable<HttpEvent<any>> {
+   uploadFile(file: File): Observable<HttpEvent<any>> {
+
+     let url = environment.prodApiUrl + "/file-upload-service/";
 
      let formData = new FormData();
      formData.append('file', file);

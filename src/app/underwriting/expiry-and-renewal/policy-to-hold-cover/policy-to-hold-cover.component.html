@@ -149,14 +149,20 @@
                     <div class="form-group col-sm">
                         <div class="col-md-13 text-center" style="margin-top:10px">
                             <div class="cust-btn-container">
-                                <button type="button" class="cust-btn"><a>Cancel Hold Cover</a></button>
-                                <button type="button" class="cust-btn"><a>Approval</a></button>
-                                <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+                                <button type="button" class="cust-btn" [disabled]="statusDesc === '' || statusDesc === 'Converted'" [class.cust-btn-disabled]="statusDesc === '' || statusDesc === 'Converted'" (click)="cancelHoldCover();"><a>Cancel Hold Cover</a></button>
+                                <button type="button" class="cust-btn" [disabled]="statusDesc !== 'In Force'" [class.cust-btn-disabled]="statusDesc !== 'In Force'"><a>Approval</a></button>
+                                <button type="button" class="cust-btn" (click)="onClickSaveBtn()"><a>Save</a></button>
                             </div>
                         </div>
                     </div>
                 </div>
             </ng-template>
+        </ngb-tab>
+        <ngb-tab id="Exit">
+                <ng-template ngbTabTitle>
+                    <div (click) = "onClickCancel()">Exit</div>
+                </ng-template>
+                <ng-template ngbTabContent></ng-template>
         </ngb-tab>
     </ngb-tabset>
 
@@ -172,3 +178,7 @@
             </div>
         </div>
     </app-modal>
+
+    <app-confirm-save (onYes)="onClickSave()"></app-confirm-save>
+    <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>
+    <app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/hold-cover-monitoring'" ></app-cancel-button>

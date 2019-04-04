@@ -1,6 +1,6 @@
 import { Component, OnInit, Input,  ViewChild } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
-import { QuotationService, NotesService } from '@app/_services';
+import { QuotationService, NotesService, UploadService } from '@app/_services';
 import { AttachmentInfo } from '../../_models/Attachment';
 import { Title } from '@angular/platform-browser';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
@@ -10,7 +10,7 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 import { environment } from '@environments/environment';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
-
+import {HttpClient, HttpParams, HttpRequest, HttpEvent, HttpEventType, HttpResponse} from '@angular/common/http';
 
 
 @Component({
@@ -115,9 +115,11 @@ export class AttachmentComponent implements OnInit {
   cancelFlag:boolean;
   counter:number;
 
+  filesList: any[] = [];
+
   constructor(config: NgbDropdownConfig,
     private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,private modalService: NgbModal,private ns : NotesService,
-     private location: Location, private router: Router ) {
+     private location: Location, private router: Router, private upload: UploadService ) {
 
     config.placement = 'bottom-right';
     config.autoClose = false;
@@ -216,12 +218,12 @@ export class AttachmentComponent implements OnInit {
               "saveAttachmentsList": [
                 {
                   "createDate":    (this.passData.tableData[i].createDate === null || this.passData.tableData[i].createDate === undefined || this.passData.tableData[i].createDate === '')?this.ns.toDateTimeString(0):this.ns.toDateTimeString(this.passData.tableData[i].createDate),
-                  "createUser":    (this.passData.tableData[i].createUser === null || this.passData.tableData[i].createUser === undefined || this.passData.tableData[i].createUser === '')?'arnil':this.passData.tableData[i].createUser,
+                  "createUser":    (this.passData.tableData[i].createUser === null || this.passData.tableData[i].createUser === undefined || this.passData.tableData[i].createUser === '')?JSON.parse(window.localStorage.currentUser).username:this.passData.tableData[i].createUser,
                   "description":   this.passData.tableData[i].description,
                   "fileName":      this.passData.tableData[i].fileName,
                   "fileNo":        this.passData.tableData[i].fileNo,
                   "updateDate":    this.ns.toDateTimeString(0),
-                  "updateUser":    'arnil'
+                  "updateUser":    JSON.parse(window.localStorage.currentUser).username
                 }
               ]
            }
@@ -260,6 +262,7 @@ export class AttachmentComponent implements OnInit {
      }
      
    }
+/*<<<<<<< HEAD
 
    if(this.passData.tableData.length === this.counter){
       setTimeout(()=>{
@@ -269,6 +272,37 @@ export class AttachmentComponent implements OnInit {
            $('app-sucess-dialog #modalBtn').trigger('click');
       },500);
    }
+=======*/
+   //upload
+   for(let files of this.filesList){
+     if (files.length == 0) {
+       console.log("No file selected!");
+       return
+
+     }
+     let file: File = files[0];
+
+     this.upload.uploadFile(file)
+       .subscribe(
+         event => {
+           if (event.type == HttpEventType.UploadProgress) {
+             const percentDone = Math.round(100 * event.loaded / event.total);
+             console.log(`File is ${percentDone}% loaded.`);
+           } else if (event instanceof HttpResponse) {
+             console.log('File is completely loaded!');
+           }
+         },
+         (err) => {
+           console.log("Upload Error:", err);
+         }, () => {
+           console.log("Upload done");
+         }
+       )
+     }
+     //clear filelist array after upload
+     this.table.filesToUpload = [];
+     this.table.refreshTable();
+/*>>>>>>> 461f752f32c09197d725373c176be5a6d657dcff*/
  
  } 
 
@@ -280,4 +314,9 @@ export class AttachmentComponent implements OnInit {
   onClickSave(){
     $('#confirm-save #modalBtn2').trigger('click');
   }
+
+   //get the emitted files from the table
+    uploads(event){
+      this.filesList = event;
+    }
 }
