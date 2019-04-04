@@ -340,6 +340,7 @@ import { WfRemindersComponent } from './home/wf-reminders/wf-reminders.component
 import { WfTransactionsComponent } from './home/wf-transactions/wf-transactions.component';
 import { WfActionsComponent } from './home/wf-actions/wf-actions.component';
 import { PolOcInquiryComponent } from './underwriting/inquiry/pol-oc-inquiry/pol-oc-inquiry.component';
+import { PolOpenCovListComponent } from './underwriting/policy-issuance/pol-open-cov-list/pol-open-cov-list.component';
 
 
 
@@ -689,6 +690,7 @@ import { PolOcInquiryComponent } from './underwriting/inquiry/pol-oc-inquiry/pol
         WfTransactionsComponent,
         WfActionsComponent,
         PolOcInquiryComponent,
+        PolOpenCovListComponent,
     ],
 
     providers: [
