@@ -9,7 +9,7 @@
                                  <ng-container >
                                     <div class="input-group" style="margin-bottom : -12px ! important">
                                     	<div class="col-sm-4" style="padding: 0">
-                                    		<div *ngIf="printDefaultType" class="input-group" style="margin-bottom : -14px ! important">
+                                    		<div  class="input-group" style="margin-bottom : -14px ! important">
                                     			 <label class="form-control-sm" for="xx">Report</label>
                                     		</div>
                                     		<div class="input-group" style="margin-bottom : -14px ! important">
@@ -20,23 +20,26 @@
                                     		</div>
                                     	</div>
                                     	<div class ="col-sm" style="padding: 0">
-                                    		<div *ngIf="printDefaultType" class="input-group" style="margin-bottom : 0px ! important">
-                                    			<select class="form-control form-control-sm cust-sm" [(ngModel)]="selectedReport" (change)="tabSelectedReportController($event);" appRequired>
+                                    		<div  class="input-group" style="margin-bottom : 0px ! important">
+                                    			<select class="form-control form-control-sm cust-sm" [(ngModel)]="selectedReport" (change)="tabSelectedReportController($event);" appRequired [disabled]="reports">
 		                                           <option *ngFor="let report of reportsList" [value]="report.val">{{report.desc}}</option>
                                         		</select>
                                     		</div>
                                     		<div class="input-group" style="margin-bottom : 0px ! important;  margin-top: 3px">
-                                    			<select class="form-control form-control-sm cust-sm" [(ngModel)]="printType" (change)="tabController($event);" appRequired>
+                                    			<select class="form-control form-control-sm cust-sm" [(ngModel)]="printType" appRequired>
 		                                            <option value="SCREEN">Screen</option>
 		                                            <option value="PDF">PDF</option>
 		                                            <option value="PRINTER">Printer</option>
                                         		</select>
                                     		</div>
-                                    		<div *ngIf="printDefaultType" class="input-group" style="margin-bottom : 0px ! important;  margin-top: 8px">
-                                    			<input type="text" id="xx" class="form-control form-control-sm" appRequired disabled readonly [(ngModel)]="wordingText" >
+                                    		<div *ngIf="printDefaultType" class="input-group" style="margin-bottom : 0px ! important;  margin-top: 3px">
+                                    			<input type="text" id="title" class="form-control form-control-sm" appRequired [disabled]="wordings" readonly [(ngModel)]="titleText" >
 												<div class="text-search-ico" ><a class="disabled-a"><i class="fa fa-search" (click)="reportsParamsLOV()"></i></a></div>
                                     		</div>
                                     	</div>	
+                                    </div>
+                                    <div *ngIf="printDefaultType" id="word" class="input-group" style="margin-top : 13px ! important">
+                                       <textarea [disabled] = "wordings" [readonly]="wordings" class="form-control form-control-sm col-sm req" style="font-size: 11px; min-height: 180px; margin-bottom: 0px;" [(ngModel)]="wordingText" appRequired></textarea>
                                     </div>
                                  </ng-container>
                                 </div>

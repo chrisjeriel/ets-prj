@@ -6,6 +6,7 @@ import { QuotationProcessing } from '@app/_models';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '@environments/environment';
+import * as alasql from 'alasql';
 
 @Component({
     selector: 'app-list-of-quotations',
@@ -24,11 +25,11 @@ export class ListOfQuotationsComponent implements OnInit {
     pageLength: number;
 
     //Variable Parameters
-     reportsList: any[] = [
+     /*reportsList: any[] = [
                                 {val:"QUOTER009A", desc:"Quotation Letter" },
                                 {val:"QUOTER009B", desc:"RI Preparedness to Support Letter and RI Confirmation of Acceptance Letter" },
                                 {val:"QUOTER009C", desc:"Risk Not Commensurate" },
-                                {val:"QUOTER009D", desc:"Treaty Exclusion Letter" }];
+                                {val:"QUOTER009D", desc:"Treaty Exclusion Letter" }];*/
     i: number;
     //quoteList: QuotationList = new QuotationList(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
     quoteList: any = {};
@@ -37,89 +38,26 @@ export class ListOfQuotationsComponent implements OnInit {
     line: string = "";
     quotationNo: string = "";
     typeOfCession: string = "";
-    dialogIcon:string  = "";
+    quoteNoCmp: any;
+    quoteId: any;
+    errorCode: any;
+    cessionDesc: any = null;
+    status: any = null;
+
+   /* dialogIcon:string  = "";
     dialogMessage:string  = "";
     selectPrinterDisabled: boolean = true;
     selectCopiesDisabled: boolean = true;
     btnDisabled: boolean;
     printType: string = "SCREEN";
-    selectedReport: string ="QUOTER009A";
-    quoteNoCmp: any;
-    quoteId: any;
-    errorCode: any;
-    printName: any = null;
+    selectedReport: string ="QUOTER009A";*/
+    
+/*    printName: any = null;
     printCopies: any = null;
     wordingTxt: any = null;
     cessionDesc: any = null;
     status: any = null;
-    defaultType: boolean = true;
-
-
-    /*passData: any = {
-        tablData: [], 
-        tHeader: ['Quotation No.','Type of Cession','Line Class','Status','Ceding Company','Principal','Contractor','Insured','Risk','Object','Site','Policy No','Currency'],
-        dataTypes: [],
-        resizable: [false, false, true, true, true, true, true, true, true, true, false, false],
-        filters: [
-            {
-                key: 'quotationNo',
-                title:'Quotation No.',
-                dataType: 'text'
-            },
-            {
-                key: 'cessionType',
-                title:'Type of Cession',
-                dataType: 'text'
-            },
-            {
-                key: 'lineClass',
-                title:'Line Class',
-                dataType: 'text'
-            },
-            {
-                key: 'quoteStatus',
-                title:'Quote Status',
-                dataType: 'text'
-            },
-            {
-                key: 'cedingCompany',
-                title:'Ceding Company',
-                dataType: 'text'
-            },
-            {
-                key: 'principal',
-                title:'Principal',
-                dataType: 'text'
-            },
-            {
-                key: 'insured',
-                title:'Insured',
-                dataType: 'text'
-            },
-            {
-                key: 'risk',
-                title:'Risk',
-                dataType: 'text'
-            },
-            {
-                key: 'object',
-                title:'Object',
-                dataType: 'text'
-            },
-            {
-                key: 'location',
-                title:'Insured',
-                dataType: 'text'
-            },
-            {
-                key: 'quoteDate',
-                title:'Period From',
-                dataType: 'date'
-            },
-        ],
-        pageLength: 10,
-        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: true, printBtn: true, pagination: true, pageStatus: true,
-    }*/
+    defaultType: boolean = true;*/
 
     passData: any = {
         tableData: [],
@@ -187,14 +125,12 @@ export class ListOfQuotationsComponent implements OnInit {
             dataType: 'seq'
         },
         {
-            key: 'currencyCd',
-            title: 'Currency',
-            dataType: 'text'
-        },
-         {
-            key: 'issueDate',
+            keys: {
+                    from: 'issueDateFrom',
+                    to: 'issueDateTo'
+                },
             title: 'Quote Date',
-            dataType: 'date'
+            dataType: 'datespan'
         },
         {
             key: 'expiryDate',
@@ -202,18 +138,23 @@ export class ListOfQuotationsComponent implements OnInit {
             dataType: 'date'
         },
         {
+            key: 'currencyCd',
+            title: 'Currency',
+            dataType: 'text'
+        },
+        {
             key: 'reqBy',
             title: 'Requested By',
             dataType: 'text'
         },
-        {
+       {
             key: 'createUser',
             title: 'Created By',
             dataType: 'text'
         },
         ],
-        pageLength: 15,
-        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: true, pageStatus: true, pagination: true, pageID: 1,
+        pageLength: 10,
+        expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, pageStatus: true, pagination: true, pageID: 1, exportFlag: true,
         keys: ['quotationNo','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','insuredDesc','riskName','objectDesc','site','policyNo','currencyCd'],
     }
 
@@ -236,7 +177,6 @@ export class ListOfQuotationsComponent implements OnInit {
     retrieveQuoteListingMethod(){
         this.quotationService.getQuoProcessingData(this.searchParams).subscribe(data => {
             this.records = data['quotationList'];
-            //this.fetchedData = records;
             for(let rec of this.records){
                 this.passData.tableData.push(new QuotationProcessing(
                                                 rec.quotationNo,
@@ -274,7 +214,7 @@ export class ListOfQuotationsComponent implements OnInit {
         console.log(this.searchParams);
     }
 
-    //Method for print on/off and getting of quoteId used for Reports generation
+        //Method for print on/off and getting of quoteId used for Reports generation
     onRowClick(event) {
         if(this.quoteList == event || event === null){
             this.quoteList = {};
@@ -300,13 +240,43 @@ export class ListOfQuotationsComponent implements OnInit {
         }
         this.line = this.quotationService.rowData[0].split("-")[0];
         this.quotationNo = this.quotationService.rowData[0];
-        this.typeOfCession = event.target.closest('tr').children[1].innerText;
         this.quotationService.toGenInfo = [];
         this.quotationService.toGenInfo.push("edit", this.line);
         this.quotationService.savingType = 'normal';
+
+         for(let rec of this.records){
+          if(rec.quotationNo === this.quotationService.rowData[0] ){
+             this.quoteId = rec.quoteId;
+             this.quotationNo = rec.quotationNo;
+             this.typeOfCession = rec.cessionDesc;
+             this.status = rec.status;
+          } 
+        }
+
         setTimeout(() => {
-            this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.typeOfCession,  quotationNo : this.quotationNo, from: 'quo-processing', inquiry: true}], { skipLocationChange: true });
+            this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.typeOfCession,  quotationNo : this.quotationNo,quoteId: this.quoteId,status: this.status, from: 'quo-processing', inquiry: true}], { skipLocationChange: true });
         },100); 
+    }
+
+    export(){
+        //do something
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var currDate = mm + dd+ yyyy;
+    var filename = 'QuotationInquiryList_'+currDate+'.xlsx'
+    var mystyle = {
+        headers:true, 
+        column: {style:{Font:{Bold:"1"}}}
+      };
+
+      alasql.fn.datetime = function(dateStr) {
+            var date = new Date(dateStr);
+            return date.toLocaleString();
+      };
+
+     alasql('SELECT quotationNo AS QuotationNo, cessionDesc AS TypeOfCession,lineClassCdDesc AS LineClass, status AS Status,cedingName AS CedingCompany,principalName AS Principal, contractorName AS Contractor, insuredDesc AS Insured, riskName AS Risk, objectDesc AS Object, site AS Site, policyNo AS PolicyNo, currencyCd AS Currency INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passData.tableData]);
     }
 
 
@@ -314,8 +284,17 @@ export class ListOfQuotationsComponent implements OnInit {
         return new Date(arr[0] + '-' + arr[1] + '-' + arr[2]);   
     }
 
+    isEmptyObject(obj) {
+      for(var prop in obj) {
+         if (obj.hasOwnProperty(prop)) {
+            return false;
+         }
+      }
+      return true;
+    }
+
     //Method for modal printing openning
-    print(){
+/*    print(){
         $('#printListQuotation > #printModalBtn').trigger('click');
     }
 
@@ -470,15 +449,7 @@ export class ListOfQuotationsComponent implements OnInit {
          this.printType = null;
          this.printName = null;
          this.printCopies = null;
-    }
+    }*/
 
-    isEmptyObject(obj) {
-      for(var prop in obj) {
-         if (obj.hasOwnProperty(prop)) {
-            return false;
-         }
-      }
-      return true;
-    }
-
+    
 }

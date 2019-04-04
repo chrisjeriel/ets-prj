@@ -18,12 +18,12 @@ export class MtnReportsParamsComponent implements OnInit {
   
   passDataReportsParam: any = {
   		tableData: [],
-  		tHeader: ["Wordings"],
-  		dataTypes: ['text'],
+  		tHeader: ["Title","Wordings"],
+  		dataTypes: ['text','text'],
   		pageLength: 10,
   		pageId: 'reportsParam1',
   		tableOnly: true,
-  		keys:['text'],
+  		keys:['title','text'],
   }
 
   selected: any;

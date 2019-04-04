@@ -59,6 +59,13 @@
 				<app-attachment [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag"></app-attachment>
 			</ng-template>
 		</ngb-tab>
+		<ngb-tab *ngIf="inquiryFlag" id="Print">
+			<ng-template ngbTabTitle>
+				<div>Print</div>
+			</ng-template>
+			<ng-template ngbTabContent></ng-template>
+		</ngb-tab>
+	
 		<ngb-tab *ngIf="!inquiryFlag" id="approval-tab" [disabled]="quoteInfo.quoteId == ''">
 
 			<ng-template #content>
@@ -169,3 +176,4 @@
 	</ngb-tabset>
 </div>
 <app-sucess-dialog id="quotation" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="modalService.dismissAll();"></app-sucess-dialog>
+<app-print-modal id="printListQuotation" (selectedData)= "showPrintPreview($event)" (onCancel)="cancelModal()" [printDefaultType]="defaultType" [passData]="passData"></app-print-modal>
