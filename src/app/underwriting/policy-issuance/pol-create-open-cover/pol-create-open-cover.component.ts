@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { UnderwritingService, QuotationService, NotesService } from '../../../_services';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { FormsModule }   from '@angular/forms';
 
 @Component({
     selector: 'app-pol-create-open-cover',
@@ -52,9 +54,16 @@ export class PolCreateOpenCoverComponent implements OnInit {
 
     @ViewChild('polLov') quListTable : CustNonDatatableComponent;
     @ViewChild('optLov') optListTable : CustNonDatatableComponent;
+    @ViewChild('myForm') form:any;
+    @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 
     quotationList: any[] = [];
     splitQuoteNo: string[] = [];
+    
+    openPolicyInfo: any = {
+        policyIdOc: 0,
+        openPolNo: ''
+    }
 
     selectedQuote: any = {};
     selectedOpt: any = {};
@@ -83,6 +92,9 @@ export class PolCreateOpenCoverComponent implements OnInit {
     }
 
     saveParams: any = {};
+    dialogMessage: string = '';
+    dialogIcon: string = '';
+    cancelFlag: boolean = false;
     
     constructor(private titleService: Title, private router: Router, private ns: NotesService, 
                 private us: UnderwritingService, private qs: QuotationService, private modalService: NgbModal) { }
@@ -166,28 +178,52 @@ export class PolCreateOpenCoverComponent implements OnInit {
         if(this.splitQuoteNo.length === 5 && this.optionData.optionId !== '' && 
            this.inceptDate.date !== '' && this.inceptDate.time !== '' &&
            this.expiryDate.date !== '' && this.expiryDate.time !== ''){
-            /*let parsedQuotationNo: string = this.splitQuoteNo[0] + this.splitQuoteNo[1] +
-                                            parseInt(this.splitQuoteNo[2]).toString() + parseInt(this.splitQuoteNo[3]).toString() +
-                                            this.splitQuoteNo[4];*/
-            this.saveParams = {
-                //quotationNo: parsedQuotationNo,
-                quotationNo: this.quoteData.quoteNo,
-                optionId: this.optionData.optionId,
-                inceptDate: this.inceptDate.date + 'T' + this.inceptDate.time,
-                expiryDate: this.expiryDate.date + 'T' + this.expiryDate.time,
-                createUser: JSON.parse(window.localStorage.currentUser).username,
-                createDate: this.ns.toDateTimeString(0),
-                updateUser: JSON.parse(window.localStorage.currentUser).username,
-                updateDate: this.ns.toDateTimeString(0)
-            };
-            console.log(this.saveParams);
-            //save to DB
-            this.us.saveOpenPolDetails(this.saveParams).subscribe((data: any)=>{
-                console.log(data);
-            });
+            $('#confirm-save #modalBtn2').trigger('click');
         }else{
             //please fill required fields
-            console.log('please fill required fields');
+            this.dialogIcon = 'info';
+            this.dialogMessage = 'Please fill all the required fields.';
+            $('#dialogPopup > #successModalBtn').trigger('click');
+            //return false;
         }
+    }
+
+    convertion(cancelFlag?){
+        this.cancelFlag = cancelFlag !== undefined;  
+        /*let parsedQuotationNo: string = this.splitQuoteNo[0] + this.splitQuoteNo[1] +
+                                        parseInt(this.splitQuoteNo[2]).toString() + parseInt(this.splitQuoteNo[3]).toString() +
+                                        this.splitQuoteNo[4];*/
+        this.saveParams = {
+            //quotationNo: parsedQuotationNo,
+            quotationNo: this.quoteData.quoteNo,
+            optionId: this.optionData.optionId,
+            inceptDate: this.inceptDate.date + 'T' + this.inceptDate.time,
+            expiryDate: this.expiryDate.date + 'T' + this.expiryDate.time,
+            createUser: JSON.parse(window.localStorage.currentUser).username,
+            createDate: this.ns.toDateTimeString(0),
+            updateUser: JSON.parse(window.localStorage.currentUser).username,
+            updateDate: this.ns.toDateTimeString(0)
+        };
+        //save to DB
+        this.us.saveOpenPolDetails(this.saveParams).subscribe((data: any)=>{
+            console.log(data);
+            this.openPolicyInfo.openPolNo = data.openPolNo;
+            this.openPolicyInfo.policyIdOc = data.policyIdOc;
+            $('#convertPopup > #modalBtn').trigger('click');
+            this.form.control.markAsPristine();
+        });
+    }
+
+    onClickCancel(){
+        this.cancelBtn.clickCancel();
+    }
+
+    toOpenCoverPolGenInfo(){
+        this.router.navigate(['/create-open-cover-letter', { 
+                                                                line: this.splitQuoteNo[0],
+                                                                policyIdOc: this.openPolicyInfo.policyIdOc,
+                                                                openPolNo: this.openPolicyInfo.openPolNo
+                                                           }
+                             ], { skipLocationChange: true });
     }
 }
