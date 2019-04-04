@@ -126,7 +126,7 @@ export class QuotationComponent implements OnInit {
   	}
 
   	showPrintPreview(content) {
-         	if (this.printType.toUpperCase() == 'SCREEN'){
+        if (this.printType.toUpperCase() == 'SCREEN'){
   			window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + this.selectedReport + '&quoteId=' + this.quoteInfo.quoteId, '_blank');
 	  		this.modalService.dismissAll();
 	  		} else if (this.printType.toUpperCase() == 'PDF'){
@@ -137,6 +137,27 @@ export class QuotationComponent implements OnInit {
 	  		    this.modalService.dismissAll();
 	  		}
   	}
+
+    showPrintDialog(event){
+          if(this.quoteInfo.status == '97'){
+            this.printDialog(event[0].printType,event[0].reportName)
+          } else if (this.quoteInfo.status == '2' || this.quoteInfo.status == '96' || this.quoteInfo.status == '98'){
+            this.printDialog(event[0].printType,event[0].reportName)
+          } else {
+            this.printDialog(event[0].printType,event[0].reportName)
+          }
+    }
+
+    printDialog(obj,selectedReport: string){
+      if (obj.toUpperCase() == 'SCREEN'){
+        window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + selectedReport + '&quoteId=' + this.quoteInfo.quoteId, '_blank');
+        this.modalService.dismissAll();
+      } else if (obj.toUpperCase() == 'PDF'){
+        this.downloadPDF(selectedReport,this.quoteInfo.quoteId);
+      } else if (obj.toUpperCase() == 'PRINTER'){
+        this.printPDF(selectedReport,this.quoteInfo.quoteId);
+      }
+    }
 
   	downloadPDF(reportName : string, quoteId : string){
        var fileName = this.quoteInfo.quotationNo;
@@ -181,8 +202,6 @@ export class QuotationComponent implements OnInit {
        });
     }
 
-
-
     isEmptyObject(obj) {
       for(var prop in obj) {
          if (obj.hasOwnProperty(prop)) {
@@ -204,7 +223,6 @@ export class QuotationComponent implements OnInit {
     		this.btnDisabled = false;
     	};
     }
-
     
 
 	// setDocumentTitle(event) {

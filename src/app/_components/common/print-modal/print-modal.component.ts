@@ -48,6 +48,8 @@ export class PrintModalComponent implements OnInit {
   wordings: boolean = true;
   reports: boolean = false;
   requiredBool: boolean = false;
+  dialogIcon:string  = "";
+  dialogMessage:string  = "";
 
   ngOnInit() {
 
@@ -157,14 +159,24 @@ refreshModal(isDisable : boolean){
     }
 
  okBtnClick($event){
-   this.selected.push(new SelectedData(this.selectedReport,this.printType,this.wordingText));
-   this.selectedData.emit(this.selected);
-   this.selected = [];
+   if (this.selectedReport == "QUOTER009B1" || this.selectedReport == "QUOTER009D"){
+        if (this.isEmptyObject(this.wordingText)){
+             this.dialogIcon = "error-message";
+             this.dialogMessage = "Please choose wordings";
+             $('#quotation #successModalBtn').trigger('click');
+             setTimeout(()=>{$('.globalLoading').css('display','none');},0);
+        } else {
+           this.selected.push(new SelectedData(this.selectedReport,this.printType,this.wordingText));
+           this.selectedData.emit(this.selected);
+           this.selected = [];
+        }
+    } else {
+     this.selected.push(new SelectedData(this.selectedReport,this.printType,this.wordingText));
+     this.selectedData.emit(this.selected);
+     this.selected = [];
+    }   
+  }
  }
-
-
-
-}
 class SelectedData {
   reportName: string;
   printType: string;
