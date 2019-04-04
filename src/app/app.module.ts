@@ -340,6 +340,8 @@ import { WfRemindersComponent } from './home/wf-reminders/wf-reminders.component
 import { WfTransactionsComponent } from './home/wf-transactions/wf-transactions.component';
 import { WfActionsComponent } from './home/wf-actions/wf-actions.component';
 import { PolOcInquiryComponent } from './underwriting/inquiry/pol-oc-inquiry/pol-oc-inquiry.component';
+import { PolOpenCovListComponent } from './underwriting/policy-issuance/pol-open-cov-list/pol-open-cov-list.component';
+import { ConfirmLeaveComponent } from './_components/common/confirm-leave/confirm-leave.component';
 
 
 
@@ -689,6 +691,8 @@ import { PolOcInquiryComponent } from './underwriting/inquiry/pol-oc-inquiry/pol
         WfTransactionsComponent,
         WfActionsComponent,
         PolOcInquiryComponent,
+        PolOpenCovListComponent,
+        ConfirmLeaveComponent,
     ],
 
     providers: [
@@ -698,6 +702,10 @@ import { PolOcInquiryComponent } from './underwriting/inquiry/pol-oc-inquiry/pol
         // provider used to create fake backend
         fakeBackendProvider
     ],
+    entryComponents: [
+	    ConfirmLeaveComponent,
+	    CancelButtonComponent
+	 ],
     bootstrap: [AppComponent],
 })
 
