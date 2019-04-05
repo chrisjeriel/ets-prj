@@ -21,16 +21,6 @@ export class PolicyIssuanceAltComponent implements OnInit {
             this.alterFlag = params['alteration'];
         });
 
-        console.log(this.alterFlag);
-
-        /* Test Data */
-        this.policyInfo.policyId = 9; 
-        this.policyInfo.policyNo = 'CAR-2019-00001-001-0001-001';
-        this.policyInfo.insuredDesc = 'insured5';
-        this.policyInfo.riskName = 'riskName';
-        this.policyInfo.principalName = 'principal';
-        this.policyInfo.contractorName = 'contractor';
-
     }
     public beforeChange($event: NgbTabChangeEvent) {
         if ($event.nextId === 'print-tab') {
@@ -48,4 +38,9 @@ export class PolicyIssuanceAltComponent implements OnInit {
       } 
   
   }
+
+  getPolInfo(event){      
+      this.policyInfo = event;
+  }
+  
 }

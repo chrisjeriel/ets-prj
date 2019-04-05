@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { UnderwritingService } from '../../../_services';
+import { UnderwritingService, NotesService } from '../../../_services';
 import { Title } from '@angular/platform-browser';
 
 @Component({
@@ -17,15 +17,133 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
   @Input() mode;
   @Input() alteration: boolean = false;
+  policyInfo:any = {
+    policyId: null,
+    policyNo: null,
+    lineCd: null,
+    lineCdDesc: null,
+    polYear: null,
+    polSeqNo: null,
+    cedingId: null,
+    cedingName: null,
+    coSeriesNo: null,
+    altNo: null,
+    cessionId: null,
+    cessionDesc: null,
+    lineClassCd: null,
+    lineClassDesc: null,
+    quoteId: null,
+    quotationNo: null,
+    holdCoverNo: null,
+    status: null,
+    statusDesc: null,
+    coRefNo: null,
+    reinsurerId: null,
+    reinsurerName: null,
+    riBinderNo: null,
+    mbiRefNo: null,
+    policyIdOc: null,
+    openPolicyNo: null,
+    refOpenPolNo: null,
+    intmId: null,
+    intmName: null,
+    principalId: null,
+    principalName: null,
+    contractorId: null,
+    contractorName: null,
+    insuredDesc: null,
+    inceptDate: null,
+    expiryDate: null,
+    lapseFrom: null,
+    lapseTo: null,
+    maintenanceFrom: null,
+    maintenanceTo: null,
+    issueDate: null,
+    effDate: null,
+    distDate: null,
+    acctDate: null,
+    currencyCd: null,
+    currencyRt: null,
+    bookedTag: null,
+    govtTag: null,
+    openCoverTag: null,
+    holdCoverTag: null,
+    declarationTag: null,
+    minDepTag: null,
+    altTag: null,
+    specialPolicyTag: null,
+    instTag: null,
+    extensionTag: null,
+    excludeDistTag: null,
+    wordings: null,
+    createUser: null,
+    createDate: null,
+    updateUser: null,
+    updateDate: null,
+    project: {
+      projId: null,
+      projDesc: null,
+      riskId: null,
+      riskName: null,
+      regionCd: null,
+      regionDesc: null,
+      provinceCd: null,
+      provinceDesc: null,
+      cityCd: null,
+      cityDesc: null,
+      districtCd: null,
+      districtDesc: null,
+      blockCd: null,
+      blockDesc: null,
+      latitude: null,
+      longitude: null,
+      totalSi: null,
+      objectId: null,
+      objectDesc: null,
+      site: null,
+      duration: null,
+      testing: null,
+      ipl: null,
+      timeExc: null,
+      noClaimPd: null,
+      createUser: null,
+      createDate: null,
+      updateUser: null,
+      updateDate: null
+    },
+    alop: {
+      insId: null,
+      insuredName: null,
+      insuredDesc: null,
+      address: null,
+      insBusiness: null,
+      annSi: null,
+      maxIndemPdSi: null,
+      issueDate: null,
+      expiryDate: null,
+      maxIndemPd: null,
+      indemFromDate: null,
+      timeExc: null,
+      repInterval: null,
+      createUser: null,
+      createDate: null,
+      updateUser: null,
+      updateDate: null
+    }
+  };
   line: string;
   private sub: any;
   hcChecked: boolean = false;
   ocChecked: boolean = false;
   decChecked: boolean = false;
   typeOfCession: string = "";
+  policyId: string;
+  policyNo: string;
+
+  @Output() emitPolicyInfoId = new EventEmitter<any>();
 
   constructor(private route: ActivatedRoute, private modalService: NgbModal,
-    private underwritingService: UnderwritingService, private titleService: Title) { }
+    private underwritingService: UnderwritingService, private titleService: Title, private ns: NotesService) { }
 
   ngOnInit() {
     this.titleService.setTitle("Pol | General Info");
@@ -36,7 +154,12 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
     this.sub = this.route.params.subscribe(params => {
       this.line = params['line'];
+      this.policyId = params['policyId'];
+      this.policyNo = params['policyNo'];
     });
+
+    this.getPolGenInfo();
+
   }
 
   ngOnDestroy() {
@@ -50,4 +173,36 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   toggleRadioBtnSet() {
     $('#radioBtnSet').css('backgroundColor', (!this.decChecked) ? '#ffffff' : '#e9ecef');
   }
+
+  getPolGenInfo() {
+    this.underwritingService.getPolGenInfo(this.policyId, this.policyNo).subscribe((data:any) => {
+      if(data.policy != null) {
+        this.policyInfo = data.policy;
+        this.policyInfo.inceptDate = this.ns.toDateTimeString(this.policyInfo.inceptDate);
+        this.policyInfo.expiryDate = this.ns.toDateTimeString(this.policyInfo.expiryDate);
+        this.policyInfo.lapseFrom = this.ns.toDateTimeString(this.policyInfo.lapseFrom);
+        this.policyInfo.lapseTo = this.ns.toDateTimeString(this.policyInfo.lapseTo);
+        this.policyInfo.maintenanceFrom = this.ns.toDateTimeString(this.policyInfo.maintenanceFrom);
+        this.policyInfo.maintenanceTo = this.ns.toDateTimeString(this.policyInfo.maintenanceTo);
+        this.policyInfo.issueDate = this.ns.toDateTimeString(this.policyInfo.issueDate);
+        this.policyInfo.effDate = this.ns.toDateTimeString(this.policyInfo.effDate);
+        this.policyInfo.distDate = this.ns.toDateTimeString(this.policyInfo.distDate);
+        this.policyInfo.acctDate = this.ns.toDateTimeString(this.policyInfo.acctDate);
+        this.policyInfo.createDate = this.ns.toDateTimeString(this.policyInfo.createDate);
+        this.policyInfo.updateDate = this.ns.toDateTimeString(this.policyInfo.updateDate);
+        this.checkPolIdF(this.policyInfo.policyId);
+      }
+    });
+  }
+
+  checkPolIdF(event){
+      this.emitPolicyInfoId.emit({
+        policyId: event,
+        policyNo: this.policyInfo.policyNo,
+        riskName: this.policyInfo.project.riskName,
+        insuredDesc: this.policyInfo.insuredDesc,
+        riskId: this.policyInfo.project.riskId
+      });    
+    }
+
 }

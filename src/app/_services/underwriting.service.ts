@@ -616,7 +616,7 @@ export class UnderwritingService {
             .set('policyId', (policyId === null || policyId === undefined ? '' : policyId))
             .set('policyNo', (policyNo === null || policyNo === undefined ? '' : policyNo))
 
-        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolAlop', {params});
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolAlop',{params});
     }
 
     getPolAlopItem(car: string, policyId: string, policyNo: any) {
@@ -766,6 +766,13 @@ export class UnderwritingService {
         const params = new HttpParams()
              .set('policyId', (policyId === null || policyId === undefined ? '' : policyId) );
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolicyApprover',{params});
+    }
+
+    getPolGenInfo(policyId: string, policyNo?: string) {
+        const params = new HttpParams()
+            .set('policyId', (policyId === null || policyId === undefined ? '' : policyId))
+            .set('policyNo', (policyNo === null || policyNo === undefined ? '' : policyNo));
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolGenInfo',{params});
     }
 
 }            

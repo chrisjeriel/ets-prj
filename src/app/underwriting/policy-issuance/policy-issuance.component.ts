@@ -23,14 +23,6 @@ export class PolicyIssuanceComponent implements OnInit {
             this.alterFlag = params['alter'];
             this.fromInq = params['fromInq'];
         });
-
-     /* Test Data */
-        this.policyInfo.policyId = 9; 
-        this.policyInfo.policyNo = 'CAR-2019-00001-001-0001-001';
-        this.policyInfo.principalName = 'principal';
-        this.policyInfo.contractorName = 'contractor';
-        this.policyInfo.riskName = 'riskName';
-
   }
 
   public beforeChange($event: NgbTabChangeEvent) {
@@ -48,6 +40,10 @@ export class PolicyIssuanceComponent implements OnInit {
         this.router.navigateByUrl('');
       } 
   
+  }
+
+  getPolInfo(event){      
+      this.policyInfo = event;
   }
   
 }
