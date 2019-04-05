@@ -207,7 +207,7 @@ export class PolOcInquiryComponent implements OnInit {
            a.riskName = a.project.riskName;
            a.objectDesc = a.project.objectDesc;
            a.site = a.project.site;
-           return true;
+           return a.openPolicyNo.split('-')[6] == "000";
          });
          this.listTable.refreshTable();
        })
