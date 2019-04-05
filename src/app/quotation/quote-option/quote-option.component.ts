@@ -439,6 +439,15 @@ cancel(){
 
 saveQuoteOptionAll(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
+   if(this.optionsData.tableData.filter(a=>a.optionRt == 0 ||
+        a.commRtQuota == 0 ||
+        a.commRtSurplus == 0 ||
+        a.commRtFac == 0
+      ).length != 0){
+     this.dialogIcon = "error";
+     setTimeout(a=>$('#quote-option #successModalBtn').trigger('click'),0);
+     return;
+   }
    let params: any = {
        quoteId:this.quoteId,
        saveQuoteOptionsList:[],
