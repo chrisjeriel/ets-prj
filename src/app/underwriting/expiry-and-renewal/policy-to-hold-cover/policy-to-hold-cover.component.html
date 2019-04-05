@@ -157,7 +157,7 @@
                         <div class="col-md-13 text-center" style="margin-top:10px">
                             <div class="cust-btn-container">
                                 <button type="button" class="cust-btn" [disabled]="statusDesc === '' || statusDesc === 'Converted'" [class.cust-btn-disabled]="statusDesc === '' || statusDesc === 'Converted'" (click)="onClickCancel();"><a>Cancel Hold Cover</a></button>
-                                <button type="button" class="cust-btn" [disabled]="statusDesc !== 'In Force'" [class.cust-btn-disabled]="statusDesc !== 'In Force'" (click)="test($event)"><a>Print</a></button>
+                                <button type="button" class="cust-btn" [disabled]="statusDesc !== 'In Force'" [class.cust-btn-disabled]="statusDesc !== 'In Force'" (click)="test(content)"><a>Approval</a></button>
                                 <button type="button" class="cust-btn" (click)="onClickSaveBtn()"><a>Save</a></button>
                             </div>
                         </div>
@@ -173,6 +173,7 @@
         </ngb-tab>
     </ngb-tabset>
 
+<!-- ALL MODALS BEGIN HERE -->
     <app-modal hidden [btnTitle]="'List Of Values'" id="lovMdl" (modalOpened)="retrievePolListing()">
         <div header>List Of Values</div>
         <div body>
@@ -203,4 +204,97 @@
     <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>
     <app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/hold-cover-monitoring'" ></app-cancel-button>
 
-<app-print-modal (selectedData)= "showPrintDialog($event)"></app-print-modal>
+<!-- <app-print-modal (selectedData)= "showPrintDialog($event)"></app-print-modal> -->
+
+            <ng-template #content>
+                <div class="modal-header">
+                    <span class="modal-title" id="modal-basic-title">Approval</span>
+                    <div class="close" style="padding-bottom: 5px;">
+                    <!--    <a class="btn-cust" aria-label="Close" (click)="modalService.dismissAll();" aria-hidden="true"><span style="padding-right: 3px;"
+                             id="closes">&times;&nbsp;&nbsp;</span></a> -->
+                    </div>
+                </div>
+                <div class="modal-body" style="width: 580px">
+                    <div class="row">
+                        <div class="col-sm-6" style="padding-right : 10px ! important;">
+                            <fieldset class="scheduler-border" style="padding-left : 20px ! important; padding-right : 10px ! important">
+                                <div class="custom-row-inline-inset">
+                                    <div class="input-group" style="margin-top : 13px ! important">
+                                        <div class="col-sm-8" style="padding-left : 0px ! important; padding-right : 0px ! important;">
+                                            <div class="input-group" style="margin-bottom : -8px ! important">
+                                                <label class="form-control-sm" for="xx" style="padding-left: 0px">Status</label>
+                                                <input type="text" id="xx" class="form-control form-control-sm col-sm" style="margin: 0px 0px 12px 9px !important;" [ngModel]="statusDesc" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="input-group">
+                                        <div class="col-sm" style="padding-left : 0px ! important; padding-right : 0px ! important">
+                                            <div class="input-group">
+                                                <select class="form-control form-control-sm cust-sm col-sm-8" [(ngModel)]="authorization">
+                                                    <option value="UNAUTHORIZED">CPI</option>
+                                                    <option value="AUTHORIZED">PMMSC-Admin</option>
+                                                </select>
+                                                <button class="cust" (click)="approve()">Approve</button>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="col-sm-4" style="padding-left : 0px ! important; padding-right : 0px ! important; text-align: center">
+                                            <button class="cust">Approve</button>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="col-sm-6" style="padding-left : 10px ! important;">
+                            <fieldset class="scheduler-border" style="padding-left : 20px ! important; padding-right : 20px ! important">
+                                <div class="custom-row-inline-inset">
+                                    <div class="input-group" style="margin-bottom : -14px ! important; margin-top : 13px ! important">
+                                        <label class="form-control-sm" for="xx">Report</label>
+                                        <select [(ngModel)]=selectedReport class="form-control form-control-sm cust-sm" style="margin: 0px 0px 18px 33px;" appRequired (change)="tabController($event);">
+                                            <option *ngFor="let report of reportsList" [value]="report.val">{{report.desc}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="input-group" style="margin-bottom : -14px ! important" >
+                                        <label class="form-control-sm" for="xx">Destination</label>
+                                        <select class="form-control form-control-sm cust-sm" style="margin: 0px 0px 14.5px 11px;" [(ngModel)]="printType">
+                                            <option>SCREEN</option>
+                                            <option>PDF</option>
+                                            <option>PRINTER</option>
+                                            <!-- <option>Google Docs</option> -->
+                                        </select>
+                                    </div>
+<!--                                    <div class="input-group" style="margin-bottom : -14px ! important">
+                                        <label class="form-control-sm" for="xx">Printer Name</label>
+                                        <select class="form-control form-control-sm cust-sm" style="margin-left: 2px">
+                                            <option>No printer available.</option>
+                                        </select>
+                                    </div>
+                                    <div class="input-group" style="margin-bottom : -14px ! important">
+                                        <label class="form-control-sm" for="xx">No. of Copies</label>
+                                        <input type="text" id="xx" class="form-control form-control-sm" appRequired style="margin-left: 2px !important;">
+                                    </div> -->
+                                    <!-- <div class="input-group" style="margin-bottom : -14px ! important">
+                                        <label class="form-control-sm" for="xx">Option No</label>
+                                        <input type="text" id="xx" class="form-control form-control-sm cust-sm" appRequired style="    margin-left: 16px;">
+                                        <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+                                    </div>
+                                    <div class="input-group" style="margin-bottom : -14px ! important">
+                                        <label class="form-control-sm" for="xx">Wordings</label>
+                                        <input type="text" id="xx" class="form-control form-control-sm" appRequired style="    margin-left: 19px;">
+                                        <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+                                    </div> -->
+                                    
+                                    
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer" style="justify-content: center;">
+                    <div >
+                        <button class="cust-btn" type="button" (click)="modalService.dismissAll();cancel();"><a>Cancel</a></button>
+                        <button class="cust-btn" [class.btnDisabled]="btnDisabled" [disabled]="btnDisabled" type="button" (click)="showPrintPreview();"><a>Print</a></button>
+                    </div>
+                </div>
+            </ng-template>

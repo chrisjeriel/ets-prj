@@ -20,7 +20,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 
 	@ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
 	@ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
-	@ViewChild(PrintModalComponent) print : PrintModalComponent;
+	//@ViewChild(PrintModalComponent) print : PrintModalComponent;
 	@ViewChild('myForm') form:any;
 
 	constructor(private titleService: Title, private noteService: NotesService, private us: UnderwritingService, private modalService: NgbModal, private router: Router) { }
@@ -82,16 +82,19 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	dialogMessage: string = '';
 	cancelFlag: boolean = false;
 
+	authorization: string = 'UNAUTHORIZED';
+
 	ngOnInit() {
 		//set default report type for Hold Cover Letter
-		this.print.selectedReport = 'QUOTER012';
-		this.print.reports = true;
-		console.log(this.print.reports);
+		//this.print.selectedReport = 'QUOTER012';
+		//this.print.reports = true;
+		//console.log(this.print.reports);
 	}
 
-	test(event){
-		console.log(event);
-		$('#printModalBtn').trigger('click');
+	test(content){
+		/*console.log(event);
+		$('#printModalBtn').trigger('click');*/
+		this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
 	}
 
 	showPrintDialog(event){
@@ -294,6 +297,15 @@ export class PolicyToHoldCoverComponent implements OnInit {
   		if ($event.nextId === 'Exit') {
     		this.router.navigateByUrl('');
   		} 
+  	}
+
+  	approve(){
+  		//do something
+  		if(this.authorization === 'UNAUTHORIZED'){
+  			this.statusDesc = 'Pending Approval';
+  		}else if(this.authorization === 'AUTHORIZED'){
+  			this.statusDesc = 'Approved';
+  		}
   	}
 
 }
