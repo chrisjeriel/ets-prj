@@ -268,7 +268,17 @@ export class PolicyToHoldCoverComponent implements OnInit {
 
 
 	onClickSaveBtn(){
-		$('#confirm-save #modalBtn2').trigger('click');
+		if(this.policyInfo.policyNo === '' || this.policyInfo.cedingName === '' || this.policyInfo.insuredDesc === '' ||
+		   this.policyInfo.riskName === '' || this.policyInfo.policyId === 0 || this.periodFromDate.date === '' ||
+		   this.periodFromDate.time === '' || this.periodToDate.date === '' || this.periodToDate.time === '' ||
+		   this.polHoldCoverParams.reqBy === '' || this.polHoldCoverParams.reqDate === '' || this.polHoldCoverParams.compRefHoldCovNo === ''){
+
+				this.dialogMessage = 'Please fill all required fields';
+				this.dialogIcon = 'info';
+				$('app-sucess-dialog #modalBtn').trigger('click');
+		}else{
+			$('#confirm-save #modalBtn2').trigger('click');
+		}
 	}
 
 	onTabChange($event: NgbTabChangeEvent) {
