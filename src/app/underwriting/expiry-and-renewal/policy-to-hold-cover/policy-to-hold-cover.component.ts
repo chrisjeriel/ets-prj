@@ -5,6 +5,7 @@ import { Title } from '@angular/platform-browser';
 import { NotesService, UnderwritingService } from '@app/_services';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { PrintModalComponent } from '@app/_components/common/print-modal/print-modal.component';
 import { FormsModule }   from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -19,6 +20,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 
 	@ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
 	@ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+	@ViewChild(PrintModalComponent) print : PrintModalComponent;
 	@ViewChild('myForm') form:any;
 
 	constructor(private titleService: Title, private noteService: NotesService, private us: UnderwritingService, private modalService: NgbModal, private router: Router) { }
@@ -81,12 +83,19 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	cancelFlag: boolean = false;
 
 	ngOnInit() {
-
-
+		//set default report type for Hold Cover Letter
+		this.print.selectedReport = 'QUOTER012';
+		this.print.reports = true;
+		console.log(this.print.reports);
 	}
+
 	test(event){
 		console.log(event);
 		$('#printModalBtn').trigger('click');
+	}
+
+	showPrintDialog(event){
+		console.log(event);
 	}
 
 	retrievePolHoldCov(policyId: string, policyNo: string){

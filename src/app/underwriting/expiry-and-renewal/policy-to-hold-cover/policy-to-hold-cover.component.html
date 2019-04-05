@@ -157,7 +157,7 @@
                         <div class="col-md-13 text-center" style="margin-top:10px">
                             <div class="cust-btn-container">
                                 <button type="button" class="cust-btn" [disabled]="statusDesc === '' || statusDesc === 'Converted'" [class.cust-btn-disabled]="statusDesc === '' || statusDesc === 'Converted'" (click)="onClickCancel();"><a>Cancel Hold Cover</a></button>
-                                <button type="button" class="cust-btn" [disabled]="statusDesc !== 'In Force'" [class.cust-btn-disabled]="statusDesc !== 'In Force'"><a>Print</a></button>
+                                <button type="button" class="cust-btn" [disabled]="statusDesc !== 'In Force'" [class.cust-btn-disabled]="statusDesc !== 'In Force'" (click)="test($event)"><a>Print</a></button>
                                 <button type="button" class="cust-btn" (click)="onClickSaveBtn()"><a>Save</a></button>
                             </div>
                         </div>
@@ -203,3 +203,4 @@
     <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>
     <app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/hold-cover-monitoring'" ></app-cancel-button>
 
+<app-print-modal (selectedData)= "showPrintDialog($event)"></app-print-modal>
