@@ -251,6 +251,8 @@ export class QuoteOptionComponent implements OnInit {
                     b.deductibleRt = b.deductibleRate;
                     b.endtCd = 0;
                     b.edited = true;
+                    b.createDate = [0,0,0,0];
+                    b.updateDate = [0,0,0,0];
                     b.createUser = JSON.parse(window.localStorage.currentUser).username;
                     b.updateUser = JSON.parse(window.localStorage.currentUser).username;
                     b.add = true;
@@ -272,6 +274,8 @@ export class QuoteOptionComponent implements OnInit {
               a.deductibleRt = a.deductibleRate;
               a.endtCd = 0;
               a.edited = true;
+              a.createDate = [0,0,0,0];
+              a.updateDate = [0,0,0,0];
               a.createUser = JSON.parse(window.localStorage.currentUser).username;
               a.updateUser = JSON.parse(window.localStorage.currentUser).username;
               a.add = true;
@@ -501,8 +505,9 @@ saveQuoteOptionAll(cancelFlag?){
         for(let oth of  params.newQuoteOptionsList[params.newQuoteOptionsList.length-1].otherRatesList){
           if(oth.deductiblesList !== undefined){
             for(let ded of oth.deductiblesList){
-              ded.createDate = new Date(ded.createDate[0],ded.createDate[1]-1,ded.createDate[2]).toISOString();
-              ded.updateDate = new Date(ded.updateDate[0],ded.updateDate[1]-1,ded.updateDate[2]).toISOString();
+              console.log(ded)
+              ded.createDate = new Date().toISOString();
+              ded.updateDate = new Date().toISOString();
             }
           }else{
             oth.deductiblesList = [];
@@ -526,7 +531,6 @@ saveQuoteOptionAll(cancelFlag?){
 
 
     for(let ded of params.saveDeductibleList){
-      console.log(ded)
       if((isNaN(ded.deductibleRt) || ded.deductibleRt=="" || ded.deductibleRt==null) && (isNaN(ded.deductibleAmt) || ded.deductibleAmt=="" || ded.deductibleAmt==null)){
         this.dialogIcon = "error";
         setTimeout(a=>$('#quote-option #successModalBtn').trigger('click'),0);

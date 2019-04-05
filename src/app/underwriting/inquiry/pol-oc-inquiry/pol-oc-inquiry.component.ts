@@ -176,12 +176,16 @@ export class PolOcInquiryComponent implements OnInit {
 
   ngOnInit() {
     this.titleService.setTitle("Pol | Policy Inquiry");
-    // this.passData.tableData = this.underwritingService.getPolicyInquiry();
     this.retrievePolListing();
   }
 
   gotoInfo(data) {
-  	   this.router.navigate(['/create-open-cover-letter', { line: data.openPolicyNo.split(/[-]/g)[1] }], { skipLocationChange: true });
+  	   this.router.navigate(['/create-open-cover-letter',{ line: data.openPolicyNo.split('-')[1],
+                                policyIdOc:data.policyIdOc,
+                                insured: data.insuredDesc,
+                                riskName: data.riskName,
+                                policyNo: data.openPolicyNo,
+                                inqFlag: true }], { skipLocationChange: true });
        //this.router.navigate(['/policy-information', {policyId:data.policyId}], { skipLocationChange: true });
   }
 

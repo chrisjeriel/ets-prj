@@ -375,11 +375,12 @@ export class QuoteEndorsementComponent implements OnInit {
     }
 
     copyEndtRowClick(data){
-      if(data === null){
-          this.copyEndtOkBtn = false;
-      }else{
-          this.copyEndtOkBtn = data.checked;
-      }
+      this.copyEndtOkBtn = this.tableCopy.selected.length != 0;
+      // if(data === null){
+      //     this.copyEndtOkBtn = false;
+      // }else{
+      //     this.copyEndtOkBtn = data.checked;
+      // }
     }
 
     copyEndtMethod(optionId: number){
@@ -460,9 +461,9 @@ export class QuoteEndorsementComponent implements OnInit {
                                                           this.saveEndt.updateUser = data.endorsements[lineCount].updateUser;          
             }
             if(data.endorsements.length == 0){
-                console.log(data)
-                this.endorsementData.tableData = JSON.parse(JSON.stringify(this.defaultEndorsements));
-                this.table.markAsDirty();
+                // console.log(data)
+                // this.endorsementData.tableData = JSON.parse(JSON.stringify(this.defaultEndorsements));
+                // this.table.markAsDirty();
             }
            /* this.table.refreshTable();*/
             this.table.refreshTable();
@@ -785,9 +786,9 @@ export class QuoteEndorsementComponent implements OnInit {
         this.passLOVData.selector = 'deductibles';
         this.passLOVData.lineCd = this.quotationNum.substring(0,3);
         this.passLOVData.hide = this.deductiblesData.tableData.filter((a)=>{return !a.deleted}).map(a=>a.deductibleCd);
+        this.passLOVData.endtCd = this.table.indvSelect.endtCd;
         this.passLOVData.params = {
           coverCd : '0',
-          endtCd: this.table.indvSelect.endtCd,
           activeTag:'Y'
         }
         $('#lov #modalBtn2').trigger('click');

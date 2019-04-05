@@ -156,14 +156,18 @@ export class PolOpenCovListComponent implements OnInit {
    }
 
    gotoInfo(){
-   	this.router.navigate(['/create-open-cover-letter', { line: this.selected.openPolicyNo.split('-')[1], policyIdOc:this.selected.policyIdOc }], { skipLocationChange: true });
+   	this.router.navigate(['/create-open-cover-letter',{ line: this.selected.openPolicyNo.split('-')[1],
+   														 policyIdOc:this.selected.policyIdOc,
+   														 insured: this.selected.insuredDesc,
+   														 riskName: this.selected.riskName,
+   														 policyNo: this.selected.openPolicyNo ,
+   														 inqFlag: false}], { skipLocationChange: true });
    }
 
    searchQuery(searchParams){
         this.searchParams = searchParams;
         this.passData.tableData = [];
         this.passData.btnDisabled = true;
-
         this.retrievePolListing();
 
    }

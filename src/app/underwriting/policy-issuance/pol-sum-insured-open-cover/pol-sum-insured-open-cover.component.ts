@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { UnderwritingService, NotesService } from '@app/_services';
 import { FormsModule }   from '@angular/forms';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
@@ -16,7 +16,7 @@ export class PolSumInsuredOpenCoverComponent implements OnInit {
   @ViewChild(CancelButtonComponent) cancel : CancelButtonComponent;
   @ViewChild('myForm') myForm : any;
   
-  policyId: string = '10';
+  policyId: string;
   coverageInfo:any = {
 	currencyCd : '',
 	currencyRt : '',
@@ -28,15 +28,18 @@ export class PolSumInsuredOpenCoverComponent implements OnInit {
   };
   dialogIcon: string = "";
   cancelFlag : boolean = false;
-
+  @Input() policyInfo:any;
+  @Input() inqFlag: boolean;
 
   constructor(private uw: UnderwritingService, private ns: NotesService) { }
 
   ngOnInit() {
-	this.fetchData();
+	this.policyId = this.policyInfo.policyIdOc;
 	this.coverageInfo.policyId = this.policyId;
 	this.coverageInfo.updateUser = JSON.parse(window.localStorage.currentUser).username;
 	this.coverageInfo.updateDate = this.ns.toDateTimeString(0);
+	console.log(this.inqFlag);
+	this.fetchData();
 
   }
 
