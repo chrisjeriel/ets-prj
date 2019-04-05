@@ -720,6 +720,7 @@ export class GeneralInfoComponent implements OnInit {
   			currencyRt: this.genInfoData.currencyRt,
   			typeOfCession: this.genInfoData.cessionDesc,
   			status: this.genInfoData.status,
+  			statusDesc: this.genInfoData.statusDesc,
   			reasonCd: this.genInfoData.reasonCd,
   			principalId: this.genInfoData.principalId,
   			lineCd: this.line,
