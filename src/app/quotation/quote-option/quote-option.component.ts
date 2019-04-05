@@ -62,6 +62,7 @@ export class QuoteOptionComponent implements OnInit {
             optionRt: 0,
             updateDate: [2019, 2, 22, 0, 0, 0, 0],
             updateUser: JSON.parse(window.localStorage.currentUser).username,
+            edited: true
         },
         pageLength: 5,
         addFlag: true,
@@ -96,7 +97,7 @@ export class QuoteOptionComponent implements OnInit {
             sumInsured: 0,
             endtCd: 0,
             coverCd:0,
-            showMG: 1
+            showMG: 1,
         },
         pageLength: 5,
         addFlag: true,
@@ -130,7 +131,7 @@ export class QuoteOptionComponent implements OnInit {
             updateUser: JSON.parse(window.localStorage.currentUser).username,
             sumInsured: 0,
             endtCd: 0,
-            showMG: 1
+            showMG: 1,
         },
         pageLength: 5,
         checkFlag: true,
@@ -261,6 +262,24 @@ export class QuoteOptionComponent implements OnInit {
             this.optionsData.nData.otherRatesList = data.quotation.project.coverage.sectionCovers;
           }
         })
+
+        this.uwService.getMaintenanceDeductibles(this.quotationNum.substring(0,3),'',
+          '0' ,'0','Y','Y').subscribe((data)=>{
+            this.optionsData.nData.deductiblesList = data['deductibles'].filter((a)=>{
+              a.sumInsured = this.fromCovers ? this.selectedCover.amount : null;
+              a.coverCd = '0';
+              a.deductibleTxt = a.deductibleText;
+              a.deductibleRt = a.deductibleRate;
+              a.endtCd = 0;
+              a.edited = true;
+              a.createUser = JSON.parse(window.localStorage.currentUser).username;
+              a.updateUser = JSON.parse(window.localStorage.currentUser).username;
+              a.add = true;
+              return true;
+            })
+        })
+
+
         this.getRates();
 
     }

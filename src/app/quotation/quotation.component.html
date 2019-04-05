@@ -85,7 +85,7 @@
 										<div class="col-sm-8" style="padding-left : 0px ! important; padding-right : 0px ! important;">
 											<div class="input-group" style="margin-bottom : -8px ! important">
 												<label class="form-control-sm" for="xx" style="padding-left: 0px">Status</label>
-												<input type="text" id="xx" class="form-control form-control-sm col-sm">
+												<input type="text" tabindex="-1" [(ngModel)]="this.quoteInfo.statusDesc" readonly id="xx" class="form-control form-control-sm col-sm">
 											</div>
 										</div>
 									</div>
@@ -93,11 +93,14 @@
 									<div class="input-group">
 										<div class="col-sm" style="padding-left : 0px ! important; padding-right : 0px ! important">
 											<div class="input-group">
-												<select class="form-control form-control-sm cust-sm col-sm-8">
+												<!-- <select class="form-control form-control-sm cust-sm col-sm-8">
 													<option>CPI</option>
 													<option>PMMSC-Admin</option>
-												</select>
-												<button class="cust">Approve</button>
+												</select> -->
+												<select class="form-control form-control-sm cust-sm col-sm-8">
+			                                        <option *ngFor="let approver of approverList; let i = index" [value]="approver.userId">{{ approver.userId + ' - ' + approver.userName }}</option>
+			                                    </select>
+												<button class="cust">{{ approveText }}</button>
 											</div>
 										</div>
 										<!-- <div class="col-sm-4" style="padding-left : 0px ! important; padding-right : 0px ! important; text-align: center">
@@ -177,3 +180,8 @@
 </div>
 <app-sucess-dialog id="quotation" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="modalService.dismissAll();"></app-sucess-dialog>
 <app-print-modal id="printListQuotation" (selectedData)= "showPrintDialog($event)" (onCancel)="cancelModal()" [printDefaultType]="defaultType" [passData]="passData"></app-print-modal>
+
+<ng-template #confirmLeave>
+	<app-confirm-leave></app-confirm-leave>
+</ng-template>
+

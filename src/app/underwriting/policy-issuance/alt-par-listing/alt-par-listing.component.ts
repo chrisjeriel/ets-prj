@@ -24,6 +24,9 @@ export class AltParListingComponent implements OnInit {
     policyNo: string = "";
     policyId: any;
     polLine: string = "";
+    statusDesc: any;
+    riskName: any;
+    insuredDesc: any;
 
     altParListData: any = {
         tHeader: [
@@ -166,7 +169,7 @@ export class AltParListingComponent implements OnInit {
                                                         policyNo: rec.policyNo,
                                                         cessionDesc: rec.cessionDesc,
                                                         cedComp: rec.cedingName, 
-                                                        insured: rec.intmName,
+                                                        insured: rec.insuredDesc,
                                                         risk: (rec.project == null) ? '' : rec.project.riskName,
                                                         object: (rec.project == null) ? '' : rec.project.objectDesc,
                                                         site: (rec.project == null) ? '' : rec.project.site,
@@ -208,15 +211,18 @@ export class AltParListingComponent implements OnInit {
         this.polLine = this.selectedPolicy.policyNo.split('-')[0];
         this.policyNo = this.selectedPolicy.policyNo;
         this.policyId = this.selectedPolicy.policyId;
+        this.statusDesc = this.selectedPolicy.status;
+        this.riskName = this.selectedPolicy.riskName;
+        this.insuredDesc = this.selectedPolicy.insured;
 
-        if (this.selectedPolicy.status === '1'){
+        if (this.selectedPolicy.status === 'In Progress' || this.selectedPolicy.status === 'Approved'){
              this.uwService.toPolInfo = [];
              this.uwService.toPolInfo.push("edit", this.polLine);
              setTimeout(() => {
-               this.router.navigate(['/policy-issuance-alt', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId }], { skipLocationChange: true });
+              this.router.navigate(['/policy-issuance-alt', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: true, statusDesc: this.statusDesc, riskName: this.riskName, insured: this.insuredDesc }], { skipLocationChange: true });
              },100); 
         } else {
-            console.log("status is in-forced!");
+             this.router.navigate(['/policy-issuance-alt', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: false, statusDesc: this.statusDesc, riskName: this.riskName, insured: this.insuredDesc }], { skipLocationChange: true }); 
         }
 
     }
@@ -237,19 +243,22 @@ export class AltParListingComponent implements OnInit {
         for(let rec of this.fetchedData){
               if(rec.policyNo === this.uwService.rowData[0]) {
                 this.policyId = rec.policyId;
+                this.statusDesc = rec.statusDesc;
+                this.riskName = rec.project.riskName;
+                this.insuredDesc = rec.insuredDesc;
               }
         }
         this.polLine = this.uwService.rowData[0].split("-")[0];
         this.policyNo = this.uwService.rowData[0];
 
-        if (this.selectedPolicy.status === '1'){
+        if (this.statusDesc === 'In Progress' || this.statusDesc === 'Approved'){
              this.uwService.toPolInfo = [];
              this.uwService.toPolInfo.push("edit", this.polLine);
              setTimeout(() => {
-               this.router.navigate(['/policy-issuance-alt', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId }], { skipLocationChange: true });
+               this.router.navigate(['/policy-issuance-alt', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: true, statusDesc: this.statusDesc, riskName: this.riskName, insured: this.insuredDesc }], { skipLocationChange: true });
              },100); 
-        } else {
-            console.log("status is in-forced!");
+        } else if (this.statusDesc === 'In Force' || this.statusDesc === 'Pending Approval' || this.statusDesc === 'Rejected') {
+             this.router.navigate(['/policy-issuance-alt', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: false, statusDesc: this.statusDesc, riskName: this.riskName, insured: this.insuredDesc }], { skipLocationChange: true }); 
         }
     }
 

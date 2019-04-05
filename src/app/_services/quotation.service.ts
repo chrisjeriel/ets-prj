@@ -1003,4 +1003,9 @@ export class QuotationService {
         return this.http.post(environment.prodApiUrl + '/quote-service/renumberQuoteOptions',JSON.stringify(params),header);
     }
 
+    retrieveQuoteApprover(quoteId: string) {
+        const params = new HttpParams()
+             .set('quoteId', (quoteId === null || quoteId === undefined ? '' : quoteId) );
+        return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuoteApprover',{params});
+    }
 }

@@ -1,7 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map,catchError } from 'rxjs/operators';
 
 import { environment } from '@environments/environment';
 import { User } from '@app/_models';
@@ -67,11 +67,15 @@ export class AuthenticationService {
                 } else {
                     // else return 400 bad request
                     console.log("Incorrect account.");
-                    /*throw nrethrowError({ error: { message: 'Username or password is incorrect' } });*/
+                    throw ({ error: { message: 'Username or password is incorrect' } });
                 }
                 /*{"id":2,"username":"TOTZ","firstName":"TOTZ","lastName":"TOTZ","token":"fake-jwt-token"}*/
                 
-            }));
+            }),catchError(e=>{
+                throw(e=="Unknown Error" ?{ error: { message: 'Connection Error' } } :e)    
+            }
+            ))
+            ;
     }
 
     logout() {
