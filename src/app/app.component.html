@@ -107,6 +107,11 @@
                                             <ng-container *ngIf="accessibleModules.indexOf('QUOTEX99') == -1">
                                             <button [routerLink]="['/create-open-cover']" class="button btn btn-link">Create
                                                 Open Cover</button>
+                                                <br />
+                                            </ng-container>
+                                            <ng-container *ngIf="accessibleModules.indexOf('QUOTEX99') == -1">
+                                            <button [routerLink]="['/open-cover-list']" class="button btn btn-link">Open Cover List</button>
+                                                <br />
                                             </ng-container>
                                         </ng-template>
                                     </ngb-panel>
