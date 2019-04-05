@@ -53,3 +53,4 @@
         </div>
 </app-modal>
 <app-mtn-reports-params id="reportsParamLOV" (selectedData)="setReportsParams($event)" [reportId]="this.reportId" (cancel)="cancel($event)"></app-mtn-reports-params>
+<app-sucess-dialog id="quotation" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="modalService.dismissAll();cancel(event)"></app-sucess-dialog>

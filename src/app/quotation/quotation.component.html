@@ -59,7 +59,7 @@
 				<app-attachment [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag"></app-attachment>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab *ngIf="inquiryFlag" id="Print">
+		<ngb-tab *ngIf="inquiryFlag" id="Print" [disabled]="quoteInfo.quoteId == ''">
 			<ng-template ngbTabTitle>
 				<div>Print</div>
 			</ng-template>
@@ -181,4 +181,4 @@
 	<app-confirm-leave></app-confirm-leave>
 </ng-template>
 ======= -->
-<app-print-modal id="printListQuotation" (selectedData)= "showPrintPreview($event)" (onCancel)="cancelModal()" [printDefaultType]="defaultType" [passData]="passData"></app-print-modal>
+<app-print-modal id="printListQuotation" (selectedData)= "showPrintDialog($event)" (onCancel)="cancelModal()" [printDefaultType]="defaultType" [passData]="passData"></app-print-modal>
