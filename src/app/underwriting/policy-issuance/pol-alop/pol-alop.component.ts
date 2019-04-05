@@ -255,7 +255,7 @@ export class PolAlopComponent implements OnInit {
 
   getPolAlop() {
     
-    this.underwritingService.getPolAlop(this.policyInfo.policyId,'').subscribe((data: any) => {
+    this.underwritingService.getPolAlop(this.policyInfo.policyId, this.policyInfo.policyNo).subscribe((data: any) => {
       if (data.policy != null) {
         this.policyId = data.policy.policyId;
         this.polAlopData = data.policy[0].alop[0]===null ? this.polAlopData : data.policy[0].alop[0];
