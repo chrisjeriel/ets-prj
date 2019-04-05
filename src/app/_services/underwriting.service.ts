@@ -762,4 +762,10 @@ export class UnderwritingService {
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolicyOCListing',{params});
     }
 
+    retrievePolicyApprover(policyId: string) {
+        const params = new HttpParams()
+             .set('policyId', (policyId === null || policyId === undefined ? '' : policyId) );
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolicyApprover',{params});
+    }
+
 }            
