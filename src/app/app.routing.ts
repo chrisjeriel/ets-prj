@@ -119,6 +119,8 @@ import { ModulesMaintenanceComponent } from './security/modules-maintenance/modu
 import { PolicyInformationComponent } from './underwriting/inquiry/policy-information/policy-information.component';
 import { PolOcInquiryComponent } from './underwriting/inquiry/pol-oc-inquiry/pol-oc-inquiry.component';
 import { PolOpenCovListComponent } from './underwriting/policy-issuance/pol-open-cov-list/pol-open-cov-list.component';
+import { PolHoldCovMonitoringComponent } from './underwriting/expiry-and-renewal/pol-hold-cov-monitoring/pol-hold-cov-monitoring.component';
+import { SpoilPolAltComponent } from './underwriting/utilities/spoil-pol-alt/spoil-pol-alt.component';
 
 const appRoutes: Routes = [
 
@@ -247,6 +249,8 @@ const appRoutes: Routes = [
     { path: 'policy-information', component: PolicyInformationComponent},
     { path: 'pol-oc-inquiry', component: PolOcInquiryComponent},
     { path: 'open-cover-list', component: PolOpenCovListComponent},
+    { path: 'pol-hold-cov-monitoring', component: PolHoldCovMonitoringComponent},
+    { path: 'spoil-pol-alt', component: SpoilPolAltComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
