@@ -945,8 +945,5 @@
 <app-sucess-dialog id="genInfo" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 <app-cancel-button (onYes)="saveQuoteGenInfo('cancel')" [url]="'/quotation-processing'" ></app-cancel-button>
 
-<!-- <app-sucess-dialog [icon]="''" [message]="''" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-confirm-save (onYes)="saveQuoteGenInfo();"></app-confirm-save> -->
-
 <app-mtn-users id="usersLOV" (selectedData)="setPreparedBy($event)"></app-mtn-users>
 

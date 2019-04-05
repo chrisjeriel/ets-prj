@@ -80,6 +80,10 @@ export class PolCreatePARComponent implements OnInit {
   expiryDate: any = "";
   expiryTime: any = "";
 
+  dialogMessage: any = "";
+  policyId: any = "";
+  policyNo: any = "";
+
   constructor(private underwritingService: UnderwritingService, private modalService: NgbModal, private router: Router,
               private titleService: Title, private quoteService: QuotationService, private ns: NotesService, private mtnService: MaintenanceService) {
 
@@ -126,13 +130,9 @@ export class PolCreatePARComponent implements OnInit {
   getPolOCListing() {
     this.underwritingService.getPolListingOc([]).subscribe(data => {
       console.log(data);
-    });
-    /*this.quoteService.getQuotationHoldCoverList([]).subscribe(data => {
-      this.holCovList = data['quotationList'];
-      this.passDataLOV.tableData = this.holCovList.filter(hc => hc.holdCover.status.toUpperCase() === 'IN FORCE' || hc.holdCover.status.toUpperCase() === 'EXPIRED')
-                                                  .map(hc => { hc.riskName = hc.project.riskName; return hc; });
-      this.lovTable.refreshTable();
-    });*/
+
+      this.passDataLOV.tableData = data['policyList'];
+    });    
   }
 
   navigateToGenInfo() {
@@ -172,6 +172,7 @@ export class PolCreatePARComponent implements OnInit {
         break;
       
       case 'oc':
+        this.getPolOCListing();
         this.clearFields();
 
         this.qu = false;
@@ -215,6 +216,7 @@ export class PolCreatePARComponent implements OnInit {
         this.riskName = this.selected.riskName;
 
         this.getOptionLOV(this.selected.quoteId);
+        this.getCutOffTime({ target: { value: this.quNo[0] } });
       } else if (str === 'hc') {       
         console.log(this.selected);
 
@@ -249,6 +251,7 @@ export class PolCreatePARComponent implements OnInit {
       "expiryDate"    : this.expiryDate + 'T' + this.expiryTime,
       "holdCoverNo"   : this.hc ? this.hcNo.join('-') : '',
       "inceptDate"    : this.inceptionDate + 'T' + this.inceptionTime,
+      "lineCd"        : this.qu ? this.quNo[0] : this.hc ? this.hcNo[0] : this.ocNo[0],
       "openPolicyNo"  : this.oc ? this.ocNo.join('-') : '',
       "optionId"      : this.optionId,
       "quotationNo"   : this.qu ? this.quNo.join('-') : '',
@@ -261,6 +264,16 @@ export class PolCreatePARComponent implements OnInit {
     console.log(savePolicyDetailsParam);
     this.underwritingService.savePolicyDetails(savePolicyDetailsParam).subscribe(data => {
       console.log(data);
+      if(data['returnCode'] === 0) {
+        this.dialogMessage = data['errorList'][0].errorMessage;
+
+        $('#createPol #successModalBtn').trigger('click');
+      } else if (data['returnCode'] === -1) {     
+        this.policyId = data['policyId'];
+        this.policyNo = data['policyNo'];
+
+        $('#convSuccessModal > #modalBtn').trigger('click');
+      }
     });
   }
 
@@ -272,6 +285,7 @@ export class PolCreatePARComponent implements OnInit {
   }
 
   getCutOffTime(ev) {
+    console.log(ev);
     var lineCd = ev.target.value;
 
     if(lineCd != '') {
@@ -301,5 +315,8 @@ export class PolCreatePARComponent implements OnInit {
     this.cedingName = "";
     this.insuredDesc = "";
     this.riskName = "";
+    this.inceptionTime = "";
+    this.expiryTime = "";
   }
+
 }

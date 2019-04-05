@@ -178,3 +178,23 @@
         </div>
     </div>
 </app-modal>
+
+<app-modal class="d-none" id="convSuccessModal">
+    <div header>Success Message</div>
+    <div body style="min-width: 420px !important;">
+        <fieldset class="scheduler-border" style="padding-top: 5px !important;">
+            <div class="custom-row-inline-inset" style="text-align: center">
+                <p *ngIf="qu" class="mg-b">Quotation No. <strong>{{ quNo.join('-') }}</strong></p>
+                <p *ngIf="hc" class="mg-b">Hold Cover No. <strong>{{ hcNo.join('-') }}</strong></p>
+                <p *ngIf="oc" class="mg-b">Open Cover Policy No. <strong>{{ 'OC-CAR-2019-00001-028-0001-000' }}</strong></p>
+                <p>was successfully converted to Policy No.</p>                
+                <p><strong>{{ policyNo }}</strong></p>
+            </div>
+        </fieldset>
+    </div>
+    <div footer class="w-100 text-center">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+    </div>
+</app-modal>
+
+<app-sucess-dialog id="createPol" [icon]="'error'" [message]="dialogMessage"></app-sucess-dialog>
