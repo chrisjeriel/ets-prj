@@ -193,7 +193,6 @@ export class PolAlopComponent implements OnInit {
 
   savePolAlopItem(cancelFlag?){
      this.cancelFlag = cancelFlag != undefined;
-     /*this.polURL = null;*/
      let savedData: any = {};
 
      savedData.policyId = this.policyInfo.policyId;
