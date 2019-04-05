@@ -179,7 +179,7 @@
               <label class="form-control-sm col-sm-1">Currency</label>
               <input type="text" class="form-control form-control-sm col-sm-1" readonly [(ngModel)]="altCoverageData.currencyCd">
               <label class="form-control-sm col-sm-1" style="margin-left: -30px !important; z-index: -1;">Exch. Rt.</label>
-              <input type="text" class="form-control form-control-sm col-sm-1" readonly appCurrencyRate [(ngModel)]="altCoverageData.currencyRt">
+              <input type="text" class="form-control form-control-sm col-sm-1 req" readonly appCurrencyRate [(ngModel)]="altCoverageData.currencyRt">
               <span class="col-sm-4"></span>
             </div>
             <div class="input-group" style="margin-left: 52px !important; margin-bottom: -10px !important; margin-top: -13px !important;">
@@ -193,16 +193,16 @@
               <span class="col-sm-2"></span>
               <label class="form-control-sm col-sm-2">Total Sum Insured</label>
               <input type="text" class="form-control form-control-sm col-sm-2 req" readonly appCurrency [(ngModel)] = "altCoverageData.prevtotalSi">
-              <input type="text" class="form-control form-control-sm col-sm-2 req" readonly appCurrency style="margin-left: 3px !important;">
-              <input type="text" class="form-control form-control-sm col-sm-2 req" readonly appCurrency style="margin-left: 3px !important;">
+              <input type="text" class="form-control form-control-sm col-sm-2 req" readonly appCurrency style="margin-left: 3px !important;" [(ngModel)] = "altCoverageData.alttotalSi">
+              <input type="text" class="form-control form-control-sm col-sm-2 req" readonly appCurrency style="margin-left: 3px !important;" [(ngModel)] = "altCoverageData.comtotalSi">
               <span class="col-sm-2"></span>
             </div>
             <div class="input-group" style="margin-left: -55px !important ;margin-top: -8px;">
               <span class="col-sm-2"></span>
               <label class="form-control-sm col-sm-2">Total Premium</label>
               <input type="text" class="form-control form-control-sm col-sm-2 req" readonly appCurrency [(ngModel)] = "altCoverageData.prevtotalPrem">
-              <input type="text" class="form-control form-control-sm col-sm-2 req" readonly appCurrency style="margin-left: 3px !important;">
-              <input type="text" class="form-control form-control-sm col-sm-2 req"  readonly appCurrency style="margin-left: 3px !important;">
+              <input type="text" class="form-control form-control-sm col-sm-2 req" readonly appCurrency style="margin-left: 3px !important;" [(ngModel)] = "altCoverageData.alttotalPrem">
+              <input type="text" class="form-control form-control-sm col-sm-2 req"  readonly appCurrency style="margin-left: 3px !important;" [(ngModel)] = "altCoverageData.comtotalPrem">
               <span class="col-sm-2"></span>
             </div>
           </div>
@@ -328,7 +328,7 @@
           <div class="input-group" style="margin-top: -5px;">
            <label class="form-control-sm col-sm-1" style="margin-right: 10px">Remarks</label>
            <div class="form-control-sm col-sm edtr-cont" style="height: 60px; margin-bottom: 10px;">
-             <text-editor [editorContent]="textArea"></text-editor>
+             <text-editor [editorContent]="altCoverageData.remarks" (fetchContent)="altCoverageData.remarks = $event"></text-editor>
            </div>
          </div>
        </div>
@@ -346,7 +346,7 @@
             <button type="button" class="cust-btn" (click)="CATPerils()" *ngIf="line == 'CAR' || line =='EAR' || line =='EEI' || line =='CEC'"><a>CAT Perils</a></button>
             
             <button type="button" class="cust-btn" (click)="pol($event)"><a>Cancel</a></button>
-            <button type="button" class="cust-btn"><a>Save</a></button>
+            <button type="button" class="cust-btn" (click)="alterationSave()"><a>Save</a></button>
           </div>
         </div>
       </div>
@@ -354,14 +354,14 @@
     
 </div>
 
-<app-modal class="hidden" id="CAT">
+<app-modal class="hidden" id="CATPerils">
     <div header>CAT Perils Exposure</div>
     <div body style=" margin-top: -10px !important; width: 400px ! important">
-       <app-cust-editable-non-datatable [passData]="passDataCATPerils"></app-cust-editable-non-datatable>
+       <app-cust-editable-non-datatable #catPerils [passData]="passDataCATPerils"></app-cust-editable-non-datatable>
     </div>                
     <div footer style="margin-right: 145px !important;">
       <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-      <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Save</a></button>
+      <button class="cust-btn" type="button" (click)=" saveCatPeril()"><a>Save</a></button>
     </div>
 </app-modal>
 </ng-container>
