@@ -151,7 +151,7 @@ span.ui-column-resizer {
                 </div> -->
                 <div class="table-scroll" id="cust-scroll">
                     <form #myForm="ngForm">
-                    <table id="non-datatable" >
+                    <table id="non-datatable" [class]="'non-datatable' + passData.pageID">
                         <thead>
                             <tr *ngIf="passData.tHeaderWithColspan != null">
                                 <ng-container *ngFor="let header of passData.tHeaderWithColspan">

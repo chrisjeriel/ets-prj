@@ -510,6 +510,21 @@ saveQuoteOptionAll(cancelFlag?){
         }
       }
     }
+    if(
+        params.saveQuoteOptionsList.length == 0 &&
+        params.deleteQuoteOptionsList.length == 0 &&
+        params.saveDeductibleList.length == 0 &&
+        params.deleteDeductibleList.length == 0 &&
+        params.otherRates.length == 0 &&
+        params.newQuoteOptionsList.length == 0
+      ){
+      this.dialogIcon = "info";
+      this.dialogMessage = "Nothing to save."
+      setTimeout(a=>$('#quote-option #successModalBtn').trigger('click'),0);
+      return null;
+    }
+
+
     for(let ded of params.saveDeductibleList){
       console.log(ded)
       if((isNaN(ded.deductibleRt) || ded.deductibleRt=="" || ded.deductibleRt==null) && (isNaN(ded.deductibleAmt) || ded.deductibleAmt=="" || ded.deductibleAmt==null)){
@@ -517,6 +532,26 @@ saveQuoteOptionAll(cancelFlag?){
         setTimeout(a=>$('#quote-option #successModalBtn').trigger('click'),0);
         return null;
       }
+    }
+
+    for(let opt of params.newQuoteOptionsList){
+      for(let ded of opt.deductiblesList){
+        if((isNaN(ded.deductibleRt) || ded.deductibleRt=="" || ded.deductibleRt==null) && (isNaN(ded.deductibleAmt) || ded.deductibleAmt=="" || ded.deductibleAmt==null)){
+          this.dialogIcon = "error";
+          setTimeout(a=>$('#quote-option #successModalBtn').trigger('click'),0);
+          return null;
+        }
+      }
+      for(let oth of opt.otherRatesList){
+        for(let ded of oth.deductiblesList){
+          if((isNaN(ded.deductibleRt) || ded.deductibleRt=="" || ded.deductibleRt==null) && (isNaN(ded.deductibleAmt) || ded.deductibleAmt=="" || ded.deductibleAmt==null)){
+            this.dialogIcon = "error";
+            setTimeout(a=>$('#quote-option #successModalBtn').trigger('click'),0);
+            return null;
+          }
+        }
+      }
+
     }
     
 
@@ -594,6 +629,7 @@ saveQuoteOptionAll(cancelFlag?){
     else{
       this.optionsData.disableAdd = false;
     }
+    this.otherRatesTable.onRowClick(null,null);
   }
 
   // showDeductiblesOptions(data,fromCovers?){
