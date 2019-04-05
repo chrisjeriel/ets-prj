@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GeneralInfoComponent } from '@app/quotation/general-info/general-info.component';
 import { environment } from '@environments/environment';
 import { QuotationService } from '@app/_services';
+import { first } from 'rxjs/operators';
 
 
 
@@ -38,6 +39,7 @@ export class QuotationComponent implements OnInit {
 		currencyRt: '',
 		typeOfCession: '',
 		status:'',
+    statusDesc: '',
 		reasonCd:'',
 		lineCd: '',
 		showAlop:false
@@ -48,8 +50,11 @@ export class QuotationComponent implements OnInit {
 	showAlop:boolean = false;
 	enblEndtTab:boolean = false;
 	dialogIcon:string  = "";
-    dialogMessage:string  = "";
-    btnDisabled: boolean;
+  dialogMessage:string  = "";
+  btnDisabled: boolean;
+  approveText: string = "For Approval";
+  currentUserId: string = JSON.parse(window.localStorage.currentUser).username;
+  approverList: any[];
 
 	ngOnInit() {
 		this.sub = this.route.params.subscribe(params => {
@@ -61,7 +66,7 @@ export class QuotationComponent implements OnInit {
 	}
 
 	showApprovalModal(content) {
-	    this.printType = "SCREEN";
+	  this.printType = "SCREEN";
 		if(this.isEmptyObject(this.selectedReport)){
     		this.selectedReport = null;
     		this.btnDisabled = true;
@@ -69,6 +74,26 @@ export class QuotationComponent implements OnInit {
     		this.btnDisabled = false;
     	};
 		this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
+
+    this.quotationService.retrieveQuoteApprover(this.quoteInfo.quoteId)
+            .pipe(first())
+            .subscribe(
+                data => {
+                    console.log(JSON.stringify(data));
+                    this.approverList = data["approverList"];
+
+                    this.approveText = 'For Approval';
+                    for (var i = data["approverList"].length - 1; i >= 0; i--) {
+                      if (data["approverList"][i].userId == this.currentUserId) {
+                        this.approveText = 'Approve';
+                      }
+                    }
+
+                },
+                error => {
+                    console.log("ERROR:::" + JSON.stringify(error));
+                });
+
 	}
 
 	onTabChange($event: NgbTabChangeEvent) {
@@ -96,15 +121,15 @@ export class QuotationComponent implements OnInit {
   								  {val:"QUOTER009B", desc:"RI Confirmation of Acceptance Letter" });
  
   		}
-		if(this.quoteInfo.status == '10'){
-			this.reportsList.push({val:"QUOTER009C", desc:"Risk Not Commensurate" });
-		}
-		if(this.quoteInfo.status == '9' && this.quoteInfo.reasonCd == 'NT'){
-			this.reportsList.push({val:"QUOTER009D", desc:"Treaty Exclusion Letter"});
-		}
-		if (this.quoteInfo.typeOfCession.toUpperCase() == 'DIRECT'){
-			this.reportsList.push({val:"QUOTER009A", desc:"Quotation Letter" });
-		}
+  		if(this.quoteInfo.status == '10'){
+  			this.reportsList.push({val:"QUOTER009C", desc:"Risk Not Commensurate" });
+  		}
+  		if(this.quoteInfo.status == '9' && this.quoteInfo.reasonCd == 'NT'){
+  			this.reportsList.push({val:"QUOTER009D", desc:"Treaty Exclusion Letter"});
+  		}
+  		if (this.quoteInfo.typeOfCession.toUpperCase() == 'DIRECT'){
+  			this.reportsList.push({val:"QUOTER009A", desc:"Quotation Letter" });
+  		}
   	}
 
   	showPrintPreview(content) {
@@ -185,6 +210,24 @@ export class QuotationComponent implements OnInit {
     	} else {
     		this.btnDisabled = false;
     	};
+    }
+
+    approveQuotation() {
+      if (this.approveText.toLowerCase() == "Approve".toLowerCase()) {
+        console.log("Call update quote status.");
+        this.quotationService.updateQuoteStatus(this.quoteInfo.quoteId, 'A', this.currentUserId).subscribe((data)=>{
+            if(data['returnCode'] == 0) {
+              /*this.dialogMessage = data['errorList'][0].errorMessage;
+              this.dialogIcon = "error";
+              $('#quote-option #successModalBtn').trigger('click');*/
+              console.log("Status Updated");
+            } else {
+              console.log("Status Failed to Update.");
+            }
+        })
+      } else {
+        console.log("Assign to another user.");
+      }
     }
 
 
