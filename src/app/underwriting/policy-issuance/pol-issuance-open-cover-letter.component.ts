@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-pol-issuance-open-cover-letter',
@@ -7,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PolIssuanceOpenCoverLetterComponent implements OnInit {
 
-  constructor() { }
+  constructor(private route: ActivatedRoute) { }
+
+  policyInfo:any;
+  inqFlag:any;
 
   ngOnInit() {
+  	this.route.params.subscribe(a=>{
+  		this.policyInfo = a;
+      this.inqFlag = a['inqFlag'] == 'true';
+      console.log(this.inqFlag == 'true')
+  	})    
   }
 
 }

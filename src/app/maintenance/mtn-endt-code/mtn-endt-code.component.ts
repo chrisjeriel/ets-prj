@@ -36,6 +36,7 @@ export class MtnEndtCodeComponent implements OnInit {
 
     @Input() lovCheckBox: boolean = false;
     selects: any[] = [];
+    addBtn:boolean = true;
 
   ngOnInit() {
     if(this.lovCheckBox){
@@ -43,8 +44,8 @@ export class MtnEndtCodeComponent implements OnInit {
     }
   }
 
-  select(data){
-  	  this.selected = data;
+  select(data) {
+  	  this.addBtn = this.table.selected.length == 0;
   }
 
   okBtnClick(){

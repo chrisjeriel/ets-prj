@@ -68,17 +68,17 @@ export class PolicyInformationComponent implements OnInit {
     this.UwService.getPolicyInformation(policyId).subscribe((data:any)=>{
       console.log(data);
       this.policyInfo = data.policy;
-      // this.policyInfo.inceptDate = this.ns.toDateTimeString(data.policy.inceptDate);
-      // this.policyInfo.expiryDate = this.ns.toDateTimeString(data.policy.expiryDate);
-      // this.policyInfo.lapseFrom = this.ns.toDateTimeString(data.policy.lapseFrom);
-      // this.policyInfo.lapseTo = this.ns.toDateTimeString(data.policy.lapseTo);
-      // this.policyInfo.lapseFrom = this.ns.toDateTimeString(data.policy.lapseFrom);
-      // this.policyInfo.maintenanceFrom = this.ns.toDateTimeString(data.policy.maintenanceFrom);
-      // this.policyInfo.maintenanceTo = this.ns.toDateTimeString(data.policy.maintenanceTo);
-      // this.policyInfo.issueDate = this.ns.toDateTimeString(data.policy.issueDate);
-      // this.policyInfo.distDate = this.ns.toDateTimeString(data.policy.distDate);
-      // this.policyInfo.effDate = this.ns.toDateTimeString(data.policy.effDate);
-      // this.policyInfo.acctDate = this.ns.toDateTimeString(data.policy.acctDate);
+      this.policyInfo.inceptDate = this.ns.toDateTimeString(data.policy.inceptDate);
+      this.policyInfo.expiryDate = this.ns.toDateTimeString(data.policy.expiryDate);
+      this.policyInfo.lapseFrom = this.ns.toDateTimeString(data.policy.lapseFrom);
+      this.policyInfo.lapseTo = this.ns.toDateTimeString(data.policy.lapseTo);
+      this.policyInfo.lapseFrom = this.ns.toDateTimeString(data.policy.lapseFrom);
+      this.policyInfo.maintenanceFrom = this.ns.toDateTimeString(data.policy.maintenanceFrom);
+      this.policyInfo.maintenanceTo = this.ns.toDateTimeString(data.policy.maintenanceTo);
+      this.policyInfo.issueDate = this.ns.toDateTimeString(data.policy.issueDate);
+      this.policyInfo.distDate = this.ns.toDateTimeString(data.policy.distDate);
+      this.policyInfo.effDate = this.ns.toDateTimeString(data.policy.effDate);
+      this.policyInfo.acctDate = this.ns.toDateTimeString(data.policy.acctDate);
       this.passData.tableData = data.policy.alterationHist;
       this.alterationTable.refreshTable();
     })

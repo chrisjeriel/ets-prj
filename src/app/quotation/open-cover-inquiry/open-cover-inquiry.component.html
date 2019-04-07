@@ -3,7 +3,7 @@
   <ngb-tabset>
     <ngb-tab class="ngb-tab" title="Open Cover Inquiry">
       <ng-template ngbTabContent>
-        <app-cust-non-datatable [passData]="passDataOpenCoverInquiry" (rowDblClick)="onRowDblClick($event)" (rowClick)="onRowClick($event)"></app-cust-non-datatable>
+        <app-cust-non-datatable [passData]="passDataOpenCoverInquiry" (rowDblClick)="onRowDblClick($event)" (newRowDblClick)="onRowClick($event)"></app-cust-non-datatable>
 
         <br><br>
         <div class="row">

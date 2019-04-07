@@ -26,14 +26,14 @@
 			<div class="form-row custom-row-inline-inset" style="margin-bottom: 1px ! important;">
 				<div class="input-group ig-row">
 					<label class="form-control-sm col-sm-2" for="inputOCPolNo" >Open Cover Pol No</label>
-				    <input type="text" id="inputOCPolNo" class="form-control form-control-sm cust-sm col-sm-2" placeholder="" value="" readonly>
+				    <input type="text" id="inputOCPolNo" class="form-control form-control-sm cust-sm col-sm-2" placeholder="" [value]="policyInfo.policyNo" readonly>
 				    <label class="form-control-sm col-sm-1" for="inputInname" >Insured</label>
-				    <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-6" placeholder="" value="" readonly>
+				    <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-6" placeholder="" [value]="policyInfo.insured" readonly>
 				    <div class="col-sm-1"></div>
 				</div>
 				<div class="input-group ig-row">
 					<label class="form-control-sm col-sm-2" for="inputRisk" >Risk</label>
-				    <input type="text" id="inputRisk" class="form-control form-control-sm cust-sm col-sm-9" placeholder="" value="" readonly>
+				    <input type="text" id="inputRisk" class="form-control form-control-sm cust-sm col-sm-9" placeholder="" [value]="policyInfo.riskName" readonly>
 				    <div class="col-sm-1"></div>
 				</div>
 			</div>
@@ -69,15 +69,15 @@
 						<div class="input-group ig-row" >
 							<div class="col-sm-2"></div>
 							<label class="form-control-sm col-sm-2">Share(%)</label>
-                            <input type="text" class="form-control form-control-sm" [(ngModel)]="coverageInfo.pctShare" name="pctShare" appOtherRates>
+                            <input [disabled]="inqFlag" type="text" class="form-control form-control-sm" [(ngModel)]="coverageInfo.pctShare" name="pctShare" appOtherRates>
                             <label class="form-control-sm col-sm-1">PML(%)</label>
-                            <input type="text" class="form-control form-control-sm" [(ngModel)]="coverageInfo.pctPml" name="pctPml" appOtherRates>
+                            <input [disabled]="inqFlag" type="text" class="form-control form-control-sm" [(ngModel)]="coverageInfo.pctPml" name="pctPml" appOtherRates>
                             <div class="col-sm-2"></div> 
 						</div>
 						<div class="input-group ig-row">
 							<div class="col-sm-2"></div>
 	                        <label class="form-control-sm col-sm-2">100% Value</label>
-	                        <input type="text" class="form-control form-control-sm" [(ngModel)]="coverageInfo.totalValue" name="totalValue" appCurrency (ngModelChange)="cmptShrPct($event)">
+	                        <input [disabled]="inqFlag" type="text" class="form-control form-control-sm" [(ngModel)]="coverageInfo.totalValue" name="totalValue" appCurrency (ngModelChange)="cmptShrPct($event)">
 	                        <div class="col-sm-2"></div>
                     	</div>
 					</div>
@@ -86,18 +86,21 @@
 		</div>
 	</div>
 </div>
-<div class="form-row">
-		<div class="form-group col-sm">
-			<div class="col-md-13 text-center">
-				<br>
-				<div class="cust-btn-container">
-					<button type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
-					<button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+
+<ng-container *ngIf="!inqFlag">
+	<div class="form-row" >
+			<div class="form-group col-sm">
+				<div class="col-md-13 text-center">
+					<br>
+					<div class="cust-btn-container">
+						<button  type="button" class="cust-btn" (click)="onClickCancel()" ><a>Cancel</a></button>
+						<button  type="button" class="cust-btn" (click)="onClickSave()" ><a>Save</a></button>
+					</div>
 				</div>
 			</div>
-		</div>
-</div>
+	</div>
+</ng-container>
 
 <app-sucess-dialog [icon]="dialogIcon" (onOk)="cancelFlag && dialogIcon == 'success'  ? this.cancel.onNo():null"></app-sucess-dialog>
 <app-confirm-save (onYes)="save()"></app-confirm-save>
-<app-cancel-button (onYes)="save('cancel')" [url]="'/policy-listing'" ></app-cancel-button>
+<app-cancel-button (onYes)="save('cancel')" [url]="inqFlag? 'pol-oc-inquiry' : '/open-cover-list'" ></app-cancel-button>
