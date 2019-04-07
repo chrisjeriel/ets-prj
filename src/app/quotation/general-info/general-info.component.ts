@@ -839,9 +839,9 @@ export class GeneralInfoComponent implements OnInit {
 
 	updateExpiryDate(ev) {
 		var d = new Date(ev);
-		var millis = d.setDate(d.getDate() + 30);
+		d.setDate(d.getDate() + 30);
 
-		this.genInfoData.expiryDate = this.ns.toDateTimeString(millis);
+		this.genInfoData.expiryDate = this.ns.toDateTimeString(d);
 	}
 
 	testFoc() {

@@ -801,7 +801,7 @@
 						</div>
 						<div class="form-group col-sm" style="margin-left: -6px !important;">
 							<label tabindex="-1" class="form-control-sm top-label">100% Value</label>
-							<input tabindex="-1" type="text" class="form-control form-control-sm cust-sm text-right" [readonly]="inquiryFlag" [(ngModel)]="project.totalValue" mask="separator">
+							<input tabindex="-1" type="text" class="form-control form-control-sm cust-sm text-right" [readonly]="inquiryFlag" [(ngModel)]="project.totalValue" mask="comma_separator.2">
 						</div>
 					</div>
 				</div>
@@ -944,9 +944,6 @@
 
 <app-sucess-dialog id="genInfo" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 <app-cancel-button (onYes)="saveQuoteGenInfo('cancel')" [url]="'/quotation-processing'" ></app-cancel-button>
-
-<!-- <app-sucess-dialog [icon]="''" [message]="''" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-confirm-save (onYes)="saveQuoteGenInfo();"></app-confirm-save> -->
 
 <app-mtn-users id="usersLOV" (selectedData)="setPreparedBy($event)"></app-mtn-users>
 
