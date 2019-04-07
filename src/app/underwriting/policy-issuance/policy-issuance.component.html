@@ -4,7 +4,7 @@
 
 		<ngb-tab class="ngb-tab" title="General Info">
 			<ng-template ngbTabContent>
-				<app-pol-gen-info [alteration]="false"></app-pol-gen-info>
+				<app-pol-gen-info (emitPolicyInfoId)="getPolInfo($event)" [alteration]="false"></app-pol-gen-info>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab title="Item" *ngIf="line=='EEI' || line=='MBI' || line=='CEC' || line=='BPV' || line=='MLP' || line=='DOS'">
