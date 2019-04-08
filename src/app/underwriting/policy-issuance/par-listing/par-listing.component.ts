@@ -27,6 +27,9 @@ export class ParListingComponent implements OnInit {
     searchParams: any[] = [];
     fetchedData: any;
     btnDisabled: boolean;
+    statusDesc: any;
+    riskName: any;
+    insuredDesc: any;
 
     constructor(private uwService: UnderwritingService, private titleService: Title, private router: Router, private ns: NotesService) { }
     passDataListing: any = {
@@ -147,6 +150,9 @@ export class ParListingComponent implements OnInit {
         exportFlag: true
     }
 
+
+
+
     ngOnInit() {
         this.titleService.setTitle("Pol | Policy List");
         this.retrievePolListing();
@@ -155,17 +161,18 @@ export class ParListingComponent implements OnInit {
    retrievePolListing(){
        this.uwService.getParListing(this.searchParams).subscribe(data => {
           var records = data['policyList'];
-          console.log(data)
+          console.log(data);
           this.fetchedData = records;
                for(let rec of records){
-                     if (rec.statusDesc === 'In Force' || rec.statusDesc === 'In Progress' && rec.altNo === 0) {
+                   if(rec.altNo === 0){
+                      if (rec.statusDesc === 'In Force' || rec.statusDesc === 'In Progress' || rec.statusDesc === 'Approved' || rec.statusDesc === 'Pending Approval' || rec.statusDesc === 'Rejected') {
                          this.passDataListing.tableData.push(
                                                     {
                                                         policyId: rec.policyId,
                                                         policyNo: rec.policyNo,
                                                         cessionDesc: rec.cessionDesc,
                                                         cedComp: rec.cedingName, 
-                                                        insured: rec.intmName,
+                                                        insured: rec.insuredDesc,
                                                         risk: (rec.project == null) ? '' : rec.project.riskName,
                                                         object: (rec.project == null) ? '' : rec.project.objectDesc,
                                                         site: (rec.project == null) ? '' : rec.project.site,
@@ -180,6 +187,7 @@ export class ParListingComponent implements OnInit {
                                                     }
                                                 );  
                      }
+                   }
                }
                 this.table.forEach(table => { table.refreshTable() });
        });
@@ -189,10 +197,8 @@ export class ParListingComponent implements OnInit {
     searchQuery(searchParams){
         this.searchParams = searchParams;
         this.passDataListing.tableData = [];
-        console.log(this.searchParams);
         this.selectedPolicy = {};
         this.passDataListing.btnDisabled = true;
-
         this.retrievePolListing();
 
     }
@@ -205,20 +211,23 @@ export class ParListingComponent implements OnInit {
         for(let rec of this.fetchedData){
               if(rec.policyNo === this.uwService.rowData[0]) {
                 this.policyId = rec.policyId;
+                this.statusDesc = rec.statusDesc;
+                this.riskName = rec.project.riskName;
+                this.insuredDesc = rec.insuredDesc;
               }
         }
         this.polLine = this.uwService.rowData[0].split("-")[0];
         this.policyNo = this.uwService.rowData[0];
 
-        if (this.selectedPolicy.status === '1'){
+
+        if (this.statusDesc === 'In Progress' || this.statusDesc === 'Approved'){
              this.uwService.toPolInfo = [];
              this.uwService.toPolInfo.push("edit", this.polLine);
              setTimeout(() => {
-               this.router.navigate(['/policy-issuance', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId }], { skipLocationChange: true });
+               this.router.navigate(['/policy-issuance', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: true, statusDesc: this.statusDesc ,riskName: this.riskName, insured: this.insuredDesc }], { skipLocationChange: true });
              },100); 
-        } else {
-            console.log("status is in-forced!");
-            this.router.navigate(['/policy-issuance', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId }], { skipLocationChange: true });
+        } else if (this.statusDesc === 'In Force' || this.statusDesc === 'Pending Approval' || this.statusDesc === 'Rejected') {
+            this.router.navigate(['/policy-issuance', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: false, statusDesc: this.statusDesc, riskName: this.riskName, insured: this.insuredDesc }], { skipLocationChange: true }); 
         }
     }
 
@@ -232,18 +241,17 @@ export class ParListingComponent implements OnInit {
         this.polLine = this.selectedPolicy.policyNo.split('-')[0];
         this.policyNo = this.selectedPolicy.policyNo;
         this.policyId = this.selectedPolicy.policyId;
+        this.statusDesc = this.selectedPolicy.status;
+        this.riskName = this.selectedPolicy.riskName;
+        this.insuredDesc = this.selectedPolicy.insured;
 
-        if (this.selectedPolicy.status === '1'){
+        if (this.selectedPolicy.status === 'In Progress' || this.selectedPolicy.status === 'Approved') {
              this.uwService.toPolInfo = [];
              this.uwService.toPolInfo.push("edit", this.polLine);
-             setTimeout(() => {
-               this.router.navigate(['/policy-issuance', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId }], { skipLocationChange: true });
-             },100); 
+             this.router.navigate(['/policy-issuance', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: true, statusDesc: this.statusDesc, riskName: this.riskName, insured: this.insuredDesc }], { skipLocationChange: true });
         } else {
-            console.log("status is in-forced!");
-            this.router.navigate(['/policy-issuance', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId }], { skipLocationChange: true }); 
+             this.router.navigate(['/policy-issuance', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: false, statusDesc: this.statusDesc, riskName: this.riskName, insured: this.insuredDesc }], { skipLocationChange: true }); 
         }
-
     }
 
     onRowClick(event){
@@ -281,7 +289,7 @@ export class ParListingComponent implements OnInit {
             return num
       };
 
-     alasql('SELECT policyNo AS PolicyNo, cessionDesc AS TypeCession, cedComp AS CedingCompany, insured AS Insured, risk AS Risk, object AS Object, site AS Site, currency AS Currency, currency(sumInsured) AS SumInsured,   datetime(periodFrom) AS PeriodFrom,currency(premium) AS Premium, datetime(issueDate) AS IssueDate, datetime(inceptDate) AS InceptDate, datetime(expiryDate) AS ExpiryDate, datetime(accDate) AS AcctingDate, status AS Status  INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passDataListing.tableData]);
+     alasql('SELECT policyNo AS PolicyNo, cessionDesc AS TypeCession, cedComp AS CedingCompany, insured AS Insured, risk AS Risk, object AS Object, site AS Site, currency AS Currency, currency(sumInsured) AS SumInsured ,currency(premium) AS Premium, datetime(issueDate) AS IssueDate, datetime(inceptDate) AS InceptDate, datetime(expiryDate) AS ExpiryDate, datetime(accDate) AS AcctingDate, status AS Status  INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passDataListing.tableData]);
     }
 
 }

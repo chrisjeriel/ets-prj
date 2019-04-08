@@ -4,7 +4,7 @@
 
 		<ngb-tab class="ngb-tab" title="General Info">
 			<ng-template ngbTabContent>
-				<app-pol-gen-info [alteration]="false"></app-pol-gen-info>
+				<app-pol-gen-info (emitPolicyInfoId)="getPolInfo($event)" [alteration]="false"></app-pol-gen-info>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab title="Item" *ngIf="line=='EEI' || line=='MBI' || line=='CEC' || line=='BPV' || line=='MLP' || line=='DOS'">
@@ -24,7 +24,7 @@
 		</ngb-tab>
 		<ngb-tab title="Inward Pol Balance">
 			<ng-template ngbTabContent>
-				<app-inward-pol-balance></app-inward-pol-balance>
+				<app-inward-pol-balance [fromInq]="fromInq"></app-inward-pol-balance>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab title="Endorsement">
@@ -139,3 +139,51 @@
   		</ngb-tab>
 	</ngb-tabset>
 </div>
+
+<ng-template #contentEditPol>
+				<div class="modal-header">
+					<span class="modal-title" id="modal-basic-title">Confirmation Message</span>
+				</div>
+				<div class="modal-body" style="width: 390px">
+					<div class="row" style="padding-right: 15px! important; padding-left: 15px ! important">
+							<fieldset class="scheduler-border">
+								<div class="custom-row-inline-inset">
+									<div class="input-group" style="margin-top : 0px ! important">
+										<span class="form-control-sm" for="xx" style="padding-left: 40px; padding-right: 35px; font-size: 12px">Selected Policy No is already posted. Modification requires approval.</span>
+									</div>
+									<div class="input-group" style="margin-top : 20px ! important">
+											<div class="input-group" style="margin-bottom : -8px ! important; padding-left: 40px; padding-right: 35px;">
+												<div class="col-sm-8" style="padding:0">
+												  <div class="input-group">
+													<label class="form-control-sm" for="xx" style="padding-left: 0px">Status</label>
+												    <input type="text" tabindex="-1" [(ngModel)]="this.policyInfo.status" readonly id="xx" class="form-control form-control-sm col-sm" style="margin-left: 5px">
+												  </div>
+											    </div>
+											</div>
+									</div>
+								    <div class="input-group" style="margin-top : 5px ! important; margin-bottom: 20px! important" >
+										<div class="col-sm" style="padding-left : 0px ! important; padding-right : 0px ! important">
+											<div class="input-group" style="padding-left: 40px; padding-right: 35px;">
+													<div class="col-sm-8" style="padding:0">
+													  <div class="input-group">
+														<select class="form-control form-control-sm cust-sm col-sm">
+			                                        		<option *ngFor="let approver of approverList; let i = index" [value]="approver.userId">{{ approver.userId + ' - ' + approver.userName }}</option>
+			                                   			 </select>
+			                                   		  </div>
+													</div>
+													<div class="col-sm-4" style="padding-left:0px;padding-right: 0px">
+														<button class="cust">{{ approveText }}</button>
+												    </div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</fieldset>
+					</div>
+				</div>
+				<div class="modal-footer" style="justify-content: center;">
+					<div >
+						<button class="cust-btn" type="button" (click)="modalService.dismissAll();returnOnModal();"><a>Return</a></button>
+					</div>
+				</div>
+</ng-template>

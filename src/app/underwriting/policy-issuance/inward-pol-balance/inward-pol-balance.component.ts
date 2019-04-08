@@ -21,6 +21,7 @@ export class InwardPolBalanceComponent implements OnInit {
   @ViewChild(ConfirmSaveComponent) confirmSave: ConfirmSaveComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(CancelButtonComponent) cancel : CancelButtonComponent;
+  @Input()fromInq: boolean = false;
 
   passData: any = {
     tableData: [],
@@ -95,6 +96,18 @@ export class InwardPolBalanceComponent implements OnInit {
    
     this.titleService.setTitle("Pol | Inward Pol Balance");
     this.fetchData();
+    if(this.fromInq){
+      this.passData.addFlag=false;
+      this.passData.deleteFlag=false;
+      this.passData2.addFlag=false;
+      this.passData2.deleteFlag=false;
+      this.passData.uneditable = [];
+      this.passData2.uneditable = [];
+      for(let key of this.passData.keys)
+        this.passData.uneditable.push(true);
+      for(let key of this.passData2.keys)
+        this.passData2.uneditable.push(true);
+    }
   }
 
   fetchData(){

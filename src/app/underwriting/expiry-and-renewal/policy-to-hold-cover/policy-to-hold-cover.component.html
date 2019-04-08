@@ -37,7 +37,7 @@
 
 <div class="cust-tabs-container">
     <h4>Policy / Expiry & Renewal</h4>
-    <ngb-tabset>
+    <ngb-tabset (tabChange)="onTabChange($event)">
         <ngb-tab title="Policy to Hold Cover">
             <ng-template ngbTabContent>
                 <div class="row" style="margin-top: 10px;">
@@ -52,9 +52,9 @@
                                     &nbsp; 
                                     </div>
                                     <div class="input-group">
-                                        <div class="input-group">
+                                        <div class="input-group ig-row">
                                             <label class="form-control-sm col-sm-2">Policy No</label>
-                                            <div class="input-group col-sm-8" style="margin-left: -3px !important;">
+                                            <div class="input-group col-sm-8">
                                                 <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Line" appRequired [ngModel]="policyInfo.policyNo.split('-')[0]">
                                                 <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Year" style="margin-left: 3px;" appRequired [ngModel]="policyInfo.policyNo.split('-')[1]">
                                                 <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Sequence No" style="margin-left: 3px;" appRequired [ngModel]="policyInfo.policyNo.split('-')[2]">
@@ -65,7 +65,7 @@
                                             <span>&nbsp;</span>
                                             <div class="text-search-ico col-sm-1"><a (click)="openModal();"><i class="fa fa-search"></i></a></div>
                                         </div>
-                                        <div class="input-group ig-row" style="margin-top: -6px !important;">
+                                        <div class="input-group ig-row" style="margin-top: -3px !important;">
                                             <label class="form-control-sm col-sm-2">Ceding Company</label>
                                             <input type="text" class="form-control form-control-sm" readonly [ngModel]="policyInfo.cedingName">
                                         </div>
@@ -89,58 +89,65 @@
                     <div class="col-sm-8">
                         <fieldset class="scheduler-border">
                             <legend class="scheduler-border">Hold Cover Details</legend>
-                            <div class="col-sm">
+                            <form #myForm="ngForm">
+                            <div class="col-sm" style="margin-top: 15px;">
                                 <div class="custom-row-inline-inset">
-                                    <div class="input-group">
-                                        <div class="input-group" style="margin-bottom: -14px !important;">
-                                            <label class="form-control-sm col-sm-2 labels" style="margin-bottom: 8px !important;">Hold Cover No</label>
-                                            <input type="text" class="form-control form-control-sm col-sm-4 warn" id="holdCovNo" readonly [ngModel]="holdCoverNo">
+                                    <!-- <div class="input-group"> -->
+                                        <div class="input-group ig-row" style="margin-bottom: -14px !important;">
+                                            <div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
+                                               <div class="input-group" style="margin-bottom: 0px !important">
+                                                   <label class="form-control-sm col-sm-4 labels" style="margin-bottom: 8px !important;">Hold Cover No</label>
+                                                   <input type="text" class="form-control form-control-sm col-sm-8 warn" name="holdCovNo" readonly [ngModel]="holdCoverNo">
+                                               </div>
+                                            </div>
+                                            <div class="col-sm-6" style="padding: 0px !important;margin: 0px !important"></div>
                                         </div>
-                                        <div class="input-group" style="margin-bottom: -14px !important;">
+                                        <div class="input-group ig-row" style="margin-bottom: -14px !important;">
                                             <div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
                                                 <div class="input-group" style="margin-bottom: -0px !important;">
                                                     <label class="form-control-sm col-sm-4 labels" style="margin-bottom: 8px !important;">Period From</label>
-                                                    <input type="date" class="form-control form-control-sm cust-sm warn col-sm" [ngModel]="periodFromDate.date" (ngModelChange)="periodFromDate.date = $event" id="pfdate" appRequired [readonly]="this.policyInfo.policyNo === ''">
-                                                    <input type="time" id="pftime" style="margin-left: 3px !important" appRequired class="form-control form-control-sm cust-sm warn col-sm-3" [ngModel]="periodFromDate.time" (ngModelChange)="periodFromDate.time = $event" [readonly]="this.policyInfo.policyNo === ''">
+                                                    <input type="date" class="form-control form-control-sm cust-sm warn col-sm" [ngModel]="periodFromDate.date" (ngModelChange)="periodFromDate.date = $event" name="pfdate" appRequired [readonly]="this.policyInfo.policyNo === ''">
+                                                    <input type="time" name="pftime" style="margin-left: 3px !important" appRequired class="form-control form-control-sm cust-sm warn col-sm-3" [ngModel]="periodFromDate.time" (ngModelChange)="periodFromDate.time = $event" [readonly]="this.policyInfo.policyNo === ''">
                                                 </div>
                                             </div>
                                             <div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
                                                 <div class="input-group" style="margin-bottom: -0px !important;">
                                                     <label class="form-control-sm col-sm-4 labels" style="margin-bottom: 8px !important;">Requested By</label>
-                                                     <input type="text" id="reqBy" class="form-control form-control-sm col-sm warn" [ngModel]="polHoldCoverParams.reqBy" (ngModelChange)="polHoldCoverParams.reqBy = $event" appRequired [readonly]="this.policyInfo.policyNo === ''">
+                                                     <input type="text" name="reqBy" class="form-control form-control-sm col-sm warn" [ngModel]="polHoldCoverParams.reqBy" (ngModelChange)="polHoldCoverParams.reqBy = $event" appRequired [readonly]="this.policyInfo.policyNo === ''">
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="input-group" style="margin-bottom: -14px !important;">
+                                        <div class="input-group ig-row" style="margin-bottom: -14px !important;">
                                            <div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
                                                 <div class="input-group" style="margin-bottom: -0px !important;">
                                                     <label class="form-control-sm col-sm-4 labels" style="margin-bottom: 8px !important;">Period To</label>
-                                                    <input type="date" id="ptdate" class="form-control form-control-sm cust-sm warn col-sm" appRequired [ngModel]="periodToDate.date" (ngModelChange)="periodToDate.date = $event" [readonly]="this.policyInfo.policyNo === ''">
-                                                    <input type="time" id="pttime" style="margin-left: 3px !important" appRequired class="form-control form-control-sm cust-sm warn col-sm-3" [ngModel]="periodToDate.time" (ngModelChange)="periodToDate.time = $event" [readonly]="this.policyInfo.policyNo === ''">
+                                                    <input type="date" name="ptdate" class="form-control form-control-sm cust-sm warn col-sm" appRequired [ngModel]="periodToDate.date" (ngModelChange)="periodToDate.date = $event" [readonly]="this.policyInfo.policyNo === ''">
+                                                    <input type="time" name="pttime" style="margin-left: 3px !important" appRequired class="form-control form-control-sm cust-sm warn col-sm-3" [ngModel]="periodToDate.time" (ngModelChange)="periodToDate.time = $event" [readonly]="this.policyInfo.policyNo === ''">
                                                 </div>
                                             </div>
                                             <div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
                                                 <div class="input-group" style="margin-bottom: -0px !important;">
                                                     <label class="form-control-sm col-sm-4 labels" style="margin-bottom: 8px !important;">Request Date</label>
-                                                    <input type="date" id="reqDate" class="form-control form-control-sm cust-sm col-sm warn" appRequired [ngModel]="polHoldCoverParams.reqDate?.split('T')[0]" (ngModelChange)="polHoldCoverParams.reqDate = $event" [readonly]="this.policyInfo.policyNo === ''">
+                                                    <input type="date" name="reqDate" class="form-control form-control-sm cust-sm col-sm warn" appRequired [ngModel]="polHoldCoverParams.reqDate?.split('T')[0]" (ngModelChange)="polHoldCoverParams.reqDate = $event" [readonly]="this.policyInfo.policyNo === ''">
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="input-group" style="margin-bottom: -14px !important;">
+                                        <div class="input-group ig-row" style="margin-bottom: -14px !important;">
                                             <label class="form-control-sm col-sm-2 labels" style="margin-bottom: 8px !important;" style="padding-left: 0px !important;" >Co. Ref. Hold Cover No</label>
-                                            <input id="crhcno" type="text" class="form-control form-control-sm warn" appRequired [ngModel]="polHoldCoverParams.compRefHoldCovNo" (ngModelChange)="polHoldCoverParams.compRefHoldCovNo = $event" [readonly]="this.policyInfo.policyNo === ''">
+                                            <input name="crhcno" type="text" class="form-control form-control-sm warn" appRequired [ngModel]="polHoldCoverParams.compRefHoldCovNo" (ngModelChange)="polHoldCoverParams.compRefHoldCovNo = $event" [readonly]="this.policyInfo.policyNo === ''">
                                             <label class="form-control-sm col-sm-2 labels" style="margin-bottom: 8px !important;">Prepared By</label>
-                                            <input type="text" id="preparedBy" class="form-control form-control-sm col-sm-7" [ngModel]="polHoldCoverParams.preparedBy" readonly tabindex="-1">
+                                            <input type="text" name="preparedBy" class="form-control form-control-sm col-sm-7" [ngModel]="polHoldCoverParams.preparedBy" readonly tabindex="-1">
                                         </div>
-                                        <div class="input-group" style="margin-bottom: -9px !important;">
+                                        <div class="input-group ig-row" style="margin-bottom: -9px !important;">
                                             <label class="form-control-sm col-sm-2 labels" style="margin-bottom: 8px !important;">Status</label>
-                                            <input type="text" id="status" class="form-control form-control-sm warn" [ngModel]="statusDesc" readonly tabindex="-1">
+                                            <input type="text" name="status" class="form-control form-control-sm warn" [ngModel]="statusDesc" readonly tabindex="-1">
                                             <label class="form-control-sm col-sm-2 labels" style="margin-bottom: 8px !important;">Approved By</label>
-                                            <input type="text" id="approvedBy" class="form-control form-control-sm col-sm-7" [ngModel]="polHoldCoverParams.approvedBy" readonly tabindex="-1">
+                                            <input type="text" name="approvedBy" class="form-control form-control-sm col-sm-7" [ngModel]="polHoldCoverParams.approvedBy" readonly tabindex="-1">
                                         </div>
-                                    </div>
+                                    <!-- </div> -->
                                 </div>
                             </div>
+                        </form>
                         </fieldset>
                     </div>
                     <div class="col-sm-2"></div>
@@ -149,8 +156,8 @@
                     <div class="form-group col-sm">
                         <div class="col-md-13 text-center" style="margin-top:10px">
                             <div class="cust-btn-container">
-                                <button type="button" class="cust-btn" [disabled]="statusDesc === '' || statusDesc === 'Converted'" [class.cust-btn-disabled]="statusDesc === '' || statusDesc === 'Converted'" (click)="cancelHoldCover();"><a>Cancel Hold Cover</a></button>
-                                <button type="button" class="cust-btn" [disabled]="statusDesc !== 'In Force'" [class.cust-btn-disabled]="statusDesc !== 'In Force'"><a>Approval</a></button>
+                                <button type="button" class="cust-btn" [disabled]="statusDesc === '' || statusDesc === 'Converted'" [class.cust-btn-disabled]="statusDesc === '' || statusDesc === 'Converted'" (click)="onClickCancel();"><a>Cancel Hold Cover</a></button>
+                                <button type="button" class="cust-btn" [disabled]="statusDesc !== 'In Force'" [class.cust-btn-disabled]="statusDesc !== 'In Force'" (click)="test(content)"><a>Approval</a></button>
                                 <button type="button" class="cust-btn" (click)="onClickSaveBtn()"><a>Save</a></button>
                             </div>
                         </div>
@@ -160,12 +167,13 @@
         </ngb-tab>
         <ngb-tab id="Exit">
                 <ng-template ngbTabTitle>
-                    <div (click) = "onClickCancel()">Exit</div>
+                    <div>Exit</div>
                 </ng-template>
                 <ng-template ngbTabContent></ng-template>
         </ngb-tab>
     </ngb-tabset>
 
+<!-- ALL MODALS BEGIN HERE -->
     <app-modal hidden [btnTitle]="'List Of Values'" id="lovMdl" (modalOpened)="retrievePolListing()">
         <div header>List Of Values</div>
         <div body>
@@ -179,6 +187,114 @@
         </div>
     </app-modal>
 
+    <app-modal hidden [btnTitle]="'Cancel Hold Cover'" id="cancelModal">
+        <div header>Prompt</div>
+        <div body>
+           <p>Cancel Hold Cover No <strong>{{this.holdCoverNo}}</strong> ?</p>
+        </div>
+        <div footer class="text-center w-100">
+            <div class="col-sm-12 text-center">
+            <button class="cust-btn" type="button" (click)="modalService.dismissAll();cancelHoldCover();"><a>Yes</a></button>
+            <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>No</a></button>
+            </div>
+        </div>
+    </app-modal>
+
     <app-confirm-save (onYes)="onClickSave()"></app-confirm-save>
     <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():this.btnCancelMainEnabled = false"></app-sucess-dialog>
     <app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/hold-cover-monitoring'" ></app-cancel-button>
+
+<!-- <app-print-modal (selectedData)= "showPrintDialog($event)"></app-print-modal> -->
+
+            <ng-template #content>
+                <div class="modal-header">
+                    <span class="modal-title" id="modal-basic-title">Approval</span>
+                    <div class="close" style="padding-bottom: 5px;">
+                    <!--    <a class="btn-cust" aria-label="Close" (click)="modalService.dismissAll();" aria-hidden="true"><span style="padding-right: 3px;"
+                             id="closes">&times;&nbsp;&nbsp;</span></a> -->
+                    </div>
+                </div>
+                <div class="modal-body" style="width: 580px">
+                    <div class="row">
+                        <div class="col-sm-6" style="padding-right : 10px ! important;">
+                            <fieldset class="scheduler-border" style="padding-left : 20px ! important; padding-right : 10px ! important">
+                                <div class="custom-row-inline-inset">
+                                    <div class="input-group" style="margin-top : 13px ! important">
+                                        <div class="col-sm-8" style="padding-left : 0px ! important; padding-right : 0px ! important;">
+                                            <div class="input-group" style="margin-bottom : -8px ! important">
+                                                <label class="form-control-sm" for="xx" style="padding-left: 0px">Status</label>
+                                                <input type="text" id="xx" class="form-control form-control-sm col-sm" style="margin: 0px 0px 12px 9px !important;" [ngModel]="statusDesc" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="input-group">
+                                        <div class="col-sm" style="padding-left : 0px ! important; padding-right : 0px ! important">
+                                            <div class="input-group">
+                                                <select class="form-control form-control-sm cust-sm col-sm-8" [(ngModel)]="authorization">
+                                                    <option value="UNAUTHORIZED">CPI</option>
+                                                    <option value="AUTHORIZED">PMMSC-Admin</option>
+                                                </select>
+                                                <button class="cust" (click)="approve()">Approve</button>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="col-sm-4" style="padding-left : 0px ! important; padding-right : 0px ! important; text-align: center">
+                                            <button class="cust">Approve</button>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="col-sm-6" style="padding-left : 10px ! important;">
+                            <fieldset class="scheduler-border" style="padding-left : 20px ! important; padding-right : 20px ! important">
+                                <div class="custom-row-inline-inset">
+                                    <div class="input-group" style="margin-bottom : -14px ! important; margin-top : 13px ! important">
+                                        <label class="form-control-sm" for="xx">Report</label>
+                                        <select [(ngModel)]=selectedReport class="form-control form-control-sm cust-sm" style="margin: 0px 0px 18px 33px;" appRequired (change)="tabController($event);">
+                                            <option *ngFor="let report of reportsList" [value]="report.val">{{report.desc}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="input-group" style="margin-bottom : -14px ! important" >
+                                        <label class="form-control-sm" for="xx">Destination</label>
+                                        <select class="form-control form-control-sm cust-sm" style="margin: 0px 0px 14.5px 11px;" [(ngModel)]="printType">
+                                            <option>SCREEN</option>
+                                            <option>PDF</option>
+                                            <option>PRINTER</option>
+                                            <!-- <option>Google Docs</option> -->
+                                        </select>
+                                    </div>
+<!--                                    <div class="input-group" style="margin-bottom : -14px ! important">
+                                        <label class="form-control-sm" for="xx">Printer Name</label>
+                                        <select class="form-control form-control-sm cust-sm" style="margin-left: 2px">
+                                            <option>No printer available.</option>
+                                        </select>
+                                    </div>
+                                    <div class="input-group" style="margin-bottom : -14px ! important">
+                                        <label class="form-control-sm" for="xx">No. of Copies</label>
+                                        <input type="text" id="xx" class="form-control form-control-sm" appRequired style="margin-left: 2px !important;">
+                                    </div> -->
+                                    <!-- <div class="input-group" style="margin-bottom : -14px ! important">
+                                        <label class="form-control-sm" for="xx">Option No</label>
+                                        <input type="text" id="xx" class="form-control form-control-sm cust-sm" appRequired style="    margin-left: 16px;">
+                                        <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+                                    </div>
+                                    <div class="input-group" style="margin-bottom : -14px ! important">
+                                        <label class="form-control-sm" for="xx">Wordings</label>
+                                        <input type="text" id="xx" class="form-control form-control-sm" appRequired style="    margin-left: 19px;">
+                                        <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+                                    </div> -->
+                                    
+                                    
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer" style="justify-content: center;">
+                    <div >
+                        <button class="cust-btn" type="button" (click)="modalService.dismissAll();cancel();"><a>Cancel</a></button>
+                        <button class="cust-btn" [class.btnDisabled]="btnDisabled" [disabled]="btnDisabled" type="button" (click)="showPrintPreview();"><a>Print</a></button>
+                    </div>
+                </div>
+            </ng-template>

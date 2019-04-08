@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild } from '@angular/core';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -8,30 +8,58 @@ import { ActivatedRoute, Router } from '@angular/router';
     styleUrls: ['./policy-issuance-alt.component.css']
 })
 export class PolicyIssuanceAltComponent implements OnInit {
+     @ViewChild('contentEditPol') contentEditPol;
 
-    /* Test Data */
-    policyInfo:any = {};
+    policyInfo = {
+        policyId: '',
+        policyNo: '',
+        status:'',
+        riskName:'',
+        insured:'',
+        editPol:''
+    }
+
     alterFlag: boolean = false;
     sub:any;
+    approveText: string = "For Approval";
+    currentUserId: string = JSON.parse(window.localStorage.currentUser).username;
+    approverList: any[];
 
     constructor(private route: ActivatedRoute, private modalService: NgbModal, private router: Router) {}
 
     ngOnInit() {
          this.sub = this.route.params.subscribe(params => {
             this.alterFlag = params['alteration'];
+            this.policyInfo.editPol = JSON.parse(params['editPol']);
+            this.policyInfo.status = params['statusDesc'];
+            this.policyInfo.policyId = params['policyId'];
+            this.policyInfo.policyNo = params['policyNo'];
+            this.policyInfo.riskName = params['riskName'];
+            this.policyInfo.insured = params['insured'];
         });
 
-        console.log(this.alterFlag);
+        console.log(this.policyInfo);
+        this.showEditModal(JSON.parse(this.policyInfo.editPol));
 
         /* Test Data */
-        this.policyInfo.policyId = 9; 
+        /*this.policyInfo.policyId = 9; 
         this.policyInfo.policyNo = 'CAR-2019-00001-001-0001-001';
         this.policyInfo.insuredDesc = 'insured5';
         this.policyInfo.riskName = 'riskName';
         this.policyInfo.principalName = 'principal';
-        this.policyInfo.contractorName = 'contractor';
+        this.policyInfo.contractorName = 'contractor';*/
 
     }
+
+    showEditModal(obj : boolean){
+        if (!obj){
+          setTimeout(() => {
+                 this.modalService.open(this.contentEditPol, { centered: true, backdrop: 'static', windowClass: "modal-size" });
+          });
+        }
+    }
+
+
     public beforeChange($event: NgbTabChangeEvent) {
         if ($event.nextId === 'print-tab') {
             $event.preventDefault();
@@ -43,9 +71,13 @@ export class PolicyIssuanceAltComponent implements OnInit {
     }
 
     onTabChange($event: NgbTabChangeEvent) {
-      if ($event.nextId === 'Exit') {
-        this.router.navigateByUrl('');
-      } 
+        if ($event.nextId === 'Exit') {
+            this.router.navigateByUrl('');
+        } 
+    }
+
+    getPolInfo(event){      
+        this.policyInfo = event;
+    }
   
-  }
 }

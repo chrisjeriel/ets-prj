@@ -307,12 +307,15 @@ export class LovComponent implements OnInit {
     }else if(this.passData.selector == 'deductibles'){
       this.passTable.tHeader = [ 'Deductible', 'Title', 'Deductible Type', 'Rate', 'Deductible Amount','Deductible Text'];
       this.passTable.dataTypes = [ 'text', 'text', 'text', 'percent', 'currency'];
-      this.passTable.keys = ['deductibleCd','deductibleTitle','deductibleType','deductibleRate','deductibleAmt','deductibleText'];
+      this.passTable.keys = ['deductibleCd','deductibleTitle','typeDesc','deductibleRate','deductibleAmt','deductibleText'];
       this.underwritingService.getMaintenanceDeductibles(this.passData.lineCd,
         this.passData.params.deductibleCd,this.passData.params.coverCd,this.passData.params.endtCd,this.passData.params.activeTag,
         this.passData.params.defaultTag
         ).subscribe((data: any) => {
           this.passTable.tableData = data.deductibles.filter((data)=>{return  this.passData.hide.indexOf(data.deductibleCd)==-1});
+          if(this.passData.endtCd !== undefined){
+            this.passTable.tableData = this.passTable.tableData.filter(data=> data.endtCd==this.passData.endtCd || data.endtCd == 0  )
+          }
           this.showButton = true;
           this.table.refreshTable();
       });

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,7 +6,6 @@ import { GeneralInfoComponent } from '@app/quotation/general-info/general-info.c
 import { environment } from '@environments/environment';
 import { QuotationService } from '@app/_services';
 import { first } from 'rxjs/operators';
-
 
 
 @Component({
@@ -52,17 +51,26 @@ export class QuotationComponent implements OnInit {
 	dialogIcon:string  = "";
   dialogMessage:string  = "";
   btnDisabled: boolean;
+  defaultType:boolean = true;
+  status: any;
+  cessionDesc: any;
+  quoteId: any;
+
+  passData: any = {
+    cessionDesc: null,
+    status: null,
+    quoteId: null
+  }
   approveText: string = "For Approval";
   currentUserId: string = JSON.parse(window.localStorage.currentUser).username;
   approverList: any[];
+
 
 	ngOnInit() {
 		this.sub = this.route.params.subscribe(params => {
             this.line = params['line'];
             this.inquiryFlag = params['inquiry'];
         });
-
-  
 	}
 
 	showApprovalModal(content) {
@@ -108,14 +116,26 @@ export class QuotationComponent implements OnInit {
   		if ($event.nextId === 'approval-tab') {
 			$event.preventDefault();
 		}
+
+      if ($event.nextId === 'Print') {
+        $event.preventDefault();
+        $('#printListQuotation > #printModalBtn').trigger('click');
+      } 
+
+
  
   	}
 
-  	checkQuoteInfo(event){  		
+  checkQuoteInfo(event){  		
   		this.quoteInfo = event;
+      this.passData.cessionDesc = this.quoteInfo.typeOfCession.toUpperCase()
+      this.passData.status = this.quoteInfo.status;
+      this.passData.quoteId = this.quoteInfo.quoteId;
+      this.passData.reasonCd = this.quoteInfo.reasonCd;
+    
   		setTimeout(() => { this.header = "/ " + (this.quoteInfo.quotationNo == '' ? this.quoteInfo.lineCd : this.quoteInfo.quotationNo) }, 0);
 
-  		if(this.quoteInfo.typeOfCession.toUpperCase() == 'RETROCESSION'){
+  	if(this.quoteInfo.typeOfCession.toUpperCase() == 'RETROCESSION'){
   			/*this.reportsList.push({val:"QUOTER009B", desc:"RI Preparedness to Support Letter and RI Confirmation of Acceptance Letter" })*/
   			this.reportsList.push({val:"QUOTER009B", desc:"RI Preparedness to Support Letter" },
   								  {val:"QUOTER009B", desc:"RI Confirmation of Acceptance Letter" });
@@ -133,7 +153,7 @@ export class QuotationComponent implements OnInit {
   	}
 
   	showPrintPreview(content) {
-         	if (this.printType.toUpperCase() == 'SCREEN'){
+        if (this.printType.toUpperCase() == 'SCREEN'){
   			window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + this.selectedReport + '&quoteId=' + this.quoteInfo.quoteId, '_blank');
 	  		this.modalService.dismissAll();
 	  		} else if (this.printType.toUpperCase() == 'PDF'){
@@ -144,6 +164,27 @@ export class QuotationComponent implements OnInit {
 	  		    this.modalService.dismissAll();
 	  		}
   	}
+
+    showPrintDialog(event){
+          if(this.quoteInfo.status == '97'){
+            this.printDialog(event[0].printType,event[0].reportName)
+          } else if (this.quoteInfo.status == '2' || this.quoteInfo.status == '96' || this.quoteInfo.status == '98'){
+            this.printDialog(event[0].printType,event[0].reportName)
+          } else {
+            this.printDialog(event[0].printType,event[0].reportName)
+          }
+    }
+
+    printDialog(obj,selectedReport: string){
+      if (obj.toUpperCase() == 'SCREEN'){
+        window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + selectedReport + '&quoteId=' + this.quoteInfo.quoteId, '_blank');
+        this.modalService.dismissAll();
+      } else if (obj.toUpperCase() == 'PDF'){
+        this.downloadPDF(selectedReport,this.quoteInfo.quoteId);
+      } else if (obj.toUpperCase() == 'PRINTER'){
+        this.printPDF(selectedReport,this.quoteInfo.quoteId);
+      }
+    }
 
   	downloadPDF(reportName : string, quoteId : string){
        var fileName = this.quoteInfo.quotationNo;
@@ -187,8 +228,6 @@ export class QuotationComponent implements OnInit {
             }          
        });
     }
-
-
 
     isEmptyObject(obj) {
       for(var prop in obj) {

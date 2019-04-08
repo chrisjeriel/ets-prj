@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12" style="padding: 0">
-            <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)" (print)="print()" (searchToDb)="searchQuery($event)"></app-cust-non-datatable>
+            <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)" (searchToDb)="searchQuery($event)" (export)="export()"></app-cust-non-datatable>
          </div>
     </div>
 
@@ -118,5 +118,5 @@
     </div>
 </div>
 
-<app-print-modal id="printListQuotation" (selectedData)= "showPrintPreview($event)" (onCancel)="cancelModal()" [printDefaultType]="defaultType"></app-print-modal>
-<app-sucess-dialog id="listQuotation" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="print();"></app-sucess-dialog>
+<!-- <app-print-modal id="printListQuotation" (selectedData)= "showPrintPreview($event)" (onCancel)="cancelModal()" [printDefaultType]="defaultType"></app-print-modal>
+<app-sucess-dialog id="listQuotation" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="print();"></app-sucess-dialog> -->
