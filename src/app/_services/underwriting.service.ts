@@ -782,4 +782,13 @@ export class UnderwritingService {
         return this.http.get(environment.prodApiUrl + "/underwriting-service/retrievePolEndtOc",{params}) ;
     }
 
+    savePolEndtOc(params){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolEndtOc', JSON.stringify(params), header);
+    }
+
 }            

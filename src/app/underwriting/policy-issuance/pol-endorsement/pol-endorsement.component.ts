@@ -276,28 +276,55 @@ export class PolEndorsementComponent implements OnInit {
             }else if(endt.deleted){
                 params.deleteEndorsements.push(endt);
             }
-            for(let ded of endt.deductibles){
-                if(ded.edited && !ded.deleted){
-                    ded.createDate = this.ns.toDateTimeString(ded.createDate);
-                    ded.updateDate = this.ns.toDateTimeString(ded.updateDate);
-                    ded.updateUser = JSON.parse(window.localStorage.currentUser).username
-                    params.saveDeductibleList.push(ded);
-                }else if(ded.deleted){
-                    params.deleteDeductibleList.push(ded);
+            if(!this.ocFlag)
+                for(let ded of endt.deductibles){
+                    if(ded.edited && !ded.deleted){
+                        ded.createDate = this.ns.toDateTimeString(ded.createDate);
+                        ded.updateDate = this.ns.toDateTimeString(ded.updateDate);
+                        ded.updateUser = JSON.parse(window.localStorage.currentUser).username
+                        params.saveDeductibleList.push(ded);
+                    }else if(ded.deleted){
+                        params.deleteDeductibleList.push(ded);
+                    }
+                }
+            else{
+                for(let ded of endt.deductiblesOc){
+                    if(ded.edited && !ded.deleted){
+                        ded.createDate = this.ns.toDateTimeString(ded.createDate);
+                        ded.updateDate = this.ns.toDateTimeString(ded.updateDate);
+                        ded.updateUser = JSON.parse(window.localStorage.currentUser).username
+                        params.saveDeductibleList.push(ded);
+                    }else if(ded.deleted){
+                        params.deleteDeductibleList.push(ded);
+                    }
                 }
             }
         }
         console.log(params)
-        this.underwritingService.savePolEndt(params).subscribe(data=>{
-            if(data['returnCode'] == -1){
-                this.dialogIcon = "success";
-                this.successDiag.open();
-                this.retrieveEndt();
-            }else{
-                this.dialogIcon = "error";
-                this.successDiag.open();
-            }
-        })
+        if(this.ocFlag){
+            params.policyId = this.policyInfo.policyIdOc;
+            this.underwritingService.savePolEndtOc(params).subscribe(data=>{
+                if(data['returnCode'] == -1){
+                    this.dialogIcon = "success";
+                    this.successDiag.open();
+                    this.retrieveEndt();
+                }else{
+                    this.dialogIcon = "error";
+                    this.successDiag.open();
+                }
+            })
+        }
+        else
+            this.underwritingService.savePolEndt(params).subscribe(data=>{
+                if(data['returnCode'] == -1){
+                    this.dialogIcon = "success";
+                    this.successDiag.open();
+                    this.retrieveEndt();
+                }else{
+                    this.dialogIcon = "error";
+                    this.successDiag.open();
+                }
+            })
     }
 
 }
