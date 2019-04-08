@@ -92,7 +92,6 @@ export class PolicyIssuanceComponent implements OnInit {
       this.policyInfo.policyId = event.policyId;
       this.policyInfo.insuredDesc =  event.insuredDesc;
       this.policyInfo.riskId =  event.riskId;
-      console.log(event);
   }
 
   returnOnModal(){
