@@ -85,7 +85,6 @@ export class PolEndorsementComponent implements OnInit {
       selector:'',
       data:{}
     }
-    policyId:any = '8';
 
 
     @Input() alteration: boolean = false;
@@ -96,6 +95,8 @@ export class PolEndorsementComponent implements OnInit {
     dialogIcon:string;
     dialogMsg: string = "";
     cancelFlag : boolean = false;
+    @Input() policyInfo: any;
+    @Input() ocFlag: false;
 
     constructor(config: NgbDropdownConfig, private underwritingService: UnderwritingService, private titleService: Title, private ns: NotesService
     ) {
@@ -105,10 +106,10 @@ export class PolEndorsementComponent implements OnInit {
 
     ngOnInit() {
         this.titleService.setTitle("Pol | Endorsement");
-        if(this.alteration){
+        if((this.alteration || this.ocFlag) && this.policyInfo.fromInq!='true'){
             //do something
             this.passData.magnifyingGlass = ['endtCd'];
-            this.passData.checkFlag = true;
+            this.passData.checkFlag = false;
             this.deductiblesData.checkFlag = true;
             this.deductiblesData.magnifyingGlass = ['deductibleCd'];
             this.passData.uneditable = [true,true,true,false];
@@ -123,25 +124,53 @@ export class PolEndorsementComponent implements OnInit {
             this.deductiblesData.addFlag = false;
             this.deductiblesData.deleteFlag = false;
         }
-        this.retrieveEndt();
+        this.currentLine = this.ocFlag ? this.policyInfo.policyNo.substring(3,6) : this.policyInfo.policyNo.substring(0,3);
+        if(this.ocFlag)
+            this.retrieveEndtOC();
+        else 
+            this.retrieveEndt();
     }
 
     //retrieve Endorsement
     retrieveEndt(){
-        this.underwritingService.getPolicyEndorsement(this.policyId, '').subscribe((data: any) =>{
+        this.underwritingService.getPolicyEndorsement(this.policyInfo.policyId, '').subscribe((data: any) =>{
             if(data.endtList !== null){
                 this.passData.tableData = data.endtList.endorsements;
-                this.endtTable.refreshTable();
-                this.endtTable.onRowClick(null,this.passData.tableData[0]);
-            }
+                
+            } 
+            this.endtTable.onRowClick(null,this.passData.tableData[0]);
+            this.endtTable.refreshTable();
         });
     }
+
+    retrieveEndtOC(){
+        this.underwritingService.getPolicyEndorsementOC(this.policyInfo.policyIdOc, '').subscribe((data: any) =>{
+            console.log(data)
+            if(data.endtList !== null){
+                this.passData.tableData = data.endtOcList.endorsementsOc;
+            } 
+            this.endtTable.onRowClick(null,this.passData.tableData[0]);
+            this.endtTable.refreshTable();
+        });
+    }
+
+
 
     //retrieve deductibles
     retrieveDeductibles(data){
         if(data !== null && data.deductibles !== undefined){
             this.deductiblesData.nData.endtCd = data.endtCd;
             this.deductiblesData.tableData = data.deductibles
+        }else{
+            this.deductiblesData.tableData = [];
+        }
+        this.dedTable.refreshTable();
+    }
+
+    retrieveDeductiblesOc(data){
+        if(data !== null && data.deductiblesOc !== undefined){
+            this.deductiblesData.nData.endtCd = data.endtCd;
+            this.deductiblesData.tableData = data.deductiblesOc
         }else{
             this.deductiblesData.tableData = [];
         }
@@ -165,7 +194,10 @@ export class PolEndorsementComponent implements OnInit {
         }
 
         //retrieve Deductibles when selecting an endorsement
-       this.retrieveDeductibles(data);
+        if(this.ocFlag)
+            this.retrieveDeductiblesOc(data);
+        else
+           this.retrieveDeductibles(data);
     }
 
     clickEndtLov(data){
@@ -175,13 +207,13 @@ export class PolEndorsementComponent implements OnInit {
 
     clickDedLov(data){
         this.passLOVData.selector = 'deductibles';
-        this.passLOVData.lineCd = 'CAR';
+        this.passLOVData.lineCd = this.currentLine;
+        this.passLOVData.endtCd = this.endtTable.indvSelect.endtCd;
         this.passLOVData.hide = this.deductiblesData.tableData.filter((a)=>{return !a.deleted}).map(a=>a.deductibleCd);
         this.passLOVData.params = {
           coverCd: '0',
-          endtCd: this.currentEndtCd,
           activeTag:'Y'
-        }
+        };
         $('#lov #modalBtn2').trigger('click');
     }
 
@@ -229,7 +261,7 @@ export class PolEndorsementComponent implements OnInit {
     save(can?){
         this.cancelFlag = can !== undefined;
         let params : any = {
-            policyId : this.policyId,
+            policyId : this.policyInfo.policyId,
             saveEndorsements: [],
             deleteEndorsements: [],
             saveDeductibleList: [],
@@ -244,28 +276,55 @@ export class PolEndorsementComponent implements OnInit {
             }else if(endt.deleted){
                 params.deleteEndorsements.push(endt);
             }
-            for(let ded of endt.deductibles){
-                if(ded.edited && !ded.deleted){
-                    ded.createDate = this.ns.toDateTimeString(ded.createDate);
-                    ded.updateDate = this.ns.toDateTimeString(ded.updateDate);
-                    ded.updateUser = JSON.parse(window.localStorage.currentUser).username
-                    params.saveDeductibleList.push(ded);
-                }else if(ded.deleted){
-                    params.deleteDeductibleList.push(ded);
+            if(!this.ocFlag)
+                for(let ded of endt.deductibles){
+                    if(ded.edited && !ded.deleted){
+                        ded.createDate = this.ns.toDateTimeString(ded.createDate);
+                        ded.updateDate = this.ns.toDateTimeString(ded.updateDate);
+                        ded.updateUser = JSON.parse(window.localStorage.currentUser).username
+                        params.saveDeductibleList.push(ded);
+                    }else if(ded.deleted){
+                        params.deleteDeductibleList.push(ded);
+                    }
+                }
+            else{
+                for(let ded of endt.deductiblesOc){
+                    if(ded.edited && !ded.deleted){
+                        ded.createDate = this.ns.toDateTimeString(ded.createDate);
+                        ded.updateDate = this.ns.toDateTimeString(ded.updateDate);
+                        ded.updateUser = JSON.parse(window.localStorage.currentUser).username
+                        params.saveDeductibleList.push(ded);
+                    }else if(ded.deleted){
+                        params.deleteDeductibleList.push(ded);
+                    }
                 }
             }
         }
         console.log(params)
-        this.underwritingService.savePolEndt(params).subscribe(data=>{
-            if(data['returnCode'] == -1){
-                this.dialogIcon = "success";
-                this.successDiag.open();
-                this.retrieveEndt();
-            }else{
-                this.dialogIcon = "error";
-                this.successDiag.open();
-            }
-        })
+        if(this.ocFlag){
+            params.policyId = this.policyInfo.policyIdOc;
+            this.underwritingService.savePolEndtOc(params).subscribe(data=>{
+                if(data['returnCode'] == -1){
+                    this.dialogIcon = "success";
+                    this.successDiag.open();
+                    this.retrieveEndt();
+                }else{
+                    this.dialogIcon = "error";
+                    this.successDiag.open();
+                }
+            })
+        }
+        else
+            this.underwritingService.savePolEndt(params).subscribe(data=>{
+                if(data['returnCode'] == -1){
+                    this.dialogIcon = "success";
+                    this.successDiag.open();
+                    this.retrieveEndt();
+                }else{
+                    this.dialogIcon = "error";
+                    this.successDiag.open();
+                }
+            })
     }
 
 }

@@ -252,7 +252,7 @@ export class CustNonDatatableComponent implements OnInit {
                 let width = this.startWidth + (event.x - this.startX);
                 $(this.start).parent().css({'min-width': width, 'max-width': width, 'width': width});
                 let index = $(this.start).parent().index() + 1;
-                $('.content-container tr td:nth-child(' + index + ')').css({'min-width': width, 'max-width': width, 'width': width});
+                $('#notPin'+this.passData.pageID+' .content-container tr td:nth-child(' + index + ')').css({'min-width': width, 'max-width': width, 'width': width});
                 
             }
         });
