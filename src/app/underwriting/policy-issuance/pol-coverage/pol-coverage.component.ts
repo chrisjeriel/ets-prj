@@ -261,6 +261,7 @@ export class PolCoverageComponent implements OnInit {
   comtotalSi:number = 0;
   comtotalPrem:number = 0;
   policyIdAlt:any;
+  integerFlag:boolean = false;
 
   constructor(private underwritingservice: UnderwritingService, private titleService: Title, private modalService: NgbModal,
                 private route: ActivatedRoute, private ns: NotesService,  private router: Router) { }
@@ -748,7 +749,7 @@ export class PolCoverageComponent implements OnInit {
   }
 
   focusBlur(){
-    //setTimeout(() => {$('.req').focus();$('.req').blur()},0)
+    setTimeout(() => {$('.req').focus();$('.req').blur()},0)
   }
 
   onClickSave(){
@@ -788,16 +789,14 @@ export class PolCoverageComponent implements OnInit {
         this.passData.tableData[j].comRate             = this.passData.tableData[j].premRt
         this.passData.tableData[j].comPremium          = isNaN((this.passData.tableData[j].altSumInsured && this.passData.tableData[j].altRate)) ? this.passData.tableData[j].premAmt : this.passData.tableData[j].premAmt  + this.passData.tableData[j].altPremium;
       }else{
-        this.passData.tableData[j].altPremium        = isNaN(this.passData.tableData[j].altRate) ? 0:this.passData.tableData[j].altSumInsured * (this.passData.tableData[j].altRate / 100);
+        this.passData.tableData[j].altPremium        = isNaN(this.passData.tableData[j].altRate) ? null:this.passData.tableData[j].altSumInsured * (this.passData.tableData[j].altRate / 100);
         
         if(this.passData.tableData[j].section == 'I' && this.passData.tableData[j].addSi == 'Y'){
           this.prevsectionISi                         += this.passData.tableData[j].sumInsured;
           this.prevsectionIPrem                       += this.passData.tableData[j].premAmt;
           this.altsectionISi                          += isNaN(this.passData.tableData[j].altSumInsured) ? 0: this.passData.tableData[j].altSumInsured;
-          
           this.altsectionIPrem                        += isNaN(this.passData.tableData[j].altPremium) ? 0: this.passData.tableData[j].altPremium;
           
-
           this.passData.tableData[j].comSumInsured     = isNaN(this.altsectionISi) ? 0:this.prevsectionISi + this.altsectionISi;
           this.passData.tableData[j].comRate           = isNaN(this.passData.tableData[j].altRate) ? this.passData.tableData[j].premRt: this.passData.tableData[j].altRate;
           this.passData.tableData[j].comPremium        = isNaN((this.passData.tableData[j].altRate && this.passData.tableData[j].altPremium)) ? this.prevsectionIPrem :  this.prevsectionIPrem + this.altsectionIPrem;
@@ -817,7 +816,6 @@ export class PolCoverageComponent implements OnInit {
           
           this.comsectionIISi                        += this.passData.tableData[j].comSumInsured;
           this.comsectionIIPrem                      += this.passData.tableData[j].comPremium;
-          
         }
 
         if(this.passData.tableData[j].section == 'III' && this.passData.tableData[j].addSi == 'Y'){
@@ -832,7 +830,6 @@ export class PolCoverageComponent implements OnInit {
           
           this.comsectionIIISi                       += this.passData.tableData[j].comSumInsured;
           this.comsectionIIIPrem                     += this.passData.tableData[j].comPremium;
-          
         }
       }
     }
@@ -870,7 +867,7 @@ export class PolCoverageComponent implements OnInit {
     this.altCoverageData.comtotalSi       = this.comtotalSi;
     this.altCoverageData.comtotalPrem     = this.comtotalPrem;
 
-    setTimeout(() => this.focusBlur(),0);
+    //setTimeout(() => this.focusBlur(),0);
   }
 
   prepareAlterationSave(){
