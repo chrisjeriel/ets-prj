@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,6 +6,8 @@ import { GeneralInfoComponent } from '@app/quotation/general-info/general-info.c
 import { environment } from '@environments/environment';
 import { QuotationService } from '@app/_services';
 import { first } from 'rxjs/operators';
+
+
 
 
 @Component({
@@ -65,7 +67,6 @@ export class QuotationComponent implements OnInit {
   currentUserId: string = JSON.parse(window.localStorage.currentUser).username;
   approverList: any[];
 
-
 	ngOnInit() {
 		this.sub = this.route.params.subscribe(params => {
             this.line = params['line'];
@@ -119,7 +120,6 @@ export class QuotationComponent implements OnInit {
 
       if ($event.nextId === 'Print') {
         $event.preventDefault();
-
         $('#printListQuotation > #printModalBtn').trigger('click');
       } 
 
@@ -127,7 +127,7 @@ export class QuotationComponent implements OnInit {
  
   	}
 
-  checkQuoteInfo(event){  		
+  checkQuoteInfo(event){ 	
   		this.quoteInfo = event;
       this.passData.cessionDesc = this.quoteInfo.typeOfCession.toUpperCase()
       this.passData.status = this.quoteInfo.status;

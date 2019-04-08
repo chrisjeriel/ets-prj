@@ -67,7 +67,7 @@ export class ListOfQuotationsComponent implements OnInit {
         {
             key: 'quotationNo',
             title: 'Quotation No.',
-            dataType: 'seq'
+            dataType: 'text'
         },
         {
             key: 'cessionDesc',
@@ -157,6 +157,7 @@ export class ListOfQuotationsComponent implements OnInit {
         expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, pageStatus: true, pagination: true, pageID: 1, exportFlag: true,
         keys: ['quotationNo','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','insuredDesc','riskName','objectDesc','site','policyNo','currencyCd'],
     }
+    theme =  window.localStorage.getItem("selectedTheme");
 
     constructor(private quotationService: QuotationService, private router: Router, private modalService: NgbModal, private notes: NotesService) { 
     }

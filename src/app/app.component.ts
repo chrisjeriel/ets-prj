@@ -150,6 +150,7 @@ export class AppComponent  {
          $('.nav-link').css({"color":""});
          $('.ngx-pagination .current').css({"background":'linear-gradient(to bottom, #4080bf 0%, #2d5986 100%)'});
          $('.cust').css({"background":'linear-gradient(to bottom,#4080bf 0%, #2d5986 100%)'}); 
+         $('.cust-export').css({"background":'linear-gradient(to bottom,#4080bf 0%, #2d5986 100%)'}); 
     }
 
     setColorTheme(color1 : string , color2 : string, color3 : string , color4 : string){
@@ -177,10 +178,13 @@ export class AppComponent  {
             });
             $('legend.scheduler-border').css({"color":color2});
             $(' aside.ng-sidebar ').css({"background-color":color3});
-            $('.nav-link ').css({"color":color2});
+            $('.nav-link').css({"color":color2});
             $('.nav-link.active ').css({"color":"#495057"});
+            $('nav-link .disabled').css({"color":"#6c757d"});  
             $('.ngx-pagination .current').css({"background":'linear-gradient(to bottom,'+color2+' 0%, '+color3+' 100%)'});
             $('.cust').css({"background":'linear-gradient(to bottom,'+color2+' 0%, '+color3+' 100%)'});
+            $('.cust-export').css({"background":'linear-gradient(to bottom,'+color2+' 0%, '+color3+' 100%)'});   
+
     }
 
     applyTheme(){
