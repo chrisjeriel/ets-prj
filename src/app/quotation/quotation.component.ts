@@ -119,6 +119,7 @@ export class QuotationComponent implements OnInit {
 
       if ($event.nextId === 'Print') {
         $event.preventDefault();
+
         $('#printListQuotation > #printModalBtn').trigger('click');
       } 
 
@@ -132,7 +133,6 @@ export class QuotationComponent implements OnInit {
       this.passData.status = this.quoteInfo.status;
       this.passData.quoteId = this.quoteInfo.quoteId;
       this.passData.reasonCd = this.quoteInfo.reasonCd;
-    
   		setTimeout(() => { this.header = "/ " + (this.quoteInfo.quotationNo == '' ? this.quoteInfo.lineCd : this.quoteInfo.quotationNo) }, 0);
 
   	if(this.quoteInfo.typeOfCession.toUpperCase() == 'RETROCESSION'){
@@ -179,10 +179,13 @@ export class QuotationComponent implements OnInit {
       if (obj.toUpperCase() == 'SCREEN'){
         window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + selectedReport + '&quoteId=' + this.quoteInfo.quoteId, '_blank');
         this.modalService.dismissAll();
+        this.selectedReport = null;
       } else if (obj.toUpperCase() == 'PDF'){
         this.downloadPDF(selectedReport,this.quoteInfo.quoteId);
+        this.selectedReport = null;
       } else if (obj.toUpperCase() == 'PRINTER'){
         this.printPDF(selectedReport,this.quoteInfo.quoteId);
+        this.selectedReport = null;
       }
     }
 
