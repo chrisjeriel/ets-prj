@@ -84,6 +84,8 @@ export class PolicyToHoldCoverComponent implements OnInit {
 
 	authorization: string = 'UNAUTHORIZED';
 
+	tempPolNo: string[] = [];
+
 	ngOnInit() {
 		//set default report type for Hold Cover Letter
 		//this.print.selectedReport = 'QUOTER012';
@@ -306,6 +308,23 @@ export class PolicyToHoldCoverComponent implements OnInit {
   		}else if(this.authorization === 'AUTHORIZED'){
   			this.statusDesc = 'Approved';
   		}
+  	}
+
+  	policySearchParams(data:string, key:string){
+  		if(key === 'lineCd'){
+  			this.tempPolNo[0] = data;
+  		}else if(key === 'year'){
+  			this.tempPolNo[1] = data;
+  		}else if(key === 'seqNo'){
+  			this.tempPolNo[2] = data;
+  		}else if(key === 'cedingId'){
+  			this.tempPolNo[3] = data;
+  		}else if(key === 'coSeriesNo'){
+  			this.tempPolNo[4] = data;
+  		}else if(key === 'altNo'){
+  			this.tempPolNo[5] = data;
+  		}
+  		console.log(this.tempPolNo);
   	}
 
 }

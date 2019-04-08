@@ -55,12 +55,12 @@
                                         <div class="input-group ig-row">
                                             <label class="form-control-sm col-sm-2">Policy No</label>
                                             <div class="input-group col-sm-8">
-                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Line" appRequired [ngModel]="policyInfo.policyNo.split('-')[0]">
-                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Year" style="margin-left: 3px;" appRequired [ngModel]="policyInfo.policyNo.split('-')[1]">
-                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Sequence No" style="margin-left: 3px;" appRequired [ngModel]="policyInfo.policyNo.split('-')[2]">
-                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Ceding ID" style="margin-left: 3px;" appRequired [ngModel]="policyInfo.policyNo.split('-')[3]">
-                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Company Series No" style="margin-left: 3px;" appRequired [ngModel]="policyInfo.policyNo.split('-')[4]">
-                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Alteration No" style="margin-left: 3px;" appRequired [ngModel]="policyInfo.policyNo.split('-')[5]">
+                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Line" appRequired [ngModel]="policyInfo.policyNo.split('-')[0]" (blur)="checkPolParams()" (ngModelChange)="policySearchParams($event, 'lineCd')">
+                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Year" style="margin-left: 3px;" appRequired [ngModel]="policyInfo.policyNo.split('-')[1]" (blur)="checkPolParams()" (ngModelChange)="policySearchParams($event, 'year')">
+                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Sequence No" style="margin-left: 3px;" appRequired [ngModel]="policyInfo.policyNo.split('-')[2]" (blur)="checkPolParams()" (ngModelChange)="policySearchParams($event, 'seqNo')">
+                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Ceding ID" style="margin-left: 3px;" appRequired [ngModel]="policyInfo.policyNo.split('-')[3]" (blur)="checkPolParams()" (ngModelChange)="policySearchParams($event, 'cedingId')">
+                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Company Series No" style="margin-left: 3px;" appRequired [ngModel]="policyInfo.policyNo.split('-')[4]" (blur)="checkPolParams()" (ngModelChange)="policySearchParams($event, 'coSeriesNo')">
+                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Alteration No" style="margin-left: 3px;" appRequired [ngModel]="policyInfo.policyNo.split('-')[5]" (blur)="checkPolParams()" (ngModelChange)="policySearchParams($event, 'altNo')">
                                             </div>
                                             <span>&nbsp;</span>
                                             <div class="text-search-ico col-sm-1"><a (click)="openModal();"><i class="fa fa-search"></i></a></div>
