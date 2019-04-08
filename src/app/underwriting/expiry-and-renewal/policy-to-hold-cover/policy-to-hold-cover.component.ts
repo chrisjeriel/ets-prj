@@ -1,10 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { PolicyHoldCoverInfo } from '../../../_models/PolicyToHoldCover';
 import { Title } from '@angular/platform-browser';
 import { NotesService, UnderwritingService } from '@app/_services';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { PrintModalComponent } from '@app/_components/common/print-modal/print-modal.component';
+import { FormsModule }   from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-policy-to-hold-cover',
@@ -17,8 +20,10 @@ export class PolicyToHoldCoverComponent implements OnInit {
 
 	@ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
 	@ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+	//@ViewChild(PrintModalComponent) print : PrintModalComponent;
+	@ViewChild('myForm') form:any;
 
-	constructor(private titleService: Title, private noteService: NotesService, private us: UnderwritingService, private modalService: NgbModal) { }
+	constructor(private titleService: Title, private noteService: NotesService, private us: UnderwritingService, private modalService: NgbModal, private router: Router) { }
 
 	policyListingData: any = {
 		tableData: [],
@@ -77,37 +82,53 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	dialogMessage: string = '';
 	cancelFlag: boolean = false;
 
+	authorization: string = 'UNAUTHORIZED';
+
 	ngOnInit() {
-
-
+		//set default report type for Hold Cover Letter
+		//this.print.selectedReport = 'QUOTER012';
+		//this.print.reports = true;
+		//console.log(this.print.reports);
 	}
-	test(event){
+
+	test(content){
+		/*console.log(event);
+		$('#printModalBtn').trigger('click');*/
+		this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
+	}
+
+	showPrintDialog(event){
 		console.log(event);
 	}
 
 	retrievePolHoldCov(policyId: string, policyNo: string){
 		this.us.retrievePolHoldCover(policyId, '').subscribe((data: any)=>{
 			console.log(data);
-			this.polHoldCoverParams.policyId				= data.policy.holdCoverList[0].policyId;
-			this.polHoldCoverParams.holdCovId				= data.policy.holdCoverList[0].holdCovId;
-			this.polHoldCoverParams.lineCd					= data.policy.holdCoverList[0].lineCd;
-			this.polHoldCoverParams.holdCovYear				= data.policy.holdCoverList[0].holdCovYear;
-			this.polHoldCoverParams.holdCovSeqNo			= data.policy.holdCoverList[0].holdCovSeqNo;
-			this.polHoldCoverParams.holdCovRevNo			= data.policy.holdCoverList[0].holdCovRevNo;
-			this.polHoldCoverParams.periodFrom				= this.noteService.toDateTimeString(data.policy.holdCoverList[0].periodFrom);
-			this.polHoldCoverParams.periodTo				= this.noteService.toDateTimeString(data.policy.holdCoverList[0].periodTo);
-			this.polHoldCoverParams.compRefHoldCovNo		= data.policy.holdCoverList[0].compRefHoldCovNo;
-			this.polHoldCoverParams.status					= data.policy.holdCoverList[0].status;
-			this.polHoldCoverParams.reqBy					= data.policy.holdCoverList[0].reqBy;
-			this.polHoldCoverParams.reqDate					= this.noteService.toDateTimeString(data.policy.holdCoverList[0].reqDate);
-			this.polHoldCoverParams.preparedBy				= data.policy.holdCoverList[0].preparedBy;
-			this.polHoldCoverParams.approvedBy				= data.policy.holdCoverList[0].approvedBy;
-			this.polHoldCoverParams.createUser				= data.policy.holdCoverList[0].createUser;
-			this.polHoldCoverParams.createDate				= this.noteService.toDateTimeString(data.policy.holdCoverList[0].createDate);
-			this.polHoldCoverParams.updateUser				= data.policy.holdCoverList[0].updateUser;
-			this.polHoldCoverParams.updateDate				= this.noteService.toDateTimeString(data.policy.holdCoverList[0].updateDate);
-			this.statusDesc 								= data.policy.holdCoverList[0].statusDesc;
-			this.holdCoverNo 								= data.policy.holdCoverList[0].holdCovNo;
+			for(let rec of data.policy.holdCoverList){
+				if(rec.status !== 'X'){
+					this.polHoldCoverParams.policyId				= rec.policyId;
+					this.polHoldCoverParams.holdCovId				= rec.holdCovId;
+					this.polHoldCoverParams.lineCd					= rec.lineCd;
+					this.polHoldCoverParams.holdCovYear				= rec.holdCovYear;
+					this.polHoldCoverParams.holdCovSeqNo			= rec.holdCovSeqNo;
+					this.polHoldCoverParams.holdCovRevNo			= rec.holdCovRevNo;
+					this.polHoldCoverParams.periodFrom				= this.noteService.toDateTimeString(rec.periodFrom);
+					this.polHoldCoverParams.periodTo				= this.noteService.toDateTimeString(rec.periodTo);
+					this.polHoldCoverParams.compRefHoldCovNo		= rec.compRefHoldCovNo;
+					this.polHoldCoverParams.status					= rec.status;
+					this.polHoldCoverParams.reqBy					= rec.reqBy;
+					this.polHoldCoverParams.reqDate					= this.noteService.toDateTimeString(rec.reqDate);
+					this.polHoldCoverParams.preparedBy				= rec.preparedBy;
+					this.polHoldCoverParams.approvedBy				= rec.approvedBy;
+					this.polHoldCoverParams.createUser				= rec.createUser;
+					this.polHoldCoverParams.createDate				= this.noteService.toDateTimeString(rec.createDate);
+					this.polHoldCoverParams.updateUser				= rec.updateUser;
+					this.polHoldCoverParams.updateDate				= this.noteService.toDateTimeString(rec.updateDate);
+					this.statusDesc 								= rec.statusDesc;
+					this.holdCoverNo 								= rec.holdCovNo;
+				}
+			}
+			
 			this.periodFromDate.date 						= this.polHoldCoverParams.periodFrom.split('T')[0];
 			this.periodFromDate.time 						= this.polHoldCoverParams.periodFrom.split('T')[1];
 			this.periodToDate.date 							= this.polHoldCoverParams.periodTo.split('T')[0];
@@ -159,6 +180,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 			this.dialogIcon = '';
 			this.dialogMessage = '';
 			$('app-sucess-dialog #modalBtn').trigger('click');
+			this.form.control.markAsPristine();
 		});
 	}
 
@@ -205,6 +227,9 @@ export class PolicyToHoldCoverComponent implements OnInit {
 		}
 	}
 
+	onClickCancel(){
+		$('#cancelModal > #modalBtn').trigger('click');
+	}
 	//cancel hold cover
 	cancelHoldCover(){
 		let params = {
@@ -253,12 +278,34 @@ export class PolicyToHoldCoverComponent implements OnInit {
 									}
 	}
 
-	onClickCancel(){
-		this.cancelBtn.clickCancel();
-	}
 
 	onClickSaveBtn(){
-		$('#confirm-save #modalBtn2').trigger('click');
+		if(this.policyInfo.policyNo === '' || this.policyInfo.cedingName === '' || this.policyInfo.insuredDesc === '' ||
+		   this.policyInfo.riskName === '' || this.policyInfo.policyId === 0 || this.periodFromDate.date === '' ||
+		   this.periodFromDate.time === '' || this.periodToDate.date === '' || this.periodToDate.time === '' ||
+		   this.polHoldCoverParams.reqBy === '' || this.polHoldCoverParams.reqDate === '' || this.polHoldCoverParams.compRefHoldCovNo === ''){
+
+				this.dialogMessage = 'Please fill all required fields';
+				this.dialogIcon = 'info';
+				$('app-sucess-dialog #modalBtn').trigger('click');
+		}else{
+			$('#confirm-save #modalBtn2').trigger('click');
+		}
 	}
+
+	onTabChange($event: NgbTabChangeEvent) {
+  		if ($event.nextId === 'Exit') {
+    		this.router.navigateByUrl('');
+  		} 
+  	}
+
+  	approve(){
+  		//do something
+  		if(this.authorization === 'UNAUTHORIZED'){
+  			this.statusDesc = 'Pending Approval';
+  		}else if(this.authorization === 'AUTHORIZED'){
+  			this.statusDesc = 'Approved';
+  		}
+  	}
 
 }
