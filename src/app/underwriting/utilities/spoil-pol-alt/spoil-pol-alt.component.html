@@ -1,0 +1,174 @@
+<div class="cust-tabs-container">
+	<h4>Policy / Utilities</h4>
+	<ngb-tabset>
+		<ngb-tab title="Spoil Policy/Alteration">
+			<ng-template ngbTabContent>
+				<fieldset class="scheduler-border fldst">
+					<div class="form-row custom-row-inline-inset">
+						<div class="input-group">
+							<div class="col-sm-2"></div>
+							<label class="form-control-sm col-sm-1">Policy No</label>
+							<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Line">
+							<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Year">
+							<input type="text" class="form-control form-control-sm col-sm   cap-input" style="margin-left: 3px;" ngbTooltip="Sequence No">
+							<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Co Code">
+							<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Co Series No">
+							<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Alt No">
+							<span>&nbsp;</span>
+							<div><a><i class="fa fa-search"></i></a></div>
+							<div class="form-row">
+								<div class="form-group">
+									<div class="col-md-12 text-center">
+										<div class="cust-btn-container">
+											<button type="button" class="cust-btn"><a>Clear</a></button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-2"></div>
+						</div>
+					</div>
+				</fieldset>
+
+				<fieldset class="scheduler-border">
+					<legend class="scheduler-border">Policy Record</legend>
+					<div class="custom-row-inline-inset">
+						<div class="form-row">
+							<div class="col-sm-6">
+								<div class="input-group">
+									<label class="form-control-sm col-sm-3">Ceding Company</label>
+									<input type="text" class="form-control form-control-sm col-sm" readonly>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="input-group">
+									<label class="form-control-sm col-sm-3">Risk</label>
+									<input type="text" class="form-control form-control-sm col-sm" readonly>
+									<div class="col-sm-1"></div>
+								</div>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="col-sm-6">
+								<div class="input-group">
+									<label class="form-control-sm col-sm-3">Insured</label>
+									<input type="text" class="form-control form-control-sm col-sm" readonly>
+								</div>
+							</div>
+							<div class="col-sm-6"></div>
+						</div>
+					</div>
+				</fieldset>
+
+				<fieldset class="scheduler-border">
+					<legend class="scheduler-border">Period of Insurance</legend>
+					<div class="custom-row-inline-inset">
+						<div class="form-row">
+							<div class="col-sm-6">
+								<div class="input-group">
+									<div class="col-sm-4"></div>
+									<label class="form-control-sm col-sm-3">Inception Date</label>
+									<input type="text" class="form-control form-control-sm col-sm" readonly>
+									<div class="col-sm-1"></div>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="input-group">
+									<div class="col-sm-1"></div>
+									<label class="form-control-sm col-sm-2">Expiry Date</label>
+									<input type="text" class="form-control form-control-sm col-sm" readonly>  
+									<div class="col-sm-5"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+
+				<fieldset class="scheduler-border">
+					<legend class="scheduler-border">Production Booking</legend>
+					<div class="custom-row-inline-inset">
+						<div class="form-row">
+							<div class="col-sm-6">
+								<div class="input-group">
+									<div class="col-sm-4"></div>
+									<label class="form-control-sm col-sm-3">Issue Date</label>
+									<input type="text" class="form-control form-control-sm col-sm" readonly>
+									<div class="col-sm-1"></div>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="input-group">
+									<label class="form-control-sm col-sm-3">Distribution Date</label>
+									<input type="text" class="form-control form-control-sm col-sm" readonly>
+									<div class="col-sm-5"></div>
+								</div>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="col-sm-6">
+								<div class="input-group">
+									<div class="col-sm-4"></div>
+									<label class="form-control-sm col-sm-3">Effective Date</label>
+									<input type="text" class="form-control form-control-sm col-sm" readonly>
+									<div class="col-sm-1"></div>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="input-group">
+									<label class="form-control-sm col-sm-3">Accounting Date</label>
+									<input type="text" class="form-control form-control-sm col-sm" readonly>
+									<div class="col-sm-5"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+
+
+				<fieldset class="scheduler-border fldst">
+					<div class="custom-row-inline-inset">
+						<div class="form-row">
+							<div class="col-sm-6">
+								<div class="input-group">
+									<div class="col-sm-4"></div>
+									<label class="form-control-sm col-sm-3">User</label>
+									<input type="text" class="form-control form-control-sm col-sm" readonly>
+									<div class="col-sm-1"></div>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="input-group">
+									<label class="form-control-sm col-sm-3">Spoiled Date</label>
+									<input type="text" class="form-control form-control-sm col-sm" readonly>
+									<div class="col-sm-5"></div>
+								</div>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="input-group">
+								<div class="col-sm-1" style="margin-right: 49px !important"></div>
+								<label class="form-control-sm col-sm-2">Reason for Spoilage</label>
+								<input class="form-control form-control-sm  col-sm-1" type="text">
+								<div class="text-search-ico" style="padding-left: 1px"><a><i class="fa fa-search"></i></a></div>&nbsp;
+								<input class="form-control form-control-sm col-sm" type="text" style="margin-left: 2px;" readonly>
+								<div class="col-sm-2" style="margin-left: 50px !important;"></div>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+
+				<div class="form-row fldst">
+					<div class="form-group col-sm">
+						<div class="col-md-12 text-center">
+							<div class="cust-btn-container">
+								<button type="button" class="cust-btn"><a>Cancel</a></button>
+								<button type="button" class="cust-btn"><a>Post Spoilage</a></button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>

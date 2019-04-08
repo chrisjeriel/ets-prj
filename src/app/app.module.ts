@@ -342,6 +342,8 @@ import { WfActionsComponent } from './home/wf-actions/wf-actions.component';
 import { PolOcInquiryComponent } from './underwriting/inquiry/pol-oc-inquiry/pol-oc-inquiry.component';
 import { PolOpenCovListComponent } from './underwriting/policy-issuance/pol-open-cov-list/pol-open-cov-list.component';
 import { ConfirmLeaveComponent } from './_components/common/confirm-leave/confirm-leave.component';
+import { PolHoldCovMonitoringComponent } from './underwriting/expiry-and-renewal/pol-hold-cov-monitoring/pol-hold-cov-monitoring.component';
+import { SpoilPolAltComponent } from './underwriting/utilities/spoil-pol-alt/spoil-pol-alt.component';
 
 
 
@@ -693,6 +695,8 @@ import { ConfirmLeaveComponent } from './_components/common/confirm-leave/confir
         PolOcInquiryComponent,
         PolOpenCovListComponent,
         ConfirmLeaveComponent,
+        PolHoldCovMonitoringComponent,
+        SpoilPolAltComponent,
     ],
 
     providers: [

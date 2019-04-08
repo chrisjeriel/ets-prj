@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild,AfterViewInit } from '@angular/core';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
-
 
 @Component({
   selector: 'app-policy-issuance',
@@ -9,28 +8,61 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./policy-issuance.component.css']
 })
 export class PolicyIssuanceComponent implements OnInit {
+  @ViewChild('contentEditPol') contentEditPol;
   line: string;
   sub: any;
-  policyInfo:any = {};
+  
+  policyInfo = {
+        policyId: '',
+        policyNo: '',
+        status:'',
+        riskName:'',
+        insured:'',
+        editPol:''
+  }
+
+
   alterFlag: boolean = false;
   fromInq:boolean = false;
+  approveText: string = "For Approval";
+  currentUserId: string = JSON.parse(window.localStorage.currentUser).username;
+  approverList: any[];
   
   constructor(private route: ActivatedRoute,private modalService: NgbModal, private router: Router) { }
 
   ngOnInit() {
+
+
     this.sub = this.route.params.subscribe(params => {
             this.line = params['line'];
             this.alterFlag = params['alter'];
             this.fromInq = params['fromInq'];
-        });
 
+            this.policyInfo.editPol = JSON.parse(params['editPol']);
+            this.policyInfo.status = params['statusDesc'];
+            this.policyInfo.policyId = params['policyId'];
+            this.policyInfo.policyNo = params['policyNo'];
+            this.policyInfo.riskName = params['riskName'];
+            this.policyInfo.insured = params['insured'];
+        });  
+
+     console.log(this.policyInfo);
+     this.showEditModal(JSON.parse(this.policyInfo.editPol));
      /* Test Data */
-        this.policyInfo.policyId = 9; 
+/*        this.policyInfo.policyId = 9; 
         this.policyInfo.policyNo = 'CAR-2019-00001-001-0001-001';
         this.policyInfo.principalName = 'principal';
         this.policyInfo.contractorName = 'contractor';
-        this.policyInfo.riskName = 'riskName';
+        this.policyInfo.riskName = 'riskName';*/
 
+  }
+
+  showEditModal(obj : boolean){
+    if (!obj){
+      setTimeout(() => {
+             this.modalService.open(this.contentEditPol, { centered: true, backdrop: 'static', windowClass: "modal-size" });
+      });
+    }
   }
 
   public beforeChange($event: NgbTabChangeEvent) {
@@ -48,6 +80,14 @@ export class PolicyIssuanceComponent implements OnInit {
         this.router.navigateByUrl('');
       } 
   
+  }
+
+  getPolInfo(event){      
+      this.policyInfo = event;
+  }
+
+  returnOnModal(){
+     this.router.navigate(['/policy-listing'],{ skipLocationChange: true }); 
   }
   
 }

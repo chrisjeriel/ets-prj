@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { UnderwritingService, QuotationService, NotesService } from '../../../_services';
+import { UnderwritingService, QuotationService, NotesService, MaintenanceService } from '../../../_services';
 import { CreateParInfo } from '../../../_models/CreatePolicy';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
@@ -26,6 +26,8 @@ export class PolCreatePARComponent implements OnInit {
   oc: boolean = false;
 
   quotationList: any[] = [];
+  holCovList: any[] = [];
+  polOcList: any[] = [];
 
   passDataLOV: any = {
     tableData: [],
@@ -78,20 +80,31 @@ export class PolCreatePARComponent implements OnInit {
   expiryDate: any = "";
   expiryTime: any = "";
 
-  constructor(private underwritingService: UnderwritingService,
-    private modalService: NgbModal, private router: Router, private titleService: Title, private quoteService: QuotationService, private ns: NotesService) {
+  dialogMessage: any = "";
+  policyId: any = "";
+  policyNo: any = "";
+
+  constructor(private underwritingService: UnderwritingService, private modalService: NgbModal, private router: Router,
+              private titleService: Title, private quoteService: QuotationService, private ns: NotesService, private mtnService: MaintenanceService) {
 
   }
 
   ngOnInit() {    
-    // this.getQuoteListing();
+    this.getQuoteListing();
+
+    this.inceptionDate = this.ns.toDateTimeString(0).split('T')[0];
+
+    var d = new Date();
+    d.setFullYear(d.getFullYear() + 1);
+
+    this.expiryDate = this.ns.toDateTimeString(d).split('T')[0];
   }
 
   getQuoteListing() {
     this.quoteService.getQuoProcessingData([]).subscribe(data => {
       this.quotationList = data['quotationList'];
-      this.passDataLOV.tableData = this.quotationList.filter(q => q.status.toUpperCase() === 'RELEASED').map(q => { q.riskName = q.project.riskName; return q; });
-
+      this.passDataLOV.tableData = this.quotationList.filter(qu => qu.status.toUpperCase() === 'RELEASED' )
+                                                     .map(qu => { qu.riskName = qu.project.riskName; return qu; });
       this.lovTable.refreshTable();
     });    
 
@@ -103,6 +116,23 @@ export class PolCreatePARComponent implements OnInit {
 
       this.lovOptTable.refreshTable();
     });
+  }
+
+  getHoldCovListing() {
+    this.quoteService.getQuotationHoldCoverList([]).subscribe(data => {
+      this.holCovList = data['quotationList'];
+      this.passDataLOV.tableData = this.holCovList.filter(hc => hc.holdCover.status.toUpperCase() === 'RELEASED' || hc.holdCover.status.toUpperCase() === 'EXPIRED')
+                                                  .map(hc => { hc.riskName = hc.project.riskName; return hc; });
+      this.lovTable.refreshTable();
+    });
+  }
+
+  getPolOCListing() {
+    this.underwritingService.getPolListingOc([]).subscribe(data => {
+      console.log(data);
+
+      this.passDataLOV.tableData = data['policyList'];
+    });    
   }
 
   navigateToGenInfo() {
@@ -124,18 +154,27 @@ export class PolCreatePARComponent implements OnInit {
   toggle(str) {
     switch (str) {
       case 'qu':
+        this.getQuoteListing();
+        this.clearFields();
+
         this.qu = true;   
         this.hc = false;
-        this.oc = false;
+        this.oc = false;       
         break;
 
       case 'hc':
+        this.getHoldCovListing();
+        this.clearFields();
+
         this.qu = false;
-        this.hc = true;        
+        this.hc = true;
         this.oc = false;
         break;
       
-      case 'oc':        
+      case 'oc':
+        this.getPolOCListing();
+        this.clearFields();
+
         this.qu = false;
         this.hc = false;
         this.oc = true;
@@ -144,8 +183,7 @@ export class PolCreatePARComponent implements OnInit {
   }
 
   showLOV() {
-    console.log('1');
-    this.getQuoteListing();
+    // this.getQuoteListing();
     $('#polLovMdl > #modalBtn').trigger('click');
   }
 
@@ -178,18 +216,25 @@ export class PolCreatePARComponent implements OnInit {
         this.riskName = this.selected.riskName;
 
         this.getOptionLOV(this.selected.quoteId);
-      } else if (str === 'hc') {
+        this.getCutOffTime({ target: { value: this.quNo[0] } });
+      } else if (str === 'hc') {       
+        console.log(this.selected);
 
+        // this.quoteService.getQuoteOptions(this.selected.quoteId).subscribe(data => {
+        //   console.log(data);
+        // });
+
+        this.hcNo = this.selected.holdCover.holdCoverNo.split('-');
+        this.optionId = this.selected.holdCover.optionId;
+        this.condition = 'WALANG CONDITION!'
+        this.cedingName = this.selected.cedingName;
+        this.insuredDesc = this.selected.insuredDesc;
+        this.riskName = this.selected.riskName;
       } else if (str === 'oc') {
 
       }
     } else {
-      this.quNo = [];
-      this.hcNo = [];
-      this.ocNo = [];
-      this.cedingName = '';
-      this.insuredDesc = '';
-      this.riskName = '';
+      this.clearFields();
     }
     
   }
@@ -203,21 +248,75 @@ export class PolCreatePARComponent implements OnInit {
 
   prepareParams() {    
     var savePolicyDetailsParam = {    
-      "expiryDate": this.expiryDate + 'T' + this.expiryTime,
-      "holdCoverNo": this.hcNo.length == 0 ? '' : this.hcNo.join('-'),
-      "inceptDate": this.inceptionDate + 'T' + this.inceptionTime,
-      "openPolicyNo": this.ocNo.length == 0 ? '' : this.ocNo.join('-'),
-      "optionId": this.optionId,
-      "quotationNo": this.quNo.length == 0 ? '' : this.quNo.join('-'),
-      "createUser": JSON.parse(window.localStorage.currentUser).username,
-      "createDate": this.ns.toDateTimeString(0),
-      "updateUser": JSON.parse(window.localStorage.currentUser).username,
-      "updateDate": this.ns.toDateTimeString(0)
+      "expiryDate"    : this.expiryDate + 'T' + this.expiryTime,
+      "holdCoverNo"   : this.hc ? this.hcNo.join('-') : '',
+      "inceptDate"    : this.inceptionDate + 'T' + this.inceptionTime,
+      "lineCd"        : this.qu ? this.quNo[0] : this.hc ? this.hcNo[0] : this.ocNo[0],
+      "openPolicyNo"  : this.oc ? this.ocNo.join('-') : '',
+      "optionId"      : this.optionId,
+      "quotationNo"   : this.qu ? this.quNo.join('-') : '',
+      "createUser"    : JSON.parse(window.localStorage.currentUser).username,
+      "createDate"    : this.ns.toDateTimeString(0),
+      "updateUser"    : JSON.parse(window.localStorage.currentUser).username,
+      "updateDate"    : this.ns.toDateTimeString(0)
     }
 
     console.log(savePolicyDetailsParam);
     this.underwritingService.savePolicyDetails(savePolicyDetailsParam).subscribe(data => {
       console.log(data);
+      if(data['returnCode'] === 0) {
+        this.dialogMessage = data['errorList'][0].errorMessage;
+
+        $('#createPol #successModalBtn').trigger('click');
+      } else if (data['returnCode'] === -1) {     
+        this.policyId = data['policyId'];
+        this.policyNo = data['policyNo'];
+
+        $('#convSuccessModal > #modalBtn').trigger('click');
+      }
     });
   }
+
+  updateExpiryDate() {
+    var d = new Date(this.inceptionDate);
+    d.setFullYear(d.getFullYear() + 1);
+
+    this.expiryDate = this.ns.toDateTimeString(d).split('T')[0];
+  }
+
+  getCutOffTime(ev) {
+    console.log(ev);
+    var lineCd = ev.target.value;
+
+    if(lineCd != '') {
+      this.mtnService.getLineLOV(lineCd).subscribe(data => {
+        var res = data['line'];
+
+        if(res.length != 0) {
+          this.inceptionTime = res[0].cutOffTime;
+          this.expiryTime = res[0].cutOffTime;
+        } else {
+          this.inceptionTime = '';
+          this.expiryTime = '';
+        }
+      });
+    } else {
+      this.inceptionTime = '';
+      this.expiryTime = '';
+    }
+  }
+
+  clearFields() {
+    this.quNo = [];
+    this.hcNo = [];
+    this.ocNo = [];
+    this.optionId = "";
+    this.condition = "";
+    this.cedingName = "";
+    this.insuredDesc = "";
+    this.riskName = "";
+    this.inceptionTime = "";
+    this.expiryTime = "";
+  }
+
 }

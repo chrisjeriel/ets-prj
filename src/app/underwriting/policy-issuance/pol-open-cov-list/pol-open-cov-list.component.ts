@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./pol-open-cov-list.component.css']
 })
 export class PolOpenCovListComponent implements OnInit {
+	selected:any;
 	passData: any = {
 	  tHeader: [
 	      "Open Cover Policy No", "Type Cession","Ceding Company", "Insured", "Risk", "Object", "Site", "Currency", "Max Si", "Issue Date", "Inception Date", "Expiry Date","Accounting Date","Status"
@@ -21,12 +22,12 @@ export class PolOpenCovListComponent implements OnInit {
 	  keys: ['openPolicyNo','cessionDesc','cedingName','insuredDesc','riskName','objectDesc','site','currencyCd','totalSi','issueDate','inceptDate','expiryDate','acctDate','statusDesc'],
 	  // checkFlag: false,
 	  // selectFlag: false,
-	  addFlag: false,
-	  editFlag: false,
+	  addFlag: true,
+	  editFlag: true,
 	  // deleteFlag: false,
 	  infoFlag: true,
 	  searchFlag: true,
-	  pageLength: 10,
+	  pageLength: 20,
 	  tableData: [],
 	  pagination: true,
 	  pageStatus: true,
@@ -133,21 +134,42 @@ export class PolOpenCovListComponent implements OnInit {
   constructor(private underwritingService: UnderwritingService, private titleService: Title, private router : Router) { }
 
   ngOnInit() {
-
-
+  	this.retrievePolListing();
   }
 
   retrievePolListing(){
        this.underwritingService.getPolListingOc(this.searchParams).subscribe((data:any)=>{
+       	console.log(data);
          this.passData.tableData = data.policyList.filter(a=>{
            a.totalSi = a.project.coverageOc.totalSi;
            a.riskName = a.project.riskName;
            a.objectDesc = a.project.objectDesc;
            a.site = a.project.site;
-           return true;
+           return a.openPolicyNo.split('-')[6] == "000" &&  ['Pending Approval','Approved','Rejected','In Progress','In Force'].indexOf(a.statusDesc)!= -1;
          });
          this.listTable.refreshTable();
        })
+   }
+   
+   gotoAdd(){
+   	this.router.navigate(['/create-policy'], { skipLocationChange: false });
+   }
+
+   gotoInfo(){
+   	this.router.navigate(['/create-open-cover-letter',{ line: this.selected.openPolicyNo.split('-')[1],
+   														 policyIdOc:this.selected.policyIdOc,
+   														 insured: this.selected.insuredDesc,
+   														 riskName: this.selected.riskName,
+   														 policyNo: this.selected.openPolicyNo ,
+   														 inqFlag: false}], { skipLocationChange: true });
+   }
+
+   searchQuery(searchParams){
+        this.searchParams = searchParams;
+        this.passData.tableData = [];
+        this.passData.btnDisabled = true;
+        this.retrievePolListing();
+
    }
 
 }

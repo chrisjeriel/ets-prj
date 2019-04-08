@@ -21,14 +21,14 @@
     }
 </style>
 <div class="cust-tabs-container">
-    <h4>Policy / Inquiry </h4>
+    <h4>Policy / Issuance </h4>
     <ngb-tabset>
-        <ngb-tab title="Open Cover Inquiry">
+        <ngb-tab title="Open Cover List">
             <ng-template ngbTabContent>
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-sm" style="padding: 0">
-                            <app-cust-non-datatable #listTable [passData]="passData" (rowClick)="onRowClick($event)" (newRowDblClick)="gotoInfo($event)" (searchToDb)="searchQuery($event)"></app-cust-non-datatable>
+                            <app-cust-non-datatable #listTable [passData]="passData" (rowClick)="selected=$event" (newRowDblClick)="selected=$event;gotoInfo()" (searchToDb)="searchQuery($event)" (add)="gotoAdd()" (edit)="gotoInfo()"></app-cust-non-datatable>
                         </div>
                     </div>
                 </div>

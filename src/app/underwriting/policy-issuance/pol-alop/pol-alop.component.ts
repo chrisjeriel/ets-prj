@@ -44,6 +44,7 @@ export class PolAlopComponent implements OnInit {
   paginateFlag;
   infoFlag;
   pageLength = 10;
+  alopFlag:string = '';
 
   passDataCar: any = {
     tableData: [],
@@ -109,7 +110,6 @@ export class PolAlopComponent implements OnInit {
   dialogMessage:string = "";
   polURL:string = "";
   dialogIcon: string = "";
-  insured:string = '';
   showAlopItem:boolean = false;
 
   @Input() policyInfo:any = {};
@@ -157,8 +157,9 @@ export class PolAlopComponent implements OnInit {
 
     this.passDataEar.tableData = this.tableData2; 
 
-    this.insured = this.policyInfo.principalName + " / " + this.policyInfo.contractorName;
     this.policyNo = this.policyInfo.policyNo.split(/[-]/g)[0];
+
+    this.polURL =  (this.alterFlag == false)? 'alt-policy-listing' : 'policy-listing'; 
 
     this.sub = this.route.params.subscribe(params => {
       this.line = params['line'];
@@ -189,9 +190,7 @@ export class PolAlopComponent implements OnInit {
   }
 
   savePolAlopItem(cancelFlag?){
-    console.log("savePolAlopItem() was called...");
      this.cancelFlag = cancelFlag != undefined;
-     this.polURL = null;
      let savedData: any = {};
 
      savedData.policyId = this.policyInfo.policyId;
@@ -253,9 +252,8 @@ export class PolAlopComponent implements OnInit {
   }
 
   getPolAlop() {
-    
-    this.underwritingService.getPolAlop(this.policyInfo.policyId,'').subscribe((data: any) => {
-      if (data.policy != null) {
+    this.underwritingService.getPolAlop(this.policyInfo.policyId, this.policyInfo.policyNo).subscribe((data: any) => {
+      if (data.policy != null && data.policy.length != 0) {
         this.policyId = data.policy.policyId;
         this.polAlopData = data.policy[0].alop[0]===null ? this.polAlopData : data.policy[0].alop[0];
         this.polAlopData.issueDate = this.ns.toDateTimeString(this.polAlopData.issueDate);
@@ -264,12 +262,10 @@ export class PolAlopComponent implements OnInit {
         this.polAlopData.createDate = this.ns.toDateTimeString(this.polAlopData.createDate);
         this.polAlopData.updateDate = this.ns.toDateTimeString(this.polAlopData.updateDate);
       }
-
     });
   }
 
   getPolAlopItem() {
-
     this.underwritingService.getPolAlopItem(this.policyNo, this.policyInfo.policyId, this.policyInfo.policyNo).subscribe((data: any) => {
       if (data.policy != null) {
         var dataInfos = data.policy.alop[0].alopItem;
@@ -320,10 +316,12 @@ export class PolAlopComponent implements OnInit {
 
 
   cancelButton() {
+    this.alopFlag = 'alop';
     this.cancelBtn.clickCancel();
   }
 
   cancelModal() {
+    this.alopFlag = 'alopitem';
     this.cancelModalBtn.clickCancel();
   }
 
@@ -334,8 +332,10 @@ export class PolAlopComponent implements OnInit {
   }
 
   setInsured(data){
-    this.polAlopData.insuredName = data.data.insuredName;
+    this.polAlopData.insuredName = data.data.insuredAbbr;
+    this.polAlopData.insuredDesc = data.data.insuredName;
     this.polAlopData.insId = data.data.insuredId;
+    this.polAlopData.address = data.data.address;
     this.form.control.markAsDirty();
   }
 
@@ -351,10 +351,6 @@ export class PolAlopComponent implements OnInit {
 
   onClickSavePolAlopItem(){
     $('#polAlopItem #confirm-save #modalBtn2').trigger('click');
-  }
-
-  getPolUrl() {
-    this.polURL =  (this.alterFlag == false)? 'alt-policy-listing' : 'policy-listing'; 
   }
 
 }

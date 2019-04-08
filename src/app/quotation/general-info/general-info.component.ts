@@ -720,6 +720,7 @@ export class GeneralInfoComponent implements OnInit {
   			currencyRt: this.genInfoData.currencyRt,
   			typeOfCession: this.genInfoData.cessionDesc,
   			status: this.genInfoData.status,
+  			statusDesc: this.genInfoData.statusDesc,
   			reasonCd: this.genInfoData.reasonCd,
   			principalId: this.genInfoData.principalId,
   			lineCd: this.line,
@@ -838,9 +839,9 @@ export class GeneralInfoComponent implements OnInit {
 
 	updateExpiryDate(ev) {
 		var d = new Date(ev);
-		var millis = d.setDate(d.getDate() + 30);
+		d.setDate(d.getDate() + 30);
 
-		this.genInfoData.expiryDate = this.ns.toDateTimeString(millis);
+		this.genInfoData.expiryDate = this.ns.toDateTimeString(d);
 	}
 
 	testFoc() {

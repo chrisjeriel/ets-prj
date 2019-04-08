@@ -11,7 +11,7 @@
 				 [ngModel]="policyInfo.policyNo" placeholder="" name="policyNo" readonly>
 				<label class="form-control-sm col-sm-1" for="xx">Insured</label>
 				<input type="text" id="xx" class="form-control form-control-sm cust-sm col-sm-5" placeholder=""
-				 [ngModel]="insured" name="insured" readonly>
+				 [ngModel]="policyInfo.insuredDesc" name="insured" readonly>
 			</div>
 			<div class="input-group" style="margin-bottom: -13px !important;">
 				<label class="col-sm-1"></label>
@@ -28,7 +28,7 @@
 					<div class="input-group">
 						<label class="form-control-sm col-sm-2 text-right" for="xx">Insured</label>
 						<input [readonly]="alterFlag" class="form-control form-control-sm  col-sm-2" type="text" name="insId" [(ngModel)]="polAlopData.insId">
-						<div class="text-search-ico"><a (click)="openGenericLOV('insured')"><i class="fa fa-search"></i></a></div>&nbsp;
+						<div *ngIf="!alterFlag" class="text-search-ico"><a (click)="openGenericLOV('insured')"><i *ngIf="!alterFlag"  class="fa fa-search"></i></a></div>&nbsp;
 						<input [readonly]="alterFlag" class="form-control form-control-sm  col-sm" type="text" style="margin-left: -7px !important;" name="insuredName"
 						 [(ngModel)]="polAlopData.insuredName">
 					</div>
@@ -167,7 +167,7 @@
 <app-mtn-insured id="insuredLOV" (selectedData)="setInsured($event)"></app-mtn-insured>
 <app-lov id="lov" [passData]="passLOV" (selectedData)="setInsured($event)"></app-lov>
 
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():modalService.dismissAll()"></app-sucess-dialog>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="(cancelFlag && alopFlag === 'alop') ? cancelBtn.onNo() : (cancelFlag && alopFlag === 'alopitem')? cancelModalBtn.onNo() : (dialogMessage === '' || (dialogMessage === 'Successfully Saved')? modalService.dismissAll():null)"></app-sucess-dialog>
 <app-confirm-save id="polAlop" (onYes)="savePolAlop()"></app-confirm-save>
 <app-cancel-button (onYes)="savePolAlop('cancel')" [url]="polURL" #cancelButtonComponent></app-cancel-button>
 
