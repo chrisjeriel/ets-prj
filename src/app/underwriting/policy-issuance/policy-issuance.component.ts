@@ -2,8 +2,6 @@ import { Component, OnInit, ViewChild,AfterViewInit } from '@angular/core';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 
-
-
 @Component({
   selector: 'app-policy-issuance',
   templateUrl: './policy-issuance.component.html',
@@ -39,6 +37,7 @@ export class PolicyIssuanceComponent implements OnInit {
             this.line = params['line'];
             this.alterFlag = params['alter'];
             this.fromInq = params['fromInq'];
+
             this.policyInfo.editPol = JSON.parse(params['editPol']);
             this.policyInfo.status = params['statusDesc'];
             this.policyInfo.policyId = params['policyId'];
@@ -67,7 +66,6 @@ export class PolicyIssuanceComponent implements OnInit {
   }
 
   public beforeChange($event: NgbTabChangeEvent) {
-    
     if ($event.nextId === 'print-tab') {
       $event.preventDefault();
     }
@@ -82,6 +80,10 @@ export class PolicyIssuanceComponent implements OnInit {
         this.router.navigateByUrl('');
       } 
   
+  }
+
+  getPolInfo(event){      
+      this.policyInfo = event;
   }
 
   returnOnModal(){

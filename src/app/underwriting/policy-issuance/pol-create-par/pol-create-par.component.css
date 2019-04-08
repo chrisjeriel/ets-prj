@@ -3,3 +3,7 @@
 	z-index: 99;
 	font-size: 14px;
 }
+
+.mg-b {
+	margin-bottom: 0 !important;
+}

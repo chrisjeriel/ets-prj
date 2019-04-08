@@ -10,9 +10,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class PolicyIssuanceAltComponent implements OnInit {
      @ViewChild('contentEditPol') contentEditPol;
 
-    /* Test Data */
-  
-
     policyInfo = {
         policyId: '',
         policyNo: '',
@@ -55,12 +52,12 @@ export class PolicyIssuanceAltComponent implements OnInit {
     }
 
     showEditModal(obj : boolean){
-    if (!obj){
-      setTimeout(() => {
-             this.modalService.open(this.contentEditPol, { centered: true, backdrop: 'static', windowClass: "modal-size" });
-      });
+        if (!obj){
+          setTimeout(() => {
+                 this.modalService.open(this.contentEditPol, { centered: true, backdrop: 'static', windowClass: "modal-size" });
+          });
+        }
     }
-  }
 
 
     public beforeChange($event: NgbTabChangeEvent) {
@@ -74,9 +71,13 @@ export class PolicyIssuanceAltComponent implements OnInit {
     }
 
     onTabChange($event: NgbTabChangeEvent) {
-      if ($event.nextId === 'Exit') {
-        this.router.navigateByUrl('');
-      } 
+        if ($event.nextId === 'Exit') {
+            this.router.navigateByUrl('');
+        } 
+    }
+
+    getPolInfo(event){      
+        this.policyInfo = event;
+    }
   
-  }
 }

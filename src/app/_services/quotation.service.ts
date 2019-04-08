@@ -1008,4 +1008,18 @@ export class QuotationService {
              .set('quoteId', (quoteId === null || quoteId === undefined ? '' : quoteId) );
         return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuoteApprover',{params});
     }
+
+    updateQuoteStatus(quoteId:string, status:string, approvedBy?:string){
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+        let params: any = {
+            quoteId : quoteId,
+            status : status,
+            approvedBy : approvedBy
+        }
+        return this.http.post(environment.prodApiUrl + '/quote-service/updateQuoteStatus',JSON.stringify(params),header);
+    }
 }

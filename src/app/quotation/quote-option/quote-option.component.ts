@@ -251,6 +251,8 @@ export class QuoteOptionComponent implements OnInit {
                     b.deductibleRt = b.deductibleRate;
                     b.endtCd = 0;
                     b.edited = true;
+                    b.createDate = [0,0,0,0];
+                    b.updateDate = [0,0,0,0];
                     b.createUser = JSON.parse(window.localStorage.currentUser).username;
                     b.updateUser = JSON.parse(window.localStorage.currentUser).username;
                     b.add = true;
@@ -272,6 +274,8 @@ export class QuoteOptionComponent implements OnInit {
               a.deductibleRt = a.deductibleRate;
               a.endtCd = 0;
               a.edited = true;
+              a.createDate = [0,0,0,0];
+              a.updateDate = [0,0,0,0];
               a.createUser = JSON.parse(window.localStorage.currentUser).username;
               a.updateUser = JSON.parse(window.localStorage.currentUser).username;
               a.add = true;
@@ -435,6 +439,15 @@ cancel(){
 
 saveQuoteOptionAll(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
+   if(this.optionsData.tableData.filter(a=>a.optionRt == 0 ||
+        a.commRtQuota == 0 ||
+        a.commRtSurplus == 0 ||
+        a.commRtFac == 0
+      ).length != 0){
+     this.dialogIcon = "error";
+     setTimeout(a=>$('#quote-option #successModalBtn').trigger('click'),0);
+     return;
+   }
    let params: any = {
        quoteId:this.quoteId,
        saveQuoteOptionsList:[],
@@ -501,8 +514,9 @@ saveQuoteOptionAll(cancelFlag?){
         for(let oth of  params.newQuoteOptionsList[params.newQuoteOptionsList.length-1].otherRatesList){
           if(oth.deductiblesList !== undefined){
             for(let ded of oth.deductiblesList){
-              ded.createDate = new Date(ded.createDate[0],ded.createDate[1]-1,ded.createDate[2]).toISOString();
-              ded.updateDate = new Date(ded.updateDate[0],ded.updateDate[1]-1,ded.updateDate[2]).toISOString();
+              console.log(ded)
+              ded.createDate = new Date().toISOString();
+              ded.updateDate = new Date().toISOString();
             }
           }else{
             oth.deductiblesList = [];
@@ -510,6 +524,50 @@ saveQuoteOptionAll(cancelFlag?){
         }
       }
     }
+    if(
+        params.saveQuoteOptionsList.length == 0 &&
+        params.deleteQuoteOptionsList.length == 0 &&
+        params.saveDeductibleList.length == 0 &&
+        params.deleteDeductibleList.length == 0 &&
+        params.otherRates.length == 0 &&
+        params.newQuoteOptionsList.length == 0
+      ){
+      this.dialogIcon = "info";
+      this.dialogMessage = "Nothing to save."
+      setTimeout(a=>$('#quote-option #successModalBtn').trigger('click'),0);
+      return null;
+    }
+
+
+    for(let ded of params.saveDeductibleList){
+      if((isNaN(ded.deductibleRt) || ded.deductibleRt=="" || ded.deductibleRt==null) && (isNaN(ded.deductibleAmt) || ded.deductibleAmt=="" || ded.deductibleAmt==null)){
+        this.dialogIcon = "error";
+        setTimeout(a=>$('#quote-option #successModalBtn').trigger('click'),0);
+        return null;
+      }
+    }
+
+    for(let opt of params.newQuoteOptionsList){
+      for(let ded of opt.deductiblesList){
+        if((isNaN(ded.deductibleRt) || ded.deductibleRt=="" || ded.deductibleRt==null) && (isNaN(ded.deductibleAmt) || ded.deductibleAmt=="" || ded.deductibleAmt==null)){
+          this.dialogIcon = "error";
+          setTimeout(a=>$('#quote-option #successModalBtn').trigger('click'),0);
+          return null;
+        }
+      }
+      for(let oth of opt.otherRatesList){
+        for(let ded of oth.deductiblesList){
+          if((isNaN(ded.deductibleRt) || ded.deductibleRt=="" || ded.deductibleRt==null) && (isNaN(ded.deductibleAmt) || ded.deductibleAmt=="" || ded.deductibleAmt==null)){
+            this.dialogIcon = "error";
+            setTimeout(a=>$('#quote-option #successModalBtn').trigger('click'),0);
+            return null;
+          }
+        }
+      }
+
+    }
+    
+
    this.quotationService.saveQuoteOptionAll(params).subscribe((data)=>{
      if(data['returnCode'] == 0) {
             this.dialogMessage = data['errorList'][0].errorMessage;
@@ -584,6 +642,7 @@ saveQuoteOptionAll(cancelFlag?){
     else{
       this.optionsData.disableAdd = false;
     }
+    this.otherRatesTable.onRowClick(null,null);
   }
 
   // showDeductiblesOptions(data,fromCovers?){

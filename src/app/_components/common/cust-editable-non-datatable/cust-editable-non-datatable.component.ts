@@ -209,7 +209,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
 
     onClickAdd(event) {
         this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
-        /*this.passData.tableData[this.passData.tableData.length-1].edited = true;*/
+        this.passData.tableData[this.passData.tableData.length-1].edited = true;
         this.unliTableLength();    
         this.search(this.searchString);
         this.tableDataChange.emit(this.passData.tableData);
@@ -266,7 +266,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
                 let width = this.startWidth + (event.x - this.startX);
                 $(this.start).parent().css({'min-width': width, 'max-width': width,'width':width});
                 let index = $(this.start).parent().index() + 1;
-                $('#non-datatable tr td:nth-child(' + index + ')').css({'min-width': width, 'max-width': width,'width':width});
+                $('#non-datatable'+this.passData.pageID+ ' tr td:nth-child(' + index + ')').css({'min-width': width, 'max-width': width,'width':width});
             }
         });
         this.renderer.listenGlobal('body', 'mouseup', (event) => {
