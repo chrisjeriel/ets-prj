@@ -14,11 +14,11 @@
                                     <div class="input-group">
                                         <div class="input-group ig-row">
                                             <label class="form-control-sm col-sm-2">Quotation No</label>
-                                            <input type="text" class="form-control form-control-sm cap-input col-sm-2" [(ngModel)]="splitQuoteNo[0]" ngbTooltip="Line" name="line" appRequired>
-                                            <input type="text" class="form-control form-control-sm input-ig-row cap-input col-sm" ngbTooltip="Year" [(ngModel)]="splitQuoteNo[1]" name="year" appRequired>
-                                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" [(ngModel)]="splitQuoteNo[2]" ngbTooltip="Sequence No" name="seqNo" appRequired>
-                                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" [(ngModel)]="splitQuoteNo[3]" ngbTooltip="Revision No" name="revNo" appRequired>
-                                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" [(ngModel)]="splitQuoteNo[4]" ngbTooltip="Company No" name="cedingId" appRequired>
+                                            <input type="text" class="form-control form-control-sm cap-input col-sm-2" [ngModel]="splitQuoteNo[0]" (ngModelChange)="searchQuoteNoFields($event, 'lineCd')" (blur)="checkQuoteNoParams();" ngbTooltip="Line" name="line" appRequired>
+                                            <input type="text" class="form-control form-control-sm input-ig-row cap-input col-sm" ngbTooltip="Year" [ngModel]="splitQuoteNo[1]" (ngModelChange)="searchQuoteNoFields($event, 'year')" (blur)="checkQuoteNoParams();" name="year" appRequired>
+                                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" [ngModel]="splitQuoteNo[2]" (ngModelChange)="searchQuoteNoFields($event, 'seqNo')" (blur)="checkQuoteNoParams();" ngbTooltip="Sequence No" name="seqNo" appRequired>
+                                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" [ngModel]="splitQuoteNo[3]" (ngModelChange)="searchQuoteNoFields($event, 'revNo')" (blur)="checkQuoteNoParams();" ngbTooltip="Revision No" name="revNo" appRequired>
+                                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" [ngModel]="splitQuoteNo[4]" (ngModelChange)="searchQuoteNoFields($event, 'cedingId')" (blur)="checkQuoteNoParams();" ngbTooltip="Company No" name="cedingId" appRequired>
                                             <span>&nbsp;</span>
                                             <div class="text-search-ico"><a><i class="fa fa-search" (click)="showLOV();"></i></a></div>
                                         </div>
@@ -26,19 +26,19 @@
                                             <label class="form-control-sm col-sm-2">Option No</label>
                                             <input type="text" class="form-control form-control-sm col-sm-1" [ngModel]="selectedOpt.optionId" name="optId" appRequired >
                                             <div class="text-search-ico-inner"><a><i class="fa fa-search" (click)="showOptionLOV()"></i></a></div>
-                                            <input type="text" class="form-control form-control-sm" style="margin-left: 7px;" [ngModel]="selectedOpt.condition" name="condition" readonly>
+                                            <input type="text" class="form-control form-control-sm" style="margin-left: 7px;" [ngModel]="selectedOpt.condition" name="condition" readonly tabindex="-1">
                                         </div>
                                         <div class="input-group ig-row">
                                             <label class="form-control-sm col-sm-2">Ceding Company</label>
-                                            <input type="text" class="form-control form-control-sm" [ngModel]="quoteData.cedingName" name="cedingName" readonly>
+                                            <input type="text" class="form-control form-control-sm" [ngModel]="quoteData.cedingName" name="cedingName" readonly tabindex="-1">
                                         </div>
                                         <div class="input-group ig-row">
                                             <label class="form-control-sm col-sm-2">Insured</label>
-                                            <input type="text" class="form-control form-control-sm" [ngModel]="quoteData.insuredDesc" name="insuredDesc" readonly>
+                                            <input type="text" class="form-control form-control-sm" [ngModel]="quoteData.insuredDesc" name="insuredDesc" readonly tabindex="-1">
                                         </div>
                                         <div class="input-group ig-row">
                                             <label class="form-control-sm col-sm-2">Risk</label>
-                                            <input type="text" class="form-control form-control-sm" [ngModel]="quoteData.riskName" name="riskName" readonly>
+                                            <input type="text" class="form-control form-control-sm" [ngModel]="quoteData.riskName" name="riskName" readonly tabindex="-1">
                                         </div>
                                         <div class="input-group ig-row">
                                             <label class="form-control-sm col-sm-2">Inception Date</label>
