@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { WorkFlowManagerService } from '@app/_services';
 
 interface Module {
   module: string;
@@ -82,12 +83,32 @@ const MODULES: Module[] = [
   styleUrls: ['./approval-list.component.css']
 })
 export class ApprovalListComponent implements OnInit {
+  constructor(private workFlowManagerService: WorkFlowManagerService) {}
 
   modules = MODULES;
 
-  constructor() { }
+  approvalList: Module[] = [];
 
   ngOnInit() {
+    this.retrieveWfmApprovals();
+  }
+
+  retrieveWfmApprovals() {
+      this.workFlowManagerService.retrieveWfmApprovals('TOTZ').subscribe((data)=>{
+          if (data["approvalList"].length > 0) {
+
+            for (var i = data["approvalList"].length - 1; i >= 0; i--) {
+              this.approvalList.push({'module' : data["approvalList"][i].module,
+                                          'details' : data["approvalList"][i].quotationNo,
+                                          'assignedBy' : data["approvalList"][i].preparedBy,
+                                          'assignedDate' : data["approvalList"][i].createDate
+                                        });
+            }
+          }
+      })
   }
 
 }
+
+
+
