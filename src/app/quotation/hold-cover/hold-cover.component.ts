@@ -84,7 +84,7 @@ export class HoldCoverComponent implements OnInit {
 	searchParams2: any[] = [];
 
 	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title,
-	 private decPipe: DecimalPipe, private ns : NotesService, private router: Router) { 
+		private decPipe: DecimalPipe, private ns : NotesService, private router: Router) { 
 	}
 
 	qLine: string;
@@ -253,230 +253,233 @@ export class HoldCoverComponent implements OnInit {
 		if(quoFiltEnabled === true){
 			this.passDataQuoteLOV.tableData = [];
 			this.quotationService.getQuoProcessingData(this.searchParams)
-				.subscribe(val => {
-					var records = val['quotationList'];
+			.subscribe(val => {
+				var records = val['quotationList'];
 
-					if(records === null  || records === '' || records === undefined){
-						this.showAll = false;
+				if(records === null  || records === '' || records === undefined){
+					this.showAll = false;
+				}else{
+					for(let rec of records){
+						if(rec.status.toUpperCase() === 'RELEASED' || rec.status.toUpperCase() === 'ON HOLD COVER'){
+							this.passDataQuoteLOV.tableData.push({
+								quotationNo: rec.quotationNo,
+								cedingName:  rec.cedingName,
+								insuredDesc: rec.insuredDesc,
+								riskName: (rec.project == null) ? '' : rec.project.riskName
+							});
+						}
+					}
+				}
+				this.table.refreshTable();
+			});
+
+			var qLine = this.quoteLine.toUpperCase();
+
+			// if (qLine === '' ||
+			// 	qLine === 'EAR' ||
+			// 	qLine === 'EEI' ||
+			// 	qLine === 'CEC' ||
+			// 	qLine === 'MBI' ||
+			// 	qLine === 'BPV' ||  
+			// 	qLine === 'MLP' ||
+			// 	qLine === 'DOS') {
+
+				$('#lovMdl > #modalBtn').trigger('click');
+				//}
+			}else{
+				this.searchMatchingQuote();
+				console.log('search matching quote');	
+
+			}
+
+		}
+
+		onRowClick(event){
+			this.rowRec = event;
+		}
+
+		onSaveClickLOV(){
+			this.sliceQuoteNo(this.rowRec.quotationNo);
+			this.quoteNo = this.rowRec.quotationNo;
+			if(this.quoteNo != null || this.quoteNo != undefined || this.quoteNo != ''){
+			}
+
+			this.modalService.dismissAll();
+			this.btnApprovalEnabled = false;
+			this.quotationService.getSelectedQuotationHoldCoverInfo(this.quoteNo)
+			.subscribe(data => {
+				this.newHc(false);
+				this.insured = this.rowRec.insuredDesc;
+				this.cedCo = this.rowRec.cedingName;
+				this.risk = this.rowRec.riskName;
+				this.hcLine  = this.qLine;
+				this.hcYear  =  String(new Date().getFullYear());
+				this.showAll = true;
+
+				if(data['quotationList'][0] === null || data['quotationList'][0] === undefined || data['quotationList'][0] === ''){ 
+					this.holdCover.holdCoverId = '';
+					this.hcLine  = '';
+					this.hcYear  =  '';
+					this.hcSeqNo = '';
+					this.hcRevNo = '';
+					this.holdCover.holdCoverNo = '';
+					this.holdCover.periodFrom = '';
+					this.holdCover.periodTo = '';
+					this.holdCover.compRefHoldCovNo = '';
+					this.holdCover.status = '';
+					this.holdCover.reqBy = '';
+					this.holdCover.reqDate = '';
+					this.holdCover.preparedBy = '';
+					this.holdCover.approvedBy = '';
+					this.holdCover.optionId = '';
+					this.clickView = false;
+					this.quoteId = (data['quotationList'][0] === undefined) ? '' : data['quotationList'][0].quoteId;
+					this.cancelHcBtnEnabled = false;
+					this.btnApprovalEnabled = false;
+
+				}else{
+					var rec = data['quotationList'][0].holdCover;
+					if((rec.status).toUpperCase() === 'CANCELLED' || (rec.status).toUpperCase() === 'REPLACED'){
 					}else{
-						for(let rec of records){
-							if(rec.status.toUpperCase() === 'RELEASED' || rec.status.toUpperCase() === 'ON HOLD COVER'){
-								this.passDataQuoteLOV.tableData.push({
-									quotationNo: rec.quotationNo,
-									cedingName:  rec.cedingName,
-									insuredDesc: rec.insuredDesc,
-									riskName: (rec.project == null) ? '' : rec.project.riskName
-								});
+						this.holdCover.holdCoverNo = rec.holdCoverNo;
+						this.splitHcNo(rec.holdCoverNo);
+						this.holdCover.periodFrom = this.ns.toDateTimeString(rec.periodFrom);
+						this.holdCover.periodTo = this.ns.toDateTimeString(rec.periodTo);
+						this.periodFromTime = this.holdCover.periodFrom.split('T')[1];
+						this.periodToTime = this.holdCover.periodTo.split('T')[1];
+						this.holdCover.compRefHoldCovNo = rec.compRefHoldCovNo;
+						this.holdCover.reqBy  = rec.reqBy;
+						this.holdCover.reqDate  = (rec.reqDate === '' || rec.reqDate === null || rec.reqDate === undefined)? '' :this.ns.toDateTimeString(rec.reqDate);
+						this.holdCover.status  = rec.status;
+						this.holdCover.approvedBy =  rec.approvedBy;
+						this.holdCover.holdCoverId = rec.holdCoverId;
+						this.holdCover.updateUser = JSON.parse(window.localStorage.currentUser).username;
+						this.holdCover.preparedBy = JSON.parse(window.localStorage.currentUser).username;
+						this.holdCover.createDate = this.ns.toDateTimeString(rec.createDate);
+						this.holdCover.createUser = rec.createUser;
+						this.holdCover.optionId = rec.optionId;
+						this.quoteId = data['quotationList'][0].quoteId;
+						this.cancelHcBtnEnabled = true;
+						this.btnApprovalEnabled = true;
+
+						if(rec.approvedBy === '' || rec.approvedBy === null ||  rec.approvedBy === undefined){
+							this.clickView = false;
+						}else{
+							if(rec.status.toUpperCase() === 'EXPIRED' || rec.status.toUpperCase() === 'CONVERTED'){
+								this.cancelHcBtnEnabled = false;
+							}else{
+								$('#modifMdl > #modalBtn').trigger('click');
 							}
 						}
 					}
-					this.table.refreshTable();
-				});
+				}
 
-				var qLine = this.quoteLine.toUpperCase();
-
-				if (qLine === '' ||
-					qLine === 'EAR' ||
-					qLine === 'EEI' ||
-					qLine === 'CEC' ||
-					qLine === 'MBI' ||
-					qLine === 'BPV' ||  
-					qLine === 'MLP' ||
-					qLine === 'DOS') {
-
-					$('#lovMdl > #modalBtn').trigger('click');
-			}
-		}else{
-				this.searchMatchingQuote();
-				console.log('search matching quote');	
-			
+			});
 		}
 
-}
+		holdCoverReq:any
+		onSaveClick(cancelFlag?){
+			this.dialogIcon = '';
+			this.dialogMessage = '';
+			this.cancelFlag = cancelFlag !== undefined;
+			if(this.quoteNo === '' || this.quoteNo === null || this.quoteNo === undefined ||
+				this.holdCover.periodFrom === '' || this.holdCover.periodFrom === null || this.holdCover.periodFrom === undefined ||
+				this.holdCover.periodTo === '' || this.holdCover.periodTo === null || this.holdCover.periodTo === undefined ||
+				this.holdCover.optionId === '' || this.holdCover.optionId === null || this.holdCover.optionId === undefined){
 
-onRowClick(event){
-	this.rowRec = event;
-}
-
-onSaveClickLOV(){
-	this.sliceQuoteNo(this.rowRec.quotationNo);
-	this.quoteNo = this.rowRec.quotationNo;
-	if(this.quoteNo != null || this.quoteNo != undefined || this.quoteNo != ''){
-	}
-
-	this.modalService.dismissAll();
-	this.btnApprovalEnabled = false;
-	this.quotationService.getSelectedQuotationHoldCoverInfo(this.plainQuotationNo(this.quoteNo))
-	.subscribe(data => {
-		this.newHc(false);
-		this.insured = this.rowRec.insuredDesc;
-		this.cedCo = this.rowRec.cedingName;
-		this.risk = this.rowRec.riskName;
-		this.hcLine  = this.qLine;
-		this.hcYear  =  String(new Date().getFullYear());
-		this.showAll = true;
-
-		if(data['quotationList'][0] === null || data['quotationList'][0] === undefined || data['quotationList'][0] === ''){ 
-			this.holdCover.holdCoverId = '';
-			this.hcLine  = '';
-			this.hcYear  =  '';
-			this.hcSeqNo = '';
-			this.hcRevNo = '';
-			this.holdCover.holdCoverNo = '';
-			this.holdCover.periodFrom = '';
-			this.holdCover.periodTo = '';
-			this.holdCover.compRefHoldCovNo = '';
-			this.holdCover.status = '';
-			this.holdCover.reqBy = '';
-			this.holdCover.reqDate = '';
-			this.holdCover.preparedBy = '';
-			this.holdCover.approvedBy = '';
-			this.holdCover.optionId = '';
-			this.clickView = false;
-			this.quoteId = (data['quotationList'][0] === undefined) ? '' : data['quotationList'][0].quoteId;
-			this.cancelHcBtnEnabled = false;
-			this.btnApprovalEnabled = false;
-
-		}else{
-			var rec = data['quotationList'][0].holdCover;
-			this.holdCover.holdCoverNo = rec.holdCoverNo;
-			this.splitHcNo(rec.holdCoverNo);
-			this.holdCover.periodFrom = this.ns.toDateTimeString(rec.periodFrom);
-			this.holdCover.periodTo = this.ns.toDateTimeString(rec.periodTo);
-			this.periodFromTime = this.holdCover.periodFrom.split('T')[1];
-			this.periodToTime = this.holdCover.periodTo.split('T')[1];
-			this.holdCover.compRefHoldCovNo = rec.compRefHoldCovNo;
-			this.holdCover.reqBy  = rec.reqBy;
-			this.holdCover.reqDate  = this.ns.toDateTimeString(rec.reqDate);
-			this.holdCover.status  = rec.status;
-			this.holdCover.approvedBy =  rec.approvedBy;
-			this.holdCover.holdCoverId = rec.holdCoverId;
-			this.holdCover.updateUser = JSON.parse(window.localStorage.currentUser).username;
-			this.holdCover.preparedBy = JSON.parse(window.localStorage.currentUser).username;
-			this.holdCover.createDate = this.ns.toDateTimeString(rec.createDate);
-			this.holdCover.createUser = rec.createUser;
-			this.holdCover.optionId = rec.optionId;
-			this.quoteId = data['quotationList'][0].quoteId;
-			this.cancelHcBtnEnabled = true;
-			this.btnApprovalEnabled = true;
-
-			if(rec.approvedBy === '' || rec.approvedBy === null ||  rec.approvedBy === undefined){
-				this.clickView = false;
-
-			}else{
-				$('#modifMdl > #modalBtn').trigger('click');
-
-			}
-		}
-
-	});
-}
-
-holdCoverReq:any
-onSaveClick(cancelFlag?){
-	this.dialogIcon = '';
-	this.dialogMessage = '';
-	this.cancelFlag = cancelFlag !== undefined;
-	if(this.quoteNo === '' || this.quoteNo === null || this.quoteNo === undefined ||
-		this.holdCover.periodFrom === '' || this.holdCover.periodFrom === null || this.holdCover.periodFrom === undefined ||
-		this.holdCover.periodTo === '' || this.holdCover.periodTo === null || this.holdCover.periodTo === undefined ||
-		this.holdCover.compRefHoldCovNo === '' || this.holdCover.compRefHoldCovNo === null || this.holdCover.compRefHoldCovNo === undefined ||
-		this.holdCover.reqBy === '' || this.holdCover.reqBy ===  null || this.holdCover.reqBy === undefined ||
-		// this.holdCover.reqDate === '' || this.holdCover.reqDate === null || this.holdCover.reqDate === undefined ||
-		this.holdCover.optionId === '' || this.holdCover.optionId === null || this.holdCover.optionId === undefined){
-
-		this.dialogIcon = 'error';
-	this.dialogMessage = 'Please complete all the required fields.';
-	$('app-sucess-dialog #modalBtn').trigger('click');
-	setTimeout(()=>{$('.globalLoading').css('display','none');},0);
-	$('.warn').focus();
-	$('.warn').blur();
-}else{
-	this.quotationService.getQuoteGenInfo('',this.plainQuotationNo(this.quoteNo))
-	.subscribe(val => {
-		this.quoteId = val['quotationGeneralInfo'].quoteId;
-
-		this.holdCoverReq = {
-			"approvedBy": this.holdCover.approvedBy,
-			"compRefHoldCovNo": this.holdCover.compRefHoldCovNo,
-			"createDate": (this.holdCover.createDate === null || this.holdCover.createDate === '' || this.holdCover.createDate === undefined) ? this.ns.toDateTimeString(0) : this.holdCover.createDate,
-			"createUser": (this.holdCover.createUser === null || this.holdCover.createUser === '' || this.holdCover.createUser === undefined) ? JSON.parse(window.localStorage.currentUser).username : this.holdCover.createUser,
-			"holdCoverId": this.holdCover.holdCoverId,
-			"holdCoverRevNo": this.hcRevNo,
-			"holdCoverSeqNo": this.hcSeqNo,
-			"optionId": this.holdCover.optionId,
-			"holdCoverYear": (this.hcYear === null || this.hcYear === '' || this.hcYear === undefined) ? String(new Date().getFullYear()) : this.hcYear,
-			"lineCd": (this.hcLine === null || this.hcLine === '' || this.hcLine === undefined) ? this.qLine.toUpperCase() : this.hcLine.toUpperCase() ,
-			"periodFrom": this.holdCover.periodFrom.split('T')[0] + 'T' + (this.periodFromTime === undefined ? this.holdCover.periodFrom.split('T')[1]: this.periodFromTime),
-			"periodTo": this.holdCover.periodTo.split('T')[0] + 'T' + (this.periodToTime === undefined ? this.holdCover.periodTo.split('T')[1]: this.periodToTime),
-			"preparedBy": (this.holdCover.preparedBy === null || this.holdCover.preparedBy === '') ? JSON.parse(window.localStorage.currentUser).username : this.holdCover.preparedBy,
-			"quoteId": this.quoteId,
-			"reqBy": this.holdCover.reqBy,
-			"reqDate": (this.holdCover.reqDate === null  || this.holdCover.reqDate === undefined || this.holdCover.reqDate === '') ?  this.ns.toDateTimeString(0) : this.holdCover.reqDate,
-			"status": (this.holdCover.status === null || this.holdCover.status === '') ? 'I' : this.holdCover.status.substring(0,1),
-			"updateDate" : this.ns.toDateTimeString(0),
-			"updateUser": (this.holdCover.preparedBy === null || this.holdCover.preparedBy === '') ? JSON.parse(window.localStorage.currentUser).username : this.holdCover.preparedBy
-		}
-
-		console.log(JSON.stringify(this.holdCoverReq));
-		this.quotationService.saveQuoteHoldCover(
-			JSON.stringify(this.holdCoverReq)
-			).subscribe(data => {
-				var returnCode = data['returnCode'];
-				var hcNo = data['holdCoverNo'].split('-');
-				this.hcLine = hcNo[1];
-				this.hcYear = hcNo[2];
-				this.hcSeqNo = hcNo[3];
-				this.hcRevNo = hcNo[4];
-
-				if(returnCode === 0){
+				setTimeout(()=>{
 					this.dialogIcon = 'error';
-					this.dialogMessage = '';
+					$('.globalLoading').css('display','none');
 					$('app-sucess-dialog #modalBtn').trigger('click');
-					setTimeout(()=>{$('.globalLoading').css('display','none');},0);
 					$('.warn').focus();
 					$('.warn').blur();
-				}else{
-					// this.dialogIcon = '';
-					// this.dialogMessage = '';
-					// $('app-sucess-dialog #modalBtn').trigger('click');
-					// this.btnApprovalEnabled = true;
-					// this.cancelHcBtnEnabled = true;
-					// $('.warn').focus();
-					// $('.warn').blur();
+				},500);
+			
+		}else{
+			this.quotationService.getQuoteGenInfo('',this.plainQuotationNo(this.quoteNo))
+			.subscribe(val => {
+				this.quoteId = val['quotationGeneralInfo'].quoteId;
 
-					if(this.btnCancelMainEnabled === true){
-						this.modalService.dismissAll();
-					}  
-
-					this.quotationService.getHoldCoverInfo('',this.plainHc(data['holdCoverNo']))
-					.subscribe(data => {
-						this.dialogIcon = '';
-						this.dialogMessage = '';
-						$('app-sucess-dialog #modalBtn').trigger('click');
-						this.btnApprovalEnabled = true;
-						this.cancelHcBtnEnabled = true;
-						// $('.warn').focus();
-						// $('.warn').blur();
-						var rec = data['quotation'].holdCover;
-						this.holdCover.holdCoverNo = rec.holdCoverNo;
-						this.holdCover.holdCoverId = rec.holdCoverId;
-						this.holdCover.periodFrom = this.ns.toDateTimeString(rec.periodFrom);
-						this.holdCover.periodTo = this.ns.toDateTimeString(rec.periodTo);
-						this.holdCover.compRefHoldCovNo  = rec.compRefHoldCovNo;
-						this.holdCover.status = rec.status;
-						this.holdCover.reqBy =  rec.reqBy;
-						this.holdCover.reqDate = (rec.reqDate === null || rec.reqDate === undefined) ? '' : this.ns.toDateTimeString(rec.reqDate);
-						this.holdCover.preparedBy = rec.preparedBy;
-						this.holdCover.approvedBy = rec.approvedBy;
-						this.holdCover.optionId = rec.optionId;
-						this.periodFromTime = this.holdCover.periodFrom.split('T')[1];
-						this.periodToTime = this.holdCover.periodTo.split('T')[1];
-					});
+				this.holdCoverReq = {
+					"approvedBy": this.holdCover.approvedBy,
+					"compRefHoldCovNo": this.holdCover.compRefHoldCovNo,
+					"createDate": (this.holdCover.createDate === null || this.holdCover.createDate === '' || this.holdCover.createDate === undefined) ? this.ns.toDateTimeString(0) : this.holdCover.createDate,
+					"createUser": (this.holdCover.createUser === null || this.holdCover.createUser === '' || this.holdCover.createUser === undefined) ? JSON.parse(window.localStorage.currentUser).username : this.holdCover.createUser,
+					"holdCoverId": this.holdCover.holdCoverId,
+					"holdCoverRevNo": this.hcRevNo,
+					"holdCoverSeqNo": this.hcSeqNo,
+					"optionId": this.holdCover.optionId,
+					"holdCoverYear": (this.hcYear === null || this.hcYear === '' || this.hcYear === undefined) ? String(new Date().getFullYear()) : this.hcYear,
+					"lineCd": (this.hcLine === null || this.hcLine === '' || this.hcLine === undefined) ? this.qLine.toUpperCase() : this.hcLine.toUpperCase() ,
+					"periodFrom": this.holdCover.periodFrom.split('T')[0] + 'T' + (this.periodFromTime === undefined ? this.holdCover.periodFrom.split('T')[1]: this.periodFromTime),
+					"periodTo": this.holdCover.periodTo.split('T')[0] + 'T' + (this.periodToTime === undefined ? this.holdCover.periodTo.split('T')[1]: this.periodToTime),
+					"preparedBy": (this.holdCover.preparedBy === null || this.holdCover.preparedBy === '') ? JSON.parse(window.localStorage.currentUser).username : this.holdCover.preparedBy,
+					"quoteId": this.quoteId,
+					"reqBy": this.holdCover.reqBy,
+					"reqDate": (this.holdCover.reqDate === null  || this.holdCover.reqDate === undefined || this.holdCover.reqDate === '') ? '' : this.holdCover.reqDate,
+					"status": (this.holdCover.status === null || this.holdCover.status === '') ? 'In Force' : this.holdCover.status,
+					"updateDate" : this.ns.toDateTimeString(0),
+					"updateUser": (this.holdCover.preparedBy === null || this.holdCover.preparedBy === '') ? JSON.parse(window.localStorage.currentUser).username : this.holdCover.preparedBy
 				}
-			});
 
-		});
+				console.log(JSON.stringify(this.holdCoverReq));
+				this.quotationService.saveQuoteHoldCover(
+					JSON.stringify(this.holdCoverReq)
+					).subscribe(data => {
+						var returnCode = data['returnCode'];
+						var hcNo = data['holdCoverNo'].split('-');
+						this.hcLine = hcNo[1];
+						this.hcYear = hcNo[2];
+						this.hcSeqNo = hcNo[3];
+						this.hcRevNo = hcNo[4];
+
+						if(returnCode === 0){
+							this.dialogIcon = 'error';
+							this.dialogMessage = '';
+							$('app-sucess-dialog #modalBtn').trigger('click');
+							setTimeout(()=>{$('.globalLoading').css('display','none');},0);
+							$('.warn').focus();
+							$('.warn').blur();
+						}else{
+							// this.dialogIcon = '';
+							// this.dialogMessage = '';
+							// $('app-sucess-dialog #modalBtn').trigger('click');
+							// this.btnApprovalEnabled = true;
+							// this.cancelHcBtnEnabled = true;
+							// $('.warn').focus();
+							// $('.warn').blur();
+
+							if(this.btnCancelMainEnabled === true){
+								this.modalService.dismissAll();
+							}  
+
+							this.quotationService.getHoldCoverInfo('',this.plainHc(data['holdCoverNo']))
+							.subscribe(data => {
+								this.dialogIcon = '';
+								this.dialogMessage = '';
+								$('app-sucess-dialog #modalBtn').trigger('click');
+								this.btnApprovalEnabled = true;
+								this.cancelHcBtnEnabled = true;
+
+								var rec = data['quotation'].holdCover;
+								this.holdCover.holdCoverNo = rec.holdCoverNo;
+								this.holdCover.holdCoverId = rec.holdCoverId;
+								this.holdCover.periodFrom = this.ns.toDateTimeString(rec.periodFrom);
+								this.holdCover.periodTo = this.ns.toDateTimeString(rec.periodTo);
+								this.holdCover.compRefHoldCovNo  = rec.compRefHoldCovNo;
+								this.holdCover.status = rec.status;
+								this.holdCover.reqBy =  rec.reqBy;
+								this.holdCover.reqDate = (rec.reqDate === null || rec.reqDate === undefined) ? '' : this.ns.toDateTimeString(rec.reqDate);
+								this.holdCover.preparedBy = rec.preparedBy;
+								this.holdCover.approvedBy = rec.approvedBy;
+								this.holdCover.optionId = rec.optionId;
+								this.periodFromTime = this.holdCover.periodFrom.split('T')[1];
+								this.periodToTime = this.holdCover.periodTo.split('T')[1];
+							});
+						}
+					});
+
+				});
 // }
 }
 
@@ -506,99 +509,93 @@ setPeriodTo(periodFrom){
 	}
 }
 
-searchQuoteInfo(line,year,seq,rev,ced){
-	var qNo = line.toUpperCase() +"-"+year+"-"+seq+"-"+rev+"-"+(ced.padStart(3,0));
-	this.quotationService.getSelectedQuote(this.plainQuotationNo(qNo))
-	.subscribe(val => {
-		var data = val['quotationList'][0];
-		if(data === undefined || data === null){
-			this.quoteNo = '';
-			this.insured = '';
-			this.cedCo = '';
-			this.risk = '';
-			this.hcLine  = '';
-			this.hcYear  =  '';
-			
-			if(line === '' || year === '' || seq === '' || rev === '' || ced === ''){
-			}else{
-				$('#lovMdl > #modalBtn').trigger('click');
-			}
-
-		}else{
-			if(data.status.toUpperCase() === 'RELEASED' || data.status.toUpperCase() === "ON HOLD COVER"){
-				console.log('triggered here ');
-				this.newHc(false);
-				this.quoteNo = (data.quotationNo === null || data.quotationNo === undefined) ? '' : data.quotationNo;
-				this.sliceQuoteNo(qNo);
-				this.insured = (data.insuredDesc  === null || data.insuredDesc === undefined) ? '' : data.insuredDesc;
-				this.cedCo = (data.cedingName  === null || data.cedingName === undefined) ? '' : data.cedingName;
-				this.risk = (data.project  === null || data.project === undefined) ? '' : data.project.riskName;
-				
-			}
-		}
-	});
-
-		this.btnApprovalEnabled = false;
-		this.quotationService.getSelectedQuotationHoldCoverInfo(this.plainQuotationNo(qNo))
-		.subscribe(data => {
-			if(data['quotationList'][0] === null || data['quotationList'][0] === undefined || data['quotationList'][0] === ''){
+getQuoteInfo(){
+	this.passDataQuoteLOV.tableData = [];
+	this.qLine =  (this.qLine === '' || this.qLine === null || this.qLine === undefined)? '' : this.qLine;
+	this.qYear =  (this.qYear === '' || this.qYear === null || this.qYear === undefined)? '' : this.qYear;
+	this.qSeqNo =  (this.qSeqNo === '' || this.qSeqNo === null || this.qSeqNo === undefined)? '' : this.qSeqNo;
+	this.qRevNo =  (this.qRevNo === '' || this.qRevNo === null || this.qRevNo === undefined)? '' : this.qRevNo;
+	this.qCedingId =  (this.qCedingId === '' || this.qCedingId === null || this.qCedingId === undefined)? '' : (this.qCedingId.padStart(3,'0'));
+	this.quotationService.getSearchQuoteInfo(this.qLine.toUpperCase(),this.qYear,this.qSeqNo,this.qRevNo,this.qCedingId)
+	.subscribe(data => {
+		console.log(data);
+		var rec = data['quotation'];
+		if(rec === '' ||  rec === null || rec === undefined || rec.length === 0){
+			if(this.qLine !== '' && this.qYear !== '' && this.qSeqNo !== '' && this.qRevNo !== '' && this.qCedingId !== ''){
+				this.quoteNo = '';
 				this.insured = '';
-				this.cedCo = ''
+				this.cedCo = '';
 				this.risk = '';
-				this.holdCover.holdCoverId = '';
 				this.hcLine  = '';
 				this.hcYear  =  '';
-				this.hcSeqNo = '';
-				this.hcRevNo = '';
-				this.holdCover.periodFrom = '';
-				this.holdCover.periodTo = '';
-				this.holdCover.compRefHoldCovNo = '';
-				this.holdCover.status = '';
-				this.holdCover.reqBy = '';
-				this.holdCover.reqDate = '';
-				this.holdCover.preparedBy = '';
-				this.holdCover.approvedBy = '';
-				this.cancelHcBtnEnabled = false;
-				this.holdCover.holdCoverNo = '';
-				this.holdCover.optionId = '';
-				this.disableFieldsHc(true);
 				this.newHc(true);
-				
-			}else{
-				console.log('2nd ');
-				var rec = data['quotationList'][0].holdCover;
-				this.holdCover.holdCoverNo = rec.holdCoverNo;
-				this.splitHcNo(rec.holdCoverNo);
-				this.holdCover.periodFrom = this.ns.toDateTimeString(rec.periodFrom);
-				this.holdCover.periodTo = this.ns.toDateTimeString(rec.periodTo);
-				this.holdCover.compRefHoldCovNo = rec.compRefHoldCovNo;
-				this.holdCover.reqBy  = rec.reqBy;
-				this.holdCover.reqDate  = this.ns.toDateTimeString(rec.reqDate);
-				this.holdCover.status  = rec.status;
-				this.holdCover.approvedBy =  rec.approvedBy;
-				this.holdCover.holdCoverId = rec.holdCoverId;
-				this.holdCover.updateUser = JSON.parse(window.localStorage.currentUser).username;
-				this.holdCover.preparedBy = JSON.parse(window.localStorage.currentUser).username;
-				this.holdCover.createDate = this.ns.toDateTimeString(rec.createDate);
-				this.holdCover.createUser = rec.createUser;
-				this.cancelHcBtnEnabled = true;
-				this.btnApprovalEnabled = true;
-				this.newHc(false);
-
-				if(rec.approvedBy === '' || rec.approvedBy === null ||  rec.approvedBy === undefined){
-					this.clickView = false;
-
-				}else{
-					$('#modifMdl > #modalBtn').trigger('click');
-
-				}
-
+				this.qLine = '' ;
+				this.qYear = '' ;
+				this.qSeqNo = '' ;
+				this.qRevNo = '' ;
+				this.qCedingId = '' ;
+				this.searchMatchingQuote();
+				this.clearAll();
 			}
-		});
+		}else{
+			if(rec.length === 1){
+				this.newHc(false);
+				this.quoteNo = (rec[0].quotationNo === null || rec[0].quotationNo === undefined) ? '' : rec[0].quotationNo;
+				this.insured = (rec[0].insuredDesc  === null || rec[0].insuredDesc === undefined) ? '' : rec[0].insuredDesc;
+				this.cedCo = (rec[0].cedingName  === null || rec[0].cedingName === undefined) ? '' : rec[0].cedingName;
+				this.risk = (rec[0].project  === null || rec[0].project === undefined) ? '' : rec[0].project.riskName;
+
+				
+				this.quotationService.getSelectedQuotationHoldCoverInfo(this.quoteNo)
+				.subscribe(data => {
+					this.btnApprovalEnabled = false;
+					if(data['quotationList'][0] === null || data['quotationList'][0] === undefined || data['quotationList'][0] === ''){
+						this.clearAll();
+						this.cancelHcBtnEnabled = false;
+						this.disableFieldsHc(true);
+						this.newHc(true);
+
+					}else{
+						var rec = data['quotationList'][0].holdCover;
+						this.holdCover.holdCoverNo = rec.holdCoverNo;
+						this.splitHcNo(rec.holdCoverNo);
+						this.holdCover.periodFrom = this.ns.toDateTimeString(rec.periodFrom);
+						this.holdCover.periodTo = this.ns.toDateTimeString(rec.periodTo);
+						this.holdCover.compRefHoldCovNo = rec.compRefHoldCovNo;
+						this.holdCover.reqBy  = rec.reqBy;
+						this.holdCover.reqDate  = this.ns.toDateTimeString(rec.reqDate);
+						this.holdCover.status  = rec.status;
+						this.holdCover.approvedBy =  rec.approvedBy;
+						this.holdCover.holdCoverId = rec.holdCoverId;
+						this.holdCover.updateUser = JSON.parse(window.localStorage.currentUser).username;
+						this.holdCover.preparedBy = JSON.parse(window.localStorage.currentUser).username;
+						this.holdCover.createDate = this.ns.toDateTimeString(rec.createDate);
+						this.holdCover.createUser = rec.createUser;
+						this.cancelHcBtnEnabled = true;
+						this.btnApprovalEnabled = true;
+						this.newHc(false);
+
+						if(rec.approvedBy === '' || rec.approvedBy === null ||  rec.approvedBy === undefined){
+							this.clickView = false;
+						}else{
+							if(rec.status.toUpperCase() === 'EXPIRED' || rec.status.toUpperCase() === 'CONVERTED'){
+								this.cancelHcBtnEnabled = false;
+							}else{
+								$('#modifMdl > #modalBtn').trigger('click');
+							}
+
+						}
+
+					}
+				});
+			}
+		}
 
 
 
+	});
 }
+
 
 
 onClickView(){
@@ -614,7 +611,10 @@ onClickModif(){
 }
 
 onClickCancelModifMdl(){
-
+	this.clickView = false;
+	this.cancelHcBtnEnabled = false;
+	this.btnApprovalEnabled = false;
+	this.newHc(true);
 	this.modalService.dismissAll();
 	this.clearAll();
 }
@@ -714,28 +714,30 @@ fmtCn(cn){
 }
 
 
-	onTabChange($event: NgbTabChangeEvent) {
-		if ($event.nextId === 'Exit') {
-			$event.preventDefault();
-			//this.router.navigateByUrl('hold-cover-monitoring');
+onTabChange($event: NgbTabChangeEvent) {
+	if ($event.nextId === 'Exit') {
+		$event.preventDefault();
+		//this.router.navigateByUrl('hold-cover-monitoring');
 
-		} 
-	}
+	} 
+}
 
-	onClickCancelHoldCover(){
-		this.modalService.dismissAll();
-		this.loading = true;
-		this.ids = {
-			"quoteId":(this.quoteId === null || this.quoteId === undefined)? '' : this.quoteId,
-			"holdCoverId":this.holdCover.holdCoverId
-		};
+onClickCancelHoldCover(){
+	console.log(this.holdCover.status);
+	this.modalService.dismissAll();
+	this.loading = true;
+	this.ids = {
+		"quoteId":(this.quoteId === null || this.quoteId === undefined)? '' : this.quoteId,
+		"holdCoverId":this.holdCover.holdCoverId
+	};
 
-		if(this.quoteId === null || this.quoteId === undefined){
-			this.genMsg = 'No existing Hold Cover';
-			this.icon = 'fa fa-times-circle fa-3x';
-			$('#successModal #modalBtn').trigger('click');
-			this.loading = false;
-		}else{
+	if(this.quoteId === null || this.quoteId === undefined){
+		this.genMsg = 'No existing Hold Cover';
+		this.icon = 'fa fa-times-circle fa-3x';
+		$('#successModal #modalBtn').trigger('click');
+		this.loading = false;
+	}else{
+		if((this.holdCover.status).toUpperCase() === 'IN FORCE' || (this.holdCover.status).toUpperCase() === 'RELEASED'){
 			this.quotationService.updateHoldCoverStatus(JSON.stringify(this.ids))
 			.subscribe(data => {
 				console.log(data);	
@@ -746,81 +748,89 @@ fmtCn(cn){
 				this.clearHcDetails();
 				this.cancelHcBtnEnabled = false;
 				this.btnApprovalEnabled = false;
-			});  
+			}); 
 		}
 
 	}
 
-	onConfirmCancelHc(){
-		this.warningMsg = 'Are you sure you want to cancel Hold Cover?'
-		$('#warningMdl #modalBtn').trigger('click');  
-	}
+}
 
-	onClickOptionLOV(){
-		this.passDataQuoteOptionsLOV.tableData = [];
-		//this.loading = true;
-		$('#optionMdl #modalBtn2').trigger('click');
-		this.quotationService.getQuoteOptions(this.quoteId.toString(),'')
-		.subscribe(data => {
-			console.log(data);
-			//this.loading = false;
-			var rec = data['quotation'].optionsList;
-			for(let i of rec){
-				this.passDataQuoteOptionsLOV.tableData.push({
-					optionNo:         i.optionId,
-					rate:             i.optionRt,
-					conditions:       i.condition,
-					commRateQuota:    i.commRtQuota,
-					commRateSurplus:  i.commRtSurplus,
-					commRateFac:      i.commRtFac
-				});
+onConfirmCancelHc(){
+	this.warningMsg = 'Are you sure you want to cancel Hold Cover?'
+	$('#warningMdl #modalBtn').trigger('click');  
+}
+
+onClickOptionLOV(){
+	this.passDataQuoteOptionsLOV.tableData = [];
+	//this.loading = true;
+	$('#optionMdl #modalBtn2').trigger('click');
+	this.quotationService.getQuoteOptions(this.quoteId.toString(),'')
+	.subscribe(data => {
+		console.log(data);
+		//this.loading = false;
+		var rec = data['quotation'].optionsList;
+		for(let i of rec){
+			this.passDataQuoteOptionsLOV.tableData.push({
+				optionNo:         i.optionId,
+				rate:             i.optionRt,
+				conditions:       i.condition,
+				commRateQuota:    i.commRtQuota,
+				commRateSurplus:  i.commRtSurplus,
+				commRateFac:      i.commRtFac
+			});
+		}
+		this.opt.refreshTable();
+	});
+}
+
+onClickOptionRow(event){
+	this.selectedOption = event;
+}
+
+onClickOkOption(){
+	this.holdCover.optionId = this.selectedOption.optionNo;
+	this.modalService.dismissAll();
+}
+
+clearHcDetails(){
+	this.holdCover.holdCoverNo = '';
+	this.holdCover.holdCoverId = '';
+	this.holdCover.periodFrom = '';
+	this.holdCover.periodTo = '';
+	this.periodFromTime = '';
+	this.periodToTime = '';
+	this.holdCover.compRefHoldCovNo = '';
+	this.holdCover.status = '';
+	this.holdCover.reqBy = '';
+	this.holdCover.reqDate = '';
+	this.holdCover.preparedBy = '';
+	this.holdCover.approvedBy = '';
+	this.holdCover.optionId = '';
+}
+
+countMatch:number;
+searchOptNo(optNoInput){
+	this.countMatch = 0;
+	this.quotationService.getQuoteOptions(this.quoteId.toString(),'')
+	.subscribe(data => {
+		var rec = data['quotation'].optionsList;
+		for(let i of rec){
+			if(Number(i.optionId) === Number(optNoInput)){
+				this.countMatch++;
 			}
-			this.opt.refreshTable();
-		});
-	}
+		}
+		if(this.countMatch !== 1){
+			this.holdCover.optionId = '';
+			this.onClickOptionLOV();
+		}
+	});
+}
 
-	onClickOptionRow(event){
-		this.selectedOption = event;
-	}
-
-	onClickOkOption(){
-		this.holdCover.optionId = this.selectedOption.optionNo;
-		this.modalService.dismissAll();
-	}
-
-	clearHcDetails(){
-		this.holdCover.holdCoverNo = '';
-		this.holdCover.holdCoverId = '';
-		this.holdCover.periodFrom = '';
-		this.holdCover.periodTo = '';
-		this.periodFromTime = '';
-		this.periodToTime = '';
-		this.holdCover.compRefHoldCovNo = '';
-		this.holdCover.status = '';
-		this.holdCover.reqBy = '';
-		this.holdCover.reqDate = '';
-		this.holdCover.preparedBy = '';
-		this.holdCover.approvedBy = '';
-		this.holdCover.optionId = '';
-	}
-
-	countMatch:number;
-	searchOptNo(optNoInput){
-		this.countMatch = 0;
-		this.quotationService.getQuoteOptions(this.quoteId.toString(),'')
-		.subscribe(data => {
-			var rec = data['quotation'].optionsList;
-			for(let i of rec){
-				if(Number(i.optionId) === Number(optNoInput)){
-					this.countMatch++;
-				}
-			}
-			if(this.countMatch !== 1){
-					this.holdCover.optionId = '';
-					this.onClickOptionLOV();
-			}
-		});
-	}
+onClickClear(){
+	this.clearAll();
+	this.newHc(true);
+	this.disableFieldsHc(true);
+}
 
 
 }
