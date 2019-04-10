@@ -17,6 +17,7 @@ export class PolAttachmentComponent implements OnInit {
 
     @Input() alterationFlag: true;
     @Input() policyInfo: any;
+    @Input() openCoverFlag: boolean = false;
 
     @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
     @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
@@ -40,6 +41,10 @@ export class PolAttachmentComponent implements OnInit {
     savedData: any[];
     deletedData: any[];
 
+    cancelFlag: boolean;
+    dialogMessage: string = "";
+    dialogIcon: string = "";
+
     filesList: any [] = [];
 
     constructor(config: NgbDropdownConfig, private underwritingService: UnderwritingService, private titleService: Title, private notes: NotesService, private upload: UploadService) {
@@ -49,7 +54,12 @@ export class PolAttachmentComponent implements OnInit {
 
     ngOnInit() {
         this.titleService.setTitle("Pol | Attachment");
-        this.retrievePolAttachment();
+        if(!this.openCoverFlag){
+          this.retrievePolAttachment();
+        }else{
+          console.log('opencover');
+          this.retrievePolAttachmentOc();
+        }
         console.log(this.policyInfo);
     }
 
@@ -66,9 +76,18 @@ export class PolAttachmentComponent implements OnInit {
         });
     }
 
-    cancelFlag: boolean;
-    dialogMessage: string = "";
-    dialogIcon: string = "";
+    retrievePolAttachmentOc(){
+      this.underwritingService.getPolAttachmentOc(this.policyInfo.policyIdOc,this.policyInfo.policyNo).subscribe((data: any) =>{
+            console.log(data);
+            this.attachmentData.tableData = [];
+            if(data.attachmentsList !== null){
+                for(var i of data.attachmentsList.attachmentsOc){
+                    this.attachmentData.tableData.push(i);
+                }
+            }
+            this.table.refreshTable();
+        });
+    }
 
     saveData(cancelFlag?){
 
