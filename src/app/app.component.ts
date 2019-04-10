@@ -1,4 +1,4 @@
-import { Component, Inject,  ViewChild} from '@angular/core';
+import { Component, Inject,  ViewChild,} from '@angular/core';
 import { Router } from '@angular/router';
 import { ResizeEvent } from 'angular-resizable-element';
 import { HostListener, ElementRef } from '@angular/core';
@@ -175,7 +175,7 @@ export class AppComponent  {
                  this.style.setProperty('background', color1, 'important');
             });
             $('legend.scheduler-border').css({"color":color2});
-            $(' aside.ng-sidebar ').css({"background-color":color3});
+            $(' aside.ng-sidebar ').css({"background-color":color3});    
             $('.nav-link').css({"color":color2});
             $('.nav-link.active ').css({"color":"#495057"});
             $('nav-link .disabled').css({"color":"#6c757d"});  

@@ -158,7 +158,6 @@ export class ReadyForPrintingComponent implements OnInit {
   retrieveQuoteListingMethod(){
     this.quotationService.getQuoProcessingData(this.searchParams).subscribe(data => {
             this.records = data['quotationList'];
-            console.log(this.records);
             for(let rec of this.records){
               if(rec.status === 'Approved'){
                 this.passData.tableData.push(
