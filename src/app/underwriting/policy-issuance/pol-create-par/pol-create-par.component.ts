@@ -103,14 +103,26 @@ export class PolCreatePARComponent implements OnInit {
     this.expiryDate = this.ns.toDateTimeString(d).split('T')[0];
   }
 
-  getQuoteListing() {
-    this.quoteService.getQuoProcessingData([]).subscribe(data => {
+  getQuoteListing(param?) {
+    this.quoteService.getQuoProcessingData(param === undefined ? [] : param).subscribe(data => {
       this.quotationList = data['quotationList'];
       this.passDataLOV.tHeader = ['Quotation No', 'Ceding Company', 'Insured', 'Risk'];
       this.passDataLOV.keys = ['quotationNo','cedingName','insuredDesc','riskName'];
-      this.passDataLOV.tableData = this.quotationList.filter(qu => qu.status.toUpperCase() === 'RELEASED' )
-                                                     .map(qu => { qu.riskName = qu.project.riskName; return qu; });
+      this.quotationList = this.quotationList.filter(qu => qu.status.toUpperCase() === 'RELEASED' )
+                                             .map(qu => { qu.riskName = qu.project.riskName; return qu; });
+      this.passDataLOV.tableData = this.quotationList;
       this.lovTable.refreshTable();
+
+      if(param !== undefined) {
+        if(this.quotationList.length === 1) {  
+          this.selected = this.quotationList[0];
+          this.setDetails();
+        } else if(this.quotationList.length === 0) {
+          this.clearFields();
+          this.getQuoteListing(undefined);
+          this.showLOV();
+        }
+      }
     });    
 
   }
@@ -123,14 +135,26 @@ export class PolCreatePARComponent implements OnInit {
     });
   }
 
-  getHoldCovListing() {
+  getHoldCovListing(param?) {
     this.quoteService.getQuotationHoldCoverList([]).subscribe(data => {
       this.holCovList = data['quotationList'];
       this.passDataLOV.tHeader = ['Quotation No', 'Ceding Company', 'Insured', 'Risk'];
       this.passDataLOV.keys = ['quotationNo','cedingName','insuredDesc','riskName'];
-      this.passDataLOV.tableData = this.holCovList.filter(hc => hc.holdCover.status.toUpperCase() === 'RELEASED' || hc.holdCover.status.toUpperCase() === 'EXPIRED')
-                                                  .map(hc => { hc.riskName = hc.project.riskName; return hc; });
+      this.holCovList = this.holCovList.filter(hc => hc.holdCover.status.toUpperCase() === 'RELEASED' || hc.holdCover.status.toUpperCase() === 'EXPIRED')
+                                       .map(hc => { hc.riskName = hc.project.riskName; return hc; });
+      this.passDataLOV.tableData = this.holCovList;
       this.lovTable.refreshTable();
+
+      if(param !== undefined) {
+        if(this.holCovList.length === 1) {  
+          this.selected = this.holCovList[0];
+          this.setDetails();
+        } else if(this.holCovList.length === 0) {
+          this.clearFields();
+          this.getHoldCovListing(undefined);
+          this.showLOV();
+        }
+      }
     });
   }
 
@@ -323,6 +347,7 @@ export class PolCreatePARComponent implements OnInit {
   }
 
   clearFields() {
+    this.searchArr = [];
     this.quNo = [];
     this.hcNo = [];
     this.ocNo = [];
@@ -400,26 +425,31 @@ export class PolCreatePARComponent implements OnInit {
   }
 
   search(key,ev) {
+    var a = ev.target.value;
+
     if(this.qu || this.hc) {
       if(key === 'lineCd') {
-        this.searchArr[0] = ev.target.value.toUpperCase() + '%';
+        this.searchArr[0] = a.toUpperCase() + '%';
       } else if(key === 'year') {
-        this.searchArr[1] = '%' + ev.target.value.toUpperCase() + '%';
+        this.searchArr[1] = '%' + a.toUpperCase() + '%';
       } else if(key === 'seqNo') {
-        this.searchArr[2] = '%' + ev.target.value.toUpperCase() + '%';
+        this.searchArr[2] = '%' + a.toUpperCase() + '%';
       } else if(key === 'revNo') {
-        this.searchArr[3] = '%' + ev.target.value.toUpperCase() + '%';
+        this.searchArr[3] = '%' + a.toUpperCase() + '%';
       } else if(key === 'cedingId') {
-        this.searchArr[4] = '%' + ev.target.value.toUpperCase();
+        this.searchArr[4] = '%' + a.toUpperCase();
       }
-    }    
+
+      if(this.qu) {
+        this.getQuoteListing([{ key: 'quotationNo', search: this.searchArr.join('') }]);  
+      } else {
+        this.getHoldCovListing([{ key: 'holdCoverNo', search: this.searchArr.join('') }]);       
+      }
+      
+    } else {
+
+    }
+
   }
 
-
-  //TODO SEARCH
-  test() {
-    this.quoteService.getQuoProcessingData([{ key: 'quotationNo', search: this.searchArr.join('') }]).subscribe(data => {
-      console.log(data);
-    });
-  }
 }

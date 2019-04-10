@@ -88,11 +88,11 @@
                             <input type="text" class="form-control form-control-sm input-ig-row cap-input col-sm" ngbTooltip="Sequence No"  appRequired[disabled]="fromQuotation">
                             <span>&nbsp;</span>
                             <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div> -->
-                            <input type="text" [ngModel]="hcNo[0]" (ngModelChange)="hcNo[0]=$event.toUpperCase()" class="form-control form-control-sm cap-input col-sm-2 req" ngbTooltip="Line" (change)="getCutOffTime($event)" appRequired>
-                            <input type="text" [(ngModel)]="hcNo[1]" class="form-control form-control-sm input-ig-row cap-input col-sm req" ngbTooltip="Year" appRequired>
-                            <input type="text" [(ngModel)]="hcNo[2]" class="form-control form-control-sm input-ig-row cap-input req" ngbTooltip="Sequence No" appRequired>
-                            <input type="text" [(ngModel)]="hcNo[3]" class="form-control form-control-sm input-ig-row cap-input req" ngbTooltip="Revision No" appRequired>
-                            <input type="text" [(ngModel)]="hcNo[4]" class="form-control form-control-sm input-ig-row cap-input req" ngbTooltip="Company No" appRequired>
+                            <input type="text" [ngModel]="hcNo[0]" (ngModelChange)="hcNo[0]=$event.toUpperCase()" class="form-control form-control-sm cap-input col-sm-2 req" ngbTooltip="Line" (change)="getCutOffTime($event); search('lineCd',$event)" appRequired>
+                            <input type="text" [(ngModel)]="hcNo[1]" (change)="search('year',$event)" class="form-control form-control-sm input-ig-row cap-input col-sm req" ngbTooltip="Year" appRequired>
+                            <input type="text" [(ngModel)]="hcNo[2]" (change)="search('seqNo',$event)" class="form-control form-control-sm input-ig-row cap-input req" ngbTooltip="Sequence No" appRequired>
+                            <input type="text" [(ngModel)]="hcNo[3]" (change)="search('revNo',$event)" class="form-control form-control-sm input-ig-row cap-input req" ngbTooltip="Revision No" appRequired>
+                            <input type="text" [(ngModel)]="hcNo[4]" (change)="search('cedingId',$event)" class="form-control form-control-sm input-ig-row cap-input req" ngbTooltip="Company No" appRequired>
                             <span>&nbsp;</span>
                             <div class="text-search-ico"><a><i class="fa fa-search" (click)="showLOV();"></i></a></div>
                         </div>
