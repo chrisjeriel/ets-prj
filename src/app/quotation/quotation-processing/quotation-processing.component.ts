@@ -162,6 +162,7 @@ export class QuotationProcessingComponent implements OnInit {
         genericBtn1: 'Copy Quote Details',
         genericBtn2: 'Internal Competition',
         exportFlag: true,
+        pagination: true
     }
 
     riskData: any = {

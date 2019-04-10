@@ -111,6 +111,7 @@ export class QuotationComponent implements OnInit {
    //   }
 
   		if ($event.nextId === 'Exit') {
+        $event.preventDefault();
     		this.router.navigateByUrl('');
   		} 
 
