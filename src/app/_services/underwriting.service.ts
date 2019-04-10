@@ -791,4 +791,12 @@ export class UnderwritingService {
         return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolEndtOc', JSON.stringify(params), header);
     }
 
+    getPolAttachmentOc(policyIdOc: string, openPolicyNo: string) {
+        const params = new HttpParams()
+             .set('policyIdOc', (policyIdOc === null || policyIdOc === undefined ? '' : policyIdOc) )
+             .set('openPolicyNo',(openPolicyNo === null || openPolicyNo === undefined ? '' : openPolicyNo) )
+
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolAttachmentOc',{params});
+    }
+
 }            

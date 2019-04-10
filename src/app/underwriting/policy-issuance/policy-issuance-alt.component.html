@@ -49,7 +49,7 @@
 		
 		<ngb-tab title="Attachment">
 			<ng-template ngbTabContent>
-				<app-pol-attachment></app-pol-attachment>
+				<app-pol-attachment [policyInfo]="policyInfo"></app-pol-attachment>
 			</ng-template>
 		</ngb-tab>
 		
@@ -161,7 +161,7 @@
 												<div class="col-sm-8" style="padding:0">
 												  <div class="input-group">
 													<label class="form-control-sm" for="xx" style="padding-left: 0px">Status</label>
-												    <input type="text" tabindex="-1" [(ngModel)]="this.policyInfo.status" readonly id="xx" class="form-control form-control-sm col-sm" style="margin-left: 5px">
+												    <input type="text" tabindex="-1" [(ngModel)]="status" readonly id="xx" class="form-control form-control-sm col-sm" style="margin-left: 5px">
 												  </div>
 											    </div>
 											</div>
@@ -177,7 +177,7 @@
 			                                   		  </div>
 													</div>
 													<div class="col-sm-4" style="padding-left:0px;padding-right: 0px">
-														<button class="cust">{{ approveText }}</button>
+														<button class="cust-btn">{{ approveText }}</button>
 												    </div>
 											</div>
 										</div>

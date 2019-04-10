@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild,AfterViewInit } from '@angular/core';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-policy-issuance',
@@ -31,12 +32,12 @@ export class PolicyIssuanceComponent implements OnInit {
   approveText: string = "For Approval";
   currentUserId: string = JSON.parse(window.localStorage.currentUser).username;
   approverList: any[];
+  theme =  window.localStorage.getItem("selectedTheme");
+  status: string = "";
   
-  constructor(private route: ActivatedRoute,private modalService: NgbModal, private router: Router) { }
+  constructor(private route: ActivatedRoute,private modalService: NgbModal, private router: Router,private app: AppComponent) { }
 
   ngOnInit() {
-
-
     this.sub = this.route.params.subscribe(params => {
             this.line = params['line'];
             this.alterFlag = params['alter'];
@@ -48,10 +49,7 @@ export class PolicyIssuanceComponent implements OnInit {
             this.policyInfo.policyNo = params['policyNo'];
             this.policyInfo.riskName = params['riskName'];
             this.policyInfo.insured = params['insured'];
-        });  
-
-     console.log(this.policyInfo);
-     this.showEditModal(JSON.parse(this.policyInfo.editPol));
+        });   
      /* Test Data */
 /*        this.policyInfo.policyId = 9; 
         this.policyInfo.policyNo = 'CAR-2019-00001-001-0001-001';
@@ -61,11 +59,17 @@ export class PolicyIssuanceComponent implements OnInit {
 
   }
 
+  ngAfterViewInit(){
+    this.status = this.policyInfo.status;
+    setTimeout(() => {
+         this.showEditModal(JSON.parse(this.policyInfo.editPol));
+         this.app.changeTheme(this.theme);
+     });
+  }
+
   showEditModal(obj : boolean){
     if (!obj){
-      setTimeout(() => {
-             this.modalService.open(this.contentEditPol, { centered: true, backdrop: 'static', windowClass: "modal-size" });
-      });
+         this.modalService.open(this.contentEditPol, { centered: true, backdrop: 'static', windowClass: "modal-size" });     
     }
   }
 

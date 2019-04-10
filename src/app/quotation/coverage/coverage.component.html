@@ -52,7 +52,7 @@
                                 <label class="form-control-sm">Exch. Rt.</label>
                                 <input type="text" class="form-control form-control-sm cust-sm txt-content-rght req" required
                                        placeholder="0.00" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
-                                        [(ngModel)]="coverageData.currencyRt" appCurrencyRate readonly>
+                                        [ngModel]="coverageData.currencyRt | number:'1.6-6'"  (ngModelChange)="coverageData.currencyRt = $event"appCurrencyRate readonly>
                             </div>
                             <div class="input-group">&nbsp;
                                 <label class="form-control-sm" style="margin-left: 1px;">Total SI</label>
@@ -74,17 +74,17 @@
                             <div class="input-group">
                                 <label class="form-control-sm col-sm-3">Section I</label>
                                 <input type="text" class="form-control form-control-sm txt-content-rght req"  placeholder="0.00"
-                                       onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="coverageData.sectionISi" appCurrency readonly>
+                                       onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [ngModel]="coverageData.sectionISi | number:'1.2-2' "  (ngModelChange)="coverageData.sectionISi = $event" readonly>
                             </div>
                             <div class="input-group">
                                 <label class="form-control-sm col-sm-3">Section II</label>
                                 <input type="text" class="form-control form-control-sm txt-content-rght req"  placeholder="0.00"
-                                       onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="coverageData.sectionIISi" appCurrency readonly>
+                                       onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [ngModel]="coverageData.sectionIISi | number:'1.2-2'" (ngModelChange)="coverageData.sectionIISi = $event" readonly>
                             </div>
                             <div class="input-group">
                                 <label class="form-control-sm col-sm-3">Section III</label>
                                 <input type="text" class="form-control form-control-sm txt-content-rght req"  placeholder="0.00"
-                                       onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="coverageData.sectionIIISi" appCurrency readonly>
+                                       onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [ngModel]="coverageData.sectionIIISi | number:'1.2-2'" (ngModelChange)="coverageData.sectionIIISi = $event" readonly>
                             </div>
                         </div>
                         <div class="col-sm-1"> &nbsp;</div>
@@ -102,7 +102,7 @@
                             <div class="input-group">
                                 <label class="form-control-sm col-sm-3">Section I</label>
                                 <input type="text" class="form-control form-control-sm txt-content-rght req"  placeholder="0.00"
-                                       onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="coverageData.sectionISi" appCurrency readonly>
+                                       onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [ngModel]="coverageData.sectionISi | number:'1.2-2' "  (ngModelChange)="coverageData.sectionISi = $event"  appCurrency readonly>
                             </div>
                         </div>
                         <div class="col-sm-1"> &nbsp;</div>
