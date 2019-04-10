@@ -273,215 +273,183 @@ export class HoldCoverComponent implements OnInit {
 				this.table.refreshTable();
 			});
 
-			var qLine = this.quoteLine.toUpperCase();
+			$('#lovMdl > #modalBtn').trigger('click');
+			
+		}else{
+			this.searchMatchingQuote();
+		}
 
-			// if (qLine === '' ||
-			// 	qLine === 'EAR' ||
-			// 	qLine === 'EEI' ||
-			// 	qLine === 'CEC' ||
-			// 	qLine === 'MBI' ||
-			// 	qLine === 'BPV' ||  
-			// 	qLine === 'MLP' ||
-			// 	qLine === 'DOS') {
+	}
 
-				$('#lovMdl > #modalBtn').trigger('click');
-				//}
+	onRowClick(event){
+		this.rowRec = event;
+	}
+
+	onSaveClickLOV(){
+		this.sliceQuoteNo(this.rowRec.quotationNo);
+		this.quoteNo = this.rowRec.quotationNo;
+		if(this.quoteNo != null || this.quoteNo != undefined || this.quoteNo != ''){
+		}
+
+		this.modalService.dismissAll();
+		this.btnApprovalEnabled = false;
+		this.quotationService.getSelectedQuotationHoldCoverInfo(this.quoteNo)
+		.subscribe(data => {
+			this.newHc(false);
+			this.insured = this.rowRec.insuredDesc;
+			this.cedCo = this.rowRec.cedingName;
+			this.risk = this.rowRec.riskName;
+			this.hcLine  = this.qLine;
+			this.hcYear  =  String(new Date().getFullYear());
+			this.showAll = true;
+
+			if(data['quotationList'][0] === null || data['quotationList'][0] === undefined || data['quotationList'][0] === ''){ 
+				this.holdCover.holdCoverId = '';
+				this.hcLine  = '';
+				this.hcYear  =  '';
+				this.hcSeqNo = '';
+				this.hcRevNo = '';
+				this.holdCover.holdCoverNo = '';
+				this.holdCover.periodFrom = '';
+				this.holdCover.periodTo = '';
+				this.holdCover.compRefHoldCovNo = '';
+				this.holdCover.status = '';
+				this.holdCover.reqBy = '';
+				this.holdCover.reqDate = '';
+				this.holdCover.preparedBy = '';
+				this.holdCover.approvedBy = '';
+				this.holdCover.optionId = '';
+				this.clickView = false;
+				this.quoteId = (data['quotationList'][0] === undefined) ? '' : data['quotationList'][0].quoteId;
+				this.cancelHcBtnEnabled = false;
+				this.btnApprovalEnabled = false;
+
 			}else{
-				this.searchMatchingQuote();
-				console.log('search matching quote');	
-
-			}
-
-		}
-
-		onRowClick(event){
-			this.rowRec = event;
-		}
-
-		onSaveClickLOV(){
-			this.sliceQuoteNo(this.rowRec.quotationNo);
-			this.quoteNo = this.rowRec.quotationNo;
-			if(this.quoteNo != null || this.quoteNo != undefined || this.quoteNo != ''){
-			}
-
-			this.modalService.dismissAll();
-			this.btnApprovalEnabled = false;
-			this.quotationService.getSelectedQuotationHoldCoverInfo(this.quoteNo)
-			.subscribe(data => {
-				this.newHc(false);
-				this.insured = this.rowRec.insuredDesc;
-				this.cedCo = this.rowRec.cedingName;
-				this.risk = this.rowRec.riskName;
-				this.hcLine  = this.qLine;
-				this.hcYear  =  String(new Date().getFullYear());
-				this.showAll = true;
-
-				if(data['quotationList'][0] === null || data['quotationList'][0] === undefined || data['quotationList'][0] === ''){ 
-					this.holdCover.holdCoverId = '';
-					this.hcLine  = '';
-					this.hcYear  =  '';
-					this.hcSeqNo = '';
-					this.hcRevNo = '';
-					this.holdCover.holdCoverNo = '';
-					this.holdCover.periodFrom = '';
-					this.holdCover.periodTo = '';
-					this.holdCover.compRefHoldCovNo = '';
-					this.holdCover.status = '';
-					this.holdCover.reqBy = '';
-					this.holdCover.reqDate = '';
-					this.holdCover.preparedBy = '';
-					this.holdCover.approvedBy = '';
-					this.holdCover.optionId = '';
-					this.clickView = false;
-					this.quoteId = (data['quotationList'][0] === undefined) ? '' : data['quotationList'][0].quoteId;
-					this.cancelHcBtnEnabled = false;
-					this.btnApprovalEnabled = false;
-
+				var rec = data['quotationList'][0].holdCover;
+				if((rec.status).toUpperCase() === 'CANCELLED' || (rec.status).toUpperCase() === 'REPLACED'){
 				}else{
-					var rec = data['quotationList'][0].holdCover;
-					if((rec.status).toUpperCase() === 'CANCELLED' || (rec.status).toUpperCase() === 'REPLACED'){
-					}else{
-						this.holdCover.holdCoverNo = rec.holdCoverNo;
-						this.splitHcNo(rec.holdCoverNo);
-						this.holdCover.periodFrom = this.ns.toDateTimeString(rec.periodFrom);
-						this.holdCover.periodTo = this.ns.toDateTimeString(rec.periodTo);
-						this.periodFromTime = this.holdCover.periodFrom.split('T')[1];
-						this.periodToTime = this.holdCover.periodTo.split('T')[1];
-						this.holdCover.compRefHoldCovNo = rec.compRefHoldCovNo;
-						this.holdCover.reqBy  = rec.reqBy;
-						this.holdCover.reqDate  = (rec.reqDate === '' || rec.reqDate === null || rec.reqDate === undefined)? '' :this.ns.toDateTimeString(rec.reqDate);
-						this.holdCover.status  = rec.status;
-						this.holdCover.approvedBy =  rec.approvedBy;
-						this.holdCover.holdCoverId = rec.holdCoverId;
-						this.holdCover.updateUser = JSON.parse(window.localStorage.currentUser).username;
-						this.holdCover.preparedBy = JSON.parse(window.localStorage.currentUser).username;
-						this.holdCover.createDate = this.ns.toDateTimeString(rec.createDate);
-						this.holdCover.createUser = rec.createUser;
-						this.holdCover.optionId = rec.optionId;
-						this.quoteId = data['quotationList'][0].quoteId;
-						this.cancelHcBtnEnabled = true;
-						this.btnApprovalEnabled = true;
+					this.holdCover.holdCoverNo = rec.holdCoverNo;
+					this.splitHcNo(rec.holdCoverNo);
+					this.holdCover.periodFrom = this.ns.toDateTimeString(rec.periodFrom);
+					this.holdCover.periodTo = this.ns.toDateTimeString(rec.periodTo);
+					this.periodFromTime = this.holdCover.periodFrom.split('T')[1];
+					this.periodToTime = this.holdCover.periodTo.split('T')[1];
+					this.holdCover.compRefHoldCovNo = rec.compRefHoldCovNo;
+					this.holdCover.reqBy  = rec.reqBy;
+					this.holdCover.reqDate  = (rec.reqDate === '' || rec.reqDate === null || rec.reqDate === undefined)? '' :this.ns.toDateTimeString(rec.reqDate);
+					this.holdCover.status  = rec.status;
+					this.holdCover.approvedBy =  rec.approvedBy;
+					this.holdCover.holdCoverId = rec.holdCoverId;
+					this.holdCover.updateUser = JSON.parse(window.localStorage.currentUser).username;
+					this.holdCover.preparedBy = JSON.parse(window.localStorage.currentUser).username;
+					this.holdCover.createDate = this.ns.toDateTimeString(rec.createDate);
+					this.holdCover.createUser = rec.createUser;
+					this.holdCover.optionId = rec.optionId;
+					this.quoteId = data['quotationList'][0].quoteId;
+					this.cancelHcBtnEnabled = true;
+					this.btnApprovalEnabled = true;
 
-						if(rec.approvedBy === '' || rec.approvedBy === null ||  rec.approvedBy === undefined){
-							this.clickView = false;
+					if(rec.approvedBy === '' || rec.approvedBy === null ||  rec.approvedBy === undefined){
+						this.clickView = false;
+					}else{
+						if(rec.status.toUpperCase() === 'EXPIRED' || rec.status.toUpperCase() === 'CONVERTED'){
+							this.cancelHcBtnEnabled = false;
 						}else{
-							if(rec.status.toUpperCase() === 'EXPIRED' || rec.status.toUpperCase() === 'CONVERTED'){
-								this.cancelHcBtnEnabled = false;
-							}else{
-								$('#modifMdl > #modalBtn').trigger('click');
-							}
+							$('#modifMdl > #modalBtn').trigger('click');
 						}
 					}
 				}
+			}
+
+		});
+	}
+
+	holdCoverReq:any
+	onSaveClick(cancelFlag?){
+		this.dialogIcon = '';
+		this.dialogMessage = '';
+		this.cancelFlag = cancelFlag !== undefined;
+		if(this.quoteNo === '' || this.quoteNo === null || this.quoteNo === undefined ||
+			this.holdCover.periodFrom === '' || this.holdCover.periodFrom === null || this.holdCover.periodFrom === undefined ||
+			this.holdCover.periodTo === '' || this.holdCover.periodTo === null || this.holdCover.periodTo === undefined ||
+			this.holdCover.optionId === '' || this.holdCover.optionId === null || this.holdCover.optionId === undefined){
+
+			setTimeout(()=>{
+				this.dialogIcon = 'error';
+				$('.globalLoading').css('display','none');
+				$('app-sucess-dialog #modalBtn').trigger('click');
+				$('.warn').focus();
+				$('.warn').blur();
+			},500);
+	}else{
+		this.quotationService.getQuoteGenInfo('',this.plainQuotationNo(this.quoteNo))
+		.subscribe(val => {
+			this.quoteId = val['quotationGeneralInfo'].quoteId;
+
+			this.holdCoverReq = {
+				"approvedBy": this.holdCover.approvedBy,
+				"compRefHoldCovNo": this.holdCover.compRefHoldCovNo,
+				"createDate": (this.holdCover.createDate === null || this.holdCover.createDate === '' || this.holdCover.createDate === undefined) ? this.ns.toDateTimeString(0) : this.holdCover.createDate,
+				"createUser": (this.holdCover.createUser === null || this.holdCover.createUser === '' || this.holdCover.createUser === undefined) ? JSON.parse(window.localStorage.currentUser).username : this.holdCover.createUser,
+				"holdCoverId": this.holdCover.holdCoverId,
+				"holdCoverRevNo": this.hcRevNo,
+				"holdCoverSeqNo": this.hcSeqNo,
+				"optionId": this.holdCover.optionId,
+				"holdCoverYear": (this.hcYear === null || this.hcYear === '' || this.hcYear === undefined) ? String(new Date().getFullYear()) : this.hcYear,
+				"lineCd": (this.hcLine === null || this.hcLine === '' || this.hcLine === undefined) ? this.qLine.toUpperCase() : this.hcLine.toUpperCase() ,
+				"periodFrom": this.holdCover.periodFrom.split('T')[0] + 'T' + (this.periodFromTime === undefined ? this.holdCover.periodFrom.split('T')[1]: this.periodFromTime),
+				"periodTo": this.holdCover.periodTo.split('T')[0] + 'T' + (this.periodToTime === undefined ? this.holdCover.periodTo.split('T')[1]: this.periodToTime),
+				"preparedBy": (this.holdCover.preparedBy === null || this.holdCover.preparedBy === '') ? JSON.parse(window.localStorage.currentUser).username : this.holdCover.preparedBy,
+				"quoteId": this.quoteId,
+				"reqBy": this.holdCover.reqBy,
+				"reqDate": (this.holdCover.reqDate === null  || this.holdCover.reqDate === undefined || this.holdCover.reqDate === '') ? '' : this.holdCover.reqDate,
+				"status": (this.holdCover.status === null || this.holdCover.status === '') ? 'In Force' : this.holdCover.status,
+				"updateDate" : this.ns.toDateTimeString(0),
+				"updateUser": (this.holdCover.preparedBy === null || this.holdCover.preparedBy === '') ? JSON.parse(window.localStorage.currentUser).username : this.holdCover.preparedBy
+			}
+
+			console.log(JSON.stringify(this.holdCoverReq));
+			this.quotationService.saveQuoteHoldCover(
+				JSON.stringify(this.holdCoverReq)
+				).subscribe(data => {
+					var returnCode = data['returnCode'];
+					var hcNo = data['holdCoverNo'].split('-');
+					this.hcLine = hcNo[1];
+					this.hcYear = hcNo[2];
+					this.hcSeqNo = hcNo[3];
+					this.hcRevNo = hcNo[4];
+
+					if(this.btnCancelMainEnabled === true){
+						this.modalService.dismissAll();
+					}  
+
+					this.quotationService.getHoldCoverInfo('',this.plainHc(data['holdCoverNo']))
+					.subscribe(data => {
+						this.dialogIcon = '';
+						this.dialogMessage = '';
+						$('app-sucess-dialog #modalBtn').trigger('click');
+						this.btnApprovalEnabled = true;
+						this.cancelHcBtnEnabled = true;
+
+						var rec = data['quotation'].holdCover;
+						this.holdCover.holdCoverNo = rec.holdCoverNo;
+						this.holdCover.holdCoverId = rec.holdCoverId;
+						this.holdCover.periodFrom = this.ns.toDateTimeString(rec.periodFrom);
+						this.holdCover.periodTo = this.ns.toDateTimeString(rec.periodTo);
+						this.holdCover.compRefHoldCovNo  = rec.compRefHoldCovNo;
+						this.holdCover.status = rec.status;
+						this.holdCover.reqBy =  rec.reqBy;
+						this.holdCover.reqDate = (rec.reqDate === null || rec.reqDate === undefined) ? '' : this.ns.toDateTimeString(rec.reqDate);
+						this.holdCover.preparedBy = rec.preparedBy;
+						this.holdCover.approvedBy = rec.approvedBy;
+						this.holdCover.optionId = rec.optionId;
+						this.periodFromTime = this.holdCover.periodFrom.split('T')[1];
+						this.periodToTime = this.holdCover.periodTo.split('T')[1];
+					});
+				});
 
 			});
-		}
-
-		holdCoverReq:any
-		onSaveClick(cancelFlag?){
-			this.dialogIcon = '';
-			this.dialogMessage = '';
-			this.cancelFlag = cancelFlag !== undefined;
-			if(this.quoteNo === '' || this.quoteNo === null || this.quoteNo === undefined ||
-				this.holdCover.periodFrom === '' || this.holdCover.periodFrom === null || this.holdCover.periodFrom === undefined ||
-				this.holdCover.periodTo === '' || this.holdCover.periodTo === null || this.holdCover.periodTo === undefined ||
-				this.holdCover.optionId === '' || this.holdCover.optionId === null || this.holdCover.optionId === undefined){
-
-				setTimeout(()=>{
-					this.dialogIcon = 'error';
-					$('.globalLoading').css('display','none');
-					$('app-sucess-dialog #modalBtn').trigger('click');
-					$('.warn').focus();
-					$('.warn').blur();
-				},500);
-			
-		}else{
-			this.quotationService.getQuoteGenInfo('',this.plainQuotationNo(this.quoteNo))
-			.subscribe(val => {
-				this.quoteId = val['quotationGeneralInfo'].quoteId;
-
-				this.holdCoverReq = {
-					"approvedBy": this.holdCover.approvedBy,
-					"compRefHoldCovNo": this.holdCover.compRefHoldCovNo,
-					"createDate": (this.holdCover.createDate === null || this.holdCover.createDate === '' || this.holdCover.createDate === undefined) ? this.ns.toDateTimeString(0) : this.holdCover.createDate,
-					"createUser": (this.holdCover.createUser === null || this.holdCover.createUser === '' || this.holdCover.createUser === undefined) ? JSON.parse(window.localStorage.currentUser).username : this.holdCover.createUser,
-					"holdCoverId": this.holdCover.holdCoverId,
-					"holdCoverRevNo": this.hcRevNo,
-					"holdCoverSeqNo": this.hcSeqNo,
-					"optionId": this.holdCover.optionId,
-					"holdCoverYear": (this.hcYear === null || this.hcYear === '' || this.hcYear === undefined) ? String(new Date().getFullYear()) : this.hcYear,
-					"lineCd": (this.hcLine === null || this.hcLine === '' || this.hcLine === undefined) ? this.qLine.toUpperCase() : this.hcLine.toUpperCase() ,
-					"periodFrom": this.holdCover.periodFrom.split('T')[0] + 'T' + (this.periodFromTime === undefined ? this.holdCover.periodFrom.split('T')[1]: this.periodFromTime),
-					"periodTo": this.holdCover.periodTo.split('T')[0] + 'T' + (this.periodToTime === undefined ? this.holdCover.periodTo.split('T')[1]: this.periodToTime),
-					"preparedBy": (this.holdCover.preparedBy === null || this.holdCover.preparedBy === '') ? JSON.parse(window.localStorage.currentUser).username : this.holdCover.preparedBy,
-					"quoteId": this.quoteId,
-					"reqBy": this.holdCover.reqBy,
-					"reqDate": (this.holdCover.reqDate === null  || this.holdCover.reqDate === undefined || this.holdCover.reqDate === '') ? '' : this.holdCover.reqDate,
-					"status": (this.holdCover.status === null || this.holdCover.status === '') ? 'In Force' : this.holdCover.status,
-					"updateDate" : this.ns.toDateTimeString(0),
-					"updateUser": (this.holdCover.preparedBy === null || this.holdCover.preparedBy === '') ? JSON.parse(window.localStorage.currentUser).username : this.holdCover.preparedBy
-				}
-
-				console.log(JSON.stringify(this.holdCoverReq));
-				this.quotationService.saveQuoteHoldCover(
-					JSON.stringify(this.holdCoverReq)
-					).subscribe(data => {
-						var returnCode = data['returnCode'];
-						var hcNo = data['holdCoverNo'].split('-');
-						this.hcLine = hcNo[1];
-						this.hcYear = hcNo[2];
-						this.hcSeqNo = hcNo[3];
-						this.hcRevNo = hcNo[4];
-
-						if(returnCode === 0){
-							this.dialogIcon = 'error';
-							this.dialogMessage = '';
-							$('app-sucess-dialog #modalBtn').trigger('click');
-							setTimeout(()=>{$('.globalLoading').css('display','none');},0);
-							$('.warn').focus();
-							$('.warn').blur();
-						}else{
-							// this.dialogIcon = '';
-							// this.dialogMessage = '';
-							// $('app-sucess-dialog #modalBtn').trigger('click');
-							// this.btnApprovalEnabled = true;
-							// this.cancelHcBtnEnabled = true;
-							// $('.warn').focus();
-							// $('.warn').blur();
-
-							if(this.btnCancelMainEnabled === true){
-								this.modalService.dismissAll();
-							}  
-
-							this.quotationService.getHoldCoverInfo('',this.plainHc(data['holdCoverNo']))
-							.subscribe(data => {
-								this.dialogIcon = '';
-								this.dialogMessage = '';
-								$('app-sucess-dialog #modalBtn').trigger('click');
-								this.btnApprovalEnabled = true;
-								this.cancelHcBtnEnabled = true;
-
-								var rec = data['quotation'].holdCover;
-								this.holdCover.holdCoverNo = rec.holdCoverNo;
-								this.holdCover.holdCoverId = rec.holdCoverId;
-								this.holdCover.periodFrom = this.ns.toDateTimeString(rec.periodFrom);
-								this.holdCover.periodTo = this.ns.toDateTimeString(rec.periodTo);
-								this.holdCover.compRefHoldCovNo  = rec.compRefHoldCovNo;
-								this.holdCover.status = rec.status;
-								this.holdCover.reqBy =  rec.reqBy;
-								this.holdCover.reqDate = (rec.reqDate === null || rec.reqDate === undefined) ? '' : this.ns.toDateTimeString(rec.reqDate);
-								this.holdCover.preparedBy = rec.preparedBy;
-								this.holdCover.approvedBy = rec.approvedBy;
-								this.holdCover.optionId = rec.optionId;
-								this.periodFromTime = this.holdCover.periodFrom.split('T')[1];
-								this.periodToTime = this.holdCover.periodTo.split('T')[1];
-							});
-						}
-					});
-
-				});
-// }
-}
+	}
 
 }
 
@@ -506,6 +474,15 @@ setPeriodTo(periodFrom){
 			this.holdCover.periodFrom = this.ns.toDateTimeString(periodFrom);
 		}
 	}catch(e){
+	}
+}
+
+limitPeriodTo(periodFrom){
+	if((new Date(this.holdCover.periodFrom).getTime()) > (new Date(this.holdCover.periodTo).getTime())){
+		this.dialogIcon = 'info';
+		this.dialogMessage = 'Period To should be greater than Period From';
+		$('app-sucess-dialog #modalBtn').trigger('click');
+		this.setPeriodTo(periodFrom);
 	}
 }
 
@@ -545,7 +522,7 @@ getQuoteInfo(){
 				this.cedCo = (rec[0].cedingName  === null || rec[0].cedingName === undefined) ? '' : rec[0].cedingName;
 				this.risk = (rec[0].project  === null || rec[0].project === undefined) ? '' : rec[0].project.riskName;
 
-				
+
 				this.quotationService.getSelectedQuotationHoldCoverInfo(this.quoteNo)
 				.subscribe(data => {
 					this.btnApprovalEnabled = false;
@@ -764,22 +741,28 @@ onClickOptionLOV(){
 	this.passDataQuoteOptionsLOV.tableData = [];
 	//this.loading = true;
 	$('#optionMdl #modalBtn2').trigger('click');
-	this.quotationService.getQuoteOptions(this.quoteId.toString(),'')
+	//(this.quoteId === null || this.quoteId === undefined)? '' : this.quoteId.toString();
+	this.quotationService.getQuoteOptions(((this.quoteId === null || this.quoteId === undefined)? '' : this.quoteId.toString()),'')
 	.subscribe(data => {
 		console.log(data);
 		//this.loading = false;
-		var rec = data['quotation'].optionsList;
-		for(let i of rec){
-			this.passDataQuoteOptionsLOV.tableData.push({
-				optionNo:         i.optionId,
-				rate:             i.optionRt,
-				conditions:       i.condition,
-				commRateQuota:    i.commRtQuota,
-				commRateSurplus:  i.commRtSurplus,
-				commRateFac:      i.commRtFac
-			});
+		if(data['quotation'] === '' || data['quotation'] === null || data['quotation'] === undefined){
+
+		}else{
+			var rec = data['quotation'].optionsList;
+			for(let i of rec){
+				this.passDataQuoteOptionsLOV.tableData.push({
+					optionNo:         i.optionId,
+					rate:             i.optionRt,
+					conditions:       i.condition,
+					commRateQuota:    i.commRtQuota,
+					commRateSurplus:  i.commRtSurplus,
+					commRateFac:      i.commRtFac
+				});
+			}
+			this.opt.refreshTable();	
 		}
-		this.opt.refreshTable();
+
 	});
 }
 
@@ -811,14 +794,19 @@ clearHcDetails(){
 countMatch:number;
 searchOptNo(optNoInput){
 	this.countMatch = 0;
-	this.quotationService.getQuoteOptions(this.quoteId.toString(),'')
+	this.quotationService.getQuoteOptions(((this.quoteId === null || this.quoteId === undefined)? '' : this.quoteId.toString()),'')
 	.subscribe(data => {
-		var rec = data['quotation'].optionsList;
-		for(let i of rec){
-			if(Number(i.optionId) === Number(optNoInput)){
-				this.countMatch++;
+		if(data['quotation'] === '' || data['quotation'] === null || data['quotation'] === undefined){
+
+		}else{
+			var rec = data['quotation'].optionsList;
+			for(let i of rec){
+				if(Number(i.optionId) === Number(optNoInput)){
+					this.countMatch++;
+				}
 			}
 		}
+		
 		if(this.countMatch !== 1){
 			this.holdCover.optionId = '';
 			this.onClickOptionLOV();
