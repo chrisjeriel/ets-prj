@@ -6,6 +6,7 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '@environments/environment';
 import { PrintModalComponent } from '@app/_components/common/print-modal/print-modal.component';
+import * as alasql from 'alasql';
 
 @Component({
   selector: 'app-ready-for-printing',
@@ -149,8 +150,8 @@ export class ReadyForPrintingComponent implements OnInit {
     checkFlag: true,
     pagination: true,
     pageStatus: true,
-    keys: ['quotationNo','approvedBy','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','insuredDesc','riskName','objectDesc','site','currencyCd','issueDate','expiryDate','reqBy','createdBy']
-
+    keys: ['quotationNo','approvedBy','cessionDesc','lineClassCdDesc','status','cedingName','principalName','contractorName','insuredDesc','riskName','objectDesc','site','currencyCd','issueDate','expiryDate','reqBy','createdBy'],
+    exportFlag: true
   }
 
   searchParams: any[] = [];
@@ -423,6 +424,34 @@ export class ReadyForPrintingComponent implements OnInit {
         }
         this.btnDisabled = true;
     });
+  }
+
+  export(){
+        //do something
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var currDate = mm + dd+ yyyy;
+    var filename = 'ReadyForPrinting'+currDate+'.xlsx'
+    var mystyle = {
+        headers:true, 
+        column: {style:{Font:{Bold:"1"}}}
+      };
+
+      alasql.fn.datetime = function(dateStr) {
+            var date = new Date(dateStr);
+            return date.toLocaleString();
+      };
+
+       alasql.fn.currency = function(currency) {
+            var parts = parseFloat(currency).toFixed(2).split(".");
+            var num = parts[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + 
+                (parts[1] ? "." + parts[1] : "");
+            return num
+      };
+
+    alasql('SELECT quotationNo AS QuotationNo, approvedBy AS ApprovedBy, cessionDesc AS TypeCession, lineClassCdDesc AS LineCLass, status AS STATUS, cedingName AS CedingCompany, principalName AS Principal, contractorName AS Contractor, insuredDesc AS Insured, riskName AS Risk, objectDesc AS Object, site AS Site, currencyCd AS Currency, datetime(issueDate) AS QuoteDate, datetime(expiryDate) AS ValidUntil, reqBy AS RequestedBy, createdBy AS CreatedBy INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passData.tableData]);
   }
 
   modalOnOk(){
