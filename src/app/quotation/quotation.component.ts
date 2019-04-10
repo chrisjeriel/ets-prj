@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,6 +6,8 @@ import { GeneralInfoComponent } from '@app/quotation/general-info/general-info.c
 import { environment } from '@environments/environment';
 import { QuotationService } from '@app/_services';
 import { first } from 'rxjs/operators';
+
+
 
 
 @Component({
@@ -65,7 +67,6 @@ export class QuotationComponent implements OnInit {
   currentUserId: string = JSON.parse(window.localStorage.currentUser).username;
   approverList: any[];
   approver:string = '';
-
 
 	ngOnInit() {
 		this.sub = this.route.params.subscribe(params => {
@@ -128,13 +129,12 @@ export class QuotationComponent implements OnInit {
  
   	}
 
-  checkQuoteInfo(event){  		
+  checkQuoteInfo(event){ 	
   		this.quoteInfo = event;
       this.passData.cessionDesc = this.quoteInfo.typeOfCession.toUpperCase()
       this.passData.status = this.quoteInfo.status;
       this.passData.quoteId = this.quoteInfo.quoteId;
       this.passData.reasonCd = this.quoteInfo.reasonCd;
-    
   		setTimeout(() => { this.header = "/ " + (this.quoteInfo.quotationNo == '' ? this.quoteInfo.lineCd : this.quoteInfo.quotationNo) }, 0);
 
   	if(this.quoteInfo.typeOfCession.toUpperCase() == 'RETROCESSION'){
@@ -181,10 +181,13 @@ export class QuotationComponent implements OnInit {
       if (obj.toUpperCase() == 'SCREEN'){
         window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + selectedReport + '&quoteId=' + this.quoteInfo.quoteId, '_blank');
         this.modalService.dismissAll();
+        this.selectedReport = null;
       } else if (obj.toUpperCase() == 'PDF'){
         this.downloadPDF(selectedReport,this.quoteInfo.quoteId);
+        this.selectedReport = null;
       } else if (obj.toUpperCase() == 'PRINTER'){
         this.printPDF(selectedReport,this.quoteInfo.quoteId);
+        this.selectedReport = null;
       }
     }
 

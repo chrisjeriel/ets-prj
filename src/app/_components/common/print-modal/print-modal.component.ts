@@ -50,6 +50,7 @@ export class PrintModalComponent implements OnInit {
   requiredBool: boolean = false;
   dialogIcon:string  = "";
   dialogMessage:string  = "";
+  btnDisabled: boolean;
 
   ngOnInit() {
 
@@ -78,13 +79,15 @@ tabSelectedReportController(event){
 refreshModal(isDisable : boolean){
   if(isDisable){
           $("a").removeClass('').addClass('disabled-a');
+          this.btnDisabled = false;
           this.wordingText = null;
           this.titleText = null;
           this.wordings = true;
           $("#title").css({"box-shadow": ""});
-          $("#word").css({"box-shadow":""});
+          $("#word").css({"box-shadow": ""});
   } else {
           $("a").removeClass('disabled-a').addClass('');
+          this.btnDisabled = false;
           this.wordingText = null;
           this.titleText = null;
           this.wordings = false;
@@ -109,6 +112,9 @@ refreshModal(isDisable : boolean){
              this.reportsList.push({val:"QUOTER009B", desc:"RI Preparedness to Support Letter" },
                       {val:"QUOTER009B1", desc:"RI Confirmation of Acceptance Letter" });
             this.selectedReport = this.reportsList[0].val;
+            this.refreshModal(true);
+            $("#title").css({"box-shadow": ""});
+            $("#word").css({"box-shadow": ""});
           }
        } else if (this.passData.cessionDesc.toUpperCase() === 'DIRECT'){
           this.reportsList = [];

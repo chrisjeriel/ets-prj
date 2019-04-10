@@ -72,7 +72,7 @@ export class QuotationProcessingComponent implements OnInit {
         {
             key: 'quotationNo',
             title: 'Quotation No.',
-            dataType: 'seq'
+            dataType: 'text'
         },
         {
             key: 'cessionDesc',
