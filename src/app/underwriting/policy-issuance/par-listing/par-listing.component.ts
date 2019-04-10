@@ -231,7 +231,7 @@ export class ParListingComponent implements OnInit {
 
     onClickAdd(event){
         setTimeout(() => {
-               this.router.navigate(['/create-policy'],{ skipLocationChange: true });
+               this.router.navigate(['/create-policy'],{ skipLocationChange: false });
         },100); 
     }
 

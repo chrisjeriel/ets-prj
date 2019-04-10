@@ -19,7 +19,11 @@ export class PolicyIssuanceComponent implements OnInit {
         status:'',
         riskName:'',
         insured:'',
-        editPol:''
+        editPol:'',
+        insuredDesc:'',
+        riskId: '',
+        fromInq: ''
+
   }
 
 
@@ -38,7 +42,7 @@ export class PolicyIssuanceComponent implements OnInit {
             this.line = params['line'];
             this.alterFlag = params['alter'];
             this.fromInq = params['fromInq'];
-
+            this.policyInfo.fromInq = params['fromInq'];
             this.policyInfo.editPol = JSON.parse(params['editPol']);
             this.policyInfo.status = params['statusDesc'];
             this.policyInfo.policyId = params['policyId'];
@@ -87,7 +91,11 @@ export class PolicyIssuanceComponent implements OnInit {
   }
 
   getPolInfo(event){      
-      this.policyInfo = event;
+      //this.policyInfo = event;
+
+      this.policyInfo.policyId = event.policyId;
+      this.policyInfo.insuredDesc =  event.insuredDesc;
+      this.policyInfo.riskId =  event.riskId;
   }
 
   returnOnModal(){

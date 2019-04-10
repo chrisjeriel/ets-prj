@@ -20,6 +20,7 @@ export class PolCreatePARComponent implements OnInit {
   tHeader: any[] = [];
   dataTypes: any[] = [];  
   quoteLine: any;
+  loading: boolean = false;
 
   qu: boolean = true;
   hc: boolean = false;
@@ -37,6 +38,7 @@ export class PolCreatePARComponent implements OnInit {
     resizable: [false,false,false,false],
     tableOnly: false,
     keys: ['quotationNo','cedingName','insuredDesc','riskName'],
+    // keys: ['openPolicyNo','cedingName','insuredDesc','riskName'],
     pageStatus: true,
     pagination: true,
     filters: [
@@ -103,6 +105,8 @@ export class PolCreatePARComponent implements OnInit {
   getQuoteListing() {
     this.quoteService.getQuoProcessingData([]).subscribe(data => {
       this.quotationList = data['quotationList'];
+      this.passDataLOV.tHeader = ['Quotation No', 'Ceding Company', 'Insured', 'Risk'];
+      this.passDataLOV.keys = ['quotationNo','cedingName','insuredDesc','riskName'];
       this.passDataLOV.tableData = this.quotationList.filter(qu => qu.status.toUpperCase() === 'RELEASED' )
                                                      .map(qu => { qu.riskName = qu.project.riskName; return qu; });
       this.lovTable.refreshTable();
@@ -121,6 +125,8 @@ export class PolCreatePARComponent implements OnInit {
   getHoldCovListing() {
     this.quoteService.getQuotationHoldCoverList([]).subscribe(data => {
       this.holCovList = data['quotationList'];
+      this.passDataLOV.tHeader = ['Quotation No', 'Ceding Company', 'Insured', 'Risk'];
+      this.passDataLOV.keys = ['quotationNo','cedingName','insuredDesc','riskName'];
       this.passDataLOV.tableData = this.holCovList.filter(hc => hc.holdCover.status.toUpperCase() === 'RELEASED' || hc.holdCover.status.toUpperCase() === 'EXPIRED')
                                                   .map(hc => { hc.riskName = hc.project.riskName; return hc; });
       this.lovTable.refreshTable();
@@ -130,8 +136,14 @@ export class PolCreatePARComponent implements OnInit {
   getPolOCListing() {
     this.underwritingService.getPolListingOc([]).subscribe(data => {
       console.log(data);
+      this.polOcList = data['policyList'];
+      this.passDataLOV.tHeader = ['Open Cover Policy No', 'Ceding Company', 'Insured', 'Risk'];
+      this.passDataLOV.keys = ['openPolicyNo','cedingName','insuredDesc','riskName'];
 
-      this.passDataLOV.tableData = data['policyList'];
+      // this.passDataLOV.tableData = this.polOcList.filter(oc => oc.statusDesc.toUpperCase() === 'RELEASED')
+      //                                            .map(oc => { oc.riskName = oc.project.riskName; return oc; });
+      this.passDataLOV.tableData = data['policyList'].map(oc => { oc.riskName = oc.project.riskName; return oc; });;      
+      this.lovTable.refreshTable();
     });    
   }
 
@@ -230,8 +242,17 @@ export class PolCreatePARComponent implements OnInit {
         this.cedingName = this.selected.cedingName;
         this.insuredDesc = this.selected.insuredDesc;
         this.riskName = this.selected.riskName;
-      } else if (str === 'oc') {
 
+        this.getCutOffTime({ target: { value: this.hcNo[0] } });
+      } else if (str === 'oc') {
+        this.ocNo = this.selected.openPolicyNo.split('-');
+        this.optionId = this.selected.optionId;
+        this.condition = this.selected.condition;
+        this.cedingName = this.selected.cedingName;
+        this.insuredDesc = this.selected.insuredDesc;
+        this.riskName = this.selected.project.riskName; //update
+
+        this.getCutOffTime({ target: { value: this.ocNo[1] } });
       }
     } else {
       this.clearFields();
@@ -246,7 +267,7 @@ export class PolCreatePARComponent implements OnInit {
     }
   }
 
-  prepareParams() {    
+  prepareParam() {    
     var savePolicyDetailsParam = {    
       "expiryDate"    : this.expiryDate + 'T' + this.expiryTime,
       "holdCoverNo"   : this.hc ? this.hcNo.join('-') : '',
@@ -262,19 +283,9 @@ export class PolCreatePARComponent implements OnInit {
     }
 
     console.log(savePolicyDetailsParam);
-    this.underwritingService.savePolicyDetails(savePolicyDetailsParam).subscribe(data => {
-      console.log(data);
-      if(data['returnCode'] === 0) {
-        this.dialogMessage = data['errorList'][0].errorMessage;
-
-        $('#createPol #successModalBtn').trigger('click');
-      } else if (data['returnCode'] === -1) {     
-        this.policyId = data['policyId'];
-        this.policyNo = data['policyNo'];
-
-        $('#convSuccessModal > #modalBtn').trigger('click');
-      }
-    });
+    return savePolicyDetailsParam;
+    
+    
   }
 
   updateExpiryDate() {
@@ -285,7 +296,6 @@ export class PolCreatePARComponent implements OnInit {
   }
 
   getCutOffTime(ev) {
-    console.log(ev);
     var lineCd = ev.target.value;
 
     if(lineCd != '') {
@@ -319,4 +329,64 @@ export class PolCreatePARComponent implements OnInit {
     this.expiryTime = "";
   }
 
+  toPolGenInfo() {
+    var line = this.policyNo.split('-')[0];
+
+    this.underwritingService.toPolInfo = [];
+    this.underwritingService.toPolInfo.push("edit", line);
+    this.router.navigate(['/policy-issuance', { line: line, policyNo: this.policyNo, policyId: this.policyId, editPol: true }], { skipLocationChange: true });
+  }
+
+  validate(obj) {
+    var entries = Object.entries(obj);
+    console.log(entries);
+    var ctr = 0;
+
+    for(var [key, val] of entries) {
+      if (this.qu && key === 'quotationNo' && String(val).split('-').includes('')) {
+        return false;
+      } else if (this.hc && key === 'holdCoverNo' && String(val).split('-').includes('')) {
+        return false;
+      } else if (this.oc && key === 'openPolicyNo' && String(val).split('-').includes('')) {
+        return false;
+      } else if (key === 'inceptDate' || key === 'expiryDate') {
+        if (String(val).split('T')[0] === '' || String(val).split('T')[1] === '' || val === 'T') {
+          return false;
+        }
+      } else if (key === 'optionId' && val === '') {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  onClickConvert(cancelFlag?) {
+    console.log(this.prepareParam());
+    // console.log(this.validate(this.prepareParams()));
+    // this.cancelFlag = cancelFlag !== undefined;
+    this.loading = true;
+
+    if(this.validate(this.prepareParam())){
+      this.underwritingService.savePolicyDetails(this.prepareParam()).subscribe(data => {
+        this.loading = false;
+        console.log(data);
+        if(data['returnCode'] === 0) {
+          this.dialogMessage = data['errorList'][0].errorMessage;
+
+          $('#createPol #successModalBtn').trigger('click');
+        } else if (data['returnCode'] === -1) {     
+          this.policyId = data['policyId'];
+          this.policyNo = data['policyNo'];
+
+          $('#convSuccessModal > #modalBtn').trigger('click');
+        }
+      });
+    } else {
+      this.loading = false;
+      this.dialogMessage = "Please complete all the required fields.";
+      $('#createPol #successModalBtn').trigger('click');
+      setTimeout(()=>{$('.globalLoading').css('display','none');},0);
+    }
+  }
 }

@@ -66,6 +66,7 @@ export class QuotationComponent implements OnInit {
   approveText: string = "For Approval";
   currentUserId: string = JSON.parse(window.localStorage.currentUser).username;
   approverList: any[];
+  approver:string = '';
 
 	ngOnInit() {
 		this.sub = this.route.params.subscribe(params => {
@@ -111,6 +112,7 @@ export class QuotationComponent implements OnInit {
    //   }
 
   		if ($event.nextId === 'Exit') {
+        $event.preventDefault();
     		this.router.navigateByUrl('');
   		} 
 
@@ -257,17 +259,27 @@ export class QuotationComponent implements OnInit {
     approveQuotation() {
       if (this.approveText.toLowerCase() == "Approve".toLowerCase()) {
         console.log("Call update quote status.");
-        this.quotationService.updateQuoteStatus(this.quoteInfo.quoteId, 'A', this.currentUserId).subscribe((data)=>{
+        this.quotationService.updateQuoteStatus(this.quoteInfo.quoteId, '97', this.currentUserId).subscribe((data)=>{
             if(data['returnCode'] == 0) {
               /*this.dialogMessage = data['errorList'][0].errorMessage;
               this.dialogIcon = "error";
               $('#quote-option #successModalBtn').trigger('click');*/
-              console.log("Status Updated");
-            } else {
               console.log("Status Failed to Update.");
+            } else {
+              console.log("Status Updated");
             }
         })
       } else {
+        this.quotationService.updateQuoteStatus(this.quoteInfo.quoteId, '96', this.approver).subscribe((data)=>{
+            if(data['returnCode'] == 0) {
+              /*this.dialogMessage = data['errorList'][0].errorMessage;
+              this.dialogIcon = "error";
+              $('#quote-option #successModalBtn').trigger('click');*/
+              console.log("Status failed forApproval");
+            } else {
+              console.log("Status For Approval .");
+            }
+        })
         console.log("Assign to another user.");
       }
     }

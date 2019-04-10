@@ -16,6 +16,7 @@ import {HttpClient, HttpParams, HttpRequest, HttpEvent, HttpEventType, HttpRespo
 export class PolAttachmentComponent implements OnInit {
 
     @Input() alterationFlag: true;
+    @Input() policyInfo: any;
 
     @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
     @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
@@ -49,18 +50,19 @@ export class PolAttachmentComponent implements OnInit {
     ngOnInit() {
         this.titleService.setTitle("Pol | Attachment");
         this.retrievePolAttachment();
+        console.log(this.policyInfo);
     }
 
     retrievePolAttachment(){
-        this.underwritingService.getPolAttachment('8','CAR-2019-1-001-1-1').subscribe((data: any) =>{
+        this.underwritingService.getPolAttachment(this.policyInfo.policyId,this.policyInfo.policyNo).subscribe((data: any) =>{
             console.log(data);
             this.attachmentData.tableData = [];
             if(data.polAttachmentList !== null){
                 for(var i of data.polAttachmentList.attachments){
                     this.attachmentData.tableData.push(i);
                 }
-                this.table.refreshTable();
             }
+            this.table.refreshTable();
         });
     }
 
@@ -89,7 +91,7 @@ export class PolAttachmentComponent implements OnInit {
           }
 
         }
-        this.underwritingService.savePolAttachment(8,this.savedData,this.deletedData).subscribe((data: any) => {
+        this.underwritingService.savePolAttachment(this.policyInfo.policyId,this.savedData,this.deletedData).subscribe((data: any) => {
           console.log(data);
           if(data.returnCode === 0){
               this.dialogMessage="The system has encountered an unspecified error.";

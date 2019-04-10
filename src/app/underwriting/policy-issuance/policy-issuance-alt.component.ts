@@ -17,7 +17,9 @@ export class PolicyIssuanceAltComponent implements OnInit {
         status:'',
         riskName:'',
         insured:'',
-        editPol:''
+        editPol:'',
+        insuredDesc:'',
+        riskId:'',
     }
 
     alterFlag: boolean = false;
@@ -82,7 +84,10 @@ export class PolicyIssuanceAltComponent implements OnInit {
     }
 
     getPolInfo(event){      
-        this.policyInfo = event;
+        //this.policyInfo = event;
+      this.policyInfo.policyId = event.policyId;
+      this.policyInfo.insuredDesc =  event.insuredDesc;
+      this.policyInfo.riskId =  event.riskId;
     }
 
    returnOnModal(){

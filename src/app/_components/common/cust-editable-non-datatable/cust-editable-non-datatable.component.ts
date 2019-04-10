@@ -374,14 +374,14 @@ export class CustEditableNonDatatableComponent implements OnInit {
    }
 
    getSum(data){
-        let sum = 0;
+        let sum = 0.0;
         if(this.dataKeys.indexOf(data)==-1){
             return data;
         }
         else{
             for (var i = this.displayData.length - 1; i >= 0; i--) {
                 if(this.displayData[i][data] !== null){
-                    sum += this.displayData[i][data];
+                    sum += parseFloat(this.displayData[i][data]);
                 }            
             }
             return sum;

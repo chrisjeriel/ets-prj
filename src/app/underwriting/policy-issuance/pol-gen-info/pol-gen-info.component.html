@@ -36,7 +36,7 @@
 								<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 									<div class="input-group" style="margin-top: 10px;">
 										<label class="form-control-sm col-sm-2">Policy No</label>
-										<input type="text" class="form-control form-control-sm col-sm-10 cap-input" [(ngModel)]="policyInfo.policyNo">
+										<input type="text" class="form-control form-control-sm col-sm-10 cap-input" [(ngModel)]="policyInfo.policyNo" readonly>
 										<!-- <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 5px;"
 										ngbTooltip="Year">
 										<input type="text" class="form-control form-control-sm col-sm-4 cap-input" style="margin-left: 5px;"
@@ -50,20 +50,20 @@
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Type of Cession</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.cessionDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.cessionDesc" readonly>
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Line Class</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.lineClassDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.lineClassDesc" readonly>
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Quotation No</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.quotationNo">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.quotationNo" readonly>
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Status</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.statusDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.statusDesc" readonly>
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Ceding Company</label>
-										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.cedingId">
-										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.cedingName">
+										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.cedingId" readonly>
+										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.cedingName" readonly>
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Co Ref No</label>
@@ -80,8 +80,8 @@
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Intermediary</label>
-										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.intmId">
-										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.intmName">
+										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.intmId" readonly>
+										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.intmName" readonly>
 									</div>
 									<div *ngIf="line === 'MLP' || line === 'DOS'" class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">MBI Ref No</label>
@@ -115,13 +115,13 @@
 						<div class="form-row ig-cust" style="margin-right: 0px;">
 							<div class="input-group col-sm-6" style="margin-top: 10px; padding: 0px;">
 								<label class="form-control-sm col-sm-4">Inception Date</label>
-								<input type="date" class="form-control form-control-sm" [(ngModel)]="policyInfo.inceptDate?.split('T')[0]">
-								<input type="text" class="form-control form-control-sm col-sm-3" style="margin-left: 5px; text-align: center;" [(ngModel)]="policyInfo.inceptDate?.split('T')[1]">
+								<input type="date" class="form-control form-control-sm" [ngModel]="policyInfo.inceptDate?.split('T')[0]" (ngModelChange)="policyInfo.inceptDate=$event+'T'+policyInfo.inceptDate.split('T')[1]" (change)="updateExpiryDate();" appRequired>
+								<input type="text" class="form-control form-control-sm col-sm-3" style="margin-left: 5px; text-align: center;" [(ngModel)]="policyInfo.inceptDate?.split('T')[1]" appRequired>
 							</div>
 							<div class="input-group col-sm-6" style="margin-top: 10px; padding: 0px;">
 								<label class="form-control-sm col-sm-4">Expiry Date</label>
-								<input type="date" class="form-control form-control-sm" [(ngModel)]="policyInfo.expiryDate?.split('T')[0]">
-								<input type="text" class="form-control form-control-sm col-sm-3" style="margin-left: 5px; text-align: center;" [(ngModel)]="policyInfo.expiryDate?.split('T')[1]">
+								<input type="date" class="form-control form-control-sm" min="{{ policyInfo.inceptDate?.split('T')[0] }}" [(ngModel)]="policyInfo.expiryDate?.split('T')[0]" appRequired>
+								<input type="text" class="form-control form-control-sm col-sm-3" style="margin-left: 5px; text-align: center;" [(ngModel)]="policyInfo.expiryDate?.split('T')[1]" appRequired>
 							</div>
 							<!-- <div class="input-group col-sm-6" style="margin-top: 10px; margin-bottom: -20px !important;">
 								<label class="form-control-sm col-sm-4">Expiry Date</label>
@@ -132,13 +132,13 @@
 						<div class="form-row ig-cust" style="margin-right: 0px;">
 							<div class="input-group col-sm-6" style="padding: 0px;">
 								<label class="form-control-sm col-sm-4">Lapse From</label>
-								<input type="date" class="form-control form-control-sm" [(ngModel)]="policyInfo.lapseFrom?.split('T')[0]">
-								<input type="text" class="form-control form-control-sm col-sm-3" style="margin-left: 5px; text-align: center;" [(ngModel)]="policyInfo.lapseFrom?.split('T')[1]">
+								<input type="date" class="form-control form-control-sm" [(ngModel)]="policyInfo.lapseFrom?.split('T')[0]" readonly>
+								<input type="text" class="form-control form-control-sm col-sm-3" style="margin-left: 5px; text-align: center;" [(ngModel)]="policyInfo.lapseFrom?.split('T')[1]" readonly>
 							</div>
 							<div class="input-group col-sm-6" style="padding: 0px;">
 								<label class="form-control-sm col-sm-4">Lapse To</label>
-								<input type="date" class="form-control form-control-sm" [(ngModel)]="policyInfo.lapseTo?.split('T')[0]">
-								<input type="text" class="form-control form-control-sm col-sm-3" style="margin-left: 5px; text-align: center;" [(ngModel)]="policyInfo.lapseTo?.split('T')[1]">
+								<input type="date" class="form-control form-control-sm" [(ngModel)]="policyInfo.lapseTo?.split('T')[0]" readonly>
+								<input type="text" class="form-control form-control-sm col-sm-3" style="margin-left: 5px; text-align: center;" [(ngModel)]="policyInfo.lapseTo?.split('T')[1]" readonly>
 							</div>
 						</div>
 						<!-- <div class="form-row ig-cust" style="margin-right: 0px;">
@@ -174,25 +174,25 @@
 						<div class="form-row ig-cust" style="margin-right: 0px;">
 							<div class="input-group col-sm-6" style="margin-top: 10px; padding: 0px;">
 								<label class="form-control-sm col-sm-4">Issue Date</label>
-								<input type="date" class="form-control form-control-sm" [(ngModel)]="policyInfo.issueDate?.split('T')[0]">
-								<input type="text" class="form-control form-control-sm col-sm-3" style="margin-left: 5px; text-align: center;" [(ngModel)]="policyInfo.issueDate?.split('T')[1]">
+								<input type="date" class="form-control form-control-sm" [(ngModel)]="policyInfo.issueDate?.split('T')[0]" appRequired>
+								<input type="text" class="form-control form-control-sm col-sm-3" style="margin-left: 5px; text-align: center;" [(ngModel)]="policyInfo.issueDate?.split('T')[1]" appRequired>
 							</div>
 							<div class="input-group col-sm-6" style="margin-top: 10px; padding: 0px;">
 								<label class="form-control-sm col-sm-4">Distribution Date</label>
-								<input type="date" class="form-control form-control-sm" [(ngModel)]="policyInfo.distDate?.split('T')[0]">
-								<input type="text" class="form-control form-control-sm col-sm-3" style="margin-left: 5px; text-align: center;" [(ngModel)]="policyInfo.distDate?.split('T')[1]">
+								<input type="date" class="form-control form-control-sm" [(ngModel)]="policyInfo.distDate?.split('T')[0]" appRequired>
+								<input type="text" class="form-control form-control-sm col-sm-3" style="margin-left: 5px; text-align: center;" [(ngModel)]="policyInfo.distDate?.split('T')[1]" appRequired>
 							</div>
 						</div>
 						<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 							<div class="input-group col-sm-6" style="padding: 0px;">
 								<label class="form-control-sm col-sm-4">Effective Date</label>
-								<input type="date" class="form-control form-control-sm" [(ngModel)]="policyInfo.effDate?.split('T')[0]">
-								<input type="text" class="form-control form-control-sm col-sm-3" style="margin-left: 5px; text-align: center;" [(ngModel)]="policyInfo.effDate?.split('T')[1]">
+								<input type="date" class="form-control form-control-sm" [(ngModel)]="policyInfo.effDate?.split('T')[0]" appRequired>
+								<input type="text" class="form-control form-control-sm col-sm-3" style="margin-left: 5px; text-align: center;" [(ngModel)]="policyInfo.effDate?.split('T')[1]" appRequired>
 							</div>
 							<div class="input-group col-sm-6" style="padding: 0px;">
 								<label class="form-control-sm col-sm-4">Accounting Date</label>
-								<input type="date" class="form-control form-control-sm" [(ngModel)]="policyInfo.acctDate?.split('T')[0]">
-								<input type="text" class="form-control form-control-sm col-sm-3" style="margin-left: 5px; text-align: center;" [(ngModel)]="policyInfo.acctDate?.split('T')[1]">
+								<input type="date" class="form-control form-control-sm" [(ngModel)]="policyInfo.acctDate?.split('T')[0]" appRequired>
+								<input type="text" class="form-control form-control-sm col-sm-3" style="margin-left: 5px; text-align: center;" [(ngModel)]="policyInfo.acctDate?.split('T')[1]" appRequired>
 							</div>
 						</div>
 					</div>
@@ -215,72 +215,68 @@
 					<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 						<div class="input-group" style="margin-top: 10px;">
 							<label class="form-control-sm col-sm-1">Principal</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId">
-							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName">
+							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" readonly>
+							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName" readonly>
 							<label class="form-control-sm col-sm-1">Contractor</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.contractorId">
-							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.contractorName">
+							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.contractorId" readonly>
+							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.contractorName" readonly>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Insured</label>
-							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [(ngModel)]="policyInfo.insuredDesc"></textarea>
+							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [(ngModel)]="policyInfo.insuredDesc" appRequired></textarea>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Risk</label>
-							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.riskName">
+							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.riskName" readonly>
 						</div>
 						<div class="input-group" style="margin-bottom: 0px !important;">
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2">Object</label>
-								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.project.objectId">
-								<input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;" [(ngModel)]="policyInfo.project.objectDesc">
+								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.project.objectId" readonly>
+								<input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;" [(ngModel)]="policyInfo.project.objectDesc" readonly>
 							</div>
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2">Region</label>
-								<input type="text" class="form-control form-control-sm col-sm-10" [(ngModel)]="policyInfo.regionDesc">
+								<input type="text" class="form-control form-control-sm col-sm-10" [(ngModel)]="policyInfo.project.regionDesc" readonly>
 							</div>
 						</div>
 						<div class="input-group">
-
-
 							<label class="form-control-sm col-sm-1">Nature of Work</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.projDesc"></textarea>
-							
-
+							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.projDesc" appRequired></textarea>							
 							<div class="col-sm-6">
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Province</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.provinceDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.provinceDesc" readonly>
 									</div>
 								</div>
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">City/Town</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.cityDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.cityDesc" readonly>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Site</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 12px; margin-left: 2px;" [(ngModel)]="policyInfo.project.site"></textarea>
+							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 12px; margin-left: 2px;" [(ngModel)]="policyInfo.project.site" appRequired></textarea>
 
 							<div class="col-sm-6">
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">District</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.cityDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.cityDesc" readonly>
 										<label class="form-control-sm col-sm-2">Block</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.blockDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.blockDesc" readonly>
 									</div>
 								</div>
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Lat</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.latitude">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.latitude" readonly>
 										<label class="form-control-sm col-sm-2">Long</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.longitude">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.longitude" readonly>
 									</div>
 								</div>
 							</div>
@@ -291,94 +287,7 @@
 				</div>
 			</fieldset>
 
-				<!-- <fieldset *ngIf="line === 'EAR'" class="scheduler-border cust-fs-padlr-offset">
-					<legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
-					<div class="col-sm-1">
-					</div>
-					<div class="col-sm">
-						<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
-							<div class="input-group" style="margin-top: 10px;">
-								<label class="form-control-sm col-sm-1">Principal</label>
-								<input type="text" class="form-control form-control-sm col-sm-1">
-								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-								<span>&nbsp;</span>
-								<input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
-								<label class="form-control-sm col-sm-1">Contractor</label>
-								<input type="text" class="form-control form-control-sm col-sm-1">
-								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-								<span>&nbsp;</span>
-								<input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
-							</div>
-							<div class="input-group">
-								<label class="form-control-sm col-sm-1">Insured</label>
-								<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 8px;"></textarea>
-							</div>
-							<div class="input-group">
-								<label class="form-control-sm col-sm-1">Risk</label>
-								<input type="text" class="form-control form-control-sm">
-							</div>
-							<div class="input-group">
-								<label class="form-control-sm col-sm-1">Object</label>
-								<input type="text" class="form-control form-control-sm">
-								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-								<span>&nbsp;</span>
-								<label class="form-control-sm col-sm-1">Region</label>
-								<input type="text" class="form-control form-control-sm">
-							</div>
-							<div class="input-group">
-								<label class="form-control-sm col-sm-1">Nature of Work</label>
-								<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;"></textarea>
-
-								<div class="col-sm">
-									<div class="row">
-										<div class="input-group">
-											<label class="form-control-sm col-sm-2">Province</label>
-											<input type="text" class="form-control form-control-sm">
-										</div>
-									</div>
-									<div class="row">
-										<div class="input-group">
-											<label class="form-control-sm col-sm-2">City/Town</label>
-											<input type="text" class="form-control form-control-sm">
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="input-group">
-								<label class="form-control-sm col-sm-1">Site</label>
-								<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;"></textarea>
-
-								<div class="col-sm">
-									<div class="row">
-										<div class="input-group">
-											<label class="form-control-sm col-sm-2">District</label>
-											<input type="text" class="form-control form-control-sm">
-											<label class="form-control-sm col-sm-2">Block</label>
-											<input type="text" class="form-control form-control-sm">
-										</div>
-									</div>
-									<div class="row">
-										<div class="input-group">
-											<label class="form-control-sm col-sm-2">Lat</label>
-											<input type="text" class="form-control form-control-sm">
-											<label class="form-control-sm col-sm-2">Long</label>
-											<input type="text" class="form-control form-control-sm">
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="input-group">
-								<label class="form-control-sm col-sm-1">Duration</label>
-								<input type="text" class="form-control form-control-sm col-sm-5">
-								<label class="form-control-sm col-sm-1">Testing</label>
-								<input type="text" class="form-control form-control-sm col-sm-5">
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-1">
-					</div>
-				</fieldset> -->
-				<fieldset *ngIf="line === 'EAR'" class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 10px !important;
+			<fieldset *ngIf="line === 'EAR'" class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 10px !important;
 				padding-top: 4px !important;">
 				<legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
 				<div class="col-sm-1">
@@ -387,69 +296,69 @@
 					<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 						<div class="input-group" style="margin-top: 10px;">
 							<label class="form-control-sm col-sm-1">Principal</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId">
-							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName">
+							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" readonly>
+							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName" readonly>
 							<label class="form-control-sm col-sm-1">Contractor</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.contractorId">
-							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.contractorName">
+							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.contractorId" readonly>
+							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.contractorName" readonly>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Insured</label>
-							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [(ngModel)]="policyInfo.insuredDesc"></textarea>
+							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [(ngModel)]="policyInfo.insuredDesc" appRequired></textarea>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Risk</label>
-							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.riskName">
+							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.riskName" readonly>
 						</div>
 						<div class="input-group" style="margin-bottom: 0px !important;">
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2">Object</label>
-								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.project.objectId">
-								<input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;" [(ngModel)]="policyInfo.project.objectDesc">
+								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.project.objectId" readonly>
+								<input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;" [(ngModel)]="policyInfo.project.objectDesc" readonly>
 							</div>
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2">Region</label>
-								<input type="text" class="form-control form-control-sm col-sm-10" [(ngModel)]="policyInfo.project.regionDesc">
+								<input type="text" class="form-control form-control-sm col-sm-10" [(ngModel)]="policyInfo.project.regionDesc" readonly>
 							</div>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Nature of Work</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.projDesc"></textarea>
+							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.projDesc" appRequired></textarea>
 
 							<div class="col-sm-6">
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Province</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.provinceDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.provinceDesc" readonly>
 									</div>
 								</div>
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">City/Town</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.cityDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.cityDesc" readonly>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Site</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.site"></textarea>
+							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.site" appRequired></textarea>
 
 							<div class="col-sm-6">
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">District</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.districtDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.districtDesc" readonly>
 										<label class="form-control-sm col-sm-2">Block</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.blockDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.blockDesc" readonly>
 									</div>
 								</div>
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Lat</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.latitude">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.latitude" readonly>
 										<label class="form-control-sm col-sm-2">Long</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.longitude">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.longitude" readonly>
 									</div>
 								</div>
 							</div>
@@ -459,7 +368,7 @@
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2" style="margin-bottom: 16px !important;">Testing</label>
-										<input type="text" class="form-control form-control-sm col-sm-10" [(ngModel)]="policyInfo.project.testing">
+										<input type="text" class="form-control form-control-sm col-sm-10" [(ngModel)]="policyInfo.project.testing" readonly>
 									</div>
 								</div>
 							</div>
@@ -478,66 +387,64 @@
 					<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 						<div class="input-group" style="margin-top: 10px;">
 							<label class="form-control-sm col-sm-1">Insured</label>
-							<input type="text" class="form-control form-control-sm col-sm-1">
-							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
+							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" readonly>
+							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName" readonly>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1"></label>
-							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;"></textarea>
+							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [(ngModel)]="policyInfo.insuredDesc" appRequired></textarea>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Risk</label>
-							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.riskName">
+							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.riskName" readonly>
 						</div>
 						<div class="input-group" style="margin-bottom: 0px !important;">
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2">Object</label>
-								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.project.objectId">
-								<input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;" [(ngModel)]="policyInfo.project.objectDesc">
+								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.project.objectId" readonly>
+								<input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;" [(ngModel)]="policyInfo.project.objectDesc" readonly>
 							</div>
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2">Region</label>
-								<input type="text" class="form-control form-control-sm col-sm-10" [(ngModel)]="policyInfo.project.regionDesc">
+								<input type="text" class="form-control form-control-sm col-sm-10" [(ngModel)]="policyInfo.project.regionDesc" readonly>
 							</div>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Items<br/>to be Insured</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.projDesc"></textarea>
-
+							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.projDesc" appRequired></textarea>
 							<div class="col-sm-6">
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Province</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.provinceDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.provinceDesc" readonly>
 									</div>
 								</div>
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">City/Town</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.cityDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.cityDesc" readonly>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Site</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.site"></textarea>
-
+							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.site" appRequired></textarea>
 							<div class="col-sm-6">
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">District</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.districtDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.districtDesc" readonly>
 										<label class="form-control-sm col-sm-2">Block</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.blockDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.blockDesc" readonly>
 									</div>
 								</div>
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Lat</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.latitude">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.latitude" readonly>
 										<label class="form-control-sm col-sm-2">Long</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.longitude">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.longitude" readonly>
 									</div>
 								</div>
 							</div>
@@ -548,75 +455,6 @@
 				</div>
 			</fieldset>
 
-			<!-- <fieldset *ngIf="line === 'MBI' || line === 'BPV'" class="scheduler-border cust-fs-padlr-offset">
-				<legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
-				<div class="col-sm-1">
-				</div>
-				<div class="col-sm">
-					<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
-						<div class="input-group" style="margin-top: 10px;">
-							<label class="form-control-sm col-sm-1">Insured</label>
-							<input type="text" class="form-control form-control-sm col-sm-1">
-							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-							<span>&nbsp;</span>
-							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
-						</div>
-						<div class="input-group">
-							<label class="form-control-sm col-sm-1"></label>
-							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 8px;"></textarea>
-						</div>
-						<div class="input-group">
-							<label class="form-control-sm col-sm-1">Risk</label>
-							<input type="text" class="form-control form-control-sm">
-						</div>
-						<div class="input-group">
-							<label class="form-control-sm col-sm-1">Object</label>
-							<input type="text" class="form-control form-control-sm">
-							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-							<span>&nbsp;</span>
-							<label class="form-control-sm col-sm-1">Region</label>
-							<input type="text" class="form-control form-control-sm">
-						</div>
-						<div class="input-group">
-							<label class="form-control-sm col-sm-1">Items to be Insured</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;"></textarea>
-							<div class="text-search-ico" (click)="showItemInfoModal(content)"><a><i class="fa fa-plus-circle"></i></a></div>
-							<span>&nbsp;</span>
-							<div class="col-sm">
-								<div class="row">
-									<div class="input-group">
-										<label class="form-control-sm col-sm-2">Province</label>
-										<input type="text" class="form-control form-control-sm">
-									</div>
-								</div>
-								<div class="row">
-									<div class="input-group">
-										<label class="form-control-sm col-sm-2">City/Town</label>
-										<input type="text" class="form-control form-control-sm">
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="input-group">
-							<label class="form-control-sm col-sm-1">Site</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;"></textarea>
-
-							<div class="col-sm">
-								<div class="row">
-									<div class="input-group">
-										<label class="form-control-sm col-sm-2">District</label>
-										<input type="text" class="form-control form-control-sm">
-										<label class="form-control-sm col-sm-2">Block</label>
-										<input type="text" class="form-control form-control-sm">
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-1">
-				</div>
-			</fieldset> -->
 			<fieldset *ngIf="line === 'MBI' || line === 'BPV'" class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 16px !important; padding-top: 17px !important;">
 				<legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
 				<div class="col-sm-1">
@@ -625,58 +463,56 @@
 					<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 						<div class="input-group" style="margin-top: 10px;">
 							<label class="form-control-sm col-sm-1">Insured</label>
-							<input type="text" class="form-control form-control-sm col-sm-1">
-							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
+							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" readonly>
+							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName" readonly>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1"></label>
-							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;"></textarea>
+							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [(ngModel)]="policyInfo.insuredDesc" appRequired></textarea>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Risk</label>
-							<input type="text" class="form-control form-control-sm">
+							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.riskName" readonly>
 						</div>
 						<div class="input-group" style="margin-bottom: 0px !important;">
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2">Object</label>
-								<input type="text" class="form-control form-control-sm col-sm-2">
-								<input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;">
+								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.project.objectId" readonly>
+								<input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;" [(ngModel)]="policyInfo.project.objectDesc" readonly>
 							</div>
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2">Region</label>
-								<input type="text" class="form-control form-control-sm col-sm-10">
+								<input type="text" class="form-control form-control-sm col-sm-10" [(ngModel)]="policyInfo.project.regionDesc" readonly>
 							</div>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Items<br/>to be Insured</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;"></textarea>
-
+							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.projDesc" appRequired></textarea>
 							<div class="col-sm-6">
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Province</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.provinceDesc" readonly>
 									</div>
 								</div>
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">City/Town</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.cityDesc" readonly>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Site</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;"></textarea>
-
+							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.site" appRequired></textarea>
 							<div class="col-sm-6">
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">District</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.districtDesc" readonly>
 										<label class="form-control-sm col-sm-2">Block</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.blockDesc" readonly>
 									</div>
 								</div>
 							</div>
@@ -686,84 +522,7 @@
 				<div class="col-sm-1">
 				</div>
 			</fieldset>
-
-			<!-- <fieldset *ngIf="line === 'MLP'" class="scheduler-border cust-fs-padlr-offset">
-				<legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
-				<div class="col-sm-1">
-				</div>
-				<div class="col-sm">
-					<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
-						<div class="input-group" style="margin-top: 10px;">
-							<label class="form-control-sm col-sm-1">Insured</label>
-							<input type="text" class="form-control form-control-sm col-sm-1">
-							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-							<span>&nbsp;</span>
-							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
-						</div>
-						<div class="input-group">
-							<label class="form-control-sm col-sm-1"></label>
-							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 8px;"></textarea>
-						</div>
-						<div class="input-group">
-							<label class="form-control-sm col-sm-1">Risk</label>
-							<input type="text" class="form-control form-control-sm">
-						</div>
-						<div class="input-group">
-							<label class="form-control-sm col-sm-1">Object</label>
-							<input type="text" class="form-control form-control-sm">
-							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-							<span>&nbsp;</span>
-							<label class="form-control-sm col-sm-1">Region</label>
-							<input type="text" class="form-control form-control-sm">
-						</div>
-						<div class="input-group">
-							<label class="form-control-sm col-sm-1">Items to be Insured</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;"></textarea>
-							<div class="text-search-ico" (click)="showItemInfoModal(content)"><a><i class="fa fa-plus-circle"></i></a></div>
-							<span>&nbsp;</span>
-							<div class="col-sm">
-								<div class="row">
-									<div class="input-group">
-										<label class="form-control-sm col-sm-2">Province</label>
-										<input type="text" class="form-control form-control-sm">
-									</div>
-								</div>
-								<div class="row">
-									<div class="input-group">
-										<label class="form-control-sm col-sm-2">City/Town</label>
-										<input type="text" class="form-control form-control-sm">
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="input-group">
-							<label class="form-control-sm col-sm-1">Site</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;"></textarea>
-
-							<div class="col-sm">
-								<div class="row">
-									<div class="input-group">
-										<label class="form-control-sm col-sm-2">District</label>
-										<input type="text" class="form-control form-control-sm">
-										<label class="form-control-sm col-sm-2">Block</label>
-										<input type="text" class="form-control form-control-sm">
-									</div>
-								</div>
-								<div class="row">
-									<div class="input-group">
-										<label class="form-control-sm col-sm-2">Time Exc.</label>
-										<input type="text" class="form-control form-control-sm">
-										<label class="form-control-sm col-sm-2">ILP</label>
-										<input type="text" class="form-control form-control-sm">
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-1">
-				</div>
-			</fieldset> -->
+			
 			<fieldset *ngIf="line === 'MLP'" class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 16px !important; padding-top: 17px !important;">
 				<legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
 				<div class="col-sm-1">
@@ -772,66 +531,66 @@
 					<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 						<div class="input-group" style="margin-top: 10px;">
 							<label class="form-control-sm col-sm-1">Insured</label>
-							<input type="text" class="form-control form-control-sm col-sm-1">
-							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
+							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" readonly>
+							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName" readonly>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1"></label>
-							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;"></textarea>
+							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [(ngModel)]="policyInfo.insuredDesc" appRequired></textarea>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Risk</label>
-							<input type="text" class="form-control form-control-sm">
+							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.riskName" readonly>
 						</div>
 						<div class="input-group" style="margin-bottom: 0px !important;">
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2">Object</label>
-								<input type="text" class="form-control form-control-sm col-sm-2">
-								<input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;">
+								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.project.objectId" readonly>
+								<input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;" [(ngModel)]="policyInfo.project.objectDesc" readonly>
 							</div>
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2">Region</label>
-								<input type="text" class="form-control form-control-sm col-sm-10">
+								<input type="text" class="form-control form-control-sm col-sm-10" [(ngModel)]="policyInfo.project.regionDesc" readonly>
 							</div>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Items<br/>to be Insured</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;"></textarea>
+							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.projDesc" appRequired></textarea>
 
 							<div class="col-sm-6">
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Province</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.provinceDesc" readonly>
 									</div>
 								</div>
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">City/Town</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.cityDesc" readonly>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Site</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;"></textarea>
+							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.site" appRequired></textarea>
 
 							<div class="col-sm-6">
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">District</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.districtDesc" readonly>
 										<label class="form-control-sm col-sm-2">Block</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.blockDesc" readonly>
 									</div>
 								</div>
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">IPL</label>
-										<input type="text" class="form-control form-control-sm">
-										<label class="form-control-sm col-sm-2">Time Exc.</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.ipl" ngbTooltip="Months" readonly>
+										<label class="form-control-sm col-sm-2">Time Excess</label>
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.timeExc" ngbTooltip="Days" readonly>
 									</div>
 								</div>
 							</div>
@@ -841,80 +600,7 @@
 				<div class="col-sm-1">
 				</div>
 			</fieldset>
-
-			<!-- <fieldset *ngIf="line === 'DOS'" class="scheduler-border cust-fs-padlr-offset">
-				<legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
-				<div class="col-sm-1">
-				</div>
-				<div class="col-sm">
-					<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
-						<div class="input-group" style="margin-top: 10px;">
-							<label class="form-control-sm col-sm-1">Insured</label>
-							<input type="text" class="form-control form-control-sm col-sm-1">
-							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-							<span>&nbsp;</span>
-							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
-						</div>
-						<div class="input-group">
-							<label class="form-control-sm col-sm-1"></label>
-							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 8px;"></textarea>
-						</div>
-						<div class="input-group">
-							<label class="form-control-sm col-sm-1">Risk</label>
-							<input type="text" class="form-control form-control-sm">
-						</div>
-						<div class="input-group">
-							<label class="form-control-sm col-sm-1">Object</label>
-							<input type="text" class="form-control form-control-sm col-sm-5">
-							<label class="form-control-sm col-sm-1">Region</label>
-							<input type="text" class="form-control form-control-sm">
-						</div>
-						<div class="input-group">
-							<label class="form-control-sm col-sm-1">Items to be Insured</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;"></textarea>
-							<div class="text-search-ico" (click)="showItemInfoModal(content)"><a><i class="fa fa-plus-circle"></i></a></div>
-							<span>&nbsp;</span>
-							<div class="col-sm">
-								<div class="row">
-									<div class="input-group">
-										<label class="form-control-sm col-sm-2">Province</label>
-										<input type="text" class="form-control form-control-sm">
-									</div>
-								</div>
-								<div class="row">
-									<div class="input-group">
-										<label class="form-control-sm col-sm-2">City/Town</label>
-										<input type="text" class="form-control form-control-sm">
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="input-group">
-							<label class="form-control-sm col-sm-1">Site</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;"></textarea>
-
-							<div class="col-sm">
-								<div class="row">
-									<div class="input-group">
-										<label class="form-control-sm col-sm-2">District</label>
-										<input type="text" class="form-control form-control-sm">
-										<label class="form-control-sm col-sm-2">Block</label>
-										<input type="text" class="form-control form-control-sm">
-									</div>
-								</div>
-								<div class="row">
-									<div class="input-group">
-										<label class="form-control-sm col-sm-2">No Claim</label>
-										<input type="text" class="form-control form-control-sm">
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-1">
-				</div>
-			</fieldset> -->
+			
 			<fieldset *ngIf="line === 'DOS'" class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 16px !important; padding-top: 17px !important;">
 				<legend class="scheduler-border" style="margin-left: 16px !important;">Insured Details</legend>
 				<div class="col-sm-1">
@@ -923,58 +609,61 @@
 					<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 						<div class="input-group" style="margin-top: 10px;">
 							<label class="form-control-sm col-sm-1">Insured</label>
-							<input type="text" class="form-control form-control-sm col-sm-1">
-							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;">
+							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" readonly>
+							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName" readonly>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1"></label>
-							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;"></textarea>
+							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 13px; margin-left: 2px;" [(ngModel)]="policyInfo.insuredDesc" appRequired></textarea>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Risk</label>
-							<input type="text" class="form-control form-control-sm">
+							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.riskName" readonly>
 						</div>
 						<div class="input-group" style="margin-bottom: 0px !important;">
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2">Object</label>
-								<input type="text" class="form-control form-control-sm col-sm-2">
-								<input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;">
+								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.project.objectId" readonly>
+								<input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;" [(ngModel)]="policyInfo.project.objectDesc" readonly>
 							</div>
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2">Region</label>
-								<input type="text" class="form-control form-control-sm col-sm-10">
+								<input type="text" class="form-control form-control-sm col-sm-10" [(ngModel)]="policyInfo.project.regionDesc" readonly>
 							</div>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Items<br/>to be Insured</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;"></textarea>
+							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.projDesc" appRequired></textarea>
 
 							<div class="col-sm-6">
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Province</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.provinceDesc" readonly>
 									</div>
 								</div>
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">City/Town</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.cityDesc" readonly>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Site</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;"></textarea>
-
+							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.site" appRequired></textarea>
 							<div class="col-sm-6">
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">District</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.districtDesc" readonly>
 										<label class="form-control-sm col-sm-2">Block</label>
-										<input type="text" class="form-control form-control-sm">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.blockDesc" readonly>
+									</div>
+									<div class="input-group">
+										<label class="form-control-sm col-sm-2">No Claim Period</label>
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.noClaimPd" ngbTooltip="Hours" readonly>
 									</div>
 								</div>
 							</div>
@@ -990,19 +679,19 @@
 					<div class="form-row ig-cust">
 						<div class="form-group col-sm-3" style="margin-bottom: 0px; margin-top: -14px;">
 							<label class="form-control-sm top-label">&nbsp;Created By</label>
-							<input type="text" class="form-control form-control-sm cust-sm">
-						</div>
-						<div class="form-group col-sm-3" style="margin-bottom: 0px; margin-top: -14px;">
-							<label class="form-control-sm top-label">&nbsp;Last Update By</label>
-							<input type="text" class="form-control form-control-sm cust-sm">
+							<input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.createUser" readonly>
 						</div>
 						<div class="form-group col-sm-3" style="margin-bottom: 0px; margin-top: -14px;">
 							<label class="form-control-sm top-label">&nbsp;Date Created</label>
-							<input type="date" class="form-control form-control-sm cust-sm">
+							<input type="datetime-local" class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.createDate" readonly>
 						</div>
 						<div class="form-group col-sm-3" style="margin-bottom: 0px; margin-top: -14px;">
+							<label class="form-control-sm top-label">&nbsp;Last Update By</label>
+							<input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.updateUser" readonly>
+						</div>						
+						<div class="form-group col-sm-3" style="margin-bottom: 0px; margin-top: -14px;">
 							<label class="form-control-sm top-label">&nbsp;Last Update</label>
-							<input type="date" class="form-control form-control-sm cust-sm">
+							<input type="datetime-local" class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.updateDate" readonly>
 						</div>
 					</div>
 				</div>
@@ -1013,15 +702,15 @@
 				<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 				<div class="custom-row-inline-inset">
 					<div class="input-group">
-						<label class="form-control-sm col-sm-2" for="xx">Currency</label>
-						<input type="text" class="form-control form-control-sm cust-sm txt-content-rght" required>
+						<label class="form-control-sm col-sm-2">Currency</label>
+						<input type="text" class="form-control form-control-sm cust-sm txt-content-rght" [(ngModel)]="policyInfo.currencyCd" readonly>
 
-						<label class="form-control-sm" for="xx">Exch. Rt.</label>
-						<input type="text" class="form-control form-control-sm cust-sm txt-content-rght" required onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
+						<label class="form-control-sm">Exch. Rt.</label>
+						<input type="text" class="form-control form-control-sm cust-sm txt-content-rght" required appCurrencyRate onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="policyInfo.currencyRt" readonly>
 					</div>
 					<div class="input-group">
-						<label class="form-control-sm col-sm-2" for="xx">Total SI</label>
-						<input type="text" class="form-control form-control-sm cust-sm txt-content-rght" required onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
+						<label class="form-control-sm col-sm-2">Total SI</label>
+						<input type="text" class="form-control form-control-sm cust-sm txt-content-rght" required onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="policyInfo.project.totalSi" readonly>
 					</div>
 				</div>
 			</fieldset>
@@ -1032,21 +721,21 @@
 						<div class="form-group col-sm-6">
 							<div class="input-group">
 								<div class="input-group-prepend">
-									<div class="input-group-text">
-										<input type="checkbox">
+									<div class="input-group-text white-bg">
+										<input type="checkbox" [checked]="policyInfo.bookedTag === 'Y'" (change)="policyInfo.bookedTag = (policyInfo.bookedTag === 'Y') ? 'N' : 'Y';">
 									</div>
 								</div>
-								<input type="text" style="font-size: 11px !important;" value="Booked" disabled class="form-control form-control-sm">
+								<input type="text" style="font-size: 11px !important; margin-left: 0 !important;" value="Booked" disabled class="form-control form-control-sm white-bg">
 							</div>
 						</div>
 						<div class="col-sm-6">
 							<div class="input-group">
 								<div class="input-group-prepend">
-									<div class="input-group-text">
-										<input type="checkbox">
+									<div class="input-group-text white-bg">
+										<input type="checkbox" [checked]="policyInfo.altTag === 'Y'" (change)="policyInfo.altTag = (policyInfo.altTag === 'Y') ? 'N' : 'Y';">
 									</div>
 								</div>
-								<input type="text" style="font-size: 11px !important;" value="Alteration" disabled class="form-control form-control-sm">
+								<input type="text" style="font-size: 11px !important; margin-left: 0 !important;" value="Alteration" disabled class="form-control form-control-sm white-bg">
 							</div>
 						</div>
 					</div>
@@ -1054,21 +743,21 @@
 						<div class="form-group col-sm-6">
 							<div class="input-group">
 								<div class="input-group-prepend">
-									<div class="input-group-text">
-										<input type="checkbox">
+									<div class="input-group-text white-bg">
+										<input type="checkbox" [checked]="policyInfo.govtTag === 'Y'" (change)="policyInfo.govtTag = (policyInfo.govtTag === 'Y') ? 'N' : 'Y';">
 									</div>
 								</div>
-								<input type="text" style="font-size: 11px !important;" value="Government" disabled class="form-control form-control-sm">
+								<input type="text" style="font-size: 11px !important; margin-left: 0 !important;" value="Government" disabled class="form-control form-control-sm white-bg">
 							</div>
 						</div>
 						<div class="col-sm-6">
 							<div class="input-group">
 								<div class="input-group-prepend">
-									<div class="input-group-text">
-										<input type="checkbox">
+									<div class="input-group-text white-bg">
+										<input type="checkbox" [checked]="policyInfo.specialPolicyTag === 'Y'" (change)="policyInfo.specialPolicyTag = (policyInfo.specialPolicyTag === 'Y') ? 'N' : 'Y';">
 									</div>
 								</div>
-								<input type="text" style="font-size: 11px !important;" value="Special Policy" disabled class="form-control form-control-sm">
+								<input type="text" style="font-size: 11px !important; margin-left: 0 !important;" value="Special Policy" disabled class="form-control form-control-sm white-bg">
 							</div>
 						</div>
 					</div>
@@ -1076,21 +765,22 @@
 						<div class="form-group col-sm-6">
 							<div class="input-group">
 								<div class="input-group-prepend">
-									<div class="input-group-text">
-										<input type="checkbox" [(ngModel)]="ocChecked">
+									<div class="input-group-text white-bg">
+										<!-- <input type="checkbox" [(ngModel)]="ocChecked"> -->
+										<input type="checkbox" [checked]="policyInfo.openCoverTag === 'Y'" (change)="policyInfo.openCoverTag = (policyInfo.openCoverTag === 'Y') ? 'N' : 'Y';">
 									</div>
 								</div>
-								<input type="text" style="font-size: 11px !important;" value="Open Cover" disabled class="form-control form-control-sm">
+								<input type="text" style="font-size: 11px !important; margin-left: 0 !important;" value="Open Cover" disabled class="form-control form-control-sm white-bg">
 							</div>
 						</div>
 						<div class="col-sm-6">
 							<div class="input-group">
 								<div class="input-group-prepend">
-									<div class="input-group-text">
-										<input type="checkbox">
+									<div class="input-group-text white-bg">
+										<input type="checkbox" [checked]="policyInfo.instTag === 'Y'" (change)="policyInfo.instTag = (policyInfo.instTag === 'Y') ? 'N' : 'Y';">
 									</div>
 								</div>
-								<input type="text" style="font-size: 11px !important;" value="Installment" disabled class="form-control form-control-sm">
+								<input type="text" style="font-size: 11px !important; margin-left: 0 !important;" value="Installment" disabled class="form-control form-control-sm white-bg">
 							</div>
 						</div>
 					</div>
@@ -1098,21 +788,21 @@
 						<div class="form-group col-sm-6">
 							<div class="input-group">
 								<div class="input-group-prepend">
-									<div class="input-group-text">
-										<input type="checkbox" [(ngModel)]="hcChecked">
+									<div class="input-group-text white-bg">
+										<input type="checkbox" [checked]="policyInfo.holdCoverTag === 'Y'" (change)="policyInfo.holdCoverTag = (policyInfo.holdCoverTag === 'Y') ? 'N' : 'Y';">
 									</div>
 								</div>
-								<input type="text" style="font-size: 11px !important;" value="Hold Cover" disabled class="form-control form-control-sm">
+								<input type="text" style="font-size: 11px !important; margin-left: 0 !important;" value="Hold Cover" disabled class="form-control form-control-sm white-bg">
 							</div>
 						</div>
 						<div class="col-sm-6">
 							<div class="input-group">
 								<div class="input-group-prepend">
-									<div class="input-group-text">
-										<input type="checkbox">
+									<div class="input-group-text white-bg">
+										<input type="checkbox" [checked]="policyInfo.extensionTag === 'Y'" (change)="policyInfo.extensionTag = (policyInfo.extensionTag === 'Y') ? 'N' : 'Y';">
 									</div>
 								</div>
-								<input type="text" style="font-size: 11px !important;" value="Extension" disabled class="form-control form-control-sm">
+								<input type="text" style="font-size: 11px !important; margin-left: 0 !important;" value="Extension" disabled class="form-control form-control-sm white-bg">
 							</div>
 						</div>
 					</div>
@@ -1120,21 +810,22 @@
 						<div class="form-group col-sm-6">
 							<div class="input-group">
 								<div class="input-group-prepend">
-									<div class="input-group-text">
-										<input type="checkbox" [(ngModel)]="decChecked" (click)="toggleRadioBtnSet();">
+									<div class="input-group-text white-bg">
+										<!-- <input type="checkbox" [(ngModel)]="decChecked" (click)="toggleRadioBtnSet();"> -->
+										<input type="checkbox" [checked]="policyInfo.declarationTag === 'Y'" (change)="policyInfo.declarationTag = (policyInfo.declarationTag === 'Y') ? 'N' : 'Y'; toggleRadioBtnSet();">
 									</div>
 								</div>
-								<input type="text" style="font-size: 11px !important;" value="Declaration" disabled class="form-control form-control-sm">
+								<input type="text" style="font-size: 11px !important; margin-left: 0 !important;" value="Declaration" disabled class="form-control form-control-sm white-bg">
 							</div>
 						</div>
 						<div class="col-sm-6">
 							<div class="input-group">
 								<div class="input-group-prepend">
-									<div class="input-group-text">
-										<input type="checkbox">
+									<div class="input-group-text white-bg">
+										<input type="checkbox" [checked]="policyInfo.excludeDistTag === 'Y'" (change)="policyInfo.excludeDistTag = (policyInfo.excludeDistTag === 'Y') ? 'N' : 'Y';">
 									</div>
 								</div>
-								<input type="text" style="font-size: 11px !important;" value="Exclude Distribution" disabled class="form-control form-control-sm">
+								<input type="text" style="font-size: 11px !important; margin-left: 0 !important;" value="Exclude Distribution" disabled class="form-control form-control-sm white-bg">
 							</div>
 						</div>
 					</div>
@@ -1142,10 +833,10 @@
 						<div class="form-group col-sm-6">
 							<div id="radioBtnSet" class="input-group-text" style="display: block; margin-top: -4px; padding-left: 33px; padding-right: 0px;">
 								<div class="input-group">
-									<input type="radio" name="option" [disabled]="!decChecked" checked="true"><label class="form-control-sm" style="margin-bottom: -2px !important; font-weight: normal !important;">With Min Dep</label>
+									<input type="radio" name="option" [disabled]="policyInfo.declarationTag != 'Y'" value="Y" [(ngModel)]="policyInfo.minDepTag"><label class="form-control-sm" style="margin-bottom: -2px !important; font-weight: normal !important;">With Min Dep</label>
 								</div>
 								<div class="input-group">
-									<input type="radio" name="option" [disabled]="!decChecked"><label class="form-control-sm" style="margin-bottom: -5px !important; font-weight: normal !important;">Without Min Dep</label>
+									<input type="radio" name="option" [disabled]="policyInfo.declarationTag != 'Y'" value="N" [(ngModel)]="policyInfo.minDepTag"><label class="form-control-sm" style="margin-bottom: -5px !important; font-weight: normal !important;">Without Min Dep</label>
 								</div>
 							</div>
 						</div>

@@ -33,6 +33,7 @@ export class CoverageComponent implements OnInit {
   // rowDblClick: EventEmitter<any> = new EventEmitter();
 
   @Input() inquiryFlag: boolean = false;
+  @Output() enblEndtTab = new EventEmitter<any>();
   hideSectionCoverArray: any[] = [];
   initialData: any[]=[];
 
@@ -330,7 +331,7 @@ export class CoverageComponent implements OnInit {
             this.initialData = [];
             this.editedData = [];
             this.deletedData =[];
-            this.enblQuoteOpTab.emit(true);
+            this.enblEndtTab.emit(true);
             //this.getCoverageInfo();
            }
       });
@@ -358,7 +359,7 @@ export class CoverageComponent implements OnInit {
   }
 
   selectedSectionCoversLOV(data){
-  
+    console.log(data)
     if(data[0].hasOwnProperty('singleSearchLov') && data[0].singleSearchLov) {
       this.sectionCoverLOVRow = data[0].ev.index;
       this.ns.lovLoader(data[0].ev, 0);
@@ -381,7 +382,7 @@ export class CoverageComponent implements OnInit {
     for(var i = 0; i<data.length;i++){
       this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
       this.passData.tableData[this.passData.tableData.length - 1].coverCd = data[i].coverCd; 
-      this.passData.tableData[this.passData.tableData.length - 1].coverCdAbbr = data[i].coverCdAbbr;
+      this.passData.tableData[this.passData.tableData.length - 1].coverCdAbbr = data[i].description;
       this.passData.tableData[this.passData.tableData.length - 1].section = data[i].section;
       this.passData.tableData[this.passData.tableData.length - 1].bulletNo = data[i].bulletNo;
       this.passData.tableData[this.passData.tableData.length - 1].sumInsured = 0;
@@ -438,7 +439,7 @@ export class CoverageComponent implements OnInit {
        this.coverageData.totalSi = this.coverageData.sectionISi
      }
      
-     this.focusBlur();
+     //this.focusBlur();
      this.validateSectionCover();
      //this.cancel();  
   }
