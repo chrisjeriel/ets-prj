@@ -344,6 +344,7 @@ import { PolOpenCovListComponent } from './underwriting/policy-issuance/pol-open
 import { ConfirmLeaveComponent } from './_components/common/confirm-leave/confirm-leave.component';
 import { PolHoldCovMonitoringComponent } from './underwriting/expiry-and-renewal/pol-hold-cov-monitoring/pol-hold-cov-monitoring.component';
 import { SpoilPolAltComponent } from './underwriting/utilities/spoil-pol-alt/spoil-pol-alt.component';
+import { WfReminderFormComponent } from './home/wf-reminders/wf-reminder-form/wf-reminder-form.component';
 
 
 
@@ -697,6 +698,7 @@ import { SpoilPolAltComponent } from './underwriting/utilities/spoil-pol-alt/spo
         ConfirmLeaveComponent,
         PolHoldCovMonitoringComponent,
         SpoilPolAltComponent,
+        WfReminderFormComponent,
     ],
 
     providers: [
