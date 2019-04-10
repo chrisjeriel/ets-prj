@@ -158,8 +158,6 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       this.policyId = params['policyId'];
       this.policyNo = params['policyNo'];
     });
-    this.checkPolCoverage();
-    console.log(this.policyInfo.showPolAlop);
     this.getPolGenInfo();
     
   }
@@ -204,17 +202,6 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   }
 
   checkPolIdF(event){
-      this.emitPolicyInfoId.emit({
-        policyId: event,
-        policyNo: this.policyInfo.policyNo,
-        riskName: this.policyInfo.project.riskName,
-        insuredDesc: this.policyInfo.insuredDesc,
-        riskId: this.policyInfo.project.riskIdz,
-        showPolAlop: this.policyInfo.showPolAlop
-      });    
-  }
-
-  checkPolCoverage() {
     this.underwritingService.getUWCoverageInfos(null, this.policyId).subscribe((data:any)=>{
       if(data.policy !== null){
         let alopFlag = false;
@@ -238,7 +225,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         riskId: this.policyInfo.project.riskIdz,
         showPolAlop: this.policyInfo.showPolAlop
       });    
-      
+
     });
   }
 
@@ -248,4 +235,5 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
     this.policyInfo.expiryDate = this.ns.toDateTimeString(d);
   }
+  
 }
