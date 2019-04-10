@@ -1,8 +1,12 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UnderwritingService, NotesService } from '../../../_services';
 import { Title } from '@angular/platform-browser';
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { LovComponent } from '@app/_components/common/lov/lov.component';
 
 @Component({
   selector: 'app-pol-gen-info',
@@ -216,4 +220,145 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
     this.policyInfo.expiryDate = this.ns.toDateTimeString(d);
   }
+
+
+  //add by paul for deductibles
+  @ViewChild('deductiblesTable') deductiblesTable :CustEditableNonDatatableComponent;
+  @ViewChild('deductiblesModal') deductiblesModal :ModalComponent;
+  dialogIcon:string = '';
+  @ViewChild('dedSuccess') successDlg: SucessDialogComponent;
+  @ViewChild('dedLov') lov :LovComponent;
+  lovCheckBox:boolean;
+  passLOVData:any = {
+    selector: '',
+
+  }
+  dialogMsg:string;
+
+
+  passDataDeductibles: any = {
+        tHeader: ["Deductible Code","Deductible Title", "Deductible Text", "Rate(%)", "Amount"],
+        dataTypes: ["text","text","text", "percent", "currency"],
+        pageLength:10,
+        addFlag: true,
+        deleteFlag: true,
+        searchFlag: true,
+        checkFlag: true,
+        infoFlag: true,
+        paginateFlag: true,
+        widths: [1, 1, 1, 1, 1, 1],
+        magnifyingGlass: ['deductibleCd'],
+        keys:['deductibleCd','deductibleTitle','deductibleTxt','deductibleRt','deductibleAmt'],
+        tableData:[],
+        pageID:'deductibles',
+        nData: {
+          "coverCd": 0,
+          "createDate": this.ns.toDateTimeString(0),
+          "createUser": JSON.parse(window.localStorage.currentUser).username,
+          "deductibleAmt": 0,
+          "deductibleCd": null,
+          "deductibleRt": 0,
+          "deductibleTxt": '',
+          "endtCd": "0",
+          "updateDate": this.ns.toDateTimeString(0),
+          "updateUser":JSON.parse(window.localStorage.currentUser).username,
+          showMG : 1
+        }
+    };
+
+  showDeductiblesModal(deductibles){
+    // setTimeout(()=>{this.getDeductibles();},0);
+    // this.modalService.open(deductibles, { centered: true, backdrop: 'static', windowClass: "modal-size" });
+    this.getDeductibles();
+    this.deductiblesModal.openNoClose();
+  }
+
+  getDeductibles(){
+    this.deductiblesTable.loadingFlag = true;
+    let params : any = {
+      policyId:this.policyId,
+      policyNo:'',
+      coverCd:0,
+      endtCd: 0
+    }
+    this.underwritingService.getUWCoverageDeductibles(params).subscribe(data=>{
+      console.log(data);
+      if(data['policy']!==null){
+        this.passDataDeductibles.tableData = data['policy']['deductibles'].filter(a=>{
+          a.createDate = this.ns.toDateTimeString(a.createDate);
+          a.updateDate = this.ns.toDateTimeString(a.updateDate);
+          a.updateUser = JSON.parse(window.localStorage.currentUser).username;
+          return true;
+        });
+      }
+      else
+        this.passDataDeductibles.tableData = [];
+      this.deductiblesTable.refreshTable();
+    });
+  }
+
+  saveDeductibles(){
+    let params:any = {
+      policyId:this.policyId,
+      saveDeductibleList: [],
+      deleteDeductibleList:[]
+    };
+    params.saveDeductibleList = this.passDataDeductibles.tableData.filter(a=>a.edited && !a.deleted && a.deductibleCd!==null);
+    params.deleteDeductibleList = this.passDataDeductibles.tableData.filter(a=>a.edited && a.deleted && a.deductibleCd!==null);
+    if(params.saveDeductibleList.length==0 && params.deleteDeductibleList.length==0){
+      this.dialogMsg = 'Nothing to save.'
+      this.dialogIcon = 'info'
+      this.successDlg.open();
+      return;
+    }
+
+    this.deductiblesTable.loadingFlag = true;
+    this.underwritingService.savePolDeductibles(params).subscribe(data=>{
+        if(data['returnCode'] == -1){
+          this.dialogIcon = '';
+          this.successDlg.open();
+          this.getDeductibles();
+        }else{
+          this.deductiblesTable.loadingFlag = false;
+          this.dialogIcon = 'error';
+          this.successDlg.open();
+        }
+      });
+  }
+
+  setSelected(data){
+    if(data.selector == 'deductibles'){
+      this.passDataDeductibles.tableData = this.passDataDeductibles.tableData.filter(a=>a.showMG!=1);
+      for(var i = 0; i<data.data.length;i++){
+        this.passDataDeductibles.tableData.push(JSON.parse(JSON.stringify(this.passDataDeductibles.nData)));
+        this.passDataDeductibles.tableData[this.passDataDeductibles.tableData.length -1].deductibleTitle = data.data[i].deductibleTitle;
+        this.passDataDeductibles.tableData[this.passDataDeductibles.tableData.length -1].deductibleRt = data.data[i].deductibleRate;
+        this.passDataDeductibles.tableData[this.passDataDeductibles.tableData.length -1].deductibleAmt = data.data[i].deductibleAmt;
+        this.passDataDeductibles.tableData[this.passDataDeductibles.tableData.length -1].deductibleTxt = data.data[i].deductibleText;
+        this.passDataDeductibles.tableData[this.passDataDeductibles.tableData.length -1].edited = true;
+        this.passDataDeductibles.tableData[this.passDataDeductibles.tableData.length -1].deductibleCd = data.data[i].deductibleCd;
+        this.passDataDeductibles.tableData[this.passDataDeductibles.tableData.length - 1].showMG = 0;
+      }
+    }else if (data.selector == 'otherRates'){
+
+    }
+    this.deductiblesTable.refreshTable();
+  }
+
+  clickDeductiblesLOV(data){
+    if(data.key=="deductibleCd"){
+      this.lovCheckBox = true;
+      this.passLOVData.selector = 'deductibles';
+      this.passLOVData.lineCd = this.policyInfo.lineCd;
+      this.passLOVData.params = {
+        coverCd : 0,
+        endtCd: '0',
+        activeTag:'Y'
+      }
+      this.passLOVData.hide = this.passDataDeductibles.tableData.filter((a)=>{return !a.deleted}).map(a=>a.deductibleCd);
+    }
+    this.lov.openLOV();
+  }
+
+
 }

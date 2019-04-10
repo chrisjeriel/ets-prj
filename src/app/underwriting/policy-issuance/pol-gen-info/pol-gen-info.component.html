@@ -875,6 +875,7 @@
 			<div class="form-group col-sm">
 				<div class="col-md-12 text-center">
 					<div class="cust-btn-container">
+						<button type="button" class="cust-btn" (click)="showDeductiblesModal(deductibles)"><a>Deductibles</a></button>
 						<button type="button" class="cust-btn" (click)="pol($event)"><a>Cancel</a></button>
 						<button type="button" class="cust-btn"><a>Save</a></button>
 					</div>
@@ -1789,6 +1790,7 @@
 	<div class="form-group col-sm">
 		<div class="col-md-12 text-center">
 			<div class="cust-btn-container" style="margin-top: 10px;">
+				<button type="button" class="cust-btn" (click)="showDeductiblesModal(deductibles)"><a>Deductibles</a></button>
 				<button type="button" class="cust-btn" (click)="pol($event)"><a>Cancel</a></button>
 				<button type="button" class="cust-btn"><a>Save</a></button>
 			</div>
@@ -1826,3 +1828,20 @@
 		</div>
 	</ng-template>
 </ng-container>
+
+
+<!-- edit by paul -->
+<app-modal class="d-none" #deductiblesModal>
+  <div header>Deductibles</div>
+  <div body>
+    <app-cust-editable-non-datatable #deductiblesTable [passData]="passDataDeductibles" (clickLOV)="clickDeductiblesLOV($event)"></app-cust-editable-non-datatable>
+  </div>
+  <div footer>
+    <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+    <button class="cust-btn" type="button" (click)="saveDeductibles();"><a>Save</a></button>
+  </div>
+</app-modal>
+
+<app-lov #dedLov [passData]="passLOVData" (selectedData)="setSelected($event)" [lovCheckBox]="true"></app-lov>
+<app-sucess-dialog #dedSuccess [message]="dialogMsg" [icon]="dialogIcon" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<!-- end edit by paul -->
