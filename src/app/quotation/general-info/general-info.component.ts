@@ -580,7 +580,6 @@ export class GeneralInfoComponent implements OnInit {
 	}
 
 	prepareParam() {
-		console.log(this.genInfoData.cedingId);
 		var saveQuoteGeneralInfoParam = {
 			"savingType"    : this.savingType,
 			"approvedBy"	: this.genInfoData.approvedBy,
@@ -761,11 +760,7 @@ export class GeneralInfoComponent implements OnInit {
 
   		var entries = Object.entries(obj);
 
-		for(var [key, val] of entries) {
-			if(key === 'reinsurerId') {
-				console.log(key);
-				console.log(val);
-			}
+		for(var [key, val] of entries) {			
 			if((val === '' || val == null) && req.includes(key)){
 				return false;
 			}			
