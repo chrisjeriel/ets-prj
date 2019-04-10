@@ -84,6 +84,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     createDate: null,
     updateUser: null,
     updateDate: null,
+    showPolAlop: false,
     project: {
       projId: null,
       projDesc: null,
@@ -161,8 +162,10 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       this.policyId = params['policyId'];
       this.policyNo = params['policyNo'];
     });
-
+    this.checkPolCoverage();
+    console.log(this.policyInfo.showPolAlop);
     this.getPolGenInfo();
+    
   }
 
   ngOnDestroy() {
@@ -210,9 +213,38 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         policyNo: this.policyInfo.policyNo,
         riskName: this.policyInfo.project.riskName,
         insuredDesc: this.policyInfo.insuredDesc,
-        riskId: this.policyInfo.project.riskId
+        riskId: this.policyInfo.project.riskIdz,
+        showPolAlop: this.policyInfo.showPolAlop
       });    
-    }
+  }
+
+  checkPolCoverage() {
+    this.underwritingService.getUWCoverageInfos(null, this.policyId).subscribe((data:any)=>{
+      if(data.policy !== null){
+        let alopFlag = false;
+        if(data.policy.project !== null){
+          for(let sectionCover of data.policy.project.coverage.sectionCovers){
+                if(sectionCover.section == 'III'){
+                    alopFlag = true;
+                   break;
+                 }
+          }
+        }
+            
+               this.policyInfo.showPolAlop = alopFlag;
+      }
+
+      this.emitPolicyInfoId.emit({
+        policyId: event,
+        policyNo: this.policyInfo.policyNo,
+        riskName: this.policyInfo.project.riskName,
+        insuredDesc: this.policyInfo.insuredDesc,
+        riskId: this.policyInfo.project.riskIdz,
+        showPolAlop: this.policyInfo.showPolAlop
+      });    
+      
+    });
+  }
 
   updateExpiryDate() {
     var d = new Date(this.policyInfo.inceptDate);
