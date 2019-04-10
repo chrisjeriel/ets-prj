@@ -23,6 +23,7 @@ export class PolCoverageComponent implements OnInit {
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   @ViewChild('catPerils') catPerilstable: CustEditableNonDatatableComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+  @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   private underwritingCoverageInfo: UnderwritingCoverageInfo;
   tableData: any[] = [];
   tableData2: any[] = [];
@@ -45,6 +46,8 @@ export class PolCoverageComponent implements OnInit {
   sectionIIPrem:number = 0;
   sectionIIISi:number = 0;
   sectionIIIPrem:number = 0;
+  totalPrem:number = 0;
+  totalSi: number = 0;
   editedData: any[] = [];
   deletedData: any[] = [];
   catPerilData: any = {
@@ -59,10 +62,11 @@ export class PolCoverageComponent implements OnInit {
                     "text", "text", "text", "currency", "percent", "currency", "checkbox", "checkbox"
                    ],
         checkFlag:true,
-        pageLength: 10,
+        pageLength: 'unli',
         searchFlag:true,
         magnifyingGlass: ['coverCode'],
         widths:[1,1,228,200,75,1,1,1],
+        uneditable:[true,true,true,false,false,false,false,false],
         keys:['section','bulletNo','description','sumInsured','premRt','premAmt','discountTag','addSi']
     };
 
@@ -163,7 +167,7 @@ export class PolCoverageComponent implements OnInit {
   lovRowData:any;
   lovCheckBox:boolean = false;
   dialogIcon:string = '';
-  policyId: any = 20;
+  policyId: any;
   projId: any;
   riskId:any;
   dialogMessage:string;
@@ -261,6 +265,10 @@ export class PolCoverageComponent implements OnInit {
   comtotalSi:number = 0;
   comtotalPrem:number = 0;
   policyIdAlt:any;
+  integerFlag:boolean = false;
+  @Input() policyInfo:any = {};
+  disabledFlag: boolean = true;
+  errorFlag: boolean = false;
 
   constructor(private underwritingservice: UnderwritingService, private titleService: Title, private modalService: NgbModal,
                 private route: ActivatedRoute, private ns: NotesService,  private router: Router) { }
@@ -268,6 +276,7 @@ export class PolCoverageComponent implements OnInit {
 
   ngOnInit() {
     this.titleService.setTitle("Pol | Coverage");
+    this.policyId = this.policyInfo.policyId;
     if (!this.alteration) {
       
       this.getPolCoverage();
@@ -320,7 +329,7 @@ export class PolCoverageComponent implements OnInit {
   }
 
   getPolCoverageAlt(){
-    this.underwritingservice.getUWCoverageInfos(null,this.policyId).subscribe((data:any) => {
+    this.underwritingservice.getUWCoverageInfos(null,'40').subscribe((data:any) => {
       console.log(data)
       this.passData.tableData = [];  
       this.prevtotalSi = 0;
@@ -396,7 +405,7 @@ export class PolCoverageComponent implements OnInit {
         this.passData2.tableData[2].comAmt = this.prevsectionIIIPrem;
 
         this.getEditable();
-        this.focusBlur();
+        //this.focusBlur();
     });
   }
 
@@ -409,7 +418,7 @@ export class PolCoverageComponent implements OnInit {
           this.riskId = data.policy.project.riskId;
           this.coverageData = data.policy.project.coverage;
           this.coverageData.remarks = this.coverageData.remarks == null ? '':this.coverageData.remarks;
-          this.coverageData.pctShare = (this.coverageData.totalSi/this.coverageData.totalValue*100);
+          //this.coverageData.pctShare = this.coverageData.totalValue == 0 ? 0:(this.coverageData.totalSi/this.coverageData.totalValue*100);
 
           this.sectionISi = 0;
           this.sectionIPrem = 0;
@@ -456,9 +465,8 @@ export class PolCoverageComponent implements OnInit {
               this.coverageData.sectionIPrem = this.sectionIPrem;
               this.coverageData.sectionIIPrem = this.sectionIIPrem;
               this.coverageData.sectionIIIPrem = this.sectionIIIPrem;
-           setTimeout(() => {
-             this.focusBlur();
-           }, 0)
+           
+             //this.focusBlur();
       });
   }
 
@@ -469,6 +477,7 @@ export class PolCoverageComponent implements OnInit {
   showDeductiblesModal(deductibles){
     // setTimeout(()=>{this.getDeductibles();},0);
     // this.modalService.open(deductibles, { centered: true, backdrop: 'static', windowClass: "modal-size" });
+    console.log(deductibles)
     this.getDeductibles();
     this.deductiblesModal.openNoClose();
   }
@@ -608,6 +617,8 @@ export class PolCoverageComponent implements OnInit {
     this.sectionIIPrem = 0;
     this.sectionIIISi = 0;
     this.sectionIIIPrem = 0;
+    this.totalSi = 0;
+    this.totalPrem =0;
     for(var i=0; i< this.passDataSectionCover.tableData.length;i++){
        if(this.passDataSectionCover.tableData[i].addSi == 'Y'){
          if(this.passDataSectionCover.tableData[i].section == 'I'){
@@ -631,6 +642,8 @@ export class PolCoverageComponent implements OnInit {
                this.sectionIIIPrem += this.passDataSectionCover.tableData[i].premAmt;
            }*/
        }
+       this.totalPrem += this.passDataSectionCover.tableData [i].premAmt;
+       this.totalSi += this.passDataSectionCover.tableData [i].sumInsured;
        this.passDataSectionCover.tableData[i].premAmt = this.passDataSectionCover.tableData[i].sumInsured * (this.passDataSectionCover.tableData[i].premRt /100 )
     }
 
@@ -645,8 +658,10 @@ export class PolCoverageComponent implements OnInit {
     this.passDataTotalPerSection.tableData[2].premium = this.sectionIIIPrem;
 
     this.coverageData.pctShare = (this.coverageData.totalSi/this.coverageData.totalValue*100);
-    this.coverageData.totalSi = this.sectionISi + this.sectionIISi + this.sectionIIISi;
-    this.coverageData.totalPrem = this.sectionIPrem + this.sectionIIPrem + this.sectionIIIPrem;
+    /*this.coverageData.totalSi = this.sectionISi + this.sectionIISi + this.sectionIIISi;
+    this.coverageData.totalPrem = this.sectionIPrem + this.sectionIIPrem + this.sectionIIIPrem;*/
+    this.coverageData.totalSi = this.totalSi;
+    this.coverageData.totalPrem = this.totalPrem;
     this.coverageData.sectionISi = this.sectionISi;
     this.coverageData.sectionIISi = this.sectionIISi;
     this.coverageData.sectionIIISi = this.sectionIIISi;
@@ -654,11 +669,18 @@ export class PolCoverageComponent implements OnInit {
     this.coverageData.sectionIIPrem = this.sectionIIPrem;
     this.coverageData.sectionIIIPrem = this.sectionIIIPrem;
 
-    setTimeout(() => {
+/*    setTimeout(() => {
       this.focusBlur();
-    }, 0)
+    }, 0)*/
   }
 
+  onrowClick(data){
+    if(data == null){
+      this.disabledFlag = true;
+    }else{
+      this.disabledFlag = false;
+    }
+  }
 
   prepareData(){
     this.editedData = [];
@@ -748,11 +770,25 @@ export class PolCoverageComponent implements OnInit {
   }
 
   focusBlur(){
-    //setTimeout(() => {$('.req').focus();$('.req').blur()},0)
+    setTimeout(() => {$('.req').focus();$('.req').blur()},0)
   }
 
   onClickSave(){
-    $('#confirm-save #modalBtn2').trigger('click');
+    for( var i= 0; i< this.passDataSectionCover.tableData.length;i++){
+      if(this.passDataSectionCover.tableData[i].sumInsured == 0 && this.passDataSectionCover.tableData[i].addSi == 'Y'){
+        this.errorFlag = true;
+      }
+    }
+
+    if(this.errorFlag){
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'Please check Sum Insured.';
+      this.successDiag.open();
+      this.errorFlag = false;
+    }else {
+      $('#confirm-save #modalBtn2').trigger('click');
+    }
+    
   }
 
 
@@ -788,16 +824,14 @@ export class PolCoverageComponent implements OnInit {
         this.passData.tableData[j].comRate             = this.passData.tableData[j].premRt
         this.passData.tableData[j].comPremium          = isNaN((this.passData.tableData[j].altSumInsured && this.passData.tableData[j].altRate)) ? this.passData.tableData[j].premAmt : this.passData.tableData[j].premAmt  + this.passData.tableData[j].altPremium;
       }else{
-        this.passData.tableData[j].altPremium        = isNaN(this.passData.tableData[j].altRate) ? 0:this.passData.tableData[j].altSumInsured * (this.passData.tableData[j].altRate / 100);
+        this.passData.tableData[j].altPremium        = isNaN(this.passData.tableData[j].altRate) ? null:this.passData.tableData[j].altSumInsured * (this.passData.tableData[j].altRate / 100);
         
         if(this.passData.tableData[j].section == 'I' && this.passData.tableData[j].addSi == 'Y'){
           this.prevsectionISi                         += this.passData.tableData[j].sumInsured;
           this.prevsectionIPrem                       += this.passData.tableData[j].premAmt;
           this.altsectionISi                          += isNaN(this.passData.tableData[j].altSumInsured) ? 0: this.passData.tableData[j].altSumInsured;
-          
           this.altsectionIPrem                        += isNaN(this.passData.tableData[j].altPremium) ? 0: this.passData.tableData[j].altPremium;
           
-
           this.passData.tableData[j].comSumInsured     = isNaN(this.altsectionISi) ? 0:this.prevsectionISi + this.altsectionISi;
           this.passData.tableData[j].comRate           = isNaN(this.passData.tableData[j].altRate) ? this.passData.tableData[j].premRt: this.passData.tableData[j].altRate;
           this.passData.tableData[j].comPremium        = isNaN((this.passData.tableData[j].altRate && this.passData.tableData[j].altPremium)) ? this.prevsectionIPrem :  this.prevsectionIPrem + this.altsectionIPrem;
@@ -817,7 +851,6 @@ export class PolCoverageComponent implements OnInit {
           
           this.comsectionIISi                        += this.passData.tableData[j].comSumInsured;
           this.comsectionIIPrem                      += this.passData.tableData[j].comPremium;
-          
         }
 
         if(this.passData.tableData[j].section == 'III' && this.passData.tableData[j].addSi == 'Y'){
@@ -832,7 +865,6 @@ export class PolCoverageComponent implements OnInit {
           
           this.comsectionIIISi                       += this.passData.tableData[j].comSumInsured;
           this.comsectionIIIPrem                     += this.passData.tableData[j].comPremium;
-          
         }
       }
     }
@@ -870,7 +902,7 @@ export class PolCoverageComponent implements OnInit {
     this.altCoverageData.comtotalSi       = this.comtotalSi;
     this.altCoverageData.comtotalPrem     = this.comtotalPrem;
 
-    setTimeout(() => this.focusBlur(),0);
+    //setTimeout(() => this.focusBlur(),0);
   }
 
   prepareAlterationSave(){

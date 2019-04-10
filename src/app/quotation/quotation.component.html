@@ -14,10 +14,10 @@
 				<div>Coverage</div>
 			</ng-template>
 			<ng-template ngbTabContent>
-				<app-coverage [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag" (enblQuoteOpTab)="enblQuoteOpTab=$event"></app-coverage>
+				<app-coverage [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag" (enblEndtTab)="enblEndtTab=$event"></app-coverage>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab [disabled]="quoteInfo.quoteId == ''|| false">
+		<ngb-tab [disabled]="quoteInfo.quoteId == '' || !enblEndtTab">
 			<ng-template ngbTabTitle>
 				<div>Quote Option</div>
 			</ng-template>
@@ -97,8 +97,8 @@
 													<option>CPI</option>
 													<option>PMMSC-Admin</option>
 												</select> -->
-												<select class="form-control form-control-sm cust-sm col-sm-8">
-			                                        <option *ngFor="let approver of approverList; let i = index" [value]="approver.userId">{{ approver.userId + ' - ' + approver.userName }}</option>
+												<select class="form-control form-control-sm cust-sm col-sm-8" [(ngModel)]="approver">
+			                                        <option *ngFor="let approver of approverList; let i = index" [value]="approver.userId" >{{ approver.userId + ' - ' + approver.userName }}</option>
 			                                    </select>
 												<button class="cust" (click)="approveQuotation();">{{ approveText }}</button>
 											</div>
