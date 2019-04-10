@@ -271,12 +271,12 @@ export class QuotationComponent implements OnInit {
         this.quotationService.updateQuoteStatus(this.quoteInfo.quoteId, 'A', this.currentUserId).subscribe((data)=>{
             if(data['returnCode'] == 0) {
               console.log("Status Failed to Update.");
-              this.dialogIcon = "error";
+              this.dialogIcon = "error-message";
               this.dialogMessage = "Status failed for Approval";
               $('#successModalBtn').trigger('click');
             } else {
               this.dialogMessage = "Status Updated";
-              this.dialogIcon = "success";
+              this.dialogIcon = "success-message";
               $('#successModalBtn').trigger('click');
               console.log("Status Updated");
             }
