@@ -384,7 +384,9 @@ clickDeductiblesLOV(data,from){
       endtCd: '0',
       activeTag:'Y'
     }
-    $('#lov #modalBtn2').trigger('click');
+    setTimeout(() => {
+      $('#lov #modalBtn2').trigger('click');
+    });
     this.deductiblesLOVRow = data.index;
 }
 

@@ -45,10 +45,8 @@ export class AppComponent  {
     private _toggleCloseOnClickOutside(): void {
         this._closeOnClickOutside = !this._closeOnClickOutside;
     }
-
     content: any;
     theme : any;
-
     constructor(
      private router: Router,
      private userService: UserService,

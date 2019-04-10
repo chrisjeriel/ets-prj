@@ -227,11 +227,11 @@ export class ReadyForPrintingComponent implements OnInit {
 
 
   onRowClick(event){
-    /*if (this.isEmptyObject(event)){
+    if (this.isEmptyObject(event)){
          this.btnDisabled = true;
        } else {
          this.btnDisabled = false;
-       }*/
+       }
   }
 
   prepareData(){
