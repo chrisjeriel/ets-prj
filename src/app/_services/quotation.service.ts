@@ -200,7 +200,7 @@ export class QuotationService {
     getSelectedQuotationHoldCoverInfo(quotationNo) {
         const params = new HttpParams()
              .set('quotationNo',quotationNo)
-             .set('status','I')
+             .set('status','')
              .set('cedingName','')
              .set('holdCoverNo','')
              .set('riskName','')
