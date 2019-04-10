@@ -256,7 +256,7 @@ export class QuotationComponent implements OnInit {
     approveQuotation() {
       if (this.approveText.toLowerCase() == "Approve".toLowerCase()) {
         console.log("Call update quote status.");
-        this.quotationService.updateQuoteStatus(this.quoteInfo.quoteId, '97', this.currentUserId).subscribe((data)=>{
+        this.quotationService.updateQuoteStatus(this.quoteInfo.quoteId, 'A', this.currentUserId).subscribe((data)=>{
             if(data['returnCode'] == 0) {
               /*this.dialogMessage = data['errorList'][0].errorMessage;
               this.dialogIcon = "error";
@@ -267,7 +267,7 @@ export class QuotationComponent implements OnInit {
             }
         })
       } else {
-        this.quotationService.updateQuoteStatus(this.quoteInfo.quoteId, '96', this.approver).subscribe((data)=>{
+        this.quotationService.updateQuoteStatus(this.quoteInfo.quoteId, 'P', this.approver).subscribe((data)=>{
             if(data['returnCode'] == 0) {
               /*this.dialogMessage = data['errorList'][0].errorMessage;
               this.dialogIcon = "error";
