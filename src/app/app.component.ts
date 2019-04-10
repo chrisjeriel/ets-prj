@@ -1,4 +1,4 @@
-import { Component, Inject,  ViewChild} from '@angular/core';
+import { Component, Inject,  ViewChild,} from '@angular/core';
 import { Router } from '@angular/router';
 import { ResizeEvent } from 'angular-resizable-element';
 import { HostListener, ElementRef } from '@angular/core';
@@ -45,10 +45,8 @@ export class AppComponent  {
     private _toggleCloseOnClickOutside(): void {
         this._closeOnClickOutside = !this._closeOnClickOutside;
     }
-
     content: any;
     theme : any;
-
     constructor(
      private router: Router,
      private userService: UserService,
@@ -177,10 +175,10 @@ export class AppComponent  {
                  this.style.setProperty('background', color1, 'important');
             });
             $('legend.scheduler-border').css({"color":color2});
-            $(' aside.ng-sidebar ').css({"background-color":color3});
+            $(' aside.ng-sidebar ').css({"background-color":color3});    
             $('.nav-link').css({"color":color2});
             $('.nav-link.active ').css({"color":"#495057"});
-            $('nav-link .disabled').css({"color":"#6c757d"});  
+            $('.nav-link.disabled').css({"color":"#6c757d"});  
             $('.ngx-pagination .current').css({"background":'linear-gradient(to bottom,'+color2+' 0%, '+color3+' 100%)'});
             $('.cust').css({"background":'linear-gradient(to bottom,'+color2+' 0%, '+color3+' 100%)'});
             $('.cust-export').css({"background":'linear-gradient(to bottom,'+color2+' 0%, '+color3+' 100%)'});   
@@ -224,9 +222,7 @@ export class AppComponent  {
 
     @HostListener('window:popstate', ['$event'])
     onPopState(event) {
-        setTimeout(() => {    
-               this.changeTheme(this.theme);
-        });
+        this.changeTheme(this.theme);
     }
 
 }
