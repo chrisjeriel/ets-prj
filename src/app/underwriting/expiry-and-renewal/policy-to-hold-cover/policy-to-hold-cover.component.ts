@@ -352,6 +352,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 
   	policySearchParams(data:string, key:string){
   		this.isType = true;
+
   		if(key === 'lineCd'){
   			this.tempPolNo[0] = data.toUpperCase();
   		}else if(key === 'year'){
@@ -368,7 +369,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
   	}
 
   	checkPolParams(){
-  		if(this.policyInfo.policyNo.length === 0){
+  		//if(this.policyInfo.policyNo.length === 0){
 	  		if(this.tempPolNo[0].length !== 0 &&
 	  		   this.tempPolNo[1].length !== 0 &&
 	  		   this.tempPolNo[2].length !== 0 &&
@@ -387,7 +388,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 				this.policyInfo.statusDesc = '';
 	  			console.log('not filled');
 	  		}
-  		}
+  		//}
   	}
 
 }
