@@ -86,8 +86,18 @@ export class MtnAttentionComponent implements OnInit {
            this.underwritingService.getCedingCompanyLOV(this.cedingId).subscribe((data:any) => {
              console.log(data);
                        for (var i = 0; i < data.cedingCompany.length; i++) {
-                           //this.passDataAttention.tableData.push(new CedingCompany( data.cedingCompany[i].cedingRepresentative.defaultTag,  data.cedingCompany[i].cedingRepresentative.designation, data.cedingCompany[i].cedingRepresentative.firstName, data.cedingCompany[i].cedingRepresentative.middleInitial, data.cedingCompany[i].cedingRepresentative.lastName, data.cedingCompany[i].cedingRepresentative.position, data.cedingCompany[i].cedingRepresentative.department, data.cedingCompany[i].cedingRepresentative.contactNo, data.cedingCompany[i].cedingRepresentative.eSignature));
-                           this.passDataAttention.tableData.push(data.cedingCompany[i]);
+                        /*   this.passDataAttention.tableData.push(new CedingCompany( data.cedingCompany[i].cedingRepresentative.defaultTag,  data.cedingCompany[i].cedingRepresentative.designation, data.cedingCompany[i].cedingRepresentative.firstName, data.cedingCompany[i].cedingRepresentative.middleInitial, data.cedingCompany[i].cedingRepresentative.lastName, data.cedingCompany[i].cedingRepresentative.position, data.cedingCompany[i].cedingRepresentative.department, data.cedingCompany[i].cedingRepresentative.contactNo, data.cedingCompany[i].cedingRepresentative.eSignature));*/
+                           this.passDataAttention.tableData.push({
+                                                                  designation:data.cedingCompany[i].cedingRepresentative.designation,
+                                                                  firstName: data.cedingCompany[i].cedingRepresentative.firstName,
+                                                                  middleInitial: data.cedingCompany[i].cedingRepresentative.middleInitial,
+                                                                  lastName: data.cedingCompany[i].cedingRepresentative.lastName,
+                                                                  position: data.cedingCompany[i].cedingRepresentative.position,
+                                                                  department: data.cedingCompany[i].cedingRepresentative.department,
+                                                                  contactNo: data.cedingCompany[i].cedingRepresentative.contactNo,
+                                                                  eSignature: data.cedingCompany[i].cedingRepresentative.eSignature
+
+                                                                });
 
                        }
                        this.table.refreshTable();
