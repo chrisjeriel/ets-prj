@@ -80,7 +80,8 @@ export class PolicyToHoldCoverComponent implements OnInit {
 		policyNo: '',
 		cedingName: '',
 		insuredDesc: '',
-		riskName: ''
+		riskName: '',
+		totalSi: 0
 	}
 
 	dialogIcon: string = '';
@@ -112,7 +113,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 		this.us.retrievePolHoldCover(policyId, '').subscribe((data: any)=>{
 			console.log(data);
 			for(let rec of data.policy.holdCoverList){
-				if(rec.status !== 'X'){
+				if(rec.status !== '6' || rec.status !== '5'){
 					this.polHoldCoverParams.policyId				= rec.policyId;
 					this.polHoldCoverParams.holdCovId				= rec.holdCovId;
 					this.polHoldCoverParams.lineCd					= rec.lineCd;
@@ -143,7 +144,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 			console.log(this.polHoldCoverParams);
 			this.isIncomplete = false;
 			this.isForViewing = false;
-			if(this.polHoldCoverParams.status === 'R'){
+			if(this.polHoldCoverParams.status === '2'){
 				$('#modificationModal > #modalBtn').trigger('click');
 			}
 		});
@@ -171,7 +172,8 @@ export class PolicyToHoldCoverComponent implements OnInit {
 							cedingName: rec.cedingName,
 							insuredDesc: rec.insuredDesc,
 							riskName: rec.project.riskName,
-							statusDesc: rec.statusDesc
+							statusDesc: rec.statusDesc,
+							totalSi: rec.project.coverage.totalSi
 						});
 					}
 					this.policyListingData.tableData = this.policyListingData.tableData.filter(a=> {return a.statusDesc === 'Expired' || a.statusDesc === 'On Hold Cover'});
@@ -215,17 +217,23 @@ export class PolicyToHoldCoverComponent implements OnInit {
 		console.log(this.polHoldCoverParams);
 		this.us.savePolHoldCover(this.polHoldCoverParams).subscribe((data: any)=>{
 			console.log(data);
-			this.holdCoverNo = data.polHoldCoverNo;
-			this.polHoldCoverParams.holdCovId = data.polHoldCoverId;
-			//get seq and rev no
-			let generatedNum: string[] = data.polHoldCoverNo.split('-');
-			this.polHoldCoverParams.holdCovSeqNo = parseInt(generatedNum[3]).toString();
-			this.polHoldCoverParams.holdCovRevNo = parseInt(generatedNum[4]).toString();
-			this.retrievePolHoldCov(this.policyInfo.policyId, this.holdCoverNo);
-			this.dialogIcon = '';
-			this.dialogMessage = '';
-			$('app-sucess-dialog #modalBtn').trigger('click');
-			this.form.control.markAsPristine();
+			if(data.returnCode === 0){
+				this.dialogIcon = 'error';
+				this.dialogMessage = 'An error has occured.';
+				$('app-sucess-dialog #modalBtn').trigger('click');
+			}else{
+				this.holdCoverNo = data.polHoldCoverNo;
+				this.polHoldCoverParams.holdCovId = data.polHoldCoverId;
+				//get seq and rev no
+				let generatedNum: string[] = data.polHoldCoverNo.split('-');
+				this.polHoldCoverParams.holdCovSeqNo = parseInt(generatedNum[3]).toString();
+				this.polHoldCoverParams.holdCovRevNo = parseInt(generatedNum[4]).toString();
+				this.retrievePolHoldCov(this.policyInfo.policyId, this.holdCoverNo);
+				this.dialogIcon = '';
+				this.dialogMessage = '';
+				$('app-sucess-dialog #modalBtn').trigger('click');
+				this.form.control.markAsPristine();
+			}
 		});
 	}
 
