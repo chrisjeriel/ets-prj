@@ -91,7 +91,7 @@
                 </div>
                 <fieldset class="scheduler-border"  style="padding-top: 5px !important;">
                 	<legend class="scheduler-border">Policy Details</legend>
-                	<app-cust-editable-non-datatable #alterationTable [passData]="passData"></app-cust-editable-non-datatable>
+                	<app-cust-editable-non-datatable #alterationTable [passData]="passData" (newClick)="rowLick($event)"></app-cust-editable-non-datatable>
                 </fieldset>
                 <div class="form-row">
                     <div class="form-group col-sm">

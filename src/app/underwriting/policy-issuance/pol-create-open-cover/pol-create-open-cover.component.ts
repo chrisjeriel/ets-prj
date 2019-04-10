@@ -59,6 +59,7 @@ export class PolCreateOpenCoverComponent implements OnInit {
 
     quotationList: any[] = [];
     splitQuoteNo: string[] = [];
+    tempQuoteNo: string[] = ['', '', '', '', ''];
     
     openPolicyInfo: any = {
         policyIdOc: 0,
@@ -225,5 +226,44 @@ export class PolCreateOpenCoverComponent implements OnInit {
                                                                 openPolNo: this.openPolicyInfo.openPolNo
                                                            }
                              ], { skipLocationChange: true });
+    }
+
+    searchQuoteNoFields(data: string, key: string){
+      if(key === 'lineCd'){
+        this.tempQuoteNo[0] = data.toUpperCase();
+      }else if(key === 'year'){
+        this.tempQuoteNo[1] = data;
+      }else if(key === 'seqNo'){
+        this.tempQuoteNo[2] = data;
+      }else if(key === 'revNo'){
+        this.tempQuoteNo[3] = data;
+      }else if(key === 'cedingId'){
+        this.tempQuoteNo[4] = data;
+      }
+    }
+
+    clearFields(){
+        this.quoteData.quoteId = 0;
+        this.quoteData.quoteNo = '';
+        this.quoteData.cedingName = '';
+        this.quoteData.insuredDesc = '';
+        this.quoteData.riskName = '';
+        this.inceptDate.date = '';
+        this.inceptDate.time = '';
+        this.expiryDate.date = '';
+        this.expiryDate.time = '';
+    }
+
+    checkQuoteNoParams(){
+      console.log(this.tempQuoteNo);
+      if(this.tempQuoteNo[0].length !== 0 &&
+         this.tempQuoteNo[1].length !== 0 &&
+         this.tempQuoteNo[2].length !== 0 &&
+         this.tempQuoteNo[3].length !== 0 &&
+         this.tempQuoteNo[4].length !== 0){
+
+      }else{
+        this.clearFields();
+      }
     }
 }

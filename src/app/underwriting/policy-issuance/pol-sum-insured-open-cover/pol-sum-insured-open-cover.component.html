@@ -69,15 +69,15 @@
 						<div class="input-group ig-row" >
 							<div class="col-sm-2"></div>
 							<label class="form-control-sm col-sm-2">Share(%)</label>
-                            <input [disabled]="inqFlag" type="text" class="form-control form-control-sm" [(ngModel)]="coverageInfo.pctShare" name="pctShare" appOtherRates>
+                            <input [readonly]="inqFlag" type="text" class="form-control form-control-sm" [(ngModel)]="coverageInfo.pctShare" name="pctShare" appOtherRates>
                             <label class="form-control-sm col-sm-1">PML(%)</label>
-                            <input [disabled]="inqFlag" type="text" class="form-control form-control-sm" [(ngModel)]="coverageInfo.pctPml" name="pctPml" appOtherRates>
+                            <input [readonly]="inqFlag" type="text" class="form-control form-control-sm" [(ngModel)]="coverageInfo.pctPml" name="pctPml" appOtherRates>
                             <div class="col-sm-2"></div> 
 						</div>
 						<div class="input-group ig-row">
 							<div class="col-sm-2"></div>
 	                        <label class="form-control-sm col-sm-2">100% Value</label>
-	                        <input [disabled]="inqFlag" type="text" class="form-control form-control-sm" [(ngModel)]="coverageInfo.totalValue" name="totalValue" appCurrency (ngModelChange)="cmptShrPct($event)">
+	                        <input [readonly]="inqFlag" type="text" class="form-control form-control-sm" [(ngModel)]="coverageInfo.totalValue" name="totalValue" appCurrency (ngModelChange)="cmptShrPct($event)">
 	                        <div class="col-sm-2"></div>
                     	</div>
 					</div>

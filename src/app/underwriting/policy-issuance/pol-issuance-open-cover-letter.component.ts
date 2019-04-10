@@ -17,7 +17,6 @@ export class PolIssuanceOpenCoverLetterComponent implements OnInit {
   	this.route.params.subscribe(a=>{
   		this.policyInfo = a;
       this.inqFlag = a['inqFlag'] == 'true';
-      console.log(this.inqFlag == 'true')
   	})    
   }
 

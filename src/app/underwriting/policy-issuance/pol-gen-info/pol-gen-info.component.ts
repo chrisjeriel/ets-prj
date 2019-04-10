@@ -159,7 +159,6 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     });
 
     this.getPolGenInfo();
-
   }
 
   ngOnDestroy() {
@@ -171,7 +170,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   }
 
   toggleRadioBtnSet() {
-    $('#radioBtnSet').css('backgroundColor', (!this.decChecked) ? '#ffffff' : '#e9ecef');
+    $('#radioBtnSet').css('backgroundColor', (this.policyInfo.declarationTag === 'Y') ? '#ffffff' : '#f5f5f5');
   }
 
   getPolGenInfo() {
@@ -180,10 +179,10 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.policyInfo = data.policy;
         this.policyInfo.inceptDate = this.ns.toDateTimeString(this.policyInfo.inceptDate);
         this.policyInfo.expiryDate = this.ns.toDateTimeString(this.policyInfo.expiryDate);
-        this.policyInfo.lapseFrom = this.ns.toDateTimeString(this.policyInfo.lapseFrom);
-        this.policyInfo.lapseTo = this.ns.toDateTimeString(this.policyInfo.lapseTo);
-        this.policyInfo.maintenanceFrom = this.ns.toDateTimeString(this.policyInfo.maintenanceFrom);
-        this.policyInfo.maintenanceTo = this.ns.toDateTimeString(this.policyInfo.maintenanceTo);
+        this.policyInfo.lapseFrom = this.policyInfo.lapseFrom == null ? '' : this.ns.toDateTimeString(this.policyInfo.lapseFrom);
+        this.policyInfo.lapseTo = this.policyInfo.lapseTo == null ? '' : this.ns.toDateTimeString(this.policyInfo.lapseTo);
+        this.policyInfo.maintenanceFrom = this.policyInfo.maintenanceFrom == null ? '' : this.ns.toDateTimeString(this.policyInfo.maintenanceFrom);
+        this.policyInfo.maintenanceTo = this.policyInfo.maintenanceTo == null ? '' : this.ns.toDateTimeString(this.policyInfo.maintenanceTo);
         this.policyInfo.issueDate = this.ns.toDateTimeString(this.policyInfo.issueDate);
         this.policyInfo.effDate = this.ns.toDateTimeString(this.policyInfo.effDate);
         this.policyInfo.distDate = this.ns.toDateTimeString(this.policyInfo.distDate);
@@ -191,6 +190,12 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.policyInfo.createDate = this.ns.toDateTimeString(this.policyInfo.createDate);
         this.policyInfo.updateDate = this.ns.toDateTimeString(this.policyInfo.updateDate);
         this.checkPolIdF(this.policyInfo.policyId);
+        this.toggleRadioBtnSet();
+
+        setTimeout(() => {
+          $('input[appCurrencyRate]').focus();
+          $('input[appCurrencyRate]').blur();
+        },0) 
       }
     });
   }
@@ -205,4 +210,10 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       });    
     }
 
+  updateExpiryDate() {
+    var d = new Date(this.policyInfo.inceptDate);
+    d.setFullYear(d.getFullYear() + 1);
+
+    this.policyInfo.expiryDate = this.ns.toDateTimeString(d);
+  }
 }
