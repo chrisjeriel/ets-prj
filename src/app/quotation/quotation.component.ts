@@ -164,6 +164,19 @@ export class QuotationComponent implements OnInit {
 	  			this.printPDF(this.selectedReport,this.quoteInfo.quoteId);
 	  		    this.modalService.dismissAll();
 	  		}
+
+        console.log(this.quoteInfo.status)
+        if(this.quoteInfo.status == 'A'){
+          this.quotationService.updateQuoteStatus(this.quoteInfo.quoteId, '3', this.currentUserId).subscribe((data)=>{
+            if(data['returnCode'] == 0) {
+              console.log("Status Failed to Update.");
+            } else {
+              console.log("Status Released");
+            }
+          });
+        }
+        
+
   	}
 
     showPrintDialog(event){
@@ -255,24 +268,33 @@ export class QuotationComponent implements OnInit {
     approveQuotation() {
       if (this.approveText.toLowerCase() == "Approve".toLowerCase()) {
         console.log("Call update quote status.");
-        this.quotationService.updateQuoteStatus(this.quoteInfo.quoteId, '97', this.currentUserId).subscribe((data)=>{
+        this.quotationService.updateQuoteStatus(this.quoteInfo.quoteId, 'A', this.currentUserId).subscribe((data)=>{
             if(data['returnCode'] == 0) {
-              /*this.dialogMessage = data['errorList'][0].errorMessage;
-              this.dialogIcon = "error";
-              $('#quote-option #successModalBtn').trigger('click');*/
               console.log("Status Failed to Update.");
+              this.dialogIcon = "error";
+              this.dialogMessage = "Status failed for Approval";
+              $('#successModalBtn').trigger('click');
             } else {
+              this.dialogMessage = "Status Updated";
+              this.dialogIcon = "success";
+              $('#successModalBtn').trigger('click');
               console.log("Status Updated");
             }
         })
       } else {
-        this.quotationService.updateQuoteStatus(this.quoteInfo.quoteId, '96', this.approver).subscribe((data)=>{
+        this.quotationService.updateQuoteStatus(this.quoteInfo.quoteId, 'P', this.approver).subscribe((data)=>{
             if(data['returnCode'] == 0) {
               /*this.dialogMessage = data['errorList'][0].errorMessage;
               this.dialogIcon = "error";
               $('#quote-option #successModalBtn').trigger('click');*/
               console.log("Status failed forApproval");
+              this.dialogIcon = "error";
+              this.dialogMessage = "Status failed for Approval";
+              $('#successModalBtn').trigger('click');
             } else {
+              this.dialogMessage = "Status Updated";
+              this.dialogIcon = "success";
+              $('#successModalBtn').trigger('click');
               console.log("Status For Approval .");
             }
         })

@@ -186,7 +186,7 @@
 	<app-confirm-leave></app-confirm-leave>
 </ng-template>
 
-
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 <!-- <<<<<<< HEAD
 <ng-template #confirmLeave>
 	<app-confirm-leave></app-confirm-leave>
