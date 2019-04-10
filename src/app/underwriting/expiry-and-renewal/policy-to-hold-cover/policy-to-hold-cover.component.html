@@ -158,7 +158,7 @@
                             <div class="cust-btn-container">
                                 <button type="button" class="cust-btn" [disabled]="statusDesc === '' || statusDesc === 'Converted'" [class.cust-btn-disabled]="statusDesc === '' || statusDesc === 'Converted'" (click)="onClickCancel();"><a>Cancel Hold Cover</a></button>
                                 <button type="button" class="cust-btn" [disabled]="statusDesc === 'Released' || statusDesc === ''" [class.cust-btn-disabled]="statusDesc === 'Released' || statusDesc === ''" (click)="test(content)"><a>Approval</a></button>
-                                <button type="button" class="cust-btn" (click)="onClickSaveBtn()" [disabled]="statusDesc !== 'Released'" [class.cust-btn-disabled]="statusDesc !== 'Released'"><a>Save</a></button>
+                                <button type="button" class="cust-btn" (click)="onClickSaveBtn()" [disabled]="statusDesc === 'Released'" [class.cust-btn-disabled]="statusDesc === 'Released'"><a>Save</a></button>
                             </div>
                         </div>
                     </div>
