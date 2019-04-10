@@ -91,10 +91,15 @@
         top: 0;
         left: 0;
         padding: 12% 20%;
+        background-image:url('app/resources/images/login-bg2x.jpg');
+        background-size:  100% 100%;
+        background-repeat: no-repeat;
     }
 
     .login-panel {
         /*border: 1px solid black;*/
+        background-color: white;
+        border: 1px solid black;
     }
 
     form div label {
@@ -141,8 +146,8 @@
 </div> -->
 <div class="login-main">
     <div class="login-panel">
-        <div class="row">
-            <div class="col-sm-8" style="border: 1px solid black; padding: 10% 20%;">
+        <div class="row" style="margin: 0px;">
+            <div class="col-sm-8" style="padding: 10% 20%;">
                 <h3>Login</h3>
                 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
                     <div class="form-group">
