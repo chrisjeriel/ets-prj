@@ -9,3 +9,4 @@ export * from './accounting.service';
 export * from './maintenance.service';
 export * from './security.service';
 export * from './upload.service';
+export * from './workflowmanager.service';

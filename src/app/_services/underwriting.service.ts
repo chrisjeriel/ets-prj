@@ -775,4 +775,13 @@ export class UnderwritingService {
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolGenInfo',{params});
     }
 
+    savePolGenInfo(savePolGenInfoParam:any){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolGenInfo', JSON.stringify(savePolGenInfoParam), header);
+    }
 }            

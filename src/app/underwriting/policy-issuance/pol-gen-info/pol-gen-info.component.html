@@ -19,6 +19,16 @@
 .input-group label {
 	line-height: .9;
 }
+
+.nm-a {
+	padding-top: 6px !important;
+	padding-bottom: 18px !important;
+}
+
+.nm-b {
+	padding-top: 7px !important;
+	padding-bottom: 6px !important;
+}
 </style>
 <input type="text" class="d-none t" [ngModel]="policyInfo.policyNo" (ngModelChange)="checkPolIdF($event)" >
 <ng-container *ngIf="!alteration">
@@ -87,18 +97,18 @@
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">MBI Ref No</label>
 										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.mbiRefNo">
 									</div>
-									<div *ngIf="hcChecked" class="input-group">
+									<div *ngIf="policyInfo.holdCoverTag === 'Y'" class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Hold Cover No</label>
 										<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="policyInfo.holdCoverNo">
-										<span class="form-control-sm col-sm-2">&nbsp;</span>
-										<span class="form-control-sm col-sm">&nbsp;</span>
+										<!-- <span class="form-control-sm col-sm-2">&nbsp;</span>
+										<span class="form-control-sm col-sm">&nbsp;</span> -->
 									</div>
-									<div *ngIf="ocChecked" class="input-group">
+									<!-- <div *ngIf="policyInfo.openCoverTag === 'Y'" class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Open Pol No</label>
 										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.openPolicyNo">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Ref Open Pol No</label>
 										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.refOpenPolNo">
-									</div>
+									</div> -->
 								</div>
 							</div>
 						</fieldset>
@@ -106,7 +116,7 @@
 				</div>
 			</div>
 			<div class="col-sm-6" style="padding-left: 0px;">
-				<fieldset class="scheduler-border cust-fs-padlr-offset" style="padding-bottom: 12px !important;">
+				<fieldset class="scheduler-border cust-fs-padlr-offset" [class.nm-a]="line != 'CAR' && line != 'EAR'">
 					<!-- style="height: 100%;" -->
 					<legend class="scheduler-border" style="margin-left: 16px !important;">Period of Insurance</legend>
 					<div class="col-sm-1">
@@ -140,12 +150,8 @@
 								<input type="date" class="form-control form-control-sm" [(ngModel)]="policyInfo.lapseTo?.split('T')[0]" readonly>
 								<input type="text" class="form-control form-control-sm col-sm-3" style="margin-left: 5px; text-align: center;" [(ngModel)]="policyInfo.lapseTo?.split('T')[1]" readonly>
 							</div>
-						</div>
-						<!-- <div class="form-row ig-cust" style="margin-right: 0px;">
-							<div class="input-group col-sm-6" style="padding: 0px;"><label class="form-control-sm col-sm-4">&nbsp;</label>
-							</div>
-						</div> -->
-						<div *ngIf="line === 'CAR' || line === 'EAR'; else notCARorEAR" class="form-row ig-cust" style="margin-right: 0px; margin-bottom: 5px;">
+						</div>						
+						<div class="form-row ig-cust" [class.d-none]="line != 'CAR' && line != 'EAR'" style="margin-right: 0px; margin-bottom: 5px !important;">
 							<div class="input-group col-sm-6" style="padding: 0px;">
 								<label class="form-control-sm col-sm-4">Maintenance From</label>
 								<input type="date" class="form-control form-control-sm" [(ngModel)]="policyInfo.maintenanceFrom?.split('T')[0]">
@@ -156,16 +162,10 @@
 								<input type="date" class="form-control form-control-sm" [(ngModel)]="policyInfo.maintenanceTo?.split('T')[0]">
 								<input type="text" class="form-control form-control-sm col-sm-3" style="margin-left: 5px; text-align: center;" [(ngModel)]="policyInfo.maintenanceTo?.split('T')[1]">
 							</div>
-						</div>
-						<ng-template #notCARorEAR>
-							<div class="form-row ig-cust" style="margin-right: 0px;">
-								<div class="input-group col-sm-6" style="padding: 0px;"><label class="form-control-sm col-sm-4">&nbsp;</label>
-								</div>
-							</div>
-						</ng-template>
+						</div>						
 					</div>
 				</fieldset>
-				<fieldset class="scheduler-border cust-fs-padlr-offset">
+				<fieldset class="scheduler-border cust-fs-padlr-offset" [class.nm-b]="line != 'CAR' && line != 'EAR'">
 					<!-- style="height: 100%;" -->
 					<legend class="scheduler-border" style="margin-left: 16px !important;">Production Booking</legend>
 					<div class="col-sm-1">
@@ -199,10 +199,30 @@
 				</fieldset>
 			</div>
 		</div>
+
 	</div>
 
 
 	<div>
+		<div class="row">
+			<div class="col-sm-8">
+				<fieldset *ngIf="policyInfo.openCoverTag === 'Y'" class="scheduler-border cust-fs-padlr-offset" style="padding-top: 10px !important; padding-bottom: 10px !important;">
+					<legend class="scheduler-border" style="margin-left: 16px !important;">Open Cover Details</legend>
+					<div class="input-group">
+						<div class="col-sm-1"></div>
+						<label class="form-control-sm col-sm-2">Open Cover Pol No</label>
+						<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="policyInfo.openPolicyNo" readonly>
+						<div class="col-sm-2"></div>
+					</div>
+					<div class="input-group">
+						<div class="col-sm-1"></div>
+						<label class="form-control-sm col-sm-2">Ref Open Policy No</label>
+						<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="policyInfo.refOpenPolNo">
+						<div class="col-sm-2"></div>
+					</div>
+				</fieldset>
+			</div>
+		</div>
 		<div class="row">
 			<div class="col-sm-8">
 				<!-- LINE: CAR -->
@@ -722,7 +742,7 @@
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<div class="input-group-text white-bg">
-										<input type="checkbox" [checked]="policyInfo.bookedTag === 'Y'" (change)="policyInfo.bookedTag = (policyInfo.bookedTag === 'Y') ? 'N' : 'Y';">
+										<input type="checkbox" [checked]="policyInfo.bookedTag === 'Y'" (change)="policyInfo.bookedTag = (policyInfo.bookedTag === 'Y') ? 'N' : 'Y';" disabled>
 									</div>
 								</div>
 								<input type="text" style="font-size: 11px !important; margin-left: 0 !important;" value="Booked" disabled class="form-control form-control-sm white-bg">
@@ -732,7 +752,7 @@
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<div class="input-group-text white-bg">
-										<input type="checkbox" [checked]="policyInfo.altTag === 'Y'" (change)="policyInfo.altTag = (policyInfo.altTag === 'Y') ? 'N' : 'Y';">
+										<input type="checkbox" [checked]="policyInfo.altTag === 'Y'" (change)="policyInfo.altTag = (policyInfo.altTag === 'Y') ? 'N' : 'Y';" disabled>
 									</div>
 								</div>
 								<input type="text" style="font-size: 11px !important; margin-left: 0 !important;" value="Alteration" disabled class="form-control form-control-sm white-bg">
@@ -767,7 +787,7 @@
 								<div class="input-group-prepend">
 									<div class="input-group-text white-bg">
 										<!-- <input type="checkbox" [(ngModel)]="ocChecked"> -->
-										<input type="checkbox" [checked]="policyInfo.openCoverTag === 'Y'" (change)="policyInfo.openCoverTag = (policyInfo.openCoverTag === 'Y') ? 'N' : 'Y';">
+										<input type="checkbox" [checked]="policyInfo.openCoverTag === 'Y'" (change)="policyInfo.openCoverTag = (policyInfo.openCoverTag === 'Y') ? 'N' : 'Y';" disabled>
 									</div>
 								</div>
 								<input type="text" style="font-size: 11px !important; margin-left: 0 !important;" value="Open Cover" disabled class="form-control form-control-sm white-bg">
@@ -789,7 +809,7 @@
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<div class="input-group-text white-bg">
-										<input type="checkbox" [checked]="policyInfo.holdCoverTag === 'Y'" (change)="policyInfo.holdCoverTag = (policyInfo.holdCoverTag === 'Y') ? 'N' : 'Y';">
+										<input type="checkbox" [checked]="policyInfo.holdCoverTag === 'Y'" (change)="policyInfo.holdCoverTag = (policyInfo.holdCoverTag === 'Y') ? 'N' : 'Y';" disabled>
 									</div>
 								</div>
 								<input type="text" style="font-size: 11px !important; margin-left: 0 !important;" value="Hold Cover" disabled class="form-control form-control-sm white-bg">
@@ -799,7 +819,7 @@
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<div class="input-group-text white-bg">
-										<input type="checkbox" [checked]="policyInfo.extensionTag === 'Y'" (change)="policyInfo.extensionTag = (policyInfo.extensionTag === 'Y') ? 'N' : 'Y';">
+										<input type="checkbox" [checked]="policyInfo.extensionTag === 'Y'" (change)="policyInfo.extensionTag = (policyInfo.extensionTag === 'Y') ? 'N' : 'Y';" disabled>
 									</div>
 								</div>
 								<input type="text" style="font-size: 11px !important; margin-left: 0 !important;" value="Extension" disabled class="form-control form-control-sm white-bg">
@@ -812,7 +832,7 @@
 								<div class="input-group-prepend">
 									<div class="input-group-text white-bg">
 										<!-- <input type="checkbox" [(ngModel)]="decChecked" (click)="toggleRadioBtnSet();"> -->
-										<input type="checkbox" [checked]="policyInfo.declarationTag === 'Y'" (change)="policyInfo.declarationTag = (policyInfo.declarationTag === 'Y') ? 'N' : 'Y'; toggleRadioBtnSet();">
+										<input type="checkbox" [checked]="policyInfo.declarationTag === 'Y'" (change)="policyInfo.declarationTag = (policyInfo.declarationTag === 'Y') ? 'N' : 'Y'; toggleRadioBtnSet();" disabled>
 									</div>
 								</div>
 								<input type="text" style="font-size: 11px !important; margin-left: 0 !important;" value="Declaration" disabled class="form-control form-control-sm white-bg">
@@ -822,7 +842,7 @@
 							<div class="input-group">
 								<div class="input-group-prepend">
 									<div class="input-group-text white-bg">
-										<input type="checkbox" [checked]="policyInfo.excludeDistTag === 'Y'" (change)="policyInfo.excludeDistTag = (policyInfo.excludeDistTag === 'Y') ? 'N' : 'Y';">
+										<input type="checkbox" [checked]="policyInfo.excludeDistTag === 'Y'" (change)="policyInfo.excludeDistTag = (policyInfo.excludeDistTag === 'Y') ? 'N' : 'Y';" disabled>
 									</div>
 								</div>
 								<input type="text" style="font-size: 11px !important; margin-left: 0 !important;" value="Exclude Distribution" disabled class="form-control form-control-sm white-bg">
@@ -833,10 +853,10 @@
 						<div class="form-group col-sm-6">
 							<div id="radioBtnSet" class="input-group-text" style="display: block; margin-top: -4px; padding-left: 33px; padding-right: 0px;">
 								<div class="input-group">
-									<input type="radio" name="option" [disabled]="policyInfo.declarationTag != 'Y'" value="Y" [(ngModel)]="policyInfo.minDepTag"><label class="form-control-sm" style="margin-bottom: -2px !important; font-weight: normal !important;">With Min Dep</label>
+									<input type="radio" name="option" disabled value="Y" [(ngModel)]="policyInfo.minDepTag"><label class="form-control-sm" style="margin-bottom: -2px !important; font-weight: normal !important;">With Min Dep</label>
 								</div>
 								<div class="input-group">
-									<input type="radio" name="option" [disabled]="policyInfo.declarationTag != 'Y'" value="N" [(ngModel)]="policyInfo.minDepTag"><label class="form-control-sm" style="margin-bottom: -5px !important; font-weight: normal !important;">Without Min Dep</label>
+									<input type="radio" name="option" disabled value="N" [(ngModel)]="policyInfo.minDepTag"><label class="form-control-sm" style="margin-bottom: -5px !important; font-weight: normal !important;">Without Min Dep</label>
 								</div>
 							</div>
 						</div>
@@ -875,12 +895,17 @@
 			<div class="form-group col-sm">
 				<div class="col-md-12 text-center">
 					<div class="cust-btn-container">
-						<button type="button" class="cust-btn" (click)="pol($event)"><a>Cancel</a></button>
-						<button type="button" class="cust-btn"><a>Save</a></button>
+						<button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+						<button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
 					</div>
 				</div>
 			</div>
 		</div>
+
+		<app-confirm-save (onYes)="prepareParam();"></app-confirm-save>
+
+		<app-sucess-dialog id="polGenInfo" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+		<app-cancel-button (onYes)="prepareParam('cancel')" [url]="'/policy-listing'" ></app-cancel-button>
 
 		<ng-template #content>
 			<div class="modal-header">
@@ -914,7 +939,7 @@
 
 		</ng-container>
 
-
+<!-- START ALTERATION -->
 
 		<ng-container *ngIf="alteration">
 

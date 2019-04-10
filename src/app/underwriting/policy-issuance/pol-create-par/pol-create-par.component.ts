@@ -38,7 +38,6 @@ export class PolCreatePARComponent implements OnInit {
     resizable: [false,false,false,false],
     tableOnly: false,
     keys: ['quotationNo','cedingName','insuredDesc','riskName'],
-    // keys: ['openPolicyNo','cedingName','insuredDesc','riskName'],
     pageStatus: true,
     pagination: true,
     filters: [
@@ -85,6 +84,8 @@ export class PolCreatePARComponent implements OnInit {
   dialogMessage: any = "";
   policyId: any = "";
   policyNo: any = "";
+
+  searchArr: any[] = [];
 
   constructor(private underwritingService: UnderwritingService, private modalService: NgbModal, private router: Router,
               private titleService: Title, private quoteService: QuotationService, private ns: NotesService, private mtnService: MaintenanceService) {
@@ -164,6 +165,11 @@ export class PolCreatePARComponent implements OnInit {
   }
 
   toggle(str) {
+    $('.req').css('boxShadow', 'none');
+    $('.req').focus(function() {
+      $(this).css('boxShadow','0 0 0 0.2rem rgba(0, 123, 255, 0.25)');
+    })
+
     switch (str) {
       case 'qu':
         this.getQuoteListing();
@@ -219,9 +225,9 @@ export class PolCreatePARComponent implements OnInit {
     }  
   }
 
-  setDetails(str) {
+  setDetails() {
     if(this.selected != null) {
-      if(str === 'qu') {
+      if(this.qu) {
         this.quNo = this.selected.quotationNo.split('-');
         this.cedingName = this.selected.cedingName;
         this.insuredDesc = this.selected.insuredDesc;
@@ -229,7 +235,7 @@ export class PolCreatePARComponent implements OnInit {
 
         this.getOptionLOV(this.selected.quoteId);
         this.getCutOffTime({ target: { value: this.quNo[0] } });
-      } else if (str === 'hc') {       
+      } else if (this.hc) {       
         console.log(this.selected);
 
         // this.quoteService.getQuoteOptions(this.selected.quoteId).subscribe(data => {
@@ -244,7 +250,7 @@ export class PolCreatePARComponent implements OnInit {
         this.riskName = this.selected.riskName;
 
         this.getCutOffTime({ target: { value: this.hcNo[0] } });
-      } else if (str === 'oc') {
+      } else if (this.oc) {
         this.ocNo = this.selected.openPolicyNo.split('-');
         this.optionId = this.selected.optionId;
         this.condition = this.selected.condition;
@@ -272,7 +278,7 @@ export class PolCreatePARComponent implements OnInit {
       "expiryDate"    : this.expiryDate + 'T' + this.expiryTime,
       "holdCoverNo"   : this.hc ? this.hcNo.join('-') : '',
       "inceptDate"    : this.inceptionDate + 'T' + this.inceptionTime,
-      "lineCd"        : this.qu ? this.quNo[0] : this.hc ? this.hcNo[0] : this.ocNo[0],
+      "lineCd"        : this.qu ? this.quNo[0] : this.hc ? this.hcNo[0] : this.ocNo[1],
       "openPolicyNo"  : this.oc ? this.ocNo.join('-') : '',
       "optionId"      : this.optionId,
       "quotationNo"   : this.qu ? this.quNo.join('-') : '',
@@ -362,7 +368,6 @@ export class PolCreatePARComponent implements OnInit {
   }
 
   onClickConvert(cancelFlag?) {
-    console.log(this.prepareParam());
     // console.log(this.validate(this.prepareParams()));
     // this.cancelFlag = cancelFlag !== undefined;
     this.loading = true;
@@ -386,7 +391,35 @@ export class PolCreatePARComponent implements OnInit {
       this.loading = false;
       this.dialogMessage = "Please complete all the required fields.";
       $('#createPol #successModalBtn').trigger('click');
-      setTimeout(()=>{$('.globalLoading').css('display','none');},0);
+      setTimeout(() => {
+        $('.globalLoading').css('display','none');
+        $('.req').focus();
+        $('.req').blur();
+      },0);
     }
+  }
+
+  search(key,ev) {
+    if(this.qu || this.hc) {
+      if(key === 'lineCd') {
+        this.searchArr[0] = ev.target.value.toUpperCase() + '%';
+      } else if(key === 'year') {
+        this.searchArr[1] = '%' + ev.target.value.toUpperCase() + '%';
+      } else if(key === 'seqNo') {
+        this.searchArr[2] = '%' + ev.target.value.toUpperCase() + '%';
+      } else if(key === 'revNo') {
+        this.searchArr[3] = '%' + ev.target.value.toUpperCase() + '%';
+      } else if(key === 'cedingId') {
+        this.searchArr[4] = '%' + ev.target.value.toUpperCase();
+      }
+    }    
+  }
+
+
+  //TODO SEARCH
+  test() {
+    this.quoteService.getQuoProcessingData([{ key: 'quotationNo', search: this.searchArr.join('') }]).subscribe(data => {
+      console.log(data);
+    });
   }
 }

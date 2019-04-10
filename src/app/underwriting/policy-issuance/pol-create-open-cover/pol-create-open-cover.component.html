@@ -3,6 +3,7 @@
     <ngb-tabset>
         <ngb-tab class="ngb-tab" title="Create Open Cover">
             <ng-template ngbTabContent>
+                <form #myForm="ngForm">
                 <div class="row">
                     <div class="col-sm-2"></div>
                     <div class="col-sm-8">
@@ -13,39 +14,39 @@
                                     <div class="input-group">
                                         <div class="input-group ig-row">
                                             <label class="form-control-sm col-sm-2">Quotation No</label>
-                                            <input type="text" class="form-control form-control-sm cap-input col-sm-2" [(ngModel)]="splitQuoteNo[0]" ngbTooltip="Line" appRequired>
-                                            <input type="text" class="form-control form-control-sm input-ig-row cap-input col-sm" ngbTooltip="Year" [(ngModel)]="splitQuoteNo[1]" appRequired>
-                                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" [(ngModel)]="splitQuoteNo[2]" ngbTooltip="Sequence No" appRequired>
-                                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" [(ngModel)]="splitQuoteNo[3]" ngbTooltip="Revision No" appRequired>
-                                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" [(ngModel)]="splitQuoteNo[4]" ngbTooltip="Company No" appRequired>
+                                            <input type="text" class="form-control form-control-sm cap-input col-sm-2" [(ngModel)]="splitQuoteNo[0]" ngbTooltip="Line" name="line" appRequired>
+                                            <input type="text" class="form-control form-control-sm input-ig-row cap-input col-sm" ngbTooltip="Year" [(ngModel)]="splitQuoteNo[1]" name="year" appRequired>
+                                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" [(ngModel)]="splitQuoteNo[2]" ngbTooltip="Sequence No" name="seqNo" appRequired>
+                                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" [(ngModel)]="splitQuoteNo[3]" ngbTooltip="Revision No" name="revNo" appRequired>
+                                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" [(ngModel)]="splitQuoteNo[4]" ngbTooltip="Company No" name="cedingId" appRequired>
                                             <span>&nbsp;</span>
                                             <div class="text-search-ico"><a><i class="fa fa-search" (click)="showLOV();"></i></a></div>
                                         </div>
                                         <div class="input-group ig-row">
                                             <label class="form-control-sm col-sm-2">Option No</label>
-                                            <input type="text" class="form-control form-control-sm col-sm-1" [ngModel]="selectedOpt.optionId" appRequired >
+                                            <input type="text" class="form-control form-control-sm col-sm-1" [ngModel]="selectedOpt.optionId" name="optId" appRequired >
                                             <div class="text-search-ico-inner"><a><i class="fa fa-search" (click)="showOptionLOV()"></i></a></div>
-                                            <input type="text" class="form-control form-control-sm" style="margin-left: 7px;" [ngModel]="selectedOpt.condition" readonly>
+                                            <input type="text" class="form-control form-control-sm" style="margin-left: 7px;" [ngModel]="selectedOpt.condition" name="condition" readonly>
                                         </div>
                                         <div class="input-group ig-row">
                                             <label class="form-control-sm col-sm-2">Ceding Company</label>
-                                            <input type="text" class="form-control form-control-sm" [ngModel]="quoteData.cedingName" readonly>
+                                            <input type="text" class="form-control form-control-sm" [ngModel]="quoteData.cedingName" name="cedingName" readonly>
                                         </div>
                                         <div class="input-group ig-row">
                                             <label class="form-control-sm col-sm-2">Insured</label>
-                                            <input type="text" class="form-control form-control-sm" [ngModel]="quoteData.insuredDesc" readonly>
+                                            <input type="text" class="form-control form-control-sm" [ngModel]="quoteData.insuredDesc" name="insuredDesc" readonly>
                                         </div>
                                         <div class="input-group ig-row">
                                             <label class="form-control-sm col-sm-2">Risk</label>
-                                            <input type="text" class="form-control form-control-sm" [ngModel]="quoteData.riskName" readonly>
+                                            <input type="text" class="form-control form-control-sm" [ngModel]="quoteData.riskName" name="riskName" readonly>
                                         </div>
                                         <div class="input-group ig-row">
                                             <label class="form-control-sm col-sm-2">Inception Date</label>
-                                            <input type="date" class="form-control form-control-sm col-sm-3" [(ngModel)]="inceptDate.date" appRequired>
-                                            <input type="time" class="form-control form-control-sm input-ig-row col-sm-2" [(ngModel)]="inceptDate.time" appRequired>
+                                            <input type="date" class="form-control form-control-sm col-sm-3" [(ngModel)]="inceptDate.date" name="inceptDate" appRequired>
+                                            <input type="time" class="form-control form-control-sm input-ig-row col-sm-2" [(ngModel)]="inceptDate.time" name="inceptTime" appRequired>
                                             <label class="form-control-sm col-sm-1" style="margin-left: 25px !important;">Expiry Date</label>
-                                            <input type="date" class="form-control form-control-sm col-sm-3" [(ngModel)]="expiryDate.date" appRequired>
-                                            <input type="time" class="form-control form-control-sm input-ig-row col-sm-2" [(ngModel)]="expiryDate.time" appRequired>
+                                            <input type="date" class="form-control form-control-sm col-sm-3" [(ngModel)]="expiryDate.date" name="expiryDate" appRequired>
+                                            <input type="time" class="form-control form-control-sm input-ig-row col-sm-2" [(ngModel)]="expiryDate.time" name="expiryTime" appRequired>
                                         </div>
                                     </div>
                                 </div>
@@ -54,11 +55,12 @@
                     </div>
                     <div class="col-sm-2"></div>
                 </div>
+               </form>
                 <div class="form-row">
                     <div class="form-group col-sm">
                         <div class="col-md-13 text-center">
                             <div class="cust-btn-container" style="margin-top:10px">
-                                <button type="button" class="cust-btn"><a>Cancel</a></button>
+                                <button type="button" class="cust-btn" (click)="onClickCancel();"><a>Cancel</a></button>
                                 <button type="button" (click)="prepareParams()" class="cust-btn"><a>Convert</a></button>
                             </div>
                         </div>
@@ -96,3 +98,25 @@
         </div>
     </div>
 </app-modal>
+
+<app-modal hidden [btnTitle]="'Convert'" id="convertPopup">
+    <div header>Success Mesage</div>
+    <div body>
+        <div class="custom-row-inline-inset" style="text-align: center">
+            <p>Quotation No <strong>{{quoteData.quoteNo}}</strong></p>
+            <p>was successfully converted to Open Cover Policy No</p>
+            <br/>
+            <p><strong>{{openPolicyInfo.openPolNo}}</strong></p>
+        </div>
+    </div>
+    <div footer class="text-center w-100">
+        <div class="col-sm-12 text-center">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();toOpenCoverPolGenInfo();"><a>Ok</a></button>
+        </div>
+    </div>
+</app-modal>
+
+<app-confirm-save (onYes)="convertion();"></app-confirm-save>
+
+<app-sucess-dialog id="dialogPopup" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-cancel-button (onYes)="convertion('cancel')" [url]="'/'" ></app-cancel-button>

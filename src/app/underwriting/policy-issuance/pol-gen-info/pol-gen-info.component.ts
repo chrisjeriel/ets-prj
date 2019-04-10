@@ -1,8 +1,9 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UnderwritingService, NotesService } from '../../../_services';
 import { Title } from '@angular/platform-browser';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
   selector: 'app-pol-gen-info',
@@ -10,6 +11,8 @@ import { Title } from '@angular/platform-browser';
   styleUrls: ['./pol-gen-info.component.css']
 })
 export class PolGenInfoComponent implements OnInit, OnDestroy {
+  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+
   tableData: any;
   tHeader: any[] = [];
   dataTypes: any[] = [];
@@ -17,6 +20,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
   @Input() mode;
   @Input() alteration: boolean = false;
+
   policyInfo:any = {
     policyId: null,
     policyNo: null,
@@ -139,6 +143,10 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   typeOfCession: string = "";
   policyId: string;
   policyNo: string;
+  dialogIcon: string = "";
+  dialogMessage: string = "";
+  loading: boolean = false;
+  cancelFlag: boolean;
 
   @Output() emitPolicyInfoId = new EventEmitter<any>();
 
@@ -189,6 +197,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.policyInfo.acctDate = this.ns.toDateTimeString(this.policyInfo.acctDate);
         this.policyInfo.createDate = this.ns.toDateTimeString(this.policyInfo.createDate);
         this.policyInfo.updateDate = this.ns.toDateTimeString(this.policyInfo.updateDate);
+        this.policyInfo.project.createDate = this.ns.toDateTimeString(this.policyInfo.project.createDate);
+        this.policyInfo.project.updateDate = this.ns.toDateTimeString(this.policyInfo.project.updateDate);
         this.checkPolIdF(this.policyInfo.policyId);
         this.toggleRadioBtnSet();
 
@@ -215,5 +225,104 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     d.setFullYear(d.getFullYear() + 1);
 
     this.policyInfo.expiryDate = this.ns.toDateTimeString(d);
+  }
+
+  prepareParam(cancelFlag?) {
+    this.cancelFlag = cancelFlag !== undefined;
+
+    var savePolGenInfoParam = {
+      "acctDate"        : this.policyInfo.acctDate,
+      "altNo"           : this.policyInfo.altNo,
+      "altTag"          : this.policyInfo.altTag,
+      "bookedTag"       : this.policyInfo.bookedTag,
+      "cedingId"        : this.policyInfo.cedingId,
+      "cessionId"       : this.policyInfo.cessionId,
+      "coRefNo"         : this.policyInfo.coRefNo,
+      "coSeriesNo"      : this.policyInfo.coSeriesNo,
+      "contractorId"    : this.policyInfo.contractorId,
+      "createDate"      : this.policyInfo.createDate,
+      "createUser"      : this.policyInfo.createUser,
+      "currencyCd"      : this.policyInfo.currencyCd,
+      "currencyRt"      : this.policyInfo.currencyRt,
+      "declarationTag"  : this.policyInfo.declarationTag,
+      "distDate"        : this.policyInfo.distDate,
+      "duration"        : this.policyInfo.project.duration,
+      "effDate"         : this.policyInfo.effDate,
+      "excludeDistTag"  : this.policyInfo.excludeDistTag,
+      "expiryDate"      : this.policyInfo.expiryDate,
+      "extensionTag"    : this.policyInfo.extensionTag,
+      "govtTag"         : this.policyInfo.govtTag,
+      "holdCoverTag"    : this.policyInfo.holdCoverTag,
+      "inceptDate"      : this.policyInfo.inceptDate,
+      "instTag"         : this.policyInfo.instTag,
+      "insuredDesc"     : this.policyInfo.insuredDesc,
+      "intmId"          : this.policyInfo.intmId,
+      "ipl"             : this.policyInfo.project.ipl,
+      "issueDate"       : this.policyInfo.issueDate,
+      "lapseFrom"       : this.policyInfo.lapseFrom,
+      "lapseTo"         : this.policyInfo.lapseTo,
+      "lineCd"          : this.policyInfo.lineCd,
+      "lineClassCd"     : this.policyInfo.lineClassCd,
+      "maintenanceFrom" : this.policyInfo.maintenanceFrom,
+      "maintenanceTo"   : this.policyInfo.maintenanceTo,
+      "mbiRefNo"        : this.policyInfo.mbiRefNo,
+      "minDepTag"       : this.policyInfo.minDepTag,
+      "noClaimPd"       : this.policyInfo.project.noClaimPd,
+      "objectId"        : this.policyInfo.project.objectId,
+      "openCoverTag"    : this.policyInfo.openCoverTag,
+      "polSeqNo"        : this.policyInfo.polSeqNo,
+      "polYear"         : this.policyInfo.polYear,
+      "policyId"        : this.policyInfo.policyId,
+      "policyIdOc"      : this.policyInfo.policyIdOc,
+      "principalId"     : this.policyInfo.principalId,
+      "prjCreateDate"   : this.policyInfo.project.createDate,
+      "prjCreateUser"   : this.policyInfo.project.createUser,
+      "prjUpdateDate"   : this.ns.toDateTimeString(0),
+      "prjUpdateUser"   : JSON.parse(window.localStorage.currentUser).username,
+      "projDesc"        : this.policyInfo.project.projDesc,
+      "projId"          : this.policyInfo.project.projId,
+      "quoteId"         : this.policyInfo.quoteId,
+      "refOpenPolNo"    : this.policyInfo.refOpenPolNo,
+      "reinsurerId"     : this.policyInfo.reinsurerId,
+      "riBinderNo"      : this.policyInfo.riBinderNo,
+      "riskId"          : this.policyInfo.project.riskId,
+      "site"            : this.policyInfo.project.site,
+      "specialPolicyTag": this.policyInfo.specialPolicyTag,
+      "status"          : this.policyInfo.status,
+      "testing"         : this.policyInfo.project.testing,
+      "timeExc"         : this.policyInfo.project.timeExc,
+      "totalSi"         : this.policyInfo.project.totalSi,
+      "updateDate"      : this.ns.toDateTimeString(0),
+      "updateUser"      : JSON.parse(window.localStorage.currentUser).username,
+      "wordings"        : this.policyInfo.wordings
+    }
+
+    console.log(savePolGenInfoParam);
+    //ADD VALIDATION
+    this.loading = true;
+    this.underwritingService.savePolGenInfo(savePolGenInfoParam).subscribe(data => {
+      console.log(data);
+      this.loading = false;
+
+      if(data['returnCode'] === 0) {
+          this.dialogIcon = 'error';
+          this.dialogMessage = data['errorList'][0].errorMessage;
+
+          $('#polGenInfo #successModalBtn').trigger('click');
+        } else if (data['returnCode'] === -1) {               
+          this.policyInfo.updateUser = JSON.parse(window.localStorage.currentUser).username;
+          this.policyInfo.updateDate  = this.ns.toDateTimeString(0);
+
+          $('#polGenInfo #successModalBtn').trigger('click');
+        }
+    });
+  }
+
+  onClickSave(){
+    $('#confirm-save #modalBtn2').trigger('click');
+  }
+
+  cancel(){
+    this.cancelBtn.clickCancel();
   }
 }

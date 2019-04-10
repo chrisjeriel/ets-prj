@@ -179,9 +179,17 @@
 	</ngb-tabset>
 </div>
 <app-sucess-dialog id="quotation" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="modalService.dismissAll();"></app-sucess-dialog>
+
 <app-print-modal id="printListQuotation" (selectedData)= "showPrintDialog($event)" (onCancel)="cancelModal()" [printDefaultType]="defaultType" [passData]="passData"></app-print-modal>
 
 <ng-template #confirmLeave>
 	<app-confirm-leave></app-confirm-leave>
 </ng-template>
 
+
+<!-- <<<<<<< HEAD
+<ng-template #confirmLeave>
+	<app-confirm-leave></app-confirm-leave>
+</ng-template>
+<app-print-modal id="printListQuotation" (selectedData)= "showPrintDialog($event)" (onCancel)="cancelModal()" [printDefaultType]="defaultType" [passData]="passData"></app-print-modal>
+======= -->
