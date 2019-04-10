@@ -519,6 +519,7 @@ export class GeneralInfoComponent implements OnInit {
 		if(this.validate(this.prepareParam())){
 			this.focusBlur();
 
+			console.log(this.genInfoData.status);
 			this.quotationService.saveQuoteGeneralInfo(JSON.stringify(this.prepareParam())).subscribe(data => {
 				this.loading = false;
 				if(data['returnCode'] == 0) {

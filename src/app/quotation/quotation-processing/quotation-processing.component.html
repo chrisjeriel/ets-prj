@@ -12,7 +12,7 @@
                         as params for your http get method.
                     -->
                     <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)"
-                        (add)="onClickAdd($event)" (edit)="onClickEdit($event)" (searchToDb)="searchQuery($event)" (gnrc1)="onClickCopy();" (gnrc2)="onClickIntCompCopy();"></app-cust-non-datatable>
+                        (add)="onClickAdd($event)" (edit)="onClickEdit($event)" (searchToDb)="searchQuery($event)" (gnrc1)="onClickCopy();" (gnrc2)="onClickIntCompCopy();" (export)="export()"></app-cust-non-datatable>
                 </div>
             </ng-template>
         </ngb-tab>
