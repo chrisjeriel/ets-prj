@@ -39,6 +39,8 @@ export class QuoteOptionComponent implements OnInit {
       selector:'',
       data:{}
     }
+    riskId:string;
+    projId:string;
 
     @Output() enblEndtTab = new EventEmitter<any>();
 
@@ -151,13 +153,12 @@ export class QuoteOptionComponent implements OnInit {
         tableData: [],
         tHeader: ['Section','Bullet No','Cover Code Name', 'Sum Insured','Change Tag', 'Rate(%)'],
         dataTypes: ['text', 'text', 'text', 'currency','checkbox','percent'],
-        pageLength: '10',  
+        pageLength: 'unli-5',  
         pageID: 3,
         keys: ['section','bulletNo','coverCdDesc','amount','changeTag','rate'],
         //widths: [1,1,'auto',140,1,140],
         uneditable: [true,true,true,true],
         searchFlag: true,
-        paginateFlag:true
     }
 
     deductiblesLOVRow : number;
@@ -293,7 +294,10 @@ export class QuoteOptionComponent implements OnInit {
         this.quotationService.getQuoteOptions(this.quoteId,'').subscribe(data => {
            if (data['quotation'] == null || data['quotation'] == undefined ){ 
            } else {
-               var optionRecords = data['quotation'].optionsList;
+
+                this.riskId = data['quotation'].project.riskId;
+                this.projId = data['quotation'].project.projId;
+                var optionRecords = data['quotation'].optionsList;
                 this.optionsData.tableData = data['quotation'].optionsList.sort(function(a,b){return a.optionId-b.optionId})
                 this.coversDeductiblesData.tableData = [];
                 this.optionsDeductiblesData.tableData = [];
@@ -451,6 +455,8 @@ saveQuoteOptionAll(cancelFlag?){
    }
    let params: any = {
        quoteId:this.quoteId,
+       projId:this.projId,
+       riskId:this.riskId,
        saveQuoteOptionsList:[],
        deleteQuoteOptionsList:[],
        saveDeductibleList:[],

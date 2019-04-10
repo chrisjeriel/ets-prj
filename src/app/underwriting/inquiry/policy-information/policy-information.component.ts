@@ -53,7 +53,7 @@ export class PolicyInformationComponent implements OnInit {
   }
   policyId:string;
   constructor(private UwService : UnderwritingService, private ns : NotesService, private route: ActivatedRoute, private router: Router) { }
-  selectedPol:any;
+  selectedPol:any = null;
 
   ngOnInit() {
     this.route.params.subscribe(data=>{
