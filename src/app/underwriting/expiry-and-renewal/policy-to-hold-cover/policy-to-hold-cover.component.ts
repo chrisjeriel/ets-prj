@@ -7,7 +7,7 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { PrintModalComponent } from '@app/_components/common/print-modal/print-modal.component';
 import { FormsModule }   from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router'; // ARNEILLE DATE: Apr.10, 2019 
 
 @Component({
 	selector: 'app-policy-to-hold-cover',
@@ -23,7 +23,8 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	//@ViewChild(PrintModalComponent) print : PrintModalComponent;
 	@ViewChild('myForm') form:any;
 
-	constructor(private titleService: Title, private noteService: NotesService, private us: UnderwritingService, private modalService: NgbModal, private router: Router) { }
+	constructor(private titleService: Title, private noteService: NotesService, private us: UnderwritingService, private modalService: NgbModal, private router: Router,
+			    private activatedRoute: ActivatedRoute) { }
 
 	policyListingData: any = {
 		tableData: [],
@@ -89,11 +90,24 @@ export class PolicyToHoldCoverComponent implements OnInit {
 
 	tempPolNo: string[] = ['','','','','',''];
 
+	private sub: any;			// ARNEILLE DATE: Apr.10, 2019
+	fromHcMonitoring: any;		// ARNEILLE DATE: Apr.10, 2019
+
 	ngOnInit() {
 		//set default report type for Hold Cover Letter
 		//this.print.selectedReport = 'QUOTER012';
 		//this.print.reports = true;
 		//console.log(this.print.reports);
+
+		// ARNEILLE DATE: Apr.10, 2019
+		this.sub = this.activatedRoute.params.subscribe(params => {
+			this.fromHcMonitoring = params['tableInfo'];
+		});
+		console.log(JSON.parse(this.fromHcMonitoring));
+		console.log(JSON.parse(this.fromHcMonitoring).holdCovNo);
+
+		this.policyInfo.policyNo = JSON.parse(this.fromHcMonitoring).policyNo;
+		// END ARNEILLE
 	}
 
 	test(content){

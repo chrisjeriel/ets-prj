@@ -799,4 +799,34 @@ export class UnderwritingService {
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolAttachmentOc',{params});
     }
 
+    getPolHoldCoverList(searchParams: any[]) {
+         var params;
+
+          if(searchParams.length < 1){
+            params = new HttpParams()
+                .set('holdCovNo','')
+                .set('status','')
+                .set('cedingName','')
+                .set('policyNo','')
+                .set('riskName','')
+                .set('insuredName','')
+                .set('periodFrom','')
+                .set('periodTo','')
+                .set('compRefHoldCovNo','')
+                .set('reqBy','')
+                .set('reqDateFrom','')
+                .set('reqDateTo','')
+                .set('expiringInDays','')
+        }
+         else{
+             params = new HttpParams();
+            for(var i of searchParams){
+                params = params.append(i.key, i.search);
+            }
+        }
+            return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolHoldCoverListing',{params});
+    }
+
 }            
+
+            
