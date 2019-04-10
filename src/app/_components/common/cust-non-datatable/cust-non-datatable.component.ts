@@ -142,6 +142,13 @@ export class CustNonDatatableComponent implements OnInit {
             this.displayData[i] = this.passData.tableData[i];
              this.passData.tableData[i].checked = this.passData.tableData[i].checked ? true : false;
         }
+
+        if (this.passData.tableData.length > 0 && this.dataKeys.length == 0 ) {
+            this.dataKeys = Object.keys(this.passData.tableData[0]);
+        } else {
+            this.dataKeys = this.passData.keys;
+        }
+
         //this.displayData = JSON.parse(JSON.stringify( this.passData.tableData));
         this.displayLength = this.displayData.length;
         this.unliTableLength();

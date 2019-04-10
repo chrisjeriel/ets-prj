@@ -289,7 +289,6 @@ export class QuoAlopComponent implements OnInit {
           option.alopDetails.issueDate = this.ns.toDateTimeString(option.alopDetails.issueDate);
           this.alopData.alopDetails.push(option.alopDetails);
       }
-      console.log(this.alopData)
       this.quotationService.saveQuoteAlop(this.alopData).subscribe((data: any) => {
         if(data['returnCode'] == 0) {
           this.dialogMessage = data['errorList'][0].errorMessage;

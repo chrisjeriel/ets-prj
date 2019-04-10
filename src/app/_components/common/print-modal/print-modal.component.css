@@ -10,3 +10,9 @@ a.disabled-a {
   pointer-events: none;
   cursor: default;
 }
+
+.btnDisabled{
+    background: gray !important;
+    cursor: context-menu;
+}
+

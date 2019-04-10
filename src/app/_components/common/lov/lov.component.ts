@@ -5,6 +5,8 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { Router } from '@angular/router';
 
+
+
 @Component({
   selector: 'app-lov',
   templateUrl: './lov.component.html',
@@ -35,6 +37,7 @@ export class LovComponent implements OnInit {
 
   @Input() lovCheckBox: boolean = false;
   showButton: boolean = false;
+  theme =  window.localStorage.getItem("selectedTheme");
 
   constructor(private modalService: NgbModal, private mtnService : MaintenanceService, private underwritingService: UnderwritingService, 
     private quotationService: QuotationService, private router: Router) { }

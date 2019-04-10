@@ -4,6 +4,7 @@ import { UnderwritingService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { Router } from '@angular/router';
+import * as alasql from 'alasql';
 
 @Component({
   selector: 'app-policy-inquiry',
@@ -40,27 +41,27 @@ export class PolicyInquiryComponent implements OnInit {
                 dataType: 'text'
             },
             {
-                key: 'typeCession',
+                key: 'cessionDesc',
                 title: 'Type of Cession',
                 dataType: 'text'
             },
             {
-                key: 'cedingCompany',
+                key: 'cedingName',
                 title: 'Ceding Company',
                 dataType: 'text'
             },
             {
-                key: 'insured',
+                key: 'insuredDesc',
                 title: 'Insured',
                 dataType: 'text'
             },
             {
-                key: 'risk',
+                key: 'riskName',
                 title: 'Risk',
                 dataType: 'text'
             },
             {
-                key: 'object',
+                key: 'objectDesc',
                 title: 'Object',
                 dataType: 'text'
             },
@@ -70,7 +71,7 @@ export class PolicyInquiryComponent implements OnInit {
                 dataType: 'text'
             },
             {
-                key: 'currency',
+                key: 'currencyCd',
                 title: 'Currency',
                 dataType: 'text'
             },
@@ -124,11 +125,12 @@ export class PolicyInquiryComponent implements OnInit {
                 dataType: 'datespan'
             },
             {
-                key: 'status',
+                key: 'statusDesc',
                 title: 'Status',
                 dataType: 'text'
             },
         ],
+    exportFlag: true
   };
 
   policyInfo:any = {
@@ -194,7 +196,7 @@ export class PolicyInquiryComponent implements OnInit {
         this.searchParams = searchParams;
         this.passData.tableData = [];
         this.passData.btnDisabled = true;
-
+        console.log(this.searchParams);
         this.retrievePolListing();
 
    }
@@ -202,7 +204,7 @@ export class PolicyInquiryComponent implements OnInit {
    retrievePolListing(){
        this.underwritingService.getParListing(this.searchParams).subscribe((data:any)=>{
          this.passData.tableData = data.policyList.filter(a=>{
-           if(a.altNo === 0){
+           
              a.lineCd = a.policyNo.substring(0,3);
              a.totalSi = a.project.coverage.totalSi;
              a.riskName = a.project.riskName;
@@ -210,12 +212,39 @@ export class PolicyInquiryComponent implements OnInit {
              a.site = a.project.site;
              a.totalPrem = a.project.coverage.totalPrem;
              return true;
-           }else
-             return false;
          });
          this.listTable.refreshTable();
        })
    }
+
+  export(){
+        //do something
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var currDate = mm + dd+ yyyy;
+    var filename = 'PolicyInquiry_'+currDate+'.xlsx'
+    var mystyle = {
+        headers:true, 
+        column: {style:{Font:{Bold:"1"}}}
+      };
+
+      alasql.fn.datetime = function(dateStr) {
+            var date = new Date(dateStr);
+            return date.toLocaleString();
+      };
+
+       alasql.fn.currency = function(currency) {
+            var parts = parseFloat(currency).toFixed(2).split(".");
+            var num = parts[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + 
+                (parts[1] ? "." + parts[1] : "");
+            return num
+      };
+
+     alasql('SELECT lineCd AS Line, policyNo AS PolicyNo, cessionDesc AS TypeCession, cedingName AS CedingCompany, insuredDesc AS Insured, riskName AS Risk, objectDesc AS Object, site AS Site, currencyCd AS Currency, currency(totalSi) AS TotalSi, currency(totalPrem) AS TotalPremium, datetime(issueDate) AS IssueDate, datetime(inceptDate) AS InceptDate, datetime(expiryDate) AS ExpiryDate, datetime(acctDate) AS AcctingDate, statusDesc AS Status  INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passData.tableData]);
+  }
+
 
 
 }
