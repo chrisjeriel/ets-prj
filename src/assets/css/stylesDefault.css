@@ -448,6 +448,10 @@ button.btn.btn-link{
     color: #0003B4;
 }
 
+button.btn.btn-link:hover{
+    color: #0056b3;
+}
+
 div.card-body {
     padding: 0px 0px 0px 12px;
 }
@@ -668,4 +672,16 @@ textarea {
 
 .cust:hover {
    background: linear-gradient(to bottom, #4080bf 0%, #2d5986 100%) ! important;
+}
+
+.selected{
+    background-color: #67b4fc82 ! important; /*#67b4fc !important;*/
+}
+
+#non-datatable th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #c9d9d9 ! important;
+    color: black;
 }

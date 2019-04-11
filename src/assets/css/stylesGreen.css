@@ -142,3 +142,15 @@ legend.scheduler-border {
 .cust:hover {
    background: linear-gradient(to bottom, #4CAF50 0%, #388E3C 100%) ! important;
 }
+
+.selected {
+    background-color: #90EE90 ! important; 
+}
+
+#non-datatable th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #B2D0B4 ! important;
+    color: black;
+}
