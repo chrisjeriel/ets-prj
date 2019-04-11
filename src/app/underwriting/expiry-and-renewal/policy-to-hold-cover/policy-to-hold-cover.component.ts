@@ -99,14 +99,28 @@ export class PolicyToHoldCoverComponent implements OnInit {
 		//this.print.reports = true;
 		//console.log(this.print.reports);
 
-		// ARNEILLE DATE: Apr.10, 2019
+		// ARNEILLE DATE: Apr.10, 2019 FROM: POL HOLD COVER MONITORNING
 		this.sub = this.activatedRoute.params.subscribe(params => {
 			this.fromHcMonitoring = params['tableInfo'];
 		});
-		console.log(JSON.parse(this.fromHcMonitoring));
-		console.log(JSON.parse(this.fromHcMonitoring).holdCovNo);
-
-		this.policyInfo.policyNo = JSON.parse(this.fromHcMonitoring).policyNo;
+		if(this.fromHcMonitoring === '' || this.fromHcMonitoring === null || this.fromHcMonitoring === undefined){
+		}else{
+			this.policyInfo.policyNo 					= JSON.parse(this.fromHcMonitoring).policyNo;
+			this.policyInfo.cedingName 					= JSON.parse(this.fromHcMonitoring).cedingName;
+			this.policyInfo.insuredDesc 				= JSON.parse(this.fromHcMonitoring).insuredDesc;
+			this.policyInfo.riskName 					= JSON.parse(this.fromHcMonitoring).riskName;
+			this.holdCoverNo 							= JSON.parse(this.fromHcMonitoring).holdCovNo;
+			this.periodFromDate.date 					= JSON.parse(this.fromHcMonitoring).periodFrom.split('T')[0];
+			this.periodFromDate.time 					= JSON.parse(this.fromHcMonitoring).periodFrom.split('T')[1];
+			this.periodToDate.date	 					= JSON.parse(this.fromHcMonitoring).periodTo.split('T')[0];
+			this.periodToDate.time 						= JSON.parse(this.fromHcMonitoring).periodTo.split('T')[1];
+			this.polHoldCoverParams.reqBy 				= JSON.parse(this.fromHcMonitoring).reqBy;
+			this.polHoldCoverParams.reqDate 			= JSON.parse(this.fromHcMonitoring).reqDate.split('T')[0];
+			this.polHoldCoverParams.compRefHoldCovNo 	= JSON.parse(this.fromHcMonitoring).compRefHoldCovNo;
+			this.statusDesc 							= JSON.parse(this.fromHcMonitoring).statusDesc;
+			this.polHoldCoverParams.preparedBy 			= JSON.parse(this.fromHcMonitoring).preparedBy;
+			this.polHoldCoverParams.approvedBy 			= JSON.parse(this.fromHcMonitoring).approvedBy;
+		}
 		// END ARNEILLE
 	}
 

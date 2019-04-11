@@ -6,6 +6,7 @@ import * as alasql from 'alasql';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 
 @Component({
@@ -92,8 +93,9 @@ export class PolHoldCovMonitoringComponent implements OnInit {
 		exportFlag: true
 	}
 	searchParams: any[] = [];
+	tableInfo:any;
 
-	constructor(private underwritingService: UnderwritingService, private ns: NotesService, private titleService: Title,private router: Router) { }
+	constructor(private underwritingService: UnderwritingService, private ns: NotesService, private titleService: Title,private router: Router, private location: Location) { }
 
 	ngOnInit() {
 		this.titleService.setTitle('Pol | Hold Cover Monitoring');
@@ -162,9 +164,16 @@ export class PolHoldCovMonitoringComponent implements OnInit {
 	}
 
 	onRowClick(event){
-		 setTimeout(() => {
-            this.router.navigate(['/policy-holdcover', { tableInfo : JSON.stringify(event) , from: 'pol-hold-cov-monitoring' }], { skipLocationChange: true });
-        },100);
+		this.tableInfo = event;
+		if(this.tableInfo !== null){
+			setTimeout(() => {
+	            this.router.navigate(['/policy-holdcover', { tableInfo : JSON.stringify(this.tableInfo) , from: 'pol-hold-cov-monitoring' }], { skipLocationChange: true });
+	            this.location.go('/policy-holdcover') // temporary, to display the correct url for pol-to-hold-cover
+        	},100);
+		}
+	}
+	onRowDblClick(event){
+		//do not delete
 	}
 
 }
