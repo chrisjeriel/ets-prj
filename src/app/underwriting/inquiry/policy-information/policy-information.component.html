@@ -1,6 +1,6 @@
 <div class="cust-tabs-container">
     <h4>Policy / Inquiry </h4>
-    <ngb-tabset>
+    <ngb-tabset (tabChange)="onTabChange($event)">
         <ngb-tab title="Policy Information">
             <ng-template ngbTabContent>
                 <div class="row">
@@ -104,6 +104,12 @@
                     </div>
                 </div>
             </ng-template>
+        </ngb-tab>
+        <ngb-tab id="Exit">
+          <ng-template ngbTabTitle>
+            <div>Exit</div>
+          </ng-template>
+            <ng-template ngbTabContent></ng-template>
         </ngb-tab>
     </ngb-tabset>
 </div>
