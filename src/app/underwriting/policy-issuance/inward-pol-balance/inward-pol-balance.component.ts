@@ -172,6 +172,7 @@ export class InwardPolBalanceComponent implements OnInit {
         rec.otherChargesInw = rec.otherCharges.filter((a)=>{return !a.deleted}).map(a=>a.amount).reduce((sum,curr)=>sum+curr);
       rec.amtDue = rec.premAmt + rec.otherChargesInw;
     }
+    this.instllmentTable.refreshTable();
   }
 
   save(can?){
