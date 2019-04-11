@@ -128,8 +128,8 @@ export class QuoteEndorsementComponent implements OnInit {
           showMG : 1
         },
         checkFlag: true,
-        addFlag: true,
-        deleteFlag: true,
+        addFlag: !this.inquiryFlag,// addFlag: true,
+        deleteFlag: !this.inquiryFlag,// deleteFlag: true,
         searchFlag: true,
         uneditable: [true, true, false],
         keys: ['endtCd','endtTitle','remarks'],
@@ -197,8 +197,8 @@ export class QuoteEndorsementComponent implements OnInit {
             showMG: 1
         },
         pageLength: 10,
-        addFlag: true,
-        deleteFlag: true,
+        addFlag: !this.inquiryFlag,
+        deleteFlag: !this.inquiryFlag,
         checkFlag: true,
         searchFlag: true,
         pageID: 2,
