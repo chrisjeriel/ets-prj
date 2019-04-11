@@ -98,15 +98,17 @@
 					    <td colspan="4" style="text-align: center;">No records for approval.</td>
 					</tr>
 				    <div class="dropdown-menu dropdown-menu-sm" id="context-menu">
-			          	<a class="dropdown-item" (click)="redirectToQuoteGenInfo()"><fa name="file-text-o"></fa>&nbsp;&nbsp;Review Document</a>
+			          	<a class="dropdown-item" (click)="redirectToQuoteGenInfo()"><fa name="file-text-o"></fa>&nbsp;&nbsp;View Details</a>
 			          	<a class="dropdown-item" (click)="approveRecord()"><fa name="check-square-o"></fa>&nbsp;&nbsp;Approve</a>
+			          	<a class="dropdown-item" (click)="rejectRecord()"><fa name="check-square-o"></fa>&nbsp;&nbsp;Reject</a>
 			        </div>
 				  </tbody>
 				</table>
 
 				<div style="float: left;">
-					<button [disabled]="selectedData == null" class="cust-btn" (click)="redirectToQuoteGenInfo()">Review Document</button>
+					<button [disabled]="selectedData == null" class="cust-btn" (click)="redirectToQuoteGenInfo()">View Details</button>
 					<button [disabled]="selectedData == null" class="cust-btn" (click)="approveRecord()" style="background: #E76B6F !important;">Approve</button>
+					<button [disabled]="selectedData == null" class="cust-btn" (click)="rejectRecord()" style="background: #E76B6F !important;">Reject</button>
 				</div>
 				<div class="pagination">
 		            <!--<div class="pagination" *ngIf="passData.hasPagination">-->
@@ -124,7 +126,7 @@
 </div>
 
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
-
+<app-confirm-save id="approval" (onYes)="approveRecord()"></app-confirm-save>
 
 <!-- <div>
 	<p>You can bind our <code>NgbPagination</code> component with slicing the data list</p>
