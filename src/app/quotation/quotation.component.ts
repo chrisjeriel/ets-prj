@@ -50,6 +50,7 @@ export class QuotationComponent implements OnInit {
 	header: string;
 	showAlop:boolean = false;
 	enblEndtTab:boolean = false;
+  enblOptTab:boolean = false;
 	dialogIcon:string  = "";
   dialogMessage:string  = "";
   btnDisabled: boolean;
