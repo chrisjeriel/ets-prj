@@ -142,13 +142,13 @@
 						<div class="form-row ig-cust" style="margin-right: 0px;">
 							<div class="input-group col-sm-6" style="padding: 0px;">
 								<label class="form-control-sm col-sm-4">Lapse From</label>
-								<input type="date" class="form-control form-control-sm" [(ngModel)]="policyInfo.lapseFrom?.split('T')[0]" readonly>
-								<input type="time" class="form-control form-control-sm col-sm-3" style="margin-left: 5px; text-align: center;" [(ngModel)]="policyInfo.lapseFrom?.split('T')[1]" readonly>
+								<input type="date" class="form-control form-control-sm" [(ngModel)]="policyInfo.issueDate?.split('T')[0]" readonly>
+								<input type="time" class="form-control form-control-sm col-sm-3" style="margin-left: 5px; text-align: center;" [(ngModel)]="policyInfo.issueDate?.split('T')[1]" readonly>
 							</div>
 							<div class="input-group col-sm-6" style="padding: 0px;">
 								<label class="form-control-sm col-sm-4">Lapse To</label>
-								<input type="date" class="form-control form-control-sm" [(ngModel)]="policyInfo.lapseTo?.split('T')[0]" readonly>
-								<input type="time" class="form-control form-control-sm col-sm-3" style="margin-left: 5px; text-align: center;" [(ngModel)]="policyInfo.lapseTo?.split('T')[1]" readonly>
+								<input type="date" class="form-control form-control-sm" [(ngModel)]="policyInfo.effDate?.split('T')[0]" readonly>
+								<input type="time" class="form-control form-control-sm col-sm-3" style="margin-left: 5px; text-align: center;" [(ngModel)]="policyInfo.effDate?.split('T')[1]" readonly>
 							</div>
 						</div>						
 						<div class="form-row ig-cust" [class.d-none]="line != 'CAR' && line != 'EAR'" style="margin-right: 0px; margin-bottom: 5px !important;">

@@ -198,8 +198,8 @@ export class QuoteEndorsementComponent implements OnInit {
             showMG: 1
         },
         pageLength: 10,
-        addFlag: !this.inquiryFlag,
-        deleteFlag: !this.inquiryFlag,
+        addFlag: true,
+        deleteFlag: true,
         checkFlag: true,
         searchFlag: true,
         pageID: 2,
