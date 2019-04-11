@@ -151,6 +151,7 @@ export class PolCreateOpenCoverComponent implements OnInit {
         //this.expiryDate.time = new Date();
         this.getCutOffTime(this.currentLineCd);
         this.getOptionLOV(this.quoteData.quoteId);
+        this.form.control.markAsDirty();
     }
 
     getCutOffTime(lineCd) {
@@ -175,6 +176,7 @@ export class PolCreateOpenCoverComponent implements OnInit {
     setOption(){
         this.optionData.optionId = this.selectedOpt.optionId;
         this.optionData.condition = this.selectedOpt.condition;
+        this.form.control.markAsDirty();
     }
 
     showLOV() {
@@ -206,6 +208,7 @@ export class PolCreateOpenCoverComponent implements OnInit {
           console.log('here');
           this.selectedOpt.optionId = fetchedOptData[0].optionId;
           this.selectedOpt.condition = fetchedOptData[0].condition;
+          this.setOption();
         }
         this.passDataOptionLOV.tableData = data['quotation']['optionsList'];
         this.optListTable.refreshTable();
@@ -220,6 +223,12 @@ export class PolCreateOpenCoverComponent implements OnInit {
             $('#confirm-save #modalBtn2').trigger('click');
         }else{
             //please fill required fields
+            console.log(this.splitQuoteNo.length);
+            console.log(this.optionData.optionId);
+            console.log(this.inceptDate.date);
+            console.log(this.inceptDate.time);
+            console.log(this.expiryDate.date);
+            console.log(this.expiryDate.time);
             this.dialogIcon = 'info';
             this.dialogMessage = 'Please fill all the required fields.';
             $('#dialogPopup > #successModalBtn').trigger('click');
