@@ -22,10 +22,17 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
     this.filters.push("Item No", "Desc. of Items");
     this.tableData = this.underwritingService.getItemInfoData('','');
   	this.line = 'EAR';
+    this.retrievePolGenInfoOc('26', 'OC-CAR-2019-00007-001-0002-000');
   }
 
   showItemInfoModal(content) {
     this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
+  }
+
+  retrievePolGenInfoOc(policyIdOc: string, openPolicyNo: string){
+      this.underwritingService.getPolGenInfoOc(policyIdOc, openPolicyNo).subscribe((data: any)=>{
+          console.log(data);
+      });
   }
 
 }

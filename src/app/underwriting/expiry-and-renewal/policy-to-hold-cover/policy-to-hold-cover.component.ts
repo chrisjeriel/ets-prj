@@ -167,10 +167,10 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	retrievePolListing(){
 		this.table.loadingFlag = true;
 		this.policyListingData.tableData = [];
-		console.log(this.tempPolNo.join().replace(/,/g, '%-%'));
+		console.log(this.tempPolNo.join('%-%');
 		console.log(this.noDataFound);
 		setTimeout(()=>{
-			this.us.getParListing([{key: 'policyNo', search: this.noDataFound ? '' : this.tempPolNo.join().replace(/,/g, '%')}]).subscribe((data: any) =>{
+			this.us.getParListing([{key: 'policyNo', search: this.noDataFound ? '' : this.tempPolNo.join('%-%')}]).subscribe((data: any) =>{
 				console.log(data);
 				if(data.policyList.length !== 0){
 					this.noDataFound = false;

@@ -816,4 +816,11 @@ export class UnderwritingService {
         return  this.http.get(environment.prodApiUrl + "/underwriting-service/retrievePolCoverageAlt",{params});
     }
 
+    getPolGenInfoOc(policyIdOc: string, openPolicyNo: string){
+        const params = new HttpParams()
+            .set('policyIdOc', policyIdOc)
+            .set('openPolicyNo', openPolicyNo)
+        return this.http.get(environment.prodApiUrl + "/underwriting-service/retrievePolGenInfoOc",{params});
+    }
+
 }            
