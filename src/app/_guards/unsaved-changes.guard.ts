@@ -13,7 +13,7 @@ export interface CanComponentDeactivate {
 @Injectable()
 export class UnsavedChangesGuard implements CanDeactivate<CanComponentDeactivate> {
     constructor(private modalService:NgbModal){}
-    canDeactivate(component: CanComponentDeactivate):Observable<boolean> | Promise<boolean> | boolean {
+    canDeactivate():Observable<boolean> | Promise<boolean> | boolean {
     	if( $('.cancel-mdl-header').length != 1 && $('.ng-dirty').length != 0 ){
     		// if(!confirm("Leave without saving changes?"))
         // 		return false;
