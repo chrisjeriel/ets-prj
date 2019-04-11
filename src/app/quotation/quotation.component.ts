@@ -169,7 +169,7 @@ export class QuotationComponent implements OnInit {
 
   	showPrintPreview(content) {
         if (this.printType.toUpperCase() == 'SCREEN'){
-  			window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + this.selectedReport + '&quoteId=' + this.quoteInfo.quoteId, '_blank');
+  			window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + this.selectedReport + '&quoteId=' + this.quoteInfo.quoteId + '&userId=' + this.currentUserId, '_blank');
 	  		this.modalService.dismissAll();
 	  		} else if (this.printType.toUpperCase() == 'PDF'){
 	  			this.downloadPDF(this.selectedReport,this.quoteInfo.quoteId);
@@ -204,7 +204,7 @@ export class QuotationComponent implements OnInit {
 
     printDialog(obj,selectedReport: string){
       if (obj.toUpperCase() == 'SCREEN'){
-        window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + selectedReport + '&quoteId=' + this.quoteInfo.quoteId, '_blank');
+        window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + selectedReport + '&quoteId=' + this.quoteInfo.quoteId + '&userId=' + this.currentUserId, '_blank');
         this.modalService.dismissAll();
         this.selectedReport = null;
       } else if (obj.toUpperCase() == 'PDF'){

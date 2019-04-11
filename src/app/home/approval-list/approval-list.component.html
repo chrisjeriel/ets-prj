@@ -99,14 +99,14 @@
 					</tr>
 				    <div class="dropdown-menu dropdown-menu-sm" id="context-menu">
 			          	<a class="dropdown-item" (click)="redirectToQuoteGenInfo()"><fa name="file-text-o"></fa>&nbsp;&nbsp;Review Document</a>
-			          	<a class="dropdown-item" href="#"><fa name="check-square-o"></fa>&nbsp;&nbsp;Approve</a>
+			          	<a class="dropdown-item" (click)="approveRecord()"><fa name="check-square-o"></fa>&nbsp;&nbsp;Approve</a>
 			        </div>
 				  </tbody>
 				</table>
 
 				<div style="float: left;">
 					<button [disabled]="selectedData == null" class="cust-btn" (click)="redirectToQuoteGenInfo()">Review Document</button>
-					<button [disabled]="selectedData == null" class="cust-btn" style="background: #E76B6F !important;">Approve</button>
+					<button [disabled]="selectedData == null" class="cust-btn" (click)="approveRecord()" style="background: #E76B6F !important;">Approve</button>
 				</div>
 				<div class="pagination">
 		            <!--<div class="pagination" *ngIf="passData.hasPagination">-->
@@ -122,6 +122,8 @@
 			
 	</div>
 </div>
+
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 
 
 <!-- <div>
