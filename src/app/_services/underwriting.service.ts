@@ -781,7 +781,50 @@ export class UnderwritingService {
                 'Content-Type': 'application/json'
             })
         };
-        
+
         return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolGenInfo', JSON.stringify(savePolGenInfoParam), header);
+    }    
+
+    getPolicyEndorsementOC(policyId: string, policyNo: string) {
+        const params = new HttpParams()
+             .set('policyIdOc', (policyId === null || policyId === undefined ? '' : policyId) )
+             .set('openPolicyNo',(policyNo === null || policyNo === undefined ? '' : policyNo) )
+        return this.http.get(environment.prodApiUrl + "/underwriting-service/retrievePolEndtOc",{params}) ;
     }
+
+    savePolEndtOc(params){
+        let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolEndtOc', JSON.stringify(params), header);
+    }
+
+    getPolAttachmentOc(policyIdOc: string, openPolicyNo: string) {
+        const params = new HttpParams()
+             .set('policyIdOc', (policyIdOc === null || policyIdOc === undefined ? '' : policyIdOc) )
+             .set('openPolicyNo',(openPolicyNo === null || openPolicyNo === undefined ? '' : openPolicyNo) )
+
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolAttachmentOc',{params});
+    }
+
+    getUWCoverageAlt(lineCd:any , polYear: any,seqNo: any,cedingId: any,coSeriesNo: any,altNo: any) {
+        /*this.uwcoverageInfoData = [
+            new UnderwritingCoverageInfo("1", "I", "3", "1000000", "12.2", "69000", "70000"),
+            new UnderwritingCoverageInfo("2", 'II', "2", "150000", "15.16", "123000", "456000")
+        ];*/
+
+         const params = new HttpParams()
+             .set('lineCd', (lineCd === null || lineCd === undefined ? '' : lineCd) )
+             .set('polYear',(polYear === null || polYear === undefined ? '' : polYear))
+             .set('seqNo',(seqNo === null || seqNo === undefined ? '' : seqNo))
+             .set('cedingId',(cedingId === null || cedingId === undefined ? '' : cedingId))
+             .set('coSeriesNo',(coSeriesNo === null || coSeriesNo === undefined ? '' : coSeriesNo))
+             .set('altNo',(altNo === null || altNo === undefined ? '' : altNo));
+        //return   this.http.get("http://localhost:8888/api/undewriting-service/retrievePolCoverage",{params});
+        return  this.http.get(environment.prodApiUrl + "/underwriting-service/retrievePolCoverageAlt",{params});
+    }
+
 }            

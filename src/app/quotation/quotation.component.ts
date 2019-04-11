@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,6 +6,8 @@ import { GeneralInfoComponent } from '@app/quotation/general-info/general-info.c
 import { environment } from '@environments/environment';
 import { QuotationService } from '@app/_services';
 import { first } from 'rxjs/operators';
+
+
 
 
 @Component({
@@ -64,7 +66,7 @@ export class QuotationComponent implements OnInit {
   approveText: string = "For Approval";
   currentUserId: string = JSON.parse(window.localStorage.currentUser).username;
   approverList: any[];
-
+  approver:string = '';
 
 	ngOnInit() {
 		this.sub = this.route.params.subscribe(params => {
@@ -110,6 +112,7 @@ export class QuotationComponent implements OnInit {
    //   }
 
   		if ($event.nextId === 'Exit') {
+        $event.preventDefault();
     		this.router.navigateByUrl('');
   		} 
 
@@ -126,13 +129,12 @@ export class QuotationComponent implements OnInit {
  
   	}
 
-  checkQuoteInfo(event){  		
+  checkQuoteInfo(event){ 	
   		this.quoteInfo = event;
       this.passData.cessionDesc = this.quoteInfo.typeOfCession.toUpperCase()
       this.passData.status = this.quoteInfo.status;
       this.passData.quoteId = this.quoteInfo.quoteId;
       this.passData.reasonCd = this.quoteInfo.reasonCd;
-    
   		setTimeout(() => { this.header = "/ " + (this.quoteInfo.quotationNo == '' ? this.quoteInfo.lineCd : this.quoteInfo.quotationNo) }, 0);
 
   	if(this.quoteInfo.typeOfCession.toUpperCase() == 'RETROCESSION'){
@@ -163,6 +165,19 @@ export class QuotationComponent implements OnInit {
 	  			this.printPDF(this.selectedReport,this.quoteInfo.quoteId);
 	  		    this.modalService.dismissAll();
 	  		}
+
+        console.log(this.quoteInfo.status)
+        if(this.quoteInfo.status == 'A'){
+          this.quotationService.updateQuoteStatus(this.quoteInfo.quoteId, '3', this.currentUserId).subscribe((data)=>{
+            if(data['returnCode'] == 0) {
+              console.log("Status Failed to Update.");
+            } else {
+              console.log("Status Released");
+            }
+          });
+        }
+        
+
   	}
 
     showPrintDialog(event){
@@ -179,10 +194,13 @@ export class QuotationComponent implements OnInit {
       if (obj.toUpperCase() == 'SCREEN'){
         window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + selectedReport + '&quoteId=' + this.quoteInfo.quoteId, '_blank');
         this.modalService.dismissAll();
+        this.selectedReport = null;
       } else if (obj.toUpperCase() == 'PDF'){
         this.downloadPDF(selectedReport,this.quoteInfo.quoteId);
+        this.selectedReport = null;
       } else if (obj.toUpperCase() == 'PRINTER'){
         this.printPDF(selectedReport,this.quoteInfo.quoteId);
+        this.selectedReport = null;
       }
     }
 
@@ -256,15 +274,34 @@ export class QuotationComponent implements OnInit {
         console.log("Call update quote status.");
         this.quotationService.updateQuoteStatus(this.quoteInfo.quoteId, 'A', this.currentUserId).subscribe((data)=>{
             if(data['returnCode'] == 0) {
-              /*this.dialogMessage = data['errorList'][0].errorMessage;
-              this.dialogIcon = "error";
-              $('#quote-option #successModalBtn').trigger('click');*/
-              console.log("Status Updated");
-            } else {
               console.log("Status Failed to Update.");
+              this.dialogIcon = "error";
+              this.dialogMessage = "Status failed for Approval";
+              $('#successModalBtn').trigger('click');
+            } else {
+              this.dialogMessage = "Status Updated";
+              this.dialogIcon = "success";
+              $('#successModalBtn').trigger('click');
+              console.log("Status Updated");
             }
         })
       } else {
+        this.quotationService.updateQuoteStatus(this.quoteInfo.quoteId, 'P', this.approver).subscribe((data)=>{
+            if(data['returnCode'] == 0) {
+              /*this.dialogMessage = data['errorList'][0].errorMessage;
+              this.dialogIcon = "error";
+              $('#quote-option #successModalBtn').trigger('click');*/
+              console.log("Status failed forApproval");
+              this.dialogIcon = "error";
+              this.dialogMessage = "Status failed for Approval";
+              $('#successModalBtn').trigger('click');
+            } else {
+              this.dialogMessage = "Status Updated";
+              this.dialogIcon = "success";
+              $('#successModalBtn').trigger('click');
+              console.log("Status For Approval .");
+            }
+        })
         console.log("Assign to another user.");
       }
     }

@@ -39,6 +39,8 @@ export class QuoteOptionComponent implements OnInit {
       selector:'',
       data:{}
     }
+    riskId:string;
+    projId:string;
 
     @Output() enblEndtTab = new EventEmitter<any>();
 
@@ -103,8 +105,8 @@ export class QuoteOptionComponent implements OnInit {
         addFlag: true,
         deleteFlag: true,
         checkFlag: true,
-        // paginateFlag: true,
-        // infoFlag: true,
+        paginateFlag: true,
+        infoFlag: true,
         searchFlag: true,
         pageID: 2,
         uneditable: [true,true],
@@ -133,10 +135,10 @@ export class QuoteOptionComponent implements OnInit {
             endtCd: 0,
             showMG: 1,
         },
-        pageLength: 5,
+        pageLength: 10,
         checkFlag: true,
-        // paginateFlag: true,
-        // infoFlag: true,
+        paginateFlag: true,
+        infoFlag: true,
         searchFlag: true,
         pageID: 6,
         uneditable: [true,true],
@@ -292,7 +294,10 @@ export class QuoteOptionComponent implements OnInit {
         this.quotationService.getQuoteOptions(this.quoteId,'').subscribe(data => {
            if (data['quotation'] == null || data['quotation'] == undefined ){ 
            } else {
-               var optionRecords = data['quotation'].optionsList;
+
+                this.riskId = data['quotation'].project.riskId;
+                this.projId = data['quotation'].project.projId;
+                var optionRecords = data['quotation'].optionsList;
                 this.optionsData.tableData = data['quotation'].optionsList.sort(function(a,b){return a.optionId-b.optionId})
                 this.coversDeductiblesData.tableData = [];
                 this.optionsDeductiblesData.tableData = [];
@@ -384,7 +389,9 @@ clickDeductiblesLOV(data,from){
       endtCd: '0',
       activeTag:'Y'
     }
-    $('#lov #modalBtn2').trigger('click');
+    setTimeout(() => {
+      $('#lov #modalBtn2').trigger('click');
+    });
     this.deductiblesLOVRow = data.index;
 }
 
@@ -450,6 +457,8 @@ saveQuoteOptionAll(cancelFlag?){
    }
    let params: any = {
        quoteId:this.quoteId,
+       projId:this.projId,
+       riskId:this.riskId,
        saveQuoteOptionsList:[],
        deleteQuoteOptionsList:[],
        saveDeductibleList:[],

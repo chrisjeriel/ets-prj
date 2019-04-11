@@ -58,6 +58,7 @@ export class MtnSectionCoversComponent implements OnInit {
           this.selects.push(this.sectionCover.tableData[i]);
         }
       }
+      console.log(this.selects)
       this.selectedData.emit(this.selects);
       this.selects = [];
     }

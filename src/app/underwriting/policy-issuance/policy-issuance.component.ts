@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild,AfterViewInit } from '@angular/core';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-policy-issuance',
@@ -10,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class PolicyIssuanceComponent implements OnInit {
   @ViewChild('contentEditPol') contentEditPol;
   line: string;
+  showPolAlop: boolean = false;
   sub: any;
   
   policyInfo = {
@@ -18,7 +20,12 @@ export class PolicyIssuanceComponent implements OnInit {
         status:'',
         riskName:'',
         insured:'',
-        editPol:''
+        editPol:'',
+        insuredDesc:'',
+        riskId: '',
+        fromInq: '',
+        showPolAlop: false
+
   }
 
 
@@ -27,27 +34,27 @@ export class PolicyIssuanceComponent implements OnInit {
   approveText: string = "For Approval";
   currentUserId: string = JSON.parse(window.localStorage.currentUser).username;
   approverList: any[];
+  theme =  window.localStorage.getItem("selectedTheme");
+  status: string = "";
   
-  constructor(private route: ActivatedRoute,private modalService: NgbModal, private router: Router) { }
+  constructor(private route: ActivatedRoute,private modalService: NgbModal, private router: Router,private app: AppComponent) { }
 
   ngOnInit() {
-
-
     this.sub = this.route.params.subscribe(params => {
             this.line = params['line'];
+            this.showPolAlop = params['showPolAlop'];
             this.alterFlag = params['alter'];
             this.fromInq = params['fromInq'];
-
+            this.policyInfo.fromInq = params['fromInq'];
             this.policyInfo.editPol = JSON.parse(params['editPol']);
             this.policyInfo.status = params['statusDesc'];
             this.policyInfo.policyId = params['policyId'];
             this.policyInfo.policyNo = params['policyNo'];
             this.policyInfo.riskName = params['riskName'];
             this.policyInfo.insured = params['insured'];
-        });  
+        });   
 
-     console.log(this.policyInfo);
-     this.showEditModal(JSON.parse(this.policyInfo.editPol));
+    console.log(this.showPolAlop);
      /* Test Data */
 /*        this.policyInfo.policyId = 9; 
         this.policyInfo.policyNo = 'CAR-2019-00001-001-0001-001';
@@ -57,11 +64,17 @@ export class PolicyIssuanceComponent implements OnInit {
 
   }
 
+  ngAfterViewInit(){
+    this.status = this.policyInfo.status;
+    setTimeout(() => {
+         this.showEditModal(JSON.parse(this.policyInfo.editPol));
+         this.app.changeTheme(this.theme);
+     });
+  }
+
   showEditModal(obj : boolean){
     if (!obj){
-      setTimeout(() => {
-             this.modalService.open(this.contentEditPol, { centered: true, backdrop: 'static', windowClass: "modal-size" });
-      });
+         this.modalService.open(this.contentEditPol, { centered: true, backdrop: 'static', windowClass: "modal-size" });     
     }
   }
 
@@ -83,7 +96,14 @@ export class PolicyIssuanceComponent implements OnInit {
   }
 
   getPolInfo(event){      
-      this.policyInfo = event;
+      //this.policyInfo = event;
+
+      this.policyInfo.policyId = event.policyId;
+      this.policyInfo.insuredDesc =  event.insuredDesc;
+      this.policyInfo.riskId =  event.riskId;
+      this.policyInfo.showPolAlop = event.showPolAlop;
+
+      console.log(event.showPolAlop);
   }
 
   returnOnModal(){

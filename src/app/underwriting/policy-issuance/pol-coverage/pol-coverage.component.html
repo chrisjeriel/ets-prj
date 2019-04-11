@@ -7,16 +7,16 @@
     <div class="input-group" style="margin-bottom: -13px !important; margin-top: 0px !important">
       <label class="col-sm-1"></label>
       <label class="form-control-sm col-sm-1" for="xx">Policy No</label>
-      <input type="text" id="xx" value="CAR-2018-5081-077-0177" class="form-control form-control-sm cust-sm col-sm-2"
+      <input type="text" id="xx" [(ngModel)]="policyInfo.policyNo" class="form-control form-control-sm cust-sm col-sm-2"
       placeholder="" readonly>
       <label class="form-control-sm col-sm-1" for="xx">Insured</label>
-      <input type="text" id="xx" value="Insurer" class="form-control form-control-sm cust-sm col-sm-5" placeholder=""
+      <input type="text" id="xx" [(ngModel)]="policyInfo.insuredDesc" class="form-control form-control-sm cust-sm col-sm-5" placeholder=""
       readonly>
     </div>
     <div class="input-group" style="margin-bottom: -13px !important;">
       <label class="col-sm-1"></label>
       <label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Risk</label>
-      <input type="text" id="xx" value="Risk Name" class="form-control form-control-sm cust-sm col-sm-8" placeholder=""
+      <input type="text" id="xx" [(ngModel)]="policyInfo.riskName" class="form-control form-control-sm cust-sm col-sm-8" placeholder=""
       readonly>
     </div>
   </div>
@@ -24,7 +24,7 @@
 <fieldset class="scheduler-border">
   <legend class="scheduler-border">Section Covers</legend>
   <div class="test" style="margin-top: 0px !important; margin-bottom: 2px;">
-    <app-cust-editable-non-datatable [passData]="passDataSectionCover" (tableDataChange)="update($event);"></app-cust-editable-non-datatable>
+    <app-cust-editable-non-datatable [passData]="passDataSectionCover" (tableDataChange)="update($event);" (newClick)="onrowClick($event)"></app-cust-editable-non-datatable>
   </div>
 </fieldset>
 
@@ -41,17 +41,17 @@
           <label class="form-control-sm col-sm-3">Currency</label>
           <input type="text" class="form-control form-control-sm" [(ngModel)]="coverageData.currencyCd" readonly>
           <label class="form-control-sm col-sm-2">Exch. Rt.</label>
-          <input type="text" class="form-control form-control-sm req" [(ngModel)]="coverageData.currencyRt" readonly appCurrencyRate>
+          <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.currencyRt | number:'1.6-6'" (ngModelChange)="coverageData.currencyRt" readonly appCurrencyRate>
           <span class="col-sm-1"></span>
         </div>
         <div class="input-group" style="margin-bottom: -13px !important">
          <label class="form-control-sm col-sm-3">Total Sum Insured</label>
-         <input type="text" class="form-control form-control-sm req" [(ngModel)]="coverageData.totalSi" readonly appCurrency>
+         <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.totalSi  | number:'1.2-2'" (ngModelChange)="coverageData.totalSi = $event" readonly appCurrency>
          <span class="col-sm-1"></span>
        </div>
        <div class="input-group" style="margin-bottom: 2px !important">
          <label class="form-control-sm col-sm-3">Total Premium</label>
-         <input type="text" class="form-control form-control-sm req" [(ngModel)]="coverageData.totalPrem" readonly appCurrency>
+         <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.totalPrem  | number:'1.2-2'" (ngModelChange)="coverageData.totalPrem = $event" readonly appCurrency>
          <span class="col-sm-1"></span>
        </div>
      </div>
@@ -76,14 +76,14 @@
       </div>
       <div class="input-group" style="margin-bottom: -13px !important">
        <label class="form-control-sm col-sm-3">Share(%)</label>
-       <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData?.pctShare" (ngModelChange)="coverageData.pctShare = $event" appCurrencyRate appRequired>
+       <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData?.pctShare | number:'1.10-10'" (ngModelChange)="coverageData.pctShare = $event" style="text-align: right !important" appRequired>
        <label class="form-control-sm col-sm-2">PML(%)</label>
-       <input type="text" class="form-control form-control-sm req" [(ngModel)]="coverageData.pctPml" appCurrencyRate>
+       <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.pctPml | number:'1.10-10'" (ngModelChange)=" coverageData.pctPml = $event" >
        <span class="col-sm-1"></span>
      </div>
      <div class="input-group" style="margin-bottom: -6px !important">
        <label class="form-control-sm col-sm-3">100% Value</label>
-       <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData?.totalValue"  (ngModelChange)="coverageData.totalValue = $event" (blur)="coverageData.pctShare = (coverageData.totalSi/coverageData.totalValue*100)" appCurrency appRequired>
+       <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData?.totalValue"  style="text-align: right !important" (ngModelChange)="coverageData.totalValue = $event" (blur)="coverageData.pctShare = (coverageData.totalSi/coverageData.totalValue*100); " appRequired>
        <span class="col-sm-1"></span>
      </div>
    </div>
@@ -116,7 +116,7 @@
     <div class="form-group col-sm">
       <div class="col-md-13 text-center" style="margin-top: 10px;">
         <div class="cust-btn-container">
-          <button type="button" class="cust-btn" (click)="showDeductiblesModal(deductibles)"><a>Deductibles</a></button>
+          <button type="button" class="cust-btn" (click)="showDeductiblesModal(deductibles)" [disabled]="disabledFlag" [class.cust-btn-disabled]="disabledFlag"><a>Deductibles</a></button>
           <button type="button" class="cust-btn" (click)="CATPerils()" *ngIf="line == 'CAR' || line =='EAR' || line =='EEI' || line =='CEC'"><a>CAT Perils</a></button>
           <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
           <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
@@ -179,7 +179,7 @@
               <label class="form-control-sm col-sm-1">Currency</label>
               <input type="text" class="form-control form-control-sm col-sm-1" readonly [(ngModel)]="altCoverageData.currencyCd">
               <label class="form-control-sm col-sm-1" style="margin-left: -30px !important; z-index: -1;">Exch. Rt.</label>
-              <input type="text" class="form-control form-control-sm col-sm-1 req" readonly appCurrencyRate [(ngModel)]="altCoverageData.currencyRt">
+              <input type="text" class="form-control form-control-sm col-sm-1 req" readonly [ngModel]="altCoverageData.currencyRt | number:'1.6-6'" (ngModelChange)="altCoverageData.currencyRt = $event">
               <span class="col-sm-4"></span>
             </div>
             <div class="input-group" style="margin-left: 52px !important; margin-bottom: -10px !important; margin-top: -13px !important;">
@@ -192,17 +192,17 @@
             <div class="input-group" style="margin-left: -55px !important;">
               <span class="col-sm-2"></span>
               <label class="form-control-sm col-sm-2">Total Sum Insured</label>
-              <input type="text" class="form-control form-control-sm col-sm-2 req" readonly appCurrency [(ngModel)] = "altCoverageData.prevtotalSi">
-              <input type="text" class="form-control form-control-sm col-sm-2 req" readonly appCurrency style="margin-left: 3px !important;" [(ngModel)] = "altCoverageData.alttotalSi">
-              <input type="text" class="form-control form-control-sm col-sm-2 req" readonly appCurrency style="margin-left: 3px !important;" [(ngModel)] = "altCoverageData.comtotalSi">
+              <input type="text" class="form-control form-control-sm col-sm-2 req" readonly appCurrency [ngModel] = "altCoverageData.prevtotalSi | number:'1.2-2'" (ngModelChange) = "altCoverageData.prevtotalSi = $event">
+              <input type="text" class="form-control form-control-sm col-sm-2 req" readonly appCurrency style="margin-left: 3px !important;" [ngModel] = "altCoverageData.alttotalSi | number:'1.2-2'" (ngModelChange) = "altCoverageData.alttotalSi = $event">
+              <input type="text" class="form-control form-control-sm col-sm-2 req" readonly appCurrency style="margin-left: 3px !important;" [ngModel] = "altCoverageData.comtotalSi | number:'1.2-2'" (ngModelChange) = "altCoverageData.comtotalSi = $event">
               <span class="col-sm-2"></span>
             </div>
             <div class="input-group" style="margin-left: -55px !important ;margin-top: -8px;">
               <span class="col-sm-2"></span>
               <label class="form-control-sm col-sm-2">Total Premium</label>
-              <input type="text" class="form-control form-control-sm col-sm-2 req" readonly appCurrency [(ngModel)] = "altCoverageData.prevtotalPrem">
-              <input type="text" class="form-control form-control-sm col-sm-2 req" readonly appCurrency style="margin-left: 3px !important;" [(ngModel)] = "altCoverageData.alttotalPrem">
-              <input type="text" class="form-control form-control-sm col-sm-2 req"  readonly appCurrency style="margin-left: 3px !important;" [(ngModel)] = "altCoverageData.comtotalPrem">
+              <input type="text" class="form-control form-control-sm col-sm-2 req" readonly appCurrency [ngModel] = "altCoverageData.prevtotalPrem | number:'1.2-2'" (ngModelChange) = "altCoverageData.prevtotalPrem = $event">
+              <input type="text" class="form-control form-control-sm col-sm-2 req" readonly appCurrency style="margin-left: 3px !important;" [ngModel] = "altCoverageData.alttotalPrem | number:'1.2-2'" (ngModelChange) = "altCoverageData.alttotalPrem = $event">
+              <input type="text" class="form-control form-control-sm col-sm-2 req"  readonly appCurrency style="margin-left: 3px !important;" [ngModel] = "altCoverageData.comtotalPrem | number:'1.2-2'" (ngModelChange) = "altCoverageData.comtotalPrem">
               <span class="col-sm-2"></span>
             </div>
           </div>
@@ -224,53 +224,6 @@
     </div>
   </fieldset>
 
-
-  <!-- <div class="row">
-    <div class="cust-sm col-sm-6" style="padding-right: 2px;">
-      <fieldset class="scheduler-border fs" style="padding-top: 0px !important;">
-        <legend class="scheduler-border">Share Details</legend>
-        <div class="cust-sm" style="margin-top: -8px;margin-bottom: -18px;">
-          <div class="row" style="margin-right: 0px; margin-bottom: 15px;">
-            <div class="input-group" style="margin-top: -10px;">
-              &nbsp;
-            </div>
-            <div class="input-group">
-              <span class="col-sm-1"></span>
-              <label class="form-control-sm col-sm-3">Share(%)</label>
-              <input type="text" class="form-control form-control-sm">
-              <label class="form-control-sm col-sm-1">PML(%)</label>
-              &nbsp;<input type="text" class="form-control form-control-sm">
-              <span class="col-sm-2"></span>
-            </div>
-            <div class="input-group">
-              <span class="col-sm-1"></span>
-              <label class="form-control-sm col-sm-3">Part Of(100%)</label>
-              <input type="text" class="form-control form-control-sm">
-              <span class="col-sm-2"></span>
-            </div>
-          </div>
-          <div class="cust-sm col-sm-1"></div>
-
-        </div>
-      </fieldset>
-    </div>
-    <div class="cust-sm col-sm-6" style="padding-left: 2px;">
-      <fieldset class="scheduler-border fs">
-       <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
-       <div class="cust-sm">
-         <div class="row" style="margin-right: 0px; margin-top: -8px;">
-          <div class="input-group" style="margin-top: 2px !important;">
-           <label class="form-control-sm col-sm-1">Remarks</label>
-           <textarea [innerHTML]="textArea" class="form-control-sm form-control" style="font-size: 11px; min-height: 65px; margin-bottom: 10px; margin-left: 8px"></textarea>
-           <div class="text-search-ico"><a><i class="fa fa-pencil" (click)="showTextEditorModal(content)"></i></a></div>&nbsp;
-         </div>
-      </div>
-    </div>
-    </fieldset>
-  </div>
-</div> -->
-
-
 <div class="row">
   <div class="col-sm-6">
     <fieldset class="scheduler-border">
@@ -281,41 +234,19 @@
       </div>
       <div class="input-group" style="margin-bottom: -13px !important">
        <label class="form-control-sm col-sm-3">Share(%)</label>
-       <input type="text" class="form-control form-control-sm req" appCurrencyRate appRequired [(ngModel)] = "altCoverageData.pctShare">
+       <input type="text" class="form-control form-control-sm req" appCurrencyRate appRequired [ngModel] = "altCoverageData.pctShare | number:'1.2-2'" (ngModelChange) = "altCoverageData.pctShare = $event">
        <label class="form-control-sm col-sm-2">PML(%)</label>
-       <input type="text" class="form-control form-control-sm req" appCurrencyRate [(ngModel)] = "altCoverageData.pctPml">
+       <input type="text" class="form-control form-control-sm req" appCurrencyRate [ngModel] = "altCoverageData.pctPml | number:'1.2-2'" (ngModelChange)="altCoverageData.pctPml">
        <span class="col-sm-1"></span>
      </div>
      <div class="input-group" style="margin-bottom: -6px !important">
        <label class="form-control-sm col-sm-3">100% Values</label>
-       <input type="text" class="form-control form-control-sm req" appCurrency appRequired [(ngModel)] = "altCoverageData.totalValue">
+       <input type="text" class="form-control form-control-sm req" appCurrency appRequired [ngModel] = "altCoverageData.totalValue | number:'1.2-2'"  (ngModelChange) = "altCoverageData.totalValue">
        <span class="col-sm-1"></span>
      </div>
    </div>
  </fieldset>
 </div>
-    <!-- <div class="cust-sm col-sm-6" style="padding-left: 0px;">
-        <fieldset class="scheduler-border">
-         <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
-        <div class="cust-sm">
-           <div class="cust-sm col-sm-1"></div>
-            <div class="row" style="margin-right: 0px; margin-bottom: 0px;">
-                    <div class="input-group" style="margin-top: -16px;">
-                        &nbsp;
-                    </div>
-                   <div class="input-group" style="margin-top: -5px;">
-                       <label class="form-control-sm col-sm-1">Remarks</label>
-                       <textarea class="form-control-sm form-control" style="font-size: 11px; min-height: 61px; margin-bottom: 10px; margin-left: 8px"></textarea> 
-                       <div class="text-search-ico"><a><i class="fa fa-pencil" (click)="showTextEditorModal(content)"></i></a></div>&nbsp;
-                    </div>
-                    <div class="input-group">
-                            <span class="col-sm-3"></span>
-                            <span class="cust-sm"></span>
-                    </div>
-            </div>
-          </div>
-      </fieldset>
-    </div> -->
     <div class="cust-sm col-sm-6" style="padding-left: 0px;">
       <fieldset class="scheduler-border" style="padding-top: 10px !important;">
        <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
@@ -342,7 +273,7 @@
       <div class="form-group col-sm">
         <div class="col-sm text-center">
           <div class="cust-btn-container" style="margin-top: 10px;">
-            <button type="button" class="cust-btn" (click)="showDeductiblesModal(deductibles)"><a>Deductibles</a></button>
+            <button type="button" class="cust-btn" (click)="showDeductiblesModal(deductibles)" [disabled]="disabledFlag" [class.cust-btn-disabled]="disabledFlag"><a>Deductibles</a></button>
             <button type="button" class="cust-btn" (click)="CATPerils()" *ngIf="line == 'CAR' || line =='EAR' || line =='EEI' || line =='CEC'"><a>CAT Perils</a></button>
             
             <button type="button" class="cust-btn" (click)="pol($event)"><a>Cancel</a></button>
@@ -365,43 +296,6 @@
     </div>
 </app-modal>
 </ng-container>
-
-<!-- <ng-template #content>
-  <div class="modal-header">
-    <span class="modal-title" id="modal-basic-title">Text Editor</span>
-    <div class="close" style="padding-bottom: 5px;">
-      <a class="btn-cust" aria-label="Close" (click)="modalService.dismissAll();" aria-hidden="true" ><span style="padding-right: 3px;" id="closes">&times;&nbsp;&nbsp;</span></a>
-    </div>
-  </div>
-  <div class="modal-body">
-    <quill-editor [(ngModel)]="textArea" [style]="{height: '300px', width: '900px'}"></quill-editor> 
-  </div>
-  <div class="modal-footer">
-    <div>
-      <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
-    </div>
-  </div>
-</ng-template> -->
-
-
-<!-- <ng-template #deductibles>
-    <div class="modal-header">
-         <span class="modal-title" id="modal-basic-title">Deductibles</span>
-         <div class="close" style="padding-bottom: 5px;">
-          <a class="btn-cust" aria-label="Close" (click)="modalService.dismissAll();" aria-hidden="true" ><span style="padding-right: 3px;" id="closes">&times;&nbsp;&nbsp;</span></a>
-          </div>
-    </div>
-    <div class="modal-body">
-          <app-cust-editable-non-datatable #deductiblesTable [passData]="passDataDeductibles"></app-cust-editable-non-datatable>
-    </div>
-    <div class="modal-footer" style="justify-content: center; padding-top: 10px;">
-      <div class="row">
-          <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-          <button class="cust-btn" type="button" (click)=""><a>Save</a></button>
-      </div>
-    </div>    
-</ng-template> -->
-
 <app-modal class="d-none" #deductiblesModal>
   <div header>Deductibles</div>
   <div body>
@@ -415,39 +309,3 @@
 
 <app-lov id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)" [lovCheckBox]="true"></app-lov>
 <app-sucess-dialog id="deductibles-success" [icon]="dialogIcon" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
-
-  <!-- <div contenteditable="true" [innerHTML]="textArea | safeText: 'html'" style="border: 1px solid;">
-   
-  </div>
-  <br />
-  <quill-editor [ngModel]="textArea"></quill-editor>
-  <br /> -->
-
-
-   <!-- <div class="input-group" style="margin-left: -15px !important">
-              <label class="form-control-sm col-sm-3">Section I</label>
-              <input type="text" class="form-control form-control-sm col-sm-3" disabled="true">
-              &nbsp;
-              <input type="text" class="form-control form-control-sm col-sm-3">
-              &nbsp;
-              <input type="text" class="form-control form-control-sm col-sm-3" disabled="true">
-              &nbsp;
-            </div>
-            <div class="input-group" style="margin-left: -15px !important">
-              <label class="form-control-sm col-sm-3">Section II</label>
-              <input type="text" class="form-control form-control-sm col-sm-3" disabled="true">
-              &nbsp;
-              <input type="text" class="form-control form-control-sm col-sm-3">
-              &nbsp;
-              <input type="text" class="form-control form-control-sm col-sm-3"  disabled="true">
-              &nbsp;
-            </div>
-            <div class="input-group" style="margin-left: -15px !important">
-              <label class="form-control-sm col-sm-3">Section III</label>
-              <input type="text" class="form-control form-control-sm col-sm-3" disabled="true">
-              &nbsp;
-              <input type="text" class="form-control form-control-sm col-sm-3">
-              &nbsp;
-              <input type="text" class="form-control form-control-sm col-sm-3"  disabled="true">
-              &nbsp;
-            </div> -->

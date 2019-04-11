@@ -36,3 +36,7 @@
     margin: 0px !important;
     padding: 4px 8px 4px 0px !important;
 }*/
+
+p {
+    margin-bottom: 0; 
+}
