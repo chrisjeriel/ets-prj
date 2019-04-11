@@ -2,7 +2,7 @@
 	<h4 *ngIf="!inquiryFlag">Quotation / Quotation Processing {{ header }}</h4>
 	<h4 *ngIf="inquiryFlag">Quotation / Quotation Inquiry</h4>
 	<!-- <ngb-tabset (tabChange)="beforeChange($event)"> -->
-		<ngb-tabset  (tabChange)="onTabChange($event)">
+		<ngb-tabset #tabset  (tabChange)="onTabChange($event)">
 		<ngb-tab class="ngb-tab" title="General Info">
 			<ng-template ngbTabContent>
 				<app-general-info (checkQuoteId)="checkQuoteInfo($event)" [quoteInfo]="quoteInfo" [inquiryFlag]="inquiryFlag"
