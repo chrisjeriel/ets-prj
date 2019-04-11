@@ -307,7 +307,7 @@
   </div>
 </app-modal>
 
-<app-confirm-save  id = "alterationSaving" (onYes)="alterationSave()"></app-confirm-save>
+<!-- <app-confirm-save  id = "alterationSaving" (onYes)="alterationSave()"></app-confirm-save> -->
 <app-lov id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)" [lovCheckBox]="true"></app-lov>
 <app-sucess-dialog id="deductibles-success" [icon]="dialogIcon" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 <app-mtn-section-covers id="sectionCoversLOV" (selectedData)="selectedSectionCoversLOV($event)" [lineCd]="line" [hideSectionCoverArray]="hideSectionCoverArray" [lovCheckBox]="true"></app-mtn-section-covers>
