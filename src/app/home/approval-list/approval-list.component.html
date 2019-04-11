@@ -17,9 +17,63 @@
 	    background-color: rgba(82, 168, 236, 0.23); /*#a6d6e24d;*/
 	    cursor: pointer;
 	}
+
+	.selected {
+		background-color: rgba(82, 168, 236, 0.23);
+	}
+
+	.my-pagination /deep/ .ngx-pagination li a {
+	    font-size: 12px !important;
+	    border-radius: 4px !important;
+	}
+
+	.my-pagination /deep/ .ngx-pagination {
+	    font-weight: 400;
+	    font-size: 12px;
+	}
+
+	.my-pagination /deep/ .ngx-pagination .current {
+	    background: #007bff;
+	    border-radius: 4px !important;
+	}
+
+	.cust-btn {
+		background: #E76B6F !important;
+		border: 0px;
+	    border-radius: 2px !important;
+	    font-size: 11px;
+	    font-weight: 400;
+	    padding: 4px 8px !important;
+	}
+
+	.cust-btn:disabled {
+		background: gray !important;
+	}
+
+	.cust-btn:hover {
+		opacity: 0.75;
+	}
+
+	.dropdown-item {
+		font-size: 12px;
+		font-weight: 400;
+	}
+
+	.dropdown-item:hover {
+	    color: #16181b;
+	    text-decoration: none;
+	    background-color: rgba(82, 168, 236, 0.23);
+	}
+
+	.pagination {
+		right: 15px;
+    	bottom: -16px;
+	}
+
+
 </style>
 
-<div style="border: 1px solid #c5c3c3; padding: 1em; margin-bottom: .75em;">
+<div style="border: 1px solid #c5c3c3; padding: 1em 1em 1.5em 1em; margin-bottom: .75em;">
 	<div class="row">
 			<div class="col-md-12">
 				<h4>Approval</h4>
@@ -33,15 +87,71 @@
 				    <th scope="col">Assigned Date</th>
 				  </tr>
 				  </thead>
-				  <tbody>
-				  <tr *ngFor="let mod of approvalList; index as i">
-				    <td>{{ mod.module }}</td>
-				    <td>{{ mod.details }}</td>
-				    <td>{{ mod.assignedBy }}</td>
-				    <td>{{ mod.assignedDate }}</td>
-				  </tr>
+				  <tbody class="app-active-table">
+					<tr *ngFor="let mod of approvalList | paginate: { id:'wf', itemsPerPage: 10, currentPage: p }; index as i" [class.selected]="mod === selectedData" (contextmenu)="onRightClick($event, mod);" (click)="onRowClick($event, mod);">
+					    <td>{{ mod.module }}</td>
+					    <td>{{ mod.details }}</td>
+					    <td>{{ mod.assignedBy }}</td>
+					    <td>{{ mod.assignedDate }}</td>
+					</tr>
+					<tr *ngIf="approvalList.length == 0">
+					    <td colspan="4" style="text-align: center;">No records for approval.</td>
+					</tr>
+				    <div class="dropdown-menu dropdown-menu-sm" id="context-menu">
+			          	<a class="dropdown-item" (click)="redirectToQuoteGenInfo()"><fa name="file-text-o"></fa>&nbsp;&nbsp;Review Document</a>
+			          	<a class="dropdown-item" href="#"><fa name="check-square-o"></fa>&nbsp;&nbsp;Approve</a>
+			        </div>
 				  </tbody>
 				</table>
+
+				<div style="float: left;">
+					<button [disabled]="selectedData == null" class="cust-btn" (click)="redirectToQuoteGenInfo()">Review Document</button>
+					<button [disabled]="selectedData == null" class="cust-btn" style="background: #E76B6F !important;">Approve</button>
+				</div>
+				<div class="pagination">
+		            <!--<div class="pagination" *ngIf="passData.hasPagination">-->
+		            <!-- <pagination-template class="" #paw="paginationApi" (pageChange)="p = $event"><a (click)="paw.setCurrent(1)">&laquo;</a></pagination-template>-->
+		            <pagination-controls [id]="'wf'" class="my-pagination" (pageChange)="p = $event;" previousLabel="" nextLabel="">
+		            </pagination-controls>
+		            <!--<pagination-template class="" #paw="paginationApi" (pageChange)="p = $event"> <a (click)="paw.setCurrent(paw.getLastPage())">&raquo;</a></pagination-template>-->
+		        </div>
+
 			</div>
+			
+
+			
 	</div>
 </div>
+
+
+<!-- <div>
+	<p>You can bind our <code>NgbPagination</code> component with slicing the data list</p>
+
+	<table class="table table-striped">
+	  <thead>
+	  <tr>
+	    <th scope="col">#</th>
+	    <th scope="col">Country</th>
+	    <th scope="col">Area</th>
+	    <th scope="col">Population</th>
+	  </tr>
+	  </thead>
+	  <tbody>
+	  <tr *ngFor="let country of countries">
+	    <th scope="row">{{ country.id }}</th>
+	    <td>
+	      <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="mr-2" style="width: 20px">
+	      {{ country.name }}
+	    </td>
+	    <td>{{ country.area | number}}</td>
+	    <td>{{ country.population | number }}</td>
+	  </tr>
+	  </tbody>
+	</table>
+
+	<div class="d-flex justify-content-between p-2">
+	  <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize">
+	  </ngb-pagination>
+	</div>
+
+</div> -->

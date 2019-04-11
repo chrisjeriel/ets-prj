@@ -73,13 +73,13 @@
 			<div class="input-group" style="margin-top: 14px !important;">
 				<label class="col-sm-3"></label>
 				<label class=" form-control-sm col-sm-2" for="annSumInsured">Annual Sum Insured</label>
-				<input [readonly]="true" class="form-control form-control-sm  col-sm-5 text-right" type="text" id="annSumInsured" [(ngModel)]="polAlopData.annSi" name="annSi"
+				<input [readonly]="true" class="form-control form-control-sm  col-sm-5 text-right" type="text" id="annSumInsured" [ngModel]="polAlopData.annSi | number:'1.2-2'" name="annSi" appCurrency
 				 onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
 			</div>
 			<div class="input-group">
 				<label class="col-sm-3"></label>
 				<label class="form-control-sm col-sm-2 text-left" for="sumInsForMaxIndem">Sum Insured for Maximum Indemnity Period</label>
-				<input [readonly]="true" class="form-control form-control-sm  col-sm-5 text-right" type="text" id="sumInsForMaxIndem" [(ngModel)]="polAlopData.maxIndemPdSi" name="maxIndemPdSi"
+				<input [readonly]="true" class="form-control form-control-sm  col-sm-5 text-right" type="text" id="sumInsForMaxIndem" [ngModel]="polAlopData.maxIndemPdSi | number:'1.2-2'" name="maxIndemPdSi" appCurrency
 				 onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
 			</div>
 		</div>
@@ -98,7 +98,7 @@
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" for="maxIndemPeriod">Maximum Indemnity Period</label>
-				<input [readonly]="alterFlag" class="form-control form-control-sm  col-sm-1" type="number" id="maxIndemPeriod" [(ngModel)]="polAlopData.maxIndemPd" name="maxIndemPd" appRequired>
+				<input [readonly]="alterFlag" class="form-control form-control-sm  col-sm-1" type="number" id="maxIndemPeriod" [ngModel]="polAlopData.maxIndemPd" name="maxIndemPd" appRequired>
 				<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">months</label>
 			</div>
 			<div class="input-group">

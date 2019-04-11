@@ -97,6 +97,7 @@
 													<option>CPI</option>
 													<option>PMMSC-Admin</option>
 												</select> -->
+<!-- <<<<<<< HEAD
 											<div class="col-sm-7" style="padding-left : 0px ! important; padding-right : 0px ! important;">
 												<div class="input-group" style="margin-bottom : -8px ! important">
 													<select class="form-control form-control-sm cust-sm" [(ngModel)]="approver">
@@ -104,6 +105,11 @@
 			                                    	</select>
 												</div>
 											</div>
+======= -->
+												<select class="form-control form-control-sm cust-sm col-sm-8" [ngModel]="approver" (ngModelChange)="approver = $event;validateApproval()">
+			                                        <option *ngFor="let approver of approverList; let i = index" [value]="approver.userId" >{{ approver.userId + ' - ' + approver.userName }}</option>
+			                                    </select>
+<!-- >>>>>>> dc3949c4744baa5b4cdeb823b2772b8643eb0776 -->
 												<button class="cust" (click)="approveQuotation();">{{ approveText }}</button>
 											</div>
 										</div>

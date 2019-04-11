@@ -56,7 +56,7 @@
                             </div>
                             <div class="input-group">&nbsp;
                                 <label class="form-control-sm" style="margin-left: 1px;">Total SI</label>
-                                <input type="text" class="form-control form-control-sm cust-sm txt-content-rght req" required placeholder="0.00" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="coverageData.totalSi" appCurrency readonly>
+                                <input type="text" class="form-control form-control-sm cust-sm txt-content-rght req" required placeholder="0.00" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [ngModel]="coverageData.totalSi | number:'1.2-2'" (ngModelChange)="coverageData.totalSi = $event"  appCurrency readonly>
                             </div>
                         </div>
                         <div class="col-sm-1"></div>
