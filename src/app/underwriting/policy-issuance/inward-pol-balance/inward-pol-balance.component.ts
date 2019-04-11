@@ -169,7 +169,7 @@ export class InwardPolBalanceComponent implements OnInit {
   compute(){
     for(let rec of this.passData.tableData){
       if(rec.otherCharges.length != 0)
-        rec.otherChargesInw = rec.otherCharges.filter((a)=>{return !a.deleted}).map(a=>a.amount).reduce((sum,curr)=>sum+curr);
+        rec.otherChargesInw = rec.otherCharges.filter((a)=>{return !a.deleted}).map(a=>a.amount).reduce((sum,curr)=>sum+curr,0);
       rec.amtDue = rec.premAmt + rec.otherChargesInw;
     }
     this.instllmentTable.refreshTable();
@@ -290,8 +290,11 @@ export class InwardPolBalanceComponent implements OnInit {
         }
       })
     }
+    this.instllmentTable.indvSelect.otherCharges = this.passData2.tableData;
+    console.log(this.passData2.tableData)
     this.otherTable.markAsDirty();
     this.otherTable.refreshTable();
+    this.compute();
   }
 
 
