@@ -207,6 +207,7 @@ export class InwardPolBalanceComponent implements OnInit {
             instFlag = true;
           }else if(chrg.deleted){
             params.delOtherCharges.push(chrg);
+            instFlag = true;
           }
         }
         if(instFlag){
