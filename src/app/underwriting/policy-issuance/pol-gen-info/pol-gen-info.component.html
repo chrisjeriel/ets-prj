@@ -79,11 +79,11 @@
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Co Ref No</label>
 										<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="policyInfo.coRefNo">
 									</div>
-									<div *ngIf="typeOfCession.toUpperCase() == 'RETROCESSION'" class="input-group">
+									<div *ngIf="policyInfo.cessionDesc?.toUpperCase() == 'RETROCESSION'" class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">RI Binder No</label>
 										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.riBinderNo">
 									</div>
-									<div *ngIf="typeOfCession.toUpperCase() == 'RETROCESSION'" class="input-group">
+									<div *ngIf="policyInfo.cessionDesc?.toUpperCase() == 'RETROCESSION'" class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Reinsurance From</label>
 										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.reinsurerId">
 										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px;">
