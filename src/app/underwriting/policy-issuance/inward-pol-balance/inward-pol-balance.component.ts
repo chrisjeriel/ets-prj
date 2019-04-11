@@ -49,7 +49,7 @@ export class InwardPolBalanceComponent implements OnInit {
     widths: ["1", "1", "1", "auto", "auto", "auto"],
     pageID:'installment',
     pageLength: 5,
-    checkFlag: true
+    checkFlag: false
   };
 
   passData2: any = {
@@ -75,7 +75,7 @@ export class InwardPolBalanceComponent implements OnInit {
       updateDate: this.ns.toDateTimeString(0),
       showMG :1
     },
-    checkFlag: true
+    checkFlag: false
   };
 
   passLOVData:any = {
@@ -110,10 +110,10 @@ export class InwardPolBalanceComponent implements OnInit {
       for(let key of this.passData2.keys)
         this.passData2.uneditable.push(true);
     }
-    console.log(this.policyInfo)
   }
 
   fetchData(){
+    console.log(this.policyInfo.policyId)
     this.underwritingservice.getInwardPolBalance(this.policyInfo.policyId).subscribe((data:any)=>{
       this.currency = data.policyList[0].project.coverage.currencyCd;
       this.totalPrem = data.policyList[0].project.coverage.totalPrem;
@@ -124,31 +124,11 @@ export class InwardPolBalanceComponent implements OnInit {
           a.otherCharges = a.otherCharges.filter(a=>a.chargeCd!=null)
           return true;
         });
-        
-      }else{
-        this.passData.tableData.push(
-          {
-            "instNo": 1,
-            "bookingDate": this.ns.toDateTimeString(data.policyList[0].issueDate),
-            "dueDate": this.ns.toDateTimeString(data.policyList[0].inceptDate),
-            "premAmt": this.totalPrem,
-            "otherChargesInw": 0,
-            "amtDue": this.totalPrem,
-            "createUser": JSON.parse(window.localStorage.currentUser).username,
-            "createDate": this.ns.toDateTimeString(0),
-            "updateUser": JSON.parse(window.localStorage.currentUser).username,
-            "updateDate": this.ns.toDateTimeString(0),
-            otherCharges:[],
-            edited: true
-          }
-        );
-         if(!this.policyInfo.fromInq){
-           this.instllmentTable.markAsDirty();
-         }
-        
+
+        this.passData.nData.dueDate = this.ns.toDateTimeString(data.policyList[0].inceptDate);
+        this.passData.nData.bookingDate = this.ns.toDateTimeString(data.policyList[0].issueDate); 
       }
       this.instllmentTable.onRowClick(null,this.passData.tableData[0]);
-      this.compute();
       this.instllmentTable.refreshTable();
     })
   }
@@ -192,7 +172,6 @@ export class InwardPolBalanceComponent implements OnInit {
         rec.otherChargesInw = rec.otherCharges.filter((a)=>{return !a.deleted}).map(a=>a.amount).reduce((sum,curr)=>sum+curr);
       rec.amtDue = rec.premAmt + rec.otherChargesInw;
     }
-
   }
 
   save(can?){
@@ -256,16 +235,51 @@ export class InwardPolBalanceComponent implements OnInit {
     if(this.instllmentTable.getSum('premAmt') == this.totalPrem)
       this.confirmSave.confirmModal();
     else{
-      console.log(this.instllmentTable.getSum('premAmt'));
-      console.log(this.totalPrem);
       this.dialogIcon = 'error-message';
-      this.dialogMsg = 'Total Premium does not match.';
+      this.dialogMsg = 'Total Premium must be equal to the sum of premium per installment.';
       this.successDiag.open();
     }
   }
 
   onClickCancel(){
     this.cancel.clickCancel();
+  }
+
+  delInst(){
+    if(this.passData.tableData.filter(a=>!a.deleted).length == 1){
+      this.dialogIcon = 'error-message';
+      this.dialogMsg = 'A policy must have one or more installments.';
+      this.successDiag.open();
+      return null;
+    }
+
+    if(this.passData.tableData[this.passData.tableData.length -1 ].add){
+      this.passData.tableData.pop();
+    }else{
+      this.passData.tableData.forEach(a=>{
+        if(a==this.instllmentTable.displayData[this.instllmentTable.displayData.filter(a=>a!=this.instllmentTable.fillData).length -1 ]){
+          a.deleted = true;
+          a.edited = true;
+        }
+      })
+    }
+    this.instllmentTable.markAsDirty();
+    this.instllmentTable.refreshTable();
+  }
+
+  delOth(){
+    if(this.passData2.tableData[this.passData2.tableData.length -1 ].add){
+      this.passData2.tableData.pop();
+    }else{
+      this.passData2.tableData.forEach(a=>{
+        if(a==this.otherTable.displayData[this.otherTable.displayData.filter(a=>a!=this.otherTable.fillData).length -1 ]){
+          a.deleted = true;
+          a.edited = true;
+        }
+      })
+    }
+    this.otherTable.markAsDirty();
+    this.otherTable.refreshTable();
   }
 
 

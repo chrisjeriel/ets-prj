@@ -65,7 +65,7 @@
                 <div class="col-sm-6" style="padding-left: 2px; padding-right: 2px;"> 
                 <fieldset class="scheduler-border" style="padding-right: 5px !important;padding-left: 5px !important;height: 356px">
                     <legend class="scheduler-border">Deductibles</legend>
-                    <app-cust-editable-non-datatable #deductibleTable  id="deductibleTable" (onDataChange)="deductibleTable.tableData=$event" [passData]="deductiblesData" (clickLOV)="clickDeductiblesLOV($event)" class="d-block py-2"></app-cust-editable-non-datatable>
+                    <app-cust-editable-non-datatable #deductibleTable  id="deductibleTable" (tableDataChange)="table.indvSelect.deductiblesList=$event" [passData]="deductiblesData" (clickLOV)="clickDeductiblesLOV($event)" class="d-block py-2"></app-cust-editable-non-datatable>
                 </fieldset>
             </div>
         </div>

@@ -128,6 +128,7 @@ export class PolOpenCovListComponent implements OnInit {
 	              dataType: 'text'
 	          },
 	      ],
+	      exportFlag: true
 	};
 	@ViewChild('listTable') listTable: any;
 	searchParams: any[] = [];

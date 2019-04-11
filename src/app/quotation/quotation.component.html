@@ -6,7 +6,7 @@
 		<ngb-tab class="ngb-tab" title="General Info">
 			<ng-template ngbTabContent>
 				<app-general-info (checkQuoteId)="checkQuoteInfo($event)" [quoteInfo]="quoteInfo" [inquiryFlag]="inquiryFlag"
-					(enblEndtTab)="enblEndtTab=$event"></app-general-info>
+					(enblEndtTab)="enblEndtTab=$event" (enblOptTab)="enblOptTab=$event"></app-general-info>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab id="idko" [disabled]="quoteInfo.quoteId == ''">
@@ -14,10 +14,10 @@
 				<div>Coverage</div>
 			</ng-template>
 			<ng-template ngbTabContent>
-				<app-coverage [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag" (enblEndtTab)="enblEndtTab=$event"></app-coverage>
+				<app-coverage [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag" (enblEndtTab)="enblOptTab=$event"></app-coverage>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab [disabled]="quoteInfo.quoteId == '' || !enblEndtTab">
+		<ngb-tab [disabled]="quoteInfo.quoteId == '' || !enblOptTab">
 			<ng-template ngbTabTitle>
 				<div>Quote Option</div>
 			</ng-template>

@@ -174,6 +174,7 @@ export class GeneralInfoComponent implements OnInit {
 	tempQuoteIdInternalComp = "";
 
 	@Output() enblEndtTab = new EventEmitter<any>(); //Paul
+	@Output() enblOptTab = new EventEmitter<any>(); //Paul
 	//@Output() enblQuoteOpTab = new EventEmitter<any>(); //EJVA
 
 	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title,
@@ -726,6 +727,7 @@ export class GeneralInfoComponent implements OnInit {
   			showAlop: this.quoteInfo.showAlop,
   			cessionId: this.genInfoData.cessionId
   		});		
+  		this.checkCoverage();//PAUL
   		this.checkQuoteOption(); //PAUL
   	}
 
@@ -854,7 +856,8 @@ export class GeneralInfoComponent implements OnInit {
 	//paul
 	checkQuoteOption(){
 		this.quotationService.getQuoteOptions(this.genInfoData.quoteId).subscribe((data)=>{
-			if(data['quotation'] !== null){
+			console.log(data)
+			if(data['quotation'].optionsList.length!=0){
 				this.enblEndtTab.emit(true);
 				let alopFlag = false;
 		           if(data['quotation'] !== null)
@@ -868,7 +871,12 @@ export class GeneralInfoComponent implements OnInit {
 		           }
 		           this.quoteInfo.showAlop = alopFlag;
 			}
-			console.log(data);
+		})
+	}
+
+	checkCoverage(){
+		this.quotationService.getCoverageInfo(null,this.genInfoData.quoteId).subscribe((data: any) => {
+			this.enblOptTab.emit(data.quotation.project!==null);
 		})
 	}
 
