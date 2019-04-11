@@ -26,7 +26,7 @@ legend.scheduler-border {
     width:auto;
     padding:10px 10px;
     margin-bottom: -14px;
-    color: #2d5986;
+    color: #2d5986 ! important;
 }
 
 label.top-label {
@@ -71,7 +71,7 @@ textarea {
     border: 1px solid gray;
     z-index: 9999 !important;
     border-radius: 2px;
-    background: linear-gradient(to bottom, #4080bf 0%, #2d5986 100%);
+    background: linear-gradient(to bottom, #4080bf 0%, #2d5986 100%) ! important;
     min-width: 60px;
     max-width: 120px;
     padding-top: 5px;
@@ -250,11 +250,18 @@ ul.ngx-pagination{
 
 .nav-link {
     padding: 5px 10px !important;
+    color : #007bff;
 }
+
+.nav-link:hover {
+    color: #0056b3;
+}
+
 
 .cap-input {
     text-transform: uppercase;
 }
+
 
 
 /*height: calc(1.8125rem + 2px);
@@ -601,6 +608,49 @@ textarea {
     color: black !important;
 }
 
+
+.cust-filter {
+    height: calc(1.3rem + 1px) !important;
+    position: absolute !important;
+    right: 3px;
+    top: 2.9px;
+    font-size: 0.7rem !important;
+    color: white !important;
+    text-align: center;
+    text-decoration: none !important;
+    outline: none !important;
+    border-style: none;
+    border: 1px solid gray;
+    border-radius: 0px 3px 3px 0px;
+    z-index: 1000 !important;
+    background: linear-gradient(to bottom, #4080bf 0%, #2d5986 100%) ! important;
+}
+
+.cust-filter:hover {
+    background: linear-gradient(to bottom, #4080df 0%, #2d5986 100%) ! important;
+}
+
+.cust-export {
+    height: calc(1.3rem + 1px) !important;
+    position: absolute !important;
+    right: -14px;
+    top: 2.9px;
+    font-size: 0.7rem !important;
+    color: white !important;
+    text-align: center;
+    text-decoration: none !important;
+    outline: none !important;
+    border-style: none;
+    border: 1px solid gray;
+    border-radius: 3px 3px 3px 3px;
+    z-index: 1000 !important;
+    background: linear-gradient(to bottom, #4080bf 0%, #2d5986 100%) ! important;
+}
+
+.cust-filter:hover {
+    background: linear-gradient(to bottom, #4080df 0%, #2d5986 100%) ! important;
+}
+
 .my-pagination /deep/ .ngx-pagination .current {
     font-size: 10px;
     font-weight: bold;
@@ -612,3 +662,10 @@ textarea {
     background: linear-gradient(to bottom, #4080bf 0%, #2d5986 100%) ! important;
 }
 
+.cust {
+    background: linear-gradient(to bottom, #4080bf 0%, #2d5986 100%) ! important;
+}
+
+.cust:hover {
+   background: linear-gradient(to bottom, #4080bf 0%, #2d5986 100%) ! important;
+}

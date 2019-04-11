@@ -37,7 +37,7 @@
 		<ngb-tab *ngIf="(line=='CAR' || line=='EAR') && quoteInfo.showAlop" [disabled]="quoteInfo.quoteId == ''">
 	<!-- 	<ngb-tab> -->
 			<ng-template ngbTabTitle>
-				<div appChangetheme>ALOP</div>
+				<div>ALOP</div>
 			</ng-template>
 			<ng-template ngbTabContent>
 				<app-quo-alop [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag"></app-quo-alop>
