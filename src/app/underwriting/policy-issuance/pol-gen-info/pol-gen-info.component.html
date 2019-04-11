@@ -730,7 +730,7 @@
 					</div>
 					<div class="input-group">
 						<label class="form-control-sm col-sm-2">Total SI</label>
-						<input type="text" class="form-control form-control-sm cust-sm txt-content-rght" required onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="policyInfo.project.totalSi" readonly>
+						<input type="text" mask="comma_separator.2" class="form-control form-control-sm cust-sm txt-content-rght text-right" required onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="policyInfo.project.totalSi" readonly>
 					</div>
 				</div>
 			</fieldset>
