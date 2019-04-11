@@ -61,7 +61,7 @@ export class CoverageComponent implements OnInit {
       showMG: 1,
       createDate: '',
       createUser: JSON.parse(window.localStorage.currentUser).username,
-      coverCode:null,
+      description:null,
       section:null,
       bulletNo:null,
       sumInsured:null,
@@ -76,9 +76,10 @@ export class CoverageComponent implements OnInit {
     checkboxFlag: true,
     pageLength: 'unli',
     widths:[60,90,225,110,1],
-    magnifyingGlass: ['coverCdAbbr'],
+    magnifyingGlass: ['description'],
     uneditable: [true,false,false,false,false],
-    keys:['section','bulletNo','coverCdAbbr','sumInsured','addSi']
+    keys:['section','bulletNo','description','sumInsured','addSi'],
+    //keys:['section','bulletNo','coverCdAbbr','sumInsured','addSi']
   };
 
   @Input() pageData:any;
@@ -150,6 +151,7 @@ export class CoverageComponent implements OnInit {
       this.table.refreshTable();
         if(data.quotation.project == null){
           this.maintenanceService.getMtnSectionCovers(this.lineCd,this.coverCd).subscribe((data: any) =>{
+            console.log(data)
               for(var i=0; i< data.sectionCovers.length;i++){
                 if(data.sectionCovers[i].defaultTag == 'Y' ){
                    data.sectionCovers[i].sumInsured = 0;
@@ -352,6 +354,7 @@ export class CoverageComponent implements OnInit {
   }
   
   sectionCoversLOV(data){
+    console.log(data)
         this.hideSectionCoverArray = this.passData.tableData.filter((a)=>{return a.coverCd!== undefined && !a.deleted}).map((a)=>{return a.coverCd.toString()});
         $('#sectionCoversLOV #modalBtn').trigger('click');
         //data.tableData = this.passData.tableData;
@@ -382,7 +385,7 @@ export class CoverageComponent implements OnInit {
     for(var i = 0; i<data.length;i++){
       this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
       this.passData.tableData[this.passData.tableData.length - 1].coverCd = data[i].coverCd; 
-      this.passData.tableData[this.passData.tableData.length - 1].coverCdAbbr = data[i].description;
+      this.passData.tableData[this.passData.tableData.length - 1].description = data[i].description;
       this.passData.tableData[this.passData.tableData.length - 1].section = data[i].section;
       this.passData.tableData[this.passData.tableData.length - 1].bulletNo = data[i].bulletNo;
       this.passData.tableData[this.passData.tableData.length - 1].sumInsured = 0;
