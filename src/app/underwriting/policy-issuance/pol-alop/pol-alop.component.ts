@@ -298,9 +298,8 @@ export class PolAlopComponent implements OnInit {
                                               "updateUser": dataInfos[i].updateUser } );
           }
         }
-        
-        this.table.refreshTable();
       }
+      this.table.refreshTable();
     });
   }
 

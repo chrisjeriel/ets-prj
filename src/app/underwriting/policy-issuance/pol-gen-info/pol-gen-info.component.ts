@@ -363,10 +363,29 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       "wordings"        : this.policyInfo.wordings
     }
 
-    console.log(savePolGenInfoParam);
     //ADD VALIDATION
     this.loading = true;
-    this.underwritingService.savePolGenInfo(savePolGenInfoParam).subscribe(data => {
+    if(this.validate()){
+      this.underwritingService.savePolGenInfo(savePolGenInfoParam).subscribe((data: any) =>{
+        if(data.returnCode === 0){
+          this.dialogMessage="The system has encountered an unspecified error.";
+          this.dialogIcon = "error";
+          $('#polGenInfo > #successModalBtn').trigger('click');
+        }else{
+          this.dialogMessage="";
+          this.dialogIcon = "";
+          $('#polGenInfo > #successModalBtn').trigger('click');
+          /*this.form.control.markAsPristine();*/
+        }
+      });
+    }else{
+      console.log('Please fill all required fields');
+    }
+    
+
+    console.log(savePolGenInfoParam);
+    
+    /*this.underwritingService.savePolGenInfo(savePolGenInfoParam).subscribe(data => {
       console.log(data);
       this.loading = false;
 
@@ -381,11 +400,17 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
           $('#polGenInfo #successModalBtn').trigger('click');
         }
-    });
+    });*/
   }
 
   onClickSave(){
-    $('#confirm-save #modalBtn2').trigger('click');
+    if(!this.validate()){
+      this.dialogMessage="Please fill all required fields.";
+      this.dialogIcon = "info";
+      $('#polGenInfo > #successModalBtn').trigger('click');
+    }else{
+      $('#confirm-save #modalBtn2').trigger('click');
+    }
   }
 
   cancel(){
@@ -485,4 +510,34 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     }
     this.lov.openLOV();
   }
+
+  cbToggle(ev) {
+    $(ev.target).addClass('ng-dirty');
+  }
+
+  //validates params before going to web service
+  validate(){
+    if(this.policyInfo.polYear == ''    || this.policyInfo.polSeqNo == '' || this.policyInfo.cedingId == ''  ||
+       this.policyInfo.coSeriesNo == ''   || this.policyInfo.cessionId == '' ||
+       this.policyInfo.lineClassCd == ''  || this.policyInfo.quoteId == ''       || this.policyInfo.status == ''      ||
+       this.policyInfo.principalId == ''         || this.policyInfo.insuredDesc == ''       || this.policyInfo.inceptDate == '' ||
+       this.policyInfo.expiryDate == '' || this.policyInfo.issueDate == '' || this.policyInfo.effDate == '' || this.policyInfo.distDate == '' ||
+       this.policyInfo.acctDate == '' || this.policyInfo.currencyCd == '' || this.policyInfo.currencyRt == ''  || 
+       this.policyInfo.project.projDesc == '' || this.policyInfo.project.site == ''){
+      return false;
+    }else{
+      //Validate Required fields on a specific line code
+      if(this.policyInfo.lineCd === 'CAR'){
+        return true;
+      }
+      else if(this.policyInfo.lineCd === 'EAR'){
+        if(this.policyInfo.project.testing == ''){
+          return false;
+        }else{
+          return true;
+        }
+      }
+    }
+  }
+  
 }
