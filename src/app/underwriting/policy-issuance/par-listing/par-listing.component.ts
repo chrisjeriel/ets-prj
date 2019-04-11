@@ -220,23 +220,14 @@ export class ParListingComponent implements OnInit {
         this.polLine = this.uwService.rowData[0].split("-")[0];
         this.policyNo = this.uwService.rowData[0];
 
-        /*this.checkPolAlop(this.policyId, this.policyNo);
-        console.log(this.showPolAlop);*/
-
         this.uwService.getPolAlop(this.policyId, this.policyNo).subscribe((data: any) => {
-            console.log(data.policy.length != 0);
-            if (data.policy.length != 0) {
-                  this.showPolAlop = true;
-            } else { 
-                 this.showPolAlop = false;
-            }
 
             if (this.statusDesc === 'In Progress' || this.statusDesc === 'Approved'){
              this.uwService.toPolInfo = [];
              this.uwService.toPolInfo.push("edit", this.polLine);
-             this.router.navigate(['/policy-issuance', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: true, statusDesc: this.statusDesc ,riskName: this.riskName, insured: this.insuredDesc, showPolAlop: this.showPolAlop }], { skipLocationChange: true });
+             this.router.navigate(['/policy-issuance', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: true, statusDesc: this.statusDesc ,riskName: this.riskName, insured: this.insuredDesc }], { skipLocationChange: true });
             } else if (this.statusDesc === 'In Force' || this.statusDesc === 'Pending Approval' || this.statusDesc === 'Rejected') {
-                this.router.navigate(['/policy-issuance', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: false, statusDesc: this.statusDesc, riskName: this.riskName, insured: this.insuredDesc, showPolAlop: this.showPolAlop }], { skipLocationChange: true }); 
+                this.router.navigate(['/policy-issuance', { line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: false, statusDesc: this.statusDesc, riskName: this.riskName, insured: this.insuredDesc }], { skipLocationChange: true }); 
             }
         
         });
@@ -257,15 +248,7 @@ export class ParListingComponent implements OnInit {
         this.riskName = this.selectedPolicy.riskName;
         this.insuredDesc = this.selectedPolicy.insured;
 
-        /*this.checkPolAlop(this.policyId, this.policyNo);*/
         this.uwService.getPolAlop(this.policyId, this.policyNo).subscribe((data: any) => {
-            console.log(data.policy.length != 0);
-            if (data.policy.length != 0) {
-                  this.showPolAlop = true;
-            } else { 
-                 this.showPolAlop = false;
-            }
-
             if (this.selectedPolicy.status === 'In Progress' || this.selectedPolicy.status === 'Approved') {
              this.uwService.toPolInfo = [];
              this.uwService.toPolInfo.push("edit", this.polLine);
@@ -275,7 +258,6 @@ export class ParListingComponent implements OnInit {
             }
 
         });
-        console.log(this.showPolAlop);
 
     }
 
@@ -315,18 +297,6 @@ export class ParListingComponent implements OnInit {
       };
 
      alasql('SELECT policyNo AS PolicyNo, cessionDesc AS TypeCession, cedComp AS CedingCompany, insured AS Insured, risk AS Risk, object AS Object, site AS Site, currency AS Currency, currency(sumInsured) AS SumInsured ,currency(premium) AS Premium, datetime(issueDate) AS IssueDate, datetime(inceptDate) AS InceptDate, datetime(expiryDate) AS ExpiryDate, datetime(accDate) AS AcctingDate, status AS Status  INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passDataListing.tableData]);
-    }
-
-    checkPolAlop(policyId:string, policyNo?:string) {
-        this.uwService.getPolAlop(policyId, policyNo).subscribe((data: any) => {
-            console.log(data.policy.length != 0);
-          if (data.policy.length != 0) {
-              this.showPolAlop = true;
-         } else { 
-             this.showPolAlop = false;
-         }
-        });
-        console.log(this.showPolAlop);
     }
 
 }

@@ -189,14 +189,14 @@ export class AppComponent  {
             this.theme = window.localStorage.getItem("selectedTheme");
     }
 
-     @HostListener('document:click', ['$event'])
+     /*@HostListener('document:click', ['$event'])
       clickout(event) {
         if(this.eRef.nativeElement.contains(event.target)) {
                       this.changeTheme(this.theme);
         } else {
                       this.changeTheme(this.theme);
         }
-     }
+     }*/
 
  /*    @HostListener('document:keyup', ['$event'])
        handleKeyboardEvent(event: KeyboardEvent) { ''

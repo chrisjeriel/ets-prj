@@ -265,12 +265,12 @@ export class PolAlopComponent implements OnInit {
     });
   }
 
-  getPolAlopItem() {+ 
+  getPolAlopItem() {
     this.underwritingService.getPolAlopItem(this.policyNo, this.policyInfo.policyId, this.policyInfo.policyNo).subscribe((data: any) => {
       this.passDataCar.tableData = [];
       this.passDataEar.tableData = [];
-      console.log(data.policy);
-      if (data.policy.alop != null && data.policy.alop.length > 0) {
+
+      if (data.policy != null && data.policy.alop.length > 0) {
         var dataInfos = data.policy.alop[0].alopItem;
 
         if(this.policyNo === "CAR") {
