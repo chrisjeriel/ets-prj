@@ -292,6 +292,8 @@ export class QuoteOptionComponent implements OnInit {
 
     getQuoteOptions(){
         this.quotationService.getQuoteOptions(this.quoteId,'').subscribe(data => {
+          this.riskId = data['quotation'].project.riskId;
+          this.projId = data['quotation'].project.projId;
            if (data['quotation'].optionsList.length == 0 ){ 
              
            } else {

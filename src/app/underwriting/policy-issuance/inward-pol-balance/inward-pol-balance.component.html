@@ -37,7 +37,7 @@
 	<div class="row" style="margin-bottom: 5px;">
 		<div class="col-sm-2"></div>
 		<div class="col-sm-8">
-			<app-cust-editable-non-datatable #instllmentTable [passData]="passData" (newClick)="updateOtherCharges($event)" (tableDataChange)="compute()">
+			<app-cust-editable-non-datatable #instllmentTable [passData]="passData" (newClick)="updateOtherCharges($event)" (tableDataChange)="compute()" (onDelete)="delInst()">
 			</app-cust-editable-non-datatable>
 		</div>
 		<div class="col-sm-2"></div>
@@ -49,7 +49,7 @@
 	<div class="row" style="margin-bottom: 5px;">
 		<div class="col-sm-3"></div>
 		<div class="col-sm-6">
-			<app-cust-editable-non-datatable #otherTable [passData]="passData2" (clickLOV)="clickLOV($event)" (tableDataChange)="compute()">
+			<app-cust-editable-non-datatable #otherTable [passData]="passData2" (clickLOV)="clickLOV($event)" (tableDataChange)="compute();instllmentTable.indvSelect.otherCharges=$event" (onDelete)="delOth()">
 			</app-cust-editable-non-datatable>
 		</div>
 		<div class="col-sm-3"></div>
