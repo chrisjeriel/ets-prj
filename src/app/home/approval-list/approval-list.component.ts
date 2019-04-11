@@ -232,6 +232,11 @@ export class ApprovalListComponent implements OnInit {
   }
 
   retrieveWfmApprovals() {
+      while(this.approvalList.length>0){
+          this.approvalList.pop();
+      }
+
+
       this.workFlowManagerService.retrieveWfmApprovals(this.currentUser.username).subscribe((data)=>{
           if (data["approvalList"].length > 0) {
             this.collectionSize = data["approvalList"].length;
