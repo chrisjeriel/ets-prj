@@ -235,12 +235,13 @@
 </app-modal>
 
 <app-modal class="d-none" id="warningMdl">
-    <div header style="height: 20px !important;"> </div>
+    <div header style="height: 20px !important;">Confirmation</div>
     <div body class="container-flex text-center">
-        <span class="fa fa-info-circle fa-3x" style="vertical-align: middle;"></span>
+        <!-- <span class="fa fa-info-circle fa-3x" style="vertical-align: middle;"></span> -->
         <span style="vertical-align: middle; margin-left: 15px;">{{ warningMsg }}</span>
     </div>
-    <div footer class="d-flex justify-content-center w-100">
+    <!-- <div footer class="d-flex justify-content-center w-100"> -->
+    <div footer>
         <button class="cust-btn" type="button" (click)="onClickCancelHoldCover()"><a>Yes</a></button>                    
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>No</a></button>
     </div>
