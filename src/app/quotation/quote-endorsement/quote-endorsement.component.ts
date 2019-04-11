@@ -23,7 +23,8 @@ export class QuoteEndorsementComponent implements OnInit {
         quoteId: '',
         quotationNo: '',
         riskName: '',
-        insuredDesc: ''
+        insuredDesc: '',
+        statusDesc: ''
     }
     @Input() ocQuoteData: any = {};
     @ViewChild('endorsment') table: CustEditableNonDatatableComponent;
@@ -128,8 +129,8 @@ export class QuoteEndorsementComponent implements OnInit {
           showMG : 1
         },
         checkFlag: true,
-        addFlag: !this.inquiryFlag,// addFlag: true,
-        deleteFlag: !this.inquiryFlag,// deleteFlag: true,
+        addFlag: true,//this.quotationInfo.statusDesc.toUpperCase() !== 'APPROVED',// addFlag: true,
+        deleteFlag: true,//!this.inquiryFlag,// deleteFlag: true,
         searchFlag: true,
         uneditable: [true, true, false],
         keys: ['endtCd','endtTitle','remarks'],

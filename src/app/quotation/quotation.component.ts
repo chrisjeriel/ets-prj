@@ -8,7 +8,6 @@ import { QuotationService } from '@app/_services';
 import { first } from 'rxjs/operators';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
-import { GeneralInfoComponent } from '@app/quotation/general-info/general-info.component';
 import { Subject } from 'rxjs';
 
 
