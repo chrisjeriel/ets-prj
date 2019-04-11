@@ -197,15 +197,25 @@ export class InwardPolBalanceComponent implements OnInit {
         params.delPolInward.push(inst);
       }
       if(!inst.deleted && inst.instNo!==null ){
+        let instFlag: boolean = false;
         for(let chrg of inst.otherCharges){
           if(chrg.edited && !chrg.deleted ){
             chrg.createDate     = this.ns.toDateTimeString(chrg.createDate);
             chrg.updateDate = this.ns.toDateTimeString(chrg.updateDate);
             chrg.updateUser = JSON.parse(window.localStorage.currentUser).username;
             params.saveOtherCharges.push(chrg);
+            instFlag = true;
           }else if(chrg.deleted){
             params.delOtherCharges.push(chrg);
           }
+        }
+        if(instFlag){
+          inst.dueDate     = this.ns.toDateTimeString(inst.dueDate);
+          inst.bookingDate = this.ns.toDateTimeString(inst.bookingDate);
+          inst.createDate     = this.ns.toDateTimeString(inst.createDate);
+          inst.updateDate = this.ns.toDateTimeString(inst.updateDate);
+          inst.updateUser = JSON.parse(window.localStorage.currentUser).username;
+          params.savePolInward.push(inst);
         }
       }
       if(inst.instNo==null){
