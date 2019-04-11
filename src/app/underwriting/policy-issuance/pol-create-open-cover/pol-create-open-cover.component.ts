@@ -3,7 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
-import { UnderwritingService, QuotationService, NotesService } from '../../../_services';
+import { UnderwritingService, QuotationService, NotesService, MaintenanceService } from '../../../_services';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { FormsModule }   from '@angular/forms';
 
@@ -96,9 +96,12 @@ export class PolCreateOpenCoverComponent implements OnInit {
     dialogMessage: string = '';
     dialogIcon: string = '';
     cancelFlag: boolean = false;
+
+    currentLineCd: string = '';
     
     constructor(private titleService: Title, private router: Router, private ns: NotesService, 
-                private us: UnderwritingService, private qs: QuotationService, private modalService: NgbModal) { }
+                private us: UnderwritingService, private qs: QuotationService, private modalService: NgbModal,
+                private ms: MaintenanceService) { }
 
     ngOnInit() {
         this.titleService.setTitle("Pol | Create Open Cover");
@@ -133,11 +136,40 @@ export class PolCreateOpenCoverComponent implements OnInit {
     setDetails(){
         this.quoteData.quoteId = this.selectedQuote.quoteId;
         this.quoteData.quoteNo = this.selectedQuote.quotationNo;
+        this.currentLineCd = this.selectedQuote.quotationNo.split('-')[0];
         this.quoteData.cedingName = this.selectedQuote.cedingName;
         this.quoteData.insuredDesc = this.selectedQuote.insuredDesc;
         this.quoteData.riskName = this.selectedQuote.project.riskName;
         this.splitQuoteNo = this.quoteData.quoteNo.split('-');
+        this.optionData.optionId = '';
+        this.optionData.condition = '';
+        this.selectedOpt.optionId = '';
+        this.selectedOpt.condition = '';
+        this.inceptDate.date = this.ns.toDateTimeString(0).split('T')[0];
+        //this.inceptDate.time = new Date();
+        this.expiryDate.date = this.ns.toDateTimeString(new Date().setFullYear(new Date().getFullYear() + 1)).split('T')[0];
+        //this.expiryDate.time = new Date();
+        this.getCutOffTime(this.currentLineCd);
         this.getOptionLOV(this.quoteData.quoteId);
+    }
+
+    getCutOffTime(lineCd) {
+      if(lineCd != '') {
+        this.ms.getLineLOV(lineCd).subscribe(data => {
+          var res = data['line'];
+
+          if(res.length != 0) {
+            this.inceptDate.time = res[0].cutOffTime;
+            this.expiryDate.time = res[0].cutOffTime;
+          } else {
+            this.inceptDate.time = '';
+            this.expiryDate.time = '';
+          }
+        });
+      } else {
+        this.inceptDate.time = '';
+        this.expiryDate.time = '';
+      }
     }
 
     setOption(){
@@ -169,6 +201,12 @@ export class PolCreateOpenCoverComponent implements OnInit {
     getOptionLOV(quoteId) {
       this.qs.getQuoteOptions(quoteId).subscribe(data => {
         console.log(data['quotation']['optionsList']);
+        let fetchedOptData: any[] = data['quotation']['optionsList'];
+        if(fetchedOptData.length === 1){
+          console.log('here');
+          this.selectedOpt.optionId = fetchedOptData[0].optionId;
+          this.selectedOpt.condition = fetchedOptData[0].condition;
+        }
         this.passDataOptionLOV.tableData = data['quotation']['optionsList'];
         this.optListTable.refreshTable();
       });
@@ -208,10 +246,16 @@ export class PolCreateOpenCoverComponent implements OnInit {
         //save to DB
         this.us.saveOpenPolDetails(this.saveParams).subscribe((data: any)=>{
             console.log(data);
-            this.openPolicyInfo.openPolNo = data.openPolNo;
-            this.openPolicyInfo.policyIdOc = data.policyIdOc;
-            $('#convertPopup > #modalBtn').trigger('click');
-            this.form.control.markAsPristine();
+            if(data.returnCode === 0){
+              this.dialogIcon = "error";
+              this.dialogMessage = "Conversion error. Invalid Quotation data.";
+              $('#dialogPopup > #successModalBtn').trigger('click');
+            }else{
+              this.openPolicyInfo.openPolNo = data.openPolNo;
+              this.openPolicyInfo.policyIdOc = data.policyIdOc;
+              $('#convertPopup > #modalBtn').trigger('click');
+              this.form.control.markAsPristine();
+            }
         });
     }
 
