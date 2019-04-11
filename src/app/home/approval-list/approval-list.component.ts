@@ -291,8 +291,9 @@ export class ApprovalListComponent implements OnInit {
               this.dialogIcon = "success-message";
               this.successDiag.open();
             }
+            this.retrieveWfmApprovals();
     });
-    this.retrieveWfmApprovals();
+    
   }
 
   
