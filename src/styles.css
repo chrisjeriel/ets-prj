@@ -580,7 +580,7 @@ textarea:read-only {
     cursor: not-allowed;
 }
 
-.cust-btn-disabled {
+.cust-btn-disabled, button[disabled] {
     background: gray !important;
     cursor: context-menu;
 }

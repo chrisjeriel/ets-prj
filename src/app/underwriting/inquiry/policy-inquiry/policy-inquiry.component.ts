@@ -204,7 +204,7 @@ export class PolicyInquiryComponent implements OnInit {
    retrievePolListing(){
        this.underwritingService.getParListing(this.searchParams).subscribe((data:any)=>{
          this.passData.tableData = data.policyList.filter(a=>{
-           if(a.altNo === 0){
+           
              a.lineCd = a.policyNo.substring(0,3);
              a.totalSi = a.project.coverage.totalSi;
              a.riskName = a.project.riskName;
@@ -212,8 +212,6 @@ export class PolicyInquiryComponent implements OnInit {
              a.site = a.project.site;
              a.totalPrem = a.project.coverage.totalPrem;
              return true;
-           }else
-             return false;
          });
          this.listTable.refreshTable();
        })

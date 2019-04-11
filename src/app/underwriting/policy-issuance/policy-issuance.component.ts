@@ -10,6 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class PolicyIssuanceComponent implements OnInit {
   @ViewChild('contentEditPol') contentEditPol;
   line: string;
+  showPolAlop: boolean = false;
   sub: any;
   
   policyInfo = {
@@ -21,7 +22,8 @@ export class PolicyIssuanceComponent implements OnInit {
         editPol:'',
         insuredDesc:'',
         riskId: '',
-        fromInq: ''
+        fromInq: '',
+        showPolAlop: false
 
   }
 
@@ -38,6 +40,7 @@ export class PolicyIssuanceComponent implements OnInit {
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
             this.line = params['line'];
+            this.showPolAlop = params['showPolAlop'];
             this.alterFlag = params['alter'];
             this.fromInq = params['fromInq'];
             this.policyInfo.fromInq = params['fromInq'];
@@ -48,6 +51,8 @@ export class PolicyIssuanceComponent implements OnInit {
             this.policyInfo.riskName = params['riskName'];
             this.policyInfo.insured = params['insured'];
         });   
+
+    console.log(this.showPolAlop);
      /* Test Data */
 /*        this.policyInfo.policyId = 9; 
         this.policyInfo.policyNo = 'CAR-2019-00001-001-0001-001';
@@ -93,6 +98,9 @@ export class PolicyIssuanceComponent implements OnInit {
       this.policyInfo.policyId = event.policyId;
       this.policyInfo.insuredDesc =  event.insuredDesc;
       this.policyInfo.riskId =  event.riskId;
+      this.policyInfo.showPolAlop = event.showPolAlop;
+
+      console.log(event.showPolAlop);
   }
 
   returnOnModal(){

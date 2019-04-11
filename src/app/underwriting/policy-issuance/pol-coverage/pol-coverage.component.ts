@@ -542,9 +542,8 @@ export class PolCoverageComponent implements OnInit {
       this.deductiblesTable.refreshTable();
     });
   }
-
+  
   saveDeductibles(){
-    this.deductiblesTable.loadingFlag = true;
     let params:any = {
       policyId:this.policyId,
       saveDeductibleList: [],
@@ -552,6 +551,13 @@ export class PolCoverageComponent implements OnInit {
     };
     params.saveDeductibleList = this.passDataDeductibles.tableData.filter(a=>a.edited && !a.deleted && a.deductibleCd!==null);
     params.deleteDeductibleList = this.passDataDeductibles.tableData.filter(a=>a.edited && a.deleted && a.deductibleCd!==null);
+    if(params.saveDeductibleList.length==0 && params.deleteDeductibleList.length==0){
+      this.dialogMessage = 'Nothing to save.'
+      this.dialogIcon = 'info'
+      this.successDlg.open();
+      return;
+    }
+    this.deductiblesTable.loadingFlag = true;
     this.underwritingservice.savePolDeductibles(params).subscribe(data=>{
         if(data['returnCode'] == -1){
           this.dialogIcon = '';
