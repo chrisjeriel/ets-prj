@@ -72,6 +72,8 @@ export class QuotationComponent implements OnInit {
 		this.sub = this.route.params.subscribe(params => {
             this.line = params['line'];
             this.inquiryFlag = params['inquiry'];
+            console.log("params['inquiry'] " + params['inquiry']);
+            console.log("QUOTATION COMPONENT: " + JSON.stringify(params));
         });
 	}
 
