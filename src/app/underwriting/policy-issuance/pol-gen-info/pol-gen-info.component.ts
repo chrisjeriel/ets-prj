@@ -462,7 +462,13 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       this.successDlg.open();
       return;
     }
-
+    for(let ded of params.saveDeductibleList){
+      if((isNaN(ded.deductibleRt) || ded.deductibleRt=="" || ded.deductibleRt==null) && (isNaN(ded.deductibleAmt) || ded.deductibleAmt=="" || ded.deductibleAmt==null)){
+        this.dialogIcon = "error";
+        setTimeout(a=>this.successDlg.open(),0);
+        return null;
+      }
+    }
     this.deductiblesTable.loadingFlag = true;
     this.underwritingService.savePolDeductibles(params).subscribe(data=>{
         if(data['returnCode'] == -1){
@@ -539,5 +545,4 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       }
     }
   }
-  
 }

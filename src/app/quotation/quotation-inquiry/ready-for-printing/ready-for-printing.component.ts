@@ -150,6 +150,8 @@ export class ReadyForPrintingComponent implements OnInit {
 
   searchParams: any[] = [];
 
+  currentUserId: string = JSON.parse(window.localStorage.currentUser).username;
+
   ngOnInit() {
     this.btnDisabled = true;
     this.retrieveQuoteListingMethod();
@@ -375,7 +377,7 @@ export class ReadyForPrintingComponent implements OnInit {
             } else {
                 if (this.printType == 'SCREEN'){  
                      for(let i=0;i<this.saveData.changeQuoteStatus.length ;i++){ 
-                        window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + this.selectedReport + '&quoteId=' + this.saveData.changeQuoteStatus[i].quoteId, '_blank');
+                        window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + this.selectedReport + '&quoteId=' + this.saveData.changeQuoteStatus[i].quoteId + '&userId=' + this.currentUserId, '_blank');
                      }
                      this.searchQuery(this.searchParams);
                 }else if (this.printType == 'PRINTER'){

@@ -292,7 +292,10 @@ export class QuoteOptionComponent implements OnInit {
 
     getQuoteOptions(){
         this.quotationService.getQuoteOptions(this.quoteId,'').subscribe(data => {
-           if (data['quotation'] == null || data['quotation'] == undefined ){ 
+          this.riskId = data['quotation'].project.riskId;
+          this.projId = data['quotation'].project.projId;
+           if (data['quotation'].optionsList.length == 0 ){ 
+             
            } else {
 
                 this.riskId = data['quotation'].project.riskId;
@@ -446,10 +449,10 @@ cancel(){
 
 saveQuoteOptionAll(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
-   if(this.optionsData.tableData.filter(a=>a.optionRt == 0 ||
+   if(this.optionsData.tableData.filter(a=>(a.optionRt == 0 ||
         a.commRtQuota == 0 ||
         a.commRtSurplus == 0 ||
-        a.commRtFac == 0
+        a.commRtFac == 0) && !a.deleted
       ).length != 0){
      this.dialogIcon = "error";
      setTimeout(a=>$('#quote-option #successModalBtn').trigger('click'),0);

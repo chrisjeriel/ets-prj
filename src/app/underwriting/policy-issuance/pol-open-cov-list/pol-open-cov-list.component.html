@@ -28,7 +28,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-sm" style="padding: 0">
-                            <app-cust-non-datatable #listTable [passData]="passData" (rowClick)="selected=$event" (newRowDblClick)="selected=$event;gotoInfo()" (searchToDb)="searchQuery($event)" (add)="gotoAdd()" (edit)="gotoInfo()"></app-cust-non-datatable>
+                            <app-cust-non-datatable #listTable [passData]="passData" (rowClick)="selected=$event" (newRowDblClick)="selected=$event;gotoInfo()" (searchToDb)="searchQuery($event)" (add)="gotoAdd()" (edit)="gotoInfo()" (export)="export()"></app-cust-non-datatable>
                         </div>
                     </div>
                 </div>

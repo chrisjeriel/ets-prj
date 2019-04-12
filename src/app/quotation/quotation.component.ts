@@ -6,7 +6,9 @@ import { GeneralInfoComponent } from '@app/quotation/general-info/general-info.c
 import { environment } from '@environments/environment';
 import { QuotationService } from '@app/_services';
 import { first } from 'rxjs/operators';
-
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
+import { Subject } from 'rxjs';
 
 
 
@@ -17,7 +19,10 @@ import { first } from 'rxjs/operators';
 })
 export class QuotationComponent implements OnInit {
 	constructor(private route: ActivatedRoute,private modalService: NgbModal, private titleService: Title, private router: Router, private quotationService: QuotationService) { }
-	docTitle: string = "";
+	@ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
+  @ViewChild('tabset') tabset: any;
+  @ViewChild(GeneralInfoComponent) genInfoComponent: GeneralInfoComponent;
+  docTitle: string = "";
 	sub: any;
 	line: string;
 	selectedReport: string;
@@ -50,6 +55,7 @@ export class QuotationComponent implements OnInit {
 	header: string;
 	showAlop:boolean = false;
 	enblEndtTab:boolean = false;
+  enblOptTab:boolean = false;
 	dialogIcon:string  = "";
   dialogMessage:string  = "";
   btnDisabled: boolean;
@@ -72,6 +78,8 @@ export class QuotationComponent implements OnInit {
 		this.sub = this.route.params.subscribe(params => {
             this.line = params['line'];
             this.inquiryFlag = params['inquiry'];
+            console.log("params['inquiry'] " + params['inquiry']);
+            console.log("QUOTATION COMPONENT: " + JSON.stringify(params));
         });
 	}
 
@@ -91,11 +99,12 @@ export class QuotationComponent implements OnInit {
                 data => {
                     console.log(JSON.stringify(data));
                     this.approverList = data["approverList"];
-
+                    console.log(this.approverList)
                     this.approveText = 'For Approval';
                     for (var i = data["approverList"].length - 1; i >= 0; i--) {
                       if (data["approverList"][i].userId == this.currentUserId) {
                         this.approveText = 'Approve';
+                        this.approver = this.currentUserId;
                       }
                     }
 
@@ -106,26 +115,51 @@ export class QuotationComponent implements OnInit {
 
 	}
 
+  validateApproval(){
+    this.approveText = 'For Approval'
+    console.log(this.approver)
+    if(this.approver == this.currentUserId){
+      this.approveText = 'Approve'
+    }
+  }
+
 	onTabChange($event: NgbTabChangeEvent) {
 		 // if($('.ng-dirty:not([type="search"]):not(.not-form)').length != 0){
 		 // 	  $event.preventDefault();
-   //   }
-
+   //   }                     
   		if ($event.nextId === 'Exit') {
         $event.preventDefault();
     		this.router.navigateByUrl('');
-  		} 
+  		} else 
 
   		if ($event.nextId === 'approval-tab') {
 			$event.preventDefault();
-		}
+		}else
 
       if ($event.nextId === 'Print') {
         $event.preventDefault();
         $('#printListQuotation > #printModalBtn').trigger('click');
-      } 
+      } else
+
+     if($('.ng-dirty').length != 0 ){
+        $event.preventDefault();
+        const subject = new Subject<boolean>();
+        const modal = this.modalService.open(ConfirmLeaveComponent,{
+            centered: true, 
+            backdrop: 'static', 
+            windowClass : 'modal-size'
+        });
+        modal.componentInstance.subject = subject;
+
+        subject.subscribe(a=>{
+          if(a){
+            $('.ng-dirty').removeClass('ng-dirty');
+            this.tabset.select($event.nextId)
+          }
+        })
 
 
+      }
  
   	}
 
@@ -156,7 +190,7 @@ export class QuotationComponent implements OnInit {
 
   	showPrintPreview(content) {
         if (this.printType.toUpperCase() == 'SCREEN'){
-  			window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + this.selectedReport + '&quoteId=' + this.quoteInfo.quoteId, '_blank');
+  			window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + this.selectedReport + '&quoteId=' + this.quoteInfo.quoteId + '&userId=' + this.currentUserId, '_blank');
 	  		this.modalService.dismissAll();
 	  		} else if (this.printType.toUpperCase() == 'PDF'){
 	  			this.downloadPDF(this.selectedReport,this.quoteInfo.quoteId);
@@ -165,8 +199,7 @@ export class QuotationComponent implements OnInit {
 	  			this.printPDF(this.selectedReport,this.quoteInfo.quoteId);
 	  		    this.modalService.dismissAll();
 	  		}
-
-        console.log(this.quoteInfo.status)
+        
         if(this.quoteInfo.status == 'A'){
           this.quotationService.updateQuoteStatus(this.quoteInfo.quoteId, '3', this.currentUserId).subscribe((data)=>{
             if(data['returnCode'] == 0) {
@@ -192,7 +225,7 @@ export class QuotationComponent implements OnInit {
 
     printDialog(obj,selectedReport: string){
       if (obj.toUpperCase() == 'SCREEN'){
-        window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + selectedReport + '&quoteId=' + this.quoteInfo.quoteId, '_blank');
+        window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + selectedReport + '&quoteId=' + this.quoteInfo.quoteId + '&userId=' + this.currentUserId, '_blank');
         this.modalService.dismissAll();
         this.selectedReport = null;
       } else if (obj.toUpperCase() == 'PDF'){
@@ -274,36 +307,37 @@ export class QuotationComponent implements OnInit {
         console.log("Call update quote status.");
         this.quotationService.updateQuoteStatus(this.quoteInfo.quoteId, 'A', this.currentUserId).subscribe((data)=>{
             if(data['returnCode'] == 0) {
-              console.log("Status Failed to Update.");
-              this.dialogIcon = "error";
+              this.dialogIcon = "error-message";
               this.dialogMessage = "Status failed for Approval";
-              $('#successModalBtn').trigger('click');
+              this.successDiag.open();
             } else {
               this.dialogMessage = "Status Updated";
-              this.dialogIcon = "success";
-              $('#successModalBtn').trigger('click');
-              console.log("Status Updated");
+              this.dialogIcon = "success-message";
+              this.successDiag.open();
             }
         })
       } else {
         this.quotationService.updateQuoteStatus(this.quoteInfo.quoteId, 'P', this.approver).subscribe((data)=>{
+          console.log(this.approver)
             if(data['returnCode'] == 0) {
               /*this.dialogMessage = data['errorList'][0].errorMessage;
               this.dialogIcon = "error";
               $('#quote-option #successModalBtn').trigger('click');*/
-              console.log("Status failed forApproval");
-              this.dialogIcon = "error";
+              this.dialogIcon = "error-message";
               this.dialogMessage = "Status failed for Approval";
-              $('#successModalBtn').trigger('click');
+              this.successDiag.open();
             } else {
-              this.dialogMessage = "Status Updated";
-              this.dialogIcon = "success";
-              $('#successModalBtn').trigger('click');
-              console.log("Status For Approval .");
+              this.dialogMessage = "Pending for Approval";
+              this.dialogIcon = "success-message";
+              this.successDiag.open();
             }
         })
-        console.log("Assign to another user.");
       }
+
+      this.genInfoComponent.ngOnInit();
+      /*setTimeout(() => {
+        this.router.navigate(['/quotation', { line: this.quoteInfo.lineCd,  quotationNo : this.quoteInfo.quotationNo, quoteId: this.quoteInfo.quoteId, from: 'quo-processing', inquiryFlag: true}], { skipLocationChange: true });
+      },100); */
     }
 
 

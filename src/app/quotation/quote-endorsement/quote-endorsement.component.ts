@@ -23,7 +23,8 @@ export class QuoteEndorsementComponent implements OnInit {
         quoteId: '',
         quotationNo: '',
         riskName: '',
-        insuredDesc: ''
+        insuredDesc: '',
+        statusDesc: ''
     }
     @Input() ocQuoteData: any = {};
     @ViewChild('endorsment') table: CustEditableNonDatatableComponent;
@@ -128,8 +129,8 @@ export class QuoteEndorsementComponent implements OnInit {
           showMG : 1
         },
         checkFlag: true,
-        addFlag: true,
-        deleteFlag: true,
+        addFlag: true,//this.quotationInfo.statusDesc.toUpperCase() !== 'APPROVED',// addFlag: true,
+        deleteFlag: true,//!this.inquiryFlag,// deleteFlag: true,
         searchFlag: true,
         uneditable: [true, true, false],
         keys: ['endtCd','endtTitle','remarks'],
@@ -620,8 +621,14 @@ export class QuoteEndorsementComponent implements OnInit {
 
 
             }
-            console.log(saveEndtReq)
-            console.log(this.endorsementData.tableData)
+            
+              for(let ded of saveEndtReq.saveDeductibleList){
+               if((isNaN(ded.deductibleRt) || ded.deductibleRt=="" || ded.deductibleRt==null) && (isNaN(ded.deductibleAmt) || ded.deductibleAmt=="" || ded.deductibleAmt==null)){
+                 this.dialogIcon = "error";
+                 setTimeout(a=>$('#quote-endorsment #successMdl > #modalBtn').trigger('click'),0);
+                 return null;
+               }
+             }
             this.quotationService.saveQuoteEndorsements(JSON.stringify(saveEndtReq))
               .subscribe((data:any) => { 
                 console.log(data);
@@ -774,6 +781,7 @@ export class QuoteEndorsementComponent implements OnInit {
                 //this.showDeductiblesOptions();
            }
          });
+
    }
 
    passLOVData: any = {
@@ -784,7 +792,7 @@ export class QuoteEndorsementComponent implements OnInit {
 
    clickDeductiblesLOV(data){
         this.passLOVData.selector = 'deductibles';
-        this.passLOVData.lineCd = this.quotationNum.substring(0,3);
+        this.passLOVData.lineCd = this.quotationInfo['lineCd'];
         this.passLOVData.hide = this.deductiblesData.tableData.filter((a)=>{return !a.deleted}).map(a=>a.deductibleCd);
         this.passLOVData.endtCd = this.table.indvSelect.endtCd;
         this.passLOVData.params = {
@@ -844,7 +852,7 @@ export class QuoteEndorsementComponent implements OnInit {
     }
 
     getDefaultDeductibles(){
-    this.uwService.getMaintenanceDeductibles(this.quotationNum.substring(0,3),'',
+    this.uwService.getMaintenanceDeductibles(this.quotationInfo['lineCd'],'',
         '0',this.table.indvSelect.endtCd,'Y','Y').subscribe((data)=>{
           this.table.indvSelect.deductiblesList = data['deductibles'].filter((a)=>{
             a.sumInsured = 0;

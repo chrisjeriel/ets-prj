@@ -26,15 +26,15 @@
 					<div class="form-row custom-row-inline-inset" style="margin-right: 9px; margin-top: 11px !important;">
 						<div class="input-group">
 							<label class="form-control-sm col-sm-2 text-right" for="xx">Insured</label>
-							<input [readonly]="inquiryFlag" class="form-control form-control-sm  col-sm-2" type="text" name="insuredId" appRequired [(ngModel)]="alopData.insuredId" (change)="checkCode($event,'principal')">
+							<input [readonly]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED'" class="form-control form-control-sm  col-sm-2" type="text" name="insuredId" appRequired [(ngModel)]="alopData.insuredId" (change)="checkCode($event,'principal')">
 							<!-- <div class="text-search-ico"><a (click)="showInsuredLOV()"><i class="fa fa-search"></i></a></div>&nbsp; -->
-							<div [class.d-none]="inquiryFlag" class="text-search-ico"><a (click)="openGenericLOV('insured')"><i class="fa fa-search"></i></a></div>&nbsp;
+							<div [class.d-none]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED'" class="text-search-ico"><a (click)="openGenericLOV('insured')"><i class="fa fa-search"></i></a></div>&nbsp;
 							<input class="form-control form-control-sm  col-sm" type="text" name="insuredName" [(ngModel)]="alopData.insuredName" [style.margin-left.px]="inquiryFlag ? '-2' : '-7'" readonly>
 						</div>
 
 						<div class="input-group textarea" style="padding-bottom: 7px;">
 							<label class="form-control-sm col-sm-2"></label>
-							<textarea [readonly]="inquiryFlag" class="form-control form-control-sm col-sm" rows="2" [(ngModel)]="alopData.insuredDesc" appRequired name="insuredDesc"></textarea>
+							<textarea [readonly]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED'" class="form-control form-control-sm col-sm" rows="2" [(ngModel)]="alopData.insuredDesc" appRequired name="insuredDesc"></textarea>
 							<br>
 						</div>
 
@@ -54,7 +54,7 @@
 						</div>
 
 						<div class="input-group textarea">
-							<textarea [readonly]="inquiryFlag" class="form-control form-control-sm col-sm-12" rows="3" style="height: 83% !important;" [(ngModel)]="alopData.insuredBusiness" appRequired name="insuredBusiness"></textarea>
+							<textarea [readonly]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED'" class="form-control form-control-sm col-sm-12" rows="3" style="height: 83% !important;" [(ngModel)]="alopData.insuredBusiness" appRequired name="insuredBusiness"></textarea>
 						</div>
 					</div>
 				</fieldset>
@@ -127,8 +127,8 @@
 				<div class="col-md-13 text-center">
 					<div class="cust-btn-container" style="margin-top: 10px;">
 					<button type="button" class="cust-btn" (click)="openAlopItem()" [disabled]="disabledFlag" [class.cust-btn-disabled]="disabledFlag"><a>Item Information</a></button>
-					<button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
-					<button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+					<button [class.d-none]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED'" type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+					<button [class.d-none]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED'" type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
 				</div>
 				</div>
 			</div>
@@ -147,7 +147,7 @@
 		<div footer class="text-center">
 				<button *ngIf="!inquiryFlag" type="button" class="cust-btn" (click)="modalService.dismissAll();showAlopItem=false"><a>Cancel</a></button>
 				<button *ngIf="!inquiryFlag" type="button" class="cust-btn" (click)="onClickSaveAlopItem()"><a>Save</a></button>
-				<button *ngIf="inquiryFlag" type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Close</a></button>
+				<button *ngIf="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED'" type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Close</a></button>
 		</div>
 	</app-modal>
 </ng-container>

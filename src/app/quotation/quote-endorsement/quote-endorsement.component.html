@@ -37,8 +37,8 @@
             <div class="col-sm-10" style="margin-top: 0.7em; margin-bottom: -0.4%;">
                 <app-cust-editable-non-datatable #endorsment id="endorsmentTable" [passData]="endorsementData" (clickLOV)="clickEndtLOV($event)" *ngIf="!OpenCover" (newClick)="selectedEndt=$event">
                     <ng-container controls-l>
-                        <button [class.d-none]="inquiryFlag" class="cust-btn" [class.cust-btn-disabled]="opId===null" (click)="clickModal($event)">Copy Endt</button>
-                        <button [class.d-none]="inquiryFlag" class="cust-btn" [class.cust-btn-disabled]="opId===null || selectedEndt===null" (click)="showDeductiblesOptions()"  style="margin-right: 0px !important;" >Deductibles</button>
+                        <button [class.d-none]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED'" class="cust-btn" [class.cust-btn-disabled]="opId===null" (click)="clickModal($event)">Copy Endt</button>
+                        <button [class.d-none]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED'" class="cust-btn" [class.cust-btn-disabled]="opId===null || selectedEndt===null" (click)="showDeductiblesOptions()"  style="margin-right: 0px !important;" >Deductibles</button>
                     </ng-container>
                 </app-cust-editable-non-datatable>
                 <app-cust-editable-non-datatable #endorsment id="endorsmentOCTable" [passData]="endorsementOCData" (clickLOV)="clickEndtLOV($event)" *ngIf="OpenCover">
@@ -56,8 +56,8 @@
                     <legend class="scheduler-border" style="visibility: hidden; padding-top: 25px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
                         <app-cust-editable-non-datatable #endorsment id="endorsmentTable" [passData]="endorsementData" (clickLOV)="clickEndtLOV($event)" *ngIf="!OpenCover" (newClick)="selectedEndt=$event;updateDed($event)" class="d-block py-2">
                             <ng-container controls-l>
-                                <button [class.d-none]="inquiryFlag" class="cust-btn" [class.cust-btn-disabled]="opId===null" (click)="clickModal($event)">Copy Endt</button>
-                                <!-- <button [class.d-none]="inquiryFlag" class="cust-btn" [class.cust-btn-disabled]="opId===null || selectedEndt===null" (click)="showDeductiblesOptions()"  style="margin-right: 0px !important;" >Deductibles</button> -->
+                                <button [class.d-none]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED'" class="cust-btn" [class.cust-btn-disabled]="opId===null" (click)="clickModal($event)">Copy Endt</button>
+                                <!-- <button [class.d-none]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED'" class="cust-btn" [class.cust-btn-disabled]="opId===null || selectedEndt===null" (click)="showDeductiblesOptions()"  style="margin-right: 0px !important;" >Deductibles</button> -->
                             </ng-container>
                         </app-cust-editable-non-datatable>
                 </fieldset>
@@ -65,7 +65,7 @@
                 <div class="col-sm-6" style="padding-left: 2px; padding-right: 2px;"> 
                 <fieldset class="scheduler-border" style="padding-right: 5px !important;padding-left: 5px !important;height: 356px">
                     <legend class="scheduler-border">Deductibles</legend>
-                    <app-cust-editable-non-datatable #deductibleTable  id="deductibleTable" (onDataChange)="deductibleTable.tableData=$event" [passData]="deductiblesData" (clickLOV)="clickDeductiblesLOV($event)" class="d-block py-2"></app-cust-editable-non-datatable>
+                    <app-cust-editable-non-datatable #deductibleTable  id="deductibleTable" (tableDataChange)="table.indvSelect.deductiblesList=$event" [passData]="deductiblesData" (clickLOV)="clickDeductiblesLOV($event)" class="d-block py-2"></app-cust-editable-non-datatable>
                 </fieldset>
             </div>
         </div>
@@ -75,8 +75,8 @@
         <div class="form-group col-sm">
             <div class="col-md-13 text-center">
                 <div class="cust-btn-container" style="padding-top: 13px">
-                    <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
-                    <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+                    <button [class.d-none]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED'" type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+                    <button [class.d-none]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED'" type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
                 </div>
             </div>
         </div>

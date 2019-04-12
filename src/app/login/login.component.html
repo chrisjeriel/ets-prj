@@ -140,13 +140,16 @@
         background-size: cover;
     }
     .my-container h1 {
-        padding: 22% 25px 0 25px;
+        padding: 41% 25px 0 25px;
         margin-top: 25px;
-        text-align: left;
+        text-align: center;
         z-index: 2;
         position: relative;
-        color: orange;
-        font-weight: 400;
+        color: #FFF;
+        font-weight: 700;
+        font-size: 45px;
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: rgba(0, 1, 180, 1);
     }
 
     .my-container h2 {
@@ -202,7 +205,7 @@
 <div class="login-main">
     <div class="login-panel">
         <div class="row" style="margin: 0px;">
-            <div class="col-sm-8" style="padding: 10% 20%;">
+            <div class="col-sm-7" style="padding: 10% 15%;">
                 <h3>Login</h3>
                 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
                     <div class="form-group">
@@ -227,16 +230,11 @@
                 <br/>
                 <br/>
                 <br/>
-                <p style="font-size: 11px;">&copy; Computer Professionals Incorporated. 2019.</p>
+                <p style="font-size: 11px;">&copy; Phil Machinery Management Services Corporation 2019.</p>
             </div>
-            <div class="col-sm-4" style="padding: 0px; border-left: 1px solid black;">
+            <div class="col-sm" style="padding: 0px; border-left: 1px solid black;">
                 <div class="my-container">
-                    <h1>Agile</h1>
-                    <h2>2019</h2>
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-                       Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type 
-                       and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap 
-                       into electronic typesetting, remaining essentially unchanged.</p>
+                    <h1>Engineering<br/>Treaty System</h1>
                 </div>
             </div>
         </div>
