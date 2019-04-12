@@ -77,7 +77,7 @@
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Co Ref No</label>
-										<input type="text" class="interme-control form-control-sm col-sm" [(ngModel)]="policyInfo.coRefNo">
+										<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="policyInfo.coRefNo">
 									</div>
 									<div *ngIf="policyInfo.cessionDesc?.toUpperCase() == 'RETROCESSION'" class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">RI Binder No</label>
@@ -980,7 +980,7 @@
 										<div class="input-group" style="    margin-top: -2px !important;
 										margin-bottom: -12px !important;">
 										<label class="form-control-sm col-sm-2">Policy No</label>
-										<input type="text" class="form-control form-control-sm col-sm-10 cap-input" ngbTooltip="Line" [(ngModel)]="policyInfo.policyNo">
+										<input type="text" class="form-control form-control-sm col-sm-10 cap-input" ngbTooltip="Line" [(ngModel)]="policyInfo.policyNo" readonly>
 										<!-- <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 5px;"
 										ngbTooltip="Year">
 										<input type="text" class="form-control form-control-sm col-sm-4 cap-input" style="margin-left: 5px;"
@@ -994,20 +994,20 @@
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Type of Cession</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.cessionDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.cessionDesc" readonly>
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Line Class</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.lineClassDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.lineClassDesc" appRequired>
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Quotation No</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.quotationNo">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.quotationNo" readonly>
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Status</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.statusDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.statusDesc" readonly>
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Ceding Company</label>
-										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.cedingId">
-										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.cedingName">
+										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.cedingId" readonly>
+										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.cedingName" readonly>
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Co Ref No</label>
@@ -1025,7 +1025,8 @@
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Intermediary</label>
 										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.intmId">
-										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.intmName">
+										<div class="text-search-ico"><a><i class="fa fa-search" (click)="showIntLOV()"></i></a></div>
+										<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.intmName" readonly>
 									</div>
 									<div *ngIf="policyInfo.holdCoverTag === 'Y'" class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Hold Cover No</label>
@@ -1057,14 +1058,14 @@
 									<div class="input-group">
 										<label class="form-control-sm col-sm-5" for="xx">Previous Inception
 										Date</label>
-										<input type="date" class="form-control form-control-sm col-sm" [ngModel]="policyInfo.inceptDate?.split('T')[0]" (ngModelChange)="policyInfo.inceptDate=$event+'T'+policyInfo.inceptDate.split('T')[1]">
-										<input type="time" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;" [(ngModel)]="policyInfo.inceptDate?.split('T')[1]">
+										<input type="date" class="form-control form-control-sm col-sm" [ngModel]="policyInfo.inceptDate?.split('T')[0]" (ngModelChange)="policyInfo.inceptDate=$event+'T'+policyInfo.inceptDate.split('T')[1]" readonly>
+										<input type="time" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;" [(ngModel)]="policyInfo.inceptDate?.split('T')[1]" readonly>
 										<div class="col-sm-1"></div>
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-5" for="xx">This Alteration Inception Date</label>
-										<input type="date" class="form-control form-control-sm" [ngModel]="policyInfo.inceptDate?.split('T')[0]" (ngModelChange)="policyInfo.inceptDate=$event+'T'+policyInfo.inceptDate.split('T')[1]">
-										<input type="time" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;" [(ngModel)]="policyInfo.inceptDate?.split('T')[1]">
+										<input type="date" class="form-control form-control-sm" [ngModel]="policyInfo.inceptDate?.split('T')[0]" (ngModelChange)="policyInfo.inceptDate=$event+'T'+policyInfo.inceptDate.split('T')[1]" appRequired>
+										<input type="time" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;" [(ngModel)]="policyInfo.inceptDate?.split('T')[1]" appRequired>
 										<div class="col-sm-1"></div>
 									</div>
 								</div>
@@ -1075,8 +1076,8 @@
 						">
 						<div class="input-group col-sm-6">
 							<label class="form-control-sm col-sm-4">Expiry Date</label>
-							<input type="date" class="form-control form-control-sm" [ngModel]="policyInfo.expiryDate?.split('T')[0]" (ngModelChange)="policyInfo.expiryDate=$event+'T'+policyInfo.expiryDate.split('T')[1]" (change)="updateExpiryDate();">
-							<input type="time" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;" [(ngModel)]="policyInfo.expiryDate?.split('T')[1]">
+							<input type="date" class="form-control form-control-sm" [ngModel]="policyInfo.expiryDate?.split('T')[0]" (ngModelChange)="policyInfo.expiryDate=$event+'T'+policyInfo.expiryDate.split('T')[1]" (change)="updateExpiryDate();" appRequired>
+							<input type="time" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;" [(ngModel)]="policyInfo.expiryDate?.split('T')[1]" appRequired>
 						</div>
 						<div class="input-group col-sm-6" style="margin-top: 10px; padding: 0px;">
 
@@ -1085,13 +1086,13 @@
 					<div class="form-row" style="margin-right: 0px; margin-bottom: -7px !important;">
 						<div class="input-group col-sm-6">
 							<label class="form-control-sm col-sm-4">Lapse From</label>
-							<input type="date" class="form-control form-control-sm" [ngModel]="policyInfo.lapseFrom?.split('T')[0]" (ngModelChange)="policyInfo.lapseFrom=$event+'T'+policyInfo.lapseFrom.split('T')[1]">
-							<input type="time" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;" [(ngModel)]="policyInfo.lapseFrom?.split('T')[1]">
+							<input type="date" class="form-control form-control-sm" [ngModel]="policyInfo.lapseFrom?.split('T')[0]" (ngModelChange)="policyInfo.lapseFrom=$event+'T'+policyInfo.lapseFrom.split('T')[1]" readonly>
+							<input type="time" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;" [(ngModel)]="policyInfo.lapseFrom?.split('T')[1]" readonly>
 						</div>
 						<div class="input-group col-sm-6" style="margin-right: 0px;">
 							<label class="form-control-sm col-sm-4">Lapse To</label>
-							<input type="date" class="form-control form-control-sm" [ngModel]="policyInfo.lapseTo?.split('T')[0]" (ngModelChange)="policyInfo.lapseTo=$event+'T'+policyInfo.lapseTo.split('T')[1]">
-							<input type="time" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;" [(ngModel)]="policyInfo.lapseTo?.split('T')[1]">
+							<input type="date" class="form-control form-control-sm" [ngModel]="policyInfo.lapseTo?.split('T')[0]" (ngModelChange)="policyInfo.lapseTo=$event+'T'+policyInfo.lapseTo.split('T')[1]" readonly>
+							<input type="time" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;" [(ngModel)]="policyInfo.lapseTo?.split('T')[1]" readonly>
 						</div>
 					</div>
 					<div class="form-row" [class.d-none]="line != 'CAR' && line != 'EAR'" style="margin-right: 0px; margin-bottom: 5px;">
@@ -1146,48 +1147,50 @@
 					<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 						<div class="input-group" style="margin-top: 10px;">
 							<label class="form-control-sm col-sm-1">Principal</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId">
-							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName">
+							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" appRequired>
+							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName" readonly>
 							<label class="form-control-sm col-sm-1">Contractor</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.contractorId">
-							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.contractorName">
+							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.contractorId" appRequired>
+							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.contractorName" readonly>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1" style="margin-right: 2px
 							!important">Insured</label>
-							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 15px !important;" [(ngModel)]="policyInfo.insuredDesc"></textarea>
+							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 15px !important;" [(ngModel)]="policyInfo.insuredDesc" appRequired></textarea>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Risk</label>
-							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.riskName">
+							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.riskName" readonly>
 						</div>
 						<div class="input-group" style="margin-bottom: 0px !important;">
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2">Object</label>
-								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.project.objectId">
-								<input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;" [(ngModel)]="policyInfo.project.objectDesc">
+								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.project.objectId" appRequired>
+								<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+								<span>&nbsp;</span>
+								<input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;" [(ngModel)]="policyInfo.project.objectDesc" readonly>
 							</div>
 							<div class="col-sm-6 input-group" style="padding: 0px;">
 								<label class="form-control-sm col-sm-2">Region</label>
-								<input type="text" class="form-control form-control-sm col-sm-10" [(ngModel)]="policyInfo.project.regionDesc">
+								<input type="text" class="form-control form-control-sm col-sm-10" [(ngModel)]="policyInfo.project.regionDesc" readonly>
 							</div>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1" style="margin-right: 2px
 							!important">Nature of Work</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="margin-bottom: 18px !important;font-size: 11px; min-height: 47px; margin-bottom: 12px;" [(ngModel)]="policyInfo.project.projDesc"></textarea>
+							<textarea class="form-control form-control-sm col-sm-5" style="margin-bottom: 18px !important;font-size: 11px; min-height: 47px; margin-bottom: 12px;" [(ngModel)]="policyInfo.project.projDesc" appRequired></textarea>
 
 							<div class="col-sm">
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Province</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.provinceDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.provinceDesc" readonly>
 									</div>
 								</div>
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">City/Town</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.cityDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.cityDesc" readonly>
 									</div>
 								</div>
 							</div>
@@ -1195,15 +1198,15 @@
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1" style="margin-right: 2px
 							!important">Site</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="margin-bottom: 18px !important;font-size: 11px; min-height: 47px; margin-bottom: 12px;" [(ngModel)]="policyInfo.project.site"></textarea>
+							<textarea class="form-control form-control-sm col-sm-5" style="margin-bottom: 18px !important;font-size: 11px; min-height: 47px; margin-bottom: 12px;" [(ngModel)]="policyInfo.project.site" appRequired></textarea>
 
 							<div class="col-sm">
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">District</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.districtDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.districtDesc" readonly>
 										<label class="form-control-sm col-sm-2">Block</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.blockDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.blockDesc" readonly>
 									</div>
 								</div>
 								<div class="row">
@@ -1236,62 +1239,63 @@
 					<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 						<div class="input-group" style="margin-top: 10px;">
 							<label class="form-control-sm col-sm-1">Principal</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId">
+							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" appRequired>
 							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 							<span>&nbsp;</span>
-							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName">
+							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName" readonly>
 							<label class="form-control-sm col-sm-1">Contractor</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.contractorId">
+							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.contractorId" appRequired>
 							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 							<span>&nbsp;</span>
-							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.contractorName">
+							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.contractorName" readonly>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Insured</label>
-							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 8px;" [(ngModel)]="policyInfo.insuredDesc"></textarea>
+							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 8px;" [(ngModel)]="policyInfo.insuredDesc" appRequired></textarea>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Risk</label>
-							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.riskName">
+							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.riskName" readonly>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Object</label>
-							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.objectId">
+							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.objectId" appRequired>
 							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 							<span>&nbsp;</span>
+							<input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;" [(ngModel)]="policyInfo.project.objectDesc" readonly>
 							<label class="form-control-sm col-sm-1">Region</label>
-							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.regionDesc">
+							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.regionDesc" readonly>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Nature of Work</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;" [(ngModel)]="policyInfo.project.projDesc"></textarea>
+							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;" [(ngModel)]="policyInfo.project.projDesc" appRequired></textarea>
 
 							<div class="col-sm">
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">Province</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.provinceDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.provinceDesc" readonly>
 									</div>
 								</div>
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">City/Town</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.cityDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.cityDesc" readonly>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Site</label>
-							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;" [(ngModel)]="policyInfo.project.site"></textarea>
+							<textarea class="form-control form-control-sm col-sm-5" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;" [(ngModel)]="policyInfo.project.site" appRequired></textarea>
 
 							<div class="col-sm">
 								<div class="row">
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">District</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.districtDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.districtDesc" readonly>
 										<label class="form-control-sm col-sm-2">Block</label>
-										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.blockDesc">
+										<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.blockDesc" readonly>
 									</div>
 								</div>
 								<div class="row">
@@ -1324,24 +1328,25 @@
 					<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 						<div class="input-group" style="margin-top: 10px;">
 							<label class="form-control-sm col-sm-1">Insured</label>
-							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId">
+							<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" appRequired>
 							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 							<span>&nbsp;</span>
-							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName">
+							<input type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName" readonly>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1"></label>
-							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 8px;" [(ngModel)]="policyInfo.insuredDesc"></textarea>
+							<textarea class="form-control form-control-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 8px;" [(ngModel)]="policyInfo.insuredDesc" appRequired></textarea>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Risk</label>
-							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.riskName">
+							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.riskName" readonly>
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Object</label>
-							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.objectId">
+							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.objectId" appRequired>
 							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 							<span>&nbsp;</span>
+							<input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;" [(ngModel)]="policyInfo.project.objectDesc" readonly>
 							<label class="form-control-sm col-sm-1">Region</label>
 							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.regionDesc">
 						</div>
@@ -1420,6 +1425,7 @@
 							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.objectId">
 							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 							<span>&nbsp;</span>
+							<input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;" [(ngModel)]="policyInfo.project.objectDesc" readonly>
 							<label class="form-control-sm col-sm-1">Region</label>
 							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.regionDesc">
 						</div>
@@ -1490,6 +1496,7 @@
 							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.objectId">
 							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 							<span>&nbsp;</span>
+							<input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;" [(ngModel)]="policyInfo.project.objectDesc" readonly>
 							<label class="form-control-sm col-sm-1">Region</label>
 							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.regionDesc">
 						</div>
@@ -1566,6 +1573,9 @@
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Object</label>
 							<input type="text" class="form-control form-control-sm col-sm-5" [(ngModel)]="policyInfo.project.objectDesc">
+							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+							<span>&nbsp;</span>
+							<input type="text" class="form-control form-control-sm col-sm-8" style="margin-left: 5px;" [(ngModel)]="policyInfo.project.objectDesc" readonly>
 							<label class="form-control-sm col-sm-1">Region</label>
 							<input type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.regionDesc">
 						</div>
@@ -1619,7 +1629,7 @@
 		<div class="col-sm-4" style="padding-left: 0px;">
 			<fieldset class="scheduler-border cust-fs-padlr-offset">
 				<!-- style="height: 100%;" -->
-				<legend class="scheduler-border" style="margin-left: 16px !important;">Production of Booking</legend>
+				<legend class="scheduler-border" style="margin-left: 16px !important;">Production Booking</legend>
 				<div class="col-sm-1">
 				</div>
 				<div class="col-sm">
@@ -1629,13 +1639,13 @@
 							<div class="custom-row-inline-inset">
 								<div class="input-group">
 									<label class="form-control-sm col-sm-4" for="xx">Previous Effective Date</label>
-									<input type="date" class="form-control form-control-sm" [ngModel]="policyInfo.effDate?.split('T')[0]" (ngModelChange)="policyInfo.effDate=$event+'T'+policyInfo.effDate.split('T')[1]">
-									<input type="time" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;" [(ngModel)]="policyInfo.effDate?.split('T')[1]">
+									<input type="date" class="form-control form-control-sm" [ngModel]="policyInfo.effDate?.split('T')[0]" (ngModelChange)="policyInfo.effDate=$event+'T'+policyInfo.effDate.split('T')[1]" readonly>
+									<input type="time" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;" [(ngModel)]="policyInfo.effDate?.split('T')[1]" readonly>
 								</div>
 								<div class="input-group">
 									<label class="form-control-sm col-sm-4" for="xx">This Alteration Effective Date</label>
-									<input type="date" class="form-control form-control-sm" [ngModel]="policyInfo.effDate?.split('T')[0]" (ngModelChange)="policyInfo.effDate=$event+'T'+policyInfo.effDate.split('T')[1]">
-									<input type="time" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;" [(ngModel)]="policyInfo.effDate?.split('T')[1]">
+									<input type="date" class="form-control form-control-sm" [ngModel]="policyInfo.effDate?.split('T')[0]" (ngModelChange)="policyInfo.effDate=$event+'T'+policyInfo.effDate.split('T')[1]" appRequired>
+									<input type="time" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;" [(ngModel)]="policyInfo.effDate?.split('T')[1]" appRequired>
 								</div>
 							</div>
 						</div>
@@ -1648,18 +1658,18 @@
 							<div class="custom-row-inline-inset">
 								<div class="input-group">
 									<label class="form-control-sm col-sm-4" for="xx">Issue Date</label>
-									<input type="date" class="form-control form-control-sm" [ngModel]="policyInfo.issueDate?.split('T')[0]" (ngModelChange)="policyInfo.issueDate=$event+'T'+policyInfo.issueDate.split('T')[1]">
-									<input type="time" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;" [(ngModel)]="policyInfo.issueDate?.split('T')[1]">
+									<input type="date" class="form-control form-control-sm" [ngModel]="policyInfo.issueDate?.split('T')[0]" (ngModelChange)="policyInfo.issueDate=$event+'T'+policyInfo.issueDate.split('T')[1]" appRequired>
+									<input type="time" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;" [(ngModel)]="policyInfo.issueDate?.split('T')[1]" appRequired>
 								</div>
 								<div class="input-group">
 									<label class="form-control-sm col-sm-4" for="xx">Distribution Date</label>
-									<input type="date" class="form-control form-control-sm" [ngModel]="policyInfo.distDate?.split('T')[0]" (ngModelChange)="policyInfo.distDate=$event+'T'+policyInfo.distDate.split('T')[1]">
-									<input type="time" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;" [(ngModel)]="policyInfo.distDate?.split('T')[1]">
+									<input type="date" class="form-control form-control-sm" [ngModel]="policyInfo.distDate?.split('T')[0]" (ngModelChange)="policyInfo.distDate=$event+'T'+policyInfo.distDate.split('T')[1]" appRequired>
+									<input type="time" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;" [(ngModel)]="policyInfo.distDate?.split('T')[1]" appRequired>
 								</div>
 								<div class="input-group">
 									<label class="form-control-sm col-sm-4" for="xx">Accounting Date</label>
-									<input type="date" class="form-control form-control-sm" [ngModel]="policyInfo.acctDate?.split('T')[0]" (ngModelChange)="policyInfo.acctDate=$event+'T'+policyInfo.acctDate.split('T')[1]">
-									<input type="time" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;" [(ngModel)]="policyInfo.acctDate?.split('T')[1]">
+									<input type="date" class="form-control form-control-sm" [ngModel]="policyInfo.acctDate?.split('T')[0]" (ngModelChange)="policyInfo.acctDate=$event+'T'+policyInfo.acctDate.split('T')[1]" appRequired>
+									<input type="time" class="form-control form-control-sm col-sm-2" style="margin-left: 5px;" [(ngModel)]="policyInfo.acctDate?.split('T')[1]" appRequired>
 								</div>
 							</div>
 						</div>
@@ -1672,7 +1682,7 @@
 				<div class="custom-row-inline-inset">
 					<div class="input-group">
 						<label class="form-control-sm" for="xx" style="margin-right:2px !important;">Currency</label>
-						<select class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.currencyCd">
+						<select class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.currencyCd" disabled>
 							<option value=""></option>
 							<option value="USD">USD</option>
 							<option value="PHP">PHP</option>
@@ -1685,7 +1695,7 @@
 					</div>
 					<div class="input-group">&nbsp;
 						<label class="form-control-sm" for="xx">Total &nbsp;SI</label>
-						<input type="text" id="xx" class="form-control form-control-sm cust-sm txt-content-rght" required onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="policyInfo.project.totalSi"
+						<input type="text" id="xx" class="form-control form-control-sm cust-sm txt-content-rght" required onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [ngModel]="policyInfo.project.totalSi | number:'1.2-2'"
 						readonly>
 					</div>
 				</div>
@@ -1701,7 +1711,7 @@
 				<div class="custom-row-inline-inset">
 					<div class="input-group">
 						<label class="form-control-sm col-sm-2">Wordings</label>
-						<textarea class="form-control form-control-sm col-sm-9" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;" [(ngModel)]="policyInfo.wordings"></textarea>
+						<textarea class="form-control form-control-sm col-sm-9" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;" [(ngModel)]="policyInfo.wordings" appRequired></textarea>
 						<div class="col-sm-1"></div>
 					</div>
 				</div>
@@ -1713,19 +1723,19 @@
 				<div class="form-row">
 					<div class="form-group col-sm-3" style="margin-bottom: 0px; margin-top: -10px;">
 						<label class="form-control-sm top-label">Created By</label>
-						<input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.createUser">
+						<input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.createUser" readonly>
 					</div>
 					<div class="form-group col-sm-3" style="margin-bottom: 0px; margin-top: -10px;">
 						<label class="form-control-sm top-label">Date Created</label>
-						<input type="date" class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.createDate?.split('T')[0]">
+						<input type="date" class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.createDate?.split('T')[0]" readonly>
 					</div>
 					<div class="form-group col-sm-3" style="margin-bottom: 0px; margin-top: -10px;">
 						<label class="form-control-sm top-label">Last Update By</label>
-						<input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.updateUser">
+						<input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.updateUser" readonly>
 					</div>
 					<div class="form-group col-sm-3" style="margin-bottom: 0px; margin-top: -10px;">
 						<label class="form-control-sm top-label">Last Update</label>
-						<input type="date" class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.updateDate?.split('T')[0]">
+						<input type="date" class="form-control form-control-sm cust-sm" [(ngModel)]="policyInfo.updateDate?.split('T')[0]" readonly>
 					</div>
 				</div>
 			</div>
@@ -1740,20 +1750,20 @@
 						<div class="input-group">
 							<div class="input-group-prepend">
 								<div class="input-group-text white-bg">
-									<input type="checkbox" [checked]="policyInfo.bookedTag === 'Y'" (change)="policyInfo.bookedTag = (policyInfo.bookedTag === 'Y')? 'N' : 'Y'; cbToggle($event);">
+									<input type="checkbox" [checked]="policyInfo.bookedTag === 'Y'" (change)="policyInfo.bookedTag = (policyInfo.bookedTag === 'Y')? 'N' : 'Y'; cbToggle($event);" disabled>
 								</div>
 							</div>
-							<input type="text" style="font-size: 11px !important;" value="Booked" disabled class="form-control form-control-sm">
+							<input type="text" style="font-size: 11px !important;" value="Booked" disabled class="form-control form-control-sm white-bg">
 						</div>
 					</div>
 					<div class="col-sm-6">
 						<div class="input-group">
 							<div class="input-group-prepend">
 								<div class="input-group-text white-bg">
-									<input type="checkbox" [checked]="policyInfo.altTag === 'Y'" (change)="policyInfo.altTag = (policyInfo.altTag === 'Y')? 'N' : 'Y'; cbToggle($event);">
+									<input type="checkbox" [checked]="policyInfo.altTag === 'Y'" (change)="policyInfo.altTag = (policyInfo.altTag === 'Y')? 'N' : 'Y'; cbToggle($event);" disabled>
 								</div>
 							</div>
-							<input type="text" style="font-size: 11px !important;" value="Alteration" disabled class="form-control form-control-sm">
+							<input type="text" style="font-size: 11px !important;" value="Alteration" disabled class="form-control form-control-sm white-bg">
 						</div>
 					</div>
 				</div>
@@ -1765,17 +1775,17 @@
 									<input type="checkbox" [checked]="policyInfo.govtTag === 'Y'" (change)="policyInfo.govtTag = (policyInfo.govtTag === 'Y')? 'N' : 'Y'; cbToggle($event);">
 								</div>
 							</div>
-							<input type="text" style="font-size: 11px !important;" value="Government" disabled class="form-control form-control-sm">
+							<input type="text" style="font-size: 11px !important;" value="Government" disabled class="form-control form-control-sm white-bg">
 						</div>
 					</div>
 					<div class="col-sm-6">
 						<div class="input-group">
 							<div class="input-group-prepend">
-								<div class="input-group-text">
+								<div class="input-group-text white-bg">
 									<input type="checkbox" [checked]="policyInfo.specialPolicyTag === 'Y'" (change)="policyInfo.specialPolicyTag = (policyInfo.specialPolicyTag === 'Y')? 'N' : 'Y'; cbToggle($event);">
 								</div>
 							</div>
-							<input type="text" style="font-size: 11px !important;" value="Special Policy" disabled class="form-control form-control-sm">
+							<input type="text" style="font-size: 11px !important;" value="Special Policy" disabled class="form-control form-control-sm white-bg">
 						</div>
 					</div>
 				</div>
@@ -1783,21 +1793,21 @@
 					<div class="form-group col-sm-6">
 						<div class="input-group">
 							<div class="input-group-prepend">
-								<div class="input-group-text">
-									<input type="checkbox" [checked]="policyInfo.openCoverTag === 'Y'" (change)="policyInfo.openCoverTag = (policyInfo.openCoverTag === 'Y')? 'N' : 'Y'; cbToggle($event);">
+								<div class="input-group-text white-bg">
+									<input type="checkbox" [checked]="policyInfo.openCoverTag === 'Y'" (change)="policyInfo.openCoverTag = (policyInfo.openCoverTag === 'Y')? 'N' : 'Y'; cbToggle($event);" disabled>
 								</div>
 							</div>
-							<input type="text" style="font-size: 11px !important;" value="Open Cover" disabled class="form-control form-control-sm">
+							<input type="text" style="font-size: 11px !important;" value="Open Cover" disabled class="form-control form-control-sm white-bg">
 						</div>
 					</div>
 					<div class="col-sm-6">
 						<div class="input-group">
 							<div class="input-group-prepend">
-								<div class="input-group-text">
+								<div class="input-group-text white-bg">
 									<input type="checkbox" [checked]="policyInfo.instTag === 'Y'" (change)="policyInfo.instTag = (policyInfo.instTag === 'Y')? 'N' : 'Y'; cbToggle($event);">
 								</div>
 							</div>
-							<input type="text" style="font-size: 11px !important;" value="Installment" disabled class="form-control form-control-sm">
+							<input type="text" style="font-size: 11px !important;" value="Installment" disabled class="form-control form-control-sm white-bg">
 						</div>
 					</div>
 				</div>
@@ -1805,21 +1815,21 @@
 					<div class="form-group col-sm-6">
 						<div class="input-group">
 							<div class="input-group-prepend">
-								<div class="input-group-text">
-									<input type="checkbox" [checked]="policyInfo.holdCoverTag === 'Y'" (change)="policyInfo.holdCoverTag = (policyInfo.holdCoverTag === 'Y')? 'N' : 'Y'; cbToggle($event);">
+								<div class="input-group-text white-bg">
+									<input type="checkbox" [checked]="policyInfo.holdCoverTag === 'Y'" (change)="policyInfo.holdCoverTag = (policyInfo.holdCoverTag === 'Y')? 'N' : 'Y'; cbToggle($event);" disabled>
 								</div>
 							</div>
-							<input type="text" style="font-size: 11px !important;" value="Hold Cover" disabled class="form-control form-control-sm">
+							<input type="text" style="font-size: 11px !important;" value="Hold Cover" disabled class="form-control form-control-sm white-bg">
 						</div>
 					</div>
 					<div class="col-sm-6">
 						<div class="input-group">
 							<div class="input-group-prepend">
-								<div class="input-group-text">
-									<input type="checkbox" [checked]="policyInfo.extensionTag === 'Y'" (change)="policyInfo.extensionTag = (policyInfo.extensionTag === 'Y')? 'N' : 'Y'; cbToggle($event);">
+								<div class="input-group-text white-bg">
+									<input type="checkbox" [checked]="policyInfo.extensionTag === 'Y'" (change)="policyInfo.extensionTag = (policyInfo.extensionTag === 'Y')? 'N' : 'Y'; cbToggle($event);" disabled>
 								</div>
 							</div>
-							<input type="text" style="font-size: 11px !important;" value="Extension" disabled class="form-control form-control-sm">
+							<input type="text" style="font-size: 11px !important;" value="Extension" disabled class="form-control form-control-sm white-bg">
 						</div>
 					</div>
 				</div>
@@ -1827,24 +1837,36 @@
 					<div class="form-group col-sm-6">
 						<div class="input-group">
 							<div class="input-group-prepend">
-								<div class="input-group-text">
-									<input type="checkbox" [checked]="policyInfo.declarationTag === 'Y'" (change)="policyInfo.declarationTag = (policyInfo.declarationTag === 'Y')? 'N' : 'Y'; cbToggle($event);">
+								<div class="input-group-text white-bg">
+									<input type="checkbox" [checked]="policyInfo.declarationTag === 'Y'" (change)="policyInfo.declarationTag = (policyInfo.declarationTag === 'Y')? 'N' : 'Y'; toggleRadioBtnSet();" disabled>
 								</div>
 							</div>
-							<input type="text" style="font-size: 11px !important;" value="Declaration" disabled class="form-control form-control-sm">
+							<input type="text" style="font-size: 11px !important;" value="Declaration" disabled class="form-control form-control-sm white-bg">
 						</div>
 					</div>
 					<div class="col-sm-6">
 						<div class="input-group">
 							<div class="input-group-prepend">
-								<div class="input-group-text">
-									<input type="checkbox" [checked]="policyInfo.excludeDistTag === 'Y'" (change)="policyInfo.excludeDistTag = (policyInfo.excludeDistTag === 'Y')? 'N' : 'Y'; cbToggle($event);">
+								<div class="input-group-text white-bg">
+									<input type="checkbox" [checked]="policyInfo.excludeDistTag === 'Y'" (change)="policyInfo.excludeDistTag = (policyInfo.excludeDistTag === 'Y')? 'N' : 'Y'; cbToggle($event);" disabled>
 								</div>
 							</div>
-							<input type="text" style="font-size: 11px !important;" value="Exclude Distribution" disabled class="form-control form-control-sm">
+							<input type="text" style="font-size: 11px !important;" value="Exclude Distribution" disabled class="form-control form-control-sm white-bg">
+						</div>
+					</div>	
+				</div>
+				<div class="form-row">
+					<div class="form-group col-sm-6">
+							<div id="radioBtnSet" class="input-group-text" style="display: block; margin-top: -4px; padding-left: 33px; padding-right: 0px;">
+							<div class="input-group">
+								<input type="radio" name="option" disabled value="Y" [(ngModel)]="policyInfo.minDepTag"><label class="form-control-sm" style="margin-bottom: -2px !important; font-weight: normal !important;">With Min Dep</label>
+							</div>
+							<div class="input-group">
+								<input type="radio" name="option" disabled value="N" [(ngModel)]="policyInfo.minDepTag"><label class="form-control-sm" style="margin-bottom: -5px !important; font-weight: normal !important;">Without Min Dep</label>
+							</div>
 						</div>
 					</div>
-				</div>
+				</div>	
 			</div>
 		</fieldset>
 	</div>
@@ -1857,8 +1879,8 @@
 		<div class="col-md-12 text-center">
 			<div class="cust-btn-container" style="margin-top: 10px;">
 				<button type="button" class="cust-btn" (click)="showDeductiblesModal(deductibles)"><a>Deductibles</a></button>
-				<button type="button" class="cust-btn" (click)="pol($event)"><a>Cancel</a></button>
-				<button type="button" class="cust-btn"><a>Save</a></button>
+				<button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+				<button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
 			</div>
 		</div>
 	</div>
@@ -1908,6 +1930,11 @@
   </div>
 </app-modal>
 
+<app-confirm-save (onYes)="prepareParam();"></app-confirm-save>
+<app-sucess-dialog id="polGenInfo" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-cancel-button (onYes)="prepareParam('cancel')" [url]="'/alt-policy-listing'" ></app-cancel-button>
+
 <app-lov #dedLov [passData]="passLOVData" (selectedData)="setSelected($event)" [lovCheckBox]="true"></app-lov>
 <app-sucess-dialog #dedSuccess [message]="dialogMsg" [icon]="dialogIcon" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-mtn-intermediary id="intLOV" (selectedData)="setInt($event)"></app-mtn-intermediary>
 <!-- end edit by paul -->

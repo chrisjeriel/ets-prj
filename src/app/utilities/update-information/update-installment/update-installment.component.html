@@ -70,13 +70,13 @@
                     <div class="col-sm-4">
                       <div class="input-group">
                         <label class="form-control-sm col-sm-4" style="margin-left: -14px !important;">Currency</label>
-                        <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px !important;">
+                        <input type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px !important;" [(ngModel)]="currency">
                       </div>
                     </div>
                     <div class="col-sm-8" style="padding-right: 53px !important;">
                       <div class="input-group">
                         <label class="form-control-sm col-sm-4" style="margin-left: -36px !important;">Total Premium</label>
-                        <input type="text" class="form-control form-control-sm col-sm">
+                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="totalPrem | number:'1.2-2'">
                       </div>
                     </div>
                   </div>
@@ -115,7 +115,7 @@
             <div class="text-center" style="margin-top: 8px !important;">
               <div class="cust-btn-container">
                 <button type="button" class="cust-btn"><a>Cancel</a></button>
-                <button type="button" class="cust-btn"><a>Save</a></button>
+                <button type="button" class="cust-btn" (click)="save()"><a>Save</a></button>
               </div>
             </div>
           </div>
@@ -139,3 +139,7 @@
         </div>
     </div>
 </app-modal>
+
+<app-sucess-dialog id="inward" [icon]="dialogIcon" (onOk)="cancelFlag && dialogIcon == 'success'  ? this.cancel.onNo():null" [message]="dialogMsg"></app-sucess-dialog>
+<app-confirm-save id="inwardSave" (onYes)="save()"></app-confirm-save>
+<app-cancel-button (onYes)="save('cancel')" [url]="'/policy-listing'" ></app-cancel-button>

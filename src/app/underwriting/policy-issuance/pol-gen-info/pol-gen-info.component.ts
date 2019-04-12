@@ -404,6 +404,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   }
 
   onClickSave(){
+    console.log("onClickSave() was called...");
     if(!this.validate()){
       this.dialogMessage="Please fill all required fields.";
       this.dialogIcon = "info";
@@ -545,4 +546,17 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       }
     }
   }
+
+  showIntLOV(){
+    $('#intLOV #modalBtn').trigger('click');
+    $('#intLOV #modalBtn').addClass('ng-dirty')
+  }
+
+  setInt(event){
+        this.policyInfo.intmId = event.intmId;
+        this.policyInfo.intmName = event.intmName;
+        this.ns.lovLoader(event.ev, 0);
+        /*this.focusBlur();*/
+  }
+
 }

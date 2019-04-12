@@ -1,7 +1,8 @@
-import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { UnderwritingService, NotesService } from '../../../_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 
 @Component({
@@ -12,6 +13,7 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 export class UpdateInstallmentComponent implements OnInit {
   searchParams: any[] = [];
   @ViewChildren(CustNonDatatableComponent) table: QueryList<CustNonDatatableComponent>;
+  @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
   selectedPolicy: any = null;
   polNo: any[] = [];
   policyId: any = "";
@@ -23,18 +25,32 @@ export class UpdateInstallmentComponent implements OnInit {
   inceptionTime: any = "";
   expiryDate: any = "";
   expiryTime: any = "";
+  currency: any = "";
+  totalPrem: any = "";
+  createUser: any = "";
   selected: any;
   fetchedData: any;
+  dialogIcon:string;
 
   passDataInstallmentInfo: any = {
-    tableData: [["1", "2019-01-12", "01/01/2019", "300000", "3.2", "500000", "100000", "200000"]],
+    tableData: [],
     tHeader: ["Inst No", "Due Date", "Booking Date", "Premium Amount", "Comm Rate(%)", "Comm Amount", "Other Charges", "Amount Due"],
     dataTypes: ["number", "date", "date", "currency", "percent", "currency", "currency", "currency"],
     addFlag: true,
     deleteFlag: true,
     pageID: 1,
     widths: ["1", "auto", "auto", "auto", "auto", "auto", "auto", "auto"],
-    nData: [null, null, null, null, null, null, null, null],
+    nData: {
+        instNo: '',
+        dueDate: '',
+        bookingDate: '',
+        premAmt: '',
+        commRt: '',
+        commAmt: '',
+        otherChargesInw: '',
+        amtDue: ''
+    },
+    keys: ['instNo', 'dueDate', 'bookingDate', 'premAmt', 'commRt', 'commAmt', 'otherChrgs', 'amtDue'],
     pageLength: 5
   };
 
@@ -90,13 +106,18 @@ export class UpdateInstallmentComponent implements OnInit {
   }
 
   setDetails() {
-    console.log(this.selected);
     if(this.selected != null) {
+      console.log(this.selected);
         this.polNo = this.selected.policyNo.split('-');
         this.policyId = this.selected.policyId;
         this.cedingName = this.selected.cedComp;
         this.insuredDesc = this.selected.insured;
         this.riskName = this.selected.risk;
+        this.currency = this.selected.currency;
+        this.totalPrem = this.selected.premium;
+        this.createUser = this.selected.createUser;
+
+        this.retrievePolInwardBal();
     } else {
       /*this.clearFields();*/
     }
@@ -107,9 +128,9 @@ export class UpdateInstallmentComponent implements OnInit {
          var records = data['policyList'];
           this.fetchedData = records;
                for(let rec of records){
-                 console.log(rec);
                    if(rec.altNo === 0){
-                      if (rec.statusDesc === 'In Force' || rec.statusDesc === 'In Progress' || rec.statusDesc === 'Approved' || rec.statusDesc === 'Pending Approval' || rec.statusDesc === 'Rejected') {
+                      if (rec.statusDesc === 'In Force') {
+                        console.log(rec);
                          this.passDataLOV.tableData.push(
                                                     {
                                                         policyId: rec.policyId,
@@ -127,14 +148,96 @@ export class UpdateInstallmentComponent implements OnInit {
                                                         inceptDate: this.ns.toDateTimeString(rec.inceptDate),
                                                         expiryDate: this.ns.toDateTimeString(rec.expiryDate),
                                                         accDate: this.ns.toDateTimeString(rec.acctDate),
-                                                        status: rec.statusDesc
+                                                        status: rec.statusDesc,
+                                                        createUser: rec.createUser
                                                     }
                                                 );  
                      }
                    }
                }
-                this.table.forEach(table => { table.refreshTable() });
+               this.table.forEach(table => { table.refreshTable() });
        });
    }
+
+   retrievePolInwardBal() {
+     console.log("retrievePolInwardBal() was called...");
+     this.underwritingService.getInwardPolBalance(this.policyId).subscribe((data:any) => {
+       console.log(data);
+     }); 
+   }
+
+   save(can?){
+     console.log("save() was called");
+     let params:any = {
+      policyId:this.policyId,
+      savePolInward : [],
+      delPolInward : [],
+      saveOtherCharges : [],
+      delOtherCharges : [],
+      newSavePolInward: []
+     }
+
+     for(let inst of this.passDataInstallmentInfo.tableData){
+       console.log(inst);
+      if(inst.edited && !inst.deleted && inst.instNo!==null){
+        inst.dueDate     = this.ns.toDateTimeString(inst.dueDate);
+        inst.bookingDate = this.ns.toDateTimeString(inst.bookingDate);
+        inst.createDate     = this.ns.toDateTimeString(inst.createDate);
+        inst.updateDate = this.ns.toDateTimeString(inst.updateDate);
+        inst.updateUser = JSON.parse(window.localStorage.currentUser).username;
+        console.log(this.createUser);
+        inst.createUser = this.createUser;
+        params.savePolInward.push(inst);
+      }else if(inst.deleted){
+        params.delPolInward.push(inst);
+      } /*
+      if(!inst.deleted && inst.instNo!==null ){
+        let instFlag: boolean = false;
+        for(let chrg of inst.otherCharges){
+          if(chrg.edited && !chrg.deleted ){
+            chrg.createDate     = this.ns.toDateTimeString(chrg.createDate);
+            chrg.updateDate = this.ns.toDateTimeString(chrg.updateDate);
+            chrg.updateUser = JSON.parse(window.localStorage.currentUser).username;
+            params.saveOtherCharges.push(chrg);
+            instFlag = true;
+          }else if(chrg.deleted){
+            params.delOtherCharges.push(chrg);
+            instFlag = true;
+          }
+        }
+        if(instFlag){
+          inst.dueDate     = this.ns.toDateTimeString(inst.dueDate);
+          inst.bookingDate = this.ns.toDateTimeString(inst.bookingDate);
+          inst.createDate     = this.ns.toDateTimeString(inst.createDate);
+          inst.updateDate = this.ns.toDateTimeString(inst.updateDate);
+          inst.updateUser = JSON.parse(window.localStorage.currentUser).username;
+          params.savePolInward.push(inst);
+        }
+      }
+      if(inst.instNo==null){
+        inst.dueDate     = this.ns.toDateTimeString(inst.dueDate);
+        inst.bookingDate = this.ns.toDateTimeString(inst.bookingDate);
+        for(let chrg of inst.otherCharges){
+          chrg.createDate     = this.ns.toDateTimeString(chrg.createDate);
+          chrg.updateDate = this.ns.toDateTimeString(chrg.updateDate);
+        }
+        params.newSavePolInward.push(inst);
+      }*/
+    }
+
+     this.underwritingService.saveInwardPolBal(params).subscribe((data:any)=>{
+       console.log(data.returnCode);
+        if(data.returnCode == -1){
+          this.dialogIcon = 'success';
+          this.successDialog.open();
+          /*this.otherTable.markAsPristine();*/
+          /*this.passDataInstallmentInfo.markAsPristine();*/
+          this.retrievePolInwardBal();
+        }else{
+          this.dialogIcon = 'error';
+          this.successDialog.open();
+        }
+      });
+    }
 
 }
