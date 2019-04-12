@@ -143,11 +143,29 @@ export class AppComponent  {
       this.theme = window.localStorage.getItem("selectedTheme");
     }
 
+
     ngOnInit(){
       this.theme = window.localStorage.getItem("selectedTheme");
       this.changeTheme(this.theme);
     }
 
+     /*@HostListener('document:click', ['$event'])
+      clickout(event) {
+        if(this.eRef.nativeElement.contains(event.target)) {
+                      this.changeTheme(this.theme);
+        } else {
+                      this.changeTheme(this.theme);
+        }
+     }*/
+
+ /*    @HostListener('document:keyup', ['$event'])
+       handleKeyboardEvent(event: KeyboardEvent) { ''
+              if (event.key == 'Backspace' || event.key == ' ') {
+                this.changeTheme(this.theme);
+              }
+    }*/
+
+    
     @HostListener('window:unload', ['$event'])
     unloadHandler(event) {
         window.localStorage.setItem("selectedTheme", this.theme);

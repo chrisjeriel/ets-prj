@@ -159,6 +159,8 @@ export class ReadyForPrintingComponent implements OnInit {
 
   searchParams: any[] = [];
 
+  currentUserId: string = JSON.parse(window.localStorage.currentUser).username;
+
   ngOnInit() {
     this.printModal.default = false;
     this.printModal.reports = true;

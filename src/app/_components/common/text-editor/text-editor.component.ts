@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -6,7 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './text-editor.component.html',
   styleUrls: ['./text-editor.component.css']
 })
-export class TextEditorComponent implements OnInit {
+export class TextEditorComponent implements OnInit, OnChanges {
 
   @Input() editorContent: any = '';
   @Input() editorPlaceholder: any = null;
@@ -39,6 +39,16 @@ export class TextEditorComponent implements OnInit {
       this.style['background'] = '#fffacd85';
     }
 
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes.readonly && changes.required) {
+      if(this.readonly && !this.required) {
+        this.style['background'] = '#f5f5f5';
+      } else if(this.required && !this.readonly) {
+        this.style['background'] = '#fffacd85';
+      }
+    }
   }
 
   showTextEditorModal(content) {
