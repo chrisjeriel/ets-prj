@@ -7,6 +7,7 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 import { DecimalPipe } from '@angular/common';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { Router } from '@angular/router';
+import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
 
 
 
@@ -84,7 +85,7 @@ export class HoldCoverComponent implements OnInit {
 	searchParams2: any[] = [];
 
 	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title,
-		private decPipe: DecimalPipe, private ns : NotesService, private router: Router) { 
+		private decPipe: DecimalPipe, private ns : NotesService, private router: Router ) { 
 	}
 
 	qLine: string;
@@ -345,9 +346,9 @@ export class HoldCoverComponent implements OnInit {
 					this.holdCover.createDate = this.ns.toDateTimeString(rec.createDate);
 					this.holdCover.createUser = rec.createUser;
 					this.holdCover.optionId = rec.optionId;
-					this.quoteId = data['quotationList'][0].quoteId;
 					this.cancelHcBtnEnabled = true;
 					this.btnApprovalEnabled = true;
+					this.quoteId = data['quotationList'][0].quoteId;
 
 					if(rec.approvedBy === '' || rec.approvedBy === null ||  rec.approvedBy === undefined){
 						this.clickView = false;
@@ -363,7 +364,7 @@ export class HoldCoverComponent implements OnInit {
 									$('#modifMdl > #modalBtn').trigger('click');
 								}
 
-							}
+							} 
 						}
 
 					});
@@ -532,7 +533,7 @@ getQuoteInfo(){
 				this.insured = (rec[0].insuredDesc  === null || rec[0].insuredDesc === undefined) ? '' : rec[0].insuredDesc;
 				this.cedCo = (rec[0].cedingName  === null || rec[0].cedingName === undefined) ? '' : rec[0].cedingName;
 				this.risk = (rec[0].project  === null || rec[0].project === undefined) ? '' : rec[0].project.riskName;
-
+				this.sliceQuoteNo(this.quoteNo);
 
 				this.quotationService.getSelectedQuotationHoldCoverInfo(this.quoteNo)
 				.subscribe(data => {
@@ -705,8 +706,6 @@ fmtCn(cn){
 onTabChange($event: NgbTabChangeEvent) {
 	if ($event.nextId === 'Exit') {
 		$event.preventDefault();
-		//this.router.navigateByUrl('hold-cover-monitoring');
-
 	} 
 }
 
@@ -743,7 +742,7 @@ onClickCancelHoldCover(){
 
 }
 
-onConfirmCancelHc(){
+onConfirmCancelHc(){	
 	this.warningMsg = 'Are you sure you want to save changes?';
 	$('#warningMdl #modalBtn').trigger('click');  
 }
@@ -752,11 +751,11 @@ onClickOptionLOV(){
 	this.passDataQuoteOptionsLOV.tableData = [];
 	//this.loading = true;
 	$('#optionMdl #modalBtn2').trigger('click');
-	//(this.quoteId === null || this.quoteId === undefined)? '' : this.quoteId.toString();
-	this.quotationService.getQuoteOptions(((this.quoteId === null || this.quoteId === undefined)? '' : this.quoteId.toString()),'')
+	this.quotationService.getQuoteOptions(this.quoteId.toString(),'')
 	.subscribe(data => {
 		console.log(data);
 		//this.loading = false;
+		this.passDataQuoteOptionsLOV.tableData = [];
 		if(data['quotation'] === '' || data['quotation'] === null || data['quotation'] === undefined){
 
 		}else{
@@ -829,7 +828,8 @@ onClickClear(){
 	this.clearAll();
 	this.newHc(true);
 	this.disableFieldsHc(true);
+	this.cancelHcBtnEnabled = false;
+	this.btnApprovalEnabled = false;
 }
-
 
 }
