@@ -7,6 +7,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '@environments/environment';
 import { PrintModalComponent } from '@app/_components/common/print-modal/print-modal.component';
 import * as alasql from 'alasql';
+import { ConcatenateBlobs } from 'concatenateblobs';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-ready-for-printing',
@@ -51,7 +53,8 @@ export class ReadyForPrintingComponent implements OnInit {
   line: any = null;    
   quotationNo: any = null;
   typeOfCession: any = null;
-
+  arrayBlob=new Array();
+  finishPrint: boolean = false;
 
 
   passData: any = {
@@ -161,11 +164,14 @@ export class ReadyForPrintingComponent implements OnInit {
     this.printModal.reports = true;
     this.btnDisabled = true;
     this.retrieveQuoteListingMethod();
+
+
   }
 
   retrieveQuoteListingMethod(){
     this.quotationService.getQuoProcessingData(this.searchParams).subscribe(data => {
             this.records = data['quotationList'];
+            console.log(this.records);
             for(let rec of this.records){
               if(rec.status === 'Approved'){
                 this.passData.tableData.push(
@@ -336,11 +342,16 @@ export class ReadyForPrintingComponent implements OnInit {
   }
 
   printPDF(reportName : string, quoteId : string){
-         this.quotationService.downloadPDF(reportName,quoteId).subscribe( data => {
+         this.quotationService.downloadPDF(reportName,quoteId)
+         .pipe(
+           finalize(() => this.batchPrinting() )
+           )
+         .subscribe( data => {
               var newBlob = new Blob([data], { type: "application/pdf" });
-              var downloadURL = window.URL.createObjectURL(data);
+              this.arrayBlob.push(newBlob);
+             /* var downloadURL = window.URL.createObjectURL(data);
               downloadURL = downloadURL + downloadURL;
-              window.open(downloadURL, '_blank').print();    
+              window.open(downloadURL, '_blank').print();    */
        },
         error => {
             if (this.isEmptyObject(error)) {
@@ -352,7 +363,17 @@ export class ReadyForPrintingComponent implements OnInit {
                setTimeout(()=>{$('.globalLoading').css('display','none');},0);
             }          
        });
+  }
 
+  batchPrinting(){
+   console.log(this.arrayBlob);
+
+/*    var downloadURL = window.URL.createObjectURL();
+    const iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    iframe.src = downloadURL;
+    document.body.appendChild(iframe);
+    iframe.contentWindow.print();*/
 
   }
 
@@ -377,6 +398,24 @@ export class ReadyForPrintingComponent implements OnInit {
   }  
 
   changeQuoteStatus() {
+
+    if (this.printType == 'PRINTER'){
+
+
+                    for(let i=0;i<this.saveData.changeQuoteStatus.length ;i++){ 
+                      if(this.quotationData[i].cessionDesc.toUpperCase() === 'DIRECT'){
+                        var selectedReport = this.reportsList[0].val
+                        this.printPDF(selectedReport,this.saveData.changeQuoteStatus[i].quoteId);
+                      } else {
+                        var selectedReport = this.reportsList[1].val
+                        this.printPDF(selectedReport,this.saveData.changeQuoteStatus[i].quoteId);
+                      }
+                    }
+
+
+                     this.searchQuery(this.searchParams);
+   }
+/*
     this.quotationService.saveChangeQuoteStatus(this.saveData).subscribe( data => {
         this.changeQuoteError = data['returnCode'];
         if(data['returnCode'] == 0) {
@@ -423,7 +462,7 @@ export class ReadyForPrintingComponent implements OnInit {
                  this.table.refreshTable("first");
         }
         this.btnDisabled = true;
-    });
+    });*/
   }
 
   export(){
