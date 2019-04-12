@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { WorkFlowManagerService, AuthenticationService, QuotationService } from '@app/_services';
 import { User } from '@app/_models';
 import { Router } from '@angular/router';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 
 interface Module {
   referenceId: string;
@@ -191,13 +192,16 @@ export class ApprovalListComponent implements OnInit {
               private router: Router,
               private quotationService: QuotationService) {}
 
+  @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   currentUser: User;
   approvalList: Module[] = [];
   selectedData:any;
   page = 1;
   pageSize = 2;
   collectionSize:any;
-  
+  currentUserId: string = JSON.parse(window.localStorage.currentUser).username;
+  dialogIcon:string  = "";
+  dialogMessage:string  = "";
   
 
   ngOnInit() {
@@ -228,6 +232,11 @@ export class ApprovalListComponent implements OnInit {
   }
 
   retrieveWfmApprovals() {
+      while(this.approvalList.length>0){
+          this.approvalList.pop();
+      }
+
+
       this.workFlowManagerService.retrieveWfmApprovals(this.currentUser.username).subscribe((data)=>{
           if (data["approvalList"].length > 0) {
             this.collectionSize = data["approvalList"].length;
@@ -243,7 +252,9 @@ export class ApprovalListComponent implements OnInit {
                                         });
             }
           }
-      })
+      });
+
+      this.selectedData = null;
   }
 
   redirectToQuoteGenInfo() {
@@ -271,6 +282,35 @@ export class ApprovalListComponent implements OnInit {
     this.selectedData = mod;
   }
 
+  approveRecord() {
+    this.quotationService.updateQuoteStatus(this.selectedData.referenceId, 'A', this.currentUserId).subscribe((data)=>{
+            if(data['returnCode'] == 0) {
+              this.dialogIcon = "error-message";
+              this.dialogMessage = "Status failed for Approval";
+              this.successDiag.open();
+            } else {
+              this.dialogMessage = this.selectedData.module + " : " + this.selectedData.details + " " + "has been approved.";
+              this.dialogIcon = "success-message";
+              this.successDiag.open();
+            }
+            this.retrieveWfmApprovals();
+    });
+  }
+
+  rejectRecord() {
+    this.quotationService.updateQuoteStatus(this.selectedData.referenceId, 'R', this.currentUserId).subscribe((data)=>{
+            if(data['returnCode'] == 0) {
+              this.dialogIcon = "error-message";
+              this.dialogMessage = "Status failed for Rejection";
+              this.successDiag.open();
+            } else {
+              this.dialogMessage = this.selectedData.module + " : " + this.selectedData.details + " " + "has been rejected.";
+              this.dialogIcon = "success-message";
+              this.successDiag.open();
+            }
+            this.retrieveWfmApprovals();
+    });
+  }
 
   
 

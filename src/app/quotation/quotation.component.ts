@@ -7,6 +7,8 @@ import { environment } from '@environments/environment';
 import { QuotationService } from '@app/_services';
 import { first } from 'rxjs/operators';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
+import { Subject } from 'rxjs';
 
 
 
@@ -18,6 +20,8 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 export class QuotationComponent implements OnInit {
 	constructor(private route: ActivatedRoute,private modalService: NgbModal, private titleService: Title, private router: Router, private quotationService: QuotationService) { }
 	@ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
+  @ViewChild('tabset') tabset: any;
+  @ViewChild(GeneralInfoComponent) genInfoComponent: GeneralInfoComponent;
   docTitle: string = "";
 	sub: any;
 	line: string;
@@ -51,6 +55,7 @@ export class QuotationComponent implements OnInit {
 	header: string;
 	showAlop:boolean = false;
 	enblEndtTab:boolean = false;
+  enblOptTab:boolean = false;
 	dialogIcon:string  = "";
   dialogMessage:string  = "";
   btnDisabled: boolean;
@@ -121,23 +126,40 @@ export class QuotationComponent implements OnInit {
 	onTabChange($event: NgbTabChangeEvent) {
 		 // if($('.ng-dirty:not([type="search"]):not(.not-form)').length != 0){
 		 // 	  $event.preventDefault();
-   //   }
-
+   //   }                     
   		if ($event.nextId === 'Exit') {
         $event.preventDefault();
     		this.router.navigateByUrl('');
-  		} 
+  		} else 
 
   		if ($event.nextId === 'approval-tab') {
 			$event.preventDefault();
-		}
+		}else
 
       if ($event.nextId === 'Print') {
         $event.preventDefault();
         $('#printListQuotation > #printModalBtn').trigger('click');
-      } 
+      } else
+
+     if($('.ng-dirty').length != 0 ){
+        $event.preventDefault();
+        const subject = new Subject<boolean>();
+        const modal = this.modalService.open(ConfirmLeaveComponent,{
+            centered: true, 
+            backdrop: 'static', 
+            windowClass : 'modal-size'
+        });
+        modal.componentInstance.subject = subject;
+
+        subject.subscribe(a=>{
+          if(a){
+            $('.ng-dirty').removeClass('ng-dirty');
+            this.tabset.select($event.nextId)
+          }
+        })
 
 
+      }
  
   	}
 
@@ -168,7 +190,7 @@ export class QuotationComponent implements OnInit {
 
   	showPrintPreview(content) {
         if (this.printType.toUpperCase() == 'SCREEN'){
-  			window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + this.selectedReport + '&quoteId=' + this.quoteInfo.quoteId, '_blank');
+  			window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + this.selectedReport + '&quoteId=' + this.quoteInfo.quoteId + '&userId=' + this.currentUserId, '_blank');
 	  		this.modalService.dismissAll();
 	  		} else if (this.printType.toUpperCase() == 'PDF'){
 	  			this.downloadPDF(this.selectedReport,this.quoteInfo.quoteId);
@@ -203,7 +225,7 @@ export class QuotationComponent implements OnInit {
 
     printDialog(obj,selectedReport: string){
       if (obj.toUpperCase() == 'SCREEN'){
-        window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + selectedReport + '&quoteId=' + this.quoteInfo.quoteId, '_blank');
+        window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + selectedReport + '&quoteId=' + this.quoteInfo.quoteId + '&userId=' + this.currentUserId, '_blank');
         this.modalService.dismissAll();
         this.selectedReport = null;
       } else if (obj.toUpperCase() == 'PDF'){
@@ -311,6 +333,11 @@ export class QuotationComponent implements OnInit {
             }
         })
       }
+
+      this.genInfoComponent.ngOnInit();
+      /*setTimeout(() => {
+        this.router.navigate(['/quotation', { line: this.quoteInfo.lineCd,  quotationNo : this.quoteInfo.quotationNo, quoteId: this.quoteInfo.quoteId, from: 'quo-processing', inquiryFlag: true}], { skipLocationChange: true });
+      },100); */
     }
 
 
