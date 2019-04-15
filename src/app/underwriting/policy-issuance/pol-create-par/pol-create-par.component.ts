@@ -643,4 +643,12 @@ export class PolCreatePARComponent implements OnInit {
       $('.req').blur();
     },0);
   }
+
+  pad(ev,num) {
+    if(ev.target.value === '') {
+      return '';
+    }
+    
+    return String(ev.target.value).padStart(num, '0');
+  }
 }
