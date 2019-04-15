@@ -312,11 +312,27 @@ export class AttachmentComponent implements OnInit {
   }
 
   onClickSave(){
-    $('#confirm-save #modalBtn2').trigger('click');
+    if(this.checkFields()){
+       $('#confirm-save #modalBtn2').trigger('click');
+      }else{
+        this.dialogMessage="Please fill up required fields.";
+        this.dialogIcon = "info";
+        $('#attchmntMdl #successModalBtn').trigger('click');
+      }
   }
 
    //get the emitted files from the table
     uploads(event){
       this.filesList = event;
+    }
+
+    checkFields(){
+      for(let check of this.passData.tableData){
+        if(check.description === null || check.description === undefined || check.description.length === 0){
+          return false;
+        }else{
+          return true;
+        }
+      }
     }
 }
