@@ -110,7 +110,7 @@ export class PolEndorsementComponent implements OnInit {
         if(this.policyInfo.fromInq!='true'){
             //do something
             this.passData.magnifyingGlass = ['endtCd'];
-            this.passData.checkFlag = false;
+            this.passData.checkFlag = true;
             this.deductiblesData.checkFlag = true;
             this.deductiblesData.magnifyingGlass = ['deductibleCd'];
             this.passData.uneditable = [true,true,true,false];
