@@ -304,7 +304,7 @@ export class PolEndorsementComponent implements OnInit {
         for(let ded of params.saveDeductibleList){
           if((isNaN(ded.deductibleRt) || ded.deductibleRt=="" || ded.deductibleRt==null) && (isNaN(ded.deductibleAmt) || ded.deductibleAmt=="" || ded.deductibleAmt==null)){
             this.dialogIcon = "error";
-            setTimeout(a=>this.successDiag.open();,0);
+            setTimeout(a=>this.successDiag.open(),0);
             return null;
           }
         }
