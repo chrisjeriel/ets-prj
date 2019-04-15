@@ -905,7 +905,7 @@
 
 		<app-confirm-save (onYes)="prepareParam();"></app-confirm-save>
 
-		<app-sucess-dialog id="polGenInfo" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+		<app-sucess-dialog id="polGenInfo" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo() : null"></app-sucess-dialog>
 		<app-cancel-button (onYes)="prepareParam('cancel')" [url]="'/policy-listing'" ></app-cancel-button>
 
 		<ng-template #content>

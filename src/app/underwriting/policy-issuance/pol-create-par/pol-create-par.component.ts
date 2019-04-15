@@ -107,6 +107,7 @@ export class PolCreatePARComponent implements OnInit {
   }
 
   getQuoteListing(param?) {
+    this.lovTable.loadingFlag = true;
     this.quoteService.getQuoProcessingData(param === undefined ? [] : param).subscribe(data => {
       this.quotationList = data['quotationList'];
       this.passDataLOV.tHeader = ['Quotation No', 'Ceding Company', 'Insured', 'Risk'];
@@ -122,11 +123,11 @@ export class PolCreatePARComponent implements OnInit {
       this.lovTable.refreshTable();
 
       if(param !== undefined) {
-        if(this.quotationList.length == 1 && this.quNo.length == 5 && !this.quNo.includes('%%')) {  
+        if(this.quotationList.length == 1 && this.quNo.length == 5 && !this.searchArr.includes('%%')) {  
           this.selected = this.quotationList[0];
           this.setDetails();
           this.noSelected = false;
-        } else if(this.quotationList.length == 0 && this.quNo.length == 5 && !this.quNo.includes('%%')) {
+        } else if(this.quotationList.length == 0 && this.quNo.length == 5 && !this.searchArr.includes('%%')) {
           this.clearFields();
           this.getQuoteListing();
           this.showLOV();
@@ -154,6 +155,7 @@ export class PolCreatePARComponent implements OnInit {
   }
 
   getHoldCovListing(param?) {
+    this.lovTable.loadingFlag = true;
     this.quoteService.getQuotationHoldCoverList(param === undefined ? [] : param).subscribe(data => {
       this.holCovList = data['quotationList'];
       this.passDataLOV.tHeader = ['Hold Cover No', 'Ceding Company', 'Insured', 'Risk'];
@@ -184,6 +186,7 @@ export class PolCreatePARComponent implements OnInit {
   }
 
   getPolOCListing(param?) {
+    this.lovTable.loadingFlag = true;
     this.underwritingService.getPolListingOc(param === undefined ? [] : param).subscribe(data => {
       console.log(data);
       this.polOcList = data['policyList'];
@@ -293,7 +296,7 @@ export class PolCreatePARComponent implements OnInit {
     }  
   }
 
-  setDetails() {
+  setDetails(fromMdl?) {
     if(this.selected != null) {
       if(this.qu) {
         this.quNo = this.selected.quotationNo.split('-');
@@ -304,6 +307,22 @@ export class PolCreatePARComponent implements OnInit {
         this.getOptionLOV(this.selected.quoteId);
         this.noSelected = false;
         this.getCutOffTime({ target: { value: this.quNo[0] } });
+
+        if(fromMdl !== undefined) {
+          this.searchArr = this.quNo.map((a, i) => {
+            if(i === 0) {
+              a = a + '%';
+            } else if(i === this.quNo.length - 1) {
+              a = '%' + a;
+            } else {
+              a = '%' + a + '%';
+            }
+
+            return a;
+          });
+
+          this.search('forceSearch',{ target: { value: '' } });
+        }               
       } else if (this.hc) {       
         console.log(this.selected);
 
@@ -327,7 +346,23 @@ export class PolCreatePARComponent implements OnInit {
           this.inceptionDate = this.ns.toDateTimeString(0).split('T')[0];
           this.updateExpiryDate();
           this.getCutOffTime({ target: { value: this.hcNo[1] } });
-        }        
+        }
+
+        if(fromMdl !== undefined) {
+          this.searchArr = this.hcNo.map((a, i) => {
+            if(i === 0) {
+              a = a + '%';
+            } else if(i === this.hcNo.length - 1) {
+              a = '%' + a;
+            } else {
+              a = '%' + a + '%';
+            }
+
+            return a;
+          });
+
+          this.search('forceSearch',{ target: { value: '' } });
+        }
         
       } else if (this.oc) {
         this.ocNo = this.selected.openPolicyNo.split('-');
@@ -338,8 +373,25 @@ export class PolCreatePARComponent implements OnInit {
         this.riskName = this.selected.project.riskName; //update
 
         this.getCutOffTime({ target: { value: this.ocNo[1] } });
+
+        if(fromMdl !== undefined) {
+          this.searchArr = this.ocNo.map((a, i) => {
+            if(i === 0) {
+              a = a + '%';
+            } else if(i === this.ocNo.length - 1) {
+              a = '%' + a;
+            } else {
+              a = '%' + a + '%';
+            }
+
+            return a;
+          });
+
+          this.search('forceSearch',{ target: { value: '' } });
+        }
       }
       
+      this.focusBlur();
     } else {
       this.clearFields();
     }
@@ -351,6 +403,8 @@ export class PolCreatePARComponent implements OnInit {
       this.optionId = this.selectedOption.optionId;
       this.condition = this.selectedOption.condition;
     }
+
+    this.focusBlur();
   }
 
   prepareParam() {    
@@ -424,8 +478,6 @@ export class PolCreatePARComponent implements OnInit {
 
   validate(obj) {
     var entries = Object.entries(obj);
-    console.log(entries);
-    var ctr = 0;
 
     for(var [key, val] of entries) {
       if (this.qu && key === 'quotationNo' && String(val).split('-').includes('')) {
@@ -472,8 +524,7 @@ export class PolCreatePARComponent implements OnInit {
       $('#createPol #successModalBtn').trigger('click');
       setTimeout(() => {
         $('.globalLoading').css('display','none');
-        $('.req').focus();
-        $('.req').blur();
+        this.focusBlur();
       },0);
     }
   }
@@ -485,7 +536,7 @@ export class PolCreatePARComponent implements OnInit {
       this.noSelected = true;
 
       if(key === 'lineCd') {
-        this.searchArr[0] = a.toUpperCase() + '%';
+        this.searchArr[0] = a === '' ? '%%' : a.toUpperCase() + '%';
       } else if(key === 'year') {
         this.searchArr[1] = '%' + a + '%';
       } else if(key === 'seqNo') {
@@ -493,12 +544,16 @@ export class PolCreatePARComponent implements OnInit {
       } else if(key === 'revNo') {
         this.searchArr[3] = '%' + a + '%';
       } else if(key === 'cedingId') {
-        this.searchArr[4] = '%' + a.padStart(3, '0');
+        this.searchArr[4] = a === '' ? '%%' : '%' + a.padStart(3, '0');
       }
 
       if(this.searchArr.includes('')) {
         this.searchArr = this.searchArr.map(a => { a = a === '' ? '%%' : a; return a; });
       }
+
+      console.log(this.searchArr);
+      console.log(this.searchArr.join('-'));
+      console.log(!this.searchArr.includes('%%'));
 
       this.getQuoteListing([{ key: 'quotationNo', search: this.searchArr.join('-') }]);      
     } else if(this.hc) {
@@ -518,7 +573,7 @@ export class PolCreatePARComponent implements OnInit {
         this.searchArr = this.searchArr.map(a => { a = a === '' ? '%%' : a; return a; });
       }
 
-      this.getHoldCovListing([{ key: 'holdCoverNo', search: this.searchArr.join('%-%') }]);
+      this.getHoldCovListing([{ key: 'holdCoverNo', search: this.searchArr.join('-') }]);
     } else {
       if(key === 'oc') {
         this.searchArr[0] = a.toUpperCase() + '%';
@@ -529,7 +584,7 @@ export class PolCreatePARComponent implements OnInit {
       } else if(key === 'seqNo') {
         this.searchArr[3] = '%' + a + '%';
       } else if(key === 'cedingId') {
-        this.searchArr[4] = '%' + a.padStart(3, '0') + '%';
+        this.searchArr[4] = '%' + a === '' ? '' : a.padStart(3, '0') + '%';
       } else if(key === 'coSeriesNo') {
         this.searchArr[5] = '%' + a + '%';
       } else if(key === 'altNo') {
@@ -540,7 +595,7 @@ export class PolCreatePARComponent implements OnInit {
         this.searchArr = this.searchArr.map(a => { a = a === '' ? '%%' : a; return a; });
       }
 
-      this.getPolOCListing([{ key: 'policyNo', search: this.searchArr.join('%-%') }]);
+      this.getPolOCListing([{ key: 'policyNo', search: this.searchArr.join('-') }]);
     }
 
   }
@@ -553,8 +608,15 @@ export class PolCreatePARComponent implements OnInit {
     } else if(this.hc) {
       this.getHoldCovListing(this.filtSearch);
     } else {
-
+      this.getPolOCListing(this.filtSearch);
     }    
   }
 
+  focusBlur() {
+    setTimeout(() => {
+      $('.globalLoading').css('display','none');
+      $('.req').focus();
+      $('.req').blur();
+    },0);
+  }
 }
