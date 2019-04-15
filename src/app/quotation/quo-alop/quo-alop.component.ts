@@ -201,6 +201,7 @@ export class QuoAlopComponent implements OnInit {
 
     getAlop(){
       this.quotationService.getALop(this.quotationInfo.quoteId,'').subscribe((data: any) => {
+        console.log(data)
              this.loading = false;
              if(data.quotation != null){
               this.quoteId = data.quotation.quoteId;
@@ -473,7 +474,7 @@ export class QuoAlopComponent implements OnInit {
      this.quotationService.getCoverageInfo(null,this.quotationInfo.quoteId).subscribe((data: any) => {
        var sectionCover = data.quotation.project.coverage.sectionCovers;
        for(var i=0;i < sectionCover.length;i++){
-         if(sectionCover[i].coverCdAbbr == 'ALOP'){
+         if(sectionCover[i].description == 'Advance Loss of Profit'){
              this.alopSI = sectionCover[i].sumInsured;
          }
        }
