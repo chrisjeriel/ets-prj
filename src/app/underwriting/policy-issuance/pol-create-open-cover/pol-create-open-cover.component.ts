@@ -256,7 +256,7 @@ export class PolCreateOpenCoverComponent implements OnInit {
         this.us.saveOpenPolDetails(this.saveParams).subscribe((data: any)=>{
             console.log(data);
             if(data.returnCode === 0){
-              this.dialogIcon = "error";
+              this.dialogIcon = "info";
               this.dialogMessage = "Conversion error. Invalid Quotation data.";
               $('#dialogPopup > #successModalBtn').trigger('click');
             }else{
@@ -276,7 +276,9 @@ export class PolCreateOpenCoverComponent implements OnInit {
         this.router.navigate(['/create-open-cover-letter', { 
                                                                 line: this.splitQuoteNo[0],
                                                                 policyIdOc: this.openPolicyInfo.policyIdOc,
-                                                                openPolNo: this.openPolicyInfo.openPolNo
+                                                                openPolNo: this.openPolicyInfo.openPolNo,
+                                                                inquiryFlag: false,
+                                                                fromBtn: 'create'
                                                            }
                              ], { skipLocationChange: true });
     }
