@@ -33,14 +33,14 @@
 				<legend class="scheduler-border">Deductibles</legend>
 				<div style="padding-top: 5px;">
 					<app-cust-editable-non-datatable #dedTable [passData]="deductiblesData" (clickLOV)="clickDedLov($event)" 
-					(tableDataChange)="endtTable.indvSelect.deductibles = $event" ></app-cust-editable-non-datatable>
+					(tableDataChange)="ocFlag ? endtTable.indvSelect.deductiblesOc = $event : endtTable.indvSelect.deductibles = $event" ></app-cust-editable-non-datatable>
 				</div>
 			</fieldset>
 		</div>
 	</div>
 
 </fieldset>
-<div class="form-row" *ngIf="(alteration || ocFlag) && policyInfo.fromInq!='true'">
+<div class="form-row" *ngIf="policyInfo.fromInq!='true'">
 	<div class="form-group col-sm">
 		<div class="col-md-13 text-center">
 			<div class="cust-btn-container">
