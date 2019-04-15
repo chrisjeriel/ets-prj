@@ -77,7 +77,7 @@
                                                 <div class="input-group" style="margin-bottom: -0px !important;">
                                                     <label class="form-control-sm col-sm-4">Period From</label>
                                                     <input type="{{type}}" class="form-control form-control-sm cust-sm warn col-sm" readonly appRequired #periodFrom (blur)="setPeriodTo(periodFrom.value)" [ngModel]="holdCover.periodFrom.split('T')[0]" (ngModelChange)="holdCover.periodFrom=$event" id="periodFrom">
-                                                    <input type="{{typeTime}}" style="margin-left: 3px !important" id="periodFromTime" readonly appRequired class="form-control form-control-sm cust-sm warn col-sm-3" [ngModel]="holdCover.periodFrom.split('T')[1]" (ngModelChange)="periodFromTime=$event">
+                                                    <input type="{{typeTime}}" style="margin-left: 3px !important" id="periodFromTime" readonly appRequired class="form-control form-control-sm cust-sm warn col-sm-3" [ngModel]="periodFromTime" (ngModelChange)="periodFromTime=$event" (change)="addNgDirty()">
                                                 </div>
                                             </div>
                                             <div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
@@ -92,7 +92,7 @@
                                                 <div class="input-group" style="margin-bottom: -0px !important;">
                                                     <label class="form-control-sm col-sm-4">Period To</label>
                                                     <input type="{{type}}" class="form-control form-control-sm cust-sm warn col-sm" readonly id="periodTo" appRequired #periodTo [ngModel]="holdCover.periodTo.split('T')[0]" (ngModelChange)="holdCover.periodTo=$event"  min="{{ holdCover.periodFrom.split('T')[0] }}" (blur)="limitPeriodTo(periodFrom.value)">
-                                                    <input type="{{typeTime}}" style="margin-left: 3px !important" id="periodToTime" readonly appRequired class="form-control form-control-sm cust-sm warn col-sm-3" [ngModel]="holdCover.periodTo.split('T')[1]" (ngModelChange)="periodToTime=$event">
+                                                    <input type="{{typeTime}}" style="margin-left: 3px !important" id="periodToTime" readonly appRequired class="form-control form-control-sm cust-sm warn col-sm-3" [ngModel]="periodToTime" (ngModelChange)="periodToTime=$event" (change)="addNgDirty()">
                                                 </div>
                                             </div>
                                             <div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">

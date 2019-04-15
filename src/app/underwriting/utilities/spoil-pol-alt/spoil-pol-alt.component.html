@@ -8,19 +8,19 @@
 						<div class="input-group">
 							<div class="col-sm-2"></div>
 							<label class="form-control-sm col-sm-1">Policy No</label>
-							<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Line">
-							<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Year">
-							<input type="text" class="form-control form-control-sm col-sm   cap-input" style="margin-left: 3px;" ngbTooltip="Sequence No">
-							<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Co Code">
-							<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Co Series No">
-							<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Alt No">
+							<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Line" [(ngModel)] = "spoilPolRecord.line">
+							<input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Year" [(ngModel)] = "spoilPolRecord.year">
+							<input type="text" class="form-control form-control-sm col-sm   cap-input text-right" style="margin-left: 3px;" ngbTooltip="Sequence No" [(ngModel)] = "spoilPolRecord.seqNo" >
+							<input type="text" class="form-control form-control-sm col-sm-1 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Co Code" [(ngModel)] = "spoilPolRecord.coCode" >
+							<input type="text" class="form-control form-control-sm col-sm-1 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Co Series No" [(ngModel)] = "spoilPolRecord.coSeriesNo" >
+							<input type="text" class="form-control form-control-sm col-sm-1 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Alt No" [(ngModel)] = "spoilPolRecord.altNo" >
 							<span>&nbsp;</span>
-							<div><a><i class="fa fa-search"></i></a></div>
+							<div><a (click)="getPolicyList()"><i class="fa fa-search"></i></a></div>
 							<div class="form-row">
 								<div class="form-group">
 									<div class="col-md-12 text-center">
 										<div class="cust-btn-container">
-											<button type="button" class="cust-btn"><a>Clear</a></button>
+											<button type="button" class="cust-btn" (click)="clearAll()"><a>Clear</a></button>
 										</div>
 									</div>
 								</div>
@@ -37,13 +37,13 @@
 							<div class="col-sm-6">
 								<div class="input-group">
 									<label class="form-control-sm col-sm-3">Ceding Company</label>
-									<input type="text" class="form-control form-control-sm col-sm" readonly>
+									<input type="text" class="form-control form-control-sm col-sm" readonly [(ngModel)]="spoilPolRecord.cedingName">
 								</div>
 							</div>
 							<div class="col-sm-6">
 								<div class="input-group">
 									<label class="form-control-sm col-sm-3">Risk</label>
-									<input type="text" class="form-control form-control-sm col-sm" readonly>
+									<input type="text" class="form-control form-control-sm col-sm" readonly [(ngModel)]="spoilPolRecord.riskName">
 									<div class="col-sm-1"></div>
 								</div>
 							</div>
@@ -52,7 +52,7 @@
 							<div class="col-sm-6">
 								<div class="input-group">
 									<label class="form-control-sm col-sm-3">Insured</label>
-									<input type="text" class="form-control form-control-sm col-sm" readonly>
+									<input type="text" class="form-control form-control-sm col-sm" readonly [(ngModel)]="spoilPolRecord.insuredDesc">
 								</div>
 							</div>
 							<div class="col-sm-6"></div>
@@ -68,7 +68,7 @@
 								<div class="input-group">
 									<div class="col-sm-4"></div>
 									<label class="form-control-sm col-sm-3">Inception Date</label>
-									<input type="text" class="form-control form-control-sm col-sm" readonly>
+									<input type="{{ type }}" class="form-control form-control-sm col-sm" readonly [(ngModel)]="spoilPolRecord.inceptDate">
 									<div class="col-sm-1"></div>
 								</div>
 							</div>
@@ -76,7 +76,7 @@
 								<div class="input-group">
 									<div class="col-sm-1"></div>
 									<label class="form-control-sm col-sm-2">Expiry Date</label>
-									<input type="text" class="form-control form-control-sm col-sm" readonly>  
+									<input type="{{ type }}" class="form-control form-control-sm col-sm" readonly [(ngModel)]="spoilPolRecord.expiryDate">  
 									<div class="col-sm-5"></div>
 								</div>
 							</div>
@@ -92,14 +92,14 @@
 								<div class="input-group">
 									<div class="col-sm-4"></div>
 									<label class="form-control-sm col-sm-3">Issue Date</label>
-									<input type="text" class="form-control form-control-sm col-sm" readonly>
+									<input type="{{ type }}" class="form-control form-control-sm col-sm" readonly [(ngModel)]="spoilPolRecord.issueDate">
 									<div class="col-sm-1"></div>
 								</div>
 							</div>
 							<div class="col-sm-6">
 								<div class="input-group">
 									<label class="form-control-sm col-sm-3">Distribution Date</label>
-									<input type="text" class="form-control form-control-sm col-sm" readonly>
+									<input type="{{ type }}" class="form-control form-control-sm col-sm" readonly [(ngModel)]="spoilPolRecord.distDate">
 									<div class="col-sm-5"></div>
 								</div>
 							</div>
@@ -109,14 +109,14 @@
 								<div class="input-group">
 									<div class="col-sm-4"></div>
 									<label class="form-control-sm col-sm-3">Effective Date</label>
-									<input type="text" class="form-control form-control-sm col-sm" readonly>
+									<input type="{{ type }}" class="form-control form-control-sm col-sm" readonly [(ngModel)]="spoilPolRecord.effDate">
 									<div class="col-sm-1"></div>
 								</div>
 							</div>
 							<div class="col-sm-6">
 								<div class="input-group">
 									<label class="form-control-sm col-sm-3">Accounting Date</label>
-									<input type="text" class="form-control form-control-sm col-sm" readonly>
+									<input type="{{ type }}" class="form-control form-control-sm col-sm" readonly [(ngModel)]="spoilPolRecord.acctDate">
 									<div class="col-sm-5"></div>
 								</div>
 							</div>
@@ -148,9 +148,11 @@
 							<div class="input-group">
 								<div class="col-sm-1" style="margin-right: 49px !important"></div>
 								<label class="form-control-sm col-sm-2">Reason for Spoilage</label>
-								<input class="form-control form-control-sm  col-sm-1" type="text">
-								<div class="text-search-ico" style="padding-left: 1px"><a><i class="fa fa-search"></i></a></div>&nbsp;
-								<input class="form-control form-control-sm col-sm" type="text" style="margin-left: 2px;" readonly>
+									<input class="form-control form-control-sm  col-sm-1" type="text" [(ngModel)]="spoilPolRecord.reason" (change)="onChangeReason()"  *ngIf="reasonLovEnabled">
+									<div *ngIf="reasonLovEnabled" style="z-index: -1"><div class="text-search-ico" style="padding-left: 1px" (click)="getSpoilList()" ><a><i class="fa fa-search"></i></a></div>&nbsp;</div>
+									<input class="form-control form-control-sm  col-sm-1 dsbld" readonly type="text" *ngIf="!reasonLovEnabled">
+									<div *ngIf="!reasonLovEnabled" style="z-index: -1"><div class="text-search-ico" style="padding-left: 1px" ><i class="fa fa-search"></i></div>&nbsp;</div>
+								<input class="form-control form-control-sm col-sm" type="text" style="margin-left: 2px;" readonly [(ngModel)]="spoilPolRecord.reasonDesc">
 								<div class="col-sm-2" style="margin-left: 50px !important;"></div>
 							</div>
 						</div>
@@ -162,11 +164,54 @@
 						<div class="col-md-12 text-center">
 							<div class="cust-btn-container">
 								<button type="button" class="cust-btn"><a>Cancel</a></button>
-								<button type="button" class="cust-btn"><a>Post Spoilage</a></button>
+								<button type="button" class="cust-btn" *ngIf="postBtnEnabled"><a>Post Spoilage</a></button>
+								<button type="button" class="cust-btn dsbld" disabled="disabled" *ngIf="!postBtnEnabled">Post Spoilage</button>
 							</div>
 						</div>
 					</div>
 				</div>
+
+				<div class="form-row">
+                    <div class="form-group col-sm">
+                        <div class="col-md-12 text-center">
+                            <div class="cust-btn-container" style="margin-top: 10px !important;">
+                                <app-modal hidden [btnTitle]="'List Of Values'" id="polLov">
+                                    <div header>List Of Values</div>
+                                    <div body>
+                                       <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)" (searchToDb)="searchQuery($event)"></app-cust-non-datatable>
+                                    </div>
+                                    <div footer class="text-center w-100">
+                                        <div class="col-sm-12 text-center">
+                                        <button class="cust-btn" type="button" (click)="onClickCancelLov()"><a>Cancel</a></button>
+                                        <button class="cust-btn" type="button" (click)="onClickOkLov()"><a>Ok</a></button>
+                                        </div>
+                                    </div>
+                                </app-modal>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-sm">
+                        <div class="col-md-12 text-center">
+                            <div class="cust-btn-container" style="margin-top: 10px !important;">
+                                <app-modal hidden [btnTitle]="'List Of Values'" id="spoilLov">
+                                    <div header>List Of Values</div>
+                                    <div body>
+                                       <app-cust-non-datatable [passData]="passDataSpoilageReason" #spoil (rowClick)="onRowClickSpoil($event)"></app-cust-non-datatable>
+                                    </div>
+                                    <div footer class="text-center w-100">
+                                        <div class="col-sm-12 text-center">
+                                        <button class="cust-btn" type="button" (click)="this.modalService.dismissAll()"><a>Cancel</a></button>
+                                        <button class="cust-btn" type="button" (click)="onClickOkSpoil()"><a>Ok</a></button>
+                                        </div>
+                                    </div>
+                                </app-modal>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
 			</ng-template>
 		</ngb-tab>
