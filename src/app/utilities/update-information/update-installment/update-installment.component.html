@@ -90,7 +90,7 @@
           <fieldset class="scheduler-border">
             <legend class="scheduler-border">Installment Info</legend>
             <div class="custom-row-inline-inset">
-              <app-cust-editable-non-datatable [passData]="passDataInstallmentInfo"></app-cust-editable-non-datatable>
+              <app-cust-editable-non-datatable #instllmentTable [passData]="passDataInstallmentInfo" (newClick)="updateOtherCharges($event)" (tableDataChange)="compute()" (onDelete)="delInst()"></app-cust-editable-non-datatable>
             </div>
           </fieldset>
         </div>
@@ -102,7 +102,7 @@
               <div class="row">
                 <div class="col-sm-2"></div>
                 <div class="col-sm-8">
-                  <app-cust-editable-non-datatable [passData]="passDataOtherCharges"></app-cust-editable-non-datatable>
+                  <app-cust-editable-non-datatable #otherTable [passData]="passDataOtherCharges" (clickLOV)="clickLOV($event)" (tableDataChange)="compute();instllmentTable.indvSelect.otherCharges=$event" (onDelete)="delOth()"></app-cust-editable-non-datatable>
                 </div>
                 <div class="col-sm-2"></div>
               </div>
@@ -114,7 +114,7 @@
           <div class="form-group col-sm">
             <div class="text-center" style="margin-top: 8px !important;">
               <div class="cust-btn-container">
-                <button type="button" class="cust-btn"><a>Cancel</a></button>
+                <button type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
                 <button type="button" class="cust-btn" (click)="save()"><a>Save</a></button>
               </div>
             </div>
@@ -140,6 +140,7 @@
     </div>
 </app-modal>
 
+<app-lov [passData]="passLOVData" (selectedData)="setSelected($event)" [lovCheckBox]="true"></app-lov>
 <app-sucess-dialog id="inward" [icon]="dialogIcon" (onOk)="cancelFlag && dialogIcon == 'success'  ? this.cancel.onNo():null" [message]="dialogMsg"></app-sucess-dialog>
 <app-confirm-save id="inwardSave" (onYes)="save()"></app-confirm-save>
 <app-cancel-button (onYes)="save('cancel')" [url]="'/policy-listing'" ></app-cancel-button>

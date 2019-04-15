@@ -20,6 +20,8 @@ export class PolicyIssuanceAltComponent implements OnInit {
         editPol:'',
         insuredDesc:'',
         riskId:'',
+        showPolAlop: false,
+        coInsuranceFlag: false
     }
 
     alterFlag: boolean = false;
@@ -42,13 +44,6 @@ export class PolicyIssuanceAltComponent implements OnInit {
             this.policyInfo.riskName = params['riskName'];
             this.policyInfo.insured = params['insured'];
         });
-        /* Test Data */
-        /*this.policyInfo.policyId = 9; 
-        this.policyInfo.policyNo = 'CAR-2019-00001-001-0001-001';
-        this.policyInfo.insuredDesc = 'insured5';
-        this.policyInfo.riskName = 'riskName';
-        this.policyInfo.principalName = 'principal';
-        this.policyInfo.contractorName = 'contractor';*/
 
     }
 
@@ -88,6 +83,8 @@ export class PolicyIssuanceAltComponent implements OnInit {
       this.policyInfo.policyId = event.policyId;
       this.policyInfo.insuredDesc =  event.insuredDesc;
       this.policyInfo.riskId =  event.riskId;
+      this.policyInfo.showPolAlop = event.showPolAlop;
+      this.policyInfo.coInsuranceFlag = event.coInsuranceFlag;
     }
 
    returnOnModal(){

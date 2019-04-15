@@ -100,6 +100,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     updateUser: null,
     updateDate: null,
     showPolAlop: false,
+    coInsuranceFlag: false,
     project: {
       projId: null,
       projDesc: null,
@@ -213,8 +214,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       this.policyId = params['policyId'];
       this.policyNo = params['policyNo'];
     });
+
     this.getPolGenInfo();
-    
   }
 
   ngOnDestroy() {
@@ -274,14 +275,19 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
                this.policyInfo.showPolAlop = alopFlag;
       }
 
-      this.emitPolicyInfoId.emit({
-        policyId: event,
-        policyNo: this.policyInfo.policyNo,
-        riskName: this.policyInfo.project.riskName,
-        insuredDesc: this.policyInfo.insuredDesc,
-        riskId: this.policyInfo.project.riskIdz,
-        showPolAlop: this.policyInfo.showPolAlop
-      });    
+      this.underwritingService.getPolCoInsurance(this.policyInfo.policyId, '') .subscribe((data: any) => {
+           this.policyInfo.coInsuranceFlag = (data.policy.length > 0)? true : false;
+
+           this.emitPolicyInfoId.emit({
+            policyId: event,
+            policyNo: this.policyInfo.policyNo,
+            riskName: this.policyInfo.project.riskName,
+            insuredDesc: this.policyInfo.insuredDesc,
+            riskId: this.policyInfo.project.riskIdz,
+            showPolAlop: this.policyInfo.showPolAlop,
+            coInsuranceFlag: this.policyInfo.coInsuranceFlag
+          }); 
+      });   
 
     });
   }
