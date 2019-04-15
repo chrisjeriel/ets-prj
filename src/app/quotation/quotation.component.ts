@@ -21,6 +21,7 @@ export class QuotationComponent implements OnInit {
 	constructor(private route: ActivatedRoute,private modalService: NgbModal, private titleService: Title, private router: Router, private quotationService: QuotationService) { }
 	@ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild('tabset') tabset: any;
+  @ViewChild(GeneralInfoComponent) genInfoComponent: GeneralInfoComponent;
   docTitle: string = "";
 	sub: any;
 	line: string;
@@ -332,6 +333,11 @@ export class QuotationComponent implements OnInit {
             }
         })
       }
+
+      this.genInfoComponent.ngOnInit();
+      /*setTimeout(() => {
+        this.router.navigate(['/quotation', { line: this.quoteInfo.lineCd,  quotationNo : this.quoteInfo.quotationNo, quoteId: this.quoteInfo.quoteId, from: 'quo-processing', inquiryFlag: true}], { skipLocationChange: true });
+      },100); */
     }
 
 

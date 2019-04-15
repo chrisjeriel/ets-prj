@@ -29,8 +29,8 @@
 			<div class="cust-btn-container" style="margin-top: 10px;">
 			<button type="button" class="cust-btn" *ngIf="custEditableNonDatatableComponent.selected.length!=0" (click)="onClickPrint()"><a>Print</a></button>
 			<button type="button" class="cust-btn cust-btn-disabled" *ngIf="custEditableNonDatatableComponent.selected.length==0"><a>Print</a></button>
-			<button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
-            <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+			<button [class.d-none]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED'" type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
+            <button [class.d-none]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED'" type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
             <!-- <app-modal [btnTitle]="'Save'" (click)="onClickSave()">
             	<div header>
             		Prompt

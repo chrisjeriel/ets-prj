@@ -252,7 +252,9 @@ export class ApprovalListComponent implements OnInit {
                                         });
             }
           }
-      })
+      });
+
+      this.selectedData = null;
   }
 
   redirectToQuoteGenInfo() {
@@ -293,7 +295,21 @@ export class ApprovalListComponent implements OnInit {
             }
             this.retrieveWfmApprovals();
     });
-    
+  }
+
+  rejectRecord() {
+    this.quotationService.updateQuoteStatus(this.selectedData.referenceId, 'R', this.currentUserId).subscribe((data)=>{
+            if(data['returnCode'] == 0) {
+              this.dialogIcon = "error-message";
+              this.dialogMessage = "Status failed for Rejection";
+              this.successDiag.open();
+            } else {
+              this.dialogMessage = this.selectedData.module + " : " + this.selectedData.details + " " + "has been rejected.";
+              this.dialogIcon = "success-message";
+              this.successDiag.open();
+            }
+            this.retrieveWfmApprovals();
+    });
   }
 
   
