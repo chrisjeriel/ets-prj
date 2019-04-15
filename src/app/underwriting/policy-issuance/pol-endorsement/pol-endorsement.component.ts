@@ -37,7 +37,8 @@ export class PolEndorsementComponent implements OnInit {
             updateDate: this.ns.toDateTimeString(0),
             createUser: JSON.parse(window.localStorage.currentUser).username,
             updateUser: JSON.parse(window.localStorage.currentUser).username,
-            deductibles: []
+            deductibles: [],
+            deductiblesOc: []
         },
         addFlag: true,
         deleteFlag: true,
